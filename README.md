@@ -13,3 +13,9 @@ Features
 5. Local storage for offline usage. Maybe sqlite.
 6. Receive Toggl data updates using WebSocket
 7. Command line client for testing and as an example on how to use.
+
+
+Technicalities
+==============
+* [ninja](https://github.com/martine/ninja) for building
+* [POCO](http://pocoproject.org/) for networking, storage etc
