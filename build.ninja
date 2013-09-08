@@ -5,7 +5,7 @@ ar = ar
 cflags = -g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter $
     -O2 $
     -DNDEBUG
-ldflags = -L$builddir
+ldflags = -L$builddir -Ithird_party/poco -Lthird_party/poco/lib/Darwin/x86_64/ -lPocoUtil -lPocoNet
 
 rule cxx
   command = $cxx -MMD -MT $out -MF $out.d $cflags -c $in -o $out
