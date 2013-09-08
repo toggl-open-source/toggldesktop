@@ -1,0 +1,88 @@
+POCO Data Release Notes
+POCO Data Library
+
+!!!Release 1.3.6
+
+!!Summary of Changes
+
+  - fixed SF# 2186643: Data::Statement::reset() not implemented in 1.3.3
+  - better error reporting in Data MySQL connector (patch #2881270 by Jan "HanzZ" Kaluza)
+  - fixed SF# 2876179: MySQL Signed/Unsigned value bug
+  - upgraded to SQLite 3.6.20
+
+
+!!!Release 1.3.5
+
+!!Summary of Changes
+
+  - fixed SF# 2779410: Poco::Data::ODBC::HandleException impovement
+
+
+!!!Release 1.3.4
+
+!!Summary of Changes
+  - Upgraded to SQLite 3.6.13
+  - improved SQLite error reporting
+  - Poco::Data::SessionPool: the janitor can be disabled by specifying a zero idle time.
+  - added Poco::Data::SessionPool::customizeSession()
+  - added support for different SQLite transaction modes (DEFERRED, IMMEDIATE, EXCLUSIVE)
+    The transaction mode can be set with <[setProperty("transactionMode", mode);]> where
+    mode is one of "DEFERRED", "IMMEDIATE" or "EXCLUSIVE". Note that mode must be passed
+    as a <[std::string]>.
+  - Data::SQLite: added support for automatic retries if the database is locked.
+    Automatic retires can be enabled with <[setProperty("maxRetryAttempts", nAttempts);]>
+    where the number of attempts must be an <[int]>. Retry behavior can be further 
+    customized using the <[minRetrySleep]> and <[maxRetrySleep]> properties. See
+    Poco::Data::SQLite::SessionImpl for more information.
+  - improved SQLite data type mapping
+
+
+!!!Release 1.3.3
+
+!!Summary of Changes
+
+  - Upgraded to SQLite 3.6.2
+  - fixed SF# 1871946: no exception thrown on error
+  - fixed SF# 2007486: Please clarify license for Data/samples/*
+  - fixed SF# 2019857: Memory leak in Data::ODBC Extractor
+  - fixed SF# 2118943: out_of_bound access in Poco::Data::BLOB:rawContent
+  - fixed SF# 1891132: Poco::Data::StatementImpl::executeWithLimit is not correct
+  
+
+!!!Release 1.3.2
+
+!!Summary of Changes
+
+  - fixed SF# 1724388: ODBC Diagnostics
+  - fixed SF# 1804797: ODBC Statement multiple execution fails
+  - fixed SF# 1803435: SessionPool onJanitorTimer called too often?
+  - fixed SF# 1851997: Undefined Behavior in ODBC::Preparation
+  - updated SQlite to 3.5.5
+
+
+!!!Release 1.3.1
+
+!!Summary of Changes
+
+  - fixed SF# 1739989: Data::RecordSet::operator = () 
+  - fixed SF# 1747525: SQLite, Transactions and Session Pooling
+  - upgraded to SQLite 3.4.1
+
+
+!!!Release 1.3.0
+
+!!Summary of Changes
+
+  - Class Poco::Data::RecordSet has been added providing generic access
+    to arbitrary tables.
+  - SessionInstantiator has been renamed Poco::Data::Connector.
+  - Poco::Data::BLOBInputStream and Poco::Data::BLOBOutputStream allow convenient access to Poco::Data::BLOB data.
+  - Poco::Data::Session and Poco::Data::Statement can be used in simpler ways.
+  - The DataConnectors project directory has been merged into the Data project directory.
+
+!!Incompatible Changes and Possible Transition Issues
+
+Release 1.3 of the POCO C++ Libraries is the first official release containing the Data library.
+The Data library has been available in a development state for the 1.2 release. For the 1.3
+release, a few things have been changed in an incompatible way that requires changes
+to existing code.
