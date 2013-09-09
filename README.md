@@ -17,7 +17,6 @@ Features
 
 Technicalities
 ==============
-* [ninja](https://github.com/martine/ninja) for building
 * [POCO](http://pocoproject.org/) for networking, storage etc
 
 
