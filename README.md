@@ -19,3 +19,17 @@ Technicalities
 ==============
 * [ninja](https://github.com/martine/ninja) for building
 * [POCO](http://pocoproject.org/) for networking, storage etc
+
+
+Install
+=======
+* Build POCO
+
+```
+cd third_party/poco-1.4.6p1-all
+./configure --omit=Data/ODBC,Data/MySQL
+make
+```
+
+* Build openSSL
+
