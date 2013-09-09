@@ -1,6 +1,7 @@
 
 builddir=build
 pocodir=third_party/poco-1.4.6p1-all
+openssldir=third_party/openssl-1.0.1e
 
 uname=$(shell uname)
 pocolib=$(pocodir)/lib/Darwin/x86_64/
@@ -38,4 +39,5 @@ kopsik:
 	$(cxx) $(ldflags) -o $(builddir)/libkopsik.a $(builddir)/kopsik.o -lkopsik
 
 deps:
+	cd $(openssldir) && ./config && make
 	cd $(pocodir) && ./configure --omit=Data/ODBC,Data/MySQL && make
