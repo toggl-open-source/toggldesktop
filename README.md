@@ -7,7 +7,7 @@ Experimental Toggl API client in good ol' C++
 Features
 ========
 1. Basic Toggl API models: user, workspace, project, task, time entry, tag
-2. Authenticate user via Toggl API, username/password
+2. Authenticate user via Toggl API
 3. User can track time.
 4. Sync pushes/pulls all changes once
 5. Local storage for offline usage. Maybe sqlite.
