@@ -1,13 +1,21 @@
+
 builddir=build
-pocolib=third_party/poco-1.4.6p1-all
+pocodir=third_party/poco-1.4.6p1-all
+
+uname=$(shell uname)
+pocolib=$(pocodir)/lib/Darwin/x86_64/
+ifeq ($(uname), Linux)
+pocolib=$(pocodir)/lib/Linux/x86_64
+endif
+
 cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -O2 -DNDEBUG \
-    -I$(pocolib)/Foundation/include \
-    -I$(pocolib)/Util/include \
-    -I$(pocolib)/Net/include \
-    -I$(pocolib)/Crypto/include \
-    -I$(pocolib)/NetSSL_OpenSSL/include
+    -I$(pocodir)/Foundation/include \
+    -I$(pocodir)/Util/include \
+    -I$(pocodir)/Net/include \
+    -I$(pocodir)/Crypto/include \
+    -I$(pocodir)/NetSSL_OpenSSL/include
 cxx=g++ $(cflags)
-ldflags=-L$(builddir) -L$(pocolib)/lib/Darwin/x86_64/ -lPocoFoundation -lPocoUtil -lPocoNet -lPocoCrypto -lPocoNetSSL
+ldflags=-L$(builddir) -L$(pocolib) -lPocoFoundation -lPocoUtil -lPocoNet -lPocoCrypto -lPocoNetSSL
 
 default: clean builddir toggl_api_client.o libkopsik.a kopsik.o kopsik
 
@@ -30,4 +38,4 @@ kopsik:
 	$(cxx) $(ldflags) -o $(builddir)/libkopsik.a $(builddir)/kopsik.o -lkopsik
 
 deps:
-	cd $(pocolib) && ./configure --omit=Data/ODBC,Data/MySQL && make
+	cd $(pocodir) && ./configure --omit=Data/ODBC,Data/MySQL && make
