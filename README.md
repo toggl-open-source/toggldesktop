@@ -22,13 +22,17 @@ Technicalities
 
 Install
 =======
-* Build POCO
+* Build dependencies
 
 ```
-cd third_party/poco-1.4.6p1-all
-./configure --omit=Data/ODBC,Data/MySQL
+make deps
+```
+
+* Build kopsik itself:
+
+```
 make
 ```
 
-* Build openSSL
+An executable named *kopsik* should emerge as the result of the build.
 
