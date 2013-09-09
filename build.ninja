@@ -4,8 +4,13 @@ cxx = g++
 ar = ar
 cflags = -g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter $
     -O2 $
-    -DNDEBUG
-ldflags = -L$builddir -Ithird_party/poco -Lthird_party/poco/lib/Darwin/x86_64/ -lPocoUtil -lPocoNet
+    -DNDEBUG $
+    -Ithird_party/poco-1.4.6p1-all/Foundation/include $
+    -Ithird_party/poco-1.4.6p1-all/Util/include $
+    -Ithird_party/poco-1.4.6p1-all/Net/include $
+    -Ithird_party/poco-1.4.6p1-all/Crypto/include $
+    -Ithird_party/poco-1.4.6p1-all/NetSSL_OpenSSL/include
+ldflags = -L$builddir -Lthird_party/poco-1.4.6p1-all/lib/Darwin/x86_64/ -lPocoFoundation -lPocoUtil -lPocoNet -lPocoCrypto -lPocoNetSSL
 
 rule cxx
   command = $cxx -MMD -MT $out -MF $out.d $cflags -c $in -o $out
