@@ -4,6 +4,8 @@
 #include "main.h"
 #include "toggl_api_client.h"
 
+#include "Poco/Message.h"
+#include "Poco/Logger.h"
 #include "Poco/SimpleFileChannel.h"
 #include "Poco/FormattingChannel.h"
 #include "Poco/PatternFormatter.h"

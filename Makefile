@@ -28,16 +28,16 @@ clean:
 builddir:
 	mkdir -p build
 
-toggl_api_client.o:
-	$(cxx) -c toggl_api_client.cc -o build/toggl_api_client.o
+toggl_api_client.o: builddir
+	$(cxx) $(ldflags) -c toggl_api_client.cc -o build/toggl_api_client.o
 
 libkopsik.a: toggl_api_client.o
 	rm -f $(builddir)/libkopsik.a && ar crs $(builddir)/libkopsik.a $(builddir)/toggl_api_client.o
 
-main.o:
-	$(cxx) -c main.cc -o build/main.o
+main.o: builddir
+	$(cxx) $(ldflags) -c main.cc -o build/main.o
 
-kopsik:
+kopsik: libkopsik.a main.o
 	$(cxx) $(ldflags) -o kopsik -lkopsik $(builddir)/libkopsik.a $(builddir)/main.o
 
 deps: openssl poco

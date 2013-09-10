@@ -15,51 +15,43 @@ namespace toggl {
 
 	typedef std::string error;
 
-	const int nil = 0;
 	const error noError = "";
 
 	typedef std::string guid;
 
-	class BaseModel {
+	class Workspace {
 	public:
-
-		error Save() {
-			return nil;
-		};
-
-		error Load() {
-			return nil;
-		};
-	};
-
-	class Workspace : public BaseModel {
-	public:
+		long ID;
 		std::string Name;
 	};
 
-	class Project : public BaseModel {
+	class Project {
 	public:
+		long ID;
 		guid Guid;
 		long Wid;
 		std::string Name;
 	};
 
-	class Task : public BaseModel {
+	class Task {
 	public:
+		long ID;
 		std::string Name;
 		long Wid;
 		long Pid;
 	};
 
-	class Tag : public BaseModel {
+	class Tag {
 	public:
+		long ID;
 		long Wid;
 		std::string Name;
 		guid Guid;
 	};
 
-	class TimeEntry : public BaseModel {
+	class TimeEntry {
 	public:
+		long ID;
 		guid Guid;
 		long Wid;
 		long Pid;
@@ -74,7 +66,7 @@ namespace toggl {
 		long UiModifiedAt;
 	};
 
-	class User : public BaseModel {
+	class User {
 	public:
 		std::string APIToken;
 		long DefaultWid;
