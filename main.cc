@@ -6,9 +6,7 @@
 
 #include "Poco/Message.h"
 #include "Poco/Logger.h"
-#include "Poco/SimpleFileChannel.h"
-#include "Poco/FormattingChannel.h"
-#include "Poco/PatternFormatter.h"
+#include "Poco/Util/Application.h"
 
 int Kopsik::main(const std::vector<std::string>& args) {
 	char* apiToken = getenv("TOGGL_API_TOKEN");
