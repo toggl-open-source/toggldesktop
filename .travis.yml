@@ -1,0 +1,17 @@
+language: cpp
+compiler:
+  - gcc
+  - clang
+before_script:
+  - make clean
+install: make deps
+script: make
+branches:
+  only:
+    - master
+notifications:
+  recipients:
+    - tanel.lebedev@gmail.com
+  email:
+    on_success: change
+    on_failure: always
