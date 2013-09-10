@@ -42,8 +42,7 @@ cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -O2 -DNDEBUG -stat
 	-I$(jsondir)
 endif
 
-cxx=g++
-
+ifeq ($(uname), Darwin)
 libs=-L$(pocolib) \
 	-lPocoDataSQLite \
 	-lPocoData \
@@ -60,7 +59,29 @@ libs=-L$(pocolib) \
 	-lssl \
 	-lcrypto \
 	-ldl
+endif
 
+ifeq ($(uname), Linux)
+libs=-L$(pocolib) \
+	-lPocoDataSQLite \
+	-lPocoData \
+	-lPocoNet \
+	-lPocoNetSSL \
+	-lPocoCrypto \
+	-lPocoUtil \
+	-lPocoXML \
+	-lPocoFoundation \
+	-L$(jsondir) \
+	-ljson \
+	-lpthread \
+	-L$(openssldir) \
+	-lssl \
+	-lcrypto \
+	-lrt \
+	-ldl
+endif
+
+cxx=g++
 srcs=toggl_api_client.h toggl_api_client.cc main.h main.cc
 objs=$(srcs:.c=.o)
 
