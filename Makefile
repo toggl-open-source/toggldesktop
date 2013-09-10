@@ -11,6 +11,7 @@ pocolib=$(pocodir)/lib/Linux/x86_64
 endif
 
 cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -O2 -DNDEBUG \
+	-I$(openssldir)/include \
 	-I$(pocodir)/Foundation/include \
 	-I$(pocodir)/Util/include \
 	-I$(pocodir)/Net/include \
@@ -46,6 +47,6 @@ openssl:
 
 poco:
 	cd $(pocodir) && \
-	./configure --omit=Data/ODBC,Data/MySQL,Zip --no-samples \
+	./configure --omit=Data/ODBC,Data/MySQL,Zip --no-tests --no-samples \
 	--include-path=$(pwd)/$(openssldir)/include --library-path=$(pwd)/$(openssldir) && \
 	make
