@@ -42,7 +42,7 @@ kopsik:
 deps: openssl poco
 
 openssl:
-	cd $(openssldir) && ./config && make
+	cd $(openssldir) && ./config -fPIC && make
 
 poco:
 	cd $(pocodir) && \
