@@ -1,52 +1,75 @@
 
 pwd=$(shell pwd)
-builddir=build
+uname=$(shell uname)
+
 pocodir=third_party/poco-1.4.6p1-all
 openssldir=third_party/openssl-1.0.1e
+jsondir=third_party/libjson
 
-uname=$(shell uname)
+main=kopsik
+
+ifeq ($(uname), Darwin)
 pocolib=$(pocodir)/lib/Darwin/x86_64/
+endif
+
 ifeq ($(uname), Linux)
 pocolib=$(pocodir)/lib/Linux/x86_64
 endif
 
-cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -O2 -DNDEBUG \
+cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -O2 -DNDEBUG -static \
 	-I$(openssldir)/include \
 	-I$(pocodir)/Foundation/include \
 	-I$(pocodir)/Util/include \
-	-I$(pocodir)/Net/include \
+	-I$(pocodir)/Data/include \
+	-I$(pocodir)/Data/SQLite/include \
 	-I$(pocodir)/Crypto/include \
-	-I$(pocodir)/NetSSL_OpenSSL/include
-cxx=g++ $(cflags)
-ldflags=-L$(builddir) -L$(pocolib) -L$(openssldir) -lPocoFoundation -lPocoUtil -lPocoNet -lPocoCrypto -lPocoNetSSL
+	-I$(pocodir)/Net/include \
+	-I$(pocodir)/NetSSL_OpenSSL/include \
+	-I$(jsondir)
+cxx=g++
+libs=-L$(pocolib) \
+	-lPocoDataSQLite \
+	-lPocoData \
+	-lPocoNet \
+	-lPocoNetSSL \
+	-lPocoCrypto \
+	-lPocoUtil \
+	-lPocoXML \
+	-lPocoFoundation \
+	-L$(jsondir) \
+	-ljson \
+	-lpthread \
+	-L$(openssldir) \
+	-lssl \
+	-lcrypto \
+	-lrt \
+	-ldl
 
-default: builddir toggl_api_client.o libkopsik.a main.o kopsik
+srcs=toggl_api_client.h toggl_api_client.cc main.h main.cc
+objs=$(srcs:.c=.o)
+
+default: kopsik
 
 clean:
-	rm -rf build
+	rm -f kopsik
 
-builddir:
-	mkdir -p build
+kopsik: 
+	$(cxx) $(cflags) -o $(main) $(objs) $(libs) && strip $(main)
 
-toggl_api_client.o: builddir
-	$(cxx) $(ldflags) -c toggl_api_client.cc -o build/toggl_api_client.o
+deps: openssl poco json
 
-libkopsik.a: toggl_api_client.o
-	rm -f $(builddir)/libkopsik.a && ar crs $(builddir)/libkopsik.a $(builddir)/toggl_api_client.o
-
-main.o: builddir
-	$(cxx) $(ldflags) -c main.cc -o build/main.o
-
-kopsik: libkopsik.a main.o
-	$(cxx) $(ldflags) -o kopsik -lkopsik $(builddir)/libkopsik.a $(builddir)/main.o
-
-deps: openssl poco
+json:
+	cd $(jsondir) && make
 
 openssl:
-	cd $(openssldir) && ./config -fPIC && make
+	cd $(openssldir) && ./config -fPIC no-shared no-dso && make
 
 poco:
 	cd $(pocodir) && \
-	./configure --omit=Data/ODBC,Data/MySQL,Zip --no-tests --no-samples \
+	./configure --omit=Data/ODBC,Data/MySQL,Zip --no-tests --no-samples --static \
 	--include-path=$(pwd)/$(openssldir)/include --library-path=$(pwd)/$(openssldir) && \
 	make
+
+.phony:
+	kopsik
+

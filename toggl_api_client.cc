@@ -1,5 +1,4 @@
 #include <string>
-#include <vector>
 #include <sstream>
 
 #include "toggl_api_client.h"
