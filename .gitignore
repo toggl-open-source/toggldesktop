@@ -30,7 +30,8 @@ third_party/openssl-1.0.1e/test/sha*t
 *.time
 opensslconf.h
 
-third_party/poco-1.4.6p1-all/**/.dep/
-third_party/poco-1.4.6p1-all/**/bin/
+third_party/poco-1.4.6p1-all/*/bin/
+third_party/poco-1.4.6p1-all/*/*/bin/
 third_party/poco-1.4.6p1-all/config.make
 third_party/poco-1.4.6p1-all/lib
+.dep
