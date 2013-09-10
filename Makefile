@@ -1,4 +1,5 @@
 
+pwd=$(shell pwd)
 builddir=build
 pocodir=third_party/poco-1.4.6p1-all
 openssldir=third_party/openssl-1.0.1e
@@ -10,12 +11,11 @@ pocolib=$(pocodir)/lib/Linux/x86_64
 endif
 
 cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -O2 -DNDEBUG \
-    -I$(openssldir)/include \
-    -I$(pocodir)/Foundation/include \
-    -I$(pocodir)/Util/include \
-    -I$(pocodir)/Net/include \
-    -I$(pocodir)/Crypto/include \
-    -I$(pocodir)/NetSSL_OpenSSL/include
+	-I$(pocodir)/Foundation/include \
+	-I$(pocodir)/Util/include \
+	-I$(pocodir)/Net/include \
+	-I$(pocodir)/Crypto/include \
+	-I$(pocodir)/NetSSL_OpenSSL/include
 cxx=g++ $(cflags)
 ldflags=-L$(builddir) -L$(pocolib) -L$(openssldir) -lPocoFoundation -lPocoUtil -lPocoNet -lPocoCrypto -lPocoNetSSL
 
@@ -45,4 +45,7 @@ openssl:
 	cd $(openssldir) && ./config && make
 
 poco:
-	cd $(pocodir) && ./configure --omit=Data/ODBC,Data/MySQL,Zip --no-samples && make
+	cd $(pocodir) && \
+	./configure --omit=Data/ODBC,Data/MySQL,Zip --no-samples \
+	--include-path=$(pwd)/$(openssldir)/include --library-path=$(pwd)/$(openssldir) && \
+	make
