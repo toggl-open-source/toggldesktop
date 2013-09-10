@@ -3,6 +3,8 @@ kopsik
 
 Experimental Toggl API client in good ol' C++
 
+[![Build Status](https://travis-ci.org/tanel/kopsik.png)](https://travis-ci.org/tane/kopsik)
+
 
 Features
 ========
