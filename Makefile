@@ -39,6 +39,10 @@ main.o:
 kopsik:
 	$(cxx) $(ldflags) -o kopsik -lkopsik $(builddir)/libkopsik.a $(builddir)/main.o
 
-deps:
+deps: openssl poco
+
+openssl:
 	cd $(openssldir) && ./config && make
-	cd $(pocodir) && ./configure --omit=Data/ODBC,Data/MySQL && make
+
+poco:
+	cd $(pocodir) && ./configure --omit=Data/ODBC,Data/MySQL,Zip --no-samples && make
