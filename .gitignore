@@ -15,6 +15,7 @@
 build
 kopsik
 
+third_party/openssl-1.0.1e/Makefile*
 third_party/openssl-1.0.1e/**/*.s
 third_party/openssl-1.0.1e/test/*test
 third_party/openssl-1.0.1e/**/lib
@@ -25,6 +26,7 @@ third_party/openssl-1.0.1e/**/*.time
 third_party/openssl-1.0.1e/apps/openssl
 third_party/openssl-1.0.1e/crypto/buildinf.h
 third_party/openssl-1.0.1e/test/sha*t
+third_party/openssl-1.0.1e/**/opensslconf.h
 
 third_party/poco-1.4.6p1-all/**/.dep/
 third_party/poco-1.4.6p1-all/**/bin/
