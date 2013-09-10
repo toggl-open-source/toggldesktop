@@ -15,6 +15,8 @@
 #include "Poco/Net/HTTPBasicCredentials.h"
 #include "Poco/Net/HTTPSClientSession.h"
 
+#include <libjson.h>
+
 namespace toggl {
 
 error User::fetch() {
@@ -59,19 +61,22 @@ error User::fetch() {
 		}
 
 		std::string json = body.str();
-			logger.debug(json);
+		logger.debug(json);
 
-		} catch (const Poco::Exception& exc) {
-			logger.error(exc.displayText());
-			return exc.displayText();
-		} catch (const std::exception& ex) {
-			logger.error(ex.what());
-			return ex.what();
-		} catch (const std::string& ex) {
-			logger.error(ex);
-			return ex;
-		}
+	} catch (const Poco::Exception& exc) {
+		logger.error(exc.displayText());
+		return exc.displayText();
+	} catch (const std::exception& ex) {
+		logger.error(ex.what());
+		return ex.what();
+	} catch (const std::string& ex) {
+		logger.error(ex);
+		return ex;
+	}
 
-		return noError;
-	};
+	return noError;
+};
+
+
+
 }
