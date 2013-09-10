@@ -1,17 +1,12 @@
 #include <iostream>
 #include <cstdlib>
 
+#include "main.h"
 #include "toggl_api_client.h"
 
 #include "Poco/SimpleFileChannel.h"
 #include "Poco/FormattingChannel.h"
 #include "Poco/PatternFormatter.h"
-#include "Poco/Util/Application.h"
-
-class Kopsik : public Poco::Util::Application {
-protected:
-    int main(const std::vector<std::string>& args);
-};
 
 int Kopsik::main(const std::vector<std::string>& args) {
 	char* apiToken = getenv("TOGGL_API_TOKEN");
@@ -33,5 +28,3 @@ int Kopsik::main(const std::vector<std::string>& args) {
 
 	return Poco::Util::Application::EXIT_OK;
 }
-
-POCO_APP_MAIN(Kopsik)
