@@ -16,6 +16,20 @@ ifeq ($(uname), Linux)
 pocolib=$(pocodir)/lib/Linux/x86_64
 endif
 
+ifeq ($(uname), Darwin)
+cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -O2 -DNDEBUG \
+	-I$(openssldir)/include \
+	-I$(pocodir)/Foundation/include \
+	-I$(pocodir)/Util/include \
+	-I$(pocodir)/Data/include \
+	-I$(pocodir)/Data/SQLite/include \
+	-I$(pocodir)/Crypto/include \
+	-I$(pocodir)/Net/include \
+	-I$(pocodir)/NetSSL_OpenSSL/include \
+	-I$(jsondir)
+endif
+
+ifeq ($(uname), Linux)
 cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -O2 -DNDEBUG -static \
 	-I$(openssldir)/include \
 	-I$(pocodir)/Foundation/include \
@@ -26,7 +40,10 @@ cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -O2 -DNDEBUG -stat
 	-I$(pocodir)/Net/include \
 	-I$(pocodir)/NetSSL_OpenSSL/include \
 	-I$(jsondir)
+endif
+
 cxx=g++
+
 libs=-L$(pocolib) \
 	-lPocoDataSQLite \
 	-lPocoData \
@@ -42,7 +59,6 @@ libs=-L$(pocolib) \
 	-L$(openssldir) \
 	-lssl \
 	-lcrypto \
-	-lrt \
 	-ldl
 
 srcs=toggl_api_client.h toggl_api_client.cc main.h main.cc
