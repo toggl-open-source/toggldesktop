@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/482/trunk/xcode/Samples/FrameworkSample
+END
+runtests.sh
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/385/trunk/xcode/Samples/FrameworkSample/runtests.sh
+END
+Info.plist
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/80/trunk/xcode/Samples/FrameworkSample/Info.plist
+END
+widget_test.cc
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/482/trunk/xcode/Samples/FrameworkSample/widget_test.cc
+END
+widget.cc
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/385/trunk/xcode/Samples/FrameworkSample/widget.cc
+END
+widget.h
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/385/trunk/xcode/Samples/FrameworkSample/widget.h
+END

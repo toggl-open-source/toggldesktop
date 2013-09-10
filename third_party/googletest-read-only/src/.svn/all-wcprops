@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 27
+/svn/!svn/ver/662/trunk/src
+END
+gtest-all.cc
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/482/trunk/src/gtest-all.cc
+END
+gtest-filepath.cc
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/642/trunk/src/gtest-filepath.cc
+END
+gtest-internal-inl.h
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/654/trunk/src/gtest-internal-inl.h
+END
+gtest-death-test.cc
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/636/trunk/src/gtest-death-test.cc
+END
+gtest-typed-test.cc
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/628/trunk/src/gtest-typed-test.cc
+END
+gtest.cc
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/662/trunk/src/gtest.cc
+END
+gtest-test-part.cc
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/628/trunk/src/gtest-test-part.cc
+END
+gtest-port.cc
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/636/trunk/src/gtest-port.cc
+END
+gtest_main.cc
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/607/trunk/src/gtest_main.cc
+END
+gtest-printers.cc
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/636/trunk/src/gtest-printers.cc
+END
