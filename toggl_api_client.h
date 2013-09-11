@@ -1,6 +1,8 @@
 #include <string>
 #include <vector>
 
+#include <libjson.h>
+
 namespace toggl {
 
 	typedef std::string error;
@@ -13,62 +15,100 @@ namespace toggl {
 	public:
 		long ID;
 		std::string Name;
+
+		error Load(JSONNODE *node);
+	};
+
+	class Client {
+	public:
+		long ID;
+		guid GUID;
+		long WID;
+		std::string Name;
+
+		error Load(JSONNODE *node);
 	};
 
 	class Project {
 	public:
 		long ID;
-		guid Guid;
-		long Wid;
+		guid GUID;
+		long WID;
 		std::string Name;
+
+		error Load(JSONNODE *node);
 	};
 
 	class Task {
 	public:
 		long ID;
 		std::string Name;
-		long Wid;
-		long Pid;
+		long WID;
+		long PID;
+
+		error Load(JSONNODE *node);
 	};
 
 	class Tag {
 	public:
 		long ID;
-		long Wid;
+		long WID;
 		std::string Name;
-		guid Guid;
+		guid GUID;
+
+		error Load(JSONNODE *node);
 	};
 
 	class TimeEntry {
 	public:
 		long ID;
-		guid Guid;
-		long Wid;
-		long Pid;
-		long Tid;
+		guid GUID;
+		long WID;
+		long PID;
+		long TID;
 		bool Billable;
-		long Start;
-		long Stop;
+		std::string Start;
+		std::string Stop;
 		long DurationInSeconds;
 		std::string Description;
-		std::vector<std::string> TagNames;
 		bool DurOnly;
-		long UiModifiedAt;
+		long UIModifiedAt;
+
+		std::vector<std::string> TagNames;
+
+		error Load(JSONNODE *node);
+
+	private:
+		error loadTags(JSONNODE *list);
 	};
 
 	class User {
 	public:
+		long ID;
 		std::string APIToken;
-		long DefaultWid;
+		long DefaultWID;
 
-		std::string Email;
-		std::vector<Workspace*> Workspaces;
-		std::vector<Project*> Projects;
-		std::vector<Task*> Tasks;
-		std::vector<TimeEntry*> TimeEntries;
-		std::vector<Tag*> Tags;
+		std::vector<Workspace> Workspaces;
+		std::vector<Project> Projects;
+		std::vector<Task> Tasks;
+		std::vector<TimeEntry> TimeEntries;
+		std::vector<Tag> Tags;
+		std::vector<Client> Clients;
 
-		error fetch();
+		// Unix timestamp of the user data; returned from API
+		int Since;
+
+		error Fetch();
+		error Load(const std::string &json);
+		error Load(JSONNODE *node);
+
+	private:
+		error loadProjects(JSONNODE *projects);
+		error loadTags(JSONNODE *projects);
+		error loadClients(JSONNODE *projects);
+		error loadTasks(JSONNODE *projects);
+		error loadTimeEntries(JSONNODE *projects);
+		error loadWorkspaces(JSONNODE *projects);
 	};
 }
 
