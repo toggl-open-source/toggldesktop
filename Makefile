@@ -100,15 +100,14 @@ json:
 
 openssl:
 ifeq ($(uname), Darwin)
-	cd $(openssldir) && make clean && ./config -fPIC no-shared no-dso && ./Configure darwin64-x86_64-cc && make
+	cd $(openssldir) && ./config -fPIC no-shared no-dso && ./Configure darwin64-x86_64-cc && make
 endif
 ifeq ($(uname), Linux)
-	cd $(openssldir) && make clean && ./config -fPIC no-shared no-dso && make
+	cd $(openssldir) && ./config -fPIC no-shared no-dso && make
 endif
 
 poco:
 	cd $(pocodir) && \
-	make clean && \
 	./configure --omit=Data/ODBC,Data/MySQL,Zip --no-tests --no-samples --static \
 	--include-path=$(pwd)/$(openssldir)/include --library-path=$(pwd)/$(openssldir) && \
 	make
