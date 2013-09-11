@@ -82,7 +82,7 @@ libs=-L$(pocolib) \
 endif
 
 cxx=g++
-srcs=toggl_api_client.h toggl_api_client.cc main.h main.cc
+srcs=toggl_api_client.h toggl_api_client.cc database.h database.cc main.h main.cc
 objs=$(srcs:.c=.o)
 
 default: kopsik
