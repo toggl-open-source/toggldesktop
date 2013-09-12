@@ -4,6 +4,7 @@
 
 #include "toggl_api_client.h"
 
+#include "Poco/Stopwatch.h"
 #include "Poco/Bugcheck.h"
 #include "Poco/Exception.h"
 #include "Poco/Logger.h"
@@ -21,6 +22,8 @@
 namespace toggl {
 
 error User::Fetch() {
+	Poco::Stopwatch stopwatch;
+	stopwatch.start();
 	poco_assert(!APIToken.empty());
 	Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
 	try {
@@ -64,18 +67,23 @@ error User::Fetch() {
 		std::string json = body.str();
 		logger.debug(json);
 
-		return this->Load(json);
+		error err = this->Load(json);
+		if (err != noError) {
+			return err;
+		}
 
 	} catch (const Poco::Exception& exc) {
-		logger.error(exc.displayText());
 		return exc.displayText();
 	} catch (const std::exception& ex) {
-		logger.error(ex.what());
 		return ex.what();
 	} catch (const std::string& ex) {
-		logger.error(ex);
 		return ex;
 	}
+
+	stopwatch.stop();
+	std::stringstream ss;
+	ss << "User fetched and parsed in " << stopwatch.elapsed() / 1000 << " ms";
+	logger.debug(ss.str());
 
 	return noError;
 };
