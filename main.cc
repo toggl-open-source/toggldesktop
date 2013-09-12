@@ -3,10 +3,13 @@
 
 #include "main.h"
 #include "toggl_api_client.h"
+#include "database.h"
 
 #include "Poco/Message.h"
 #include "Poco/Logger.h"
 #include "Poco/Util/Application.h"
+
+namespace kopsik {
 
 int Kopsik::main(const std::vector<std::string>& args) {
 	char* apiToken = getenv("TOGGL_API_TOKEN");
@@ -18,13 +21,21 @@ int Kopsik::main(const std::vector<std::string>& args) {
 	Poco::Logger &logger = Poco::Logger::get("");
 	logger.setLevel(Poco::Message::PRIO_DEBUG);
 
-	toggl::User user;
+	User user;
 	user.APIToken = std::string(apiToken);
-	toggl::error err = user.Fetch();
-	if (err != toggl::noError) {
+	error err = user.Fetch();
+	if (err != noError) {
+		logger.error(err);
+		return Poco::Util::Application::EXIT_SOFTWARE;
+	}
+
+	err = user.Save(db);
+	if (err != noError) {
 		logger.error(err);
 		return Poco::Util::Application::EXIT_SOFTWARE;
 	}
 
 	return Poco::Util::Application::EXIT_OK;
+}
+
 }

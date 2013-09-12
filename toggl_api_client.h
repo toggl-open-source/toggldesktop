@@ -3,13 +3,10 @@
 
 #include <libjson.h>
 
-namespace toggl {
+#include "types.h"
+#include "database.h"
 
-	typedef std::string error;
-
-	const error noError = "";
-
-	typedef std::string guid;
+namespace kopsik {
 
 	class Workspace {
 	public:
@@ -88,6 +85,9 @@ namespace toggl {
 		std::string APIToken;
 		long DefaultWID;
 
+		// Unix timestamp of the user data; returned from API
+		int Since;
+
 		std::vector<Workspace> Workspaces;
 		std::vector<Project> Projects;
 		std::vector<Task> Tasks;
@@ -95,12 +95,10 @@ namespace toggl {
 		std::vector<Tag> Tags;
 		std::vector<Client> Clients;
 
-		// Unix timestamp of the user data; returned from API
-		int Since;
-
 		error Fetch();
 		error Load(const std::string &json);
 		error Load(JSONNODE *node);
+		error Save(Database &db);
 
 	private:
 		error loadProjects(JSONNODE *projects);
