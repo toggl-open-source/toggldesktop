@@ -22,7 +22,7 @@ int Kopsik::main(const std::vector<std::string>& args) {
 	user.APIToken = std::string(apiToken);
 	toggl::error err = user.Fetch();
 	if (err != toggl::noError) {
-		std::cerr << err << std::endl;
+		logger.error(err);
 		return Poco::Util::Application::EXIT_SOFTWARE;
 	}
 
