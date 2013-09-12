@@ -37,3 +37,5 @@ third_party/poco-1.4.6p1-all/lib
 third_party/poco-1.4.6p1-all/*/samples/*/bin/
 third_party/poco-1.4.6p1-all/*/*/testsuite/bin/
 .dep
+
+kopsik.db
