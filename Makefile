@@ -85,12 +85,12 @@ cxx=g++
 srcs=toggl_api_client.h toggl_api_client.cc database.h database.cc main.h main.cc
 objs=$(srcs:.c=.o)
 
-default: kopsik
+default: command_line_client
 
 clean:
 	rm -f kopsik
 
-kopsik: 
+command_line_client: 
 	$(cxx) $(cflags) -o $(main) $(objs) $(libs) && strip $(main)
 
 deps: openssl poco json
