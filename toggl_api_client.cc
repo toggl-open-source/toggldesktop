@@ -82,13 +82,16 @@ error User::Fetch() {
 
 	stopwatch.stop();
 	std::stringstream ss;
-	ss << "User fetched and parsed in " << stopwatch.elapsed() / 1000 << " ms";
+	ss << "User with related data JSON fetched and parsed in " << stopwatch.elapsed() / 1000 << " ms";
 	logger.debug(ss.str());
 
 	return noError;
 };
 
 error User::Load(const std::string &json) {
+    Poco::Stopwatch stopwatch;
+    stopwatch.start();
+
 	poco_assert(!json.empty());
     JSONNODE *root = json_parse(json.c_str());
     JSONNODE_ITERATOR current_node = json_begin(root);
@@ -110,6 +113,13 @@ error User::Load(const std::string &json) {
         ++current_node;
     }
     json_delete(root);
+
+    stopwatch.stop();
+    std::stringstream ss;
+    ss << json.length() << " bytes of JSON parsed in " << stopwatch.elapsed() / 1000 << " ms";
+    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
+    logger.debug(ss.str());
+
     return noError;
 }
 
