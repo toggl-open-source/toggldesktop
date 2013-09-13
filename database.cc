@@ -14,28 +14,29 @@
 namespace kopsik {
 
 error Database::open_database() {
-    ses_ = new Poco::Data::Session("SQLite", "kopsik.db");
+    session = new Poco::Data::Session("SQLite", "kopsik.db");
     return initialize_tables();
 }
 
 void Database::close_database() {
-    if (ses_) {
-        delete ses_;
-        ses_ = 0;
+    if (session) {
+        delete session;
+        session = 0;
     }
 }
 
 error Database::initialize_tables() {
-    poco_assert(ses_);
+    poco_assert(session);
+
     std::string table_name;
     // Check if we have migrations table
-    *ses_ <<
+    *session <<
         "SELECT name FROM sqlite_master "
         "WHERE type='table' AND name='kopsik_migrations'",
         Poco::Data::into(table_name), Poco::Data::limit(1), Poco::Data::now;
 
     if (table_name.length() == 0) {
-        *ses_ <<
+        *session <<
             "CREATE TABLE kopsik_migrations(id INTEGER PRIMARY KEY, "
             "name VARCHAR NOT NULL)",
             Poco::Data::now;
@@ -170,13 +171,13 @@ error Database::initialize_tables() {
 
 error Database::migrate(std::string name, std::string sql) {
     int count = 0;
-    *ses_ << "SELECT COUNT(*) FROM kopsik_migrations WHERE name=:name",
+    *session << "SELECT COUNT(*) FROM kopsik_migrations WHERE name=:name",
         Poco::Data::into(count), Poco::Data::use(name), Poco::Data::now;
 
     if (count < 1) {
-        *ses_ << sql, Poco::Data::now;
+        *session << sql, Poco::Data::now;
 
-        *ses_ << "INSERT INTO kopsik_migrations(name) VALUES(:name)",
+        *session << "INSERT INTO kopsik_migrations(name) VALUES(:name)",
             Poco::Data::use(name), Poco::Data::now;
     }
 

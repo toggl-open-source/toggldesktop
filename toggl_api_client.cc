@@ -23,9 +23,11 @@
 namespace kopsik {
 
 error User::Fetch() {
+    poco_assert(!APIToken.empty());
+
     Poco::Stopwatch stopwatch;
     stopwatch.start();
-    poco_assert(!APIToken.empty());
+
     Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
     try {
         const Poco::URI uri("https://www.toggl.com");
@@ -41,6 +43,9 @@ error User::Fetch() {
             "/api/v8/me?with_related_data=true",
             Poco::Net::HTTPMessage::HTTP_1_1);
         req.setKeepAlive(false);
+        req.set("Accept-Encoding", "gzip");
+        req.set("Content-Encoding", "gzip");
+        req.setChunkedTransferEncoding(true);
 
         logger.debug("Sending request..");
 
@@ -94,10 +99,11 @@ error User::Fetch() {
 };
 
 error User::Load(const std::string &json) {
+    poco_assert(!json.empty());
+
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
-    poco_assert(!json.empty());
     JSONNODE *root = json_parse(json.c_str());
     JSONNODE_ITERATOR current_node = json_begin(root);
     JSONNODE_ITERATOR last_node = json_end(root);
@@ -131,6 +137,7 @@ error User::Load(const std::string &json) {
 
 error User::Load(JSONNODE *data) {
     poco_assert(data);
+
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
@@ -187,7 +194,10 @@ error User::Save(Database *db) {
 }
 
 error User::loadProjects(JSONNODE *list) {
+    poco_assert(list);
+
     this->Projects.clear();
+
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
@@ -209,7 +219,10 @@ std::string Project::String() {
 }
 
 error User::loadTasks(JSONNODE *list) {
+    poco_assert(list);
+
     this->Tasks.clear();
+
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
@@ -231,7 +244,10 @@ std::string Task::String() {
 }
 
 error User::loadWorkspaces(JSONNODE *list) {
+    poco_assert(list);
+
     this->Workspaces.clear();
+
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
@@ -253,7 +269,10 @@ std::string Workspace::String() {
 }
 
 error User::loadTags(JSONNODE *list) {
+    poco_assert(list);
+
     this->Tags.clear();
+
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
@@ -275,7 +294,10 @@ std::string Tag::String() {
 }
 
 error User::loadClients(JSONNODE *list) {
+    poco_assert(list);
+
     this->Clients.clear();
+
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
@@ -297,7 +319,10 @@ std::string Client::String() {
 }
 
 error User::loadTimeEntries(JSONNODE *list) {
+    poco_assert(list);
+
     this->TimeEntries.clear();
+
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
@@ -332,6 +357,7 @@ std::string TimeEntry::String() {
 
 error Workspace::Load(JSONNODE *data) {
     poco_assert(data);
+
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
@@ -349,6 +375,7 @@ error Workspace::Load(JSONNODE *data) {
 
 error Client::Load(JSONNODE *data) {
     poco_assert(data);
+
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
@@ -370,6 +397,7 @@ error Client::Load(JSONNODE *data) {
 
 error Project::Load(JSONNODE *data) {
     poco_assert(data);
+
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
@@ -393,6 +421,7 @@ error Project::Load(JSONNODE *data) {
 
 error Task::Load(JSONNODE *data) {
     poco_assert(data);
+
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
@@ -414,6 +443,7 @@ error Task::Load(JSONNODE *data) {
 
 error Tag::Load(JSONNODE *data) {
     poco_assert(data);
+
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
@@ -435,6 +465,7 @@ error Tag::Load(JSONNODE *data) {
 
 error TimeEntry::Load(JSONNODE *data) {
     poco_assert(data);
+
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
@@ -476,6 +507,7 @@ error TimeEntry::Load(JSONNODE *data) {
 
 error TimeEntry::loadTags(JSONNODE *list) {
     poco_assert(list);
+
     this->TagNames.clear();
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);

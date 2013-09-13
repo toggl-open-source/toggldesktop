@@ -14,7 +14,7 @@ namespace kopsik {
 
 class Database  {
 public:
-    Database() : ses_(0) {
+    Database() : session(0) {
         Poco::Data::SQLite::Connector::registerConnector();
     }
 
@@ -26,7 +26,7 @@ public:
     void close_database();
 
 private:
-    Poco::Data::Session *ses_;
+    Poco::Data::Session *session;
     error initialize_tables();
     error migrate(std::string name, std::string sql);
 };
