@@ -5,7 +5,7 @@ compiler:
 before_script:
   - make clean
 install: make deps
-script: make test
+script: make test && make lint
 branches:
   only:
     - master

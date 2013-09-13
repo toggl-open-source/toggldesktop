@@ -16,6 +16,7 @@ namespace kopsik {
 		std::string Name;
 
 		error Load(JSONNODE *node);
+		std::string String();
 	};
 
 	class Client {
@@ -28,6 +29,7 @@ namespace kopsik {
 		std::string Name;
 
 		error Load(JSONNODE *node);
+		std::string String();
 	};
 
 	class Project {
@@ -41,6 +43,7 @@ namespace kopsik {
 		std::string Name;
 
 		error Load(JSONNODE *node);
+		std::string String();
 	};
 
 	class Task {
@@ -53,6 +56,7 @@ namespace kopsik {
 		long PID;
 
 		error Load(JSONNODE *node);
+		std::string String();
 	};
 
 	class Tag {
@@ -65,6 +69,7 @@ namespace kopsik {
 		guid GUID;
 
 		error Load(JSONNODE *node);
+		std::string String();
 	};
 
 	class TimeEntry {
@@ -90,6 +95,7 @@ namespace kopsik {
 		std::vector<std::string> TagNames;
 
 		error Load(JSONNODE *node);
+		std::string String();
 
 	private:
 		error loadTags(JSONNODE *list);
@@ -116,15 +122,15 @@ namespace kopsik {
 		error Fetch();
 		error Load(const std::string &json);
 		error Load(JSONNODE *node);
-		error Save(Database &db);
+		error Save(Database *db);
+		std::string String();
 
 	private:
-		error loadProjects(JSONNODE *projects);
-		error loadTags(JSONNODE *projects);
-		error loadClients(JSONNODE *projects);
-		error loadTasks(JSONNODE *projects);
-		error loadTimeEntries(JSONNODE *projects);
-		error loadWorkspaces(JSONNODE *projects);
+		error loadProjects(JSONNODE *);
+		error loadTags(JSONNODE *);
+		error loadClients(JSONNODE *);
+		error loadTasks(JSONNODE *);
+		error loadTimeEntries(JSONNODE *);
+		error loadWorkspaces(JSONNODE *);
 	};
 }
-

@@ -1,8 +1,9 @@
+// Copyright 2013 Tanel Lebedev
+
 #include <string>
 #include <sstream>
-#include <iostream>
 
-#include "toggl_api_client.h"
+#include "./toggl_api_client.h"
 
 #include "Poco/Stopwatch.h"
 #include "Poco/Bugcheck.h"
@@ -17,82 +18,86 @@
 #include "Poco/Net/HTTPBasicCredentials.h"
 #include "Poco/Net/HTTPSClientSession.h"
 
-#include <libjson.h>
+#include "libjson.h" // NOLINT
 
 namespace kopsik {
 
 error User::Fetch() {
-	Poco::Stopwatch stopwatch;
-	stopwatch.start();
-	poco_assert(!APIToken.empty());
-	Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
-	try {
-		const Poco::URI uri("https://www.toggl.com");
-		const Poco::Net::Context::Ptr context(new Poco::Net::Context(
-			Poco::Net::Context::CLIENT_USE, "", "", "",
-			Poco::Net::Context::VERIFY_NONE, 9, false, "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"));
-		Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(), context);
-		session.setKeepAlive(false);
+    Poco::Stopwatch stopwatch;
+    stopwatch.start();
+    poco_assert(!APIToken.empty());
+    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
+    try {
+        const Poco::URI uri("https://www.toggl.com");
+        const Poco::Net::Context::Ptr context(new Poco::Net::Context(
+            Poco::Net::Context::CLIENT_USE, "", "", "",
+            Poco::Net::Context::VERIFY_NONE, 9, false,
+            "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"));
+        Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(),
+            context);
+        session.setKeepAlive(false);
 
-		Poco::Net::HTTPRequest req(Poco::Net::HTTPRequest::HTTP_GET,
-			"/api/v8/me?with_related_data=true", Poco::Net::HTTPMessage::HTTP_1_1);
-		req.setKeepAlive(false);
+        Poco::Net::HTTPRequest req(Poco::Net::HTTPRequest::HTTP_GET,
+            "/api/v8/me?with_related_data=true",
+            Poco::Net::HTTPMessage::HTTP_1_1);
+        req.setKeepAlive(false);
 
-		logger.debug("Sending request..");
+        logger.debug("Sending request..");
 
-		Poco::Net::HTTPBasicCredentials cred(APIToken, "api_token");
-		cred.authenticate(req);
-		session.sendRequest(req) << std::flush;
+        Poco::Net::HTTPBasicCredentials cred(APIToken, "api_token");
+        cred.authenticate(req);
+        session.sendRequest(req) << std::flush;
 
-		std::stringstream request_string;
-		req.write(request_string);
-		logger.debug(request_string.str());
+        std::stringstream request_string;
+        req.write(request_string);
+        logger.debug(request_string.str());
 
-		logger.debug("Request sent. Receiving response..");
+        logger.debug("Request sent. Receiving response..");
 
-		Poco::Net::HTTPResponse response;
-		std::istream& is = session.receiveResponse(response);
+        Poco::Net::HTTPResponse response;
+        std::istream& is = session.receiveResponse(response);
 
-		std::stringstream response_string;
-		response_string << "Response received: " << response.getStatus() << " " << response.getReason();
-		logger.debug(response_string.str());
+        std::stringstream response_string;
+        response_string << "Response received: " << response.getStatus()
+            << " " << response.getReason();
+        logger.debug(response_string.str());
 
-		std::ostringstream body;
-		Poco::StreamCopier::copyStream(is, body);
+        std::ostringstream body;
+        Poco::StreamCopier::copyStream(is, body);
 
-		if ((response.getStatus() != 202) && (response.getStatus() != 200)) {
-			return body.str();
-		}
+        if ((response.getStatus() != 202) && (response.getStatus() != 200)) {
+            return body.str();
+        }
 
-		std::string json = body.str();
-		logger.debug(json);
+        std::string json = body.str();
+        logger.debug(json);
 
-		error err = this->Load(json);
-		if (err != noError) {
-			return err;
-		}
+        error err = this->Load(json);
+        if (err != noError) {
+            return err;
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
 
-	} catch (const Poco::Exception& exc) {
-		return exc.displayText();
-	} catch (const std::exception& ex) {
-		return ex.what();
-	} catch (const std::string& ex) {
-		return ex;
-	}
+    stopwatch.stop();
+    std::stringstream ss;
+    ss << "User with related data JSON fetched and parsed in "
+        << stopwatch.elapsed() / 1000 << " ms";
+    logger.debug(ss.str());
 
-	stopwatch.stop();
-	std::stringstream ss;
-	ss << "User with related data JSON fetched and parsed in " << stopwatch.elapsed() / 1000 << " ms";
-	logger.debug(ss.str());
-
-	return noError;
+    return noError;
 };
 
 error User::Load(const std::string &json) {
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
-	poco_assert(!json.empty());
+    poco_assert(!json.empty());
     JSONNODE *root = json_parse(json.c_str());
     JSONNODE_ITERATOR current_node = json_begin(root);
     JSONNODE_ITERATOR last_node = json_end(root);
@@ -100,9 +105,9 @@ error User::Load(const std::string &json) {
         json_char *node_name = json_name(*current_node);
         if (strcmp(node_name, "since") == 0) {
             this->Since = json_as_int(*current_node);
-			std::stringstream s;
-			s << "User data as of: " << this->Since;
-			Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
+            std::stringstream s;
+            s << "User data as of: " << this->Since;
+            Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
             logger.debug(s.str());
         } else if (strcmp(node_name, "data") == 0) {
             error err = this->Load(*current_node);
@@ -116,7 +121,8 @@ error User::Load(const std::string &json) {
 
     stopwatch.stop();
     std::stringstream ss;
-    ss << json.length() << " bytes of JSON parsed in " << stopwatch.elapsed() / 1000 << " ms";
+    ss << json.length() << " bytes of JSON parsed in " <<
+        stopwatch.elapsed() / 1000 << " ms";
     Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
     logger.debug(ss.str());
 
@@ -124,7 +130,7 @@ error User::Load(const std::string &json) {
 }
 
 error User::Load(JSONNODE *data) {
-	poco_assert(data);
+    poco_assert(data);
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
@@ -155,7 +161,7 @@ error User::Load(JSONNODE *data) {
     return noError;
 }
 
-error User::Save(Database &db) {
+error User::Save(Database *db) {
     /*
 
         if (strcmp(node_name, "id") == 0) {
@@ -181,8 +187,7 @@ error User::Save(Database &db) {
 }
 
 error User::loadProjects(JSONNODE *list) {
-	std::cout << "Loading projects" << std::endl;
-	this->Projects.clear();
+    this->Projects.clear();
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
@@ -192,15 +197,19 @@ error User::loadProjects(JSONNODE *list) {
             return err;
         }
         this->Projects.push_back(model);
-        std::cout << "ID=" << model.ID << " name=" << model.Name << " wid=" << model.WID << " guid=" << model.GUID << std::endl;
         ++current_node;
     }
     return noError;
 }
 
+std::string Project::String() {
+    std::stringstream ss;
+    ss << "ID=" << ID << " name=" << Name << " wid=" << WID << " guid=" << GUID;
+    return ss.str();
+}
+
 error User::loadTasks(JSONNODE *list) {
-	std::cout << "Loading tasks" << std::endl;
-	this->Tasks.clear();
+    this->Tasks.clear();
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
@@ -210,15 +219,19 @@ error User::loadTasks(JSONNODE *list) {
             return err;
         }
         this->Tasks.push_back(model);
-        std::cout << "ID=" << model.ID << " name=" << model.Name << " wid=" << model.WID << " pid=" << model.PID << std::endl;
         ++current_node;
     }
     return noError;
 }
 
+std::string Task::String() {
+    std::stringstream ss;
+    ss << "ID=" << ID << " name=" << Name << " wid=" << WID << " pid=" << PID;
+    return ss.str();
+}
+
 error User::loadWorkspaces(JSONNODE *list) {
-	std::cout << "Loading workspaces" << std::endl;
-	this->Workspaces.clear();
+    this->Workspaces.clear();
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
@@ -228,15 +241,19 @@ error User::loadWorkspaces(JSONNODE *list) {
             return err;
         }
         this->Workspaces.push_back(model);
-        std::cout << "ID=" << model.ID << " name=" << model.Name << std::endl;
         ++current_node;
     }
     return noError;
 }
 
+std::string Workspace::String() {
+    std::stringstream ss;
+    ss << "ID=" << ID << " name=" << Name;
+    return ss.str();
+}
+
 error User::loadTags(JSONNODE *list) {
-	std::cout << "Loading tags" << std::endl;
-	this->Tags.clear();
+    this->Tags.clear();
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
@@ -246,15 +263,19 @@ error User::loadTags(JSONNODE *list) {
             return err;
         }
         this->Tags.push_back(model);
-        std::cout << "ID=" << model.ID << " name=" << model.Name << " wid=" << model.WID << " guid=" << model.GUID << std::endl;
         ++current_node;
     }
     return noError;
 }
 
+std::string Tag::String() {
+    std::stringstream ss;
+    ss << "ID=" << ID << " name=" << Name << " wid=" << WID << " guid=" << GUID;
+    return ss.str();
+}
+
 error User::loadClients(JSONNODE *list) {
-	std::cout << "Loading clients" << std::endl;
-	this->Clients.clear();
+    this->Clients.clear();
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
@@ -264,15 +285,19 @@ error User::loadClients(JSONNODE *list) {
             return err;
         }
         this->Clients.push_back(model);
-        std::cout << "ID=" << model.ID << " name=" << model.Name << " wid=" << model.WID << " guid=" << model.GUID << std::endl;
         ++current_node;
     }
     return noError;
 }
 
+std::string Client::String() {
+    std::stringstream ss;
+    ss << "ID=" << ID << " name=" << Name << " wid=" << WID << " guid=" << GUID;
+    return ss.str();
+}
+
 error User::loadTimeEntries(JSONNODE *list) {
-	std::cout << "Loading time entries" << std::endl;
-	this->TimeEntries.clear();
+    this->TimeEntries.clear();
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
@@ -282,17 +307,31 @@ error User::loadTimeEntries(JSONNODE *list) {
             return err;
         }
         this->TimeEntries.push_back(model);
-        std::cout << "ID=" << model.ID << " description=" << model.Description << " wid=" << model.WID << " guid=" << model.GUID << std::endl <<
-            " pid=" << model.PID << " tid=" << model.TID << " start=" << model.Start << " stop=" << model.Stop << std::endl << 
-            " duration=" << model.DurationInSeconds << " billable=" << model.Billable << std::endl <<
-            " duronly=" << model.DurOnly << " uimodifiedat=" << model.UIModifiedAt << std::endl;
         ++current_node;
     }
     return noError;
 }
 
+std::string TimeEntry::String() {
+    std::stringstream ss;
+    ss << "ID=" << ID <<
+    " description=" << Description <<
+    " wid=" << WID <<
+    " guid=" << GUID <<
+    " pid=" << PID <<
+    " tid=" << TID <<
+    " start=" << Start <<
+    " stop=" << Stop <<
+    " duration=" << DurationInSeconds <<
+    " billable=" << Billable <<
+    " duronly=" << DurOnly <<
+    " uimodifiedat=" << UIModifiedAt;
+    return ss.str();
+}
+
+
 error Workspace::Load(JSONNODE *data) {
-	poco_assert(data);
+    poco_assert(data);
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
@@ -309,7 +348,7 @@ error Workspace::Load(JSONNODE *data) {
 }
 
 error Client::Load(JSONNODE *data) {
-	poco_assert(data);
+    poco_assert(data);
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
@@ -330,7 +369,7 @@ error Client::Load(JSONNODE *data) {
 }
 
 error Project::Load(JSONNODE *data) {
-	poco_assert(data);
+    poco_assert(data);
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
@@ -353,7 +392,7 @@ error Project::Load(JSONNODE *data) {
 }
 
 error Task::Load(JSONNODE *data) {
-	poco_assert(data);
+    poco_assert(data);
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
@@ -374,7 +413,7 @@ error Task::Load(JSONNODE *data) {
 }
 
 error Tag::Load(JSONNODE *data) {
-	poco_assert(data);
+    poco_assert(data);
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
@@ -448,7 +487,6 @@ error TimeEntry::loadTags(JSONNODE *list) {
         ++current_node;
     }
     return noError;
-
 }
 
-}
+}   // namespace kopsik
