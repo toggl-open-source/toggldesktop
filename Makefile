@@ -90,8 +90,11 @@ default: command_line_client
 clean:
 	rm -f kopsik
 
-command_line_client: 
+command_line_client:
 	$(cxx) $(cflags) -o $(main) $(objs) $(libs) && strip $(main)
+
+test: command_line_client
+	./kopsik test
 
 deps: openssl poco json
 
