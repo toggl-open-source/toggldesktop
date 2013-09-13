@@ -344,6 +344,8 @@ error Project::Load(JSONNODE *data) {
             this->GUID = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "wid") == 0) {
             this->WID = json_as_int(*current_node);
+        } else if (strcmp(node_name, "cid") == 0) {
+            this->CID = json_as_int(*current_node);
         }
         ++current_node;
     }
