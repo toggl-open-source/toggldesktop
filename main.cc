@@ -37,7 +37,7 @@ int Kopsik::main(const std::vector<std::string>& args) {
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
 
-            err = user.Save(&db);
+            err = db.Save(user);
             if (err != noError) {
                 logger.error(err);
                 return Poco::Util::Application::EXIT_SOFTWARE;

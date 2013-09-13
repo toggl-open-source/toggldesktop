@@ -171,31 +171,6 @@ error User::Load(JSONNODE *data) {
     return noError;
 }
 
-error User::Save(Database *db) {
-    /*
-
-        if (strcmp(node_name, "id") == 0) {
-            this->ID = json_as_int(*current_node);
-        } else if (strcmp(node_name, "default_wid") == 0) {
-            this->DefaultWID = json_as_int(*current_node);
-        } else if (strcmp(node_name, "projects") == 0) {
-            err = this->loadProjects(*current_node);
-        } else if (strcmp(node_name, "tags") == 0) {
-            err = this->loadTags(*current_node);
-        } else if (strcmp(node_name, "tasks") == 0) {
-            err = this->loadTasks(*current_node);
-        } else if (strcmp(node_name, "time_entries") == 0) {
-            err = this->loadTimeEntries(*current_node);
-        } else if (strcmp(node_name, "workspaces") == 0) {
-            err = this->loadWorkspaces(*current_node);
-        } else if (strcmp(node_name, "clients") == 0) {
-            err = this->loadClients(*current_node);
-        }
-    }
-    */
-    return noError;
-}
-
 error User::loadProjects(JSONNODE *list) {
     poco_assert(list);
 

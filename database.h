@@ -9,6 +9,7 @@
 #include "Poco/Data/SQLite/Connector.h"
 
 #include "types.h"
+#include "toggl_api_client.h"
 
 namespace kopsik {
 
@@ -26,6 +27,8 @@ public:
 
     error Open();
     void Close();
+
+    error Save(const User &user);
 
 private:
     error initialize_tables();

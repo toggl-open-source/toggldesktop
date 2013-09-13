@@ -1,10 +1,12 @@
+#ifndef _kopsik_toggl_api_client_h_
+#define _kopsik_toggl_api_client_h_
+
 #include <string>
 #include <vector>
 
 #include <libjson.h>
 
 #include "types.h"
-#include "database.h"
 
 namespace kopsik {
 
@@ -122,7 +124,6 @@ namespace kopsik {
 		error Fetch();
 		error Load(const std::string &json);
 		error Load(JSONNODE *node);
-		error Save(Database *db);
 		std::string String();
 
 	private:
@@ -134,3 +135,5 @@ namespace kopsik {
 		error loadWorkspaces(JSONNODE *);
 	};
 }
+
+#endif // _kopsik_toggl_api_client_h_
