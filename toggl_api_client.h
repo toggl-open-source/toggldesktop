@@ -69,7 +69,7 @@ namespace kopsik {
 		long DurationInSeconds;
 		std::string Description;
 		bool DurOnly;
-		long UIModifiedAt;
+		long UIModifiedAt; // TE is the only model that can actually be updated by user.
 
 		std::vector<std::string> TagNames;
 
