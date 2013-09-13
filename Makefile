@@ -96,6 +96,9 @@ command_line_client:
 test: command_line_client
 	./kopsik test
 
+lint:
+	./third_party/cpplint/cpplint.py *.cc
+
 deps: openssl poco json
 
 json:
