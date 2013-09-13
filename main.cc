@@ -23,16 +23,21 @@ int Kopsik::main(const std::vector<std::string>& args) {
 
 	User user;
 	user.APIToken = std::string(apiToken);
-	error err = user.Fetch();
-	if (err != noError) {
-		logger.error(err);
-		return Poco::Util::Application::EXIT_SOFTWARE;
-	}
 
-	err = user.Save(db);
-	if (err != noError) {
-		logger.error(err);
-		return Poco::Util::Application::EXIT_SOFTWARE;
+	if (!args.empty()) {
+		if ("sync" == args[0]) {
+			error err = user.Fetch();
+			if (err != noError) {
+				logger.error(err);
+				return Poco::Util::Application::EXIT_SOFTWARE;
+			}
+
+			err = user.Save(db);
+			if (err != noError) {
+				logger.error(err);
+				return Poco::Util::Application::EXIT_SOFTWARE;
+			}
+		}
 	}
 
 	return Poco::Util::Application::EXIT_OK;
