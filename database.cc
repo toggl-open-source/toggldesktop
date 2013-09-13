@@ -37,53 +37,73 @@ error Database::initialize_tables() {
 		*ses_ << "CREATE TABLE kopsik_migrations(id INTEGER PRIMARY KEY, name VARCHAR NOT NULL)", Poco::Data::now;
 	}
 
-	error err = migrate("users", "CREATE TABLE users(local_id INTEGER PRIMARY KEY, id INTEGER NOT NULL, api_token VARCHAR NOT NULL, "
+	error err = migrate("users",
+		"CREATE TABLE users(local_id INTEGER PRIMARY KEY, id INTEGER NOT NULL, api_token VARCHAR NOT NULL, "
 		"default_wid INTEGER, since INTEGER)");
 	if (err != noError) {
 		return err;
 	}
 
-	err = migrate("workspaces", "CREATE TABLE workspaces(local_id INTEGER PRIMARY KEY, id INTEGER NOT NULL, name VARCHAR NOT NULL)");
+	err = migrate("workspaces",
+		"CREATE TABLE workspaces(local_id INTEGER PRIMARY KEY, id INTEGER NOT NULL, uid INTEGER NOT NULL, "
+		"name VARCHAR NOT NULL,"
+		"CONSTRAINT fk_workspaces_uid FOREIGN KEY (uid) REFERENCES users(id) ON DELETE NO ACTION ON UPDATE NO ACTION"
+		")");
 	if (err != noError) {
 		return err;
 	}
 
-	err = migrate("clients", "CREATE TABLE clients(local_id INTEGER PRIMARY KEY, id INTEGER NOT NULL, name VARCHAR NOT NULL, "
+	err = migrate("clients",
+		"CREATE TABLE clients(local_id INTEGER PRIMARY KEY, id INTEGER NOT NULL, uid INTEGER NOT NULL, name VARCHAR NOT NULL, "
 		"guid VARCHAR, wid INTEGER NOT NULL, "
-		"CONSTRAINT fk_clients_wid FOREIGN KEY (wid) REFERENCES workpaces(id) ON DELETE NO ACTION ON UPDATE NO ACTION)");
+		"CONSTRAINT fk_clients_wid FOREIGN KEY (wid) REFERENCES workpaces(id) ON DELETE NO ACTION ON UPDATE NO ACTION,"
+		"CONSTRAINT fk_clients_uid FOREIGN KEY (uid) REFERENCES users(id) ON DELETE NO ACTION ON UPDATE NO ACTION"
+		")");
 	if (err != noError) {
 		return err;
 	}
 
-	err = migrate("projects", "CREATE TABLE projects(local_id INTEGER PRIMARY KEY, id INTEGER NOT NULL, name VARCHAR NOT NULL, "
-		"guid VARCHAR, wid INTEGER NOT NULL, "
-		"CONSTRAINT fk_projects_wid FOREIGN KEY (wid) REFERENCES workpaces(id) ON DELETE NO ACTION ON UPDATE NO ACTION)");
+	err = migrate("projects",
+		"CREATE TABLE projects(local_id INTEGER PRIMARY KEY, id INTEGER NOT NULL, uid INTEGER NOT NULL, "
+		"name VARCHAR NOT NULL, guid VARCHAR, wid INTEGER NOT NULL, "
+		"CONSTRAINT fk_projects_wid FOREIGN KEY (wid) REFERENCES workpaces(id) ON DELETE NO ACTION ON UPDATE NO ACTION,"
+		"CONSTRAINT fk_projects_uid FOREIGN KEY (uid) REFERENCES users(id) ON DELETE NO ACTION ON UPDATE NO ACTION"
+		")");
 	if (err != noError) {
 		return err;
 	}
 
-	err = migrate("tasks", "CREATE TABLE tasks(local_id INTEGER PRIMARY KEY, id INTEGER NOT NULL, name VARCHAR NOT NULL, "
-		"wid INTEGER NOT NULL, pid INTEGER, "
+	err = migrate("tasks",
+		"CREATE TABLE tasks(local_id INTEGER PRIMARY KEY, id INTEGER NOT NULL, uid INTEGER NOT NULL, "
+		"name VARCHAR NOT NULL, wid INTEGER NOT NULL, pid INTEGER, "
 		"CONSTRAINT fk_tasks_wid FOREIGN KEY (wid) REFERENCES workpaces(id) ON DELETE NO ACTION ON UPDATE NO ACTION, "
-		"CONSTRAINT fk_tasks_pid FOREIGN KEY (pid) REFERENCES projects(id) ON DELETE NO ACTION ON UPDATE NO ACTION)");
+		"CONSTRAINT fk_tasks_pid FOREIGN KEY (pid) REFERENCES projects(id) ON DELETE NO ACTION ON UPDATE NO ACTION, "
+		"CONSTRAINT fk_tasks_uid FOREIGN KEY (uid) REFERENCES users(id) ON DELETE NO ACTION ON UPDATE NO ACTION "
+		")");
 	if (err != noError) {
 		return err;
 	}
 
-	err = migrate("tags", "CREATE TABLE tags(local_id INTEGER PRIMARY KEY, id INTEGER NOT NULL, name VARCHAR NOT NULL, "
-		"wid INTEGER NOT NULL, guid VARCHAR, "
-		"CONSTRAINT fk_tags_wid FOREIGN KEY (wid) REFERENCES tags(id) ON DELETE NO ACTION ON UPDATE NO ACTION)");
+	err = migrate("tags",
+		"CREATE TABLE tags(local_id INTEGER PRIMARY KEY, id INTEGER NOT NULL, uid INTEGER NOT NULL, "
+		"name VARCHAR NOT NULL, wid INTEGER NOT NULL, guid VARCHAR, "
+		"CONSTRAINT fk_tags_wid FOREIGN KEY (wid) REFERENCES workspaces(id) ON DELETE NO ACTION ON UPDATE NO ACTION,"
+		"CONSTRAINT fk_tags_uid FOREIGN KEY (uid) REFERENCES users(id) ON DELETE NO ACTION ON UPDATE NO ACTION"
+		")");
 	if (err != noError) {
 		return err;
 	}
 
-	err = migrate("time_entries", "CREATE TABLE time_entries(local_id INTEGER PRIMARY KEY, id INTEGER NOT NULL, description VARCHAR, "
-		"wid INTEGER NOT NULL, guid VARCHAR, pid INTEGER, tid INTEGER, billable INTEGER NOT NULL DEFAULT 0,"
+	err = migrate("time_entries",
+		"CREATE TABLE time_entries(local_id INTEGER PRIMARY KEY, id INTEGER NOT NULL, uid INTEGER NOT NULL, "
+		"description VARCHAR, wid INTEGER NOT NULL, guid VARCHAR, pid INTEGER, tid INTEGER, billable INTEGER NOT NULL DEFAULT 0,"
 		"duronly INTEGER NOT NULL DEFAULT 0, ui_modified_at INTEGER, start INTEGER NOT NULL, stop INTEGER, duration INTEGER NOT NULL,"
 		"tags TEXT,"
-		"CONSTRAINT fk_time_entries_wid FOREIGN KEY (wid) REFERENCES workspaces(id) ON DELETE NO ACTION ON UPDATE NO ACTION,"
-		"CONSTRAINT fk_time_entries_pid FOREIGN KEY (pid) REFERENCES projects(id) ON DELETE NO ACTION ON UPDATE NO ACTION,"
-		"CONSTRAINT fk_time_entries_tid FOREIGN KEY (tid) REFERENCES tasks(id) ON DELETE NO ACTION ON UPDATE NO ACTION)");
+		"CONSTRAINT fk_time_entries_wid FOREIGN KEY (wid) REFERENCES workspaces(id) ON DELETE NO ACTION ON UPDATE NO ACTION, "
+		"CONSTRAINT fk_time_entries_pid FOREIGN KEY (pid) REFERENCES projects(id) ON DELETE NO ACTION ON UPDATE NO ACTION, "
+		"CONSTRAINT fk_time_entries_tid FOREIGN KEY (tid) REFERENCES tasks(id) ON DELETE NO ACTION ON UPDATE NO ACTION, "
+		"CONSTRAINT fk_time_entries_uid FOREIGN KEY (uid) REFERENCES users(id) ON DELETE NO ACTION ON UPDATE NO ACTION"
+		")");
 	if (err != noError) {
 		return err;
 	}
