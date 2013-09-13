@@ -53,7 +53,8 @@ error Database::initialize_tables() {
         "local_id integer primary key, "
         "id integer not null, "
         "api_token varchar not null, "
-        "default_wid integer, since integer"
+        "default_wid integer, "
+        "since integer"
         ")");
     if (err != noError) {
         return err;
