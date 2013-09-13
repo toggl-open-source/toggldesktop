@@ -22,11 +22,12 @@ public:
         Poco::Data::SQLite::Connector::unregisterConnector();
     }
 
-    error open_database();
-    void close_database();
+    Poco::Data::Session *session;
+
+    error Open();
+    void Close();
 
 private:
-    Poco::Data::Session *session;
     error initialize_tables();
     error migrate(std::string name, std::string sql);
 };

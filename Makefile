@@ -93,8 +93,11 @@ clean:
 command_line_client:
 	$(cxx) $(cflags) -o $(main) $(objs) $(libs) && strip $(main)
 
-test: command_line_client
+test:
 	./kopsik test
+
+sync:
+	./kopsik sync
 
 lint:
 	./third_party/cpplint/cpplint.py *.cc

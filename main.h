@@ -16,14 +16,14 @@ protected:
 	int main(const std::vector<std::string>& args);
 	virtual void initialize(Poco::Util::Application &self) {
 		Poco::Util::Application::initialize(self);
-		db.open_database();
+		db.Open();
 	};
 	virtual void uninitialize() {
-		db.close_database();
+		db.Close();
 	};
 	virtual void reinitialize() {
-		db.close_database();
-		db.open_database();
+		db.Close();
+		db.Open();
 	};
 	virtual void defineOptions(Poco::Util::OptionSet& options) {
 	};

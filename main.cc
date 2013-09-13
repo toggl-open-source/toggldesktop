@@ -46,7 +46,7 @@ int Kopsik::main(const std::vector<std::string>& args) {
 
         // FIXME: move out, later
         if ("test" == args[0]) {
-            Poco::FileStream fis("test/me.json", std::ios::binary);
+            Poco::FileStream fis("testdata/me.json", std::ios::binary);
             poco_assert(fis.good());
             std::stringstream ss;
             ss << fis.rdbuf();

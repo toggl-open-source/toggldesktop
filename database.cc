@@ -13,12 +13,12 @@
 
 namespace kopsik {
 
-error Database::open_database() {
+error Database::Open() {
     session = new Poco::Data::Session("SQLite", "kopsik.db");
     return initialize_tables();
 }
 
-void Database::close_database() {
+void Database::Close() {
     if (session) {
         delete session;
         session = 0;
