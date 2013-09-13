@@ -8,6 +8,7 @@
 #include "Poco/Stopwatch.h"
 #include "Poco/Bugcheck.h"
 #include "Poco/Exception.h"
+#include "Poco/InflatingStream.h"
 #include "Poco/Logger.h"
 #include "Poco/StreamCopier.h"
 #include "Poco/URI.h"
@@ -62,20 +63,22 @@ error User::Fetch() {
         Poco::Net::HTTPResponse response;
         std::istream& is = session.receiveResponse(response);
 
+        Poco::InflatingInputStream inflater(is,
+            Poco::InflatingStreamBuf::STREAM_GZIP);
+        std::stringstream ss;
+        ss << inflater.rdbuf();
+        const std::string &json = ss.str();
+
         std::stringstream response_string;
-        response_string << "Response received: " << response.getStatus()
-            << " " << response.getReason();
+        response_string << "Response status: " << response.getStatus()
+            << ", reason: " << response.getReason()
+            << ", Content type: " << response.getContentType()
+            << ", Content-Encoding: " << response.get("Content-Encoding");
         logger.debug(response_string.str());
 
-        std::ostringstream body;
-        Poco::StreamCopier::copyStream(is, body);
-
         if ((response.getStatus() != 202) && (response.getStatus() != 200)) {
-            return body.str();
+            return json;
         }
-
-        std::string json = body.str();
-        logger.debug(json);
 
         error err = this->Load(json);
         if (err != noError) {
