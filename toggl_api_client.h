@@ -10,6 +10,8 @@ namespace kopsik {
 
 	class Workspace {
 	public:
+		Workspace() : ID(0), Name("") {}
+
 		long ID;
 		std::string Name;
 
@@ -18,6 +20,8 @@ namespace kopsik {
 
 	class Client {
 	public:
+		Client() : ID(0), GUID(""), WID(0), Name("") {}
+
 		long ID;
 		guid GUID;
 		long WID;
@@ -28,9 +32,12 @@ namespace kopsik {
 
 	class Project {
 	public:
+		Project() : ID(0), GUID(""), WID(0), CID(0), Name("") {}
+
 		long ID;
 		guid GUID;
 		long WID;
+		long CID;
 		std::string Name;
 
 		error Load(JSONNODE *node);
@@ -38,6 +45,8 @@ namespace kopsik {
 
 	class Task {
 	public:
+		Task() : ID(0), Name(""), WID(0), PID(0) {}
+
 		long ID;
 		std::string Name;
 		long WID;
@@ -48,6 +57,8 @@ namespace kopsik {
 
 	class Tag {
 	public:
+		Tag() : ID(0), WID(0), Name(""), GUID("") {}
+
 		long ID;
 		long WID;
 		std::string Name;
@@ -58,12 +69,17 @@ namespace kopsik {
 
 	class TimeEntry {
 	public:
+		TimeEntry() : ID(0), GUID(""), WID(0), PID(0), TID(0), Billable(false), 
+			Start(""), Stop(""), DurationInSeconds(0), Description(""),
+			DurOnly(false), UIModifiedAt(0) {}
+
 		long ID;
 		guid GUID;
 		long WID;
 		long PID;
 		long TID;
 		bool Billable;
+		// FIXME: should be long
 		std::string Start;
 		std::string Stop;
 		long DurationInSeconds;
@@ -81,12 +97,14 @@ namespace kopsik {
 
 	class User {
 	public:
+		User() : ID(0), APIToken(""), DefaultWID(0), Since(0) {}
+
 		long ID;
 		std::string APIToken;
 		long DefaultWID;
 
 		// Unix timestamp of the user data; returned from API
-		int Since;
+		long Since;
 
 		std::vector<Workspace> Workspaces;
 		std::vector<Project> Projects;
