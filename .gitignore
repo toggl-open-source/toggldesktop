@@ -14,6 +14,7 @@
 
 build
 kopsik
+kopsik_test
 
 third_party/openssl-1.0.1e/Makefile*
 third_party/openssl-1.0.1e/test/*test
@@ -39,6 +40,7 @@ third_party/poco-1.4.6p1-all/*/*/testsuite/bin/
 .dep
 
 kopsik.db
+test.db
 
 # Internal testing data for Toggl
 internal
