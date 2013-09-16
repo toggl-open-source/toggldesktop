@@ -12,6 +12,9 @@
 #include "libjson.h" // NOLINT
 
 #include "Poco/Types.h"
+#include "Poco/Data/Common.h"
+#include "Poco/Data/RecordSet.h"
+#include "Poco/Data/Statement.h"
 
 #include "./types.h"
 
@@ -185,6 +188,8 @@ namespace kopsik {
         Task *GetTaskByID(const Poco::UInt64 id);
         Tag *GetTagByID(const Poco::UInt64 id);
         TimeEntry *GetTimeEntryByID(const Poco::UInt64 id);
+
+        error loadTimeEntries(Poco::Data::Statement &select);
 
         TimeEntry *RunningTimeEntry();
         TimeEntry *Start();

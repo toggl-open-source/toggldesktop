@@ -57,6 +57,8 @@ class Database {
         error Save(Tag *model);
         error Save(TimeEntry *model);
 
+        error LoadTimeEntriesForUpload(User *user);
+
     private:
         error initialize_tables();
         error migrate(std::string name, std::string sql);

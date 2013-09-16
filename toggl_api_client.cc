@@ -30,10 +30,11 @@ TimeEntry *User::Start() {
     TimeEntry *te = new TimeEntry();
     te->UID = this->ID;
     te->Start = time(0);
-     // FIXME: do magic calculation here
+    // FIXME: do magic calculation here
     te->DurationInSeconds = -1;
     te->WID = this->DefaultWID;
     te->Dirty = true;
+    te->UIModifiedAt = time(0);  // this will force it to be pushed to server
     TimeEntries.push_back(te);
     return te;
 }
@@ -50,6 +51,7 @@ std::vector<TimeEntry *> User::Stop() {
         // FIXME: do magic calculation here
         te->DurationInSeconds = 0;
         te->Dirty = true;
+        te->UIModifiedAt = time(0);  // this will force it to be pushed to server
         te = RunningTimeEntry();
     }
     return result;
@@ -383,6 +385,35 @@ error User::loadTimeEntries(JSONNODE *list) {
     return noError;
 }
 
+error User::loadTimeEntries(Poco::Data::Statement &select) {
+    Poco::Data::RecordSet rs(select);
+    while (!select.done()) {
+        select.execute();
+        bool more = rs.moveFirst();
+        while (more) {
+            TimeEntry *model = new TimeEntry();
+            model->LocalID = rs[0].convert<Poco::Int64>();
+            model->ID = rs[1].convert<Poco::UInt64>();
+            model->UID = rs[2].convert<Poco::UInt64>();
+            model->Description = rs[3].convert<std::string>();
+            model->WID = rs[4].convert<Poco::UInt64>();
+            model->GUID = rs[5].convert<std::string>();
+            model->PID = rs[6].convert<Poco::UInt64>();
+            model->TID = rs[7].convert<Poco::UInt64>();
+            model->Billable = rs[8].convert<bool>();
+            model->DurOnly = rs[9].convert<bool>();
+            model->UIModifiedAt = rs[10].convert<Poco::UInt64>();
+            model->Start = rs[11].convert<Poco::UInt64>();
+            model->Stop = rs[12].convert<Poco::UInt64>();
+            model->DurationInSeconds = rs[13].convert<Poco::Int64>();
+            model->SetTags(rs[14].convert<std::string>());
+            TimeEntries.push_back(model);
+            more = rs.moveNext();
+        }
+    }
+    return noError;
+}
+
 std::string TimeEntry::String() {
     std::stringstream ss;
     ss << "ID=" << ID <<
@@ -403,6 +434,7 @@ std::string TimeEntry::String() {
 // FIXME: use map instead?
 
 Workspace *User::GetWorkspaceByID(const Poco::UInt64 id) {
+    poco_assert(id > 0);
     for (std::vector<Workspace *>::const_iterator it = this->Workspaces.begin();
             it != this->Workspaces.end(); it++) {
         if ((*it)->ID == id) {
@@ -413,6 +445,7 @@ Workspace *User::GetWorkspaceByID(const Poco::UInt64 id) {
 }
 
 Client *User::GetClientByID(const Poco::UInt64 id) {
+    poco_assert(id > 0);
     for (std::vector<Client *>::const_iterator it = this->Clients.begin();
             it != this->Clients.end(); it++) {
         if ((*it)->ID == id) {
@@ -423,6 +456,7 @@ Client *User::GetClientByID(const Poco::UInt64 id) {
 }
 
 Project *User::GetProjectByID(const Poco::UInt64 id) {
+    poco_assert(id > 0);
     for (std::vector<Project *>::const_iterator it = this->Projects.begin();
             it != this->Projects.end(); it++) {
         if ((*it)->ID == id) {
@@ -433,6 +467,7 @@ Project *User::GetProjectByID(const Poco::UInt64 id) {
 }
 
 Task *User::GetTaskByID(const Poco::UInt64 id) {
+    poco_assert(id > 0);
     for (std::vector<Task *>::const_iterator it = this->Tasks.begin();
             it != this->Tasks.end(); it++) {
         if ((*it)->ID == id) {
@@ -443,6 +478,7 @@ Task *User::GetTaskByID(const Poco::UInt64 id) {
 }
 
 Tag *User::GetTagByID(const Poco::UInt64 id) {
+    poco_assert(id > 0);
     for (std::vector<Tag *>::const_iterator it = this->Tags.begin();
             it != this->Tags.end(); it++) {
         if ((*it)->ID == id) {
@@ -453,6 +489,7 @@ Tag *User::GetTagByID(const Poco::UInt64 id) {
 }
 
 TimeEntry *User::GetTimeEntryByID(const Poco::UInt64 id) {
+    poco_assert(id > 0);
     for (std::vector<TimeEntry *>::const_iterator it =
             this->TimeEntries.begin(); it != this->TimeEntries.end(); it++) {
         if ((*it)->ID == id) {
