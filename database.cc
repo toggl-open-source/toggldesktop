@@ -145,6 +145,7 @@ error Database::Load(std::string api_token, User *model,
     poco_assert(session);
     poco_assert(model);
     poco_assert(!api_token.empty());
+    model->APIToken = api_token;
     try {
         Poco::UInt64 uid(0);
         *session << "select id from users where api_token = :api_token",
@@ -155,6 +156,9 @@ error Database::Load(std::string api_token, User *model,
         error err = last_error();
         if (err != noError) {
             return err;
+        }
+        if (uid <= 0) {
+            return noError;
         }
         return Load(uid, model, with_related_data);
     } catch(const Poco::Exception& exc) {

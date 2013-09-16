@@ -39,7 +39,6 @@ namespace kopsik {
             logger.error(err);
             return Poco::Util::Application::EXIT_SOFTWARE;
         }
-        poco_assert(user.ID != 0);
         poco_assert(!user.APIToken.empty());
 
         // Run a command on the user that has been loaded
