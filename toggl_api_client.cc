@@ -617,6 +617,30 @@ error Tag::Load(JSONNODE *data) {
     return noError;
 }
 
+void TimeEntry::SetStart(std::string value) {
+    // FIXME: parse from string
+}
+
+void TimeEntry::SetStop(std::string value) {
+    // FIXME: parse from string
+}
+
+std::string TimeEntry::Tags() {
+    std::stringstream ss;
+    std::copy(TagNames.begin(), TagNames.end(),
+        std::ostream_iterator<std::string>(ss, "|"));
+    return ss.str();
+}
+
+void TimeEntry::SetTags(std::string tags) {
+    TagNames.clear();
+    std::stringstream ss(tags);
+    while (ss.good()) {
+        std::string tag;
+        getline(ss, tag, '|');
+        TagNames.push_back(tag);
+    }
+}
 
 error TimeEntry::Load(JSONNODE *data) {
     poco_assert(data);
@@ -638,9 +662,9 @@ error TimeEntry::Load(JSONNODE *data) {
         } else if (strcmp(node_name, "tid") == 0) {
             this->TID = json_as_int(*current_node);
         } else if (strcmp(node_name, "start") == 0) {
-            this->Start = std::string(json_as_string(*current_node));
+            this->SetStart(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "stop") == 0) {
-            this->Stop = std::string(json_as_string(*current_node));
+            this->SetStop(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "duration") == 0) {
             this->DurationInSeconds = json_as_int(*current_node);
         } else if (strcmp(node_name, "ui_modified_at") == 0) {

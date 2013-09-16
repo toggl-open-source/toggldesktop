@@ -437,8 +437,8 @@ error Database::loadTimeEntries(User *user) {
             model->Billable = rs[8].convert<bool>();
             model->DurOnly = rs[9].convert<bool>();
             model->UIModifiedAt = rs[10].convert<Poco::UInt64>();
-            model->Start = rs[11].convert<std::string>();
-            model->Stop = rs[12].convert<std::string>();
+            model->Start = rs[11].convert<Poco::UInt64>();
+            model->Stop = rs[12].convert<Poco::UInt64>();
             model->DurationInSeconds = rs[13].convert<Poco::Int64>();
             model->SetTags(rs[14].convert<std::string>());
             user->TimeEntries.push_back(model);

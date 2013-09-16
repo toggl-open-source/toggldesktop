@@ -104,7 +104,7 @@ namespace kopsik {
     public:
         TimeEntry() : LocalID(0),
             ID(0), GUID(""), WID(0), PID(0), TID(0), Billable(false),
-            Start(""), Stop(""), DurationInSeconds(0), Description(""),
+            Start(0), Stop(0), DurationInSeconds(0), Description(""),
             DurOnly(false), UIModifiedAt(0), UID(0), Dirty(false) {}
 
         Poco::Int64 LocalID;
@@ -114,9 +114,8 @@ namespace kopsik {
         Poco::UInt64 PID;
         Poco::UInt64 TID;
         bool Billable;
-        // FIXME: should be Uint64 maybe
-        std::string Start;
-        std::string Stop;
+        Poco::UInt64 Start;
+        Poco::UInt64 Stop;
         Poco::Int64 DurationInSeconds;
         std::string Description;
         bool DurOnly;
@@ -127,21 +126,11 @@ namespace kopsik {
         bool Dirty;
 
         std::vector<std::string> TagNames;
-        std::string Tags() {
-            std::stringstream ss;
-            std::copy(TagNames.begin(), TagNames.end(),
-                std::ostream_iterator<std::string>(ss, "|"));
-            return ss.str();
-        }
-        void SetTags(std::string tags) {
-            TagNames.clear();
-            std::stringstream ss(tags);
-            while (ss.good()) {
-                std::string tag;
-                getline(ss, tag, '|');
-                TagNames.push_back(tag);
-            }
-        }
+        std::string Tags();
+        void SetTags(std::string tags);
+
+        void SetStart(std::string value);
+        void SetStop(std::string value);
 
         error Load(JSONNODE *node);
         std::string String();
