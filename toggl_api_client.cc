@@ -35,7 +35,7 @@ TimeEntry *User::Start() {
     te->DurationInSeconds = -time(0);
     te->WID = this->DefaultWID;
     te->Dirty = true;
-    te->UIModifiedAt = time(0);  // this will force it to be pushed to server
+    te->UIModifiedAt = time(0);
     TimeEntries.push_back(te);
     return te;
 }
@@ -49,10 +49,8 @@ std::vector<TimeEntry *> User::Stop() {
     TimeEntry *te = RunningTimeEntry();
     while (te) {
         result.push_back(te);
-        // FIXME: do magic calculation here
-        te->DurationInSeconds = 0;
+        te->DurationInSeconds = time(0) + te->DurationInSeconds;
         te->Dirty = true;
-        // this will force it to be pushed to server
         te->UIModifiedAt = time(0);
         te = RunningTimeEntry();
     }
