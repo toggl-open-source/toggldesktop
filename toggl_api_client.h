@@ -170,7 +170,8 @@ namespace kopsik {
         std::vector<Tag *> Tags;
         std::vector<TimeEntry *> TimeEntries;
 
-        error Fetch();
+        error Pull();
+        error Push();
         error Load(const std::string &json);
         error Load(JSONNODE *node);
         std::string String();

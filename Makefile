@@ -106,8 +106,11 @@ test:
 	$(cxx) $(cflags) -DNDEBUG -o kopsik_test $(test_objs) $(libs)
 	./kopsik_test
 
-sync:
-	./kopsik sync
+pull:
+	./kopsik pull
+
+push:
+	./kopsik push
 
 lint:
 	./third_party/cpplint/cpplint.py *.cc *.h

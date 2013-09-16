@@ -71,8 +71,14 @@ TimeEntry *User::RunningTimeEntry() {
     return 0;
 }
 
+error User::Push() {
+    poco_assert(!APIToken.empty());
+    // FIXME: push time entries here
+    return noError;
+}
+
 // FIXME: move code into a GET method
-error User::Fetch() {
+error User::Pull() {
     poco_assert(!APIToken.empty());
 
     Poco::Stopwatch stopwatch;

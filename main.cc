@@ -25,7 +25,7 @@ namespace kopsik {
             return Poco::Util::Application::EXIT_USAGE;
         }
         if (args.empty()) {
-            std::cout << "Recognized commands are: sync, start, stop"
+            std::cout << "Recognized commands are: push, pull, start, stop"
                 << std::endl;
             return Poco::Util::Application::EXIT_USAGE;
         }
@@ -42,8 +42,10 @@ namespace kopsik {
         poco_assert(!user.APIToken.empty());
 
         // Run a command on the user that has been loaded
-        if ("sync" == args[0]) {
-            err = user.Fetch();
+        if ("pull" == args[0]) {
+            err = user.Pull();
+        } else if ("push" == args[0]) {
+            err = user.Push();
         } else if ("start" == args[0]) {
             TimeEntry *te = user.Start();
             if (te) {
