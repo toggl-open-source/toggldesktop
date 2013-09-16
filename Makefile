@@ -4,6 +4,7 @@ uname=$(shell uname)
 
 pocodir=third_party/poco-1.4.6p1-all
 openssldir=third_party/openssl-1.0.1e
+GTEST_ROOT=third_party/googletest-read-only
 jsondir=third_party/libjson
 
 main=kopsik
@@ -17,8 +18,10 @@ pocolib=$(pocodir)/lib/Linux/x86_64
 endif
 
 ifeq ($(uname), Darwin)
-cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -O2 -DNDEBUG \
+cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter \
 	-I$(openssldir)/include \
+	-I$(GTEST_ROOT)/include \
+	-I$(GTEST_ROOT) \
 	-I$(pocodir)/Foundation/include \
 	-I$(pocodir)/Util/include \
 	-I$(pocodir)/Data/include \
@@ -30,8 +33,10 @@ cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -O2 -DNDEBUG \
 endif
 
 ifeq ($(uname), Linux)
-cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -O2 -DNDEBUG -static \
+cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
 	-I$(openssldir)/include \
+	-I$(GTEST_ROOT)/include \
+	-I$(GTEST_ROOT) \
 	-I$(pocodir)/Foundation/include \
 	-I$(pocodir)/Util/include \
 	-I$(pocodir)/Data/include \
@@ -82,8 +87,12 @@ libs=-L$(pocolib) \
 endif
 
 cxx=g++
+
 srcs=toggl_api_client.h toggl_api_client.cc database.h database.cc main.h main.cc
 objs=$(srcs:.c=.o)
+
+test_srcs=toggl_api_client.h toggl_api_client.cc database.h database.cc $(GTEST_ROOT)/src/gtest-all.cc kopsik_test.h kopsik_test.cc
+test_objs=$(test_srcs:.c=.o)
 
 default: command_line_client
 
@@ -91,16 +100,17 @@ clean:
 	rm -f kopsik
 
 command_line_client:
-	$(cxx) $(cflags) -o $(main) $(objs) $(libs) && strip $(main)
+	$(cxx) $(cflags) -O2 -DNDEBUG -o $(main) $(objs) $(libs) && strip $(main)
 
 test:
-	./kopsik test
+	$(cxx) $(cflags) -DNDEBUG -o kopsik_test $(test_objs) $(libs)
+	./kopsik_test
 
 sync:
 	./kopsik sync
 
 lint:
-	./third_party/cpplint/cpplint.py *.cc
+	./third_party/cpplint/cpplint.py *.cc *.h
 
 deps: openssl poco json
 

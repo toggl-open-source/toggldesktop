@@ -1,13 +1,17 @@
-#ifndef _kopsik_types_h_
-#define _kopsik_types_h_
+// Copyright 2013 Tanel Lebedev
+
+#ifndef TYPES_H_
+#define TYPES_H_
+
+#include <string>
 
 namespace kopsik {
 
-	typedef std::string error;
+    typedef std::string error;
 
-	const error noError = "";
+    const error noError = "";
 
-	typedef std::string guid;
+    typedef std::string guid;
 }
 
-#endif // _kopsik_types_h_
+#endif  // TYPES_H_
