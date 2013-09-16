@@ -30,13 +30,13 @@ namespace kopsik {
                 User user;
                 user.APIToken = std::string(apiToken);
 
+                Database db("kopsik.db");
+
                 error err = user.Fetch();
                 if (err != noError) {
                     logger.error(err);
                     return Poco::Util::Application::EXIT_SOFTWARE;
                 }
-
-                Database db("kopsik.db");
 
                 err = db.Save(&user, true);
                 if (err != noError) {

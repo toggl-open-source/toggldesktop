@@ -896,6 +896,18 @@ error Database::initialize_tables() {
             "create table kopsik_migrations(id integer primary key, "
             "name varchar not null)",
             Poco::Data::now;
+        error err = last_error();
+        if (err != noError) {
+            return err;
+        }
+        *session <<
+            "CREATE UNIQUE INDEX id_kopsik_migrations_name "
+                "ON kopsik_migrations (name);",
+            Poco::Data::now;
+        err = last_error();
+        if (err != noError) {
+            return err;
+        }
     }
 
     error err = migrate("users",
@@ -909,6 +921,13 @@ error Database::initialize_tables() {
     if (err != noError) {
         return err;
     }
+    *session <<
+        "CREATE UNIQUE INDEX id_users_id ON users (id)",
+        Poco::Data::now;
+    err = last_error();
+    if (err != noError) {
+        return err;
+    }
 
     err = migrate("workspaces",
         "create table workspaces("
@@ -919,6 +938,13 @@ error Database::initialize_tables() {
         "constraint fk_workspaces_uid foreign key (uid) "
         "references users(id) on delete no action on update no action"
         ")");
+    if (err != noError) {
+        return err;
+    }
+    *session <<
+        "CREATE UNIQUE INDEX id_workspaces_id ON workspaces (id)",
+        Poco::Data::now;
+    err = last_error();
     if (err != noError) {
         return err;
     }
@@ -939,6 +965,20 @@ error Database::initialize_tables() {
     if (err != noError) {
         return err;
     }
+    *session <<
+        "CREATE UNIQUE INDEX id_clients_id ON clients (id)",
+        Poco::Data::now;
+    err = last_error();
+    if (err != noError) {
+        return err;
+    }
+    *session <<
+        "CREATE UNIQUE INDEX id_clients_guid ON clients (guid)",
+        Poco::Data::now;
+    err = last_error();
+    if (err != noError) {
+        return err;
+    }
 
     err = migrate("projects",
         "create table projects("
@@ -953,6 +993,20 @@ error Database::initialize_tables() {
         "constraint fk_projects_uid foreign key (uid) "
         "referENCES users(id) ON DELETE NO ACTION ON UPDATE NO ACTION"
         ")");
+    if (err != noError) {
+        return err;
+    }
+    *session <<
+        "CREATE UNIQUE INDEX id_projects_id ON projects (id)",
+        Poco::Data::now;
+    err = last_error();
+    if (err != noError) {
+        return err;
+    }
+    *session <<
+        "CREATE UNIQUE INDEX id_projects_guid ON projects (guid)",
+        Poco::Data::now;
+    err = last_error();
     if (err != noError) {
         return err;
     }
@@ -975,6 +1029,13 @@ error Database::initialize_tables() {
     if (err != noError) {
         return err;
     }
+    *session <<
+        "CREATE UNIQUE INDEX id_tasks_id ON tasks (id)",
+        Poco::Data::now;
+    err = last_error();
+    if (err != noError) {
+        return err;
+    }
 
     err = migrate("tags",
         "create table tags("
@@ -989,6 +1050,20 @@ error Database::initialize_tables() {
         "constraint fk_tags_uid foreign key (uid) "
         "references users(id) on delete no action on update no action"
         ")");
+    if (err != noError) {
+        return err;
+    }
+    *session <<
+        "CREATE UNIQUE INDEX id_tags_id ON tags (id)",
+        Poco::Data::now;
+    err = last_error();
+    if (err != noError) {
+        return err;
+    }
+    *session <<
+        "CREATE UNIQUE INDEX id_tags_guid ON tags (guid)",
+        Poco::Data::now;
+    err = last_error();
     if (err != noError) {
         return err;
     }
@@ -1022,8 +1097,17 @@ error Database::initialize_tables() {
     if (err != noError) {
         return err;
     }
-
-    return noError;
+    *session <<
+        "CREATE UNIQUE INDEX id_time_entries_id ON time_entries (id)",
+        Poco::Data::now;
+    err = last_error();
+    if (err != noError) {
+        return err;
+    }
+    *session <<
+        "CREATE UNIQUE INDEX id_time_entries_guid ON time_entries (guid)",
+        Poco::Data::now;
+    return last_error();
 }
 
 error Database::migrate(std::string name, std::string sql) {
