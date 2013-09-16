@@ -994,14 +994,8 @@ error Database::initialize_tables() {
         "api_token varchar not null, "
         "default_wid integer, "
         "since integer"
-        ")");
-    if (err != noError) {
-        return err;
-    }
-    *session <<
-        "CREATE UNIQUE INDEX id_users_id ON users (id)",
-        Poco::Data::now;
-    err = last_error();
+        "); "
+        "CREATE UNIQUE INDEX id_users_id ON users (id);");
     if (err != noError) {
         return err;
     }
@@ -1014,14 +1008,8 @@ error Database::initialize_tables() {
         "name varchar not null,"
         "constraint fk_workspaces_uid foreign key (uid) "
         "references users(id) on delete no action on update no action"
-        ")");
-    if (err != noError) {
-        return err;
-    }
-    *session <<
-        "CREATE UNIQUE INDEX id_workspaces_id ON workspaces (id)",
-        Poco::Data::now;
-    err = last_error();
+        "); "
+        "CREATE UNIQUE INDEX id_workspaces_id ON workspaces (id);");
     if (err != noError) {
         return err;
     }
@@ -1038,21 +1026,9 @@ error Database::initialize_tables() {
         "references workpaces(id) on delete no action on update no action,"
         "constraint fk_clients_uid foreign key (uid) "
         "references users(id) on delete no action on update no action"
-        ")");
-    if (err != noError) {
-        return err;
-    }
-    *session <<
-        "CREATE UNIQUE INDEX id_clients_id ON clients (id)",
-        Poco::Data::now;
-    err = last_error();
-    if (err != noError) {
-        return err;
-    }
-    *session <<
-        "CREATE UNIQUE INDEX id_clients_guid ON clients (guid)",
-        Poco::Data::now;
-    err = last_error();
+        "); "
+        "CREATE UNIQUE INDEX id_clients_id ON clients (id); "
+        "CREATE UNIQUE INDEX id_clients_guid ON clients (guid);");
     if (err != noError) {
         return err;
     }
@@ -1069,21 +1045,9 @@ error Database::initialize_tables() {
         "references workpaces(id) on delete no action on update no action,"
         "constraint fk_projects_uid foreign key (uid) "
         "referENCES users(id) ON DELETE NO ACTION ON UPDATE NO ACTION"
-        ")");
-    if (err != noError) {
-        return err;
-    }
-    *session <<
-        "CREATE UNIQUE INDEX id_projects_id ON projects (id)",
-        Poco::Data::now;
-    err = last_error();
-    if (err != noError) {
-        return err;
-    }
-    *session <<
-        "CREATE UNIQUE INDEX id_projects_guid ON projects (guid)",
-        Poco::Data::now;
-    err = last_error();
+        "); "
+        "CREATE UNIQUE INDEX id_projects_id ON projects (id) "
+        "CREATE UNIQUE INDEX id_projects_guid ON projects (guid) ");
     if (err != noError) {
         return err;
     }
@@ -1102,14 +1066,8 @@ error Database::initialize_tables() {
         "references projects(id) on delete no action on update no action, "
         "constraint fk_tasks_uid foreign key (uid) "
         "references users(id) on delete no action on update no action "
-        ")");
-    if (err != noError) {
-        return err;
-    }
-    *session <<
-        "CREATE UNIQUE INDEX id_tasks_id ON tasks (id)",
-        Poco::Data::now;
-    err = last_error();
+        "); "
+        "CREATE UNIQUE INDEX id_tasks_id ON tasks (id);");
     if (err != noError) {
         return err;
     }
@@ -1126,21 +1084,9 @@ error Database::initialize_tables() {
         "references workspaces(id) on delete no action on update no action,"
         "constraint fk_tags_uid foreign key (uid) "
         "references users(id) on delete no action on update no action"
-        ")");
-    if (err != noError) {
-        return err;
-    }
-    *session <<
-        "CREATE UNIQUE INDEX id_tags_id ON tags (id)",
-        Poco::Data::now;
-    err = last_error();
-    if (err != noError) {
-        return err;
-    }
-    *session <<
-        "CREATE UNIQUE INDEX id_tags_guid ON tags (guid)",
-        Poco::Data::now;
-    err = last_error();
+        "); "
+        "CREATE UNIQUE INDEX id_tags_id ON tags (id); "
+        "CREATE UNIQUE INDEX id_tags_guid ON tags (guid); ");
     if (err != noError) {
         return err;
     }
@@ -1170,20 +1116,9 @@ error Database::initialize_tables() {
         "references tasks(id) on delete no action on update no action, "
         "constraint fk_time_entries_uid foreign key (uid) "
         "references users(id) on delete no action on update no action"
-        ")");
-    if (err != noError) {
-        return err;
-    }
-    *session <<
-        "CREATE UNIQUE INDEX id_time_entries_id ON time_entries (id)",
-        Poco::Data::now;
-    err = last_error();
-    if (err != noError) {
-        return err;
-    }
-    *session <<
-        "CREATE UNIQUE INDEX id_time_entries_guid ON time_entries (guid)",
-        Poco::Data::now;
+        "); "
+        "CREATE UNIQUE INDEX id_time_entries_id ON time_entries (id); "
+        "CREATE UNIQUE INDEX id_time_entries_guid ON time_entries (guid); ");
     return last_error();
 }
 

@@ -11,8 +11,9 @@ namespace kopsik {
 
     TEST(KopsikTest, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
         Poco::File f("test.db");
-        f.remove(false);
-
+        if (f.exists()) {
+            f.remove(false);
+        }
         Database db("test.db");
 
         Poco::FileStream fis("testdata/me.json", std::ios::binary);
@@ -55,8 +56,9 @@ namespace kopsik {
 
  TEST(KopsikTest, SavesModelsAndKnowsToUpdateWithSeparateUserInstances) {
         Poco::File f("test.db");
-        f.remove(false);
-
+        if (f.exists()) {
+            f.remove(false);
+        }
         Database db("test.db");
 
         Poco::FileStream fis("testdata/me.json", std::ios::binary);
@@ -130,7 +132,9 @@ namespace kopsik {
         ASSERT_EQ(noError, user.Load(ss.str()));
 
         Poco::File f("test.db");
-        f.remove(false);
+        if (f.exists()) {
+            f.remove(false);
+        }
         Database db("test.db");
 
         ASSERT_EQ(noError, db.Save(&user, false));
@@ -260,8 +264,9 @@ namespace kopsik {
         ASSERT_EQ(user.ID, user.Clients[0]->UID);
 
         Poco::File f("test.db");
-        f.remove(false);
-
+        if (f.exists()) {
+            f.remove(false);
+        }
         Database db("test.db");
 
         Poco::UInt64 n;
