@@ -32,8 +32,7 @@ TimeEntry *User::Start() {
     TimeEntry *te = new TimeEntry();
     te->UID = this->ID;
     te->Start = time(0);
-    // FIXME: do magic calculation here
-    te->DurationInSeconds = -1;
+    te->DurationInSeconds = -time(0);
     te->WID = this->DefaultWID;
     te->Dirty = true;
     te->UIModifiedAt = time(0);  // this will force it to be pushed to server
