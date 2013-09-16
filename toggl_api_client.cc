@@ -12,6 +12,8 @@
 #include "Poco/Logger.h"
 #include "Poco/StreamCopier.h"
 #include "Poco/URI.h"
+#include "Poco/DateTimeParser.h"
+#include "Poco/DateTime.h"
 #include "Poco/Net/Context.h"
 #include "Poco/Net/HTTPRequest.h"
 #include "Poco/Net/HTTPResponse.h"
@@ -51,7 +53,8 @@ std::vector<TimeEntry *> User::Stop() {
         // FIXME: do magic calculation here
         te->DurationInSeconds = 0;
         te->Dirty = true;
-        te->UIModifiedAt = time(0);  // this will force it to be pushed to server
+        // this will force it to be pushed to server
+        te->UIModifiedAt = time(0);
         te = RunningTimeEntry();
     }
     return result;
@@ -385,10 +388,11 @@ error User::loadTimeEntries(JSONNODE *list) {
     return noError;
 }
 
-error User::loadTimeEntries(Poco::Data::Statement &select) {
-    Poco::Data::RecordSet rs(select);
-    while (!select.done()) {
-        select.execute();
+error User::loadTimeEntries(Poco::Data::Statement *select) {
+    poco_assert(select);
+    Poco::Data::RecordSet rs(*select);
+    while (!select->done()) {
+        select->execute();
         bool more = rs.moveFirst();
         while (more) {
             TimeEntry *model = new TimeEntry();
@@ -654,12 +658,21 @@ error Tag::Load(JSONNODE *data) {
     return noError;
 }
 
+std::time_t Parse8601(std::string iso_8601_formatted_date) {
+    int tzd;
+    Poco::DateTime dt;
+    Poco::DateTimeParser::parse(Poco::DateTimeFormat::ISO8601_FORMAT,
+        iso_8601_formatted_date, dt, tzd);
+    Poco::Timestamp ts = dt.timestamp();
+    return ts.epochTime();
+}
+
 void TimeEntry::SetStart(std::string value) {
-    // FIXME: parse from string
+    this->Start = Parse8601(value);
 }
 
 void TimeEntry::SetStop(std::string value) {
-    // FIXME: parse from string
+    this->Stop = Parse8601(value);
 }
 
 std::string TimeEntry::Tags() {

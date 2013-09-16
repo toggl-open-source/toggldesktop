@@ -443,7 +443,7 @@ error Database::loadTimeEntries(User *user) {
     if (err != noError) {
         return err;
     }
-    return user->loadTimeEntries(select);
+    return user->loadTimeEntries(&select);
 }
 
 error Database::LoadTimeEntriesForUpload(User *user) {
@@ -461,7 +461,7 @@ error Database::LoadTimeEntriesForUpload(User *user) {
     if (err != noError) {
         return err;
     }
-    return user->loadTimeEntries(select);
+    return user->loadTimeEntries(&select);
 }
 
 error Database::saveList(Poco::UInt64 UID, std::vector<Workspace *> *list) {

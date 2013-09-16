@@ -189,7 +189,7 @@ namespace kopsik {
         Tag *GetTagByID(const Poco::UInt64 id);
         TimeEntry *GetTimeEntryByID(const Poco::UInt64 id);
 
-        error loadTimeEntries(Poco::Data::Statement &select);
+        error loadTimeEntries(Poco::Data::Statement *select);
 
         TimeEntry *RunningTimeEntry();
         TimeEntry *Start();
