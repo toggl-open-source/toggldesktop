@@ -46,9 +46,16 @@ namespace kopsik {
         if ("sync" == args[0]) {
             err = user.Fetch();
         } else if ("start" == args[0]) {
-            err = user.Start();
+            TimeEntry *te = user.Start();
+            if (te) {
+                logger.debug("Time entry started: " + te->String());
+            }
         } else if ("stop" == args[0]) {
-            err = user.Stop();
+            std::vector<TimeEntry *>stopped = user.Stop();
+            for (std::vector<TimeEntry *>::const_iterator it = stopped.begin();
+                    it != stopped.end(); it++) {
+                logger.debug("Time entry stopped: " + (*it)->String());
+            }
         }
 
         // Check command result

@@ -23,13 +23,44 @@
 
 namespace kopsik {
 
-
-error User::Start() {
-    return noError;
+// Start a time entry, mark it as dirty and add to user time entry collection.
+// Do not save here, dirtyness will be handled outside of this module.
+TimeEntry *User::Start() {
+    Stop();
+    TimeEntry *te = new TimeEntry();
+    te->UID = this->ID;
+    te->Start = time(0);
+    te->DurationInSeconds = -1; // FIXME: do magic calculation here
+    te->WID = this->DefaultWID;
+    te->Dirty = true;
+    TimeEntries.push_back(te);
+    return te;
 }
 
-error User::Stop() {
-    return noError;
+// Stop a time entry, mark it as dirty.
+// Note that there may be multiple TE-s running. If there are,
+// all of them are stopped (multi-tracking is not supported by Toggl).
+// Do not save here, dirtyness will be handled outside of this module.
+std::vector<TimeEntry *> User::Stop() {
+    std::vector<TimeEntry *> result;
+    TimeEntry *te = RunningTimeEntry();
+    while (te) {
+        result.push_back(te);
+        te->DurationInSeconds = 0; // FIXME: do magic calculation here
+        te->Dirty = true;
+        te = RunningTimeEntry();
+    }
+    return result;
+}
+
+TimeEntry *User::RunningTimeEntry() {
+    for (std::vector<TimeEntry *>::const_iterator it = this->TimeEntries.begin();
+            it != this->TimeEntries.end(); it++) {
+        if ((*it)->DurationInSeconds < 0) {
+            return *it;
+        }
+    }
+    return 0;
 }
 
 // FIXME: move code into a GET method
