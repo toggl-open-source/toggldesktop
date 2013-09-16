@@ -527,7 +527,11 @@ error Database::saveList(Poco::UInt64 UID, std::vector<TimeEntry *> *list) {
 }
 
 error Database::Save(TimeEntry *model) {
+    poco_assert(model);
     poco_assert(session);
+    if (model->LocalID != 0 && !model->Dirty) {
+        return noError;
+    }
     try {
         if (model->ID > 0) {
             *session << "select local_id from time_entries where id = :id",
@@ -601,6 +605,7 @@ error Database::Save(TimeEntry *model) {
                 Poco::Data::into(model->LocalID),
                 Poco::Data::now;
         }
+        model->Dirty = false;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -612,7 +617,11 @@ error Database::Save(TimeEntry *model) {
 }
 
 error Database::Save(Workspace *model) {
+    poco_assert(model);
     poco_assert(session);
+    if (model->LocalID != 0 && !model->Dirty) {
+        return noError;
+    }
     try {
         if (model->ID > 0) {
             *session << "select local_id from workspaces where id = :id",
@@ -652,6 +661,7 @@ error Database::Save(Workspace *model) {
                 Poco::Data::into(model->LocalID),
                 Poco::Data::now;
         }
+        model->Dirty = false;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -663,7 +673,11 @@ error Database::Save(Workspace *model) {
 }
 
 error Database::Save(Client *model) {
+    poco_assert(model);
     poco_assert(session);
+    if (model->LocalID != 0 && !model->Dirty) {
+        return noError;
+    }
     try {
         if (model->ID > 0) {
             *session << "select local_id from clients where id = :id",
@@ -707,6 +721,7 @@ error Database::Save(Client *model) {
                 Poco::Data::into(model->LocalID),
                 Poco::Data::now;
         }
+        model->Dirty = false;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -718,7 +733,11 @@ error Database::Save(Client *model) {
 }
 
 error Database::Save(Project *model) {
+    poco_assert(model);
     poco_assert(session);
+    if (model->LocalID != 0 && !model->Dirty) {
+        return noError;
+    }
     try {
         if (model->ID > 0) {
             *session << "select local_id from projects where id = :id",
@@ -762,6 +781,7 @@ error Database::Save(Project *model) {
                 Poco::Data::into(model->LocalID),
                 Poco::Data::now;
         }
+        model->Dirty = false;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -773,7 +793,11 @@ error Database::Save(Project *model) {
 }
 
 error Database::Save(Task *model) {
+    poco_assert(model);
     poco_assert(session);
+    if (model->LocalID != 0 && !model->Dirty) {
+        return noError;
+    }
     try {
         if (model->ID > 0) {
             *session << "select local_id from tasks where id = :id",
@@ -817,6 +841,7 @@ error Database::Save(Task *model) {
                 Poco::Data::into(model->LocalID),
                 Poco::Data::now;
         }
+        model->Dirty = false;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -828,7 +853,11 @@ error Database::Save(Task *model) {
 }
 
 error Database::Save(Tag *model) {
+    poco_assert(model);
     poco_assert(session);
+    if (model->LocalID != 0 && !model->Dirty) {
+        return noError;
+    }
     try {
         if (model->ID > 0) {
             *session << "select local_id from tags where id = :id",
@@ -872,6 +901,7 @@ error Database::Save(Tag *model) {
                 Poco::Data::into(model->LocalID),
                 Poco::Data::now;
         }
+        model->Dirty = false;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -883,7 +913,9 @@ error Database::Save(Tag *model) {
 }
 
 error Database::Save(User *model, bool with_related_data) {
+    poco_assert(model);
     poco_assert(session);
+
     error err = validate(model);
     if (err != noError) {
         return err;
@@ -894,61 +926,65 @@ error Database::Save(User *model, bool with_related_data) {
 
     Poco::Logger &logger = Poco::Logger::get("database");
 
-    try {
-        if (model->ID > 0) {
-            *session << "select local_id from users where id = :id",
-                Poco::Data::into(model->LocalID),
-                Poco::Data::use(model->ID),
-                Poco::Data::limit(1),
-                Poco::Data::now;
-            error err = last_error();
-            if (err != noError) {
-                return err;
+    if (!model->LocalID || model->Dirty) {
+        try {
+            if (model->ID > 0) {
+                *session << "select local_id from users where id = :id",
+                    Poco::Data::into(model->LocalID),
+                    Poco::Data::use(model->ID),
+                    Poco::Data::limit(1),
+                    Poco::Data::now;
+                error err = last_error();
+                if (err != noError) {
+                    return err;
+                }
             }
+            if (model->LocalID != 0) {
+                logger.debug("Updating user " + model->String());
+                *session << "update users set "
+                    "api_token = :api_token, default_wid = :default_wid, "
+                    "since = :since, id = :id "
+                    "where local_id = :local_id",
+                    Poco::Data::use(model->APIToken),
+                    Poco::Data::use(model->DefaultWID),
+                    Poco::Data::use(model->Since),
+                    Poco::Data::use(model->ID),
+                    Poco::Data::use(model->LocalID),
+                    Poco::Data::now;
+                error err = last_error();
+                if (err != noError) {
+                    return err;
+                }
+            } else {
+                logger.debug("Inserting user " + model->String());
+                *session << "insert into users("
+                    "id, api_token, default_wid, since) "
+                    "values(:id, :api_token, :default_wid, :since)",
+                    Poco::Data::use(model->ID),
+                    Poco::Data::use(model->APIToken),
+                    Poco::Data::use(model->DefaultWID),
+                    Poco::Data::use(model->Since),
+                    Poco::Data::now;
+                error err = last_error();
+                if (err != noError) {
+                    return err;
+                }
+                *session << "select last_insert_rowid()",
+                    Poco::Data::into(model->LocalID),
+                    Poco::Data::now;
+                err = last_error();
+                if (err != noError) {
+                    return err;
+                }
+            }
+            model->Dirty = false;
+        } catch(const Poco::Exception& exc) {
+            return exc.displayText();
+        } catch(const std::exception& ex) {
+            return ex.what();
+        } catch(const std::string& ex) {
+            return ex;
         }
-        if (model->LocalID != 0) {
-            logger.debug("Updating user " + model->String());
-            *session << "update users set "
-                "api_token = :api_token, default_wid = :default_wid, "
-                "since = :since, id = :id "
-                "where local_id = :local_id",
-                Poco::Data::use(model->APIToken),
-                Poco::Data::use(model->DefaultWID),
-                Poco::Data::use(model->Since),
-                Poco::Data::use(model->ID),
-                Poco::Data::use(model->LocalID),
-                Poco::Data::now;
-            error err = last_error();
-            if (err != noError) {
-                return err;
-            }
-        } else {
-            logger.debug("Inserting user " + model->String());
-            *session << "insert into users(id, api_token, default_wid, since) "
-                "values(:id, :api_token, :default_wid, :since)",
-                Poco::Data::use(model->ID),
-                Poco::Data::use(model->APIToken),
-                Poco::Data::use(model->DefaultWID),
-                Poco::Data::use(model->Since),
-                Poco::Data::now;
-            error err = last_error();
-            if (err != noError) {
-                return err;
-            }
-            *session << "select last_insert_rowid()",
-                Poco::Data::into(model->LocalID),
-                Poco::Data::now;
-            err = last_error();
-            if (err != noError) {
-                return err;
-            }
-        }
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
     }
 
     if (with_related_data) {

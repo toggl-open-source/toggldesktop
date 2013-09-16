@@ -25,7 +25,7 @@ namespace kopsik {
         Poco::UInt64 ID;
         std::string Name;
         Poco::UInt64 UID;
-        bool Dirty; // Needs to be saved into DB
+        bool Dirty;
 
         error Load(JSONNODE *node);
         std::string String();
@@ -42,7 +42,7 @@ namespace kopsik {
         Poco::UInt64 WID;
         std::string Name;
         Poco::UInt64 UID;
-        bool Dirty; // Needs to be saved into DB
+        bool Dirty;
 
         error Load(JSONNODE *node);
         std::string String();
@@ -60,7 +60,7 @@ namespace kopsik {
         Poco::UInt64 CID;
         std::string Name;
         Poco::UInt64 UID;
-        bool Dirty; // Needs to be saved into DB
+        bool Dirty;
 
         error Load(JSONNODE *node);
         std::string String();
@@ -77,7 +77,7 @@ namespace kopsik {
         Poco::UInt64 WID;
         Poco::UInt64 PID;
         Poco::UInt64 UID;
-        bool Dirty; // Needs to be saved into DB
+        bool Dirty;
 
         error Load(JSONNODE *node);
         std::string String();
@@ -94,7 +94,7 @@ namespace kopsik {
         std::string Name;
         guid GUID;
         Poco::UInt64 UID;
-        bool Dirty; // Needs to be saved into DB
+        bool Dirty;
 
         error Load(JSONNODE *node);
         std::string String();
@@ -124,8 +124,7 @@ namespace kopsik {
         // be updated by user.
         Poco::UInt64 UIModifiedAt;
         Poco::UInt64 UID;
-        bool Dirty; // Needs to be saved into DB
-
+        bool Dirty;
 
         std::vector<std::string> TagNames;
         std::string Tags() {
@@ -170,8 +169,7 @@ namespace kopsik {
         Poco::UInt64 DefaultWID;
         // Unix timestamp of the user data; returned from API
         Poco::UInt64 Since;
-
-        bool Dirty; // Needs to be saved into DB
+        bool Dirty;
 
         std::vector<Workspace *> Workspaces;
         std::vector<Client *> Clients;

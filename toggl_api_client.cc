@@ -30,7 +30,8 @@ TimeEntry *User::Start() {
     TimeEntry *te = new TimeEntry();
     te->UID = this->ID;
     te->Start = time(0);
-    te->DurationInSeconds = -1; // FIXME: do magic calculation here
+     // FIXME: do magic calculation here
+    te->DurationInSeconds = -1;
     te->WID = this->DefaultWID;
     te->Dirty = true;
     TimeEntries.push_back(te);
@@ -46,7 +47,8 @@ std::vector<TimeEntry *> User::Stop() {
     TimeEntry *te = RunningTimeEntry();
     while (te) {
         result.push_back(te);
-        te->DurationInSeconds = 0; // FIXME: do magic calculation here
+        // FIXME: do magic calculation here
+        te->DurationInSeconds = 0;
         te->Dirty = true;
         te = RunningTimeEntry();
     }
@@ -54,7 +56,8 @@ std::vector<TimeEntry *> User::Stop() {
 }
 
 TimeEntry *User::RunningTimeEntry() {
-    for (std::vector<TimeEntry *>::const_iterator it = this->TimeEntries.begin();
+    for (std::vector<TimeEntry *>::const_iterator it =
+            this->TimeEntries.begin();
             it != this->TimeEntries.end(); it++) {
         if ((*it)->DurationInSeconds < 0) {
             return *it;
