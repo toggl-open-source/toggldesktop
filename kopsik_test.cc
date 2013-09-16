@@ -9,6 +9,117 @@
 
 namespace kopsik {
 
+    TEST(KopsikTest, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
+        Poco::File f("test.db");
+        f.remove(false);
+
+        Database db("test.db");
+
+        Poco::FileStream fis("testdata/me.json", std::ios::binary);
+        std::stringstream ss;
+        ss << fis.rdbuf();
+        fis.close();
+
+        User user;
+        ASSERT_EQ(noError, user.Load(ss.str()));
+
+        Poco::UInt64 n;
+        ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
+        ASSERT_EQ(Poco::UInt64(0), n);
+
+        for (int i = 0; i < 3; i++) {
+            ASSERT_EQ(noError, db.Save(&user, true));
+
+            ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
+            ASSERT_EQ(Poco::UInt64(1), n);
+
+            ASSERT_EQ(noError, db.UInt("select count(1) from workspaces", &n));
+            ASSERT_EQ(uint(2), n);
+
+            ASSERT_EQ(noError, db.UInt("select count(1) from clients", &n));
+            ASSERT_EQ(uint(2), n);
+
+            ASSERT_EQ(noError, db.UInt("select count(1) from projects", &n));
+            ASSERT_EQ(uint(2), n);
+
+            ASSERT_EQ(noError, db.UInt("select count(1) from tasks", &n));
+            ASSERT_EQ(uint(2), n);
+
+            ASSERT_EQ(noError, db.UInt("select count(1) from tags", &n));
+            ASSERT_EQ(uint(0), n);
+
+            ASSERT_EQ(noError, db.UInt("select count(1) from time_entries", &n));
+            ASSERT_EQ(uint(3), n);
+        }
+    }
+
+ TEST(KopsikTest, SavesModelsAndKnowsToUpdateWithSeparateUserInstances) {
+        Poco::File f("test.db");
+        f.remove(false);
+
+        Database db("test.db");
+
+        Poco::FileStream fis("testdata/me.json", std::ios::binary);
+        std::stringstream ss;
+        ss << fis.rdbuf();
+        fis.close();
+
+        std::string json = ss.str();
+
+        User user1;
+        ASSERT_EQ(noError, user1.Load(json));
+
+        User user2;
+        ASSERT_EQ(noError, user2.Load(json));
+
+        ASSERT_EQ(noError, db.Save(&user1, true));
+
+        Poco::UInt64 n;
+        ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
+        ASSERT_EQ(Poco::UInt64(1), n);
+
+        ASSERT_EQ(noError, db.UInt("select count(1) from workspaces", &n));
+        ASSERT_EQ(uint(2), n);
+
+        ASSERT_EQ(noError, db.UInt("select count(1) from clients", &n));
+        ASSERT_EQ(uint(2), n);
+
+        ASSERT_EQ(noError, db.UInt("select count(1) from projects", &n));
+        ASSERT_EQ(uint(2), n);
+
+        ASSERT_EQ(noError, db.UInt("select count(1) from tasks", &n));
+        ASSERT_EQ(uint(2), n);
+
+        ASSERT_EQ(noError, db.UInt("select count(1) from tags", &n));
+        ASSERT_EQ(uint(0), n);
+
+        ASSERT_EQ(noError, db.UInt("select count(1) from time_entries", &n));
+        ASSERT_EQ(uint(3), n);
+
+        ASSERT_EQ(noError, db.Save(&user2, true));
+
+        ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
+        ASSERT_EQ(Poco::UInt64(1), n);
+
+        ASSERT_EQ(noError, db.UInt("select count(1) from workspaces", &n));
+        ASSERT_EQ(uint(2), n);
+
+        ASSERT_EQ(noError, db.UInt("select count(1) from clients", &n));
+        ASSERT_EQ(uint(2), n);
+
+        ASSERT_EQ(noError, db.UInt("select count(1) from projects", &n));
+        ASSERT_EQ(uint(2), n);
+
+        ASSERT_EQ(noError, db.UInt("select count(1) from tasks", &n));
+        ASSERT_EQ(uint(2), n);
+
+        ASSERT_EQ(noError, db.UInt("select count(1) from tags", &n));
+        ASSERT_EQ(uint(0), n);
+
+        ASSERT_EQ(noError, db.UInt("select count(1) from time_entries", &n));
+        ASSERT_EQ(uint(3), n);
+    }
+
     TEST(KopsikTest, SavesModels) {
         Poco::FileStream fis("testdata/me.json", std::ios::binary);
         ASSERT_TRUE(fis.good());
@@ -121,7 +232,6 @@ namespace kopsik {
         ASSERT_EQ(false, user.TimeEntries[0]->DurOnly);
         ASSERT_EQ(user.ID, user.TimeEntries[0]->UID);
 
-        // FIXME: Tasks
         ASSERT_EQ(uint(2), user.Tasks.size());
 
         ASSERT_EQ(uint(1894794), user.Tasks[0]->ID);

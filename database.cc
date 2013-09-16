@@ -500,6 +500,17 @@ error Database::saveList(Poco::UInt64 UID, std::vector<TimeEntry *> *list) {
 error Database::Save(TimeEntry *model) {
     poco_assert(session);
     try {
+        if (model->ID > 0) {
+            *session << "select local_id from time_entries where id = :id",
+                Poco::Data::into(model->LocalID),
+                Poco::Data::use(model->ID),
+                Poco::Data::limit(1),
+                Poco::Data::now;
+            error err = last_error();
+            if (err != noError) {
+                return err;
+            }
+        }
         Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID != 0) {
             logger.debug("Updating time entry " + model->String());
@@ -574,6 +585,17 @@ error Database::Save(TimeEntry *model) {
 error Database::Save(Workspace *model) {
     poco_assert(session);
     try {
+        if (model->ID > 0) {
+            *session << "select local_id from workspaces where id = :id",
+                Poco::Data::into(model->LocalID),
+                Poco::Data::use(model->ID),
+                Poco::Data::limit(1),
+                Poco::Data::now;
+            error err = last_error();
+            if (err != noError) {
+                return err;
+            }
+        }
         Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID != 0) {
             logger.debug("Updating workspace " + model->String());
@@ -614,6 +636,17 @@ error Database::Save(Workspace *model) {
 error Database::Save(Client *model) {
     poco_assert(session);
     try {
+        if (model->ID > 0) {
+            *session << "select local_id from clients where id = :id",
+                Poco::Data::into(model->LocalID),
+                Poco::Data::use(model->ID),
+                Poco::Data::limit(1),
+                Poco::Data::now;
+            error err = last_error();
+            if (err != noError) {
+                return err;
+            }
+        }
         Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID != 0) {
             logger.debug("Updating client " + model->String());
@@ -658,6 +691,17 @@ error Database::Save(Client *model) {
 error Database::Save(Project *model) {
     poco_assert(session);
     try {
+        if (model->ID > 0) {
+            *session << "select local_id from projects where id = :id",
+                Poco::Data::into(model->LocalID),
+                Poco::Data::use(model->ID),
+                Poco::Data::limit(1),
+                Poco::Data::now;
+            error err = last_error();
+            if (err != noError) {
+                return err;
+            }
+        }
         Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID != 0) {
             logger.debug("Updating project " + model->String());
@@ -702,6 +746,17 @@ error Database::Save(Project *model) {
 error Database::Save(Task *model) {
     poco_assert(session);
     try {
+        if (model->ID > 0) {
+            *session << "select local_id from tasks where id = :id",
+                Poco::Data::into(model->LocalID),
+                Poco::Data::use(model->ID),
+                Poco::Data::limit(1),
+                Poco::Data::now;
+            error err = last_error();
+            if (err != noError) {
+                return err;
+            }
+        }
         Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID != 0) {
             logger.debug("Updating task " + model->String());
@@ -746,6 +801,17 @@ error Database::Save(Task *model) {
 error Database::Save(Tag *model) {
     poco_assert(session);
     try {
+        if (model->ID > 0) {
+            *session << "select local_id from tags where id = :id",
+                Poco::Data::into(model->LocalID),
+                Poco::Data::use(model->ID),
+                Poco::Data::limit(1),
+                Poco::Data::now;
+            error err = last_error();
+            if (err != noError) {
+                return err;
+            }
+        }
         Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID != 0) {
             logger.debug("Updating tag " + model->String());
@@ -800,6 +866,17 @@ error Database::Save(User *model, bool with_related_data) {
     Poco::Logger &logger = Poco::Logger::get("database");
 
     try {
+        if (model->ID > 0) {
+            *session << "select local_id from users where id = :id",
+                Poco::Data::into(model->LocalID),
+                Poco::Data::use(model->ID),
+                Poco::Data::limit(1),
+                Poco::Data::now;
+            error err = last_error();
+            if (err != noError) {
+                return err;
+            }
+        }
         if (model->LocalID != 0) {
             logger.debug("Updating user " + model->String());
             *session << "update users set "
