@@ -377,23 +377,6 @@ error Database::loadTags(User *user) {
     return noError;
 }
 
-/*
-        "local_id integer primary key, "
-        "id integer not null, "
-        "uid integer not null, "
-        "description varchar, "
-        "wid integer not null, "
-        "guid varchar, "
-        "pid integer, "
-        "tid integer, "
-        "billable integer not null default 0,"
-        "duronly integer not null default 0, "
-        "ui_modified_at integer, "
-        "start integer not null, "
-        "stop integer, "
-        "duration integer not null,"
-        "tags text,"
-*/
 error Database::loadTimeEntries(User *user) {
     poco_assert(user->ID > 0);
     user->ClearTimeEntries();
