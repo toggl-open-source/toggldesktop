@@ -49,12 +49,13 @@ namespace kopsik {
             ASSERT_EQ(noError, db.UInt("select count(1) from tags", &n));
             ASSERT_EQ(uint(0), n);
 
-            ASSERT_EQ(noError, db.UInt("select count(1) from time_entries", &n));
+            ASSERT_EQ(noError, db.UInt("select count(1) from time_entries",
+                    &n));
             ASSERT_EQ(uint(3), n);
         }
     }
 
- TEST(KopsikTest, SavesModelsAndKnowsToUpdateWithSeparateUserInstances) {
+    TEST(KopsikTest, SavesModelsAndKnowsToUpdateWithSeparateUserInstances) {
         Poco::File f("test.db");
         if (f.exists()) {
             f.remove(false);

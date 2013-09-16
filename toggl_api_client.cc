@@ -23,6 +23,16 @@
 
 namespace kopsik {
 
+
+error User::Start() {
+    return noError;
+}
+
+error User::Stop() {
+    return noError;
+}
+
+// FIXME: move code into a GET method
 error User::Fetch() {
     poco_assert(!APIToken.empty());
 

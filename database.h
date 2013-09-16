@@ -45,6 +45,8 @@ class Database {
         error Delete(TimeEntry *model);
 
         error Load(Poco::UInt64 UID, User *model, bool with_related_data);
+        error Load(std::string api_token, User *model, bool with_related_data);
+
         error UInt(std::string sql, Poco::UInt64 *result);
 
         error Save(User *user, bool with_related_data);

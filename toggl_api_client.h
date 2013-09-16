@@ -187,6 +187,9 @@ namespace kopsik {
         Tag *GetTagByID(const Poco::UInt64 id);
         TimeEntry *GetTimeEntryByID(const Poco::UInt64 id);
 
+        error Start();
+        error Stop();
+
     private:
         error loadProjects(JSONNODE *list);
         error loadTags(JSONNODE *list);

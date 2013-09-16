@@ -130,8 +130,37 @@ error Database::last_error() {
     return noError;
 }
 
-error Database::Load(Poco::UInt64 UID, User *model, bool with_related_data) {
+error Database::Load(std::string api_token, User *model,
+        bool with_related_data) {
     poco_assert(session);
+    poco_assert(model);
+    poco_assert(!api_token.empty());
+    try {
+        Poco::UInt64 uid(0);
+        *session << "select id from users where api_token = :api_token",
+            Poco::Data::into(uid),
+            Poco::Data::use(api_token),
+            Poco::Data::limit(1),
+            Poco::Data::now;
+        error err = last_error();
+        if (err != noError) {
+            return err;
+        }
+        return Load(uid, model, with_related_data);
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
+error Database::Load(Poco::UInt64 UID, User *model, bool with_related_data) {
+    poco_assert(model);
+    poco_assert(session);
+    poco_assert(UID > 0);
 
     Poco::Stopwatch stopwatch;
     stopwatch.start();
