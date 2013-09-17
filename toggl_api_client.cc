@@ -93,7 +93,11 @@ error User::pushTimeEntry(TimeEntry *te) {
     logger.debug("Pushing time entry " + te->String());
 
     try {
-        std::string json = te->JSON();
+        JSONNODE *node = te->JSON();
+        json_char *jc = json_write_formatted(node);
+        std::string json(jc);
+        json_free(jc);
+        json_delete(node);
 
         logger.debug(json);
 
@@ -134,14 +138,14 @@ error User::pushTimeEntry(TimeEntry *te) {
         response_string << "Response received: " << response.getStatus() << " " << response.getReason();
         logger.debug(response_string.str());
 
-        if ((response.getStatus() != 202) && (response.getStatus() != 200)) {
-            // FIXME: backoff
-            return false;
-        }
-
         // Read request body
         std::ostringstream body;
         Poco::StreamCopier::copyStream(is, body);
+
+        if ((response.getStatus() != 202) && (response.getStatus() != 200)) {
+            // FIXME: backoff
+            return "Time entry push failed with error: " + body.str();
+        }
 
         // FIXME: reset backoff
 
@@ -525,31 +529,39 @@ std::string TimeEntry::String() {
     " duration=" << DurationInSeconds <<
     " billable=" << Billable <<
     " duronly=" << DurOnly <<
-    " uimodifiedat=" << UIModifiedAt;
+    " ui_modified_at=" << UIModifiedAt;
     return ss.str();
 }
 
-std::string TimeEntry::JSON() {
-    // initialize new node
+JSONNODE *TimeEntry::JSON() {
     JSONNODE *n = json_new(JSON_NODE);
-    // add fields to node
-    json_push_back(n, json_new_i("id", (json_int_t)ID));
+    json_set_name(n, "time_entry");
+    if (ID > 0) {
+        json_push_back(n, json_new_i("id", (json_int_t)ID));
+    }
     json_push_back(n, json_new_a("description", Description.c_str()));
     json_push_back(n, json_new_i("wid", (json_int_t)WID));
-    json_push_back(n, json_new_a("guid", GUID.c_str()));
-    json_push_back(n, json_new_i("pid", (json_int_t)PID));
-    json_push_back(n, json_new_i("tid", (json_int_t)TID));
-    json_push_back(n, json_new_i("start", (json_int_t)Start));
-    json_push_back(n, json_new_i("stop", (json_int_t)Stop));
+    if (!GUID.empty()) {
+        json_push_back(n, json_new_a("guid", GUID.c_str()));
+    }
+    if (PID > 0) {
+        json_push_back(n, json_new_i("pid", (json_int_t)PID));
+    }
+    if (TID > 0) {
+        json_push_back(n, json_new_i("tid", (json_int_t)TID));
+    }
+    json_push_back(n, json_new_a("start", StartString().c_str()));
+    if (Stop > 0) {
+        json_push_back(n, json_new_a("stop", StopString().c_str()));
+    }
     json_push_back(n, json_new_i("duration", (json_int_t)DurationInSeconds));
     json_push_back(n, json_new_b("billable", Billable));
     json_push_back(n, json_new_b("duronly", DurOnly));
     json_push_back(n, json_new_i("ui_modified_at", (json_int_t)UIModifiedAt));
-
-    json_char *jc = json_write_formatted(n);
-    std::string json(jc);
-    json_free(jc);
-    return json;
+    
+    JSONNODE *wrapper = json_new(JSON_NODE);
+    json_push_back(wrapper, n);
+    return wrapper;
 }
 
 // FIXME: use map instead?
@@ -784,11 +796,24 @@ std::time_t Parse8601(std::string iso_8601_formatted_date) {
     return ts.epochTime();
 }
 
-void TimeEntry::SetStart(std::string value) {
+std::string Format8601(std::time_t date) {
+    Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
+    return Poco::DateTimeFormatter::format(ts, Poco::DateTimeFormat::ISO8601_FORMAT);
+}
+
+std::string TimeEntry::StartString() {
+     return Format8601(this->Start);
+}
+
+void TimeEntry::SetStartString(std::string value) {
     this->Start = Parse8601(value);
 }
 
-void TimeEntry::SetStop(std::string value) {
+std::string TimeEntry::StopString() {
+     return Format8601(this->Stop);
+}
+
+void TimeEntry::SetStopString(std::string value) {
     this->Stop = Parse8601(value);
 }
 
@@ -829,9 +854,9 @@ error TimeEntry::Load(JSONNODE *data) {
         } else if (strcmp(node_name, "tid") == 0) {
             this->TID = json_as_int(*current_node);
         } else if (strcmp(node_name, "start") == 0) {
-            this->SetStart(std::string(json_as_string(*current_node)));
+            this->SetStartString(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "stop") == 0) {
-            this->SetStop(std::string(json_as_string(*current_node)));
+            this->SetStopString(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "duration") == 0) {
             this->DurationInSeconds = json_as_int(*current_node);
         } else if (strcmp(node_name, "ui_modified_at") == 0) {

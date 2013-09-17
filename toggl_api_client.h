@@ -132,12 +132,14 @@ namespace kopsik {
         std::string Tags();
         void SetTags(std::string tags);
 
-        void SetStart(std::string value);
-        void SetStop(std::string value);
+        std::string StartString();
+        void SetStartString(std::string value);
+        std::string StopString();
+        void SetStopString(std::string value);
 
         error Load(JSONNODE *node);
         std::string String();
-        std::string JSON();
+        JSONNODE *JSON();
 
     private:
         error loadTags(JSONNODE *list);

@@ -262,10 +262,10 @@ error Database::UInt(std::string sql, Poco::UInt64 *result) {
 error Database::validate(User *model) {
     poco_assert(model);
     if (model->APIToken.empty()) {
-        return error("Missing APIToken");
+        return error("Missing user API token, cannot save user without API token");
     }
     if (model->ID <= 0) {
-        return error("Missing ID");
+        return error("Missing user ID, cannot save user without ID");
     }
     return noError;
 }
