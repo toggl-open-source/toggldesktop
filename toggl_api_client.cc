@@ -70,7 +70,98 @@ TimeEntry *User::RunningTimeEntry() {
 
 error User::Push() {
     poco_assert(!APIToken.empty());
-    // FIXME: push time entries here
+    // Gather dirty stuff
+    for (std::vector<TimeEntry *>::const_iterator it =
+            this->TimeEntries.begin();
+            it != this->TimeEntries.end(); it++) {
+        TimeEntry *te = *it;
+        if ((te->UIModifiedAt > 0) || (!te->ID)) {
+            error err = pushTimeEntry(te);
+            if (err != noError) {
+                return err;
+            }
+        }
+    }
+    return noError;
+}
+
+error User::pushTimeEntry(TimeEntry *te) {
+    poco_assert(te);
+    poco_assert(!APIToken.empty());
+
+    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
+    logger.debug("Pushing time entry " + te->String());
+
+    try {
+        std::string json = te->JSON();
+
+        logger.debug(json);
+
+        const Poco::URI uri("https://www.toggl.com");
+
+        const Poco::Net::Context::Ptr context(new Poco::Net::Context(
+            Poco::Net::Context::CLIENT_USE, "", "", "",
+            Poco::Net::Context::VERIFY_NONE, 9, false, "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"));
+
+        Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(), context);
+        session.setKeepAlive(false);
+
+        Poco::Net::HTTPRequest req(Poco::Net::HTTPRequest::HTTP_POST,
+            "/api/v8/time_entries", Poco::Net::HTTPMessage::HTTP_1_1);
+        req.setContentType("application/json");
+        req.setKeepAlive(false);
+        req.setContentLength(json.length());
+
+        logger.debug("Sending request..");
+
+        Poco::Net::HTTPBasicCredentials cred(APIToken, "api_token");
+        cred.authenticate(req);
+        session.sendRequest(req) << json << std::flush;
+
+        // Log out request contents
+        std::stringstream request_string;
+        req.write(request_string);
+        logger.debug(request_string.str());
+
+        logger.debug("Request sent. Receiving response..");
+
+        // Receive response
+        Poco::Net::HTTPResponse response;
+        std::istream& is = session.receiveResponse(response);
+
+        // Log out response contents
+        std::stringstream response_string;
+        response_string << "Response received: " << response.getStatus() << " " << response.getReason();
+        logger.debug(response_string.str());
+
+        if ((response.getStatus() != 202) && (response.getStatus() != 200)) {
+            // FIXME: backoff
+            return false;
+        }
+
+        // Read request body
+        std::ostringstream body;
+        Poco::StreamCopier::copyStream(is, body);
+
+        // FIXME: reset backoff
+
+        // Parse JSON
+        json = body.str();
+        logger.debug(json);
+
+        // FIXME: load JSON
+
+    } catch (const Poco::Exception& exc) {
+        // FIXME: backoff
+        return exc.displayText();
+    } catch (const std::exception& ex) {
+        // FIXME: backoff
+        return ex.what();
+    } catch (const std::string& ex) {
+        // FIXME: backoff
+        return ex;
+    }
+
     return noError;
 }
 
@@ -436,6 +527,29 @@ std::string TimeEntry::String() {
     " duronly=" << DurOnly <<
     " uimodifiedat=" << UIModifiedAt;
     return ss.str();
+}
+
+std::string TimeEntry::JSON() {
+    // initialize new node
+    JSONNODE *n = json_new(JSON_NODE);
+    // add fields to node
+    json_push_back(n, json_new_i("id", (json_int_t)ID));
+    json_push_back(n, json_new_a("description", Description.c_str()));
+    json_push_back(n, json_new_i("wid", (json_int_t)WID));
+    json_push_back(n, json_new_a("guid", GUID.c_str()));
+    json_push_back(n, json_new_i("pid", (json_int_t)PID));
+    json_push_back(n, json_new_i("tid", (json_int_t)TID));
+    json_push_back(n, json_new_i("start", (json_int_t)Start));
+    json_push_back(n, json_new_i("stop", (json_int_t)Stop));
+    json_push_back(n, json_new_i("duration", (json_int_t)DurationInSeconds));
+    json_push_back(n, json_new_b("billable", Billable));
+    json_push_back(n, json_new_b("duronly", DurOnly));
+    json_push_back(n, json_new_i("ui_modified_at", (json_int_t)UIModifiedAt));
+
+    json_char *jc = json_write_formatted(n);
+    std::string json(jc);
+    json_free(jc);
+    return json;
 }
 
 // FIXME: use map instead?

@@ -446,24 +446,6 @@ error Database::loadTimeEntries(User *user) {
     return user->loadTimeEntries(&select);
 }
 
-error Database::LoadTimeEntriesForUpload(User *user) {
-    poco_assert(user);
-    poco_assert(user->ID > 0);
-    user->ClearTimeEntries();
-    Poco::Data::Statement select(*session);
-    select << "SELECT local_id, id, uid, description, wid, guid, pid, "
-        "tid, billable, duronly, ui_modified_at, start, stop, "
-        "duration, tags "
-        "FROM time_entries WHERE uid = :uid "
-        "ORDER BY start DESC",
-        Poco::Data::use(user->ID);
-    error err = last_error();
-    if (err != noError) {
-        return err;
-    }
-    return user->loadTimeEntries(&select);
-}
-
 error Database::saveList(Poco::UInt64 UID, std::vector<Workspace *> *list) {
     poco_assert(UID > 0);
     poco_assert(list);

@@ -137,6 +137,7 @@ namespace kopsik {
 
         error Load(JSONNODE *node);
         std::string String();
+        std::string JSON();
 
     private:
         error loadTags(JSONNODE *list);
@@ -203,6 +204,8 @@ namespace kopsik {
         error loadTasks(JSONNODE *list);
         error loadTimeEntries(JSONNODE *list);
         error loadWorkspaces(JSONNODE *list);
+
+        error pushTimeEntry(TimeEntry *te);
     };
 }  // namespace kopsik
 
