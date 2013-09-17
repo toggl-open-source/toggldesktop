@@ -105,9 +105,11 @@ error User::pushTimeEntry(TimeEntry *te) {
 
         const Poco::Net::Context::Ptr context(new Poco::Net::Context(
             Poco::Net::Context::CLIENT_USE, "", "", "",
-            Poco::Net::Context::VERIFY_NONE, 9, false, "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"));
+            Poco::Net::Context::VERIFY_NONE, 9, false,
+            "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"));
 
-        Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(), context);
+        Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(),
+            context);
         session.setKeepAlive(false);
 
         Poco::Net::HTTPRequest req(Poco::Net::HTTPRequest::HTTP_POST,
@@ -135,7 +137,8 @@ error User::pushTimeEntry(TimeEntry *te) {
 
         // Log out response contents
         std::stringstream response_string;
-        response_string << "Response received: " << response.getStatus() << " " << response.getReason();
+        response_string << "Response received: " << response.getStatus()
+            << " " << response.getReason();
         logger.debug(response_string.str());
 
         // Read request body
@@ -157,18 +160,16 @@ error User::pushTimeEntry(TimeEntry *te) {
         if (err != noError) {
             return err;
         }
-
-    } catch (const Poco::Exception& exc) {
+    } catch(const Poco::Exception& exc) {
         // FIXME: backoff
         return exc.displayText();
-    } catch (const std::exception& ex) {
+    } catch(const std::exception& ex) {
         // FIXME: backoff
         return ex.what();
-    } catch (const std::string& ex) {
+    } catch(const std::string& ex) {
         // FIXME: backoff
         return ex;
     }
-
     return noError;
 }
 
@@ -561,7 +562,7 @@ JSONNODE *TimeEntry::JSON() {
     json_push_back(n, json_new_b("billable", Billable));
     json_push_back(n, json_new_b("duronly", DurOnly));
     json_push_back(n, json_new_i("ui_modified_at", (json_int_t)UIModifiedAt));
-    
+
     JSONNODE *wrapper = json_new(JSON_NODE);
     json_push_back(wrapper, n);
     return wrapper;
@@ -801,7 +802,8 @@ std::time_t Parse8601(std::string iso_8601_formatted_date) {
 
 std::string Format8601(std::time_t date) {
     Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
-    return Poco::DateTimeFormatter::format(ts, Poco::DateTimeFormat::ISO8601_FORMAT);
+    return Poco::DateTimeFormatter::format(ts,
+        Poco::DateTimeFormat::ISO8601_FORMAT);
 }
 
 std::string TimeEntry::StartString() {
