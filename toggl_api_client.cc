@@ -153,7 +153,10 @@ error User::pushTimeEntry(TimeEntry *te) {
         json = body.str();
         logger.debug(json);
 
-        // FIXME: load JSON
+        error err = te->Load(json);
+        if (err != noError) {
+            return err;
+        }
 
     } catch (const Poco::Exception& exc) {
         // FIXME: backoff
@@ -832,6 +835,16 @@ void TimeEntry::SetTags(std::string tags) {
         getline(ss, tag, '|');
         TagNames.push_back(tag);
     }
+}
+
+error TimeEntry::Load(std::string json) {
+    JSONNODE *root = json_parse(json.c_str());
+    error err = Load(root);
+    if (err != noError) {
+        this->Dirty = true;
+    }
+    json_delete(root);
+    return err;
 }
 
 error TimeEntry::Load(JSONNODE *data) {

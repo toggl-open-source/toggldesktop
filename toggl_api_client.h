@@ -138,6 +138,8 @@ namespace kopsik {
         void SetStopString(std::string value);
 
         error Load(JSONNODE *node);
+        error Load(std::string json);
+
         std::string String();
         JSONNODE *JSON();
 
