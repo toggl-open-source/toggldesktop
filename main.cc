@@ -25,7 +25,7 @@ namespace kopsik {
             return Poco::Util::Application::EXIT_USAGE;
         }
         if (args.empty()) {
-            std::cout << "Recognized commands are: push, pull, start, stop"
+            std::cout << "Recognized commands are: push, pull, start, stop, status"
                 << std::endl;
             return Poco::Util::Application::EXIT_USAGE;
         }
