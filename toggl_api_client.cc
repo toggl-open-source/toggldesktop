@@ -70,7 +70,11 @@ TimeEntry *User::RunningTimeEntry() {
 
 error User::Push() {
     poco_assert(!APIToken.empty());
-    // Gather dirty stuff
+
+    Poco::Stopwatch stopwatch;
+    stopwatch.start();
+
+    // Gather dirty stuff, push it real good
     for (std::vector<TimeEntry *>::const_iterator it =
             this->TimeEntries.begin();
             it != this->TimeEntries.end(); it++) {
@@ -82,6 +86,14 @@ error User::Push() {
             }
         }
     }
+
+    stopwatch.stop();
+    std::stringstream ss;
+    ss << "Changes data JSON pushed and responses parsed in "
+        << stopwatch.elapsed() / 1000 << " ms";
+    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
+    logger.debug(ss.str());
+
     return noError;
 }
 
