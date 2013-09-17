@@ -42,20 +42,28 @@ namespace kopsik {
         poco_assert(!user.APIToken.empty());
 
         // Run a command on the user that has been loaded
-        if ("pull" == args[0]) {
+        std::string cmd = args[0];
+        if ("pull" == cmd) {
             err = user.Pull();
-        } else if ("push" == args[0]) {
+        } else if ("push" == cmd) {
             err = user.Push();
-        } else if ("start" == args[0]) {
+        } else if ("status" == cmd) {
+            TimeEntry *te = user.RunningTimeEntry();
+            if (te) {
+                logger.information("Tracking: " + te->String());
+            } else {
+                logger.information("Stopped.");
+            }
+        } else if ("start" == cmd) {
             TimeEntry *te = user.Start();
             if (te) {
-                logger.debug("Time entry started: " + te->String());
+                logger.information("Started: " + te->String());
             }
-        } else if ("stop" == args[0]) {
+        } else if ("stop" == cmd) {
             std::vector<TimeEntry *>stopped = user.Stop();
             for (std::vector<TimeEntry *>::const_iterator it = stopped.begin();
                     it != stopped.end(); it++) {
-                logger.debug("Time entry stopped: " + (*it)->String());
+                logger.information("Stopped: " + (*it)->String());
             }
         }
 
