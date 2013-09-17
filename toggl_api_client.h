@@ -209,7 +209,8 @@ namespace kopsik {
         error loadTimeEntries(JSONNODE *list);
         error loadWorkspaces(JSONNODE *list);
 
-        error pushTimeEntry(TimeEntry *te);
+        error requestJSON(std::string method, std::string relative_url,
+                std::string json, std::string *response_body);
     };
 }  // namespace kopsik
 

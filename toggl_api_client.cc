@@ -9,6 +9,7 @@
 #include "Poco/Bugcheck.h"
 #include "Poco/Exception.h"
 #include "Poco/InflatingStream.h"
+#include "Poco/DeflatingStream.h"
 #include "Poco/Logger.h"
 #include "Poco/StreamCopier.h"
 #include "Poco/URI.h"
@@ -24,6 +25,9 @@
 #include "./libjson.h"
 
 namespace kopsik {
+
+    //const std::string TOGGL_SERVER_URL("https://www.toggl.com");
+    const std::string TOGGL_SERVER_URL("http://localhost:8080");
 
 // Start a time entry, mark it as dirty and add to user time entry collection.
 // Do not save here, dirtyness will be handled outside of this module.
@@ -69,51 +73,57 @@ TimeEntry *User::RunningTimeEntry() {
 }
 
 error User::Push() {
-    poco_assert(!APIToken.empty());
-
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
-    // Gather dirty stuff, push it real good
+    // Build dirty JSON
+    JSONNODE *c = json_new(JSON_ARRAY);
     for (std::vector<TimeEntry *>::const_iterator it =
             this->TimeEntries.begin();
             it != this->TimeEntries.end(); it++) {
         TimeEntry *te = *it;
         if ((te->UIModifiedAt > 0) || (!te->ID)) {
-            error err = pushTimeEntry(te);
-            if (err != noError) {
-                return err;
-            }
+            // FIXME: build a batch update request
+            JSONNODE *node = te->JSON();
+            json_push_back(c, node);
         }
     }
+    json_char *jc = json_write_formatted(c);
+    std::string json(jc);
+    json_free(jc);
+    json_delete(c);
+
+    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
+    logger.debug(json);
+
+    std::string response_body("");
+    error err = requestJSON(Poco::Net::HTTPRequest::HTTP_POST,
+        "/api/v8/batch_updates",
+        json,
+        &response_body);
+    if (err != noError) {
+        return err;
+    }
+
+    // FIXME: load results
 
     stopwatch.stop();
     std::stringstream ss;
     ss << "Changes data JSON pushed and responses parsed in "
         << stopwatch.elapsed() / 1000 << " ms";
-    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
     logger.debug(ss.str());
 
     return noError;
 }
 
-error User::pushTimeEntry(TimeEntry *te) {
-    poco_assert(te);
-    poco_assert(!APIToken.empty());
-
-    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
-    logger.debug("Pushing time entry " + te->String());
-
+error User::requestJSON(std::string method, std::string relative_url,
+        std::string json, std::string *response_body) {
+    poco_assert(!method.empty());
+    poco_assert(!relative_url.empty());
+    poco_assert(response_body);
+    *response_body = "";
     try {
-        JSONNODE *node = te->JSON();
-        json_char *jc = json_write_formatted(node);
-        std::string json(jc);
-        json_free(jc);
-        json_delete(node);
-
-        logger.debug(json);
-
-        const Poco::URI uri("https://www.toggl.com");
+        const Poco::URI uri(TOGGL_SERVER_URL);
 
         const Poco::Net::Context::Ptr context(new Poco::Net::Context(
             Poco::Net::Context::CLIENT_USE, "", "", "",
@@ -124,17 +134,29 @@ error User::pushTimeEntry(TimeEntry *te) {
             context);
         session.setKeepAlive(false);
 
-        Poco::Net::HTTPRequest req(Poco::Net::HTTPRequest::HTTP_POST,
-            "/api/v8/time_entries", Poco::Net::HTTPMessage::HTTP_1_1);
-        req.setContentType("application/json");
-        req.setKeepAlive(false);
-        req.setContentLength(json.length());
+        std::istringstream requestStream(json);
+        Poco::DeflatingInputStream gzipRequest(requestStream,
+            Poco::DeflatingStreamBuf::STREAM_GZIP);
+        Poco::DeflatingStreamBuf *pBuff = gzipRequest.rdbuf();
 
+        long size = pBuff->pubseekoff(0, std::ios::end, std::ios::in);
+        pBuff->pubseekpos(0, std::ios::in);
+
+        Poco::Net::HTTPRequest req(method,
+            relative_url, Poco::Net::HTTPMessage::HTTP_1_1);
+        req.setKeepAlive(false);
+        req.setContentType("application/json");
+        req.setContentLength(size);
+        req.set("Content-Encoding", "gzip");
+        req.set("Accept-Encoding", "gzip");
+        req.setChunkedTransferEncoding(true);
+
+        Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
         logger.debug("Sending request..");
 
         Poco::Net::HTTPBasicCredentials cred(APIToken, "api_token");
         cred.authenticate(req);
-        session.sendRequest(req) << json << std::flush;
+        session.sendRequest(req) << pBuff << std::flush;
 
         // Log out request contents
         std::stringstream request_string;
@@ -147,31 +169,30 @@ error User::pushTimeEntry(TimeEntry *te) {
         Poco::Net::HTTPResponse response;
         std::istream& is = session.receiveResponse(response);
 
+        // Inflate
+        Poco::InflatingInputStream inflater(is,
+            Poco::InflatingStreamBuf::STREAM_GZIP);
+        std::stringstream ss;
+        ss << inflater.rdbuf();
+        *response_body = ss.str();
+
         // Log out response contents
         std::stringstream response_string;
-        response_string << "Response received: " << response.getStatus()
-            << " " << response.getReason();
+        response_string << "Response status: " << response.getStatus()
+            << ", reason: " << response.getReason()
+            << ", Content type: " << response.getContentType()
+            << ", Content-Encoding: " << response.get("Content-Encoding");
         logger.debug(response_string.str());
 
-        // Read request body
-        std::ostringstream body;
-        Poco::StreamCopier::copyStream(is, body);
-
-        if ((response.getStatus() != 202) && (response.getStatus() != 200)) {
+        bool statusOK = (response.getStatus() >= 200)
+            && (response.getStatus() < 300);
+        if (!statusOK) {
             // FIXME: backoff
-            return "Time entry push failed with error: " + body.str();
+            return "Data push failed with error: " + *response_body;
         }
 
         // FIXME: reset backoff
 
-        // Parse JSON
-        json = body.str();
-        logger.debug(json);
-
-        error err = te->Load(json);
-        if (err != noError) {
-            return err;
-        }
     } catch(const Poco::Exception& exc) {
         // FIXME: backoff
         return exc.displayText();
@@ -187,78 +208,28 @@ error User::pushTimeEntry(TimeEntry *te) {
 
 // FIXME: move code into a GET method
 error User::Pull() {
-    poco_assert(!APIToken.empty());
-
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
-    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
-    try {
-        const Poco::URI uri("https://www.toggl.com");
-        const Poco::Net::Context::Ptr context(new Poco::Net::Context(
-            Poco::Net::Context::CLIENT_USE, "", "", "",
-            Poco::Net::Context::VERIFY_NONE, 9, false,
-            "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"));
-        Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(),
-            context);
-        session.setKeepAlive(false);
+    std::string response_body("");
+    error err = requestJSON(Poco::Net::HTTPRequest::HTTP_GET,
+        "/api/v8/me?with_related_data=true",
+        "",
+        &response_body);
+    if (err != noError) {
+        return err;
+    }
 
-        Poco::Net::HTTPRequest req(Poco::Net::HTTPRequest::HTTP_GET,
-            "/api/v8/me?with_related_data=true",
-            Poco::Net::HTTPMessage::HTTP_1_1);
-        req.setKeepAlive(false);
-        req.set("Accept-Encoding", "gzip");
-        req.set("Content-Encoding", "gzip");
-        req.setChunkedTransferEncoding(true);
-
-        logger.debug("Sending request..");
-
-        Poco::Net::HTTPBasicCredentials cred(APIToken, "api_token");
-        cred.authenticate(req);
-        session.sendRequest(req) << std::flush;
-
-        std::stringstream request_string;
-        req.write(request_string);
-        logger.debug(request_string.str());
-
-        logger.debug("Request sent. Receiving response..");
-
-        Poco::Net::HTTPResponse response;
-        std::istream& is = session.receiveResponse(response);
-
-        Poco::InflatingInputStream inflater(is,
-            Poco::InflatingStreamBuf::STREAM_GZIP);
-        std::stringstream ss;
-        ss << inflater.rdbuf();
-        const std::string &json = ss.str();
-
-        std::stringstream response_string;
-        response_string << "Response status: " << response.getStatus()
-            << ", reason: " << response.getReason()
-            << ", Content type: " << response.getContentType()
-            << ", Content-Encoding: " << response.get("Content-Encoding");
-        logger.debug(response_string.str());
-
-        if ((response.getStatus() != 202) && (response.getStatus() != 200)) {
-            return json;
-        }
-
-        error err = this->Load(json);
-        if (err != noError) {
-            return err;
-        }
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
+    err = this->Load(response_body);
+    if (err != noError) {
+        return err;
     }
 
     stopwatch.stop();
     std::stringstream ss;
     ss << "User with related data JSON fetched and parsed in "
         << stopwatch.elapsed() / 1000 << " ms";
+    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
     logger.debug(ss.str());
 
     return noError;
@@ -270,6 +241,8 @@ error User::Load(const std::string &json) {
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
+    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
+
     JSONNODE *root = json_parse(json.c_str());
     JSONNODE_ITERATOR current_node = json_begin(root);
     JSONNODE_ITERATOR last_node = json_end(root);
@@ -279,7 +252,6 @@ error User::Load(const std::string &json) {
             this->Since = json_as_int(*current_node);
             std::stringstream s;
             s << "User data as of: " << this->Since;
-            Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
             logger.debug(s.str());
         } else if (strcmp(node_name, "data") == 0) {
             error err = this->Load(*current_node);
@@ -295,7 +267,6 @@ error User::Load(const std::string &json) {
     std::stringstream ss;
     ss << json.length() << " bytes of JSON parsed in " <<
         stopwatch.elapsed() / 1000 << " ms";
-    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
     logger.debug(ss.str());
 
     return noError;
@@ -852,6 +823,7 @@ void TimeEntry::SetTags(std::string tags) {
 }
 
 error TimeEntry::Load(std::string json) {
+    poco_assert(!json.empty());
     JSONNODE *root = json_parse(json.c_str());
     error err = Load(root);
     if (err != noError) {
