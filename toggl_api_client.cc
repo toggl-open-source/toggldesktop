@@ -26,7 +26,7 @@
 
 namespace kopsik {
 
-    //const std::string TOGGL_SERVER_URL("https://www.toggl.com");
+    // const std::string TOGGL_SERVER_URL("https://www.toggl.com");
     const std::string TOGGL_SERVER_URL("http://localhost:8080");
 
 // Start a time entry, mark it as dirty and add to user time entry collection.
@@ -86,7 +86,8 @@ error User::Push() {
             // FIXME: build a batch update request
             JSONNODE *update = json_new(JSON_NODE);
             json_push_back(update, json_new_a("method", "POST"));
-            json_push_back(update, json_new_a("relative_url", "/api/v8/time_entries"));
+            json_push_back(update, json_new_a("relative_url",
+                "/api/v8/time_entries"));
 
             JSONNODE *body = json_new(JSON_NODE);
             json_set_name(body, "body");
@@ -147,7 +148,7 @@ error User::requestJSON(std::string method, std::string relative_url,
             Poco::DeflatingStreamBuf::STREAM_GZIP);
         Poco::DeflatingStreamBuf *pBuff = gzipRequest.rdbuf();
 
-        long size = pBuff->pubseekoff(0, std::ios::end, std::ios::in);
+        Poco::Int64 size = pBuff->pubseekoff(0, std::ios::end, std::ios::in);
         pBuff->pubseekpos(0, std::ios::in);
 
         Poco::Net::HTTPRequest req(method,
@@ -200,7 +201,6 @@ error User::requestJSON(std::string method, std::string relative_url,
         }
 
         // FIXME: reset backoff
-
     } catch(const Poco::Exception& exc) {
         // FIXME: backoff
         return exc.displayText();
