@@ -14,6 +14,12 @@
 
 namespace kopsik {
 
+    void Kopsik::usage() {
+        std::cout << "Recognized commands are: "
+            << "push, pull, start, stop, status"
+            << std::endl;
+    }
+
     int Kopsik::main(const std::vector<std::string>& args) {
         Poco::Logger &logger = Poco::Logger::get("");
         logger.setLevel(Poco::Message::PRIO_DEBUG);
@@ -25,9 +31,7 @@ namespace kopsik {
             return Poco::Util::Application::EXIT_USAGE;
         }
         if (args.empty()) {
-            std::cout << "Recognized commands are: "
-                << "push, pull, start, stop, status"
-                << std::endl;
+            usage();
             return Poco::Util::Application::EXIT_USAGE;
         }
 
@@ -53,7 +57,7 @@ namespace kopsik {
             if (te) {
                 logger.information("Tracking: " + te->String());
             } else {
-                logger.information("Stopped.");
+                logger.information("Timer is not tracking.");
             }
         } else if ("start" == cmd) {
             TimeEntry *te = user.Start();
@@ -66,6 +70,9 @@ namespace kopsik {
                     it != stopped.end(); it++) {
                 logger.information("Stopped: " + (*it)->String());
             }
+        } else {
+            usage();
+            return Poco::Util::Application::EXIT_USAGE;
         }
 
         // Check command result

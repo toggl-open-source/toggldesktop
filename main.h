@@ -27,6 +27,9 @@ namespace kopsik {
         virtual void reinitialize() {}
         virtual void defineOptions(Poco::Util::OptionSet& options) {} // NOLINT
         void handleOption(const std::string &name, const std::string &value) {}
+
+    private:
+        void usage();
     };
 
 }  // namespace kopsik
