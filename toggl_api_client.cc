@@ -27,7 +27,7 @@
 namespace kopsik {
 
     const std::string TOGGL_SERVER_URL("https://www.toggl.com");
-    //const std::string TOGGL_SERVER_URL("http://localhost:8080");
+    // const std::string TOGGL_SERVER_URL("http://localhost:8080");
 
 // Start a time entry, mark it as dirty and add to user time entry collection.
 // Do not save here, dirtyness will be handled outside of this module.
@@ -76,20 +76,24 @@ bool TimeEntry::NeedsPush() {
     return (UIModifiedAt > 0) || !ID;
 }
 
+void User::CollectDirtyObjects(std::vector<TimeEntry *> *result) {
+    poco_assert(result);
+    for (std::vector<TimeEntry *>::const_iterator it = TimeEntries.begin();
+            it != TimeEntries.end();
+            it++) {
+        TimeEntry *te = *it;
+        if (te->NeedsPush()) {
+            result->push_back(te);
+        }
+    }
+}
+
 error User::Push() {
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
-    // Collect dirty objects
     std::vector<TimeEntry *>dirty;
-    for (std::vector<TimeEntry *>::const_iterator it =
-            this->TimeEntries.begin();
-            it != this->TimeEntries.end(); it++) {
-        TimeEntry *te = *it;
-        if (te->NeedsPush()) {
-            dirty.push_back(te);
-        }
-    }
+    CollectDirtyObjects(&dirty);
 
     // Convert the dirty objcets to batch updates JSON
     JSONNODE *c = json_new(JSON_ARRAY);

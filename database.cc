@@ -232,7 +232,7 @@ error Database::Load(Poco::UInt64 UID, User *model, bool with_related_data) {
     stopwatch.stop();
     std::stringstream ss;
     ss << "User with_related_data=" << with_related_data << " loaded in "
-        << stopwatch.elapsed() / 1000 << " ms" << std::endl;
+        << stopwatch.elapsed() / 1000 << " ms";
     logger.debug(ss.str());
 
     return noError;
@@ -1027,7 +1027,7 @@ error Database::Save(User *model, bool with_related_data) {
     stopwatch.stop();
     std::stringstream ss;
     ss << "User with_related_data=" << with_related_data << " saved in "
-        << stopwatch.elapsed() / 1000 << " ms" << std::endl;
+        << stopwatch.elapsed() / 1000 << " ms";
     logger.debug(ss.str());
 
     return noError;

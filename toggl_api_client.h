@@ -217,6 +217,8 @@ namespace kopsik {
         Tag *GetTagByID(const Poco::UInt64 id);
         TimeEntry *GetTimeEntryByID(const Poco::UInt64 id);
 
+        void CollectDirtyObjects(std::vector<TimeEntry *> *result);
+
         error loadTimeEntries(Poco::Data::Statement *select);
 
         TimeEntry *RunningTimeEntry();

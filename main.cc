@@ -59,6 +59,13 @@ namespace kopsik {
             } else {
                 logger.information("Timer is not tracking.");
             }
+            std::vector<TimeEntry *> dirty;
+            user.CollectDirtyObjects(&dirty);
+            for (std::vector<TimeEntry *>::const_iterator it = dirty.begin();
+                    it != dirty.end(); it++) {
+                TimeEntry *te = *it;
+                logger.debug("- dirty time entry: " + te->String());
+            }
         } else if ("start" == cmd) {
             TimeEntry *te = user.Start();
             if (te) {
