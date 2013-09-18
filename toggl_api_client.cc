@@ -943,37 +943,39 @@ error TimeEntry::Load(JSONNODE *data) {
     Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
     logger.debug("Time entry is loading this JSON: " + json);
 
+    Poco::UInt64 id(0), wid(0), pid(0), tid(0), ui_modified_at(0);
+    Poco::Int64 duration_in_seconds(0);
+    std::string description(""), guid(""), start(""), stop("");
+    bool billable(false), duronly(false);
+
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
         json_char *node_name = json_name(*current_node);
         if (strcmp(node_name, "id") == 0) {
-            this->ID = json_as_int(*current_node);
-            std::stringstream ss;
-            ss << "Set time entry ID " << this->String() + " to " << this->ID;
-            logger.debug(ss.str());
+            id = json_as_int(*current_node);
         } else if (strcmp(node_name, "description") == 0) {
-            this->Description = std::string(json_as_string(*current_node));
+            description = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "guid") == 0) {
-            this->GUID = std::string(json_as_string(*current_node));
+            guid = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "wid") == 0) {
-            this->WID = json_as_int(*current_node);
+            wid = json_as_int(*current_node);
         } else if (strcmp(node_name, "pid") == 0) {
-            this->PID = json_as_int(*current_node);
+            pid = json_as_int(*current_node);
         } else if (strcmp(node_name, "tid") == 0) {
-            this->TID = json_as_int(*current_node);
+            tid = json_as_int(*current_node);
         } else if (strcmp(node_name, "start") == 0) {
-            this->SetStartString(std::string(json_as_string(*current_node)));
+            start = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "stop") == 0) {
-            this->SetStopString(std::string(json_as_string(*current_node)));
+            stop = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "duration") == 0) {
-            this->DurationInSeconds = json_as_int(*current_node);
+            duration_in_seconds = json_as_int(*current_node);
         } else if (strcmp(node_name, "ui_modified_at") == 0) {
-            this->UIModifiedAt = json_as_int(*current_node);
+            ui_modified_at = json_as_int(*current_node);
         } else if (strcmp(node_name, "billable") == 0) {
-            this->Billable = json_as_bool(*current_node);
+            billable = json_as_bool(*current_node);
         } else if (strcmp(node_name, "duronly") == 0) {
-            this->DurOnly = json_as_bool(*current_node);
+            duronly = json_as_bool(*current_node);
         } else if (strcmp(node_name, "tags") == 0) {
             error err = this->loadTags(*current_node);
             if (err != noError) {
@@ -983,8 +985,27 @@ error TimeEntry::Load(JSONNODE *data) {
         ++current_node;
     }
 
-    Dirty = true;
+    // Compare UIModifiedAt - see if we can apply this update from server:
+    if (UIModifiedAt > ui_modified_at) {
+        // if we have newer version, don't apply updates from server.
+        return noError;
+    }
 
+    // Apply updates from server and mark model as Dirty (so it will saved
+    // to local database).
+    ID = id;
+    Description = description;
+    GUID = guid;
+    WID = wid;
+    PID = pid;
+    TID = tid;
+    DurOnly = duronly;
+    Billable = billable;
+    DurationInSeconds = duration_in_seconds;
+    SetStartString(start);
+    SetStopString(stop);
+    Dirty = true;
+    UIModifiedAt = 0;
     return noError;
 }
 
