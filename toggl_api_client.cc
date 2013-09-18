@@ -95,6 +95,12 @@ error User::Push() {
     std::vector<TimeEntry *>dirty;
     CollectDirtyObjects(&dirty);
 
+    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
+    if (dirty.empty()) {
+        logger.debug("Nothing to push.");
+        return noError;
+    }
+
     // Convert the dirty objcets to batch updates JSON
     JSONNODE *c = json_new(JSON_ARRAY);
     for (std::vector<TimeEntry *>::const_iterator it =
@@ -121,7 +127,6 @@ error User::Push() {
     json_free(jc);
     json_delete(c);
 
-    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
     logger.debug(json);
 
     std::string response_body("");
