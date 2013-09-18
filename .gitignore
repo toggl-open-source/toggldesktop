@@ -44,3 +44,5 @@ test.db
 
 # Internal testing data for Toggl
 internal
+
+.DS_Store
