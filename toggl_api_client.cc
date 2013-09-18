@@ -26,8 +26,8 @@
 
 namespace kopsik {
 
-    // const std::string TOGGL_SERVER_URL("https://www.toggl.com");
-    const std::string TOGGL_SERVER_URL("http://localhost:8080");
+    const std::string TOGGL_SERVER_URL("https://www.toggl.com");
+    //const std::string TOGGL_SERVER_URL("http://localhost:8080");
 
 // Start a time entry, mark it as dirty and add to user time entry collection.
 // Do not save here, dirtyness will be handled outside of this module.
