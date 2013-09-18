@@ -72,30 +72,45 @@ TimeEntry *User::RunningTimeEntry() {
     return 0;
 }
 
+bool TimeEntry::NeedsPush() {
+    return (UIModifiedAt > 0) || !ID;
+}
+
 error User::Push() {
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
-    // Build dirty JSON
-    JSONNODE *c = json_new(JSON_ARRAY);
+    // Collect dirty objects
+    std::vector<TimeEntry *>dirty;
     for (std::vector<TimeEntry *>::const_iterator it =
             this->TimeEntries.begin();
             it != this->TimeEntries.end(); it++) {
         TimeEntry *te = *it;
-        if ((te->UIModifiedAt > 0) || (!te->ID)) {
-            // FIXME: build a batch update request
-            JSONNODE *update = json_new(JSON_NODE);
-            json_push_back(update, json_new_a("method", "POST"));
-            json_push_back(update, json_new_a("relative_url",
-                "/api/v8/time_entries"));
-
-            JSONNODE *body = json_new(JSON_NODE);
-            json_set_name(body, "body");
-            json_push_back(body, te->JSON());
-            json_push_back(update, body);
-
-            json_push_back(c, update);
+        if (te->NeedsPush()) {
+            dirty.push_back(te);
         }
+    }
+
+    // Convert the dirty objcets to batch updates JSON
+    JSONNODE *c = json_new(JSON_ARRAY);
+    for (std::vector<TimeEntry *>::const_iterator it =
+            dirty.begin();
+            it != dirty.end(); it++) {
+        TimeEntry *te = *it;
+        JSONNODE *n = te->JSON();
+        json_set_name(n, "time_entry");
+
+        JSONNODE *body = json_new(JSON_NODE);
+        json_set_name(body, "body");
+        json_push_back(body, n);
+
+        JSONNODE *update = json_new(JSON_NODE);
+        json_push_back(update, json_new_a("method", "POST"));
+        json_push_back(update, json_new_a("relative_url",
+            "/api/v8/time_entries"));
+        json_push_back(update, body);
+
+        json_push_back(c, update);
     }
     json_char *jc = json_write_formatted(c);
     std::string json(jc);
@@ -114,7 +129,56 @@ error User::Push() {
         return err;
     }
 
-    // FIXME: load results
+    std::vector<BatchUpdateResult> results;
+    parseResponseArray(response_body, &results);
+    // Iterate through response array, parse response bodies.
+    // Collect errors into a vector.
+    std::vector<error> errors;
+    int response_index = 0;
+    for (std::vector<BatchUpdateResult>::const_iterator it = results.begin();
+            it != results.end();
+            it++) {
+        BatchUpdateResult result = *it;
+
+        std::stringstream ss;
+        ss << "batch update result status " << result.StatusCode
+            << ", body " << result.Body;
+        logger.error(ss.str());
+
+        JSONNODE *n = json_parse(result.Body.c_str());
+        JSONNODE_ITERATOR i = json_begin(n);
+        JSONNODE_ITERATOR e = json_end(n);
+        while (i != e) {
+            json_char *node_name = json_name(*i);
+            if (strcmp(node_name, "data") == 0) {
+                TimeEntry *te = dirty[response_index];
+                poco_assert(te);
+                error err = te->Load(*i);
+                if (err != noError) {
+                    errors.push_back(err);
+                }
+            }
+            ++i;
+        }
+        json_delete(n);
+
+        response_index++;
+    }
+
+    // Collect errors
+    if (!errors.empty()) {
+        for (std::vector<error>::const_iterator it = errors.begin();
+                it != errors.end();
+                it++) {
+            error err = *it;
+            logger.error(err);
+        }
+
+        std::stringstream ss;
+        std::copy(errors.begin(), errors.end(),
+            std::ostream_iterator<std::string>(ss, ". "));
+        return error(ss.str());
+    }
 
     stopwatch.stop();
     std::stringstream ss;
@@ -123,6 +187,38 @@ error User::Push() {
     logger.debug(ss.str());
 
     return noError;
+}
+
+void User::parseResponseArray(std::string response_body,
+        std::vector<BatchUpdateResult> *responses) {
+    poco_assert(responses);
+    JSONNODE *response_array = json_parse(response_body.c_str());
+    JSONNODE_ITERATOR i = json_begin(response_array);
+    JSONNODE_ITERATOR e = json_end(response_array);
+    while (i != e) {
+        BatchUpdateResult result;
+        result.parseResponseJSON(*i);
+        responses->push_back(result);
+        ++i;
+    }
+    json_delete(response_array);
+}
+
+void BatchUpdateResult::parseResponseJSON(JSONNODE *n) {
+    poco_assert(n);
+    this->StatusCode = 0;
+    this->Body = "";
+    JSONNODE_ITERATOR i = json_begin(n);
+    JSONNODE_ITERATOR e = json_end(n);
+    while (i != e) {
+        json_char *node_name = json_name(*i);
+        if (strcmp(node_name, "status") == 0) {
+            this->StatusCode = json_as_int(*i);
+        } else if (strcmp(node_name, "body") == 0) {
+            this->Body = std::string(json_as_string(*i));
+        }
+        ++i;
+    }
 }
 
 error User::requestJSON(std::string method, std::string relative_url,
@@ -192,10 +288,9 @@ error User::requestJSON(std::string method, std::string relative_url,
             << ", Content type: " << response.getContentType()
             << ", Content-Encoding: " << response.get("Content-Encoding");
         logger.debug(response_string.str());
+        logger.debug(*response_body);
 
-        bool statusOK = (response.getStatus() >= 200)
-            && (response.getStatus() < 300);
-        if (!statusOK) {
+        if (!isStatusOK(response.getStatus())) {
             // FIXME: backoff
             return "Data push failed with error: " + *response_body;
         }
@@ -212,6 +307,10 @@ error User::requestJSON(std::string method, std::string relative_url,
         return ex;
     }
     return noError;
+}
+
+bool User::isStatusOK(int status) {
+    return status >= 200 && status < 300;
 }
 
 // FIXME: move code into a GET method
@@ -530,6 +629,7 @@ std::string TimeEntry::String() {
 
 JSONNODE *TimeEntry::JSON() {
     JSONNODE *n = json_new(JSON_NODE);
+    json_set_name(n, "time_entry");
     if (ID > 0) {
         json_push_back(n, json_new_i("id", (json_int_t)ID));
     }
@@ -672,20 +772,19 @@ void User::ClearTimeEntries() {
     this->TimeEntries.clear();
 }
 
-error Workspace::Load(JSONNODE *data) {
-    poco_assert(data);
-
-    JSONNODE_ITERATOR current_node = json_begin(data);
-    JSONNODE_ITERATOR last_node = json_end(data);
-    while (current_node != last_node) {
-        json_char *node_name = json_name(*current_node);
+error Workspace::Load(JSONNODE *n) {
+    poco_assert(n);
+    JSONNODE_ITERATOR i = json_begin(n);
+    JSONNODE_ITERATOR e = json_end(n);
+    while (i != e) {
+        json_char *node_name = json_name(*i);
         error err = noError;
         if (strcmp(node_name, "id") == 0) {
-            this->ID = json_as_int(*current_node);
+            this->ID = json_as_int(*i);
         } else if (strcmp(node_name, "name") == 0) {
-            this->Name = std::string(json_as_string(*current_node));
+            this->Name = std::string(json_as_string(*i));
         }
-        ++current_node;
+        ++i;
     }
     return noError;
 }
@@ -831,9 +930,6 @@ error TimeEntry::Load(std::string json) {
     poco_assert(!json.empty());
     JSONNODE *root = json_parse(json.c_str());
     error err = Load(root);
-    if (err != noError) {
-        this->Dirty = true;
-    }
     json_delete(root);
     return err;
 }
@@ -841,12 +937,21 @@ error TimeEntry::Load(std::string json) {
 error TimeEntry::Load(JSONNODE *data) {
     poco_assert(data);
 
+    json_char *jc = json_write_formatted(data);
+    std::string json(jc);
+    json_free(jc);
+    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
+    logger.debug("Time entry is loading this JSON: " + json);
+
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
         json_char *node_name = json_name(*current_node);
         if (strcmp(node_name, "id") == 0) {
             this->ID = json_as_int(*current_node);
+            std::stringstream ss;
+            ss << "Set time entry ID " << this->String() + " to " << this->ID;
+            logger.debug(ss.str());
         } else if (strcmp(node_name, "description") == 0) {
             this->Description = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "guid") == 0) {
@@ -877,6 +982,9 @@ error TimeEntry::Load(JSONNODE *data) {
         }
         ++current_node;
     }
+
+    Dirty = true;
+
     return noError;
 }
 

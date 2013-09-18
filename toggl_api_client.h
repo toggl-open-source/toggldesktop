@@ -20,6 +20,26 @@
 
 namespace kopsik {
 
+    class BatchUpdate {
+    public:
+        BatchUpdate() : Method(""), RelativeUrl(""), Body("") {
+        }
+        std::string Method;
+        std::string RelativeUrl;
+        std::string Body;
+    };
+
+    class BatchUpdateResult {
+    public:
+        BatchUpdateResult() : StatusCode(0), Body("") {
+        }
+        int StatusCode;
+        std::string Body;
+
+        void parseResponseJSON(JSONNODE *n);
+        void parseResponseJSONBody(std::string body);
+    };
+
     class Workspace {
     public:
         Workspace() : LocalID(0), ID(0), Name(""), UID(0), Dirty(false) {}
@@ -143,6 +163,8 @@ namespace kopsik {
         std::string String();
         JSONNODE *JSON();
 
+        bool NeedsPush();
+
     private:
         error loadTags(JSONNODE *list);
     };
@@ -211,6 +233,9 @@ namespace kopsik {
 
         error requestJSON(std::string method, std::string relative_url,
                 std::string json, std::string *response_body);
+        bool isStatusOK(int status);
+        void parseResponseArray(std::string response_body,
+            std::vector<BatchUpdateResult> *responses);
     };
 }  // namespace kopsik
 
