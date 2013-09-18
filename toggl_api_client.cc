@@ -115,9 +115,17 @@ error User::Push() {
         json_push_back(body, n);
 
         JSONNODE *update = json_new(JSON_NODE);
-        json_push_back(update, json_new_a("method", "POST"));
-        json_push_back(update, json_new_a("relative_url",
-            "/api/v8/time_entries"));
+        if (!te->ID) {
+            json_push_back(update, json_new_a("method", "POST"));
+            json_push_back(update, json_new_a("relative_url",
+                "/api/v8/time_entries"));
+        } else {
+            std::stringstream url;
+            url << "/api/v8/time_entries/" << te->ID;
+            json_push_back(update, json_new_a("method", "PUT"));
+            json_push_back(update, json_new_a("relative_url",
+                url.str().c_str()));
+        }
         json_push_back(update, body);
 
         json_push_back(c, update);
