@@ -12,6 +12,8 @@
 		74B7831417EA531800FA08C8 /* toggl_api_client.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B7830F17EA531800FA08C8 /* toggl_api_client.cc */; };
 		74B7831517EA531800FA08C8 /* toggl_api_client.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B7831017EA531800FA08C8 /* toggl_api_client.h */; };
 		74B7831617EA531800FA08C8 /* types.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B7831117EA531800FA08C8 /* types.h */; };
+		74B7831A17EA5CD200FA08C8 /* kopsik.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B7831917EA5CD200FA08C8 /* kopsik.h */; };
+		74B7832017EA616000FA08C8 /* api.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B7831F17EA616000FA08C8 /* api.cc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +23,8 @@
 		74B7830F17EA531800FA08C8 /* toggl_api_client.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = toggl_api_client.cc; path = ../../../toggl_api_client.cc; sourceTree = "<group>"; };
 		74B7831017EA531800FA08C8 /* toggl_api_client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = toggl_api_client.h; path = ../../../toggl_api_client.h; sourceTree = "<group>"; };
 		74B7831117EA531800FA08C8 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = types.h; path = ../../../types.h; sourceTree = "<group>"; };
+		74B7831917EA5CD200FA08C8 /* kopsik.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kopsik.h; path = ../../../include/kopsik.h; sourceTree = "<group>"; };
+		74B7831F17EA616000FA08C8 /* api.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = api.cc; path = ../../../api.cc; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +41,8 @@
 		74B782FD17EA52D600FA08C8 = {
 			isa = PBXGroup;
 			children = (
+				74B7831F17EA616000FA08C8 /* api.cc */,
+				74B7831917EA5CD200FA08C8 /* kopsik.h */,
 				74B7830D17EA531800FA08C8 /* database.cc */,
 				74B7830E17EA531800FA08C8 /* database.h */,
 				74B7830F17EA531800FA08C8 /* toggl_api_client.cc */,
@@ -64,6 +70,7 @@
 				74B7831317EA531800FA08C8 /* database.h in Headers */,
 				74B7831517EA531800FA08C8 /* toggl_api_client.h in Headers */,
 				74B7831617EA531800FA08C8 /* types.h in Headers */,
+				74B7831A17EA5CD200FA08C8 /* kopsik.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,6 +127,7 @@
 			files = (
 				74B7831217EA531800FA08C8 /* database.cc in Sources */,
 				74B7831417EA531800FA08C8 /* toggl_api_client.cc in Sources */,
+				74B7832017EA616000FA08C8 /* api.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
