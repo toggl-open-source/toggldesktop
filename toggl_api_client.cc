@@ -84,8 +84,16 @@ error User::Push() {
         TimeEntry *te = *it;
         if ((te->UIModifiedAt > 0) || (!te->ID)) {
             // FIXME: build a batch update request
-            JSONNODE *node = te->JSON();
-            json_push_back(c, node);
+            JSONNODE *update = json_new(JSON_NODE);
+            json_push_back(update, json_new_a("method", "POST"));
+            json_push_back(update, json_new_a("relative_url", "/api/v8/time_entries"));
+
+            JSONNODE *body = json_new(JSON_NODE);
+            json_set_name(body, "body");
+            json_push_back(body, te->JSON());
+            json_push_back(update, body);
+
+            json_push_back(c, update);
         }
     }
     json_char *jc = json_write_formatted(c);
@@ -522,7 +530,6 @@ std::string TimeEntry::String() {
 
 JSONNODE *TimeEntry::JSON() {
     JSONNODE *n = json_new(JSON_NODE);
-    json_set_name(n, "time_entry");
     if (ID > 0) {
         json_push_back(n, json_new_i("id", (json_int_t)ID));
     }
@@ -546,9 +553,7 @@ JSONNODE *TimeEntry::JSON() {
     json_push_back(n, json_new_b("duronly", DurOnly));
     json_push_back(n, json_new_i("ui_modified_at", (json_int_t)UIModifiedAt));
 
-    JSONNODE *wrapper = json_new(JSON_NODE);
-    json_push_back(wrapper, n);
-    return wrapper;
+    return n;
 }
 
 // FIXME: use map instead?
