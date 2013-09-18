@@ -33,7 +33,7 @@ namespace kopsik {
     public:
         BatchUpdateResult() : StatusCode(0), Body("") {
         }
-        int StatusCode;
+        Poco::Int64 StatusCode;
         std::string Body;
 
         void parseResponseJSON(JSONNODE *n);
