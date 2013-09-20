@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		74033C7C17EC1C1100CA53D3 /* libjson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C7B17EC1C1100CA53D3 /* libjson.a */; };
+		74033C8417EC1C6200CA53D3 /* libPocoCrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C7D17EC1C6200CA53D3 /* libPocoCrypto.a */; };
+		74033C8517EC1C6200CA53D3 /* libPocoData.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C7E17EC1C6200CA53D3 /* libPocoData.a */; };
+		74033C8617EC1C6200CA53D3 /* libPocoDataSQLite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C7F17EC1C6200CA53D3 /* libPocoDataSQLite.a */; };
+		74033C8717EC1C6200CA53D3 /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C8017EC1C6200CA53D3 /* libPocoFoundation.a */; };
+		74033C8817EC1C6200CA53D3 /* libPocoNet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C8117EC1C6200CA53D3 /* libPocoNet.a */; };
+		74033C8917EC1C6200CA53D3 /* libPocoNetSSL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C8217EC1C6200CA53D3 /* libPocoNetSSL.a */; };
+		74033C8A17EC1C6200CA53D3 /* libPocoUtil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C8317EC1C6200CA53D3 /* libPocoUtil.a */; };
+		74033C9117EC1D3600CA53D3 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C8F17EC1D3600CA53D3 /* libcrypto.a */; };
+		74033C9217EC1D3600CA53D3 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C9017EC1D3600CA53D3 /* libssl.a */; };
+		74033C9C17EC1EB300CA53D3 /* libPocoXML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C9317EC1D6F00CA53D3 /* libPocoXML.a */; };
 		74B7831217EA531800FA08C8 /* database.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B7830D17EA531800FA08C8 /* database.cc */; };
 		74B7831317EA531800FA08C8 /* database.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B7830E17EA531800FA08C8 /* database.h */; };
 		74B7831417EA531800FA08C8 /* toggl_api_client.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B7830F17EA531800FA08C8 /* toggl_api_client.cc */; };
@@ -17,6 +28,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		74033C7B17EC1C1100CA53D3 /* libjson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjson.a; path = ../../../third_party/libjson/libjson.a; sourceTree = "<group>"; };
+		74033C7D17EC1C6200CA53D3 /* libPocoCrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoCrypto.a; path = "../../../third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoCrypto.a"; sourceTree = "<group>"; };
+		74033C7E17EC1C6200CA53D3 /* libPocoData.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoData.a; path = "../../../third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoData.a"; sourceTree = "<group>"; };
+		74033C7F17EC1C6200CA53D3 /* libPocoDataSQLite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoDataSQLite.a; path = "../../../third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoDataSQLite.a"; sourceTree = "<group>"; };
+		74033C8017EC1C6200CA53D3 /* libPocoFoundation.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoFoundation.a; path = "../../../third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoFoundation.a"; sourceTree = "<group>"; };
+		74033C8117EC1C6200CA53D3 /* libPocoNet.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNet.a; path = "../../../third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoNet.a"; sourceTree = "<group>"; };
+		74033C8217EC1C6200CA53D3 /* libPocoNetSSL.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNetSSL.a; path = "../../../third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoNetSSL.a"; sourceTree = "<group>"; };
+		74033C8317EC1C6200CA53D3 /* libPocoUtil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoUtil.a; path = "../../../third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoUtil.a"; sourceTree = "<group>"; };
+		74033C8B17EC1CD200CA53D3 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
+		74033C8F17EC1D3600CA53D3 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../../third_party/openssl-1.0.1e/libcrypto.a"; sourceTree = "<group>"; };
+		74033C9017EC1D3600CA53D3 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../../third_party/openssl-1.0.1e/libssl.a"; sourceTree = "<group>"; };
+		74033C9317EC1D6F00CA53D3 /* libPocoXML.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoXML.a; path = "../../../third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoXML.a"; sourceTree = "<group>"; };
+		74033C9A17EC1E6D00CA53D3 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		74B7830617EA52D600FA08C8 /* libkopsik.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libkopsik.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		74B7830D17EA531800FA08C8 /* database.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = database.cc; path = ../../../database.cc; sourceTree = "<group>"; };
 		74B7830E17EA531800FA08C8 /* database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = database.h; path = ../../../database.h; sourceTree = "<group>"; };
@@ -32,6 +56,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74033C8417EC1C6200CA53D3 /* libPocoCrypto.a in Frameworks */,
+				74033C8517EC1C6200CA53D3 /* libPocoData.a in Frameworks */,
+				74033C8617EC1C6200CA53D3 /* libPocoDataSQLite.a in Frameworks */,
+				74033C8717EC1C6200CA53D3 /* libPocoFoundation.a in Frameworks */,
+				74033C8817EC1C6200CA53D3 /* libPocoNet.a in Frameworks */,
+				74033C8917EC1C6200CA53D3 /* libPocoNetSSL.a in Frameworks */,
+				74033C8A17EC1C6200CA53D3 /* libPocoUtil.a in Frameworks */,
+				74033C9C17EC1EB300CA53D3 /* libPocoXML.a in Frameworks */,
+				74033C9117EC1D3600CA53D3 /* libcrypto.a in Frameworks */,
+				74033C9217EC1D3600CA53D3 /* libssl.a in Frameworks */,
+				74033C7C17EC1C1100CA53D3 /* libjson.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -41,6 +76,19 @@
 		74B782FD17EA52D600FA08C8 = {
 			isa = PBXGroup;
 			children = (
+				74033C9A17EC1E6D00CA53D3 /* libstdc++.dylib */,
+				74033C9317EC1D6F00CA53D3 /* libPocoXML.a */,
+				74033C8F17EC1D3600CA53D3 /* libcrypto.a */,
+				74033C9017EC1D3600CA53D3 /* libssl.a */,
+				74033C8B17EC1CD200CA53D3 /* libc++.dylib */,
+				74033C7D17EC1C6200CA53D3 /* libPocoCrypto.a */,
+				74033C7E17EC1C6200CA53D3 /* libPocoData.a */,
+				74033C7F17EC1C6200CA53D3 /* libPocoDataSQLite.a */,
+				74033C8017EC1C6200CA53D3 /* libPocoFoundation.a */,
+				74033C8117EC1C6200CA53D3 /* libPocoNet.a */,
+				74033C8217EC1C6200CA53D3 /* libPocoNetSSL.a */,
+				74033C8317EC1C6200CA53D3 /* libPocoUtil.a */,
+				74033C7B17EC1C1100CA53D3 /* libjson.a */,
 				74B7831F17EA616000FA08C8 /* api.cc */,
 				74B7831917EA5CD200FA08C8 /* kopsik.h */,
 				74B7830D17EA531800FA08C8 /* database.cc */,
@@ -160,6 +208,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -186,6 +235,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
 			};
@@ -204,6 +254,12 @@
 					"../../../third_party/poco-1.4.6p1-all/NetSSL_OpenSSL/include/",
 					"../../../third_party/poco-1.4.6p1-all/Crypto/include/",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../third_party/libjson\"",
+					"\"$(SRCROOT)/../../../third_party/poco-1.4.6p1-all/lib/Darwin/x86_64\"",
+					"\"$(SRCROOT)/../../../third_party/openssl-1.0.1e\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -220,6 +276,12 @@
 					"../../../third_party/poco-1.4.6p1-all/Net/include/",
 					"../../../third_party/poco-1.4.6p1-all/NetSSL_OpenSSL/include/",
 					"../../../third_party/poco-1.4.6p1-all/Crypto/include/",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../third_party/libjson\"",
+					"\"$(SRCROOT)/../../../third_party/poco-1.4.6p1-all/lib/Darwin/x86_64\"",
+					"\"$(SRCROOT)/../../../third_party/openssl-1.0.1e\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -244,6 +306,7 @@
 				74B7830C17EA52D600FA08C8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
