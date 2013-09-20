@@ -204,6 +204,7 @@ namespace kopsik {
         ASSERT_EQ(Poco::UInt64(1047), user.ID);
         ASSERT_EQ(Poco::UInt64(123456788), user.DefaultWID);
         ASSERT_EQ("30eb0ae954b536d2f6628f7fec47beb6", user.APIToken);
+        ASSERT_EQ("John Smith", user.Fullname);
 
         // Projects
         ASSERT_EQ(uint(2), user.Projects.size());

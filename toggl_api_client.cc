@@ -420,6 +420,8 @@ error User::Load(JSONNODE *data) {
             this->DefaultWID = json_as_int(*current_node);
         } else if (strcmp(node_name, "api_token") == 0) {
             this->APIToken = std::string(json_as_string(*current_node));
+        } else if (strcmp(node_name, "fullname") == 0) {
+            this->Fullname = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "projects") == 0) {
             err = this->loadProjects(*current_node);
         } else if (strcmp(node_name, "tags") == 0) {

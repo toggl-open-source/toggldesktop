@@ -13,13 +13,30 @@ extern "C" {
 
 #define KOPSIK_EXPORT
 
-KOPSIK_EXPORT void kopsik_version (int *major, int *minor, int *patch);
-
 struct HTimeEntry;
 typedef struct HTimeEntry HTimeEntry;
 
-KOPSIK_EXPORT void *kopsik_ctx_new (void);
-KOPSIK_EXPORT void kopsik_ctx_shutdown (void *context);
+struct HUser {
+  const char *fullname;
+};
+
+typedef struct HUser HUser;
+
+typedef const char * kopsik_error;
+
+#define NO_ERROR kopsik_error("")
+
+KOPSIK_EXPORT kopsik_error kopsik_version (int *major, int *minor, int *patch);
+
+KOPSIK_EXPORT kopsik_error kopsik_current_user (HUser *out);
+
+KOPSIK_EXPORT kopsik_error kopsik_time_entry_start (HTimeEntry *out);
+
+KOPSIK_EXPORT kopsik_error kopsik_time_entry_stop (HTimeEntry *out);
+
+KOPSIK_EXPORT kopsik_error kopsik_time_entry_running (HTimeEntry *out);
+
+KOPSIK_EXPORT kopsik_error kopsik_time_entry_list (HTimeEntry *out[]);
 
 #undef KOPSIK_EXPORT
 

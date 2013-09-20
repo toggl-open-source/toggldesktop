@@ -172,7 +172,7 @@ namespace kopsik {
     class User {
     public:
         User() : LocalID(0), ID(0), APIToken(""), DefaultWID(0), Since(0),
-            Dirty(false) {}
+            Dirty(false), Fullname("") {}
         ~User() {
             ClearWorkspaces();
             ClearClients();
@@ -189,6 +189,7 @@ namespace kopsik {
         // Unix timestamp of the user data; returned from API
         Poco::UInt64 Since;
         bool Dirty;
+        std::string Fullname;
 
         std::vector<Workspace *> Workspaces;
         std::vector<Client *> Clients;

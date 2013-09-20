@@ -182,13 +182,14 @@ error Database::Load(Poco::UInt64 UID, User *model, bool with_related_data) {
     Poco::Logger &logger = Poco::Logger::get("database");
 
     try {
-        *session << "select local_id, id, api_token, default_wid, since "
+        *session << "select local_id, id, api_token, default_wid, since, fullname "
             "from users where id = :id limit 1",
             Poco::Data::into(model->LocalID),
             Poco::Data::into(model->ID),
             Poco::Data::into(model->APIToken),
             Poco::Data::into(model->DefaultWID),
             Poco::Data::into(model->Since),
+            Poco::Data::into(model->Fullname),
             Poco::Data::use(UID),
             Poco::Data::now;
         error err = last_error();
@@ -953,12 +954,13 @@ error Database::Save(User *model, bool with_related_data) {
                 logger.debug("Updating user " + model->String());
                 *session << "update users set "
                     "api_token = :api_token, default_wid = :default_wid, "
-                    "since = :since, id = :id "
+                    "since = :since, id = :id, fullname = :fullname "
                     "where local_id = :local_id",
                     Poco::Data::use(model->APIToken),
                     Poco::Data::use(model->DefaultWID),
                     Poco::Data::use(model->Since),
                     Poco::Data::use(model->ID),
+                    Poco::Data::use(model->Fullname),
                     Poco::Data::use(model->LocalID),
                     Poco::Data::now;
                 error err = last_error();
@@ -968,12 +970,13 @@ error Database::Save(User *model, bool with_related_data) {
             } else {
                 logger.debug("Inserting user " + model->String());
                 *session << "insert into users("
-                    "id, api_token, default_wid, since) "
-                    "values(:id, :api_token, :default_wid, :since)",
+                    "id, api_token, default_wid, since, fullname) "
+                    "values(:id, :api_token, :default_wid, :since, :fullname)",
                     Poco::Data::use(model->ID),
                     Poco::Data::use(model->APIToken),
                     Poco::Data::use(model->DefaultWID),
                     Poco::Data::use(model->Since),
+                    Poco::Data::use(model->Fullname),
                     Poco::Data::now;
                 error err = last_error();
                 if (err != noError) {
@@ -1068,7 +1071,8 @@ error Database::initialize_tables() {
         "id integer not null, "
         "api_token varchar not null, "
         "default_wid integer, "
-        "since integer"
+        "since integer, "
+        "fullname varchar "
         "); "
         "CREATE UNIQUE INDEX id_users_id ON users (id);");
     if (err != noError) {
