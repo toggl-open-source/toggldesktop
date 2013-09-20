@@ -17,16 +17,16 @@ struct HTimeEntry;
 typedef struct HTimeEntry HTimeEntry;
 
 struct HUser {
-  const char *fullname;
+  const char *Fullname;
 };
 
 typedef struct HUser HUser;
 
 typedef const char * kopsik_error;
 
-#define NO_ERROR kopsik_error("")
+#define NO_ERROR ""
 
-KOPSIK_EXPORT kopsik_error kopsik_version (int *major, int *minor, int *patch);
+KOPSIK_EXPORT void kopsik_version (int *major, int *minor, int *patch);
 
 KOPSIK_EXPORT kopsik_error kopsik_current_user (HUser *out);
 
