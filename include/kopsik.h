@@ -22,21 +22,15 @@ struct HUser {
 
 typedef struct HUser HUser;
 
-typedef const char * kopsik_error;
-
-#define NO_ERROR ""
-
 KOPSIK_EXPORT void kopsik_version (int *major, int *minor, int *patch);
+KOPSIK_EXPORT int kopsik_current_user (char *errmsg, unsigned int errlen, HUser *out);
 
-KOPSIK_EXPORT kopsik_error kopsik_current_user (HUser *out);
-
-KOPSIK_EXPORT kopsik_error kopsik_time_entry_start (HTimeEntry *out);
-
-KOPSIK_EXPORT kopsik_error kopsik_time_entry_stop (HTimeEntry *out);
-
-KOPSIK_EXPORT kopsik_error kopsik_time_entry_running (HTimeEntry *out);
-
-KOPSIK_EXPORT kopsik_error kopsik_time_entry_list (HTimeEntry *out[]);
+/*
+KOPSIK_EXPORT int kopsik_time_entry_start (char *errmsg, unsigned int errlen, HTimeEntry *out);
+KOPSIK_EXPORT int kopsik_time_entry_stop (char *errmsg, unsigned int errlen, HTimeEntry *out);
+KOPSIK_EXPORT int kopsik_time_entry_running (char *errmsg, unsigned int errlen, HTimeEntry *out);
+KOPSIK_EXPORT int kopsik_time_entry_list (char *errmsg, unsigned int errlen, HTimeEntry *out[]);
+*/
 
 #undef KOPSIK_EXPORT
 
