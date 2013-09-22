@@ -167,6 +167,9 @@ namespace kopsik {
 
     private:
         error loadTags(JSONNODE *list);
+
+        std::time_t Parse8601(std::string iso_8601_formatted_date);
+        std::string Format8601(std::time_t date);
     };
 
     class User {

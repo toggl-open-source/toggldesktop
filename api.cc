@@ -3,7 +3,6 @@
 
 #include "include/kopsik.h"
 #include "database.h"
-#include "toggl_api_client.h"
 
 void kopsik_version (int *major, int *minor, int *patch) {
 	*major = 0;
@@ -18,8 +17,9 @@ int kopsik_current_user (char *errmsg, unsigned int errlen, HUser *out) {
       return 1;
     }
 
-    kopsik::Database db("kopsik.db");
     kopsik::User user;
+
+    kopsik::Database db("kopsik.db");
 
     kopsik::error err = db.Load(apiToken, &user, true);
     if (err != kopsik::noError) {

@@ -15,7 +15,9 @@
 #include "Poco/URI.h"
 #include "Poco/DateTimeParser.h"
 #include "Poco/DateTime.h"
+#include "Poco/DateTimeFormatter.h"
 #include "Poco/Net/Context.h"
+#include "Poco/Net/NameValueCollection.h"
 #include "Poco/Net/HTTPRequest.h"
 #include "Poco/Net/HTTPResponse.h"
 #include "Poco/Net/HTTPMessage.h"
@@ -897,7 +899,7 @@ error Tag::Load(JSONNODE *data) {
     return noError;
 }
 
-std::time_t Parse8601(std::string iso_8601_formatted_date) {
+std::time_t TimeEntry::Parse8601(std::string iso_8601_formatted_date) {
     int tzd;
     Poco::DateTime dt;
     Poco::DateTimeParser::parse(Poco::DateTimeFormat::ISO8601_FORMAT,
@@ -906,7 +908,7 @@ std::time_t Parse8601(std::string iso_8601_formatted_date) {
     return ts.epochTime();
 }
 
-std::string Format8601(std::time_t date) {
+std::string TimeEntry::Format8601(std::time_t date) {
     Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
     return Poco::DateTimeFormatter::format(ts,
         Poco::DateTimeFormat::ISO8601_FORMAT);
