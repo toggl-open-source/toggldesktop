@@ -7,7 +7,7 @@ openssldir=third_party/openssl-1.0.1e
 GTEST_ROOT=third_party/googletest-read-only
 jsondir=third_party/libjson
 
-main=kopsik
+main=toggl
 
 ifeq ($(uname), Darwin)
 pocolib=$(pocodir)/lib/Darwin/x86_64/
@@ -97,20 +97,21 @@ test_objs=$(test_srcs:.c=.o)
 default: command_line_client
 
 clean:
-	rm -f kopsik
+	rm -f $(main)
+	rm -f $(main)_test
 
 command_line_client:
 	$(cxx) $(cflags) -O2 -DNDEBUG -o $(main) $(objs) $(libs) && strip $(main)
 
 test:
-	$(cxx) $(cflags) -DNDEBUG -o kopsik_test $(test_objs) $(libs)
-	./kopsik_test
+	$(cxx) $(cflags) -DNDEBUG -o $(main)_test $(test_objs) $(libs)
+	./$(main)_test
 
 pull:
-	./kopsik pull
+	./$(main) pull
 
 push:
-	./kopsik push
+	./$(main) push
 
 lint:
 	./third_party/cpplint/cpplint.py *.cc *.h
