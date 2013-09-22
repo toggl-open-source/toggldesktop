@@ -13,8 +13,8 @@
 *.a
 
 build
-kopsik
-kopsik_test
+toggl_test
+toggl
 
 third_party/openssl-1.0.1e/Makefile*
 third_party/openssl-1.0.1e/test/*test
