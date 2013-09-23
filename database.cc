@@ -108,15 +108,13 @@ error Database::deleteFromTable(std::string table_name, Poco::Int64 local_id) {
     poco_assert(!table_name.empty());
     poco_assert(local_id);
     try {
-        if (local_id != 0) {
-            *session << "delete from " + table_name +
-                " where local_id = :local_id",
-                Poco::Data::use(local_id),
-                Poco::Data::now;
-            error err = last_error();
-            if (err != noError) {
-                return err;
-            }
+        *session << "delete from " + table_name +
+            " where local_id = :local_id",
+            Poco::Data::use(local_id),
+            Poco::Data::now;
+        error err = last_error();
+        if (err != noError) {
+            return err;
         }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -289,30 +287,38 @@ error Database::loadWorkspaces(Poco::UInt64 UID,
 
     list->clear();
 
-    Poco::Data::Statement select(*session);
-    select << "SELECT local_id, id, uid, name "
-        "FROM workspaces WHERE uid = :uid "
-        "ORDER BY name",
-        Poco::Data::use(UID);
-    error err = last_error();
-    if (err != noError) {
-        return err;
-    }
-    Poco::Data::RecordSet rs(select);
-    while (!select.done()) {
-        select.execute();
-        bool more = rs.moveFirst();
-        while (more) {
-            Workspace *model = new Workspace();
-            model->LocalID = rs[0].convert<Poco::Int64>();
-            model->ID = rs[1].convert<Poco::UInt64>();
-            model->UID = rs[2].convert<Poco::UInt64>();
-            model->Name = rs[3].convert<std::string>();
-            list->push_back(model);
-            more = rs.moveNext();
+    try {
+        Poco::Data::Statement select(*session);
+        select << "SELECT local_id, id, uid, name "
+            "FROM workspaces WHERE uid = :uid "
+            "ORDER BY name",
+            Poco::Data::use(UID);
+        error err = last_error();
+        if (err != noError) {
+            return err;
         }
+        Poco::Data::RecordSet rs(select);
+        while (!select.done()) {
+            select.execute();
+            bool more = rs.moveFirst();
+            while (more) {
+                Workspace *model = new Workspace();
+                model->LocalID = rs[0].convert<Poco::Int64>();
+                model->ID = rs[1].convert<Poco::UInt64>();
+                model->UID = rs[2].convert<Poco::UInt64>();
+                model->Name = rs[3].convert<std::string>();
+                list->push_back(model);
+                more = rs.moveNext();
+            }
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
     }
-    return noError;
+    return last_error();
 }
 
 error Database::loadClients(Poco::UInt64 UID, std::vector<Client *> *list) {
@@ -321,33 +327,41 @@ error Database::loadClients(Poco::UInt64 UID, std::vector<Client *> *list) {
 
     list->clear();
 
-    Poco::Data::Statement select(*session);
-    select << "SELECT local_id, id, uid, name, guid, wid "
-        "FROM clients WHERE uid = :uid "
-        "ORDER BY name",
-        Poco::Data::use(UID);
+    try {
+        Poco::Data::Statement select(*session);
+        select << "SELECT local_id, id, uid, name, guid, wid "
+            "FROM clients WHERE uid = :uid "
+            "ORDER BY name",
+            Poco::Data::use(UID);
 
-    error err = last_error();
-    if (err != noError) {
-        return err;
-    }
-    Poco::Data::RecordSet rs(select);
-    while (!select.done()) {
-        select.execute();
-        bool more = rs.moveFirst();
-        while (more) {
-            Client *model = new Client();
-            model->LocalID = rs[0].convert<Poco::Int64>();
-            model->ID = rs[1].convert<Poco::UInt64>();
-            model->UID = rs[2].convert<Poco::UInt64>();
-            model->Name = rs[3].convert<std::string>();
-            model->GUID = rs[4].convert<std::string>();
-            model->WID = rs[5].convert<Poco::UInt64>();
-            list->push_back(model);
-            more = rs.moveNext();
+        error err = last_error();
+        if (err != noError) {
+            return err;
         }
+        Poco::Data::RecordSet rs(select);
+        while (!select.done()) {
+            select.execute();
+            bool more = rs.moveFirst();
+            while (more) {
+                Client *model = new Client();
+                model->LocalID = rs[0].convert<Poco::Int64>();
+                model->ID = rs[1].convert<Poco::UInt64>();
+                model->UID = rs[2].convert<Poco::UInt64>();
+                model->Name = rs[3].convert<std::string>();
+                model->GUID = rs[4].convert<std::string>();
+                model->WID = rs[5].convert<Poco::UInt64>();
+                list->push_back(model);
+                more = rs.moveNext();
+            }
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
     }
-    return noError;
+    return last_error();
 }
 
 error Database::loadProjects(Poco::UInt64 UID, std::vector<Project *> *list) {
@@ -356,32 +370,40 @@ error Database::loadProjects(Poco::UInt64 UID, std::vector<Project *> *list) {
 
     list->clear();
 
-    Poco::Data::Statement select(*session);
-    select << "SELECT local_id, id, uid, name, guid, wid "
-        "FROM projects WHERE uid = :uid "
-        "ORDER BY name",
-        Poco::Data::use(UID);
-    error err = last_error();
-    if (err != noError) {
-        return err;
-    }
-    Poco::Data::RecordSet rs(select);
-    while (!select.done()) {
-        select.execute();
-        bool more = rs.moveFirst();
-        while (more) {
-            Project *model = new Project();
-            model->LocalID = rs[0].convert<Poco::Int64>();
-            model->ID = rs[1].convert<Poco::UInt64>();
-            model->UID = rs[2].convert<Poco::UInt64>();
-            model->Name = rs[3].convert<std::string>();
-            model->GUID = rs[4].convert<std::string>();
-            model->WID = rs[5].convert<Poco::UInt64>();
-            list->push_back(model);
-            more = rs.moveNext();
+    try {
+        Poco::Data::Statement select(*session);
+        select << "SELECT local_id, id, uid, name, guid, wid "
+            "FROM projects WHERE uid = :uid "
+            "ORDER BY name",
+            Poco::Data::use(UID);
+        error err = last_error();
+        if (err != noError) {
+            return err;
         }
+        Poco::Data::RecordSet rs(select);
+        while (!select.done()) {
+            select.execute();
+            bool more = rs.moveFirst();
+            while (more) {
+                Project *model = new Project();
+                model->LocalID = rs[0].convert<Poco::Int64>();
+                model->ID = rs[1].convert<Poco::UInt64>();
+                model->UID = rs[2].convert<Poco::UInt64>();
+                model->Name = rs[3].convert<std::string>();
+                model->GUID = rs[4].convert<std::string>();
+                model->WID = rs[5].convert<Poco::UInt64>();
+                list->push_back(model);
+                more = rs.moveNext();
+            }
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
     }
-    return noError;
+    return last_error();
 }
 
 error Database::loadTasks(Poco::UInt64 UID, std::vector<Task *> *list) {
@@ -390,32 +412,40 @@ error Database::loadTasks(Poco::UInt64 UID, std::vector<Task *> *list) {
 
     list->clear();
 
-    Poco::Data::Statement select(*session);
-    select << "SELECT local_id, id, uid, name, wid, pid "
-        "FROM tasks WHERE uid = :uid "
-        "ORDER BY name",
-        Poco::Data::use(UID);
-    error err = last_error();
-    if (err != noError) {
-        return err;
-    }
-    Poco::Data::RecordSet rs(select);
-    while (!select.done()) {
-        select.execute();
-        bool more = rs.moveFirst();
-        while (more) {
-            Task *model = new Task();
-            model->LocalID = rs[0].convert<Poco::Int64>();
-            model->ID = rs[1].convert<Poco::UInt64>();
-            model->UID = rs[2].convert<Poco::UInt64>();
-            model->Name = rs[3].convert<std::string>();
-            model->WID = rs[4].convert<Poco::UInt64>();
-            model->PID = rs[5].convert<Poco::UInt64>();
-            list->push_back(model);
-            more = rs.moveNext();
+    try {
+        Poco::Data::Statement select(*session);
+        select << "SELECT local_id, id, uid, name, wid, pid "
+            "FROM tasks WHERE uid = :uid "
+            "ORDER BY name",
+            Poco::Data::use(UID);
+        error err = last_error();
+        if (err != noError) {
+            return err;
         }
+        Poco::Data::RecordSet rs(select);
+        while (!select.done()) {
+            select.execute();
+            bool more = rs.moveFirst();
+            while (more) {
+                Task *model = new Task();
+                model->LocalID = rs[0].convert<Poco::Int64>();
+                model->ID = rs[1].convert<Poco::UInt64>();
+                model->UID = rs[2].convert<Poco::UInt64>();
+                model->Name = rs[3].convert<std::string>();
+                model->WID = rs[4].convert<Poco::UInt64>();
+                model->PID = rs[5].convert<Poco::UInt64>();
+                list->push_back(model);
+                more = rs.moveNext();
+            }
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
     }
-    return noError;
+    return last_error();
 }
 
 error Database::loadTags(Poco::UInt64 UID, std::vector<Tag *> *list) {
@@ -424,32 +454,40 @@ error Database::loadTags(Poco::UInt64 UID, std::vector<Tag *> *list) {
 
     list->clear();
 
-    Poco::Data::Statement select(*session);
-    select << "SELECT local_id, id, uid, name, wid, guid "
-        "FROM tags WHERE uid = :uid "
-        "ORDER BY name",
-        Poco::Data::use(UID);
-    error err = last_error();
-    if (err != noError) {
-        return err;
-    }
-    Poco::Data::RecordSet rs(select);
-    while (!select.done()) {
-        select.execute();
-        bool more = rs.moveFirst();
-        while (more) {
-            Tag *model = new Tag();
-            model->LocalID = rs[0].convert<Poco::Int64>();
-            model->ID = rs[1].convert<Poco::UInt64>();
-            model->UID = rs[2].convert<Poco::UInt64>();
-            model->Name = rs[3].convert<std::string>();
-            model->WID = rs[4].convert<Poco::UInt64>();
-            model->GUID = rs[5].convert<std::string>();
-            list->push_back(model);
-            more = rs.moveNext();
+    try {
+        Poco::Data::Statement select(*session);
+        select << "SELECT local_id, id, uid, name, wid, guid "
+            "FROM tags WHERE uid = :uid "
+            "ORDER BY name",
+            Poco::Data::use(UID);
+        error err = last_error();
+        if (err != noError) {
+            return err;
         }
+        Poco::Data::RecordSet rs(select);
+        while (!select.done()) {
+            select.execute();
+            bool more = rs.moveFirst();
+            while (more) {
+                Tag *model = new Tag();
+                model->LocalID = rs[0].convert<Poco::Int64>();
+                model->ID = rs[1].convert<Poco::UInt64>();
+                model->UID = rs[2].convert<Poco::UInt64>();
+                model->Name = rs[3].convert<std::string>();
+                model->WID = rs[4].convert<Poco::UInt64>();
+                model->GUID = rs[5].convert<std::string>();
+                list->push_back(model);
+                more = rs.moveNext();
+            }
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
     }
-    return noError;
+    return last_error();
 }
 
 error Database::loadTimeEntries(Poco::UInt64 UID,
@@ -459,47 +497,64 @@ error Database::loadTimeEntries(Poco::UInt64 UID,
 
     list->clear();
 
-    Poco::Data::Statement select(*session);
-    select << "SELECT local_id, id, uid, description, wid, guid, pid, "
-        "tid, billable, duronly, ui_modified_at, start, stop, "
-        "duration, tags "
-        "FROM time_entries WHERE uid = :uid "
-        "ORDER BY start DESC",
-        Poco::Data::use(UID);
-    error err = last_error();
-    if (err != noError) {
-        return err;
+    try {
+        Poco::Data::Statement select(*session);
+        select << "SELECT local_id, id, uid, description, wid, guid, pid, "
+            "tid, billable, duronly, ui_modified_at, start, stop, "
+            "duration, tags "
+            "FROM time_entries WHERE uid = :uid "
+            "ORDER BY start DESC",
+            Poco::Data::use(UID);
+        error err = last_error();
+        if (err != noError) {
+            return err;
+        }
+        return loadTimeEntriesFromSQLStatement(&select, list);
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
     }
-    return loadTimeEntriesFromSQLStatement(&select, list);
+    return last_error();
 }
 
 error Database::loadTimeEntriesFromSQLStatement(Poco::Data::Statement *select,
         std::vector<TimeEntry *> *list) {
     poco_assert(select);
-    Poco::Data::RecordSet rs(*select);
-    while (!select->done()) {
-        select->execute();
-        bool more = rs.moveFirst();
-        while (more) {
-            TimeEntry *model = new TimeEntry();
-            model->LocalID = rs[0].convert<Poco::Int64>();
-            model->ID = rs[1].convert<Poco::UInt64>();
-            model->UID = rs[2].convert<Poco::UInt64>();
-            model->Description = rs[3].convert<std::string>();
-            model->WID = rs[4].convert<Poco::UInt64>();
-            model->GUID = rs[5].convert<std::string>();
-            model->PID = rs[6].convert<Poco::UInt64>();
-            model->TID = rs[7].convert<Poco::UInt64>();
-            model->Billable = rs[8].convert<bool>();
-            model->DurOnly = rs[9].convert<bool>();
-            model->UIModifiedAt = rs[10].convert<Poco::UInt64>();
-            model->Start = rs[11].convert<Poco::UInt64>();
-            model->Stop = rs[12].convert<Poco::UInt64>();
-            model->DurationInSeconds = rs[13].convert<Poco::Int64>();
-            model->SetTags(rs[14].convert<std::string>());
-            list->push_back(model);
-            more = rs.moveNext();
+    try {
+        Poco::Data::RecordSet rs(*select);
+        while (!select->done()) {
+            select->execute();
+            bool more = rs.moveFirst();
+            while (more) {
+                TimeEntry *model = new TimeEntry();
+                model->LocalID = rs[0].convert<Poco::Int64>();
+                model->ID = rs[1].convert<Poco::UInt64>();
+                model->UID = rs[2].convert<Poco::UInt64>();
+                model->Description = rs[3].convert<std::string>();
+                model->WID = rs[4].convert<Poco::UInt64>();
+                model->GUID = rs[5].convert<std::string>();
+                model->PID = rs[6].convert<Poco::UInt64>();
+                model->TID = rs[7].convert<Poco::UInt64>();
+                model->Billable = rs[8].convert<bool>();
+                model->DurOnly = rs[9].convert<bool>();
+                model->UIModifiedAt = rs[10].convert<Poco::UInt64>();
+                model->Start = rs[11].convert<Poco::UInt64>();
+                model->Stop = rs[12].convert<Poco::UInt64>();
+                model->DurationInSeconds = rs[13].convert<Poco::Int64>();
+                model->SetTags(rs[14].convert<std::string>());
+                list->push_back(model);
+                more = rs.moveNext();
+            }
         }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
     }
     return noError;
 }
