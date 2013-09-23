@@ -1,16 +1,17 @@
+// Copyright 2013 Tanel Lebedev
 
 #include <cstring>
 
 #include "include/kopsik.h"
-#include "database.h"
+#include "./database.h"
 
-void kopsik_version (int *major, int *minor, int *patch) {
-	*major = 0;
-	*minor = 1;
-	*patch = 0;
+void kopsik_version(int *major, int *minor, int *patch) {
+    *major = 0;
+    *minor = 1;
+    *patch = 0;
 }
 
-int kopsik_current_user (char *errmsg, unsigned int errlen, HUser *out) {
+int kopsik_current_user(char *errmsg, unsigned int errlen, HUser *out) {
     char* apiToken = getenv("TOGGL_API_TOKEN");
     if (!apiToken) {
       strncpy(errmsg, "Please set TOGGL_API_TOKEN in environment", errlen);

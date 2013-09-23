@@ -22,14 +22,14 @@ namespace kopsik {
         fis.close();
 
         User user;
-        ASSERT_EQ(noError, user.Load(ss.str()));
+        ASSERT_EQ(noError, user.LoadFromJSONString(ss.str(), true));
 
         Poco::UInt64 n;
         ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
         ASSERT_EQ(Poco::UInt64(0), n);
 
         for (int i = 0; i < 3; i++) {
-            ASSERT_EQ(noError, db.Save(&user, true));
+            ASSERT_EQ(noError, db.SaveUser(&user, true));
 
             ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
             ASSERT_EQ(Poco::UInt64(1), n);
@@ -70,12 +70,9 @@ namespace kopsik {
         std::string json = ss.str();
 
         User user1;
-        ASSERT_EQ(noError, user1.Load(json));
+        ASSERT_EQ(noError, user1.LoadFromJSONString(json, true));
 
-        User user2;
-        ASSERT_EQ(noError, user2.Load(json));
-
-        ASSERT_EQ(noError, db.Save(&user1, true));
+        ASSERT_EQ(noError, db.SaveUser(&user1, true));
 
         Poco::UInt64 n;
         ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
@@ -99,7 +96,19 @@ namespace kopsik {
         ASSERT_EQ(noError, db.UInt("select count(1) from time_entries", &n));
         ASSERT_EQ(uint(3), n);
 
-        ASSERT_EQ(noError, db.Save(&user2, true));
+        User user2;
+        ASSERT_EQ(noError, db.LoadUserByID(user1.ID, &user2, true));
+
+        ASSERT_EQ(user1.Workspaces.size(), user2.Workspaces.size());
+        ASSERT_EQ(user1.Clients.size(), user2.Clients.size());
+        ASSERT_EQ(user1.Projects.size(), user2.Projects.size());
+        ASSERT_EQ(user1.Tasks.size(), user2.Tasks.size());
+        ASSERT_EQ(user1.Tags.size(), user2.Tags.size());
+        ASSERT_EQ(user1.TimeEntries.size(), user2.TimeEntries.size());
+
+        ASSERT_EQ(noError, user2.LoadFromJSONString(json, true));
+
+        ASSERT_EQ(noError, db.SaveUser(&user2, true));
 
         ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
         ASSERT_EQ(Poco::UInt64(1), n);
@@ -130,7 +139,7 @@ namespace kopsik {
         ss << fis.rdbuf();
         fis.close();
         User user;
-        ASSERT_EQ(noError, user.Load(ss.str()));
+        ASSERT_EQ(noError, user.LoadFromJSONString(ss.str(), true));
 
         Poco::File f("test.db");
         if (f.exists()) {
@@ -138,55 +147,55 @@ namespace kopsik {
         }
         Database db("test.db");
 
-        ASSERT_EQ(noError, db.Save(&user, false));
+        ASSERT_EQ(noError, db.SaveUser(&user, false));
 
         // Time entry
         TimeEntry te;
         te.UID = user.ID;
-        ASSERT_EQ(noError, db.Save(&te));
+        ASSERT_EQ(noError, db.SaveTimeEntry(&te));
         ASSERT_TRUE(te.LocalID);
-        ASSERT_EQ(noError, db.Save(&te));
-        ASSERT_EQ(noError, db.Delete(&te));
+        ASSERT_EQ(noError, db.SaveTimeEntry(&te));
+        ASSERT_EQ(noError, db.DeleteTimeEntry(&te));
 
         // Tag
         Tag t;
         t.UID = user.ID;
-        ASSERT_EQ(noError, db.Save(&t));
+        ASSERT_EQ(noError, db.SaveTag(&t));
         ASSERT_TRUE(t.LocalID);
-        ASSERT_EQ(noError, db.Save(&t));
-        ASSERT_EQ(noError, db.Delete(&t));
+        ASSERT_EQ(noError, db.SaveTag(&t));
+        ASSERT_EQ(noError, db.DeleteTag(&t));
 
         // Workspace
         Workspace w;
         w.UID = user.ID;
-        ASSERT_EQ(noError, db.Save(&w));
+        ASSERT_EQ(noError, db.SaveWorkspace(&w));
         ASSERT_TRUE(w.LocalID);
-        ASSERT_EQ(noError, db.Save(&w));
-        ASSERT_EQ(noError, db.Delete(&w));
+        ASSERT_EQ(noError, db.SaveWorkspace(&w));
+        ASSERT_EQ(noError, db.DeleteWorkspace(&w));
 
         // Project
         Project p;
         p.UID = user.ID;
-        ASSERT_EQ(noError, db.Save(&p));
+        ASSERT_EQ(noError, db.SaveProject(&p));
         ASSERT_TRUE(p.LocalID);
-        ASSERT_EQ(noError, db.Save(&p));
-        ASSERT_EQ(noError, db.Delete(&p));
+        ASSERT_EQ(noError, db.SaveProject(&p));
+        ASSERT_EQ(noError, db.DeleteProject(&p));
 
         // Client
         Client c;
         c.UID = user.ID;
-        ASSERT_EQ(noError, db.Save(&c));
+        ASSERT_EQ(noError, db.SaveClient(&c));
         ASSERT_TRUE(c.LocalID);
-        ASSERT_EQ(noError, db.Save(&c));
-        ASSERT_EQ(noError, db.Delete(&c));
+        ASSERT_EQ(noError, db.SaveClient(&c));
+        ASSERT_EQ(noError, db.DeleteClient(&c));
 
         // Workspace
         Task task;
         task.UID = user.ID;
-        ASSERT_EQ(noError, db.Save(&task));
+        ASSERT_EQ(noError, db.SaveTask(&task));
         ASSERT_TRUE(task.LocalID);
-        ASSERT_EQ(noError, db.Save(&task));
-        ASSERT_EQ(noError, db.Delete(&task));
+        ASSERT_EQ(noError, db.SaveTask(&task));
+        ASSERT_EQ(noError, db.DeleteTask(&task));
     }
 
     TEST(KopsikTest, ParsesAndSavesData) {
@@ -199,7 +208,7 @@ namespace kopsik {
         ASSERT_FALSE(json.empty());
 
         User user;
-        ASSERT_EQ(noError, user.Load(json));
+        ASSERT_EQ(noError, user.LoadFromJSONString(json, true));
         ASSERT_EQ(Poco::UInt64(1379068550), user.Since);
         ASSERT_EQ(Poco::UInt64(1047), user.ID);
         ASSERT_EQ(Poco::UInt64(123456788), user.DefaultWID);
@@ -276,7 +285,7 @@ namespace kopsik {
         ASSERT_EQ(Poco::UInt64(0), n);
 
         // Insert
-        ASSERT_EQ(noError, db.Save(&user, true));
+        ASSERT_EQ(noError, db.SaveUser(&user, true));
         ASSERT_GT(user.LocalID, uint(0));
         ASSERT_GT(user.ID, uint(0));
         ASSERT_FALSE(user.APIToken.empty());
@@ -303,13 +312,13 @@ namespace kopsik {
         ASSERT_EQ(Poco::UInt64(user.TimeEntries.size()), n);
 
         // Update
-        ASSERT_EQ(noError, db.Save(&user, true));
+        ASSERT_EQ(noError, db.SaveUser(&user, true));
         ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
         ASSERT_EQ(Poco::UInt64(1), n);
 
         // Select
         User user2;
-        ASSERT_EQ(noError, db.Load(user.ID, &user2, true));
+        ASSERT_EQ(noError, db.LoadUserByID(user.ID, &user2, true));
 
         ASSERT_TRUE(user2.ID);
         ASSERT_EQ(user.ID, user2.ID);
@@ -354,7 +363,7 @@ namespace kopsik {
         ASSERT_EQ(user.Clients[1]->String(), user2.Clients[1]->String());
 
         // Delete
-        ASSERT_EQ(noError, db.Delete(&user, true));
+        ASSERT_EQ(noError, db.DeleteUser(&user, true));
 
         ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
         ASSERT_EQ(Poco::UInt64(0), n);

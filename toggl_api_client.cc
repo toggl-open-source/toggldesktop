@@ -16,6 +16,7 @@
 #include "Poco/DateTimeParser.h"
 #include "Poco/DateTime.h"
 #include "Poco/DateTimeFormatter.h"
+#include "Poco/DateTimeFormat.h"
 #include "Poco/Net/Context.h"
 #include "Poco/Net/NameValueCollection.h"
 #include "Poco/Net/HTTPRequest.h"
@@ -36,10 +37,10 @@ namespace kopsik {
 TimeEntry *User::Start() {
     Stop();
     TimeEntry *te = new TimeEntry();
-    te->UID = this->ID;
+    te->UID = ID;
     te->Start = time(0);
     te->DurationInSeconds = -time(0);
-    te->WID = this->DefaultWID;
+    te->WID = DefaultWID;
     te->Dirty = true;
     te->UIModifiedAt = time(0);
     TimeEntries.push_back(te);
@@ -65,8 +66,8 @@ std::vector<TimeEntry *> User::Stop() {
 
 TimeEntry *User::RunningTimeEntry() {
     for (std::vector<TimeEntry *>::const_iterator it =
-            this->TimeEntries.begin();
-            it != this->TimeEntries.end(); it++) {
+            TimeEntries.begin();
+            it != TimeEntries.end(); it++) {
         if ((*it)->DurationInSeconds < 0) {
             return *it;
         }
@@ -172,7 +173,7 @@ error User::Push() {
             if (strcmp(node_name, "data") == 0) {
                 TimeEntry *te = dirty[response_index];
                 poco_assert(te);
-                error err = te->Load(*i);
+                error err = te->LoadFromJSONNode(*i);
                 if (err != noError) {
                     errors.push_back(err);
                 }
@@ -225,16 +226,16 @@ void User::parseResponseArray(std::string response_body,
 
 void BatchUpdateResult::parseResponseJSON(JSONNODE *n) {
     poco_assert(n);
-    this->StatusCode = 0;
-    this->Body = "";
+    StatusCode = 0;
+    Body = "";
     JSONNODE_ITERATOR i = json_begin(n);
     JSONNODE_ITERATOR e = json_end(n);
     while (i != e) {
         json_char *node_name = json_name(*i);
         if (strcmp(node_name, "status") == 0) {
-            this->StatusCode = json_as_int(*i);
+            StatusCode = json_as_int(*i);
         } else if (strcmp(node_name, "body") == 0) {
-            this->Body = std::string(json_as_string(*i));
+            Body = std::string(json_as_string(*i));
         }
         ++i;
     }
@@ -346,7 +347,7 @@ error User::Pull() {
         return err;
     }
 
-    err = this->Load(response_body);
+    err = LoadFromJSONString(response_body, true);
     if (err != noError) {
         return err;
     }
@@ -361,7 +362,8 @@ error User::Pull() {
     return noError;
 };
 
-error User::Load(const std::string &json) {
+error User::LoadFromJSONString(const std::string &json,
+        bool with_related_data) {
     poco_assert(!json.empty());
 
     Poco::Stopwatch stopwatch;
@@ -375,12 +377,12 @@ error User::Load(const std::string &json) {
     while (current_node != last_node) {
         json_char *node_name = json_name(*current_node);
         if (strcmp(node_name, "since") == 0) {
-            this->Since = json_as_int(*current_node);
+            Since = json_as_int(*current_node);
             std::stringstream s;
-            s << "User data as of: " << this->Since;
+            s << "User data as of: " << Since;
             logger.debug(s.str());
         } else if (strcmp(node_name, "data") == 0) {
-            error err = this->Load(*current_node);
+            error err = LoadFromJSONNode(*current_node, with_related_data);
             if (err != noError) {
                 return err;
             }
@@ -408,7 +410,7 @@ std::string User::String() {
     return ss.str();
 }
 
-error User::Load(JSONNODE *data) {
+error User::LoadFromJSONNode(JSONNODE *data, bool with_related_data) {
     poco_assert(data);
 
     JSONNODE_ITERATOR current_node = json_begin(data);
@@ -417,25 +419,27 @@ error User::Load(JSONNODE *data) {
         json_char *node_name = json_name(*current_node);
         error err = noError;
         if (strcmp(node_name, "id") == 0) {
-            this->ID = json_as_int(*current_node);
+            ID = json_as_int(*current_node);
         } else if (strcmp(node_name, "default_wid") == 0) {
-            this->DefaultWID = json_as_int(*current_node);
+            DefaultWID = json_as_int(*current_node);
         } else if (strcmp(node_name, "api_token") == 0) {
-            this->APIToken = std::string(json_as_string(*current_node));
+            APIToken = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "fullname") == 0) {
-            this->Fullname = std::string(json_as_string(*current_node));
-        } else if (strcmp(node_name, "projects") == 0) {
-            err = this->loadProjects(*current_node);
-        } else if (strcmp(node_name, "tags") == 0) {
-            err = this->loadTags(*current_node);
-        } else if (strcmp(node_name, "tasks") == 0) {
-            err = this->loadTasks(*current_node);
-        } else if (strcmp(node_name, "time_entries") == 0) {
-            err = this->loadTimeEntries(*current_node);
-        } else if (strcmp(node_name, "workspaces") == 0) {
-            err = this->loadWorkspaces(*current_node);
-        } else if (strcmp(node_name, "clients") == 0) {
-            err = this->loadClients(*current_node);
+            Fullname = std::string(json_as_string(*current_node));
+        } else if (with_related_data) {
+            if (strcmp(node_name, "projects") == 0) {
+                err = loadProjectsFromJSONNode(*current_node);
+            } else if (strcmp(node_name, "tags") == 0) {
+                err = loadTagsFromJSONNode(*current_node);
+            } else if (strcmp(node_name, "tasks") == 0) {
+                err = loadTasksFromJSONNode(*current_node);
+            } else if (strcmp(node_name, "time_entries") == 0) {
+                err = loadTimeEntriesFromJSONNode(*current_node);
+            } else if (strcmp(node_name, "workspaces") == 0) {
+                err = loadWorkspacesFromJSONNode(*current_node);
+            } else if (strcmp(node_name, "clients") == 0) {
+                err = loadClientsFromJSONNode(*current_node);
+            }
         }
         if (err != noError) {
             return err;
@@ -445,22 +449,20 @@ error User::Load(JSONNODE *data) {
     return noError;
 }
 
-error User::loadProjects(JSONNODE *list) {
+error User::loadProjectsFromJSONNode(JSONNODE *list) {
     poco_assert(list);
-
-    ClearProjects();
 
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
         Project *model = new Project();
-        model->UID = this->ID;
-        error err = model->Load(*current_node);
+        model->UID = ID;
+        error err = model->LoadFromJSONNode(*current_node);
         if (err != noError) {
             delete model;
             return err;
         }
-        this->Projects.push_back(model);
+        Projects.push_back(model);
         ++current_node;
     }
     return noError;
@@ -472,22 +474,20 @@ std::string Project::String() {
     return ss.str();
 }
 
-error User::loadTasks(JSONNODE *list) {
+error User::loadTasksFromJSONNode(JSONNODE *list) {
     poco_assert(list);
-
-    ClearTasks();
 
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
         Task *model = new Task();
-        model->UID = this->ID;
-        error err = model->Load(*current_node);
+        model->UID = ID;
+        error err = model->LoadFromJSONNode(*current_node);
         if (err != noError) {
             delete model;
             return err;
         }
-        this->Tasks.push_back(model);
+        Tasks.push_back(model);
         ++current_node;
     }
     return noError;
@@ -499,22 +499,20 @@ std::string Task::String() {
     return ss.str();
 }
 
-error User::loadWorkspaces(JSONNODE *list) {
+error User::loadWorkspacesFromJSONNode(JSONNODE *list) {
     poco_assert(list);
-
-    ClearWorkspaces();
 
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
         Workspace *model = new Workspace();
-        model->UID = this->ID;
-        error err = model->Load(*current_node);
+        model->UID = ID;
+        error err = model->LoadFromJSONNode(*current_node);
         if (err != noError) {
             delete model;
             return err;
         }
-        this->Workspaces.push_back(model);
+        Workspaces.push_back(model);
         ++current_node;
     }
     return noError;
@@ -526,22 +524,20 @@ std::string Workspace::String() {
     return ss.str();
 }
 
-error User::loadTags(JSONNODE *list) {
+error User::loadTagsFromJSONNode(JSONNODE *list) {
     poco_assert(list);
-
-    ClearTags();
 
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
         Tag *model = new Tag();
-        model->UID = this->ID;
-        error err = model->Load(*current_node);
+        model->UID = ID;
+        error err = model->LoadFromJSONNode(*current_node);
         if (err != noError) {
             delete model;
             return err;
         }
-        this->Tags.push_back(model);
+        Tags.push_back(model);
         ++current_node;
     }
     return noError;
@@ -553,22 +549,20 @@ std::string Tag::String() {
     return ss.str();
 }
 
-error User::loadClients(JSONNODE *list) {
+error User::loadClientsFromJSONNode(JSONNODE *list) {
     poco_assert(list);
-
-    ClearClients();
 
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
         Client *model = new Client();
-        model->UID = this->ID;
-        error err = model->Load(*current_node);
+        model->UID = ID;
+        error err = model->LoadFromJSONNode(*current_node);
         if (err != noError) {
             delete model;
             return err;
         }
-        this->Clients.push_back(model);
+        Clients.push_back(model);
         ++current_node;
     }
     return noError;
@@ -580,53 +574,21 @@ std::string Client::String() {
     return ss.str();
 }
 
-error User::loadTimeEntries(JSONNODE *list) {
+error User::loadTimeEntriesFromJSONNode(JSONNODE *list) {
     poco_assert(list);
-
-    ClearTimeEntries();
 
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
         TimeEntry *model = new TimeEntry();
-        model->UID = this->ID;
-        error err = model->Load(*current_node);
+        model->UID = ID;
+        error err = model->LoadFromJSONNode(*current_node);
         if (err != noError) {
             delete model;
             return err;
         }
-        this->TimeEntries.push_back(model);
+        TimeEntries.push_back(model);
         ++current_node;
-    }
-    return noError;
-}
-
-error User::loadTimeEntries(Poco::Data::Statement *select) {
-    poco_assert(select);
-    Poco::Data::RecordSet rs(*select);
-    while (!select->done()) {
-        select->execute();
-        bool more = rs.moveFirst();
-        while (more) {
-            TimeEntry *model = new TimeEntry();
-            model->LocalID = rs[0].convert<Poco::Int64>();
-            model->ID = rs[1].convert<Poco::UInt64>();
-            model->UID = rs[2].convert<Poco::UInt64>();
-            model->Description = rs[3].convert<std::string>();
-            model->WID = rs[4].convert<Poco::UInt64>();
-            model->GUID = rs[5].convert<std::string>();
-            model->PID = rs[6].convert<Poco::UInt64>();
-            model->TID = rs[7].convert<Poco::UInt64>();
-            model->Billable = rs[8].convert<bool>();
-            model->DurOnly = rs[9].convert<bool>();
-            model->UIModifiedAt = rs[10].convert<Poco::UInt64>();
-            model->Start = rs[11].convert<Poco::UInt64>();
-            model->Stop = rs[12].convert<Poco::UInt64>();
-            model->DurationInSeconds = rs[13].convert<Poco::Int64>();
-            model->SetTags(rs[14].convert<std::string>());
-            TimeEntries.push_back(model);
-            more = rs.moveNext();
-        }
     }
     return noError;
 }
@@ -681,8 +643,8 @@ JSONNODE *TimeEntry::JSON() {
 
 Workspace *User::GetWorkspaceByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
-    for (std::vector<Workspace *>::const_iterator it = this->Workspaces.begin();
-            it != this->Workspaces.end(); it++) {
+    for (std::vector<Workspace *>::const_iterator it = Workspaces.begin();
+            it != Workspaces.end(); it++) {
         if ((*it)->ID == id) {
             return *it;
         }
@@ -692,8 +654,8 @@ Workspace *User::GetWorkspaceByID(const Poco::UInt64 id) {
 
 Client *User::GetClientByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
-    for (std::vector<Client *>::const_iterator it = this->Clients.begin();
-            it != this->Clients.end(); it++) {
+    for (std::vector<Client *>::const_iterator it = Clients.begin();
+            it != Clients.end(); it++) {
         if ((*it)->ID == id) {
             return *it;
         }
@@ -703,8 +665,8 @@ Client *User::GetClientByID(const Poco::UInt64 id) {
 
 Project *User::GetProjectByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
-    for (std::vector<Project *>::const_iterator it = this->Projects.begin();
-            it != this->Projects.end(); it++) {
+    for (std::vector<Project *>::const_iterator it = Projects.begin();
+            it != Projects.end(); it++) {
         if ((*it)->ID == id) {
             return *it;
         }
@@ -714,8 +676,8 @@ Project *User::GetProjectByID(const Poco::UInt64 id) {
 
 Task *User::GetTaskByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
-    for (std::vector<Task *>::const_iterator it = this->Tasks.begin();
-            it != this->Tasks.end(); it++) {
+    for (std::vector<Task *>::const_iterator it = Tasks.begin();
+            it != Tasks.end(); it++) {
         if ((*it)->ID == id) {
             return *it;
         }
@@ -725,8 +687,8 @@ Task *User::GetTaskByID(const Poco::UInt64 id) {
 
 Tag *User::GetTagByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
-    for (std::vector<Tag *>::const_iterator it = this->Tags.begin();
-            it != this->Tags.end(); it++) {
+    for (std::vector<Tag *>::const_iterator it = Tags.begin();
+            it != Tags.end(); it++) {
         if ((*it)->ID == id) {
             return *it;
         }
@@ -737,7 +699,7 @@ Tag *User::GetTagByID(const Poco::UInt64 id) {
 TimeEntry *User::GetTimeEntryByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
     for (std::vector<TimeEntry *>::const_iterator it =
-            this->TimeEntries.begin(); it != this->TimeEntries.end(); it++) {
+            TimeEntries.begin(); it != TimeEntries.end(); it++) {
         if ((*it)->ID == id) {
             return *it;
         }
@@ -746,54 +708,54 @@ TimeEntry *User::GetTimeEntryByID(const Poco::UInt64 id) {
 }
 
 void User::ClearWorkspaces() {
-    for (std::vector<Workspace *>::const_iterator it = this->Workspaces.begin();
-            it != this->Workspaces.end(); it++) {
+    for (std::vector<Workspace *>::const_iterator it = Workspaces.begin();
+            it != Workspaces.end(); it++) {
         delete *it;
     }
-    this->Workspaces.clear();
+    Workspaces.clear();
 }
 
 void User::ClearProjects() {
-    for (std::vector<Project *>::const_iterator it = this->Projects.begin();
-            it != this->Projects.end(); it++) {
+    for (std::vector<Project *>::const_iterator it = Projects.begin();
+            it != Projects.end(); it++) {
         delete *it;
     }
-    this->Projects.clear();
+    Projects.clear();
 }
 
 void User::ClearTasks() {
-    for (std::vector<Task *>::const_iterator it = this->Tasks.begin();
-            it != this->Tasks.end(); it++) {
+    for (std::vector<Task *>::const_iterator it = Tasks.begin();
+            it != Tasks.end(); it++) {
         delete *it;
     }
-    this->Tasks.clear();
+    Tasks.clear();
 }
 
 void User::ClearTags() {
-    for (std::vector<Tag *>::const_iterator it = this->Tags.begin();
-            it != this->Tags.end(); it++) {
+    for (std::vector<Tag *>::const_iterator it = Tags.begin();
+            it != Tags.end(); it++) {
         delete *it;
     }
-    this->Tags.clear();
+    Tags.clear();
 }
 
 void User::ClearClients() {
-    for (std::vector<Client *>::const_iterator it = this->Clients.begin();
-            it != this->Clients.end(); it++) {
+    for (std::vector<Client *>::const_iterator it = Clients.begin();
+            it != Clients.end(); it++) {
         delete *it;
     }
-    this->Clients.clear();
+    Clients.clear();
 }
 
 void User::ClearTimeEntries() {
     for (std::vector<TimeEntry *>::const_iterator it =
-            this->TimeEntries.begin(); it != this->TimeEntries.end(); it++) {
+            TimeEntries.begin(); it != TimeEntries.end(); it++) {
         delete *it;
     }
-    this->TimeEntries.clear();
+    TimeEntries.clear();
 }
 
-error Workspace::Load(JSONNODE *n) {
+error Workspace::LoadFromJSONNode(JSONNODE *n) {
     poco_assert(n);
     JSONNODE_ITERATOR i = json_begin(n);
     JSONNODE_ITERATOR e = json_end(n);
@@ -801,16 +763,16 @@ error Workspace::Load(JSONNODE *n) {
         json_char *node_name = json_name(*i);
         error err = noError;
         if (strcmp(node_name, "id") == 0) {
-            this->ID = json_as_int(*i);
+            ID = json_as_int(*i);
         } else if (strcmp(node_name, "name") == 0) {
-            this->Name = std::string(json_as_string(*i));
+            Name = std::string(json_as_string(*i));
         }
         ++i;
     }
     return noError;
 }
 
-error Client::Load(JSONNODE *data) {
+error Client::LoadFromJSONNode(JSONNODE *data) {
     poco_assert(data);
 
     JSONNODE_ITERATOR current_node = json_begin(data);
@@ -819,20 +781,20 @@ error Client::Load(JSONNODE *data) {
         json_char *node_name = json_name(*current_node);
         error err = noError;
         if (strcmp(node_name, "id") == 0) {
-            this->ID = json_as_int(*current_node);
+            ID = json_as_int(*current_node);
         } else if (strcmp(node_name, "name") == 0) {
-            this->Name = std::string(json_as_string(*current_node));
+            Name = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "guid") == 0) {
-            this->GUID = std::string(json_as_string(*current_node));
+            GUID = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "wid") == 0) {
-        this->WID = json_as_int(*current_node);
+            WID = json_as_int(*current_node);
         }
         ++current_node;
     }
     return noError;
 }
 
-error Project::Load(JSONNODE *data) {
+error Project::LoadFromJSONNode(JSONNODE *data) {
     poco_assert(data);
 
     JSONNODE_ITERATOR current_node = json_begin(data);
@@ -841,22 +803,22 @@ error Project::Load(JSONNODE *data) {
         json_char *node_name = json_name(*current_node);
         error err = noError;
         if (strcmp(node_name, "id") == 0) {
-            this->ID = json_as_int(*current_node);
+            ID = json_as_int(*current_node);
         } else if (strcmp(node_name, "name") == 0) {
-            this->Name = std::string(json_as_string(*current_node));
+            Name = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "guid") == 0) {
-            this->GUID = std::string(json_as_string(*current_node));
+            GUID = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "wid") == 0) {
-            this->WID = json_as_int(*current_node);
+            WID = json_as_int(*current_node);
         } else if (strcmp(node_name, "cid") == 0) {
-            this->CID = json_as_int(*current_node);
+            CID = json_as_int(*current_node);
         }
         ++current_node;
     }
     return noError;
 }
 
-error Task::Load(JSONNODE *data) {
+error Task::LoadFromJSONNode(JSONNODE *data) {
     poco_assert(data);
 
     JSONNODE_ITERATOR current_node = json_begin(data);
@@ -865,20 +827,20 @@ error Task::Load(JSONNODE *data) {
         json_char *node_name = json_name(*current_node);
         error err = noError;
         if (strcmp(node_name, "id") == 0) {
-            this->ID = json_as_int(*current_node);
+            ID = json_as_int(*current_node);
         } else if (strcmp(node_name, "name") == 0) {
-            this->Name = std::string(json_as_string(*current_node));
+            Name = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "pid") == 0) {
-            this->PID = json_as_int(*current_node);
+            PID = json_as_int(*current_node);
         } else if (strcmp(node_name, "wid") == 0) {
-            this->WID = json_as_int(*current_node);
+            WID = json_as_int(*current_node);
         }
         ++current_node;
     }
     return noError;
 }
 
-error Tag::Load(JSONNODE *data) {
+error Tag::LoadFromJSONNode(JSONNODE *data) {
     poco_assert(data);
 
     JSONNODE_ITERATOR current_node = json_begin(data);
@@ -886,13 +848,13 @@ error Tag::Load(JSONNODE *data) {
     while (current_node != last_node) {
         json_char *node_name = json_name(*current_node);
         if (strcmp(node_name, "id") == 0) {
-            this->ID = json_as_int(*current_node);
+            ID = json_as_int(*current_node);
         } else if (strcmp(node_name, "name") == 0) {
-            this->Name = std::string(json_as_string(*current_node));
+            Name = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "guid") == 0) {
-            this->GUID = std::string(json_as_string(*current_node));
+            GUID = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "wid") == 0) {
-            this->WID = json_as_int(*current_node);
+            WID = json_as_int(*current_node);
         }
         ++current_node;
     }
@@ -915,19 +877,19 @@ std::string TimeEntry::Format8601(std::time_t date) {
 }
 
 std::string TimeEntry::StartString() {
-     return Format8601(this->Start);
+     return Format8601(Start);
 }
 
 void TimeEntry::SetStartString(std::string value) {
-    this->Start = Parse8601(value);
+    Start = Parse8601(value);
 }
 
 std::string TimeEntry::StopString() {
-     return Format8601(this->Stop);
+     return Format8601(Stop);
 }
 
 void TimeEntry::SetStopString(std::string value) {
-    this->Stop = Parse8601(value);
+    Stop = Parse8601(value);
 }
 
 std::string TimeEntry::Tags() {
@@ -947,15 +909,15 @@ void TimeEntry::SetTags(std::string tags) {
     }
 }
 
-error TimeEntry::Load(std::string json) {
+error TimeEntry::LoadFromJSONString(std::string json) {
     poco_assert(!json.empty());
     JSONNODE *root = json_parse(json.c_str());
-    error err = Load(root);
+    error err = LoadFromJSONNode(root);
     json_delete(root);
     return err;
 }
 
-error TimeEntry::Load(JSONNODE *data) {
+error TimeEntry::LoadFromJSONNode(JSONNODE *data) {
     poco_assert(data);
 
     json_char *jc = json_write_formatted(data);
@@ -998,7 +960,7 @@ error TimeEntry::Load(JSONNODE *data) {
         } else if (strcmp(node_name, "duronly") == 0) {
             duronly = json_as_bool(*current_node);
         } else if (strcmp(node_name, "tags") == 0) {
-            error err = this->loadTags(*current_node);
+            error err = loadTagsFromJSONNode(*current_node);
             if (err != noError) {
                 return err;
             }
@@ -1030,17 +992,17 @@ error TimeEntry::Load(JSONNODE *data) {
     return noError;
 }
 
-error TimeEntry::loadTags(JSONNODE *list) {
+error TimeEntry::loadTagsFromJSONNode(JSONNODE *list) {
     poco_assert(list);
 
-    this->TagNames.clear();
+    TagNames.clear();
 
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
         std::string tag = std::string(json_as_string(*current_node));
         if (!tag.empty()) {
-            this->TagNames.push_back(tag);
+            TagNames.push_back(tag);
         }
         ++current_node;
     }

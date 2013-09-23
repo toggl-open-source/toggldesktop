@@ -36,26 +36,29 @@ class Database {
             Poco::Data::SQLite::Connector::unregisterConnector();
         }
 
-        error Delete(User *model, bool with_related_data);
-        error Delete(Workspace *model);
-        error Delete(Client *model);
-        error Delete(Project *model);
-        error Delete(Task *model);
-        error Delete(Tag *model);
-        error Delete(TimeEntry *model);
+        error DeleteUser(User *model, bool with_related_data);
+        error DeleteWorkspace(Workspace *model);
+        error DeleteClient(Client *model);
+        error DeleteProject(Project *model);
+        error DeleteTask(Task *model);
+        error DeleteTag(Tag *model);
+        error DeleteTimeEntry(TimeEntry *model);
 
-        error Load(Poco::UInt64 UID, User *model, bool with_related_data);
-        error Load(std::string api_token, User *model, bool with_related_data);
+        error LoadUserByID(Poco::UInt64 UID, User *user,
+            bool with_related_data);
+        error LoadUserByAPIToken(std::string api_token, User *user,
+            bool with_related_data);
+        error loadUsersRelatedData(User *user);
 
         error UInt(std::string sql, Poco::UInt64 *result);
 
-        error Save(User *user, bool with_related_data);
-        error Save(Workspace *model);
-        error Save(Client *model);
-        error Save(Project *model);
-        error Save(Task *model);
-        error Save(Tag *model);
-        error Save(TimeEntry *model);
+        error SaveUser(User *user, bool with_related_data);
+        error SaveWorkspace(Workspace *model);
+        error SaveClient(Client *model);
+        error SaveProject(Project *model);
+        error SaveTask(Task *model);
+        error SaveTag(Tag *model);
+        error SaveTimeEntry(TimeEntry *model);
 
         error LoadTimeEntriesForUpload(User *user);
 
@@ -65,19 +68,22 @@ class Database {
         error validate(User *user);
         error last_error();
 
-        error loadWorkspaces(User *user);
-        error loadClients(User *user);
-        error loadProjects(User *user);
-        error loadTasks(User *user);
-        error loadTags(User *user);
-        error loadTimeEntries(User *user);
+        error loadWorkspaces(Poco::UInt64 UID, std::vector<Workspace *> *list);
+        error loadClients(Poco::UInt64 UID, std::vector<Client *> *list);
+        error loadProjects(Poco::UInt64 UID, std::vector<Project *> *list);
+        error loadTasks(Poco::UInt64 UID, std::vector<Task *> *list);
+        error loadTags(Poco::UInt64 UID, std::vector<Tag *> *list);
+        error loadTimeEntries(Poco::UInt64 UID, std::vector<TimeEntry *> *list);
 
-        error saveList(Poco::UInt64 UID, std::vector<Workspace *> *list);
-        error saveList(Poco::UInt64 UID, std::vector<Client *> *list);
-        error saveList(Poco::UInt64 UID, std::vector<Project *> *list);
-        error saveList(Poco::UInt64 UID, std::vector<Task *> *list);
-        error saveList(Poco::UInt64 UID, std::vector<Tag *> *list);
-        error saveList(Poco::UInt64 UID, std::vector<TimeEntry *> *list);
+        error loadTimeEntriesFromSQLStatement(Poco::Data::Statement *select,
+            std::vector<TimeEntry *> *list);
+
+        error saveWorkspaces(Poco::UInt64 UID, std::vector<Workspace *> *list);
+        error saveClients(Poco::UInt64 UID, std::vector<Client *> *list);
+        error saveProjects(Poco::UInt64 UID, std::vector<Project *> *list);
+        error saveTasks(Poco::UInt64 UID, std::vector<Task *> *list);
+        error saveTags(Poco::UInt64 UID, std::vector<Tag *> *list);
+        error saveTimeEntries(Poco::UInt64 UID, std::vector<TimeEntry *> *list);
 
         error deleteFromTable(std::string table_name, Poco::Int64 local_id);
         error deleteAllFromTableByUID(std::string table_name, Poco::Int64 UID);

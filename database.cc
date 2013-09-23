@@ -19,7 +19,7 @@
 
 namespace kopsik {
 
-error Database::Delete(User *model, bool with_related_data) {
+error Database::DeleteUser(User *model, bool with_related_data) {
     poco_assert(model);
     error err = deleteFromTable("users", model->LocalID);
     if (err != noError) {
@@ -54,32 +54,32 @@ error Database::Delete(User *model, bool with_related_data) {
     return noError;
 }
 
-error Database::Delete(TimeEntry *model) {
+error Database::DeleteTimeEntry(TimeEntry *model) {
     poco_assert(model);
     return deleteFromTable("time_entries", model->LocalID);
 }
 
-error Database::Delete(Tag *model) {
+error Database::DeleteTag(Tag *model) {
     poco_assert(model);
     return deleteFromTable("tags", model->LocalID);
 }
 
-error Database::Delete(Workspace *model) {
+error Database::DeleteWorkspace(Workspace *model) {
     poco_assert(model);
     return deleteFromTable("workspaces", model->LocalID);
 }
 
-error Database::Delete(Task *model) {
+error Database::DeleteTask(Task *model) {
     poco_assert(model);
     return deleteFromTable("tasks", model->LocalID);
 }
 
-error Database::Delete(Project *model) {
+error Database::DeleteProject(Project *model) {
     poco_assert(model);
     return deleteFromTable("projects", model->LocalID);
 }
 
-error Database::Delete(Client *model) {
+error Database::DeleteClient(Client *model) {
     poco_assert(model);
     return deleteFromTable("clients", model->LocalID);
 }
@@ -140,7 +140,7 @@ error Database::last_error() {
     return noError;
 }
 
-error Database::Load(std::string api_token, User *model,
+error Database::LoadUserByAPIToken(std::string api_token, User *model,
         bool with_related_data) {
     poco_assert(session);
     poco_assert(model);
@@ -160,7 +160,7 @@ error Database::Load(std::string api_token, User *model,
         if (uid <= 0) {
             return noError;
         }
-        return Load(uid, model, with_related_data);
+        return LoadUserByID(uid, model, with_related_data);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -171,8 +171,38 @@ error Database::Load(std::string api_token, User *model,
     return noError;
 }
 
-error Database::Load(Poco::UInt64 UID, User *model, bool with_related_data) {
-    poco_assert(model);
+error Database::loadUsersRelatedData(User *user) {
+    error err = loadWorkspaces(user->ID, &user->Workspaces);
+    if (err != noError) {
+        return err;
+    }
+
+    err = loadClients(user->ID, &user->Clients);
+    if (err != noError) {
+        return err;
+    }
+
+    err = loadProjects(user->ID, &user->Projects);
+    if (err != noError) {
+        return err;
+    }
+
+    err = loadTasks(user->ID, &user->Tasks);
+    if (err != noError) {
+        return err;
+    }
+
+    err = loadTags(user->ID, &user->Tags);
+    if (err != noError) {
+        return err;
+    }
+
+    return loadTimeEntries(user->ID, &user->TimeEntries);
+}
+
+error Database::LoadUserByID(Poco::UInt64 UID, User *user,
+        bool with_related_data) {
+    poco_assert(user);
     poco_assert(session);
     poco_assert(UID > 0);
 
@@ -182,14 +212,15 @@ error Database::Load(Poco::UInt64 UID, User *model, bool with_related_data) {
     Poco::Logger &logger = Poco::Logger::get("database");
 
     try {
-        *session << "select local_id, id, api_token, default_wid, since, fullname "
+        *session <<
+            "select local_id, id, api_token, default_wid, since, fullname "
             "from users where id = :id limit 1",
-            Poco::Data::into(model->LocalID),
-            Poco::Data::into(model->ID),
-            Poco::Data::into(model->APIToken),
-            Poco::Data::into(model->DefaultWID),
-            Poco::Data::into(model->Since),
-            Poco::Data::into(model->Fullname),
+            Poco::Data::into(user->LocalID),
+            Poco::Data::into(user->ID),
+            Poco::Data::into(user->APIToken),
+            Poco::Data::into(user->DefaultWID),
+            Poco::Data::into(user->Since),
+            Poco::Data::into(user->Fullname),
             Poco::Data::use(UID),
             Poco::Data::now;
         error err = last_error();
@@ -204,27 +235,7 @@ error Database::Load(Poco::UInt64 UID, User *model, bool with_related_data) {
         return ex;
     }
     if (with_related_data) {
-        error err = loadWorkspaces(model);
-        if (err != noError) {
-            return err;
-        }
-        err = loadClients(model);
-        if (err != noError) {
-            return err;
-        }
-        err = loadProjects(model);
-        if (err != noError) {
-            return err;
-        }
-        err = loadTasks(model);
-        if (err != noError) {
-            return err;
-        }
-        err = loadTags(model);
-        if (err != noError) {
-            return err;
-        }
-        err = loadTimeEntries(model);
+        error err = loadUsersRelatedData(user);
         if (err != noError) {
             return err;
         }
@@ -271,15 +282,18 @@ error Database::validate(User *model) {
     return noError;
 }
 
-error Database::loadWorkspaces(User *user) {
-    poco_assert(user);
-    poco_assert(user->ID > 0);
-    user->ClearWorkspaces();
+error Database::loadWorkspaces(Poco::UInt64 UID,
+        std::vector<Workspace *> *list) {
+    poco_assert(UID > 0);
+    poco_assert(list);
+
+    list->clear();
+
     Poco::Data::Statement select(*session);
     select << "SELECT local_id, id, uid, name "
         "FROM workspaces WHERE uid = :uid "
         "ORDER BY name",
-        Poco::Data::use(user->ID);
+        Poco::Data::use(UID);
     error err = last_error();
     if (err != noError) {
         return err;
@@ -294,22 +308,25 @@ error Database::loadWorkspaces(User *user) {
             model->ID = rs[1].convert<Poco::UInt64>();
             model->UID = rs[2].convert<Poco::UInt64>();
             model->Name = rs[3].convert<std::string>();
-            user->Workspaces.push_back(model);
+            list->push_back(model);
             more = rs.moveNext();
         }
     }
     return noError;
 }
 
-error Database::loadClients(User *user) {
-    poco_assert(user);
-    poco_assert(user->ID > 0);
-    user->ClearClients();
+error Database::loadClients(Poco::UInt64 UID, std::vector<Client *> *list) {
+    poco_assert(UID > 0);
+    poco_assert(list);
+
+    list->clear();
+
     Poco::Data::Statement select(*session);
     select << "SELECT local_id, id, uid, name, guid, wid "
         "FROM clients WHERE uid = :uid "
         "ORDER BY name",
-        Poco::Data::use(user->ID);
+        Poco::Data::use(UID);
+
     error err = last_error();
     if (err != noError) {
         return err;
@@ -326,22 +343,24 @@ error Database::loadClients(User *user) {
             model->Name = rs[3].convert<std::string>();
             model->GUID = rs[4].convert<std::string>();
             model->WID = rs[5].convert<Poco::UInt64>();
-            user->Clients.push_back(model);
+            list->push_back(model);
             more = rs.moveNext();
         }
     }
     return noError;
 }
 
-error Database::loadProjects(User *user) {
-    poco_assert(user);
-    poco_assert(user->ID > 0);
-    user->ClearProjects();
+error Database::loadProjects(Poco::UInt64 UID, std::vector<Project *> *list) {
+    poco_assert(UID > 0);
+    poco_assert(list);
+
+    list->clear();
+
     Poco::Data::Statement select(*session);
     select << "SELECT local_id, id, uid, name, guid, wid "
         "FROM projects WHERE uid = :uid "
         "ORDER BY name",
-        Poco::Data::use(user->ID);
+        Poco::Data::use(UID);
     error err = last_error();
     if (err != noError) {
         return err;
@@ -358,22 +377,24 @@ error Database::loadProjects(User *user) {
             model->Name = rs[3].convert<std::string>();
             model->GUID = rs[4].convert<std::string>();
             model->WID = rs[5].convert<Poco::UInt64>();
-            user->Projects.push_back(model);
+            list->push_back(model);
             more = rs.moveNext();
         }
     }
     return noError;
 }
 
-error Database::loadTasks(User *user) {
-    poco_assert(user);
-    poco_assert(user->ID > 0);
-    user->ClearTasks();
+error Database::loadTasks(Poco::UInt64 UID, std::vector<Task *> *list) {
+    poco_assert(UID > 0);
+    poco_assert(list);
+
+    list->clear();
+
     Poco::Data::Statement select(*session);
     select << "SELECT local_id, id, uid, name, wid, pid "
         "FROM tasks WHERE uid = :uid "
         "ORDER BY name",
-        Poco::Data::use(user->ID);
+        Poco::Data::use(UID);
     error err = last_error();
     if (err != noError) {
         return err;
@@ -390,22 +411,24 @@ error Database::loadTasks(User *user) {
             model->Name = rs[3].convert<std::string>();
             model->WID = rs[4].convert<Poco::UInt64>();
             model->PID = rs[5].convert<Poco::UInt64>();
-            user->Tasks.push_back(model);
+            list->push_back(model);
             more = rs.moveNext();
         }
     }
     return noError;
 }
 
-error Database::loadTags(User *user) {
-    poco_assert(user);
-    poco_assert(user->ID > 0);
-    user->ClearTags();
+error Database::loadTags(Poco::UInt64 UID, std::vector<Tag *> *list) {
+    poco_assert(UID > 0);
+    poco_assert(list);
+
+    list->clear();
+
     Poco::Data::Statement select(*session);
     select << "SELECT local_id, id, uid, name, wid, guid "
         "FROM tags WHERE uid = :uid "
         "ORDER BY name",
-        Poco::Data::use(user->ID);
+        Poco::Data::use(UID);
     error err = last_error();
     if (err != noError) {
         return err;
@@ -422,39 +445,74 @@ error Database::loadTags(User *user) {
             model->Name = rs[3].convert<std::string>();
             model->WID = rs[4].convert<Poco::UInt64>();
             model->GUID = rs[5].convert<std::string>();
-            user->Tags.push_back(model);
+            list->push_back(model);
             more = rs.moveNext();
         }
     }
     return noError;
 }
 
-error Database::loadTimeEntries(User *user) {
-    poco_assert(user);
-    poco_assert(user->ID > 0);
-    user->ClearTimeEntries();
+error Database::loadTimeEntries(Poco::UInt64 UID,
+        std::vector<TimeEntry *> *list) {
+    poco_assert(UID > 0);
+    poco_assert(list);
+
+    list->clear();
+
     Poco::Data::Statement select(*session);
     select << "SELECT local_id, id, uid, description, wid, guid, pid, "
         "tid, billable, duronly, ui_modified_at, start, stop, "
         "duration, tags "
         "FROM time_entries WHERE uid = :uid "
         "ORDER BY start DESC",
-        Poco::Data::use(user->ID);
+        Poco::Data::use(UID);
     error err = last_error();
     if (err != noError) {
         return err;
     }
-    return user->loadTimeEntries(&select);
+    return loadTimeEntriesFromSQLStatement(&select, list);
 }
 
-error Database::saveList(Poco::UInt64 UID, std::vector<Workspace *> *list) {
+error Database::loadTimeEntriesFromSQLStatement(Poco::Data::Statement *select,
+        std::vector<TimeEntry *> *list) {
+    poco_assert(select);
+    Poco::Data::RecordSet rs(*select);
+    while (!select->done()) {
+        select->execute();
+        bool more = rs.moveFirst();
+        while (more) {
+            TimeEntry *model = new TimeEntry();
+            model->LocalID = rs[0].convert<Poco::Int64>();
+            model->ID = rs[1].convert<Poco::UInt64>();
+            model->UID = rs[2].convert<Poco::UInt64>();
+            model->Description = rs[3].convert<std::string>();
+            model->WID = rs[4].convert<Poco::UInt64>();
+            model->GUID = rs[5].convert<std::string>();
+            model->PID = rs[6].convert<Poco::UInt64>();
+            model->TID = rs[7].convert<Poco::UInt64>();
+            model->Billable = rs[8].convert<bool>();
+            model->DurOnly = rs[9].convert<bool>();
+            model->UIModifiedAt = rs[10].convert<Poco::UInt64>();
+            model->Start = rs[11].convert<Poco::UInt64>();
+            model->Stop = rs[12].convert<Poco::UInt64>();
+            model->DurationInSeconds = rs[13].convert<Poco::Int64>();
+            model->SetTags(rs[14].convert<std::string>());
+            list->push_back(model);
+            more = rs.moveNext();
+        }
+    }
+    return noError;
+}
+
+error Database::saveWorkspaces(Poco::UInt64 UID,
+        std::vector<Workspace *> *list) {
     poco_assert(UID > 0);
     poco_assert(list);
     for (std::vector<Workspace *>::iterator it = list->begin();
             it != list->end(); ++it) {
         Workspace *model = *it;
         model->UID = UID;
-        error err = Save(model);
+        error err = SaveWorkspace(model);
         if (err != noError) {
             return err;
         }
@@ -462,14 +520,14 @@ error Database::saveList(Poco::UInt64 UID, std::vector<Workspace *> *list) {
     return noError;
 }
 
-error Database::saveList(Poco::UInt64 UID, std::vector<Client *> *list) {
+error Database::saveClients(Poco::UInt64 UID, std::vector<Client *> *list) {
     poco_assert(UID > 0);
     poco_assert(list);
     for (std::vector<Client *>::iterator it = list->begin();
             it != list->end(); ++it) {
         Client *model = *it;
         model->UID = UID;
-        error err = Save(model);
+        error err = SaveClient(model);
         if (err != noError) {
             return err;
         }
@@ -477,14 +535,14 @@ error Database::saveList(Poco::UInt64 UID, std::vector<Client *> *list) {
     return noError;
 }
 
-error Database::saveList(Poco::UInt64 UID, std::vector<Project *> *list) {
+error Database::saveProjects(Poco::UInt64 UID, std::vector<Project *> *list) {
     poco_assert(UID > 0);
     poco_assert(list);
     for (std::vector<Project *>::iterator it = list->begin();
             it != list->end(); ++it) {
         Project *model = *it;
         model->UID = UID;
-        error err = Save(model);
+        error err = SaveProject(model);
         if (err != noError) {
             return err;
         }
@@ -492,14 +550,14 @@ error Database::saveList(Poco::UInt64 UID, std::vector<Project *> *list) {
     return noError;
 }
 
-error Database::saveList(Poco::UInt64 UID, std::vector<Task *> *list) {
+error Database::saveTasks(Poco::UInt64 UID, std::vector<Task *> *list) {
     poco_assert(UID > 0);
     poco_assert(list);
     for (std::vector<Task *>::iterator it = list->begin();
             it != list->end(); ++it) {
         Task *model = *it;
         model->UID = UID;
-        error err = Save(model);
+        error err = SaveTask(model);
         if (err != noError) {
             return err;
         }
@@ -507,14 +565,14 @@ error Database::saveList(Poco::UInt64 UID, std::vector<Task *> *list) {
     return noError;
 }
 
-error Database::saveList(Poco::UInt64 UID, std::vector<Tag *> *list) {
+error Database::saveTags(Poco::UInt64 UID, std::vector<Tag *> *list) {
     poco_assert(UID > 0);
     poco_assert(list);
     for (std::vector<Tag *>::iterator it = list->begin();
             it != list->end(); ++it) {
         Tag *model = *it;
         model->UID = UID;
-        error err = Save(model);
+        error err = SaveTag(model);
         if (err != noError) {
             return err;
         }
@@ -522,14 +580,15 @@ error Database::saveList(Poco::UInt64 UID, std::vector<Tag *> *list) {
     return noError;
 }
 
-error Database::saveList(Poco::UInt64 UID, std::vector<TimeEntry *> *list) {
+error Database::saveTimeEntries(Poco::UInt64 UID,
+        std::vector<TimeEntry *> *list) {
     poco_assert(UID > 0);
     poco_assert(list);
     for (std::vector<TimeEntry *>::iterator it = list->begin();
             it != list->end(); ++it) {
         TimeEntry *model = *it;
         model->UID = UID;
-        error err = Save(model);
+        error err = SaveTimeEntry(model);
         if (err != noError) {
             return err;
         }
@@ -537,24 +596,13 @@ error Database::saveList(Poco::UInt64 UID, std::vector<TimeEntry *> *list) {
     return noError;
 }
 
-error Database::Save(TimeEntry *model) {
+error Database::SaveTimeEntry(TimeEntry *model) {
     poco_assert(model);
     poco_assert(session);
     if (model->LocalID != 0 && !model->Dirty) {
         return noError;
     }
     try {
-        if (model->ID > 0) {
-            *session << "select local_id from time_entries where id = :id",
-                Poco::Data::into(model->LocalID),
-                Poco::Data::use(model->ID),
-                Poco::Data::limit(1),
-                Poco::Data::now;
-            error err = last_error();
-            if (err != noError) {
-                return err;
-            }
-        }
         Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID != 0) {
             logger.debug("Updating time entry " + model->String());
@@ -627,24 +675,13 @@ error Database::Save(TimeEntry *model) {
     return last_error();
 }
 
-error Database::Save(Workspace *model) {
+error Database::SaveWorkspace(Workspace *model) {
     poco_assert(model);
     poco_assert(session);
     if (model->LocalID != 0 && !model->Dirty) {
         return noError;
     }
     try {
-        if (model->ID > 0) {
-            *session << "select local_id from workspaces where id = :id",
-                Poco::Data::into(model->LocalID),
-                Poco::Data::use(model->ID),
-                Poco::Data::limit(1),
-                Poco::Data::now;
-            error err = last_error();
-            if (err != noError) {
-                return err;
-            }
-        }
         Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID != 0) {
             logger.debug("Updating workspace " + model->String());
@@ -683,24 +720,13 @@ error Database::Save(Workspace *model) {
     return last_error();
 }
 
-error Database::Save(Client *model) {
+error Database::SaveClient(Client *model) {
     poco_assert(model);
     poco_assert(session);
     if (model->LocalID != 0 && !model->Dirty) {
         return noError;
     }
     try {
-        if (model->ID > 0) {
-            *session << "select local_id from clients where id = :id",
-                Poco::Data::into(model->LocalID),
-                Poco::Data::use(model->ID),
-                Poco::Data::limit(1),
-                Poco::Data::now;
-            error err = last_error();
-            if (err != noError) {
-                return err;
-            }
-        }
         Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID != 0) {
             logger.debug("Updating client " + model->String());
@@ -743,24 +769,13 @@ error Database::Save(Client *model) {
     return last_error();
 }
 
-error Database::Save(Project *model) {
+error Database::SaveProject(Project *model) {
     poco_assert(model);
     poco_assert(session);
     if (model->LocalID != 0 && !model->Dirty) {
         return noError;
     }
     try {
-        if (model->ID > 0) {
-            *session << "select local_id from projects where id = :id",
-                Poco::Data::into(model->LocalID),
-                Poco::Data::use(model->ID),
-                Poco::Data::limit(1),
-                Poco::Data::now;
-            error err = last_error();
-            if (err != noError) {
-                return err;
-            }
-        }
         Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID != 0) {
             logger.debug("Updating project " + model->String());
@@ -803,24 +818,13 @@ error Database::Save(Project *model) {
     return last_error();
 }
 
-error Database::Save(Task *model) {
+error Database::SaveTask(Task *model) {
     poco_assert(model);
     poco_assert(session);
     if (model->LocalID != 0 && !model->Dirty) {
         return noError;
     }
     try {
-        if (model->ID > 0) {
-            *session << "select local_id from tasks where id = :id",
-                Poco::Data::into(model->LocalID),
-                Poco::Data::use(model->ID),
-                Poco::Data::limit(1),
-                Poco::Data::now;
-            error err = last_error();
-            if (err != noError) {
-                return err;
-            }
-        }
         Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID != 0) {
             logger.debug("Updating task " + model->String());
@@ -863,24 +867,13 @@ error Database::Save(Task *model) {
     return last_error();
 }
 
-error Database::Save(Tag *model) {
+error Database::SaveTag(Tag *model) {
     poco_assert(model);
     poco_assert(session);
     if (model->LocalID != 0 && !model->Dirty) {
         return noError;
     }
     try {
-        if (model->ID > 0) {
-            *session << "select local_id from tags where id = :id",
-                Poco::Data::into(model->LocalID),
-                Poco::Data::use(model->ID),
-                Poco::Data::limit(1),
-                Poco::Data::now;
-            error err = last_error();
-            if (err != noError) {
-                return err;
-            }
-        }
         Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID != 0) {
             logger.debug("Updating tag " + model->String());
@@ -923,7 +916,7 @@ error Database::Save(Tag *model) {
     return last_error();
 }
 
-error Database::Save(User *model, bool with_related_data) {
+error Database::SaveUser(User *model, bool with_related_data) {
     poco_assert(model);
     poco_assert(session);
 
@@ -932,96 +925,87 @@ error Database::Save(User *model, bool with_related_data) {
         return err;
     }
 
+    if (model->LocalID && !model->Dirty) {
+        return noError;
+    }
+
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
     Poco::Logger &logger = Poco::Logger::get("database");
 
-    if (!model->LocalID || model->Dirty) {
-        try {
-            if (model->ID > 0) {
-                *session << "select local_id from users where id = :id",
-                    Poco::Data::into(model->LocalID),
-                    Poco::Data::use(model->ID),
-                    Poco::Data::limit(1),
-                    Poco::Data::now;
-                error err = last_error();
-                if (err != noError) {
-                    return err;
-                }
+    try {
+        if (model->LocalID != 0) {
+            logger.debug("Updating user " + model->String());
+            *session << "update users set "
+                "api_token = :api_token, default_wid = :default_wid, "
+                "since = :since, id = :id, fullname = :fullname "
+                "where local_id = :local_id",
+                Poco::Data::use(model->APIToken),
+                Poco::Data::use(model->DefaultWID),
+                Poco::Data::use(model->Since),
+                Poco::Data::use(model->ID),
+                Poco::Data::use(model->Fullname),
+                Poco::Data::use(model->LocalID),
+                Poco::Data::now;
+            error err = last_error();
+            if (err != noError) {
+                return err;
             }
-            if (model->LocalID != 0) {
-                logger.debug("Updating user " + model->String());
-                *session << "update users set "
-                    "api_token = :api_token, default_wid = :default_wid, "
-                    "since = :since, id = :id, fullname = :fullname "
-                    "where local_id = :local_id",
-                    Poco::Data::use(model->APIToken),
-                    Poco::Data::use(model->DefaultWID),
-                    Poco::Data::use(model->Since),
-                    Poco::Data::use(model->ID),
-                    Poco::Data::use(model->Fullname),
-                    Poco::Data::use(model->LocalID),
-                    Poco::Data::now;
-                error err = last_error();
-                if (err != noError) {
-                    return err;
-                }
-            } else {
-                logger.debug("Inserting user " + model->String());
-                *session << "insert into users("
-                    "id, api_token, default_wid, since, fullname) "
-                    "values(:id, :api_token, :default_wid, :since, :fullname)",
-                    Poco::Data::use(model->ID),
-                    Poco::Data::use(model->APIToken),
-                    Poco::Data::use(model->DefaultWID),
-                    Poco::Data::use(model->Since),
-                    Poco::Data::use(model->Fullname),
-                    Poco::Data::now;
-                error err = last_error();
-                if (err != noError) {
-                    return err;
-                }
-                *session << "select last_insert_rowid()",
-                    Poco::Data::into(model->LocalID),
-                    Poco::Data::now;
-                err = last_error();
-                if (err != noError) {
-                    return err;
-                }
+        } else {
+            logger.debug("Inserting user " + model->String());
+            *session << "insert into users("
+                "id, api_token, default_wid, since, fullname) "
+                "values(:id, :api_token, :default_wid, :since, :fullname)",
+                Poco::Data::use(model->ID),
+                Poco::Data::use(model->APIToken),
+                Poco::Data::use(model->DefaultWID),
+                Poco::Data::use(model->Since),
+                Poco::Data::use(model->Fullname),
+                Poco::Data::now;
+            error err = last_error();
+            if (err != noError) {
+                return err;
             }
-            model->Dirty = false;
-        } catch(const Poco::Exception& exc) {
-            return exc.displayText();
-        } catch(const std::exception& ex) {
-            return ex.what();
-        } catch(const std::string& ex) {
-            return ex;
+            *session << "select last_insert_rowid()",
+                Poco::Data::into(model->LocalID),
+                Poco::Data::now;
+            err = last_error();
+            if (err != noError) {
+                return err;
+            }
         }
+        model->Dirty = false;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
     }
 
     if (with_related_data) {
-        err = saveList(model->ID, &model->Workspaces);
+        err = saveWorkspaces(model->ID, &model->Workspaces);
         if (err != noError) {
             return err;
         }
-        err = saveList(model->ID, &model->Clients);
+        err = saveClients(model->ID, &model->Clients);
         if (err != noError) {
             return err;
         }
-        err = saveList(model->ID, &model->Projects);
+        err = saveProjects(model->ID, &model->Projects);
         if (err != noError) {
             return err;
         }
-        err = saveList(model->ID, &model->Tasks);
+        err = saveTasks(model->ID, &model->Tasks);
         if (err != noError) {
             return err;
         }
-        err = saveList(model->ID, &model->Tags);
+        err = saveTags(model->ID, &model->Tags);
         if (err != noError) {
             return err;
         }
-        err = saveList(model->ID, &model->TimeEntries);
+        err = saveTimeEntries(model->ID, &model->TimeEntries);
         if (err != noError) {
             return err;
         }

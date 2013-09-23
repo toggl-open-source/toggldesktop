@@ -12,9 +12,6 @@
 #include "libjson.h" // NOLINT
 
 #include "Poco/Types.h"
-#include "Poco/Data/Common.h"
-#include "Poco/Data/RecordSet.h"
-#include "Poco/Data/Statement.h"
 
 #include "./types.h"
 
@@ -50,7 +47,7 @@ namespace kopsik {
         Poco::UInt64 UID;
         bool Dirty;
 
-        error Load(JSONNODE *node);
+        error LoadFromJSONNode(JSONNODE *node);
         std::string String();
     };
 
@@ -67,7 +64,7 @@ namespace kopsik {
         Poco::UInt64 UID;
         bool Dirty;
 
-        error Load(JSONNODE *node);
+        error LoadFromJSONNode(JSONNODE *node);
         std::string String();
     };
 
@@ -85,7 +82,7 @@ namespace kopsik {
         Poco::UInt64 UID;
         bool Dirty;
 
-        error Load(JSONNODE *node);
+        error LoadFromJSONNode(JSONNODE *node);
         std::string String();
     };
 
@@ -102,7 +99,7 @@ namespace kopsik {
         Poco::UInt64 UID;
         bool Dirty;
 
-        error Load(JSONNODE *node);
+        error LoadFromJSONNode(JSONNODE *node);
         std::string String();
     };
 
@@ -119,7 +116,7 @@ namespace kopsik {
         Poco::UInt64 UID;
         bool Dirty;
 
-        error Load(JSONNODE *node);
+        error LoadFromJSONNode(JSONNODE *node);
         std::string String();
     };
 
@@ -157,8 +154,8 @@ namespace kopsik {
         std::string StopString();
         void SetStopString(std::string value);
 
-        error Load(JSONNODE *node);
-        error Load(std::string json);
+        error LoadFromJSONNode(JSONNODE *node);
+        error LoadFromJSONString(std::string json);
 
         std::string String();
         JSONNODE *JSON();
@@ -166,7 +163,7 @@ namespace kopsik {
         bool NeedsPush();
 
     private:
-        error loadTags(JSONNODE *list);
+        error loadTagsFromJSONNode(JSONNODE *list);
 
         std::time_t Parse8601(std::string iso_8601_formatted_date);
         std::string Format8601(std::time_t date);
@@ -203,8 +200,9 @@ namespace kopsik {
 
         error Pull();
         error Push();
-        error Load(const std::string &json);
-        error Load(JSONNODE *node);
+        error LoadFromJSONString(const std::string &json,
+            bool with_related_data);
+        error LoadFromJSONNode(JSONNODE *node, bool with_related_data);
         std::string String();
 
         void ClearWorkspaces();
@@ -223,19 +221,17 @@ namespace kopsik {
 
         void CollectDirtyObjects(std::vector<TimeEntry *> *result);
 
-        error loadTimeEntries(Poco::Data::Statement *select);
-
         TimeEntry *RunningTimeEntry();
         TimeEntry *Start();
         std::vector<TimeEntry *> Stop();
 
     private:
-        error loadProjects(JSONNODE *list);
-        error loadTags(JSONNODE *list);
-        error loadClients(JSONNODE *list);
-        error loadTasks(JSONNODE *list);
-        error loadTimeEntries(JSONNODE *list);
-        error loadWorkspaces(JSONNODE *list);
+        error loadProjectsFromJSONNode(JSONNODE *list);
+        error loadTagsFromJSONNode(JSONNODE *list);
+        error loadClientsFromJSONNode(JSONNODE *list);
+        error loadTasksFromJSONNode(JSONNODE *list);
+        error loadTimeEntriesFromJSONNode(JSONNODE *list);
+        error loadWorkspacesFromJSONNode(JSONNODE *list);
 
         error requestJSON(std::string method, std::string relative_url,
                 std::string json, std::string *response_body);

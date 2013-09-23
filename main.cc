@@ -39,7 +39,7 @@ namespace kopsik {
 
         // Load user - we know current user by the TOGGL_API_TOKEN parameter.
         User user;
-        error err = db.Load(apiToken, &user, true);
+        error err = db.LoadUserByAPIToken(apiToken, &user, true);
         if (err != noError) {
             logger.error(err);
             return Poco::Util::Application::EXIT_SOFTWARE;
@@ -89,7 +89,7 @@ namespace kopsik {
         }
 
         // If still not blown up, save state and exit.
-        err = db.Save(&user, true);
+        err = db.SaveUser(&user, true);
         if (err != noError) {
             logger.error(err);
             return Poco::Util::Application::EXIT_SOFTWARE;
