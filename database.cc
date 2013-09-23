@@ -1265,21 +1265,28 @@ error Database::migrate(std::string name, std::string sql) {
     poco_assert(session);
     poco_assert(!name.empty());
     poco_assert(!sql.empty());
-    int count = 0;
-    *session << "select count(*) from kopsik_migrations where name=:name",
-        Poco::Data::into(count),
-        Poco::Data::use(name),
-        Poco::Data::now;
-
-    if (count < 1) {
-        *session << sql, Poco::Data::now;
-
-        *session << "insert into kopsik_migrations(name) values(:name)",
+    try {
+        int count = 0;
+        *session << "select count(*) from kopsik_migrations where name=:name",
+            Poco::Data::into(count),
             Poco::Data::use(name),
             Poco::Data::now;
-    }
 
-    return noError;
+        if (count < 1) {
+            *session << sql, Poco::Data::now;
+
+            *session << "insert into kopsik_migrations(name) values(:name)",
+                Poco::Data::use(name),
+                Poco::Data::now;
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error();
 }
 
 }   // namespace kopsik
