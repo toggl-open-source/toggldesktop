@@ -15,7 +15,7 @@ int kopsik_current_user(char *errmsg, unsigned int errlen, HUser *out) {
     char* apiToken = getenv("TOGGL_API_TOKEN");
     if (!apiToken) {
       strncpy(errmsg, "Please set TOGGL_API_TOKEN in environment", errlen);
-      return 1;
+      return 0;
     }
 
     kopsik::User user;
@@ -25,7 +25,8 @@ int kopsik_current_user(char *errmsg, unsigned int errlen, HUser *out) {
     kopsik::error err = db.LoadUserByAPIToken(apiToken, &user, true);
     if (err != kopsik::noError) {
         err.copy(errmsg, errlen);
-        return 1;
+        return 0;
     }
-    return 0;
+
+    return 1;
 }
