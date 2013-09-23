@@ -22,7 +22,7 @@ int kopsik_current_user(char *errmsg, unsigned int errlen, HUser *out) {
 
     kopsik::Database db("kopsik.db");
 
-    kopsik::error err = db.Load(apiToken, &user, true);
+    kopsik::error err = db.LoadUserByAPIToken(apiToken, &user, true);
     if (err != kopsik::noError) {
         err.copy(errmsg, errlen);
         return 1;
