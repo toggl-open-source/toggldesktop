@@ -30,21 +30,20 @@ typedef int kopsik_api_result;
 #define KOPSIK_API_FAILURE 1
 
 KOPSIK_EXPORT void kopsik_version(
-int *major, int *minor, int *patch);
+  int *major, int *minor, int *patch);
 
 // User API
 
 KOPSIK_EXPORT TogglUser *kopsik_user_new();
-KOPSIK_EXPORT kopsik_api_result kopsik_current_user(
-  char *errmsg, unsigned int errlen, TogglUser *out_user);
 KOPSIK_EXPORT void kopsik_user_delete(TogglUser *user);
 
-// Session management
+KOPSIK_EXPORT kopsik_api_result kopsik_current_user(
+  char *errmsg, unsigned int errlen, TogglUser *out_user);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_set_api_token(
   char *errmsg, unsigned int errlen, const char *in_api_token);
 
-// Data related API
+// Sync
 
 KOPSIK_EXPORT kopsik_api_result kopsik_sync(
   char *errmsg, unsigned int errlen);
