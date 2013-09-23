@@ -45,7 +45,8 @@ KOPSIK_EXPORT kopsik_api_result kopsik_sync(
   char *errmsg, unsigned int errlen);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_running_time_entry(
-  char *errmsg, unsigned int errlen, KopsikTimeEntry *out_time_entry);
+  char *errmsg, unsigned int errlen,
+  KopsikTimeEntry *out_time_entry, int *is_tracking);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_dirty_models(
   char *errmsg, unsigned int errlen, KopsikDirtyModels *out_dirty_models);

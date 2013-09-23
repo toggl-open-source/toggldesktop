@@ -63,11 +63,16 @@ kopsik_api_result kopsik_sync(char *errmsg, unsigned int errlen) {
 }
 
 kopsik_api_result kopsik_running_time_entry(char *errmsg, unsigned int errlen,
-        KopsikTimeEntry *out_time_entry) {
+        KopsikTimeEntry *out_time_entry, int *is_tracking) {
     if (!out_time_entry) {
         strncpy(errmsg, "Invalid time entry pointer", errlen);
         return KOPSIK_API_FAILURE;
     }
+    if (!is_tracking) {
+        strncpy(errmsg, "Invalid is_tracking pointer", errlen);
+        return KOPSIK_API_FAILURE;
+    }
+    *is_tracking = 0;
     // FIXME:
     return KOPSIK_API_SUCCESS;
 }

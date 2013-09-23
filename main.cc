@@ -51,18 +51,17 @@ namespace command_line_client {
 
         if ("status" == args[0]) {
             KopsikTimeEntry te;
+            int is_tracking(0);
             if (KOPSIK_API_FAILURE == kopsik_running_time_entry(err, ERRLEN,
-                    &te)) {
+                    &te, &is_tracking)) {
                 logger.error(err);
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
-            /*
-            if (te) {
-                logger.information("Tracking: " + te->String());
+            if (is_tracking) {
+                logger.information("Tracking: " + std::string(te.Description));
             } else {
-                logger.information("Timer is not tracking.");
+                logger.information("Not tracking.");
             }
-            */
             return Poco::Util::Application::EXIT_OK;
         }
 
