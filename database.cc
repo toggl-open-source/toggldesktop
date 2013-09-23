@@ -138,6 +138,15 @@ error Database::last_error() {
     return noError;
 }
 
+error Database::LoadCurrentUser(User *user, bool with_related_data) {
+    std::string api_token("");
+    error err = CurrentAPIToken(&api_token);
+    if (err != noError) {
+        return err;
+    }
+    return LoadUserByAPIToken(api_token, user, with_related_data);
+}
+
 error Database::LoadUserByAPIToken(std::string api_token, User *model,
         bool with_related_data) {
     poco_assert(session);
@@ -976,68 +985,69 @@ error Database::SaveUser(User *model, bool with_related_data) {
     poco_assert(model);
     poco_assert(session);
 
+    Poco::Logger &logger = Poco::Logger::get("database");
+
+    Poco::Stopwatch stopwatch;
+    stopwatch.start();
+
     error err = validate(model);
     if (err != noError) {
         return err;
     }
 
-    if (model->LocalID && !model->Dirty) {
-        return noError;
-    }
-
-    Poco::Stopwatch stopwatch;
-    stopwatch.start();
-
-    Poco::Logger &logger = Poco::Logger::get("database");
-
-    try {
-        if (model->LocalID != 0) {
-            logger.debug("Updating user " + model->String());
-            *session << "update users set "
-                "api_token = :api_token, default_wid = :default_wid, "
-                "since = :since, id = :id, fullname = :fullname "
-                "where local_id = :local_id",
-                Poco::Data::use(model->APIToken),
-                Poco::Data::use(model->DefaultWID),
-                Poco::Data::use(model->Since),
-                Poco::Data::use(model->ID),
-                Poco::Data::use(model->Fullname),
-                Poco::Data::use(model->LocalID),
-                Poco::Data::now;
-            error err = last_error();
-            if (err != noError) {
-                return err;
+    // Check if we really need to save model,
+    // *but* do not return if we don't need to.
+    // We might need to save related models, still.
+    if (!model->LocalID || model->Dirty) {
+        try {
+            if (model->LocalID != 0) {
+                logger.debug("Updating user " + model->String());
+                *session << "update users set "
+                    "api_token = :api_token, default_wid = :default_wid, "
+                    "since = :since, id = :id, fullname = :fullname "
+                    "where local_id = :local_id",
+                    Poco::Data::use(model->APIToken),
+                    Poco::Data::use(model->DefaultWID),
+                    Poco::Data::use(model->Since),
+                    Poco::Data::use(model->ID),
+                    Poco::Data::use(model->Fullname),
+                    Poco::Data::use(model->LocalID),
+                    Poco::Data::now;
+                error err = last_error();
+                if (err != noError) {
+                    return err;
+                }
+            } else {
+                logger.debug("Inserting user " + model->String());
+                *session << "insert into users("
+                    "id, api_token, default_wid, since, fullname) "
+                    "values(:id, :api_token, :default_wid, :since, :fullname)",
+                    Poco::Data::use(model->ID),
+                    Poco::Data::use(model->APIToken),
+                    Poco::Data::use(model->DefaultWID),
+                    Poco::Data::use(model->Since),
+                    Poco::Data::use(model->Fullname),
+                    Poco::Data::now;
+                error err = last_error();
+                if (err != noError) {
+                    return err;
+                }
+                *session << "select last_insert_rowid()",
+                    Poco::Data::into(model->LocalID),
+                    Poco::Data::now;
+                err = last_error();
+                if (err != noError) {
+                    return err;
+                }
             }
-        } else {
-            logger.debug("Inserting user " + model->String());
-            *session << "insert into users("
-                "id, api_token, default_wid, since, fullname) "
-                "values(:id, :api_token, :default_wid, :since, :fullname)",
-                Poco::Data::use(model->ID),
-                Poco::Data::use(model->APIToken),
-                Poco::Data::use(model->DefaultWID),
-                Poco::Data::use(model->Since),
-                Poco::Data::use(model->Fullname),
-                Poco::Data::now;
-            error err = last_error();
-            if (err != noError) {
-                return err;
-            }
-            *session << "select last_insert_rowid()",
-                Poco::Data::into(model->LocalID),
-                Poco::Data::now;
-            err = last_error();
-            if (err != noError) {
-                return err;
-            }
+            model->Dirty = false;
+        } catch(const Poco::Exception& exc) {
+            return exc.displayText();
+        } catch(const std::exception& ex) {
+            return ex.what();
+        } catch(const std::string& ex) {
+            return ex;
         }
-        model->Dirty = false;
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
     }
 
     if (with_related_data) {

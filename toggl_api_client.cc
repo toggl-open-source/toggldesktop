@@ -91,7 +91,7 @@ void User::CollectDirtyObjects(std::vector<TimeEntry *> *result) {
     }
 }
 
-error User::Push() {
+error User::push() {
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
@@ -333,8 +333,16 @@ bool User::isStatusOK(int status) {
     return status >= 200 && status < 300;
 }
 
+error User::Sync() {
+    error err = pull();
+    if (err != noError) {
+        return err;
+    }
+    return push();
+}
+
 // FIXME: move code into a GET method
-error User::Pull() {
+error User::pull() {
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 

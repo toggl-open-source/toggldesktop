@@ -199,8 +199,7 @@ namespace kopsik {
         std::vector<Tag *> Tags;
         std::vector<TimeEntry *> TimeEntries;
 
-        error Pull();
-        error Push();
+        error Sync();
         error LoadFromJSONString(const std::string &json,
             bool with_related_data);
         error LoadFromJSONNode(JSONNODE *node, bool with_related_data);
@@ -227,6 +226,9 @@ namespace kopsik {
         std::vector<TimeEntry *> Stop();
 
     private:
+        error pull();
+        error push();
+
         error loadProjectsFromJSONNode(JSONNODE *list);
         error loadTagsFromJSONNode(JSONNODE *list);
         error loadClientsFromJSONNode(JSONNODE *list);

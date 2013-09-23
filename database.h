@@ -48,7 +48,7 @@ class Database {
             bool with_related_data);
         error LoadUserByAPIToken(std::string api_token, User *user,
             bool with_related_data);
-        error loadUsersRelatedData(User *user);
+        error LoadCurrentUser(User *user, bool with_related_data);
 
         error UInt(std::string sql, Poco::UInt64 *result);
 
@@ -71,6 +71,8 @@ class Database {
         error migrate(std::string name, std::string sql);
         error validate(User *user);
         error last_error();
+
+        error loadUsersRelatedData(User *user);
 
         error loadWorkspaces(Poco::UInt64 UID, std::vector<Workspace *> *list);
         error loadClients(Poco::UInt64 UID, std::vector<Client *> *list);

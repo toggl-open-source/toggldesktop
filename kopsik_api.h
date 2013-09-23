@@ -13,20 +13,17 @@ extern "C" {
 
 #define KOPSIK_EXPORT
 
-struct KopsikTimeEntry {
-  const char *Description;
-};
-typedef struct KopsikTimeEntry KopsikTimeEntry;
+typedef struct {
+  char *Description;
+} TogglTimeEntry;
 
-struct KopsikUser {
-  const char *Fullname;
-};
-typedef struct KopsikUser KopsikUser;
+typedef struct {
+  char *Fullname;
+} TogglUser;
 
-struct KopsikDirtyModels {
+typedef struct {
   int TimeEntries;
-};
-typedef struct KopsikDirtyModels KopsikDirtyModels;
+} TogglDirtyModels;
 
 typedef int kopsik_api_result;
 #define KOPSIK_API_SUCCESS 0
@@ -35,27 +32,36 @@ typedef int kopsik_api_result;
 KOPSIK_EXPORT void kopsik_version(
 int *major, int *minor, int *patch);
 
+// User API
+
+KOPSIK_EXPORT TogglUser *kopsik_user_new();
 KOPSIK_EXPORT kopsik_api_result kopsik_current_user(
-  char *errmsg, unsigned int errlen, KopsikUser *out_user);
+  char *errmsg, unsigned int errlen, TogglUser *out_user);
+KOPSIK_EXPORT void kopsik_user_delete(TogglUser *user);
+
+// Session management
 
 KOPSIK_EXPORT kopsik_api_result kopsik_set_api_token(
   char *errmsg, unsigned int errlen, const char *in_api_token);
 
+// Data related API
+
 KOPSIK_EXPORT kopsik_api_result kopsik_sync(
   char *errmsg, unsigned int errlen);
+KOPSIK_EXPORT kopsik_api_result kopsik_dirty_models(
+  char *errmsg, unsigned int errlen, TogglDirtyModels *out_dirty_models);
 
+// Time tracking API
+
+KOPSIK_EXPORT TogglTimeEntry *kopsik_time_entry_new();
 KOPSIK_EXPORT kopsik_api_result kopsik_running_time_entry(
   char *errmsg, unsigned int errlen,
-  KopsikTimeEntry *out_time_entry, int *is_tracking);
-
-KOPSIK_EXPORT kopsik_api_result kopsik_dirty_models(
-  char *errmsg, unsigned int errlen, KopsikDirtyModels *out_dirty_models);
-
+  TogglTimeEntry *out_time_entry, int *is_tracking);
 KOPSIK_EXPORT kopsik_api_result kopsik_start(
-  char *errmsg, unsigned int errlen, KopsikTimeEntry *out_time_entry);
-
+  char *errmsg, unsigned int errlen, TogglTimeEntry *out_time_entry);
 KOPSIK_EXPORT kopsik_api_result kopsik_stop(
-  char *errmsg, unsigned int errlen, KopsikTimeEntry *out_time_entry);
+  char *errmsg, unsigned int errlen, TogglTimeEntry *out_time_entry);
+KOPSIK_EXPORT void kopsik_time_entry_delete(TogglTimeEntry *in_time_entry);
 
 #undef KOPSIK_EXPORT
 
