@@ -63,6 +63,8 @@ class Database {
         error LoadTimeEntriesForUpload(User *user);
 
         error CurrentAPIToken(std::string *token);
+        error SetCurrentAPIToken(const std::string &token);
+        error ClearCurrentAPIToken();
 
     private:
         error initialize_tables();

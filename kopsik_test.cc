@@ -9,6 +9,37 @@
 
 namespace kopsik {
 
+    TEST(KopsikTest, SaveAndLoadCurrentAPIToken) {
+        Poco::File f("test.db");
+        if (f.exists()) {
+            f.remove(false);
+        }
+        Database db("test.db");
+
+        std::string api_token("");
+        ASSERT_EQ(noError, db.CurrentAPIToken(&api_token));
+        ASSERT_EQ("", api_token);
+
+        api_token = "abc123";
+        ASSERT_EQ(noError, db.SetCurrentAPIToken(api_token));
+        ASSERT_EQ(noError, db.SetCurrentAPIToken(api_token));
+
+        Poco::UInt64 n(0);
+        ASSERT_EQ(noError, db.UInt("select count(1) from sessions", &n));
+        ASSERT_EQ(Poco::UInt64(1), n);
+
+        std::string api_token_from_db("");
+        ASSERT_EQ(noError, db.CurrentAPIToken(&api_token_from_db));
+        ASSERT_EQ("abc123", api_token_from_db);
+
+        ASSERT_EQ(noError, db.ClearCurrentAPIToken());
+        ASSERT_EQ(noError, db.UInt("select count(1) from sessions", &n));
+        ASSERT_EQ(Poco::UInt64(0), n);
+
+        ASSERT_EQ(noError, db.CurrentAPIToken(&api_token_from_db));
+        ASSERT_EQ("", api_token_from_db);
+    }
+
     TEST(KopsikTest, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
         Poco::File f("test.db");
         if (f.exists()) {

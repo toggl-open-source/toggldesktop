@@ -212,7 +212,7 @@ error Database::LoadUserByID(Poco::UInt64 UID, User *user,
     try {
         *session <<
             "select local_id, id, api_token, default_wid, since, fullname "
-            "from users where id = :id limit 1",
+            "from users where id = :id",
             Poco::Data::into(user->LocalID),
             Poco::Data::into(user->ID),
             Poco::Data::into(user->APIToken),
@@ -220,6 +220,7 @@ error Database::LoadUserByID(Poco::UInt64 UID, User *user,
             Poco::Data::into(user->Since),
             Poco::Data::into(user->Fullname),
             Poco::Data::use(UID),
+            Poco::Data::limit(1),
             Poco::Data::now;
         error err = last_error();
         if (err != noError) {
@@ -1083,7 +1084,9 @@ error Database::initialize_tables() {
     *session <<
         "select name from sqlite_master "
         "where type='table' and name='kopsik_migrations'",
-        Poco::Data::into(table_name), Poco::Data::limit(1), Poco::Data::now;
+        Poco::Data::into(table_name),
+        Poco::Data::limit(1),
+        Poco::Data::now;
 
     if (table_name.length() == 0) {
         *session <<
@@ -1258,7 +1261,54 @@ error Database::initialize_tables() {
 error Database::CurrentAPIToken(std::string *token) {
     poco_assert(session);
     poco_assert(token);
-    return noError;
+    *token = "";
+    try {
+        *session << "select api_token from sessions",
+            Poco::Data::into(*token),
+            Poco::Data::limit(1),
+            Poco::Data::now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error();
+}
+
+error Database::ClearCurrentAPIToken() {
+    poco_assert(session);
+    try {
+        *session << "delete from sessions", Poco::Data::now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error();
+}
+
+error Database::SetCurrentAPIToken(const std::string &token) {
+    poco_assert(session);
+    error err = ClearCurrentAPIToken();
+    if (err != noError) {
+        return err;
+    }
+    try {
+        *session << "insert into sessions(api_token) values(:api_token)",
+            Poco::Data::use(token),
+            Poco::Data::now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error();
 }
 
 error Database::migrate(std::string name, std::string sql) {
