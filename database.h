@@ -62,6 +62,8 @@ class Database {
 
         error LoadTimeEntriesForUpload(User *user);
 
+        error CurrentAPIToken(std::string *token);
+
     private:
         error initialize_tables();
         error migrate(std::string name, std::string sql);

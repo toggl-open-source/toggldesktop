@@ -1187,27 +1187,24 @@ error Database::initialize_tables() {
     }
 
     return migrate("sessions",
-                "create table sessions("
-                "local_id integer primary key, "
-                "api_token varchar not null, "
-                "active integer not null default 1 "
-                "); "
-                   "CREATE UNIQUE INDEX id_sessions_active ON sessions (active); ");
-  
-    return last_error();
+        "create table sessions("
+        "local_id integer primary key, "
+        "api_token varchar not null, "
+        "active integer not null default 1 "
+        "); "
+        "CREATE UNIQUE INDEX id_sessions_active ON sessions (active); ");
+    if (err != noError) {
+        return err;
+    }
+
+    return noError;
 }
-  
-  error Database::CurrentAPIToken(std::string &token) {
+
+error Database::CurrentAPIToken(std::string *token) {
     poco_assert(session);
-    poco_assert(!name.empty());
-    poco_assert(!sql.empty());
-    int count = 0;
-    *session << "select count(*) from kopsik_migrations where name=:name",
-    Poco::Data::into(count),
-    Poco::Data::use(name),
-    Poco::Data::now;
-    
-  }
+    poco_assert(token);
+    return noError;
+}
 
 error Database::migrate(std::string name, std::string sql) {
     poco_assert(session);
