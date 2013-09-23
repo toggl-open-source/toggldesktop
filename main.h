@@ -9,14 +9,12 @@
 #include "Poco/Util/Application.h"
 #include "Poco/Util/OptionSet.h"
 
-#include "./database.h"
+namespace command_line_client {
 
-namespace kopsik {
-
-    class Kopsik : public Poco::Util::Application {
+    class Main : public Poco::Util::Application {
     public:
-        Kopsik() {}
-        ~Kopsik() {}
+        Main() {}
+        ~Main() {}
 
     protected:
         int main(const std::vector<std::string>& args);
@@ -32,8 +30,8 @@ namespace kopsik {
         void usage();
     };
 
-}  // namespace kopsik
+}  // namespace command_line_client
 
-POCO_APP_MAIN(kopsik::Kopsik)
+POCO_APP_MAIN(command_line_client::Main)
 
 #endif  // MAIN_H_

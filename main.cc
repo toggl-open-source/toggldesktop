@@ -1,101 +1,104 @@
 // Copyright 2013 Tanel Lebedev
 
-#include <iostream> // NOLINT
-#include <cstdlib>
-#include <vector>
-
-#include "./toggl_api_client.h"
-#include "./database.h"
 #include "./main.h"
+
+#include <sstream>
+
+#include "./kopsik_api.h"
 
 #include "Poco/Message.h"
 #include "Poco/Logger.h"
 #include "Poco/Util/Application.h"
 
-namespace kopsik {
+#define ERRLEN 1024
 
-    void Kopsik::usage() {
-        std::cout << "Recognized commands are: "
-            << "push, pull, start, stop, status"
-            << std::endl;
+namespace command_line_client {
+
+    void Main::usage() {
+        Poco::Logger &logger = Poco::Logger::get("");
+        logger.information("Recognized commands are: "
+            "sync, start, stop, status, dirty");
     }
 
-    int Kopsik::main(const std::vector<std::string>& args) {
+    int Main::main(const std::vector<std::string>& args) {
         Poco::Logger &logger = Poco::Logger::get("");
         logger.setLevel(Poco::Message::PRIO_DEBUG);
 
-        char* apiToken = getenv("TOGGL_API_TOKEN");
-        if (!apiToken) {
-            std::cerr << "Please set TOGGL_API_TOKEN in environment"
-                << std::endl;
-            return Poco::Util::Application::EXIT_USAGE;
-        }
         if (args.empty()) {
             usage();
             return Poco::Util::Application::EXIT_USAGE;
         }
 
-        Database db("kopsik.db");
+        char* apiToken = getenv("TOGGL_API_TOKEN");
+        if (!apiToken) {
+            logger.error("Please set TOGGL_API_TOKEN in environment");
+            return Poco::Util::Application::EXIT_USAGE;
+        }
 
-        // Load user - we know current user by the TOGGL_API_TOKEN parameter.
-        User user;
-        error err = db.LoadUserByAPIToken(apiToken, &user, true);
-        if (err != noError) {
+        char err[ERRLEN];
+        if (KOPSIK_API_FAILURE == kopsik_set_api_token(err, ERRLEN, apiToken)) {
             logger.error(err);
             return Poco::Util::Application::EXIT_SOFTWARE;
         }
-        poco_assert(!user.APIToken.empty());
 
-        // Run a command on the user that has been loaded
-        std::string cmd = args[0];
-        if ("pull" == cmd) {
-            err = user.Pull();
-        } else if ("push" == cmd) {
-            err = user.Push();
-        } else if ("status" == cmd) {
-            TimeEntry *te = user.RunningTimeEntry();
+        if ("sync" == args[0]) {
+            if (KOPSIK_API_FAILURE == kopsik_sync(err, ERRLEN)) {
+                logger.error(err);
+                return Poco::Util::Application::EXIT_SOFTWARE;
+            }
+            return Poco::Util::Application::EXIT_OK;
+        }
+
+        if ("status" == args[0]) {
+            KopsikTimeEntry te;
+            if (KOPSIK_API_FAILURE == kopsik_running_time_entry(err, ERRLEN,
+                    &te)) {
+                logger.error(err);
+                return Poco::Util::Application::EXIT_SOFTWARE;
+            }
+            /*
             if (te) {
                 logger.information("Tracking: " + te->String());
             } else {
                 logger.information("Timer is not tracking.");
             }
-            std::vector<TimeEntry *> dirty;
-            user.CollectDirtyObjects(&dirty);
-            for (std::vector<TimeEntry *>::const_iterator it = dirty.begin();
-                    it != dirty.end(); it++) {
-                TimeEntry *te = *it;
-                logger.debug("- dirty time entry: " + te->String());
-            }
-        } else if ("start" == cmd) {
-            TimeEntry *te = user.Start();
-            if (te) {
-                logger.information("Started: " + te->String());
-            }
-        } else if ("stop" == cmd) {
-            std::vector<TimeEntry *>stopped = user.Stop();
-            for (std::vector<TimeEntry *>::const_iterator it = stopped.begin();
-                    it != stopped.end(); it++) {
-                logger.information("Stopped: " + (*it)->String());
-            }
-        } else {
-            usage();
-            return Poco::Util::Application::EXIT_USAGE;
+            */
+            return Poco::Util::Application::EXIT_OK;
         }
 
-        // Check command result
-        if (err != noError) {
-            logger.error(err);
-            return Poco::Util::Application::EXIT_SOFTWARE;
+        if ("dirty" == args[0]) {
+            KopsikDirtyModels dm;
+            if (KOPSIK_API_FAILURE == kopsik_dirty_models(err, ERRLEN, &dm)) {
+                logger.error(err);
+                return Poco::Util::Application::EXIT_SOFTWARE;
+            }
+            std::stringstream ss;
+            ss << dm.TimeEntries << " dirty time entries.";
+            logger.information(ss.str());
+            return Poco::Util::Application::EXIT_OK;
         }
 
-        // If still not blown up, save state and exit.
-        err = db.SaveUser(&user, true);
-        if (err != noError) {
-            logger.error(err);
-            return Poco::Util::Application::EXIT_SOFTWARE;
+        if ("start" == args[0]) {
+            KopsikTimeEntry te;
+            if (KOPSIK_API_FAILURE == kopsik_start(err, ERRLEN, &te)) {
+                logger.error(err);
+                return Poco::Util::Application::EXIT_SOFTWARE;
+            }
+            logger.information("Started.");
+            return Poco::Util::Application::EXIT_OK;
         }
 
-        return Poco::Util::Application::EXIT_OK;
+        if ("stop" == args[0]) {
+            KopsikTimeEntry te;
+            if (KOPSIK_API_FAILURE == kopsik_stop(err, ERRLEN, &te)) {
+                logger.error(err);
+                return Poco::Util::Application::EXIT_SOFTWARE;
+            }
+            logger.information("Stopped.");
+            return Poco::Util::Application::EXIT_OK;
+        }
+
+        usage();
+        return Poco::Util::Application::EXIT_USAGE;
     }
-
-}  // namespace kopsik
+}  // namespace command_line_client

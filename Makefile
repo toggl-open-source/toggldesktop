@@ -88,7 +88,7 @@ endif
 
 cxx=g++
 
-srcs=toggl_api_client.h toggl_api_client.cc database.h database.cc main.h main.cc
+srcs=toggl_api_client.h toggl_api_client.cc database.h database.cc kopsik_api.h kopsik_api.cc main.h main.cc
 objs=$(srcs:.c=.o)
 
 test_srcs=toggl_api_client.h toggl_api_client.cc database.h database.cc $(GTEST_ROOT)/src/gtest-all.cc kopsik_test.h kopsik_test.cc
