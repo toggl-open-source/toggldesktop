@@ -8,6 +8,7 @@
 #include <sstream>
 #include <iterator>
 #include <algorithm>
+#include <ctime>
 
 #include "libjson.h" // NOLINT
 
