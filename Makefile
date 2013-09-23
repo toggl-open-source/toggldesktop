@@ -94,7 +94,7 @@ objs=$(srcs:.c=.o)
 test_srcs=toggl_api_client.h toggl_api_client.cc database.h database.cc $(GTEST_ROOT)/src/gtest-all.cc kopsik_test.h kopsik_test.cc
 test_objs=$(test_srcs:.c=.o)
 
-default: command_line_client
+default: lint command_line_client
 
 clean:
 	rm -f $(main)
