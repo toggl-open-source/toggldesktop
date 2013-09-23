@@ -103,7 +103,7 @@ clean:
 command_line_client:
 	$(cxx) $(cflags) -O2 -DNDEBUG -o $(main) $(objs) $(libs) && strip $(main)
 
-test:
+test: lint
 	$(cxx) $(cflags) -DNDEBUG -o $(main)_test $(test_objs) $(libs)
 	./$(main)_test
 
