@@ -144,6 +144,7 @@ error User::push() {
     error err = requestJSON(Poco::Net::HTTPRequest::HTTP_POST,
         "/api/v8/batch_updates",
         json,
+        true,
         &response_body);
     if (err != noError) {
         return err;
@@ -241,8 +242,11 @@ void BatchUpdateResult::parseResponseJSON(JSONNODE *n) {
     }
 }
 
-error User::requestJSON(std::string method, std::string relative_url,
-        std::string json, std::string *response_body) {
+error User::requestJSON(std::string method,
+        std::string relative_url,
+        std::string json,
+        bool authenticate_with_api_token,
+        std::string *response_body) {
     poco_assert(!method.empty());
     poco_assert(!relative_url.empty());
     poco_assert(response_body);
@@ -279,7 +283,17 @@ error User::requestJSON(std::string method, std::string relative_url,
         Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
         logger.debug("Sending request..");
 
-        Poco::Net::HTTPBasicCredentials cred(APIToken, "api_token");
+        std::string login_username("");
+        std::string login_password("");
+        if (authenticate_with_api_token) {
+            login_username = APIToken;
+            login_password = "api_token";
+        } else {
+            login_username = LoginEmail;
+            login_password = LoginPassword;
+        }
+
+        Poco::Net::HTTPBasicCredentials cred(login_username, login_password);
         cred.authenticate(req);
         session.sendRequest(req) << pBuff << std::flush;
 
@@ -334,11 +348,13 @@ bool User::isStatusOK(int status) {
 }
 
 error User::Login(const std::string &email, const std::string &password) {
-    return noError;
+    LoginEmail = email;
+    LoginPassword = password;
+    return pull(false);
 }
 
 error User::Sync() {
-    error err = pull();
+    error err = pull(true);
     if (err != noError) {
         return err;
     }
@@ -346,7 +362,7 @@ error User::Sync() {
 }
 
 // FIXME: move code into a GET method
-error User::pull() {
+error User::pull(bool authenticate_with_api_token) {
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
@@ -354,6 +370,7 @@ error User::pull() {
     error err = requestJSON(Poco::Net::HTTPRequest::HTTP_GET,
         "/api/v8/me?with_related_data=true",
         "",
+        authenticate_with_api_token,
         &response_body);
     if (err != noError) {
         return err;

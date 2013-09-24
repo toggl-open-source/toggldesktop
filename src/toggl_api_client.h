@@ -173,7 +173,7 @@ namespace kopsik {
     class User {
     public:
         User() : LocalID(0), ID(0), APIToken(""), DefaultWID(0), Since(0),
-            Dirty(false), Fullname("") {}
+            Dirty(false), Fullname(""), LoginEmail(""), LoginPassword("") {}
         ~User() {
             ClearWorkspaces();
             ClearClients();
@@ -226,8 +226,11 @@ namespace kopsik {
         TimeEntry *Start();
         std::vector<TimeEntry *> Stop();
 
+        std::string LoginEmail;
+        std::string LoginPassword;
+
     private:
-        error pull();
+        error pull(bool authenticate_with_api_token);
         error push();
 
         error loadProjectsFromJSONNode(JSONNODE *list);
@@ -238,7 +241,9 @@ namespace kopsik {
         error loadWorkspacesFromJSONNode(JSONNODE *list);
 
         error requestJSON(std::string method, std::string relative_url,
-                std::string json, std::string *response_body);
+                std::string json,
+                bool authenticate_with_api_token,
+                std::string *response_body);
         bool isStatusOK(int status);
         void parseResponseArray(std::string response_body,
             std::vector<BatchUpdateResult> *responses);
