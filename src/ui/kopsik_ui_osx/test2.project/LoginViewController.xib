@@ -28,6 +28,9 @@
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
+                    <connections>
+                        <outlet property="nextKeyView" destination="92W-wp-mad" id="ck4-uf-hqS"/>
+                    </connections>
                 </textField>
                 <secureTextField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="92W-wp-mad">
                     <rect key="frame" x="20" y="67" width="183" height="22"/>
@@ -40,6 +43,9 @@
                             <string>NSAllRomanInputSourcesLocaleIdentifier</string>
                         </allowedInputSourceLocales>
                     </secureTextFieldCell>
+                    <connections>
+                        <outlet property="nextKeyView" destination="xDb-Xv-sF3" id="2iU-3T-0OR"/>
+                    </connections>
                 </secureTextField>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xDb-Xv-sF3">
                     <rect key="frame" x="13" y="31" width="82" height="32"/>
@@ -50,6 +56,7 @@
                     </buttonCell>
                     <connections>
                         <action selector="clickLoginButton:" target="-2" id="uKz-IP-d3X"/>
+                        <outlet property="nextKeyView" destination="bYg-wE-3PV" id="tT3-T3-tRo"/>
                     </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tdS-Qv-qf5">
@@ -80,6 +87,9 @@
                     </textFieldCell>
                 </textField>
             </subviews>
+            <connections>
+                <outlet property="nextKeyView" destination="bYg-wE-3PV" id="s3H-Jo-4m6"/>
+            </connections>
         </customView>
     </objects>
 </document>
