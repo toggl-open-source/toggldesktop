@@ -1,7 +1,7 @@
 // Copyright 2013 Tanel Lebedev
 
-#ifndef TOGGL_API_CLIENT_H_
-#define TOGGL_API_CLIENT_H_
+#ifndef SRC_TOGGL_API_CLIENT_H_
+#define SRC_TOGGL_API_CLIENT_H_
 
 #include <string>
 #include <vector>
@@ -244,4 +244,4 @@ namespace kopsik {
     };
 }  // namespace kopsik
 
-#endif  // TOGGL_API_CLIENT_H_
+#endif  // SRC_TOGGL_API_CLIENT_H_

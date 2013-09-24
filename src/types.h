@@ -1,7 +1,7 @@
 // Copyright 2013 Tanel Lebedev
 
-#ifndef TYPES_H_
-#define TYPES_H_
+#ifndef SRC_TYPES_H_
+#define SRC_TYPES_H_
 
 #include <string>
 
@@ -14,4 +14,4 @@ namespace kopsik {
     typedef std::string guid;
 }
 
-#endif  // TYPES_H_
+#endif  // SRC_TYPES_H_

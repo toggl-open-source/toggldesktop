@@ -1,7 +1,7 @@
 // Copyright 2013 Tanel Lebedev
 
-#ifndef DATABASE_H_
-#define DATABASE_H_
+#ifndef SRC_DATABASE_H_
+#define SRC_DATABASE_H_
 
 #include <string>
 #include <vector>
@@ -99,4 +99,4 @@ class Database {
 
 }  // namespace kopsik
 
-#endif  // DATABASE_H_
+#endif  // SRC_DATABASE_H_

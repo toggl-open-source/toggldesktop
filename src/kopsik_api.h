@@ -1,7 +1,7 @@
 // Copyright 2013 Tanel Lebedev
 
-#ifndef KOPSIK_API_H_
-#define KOPSIK_API_H_
+#ifndef SRC_KOPSIK_API_H_
+#define SRC_KOPSIK_API_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -68,4 +68,4 @@ KOPSIK_EXPORT void kopsik_time_entry_delete(TogglTimeEntry *in_time_entry);
 }
 #endif
 
-#endif  // KOPSIK_API_H_
+#endif  // SRC_KOPSIK_API_H_

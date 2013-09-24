@@ -1,7 +1,7 @@
 // Copyright 2013 Tanel Lebedev
 
-#ifndef MAIN_H_
-#define MAIN_H_
+#ifndef SRC_MAIN_H_
+#define SRC_MAIN_H_
 
 #include <string>
 #include <vector>
@@ -34,4 +34,4 @@ namespace command_line_client {
 
 POCO_APP_MAIN(command_line_client::Main)
 
-#endif  // MAIN_H_
+#endif  // SRC_MAIN_H_

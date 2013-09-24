@@ -88,10 +88,10 @@ endif
 
 cxx=g++
 
-srcs=toggl_api_client.h toggl_api_client.cc database.h database.cc kopsik_api.h kopsik_api.cc main.h main.cc
+srcs=src/toggl_api_client.h src/toggl_api_client.cc src/database.h src/database.cc src/kopsik_api.h src/kopsik_api.cc src/main.h src/main.cc
 objs=$(srcs:.c=.o)
 
-test_srcs=toggl_api_client.h toggl_api_client.cc database.h database.cc $(GTEST_ROOT)/src/gtest-all.cc kopsik_test.h kopsik_test.cc
+test_srcs=src/toggl_api_client.h src/toggl_api_client.cc src/database.h src/database.cc $(GTEST_ROOT)/src/gtest-all.cc src/kopsik_test.h src/kopsik_test.cc
 test_objs=$(test_srcs:.c=.o)
 
 default: lint command_line_client
@@ -114,7 +114,7 @@ push:
 	./$(main) push
 
 lint:
-	./third_party/cpplint/cpplint.py *.cc *.h
+	./third_party/cpplint/cpplint.py src/*
 
 deps: openssl poco json
 
