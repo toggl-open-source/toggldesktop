@@ -88,9 +88,6 @@ endif
 
 cxx=g++
 
-srcs=src/toggl_api_client.h src/toggl_api_client.cc src/database.h src/database.cc src/kopsik_api.h src/kopsik_api.cc src/main.h src/main.cc
-objs=$(srcs:.c=.o)
-
 test_srcs=src/toggl_api_client.h src/toggl_api_client.cc src/database.h src/database.cc $(GTEST_ROOT)/src/gtest-all.cc src/kopsik_test.h src/kopsik_test.cc
 test_objs=$(test_srcs:.c=.o)
 
@@ -101,7 +98,13 @@ clean:
 	rm -f $(main)_test
 
 command_line_client:
-	$(cxx) $(cflags) -O2 -DNDEBUG -o $(main) $(objs) $(libs) && strip $(main)
+	mkdir -p build
+	$(cxx) $(cflags) -O2 -DNDEBUG -c src/toggl_api_client.cc -o build/toggl_api_client.o
+	$(cxx) $(cflags) -O2 -DNDEBUG -c src/database.cc -o build/database.o
+	$(cxx) $(cflags) -O2 -DNDEBUG -c src/kopsik_api.cc -o build/kopsik_api.o
+	$(cxx) $(cflags) -O2 -DNDEBUG -c src/main.cc -o build/main.o
+	$(cxx) -o $(main) -o $(main) build/*.o $(libs)
+	strip $(main)
 
 test: lint
 	$(cxx) $(cflags) -DNDEBUG -o $(main)_test $(test_objs) $(libs)
