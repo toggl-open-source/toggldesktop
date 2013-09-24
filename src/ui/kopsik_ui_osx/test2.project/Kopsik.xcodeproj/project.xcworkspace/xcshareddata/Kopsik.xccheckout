@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>3F7036A0-FB23-4384-965F-7CBE86A38298</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Kopsik</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>B7EC41FA-91F9-4BE0-96D7-254FF91D49AB</key>
+		<string>ssh://github.com/tanel/kopsik.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>src/ui/kopsik_ui_osx/test2.project/Kopsik.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>B7EC41FA-91F9-4BE0-96D7-254FF91D49AB</key>
+		<string>../../../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/tanel/kopsik.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>B7EC41FA-91F9-4BE0-96D7-254FF91D49AB</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>B7EC41FA-91F9-4BE0-96D7-254FF91D49AB</string>
+			<key>IDESourceControlWCCName</key>
+			<string>kopsik</string>
+		</dict>
+	</array>
+</dict>
+</plist>
