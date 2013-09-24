@@ -9,3 +9,4 @@
 #import "UIEvents.h"
 
 NSString *const kUIEventUserLoggedIn = @"UserLoggedIn";
+NSString *const kUIEventUserLoggedOut = @"UserLoggedOut";

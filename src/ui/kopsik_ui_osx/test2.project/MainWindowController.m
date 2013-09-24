@@ -8,11 +8,13 @@
 
 #import "MainWindowController.h"
 #import "LoginViewController.h"
+#import "TimeEntryListViewController.h"
 #import "UIEvents.h"
 #import "kopsik_api.h"
 
 @interface MainWindowController ()
 @property (nonatomic,strong) IBOutlet LoginViewController *loginViewController;
+@property (nonatomic,strong) IBOutlet TimeEntryListViewController *timeEntryListViewController;
 @end
 
 @implementation MainWindowController
@@ -26,7 +28,15 @@
       selector:@selector(eventHandler:)
       name:kUIEventUserLoggedIn
       object:nil];
-    self.loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(eventHandler:)
+     name:kUIEventUserLoggedOut
+     object:nil];
+    self.loginViewController = [[LoginViewController alloc]
+                                initWithNibName:@"LoginViewController" bundle:nil];
+    self.timeEntryListViewController = [[TimeEntryListViewController alloc]
+                                        initWithNibName:@"TimeEntryListViewController" bundle:nil];
   }
   return self;
 }
@@ -40,8 +50,7 @@
   if (KOPSIK_API_SUCCESS != kopsik_current_user(err, KOPSIK_ERR_LEN, user)) {
     NSLog(@"Error fetching user: %s", err);
   } else if (!user->ID) {
-    [self.contentView addSubview:self.loginViewController.view];
-    self.loginViewController.view.frame =self.contentView.bounds;
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedOut object:nil];
   } else {
     NSLog(@"Current user: %s", user->Fullname);
   }
@@ -50,7 +59,17 @@
 
 -(void)eventHandler: (NSNotification *) notification
 {
-  NSLog(@"event triggered");
+  NSLog(@"event triggered: %@", notification.name);
+  if ([notification.name isEqualToString:kUIEventUserLoggedOut]) {
+    [self.timeEntryListViewController.view removeFromSuperview];
+    [self.contentView addSubview:self.loginViewController.view];
+    self.loginViewController.view.frame =self.contentView.bounds;
+    [self.timeEntryListViewController.view removeFromSuperview];
+  } else if ([notification.name isEqualToString:kUIEventUserLoggedIn]) {
+    [self.loginViewController.view removeFromSuperview];
+    [self.contentView addSubview:self.timeEntryListViewController.view];
+    self.timeEntryListViewController.view.frame =self.contentView.bounds;
+  }
 }
 
 @end
