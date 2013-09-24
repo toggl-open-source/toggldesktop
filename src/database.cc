@@ -1028,6 +1028,8 @@ error Database::SaveUser(User *model, bool with_related_data) {
         return err;
     }
 
+    session->begin();
+
     // Check if we really need to save model,
     // *but* do not return if we don't need to.
     // We might need to save related models, still.
@@ -1048,6 +1050,7 @@ error Database::SaveUser(User *model, bool with_related_data) {
                     Poco::Data::now;
                 error err = last_error();
                 if (err != noError) {
+                    session->rollback();
                     return err;
                 }
             } else {
@@ -1063,6 +1066,7 @@ error Database::SaveUser(User *model, bool with_related_data) {
                     Poco::Data::now;
                 error err = last_error();
                 if (err != noError) {
+                    session->rollback();
                     return err;
                 }
                 Poco::Int64 local_id(0);
@@ -1072,15 +1076,19 @@ error Database::SaveUser(User *model, bool with_related_data) {
                 model->SetLocalID(local_id);
                 err = last_error();
                 if (err != noError) {
+                    session->rollback();
                     return err;
                 }
             }
             model->ClearDirty();
         } catch(const Poco::Exception& exc) {
+            session->rollback();
             return exc.displayText();
         } catch(const std::exception& ex) {
+            session->rollback();
             return ex.what();
         } catch(const std::string& ex) {
+            session->rollback();
             return ex;
         }
     }
@@ -1088,29 +1096,37 @@ error Database::SaveUser(User *model, bool with_related_data) {
     if (with_related_data) {
         err = saveWorkspaces(model->ID(), &model->Workspaces);
         if (err != noError) {
+            session->rollback();
             return err;
         }
         err = saveClients(model->ID(), &model->Clients);
         if (err != noError) {
+            session->rollback();
             return err;
         }
         err = saveProjects(model->ID(), &model->Projects);
         if (err != noError) {
+            session->rollback();
             return err;
         }
         err = saveTasks(model->ID(), &model->Tasks);
         if (err != noError) {
+            session->rollback();
             return err;
         }
         err = saveTags(model->ID(), &model->Tags);
         if (err != noError) {
+            session->rollback();
             return err;
         }
         err = saveTimeEntries(model->ID(), &model->TimeEntries);
         if (err != noError) {
+            session->rollback();
             return err;
         }
     }
+
+    session->commit();
 
     stopwatch.stop();
     std::stringstream ss;
