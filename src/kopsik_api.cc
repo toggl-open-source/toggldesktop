@@ -24,6 +24,7 @@ void kopsik_version(int *major, int *minor, int *patch) {
 
 TogglUser *kopsik_user_new() {
     TogglUser *user = new TogglUser();
+    user->ID = 0;
     user->Fullname = 0;
     return user;
 }

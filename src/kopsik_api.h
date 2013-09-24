@@ -13,18 +13,6 @@ extern "C" {
 
 #define KOPSIK_EXPORT
 
-typedef struct {
-  char *Description;
-} TogglTimeEntry;
-
-typedef struct {
-  char *Fullname;
-} TogglUser;
-
-typedef struct {
-  int TimeEntries;
-} TogglDirtyModels;
-
 typedef int kopsik_api_result;
 #define KOPSIK_API_SUCCESS 0
 #define KOPSIK_API_FAILURE 1
@@ -33,6 +21,11 @@ KOPSIK_EXPORT void kopsik_version(
   int *major, int *minor, int *patch);
 
 // User API
+  
+typedef struct {
+    unsigned int ID;
+    char *Fullname;
+} TogglUser;
 
 KOPSIK_EXPORT TogglUser *kopsik_user_new();
 KOPSIK_EXPORT void kopsik_user_delete(TogglUser *user);
@@ -45,6 +38,10 @@ KOPSIK_EXPORT kopsik_api_result kopsik_set_api_token(
 
 // Sync
 
+typedef struct {
+    int TimeEntries;
+} TogglDirtyModels;
+  
 KOPSIK_EXPORT kopsik_api_result kopsik_sync(
   char *errmsg, unsigned int errlen);
 KOPSIK_EXPORT kopsik_api_result kopsik_dirty_models(
@@ -52,6 +49,10 @@ KOPSIK_EXPORT kopsik_api_result kopsik_dirty_models(
 
 // Time tracking API
 
+typedef struct {
+    char *Description;
+} TogglTimeEntry;
+  
 KOPSIK_EXPORT TogglTimeEntry *kopsik_time_entry_new();
 KOPSIK_EXPORT kopsik_api_result kopsik_running_time_entry(
   char *errmsg, unsigned int errlen,
