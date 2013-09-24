@@ -334,12 +334,8 @@
 				INSTALL_PATH = "@executable_path/../../Contents/Resources";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/tambet/projects/libkopsik/Kopsik/Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/lib/Darwin/x86_64",
-					"/Users/tambet/projects/libkopsik/Kopsik/Kopsik/third_party/kopsik/third_party/openssl-1.0.1e",
-					/Users/tambet/projects/libkopsik/Kopsik/Kopsik/third_party/kopsik/third_party/libjson,
-					/Users/tambet/projects/kopsik/third_party/libjson,
-					"/Users/tambet/projects/kopsik/third_party/openssl-1.0.1e",
-					"/Users/tambet/projects/kopsik/third_party/poco-1.4.6p1-all/lib/Darwin/x86_64",
+					"../../../third_party/poco-1.4.6p1-all/lib/Darwin/x86_64",
+					../../../third_party/libjson,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -364,12 +360,8 @@
 				INSTALL_PATH = "@executable_path/../../Contents/Resources";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/tambet/projects/libkopsik/Kopsik/Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/lib/Darwin/x86_64",
-					"/Users/tambet/projects/libkopsik/Kopsik/Kopsik/third_party/kopsik/third_party/openssl-1.0.1e",
-					/Users/tambet/projects/libkopsik/Kopsik/Kopsik/third_party/kopsik/third_party/libjson,
-					/Users/tambet/projects/kopsik/third_party/libjson,
-					"/Users/tambet/projects/kopsik/third_party/openssl-1.0.1e",
-					"/Users/tambet/projects/kopsik/third_party/poco-1.4.6p1-all/lib/Darwin/x86_64",
+					"../../../third_party/poco-1.4.6p1-all/lib/Darwin/x86_64",
+					../../../third_party/libjson,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
