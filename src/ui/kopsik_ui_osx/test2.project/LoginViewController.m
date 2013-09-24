@@ -31,11 +31,12 @@
   
   char err[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_login(err, KOPSIK_ERR_LEN, [email UTF8String], [pass UTF8String])) {
-    [self.errorLabel setValue:[NSString stringWithUTF8String:err]];
+    [self.errorLabel setStringValue:[NSString stringWithUTF8String:err]];
     [self.errorLabel setHidden:NO];
     NSLog(@"Login failed: %s", err);
   } else {
     NSLog(@"Success");
+    [self loginSuccess];
     [self.errorLabel setHidden:YES];
   }
 }

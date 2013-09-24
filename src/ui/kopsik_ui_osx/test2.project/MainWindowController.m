@@ -22,6 +22,7 @@
     self = [super initWithWindow:window];
     if (self) {
       self.loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
+      self.loginViewController.loginSuccess = @selector(loginSuccess);
     }
     return self;
 }
@@ -41,6 +42,12 @@
   } else {
     NSLog(@"Current user: %s", user->Fullname);
   }
-  kopsik_user_delete(user);}
+  kopsik_user_delete(user);
+}
+
+- (void)loginSuccess
+{
+  NSLog(@"got it!!");
+}
 
 @end

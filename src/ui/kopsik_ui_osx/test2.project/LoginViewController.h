@@ -13,6 +13,7 @@
 @property (weak) IBOutlet NSSecureTextField *password;
 @property (weak) IBOutlet NSTextField *errorLabel;
 @property (weak) IBOutlet NSButton *loginButton;
+@property (nonatomic, assign) SEL loginSuccess;
 - (IBAction)clickLoginButton:(id)sender;
 
 @end
