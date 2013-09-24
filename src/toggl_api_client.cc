@@ -1221,12 +1221,6 @@ error TimeEntry::LoadFromJSONString(std::string json) {
 error TimeEntry::LoadFromJSONNode(JSONNODE *data) {
     poco_assert(data);
 
-    json_char *jc = json_write_formatted(data);
-    std::string json(jc);
-    json_free(jc);
-    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
-    logger.debug("Time entry is loading this JSON: " + json);
-
     Poco::UInt64 id(0), wid(0), pid(0), tid(0), ui_modified_at(0);
     Poco::Int64 duration_in_seconds(0);
     std::string description(""), guid(""), start(""), stop("");
