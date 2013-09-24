@@ -19,6 +19,8 @@
 		69FC181F17E6534500B96425 /* test2Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 69FC181E17E6534500B96425 /* test2Tests.m */; };
 		74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C9617EC1DE100CA53D3 /* libc++.dylib */; };
 		74033C9817EC1DF100CA53D3 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C8D17EC1CFD00CA53D3 /* libstdc++.dylib */; };
+		7424949E17F1E3D20030121C /* UIEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 7424949D17F1E3D20030121C /* UIEvents.m */; };
+		7424949F17F1E3D20030121C /* UIEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 7424949D17F1E3D20030121C /* UIEvents.m */; };
 		74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */; };
 		74D1D25717EB713F00E709B0 /* TimeEntryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */; };
 		74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */; };
@@ -75,6 +77,8 @@
 		69FC181E17E6534500B96425 /* test2Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = test2Tests.m; sourceTree = "<group>"; };
 		74033C8D17EC1CFD00CA53D3 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		74033C9617EC1DE100CA53D3 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
+		7424949C17F1E3D20030121C /* UIEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIEvents.h; path = ../UIEvents.h; sourceTree = "<group>"; };
+		7424949D17F1E3D20030121C /* UIEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIEvents.m; path = ../UIEvents.m; sourceTree = "<group>"; };
 		74D1D25317EB713F00E709B0 /* TimeEntryListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryListViewController.h; sourceTree = SOURCE_ROOT; };
 		74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryListViewController.m; sourceTree = SOURCE_ROOT; };
 		74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeEntryListViewController.xib; sourceTree = SOURCE_ROOT; };
@@ -166,6 +170,8 @@
 		69FC17FA17E6534400B96425 /* kopsik_ui */ = {
 			isa = PBXGroup;
 			children = (
+				7424949C17F1E3D20030121C /* UIEvents.h */,
+				7424949D17F1E3D20030121C /* UIEvents.m */,
 				C5DA1FBA17F197BF001C4565 /* kopsik_api.h */,
 				69FC180617E6534400B96425 /* AppDelegate.h */,
 				69FC180717E6534400B96425 /* AppDelegate.m */,
@@ -345,6 +351,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7424949E17F1E3D20030121C /* UIEvents.m in Sources */,
 				C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */,
 				69FC180117E6534400B96425 /* main.m in Sources */,
 				69FC180817E6534400B96425 /* AppDelegate.m in Sources */,
@@ -360,6 +367,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7424949F17F1E3D20030121C /* UIEvents.m in Sources */,
 				69FC181F17E6534500B96425 /* test2Tests.m in Sources */,
 				74D1D25717EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
 				74D1D25E17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,

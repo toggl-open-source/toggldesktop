@@ -8,6 +8,7 @@
 
 #import "LoginViewController.h"
 #import "kopsik_api.h"
+#import "UIEvents.h"
 
 @interface LoginViewController ()
 
@@ -36,8 +37,10 @@
     NSLog(@"Login failed: %s", err);
   } else {
     NSLog(@"Success");
-    [self loginSuccess];
     [self.errorLabel setHidden:YES];
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:kUIEventUserLoggedIn
+     object:nil ];
   }
 }
 @end

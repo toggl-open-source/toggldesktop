@@ -8,8 +8,8 @@
 
 #import "MainWindowController.h"
 #import "LoginViewController.h"
-
-#include "kopsik_api.h"
+#import "UIEvents.h"
+#import "kopsik_api.h"
 
 @interface MainWindowController ()
 @property (nonatomic,strong) IBOutlet LoginViewController *loginViewController;
@@ -19,24 +19,27 @@
 
 - (id)initWithWindow:(NSWindow *)window
 {
-    self = [super initWithWindow:window];
-    if (self) {
-      self.loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
-      self.loginViewController.loginSuccess = @selector(loginSuccess);
-    }
-    return self;
+  self = [super initWithWindow:window];
+  if (self) {
+    [[NSNotificationCenter defaultCenter]
+      addObserver:self
+      selector:@selector(eventHandler:)
+      name:kUIEventUserLoggedIn
+      object:nil];
+    self.loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
+  }
+  return self;
 }
 
 - (void)windowDidLoad
 {
-    [super windowDidLoad];
+  [super windowDidLoad];
     
   char err[KOPSIK_ERR_LEN];
   TogglUser *user = kopsik_user_new();
   if (KOPSIK_API_SUCCESS != kopsik_current_user(err, KOPSIK_ERR_LEN, user)) {
     NSLog(@"Error fetching user: %s", err);
   } else if (!user->ID) {
-    NSLog(@"User not found.. LOG IN!!!");
     [self.contentView addSubview:self.loginViewController.view];
     self.loginViewController.view.frame =self.contentView.bounds;
   } else {
@@ -45,9 +48,9 @@
   kopsik_user_delete(user);
 }
 
-- (void)loginSuccess
+-(void)eventHandler: (NSNotification *) notification
 {
-  NSLog(@"got it!!");
+  NSLog(@"event triggered");
 }
 
 @end
