@@ -88,16 +88,14 @@ endif
 
 cxx=g++
 
-test_srcs=src/toggl_api_client.h src/toggl_api_client.cc src/database.h src/database.cc $(GTEST_ROOT)/src/gtest-all.cc src/kopsik_test.h src/kopsik_test.cc
-test_objs=$(test_srcs:.c=.o)
-
-default: lint command_line_client
+default: command_line_client
 
 clean:
+	rm -rf build
 	rm -f $(main)
 	rm -f $(main)_test
 
-command_line_client:
+command_line_client: clean lint
 	mkdir -p build
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/toggl_api_client.cc -o build/toggl_api_client.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/database.cc -o build/database.o
@@ -106,8 +104,14 @@ command_line_client:
 	$(cxx) -o $(main) -o $(main) build/*.o $(libs)
 	strip $(main)
 
-test: lint
-	$(cxx) $(cflags) -DNDEBUG -o $(main)_test $(test_objs) $(libs)
+test: clean lint
+	mkdir -p build
+	$(cxx) $(cflags) -O2 -DNDEBUG -c src/toggl_api_client.cc -o build/toggl_api_client.o
+	$(cxx) $(cflags) -O2 -DNDEBUG -c src/database.cc -o build/database.o
+	$(cxx) $(cflags) -O2 -DNDEBUG -c src/kopsik_api.cc -o build/kopsik_api.o
+	$(cxx) $(cflags) -O2 -DNDEBUG -c src/kopsik_test.cc -o build/kopsik_test.o
+	$(cxx) $(cflags) -O2 -DNDEBUG -c $(GTEST_ROOT)/src/gtest-all.cc -o build/gtest-all.o
+	$(cxx) -o $(main) -o $(main)_test build/*.o $(libs)
 	./$(main)_test
 
 pull:
