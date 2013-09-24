@@ -144,6 +144,9 @@ error Database::LoadCurrentUser(User *user, bool with_related_data) {
     if (err != noError) {
         return err;
     }
+    if (api_token.empty()) {
+        return noError;
+    }
     return LoadUserByAPIToken(api_token, user, with_related_data);
 }
 
