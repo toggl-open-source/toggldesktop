@@ -47,3 +47,4 @@ internal
 
 .DS_Store
 *.xcuserstate
+*.xcuserdatad/
