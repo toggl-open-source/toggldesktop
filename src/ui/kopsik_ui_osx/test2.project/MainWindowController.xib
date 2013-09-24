@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment defaultVersion="1080" identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4510"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="MainWindowController">
+            <connections>
+                <outlet property="contentView" destination="av5-A6-9S5" id="g24-fx-drT"/>
+                <outlet property="contentViewController" destination="av5-A6-9S5" id="VD8-35-TOQ"/>
+                <outlet property="footerView" destination="9N7-5v-gZK" id="Ct6-rG-j6e"/>
+                <outlet property="headerView" destination="5Ld-I4-6Cu" id="GZI-Pu-RUM"/>
+                <outlet property="headerViewController" destination="5Ld-I4-6Cu" id="1fj-1u-n9l"/>
+                <outlet property="window" destination="1" id="3"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application"/>
+        <window title="Toggl" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" wantsToBeColor="NO" animationBehavior="default" id="1">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="196" y="240" width="258" height="427"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
+            <view key="contentView" id="2">
+                <rect key="frame" x="0.0" y="0.0" width="258" height="427"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Ld-I4-6Cu">
+                        <rect key="frame" x="0.0" y="353" width="258" height="74"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="74" id="cgB-pa-3IW"/>
+                        </constraints>
+                    </customView>
+                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="av5-A6-9S5">
+                        <rect key="frame" x="0.0" y="29" width="258" height="326"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    </customView>
+                    <customView focusRingType="exterior" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9N7-5v-gZK">
+                        <rect key="frame" x="0.0" y="1" width="258" height="29"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <subviews>
+                            <popUpButton ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lep-kW-t8B">
+                                <rect key="frame" x="2" y="3" width="39" height="23"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="23" id="xqF-hw-sWO"/>
+                                </constraints>
+                                <popUpButtonCell key="cell" type="smallSquare" bezelStyle="smallSquare" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" pullsDown="YES" selectedItem="Wau-D8-ZNm" id="gva-sJ-eF9">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <menu key="menu" title="OtherViews" id="x4W-b1-8Mt">
+                                        <items>
+                                            <menuItem state="on" image="NSActionTemplate" hidden="YES" id="Wau-D8-ZNm"/>
+                                            <menuItem title="Item 2" id="mg3-0M-DhN"/>
+                                            <menuItem title="Item 3" id="7av-Zb-j2V"/>
+                                        </items>
+                                    </menu>
+                                </popUpButtonCell>
+                            </popUpButton>
+                            <button horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ixr-JC-i3w">
+                                <rect key="frame" x="230" y="1" width="25" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Hap-2l-g1o">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="lep-kW-t8B" firstAttribute="leading" secondItem="9N7-5v-gZK" secondAttribute="leading" constant="2" id="Qlu-rj-UHe"/>
+                            <constraint firstItem="ixr-JC-i3w" firstAttribute="centerY" secondItem="lep-kW-t8B" secondAttribute="centerY" id="UF6-x9-8uE"/>
+                            <constraint firstItem="ixr-JC-i3w" firstAttribute="centerY" secondItem="9N7-5v-gZK" secondAttribute="centerY" id="dVw-uK-ukZ"/>
+                            <constraint firstAttribute="trailing" secondItem="ixr-JC-i3w" secondAttribute="trailing" constant="5" id="vIQ-Li-5dW"/>
+                        </constraints>
+                    </customView>
+                </subviews>
+            </view>
+            <connections>
+                <outlet property="delegate" destination="-2" id="4"/>
+            </connections>
+        </window>
+    </objects>
+    <resources>
+        <image name="NSActionTemplate" width="15" height="15"/>
+    </resources>
+</document>

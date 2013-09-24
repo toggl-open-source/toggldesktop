@@ -12,6 +12,8 @@ extern "C" {
 #include <stdio.h>
 
 #define KOPSIK_EXPORT
+  
+#define KOPSIK_ERR_LEN 1024
 
 typedef int kopsik_api_result;
 #define KOPSIK_API_SUCCESS 0
