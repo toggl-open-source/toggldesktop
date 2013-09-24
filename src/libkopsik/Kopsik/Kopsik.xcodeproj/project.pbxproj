@@ -331,6 +331,7 @@
 					"../../../third_party/poco-1.4.6p1-all/NetSSL_OpenSSL/include/",
 					"../../../third_party/poco-1.4.6p1-all/Crypto/include/",
 				);
+				INSTALL_PATH = "@executable_path/../../Contents/Resources";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/tambet/projects/libkopsik/Kopsik/Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/lib/Darwin/x86_64",
@@ -360,6 +361,7 @@
 					"../../../third_party/poco-1.4.6p1-all/NetSSL_OpenSSL/include/",
 					"../../../third_party/poco-1.4.6p1-all/Crypto/include/",
 				);
+				INSTALL_PATH = "@executable_path/../../Contents/Resources";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/tambet/projects/libkopsik/Kopsik/Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/lib/Darwin/x86_64",
