@@ -114,7 +114,7 @@ push:
 	./$(main) push
 
 lint:
-	./third_party/cpplint/cpplint.py src/*
+	./third_party/cpplint/cpplint.py src/*.cc src/*.h
 
 deps: openssl poco json
 

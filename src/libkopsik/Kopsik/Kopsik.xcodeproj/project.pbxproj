@@ -1,0 +1,401 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C502226F17F071CB00888F8C /* Kopsik.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C55DA59C17F06A3B00B42178 /* Kopsik.dylib */; };
+		C502227117F0720B00888F8C /* kopsik.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C55DA5B017F06B9B00B42178 /* kopsik.h */; };
+		C55DA5A617F06A3B00B42178 /* Kopsik.cp in Sources */ = {isa = PBXBuildFile; fileRef = C55DA5A517F06A3B00B42178 /* Kopsik.cp */; };
+		C55DA5B517F06B9B00B42178 /* api.cc in Sources */ = {isa = PBXBuildFile; fileRef = C55DA5AC17F06B9B00B42178 /* api.cc */; };
+		C55DA5B617F06B9B00B42178 /* database.cc in Sources */ = {isa = PBXBuildFile; fileRef = C55DA5AD17F06B9B00B42178 /* database.cc */; };
+		C55DA5B717F06B9B00B42178 /* database.h in Headers */ = {isa = PBXBuildFile; fileRef = C55DA5AE17F06B9B00B42178 /* database.h */; };
+		C55DA5B817F06B9B00B42178 /* kopsik.h in Headers */ = {isa = PBXBuildFile; fileRef = C55DA5B017F06B9B00B42178 /* kopsik.h */; };
+		C55DA5BF17F06BB700B42178 /* toggl_api_client.cc in Sources */ = {isa = PBXBuildFile; fileRef = C55DA5BC17F06BB700B42178 /* toggl_api_client.cc */; };
+		C55DA5C017F06BB700B42178 /* toggl_api_client.h in Headers */ = {isa = PBXBuildFile; fileRef = C55DA5BD17F06BB700B42178 /* toggl_api_client.h */; };
+		C55DA5C117F06BB700B42178 /* types.h in Headers */ = {isa = PBXBuildFile; fileRef = C55DA5BE17F06BB700B42178 /* types.h */; };
+		C55DA5CA17F06E4700B42178 /* libPocoDataSQLite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DA5C217F06E4700B42178 /* libPocoDataSQLite.a */; };
+		C55DA5CB17F06E4700B42178 /* libPocoNetSSL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DA5C317F06E4700B42178 /* libPocoNetSSL.a */; };
+		C55DA5CC17F06E4700B42178 /* libPocoNet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DA5C417F06E4700B42178 /* libPocoNet.a */; };
+		C55DA5CD17F06E4700B42178 /* libPocoData.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DA5C517F06E4700B42178 /* libPocoData.a */; };
+		C55DA5CE17F06E4700B42178 /* libPocoCrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DA5C617F06E4700B42178 /* libPocoCrypto.a */; };
+		C55DA5CF17F06E4700B42178 /* libPocoUtil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DA5C717F06E4700B42178 /* libPocoUtil.a */; };
+		C55DA5D017F06E4700B42178 /* libPocoXML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DA5C817F06E4700B42178 /* libPocoXML.a */; };
+		C55DA5D117F06E4700B42178 /* libPocoFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DA5C917F06E4700B42178 /* libPocoFoundation.a */; };
+		C55DA5D417F06E5A00B42178 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DA5D217F06E5A00B42178 /* libssl.a */; };
+		C55DA5D517F06E5A00B42178 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DA5D317F06E5A00B42178 /* libcrypto.a */; };
+		C55DA5D717F06EC200B42178 /* libjson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DA5D617F06EC200B42178 /* libjson.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C502226E17F0714F00888F8C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /Users/tambet/projects/libkopsik/lib;
+			dstSubfolderSpec = 0;
+			files = (
+				C502226F17F071CB00888F8C /* Kopsik.dylib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C502227017F071FD00888F8C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /Users/tambet/projects/libkopsik/include;
+			dstSubfolderSpec = 0;
+			files = (
+				C502227117F0720B00888F8C /* kopsik.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		C55DA59C17F06A3B00B42178 /* Kopsik.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = Kopsik.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		C55DA5A017F06A3B00B42178 /* Kopsik-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Kopsik-Prefix.pch"; sourceTree = "<group>"; };
+		C55DA5A117F06A3B00B42178 /* KopsikProj.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = KopsikProj.xcconfig; sourceTree = "<group>"; };
+		C55DA5A217F06A3B00B42178 /* KopsikTarget.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = KopsikTarget.xcconfig; sourceTree = "<group>"; };
+		C55DA5A317F06A3B00B42178 /* Kopsik.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Kopsik.h; sourceTree = "<group>"; };
+		C55DA5A417F06A3B00B42178 /* KopsikPriv.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KopsikPriv.h; sourceTree = "<group>"; };
+		C55DA5A517F06A3B00B42178 /* Kopsik.cp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Kopsik.cp; sourceTree = "<group>"; };
+		C55DA5AC17F06B9B00B42178 /* api.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = api.cc; path = third_party/kopsik/api.cc; sourceTree = "<group>"; };
+		C55DA5AD17F06B9B00B42178 /* database.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = database.cc; path = third_party/kopsik/database.cc; sourceTree = "<group>"; };
+		C55DA5AE17F06B9B00B42178 /* database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = database.h; path = third_party/kopsik/database.h; sourceTree = "<group>"; };
+		C55DA5B017F06B9B00B42178 /* kopsik.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kopsik.h; sourceTree = "<group>"; };
+		C55DA5B317F06B9B00B42178 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = third_party/kopsik/LICENSE; sourceTree = "<group>"; };
+		C55DA5BC17F06BB700B42178 /* toggl_api_client.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = toggl_api_client.cc; path = third_party/kopsik/toggl_api_client.cc; sourceTree = "<group>"; };
+		C55DA5BD17F06BB700B42178 /* toggl_api_client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = toggl_api_client.h; path = third_party/kopsik/toggl_api_client.h; sourceTree = "<group>"; };
+		C55DA5BE17F06BB700B42178 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = types.h; path = third_party/kopsik/types.h; sourceTree = "<group>"; };
+		C55DA5C217F06E4700B42178 /* libPocoDataSQLite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoDataSQLite.a; path = "Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoDataSQLite.a"; sourceTree = "<group>"; };
+		C55DA5C317F06E4700B42178 /* libPocoNetSSL.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNetSSL.a; path = "Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoNetSSL.a"; sourceTree = "<group>"; };
+		C55DA5C417F06E4700B42178 /* libPocoNet.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNet.a; path = "Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoNet.a"; sourceTree = "<group>"; };
+		C55DA5C517F06E4700B42178 /* libPocoData.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoData.a; path = "Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoData.a"; sourceTree = "<group>"; };
+		C55DA5C617F06E4700B42178 /* libPocoCrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoCrypto.a; path = "Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoCrypto.a"; sourceTree = "<group>"; };
+		C55DA5C717F06E4700B42178 /* libPocoUtil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoUtil.a; path = "Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoUtil.a"; sourceTree = "<group>"; };
+		C55DA5C817F06E4700B42178 /* libPocoXML.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoXML.a; path = "Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoXML.a"; sourceTree = "<group>"; };
+		C55DA5C917F06E4700B42178 /* libPocoFoundation.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoFoundation.a; path = "Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoFoundation.a"; sourceTree = "<group>"; };
+		C55DA5D217F06E5A00B42178 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "Kopsik/third_party/kopsik/third_party/openssl-1.0.1e/libssl.a"; sourceTree = "<group>"; };
+		C55DA5D317F06E5A00B42178 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "Kopsik/third_party/kopsik/third_party/openssl-1.0.1e/libcrypto.a"; sourceTree = "<group>"; };
+		C55DA5D617F06EC200B42178 /* libjson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjson.a; path = Kopsik/third_party/kopsik/third_party/libjson/libjson.a; sourceTree = "<group>"; };
+		C55DA5D817F06EDA00B42178 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
+		C55DA5DA17F06EF200B42178 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
+		C55DA5DB17F06EF200B42178 /* libc++abi.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++abi.dylib"; path = "usr/lib/libc++abi.dylib"; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C55DA59917F06A3B00B42178 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C55DA5D717F06EC200B42178 /* libjson.a in Frameworks */,
+				C55DA5D417F06E5A00B42178 /* libssl.a in Frameworks */,
+				C55DA5D517F06E5A00B42178 /* libcrypto.a in Frameworks */,
+				C55DA5CA17F06E4700B42178 /* libPocoDataSQLite.a in Frameworks */,
+				C55DA5CB17F06E4700B42178 /* libPocoNetSSL.a in Frameworks */,
+				C55DA5CC17F06E4700B42178 /* libPocoNet.a in Frameworks */,
+				C55DA5CD17F06E4700B42178 /* libPocoData.a in Frameworks */,
+				C55DA5CE17F06E4700B42178 /* libPocoCrypto.a in Frameworks */,
+				C55DA5CF17F06E4700B42178 /* libPocoUtil.a in Frameworks */,
+				C55DA5D017F06E4700B42178 /* libPocoXML.a in Frameworks */,
+				C55DA5D117F06E4700B42178 /* libPocoFoundation.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C55DA59317F06A3B00B42178 = {
+			isa = PBXGroup;
+			children = (
+				C55DA5DA17F06EF200B42178 /* libc++.dylib */,
+				C55DA5DB17F06EF200B42178 /* libc++abi.dylib */,
+				C55DA5D817F06EDA00B42178 /* libstdc++.dylib */,
+				C55DA5D617F06EC200B42178 /* libjson.a */,
+				C55DA5D217F06E5A00B42178 /* libssl.a */,
+				C55DA5D317F06E5A00B42178 /* libcrypto.a */,
+				C55DA5C217F06E4700B42178 /* libPocoDataSQLite.a */,
+				C55DA5C317F06E4700B42178 /* libPocoNetSSL.a */,
+				C55DA5C417F06E4700B42178 /* libPocoNet.a */,
+				C55DA5C517F06E4700B42178 /* libPocoData.a */,
+				C55DA5C617F06E4700B42178 /* libPocoCrypto.a */,
+				C55DA5C717F06E4700B42178 /* libPocoUtil.a */,
+				C55DA5C817F06E4700B42178 /* libPocoXML.a */,
+				C55DA5C917F06E4700B42178 /* libPocoFoundation.a */,
+				C55DA59E17F06A3B00B42178 /* Kopsik */,
+				C55DA59D17F06A3B00B42178 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C55DA59D17F06A3B00B42178 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C55DA59C17F06A3B00B42178 /* Kopsik.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C55DA59E17F06A3B00B42178 /* Kopsik */ = {
+			isa = PBXGroup;
+			children = (
+				C55DA5BC17F06BB700B42178 /* toggl_api_client.cc */,
+				C55DA5BD17F06BB700B42178 /* toggl_api_client.h */,
+				C55DA5BE17F06BB700B42178 /* types.h */,
+				C55DA5AC17F06B9B00B42178 /* api.cc */,
+				C55DA5AD17F06B9B00B42178 /* database.cc */,
+				C55DA5AE17F06B9B00B42178 /* database.h */,
+				C55DA5AF17F06B9B00B42178 /* include */,
+				C55DA5B317F06B9B00B42178 /* LICENSE */,
+				C55DA5A117F06A3B00B42178 /* KopsikProj.xcconfig */,
+				C55DA5A217F06A3B00B42178 /* KopsikTarget.xcconfig */,
+				C55DA5A317F06A3B00B42178 /* Kopsik.h */,
+				C55DA5A417F06A3B00B42178 /* KopsikPriv.h */,
+				C55DA5A517F06A3B00B42178 /* Kopsik.cp */,
+				C55DA59F17F06A3B00B42178 /* Supporting Files */,
+			);
+			path = Kopsik;
+			sourceTree = "<group>";
+		};
+		C55DA59F17F06A3B00B42178 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C55DA5A017F06A3B00B42178 /* Kopsik-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C55DA5AF17F06B9B00B42178 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				C55DA5B017F06B9B00B42178 /* kopsik.h */,
+			);
+			name = include;
+			path = third_party/kopsik/include;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		C55DA59A17F06A3B00B42178 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C55DA5C017F06BB700B42178 /* toggl_api_client.h in Headers */,
+				C55DA5B717F06B9B00B42178 /* database.h in Headers */,
+				C55DA5B817F06B9B00B42178 /* kopsik.h in Headers */,
+				C55DA5C117F06BB700B42178 /* types.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		C55DA59B17F06A3B00B42178 /* Kopsik */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C55DA5A917F06A3B00B42178 /* Build configuration list for PBXNativeTarget "Kopsik" */;
+			buildPhases = (
+				C55DA59817F06A3B00B42178 /* Sources */,
+				C55DA59917F06A3B00B42178 /* Frameworks */,
+				C55DA59A17F06A3B00B42178 /* Headers */,
+				C502226E17F0714F00888F8C /* CopyFiles */,
+				C502227017F071FD00888F8C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Kopsik;
+			productName = Kopsik;
+			productReference = C55DA59C17F06A3B00B42178 /* Kopsik.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C55DA59417F06A3B00B42178 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Tambet Masik";
+			};
+			buildConfigurationList = C55DA59717F06A3B00B42178 /* Build configuration list for PBXProject "Kopsik" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C55DA59317F06A3B00B42178;
+			productRefGroup = C55DA59D17F06A3B00B42178 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C55DA59B17F06A3B00B42178 /* Kopsik */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C55DA59817F06A3B00B42178 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C55DA5B517F06B9B00B42178 /* api.cc in Sources */,
+				C55DA5A617F06A3B00B42178 /* Kopsik.cp in Sources */,
+				C55DA5B617F06B9B00B42178 /* database.cc in Sources */,
+				C55DA5BF17F06BB700B42178 /* toggl_api_client.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		C55DA5A717F06A3B00B42178 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Data/include/",
+					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Util/include/",
+					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Foundation/include/",
+					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Data/SQLite/include/",
+					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Net/include/",
+					Kopsik/third_party/kopsik/third_party/libjson,
+					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/NetSSL_OpenSSL/include/",
+					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Crypto/include/",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		C55DA5A817F06A3B00B42178 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Data/include/",
+					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Util/include/",
+					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Foundation/include/",
+					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Data/SQLite/include/",
+					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Net/include/",
+					Kopsik/third_party/kopsik/third_party/libjson,
+					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/NetSSL_OpenSSL/include/",
+					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Crypto/include/",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		C55DA5AA17F06A3B00B42178 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LIBRARY = "libstdc++";
+				INSTALL_PATH = /Users/tambet/projects/libkopsik/lib;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/tambet/projects/libkopsik/Kopsik/Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/lib/Darwin/x86_64",
+					"/Users/tambet/projects/libkopsik/Kopsik/Kopsik/third_party/kopsik/third_party/openssl-1.0.1e",
+					/Users/tambet/projects/libkopsik/Kopsik/Kopsik/third_party/kopsik/third_party/libjson,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		C55DA5AB17F06A3B00B42178 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LIBRARY = "libstdc++";
+				INSTALL_PATH = /Users/tambet/projects/libkopsik/lib;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/tambet/projects/libkopsik/Kopsik/Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/lib/Darwin/x86_64",
+					"/Users/tambet/projects/libkopsik/Kopsik/Kopsik/third_party/kopsik/third_party/openssl-1.0.1e",
+					/Users/tambet/projects/libkopsik/Kopsik/Kopsik/third_party/kopsik/third_party/libjson,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C55DA59717F06A3B00B42178 /* Build configuration list for PBXProject "Kopsik" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C55DA5A717F06A3B00B42178 /* Debug */,
+				C55DA5A817F06A3B00B42178 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C55DA5A917F06A3B00B42178 /* Build configuration list for PBXNativeTarget "Kopsik" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C55DA5AA17F06A3B00B42178 /* Debug */,
+				C55DA5AB17F06A3B00B42178 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C55DA59417F06A3B00B42178 /* Project object */;
+}
