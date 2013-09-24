@@ -1,18 +1,18 @@
 //
-//  FooterViewController.m
+//  LoginViewController.m
 //  kopsik_ui_osx
 //
-//  Created by Tanel Lebedev on 19/09/2013.
+//  Created by Tambet Masik on 9/24/13.
 //  Copyright (c) 2013 Alari. All rights reserved.
 //
 
-#import "FooterViewController.h"
+#import "LoginViewController.h"
 
-@interface FooterViewController ()
+@interface LoginViewController ()
 
 @end
 
-@implementation FooterViewController
+@implementation LoginViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -20,8 +20,12 @@
     if (self) {
         // Initialization code here.
     }
-    
     return self;
 }
 
+- (IBAction)clickLoginButton:(id)sender {
+  NSString *email, *pass;
+  email = [self.email stringValue];
+  pass = [self.password stringValue];
+}
 @end
