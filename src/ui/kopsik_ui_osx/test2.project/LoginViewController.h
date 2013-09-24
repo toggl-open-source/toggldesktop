@@ -11,6 +11,7 @@
 @interface LoginViewController : NSViewController
 @property (weak) IBOutlet NSTextField *email;
 @property (weak) IBOutlet NSSecureTextField *password;
+@property (weak) IBOutlet NSTextField *errorLabel;
 @property (weak) IBOutlet NSButton *loginButton;
 - (IBAction)clickLoginButton:(id)sender;
 
