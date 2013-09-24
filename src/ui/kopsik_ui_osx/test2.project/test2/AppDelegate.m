@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#include "kopsik.h"
+#include "kopsik_api.h"
 
 #include "MasterViewController.h"
 
@@ -33,13 +33,16 @@
   NSString *s = [NSString stringWithFormat:@"libkopsik version %d.%d.%d", major, minor, patch];
   NSLog(@"%@", s);
   
-  HUser user;
   char err[ERRLEN];
-  if (! kopsik_current_user(err, ERRLEN, &user)) {
+  TogglUser *user = kopsik_user_new();
+  if (KOPSIK_API_SUCCESS != kopsik_current_user(err, ERRLEN, user)) {
     NSLog(@"Error fetching user: %s", err);
+  } else if (!user->ID) {
+    NSLog(@"User not found.. LOG IN!!!");
   } else {
-    NSLog(@"Current user: %s", user.Fullname);
+    NSLog(@"Current user: %s", user->Fullname);
   }
+  kopsik_user_delete(user);
 }
 
 @end
