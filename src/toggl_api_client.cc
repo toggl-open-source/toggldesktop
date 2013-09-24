@@ -333,6 +333,10 @@ bool User::isStatusOK(int status) {
     return status >= 200 && status < 300;
 }
 
+error User::Login(const std::string &email, const std::string &password) {
+    return noError;
+}
+
 error User::Sync() {
     error err = pull();
     if (err != noError) {

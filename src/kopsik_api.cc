@@ -100,6 +100,47 @@ kopsik_api_result kopsik_set_api_token(char *errmsg, unsigned int errlen,
     return KOPSIK_API_SUCCESS;
 }
 
+kopsik_api_result kopsik_login(
+        char *errmsg, unsigned int errlen,
+        const char *in_email, const char *in_password) {
+    if (!in_email) {
+        strncpy(errmsg, "Invalid email pointer", errlen);
+        return KOPSIK_API_FAILURE;
+    }
+    if (!in_password) {
+        strncpy(errmsg, "Invalid password pointer", errlen);
+        return KOPSIK_API_FAILURE;
+    }
+    std::string email(in_email);
+    std::string password(in_password);
+    if (email.empty()) {
+        strncpy(errmsg, "Empty email", errlen);
+        return KOPSIK_API_FAILURE;
+    }
+    if (password.empty()) {
+        strncpy(errmsg, "Empty password", errlen);
+        return KOPSIK_API_FAILURE;
+    }
+    kopsik::User user;
+    kopsik::error err = user.Login(email, password);
+    if (err != kopsik::noError) {
+        err.copy(errmsg, errlen);
+        return KOPSIK_API_FAILURE;
+    }
+    kopsik::Database db(DBNAME);
+    err = db.SaveUser(&user, true);
+    if (err != kopsik::noError) {
+        err.copy(errmsg, errlen);
+        return KOPSIK_API_FAILURE;
+    }
+    err = db.SetCurrentAPIToken(user.APIToken);
+    if (err != kopsik::noError) {
+        err.copy(errmsg, errlen);
+        return KOPSIK_API_FAILURE;
+    }
+    return KOPSIK_API_SUCCESS;
+}
+
 kopsik_api_result kopsik_sync(char *errmsg, unsigned int errlen) {
     kopsik::Database db(DBNAME);
     kopsik::User user;

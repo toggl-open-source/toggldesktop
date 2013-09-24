@@ -200,6 +200,7 @@ namespace kopsik {
         std::vector<TimeEntry *> TimeEntries;
 
         error Sync();
+        error Login(const std::string &email, const std::string &password);
         error LoadFromJSONString(const std::string &json,
             bool with_related_data);
         error LoadFromJSONNode(JSONNODE *node, bool with_related_data);

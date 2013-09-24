@@ -36,6 +36,10 @@ KOPSIK_EXPORT kopsik_api_result kopsik_current_user(
 KOPSIK_EXPORT kopsik_api_result kopsik_set_api_token(
   char *errmsg, unsigned int errlen, const char *in_api_token);
 
+KOPSIK_EXPORT kopsik_api_result kopsik_login(
+  char *errmsg, unsigned int errlen,
+  const char *in_email, const char *in_password);
+
 // Sync
 
 typedef struct {
