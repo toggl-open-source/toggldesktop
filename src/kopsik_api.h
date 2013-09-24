@@ -12,15 +12,22 @@ extern "C" {
 #include <stdio.h>
 
 #define KOPSIK_EXPORT
-  
+
 #define KOPSIK_ERR_LEN 1024
 
 typedef int kopsik_api_result;
 #define KOPSIK_API_SUCCESS 0
 #define KOPSIK_API_FAILURE 1
 
+// Configuration API
+
 KOPSIK_EXPORT void kopsik_version(
   int *major, int *minor, int *patch);
+KOPSIK_EXPORT void kopsik_set_proxy(
+  const char *host, const unsigned int port,
+  const char *username, const char *password);
+KOPSIK_EXPORT void kopsik_set_log_path(const char *path);
+KOPSIK_EXPORT void kopsik_set_db_path(const char *path);
 
 // User API
 
