@@ -1,0 +1,621 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
+		69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69FC17FD17E6534400B96425 /* InfoPlist.strings */; };
+		69FC180117E6534400B96425 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 69FC180017E6534400B96425 /* main.m */; };
+		69FC180517E6534400B96425 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 69FC180317E6534400B96425 /* Credits.rtf */; };
+		69FC180817E6534400B96425 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 69FC180717E6534400B96425 /* AppDelegate.m */; };
+		69FC180B17E6534500B96425 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69FC180917E6534500B96425 /* MainMenu.xib */; };
+		69FC181317E6534500B96425 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC181217E6534500B96425 /* SenTestingKit.framework */; };
+		69FC181417E6534500B96425 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
+		69FC181C17E6534500B96425 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69FC181A17E6534500B96425 /* InfoPlist.strings */; };
+		69FC181F17E6534500B96425 /* test2Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 69FC181E17E6534500B96425 /* test2Tests.m */; };
+		74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C9617EC1DE100CA53D3 /* libc++.dylib */; };
+		74033C9817EC1DF100CA53D3 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C8D17EC1CFD00CA53D3 /* libstdc++.dylib */; };
+		74591C8817EBA878001D7AB7 /* ContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74591C8717EBA878001D7AB7 /* ContentViewController.m */; };
+		74591C8917EBA878001D7AB7 /* ContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74591C8717EBA878001D7AB7 /* ContentViewController.m */; };
+		74591C8C17EBA898001D7AB7 /* HeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74591C8B17EBA898001D7AB7 /* HeaderViewController.m */; };
+		74591C8D17EBA898001D7AB7 /* HeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74591C8B17EBA898001D7AB7 /* HeaderViewController.m */; };
+		74D1D24F17EB6E9300E709B0 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D24D17EB6E9300E709B0 /* MasterViewController.m */; };
+		74D1D25017EB6E9300E709B0 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D24D17EB6E9300E709B0 /* MasterViewController.m */; };
+		74D1D25117EB6E9300E709B0 /* MasterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D24E17EB6E9300E709B0 /* MasterViewController.xib */; };
+		74D1D25217EB6E9300E709B0 /* MasterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D24E17EB6E9300E709B0 /* MasterViewController.xib */; };
+		74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */; };
+		74D1D25717EB713F00E709B0 /* TimeEntryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */; };
+		74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */; };
+		74D1D25917EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */; };
+		74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D25B17EB71C100E709B0 /* TimeEntryEditViewController.m */; };
+		74D1D25E17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D25B17EB71C100E709B0 /* TimeEntryEditViewController.m */; };
+		74D1D25F17EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D25C17EB71C100E709B0 /* TimeEntryEditViewController.xib */; };
+		74D1D26017EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D25C17EB71C100E709B0 /* TimeEntryEditViewController.xib */; };
+		74D1D26417EB722E00E709B0 /* FooterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D26217EB722E00E709B0 /* FooterViewController.m */; };
+		74D1D26517EB722E00E709B0 /* FooterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D26217EB722E00E709B0 /* FooterViewController.m */; };
+		74D1D26617EB722E00E709B0 /* FooterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D26317EB722E00E709B0 /* FooterViewController.xib */; };
+		74D1D26717EB722E00E709B0 /* FooterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D26317EB722E00E709B0 /* FooterViewController.xib */; };
+		74D1D26B17EB728000E709B0 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D26917EB728000E709B0 /* TimerViewController.m */; };
+		74D1D26C17EB728000E709B0 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D26917EB728000E709B0 /* TimerViewController.m */; };
+		74D1D26D17EB728000E709B0 /* TimerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D26A17EB728000E709B0 /* TimerViewController.xib */; };
+		74D1D26E17EB728000E709B0 /* TimerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D26A17EB728000E709B0 /* TimerViewController.xib */; };
+		74D1D27217EB72D900E709B0 /* TimerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D27017EB72D900E709B0 /* TimerEditViewController.m */; };
+		74D1D27317EB72D900E709B0 /* TimerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D27017EB72D900E709B0 /* TimerEditViewController.m */; };
+		74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */; };
+		74D1D27517EB72D900E709B0 /* TimerEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */; };
+		C502227317F0726000888F8C /* Kopsik.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C502227217F0726000888F8C /* Kopsik.dylib */; };
+		C502227417F0726000888F8C /* Kopsik.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C502227217F0726000888F8C /* Kopsik.dylib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		69FC181517E6534500B96425 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69FC17E917E6534400B96425 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 69FC17F017E6534400B96425;
+			remoteInfo = test2;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		69FC17F117E6534400B96425 /* kopsik_ui_osx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kopsik_ui_osx.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		69FC17F417E6534400B96425 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		69FC17F717E6534400B96425 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		69FC17F817E6534400B96425 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		69FC17F917E6534400B96425 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		69FC17FC17E6534400B96425 /* kopsik_ui_osx-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "kopsik_ui_osx-Info.plist"; sourceTree = "<group>"; };
+		69FC17FE17E6534400B96425 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		69FC180017E6534400B96425 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		69FC180217E6534400B96425 /* kopsik_ui_osx-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "kopsik_ui_osx-Prefix.pch"; sourceTree = "<group>"; };
+		69FC180417E6534400B96425 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		69FC180617E6534400B96425 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		69FC180717E6534400B96425 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		69FC180A17E6534500B96425 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		69FC181117E6534500B96425 /* kopsik_ui_osxTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kopsik_ui_osxTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		69FC181217E6534500B96425 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		69FC181917E6534500B96425 /* kopsik_ui_osxTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "kopsik_ui_osxTests-Info.plist"; sourceTree = "<group>"; };
+		69FC181B17E6534500B96425 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		69FC181D17E6534500B96425 /* test2Tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = test2Tests.h; sourceTree = "<group>"; };
+		69FC181E17E6534500B96425 /* test2Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = test2Tests.m; sourceTree = "<group>"; };
+		74033C8D17EC1CFD00CA53D3 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
+		74033C9617EC1DE100CA53D3 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
+		74591C8617EBA878001D7AB7 /* ContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentViewController.h; sourceTree = SOURCE_ROOT; };
+		74591C8717EBA878001D7AB7 /* ContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentViewController.m; sourceTree = SOURCE_ROOT; };
+		74591C8A17EBA898001D7AB7 /* HeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeaderViewController.h; sourceTree = SOURCE_ROOT; };
+		74591C8B17EBA898001D7AB7 /* HeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeaderViewController.m; sourceTree = SOURCE_ROOT; };
+		74D1D24C17EB6E9300E709B0 /* MasterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MasterViewController.h; path = ../MasterViewController.h; sourceTree = "<group>"; };
+		74D1D24D17EB6E9300E709B0 /* MasterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MasterViewController.m; path = ../MasterViewController.m; sourceTree = "<group>"; };
+		74D1D24E17EB6E9300E709B0 /* MasterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MasterViewController.xib; path = ../MasterViewController.xib; sourceTree = "<group>"; };
+		74D1D25317EB713F00E709B0 /* TimeEntryListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryListViewController.h; sourceTree = SOURCE_ROOT; };
+		74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryListViewController.m; sourceTree = SOURCE_ROOT; };
+		74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeEntryListViewController.xib; sourceTree = SOURCE_ROOT; };
+		74D1D25A17EB71C100E709B0 /* TimeEntryEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryEditViewController.h; sourceTree = SOURCE_ROOT; };
+		74D1D25B17EB71C100E709B0 /* TimeEntryEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryEditViewController.m; sourceTree = SOURCE_ROOT; };
+		74D1D25C17EB71C100E709B0 /* TimeEntryEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeEntryEditViewController.xib; sourceTree = SOURCE_ROOT; };
+		74D1D26117EB722E00E709B0 /* FooterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooterViewController.h; sourceTree = SOURCE_ROOT; };
+		74D1D26217EB722E00E709B0 /* FooterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FooterViewController.m; sourceTree = SOURCE_ROOT; };
+		74D1D26317EB722E00E709B0 /* FooterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FooterViewController.xib; sourceTree = SOURCE_ROOT; };
+		74D1D26817EB728000E709B0 /* TimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerViewController.h; sourceTree = SOURCE_ROOT; };
+		74D1D26917EB728000E709B0 /* TimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerViewController.m; sourceTree = SOURCE_ROOT; };
+		74D1D26A17EB728000E709B0 /* TimerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimerViewController.xib; sourceTree = SOURCE_ROOT; };
+		74D1D26F17EB72D900E709B0 /* TimerEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerEditViewController.h; sourceTree = SOURCE_ROOT; };
+		74D1D27017EB72D900E709B0 /* TimerEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerEditViewController.m; sourceTree = SOURCE_ROOT; };
+		74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimerEditViewController.xib; sourceTree = SOURCE_ROOT; };
+		C502227217F0726000888F8C /* Kopsik.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Kopsik.dylib; path = ../../libkopsik/lib/Kopsik.dylib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		69FC17EE17E6534400B96425 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				74033C9817EC1DF100CA53D3 /* libstdc++.dylib in Frameworks */,
+				74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */,
+				69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */,
+				C502227317F0726000888F8C /* Kopsik.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		69FC180D17E6534500B96425 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				69FC181317E6534500B96425 /* SenTestingKit.framework in Frameworks */,
+				69FC181417E6534500B96425 /* Cocoa.framework in Frameworks */,
+				C502227417F0726000888F8C /* Kopsik.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		69FC17E817E6534400B96425 = {
+			isa = PBXGroup;
+			children = (
+				74033C9617EC1DE100CA53D3 /* libc++.dylib */,
+				74033C8D17EC1CFD00CA53D3 /* libstdc++.dylib */,
+				69FC17FA17E6534400B96425 /* kopsik_ui */,
+				69FC181717E6534500B96425 /* kopsikTests */,
+				69FC17F317E6534400B96425 /* Frameworks */,
+				69FC17F217E6534400B96425 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		69FC17F217E6534400B96425 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				69FC17F117E6534400B96425 /* kopsik_ui_osx.app */,
+				69FC181117E6534500B96425 /* kopsik_ui_osxTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		69FC17F317E6534400B96425 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C502227217F0726000888F8C /* Kopsik.dylib */,
+				69FC17F417E6534400B96425 /* Cocoa.framework */,
+				69FC181217E6534500B96425 /* SenTestingKit.framework */,
+				69FC17F617E6534400B96425 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		69FC17F617E6534400B96425 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				69FC17F717E6534400B96425 /* AppKit.framework */,
+				69FC17F817E6534400B96425 /* CoreData.framework */,
+				69FC17F917E6534400B96425 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		69FC17FA17E6534400B96425 /* kopsik_ui */ = {
+			isa = PBXGroup;
+			children = (
+				69FC180617E6534400B96425 /* AppDelegate.h */,
+				69FC180717E6534400B96425 /* AppDelegate.m */,
+				69FC180917E6534500B96425 /* MainMenu.xib */,
+				74D1D26817EB728000E709B0 /* TimerViewController.h */,
+				74D1D26917EB728000E709B0 /* TimerViewController.m */,
+				74D1D26A17EB728000E709B0 /* TimerViewController.xib */,
+				74D1D26F17EB72D900E709B0 /* TimerEditViewController.h */,
+				74D1D27017EB72D900E709B0 /* TimerEditViewController.m */,
+				74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */,
+				74D1D26117EB722E00E709B0 /* FooterViewController.h */,
+				74D1D26217EB722E00E709B0 /* FooterViewController.m */,
+				74D1D26317EB722E00E709B0 /* FooterViewController.xib */,
+				74D1D25A17EB71C100E709B0 /* TimeEntryEditViewController.h */,
+				74D1D25B17EB71C100E709B0 /* TimeEntryEditViewController.m */,
+				74D1D25C17EB71C100E709B0 /* TimeEntryEditViewController.xib */,
+				74D1D24C17EB6E9300E709B0 /* MasterViewController.h */,
+				74D1D24D17EB6E9300E709B0 /* MasterViewController.m */,
+				74D1D24E17EB6E9300E709B0 /* MasterViewController.xib */,
+				74591C8617EBA878001D7AB7 /* ContentViewController.h */,
+				74591C8717EBA878001D7AB7 /* ContentViewController.m */,
+				74591C8A17EBA898001D7AB7 /* HeaderViewController.h */,
+				74591C8B17EBA898001D7AB7 /* HeaderViewController.m */,
+				74D1D25317EB713F00E709B0 /* TimeEntryListViewController.h */,
+				74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */,
+				74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */,
+				69FC17FB17E6534400B96425 /* Supporting Files */,
+			);
+			name = kopsik_ui;
+			path = test2;
+			sourceTree = "<group>";
+		};
+		69FC17FB17E6534400B96425 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				69FC17FC17E6534400B96425 /* kopsik_ui_osx-Info.plist */,
+				69FC17FD17E6534400B96425 /* InfoPlist.strings */,
+				69FC180017E6534400B96425 /* main.m */,
+				69FC180217E6534400B96425 /* kopsik_ui_osx-Prefix.pch */,
+				69FC180317E6534400B96425 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		69FC181717E6534500B96425 /* kopsikTests */ = {
+			isa = PBXGroup;
+			children = (
+				69FC181D17E6534500B96425 /* test2Tests.h */,
+				69FC181E17E6534500B96425 /* test2Tests.m */,
+				69FC181817E6534500B96425 /* Supporting Files */,
+			);
+			name = kopsikTests;
+			path = test2Tests;
+			sourceTree = "<group>";
+		};
+		69FC181817E6534500B96425 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				69FC181917E6534500B96425 /* kopsik_ui_osxTests-Info.plist */,
+				69FC181A17E6534500B96425 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		69FC17F017E6534400B96425 /* kopsik_ui_osx */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 69FC182217E6534500B96425 /* Build configuration list for PBXNativeTarget "kopsik_ui_osx" */;
+			buildPhases = (
+				69FC17ED17E6534400B96425 /* Sources */,
+				69FC17EE17E6534400B96425 /* Frameworks */,
+				69FC17EF17E6534400B96425 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kopsik_ui_osx;
+			productName = test2;
+			productReference = 69FC17F117E6534400B96425 /* kopsik_ui_osx.app */;
+			productType = "com.apple.product-type.application";
+		};
+		69FC181017E6534500B96425 /* kopsik_ui_osxTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 69FC182517E6534500B96425 /* Build configuration list for PBXNativeTarget "kopsik_ui_osxTests" */;
+			buildPhases = (
+				69FC180C17E6534500B96425 /* Sources */,
+				69FC180D17E6534500B96425 /* Frameworks */,
+				69FC180E17E6534500B96425 /* Resources */,
+				69FC180F17E6534500B96425 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				69FC181617E6534500B96425 /* PBXTargetDependency */,
+			);
+			name = kopsik_ui_osxTests;
+			productName = test2Tests;
+			productReference = 69FC181117E6534500B96425 /* kopsik_ui_osxTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		69FC17E917E6534400B96425 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = Alari;
+			};
+			buildConfigurationList = 69FC17EC17E6534400B96425 /* Build configuration list for PBXProject "kopsik_ui_osx" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 69FC17E817E6534400B96425;
+			productRefGroup = 69FC17F217E6534400B96425 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				69FC17F017E6534400B96425 /* kopsik_ui_osx */,
+				69FC181017E6534500B96425 /* kopsik_ui_osxTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		69FC17EF17E6534400B96425 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */,
+				69FC180517E6534400B96425 /* Credits.rtf in Resources */,
+				69FC180B17E6534500B96425 /* MainMenu.xib in Resources */,
+				74D1D25117EB6E9300E709B0 /* MasterViewController.xib in Resources */,
+				74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
+				74D1D25F17EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */,
+				74D1D26617EB722E00E709B0 /* FooterViewController.xib in Resources */,
+				74D1D26D17EB728000E709B0 /* TimerViewController.xib in Resources */,
+				74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		69FC180E17E6534500B96425 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				69FC181C17E6534500B96425 /* InfoPlist.strings in Resources */,
+				74D1D25217EB6E9300E709B0 /* MasterViewController.xib in Resources */,
+				74D1D25917EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
+				74D1D26017EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */,
+				74D1D26717EB722E00E709B0 /* FooterViewController.xib in Resources */,
+				74D1D26E17EB728000E709B0 /* TimerViewController.xib in Resources */,
+				74D1D27517EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		69FC180F17E6534500B96425 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		69FC17ED17E6534400B96425 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				69FC180117E6534400B96425 /* main.m in Sources */,
+				69FC180817E6534400B96425 /* AppDelegate.m in Sources */,
+				74D1D24F17EB6E9300E709B0 /* MasterViewController.m in Sources */,
+				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
+				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,
+				74D1D26417EB722E00E709B0 /* FooterViewController.m in Sources */,
+				74D1D26B17EB728000E709B0 /* TimerViewController.m in Sources */,
+				74D1D27217EB72D900E709B0 /* TimerEditViewController.m in Sources */,
+				74591C8817EBA878001D7AB7 /* ContentViewController.m in Sources */,
+				74591C8C17EBA898001D7AB7 /* HeaderViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		69FC180C17E6534500B96425 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				69FC181F17E6534500B96425 /* test2Tests.m in Sources */,
+				74D1D25017EB6E9300E709B0 /* MasterViewController.m in Sources */,
+				74D1D25717EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
+				74D1D25E17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,
+				74D1D26517EB722E00E709B0 /* FooterViewController.m in Sources */,
+				74D1D26C17EB728000E709B0 /* TimerViewController.m in Sources */,
+				74D1D27317EB72D900E709B0 /* TimerEditViewController.m in Sources */,
+				74591C8917EBA878001D7AB7 /* ContentViewController.m in Sources */,
+				74591C8D17EBA898001D7AB7 /* HeaderViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		69FC181617E6534500B96425 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 69FC17F017E6534400B96425 /* kopsik_ui_osx */;
+			targetProxy = 69FC181517E6534500B96425 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		69FC17FD17E6534400B96425 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				69FC17FE17E6534400B96425 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		69FC180317E6534400B96425 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				69FC180417E6534400B96425 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		69FC180917E6534500B96425 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				69FC180A17E6534500B96425 /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		69FC181A17E6534500B96425 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				69FC181B17E6534500B96425 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		69FC182017E6534500B96425 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		69FC182117E6534500B96425 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		69FC182317E6534500B96425 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "test2/kopsik_ui_osx-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/Users/tambet/projects/libkopsik/include,
+				);
+				INFOPLIST_FILE = "test2/kopsik_ui_osx-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					/Users/tambet/projects/libkopsik/lib,
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = kopsik_ui_osx;
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		69FC182417E6534500B96425 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "test2/kopsik_ui_osx-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/Users/tambet/projects/libkopsik/include,
+				);
+				INFOPLIST_FILE = "test2/kopsik_ui_osx-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					/Users/tambet/projects/libkopsik/lib,
+				);
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = kopsik_ui_osx;
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		69FC182617E6534500B96425 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/test2.app/Contents/MacOS/test2";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "test2/test2-Prefix.pch";
+				INFOPLIST_FILE = "test2Tests/kopsik_ui_osxTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\\\\\\\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/kopsik-gdrqxzhkjpeomlgorxydlstyhljk/Build/Products/Debug\\\\\\\"",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Kopsik-cptvydtiosmzancjbyyzuervwdsl/Build/Products/Debug",
+					/Users/tambet/projects/libkopsik/lib,
+				);
+				PRODUCT_NAME = kopsik_ui_osxTests;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		69FC182717E6534500B96425 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/test2.app/Contents/MacOS/test2";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "test2/test2-Prefix.pch";
+				INFOPLIST_FILE = "test2Tests/kopsik_ui_osxTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\\\\\\\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/kopsik-gdrqxzhkjpeomlgorxydlstyhljk/Build/Products/Debug\\\\\\\"",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Kopsik-cptvydtiosmzancjbyyzuervwdsl/Build/Products/Debug",
+					/Users/tambet/projects/libkopsik/lib,
+				);
+				PRODUCT_NAME = kopsik_ui_osxTests;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		69FC17EC17E6534400B96425 /* Build configuration list for PBXProject "kopsik_ui_osx" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				69FC182017E6534500B96425 /* Debug */,
+				69FC182117E6534500B96425 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		69FC182217E6534500B96425 /* Build configuration list for PBXNativeTarget "kopsik_ui_osx" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				69FC182317E6534500B96425 /* Debug */,
+				69FC182417E6534500B96425 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		69FC182517E6534500B96425 /* Build configuration list for PBXNativeTarget "kopsik_ui_osxTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				69FC182617E6534500B96425 /* Debug */,
+				69FC182717E6534500B96425 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 69FC17E917E6534400B96425 /* Project object */;
+}
