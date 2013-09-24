@@ -37,14 +37,48 @@ namespace kopsik {
 TimeEntry *User::Start() {
     Stop();
     TimeEntry *te = new TimeEntry();
-    te->UID = ID;
-    te->Start = time(0);
-    te->DurationInSeconds = -time(0);
-    te->WID = DefaultWID;
-    te->Dirty = true;
-    te->UIModifiedAt = time(0);
+    te->SetUID(ID());
+    te->SetStart(time(0));
+    te->SetDurationInSeconds(-time(0));
+    te->SetWID(DefaultWID());
+    te->SetUIModifiedAt(time(0));
     TimeEntries.push_back(te);
     return te;
+}
+
+void User::SetFullname(std::string value) {
+    if (fullname_ != value) {
+        fullname_ = value;
+        dirty_ = true;
+    }
+}
+
+void User::SetAPIToken(std::string value) {
+    if (api_token_ != value) {
+        api_token_ = value;
+        dirty_ = true;
+    }
+}
+
+void User::SetSince(Poco::UInt64 value) {
+    if (since_ != value) {
+        since_ = value;
+        dirty_ = true;
+    }
+}
+
+void User::SetID(Poco::UInt64 value) {
+    if (id_ != value) {
+        id_ = value;
+        dirty_ = true;
+    }
+}
+
+void User::SetDefaultWID(Poco::UInt64 value) {
+    if (default_wid_ != value) {
+        default_wid_ = value;
+        dirty_ = true;
+    }
 }
 
 // Stop a time entry, mark it as dirty.
@@ -56,9 +90,8 @@ std::vector<TimeEntry *> User::Stop() {
     TimeEntry *te = RunningTimeEntry();
     while (te) {
         result.push_back(te);
-        te->DurationInSeconds = time(0) + te->DurationInSeconds;
-        te->Dirty = true;
-        te->UIModifiedAt = time(0);
+        te->SetDurationInSeconds(time(0) + te->DurationInSeconds());
+        te->SetUIModifiedAt(time(0));
         te = RunningTimeEntry();
     }
     return result;
@@ -68,7 +101,7 @@ TimeEntry *User::RunningTimeEntry() {
     for (std::vector<TimeEntry *>::const_iterator it =
             TimeEntries.begin();
             it != TimeEntries.end(); it++) {
-        if ((*it)->DurationInSeconds < 0) {
+        if ((*it)->DurationInSeconds() < 0) {
             return *it;
         }
     }
@@ -76,7 +109,7 @@ TimeEntry *User::RunningTimeEntry() {
 }
 
 bool TimeEntry::NeedsPush() {
-    return (UIModifiedAt > 0) || !ID;
+    return (ui_modified_at_ > 0) || !id_;
 }
 
 void User::CollectDirtyObjects(std::vector<TimeEntry *> *result) {
@@ -118,13 +151,13 @@ error User::push() {
         json_push_back(body, n);
 
         JSONNODE *update = json_new(JSON_NODE);
-        if (!te->ID) {
+        if (!te->ID()) {
             json_push_back(update, json_new_a("method", "POST"));
             json_push_back(update, json_new_a("relative_url",
                 "/api/v8/time_entries"));
         } else {
             std::stringstream url;
-            url << "/api/v8/time_entries/" << te->ID;
+            url << "/api/v8/time_entries/" << te->ID();
             json_push_back(update, json_new_a("method", "PUT"));
             json_push_back(update, json_new_a("relative_url",
                 url.str().c_str()));
@@ -286,7 +319,7 @@ error User::requestJSON(std::string method,
         std::string login_username("");
         std::string login_password("");
         if (authenticate_with_api_token) {
-            login_username = APIToken;
+            login_username = APIToken();
             login_password = "api_token";
         } else {
             login_username = LoginEmail;
@@ -406,9 +439,9 @@ error User::LoadFromJSONString(const std::string &json,
     while (current_node != last_node) {
         json_char *node_name = json_name(*current_node);
         if (strcmp(node_name, "since") == 0) {
-            Since = json_as_int(*current_node);
+            SetSince(json_as_int(*current_node));
             std::stringstream s;
-            s << "User data as of: " << Since;
+            s << "User data as of: " << Since();
             logger.debug(s.str());
         } else if (strcmp(node_name, "data") == 0) {
             error err = LoadFromJSONNode(*current_node, with_related_data);
@@ -431,11 +464,11 @@ error User::LoadFromJSONString(const std::string &json,
 
 std::string User::String() {
     std::stringstream ss;
-    ss << "ID=" << ID <<
-        " default_wid=" << DefaultWID <<
-        " local_id=" << LocalID <<
-        " api_token=" << APIToken <<
-        " since=" << Since;
+    ss << "ID=" << id_ <<
+        " default_wid=" << default_wid_ <<
+        " local_id=" << local_id_ <<
+        " api_token=" << api_token_ <<
+        " since=" << since_;
     return ss.str();
 }
 
@@ -448,13 +481,13 @@ error User::LoadFromJSONNode(JSONNODE *data, bool with_related_data) {
         json_char *node_name = json_name(*current_node);
         error err = noError;
         if (strcmp(node_name, "id") == 0) {
-            ID = json_as_int(*current_node);
+            SetID(json_as_int(*current_node));
         } else if (strcmp(node_name, "default_wid") == 0) {
-            DefaultWID = json_as_int(*current_node);
+            SetDefaultWID(json_as_int(*current_node));
         } else if (strcmp(node_name, "api_token") == 0) {
-            APIToken = std::string(json_as_string(*current_node));
+            SetAPIToken(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "fullname") == 0) {
-            Fullname = std::string(json_as_string(*current_node));
+            SetFullname(std::string(json_as_string(*current_node)));
         } else if (with_related_data) {
             if (strcmp(node_name, "projects") == 0) {
                 err = loadProjectsFromJSONNode(*current_node);
@@ -485,13 +518,18 @@ error User::loadProjectsFromJSONNode(JSONNODE *list) {
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
         Project *model = new Project();
-        model->UID = ID;
+        model->SetUID(ID());
         error err = model->LoadFromJSONNode(*current_node);
         if (err != noError) {
             delete model;
             return err;
         }
-        Projects.push_back(model);
+        Project *existing = GetProjectByID(model->ID());
+        if (!existing) {
+            Projects.push_back(model);
+        } else {
+            delete model;
+        }
         ++current_node;
     }
     return noError;
@@ -499,8 +537,51 @@ error User::loadProjectsFromJSONNode(JSONNODE *list) {
 
 std::string Project::String() {
     std::stringstream ss;
-    ss << "ID=" << ID << " name=" << Name << " wid=" << WID << " guid=" << GUID;
+    ss << "ID=" << id_ << " name=" << name_ << " wid=" << wid_ <<
+        " guid=" << guid_;
     return ss.str();
+}
+
+void Project::SetName(std::string value) {
+    if (name_ != value) {
+        name_ = value;
+        dirty_ = true;
+    }
+}
+
+void Project::SetID(Poco::UInt64 value) {
+    if (id_ != value) {
+        id_ = value;
+        dirty_ = true;
+    }
+}
+
+void Project::SetGUID(std::string value) {
+    if (guid_ != value) {
+        guid_ = value;
+        dirty_ = true;
+    }
+}
+
+void Project::SetWID(Poco::UInt64 value) {
+    if (wid_ != value) {
+        wid_ = value;
+        dirty_ = true;
+    }
+}
+
+void Project::SetCID(Poco::UInt64 value) {
+    if (cid_ != value) {
+        cid_ = value;
+        dirty_ = true;
+    }
+}
+
+void Project::SetUID(Poco::UInt64 value) {
+    if (uid_ != value) {
+        uid_ = value;
+        dirty_ = true;
+    }
 }
 
 error User::loadTasksFromJSONNode(JSONNODE *list) {
@@ -510,13 +591,18 @@ error User::loadTasksFromJSONNode(JSONNODE *list) {
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
         Task *model = new Task();
-        model->UID = ID;
+        model->SetUID(ID());
         error err = model->LoadFromJSONNode(*current_node);
         if (err != noError) {
             delete model;
             return err;
         }
-        Tasks.push_back(model);
+        Task *existing = GetTaskByID(model->ID());
+        if (!existing) {
+            Tasks.push_back(model);
+        } else {
+            delete model;
+        }
         ++current_node;
     }
     return noError;
@@ -524,8 +610,44 @@ error User::loadTasksFromJSONNode(JSONNODE *list) {
 
 std::string Task::String() {
     std::stringstream ss;
-    ss << "ID=" << ID << " name=" << Name << " wid=" << WID << " pid=" << PID;
+    ss << "ID=" << id_ << " name=" << name_ << " wid=" << wid_ <<
+        " pid=" << pid_;
     return ss.str();
+}
+
+void Task::SetID(Poco::UInt64 value) {
+    if (id_ != value) {
+        id_ = value;
+        dirty_ = true;
+    }
+}
+
+void Task::SetPID(Poco::UInt64 value) {
+    if (pid_ != value) {
+        pid_ = value;
+        dirty_ = true;
+    }
+}
+
+void Task::SetWID(Poco::UInt64 value) {
+    if (wid_ != value) {
+        wid_ = value;
+        dirty_ = true;
+    }
+}
+
+void Task::SetUID(Poco::UInt64 value) {
+    if (uid_ != value) {
+        uid_ = value;
+        dirty_ = true;
+    }
+}
+
+void Task::SetName(std::string value) {
+    if (name_ != value) {
+        name_ = value;
+        dirty_ = true;
+    }
 }
 
 error User::loadWorkspacesFromJSONNode(JSONNODE *list) {
@@ -535,13 +657,18 @@ error User::loadWorkspacesFromJSONNode(JSONNODE *list) {
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
         Workspace *model = new Workspace();
-        model->UID = ID;
+        model->SetUID(ID());
         error err = model->LoadFromJSONNode(*current_node);
         if (err != noError) {
             delete model;
             return err;
         }
-        Workspaces.push_back(model);
+        Workspace *existing = GetWorkspaceByID(model->ID());
+        if (!existing) {
+            Workspaces.push_back(model);
+        } else {
+            delete model;
+        }
         ++current_node;
     }
     return noError;
@@ -549,8 +676,29 @@ error User::loadWorkspacesFromJSONNode(JSONNODE *list) {
 
 std::string Workspace::String() {
     std::stringstream ss;
-    ss << "ID=" << ID << " name=" << Name;
+    ss << "ID=" << id_ << " name=" << name_;
     return ss.str();
+}
+
+void Workspace::SetUID(Poco::UInt64 value) {
+    if (uid_ != value) {
+        uid_ = value;
+        dirty_ = true;
+    }
+}
+
+void Workspace::SetID(Poco::UInt64 value) {
+    if (id_ != value) {
+        id_ = value;
+        dirty_ = true;
+    }
+}
+
+void Workspace::SetName(std::string value) {
+    if (name_ != value) {
+        name_ = value;
+        dirty_ = true;
+    }
 }
 
 error User::loadTagsFromJSONNode(JSONNODE *list) {
@@ -560,13 +708,18 @@ error User::loadTagsFromJSONNode(JSONNODE *list) {
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
         Tag *model = new Tag();
-        model->UID = ID;
+        model->SetUID(ID());
         error err = model->LoadFromJSONNode(*current_node);
         if (err != noError) {
             delete model;
             return err;
         }
-        Tags.push_back(model);
+        Tag *existing = GetTagByID(model->ID());
+        if (!existing) {
+            Tags.push_back(model);
+        } else {
+            delete model;
+        }
         ++current_node;
     }
     return noError;
@@ -574,8 +727,44 @@ error User::loadTagsFromJSONNode(JSONNODE *list) {
 
 std::string Tag::String() {
     std::stringstream ss;
-    ss << "ID=" << ID << " name=" << Name << " wid=" << WID << " guid=" << GUID;
+    ss << "ID=" << id_ << " name=" << name_ << " wid=" << wid_ <<
+        " guid=" << guid_;
     return ss.str();
+}
+
+void Tag::SetUID(Poco::UInt64 value) {
+    if (uid_ != value) {
+        uid_ = value;
+        dirty_ = true;
+    }
+}
+
+void Tag::SetID(Poco::UInt64 value) {
+    if (id_ != value) {
+        id_ = value;
+        dirty_ = true;
+    }
+}
+
+void Tag::SetWID(Poco::UInt64 value) {
+    if (wid_ != value) {
+        wid_ = value;
+        dirty_ = true;
+    }
+}
+
+void Tag::SetName(std::string value) {
+    if (name_ != value) {
+        name_ = value;
+        dirty_ = true;
+    }
+}
+
+void Tag::SetGUID(std::string value) {
+    if (guid_ != value) {
+        guid_ = value;
+        dirty_ = true;
+    }
 }
 
 error User::loadClientsFromJSONNode(JSONNODE *list) {
@@ -585,13 +774,18 @@ error User::loadClientsFromJSONNode(JSONNODE *list) {
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
         Client *model = new Client();
-        model->UID = ID;
+        model->SetUID(ID());
         error err = model->LoadFromJSONNode(*current_node);
         if (err != noError) {
             delete model;
             return err;
         }
-        Clients.push_back(model);
+        Client *existing = GetClientByID(model->ID());
+        if (!existing) {
+            Clients.push_back(model);
+        } else {
+            delete model;
+        }
         ++current_node;
     }
     return noError;
@@ -599,8 +793,44 @@ error User::loadClientsFromJSONNode(JSONNODE *list) {
 
 std::string Client::String() {
     std::stringstream ss;
-    ss << "ID=" << ID << " name=" << Name << " wid=" << WID << " guid=" << GUID;
+    ss << "ID=" << id_ << " name=" << name_ << " wid=" << wid_ <<
+        " guid=" << guid_;
     return ss.str();
+}
+
+void Client::SetID(Poco::UInt64 value) {
+    if (id_ != value) {
+        id_ = value;
+        dirty_ = true;
+    }
+}
+
+void Client::SetName(std::string value) {
+    if (name_ != value) {
+        name_ = value;
+        dirty_ = true;
+    }
+}
+
+void Client::SetUID(Poco::UInt64 value) {
+    if (uid_ != value) {
+        uid_ = value;
+        dirty_ = true;
+    }
+}
+
+void Client::SetGUID(std::string value) {
+    if (guid_ != value) {
+        guid_ = value;
+        dirty_ = true;
+    }
+}
+
+void Client::SetWID(Poco::UInt64 value) {
+    if (wid_ != value) {
+        wid_ = value;
+        dirty_ = true;
+    }
 }
 
 error User::loadTimeEntriesFromJSONNode(JSONNODE *list) {
@@ -610,13 +840,18 @@ error User::loadTimeEntriesFromJSONNode(JSONNODE *list) {
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
         TimeEntry *model = new TimeEntry();
-        model->UID = ID;
+        model->SetUID(ID());
         error err = model->LoadFromJSONNode(*current_node);
         if (err != noError) {
             delete model;
             return err;
         }
-        TimeEntries.push_back(model);
+        TimeEntry *existing = GetTimeEntryByID(model->ID());
+        if (!existing) {
+            TimeEntries.push_back(model);
+        } else {
+            delete model;
+        }
         ++current_node;
     }
     return noError;
@@ -624,46 +859,47 @@ error User::loadTimeEntriesFromJSONNode(JSONNODE *list) {
 
 std::string TimeEntry::String() {
     std::stringstream ss;
-    ss << "ID=" << ID <<
-    " description=" << Description <<
-    " wid=" << WID <<
-    " guid=" << GUID <<
-    " pid=" << PID <<
-    " tid=" << TID <<
-    " start=" << Start <<
-    " stop=" << Stop <<
-    " duration=" << DurationInSeconds <<
-    " billable=" << Billable <<
-    " duronly=" << DurOnly <<
-    " ui_modified_at=" << UIModifiedAt;
+    ss << "ID=" << id_ <<
+    " description=" << description_ <<
+    " wid=" << wid_ <<
+    " guid=" << guid_ <<
+    " pid=" << pid_ <<
+    " tid=" << tid_ <<
+    " start=" << start_ <<
+    " stop=" << stop_ <<
+    " duration=" << duration_in_seconds_ <<
+    " billable=" << billable_ <<
+    " duronly=" << duronly_ <<
+    " ui_modified_at=" << ui_modified_at_;
     return ss.str();
 }
 
 JSONNODE *TimeEntry::JSON() {
     JSONNODE *n = json_new(JSON_NODE);
     json_set_name(n, "time_entry");
-    if (ID > 0) {
-        json_push_back(n, json_new_i("id", (json_int_t)ID));
+    if (id_) {
+        json_push_back(n, json_new_i("id", (json_int_t)id_));
     }
-    json_push_back(n, json_new_a("description", Description.c_str()));
-    json_push_back(n, json_new_i("wid", (json_int_t)WID));
-    if (!GUID.empty()) {
-        json_push_back(n, json_new_a("guid", GUID.c_str()));
+    json_push_back(n, json_new_a("description", description_.c_str()));
+    json_push_back(n, json_new_i("wid", (json_int_t)wid_));
+    if (!guid_.empty()) {
+        json_push_back(n, json_new_a("guid", guid_.c_str()));
     }
-    if (PID > 0) {
-        json_push_back(n, json_new_i("pid", (json_int_t)PID));
+    if (pid_) {
+        json_push_back(n, json_new_i("pid", (json_int_t)pid_));
     }
-    if (TID > 0) {
-        json_push_back(n, json_new_i("tid", (json_int_t)TID));
+    if (tid_) {
+        json_push_back(n, json_new_i("tid", (json_int_t)tid_));
     }
     json_push_back(n, json_new_a("start", StartString().c_str()));
-    if (Stop > 0) {
+    if (stop_) {
         json_push_back(n, json_new_a("stop", StopString().c_str()));
     }
-    json_push_back(n, json_new_i("duration", (json_int_t)DurationInSeconds));
-    json_push_back(n, json_new_b("billable", Billable));
-    json_push_back(n, json_new_b("duronly", DurOnly));
-    json_push_back(n, json_new_i("ui_modified_at", (json_int_t)UIModifiedAt));
+    json_push_back(n, json_new_i("duration", (json_int_t)duration_in_seconds_));
+    json_push_back(n, json_new_b("billable", billable_));
+    json_push_back(n, json_new_b("duronly", duronly_));
+    json_push_back(n, json_new_i("ui_modified_at",
+        (json_int_t)ui_modified_at_));
 
     return n;
 }
@@ -674,7 +910,7 @@ Workspace *User::GetWorkspaceByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
     for (std::vector<Workspace *>::const_iterator it = Workspaces.begin();
             it != Workspaces.end(); it++) {
-        if ((*it)->ID == id) {
+        if ((*it)->ID() == id) {
             return *it;
         }
     }
@@ -685,7 +921,7 @@ Client *User::GetClientByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
     for (std::vector<Client *>::const_iterator it = Clients.begin();
             it != Clients.end(); it++) {
-        if ((*it)->ID == id) {
+        if ((*it)->ID() == id) {
             return *it;
         }
     }
@@ -696,7 +932,7 @@ Project *User::GetProjectByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
     for (std::vector<Project *>::const_iterator it = Projects.begin();
             it != Projects.end(); it++) {
-        if ((*it)->ID == id) {
+        if ((*it)->ID() == id) {
             return *it;
         }
     }
@@ -707,7 +943,7 @@ Task *User::GetTaskByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
     for (std::vector<Task *>::const_iterator it = Tasks.begin();
             it != Tasks.end(); it++) {
-        if ((*it)->ID == id) {
+        if ((*it)->ID() == id) {
             return *it;
         }
     }
@@ -718,7 +954,7 @@ Tag *User::GetTagByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
     for (std::vector<Tag *>::const_iterator it = Tags.begin();
             it != Tags.end(); it++) {
-        if ((*it)->ID == id) {
+        if ((*it)->ID() == id) {
             return *it;
         }
     }
@@ -729,7 +965,7 @@ TimeEntry *User::GetTimeEntryByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
     for (std::vector<TimeEntry *>::const_iterator it =
             TimeEntries.begin(); it != TimeEntries.end(); it++) {
-        if ((*it)->ID == id) {
+        if ((*it)->ID() == id) {
             return *it;
         }
     }
@@ -792,9 +1028,9 @@ error Workspace::LoadFromJSONNode(JSONNODE *n) {
         json_char *node_name = json_name(*i);
         error err = noError;
         if (strcmp(node_name, "id") == 0) {
-            ID = json_as_int(*i);
+            SetID(json_as_int(*i));
         } else if (strcmp(node_name, "name") == 0) {
-            Name = std::string(json_as_string(*i));
+            SetName(std::string(json_as_string(*i)));
         }
         ++i;
     }
@@ -810,13 +1046,13 @@ error Client::LoadFromJSONNode(JSONNODE *data) {
         json_char *node_name = json_name(*current_node);
         error err = noError;
         if (strcmp(node_name, "id") == 0) {
-            ID = json_as_int(*current_node);
+            SetID(json_as_int(*current_node));
         } else if (strcmp(node_name, "name") == 0) {
-            Name = std::string(json_as_string(*current_node));
+            SetName(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "guid") == 0) {
-            GUID = std::string(json_as_string(*current_node));
+            SetGUID(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "wid") == 0) {
-            WID = json_as_int(*current_node);
+            SetWID(json_as_int(*current_node));
         }
         ++current_node;
     }
@@ -832,15 +1068,15 @@ error Project::LoadFromJSONNode(JSONNODE *data) {
         json_char *node_name = json_name(*current_node);
         error err = noError;
         if (strcmp(node_name, "id") == 0) {
-            ID = json_as_int(*current_node);
+            SetID(json_as_int(*current_node));
         } else if (strcmp(node_name, "name") == 0) {
-            Name = std::string(json_as_string(*current_node));
+            SetName(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "guid") == 0) {
-            GUID = std::string(json_as_string(*current_node));
+            SetGUID(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "wid") == 0) {
-            WID = json_as_int(*current_node);
+            SetWID(json_as_int(*current_node));
         } else if (strcmp(node_name, "cid") == 0) {
-            CID = json_as_int(*current_node);
+            SetCID(json_as_int(*current_node));
         }
         ++current_node;
     }
@@ -856,13 +1092,13 @@ error Task::LoadFromJSONNode(JSONNODE *data) {
         json_char *node_name = json_name(*current_node);
         error err = noError;
         if (strcmp(node_name, "id") == 0) {
-            ID = json_as_int(*current_node);
+            SetID(json_as_int(*current_node));
         } else if (strcmp(node_name, "name") == 0) {
-            Name = std::string(json_as_string(*current_node));
+            SetName(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "pid") == 0) {
-            PID = json_as_int(*current_node);
+            SetPID(json_as_int(*current_node));
         } else if (strcmp(node_name, "wid") == 0) {
-            WID = json_as_int(*current_node);
+            SetWID(json_as_int(*current_node));
         }
         ++current_node;
     }
@@ -877,13 +1113,13 @@ error Tag::LoadFromJSONNode(JSONNODE *data) {
     while (current_node != last_node) {
         json_char *node_name = json_name(*current_node);
         if (strcmp(node_name, "id") == 0) {
-            ID = json_as_int(*current_node);
+            SetID(json_as_int(*current_node));
         } else if (strcmp(node_name, "name") == 0) {
-            Name = std::string(json_as_string(*current_node));
+            SetName(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "guid") == 0) {
-            GUID = std::string(json_as_string(*current_node));
+            SetGUID(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "wid") == 0) {
-            WID = json_as_int(*current_node);
+            SetWID(json_as_int(*current_node));
         }
         ++current_node;
     }
@@ -906,19 +1142,54 @@ std::string TimeEntry::Format8601(std::time_t date) {
 }
 
 std::string TimeEntry::StartString() {
-     return Format8601(Start);
+     return Format8601(start_);
 }
 
 void TimeEntry::SetStartString(std::string value) {
-    Start = Parse8601(value);
+    SetStart(Parse8601(value));
+}
+
+void TimeEntry::SetDurOnly(bool value) {
+    if (duronly_ != value) {
+        duronly_ = value;
+        dirty_ = true;
+    }
+}
+
+void TimeEntry::SetBillable(bool value) {
+    if (billable_ != value) {
+        billable_ = value;
+        dirty_ = true;
+    }
+}
+
+void TimeEntry::SetDurationInSeconds(Poco::Int64 value) {
+    if (duration_in_seconds_ != value) {
+        duration_in_seconds_ = value;
+        dirty_ = true;
+    }
 }
 
 std::string TimeEntry::StopString() {
-     return Format8601(Stop);
+     return Format8601(stop_);
 }
 
 void TimeEntry::SetStopString(std::string value) {
-    Stop = Parse8601(value);
+    SetStop(Parse8601(value));
+}
+
+void TimeEntry::SetStop(Poco::UInt64 value) {
+    if (stop_ != value) {
+        stop_ = value;
+        dirty_ = true;
+    }
+}
+
+void TimeEntry::SetStart(Poco::UInt64 value) {
+    if (start_ != value) {
+        start_ = value;
+        dirty_ = true;
+    }
 }
 
 std::string TimeEntry::Tags() {
@@ -929,6 +1200,7 @@ std::string TimeEntry::Tags() {
 }
 
 void TimeEntry::SetTags(std::string tags) {
+    // FIXME: dirty check missing
     TagNames.clear();
     std::stringstream ss(tags);
     while (ss.good()) {
@@ -998,27 +1270,83 @@ error TimeEntry::LoadFromJSONNode(JSONNODE *data) {
     }
 
     // Compare UIModifiedAt - see if we can apply this update from server:
-    if (UIModifiedAt > ui_modified_at) {
+    if (ui_modified_at_ > ui_modified_at) {
         // if we have newer version, don't apply updates from server.
         return noError;
     }
 
     // Apply updates from server and mark model as Dirty (so it will saved
-    // to local database).
-    ID = id;
-    Description = description;
-    GUID = guid;
-    WID = wid;
-    PID = pid;
-    TID = tid;
-    DurOnly = duronly;
-    Billable = billable;
-    DurationInSeconds = duration_in_seconds;
+    // to local database). Only set dirty flag when something has actually
+    // changed.
+    SetID(id);
+    SetDescription(description);
+    SetGUID(guid);
+    SetWID(wid);
+    SetPID(pid);
+    SetTID(tid);
+    SetDurOnly(duronly);
+    SetBillable(billable);
+    SetDurationInSeconds(duration_in_seconds);
     SetStartString(start);
     SetStopString(stop);
-    Dirty = true;
-    UIModifiedAt = 0;
+    SetUIModifiedAt(0);
     return noError;
+}
+
+void TimeEntry::SetWID(Poco::UInt64 value) {
+    if (wid_ != value) {
+        wid_ = value;
+        dirty_ = true;
+    }
+}
+
+void TimeEntry::SetID(Poco::UInt64 value) {
+    if (id_ != value) {
+        id_ = value;
+        dirty_ = true;
+    }
+}
+
+void TimeEntry::SetPID(Poco::UInt64 value) {
+    if (pid_ != value) {
+        pid_ = value;
+        dirty_ = true;
+    }
+}
+
+void TimeEntry::SetTID(Poco::UInt64 value) {
+    if (tid_ != value) {
+        tid_ = value;
+        dirty_ = true;
+    }
+}
+
+void TimeEntry::SetUID(Poco::UInt64 value) {
+    if (uid_ != value) {
+        uid_ = value;
+        dirty_ = true;
+    }
+}
+
+void TimeEntry::SetDescription(std::string value) {
+    if (description_ != value) {
+        description_ = value;
+        dirty_ = true;
+    }
+}
+
+void TimeEntry::SetGUID(std::string value) {
+    if (guid_ != value) {
+        guid_ = value;
+        dirty_ = true;
+    }
+}
+
+void TimeEntry::SetUIModifiedAt(Poco::UInt64 value) {
+    if (ui_modified_at_ != value) {
+        ui_modified_at_ = value;
+        dirty_ = true;
+    }
 }
 
 error TimeEntry::loadTagsFromJSONNode(JSONNODE *list) {

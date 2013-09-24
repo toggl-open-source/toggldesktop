@@ -13,7 +13,7 @@ void time_entry_to_struct(kopsik::TimeEntry *in, TogglTimeEntry *out_te) {
     free(out_te->Description);
     out_te->Description = 0;
   }
-  out_te->Description = strdup(in->Description.c_str());
+  out_te->Description = strdup(in->Description().c_str());
 }
 
 void kopsik_version(int *major, int *minor, int *patch) {
@@ -76,7 +76,7 @@ kopsik_api_result kopsik_current_user(char *errmsg, unsigned int errlen,
     strncpy(errmsg, "Please log in", errlen);
     return KOPSIK_API_FAILURE;
   }
-  kopsik_user_set_fullname(out_user, user.Fullname.c_str());
+  kopsik_user_set_fullname(out_user, user.Fullname().c_str());
   return KOPSIK_API_SUCCESS;
 }
 
@@ -133,7 +133,7 @@ kopsik_api_result kopsik_login(
     err.copy(errmsg, errlen);
     return KOPSIK_API_FAILURE;
   }
-  err = db.SetCurrentAPIToken(user.APIToken);
+  err = db.SetCurrentAPIToken(user.APIToken());
   if (err != kopsik::noError) {
     err.copy(errmsg, errlen);
     return KOPSIK_API_FAILURE;
