@@ -505,14 +505,12 @@
 				GCC_PREFIX_HEADER = "test2/kopsik_ui_osx-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					/Users/tambet/projects/libkopsik/include,
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include
 				);
 				INFOPLIST_FILE = "test2/kopsik_ui_osx-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					/Users/tambet/projects/libkopsik/lib,
 					/Users/tambet/projects/kopsik/src/libkopsik/lib,
 				);
 				ONLY_ACTIVE_ARCH = YES;
@@ -531,13 +529,11 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					/Users/tambet/projects/libkopsik/include,
 				);
 				INFOPLIST_FILE = "test2/kopsik_ui_osx-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					/Users/tambet/projects/libkopsik/lib,
 					/Users/tambet/projects/kopsik/src/libkopsik/lib,
 				);
 				ONLY_ACTIVE_ARCH = NO;
@@ -560,7 +556,6 @@
 					"$(inherited)",
 					"\\\\\\\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/kopsik-gdrqxzhkjpeomlgorxydlstyhljk/Build/Products/Debug\\\\\\\"",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Kopsik-cptvydtiosmzancjbyyzuervwdsl/Build/Products/Debug",
-					/Users/tambet/projects/libkopsik/lib,
 				);
 				PRODUCT_NAME = kopsik_ui_osxTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -581,7 +576,6 @@
 					"$(inherited)",
 					"\\\\\\\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/kopsik-gdrqxzhkjpeomlgorxydlstyhljk/Build/Products/Debug\\\\\\\"",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Kopsik-cptvydtiosmzancjbyyzuervwdsl/Build/Products/Debug",
-					/Users/tambet/projects/libkopsik/lib,
 				);
 				PRODUCT_NAME = kopsik_ui_osxTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
