@@ -47,8 +47,7 @@
 		74D1D27317EB72D900E709B0 /* TimerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D27017EB72D900E709B0 /* TimerEditViewController.m */; };
 		74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */; };
 		74D1D27517EB72D900E709B0 /* TimerEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */; };
-		C502227317F0726000888F8C /* Kopsik.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C502227217F0726000888F8C /* Kopsik.dylib */; };
-		C502227417F0726000888F8C /* Kopsik.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C502227217F0726000888F8C /* Kopsik.dylib */; };
+		C5DA1FB917F19647001C4565 /* Kopsik.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA1FB817F19647001C4565 /* Kopsik.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,7 +104,8 @@
 		74D1D26F17EB72D900E709B0 /* TimerEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerEditViewController.h; sourceTree = SOURCE_ROOT; };
 		74D1D27017EB72D900E709B0 /* TimerEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerEditViewController.m; sourceTree = SOURCE_ROOT; };
 		74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimerEditViewController.xib; sourceTree = SOURCE_ROOT; };
-		C502227217F0726000888F8C /* Kopsik.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Kopsik.dylib; path = ../../libkopsik/lib/Kopsik.dylib; sourceTree = "<group>"; };
+		C5DA1FB817F19647001C4565 /* Kopsik.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Kopsik.dylib; path = ../../../libkopsik/lib/Kopsik.dylib; sourceTree = "<group>"; };
+		C5DA1FBA17F197BF001C4565 /* kopsik_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kopsik_api.h; path = ../../../../kopsik_api.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,7 +116,7 @@
 				74033C9817EC1DF100CA53D3 /* libstdc++.dylib in Frameworks */,
 				74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */,
 				69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */,
-				C502227317F0726000888F8C /* Kopsik.dylib in Frameworks */,
+				C5DA1FB917F19647001C4565 /* Kopsik.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,7 +126,6 @@
 			files = (
 				69FC181317E6534500B96425 /* SenTestingKit.framework in Frameworks */,
 				69FC181417E6534500B96425 /* Cocoa.framework in Frameworks */,
-				C502227417F0726000888F8C /* Kopsik.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,7 +156,7 @@
 		69FC17F317E6534400B96425 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C502227217F0726000888F8C /* Kopsik.dylib */,
+				C5DA1FB817F19647001C4565 /* Kopsik.dylib */,
 				69FC17F417E6534400B96425 /* Cocoa.framework */,
 				69FC181217E6534500B96425 /* SenTestingKit.framework */,
 				69FC17F617E6534400B96425 /* Other Frameworks */,
@@ -178,6 +177,7 @@
 		69FC17FA17E6534400B96425 /* kopsik_ui */ = {
 			isa = PBXGroup;
 			children = (
+				C5DA1FBA17F197BF001C4565 /* kopsik_api.h */,
 				69FC180617E6534400B96425 /* AppDelegate.h */,
 				69FC180717E6534400B96425 /* AppDelegate.m */,
 				69FC180917E6534500B96425 /* MainMenu.xib */,
@@ -511,6 +511,7 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					/Users/tambet/projects/libkopsik/lib,
+					/Users/tambet/projects/kopsik/src/libkopsik/lib,
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = kopsik_ui_osx;
@@ -535,6 +536,7 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					/Users/tambet/projects/libkopsik/lib,
+					/Users/tambet/projects/kopsik/src/libkopsik/lib,
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = kopsik_ui_osx;
