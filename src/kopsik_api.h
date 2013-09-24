@@ -76,6 +76,19 @@ KOPSIK_EXPORT kopsik_api_result kopsik_stop(
   char *errmsg, unsigned int errlen, TogglTimeEntry *out_time_entry);
 KOPSIK_EXPORT void kopsik_time_entry_delete(TogglTimeEntry *in_time_entry);
 
+// Time entries API
+
+typedef struct {
+  TogglTimeEntry *time_entries;
+  unsigned int length;
+} TogglTimeEntryList;
+
+KOPSIK_EXPORT TogglTimeEntryList *kopsik_time_entry_list_new();
+KOPSIK_EXPORT kopsik_api_result kopsik_time_entries(
+  char *errmsg, unsigned int errlen, TogglTimeEntryList *out_time_entry_list);
+KOPSIK_EXPORT void kopsik_time_entry_list_delete(TogglTimeEntryList
+  *in_time_entry_list);
+
 #undef KOPSIK_EXPORT
 
 #ifdef __cplusplus

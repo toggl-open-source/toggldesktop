@@ -8,7 +8,13 @@
 
 #define DBNAME "kopsik.db"
 
+// FIXME: add asserts, remove "invalid pointer" error messages
+
+#define assert(thing) { }
+
 void time_entry_to_struct(kopsik::TimeEntry *in, TogglTimeEntry *out_te) {
+  assert(in);
+  assert(out_te);
   if (out_te->Description) {
     free(out_te->Description);
     out_te->Description = 0;
@@ -17,6 +23,9 @@ void time_entry_to_struct(kopsik::TimeEntry *in, TogglTimeEntry *out_te) {
 }
 
 void kopsik_version(int *major, int *minor, int *patch) {
+  assert(major);
+  assert(minor);
+  assert(patch);
   *major = 0;
   *minor = 1;
   *patch = 0;
@@ -30,6 +39,7 @@ TogglUser *kopsik_user_new() {
 }
 
 void kopsik_user_delete(TogglUser *user) {
+  assert(user);
   if (user->Fullname) {
     free(user->Fullname);
     user->Fullname = 0;
@@ -39,6 +49,8 @@ void kopsik_user_delete(TogglUser *user) {
 }
 
 void kopsik_user_set_fullname(TogglUser *user, const char *fullname) {
+  assert(user);
+  assert(fullname);
   if (user->Fullname) {
     free(user->Fullname);
     user->Fullname = 0;
@@ -53,6 +65,7 @@ TogglTimeEntry *kopsik_time_entry_new() {
 }
 
 void kopsik_time_entry_delete(TogglTimeEntry *te) {
+  assert(te);
   if (te->Description) {
     free(te->Description);
     te->Description = 0;
@@ -64,7 +77,10 @@ void kopsik_time_entry_delete(TogglTimeEntry *te) {
 // FIXME: write tests for API
 
 kopsik_api_result kopsik_current_user(char *errmsg, unsigned int errlen,
-  TogglUser *out_user) {
+    TogglUser *out_user) {
+  assert(errmsg);
+  assert(errlen);
+  assert(out_user);
   if (!out_user) {
     strncpy(errmsg, "Invalid user pointer", errlen);
     return KOPSIK_API_FAILURE;
@@ -73,7 +89,7 @@ kopsik_api_result kopsik_current_user(char *errmsg, unsigned int errlen,
   kopsik::User user;
   kopsik::error err = db.LoadCurrentUser(&user, true);
   if (err != kopsik::noError) {
-    strncpy(errmsg, "Please log in", errlen);
+    err.copy(errmsg, errlen);
     return KOPSIK_API_FAILURE;
   }
   kopsik_user_set_fullname(out_user, user.Fullname().c_str());
@@ -81,7 +97,10 @@ kopsik_api_result kopsik_current_user(char *errmsg, unsigned int errlen,
 }
 
 kopsik_api_result kopsik_set_api_token(char *errmsg, unsigned int errlen,
-  const char *in_api_token) {
+    const char *in_api_token) {
+  assert(errmsg);
+  assert(errlen);
+  assert(in_api_token);
   if (!in_api_token) {
     strncpy(errmsg, "Invalid api_token pointer", errlen);
     return KOPSIK_API_FAILURE;
@@ -103,6 +122,10 @@ kopsik_api_result kopsik_set_api_token(char *errmsg, unsigned int errlen,
 kopsik_api_result kopsik_login(
   char *errmsg, unsigned int errlen,
   const char *in_email, const char *in_password) {
+  assert(errmsg);
+  assert(errlen);
+  assert(in_email);
+  assert(in_password);
   if (!in_email) {
     strncpy(errmsg, "Invalid email pointer", errlen);
     return KOPSIK_API_FAILURE;
@@ -142,6 +165,8 @@ kopsik_api_result kopsik_login(
 }
 
 kopsik_api_result kopsik_sync(char *errmsg, unsigned int errlen) {
+  assert(errmsg);
+  assert(errlen);
   kopsik::Database db(DBNAME);
   kopsik::User user;
   kopsik::error err = db.LoadCurrentUser(&user, true);
@@ -163,7 +188,11 @@ kopsik_api_result kopsik_sync(char *errmsg, unsigned int errlen) {
 }
 
 kopsik_api_result kopsik_running_time_entry(char *errmsg, unsigned int errlen,
-  TogglTimeEntry *out_time_entry, int *is_tracking) {
+    TogglTimeEntry *out_time_entry, int *is_tracking) {
+  assert(errmsg);
+  assert(errlen);
+  assert(out_time_entry);
+  assert(is_tracking);
   if (!out_time_entry) {
     strncpy(errmsg, "Invalid time entry pointer", errlen);
     return KOPSIK_API_FAILURE;
@@ -189,7 +218,10 @@ kopsik_api_result kopsik_running_time_entry(char *errmsg, unsigned int errlen,
 }
 
 kopsik_api_result kopsik_dirty_models(char *errmsg, unsigned int errlen,
-  TogglDirtyModels *out_dirty_models) {
+    TogglDirtyModels *out_dirty_models) {
+  assert(errmsg);
+  assert(errlen);
+  assert(out_dirty_models);
   if (!out_dirty_models) {
     strncpy(errmsg, "Invalid dirty models pointer", errlen);
     return KOPSIK_API_FAILURE;
@@ -213,7 +245,10 @@ return KOPSIK_API_SUCCESS;
 }
 
 kopsik_api_result kopsik_start(char *errmsg, unsigned int errlen,
-  TogglTimeEntry *out_time_entry) {
+    TogglTimeEntry *out_time_entry) {
+  assert(errmsg);
+  assert(errlen);
+  assert(out_time_entry);
   if (!out_time_entry) {
     strncpy(errmsg, "Invalid time entry pointer", errlen);
     return KOPSIK_API_FAILURE;
@@ -238,7 +273,10 @@ kopsik_api_result kopsik_start(char *errmsg, unsigned int errlen,
 }
 
 kopsik_api_result kopsik_stop(char *errmsg, unsigned int errlen,
-  TogglTimeEntry *out_time_entry) {
+    TogglTimeEntry *out_time_entry) {
+  assert(errmsg);
+  assert(errlen);
+  assert(out_time_entry);
   if (!out_time_entry) {
     strncpy(errmsg, "Invalid time entry pointer", errlen);
     return KOPSIK_API_FAILURE;
@@ -266,13 +304,75 @@ kopsik_api_result kopsik_stop(char *errmsg, unsigned int errlen,
 void kopsik_set_proxy(
     const char *host, const unsigned int port,
     const char *username, const char *password) {
+  assert(host);
+  assert(username);
+  assert(password);
   // FIXME: implement
 }
 
 void kopsik_set_log_path(const char *path) {
+  assert(path);
   // FIXME: implement
 }
 
 void kopsik_set_db_path(const char *path) {
+  assert(path);
   // FIXME: implement
+}
+
+TogglTimeEntryList *kopsik_time_entry_list_new() {
+  TogglTimeEntryList *result = new TogglTimeEntryList();
+  result->length = 0;
+  result->time_entries = 0;
+  return result;
+}
+
+kopsik_api_result kopsik_time_entries(
+    char *errmsg, unsigned int errlen,
+    TogglTimeEntryList *out_time_entry_list) {
+  assert(errmsg);
+  assert(errlen);
+  assert(out_time_entry_list);
+  if (!out_time_entry_list) {
+    strncpy(errmsg, "Invalid time entry list pointer", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  kopsik::Database db(DBNAME);
+  kopsik::User user;
+  kopsik::error err = db.LoadCurrentUser(&user, true);
+  if (err != kopsik::noError) {
+    err.copy(errmsg, errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  out_time_entry_list->length = user.TimeEntries.size();
+  if (!out_time_entry_list->length) {
+    return KOPSIK_API_SUCCESS;
+  }
+
+  TogglTimeEntry *te = kopsik_time_entry_new();
+  void *m = malloc(out_time_entry_list->length * sizeof(te));
+  kopsik_time_entry_delete(te);
+
+  assert(m);
+  out_time_entry_list->time_entries = reinterpret_cast<TogglTimeEntry*>(m);
+  for (unsigned int i = 0; i < user.TimeEntries.size(); i++) {
+    kopsik::TimeEntry *te = user.TimeEntries[i];
+    TogglTimeEntry *item = kopsik_time_entry_new();
+    time_entry_to_struct(te, item);
+    // FIXME: out_time_entry_list->time_entries[i] = item;
+  }
+  return KOPSIK_API_SUCCESS;
+}
+
+void kopsik_time_entry_list_delete(TogglTimeEntryList *in_time_entry_list) {
+  assert(in_time_entry_list);
+  for (unsigned int i = 0; i < in_time_entry_list->length; i++) {
+    // FIXME: delete in_time_entry_list->time_entries[i];
+    // FIXME: in_time_entry_list->time_entries[i] = 0;
+  }
+  if (in_time_entry_list->time_entries) {
+    free(in_time_entry_list->time_entries);
+  }
+  delete in_time_entry_list;
+  in_time_entry_list = 0;
 }

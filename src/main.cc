@@ -17,7 +17,7 @@ namespace command_line_client {
     void Main::usage() {
         Poco::Logger &logger = Poco::Logger::get("");
         logger.information("Recognized commands are: "
-            "sync, start, stop, status, dirty");
+            "sync, start, stop, status, dirty, list");
     }
 
     int Main::main(const std::vector<std::string>& args) {
@@ -114,6 +114,20 @@ namespace command_line_client {
                 logger.information("Stopped.");
             }
             kopsik_time_entry_delete(te);
+            return Poco::Util::Application::EXIT_OK;
+        }
+
+        if ("list" == args[0]) {
+            TogglTimeEntryList *list = kopsik_time_entry_list_new();
+            if (KOPSIK_API_FAILURE == kopsik_time_entries(err, ERRLEN, list)) {
+                logger.error(err);
+                kopsik_time_entry_list_delete(list);
+                return Poco::Util::Application::EXIT_SOFTWARE;
+            }
+            std::stringstream ss;
+            ss << "Found " << list->length << " time entries.";
+            logger.information(ss.str());
+            kopsik_time_entry_list_delete(list);
             return Poco::Util::Application::EXIT_OK;
         }
 
