@@ -10,13 +10,15 @@
 
 #define assert(thing) {}
 
-TogglContext *kopsik_init() {
+// Context API
+
+TogglContext *kopsik_context_init() {
   TogglContext *ctx = new TogglContext();
   ctx->app_path = 0;
   return ctx;
 }
 
-void kopsik_delete(TogglContext *in_ctx) {
+void kopsik_context_clear(TogglContext *in_ctx) {
   assert(in_ctx);
   if (in_ctx->app_path) {
     free(in_ctx->app_path);
@@ -26,15 +28,7 @@ void kopsik_delete(TogglContext *in_ctx) {
   in_ctx = 0;
 }
 
-void time_entry_to_struct(kopsik::TimeEntry *in, TogglTimeEntry *out_te) {
-  assert(in);
-  assert(out_te);
-  if (out_te->Description) {
-    free(out_te->Description);
-    out_te->Description = 0;
-  }
-  out_te->Description = strdup(in->Description().c_str());
-}
+// Configuration API
 
 void kopsik_version(int *major, int *minor, int *patch) {
   assert(major);
@@ -72,22 +66,6 @@ void kopsik_user_set_fullname(TogglUser *user, const char *fullname) {
   user->Fullname = strdup(fullname);
 }
 
-TogglTimeEntry *kopsik_time_entry_new() {
-  TogglTimeEntry *te = new TogglTimeEntry();
-  te->Description = 0;
-  return te;
-}
-
-void kopsik_time_entry_delete(TogglTimeEntry *te) {
-  assert(te);
-  if (te->Description) {
-    free(te->Description);
-    te->Description = 0;
-  }
-  delete te;
-  te = 0;
-}
-
 // FIXME: write tests for API
 
 kopsik_api_result kopsik_current_user(char *errmsg, unsigned int errlen,
@@ -110,7 +88,9 @@ kopsik_api_result kopsik_current_user(char *errmsg, unsigned int errlen,
   return KOPSIK_API_SUCCESS;
 }
 
-kopsik_api_result kopsik_set_api_token(char *errmsg, unsigned int errlen,
+kopsik_api_result kopsik_set_api_token(
+    TogglContext *ctx,
+    char *errmsg, unsigned int errlen,
     const char *in_api_token) {
   assert(errmsg);
   assert(errlen);
@@ -178,7 +158,9 @@ kopsik_api_result kopsik_login(
   return KOPSIK_API_SUCCESS;
 }
 
-kopsik_api_result kopsik_sync(char *errmsg, unsigned int errlen) {
+kopsik_api_result kopsik_sync(
+    TogglContext *in_ctx,
+    char *errmsg, unsigned int errlen) {
   assert(errmsg);
   assert(errlen);
   kopsik::Database db(DBNAME);
@@ -201,7 +183,100 @@ kopsik_api_result kopsik_sync(char *errmsg, unsigned int errlen) {
   return KOPSIK_API_SUCCESS;
 }
 
-kopsik_api_result kopsik_running_time_entry(char *errmsg, unsigned int errlen,
+kopsik_api_result kopsik_dirty_models(
+    TogglContext *ctx,
+    char *errmsg, unsigned int errlen,
+    TogglDirtyModels *out_dirty_models) {
+  assert(errmsg);
+  assert(errlen);
+  assert(out_dirty_models);
+  if (!out_dirty_models) {
+    strncpy(errmsg, "Invalid dirty models pointer", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  kopsik::Database db(DBNAME);
+  kopsik::User user;
+  kopsik::error err = db.LoadCurrentUser(&user, true);
+  if (err != kopsik::noError) {
+    err.copy(errmsg, errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  std::vector<kopsik::TimeEntry *> dirty;
+  user.CollectDirtyObjects(&dirty);
+  out_dirty_models->TimeEntries = 0;
+  for (std::vector<kopsik::TimeEntry *>::const_iterator it = dirty.begin();
+    it != dirty.end();
+    it++) {
+    out_dirty_models->TimeEntries++;
+  }
+  return KOPSIK_API_SUCCESS;
+}
+
+void kopsik_set_proxy(
+    const char *host, const unsigned int port,
+    const char *username, const char *password) {
+  assert(host);
+  assert(username);
+  assert(password);
+  // FIXME: implement
+}
+
+void kopsik_set_app_path(const char *path) {
+  assert(path);
+  // FIXME: implement
+}
+
+// Time entry API.
+
+TogglTimeEntry *kopsik_time_entry_new() {
+  TogglTimeEntry *te = new TogglTimeEntry();
+  te->Description = 0;
+  return te;
+}
+
+void kopsik_time_entry_clear(TogglTimeEntry *te) {
+  assert(te);
+  if (te->Description) {
+    free(te->Description);
+    te->Description = 0;
+  }
+  delete te;
+  te = 0;
+}
+
+TogglTimeEntryList *kopsik_time_entry_list_new() {
+  TogglTimeEntryList *result = new TogglTimeEntryList();
+  result->length = 0;
+  result->time_entries = 0;
+  return result;
+}
+
+void kopsik_time_entry_list_clear(TogglTimeEntryList *in_time_entry_list) {
+  assert(in_time_entry_list);
+  for (unsigned int i = 0; i < in_time_entry_list->length; i++) {
+    delete in_time_entry_list->time_entries[i];
+    in_time_entry_list->time_entries[i] = 0;
+  }
+  if (in_time_entry_list->time_entries) {
+    free(in_time_entry_list->time_entries);
+  }
+  delete in_time_entry_list;
+  in_time_entry_list = 0;
+}
+
+void time_entry_to_struct(kopsik::TimeEntry *in, TogglTimeEntry *out_te) {
+  assert(in);
+  assert(out_te);
+  if (out_te->Description) {
+    free(out_te->Description);
+    out_te->Description = 0;
+  }
+  out_te->Description = strdup(in->Description().c_str());
+}
+
+kopsik_api_result kopsik_running_time_entry(
+    TogglContext *ctx,
+    char *errmsg, unsigned int errlen,
     TogglTimeEntry *out_time_entry, int *is_tracking) {
   assert(errmsg);
   assert(errlen);
@@ -231,34 +306,9 @@ kopsik_api_result kopsik_running_time_entry(char *errmsg, unsigned int errlen,
   return KOPSIK_API_SUCCESS;
 }
 
-kopsik_api_result kopsik_dirty_models(char *errmsg, unsigned int errlen,
-    TogglDirtyModels *out_dirty_models) {
-  assert(errmsg);
-  assert(errlen);
-  assert(out_dirty_models);
-  if (!out_dirty_models) {
-    strncpy(errmsg, "Invalid dirty models pointer", errlen);
-    return KOPSIK_API_FAILURE;
-  }
-  kopsik::Database db(DBNAME);
-  kopsik::User user;
-  kopsik::error err = db.LoadCurrentUser(&user, true);
-  if (err != kopsik::noError) {
-    err.copy(errmsg, errlen);
-    return KOPSIK_API_FAILURE;
-  }
-  std::vector<kopsik::TimeEntry *> dirty;
-  user.CollectDirtyObjects(&dirty);
-  out_dirty_models->TimeEntries = 0;
-  for (std::vector<kopsik::TimeEntry *>::const_iterator it = dirty.begin();
-    it != dirty.end();
-    it++) {
-    out_dirty_models->TimeEntries++;
-}
-return KOPSIK_API_SUCCESS;
-}
-
-kopsik_api_result kopsik_start(char *errmsg, unsigned int errlen,
+kopsik_api_result kopsik_start(
+    TogglContext *in_ctx,
+    char *errmsg, unsigned int errlen,
     TogglTimeEntry *out_time_entry) {
   assert(errmsg);
   assert(errlen);
@@ -286,7 +336,9 @@ kopsik_api_result kopsik_start(char *errmsg, unsigned int errlen,
   return KOPSIK_API_SUCCESS;
 }
 
-kopsik_api_result kopsik_stop(char *errmsg, unsigned int errlen,
+kopsik_api_result kopsik_stop(
+    TogglContext *in_ctx,
+    char *errmsg, unsigned int errlen,
     TogglTimeEntry *out_time_entry) {
   assert(errmsg);
   assert(errlen);
@@ -315,28 +367,8 @@ kopsik_api_result kopsik_stop(char *errmsg, unsigned int errlen,
   return KOPSIK_API_SUCCESS;
 }
 
-void kopsik_set_proxy(
-    const char *host, const unsigned int port,
-    const char *username, const char *password) {
-  assert(host);
-  assert(username);
-  assert(password);
-  // FIXME: implement
-}
-
-void kopsik_set_app_path(const char *path) {
-  assert(path);
-  // FIXME: implement
-}
-
-TogglTimeEntryList *kopsik_time_entry_list_new() {
-  TogglTimeEntryList *result = new TogglTimeEntryList();
-  result->length = 0;
-  result->time_entries = 0;
-  return result;
-}
-
 kopsik_api_result kopsik_time_entries(
+    TogglContext *in_ctx,
     char *errmsg, unsigned int errlen,
     TogglTimeEntryList *out_time_entry_list) {
   assert(errmsg);
@@ -359,7 +391,7 @@ kopsik_api_result kopsik_time_entries(
   }
   TogglTimeEntry *te = kopsik_time_entry_new();
   void *m = malloc(out_time_entry_list->length * sizeof(te));
-  kopsik_time_entry_delete(te);
+  kopsik_time_entry_clear(te);
   assert(m);
   out_time_entry_list->time_entries = reinterpret_cast<TogglTimeEntry **>(m);
   for (unsigned int i = 0; i < user.TimeEntries.size(); i++) {
@@ -369,17 +401,4 @@ kopsik_api_result kopsik_time_entries(
     out_time_entry_list->time_entries[i] = item;
   }
   return KOPSIK_API_SUCCESS;
-}
-
-void kopsik_time_entry_list_delete(TogglTimeEntryList *in_time_entry_list) {
-  assert(in_time_entry_list);
-  for (unsigned int i = 0; i < in_time_entry_list->length; i++) {
-    delete in_time_entry_list->time_entries[i];
-    in_time_entry_list->time_entries[i] = 0;
-  }
-  if (in_time_entry_list->time_entries) {
-    free(in_time_entry_list->time_entries);
-  }
-  delete in_time_entry_list;
-  in_time_entry_list = 0;
 }

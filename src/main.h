@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include "./kopsik_api.h"
+
 #include "Poco/Util/Application.h"
 #include "Poco/Util/OptionSet.h"
 
@@ -13,8 +15,13 @@ namespace command_line_client {
 
     class Main : public Poco::Util::Application {
     public:
-        Main() {}
-        ~Main() {}
+        Main() : ctx_(0) {
+            ctx_ = kopsik_context_init();
+            poco_assert(ctx_);
+        }
+        ~Main() {
+            kopsik_context_clear(ctx_);
+        }
 
     protected:
         int main(const std::vector<std::string>& args);
@@ -28,6 +35,7 @@ namespace command_line_client {
 
     private:
         void usage();
+        TogglContext *ctx_;
     };
 
 }  // namespace command_line_client
