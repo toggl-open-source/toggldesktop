@@ -10,7 +10,6 @@
 #import "LoginViewController.h"
 #import "TimeEntryListViewController.h"
 #import "UIEvents.h"
-#import "kopsik_api.h"
 
 @interface MainWindowController ()
 @property (nonatomic,strong) IBOutlet LoginViewController *loginViewController;
@@ -35,8 +34,10 @@
      object:nil];
     self.loginViewController = [[LoginViewController alloc]
                                 initWithNibName:@"LoginViewController" bundle:nil];
+    self.loginViewController->ctx_ = ctx_;
     self.timeEntryListViewController = [[TimeEntryListViewController alloc]
                                         initWithNibName:@"TimeEntryListViewController" bundle:nil];
+    self.timeEntryListViewController->ctx_ = ctx_;
   }
   return self;
 }
@@ -47,14 +48,14 @@
     
   char err[KOPSIK_ERR_LEN];
   TogglUser *user = kopsik_user_new();
-  if (KOPSIK_API_SUCCESS != kopsik_current_user(err, KOPSIK_ERR_LEN, user)) {
+  if (KOPSIK_API_SUCCESS != kopsik_current_user(ctx_, err, KOPSIK_ERR_LEN, user)) {
     NSLog(@"Error fetching user: %s", err);
   } else if (!user->ID) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedOut object:nil];
   } else {
     NSLog(@"Current user: %s", user->Fullname);
   }
-  kopsik_user_delete(user);
+  kopsik_user_clear(user);
 }
 
 -(void)eventHandler: (NSNotification *) notification

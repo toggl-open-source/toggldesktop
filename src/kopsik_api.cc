@@ -46,7 +46,7 @@ TogglUser *kopsik_user_new() {
   return user;
 }
 
-void kopsik_user_delete(TogglUser *user) {
+void kopsik_user_clear(TogglUser *user) {
   assert(user);
   if (user->Fullname) {
     free(user->Fullname);
@@ -68,7 +68,9 @@ void kopsik_user_set_fullname(TogglUser *user, const char *fullname) {
 
 // FIXME: write tests for API
 
-kopsik_api_result kopsik_current_user(char *errmsg, unsigned int errlen,
+kopsik_api_result kopsik_current_user(
+    TogglContext *in_ctx,
+    char *errmsg, unsigned int errlen,
     TogglUser *out_user) {
   assert(errmsg);
   assert(errlen);
@@ -114,8 +116,9 @@ kopsik_api_result kopsik_set_api_token(
 }
 
 kopsik_api_result kopsik_login(
-  char *errmsg, unsigned int errlen,
-  const char *in_email, const char *in_password) {
+    TogglContext *in_ctx,
+    char *errmsg, unsigned int errlen,
+    const char *in_email, const char *in_password) {
   assert(errmsg);
   assert(errlen);
   assert(in_email);
@@ -213,6 +216,7 @@ kopsik_api_result kopsik_dirty_models(
 }
 
 void kopsik_set_proxy(
+    TogglContext *ctx,
     const char *host, const unsigned int port,
     const char *username, const char *password) {
   assert(host);
@@ -221,7 +225,7 @@ void kopsik_set_proxy(
   // FIXME: implement
 }
 
-void kopsik_set_app_path(const char *path) {
+void kopsik_set_app_path(TogglContext *ctx, const char *path) {
   assert(path);
   // FIXME: implement
 }
@@ -385,7 +389,7 @@ kopsik_api_result kopsik_time_entries(
     err.copy(errmsg, errlen);
     return KOPSIK_API_FAILURE;
   }
-  out_time_entry_list->length = user.TimeEntries.size();
+  out_time_entry_list->length = (unsigned int)user.TimeEntries.size();
   if (!out_time_entry_list->length) {
     return KOPSIK_API_SUCCESS;
   }

@@ -7,8 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "kopsik_api.h"
 
 @interface MainWindowController : NSWindowController
+{
+  @public
+  TogglContext *ctx_;
+}
 @property (weak) IBOutlet NSView *headerView;
 @property (weak) IBOutlet NSView *contentView;
 @property (weak) IBOutlet NSView *footerView;

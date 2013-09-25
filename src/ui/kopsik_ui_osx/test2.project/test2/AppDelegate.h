@@ -7,7 +7,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "kopsik_api.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
-
+{
+  @public
+  TogglContext *ctx_;
+}
 @end
