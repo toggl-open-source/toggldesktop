@@ -8,11 +8,14 @@
 
 #include "Poco/Bugcheck.h"
 #include "Poco/Path.h"
+#include "Poco/Logger.h"
+#include "Poco/SimpleFileChannel.h"
+#include "Poco/FormattingChannel.h"
+#include "Poco/PatternFormatter.h"
 
 TogglContext *kopsik_context_init() {
   TogglContext *ctx = new TogglContext();
   ctx->db_path = 0;
-  ctx->log_path = 0;
   return ctx;
 }
 
@@ -21,10 +24,6 @@ void kopsik_context_clear(TogglContext *in_ctx) {
   if (in_ctx->db_path) {
     free(in_ctx->db_path);
     in_ctx->db_path = 0;
-  }
-  if (in_ctx->log_path) {
-    free(in_ctx->log_path);
-    in_ctx->log_path = 0;
   }
   delete in_ctx;
   in_ctx = 0;
@@ -41,11 +40,20 @@ void kopsik_set_db_path(TogglContext *ctx, const char *path) {
 
 void kopsik_set_log_path(TogglContext *ctx, const char *path) {
   poco_assert(path);
-  if (ctx->log_path) {
-    free(ctx->log_path);
-    ctx->log_path = 0;
-  }
-  ctx->log_path = strdup(path);
+
+  Poco::AutoPtr<Poco::SimpleFileChannel> simpleFileChannel(
+    new Poco::SimpleFileChannel);
+  simpleFileChannel->setProperty("path", path);
+  simpleFileChannel->setProperty("rotation", "1 M");
+
+  Poco::AutoPtr<Poco::FormattingChannel> formattingChannel(
+      new Poco::FormattingChannel(
+        new Poco::PatternFormatter("%Y-%m-%d %H:%M:%S.%c [%P]:%s:%q:%t")));
+  formattingChannel->setChannel(simpleFileChannel);
+
+  Poco::Logger &logger = Poco::Logger::get("");
+  logger.setChannel(formattingChannel);
+  logger.setLevel("debug");
 }
 
 void kopsik_version(int *major, int *minor, int *patch) {
@@ -103,6 +111,7 @@ kopsik_api_result kopsik_current_user(
     return KOPSIK_API_FAILURE;
   }
   kopsik_user_set_fullname(out_user, user.Fullname().c_str());
+  out_user->ID = user.ID();
   return KOPSIK_API_SUCCESS;
 }
 

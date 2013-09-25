@@ -53,6 +53,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedOut object:nil];
   } else {
     NSLog(@"Current user: %s", user->Fullname);
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedIn object:nil];
   }
   kopsik_user_clear(user);
 }
