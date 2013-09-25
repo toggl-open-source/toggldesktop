@@ -7,6 +7,7 @@
 //
 
 #import "TimeEntryListViewController.h"
+#import "timeEntryViewItem.h"
 #import "UIEvents.h"
 #import "kopsik_api.h"
 #import "Context.h"
@@ -21,6 +22,8 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+      viewitems = [NSMutableArray array];
+
       [[NSNotificationCenter defaultCenter]
        addObserver:self
        selector:@selector(eventHandler:)
@@ -34,17 +37,38 @@
 {
   if ([notification.name isEqualToString:kUIEventUserLoggedIn]) {
     char err[KOPSIK_ERR_LEN];
-    TogglTimeEntryList *list = kopsik_time_entry_list_new();
-    if (KOPSIK_API_SUCCESS != kopsik_time_entries(ctx, err, KOPSIK_ERR_LEN, list)) {
+    TogglTimeEntryViewItemList *list = kopsik_time_entry_view_item_list_init();
+    if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(ctx, err, KOPSIK_ERR_LEN, list)) {
       NSLog(@"Error fetching time entries: %s", err);
     } else {
-      for (int i = 0; i < list->length; i++) {
-        TogglTimeEntry *te = list->time_entries[i];
-        NSLog(@"te = %s", te->Description);
+      [viewitems removeAllObjects];
+      for (int i = 0; i < list->Length; i++) {
+        TogglTimeEntryViewItem *item = list->ViewItems[i];
+        TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
+        model.description = [NSString stringWithUTF8String:item->Description];
+        if (item->Project) {
+          model.project = [NSString stringWithUTF8String:item->Project];
+        }
+        model.duration = [NSString stringWithUTF8String:item->Duration];
+        [viewitems addObject:model];
       }
     }
-    kopsik_time_entry_list_clear(list);
+    kopsik_time_entry_view_item_list_clear(list);
+    [self.timeEntriesTableView reloadData];
   }
+}
+
+- (int)numberOfRowsInTableView:(NSTableView *)tv
+{
+  return (int)[viewitems count];
+}
+
+- (id)tableView:(NSTableView *)tv
+  objectValueForTableColumn:(NSTableColumn *)tableColumn
+            row:(int)row
+{
+  TimeEntryViewItem *item = [viewitems objectAtIndex:row];
+  return item.description;
 }
 
 @end

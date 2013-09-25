@@ -124,7 +124,7 @@ kopsik_api_result kopsik_current_user(
   }
   out_user->Fullname = strdup(user.Fullname().c_str());
 
-  out_user->ID = user.ID();
+  out_user->ID = (unsigned int)user.ID();
   return KOPSIK_API_SUCCESS;
 }
 

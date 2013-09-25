@@ -10,5 +10,9 @@
 #import "kopsik_api.h"
 
 @interface TimeEntryListViewController : NSViewController
-@property (weak) IBOutlet NSScrollView *timeEntriesTableView;
+{
+  @private
+  NSMutableArray *viewitems;
+}
+@property (weak) IBOutlet NSTableView *timeEntriesTableView;
 @end

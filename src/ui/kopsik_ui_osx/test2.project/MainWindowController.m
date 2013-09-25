@@ -46,7 +46,7 @@
   [super windowDidLoad];
     
   char err[KOPSIK_ERR_LEN];
-  TogglUser *user = kopsik_user_new();
+  TogglUser *user = kopsik_user_init();
   if (KOPSIK_API_SUCCESS != kopsik_current_user(ctx, err, KOPSIK_ERR_LEN, user)) {
     NSLog(@"Error fetching user: %s", err);
   } else if (!user->ID) {
