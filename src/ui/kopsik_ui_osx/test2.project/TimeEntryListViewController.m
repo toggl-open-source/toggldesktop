@@ -33,13 +33,16 @@
 {
   if ([notification.name isEqualToString:kUIEventUserLoggedIn]) {
     char err[KOPSIK_ERR_LEN];
-    TogglTimeEntryList *time_entries = kopsik_time_entry_list_new();
-    if (KOPSIK_API_SUCCESS != kopsik_time_entries(err, KOPSIK_ERR_LEN, time_entries)) {
+    TogglTimeEntryList *list = kopsik_time_entry_list_new();
+    if (KOPSIK_API_SUCCESS != kopsik_time_entries(err, KOPSIK_ERR_LEN, list)) {
       NSLog(@"Error fetching time entries: %s", err);
     } else {
-      // FIXME: render entries
+      for (int i = 0; i < list->length; i++) {
+        TogglTimeEntry *te = list->time_entries[i];
+        NSLog(@"te = %s", te->Description);
+      }
     }
-    kopsik_time_entry_list_delete(time_entries);
+    kopsik_time_entry_list_delete(list);
   }
 }
 

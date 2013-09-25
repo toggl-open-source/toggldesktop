@@ -352,12 +352,12 @@ kopsik_api_result kopsik_time_entries(
   void *m = malloc(out_time_entry_list->length * sizeof(te));
   kopsik_time_entry_delete(te);
   assert(m);
-  out_time_entry_list->time_entries = reinterpret_cast<TogglTimeEntry*>(m);
+  out_time_entry_list->time_entries = reinterpret_cast<TogglTimeEntry **>(m);
   for (unsigned int i = 0; i < user.TimeEntries.size(); i++) {
     kopsik::TimeEntry *te = user.TimeEntries[i];
     TogglTimeEntry *item = kopsik_time_entry_new();
     time_entry_to_struct(te, item);
-    // FIXME: out_time_entry_list->time_entries[i] = item;
+    out_time_entry_list->time_entries[i] = item;
   }
   return KOPSIK_API_SUCCESS;
 }
@@ -365,8 +365,8 @@ kopsik_api_result kopsik_time_entries(
 void kopsik_time_entry_list_delete(TogglTimeEntryList *in_time_entry_list) {
   assert(in_time_entry_list);
   for (unsigned int i = 0; i < in_time_entry_list->length; i++) {
-    // FIXME: delete in_time_entry_list->time_entries[i];
-    // FIXME: in_time_entry_list->time_entries[i] = 0;
+    delete in_time_entry_list->time_entries[i];
+    in_time_entry_list->time_entries[i] = 0;
   }
   if (in_time_entry_list->time_entries) {
     free(in_time_entry_list->time_entries);

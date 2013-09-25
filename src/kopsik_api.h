@@ -79,7 +79,7 @@ KOPSIK_EXPORT void kopsik_time_entry_delete(TogglTimeEntry *in_time_entry);
 // Time entries API
 
 typedef struct {
-  TogglTimeEntry *time_entries;
+  TogglTimeEntry **time_entries;
   unsigned int length;
 } TogglTimeEntryList;
 
