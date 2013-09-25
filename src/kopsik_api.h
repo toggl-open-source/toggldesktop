@@ -26,6 +26,7 @@ typedef struct {
 } TogglContext;
 
 KOPSIK_EXPORT TogglContext *kopsik_context_init();
+
 KOPSIK_EXPORT void kopsik_context_clear(TogglContext *in_ctx);
 
 // Configuration API
@@ -49,7 +50,7 @@ typedef struct {
     char *Fullname;
 } TogglUser;
 
-KOPSIK_EXPORT TogglUser *kopsik_user_new();
+KOPSIK_EXPORT TogglUser *kopsik_user_init();
 
 KOPSIK_EXPORT void kopsik_user_clear(TogglUser *user);
 
@@ -86,7 +87,7 @@ typedef struct {
     char *Description;
 } TogglTimeEntry;
 
-KOPSIK_EXPORT TogglTimeEntry *kopsik_time_entry_new();
+KOPSIK_EXPORT TogglTimeEntry *kopsik_time_entry_init();
 
 KOPSIK_EXPORT void kopsik_time_entry_clear(TogglTimeEntry *in_time_entry);
 
@@ -108,7 +109,7 @@ typedef struct {
   unsigned int length;
 } TogglTimeEntryList;
 
-KOPSIK_EXPORT TogglTimeEntryList *kopsik_time_entry_list_new();
+KOPSIK_EXPORT TogglTimeEntryList *kopsik_time_entry_list_init();
 
 KOPSIK_EXPORT void kopsik_time_entry_list_clear(
   TogglTimeEntryList *in_time_entry_list);

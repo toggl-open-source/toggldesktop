@@ -1,6 +1,7 @@
 // Copyright 2013 Tanel Lebedev
 
 #include <cstring>
+#include <iostream> // NOLINT
 
 #include "./kopsik_api.h"
 #include "./database.h"
@@ -12,6 +13,8 @@
 #include "Poco/SimpleFileChannel.h"
 #include "Poco/FormattingChannel.h"
 #include "Poco/PatternFormatter.h"
+
+// Context API.
 
 TogglContext *kopsik_context_init() {
   TogglContext *ctx = new TogglContext();
@@ -27,6 +30,27 @@ void kopsik_context_clear(TogglContext *in_ctx) {
   }
   delete in_ctx;
   in_ctx = 0;
+}
+
+// Configuration API.
+
+void kopsik_version(int *major, int *minor, int *patch) {
+  poco_assert(major);
+  poco_assert(minor);
+  poco_assert(patch);
+  *major = 0;
+  *minor = 1;
+  *patch = 0;
+}
+
+void kopsik_set_proxy(
+    TogglContext *ctx,
+    const char *host, const unsigned int port,
+    const char *username, const char *password) {
+  poco_assert(host);
+  poco_assert(username);
+  poco_assert(password);
+  // FIXME: implement
 }
 
 void kopsik_set_db_path(TogglContext *ctx, const char *path) {
@@ -56,16 +80,9 @@ void kopsik_set_log_path(TogglContext *ctx, const char *path) {
   logger.setLevel("debug");
 }
 
-void kopsik_version(int *major, int *minor, int *patch) {
-  poco_assert(major);
-  poco_assert(minor);
-  poco_assert(patch);
-  *major = 0;
-  *minor = 1;
-  *patch = 0;
-}
+// User API.
 
-TogglUser *kopsik_user_new() {
+TogglUser *kopsik_user_init() {
   TogglUser *user = new TogglUser();
   user->ID = 0;
   user->Fullname = 0;
@@ -80,16 +97,6 @@ void kopsik_user_clear(TogglUser *user) {
   }
   delete user;
   user = 0;
-}
-
-void kopsik_user_set_fullname(TogglUser *user, const char *fullname) {
-  poco_assert(user);
-  poco_assert(fullname);
-  if (user->Fullname) {
-    free(user->Fullname);
-    user->Fullname = 0;
-  }
-  user->Fullname = strdup(fullname);
 }
 
 kopsik_api_result kopsik_current_user(
@@ -110,7 +117,13 @@ kopsik_api_result kopsik_current_user(
     err.copy(errmsg, errlen);
     return KOPSIK_API_FAILURE;
   }
-  kopsik_user_set_fullname(out_user, user.Fullname().c_str());
+
+  if (out_user->Fullname) {
+    free(out_user->Fullname);
+    out_user->Fullname = 0;
+  }
+  out_user->Fullname = strdup(user.Fullname().c_str());
+
   out_user->ID = user.ID();
   return KOPSIK_API_SUCCESS;
 }
@@ -186,11 +199,14 @@ kopsik_api_result kopsik_login(
   return KOPSIK_API_SUCCESS;
 }
 
+// Sync
+
 kopsik_api_result kopsik_sync(
     TogglContext *in_ctx,
     char *errmsg, unsigned int errlen) {
   poco_assert(errmsg);
   poco_assert(errlen);
+  std::cout << "in_ctx->db_path = " << in_ctx->db_path << std::endl;
   kopsik::Database db(in_ctx->db_path);
   kopsik::User user;
   kopsik::error err = db.LoadCurrentUser(&user, true);
@@ -241,19 +257,9 @@ kopsik_api_result kopsik_dirty_models(
   return KOPSIK_API_SUCCESS;
 }
 
-void kopsik_set_proxy(
-    TogglContext *ctx,
-    const char *host, const unsigned int port,
-    const char *username, const char *password) {
-  poco_assert(host);
-  poco_assert(username);
-  poco_assert(password);
-  // FIXME: implement
-}
-
 // Time entry API.
 
-TogglTimeEntry *kopsik_time_entry_new() {
+TogglTimeEntry *kopsik_time_entry_init() {
   TogglTimeEntry *te = new TogglTimeEntry();
   te->Description = 0;
   return te;
@@ -269,7 +275,7 @@ void kopsik_time_entry_clear(TogglTimeEntry *te) {
   te = 0;
 }
 
-TogglTimeEntryList *kopsik_time_entry_list_new() {
+TogglTimeEntryList *kopsik_time_entry_list_init() {
   TogglTimeEntryList *result = new TogglTimeEntryList();
   result->length = 0;
   result->time_entries = 0;
@@ -414,14 +420,14 @@ kopsik_api_result kopsik_time_entries(
   if (!out_time_entry_list->length) {
     return KOPSIK_API_SUCCESS;
   }
-  TogglTimeEntry *te = kopsik_time_entry_new();
+  TogglTimeEntry *te = kopsik_time_entry_init();
   void *m = malloc(out_time_entry_list->length * sizeof(te));
   kopsik_time_entry_clear(te);
   poco_assert(m);
   out_time_entry_list->time_entries = reinterpret_cast<TogglTimeEntry **>(m);
   for (unsigned int i = 0; i < user.TimeEntries.size(); i++) {
     kopsik::TimeEntry *te = user.TimeEntries[i];
-    TogglTimeEntry *item = kopsik_time_entry_new();
+    TogglTimeEntry *item = kopsik_time_entry_init();
     time_entry_to_struct(te, item);
     out_time_entry_list->time_entries[i] = item;
   }
