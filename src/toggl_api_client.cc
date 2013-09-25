@@ -47,7 +47,7 @@ TimeEntry *User::Start() {
 }
 
 bool compareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
-  return a->Start() < b->Start();
+  return a->Start() > b->Start();
 }
 
 void User::SortTimeEntriesByStart() {
