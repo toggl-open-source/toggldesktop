@@ -9,6 +9,7 @@
 #import "LoginViewController.h"
 #import "kopsik_api.h"
 #import "UIEvents.h"
+#import "Context.h"
 
 @interface LoginViewController ()
 
@@ -31,7 +32,7 @@
   pass = [self.password stringValue];
   
   char err[KOPSIK_ERR_LEN];
-  if (KOPSIK_API_SUCCESS != kopsik_login(ctx_, err, KOPSIK_ERR_LEN, [email UTF8String], [pass UTF8String])) {
+  if (KOPSIK_API_SUCCESS != kopsik_login(ctx, err, KOPSIK_ERR_LEN, [email UTF8String], [pass UTF8String])) {
     [self.errorLabel setStringValue:[NSString stringWithUTF8String:err]];
     [self.errorLabel setHidden:NO];
   } else {

@@ -10,10 +10,6 @@
 #import "kopsik_api.h"
 
 @interface LoginViewController : NSViewController
-{
-  @public
-  TogglContext *ctx_;
-}
 @property (weak) IBOutlet NSTextField *email;
 @property (weak) IBOutlet NSSecureTextField *password;
 @property (weak) IBOutlet NSTextField *errorLabel;

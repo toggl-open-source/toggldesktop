@@ -7,14 +7,16 @@
 #include "Poco/FileStream.h"
 #include "Poco/File.h"
 
+#define TESTDB "test.db"
+
 namespace kopsik {
 
     TEST(KopsikTest, SaveAndLoadCurrentAPIToken) {
-        Poco::File f("test.db");
+        Poco::File f(TESTDB);
         if (f.exists()) {
             f.remove(false);
         }
-        Database db("test.db");
+        Database db(TESTDB);
 
         std::string api_token("");
         ASSERT_EQ(noError, db.CurrentAPIToken(&api_token));
@@ -41,11 +43,11 @@ namespace kopsik {
     }
 
     TEST(KopsikTest, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
-        Poco::File f("test.db");
+        Poco::File f(TESTDB);
         if (f.exists()) {
             f.remove(false);
         }
-        Database db("test.db");
+        Database db(TESTDB);
 
         Poco::FileStream fis("testdata/me.json", std::ios::binary);
         std::stringstream ss;
@@ -87,11 +89,11 @@ namespace kopsik {
     }
 
     TEST(KopsikTest, SavesModelsAndKnowsToUpdateWithSeparateUserInstances) {
-        Poco::File f("test.db");
+        Poco::File f(TESTDB);
         if (f.exists()) {
             f.remove(false);
         }
-        Database db("test.db");
+        Database db(TESTDB);
 
         Poco::FileStream fis("testdata/me.json", std::ios::binary);
         std::stringstream ss;
@@ -172,11 +174,11 @@ namespace kopsik {
         User user;
         ASSERT_EQ(noError, user.LoadFromJSONString(ss.str(), true));
 
-        Poco::File f("test.db");
+        Poco::File f(TESTDB);
         if (f.exists()) {
             f.remove(false);
         }
-        Database db("test.db");
+        Database db(TESTDB);
 
         ASSERT_EQ(noError, db.SaveUser(&user, false));
 
@@ -305,11 +307,11 @@ namespace kopsik {
             user.Clients[1]->GUID());
         ASSERT_EQ(user.ID(), user.Clients[0]->UID());
 
-        Poco::File f("test.db");
+        Poco::File f(TESTDB);
         if (f.exists()) {
             f.remove(false);
         }
-        Database db("test.db");
+        Database db(TESTDB);
 
         Poco::UInt64 n;
         ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));

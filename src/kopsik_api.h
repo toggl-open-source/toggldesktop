@@ -22,7 +22,8 @@ typedef int kopsik_api_result;
 // Context API.
 
 typedef struct {
-  char *app_path;
+  char *db_path;
+  char *log_path;
 } TogglContext;
 
 KOPSIK_EXPORT TogglContext *kopsik_context_init();
@@ -37,7 +38,10 @@ KOPSIK_EXPORT void kopsik_set_proxy(TogglContext *in_ctx,
   const char *host, const unsigned int port,
   const char *username, const char *password);
 
-KOPSIK_EXPORT void kopsik_set_app_path(TogglContext *in_ctx,
+KOPSIK_EXPORT void kopsik_set_db_path(TogglContext *in_ctx,
+  const char *in_path);
+
+KOPSIK_EXPORT void kopsik_set_log_path(TogglContext *in_ctx,
   const char *in_path);
 
 // User API

@@ -9,6 +9,7 @@
 #import "TimeEntryListViewController.h"
 #import "UIEvents.h"
 #import "kopsik_api.h"
+#import "Context.h"
 
 @interface TimeEntryListViewController ()
 
@@ -20,7 +21,6 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-      
       [[NSNotificationCenter defaultCenter]
        addObserver:self
        selector:@selector(eventHandler:)
@@ -35,7 +35,7 @@
   if ([notification.name isEqualToString:kUIEventUserLoggedIn]) {
     char err[KOPSIK_ERR_LEN];
     TogglTimeEntryList *list = kopsik_time_entry_list_new();
-    if (KOPSIK_API_SUCCESS != kopsik_time_entries(ctx_, err, KOPSIK_ERR_LEN, list)) {
+    if (KOPSIK_API_SUCCESS != kopsik_time_entries(ctx, err, KOPSIK_ERR_LEN, list)) {
       NSLog(@"Error fetching time entries: %s", err);
     } else {
       for (int i = 0; i < list->length; i++) {

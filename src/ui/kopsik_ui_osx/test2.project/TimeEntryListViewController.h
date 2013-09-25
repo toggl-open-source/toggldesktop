@@ -10,9 +10,5 @@
 #import "kopsik_api.h"
 
 @interface TimeEntryListViewController : NSViewController
-{
-  @public
-  TogglContext *ctx_;
-}
 @property (weak) IBOutlet NSTableView *timeEntriesTableView;
 @end

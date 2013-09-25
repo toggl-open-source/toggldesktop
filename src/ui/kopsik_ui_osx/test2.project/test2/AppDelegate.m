@@ -7,9 +7,9 @@
 //
 
 #import "AppDelegate.h"
-#include "kopsik_api.h"
-
-#include "MainWindowController.h"
+#import "kopsik_api.h"
+#import "Context.h"
+#import "MainWindowController.h"
 
 @interface  AppDelegate()
 @property (nonatomic,strong) IBOutlet MainWindowController *mainWindowController;
@@ -20,14 +20,12 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
   self.mainWindowController = [[MainWindowController alloc] initWithWindowNibName:@"MainWindowController"];
-  self.mainWindowController->ctx_ = ctx_;
   [self.mainWindowController showWindow:self];
   
   int major = 0;
   int minor = 0;
   int patch = 0;
   kopsik_version(&major, &minor, &patch);
-  kopsik_set_app_path(ctx_, [self.applicationSupportDirectory UTF8String]);
   NSString *s = [NSString stringWithFormat:@"libkopsik version %d.%d.%d", major, minor, patch];
   NSLog(@"%@", s);
 }
@@ -40,7 +38,7 @@
   if ([paths count] == 0) {
     NSLog(@"Unable to access application support directory!");
   }
-  path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"libkopsik"];
+  path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"Kopsik"];
   
 	if (![[NSFileManager defaultManager] fileExistsAtPath:path]){
 		if (![[NSFileManager defaultManager] createDirectoryAtPath:path
@@ -56,13 +54,23 @@
 - (id) init
 {
   self = [super init];
-  ctx_ = kopsik_context_init();
+  ctx = kopsik_context_init();
+
+  NSString *app_path = self.applicationSupportDirectory;
+
+  NSString *db_path = [app_path stringByAppendingPathComponent:@"kopsik.db"];
+  kopsik_set_db_path(ctx, [db_path UTF8String]);
+
+  NSString *log_path = [app_path stringByAppendingPathComponent:@"kopsik.log"];
+  kopsik_set_log_path(ctx, [log_path UTF8String]);
+
   return self;
 }
 
 - (void) dealloc
 {
-  kopsik_context_clear(ctx_);
+  kopsik_context_clear(ctx);
+  ctx = 0;
 }
 
 @end

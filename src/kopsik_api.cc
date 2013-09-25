@@ -6,34 +6,52 @@
 #include "./database.h"
 #include "./toggl_api_client.h"
 
-#define DBNAME "kopsik.db"
-
-#define assert(thing) {}
-
-// Context API
+#include "Poco/Bugcheck.h"
+#include "Poco/Path.h"
 
 TogglContext *kopsik_context_init() {
   TogglContext *ctx = new TogglContext();
-  ctx->app_path = 0;
+  ctx->db_path = 0;
+  ctx->log_path = 0;
   return ctx;
 }
 
 void kopsik_context_clear(TogglContext *in_ctx) {
-  assert(in_ctx);
-  if (in_ctx->app_path) {
-    free(in_ctx->app_path);
-    in_ctx->app_path = 0;
+  poco_assert(in_ctx);
+  if (in_ctx->db_path) {
+    free(in_ctx->db_path);
+    in_ctx->db_path = 0;
+  }
+  if (in_ctx->log_path) {
+    free(in_ctx->log_path);
+    in_ctx->log_path = 0;
   }
   delete in_ctx;
   in_ctx = 0;
 }
 
-// Configuration API
+void kopsik_set_db_path(TogglContext *ctx, const char *path) {
+  poco_assert(path);
+  if (ctx->db_path) {
+    free(ctx->db_path);
+    ctx->db_path = 0;
+  }
+  ctx->db_path = strdup(path);
+}
+
+void kopsik_set_log_path(TogglContext *ctx, const char *path) {
+  poco_assert(path);
+  if (ctx->log_path) {
+    free(ctx->log_path);
+    ctx->log_path = 0;
+  }
+  ctx->log_path = strdup(path);
+}
 
 void kopsik_version(int *major, int *minor, int *patch) {
-  assert(major);
-  assert(minor);
-  assert(patch);
+  poco_assert(major);
+  poco_assert(minor);
+  poco_assert(patch);
   *major = 0;
   *minor = 1;
   *patch = 0;
@@ -47,7 +65,7 @@ TogglUser *kopsik_user_new() {
 }
 
 void kopsik_user_clear(TogglUser *user) {
-  assert(user);
+  poco_assert(user);
   if (user->Fullname) {
     free(user->Fullname);
     user->Fullname = 0;
@@ -57,8 +75,8 @@ void kopsik_user_clear(TogglUser *user) {
 }
 
 void kopsik_user_set_fullname(TogglUser *user, const char *fullname) {
-  assert(user);
-  assert(fullname);
+  poco_assert(user);
+  poco_assert(fullname);
   if (user->Fullname) {
     free(user->Fullname);
     user->Fullname = 0;
@@ -66,20 +84,18 @@ void kopsik_user_set_fullname(TogglUser *user, const char *fullname) {
   user->Fullname = strdup(fullname);
 }
 
-// FIXME: write tests for API
-
 kopsik_api_result kopsik_current_user(
     TogglContext *in_ctx,
     char *errmsg, unsigned int errlen,
     TogglUser *out_user) {
-  assert(errmsg);
-  assert(errlen);
-  assert(out_user);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(out_user);
   if (!out_user) {
     strncpy(errmsg, "Invalid user pointer", errlen);
     return KOPSIK_API_FAILURE;
   }
-  kopsik::Database db(DBNAME);
+  kopsik::Database db(in_ctx->db_path);
   kopsik::User user;
   kopsik::error err = db.LoadCurrentUser(&user, true);
   if (err != kopsik::noError) {
@@ -91,12 +107,12 @@ kopsik_api_result kopsik_current_user(
 }
 
 kopsik_api_result kopsik_set_api_token(
-    TogglContext *ctx,
+    TogglContext *in_ctx,
     char *errmsg, unsigned int errlen,
     const char *in_api_token) {
-  assert(errmsg);
-  assert(errlen);
-  assert(in_api_token);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(in_api_token);
   if (!in_api_token) {
     strncpy(errmsg, "Invalid api_token pointer", errlen);
     return KOPSIK_API_FAILURE;
@@ -106,7 +122,7 @@ kopsik_api_result kopsik_set_api_token(
     strncpy(errmsg, "Emtpy API token", errlen);
     return KOPSIK_API_FAILURE;
   }
-  kopsik::Database db(DBNAME);
+  kopsik::Database db(in_ctx->db_path);
   kopsik::error err = db.SetCurrentAPIToken(api_token);
   if (err != kopsik::noError) {
     err.copy(errmsg, errlen);
@@ -119,10 +135,10 @@ kopsik_api_result kopsik_login(
     TogglContext *in_ctx,
     char *errmsg, unsigned int errlen,
     const char *in_email, const char *in_password) {
-  assert(errmsg);
-  assert(errlen);
-  assert(in_email);
-  assert(in_password);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(in_email);
+  poco_assert(in_password);
   if (!in_email) {
     strncpy(errmsg, "Invalid email pointer", errlen);
     return KOPSIK_API_FAILURE;
@@ -147,7 +163,7 @@ kopsik_api_result kopsik_login(
     err.copy(errmsg, errlen);
     return KOPSIK_API_FAILURE;
   }
-  kopsik::Database db(DBNAME);
+  kopsik::Database db(in_ctx->db_path);
   err = db.SaveUser(&user, true);
   if (err != kopsik::noError) {
     err.copy(errmsg, errlen);
@@ -164,9 +180,9 @@ kopsik_api_result kopsik_login(
 kopsik_api_result kopsik_sync(
     TogglContext *in_ctx,
     char *errmsg, unsigned int errlen) {
-  assert(errmsg);
-  assert(errlen);
-  kopsik::Database db(DBNAME);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  kopsik::Database db(in_ctx->db_path);
   kopsik::User user;
   kopsik::error err = db.LoadCurrentUser(&user, true);
   if (err != kopsik::noError) {
@@ -187,17 +203,18 @@ kopsik_api_result kopsik_sync(
 }
 
 kopsik_api_result kopsik_dirty_models(
-    TogglContext *ctx,
+    TogglContext *in_ctx,
     char *errmsg, unsigned int errlen,
     TogglDirtyModels *out_dirty_models) {
-  assert(errmsg);
-  assert(errlen);
-  assert(out_dirty_models);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(out_dirty_models);
   if (!out_dirty_models) {
     strncpy(errmsg, "Invalid dirty models pointer", errlen);
     return KOPSIK_API_FAILURE;
   }
-  kopsik::Database db(DBNAME);
+  kopsik::Database db(in_ctx->db_path);
+
   kopsik::User user;
   kopsik::error err = db.LoadCurrentUser(&user, true);
   if (err != kopsik::noError) {
@@ -219,14 +236,9 @@ void kopsik_set_proxy(
     TogglContext *ctx,
     const char *host, const unsigned int port,
     const char *username, const char *password) {
-  assert(host);
-  assert(username);
-  assert(password);
-  // FIXME: implement
-}
-
-void kopsik_set_app_path(TogglContext *ctx, const char *path) {
-  assert(path);
+  poco_assert(host);
+  poco_assert(username);
+  poco_assert(password);
   // FIXME: implement
 }
 
@@ -239,7 +251,7 @@ TogglTimeEntry *kopsik_time_entry_new() {
 }
 
 void kopsik_time_entry_clear(TogglTimeEntry *te) {
-  assert(te);
+  poco_assert(te);
   if (te->Description) {
     free(te->Description);
     te->Description = 0;
@@ -256,7 +268,7 @@ TogglTimeEntryList *kopsik_time_entry_list_new() {
 }
 
 void kopsik_time_entry_list_clear(TogglTimeEntryList *in_time_entry_list) {
-  assert(in_time_entry_list);
+  poco_assert(in_time_entry_list);
   for (unsigned int i = 0; i < in_time_entry_list->length; i++) {
     delete in_time_entry_list->time_entries[i];
     in_time_entry_list->time_entries[i] = 0;
@@ -269,8 +281,8 @@ void kopsik_time_entry_list_clear(TogglTimeEntryList *in_time_entry_list) {
 }
 
 void time_entry_to_struct(kopsik::TimeEntry *in, TogglTimeEntry *out_te) {
-  assert(in);
-  assert(out_te);
+  poco_assert(in);
+  poco_assert(out_te);
   if (out_te->Description) {
     free(out_te->Description);
     out_te->Description = 0;
@@ -279,13 +291,13 @@ void time_entry_to_struct(kopsik::TimeEntry *in, TogglTimeEntry *out_te) {
 }
 
 kopsik_api_result kopsik_running_time_entry(
-    TogglContext *ctx,
+    TogglContext *in_ctx,
     char *errmsg, unsigned int errlen,
     TogglTimeEntry *out_time_entry, int *is_tracking) {
-  assert(errmsg);
-  assert(errlen);
-  assert(out_time_entry);
-  assert(is_tracking);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(out_time_entry);
+  poco_assert(is_tracking);
   if (!out_time_entry) {
     strncpy(errmsg, "Invalid time entry pointer", errlen);
     return KOPSIK_API_FAILURE;
@@ -295,7 +307,7 @@ kopsik_api_result kopsik_running_time_entry(
     return KOPSIK_API_FAILURE;
   }
   *is_tracking = 0;
-  kopsik::Database db(DBNAME);
+  kopsik::Database db(in_ctx->db_path);
   kopsik::User user;
   kopsik::error err = db.LoadCurrentUser(&user, true);
   if (err != kopsik::noError) {
@@ -314,14 +326,14 @@ kopsik_api_result kopsik_start(
     TogglContext *in_ctx,
     char *errmsg, unsigned int errlen,
     TogglTimeEntry *out_time_entry) {
-  assert(errmsg);
-  assert(errlen);
-  assert(out_time_entry);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(out_time_entry);
   if (!out_time_entry) {
     strncpy(errmsg, "Invalid time entry pointer", errlen);
     return KOPSIK_API_FAILURE;
   }
-  kopsik::Database db(DBNAME);
+  kopsik::Database db(in_ctx->db_path);
   kopsik::User user;
   kopsik::error err = db.LoadCurrentUser(&user, true);
   if (err != kopsik::noError) {
@@ -344,14 +356,14 @@ kopsik_api_result kopsik_stop(
     TogglContext *in_ctx,
     char *errmsg, unsigned int errlen,
     TogglTimeEntry *out_time_entry) {
-  assert(errmsg);
-  assert(errlen);
-  assert(out_time_entry);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(out_time_entry);
   if (!out_time_entry) {
     strncpy(errmsg, "Invalid time entry pointer", errlen);
     return KOPSIK_API_FAILURE;
   }
-  kopsik::Database db(DBNAME);
+  kopsik::Database db(in_ctx->db_path);
   kopsik::User user;
   kopsik::error err = db.LoadCurrentUser(&user, true);
   if (err != kopsik::noError) {
@@ -375,14 +387,14 @@ kopsik_api_result kopsik_time_entries(
     TogglContext *in_ctx,
     char *errmsg, unsigned int errlen,
     TogglTimeEntryList *out_time_entry_list) {
-  assert(errmsg);
-  assert(errlen);
-  assert(out_time_entry_list);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(out_time_entry_list);
   if (!out_time_entry_list) {
     strncpy(errmsg, "Invalid time entry list pointer", errlen);
     return KOPSIK_API_FAILURE;
   }
-  kopsik::Database db(DBNAME);
+  kopsik::Database db(in_ctx->db_path);
   kopsik::User user;
   kopsik::error err = db.LoadCurrentUser(&user, true);
   if (err != kopsik::noError) {
@@ -396,7 +408,7 @@ kopsik_api_result kopsik_time_entries(
   TogglTimeEntry *te = kopsik_time_entry_new();
   void *m = malloc(out_time_entry_list->length * sizeof(te));
   kopsik_time_entry_clear(te);
-  assert(m);
+  poco_assert(m);
   out_time_entry_list->time_entries = reinterpret_cast<TogglTimeEntry **>(m);
   for (unsigned int i = 0; i < user.TimeEntries.size(); i++) {
     kopsik::TimeEntry *te = user.TimeEntries[i];

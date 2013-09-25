@@ -5,6 +5,7 @@
 
 #include <string>
 #include <vector>
+#include <iostream> // NOLINT
 
 #include "Poco/Logger.h"
 #include "Poco/Data/Common.h"
@@ -17,9 +18,9 @@ namespace kopsik {
 
 class Database {
     public:
-        explicit Database(std::string dbname) : session(0) {
+        explicit Database(std::string db_path) : session(0) {
             Poco::Data::SQLite::Connector::registerConnector();
-            session = new Poco::Data::Session("SQLite", dbname);
+            session = new Poco::Data::Session("SQLite", db_path);
             error err = initialize_tables();
             if (err != noError) {
                 Poco::Logger &logger = Poco::Logger::get("database");
