@@ -348,11 +348,9 @@ kopsik_api_result kopsik_time_entries(
   if (!out_time_entry_list->length) {
     return KOPSIK_API_SUCCESS;
   }
-
   TogglTimeEntry *te = kopsik_time_entry_new();
   void *m = malloc(out_time_entry_list->length * sizeof(te));
   kopsik_time_entry_delete(te);
-
   assert(m);
   out_time_entry_list->time_entries = reinterpret_cast<TogglTimeEntry*>(m);
   for (unsigned int i = 0; i < user.TimeEntries.size(); i++) {
