@@ -8,9 +8,23 @@
 
 #define DBNAME "kopsik.db"
 
-// FIXME: add asserts, remove "invalid pointer" error messages
+#define assert(thing) {}
 
-#define assert(thing) { }
+TogglContext *kopsik_init() {
+  TogglContext *ctx = new TogglContext();
+  ctx->app_path = 0;
+  return ctx;
+}
+
+void kopsik_delete(TogglContext *in_ctx) {
+  assert(in_ctx);
+  if (in_ctx->app_path) {
+    free(in_ctx->app_path);
+    in_ctx->app_path = 0;
+  }
+  delete in_ctx;
+  in_ctx = 0;
+}
 
 void time_entry_to_struct(kopsik::TimeEntry *in, TogglTimeEntry *out_te) {
   assert(in);
@@ -310,12 +324,7 @@ void kopsik_set_proxy(
   // FIXME: implement
 }
 
-void kopsik_set_log_path(const char *path) {
-  assert(path);
-  // FIXME: implement
-}
-
-void kopsik_set_db_path(const char *path) {
+void kopsik_set_app_path(const char *path) {
   assert(path);
   // FIXME: implement
 }
