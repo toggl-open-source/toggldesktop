@@ -26,13 +26,12 @@
   int minor = 0;
   int patch = 0;
   kopsik_version(&major, &minor, &patch);
-  
-  kopsik_set_db_path([self.supportDirector UTF8String]);
+  kopsik_set_db_path([self.applicationSupportDirectory UTF8String]);
   NSString *s = [NSString stringWithFormat:@"libkopsik version %d.%d.%d", major, minor, patch];
   NSLog(@"%@", s);
 }
 
-- (NSString *)supportDirector
+- (NSString *)applicationSupportDirectory
 {
   NSString *path;
   NSError *error;
