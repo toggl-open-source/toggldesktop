@@ -14,7 +14,8 @@ namespace command_line_client {
 
     void Main::usage() {
         std::cout << "Recognized commands are: "
-            "sync, start, stop, status, dirty, list" << std::endl;
+            "sync, start, stop, status, dirty, time_entries, listview"
+            << std::endl;
     }
 
     int Main::main(const std::vector<std::string>& args) {
@@ -117,7 +118,7 @@ namespace command_line_client {
             return Poco::Util::Application::EXIT_OK;
         }
 
-        if ("list" == args[0]) {
+        if ("time_entries" == args[0]) {
             TogglTimeEntryList *list = kopsik_time_entry_list_init();
             if (KOPSIK_API_FAILURE == kopsik_time_entries(
                     ctx_, err, ERRLEN, list)) {
@@ -125,9 +126,31 @@ namespace command_line_client {
                 kopsik_time_entry_list_clear(list);
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
-            std::cout << "Found " << list->length << " time entries."
+            std::cout << "Found " << list->Length << " time entries."
                 << std::endl;
             kopsik_time_entry_list_clear(list);
+            return Poco::Util::Application::EXIT_OK;
+        }
+
+        if ("listview" == args[0]) {
+            TogglTimeEntryViewItemList *list =
+                kopsik_time_entry_view_item_list_init();
+            if (KOPSIK_API_FAILURE == kopsik_time_entry_view_items(
+                    ctx_, err, ERRLEN, list)) {
+                std::cerr << err << std::endl;
+                kopsik_time_entry_view_item_list_clear(list);
+                return Poco::Util::Application::EXIT_SOFTWARE;
+            }
+            for (unsigned int i = 0; i < list->Length; i++) {
+                TogglTimeEntryViewItem *item = list->ViewItems[i];
+                std::cout << "description: " << item->Description
+                    << " project: " << item->Project
+                    << " duration: " << item->Duration
+                    << std::endl;
+            }
+            std::cout << "Got " << list->Length << " time entry view items."
+                << std::endl;
+            kopsik_time_entry_view_item_list_clear(list);
             return Poco::Util::Application::EXIT_OK;
         }
 

@@ -105,8 +105,8 @@ KOPSIK_EXPORT kopsik_api_result kopsik_stop(
   char *errmsg, unsigned int errlen, TogglTimeEntry *out_time_entry);
 
 typedef struct {
-  TogglTimeEntry **time_entries;
-  unsigned int length;
+  TogglTimeEntry **TimeEntries;
+  unsigned int Length;
 } TogglTimeEntryList;
 
 KOPSIK_EXPORT TogglTimeEntryList *kopsik_time_entry_list_init();
@@ -117,6 +117,30 @@ KOPSIK_EXPORT void kopsik_time_entry_list_clear(
 KOPSIK_EXPORT kopsik_api_result kopsik_time_entries(
   TogglContext *in_ctx,
   char *errmsg, unsigned int errlen, TogglTimeEntryList *out_time_entry_list);
+
+// Time entries view
+
+typedef struct {
+  char *Description;
+  char *Project;
+  char *Duration;
+} TogglTimeEntryViewItem;
+
+typedef struct {
+  TogglTimeEntryViewItem **ViewItems;
+  unsigned int Length;
+} TogglTimeEntryViewItemList;
+
+KOPSIK_EXPORT TogglTimeEntryViewItemList *
+  kopsik_time_entry_view_item_list_init();
+
+KOPSIK_EXPORT void kopsik_time_entry_view_item_list_clear(
+  TogglTimeEntryViewItemList *in_time_entry_list);
+
+KOPSIK_EXPORT kopsik_api_result kopsik_time_entry_view_items(
+  TogglContext *in_ctx,
+  char *errmsg, unsigned int errlen,
+  TogglTimeEntryViewItemList *out_list);
 
 #undef KOPSIK_EXPORT
 

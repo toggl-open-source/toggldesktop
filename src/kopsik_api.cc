@@ -268,19 +268,19 @@ void kopsik_time_entry_clear(TogglTimeEntry *te) {
 
 TogglTimeEntryList *kopsik_time_entry_list_init() {
   TogglTimeEntryList *result = new TogglTimeEntryList();
-  result->length = 0;
-  result->time_entries = 0;
+  result->Length = 0;
+  result->TimeEntries = 0;
   return result;
 }
 
 void kopsik_time_entry_list_clear(TogglTimeEntryList *in_time_entry_list) {
   poco_assert(in_time_entry_list);
-  for (unsigned int i = 0; i < in_time_entry_list->length; i++) {
-    delete in_time_entry_list->time_entries[i];
-    in_time_entry_list->time_entries[i] = 0;
+  for (unsigned int i = 0; i < in_time_entry_list->Length; i++) {
+    delete in_time_entry_list->TimeEntries[i];
+    in_time_entry_list->TimeEntries[i] = 0;
   }
-  if (in_time_entry_list->time_entries) {
-    free(in_time_entry_list->time_entries);
+  if (in_time_entry_list->TimeEntries) {
+    free(in_time_entry_list->TimeEntries);
   }
   delete in_time_entry_list;
   in_time_entry_list = 0;
@@ -358,10 +358,6 @@ kopsik_api_result kopsik_stop(
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(out_time_entry);
-  if (!out_time_entry) {
-    strncpy(errmsg, "Invalid time entry pointer", errlen);
-    return KOPSIK_API_FAILURE;
-  }
   poco_assert(in_ctx->db_path);
   kopsik::Database db(in_ctx->db_path);
   kopsik::User user;
@@ -391,10 +387,6 @@ kopsik_api_result kopsik_time_entries(
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(out_time_entry_list);
-  if (!out_time_entry_list) {
-    strncpy(errmsg, "Invalid time entry list pointer", errlen);
-    return KOPSIK_API_FAILURE;
-  }
   poco_assert(in_ctx->db_path);
   kopsik::Database db(in_ctx->db_path);
   kopsik::User user;
@@ -403,20 +395,117 @@ kopsik_api_result kopsik_time_entries(
     err.copy(errmsg, errlen);
     return KOPSIK_API_FAILURE;
   }
-  out_time_entry_list->length = (unsigned int)user.TimeEntries.size();
-  if (!out_time_entry_list->length) {
+  out_time_entry_list->Length = (unsigned int)user.TimeEntries.size();
+  if (!out_time_entry_list->Length) {
     return KOPSIK_API_SUCCESS;
   }
   TogglTimeEntry *te = kopsik_time_entry_init();
-  void *m = malloc(out_time_entry_list->length * sizeof(te));
+  void *m = malloc(out_time_entry_list->Length * sizeof(te));
   kopsik_time_entry_clear(te);
   poco_assert(m);
-  out_time_entry_list->time_entries = reinterpret_cast<TogglTimeEntry **>(m);
+  out_time_entry_list->TimeEntries = reinterpret_cast<TogglTimeEntry **>(m);
   for (unsigned int i = 0; i < user.TimeEntries.size(); i++) {
     kopsik::TimeEntry *te = user.TimeEntries[i];
     TogglTimeEntry *item = kopsik_time_entry_init();
     time_entry_to_struct(te, item);
-    out_time_entry_list->time_entries[i] = item;
+    out_time_entry_list->TimeEntries[i] = item;
+  }
+  return KOPSIK_API_SUCCESS;
+}
+
+// Time entries view API
+
+TogglTimeEntryViewItem *kopsik_time_entry_view_item_init() {
+  TogglTimeEntryViewItem *item = new TogglTimeEntryViewItem();
+  item->Description = 0;
+  item->Project = 0;
+  item->Duration = 0;
+  return item;
+}
+
+void kopsik_time_entry_view_item_clear(TogglTimeEntryViewItem *item) {
+  poco_assert(item);
+  if (item->Description) {
+    free(item->Description);
+    item->Description = 0;
+  }
+  if (item->Project) {
+    free(item->Project);
+    item->Project = 0;
+  }
+  if (item->Duration) {
+    free(item->Duration);
+    item->Duration = 0;
+  }
+  delete item;
+  item = 0;
+}
+
+TogglTimeEntryViewItemList *kopsik_time_entry_view_item_list_init() {
+  TogglTimeEntryViewItemList *result = new TogglTimeEntryViewItemList();
+  result->Length = 0;
+  result->ViewItems = 0;
+  return result;
+}
+
+void kopsik_time_entry_view_item_list_clear(
+    TogglTimeEntryViewItemList *in_list) {
+  poco_assert(in_list);
+  for (unsigned int i = 0; i < in_list->Length; i++) {
+    delete in_list->ViewItems[i];
+    in_list->ViewItems[i] = 0;
+  }
+  if (in_list->ViewItems) {
+    free(in_list->ViewItems);
+  }
+  delete in_list;
+  in_list = 0;
+}
+
+kopsik_api_result kopsik_time_entry_view_items(
+    TogglContext *in_ctx,
+    char *errmsg, unsigned int errlen,
+    TogglTimeEntryViewItemList *out_list) {
+  poco_assert(in_ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(out_list);
+  poco_assert(in_ctx->db_path);
+
+  kopsik::Database db(in_ctx->db_path);
+  kopsik::User user;
+
+  kopsik::error err = db.LoadCurrentUser(&user, true);
+  if (err != kopsik::noError) {
+    err.copy(errmsg, errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
+  user.SortTimeEntriesByStart();
+
+  out_list->Length = (unsigned int)user.TimeEntries.size();
+  if (!out_list->Length) {
+    return KOPSIK_API_SUCCESS;
+  }
+
+  TogglTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
+  void *m = malloc(out_list->Length * sizeof(item));
+  kopsik_time_entry_view_item_clear(item);
+  poco_assert(m);
+  out_list->ViewItems =
+    reinterpret_cast<TogglTimeEntryViewItem **>(m);
+  for (unsigned int i = 0; i < user.TimeEntries.size(); i++) {
+    kopsik::TimeEntry *te = user.TimeEntries[i];
+    TogglTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
+    item->Description = strdup(te->Description().c_str());
+    if (te->PID()) {
+      kopsik::Project *p = user.GetProjectByID(te->PID());
+      if (p) {
+        item->Project = strdup(p->Name().c_str());
+      }
+    }
+    item->Duration = strdup(te->DurationString().c_str());
+    out_list->ViewItems[i] = item;
   }
   return KOPSIK_API_SUCCESS;
 }

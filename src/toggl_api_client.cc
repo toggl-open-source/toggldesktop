@@ -35,22 +35,31 @@ namespace kopsik {
 // Start a time entry, mark it as dirty and add to user time entry collection.
 // Do not save here, dirtyness will be handled outside of this module.
 TimeEntry *User::Start() {
-    Stop();
-    TimeEntry *te = new TimeEntry();
-    te->SetUID(ID());
-    te->SetStart(time(0));
-    te->SetDurationInSeconds(-time(0));
-    te->SetWID(DefaultWID());
-    te->SetUIModifiedAt(time(0));
-    TimeEntries.push_back(te);
-    return te;
+  Stop();
+  TimeEntry *te = new TimeEntry();
+  te->SetUID(ID());
+  te->SetStart(time(0));
+  te->SetDurationInSeconds(-time(0));
+  te->SetWID(DefaultWID());
+  te->SetUIModifiedAt(time(0));
+  TimeEntries.push_back(te);
+  return te;
+}
+
+bool compareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
+  return a->Start() < b->Start();
+}
+
+void User::SortTimeEntriesByStart() {
+  std::sort(TimeEntries.begin(), TimeEntries.end(),
+    compareTimeEntriesByStart);
 }
 
 void User::SetFullname(std::string value) {
-    if (fullname_ != value) {
-        fullname_ = value;
-        dirty_ = true;
-    }
+  if (fullname_ != value) {
+    fullname_ = value;
+    dirty_ = true;
+  }
 }
 
 void User::SetAPIToken(std::string value) {
@@ -1147,6 +1156,15 @@ std::string TimeEntry::StartString() {
 
 void TimeEntry::SetStartString(std::string value) {
     SetStart(Parse8601(value));
+}
+
+std::string TimeEntry::DurationString() {
+    // FIXME: format duration in seconds into duration string
+    return "23:32min";
+}
+
+void TimeEntry::SetDurationString(std::string value) {
+    // FIXME: parse duration string into duration in seconds
 }
 
 void TimeEntry::SetDurOnly(bool value) {

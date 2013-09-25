@@ -226,6 +226,8 @@ namespace kopsik {
         void SetBillable(bool value);
         Poco::Int64 DurationInSeconds() { return duration_in_seconds_; }
         void SetDurationInSeconds(Poco::Int64 value);
+        std::string DurationString();
+        void SetDurationString(std::string value);
         Poco::Int64 LocalID() { return local_id_; }
         void SetLocalID(Poco::Int64 value) { local_id_ = value; }
         bool DurOnly() { return duronly_; }
@@ -316,6 +318,7 @@ namespace kopsik {
         TimeEntry *GetTimeEntryByID(const Poco::UInt64 id);
 
         void CollectDirtyObjects(std::vector<TimeEntry *> *result);
+        void SortTimeEntriesByStart();
 
         TimeEntry *RunningTimeEntry();
         TimeEntry *Start();
