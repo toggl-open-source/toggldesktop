@@ -19,6 +19,17 @@ typedef int kopsik_api_result;
 #define KOPSIK_API_SUCCESS 0
 #define KOPSIK_API_FAILURE 1
 
+// Context API.
+
+typedef struct {
+  void *db;
+  char *db_path;
+  char *log_path;
+} TogglContext;
+
+KOPSIK_EXPORT TogglContext *kopsik_init();
+KOPSIK_EXPORT TogglContext *kopsik_init();
+
 // Configuration API
 
 KOPSIK_EXPORT void kopsik_version(

@@ -20,6 +20,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+      
       [[NSNotificationCenter defaultCenter]
        addObserver:self
        selector:@selector(eventHandler:)

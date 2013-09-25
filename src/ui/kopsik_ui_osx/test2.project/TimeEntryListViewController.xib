@@ -7,6 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimeEntryListViewController">
             <connections>
+                <outlet property="timeEntriesTableView" destination="fu8-w4-kYq" id="bh9-V9-iCc"/>
                 <outlet property="view" destination="3" id="Tzl-sf-sWH"/>
             </connections>
         </customObject>

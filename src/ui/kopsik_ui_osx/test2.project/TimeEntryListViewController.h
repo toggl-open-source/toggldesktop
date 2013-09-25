@@ -9,5 +9,6 @@
 #import <Cocoa/Cocoa.h>
 
 @interface TimeEntryListViewController : NSViewController
+@property (weak) IBOutlet NSTableView *timeEntriesTableView;
 
 @end
