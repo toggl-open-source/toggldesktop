@@ -41,7 +41,7 @@ KOPSIK_EXPORT void kopsik_set_proxy(TogglContext *in_ctx,
 KOPSIK_EXPORT void kopsik_set_db_path(TogglContext *in_ctx,
   const char *in_path);
 
-KOPSIK_EXPORT void kopsik_set_log_path(TogglContext *ctx, const char *path);
+KOPSIK_EXPORT void kopsik_set_log_path(TogglContext *in_ctx, const char *path);
 
 // User API
 

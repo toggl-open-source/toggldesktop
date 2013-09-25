@@ -3,9 +3,9 @@
 #include "./main.h"
 
 #include <sstream>
+#include <iostream> // NOLINT
 
 #include "Poco/Message.h"
-#include "Poco/Logger.h"
 #include "Poco/Util/Application.h"
 
 #define ERRLEN 1024
@@ -13,15 +13,11 @@
 namespace command_line_client {
 
     void Main::usage() {
-        Poco::Logger &logger = Poco::Logger::get("");
-        logger.information("Recognized commands are: "
-            "sync, start, stop, status, dirty, list");
+        std::cout << "Recognized commands are: "
+            "sync, start, stop, status, dirty, list" << std::endl;
     }
 
     int Main::main(const std::vector<std::string>& args) {
-        Poco::Logger &logger = Poco::Logger::get("");
-        logger.setLevel(Poco::Message::PRIO_DEBUG);
-
         if (args.empty()) {
             usage();
             return Poco::Util::Application::EXIT_USAGE;
@@ -29,25 +25,27 @@ namespace command_line_client {
 
         char* apiToken = getenv("TOGGL_API_TOKEN");
         if (!apiToken) {
-            logger.error("Please set TOGGL_API_TOKEN in environment");
+            std::cerr << "Please set TOGGL_API_TOKEN in environment" <<
+                std::endl;
             return Poco::Util::Application::EXIT_USAGE;
-        }
-
-        char err[ERRLEN];
-        if (KOPSIK_API_FAILURE == kopsik_set_api_token(
-                ctx_, err, ERRLEN, apiToken)) {
-            logger.error(err);
-            return Poco::Util::Application::EXIT_SOFTWARE;
         }
 
         kopsik_set_db_path(ctx_, "kopsik.db");
         kopsik_set_log_path(ctx_, "kopsik.log");
 
+        char err[ERRLEN];
+        if (KOPSIK_API_FAILURE == kopsik_set_api_token(
+                ctx_, err, ERRLEN, apiToken)) {
+            std::cerr << err << std::endl;
+            return Poco::Util::Application::EXIT_SOFTWARE;
+        }
+
         if ("sync" == args[0]) {
             if (KOPSIK_API_FAILURE == kopsik_sync(ctx_, err, ERRLEN)) {
-                logger.error(err);
+                std::cerr << err << std::endl;
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
+            std::cout << "Synced." << std::endl;
             return Poco::Util::Application::EXIT_OK;
         }
 
@@ -56,14 +54,14 @@ namespace command_line_client {
             int is_tracking(0);
             if (KOPSIK_API_FAILURE == kopsik_running_time_entry(
                     ctx_, err, ERRLEN, te, &is_tracking)) {
-                logger.error(err);
+                std::cerr << err << std::endl;
                 kopsik_time_entry_clear(te);
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
             if (is_tracking) {
-                logger.information("Tracking: " + std::string(te->Description));
+                std::cout << "Tracking: " << te->Description << std::endl;
             } else {
-                logger.information("Not tracking.");
+                std::cout << "Not tracking." << std::endl;
             }
             kopsik_time_entry_clear(te);
             return Poco::Util::Application::EXIT_OK;
@@ -73,29 +71,27 @@ namespace command_line_client {
             TogglDirtyModels dm;
             if (KOPSIK_API_FAILURE == kopsik_dirty_models(
                     ctx_, err, ERRLEN, &dm)) {
-                logger.error(err);
+                std::cerr << err << std::endl;
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
-            std::stringstream ss;
-            ss << dm.TimeEntries << " dirty time entries.";
-            logger.information(ss.str());
+            std::cout << dm.TimeEntries << " dirty time entries." << std::endl;
             return Poco::Util::Application::EXIT_OK;
         }
 
         if ("start" == args[0]) {
             TogglTimeEntry *te = kopsik_time_entry_init();
             if (KOPSIK_API_FAILURE == kopsik_start(ctx_, err, ERRLEN, te)) {
-                logger.error(err);
+                std::cerr << err << std::endl;
                 kopsik_time_entry_clear(te);
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
             if (KOPSIK_API_FAILURE == kopsik_sync(ctx_, err, ERRLEN)) {
-                logger.error(err);
+                std::cerr << err << std::endl;
             }
             if (te->Description) {
-                logger.information("Started: " + std::string(te->Description));
+                std::cout << "Started: " << te->Description << std::endl;
             } else {
-                logger.information("Started.");
+                std::cout << "Started." << std::endl;
             }
             kopsik_time_entry_clear(te);
             return Poco::Util::Application::EXIT_OK;
@@ -105,17 +101,17 @@ namespace command_line_client {
             TogglTimeEntry *te = kopsik_time_entry_init();
             if (KOPSIK_API_FAILURE == kopsik_stop(
                     ctx_, err, ERRLEN, te)) {
-                logger.error(err);
+                std::cerr << err << std::endl;
                 kopsik_time_entry_clear(te);
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
             if (KOPSIK_API_FAILURE == kopsik_sync(ctx_, err, ERRLEN)) {
-                logger.error(err);
+                std::cerr << err << std::endl;
             }
             if (te->Description) {
-                logger.information("Stopped: " + std::string(te->Description));
+                std::cout << "Stopped: " << te->Description << std::endl;
             } else {
-                logger.information("Stopped.");
+                std::cout << "Stopped." << std::endl;
             }
             kopsik_time_entry_clear(te);
             return Poco::Util::Application::EXIT_OK;
@@ -125,13 +121,12 @@ namespace command_line_client {
             TogglTimeEntryList *list = kopsik_time_entry_list_init();
             if (KOPSIK_API_FAILURE == kopsik_time_entries(
                     ctx_, err, ERRLEN, list)) {
-                logger.error(err);
+                std::cerr << err << std::endl;
                 kopsik_time_entry_list_clear(list);
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
-            std::stringstream ss;
-            ss << "Found " << list->length << " time entries.";
-            logger.information(ss.str());
+            std::cout << "Found " << list->length << " time entries."
+                << std::endl;
             kopsik_time_entry_list_clear(list);
             return Poco::Util::Application::EXIT_OK;
         }
