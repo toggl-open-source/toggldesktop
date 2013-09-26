@@ -460,9 +460,11 @@ kopsik_api_result kopsik_time_entry_view_items(
     return KOPSIK_API_SUCCESS;
   }
 
-  TogglTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-  void *m = malloc(user.TimeEntries.size() * sizeof(item));
-  kopsik_time_entry_view_item_clear(item);
+  out_list->Length = 0;
+
+  TogglTimeEntryViewItem *tmp = kopsik_time_entry_view_item_init();
+  void *m = malloc(user.TimeEntries.size() * sizeof(tmp));
+  kopsik_time_entry_view_item_clear(tmp);
   poco_assert(m);
   out_list->ViewItems =
     reinterpret_cast<TogglTimeEntryViewItem **>(m);
@@ -471,7 +473,7 @@ kopsik_api_result kopsik_time_entry_view_items(
     TogglTimeEntryViewItem *view_item = kopsik_time_entry_view_item_init();
     kopsik_time_entry_to_toggl_time_entry_view_item_struct(
       te, &user, view_item);
-    out_list->ViewItems[i] = item;
+    out_list->ViewItems[i] = view_item;
     out_list->Length++;
   }
   return KOPSIK_API_SUCCESS;
