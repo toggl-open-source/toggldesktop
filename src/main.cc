@@ -35,6 +35,7 @@ namespace command_line_client {
         kopsik_set_log_path(ctx_, "kopsik.log");
 
         char err[ERRLEN];
+        std::fill(err, err + ERRLEN, 0);
         if (KOPSIK_API_FAILURE == kopsik_set_api_token(
                 ctx_, err, ERRLEN, apiToken)) {
             std::cerr << err << std::endl;
