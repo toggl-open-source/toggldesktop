@@ -7,10 +7,11 @@
 //
 
 #import "TimeEntryListViewController.h"
-#import "timeEntryViewItem.h"
+#import "TimeEntryViewItem.h"
 #import "UIEvents.h"
 #import "kopsik_api.h"
 #import "Context.h"
+#import "TableViewCell.h"
 
 @interface TimeEntryListViewController ()
 
@@ -63,14 +64,45 @@
   return (int)[viewitems count];
 }
 
-- (NSView *)tableView:(NSTableView *)tableView
-   viewForTableColumn:(NSTableColumn *)tableColumn
-                  row:(NSInteger)row {
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+    TimeEntryViewItem *item = [viewitems objectAtIndex:row];
+    TableViewCell *cellView = [tableView makeViewWithIdentifier:@"TimeEntryCell" owner:self];
+    if (cellView == nil) {
+      cellView = [[TableViewCell alloc] init];
+      cellView.identifier = @"TimeEntryCell";
+    }
+    cellView.colorTextField.backgroundColor =
+      [NSColor brownColor]; // FIXME: set project color
+    cellView.descriptionTextField.stringValue = item.description;
+    cellView.projectTextField.stringValue = item.project;
+    cellView.durationTextField.stringValue = item.duration;
+    NSLog(@"%d", cellView.durationTextField.isHidden);
+    return cellView;
+  /*
+  // get an existing cell with the MyView identifier if it exists
+  NSTextField *result = [tableView makeViewWithIdentifier:@"MyView" owner:self];
   
-  NSView *result = [tableView makeViewWithIdentifier:@"TimeEntryViewCell" owner:self];
-  //TimeEntryViewItem *item = [viewitems objectAtIndex:row];
+  // There is no existing cell to reuse so we will create a new one
+  if (result == nil) {
+    
+    // create the new NSTextField with a frame of the {0,0} with the width of the table
+    // note that the height of the frame is not really relevant, the row-height will modify the height
+    // the new text field is then returned as an autoreleased object
+    result = [[NSTextField alloc] init];
+    
+    // the identifier of the NSTextField instance is set to MyView. This
+    // allows it to be re-used
+    result.identifier = @"MyView";
+  }
   
+  // result is now guaranteed to be valid, either as a re-used cell
+  // or as a new cell, so set the stringValue of the cell to the
+  // nameArray value at row
+  result.stringValue = @"blah";
+  // return the result.
   return result;
+   */
+  
 }
 
 @end

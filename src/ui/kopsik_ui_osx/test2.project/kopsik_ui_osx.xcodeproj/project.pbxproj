@@ -26,8 +26,6 @@
 		74BAAA0817F32C470079386F /* Context.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0617F32C470079386F /* Context.m */; };
 		74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */; };
 		74BAAA0C17F37B140079386F /* TimeEntryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */; };
-		74BAAA1117F38C9B0079386F /* TimeEntryViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74BAAA1017F38C9B0079386F /* TimeEntryViewCell.xib */; };
-		74BAAA1217F38C9B0079386F /* TimeEntryViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74BAAA1017F38C9B0079386F /* TimeEntryViewCell.xib */; };
 		74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */; };
 		74D1D25717EB713F00E709B0 /* TimeEntryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */; };
 		74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */; };
@@ -44,6 +42,7 @@
 		74D1D27317EB72D900E709B0 /* TimerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D27017EB72D900E709B0 /* TimerEditViewController.m */; };
 		74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */; };
 		74D1D27517EB72D900E709B0 /* TimerEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */; };
+		C5CB7F0417F43EE100A2AEB1 /* TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TableViewCell.m */; };
 		C5DA1FB917F19647001C4565 /* Kopsik.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA1FB817F19647001C4565 /* Kopsik.dylib */; };
 		C5DA1FBB17F19F9A001C4565 /* Kopsik.dylib in Resources */ = {isa = PBXBuildFile; fileRef = C5DA1FB817F19647001C4565 /* Kopsik.dylib */; };
 		C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */; };
@@ -91,7 +90,6 @@
 		74BAAA0617F32C470079386F /* Context.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Context.m; path = ../Context.m; sourceTree = "<group>"; };
 		74BAAA0917F37B140079386F /* TimeEntryViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryViewItem.h; sourceTree = SOURCE_ROOT; };
 		74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryViewItem.m; sourceTree = SOURCE_ROOT; };
-		74BAAA1017F38C9B0079386F /* TimeEntryViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeEntryViewCell.xib; sourceTree = "<group>"; };
 		74D1D25317EB713F00E709B0 /* TimeEntryListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryListViewController.h; sourceTree = SOURCE_ROOT; };
 		74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryListViewController.m; sourceTree = SOURCE_ROOT; };
 		74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeEntryListViewController.xib; sourceTree = SOURCE_ROOT; };
@@ -104,6 +102,8 @@
 		74D1D26F17EB72D900E709B0 /* TimerEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerEditViewController.h; sourceTree = SOURCE_ROOT; };
 		74D1D27017EB72D900E709B0 /* TimerEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerEditViewController.m; sourceTree = SOURCE_ROOT; };
 		74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimerEditViewController.xib; sourceTree = SOURCE_ROOT; };
+		C5CB7F0217F43EE100A2AEB1 /* TableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCell.h; sourceTree = "<group>"; };
+		C5CB7F0317F43EE100A2AEB1 /* TableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCell.m; sourceTree = "<group>"; };
 		C5DA1FB817F19647001C4565 /* Kopsik.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Kopsik.dylib; path = ../../../libkopsik/lib/Kopsik.dylib; sourceTree = "<group>"; };
 		C5DA1FBA17F197BF001C4565 /* kopsik_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kopsik_api.h; path = ../../../../kopsik_api.h; sourceTree = "<group>"; };
 		C5DA1FBC17F1B08A001C4565 /* MainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowController.h; sourceTree = SOURCE_ROOT; };
@@ -209,8 +209,9 @@
 				C5DA1FC317F1B38B001C4565 /* LoginViewController.xib */,
 				74D1D25317EB713F00E709B0 /* TimeEntryListViewController.h */,
 				74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */,
-				74BAAA1017F38C9B0079386F /* TimeEntryViewCell.xib */,
 				74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */,
+				C5CB7F0217F43EE100A2AEB1 /* TableViewCell.h */,
+				C5CB7F0317F43EE100A2AEB1 /* TableViewCell.m */,
 				74BAAA0917F37B140079386F /* TimeEntryViewItem.h */,
 				74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */,
 				69FC17FB17E6534400B96425 /* Supporting Files */,
@@ -327,7 +328,6 @@
 				C5DA1FC517F1B38B001C4565 /* LoginViewController.xib in Resources */,
 				69FC180517E6534400B96425 /* Credits.rtf in Resources */,
 				69FC180B17E6534500B96425 /* MainMenu.xib in Resources */,
-				74BAAA1117F38C9B0079386F /* TimeEntryViewCell.xib in Resources */,
 				C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */,
 				74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
 				74D1D25F17EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */,
@@ -343,7 +343,6 @@
 			files = (
 				69FC181C17E6534500B96425 /* InfoPlist.strings in Resources */,
 				74D1D25917EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
-				74BAAA1217F38C9B0079386F /* TimeEntryViewCell.xib in Resources */,
 				74D1D26017EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */,
 				74D1D26E17EB728000E709B0 /* TimerViewController.xib in Resources */,
 				74D1D27517EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
@@ -374,6 +373,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7424949E17F1E3D20030121C /* UIEvents.m in Sources */,
+				C5CB7F0417F43EE100A2AEB1 /* TableViewCell.m in Sources */,
 				C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */,
 				69FC180117E6534400B96425 /* main.m in Sources */,
 				74BAAA0717F32C470079386F /* Context.m in Sources */,
