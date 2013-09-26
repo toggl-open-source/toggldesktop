@@ -264,53 +264,37 @@ kopsik_api_result kopsik_dirty_models(
   return KOPSIK_API_SUCCESS;
 }
 
-// Time entry API.
+// Time entries view API
 
-TogglTimeEntry *kopsik_time_entry_init() {
-  TogglTimeEntry *te = new TogglTimeEntry();
-  te->Description = 0;
-  return te;
+TogglTimeEntryViewItem *kopsik_time_entry_view_item_init() {
+  TogglTimeEntryViewItem *item = new TogglTimeEntryViewItem();
+  item->Description = 0;
+  item->Project = 0;
+  item->Duration = 0;
+  item->Color = 0;
+  return item;
 }
 
-void kopsik_time_entry_clear(TogglTimeEntry *te) {
-  poco_assert(te);
-  if (te->Description) {
-    free(te->Description);
-    te->Description = 0;
+void kopsik_time_entry_view_item_clear(TogglTimeEntryViewItem *item) {
+  poco_assert(item);
+  if (item->Description) {
+    free(item->Description);
+    item->Description = 0;
   }
-  delete te;
-  te = 0;
-}
-
-TogglTimeEntryList *kopsik_time_entry_list_init() {
-  TogglTimeEntryList *result = new TogglTimeEntryList();
-  result->Length = 0;
-  result->TimeEntries = 0;
-  return result;
-}
-
-void kopsik_time_entry_list_clear(TogglTimeEntryList *in_time_entry_list) {
-  poco_assert(in_time_entry_list);
-  for (unsigned int i = 0; i < in_time_entry_list->Length; i++) {
-    kopsik_time_entry_clear(in_time_entry_list->TimeEntries[i]);
-    in_time_entry_list->TimeEntries[i] = 0;
+  if (item->Project) {
+    free(item->Project);
+    item->Project = 0;
   }
-  if (in_time_entry_list->TimeEntries) {
-    free(in_time_entry_list->TimeEntries);
+  if (item->Duration) {
+    free(item->Duration);
+    item->Duration = 0;
   }
-  delete in_time_entry_list;
-  in_time_entry_list = 0;
-}
-
-void kopsik_time_entry_to_toggl_time_entry_struct(kopsik::TimeEntry *te,
-    TogglTimeEntry *time_entry_struct) {
-  poco_assert(te);
-  poco_assert(time_entry_struct);
-  if (time_entry_struct->Description) {
-    free(time_entry_struct->Description);
-    time_entry_struct->Description = 0;
+  if (item->Color) {
+    free(item->Color);
+    item->Color = 0;
   }
-  time_entry_struct->Description = strdup(te->Description().c_str());
+  delete item;
+  item = 0;
 }
 
 void kopsik_time_entry_to_toggl_time_entry_view_item_struct(
@@ -344,40 +328,14 @@ void kopsik_time_entry_to_toggl_time_entry_view_item_struct(
   view_item->Duration = strdup(te->DurationString().c_str());
 }
 
-kopsik_api_result kopsik_running_time_entry(
-    TogglContext *in_ctx,
-    char *errmsg, unsigned int errlen,
-    TogglTimeEntry *out_time_entry, int *is_tracking) {
-  poco_assert(in_ctx);
-  poco_assert(errmsg);
-  poco_assert(errlen);
-  poco_assert(out_time_entry);
-  poco_assert(is_tracking);
-  *is_tracking = 0;
-  poco_assert(in_ctx->db_path);
-  kopsik::Database db(in_ctx->db_path);
-  kopsik::User user;
-  kopsik::error err = db.LoadCurrentUser(&user, true);
-  if (err != kopsik::noError) {
-    err.copy(errmsg, errlen);
-    return KOPSIK_API_FAILURE;
-  }
-  kopsik::TimeEntry *te = user.RunningTimeEntry();
-  if (te) {
-    *is_tracking = true;
-    kopsik_time_entry_to_toggl_time_entry_struct(te, out_time_entry);
-  }
-  return KOPSIK_API_SUCCESS;
-}
-
 kopsik_api_result kopsik_start(
     TogglContext *in_ctx,
     char *errmsg, unsigned int errlen,
-    TogglTimeEntry *out_time_entry) {
+    TogglTimeEntryViewItem *out_view_item) {
   poco_assert(in_ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
-  poco_assert(out_time_entry);
+  poco_assert(out_view_item);
   poco_assert(in_ctx->db_path);
   kopsik::Database db(in_ctx->db_path);
   kopsik::User user;
@@ -393,7 +351,8 @@ kopsik_api_result kopsik_start(
       err.copy(errmsg, errlen);
       return KOPSIK_API_FAILURE;
     }
-    kopsik_time_entry_to_toggl_time_entry_struct(te, out_time_entry);
+    kopsik_time_entry_to_toggl_time_entry_view_item_struct(
+      te, &user, out_view_item);
   }
   return KOPSIK_API_SUCCESS;
 }
@@ -401,11 +360,11 @@ kopsik_api_result kopsik_start(
 kopsik_api_result kopsik_stop(
     TogglContext *in_ctx,
     char *errmsg, unsigned int errlen,
-    TogglTimeEntry *out_time_entry) {
+    TogglTimeEntryViewItem *out_view_item) {
   poco_assert(in_ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
-  poco_assert(out_time_entry);
+  poco_assert(out_view_item);
   poco_assert(in_ctx->db_path);
   kopsik::Database db(in_ctx->db_path);
   kopsik::User user;
@@ -422,76 +381,10 @@ kopsik_api_result kopsik_stop(
       return KOPSIK_API_FAILURE;
     }
     kopsik::TimeEntry *te = stopped[0];
-    kopsik_time_entry_to_toggl_time_entry_struct(te, out_time_entry);
+    kopsik_time_entry_to_toggl_time_entry_view_item_struct(
+      te, &user, out_view_item);
   }
   return KOPSIK_API_SUCCESS;
-}
-
-kopsik_api_result kopsik_time_entries(
-    TogglContext *in_ctx,
-    char *errmsg, unsigned int errlen,
-    TogglTimeEntryList *out_time_entry_list) {
-  poco_assert(in_ctx);
-  poco_assert(errmsg);
-  poco_assert(errlen);
-  poco_assert(out_time_entry_list);
-  poco_assert(in_ctx->db_path);
-  kopsik::Database db(in_ctx->db_path);
-  kopsik::User user;
-  kopsik::error err = db.LoadCurrentUser(&user, true);
-  if (err != kopsik::noError) {
-    err.copy(errmsg, errlen);
-    return KOPSIK_API_FAILURE;
-  }
-  out_time_entry_list->Length = (unsigned int)user.TimeEntries.size();
-  if (!out_time_entry_list->Length) {
-    return KOPSIK_API_SUCCESS;
-  }
-  TogglTimeEntry *te = kopsik_time_entry_init();
-  void *m = malloc(out_time_entry_list->Length * sizeof(te));
-  kopsik_time_entry_clear(te);
-  poco_assert(m);
-  out_time_entry_list->TimeEntries = reinterpret_cast<TogglTimeEntry **>(m);
-  for (unsigned int i = 0; i < user.TimeEntries.size(); i++) {
-    kopsik::TimeEntry *te = user.TimeEntries[i];
-    TogglTimeEntry *item = kopsik_time_entry_init();
-    kopsik_time_entry_to_toggl_time_entry_struct(te, item);
-    out_time_entry_list->TimeEntries[i] = item;
-  }
-  return KOPSIK_API_SUCCESS;
-}
-
-// Time entries view API
-
-TogglTimeEntryViewItem *kopsik_time_entry_view_item_init() {
-  TogglTimeEntryViewItem *item = new TogglTimeEntryViewItem();
-  item->Description = 0;
-  item->Project = 0;
-  item->Duration = 0;
-  item->Color = 0;
-  return item;
-}
-
-void kopsik_time_entry_view_item_clear(TogglTimeEntryViewItem *item) {
-  poco_assert(item);
-  if (item->Description) {
-    free(item->Description);
-    item->Description = 0;
-  }
-  if (item->Project) {
-    free(item->Project);
-    item->Project = 0;
-  }
-  if (item->Duration) {
-    free(item->Duration);
-    item->Duration = 0;
-  }
-  if (item->Color) {
-    free(item->Color);
-    item->Color = 0;
-  }
-  delete item;
-  item = 0;
 }
 
 kopsik_api_result kopsik_running_time_entry_view_item(

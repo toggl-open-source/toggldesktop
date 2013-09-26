@@ -85,43 +85,6 @@ KOPSIK_EXPORT kopsik_api_result kopsik_dirty_models(
   TogglContext *in_ctx,
   char *errmsg, unsigned int errlen, TogglDirtyModels *out_dirty_models);
 
-// Time tracking API
-
-typedef struct {
-    char *Description;
-} TogglTimeEntry;
-
-KOPSIK_EXPORT TogglTimeEntry *kopsik_time_entry_init();
-
-KOPSIK_EXPORT void kopsik_time_entry_clear(TogglTimeEntry *in_time_entry);
-
-KOPSIK_EXPORT kopsik_api_result kopsik_running_time_entry(
-  TogglContext *in_ctx,
-  char *errmsg, unsigned int errlen,
-  TogglTimeEntry *out_time_entry, int *is_tracking);
-
-KOPSIK_EXPORT kopsik_api_result kopsik_start(
-  TogglContext *in_ctx,
-  char *errmsg, unsigned int errlen, TogglTimeEntry *out_time_entry);
-
-KOPSIK_EXPORT kopsik_api_result kopsik_stop(
-  TogglContext *in_ctx,
-  char *errmsg, unsigned int errlen, TogglTimeEntry *out_time_entry);
-
-typedef struct {
-  TogglTimeEntry **TimeEntries;
-  unsigned int Length;
-} TogglTimeEntryList;
-
-KOPSIK_EXPORT TogglTimeEntryList *kopsik_time_entry_list_init();
-
-KOPSIK_EXPORT void kopsik_time_entry_list_clear(
-  TogglTimeEntryList *in_time_entry_list);
-
-KOPSIK_EXPORT kopsik_api_result kopsik_time_entries(
-  TogglContext *in_ctx,
-  char *errmsg, unsigned int errlen, TogglTimeEntryList *out_time_entry_list);
-
 // Time entries view
 
 typedef struct {
@@ -147,11 +110,21 @@ KOPSIK_EXPORT kopsik_api_result kopsik_running_time_entry_view_item(
   char *errmsg, unsigned int errlen,
   TogglTimeEntryViewItem *out_item, int *out_found);
 
+KOPSIK_EXPORT kopsik_api_result kopsik_start(
+  TogglContext *in_ctx,
+  char *errmsg, unsigned int errlen,
+  TogglTimeEntryViewItem *out_view_item);
+
+KOPSIK_EXPORT kopsik_api_result kopsik_stop(
+  TogglContext *in_ctx,
+  char *errmsg, unsigned int errlen,
+  TogglTimeEntryViewItem *out_view_item);
+
 KOPSIK_EXPORT TogglTimeEntryViewItemList *
   kopsik_time_entry_view_item_list_init();
 
 KOPSIK_EXPORT void kopsik_time_entry_view_item_list_clear(
-  TogglTimeEntryViewItemList *in_time_entry_list);
+  TogglTimeEntryViewItemList *in_list);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_time_entry_view_items(
   TogglContext *in_ctx,
