@@ -3,7 +3,7 @@
 //  kopsik_ui_osx
 //
 //  Created by Tambet Masik on 9/24/13.
-//  Copyright (c) 2013 Alari. All rights reserved.
+//  Copyright (c) 2013 kopsik developers. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

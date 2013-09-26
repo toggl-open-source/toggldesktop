@@ -3,7 +3,7 @@
 //  test2Tests
 //
 //  Created by Alari on 9/15/13.
-//  Copyright (c) 2013 Alari. All rights reserved.
+//  Copyright (c) 2013 kopsik developers. All rights reserved.
 //
 
 #import "test2Tests.h"
