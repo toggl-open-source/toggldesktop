@@ -11,6 +11,7 @@
 #import "TimeEntryListViewController.h"
 #import "TimerViewController.h"
 #import "TimerEditViewController.h"
+#import "TimeEntryViewItem.h"
 #import "UIEvents.h"
 #import "Context.h"
 
@@ -73,7 +74,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedIn object:nil];
     
     // Get running time entry
-    TogglTimeEntry *te = kopsik_time_entry_init();
+    TogglTimeEntryViewItem *item = kopsik_time_entry_view_item_i();
     int is_tracking = 0;
     if (KOPSIK_API_SUCCESS == kopsik_running_time_entry(ctx, err, KOPSIK_ERR_LEN,
                                                         te, &is_tracking)) {
@@ -87,7 +88,7 @@
     } else {
       NSLog(@"Error fetching running time entry: %s", err);
     }
-    kopsik_time_entry_clear(te);
+    kopsik_time_entry_view_item_clear(item);
   }
   kopsik_user_clear(user);
 }

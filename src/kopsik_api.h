@@ -136,6 +136,17 @@ typedef struct {
   unsigned int Length;
 } TogglTimeEntryViewItemList;
 
+KOPSIK_EXPORT TogglTimeEntryViewItem *
+  kopsik_time_entry_view_item_init();
+
+KOPSIK_EXPORT void kopsik_time_entry_view_item_clear(
+  TogglTimeEntryViewItem *in_item);
+
+KOPSIK_EXPORT kopsik_api_result kopsik_running_time_entry_view_item(
+  TogglContext *in_ctx,
+  char *errmsg, unsigned int errlen,
+  TogglTimeEntryViewItem *out_item, int *out_found);
+
 KOPSIK_EXPORT TogglTimeEntryViewItemList *
   kopsik_time_entry_view_item_list_init();
 
