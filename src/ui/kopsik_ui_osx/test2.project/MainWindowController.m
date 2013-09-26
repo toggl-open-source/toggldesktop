@@ -73,4 +73,13 @@
   }
 }
 
+- (IBAction)logout:(id)sender {
+  char err[KOPSIK_ERR_LEN];
+  if (KOPSIK_API_SUCCESS != kopsik_logout(ctx, err, KOPSIK_ERR_LEN)) {
+    NSLog(@"Logout error: %s", err);
+    return;
+  }
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedOut object:nil];
+}
+
 @end

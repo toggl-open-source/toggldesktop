@@ -67,6 +67,10 @@ KOPSIK_EXPORT kopsik_api_result kopsik_login(
   char *errmsg, unsigned int errlen,
   const char *in_email, const char *in_password);
 
+KOPSIK_EXPORT kopsik_api_result kopsik_logout(
+  TogglContext *in_ctx,
+  char *errmsg, unsigned int errlen);
+
 // Sync
 
 typedef struct {

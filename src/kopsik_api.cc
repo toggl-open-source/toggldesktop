@@ -191,6 +191,22 @@ kopsik_api_result kopsik_login(
   return KOPSIK_API_SUCCESS;
 }
 
+kopsik_api_result kopsik_logout(
+    TogglContext *in_ctx,
+    char *errmsg, unsigned int errlen) {
+  poco_assert(in_ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(in_ctx->db_path);
+  kopsik::Database db(in_ctx->db_path);
+  kopsik::error err = db.ClearCurrentAPIToken();
+  if (err != kopsik::noError) {
+    err.copy(errmsg, errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  return KOPSIK_API_SUCCESS;
+}
+
 // Sync
 
 kopsik_api_result kopsik_sync(

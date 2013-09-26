@@ -27,10 +27,8 @@
 }
 
 - (IBAction)clickLoginButton:(id)sender {
-  NSString *email, *pass;
-  email = [self.email stringValue];
-  pass = [self.password stringValue];
-  
+  NSString *email = [self.email stringValue];
+  NSString *pass = [self.password stringValue];
   char err[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_login(ctx, err, KOPSIK_ERR_LEN, [email UTF8String], [pass UTF8String])) {
     [self.errorLabel setStringValue:[NSString stringWithUTF8String:err]];
