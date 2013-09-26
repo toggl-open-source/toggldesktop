@@ -37,6 +37,16 @@
      selector:@selector(eventHandler:)
      name:kUIEventUserLoggedOut
      object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(eventHandler:)
+     name:kUIEventTimerRunning
+     object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(eventHandler:)
+     name:kUIEventTimerStopped
+     object:nil];
 
     self.loginViewController = [[LoginViewController alloc]
                                 initWithNibName:@"LoginViewController" bundle:nil];
@@ -61,6 +71,23 @@
   } else {
     NSLog(@"Current user: %s", user->Fullname);
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedIn object:nil];
+    
+    // Get running time entry
+    TogglTimeEntry *te = kopsik_time_entry_init();
+    int is_tracking = 0;
+    if (KOPSIK_API_SUCCESS == kopsik_running_time_entry(ctx, err, KOPSIK_ERR_LEN,
+                                                        te, &is_tracking)) {
+      if (is_tracking) {
+        [[NSNotificationCenter defaultCenter]
+         postNotificationName:kUIEventTimerRunning object:nil];
+      } else {
+        [[NSNotificationCenter defaultCenter]
+         postNotificationName:kUIEventTimerStopped object:nil];
+      }
+    } else {
+      NSLog(@"Error fetching running time entry: %s", err);
+    }
+    kopsik_time_entry_clear(te);
   }
   kopsik_user_clear(user);
 }
@@ -76,10 +103,6 @@
     [self.contentView addSubview:self.timeEntryListViewController.view];
     self.timeEntryListViewController.view.frame = self.contentView.bounds;
     
-    // Show timer
-    [self.headerView addSubview:self.timerViewController.view];
-    self.timerViewController.view.frame = self.headerView.bounds;
-    
     // Show footer
     [self.footerView setHidden:NO];
     
@@ -92,7 +115,18 @@
     [self.timeEntryListViewController.view removeFromSuperview];
     [self.footerView setHidden:YES];
     [self.timeEntryListViewController.view removeFromSuperview];
+
+  } else if ([notification.name isEqualToString:kUIEventTimerRunning]) {
+    [self.headerView addSubview:self.timerViewController.view];
+    self.timerViewController.view.frame = self.headerView.bounds;
+    
+    [self.timerEditViewController.view removeFromSuperview];
+
+  } else if ([notification.name isEqualToString:kUIEventTimerStopped]) {
     [self.timerViewController.view removeFromSuperview];
+
+    [self.headerView addSubview:self.timerEditViewController.view];
+    self.timerEditViewController.view.frame = self.headerView.bounds;
   }
 }
 

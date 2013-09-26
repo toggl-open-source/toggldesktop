@@ -10,3 +10,5 @@
 
 NSString *const kUIEventUserLoggedIn = @"UserLoggedIn";
 NSString *const kUIEventUserLoggedOut = @"UserLoggedOut";
+NSString *const kUIEventTimerRunning = @"TimerRunning";
+NSString *const kUIEventTimerStopped = @"TimerStopped";

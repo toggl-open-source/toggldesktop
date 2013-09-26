@@ -10,3 +10,5 @@
 
 extern NSString *const kUIEventUserLoggedIn;
 extern NSString *const kUIEventUserLoggedOut;
+extern NSString *const kUIEventTimerRunning;
+extern NSString *const kUIEventTimerStopped;
