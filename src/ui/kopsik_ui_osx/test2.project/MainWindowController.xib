@@ -21,7 +21,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="258" height="427"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
             <view key="contentView" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="258" height="427"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -38,7 +38,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
                     <customView focusRingType="exterior" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9N7-5v-gZK">
-                        <rect key="frame" x="0.0" y="1" width="258" height="29"/>
+                        <rect key="frame" x="0.0" y="0.0" width="258" height="29"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <subviews>
                             <popUpButton ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lep-kW-t8B">
@@ -69,13 +69,15 @@
                             </button>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="lep-kW-t8B" firstAttribute="leading" secondItem="9N7-5v-gZK" secondAttribute="leading" constant="2" id="Qlu-rj-UHe"/>
-                            <constraint firstItem="ixr-JC-i3w" firstAttribute="centerY" secondItem="lep-kW-t8B" secondAttribute="centerY" id="UF6-x9-8uE"/>
-                            <constraint firstItem="ixr-JC-i3w" firstAttribute="centerY" secondItem="9N7-5v-gZK" secondAttribute="centerY" id="dVw-uK-ukZ"/>
-                            <constraint firstAttribute="trailing" secondItem="ixr-JC-i3w" secondAttribute="trailing" constant="5" id="vIQ-Li-5dW"/>
+                            <constraint firstAttribute="trailing" secondItem="ixr-JC-i3w" secondAttribute="trailing" constant="5" id="Ttu-n1-iX3"/>
                         </constraints>
                     </customView>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="9N7-5v-gZK" secondAttribute="bottom" id="Ipy-cq-QaZ"/>
+                    <constraint firstAttribute="trailing" secondItem="9N7-5v-gZK" secondAttribute="trailing" id="Ue1-hJ-toJ"/>
+                    <constraint firstItem="9N7-5v-gZK" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="hUd-4h-ZLd"/>
+                </constraints>
             </view>
             <connections>
                 <outlet property="delegate" destination="-2" id="4"/>
