@@ -63,12 +63,14 @@
   return (int)[viewitems count];
 }
 
-- (id)tableView:(NSTableView *)tv
-  objectValueForTableColumn:(NSTableColumn *)tableColumn
-            row:(int)row
-{
-  TimeEntryViewItem *item = [viewitems objectAtIndex:row];
-  return item.description;
+- (NSView *)tableView:(NSTableView *)tableView
+   viewForTableColumn:(NSTableColumn *)tableColumn
+                  row:(NSInteger)row {
+  
+  NSView *result = [tableView makeViewWithIdentifier:@"TimeEntryViewCell" owner:self];
+  //TimeEntryViewItem *item = [viewitems objectAtIndex:row];
+  
+  return result;
 }
 
 @end

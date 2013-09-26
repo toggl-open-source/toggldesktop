@@ -1287,9 +1287,6 @@ error TimeEntry::LoadFromJSONNode(JSONNODE *data) {
         return noError;
     }
 
-    // Apply updates from server and mark model as Dirty (so it will saved
-    // to local database). Only set dirty flag when something has actually
-    // changed.
     SetID(id);
     SetDescription(description);
     SetGUID(guid);
