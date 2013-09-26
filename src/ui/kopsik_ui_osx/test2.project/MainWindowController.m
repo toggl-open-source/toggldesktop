@@ -74,10 +74,11 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedIn object:nil];
     
     // Get running time entry
-    TogglTimeEntryViewItem *item = kopsik_time_entry_view_item_i();
+    TogglTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
     int is_tracking = 0;
-    if (KOPSIK_API_SUCCESS == kopsik_running_time_entry(ctx, err, KOPSIK_ERR_LEN,
-                                                        te, &is_tracking)) {
+    if (KOPSIK_API_SUCCESS == kopsik_running_time_entry_view_item(ctx,
+                                                                  err, KOPSIK_ERR_LEN,
+                                                                  item, &is_tracking)) {
       if (is_tracking) {
         [[NSNotificationCenter defaultCenter]
          postNotificationName:kUIEventTimerRunning object:nil];

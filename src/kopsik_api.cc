@@ -390,13 +390,13 @@ kopsik_api_result kopsik_stop(
 kopsik_api_result kopsik_running_time_entry_view_item(
     TogglContext *in_ctx,
     char *errmsg, unsigned int errlen,
-    TogglTimeEntryViewItem *out_item, int *out_found) {
+    TogglTimeEntryViewItem *out_item, int *out_is_tracking) {
   poco_assert(in_ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(out_item);
-  poco_assert(out_found);
-  *out_found = 0;
+  poco_assert(out_is_tracking);
+  *out_is_tracking = 0;
   poco_assert(in_ctx->db_path);
   kopsik::Database db(in_ctx->db_path);
   kopsik::User user;
@@ -407,7 +407,7 @@ kopsik_api_result kopsik_running_time_entry_view_item(
   }
   kopsik::TimeEntry *te = user.RunningTimeEntry();
   if (te) {
-    *out_found = true;
+    *out_is_tracking = true;
     kopsik_time_entry_to_toggl_time_entry_view_item_struct(
       te, &user, out_item);
   }
