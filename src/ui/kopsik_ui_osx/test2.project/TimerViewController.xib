@@ -7,6 +7,10 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimerViewController">
             <connections>
+                <outlet property="descriptionTextField" destination="YXM-R7-dLG" id="tLp-05-Tqu"/>
+                <outlet property="durationTextField" destination="HQf-TD-Aml" id="UK6-mY-ecU"/>
+                <outlet property="projectTextField" destination="X3a-qM-b5Y" id="AjF-XC-eWk"/>
+                <outlet property="stopButton" destination="Dn7-uI-YOj" id="D3v-9x-xnI"/>
                 <outlet property="view" destination="ZCm-7Z-S1x" id="El3-Dq-cnO"/>
             </connections>
         </customObject>
