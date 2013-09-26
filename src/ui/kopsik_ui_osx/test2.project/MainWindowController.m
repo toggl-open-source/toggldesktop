@@ -9,12 +9,16 @@
 #import "MainWindowController.h"
 #import "LoginViewController.h"
 #import "TimeEntryListViewController.h"
+#import "TimerViewController.h"
+#import "TimerEditViewController.h"
 #import "UIEvents.h"
 #import "Context.h"
 
 @interface MainWindowController ()
 @property (nonatomic,strong) IBOutlet LoginViewController *loginViewController;
 @property (nonatomic,strong) IBOutlet TimeEntryListViewController *timeEntryListViewController;
+@property (nonatomic,strong) IBOutlet TimerViewController *timerViewController;
+@property (nonatomic,strong) IBOutlet TimerEditViewController *timerEditViewController;
 @end
 
 @implementation MainWindowController
@@ -38,6 +42,8 @@
                                 initWithNibName:@"LoginViewController" bundle:nil];
     self.timeEntryListViewController = [[TimeEntryListViewController alloc]
                                         initWithNibName:@"TimeEntryListViewController" bundle:nil];
+    self.timerViewController = [[TimerViewController alloc]
+                                initWithNibName:@"TimerViewController" bundle:nil];
   }
   return self;
 }
@@ -62,17 +68,31 @@
 -(void)eventHandler: (NSNotification *) notification
 {
   NSLog(@"event triggered: %@", notification.name);
-  if ([notification.name isEqualToString:kUIEventUserLoggedOut]) {
-    [self.timeEntryListViewController.view removeFromSuperview];
+  if ([notification.name isEqualToString:kUIEventUserLoggedIn]) {
+    // Hide login view
+    [self.loginViewController.view removeFromSuperview];
+
+    // Show time entry list
+    [self.contentView addSubview:self.timeEntryListViewController.view];
+    self.timeEntryListViewController.view.frame = self.contentView.bounds;
+    
+    // Show timer
+    [self.headerView addSubview:self.timerViewController.view];
+    self.timerViewController.view.frame = self.headerView.bounds;
+    
+    // Show footer
+    [self.footerView setHidden:NO];
+    
+  } else if ([notification.name isEqualToString:kUIEventUserLoggedOut]) {
+    // Show login view
     [self.contentView addSubview:self.loginViewController.view];
-    self.loginViewController.view.frame =self.contentView.bounds;
+    self.loginViewController.view.frame = self.contentView.bounds;
+
+    // Hide all other views
+    [self.timeEntryListViewController.view removeFromSuperview];
     [self.footerView setHidden:YES];
     [self.timeEntryListViewController.view removeFromSuperview];
-  } else if ([notification.name isEqualToString:kUIEventUserLoggedIn]) {
-    [self.loginViewController.view removeFromSuperview];
-    [self.contentView addSubview:self.timeEntryListViewController.view];
-    self.timeEntryListViewController.view.frame =self.contentView.bounds;
-    [self.footerView setHidden:NO];
+    [self.timerViewController.view removeFromSuperview];
   }
 }
 
