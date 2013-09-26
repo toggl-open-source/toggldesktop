@@ -10,8 +10,7 @@
                 <outlet property="contentView" destination="av5-A6-9S5" id="g24-fx-drT"/>
                 <outlet property="contentViewController" destination="av5-A6-9S5" id="VD8-35-TOQ"/>
                 <outlet property="footerView" destination="9N7-5v-gZK" id="Ct6-rG-j6e"/>
-                <outlet property="headerView" destination="5Ld-I4-6Cu" id="GZI-Pu-RUM"/>
-                <outlet property="headerViewController" destination="5Ld-I4-6Cu" id="1fj-1u-n9l"/>
+                <outlet property="headerView" destination="5Ld-I4-6Cu" id="aZt-1o-76f"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>
         </customObject>
