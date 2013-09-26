@@ -1,6 +1,7 @@
 // Copyright 2013 Tanel Lebedev
 
 #include <cstring>
+#include <iostream> // NOLINT
 
 #include "./kopsik_api.h"
 #include "./database.h"
@@ -114,7 +115,7 @@ kopsik_api_result kopsik_current_user(
   kopsik::User user;
   kopsik::error err = db.LoadCurrentUser(&user, true);
   if (err != kopsik::noError) {
-    err.copy(errmsg, errlen);
+    strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
 
@@ -145,7 +146,7 @@ kopsik_api_result kopsik_set_api_token(
   kopsik::Database db(in_ctx->db_path);
   kopsik::error err = db.SetCurrentAPIToken(api_token);
   if (err != kopsik::noError) {
-    err.copy(errmsg, errlen);
+    strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
   return KOPSIK_API_SUCCESS;
@@ -173,19 +174,19 @@ kopsik_api_result kopsik_login(
   kopsik::User user;
   kopsik::error err = user.Login(email, password);
   if (err != kopsik::noError) {
-    err.copy(errmsg, errlen);
+    strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
   poco_assert(in_ctx->db_path);
   kopsik::Database db(in_ctx->db_path);
   err = db.SaveUser(&user, true);
   if (err != kopsik::noError) {
-    err.copy(errmsg, errlen);
+    strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
   err = db.SetCurrentAPIToken(user.APIToken());
   if (err != kopsik::noError) {
-    err.copy(errmsg, errlen);
+    strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
   return KOPSIK_API_SUCCESS;
@@ -475,6 +476,29 @@ kopsik_api_result kopsik_time_entry_view_items(
       te, &user, view_item);
     out_list->ViewItems[i] = view_item;
     out_list->Length++;
+  }
+  return KOPSIK_API_SUCCESS;
+}
+
+// Websocket client
+
+kopsik_api_result kopsik_listen(
+    TogglContext *in_ctx,
+    char *errmsg, unsigned int errlen) {
+  poco_assert(in_ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  kopsik::Database db(in_ctx->db_path);
+  kopsik::User user;
+  kopsik::error err = db.LoadCurrentUser(&user, true);
+  if (err != kopsik::noError) {
+    err.copy(errmsg, errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  err = user.Listen();
+  if (err != kopsik::noError) {
+    err.copy(errmsg, errlen);
+    std::cout << "error! " << errmsg << " " << errlen << std::endl;
   }
   return KOPSIK_API_SUCCESS;
 }

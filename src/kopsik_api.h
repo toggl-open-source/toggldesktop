@@ -131,6 +131,12 @@ KOPSIK_EXPORT kopsik_api_result kopsik_time_entry_view_items(
   char *errmsg, unsigned int errlen,
   TogglTimeEntryViewItemList *out_list);
 
+// Websocket client
+
+KOPSIK_EXPORT kopsik_api_result kopsik_listen(
+  TogglContext *in_ctx,
+  char *errmsg, unsigned int errlen);
+
 #undef KOPSIK_EXPORT
 
 #ifdef __cplusplus
