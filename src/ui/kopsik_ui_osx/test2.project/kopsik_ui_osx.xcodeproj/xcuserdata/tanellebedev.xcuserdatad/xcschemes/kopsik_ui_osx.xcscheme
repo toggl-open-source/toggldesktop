@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "69FC17F017E6534400B96425"
-               BuildableName = "kopsik_ui_osx.app"
+               BuildableName = "TogglDesktop.app"
                BlueprintName = "kopsik_ui_osx"
                ReferencedContainer = "container:kopsik_ui_osx.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "69FC17F017E6534400B96425"
-            BuildableName = "kopsik_ui_osx.app"
+            BuildableName = "TogglDesktop.app"
             BlueprintName = "kopsik_ui_osx"
             ReferencedContainer = "container:kopsik_ui_osx.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "69FC17F017E6534400B96425"
-            BuildableName = "kopsik_ui_osx.app"
+            BuildableName = "TogglDesktop.app"
             BlueprintName = "kopsik_ui_osx"
             ReferencedContainer = "container:kopsik_ui_osx.xcodeproj">
          </BuildableReference>
@@ -80,7 +80,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "69FC17F017E6534400B96425"
-            BuildableName = "kopsik_ui_osx.app"
+            BuildableName = "TogglDesktop.app"
             BlueprintName = "kopsik_ui_osx"
             ReferencedContainer = "container:kopsik_ui_osx.xcodeproj">
          </BuildableReference>
