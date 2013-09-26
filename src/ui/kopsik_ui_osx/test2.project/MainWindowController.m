@@ -80,8 +80,10 @@
                                                                   err, KOPSIK_ERR_LEN,
                                                                   item, &is_tracking)) {
       if (is_tracking) {
+        TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
+        [te load:item];
         [[NSNotificationCenter defaultCenter]
-         postNotificationName:kUIEventTimerRunning object:nil];
+         postNotificationName:kUIEventTimerRunning object:te];
       } else {
         [[NSNotificationCenter defaultCenter]
          postNotificationName:kUIEventTimerStopped object:nil];

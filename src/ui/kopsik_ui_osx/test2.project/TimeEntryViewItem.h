@@ -7,8 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "kopsik_api.h"
 
 @interface TimeEntryViewItem : NSObject
+- (void)load:(TogglTimeEntryViewItem *)data;
 @property NSString *description;
 @property NSString *project;
 @property NSString *duration;

@@ -46,14 +46,7 @@
       for (int i = 0; i < list->Length; i++) {
         TogglTimeEntryViewItem *item = list->ViewItems[i];
         TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
-        model.description = [NSString stringWithUTF8String:item->Description];
-        if (item->Project) {
-          model.project = [NSString stringWithUTF8String:item->Project];
-        }
-        if (item->Color) {
-          model.color = [NSString stringWithUTF8String:item->Color];
-        }
-        model.duration = [NSString stringWithUTF8String:item->Duration];
+        [model load:item];
         [viewitems addObject:model];
       }
     }

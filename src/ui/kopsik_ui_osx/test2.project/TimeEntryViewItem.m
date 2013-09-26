@@ -7,7 +7,19 @@
 //
 
 #import "TimeEntryViewItem.h"
+#import "kopsik_api.h"
 
 @implementation TimeEntryViewItem
+
+- (void)load:(TogglTimeEntryViewItem *)data {
+  self.description = [NSString stringWithUTF8String:data->Description];
+  if (data->Project) {
+    self.project = [NSString stringWithUTF8String:data->Project];
+  }
+  if (data->Color) {
+    self.color = [NSString stringWithUTF8String:data->Color];
+  }
+  self.duration = [NSString stringWithUTF8String:data->Duration];
+}
 
 @end
