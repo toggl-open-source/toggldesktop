@@ -256,6 +256,7 @@ namespace kopsik {
             user.Projects[0]->GUID());
         ASSERT_EQ(uint(123456789), user.Projects[0]->WID());
         ASSERT_EQ("Testing stuff", user.Projects[0]->Name());
+        ASSERT_EQ("21", user.Projects[0]->Color());
         ASSERT_EQ(user.ID(), user.Projects[0]->UID());
 
         ASSERT_EQ(uint(2567324), user.Projects[1]->ID());

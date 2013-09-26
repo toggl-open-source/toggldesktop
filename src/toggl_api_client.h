@@ -102,7 +102,7 @@ namespace kopsik {
     class Project {
     public:
         Project() : local_id_(0), id_(0), guid_(""), wid_(0), cid_(0),
-            name_(""), uid_(0), dirty_(false) {}
+            name_(""), uid_(0), dirty_(false), color_("") {}
 
         Poco::Int64 LocalID() { return local_id_; }
         void SetLocalID(Poco::Int64 value) { local_id_ = value; }
@@ -120,6 +120,8 @@ namespace kopsik {
         void SetUID(Poco::UInt64 value);
         bool Dirty() { return dirty_; }
         void ClearDirty() { dirty_ = false; }
+        std::string Color() { return color_; }
+        void SetColor(std::string value);
 
         error LoadFromJSONNode(JSONNODE *node);
         std::string String();
@@ -133,6 +135,7 @@ namespace kopsik {
         std::string name_;
         Poco::UInt64 uid_;
         bool dirty_;
+        std::string color_;
     };
 
     class Task {

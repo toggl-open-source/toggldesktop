@@ -558,6 +558,13 @@ void Project::SetName(std::string value) {
     }
 }
 
+void Project::SetColor(std::string value) {
+    if (color_ != value) {
+        color_ = value;
+        dirty_ = true;
+    }
+}
+
 void Project::SetID(Poco::UInt64 value) {
     if (id_ != value) {
         id_ = value;
@@ -1086,6 +1093,8 @@ error Project::LoadFromJSONNode(JSONNODE *data) {
             SetWID(json_as_int(*current_node));
         } else if (strcmp(node_name, "cid") == 0) {
             SetCID(json_as_int(*current_node));
+        } else if (strcmp(node_name, "color") == 0) {
+            SetColor(std::string(json_as_string(*current_node)));
         }
         ++current_node;
     }

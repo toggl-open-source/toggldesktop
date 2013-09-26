@@ -399,7 +399,7 @@ error Database::loadProjects(Poco::UInt64 UID, std::vector<Project *> *list) {
 
     try {
         Poco::Data::Statement select(*session);
-        select << "SELECT local_id, id, uid, name, guid, wid "
+        select << "SELECT local_id, id, uid, name, guid, wid, color "
             "FROM projects WHERE uid = :uid "
             "ORDER BY name",
             Poco::Data::use(UID);
@@ -419,6 +419,7 @@ error Database::loadProjects(Poco::UInt64 UID, std::vector<Project *> *list) {
                 model->SetName(rs[3].convert<std::string>());
                 model->SetGUID(rs[4].convert<std::string>());
                 model->SetWID(rs[5].convert<Poco::UInt64>());
+                model->SetColor(rs[6].convert<std::string>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -872,24 +873,27 @@ error Database::SaveProject(Project *model) {
         if (model->LocalID()) {
             logger.debug("Updating project " + model->String());
             *session << "update projects set "
-                "id = :id, uid = :uid, name = :name, guid = :guid, wid = :wid "
+                "id = :id, uid = :uid, name = :name, guid = :guid, wid = :wid, "
+                "color = :color "
                 "where local_id = :local_id",
                 Poco::Data::use(model->ID()),
                 Poco::Data::use(model->UID()),
                 Poco::Data::use(model->Name()),
                 Poco::Data::use(model->GUID()),
                 Poco::Data::use(model->WID()),
+                Poco::Data::use(model->Color()),
                 Poco::Data::use(model->LocalID()),
                 Poco::Data::now;
         } else {
             logger.debug("Inserting project " + model->String());
-            *session << "insert into projects(id, uid, name, guid, wid) "
-                "values(:id, :uid, :name, :guid, :wid)",
+            *session << "insert into projects(id, uid, name, guid, wid, color) "
+                "values(:id, :uid, :name, :guid, :wid, :color)",
                 Poco::Data::use(model->ID()),
                 Poco::Data::use(model->UID()),
                 Poco::Data::use(model->Name()),
                 Poco::Data::use(model->GUID()),
                 Poco::Data::use(model->WID()),
+                Poco::Data::use(model->Color()),
                 Poco::Data::now;
             error err = last_error();
             if (err != noError) {
@@ -1222,6 +1226,7 @@ error Database::initialize_tables() {
         "uid integer not null, "
         "name varchar not null, "
         "guid varchar, "
+        "color varchar, "
         "wid integer not null, "
         "constraint fk_projects_wid foreign key (wid) "
         "references workpaces(id) on delete no action on update no action,"
