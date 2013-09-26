@@ -276,7 +276,7 @@ TogglTimeEntryList *kopsik_time_entry_list_init() {
 void kopsik_time_entry_list_clear(TogglTimeEntryList *in_time_entry_list) {
   poco_assert(in_time_entry_list);
   for (unsigned int i = 0; i < in_time_entry_list->Length; i++) {
-    delete in_time_entry_list->TimeEntries[i];
+    kopsik_time_entry_clear(in_time_entry_list->TimeEntries[i]);
     in_time_entry_list->TimeEntries[i] = 0;
   }
   if (in_time_entry_list->TimeEntries) {
@@ -457,7 +457,7 @@ void kopsik_time_entry_view_item_list_clear(
     TogglTimeEntryViewItemList *in_list) {
   poco_assert(in_list);
   for (unsigned int i = 0; i < in_list->Length; i++) {
-    delete in_list->ViewItems[i];
+    kopsik_time_entry_view_item_clear(in_list->ViewItems[i]);
     in_list->ViewItems[i] = 0;
   }
   if (in_list->ViewItems) {
