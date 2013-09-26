@@ -128,6 +128,11 @@ deps: openssl poco json
 json:
 	cd $(jsondir) && make
 
+nightly: deps
+	cd src/libkopsik/Kopsik && xcodebuild -arch x86_64
+	cd src/ui/kopsik_ui_osx/test2.project && xcodebuild -arch x86_64
+	#upload the resulting app to cdn
+
 openssl:
 ifeq ($(uname), Darwin)
 	cd $(openssldir) && ./config -fPIC no-shared no-dso && ./Configure darwin64-x86_64-cc && make
