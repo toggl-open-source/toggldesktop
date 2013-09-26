@@ -62,7 +62,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		69FC17F117E6534400B96425 /* kopsik_ui_osx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kopsik_ui_osx.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		69FC17F117E6534400B96425 /* TogglDesktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TogglDesktop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		69FC17F417E6534400B96425 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		69FC17F717E6534400B96425 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		69FC17F817E6534400B96425 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -154,7 +154,7 @@
 		69FC17F217E6534400B96425 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				69FC17F117E6534400B96425 /* kopsik_ui_osx.app */,
+				69FC17F117E6534400B96425 /* TogglDesktop.app */,
 				69FC181117E6534500B96425 /* kopsik_ui_osxTests.octest */,
 			);
 			name = Products;
@@ -269,7 +269,7 @@
 			);
 			name = kopsik_ui_osx;
 			productName = test2;
-			productReference = 69FC17F117E6534400B96425 /* kopsik_ui_osx.app */;
+			productReference = 69FC17F117E6534400B96425 /* TogglDesktop.app */;
 			productType = "com.apple.product-type.application";
 		};
 		69FC181017E6534500B96425 /* kopsik_ui_osxTests */ = {
@@ -522,7 +522,7 @@
 					../../../libkopsik/lib,
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = kopsik_ui_osx;
+				PRODUCT_NAME = TogglDesktop;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				WRAPPER_EXTENSION = app;
 			};
@@ -545,7 +545,7 @@
 					../../../libkopsik/lib,
 				);
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_NAME = kopsik_ui_osx;
+				PRODUCT_NAME = TogglDesktop;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				WRAPPER_EXTENSION = app;
 			};
