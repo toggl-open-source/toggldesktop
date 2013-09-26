@@ -124,6 +124,7 @@ typedef struct {
   char *Description;
   char *Project;
   char *Duration;
+  char *Color;
 } TogglTimeEntryViewItem;
 
 typedef struct {

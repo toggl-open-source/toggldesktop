@@ -420,6 +420,7 @@ TogglTimeEntryViewItem *kopsik_time_entry_view_item_init() {
   item->Description = 0;
   item->Project = 0;
   item->Duration = 0;
+  item->Color = 0;
   return item;
 }
 
@@ -436,6 +437,10 @@ void kopsik_time_entry_view_item_clear(TogglTimeEntryViewItem *item) {
   if (item->Duration) {
     free(item->Duration);
     item->Duration = 0;
+  }
+  if (item->Color) {
+    free(item->Color);
+    item->Color = 0;
   }
   delete item;
   item = 0;
@@ -502,6 +507,7 @@ kopsik_api_result kopsik_time_entry_view_items(
       kopsik::Project *p = user.GetProjectByID(te->PID());
       if (p) {
         item->Project = strdup(p->Name().c_str());
+        item->Color = strdup(p->ColorCode().c_str());
       }
     }
     item->Duration = strdup(te->DurationString().c_str());

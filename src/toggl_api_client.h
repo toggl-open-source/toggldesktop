@@ -122,9 +122,12 @@ namespace kopsik {
         void ClearDirty() { dirty_ = false; }
         std::string Color() { return color_; }
         void SetColor(std::string value);
+        std::string ColorCode();
 
         error LoadFromJSONNode(JSONNODE *node);
         std::string String();
+
+        static std::vector<std::string> color_codes;
 
     private:
         Poco::Int64 local_id_;

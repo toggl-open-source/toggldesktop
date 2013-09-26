@@ -11,6 +11,20 @@
 
 namespace kopsik {
 
+    TEST(KopsikTest, ProjectsHaveColorCodes) {
+        Project p;
+        p.SetColor("1");
+        ASSERT_EQ("#bc85e6", p.ColorCode());
+        p.SetColor("");
+        ASSERT_EQ("#999999", p.ColorCode());
+        p.SetColor("-10");
+        ASSERT_EQ("#14a88e", p.ColorCode());
+        p.SetColor("0");
+        ASSERT_EQ("#999999", p.ColorCode());
+        p.SetColor("999");
+        ASSERT_EQ("#a4506c", p.ColorCode());
+    }
+
     TEST(KopsikTest, SaveAndLoadCurrentAPIToken) {
         Poco::File f(TESTDB);
         if (f.exists()) {

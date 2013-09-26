@@ -17,6 +17,7 @@
 #include "Poco/DateTime.h"
 #include "Poco/DateTimeFormatter.h"
 #include "Poco/DateTimeFormat.h"
+#include "Poco/NumberParser.h"
 #include "Poco/Net/Context.h"
 #include "Poco/Net/NameValueCollection.h"
 #include "Poco/Net/HTTPRequest.h"
@@ -29,8 +30,18 @@
 
 namespace kopsik {
 
-    const std::string TOGGL_SERVER_URL("https://www.toggl.com");
-    // const std::string TOGGL_SERVER_URL("http://localhost:8080");
+const std::string TOGGL_SERVER_URL("https://www.toggl.com");
+// const std::string TOGGL_SERVER_URL("http://localhost:8080");
+
+const char *known_colors[] = {
+    "#4dc3ff", "#bc85e6", "#df7baa", "#f68d38", "#b27636",
+    "#8ab734", "#14a88e", "#268bb5", "#6668b4", "#a4506c",
+    "#67412c", "#3c6526", "#094558", "#bc2d07", "#999999"
+};
+template<typename T, size_t N> T *end(T (&ra)[N]) {
+    return ra + N;
+}
+std::vector<std::string> Project::color_codes(known_colors, end(known_colors));
 
 // Start a time entry, mark it as dirty and add to user time entry collection.
 // Do not save here, dirtyness will be handled outside of this module.
@@ -563,6 +574,17 @@ void Project::SetColor(std::string value) {
         color_ = value;
         dirty_ = true;
     }
+}
+
+std::string Project::ColorCode() {
+    int index(0);
+    if (!Poco::NumberParser::tryParse(Color(), index)) {
+        return color_codes.back();
+    }
+    if (!index) {
+        return color_codes.back();
+    }
+    return color_codes[index % color_codes.size()];
 }
 
 void Project::SetID(Poco::UInt64 value) {
