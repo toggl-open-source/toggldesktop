@@ -37,7 +37,7 @@
                         <rect key="frame" x="0.0" y="29" width="258" height="326"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
-                    <customView focusRingType="exterior" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9N7-5v-gZK">
+                    <customView hidden="YES" focusRingType="exterior" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9N7-5v-gZK">
                         <rect key="frame" x="0.0" y="0.0" width="258" height="29"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <subviews>

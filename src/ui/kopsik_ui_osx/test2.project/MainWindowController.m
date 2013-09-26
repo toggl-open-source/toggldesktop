@@ -33,6 +33,7 @@
      selector:@selector(eventHandler:)
      name:kUIEventUserLoggedOut
      object:nil];
+
     self.loginViewController = [[LoginViewController alloc]
                                 initWithNibName:@"LoginViewController" bundle:nil];
     self.timeEntryListViewController = [[TimeEntryListViewController alloc]
@@ -65,11 +66,13 @@
     [self.timeEntryListViewController.view removeFromSuperview];
     [self.contentView addSubview:self.loginViewController.view];
     self.loginViewController.view.frame =self.contentView.bounds;
+    [self.footerView setHidden:YES];
     [self.timeEntryListViewController.view removeFromSuperview];
   } else if ([notification.name isEqualToString:kUIEventUserLoggedIn]) {
     [self.loginViewController.view removeFromSuperview];
     [self.contentView addSubview:self.timeEntryListViewController.view];
     self.timeEntryListViewController.view.frame =self.contentView.bounds;
+    [self.footerView setHidden:NO];
   }
 }
 
