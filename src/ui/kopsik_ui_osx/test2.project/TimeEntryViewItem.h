@@ -12,4 +12,5 @@
 @property NSString *description;
 @property NSString *project;
 @property NSString *duration;
+@property NSString *color;
 @end

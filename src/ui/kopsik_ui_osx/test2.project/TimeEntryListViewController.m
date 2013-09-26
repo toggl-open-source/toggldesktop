@@ -50,6 +50,9 @@
         if (item->Project) {
           model.project = [NSString stringWithUTF8String:item->Project];
         }
+        if (item->Color) {
+          model.color = [NSString stringWithUTF8String:item->Color];
+        }
         model.duration = [NSString stringWithUTF8String:item->Duration];
         [viewitems addObject:model];
       }
@@ -71,38 +74,24 @@
       cellView = [[TableViewCell alloc] init];
       cellView.identifier = @"TimeEntryCell";
     }
-    cellView.colorTextField.backgroundColor =
-      [NSColor brownColor]; // FIXME: set project color
+    cellView.colorTextField.backgroundColor = [self hexCodeToNSColor:item.color];
     cellView.descriptionTextField.stringValue = item.description;
     cellView.projectTextField.stringValue = item.project;
     cellView.durationTextField.stringValue = item.duration;
-    NSLog(@"%d", cellView.durationTextField.isHidden);
     return cellView;
-  /*
-  // get an existing cell with the MyView identifier if it exists
-  NSTextField *result = [tableView makeViewWithIdentifier:@"MyView" owner:self];
-  
-  // There is no existing cell to reuse so we will create a new one
-  if (result == nil) {
-    
-    // create the new NSTextField with a frame of the {0,0} with the width of the table
-    // note that the height of the frame is not really relevant, the row-height will modify the height
-    // the new text field is then returned as an autoreleased object
-    result = [[NSTextField alloc] init];
-    
-    // the identifier of the NSTextField instance is set to MyView. This
-    // allows it to be re-used
-    result.identifier = @"MyView";
-  }
-  
-  // result is now guaranteed to be valid, either as a re-used cell
-  // or as a new cell, so set the stringValue of the cell to the
-  // nameArray value at row
-  result.stringValue = @"blah";
-  // return the result.
-  return result;
-   */
-  
+}
+
+- (NSColor *)hexCodeToNSColor:(NSString *)hexCode {
+	unsigned int colorCode = 0;
+  if (hexCode.length > 1) {
+    NSString *numbers = [hexCode substringWithRange:NSMakeRange(1, [hexCode length] - 1)];
+		NSScanner *scanner = [NSScanner scannerWithString:numbers];
+		[scanner scanHexInt:&colorCode];
+	}
+	return [NSColor
+          colorWithDeviceRed:((colorCode>>16)&0xFF)/255.0
+          green:((colorCode>>8)&0xFF)/255.0
+          blue:((colorCode)&0xFF)/255.0 alpha:1.0];
 }
 
 @end
