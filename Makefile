@@ -143,5 +143,5 @@ poco:
 	make
 
 .phony:
-	kopsik
+	command_line_client
 
