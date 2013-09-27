@@ -81,7 +81,7 @@
     [te load:item];
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerStopped object:te];
     // FIXME: make this async
-    if (KOPSIK_API_SUCCESS != kopsik_sync(ctx, err, KOPSIK_ERR_LEN, 0)) {
+    if (KOPSIK_API_SUCCESS != kopsik_push(ctx, err, KOPSIK_ERR_LEN)) {
       NSLog(@"Sync error: %s", err);
     }
   }

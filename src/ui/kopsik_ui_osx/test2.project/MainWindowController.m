@@ -79,7 +79,6 @@
   } else {
     NSLog(@"Current user: %s", user->Fullname);
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedIn object:nil];
-    [self sync:self];
   }
   kopsik_user_clear(user);
 }
@@ -98,6 +97,8 @@
     // Show header and footer
     [self.footerView setHidden:NO];
     [self.headerView setHidden:NO];
+    
+    [self startSync:1];
     
   } else if ([notification.name isEqualToString:kUIEventUserLoggedOut]) {
     // Show login view
@@ -134,6 +135,10 @@
 }
 
 - (IBAction)sync:(id)sender {
+  [self startSync:1];
+}
+
+- (void)startSync:(int)full_sync {
   char err[KOPSIK_ERR_LEN];
   // FIXME: make this async
   if (KOPSIK_API_SUCCESS != kopsik_sync(ctx, err, KOPSIK_ERR_LEN, 1)) {

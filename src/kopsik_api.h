@@ -80,7 +80,11 @@ typedef struct {
 KOPSIK_EXPORT kopsik_api_result kopsik_sync(
   KopsikContext *in_ctx,
   char *errmsg, unsigned int errlen,
-  int fetch_updates_only);
+  int full_sync);
+
+KOPSIK_EXPORT kopsik_api_result kopsik_push(
+  KopsikContext *in_ctx,
+  char *errmsg, unsigned int errlen);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_dirty_models(
   KopsikContext *in_ctx,

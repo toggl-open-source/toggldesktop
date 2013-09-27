@@ -174,7 +174,7 @@ void User::CollectDirtyObjects(std::vector<TimeEntry *> *result) {
     }
 }
 
-error User::push() {
+error User::Push() {
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
@@ -430,25 +430,31 @@ bool User::isStatusOK(int status) {
 error User::Login(const std::string &email, const std::string &password) {
     LoginEmail = email;
     LoginPassword = password;
-    return pull(false);
+    return pull(false, true);
 }
 
-error User::Sync() {
-    error err = pull(true);
+error User::Sync(bool full_sync) {
+    error err = pull(true, full_sync);
     if (err != noError) {
         return err;
     }
-    return push();
+    return Push();
 }
 
 // FIXME: move code into a GET method
-error User::pull(bool authenticate_with_api_token) {
+error User::pull(bool authenticate_with_api_token, bool full_sync) {
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
+    std::stringstream relative_url;
+    relative_url << "/api/v8/me?with_related_data=true";
+    if (!full_sync) {
+        relative_url << "&since=" << since_;
+    }
+
     std::string response_body("");
     error err = requestJSON(Poco::Net::HTTPRequest::HTTP_GET,
-        "/api/v8/me?with_related_data=true",
+        relative_url.str(),
         "",
         authenticate_with_api_token,
         &response_body);

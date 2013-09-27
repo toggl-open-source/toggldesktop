@@ -307,7 +307,8 @@ namespace kopsik {
             ClearTimeEntries();
         }
 
-        error Sync();
+        error Sync(bool full_sync);
+        error Push();
         error Login(const std::string &email, const std::string &password);
         void LoadFromJSONString(const std::string &json,
             bool with_related_data);
@@ -374,8 +375,8 @@ namespace kopsik {
         bool dirty_;
         std::string fullname_;
 
-        error pull(bool authenticate_with_api_token);
-        error push();
+        error pull(bool authenticate_with_api_token,
+            bool full_sync);
 
         void loadProjectsFromJSONNode(JSONNODE *list);
         void loadTagsFromJSONNode(JSONNODE *list);

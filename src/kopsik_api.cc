@@ -212,7 +212,7 @@ kopsik_api_result kopsik_logout(
 kopsik_api_result kopsik_sync(
     KopsikContext *in_ctx,
     char *errmsg, unsigned int errlen,
-    int fetch_updates_only) {
+    int full_sync) {
   poco_assert(in_ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
@@ -224,7 +224,35 @@ kopsik_api_result kopsik_sync(
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
-  err = user.Sync();
+  err = user.Sync(full_sync);
+  if (err != kopsik::noError) {
+    strncpy(errmsg, err.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  err = db.SaveUser(&user, true);
+  if (err != kopsik::noError) {
+    strncpy(errmsg, err.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  return KOPSIK_API_SUCCESS;
+}
+
+
+kopsik_api_result kopsik_push(
+    KopsikContext *in_ctx,
+    char *errmsg, unsigned int errlen) {
+  poco_assert(in_ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(in_ctx->db_path);
+  kopsik::Database db(in_ctx->db_path);
+  kopsik::User user;
+  kopsik::error err = db.LoadCurrentUser(&user, true);
+  if (err != kopsik::noError) {
+    strncpy(errmsg, err.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  err = user.Push();
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
