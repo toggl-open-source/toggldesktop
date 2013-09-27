@@ -308,6 +308,7 @@ namespace kopsik {
             bool with_related_data);
         error LoadFromJSONNode(JSONNODE *node, bool with_related_data);
         std::string String();
+        error Listen();
 
         void ClearWorkspaces();
         void ClearClients();

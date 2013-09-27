@@ -25,6 +25,7 @@
 #include "Poco/Net/HTTPMessage.h"
 #include "Poco/Net/HTTPBasicCredentials.h"
 #include "Poco/Net/HTTPSClientSession.h"
+#include "Poco/Net/WebSocket.h"
 
 #include "./libjson.h"
 
@@ -32,6 +33,10 @@ namespace kopsik {
 
 const std::string TOGGL_SERVER_URL("https://www.toggl.com");
 // const std::string TOGGL_SERVER_URL("http://localhost:8080");
+
+// const std::string TOGGL_WEBSOCKET_SERVER_URL("https://stream.toggl.com")
+const std::string TOGGL_WEBSOCKET_SERVER_URL("wss://localhost:8088");
+// const std::string TOGGL_WEBSOCKET_SERVER_URL("wss://echo.websocket.org");
 
 const char *known_colors[] = {
     "#4dc3ff", "#bc85e6", "#df7baa", "#f68d38", "#b27636",
@@ -55,6 +60,29 @@ TimeEntry *User::Start() {
   te->SetUIModifiedAt(time(0));
   TimeEntries.push_back(te);
   return te;
+}
+
+error User::Listen() {
+  try {
+    const Poco::URI uri(TOGGL_WEBSOCKET_SERVER_URL);
+    const Poco::Net::Context::Ptr context(new Poco::Net::Context(
+      Poco::Net::Context::CLIENT_USE, "", "", "",
+      Poco::Net::Context::VERIFY_NONE, 9, false,
+      "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"));
+    Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(),
+      context);
+    Poco::Net::HTTPRequest req(Poco::Net::HTTPRequest::HTTP_GET, "/ws",
+      Poco::Net::HTTPMessage::HTTP_1_1);
+    Poco::Net::HTTPResponse res;
+    Poco::Net::WebSocket ws(session, req, res);
+  } catch(const Poco::Exception& exc) {
+    return exc.displayText();
+  } catch(const std::exception& ex) {
+    return ex.what();
+  } catch(const std::string& ex) {
+    return ex;
+  }
+  return noError;
 }
 
 bool compareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {

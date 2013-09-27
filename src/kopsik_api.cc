@@ -1,7 +1,6 @@
 // Copyright 2013 Tanel Lebedev
 
 #include <cstring>
-#include <iostream> // NOLINT
 
 #include "./kopsik_api.h"
 #include "./database.h"
@@ -202,7 +201,7 @@ kopsik_api_result kopsik_logout(
   kopsik::Database db(in_ctx->db_path);
   kopsik::error err = db.ClearCurrentAPIToken();
   if (err != kopsik::noError) {
-    err.copy(errmsg, errlen);
+    strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
   return KOPSIK_API_SUCCESS;
@@ -221,17 +220,17 @@ kopsik_api_result kopsik_sync(
   kopsik::User user;
   kopsik::error err = db.LoadCurrentUser(&user, true);
   if (err != kopsik::noError) {
-    err.copy(errmsg, errlen);
+    strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
   err = user.Sync();
   if (err != kopsik::noError) {
-    err.copy(errmsg, errlen);
+    strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
   err = db.SaveUser(&user, true);
   if (err != kopsik::noError) {
-    err.copy(errmsg, errlen);
+    strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
   return KOPSIK_API_SUCCESS;
@@ -251,7 +250,7 @@ kopsik_api_result kopsik_dirty_models(
   kopsik::User user;
   kopsik::error err = db.LoadCurrentUser(&user, true);
   if (err != kopsik::noError) {
-    err.copy(errmsg, errlen);
+    strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
   std::vector<kopsik::TimeEntry *> dirty;
@@ -342,14 +341,14 @@ kopsik_api_result kopsik_start(
   kopsik::User user;
   kopsik::error err = db.LoadCurrentUser(&user, true);
   if (err != kopsik::noError) {
-    err.copy(errmsg, errlen);
+    strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
   kopsik::TimeEntry *te = user.Start();
   if (te) {
     err = db.SaveUser(&user, true);
     if (err != kopsik::noError) {
-      err.copy(errmsg, errlen);
+      strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
     kopsik_time_entry_to_toggl_time_entry_view_item_struct(
@@ -371,14 +370,14 @@ kopsik_api_result kopsik_stop(
   kopsik::User user;
   kopsik::error err = db.LoadCurrentUser(&user, true);
   if (err != kopsik::noError) {
-    err.copy(errmsg, errlen);
+    strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
   std::vector<kopsik::TimeEntry *> stopped = user.Stop();
   if (!stopped.empty()) {
     err = db.SaveUser(&user, true);
     if (err != kopsik::noError) {
-      err.copy(errmsg, errlen);
+      strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
     kopsik::TimeEntry *te = stopped[0];
@@ -403,7 +402,7 @@ kopsik_api_result kopsik_running_time_entry_view_item(
   kopsik::User user;
   kopsik::error err = db.LoadCurrentUser(&user, true);
   if (err != kopsik::noError) {
-    err.copy(errmsg, errlen);
+    strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
   kopsik::TimeEntry *te = user.RunningTimeEntry();
@@ -451,7 +450,7 @@ kopsik_api_result kopsik_time_entry_view_items(
 
   kopsik::error err = db.LoadCurrentUser(&user, true);
   if (err != kopsik::noError) {
-    err.copy(errmsg, errlen);
+    strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
 
@@ -492,13 +491,13 @@ kopsik_api_result kopsik_listen(
   kopsik::User user;
   kopsik::error err = db.LoadCurrentUser(&user, true);
   if (err != kopsik::noError) {
-    err.copy(errmsg, errlen);
+    strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
   err = user.Listen();
   if (err != kopsik::noError) {
-    err.copy(errmsg, errlen);
-    std::cout << "error! " << errmsg << " " << errlen << std::endl;
+    strncpy(errmsg, err.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   }
   return KOPSIK_API_SUCCESS;
 }
