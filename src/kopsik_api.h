@@ -117,6 +117,7 @@ KOPSIK_EXPORT void kopsik_format_duration_in_seconds(
 KOPSIK_EXPORT kopsik_api_result kopsik_start(
   TogglContext *in_ctx,
   char *errmsg, unsigned int errlen,
+  const char *in_description,
   TogglTimeEntryViewItem *out_view_item);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_stop(

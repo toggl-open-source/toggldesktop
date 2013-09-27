@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 @interface TimerEditViewController : NSViewController
+- (IBAction)startButtonClicked:(id)sender;
 @property (weak) IBOutlet NSTextField *descriptionTextField;
 @property (weak) IBOutlet NSButton *startButton;
-
 @end

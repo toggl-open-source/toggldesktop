@@ -51,9 +51,10 @@ std::vector<std::string> Project::color_codes(known_colors, end(known_colors));
 
 // Start a time entry, mark it as dirty and add to user time entry collection.
 // Do not save here, dirtyness will be handled outside of this module.
-TimeEntry *User::Start() {
+TimeEntry *User::Start(std::string description) {
   Stop();
   TimeEntry *te = new TimeEntry();
+  te->SetDescription(description);
   te->SetUID(ID());
   te->SetStart(time(0));
   te->SetDurationInSeconds(-time(0));

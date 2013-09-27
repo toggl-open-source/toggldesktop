@@ -342,12 +342,19 @@ void kopsik_format_duration_in_seconds(
 kopsik_api_result kopsik_start(
     TogglContext *in_ctx,
     char *errmsg, unsigned int errlen,
+    const char *in_description,
     TogglTimeEntryViewItem *out_view_item) {
   poco_assert(in_ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
+  poco_assert(in_description);
   poco_assert(out_view_item);
   poco_assert(in_ctx->db_path);
+  std::string description(in_description);
+  if (description.empty()) {
+    strncpy(errmsg, "Missing description", errlen);
+    return KOPSIK_API_FAILURE;
+  }
   kopsik::Database db(in_ctx->db_path);
   kopsik::User user;
   kopsik::error err = db.LoadCurrentUser(&user, true);
@@ -355,7 +362,7 @@ kopsik_api_result kopsik_start(
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
-  kopsik::TimeEntry *te = user.Start();
+  kopsik::TimeEntry *te = user.Start(description);
   if (te) {
     err = db.SaveUser(&user, true);
     if (err != kopsik::noError) {

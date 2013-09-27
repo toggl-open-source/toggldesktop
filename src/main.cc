@@ -82,7 +82,8 @@ namespace command_line_client {
 
         if ("start" == args[0]) {
             TogglTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
-            if (KOPSIK_API_FAILURE == kopsik_start(ctx_, err, ERRLEN, te)) {
+            if (KOPSIK_API_FAILURE == kopsik_start(
+                    ctx_, err, ERRLEN, "New time entry", te)) {
                 std::cerr << err << std::endl;
                 kopsik_time_entry_view_item_clear(te);
                 return Poco::Util::Application::EXIT_SOFTWARE;

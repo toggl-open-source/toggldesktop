@@ -36,6 +36,9 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" size="10" name="LucidaGrande"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="startButtonClicked:" target="-2" id="HQW-xO-X1l"/>
+                                </connections>
                             </button>
                             <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y8j-ZI-jWO">
                                 <rect key="frame" x="6" y="17" width="185" height="26"/>

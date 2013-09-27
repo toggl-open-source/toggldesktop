@@ -333,7 +333,7 @@ namespace kopsik {
         void SortTimeEntriesByStart();
 
         TimeEntry *RunningTimeEntry();
-        TimeEntry *Start();
+        TimeEntry *Start(std::string description);
         std::vector<TimeEntry *> Stop();
 
         Poco::Int64 LocalID() { return local_id_; }
