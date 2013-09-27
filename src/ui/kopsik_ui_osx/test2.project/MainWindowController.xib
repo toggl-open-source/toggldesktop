@@ -20,23 +20,23 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="258" height="427"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
             <view key="contentView" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="258" height="427"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Ld-I4-6Cu">
+                    <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Ld-I4-6Cu" userLabel="HeaderView">
                         <rect key="frame" x="0.0" y="353" width="258" height="74"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="74" id="cgB-pa-3IW"/>
                         </constraints>
                     </customView>
-                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="av5-A6-9S5">
+                    <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="av5-A6-9S5" userLabel="ContentView">
                         <rect key="frame" x="0.0" y="29" width="258" height="326"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
-                    <customView hidden="YES" focusRingType="exterior" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9N7-5v-gZK">
+                    <customView hidden="YES" focusRingType="exterior" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9N7-5v-gZK" userLabel="FooterView">
                         <rect key="frame" x="0.0" y="0.0" width="258" height="29"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <subviews>
@@ -61,7 +61,7 @@
                                     </menu>
                                 </popUpButtonCell>
                             </popUpButton>
-                            <button horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ixr-JC-i3w">
+                            <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ixr-JC-i3w">
                                 <rect key="frame" x="230" y="1" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Hap-2l-g1o">
@@ -71,14 +71,18 @@
                             </button>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="ixr-JC-i3w" secondAttribute="trailing" constant="5" id="Ttu-n1-iX3"/>
+                            <constraint firstAttribute="bottom" secondItem="ixr-JC-i3w" secondAttribute="bottom" constant="4" id="KPF-zB-GC1"/>
+                            <constraint firstAttribute="trailing" secondItem="ixr-JC-i3w" secondAttribute="trailing" constant="5" id="yLP-3w-GsM"/>
                         </constraints>
                     </customView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="9N7-5v-gZK" secondAttribute="bottom" id="Ipy-cq-QaZ"/>
-                    <constraint firstAttribute="trailing" secondItem="9N7-5v-gZK" secondAttribute="trailing" id="Ue1-hJ-toJ"/>
-                    <constraint firstItem="9N7-5v-gZK" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="hUd-4h-ZLd"/>
+                    <constraint firstAttribute="trailing" secondItem="9N7-5v-gZK" secondAttribute="trailing" id="447-UX-hQV"/>
+                    <constraint firstItem="av5-A6-9S5" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="G80-0l-uzQ"/>
+                    <constraint firstItem="9N7-5v-gZK" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="OyS-BN-IHn"/>
+                    <constraint firstItem="av5-A6-9S5" firstAttribute="top" secondItem="2" secondAttribute="top" constant="72" id="RQH-8g-TEH"/>
+                    <constraint firstAttribute="bottom" secondItem="9N7-5v-gZK" secondAttribute="bottom" id="q0W-eY-BbL"/>
+                    <constraint firstAttribute="trailing" secondItem="av5-A6-9S5" secondAttribute="trailing" id="r8N-fC-UxY"/>
                 </constraints>
             </view>
             <connections>
