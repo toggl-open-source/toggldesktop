@@ -10,6 +10,7 @@
 #import "UIEvents.h"
 #import "kopsik_api.h"
 #import "TimeEntryViewItem.h"
+#import "Context.h"
 
 @interface TimerViewController ()
 @property NSTimer *timer;
@@ -63,6 +64,23 @@
   } else if ([notification.name isEqualToString:kUIEventTimerStopped]) {
     [self stopTimer];
   }
+}
+
+- (IBAction)stopButtonClicked:(id)sender
+{
+  char err[KOPSIK_ERR_LEN];
+  TogglTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
+  if (KOPSIK_API_SUCCESS != kopsik_stop(ctx, err, KOPSIK_ERR_LEN, item)) {
+    NSLog(@"Error stopping time entry: %s", err);
+  } else {
+    TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerStopped object:te];
+    // FIXME: make this async
+    if (KOPSIK_API_SUCCESS != kopsik_sync(ctx, err, KOPSIK_ERR_LEN)) {
+      NSLog(@"Sync error: %s", err);
+    }
+  }
+  kopsik_time_entry_view_item_clear(item);
 }
 
 - (void)timerFired:(NSTimer*)timer
