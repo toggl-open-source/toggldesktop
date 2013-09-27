@@ -112,7 +112,7 @@
 
     // Show time entry list
     [self.contentView addSubview:self.timeEntryListViewController.view];
-    self.timeEntryListViewController.view.frame = self.contentView.bounds;
+    [self.timeEntryListViewController.view setFrame:self.contentView.bounds];
     
     // Show footer
     [self.footerView setHidden:NO];
@@ -120,7 +120,7 @@
   } else if ([notification.name isEqualToString:kUIEventUserLoggedOut]) {
     // Show login view
     [self.contentView addSubview:self.loginViewController.view];
-    self.loginViewController.view.frame = self.contentView.bounds;
+    [self.loginViewController.view setFrame:self.contentView.bounds];
 
     // Hide all other views
     [self.timeEntryListViewController.view removeFromSuperview];
@@ -129,15 +129,14 @@
 
   } else if ([notification.name isEqualToString:kUIEventTimerRunning]) {
     [self.headerView addSubview:self.timerViewController.view];
-    self.timerViewController.view.frame = self.headerView.bounds;
+    [self.timerViewController.view setFrame: self.headerView.bounds];
     
     [self.timerEditViewController.view removeFromSuperview];
-
+    
   } else if ([notification.name isEqualToString:kUIEventTimerStopped]) {
     [self.timerViewController.view removeFromSuperview];
-
     [self.headerView addSubview:self.timerEditViewController.view];
-    self.timerEditViewController.view.frame = self.headerView.bounds;
+    [self.timerEditViewController.view setFrame:self.headerView.bounds];
   }
 }
 
