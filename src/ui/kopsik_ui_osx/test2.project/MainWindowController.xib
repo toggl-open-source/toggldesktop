@@ -79,10 +79,12 @@
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="9N7-5v-gZK" secondAttribute="trailing" id="447-UX-hQV"/>
                     <constraint firstItem="av5-A6-9S5" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="G80-0l-uzQ"/>
+                    <constraint firstAttribute="trailing" secondItem="5Ld-I4-6Cu" secondAttribute="trailing" id="NpS-3B-d49"/>
                     <constraint firstItem="9N7-5v-gZK" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="OyS-BN-IHn"/>
                     <constraint firstItem="av5-A6-9S5" firstAttribute="top" secondItem="2" secondAttribute="top" constant="72" id="RQH-8g-TEH"/>
                     <constraint firstAttribute="bottom" secondItem="9N7-5v-gZK" secondAttribute="bottom" id="q0W-eY-BbL"/>
                     <constraint firstAttribute="trailing" secondItem="av5-A6-9S5" secondAttribute="trailing" id="r8N-fC-UxY"/>
+                    <constraint firstItem="5Ld-I4-6Cu" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="y3G-m3-QcM"/>
                 </constraints>
             </view>
             <connections>
