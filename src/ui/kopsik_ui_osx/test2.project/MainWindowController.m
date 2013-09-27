@@ -79,6 +79,11 @@
   } else {
     NSLog(@"Current user: %s", user->Fullname);
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedIn object:nil];
+
+    // FIXME: make this async
+    if (KOPSIK_API_SUCCESS != kopsik_sync(ctx, err, KOPSIK_ERR_LEN)) {
+      NSLog(@"Sync error: %s", err);
+    }
     
     // Get running time entry
     TogglTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
@@ -153,6 +158,7 @@
 }
 
 - (IBAction)sync:(id)sender {
+  // FIXME: make this async
   char err[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_sync(ctx, err, KOPSIK_ERR_LEN)) {
     NSLog(@"Sync error: %s", err);
