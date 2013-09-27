@@ -399,7 +399,7 @@ error Database::loadProjects(Poco::UInt64 UID, std::vector<Project *> *list) {
 
     try {
         Poco::Data::Statement select(*session);
-        select << "SELECT local_id, id, uid, name, guid, wid, color "
+        select << "SELECT local_id, id, uid, name, guid, wid, color, cid "
             "FROM projects WHERE uid = :uid "
             "ORDER BY name",
             Poco::Data::use(UID);
@@ -420,6 +420,7 @@ error Database::loadProjects(Poco::UInt64 UID, std::vector<Project *> *list) {
                 model->SetGUID(rs[4].convert<std::string>());
                 model->SetWID(rs[5].convert<Poco::UInt64>());
                 model->SetColor(rs[6].convert<std::string>());
+                model->SetCID(rs[7].convert<Poco::UInt64>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -873,8 +874,8 @@ error Database::SaveProject(Project *model) {
         if (model->LocalID()) {
             logger.debug("Updating project " + model->String());
             *session << "update projects set "
-                "id = :id, uid = :uid, name = :name, guid = :guid, wid = :wid, "
-                "color = :color "
+                "id = :id, uid = :uid, name = :name, guid = :guid,"
+                "wid = :wid, color = :color, cid = :cid "
                 "where local_id = :local_id",
                 Poco::Data::use(model->ID()),
                 Poco::Data::use(model->UID()),
@@ -882,18 +883,21 @@ error Database::SaveProject(Project *model) {
                 Poco::Data::use(model->GUID()),
                 Poco::Data::use(model->WID()),
                 Poco::Data::use(model->Color()),
+                Poco::Data::use(model->CID()),
                 Poco::Data::use(model->LocalID()),
                 Poco::Data::now;
         } else {
             logger.debug("Inserting project " + model->String());
-            *session << "insert into projects(id, uid, name, guid, wid, color) "
-                "values(:id, :uid, :name, :guid, :wid, :color)",
+            *session <<
+                "insert into projects(id, uid, name, guid, wid, color, cid) "
+                "values(:id, :uid, :name, :guid, :wid, :color, :cid)",
                 Poco::Data::use(model->ID()),
                 Poco::Data::use(model->UID()),
                 Poco::Data::use(model->Name()),
                 Poco::Data::use(model->GUID()),
                 Poco::Data::use(model->WID()),
                 Poco::Data::use(model->Color()),
+                Poco::Data::use(model->CID()),
                 Poco::Data::now;
             error err = last_error();
             if (err != noError) {
@@ -1193,7 +1197,7 @@ error Database::initialize_tables() {
         "uid integer not null, "
         "name varchar not null,"
         "constraint fk_workspaces_uid foreign key (uid) "
-        "references users(id) on delete no action on update no action"
+        "   references users(id) on delete no action on update no action"
         "); "
         "CREATE UNIQUE INDEX id_workspaces_id ON workspaces (id);");
     if (err != noError) {
@@ -1209,9 +1213,9 @@ error Database::initialize_tables() {
         "guid varchar, "
         "wid integer not null, "
         "constraint fk_clients_wid foreign key (wid) "
-        "references workpaces(id) on delete no action on update no action,"
+        "   references workpaces(id) on delete no action on update no action,"
         "constraint fk_clients_uid foreign key (uid) "
-        "references users(id) on delete no action on update no action"
+        "   references users(id) on delete no action on update no action"
         "); "
         "CREATE UNIQUE INDEX id_clients_id ON clients (id); "
         "CREATE UNIQUE INDEX id_clients_guid ON clients (guid);");
@@ -1228,10 +1232,13 @@ error Database::initialize_tables() {
         "guid varchar, "
         "color varchar, "
         "wid integer not null, "
+        "cid integer, "
         "constraint fk_projects_wid foreign key (wid) "
-        "references workpaces(id) on delete no action on update no action,"
+        "   references workpaces(id) on delete no action on update no action,"
+        "constraint fk_projects_cid foreign key (cid) "
+        "   references clients(id) on delete no action on update no action,"
         "constraint fk_projects_uid foreign key (uid) "
-        "referENCES users(id) ON DELETE NO ACTION ON UPDATE NO ACTION"
+        "   references users(id) ON DELETE NO ACTION ON UPDATE NO ACTION"
         "); "
         "CREATE UNIQUE INDEX id_projects_id ON projects (id) "
         "CREATE UNIQUE INDEX id_projects_guid ON projects (guid) ");
@@ -1248,11 +1255,11 @@ error Database::initialize_tables() {
         "wid integer not null, "
         "pid integer, "
         "constraint fk_tasks_wid foreign key (wid) "
-        "references workpaces(id) on delete no action on update no action, "
+        "   references workpaces(id) on delete no action on update no action, "
         "constraint fk_tasks_pid foreign key (pid) "
-        "references projects(id) on delete no action on update no action, "
+        "   references projects(id) on delete no action on update no action, "
         "constraint fk_tasks_uid foreign key (uid) "
-        "references users(id) on delete no action on update no action "
+        "   references users(id) on delete no action on update no action "
         "); "
         "CREATE UNIQUE INDEX id_tasks_id ON tasks (id);");
     if (err != noError) {
@@ -1268,9 +1275,9 @@ error Database::initialize_tables() {
         "wid integer not null, "
         "guid varchar, "
         "constraint fk_tags_wid foreign key (wid) "
-        "references workspaces(id) on delete no action on update no action,"
+        "   references workspaces(id) on delete no action on update no action,"
         "constraint fk_tags_uid foreign key (uid) "
-        "references users(id) on delete no action on update no action"
+        "   references users(id) on delete no action on update no action"
         "); "
         "CREATE UNIQUE INDEX id_tags_id ON tags (id); "
         "CREATE UNIQUE INDEX id_tags_guid ON tags (guid); ");
@@ -1296,13 +1303,13 @@ error Database::initialize_tables() {
         "duration integer not null,"
         "tags text,"
         "constraint fk_time_entries_wid foreign key (wid) "
-        "references workspaces(id) on delete no action on update no action, "
+        "   references workspaces(id) on delete no action on update no action, "
         "constraint fk_time_entries_pid foreign key (pid) "
-        "references projects(id) on delete no action on update no action, "
+        "   references projects(id) on delete no action on update no action, "
         "constraint fk_time_entries_tid foreign key (tid) "
-        "references tasks(id) on delete no action on update no action, "
+        "   references tasks(id) on delete no action on update no action, "
         "constraint fk_time_entries_uid foreign key (uid) "
-        "references users(id) on delete no action on update no action"
+        "   references users(id) on delete no action on update no action"
         "); "
         "CREATE UNIQUE INDEX id_time_entries_id ON time_entries (id); "
         "CREATE UNIQUE INDEX id_time_entries_guid ON time_entries (guid); ");

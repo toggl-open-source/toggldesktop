@@ -893,10 +893,9 @@ void User::loadTimeEntriesFromJSONNode(JSONNODE *list) {
             model = new TimeEntry();
             TimeEntries.push_back(model);
         }
-        // if we have newer version, don't apply updates from server.
         Poco::UInt64 ui_modified_at =
             getUIModifiedAtFromJSONNode(*current_node);
-        if (ui_modified_at <= model->UIModifiedAt()  ) {
+        if (!(model->UIModifiedAt() > ui_modified_at)) {
             model->SetUID(ID());
             model->LoadFromJSONNode(*current_node);
         }
