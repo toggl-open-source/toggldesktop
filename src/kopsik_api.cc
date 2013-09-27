@@ -15,13 +15,13 @@
 
 // Context API.
 
-TogglContext *kopsik_context_init() {
-  TogglContext *ctx = new TogglContext();
+KopsikContext *kopsik_context_init() {
+  KopsikContext *ctx = new KopsikContext();
   ctx->db_path = 0;
   return ctx;
 }
 
-void kopsik_context_clear(TogglContext *in_ctx) {
+void kopsik_context_clear(KopsikContext *in_ctx) {
   poco_assert(in_ctx);
   if (in_ctx->db_path) {
     free(in_ctx->db_path);
@@ -43,7 +43,7 @@ void kopsik_version(int *major, int *minor, int *patch) {
 }
 
 void kopsik_set_proxy(
-    TogglContext *in_ctx,
+    KopsikContext *in_ctx,
     const char *host, const unsigned int port,
     const char *username, const char *password) {
   poco_assert(in_ctx);
@@ -53,7 +53,7 @@ void kopsik_set_proxy(
   // FIXME: implement
 }
 
-void kopsik_set_db_path(TogglContext *in_ctx, const char *path) {
+void kopsik_set_db_path(KopsikContext *in_ctx, const char *path) {
   poco_assert(in_ctx);
   poco_assert(path);
   if (in_ctx->db_path) {
@@ -63,7 +63,7 @@ void kopsik_set_db_path(TogglContext *in_ctx, const char *path) {
   in_ctx->db_path = strdup(path);
 }
 
-void kopsik_set_log_path(TogglContext *in_ctx, const char *path) {
+void kopsik_set_log_path(KopsikContext *in_ctx, const char *path) {
   poco_assert(in_ctx);
   poco_assert(path);
 
@@ -84,14 +84,14 @@ void kopsik_set_log_path(TogglContext *in_ctx, const char *path) {
 
 // User API.
 
-TogglUser *kopsik_user_init() {
-  TogglUser *user = new TogglUser();
+KopsikUser *kopsik_user_init() {
+  KopsikUser *user = new KopsikUser();
   user->ID = 0;
   user->Fullname = 0;
   return user;
 }
 
-void kopsik_user_clear(TogglUser *user) {
+void kopsik_user_clear(KopsikUser *user) {
   poco_assert(user);
   if (user->Fullname) {
     free(user->Fullname);
@@ -102,9 +102,9 @@ void kopsik_user_clear(TogglUser *user) {
 }
 
 kopsik_api_result kopsik_current_user(
-    TogglContext *in_ctx,
+    KopsikContext *in_ctx,
     char *errmsg, unsigned int errlen,
-    TogglUser *out_user) {
+    KopsikUser *out_user) {
   poco_assert(in_ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
@@ -129,7 +129,7 @@ kopsik_api_result kopsik_current_user(
 }
 
 kopsik_api_result kopsik_set_api_token(
-    TogglContext *in_ctx,
+    KopsikContext *in_ctx,
     char *errmsg, unsigned int errlen,
     const char *in_api_token) {
   poco_assert(in_ctx);
@@ -152,7 +152,7 @@ kopsik_api_result kopsik_set_api_token(
 }
 
 kopsik_api_result kopsik_login(
-    TogglContext *in_ctx,
+    KopsikContext *in_ctx,
     char *errmsg, unsigned int errlen,
     const char *in_email, const char *in_password) {
   poco_assert(in_ctx);
@@ -192,7 +192,7 @@ kopsik_api_result kopsik_login(
 }
 
 kopsik_api_result kopsik_logout(
-    TogglContext *in_ctx,
+    KopsikContext *in_ctx,
     char *errmsg, unsigned int errlen) {
   poco_assert(in_ctx);
   poco_assert(errmsg);
@@ -210,8 +210,9 @@ kopsik_api_result kopsik_logout(
 // Sync
 
 kopsik_api_result kopsik_sync(
-    TogglContext *in_ctx,
-    char *errmsg, unsigned int errlen) {
+    KopsikContext *in_ctx,
+    char *errmsg, unsigned int errlen,
+    int fetch_updates_only) {
   poco_assert(in_ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
@@ -237,9 +238,9 @@ kopsik_api_result kopsik_sync(
 }
 
 kopsik_api_result kopsik_dirty_models(
-    TogglContext *in_ctx,
+    KopsikContext *in_ctx,
     char *errmsg, unsigned int errlen,
-    TogglDirtyModels *out_dirty_models) {
+    KopsikDirtyModels *out_dirty_models) {
   poco_assert(in_ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
@@ -266,8 +267,8 @@ kopsik_api_result kopsik_dirty_models(
 
 // Time entries view API
 
-TogglTimeEntryViewItem *kopsik_time_entry_view_item_init() {
-  TogglTimeEntryViewItem *item = new TogglTimeEntryViewItem();
+KopsikTimeEntryViewItem *kopsik_time_entry_view_item_init() {
+  KopsikTimeEntryViewItem *item = new KopsikTimeEntryViewItem();
   item->DurationInSeconds = 0;
   item->Description = 0;
   item->Project = 0;
@@ -276,7 +277,7 @@ TogglTimeEntryViewItem *kopsik_time_entry_view_item_init() {
   return item;
 }
 
-void kopsik_time_entry_view_item_clear(TogglTimeEntryViewItem *item) {
+void kopsik_time_entry_view_item_clear(KopsikTimeEntryViewItem *item) {
   poco_assert(item);
   if (item->Description) {
     free(item->Description);
@@ -301,7 +302,7 @@ void kopsik_time_entry_view_item_clear(TogglTimeEntryViewItem *item) {
 void kopsik_time_entry_to_toggl_time_entry_view_item_struct(
     kopsik::TimeEntry *te,
     kopsik::User *user,
-    TogglTimeEntryViewItem *view_item) {
+    KopsikTimeEntryViewItem *view_item) {
   poco_assert(te);
   poco_assert(user);
   poco_assert(view_item);
@@ -340,10 +341,10 @@ void kopsik_format_duration_in_seconds(
 }
 
 kopsik_api_result kopsik_start(
-    TogglContext *in_ctx,
+    KopsikContext *in_ctx,
     char *errmsg, unsigned int errlen,
     const char *in_description,
-    TogglTimeEntryViewItem *out_view_item) {
+    KopsikTimeEntryViewItem *out_view_item) {
   poco_assert(in_ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
@@ -376,9 +377,9 @@ kopsik_api_result kopsik_start(
 }
 
 kopsik_api_result kopsik_stop(
-    TogglContext *in_ctx,
+    KopsikContext *in_ctx,
     char *errmsg, unsigned int errlen,
-    TogglTimeEntryViewItem *out_view_item) {
+    KopsikTimeEntryViewItem *out_view_item) {
   poco_assert(in_ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
@@ -406,9 +407,9 @@ kopsik_api_result kopsik_stop(
 }
 
 kopsik_api_result kopsik_running_time_entry_view_item(
-    TogglContext *in_ctx,
+    KopsikContext *in_ctx,
     char *errmsg, unsigned int errlen,
-    TogglTimeEntryViewItem *out_item, int *out_is_tracking) {
+    KopsikTimeEntryViewItem *out_item, int *out_is_tracking) {
   poco_assert(in_ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
@@ -432,15 +433,15 @@ kopsik_api_result kopsik_running_time_entry_view_item(
   return KOPSIK_API_SUCCESS;
 }
 
-TogglTimeEntryViewItemList *kopsik_time_entry_view_item_list_init() {
-  TogglTimeEntryViewItemList *result = new TogglTimeEntryViewItemList();
+KopsikTimeEntryViewItemList *kopsik_time_entry_view_item_list_init() {
+  KopsikTimeEntryViewItemList *result = new KopsikTimeEntryViewItemList();
   result->Length = 0;
   result->ViewItems = 0;
   return result;
 }
 
 void kopsik_time_entry_view_item_list_clear(
-    TogglTimeEntryViewItemList *in_list) {
+    KopsikTimeEntryViewItemList *in_list) {
   poco_assert(in_list);
   for (unsigned int i = 0; i < in_list->Length; i++) {
     kopsik_time_entry_view_item_clear(in_list->ViewItems[i]);
@@ -454,9 +455,9 @@ void kopsik_time_entry_view_item_list_clear(
 }
 
 kopsik_api_result kopsik_time_entry_view_items(
-    TogglContext *in_ctx,
+    KopsikContext *in_ctx,
     char *errmsg, unsigned int errlen,
-    TogglTimeEntryViewItemList *out_list) {
+    KopsikTimeEntryViewItemList *out_list) {
   poco_assert(in_ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
@@ -489,15 +490,15 @@ kopsik_api_result kopsik_time_entry_view_items(
 
   out_list->Length = 0;
 
-  TogglTimeEntryViewItem *tmp = kopsik_time_entry_view_item_init();
+  KopsikTimeEntryViewItem *tmp = kopsik_time_entry_view_item_init();
   void *m = malloc(stopped.size() * sizeof(tmp));
   kopsik_time_entry_view_item_clear(tmp);
   poco_assert(m);
   out_list->ViewItems =
-    reinterpret_cast<TogglTimeEntryViewItem **>(m);
+    reinterpret_cast<KopsikTimeEntryViewItem **>(m);
   for (unsigned int i = 0; i < stopped.size(); i++) {
     kopsik::TimeEntry *te = stopped[i];
-    TogglTimeEntryViewItem *view_item = kopsik_time_entry_view_item_init();
+    KopsikTimeEntryViewItem *view_item = kopsik_time_entry_view_item_init();
     kopsik_time_entry_to_toggl_time_entry_view_item_struct(
       te, &user, view_item);
     out_list->ViewItems[i] = view_item;
@@ -509,7 +510,7 @@ kopsik_api_result kopsik_time_entry_view_items(
 // Websocket client
 
 kopsik_api_result kopsik_listen(
-    TogglContext *in_ctx,
+    KopsikContext *in_ctx,
     char *errmsg, unsigned int errlen) {
   poco_assert(in_ctx);
   poco_assert(errmsg);

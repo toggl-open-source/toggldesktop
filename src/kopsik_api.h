@@ -23,67 +23,68 @@ typedef int kopsik_api_result;
 
 typedef struct {
   char *db_path;
-} TogglContext;
+} KopsikContext;
 
-KOPSIK_EXPORT TogglContext *kopsik_context_init();
+KOPSIK_EXPORT KopsikContext *kopsik_context_init();
 
-KOPSIK_EXPORT void kopsik_context_clear(TogglContext *in_ctx);
+KOPSIK_EXPORT void kopsik_context_clear(KopsikContext *in_ctx);
 
 // Configuration API
 
 KOPSIK_EXPORT void kopsik_version(
   int *major, int *minor, int *patch);
 
-KOPSIK_EXPORT void kopsik_set_proxy(TogglContext *in_ctx,
+KOPSIK_EXPORT void kopsik_set_proxy(KopsikContext *in_ctx,
   const char *host, const unsigned int port,
   const char *username, const char *password);
 
-KOPSIK_EXPORT void kopsik_set_db_path(TogglContext *in_ctx,
+KOPSIK_EXPORT void kopsik_set_db_path(KopsikContext *in_ctx,
   const char *in_path);
 
-KOPSIK_EXPORT void kopsik_set_log_path(TogglContext *in_ctx, const char *path);
+KOPSIK_EXPORT void kopsik_set_log_path(KopsikContext *in_ctx, const char *path);
 
 // User API
 
 typedef struct {
     unsigned int ID;
     char *Fullname;
-} TogglUser;
+} KopsikUser;
 
-KOPSIK_EXPORT TogglUser *kopsik_user_init();
+KOPSIK_EXPORT KopsikUser *kopsik_user_init();
 
-KOPSIK_EXPORT void kopsik_user_clear(TogglUser *user);
+KOPSIK_EXPORT void kopsik_user_clear(KopsikUser *user);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_current_user(
-  TogglContext *in_ctx,
-  char *errmsg, unsigned int errlen, TogglUser *out_user);
+  KopsikContext *in_ctx,
+  char *errmsg, unsigned int errlen, KopsikUser *out_user);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_set_api_token(
-  TogglContext *in_ctx,
+  KopsikContext *in_ctx,
   char *errmsg, unsigned int errlen, const char *in_api_token);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_login(
-  TogglContext *in_ctx,
+  KopsikContext *in_ctx,
   char *errmsg, unsigned int errlen,
   const char *in_email, const char *in_password);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_logout(
-  TogglContext *in_ctx,
+  KopsikContext *in_ctx,
   char *errmsg, unsigned int errlen);
 
 // Sync
 
 typedef struct {
-    int TimeEntries;
-} TogglDirtyModels;
+  int TimeEntries;
+} KopsikDirtyModels;
 
 KOPSIK_EXPORT kopsik_api_result kopsik_sync(
-  TogglContext *in_ctx,
-  char *errmsg, unsigned int errlen);
+  KopsikContext *in_ctx,
+  char *errmsg, unsigned int errlen,
+  int fetch_updates_only);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_dirty_models(
-  TogglContext *in_ctx,
-  char *errmsg, unsigned int errlen, TogglDirtyModels *out_dirty_models);
+  KopsikContext *in_ctx,
+  char *errmsg, unsigned int errlen, KopsikDirtyModels *out_dirty_models);
 
 // Time entries view
 
@@ -93,53 +94,53 @@ typedef struct {
   char *Project;
   char *Duration;
   char *Color;
-} TogglTimeEntryViewItem;
+} KopsikTimeEntryViewItem;
 
 typedef struct {
-  TogglTimeEntryViewItem **ViewItems;
+  KopsikTimeEntryViewItem **ViewItems;
   unsigned int Length;
-} TogglTimeEntryViewItemList;
+} KopsikTimeEntryViewItemList;
 
-KOPSIK_EXPORT TogglTimeEntryViewItem *
+KOPSIK_EXPORT KopsikTimeEntryViewItem *
   kopsik_time_entry_view_item_init();
 
 KOPSIK_EXPORT void kopsik_time_entry_view_item_clear(
-  TogglTimeEntryViewItem *in_item);
+  KopsikTimeEntryViewItem *in_item);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_running_time_entry_view_item(
-  TogglContext *in_ctx,
+  KopsikContext *in_ctx,
   char *errmsg, unsigned int errlen,
-  TogglTimeEntryViewItem *out_item, int *out_is_tracking);
+  KopsikTimeEntryViewItem *out_item, int *out_is_tracking);
 
 KOPSIK_EXPORT void kopsik_format_duration_in_seconds(
   int duration_in_seconds, char *out_str, unsigned int max_strlen);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_start(
-  TogglContext *in_ctx,
+  KopsikContext *in_ctx,
   char *errmsg, unsigned int errlen,
   const char *in_description,
-  TogglTimeEntryViewItem *out_view_item);
+  KopsikTimeEntryViewItem *out_view_item);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_stop(
-  TogglContext *in_ctx,
+  KopsikContext *in_ctx,
   char *errmsg, unsigned int errlen,
-  TogglTimeEntryViewItem *out_view_item);
+  KopsikTimeEntryViewItem *out_view_item);
 
-KOPSIK_EXPORT TogglTimeEntryViewItemList *
+KOPSIK_EXPORT KopsikTimeEntryViewItemList *
   kopsik_time_entry_view_item_list_init();
 
 KOPSIK_EXPORT void kopsik_time_entry_view_item_list_clear(
-  TogglTimeEntryViewItemList *in_list);
+  KopsikTimeEntryViewItemList *in_list);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_time_entry_view_items(
-  TogglContext *in_ctx,
+  KopsikContext *in_ctx,
   char *errmsg, unsigned int errlen,
-  TogglTimeEntryViewItemList *out_list);
+  KopsikTimeEntryViewItemList *out_list);
 
 // Websocket client
 
 KOPSIK_EXPORT kopsik_api_result kopsik_listen(
-  TogglContext *in_ctx,
+  KopsikContext *in_ctx,
   char *errmsg, unsigned int errlen);
 
 #undef KOPSIK_EXPORT

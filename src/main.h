@@ -35,7 +35,7 @@ namespace command_line_client {
 
     private:
         void usage();
-        TogglContext *ctx_;
+        KopsikContext *ctx_;
     };
 
 }  // namespace command_line_client

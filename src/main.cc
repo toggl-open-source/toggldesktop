@@ -43,7 +43,7 @@ namespace command_line_client {
         }
 
         if ("sync" == args[0]) {
-            if (KOPSIK_API_FAILURE == kopsik_sync(ctx_, err, ERRLEN)) {
+            if (KOPSIK_API_FAILURE == kopsik_sync(ctx_, err, ERRLEN, 1)) {
                 std::cerr << err << std::endl;
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
@@ -52,7 +52,7 @@ namespace command_line_client {
         }
 
         if ("status" == args[0]) {
-            TogglTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
+            KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
             int found(0);
             if (KOPSIK_API_FAILURE == kopsik_running_time_entry_view_item(
                     ctx_, err, ERRLEN, te, &found)) {
@@ -70,7 +70,7 @@ namespace command_line_client {
         }
 
         if ("dirty" == args[0]) {
-            TogglDirtyModels dm;
+            KopsikDirtyModels dm;
             if (KOPSIK_API_FAILURE == kopsik_dirty_models(
                     ctx_, err, ERRLEN, &dm)) {
                 std::cerr << err << std::endl;
@@ -81,14 +81,14 @@ namespace command_line_client {
         }
 
         if ("start" == args[0]) {
-            TogglTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
+            KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
             if (KOPSIK_API_FAILURE == kopsik_start(
                     ctx_, err, ERRLEN, "New time entry", te)) {
                 std::cerr << err << std::endl;
                 kopsik_time_entry_view_item_clear(te);
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
-            if (KOPSIK_API_FAILURE == kopsik_sync(ctx_, err, ERRLEN)) {
+            if (KOPSIK_API_FAILURE == kopsik_sync(ctx_, err, ERRLEN, 0)) {
                 std::cerr << err << std::endl;
             }
             if (te->Description) {
@@ -101,14 +101,14 @@ namespace command_line_client {
         }
 
         if ("stop" == args[0]) {
-            TogglTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
+            KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
             if (KOPSIK_API_FAILURE == kopsik_stop(
                     ctx_, err, ERRLEN, te)) {
                 std::cerr << err << std::endl;
                 kopsik_time_entry_view_item_clear(te);
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
-            if (KOPSIK_API_FAILURE == kopsik_sync(ctx_, err, ERRLEN)) {
+            if (KOPSIK_API_FAILURE == kopsik_sync(ctx_, err, ERRLEN, 0)) {
                 std::cerr << err << std::endl;
             }
             if (te->Description) {
@@ -121,7 +121,7 @@ namespace command_line_client {
         }
 
         if ("list" == args[0]) {
-            TogglTimeEntryViewItemList *list =
+            KopsikTimeEntryViewItemList *list =
                 kopsik_time_entry_view_item_list_init();
             if (KOPSIK_API_FAILURE == kopsik_time_entry_view_items(
                     ctx_, err, ERRLEN, list)) {
@@ -130,7 +130,7 @@ namespace command_line_client {
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
             for (unsigned int i = 0; i < list->Length; i++) {
-                TogglTimeEntryViewItem *item = list->ViewItems[i];
+                KopsikTimeEntryViewItem *item = list->ViewItems[i];
                 std::cout << "description: " << item->Description
                     << " project: " << item->Project
                     << " duration: " << item->Duration
