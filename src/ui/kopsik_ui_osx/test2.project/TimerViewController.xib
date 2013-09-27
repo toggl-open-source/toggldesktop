@@ -20,14 +20,14 @@
             <rect key="frame" x="0.0" y="0.0" width="271" height="69"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="n2B-Hq-XId">
+                <box autoresizesSubviews="NO" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="n2B-Hq-XId">
                     <rect key="frame" x="3" y="3" width="265" height="62"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView">
                         <rect key="frame" x="2" y="2" width="261" height="58"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YXM-R7-dLG">
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YXM-R7-dLG">
                                 <rect key="frame" x="9" y="27" width="51" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
@@ -39,7 +39,7 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HQf-TD-Aml">
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HQf-TD-Aml">
                                 <rect key="frame" x="136" y="18" width="86" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
@@ -51,7 +51,7 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <button verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dn7-uI-YOj">
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Dn7-uI-YOj">
                                 <rect key="frame" x="220" y="15" width="32" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
@@ -88,6 +88,12 @@
                     <color key="fillColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
             </subviews>
+            <constraints>
+                <constraint firstItem="n2B-Hq-XId" firstAttribute="top" secondItem="ZCm-7Z-S1x" secondAttribute="top" constant="6" id="AIy-Ug-dkU"/>
+                <constraint firstItem="n2B-Hq-XId" firstAttribute="centerX" secondItem="ZCm-7Z-S1x" secondAttribute="centerX" id="Agj-aJ-Zy6"/>
+                <constraint firstItem="n2B-Hq-XId" firstAttribute="leading" secondItem="ZCm-7Z-S1x" secondAttribute="leading" constant="6" id="IPK-0Y-I7C"/>
+                <constraint firstAttribute="bottom" secondItem="n2B-Hq-XId" secondAttribute="bottom" constant="7" id="YvN-eL-sJw"/>
+            </constraints>
         </customView>
     </objects>
     <resources>
