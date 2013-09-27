@@ -305,7 +305,7 @@ void kopsik_time_entry_to_toggl_time_entry_view_item_struct(
   poco_assert(te);
   poco_assert(user);
   poco_assert(view_item);
-  view_item->DurationInSeconds = te->DurationInSeconds();
+  view_item->DurationInSeconds = static_cast<int>(te->DurationInSeconds());
   if (view_item->Description) {
     free(view_item->Description);
     view_item->Description = 0;
@@ -328,6 +328,15 @@ void kopsik_time_entry_to_toggl_time_entry_view_item_struct(
     }
   }
   view_item->Duration = strdup(te->DurationString().c_str());
+}
+
+void kopsik_format_duration_in_seconds(
+    int duration_in_seconds, char *out_str, unsigned int max_strlen) {
+  poco_assert(out_str);
+  poco_assert(max_strlen);
+  std::string formatted =
+    kopsik::Formatter::FormatDurationInSeconds(duration_in_seconds);
+  strncpy(out_str, formatted.c_str(), max_strlen);
 }
 
 kopsik_api_result kopsik_start(

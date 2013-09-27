@@ -1192,20 +1192,7 @@ void TimeEntry::SetStartString(std::string value) {
 
 // FIXME: add tests for this
 std::string TimeEntry::DurationString() {
-    Poco::Int64 duration = duration_in_seconds_;
-    if (duration < 0) {
-        duration = time(0) + duration;
-    }
-    Poco::Timespan span(duration * Poco::Timespan::SECONDS);
-    if (span.totalHours() > 0) {
-        return Poco::DateTimeFormatter::format(span, "%H:%M:%S");
-    }
-    if (span.totalMinutes() > 0) {
-        return Poco::DateTimeFormatter::format(span, "%M:%S min");
-    }
-    std::ostringstream out;
-    out << span.totalSeconds() << " sec";
-    return out.str();
+    return Formatter::FormatDurationInSeconds(duration_in_seconds_);
 }
 
 void TimeEntry::SetDurationString(std::string value) {
@@ -1391,6 +1378,22 @@ error TimeEntry::loadTagsFromJSONNode(JSONNODE *list) {
         ++current_node;
     }
     return noError;
+}
+
+std::string Formatter::FormatDurationInSeconds(Poco::Int64 value) {
+    if (value < 0) {
+        value = time(0) + value;
+    }
+    Poco::Timespan span(value * Poco::Timespan::SECONDS);
+    if (span.totalHours() > 0) {
+        return Poco::DateTimeFormatter::format(span, "%H:%M:%S");
+    }
+    if (span.totalMinutes() > 0) {
+        return Poco::DateTimeFormatter::format(span, "%M:%S min");
+    }
+    std::ostringstream out;
+    out << span.totalSeconds() << " sec";
+    return out.str();
 }
 
 }   // namespace kopsik

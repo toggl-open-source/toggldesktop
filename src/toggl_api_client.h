@@ -38,6 +38,11 @@ namespace kopsik {
         void parseResponseJSONBody(std::string body);
     };
 
+    class Formatter {
+    public:
+        static std::string FormatDurationInSeconds(Poco::Int64 value);
+    };
+
     // FIXME: implement base class with common fields, dirtyness etc
 
     class Workspace {

@@ -111,6 +111,9 @@ KOPSIK_EXPORT kopsik_api_result kopsik_running_time_entry_view_item(
   char *errmsg, unsigned int errlen,
   TogglTimeEntryViewItem *out_item, int *out_is_tracking);
 
+KOPSIK_EXPORT void kopsik_format_duration_in_seconds(
+  int duration_in_seconds, char *out_str, unsigned int max_strlen);
+
 KOPSIK_EXPORT kopsik_api_result kopsik_start(
   TogglContext *in_ctx,
   char *errmsg, unsigned int errlen,
