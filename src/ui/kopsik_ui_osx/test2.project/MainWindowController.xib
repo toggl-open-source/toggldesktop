@@ -20,7 +20,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="258" height="427"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
             <view key="contentView" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="258" height="427"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -46,15 +46,21 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="23" id="xqF-hw-sWO"/>
                                 </constraints>
-                                <popUpButtonCell key="cell" type="smallSquare" bezelStyle="smallSquare" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" pullsDown="YES" selectedItem="mg3-0M-DhN" id="gva-sJ-eF9">
+                                <popUpButtonCell key="cell" type="smallSquare" bezelStyle="smallSquare" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" pullsDown="YES" id="gva-sJ-eF9">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
                                     <menu key="menu" title="OtherViews" id="x4W-b1-8Mt">
                                         <items>
                                             <menuItem state="on" image="NSActionTemplate" hidden="YES" id="Wau-D8-ZNm"/>
-                                            <menuItem title="Logout" id="mg3-0M-DhN">
+                                            <menuItem title="Sync" id="mg3-0M-DhN">
                                                 <connections>
-                                                    <action selector="logout:" target="-2" id="qdH-Os-M51"/>
+                                                    <action selector="sync:" target="-2" id="e7M-RY-kKh"/>
+                                                </connections>
+                                            </menuItem>
+                                            <menuItem isSeparatorItem="YES" id="VQH-8y-NbG"/>
+                                            <menuItem title="Logout" id="Giz-0M-7IX">
+                                                <connections>
+                                                    <action selector="logout:" target="-2" id="9um-r5-C92"/>
                                                 </connections>
                                             </menuItem>
                                         </items>

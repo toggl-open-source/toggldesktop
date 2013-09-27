@@ -11,6 +11,7 @@
 
 @interface MainWindowController : NSWindowController
 - (IBAction)logout:(id)sender;
+- (IBAction)sync:(id)sender;
 @property (weak) IBOutlet NSView *headerView;
 @property (weak) IBOutlet NSView *contentView;
 @property (weak) IBOutlet NSView *footerView;

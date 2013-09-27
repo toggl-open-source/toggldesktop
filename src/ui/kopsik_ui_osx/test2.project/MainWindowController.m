@@ -149,4 +149,12 @@
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedOut object:nil];
 }
 
+- (IBAction)sync:(id)sender {
+  char err[KOPSIK_ERR_LEN];
+  if (KOPSIK_API_SUCCESS != kopsik_sync(ctx, err, KOPSIK_ERR_LEN)) {
+    NSLog(@"Sync error: %s", err);
+    return;
+  }
+}
+
 @end
