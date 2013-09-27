@@ -17,6 +17,7 @@
 #include "Poco/DateTime.h"
 #include "Poco/DateTimeFormatter.h"
 #include "Poco/DateTimeFormat.h"
+#include "Poco/Timespan.h"
 #include "Poco/NumberParser.h"
 #include "Poco/Net/Context.h"
 #include "Poco/Net/NameValueCollection.h"
@@ -1217,9 +1218,18 @@ void TimeEntry::SetStartString(std::string value) {
     SetStart(Parse8601(value));
 }
 
+// FIXME: add tests for this
 std::string TimeEntry::DurationString() {
-    // FIXME: format duration in seconds into duration string
-    return "23:32min";
+    std::ostringstream out;
+    Poco::Timespan span(duration_in_seconds_ * Poco::Timespan::SECONDS);
+    if (span.totalHours() > 0) {
+        out << span.hours() << ":" << span.minutes() << ":" << span.seconds();
+    } else if (span.totalMinutes() > 0) {
+        out << span.minutes() << ":" << span.seconds() << " min";
+    } else {
+        out << span.totalSeconds() << " sec";
+    }
+    return out.str();
 }
 
 void TimeEntry::SetDurationString(std::string value) {
