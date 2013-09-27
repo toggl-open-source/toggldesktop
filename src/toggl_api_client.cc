@@ -1221,7 +1221,11 @@ void TimeEntry::SetStartString(std::string value) {
 // FIXME: add tests for this
 std::string TimeEntry::DurationString() {
     std::ostringstream out;
-    Poco::Timespan span(duration_in_seconds_ * Poco::Timespan::SECONDS);
+    Poco::Int64 duration = duration_in_seconds_;
+    if (duration < 0) {
+        duration = time(0) + duration;
+    }
+    Poco::Timespan span(duration * Poco::Timespan::SECONDS);
     if (span.totalHours() > 0) {
         out << span.hours() << ":" << span.minutes() << ":" << span.seconds();
     } else if (span.totalMinutes() > 0) {
