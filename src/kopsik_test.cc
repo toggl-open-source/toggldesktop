@@ -56,6 +56,59 @@ namespace kopsik {
         ASSERT_EQ("", api_token_from_db);
     }
 
+    TEST(KopsikTest, UpdatesTimeEntryFromJSON) {
+        Poco::File f(TESTDB);
+        if (f.exists()) {
+            f.remove(false);
+        }
+        Database db(TESTDB);
+
+        Poco::FileStream fis("testdata/me.json", std::ios::binary);
+        std::stringstream ss;
+        ss << fis.rdbuf();
+        fis.close();
+
+        User user;
+        user.LoadFromJSONString(ss.str(), true);
+
+        TimeEntry *te = user.GetTimeEntryByID(89818605);
+        ASSERT_TRUE(te);
+
+        std::string json = "{\"id\":89818605,\"description\":\"Changed\"}";
+        te->LoadFromJSONString(json);
+        ASSERT_EQ("Changed", te->Description());
+    }
+
+    TEST(KopsikTest, UpdatesTimeEntryFromFullUserJSON) {
+        Poco::File f(TESTDB);
+        if (f.exists()) {
+            f.remove(false);
+        }
+        Database db(TESTDB);
+
+        Poco::FileStream fis("testdata/me.json", std::ios::binary);
+        std::stringstream ss;
+        ss << fis.rdbuf();
+        fis.close();
+
+        User user;
+        user.LoadFromJSONString(ss.str(), true);
+
+        TimeEntry *te = user.GetTimeEntryByID(89818605);
+        ASSERT_TRUE(te);
+
+        std::string json = ss.str();
+        size_t n = json.find("Important things");
+        ASSERT_TRUE(n);
+        json = json.replace(n,
+            std::string("Important things").length(), "Even more important!");
+
+        user.LoadFromJSONString(json, true);
+        te = user.GetTimeEntryByID(89818605);
+        ASSERT_TRUE(te);
+        ASSERT_EQ("Even more important!", te->Description());
+    }
+
     TEST(KopsikTest, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
         Poco::File f(TESTDB);
         if (f.exists()) {
@@ -69,7 +122,7 @@ namespace kopsik {
         fis.close();
 
         User user;
-        ASSERT_EQ(noError, user.LoadFromJSONString(ss.str(), true));
+        user.LoadFromJSONString(ss.str(), true);
 
         Poco::UInt64 n;
         ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
@@ -117,7 +170,7 @@ namespace kopsik {
         std::string json = ss.str();
 
         User user1;
-        ASSERT_EQ(noError, user1.LoadFromJSONString(json, true));
+        user1.LoadFromJSONString(json, true);
 
         ASSERT_EQ(noError, db.SaveUser(&user1, true));
 
@@ -153,7 +206,7 @@ namespace kopsik {
         ASSERT_EQ(user1.Tags.size(), user2.Tags.size());
         ASSERT_EQ(user1.TimeEntries.size(), user2.TimeEntries.size());
 
-        ASSERT_EQ(noError, user2.LoadFromJSONString(json, true));
+        user2.LoadFromJSONString(json, true);
 
         ASSERT_EQ(noError, db.SaveUser(&user2, true));
 
@@ -186,7 +239,7 @@ namespace kopsik {
         ss << fis.rdbuf();
         fis.close();
         User user;
-        ASSERT_EQ(noError, user.LoadFromJSONString(ss.str(), true));
+        user.LoadFromJSONString(ss.str(), true);
 
         Poco::File f(TESTDB);
         if (f.exists()) {
@@ -255,7 +308,7 @@ namespace kopsik {
         ASSERT_FALSE(json.empty());
 
         User user;
-        ASSERT_EQ(noError, user.LoadFromJSONString(json, true));
+        user.LoadFromJSONString(json, true);
         ASSERT_EQ(Poco::UInt64(1379068550), user.Since());
         ASSERT_EQ(Poco::UInt64(1047), user.ID());
         ASSERT_EQ(Poco::UInt64(123456788), user.DefaultWID());

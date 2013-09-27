@@ -44,7 +44,7 @@ namespace kopsik {
     public:
         Workspace() : local_id_(0), id_(0), name_(""), uid_(0), dirty_(false) {}
 
-        error LoadFromJSONNode(JSONNODE *node);
+        void LoadFromJSONNode(JSONNODE *node);
         std::string String();
 
         Poco::Int64 LocalID() { return local_id_; }
@@ -86,7 +86,7 @@ namespace kopsik {
         bool Dirty() { return dirty_; }
         void ClearDirty() { dirty_ = false; }
 
-        error LoadFromJSONNode(JSONNODE *node);
+        void LoadFromJSONNode(JSONNODE *node);
         std::string String();
 
     private:
@@ -124,7 +124,7 @@ namespace kopsik {
         void SetColor(std::string value);
         std::string ColorCode();
 
-        error LoadFromJSONNode(JSONNODE *node);
+        void LoadFromJSONNode(JSONNODE *node);
         std::string String();
 
         static std::vector<std::string> color_codes;
@@ -161,7 +161,7 @@ namespace kopsik {
         bool Dirty() { return dirty_; }
         void ClearDirty() { dirty_ = false; }
 
-        error LoadFromJSONNode(JSONNODE *node);
+        void LoadFromJSONNode(JSONNODE *node);
         std::string String();
 
     private:
@@ -194,7 +194,7 @@ namespace kopsik {
         bool Dirty() { return dirty_; }
         void ClearDirty() { dirty_ = false; }
 
-        error LoadFromJSONNode(JSONNODE *node);
+        void LoadFromJSONNode(JSONNODE *node);
         std::string String();
 
     private:
@@ -255,8 +255,8 @@ namespace kopsik {
 
         std::vector<std::string> TagNames;
 
-        error LoadFromJSONNode(JSONNODE *node);
-        error LoadFromJSONString(std::string json);
+        void LoadFromJSONNode(JSONNODE *node);
+        void LoadFromJSONString(std::string json);
 
         std::string String();
         JSONNODE *JSON();
@@ -304,9 +304,9 @@ namespace kopsik {
 
         error Sync();
         error Login(const std::string &email, const std::string &password);
-        error LoadFromJSONString(const std::string &json,
+        void LoadFromJSONString(const std::string &json,
             bool with_related_data);
-        error LoadFromJSONNode(JSONNODE *node, bool with_related_data);
+        void LoadDataFromJSONNode(JSONNODE *node, bool with_related_data);
         std::string String();
         error Listen();
 
@@ -372,12 +372,15 @@ namespace kopsik {
         error pull(bool authenticate_with_api_token);
         error push();
 
-        error loadProjectsFromJSONNode(JSONNODE *list);
-        error loadTagsFromJSONNode(JSONNODE *list);
-        error loadClientsFromJSONNode(JSONNODE *list);
-        error loadTasksFromJSONNode(JSONNODE *list);
-        error loadTimeEntriesFromJSONNode(JSONNODE *list);
-        error loadWorkspacesFromJSONNode(JSONNODE *list);
+        void loadProjectsFromJSONNode(JSONNODE *list);
+        void loadTagsFromJSONNode(JSONNODE *list);
+        void loadClientsFromJSONNode(JSONNODE *list);
+        void loadTasksFromJSONNode(JSONNODE *list);
+        void loadTimeEntriesFromJSONNode(JSONNODE *list);
+        void loadWorkspacesFromJSONNode(JSONNODE *list);
+
+        Poco::UInt64 getIDFromJSONNode(JSONNODE *list);
+        Poco::UInt64 getUIModifiedAtFromJSONNode(JSONNODE *data);
 
         error requestJSON(std::string method, std::string relative_url,
                 std::string json,
