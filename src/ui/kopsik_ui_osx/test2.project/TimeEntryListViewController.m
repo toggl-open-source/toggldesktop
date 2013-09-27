@@ -69,7 +69,9 @@
     }
     cellView.colorTextField.backgroundColor = [self hexCodeToNSColor:item.color];
     cellView.descriptionTextField.stringValue = item.description;
-    cellView.projectTextField.stringValue = item.project;
+    if (item.project) {
+      cellView.projectTextField.stringValue = item.project;
+    }
     cellView.durationTextField.stringValue = item.duration;
     return cellView;
 }
