@@ -268,6 +268,7 @@ kopsik_api_result kopsik_dirty_models(
 
 TogglTimeEntryViewItem *kopsik_time_entry_view_item_init() {
   TogglTimeEntryViewItem *item = new TogglTimeEntryViewItem();
+  item->DurationInSeconds = 0;
   item->Description = 0;
   item->Project = 0;
   item->Duration = 0;
@@ -304,6 +305,7 @@ void kopsik_time_entry_to_toggl_time_entry_view_item_struct(
   poco_assert(te);
   poco_assert(user);
   poco_assert(view_item);
+  view_item->DurationInSeconds = te->DurationInSeconds();
   if (view_item->Description) {
     free(view_item->Description);
     view_item->Description = 0;

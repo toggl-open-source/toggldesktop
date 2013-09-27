@@ -88,6 +88,7 @@ KOPSIK_EXPORT kopsik_api_result kopsik_dirty_models(
 // Time entries view
 
 typedef struct {
+  int DurationInSeconds;
   char *Description;
   char *Project;
   char *Duration;
