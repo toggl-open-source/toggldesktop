@@ -109,7 +109,6 @@
     [self.footerView setHidden:YES];
     [self.headerView setHidden:YES];
     [self.timerViewController.view removeFromSuperview];
-    [self.timerEditViewController.view removeFromSuperview];
 
   } else if ([notification.name isEqualToString:kUIEventTimerRunning]) {
     [self.headerView addSubview:self.timerViewController.view];
@@ -119,6 +118,7 @@
     
   } else if ([notification.name isEqualToString:kUIEventTimerStopped]) {
     [self.timerViewController.view removeFromSuperview];
+
     [self.headerView addSubview:self.timerEditViewController.view];
     [self.timerEditViewController.view setFrame:self.headerView.bounds];
   }
