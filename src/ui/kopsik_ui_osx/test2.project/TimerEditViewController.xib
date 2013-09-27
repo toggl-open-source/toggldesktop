@@ -35,6 +35,9 @@
                                 <buttonCell key="cell" type="smallSquare" title="Start" bezelStyle="smallSquare" image="NSGoRightTemplate" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tyq-wF-VJv">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" size="10" name="LucidaGrande"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
                                 </buttonCell>
                                 <connections>
                                     <action selector="startButtonClicked:" target="-2" id="HQW-xO-X1l"/>
