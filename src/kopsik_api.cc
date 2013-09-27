@@ -456,20 +456,29 @@ kopsik_api_result kopsik_time_entry_view_items(
 
   user.SortTimeEntriesByStart();
 
-  if (user.TimeEntries.empty()) {
+  std::vector<kopsik::TimeEntry *>stopped;
+  for (std::vector<kopsik::TimeEntry *>::const_iterator it =
+      user.TimeEntries.begin(); it != user.TimeEntries.end(); it++) {
+    kopsik::TimeEntry *te = *it;
+    if (te->DurationInSeconds() >= 0) {
+      stopped.push_back(te);
+    }
+  }
+
+  if (stopped.empty()) {
     return KOPSIK_API_SUCCESS;
   }
 
   out_list->Length = 0;
 
   TogglTimeEntryViewItem *tmp = kopsik_time_entry_view_item_init();
-  void *m = malloc(user.TimeEntries.size() * sizeof(tmp));
+  void *m = malloc(stopped.size() * sizeof(tmp));
   kopsik_time_entry_view_item_clear(tmp);
   poco_assert(m);
   out_list->ViewItems =
     reinterpret_cast<TogglTimeEntryViewItem **>(m);
-  for (unsigned int i = 0; i < user.TimeEntries.size(); i++) {
-    kopsik::TimeEntry *te = user.TimeEntries[i];
+  for (unsigned int i = 0; i < stopped.size(); i++) {
+    kopsik::TimeEntry *te = stopped[i];
     TogglTimeEntryViewItem *view_item = kopsik_time_entry_view_item_init();
     kopsik_time_entry_to_toggl_time_entry_view_item_struct(
       te, &user, view_item);
