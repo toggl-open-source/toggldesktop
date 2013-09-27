@@ -7,6 +7,8 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimerEditViewController">
             <connections>
+                <outlet property="descriptionTextField" destination="Y8j-ZI-jWO" id="YDT-fC-JLf"/>
+                <outlet property="startButton" destination="ulR-eB-96b" id="8oR-P1-EXW"/>
                 <outlet property="view" destination="M2u-7B-WCs" id="bD3-yq-26j"/>
             </connections>
         </customObject>
