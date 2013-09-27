@@ -55,6 +55,8 @@
                                         initWithNibName:@"TimeEntryListViewController" bundle:nil];
     self.timerViewController = [[TimerViewController alloc]
                                 initWithNibName:@"TimerViewController" bundle:nil];
+    self.timerEditViewController = [[TimerEditViewController alloc]
+                                      initWithNibName:@"TimerEditViewController" bundle:nil];
   }
   return self;
 }
