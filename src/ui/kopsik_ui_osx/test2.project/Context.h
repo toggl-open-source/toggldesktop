@@ -9,4 +9,4 @@
 #import <Foundation/Foundation.h>
 #import "kopsik_api.h"
 
-extern TogglContext *ctx;
+extern KopsikContext *ctx;

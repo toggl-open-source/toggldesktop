@@ -11,7 +11,7 @@
 
 @implementation TimeEntryViewItem
 
-- (void)load:(TogglTimeEntryViewItem *)data {
+- (void)load:(KopsikTimeEntryViewItem *)data {
   self.duration_in_seconds = data->DurationInSeconds;
   self.description = [NSString stringWithUTF8String:data->Description];
   if (data->Project) {

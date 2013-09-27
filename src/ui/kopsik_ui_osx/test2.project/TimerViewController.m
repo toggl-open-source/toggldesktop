@@ -73,7 +73,7 @@
 - (IBAction)stopButtonClicked:(id)sender
 {
   char err[KOPSIK_ERR_LEN];
-  TogglTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
+  KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
   if (KOPSIK_API_SUCCESS != kopsik_stop(ctx, err, KOPSIK_ERR_LEN, item)) {
     NSLog(@"Error stopping time entry: %s", err);
   } else {
@@ -81,7 +81,7 @@
     [te load:item];
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerStopped object:te];
     // FIXME: make this async
-    if (KOPSIK_API_SUCCESS != kopsik_sync(ctx, err, KOPSIK_ERR_LEN)) {
+    if (KOPSIK_API_SUCCESS != kopsik_sync(ctx, err, KOPSIK_ERR_LEN, 0)) {
       NSLog(@"Sync error: %s", err);
     }
   }

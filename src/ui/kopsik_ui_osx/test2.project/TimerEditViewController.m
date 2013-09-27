@@ -35,7 +35,7 @@
     return;
   }
   char err[KOPSIK_ERR_LEN];
-  TogglTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
+  KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
   if (KOPSIK_API_SUCCESS != kopsik_start(ctx, err, KOPSIK_ERR_LEN, [description UTF8String], item)) {
     NSLog(@"Error starting time entry: %s", err);
   } else {
@@ -43,7 +43,7 @@
     [te load:item];
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerRunning object:te];
     // FIXME: make this async
-    if (KOPSIK_API_SUCCESS != kopsik_sync(ctx, err, KOPSIK_ERR_LEN)) {
+    if (KOPSIK_API_SUCCESS != kopsik_sync(ctx, err, KOPSIK_ERR_LEN, 0)) {
       NSLog(@"Sync error: %s", err);
     }
   }

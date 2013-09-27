@@ -8,5 +8,5 @@
 
 #import "Context.h"
 
-TogglContext *ctx;
+KopsikContext *ctx;
 

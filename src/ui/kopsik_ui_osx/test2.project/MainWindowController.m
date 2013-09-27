@@ -71,7 +71,7 @@
   [super windowDidLoad];
     
   char err[KOPSIK_ERR_LEN];
-  TogglUser *user = kopsik_user_init();
+  KopsikUser *user = kopsik_user_init();
   if (KOPSIK_API_SUCCESS != kopsik_current_user(ctx, err, KOPSIK_ERR_LEN, user)) {
     NSLog(@"Error fetching user: %s", err);
   } else if (!user->ID) {
@@ -136,12 +136,12 @@
 - (IBAction)sync:(id)sender {
   char err[KOPSIK_ERR_LEN];
   // FIXME: make this async
-  if (KOPSIK_API_SUCCESS != kopsik_sync(ctx, err, KOPSIK_ERR_LEN)) {
+  if (KOPSIK_API_SUCCESS != kopsik_sync(ctx, err, KOPSIK_ERR_LEN, 1)) {
     NSLog(@"Sync error: %s", err);
   }
   
   // Get running time entry
-  TogglTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
+  KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
   int is_tracking = 0;
   if (KOPSIK_API_SUCCESS == kopsik_running_time_entry_view_item(ctx,
                                                                 err, KOPSIK_ERR_LEN,

@@ -38,13 +38,13 @@
 {
   if ([notification.name isEqualToString:kUIEventUserLoggedIn]) {
     char err[KOPSIK_ERR_LEN];
-    TogglTimeEntryViewItemList *list = kopsik_time_entry_view_item_list_init();
+    KopsikTimeEntryViewItemList *list = kopsik_time_entry_view_item_list_init();
     if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(ctx, err, KOPSIK_ERR_LEN, list)) {
       NSLog(@"Error fetching time entries: %s", err);
     } else {
       [viewitems removeAllObjects];
       for (int i = 0; i < list->Length; i++) {
-        TogglTimeEntryViewItem *item = list->ViewItems[i];
+        KopsikTimeEntryViewItem *item = list->ViewItems[i];
         TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
         [model load:item];
         [viewitems addObject:model];
