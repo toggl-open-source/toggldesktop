@@ -57,9 +57,6 @@
                         </items>
                     </menu>
                 </menuItem>
-                <menuItem title="File" id="83">
-                    <menu key="submenu" title="File" id="81"/>
-                </menuItem>
                 <menuItem title="Edit" id="217">
                     <menu key="submenu" title="Edit" id="205">
                         <items>
