@@ -40,6 +40,7 @@
     NSLog(@"Error starting time entry: %s", err);
   } else {
     TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
+    [te load:item];
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerRunning object:te];
     // FIXME: make this async
     if (KOPSIK_API_SUCCESS != kopsik_sync(ctx, err, KOPSIK_ERR_LEN)) {

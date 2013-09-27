@@ -51,7 +51,11 @@
     TimeEntryViewItem *te = notification.object;
     [self.descriptionTextField setStringValue:te.description];
     [self.durationTextField setStringValue:te.duration];
-    [self.projectTextField setStringValue:te.project];
+    if (te.project != nil) {
+      [self.projectTextField setStringValue:te.project];
+    } else {
+      [self.projectTextField setStringValue:@""];
+    }
     if ((self.timer == nil) || ([self.timer isValid] == NO)) {
       self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                     target:self
@@ -74,6 +78,7 @@
     NSLog(@"Error stopping time entry: %s", err);
   } else {
     TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
+    [te load:item];
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerStopped object:te];
     // FIXME: make this async
     if (KOPSIK_API_SUCCESS != kopsik_sync(ctx, err, KOPSIK_ERR_LEN)) {
