@@ -13,5 +13,5 @@
 @property (weak) IBOutlet NSTextField *projectTextField;
 @property (weak) IBOutlet NSTextField *durationTextField;
 @property (weak) IBOutlet NSButton *stopButton;
-
+- (void)timerFired:(NSTimer *)timer;
 @end

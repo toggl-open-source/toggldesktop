@@ -11,6 +11,7 @@
 
 @interface TimeEntryViewItem : NSObject
 - (void)load:(TogglTimeEntryViewItem *)data;
+@property int duration_in_seconds;
 @property NSString *description;
 @property NSString *project;
 @property NSString *duration;
