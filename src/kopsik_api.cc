@@ -17,18 +17,34 @@
 
 KopsikContext *kopsik_context_init() {
   KopsikContext *ctx = new KopsikContext();
-  ctx->db_path = 0;
+  ctx->db = 0;
   return ctx;
 }
 
-void kopsik_context_clear(KopsikContext *in_ctx) {
-  poco_assert(in_ctx);
-  if (in_ctx->db_path) {
-    free(in_ctx->db_path);
-    in_ctx->db_path = 0;
+void kopsik_context_db_clear(KopsikContext *ctx) {
+  poco_assert(ctx);
+  if (ctx->db) {
+    kopsik::Database *db = reinterpret_cast<kopsik::Database *>(ctx->db);
+    delete db;
+    ctx->db = 0;
   }
-  delete in_ctx;
-  in_ctx = 0;
+}
+
+void kopsik_context_user_clear(KopsikContext *ctx) {
+  poco_assert(ctx);
+  if (ctx->user) {
+    kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->user);
+    delete user;
+    ctx->user = 0;
+  }
+}
+
+void kopsik_context_clear(KopsikContext *ctx) {
+  poco_assert(ctx);
+  kopsik_context_db_clear(ctx);
+  kopsik_context_user_clear(ctx);
+  delete ctx;
+  ctx = 0;
 }
 
 // Configuration API.
@@ -43,28 +59,25 @@ void kopsik_version(int *major, int *minor, int *patch) {
 }
 
 void kopsik_set_proxy(
-    KopsikContext *in_ctx,
+    KopsikContext *ctx,
     const char *host, const unsigned int port,
     const char *username, const char *password) {
-  poco_assert(in_ctx);
+  poco_assert(ctx);
   poco_assert(host);
   poco_assert(username);
   poco_assert(password);
   // FIXME: implement
 }
 
-void kopsik_set_db_path(KopsikContext *in_ctx, const char *path) {
-  poco_assert(in_ctx);
+void kopsik_set_db_path(KopsikContext *ctx, const char *path) {
+  poco_assert(ctx);
   poco_assert(path);
-  if (in_ctx->db_path) {
-    free(in_ctx->db_path);
-    in_ctx->db_path = 0;
-  }
-  in_ctx->db_path = strdup(path);
+  kopsik_context_db_clear(ctx);
+  ctx->db = new kopsik::Database(path);
 }
 
-void kopsik_set_log_path(KopsikContext *in_ctx, const char *path) {
-  poco_assert(in_ctx);
+void kopsik_set_log_path(KopsikContext *ctx, const char *path) {
+  poco_assert(ctx);
   poco_assert(path);
 
   Poco::AutoPtr<Poco::SimpleFileChannel> simpleFileChannel(
@@ -101,38 +114,57 @@ void kopsik_user_clear(KopsikUser *user) {
   user = 0;
 }
 
+kopsik::Database *kopsik_context_get_db(KopsikContext *ctx) {
+  poco_assert(ctx);
+  poco_assert(ctx->db);
+  return reinterpret_cast<kopsik::Database *>(ctx->db);
+}
+
+kopsik::User *kopsik_context_get_user(KopsikContext *ctx) {
+  poco_assert(ctx);
+  poco_assert(ctx->user);
+  return reinterpret_cast<kopsik::User *>(ctx->user);
+}
+
 kopsik_api_result kopsik_current_user(
-    KopsikContext *in_ctx,
+    KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
     KopsikUser *out_user) {
-  poco_assert(in_ctx);
+  poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(out_user);
-  poco_assert(in_ctx->db_path);
-  kopsik::Database db(in_ctx->db_path);
-  kopsik::User user;
-  kopsik::error err = db.LoadCurrentUser(&user, true);
-  if (err != kopsik::noError) {
-    strncpy(errmsg, err.c_str(), errlen);
-    return KOPSIK_API_FAILURE;
-  }
 
+  if (!ctx->user) {
+    kopsik::Database *db = kopsik_context_get_db(ctx);
+    kopsik::User *user = new kopsik::User();
+    kopsik::error err = db->LoadCurrentUser(user, true);
+    if (err != kopsik::noError) {
+      delete user;
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+    }
+    if (!user->ID()) {
+      delete user;
+      return KOPSIK_API_SUCCESS;
+    }
+    ctx->user = user;
+  }
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->user);
   if (out_user->Fullname) {
     free(out_user->Fullname);
     out_user->Fullname = 0;
   }
-  out_user->Fullname = strdup(user.Fullname().c_str());
-
-  out_user->ID = (unsigned int)user.ID();
+  out_user->Fullname = strdup(user->Fullname().c_str());
+  out_user->ID = (unsigned int)user->ID();
   return KOPSIK_API_SUCCESS;
 }
 
 kopsik_api_result kopsik_set_api_token(
-    KopsikContext *in_ctx,
+    KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
     const char *in_api_token) {
-  poco_assert(in_ctx);
+  poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(in_api_token);
@@ -141,9 +173,8 @@ kopsik_api_result kopsik_set_api_token(
     strncpy(errmsg, "Emtpy API token", errlen);
     return KOPSIK_API_FAILURE;
   }
-  poco_assert(in_ctx->db_path);
-  kopsik::Database db(in_ctx->db_path);
-  kopsik::error err = db.SetCurrentAPIToken(api_token);
+  kopsik::Database *db = kopsik_context_get_db(ctx);
+  kopsik::error err = db->SetCurrentAPIToken(api_token);
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
@@ -152,10 +183,10 @@ kopsik_api_result kopsik_set_api_token(
 }
 
 kopsik_api_result kopsik_login(
-    KopsikContext *in_ctx,
+    KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
     const char *in_email, const char *in_password) {
-  poco_assert(in_ctx);
+  poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(in_email);
@@ -170,36 +201,39 @@ kopsik_api_result kopsik_login(
     strncpy(errmsg, "Empty password", errlen);
     return KOPSIK_API_FAILURE;
   }
-  kopsik::User user;
-  kopsik::error err = user.Login(email, password);
+  kopsik_context_user_clear(ctx);
+  kopsik::User *user = new kopsik::User();
+  kopsik::error err = user->Login(email, password);
   if (err != kopsik::noError) {
+    delete user;
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
-  poco_assert(in_ctx->db_path);
-  kopsik::Database db(in_ctx->db_path);
-  err = db.SaveUser(&user, true);
+  kopsik::Database *db = kopsik_context_get_db(ctx);
+  err = db->SaveUser(user, true);
   if (err != kopsik::noError) {
+    delete user;
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
-  err = db.SetCurrentAPIToken(user.APIToken());
+  err = db->SetCurrentAPIToken(user->APIToken());
   if (err != kopsik::noError) {
+    delete user;
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
+  ctx->user = user;
   return KOPSIK_API_SUCCESS;
 }
 
 kopsik_api_result kopsik_logout(
-    KopsikContext *in_ctx,
+    KopsikContext *ctx,
     char *errmsg, unsigned int errlen) {
-  poco_assert(in_ctx);
+  poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
-  poco_assert(in_ctx->db_path);
-  kopsik::Database db(in_ctx->db_path);
-  kopsik::error err = db.ClearCurrentAPIToken();
+  kopsik::Database *db = kopsik_context_get_db(ctx);
+  kopsik::error err = db->ClearCurrentAPIToken();
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
@@ -209,27 +243,14 @@ kopsik_api_result kopsik_logout(
 
 // Sync
 
-kopsik_api_result kopsik_sync(
-    KopsikContext *in_ctx,
-    char *errmsg, unsigned int errlen,
-    int full_sync) {
-  poco_assert(in_ctx);
+kopsik_api_result kopsik_context_save(KopsikContext *ctx,
+  char *errmsg, unsigned int errlen) {
+  poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
-  poco_assert(in_ctx->db_path);
-  kopsik::Database db(in_ctx->db_path);
-  kopsik::User user;
-  kopsik::error err = db.LoadCurrentUser(&user, true);
-  if (err != kopsik::noError) {
-    strncpy(errmsg, err.c_str(), errlen);
-    return KOPSIK_API_FAILURE;
-  }
-  err = user.Sync(full_sync);
-  if (err != kopsik::noError) {
-    strncpy(errmsg, err.c_str(), errlen);
-    return KOPSIK_API_FAILURE;
-  }
-  err = db.SaveUser(&user, true);
+  kopsik::Database *db = kopsik_context_get_db(ctx);
+  kopsik::User *user = kopsik_context_get_user(ctx);
+  kopsik::error err = db->SaveUser(user, true);
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
@@ -237,53 +258,45 @@ kopsik_api_result kopsik_sync(
   return KOPSIK_API_SUCCESS;
 }
 
-
-kopsik_api_result kopsik_push(
-    KopsikContext *in_ctx,
-    char *errmsg, unsigned int errlen) {
-  poco_assert(in_ctx);
+kopsik_api_result kopsik_sync(
+    KopsikContext *ctx,
+    char *errmsg, unsigned int errlen,
+    int full_sync) {
+  poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
-  poco_assert(in_ctx->db_path);
-  kopsik::Database db(in_ctx->db_path);
-  kopsik::User user;
-  kopsik::error err = db.LoadCurrentUser(&user, true);
+  kopsik::User *user = kopsik_context_get_user(ctx);
+  kopsik::error err = user->Sync(full_sync);
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
-  err = user.Push();
+  return kopsik_context_save(ctx, errmsg, errlen);
+}
+
+kopsik_api_result kopsik_push(
+    KopsikContext *ctx,
+    char *errmsg, unsigned int errlen) {
+  poco_assert(ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  kopsik::User *user = kopsik_context_get_user(ctx);
+  kopsik::error err = user->Push();
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
-  err = db.SaveUser(&user, true);
-  if (err != kopsik::noError) {
-    strncpy(errmsg, err.c_str(), errlen);
-    return KOPSIK_API_FAILURE;
-  }
-  return KOPSIK_API_SUCCESS;
+  return kopsik_context_save(ctx, errmsg, errlen);
 }
 
 kopsik_api_result kopsik_dirty_models(
-    KopsikContext *in_ctx,
+    KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
     KopsikDirtyModels *out_dirty_models) {
-  poco_assert(in_ctx);
-  poco_assert(errmsg);
-  poco_assert(errlen);
   poco_assert(out_dirty_models);
-  poco_assert(in_ctx->db_path);
-  kopsik::Database db(in_ctx->db_path);
-
-  kopsik::User user;
-  kopsik::error err = db.LoadCurrentUser(&user, true);
-  if (err != kopsik::noError) {
-    strncpy(errmsg, err.c_str(), errlen);
-    return KOPSIK_API_FAILURE;
-  }
+  kopsik::User *user = kopsik_context_get_user(ctx);
   std::vector<kopsik::TimeEntry *> dirty;
-  user.CollectDirtyObjects(&dirty);
+  user->CollectDirtyObjects(&dirty);
   out_dirty_models->TimeEntries = 0;
   for (std::vector<kopsik::TimeEntry *>::const_iterator it = dirty.begin();
     it != dirty.end();
@@ -327,7 +340,7 @@ void kopsik_time_entry_view_item_clear(KopsikTimeEntryViewItem *item) {
   item = 0;
 }
 
-void kopsik_time_entry_to_toggl_time_entry_view_item_struct(
+void time_entry_to_view_item(
     kopsik::TimeEntry *te,
     kopsik::User *user,
     KopsikTimeEntryViewItem *view_item) {
@@ -369,94 +382,66 @@ void kopsik_format_duration_in_seconds(
 }
 
 kopsik_api_result kopsik_start(
-    KopsikContext *in_ctx,
+    KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
     const char *in_description,
     KopsikTimeEntryViewItem *out_view_item) {
-  poco_assert(in_ctx);
+  poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(in_description);
   poco_assert(out_view_item);
-  poco_assert(in_ctx->db_path);
   std::string description(in_description);
   if (description.empty()) {
     strncpy(errmsg, "Missing description", errlen);
     return KOPSIK_API_FAILURE;
   }
-  kopsik::Database db(in_ctx->db_path);
-  kopsik::User user;
-  kopsik::error err = db.LoadCurrentUser(&user, true);
-  if (err != kopsik::noError) {
-    strncpy(errmsg, err.c_str(), errlen);
-    return KOPSIK_API_FAILURE;
+  kopsik::User *user = kopsik_context_get_user(ctx);
+  kopsik::TimeEntry *te = user->Start(description);
+  kopsik_api_result res = kopsik_context_save(ctx, errmsg, errlen);
+  if (KOPSIK_API_SUCCESS != res) {
+    return res;
   }
-  kopsik::TimeEntry *te = user.Start(description);
-  if (te) {
-    err = db.SaveUser(&user, true);
-    if (err != kopsik::noError) {
-      strncpy(errmsg, err.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
-    }
-    kopsik_time_entry_to_toggl_time_entry_view_item_struct(
-      te, &user, out_view_item);
-  }
+  time_entry_to_view_item(te, kopsik_context_get_user(ctx), out_view_item);
   return KOPSIK_API_SUCCESS;
 }
 
 kopsik_api_result kopsik_stop(
-    KopsikContext *in_ctx,
+    KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
     KopsikTimeEntryViewItem *out_view_item) {
-  poco_assert(in_ctx);
+  poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(out_view_item);
-  poco_assert(in_ctx->db_path);
-  kopsik::Database db(in_ctx->db_path);
-  kopsik::User user;
-  kopsik::error err = db.LoadCurrentUser(&user, true);
-  if (err != kopsik::noError) {
-    strncpy(errmsg, err.c_str(), errlen);
-    return KOPSIK_API_FAILURE;
-  }
-  std::vector<kopsik::TimeEntry *> stopped = user.Stop();
+  kopsik::User *user = kopsik_context_get_user(ctx);
+  std::vector<kopsik::TimeEntry *> stopped = user->Stop();
   if (!stopped.empty()) {
-    err = db.SaveUser(&user, true);
-    if (err != kopsik::noError) {
-      strncpy(errmsg, err.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+    kopsik_api_result res = kopsik_context_save(ctx, errmsg, errlen);
+    if (res != KOPSIK_API_SUCCESS) {
+      return res;
     }
     kopsik::TimeEntry *te = stopped[0];
-    kopsik_time_entry_to_toggl_time_entry_view_item_struct(
-      te, &user, out_view_item);
+    time_entry_to_view_item(te, user, out_view_item);
   }
   return KOPSIK_API_SUCCESS;
 }
 
 kopsik_api_result kopsik_running_time_entry_view_item(
-    KopsikContext *in_ctx,
+    KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
     KopsikTimeEntryViewItem *out_item, int *out_is_tracking) {
-  poco_assert(in_ctx);
+  poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(out_item);
   poco_assert(out_is_tracking);
   *out_is_tracking = 0;
-  poco_assert(in_ctx->db_path);
-  kopsik::Database db(in_ctx->db_path);
-  kopsik::User user;
-  kopsik::error err = db.LoadCurrentUser(&user, true);
-  if (err != kopsik::noError) {
-    strncpy(errmsg, err.c_str(), errlen);
-    return KOPSIK_API_FAILURE;
-  }
-  kopsik::TimeEntry *te = user.RunningTimeEntry();
+  kopsik::User *user = kopsik_context_get_user(ctx);
+  kopsik::TimeEntry *te = user->RunningTimeEntry();
   if (te) {
     *out_is_tracking = true;
-    kopsik_time_entry_to_toggl_time_entry_view_item_struct(
-      te, &user, out_item);
+    time_entry_to_view_item(te, user, out_item);
   }
   return KOPSIK_API_SUCCESS;
 }
@@ -483,29 +468,20 @@ void kopsik_time_entry_view_item_list_clear(
 }
 
 kopsik_api_result kopsik_time_entry_view_items(
-    KopsikContext *in_ctx,
+    KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
     KopsikTimeEntryViewItemList *out_list) {
-  poco_assert(in_ctx);
+  poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(out_list);
-  poco_assert(in_ctx->db_path);
 
-  kopsik::Database db(in_ctx->db_path);
-  kopsik::User user;
-
-  kopsik::error err = db.LoadCurrentUser(&user, true);
-  if (err != kopsik::noError) {
-    strncpy(errmsg, err.c_str(), errlen);
-    return KOPSIK_API_FAILURE;
-  }
-
-  user.SortTimeEntriesByStart();
+  kopsik::User *user = kopsik_context_get_user(ctx);
+  user->SortTimeEntriesByStart();
 
   std::vector<kopsik::TimeEntry *>stopped;
   for (std::vector<kopsik::TimeEntry *>::const_iterator it =
-      user.TimeEntries.begin(); it != user.TimeEntries.end(); it++) {
+      user->TimeEntries.begin(); it != user->TimeEntries.end(); it++) {
     kopsik::TimeEntry *te = *it;
     if (te->DurationInSeconds() >= 0) {
       stopped.push_back(te);
@@ -527,8 +503,7 @@ kopsik_api_result kopsik_time_entry_view_items(
   for (unsigned int i = 0; i < stopped.size(); i++) {
     kopsik::TimeEntry *te = stopped[i];
     KopsikTimeEntryViewItem *view_item = kopsik_time_entry_view_item_init();
-    kopsik_time_entry_to_toggl_time_entry_view_item_struct(
-      te, &user, view_item);
+    time_entry_to_view_item(te, user, view_item);
     out_list->ViewItems[i] = view_item;
     out_list->Length++;
   }
@@ -538,19 +513,13 @@ kopsik_api_result kopsik_time_entry_view_items(
 // Websocket client
 
 kopsik_api_result kopsik_listen(
-    KopsikContext *in_ctx,
+    KopsikContext *ctx,
     char *errmsg, unsigned int errlen) {
-  poco_assert(in_ctx);
+  poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
-  kopsik::Database db(in_ctx->db_path);
-  kopsik::User user;
-  kopsik::error err = db.LoadCurrentUser(&user, true);
-  if (err != kopsik::noError) {
-    strncpy(errmsg, err.c_str(), errlen);
-    return KOPSIK_API_FAILURE;
-  }
-  err = user.Listen();
+  kopsik::User *user = kopsik_context_get_user(ctx);
+  kopsik::error err = user->Listen();
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;

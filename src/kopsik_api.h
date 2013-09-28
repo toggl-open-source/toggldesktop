@@ -22,7 +22,8 @@ typedef int kopsik_api_result;
 // Context API.
 
 typedef struct {
-  char *db_path;
+  void *db;
+  void *user;
 } KopsikContext;
 
 KOPSIK_EXPORT KopsikContext *kopsik_context_init();
