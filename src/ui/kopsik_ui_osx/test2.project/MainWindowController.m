@@ -104,6 +104,7 @@
     // Show login view
     [self.contentView addSubview:self.loginViewController.view];
     [self.loginViewController.view setFrame:self.contentView.bounds];
+    [self.loginViewController.email becomeFirstResponder];
 
     // Hide all other views
     [self.timeEntryListViewController.view removeFromSuperview];
