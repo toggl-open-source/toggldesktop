@@ -91,6 +91,9 @@
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" size="10" name="LucidaGrande"/>
                                                         </buttonCell>
+                                                        <connections>
+                                                            <action selector="continueButtonClicked:" target="-2" id="Ikq-gM-JIm"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <connections>
