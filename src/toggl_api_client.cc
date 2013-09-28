@@ -1025,6 +1025,17 @@ TimeEntry *User::GetTimeEntryByID(const Poco::UInt64 id) {
     return 0;
 }
 
+TimeEntry *User::GetTimeEntryByGUID(std::string GUID) {
+    poco_assert(!GUID.empty());
+    for (std::vector<TimeEntry *>::const_iterator it =
+            TimeEntries.begin(); it != TimeEntries.end(); it++) {
+        if ((*it)->GUID() == GUID) {
+            return *it;
+        }
+    }
+    return 0;
+}
+
 void User::ClearWorkspaces() {
     for (std::vector<Workspace *>::const_iterator it = Workspaces.begin();
             it != Workspaces.end(); it++) {

@@ -315,6 +315,7 @@ KopsikTimeEntryViewItem *kopsik_time_entry_view_item_init() {
   item->Project = 0;
   item->Duration = 0;
   item->Color = 0;
+  item->GUID = 0;
   return item;
 }
 
@@ -336,6 +337,10 @@ void kopsik_time_entry_view_item_clear(KopsikTimeEntryViewItem *item) {
     free(item->Color);
     item->Color = 0;
   }
+  if (item->GUID) {
+    free(item->GUID);
+    item->GUID = 0;
+  }
   delete item;
   item = 0;
 }
@@ -353,6 +358,11 @@ void time_entry_to_view_item(
     view_item->Description = 0;
   }
   view_item->Description = strdup(te->Description().c_str());
+  if (view_item->GUID) {
+    free(view_item->GUID);
+    view_item->GUID = 0;
+  }
+  view_item->GUID = strdup(te->GUID().c_str());
   if (te->PID()) {
     kopsik::Project *p = user->GetProjectByID(te->PID());
     if (p) {

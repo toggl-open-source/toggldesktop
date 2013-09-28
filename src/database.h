@@ -73,6 +73,8 @@ class Database {
         error validate(User *user);
         error last_error();
 
+        std::string generateGUID();
+
         error loadUsersRelatedData(User *user);
 
         error loadWorkspaces(Poco::UInt64 UID, std::vector<Workspace *> *list);

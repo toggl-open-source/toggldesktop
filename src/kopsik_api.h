@@ -99,6 +99,7 @@ typedef struct {
   char *Project;
   char *Duration;
   char *Color;
+  char *GUID;
 } KopsikTimeEntryViewItem;
 
 typedef struct {

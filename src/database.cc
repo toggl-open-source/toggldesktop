@@ -9,6 +9,8 @@
 #include "./toggl_api_client.h"
 
 #include "Poco/Logger.h"
+#include "Poco/UUID.h"
+#include "Poco/UUIDGenerator.h"
 #include "Poco/Stopwatch.h"
 #include "Poco/Data/Common.h"
 #include "Poco/Data/RecordSet.h"
@@ -136,6 +138,13 @@ error Database::last_error() {
         return error(last);
     }
     return noError;
+}
+
+std::string Database::generateGUID() {
+    Poco::UUIDGenerator& generator =
+        Poco::UUIDGenerator::defaultGenerator();
+    Poco::UUID uuid(generator.createRandom());
+    return uuid.toString();
 }
 
 error Database::LoadCurrentUser(User *user, bool with_related_data) {
@@ -687,8 +696,11 @@ error Database::saveTimeEntries(Poco::UInt64 UID,
 error Database::SaveTimeEntry(TimeEntry *model) {
     poco_assert(model);
     poco_assert(session);
-    if (model->LocalID() && !model->Dirty()) {
+    if (model->LocalID() && !model->Dirty() && !model->GUID().empty()) {
         return noError;
+    }
+    if (model->GUID().empty()) {
+        model->SetGUID(generateGUID());
     }
     try {
         Poco::Logger &logger = Poco::Logger::get("database");

@@ -329,6 +329,7 @@ namespace kopsik {
         Task *GetTaskByID(const Poco::UInt64 id);
         Tag *GetTagByID(const Poco::UInt64 id);
         TimeEntry *GetTimeEntryByID(const Poco::UInt64 id);
+        TimeEntry *GetTimeEntryByGUID(std::string GUID);
 
         void CollectDirtyObjects(std::vector<TimeEntry *> *result);
         void SortTimeEntriesByStart();

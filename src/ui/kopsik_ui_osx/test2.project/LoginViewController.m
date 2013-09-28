@@ -38,4 +38,5 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedIn object:nil];
   }
 }
+
 @end
