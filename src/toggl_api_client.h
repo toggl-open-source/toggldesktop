@@ -336,6 +336,7 @@ namespace kopsik {
 
         TimeEntry *RunningTimeEntry();
         TimeEntry *Start(std::string description);
+        TimeEntry *Continue(std::string GUID);
         std::vector<TimeEntry *> Stop();
 
         Poco::Int64 LocalID() { return local_id_; }

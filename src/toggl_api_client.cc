@@ -64,6 +64,23 @@ TimeEntry *User::Start(std::string description) {
   return te;
 }
 
+TimeEntry *User::Continue(std::string GUID) {
+    Stop();
+    TimeEntry *existing = GetTimeEntryByGUID(GUID);
+    poco_assert(existing);
+    TimeEntry *te = new TimeEntry();
+    te->SetDescription(existing->Description());
+    te->SetUID(ID());
+    te->SetStart(time(0));
+    te->SetDurationInSeconds(-time(0));
+    te->SetWID(existing->WID());
+    te->SetWID(existing->PID());
+    te->SetWID(existing->TID());
+    te->SetUIModifiedAt(time(0));
+    TimeEntries.push_back(te);
+    return te;
+}
+
 error User::Listen() {
   try {
     const Poco::URI uri(TOGGL_WEBSOCKET_SERVER_URL);

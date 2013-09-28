@@ -15,4 +15,5 @@
   NSMutableArray *viewitems;
 }
 @property (weak) IBOutlet NSTableView *timeEntriesTableView;
+- (IBAction)continueButtonClicked:(id)sender;
 @end

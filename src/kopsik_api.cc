@@ -416,6 +416,31 @@ kopsik_api_result kopsik_start(
   return KOPSIK_API_SUCCESS;
 }
 
+kopsik_api_result kopsik_continue(
+    KopsikContext *ctx,
+    char *errmsg, unsigned int errlen,
+    const char *in_guid,
+    KopsikTimeEntryViewItem *out_view_item) {
+  poco_assert(ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(in_guid);
+  poco_assert(out_view_item);
+  std::string GUID(in_guid);
+  if (GUID.empty()) {
+    strncpy(errmsg, "Missing GUID", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  kopsik::User *user = kopsik_context_get_user(ctx);
+  kopsik::TimeEntry *te = user->Continue(GUID);
+  kopsik_api_result res = kopsik_context_save(ctx, errmsg, errlen);
+  if (KOPSIK_API_SUCCESS != res) {
+    return res;
+  }
+  time_entry_to_view_item(te, kopsik_context_get_user(ctx), out_view_item);
+  return KOPSIK_API_SUCCESS;
+}
+
 kopsik_api_result kopsik_stop(
     KopsikContext *ctx,
     char *errmsg, unsigned int errlen,

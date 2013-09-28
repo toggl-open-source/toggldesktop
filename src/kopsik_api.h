@@ -127,6 +127,12 @@ KOPSIK_EXPORT kopsik_api_result kopsik_start(
   const char *in_description,
   KopsikTimeEntryViewItem *out_view_item);
 
+KOPSIK_EXPORT kopsik_api_result kopsik_continue(
+  KopsikContext *in_ctx,
+  char *errmsg, unsigned int errlen,
+  const char *in_guid,
+  KopsikTimeEntryViewItem *out_view_item);
+
 KOPSIK_EXPORT kopsik_api_result kopsik_stop(
   KopsikContext *in_ctx,
   char *errmsg, unsigned int errlen,
