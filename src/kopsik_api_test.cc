@@ -18,7 +18,9 @@ namespace kopsik {
     }
 
     TEST(KopsikApiTest, kopsik_version) {
-        int major(0), minor(0), patch(0);
+        int major = 0;
+        int minor = 0;
+        int patch = 0;
         kopsik_version(&major, &minor, &patch);
         ASSERT_TRUE(major || minor || patch);
     }
