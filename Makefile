@@ -5,6 +5,7 @@ uname=$(shell uname)
 pocodir=third_party/poco-1.4.6p1-all
 openssldir=third_party/openssl-1.0.1e
 GTEST_ROOT=third_party/googletest-read-only
+GMOCK_DIR=third_party/gmock-1.7.0
 jsondir=third_party/libjson
 
 main=toggl
@@ -22,6 +23,8 @@ cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter \
 	-I$(openssldir)/include \
 	-I$(GTEST_ROOT)/include \
 	-I$(GTEST_ROOT) \
+	-I$(GMOCK_DIR)/include \
+	-I$(GMOCK_DIR) \
 	-I$(pocodir)/Foundation/include \
 	-I$(pocodir)/Util/include \
 	-I$(pocodir)/Data/include \
@@ -37,6 +40,8 @@ cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
 	-I$(openssldir)/include \
 	-I$(GTEST_ROOT)/include \
 	-I$(GTEST_ROOT) \
+	-I$(GMOCK_DIR)/include \
+	-I$(GMOCK_DIR) \
 	-I$(pocodir)/Foundation/include \
 	-I$(pocodir)/Util/include \
 	-I$(pocodir)/Data/include \
@@ -116,6 +121,7 @@ test: clean lint
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/kopsik_api_test.cc -o build/kopsik_api_test.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/kopsik_test.cc -o build/kopsik_test.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c $(GTEST_ROOT)/src/gtest-all.cc -o build/gtest-all.o
+	$(cxx) $(cflags) -O2 -DNDEBUG -c ${GMOCK_DIR}/src/gmock-all.cc -o build/gmock-all.o
 	$(cxx) -o $(main) -o $(main)_test build/*.o $(libs)
 	./$(main)_test
 

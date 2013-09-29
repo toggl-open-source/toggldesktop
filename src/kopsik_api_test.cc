@@ -1,6 +1,7 @@
 // Copyright 2013 Tanel Lebedev
 
 #include "gtest/gtest.h"
+#include "gmock/gmock.h"
 #include "./kopsik_api.h"
 
 #include "Poco/File.h"
