@@ -27,4 +27,12 @@ An executable named *toggl* should emerge as the result of the build.
 
 OS X app
 --------
+```
+make osx
+```
 
+Tests
+-----
+```
+make test
+```
