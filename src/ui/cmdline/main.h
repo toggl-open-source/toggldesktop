@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "./kopsik_api.h"
+#include "../../kopsik_api.h"
 
 #include "Poco/Util/Application.h"
 #include "Poco/Util/OptionSet.h"

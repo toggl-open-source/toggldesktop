@@ -88,19 +88,19 @@ endif
 
 cxx=g++
 
-default: command_line_client
+default: cmdline
 
 clean:
 	rm -rf build
 	rm -f $(main)
 	rm -f $(main)_test
 
-command_line_client: clean lint
+cmdline: clean lint
 	mkdir -p build
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/toggl_api_client.cc -o build/toggl_api_client.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/database.cc -o build/database.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/kopsik_api.cc -o build/kopsik_api.o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/main.cc -o build/main.o
+	$(cxx) $(cflags) -O2 -DNDEBUG -c src/ui/cmdline/main.cc -o build/main.o
 	$(cxx) -o $(main) -o $(main) build/*.o $(libs)
 	strip $(main)
 

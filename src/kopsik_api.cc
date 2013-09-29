@@ -115,13 +115,13 @@ void kopsik_user_clear(KopsikUser *user) {
   user = 0;
 }
 
-kopsik::Database *kopsik_context_get_db(KopsikContext *ctx) {
+kopsik::Database *get_db(KopsikContext *ctx) {
   poco_assert(ctx);
   poco_assert(ctx->db);
   return reinterpret_cast<kopsik::Database *>(ctx->db);
 }
 
-kopsik::User *kopsik_context_get_user(KopsikContext *ctx) {
+kopsik::User *get_user(KopsikContext *ctx) {
   poco_assert(ctx);
   poco_assert(ctx->user);
   return reinterpret_cast<kopsik::User *>(ctx->user);
@@ -137,7 +137,7 @@ kopsik_api_result kopsik_current_user(
   poco_assert(out_user);
 
   if (!ctx->user) {
-    kopsik::Database *db = kopsik_context_get_db(ctx);
+    kopsik::Database *db = get_db(ctx);
     kopsik::User *user = new kopsik::User();
     kopsik::error err = db->LoadCurrentUser(user, true);
     if (err != kopsik::noError) {
@@ -147,7 +147,8 @@ kopsik_api_result kopsik_current_user(
     }
     ctx->user = user;
   }
-  kopsik::User *user = kopsik_context_get_user(ctx);
+  poco_assert(ctx->user);
+  kopsik::User *user = get_user(ctx);
   if (out_user->Fullname) {
     free(out_user->Fullname);
     out_user->Fullname = 0;
@@ -170,7 +171,7 @@ kopsik_api_result kopsik_set_api_token(
     strncpy(errmsg, "Emtpy API token", errlen);
     return KOPSIK_API_FAILURE;
   }
-  kopsik::Database *db = kopsik_context_get_db(ctx);
+  kopsik::Database *db = get_db(ctx);
   kopsik::error err = db->SetCurrentAPIToken(api_token);
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
@@ -206,7 +207,7 @@ kopsik_api_result kopsik_login(
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
-  kopsik::Database *db = kopsik_context_get_db(ctx);
+  kopsik::Database *db = get_db(ctx);
   err = db->SaveUser(user, true);
   if (err != kopsik::noError) {
     delete user;
@@ -229,7 +230,7 @@ kopsik_api_result kopsik_logout(
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
-  kopsik::Database *db = kopsik_context_get_db(ctx);
+  kopsik::Database *db = get_db(ctx);
   kopsik::error err = db->ClearCurrentAPIToken();
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
@@ -240,13 +241,13 @@ kopsik_api_result kopsik_logout(
 
 // Sync
 
-kopsik_api_result kopsik_context_save(KopsikContext *ctx,
+kopsik_api_result save(KopsikContext *ctx,
   char *errmsg, unsigned int errlen) {
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
-  kopsik::Database *db = kopsik_context_get_db(ctx);
-  kopsik::User *user = kopsik_context_get_user(ctx);
+  kopsik::Database *db = get_db(ctx);
+  kopsik::User *user = get_user(ctx);
   kopsik::error err = db->SaveUser(user, true);
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
@@ -262,13 +263,13 @@ kopsik_api_result kopsik_sync(
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
-  kopsik::User *user = kopsik_context_get_user(ctx);
+  kopsik::User *user = get_user(ctx);
   kopsik::error err = user->Sync(full_sync);
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
-  return kopsik_context_save(ctx, errmsg, errlen);
+  return save(ctx, errmsg, errlen);
 }
 
 kopsik_api_result kopsik_push(
@@ -277,13 +278,13 @@ kopsik_api_result kopsik_push(
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
-  kopsik::User *user = kopsik_context_get_user(ctx);
+  kopsik::User *user = get_user(ctx);
   kopsik::error err = user->Push();
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
-  return kopsik_context_save(ctx, errmsg, errlen);
+  return save(ctx, errmsg, errlen);
 }
 
 kopsik_api_result kopsik_dirty_models(
@@ -291,7 +292,7 @@ kopsik_api_result kopsik_dirty_models(
     char *errmsg, unsigned int errlen,
     KopsikDirtyModels *out_dirty_models) {
   poco_assert(out_dirty_models);
-  kopsik::User *user = kopsik_context_get_user(ctx);
+  kopsik::User *user = get_user(ctx);
   std::vector<kopsik::TimeEntry *> dirty;
   user->CollectDirtyObjects(&dirty);
   out_dirty_models->TimeEntries = 0;
@@ -403,13 +404,13 @@ kopsik_api_result kopsik_start(
     strncpy(errmsg, "Missing description", errlen);
     return KOPSIK_API_FAILURE;
   }
-  kopsik::User *user = kopsik_context_get_user(ctx);
+  kopsik::User *user = get_user(ctx);
   kopsik::TimeEntry *te = user->Start(description);
-  kopsik_api_result res = kopsik_context_save(ctx, errmsg, errlen);
+  kopsik_api_result res = save(ctx, errmsg, errlen);
   if (KOPSIK_API_SUCCESS != res) {
     return res;
   }
-  time_entry_to_view_item(te, kopsik_context_get_user(ctx), out_view_item);
+  time_entry_to_view_item(te, user, out_view_item);
   return KOPSIK_API_SUCCESS;
 }
 
@@ -428,13 +429,13 @@ kopsik_api_result kopsik_continue(
     strncpy(errmsg, "Missing GUID", errlen);
     return KOPSIK_API_FAILURE;
   }
-  kopsik::User *user = kopsik_context_get_user(ctx);
+  kopsik::User *user = get_user(ctx);
   kopsik::TimeEntry *te = user->Continue(GUID);
-  kopsik_api_result res = kopsik_context_save(ctx, errmsg, errlen);
+  kopsik_api_result res = save(ctx, errmsg, errlen);
   if (KOPSIK_API_SUCCESS != res) {
     return res;
   }
-  time_entry_to_view_item(te, kopsik_context_get_user(ctx), out_view_item);
+  time_entry_to_view_item(te, user, out_view_item);
   return KOPSIK_API_SUCCESS;
 }
 
@@ -446,10 +447,10 @@ kopsik_api_result kopsik_stop(
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(out_view_item);
-  kopsik::User *user = kopsik_context_get_user(ctx);
+  kopsik::User *user = get_user(ctx);
   std::vector<kopsik::TimeEntry *> stopped = user->Stop();
   if (!stopped.empty()) {
-    kopsik_api_result res = kopsik_context_save(ctx, errmsg, errlen);
+    kopsik_api_result res = save(ctx, errmsg, errlen);
     if (res != KOPSIK_API_SUCCESS) {
       return res;
     }
@@ -469,7 +470,7 @@ kopsik_api_result kopsik_running_time_entry_view_item(
   poco_assert(out_item);
   poco_assert(out_is_tracking);
   *out_is_tracking = 0;
-  kopsik::User *user = kopsik_context_get_user(ctx);
+  kopsik::User *user = get_user(ctx);
   kopsik::TimeEntry *te = user->RunningTimeEntry();
   if (te) {
     *out_is_tracking = true;
@@ -508,7 +509,7 @@ kopsik_api_result kopsik_time_entry_view_items(
   poco_assert(errlen);
   poco_assert(out_list);
 
-  kopsik::User *user = kopsik_context_get_user(ctx);
+  kopsik::User *user = get_user(ctx);
   user->SortTimeEntriesByStart();
 
   std::vector<kopsik::TimeEntry *>stopped;
@@ -550,7 +551,7 @@ kopsik_api_result kopsik_listen(
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
-  kopsik::User *user = kopsik_context_get_user(ctx);
+  kopsik::User *user = get_user(ctx);
   kopsik::error err = user->Listen();
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
