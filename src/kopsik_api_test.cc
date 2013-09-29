@@ -48,8 +48,6 @@ namespace kopsik {
         KopsikUser *user = kopsik_user_init();
         ASSERT_TRUE(user);
         kopsik_user_clear(user);
-        ASSERT_FALSE(user->ID);
-        ASSERT_FALSE(user->Fullname);
     }
 
 }  // namespace kopsik

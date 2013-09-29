@@ -346,7 +346,7 @@ namespace kopsik {
         ASSERT_EQ(6356, user.TimeEntries[0]->DurationInSeconds());
         ASSERT_EQ("Important things", user.TimeEntries[0]->Description());
         ASSERT_EQ(uint(0), user.TimeEntries[0]->TagNames.size());
-        ASSERT_EQ(false, user.TimeEntries[0]->DurOnly());
+        ASSERT_FALSE(user.TimeEntries[0]->DurOnly());
         ASSERT_EQ(user.ID(), user.TimeEntries[0]->UID());
 
         ASSERT_EQ(uint(2), user.Tasks.size());
