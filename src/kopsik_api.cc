@@ -161,22 +161,37 @@ kopsik_api_result kopsik_current_user(
 kopsik_api_result kopsik_set_api_token(
     KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
-    const char *in_api_token) {
+    const char *api_token) {
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
-  poco_assert(in_api_token);
-  std::string api_token(in_api_token);
-  if (api_token.empty()) {
-    strncpy(errmsg, "Emtpy API token", errlen);
-    return KOPSIK_API_FAILURE;
-  }
+  poco_assert(api_token);
   kopsik::Database *db = get_db(ctx);
   kopsik::error err = db->SetCurrentAPIToken(api_token);
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
+  return KOPSIK_API_SUCCESS;
+}
+
+kopsik_api_result kopsik_get_api_token(
+    KopsikContext *ctx,
+    char *errmsg, unsigned int errlen,
+    char *str, unsigned int max_strlen) {
+  poco_assert(ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(str);
+  poco_assert(max_strlen);
+  kopsik::Database *db = get_db(ctx);
+  std::string token("");
+  kopsik::error err = db->CurrentAPIToken(&token);
+  if (err != kopsik::noError) {
+    strncpy(errmsg, err.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  strncpy(str, token.c_str(), max_strlen);
   return KOPSIK_API_SUCCESS;
 }
 

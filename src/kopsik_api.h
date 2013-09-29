@@ -28,21 +28,22 @@ typedef struct {
 
 KOPSIK_EXPORT KopsikContext *kopsik_context_init();
 
-KOPSIK_EXPORT void kopsik_context_clear(KopsikContext *in_ctx);
+KOPSIK_EXPORT void kopsik_context_clear(KopsikContext *ctx);
 
 // Configuration API
 
 KOPSIK_EXPORT void kopsik_version(
   int *major, int *minor, int *patch);
 
-KOPSIK_EXPORT void kopsik_set_proxy(KopsikContext *in_ctx,
+KOPSIK_EXPORT void kopsik_set_proxy(KopsikContext *ctx,
   const char *host, const unsigned int port,
   const char *username, const char *password);
 
-KOPSIK_EXPORT void kopsik_set_db_path(KopsikContext *in_ctx,
-  const char *in_path);
+KOPSIK_EXPORT void kopsik_set_db_path(KopsikContext *ctx,
+  const char *path);
 
-KOPSIK_EXPORT void kopsik_set_log_path(KopsikContext *in_ctx, const char *path);
+KOPSIK_EXPORT void kopsik_set_log_path(KopsikContext *ctx,
+  const char *path);
 
 // User API
 
@@ -55,21 +56,28 @@ KOPSIK_EXPORT KopsikUser *kopsik_user_init();
 
 KOPSIK_EXPORT void kopsik_user_clear(KopsikUser *user);
 
-KOPSIK_EXPORT kopsik_api_result kopsik_current_user(
-  KopsikContext *in_ctx,
-  char *errmsg, unsigned int errlen, KopsikUser *out_user);
-
 KOPSIK_EXPORT kopsik_api_result kopsik_set_api_token(
-  KopsikContext *in_ctx,
-  char *errmsg, unsigned int errlen, const char *in_api_token);
+  KopsikContext *ctx,
+  char *errmsg, unsigned int errlen,
+  const char *api_token);
+
+KOPSIK_EXPORT kopsik_api_result kopsik_get_api_token(
+  KopsikContext *ctx,
+  char *errmsg, unsigned int errlen,
+  char *str, unsigned int max_strlen);
+
+KOPSIK_EXPORT kopsik_api_result kopsik_current_user(
+  KopsikContext *ctx,
+  char *errmsg, unsigned int errlen,
+  KopsikUser *user);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_login(
-  KopsikContext *in_ctx,
+  KopsikContext *ctx,
   char *errmsg, unsigned int errlen,
-  const char *in_email, const char *in_password);
+  const char *email, const char *password);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_logout(
-  KopsikContext *in_ctx,
+  KopsikContext *ctx,
   char *errmsg, unsigned int errlen);
 
 // Sync
@@ -79,17 +87,18 @@ typedef struct {
 } KopsikDirtyModels;
 
 KOPSIK_EXPORT kopsik_api_result kopsik_sync(
-  KopsikContext *in_ctx,
+  KopsikContext *ctx,
   char *errmsg, unsigned int errlen,
   int full_sync);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_push(
-  KopsikContext *in_ctx,
+  KopsikContext *ctx,
   char *errmsg, unsigned int errlen);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_dirty_models(
-  KopsikContext *in_ctx,
-  char *errmsg, unsigned int errlen, KopsikDirtyModels *out_dirty_models);
+  KopsikContext *ctx,
+  char *errmsg, unsigned int errlen,
+  KopsikDirtyModels *dirty_models);
 
 // Time entries view
 
@@ -111,48 +120,48 @@ KOPSIK_EXPORT KopsikTimeEntryViewItem *
   kopsik_time_entry_view_item_init();
 
 KOPSIK_EXPORT void kopsik_time_entry_view_item_clear(
-  KopsikTimeEntryViewItem *in_item);
+  KopsikTimeEntryViewItem *item);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_running_time_entry_view_item(
-  KopsikContext *in_ctx,
+  KopsikContext *ctx,
   char *errmsg, unsigned int errlen,
-  KopsikTimeEntryViewItem *out_item, int *out_is_tracking);
+  KopsikTimeEntryViewItem *item, int *is_tracking);
 
 KOPSIK_EXPORT void kopsik_format_duration_in_seconds(
-  int duration_in_seconds, char *out_str, unsigned int max_strlen);
+  int duration_in_seconds, char *str, unsigned int max_strlen);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_start(
-  KopsikContext *in_ctx,
+  KopsikContext *ctx,
   char *errmsg, unsigned int errlen,
-  const char *in_description,
-  KopsikTimeEntryViewItem *out_view_item);
+  const char *description,
+  KopsikTimeEntryViewItem *item);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_continue(
-  KopsikContext *in_ctx,
+  KopsikContext *ctx,
   char *errmsg, unsigned int errlen,
-  const char *in_guid,
-  KopsikTimeEntryViewItem *out_view_item);
+  const char *guid,
+  KopsikTimeEntryViewItem *item);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_stop(
-  KopsikContext *in_ctx,
+  KopsikContext *ctx,
   char *errmsg, unsigned int errlen,
-  KopsikTimeEntryViewItem *out_view_item);
+  KopsikTimeEntryViewItem *item);
 
 KOPSIK_EXPORT KopsikTimeEntryViewItemList *
   kopsik_time_entry_view_item_list_init();
 
 KOPSIK_EXPORT void kopsik_time_entry_view_item_list_clear(
-  KopsikTimeEntryViewItemList *in_list);
+  KopsikTimeEntryViewItemList *list);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_time_entry_view_items(
-  KopsikContext *in_ctx,
+  KopsikContext *ctx,
   char *errmsg, unsigned int errlen,
-  KopsikTimeEntryViewItemList *out_list);
+  KopsikTimeEntryViewItemList *list);
 
 // Websocket client
 
 KOPSIK_EXPORT kopsik_api_result kopsik_listen(
-  KopsikContext *in_ctx,
+  KopsikContext *ctx,
   char *errmsg, unsigned int errlen);
 
 #undef KOPSIK_EXPORT
