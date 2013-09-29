@@ -95,6 +95,10 @@ clean:
 	rm -f $(main)
 	rm -f $(main)_test
 
+osx:
+	xcodebuild -project src/libkopsik/Kopsik/Kopsik.xcodeproj && \
+	xcodebuild -project src/ui/kopsik_ui_osx/test2.project/kopsik_ui_osx.xcodeproj
+
 cmdline: clean lint
 	mkdir -p build
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/toggl_api_client.cc -o build/toggl_api_client.o
