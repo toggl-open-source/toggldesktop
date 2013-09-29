@@ -106,6 +106,7 @@ KopsikUser *kopsik_user_init() {
 
 void kopsik_user_clear(KopsikUser *user) {
   poco_assert(user);
+  user->ID = 0;
   if (user->Fullname) {
     free(user->Fullname);
     user->Fullname = 0;
