@@ -4,7 +4,6 @@
 #define SRC_KOPSIK_TEST_H_
 
 #include "gtest/gtest.h"
-#include "./toggl_api_client.h"
 
 namespace kopsik {
 

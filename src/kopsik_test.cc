@@ -2,6 +2,7 @@
 
 #include "gtest/gtest.h"
 #include "./toggl_api_client.h"
+#include "./kopsik_api_test.h"
 #include "./database.h"
 
 #include "Poco/FileStream.h"

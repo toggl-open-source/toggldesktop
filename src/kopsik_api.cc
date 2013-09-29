@@ -144,13 +144,9 @@ kopsik_api_result kopsik_current_user(
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
-    if (!user->ID()) {
-      delete user;
-      return KOPSIK_API_SUCCESS;
-    }
     ctx->user = user;
   }
-  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->user);
+  kopsik::User *user = kopsik_context_get_user(ctx);
   if (out_user->Fullname) {
     free(out_user->Fullname);
     out_user->Fullname = 0;

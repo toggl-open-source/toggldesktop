@@ -39,13 +39,8 @@ third_party/poco-1.4.6p1-all/*/samples/*/bin/
 third_party/poco-1.4.6p1-all/*/*/testsuite/bin/
 .dep
 
-kopsik.db
-test.db
-
-# Internal testing data for Toggl
-internal
-
+*.db
 .DS_Store
 *.xcuserstate
 *.xcuserdatad/
-kopsik.log
+*.log
