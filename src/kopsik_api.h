@@ -81,11 +81,6 @@ KOPSIK_EXPORT kopsik_api_result kopsik_logout(
   KopsikContext *ctx,
   char *errmsg, unsigned int errlen);
 
-// Async API
-
-typedef void (*kopsik_callback)
-  (kopsik_api_result result, char *errmsg, unsigned int errlen);
-
 // Sync
 
 typedef struct {
@@ -97,25 +92,30 @@ KOPSIK_EXPORT kopsik_api_result kopsik_sync(
   char *errmsg, unsigned int errlen,
   int full_sync);
 
-KOPSIK_EXPORT kopsik_api_result kopsik_async(
-  KopsikContext *ctx,
-  char *errmsg, unsigned int errlen,
-  int full_sync,
-  kopsik_callback callback);
-
 KOPSIK_EXPORT kopsik_api_result kopsik_push(
   KopsikContext *ctx,
   char *errmsg, unsigned int errlen);
-
-KOPSIK_EXPORT kopsik_api_result kopsik_push_async(
-  KopsikContext *ctx,
-  char *errmsg, unsigned int errlen,
-  kopsik_callback callback);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_dirty_models(
   KopsikContext *ctx,
   char *errmsg, unsigned int errlen,
   KopsikDirtyModels *dirty_models);
+
+// Async API
+
+typedef void (*kopsik_callback)
+  (kopsik_api_result result, char *errmsg, unsigned int errlen);
+
+KOPSIK_EXPORT void kopsik_sync_async(
+  KopsikContext *ctx,
+  char *errmsg, unsigned int errlen,
+  int full_sync,
+  kopsik_callback callback);
+
+KOPSIK_EXPORT void kopsik_push_async(
+  KopsikContext *ctx,
+  char *errmsg, unsigned int errlen,
+  kopsik_callback callback);
 
 // Time entries view
 
