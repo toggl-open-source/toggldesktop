@@ -9,7 +9,6 @@
             <connections>
                 <outlet property="contentView" destination="av5-A6-9S5" id="g24-fx-drT"/>
                 <outlet property="contentViewController" destination="av5-A6-9S5" id="VD8-35-TOQ"/>
-                <outlet property="footerView" destination="9N7-5v-gZK" id="Ct6-rG-j6e"/>
                 <outlet property="headerView" destination="5Ld-I4-6Cu" id="aZt-1o-76f"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>
@@ -20,7 +19,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="258" height="427"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
             <view key="contentView" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="258" height="427"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -28,69 +27,63 @@
                     <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Ld-I4-6Cu" userLabel="HeaderView">
                         <rect key="frame" x="0.0" y="353" width="258" height="74"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="74" id="cgB-pa-3IW"/>
-                        </constraints>
                     </customView>
-                    <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="av5-A6-9S5" userLabel="ContentView">
+                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="av5-A6-9S5" userLabel="ContentView">
                         <rect key="frame" x="0.0" y="29" width="258" height="326"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
-                    <customView hidden="YES" focusRingType="exterior" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9N7-5v-gZK" userLabel="FooterView">
+                    <customView focusRingType="exterior" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I56-Lj-qTa" userLabel="FooterView">
                         <rect key="frame" x="0.0" y="0.0" width="258" height="29"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <subviews>
-                            <popUpButton ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lep-kW-t8B">
+                            <popUpButton ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ar7-s4-8Jz">
                                 <rect key="frame" x="2" y="3" width="39" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="23" id="xqF-hw-sWO"/>
+                                    <constraint firstAttribute="height" constant="23" id="zdb-H8-AXX"/>
                                 </constraints>
-                                <popUpButtonCell key="cell" type="smallSquare" bezelStyle="smallSquare" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" pullsDown="YES" id="gva-sJ-eF9">
+                                <popUpButtonCell key="cell" type="smallSquare" bezelStyle="smallSquare" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" pullsDown="YES" selectedItem="iWP-TY-GZW" id="228-43-gNA">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
-                                    <menu key="menu" title="OtherViews" id="x4W-b1-8Mt">
+                                    <menu key="menu" title="OtherViews" id="vwC-Ks-dRa">
                                         <items>
-                                            <menuItem state="on" image="NSActionTemplate" hidden="YES" id="Wau-D8-ZNm"/>
-                                            <menuItem title="Sync" id="mg3-0M-DhN">
+                                            <menuItem state="on" image="NSActionTemplate" hidden="YES" id="iWP-TY-GZW"/>
+                                            <menuItem title="Sync" id="tHc-0A-qvU">
                                                 <connections>
-                                                    <action selector="sync:" target="-2" id="e7M-RY-kKh"/>
+                                                    <action selector="sync:" target="-2" id="dqy-aI-Fgl"/>
                                                 </connections>
                                             </menuItem>
-                                            <menuItem isSeparatorItem="YES" id="VQH-8y-NbG"/>
-                                            <menuItem title="Logout" id="Giz-0M-7IX">
+                                            <menuItem isSeparatorItem="YES" id="9e7-Oe-tdO"/>
+                                            <menuItem title="Logout" id="Fl0-Xf-c37">
                                                 <connections>
-                                                    <action selector="logout:" target="-2" id="9um-r5-C92"/>
+                                                    <action selector="logout:" target="-2" id="oFZ-EX-oQJ"/>
                                                 </connections>
                                             </menuItem>
                                         </items>
                                     </menu>
                                 </popUpButtonCell>
                             </popUpButton>
-                            <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ixr-JC-i3w">
+                            <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yA3-JF-apT">
                                 <rect key="frame" x="230" y="1" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Hap-2l-g1o">
+                                <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="foE-cy-KnU">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                             </button>
                         </subviews>
-                        <constraints>
-                            <constraint firstAttribute="bottom" secondItem="ixr-JC-i3w" secondAttribute="bottom" constant="4" id="KPF-zB-GC1"/>
-                            <constraint firstAttribute="trailing" secondItem="ixr-JC-i3w" secondAttribute="trailing" constant="5" id="yLP-3w-GsM"/>
-                        </constraints>
                     </customView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="9N7-5v-gZK" secondAttribute="trailing" id="447-UX-hQV"/>
-                    <constraint firstItem="av5-A6-9S5" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="G80-0l-uzQ"/>
-                    <constraint firstAttribute="trailing" secondItem="5Ld-I4-6Cu" secondAttribute="trailing" id="NpS-3B-d49"/>
-                    <constraint firstItem="9N7-5v-gZK" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="OyS-BN-IHn"/>
-                    <constraint firstItem="av5-A6-9S5" firstAttribute="top" secondItem="2" secondAttribute="top" constant="72" id="RQH-8g-TEH"/>
-                    <constraint firstAttribute="bottom" secondItem="9N7-5v-gZK" secondAttribute="bottom" id="q0W-eY-BbL"/>
-                    <constraint firstAttribute="trailing" secondItem="av5-A6-9S5" secondAttribute="trailing" id="r8N-fC-UxY"/>
-                    <constraint firstItem="5Ld-I4-6Cu" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="y3G-m3-QcM"/>
+                    <constraint firstAttribute="trailing" secondItem="5Ld-I4-6Cu" secondAttribute="trailing" id="36u-aa-lo3"/>
+                    <constraint firstAttribute="trailing" secondItem="av5-A6-9S5" secondAttribute="trailing" id="57y-9P-PlT"/>
+                    <constraint firstAttribute="bottom" secondItem="I56-Lj-qTa" secondAttribute="bottom" id="A4i-KT-TTQ"/>
+                    <constraint firstItem="av5-A6-9S5" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="ESW-fM-7Eo"/>
+                    <constraint firstAttribute="trailing" secondItem="I56-Lj-qTa" secondAttribute="trailing" id="UeH-1D-1zL"/>
+                    <constraint firstItem="5Ld-I4-6Cu" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="XId-R8-zBU"/>
+                    <constraint firstItem="I56-Lj-qTa" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="doi-5e-Y0o"/>
+                    <constraint firstItem="av5-A6-9S5" firstAttribute="top" secondItem="2" secondAttribute="top" constant="72" id="juq-i1-HoK"/>
+                    <constraint firstAttribute="bottom" secondItem="av5-A6-9S5" secondAttribute="bottom" constant="29" id="yWZ-Zg-oVi"/>
                 </constraints>
             </view>
             <connections>
