@@ -34,8 +34,6 @@ namespace kopsik {
         KopsikContext *ctx = kopsik_context_init();
         ASSERT_TRUE(ctx);
         kopsik_context_clear(ctx);
-        ASSERT_FALSE(ctx->db);
-        ASSERT_FALSE(ctx->current_user);
     }
 
     TEST(KopsikApiTest, kopsik_version) {
