@@ -3,6 +3,7 @@
 #include "./toggl_api_client.h"
 
 #include <string>
+#include <cstring>
 #include <sstream>
 
 #include "Poco/Stopwatch.h"
