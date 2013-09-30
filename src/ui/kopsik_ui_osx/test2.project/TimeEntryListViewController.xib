@@ -17,10 +17,10 @@
             <rect key="frame" x="0.0" y="0.0" width="258" height="330"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <scrollView wantsLayer="YES" ambiguous="YES" misplaced="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fu8-w4-kYq">
+                <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fu8-w4-kYq">
                     <rect key="frame" x="0.0" y="0.0" width="258" height="330"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <clipView key="contentView" ambiguous="YES" misplaced="YES" id="TQQ-db-grk">
+                    <clipView key="contentView" id="TQQ-db-grk">
                         <rect key="frame" x="0.0" y="0.0" width="258" height="330"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -126,8 +126,10 @@
                 </scrollView>
             </subviews>
             <constraints>
+                <constraint firstItem="fu8-w4-kYq" firstAttribute="top" secondItem="3" secondAttribute="top" id="Hf7-z0-TJQ"/>
                 <constraint firstItem="fu8-w4-kYq" firstAttribute="leading" secondItem="3" secondAttribute="leading" id="Kzp-8f-L6N"/>
                 <constraint firstAttribute="trailing" secondItem="fu8-w4-kYq" secondAttribute="trailing" id="Mw2-Bk-0wN"/>
+                <constraint firstAttribute="bottom" secondItem="fu8-w4-kYq" secondAttribute="bottom" id="tZR-YL-cvO"/>
             </constraints>
         </customView>
     </objects>
