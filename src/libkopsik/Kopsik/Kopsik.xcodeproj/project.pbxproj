@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		74EB0F1717F9A2600046ABC1 /* https_client.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74EB0F1517F9A2600046ABC1 /* https_client.cc */; };
+		74EB0F1817F9A2600046ABC1 /* https_client.h in Headers */ = {isa = PBXBuildFile; fileRef = 74EB0F1617F9A2600046ABC1 /* https_client.h */; };
 		C5DA1F8F17F18CAA001C4565 /* libjson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA1F8E17F18CAA001C4565 /* libjson.a */; };
 		C5DA1F9117F18CB6001C4565 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA1F9017F18CB6001C4565 /* libssl.a */; };
 		C5DA1F9317F18CBB001C4565 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA1F9217F18CBB001C4565 /* libcrypto.a */; };
@@ -28,6 +30,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		74EB0F1517F9A2600046ABC1 /* https_client.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = https_client.cc; path = ../../../https_client.cc; sourceTree = "<group>"; };
+		74EB0F1617F9A2600046ABC1 /* https_client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = https_client.h; path = ../../../https_client.h; sourceTree = "<group>"; };
 		C55DA59C17F06A3B00B42178 /* Kopsik.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = Kopsik.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		C55DA5A017F06A3B00B42178 /* Kopsik-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Kopsik-Prefix.pch"; sourceTree = "<group>"; };
 		C55DA5A117F06A3B00B42178 /* KopsikProj.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = KopsikProj.xcconfig; sourceTree = "<group>"; };
@@ -110,6 +114,8 @@
 		C55DA59E17F06A3B00B42178 /* Kopsik */ = {
 			isa = PBXGroup;
 			children = (
+				74EB0F1517F9A2600046ABC1 /* https_client.cc */,
+				74EB0F1617F9A2600046ABC1 /* https_client.h */,
 				C5DA1FB417F1942A001C4565 /* kopsik_api.cc */,
 				C5DA1FB517F1942A001C4565 /* kopsik_api.h */,
 				C5DA1FA417F18D7B001C4565 /* database.cc */,
@@ -142,6 +148,7 @@
 				C5DA1FB717F1942A001C4565 /* kopsik_api.h in Headers */,
 				C5DA1FB017F18D7B001C4565 /* toggl_api_client.h in Headers */,
 				C5DA1FB117F18D7B001C4565 /* types.h in Headers */,
+				74EB0F1817F9A2600046ABC1 /* https_client.h in Headers */,
 				C5DA1FAC17F18D7B001C4565 /* database.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -214,6 +221,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74EB0F1717F9A2600046ABC1 /* https_client.cc in Sources */,
 				C5DA1FAB17F18D7B001C4565 /* database.cc in Sources */,
 				C5DA1FAF17F18D7B001C4565 /* toggl_api_client.cc in Sources */,
 				C5DA1FB617F1942A001C4565 /* kopsik_api.cc in Sources */,
