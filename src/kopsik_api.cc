@@ -298,6 +298,20 @@ kopsik_api_result kopsik_sync(
   return save(ctx, errmsg, errlen);
 }
 
+void kopsik_sync_async(
+    KopsikContext *ctx,
+    char *errmsg, unsigned int errlen,
+    int full_sync,
+    kopsik_callback callback) {
+  poco_assert(ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(callback);
+  // FIXME: return here, do stuff in another Poco thread
+  kopsik_api_result res = kopsik_sync(ctx, errmsg, errlen, full_sync);
+  callback(res, errmsg, errlen);
+}
+
 kopsik_api_result kopsik_push(
     KopsikContext *ctx,
     char *errmsg, unsigned int errlen) {
@@ -317,6 +331,19 @@ kopsik_api_result kopsik_push(
     return KOPSIK_API_FAILURE;
   }
   return save(ctx, errmsg, errlen);
+}
+
+kopsik_api_result kopsik_push_async(
+    KopsikContext *ctx,
+    char *errmsg, unsigned int errlen,
+    kopsik_callback callback) {
+  poco_assert(ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(callback);
+  // FIXME: return here, do stuff in another Poco thread
+  kopsik_api_result res = kopsik_push(ctx, errmsg, errlen);
+  callback(res, errmsg, errlen);
 }
 
 kopsik_api_result kopsik_dirty_models(
