@@ -18,6 +18,12 @@ namespace command_line_client {
             << std::endl;
     }
 
+    void Main::defineOptions(Poco::Util::OptionSet& options) {
+        Poco::Util::Application::defineOptions(options);
+        options.addOption(Poco::Util::Option(
+            "verbose", "v", "verbose logging, to the console"));
+    }
+
     int Main::main(const std::vector<std::string>& args) {
         if (args.empty()) {
             usage();

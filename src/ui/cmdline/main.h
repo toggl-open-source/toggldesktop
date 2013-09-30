@@ -30,7 +30,7 @@ namespace command_line_client {
         };
         virtual void uninitialize() {}
         virtual void reinitialize() {}
-        virtual void defineOptions(Poco::Util::OptionSet& options) {} // NOLINT
+        virtual void defineOptions(Poco::Util::OptionSet& options); // NOLINT
         void handleOption(const std::string &name, const std::string &value) {}
 
     private:
