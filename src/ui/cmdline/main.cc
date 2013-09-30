@@ -37,19 +37,29 @@ namespace command_line_client {
             return Poco::Util::Application::EXIT_USAGE;
         }
 
-        kopsik_set_db_path(ctx_, "kopsik.db");
-        kopsik_set_log_path(ctx_, "kopsik.log");
+        kopsik_set_db_path(ctx, "kopsik.db");
+        kopsik_set_log_path(ctx, "kopsik.log");
 
+        // Start session in lib
         char err[ERRLEN];
         std::fill(err, err + ERRLEN, 0);
         if (KOPSIK_API_FAILURE == kopsik_set_api_token(
-                ctx_, err, ERRLEN, apiToken)) {
+                ctx, err, ERRLEN, apiToken)) {
             std::cerr << err << std::endl;
             return Poco::Util::Application::EXIT_SOFTWARE;
         }
 
+        // Load user that is referenced by the session
+        KopsikUser *user = kopsik_user_init();
+        if (KOPSIK_API_SUCCESS != kopsik_current_user(
+                ctx, err, ERRLEN, user)) {
+            std::cerr << err << std::endl;
+            return Poco::Util::Application::EXIT_SOFTWARE;
+        }
+        kopsik_user_clear(user);
+
         if ("sync" == args[0]) {
-            if (KOPSIK_API_FAILURE == kopsik_sync(ctx_, err, ERRLEN, 1)) {
+            if (KOPSIK_API_FAILURE == kopsik_sync(ctx, err, ERRLEN, 1)) {
                 std::cerr << err << std::endl;
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
@@ -61,7 +71,7 @@ namespace command_line_client {
             KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
             int found(0);
             if (KOPSIK_API_FAILURE == kopsik_running_time_entry_view_item(
-                    ctx_, err, ERRLEN, te, &found)) {
+                    ctx, err, ERRLEN, te, &found)) {
                 std::cerr << err << std::endl;
                 kopsik_time_entry_view_item_clear(te);
                 return Poco::Util::Application::EXIT_SOFTWARE;
@@ -78,7 +88,7 @@ namespace command_line_client {
         if ("dirty" == args[0]) {
             KopsikDirtyModels dm;
             if (KOPSIK_API_FAILURE == kopsik_dirty_models(
-                    ctx_, err, ERRLEN, &dm)) {
+                    ctx, err, ERRLEN, &dm)) {
                 std::cerr << err << std::endl;
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
@@ -89,12 +99,12 @@ namespace command_line_client {
         if ("start" == args[0]) {
             KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
             if (KOPSIK_API_FAILURE == kopsik_start(
-                    ctx_, err, ERRLEN, "New time entry", te)) {
+                    ctx, err, ERRLEN, "New time entry", te)) {
                 std::cerr << err << std::endl;
                 kopsik_time_entry_view_item_clear(te);
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
-            if (KOPSIK_API_FAILURE == kopsik_sync(ctx_, err, ERRLEN, 0)) {
+            if (KOPSIK_API_FAILURE == kopsik_sync(ctx, err, ERRLEN, 0)) {
                 std::cerr << err << std::endl;
             }
             if (te->Description) {
@@ -109,12 +119,12 @@ namespace command_line_client {
         if ("stop" == args[0]) {
             KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
             if (KOPSIK_API_FAILURE == kopsik_stop(
-                    ctx_, err, ERRLEN, te)) {
+                    ctx, err, ERRLEN, te)) {
                 std::cerr << err << std::endl;
                 kopsik_time_entry_view_item_clear(te);
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
-            if (KOPSIK_API_FAILURE == kopsik_sync(ctx_, err, ERRLEN, 0)) {
+            if (KOPSIK_API_FAILURE == kopsik_sync(ctx, err, ERRLEN, 0)) {
                 std::cerr << err << std::endl;
             }
             if (te->Description) {
@@ -130,7 +140,7 @@ namespace command_line_client {
             KopsikTimeEntryViewItemList *list =
                 kopsik_time_entry_view_item_list_init();
             if (KOPSIK_API_FAILURE == kopsik_time_entry_view_items(
-                    ctx_, err, ERRLEN, list)) {
+                    ctx, err, ERRLEN, list)) {
                 std::cerr << err << std::endl;
                 kopsik_time_entry_view_item_list_clear(list);
                 return Poco::Util::Application::EXIT_SOFTWARE;
@@ -150,7 +160,7 @@ namespace command_line_client {
 
         if ("listen" == args[0]) {
             std::cout << "Listening to websocket.. " << std::endl;
-            if (KOPSIK_API_FAILURE == kopsik_listen(ctx_, err, ERRLEN)) {
+            if (KOPSIK_API_FAILURE == kopsik_listen(ctx, err, ERRLEN)) {
                 std::cerr << "Error while listening to websocket: "
                     << err << std::endl;
                 return Poco::Util::Application::EXIT_SOFTWARE;

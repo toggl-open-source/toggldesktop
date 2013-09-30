@@ -15,12 +15,12 @@ namespace command_line_client {
 
     class Main : public Poco::Util::Application {
     public:
-        Main() : ctx_(0) {
-            ctx_ = kopsik_context_init();
-            poco_assert(ctx_);
+        Main() : ctx(0) {
+            ctx = kopsik_context_init();
+            poco_assert(ctx);
         }
         ~Main() {
-            kopsik_context_clear(ctx_);
+            kopsik_context_clear(ctx);
         }
 
     protected:
@@ -35,7 +35,7 @@ namespace command_line_client {
 
     private:
         void usage();
-        KopsikContext *ctx_;
+        KopsikContext *ctx;
     };
 
 }  // namespace command_line_client
