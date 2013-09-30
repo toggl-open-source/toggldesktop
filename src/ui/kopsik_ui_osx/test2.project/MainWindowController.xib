@@ -63,7 +63,7 @@
                                     </menu>
                                 </popUpButtonCell>
                             </popUpButton>
-                            <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yA3-JF-apT">
+                            <button horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yA3-JF-apT">
                                 <rect key="frame" x="230" y="1" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="foE-cy-KnU">
@@ -72,6 +72,9 @@
                                 </buttonCell>
                             </button>
                         </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="yA3-JF-apT" secondAttribute="trailing" constant="5" id="unV-ly-5hs"/>
+                        </constraints>
                     </customView>
                 </subviews>
                 <constraints>
