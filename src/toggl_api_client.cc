@@ -6,38 +6,20 @@
 #include <sstream>
 
 #include "Poco/Stopwatch.h"
-#include "Poco/Bugcheck.h"
 #include "Poco/Exception.h"
-#include "Poco/InflatingStream.h"
-#include "Poco/DeflatingStream.h"
 #include "Poco/Logger.h"
-#include "Poco/StreamCopier.h"
-#include "Poco/URI.h"
 #include "Poco/DateTimeParser.h"
 #include "Poco/DateTime.h"
 #include "Poco/DateTimeFormatter.h"
 #include "Poco/DateTimeFormat.h"
 #include "Poco/Timespan.h"
 #include "Poco/NumberParser.h"
-#include "Poco/Net/Context.h"
-#include "Poco/Net/NameValueCollection.h"
-#include "Poco/Net/HTTPRequest.h"
-#include "Poco/Net/HTTPResponse.h"
-#include "Poco/Net/HTTPMessage.h"
-#include "Poco/Net/HTTPBasicCredentials.h"
-#include "Poco/Net/HTTPSClientSession.h"
-#include "Poco/Net/WebSocket.h"
+
+#include "./https_client.h"
 
 #include "./libjson.h"
 
 namespace kopsik {
-
-const std::string TOGGL_SERVER_URL("https://www.toggl.com");
-// const std::string TOGGL_SERVER_URL("http://localhost:8080");
-
-// const std::string TOGGL_WEBSOCKET_SERVER_URL("https://stream.toggl.com")
-const std::string TOGGL_WEBSOCKET_SERVER_URL("wss://localhost:8088");
-// const std::string TOGGL_WEBSOCKET_SERVER_URL("wss://echo.websocket.org");
 
 const char *known_colors[] = {
     "#4dc3ff", "#bc85e6", "#df7baa", "#f68d38", "#b27636",
@@ -81,27 +63,8 @@ TimeEntry *User::Continue(std::string GUID) {
     return te;
 }
 
-error User::Listen() {
-  try {
-    const Poco::URI uri(TOGGL_WEBSOCKET_SERVER_URL);
-    const Poco::Net::Context::Ptr context(new Poco::Net::Context(
-      Poco::Net::Context::CLIENT_USE, "", "", "",
-      Poco::Net::Context::VERIFY_NONE, 9, false,
-      "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"));
-    Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(),
-      context);
-    Poco::Net::HTTPRequest req(Poco::Net::HTTPRequest::HTTP_GET, "/ws",
-      Poco::Net::HTTPMessage::HTTP_1_1);
-    Poco::Net::HTTPResponse res;
-    Poco::Net::WebSocket ws(session, req, res);
-  } catch(const Poco::Exception& exc) {
-    return exc.displayText();
-  } catch(const std::exception& ex) {
-    return ex.what();
-  } catch(const std::string& ex) {
-    return ex;
-  }
-  return noError;
+error User::ListenToWebsocket(HTTPSClient *https_client) {
+  return https_client->ListenToWebsocket();
 }
 
 bool compareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
@@ -191,7 +154,7 @@ void User::CollectDirtyObjects(std::vector<TimeEntry *> *result) {
     }
 }
 
-error User::Push() {
+error User::Push(HTTPSClient *https_client) {
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
@@ -241,10 +204,10 @@ error User::Push() {
     logger.debug(json);
 
     std::string response_body("");
-    error err = requestJSON(Poco::Net::HTTPRequest::HTTP_POST,
-        "/api/v8/batch_updates",
+    error err = https_client->PostJSON("/api/v8/batch_updates",
         json,
-        true,
+        APIToken(),
+        "api_token",
         &response_body);
     if (err != noError) {
         return err;
@@ -252,6 +215,7 @@ error User::Push() {
 
     std::vector<BatchUpdateResult> results;
     parseResponseArray(response_body, &results);
+
     // Iterate through response array, parse response bodies.
     // Collect errors into a vector.
     std::vector<error> errors;
@@ -310,6 +274,7 @@ error User::Push() {
 void User::parseResponseArray(std::string response_body,
         std::vector<BatchUpdateResult> *responses) {
     poco_assert(responses);
+    poco_assert(!response_body.empty());
     JSONNODE *response_array = json_parse(response_body.c_str());
     JSONNODE_ITERATOR i = json_begin(response_array);
     JSONNODE_ITERATOR e = json_end(response_array);
@@ -339,156 +304,62 @@ void BatchUpdateResult::parseResponseJSON(JSONNODE *n) {
     }
 }
 
-error User::requestJSON(std::string method,
-        std::string relative_url,
-        std::string json,
-        bool authenticate_with_api_token,
-        std::string *response_body) {
-    poco_assert(!method.empty());
-    poco_assert(!relative_url.empty());
-    poco_assert(response_body);
-    *response_body = "";
-    try {
-        const Poco::URI uri(TOGGL_SERVER_URL);
-
-        const Poco::Net::Context::Ptr context(new Poco::Net::Context(
-            Poco::Net::Context::CLIENT_USE, "", "", "",
-            Poco::Net::Context::VERIFY_NONE, 9, false,
-            "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"));
-
-        Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(),
-            context);
-        session.setKeepAlive(false);
-
-        std::istringstream requestStream(json);
-        Poco::DeflatingInputStream gzipRequest(requestStream,
-            Poco::DeflatingStreamBuf::STREAM_GZIP);
-        Poco::DeflatingStreamBuf *pBuff = gzipRequest.rdbuf();
-
-        Poco::Int64 size = pBuff->pubseekoff(0, std::ios::end, std::ios::in);
-        pBuff->pubseekpos(0, std::ios::in);
-
-        Poco::Net::HTTPRequest req(method,
-            relative_url, Poco::Net::HTTPMessage::HTTP_1_1);
-        req.setKeepAlive(false);
-        req.setContentType("application/json");
-        req.setContentLength(size);
-        req.set("Content-Encoding", "gzip");
-        req.set("Accept-Encoding", "gzip");
-        req.setChunkedTransferEncoding(true);
-
-        Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
-        logger.debug("Sending request..");
-
-        std::string login_username("");
-        std::string login_password("");
-        if (authenticate_with_api_token) {
-            login_username = APIToken();
-            login_password = "api_token";
-        } else {
-            login_username = LoginEmail;
-            login_password = LoginPassword;
-        }
-
-        Poco::Net::HTTPBasicCredentials cred(login_username, login_password);
-        cred.authenticate(req);
-        session.sendRequest(req) << pBuff << std::flush;
-
-        // Log out request contents
-        std::stringstream request_string;
-        req.write(request_string);
-        logger.debug(request_string.str());
-
-        logger.debug("Request sent. Receiving response..");
-
-        // Receive response
-        Poco::Net::HTTPResponse response;
-        std::istream& is = session.receiveResponse(response);
-
-        // Inflate
-        Poco::InflatingInputStream inflater(is,
-            Poco::InflatingStreamBuf::STREAM_GZIP);
-        std::stringstream ss;
-        ss << inflater.rdbuf();
-        *response_body = ss.str();
-
-        // Log out response contents
-        std::stringstream response_string;
-        response_string << "Response status: " << response.getStatus()
-            << ", reason: " << response.getReason()
-            << ", Content type: " << response.getContentType()
-            << ", Content-Encoding: " << response.get("Content-Encoding");
-        logger.debug(response_string.str());
-        logger.debug(*response_body);
-
-        if (!isStatusOK(response.getStatus())) {
-            // FIXME: backoff
-            return "Data push failed with error: " + *response_body;
-        }
-
-        // FIXME: reset backoff
-    } catch(const Poco::Exception& exc) {
-        // FIXME: backoff
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        // FIXME: backoff
-        return ex.what();
-    } catch(const std::string& ex) {
-        // FIXME: backoff
-        return ex;
-    }
-    return noError;
+error User::Login(HTTPSClient *https_client,
+    const std::string &email, const std::string &password) {
+  LoginEmail = email;
+  LoginPassword = password;
+  return pull(https_client, false, true);
 }
 
-bool User::isStatusOK(int status) {
-    return status >= 200 && status < 300;
-}
-
-error User::Login(const std::string &email, const std::string &password) {
-    LoginEmail = email;
-    LoginPassword = password;
-    return pull(false, true);
-}
-
-error User::Sync(bool full_sync) {
-    error err = pull(true, full_sync);
+error User::Sync(HTTPSClient *https_client, bool full_sync) {
+    error err = pull(https_client, true, full_sync);
     if (err != noError) {
         return err;
     }
-    return Push();
+    return Push(https_client);
 }
 
 // FIXME: move code into a GET method
-error User::pull(bool authenticate_with_api_token, bool full_sync) {
-    Poco::Stopwatch stopwatch;
-    stopwatch.start();
+error User::pull(HTTPSClient *https_client,
+      bool authenticate_with_api_token, bool full_sync) {
+  Poco::Stopwatch stopwatch;
+  stopwatch.start();
 
-    std::stringstream relative_url;
-    relative_url << "/api/v8/me?with_related_data=true";
-    if (!full_sync) {
-        relative_url << "&since=" << since_;
-    }
+  std::stringstream relative_url;
+  relative_url << "/api/v8/me?with_related_data=true";
+  if (!full_sync) {
+      relative_url << "&since=" << since_;
+  }
 
-    std::string response_body("");
-    error err = requestJSON(Poco::Net::HTTPRequest::HTTP_GET,
-        relative_url.str(),
-        "",
-        authenticate_with_api_token,
-        &response_body);
-    if (err != noError) {
-        return err;
-    }
+  std::string basic_auth_username("");
+  std::string basic_auth_password("");
+  if (authenticate_with_api_token) {
+    basic_auth_username = APIToken();
+    basic_auth_password = "api_token";
+  } else {
+    basic_auth_username = LoginEmail;
+    basic_auth_password = LoginPassword;
+  }
+  std::string response_body("");
 
-    LoadFromJSONString(response_body, true);
+  error err = https_client->GetJSON(relative_url.str(),
+    basic_auth_username,
+    basic_auth_password,
+    &response_body);
+  if (err != noError) {
+    return err;
+  }
 
-    stopwatch.stop();
-    std::stringstream ss;
-    ss << "User with related data JSON fetched and parsed in "
-        << stopwatch.elapsed() / 1000 << " ms";
-    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
-    logger.debug(ss.str());
+  LoadFromJSONString(response_body, true);
 
-    return noError;
+  stopwatch.stop();
+  std::stringstream ss;
+  ss << "User with related data JSON fetched and parsed in "
+    << stopwatch.elapsed() / 1000 << " ms";
+  Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
+  logger.debug(ss.str());
+
+  return noError;
 };
 
 void User::LoadFromJSONString(const std::string &json,
@@ -892,19 +763,6 @@ Poco::UInt64 User::getIDFromJSONNode(JSONNODE *data) {
     return 0;
 }
 
-Poco::UInt64 User::getUIModifiedAtFromJSONNode(JSONNODE *data) {
-    JSONNODE_ITERATOR current_node = json_begin(data);
-    JSONNODE_ITERATOR last_node = json_end(data);
-    while (current_node != last_node) {
-        json_char *node_name = json_name(*current_node);
-        if (strcmp(node_name, "ui_modified_at") == 0) {
-            return json_as_int(*current_node);
-        }
-        ++current_node;
-    }
-    return 0;
-}
-
 void User::loadTimeEntriesFromJSONNode(JSONNODE *list) {
     poco_assert(list);
 
@@ -917,12 +775,8 @@ void User::loadTimeEntriesFromJSONNode(JSONNODE *list) {
             model = new TimeEntry();
             TimeEntries.push_back(model);
         }
-        Poco::UInt64 ui_modified_at =
-            getUIModifiedAtFromJSONNode(*current_node);
-        if (!(model->UIModifiedAt() > ui_modified_at)) {
-            model->SetUID(ID());
-            model->LoadFromJSONNode(*current_node);
-        }
+        model->SetUID(ID());
+        model->LoadFromJSONNode(*current_node);
         ++current_node;
     }
 }
@@ -1295,6 +1149,19 @@ void TimeEntry::SetTags(std::string tags) {
     }
 }
 
+Poco::UInt64 TimeEntry::getUIModifiedAtFromJSONNode(JSONNODE *data) {
+    JSONNODE_ITERATOR current_node = json_begin(data);
+    JSONNODE_ITERATOR last_node = json_end(data);
+    while (current_node != last_node) {
+        json_char *node_name = json_name(*current_node);
+        if (strcmp(node_name, "ui_modified_at") == 0) {
+            return json_as_int(*current_node);
+        }
+        ++current_node;
+    }
+    return 0;
+}
+
 void TimeEntry::LoadFromJSONString(std::string json) {
     poco_assert(!json.empty());
     JSONNODE *root = json_parse(json.c_str());
@@ -1304,6 +1171,12 @@ void TimeEntry::LoadFromJSONString(std::string json) {
 
 void TimeEntry::LoadFromJSONNode(JSONNODE *data) {
     poco_assert(data);
+
+    Poco::UInt64 ui_modified_at =
+        getUIModifiedAtFromJSONNode(data);
+    if (UIModifiedAt() > ui_modified_at) {
+        return;
+    }
 
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);

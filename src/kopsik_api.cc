@@ -5,6 +5,7 @@
 #include "./kopsik_api.h"
 #include "./database.h"
 #include "./toggl_api_client.h"
+#include "./https_client.h"
 
 #include "Poco/Bugcheck.h"
 #include "Poco/Path.h"
@@ -18,6 +19,8 @@
 KopsikContext *kopsik_context_init() {
   KopsikContext *ctx = new KopsikContext();
   ctx->db = 0;
+  ctx->current_user = 0;
+  ctx->https_client = new kopsik::HTTPSClient();
   return ctx;
 }
 
@@ -32,10 +35,10 @@ void kopsik_context_db_clear(KopsikContext *ctx) {
 
 void kopsik_context_user_clear(KopsikContext *ctx) {
   poco_assert(ctx);
-  if (ctx->user) {
-    kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->user);
+  if (ctx->current_user) {
+    kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
     delete user;
-    ctx->user = 0;
+    ctx->current_user = 0;
   }
 }
 
@@ -43,6 +46,12 @@ void kopsik_context_clear(KopsikContext *ctx) {
   poco_assert(ctx);
   kopsik_context_db_clear(ctx);
   kopsik_context_user_clear(ctx);
+  if (ctx->https_client) {
+    kopsik::HTTPSClient *https_client =
+      reinterpret_cast<kopsik::HTTPSClient *>(ctx->https_client);
+    delete https_client;
+    ctx->https_client = 0;
+  }
   delete ctx;
   ctx = 0;
 }
@@ -121,12 +130,6 @@ kopsik::Database *get_db(KopsikContext *ctx) {
   return reinterpret_cast<kopsik::Database *>(ctx->db);
 }
 
-kopsik::User *get_user(KopsikContext *ctx) {
-  poco_assert(ctx);
-  poco_assert(ctx->user);
-  return reinterpret_cast<kopsik::User *>(ctx->user);
-}
-
 kopsik_api_result kopsik_current_user(
     KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
@@ -136,7 +139,7 @@ kopsik_api_result kopsik_current_user(
   poco_assert(errlen);
   poco_assert(out_user);
 
-  if (!ctx->user) {
+  if (!ctx->current_user) {
     kopsik::Database *db = get_db(ctx);
     kopsik::User *user = new kopsik::User();
     kopsik::error err = db->LoadCurrentUser(user, true);
@@ -145,10 +148,10 @@ kopsik_api_result kopsik_current_user(
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
-    ctx->user = user;
+    ctx->current_user = user;
   }
-  poco_assert(ctx->user);
-  kopsik::User *user = get_user(ctx);
+  poco_assert(ctx->current_user);
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
   if (out_user->Fullname) {
     free(out_user->Fullname);
     out_user->Fullname = 0;
@@ -216,7 +219,9 @@ kopsik_api_result kopsik_login(
   }
   kopsik_context_user_clear(ctx);
   kopsik::User *user = new kopsik::User();
-  kopsik::error err = user->Login(email, password);
+  kopsik::HTTPSClient *https_client =
+    reinterpret_cast<kopsik::HTTPSClient *>(ctx->https_client);
+  kopsik::error err = user->Login(https_client, email, password);
   if (err != kopsik::noError) {
     delete user;
     strncpy(errmsg, err.c_str(), errlen);
@@ -235,7 +240,7 @@ kopsik_api_result kopsik_login(
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
-  ctx->user = user;
+  ctx->current_user = user;
   return KOPSIK_API_SUCCESS;
 }
 
@@ -262,7 +267,7 @@ kopsik_api_result save(KopsikContext *ctx,
   poco_assert(errmsg);
   poco_assert(errlen);
   kopsik::Database *db = get_db(ctx);
-  kopsik::User *user = get_user(ctx);
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
   kopsik::error err = db->SaveUser(user, true);
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
@@ -278,8 +283,14 @@ kopsik_api_result kopsik_sync(
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
-  kopsik::User *user = get_user(ctx);
-  kopsik::error err = user->Sync(full_sync);
+  if (!ctx->current_user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
+  kopsik::HTTPSClient *https_client =
+    reinterpret_cast<kopsik::HTTPSClient *>(ctx->https_client);
+  kopsik::error err = user->Sync(https_client, full_sync);
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
@@ -293,8 +304,14 @@ kopsik_api_result kopsik_push(
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
-  kopsik::User *user = get_user(ctx);
-  kopsik::error err = user->Push();
+  if (!ctx->current_user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
+  kopsik::HTTPSClient *https_client =
+    reinterpret_cast<kopsik::HTTPSClient *>(ctx->https_client);
+  kopsik::error err = user->Push(https_client);
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
@@ -306,8 +323,15 @@ kopsik_api_result kopsik_dirty_models(
     KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
     KopsikDirtyModels *out_dirty_models) {
+  poco_assert(ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
   poco_assert(out_dirty_models);
-  kopsik::User *user = get_user(ctx);
+  if (!ctx->current_user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
   std::vector<kopsik::TimeEntry *> dirty;
   user->CollectDirtyObjects(&dirty);
   out_dirty_models->TimeEntries = 0;
@@ -419,7 +443,11 @@ kopsik_api_result kopsik_start(
     strncpy(errmsg, "Missing description", errlen);
     return KOPSIK_API_FAILURE;
   }
-  kopsik::User *user = get_user(ctx);
+  if (!ctx->current_user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
   kopsik::TimeEntry *te = user->Start(description);
   kopsik_api_result res = save(ctx, errmsg, errlen);
   if (KOPSIK_API_SUCCESS != res) {
@@ -444,7 +472,11 @@ kopsik_api_result kopsik_continue(
     strncpy(errmsg, "Missing GUID", errlen);
     return KOPSIK_API_FAILURE;
   }
-  kopsik::User *user = get_user(ctx);
+  if (!ctx->current_user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
   kopsik::TimeEntry *te = user->Continue(GUID);
   kopsik_api_result res = save(ctx, errmsg, errlen);
   if (KOPSIK_API_SUCCESS != res) {
@@ -462,7 +494,11 @@ kopsik_api_result kopsik_stop(
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(out_view_item);
-  kopsik::User *user = get_user(ctx);
+  if (!ctx->current_user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
   std::vector<kopsik::TimeEntry *> stopped = user->Stop();
   if (!stopped.empty()) {
     kopsik_api_result res = save(ctx, errmsg, errlen);
@@ -485,7 +521,11 @@ kopsik_api_result kopsik_running_time_entry_view_item(
   poco_assert(out_item);
   poco_assert(out_is_tracking);
   *out_is_tracking = 0;
-  kopsik::User *user = get_user(ctx);
+  if (!ctx->current_user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
   kopsik::TimeEntry *te = user->RunningTimeEntry();
   if (te) {
     *out_is_tracking = true;
@@ -524,7 +564,11 @@ kopsik_api_result kopsik_time_entry_view_items(
   poco_assert(errlen);
   poco_assert(out_list);
 
-  kopsik::User *user = get_user(ctx);
+  if (!ctx->current_user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
   user->SortTimeEntriesByStart();
 
   std::vector<kopsik::TimeEntry *>stopped;
@@ -566,8 +610,14 @@ kopsik_api_result kopsik_listen(
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
-  kopsik::User *user = get_user(ctx);
-  kopsik::error err = user->Listen();
+  if (!ctx->current_user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
+  kopsik::HTTPSClient *https_client =
+    reinterpret_cast<kopsik::HTTPSClient *>(ctx->https_client);
+  kopsik::error err = user->ListenToWebsocket(https_client);
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;

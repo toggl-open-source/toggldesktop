@@ -23,7 +23,8 @@ typedef int kopsik_api_result;
 
 typedef struct {
   void *db;
-  void *user;
+  void *current_user;
+  void *https_client;
 } KopsikContext;
 
 KOPSIK_EXPORT KopsikContext *kopsik_context_init();
@@ -83,7 +84,7 @@ KOPSIK_EXPORT kopsik_api_result kopsik_logout(
 // Sync
 
 typedef struct {
-  int TimeEntries;
+  unsigned int TimeEntries;
 } KopsikDirtyModels;
 
 KOPSIK_EXPORT kopsik_api_result kopsik_sync(

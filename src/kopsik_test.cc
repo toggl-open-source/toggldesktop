@@ -311,7 +311,7 @@ namespace kopsik {
         User user;
         user.LoadFromJSONString(json, true);
         ASSERT_EQ(Poco::UInt64(1379068550), user.Since());
-        ASSERT_EQ(Poco::UInt64(1047), user.ID());
+        ASSERT_EQ(Poco::UInt64(10471231), user.ID());
         ASSERT_EQ(Poco::UInt64(123456788), user.DefaultWID());
         ASSERT_EQ("30eb0ae954b536d2f6628f7fec47beb6", user.APIToken());
         ASSERT_EQ("John Smith", user.Fullname());

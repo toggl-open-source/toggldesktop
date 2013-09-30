@@ -106,6 +106,7 @@ osx:
 
 cmdline: clean lint
 	mkdir -p build
+	$(cxx) $(cflags) -O2 -DNDEBUG -c src/https_client.cc -o build/https_client.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/toggl_api_client.cc -o build/toggl_api_client.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/database.cc -o build/database.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/kopsik_api.cc -o build/kopsik_api.o
@@ -115,6 +116,7 @@ cmdline: clean lint
 
 test: clean lint
 	mkdir -p build
+	$(cxx) $(cflags) -O2 -DNDEBUG -c src/https_client.cc -o build/https_client.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/toggl_api_client.cc -o build/toggl_api_client.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/database.cc -o build/database.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/kopsik_api.cc -o build/kopsik_api.o

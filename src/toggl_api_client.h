@@ -15,6 +15,7 @@
 #include "Poco/Types.h"
 
 #include "./types.h"
+#include "./https_client.h"
 
 namespace kopsik {
 
@@ -288,6 +289,7 @@ namespace kopsik {
         bool dirty_;
 
         error loadTagsFromJSONNode(JSONNODE *list);
+        Poco::UInt64 getUIModifiedAtFromJSONNode(JSONNODE *data);
 
         std::time_t Parse8601(std::string iso_8601_formatted_date);
         std::string Format8601(std::time_t date);
@@ -307,14 +309,16 @@ namespace kopsik {
             ClearTimeEntries();
         }
 
-        error Sync(bool full_sync);
-        error Push();
-        error Login(const std::string &email, const std::string &password);
+        error Sync(HTTPSClient *https_client, bool full_sync);
+        error Push(HTTPSClient *https_client);
+        error Login(HTTPSClient *https_client,
+            const std::string &email, const std::string &password);
+        error ListenToWebsocket(HTTPSClient *https_client);
+
         void LoadFromJSONString(const std::string &json,
             bool with_related_data);
         void LoadDataFromJSONNode(JSONNODE *node, bool with_related_data);
         std::string String();
-        error Listen();
 
         void ClearWorkspaces();
         void ClearClients();
@@ -377,7 +381,8 @@ namespace kopsik {
         bool dirty_;
         std::string fullname_;
 
-        error pull(bool authenticate_with_api_token,
+        error pull(HTTPSClient *https_client,
+            bool authenticate_with_api_token,
             bool full_sync);
 
         void loadProjectsFromJSONNode(JSONNODE *list);
@@ -388,7 +393,6 @@ namespace kopsik {
         void loadWorkspacesFromJSONNode(JSONNODE *list);
 
         Poco::UInt64 getIDFromJSONNode(JSONNODE *list);
-        Poco::UInt64 getUIModifiedAtFromJSONNode(JSONNODE *data);
 
         error requestJSON(std::string method, std::string relative_url,
                 std::string json,
