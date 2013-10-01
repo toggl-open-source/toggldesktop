@@ -349,27 +349,29 @@ void kopsik_sync_async(
     KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
     int full_sync,
-    kopsik_callback callback) {
+    kopsik_callback callback,
+    void *callback_arg) {
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(callback);
   // FIXME: return here, do stuff in another Poco thread
   kopsik_api_result res = kopsik_sync(ctx, errmsg, errlen, full_sync);
-  callback(res, errmsg, errlen);
+  callback(res, errmsg, errlen, callback_arg);
 }
 
 void kopsik_push_async(
     KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
-    kopsik_callback callback) {
+    kopsik_callback callback,
+    void *callback_arg) {
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(callback);
   // FIXME: return here, do stuff in another Poco thread
   kopsik_api_result res = kopsik_push(ctx, errmsg, errlen);
-  callback(res, errmsg, errlen);
+  callback(res, errmsg, errlen, callback_arg);
 }
 
 // Time entries view API

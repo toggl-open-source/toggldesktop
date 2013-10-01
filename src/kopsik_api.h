@@ -103,19 +103,24 @@ KOPSIK_EXPORT kopsik_api_result kopsik_dirty_models(
 
 // Async API
 
-typedef void (*kopsik_callback)
-  (kopsik_api_result result, char *errmsg, unsigned int errlen);
+typedef void (*kopsik_callback)(
+  kopsik_api_result result,
+  char *errmsg,
+  unsigned int errlen,
+  void *callback_arg);
 
 KOPSIK_EXPORT void kopsik_sync_async(
   KopsikContext *ctx,
   char *errmsg, unsigned int errlen,
   int full_sync,
-  kopsik_callback callback);
+  kopsik_callback callback,
+  void *callback_arg);
 
 KOPSIK_EXPORT void kopsik_push_async(
   KopsikContext *ctx,
   char *errmsg, unsigned int errlen,
-  kopsik_callback callback);
+  kopsik_callback callback,
+  void *callback_arg);
 
 // Time entries view
 
