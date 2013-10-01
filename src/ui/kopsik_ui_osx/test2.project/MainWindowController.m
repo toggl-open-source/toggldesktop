@@ -137,7 +137,7 @@
   } else if ([notification.name isEqualToString:kUIEventTimeEntrySelected]) {
     [self.timeEntryListViewController.view removeFromSuperview];
     [self.contentView addSubview:self.timeEntryEditViewController.view];
-    [self.timerEditViewController.view setFrame:self.contentView.bounds];
+    [self.timeEntryEditViewController.view setFrame:self.contentView.bounds];
   }
 }
 
