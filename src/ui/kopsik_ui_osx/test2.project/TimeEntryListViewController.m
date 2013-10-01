@@ -94,22 +94,28 @@
           blue:((colorCode)&0xFF)/255.0 alpha:1.0];
 }
 
+void finishPushAfterContinue(kopsik_api_result result, char *err, unsigned int errlen) {
+  if (KOPSIK_API_SUCCESS != result) {
+    NSLog(@"Error pushing data: %s", err);
+  }
+}
+
 - (IBAction)continueButtonClicked:(id)sender {
   char err[KOPSIK_ERR_LEN];
   NSString *guid = @"FIXME";
   KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
   if (KOPSIK_API_SUCCESS != kopsik_continue(ctx, err, KOPSIK_ERR_LEN, [guid UTF8String], item)) {
     NSLog(@"Error starting time entry: %s", err);
-  } else {
-    TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
-    [te load:item];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerRunning object:te];
-    // FIXME: make this async
-    if (KOPSIK_API_SUCCESS != kopsik_push(ctx, err, KOPSIK_ERR_LEN)) {
-      NSLog(@"Sync error: %s", err);
-    }
+    kopsik_time_entry_view_item_clear(item);
+    return;
   }
+
+  TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
+  [te load:item];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerRunning object:te];
   kopsik_time_entry_view_item_clear(item);
+
+  kopsik_push_async(ctx, err, KOPSIK_ERR_LEN, finishPushAfterContinue);
 }
 
 @end

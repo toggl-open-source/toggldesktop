@@ -152,32 +152,35 @@
   [self startSync:1];
 }
 
-- (void)startSync:(int)full_sync {
-  char err[KOPSIK_ERR_LEN];
-  // FIXME: make this async
-  if (KOPSIK_API_SUCCESS != kopsik_sync(ctx, err, KOPSIK_ERR_LEN, 1)) {
-    NSLog(@"Sync error: %s", err);
+void finishSync(kopsik_api_result result, char *err, unsigned int errlen) {
+  if (KOPSIK_API_SUCCESS != result) {
+    NSLog(@"Error syncing data: %s", err);
+    return;
   }
-  
-  // Get running time entry
+
   KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
   int is_tracking = 0;
-  if (KOPSIK_API_SUCCESS == kopsik_running_time_entry_view_item(ctx,
+  if (KOPSIK_API_SUCCESS != kopsik_running_time_entry_view_item(ctx,
                                                                 err, KOPSIK_ERR_LEN,
                                                                 item, &is_tracking)) {
-    if (is_tracking) {
-      TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
-      [te load:item];
-      [[NSNotificationCenter defaultCenter]
-       postNotificationName:kUIEventTimerRunning object:te];
-    } else {
-      [[NSNotificationCenter defaultCenter]
-       postNotificationName:kUIEventTimerStopped object:nil];
-    }
-  } else {
     NSLog(@"Error fetching running time entry: %s", err);
+    kopsik_time_entry_view_item_clear(item);
+    return;
+  }
+
+  if (is_tracking) {
+    TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
+    [te load:item];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerRunning object:te];
+  } else {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerStopped object:nil];
   }
   kopsik_time_entry_view_item_clear(item);
+}
+
+- (void)startSync:(int)full_sync {
+  char err[KOPSIK_ERR_LEN];
+  kopsik_sync_async(ctx, err, KOPSIK_ERR_LEN, 1, finishSync);
 }
 
 @end
