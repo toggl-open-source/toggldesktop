@@ -7,7 +7,6 @@
 extern "C" {
 #endif
 
-#include <errno.h>
 #include <stddef.h>
 #include <stdio.h>
 
@@ -26,6 +25,7 @@ typedef struct {
   void *current_user;
   void *https_client;
   void *mutex;
+  void *tm;
 } KopsikContext;
 
 KOPSIK_EXPORT KopsikContext *kopsik_context_init();

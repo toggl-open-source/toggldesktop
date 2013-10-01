@@ -15,6 +15,9 @@
 #include "Poco/PatternFormatter.h"
 #include "Poco/ScopedLock.h"
 #include "Poco/Mutex.h"
+#include "Poco/Thread.h"
+#include "Poco/Runnable.h"
+#include "Poco/TaskManager.h"
 
 // Context API.
 
@@ -24,12 +27,20 @@ KopsikContext *kopsik_context_init() {
   ctx->current_user = 0;
   ctx->https_client = new kopsik::HTTPSClient();
   ctx->mutex = new Poco::Mutex();
+  ctx->tm = new Poco::TaskManager();
   return ctx;
 }
 
 void kopsik_context_clear(KopsikContext *ctx) {
   poco_assert(ctx);
 
+  if (ctx->tm) {
+    Poco::TaskManager *tm =
+        reinterpret_cast<Poco::TaskManager *>(ctx->tm);
+    tm->joinAll();
+    delete tm;
+    ctx->tm = 0;
+  }
   if (ctx->db) {
     kopsik::Database *db = reinterpret_cast<kopsik::Database *>(ctx->db);
     delete db;
