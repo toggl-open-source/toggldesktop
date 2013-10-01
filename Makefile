@@ -141,8 +141,9 @@ deps: openssl poco json
 json:
 	cd $(jsondir) && make
 
-nightly: deps test osx
-	#upload the resulting app to cdn
+nightly: #deps test osx
+	rm -rf src/branding
+	git clone gitosis@git.toggl.com:kopsik_branding.git src/branding
 
 openssl:
 ifeq ($(uname), Darwin)
