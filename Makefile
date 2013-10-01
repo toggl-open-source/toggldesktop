@@ -141,9 +141,7 @@ deps: openssl poco json
 json:
 	cd $(jsondir) && make
 
-nightly: deps
-	cd src/libkopsik/Kopsik && xcodebuild -arch x86_64
-	cd src/ui/kopsik_ui_osx/test2.project && xcodebuild -arch x86_64
+nightly: deps test osx
 	#upload the resulting app to cdn
 
 openssl:
