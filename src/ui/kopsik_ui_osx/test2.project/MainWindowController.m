@@ -107,7 +107,9 @@
     [self.footerView setHidden:NO];
     [self.headerView setHidden:NO];
     
-    [self startSync:1];
+    renderRunningTimeEntry();
+    
+    [self startSync];
     
   } else if ([notification.name isEqualToString:kUIEventUserLoggedOut]) {
     // Show login view
@@ -149,17 +151,22 @@
 }
 
 - (IBAction)sync:(id)sender {
-  [self startSync:1];
+  [self startSync];
 }
 
 void finishSync(kopsik_api_result result, char *err, unsigned int errlen) {
+  NSLog(@"finishSync");
   if (KOPSIK_API_SUCCESS != result) {
     NSLog(@"Error syncing data: %s", err);
     return;
   }
+  renderRunningTimeEntry();
+}
 
+void renderRunningTimeEntry() {
   KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
   int is_tracking = 0;
+  char err[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_running_time_entry_view_item(ctx,
                                                                 err, KOPSIK_ERR_LEN,
                                                                 item, &is_tracking)) {
@@ -178,7 +185,7 @@ void finishSync(kopsik_api_result result, char *err, unsigned int errlen) {
   kopsik_time_entry_view_item_clear(item);
 }
 
-- (void)startSync:(int)full_sync {
+- (void)startSync {
   char err[KOPSIK_ERR_LEN];
   kopsik_sync_async(ctx, err, KOPSIK_ERR_LEN, 1, finishSync);
 }

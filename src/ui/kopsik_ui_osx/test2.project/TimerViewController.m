@@ -71,6 +71,7 @@
 }
 
 void finishPushAfterStop(kopsik_api_result result, char *err, unsigned int errlen) {
+  NSLog(@"finishPushAfterStop");
   if (KOPSIK_API_SUCCESS != result) {
     NSLog(@"Error pushing data: %s", err);
   }
