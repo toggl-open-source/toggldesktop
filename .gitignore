@@ -44,3 +44,5 @@ third_party/poco-1.4.6p1-all/*/*/testsuite/bin/
 *.xcuserstate
 *.xcuserdatad/
 *.log
+
+src/branding/
