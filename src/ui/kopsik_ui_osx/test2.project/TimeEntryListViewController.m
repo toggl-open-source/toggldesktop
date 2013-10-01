@@ -10,8 +10,9 @@
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
 #import "kopsik_api.h"
-#import "Context.h"
 #import "TableViewCell.h"
+#import "Context.h"
+#import "UIEvents.h"
 
 @interface TimeEntryListViewController ()
 
@@ -74,6 +75,10 @@
     }
     cellView.durationTextField.stringValue = item.duration;
     return cellView;
+}
+
+- (void)tableViewSelectionDidChange:(NSNotification *)aNotification{
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimeEntrySelected object:nil];
 }
 
 - (NSColor *)hexCodeToNSColor:(NSString *)hexCode {

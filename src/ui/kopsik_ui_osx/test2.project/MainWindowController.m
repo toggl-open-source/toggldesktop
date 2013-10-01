@@ -11,6 +11,7 @@
 #import "TimeEntryListViewController.h"
 #import "TimerViewController.h"
 #import "TimerEditViewController.h"
+#import "TimeEntryEditViewController.h"
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
 #import "Context.h"
@@ -20,6 +21,7 @@
 @property (nonatomic,strong) IBOutlet TimeEntryListViewController *timeEntryListViewController;
 @property (nonatomic,strong) IBOutlet TimerViewController *timerViewController;
 @property (nonatomic,strong) IBOutlet TimerEditViewController *timerEditViewController;
+@property (nonatomic,strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
 @end
 
 @implementation MainWindowController
@@ -48,6 +50,11 @@
      selector:@selector(eventHandler:)
      name:kUIEventTimerStopped
      object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(eventHandler:)
+     name:kUIEventTimeEntrySelected
+     object:nil];
 
     self.loginViewController = [[LoginViewController alloc]
                                 initWithNibName:@"LoginViewController" bundle:nil];
@@ -57,6 +64,8 @@
                                 initWithNibName:@"TimerViewController" bundle:nil];
     self.timerEditViewController = [[TimerEditViewController alloc]
                                       initWithNibName:@"TimerEditViewController" bundle:nil];
+    self.timeEntryEditViewController = [[TimeEntryEditViewController alloc]
+                                    initWithNibName:@"TimeEntryEditViewController" bundle:nil];
     
     [self.loginViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
     [self.timerViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
@@ -123,6 +132,10 @@
 
     [self.headerView addSubview:self.timerEditViewController.view];
     [self.timerEditViewController.view setFrame:self.headerView.bounds];
+  } else if ([notification.name isEqualToString:kUIEventTimeEntrySelected]) {
+    [self.timeEntryListViewController.view removeFromSuperview];
+    [self.contentView addSubview:self.timeEntryEditViewController.view];
+    [self.timerEditViewController.view setFrame:self.contentView.bounds];
   }
 }
 
