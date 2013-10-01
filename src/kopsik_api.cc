@@ -13,6 +13,8 @@
 #include "Poco/SimpleFileChannel.h"
 #include "Poco/FormattingChannel.h"
 #include "Poco/PatternFormatter.h"
+#include "Poco/ScopedLock.h"
+#include "Poco/Mutex.h"
 
 // Context API.
 
@@ -21,36 +23,33 @@ KopsikContext *kopsik_context_init() {
   ctx->db = 0;
   ctx->current_user = 0;
   ctx->https_client = new kopsik::HTTPSClient();
+  ctx->mutex = new Poco::Mutex();
   return ctx;
 }
 
-void kopsik_context_db_clear(KopsikContext *ctx) {
+void kopsik_context_clear(KopsikContext *ctx) {
   poco_assert(ctx);
+
   if (ctx->db) {
     kopsik::Database *db = reinterpret_cast<kopsik::Database *>(ctx->db);
     delete db;
     ctx->db = 0;
   }
-}
-
-void kopsik_context_user_clear(KopsikContext *ctx) {
-  poco_assert(ctx);
   if (ctx->current_user) {
     kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
     delete user;
     ctx->current_user = 0;
   }
-}
-
-void kopsik_context_clear(KopsikContext *ctx) {
-  poco_assert(ctx);
-  kopsik_context_db_clear(ctx);
-  kopsik_context_user_clear(ctx);
   if (ctx->https_client) {
     kopsik::HTTPSClient *https_client =
       reinterpret_cast<kopsik::HTTPSClient *>(ctx->https_client);
     delete https_client;
     ctx->https_client = 0;
+  }
+  if (ctx->mutex) {
+    Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+    delete mutex;
+    ctx->mutex = 0;
   }
   delete ctx;
   ctx = 0;
@@ -75,19 +74,34 @@ void kopsik_set_proxy(
   poco_assert(host);
   poco_assert(username);
   poco_assert(password);
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
   // FIXME: implement
 }
 
 void kopsik_set_db_path(KopsikContext *ctx, const char *path) {
   poco_assert(ctx);
   poco_assert(path);
-  kopsik_context_db_clear(ctx);
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
+  if (ctx->db) {
+    kopsik::Database *db = reinterpret_cast<kopsik::Database *>(ctx->db);
+    delete db;
+    ctx->db = 0;
+  }
   ctx->db = new kopsik::Database(path);
 }
 
 void kopsik_set_log_path(KopsikContext *ctx, const char *path) {
   poco_assert(ctx);
   poco_assert(path);
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
 
   Poco::AutoPtr<Poco::SimpleFileChannel> simpleFileChannel(
     new Poco::SimpleFileChannel);
@@ -139,6 +153,9 @@ kopsik_api_result kopsik_current_user(
   poco_assert(errlen);
   poco_assert(out_user);
 
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
   if (!ctx->current_user) {
     kopsik::Database *db = get_db(ctx);
     kopsik::User *user = new kopsik::User();
@@ -169,6 +186,10 @@ kopsik_api_result kopsik_set_api_token(
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(api_token);
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
   kopsik::Database *db = get_db(ctx);
   kopsik::error err = db->SetCurrentAPIToken(api_token);
   if (err != kopsik::noError) {
@@ -187,6 +208,10 @@ kopsik_api_result kopsik_get_api_token(
   poco_assert(errlen);
   poco_assert(str);
   poco_assert(max_strlen);
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
   kopsik::Database *db = get_db(ctx);
   std::string token("");
   kopsik::error err = db->CurrentAPIToken(&token);
@@ -207,6 +232,10 @@ kopsik_api_result kopsik_login(
   poco_assert(errlen);
   poco_assert(in_email);
   poco_assert(in_password);
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
   std::string email(in_email);
   std::string password(in_password);
   if (email.empty()) {
@@ -217,7 +246,11 @@ kopsik_api_result kopsik_login(
     strncpy(errmsg, "Empty password", errlen);
     return KOPSIK_API_FAILURE;
   }
-  kopsik_context_user_clear(ctx);
+  if (ctx->current_user) {
+    kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
+    delete user;
+    ctx->current_user = 0;
+  }
   kopsik::User *user = new kopsik::User();
   kopsik::HTTPSClient *https_client =
     reinterpret_cast<kopsik::HTTPSClient *>(ctx->https_client);
@@ -250,6 +283,10 @@ kopsik_api_result kopsik_logout(
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
   kopsik::Database *db = get_db(ctx);
   kopsik::error err = db->ClearCurrentAPIToken();
   if (err != kopsik::noError) {
@@ -283,6 +320,10 @@ kopsik_api_result kopsik_sync(
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
   if (!ctx->current_user) {
     strncpy(errmsg, "Please login first", errlen);
     return KOPSIK_API_FAILURE;
@@ -304,6 +345,10 @@ kopsik_api_result kopsik_push(
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
   if (!ctx->current_user) {
     strncpy(errmsg, "Please login first", errlen);
     return KOPSIK_API_FAILURE;
@@ -327,6 +372,10 @@ kopsik_api_result kopsik_dirty_models(
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(out_dirty_models);
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
   if (!ctx->current_user) {
     strncpy(errmsg, "Please login first", errlen);
     return KOPSIK_API_FAILURE;
@@ -349,29 +398,27 @@ void kopsik_sync_async(
     KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
     int full_sync,
-    kopsik_callback callback,
-    void *callback_arg) {
+    kopsik_callback callback) {
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(callback);
   // FIXME: return here, do stuff in another Poco thread
   kopsik_api_result res = kopsik_sync(ctx, errmsg, errlen, full_sync);
-  callback(res, errmsg, errlen, callback_arg);
+  callback(res, errmsg, errlen);
 }
 
 void kopsik_push_async(
     KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
-    kopsik_callback callback,
-    void *callback_arg) {
+    kopsik_callback callback) {
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(callback);
   // FIXME: return here, do stuff in another Poco thread
   kopsik_api_result res = kopsik_push(ctx, errmsg, errlen);
-  callback(res, errmsg, errlen, callback_arg);
+  callback(res, errmsg, errlen);
 }
 
 // Time entries view API
@@ -469,6 +516,10 @@ kopsik_api_result kopsik_start(
   poco_assert(errlen);
   poco_assert(in_description);
   poco_assert(out_view_item);
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
   std::string description(in_description);
   if (description.empty()) {
     strncpy(errmsg, "Missing description", errlen);
@@ -498,6 +549,10 @@ kopsik_api_result kopsik_continue(
   poco_assert(errlen);
   poco_assert(in_guid);
   poco_assert(out_view_item);
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
   std::string GUID(in_guid);
   if (GUID.empty()) {
     strncpy(errmsg, "Missing GUID", errlen);
@@ -525,6 +580,10 @@ kopsik_api_result kopsik_stop(
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(out_view_item);
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
   if (!ctx->current_user) {
     strncpy(errmsg, "Please login first", errlen);
     return KOPSIK_API_FAILURE;
@@ -551,6 +610,10 @@ kopsik_api_result kopsik_running_time_entry_view_item(
   poco_assert(errlen);
   poco_assert(out_item);
   poco_assert(out_is_tracking);
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
   *out_is_tracking = 0;
   if (!ctx->current_user) {
     strncpy(errmsg, "Please login first", errlen);
@@ -594,6 +657,9 @@ kopsik_api_result kopsik_time_entry_view_items(
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(out_list);
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
 
   if (!ctx->current_user) {
     strncpy(errmsg, "Please login first", errlen);
@@ -641,6 +707,10 @@ kopsik_api_result kopsik_listen(
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
   if (!ctx->current_user) {
     strncpy(errmsg, "Please login first", errlen);
     return KOPSIK_API_FAILURE;

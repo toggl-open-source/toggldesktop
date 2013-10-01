@@ -25,6 +25,7 @@ typedef struct {
   void *db;
   void *current_user;
   void *https_client;
+  void *mutex;
 } KopsikContext;
 
 KOPSIK_EXPORT KopsikContext *kopsik_context_init();
@@ -106,21 +107,18 @@ KOPSIK_EXPORT kopsik_api_result kopsik_dirty_models(
 typedef void (*kopsik_callback)(
   kopsik_api_result result,
   char *errmsg,
-  unsigned int errlen,
-  void *callback_arg);
+  unsigned int errlen);
 
 KOPSIK_EXPORT void kopsik_sync_async(
   KopsikContext *ctx,
   char *errmsg, unsigned int errlen,
   int full_sync,
-  kopsik_callback callback,
-  void *callback_arg);
+  kopsik_callback callback);
 
 KOPSIK_EXPORT void kopsik_push_async(
   KopsikContext *ctx,
   char *errmsg, unsigned int errlen,
-  kopsik_callback callback,
-  void *callback_arg);
+  kopsik_callback callback);
 
 // Time entries view
 
