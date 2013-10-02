@@ -57,6 +57,15 @@
 - (id) init
 {
   self = [super init];
+  
+  // Disallow duplicate instances
+  if ([[NSRunningApplication runningApplicationsWithBundleIdentifier:[[NSBundle mainBundle] bundleIdentifier]] count] > 1) {
+    [[NSAlert alertWithMessageText:[NSString stringWithFormat:@"Another copy of %@ is already running.", [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey]]
+                     defaultButton:nil alternateButton:nil otherButton:nil informativeTextWithFormat:@"This copy will now quit."] runModal];
+    
+    [NSApp terminate:nil];
+  }
+  
   ctx = kopsik_context_init();
 
   NSString *app_path = self.applicationSupportDirectory;
