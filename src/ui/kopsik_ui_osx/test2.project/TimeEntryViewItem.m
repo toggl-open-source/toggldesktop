@@ -12,6 +12,7 @@
 @implementation TimeEntryViewItem
 
 - (void)load:(KopsikTimeEntryViewItem *)data {
+  self.GUID = [NSString stringWithUTF8String:data->GUID];
   self.duration_in_seconds = data->DurationInSeconds;
   self.description = [NSString stringWithUTF8String:data->Description];
   if (data->Project) {

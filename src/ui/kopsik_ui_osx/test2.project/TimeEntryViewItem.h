@@ -16,4 +16,5 @@
 @property NSString *project;
 @property NSString *duration;
 @property NSString *color;
+@property NSString *GUID;
 @end

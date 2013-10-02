@@ -14,5 +14,6 @@
 @property (nonatomic,strong) IBOutlet NSTextField *projectTextField;
 @property (nonatomic,strong) IBOutlet NSTextField *durationTextField;
 @property (nonatomic,strong) IBOutlet NSButton *continueButton;
+@property NSString *GUID;
 @end
 

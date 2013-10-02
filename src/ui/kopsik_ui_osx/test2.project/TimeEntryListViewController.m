@@ -74,6 +74,7 @@
       cellView = [[TableViewCell alloc] init];
       cellView.identifier = @"TimeEntryCell";
     }
+    cellView.GUID = item.GUID;
     cellView.colorTextField.backgroundColor = [self hexCodeToNSColor:item.color];
     cellView.descriptionTextField.stringValue = item.description;
     if (item.project) {
@@ -112,8 +113,10 @@ void finishPushAfterContinue(kopsik_api_result result, char *err, unsigned int e
 }
 
 - (IBAction)continueButtonClicked:(id)sender {
+  NSButton *btn = sender;
+  TableViewCell *cell = (TableViewCell*)[btn superview];
   char err[KOPSIK_ERR_LEN];
-  NSString *guid = @"FIXME";
+  NSString *guid = cell.GUID;
   KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
   if (KOPSIK_API_SUCCESS != kopsik_continue(ctx, err, KOPSIK_ERR_LEN, [guid UTF8String], item)) {
     NSLog(@"Error starting time entry: %s", err);
@@ -127,8 +130,9 @@ void finishPushAfterContinue(kopsik_api_result result, char *err, unsigned int e
 
   TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
   [te load:item];
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerRunning object:te];
   kopsik_time_entry_view_item_clear(item);
+
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerRunning object:te];
 
   kopsik_push_async(ctx, err, KOPSIK_ERR_LEN, finishPushAfterContinue);
 }
