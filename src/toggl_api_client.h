@@ -31,12 +31,13 @@ namespace kopsik {
 
     class BatchUpdateResult {
     public:
-        BatchUpdateResult() : StatusCode(0), Body(""), GUID("") {
+        BatchUpdateResult() : StatusCode(0), Body(""), GUID(""),
+            ContentType("") {
         }
         Poco::Int64 StatusCode;
-        std::string ContentType;
         std::string Body;
         std::string GUID;  // must match the BatchUpdate GUID
+        std::string ContentType;
 
         void parseResponseJSON(JSONNODE *n);
         void parseResponseJSONBody(std::string body);

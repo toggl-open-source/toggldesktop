@@ -187,6 +187,7 @@ namespace kopsik {
         ASSERT_EQ(KOPSIK_API_SUCCESS,
             kopsik_stop(ctx, err, ERRLEN, stopped));
         ASSERT_EQ(std::string("Test"), std::string(stopped->Description));
+        std::string dirty_guid(stopped->GUID);
         kopsik_time_entry_view_item_clear(stopped);
 
         // Now the stopped time entry should be listed
@@ -215,8 +216,13 @@ namespace kopsik {
 
         // Push changes
         std::stringstream response_body;
-        response_body << "["
-            << "{\"status\": 200, \"body\": \""
+        response_body
+            << "["
+            << "{"
+            << "\"status\": 200,"
+            << "\"guid\": \"" << dirty_guid << "\","
+            << "\"content_type\": \"application/json\","
+            << "\"body\": \""
                 << "{\"data\": {\"id\": 123456789, \"ui_modified_at\": "
                 << time(0) << "}}\""
             << "}"

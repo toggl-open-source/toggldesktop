@@ -221,19 +221,34 @@ error User::Push(HTTPSClient *https_client) {
     // Iterate through response array, parse response bodies.
     // Collect errors into a vector.
     std::vector<error> errors;
-    int response_index = 0;
     for (std::vector<BatchUpdateResult>::const_iterator it = results.begin();
             it != results.end();
             it++) {
         BatchUpdateResult result = *it;
 
         std::stringstream ss;
-        ss << "batch update result status " << result.StatusCode
-            << ", body " << result.Body;
+        ss  << "batch update result GUID: " << result.GUID
+            << ", StatusCode: " << result.StatusCode
+            << ", ContentType: " << result.ContentType
+            << ", Body: " << result.Body;
         logger.error(ss.str());
 
-        // Some response bodies contain plaintext error messages.
+        if (result.StatusCode < 200 || result.StatusCode >= 300) {
+            errors.push_back(result.Body);
+        }
+
+        poco_assert(!result.GUID.empty());
         poco_assert(json_is_valid(result.Body.c_str()));
+
+        TimeEntry *te = 0;
+        for (std::vector<TimeEntry *>::const_iterator it =
+                dirty.begin(); it != dirty.end(); it++) {
+            if ((*it)->GUID() == result.GUID) {
+                te = *it;
+                break;
+            }
+        }
+        poco_assert(te);
 
         JSONNODE *n = json_parse(result.Body.c_str());
         JSONNODE_ITERATOR i = json_begin(n);
@@ -241,15 +256,11 @@ error User::Push(HTTPSClient *https_client) {
         while (i != e) {
             json_char *node_name = json_name(*i);
             if (strcmp(node_name, "data") == 0) {
-                TimeEntry *te = dirty[response_index];
-                poco_assert(te);
                 te->LoadFromJSONNode(*i);
             }
             ++i;
         }
         json_delete(n);
-
-        response_index++;
     }
 
     // Collect errors
@@ -297,6 +308,7 @@ void BatchUpdateResult::parseResponseJSON(JSONNODE *n) {
     StatusCode = 0;
     Body = "";
     GUID = "";
+    ContentType = "";
     JSONNODE_ITERATOR i = json_begin(n);
     JSONNODE_ITERATOR e = json_end(n);
     while (i != e) {
@@ -307,6 +319,8 @@ void BatchUpdateResult::parseResponseJSON(JSONNODE *n) {
             Body = std::string(json_as_string(*i));
         } else if (strcmp(node_name, "guid") == 0) {
             GUID = std::string(json_as_string(*i));
+        } else if (strcmp(node_name, "guid") == 0) {
+            ContentType = std::string(json_as_string(*i));
         }
         ++i;
     }
