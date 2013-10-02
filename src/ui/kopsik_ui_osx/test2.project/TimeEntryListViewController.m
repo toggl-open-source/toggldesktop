@@ -13,6 +13,7 @@
 #import "TableViewCell.h"
 #import "Context.h"
 #import "UIEvents.h"
+#import "bugsnag.h"
 
 @interface TimeEntryListViewController ()
 
@@ -42,14 +43,19 @@
     KopsikTimeEntryViewItemList *list = kopsik_time_entry_view_item_list_init();
     if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(ctx, err, KOPSIK_ERR_LEN, list)) {
       NSLog(@"Error fetching time entries: %s", err);
-    } else {
-      [viewitems removeAllObjects];
-      for (int i = 0; i < list->Length; i++) {
-        KopsikTimeEntryViewItem *item = list->ViewItems[i];
-        TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
-        [model load:item];
-        [viewitems addObject:model];
-      }
+      [Bugsnag notify:[NSException
+                       exceptionWithName:@"Error fetching time entries"
+                       reason:[NSString stringWithUTF8String:err]
+                       userInfo:nil]];
+      kopsik_time_entry_view_item_list_clear(list);
+      return;
+    }
+    [viewitems removeAllObjects];
+    for (int i = 0; i < list->Length; i++) {
+      KopsikTimeEntryViewItem *item = list->ViewItems[i];
+      TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
+      [model load:item];
+      [viewitems addObject:model];
     }
     kopsik_time_entry_view_item_list_clear(list);
     [self.timeEntriesTableView reloadData];
@@ -98,6 +104,10 @@ void finishPushAfterContinue(kopsik_api_result result, char *err, unsigned int e
   NSLog(@"finishPushAfterContinue");
   if (KOPSIK_API_SUCCESS != result) {
     NSLog(@"Error pushing data: %s", err);
+    [Bugsnag notify:[NSException
+                     exceptionWithName:@"Error pushing data"
+                     reason:[NSString stringWithUTF8String:err]
+                     userInfo:nil]];
   }
 }
 
@@ -108,6 +118,10 @@ void finishPushAfterContinue(kopsik_api_result result, char *err, unsigned int e
   if (KOPSIK_API_SUCCESS != kopsik_continue(ctx, err, KOPSIK_ERR_LEN, [guid UTF8String], item)) {
     NSLog(@"Error starting time entry: %s", err);
     kopsik_time_entry_view_item_clear(item);
+    [Bugsnag notify:[NSException
+                     exceptionWithName:@"Error starting time entry"
+                     reason:[NSString stringWithUTF8String:err]
+                     userInfo:nil]];
     return;
   }
 

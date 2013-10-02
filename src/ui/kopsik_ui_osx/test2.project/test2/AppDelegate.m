@@ -10,6 +10,7 @@
 #import "kopsik_api.h"
 #import "Context.h"
 #import "MainWindowController.h"
+#import "Bugsnag.h"
 
 @interface  AppDelegate()
 @property (nonatomic,strong) IBOutlet MainWindowController *mainWindowController;
@@ -19,6 +20,8 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+  [Bugsnag startBugsnagWithApiKey:@"2a46aa1157256f759053289f2d687c2f"];
+  
   self.mainWindowController = [[MainWindowController alloc] initWithWindowNibName:@"MainWindowController"];
   [self.mainWindowController showWindow:self];
   

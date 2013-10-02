@@ -11,6 +11,7 @@
 #import "Context.h"
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
+#import "Bugsnag.h"
 
 @interface TimerEditViewController ()
 
@@ -31,7 +32,11 @@
 void finishPushAfterStart(kopsik_api_result result, char *err, unsigned int errlen) {
   NSLog(@"finishPushAfterStart");
   if (KOPSIK_API_SUCCESS != result) {
-    NSLog(@"Error pushing data: %s", err);
+    NSLog(@"finishPushAfterStart error: %s", err);
+    [Bugsnag notify:[NSException
+                     exceptionWithName:@"finishPushAfterStart error"
+                     reason:[NSString stringWithUTF8String:err]
+                     userInfo:nil]];
   }
 }
 
@@ -46,6 +51,10 @@ void finishPushAfterStart(kopsik_api_result result, char *err, unsigned int errl
   if (KOPSIK_API_SUCCESS != kopsik_start(ctx, err, KOPSIK_ERR_LEN, [description UTF8String], item)) {
     NSLog(@"Error starting time entry: %s", err);
     kopsik_time_entry_view_item_clear(item);
+    [Bugsnag notify:[NSException
+                     exceptionWithName:@"Error starting time entry"
+                     reason:[NSString stringWithUTF8String:err]
+                     userInfo:nil]];
     return;
   }
 

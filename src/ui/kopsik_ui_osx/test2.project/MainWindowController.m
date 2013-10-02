@@ -15,6 +15,7 @@
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
 #import "Context.h"
+#import "Bugsnag.h"
 
 @interface MainWindowController ()
 @property (nonatomic,strong) IBOutlet LoginViewController *loginViewController;
@@ -83,7 +84,15 @@
   KopsikUser *user = kopsik_user_init();
   if (KOPSIK_API_SUCCESS != kopsik_current_user(ctx, err, KOPSIK_ERR_LEN, user)) {
     NSLog(@"Error fetching user: %s", err);
-  } else if (!user->ID) {
+    [Bugsnag notify:[NSException
+                     exceptionWithName:@"Error fetching user"
+                     reason:[NSString stringWithUTF8String:err]
+                     userInfo:nil]];
+    kopsik_user_clear(user);
+    return;
+  }
+  
+  if (!user->ID) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedOut object:nil];
   } else {
     NSLog(@"Current user: %s", user->Fullname);
@@ -145,6 +154,10 @@
   char err[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_logout(ctx, err, KOPSIK_ERR_LEN)) {
     NSLog(@"Logout error: %s", err);
+    [Bugsnag notify:[NSException
+                     exceptionWithName:@"Logout error"
+                     reason:[NSString stringWithUTF8String:err]
+                     userInfo:nil]];
     return;
   }
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedOut object:nil];
@@ -157,7 +170,11 @@
 void finishSync(kopsik_api_result result, char *err, unsigned int errlen) {
   NSLog(@"finishSync");
   if (KOPSIK_API_SUCCESS != result) {
-    NSLog(@"Error syncing data: %s", err);
+    NSLog(@"finishSync error %s", err);
+    [Bugsnag notify:[NSException
+                     exceptionWithName:@"finishSync error"
+                     reason:[NSString stringWithUTF8String:err]
+                     userInfo:nil]];
     return;
   }
   renderRunningTimeEntry();
@@ -172,6 +189,10 @@ void renderRunningTimeEntry() {
                                                                 item, &is_tracking)) {
     NSLog(@"Error fetching running time entry: %s", err);
     kopsik_time_entry_view_item_clear(item);
+    [Bugsnag notify:[NSException
+                     exceptionWithName:@"Error fetching running time entry"
+                     reason:[NSString stringWithUTF8String:err]
+                     userInfo:nil]];
     return;
   }
 
