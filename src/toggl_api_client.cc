@@ -17,6 +17,7 @@
 #include "Poco/NumberParser.h"
 
 #include "./https_client.h"
+#include "./version.h"
 
 #include "./libjson.h"
 
@@ -43,6 +44,7 @@ TimeEntry *User::Start(std::string description) {
   te->SetDurationInSeconds(-time(0));
   te->SetWID(DefaultWID());
   te->SetUIModifiedAt(time(0));
+  te->SetCreatedWith(createdWith());
   TimeEntries.push_back(te);
   return te;
 }
@@ -60,8 +62,20 @@ TimeEntry *User::Continue(std::string GUID) {
     te->SetPID(existing->PID());
     te->SetTID(existing->TID());
     te->SetUIModifiedAt(time(0));
+    te->SetCreatedWith(createdWith());
     TimeEntries.push_back(te);
     return te;
+}
+
+std::string User::createdWith() {
+    std::stringstream ss;
+    ss  << "libkopsik/"
+        << kopsik::version::Major
+        << "."
+        << kopsik::version::Minor
+        << "."
+        << kopsik::version::Patch;
+    return ss.str();
 }
 
 error User::ListenToWebsocket(HTTPSClient *https_client) {
@@ -237,7 +251,6 @@ error User::Push(HTTPSClient *https_client) {
             errors.push_back(result.Body);
         }
 
-        poco_assert(!result.GUID.empty());
         poco_assert(json_is_valid(result.Body.c_str()));
 
         TimeEntry *te = 0;
@@ -805,18 +818,20 @@ void User::loadTimeEntriesFromJSONNode(JSONNODE *list) {
 
 std::string TimeEntry::String() {
     std::stringstream ss;
-    ss << "ID=" << id_ <<
-    " description=" << description_ <<
-    " wid=" << wid_ <<
-    " guid=" << guid_ <<
-    " pid=" << pid_ <<
-    " tid=" << tid_ <<
-    " start=" << start_ <<
-    " stop=" << stop_ <<
-    " duration=" << duration_in_seconds_ <<
-    " billable=" << billable_ <<
-    " duronly=" << duronly_ <<
-    " ui_modified_at=" << ui_modified_at_;
+    ss  << "ID=" << id_
+        << " description=" << description_
+        << " wid=" << wid_
+        << " guid=" << guid_
+        << " pid=" << pid_
+        << " tid=" << tid_
+        << " start=" << start_
+        << " stop=" << stop_
+        << " duration=" << duration_in_seconds_
+        << " billable=" << billable_
+        << " duronly=" << duronly_
+        << " tags=" << Tags()
+        << " created_with=" << CreatedWith()
+        << " ui_modified_at=" << ui_modified_at_;
     return ss.str();
 }
 
@@ -828,9 +843,7 @@ JSONNODE *TimeEntry::JSON() {
     }
     json_push_back(n, json_new_a("description", description_.c_str()));
     json_push_back(n, json_new_i("wid", (json_int_t)wid_));
-    if (!guid_.empty()) {
-        json_push_back(n, json_new_a("guid", guid_.c_str()));
-    }
+    json_push_back(n, json_new_a("guid", guid_.c_str()));
     if (pid_) {
         json_push_back(n, json_new_i("pid", (json_int_t)pid_));
     }
@@ -846,6 +859,7 @@ JSONNODE *TimeEntry::JSON() {
     json_push_back(n, json_new_b("duronly", duronly_));
     json_push_back(n, json_new_i("ui_modified_at",
         (json_int_t)ui_modified_at_));
+    json_push_back(n, json_new_a("created_with", created_with_.c_str()));
 
     return n;
 }
@@ -1108,6 +1122,13 @@ void TimeEntry::SetDurationString(std::string value) {
     // FIXME: parse duration string into duration in seconds
 }
 
+void TimeEntry::SetCreatedWith(std::string value) {
+    if (created_with_ != value) {
+        created_with_ = value;
+        dirty_ = true;
+    }
+}
+
 void TimeEntry::SetDurOnly(bool value) {
     if (duronly_ != value) {
         duronly_ = value;
@@ -1228,6 +1249,8 @@ void TimeEntry::LoadFromJSONNode(JSONNODE *data) {
             SetDurOnly(json_as_bool(*current_node));
         } else if (strcmp(node_name, "tags") == 0) {
             loadTagsFromJSONNode(*current_node);
+        } else if (strcmp(node_name, "created_with") == 0) {
+            SetCreatedWith(std::string(json_as_string(*current_node)));
         }
         ++current_node;
     }

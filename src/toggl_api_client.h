@@ -222,7 +222,8 @@ namespace kopsik {
         TimeEntry() : local_id_(0),
             id_(0), guid_(""), wid_(0), pid_(0), tid_(0), billable_(false),
             start_(0), stop_(0), duration_in_seconds_(0), description_(""),
-            duronly_(false), ui_modified_at_(0), uid_(0), dirty_(false) {}
+            duronly_(false), ui_modified_at_(0), uid_(0), dirty_(false),
+            created_with_("") {}
 
         std::string Tags();
         void SetTags(std::string tags);
@@ -262,6 +263,8 @@ namespace kopsik {
         void SetStop(Poco::UInt64 value);
         bool Dirty() { return dirty_; }
         void ClearDirty() { dirty_ = false; }
+        std::string CreatedWith() { return created_with_; }
+        void SetCreatedWith(std::string value);
 
         std::vector<std::string> TagNames;
 
@@ -291,6 +294,7 @@ namespace kopsik {
         Poco::UInt64 ui_modified_at_;
         Poco::UInt64 uid_;
         bool dirty_;
+        std::string created_with_;
 
         error loadTagsFromJSONNode(JSONNODE *list);
         Poco::UInt64 getUIModifiedAtFromJSONNode(JSONNODE *data);
@@ -405,6 +409,8 @@ namespace kopsik {
         bool isStatusOK(int status);
         void parseResponseArray(std::string response_body,
             std::vector<BatchUpdateResult> *responses);
+
+        std::string createdWith();
     };
 }  // namespace kopsik
 

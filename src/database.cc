@@ -542,7 +542,7 @@ error Database::loadTimeEntries(Poco::UInt64 UID,
         Poco::Data::Statement select(*session);
         select << "SELECT local_id, id, uid, description, wid, guid, pid, "
             "tid, billable, duronly, ui_modified_at, start, stop, "
-            "duration, tags "
+            "duration, tags, created_with "
             "FROM time_entries WHERE uid = :uid "
             "ORDER BY start DESC",
             Poco::Data::use(UID);
@@ -564,6 +564,7 @@ error Database::loadTimeEntries(Poco::UInt64 UID,
 error Database::loadTimeEntriesFromSQLStatement(Poco::Data::Statement *select,
         std::vector<TimeEntry *> *list) {
     poco_assert(select);
+    poco_assert(list);
     try {
         Poco::Data::RecordSet rs(*select);
         while (!select->done()) {
@@ -586,6 +587,7 @@ error Database::loadTimeEntriesFromSQLStatement(Poco::Data::Statement *select,
                 model->SetStop(rs[12].convert<Poco::UInt64>());
                 model->SetDurationInSeconds(rs[13].convert<Poco::Int64>());
                 model->SetTags(rs[14].convert<std::string>());
+                model->SetCreatedWith(rs[15].convert<std::string>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -711,7 +713,7 @@ error Database::SaveTimeEntry(TimeEntry *model) {
                 "guid = :guid, pid = :pid, tid = :tid, billable = :billable, "
                 "duronly = :duronly, ui_modified_at = :ui_modified_at, "
                 "start = :start, stop = :stop, duration = :duration, "
-                "tags = :tags "
+                "tags = :tags, created_with = :created_with "
                 "where local_id = :local_id",
                 Poco::Data::use(model->ID()),
                 Poco::Data::use(model->UID()),
@@ -727,6 +729,7 @@ error Database::SaveTimeEntry(TimeEntry *model) {
                 Poco::Data::use(model->Stop()),
                 Poco::Data::use(model->DurationInSeconds()),
                 Poco::Data::use(model->Tags()),
+                Poco::Data::use(model->CreatedWith()),
                 Poco::Data::use(model->LocalID()),
                 Poco::Data::now;
         } else {
@@ -735,12 +738,12 @@ error Database::SaveTimeEntry(TimeEntry *model) {
                 "guid, pid, tid, billable, "
                 "duronly, ui_modified_at, "
                 "start, stop, duration, "
-                "tags) "
+                "tags, created_with) "
                 "values(:id, :uid, :description, :wid, "
                 ":guid, :pid, :tid, :billable, "
                 ":duronly, :ui_modified_at, "
                 ":start, :stop, :duration, "
-                ":tags)",
+                ":tags, :created_with)",
                 Poco::Data::use(model->ID()),
                 Poco::Data::use(model->UID()),
                 Poco::Data::use(model->Description()),
@@ -755,6 +758,7 @@ error Database::SaveTimeEntry(TimeEntry *model) {
                 Poco::Data::use(model->Stop()),
                 Poco::Data::use(model->DurationInSeconds()),
                 Poco::Data::use(model->Tags()),
+                Poco::Data::use(model->CreatedWith()),
                 Poco::Data::now;
             error err = last_error();
             if (err != noError) {
@@ -1329,13 +1333,19 @@ error Database::initialize_tables() {
       return err;
     }
 
-    return migrate("sessions",
+    err = migrate("sessions",
         "create table sessions("
         "local_id integer primary key, "
         "api_token varchar not null, "
         "active integer not null default 1 "
         "); "
         "CREATE UNIQUE INDEX id_sessions_active ON sessions (active); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("time_entry.created_with",
+        "alter table time_entries add column created_with varchar; ");
     if (err != noError) {
         return err;
     }
