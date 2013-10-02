@@ -21,6 +21,7 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
   [Bugsnag startBugsnagWithApiKey:@"2a46aa1157256f759053289f2d687c2f"];
+  [Bugsnag configuration].releaseStage = @"development";
   
   self.mainWindowController = [[MainWindowController alloc] initWithWindowNibName:@"MainWindowController"];
   [self.mainWindowController showWindow:self];
