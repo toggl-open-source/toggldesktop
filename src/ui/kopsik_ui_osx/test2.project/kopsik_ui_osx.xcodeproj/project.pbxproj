@@ -58,6 +58,7 @@
 		74E3CDD517FBABE400C3ADD3 /* BugsnagOSXNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDC517FBABE400C3ADD3 /* BugsnagOSXNotifier.m */; };
 		74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74E3CDD617FBAE0800C3ADD3 /* SystemConfiguration.framework */; };
 		74E3CDD917FC369700C3ADD3 /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74E3CDD817FC369700C3ADD3 /* ExceptionHandling.framework */; };
+		74E3CDDD17FC8E8000C3ADD3 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDDC17FC8E8000C3ADD3 /* User.m */; };
 		C5CB7F0417F43EE100A2AEB1 /* TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TableViewCell.m */; };
 		C5DA1FB917F19647001C4565 /* Kopsik.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA1FB817F19647001C4565 /* Kopsik.dylib */; };
 		C5DA1FBB17F19F9A001C4565 /* Kopsik.dylib in Resources */ = {isa = PBXBuildFile; fileRef = C5DA1FB817F19647001C4565 /* Kopsik.dylib */; };
@@ -135,6 +136,8 @@
 		74E3CDC517FBABE400C3ADD3 /* BugsnagOSXNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugsnagOSXNotifier.m; sourceTree = "<group>"; };
 		74E3CDD617FBAE0800C3ADD3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		74E3CDD817FC369700C3ADD3 /* ExceptionHandling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExceptionHandling.framework; path = System/Library/Frameworks/ExceptionHandling.framework; sourceTree = SDKROOT; };
+		74E3CDDB17FC8E8000C3ADD3 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = SOURCE_ROOT; };
+		74E3CDDC17FC8E8000C3ADD3 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = SOURCE_ROOT; };
 		C5CB7F0217F43EE100A2AEB1 /* TableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCell.h; sourceTree = "<group>"; };
 		C5CB7F0317F43EE100A2AEB1 /* TableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCell.m; sourceTree = "<group>"; };
 		C5DA1FB817F19647001C4565 /* Kopsik.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Kopsik.dylib; path = ../../../libkopsik/lib/Kopsik.dylib; sourceTree = "<group>"; };
@@ -232,6 +235,8 @@
 				69FC180917E6534500B96425 /* MainMenu.xib */,
 				C5DA1FBC17F1B08A001C4565 /* MainWindowController.h */,
 				C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */,
+				74E3CDDB17FC8E8000C3ADD3 /* User.h */,
+				74E3CDDC17FC8E8000C3ADD3 /* User.m */,
 				C5DA1FBE17F1B08A001C4565 /* MainWindowController.xib */,
 				74D1D26817EB728000E709B0 /* TimerViewController.h */,
 				74D1D26917EB728000E709B0 /* TimerViewController.m */,
@@ -463,6 +468,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74E3CDDD17FC8E8000C3ADD3 /* User.m in Sources */,
 				7424949E17F1E3D20030121C /* UIEvents.m in Sources */,
 				C5CB7F0417F43EE100A2AEB1 /* TableViewCell.m in Sources */,
 				C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */,
