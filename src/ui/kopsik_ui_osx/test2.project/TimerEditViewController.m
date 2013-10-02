@@ -37,6 +37,7 @@ void finishPushAfterStart(kopsik_api_result result, char *err, unsigned int errl
                      exceptionWithName:@"finishPushAfterStart error"
                      reason:[NSString stringWithUTF8String:err]
                      userInfo:nil]];
+    free(err);
   }
 }
 
@@ -62,7 +63,7 @@ void finishPushAfterStart(kopsik_api_result result, char *err, unsigned int errl
   [te load:item];
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerRunning object:te];
 
-  kopsik_push_async(ctx, err, KOPSIK_ERR_LEN, finishPushAfterStart);
+  kopsik_push_async(ctx, finishPushAfterStart);
 }
 
 @end

@@ -79,6 +79,7 @@ void finishPushAfterStop(kopsik_api_result result, char *err, unsigned int errle
                      exceptionWithName:@"Error pushing data"
                      reason:[NSString stringWithUTF8String:err]
                      userInfo:nil]];
+    free(err);
   }
 }
 
@@ -102,7 +103,7 @@ void finishPushAfterStop(kopsik_api_result result, char *err, unsigned int errle
 
   kopsik_time_entry_view_item_clear(item);
 
-  kopsik_push_async(ctx, err, KOPSIK_ERR_LEN, finishPushAfterStop);
+  kopsik_push_async(ctx, finishPushAfterStop);
 }
 
 - (void)timerFired:(NSTimer*)timer

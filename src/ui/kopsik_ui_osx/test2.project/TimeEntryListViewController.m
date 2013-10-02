@@ -109,6 +109,7 @@ void finishPushAfterContinue(kopsik_api_result result, char *err, unsigned int e
                      exceptionWithName:@"Error pushing data"
                      reason:[NSString stringWithUTF8String:err]
                      userInfo:nil]];
+    free(err);
   }
 }
 
@@ -134,7 +135,7 @@ void finishPushAfterContinue(kopsik_api_result result, char *err, unsigned int e
 
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerRunning object:te];
 
-  kopsik_push_async(ctx, err, KOPSIK_ERR_LEN, finishPushAfterContinue);
+  kopsik_push_async(ctx, finishPushAfterContinue);
 }
 
 @end

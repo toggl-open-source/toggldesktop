@@ -187,6 +187,7 @@ void finishSync(kopsik_api_result result, char *err, unsigned int errlen) {
                      exceptionWithName:@"finishSync error"
                      reason:[NSString stringWithUTF8String:err]
                      userInfo:nil]];
+    free(err);
     return;
   }
   renderRunningTimeEntry();
@@ -219,8 +220,7 @@ void renderRunningTimeEntry() {
 }
 
 - (void)startSync {
-  char err[KOPSIK_ERR_LEN];
-  kopsik_sync_async(ctx, err, KOPSIK_ERR_LEN, 1, finishSync);
+  kopsik_sync_async(ctx, 1, finishSync);
 }
 
 @end

@@ -106,18 +106,18 @@ KOPSIK_EXPORT kopsik_api_result kopsik_dirty_models(
 
 typedef void (*kopsik_callback)(
   kopsik_api_result result,
+  // NB! you need to free() the memory yourself
   char *errmsg,
+  // Length of the returned error string.
   unsigned int errlen);
 
 KOPSIK_EXPORT void kopsik_sync_async(
   KopsikContext *ctx,
-  char *errmsg, unsigned int errlen,
   int full_sync,
   kopsik_callback callback);
 
 KOPSIK_EXPORT void kopsik_push_async(
   KopsikContext *ctx,
-  char *errmsg, unsigned int errlen,
   kopsik_callback callback);
 
 // Time entries view

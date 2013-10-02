@@ -450,68 +450,68 @@ kopsik_api_result kopsik_dirty_models(
 class SyncTask : public Poco::Task {
   public:
     SyncTask(KopsikContext *ctx,
-      char *errmsg, unsigned int errlen,
       int full_sync,
       kopsik_callback callback) : Task("sync"),
       ctx_(ctx),
-      errmsg_(errmsg),
-      errlen_(errlen),
       full_sync_(full_sync),
       callback_(callback) {}
     void runTask() {
-      kopsik_api_result res = kopsik_sync(ctx_, errmsg_, errlen_, full_sync_);
-      callback_(res, errmsg_, errlen_);
+      char err[KOPSIK_ERR_LEN];
+      kopsik_api_result res = kopsik_sync(
+        ctx_, err, KOPSIK_ERR_LEN, full_sync_);
+      char *result_str = 0;
+      unsigned int result_len = 0;
+      if (res != KOPSIK_API_SUCCESS) {
+        result_str = strdup(err);
+        result_len = strlen(err);
+      }
+      callback_(res, result_str, result_len);
     }
   private:
     KopsikContext *ctx_;
-    char *errmsg_;
-    unsigned int errlen_;
     int full_sync_;
     kopsik_callback callback_;
 };
 
 void kopsik_sync_async(
     KopsikContext *ctx,
-    char *errmsg, unsigned int errlen,
     int full_sync,
     kopsik_callback callback) {
   poco_assert(ctx);
-  poco_assert(errmsg);
-  poco_assert(errlen);
   poco_assert(callback);
-
   Poco::TaskManager *tm = reinterpret_cast<Poco::TaskManager *>(ctx->tm);
-  tm->start(new SyncTask(ctx, errmsg, errlen, full_sync, callback));
+  tm->start(new SyncTask(ctx, full_sync, callback));
 }
 
 class PushTask : public Poco::Task {
   public:
     PushTask(KopsikContext *ctx,
-      char *errmsg, unsigned int errlen,
       kopsik_callback callback) : Task("push"),
-      ctx_(ctx), errmsg_(errmsg), errlen_(errlen), callback_(callback) {}
+      ctx_(ctx), callback_(callback) {}
     void runTask() {
-      kopsik_api_result res = kopsik_push(ctx_, errmsg_, errlen_);
-      callback_(res, errmsg_, errlen_);
+      char err[KOPSIK_ERR_LEN];
+      kopsik_api_result res = kopsik_push(ctx_, err, KOPSIK_ERR_LEN);
+      char *result_str = 0;
+      unsigned int result_len = 0;
+      if (res != KOPSIK_API_SUCCESS) {
+        result_str = strdup(err);
+        result_len = strlen(err);
+      }
+      callback_(res, result_str, result_len);
     }
   private:
     KopsikContext *ctx_;
-    char *errmsg_;
-    unsigned int errlen_;
     kopsik_callback callback_;
 };
 
 void kopsik_push_async(
     KopsikContext *ctx,
-    char *errmsg, unsigned int errlen,
     kopsik_callback callback) {
   poco_assert(ctx);
-  poco_assert(errmsg);
-  poco_assert(errlen);
   poco_assert(callback);
 
   Poco::TaskManager *tm = reinterpret_cast<Poco::TaskManager *>(ctx->tm);
-  tm->start(new PushTask(ctx, errmsg, errlen, callback));
+  tm->start(new PushTask(ctx, callback));
 }
 
 // Time entries view API
