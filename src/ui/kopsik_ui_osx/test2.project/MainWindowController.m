@@ -16,6 +16,7 @@
 #import "UIEvents.h"
 #import "Context.h"
 #import "Bugsnag.h"
+#import "User.h"
 
 @interface MainWindowController ()
 @property (nonatomic,strong) IBOutlet LoginViewController *loginViewController;
@@ -91,20 +92,29 @@
     kopsik_user_clear(user);
     return;
   }
+
+  User *userinfo = nil;
+  if (user->ID) {
+    userinfo = [[User alloc] init];
+    [userinfo load:user];
+  }
+  kopsik_user_clear(user);
   
-  if (!user->ID) {
+  if (userinfo == nil) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedOut object:nil];
   } else {
     NSLog(@"Current user: %s", user->Fullname);
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedIn object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedIn object:userinfo];
   }
-  kopsik_user_clear(user);
 }
 
 -(void)eventHandler: (NSNotification *) notification
 {
   NSLog(@"event triggered: %@", notification.name);
   if ([notification.name isEqualToString:kUIEventUserLoggedIn]) {
+    User *userinfo = notification.object;
+    [Bugsnag setUserAttribute:@"user_id" withValue:[NSString stringWithFormat:@"%ld", userinfo.ID]];
+    
     // Hide login view
     [self.loginViewController.view removeFromSuperview];
 
@@ -121,6 +131,8 @@
     [self startSync];
     
   } else if ([notification.name isEqualToString:kUIEventUserLoggedOut]) {
+    [Bugsnag setUserAttribute:@"user_id" withValue:nil];
+    
     // Show login view
     [self.contentView addSubview:self.loginViewController.view];
     [self.loginViewController.view setFrame:self.contentView.bounds];
