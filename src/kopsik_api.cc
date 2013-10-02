@@ -6,6 +6,7 @@
 #include "./database.h"
 #include "./toggl_api_client.h"
 #include "./https_client.h"
+#include "./version.h"
 
 #include "Poco/Bugcheck.h"
 #include "Poco/Path.h"
@@ -133,9 +134,9 @@ void kopsik_version(int *major, int *minor, int *patch) {
   poco_assert(major);
   poco_assert(minor);
   poco_assert(patch);
-  *major = 0;
-  *minor = 1;
-  *patch = 0;
+  *major = kopsik::version::Major;
+  *minor = kopsik::version::Minor;
+  *patch = kopsik::version::Patch;
 }
 
 void kopsik_set_proxy(
