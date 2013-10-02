@@ -168,7 +168,7 @@ error User::Push(HTTPSClient *https_client) {
         return noError;
     }
 
-    // Convert the dirty objcets to batch updates JSON
+    // Convert the dirty objects to batch updates JSON.
     JSONNODE *c = json_new(JSON_ARRAY);
     for (std::vector<TimeEntry *>::const_iterator it =
             dirty.begin();
@@ -193,6 +193,7 @@ error User::Push(HTTPSClient *https_client) {
             json_push_back(update, json_new_a("relative_url",
                 url.str().c_str()));
         }
+        json_push_back(update, json_new_a("GUID", te->GUID().c_str()));
         json_push_back(update, body);
 
         json_push_back(c, update);
@@ -230,6 +231,9 @@ error User::Push(HTTPSClient *https_client) {
         ss << "batch update result status " << result.StatusCode
             << ", body " << result.Body;
         logger.error(ss.str());
+
+        // Some response bodies contain plaintext error messages.
+        poco_assert(json_is_valid(result.Body.c_str()));
 
         JSONNODE *n = json_parse(result.Body.c_str());
         JSONNODE_ITERATOR i = json_begin(n);
@@ -292,6 +296,7 @@ void BatchUpdateResult::parseResponseJSON(JSONNODE *n) {
     poco_assert(n);
     StatusCode = 0;
     Body = "";
+    GUID = "";
     JSONNODE_ITERATOR i = json_begin(n);
     JSONNODE_ITERATOR e = json_end(n);
     while (i != e) {
@@ -300,6 +305,8 @@ void BatchUpdateResult::parseResponseJSON(JSONNODE *n) {
             StatusCode = json_as_int(*i);
         } else if (strcmp(node_name, "body") == 0) {
             Body = std::string(json_as_string(*i));
+        } else if (strcmp(node_name, "guid") == 0) {
+            GUID = std::string(json_as_string(*i));
         }
         ++i;
     }

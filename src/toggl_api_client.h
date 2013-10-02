@@ -21,19 +21,22 @@ namespace kopsik {
 
     class BatchUpdate {
     public:
-        BatchUpdate() : Method(""), RelativeUrl(""), Body("") {
+        BatchUpdate() : Method(""), RelativeUrl(""), Body(""), GUID("") {
         }
         std::string Method;
         std::string RelativeUrl;
         std::string Body;
+        std::string GUID;
     };
 
     class BatchUpdateResult {
     public:
-        BatchUpdateResult() : StatusCode(0), Body("") {
+        BatchUpdateResult() : StatusCode(0), Body(""), GUID("") {
         }
         Poco::Int64 StatusCode;
+        std::string ContentType;
         std::string Body;
+        std::string GUID;  // must match the BatchUpdate GUID
 
         void parseResponseJSON(JSONNODE *n);
         void parseResponseJSONBody(std::string body);
