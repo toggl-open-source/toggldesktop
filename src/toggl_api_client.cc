@@ -57,8 +57,8 @@ TimeEntry *User::Continue(std::string GUID) {
     te->SetStart(time(0));
     te->SetDurationInSeconds(-time(0));
     te->SetWID(existing->WID());
-    te->SetWID(existing->PID());
-    te->SetWID(existing->TID());
+    te->SetPID(existing->PID());
+    te->SetTID(existing->TID());
     te->SetUIModifiedAt(time(0));
     TimeEntries.push_back(te);
     return te;
