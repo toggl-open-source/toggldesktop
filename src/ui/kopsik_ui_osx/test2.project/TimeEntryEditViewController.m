@@ -74,13 +74,20 @@
       [self.projectSelect setStringValue:@""];
     }
     [self.durationTextField setStringValue:item.duration];
+    [self.startTime setDateValue:item.started];
+    [self.startDate setDateValue:item.started];
+    [self.endTime setDateValue:item.ended];
+    if (YES == item.billable) {
+      [self.billableCheckbox setState:NSOnState];
+    } else {
+      [self.billableCheckbox setState:NSOffState];
+    }
+    
+    // FIXME: fill tags
+    //    @property (weak) IBOutlet NSTokenField *tags;
 
-//    @property (weak) IBOutlet NSDatePicker *startTime;
-//    @property (weak) IBOutlet NSDatePicker *endTime;
-//    @property (weak) IBOutlet NSDatePicker *startDate;
-//    @property (weak) IBOutlet NSTokenField *tags;
-//    @property (weak) IBOutlet NSButton *billableCheckbox;
-//    @property (weak) IBOutlet NSTextField *lastEditTextField;
+    // FIXME: fill last edit field
+    //    @property (weak) IBOutlet NSTextField *lastEditTextField;
     
   }
 }
