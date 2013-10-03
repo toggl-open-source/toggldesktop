@@ -129,6 +129,10 @@ typedef struct {
   char *Duration;
   char *Color;
   char *GUID;
+  int Billable;
+  char *Tags;
+  time_t Started;
+  time_t Ended;
 } KopsikTimeEntryViewItem;
 
 typedef struct {

@@ -51,17 +51,21 @@ void time_entry_to_view_item(
   poco_assert(te);
   poco_assert(user);
   poco_assert(view_item);
+
   view_item->DurationInSeconds = static_cast<int>(te->DurationInSeconds());
+
   if (view_item->Description) {
     free(view_item->Description);
     view_item->Description = 0;
   }
   view_item->Description = strdup(te->Description().c_str());
+
   if (view_item->GUID) {
     free(view_item->GUID);
     view_item->GUID = 0;
   }
   view_item->GUID = strdup(te->GUID().c_str());
+
   if (te->PID()) {
     kopsik::Project *p = user->GetProjectByID(te->PID());
     if (p) {
@@ -78,7 +82,28 @@ void time_entry_to_view_item(
       view_item->Color = strdup(p->ColorCode().c_str());
     }
   }
+
+  if (view_item->Duration) {
+    free(view_item->Duration);
+    view_item->Duration = 0;
+  }
   view_item->Duration = strdup(te->DurationString().c_str());
+
+  view_item->Started = time_t(te->Start());
+  view_item->Ended = time_t(te->Stop());
+  if (te->Billable()) {
+    view_item->Billable = 1;
+  } else {
+    view_item->Billable = 0;
+  }
+
+  if (view_item->Tags) {
+    free(view_item->Tags);
+    view_item->Tags = 0;
+  }
+  if (!te->Tags().empty()) {
+    view_item->Tags = strdup(te->Tags().c_str());
+  }
 }
 
 // Context API.
@@ -524,6 +549,10 @@ KopsikTimeEntryViewItem *kopsik_time_entry_view_item_init() {
   item->Duration = 0;
   item->Color = 0;
   item->GUID = 0;
+  item->Billable = 0;
+  item->Tags = 0;
+  item->Started = 0;
+  item->Ended = 0;
   return item;
 }
 
@@ -548,6 +577,10 @@ void kopsik_time_entry_view_item_clear(KopsikTimeEntryViewItem *item) {
   if (item->GUID) {
     free(item->GUID);
     item->GUID = 0;
+  }
+  if (item->Tags) {
+    free(item->Tags);
+    item->Tags = 0;
   }
   delete item;
   item = 0;
