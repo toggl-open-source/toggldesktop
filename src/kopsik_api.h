@@ -97,7 +97,7 @@ KOPSIK_EXPORT kopsik_api_result kopsik_push(
   KopsikContext *ctx,
   char *errmsg, unsigned int errlen);
 
-KOPSIK_EXPORT kopsik_api_result kopsik_dirty_models(
+KOPSIK_EXPORT kopsik_api_result kopsik_pushable_models(
   KopsikContext *ctx,
   char *errmsg, unsigned int errlen,
   KopsikDirtyModels *dirty_models);

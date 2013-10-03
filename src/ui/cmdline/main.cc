@@ -87,7 +87,7 @@ namespace command_line_client {
 
         if ("dirty" == args[0]) {
             KopsikDirtyModels dm;
-            if (KOPSIK_API_FAILURE == kopsik_dirty_models(
+            if (KOPSIK_API_FAILURE == kopsik_pushable_models(
                     ctx, err, ERRLEN, &dm)) {
                 std::cerr << err << std::endl;
                 return Poco::Util::Application::EXIT_SOFTWARE;

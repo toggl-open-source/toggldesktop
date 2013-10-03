@@ -303,6 +303,16 @@ namespace kopsik {
         std::string Format8601(std::time_t date);
     };
 
+    class RelatedData {
+    public:
+        std::vector<Workspace *> Workspaces;
+        std::vector<Client *> Clients;
+        std::vector<Project *> Projects;
+        std::vector<Task *> Tasks;
+        std::vector<Tag *> Tags;
+        std::vector<TimeEntry *> TimeEntries;
+    };
+
     class User {
     public:
         User() : LoginEmail(""), LoginPassword(""), local_id_(0), id_(0),
@@ -343,7 +353,7 @@ namespace kopsik {
         TimeEntry *GetTimeEntryByID(const Poco::UInt64 id);
         TimeEntry *GetTimeEntryByGUID(std::string GUID);
 
-        void CollectDirtyObjects(std::vector<TimeEntry *> *result);
+        void CollectPushableObjects(std::vector<TimeEntry *> *result);
         void SortTimeEntriesByStart();
 
         TimeEntry *RunningTimeEntry();
@@ -372,12 +382,7 @@ namespace kopsik {
         std::string LoginEmail;
         std::string LoginPassword;
 
-        std::vector<Workspace *> Workspaces;
-        std::vector<Client *> Clients;
-        std::vector<Project *> Projects;
-        std::vector<Task *> Tasks;
-        std::vector<Tag *> Tags;
-        std::vector<TimeEntry *> TimeEntries;
+        RelatedData related;
 
     private:
         Poco::Int64 local_id_;

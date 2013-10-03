@@ -45,7 +45,7 @@ TimeEntry *User::Start(std::string description) {
   te->SetWID(DefaultWID());
   te->SetUIModifiedAt(time(0));
   te->SetCreatedWith(createdWith());
-  TimeEntries.push_back(te);
+  related.TimeEntries.push_back(te);
   return te;
 }
 
@@ -63,7 +63,7 @@ TimeEntry *User::Continue(std::string GUID) {
     te->SetTID(existing->TID());
     te->SetUIModifiedAt(time(0));
     te->SetCreatedWith(createdWith());
-    TimeEntries.push_back(te);
+    related.TimeEntries.push_back(te);
     return te;
 }
 
@@ -87,7 +87,7 @@ bool compareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
 }
 
 void User::SortTimeEntriesByStart() {
-  std::sort(TimeEntries.begin(), TimeEntries.end(),
+  std::sort(related.TimeEntries.begin(), related.TimeEntries.end(),
     compareTimeEntriesByStart);
 }
 
@@ -144,8 +144,9 @@ std::vector<TimeEntry *> User::Stop() {
 
 TimeEntry *User::RunningTimeEntry() {
     for (std::vector<TimeEntry *>::const_iterator it =
-            TimeEntries.begin();
-            it != TimeEntries.end(); it++) {
+            related.TimeEntries.begin();
+            it != related.TimeEntries.end();
+            it++) {
         if ((*it)->DurationInSeconds() < 0) {
             return *it;
         }
@@ -157,10 +158,11 @@ bool TimeEntry::NeedsPush() {
     return (ui_modified_at_ > 0) || !id_;
 }
 
-void User::CollectDirtyObjects(std::vector<TimeEntry *> *result) {
+void User::CollectPushableObjects(std::vector<TimeEntry *> *result) {
     poco_assert(result);
-    for (std::vector<TimeEntry *>::const_iterator it = TimeEntries.begin();
-            it != TimeEntries.end();
+    for (std::vector<TimeEntry *>::const_iterator it =
+            related.TimeEntries.begin();
+            it != related.TimeEntries.end();
             it++) {
         TimeEntry *te = *it;
         if (te->NeedsPush()) {
@@ -174,7 +176,7 @@ error User::Push(HTTPSClient *https_client) {
     stopwatch.start();
 
     std::vector<TimeEntry *>dirty;
-    CollectDirtyObjects(&dirty);
+    CollectPushableObjects(&dirty);
 
     Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
     if (dirty.empty()) {
@@ -484,7 +486,7 @@ void User::loadProjectsFromJSONNode(JSONNODE *list) {
         Project *model = GetProjectByID(id);
         if (!model) {
             model = new Project();
-            Projects.push_back(model);
+            related.Projects.push_back(model);
         }
         model->SetUID(ID());
         model->LoadFromJSONNode(*current_node);
@@ -569,7 +571,7 @@ void User::loadTasksFromJSONNode(JSONNODE *list) {
         Task *model = GetTaskByID(id);
         if (!model) {
             model = new Task();
-            Tasks.push_back(model);
+            related.Tasks.push_back(model);
         }
         model->SetUID(ID());
         model->LoadFromJSONNode(*current_node);
@@ -629,7 +631,7 @@ void User::loadWorkspacesFromJSONNode(JSONNODE *list) {
         Workspace *model = GetWorkspaceByID(id);
         if (!model) {
             model = new Workspace();
-            Workspaces.push_back(model);
+            related.Workspaces.push_back(model);
         }
         model->SetUID(ID());
         model->LoadFromJSONNode(*current_node);
@@ -674,7 +676,7 @@ void User::loadTagsFromJSONNode(JSONNODE *list) {
         Tag *model = GetTagByID(id);
         if (!model) {
             model = new Tag();
-            Tags.push_back(model);
+            related.Tags.push_back(model);
         }
         model->SetUID(ID());
         model->LoadFromJSONNode(*current_node);
@@ -734,7 +736,7 @@ void User::loadClientsFromJSONNode(JSONNODE *list) {
         Client *model = GetClientByID(id);
         if (!model) {
             model = new Client();
-            Clients.push_back(model);
+            related.Clients.push_back(model);
         }
         model->SetUID(ID());
         model->LoadFromJSONNode(*current_node);
@@ -808,7 +810,7 @@ void User::loadTimeEntriesFromJSONNode(JSONNODE *list) {
         TimeEntry *model = GetTimeEntryByID(id);
         if (!model) {
             model = new TimeEntry();
-            TimeEntries.push_back(model);
+            related.TimeEntries.push_back(model);
         }
         model->SetUID(ID());
         model->LoadFromJSONNode(*current_node);
@@ -868,8 +870,10 @@ JSONNODE *TimeEntry::JSON() {
 
 Workspace *User::GetWorkspaceByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
-    for (std::vector<Workspace *>::const_iterator it = Workspaces.begin();
-            it != Workspaces.end(); it++) {
+    for (std::vector<Workspace *>::const_iterator it =
+            related.Workspaces.begin();
+            it != related.Workspaces.end();
+            it++) {
         if ((*it)->ID() == id) {
             return *it;
         }
@@ -879,8 +883,8 @@ Workspace *User::GetWorkspaceByID(const Poco::UInt64 id) {
 
 Client *User::GetClientByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
-    for (std::vector<Client *>::const_iterator it = Clients.begin();
-            it != Clients.end(); it++) {
+    for (std::vector<Client *>::const_iterator it = related.Clients.begin();
+            it != related.Clients.end(); it++) {
         if ((*it)->ID() == id) {
             return *it;
         }
@@ -890,8 +894,8 @@ Client *User::GetClientByID(const Poco::UInt64 id) {
 
 Project *User::GetProjectByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
-    for (std::vector<Project *>::const_iterator it = Projects.begin();
-            it != Projects.end(); it++) {
+    for (std::vector<Project *>::const_iterator it = related.Projects.begin();
+            it != related.Projects.end(); it++) {
         if ((*it)->ID() == id) {
             return *it;
         }
@@ -901,8 +905,8 @@ Project *User::GetProjectByID(const Poco::UInt64 id) {
 
 Task *User::GetTaskByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
-    for (std::vector<Task *>::const_iterator it = Tasks.begin();
-            it != Tasks.end(); it++) {
+    for (std::vector<Task *>::const_iterator it = related.Tasks.begin();
+            it != related.Tasks.end(); it++) {
         if ((*it)->ID() == id) {
             return *it;
         }
@@ -912,8 +916,8 @@ Task *User::GetTaskByID(const Poco::UInt64 id) {
 
 Tag *User::GetTagByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
-    for (std::vector<Tag *>::const_iterator it = Tags.begin();
-            it != Tags.end(); it++) {
+    for (std::vector<Tag *>::const_iterator it = related.Tags.begin();
+            it != related.Tags.end(); it++) {
         if ((*it)->ID() == id) {
             return *it;
         }
@@ -924,7 +928,9 @@ Tag *User::GetTagByID(const Poco::UInt64 id) {
 TimeEntry *User::GetTimeEntryByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
     for (std::vector<TimeEntry *>::const_iterator it =
-            TimeEntries.begin(); it != TimeEntries.end(); it++) {
+            related.TimeEntries.begin();
+            it != related.TimeEntries.end();
+            it++) {
         if ((*it)->ID() == id) {
             return *it;
         }
@@ -935,7 +941,9 @@ TimeEntry *User::GetTimeEntryByID(const Poco::UInt64 id) {
 TimeEntry *User::GetTimeEntryByGUID(std::string GUID) {
     poco_assert(!GUID.empty());
     for (std::vector<TimeEntry *>::const_iterator it =
-            TimeEntries.begin(); it != TimeEntries.end(); it++) {
+            related.TimeEntries.begin();
+            it != related.TimeEntries.end();
+            it++) {
         if ((*it)->GUID() == GUID) {
             return *it;
         }
@@ -944,51 +952,63 @@ TimeEntry *User::GetTimeEntryByGUID(std::string GUID) {
 }
 
 void User::ClearWorkspaces() {
-    for (std::vector<Workspace *>::const_iterator it = Workspaces.begin();
-            it != Workspaces.end(); it++) {
+    for (std::vector<Workspace *>::const_iterator it =
+            related.Workspaces.begin();
+            it != related.Workspaces.end();
+            it++) {
         delete *it;
     }
-    Workspaces.clear();
+    related.Workspaces.clear();
 }
 
 void User::ClearProjects() {
-    for (std::vector<Project *>::const_iterator it = Projects.begin();
-            it != Projects.end(); it++) {
+    for (std::vector<Project *>::const_iterator it =
+            related.Projects.begin();
+            it != related.Projects.end();
+            it++) {
         delete *it;
     }
-    Projects.clear();
+    related.Projects.clear();
 }
 
 void User::ClearTasks() {
-    for (std::vector<Task *>::const_iterator it = Tasks.begin();
-            it != Tasks.end(); it++) {
+    for (std::vector<Task *>::const_iterator it =
+            related.Tasks.begin();
+            it != related.Tasks.end();
+            it++) {
         delete *it;
     }
-    Tasks.clear();
+    related.Tasks.clear();
 }
 
 void User::ClearTags() {
-    for (std::vector<Tag *>::const_iterator it = Tags.begin();
-            it != Tags.end(); it++) {
+    for (std::vector<Tag *>::const_iterator it =
+            related.Tags.begin();
+            it != related.Tags.end();
+            it++) {
         delete *it;
     }
-    Tags.clear();
+    related.Tags.clear();
 }
 
 void User::ClearClients() {
-    for (std::vector<Client *>::const_iterator it = Clients.begin();
-            it != Clients.end(); it++) {
+    for (std::vector<Client *>::const_iterator it =
+            related.Clients.begin();
+            it != related.Clients.end();
+            it++) {
         delete *it;
     }
-    Clients.clear();
+    related.Clients.clear();
 }
 
 void User::ClearTimeEntries() {
     for (std::vector<TimeEntry *>::const_iterator it =
-            TimeEntries.begin(); it != TimeEntries.end(); it++) {
+            related.TimeEntries.begin();
+            it != related.TimeEntries.end();
+            it++) {
         delete *it;
     }
-    TimeEntries.clear();
+    related.TimeEntries.clear();
 }
 
 void Workspace::LoadFromJSONNode(JSONNODE *n) {

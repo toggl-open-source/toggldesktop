@@ -200,12 +200,18 @@ namespace kopsik {
         User user2;
         ASSERT_EQ(noError, db.LoadUserByID(user1.ID(), &user2, true));
 
-        ASSERT_EQ(user1.Workspaces.size(), user2.Workspaces.size());
-        ASSERT_EQ(user1.Clients.size(), user2.Clients.size());
-        ASSERT_EQ(user1.Projects.size(), user2.Projects.size());
-        ASSERT_EQ(user1.Tasks.size(), user2.Tasks.size());
-        ASSERT_EQ(user1.Tags.size(), user2.Tags.size());
-        ASSERT_EQ(user1.TimeEntries.size(), user2.TimeEntries.size());
+        ASSERT_EQ(user1.related.Workspaces.size(),
+            user2.related.Workspaces.size());
+        ASSERT_EQ(user1.related.Clients.size(),
+            user2.related.Clients.size());
+        ASSERT_EQ(user1.related.Projects.size(),
+            user2.related.Projects.size());
+        ASSERT_EQ(user1.related.Tasks.size(),
+            user2.related.Tasks.size());
+        ASSERT_EQ(user1.related.Tags.size(),
+            user2.related.Tags.size());
+        ASSERT_EQ(user1.related.TimeEntries.size(),
+            user2.related.TimeEntries.size());
 
         user2.LoadFromJSONString(json, true);
 
@@ -317,64 +323,65 @@ namespace kopsik {
         ASSERT_EQ("John Smith", user.Fullname());
 
         // Projects
-        ASSERT_EQ(uint(2), user.Projects.size());
+        ASSERT_EQ(uint(2), user.related.Projects.size());
 
-        ASSERT_EQ(uint(2598305), user.Projects[0]->ID());
+        ASSERT_EQ(uint(2598305), user.related.Projects[0]->ID());
         ASSERT_EQ("2f0b8f51-f898-d992-3e1a-6bc261fc41ef",
-            user.Projects[0]->GUID());
-        ASSERT_EQ(uint(123456789), user.Projects[0]->WID());
-        ASSERT_EQ("Testing stuff", user.Projects[0]->Name());
-        ASSERT_EQ("21", user.Projects[0]->Color());
-        ASSERT_EQ(user.ID(), user.Projects[0]->UID());
+            user.related.Projects[0]->GUID());
+        ASSERT_EQ(uint(123456789), user.related.Projects[0]->WID());
+        ASSERT_EQ("Testing stuff", user.related.Projects[0]->Name());
+        ASSERT_EQ("21", user.related.Projects[0]->Color());
+        ASSERT_EQ(user.ID(), user.related.Projects[0]->UID());
 
-        ASSERT_EQ(uint(2567324), user.Projects[1]->ID());
-        ASSERT_EQ(uint(123456789), user.Projects[1]->WID());
-        ASSERT_EQ("Even more work", user.Projects[1]->Name());
-        ASSERT_EQ(uint(1129807), user.Projects[1]->CID());
-        ASSERT_EQ(user.ID(), user.Projects[1]->UID());
+        ASSERT_EQ(uint(2567324), user.related.Projects[1]->ID());
+        ASSERT_EQ(uint(123456789), user.related.Projects[1]->WID());
+        ASSERT_EQ("Even more work", user.related.Projects[1]->Name());
+        ASSERT_EQ(uint(1129807), user.related.Projects[1]->CID());
+        ASSERT_EQ(user.ID(), user.related.Projects[1]->UID());
 
         // Time entries
-        ASSERT_EQ(uint(3), user.TimeEntries.size());
+        ASSERT_EQ(uint(3), user.related.TimeEntries.size());
 
-        ASSERT_EQ(uint(89818605), user.TimeEntries[0]->ID());
+        ASSERT_EQ(uint(89818605), user.related.TimeEntries[0]->ID());
         ASSERT_EQ("07fba193-91c4-0ec8-2894-820df0548a8f",
-            user.TimeEntries[0]->GUID());
-        ASSERT_EQ(uint(2567324), user.TimeEntries[0]->PID());
-        ASSERT_EQ(true, user.TimeEntries[0]->Billable());
-        ASSERT_EQ(uint(1378362830), user.TimeEntries[0]->Start());
-        ASSERT_EQ(uint(1378369186), user.TimeEntries[0]->Stop());
-        ASSERT_EQ(6356, user.TimeEntries[0]->DurationInSeconds());
-        ASSERT_EQ("Important things", user.TimeEntries[0]->Description());
-        ASSERT_EQ(uint(0), user.TimeEntries[0]->TagNames.size());
-        ASSERT_FALSE(user.TimeEntries[0]->DurOnly());
-        ASSERT_EQ(user.ID(), user.TimeEntries[0]->UID());
+            user.related.TimeEntries[0]->GUID());
+        ASSERT_EQ(uint(2567324), user.related.TimeEntries[0]->PID());
+        ASSERT_EQ(true, user.related.TimeEntries[0]->Billable());
+        ASSERT_EQ(uint(1378362830), user.related.TimeEntries[0]->Start());
+        ASSERT_EQ(uint(1378369186), user.related.TimeEntries[0]->Stop());
+        ASSERT_EQ(6356, user.related.TimeEntries[0]->DurationInSeconds());
+        ASSERT_EQ("Important things",
+            user.related.TimeEntries[0]->Description());
+        ASSERT_EQ(uint(0), user.related.TimeEntries[0]->TagNames.size());
+        ASSERT_FALSE(user.related.TimeEntries[0]->DurOnly());
+        ASSERT_EQ(user.ID(), user.related.TimeEntries[0]->UID());
 
-        ASSERT_EQ(uint(2), user.Tasks.size());
+        ASSERT_EQ(uint(2), user.related.Tasks.size());
 
-        ASSERT_EQ(uint(1894794), user.Tasks[0]->ID());
-        ASSERT_EQ("blog (writing)", user.Tasks[0]->Name());
-        ASSERT_EQ(uint(123456789), user.Tasks[0]->WID());
-        ASSERT_EQ(uint(2585208), user.Tasks[0]->PID());
-        ASSERT_EQ(user.ID(), user.Tasks[0]->UID());
+        ASSERT_EQ(uint(1894794), user.related.Tasks[0]->ID());
+        ASSERT_EQ("blog (writing)", user.related.Tasks[0]->Name());
+        ASSERT_EQ(uint(123456789), user.related.Tasks[0]->WID());
+        ASSERT_EQ(uint(2585208), user.related.Tasks[0]->PID());
+        ASSERT_EQ(user.ID(), user.related.Tasks[0]->UID());
 
         // FIXME: Tags
 
         // Workspaces
-        ASSERT_EQ(uint(2), user.Workspaces.size());
+        ASSERT_EQ(uint(2), user.related.Workspaces.size());
 
-        ASSERT_EQ(uint(123456788), user.Workspaces[0]->ID());
-        ASSERT_EQ("stuff", user.Workspaces[0]->Name());
-        ASSERT_EQ(user.ID(), user.Workspaces[0]->UID());
+        ASSERT_EQ(uint(123456788), user.related.Workspaces[0]->ID());
+        ASSERT_EQ("stuff", user.related.Workspaces[0]->Name());
+        ASSERT_EQ(user.ID(), user.related.Workspaces[0]->UID());
 
         // Clients
-        ASSERT_EQ(uint(2), user.Clients.size());
+        ASSERT_EQ(uint(2), user.related.Clients.size());
 
-        ASSERT_EQ(uint(1385144), user.Clients[0]->ID());
-        ASSERT_EQ(uint(123456789), user.Clients[0]->WID());
-        ASSERT_EQ("ABC", user.Clients[0]->Name());
+        ASSERT_EQ(uint(1385144), user.related.Clients[0]->ID());
+        ASSERT_EQ(uint(123456789), user.related.Clients[0]->WID());
+        ASSERT_EQ("ABC", user.related.Clients[0]->Name());
         ASSERT_EQ("59b464cd-0f8e-e601-ff44-f135225a6738",
-            user.Clients[1]->GUID());
-        ASSERT_EQ(user.ID(), user.Clients[0]->UID());
+            user.related.Clients[1]->GUID());
+        ASSERT_EQ(user.ID(), user.related.Clients[0]->UID());
 
         Poco::File f(TESTDB);
         if (f.exists()) {
@@ -396,22 +403,22 @@ namespace kopsik {
         ASSERT_EQ(Poco::UInt64(1), n);
 
         ASSERT_EQ(noError, db.UInt("select count(1) from workspaces", &n));
-        ASSERT_EQ(Poco::UInt64(user.Workspaces.size()), n);
+        ASSERT_EQ(Poco::UInt64(user.related.Workspaces.size()), n);
 
         ASSERT_EQ(noError, db.UInt("select count(1) from clients", &n));
-        ASSERT_EQ(Poco::UInt64(user.Clients.size()), n);
+        ASSERT_EQ(Poco::UInt64(user.related.Clients.size()), n);
 
         ASSERT_EQ(noError, db.UInt("select count(1) from projects", &n));
-        ASSERT_EQ(Poco::UInt64(user.Projects.size()), n);
+        ASSERT_EQ(Poco::UInt64(user.related.Projects.size()), n);
 
         ASSERT_EQ(noError, db.UInt("select count(1) from tasks", &n));
-        ASSERT_EQ(Poco::UInt64(user.Tasks.size()), n);
+        ASSERT_EQ(Poco::UInt64(user.related.Tasks.size()), n);
 
         ASSERT_EQ(noError, db.UInt("select count(1) from tags", &n));
-        ASSERT_EQ(Poco::UInt64(user.Tags.size()), n);
+        ASSERT_EQ(Poco::UInt64(user.related.Tags.size()), n);
 
         ASSERT_EQ(noError, db.UInt("select count(1) from time_entries", &n));
-        ASSERT_EQ(Poco::UInt64(user.TimeEntries.size()), n);
+        ASSERT_EQ(Poco::UInt64(user.related.TimeEntries.size()), n);
 
         // Update
         ASSERT_EQ(noError, db.SaveUser(&user, true));
@@ -429,42 +436,48 @@ namespace kopsik {
         ASSERT_EQ(user.ID(), user2.ID());
         ASSERT_EQ(user.DefaultWID(), user2.DefaultWID());
 
-        ASSERT_EQ(uint(2), user2.Projects.size());
-        Project *project_from_db = user2.GetProjectByID(user.Projects[0]->ID());
+        ASSERT_EQ(uint(2), user2.related.Projects.size());
+        Project *project_from_db =
+            user2.GetProjectByID(user.related.Projects[0]->ID());
         ASSERT_TRUE(project_from_db);
-        ASSERT_EQ(user.Projects[0]->String(), project_from_db->String());
-        project_from_db = user2.GetProjectByID(user.Projects[1]->ID());
-        ASSERT_EQ(user.Projects[1]->String(), project_from_db->String());
+        ASSERT_EQ(user.related.Projects[0]->String(),
+            project_from_db->String());
+        project_from_db = user2.GetProjectByID(user.related.Projects[1]->ID());
+        ASSERT_EQ(user.related.Projects[1]->String(),
+            project_from_db->String());
 
-        ASSERT_EQ(uint(3), user2.TimeEntries.size());
+        ASSERT_EQ(uint(3), user2.related.TimeEntries.size());
         TimeEntry *te_from_db =
-            user2.GetTimeEntryByID(user.TimeEntries[0]->ID());
+            user2.GetTimeEntryByID(user.related.TimeEntries[0]->ID());
         ASSERT_TRUE(te_from_db);
-        ASSERT_EQ(user.TimeEntries[0]->String(), te_from_db->String());
-        te_from_db = user2.GetTimeEntryByID(user.TimeEntries[1]->ID());
+        ASSERT_EQ(user.related.TimeEntries[0]->String(), te_from_db->String());
+        te_from_db = user2.GetTimeEntryByID(user.related.TimeEntries[1]->ID());
         ASSERT_TRUE(te_from_db);
-        ASSERT_EQ(user.TimeEntries[1]->String(), te_from_db->String());
-        te_from_db = user2.GetTimeEntryByID(user.TimeEntries[2]->ID());
+        ASSERT_EQ(user.related.TimeEntries[1]->String(), te_from_db->String());
+        te_from_db = user2.GetTimeEntryByID(user.related.TimeEntries[2]->ID());
         ASSERT_TRUE(te_from_db);
-        ASSERT_EQ(user.TimeEntries[2]->String(), te_from_db->String());
+        ASSERT_EQ(user.related.TimeEntries[2]->String(), te_from_db->String());
 
-        ASSERT_EQ(uint(2), user2.Workspaces.size());
+        ASSERT_EQ(uint(2), user2.related.Workspaces.size());
         Workspace *ws_from_db =
-            user2.GetWorkspaceByID(user.Workspaces[0]->ID());
+            user2.GetWorkspaceByID(user.related.Workspaces[0]->ID());
         ASSERT_TRUE(ws_from_db);
-        ASSERT_EQ(user.Workspaces[0]->String(), ws_from_db->String());
-        ws_from_db = user2.GetWorkspaceByID(user.Workspaces[1]->ID());
+        ASSERT_EQ(user.related.Workspaces[0]->String(), ws_from_db->String());
+        ws_from_db = user2.GetWorkspaceByID(user.related.Workspaces[1]->ID());
         ASSERT_TRUE(ws_from_db);
-        ASSERT_EQ(user.Workspaces[1]->String(), ws_from_db->String());
+        ASSERT_EQ(user.related.Workspaces[1]->String(), ws_from_db->String());
 
-        ASSERT_EQ(uint(2), user2.Tasks.size());
-        Task *task_from_db = user2.GetTaskByID(user2.Tasks[0]->ID());
-        ASSERT_EQ(user.Tasks[0]->String(), task_from_db->String());
-        ASSERT_EQ(user.Tasks[1]->String(), user2.Tasks[1]->String());
+        ASSERT_EQ(uint(2), user2.related.Tasks.size());
+        Task *task_from_db = user2.GetTaskByID(user2.related.Tasks[0]->ID());
+        ASSERT_EQ(user.related.Tasks[0]->String(), task_from_db->String());
+        ASSERT_EQ(user.related.Tasks[1]->String(),
+            user2.related.Tasks[1]->String());
 
-        ASSERT_EQ(uint(2), user2.Clients.size());
-        ASSERT_EQ(user.Clients[0]->String(), user2.Clients[0]->String());
-        ASSERT_EQ(user.Clients[1]->String(), user2.Clients[1]->String());
+        ASSERT_EQ(uint(2), user2.related.Clients.size());
+        ASSERT_EQ(user.related.Clients[0]->String(),
+            user2.related.Clients[0]->String());
+        ASSERT_EQ(user.related.Clients[1]->String(),
+            user2.related.Clients[1]->String());
 
         // Delete
         ASSERT_EQ(noError, db.DeleteUser(&user, true));

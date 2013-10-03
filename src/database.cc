@@ -191,32 +191,32 @@ error Database::LoadUserByAPIToken(std::string api_token, User *model,
 }
 
 error Database::loadUsersRelatedData(User *user) {
-    error err = loadWorkspaces(user->ID(), &user->Workspaces);
+    error err = loadWorkspaces(user->ID(), &user->related.Workspaces);
     if (err != noError) {
         return err;
     }
 
-    err = loadClients(user->ID(), &user->Clients);
+    err = loadClients(user->ID(), &user->related.Clients);
     if (err != noError) {
         return err;
     }
 
-    err = loadProjects(user->ID(), &user->Projects);
+    err = loadProjects(user->ID(), &user->related.Projects);
     if (err != noError) {
         return err;
     }
 
-    err = loadTasks(user->ID(), &user->Tasks);
+    err = loadTasks(user->ID(), &user->related.Tasks);
     if (err != noError) {
         return err;
     }
 
-    err = loadTags(user->ID(), &user->Tags);
+    err = loadTags(user->ID(), &user->related.Tags);
     if (err != noError) {
         return err;
     }
 
-    return loadTimeEntries(user->ID(), &user->TimeEntries);
+    return loadTimeEntries(user->ID(), &user->related.TimeEntries);
 }
 
 error Database::LoadUserByID(Poco::UInt64 UID, User *user,
@@ -1118,32 +1118,32 @@ error Database::SaveUser(User *model, bool with_related_data) {
     }
 
     if (with_related_data) {
-        err = saveWorkspaces(model->ID(), &model->Workspaces);
+        err = saveWorkspaces(model->ID(), &model->related.Workspaces);
         if (err != noError) {
             session->rollback();
             return err;
         }
-        err = saveClients(model->ID(), &model->Clients);
+        err = saveClients(model->ID(), &model->related.Clients);
         if (err != noError) {
             session->rollback();
             return err;
         }
-        err = saveProjects(model->ID(), &model->Projects);
+        err = saveProjects(model->ID(), &model->related.Projects);
         if (err != noError) {
             session->rollback();
             return err;
         }
-        err = saveTasks(model->ID(), &model->Tasks);
+        err = saveTasks(model->ID(), &model->related.Tasks);
         if (err != noError) {
             session->rollback();
             return err;
         }
-        err = saveTags(model->ID(), &model->Tags);
+        err = saveTags(model->ID(), &model->related.Tags);
         if (err != noError) {
             session->rollback();
             return err;
         }
-        err = saveTimeEntries(model->ID(), &model->TimeEntries);
+        err = saveTimeEntries(model->ID(), &model->related.TimeEntries);
         if (err != noError) {
             session->rollback();
             return err;

@@ -210,7 +210,7 @@ namespace kopsik {
         // We started and stopped one time entry.
         // This means we should have one dirty model now.
         KopsikDirtyModels dirty_models;
-        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_dirty_models(
+        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_pushable_models(
             ctx, err, ERRLEN, &dirty_models));
         ASSERT_EQ((unsigned int)1, dirty_models.TimeEntries);
 
@@ -242,7 +242,7 @@ namespace kopsik {
             ctx, err, ERRLEN));
 
         // Check that no dirty models are left.
-        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_dirty_models(
+        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_pushable_models(
             ctx, err, ERRLEN, &dirty_models));
         ASSERT_EQ((unsigned int)0, dirty_models.TimeEntries);
 
@@ -257,7 +257,7 @@ namespace kopsik {
         kopsik_time_entry_view_item_clear(continued);
 
         // We should now once again have a dirty model.
-        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_dirty_models(
+        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_pushable_models(
             ctx, err, ERRLEN, &dirty_models));
         ASSERT_EQ((unsigned int)1, dirty_models.TimeEntries);
 

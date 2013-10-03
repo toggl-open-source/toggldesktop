@@ -417,7 +417,7 @@ kopsik_api_result kopsik_push(
   return save(ctx, errmsg, errlen);
 }
 
-kopsik_api_result kopsik_dirty_models(
+kopsik_api_result kopsik_pushable_models(
     KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
     KopsikDirtyModels *out_dirty_models) {
@@ -435,7 +435,7 @@ kopsik_api_result kopsik_dirty_models(
   }
   kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
   std::vector<kopsik::TimeEntry *> dirty;
-  user->CollectDirtyObjects(&dirty);
+  user->CollectPushableObjects(&dirty);
   out_dirty_models->TimeEntries = 0;
   for (std::vector<kopsik::TimeEntry *>::const_iterator it = dirty.begin();
     it != dirty.end();
@@ -726,7 +726,8 @@ kopsik_api_result kopsik_time_entry_view_items(
 
   std::vector<kopsik::TimeEntry *>stopped;
   for (std::vector<kopsik::TimeEntry *>::const_iterator it =
-      user->TimeEntries.begin(); it != user->TimeEntries.end(); it++) {
+      user->related.TimeEntries.begin();
+      it != user->related.TimeEntries.end(); it++) {
     kopsik::TimeEntry *te = *it;
     if (te->DurationInSeconds() >= 0) {
       stopped.push_back(te);
