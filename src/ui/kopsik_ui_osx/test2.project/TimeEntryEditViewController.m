@@ -83,12 +83,11 @@
       [self.billableCheckbox setState:NSOffState];
     }
     
-    // FIXME: fill tags
-    //    @property (weak) IBOutlet NSTokenField *tags;
-
-    // FIXME: fill last edit field
-    //    @property (weak) IBOutlet NSTextField *lastEditTextField;
-    
+    if ([item.tags count] == 0) {
+      [self.tags setObjectValue:nil];
+    } else {
+      [self.tags setObjectValue:item.tags];
+    }
   }
 }
 
