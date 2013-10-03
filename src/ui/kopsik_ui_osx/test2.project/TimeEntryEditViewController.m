@@ -91,7 +91,7 @@
   }
 }
 
-- (IBAction)durationTextFieldEndEditing:(id)sender {
+- (IBAction)durationTextFieldChanged:(id)sender {
 }
 
 - (IBAction)projectSelectChanged:(id)sender {
@@ -106,7 +106,7 @@
 - (IBAction)dateChanged:(id)sender {
 }
 
-- (IBAction)tagsEndEditing:(id)sender {
+- (IBAction)tagsChanged:(id)sender {
 }
 
 - (IBAction)billableCheckBoxClicked:(id)sender {
@@ -114,6 +114,8 @@
 
 - (IBAction)deleteButtonClicked:(id)sender {
 }
+
 - (IBAction)descriptionTextFieldChanged:(id)sender {
 }
+
 @end
