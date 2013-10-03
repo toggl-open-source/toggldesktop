@@ -155,7 +155,9 @@
 
     [self.headerView addSubview:self.timerEditViewController.view];
     [self.timerEditViewController.view setFrame:self.headerView.bounds];
+
   } else if ([notification.name isEqualToString:kUIEventTimeEntrySelected]) {
+    [self.headerView setHidden:YES];
     [self.timeEntryListViewController.view removeFromSuperview];
     [self.contentView addSubview:self.timeEntryEditViewController.view];
     [self.timeEntryEditViewController.view setFrame:self.contentView.bounds];
