@@ -85,10 +85,10 @@
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification{
-  // FIXME: include the selected time entry GUID,
-  // else the editor won't find the TE thats being edited.
-  NSString *guid = @"FIXME";
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimeEntrySelected object:guid];
+  NSInteger selectedRow = [self.timeEntriesTableView selectedRow];
+  TimeEntryViewItem *item = [viewitems objectAtIndex:selectedRow];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimeEntrySelected
+                                                      object:item.GUID];
 }
 
 - (NSColor *)hexCodeToNSColor:(NSString *)hexCode {
@@ -119,8 +119,8 @@ void finishPushAfterContinue(kopsik_api_result result, char *err, unsigned int e
 - (IBAction)continueButtonClicked:(id)sender {
   NSButton *btn = sender;
   TableViewCell *cell = (TableViewCell*)[btn superview];
-  char err[KOPSIK_ERR_LEN];
   NSString *guid = cell.GUID;
+  char err[KOPSIK_ERR_LEN];
   KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
   if (KOPSIK_API_SUCCESS != kopsik_continue(ctx, err, KOPSIK_ERR_LEN, [guid UTF8String], item)) {
     NSLog(@"Error starting time entry: %s", err);

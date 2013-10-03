@@ -25,16 +25,14 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-      [[NSNotificationCenter defaultCenter]
-       addObserver:self
-       selector:@selector(eventHandler:)
-       name:kUIEventTimerRunning
-       object:nil];
-      [[NSNotificationCenter defaultCenter]
-       addObserver:self
-       selector:@selector(eventHandler:)
-       name:kUIEventTimerStopped
-       object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUIEventTimerRunning
+                                                 object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUIEventTimerStopped
+                                                 object:nil];
     }
     
     return self;
@@ -64,10 +62,10 @@
                                                   userInfo:te
                                                    repeats:YES];
     }
+
   } else if ([notification.name isEqualToString:kUIEventTimerStopped]) {
     [self stopTimer];
-  } else if ([notification.name isEqualToString:kUIEventTimerStopped]) {
-    [self stopTimer];
+
   }
 }
 
