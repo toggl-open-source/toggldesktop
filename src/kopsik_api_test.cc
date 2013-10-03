@@ -261,6 +261,23 @@ namespace kopsik {
             ctx, err, ERRLEN, &dirty_models));
         ASSERT_EQ((unsigned int)1, dirty_models.TimeEntries);
 
+        // Get time entry view using GUID
+        int was_found = 0;
+        KopsikTimeEntryViewItem *found = kopsik_time_entry_view_item_init();
+        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_item_by_guid(
+            ctx, err, ERRLEN, dirty_guid.c_str(), found, &was_found));
+        ASSERT_EQ(dirty_guid, std::string(found->GUID));
+        ASSERT_TRUE(was_found);
+        kopsik_time_entry_view_item_clear(found);
+
+        KopsikTimeEntryViewItem *nonexistant =
+            kopsik_time_entry_view_item_init();
+        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_item_by_guid(
+            ctx, err, ERRLEN, "bad guid", nonexistant, &was_found));
+        ASSERT_FALSE(nonexistant->GUID);
+        ASSERT_FALSE(was_found);
+        kopsik_time_entry_view_item_clear(nonexistant);
+
         /*
 
         // Sync, to get rid of it.

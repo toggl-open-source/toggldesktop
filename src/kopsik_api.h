@@ -145,7 +145,8 @@ KOPSIK_EXPORT void kopsik_time_entry_view_item_clear(
 KOPSIK_EXPORT kopsik_api_result kopsik_running_time_entry_view_item(
   KopsikContext *ctx,
   char *errmsg, unsigned int errlen,
-  KopsikTimeEntryViewItem *item, int *is_tracking);
+  KopsikTimeEntryViewItem *item,
+  int *is_tracking);
 
 KOPSIK_EXPORT void kopsik_format_duration_in_seconds(
   int duration_in_seconds, char *str, unsigned int max_strlen);
@@ -155,6 +156,13 @@ KOPSIK_EXPORT kopsik_api_result kopsik_start(
   char *errmsg, unsigned int errlen,
   const char *description,
   KopsikTimeEntryViewItem *item);
+
+KOPSIK_EXPORT kopsik_api_result kopsik_time_entry_view_item_by_guid(
+  KopsikContext *ctx,
+  char *errmsg, unsigned int errlen,
+  const char *guid,
+  KopsikTimeEntryViewItem *item,
+  int *was_found);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_continue(
   KopsikContext *ctx,

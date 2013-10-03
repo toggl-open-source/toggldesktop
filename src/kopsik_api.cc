@@ -463,7 +463,7 @@ class SyncTask : public Poco::Task {
       unsigned int result_len = 0;
       if (res != KOPSIK_API_SUCCESS) {
         result_str = strdup(err);
-        result_len = strlen(err);
+        result_len = static_cast<int>(strlen(err));
       }
       callback_(res, result_str, result_len);
     }
@@ -495,7 +495,7 @@ class PushTask : public Poco::Task {
       unsigned int result_len = 0;
       if (res != KOPSIK_API_SUCCESS) {
         result_str = strdup(err);
-        result_len = strlen(err);
+        result_len = static_cast<int>(strlen(err));
       }
       callback_(res, result_str, result_len);
     }
@@ -595,21 +595,57 @@ kopsik_api_result kopsik_start(
   return KOPSIK_API_SUCCESS;
 }
 
-kopsik_api_result kopsik_continue(
+kopsik_api_result kopsik_time_entry_view_item_by_guid(
     KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
-    const char *in_guid,
-    KopsikTimeEntryViewItem *out_view_item) {
+    const char *guid,
+    KopsikTimeEntryViewItem *view_item,
+    int *was_found) {
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
-  poco_assert(in_guid);
-  poco_assert(out_view_item);
+  poco_assert(guid);
+  poco_assert(view_item);
+  poco_assert(was_found);
 
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
 
-  std::string GUID(in_guid);
+  std::string GUID(guid);
+  if (GUID.empty()) {
+    strncpy(errmsg, "Missing GUID", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  if (!ctx->current_user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
+  kopsik::TimeEntry *te = user->GetTimeEntryByGUID(GUID);
+  if (te) {
+    *was_found = 1;
+    time_entry_to_view_item(te, user, view_item);
+  } else {
+    *was_found = 0;
+  }
+  return KOPSIK_API_SUCCESS;
+}
+
+kopsik_api_result kopsik_continue(
+    KopsikContext *ctx,
+    char *errmsg, unsigned int errlen,
+    const char *guid,
+    KopsikTimeEntryViewItem *view_item) {
+  poco_assert(ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(guid);
+  poco_assert(view_item);
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
+  std::string GUID(guid);
   if (GUID.empty()) {
     strncpy(errmsg, "Missing GUID", errlen);
     return KOPSIK_API_FAILURE;
@@ -620,11 +656,12 @@ kopsik_api_result kopsik_continue(
   }
   kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
   kopsik::TimeEntry *te = user->Continue(GUID);
+  poco_assert(te);
   kopsik_api_result res = save(ctx, errmsg, errlen);
   if (KOPSIK_API_SUCCESS != res) {
     return res;
   }
-  time_entry_to_view_item(te, user, out_view_item);
+  time_entry_to_view_item(te, user, view_item);
   return KOPSIK_API_SUCCESS;
 }
 
