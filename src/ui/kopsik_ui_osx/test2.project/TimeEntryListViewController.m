@@ -85,7 +85,10 @@
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification{
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimeEntrySelected object:nil];
+  // FIXME: include the selected time entry GUID,
+  // else the editor won't find the TE thats being edited.
+  NSString *guid = @"FIXME";
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimeEntrySelected object:guid];
 }
 
 - (NSColor *)hexCodeToNSColor:(NSString *)hexCode {

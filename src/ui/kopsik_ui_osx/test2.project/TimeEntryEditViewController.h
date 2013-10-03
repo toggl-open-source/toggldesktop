@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 @interface TimeEntryEditViewController : NSViewController
+- (IBAction)backButtonClicked:(id)sender;
 @property (weak) IBOutlet NSComboBox *projectSelect;
 @property (weak) IBOutlet NSTextField *durationTextField;
 @property (weak) IBOutlet NSDatePicker *startTime;

@@ -13,3 +13,4 @@ extern NSString *const kUIEventUserLoggedOut;
 extern NSString *const kUIEventTimerRunning;
 extern NSString *const kUIEventTimerStopped;
 extern NSString *const kUIEventTimeEntrySelected;
+extern NSString *const kUIEventTimeEntryDeselected;

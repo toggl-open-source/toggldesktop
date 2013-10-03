@@ -7,6 +7,7 @@
 //
 
 #import "TimeEntryEditViewController.h"
+#import "UIEvents.h"
 
 @interface TimeEntryEditViewController ()
 
@@ -24,4 +25,7 @@
     return self;
 }
 
+- (IBAction)backButtonClicked:(id)sender {
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimeEntryDeselected object:nil];
+}
 @end

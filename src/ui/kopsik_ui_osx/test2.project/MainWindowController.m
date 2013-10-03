@@ -32,31 +32,30 @@
 {
   self = [super initWithWindow:window];
   if (self) {
-    [[NSNotificationCenter defaultCenter]
-      addObserver:self
-      selector:@selector(eventHandler:)
-      name:kUIEventUserLoggedIn
-      object:nil];
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(eventHandler:)
-     name:kUIEventUserLoggedOut
-     object:nil];
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(eventHandler:)
-     name:kUIEventTimerRunning
-     object:nil];
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(eventHandler:)
-     name:kUIEventTimerStopped
-     object:nil];
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(eventHandler:)
-     name:kUIEventTimeEntrySelected
-     object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eventHandler:)
+                                                 name:kUIEventUserLoggedIn
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eventHandler:)
+                                                 name:kUIEventUserLoggedOut
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eventHandler:)
+                                                 name:kUIEventTimerRunning
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eventHandler:)
+                                                 name:kUIEventTimerStopped
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eventHandler:)
+                                                 name:kUIEventTimeEntrySelected
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eventHandler:)
+                                                 name:kUIEventTimeEntryDeselected
+                                               object:nil];
 
     self.loginViewController = [[LoginViewController alloc]
                                 initWithNibName:@"LoginViewController" bundle:nil];
@@ -161,6 +160,12 @@
     [self.timeEntryListViewController.view removeFromSuperview];
     [self.contentView addSubview:self.timeEntryEditViewController.view];
     [self.timeEntryEditViewController.view setFrame:self.contentView.bounds];
+
+  } else if ([notification.name isEqualToString:kUIEventTimeEntryDeselected]) {
+    [self.headerView setHidden:NO];
+    [self.timeEntryEditViewController.view removeFromSuperview];
+    [self.contentView addSubview:self.timeEntryListViewController.view];
+    [self.timeEntryListViewController.view setFrame:self.contentView.bounds];
   }
 }
 
