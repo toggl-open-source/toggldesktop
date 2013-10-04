@@ -131,8 +131,8 @@ typedef struct {
   char *GUID;
   int Billable;
   char *Tags;
-  time_t Started;
-  time_t Ended;
+  int Started;
+  int Ended;
 } KopsikTimeEntryViewItem;
 
 typedef struct {
