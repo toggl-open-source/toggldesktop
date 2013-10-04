@@ -1239,6 +1239,12 @@ void TimeEntry::LoadFromJSONNode(JSONNODE *data) {
     Poco::UInt64 ui_modified_at =
         getUIModifiedAtFromJSONNode(data);
     if (UIModifiedAt() > ui_modified_at) {
+        Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
+        std::stringstream ss;
+        ss  << "Will not overwrite time entry "
+            << String()
+            << " with server data because we have a ui_modified_at";
+        logger.debug(ss.str());
         return;
     }
 
