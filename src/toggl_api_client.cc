@@ -253,6 +253,7 @@ error User::Push(HTTPSClient *https_client) {
             errors.push_back(result.Body);
         }
 
+        poco_assert(!result.GUID.empty());
         poco_assert(json_is_valid(result.Body.c_str()));
 
         TimeEntry *te = 0;
