@@ -89,8 +89,8 @@ void time_entry_to_view_item(
   }
   view_item->Duration = strdup(te->DurationString().c_str());
 
-  view_item->Started = time_t(te->Start());
-  view_item->Ended = time_t(te->Stop());
+  view_item->Started = static_cast<unsigned int>(te->Start());
+  view_item->Ended = static_cast<unsigned int>(te->Stop());
   if (te->Billable()) {
     view_item->Billable = 1;
   } else {
