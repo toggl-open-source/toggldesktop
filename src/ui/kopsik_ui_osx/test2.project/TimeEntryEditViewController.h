@@ -20,7 +20,6 @@
 @property (weak) IBOutlet NSTextField *lastUpdateTextField;
 @property (weak) IBOutlet NSButton *deleteButton;
 @property (weak) IBOutlet NSButton *backButton;
-@property NSString *GUID;
 - (IBAction)descriptionTextFieldChanged:(id)sender;
 - (IBAction)durationTextFieldChanged:(id)sender;
 - (IBAction)projectSelectChanged:(id)sender;

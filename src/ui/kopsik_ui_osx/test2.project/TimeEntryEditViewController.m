@@ -13,7 +13,7 @@
 #import "Bugsnag.h"
 
 @interface TimeEntryEditViewController ()
-
+@property NSString *GUID;
 @end
 
 @implementation TimeEntryEditViewController
@@ -127,6 +127,7 @@ void finishPushAfterDelete(kopsik_api_result result, char *err, unsigned int err
 }
 
 - (IBAction)deleteButtonClicked:(id)sender {
+  NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_delete_time_entry(ctx,
                                                      err,
