@@ -799,6 +799,7 @@ kopsik_api_result kopsik_time_entry_view_items(
       user->related.TimeEntries.begin();
       it != user->related.TimeEntries.end(); it++) {
     kopsik::TimeEntry *te = *it;
+    poco_assert(!te->GUID().empty());
     if (te->DurationInSeconds() >= 0) {
       stopped.push_back(te);
     }
