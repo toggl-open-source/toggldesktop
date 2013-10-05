@@ -39,6 +39,7 @@
 {
   if ([notification.name isEqualToString:kUIEventTimeEntrySelected]) {
     NSString *guid = notification.object;
+    NSAssert(guid != nil, @"GUID is nil");
     NSLog(@"guid = %@", guid);
     int was_found = 0;
     KopsikTimeEntryViewItem *view_item = kopsik_time_entry_view_item_init();
@@ -67,7 +68,8 @@
     [item load:view_item];
     kopsik_time_entry_view_item_clear(view_item);
     
-    self.GUID = [NSString stringWithUTF8String:view_item->GUID];
+    self.GUID = guid;
+    NSAssert(self.GUID != nil, @"GUID is nil");
     
     [self.descriptionTextField setStringValue:item.description];
     if (item.project != nil) {
@@ -141,6 +143,7 @@ void finishPushAfterDelete(kopsik_api_result result, char *err, unsigned int err
     return;
   }
   kopsik_push_async(ctx, finishPushAfterDelete);
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimeEntryDeselected object:nil];
 }
 
 - (IBAction)descriptionTextFieldChanged:(id)sender {
