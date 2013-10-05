@@ -67,6 +67,16 @@ TimeEntry *User::Continue(std::string GUID) {
     return te;
 }
 
+void User::DeleteTimeEntry(std::string GUID) {
+    Stop();
+    TimeEntry *te = GetTimeEntryByGUID(GUID);
+    poco_assert(te);
+    te->SetDeletedAt(time(0));
+    related.TimeEntries.erase(
+        std::remove(related.TimeEntries.begin(), related.TimeEntries.end(), te),
+        related.TimeEntries.end());
+}
+
 std::string User::createdWith() {
     std::stringstream ss;
     ss  << "libkopsik/"
@@ -1182,6 +1192,13 @@ void TimeEntry::SetStopString(std::string value) {
 void TimeEntry::SetStop(Poco::UInt64 value) {
     if (stop_ != value) {
         stop_ = value;
+        dirty_ = true;
+    }
+}
+
+void TimeEntry::SetDeletedAt(Poco::UInt64 value) {
+    if (deleted_at_ != value) {
+        deleted_at_ = value;
         dirty_ = true;
     }
 }

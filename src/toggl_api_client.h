@@ -223,7 +223,7 @@ namespace kopsik {
             id_(0), guid_(""), wid_(0), pid_(0), tid_(0), billable_(false),
             start_(0), stop_(0), duration_in_seconds_(0), description_(""),
             duronly_(false), ui_modified_at_(0), uid_(0), dirty_(false),
-            created_with_("") {}
+            created_with_(""), deleted_at_(0) {}
 
         std::string Tags();
         void SetTags(std::string tags);
@@ -265,6 +265,8 @@ namespace kopsik {
         void ClearDirty() { dirty_ = false; }
         std::string CreatedWith() { return created_with_; }
         void SetCreatedWith(std::string value);
+        Poco::UInt64 DeletedAt() { return deleted_at_; }
+        void SetDeletedAt(Poco::UInt64 value);
 
         std::vector<std::string> TagNames;
 
@@ -295,6 +297,7 @@ namespace kopsik {
         Poco::UInt64 uid_;
         bool dirty_;
         std::string created_with_;
+        Poco::UInt64 deleted_at_;
 
         error loadTagsFromJSONNode(JSONNODE *list);
         Poco::UInt64 getUIModifiedAtFromJSONNode(JSONNODE *data);
@@ -360,6 +363,7 @@ namespace kopsik {
         TimeEntry *Start(std::string description);
         TimeEntry *Continue(std::string GUID);
         std::vector<TimeEntry *> Stop();
+        void DeleteTimeEntry(std::string GUID);
 
         Poco::Int64 LocalID() { return local_id_; }
         void SetLocalID(Poco::Int64 value) { local_id_ = value; }

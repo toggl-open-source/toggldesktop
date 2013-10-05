@@ -174,6 +174,11 @@ KOPSIK_EXPORT kopsik_api_result kopsik_continue(
   const char *guid,
   KopsikTimeEntryViewItem *item);
 
+KOPSIK_EXPORT kopsik_api_result kopsik_delete_time_entry(
+  KopsikContext *ctx,
+  char *errmsg, unsigned int errlen,
+  const char *guid);
+
 KOPSIK_EXPORT kopsik_api_result kopsik_stop(
   KopsikContext *ctx,
   char *errmsg, unsigned int errlen,

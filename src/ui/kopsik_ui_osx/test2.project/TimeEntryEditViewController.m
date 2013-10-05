@@ -67,6 +67,8 @@
     [item load:view_item];
     kopsik_time_entry_view_item_clear(view_item);
     
+    self.GUID = [NSString stringWithUTF8String:view_item->GUID];
+    
     [self.descriptionTextField setStringValue:item.description];
     if (item.project != nil) {
       [self.projectSelect setStringValue:item.project];
@@ -112,7 +114,32 @@
 - (IBAction)billableCheckBoxClicked:(id)sender {
 }
 
+void finishPushAfterDelete(kopsik_api_result result, char *err, unsigned int errlen) {
+  NSLog(@"finishPushAfterDelete");
+  if (KOPSIK_API_SUCCESS != result) {
+    NSLog(@"Error pushing data: %s", err);
+    [Bugsnag notify:[NSException
+                     exceptionWithName:@"Error pushing data"
+                     reason:[NSString stringWithUTF8String:err]
+                     userInfo:nil]];
+    free(err);
+  }
+}
+
 - (IBAction)deleteButtonClicked:(id)sender {
+  char err[KOPSIK_ERR_LEN];
+  if (KOPSIK_API_SUCCESS != kopsik_delete_time_entry(ctx,
+                                                     err,
+                                                     KOPSIK_ERR_LEN,
+                                                     [self.GUID UTF8String])) {
+    NSLog(@"Error deleting time entry: %s", err);
+    [Bugsnag notify:[NSException
+                     exceptionWithName:@"Error starting time entry"
+                     reason:[NSString stringWithUTF8String:err]
+                     userInfo:nil]];
+    return;
+  }
+  kopsik_push_async(ctx, finishPushAfterDelete);
 }
 
 - (IBAction)descriptionTextFieldChanged:(id)sender {

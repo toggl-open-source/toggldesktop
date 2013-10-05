@@ -698,6 +698,33 @@ kopsik_api_result kopsik_continue(
   return KOPSIK_API_SUCCESS;
 }
 
+kopsik_api_result kopsik_delete_time_entry(
+    KopsikContext *ctx,
+    char *errmsg, unsigned int errlen,
+    const char *guid) {
+  poco_assert(ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(guid);
+
+  std::string GUID(guid);
+  if (GUID.empty()) {
+    strncpy(errmsg, "Missing GUID", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  if (!ctx->current_user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
+  user->DeleteTimeEntry(GUID);
+  return save(ctx, errmsg, errlen);
+}
+
 kopsik_api_result kopsik_stop(
     KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
