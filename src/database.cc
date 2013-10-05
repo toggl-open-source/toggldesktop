@@ -542,8 +542,9 @@ error Database::loadTimeEntries(Poco::UInt64 UID,
         Poco::Data::Statement select(*session);
         select << "SELECT local_id, id, uid, description, wid, guid, pid, "
             "tid, billable, duronly, ui_modified_at, start, stop, "
-            "duration, tags, created_with "
-            "FROM time_entries WHERE uid = :uid "
+            "duration, tags, created_with, deleted_at "
+            "FROM time_entries "
+            "WHERE uid = :uid "
             "ORDER BY start DESC",
             Poco::Data::use(UID);
         error err = last_error();
@@ -588,6 +589,7 @@ error Database::loadTimeEntriesFromSQLStatement(Poco::Data::Statement *select,
                 model->SetDurationInSeconds(rs[13].convert<Poco::Int64>());
                 model->SetTags(rs[14].convert<std::string>());
                 model->SetCreatedWith(rs[15].convert<std::string>());
+                model->SetDeletedAt(rs[16].convert<Poco::UInt64>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();

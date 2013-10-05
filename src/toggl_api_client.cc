@@ -72,9 +72,11 @@ void User::DeleteTimeEntry(std::string GUID) {
     TimeEntry *te = GetTimeEntryByGUID(GUID);
     poco_assert(te);
     te->SetDeletedAt(time(0));
+/* FIXME: remove TE when it's actually deleted
     related.TimeEntries.erase(
         std::remove(related.TimeEntries.begin(), related.TimeEntries.end(), te),
         related.TimeEntries.end());
+*/
 }
 
 std::string User::createdWith() {
