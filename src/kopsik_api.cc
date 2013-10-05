@@ -821,31 +821,35 @@ kopsik_api_result kopsik_time_entry_view_items(
   kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
   user->SortTimeEntriesByStart();
 
-  std::vector<kopsik::TimeEntry *>stopped;
+  std::vector<kopsik::TimeEntry *>visible;
   for (std::vector<kopsik::TimeEntry *>::const_iterator it =
       user->related.TimeEntries.begin();
       it != user->related.TimeEntries.end(); it++) {
     kopsik::TimeEntry *te = *it;
     poco_assert(!te->GUID().empty());
-    if (te->DurationInSeconds() >= 0) {
-      stopped.push_back(te);
+    if (te->DurationInSeconds() < 0) {
+      continue;
     }
+    if (te->DeletedAt() > 0) {
+      continue;
+    }
+    visible.push_back(te);
   }
 
-  if (stopped.empty()) {
+  if (visible.empty()) {
     return KOPSIK_API_SUCCESS;
   }
 
   out_list->Length = 0;
 
   KopsikTimeEntryViewItem *tmp = kopsik_time_entry_view_item_init();
-  void *m = malloc(stopped.size() * sizeof(tmp));
+  void *m = malloc(visible.size() * sizeof(tmp));
   kopsik_time_entry_view_item_clear(tmp);
   poco_assert(m);
   out_list->ViewItems =
     reinterpret_cast<KopsikTimeEntryViewItem **>(m);
-  for (unsigned int i = 0; i < stopped.size(); i++) {
-    kopsik::TimeEntry *te = stopped[i];
+  for (unsigned int i = 0; i < visible.size(); i++) {
+    kopsik::TimeEntry *te = visible[i];
     KopsikTimeEntryViewItem *view_item = kopsik_time_entry_view_item_init();
     time_entry_to_view_item(te, user, view_item);
     out_list->ViewItems[i] = view_item;
