@@ -277,6 +277,9 @@ namespace kopsik {
         JSONNODE *JSON();
 
         bool NeedsPush();
+        bool NeedsPOST();
+        bool NeedsPUT();
+        bool NeedsDELETE();
 
     private:
         Poco::Int64 local_id_;

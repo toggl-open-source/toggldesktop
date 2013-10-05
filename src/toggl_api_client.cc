@@ -167,7 +167,22 @@ TimeEntry *User::RunningTimeEntry() {
 }
 
 bool TimeEntry::NeedsPush() {
-    return (ui_modified_at_ > 0) || !id_;
+    return NeedsPOST() || NeedsPUT() || NeedsDELETE();
+}
+
+bool TimeEntry::NeedsPOST() {
+    // No server side ID yet, meaning it's not POSTed yet
+    return !id_;
+}
+
+bool TimeEntry::NeedsPUT() {
+    // User has modified model via UI, needs a PUT
+    return ui_modified_at_ > 0;
+}
+
+bool TimeEntry::NeedsDELETE() {
+    // TE is deleted, needs a DELETE
+    return deleted_at_ > 0;
 }
 
 void User::CollectPushableObjects(std::vector<TimeEntry *> *result) {
