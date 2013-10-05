@@ -713,7 +713,8 @@ error Database::SaveTimeEntry(TimeEntry *model) {
                 "guid = :guid, pid = :pid, tid = :tid, billable = :billable, "
                 "duronly = :duronly, ui_modified_at = :ui_modified_at, "
                 "start = :start, stop = :stop, duration = :duration, "
-                "tags = :tags, created_with = :created_with "
+                "tags = :tags, created_with = :created_with, "
+                "deleted_at = :deleted_at "
                 "where local_id = :local_id",
                 Poco::Data::use(model->ID()),
                 Poco::Data::use(model->UID()),
@@ -730,6 +731,7 @@ error Database::SaveTimeEntry(TimeEntry *model) {
                 Poco::Data::use(model->DurationInSeconds()),
                 Poco::Data::use(model->Tags()),
                 Poco::Data::use(model->CreatedWith()),
+                Poco::Data::use(model->DeletedAt()),
                 Poco::Data::use(model->LocalID()),
                 Poco::Data::now;
         } else {
@@ -738,12 +740,12 @@ error Database::SaveTimeEntry(TimeEntry *model) {
                 "guid, pid, tid, billable, "
                 "duronly, ui_modified_at, "
                 "start, stop, duration, "
-                "tags, created_with) "
+                "tags, created_with, deleted_at) "
                 "values(:id, :uid, :description, :wid, "
                 ":guid, :pid, :tid, :billable, "
                 ":duronly, :ui_modified_at, "
                 ":start, :stop, :duration, "
-                ":tags, :created_with)",
+                ":tags, :created_with, :deleted_at)",
                 Poco::Data::use(model->ID()),
                 Poco::Data::use(model->UID()),
                 Poco::Data::use(model->Description()),
@@ -759,6 +761,7 @@ error Database::SaveTimeEntry(TimeEntry *model) {
                 Poco::Data::use(model->DurationInSeconds()),
                 Poco::Data::use(model->Tags()),
                 Poco::Data::use(model->CreatedWith()),
+                Poco::Data::use(model->DeletedAt()),
                 Poco::Data::now;
             error err = last_error();
             if (err != noError) {
@@ -1318,6 +1321,8 @@ error Database::initialize_tables() {
         "stop varchar, "
         "duration integer not null,"
         "tags text,"
+        "created_with varchar,"
+        "deleted_at integer,"
         "constraint fk_time_entries_wid foreign key (wid) "
         "   references workspaces(id) on delete no action on update no action, "
         "constraint fk_time_entries_pid foreign key (pid) "
@@ -1340,12 +1345,6 @@ error Database::initialize_tables() {
         "active integer not null default 1 "
         "); "
         "CREATE UNIQUE INDEX id_sessions_active ON sessions (active); ");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("time_entry.created_with",
-        "alter table time_entries add column created_with varchar; ");
     if (err != noError) {
         return err;
     }
