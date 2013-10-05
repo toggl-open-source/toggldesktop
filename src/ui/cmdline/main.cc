@@ -14,7 +14,7 @@ namespace command_line_client {
 
     void Main::usage() {
         std::cout << "Recognized commands are: "
-            "sync, start, stop, status, dirty, list"
+            "sync, start, stop, status, pushable, list, continue"
             << std::endl;
     }
 
@@ -85,14 +85,14 @@ namespace command_line_client {
             return Poco::Util::Application::EXIT_OK;
         }
 
-        if ("dirty" == args[0]) {
-            KopsikDirtyModels dm;
+        if ("pushable" == args[0]) {
+            KopsikPushableModelStats stats;
             if (KOPSIK_API_FAILURE == kopsik_pushable_models(
-                    ctx, err, ERRLEN, &dm)) {
+                    ctx, err, ERRLEN, &stats)) {
                 std::cerr << err << std::endl;
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
-            std::cout << dm.TimeEntries << " dirty time entries." << std::endl;
+            std::cout << stats.TimeEntries << " pushable time entries." << std::endl;
             return Poco::Util::Application::EXIT_OK;
         }
 

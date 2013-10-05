@@ -86,7 +86,7 @@ KOPSIK_EXPORT kopsik_api_result kopsik_logout(
 
 typedef struct {
   unsigned int TimeEntries;
-} KopsikDirtyModels;
+} KopsikPushableModelStats;
 
 KOPSIK_EXPORT kopsik_api_result kopsik_sync(
   KopsikContext *ctx,
@@ -100,7 +100,7 @@ KOPSIK_EXPORT kopsik_api_result kopsik_push(
 KOPSIK_EXPORT kopsik_api_result kopsik_pushable_models(
   KopsikContext *ctx,
   char *errmsg, unsigned int errlen,
-  KopsikDirtyModels *dirty_models);
+  KopsikPushableModelStats *stats);
 
 // Async API
 

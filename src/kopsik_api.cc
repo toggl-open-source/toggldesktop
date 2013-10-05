@@ -445,11 +445,11 @@ kopsik_api_result kopsik_push(
 kopsik_api_result kopsik_pushable_models(
     KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
-    KopsikDirtyModels *out_dirty_models) {
+    KopsikPushableModelStats *stats) {
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
-  poco_assert(out_dirty_models);
+  poco_assert(stats);
 
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
@@ -459,13 +459,13 @@ kopsik_api_result kopsik_pushable_models(
     return KOPSIK_API_FAILURE;
   }
   kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
-  std::vector<kopsik::TimeEntry *> dirty;
-  user->CollectPushableObjects(&dirty);
-  out_dirty_models->TimeEntries = 0;
-  for (std::vector<kopsik::TimeEntry *>::const_iterator it = dirty.begin();
-    it != dirty.end();
+  std::vector<kopsik::TimeEntry *> pushable;
+  user->CollectPushableObjects(&pushable);
+  stats->TimeEntries = 0;
+  for (std::vector<kopsik::TimeEntry *>::const_iterator it = pushable.begin();
+    it != pushable.end();
     it++) {
-    out_dirty_models->TimeEntries++;
+    stats->TimeEntries++;
   }
   return KOPSIK_API_SUCCESS;
 }
