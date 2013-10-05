@@ -211,6 +211,12 @@ error User::Push(HTTPSClient *https_client) {
         return noError;
     }
 
+    {
+        std::stringstream ss;
+        ss << dirty.size() << " model(s) need a push";
+        logger.debug(ss.str());
+    }
+
     // Convert the dirty objects to batch updates JSON.
     JSONNODE *c = json_new(JSON_ARRAY);
     for (std::vector<TimeEntry *>::const_iterator it =
@@ -225,16 +231,33 @@ error User::Push(HTTPSClient *https_client) {
         json_push_back(body, n);
 
         JSONNODE *update = json_new(JSON_NODE);
-        if (!te->ID()) {
+        if (te->NeedsPOST()) {
             json_push_back(update, json_new_a("method", "POST"));
             json_push_back(update, json_new_a("relative_url",
                 "/api/v8/time_entries"));
-        } else {
+            std::stringstream ss;
+            ss << "Time entry " << te->String() << " needs a POST";
+            logger.debug(ss.str());
+
+        } else if (te->NeedsPUT()) {
             std::stringstream url;
             url << "/api/v8/time_entries/" << te->ID();
             json_push_back(update, json_new_a("method", "PUT"));
             json_push_back(update, json_new_a("relative_url",
                 url.str().c_str()));
+            std::stringstream ss;
+            ss << "Time entry " << te->String() << " needs a PUT";
+            logger.debug(ss.str());
+
+        } else if (te->NeedsDELETE()) {
+            std::stringstream url;
+            url << "/api/v8/time_entries/" << te->ID();
+            json_push_back(update, json_new_a("method", "DELETE"));
+            json_push_back(update, json_new_a("relative_url",
+                url.str().c_str()));
+            std::stringstream ss;
+            ss << "Time entry " << te->String() << " needs a DELETE";
+            logger.debug(ss.str());
         }
         json_push_back(update, json_new_a("GUID", te->GUID().c_str()));
         json_push_back(update, body);
@@ -274,9 +297,14 @@ error User::Push(HTTPSClient *https_client) {
             << ", StatusCode: " << result.StatusCode
             << ", ContentType: " << result.ContentType
             << ", Body: " << result.Body;
-        logger.error(ss.str());
+        logger.debug(ss.str());
 
         if (result.StatusCode < 200 || result.StatusCode >= 300) {
+            ss  << "ERROR! update result GUID: " << result.GUID
+                << ", StatusCode: " << result.StatusCode
+                << ", ContentType: " << result.ContentType
+                << ", Body: " << result.Body;
+            logger.error(ss.str());
             errors.push_back(result.Body);
         }
 
