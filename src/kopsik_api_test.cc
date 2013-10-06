@@ -288,6 +288,10 @@ namespace kopsik {
             kopsik_time_entry_view_item_list_init();
         ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_items(
             ctx, err, ERRLEN, visible));
+        for (unsigned int i = 0; i < visible->Length; i++) {
+            KopsikTimeEntryViewItem *n = visible->ViewItems[i];
+            ASSERT_FALSE(std::string(n->GUID) == GUID);
+        }
         kopsik_time_entry_view_item_list_clear(visible);
 
         // Log out
