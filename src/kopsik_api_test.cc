@@ -209,10 +209,10 @@ namespace kopsik {
 
         // We started and stopped one time entry.
         // This means we should have one dirty model now.
-        KopsikDirtyModels dirty_models;
+        KopsikPushableModelStats stats;
         ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_pushable_models(
-            ctx, err, ERRLEN, &dirty_models));
-        ASSERT_EQ((unsigned int)1, dirty_models.TimeEntries);
+            ctx, err, ERRLEN, &stats));
+        ASSERT_EQ((unsigned int)1, stats.TimeEntries);
 
         // Push changes
         std::stringstream response_body;
@@ -243,8 +243,8 @@ namespace kopsik {
 
         // Check that no dirty models are left.
         ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_pushable_models(
-            ctx, err, ERRLEN, &dirty_models));
-        ASSERT_EQ((unsigned int)0, dirty_models.TimeEntries);
+            ctx, err, ERRLEN, &stats));
+        ASSERT_EQ((unsigned int)0, stats.TimeEntries);
 
         // Continue the time entry we created in the start.
         KopsikTimeEntryViewItem *continued =
@@ -258,8 +258,8 @@ namespace kopsik {
 
         // We should now once again have a dirty model.
         ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_pushable_models(
-            ctx, err, ERRLEN, &dirty_models));
-        ASSERT_EQ((unsigned int)1, dirty_models.TimeEntries);
+            ctx, err, ERRLEN, &stats));
+        ASSERT_EQ((unsigned int)1, stats.TimeEntries);
 
         // Get time entry view using GUID
         int was_found = 0;
@@ -270,6 +270,7 @@ namespace kopsik {
         ASSERT_TRUE(was_found);
         kopsik_time_entry_view_item_clear(found);
 
+        // Ask for a non-existant time entry
         KopsikTimeEntryViewItem *nonexistant =
             kopsik_time_entry_view_item_init();
         ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_item_by_guid(
@@ -278,18 +279,16 @@ namespace kopsik {
         ASSERT_FALSE(was_found);
         kopsik_time_entry_view_item_clear(nonexistant);
 
-        /*
+        // Delete the time entry we created in the start.
+        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_delete_time_entry(
+            ctx, err, ERRLEN, GUID.c_str()));
 
-        // Sync, to get rid of it.
-        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_sync(ctx,
-            err, ERRLEN, 1));
-
-        // We should have not dirty models left.
-         ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_dirty_models(
-            ctx, err, ERRLEN, &dirty_models));
-        ASSERT_EQ((unsigned int)0, dirty_models.TimeEntries);
-
-        */
+        // We shouldnt be able to retrieve this time entry now in list.
+        KopsikTimeEntryViewItemList *visible =
+            kopsik_time_entry_view_item_list_init();
+        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_items(
+            ctx, err, ERRLEN, visible));
+        kopsik_time_entry_view_item_list_clear(visible);
 
         // Log out
         ASSERT_EQ(KOPSIK_API_SUCCESS,
