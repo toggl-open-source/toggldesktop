@@ -43,7 +43,7 @@ namespace command_line_client {
         // Start session in lib
         char err[ERRLEN];
         std::fill(err, err + ERRLEN, 0);
-        if (KOPSIK_API_FAILURE == kopsik_set_api_token(
+        if (KOPSIK_API_SUCCESS != kopsik_set_api_token(
                 ctx, err, ERRLEN, apiToken)) {
             std::cerr << err << std::endl;
             return Poco::Util::Application::EXIT_SOFTWARE;
@@ -59,7 +59,7 @@ namespace command_line_client {
         kopsik_user_clear(user);
 
         if ("sync" == args[0]) {
-            if (KOPSIK_API_FAILURE == kopsik_sync(ctx, err, ERRLEN, 1)) {
+            if (KOPSIK_API_SUCCESS != kopsik_sync(ctx, err, ERRLEN, 1)) {
                 std::cerr << err << std::endl;
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
@@ -70,7 +70,7 @@ namespace command_line_client {
         if ("status" == args[0]) {
             KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
             int found(0);
-            if (KOPSIK_API_FAILURE == kopsik_running_time_entry_view_item(
+            if (KOPSIK_API_SUCCESS != kopsik_running_time_entry_view_item(
                     ctx, err, ERRLEN, te, &found)) {
                 std::cerr << err << std::endl;
                 kopsik_time_entry_view_item_clear(te);
@@ -87,7 +87,7 @@ namespace command_line_client {
 
         if ("pushable" == args[0]) {
             KopsikPushableModelStats stats;
-            if (KOPSIK_API_FAILURE == kopsik_pushable_models(
+            if (KOPSIK_API_SUCCESS != kopsik_pushable_models(
                     ctx, err, ERRLEN, &stats)) {
                 std::cerr << err << std::endl;
                 return Poco::Util::Application::EXIT_SOFTWARE;
@@ -98,13 +98,13 @@ namespace command_line_client {
 
         if ("start" == args[0]) {
             KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
-            if (KOPSIK_API_FAILURE == kopsik_start(
+            if (KOPSIK_API_SUCCESS != kopsik_start(
                     ctx, err, ERRLEN, "New time entry", te)) {
                 std::cerr << err << std::endl;
                 kopsik_time_entry_view_item_clear(te);
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
-            if (KOPSIK_API_FAILURE == kopsik_sync(ctx, err, ERRLEN, 0)) {
+            if (KOPSIK_API_SUCCESS != kopsik_push(ctx, err, ERRLEN)) {
                 std::cerr << err << std::endl;
             }
             if (te->Description) {
@@ -118,13 +118,13 @@ namespace command_line_client {
 
         if ("stop" == args[0]) {
             KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
-            if (KOPSIK_API_FAILURE == kopsik_stop(
+            if (KOPSIK_API_SUCCESS != kopsik_stop(
                     ctx, err, ERRLEN, te)) {
                 std::cerr << err << std::endl;
                 kopsik_time_entry_view_item_clear(te);
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
-            if (KOPSIK_API_FAILURE == kopsik_sync(ctx, err, ERRLEN, 0)) {
+            if (KOPSIK_API_SUCCESS != kopsik_push(ctx, err, ERRLEN)) {
                 std::cerr << err << std::endl;
             }
             if (te->Description) {
@@ -139,7 +139,7 @@ namespace command_line_client {
         if ("list" == args[0]) {
             KopsikTimeEntryViewItemList *list =
                 kopsik_time_entry_view_item_list_init();
-            if (KOPSIK_API_FAILURE == kopsik_time_entry_view_items(
+            if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(
                     ctx, err, ERRLEN, list)) {
                 std::cerr << err << std::endl;
                 kopsik_time_entry_view_item_list_clear(list);
@@ -160,7 +160,7 @@ namespace command_line_client {
 
         if ("listen" == args[0]) {
             std::cout << "Listening to websocket.. " << std::endl;
-            if (KOPSIK_API_FAILURE == kopsik_listen(ctx, err, ERRLEN)) {
+            if (KOPSIK_API_SUCCESS != kopsik_listen(ctx, err, ERRLEN)) {
                 std::cerr << "Error while listening to websocket: "
                     << err << std::endl;
                 return Poco::Util::Application::EXIT_SOFTWARE;

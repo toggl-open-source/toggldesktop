@@ -16,7 +16,6 @@ extern "C" {
 
 typedef int kopsik_api_result;
 #define KOPSIK_API_SUCCESS 0
-#define KOPSIK_API_FAILURE 1
 
 // Context API.
 

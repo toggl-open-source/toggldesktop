@@ -21,6 +21,8 @@
 #include "Poco/TaskManager.h"
 #include "Poco/Task.h"
 
+#define KOPSIK_API_FAILURE 1
+
 // Private helpers
 
 kopsik::Database *get_db(KopsikContext *ctx) {
