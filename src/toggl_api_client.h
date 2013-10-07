@@ -344,6 +344,7 @@ namespace kopsik {
         Workspace *GetWorkspaceByID(const Poco::UInt64 id);
         Client *GetClientByID(const Poco::UInt64 id);
         Project *GetProjectByID(const Poco::UInt64 id);
+        Project *GetProjectByName(const std::string name);
         Task *GetTaskByID(const Poco::UInt64 id);
         Tag *GetTagByID(const Poco::UInt64 id);
         TimeEntry *GetTimeEntryByID(const Poco::UInt64 id);

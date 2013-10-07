@@ -951,6 +951,16 @@ Project *User::GetProjectByID(const Poco::UInt64 id) {
     return 0;
 }
 
+Project *User::GetProjectByName(const std::string name) {
+    for (std::vector<Project *>::const_iterator it = related.Projects.begin();
+            it != related.Projects.end(); it++) {
+        if ((*it)->Name() == name) {
+            return *it;
+        }
+    }
+    return 0;
+}
+
 Task *User::GetTaskByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
     for (std::vector<Task *>::const_iterator it = related.Tasks.begin();
