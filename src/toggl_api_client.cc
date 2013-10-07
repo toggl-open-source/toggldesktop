@@ -72,11 +72,6 @@ void User::DeleteTimeEntry(std::string GUID) {
     TimeEntry *te = GetTimeEntryByGUID(GUID);
     poco_assert(te);
     te->SetDeletedAt(time(0));
-/* FIXME: remove TE when it's actually deleted
-    related.TimeEntries.erase(
-        std::remove(related.TimeEntries.begin(), related.TimeEntries.end(), te),
-        related.TimeEntries.end());
-*/
 }
 
 std::string User::createdWith() {
@@ -412,7 +407,6 @@ error User::Sync(HTTPSClient *https_client, bool full_sync) {
     return Push(https_client);
 }
 
-// FIXME: move code into a GET method
 error User::pull(HTTPSClient *https_client,
       bool authenticate_with_api_token, bool full_sync) {
   Poco::Stopwatch stopwatch;
@@ -921,8 +915,6 @@ JSONNODE *TimeEntry::JSON() {
 
     return n;
 }
-
-// FIXME: use map instead?
 
 Workspace *User::GetWorkspaceByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
