@@ -68,10 +68,10 @@ TimeEntry *User::Continue(std::string GUID) {
 }
 
 void User::DeleteTimeEntry(std::string GUID) {
-    Stop();
     TimeEntry *te = GetTimeEntryByGUID(GUID);
     poco_assert(te);
     te->SetDeletedAt(time(0));
+    te->SetUIModifiedAt(time(0));
 }
 
 std::string User::createdWith() {
