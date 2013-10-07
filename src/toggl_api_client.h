@@ -19,16 +19,6 @@
 
 namespace kopsik {
 
-    class BatchUpdate {
-    public:
-        BatchUpdate() : Method(""), RelativeUrl(""), Body(""), GUID("") {
-        }
-        std::string Method;
-        std::string RelativeUrl;
-        std::string Body;
-        std::string GUID;
-    };
-
     class BatchUpdateResult {
     public:
         BatchUpdateResult() : StatusCode(0), Body(""), GUID(""),
