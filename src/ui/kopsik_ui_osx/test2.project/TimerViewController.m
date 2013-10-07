@@ -14,6 +14,7 @@
 #import "Bugsnag.h"
 
 @interface TimerViewController ()
+@property TimeEntryViewItem *te;
 @property NSTimer *timer;
 @end
 
@@ -33,39 +34,30 @@
                                                selector:@selector(eventHandler:)
                                                    name:kUIEventTimerStopped
                                                  object:nil];
+      self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                               target:self
+                                             selector:@selector(timerFired:)
+                                             userInfo:nil
+                                              repeats:YES];
     }
-    
+  
     return self;
-}
-
-- (void)stopTimer {
-  if (self.timer != nil && [self.timer isValid] == YES) {
-    [self.timer invalidate];
-  }
 }
 
 -(void)eventHandler: (NSNotification *) notification
 {
   if ([notification.name isEqualToString:kUIEventTimerRunning]) {
-    TimeEntryViewItem *te = notification.object;
-    [self.descriptionTextField setStringValue:te.description];
-    [self.durationTextField setStringValue:te.duration];
-    if (te.project != nil) {
-      [self.projectTextField setStringValue:te.project];
+    self.te = notification.object;
+    [self.descriptionTextField setStringValue:self.te.description];
+    [self.durationTextField setStringValue:self.te.duration];
+    if (self.te.project != nil) {
+      [self.projectTextField setStringValue:self.te.project];
     } else {
       [self.projectTextField setStringValue:@""];
     }
-    if ((self.timer == nil) || ([self.timer isValid] == NO)) {
-      self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                    target:self
-                                                  selector:@selector(timerFired:)
-                                                  userInfo:te
-                                                   repeats:YES];
-    }
-
+    
   } else if ([notification.name isEqualToString:kUIEventTimerStopped]) {
-    [self stopTimer];
-
+    self.te = nil;
   }
 }
 
@@ -106,11 +98,12 @@ void finishPushAfterStop(kopsik_api_result result, char *err, unsigned int errle
 
 - (void)timerFired:(NSTimer*)timer
 {
-  char str[duration_str_len];
-  TimeEntryViewItem *te = timer.userInfo;
-  kopsik_format_duration_in_seconds(te.duration_in_seconds, str, duration_str_len);
-  NSString *newValue = [NSString stringWithUTF8String:str];
-  [self.durationTextField setStringValue:newValue];
+  if (self.te != nil) {
+    char str[duration_str_len];
+    kopsik_format_duration_in_seconds(self.te.duration_in_seconds, str, duration_str_len);
+    NSString *newValue = [NSString stringWithUTF8String:str];
+    [self.durationTextField setStringValue:newValue];
+  }
 }
 
 @end
