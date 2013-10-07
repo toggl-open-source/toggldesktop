@@ -756,6 +756,9 @@ kopsik_api_result kopsik_set_time_entry_duration(
   kopsik::TimeEntry *te = user->GetTimeEntryByGUID(GUID);
   poco_assert(te);
   te->SetDurationString(std::string(value));
+  if (te->Dirty()) {
+    te->SetUIModifiedAt(time(0));
+  }
 
   return save(ctx, errmsg, errlen);
 }
@@ -794,6 +797,9 @@ kopsik_api_result kopsik_set_time_entry_project(
   } else {
     te->SetPID(0);
   }
+  if (te->Dirty()) {
+    te->SetUIModifiedAt(time(0));
+  }
 
   return save(ctx, errmsg, errlen);
 }
@@ -827,6 +833,9 @@ kopsik_api_result kopsik_set_time_entry_start_time(
   kopsik::TimeEntry *te = user->GetTimeEntryByGUID(GUID);
   poco_assert(te);
   te->SetStartString(std::string(value));
+  if (te->Dirty()) {
+    te->SetUIModifiedAt(time(0));
+  }
 
   return save(ctx, errmsg, errlen);
 }
@@ -860,6 +869,9 @@ kopsik_api_result kopsik_set_time_entry_end_time(
   kopsik::TimeEntry *te = user->GetTimeEntryByGUID(GUID);
   poco_assert(te);
   te->SetStopString(std::string(value));
+  if (te->Dirty()) {
+    te->SetUIModifiedAt(time(0));
+  }
 
   return save(ctx, errmsg, errlen);
 }
@@ -893,6 +905,9 @@ kopsik_api_result kopsik_set_time_entry_tags(
   kopsik::TimeEntry *te = user->GetTimeEntryByGUID(GUID);
   poco_assert(te);
   te->SetTags(std::string(value));
+  if (te->Dirty()) {
+    te->SetUIModifiedAt(time(0));
+  }
 
   return save(ctx, errmsg, errlen);
 }
@@ -930,6 +945,9 @@ kopsik_api_result kopsik_set_time_entry_billable(
   } else {
     te->SetBillable(false);
   }
+  if (te->Dirty()) {
+    te->SetUIModifiedAt(time(0));
+  }
 
   return save(ctx, errmsg, errlen);
 }
@@ -963,6 +981,9 @@ kopsik_api_result kopsik_set_time_entry_description(
   kopsik::TimeEntry *te = user->GetTimeEntryByGUID(GUID);
   poco_assert(te);
   te->SetDescription(std::string(value));
+  if (te->Dirty()) {
+    te->SetUIModifiedAt(time(0));
+  }
 
   return save(ctx, errmsg, errlen);
 }
