@@ -178,6 +178,54 @@ KOPSIK_EXPORT kopsik_api_result kopsik_delete_time_entry(
   char *errmsg, unsigned int errlen,
   const char *guid);
 
+KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_duration(
+  KopsikContext *ctx,
+  char *errmsg, unsigned int errlen,
+  const char *guid,
+  const char *value);
+
+KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_project(
+  KopsikContext *ctx,
+  char *errmsg, unsigned int errlen,
+  const char *guid,
+  const char *value);
+
+KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_start_time(
+  KopsikContext *ctx,
+  char *errmsg, unsigned int errlen,
+  const char *guid,
+  const char *value);
+
+KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_end_time(
+  KopsikContext *ctx,
+  char *errmsg, unsigned int errlen,
+  const char *guid,
+  const char *value);
+
+KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_start_date(
+  KopsikContext *ctx,
+  char *errmsg, unsigned int errlen,
+  const char *guid,
+  const char *value);
+
+KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_tags(
+  KopsikContext *ctx,
+  char *errmsg, unsigned int errlen,
+  const char *guid,
+  const char *value);
+
+KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_billable(
+  KopsikContext *ctx,
+  char *errmsg, unsigned int errlen,
+  const char *guid,
+  int value);
+
+KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_description(
+  KopsikContext *ctx,
+  char *errmsg, unsigned int errlen,
+  const char *guid,
+  const char *value);
+
 KOPSIK_EXPORT kopsik_api_result kopsik_stop(
   KopsikContext *ctx,
   char *errmsg, unsigned int errlen,

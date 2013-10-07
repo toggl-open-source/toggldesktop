@@ -95,25 +95,185 @@
   }
 }
 
+void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int errlen) {
+  NSLog(@"finishPushAfterUpdate");
+  if (KOPSIK_API_SUCCESS != result) {
+    NSLog(@"Error pushing data: %s", err);
+    [Bugsnag notify:[NSException
+                     exceptionWithName:@"Error pushing data"
+                     reason:[NSString stringWithUTF8String:err]
+                     userInfo:nil]];
+    free(err);
+  }
+}
+
 - (IBAction)durationTextFieldChanged:(id)sender {
+  NSLog(@"durationTextFieldChanged");
+  NSAssert(self.GUID != nil, @"GUID is nil");
+  char err[KOPSIK_ERR_LEN];
+  const char *value = [[self.durationTextField stringValue] UTF8String];
+  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_duration(ctx,
+                                                           err,
+                                                           KOPSIK_ERR_LEN,
+                                                           [self.GUID UTF8String],
+                                                           value)) {
+    NSLog(@"Error updating time entry: %s", err);
+    [Bugsnag notify:[NSException
+                     exceptionWithName:@"Error updating time entry"
+                     reason:[NSString stringWithUTF8String:err]
+                     userInfo:nil]];
+    return;
+  }
+  kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
 - (IBAction)projectSelectChanged:(id)sender {
+  NSLog(@"projectSelectChanged");
+  NSAssert(self.GUID != nil, @"GUID is nil");
+  char err[KOPSIK_ERR_LEN];
+  const char *value = 0;
+  id selectedValue = [self.projectSelect objectValueOfSelectedItem];
+  if (selectedValue != nil) {
+    NSString *stringValue = (NSString *)selectedValue;
+    value = [stringValue UTF8String];
+  }
+  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_project(ctx,
+                                                          err,
+                                                          KOPSIK_ERR_LEN,
+                                                          [self.GUID UTF8String],
+                                                          value)) {
+    NSLog(@"Error updating time entry: %s", err);
+    [Bugsnag notify:[NSException
+                     exceptionWithName:@"Error updating time entry"
+                     reason:[NSString stringWithUTF8String:err]
+                     userInfo:nil]];
+    return;
+  }
+  kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
 - (IBAction)startTimeChanged:(id)sender {
+  NSLog(@"startTimeChanged");
+  NSAssert(self.GUID != nil, @"GUID is nil");
+  char err[KOPSIK_ERR_LEN];
+  const char *value = [[self.startTime stringValue] UTF8String];
+  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_start_time(ctx,
+                                                             err,
+                                                             KOPSIK_ERR_LEN,
+                                                             [self.GUID UTF8String],
+                                                             value)) {
+    NSLog(@"Error updating time entry: %s", err);
+    [Bugsnag notify:[NSException
+                     exceptionWithName:@"Error updating time entry"
+                     reason:[NSString stringWithUTF8String:err]
+                     userInfo:nil]];
+    return;
+  }
+  kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
 - (IBAction)endTimeChanged:(id)sender {
+  NSLog(@"endTimeChanged");
+  NSAssert(self.GUID != nil, @"GUID is nil");
+  char err[KOPSIK_ERR_LEN];
+  const char *value = [[self.endTime stringValue] UTF8String];
+  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_end_time(ctx,
+                                                           err,
+                                                           KOPSIK_ERR_LEN,
+                                                           [self.GUID UTF8String],
+                                                           value)) {
+    NSLog(@"Error updating time entry: %s", err);
+    [Bugsnag notify:[NSException
+                     exceptionWithName:@"Error updating time entry"
+                     reason:[NSString stringWithUTF8String:err]
+                     userInfo:nil]];
+    return;
+  }
+  kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
 - (IBAction)dateChanged:(id)sender {
+  NSLog(@"dateChanged");
+  NSAssert(self.GUID != nil, @"GUID is nil");
+  char err[KOPSIK_ERR_LEN];
+  const char *value = [[self.startDate stringValue] UTF8String];
+  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_start_date(ctx,
+                                                             err,
+                                                             KOPSIK_ERR_LEN,
+                                                             [self.GUID UTF8String],
+                                                             value)) {
+    NSLog(@"Error updating time entry: %s", err);
+    [Bugsnag notify:[NSException
+                     exceptionWithName:@"Error updating time entry"
+                     reason:[NSString stringWithUTF8String:err]
+                     userInfo:nil]];
+    return;
+  }
+  kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
 - (IBAction)tagsChanged:(id)sender {
+  NSLog(@"tagsChanged");
+  NSAssert(self.GUID != nil, @"GUID is nil");
+  char err[KOPSIK_ERR_LEN];
+  NSArray *tag_names = [self.tags objectValue];
+  const char *value = [[tag_names componentsJoinedByString:@"|"] UTF8String];
+  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_tags(ctx,
+                                                       err,
+                                                       KOPSIK_ERR_LEN,
+                                                       [self.GUID UTF8String],
+                                                       value)) {
+    NSLog(@"Error updating time entry: %s", err);
+    [Bugsnag notify:[NSException
+                     exceptionWithName:@"Error updating time entry"
+                     reason:[NSString stringWithUTF8String:err]
+                     userInfo:nil]];
+    return;
+  }
+  kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
 - (IBAction)billableCheckBoxClicked:(id)sender {
+  NSLog(@"billableCheckBoxClicked");
+  NSAssert(self.GUID != nil, @"GUID is nil");
+  char err[KOPSIK_ERR_LEN];
+  int value = 0;
+  if (NSOnState == [self.billableCheckbox state]) {
+    value = 1;
+  }
+  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_billable(ctx,
+                                                           err,
+                                                           KOPSIK_ERR_LEN,
+                                                           [self.GUID UTF8String],
+                                                           value)) {
+    NSLog(@"Error updating time entry: %s", err);
+    [Bugsnag notify:[NSException
+                     exceptionWithName:@"Error updating time entry"
+                     reason:[NSString stringWithUTF8String:err]
+                     userInfo:nil]];
+    return;
+  }
+  kopsik_push_async(ctx, finishPushAfterUpdate);
+}
+
+- (IBAction)descriptionTextFieldChanged:(id)sender {
+  NSLog(@"descriptionTextFieldChanged");
+  NSAssert(self.GUID != nil, @"GUID is nil");
+  char err[KOPSIK_ERR_LEN];
+  const char *value = [[self.descriptionTextField stringValue] UTF8String];
+  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_description(ctx,
+                                                              err,
+                                                              KOPSIK_ERR_LEN,
+                                                              [self.GUID UTF8String],
+                                                              value)) {
+    NSLog(@"Error updating time entry: %s", err);
+    [Bugsnag notify:[NSException
+                     exceptionWithName:@"Error updating time entry"
+                     reason:[NSString stringWithUTF8String:err]
+                     userInfo:nil]];
+    return;
+  }
+  kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
 void finishPushAfterDelete(kopsik_api_result result, char *err, unsigned int errlen) {
@@ -137,16 +297,13 @@ void finishPushAfterDelete(kopsik_api_result result, char *err, unsigned int err
                                                      [self.GUID UTF8String])) {
     NSLog(@"Error deleting time entry: %s", err);
     [Bugsnag notify:[NSException
-                     exceptionWithName:@"Error starting time entry"
+                     exceptionWithName:@"Error deleting time entry"
                      reason:[NSString stringWithUTF8String:err]
                      userInfo:nil]];
     return;
   }
   kopsik_push_async(ctx, finishPushAfterDelete);
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimeEntryDeselected object:nil];
-}
-
-- (IBAction)descriptionTextFieldChanged:(id)sender {
 }
 
 @end

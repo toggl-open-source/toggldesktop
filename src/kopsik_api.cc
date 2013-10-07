@@ -727,6 +727,78 @@ kopsik_api_result kopsik_delete_time_entry(
   return save(ctx, errmsg, errlen);
 }
 
+kopsik_api_result kopsik_set_time_entry_duration(
+    KopsikContext *ctx,
+    char *errmsg, unsigned int errlen,
+    const char *guid,
+    const char *value) {
+  // FIXME:
+  return KOPSIK_API_SUCCESS;
+}
+
+kopsik_api_result kopsik_set_time_entry_project(
+    KopsikContext *ctx,
+    char *errmsg, unsigned int errlen,
+    const char *guid,
+    const char *value) {
+  // FIXME:
+  return KOPSIK_API_SUCCESS;
+}
+
+kopsik_api_result kopsik_set_time_entry_start_time(
+    KopsikContext *ctx,
+    char *errmsg, unsigned int errlen,
+    const char *guid,
+    const char *value) {
+  // FIXME:
+  return KOPSIK_API_SUCCESS;
+}
+
+kopsik_api_result kopsik_set_time_entry_end_time(
+    KopsikContext *ctx,
+    char *errmsg, unsigned int errlen,
+    const char *guid,
+    const char *value) {
+  // FIXME:
+  return KOPSIK_API_SUCCESS;
+}
+
+kopsik_api_result kopsik_set_time_entry_start_date(
+    KopsikContext *ctx,
+    char *errmsg, unsigned int errlen,
+    const char *guid,
+    const char *value) {
+  // FIXME:
+  return KOPSIK_API_SUCCESS;
+}
+
+kopsik_api_result kopsik_set_time_entry_tags(
+    KopsikContext *ctx,
+    char *errmsg, unsigned int errlen,
+    const char *guid,
+    const char *value) {
+  // FIXME:
+  return KOPSIK_API_SUCCESS;
+}
+
+kopsik_api_result kopsik_set_time_entry_billable(
+    KopsikContext *ctx,
+    char *errmsg, unsigned int errlen,
+    const char *guid,
+    int value) {
+  // FIXME:
+  return KOPSIK_API_SUCCESS;
+}
+
+kopsik_api_result kopsik_set_time_entry_description(
+    KopsikContext *ctx,
+    char *errmsg, unsigned int errlen,
+    const char *guid,
+    const char *value) {
+  // FIXME:
+  return KOPSIK_API_SUCCESS;
+}
+
 kopsik_api_result kopsik_stop(
     KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
