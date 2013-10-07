@@ -732,8 +732,32 @@ kopsik_api_result kopsik_set_time_entry_duration(
     char *errmsg, unsigned int errlen,
     const char *guid,
     const char *value) {
-  // FIXME:
-  return KOPSIK_API_SUCCESS;
+
+  poco_assert(ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(guid);
+  poco_assert(value);
+
+  std::string GUID(guid);
+  if (GUID.empty()) {
+    strncpy(errmsg, "Missing GUID", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  if (!ctx->current_user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
+  kopsik::TimeEntry *te = user->GetTimeEntryByGUID(GUID);
+  poco_assert(te);
+  te->SetDurationString(std::string(value));
+
+  return save(ctx, errmsg, errlen);
 }
 
 kopsik_api_result kopsik_set_time_entry_project(
@@ -741,8 +765,37 @@ kopsik_api_result kopsik_set_time_entry_project(
     char *errmsg, unsigned int errlen,
     const char *guid,
     const char *value) {
-  // FIXME:
-  return KOPSIK_API_SUCCESS;
+
+  poco_assert(ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(guid);
+  poco_assert(value);
+
+  std::string GUID(guid);
+  if (GUID.empty()) {
+    strncpy(errmsg, "Missing GUID", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  if (!ctx->current_user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
+  kopsik::TimeEntry *te = user->GetTimeEntryByGUID(GUID);
+  poco_assert(te);
+  kopsik::Project *p = user->GetProjectByName(std::string(value));
+  if (p) {
+    te->SetPID(p->ID());
+  } else {
+    te->SetPID(0);
+  }
+
+  return save(ctx, errmsg, errlen);
 }
 
 kopsik_api_result kopsik_set_time_entry_start_time(
@@ -750,8 +803,32 @@ kopsik_api_result kopsik_set_time_entry_start_time(
     char *errmsg, unsigned int errlen,
     const char *guid,
     const char *value) {
-  // FIXME:
-  return KOPSIK_API_SUCCESS;
+
+  poco_assert(ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(guid);
+  poco_assert(value);
+
+  std::string GUID(guid);
+  if (GUID.empty()) {
+    strncpy(errmsg, "Missing GUID", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  if (!ctx->current_user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
+  kopsik::TimeEntry *te = user->GetTimeEntryByGUID(GUID);
+  poco_assert(te);
+  te->SetStartString(std::string(value));
+
+  return save(ctx, errmsg, errlen);
 }
 
 kopsik_api_result kopsik_set_time_entry_end_time(
@@ -759,17 +836,32 @@ kopsik_api_result kopsik_set_time_entry_end_time(
     char *errmsg, unsigned int errlen,
     const char *guid,
     const char *value) {
-  // FIXME:
-  return KOPSIK_API_SUCCESS;
-}
 
-kopsik_api_result kopsik_set_time_entry_start_date(
-    KopsikContext *ctx,
-    char *errmsg, unsigned int errlen,
-    const char *guid,
-    const char *value) {
-  // FIXME:
-  return KOPSIK_API_SUCCESS;
+  poco_assert(ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(guid);
+  poco_assert(value);
+
+  std::string GUID(guid);
+  if (GUID.empty()) {
+    strncpy(errmsg, "Missing GUID", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  if (!ctx->current_user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
+  kopsik::TimeEntry *te = user->GetTimeEntryByGUID(GUID);
+  poco_assert(te);
+  te->SetStopString(std::string(value));
+
+  return save(ctx, errmsg, errlen);
 }
 
 kopsik_api_result kopsik_set_time_entry_tags(
@@ -777,8 +869,32 @@ kopsik_api_result kopsik_set_time_entry_tags(
     char *errmsg, unsigned int errlen,
     const char *guid,
     const char *value) {
-  // FIXME:
-  return KOPSIK_API_SUCCESS;
+
+  poco_assert(ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(guid);
+  poco_assert(value);
+
+  std::string GUID(guid);
+  if (GUID.empty()) {
+    strncpy(errmsg, "Missing GUID", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  if (!ctx->current_user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
+  kopsik::TimeEntry *te = user->GetTimeEntryByGUID(GUID);
+  poco_assert(te);
+  te->SetTags(std::string(value));
+
+  return save(ctx, errmsg, errlen);
 }
 
 kopsik_api_result kopsik_set_time_entry_billable(
@@ -786,8 +902,36 @@ kopsik_api_result kopsik_set_time_entry_billable(
     char *errmsg, unsigned int errlen,
     const char *guid,
     int value) {
-  // FIXME:
-  return KOPSIK_API_SUCCESS;
+
+  poco_assert(ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(guid);
+  poco_assert(value);
+
+  std::string GUID(guid);
+  if (GUID.empty()) {
+    strncpy(errmsg, "Missing GUID", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  if (!ctx->current_user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
+  kopsik::TimeEntry *te = user->GetTimeEntryByGUID(GUID);
+  poco_assert(te);
+  if (value) {
+    te->SetBillable(true);
+  } else {
+    te->SetBillable(false);
+  }
+
+  return save(ctx, errmsg, errlen);
 }
 
 kopsik_api_result kopsik_set_time_entry_description(
@@ -795,8 +939,32 @@ kopsik_api_result kopsik_set_time_entry_description(
     char *errmsg, unsigned int errlen,
     const char *guid,
     const char *value) {
-  // FIXME:
-  return KOPSIK_API_SUCCESS;
+
+  poco_assert(ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(guid);
+  poco_assert(value);
+
+  std::string GUID(guid);
+  if (GUID.empty()) {
+    strncpy(errmsg, "Missing GUID", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  if (!ctx->current_user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
+  kopsik::TimeEntry *te = user->GetTimeEntryByGUID(GUID);
+  poco_assert(te);
+  te->SetDescription(std::string(value));
+
+  return save(ctx, errmsg, errlen);
 }
 
 kopsik_api_result kopsik_stop(

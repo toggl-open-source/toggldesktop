@@ -202,12 +202,6 @@ KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_end_time(
   const char *guid,
   const char *value);
 
-KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_start_date(
-  KopsikContext *ctx,
-  char *errmsg, unsigned int errlen,
-  const char *guid,
-  const char *value);
-
 KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_tags(
   KopsikContext *ctx,
   char *errmsg, unsigned int errlen,
