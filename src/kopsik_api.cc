@@ -922,7 +922,6 @@ kopsik_api_result kopsik_set_time_entry_billable(
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(guid);
-  poco_assert(value);
 
   std::string GUID(guid);
   if (GUID.empty()) {
