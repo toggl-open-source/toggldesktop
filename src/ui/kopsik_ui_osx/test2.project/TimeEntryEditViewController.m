@@ -195,6 +195,8 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
 - (IBAction)dateChanged:(id)sender {
   NSLog(@"dateChanged");
   NSAssert(self.GUID != nil, @"GUID is nil");
+  // FIXME
+  /*
   char err[KOPSIK_ERR_LEN];
   const char *value = [[self.startDate stringValue] UTF8String];
   if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_start_date(ctx,
@@ -209,6 +211,7 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
                      userInfo:nil]];
     return;
   }
+  */
   kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
