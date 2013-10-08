@@ -1427,15 +1427,7 @@ std::string Formatter::FormatDurationInSeconds(Poco::Int64 value) {
         value = time(0) + value;
     }
     Poco::Timespan span(value * Poco::Timespan::SECONDS);
-    if (span.totalHours() > 0) {
-        return Poco::DateTimeFormatter::format(span, "%H:%M:%S");
-    }
-    if (span.totalMinutes() > 0) {
-        return Poco::DateTimeFormatter::format(span, "%M:%S min");
-    }
-    std::ostringstream out;
-    out << span.totalSeconds() << " sec";
-    return out.str();
+    return Poco::DateTimeFormatter::format(span, "%H:%M:%S");
 }
 
 }   // namespace kopsik
