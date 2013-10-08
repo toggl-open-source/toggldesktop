@@ -38,6 +38,7 @@
                     </textFieldCell>
                     <connections>
                         <action selector="durationTextFieldChanged:" target="-2" id="5yw-Kw-jbf"/>
+                        <outlet property="nextKeyView" destination="11" id="3UM-uG-bxA"/>
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="19">
@@ -63,6 +64,7 @@
                     </textFieldCell>
                     <connections>
                         <action selector="descriptionTextFieldChanged:" target="-2" id="NzA-ig-RqJ"/>
+                        <outlet property="nextKeyView" destination="16" id="B6N-q2-wiP"/>
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VJj-Qi-8kG">
@@ -176,6 +178,7 @@
                     </comboBoxCell>
                     <connections>
                         <action selector="projectSelectChanged:" target="-2" id="mjj-yR-h9m"/>
+                        <outlet property="nextKeyView" destination="17" id="AMe-zB-Gxr"/>
                     </connections>
                 </comboBox>
                 <datePicker verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="12">
@@ -216,6 +219,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </datePickerCell>
                     <connections>
                         <action selector="dateChanged:" target="-2" id="GWz-aa-QPR"/>
+                        <outlet property="nextKeyView" destination="7" id="gMX-eV-JB5"/>
                     </connections>
                 </datePicker>
                 <datePicker verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="11">
@@ -256,6 +260,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </datePickerCell>
                     <connections>
                         <action selector="startTimeChanged:" target="-2" id="oZm-dY-RqC"/>
+                        <outlet property="nextKeyView" destination="10" id="Tsi-j9-fhM"/>
                     </connections>
                 </datePicker>
                 <datePicker verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="10">
@@ -296,6 +301,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </datePickerCell>
                     <connections>
                         <action selector="endTimeChanged:" target="-2" id="clR-DL-Oqg"/>
+                        <outlet property="nextKeyView" destination="12" id="aNn-Ng-SgG"/>
                     </connections>
                 </datePicker>
                 <tokenField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7">
@@ -308,6 +314,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </tokenFieldCell>
                     <connections>
                         <action selector="tagsChanged:" target="-2" id="ZNw-YV-9Ui"/>
+                        <outlet property="nextKeyView" destination="8" id="flg-Va-ca9"/>
                     </connections>
                 </tokenField>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8">
@@ -319,6 +326,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </buttonCell>
                     <connections>
                         <action selector="billableCheckBoxClicked:" target="-2" id="hJQ-Ih-yPD"/>
+                        <outlet property="nextKeyView" destination="RVJ-fW-uYG" id="oCK-Rx-HFs"/>
                     </connections>
                 </button>
                 <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6">
