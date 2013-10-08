@@ -316,11 +316,11 @@ namespace kopsik {
         const int kMaxStrLen = 100;
         char str[kMaxStrLen];
         kopsik_format_duration_in_seconds(10, str, kMaxStrLen);
-        ASSERT_EQ("10 sec", std::string(str));
+        ASSERT_EQ("00:00:10", std::string(str));
         kopsik_format_duration_in_seconds(60, str, kMaxStrLen);
-        ASSERT_EQ("01:00 min", std::string(str));
+        ASSERT_EQ("00:01:00", std::string(str));
         kopsik_format_duration_in_seconds(65, str, kMaxStrLen);
-        ASSERT_EQ("01:05 min", std::string(str));
+        ASSERT_EQ("00:01:05", std::string(str));
         kopsik_format_duration_in_seconds(3600, str, kMaxStrLen);
         ASSERT_EQ("01:00:00", std::string(str));
         kopsik_format_duration_in_seconds(5400, str, kMaxStrLen);
