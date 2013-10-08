@@ -773,7 +773,6 @@ kopsik_api_result kopsik_set_time_entry_project(
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(guid);
-  poco_assert(value);
 
   std::string GUID(guid);
   if (GUID.empty()) {
@@ -791,9 +790,13 @@ kopsik_api_result kopsik_set_time_entry_project(
   kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
   kopsik::TimeEntry *te = user->GetTimeEntryByGUID(GUID);
   poco_assert(te);
-  kopsik::Project *p = user->GetProjectByName(std::string(value));
-  if (p) {
-    te->SetPID(p->ID());
+  if (value) {
+    kopsik::Project *p = user->GetProjectByName(std::string(value));
+    if (p) {
+      te->SetPID(p->ID());
+    } else {
+      te->SetPID(0);
+    }
   } else {
     te->SetPID(0);
   }
