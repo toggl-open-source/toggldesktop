@@ -1422,11 +1422,12 @@ error TimeEntry::loadTagsFromJSONNode(JSONNODE *list) {
     return noError;
 }
 
-std::string Formatter::FormatDurationInSeconds(Poco::Int64 value) {
-    if (value < 0) {
-        value = time(0) + value;
+std::string Formatter::FormatDurationInSeconds(const Poco::Int64 value) {
+    Poco::Int64 duration = value;
+    if (duration < 0) {
+        duration += time(0);
     }
-    Poco::Timespan span(value * Poco::Timespan::SECONDS);
+    Poco::Timespan span(duration * Poco::Timespan::SECONDS);
     return Poco::DateTimeFormatter::format(span, "%H:%M:%S");
 }
 

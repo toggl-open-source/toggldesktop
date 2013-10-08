@@ -35,7 +35,7 @@ namespace kopsik {
 
     class Formatter {
     public:
-        static std::string FormatDurationInSeconds(Poco::Int64 value);
+        static std::string FormatDurationInSeconds(const Poco::Int64 value);
     };
 
     // FIXME: implement base class with common fields, dirtyness etc

@@ -329,7 +329,6 @@ namespace kopsik {
         ASSERT_EQ("01:30:10", std::string(str));
     }
 
-
     TEST(KopsikApiTest, kopsik_time_entry_view_item_list_init) {
         KopsikTimeEntryViewItemList *list =
             kopsik_time_entry_view_item_list_init();
