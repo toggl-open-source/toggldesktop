@@ -293,6 +293,17 @@ void finishPushAfterDelete(kopsik_api_result result, char *err, unsigned int err
 
 - (IBAction)deleteButtonClicked:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
+  
+  NSAlert *alert = [[NSAlert alloc] init];
+  [alert addButtonWithTitle:@"OK"];
+  [alert addButtonWithTitle:@"Cancel"];
+  [alert setMessageText:@"Delete the time entry?"];
+  [alert setInformativeText:@"Deleted time entries cannot be restored."];
+  [alert setAlertStyle:NSWarningAlertStyle];
+  if ([alert runModal] != NSAlertFirstButtonReturn) {
+    return;
+  }
+  
   char err[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_delete_time_entry(ctx,
                                                      err,
