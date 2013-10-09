@@ -913,6 +913,18 @@ JSONNODE *TimeEntry::JSON() {
         (json_int_t)ui_modified_at_));
     json_push_back(n, json_new_a("created_with", created_with_.c_str()));
 
+    if (!TagNames.empty()) {
+        JSONNODE *tag_nodes = json_new(JSON_ARRAY);
+        json_set_name(tag_nodes, "tags");
+        for (std::vector<std::string>::const_iterator it = TagNames.begin();
+                it != TagNames.end();
+                it++) {
+            std::string tag_name = *it;
+            json_push_back(tag_nodes, json_new_a(NULL, tag_name.c_str()));
+        }
+        json_push_back(n, tag_nodes);
+    }
+
     return n;
 }
 
