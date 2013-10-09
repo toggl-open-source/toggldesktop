@@ -190,13 +190,13 @@ KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_project(
   const char *guid,
   const char *value);
 
-KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_start_time(
+KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_start_iso_8601(
   KopsikContext *ctx,
   char *errmsg, unsigned int errlen,
   const char *guid,
   const char *value);
 
-KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_end_time(
+KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_end_iso_8601(
   KopsikContext *ctx,
   char *errmsg, unsigned int errlen,
   const char *guid,

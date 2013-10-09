@@ -807,7 +807,7 @@ kopsik_api_result kopsik_set_time_entry_project(
   return save(ctx, errmsg, errlen);
 }
 
-kopsik_api_result kopsik_set_time_entry_start_time(
+kopsik_api_result kopsik_set_time_entry_start_iso_8601(
     KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
     const char *guid,
@@ -843,7 +843,7 @@ kopsik_api_result kopsik_set_time_entry_start_time(
   return save(ctx, errmsg, errlen);
 }
 
-kopsik_api_result kopsik_set_time_entry_end_time(
+kopsik_api_result kopsik_set_time_entry_end_iso_8601(
     KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
     const char *guid,
