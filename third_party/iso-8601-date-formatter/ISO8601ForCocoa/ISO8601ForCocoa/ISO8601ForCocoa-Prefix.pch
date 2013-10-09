@@ -1,0 +1,10 @@
+//
+// Prefix header for all source files of the 'ISO8601ForCocoa' target in the 'ISO8601ForCocoa' project
+//
+
+#include <stdbool.h>
+#include <tgmath.h>
+
+#ifdef __OBJC__
+#   import <Foundation/Foundation.h>
+#endif
