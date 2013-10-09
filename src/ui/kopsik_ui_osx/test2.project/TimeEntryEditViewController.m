@@ -10,7 +10,6 @@
 #import "UIEvents.h"
 #import "TimeEntryViewItem.h"
 #import "Context.h"
-#import "Bugsnag.h"
 
 @interface TimeEntryEditViewController ()
 @property NSString *GUID;
@@ -50,12 +49,9 @@
                                                                   [guid UTF8String],
                                                                   view_item,
                                                                   &was_found)) {
-      NSLog(@"Error fetching time entry by GUID %@: %s", guid, err);
       kopsik_time_entry_view_item_clear(view_item);
-      [Bugsnag notify:[NSException
-                       exceptionWithName:@"Error fetching TE by GUID"
-                       reason:[NSString stringWithUTF8String:err]
-                       userInfo:nil]];
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                          object:[NSString stringWithUTF8String:err]];
       return;
     }
     
@@ -98,11 +94,8 @@
 void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int errlen) {
   NSLog(@"finishPushAfterUpdate");
   if (KOPSIK_API_SUCCESS != result) {
-    NSLog(@"Error pushing data: %s", err);
-    [Bugsnag notify:[NSException
-                     exceptionWithName:@"Error pushing data"
-                     reason:[NSString stringWithUTF8String:err]
-                     userInfo:nil]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
     free(err);
   }
 }
@@ -117,11 +110,8 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
                                                            KOPSIK_ERR_LEN,
                                                            [self.GUID UTF8String],
                                                            value)) {
-    NSLog(@"Error updating time entry: %s", err);
-    [Bugsnag notify:[NSException
-                     exceptionWithName:@"Error updating time entry"
-                     reason:[NSString stringWithUTF8String:err]
-                     userInfo:nil]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
     return;
   }
   kopsik_push_async(ctx, finishPushAfterUpdate);
@@ -142,11 +132,8 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
                                                           KOPSIK_ERR_LEN,
                                                           [self.GUID UTF8String],
                                                           value)) {
-    NSLog(@"Error updating time entry: %s", err);
-    [Bugsnag notify:[NSException
-                     exceptionWithName:@"Error updating time entry"
-                     reason:[NSString stringWithUTF8String:err]
-                     userInfo:nil]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
     return;
   }
   kopsik_push_async(ctx, finishPushAfterUpdate);
@@ -183,11 +170,8 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
                                                                  KOPSIK_ERR_LEN,
                                                                  [self.GUID UTF8String],
                                                                  [iso8601String UTF8String])) {
-    NSLog(@"Error updating time entry: %s", err);
-    [Bugsnag notify:[NSException
-                     exceptionWithName:@"Error updating time entry"
-                     reason:[NSString stringWithUTF8String:err]
-                     userInfo:nil]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
     return;
   }
 }
@@ -223,11 +207,8 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
                                                                KOPSIK_ERR_LEN,
                                                                [self.GUID UTF8String],
                                                                [iso8601String UTF8String])) {
-    NSLog(@"Error updating time entry: %s", err);
-    [Bugsnag notify:[NSException
-                     exceptionWithName:@"Error updating time entry"
-                     reason:[NSString stringWithUTF8String:err]
-                     userInfo:nil]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
     return;
   }
 }
@@ -245,17 +226,16 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
   NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
   NSArray *tag_names = [self.tags objectValue];
+  NSLog(@"tag names = %@", tag_names);
   const char *value = [[tag_names componentsJoinedByString:@"|"] UTF8String];
+  NSLog(@"char value = %s", value);
   if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_tags(ctx,
                                                        err,
                                                        KOPSIK_ERR_LEN,
                                                        [self.GUID UTF8String],
                                                        value)) {
-    NSLog(@"Error updating time entry: %s", err);
-    [Bugsnag notify:[NSException
-                     exceptionWithName:@"Error updating time entry"
-                     reason:[NSString stringWithUTF8String:err]
-                     userInfo:nil]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
     return;
   }
   kopsik_push_async(ctx, finishPushAfterUpdate);
@@ -274,11 +254,8 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
                                                            KOPSIK_ERR_LEN,
                                                            [self.GUID UTF8String],
                                                            value)) {
-    NSLog(@"Error updating time entry: %s", err);
-    [Bugsnag notify:[NSException
-                     exceptionWithName:@"Error updating time entry"
-                     reason:[NSString stringWithUTF8String:err]
-                     userInfo:nil]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
     return;
   }
   kopsik_push_async(ctx, finishPushAfterUpdate);
@@ -294,11 +271,8 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
                                                               KOPSIK_ERR_LEN,
                                                               [self.GUID UTF8String],
                                                               value)) {
-    NSLog(@"Error updating time entry: %s", err);
-    [Bugsnag notify:[NSException
-                     exceptionWithName:@"Error updating time entry"
-                     reason:[NSString stringWithUTF8String:err]
-                     userInfo:nil]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
     return;
   }
   kopsik_push_async(ctx, finishPushAfterUpdate);
@@ -307,11 +281,8 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
 void finishPushAfterDelete(kopsik_api_result result, char *err, unsigned int errlen) {
   NSLog(@"finishPushAfterDelete");
   if (KOPSIK_API_SUCCESS != result) {
-    NSLog(@"Error pushing data: %s", err);
-    [Bugsnag notify:[NSException
-                     exceptionWithName:@"Error pushing data"
-                     reason:[NSString stringWithUTF8String:err]
-                     userInfo:nil]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
     free(err);
   }
 }
@@ -334,11 +305,8 @@ void finishPushAfterDelete(kopsik_api_result result, char *err, unsigned int err
                                                      err,
                                                      KOPSIK_ERR_LEN,
                                                      [self.GUID UTF8String])) {
-    NSLog(@"Error deleting time entry: %s", err);
-    [Bugsnag notify:[NSException
-                     exceptionWithName:@"Error deleting time entry"
-                     reason:[NSString stringWithUTF8String:err]
-                     userInfo:nil]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
     return;
   }
   kopsik_push_async(ctx, finishPushAfterDelete);

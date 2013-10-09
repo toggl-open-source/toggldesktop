@@ -14,3 +14,4 @@ NSString *const kUIEventTimerRunning = @"TimerRunning";
 NSString *const kUIEventTimerStopped = @"TimerStopped";
 NSString *const kUIEventTimeEntrySelected = @"TimeEntrySelected";
 NSString *const kUIEventTimeEntryDeselected = @"TimeEntryDeselected";
+NSString *const kUIEventError = @"Error";

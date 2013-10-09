@@ -13,7 +13,6 @@
 #import "TableViewCell.h"
 #import "Context.h"
 #import "UIEvents.h"
-#import "bugsnag.h"
 
 @interface TimeEntryListViewController ()
 
@@ -42,11 +41,8 @@
     char err[KOPSIK_ERR_LEN];
     KopsikTimeEntryViewItemList *list = kopsik_time_entry_view_item_list_init();
     if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(ctx, err, KOPSIK_ERR_LEN, list)) {
-      NSLog(@"Error fetching time entries: %s", err);
-      [Bugsnag notify:[NSException
-                       exceptionWithName:@"Error fetching time entries"
-                       reason:[NSString stringWithUTF8String:err]
-                       userInfo:nil]];
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                          object:[NSString stringWithUTF8String:err]];
       kopsik_time_entry_view_item_list_clear(list);
       return;
     }
@@ -100,11 +96,8 @@
 void finishPushAfterContinue(kopsik_api_result result, char *err, unsigned int errlen) {
   NSLog(@"finishPushAfterContinue");
   if (KOPSIK_API_SUCCESS != result) {
-    NSLog(@"Error pushing data: %s", err);
-    [Bugsnag notify:[NSException
-                     exceptionWithName:@"Error pushing data"
-                     reason:[NSString stringWithUTF8String:err]
-                     userInfo:nil]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
     free(err);
   }
 }
@@ -116,12 +109,9 @@ void finishPushAfterContinue(kopsik_api_result result, char *err, unsigned int e
   char err[KOPSIK_ERR_LEN];
   KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
   if (KOPSIK_API_SUCCESS != kopsik_continue(ctx, err, KOPSIK_ERR_LEN, [guid UTF8String], item)) {
-    NSLog(@"Error starting time entry: %s", err);
     kopsik_time_entry_view_item_clear(item);
-    [Bugsnag notify:[NSException
-                     exceptionWithName:@"Error starting time entry"
-                     reason:[NSString stringWithUTF8String:err]
-                     userInfo:nil]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
     return;
   }
 

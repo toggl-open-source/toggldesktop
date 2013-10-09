@@ -56,6 +56,10 @@
                                              selector:@selector(eventHandler:)
                                                  name:kUIEventTimeEntryDeselected
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eventHandler:)
+                                                 name:kUIEventError
+                                               object:nil];
 
     self.loginViewController = [[LoginViewController alloc]
                                 initWithNibName:@"LoginViewController" bundle:nil];
@@ -83,11 +87,8 @@
   char err[KOPSIK_ERR_LEN];
   KopsikUser *user = kopsik_user_init();
   if (KOPSIK_API_SUCCESS != kopsik_current_user(ctx, err, KOPSIK_ERR_LEN, user)) {
-    NSLog(@"Error fetching user: %s", err);
-    [Bugsnag notify:[NSException
-                     exceptionWithName:@"Error fetching user"
-                     reason:[NSString stringWithUTF8String:err]
-                     userInfo:nil]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
     kopsik_user_clear(user);
     return;
   }
@@ -166,17 +167,44 @@
     [self.timeEntryEditViewController.view removeFromSuperview];
     [self.contentView addSubview:self.timeEntryListViewController.view];
     [self.timeEntryListViewController.view setFrame:self.contentView.bounds];
+  
+  } else if ([notification.name isEqualToString:kUIEventError]) {
+    // Proxy all app errors through this notification.
+
+    NSString *msg = notification.object;
+    NSLog(@"Error: %@", msg);
+
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert setMessageText:msg];
+    [alert addButtonWithTitle:@"Dismiss"];
+    [alert beginSheetModalForWindow:self.window
+                      modalDelegate:self
+                     didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:)
+                        contextInfo:nil];
+
+    [Bugsnag notify:[NSException
+                     exceptionWithName:@"UI error"
+                     reason:msg
+                     userInfo:nil]];
+  }
+}
+
+- (void) alertDidEnd:(NSAlert *)a returnCode:(NSInteger)rc contextInfo:(void *)ci {
+  switch(rc) {
+    case NSAlertFirstButtonReturn:
+      // "First" pressed
+      break;
+    case NSAlertSecondButtonReturn:
+      // "Second" pressed
+      break;
   }
 }
 
 - (IBAction)logout:(id)sender {
   char err[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_logout(ctx, err, KOPSIK_ERR_LEN)) {
-    NSLog(@"Logout error: %s", err);
-    [Bugsnag notify:[NSException
-                     exceptionWithName:@"Logout error"
-                     reason:[NSString stringWithUTF8String:err]
-                     userInfo:nil]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
     return;
   }
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedOut object:nil];
@@ -189,11 +217,9 @@
 void finishSync(kopsik_api_result result, char *err, unsigned int errlen) {
   NSLog(@"finishSync");
   if (KOPSIK_API_SUCCESS != result) {
-    NSLog(@"finishSync error %s", err);
-    [Bugsnag notify:[NSException
-                     exceptionWithName:@"finishSync error"
-                     reason:[NSString stringWithUTF8String:err]
-                     userInfo:nil]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
+    
     free(err);
     return;
   }
@@ -207,12 +233,9 @@ void renderRunningTimeEntry() {
   if (KOPSIK_API_SUCCESS != kopsik_running_time_entry_view_item(ctx,
                                                                 err, KOPSIK_ERR_LEN,
                                                                 item, &is_tracking)) {
-    NSLog(@"Error fetching running time entry: %s", err);
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
     kopsik_time_entry_view_item_clear(item);
-    [Bugsnag notify:[NSException
-                     exceptionWithName:@"Error fetching running time entry"
-                     reason:[NSString stringWithUTF8String:err]
-                     userInfo:nil]];
     return;
   }
 

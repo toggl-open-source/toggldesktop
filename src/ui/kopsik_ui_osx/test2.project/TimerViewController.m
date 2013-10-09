@@ -11,7 +11,6 @@
 #import "kopsik_api.h"
 #import "TimeEntryViewItem.h"
 #import "Context.h"
-#import "Bugsnag.h"
 
 @interface TimerViewController ()
 @property TimeEntryViewItem *te;
@@ -64,11 +63,8 @@
 void finishPushAfterStop(kopsik_api_result result, char *err, unsigned int errlen) {
   NSLog(@"finishPushAfterStop");
   if (KOPSIK_API_SUCCESS != result) {
-    NSLog(@"Error pushing data: %s", err);
-    [Bugsnag notify:[NSException
-                     exceptionWithName:@"Error pushing data"
-                     reason:[NSString stringWithUTF8String:err]
-                     userInfo:nil]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
     free(err);
   }
 }
@@ -78,12 +74,9 @@ void finishPushAfterStop(kopsik_api_result result, char *err, unsigned int errle
   char err[KOPSIK_ERR_LEN];
   KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
   if (KOPSIK_API_SUCCESS != kopsik_stop(ctx, err, KOPSIK_ERR_LEN, item)) {
-    NSLog(@"Error stopping time entry: %s", err);
     kopsik_time_entry_view_item_clear(item);
-    [Bugsnag notify:[NSException
-                     exceptionWithName:@"Error stopping time entry"
-                     reason:[NSString stringWithUTF8String:err]
-                     userInfo:nil]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
     return;
   }
   
