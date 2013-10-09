@@ -15,3 +15,4 @@ extern NSString *const kUIEventTimerStopped;
 extern NSString *const kUIEventTimeEntrySelected;
 extern NSString *const kUIEventTimeEntryDeselected;
 extern NSString *const kUIEventError;
+extern NSString *const kUIEventChange;

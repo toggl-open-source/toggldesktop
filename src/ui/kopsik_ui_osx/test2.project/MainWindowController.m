@@ -18,6 +18,7 @@
 #import "Bugsnag.h"
 #import "User.h"
 #import "Reachability.h"
+#import "ViewItemChange.h"
 
 @interface MainWindowController ()
 @property (nonatomic,strong) IBOutlet LoginViewController *loginViewController;
@@ -86,14 +87,19 @@
     self.reachability = [Reachability reachabilityForInternetConnection];
     [self.reachability startNotifier];
     
-    NetworkStatus remoteHostStatus = [self.reachability currentReachabilityStatus];
-    if (NotReachable == remoteHostStatus) {
-      NSLog(@"Network is not reachable");
-    } else {
-      NSLog(@"Network is reachable");
-    }
+    kopsik_register_view_item_change_callback(ctx, view_items_changed);
   }
   return self;
+}
+
+void view_items_changed(KopsikViewItemChangeList *list) {
+  NSLog(@"Number of view items that have changed: %d", list->Length);
+  for (unsigned int i = 0; i < list->Length; i++) {
+    ViewItemChange *change = [[ViewItemChange alloc] init];
+    [change load:list->Changes[i]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventChange
+                                                        object:change];
+  }
 }
 
 - (void)reachabilityChanged:(NSNotification*)note

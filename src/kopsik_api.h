@@ -25,6 +25,7 @@ typedef struct {
   void *https_client;
   void *mutex;
   void *tm;
+  void *view_item_change_callback;
 } KopsikContext;
 
 KOPSIK_EXPORT KopsikContext *kopsik_context_init();
@@ -103,7 +104,7 @@ KOPSIK_EXPORT kopsik_api_result kopsik_pushable_models(
 
 // Async API
 
-typedef void (*kopsik_callback)(
+typedef void (*KopsikResultCallback)(
   kopsik_api_result result,
   // NB! you need to free() the memory yourself
   char *errmsg,
@@ -113,11 +114,11 @@ typedef void (*kopsik_callback)(
 KOPSIK_EXPORT void kopsik_sync_async(
   KopsikContext *ctx,
   int full_sync,
-  kopsik_callback callback);
+  KopsikResultCallback callback);
 
 KOPSIK_EXPORT void kopsik_push_async(
   KopsikContext *ctx,
-  kopsik_callback callback);
+  KopsikResultCallback callback);
 
 // Time entries view
 
@@ -235,6 +236,38 @@ KOPSIK_EXPORT kopsik_api_result kopsik_time_entry_view_items(
   KopsikContext *ctx,
   char *errmsg, unsigned int errlen,
   KopsikTimeEntryViewItemList *list);
+
+// Receive updates from library
+
+#define KOPSIK_CHANGE_INSERT 1
+#define KOPSIK_CHANGE_UPDATE 2
+#define KOPSIK_CHANGE_DELETE 3
+
+#define KOPSIK_MODEL_WORKSPACE 1
+#define KOPSIK_MODEL_CLIENT 2
+#define KOPSIK_MODEL_PROJECT 3
+#define KOPSIK_MODEL_TASK 4
+#define KOPSIK_MODEL_TIME_ENTRY 5
+#define KOPSIK_MODEL_TAG 6
+
+typedef struct {
+  int change_type;
+  int model_type;
+  unsigned int model_id;
+  char *GUID;
+} KopsikViewItemChange;
+
+typedef struct {
+  KopsikViewItemChange **Changes;
+  unsigned int Length;
+} KopsikViewItemChangeList;
+
+typedef void (*KopsikViewItemChangeCallback)(
+  KopsikViewItemChangeList *list);
+
+KOPSIK_EXPORT void kopsik_register_view_item_change_callback(
+  KopsikContext *ctx,
+  KopsikViewItemChangeCallback callback);
 
 // Websocket client
 

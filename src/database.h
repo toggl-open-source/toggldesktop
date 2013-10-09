@@ -16,6 +16,27 @@
 
 namespace kopsik {
 
+class ModelChange {
+    public:
+        ModelChange(const std::string model_type,
+                    const std::string change_type,
+                    const unsigned int model_id,
+                    const std::string GUID) :
+          model_type_(model_type),
+          change_type_(change_type),
+          model_id_(model_id),
+          GUID_(GUID) {}
+        std::string const& GUID() { return GUID_; }
+        std::string const& ModelType() { return model_type_; }
+        unsigned int const& ModelID() { return model_id_; }
+        std::string const& ChangeType() { return change_type_; }
+    private:
+        std::string model_type_;
+        std::string change_type_;
+        unsigned int model_id_;
+        std::string GUID_;
+};
+
 class Database {
     public:
         explicit Database(std::string db_path) : session(0) {
@@ -38,12 +59,18 @@ class Database {
         }
 
         error DeleteUser(User *model, bool with_related_data);
-        error DeleteWorkspace(Workspace *model);
-        error DeleteClient(Client *model);
-        error DeleteProject(Project *model);
-        error DeleteTask(Task *model);
-        error DeleteTag(Tag *model);
-        error DeleteTimeEntry(TimeEntry *model);
+        error DeleteWorkspace(Workspace *model,
+            std::vector<ModelChange> *changes);
+        error DeleteClient(Client *model,
+            std::vector<ModelChange> *changes);
+        error DeleteProject(Project *model,
+            std::vector<ModelChange> *changes);
+        error DeleteTask(Task *model,
+            std::vector<ModelChange> *changes);
+        error DeleteTag(Tag *model,
+            std::vector<ModelChange> *changes);
+        error DeleteTimeEntry(TimeEntry *model,
+            std::vector<ModelChange> *changes);
 
         error LoadUserByID(Poco::UInt64 UID, User *user,
             bool with_related_data);
@@ -53,13 +80,17 @@ class Database {
 
         error UInt(std::string sql, Poco::UInt64 *result);
 
-        error SaveUser(User *user, bool with_related_data);
-        error SaveWorkspace(Workspace *model);
-        error SaveClient(Client *model);
-        error SaveProject(Project *model);
-        error SaveTask(Task *model);
-        error SaveTag(Tag *model);
-        error SaveTimeEntry(TimeEntry *model);
+        error SaveUser(User *user,
+            bool with_related_data,
+            std::vector<ModelChange> *changes);
+        error SaveWorkspace(Workspace *model,
+            std::vector<ModelChange> *changes);
+        error SaveClient(Client *model, std::vector<ModelChange> *changes);
+        error SaveProject(Project *model, std::vector<ModelChange> *changes);
+        error SaveTask(Task *model, std::vector<ModelChange> *changes);
+        error SaveTag(Tag *model, std::vector<ModelChange> *changes);
+        error SaveTimeEntry(TimeEntry *model,
+            std::vector<ModelChange> *changes);
 
         error LoadTimeEntriesForUpload(User *user);
 
@@ -87,12 +118,24 @@ class Database {
         error loadTimeEntriesFromSQLStatement(Poco::Data::Statement *select,
             std::vector<TimeEntry *> *list);
 
-        error saveWorkspaces(Poco::UInt64 UID, std::vector<Workspace *> *list);
-        error saveClients(Poco::UInt64 UID, std::vector<Client *> *list);
-        error saveProjects(Poco::UInt64 UID, std::vector<Project *> *list);
-        error saveTasks(Poco::UInt64 UID, std::vector<Task *> *list);
-        error saveTags(Poco::UInt64 UID, std::vector<Tag *> *list);
-        error saveTimeEntries(Poco::UInt64 UID, std::vector<TimeEntry *> *list);
+        error saveWorkspaces(Poco::UInt64 UID,
+            std::vector<Workspace *> *list,
+            std::vector<ModelChange> *changes);
+        error saveClients(Poco::UInt64 UID,
+            std::vector<Client *> *list,
+            std::vector<ModelChange> *changes);
+        error saveProjects(Poco::UInt64 UID,
+            std::vector<Project *> *list,
+            std::vector<ModelChange> *changes);
+        error saveTasks(Poco::UInt64 UID,
+            std::vector<Task *> *list,
+            std::vector<ModelChange> *changes);
+        error saveTags(Poco::UInt64 UID,
+            std::vector<Tag *> *list,
+            std::vector<ModelChange> *changes);
+        error saveTimeEntries(Poco::UInt64 UID,
+            std::vector<TimeEntry *> *list,
+            std::vector<ModelChange> *changes);
 
         error deleteFromTable(std::string table_name, Poco::Int64 local_id);
         error deleteAllFromTableByUID(std::string table_name, Poco::Int64 UID);

@@ -31,6 +31,84 @@ kopsik::Database *get_db(KopsikContext *ctx) {
   return reinterpret_cast<kopsik::Database *>(ctx->db);
 }
 
+void model_change_to_view_item_change(
+                                      kopsik::ModelChange *in,
+                                      KopsikViewItemChange *out) {
+  poco_assert(in);
+  poco_assert(out);
+
+  poco_assert(!out->GUID);
+  out->GUID = strdup(in->GUID().c_str());
+
+  poco_assert(!out->model_id);
+  out->model_id = in->ModelID();
+
+  std::string change_type = in->ChangeType();
+  if ("insert" == change_type) {
+    out->change_type = KOPSIK_CHANGE_INSERT;
+  } else if ("update" == change_type) {
+    out->change_type = KOPSIK_CHANGE_UPDATE;
+  } else if ("delete" == change_type) {
+    out->change_type = KOPSIK_CHANGE_DELETE;
+  }
+  poco_assert(out->change_type);
+
+  std::string model_type = in->ModelType();
+  if ("workspace" == model_type) {
+    out->model_type = KOPSIK_MODEL_WORKSPACE;
+  } else if ("client" == model_type) {
+    out->model_type = KOPSIK_MODEL_CLIENT;
+  } else if ("project" == model_type) {
+    out->model_type = KOPSIK_MODEL_PROJECT;
+  } else if ("task" == model_type) {
+    out->model_type = KOPSIK_MODEL_TASK;
+  } else if ("time_entry" == model_type) {
+    out->model_type = KOPSIK_MODEL_TIME_ENTRY;
+  } else if ("tag" == model_type) {
+    out->model_type = KOPSIK_MODEL_TAG;
+  }
+  poco_assert(out->model_type);
+}
+
+KopsikViewItemChangeList *view_item_change_list_init() {
+  KopsikViewItemChangeList *list = new KopsikViewItemChangeList();
+  list->Length = 0;
+  list->Changes = 0;
+  return list;
+}
+
+void view_item_change_clear(KopsikViewItemChange *change) {
+  poco_assert(change);
+  if (change->GUID) {
+    free(change->GUID);
+    change->GUID = 0;
+  }
+  delete change;
+  change = 0;
+}
+
+void view_item_change_list_clear(KopsikViewItemChangeList *list) {
+  poco_assert(list);
+  for (unsigned int i = 0; i < list->Length; i++) {
+    view_item_change_clear(list->Changes[i]);
+    list->Changes[i] = 0;
+  }
+  if (list->Changes) {
+    free(list->Changes);
+  }
+  delete list;
+  list = 0;
+}
+
+KopsikViewItemChange *view_item_change_init() {
+  KopsikViewItemChange *change = new KopsikViewItemChange();
+  change->change_type = 0;
+  change->model_type = 0;
+  change->model_id = 0;
+  change->GUID = 0;
+  return change;
+}
+
 kopsik_api_result save(KopsikContext *ctx,
   char *errmsg, unsigned int errlen) {
   poco_assert(ctx);
@@ -38,10 +116,35 @@ kopsik_api_result save(KopsikContext *ctx,
   poco_assert(errlen);
   kopsik::Database *db = get_db(ctx);
   kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
-  kopsik::error err = db->SaveUser(user, true);
+  std::vector<kopsik::ModelChange> changes;
+  kopsik::error err = db->SaveUser(user, true, &changes);
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
+  }
+  if (ctx->view_item_change_callback) {
+    KopsikViewItemChangeList *list = view_item_change_list_init();
+    list->Length = 0;
+    if (!changes.empty()) {
+      KopsikViewItemChange *tmp = view_item_change_init();
+      void *m = malloc(changes.size() * sizeof(tmp));
+      view_item_change_clear(tmp);
+      poco_assert(m);
+
+      list->Changes = reinterpret_cast<KopsikViewItemChange **>(m);
+      for (unsigned int i = 0; i < changes.size(); i++) {
+        kopsik::ModelChange &in = changes[i];
+        KopsikViewItemChange *out = view_item_change_init();
+        model_change_to_view_item_change(&in, out);
+        list->Changes[i] = out;
+        list->Length++;
+      }
+    }
+    KopsikViewItemChangeCallback cb =
+      reinterpret_cast<KopsikViewItemChangeCallback>(
+        ctx->view_item_change_callback);
+    cb(list);
+    view_item_change_list_clear(list);
   }
   return KOPSIK_API_SUCCESS;
 }
@@ -117,6 +220,7 @@ KopsikContext *kopsik_context_init() {
   ctx->https_client = new kopsik::HTTPSClient();
   ctx->mutex = new Poco::Mutex();
   ctx->tm = new Poco::TaskManager();
+  ctx->view_item_change_callback = 0;
   return ctx;
 }
 
@@ -355,7 +459,7 @@ kopsik_api_result kopsik_login(
     return KOPSIK_API_FAILURE;
   }
   kopsik::Database *db = get_db(ctx);
-  err = db->SaveUser(user, true);
+  err = db->SaveUser(user, true, 0);
   if (err != kopsik::noError) {
     delete user;
     strncpy(errmsg, err.c_str(), errlen);
@@ -478,7 +582,7 @@ class SyncTask : public Poco::Task {
   public:
     SyncTask(KopsikContext *ctx,
       int full_sync,
-      kopsik_callback callback) : Task("sync"),
+      KopsikResultCallback callback) : Task("sync"),
       ctx_(ctx),
       full_sync_(full_sync),
       callback_(callback) {}
@@ -497,13 +601,13 @@ class SyncTask : public Poco::Task {
   private:
     KopsikContext *ctx_;
     int full_sync_;
-    kopsik_callback callback_;
+    KopsikResultCallback callback_;
 };
 
 void kopsik_sync_async(
     KopsikContext *ctx,
     int full_sync,
-    kopsik_callback callback) {
+    KopsikResultCallback callback) {
   poco_assert(ctx);
   poco_assert(callback);
   Poco::TaskManager *tm = reinterpret_cast<Poco::TaskManager *>(ctx->tm);
@@ -513,7 +617,7 @@ void kopsik_sync_async(
 class PushTask : public Poco::Task {
   public:
     PushTask(KopsikContext *ctx,
-      kopsik_callback callback) : Task("push"),
+      KopsikResultCallback callback) : Task("push"),
       ctx_(ctx), callback_(callback) {}
     void runTask() {
       char err[KOPSIK_ERR_LEN];
@@ -528,12 +632,12 @@ class PushTask : public Poco::Task {
     }
   private:
     KopsikContext *ctx_;
-    kopsik_callback callback_;
+    KopsikResultCallback callback_;
 };
 
 void kopsik_push_async(
     KopsikContext *ctx,
-    kopsik_callback callback) {
+    KopsikResultCallback callback) {
   poco_assert(ctx);
   poco_assert(callback);
 
@@ -1121,6 +1225,20 @@ kopsik_api_result kopsik_time_entry_view_items(
     out_list->Length++;
   }
   return KOPSIK_API_SUCCESS;
+}
+
+// Receive updates from library
+
+void kopsik_register_view_item_change_callback(
+    KopsikContext *ctx,
+    KopsikViewItemChangeCallback callback) {
+  poco_assert(ctx);
+  poco_assert(callback);
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
+  ctx->view_item_change_callback = reinterpret_cast<void *>(callback);
 }
 
 // Websocket client
