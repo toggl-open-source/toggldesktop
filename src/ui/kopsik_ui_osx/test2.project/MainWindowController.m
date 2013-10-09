@@ -174,6 +174,11 @@
     NSString *msg = notification.object;
     NSLog(@"Error: %@", msg);
 
+    // Ignore offline errors
+    if ([msg rangeOfString:@"host not found"].location == NSNotFound) {
+      return;
+    }
+
     NSAlert *alert = [[NSAlert alloc] init];
     [alert setMessageText:msg];
     [alert addButtonWithTitle:@"Dismiss"];
