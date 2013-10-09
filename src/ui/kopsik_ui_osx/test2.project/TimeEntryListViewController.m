@@ -84,13 +84,6 @@
     return cellView;
 }
 
-- (void)tableViewSelectionDidChange:(NSNotification *)aNotification{
-  NSInteger selectedRow = [self.timeEntriesTableView selectedRow];
-  TimeEntryViewItem *item = [viewitems objectAtIndex:selectedRow];
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimeEntrySelected
-                                                      object:item.GUID];
-}
-
 - (NSColor *)hexCodeToNSColor:(NSString *)hexCode {
 	unsigned int colorCode = 0;
   if (hexCode.length > 1) {
@@ -139,6 +132,13 @@ void finishPushAfterContinue(kopsik_api_result result, char *err, unsigned int e
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerRunning object:te];
 
   kopsik_push_async(ctx, finishPushAfterContinue);
+}
+
+- (IBAction)performClick:(id)sender {
+  NSInteger row = [self.timeEntriesTableView clickedRow];
+  TimeEntryViewItem *item = [viewitems objectAtIndex:row];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimeEntrySelected
+                                                      object:item.GUID];
 }
 
 @end

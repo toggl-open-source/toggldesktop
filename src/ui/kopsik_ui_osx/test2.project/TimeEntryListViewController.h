@@ -16,4 +16,5 @@
 }
 @property (weak) IBOutlet NSTableView *timeEntriesTableView;
 - (IBAction)continueButtonClicked:(id)sender;
+- (IBAction)performClick:(id)sender;
 @end

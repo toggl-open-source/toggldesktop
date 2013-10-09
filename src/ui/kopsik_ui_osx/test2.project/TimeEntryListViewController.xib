@@ -21,11 +21,11 @@
                     <rect key="frame" x="0.0" y="0.0" width="258" height="330"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <clipView key="contentView" id="TQQ-db-grk">
-                        <rect key="frame" x="0.0" y="0.0" width="258" height="330"/>
+                        <rect key="frame" x="0.0" y="0.0" width="258" height="315"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="kSc-tv-Cw1">
-                                <rect key="frame" x="0.0" y="0.0" width="260" height="330"/>
+                                <rect key="frame" x="0.0" y="0.0" width="260" height="315"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -108,6 +108,7 @@
                                     </tableColumn>
                                 </tableColumns>
                                 <connections>
+                                    <action selector="performClick:" target="-2" id="uPF-SU-Gir"/>
                                     <outlet property="dataSource" destination="-2" id="mvS-oR-OON"/>
                                     <outlet property="delegate" destination="-2" id="cq5-Ff-bG3"/>
                                 </connections>
@@ -116,7 +117,7 @@
                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </clipView>
                     <scroller key="horizontalScroller" verticalHuggingPriority="750" id="RWC-Ro-rhd">
-                        <rect key="frame" x="0.0" y="314" width="258" height="16"/>
+                        <rect key="frame" x="0.0" y="315" width="258" height="15"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" id="mPP-6U-WOC">
