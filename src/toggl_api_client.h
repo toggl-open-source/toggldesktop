@@ -15,24 +15,19 @@
 #include "Poco/Types.h"
 
 #include "./types.h"
+#include "./https_client.h"
 
 namespace kopsik {
 
-    class BatchUpdate {
-    public:
-        BatchUpdate() : Method(""), RelativeUrl(""), Body("") {
-        }
-        std::string Method;
-        std::string RelativeUrl;
-        std::string Body;
-    };
-
     class BatchUpdateResult {
     public:
-        BatchUpdateResult() : StatusCode(0), Body("") {
+        BatchUpdateResult() : StatusCode(0), Body(""), GUID(""),
+            ContentType("") {
         }
         Poco::Int64 StatusCode;
         std::string Body;
+        std::string GUID;  // must match the BatchUpdate GUID
+        std::string ContentType;
 
         void parseResponseJSON(JSONNODE *n);
         void parseResponseJSONBody(std::string body);
@@ -40,7 +35,7 @@ namespace kopsik {
 
     class Formatter {
     public:
-        static std::string FormatDurationInSeconds(Poco::Int64 value);
+        static std::string FormatDurationInSeconds(const Poco::Int64 value);
     };
 
     // FIXME: implement base class with common fields, dirtyness etc
@@ -217,7 +212,8 @@ namespace kopsik {
         TimeEntry() : local_id_(0),
             id_(0), guid_(""), wid_(0), pid_(0), tid_(0), billable_(false),
             start_(0), stop_(0), duration_in_seconds_(0), description_(""),
-            duronly_(false), ui_modified_at_(0), uid_(0), dirty_(false) {}
+            duronly_(false), ui_modified_at_(0), uid_(0), dirty_(false),
+            created_with_(""), deleted_at_(0) {}
 
         std::string Tags();
         void SetTags(std::string tags);
@@ -257,6 +253,10 @@ namespace kopsik {
         void SetStop(Poco::UInt64 value);
         bool Dirty() { return dirty_; }
         void ClearDirty() { dirty_ = false; }
+        std::string CreatedWith() { return created_with_; }
+        void SetCreatedWith(std::string value);
+        Poco::UInt64 DeletedAt() { return deleted_at_; }
+        void SetDeletedAt(Poco::UInt64 value);
 
         std::vector<std::string> TagNames;
 
@@ -267,6 +267,9 @@ namespace kopsik {
         JSONNODE *JSON();
 
         bool NeedsPush();
+        bool NeedsPOST();
+        bool NeedsPUT();
+        bool NeedsDELETE();
 
     private:
         Poco::Int64 local_id_;
@@ -286,11 +289,24 @@ namespace kopsik {
         Poco::UInt64 ui_modified_at_;
         Poco::UInt64 uid_;
         bool dirty_;
+        std::string created_with_;
+        Poco::UInt64 deleted_at_;
 
         error loadTagsFromJSONNode(JSONNODE *list);
+        Poco::UInt64 getUIModifiedAtFromJSONNode(JSONNODE *data);
 
         std::time_t Parse8601(std::string iso_8601_formatted_date);
         std::string Format8601(std::time_t date);
+    };
+
+    class RelatedData {
+    public:
+        std::vector<Workspace *> Workspaces;
+        std::vector<Client *> Clients;
+        std::vector<Project *> Projects;
+        std::vector<Task *> Tasks;
+        std::vector<Tag *> Tags;
+        std::vector<TimeEntry *> TimeEntries;
     };
 
     class User {
@@ -307,14 +323,16 @@ namespace kopsik {
             ClearTimeEntries();
         }
 
-        error Sync(bool full_sync);
-        error Push();
-        error Login(const std::string &email, const std::string &password);
+        error Sync(HTTPSClient *https_client, bool full_sync);
+        error Push(HTTPSClient *https_client);
+        error Login(HTTPSClient *https_client,
+            const std::string &email, const std::string &password);
+        error ListenToWebsocket(HTTPSClient *https_client);
+
         void LoadFromJSONString(const std::string &json,
             bool with_related_data);
         void LoadDataFromJSONNode(JSONNODE *node, bool with_related_data);
         std::string String();
-        error Listen();
 
         void ClearWorkspaces();
         void ClearClients();
@@ -326,18 +344,20 @@ namespace kopsik {
         Workspace *GetWorkspaceByID(const Poco::UInt64 id);
         Client *GetClientByID(const Poco::UInt64 id);
         Project *GetProjectByID(const Poco::UInt64 id);
+        Project *GetProjectByName(const std::string name);
         Task *GetTaskByID(const Poco::UInt64 id);
         Tag *GetTagByID(const Poco::UInt64 id);
         TimeEntry *GetTimeEntryByID(const Poco::UInt64 id);
         TimeEntry *GetTimeEntryByGUID(std::string GUID);
 
-        void CollectDirtyObjects(std::vector<TimeEntry *> *result);
+        void CollectPushableObjects(std::vector<TimeEntry *> *result);
         void SortTimeEntriesByStart();
 
         TimeEntry *RunningTimeEntry();
         TimeEntry *Start(std::string description);
         TimeEntry *Continue(std::string GUID);
         std::vector<TimeEntry *> Stop();
+        void DeleteTimeEntry(std::string GUID);
 
         Poco::Int64 LocalID() { return local_id_; }
         void SetLocalID(Poco::Int64 value) { local_id_ = value; }
@@ -360,12 +380,7 @@ namespace kopsik {
         std::string LoginEmail;
         std::string LoginPassword;
 
-        std::vector<Workspace *> Workspaces;
-        std::vector<Client *> Clients;
-        std::vector<Project *> Projects;
-        std::vector<Task *> Tasks;
-        std::vector<Tag *> Tags;
-        std::vector<TimeEntry *> TimeEntries;
+        RelatedData related;
 
     private:
         Poco::Int64 local_id_;
@@ -377,7 +392,8 @@ namespace kopsik {
         bool dirty_;
         std::string fullname_;
 
-        error pull(bool authenticate_with_api_token,
+        error pull(HTTPSClient *https_client,
+            bool authenticate_with_api_token,
             bool full_sync);
 
         void loadProjectsFromJSONNode(JSONNODE *list);
@@ -388,7 +404,6 @@ namespace kopsik {
         void loadWorkspacesFromJSONNode(JSONNODE *list);
 
         Poco::UInt64 getIDFromJSONNode(JSONNODE *list);
-        Poco::UInt64 getUIModifiedAtFromJSONNode(JSONNODE *data);
 
         error requestJSON(std::string method, std::string relative_url,
                 std::string json,
@@ -397,6 +412,8 @@ namespace kopsik {
         bool isStatusOK(int status);
         void parseResponseArray(std::string response_body,
             std::vector<BatchUpdateResult> *responses);
+
+        std::string createdWith();
     };
 }  // namespace kopsik
 

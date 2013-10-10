@@ -20,8 +20,8 @@
                 <scrollView wantsLayer="YES" ambiguous="YES" misplaced="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fu8-w4-kYq">
                     <rect key="frame" x="0.0" y="-246" width="255" height="330"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <clipView key="contentView" ambiguous="YES" misplaced="YES" id="TQQ-db-grk">
-                        <rect key="frame" x="0.0" y="0.0" width="255" height="330"/>
+                    <clipView key="contentView" id="TQQ-db-grk">
+                        <rect key="frame" x="0.0" y="0.0" width="258" height="315"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="kSc-tv-Cw1">
@@ -108,6 +108,7 @@
                                     </tableColumn>
                                 </tableColumns>
                                 <connections>
+                                    <action selector="performClick:" target="-2" id="uPF-SU-Gir"/>
                                     <outlet property="dataSource" destination="-2" id="mvS-oR-OON"/>
                                     <outlet property="delegate" destination="-2" id="cq5-Ff-bG3"/>
                                 </connections>
@@ -126,8 +127,10 @@
                 </scrollView>
             </subviews>
             <constraints>
+                <constraint firstItem="fu8-w4-kYq" firstAttribute="top" secondItem="3" secondAttribute="top" id="Hf7-z0-TJQ"/>
                 <constraint firstItem="fu8-w4-kYq" firstAttribute="leading" secondItem="3" secondAttribute="leading" id="Kzp-8f-L6N"/>
                 <constraint firstAttribute="trailing" secondItem="fu8-w4-kYq" secondAttribute="trailing" id="Mw2-Bk-0wN"/>
+                <constraint firstAttribute="bottom" secondItem="fu8-w4-kYq" secondAttribute="bottom" id="tZR-YL-cvO"/>
             </constraints>
         </customView>
         <customView id="Jmm-Vb-RaF">

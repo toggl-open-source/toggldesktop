@@ -22,6 +22,8 @@
 		7424949E17F1E3D20030121C /* UIEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 7424949D17F1E3D20030121C /* UIEvents.m */; };
 		7424949F17F1E3D20030121C /* UIEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 7424949D17F1E3D20030121C /* UIEvents.m */; };
 		744E126717F22AB900ABE72A /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 744E126617F22AB900ABE72A /* app.icns */; };
+		746B49F418059858002E98DC /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 746B49F318059858002E98DC /* Reachability.m */; };
+		746B49F71806163F002E98DC /* ViewItemChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 746B49F61806163F002E98DC /* ViewItemChange.m */; };
 		74BAAA0717F32C470079386F /* Context.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0617F32C470079386F /* Context.m */; };
 		74BAAA0817F32C470079386F /* Context.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0617F32C470079386F /* Context.m */; };
 		74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */; };
@@ -42,6 +44,23 @@
 		74D1D27317EB72D900E709B0 /* TimerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D27017EB72D900E709B0 /* TimerEditViewController.m */; };
 		74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */; };
 		74D1D27517EB72D900E709B0 /* TimerEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */; };
+		74E3CDC617FBABE400C3ADD3 /* Bugsnag.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDB317FBABE400C3ADD3 /* Bugsnag.m */; };
+		74E3CDC717FBABE400C3ADD3 /* Bugsnag.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDB317FBABE400C3ADD3 /* Bugsnag.m */; };
+		74E3CDC817FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDB517FBABE400C3ADD3 /* BugsnagConfiguration.m */; };
+		74E3CDC917FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDB517FBABE400C3ADD3 /* BugsnagConfiguration.m */; };
+		74E3CDCA17FBABE400C3ADD3 /* BugsnagEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDB717FBABE400C3ADD3 /* BugsnagEvent.m */; };
+		74E3CDCB17FBABE400C3ADD3 /* BugsnagEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDB717FBABE400C3ADD3 /* BugsnagEvent.m */; };
+		74E3CDCC17FBABE400C3ADD3 /* BugsnagMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDBA17FBABE400C3ADD3 /* BugsnagMetaData.m */; };
+		74E3CDCD17FBABE400C3ADD3 /* BugsnagMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDBA17FBABE400C3ADD3 /* BugsnagMetaData.m */; };
+		74E3CDCE17FBABE400C3ADD3 /* BugsnagNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDBC17FBABE400C3ADD3 /* BugsnagNotifier.m */; };
+		74E3CDCF17FBABE400C3ADD3 /* BugsnagNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDBC17FBABE400C3ADD3 /* BugsnagNotifier.m */; };
+		74E3CDD017FBABE400C3ADD3 /* BugsnagReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDBF17FBABE400C3ADD3 /* BugsnagReachability.m */; };
+		74E3CDD117FBABE400C3ADD3 /* BugsnagReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDBF17FBABE400C3ADD3 /* BugsnagReachability.m */; };
+		74E3CDD417FBABE400C3ADD3 /* BugsnagOSXNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDC517FBABE400C3ADD3 /* BugsnagOSXNotifier.m */; };
+		74E3CDD517FBABE400C3ADD3 /* BugsnagOSXNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDC517FBABE400C3ADD3 /* BugsnagOSXNotifier.m */; };
+		74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74E3CDD617FBAE0800C3ADD3 /* SystemConfiguration.framework */; };
+		74E3CDD917FC369700C3ADD3 /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74E3CDD817FC369700C3ADD3 /* ExceptionHandling.framework */; };
+		74E3CDDD17FC8E8000C3ADD3 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDDC17FC8E8000C3ADD3 /* User.m */; };
 		C5CB7F0417F43EE100A2AEB1 /* TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TableViewCell.m */; };
 		C5DA1FB917F19647001C4565 /* Kopsik.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA1FB817F19647001C4565 /* Kopsik.dylib */; };
 		C5DA1FBB17F19F9A001C4565 /* Kopsik.dylib in Resources */ = {isa = PBXBuildFile; fileRef = C5DA1FB817F19647001C4565 /* Kopsik.dylib */; };
@@ -86,6 +105,10 @@
 		7424949C17F1E3D20030121C /* UIEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIEvents.h; path = ../UIEvents.h; sourceTree = "<group>"; };
 		7424949D17F1E3D20030121C /* UIEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIEvents.m; path = ../UIEvents.m; sourceTree = "<group>"; };
 		744E126617F22AB900ABE72A /* app.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = app.icns; sourceTree = "<group>"; };
+		746B49F218059858002E98DC /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = ../../../../third_party/Reachability/Reachability/Reachability.h; sourceTree = "<group>"; };
+		746B49F318059858002E98DC /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = ../../../../third_party/Reachability/Reachability/Reachability.m; sourceTree = "<group>"; };
+		746B49F51806163F002E98DC /* ViewItemChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewItemChange.h; sourceTree = SOURCE_ROOT; };
+		746B49F61806163F002E98DC /* ViewItemChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewItemChange.m; sourceTree = SOURCE_ROOT; };
 		74BAAA0517F32C470079386F /* Context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Context.h; path = ../Context.h; sourceTree = "<group>"; };
 		74BAAA0617F32C470079386F /* Context.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Context.m; path = ../Context.m; sourceTree = "<group>"; };
 		74BAAA0917F37B140079386F /* TimeEntryViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryViewItem.h; sourceTree = SOURCE_ROOT; };
@@ -102,6 +125,25 @@
 		74D1D26F17EB72D900E709B0 /* TimerEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerEditViewController.h; sourceTree = SOURCE_ROOT; };
 		74D1D27017EB72D900E709B0 /* TimerEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerEditViewController.m; sourceTree = SOURCE_ROOT; };
 		74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimerEditViewController.xib; sourceTree = SOURCE_ROOT; };
+		74E3CDB217FBABE400C3ADD3 /* Bugsnag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bugsnag.h; sourceTree = "<group>"; };
+		74E3CDB317FBABE400C3ADD3 /* Bugsnag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bugsnag.m; sourceTree = "<group>"; };
+		74E3CDB417FBABE400C3ADD3 /* BugsnagConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugsnagConfiguration.h; sourceTree = "<group>"; };
+		74E3CDB517FBABE400C3ADD3 /* BugsnagConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugsnagConfiguration.m; sourceTree = "<group>"; };
+		74E3CDB617FBABE400C3ADD3 /* BugsnagEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugsnagEvent.h; sourceTree = "<group>"; };
+		74E3CDB717FBABE400C3ADD3 /* BugsnagEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugsnagEvent.m; sourceTree = "<group>"; };
+		74E3CDB817FBABE400C3ADD3 /* BugsnagLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugsnagLogger.h; sourceTree = "<group>"; };
+		74E3CDB917FBABE400C3ADD3 /* BugsnagMetaData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugsnagMetaData.h; sourceTree = "<group>"; };
+		74E3CDBA17FBABE400C3ADD3 /* BugsnagMetaData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugsnagMetaData.m; sourceTree = "<group>"; };
+		74E3CDBB17FBABE400C3ADD3 /* BugsnagNotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugsnagNotifier.h; sourceTree = "<group>"; };
+		74E3CDBC17FBABE400C3ADD3 /* BugsnagNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugsnagNotifier.m; sourceTree = "<group>"; };
+		74E3CDBE17FBABE400C3ADD3 /* BugsnagReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugsnagReachability.h; sourceTree = "<group>"; };
+		74E3CDBF17FBABE400C3ADD3 /* BugsnagReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugsnagReachability.m; sourceTree = "<group>"; };
+		74E3CDC417FBABE400C3ADD3 /* BugsnagOSXNotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugsnagOSXNotifier.h; sourceTree = "<group>"; };
+		74E3CDC517FBABE400C3ADD3 /* BugsnagOSXNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugsnagOSXNotifier.m; sourceTree = "<group>"; };
+		74E3CDD617FBAE0800C3ADD3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		74E3CDD817FC369700C3ADD3 /* ExceptionHandling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExceptionHandling.framework; path = System/Library/Frameworks/ExceptionHandling.framework; sourceTree = SDKROOT; };
+		74E3CDDB17FC8E8000C3ADD3 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = SOURCE_ROOT; };
+		74E3CDDC17FC8E8000C3ADD3 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = SOURCE_ROOT; };
 		C5CB7F0217F43EE100A2AEB1 /* TableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCell.h; sourceTree = "<group>"; };
 		C5CB7F0317F43EE100A2AEB1 /* TableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCell.m; sourceTree = "<group>"; };
 		C5DA1FB817F19647001C4565 /* Kopsik.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Kopsik.dylib; path = ../../../libkopsik/lib/Kopsik.dylib; sourceTree = "<group>"; };
@@ -119,6 +161,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74E3CDD917FC369700C3ADD3 /* ExceptionHandling.framework in Frameworks */,
+				74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */,
 				74033C9817EC1DF100CA53D3 /* libstdc++.dylib in Frameworks */,
 				74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */,
 				69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */,
@@ -141,9 +185,10 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
+				746B49F218059858002E98DC /* Reachability.h */,
+				746B49F318059858002E98DC /* Reachability.m */,
+				74E3CDB117FBABE400C3ADD3 /* bugsnag */,
 				744E126617F22AB900ABE72A /* app.icns */,
-				74033C9617EC1DE100CA53D3 /* libc++.dylib */,
-				74033C8D17EC1CFD00CA53D3 /* libstdc++.dylib */,
 				69FC17FA17E6534400B96425 /* kopsik_ui */,
 				69FC181717E6534500B96425 /* kopsikTests */,
 				69FC17F317E6534400B96425 /* Frameworks */,
@@ -163,6 +208,10 @@
 		69FC17F317E6534400B96425 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				74033C9617EC1DE100CA53D3 /* libc++.dylib */,
+				74033C8D17EC1CFD00CA53D3 /* libstdc++.dylib */,
+				74E3CDD817FC369700C3ADD3 /* ExceptionHandling.framework */,
+				74E3CDD617FBAE0800C3ADD3 /* SystemConfiguration.framework */,
 				C5DA1FB817F19647001C4565 /* Kopsik.dylib */,
 				69FC17F417E6534400B96425 /* Cocoa.framework */,
 				69FC181217E6534500B96425 /* SenTestingKit.framework */,
@@ -195,6 +244,8 @@
 				C5DA1FBC17F1B08A001C4565 /* MainWindowController.h */,
 				C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */,
 				C5DA1FBE17F1B08A001C4565 /* MainWindowController.xib */,
+				74E3CDDB17FC8E8000C3ADD3 /* User.h */,
+				74E3CDDC17FC8E8000C3ADD3 /* User.m */,
 				74D1D26817EB728000E709B0 /* TimerViewController.h */,
 				74D1D26917EB728000E709B0 /* TimerViewController.m */,
 				74D1D26A17EB728000E709B0 /* TimerViewController.xib */,
@@ -215,6 +266,8 @@
 				74BAAA0917F37B140079386F /* TimeEntryViewItem.h */,
 				74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */,
 				69FC17FB17E6534400B96425 /* Supporting Files */,
+				746B49F51806163F002E98DC /* ViewItemChange.h */,
+				746B49F61806163F002E98DC /* ViewItemChange.m */,
 			);
 			name = kopsik_ui;
 			path = test2;
@@ -252,6 +305,45 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		74E3CDB117FBABE400C3ADD3 /* bugsnag */ = {
+			isa = PBXGroup;
+			children = (
+				74E3CDB217FBABE400C3ADD3 /* Bugsnag.h */,
+				74E3CDB317FBABE400C3ADD3 /* Bugsnag.m */,
+				74E3CDB417FBABE400C3ADD3 /* BugsnagConfiguration.h */,
+				74E3CDB517FBABE400C3ADD3 /* BugsnagConfiguration.m */,
+				74E3CDB617FBABE400C3ADD3 /* BugsnagEvent.h */,
+				74E3CDB717FBABE400C3ADD3 /* BugsnagEvent.m */,
+				74E3CDB817FBABE400C3ADD3 /* BugsnagLogger.h */,
+				74E3CDB917FBABE400C3ADD3 /* BugsnagMetaData.h */,
+				74E3CDBA17FBABE400C3ADD3 /* BugsnagMetaData.m */,
+				74E3CDBB17FBABE400C3ADD3 /* BugsnagNotifier.h */,
+				74E3CDBC17FBABE400C3ADD3 /* BugsnagNotifier.m */,
+				74E3CDBD17FBABE400C3ADD3 /* dependencies */,
+				74E3CDC317FBABE400C3ADD3 /* OSX */,
+			);
+			name = bugsnag;
+			path = "../../../../third_party/bugsnag-cocoa/bugsnag";
+			sourceTree = "<group>";
+		};
+		74E3CDBD17FBABE400C3ADD3 /* dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				74E3CDBE17FBABE400C3ADD3 /* BugsnagReachability.h */,
+				74E3CDBF17FBABE400C3ADD3 /* BugsnagReachability.m */,
+			);
+			path = dependencies;
+			sourceTree = "<group>";
+		};
+		74E3CDC317FBABE400C3ADD3 /* OSX */ = {
+			isa = PBXGroup;
+			children = (
+				74E3CDC417FBABE400C3ADD3 /* BugsnagOSXNotifier.h */,
+				74E3CDC517FBABE400C3ADD3 /* BugsnagOSXNotifier.m */,
+			);
+			path = OSX;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -262,6 +354,7 @@
 				69FC17ED17E6534400B96425 /* Sources */,
 				69FC17EE17E6534400B96425 /* Frameworks */,
 				69FC17EF17E6534400B96425 /* Resources */,
+				74E3CDDA17FC37A500C3ADD3 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -365,6 +458,19 @@
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
+		74E3CDDA17FC37A500C3ADD3 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /usr/bin/ruby;
+			shellScript = "if ENV[\"DEBUG_INFORMATION_FORMAT\"] != \"dwarf-with-dsym\"\nexit\nend\n\nfork do\nProcess.setsid\nSTDIN.reopen(\"/dev/null\")\nSTDOUT.reopen(\"/dev/null\", \"a\")\nSTDERR.reopen(\"/dev/null\", \"a\")\n\nrequire 'shellwords'\n\nDir[\"#{ENV[\"DWARF_DSYM_FOLDER_PATH\"]}/#{ENV[\"DWARF_DSYM_FILE_NAME\"]}/Contents/Resources/DWARF/*\"].each do |dsym|\nsystem(\"curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV[\"PROJECT_DIR\"])} https://upload.bugsnag.com/\")\nend\nend";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -372,17 +478,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74E3CDDD17FC8E8000C3ADD3 /* User.m in Sources */,
 				7424949E17F1E3D20030121C /* UIEvents.m in Sources */,
 				C5CB7F0417F43EE100A2AEB1 /* TableViewCell.m in Sources */,
 				C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */,
+				74E3CDC617FBABE400C3ADD3 /* Bugsnag.m in Sources */,
+				74E3CDD017FBABE400C3ADD3 /* BugsnagReachability.m in Sources */,
+				74E3CDCC17FBABE400C3ADD3 /* BugsnagMetaData.m in Sources */,
+				74E3CDCA17FBABE400C3ADD3 /* BugsnagEvent.m in Sources */,
 				69FC180117E6534400B96425 /* main.m in Sources */,
 				74BAAA0717F32C470079386F /* Context.m in Sources */,
+				746B49F418059858002E98DC /* Reachability.m in Sources */,
+				746B49F71806163F002E98DC /* ViewItemChange.m in Sources */,
 				69FC180817E6534400B96425 /* AppDelegate.m in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
 				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,
+				74E3CDD417FBABE400C3ADD3 /* BugsnagOSXNotifier.m in Sources */,
 				74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */,
 				74D1D26B17EB728000E709B0 /* TimerViewController.m in Sources */,
 				74D1D27217EB72D900E709B0 /* TimerEditViewController.m in Sources */,
+				74E3CDCE17FBABE400C3ADD3 /* BugsnagNotifier.m in Sources */,
+				74E3CDC817FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */,
 				C5DA1FC417F1B38B001C4565 /* LoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -391,13 +507,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74E3CDD517FBABE400C3ADD3 /* BugsnagOSXNotifier.m in Sources */,
+				74E3CDD117FBABE400C3ADD3 /* BugsnagReachability.m in Sources */,
+				74E3CDC717FBABE400C3ADD3 /* Bugsnag.m in Sources */,
 				7424949F17F1E3D20030121C /* UIEvents.m in Sources */,
 				74BAAA0C17F37B140079386F /* TimeEntryViewItem.m in Sources */,
 				69FC181F17E6534500B96425 /* test2Tests.m in Sources */,
+				74E3CDCD17FBABE400C3ADD3 /* BugsnagMetaData.m in Sources */,
 				74D1D25717EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
+				74E3CDCB17FBABE400C3ADD3 /* BugsnagEvent.m in Sources */,
 				74D1D25E17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,
 				74D1D26C17EB728000E709B0 /* TimerViewController.m in Sources */,
+				74E3CDCF17FBABE400C3ADD3 /* BugsnagNotifier.m in Sources */,
 				74D1D27317EB72D900E709B0 /* TimerEditViewController.m in Sources */,
+				74E3CDC917FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */,
 				74BAAA0817F32C470079386F /* Context.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

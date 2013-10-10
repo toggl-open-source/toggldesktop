@@ -13,6 +13,7 @@
 #import "Context.h"
 
 @interface TimerViewController ()
+@property TimeEntryViewItem *te;
 @property NSTimer *timer;
 @end
 
@@ -24,49 +25,47 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-      [[NSNotificationCenter defaultCenter]
-       addObserver:self
-       selector:@selector(eventHandler:)
-       name:kUIEventTimerRunning
-       object:nil];
-      [[NSNotificationCenter defaultCenter]
-       addObserver:self
-       selector:@selector(eventHandler:)
-       name:kUIEventTimerStopped
-       object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUIEventTimerRunning
+                                                 object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUIEventTimerStopped
+                                                 object:nil];
+      self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                               target:self
+                                             selector:@selector(timerFired:)
+                                             userInfo:nil
+                                              repeats:YES];
     }
-    
+  
     return self;
-}
-
-- (void)stopTimer {
-  if (self.timer != nil && [self.timer isValid] == YES) {
-    [self.timer invalidate];
-  }
 }
 
 -(void)eventHandler: (NSNotification *) notification
 {
   if ([notification.name isEqualToString:kUIEventTimerRunning]) {
-    TimeEntryViewItem *te = notification.object;
-    [self.descriptionTextField setStringValue:te.description];
-    [self.durationTextField setStringValue:te.duration];
-    if (te.project != nil) {
-      [self.projectTextField setStringValue:te.project];
+    self.te = notification.object;
+    [self.descriptionTextField setStringValue:self.te.description];
+    [self.durationTextField setStringValue:self.te.duration];
+    if (self.te.project != nil) {
+      [self.projectTextField setStringValue:self.te.project];
     } else {
       [self.projectTextField setStringValue:@""];
     }
-    if ((self.timer == nil) || ([self.timer isValid] == NO)) {
-      self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                    target:self
-                                                  selector:@selector(timerFired:)
-                                                  userInfo:te
-                                                   repeats:YES];
-    }
+    
   } else if ([notification.name isEqualToString:kUIEventTimerStopped]) {
-    [self stopTimer];
-  } else if ([notification.name isEqualToString:kUIEventTimerStopped]) {
-    [self stopTimer];
+    self.te = nil;
+  }
+}
+
+void finishPushAfterStop(kopsik_api_result result, char *err, unsigned int errlen) {
+  NSLog(@"finishPushAfterStop");
+  if (KOPSIK_API_SUCCESS != result) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
+    free(err);
   }
 }
 
@@ -75,26 +74,29 @@
   char err[KOPSIK_ERR_LEN];
   KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
   if (KOPSIK_API_SUCCESS != kopsik_stop(ctx, err, KOPSIK_ERR_LEN, item)) {
-    NSLog(@"Error stopping time entry: %s", err);
-  } else {
-    TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
-    [te load:item];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerStopped object:te];
-    // FIXME: make this async
-    if (KOPSIK_API_SUCCESS != kopsik_push(ctx, err, KOPSIK_ERR_LEN)) {
-      NSLog(@"Sync error: %s", err);
-    }
+    kopsik_time_entry_view_item_clear(item);
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
+    return;
   }
+  
+  TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
+  [te load:item];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerStopped object:te];
+
   kopsik_time_entry_view_item_clear(item);
+
+  kopsik_push_async(ctx, finishPushAfterStop);
 }
 
 - (void)timerFired:(NSTimer*)timer
 {
-  char str[duration_str_len];
-  TimeEntryViewItem *te = timer.userInfo;
-  kopsik_format_duration_in_seconds(te.duration_in_seconds, str, duration_str_len);
-  NSString *newValue = [NSString stringWithUTF8String:str];
-  [self.durationTextField setStringValue:newValue];
+  if (self.te != nil) {
+    char str[duration_str_len];
+    kopsik_format_duration_in_seconds(self.te.duration_in_seconds, str, duration_str_len);
+    NSString *newValue = [NSString stringWithUTF8String:str];
+    [self.durationTextField setStringValue:newValue];
+  }
 }
 
 @end

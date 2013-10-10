@@ -1,10 +1,12 @@
 
 pwd=$(shell pwd)
 uname=$(shell uname)
+timestamp=$(shell date "+%Y-%m-%d-%H-%M-%S")
 
 pocodir=third_party/poco-1.4.6p1-all
 openssldir=third_party/openssl-1.0.1e
 GTEST_ROOT=third_party/googletest-read-only
+GMOCK_DIR=third_party/gmock-1.7.0
 jsondir=third_party/libjson
 
 main=toggl
@@ -22,6 +24,8 @@ cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter \
 	-I$(openssldir)/include \
 	-I$(GTEST_ROOT)/include \
 	-I$(GTEST_ROOT) \
+	-I$(GMOCK_DIR)/include \
+	-I$(GMOCK_DIR) \
 	-I$(pocodir)/Foundation/include \
 	-I$(pocodir)/Util/include \
 	-I$(pocodir)/Data/include \
@@ -37,6 +41,8 @@ cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
 	-I$(openssldir)/include \
 	-I$(GTEST_ROOT)/include \
 	-I$(GTEST_ROOT) \
+	-I$(GMOCK_DIR)/include \
+	-I$(GMOCK_DIR) \
 	-I$(pocodir)/Foundation/include \
 	-I$(pocodir)/Util/include \
 	-I$(pocodir)/Data/include \
@@ -99,8 +105,12 @@ osx:
 	xcodebuild -project src/libkopsik/Kopsik/Kopsik.xcodeproj && \
 	xcodebuild -project src/ui/kopsik_ui_osx/test2.project/kopsik_ui_osx.xcodeproj
 
+open:
+	open src/libkopsik/Kopsik/Kopsik.xcodeproj && open src/ui/kopsik_ui_osx/test2.project/kopsik_ui_osx.xcodeproj
+
 cmdline: clean lint
 	mkdir -p build
+	$(cxx) $(cflags) -O2 -DNDEBUG -c src/https_client.cc -o build/https_client.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/toggl_api_client.cc -o build/toggl_api_client.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/database.cc -o build/database.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/kopsik_api.cc -o build/kopsik_api.o
@@ -110,12 +120,14 @@ cmdline: clean lint
 
 test: clean lint
 	mkdir -p build
+	$(cxx) $(cflags) -O2 -DNDEBUG -c src/https_client.cc -o build/https_client.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/toggl_api_client.cc -o build/toggl_api_client.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/database.cc -o build/database.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/kopsik_api.cc -o build/kopsik_api.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/kopsik_api_test.cc -o build/kopsik_api_test.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/kopsik_test.cc -o build/kopsik_test.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c $(GTEST_ROOT)/src/gtest-all.cc -o build/gtest-all.o
+	$(cxx) $(cflags) -O2 -DNDEBUG -c ${GMOCK_DIR}/src/gmock-all.cc -o build/gmock-all.o
 	$(cxx) -o $(main) -o $(main)_test build/*.o $(libs)
 	./$(main)_test
 
@@ -133,10 +145,14 @@ deps: openssl poco json
 json:
 	cd $(jsondir) && make
 
-nightly: deps
-	cd src/libkopsik/Kopsik && xcodebuild -arch x86_64
-	cd src/ui/kopsik_ui_osx/test2.project && xcodebuild -arch x86_64
-	#upload the resulting app to cdn
+nightly: #deps test osx
+	rm -rf src/branding
+	git clone gitosis@git.toggl.com:kopsik_branding.git src/branding
+	rm -rf TogglDesktop.app
+	rm -rf kopsik*.tar.gz
+	cp -r src/ui/kopsik_ui_osx/test2.project/build/Release/TogglDesktop.app .
+	tar cvfz kopsik-$(timestamp).tar.gz TogglDesktop.app
+	cd src/branding && go get && PLATFORM=osx VERSION=1.0 INSTALLER=../../kopsik-$(timestamp).tar.gz go run upload_to_cdn.go
 
 openssl:
 ifeq ($(uname), Darwin)

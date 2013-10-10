@@ -10,8 +10,10 @@
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
 #import "kopsik_api.h"
-#import "Context.h"
 #import "TableViewCell.h"
+#import "Context.h"
+#import "UIEvents.h"
+#import "ViewItemChange.h"
 
 @interface TimeEntryListViewController ()
 
@@ -25,11 +27,14 @@
     if (self) {
       viewitems = [NSMutableArray array];
 
-      [[NSNotificationCenter defaultCenter]
-       addObserver:self
-       selector:@selector(eventHandler:)
-       name:kUIEventUserLoggedIn
-       object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUIEventUserLoggedIn
+                                                 object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUIEventChange
+                                                 object:nil];
     }
     return self;
 }
@@ -40,18 +45,36 @@
     char err[KOPSIK_ERR_LEN];
     KopsikTimeEntryViewItemList *list = kopsik_time_entry_view_item_list_init();
     if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(ctx, err, KOPSIK_ERR_LEN, list)) {
-      NSLog(@"Error fetching time entries: %s", err);
-    } else {
-      [viewitems removeAllObjects];
-      for (int i = 0; i < list->Length; i++) {
-        KopsikTimeEntryViewItem *item = list->ViewItems[i];
-        TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
-        [model load:item];
-        [viewitems addObject:model];
-      }
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                          object:[NSString stringWithUTF8String:err]];
+      kopsik_time_entry_view_item_list_clear(list);
+      return;
+    }
+    [viewitems removeAllObjects];
+    for (int i = 0; i < list->Length; i++) {
+      KopsikTimeEntryViewItem *item = list->ViewItems[i];
+      TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
+      [model load:item];
+      [viewitems addObject:model];
     }
     kopsik_time_entry_view_item_list_clear(list);
     [self.timeEntriesTableView reloadData];
+
+  } else if ([notification.name isEqualToString:kUIEventChange]) {
+    ViewItemChange *change = notification.object;
+    if (KOPSIK_MODEL_TIME_ENTRY == change.model_type) {
+      NSLog(@"Time entry view item has changed");
+      if (KOPSIK_CHANGE_DELETE == change.change_type) {
+        NSString *GUID = change.GUID;
+        for (int i = 0; i < viewitems.count; i++) {
+          TimeEntryViewItem *view_item = viewitems[i];
+          if ([view_item.GUID isEqualToString:GUID]) {
+            [viewitems removeObjectAtIndex:i];
+          }
+        }
+      }
+      [self.timeEntriesTableView reloadData];
+    }
   }
 }
 
@@ -67,6 +90,7 @@
       cellView = [[TableViewCell alloc] init];
       cellView.identifier = @"TimeEntryCell";
     }
+    cellView.GUID = item.GUID;
     cellView.colorTextField.backgroundColor = [self hexCodeToNSColor:item.color];
     cellView.descriptionTextField.stringValue = item.description;
     if (item.project) {
@@ -89,22 +113,42 @@
           blue:((colorCode)&0xFF)/255.0 alpha:1.0];
 }
 
+void finishPushAfterContinue(kopsik_api_result result, char *err, unsigned int errlen) {
+  NSLog(@"finishPushAfterContinue");
+  if (KOPSIK_API_SUCCESS != result) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
+    free(err);
+  }
+}
+
 - (IBAction)continueButtonClicked:(id)sender {
+  NSButton *btn = sender;
+  TableViewCell *cell = (TableViewCell*)[btn superview];
+  NSString *guid = cell.GUID;
   char err[KOPSIK_ERR_LEN];
-  NSString *guid = @"FIXME";
   KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
   if (KOPSIK_API_SUCCESS != kopsik_continue(ctx, err, KOPSIK_ERR_LEN, [guid UTF8String], item)) {
-    NSLog(@"Error starting time entry: %s", err);
-  } else {
-    TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
-    [te load:item];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerRunning object:te];
-    // FIXME: make this async
-    if (KOPSIK_API_SUCCESS != kopsik_push(ctx, err, KOPSIK_ERR_LEN)) {
-      NSLog(@"Sync error: %s", err);
-    }
+    kopsik_time_entry_view_item_clear(item);
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
+    return;
   }
+
+  TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
+  [te load:item];
   kopsik_time_entry_view_item_clear(item);
+
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerRunning object:te];
+
+  kopsik_push_async(ctx, finishPushAfterContinue);
+}
+
+- (IBAction)performClick:(id)sender {
+  NSInteger row = [self.timeEntriesTableView clickedRow];
+  TimeEntryViewItem *item = [viewitems objectAtIndex:row];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimeEntrySelected
+                                                      object:item.GUID];
 }
 
 @end

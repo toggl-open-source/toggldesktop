@@ -10,6 +10,7 @@
 #import "kopsik_api.h"
 #import "Context.h"
 #import "MainWindowController.h"
+#import "Bugsnag.h"
 
 @interface  AppDelegate()
 @property (nonatomic,strong) IBOutlet MainWindowController *mainWindowController;
@@ -19,7 +20,11 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+  [Bugsnag startBugsnagWithApiKey:@"2a46aa1157256f759053289f2d687c2f"];
+  [Bugsnag configuration].releaseStage = @"development";
+  
   self.mainWindowController = [[MainWindowController alloc] initWithWindowNibName:@"MainWindowController"];
+  [self.mainWindowController.window setReleasedWhenClosed:NO];
   [self.mainWindowController showWindow:self];
   
   int major = 0;
@@ -28,6 +33,11 @@
   kopsik_version(&major, &minor, &patch);
   NSString *s = [NSString stringWithFormat:@"libkopsik version %d.%d.%d", major, minor, patch];
   NSLog(@"%@", s);
+}
+
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag{
+  [self.mainWindowController.window setIsVisible:YES];
+  return YES;
 }
 
 - (NSString *)applicationSupportDirectory
@@ -54,6 +64,15 @@
 - (id) init
 {
   self = [super init];
+  
+  // Disallow duplicate instances
+  if ([[NSRunningApplication runningApplicationsWithBundleIdentifier:[[NSBundle mainBundle] bundleIdentifier]] count] > 1) {
+    [[NSAlert alertWithMessageText:[NSString stringWithFormat:@"Another copy of %@ is already running.", [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey]]
+                     defaultButton:nil alternateButton:nil otherButton:nil informativeTextWithFormat:@"This copy will now quit."] runModal];
+    
+    [NSApp terminate:nil];
+  }
+  
   ctx = kopsik_context_init();
 
   NSString *app_path = self.applicationSupportDirectory;

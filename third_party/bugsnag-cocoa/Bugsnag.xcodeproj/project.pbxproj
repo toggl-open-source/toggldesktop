@@ -1,0 +1,474 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F4C71CE317CE8B9900009E4B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4C71CE217CE8B9900009E4B /* Foundation.framework */; };
+		F4C71CE817CE8B9900009E4B /* Bugsnag.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F4C71CE717CE8B9900009E4B /* Bugsnag.h */; };
+		F4C71CEA17CE8B9900009E4B /* Bugsnag.m in Sources */ = {isa = PBXBuildFile; fileRef = F4C71CE917CE8B9900009E4B /* Bugsnag.m */; };
+		F4C71CF217CE8B9900009E4B /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4C71CF117CE8B9900009E4B /* SenTestingKit.framework */; };
+		F4C71CF517CE8B9900009E4B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4C71CE217CE8B9900009E4B /* Foundation.framework */; };
+		F4C71CF817CE8B9900009E4B /* libBugsnag.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F4C71CDF17CE8B9900009E4B /* libBugsnag.a */; };
+		F4C71CFE17CE8B9900009E4B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4C71CFC17CE8B9900009E4B /* InfoPlist.strings */; };
+		F4C71D0117CE8B9900009E4B /* BugsnagTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4C71D0017CE8B9900009E4B /* BugsnagTests.m */; };
+		F4DE7CED17E9238A00BFD1C8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4DE7CEC17E9238A00BFD1C8 /* UIKit.framework */; };
+		F4FCBA0E17CE90B200A264EC /* BugsnagConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FCBA0D17CE90B200A264EC /* BugsnagConfiguration.m */; };
+		F4FCBA1117CE90EB00A264EC /* BugsnagMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FCBA1017CE90EB00A264EC /* BugsnagMetaData.m */; };
+		F4FCBA1417CE90FB00A264EC /* BugsnagEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FCBA1317CE90FB00A264EC /* BugsnagEvent.m */; };
+		F4FCBA1717CE924400A264EC /* BugsnagNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FCBA1617CE924400A264EC /* BugsnagNotifier.m */; };
+		F4FCBA2117CEF24E00A264EC /* BugsnagIosNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FCBA2017CEF24E00A264EC /* BugsnagIosNotifier.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F4C71CF617CE8B9900009E4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F4C71CD717CE8B9900009E4B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F4C71CDE17CE8B9900009E4B;
+			remoteInfo = bugsnag;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F4C71CDD17CE8B9900009E4B /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+				F4C71CE817CE8B9900009E4B /* Bugsnag.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		F495C52D17E2A8E700B1995A /* BugsnagOSXNotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BugsnagOSXNotifier.h; path = OSX/BugsnagOSXNotifier.h; sourceTree = "<group>"; };
+		F495C52E17E2A8E700B1995A /* BugsnagOSXNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BugsnagOSXNotifier.m; path = OSX/BugsnagOSXNotifier.m; sourceTree = "<group>"; };
+		F4BD0C9317E7875400E92185 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		F4C71CDF17CE8B9900009E4B /* libBugsnag.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBugsnag.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4C71CE217CE8B9900009E4B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		F4C71CE717CE8B9900009E4B /* Bugsnag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bugsnag.h; sourceTree = "<group>"; };
+		F4C71CE917CE8B9900009E4B /* Bugsnag.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Bugsnag.m; sourceTree = "<group>"; };
+		F4C71CF017CE8B9900009E4B /* Bugsnag.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Bugsnag.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4C71CF117CE8B9900009E4B /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		F4C71CFD17CE8B9900009E4B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		F4C71CFF17CE8B9900009E4B /* BugsnagTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BugsnagTests.h; sourceTree = "<group>"; };
+		F4C71D0017CE8B9900009E4B /* BugsnagTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BugsnagTests.m; sourceTree = "<group>"; };
+		F4DE7CEC17E9238A00BFD1C8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		F4FCBA0C17CE90B200A264EC /* BugsnagConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugsnagConfiguration.h; sourceTree = "<group>"; };
+		F4FCBA0D17CE90B200A264EC /* BugsnagConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugsnagConfiguration.m; sourceTree = "<group>"; };
+		F4FCBA0F17CE90EB00A264EC /* BugsnagMetaData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugsnagMetaData.h; sourceTree = "<group>"; };
+		F4FCBA1017CE90EB00A264EC /* BugsnagMetaData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugsnagMetaData.m; sourceTree = "<group>"; };
+		F4FCBA1217CE90FB00A264EC /* BugsnagEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugsnagEvent.h; sourceTree = "<group>"; };
+		F4FCBA1317CE90FB00A264EC /* BugsnagEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugsnagEvent.m; sourceTree = "<group>"; };
+		F4FCBA1517CE924400A264EC /* BugsnagNotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugsnagNotifier.h; sourceTree = "<group>"; };
+		F4FCBA1617CE924400A264EC /* BugsnagNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugsnagNotifier.m; sourceTree = "<group>"; };
+		F4FCBA1817CEB47B00A264EC /* BugsnagLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugsnagLogger.h; sourceTree = "<group>"; };
+		F4FCBA1F17CEF24E00A264EC /* BugsnagIosNotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BugsnagIosNotifier.h; path = iOS/BugsnagIosNotifier.h; sourceTree = "<group>"; };
+		F4FCBA2017CEF24E00A264EC /* BugsnagIosNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BugsnagIosNotifier.m; path = iOS/BugsnagIosNotifier.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F4C71CDC17CE8B9900009E4B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4C71CE317CE8B9900009E4B /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F4C71CEC17CE8B9900009E4B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4DE7CED17E9238A00BFD1C8 /* UIKit.framework in Frameworks */,
+				F4C71CF217CE8B9900009E4B /* SenTestingKit.framework in Frameworks */,
+				F4C71CF517CE8B9900009E4B /* Foundation.framework in Frameworks */,
+				F4C71CF817CE8B9900009E4B /* libBugsnag.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F495C53117E2A8ED00B1995A /* OSX */ = {
+			isa = PBXGroup;
+			children = (
+				F495C52D17E2A8E700B1995A /* BugsnagOSXNotifier.h */,
+				F495C52E17E2A8E700B1995A /* BugsnagOSXNotifier.m */,
+			);
+			name = OSX;
+			sourceTree = "<group>";
+		};
+		F4C71CD617CE8B9900009E4B = {
+			isa = PBXGroup;
+			children = (
+				F4DE7CEC17E9238A00BFD1C8 /* UIKit.framework */,
+				F4C71CE417CE8B9900009E4B /* Bugsnag */,
+				F4C71CF917CE8B9900009E4B /* BugsnagTests */,
+				F4C71CE117CE8B9900009E4B /* Frameworks */,
+				F4C71CE017CE8B9900009E4B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F4C71CE017CE8B9900009E4B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F4C71CDF17CE8B9900009E4B /* libBugsnag.a */,
+				F4C71CF017CE8B9900009E4B /* Bugsnag.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F4C71CE117CE8B9900009E4B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F4BD0C9317E7875400E92185 /* Cocoa.framework */,
+				F4C71CE217CE8B9900009E4B /* Foundation.framework */,
+				F4C71CF117CE8B9900009E4B /* SenTestingKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F4C71CE417CE8B9900009E4B /* Bugsnag */ = {
+			isa = PBXGroup;
+			children = (
+				F495C53117E2A8ED00B1995A /* OSX */,
+				F4FCBA1E17CEECC300A264EC /* iOS */,
+				F4C71CE717CE8B9900009E4B /* Bugsnag.h */,
+				F4C71CE917CE8B9900009E4B /* Bugsnag.m */,
+				F4FCBA0C17CE90B200A264EC /* BugsnagConfiguration.h */,
+				F4FCBA0D17CE90B200A264EC /* BugsnagConfiguration.m */,
+				F4FCBA1217CE90FB00A264EC /* BugsnagEvent.h */,
+				F4FCBA1317CE90FB00A264EC /* BugsnagEvent.m */,
+				F4FCBA1817CEB47B00A264EC /* BugsnagLogger.h */,
+				F4FCBA0F17CE90EB00A264EC /* BugsnagMetaData.h */,
+				F4FCBA1017CE90EB00A264EC /* BugsnagMetaData.m */,
+				F4FCBA1517CE924400A264EC /* BugsnagNotifier.h */,
+				F4FCBA1617CE924400A264EC /* BugsnagNotifier.m */,
+			);
+			name = Bugsnag;
+			path = bugsnag;
+			sourceTree = "<group>";
+		};
+		F4C71CF917CE8B9900009E4B /* BugsnagTests */ = {
+			isa = PBXGroup;
+			children = (
+				F4C71CFF17CE8B9900009E4B /* BugsnagTests.h */,
+				F4C71D0017CE8B9900009E4B /* BugsnagTests.m */,
+				F4C71CFA17CE8B9900009E4B /* Supporting Files */,
+			);
+			name = BugsnagTests;
+			path = bugsnagTests;
+			sourceTree = "<group>";
+		};
+		F4C71CFA17CE8B9900009E4B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F4C71CFC17CE8B9900009E4B /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F4FCBA1E17CEECC300A264EC /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				F4FCBA1F17CEF24E00A264EC /* BugsnagIosNotifier.h */,
+				F4FCBA2017CEF24E00A264EC /* BugsnagIosNotifier.m */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F4C71CDE17CE8B9900009E4B /* Bugsnag */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F4C71D0417CE8B9900009E4B /* Build configuration list for PBXNativeTarget "Bugsnag" */;
+			buildPhases = (
+				F4C71CDB17CE8B9900009E4B /* Sources */,
+				F4C71CDC17CE8B9900009E4B /* Frameworks */,
+				F4C71CDD17CE8B9900009E4B /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Bugsnag;
+			productName = bugsnag;
+			productReference = F4C71CDF17CE8B9900009E4B /* libBugsnag.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		F4C71CEF17CE8B9900009E4B /* BugsnagTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F4C71D0717CE8B9900009E4B /* Build configuration list for PBXNativeTarget "BugsnagTest" */;
+			buildPhases = (
+				F4C71CEB17CE8B9900009E4B /* Sources */,
+				F4C71CEC17CE8B9900009E4B /* Frameworks */,
+				F4C71CED17CE8B9900009E4B /* Resources */,
+				F4C71CEE17CE8B9900009E4B /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F4C71CF717CE8B9900009E4B /* PBXTargetDependency */,
+			);
+			name = BugsnagTest;
+			productName = bugsnagTests;
+			productReference = F4C71CF017CE8B9900009E4B /* Bugsnag.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F4C71CD717CE8B9900009E4B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "Simon Maynard";
+			};
+			buildConfigurationList = F4C71CDA17CE8B9900009E4B /* Build configuration list for PBXProject "Bugsnag" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = F4C71CD617CE8B9900009E4B;
+			productRefGroup = F4C71CE017CE8B9900009E4B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F4C71CDE17CE8B9900009E4B /* Bugsnag */,
+				F4C71CEF17CE8B9900009E4B /* BugsnagTest */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F4C71CED17CE8B9900009E4B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4C71CFE17CE8B9900009E4B /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F4C71CEE17CE8B9900009E4B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F4C71CDB17CE8B9900009E4B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4C71CEA17CE8B9900009E4B /* Bugsnag.m in Sources */,
+				F4FCBA0E17CE90B200A264EC /* BugsnagConfiguration.m in Sources */,
+				F4FCBA1117CE90EB00A264EC /* BugsnagMetaData.m in Sources */,
+				F4FCBA1417CE90FB00A264EC /* BugsnagEvent.m in Sources */,
+				F4FCBA1717CE924400A264EC /* BugsnagNotifier.m in Sources */,
+				F4FCBA2117CEF24E00A264EC /* BugsnagIosNotifier.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F4C71CEB17CE8B9900009E4B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4C71D0117CE8B9900009E4B /* BugsnagTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F4C71CF717CE8B9900009E4B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F4C71CDE17CE8B9900009E4B /* Bugsnag */;
+			targetProxy = F4C71CF617CE8B9900009E4B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		F4C71CFC17CE8B9900009E4B /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F4C71CFD17CE8B9900009E4B /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F4C71D0217CE8B9900009E4B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = BugsnagTests;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		F4C71D0317CE8B9900009E4B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				PRODUCT_NAME = BugsnagTests;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F4C71D0517CE8B9900009E4B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				DSTROOT = /tmp/bugsnag.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Bugsnag-Prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = Bugsnag;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		F4C71D0617CE8B9900009E4B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				DSTROOT = /tmp/bugsnag.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Bugsnag-Prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = Bugsnag;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		F4C71D0817CE8B9900009E4B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Bugsnag-Prefix.pch";
+				INFOPLIST_FILE = "bugsnagTests/BugsnagTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = Bugsnag;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		F4C71D0917CE8B9900009E4B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Bugsnag-Prefix.pch";
+				INFOPLIST_FILE = "bugsnagTests/BugsnagTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = Bugsnag;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F4C71CDA17CE8B9900009E4B /* Build configuration list for PBXProject "Bugsnag" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F4C71D0217CE8B9900009E4B /* Debug */,
+				F4C71D0317CE8B9900009E4B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F4C71D0417CE8B9900009E4B /* Build configuration list for PBXNativeTarget "Bugsnag" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F4C71D0517CE8B9900009E4B /* Debug */,
+				F4C71D0617CE8B9900009E4B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F4C71D0717CE8B9900009E4B /* Build configuration list for PBXNativeTarget "BugsnagTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F4C71D0817CE8B9900009E4B /* Debug */,
+				F4C71D0917CE8B9900009E4B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F4C71CD717CE8B9900009E4B /* Project object */;
+}

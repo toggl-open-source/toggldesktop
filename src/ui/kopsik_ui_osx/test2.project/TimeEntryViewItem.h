@@ -16,4 +16,9 @@
 @property NSString *project;
 @property NSString *duration;
 @property NSString *color;
+@property NSString *GUID;
+@property BOOL billable;
+@property NSDate *started;
+@property NSDate *ended;
+@property NSArray *tags;
 @end

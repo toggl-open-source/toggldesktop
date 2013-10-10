@@ -3,41 +3,25 @@
 #include "./toggl_api_client.h"
 
 #include <string>
+#include <cstring>
 #include <sstream>
 
 #include "Poco/Stopwatch.h"
-#include "Poco/Bugcheck.h"
 #include "Poco/Exception.h"
-#include "Poco/InflatingStream.h"
-#include "Poco/DeflatingStream.h"
 #include "Poco/Logger.h"
-#include "Poco/StreamCopier.h"
-#include "Poco/URI.h"
 #include "Poco/DateTimeParser.h"
 #include "Poco/DateTime.h"
 #include "Poco/DateTimeFormatter.h"
 #include "Poco/DateTimeFormat.h"
 #include "Poco/Timespan.h"
 #include "Poco/NumberParser.h"
-#include "Poco/Net/Context.h"
-#include "Poco/Net/NameValueCollection.h"
-#include "Poco/Net/HTTPRequest.h"
-#include "Poco/Net/HTTPResponse.h"
-#include "Poco/Net/HTTPMessage.h"
-#include "Poco/Net/HTTPBasicCredentials.h"
-#include "Poco/Net/HTTPSClientSession.h"
-#include "Poco/Net/WebSocket.h"
+
+#include "./https_client.h"
+#include "./version.h"
 
 #include "./libjson.h"
 
 namespace kopsik {
-
-const std::string TOGGL_SERVER_URL("https://www.toggl.com");
-// const std::string TOGGL_SERVER_URL("http://localhost:8080");
-
-// const std::string TOGGL_WEBSOCKET_SERVER_URL("https://stream.toggl.com")
-const std::string TOGGL_WEBSOCKET_SERVER_URL("wss://localhost:8088");
-// const std::string TOGGL_WEBSOCKET_SERVER_URL("wss://echo.websocket.org");
 
 const char *known_colors[] = {
     "#4dc3ff", "#bc85e6", "#df7baa", "#f68d38", "#b27636",
@@ -60,7 +44,8 @@ TimeEntry *User::Start(std::string description) {
   te->SetDurationInSeconds(-time(0));
   te->SetWID(DefaultWID());
   te->SetUIModifiedAt(time(0));
-  TimeEntries.push_back(te);
+  te->SetCreatedWith(createdWith());
+  related.TimeEntries.push_back(te);
   return te;
 }
 
@@ -74,34 +59,34 @@ TimeEntry *User::Continue(std::string GUID) {
     te->SetStart(time(0));
     te->SetDurationInSeconds(-time(0));
     te->SetWID(existing->WID());
-    te->SetWID(existing->PID());
-    te->SetWID(existing->TID());
+    te->SetPID(existing->PID());
+    te->SetTID(existing->TID());
     te->SetUIModifiedAt(time(0));
-    TimeEntries.push_back(te);
+    te->SetCreatedWith(createdWith());
+    related.TimeEntries.push_back(te);
     return te;
 }
 
-error User::Listen() {
-  try {
-    const Poco::URI uri(TOGGL_WEBSOCKET_SERVER_URL);
-    const Poco::Net::Context::Ptr context(new Poco::Net::Context(
-      Poco::Net::Context::CLIENT_USE, "", "", "",
-      Poco::Net::Context::VERIFY_NONE, 9, false,
-      "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"));
-    Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(),
-      context);
-    Poco::Net::HTTPRequest req(Poco::Net::HTTPRequest::HTTP_GET, "/ws",
-      Poco::Net::HTTPMessage::HTTP_1_1);
-    Poco::Net::HTTPResponse res;
-    Poco::Net::WebSocket ws(session, req, res);
-  } catch(const Poco::Exception& exc) {
-    return exc.displayText();
-  } catch(const std::exception& ex) {
-    return ex.what();
-  } catch(const std::string& ex) {
-    return ex;
-  }
-  return noError;
+void User::DeleteTimeEntry(std::string GUID) {
+    TimeEntry *te = GetTimeEntryByGUID(GUID);
+    poco_assert(te);
+    te->SetDeletedAt(time(0));
+    te->SetUIModifiedAt(time(0));
+}
+
+std::string User::createdWith() {
+    std::stringstream ss;
+    ss  << "libkopsik/"
+        << kopsik::version::Major
+        << "."
+        << kopsik::version::Minor
+        << "."
+        << kopsik::version::Patch;
+    return ss.str();
+}
+
+error User::ListenToWebsocket(HTTPSClient *https_client) {
+  return https_client->ListenToWebsocket();
 }
 
 bool compareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
@@ -109,7 +94,7 @@ bool compareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
 }
 
 void User::SortTimeEntriesByStart() {
-  std::sort(TimeEntries.begin(), TimeEntries.end(),
+  std::sort(related.TimeEntries.begin(), related.TimeEntries.end(),
     compareTimeEntriesByStart);
 }
 
@@ -166,8 +151,9 @@ std::vector<TimeEntry *> User::Stop() {
 
 TimeEntry *User::RunningTimeEntry() {
     for (std::vector<TimeEntry *>::const_iterator it =
-            TimeEntries.begin();
-            it != TimeEntries.end(); it++) {
+            related.TimeEntries.begin();
+            it != related.TimeEntries.end();
+            it++) {
         if ((*it)->DurationInSeconds() < 0) {
             return *it;
         }
@@ -176,13 +162,29 @@ TimeEntry *User::RunningTimeEntry() {
 }
 
 bool TimeEntry::NeedsPush() {
-    return (ui_modified_at_ > 0) || !id_;
+    return NeedsPOST() || NeedsPUT() || NeedsDELETE();
 }
 
-void User::CollectDirtyObjects(std::vector<TimeEntry *> *result) {
+bool TimeEntry::NeedsPOST() {
+    // No server side ID yet, meaning it's not POSTed yet
+    return !id_;
+}
+
+bool TimeEntry::NeedsPUT() {
+    // User has modified model via UI, needs a PUT
+    return ui_modified_at_ > 0;
+}
+
+bool TimeEntry::NeedsDELETE() {
+    // TE is deleted, needs a DELETE
+    return deleted_at_ > 0;
+}
+
+void User::CollectPushableObjects(std::vector<TimeEntry *> *result) {
     poco_assert(result);
-    for (std::vector<TimeEntry *>::const_iterator it = TimeEntries.begin();
-            it != TimeEntries.end();
+    for (std::vector<TimeEntry *>::const_iterator it =
+            related.TimeEntries.begin();
+            it != related.TimeEntries.end();
             it++) {
         TimeEntry *te = *it;
         if (te->NeedsPush()) {
@@ -191,12 +193,12 @@ void User::CollectDirtyObjects(std::vector<TimeEntry *> *result) {
     }
 }
 
-error User::Push() {
+error User::Push(HTTPSClient *https_client) {
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
     std::vector<TimeEntry *>dirty;
-    CollectDirtyObjects(&dirty);
+    CollectPushableObjects(&dirty);
 
     Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
     if (dirty.empty()) {
@@ -204,7 +206,13 @@ error User::Push() {
         return noError;
     }
 
-    // Convert the dirty objcets to batch updates JSON
+    {
+        std::stringstream ss;
+        ss << dirty.size() << " model(s) need a push";
+        logger.debug(ss.str());
+    }
+
+    // Convert the dirty objects to batch updates JSON.
     JSONNODE *c = json_new(JSON_ARRAY);
     for (std::vector<TimeEntry *>::const_iterator it =
             dirty.begin();
@@ -218,17 +226,35 @@ error User::Push() {
         json_push_back(body, n);
 
         JSONNODE *update = json_new(JSON_NODE);
-        if (!te->ID()) {
+        if (te->NeedsPOST()) {
             json_push_back(update, json_new_a("method", "POST"));
             json_push_back(update, json_new_a("relative_url",
                 "/api/v8/time_entries"));
-        } else {
+            std::stringstream ss;
+            ss << "Time entry " << te->String() << " needs a POST";
+            logger.debug(ss.str());
+
+        } else if (te->NeedsPUT()) {
             std::stringstream url;
             url << "/api/v8/time_entries/" << te->ID();
             json_push_back(update, json_new_a("method", "PUT"));
             json_push_back(update, json_new_a("relative_url",
                 url.str().c_str()));
+            std::stringstream ss;
+            ss << "Time entry " << te->String() << " needs a PUT";
+            logger.debug(ss.str());
+
+        } else if (te->NeedsDELETE()) {
+            std::stringstream url;
+            url << "/api/v8/time_entries/" << te->ID();
+            json_push_back(update, json_new_a("method", "DELETE"));
+            json_push_back(update, json_new_a("relative_url",
+                url.str().c_str()));
+            std::stringstream ss;
+            ss << "Time entry " << te->String() << " needs a DELETE";
+            logger.debug(ss.str());
         }
+        json_push_back(update, json_new_a("GUID", te->GUID().c_str()));
         json_push_back(update, body);
 
         json_push_back(c, update);
@@ -241,10 +267,10 @@ error User::Push() {
     logger.debug(json);
 
     std::string response_body("");
-    error err = requestJSON(Poco::Net::HTTPRequest::HTTP_POST,
-        "/api/v8/batch_updates",
+    error err = https_client->PostJSON("/api/v8/batch_updates",
         json,
-        true,
+        APIToken(),
+        "api_token",
         &response_body);
     if (err != noError) {
         return err;
@@ -252,19 +278,50 @@ error User::Push() {
 
     std::vector<BatchUpdateResult> results;
     parseResponseArray(response_body, &results);
+
     // Iterate through response array, parse response bodies.
     // Collect errors into a vector.
     std::vector<error> errors;
-    int response_index = 0;
     for (std::vector<BatchUpdateResult>::const_iterator it = results.begin();
             it != results.end();
             it++) {
         BatchUpdateResult result = *it;
 
         std::stringstream ss;
-        ss << "batch update result status " << result.StatusCode
-            << ", body " << result.Body;
-        logger.error(ss.str());
+        ss  << "batch update result GUID: " << result.GUID
+            << ", StatusCode: " << result.StatusCode
+            << ", ContentType: " << result.ContentType
+            << ", Body: " << result.Body;
+        logger.debug(ss.str());
+
+        if (result.StatusCode < 200 || result.StatusCode >= 300) {
+            ss  << "ERROR! update result GUID: " << result.GUID
+                << ", StatusCode: " << result.StatusCode
+                << ", ContentType: " << result.ContentType
+                << ", Body: " << result.Body;
+            logger.error(ss.str());
+            if ("null" == result.Body) {
+                errors.push_back(ss.str());
+            } else {
+                errors.push_back(result.Body);
+            }
+        }
+
+        poco_assert(!result.GUID.empty());
+        if ("null" == result.Body) {
+          continue;
+        }
+        poco_assert(json_is_valid(result.Body.c_str()));
+
+        TimeEntry *te = 0;
+        for (std::vector<TimeEntry *>::const_iterator it =
+                dirty.begin(); it != dirty.end(); it++) {
+            if ((*it)->GUID() == result.GUID) {
+                te = *it;
+                break;
+            }
+        }
+        poco_assert(te);
 
         JSONNODE *n = json_parse(result.Body.c_str());
         JSONNODE_ITERATOR i = json_begin(n);
@@ -272,15 +329,11 @@ error User::Push() {
         while (i != e) {
             json_char *node_name = json_name(*i);
             if (strcmp(node_name, "data") == 0) {
-                TimeEntry *te = dirty[response_index];
-                poco_assert(te);
                 te->LoadFromJSONNode(*i);
             }
             ++i;
         }
         json_delete(n);
-
-        response_index++;
     }
 
     // Collect errors
@@ -310,6 +363,7 @@ error User::Push() {
 void User::parseResponseArray(std::string response_body,
         std::vector<BatchUpdateResult> *responses) {
     poco_assert(responses);
+    poco_assert(!response_body.empty());
     JSONNODE *response_array = json_parse(response_body.c_str());
     JSONNODE_ITERATOR i = json_begin(response_array);
     JSONNODE_ITERATOR e = json_end(response_array);
@@ -326,6 +380,8 @@ void BatchUpdateResult::parseResponseJSON(JSONNODE *n) {
     poco_assert(n);
     StatusCode = 0;
     Body = "";
+    GUID = "";
+    ContentType = "";
     JSONNODE_ITERATOR i = json_begin(n);
     JSONNODE_ITERATOR e = json_end(n);
     while (i != e) {
@@ -334,161 +390,70 @@ void BatchUpdateResult::parseResponseJSON(JSONNODE *n) {
             StatusCode = json_as_int(*i);
         } else if (strcmp(node_name, "body") == 0) {
             Body = std::string(json_as_string(*i));
+        } else if (strcmp(node_name, "guid") == 0) {
+            GUID = std::string(json_as_string(*i));
+        } else if (strcmp(node_name, "guid") == 0) {
+            ContentType = std::string(json_as_string(*i));
         }
         ++i;
     }
 }
 
-error User::requestJSON(std::string method,
-        std::string relative_url,
-        std::string json,
-        bool authenticate_with_api_token,
-        std::string *response_body) {
-    poco_assert(!method.empty());
-    poco_assert(!relative_url.empty());
-    poco_assert(response_body);
-    *response_body = "";
-    try {
-        const Poco::URI uri(TOGGL_SERVER_URL);
-
-        const Poco::Net::Context::Ptr context(new Poco::Net::Context(
-            Poco::Net::Context::CLIENT_USE, "", "", "",
-            Poco::Net::Context::VERIFY_NONE, 9, false,
-            "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"));
-
-        Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(),
-            context);
-        session.setKeepAlive(false);
-
-        std::istringstream requestStream(json);
-        Poco::DeflatingInputStream gzipRequest(requestStream,
-            Poco::DeflatingStreamBuf::STREAM_GZIP);
-        Poco::DeflatingStreamBuf *pBuff = gzipRequest.rdbuf();
-
-        Poco::Int64 size = pBuff->pubseekoff(0, std::ios::end, std::ios::in);
-        pBuff->pubseekpos(0, std::ios::in);
-
-        Poco::Net::HTTPRequest req(method,
-            relative_url, Poco::Net::HTTPMessage::HTTP_1_1);
-        req.setKeepAlive(false);
-        req.setContentType("application/json");
-        req.setContentLength(size);
-        req.set("Content-Encoding", "gzip");
-        req.set("Accept-Encoding", "gzip");
-        req.setChunkedTransferEncoding(true);
-
-        Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
-        logger.debug("Sending request..");
-
-        std::string login_username("");
-        std::string login_password("");
-        if (authenticate_with_api_token) {
-            login_username = APIToken();
-            login_password = "api_token";
-        } else {
-            login_username = LoginEmail;
-            login_password = LoginPassword;
-        }
-
-        Poco::Net::HTTPBasicCredentials cred(login_username, login_password);
-        cred.authenticate(req);
-        session.sendRequest(req) << pBuff << std::flush;
-
-        // Log out request contents
-        std::stringstream request_string;
-        req.write(request_string);
-        logger.debug(request_string.str());
-
-        logger.debug("Request sent. Receiving response..");
-
-        // Receive response
-        Poco::Net::HTTPResponse response;
-        std::istream& is = session.receiveResponse(response);
-
-        // Inflate
-        Poco::InflatingInputStream inflater(is,
-            Poco::InflatingStreamBuf::STREAM_GZIP);
-        std::stringstream ss;
-        ss << inflater.rdbuf();
-        *response_body = ss.str();
-
-        // Log out response contents
-        std::stringstream response_string;
-        response_string << "Response status: " << response.getStatus()
-            << ", reason: " << response.getReason()
-            << ", Content type: " << response.getContentType()
-            << ", Content-Encoding: " << response.get("Content-Encoding");
-        logger.debug(response_string.str());
-        logger.debug(*response_body);
-
-        if (!isStatusOK(response.getStatus())) {
-            // FIXME: backoff
-            return "Data push failed with error: " + *response_body;
-        }
-
-        // FIXME: reset backoff
-    } catch(const Poco::Exception& exc) {
-        // FIXME: backoff
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        // FIXME: backoff
-        return ex.what();
-    } catch(const std::string& ex) {
-        // FIXME: backoff
-        return ex;
-    }
-    return noError;
+error User::Login(HTTPSClient *https_client,
+    const std::string &email, const std::string &password) {
+  LoginEmail = email;
+  LoginPassword = password;
+  return pull(https_client, false, true);
 }
 
-bool User::isStatusOK(int status) {
-    return status >= 200 && status < 300;
-}
-
-error User::Login(const std::string &email, const std::string &password) {
-    LoginEmail = email;
-    LoginPassword = password;
-    return pull(false, true);
-}
-
-error User::Sync(bool full_sync) {
-    error err = pull(true, full_sync);
+error User::Sync(HTTPSClient *https_client, bool full_sync) {
+    error err = pull(https_client, true, full_sync);
     if (err != noError) {
         return err;
     }
-    return Push();
+    return Push(https_client);
 }
 
-// FIXME: move code into a GET method
-error User::pull(bool authenticate_with_api_token, bool full_sync) {
-    Poco::Stopwatch stopwatch;
-    stopwatch.start();
+error User::pull(HTTPSClient *https_client,
+      bool authenticate_with_api_token, bool full_sync) {
+  Poco::Stopwatch stopwatch;
+  stopwatch.start();
 
-    std::stringstream relative_url;
-    relative_url << "/api/v8/me?with_related_data=true";
-    if (!full_sync) {
-        relative_url << "&since=" << since_;
-    }
+  std::stringstream relative_url;
+  relative_url << "/api/v8/me?with_related_data=true";
+  if (!full_sync) {
+      relative_url << "&since=" << since_;
+  }
 
-    std::string response_body("");
-    error err = requestJSON(Poco::Net::HTTPRequest::HTTP_GET,
-        relative_url.str(),
-        "",
-        authenticate_with_api_token,
-        &response_body);
-    if (err != noError) {
-        return err;
-    }
+  std::string basic_auth_username("");
+  std::string basic_auth_password("");
+  if (authenticate_with_api_token) {
+    basic_auth_username = APIToken();
+    basic_auth_password = "api_token";
+  } else {
+    basic_auth_username = LoginEmail;
+    basic_auth_password = LoginPassword;
+  }
+  std::string response_body("");
 
-    LoadFromJSONString(response_body, true);
+  error err = https_client->GetJSON(relative_url.str(),
+    basic_auth_username,
+    basic_auth_password,
+    &response_body);
+  if (err != noError) {
+    return err;
+  }
 
-    stopwatch.stop();
-    std::stringstream ss;
-    ss << "User with related data JSON fetched and parsed in "
-        << stopwatch.elapsed() / 1000 << " ms";
-    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
-    logger.debug(ss.str());
+  LoadFromJSONString(response_body, true);
 
-    return noError;
+  stopwatch.stop();
+  std::stringstream ss;
+  ss << "User with related data JSON fetched and parsed in "
+    << stopwatch.elapsed() / 1000 << " ms";
+  Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
+  logger.debug(ss.str());
+
+  return noError;
 };
 
 void User::LoadFromJSONString(const std::string &json,
@@ -578,7 +543,7 @@ void User::loadProjectsFromJSONNode(JSONNODE *list) {
         Project *model = GetProjectByID(id);
         if (!model) {
             model = new Project();
-            Projects.push_back(model);
+            related.Projects.push_back(model);
         }
         model->SetUID(ID());
         model->LoadFromJSONNode(*current_node);
@@ -663,7 +628,7 @@ void User::loadTasksFromJSONNode(JSONNODE *list) {
         Task *model = GetTaskByID(id);
         if (!model) {
             model = new Task();
-            Tasks.push_back(model);
+            related.Tasks.push_back(model);
         }
         model->SetUID(ID());
         model->LoadFromJSONNode(*current_node);
@@ -723,7 +688,7 @@ void User::loadWorkspacesFromJSONNode(JSONNODE *list) {
         Workspace *model = GetWorkspaceByID(id);
         if (!model) {
             model = new Workspace();
-            Workspaces.push_back(model);
+            related.Workspaces.push_back(model);
         }
         model->SetUID(ID());
         model->LoadFromJSONNode(*current_node);
@@ -768,7 +733,7 @@ void User::loadTagsFromJSONNode(JSONNODE *list) {
         Tag *model = GetTagByID(id);
         if (!model) {
             model = new Tag();
-            Tags.push_back(model);
+            related.Tags.push_back(model);
         }
         model->SetUID(ID());
         model->LoadFromJSONNode(*current_node);
@@ -828,7 +793,7 @@ void User::loadClientsFromJSONNode(JSONNODE *list) {
         Client *model = GetClientByID(id);
         if (!model) {
             model = new Client();
-            Clients.push_back(model);
+            related.Clients.push_back(model);
         }
         model->SetUID(ID());
         model->LoadFromJSONNode(*current_node);
@@ -892,19 +857,6 @@ Poco::UInt64 User::getIDFromJSONNode(JSONNODE *data) {
     return 0;
 }
 
-Poco::UInt64 User::getUIModifiedAtFromJSONNode(JSONNODE *data) {
-    JSONNODE_ITERATOR current_node = json_begin(data);
-    JSONNODE_ITERATOR last_node = json_end(data);
-    while (current_node != last_node) {
-        json_char *node_name = json_name(*current_node);
-        if (strcmp(node_name, "ui_modified_at") == 0) {
-            return json_as_int(*current_node);
-        }
-        ++current_node;
-    }
-    return 0;
-}
-
 void User::loadTimeEntriesFromJSONNode(JSONNODE *list) {
     poco_assert(list);
 
@@ -915,32 +867,30 @@ void User::loadTimeEntriesFromJSONNode(JSONNODE *list) {
         TimeEntry *model = GetTimeEntryByID(id);
         if (!model) {
             model = new TimeEntry();
-            TimeEntries.push_back(model);
+            related.TimeEntries.push_back(model);
         }
-        Poco::UInt64 ui_modified_at =
-            getUIModifiedAtFromJSONNode(*current_node);
-        if (!(model->UIModifiedAt() > ui_modified_at)) {
-            model->SetUID(ID());
-            model->LoadFromJSONNode(*current_node);
-        }
+        model->SetUID(ID());
+        model->LoadFromJSONNode(*current_node);
         ++current_node;
     }
 }
 
 std::string TimeEntry::String() {
     std::stringstream ss;
-    ss << "ID=" << id_ <<
-    " description=" << description_ <<
-    " wid=" << wid_ <<
-    " guid=" << guid_ <<
-    " pid=" << pid_ <<
-    " tid=" << tid_ <<
-    " start=" << start_ <<
-    " stop=" << stop_ <<
-    " duration=" << duration_in_seconds_ <<
-    " billable=" << billable_ <<
-    " duronly=" << duronly_ <<
-    " ui_modified_at=" << ui_modified_at_;
+    ss  << "ID=" << id_
+        << " description=" << description_
+        << " wid=" << wid_
+        << " guid=" << guid_
+        << " pid=" << pid_
+        << " tid=" << tid_
+        << " start=" << start_
+        << " stop=" << stop_
+        << " duration=" << duration_in_seconds_
+        << " billable=" << billable_
+        << " duronly=" << duronly_
+        << " tags=" << Tags()
+        << " created_with=" << CreatedWith()
+        << " ui_modified_at=" << ui_modified_at_;
     return ss.str();
 }
 
@@ -952,9 +902,7 @@ JSONNODE *TimeEntry::JSON() {
     }
     json_push_back(n, json_new_a("description", description_.c_str()));
     json_push_back(n, json_new_i("wid", (json_int_t)wid_));
-    if (!guid_.empty()) {
-        json_push_back(n, json_new_a("guid", guid_.c_str()));
-    }
+    json_push_back(n, json_new_a("guid", guid_.c_str()));
     if (pid_) {
         json_push_back(n, json_new_i("pid", (json_int_t)pid_));
     }
@@ -970,16 +918,29 @@ JSONNODE *TimeEntry::JSON() {
     json_push_back(n, json_new_b("duronly", duronly_));
     json_push_back(n, json_new_i("ui_modified_at",
         (json_int_t)ui_modified_at_));
+    json_push_back(n, json_new_a("created_with", created_with_.c_str()));
+
+    if (!TagNames.empty()) {
+        JSONNODE *tag_nodes = json_new(JSON_ARRAY);
+        json_set_name(tag_nodes, "tags");
+        for (std::vector<std::string>::const_iterator it = TagNames.begin();
+                it != TagNames.end();
+                it++) {
+            std::string tag_name = *it;
+            json_push_back(tag_nodes, json_new_a(NULL, tag_name.c_str()));
+        }
+        json_push_back(n, tag_nodes);
+    }
 
     return n;
 }
 
-// FIXME: use map instead?
-
 Workspace *User::GetWorkspaceByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
-    for (std::vector<Workspace *>::const_iterator it = Workspaces.begin();
-            it != Workspaces.end(); it++) {
+    for (std::vector<Workspace *>::const_iterator it =
+            related.Workspaces.begin();
+            it != related.Workspaces.end();
+            it++) {
         if ((*it)->ID() == id) {
             return *it;
         }
@@ -989,8 +950,8 @@ Workspace *User::GetWorkspaceByID(const Poco::UInt64 id) {
 
 Client *User::GetClientByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
-    for (std::vector<Client *>::const_iterator it = Clients.begin();
-            it != Clients.end(); it++) {
+    for (std::vector<Client *>::const_iterator it = related.Clients.begin();
+            it != related.Clients.end(); it++) {
         if ((*it)->ID() == id) {
             return *it;
         }
@@ -1000,9 +961,19 @@ Client *User::GetClientByID(const Poco::UInt64 id) {
 
 Project *User::GetProjectByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
-    for (std::vector<Project *>::const_iterator it = Projects.begin();
-            it != Projects.end(); it++) {
+    for (std::vector<Project *>::const_iterator it = related.Projects.begin();
+            it != related.Projects.end(); it++) {
         if ((*it)->ID() == id) {
+            return *it;
+        }
+    }
+    return 0;
+}
+
+Project *User::GetProjectByName(const std::string name) {
+    for (std::vector<Project *>::const_iterator it = related.Projects.begin();
+            it != related.Projects.end(); it++) {
+        if ((*it)->Name() == name) {
             return *it;
         }
     }
@@ -1011,8 +982,8 @@ Project *User::GetProjectByID(const Poco::UInt64 id) {
 
 Task *User::GetTaskByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
-    for (std::vector<Task *>::const_iterator it = Tasks.begin();
-            it != Tasks.end(); it++) {
+    for (std::vector<Task *>::const_iterator it = related.Tasks.begin();
+            it != related.Tasks.end(); it++) {
         if ((*it)->ID() == id) {
             return *it;
         }
@@ -1022,8 +993,8 @@ Task *User::GetTaskByID(const Poco::UInt64 id) {
 
 Tag *User::GetTagByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
-    for (std::vector<Tag *>::const_iterator it = Tags.begin();
-            it != Tags.end(); it++) {
+    for (std::vector<Tag *>::const_iterator it = related.Tags.begin();
+            it != related.Tags.end(); it++) {
         if ((*it)->ID() == id) {
             return *it;
         }
@@ -1034,7 +1005,9 @@ Tag *User::GetTagByID(const Poco::UInt64 id) {
 TimeEntry *User::GetTimeEntryByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
     for (std::vector<TimeEntry *>::const_iterator it =
-            TimeEntries.begin(); it != TimeEntries.end(); it++) {
+            related.TimeEntries.begin();
+            it != related.TimeEntries.end();
+            it++) {
         if ((*it)->ID() == id) {
             return *it;
         }
@@ -1045,7 +1018,9 @@ TimeEntry *User::GetTimeEntryByID(const Poco::UInt64 id) {
 TimeEntry *User::GetTimeEntryByGUID(std::string GUID) {
     poco_assert(!GUID.empty());
     for (std::vector<TimeEntry *>::const_iterator it =
-            TimeEntries.begin(); it != TimeEntries.end(); it++) {
+            related.TimeEntries.begin();
+            it != related.TimeEntries.end();
+            it++) {
         if ((*it)->GUID() == GUID) {
             return *it;
         }
@@ -1054,51 +1029,63 @@ TimeEntry *User::GetTimeEntryByGUID(std::string GUID) {
 }
 
 void User::ClearWorkspaces() {
-    for (std::vector<Workspace *>::const_iterator it = Workspaces.begin();
-            it != Workspaces.end(); it++) {
+    for (std::vector<Workspace *>::const_iterator it =
+            related.Workspaces.begin();
+            it != related.Workspaces.end();
+            it++) {
         delete *it;
     }
-    Workspaces.clear();
+    related.Workspaces.clear();
 }
 
 void User::ClearProjects() {
-    for (std::vector<Project *>::const_iterator it = Projects.begin();
-            it != Projects.end(); it++) {
+    for (std::vector<Project *>::const_iterator it =
+            related.Projects.begin();
+            it != related.Projects.end();
+            it++) {
         delete *it;
     }
-    Projects.clear();
+    related.Projects.clear();
 }
 
 void User::ClearTasks() {
-    for (std::vector<Task *>::const_iterator it = Tasks.begin();
-            it != Tasks.end(); it++) {
+    for (std::vector<Task *>::const_iterator it =
+            related.Tasks.begin();
+            it != related.Tasks.end();
+            it++) {
         delete *it;
     }
-    Tasks.clear();
+    related.Tasks.clear();
 }
 
 void User::ClearTags() {
-    for (std::vector<Tag *>::const_iterator it = Tags.begin();
-            it != Tags.end(); it++) {
+    for (std::vector<Tag *>::const_iterator it =
+            related.Tags.begin();
+            it != related.Tags.end();
+            it++) {
         delete *it;
     }
-    Tags.clear();
+    related.Tags.clear();
 }
 
 void User::ClearClients() {
-    for (std::vector<Client *>::const_iterator it = Clients.begin();
-            it != Clients.end(); it++) {
+    for (std::vector<Client *>::const_iterator it =
+            related.Clients.begin();
+            it != related.Clients.end();
+            it++) {
         delete *it;
     }
-    Clients.clear();
+    related.Clients.clear();
 }
 
 void User::ClearTimeEntries() {
     for (std::vector<TimeEntry *>::const_iterator it =
-            TimeEntries.begin(); it != TimeEntries.end(); it++) {
+            related.TimeEntries.begin();
+            it != related.TimeEntries.end();
+            it++) {
         delete *it;
     }
-    TimeEntries.clear();
+    related.TimeEntries.clear();
 }
 
 void Workspace::LoadFromJSONNode(JSONNODE *n) {
@@ -1232,6 +1219,13 @@ void TimeEntry::SetDurationString(std::string value) {
     // FIXME: parse duration string into duration in seconds
 }
 
+void TimeEntry::SetCreatedWith(std::string value) {
+    if (created_with_ != value) {
+        created_with_ = value;
+        dirty_ = true;
+    }
+}
+
 void TimeEntry::SetDurOnly(bool value) {
     if (duronly_ != value) {
         duronly_ = value;
@@ -1268,6 +1262,13 @@ void TimeEntry::SetStop(Poco::UInt64 value) {
     }
 }
 
+void TimeEntry::SetDeletedAt(Poco::UInt64 value) {
+    if (deleted_at_ != value) {
+        deleted_at_ = value;
+        dirty_ = true;
+    }
+}
+
 void TimeEntry::SetStart(Poco::UInt64 value) {
     if (start_ != value) {
         start_ = value;
@@ -1295,6 +1296,19 @@ void TimeEntry::SetTags(std::string tags) {
     }
 }
 
+Poco::UInt64 TimeEntry::getUIModifiedAtFromJSONNode(JSONNODE *data) {
+    JSONNODE_ITERATOR current_node = json_begin(data);
+    JSONNODE_ITERATOR last_node = json_end(data);
+    while (current_node != last_node) {
+        json_char *node_name = json_name(*current_node);
+        if (strcmp(node_name, "ui_modified_at") == 0) {
+            return json_as_int(*current_node);
+        }
+        ++current_node;
+    }
+    return 0;
+}
+
 void TimeEntry::LoadFromJSONString(std::string json) {
     poco_assert(!json.empty());
     JSONNODE *root = json_parse(json.c_str());
@@ -1304,6 +1318,18 @@ void TimeEntry::LoadFromJSONString(std::string json) {
 
 void TimeEntry::LoadFromJSONNode(JSONNODE *data) {
     poco_assert(data);
+
+    Poco::UInt64 ui_modified_at =
+        getUIModifiedAtFromJSONNode(data);
+    if (UIModifiedAt() > ui_modified_at) {
+        Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
+        std::stringstream ss;
+        ss  << "Will not overwrite time entry "
+            << String()
+            << " with server data because we have a ui_modified_at";
+        logger.debug(ss.str());
+        return;
+    }
 
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
@@ -1333,6 +1359,8 @@ void TimeEntry::LoadFromJSONNode(JSONNODE *data) {
             SetDurOnly(json_as_bool(*current_node));
         } else if (strcmp(node_name, "tags") == 0) {
             loadTagsFromJSONNode(*current_node);
+        } else if (strcmp(node_name, "created_with") == 0) {
+            SetCreatedWith(std::string(json_as_string(*current_node)));
         }
         ++current_node;
     }
@@ -1413,20 +1441,13 @@ error TimeEntry::loadTagsFromJSONNode(JSONNODE *list) {
     return noError;
 }
 
-std::string Formatter::FormatDurationInSeconds(Poco::Int64 value) {
-    if (value < 0) {
-        value = time(0) + value;
+std::string Formatter::FormatDurationInSeconds(const Poco::Int64 value) {
+    Poco::Int64 duration = value;
+    if (duration < 0) {
+        duration += time(0);
     }
-    Poco::Timespan span(value * Poco::Timespan::SECONDS);
-    if (span.totalHours() > 0) {
-        return Poco::DateTimeFormatter::format(span, "%H:%M:%S");
-    }
-    if (span.totalMinutes() > 0) {
-        return Poco::DateTimeFormatter::format(span, "%M:%S min");
-    }
-    std::ostringstream out;
-    out << span.totalSeconds() << " sec";
-    return out.str();
+    Poco::Timespan span(duration * Poco::Timespan::SECONDS);
+    return Poco::DateTimeFormatter::format(span, "%H:%M:%S");
 }
 
 }   // namespace kopsik
