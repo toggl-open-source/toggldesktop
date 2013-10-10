@@ -11,6 +11,7 @@
 
 @interface TimeEntryViewItem : NSObject
 - (void)load:(KopsikTimeEntryViewItem *)data;
++ (TimeEntryViewItem *)findByGUID:(NSString *)guid;
 @property int duration_in_seconds;
 @property NSString *description;
 @property NSString *project;

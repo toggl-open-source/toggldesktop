@@ -40,30 +40,9 @@
     NSString *guid = notification.object;
     NSAssert(guid != nil, @"GUID is nil");
     NSLog(@"guid = %@", guid);
-    int was_found = 0;
-    KopsikTimeEntryViewItem *view_item = kopsik_time_entry_view_item_init();
-    char err[KOPSIK_ERR_LEN];
-    if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_item_by_guid(ctx,
-                                                                  err,
-                                                                  KOPSIK_ERR_LEN,
-                                                                  [guid UTF8String],
-                                                                  view_item,
-                                                                  &was_found)) {
-      kopsik_time_entry_view_item_clear(view_item);
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
-                                                          object:[NSString stringWithUTF8String:err]];
-      return;
-    }
-    
-    if (!was_found) {
-      kopsik_time_entry_view_item_clear(view_item);
-      return;
-    }
-    
-    TimeEntryViewItem *item = [[TimeEntryViewItem alloc] init];
-    [item load:view_item];
-    kopsik_time_entry_view_item_clear(view_item);
-    
+    TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:guid];
+    NSAssert(item != nil, @"View item not found by GUID!");
+
     self.GUID = guid;
     NSAssert(self.GUID != nil, @"GUID is nil");
     
