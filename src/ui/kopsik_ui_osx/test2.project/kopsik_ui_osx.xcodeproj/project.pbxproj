@@ -78,6 +78,13 @@
 			remoteGlobalIDString = 69FC17F017E6534400B96425;
 			remoteInfo = test2;
 		};
+		74B680AC180759C300B697AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 74B680A8180759C300B697AA /* Kopsik.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C55DA59C17F06A3B00B42178;
+			remoteInfo = Kopsik;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -109,6 +116,7 @@
 		746B49F318059858002E98DC /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = ../../../../third_party/Reachability/Reachability/Reachability.m; sourceTree = "<group>"; };
 		746B49F51806163F002E98DC /* ViewItemChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewItemChange.h; sourceTree = SOURCE_ROOT; };
 		746B49F61806163F002E98DC /* ViewItemChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewItemChange.m; sourceTree = SOURCE_ROOT; };
+		74B680A8180759C300B697AA /* Kopsik.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kopsik.xcodeproj; path = ../../../libkopsik/Kopsik/Kopsik.xcodeproj; sourceTree = "<group>"; };
 		74BAAA0517F32C470079386F /* Context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Context.h; path = ../Context.h; sourceTree = "<group>"; };
 		74BAAA0617F32C470079386F /* Context.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Context.m; path = ../Context.m; sourceTree = "<group>"; };
 		74BAAA0917F37B140079386F /* TimeEntryViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryViewItem.h; sourceTree = SOURCE_ROOT; };
@@ -185,6 +193,7 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
+				74B680A8180759C300B697AA /* Kopsik.xcodeproj */,
 				746B49F218059858002E98DC /* Reachability.h */,
 				746B49F318059858002E98DC /* Reachability.m */,
 				74E3CDB117FBABE400C3ADD3 /* bugsnag */,
@@ -305,6 +314,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		74B680A9180759C300B697AA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				74B680AD180759C300B697AA /* Kopsik.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		74E3CDB117FBABE400C3ADD3 /* bugsnag */ = {
 			isa = PBXGroup;
 			children = (
@@ -403,6 +420,12 @@
 			mainGroup = 69FC17E817E6534400B96425;
 			productRefGroup = 69FC17F217E6534400B96425 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 74B680A9180759C300B697AA /* Products */;
+					ProjectRef = 74B680A8180759C300B697AA /* Kopsik.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				69FC17F017E6534400B96425 /* kopsik_ui_osx */,
@@ -410,6 +433,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		74B680AD180759C300B697AA /* Kopsik.dylib */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.dylib";
+			path = Kopsik.dylib;
+			remoteRef = 74B680AC180759C300B697AA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		69FC17EF17E6534400B96425 /* Resources */ = {
