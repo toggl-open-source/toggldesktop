@@ -300,10 +300,17 @@ error User::Push(HTTPSClient *https_client) {
                 << ", ContentType: " << result.ContentType
                 << ", Body: " << result.Body;
             logger.error(ss.str());
-            errors.push_back(result.Body);
+            if ("null" == result.Body) {
+                errors.push_back(ss.str());
+            } else {
+                errors.push_back(result.Body);
+            }
         }
 
         poco_assert(!result.GUID.empty());
+        if ("null" == result.Body) {
+          continue;
+        }
         poco_assert(json_is_valid(result.Body.c_str()));
 
         TimeEntry *te = 0;
