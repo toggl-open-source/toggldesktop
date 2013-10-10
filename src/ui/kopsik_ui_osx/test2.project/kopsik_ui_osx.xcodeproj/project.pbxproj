@@ -85,6 +85,13 @@
 			remoteGlobalIDString = C55DA59C17F06A3B00B42178;
 			remoteInfo = Kopsik;
 		};
+		74B680AE18075A4300B697AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 74B680A8180759C300B697AA /* Kopsik.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C55DA59B17F06A3B00B42178;
+			remoteInfo = Kopsik;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -376,6 +383,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				74B680AF18075A4300B697AA /* PBXTargetDependency */,
 			);
 			name = kopsik_ui_osx;
 			productName = test2;
@@ -565,6 +573,11 @@
 			isa = PBXTargetDependency;
 			target = 69FC17F017E6534400B96425 /* kopsik_ui_osx */;
 			targetProxy = 69FC181517E6534500B96425 /* PBXContainerItemProxy */;
+		};
+		74B680AF18075A4300B697AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Kopsik;
+			targetProxy = 74B680AE18075A4300B697AA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
