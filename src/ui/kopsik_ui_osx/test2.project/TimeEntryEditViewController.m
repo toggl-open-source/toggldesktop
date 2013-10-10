@@ -299,7 +299,7 @@ void finishPushAfterDelete(kopsik_api_result result, char *err, unsigned int err
   if ([alert runModal] != NSAlertFirstButtonReturn) {
     return;
   }
-  
+
   char err[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_delete_time_entry(ctx,
                                                      err,

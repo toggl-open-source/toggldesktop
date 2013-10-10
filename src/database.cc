@@ -769,8 +769,13 @@ error Database::saveTimeEntries(Poco::UInt64 UID,
         if (err != noError) {
             return err;
         }
+        std::stringstream ss;
+        ss << "List size before removal: " << list->size();
         list->erase(std::remove(list->begin(), list->end(), te), list->end());
+        ss << ", list size after removal: " << list->size();
         delete te;
+        Poco::Logger &logger = Poco::Logger::get("database");
+        logger.debug(ss.str());
     }
     return noError;
 }
