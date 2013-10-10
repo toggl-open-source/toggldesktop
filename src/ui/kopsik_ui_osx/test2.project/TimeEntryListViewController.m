@@ -13,6 +13,7 @@
 #import "TableViewCell.h"
 #import "Context.h"
 #import "UIEvents.h"
+#import "ViewItemChange.h"
 
 @interface TimeEntryListViewController ()
 
@@ -26,11 +27,14 @@
     if (self) {
       viewitems = [NSMutableArray array];
 
-      [[NSNotificationCenter defaultCenter]
-       addObserver:self
-       selector:@selector(eventHandler:)
-       name:kUIEventUserLoggedIn
-       object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUIEventUserLoggedIn
+                                                 object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUIEventChange
+                                                 object:nil];
     }
     return self;
 }
@@ -55,6 +59,22 @@
     }
     kopsik_time_entry_view_item_list_clear(list);
     [self.timeEntriesTableView reloadData];
+
+  } else if ([notification.name isEqualToString:kUIEventChange]) {
+    ViewItemChange *change = notification.object;
+    if (KOPSIK_MODEL_TIME_ENTRY == change.model_type) {
+      NSLog(@"Time entry view item has changed");
+      if (KOPSIK_CHANGE_DELETE == change.change_type) {
+        NSString *GUID = change.GUID;
+        for (int i = 0; i < viewitems.count; i++) {
+          TimeEntryViewItem *view_item = viewitems[i];
+          if ([view_item.GUID isEqualToString:GUID]) {
+            [viewitems removeObjectAtIndex:i];
+          }
+        }
+      }
+      [self.timeEntriesTableView reloadData];
+    }
   }
 }
 
