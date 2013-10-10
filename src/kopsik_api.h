@@ -25,7 +25,6 @@ typedef struct {
   void *https_client;
   void *mutex;
   void *tm;
-  void *view_item_change_callback;
 } KopsikContext;
 
 KOPSIK_EXPORT KopsikContext *kopsik_context_init();
@@ -251,7 +250,6 @@ KOPSIK_EXPORT kopsik_api_result kopsik_time_entry_view_items(
 #define KOPSIK_MODEL_TAG 6
 
 typedef struct {
-  int change_type;
   int model_type;
   unsigned int model_id;
   char *GUID;
@@ -261,13 +259,6 @@ typedef struct {
   KopsikViewItemChange **Changes;
   unsigned int Length;
 } KopsikViewItemChangeList;
-
-typedef void (*KopsikViewItemChangeCallback)(
-  KopsikViewItemChangeList *list);
-
-KOPSIK_EXPORT void kopsik_register_view_item_change_callback(
-  KopsikContext *ctx,
-  KopsikViewItemChangeCallback callback);
 
 // Websocket client
 

@@ -13,7 +13,6 @@
   self.GUID = [NSString stringWithUTF8String:data->GUID];
   self.model_id = data->model_id;
   self.model_type = data->model_type;
-  self.change_type = data->change_type;
 }
 
 @end
