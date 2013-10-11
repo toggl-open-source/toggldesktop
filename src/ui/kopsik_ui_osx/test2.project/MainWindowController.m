@@ -94,6 +94,10 @@
 {
   NSLog(@"reachabilityChanged");
   Reachability * reach = [note object];
+  if (reach == nil) {
+    NSLog(@"Warning: No reach data from reachability.");
+    return;
+  }
   NetworkStatus netStatus = [reach currentReachabilityStatus];
   if (netStatus == NotReachable) {
     NSLog(@"network is not reachable");
