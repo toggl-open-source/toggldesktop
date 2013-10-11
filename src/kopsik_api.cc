@@ -31,73 +31,6 @@ kopsik::Database *get_db(KopsikContext *ctx) {
   return reinterpret_cast<kopsik::Database *>(ctx->db);
 }
 
-void model_change_to_view_item_change(
-                                      kopsik::ModelChange *in,
-                                      KopsikViewItemChange *out) {
-  poco_assert(in);
-  poco_assert(out);
-
-  poco_assert(!out->GUID);
-  out->GUID = strdup(in->GUID().c_str());
-
-  poco_assert(!out->model_id);
-  out->model_id = in->ModelID();
-
-  std::string model_type = in->ModelType();
-  if ("workspace" == model_type) {
-    out->model_type = KOPSIK_MODEL_WORKSPACE;
-  } else if ("client" == model_type) {
-    out->model_type = KOPSIK_MODEL_CLIENT;
-  } else if ("project" == model_type) {
-    out->model_type = KOPSIK_MODEL_PROJECT;
-  } else if ("task" == model_type) {
-    out->model_type = KOPSIK_MODEL_TASK;
-  } else if ("time_entry" == model_type) {
-    out->model_type = KOPSIK_MODEL_TIME_ENTRY;
-  } else if ("tag" == model_type) {
-    out->model_type = KOPSIK_MODEL_TAG;
-  }
-  poco_assert(out->model_type);
-}
-
-KopsikViewItemChangeList *view_item_change_list_init() {
-  KopsikViewItemChangeList *list = new KopsikViewItemChangeList();
-  list->Length = 0;
-  list->Changes = 0;
-  return list;
-}
-
-void view_item_change_clear(KopsikViewItemChange *change) {
-  poco_assert(change);
-  if (change->GUID) {
-    free(change->GUID);
-    change->GUID = 0;
-  }
-  delete change;
-  change = 0;
-}
-
-void view_item_change_list_clear(KopsikViewItemChangeList *list) {
-  poco_assert(list);
-  for (unsigned int i = 0; i < list->Length; i++) {
-    view_item_change_clear(list->Changes[i]);
-    list->Changes[i] = 0;
-  }
-  if (list->Changes) {
-    free(list->Changes);
-  }
-  delete list;
-  list = 0;
-}
-
-KopsikViewItemChange *view_item_change_init() {
-  KopsikViewItemChange *change = new KopsikViewItemChange();
-  change->model_type = 0;
-  change->model_id = 0;
-  change->GUID = 0;
-  return change;
-}
-
 kopsik_api_result save(KopsikContext *ctx,
   char *errmsg, unsigned int errlen) {
   poco_assert(ctx);
@@ -105,8 +38,7 @@ kopsik_api_result save(KopsikContext *ctx,
   poco_assert(errlen);
   kopsik::Database *db = get_db(ctx);
   kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
-  std::vector<kopsik::ModelChange> changes;
-  kopsik::error err = db->SaveUser(user, true, &changes);
+  kopsik::error err = db->SaveUser(user, true);
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
@@ -423,7 +355,7 @@ kopsik_api_result kopsik_login(
     return KOPSIK_API_FAILURE;
   }
   kopsik::Database *db = get_db(ctx);
-  err = db->SaveUser(user, true, 0);
+  err = db->SaveUser(user, true);
   if (err != kopsik::noError) {
     delete user;
     strncpy(errmsg, err.c_str(), errlen);

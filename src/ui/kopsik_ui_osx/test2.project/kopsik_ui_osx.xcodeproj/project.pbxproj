@@ -23,7 +23,6 @@
 		7424949F17F1E3D20030121C /* UIEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 7424949D17F1E3D20030121C /* UIEvents.m */; };
 		744E126717F22AB900ABE72A /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 744E126617F22AB900ABE72A /* app.icns */; };
 		746B49F418059858002E98DC /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 746B49F318059858002E98DC /* Reachability.m */; };
-		746B49F71806163F002E98DC /* ViewItemChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 746B49F61806163F002E98DC /* ViewItemChange.m */; };
 		74BAAA0717F32C470079386F /* Context.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0617F32C470079386F /* Context.m */; };
 		74BAAA0817F32C470079386F /* Context.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0617F32C470079386F /* Context.m */; };
 		74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */; };
@@ -121,8 +120,6 @@
 		744E126617F22AB900ABE72A /* app.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = app.icns; sourceTree = "<group>"; };
 		746B49F218059858002E98DC /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = ../../../../third_party/Reachability/Reachability/Reachability.h; sourceTree = "<group>"; };
 		746B49F318059858002E98DC /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = ../../../../third_party/Reachability/Reachability/Reachability.m; sourceTree = "<group>"; };
-		746B49F51806163F002E98DC /* ViewItemChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewItemChange.h; sourceTree = SOURCE_ROOT; };
-		746B49F61806163F002E98DC /* ViewItemChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewItemChange.m; sourceTree = SOURCE_ROOT; };
 		74B680A8180759C300B697AA /* Kopsik.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kopsik.xcodeproj; path = ../../../libkopsik/Kopsik/Kopsik.xcodeproj; sourceTree = "<group>"; };
 		74BAAA0517F32C470079386F /* Context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Context.h; path = ../Context.h; sourceTree = "<group>"; };
 		74BAAA0617F32C470079386F /* Context.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Context.m; path = ../Context.m; sourceTree = "<group>"; };
@@ -282,8 +279,6 @@
 				74BAAA0917F37B140079386F /* TimeEntryViewItem.h */,
 				74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */,
 				69FC17FB17E6534400B96425 /* Supporting Files */,
-				746B49F51806163F002E98DC /* ViewItemChange.h */,
-				746B49F61806163F002E98DC /* ViewItemChange.m */,
 			);
 			name = kopsik_ui;
 			path = test2;
@@ -530,7 +525,6 @@
 				69FC180117E6534400B96425 /* main.m in Sources */,
 				74BAAA0717F32C470079386F /* Context.m in Sources */,
 				746B49F418059858002E98DC /* Reachability.m in Sources */,
-				746B49F71806163F002E98DC /* ViewItemChange.m in Sources */,
 				69FC180817E6534400B96425 /* AppDelegate.m in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
 				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,

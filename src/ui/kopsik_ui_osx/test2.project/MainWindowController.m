@@ -18,7 +18,6 @@
 #import "Bugsnag.h"
 #import "User.h"
 #import "Reachability.h"
-#import "ViewItemChange.h"
 
 @interface MainWindowController ()
 @property (nonatomic,strong) IBOutlet LoginViewController *loginViewController;

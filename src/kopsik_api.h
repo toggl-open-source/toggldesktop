@@ -236,30 +236,6 @@ KOPSIK_EXPORT kopsik_api_result kopsik_time_entry_view_items(
   char *errmsg, unsigned int errlen,
   KopsikTimeEntryViewItemList *list);
 
-// Receive updates from library
-
-#define KOPSIK_CHANGE_INSERT 1
-#define KOPSIK_CHANGE_UPDATE 2
-#define KOPSIK_CHANGE_DELETE 3
-
-#define KOPSIK_MODEL_WORKSPACE 1
-#define KOPSIK_MODEL_CLIENT 2
-#define KOPSIK_MODEL_PROJECT 3
-#define KOPSIK_MODEL_TASK 4
-#define KOPSIK_MODEL_TIME_ENTRY 5
-#define KOPSIK_MODEL_TAG 6
-
-typedef struct {
-  int model_type;
-  unsigned int model_id;
-  char *GUID;
-} KopsikViewItemChange;
-
-typedef struct {
-  KopsikViewItemChange **Changes;
-  unsigned int Length;
-} KopsikViewItemChangeList;
-
 // Websocket client
 
 KOPSIK_EXPORT kopsik_api_result kopsik_listen(

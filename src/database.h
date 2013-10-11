@@ -59,16 +59,11 @@ class Database {
         }
 
         error DeleteUser(User *model, bool with_related_data);
-        error DeleteWorkspace(Workspace *model,
-            std::vector<ModelChange> *changes);
-        error DeleteClient(Client *model,
-            std::vector<ModelChange> *changes);
-        error DeleteProject(Project *model,
-            std::vector<ModelChange> *changes);
-        error DeleteTask(Task *model,
-            std::vector<ModelChange> *changes);
-        error DeleteTag(Tag *model,
-            std::vector<ModelChange> *changes);
+        error DeleteWorkspace(Workspace *model);
+        error DeleteClient(Client *model);
+        error DeleteProject(Project *model);
+        error DeleteTask(Task *model);
+        error DeleteTag(Tag *model);
 
         error LoadUserByID(Poco::UInt64 UID, User *user,
             bool with_related_data);
@@ -78,17 +73,13 @@ class Database {
 
         error UInt(std::string sql, Poco::UInt64 *result);
 
-        error SaveUser(User *user,
-            bool with_related_data,
-            std::vector<ModelChange> *changes);
-        error SaveWorkspace(Workspace *model,
-            std::vector<ModelChange> *changes);
-        error SaveClient(Client *model, std::vector<ModelChange> *changes);
-        error SaveProject(Project *model, std::vector<ModelChange> *changes);
-        error SaveTask(Task *model, std::vector<ModelChange> *changes);
-        error SaveTag(Tag *model, std::vector<ModelChange> *changes);
-        error SaveTimeEntry(TimeEntry *model,
-            std::vector<ModelChange> *changes);
+        error SaveUser(User *user, bool with_related_data);
+        error SaveWorkspace(Workspace *model);
+        error SaveClient(Client *model);
+        error SaveProject(Project *model);
+        error SaveTask(Task *model);
+        error SaveTag(Tag *model);
+        error SaveTimeEntry(TimeEntry *model);
 
         error LoadTimeEntriesForUpload(User *user);
 
@@ -117,23 +108,17 @@ class Database {
             std::vector<TimeEntry *> *list);
 
         error saveWorkspaces(Poco::UInt64 UID,
-            std::vector<Workspace *> *list,
-            std::vector<ModelChange> *changes);
+            std::vector<Workspace *> *list);
         error saveClients(Poco::UInt64 UID,
-            std::vector<Client *> *list,
-            std::vector<ModelChange> *changes);
+            std::vector<Client *> *list);
         error saveProjects(Poco::UInt64 UID,
-            std::vector<Project *> *list,
-            std::vector<ModelChange> *changes);
+            std::vector<Project *> *list);
         error saveTasks(Poco::UInt64 UID,
-            std::vector<Task *> *list,
-            std::vector<ModelChange> *changes);
+            std::vector<Task *> *list);
         error saveTags(Poco::UInt64 UID,
-            std::vector<Tag *> *list,
-            std::vector<ModelChange> *changes);
+            std::vector<Tag *> *list);
         error saveTimeEntries(Poco::UInt64 UID,
-            std::vector<TimeEntry *> *list,
-            std::vector<ModelChange> *changes);
+            std::vector<TimeEntry *> *list);
 
         error deleteFromTable(std::string table_name, Poco::Int64 local_id);
         error deleteAllFromTableByUID(std::string table_name, Poco::Int64 UID);

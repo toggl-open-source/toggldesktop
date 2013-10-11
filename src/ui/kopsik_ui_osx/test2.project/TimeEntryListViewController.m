@@ -13,7 +13,6 @@
 #import "TableViewCell.h"
 #import "Context.h"
 #import "UIEvents.h"
-#import "ViewItemChange.h"
 
 @interface TimeEntryListViewController ()
 
@@ -65,8 +64,7 @@
     [self.timeEntriesTableView reloadData];
 
   } else if ([notification.name isEqualToString:kUIEventChange]) {
-    ViewItemChange *change = notification.object;
-    NSLog(@"Time entry changed: %@", change);
+    NSLog(@"Time entry changed: %@", notification.object);
 
   } else if ([notification.name isEqualToString:kUIEventDelete]) {
     TimeEntryViewItem *deleted = notification.object;
