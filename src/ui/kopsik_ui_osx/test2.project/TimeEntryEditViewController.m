@@ -39,7 +39,6 @@
   if ([notification.name isEqualToString:kUIEventTimeEntrySelected]) {
     NSString *guid = notification.object;
     NSAssert(guid != nil, @"GUID is nil");
-    NSLog(@"guid = %@", guid);
     TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:guid];
     NSAssert(item != nil, @"View item not found by GUID!");
 
@@ -71,7 +70,6 @@
 }
 
 void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int errlen) {
-  NSLog(@"finishPushAfterUpdate");
   if (KOPSIK_API_SUCCESS != result) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
                                                         object:[NSString stringWithUTF8String:err]];
@@ -80,7 +78,6 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
 }
 
 - (IBAction)durationTextFieldChanged:(id)sender {
-  NSLog(@"durationTextFieldChanged");
   NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
   const char *value = [[self.durationTextField stringValue] UTF8String];
@@ -93,11 +90,12 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUpdate
+                                                      object:self.GUID];
   kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
 - (IBAction)projectSelectChanged:(id)sender {
-  NSLog(@"projectSelectChanged");
   NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
   const char *value = 0;
@@ -115,13 +113,16 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUpdate
+                                                      object:self.GUID];
   kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
 - (IBAction)startTimeChanged:(id)sender {
-  NSLog(@"startTimeChanged");
   NSAssert(self.GUID != nil, @"GUID is nil");
   [self applyStartTime];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUpdate
+                                                      object:self.GUID];
   kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
@@ -156,9 +157,10 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
 }
 
 - (IBAction)endTimeChanged:(id)sender {
-  NSLog(@"endTimeChanged");
   NSAssert(self.GUID != nil, @"GUID is nil");
   [self applyEndTime];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUpdate
+                                                      object:self.GUID];
   kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
@@ -193,21 +195,19 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
 }
 
 - (IBAction)dateChanged:(id)sender {
-  NSLog(@"dateChanged");
   NSAssert(self.GUID != nil, @"GUID is nil");
   [self applyStartTime];
   [self applyEndTime];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUpdate
+                                                      object:self.GUID];
   kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
 - (IBAction)tagsChanged:(id)sender {
-  NSLog(@"tagsChanged");
   NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
   NSArray *tag_names = [self.tags objectValue];
-  NSLog(@"tag names = %@", tag_names);
   const char *value = [[tag_names componentsJoinedByString:@"|"] UTF8String];
-  NSLog(@"char value = %s", value);
   if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_tags(ctx,
                                                        err,
                                                        KOPSIK_ERR_LEN,
@@ -217,11 +217,12 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUpdate
+                                                      object:self.GUID];
   kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
 - (IBAction)billableCheckBoxClicked:(id)sender {
-  NSLog(@"billableCheckBoxClicked");
   NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
   int value = 0;
@@ -237,11 +238,12 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUpdate
+                                                      object:self.GUID];
   kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
 - (IBAction)descriptionTextFieldChanged:(id)sender {
-  NSLog(@"descriptionTextFieldChanged");
   NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
   const char *value = [[self.descriptionTextField stringValue] UTF8String];
@@ -254,11 +256,12 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUpdate
+                                                      object:self.GUID];
   kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
 void finishPushAfterDelete(kopsik_api_result result, char *err, unsigned int errlen) {
-  NSLog(@"finishPushAfterDelete");
   if (KOPSIK_API_SUCCESS != result) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
                                                         object:[NSString stringWithUTF8String:err]];

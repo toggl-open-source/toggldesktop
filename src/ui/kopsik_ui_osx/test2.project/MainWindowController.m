@@ -128,14 +128,12 @@
   if (userinfo == nil) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedOut object:nil];
   } else {
-    NSLog(@"Current user: %s", user->Fullname);
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedIn object:userinfo];
   }
 }
 
 -(void)eventHandler: (NSNotification *) notification
 {
-  NSLog(@"event triggered: %@", notification.name);
   if ([notification.name isEqualToString:kUIEventUserLoggedIn]) {
     User *userinfo = notification.object;
     [Bugsnag setUserAttribute:@"user_id" withValue:[NSString stringWithFormat:@"%ld", userinfo.ID]];
@@ -245,7 +243,6 @@
 }
 
 void finishSync(kopsik_api_result result, char *err, unsigned int errlen) {
-  NSLog(@"finishSync");
   if (KOPSIK_API_SUCCESS != result) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
                                                         object:[NSString stringWithUTF8String:err]];

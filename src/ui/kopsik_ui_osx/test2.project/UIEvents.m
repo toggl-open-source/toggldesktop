@@ -16,3 +16,4 @@ NSString *const kUIEventTimeEntrySelected = @"TimeEntrySelected";
 NSString *const kUIEventTimeEntryDeselected = @"TimeEntryDeselected";
 NSString *const kUIEventError = @"Error";
 NSString *const kUIEventDelete = @"Delete";
+NSString *const kUIEventUpdate = @"Update";
