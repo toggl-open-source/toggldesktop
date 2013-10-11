@@ -32,7 +32,7 @@
                                                  object:nil];
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
-                                                   name:kUIEventChange
+                                                   name:kUIEventTimerStopped
                                                  object:nil];
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
@@ -63,9 +63,17 @@
     kopsik_time_entry_view_item_list_clear(list);
     [self.timeEntriesTableView reloadData];
 
-  } else if ([notification.name isEqualToString:kUIEventChange]) {
-    NSLog(@"Time entry changed: %@", notification.object);
-
+  } else if ([notification.name isEqualToString:kUIEventTimerStopped]) {
+    NSLog(@"Time entry stopped: %@", notification.object);
+    return;
+    if (notification.object == nil) {
+      return;
+    }
+    NSLog(@"Time entry stopped, not null: %@", notification.object);
+    TimeEntryViewItem *item = notification.object;
+    [viewitems insertObject:item atIndex:0];
+    [self.timeEntriesTableView reloadData];
+    
   } else if ([notification.name isEqualToString:kUIEventDelete]) {
     TimeEntryViewItem *deleted = notification.object;
     NSLog(@"Time entry deleted: %@", deleted);
