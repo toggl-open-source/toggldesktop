@@ -45,7 +45,7 @@
     self.GUID = guid;
     NSAssert(self.GUID != nil, @"GUID is nil");
     
-    [self.descriptionTextField setStringValue:item.description];
+    [self.descriptionTextField setStringValue:item.Description];
     if (item.project != nil) {
       [self.projectSelect setStringValue:item.project];
     } else {

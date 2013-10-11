@@ -13,7 +13,7 @@
 - (void)load:(KopsikTimeEntryViewItem *)data;
 + (TimeEntryViewItem *)findByGUID:(NSString *)guid;
 @property int duration_in_seconds;
-@property NSString *description;
+@property NSString *Description;
 @property NSString *project;
 @property NSString *duration;
 @property NSString *color;

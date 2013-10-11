@@ -16,7 +16,7 @@
 - (void)load:(KopsikTimeEntryViewItem *)data {
   self.GUID = [NSString stringWithUTF8String:data->GUID];
   self.duration_in_seconds = data->DurationInSeconds;
-  self.description = [NSString stringWithUTF8String:data->Description];
+  self.Description = [NSString stringWithUTF8String:data->Description];
   if (data->Project) {
     self.project = [NSString stringWithUTF8String:data->Project];
   } else {
@@ -69,6 +69,13 @@
   kopsik_time_entry_view_item_clear(view_item);
 
   return item;
+}
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"GUID: %@, description: %@, started: %@, ended: %@, project: %@, seconds: %d, duration: %@, color: %@, billable: %i, tags: %@",
+          self.GUID, self.Description, self.started, self.ended,
+          self.project, self.duration_in_seconds, self.duration,
+          self.color, self.billable, self.tags];
 }
 
 @end

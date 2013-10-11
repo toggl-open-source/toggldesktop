@@ -98,7 +98,7 @@
     }
     cellView.GUID = item.GUID;
     cellView.colorTextField.backgroundColor = [self hexCodeToNSColor:item.color];
-    cellView.descriptionTextField.stringValue = item.description;
+    cellView.descriptionTextField.stringValue = item.Description;
     if (item.project) {
       cellView.projectTextField.stringValue = item.project;
     }

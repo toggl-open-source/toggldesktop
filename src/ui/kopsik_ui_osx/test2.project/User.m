@@ -13,7 +13,11 @@
 
 - (void)load:(KopsikUser *)data {
   self.ID = data->ID;
-  self.Fullname = [NSString stringWithUTF8String:data->Fullname];
+  self.fullname = [NSString stringWithUTF8String:data->Fullname];
+}
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"ID: %ld, fullname: %@", self.ID, self.fullname];
 }
 
 @end

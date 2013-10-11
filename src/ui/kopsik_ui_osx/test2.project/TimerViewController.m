@@ -47,7 +47,7 @@
 {
   if ([notification.name isEqualToString:kUIEventTimerRunning]) {
     self.te = notification.object;
-    [self.descriptionTextField setStringValue:self.te.description];
+    [self.descriptionTextField setStringValue:self.te.Description];
     [self.durationTextField setStringValue:self.te.duration];
     if (self.te.project != nil) {
       [self.projectTextField setStringValue:self.te.project];
@@ -61,7 +61,6 @@
 }
 
 void finishPushAfterStop(kopsik_api_result result, char *err, unsigned int errlen) {
-  NSLog(@"finishPushAfterStop");
   if (KOPSIK_API_SUCCESS != result) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
                                                         object:[NSString stringWithUTF8String:err]];

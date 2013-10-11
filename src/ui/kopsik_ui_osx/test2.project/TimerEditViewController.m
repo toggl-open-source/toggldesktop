@@ -29,7 +29,6 @@
 }
 
 void finishPushAfterStart(kopsik_api_result result, char *err, unsigned int errlen) {
-  NSLog(@"finishPushAfterStart");
   if (KOPSIK_API_SUCCESS != result) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
                                                         object:[NSString stringWithUTF8String:err]];

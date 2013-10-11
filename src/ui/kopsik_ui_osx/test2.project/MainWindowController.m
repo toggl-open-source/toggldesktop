@@ -62,6 +62,14 @@
                                              selector:@selector(eventHandler:)
                                                  name:kUIEventError
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eventHandler:)
+                                                 name:kUIEventDelete
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eventHandler:)
+                                                 name:kUIEventUpdate
+                                               object:nil];
     
     self.loginViewController = [[LoginViewController alloc]
                                 initWithNibName:@"LoginViewController" bundle:nil];
@@ -134,6 +142,8 @@
 
 -(void)eventHandler: (NSNotification *) notification
 {
+  NSLog(@"-- UI event -- %@: %@", notification.name, notification.object);
+
   if ([notification.name isEqualToString:kUIEventUserLoggedIn]) {
     User *userinfo = notification.object;
     [Bugsnag setUserAttribute:@"user_id" withValue:[NSString stringWithFormat:@"%ld", userinfo.ID]];
