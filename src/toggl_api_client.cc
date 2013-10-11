@@ -890,7 +890,8 @@ std::string TimeEntry::String() {
         << " duronly=" << duronly_
         << " tags=" << Tags()
         << " created_with=" << CreatedWith()
-        << " ui_modified_at=" << ui_modified_at_;
+        << " ui_modified_at=" << ui_modified_at_
+        << " deleted_at=" << deleted_at_;
     return ss.str();
 }
 
