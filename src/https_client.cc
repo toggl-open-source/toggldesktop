@@ -22,8 +22,8 @@
 
 namespace kopsik {
 
-// const std::string TOGGL_SERVER_URL("https://www.toggl.com");
-const std::string TOGGL_SERVER_URL("http://localhost:8080");
+const std::string TOGGL_SERVER_URL("https://www.toggl.com");
+// const std::string TOGGL_SERVER_URL("http://localhost:8080");
 
 // const std::string TOGGL_WEBSOCKET_SERVER_URL("https://stream.toggl.com")
 const std::string TOGGL_WEBSOCKET_SERVER_URL("wss://localhost:8088");
