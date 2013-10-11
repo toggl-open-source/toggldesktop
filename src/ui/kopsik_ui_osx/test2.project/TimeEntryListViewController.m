@@ -38,6 +38,10 @@
                                                selector:@selector(eventHandler:)
                                                    name:kUIEventDelete
                                                  object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUIEventUpdate
+                                                 object:nil];
     }
     return self;
 }
@@ -81,6 +85,21 @@
         return;
       }
     }
+
+  } else if ([notification.name isEqualToString:kUIEventUpdate]) {
+    NSString *GUID = notification.object;
+    for (int i = 0; i < [viewitems count]; i++) {
+      TimeEntryViewItem *item = [viewitems objectAtIndex:i];
+      if ([GUID isEqualToString:item.GUID]) {
+        TimeEntryViewItem *updated = [TimeEntryViewItem findByGUID:GUID];
+        if (updated != nil) {
+          [viewitems replaceObjectAtIndex:i withObject:updated];
+          [self.timeEntriesTableView reloadData];
+        }
+        return;
+      }
+    }
+    
   }
 }
 
