@@ -235,6 +235,7 @@ error User::Push(HTTPSClient *https_client) {
             std::stringstream ss;
             ss << "Time entry " << te->String() << " needs a DELETE";
             logger.debug(ss.str());
+
         } else if (te->NeedsPOST()) {
             json_push_back(update, json_new_a("method", "POST"));
             json_push_back(update, json_new_a("relative_url",
