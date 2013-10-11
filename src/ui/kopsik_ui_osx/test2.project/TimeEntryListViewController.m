@@ -35,6 +35,10 @@
                                                selector:@selector(eventHandler:)
                                                    name:kUIEventChange
                                                  object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUIEventDelete
+                                                 object:nil];
     }
     return self;
 }
@@ -62,19 +66,21 @@
 
   } else if ([notification.name isEqualToString:kUIEventChange]) {
     ViewItemChange *change = notification.object;
-    if (KOPSIK_MODEL_TIME_ENTRY == change.model_type) {
-      NSLog(@"Time entry view item has changed");
-      if (KOPSIK_CHANGE_DELETE == change.change_type) {
-        NSString *GUID = change.GUID;
-        for (int i = 0; i < viewitems.count; i++) {
-          TimeEntryViewItem *view_item = viewitems[i];
-          if ([view_item.GUID isEqualToString:GUID]) {
-            [viewitems removeObjectAtIndex:i];
-          }
-        }
+    NSLog(@"Time entry changed: %@", change);
+
+  } else if ([notification.name isEqualToString:kUIEventDelete]) {
+    TimeEntryViewItem *deleted = notification.object;
+    NSLog(@"Time entry deleted: %@", deleted);
+    for (int i = 0; i < [viewitems count]; i++) {
+      TimeEntryViewItem *item = [viewitems objectAtIndex:i];
+      if ([deleted.GUID isEqualToString:item.GUID]) {
+        [viewitems removeObject:item];
+        NSLog(@"Time entry removed from list: %@", item);
+        [self.timeEntriesTableView reloadData];
+        return;
       }
-      [self.timeEntriesTableView reloadData];
     }
+    NSLog(@"Warning: time entry not found when deleting %@", deleted);
   }
 }
 

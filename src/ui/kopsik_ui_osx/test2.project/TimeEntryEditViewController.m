@@ -279,6 +279,12 @@ void finishPushAfterDelete(kopsik_api_result result, char *err, unsigned int err
     return;
   }
 
+  TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:self.GUID];
+  NSAssert(item != nil, @"Time entry view item not found when deleting");
+
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventDelete
+                                                      object:item];
+
   char err[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_delete_time_entry(ctx,
                                                      err,

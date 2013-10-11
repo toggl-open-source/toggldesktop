@@ -16,3 +16,4 @@ extern NSString *const kUIEventTimeEntrySelected;
 extern NSString *const kUIEventTimeEntryDeselected;
 extern NSString *const kUIEventError;
 extern NSString *const kUIEventChange;
+extern NSString *const kUIEventDelete;
