@@ -69,8 +69,6 @@ class Database {
             std::vector<ModelChange> *changes);
         error DeleteTag(Tag *model,
             std::vector<ModelChange> *changes);
-        error DeleteTimeEntry(TimeEntry *model,
-            std::vector<ModelChange> *changes);
 
         error LoadUserByID(Poco::UInt64 UID, User *user,
             bool with_related_data);

@@ -56,20 +56,6 @@ error Database::DeleteUser(User *model, bool with_related_data) {
     return noError;
 }
 
-error Database::DeleteTimeEntry(TimeEntry *model,
-        std::vector<ModelChange> *changes) {
-    poco_assert(model);
-    error err = deleteFromTable("time_entries", model->LocalID());
-    if (err != noError) {
-        return err;
-    }
-    if (changes) {
-        changes->push_back(ModelChange("time_entry", "delete",
-            (unsigned int)model->ID(), model->GUID()));
-    }
-    return noError;
-}
-
 error Database::DeleteTag(Tag *model,
         std::vector<ModelChange> *changes) {
     poco_assert(model);
@@ -163,6 +149,11 @@ error Database::deleteFromTable(std::string table_name, Poco::Int64 local_id) {
     poco_assert(session);
     poco_assert(!table_name.empty());
     poco_assert(local_id);
+    std::stringstream ss;
+    ss << "Deleting from table " << table_name
+        << ", local ID: " << local_id;
+    Poco::Logger &logger = Poco::Logger::get("database");
+    logger.debug(ss.str());
     try {
         *session << "delete from " + table_name +
             " where local_id = :local_id",
@@ -752,6 +743,12 @@ error Database::saveTimeEntries(Poco::UInt64 UID,
     for (std::vector<TimeEntry *>::iterator it = list->begin();
             it != list->end(); ++it) {
         TimeEntry *model = *it;
+        if (model->IsMarkedAsDeletedOnServer()) {
+            error err = deleteFromTable("time_entries", model->LocalID());
+            if (err != noError) {
+                return err;
+            }
+        }
         model->SetUID(UID);
         error err = SaveTimeEntry(model, changes);
         if (err != noError) {
@@ -761,8 +758,8 @@ error Database::saveTimeEntries(Poco::UInt64 UID,
     return noError;
 }
 
-  error Database::SaveTimeEntry(TimeEntry *model,
-                                std::vector<ModelChange> *changes) {
+error Database::SaveTimeEntry(TimeEntry *model,
+                              std::vector<ModelChange> *changes) {
     poco_assert(model);
     poco_assert(session);
     if (model->LocalID() && !model->Dirty() && !model->GUID().empty()) {

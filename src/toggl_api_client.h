@@ -28,6 +28,7 @@ namespace kopsik {
         std::string Body;
         std::string GUID;  // must match the BatchUpdate GUID
         std::string ContentType;
+        std::string Method;
 
         void parseResponseJSON(JSONNODE *n);
         void parseResponseJSONBody(std::string body);
@@ -213,7 +214,8 @@ namespace kopsik {
             id_(0), guid_(""), wid_(0), pid_(0), tid_(0), billable_(false),
             start_(0), stop_(0), duration_in_seconds_(0), description_(""),
             duronly_(false), ui_modified_at_(0), uid_(0), dirty_(false),
-            created_with_(""), deleted_at_(0) {}
+            created_with_(""), deleted_at_(0),
+            is_marked_as_deleted_on_server_(false) {}
 
         std::string Tags();
         void SetTags(std::string tags);
@@ -255,8 +257,21 @@ namespace kopsik {
         void ClearDirty() { dirty_ = false; }
         std::string CreatedWith() { return created_with_; }
         void SetCreatedWith(std::string value);
+        // Deleting a time entry hides it from
+        // UI and flags it for removal from
+        // server:
         Poco::UInt64 DeletedAt() { return deleted_at_; }
         void SetDeletedAt(Poco::UInt64 value);
+        // When time entry is finally deleted
+        // on server, it will be removed from local
+        // DB using this flag:
+        bool IsMarkedAsDeletedOnServer() {
+            return is_marked_as_deleted_on_server_;
+        }
+        void MarkTimeEntryAsDeletedOnServer() {
+            is_marked_as_deleted_on_server_ = true;
+            dirty_ = true;
+        }
 
         std::vector<std::string> TagNames;
 
@@ -291,6 +306,7 @@ namespace kopsik {
         bool dirty_;
         std::string created_with_;
         Poco::UInt64 deleted_at_;
+        bool is_marked_as_deleted_on_server_;
 
         error loadTagsFromJSONNode(JSONNODE *list);
         Poco::UInt64 getUIModifiedAtFromJSONNode(JSONNODE *data);

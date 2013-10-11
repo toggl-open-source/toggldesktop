@@ -253,7 +253,8 @@ namespace kopsik {
         }
 
         // now, really delete it
-        ASSERT_EQ(noError, db.DeleteTimeEntry(te, 0));
+        te->MarkTimeEntryAsDeletedOnServer();
+        ASSERT_EQ(noError, db.SaveUser(&user, true, 0));
         {
             Poco::UInt64 te_count(0);
             std::stringstream query;
@@ -287,7 +288,6 @@ namespace kopsik {
         ASSERT_EQ(noError, db.SaveTimeEntry(&te, 0));
         ASSERT_TRUE(te.LocalID());
         ASSERT_EQ(noError, db.SaveTimeEntry(&te, 0));
-        ASSERT_EQ(noError, db.DeleteTimeEntry(&te, 0));
 
         // Tag
         Tag t;

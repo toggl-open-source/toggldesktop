@@ -323,6 +323,12 @@ error User::Push(HTTPSClient *https_client) {
         }
         poco_assert(te);
 
+        // If TE was deleted, the body won't contain useful data.
+        if ("DELETE" == result.Method) {
+            te->MarkTimeEntryAsDeletedOnServer();
+            continue;
+        }
+
         JSONNODE *n = json_parse(result.Body.c_str());
         JSONNODE_ITERATOR i = json_begin(n);
         JSONNODE_ITERATOR e = json_end(n);
@@ -394,6 +400,8 @@ void BatchUpdateResult::parseResponseJSON(JSONNODE *n) {
             GUID = std::string(json_as_string(*i));
         } else if (strcmp(node_name, "guid") == 0) {
             ContentType = std::string(json_as_string(*i));
+        } else if (strcmp(node_name, "method") == 0) {
+            Method = std::string(json_as_string(*i));
         }
         ++i;
     }
