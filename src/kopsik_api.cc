@@ -791,7 +791,7 @@ kopsik_api_result kopsik_delete_time_entry(
   Poco::Mutex::ScopedLock lock(*mutex);
 
   kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
-  user->DeleteTimeEntry(GUID);
+  user->MarkTimeEntryAsDeleted(GUID);
   return save(ctx, errmsg, errlen);
 }
 

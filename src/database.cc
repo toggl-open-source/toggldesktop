@@ -749,33 +749,14 @@ error Database::saveTimeEntries(Poco::UInt64 UID,
         std::vector<ModelChange> *changes) {
     poco_assert(UID > 0);
     poco_assert(list);
-    std::vector<TimeEntry *> deleted;
     for (std::vector<TimeEntry *>::iterator it = list->begin();
             it != list->end(); ++it) {
         TimeEntry *model = *it;
         model->SetUID(UID);
-        if (!model->UIModifiedAt() && model->DeletedAt()) {
-            deleted.push_back(model);
-        }
         error err = SaveTimeEntry(model, changes);
         if (err != noError) {
             return err;
         }
-    }
-    for (std::vector<TimeEntry *>::iterator it = deleted.begin();
-            it != deleted.end(); ++it) {
-        TimeEntry *te = *it;
-        error err = DeleteTimeEntry(te, changes);
-        if (err != noError) {
-            return err;
-        }
-        std::stringstream ss;
-        ss << "List size before removal: " << list->size();
-        list->erase(std::remove(list->begin(), list->end(), te), list->end());
-        ss << ", list size after removal: " << list->size();
-        delete te;
-        Poco::Logger &logger = Poco::Logger::get("database");
-        logger.debug(ss.str());
     }
     return noError;
 }

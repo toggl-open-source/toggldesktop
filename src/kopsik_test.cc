@@ -12,6 +12,14 @@
 
 namespace kopsik {
 
+    std::string loadTestData() {
+        Poco::FileStream fis("testdata/me.json", std::ios::binary);
+        std::stringstream ss;
+        ss << fis.rdbuf();
+        fis.close();
+        return ss.str();
+    }
+
     TEST(KopsikTest, ProjectsHaveColorCodes) {
         Project p;
         p.SetColor("1");
@@ -64,13 +72,8 @@ namespace kopsik {
         }
         Database db(TESTDB);
 
-        Poco::FileStream fis("testdata/me.json", std::ios::binary);
-        std::stringstream ss;
-        ss << fis.rdbuf();
-        fis.close();
-
         User user;
-        user.LoadFromJSONString(ss.str(), true);
+        user.LoadFromJSONString(loadTestData(), true);
 
         TimeEntry *te = user.GetTimeEntryByID(89818605);
         ASSERT_TRUE(te);
@@ -87,18 +90,14 @@ namespace kopsik {
         }
         Database db(TESTDB);
 
-        Poco::FileStream fis("testdata/me.json", std::ios::binary);
-        std::stringstream ss;
-        ss << fis.rdbuf();
-        fis.close();
+        std::string json = loadTestData();
 
         User user;
-        user.LoadFromJSONString(ss.str(), true);
+        user.LoadFromJSONString(loadTestData(), true);
 
         TimeEntry *te = user.GetTimeEntryByID(89818605);
         ASSERT_TRUE(te);
 
-        std::string json = ss.str();
         size_t n = json.find("Important things");
         ASSERT_TRUE(n);
         json = json.replace(n,
@@ -117,13 +116,8 @@ namespace kopsik {
         }
         Database db(TESTDB);
 
-        Poco::FileStream fis("testdata/me.json", std::ios::binary);
-        std::stringstream ss;
-        ss << fis.rdbuf();
-        fis.close();
-
         User user;
-        user.LoadFromJSONString(ss.str(), true);
+        user.LoadFromJSONString(loadTestData(), true);
 
         Poco::UInt64 n;
         ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
@@ -163,12 +157,7 @@ namespace kopsik {
         }
         Database db(TESTDB);
 
-        Poco::FileStream fis("testdata/me.json", std::ios::binary);
-        std::stringstream ss;
-        ss << fis.rdbuf();
-        fis.close();
-
-        std::string json = ss.str();
+        std::string json = loadTestData();
 
         User user1;
         user1.LoadFromJSONString(json, true);
@@ -237,6 +226,42 @@ namespace kopsik {
 
         ASSERT_EQ(noError, db.UInt("select count(1) from time_entries", &n));
         ASSERT_EQ(uint(3), n);
+    }
+
+    TEST(KopsikTest, TestDeletionSteps) {
+        Poco::File f(TESTDB);
+        if (f.exists()) {
+            f.remove(false);
+        }
+        Database db(TESTDB);
+
+        User user;
+        user.LoadFromJSONString(loadTestData(), true);
+
+        // first, mark time entry as deleted
+        TimeEntry *te = user.Start("My new time entry");
+        ASSERT_EQ(noError, db.SaveUser(&user, true, 0));
+
+        user.MarkTimeEntryAsDeleted(te->GUID());
+        {
+            Poco::UInt64 te_count(0);
+            std::stringstream query;
+            query << "select count(1) from time_entries where local_id = "
+                << te->LocalID();
+            ASSERT_EQ(noError, db.UInt(query.str(), &te_count));
+            ASSERT_EQ(Poco::UInt64(1), te_count);
+        }
+
+        // now, really delete it
+        ASSERT_EQ(noError, db.DeleteTimeEntry(te, 0));
+        {
+            Poco::UInt64 te_count(0);
+            std::stringstream query;
+            query << "select count(1) from time_entries where local_id = "
+                << te->LocalID();
+            ASSERT_EQ(noError, db.UInt(query.str(), &te_count));
+            ASSERT_EQ(Poco::UInt64(0), te_count);
+        }
     }
 
     TEST(KopsikTest, SavesModels) {
