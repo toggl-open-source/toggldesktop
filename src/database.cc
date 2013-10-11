@@ -704,6 +704,17 @@ error Database::saveTimeEntries(Poco::UInt64 UID,
             return err;
         }
     }
+    // Purge deleted time entries from memory
+    std::vector<TimeEntry *>::iterator it = list->begin();
+    while (it != list->end()) {
+        TimeEntry *te = *it;
+        if (te->IsMarkedAsDeletedOnServer()) {
+            it = list->erase(it);
+        } else {
+            ++it;
+        }
+    }
+
     return noError;
 }
 
