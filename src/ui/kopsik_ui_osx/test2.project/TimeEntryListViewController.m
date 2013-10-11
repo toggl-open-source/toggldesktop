@@ -65,7 +65,6 @@
 
   } else if ([notification.name isEqualToString:kUIEventTimerStopped]) {
     NSLog(@"Time entry stopped: %@", notification.object);
-    return;
     if (notification.object == nil) {
       return;
     }
