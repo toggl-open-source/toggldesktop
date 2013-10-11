@@ -102,11 +102,7 @@ clean:
 	rm -f $(main)_test
 
 osx:
-	xcodebuild -project src/libkopsik/Kopsik/Kopsik.xcodeproj && \
 	xcodebuild -project src/ui/kopsik_ui_osx/test2.project/kopsik_ui_osx.xcodeproj
-
-open:
-	open src/libkopsik/Kopsik/Kopsik.xcodeproj && open src/ui/kopsik_ui_osx/test2.project/kopsik_ui_osx.xcodeproj
 
 cmdline: clean lint
 	mkdir -p build
