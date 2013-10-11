@@ -226,7 +226,16 @@ error User::Push(HTTPSClient *https_client) {
         json_push_back(body, n);
 
         JSONNODE *update = json_new(JSON_NODE);
-        if (te->NeedsPOST()) {
+        if (te->NeedsDELETE()) {
+            std::stringstream url;
+            url << "/api/v8/time_entries/" << te->ID();
+            json_push_back(update, json_new_a("method", "DELETE"));
+            json_push_back(update, json_new_a("relative_url",
+                url.str().c_str()));
+            std::stringstream ss;
+            ss << "Time entry " << te->String() << " needs a DELETE";
+            logger.debug(ss.str());
+        } else if (te->NeedsPOST()) {
             json_push_back(update, json_new_a("method", "POST"));
             json_push_back(update, json_new_a("relative_url",
                 "/api/v8/time_entries"));
@@ -242,16 +251,6 @@ error User::Push(HTTPSClient *https_client) {
                 url.str().c_str()));
             std::stringstream ss;
             ss << "Time entry " << te->String() << " needs a PUT";
-            logger.debug(ss.str());
-
-        } else if (te->NeedsDELETE()) {
-            std::stringstream url;
-            url << "/api/v8/time_entries/" << te->ID();
-            json_push_back(update, json_new_a("method", "DELETE"));
-            json_push_back(update, json_new_a("relative_url",
-                url.str().c_str()));
-            std::stringstream ss;
-            ss << "Time entry " << te->String() << " needs a DELETE";
             logger.debug(ss.str());
         }
         json_push_back(update, json_new_a("GUID", te->GUID().c_str()));
