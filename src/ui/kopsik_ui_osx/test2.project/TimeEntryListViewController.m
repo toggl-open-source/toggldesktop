@@ -64,28 +64,23 @@
     [self.timeEntriesTableView reloadData];
 
   } else if ([notification.name isEqualToString:kUIEventTimerStopped]) {
-    NSLog(@"Time entry stopped: %@", notification.object);
     if (notification.object == nil) {
       return;
     }
-    NSLog(@"Time entry stopped, not null: %@", notification.object);
     TimeEntryViewItem *item = notification.object;
     [viewitems insertObject:item atIndex:0];
     [self.timeEntriesTableView reloadData];
     
   } else if ([notification.name isEqualToString:kUIEventDelete]) {
     TimeEntryViewItem *deleted = notification.object;
-    NSLog(@"Time entry deleted: %@", deleted);
     for (int i = 0; i < [viewitems count]; i++) {
       TimeEntryViewItem *item = [viewitems objectAtIndex:i];
       if ([deleted.GUID isEqualToString:item.GUID]) {
         [viewitems removeObject:item];
-        NSLog(@"Time entry removed from list: %@", item);
         [self.timeEntriesTableView reloadData];
         return;
       }
     }
-    NSLog(@"Warning: time entry not found when deleting %@", deleted);
   }
 }
 
