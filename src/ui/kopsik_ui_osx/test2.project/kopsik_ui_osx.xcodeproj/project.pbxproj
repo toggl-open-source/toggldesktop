@@ -24,6 +24,13 @@
 		744E126717F22AB900ABE72A /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 744E126617F22AB900ABE72A /* app.icns */; };
 		746B49F418059858002E98DC /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 746B49F318059858002E98DC /* Reachability.m */; };
 		74AA94651808B2D00000539F /* TableViewHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA94641808B2D00000539F /* TableViewHeader.m */; };
+		74AA9471180909F50000539F /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA9467180909F50000539F /* GTMHTTPFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		74AA9472180909F50000539F /* GTMHTTPFetchHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA9469180909F50000539F /* GTMHTTPFetchHistory.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		74AA9473180909F50000539F /* GTMOAuth2Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA946B180909F50000539F /* GTMOAuth2Authentication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA946D180909F50000539F /* GTMOAuth2SignIn.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		74AA9475180909F50000539F /* GTMOAuth2Window.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74AA946E180909F50000539F /* GTMOAuth2Window.xib */; };
+		74AA9476180909F50000539F /* GTMOAuth2WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA9470180909F50000539F /* GTMOAuth2WindowController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		74AA947818090A8E0000539F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74AA947718090A8E0000539F /* Security.framework */; };
 		74BAAA0717F32C470079386F /* Context.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0617F32C470079386F /* Context.m */; };
 		74BAAA0817F32C470079386F /* Context.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0617F32C470079386F /* Context.m */; };
 		74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */; };
@@ -123,6 +130,18 @@
 		746B49F318059858002E98DC /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = ../../../../third_party/Reachability/Reachability/Reachability.m; sourceTree = "<group>"; };
 		74AA94631808B2D00000539F /* TableViewHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewHeader.h; sourceTree = "<group>"; };
 		74AA94641808B2D00000539F /* TableViewHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewHeader.m; sourceTree = "<group>"; };
+		74AA9466180909F50000539F /* GTMHTTPFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMHTTPFetcher.h; path = "../../../../third_party/gtm-oauth2-read-only/HTTPFetcher/GTMHTTPFetcher.h"; sourceTree = "<group>"; };
+		74AA9467180909F50000539F /* GTMHTTPFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMHTTPFetcher.m; path = "../../../../third_party/gtm-oauth2-read-only/HTTPFetcher/GTMHTTPFetcher.m"; sourceTree = "<group>"; };
+		74AA9468180909F50000539F /* GTMHTTPFetchHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMHTTPFetchHistory.h; path = "../../../../third_party/gtm-oauth2-read-only/HTTPFetcher/GTMHTTPFetchHistory.h"; sourceTree = "<group>"; };
+		74AA9469180909F50000539F /* GTMHTTPFetchHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMHTTPFetchHistory.m; path = "../../../../third_party/gtm-oauth2-read-only/HTTPFetcher/GTMHTTPFetchHistory.m"; sourceTree = "<group>"; };
+		74AA946A180909F50000539F /* GTMOAuth2Authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMOAuth2Authentication.h; path = "../../../../third_party/gtm-oauth2-read-only/Source/GTMOAuth2Authentication.h"; sourceTree = "<group>"; };
+		74AA946B180909F50000539F /* GTMOAuth2Authentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMOAuth2Authentication.m; path = "../../../../third_party/gtm-oauth2-read-only/Source/GTMOAuth2Authentication.m"; sourceTree = "<group>"; };
+		74AA946C180909F50000539F /* GTMOAuth2SignIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMOAuth2SignIn.h; path = "../../../../third_party/gtm-oauth2-read-only/Source/GTMOAuth2SignIn.h"; sourceTree = "<group>"; };
+		74AA946D180909F50000539F /* GTMOAuth2SignIn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMOAuth2SignIn.m; path = "../../../../third_party/gtm-oauth2-read-only/Source/GTMOAuth2SignIn.m"; sourceTree = "<group>"; };
+		74AA946E180909F50000539F /* GTMOAuth2Window.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GTMOAuth2Window.xib; path = "../../../../third_party/gtm-oauth2-read-only/Source/Mac/GTMOAuth2Window.xib"; sourceTree = "<group>"; };
+		74AA946F180909F50000539F /* GTMOAuth2WindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMOAuth2WindowController.h; path = "../../../../third_party/gtm-oauth2-read-only/Source/Mac/GTMOAuth2WindowController.h"; sourceTree = "<group>"; };
+		74AA9470180909F50000539F /* GTMOAuth2WindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMOAuth2WindowController.m; path = "../../../../third_party/gtm-oauth2-read-only/Source/Mac/GTMOAuth2WindowController.m"; sourceTree = "<group>"; };
+		74AA947718090A8E0000539F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		74B680A8180759C300B697AA /* Kopsik.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kopsik.xcodeproj; path = ../../../libkopsik/Kopsik/Kopsik.xcodeproj; sourceTree = "<group>"; };
 		74BAAA0517F32C470079386F /* Context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Context.h; path = ../Context.h; sourceTree = "<group>"; };
 		74BAAA0617F32C470079386F /* Context.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Context.m; path = ../Context.m; sourceTree = "<group>"; };
@@ -176,6 +195,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74AA947818090A8E0000539F /* Security.framework in Frameworks */,
 				74E3CDD917FC369700C3ADD3 /* ExceptionHandling.framework in Frameworks */,
 				74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */,
 				74033C9817EC1DF100CA53D3 /* libstdc++.dylib in Frameworks */,
@@ -200,6 +220,17 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
+				74AA9466180909F50000539F /* GTMHTTPFetcher.h */,
+				74AA9467180909F50000539F /* GTMHTTPFetcher.m */,
+				74AA9468180909F50000539F /* GTMHTTPFetchHistory.h */,
+				74AA9469180909F50000539F /* GTMHTTPFetchHistory.m */,
+				74AA946A180909F50000539F /* GTMOAuth2Authentication.h */,
+				74AA946B180909F50000539F /* GTMOAuth2Authentication.m */,
+				74AA946C180909F50000539F /* GTMOAuth2SignIn.h */,
+				74AA946D180909F50000539F /* GTMOAuth2SignIn.m */,
+				74AA946E180909F50000539F /* GTMOAuth2Window.xib */,
+				74AA946F180909F50000539F /* GTMOAuth2WindowController.h */,
+				74AA9470180909F50000539F /* GTMOAuth2WindowController.m */,
 				74B680A8180759C300B697AA /* Kopsik.xcodeproj */,
 				746B49F218059858002E98DC /* Reachability.h */,
 				746B49F318059858002E98DC /* Reachability.m */,
@@ -224,6 +255,7 @@
 		69FC17F317E6534400B96425 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				74AA947718090A8E0000539F /* Security.framework */,
 				74033C9617EC1DE100CA53D3 /* libc++.dylib */,
 				74033C8D17EC1CFD00CA53D3 /* libstdc++.dylib */,
 				74E3CDD817FC369700C3ADD3 /* ExceptionHandling.framework */,
@@ -468,6 +500,7 @@
 				744E126717F22AB900ABE72A /* app.icns in Resources */,
 				74D1D26D17EB728000E709B0 /* TimerViewController.xib in Resources */,
 				74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
+				74AA9475180909F50000539F /* GTMOAuth2Window.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -523,6 +556,7 @@
 				7424949E17F1E3D20030121C /* UIEvents.m in Sources */,
 				C5CB7F0417F43EE100A2AEB1 /* TableViewCell.m in Sources */,
 				C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */,
+				74AA9472180909F50000539F /* GTMHTTPFetchHistory.m in Sources */,
 				74E3CDC617FBABE400C3ADD3 /* Bugsnag.m in Sources */,
 				74E3CDD017FBABE400C3ADD3 /* BugsnagReachability.m in Sources */,
 				74E3CDCC17FBABE400C3ADD3 /* BugsnagMetaData.m in Sources */,
@@ -532,13 +566,17 @@
 				746B49F418059858002E98DC /* Reachability.m in Sources */,
 				69FC180817E6534400B96425 /* AppDelegate.m in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
+				74AA9476180909F50000539F /* GTMOAuth2WindowController.m in Sources */,
 				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,
+				74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */,
 				74E3CDD417FBABE400C3ADD3 /* BugsnagOSXNotifier.m in Sources */,
+				74AA9471180909F50000539F /* GTMHTTPFetcher.m in Sources */,
 				74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */,
 				74D1D26B17EB728000E709B0 /* TimerViewController.m in Sources */,
 				74D1D27217EB72D900E709B0 /* TimerEditViewController.m in Sources */,
 				74E3CDCE17FBABE400C3ADD3 /* BugsnagNotifier.m in Sources */,
 				74E3CDC817FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */,
+				74AA9473180909F50000539F /* GTMOAuth2Authentication.m in Sources */,
 				74AA94651808B2D00000539F /* TableViewHeader.m in Sources */,
 				C5DA1FC417F1B38B001C4565 /* LoginViewController.m in Sources */,
 			);
