@@ -10,6 +10,7 @@
 #import "kopsik_api.h"
 
 @interface LoginViewController : NSViewController
+@property (weak) IBOutlet NSButton *loginWithGoogleButton;
 @property (weak) IBOutlet NSTextField *email;
 @property (weak) IBOutlet NSSecureTextField *password;
 @property (weak) IBOutlet NSTextField *errorLabel;

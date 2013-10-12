@@ -22,9 +22,17 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Initialization code here.
     }
     return self;
+}
+
+-(void)awakeFromNib {
+  NSColor *color = [NSColor blueColor];
+  NSMutableAttributedString *colorTitle =
+    [[NSMutableAttributedString alloc] initWithAttributedString:[self.loginWithGoogleButton attributedTitle]];
+  NSRange titleRange = NSMakeRange(0, [colorTitle length]);
+  [colorTitle addAttribute:NSForegroundColorAttributeName value:color range:titleRange];
+  [self.loginWithGoogleButton setAttributedTitle:colorTitle];
 }
 
 - (IBAction)clickLoginButton:(id)sender {
@@ -63,9 +71,28 @@
       finishedWithAuth:(GTMOAuth2Authentication *)auth
                  error:(NSError *)error {
   if (error != nil) {
-    // Authentication failed
+    // Authentication failed (perhaps the user denied access, or closed the
+    // window before granting access)
+    NSString *errorStr = [error localizedDescription];
+
+    NSData *responseData = [[error userInfo] objectForKey:@"data"]; // kGTMHTTPFetcherStatusDataKey
+    if ([responseData length] > 0) {
+      // Show the body of the server's authentication failure response
+      errorStr = [[NSString alloc] initWithData:responseData
+                                        encoding:NSUTF8StringEncoding];
+    } else {
+      NSString *str = [[error userInfo] objectForKey:kGTMOAuth2ErrorMessageKey];
+      if (str != nil) {
+        if ([str length] > 0) {
+          errorStr = str;
+        }
+      }
+    }
+    [self.errorLabel setStringValue:errorStr];
+    [self.errorLabel setHidden:NO];
   } else {
-    // Authentication succeeded
+    [self.errorLabel setHidden:YES];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedIn object:nil];
   }
 }
 

@@ -10,6 +10,7 @@
                 <outlet property="email" destination="bYg-wE-3PV" id="etj-2t-aVu"/>
                 <outlet property="errorLabel" destination="QVF-nf-s0B" id="93r-93-6e3"/>
                 <outlet property="loginButton" destination="xDb-Xv-sF3" id="MTQ-5s-9C3"/>
+                <outlet property="loginWithGoogleButton" destination="BjR-qI-EJB" id="w0g-hF-itL"/>
                 <outlet property="password" destination="92W-wp-mad" id="tPO-5C-6Hy"/>
                 <outlet property="view" destination="1" id="2"/>
             </connections>
