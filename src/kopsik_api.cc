@@ -541,6 +541,36 @@ void kopsik_push_async(
   tm->start(new PushTask(ctx, callback));
 }
 
+// Project list
+
+KopsikProjectSelectItemList *
+    kopsik_project_select_item_list_init() {
+  KopsikProjectSelectItemList *result = new KopsikProjectSelectItemList();
+  result->Length = 0;
+  result->ViewItems = 0;
+  return result;
+}
+
+void kopsik_project_select_item_list_clear(
+    KopsikProjectSelectItemList *list) {
+  poco_assert(list);
+  for (unsigned int i = 0; i < list->Length; i++) {
+    KopsikProjectSelectItem *item = list->ViewItems[i];
+    poco_assert(item);
+    if (item->Name) {
+      free(item->Name);
+      item->Name = 0;
+    }
+    delete item;
+    list->ViewItems[i] = 0;
+  }
+  if (list->ViewItems) {
+    free(list->ViewItems);
+  }
+  delete list;
+  list = 0;
+}
+
 // Time entries view API
 
 KopsikTimeEntryViewItem *kopsik_time_entry_view_item_init() {

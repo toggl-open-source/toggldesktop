@@ -119,6 +119,28 @@ KOPSIK_EXPORT void kopsik_push_async(
   KopsikContext *ctx,
   KopsikResultCallback callback);
 
+// Project list
+
+typedef struct {
+  char *Name;
+} KopsikProjectSelectItem;
+
+typedef struct {
+  KopsikProjectSelectItem **ViewItems;
+  unsigned int Length;
+} KopsikProjectSelectItemList;
+
+KOPSIK_EXPORT KopsikProjectSelectItemList *
+  kopsik_project_select_item_list_init();
+
+KOPSIK_EXPORT void kopsik_project_select_item_list_clear(
+  KopsikProjectSelectItemList *list);
+
+KOPSIK_EXPORT kopsik_api_result kopsik_project_select_items(
+    KopsikContext *ctx,
+    char *errmsg, unsigned int errlen,
+    KopsikProjectSelectItemList *list);
+
 // Time entries view
 
 typedef struct {
