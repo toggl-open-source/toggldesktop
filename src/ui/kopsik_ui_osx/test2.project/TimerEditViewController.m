@@ -54,6 +54,8 @@ void finishPushAfterStart(kopsik_api_result result, char *err, unsigned int errl
   TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
   [te load:item];
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerRunning object:te];
+  
+  [self.descriptionTextField setStringValue:@""];
 
   kopsik_push_async(ctx, finishPushAfterStart);
 }
