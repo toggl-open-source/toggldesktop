@@ -15,4 +15,5 @@
 @property (weak) IBOutlet NSTextField *errorLabel;
 @property (weak) IBOutlet NSButton *loginButton;
 - (IBAction)clickLoginButton:(id)sender;
+- (IBAction)clickGoogleLoginButton:(id)sender;
 @end

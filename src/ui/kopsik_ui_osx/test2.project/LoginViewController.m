@@ -10,6 +10,7 @@
 #import "kopsik_api.h"
 #import "UIEvents.h"
 #import "Context.h"
+#import "GTMOAuth2WindowController.h"
 
 @interface LoginViewController ()
 
@@ -36,6 +37,35 @@
   } else {
     [self.errorLabel setHidden:YES];
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedIn object:nil];
+  }
+}
+
+- (IBAction)clickGoogleLoginButton:(id)sender {
+  
+  NSString *scope = @"https://www.googleapis.com/auth/userinfo.email";
+  NSString *clientID = @"426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com";
+  // According to Google docs, in installed apps the client secret is not expected to stay secret:
+  NSString *clientSecret = @"TsQlSHqGEYSgoSZe91E2pMtp";
+  
+  GTMOAuth2WindowController *windowController;
+  windowController = [[GTMOAuth2WindowController alloc] initWithScope:scope
+                                                              clientID:clientID
+                                                          clientSecret:clientSecret
+                                                      keychainItemName:nil
+                                                        resourceBundle:nil];
+  
+  [windowController signInSheetModalForWindow:[[NSApplication sharedApplication] mainWindow]
+                               delegate:self
+                       finishedSelector:@selector(viewController:finishedWithAuth:error:)];
+}
+
+- (void)viewController:(GTMOAuth2WindowController *)viewController
+      finishedWithAuth:(GTMOAuth2Authentication *)auth
+                 error:(NSError *)error {
+  if (error != nil) {
+    // Authentication failed
+  } else {
+    // Authentication succeeded
   }
 }
 

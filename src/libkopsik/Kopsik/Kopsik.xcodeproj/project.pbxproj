@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		74AA947A18091AE10000539F /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74AA947918091AE10000539F /* WebKit.framework */; };
 		74EB0F1717F9A2600046ABC1 /* https_client.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74EB0F1517F9A2600046ABC1 /* https_client.cc */; };
 		74EB0F1817F9A2600046ABC1 /* https_client.h in Headers */ = {isa = PBXBuildFile; fileRef = 74EB0F1617F9A2600046ABC1 /* https_client.h */; };
 		C5DA1F8F17F18CAA001C4565 /* libjson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA1F8E17F18CAA001C4565 /* libjson.a */; };
@@ -30,6 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		74AA947918091AE10000539F /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		74EB0F1517F9A2600046ABC1 /* https_client.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = https_client.cc; path = ../../../https_client.cc; sourceTree = "<group>"; };
 		74EB0F1617F9A2600046ABC1 /* https_client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = https_client.h; path = ../../../https_client.h; sourceTree = "<group>"; };
 		C55DA59C17F06A3B00B42178 /* Kopsik.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = Kopsik.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -64,6 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74AA947A18091AE10000539F /* WebKit.framework in Frameworks */,
 				C5DA1FA217F18D2B001C4565 /* libPocoUtil.a in Frameworks */,
 				C5DA1F9D17F18D2B001C4565 /* libPocoData.a in Frameworks */,
 				C5DA1FA317F18D2B001C4565 /* libPocoXML.a in Frameworks */,
@@ -84,6 +87,7 @@
 		C55DA59317F06A3B00B42178 = {
 			isa = PBXGroup;
 			children = (
+				74AA947918091AE10000539F /* WebKit.framework */,
 				C5DA1F9417F18D2B001C4565 /* libPocoCrypto.a */,
 				C5DA1F9517F18D2B001C4565 /* libPocoData.a */,
 				C5DA1F9617F18D2B001C4565 /* libPocoDataSQLite.a */,
