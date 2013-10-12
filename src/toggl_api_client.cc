@@ -1287,8 +1287,15 @@ void TimeEntry::SetStart(Poco::UInt64 value) {
 
 std::string TimeEntry::Tags() {
     std::stringstream ss;
-    std::copy(TagNames.begin(), TagNames.end(),
-        std::ostream_iterator<std::string>(ss, "|"));
+    for (std::vector<std::string>::const_iterator it =
+            TagNames.begin();
+            it != TagNames.end();
+            it++) {
+        if (it != TagNames.begin()) {
+            ss << "|";
+        }
+        ss << *it;
+    }
     return ss.str();
 }
 

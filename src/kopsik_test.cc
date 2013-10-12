@@ -20,6 +20,12 @@ namespace kopsik {
         return ss.str();
     }
 
+    TEST(KopsikTest, TimeEntryReturnsTags) {
+        TimeEntry te;
+        te.SetTags("alfa|beeta");
+        ASSERT_EQ(std::string("alfa|beeta"), te.Tags());
+    }
+
     TEST(KopsikTest, ProjectsHaveColorCodes) {
         Project p;
         p.SetColor("1");
