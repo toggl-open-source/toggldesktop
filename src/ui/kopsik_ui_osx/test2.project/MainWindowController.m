@@ -17,7 +17,6 @@
 #import "Context.h"
 #import "Bugsnag.h"
 #import "User.h"
-#import "Reachability.h"
 
 @interface MainWindowController ()
 @property (nonatomic,strong) IBOutlet LoginViewController *loginViewController;
@@ -25,7 +24,6 @@
 @property (nonatomic,strong) IBOutlet TimerViewController *timerViewController;
 @property (nonatomic,strong) IBOutlet TimerEditViewController *timerEditViewController;
 @property (nonatomic,strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
-@property Reachability *reachability;
 @end
 
 @implementation MainWindowController
@@ -86,31 +84,8 @@
     [self.timerViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
     [self.timerEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
     [self.timeEntryListViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(reachabilityChanged:)
-                                                 name: kReachabilityChangedNotification
-                                               object: nil];
-    self.reachability = [Reachability reachabilityForInternetConnection];
-    [self.reachability startNotifier];
   }
   return self;
-}
-
-- (void)reachabilityChanged:(NSNotification*)note
-{
-  NSLog(@"reachabilityChanged");
-  Reachability * reach = [note object];
-  if (reach == nil) {
-    NSLog(@"Warning: No reach data from reachability.");
-    return;
-  }
-  NetworkStatus netStatus = [reach currentReachabilityStatus];
-  if (netStatus == NotReachable) {
-    NSLog(@"network is not reachable");
-    return;
-  }
-  [self startSync];
 }
 
 - (void)windowDidLoad
