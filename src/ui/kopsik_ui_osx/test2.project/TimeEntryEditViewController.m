@@ -13,6 +13,7 @@
 
 @interface TimeEntryEditViewController ()
 @property NSString *GUID;
+@property NSMutableArray *projectSelectItems;
 @end
 
 @implementation TimeEntryEditViewController
@@ -25,6 +26,11 @@
                                                selector:@selector(eventHandler:)
                                                    name:kUIEventTimeEntrySelected
                                                  object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUIEventUserLoggedIn
+                                                 object:nil];
+      self.projectSelectItems = [[NSMutableArray alloc] init];
     }
     
     return self;
@@ -34,7 +40,7 @@
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimeEntryDeselected object:nil];
 }
 
--(void)eventHandler: (NSNotification *) notification
+- (void)eventHandler: (NSNotification *) notification
 {
   if ([notification.name isEqualToString:kUIEventTimeEntrySelected]) {
     NSString *guid = notification.object;
@@ -66,6 +72,9 @@
     } else {
       [self.tags setObjectValue:item.tags];
     }
+
+  } else if ([notification.name isEqualToString:kUIEventUserLoggedIn]) {
+    [self renderProjectSelect];
   }
 }
 
@@ -93,6 +102,25 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUpdate
                                                       object:self.GUID];
   kopsik_push_async(ctx, finishPushAfterUpdate);
+}
+
+- (void) renderProjectSelect {
+  [self.projectSelectItems removeAllObjects];
+  KopsikProjectSelectItemList *list = kopsik_project_select_item_list_init();
+  char err[KOPSIK_ERR_LEN];
+  if (KOPSIK_API_SUCCESS != kopsik_project_select_items(ctx, err, KOPSIK_ERR_LEN, list)) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
+    kopsik_project_select_item_list_clear(list);
+    return;
+  }
+  for (int i = 0; i < list->Length; i++) {
+    KopsikProjectSelectItem *item = list->ViewItems[i];
+    NSString *project_name = [NSString stringWithUTF8String:item->Name];
+    [self.projectSelectItems addObject:project_name];
+  }
+  
+  kopsik_project_select_item_list_clear(list);
 }
 
 - (IBAction)projectSelectChanged:(id)sender {

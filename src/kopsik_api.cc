@@ -551,17 +551,21 @@ KopsikProjectSelectItemList *
   return result;
 }
 
+void project_select_item_clear(KopsikProjectSelectItem *item) {
+  if (item->Name) {
+    free(item->Name);
+    item->Name = 0;
+  }
+  delete item;
+}
+
 void kopsik_project_select_item_list_clear(
     KopsikProjectSelectItemList *list) {
   poco_assert(list);
   for (unsigned int i = 0; i < list->Length; i++) {
     KopsikProjectSelectItem *item = list->ViewItems[i];
     poco_assert(item);
-    if (item->Name) {
-      free(item->Name);
-      item->Name = 0;
-    }
-    delete item;
+    project_select_item_clear(item);
     list->ViewItems[i] = 0;
   }
   if (list->ViewItems) {
@@ -569,6 +573,49 @@ void kopsik_project_select_item_list_clear(
   }
   delete list;
   list = 0;
+}
+
+KopsikProjectSelectItem *project_select_item_init() {
+  KopsikProjectSelectItem *item = new KopsikProjectSelectItem();
+  item->Name = 0;
+  return item;;
+}
+
+kopsik_api_result kopsik_project_select_items(
+    KopsikContext *ctx,
+    char *errmsg, unsigned int errlen,
+    KopsikProjectSelectItemList *list) {
+  poco_assert(ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(list);
+
+  if (!ctx->current_user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
+
+  list->Length = 0;
+
+  KopsikProjectSelectItem *tmp = project_select_item_init();
+  void *m = malloc(user->related.Projects.size() * sizeof(tmp));
+  project_select_item_clear(tmp);
+  poco_assert(m);
+  list->ViewItems =
+    reinterpret_cast<KopsikProjectSelectItem **>(m);
+  for (unsigned int i = 0; i < user->related.Projects.size(); i++) {
+    kopsik::Project *p = user->related.Projects[i];
+    KopsikProjectSelectItem *view_item = project_select_item_init();
+    view_item->Name = strdup(p->Name().c_str());
+    list->ViewItems[i] = view_item;
+    list->Length++;
+  }
+  return KOPSIK_API_SUCCESS;
 }
 
 // Time entries view API
