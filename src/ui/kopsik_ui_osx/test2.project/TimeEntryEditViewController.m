@@ -122,13 +122,9 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
 - (IBAction)projectSelectChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
-  const char *value = 0;
-  id selectedValue = [self.projectSelect objectValueOfSelectedItem];
-  return;
-  if (selectedValue != nil) {
-    NSString *stringValue = (NSString *)selectedValue;
-    value = [stringValue UTF8String];
-  }
+  NSInteger row = [self.projectSelect indexOfSelectedItem];
+  NSString *project_name = [self.projectNames objectAtIndex:row];
+  const char *value = [project_name UTF8String];
   if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_project(ctx,
                                                           err,
                                                           KOPSIK_ERR_LEN,
