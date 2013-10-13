@@ -92,7 +92,28 @@
     [self.errorLabel setHidden:NO];
   } else {
     [self.errorLabel setHidden:YES];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedIn object:nil];
+    
+    NSURL *url = [NSURL URLWithString:@"https://www.googleapis.com/oauth2/v1/userinfo"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    
+    [auth authorizeRequest:request
+                  delegate:self
+         didFinishSelector:@selector(authentication:request:finishedWithError:)];
+  }
+}
+
+- (void)authentication:(GTMOAuth2Authentication *)auth
+               request:(NSMutableURLRequest *)request
+     finishedWithError:(NSError *)error {
+  if (error != nil) {
+    [self.errorLabel setStringValue:[error localizedDescription]];
+    [self.errorLabel setHidden:NO];
+  } else {
+    [self.errorLabel setHidden:YES];
+    NSLog(@"Authorization succeeded");
+    // Authorization succeeded
+    //     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedIn object:nil];
+
   }
 }
 
