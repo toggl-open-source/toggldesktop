@@ -147,10 +147,15 @@ namespace command_line_client {
             }
             for (unsigned int i = 0; i < list->Length; i++) {
                 KopsikTimeEntryViewItem *item = list->ViewItems[i];
-                std::cout << "description: " << item->Description
-                    << " project: " << item->Project
-                    << " duration: " << item->Duration
-                    << std::endl;
+                std::stringstream ss;
+                ss << "description: " << item->Description;
+                if (item->Project) {
+                    ss << " project: " << item->Project;
+                }
+                if (item->Duration) {
+                    ss << " duration: " << item->Duration;
+                }
+                std::cout << ss.str() << std::endl;
             }
             std::cout << "Got " << list->Length << " time entry view items."
                 << std::endl;
