@@ -27,6 +27,7 @@
 }
 
 -(void)awakeFromNib {
+  // Set google login link color to blue
   NSColor *color = [NSColor blueColor];
   NSMutableAttributedString *colorTitle =
     [[NSMutableAttributedString alloc] initWithAttributedString:[self.loginWithGoogleButton attributedTitle]];
