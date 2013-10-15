@@ -44,10 +44,11 @@
   if (KOPSIK_API_SUCCESS != kopsik_login(ctx, err, KOPSIK_ERR_LEN, [email UTF8String], [pass UTF8String])) {
     [self.errorLabel setStringValue:[NSString stringWithUTF8String:err]];
     [self.errorLabel setHidden:NO];
-  } else {
-    [self.errorLabel setHidden:YES];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedIn object:nil];
+    return;
   }
+  
+  [self.errorLabel setHidden:YES];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedIn object:nil];
 }
 
 - (IBAction)clickGoogleLoginButton:(id)sender {
@@ -73,11 +74,9 @@
       finishedWithAuth:(GTMOAuth2Authentication *)auth
                  error:(NSError *)error {
   if (error != nil) {
-    // Authentication failed (perhaps the user denied access, or closed the
-    // window before granting access)
     NSString *errorStr = [error localizedDescription];
-
-    NSData *responseData = [[error userInfo] objectForKey:@"data"]; // kGTMHTTPFetcherStatusDataKey
+    
+    NSData *responseData = [[error userInfo] objectForKey:kGTMHTTPFetcherStatusDataKey];
     if ([responseData length] > 0) {
       // Show the body of the server's authentication failure response
       errorStr = [[NSString alloc] initWithData:responseData
@@ -90,32 +89,36 @@
         }
       }
     }
+    if ([errorStr isEqualToString:@"access_denied"]) {
+      // User canceled login, nothing to do here.
+      return;
+    }
     [self.errorLabel setStringValue:errorStr];
     [self.errorLabel setHidden:NO];
-  } else {
-    [self.errorLabel setHidden:YES];
-    
-    NSURL *url = [NSURL URLWithString:@"https://www.googleapis.com/oauth2/v1/userinfo"];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    
-    [auth authorizeRequest:request
-                  delegate:self
-         didFinishSelector:@selector(authentication:request:finishedWithError:)];
+    return;
   }
+  
+  [self.errorLabel setHidden:YES];
+    
+  NSURL *url = [NSURL URLWithString:@"https://www.googleapis.com/oauth2/v1/userinfo"];
+  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    
+  [auth authorizeRequest:request
+                delegate:self
+       didFinishSelector:@selector(authentication:request:finishedWithError:)];
 }
 
 - (void)authentication:(GTMOAuth2Authentication *)auth
                request:(NSMutableURLRequest *)request
      finishedWithError:(NSError *)error {
-  if (error != nil) {
-    [self.errorLabel setStringValue:[error localizedDescription]];
-    [self.errorLabel setHidden:NO];
-  } else {
-    [self.errorLabel setHidden:YES];
-    NSLog(@"Authorization succeeded");
-    // Authorization succeeded
-    //     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedIn object:nil];
 
+  NSString *errorStr = [error localizedDescription];
+  
+  if (error != nil) {
+    NSLog(@"Authorization failed");
+    [self.errorLabel setStringValue:errorStr];
+    [self.errorLabel setHidden:NO];
+    return;
   }
 }
 
