@@ -409,44 +409,36 @@ void BatchUpdateResult::parseResponseJSON(JSONNODE *n) {
 
 error User::Login(HTTPSClient *https_client,
     const std::string &email, const std::string &password) {
-  LoginEmail = email;
-  LoginPassword = password;
-  return pull(https_client, false, true);
+  BasicAuthUsername = email;
+  BasicAuthPassword = password;
+  return pull(https_client, true);
 }
 
 error User::Sync(HTTPSClient *https_client, bool full_sync) {
-    error err = pull(https_client, true, full_sync);
+    BasicAuthUsername = APIToken();
+    BasicAuthPassword = "api_token";
+    error err = pull(https_client, full_sync);
     if (err != noError) {
         return err;
     }
     return Push(https_client);
 }
 
-error User::pull(HTTPSClient *https_client,
-      bool authenticate_with_api_token, bool full_sync) {
+error User::pull(HTTPSClient *https_client, bool full_sync) {
   Poco::Stopwatch stopwatch;
   stopwatch.start();
 
   std::stringstream relative_url;
-  relative_url << "/api/v8/me?with_related_data=true";
+  relative_url << "/api/v8/me?app_name=kopsik&with_related_data=true";
   if (!full_sync) {
       relative_url << "&since=" << since_;
   }
 
-  std::string basic_auth_username("");
-  std::string basic_auth_password("");
-  if (authenticate_with_api_token) {
-    basic_auth_username = APIToken();
-    basic_auth_password = "api_token";
-  } else {
-    basic_auth_username = LoginEmail;
-    basic_auth_password = LoginPassword;
-  }
   std::string response_body("");
 
   error err = https_client->GetJSON(relative_url.str(),
-    basic_auth_username,
-    basic_auth_password,
+    BasicAuthUsername,
+    BasicAuthPassword,
     &response_body);
   if (err != noError) {
     return err;

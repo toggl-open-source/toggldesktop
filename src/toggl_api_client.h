@@ -327,8 +327,8 @@ namespace kopsik {
 
     class User {
     public:
-        User() : LoginEmail(""), LoginPassword(""), local_id_(0), id_(0),
-            api_token_(""), default_wid_(0), since_(0), dirty_(false),
+        User() : BasicAuthUsername(""), BasicAuthPassword(""), local_id_(0),
+            id_(0), api_token_(""), default_wid_(0), since_(0), dirty_(false),
             fullname_("") {}
         ~User() {
             ClearWorkspaces();
@@ -393,8 +393,8 @@ namespace kopsik {
 
         // Following fields are not saved into database:
         // They are only used to log user in.
-        std::string LoginEmail;
-        std::string LoginPassword;
+        std::string BasicAuthUsername;
+        std::string BasicAuthPassword;
 
         RelatedData related;
 
@@ -409,7 +409,6 @@ namespace kopsik {
         std::string fullname_;
 
         error pull(HTTPSClient *https_client,
-            bool authenticate_with_api_token,
             bool full_sync);
 
         void loadProjectsFromJSONNode(JSONNODE *list);
