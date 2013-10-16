@@ -23,6 +23,7 @@ typedef struct {
   void *db;
   void *current_user;
   void *https_client;
+  void *ws_client;
   void *mutex;
   void *tm;
   void *ws_callback;

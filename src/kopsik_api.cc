@@ -6,6 +6,7 @@
 #include "./database.h"
 #include "./toggl_api_client.h"
 #include "./https_client.h"
+#include "./websocket_client.h"
 #include "./version.h"
 
 #include "Poco/Bugcheck.h"
@@ -115,6 +116,7 @@ KopsikContext *kopsik_context_init() {
   ctx->db = 0;
   ctx->current_user = 0;
   ctx->https_client = new kopsik::HTTPSClient();
+  ctx->ws_client = new kopsik::WebSocketClient();
   ctx->mutex = new Poco::Mutex();
   ctx->tm = new Poco::TaskManager();
   ctx->ws_callback = 0;
@@ -146,6 +148,12 @@ void kopsik_context_clear(KopsikContext *ctx) {
       reinterpret_cast<kopsik::HTTPSClient *>(ctx->https_client);
     delete https_client;
     ctx->https_client = 0;
+  }
+  if (ctx->ws_client) {
+    kopsik::WebSocketClient *ws_client =
+      reinterpret_cast<kopsik::WebSocketClient *>(ctx->ws_client);
+    delete ws_client;
+    ctx->ws_client = 0;
   }
   if (ctx->mutex) {
     Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
@@ -1253,9 +1261,9 @@ kopsik_api_result kopsik_websocket_start(
   ctx->ws_callback = reinterpret_cast<void *>(callback);
 
   kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
-  kopsik::HTTPSClient *https_client =
-    reinterpret_cast<kopsik::HTTPSClient *>(ctx->https_client);
-  kopsik::error err = https_client->StartWebSocketActivity(
+  kopsik::WebSocketClient *ws_client =
+    reinterpret_cast<kopsik::WebSocketClient *>(ctx->ws_client);
+  kopsik::error err = ws_client->Start(
     ctx,
     user->APIToken(),
     on_websocket_message);
@@ -1281,8 +1289,8 @@ kopsik_api_result kopsik_websocket_stop(
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
 
-  kopsik::HTTPSClient *https_client =
-    reinterpret_cast<kopsik::HTTPSClient *>(ctx->https_client);
-  https_client->StopWebSocketActivity();
+  kopsik::WebSocketClient *ws_client =
+    reinterpret_cast<kopsik::WebSocketClient *>(ctx->ws_client);
+  ws_client->Stop();
   return KOPSIK_API_SUCCESS;
 }
