@@ -170,6 +170,7 @@ namespace command_line_client {
                     << err << std::endl;
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
+            Poco::Thread::sleep(30 * 1000);
             if (KOPSIK_API_SUCCESS != kopsik_websocket_stop(ctx, err, ERRLEN)) {
                 std::cerr << "Error stopping websocket: "
                     << err << std::endl;
