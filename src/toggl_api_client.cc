@@ -1232,6 +1232,9 @@ void Tag::LoadFromJSONNode(JSONNODE *data) {
 }
 
 std::time_t TimeEntry::Parse8601(std::string iso_8601_formatted_date) {
+    if ("null" == iso_8601_formatted_date) {
+        return 0;
+    }
     int tzd;
     Poco::DateTime dt;
     Poco::DateTimeParser::parse(Poco::DateTimeFormat::ISO8601_FORMAT,
