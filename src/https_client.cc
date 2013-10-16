@@ -26,7 +26,7 @@ const std::string kTogglServerURL = "https://www.toggl.com";
 const std::string kTogglWebSocketServerURL = "https://stream.toggl.com";
 // const std::string kTogglWebSocketServerURL = "https://localhost:8088";
 
-const int kWebsocketBufSize = 1024 * 100;
+const int kWebsocketBufSize = 1024 * 10;
 
 error HTTPSClient::StartWebSocketActivity(std::string api_token) {
   Poco::Logger &logger = Poco::Logger::get("https_client");
@@ -100,31 +100,40 @@ void HTTPSClient::parseWebSocketMessage(std::string json,
   json_delete(root);
 }
 
+std::string HTTPSClient::receiveWebSocketMessage() {
+  char buf[kWebsocketBufSize];
+  int flags = Poco::Net::WebSocket::FRAME_BINARY;
+  int n = ws_->receiveFrame(buf, kWebsocketBufSize, flags);
+  std::string json;
+  if (n > 0) {
+    json.append(buf, n);
+  }
+  return json;
+}
+
 void HTTPSClient::runActivity() {
   Poco::Logger &logger = Poco::Logger::get("https_client");
-  logger.debug("HTTPSClient::runActivity");
   while (!activity_.isStopped()) {
     logger.debug("HTTPSClient::runActivity running");
+    std::string json = receiveWebSocketMessage();
 
-    char buffer[kWebsocketBufSize];
-    int flags = Poco::Net::WebSocket::FRAME_BINARY;
-    int n = ws_->receiveFrame(buffer, kWebsocketBufSize, flags);
-    if (n > 0) {
+    {
       std::stringstream ss;
-      ss << "WebSocket read: " << buffer;
+      ss << "WebSocket message: " << json;
       logger.debug(ss.str());
     }
 
-    std::string json(buffer);
     std::string type;
     parseWebSocketMessage(json, type);
 
-    std::stringstream ss;
-    ss << "Parsed message type: " << type;
-    logger.debug(ss.str());
+    {
+      std::stringstream ss;
+      ss << "Parsed message type: " << type;
+      logger.debug(ss.str());
+    }
 
     if (activity_.isStopped()) {
-      return;
+      break;
     }
 
     if ("ping" == type) {
@@ -134,13 +143,13 @@ void HTTPSClient::runActivity() {
     }
 
     if (activity_.isStopped()) {
-      return;
+      break;
     }
 
     Poco::Thread::sleep(200);
 
     if (activity_.isStopped()) {
-      return;
+      break;
     }
   }
   logger.debug("HTTPSClient::runActivity finished");

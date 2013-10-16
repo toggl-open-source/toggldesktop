@@ -67,6 +67,7 @@ namespace kopsik {
 
     void parseWebSocketMessage(std::string json,
       std::string &type);
+    std::string receiveWebSocketMessage();
 
     Poco::Activity<HTTPSClient> activity_;
     Poco::Net::HTTPSClientSession *session_;
