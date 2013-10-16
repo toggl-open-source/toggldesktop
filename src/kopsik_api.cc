@@ -1240,7 +1240,19 @@ void on_websocket_message(
     return;
   }
 
-  callback(KOPSIK_API_SUCCESS, 0, 0, 0);
+  for (std::vector<kopsik::ModelChange>::const_iterator it = changes.begin();
+      it != changes.end();
+      it++) {
+    kopsik::ModelChange mc = *it;
+    if ("time_entry" == mc.ModelType()) {
+      poco_assert(!mc.GUID().empty());
+      kopsik::TimeEntry *te = user->GetTimeEntryByGUID(mc.GUID());
+      poco_assert(te);
+      KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
+      time_entry_to_view_item(te, user, item);
+      callback(KOPSIK_API_SUCCESS, 0, 0, item);
+    }
+  }
 }
 
 void kopsik_set_change_callback(
