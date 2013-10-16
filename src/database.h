@@ -91,7 +91,6 @@ class Database {
     private:
         error initialize_tables();
         error migrate(std::string name, std::string sql);
-        error validate(User *user);
         error last_error();
 
         std::string generateGUID();

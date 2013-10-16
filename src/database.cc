@@ -303,17 +303,6 @@ error Database::UInt(std::string sql, Poco::UInt64 *result) {
     return noError;
 }
 
-error Database::validate(User *model) {
-    poco_assert(model);
-    if (model->APIToken().empty()) {
-        return error("Missing user API token, cannot save user");
-    }
-    if (!model->ID()) {
-        return error("Missing user ID, cannot save user");
-    }
-    return noError;
-}
-
 error Database::loadWorkspaces(Poco::UInt64 UID,
         std::vector<Workspace *> *list) {
     poco_assert(UID > 0);
@@ -1102,9 +1091,11 @@ error Database::SaveUser(User *model, bool with_related_data,
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
-    error err = validate(model);
-    if (err != noError) {
-        return err;
+    if (model->APIToken().empty()) {
+        return error("Missing user API token, cannot save user");
+    }
+    if (!model->ID()) {
+        return error("Missing user ID, cannot save user");
     }
 
     session->begin();
@@ -1173,7 +1164,7 @@ error Database::SaveUser(User *model, bool with_related_data,
     }
 
     if (with_related_data) {
-        err = saveWorkspaces(model->ID(), &model->related.Workspaces);
+        error err = saveWorkspaces(model->ID(), &model->related.Workspaces);
         if (err != noError) {
             session->rollback();
             return err;
