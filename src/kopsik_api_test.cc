@@ -113,7 +113,7 @@ namespace kopsik {
 
         // Login
         EXPECT_CALL(*mock_client, GetJSON(
-            std::string("/api/v8/me?with_related_data=true"),
+            std::string("/api/v8/me?app_name=kopsik&with_related_data=true"),
             std::string("foo@bar.com"),
             std::string("secret"),
             testing::_))
