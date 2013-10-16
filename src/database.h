@@ -80,7 +80,8 @@ class Database {
         error SaveProject(Project *model);
         error SaveTask(Task *model);
         error SaveTag(Tag *model);
-        error SaveTimeEntry(TimeEntry *model);
+        error SaveTimeEntry(TimeEntry *model,
+            std::vector<ModelChange> *changes);
 
         error LoadTimeEntriesForUpload(User *user);
 
@@ -118,7 +119,8 @@ class Database {
         error saveTags(Poco::UInt64 UID,
             std::vector<Tag *> *list);
         error saveTimeEntries(Poco::UInt64 UID,
-            std::vector<TimeEntry *> *list);
+            std::vector<TimeEntry *> *list,
+            std::vector<ModelChange> *changes);
 
         error deleteFromTable(std::string table_name, Poco::Int64 local_id);
         error deleteAllFromTableByUID(std::string table_name, Poco::Int64 UID);

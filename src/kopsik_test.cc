@@ -295,9 +295,9 @@ namespace kopsik {
         // Time entry
         TimeEntry te;
         te.SetUID(user.ID());
-        ASSERT_EQ(noError, db.SaveTimeEntry(&te));
+        ASSERT_EQ(noError, db.SaveTimeEntry(&te, &changes));
         ASSERT_TRUE(te.LocalID());
-        ASSERT_EQ(noError, db.SaveTimeEntry(&te));
+        ASSERT_EQ(noError, db.SaveTimeEntry(&te, &changes));
 
         // Tag
         Tag t;

@@ -676,9 +676,11 @@ error Database::saveTags(Poco::UInt64 UID,
 }
 
 error Database::saveTimeEntries(Poco::UInt64 UID,
-        std::vector<TimeEntry *> *list) {
+        std::vector<TimeEntry *> *list,
+        std::vector<ModelChange> *changes) {
     poco_assert(UID > 0);
     poco_assert(list);
+    poco_assert(changes);
     for (std::vector<TimeEntry *>::iterator it = list->begin();
             it != list->end(); ++it) {
         TimeEntry *model = *it;
@@ -689,7 +691,7 @@ error Database::saveTimeEntries(Poco::UInt64 UID,
             }
         }
         model->SetUID(UID);
-        error err = SaveTimeEntry(model);
+        error err = SaveTimeEntry(model, changes);
         if (err != noError) {
             return err;
         }
@@ -708,9 +710,11 @@ error Database::saveTimeEntries(Poco::UInt64 UID,
     return noError;
 }
 
-error Database::SaveTimeEntry(TimeEntry *model) {
+error Database::SaveTimeEntry(TimeEntry *model,
+        std::vector<ModelChange> *changes) {
     poco_assert(model);
     poco_assert(session);
+    poco_assert(changes);
     if (model->LocalID() && !model->Dirty() && !model->GUID().empty()) {
         return noError;
     }
@@ -753,6 +757,8 @@ error Database::SaveTimeEntry(TimeEntry *model) {
           if (err != noError) {
             return err;
           }
+          changes->push_back(ModelChange(
+            "time_entry", "UPDATE", model->ID(), model->GUID()));
         } else {
             logger.debug("Inserting time entry " + model->String());
             *session << "insert into time_entries(id, uid, description, wid, "
@@ -792,6 +798,8 @@ error Database::SaveTimeEntry(TimeEntry *model) {
                 Poco::Data::into(local_id),
                 Poco::Data::now;
             model->SetLocalID(local_id);
+            changes->push_back(ModelChange(
+              "time_entry", "INSERT", model->ID(), model->GUID()));
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
@@ -1085,6 +1093,7 @@ error Database::SaveUser(User *model, bool with_related_data,
         std::vector<ModelChange> *changes) {
     poco_assert(model);
     poco_assert(session);
+    poco_assert(changes);
 
     Poco::Logger &logger = Poco::Logger::get("database");
 
@@ -1123,6 +1132,8 @@ error Database::SaveUser(User *model, bool with_related_data,
                     session->rollback();
                     return err;
                 }
+                changes->push_back(ModelChange(
+                    "user", "UPDATE", model->ID(), ""));
             } else {
                 logger.debug("Inserting user " + model->String());
                 *session << "insert into users("
@@ -1149,6 +1160,8 @@ error Database::SaveUser(User *model, bool with_related_data,
                     session->rollback();
                     return err;
                 }
+                changes->push_back(ModelChange(
+                    "user", "INSERT", model->ID(), ""));
             }
             model->ClearDirty();
         } catch(const Poco::Exception& exc) {
@@ -1189,7 +1202,8 @@ error Database::SaveUser(User *model, bool with_related_data,
             session->rollback();
             return err;
         }
-        err = saveTimeEntries(model->ID(), &model->related.TimeEntries);
+        err = saveTimeEntries(model->ID(), &model->related.TimeEntries,
+            changes);
         if (err != noError) {
             session->rollback();
             return err;
