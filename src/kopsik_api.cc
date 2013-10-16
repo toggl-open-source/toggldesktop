@@ -1227,3 +1227,24 @@ kopsik_api_result kopsik_websocket_start(
   }
   return KOPSIK_API_SUCCESS;
 }
+
+kopsik_api_result kopsik_websocket_stop(
+    KopsikContext *ctx,
+    char *errmsg, unsigned int errlen) {
+  poco_assert(ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+
+  if (!ctx->current_user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
+  kopsik::HTTPSClient *https_client =
+    reinterpret_cast<kopsik::HTTPSClient *>(ctx->https_client);
+  https_client->StopWebSocketActivity();
+  return KOPSIK_API_SUCCESS;
+}

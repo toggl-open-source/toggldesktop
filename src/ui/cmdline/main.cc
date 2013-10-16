@@ -166,7 +166,12 @@ namespace command_line_client {
         if ("listen" == args[0]) {
             std::cout << "Listening to websocket.. " << std::endl;
             if (KOPSIK_API_SUCCESS != kopsik_websocket_start(ctx, err, ERRLEN)) {
-                std::cerr << "Error while listening to websocket: "
+                std::cerr << "Error starting websocket: "
+                    << err << std::endl;
+                return Poco::Util::Application::EXIT_SOFTWARE;
+            }
+            if (KOPSIK_API_SUCCESS != kopsik_websocket_stop(ctx, err, ERRLEN)) {
+                std::cerr << "Error stopping websocket: "
                     << err << std::endl;
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }

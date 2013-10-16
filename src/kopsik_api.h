@@ -264,6 +264,10 @@ KOPSIK_EXPORT kopsik_api_result kopsik_websocket_start(
   KopsikContext *ctx,
   char *errmsg, unsigned int errlen);
 
+KOPSIK_EXPORT kopsik_api_result kopsik_websocket_stop(
+  KopsikContext *ctx,
+  char *errmsg, unsigned int errlen);
+
 #undef KOPSIK_EXPORT
 
 #ifdef __cplusplus
