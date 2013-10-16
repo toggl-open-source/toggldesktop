@@ -40,8 +40,12 @@ error HTTPSClient::ListenToWebsocket() {
       context);
     Poco::Net::HTTPRequest req(Poco::Net::HTTPRequest::HTTP_GET, "/ws",
       Poco::Net::HTTPMessage::HTTP_1_1);
+    req.set("Origin", "http://localhost");
     Poco::Net::HTTPResponse res;
     Poco::Net::WebSocket ws(session, req, res);
+
+    Poco::Logger &logger = Poco::Logger::get("https_client");
+    logger.debug("WebSocket connection established.");
   } catch(const Poco::Exception& exc) {
     return exc.displayText();
   } catch(const std::exception& ex) {
