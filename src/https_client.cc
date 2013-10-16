@@ -23,9 +23,8 @@ namespace kopsik {
 const std::string kTogglServerURL = "https://www.toggl.com";
 // const std::string kTogglServerURL = "http://localhost:8080";
 
-// const std::string kTogglWebSocketServerURL = "https://stream.toggl.com";
-const std::string kTogglWebSocketServerURL = "https://localhost:8088";
-// const std::string kTogglWebSocketServerURL = "https://echo.websocket.org";
+const std::string kTogglWebSocketServerURL = "https://stream.toggl.com";
+// const std::string kTogglWebSocketServerURL = "https://localhost:8088";
 
 const int kWebsocketBufSize = 1024 * 100;
 
