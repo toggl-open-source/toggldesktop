@@ -14,7 +14,7 @@ namespace command_line_client {
 
     void Main::usage() {
         std::cout << "Recognized commands are: "
-            "sync, start, stop, status, pushable, list, continue"
+            "sync, start, stop, status, pushable, list, continue, listen"
             << std::endl;
     }
 
