@@ -57,7 +57,7 @@
   NSString *scope = @"https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email";
   NSString *clientID = @"426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com";
   // According to Google docs, in installed apps the client secret is not expected to stay secret:
-  NSString *clientSecret = @"JhhY1GJPGcrK6pBoilaqvlgd";
+  NSString *clientSecret = @"6IHWKIfTAMF7cPJsBvoGxYui";
   
   GTMOAuth2WindowController *windowController;
   windowController = [[GTMOAuth2WindowController alloc] initWithScope:scope
@@ -100,10 +100,8 @@
     return;
   }
   
-  NSLog(@"Code: %@", auth.code);
-
   char err[KOPSIK_ERR_LEN];
-  if (KOPSIK_API_SUCCESS != kopsik_login(ctx, err, KOPSIK_ERR_LEN, [auth.code UTF8String], "oauth_code")) {
+  if (KOPSIK_API_SUCCESS != kopsik_login(ctx, err, KOPSIK_ERR_LEN, [auth.accessToken UTF8String], "google_access_token")) {
     NSLog(@"Login error: %s", err);
     [self.errorLabel setStringValue:[NSString stringWithUTF8String:err]];
     [self.errorLabel setHidden:NO];
