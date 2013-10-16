@@ -217,20 +217,10 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
-				74AA9466180909F50000539F /* GTMHTTPFetcher.h */,
-				74AA9467180909F50000539F /* GTMHTTPFetcher.m */,
-				74AA9468180909F50000539F /* GTMHTTPFetchHistory.h */,
-				74AA9469180909F50000539F /* GTMHTTPFetchHistory.m */,
-				74AA946A180909F50000539F /* GTMOAuth2Authentication.h */,
-				74AA946B180909F50000539F /* GTMOAuth2Authentication.m */,
-				74AA946C180909F50000539F /* GTMOAuth2SignIn.h */,
-				74AA946D180909F50000539F /* GTMOAuth2SignIn.m */,
-				74AA946E180909F50000539F /* GTMOAuth2Window.xib */,
-				74AA946F180909F50000539F /* GTMOAuth2WindowController.h */,
-				74AA9470180909F50000539F /* GTMOAuth2WindowController.m */,
 				74B680A8180759C300B697AA /* Kopsik.xcodeproj */,
 				74E3CDB117FBABE400C3ADD3 /* bugsnag */,
 				744E126617F22AB900ABE72A /* app.icns */,
+				74E1682E180F269F0026261C /* gtm */,
 				69FC17FA17E6534400B96425 /* kopsik_ui */,
 				69FC181717E6534500B96425 /* kopsikTests */,
 				69FC17F317E6534400B96425 /* Frameworks */,
@@ -354,6 +344,24 @@
 				74B680AD180759C300B697AA /* Kopsik.dylib */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		74E1682E180F269F0026261C /* gtm */ = {
+			isa = PBXGroup;
+			children = (
+				74AA9466180909F50000539F /* GTMHTTPFetcher.h */,
+				74AA9467180909F50000539F /* GTMHTTPFetcher.m */,
+				74AA9468180909F50000539F /* GTMHTTPFetchHistory.h */,
+				74AA9469180909F50000539F /* GTMHTTPFetchHistory.m */,
+				74AA946A180909F50000539F /* GTMOAuth2Authentication.h */,
+				74AA946B180909F50000539F /* GTMOAuth2Authentication.m */,
+				74AA946C180909F50000539F /* GTMOAuth2SignIn.h */,
+				74AA946D180909F50000539F /* GTMOAuth2SignIn.m */,
+				74AA946E180909F50000539F /* GTMOAuth2Window.xib */,
+				74AA946F180909F50000539F /* GTMOAuth2WindowController.h */,
+				74AA9470180909F50000539F /* GTMOAuth2WindowController.m */,
+			);
+			name = gtm;
 			sourceTree = "<group>";
 		};
 		74E3CDB117FBABE400C3ADD3 /* bugsnag */ = {

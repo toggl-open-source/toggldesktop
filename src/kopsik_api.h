@@ -272,13 +272,6 @@ typedef void (*KopsikViewItemChangeCallback)(
   KopsikTimeEntryViewItem *view_item
 );
 
-typedef void (*KopsikResultCallback)(
-  kopsik_api_result result,
-  // NB! you need to free() the memory yourself
-  char *errmsg,
-  // Length of the returned error string.
-  unsigned int errlen);
-
 KOPSIK_EXPORT kopsik_api_result kopsik_websocket_start(
   KopsikContext *ctx,
   char *errmsg, unsigned int errlen,

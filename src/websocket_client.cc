@@ -82,7 +82,8 @@ error WebSocketClient::Start(void *ctx,
     std::string payload(jc);
     json_free(jc);
     json_delete(c);
-    ws_->sendFrame(payload.data(), payload.size(),
+    ws_->sendFrame(payload.data(),
+      static_cast<int>(payload.size()),
       Poco::Net::WebSocket::FRAME_BINARY);
 
     activity_.start();
@@ -146,7 +147,8 @@ void WebSocketClient::runActivity() {
     }
 
     if ("ping" == type) {
-      ws_->sendFrame(kPong.data(), kPong.size(),
+      ws_->sendFrame(kPong.data(),
+        static_cast<int>(kPong.size()),
         Poco::Net::WebSocket::FRAME_BINARY);
     } else if ("data" == type) {
       on_websocket_message_(ctx_, json);

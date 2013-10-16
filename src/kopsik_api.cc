@@ -1233,7 +1233,7 @@ void on_websocket_message(
     char *result_str = 0;
     unsigned int result_len = 0;
     result_str = strdup(err.c_str());
-    result_len = err.size();
+    result_len = static_cast<int>(err.size());
     callback(KOPSIK_API_FAILURE, result_str, result_len, 0);
     return;
   }
