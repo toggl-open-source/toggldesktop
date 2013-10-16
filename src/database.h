@@ -20,7 +20,7 @@ class ModelChange {
     public:
         ModelChange(const std::string model_type,
                     const std::string change_type,
-                    const unsigned int model_id,
+                    const Poco::UInt64 model_id,
                     const std::string GUID) :
           model_type_(model_type),
           change_type_(change_type),
@@ -28,12 +28,12 @@ class ModelChange {
           GUID_(GUID) {}
         std::string const& GUID() { return GUID_; }
         std::string const& ModelType() { return model_type_; }
-        unsigned int const& ModelID() { return model_id_; }
+        Poco::UInt64 const& ModelID() { return model_id_; }
         std::string const& ChangeType() { return change_type_; }
     private:
         std::string model_type_;
         std::string change_type_;
-        unsigned int model_id_;
+        Poco::UInt64 model_id_;
         std::string GUID_;
 };
 
