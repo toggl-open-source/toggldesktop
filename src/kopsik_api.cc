@@ -1220,7 +1220,7 @@ kopsik_api_result kopsik_websocket_start(
   kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
   kopsik::HTTPSClient *https_client =
     reinterpret_cast<kopsik::HTTPSClient *>(ctx->https_client);
-  kopsik::error err = user->ListenToWebsocket(https_client);
+  kopsik::error err = https_client->StartWebSocketActivity(user->APIToken());
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;

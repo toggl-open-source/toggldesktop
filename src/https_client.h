@@ -14,8 +14,9 @@ namespace kopsik {
     public:
         HTTPSClient() {}
         virtual ~HTTPSClient() {}
-        virtual error ListenToWebsocket(
+        virtual error StartWebSocketActivity(
             std::string api_token);
+        virtual void StopWebSocketActivity();
         virtual error PostJSON(std::string relative_url,
             std::string json,
             std::string basic_auth_username,

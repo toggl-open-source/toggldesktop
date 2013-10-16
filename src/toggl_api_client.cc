@@ -85,10 +85,6 @@ std::string User::createdWith() {
     return ss.str();
 }
 
-error User::ListenToWebsocket(HTTPSClient *https_client) {
-  return https_client->ListenToWebsocket(APIToken());
-}
-
 bool compareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
   return a->Start() > b->Start();
 }

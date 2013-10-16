@@ -343,7 +343,6 @@ namespace kopsik {
         error Push(HTTPSClient *https_client);
         error Login(HTTPSClient *https_client,
             const std::string &email, const std::string &password);
-        error ListenToWebsocket(HTTPSClient *https_client);
 
         void LoadFromJSONString(const std::string &json,
             bool with_related_data);

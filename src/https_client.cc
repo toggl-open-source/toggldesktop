@@ -33,7 +33,7 @@ const std::string kTogglWebSocketServerURL = "https://localhost:8088";
 
 const int kWebsocketBufSize = 1024;
 
-error HTTPSClient::ListenToWebsocket(std::string api_token) {
+error HTTPSClient::StartWebSocketActivity(std::string api_token) {
   try {
     const Poco::URI uri(kTogglWebSocketServerURL);
     const Poco::Net::Context::Ptr context(new Poco::Net::Context(
@@ -76,6 +76,9 @@ error HTTPSClient::ListenToWebsocket(std::string api_token) {
     return ex;
   }
   return noError;
+}
+
+void HTTPSClient::StopWebSocketActivity() {
 }
 
 error HTTPSClient::PostJSON(std::string relative_url,
