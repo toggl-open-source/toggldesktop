@@ -119,7 +119,7 @@ KopsikContext *kopsik_context_init() {
   ctx->ws_client = new kopsik::WebSocketClient();
   ctx->mutex = new Poco::Mutex();
   ctx->tm = new Poco::TaskManager();
-  ctx->ws_callback = 0;
+  ctx->change_callback = 0;
   return ctx;
 }
 
@@ -1218,10 +1218,9 @@ void on_websocket_message(
   poco_assert(!json.empty());
 
   KopsikContext *ctx = reinterpret_cast<KopsikContext *>(context);
-  poco_assert(ctx->ws_callback);
-
+  poco_assert(ctx->change_callback);
   KopsikViewItemChangeCallback callback =
-    reinterpret_cast<KopsikViewItemChangeCallback>(ctx->ws_callback);
+    reinterpret_cast<KopsikViewItemChangeCallback>(ctx->change_callback);
   poco_assert(callback);
 
   kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
@@ -1241,14 +1240,23 @@ void on_websocket_message(
   callback(KOPSIK_API_SUCCESS, 0, 0, 0);
 }
 
+void kopsik_set_change_callback(
+    KopsikContext *ctx,
+    KopsikViewItemChangeCallback callback) {
+  poco_assert(callback);
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
+  ctx->change_callback = reinterpret_cast<void *>(callback);
+}
+
 kopsik_api_result kopsik_websocket_start(
     KopsikContext *ctx,
-    char *errmsg, unsigned int errlen,
-    KopsikViewItemChangeCallback callback) {
+    char *errmsg, unsigned int errlen) {
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
-  poco_assert(callback);
 
   if (!ctx->current_user) {
     strncpy(errmsg, "Please login first", errlen);
@@ -1257,8 +1265,6 @@ kopsik_api_result kopsik_websocket_start(
 
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
-
-  ctx->ws_callback = reinterpret_cast<void *>(callback);
 
   kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
   kopsik::WebSocketClient *ws_client =

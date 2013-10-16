@@ -26,7 +26,7 @@ typedef struct {
   void *ws_client;
   void *mutex;
   void *tm;
-  void *ws_callback;
+  void *change_callback;
 } KopsikContext;
 
 KOPSIK_EXPORT KopsikContext *kopsik_context_init();
@@ -272,10 +272,13 @@ typedef void (*KopsikViewItemChangeCallback)(
   KopsikTimeEntryViewItem *view_item
 );
 
+KOPSIK_EXPORT void kopsik_set_change_callback(
+  KopsikContext *ctx,
+  KopsikViewItemChangeCallback callback);
+
 KOPSIK_EXPORT kopsik_api_result kopsik_websocket_start(
   KopsikContext *ctx,
-  char *errmsg, unsigned int errlen,
-  KopsikViewItemChangeCallback callback);
+  char *errmsg, unsigned int errlen);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_websocket_stop(
   KopsikContext *ctx,
