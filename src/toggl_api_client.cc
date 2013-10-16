@@ -1254,6 +1254,10 @@ void TimeEntry::SetStartString(std::string value) {
     SetStart(Parse8601(value));
 }
 
+void TimeEntry::SetUpdatedAtString(std::string value) {
+    SetUpdatedAt(Parse8601(value));
+}
+
 std::string TimeEntry::DurationString() {
     return Formatter::FormatDurationInSeconds(duration_in_seconds_);
 }
@@ -1315,6 +1319,13 @@ void TimeEntry::SetDeletedAt(Poco::UInt64 value) {
 void TimeEntry::SetStart(Poco::UInt64 value) {
     if (start_ != value) {
         start_ = value;
+        dirty_ = true;
+    }
+}
+
+void TimeEntry::SetUpdatedAt(Poco::UInt64 value) {
+    if (updated_at_ != value) {
+        updated_at_ = value;
         dirty_ = true;
     }
 }
@@ -1411,6 +1422,8 @@ void TimeEntry::LoadFromJSONNode(JSONNODE *data) {
             loadTagsFromJSONNode(*current_node);
         } else if (strcmp(node_name, "created_with") == 0) {
             SetCreatedWith(std::string(json_as_string(*current_node)));
+        } else if (strcmp(node_name, "at") == 0) {
+            SetUpdatedAtString(std::string(json_as_string(*current_node)));
         }
         ++current_node;
     }

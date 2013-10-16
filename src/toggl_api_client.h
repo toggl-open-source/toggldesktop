@@ -215,7 +215,8 @@ namespace kopsik {
             start_(0), stop_(0), duration_in_seconds_(0), description_(""),
             duronly_(false), ui_modified_at_(0), uid_(0), dirty_(false),
             created_with_(""), deleted_at_(0),
-            is_marked_as_deleted_on_server_(false) {}
+            is_marked_as_deleted_on_server_(false),
+            updated_at_(0) {}
 
         std::string Tags();
         void SetTags(std::string tags);
@@ -262,6 +263,11 @@ namespace kopsik {
         // server:
         Poco::UInt64 DeletedAt() { return deleted_at_; }
         void SetDeletedAt(Poco::UInt64 value);
+
+        Poco::UInt64 UpdatedAt() { return updated_at_; }
+        void SetUpdatedAt(Poco::UInt64 value);
+        void SetUpdatedAtString(std::string value);
+
         // When time entry is finally deleted
         // on server, it will be removed from local
         // DB using this flag:
@@ -307,6 +313,7 @@ namespace kopsik {
         std::string created_with_;
         Poco::UInt64 deleted_at_;
         bool is_marked_as_deleted_on_server_;
+        Poco::UInt64 updated_at_;
 
         error loadTagsFromJSONNode(JSONNODE *list);
         Poco::UInt64 getUIModifiedAtFromJSONNode(JSONNODE *data);

@@ -542,7 +542,7 @@ error Database::loadTimeEntries(Poco::UInt64 UID,
         Poco::Data::Statement select(*session);
         select << "SELECT local_id, id, uid, description, wid, guid, pid, "
             "tid, billable, duronly, ui_modified_at, start, stop, "
-            "duration, tags, created_with, deleted_at "
+            "duration, tags, created_with, deleted_at, updated_at "
             "FROM time_entries "
             "WHERE uid = :uid "
             "ORDER BY start DESC",
@@ -590,6 +590,7 @@ error Database::loadTimeEntriesFromSQLStatement(Poco::Data::Statement *select,
                 model->SetTags(rs[14].convert<std::string>());
                 model->SetCreatedWith(rs[15].convert<std::string>());
                 model->SetDeletedAt(rs[16].convert<Poco::UInt64>());
+                model->SetUpdatedAt(rs[17].convert<Poco::UInt64>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -737,7 +738,8 @@ error Database::SaveTimeEntry(TimeEntry *model) {
                 "duronly = :duronly, ui_modified_at = :ui_modified_at, "
                 "start = :start, stop = :stop, duration = :duration, "
                 "tags = :tags, created_with = :created_with, "
-                "deleted_at = :deleted_at "
+                "deleted_at = :deleted_at, "
+                "updated_at = :updated_at "
                 "where local_id = :local_id",
                 Poco::Data::use(model->ID()),
                 Poco::Data::use(model->UID()),
@@ -755,6 +757,7 @@ error Database::SaveTimeEntry(TimeEntry *model) {
                 Poco::Data::use(model->Tags()),
                 Poco::Data::use(model->CreatedWith()),
                 Poco::Data::use(model->DeletedAt()),
+                Poco::Data::use(model->UpdatedAt()),
                 Poco::Data::use(model->LocalID()),
                 Poco::Data::now;
           error err = last_error();
@@ -767,12 +770,12 @@ error Database::SaveTimeEntry(TimeEntry *model) {
                 "guid, pid, tid, billable, "
                 "duronly, ui_modified_at, "
                 "start, stop, duration, "
-                "tags, created_with, deleted_at) "
+                "tags, created_with, deleted_at, updated_at) "
                 "values(:id, :uid, :description, :wid, "
                 ":guid, :pid, :tid, :billable, "
                 ":duronly, :ui_modified_at, "
                 ":start, :stop, :duration, "
-                ":tags, :created_with, :deleted_at)",
+                ":tags, :created_with, :deleted_at, :updated_at)",
                 Poco::Data::use(model->ID()),
                 Poco::Data::use(model->UID()),
                 Poco::Data::use(model->Description()),
@@ -789,6 +792,7 @@ error Database::SaveTimeEntry(TimeEntry *model) {
                 Poco::Data::use(model->Tags()),
                 Poco::Data::use(model->CreatedWith()),
                 Poco::Data::use(model->DeletedAt()),
+                Poco::Data::use(model->UpdatedAt()),
                 Poco::Data::now;
             error err = last_error();
             if (err != noError) {
@@ -1364,12 +1368,13 @@ error Database::initialize_tables() {
         "billable integer not null default 0,"
         "duronly integer not null default 0, "
         "ui_modified_at integer, "
-        "start varchar not null, "
-        "stop varchar, "
+        "start integer not null, "
+        "stop integer, "
         "duration integer not null,"
         "tags text,"
         "created_with varchar,"
         "deleted_at integer,"
+        "updated_at integer,"
         "constraint fk_time_entries_wid foreign key (wid) "
         "   references workspaces(id) on delete no action on update no action, "
         "constraint fk_time_entries_pid foreign key (pid) "
