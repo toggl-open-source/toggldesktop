@@ -39,7 +39,8 @@ kopsik_api_result save(KopsikContext *ctx,
   poco_assert(errlen);
   kopsik::Database *db = get_db(ctx);
   kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
-  kopsik::error err = db->SaveUser(user, true);
+  std::vector<kopsik::ModelChange> changes;
+  kopsik::error err = db->SaveUser(user, true, &changes);
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
@@ -364,7 +365,8 @@ kopsik_api_result kopsik_login(
     return KOPSIK_API_FAILURE;
   }
   kopsik::Database *db = get_db(ctx);
-  err = db->SaveUser(user, true);
+  std::vector<kopsik::ModelChange> changes;
+  err = db->SaveUser(user, true, &changes);
   if (err != kopsik::noError) {
     delete user;
     strncpy(errmsg, err.c_str(), errlen);
@@ -1227,7 +1229,8 @@ void on_websocket_message(
   user->LoadUpdateFromJSONString(json);
 
   kopsik::Database *db = get_db(ctx);
-  kopsik::error err = db->SaveUser(user, true);
+  std::vector<kopsik::ModelChange> changes;
+  kopsik::error err = db->SaveUser(user, true, &changes);
   if (err != kopsik::noError) {
     char *result_str = 0;
     unsigned int result_len = 0;

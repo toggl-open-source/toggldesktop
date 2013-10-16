@@ -73,7 +73,8 @@ class Database {
 
         error UInt(std::string sql, Poco::UInt64 *result);
 
-        error SaveUser(User *user, bool with_related_data);
+        error SaveUser(User *user, bool with_related_data,
+            std::vector<ModelChange> *changes);
         error SaveWorkspace(Workspace *model);
         error SaveClient(Client *model);
         error SaveProject(Project *model);

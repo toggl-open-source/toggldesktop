@@ -1092,7 +1092,8 @@ error Database::SaveTag(Tag *model) {
     return noError;
 }
 
-error Database::SaveUser(User *model, bool with_related_data) {
+error Database::SaveUser(User *model, bool with_related_data,
+        std::vector<ModelChange> *changes) {
     poco_assert(model);
     poco_assert(session);
 

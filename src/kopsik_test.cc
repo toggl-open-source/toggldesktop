@@ -130,7 +130,8 @@ namespace kopsik {
         ASSERT_EQ(Poco::UInt64(0), n);
 
         for (int i = 0; i < 3; i++) {
-            ASSERT_EQ(noError, db.SaveUser(&user, true));
+            std::vector<ModelChange> changes;
+            ASSERT_EQ(noError, db.SaveUser(&user, true, &changes));
 
             ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
             ASSERT_EQ(Poco::UInt64(1), n);
@@ -168,7 +169,8 @@ namespace kopsik {
         User user1;
         user1.LoadFromJSONString(json, true);
 
-        ASSERT_EQ(noError, db.SaveUser(&user1, true));
+        std::vector<ModelChange> changes;
+        ASSERT_EQ(noError, db.SaveUser(&user1, true, &changes));
 
         Poco::UInt64 n;
         ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
@@ -210,7 +212,7 @@ namespace kopsik {
 
         user2.LoadFromJSONString(json, true);
 
-        ASSERT_EQ(noError, db.SaveUser(&user2, true));
+        ASSERT_EQ(noError, db.SaveUser(&user2, true, &changes));
 
         ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
         ASSERT_EQ(Poco::UInt64(1), n);
@@ -246,7 +248,8 @@ namespace kopsik {
 
         // first, mark time entry as deleted
         TimeEntry *te = user.Start("My new time entry");
-        ASSERT_EQ(noError, db.SaveUser(&user, true));
+        std::vector<ModelChange> changes;
+        ASSERT_EQ(noError, db.SaveUser(&user, true, &changes));
 
         user.MarkTimeEntryAsDeleted(te->GUID());
         {
@@ -260,7 +263,7 @@ namespace kopsik {
 
         // now, really delete it
         te->MarkTimeEntryAsDeletedOnServer();
-        ASSERT_EQ(noError, db.SaveUser(&user, true));
+        ASSERT_EQ(noError, db.SaveUser(&user, true, &changes));
         {
             Poco::UInt64 te_count(0);
             std::stringstream query;
@@ -286,7 +289,8 @@ namespace kopsik {
         }
         Database db(TESTDB);
 
-        ASSERT_EQ(noError, db.SaveUser(&user, false));
+        std::vector<ModelChange> changes;
+        ASSERT_EQ(noError, db.SaveUser(&user, false, &changes));
 
         // Time entry
         TimeEntry te;
@@ -425,7 +429,8 @@ namespace kopsik {
         ASSERT_EQ(Poco::UInt64(0), n);
 
         // Insert
-        ASSERT_EQ(noError, db.SaveUser(&user, true));
+        std::vector<ModelChange> changes;
+        ASSERT_EQ(noError, db.SaveUser(&user, true, &changes));
         ASSERT_GT(user.LocalID(), uint(0));
         ASSERT_GT(user.ID(), uint(0));
         ASSERT_FALSE(user.APIToken().empty());
@@ -452,7 +457,7 @@ namespace kopsik {
         ASSERT_EQ(Poco::UInt64(user.related.TimeEntries.size()), n);
 
         // Update
-        ASSERT_EQ(noError, db.SaveUser(&user, true));
+        ASSERT_EQ(noError, db.SaveUser(&user, true, &changes));
         ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
         ASSERT_EQ(Poco::UInt64(1), n);
 
