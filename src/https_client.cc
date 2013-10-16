@@ -24,16 +24,18 @@
 
 namespace kopsik {
 
-const std::string TOGGL_SERVER_URL("https://www.toggl.com");
-// const std::string TOGGL_SERVER_URL("http://localhost:8080");
+const std::string kTogglServerURL = "https://www.toggl.com";
+// const std::string kTogglServerURL = "http://localhost:8080";
 
-// const std::string TOGGL_WEBSOCKET_SERVER_URL("https://stream.toggl.com");
-const std::string TOGGL_WEBSOCKET_SERVER_URL("https://localhost:8088");
-// const std::string TOGGL_WEBSOCKET_SERVER_URL("https://echo.websocket.org");
+// const std::string kTogglWebSocketServerURL = "https://stream.toggl.com";
+const std::string kTogglWebSocketServerURL = "https://localhost:8088";
+// const std::string kTogglWebSocketServerURL = "https://echo.websocket.org";
+
+const int kWebsocketBufSize = 1024;
 
 error HTTPSClient::ListenToWebsocket(std::string api_token) {
   try {
-    const Poco::URI uri(TOGGL_WEBSOCKET_SERVER_URL);
+    const Poco::URI uri(kTogglWebSocketServerURL);
     const Poco::Net::Context::Ptr context(new Poco::Net::Context(
       Poco::Net::Context::CLIENT_USE, "", "", "",
       Poco::Net::Context::VERIFY_NONE, 9, false,
@@ -49,6 +51,8 @@ error HTTPSClient::ListenToWebsocket(std::string api_token) {
     Poco::Logger &logger = Poco::Logger::get("https_client");
     logger.debug("WebSocket connection established.");
 
+    int flags = Poco::Net::WebSocket::FRAME_BINARY;
+
     // Authenticate
     JSONNODE *c = json_new(JSON_NODE);
     json_push_back(c, json_new_a("type", "authenticate"));
@@ -57,9 +61,13 @@ error HTTPSClient::ListenToWebsocket(std::string api_token) {
     std::string payload(jc);
     json_free(jc);
     json_delete(c);
+    ws.sendFrame(payload.data(), payload.size(), flags);
 
-    ws.sendFrame(payload.data(), payload.size(),
-        Poco::Net::WebSocket::FRAME_BINARY);
+    char buffer[kWebsocketBufSize];
+    int n = ws.receiveFrame(buffer, kWebsocketBufSize, flags);
+    std::stringstream ss;
+    ss << "WebSocket authentication response: " << buffer;
+    logger.debug(ss.str());
   } catch(const Poco::Exception& exc) {
     return exc.displayText();
   } catch(const std::exception& ex) {
@@ -106,7 +114,7 @@ error HTTPSClient::requestJSON(std::string method,
     poco_assert(response_body);
     *response_body = "";
     try {
-        const Poco::URI uri(TOGGL_SERVER_URL);
+        const Poco::URI uri(kTogglServerURL);
 
         const Poco::Net::Context::Ptr context(new Poco::Net::Context(
             Poco::Net::Context::CLIENT_USE, "", "", "",

@@ -1202,7 +1202,7 @@ kopsik_api_result kopsik_time_entry_view_items(
 
 // Websocket client
 
-kopsik_api_result kopsik_listen(
+kopsik_api_result kopsik_websocket_start(
     KopsikContext *ctx,
     char *errmsg, unsigned int errlen) {
   poco_assert(ctx);
