@@ -3,7 +3,6 @@
 #include "./main.h"
 
 #include <sstream>
-#include <iostream> // NOLINT
 
 #include "Poco/Message.h"
 #include "Poco/Util/Application.h"
@@ -24,6 +23,42 @@ namespace command_line_client {
             "verbose", "v", "verbose logging, to the console"));
     }
 
+    std::string KopsikTimeEntryViewItemToString(
+            KopsikTimeEntryViewItem *item) {
+        std::stringstream ss;
+        ss << "description: " << item->Description;
+        if (item->Project) {
+            ss << " project: " << item->Project;
+        }
+        if (item->Duration) {
+            ss << " duration: " << item->Duration;
+        }
+        return ss.str();
+    }
+
+    void on_view_item_change(kopsik_api_result result,
+            char *err_string,
+            int unsigned err_len,
+            KopsikTimeEntryViewItem *view_item) {
+        if (KOPSIK_API_SUCCESS != result) {
+            std::string err("");
+            err.append(err_string, err_len);
+            std::cerr << "on_view_item_change error! "
+                << err << std::endl;
+            free(err_string);
+            return;
+        }
+        if (!view_item) {
+            std::cerr << "on_view_item_change but nothing changed"
+                << std::endl;
+            return;
+        }
+        std::cout << "on_view_item_change "
+            << KopsikTimeEntryViewItemToString(view_item)
+            << std::endl;
+        kopsik_time_entry_view_item_clear(view_item);
+    }
+
     int Main::main(const std::vector<std::string>& args) {
         if (args.empty()) {
             usage();
@@ -39,6 +74,8 @@ namespace command_line_client {
 
         kopsik_set_db_path(ctx, "kopsik.db");
         kopsik_set_log_path(ctx, "kopsik.log");
+
+        Poco::ErrorHandler::set(this);
 
         // Start session in lib
         char err[ERRLEN];
@@ -147,15 +184,7 @@ namespace command_line_client {
             }
             for (unsigned int i = 0; i < list->Length; i++) {
                 KopsikTimeEntryViewItem *item = list->ViewItems[i];
-                std::stringstream ss;
-                ss << "description: " << item->Description;
-                if (item->Project) {
-                    ss << " project: " << item->Project;
-                }
-                if (item->Duration) {
-                    ss << " duration: " << item->Duration;
-                }
-                std::cout << ss.str() << std::endl;
+                std::cout << KopsikTimeEntryViewItemToString(item) << std::endl;
             }
             std::cout << "Got " << list->Length << " time entry view items."
                 << std::endl;
@@ -165,12 +194,15 @@ namespace command_line_client {
 
         if ("listen" == args[0]) {
             std::cout << "Listening to websocket.. " << std::endl;
-            if (KOPSIK_API_SUCCESS != kopsik_websocket_start(ctx, err, ERRLEN)) {
+            if (KOPSIK_API_SUCCESS != kopsik_websocket_start(ctx, err, ERRLEN,
+                    on_view_item_change)) {
                 std::cerr << "Error starting websocket: "
                     << err << std::endl;
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
-            Poco::Thread::sleep(30 * 1000);
+            while (true) {
+                Poco::Thread::sleep(1000);
+            }
             if (KOPSIK_API_SUCCESS != kopsik_websocket_stop(ctx, err, ERRLEN)) {
                 std::cerr << "Error stopping websocket: "
                     << err << std::endl;

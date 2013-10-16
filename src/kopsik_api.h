@@ -25,6 +25,7 @@ typedef struct {
   void *https_client;
   void *mutex;
   void *tm;
+  void *ws_callback;
 } KopsikContext;
 
 KOPSIK_EXPORT KopsikContext *kopsik_context_init();
@@ -260,9 +261,27 @@ KOPSIK_EXPORT kopsik_api_result kopsik_time_entry_view_items(
 
 // Websocket client
 
+typedef void (*KopsikViewItemChangeCallback)(
+  kopsik_api_result result,
+  // NB! you need to free() the memory yourself
+  char *errmsg,
+  // Length of the returned error string.
+  unsigned int errlen,
+  // Actual changes, if no errors
+  KopsikTimeEntryViewItem *view_item
+);
+
+typedef void (*KopsikResultCallback)(
+  kopsik_api_result result,
+  // NB! you need to free() the memory yourself
+  char *errmsg,
+  // Length of the returned error string.
+  unsigned int errlen);
+
 KOPSIK_EXPORT kopsik_api_result kopsik_websocket_start(
   KopsikContext *ctx,
-  char *errmsg, unsigned int errlen);
+  char *errmsg, unsigned int errlen,
+  KopsikViewItemChangeCallback callback);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_websocket_stop(
   KopsikContext *ctx,

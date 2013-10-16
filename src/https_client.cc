@@ -15,6 +15,8 @@
 #include "Poco/Net/NameValueCollection.h"
 #include "Poco/Net/HTTPMessage.h"
 #include "Poco/Net/HTTPBasicCredentials.h"
+#include "Poco/ScopedLock.h"
+#include "Poco/Mutex.h"
 
 #include "./libjson.h"
 
@@ -28,7 +30,21 @@ const std::string kTogglWebSocketServerURL = "https://stream.toggl.com";
 
 const int kWebsocketBufSize = 1024 * 10;
 
-error HTTPSClient::StartWebSocketActivity(std::string api_token) {
+const std::string kPong("{\"type\": \"pong\"}");
+
+error HTTPSClient::StartWebSocketActivity(void *ctx,
+    std::string api_token,
+    WebSocketMessageCallback on_websocket_message) {
+  poco_assert(ctx);
+  poco_assert(!api_token.empty());
+  poco_assert(on_websocket_message);
+
+  Poco::Mutex mutex;
+  Poco::Mutex::ScopedLock lock(mutex);
+
+  ctx_ = ctx;
+  on_websocket_message_ = on_websocket_message;
+
   Poco::Logger &logger = Poco::Logger::get("https_client");
   logger.debug("HTTPSClient::StartWebSocketActivity");
   try {
@@ -83,21 +99,25 @@ error HTTPSClient::StartWebSocketActivity(std::string api_token) {
   return noError;
 }
 
-void HTTPSClient::parseWebSocketMessage(std::string json,
-    std::string &type) {
+std::string HTTPSClient::parseWebSocketMessageType(std::string json) {
   poco_assert(!json.empty());
-  type = "";
+
+  std::string type("data");
+
   JSONNODE *root = json_parse(json.c_str());
   JSONNODE_ITERATOR i = json_begin(root);
   JSONNODE_ITERATOR e = json_end(root);
   while (i != e) {
-      json_char *node_name = json_name(*i);
-      if (strcmp(node_name, "type") == 0) {
-        type = std::string(json_as_string(*i));
-      }
-      ++i;
+    json_char *node_name = json_name(*i);
+    if (strcmp(node_name, "type") == 0) {
+      type = std::string(json_as_string(*i));
+      break;
+    }
+    ++i;
   }
   json_delete(root);
+
+  return type;
 }
 
 std::string HTTPSClient::receiveWebSocketMessage() {
@@ -123,8 +143,7 @@ void HTTPSClient::runActivity() {
       logger.debug(ss.str());
     }
 
-    std::string type;
-    parseWebSocketMessage(json, type);
+    std::string type = parseWebSocketMessageType(json);
 
     {
       std::stringstream ss;
@@ -137,9 +156,10 @@ void HTTPSClient::runActivity() {
     }
 
     if ("ping" == type) {
-      std::string payload("{\"type\": \"pong\"}");
-      ws_->sendFrame(payload.data(), payload.size(),
+      ws_->sendFrame(kPong.data(), kPong.size(),
         Poco::Net::WebSocket::FRAME_BINARY);
+    } else if ("data" == type) {
+      on_websocket_message_(ctx_, json);
     }
 
     if (activity_.isStopped()) {

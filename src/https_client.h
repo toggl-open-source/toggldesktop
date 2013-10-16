@@ -16,13 +16,19 @@
 
 namespace kopsik {
 
+  typedef void (*WebSocketMessageCallback)(
+    void *callback,
+    std::string json);
+
   class HTTPSClient {
   public:
     HTTPSClient() : activity_(this, &HTTPSClient::runActivity),
       session_(0),
       req_(0),
       res_(0),
-      ws_(0) {}
+      ws_(0),
+      on_websocket_message_(0),
+      ctx_(0) {}
     virtual ~HTTPSClient() {
       if (ws_) {
         delete ws_;
@@ -42,7 +48,9 @@ namespace kopsik {
       }
     }
     virtual error StartWebSocketActivity(
-      std::string api_token);
+      void *ctx,
+      std::string api_token,
+      WebSocketMessageCallback on_websocket_message);
     virtual void StopWebSocketActivity();
     virtual error PostJSON(std::string relative_url,
       std::string json,
@@ -65,8 +73,7 @@ namespace kopsik {
       std::string basic_auth_password,
       std::string *response_body);
 
-    void parseWebSocketMessage(std::string json,
-      std::string &type);
+    std::string parseWebSocketMessageType(std::string json);
     std::string receiveWebSocketMessage();
 
     Poco::Activity<HTTPSClient> activity_;
@@ -74,6 +81,8 @@ namespace kopsik {
     Poco::Net::HTTPRequest *req_;
     Poco::Net::HTTPResponse *res_;
     Poco::Net::WebSocket *ws_;
+    WebSocketMessageCallback on_websocket_message_;
+    void *ctx_;
   };
 }  // namespace kopsik
 

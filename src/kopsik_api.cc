@@ -117,6 +117,7 @@ KopsikContext *kopsik_context_init() {
   ctx->https_client = new kopsik::HTTPSClient();
   ctx->mutex = new Poco::Mutex();
   ctx->tm = new Poco::TaskManager();
+  ctx->ws_callback = 0;
   return ctx;
 }
 
@@ -1202,12 +1203,44 @@ kopsik_api_result kopsik_time_entry_view_items(
 
 // Websocket client
 
+void on_websocket_message(
+    void *context,
+    std::string json) {
+  poco_assert(context);
+  poco_assert(!json.empty());
+
+  KopsikContext *ctx = reinterpret_cast<KopsikContext *>(context);
+  poco_assert(ctx->ws_callback);
+
+  KopsikViewItemChangeCallback callback =
+    reinterpret_cast<KopsikViewItemChangeCallback>(ctx->ws_callback);
+  poco_assert(callback);
+
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
+  user->LoadUpdateFromJSONString(json);
+
+  kopsik::Database *db = get_db(ctx);
+  kopsik::error err = db->SaveUser(user, true);
+  if (err != kopsik::noError) {
+    char *result_str = 0;
+    unsigned int result_len = 0;
+    result_str = strdup(err.c_str());
+    result_len = err.size();
+    callback(KOPSIK_API_FAILURE, result_str, result_len, 0);
+    return;
+  }
+
+  callback(KOPSIK_API_SUCCESS, 0, 0, 0);
+}
+
 kopsik_api_result kopsik_websocket_start(
     KopsikContext *ctx,
-    char *errmsg, unsigned int errlen) {
+    char *errmsg, unsigned int errlen,
+    KopsikViewItemChangeCallback callback) {
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
+  poco_assert(callback);
 
   if (!ctx->current_user) {
     strncpy(errmsg, "Please login first", errlen);
@@ -1217,10 +1250,15 @@ kopsik_api_result kopsik_websocket_start(
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
 
+  ctx->ws_callback = reinterpret_cast<void *>(callback);
+
   kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
   kopsik::HTTPSClient *https_client =
     reinterpret_cast<kopsik::HTTPSClient *>(ctx->https_client);
-  kopsik::error err = https_client->StartWebSocketActivity(user->APIToken());
+  kopsik::error err = https_client->StartWebSocketActivity(
+    ctx,
+    user->APIToken(),
+    on_websocket_message);
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;

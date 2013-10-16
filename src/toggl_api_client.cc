@@ -529,6 +529,47 @@ void User::LoadDataFromJSONNode(JSONNODE *data, bool with_related_data) {
     }
 }
 
+void User::LoadUpdateFromJSONString(std::string json) {
+    poco_assert(!json.empty());
+    JSONNODE *root = json_parse(json.c_str());
+    loadUpdateFromJSONNode(root);
+    json_delete(root);
+}
+
+void User::loadUpdateFromJSONNode(JSONNODE *node) {
+    poco_assert(node);
+
+    JSONNODE *data = 0;
+    std::string model("");
+    std::string action("");
+
+    JSONNODE_ITERATOR i = json_begin(node);
+    JSONNODE_ITERATOR e = json_end(node);
+    while (i != e) {
+        json_char *node_name = json_name(*i);
+        if (strcmp(node_name, "data") == 0) {
+            data = *i;
+        } else if (strcmp(node_name, "model") == 0) {
+            model = std::string(json_as_string(*i));
+        } else if (strcmp(node_name, "action") == 0) {
+            action = std::string(json_as_string(*i));
+        }
+        ++i;
+    }
+    poco_assert(data);
+
+    std::stringstream ss;
+    ss << "Update parsed into action=" << action
+        << ", model=" + model;
+    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
+    logger.debug(ss.str());
+
+    if ("time_entry" == model) {
+        // FIXME: check action and handle DELETE?
+        loadTimeEntryFromJSONNode(data);
+    }
+}
+
 void User::loadProjectsFromJSONNode(JSONNODE *list) {
     poco_assert(list);
 
@@ -859,16 +900,22 @@ void User::loadTimeEntriesFromJSONNode(JSONNODE *list) {
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
-        Poco::UInt64 id = getIDFromJSONNode(*current_node);
-        TimeEntry *model = GetTimeEntryByID(id);
-        if (!model) {
-            model = new TimeEntry();
-            related.TimeEntries.push_back(model);
-        }
-        model->SetUID(ID());
-        model->LoadFromJSONNode(*current_node);
+        loadTimeEntryFromJSONNode(*current_node);
         ++current_node;
     }
+}
+
+void User::loadTimeEntryFromJSONNode(JSONNODE *data) {
+    poco_assert(data);
+
+    Poco::UInt64 id = getIDFromJSONNode(data);
+    TimeEntry *model = GetTimeEntryByID(id);
+    if (!model) {
+        model = new TimeEntry();
+        related.TimeEntries.push_back(model);
+    }
+    model->SetUID(ID());
+    model->LoadFromJSONNode(data);
 }
 
 std::string TimeEntry::String() {
@@ -1207,7 +1254,6 @@ void TimeEntry::SetStartString(std::string value) {
     SetStart(Parse8601(value));
 }
 
-// FIXME: add tests for this
 std::string TimeEntry::DurationString() {
     return Formatter::FormatDurationInSeconds(duration_in_seconds_);
 }

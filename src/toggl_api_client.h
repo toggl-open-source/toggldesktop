@@ -347,6 +347,7 @@ namespace kopsik {
         void LoadFromJSONString(const std::string &json,
             bool with_related_data);
         void LoadDataFromJSONNode(JSONNODE *node, bool with_related_data);
+        void LoadUpdateFromJSONString(std::string json);
         std::string String();
 
         void ClearWorkspaces();
@@ -415,7 +416,10 @@ namespace kopsik {
         void loadClientsFromJSONNode(JSONNODE *list);
         void loadTasksFromJSONNode(JSONNODE *list);
         void loadTimeEntriesFromJSONNode(JSONNODE *list);
+        void loadTimeEntryFromJSONNode(JSONNODE *data);
         void loadWorkspacesFromJSONNode(JSONNODE *list);
+
+        void loadUpdateFromJSONNode(JSONNODE *data);
 
         Poco::UInt64 getIDFromJSONNode(JSONNODE *list);
 

@@ -5,15 +5,17 @@
 
 #include <string>
 #include <vector>
+#include <iostream> // NOLINT
 
 #include "../../kopsik_api.h"
 
 #include "Poco/Util/Application.h"
 #include "Poco/Util/OptionSet.h"
+#include "Poco/ErrorHandler.h"
 
 namespace command_line_client {
 
-    class Main : public Poco::Util::Application {
+    class Main : public Poco::Util::Application, Poco::ErrorHandler {
     public:
         Main() : ctx(0) {
             ctx = kopsik_context_init();
@@ -21,6 +23,17 @@ namespace command_line_client {
         }
         ~Main() {
             kopsik_context_clear(ctx);
+        }
+
+        // ErrorHandler
+        void exception(const Poco::Exception& exc) {
+            std::cerr << exc.displayText() << std::endl;
+        }
+        void exception(const std::exception& exc) {
+            std::cerr << exc.what() << std::endl;
+        }
+        void exception() {
+            std::cerr << "unknown exception" << std::endl;
         }
 
     protected:
@@ -36,7 +49,8 @@ namespace command_line_client {
     private:
         void usage();
         KopsikContext *ctx;
-    };
+
+};
 
 }  // namespace command_line_client
 
