@@ -20,16 +20,18 @@
 #include "Poco/Net/HTTPSClientSession.h"
 #include "Poco/Net/WebSocket.h"
 
+#include "./libjson.h"
+
 namespace kopsik {
 
 const std::string TOGGL_SERVER_URL("https://www.toggl.com");
 // const std::string TOGGL_SERVER_URL("http://localhost:8080");
 
-// const std::string TOGGL_WEBSOCKET_SERVER_URL("https://stream.toggl.com")
-const std::string TOGGL_WEBSOCKET_SERVER_URL("wss://localhost:8088");
-// const std::string TOGGL_WEBSOCKET_SERVER_URL("wss://echo.websocket.org");
+// const std::string TOGGL_WEBSOCKET_SERVER_URL("https://stream.toggl.com");
+const std::string TOGGL_WEBSOCKET_SERVER_URL("https://localhost:8088");
+// const std::string TOGGL_WEBSOCKET_SERVER_URL("https://echo.websocket.org");
 
-error HTTPSClient::ListenToWebsocket() {
+error HTTPSClient::ListenToWebsocket(std::string api_token) {
   try {
     const Poco::URI uri(TOGGL_WEBSOCKET_SERVER_URL);
     const Poco::Net::Context::Ptr context(new Poco::Net::Context(
@@ -40,12 +42,24 @@ error HTTPSClient::ListenToWebsocket() {
       context);
     Poco::Net::HTTPRequest req(Poco::Net::HTTPRequest::HTTP_GET, "/ws",
       Poco::Net::HTTPMessage::HTTP_1_1);
-    req.set("Origin", "http://localhost");
+    req.set("Origin", "https://localhost");
     Poco::Net::HTTPResponse res;
     Poco::Net::WebSocket ws(session, req, res);
 
     Poco::Logger &logger = Poco::Logger::get("https_client");
     logger.debug("WebSocket connection established.");
+
+    // Authenticate
+    JSONNODE *c = json_new(JSON_NODE);
+    json_push_back(c, json_new_a("type", "authenticate"));
+    json_push_back(c, json_new_a("api_token", api_token.c_str()));
+    json_char *jc = json_write_formatted(c);
+    std::string payload(jc);
+    json_free(jc);
+    json_delete(c);
+
+    ws.sendFrame(payload.data(), payload.size(),
+        Poco::Net::WebSocket::FRAME_BINARY);
   } catch(const Poco::Exception& exc) {
     return exc.displayText();
   } catch(const std::exception& ex) {

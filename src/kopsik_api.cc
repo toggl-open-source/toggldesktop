@@ -1209,13 +1209,14 @@ kopsik_api_result kopsik_listen(
   poco_assert(errmsg);
   poco_assert(errlen);
 
-  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
-  Poco::Mutex::ScopedLock lock(*mutex);
-
   if (!ctx->current_user) {
     strncpy(errmsg, "Please login first", errlen);
     return KOPSIK_API_FAILURE;
   }
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
   kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
   kopsik::HTTPSClient *https_client =
     reinterpret_cast<kopsik::HTTPSClient *>(ctx->https_client);

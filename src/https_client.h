@@ -14,7 +14,8 @@ namespace kopsik {
     public:
         HTTPSClient() {}
         virtual ~HTTPSClient() {}
-        virtual error ListenToWebsocket();
+        virtual error ListenToWebsocket(
+            std::string api_token);
         virtual error PostJSON(std::string relative_url,
             std::string json,
             std::string basic_auth_username,
@@ -24,6 +25,7 @@ namespace kopsik {
             std::string basic_auth_username,
             std::string basic_auth_password,
             std::string *response_body);
+
     private:
         error requestJSON(std::string method,
             std::string relative_url,
