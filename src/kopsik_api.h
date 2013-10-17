@@ -269,8 +269,7 @@ typedef void (*KopsikViewItemChangeCallback)(
   // Length of the returned error string.
   unsigned int errlen,
   // Actual changes, if no errors
-  KopsikTimeEntryViewItem *view_item
-);
+  KopsikTimeEntryViewItem *view_item);
 
 KOPSIK_EXPORT void kopsik_set_change_callback(
   KopsikContext *ctx,

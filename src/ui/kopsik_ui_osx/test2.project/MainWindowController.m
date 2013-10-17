@@ -138,8 +138,21 @@
     
     [self startSync];
     
+    kopsik_set_change_callback(ctx, onModelChange);
+    char err[KOPSIK_ERR_LEN];
+    if (KOPSIK_API_SUCCESS != kopsik_websocket_start(ctx, err, KOPSIK_ERR_LEN)) {
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                          object:[NSString stringWithUTF8String:err]];
+    }
+    
   } else if ([notification.name isEqualToString:kUIEventUserLoggedOut]) {
     [Bugsnag setUserAttribute:@"user_id" withValue:nil];
+    
+    char err[KOPSIK_ERR_LEN];
+    if (KOPSIK_API_SUCCESS != kopsik_websocket_stop(ctx, err, KOPSIK_ERR_LEN)) {
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                          object:[NSString stringWithUTF8String:err]];
+    }
     
     // Show login view
     [self.contentView addSubview:self.loginViewController.view];
@@ -259,6 +272,23 @@ void renderRunningTimeEntry() {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerStopped object:nil];
   }
   kopsik_time_entry_view_item_clear(item);
+}
+
+void onModelChange(kopsik_api_result result,
+                     char *errmsg,
+                     unsigned int errlen,
+                     KopsikTimeEntryViewItem *view_item) {
+  NSLog(@"onModelChange");
+  if (KOPSIK_API_SUCCESS != result) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                          object:[NSString stringWithUTF8String:errmsg]];
+    free(errmsg);
+    return;
+  }
+  if (view_item) {
+    // FIXME: notify about change
+    kopsik_time_entry_view_item_clear(view_item);
+  }
 }
 
 - (void)startSync {
