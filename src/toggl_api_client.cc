@@ -283,30 +283,27 @@ error User::Push(HTTPSClient *https_client) {
             it++) {
         BatchUpdateResult result = *it;
 
-        std::stringstream ss;
-        ss  << "batch update result GUID: " << result.GUID
-            << ", StatusCode: " << result.StatusCode
-            << ", ContentType: " << result.ContentType
-            << ", Body: " << result.Body;
-        logger.debug(ss.str());
-
-        if (result.StatusCode < 200 || result.StatusCode >= 300) {
-            ss  << "ERROR! update result GUID: " << result.GUID
+        {
+            std::stringstream ss;
+            ss  << "batch update result GUID: " << result.GUID
                 << ", StatusCode: " << result.StatusCode
                 << ", ContentType: " << result.ContentType
                 << ", Body: " << result.Body;
-            logger.error(ss.str());
+            logger.debug(ss.str());
+        }
+
+        if ((result.StatusCode < 200) || (result.StatusCode >= 300)) {
             if ("null" == result.Body) {
+                std::stringstream ss;
+                ss  << "Request failed with status code " << result.StatusCode;
                 errors.push_back(ss.str());
             } else {
                 errors.push_back(result.Body);
             }
+            continue;
         }
 
         poco_assert(!result.GUID.empty());
-        if ("null" == result.Body) {
-          continue;
-        }
         poco_assert(json_is_valid(result.Body.c_str()));
 
         TimeEntry *te = 0;
@@ -340,16 +337,23 @@ error User::Push(HTTPSClient *https_client) {
 
     // Collect errors
     if (!errors.empty()) {
+        std::stringstream ss;
+        ss << "Errors encountered while syncing data: ";
         for (std::vector<error>::const_iterator it = errors.begin();
                 it != errors.end();
                 it++) {
             error err = *it;
+            if (!err.empty()) {
+                if (err[err.size() - 1] == '\n') {
+                    err[err.size() - 1] = '.';
+                }
+            }
+            if (it != errors.begin()) {
+                ss << " ";
+            }
+            ss << err;
             logger.error(err);
         }
-
-        std::stringstream ss;
-        std::copy(errors.begin(), errors.end(),
-            std::ostream_iterator<std::string>(ss, ". "));
         return error(ss.str());
     }
 
