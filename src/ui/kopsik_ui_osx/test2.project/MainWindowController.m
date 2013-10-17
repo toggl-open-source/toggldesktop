@@ -117,7 +117,7 @@
 
 -(void)eventHandler: (NSNotification *) notification
 {
-  NSLog(@"-- UI event -- %@: %@", notification.name, notification.object);
+  NSLog(@"osx_ui.%@ %@", notification.name, notification.object);
 
   if ([notification.name isEqualToString:kUIEventUserLoggedIn]) {
     User *userinfo = notification.object;
@@ -280,19 +280,20 @@ void onModelChange(kopsik_api_result result,
                      char *errmsg,
                      unsigned int errlen,
                      KopsikTimeEntryViewItem *view_item) {
-  NSLog(@"onModelChange");
   if (KOPSIK_API_SUCCESS != result) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
                                                           object:[NSString stringWithUTF8String:errmsg]];
     free(errmsg);
     return;
   }
-  if (view_item) {
-    TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
-    [te load:view_item];
-    kopsik_time_entry_view_item_clear(view_item);
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUpdate object:te.GUID];
-  }
+
+  TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
+  [te load:view_item];
+  kopsik_time_entry_view_item_clear(view_item);
+
+  NSLog(@"osx_ui.onModelChange %@", te);
+
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUpdate object:te.GUID];
 }
 
 - (void)startSync {

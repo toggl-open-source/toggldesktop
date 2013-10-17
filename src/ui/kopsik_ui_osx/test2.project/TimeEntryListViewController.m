@@ -115,6 +115,7 @@
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
     TimeEntryViewItem *item = [viewitems objectAtIndex:row];
+    NSAssert(item != nil, @"view item from viewitems array is nil");
     TableViewCell *cellView = [tableView makeViewWithIdentifier:@"TimeEntryCell" owner:self];
     if (cellView == nil) {
       cellView = [[TableViewCell alloc] init];
