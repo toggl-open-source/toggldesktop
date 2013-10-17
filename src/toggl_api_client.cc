@@ -1504,6 +1504,7 @@ std::time_t Formatter::Parse8601(std::string iso_8601_formatted_date) {
     Poco::DateTime dt;
     Poco::DateTimeParser::parse(Poco::DateTimeFormat::ISO8601_FORMAT,
         iso_8601_formatted_date, dt, tzd);
+    dt.makeUTC(tzd);
     Poco::Timestamp ts = dt.timestamp();
     return ts.epochTime();
 }
