@@ -33,6 +33,10 @@
                                                selector:@selector(eventHandler:)
                                                    name:kUIEventTimerStopped
                                                  object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUIEventUpdate
+                                                 object:nil];
       self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                target:self
                                              selector:@selector(timerFired:)
@@ -46,17 +50,28 @@
 -(void)eventHandler: (NSNotification *) notification
 {
   if ([notification.name isEqualToString:kUIEventTimerRunning]) {
-    self.te = notification.object;
-    [self.descriptionTextField setStringValue:self.te.Description];
-    [self.durationTextField setStringValue:self.te.duration];
-    if (self.te.project != nil) {
-      [self.projectTextField setStringValue:self.te.project];
-    } else {
-      [self.projectTextField setStringValue:@""];
-    }
+    [self render:notification.object];
     
   } else if ([notification.name isEqualToString:kUIEventTimerStopped]) {
     self.te = nil;
+
+  } else if ([notification.name isEqualToString:kUIEventUpdate]) {
+    NSString *GUID = notification.object;
+    if ([GUID isEqualToString:self.te.GUID]) {
+      TimeEntryViewItem *te = [TimeEntryViewItem findByGUID:GUID];
+      [self render:te];
+    }
+  }
+}
+
+- (void) render:(TimeEntryViewItem *)view_item {
+  self.te = view_item;
+  [self.descriptionTextField setStringValue:self.te.Description];
+  [self.durationTextField setStringValue:self.te.duration];
+  if (self.te.project != nil) {
+    [self.projectTextField setStringValue:self.te.project];
+  } else {
+    [self.projectTextField setStringValue:@""];
   }
 }
 
