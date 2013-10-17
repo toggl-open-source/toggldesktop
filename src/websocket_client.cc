@@ -99,10 +99,12 @@ error WebSocketClient::Start(void *ctx,
 
 std::string WebSocketClient::parseWebSocketMessageType(std::string json) {
   poco_assert(!json.empty());
-
   std::string type("data");
 
-  JSONNODE *root = json_parse(json.c_str());
+  const char *str = json.c_str();
+  poco_assert(json_is_valid(str));
+  
+  JSONNODE *root = json_parse(str);
   JSONNODE_ITERATOR i = json_begin(root);
   JSONNODE_ITERATOR e = json_end(root);
   while (i != e) {
