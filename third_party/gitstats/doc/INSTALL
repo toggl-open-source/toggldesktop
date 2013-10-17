@@ -1,0 +1,10 @@
+gitstats does not currently need to be installed; it's used right from the
+directory (it also assumes some files like the stylesheet are in .)
+
+Suppose you have a git project at /mnt/src/git/project
+and you want to save the statistics to ~/public_html/project
+
+You would run:
+$ ./gitstats /mnt/src/git/project ~/public_html/project
+(go grab a cup of coffee if it's a large project :)
+$ sensible-browser ~/public_html/project/index.html

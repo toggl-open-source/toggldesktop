@@ -1,0 +1,107 @@
+=encoding utf8
+
+=head1 NAME
+
+gitstats - git history statistics generator
+
+=head1 SYNOPSIS
+
+B<gitstats> [options] <repository dir> <output dir>
+
+=head1 DESCRIPTION
+
+B<gitstats> is a statistics generator for L<git(1)> repositories. It examines the repository and produces some interesting statistics from the history of it. Currently HTML is the only output format.
+
+=head1 OPTIONS
+
+-c option=value
+
+Override a default configuration value. Defaults can be seen by running B<gitstats> without parameters.
+
+=head2 Values:
+
+=over
+
+=item authors_top
+
+How many top authors to show.
+
+=item commit_begin, commit_end
+
+Specify a commit range to generate statistics from. You can specify only commit_end limit statistics to a certain commit or another branch.
+
+=item linear_linestats
+
+When enabled, the lines of code statistics are collected from linear history.
+The downside is that commits of long feature branches appear only at the point
+where a merge commit is made.
+
+If disabled (old behaviour), the problem is that if two branches contain the
+same changes (for example, removal of same lines), the statistics get skewed.
+
+Defaults to on.
+
+=item max_authors
+
+How many authors to show in the list of authors.
+
+=item max_domains
+
+How many domains to show in domains by commits.
+
+=item max_ext_length
+
+Maximum file extension length.
+
+=item processes
+
+Number of concurrent processes to use when extracting git repository data.
+
+=item project_name
+
+Project name to show on the generated pages. Default is to use basename of the repository directory.
+
+=item style
+
+CSS stylesheet to use.
+
+=back
+
+=head1 FAQ
+
+Q: How do I generate statistics of a non-master branch?
+
+A: Use C<-c commit_end=web> parameter.
+
+Q: I have files in my git repository that I would like to exclude from the statistics, how do I do that?
+
+A: At the moment the only way is to use L<git-filter-branch(1)> to create a temporary repository and generate the statistics from that.
+
+=head1 EXAMPLES
+
+=over
+
+=item Generates statistics from a git repository in C<foo> and outputs the result in a directory C<foo_stats>:
+
+  gitstats foo foo_stats
+
+=item As above, but only analyzes the last 10 commits:
+
+  gitstats -c commit_begin='HEAD~10' foo foo_stats
+
+=back
+
+=head1 AUTHORS
+
+B<gitstats> was written by Heikki Hokkanen and others.
+
+See the git repository at http://repo.or.cz/w/gitstats.git for an up-to-date full list of contributors.
+
+=head1 WWW
+
+http://gitstats.sourceforge.net/
+
+=head1 SEE ALSO
+
+L<git(1)>
+
