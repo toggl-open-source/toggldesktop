@@ -196,7 +196,7 @@
     NSLog(@"Error: %@", msg);
 
     // Ignore offline errors
-    if ([msg rangeOfString:@"host not found"].location == NSNotFound) {
+    if ([msg rangeOfString:@"host not found"].location != NSNotFound) {
       return;
     }
 
