@@ -40,38 +40,50 @@
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimeEntryDeselected object:nil];
 }
 
+- (void)render:(NSString *)view_item_guid {
+  NSAssert(view_item_guid != nil, @"GUID is nil");
+  TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:view_item_guid];
+  NSAssert(item != nil, @"View item not found by GUID!");
+  
+  self.GUID = view_item_guid;
+  NSAssert(self.GUID != nil, @"GUID is nil");
+  
+  [self.descriptionTextField setStringValue:item.Description];
+  if (item.project != nil) {
+    [self.projectSelect setStringValue:item.project];
+  } else {
+    [self.projectSelect setStringValue:@""];
+  }
+  [self.durationTextField setStringValue:item.duration];
+  [self.startTime setDateValue:item.started];
+  [self.startDate setDateValue:item.started];
+  [self.endTime setDateValue:item.ended];
+  if (YES == item.billable) {
+    [self.billableCheckbox setState:NSOnState];
+  } else {
+    [self.billableCheckbox setState:NSOffState];
+  }
+  
+  if ([item.tags count] == 0) {
+    [self.tags setObjectValue:nil];
+  } else {
+    [self.tags setObjectValue:item.tags];
+  }
+  
+  if (item.updatedAt != nil) {
+    [self.lastUpdateLabelTextField setHidden:NO];
+    [self.lastUpdateTextField setHidden:NO];
+    [self.lastUpdateTextField setStringValue:item.updatedAt];
+  } else {
+    [self.lastUpdateLabelTextField setHidden:YES];
+    [self.lastUpdateTextField setHidden:YES];
+  }
+}
+
 - (void)eventHandler: (NSNotification *) notification
 {
   if ([notification.name isEqualToString:kUIEventTimeEntrySelected]) {
-    NSString *guid = notification.object;
-    NSAssert(guid != nil, @"GUID is nil");
-    TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:guid];
-    NSAssert(item != nil, @"View item not found by GUID!");
-
-    self.GUID = guid;
-    NSAssert(self.GUID != nil, @"GUID is nil");
-    
-    [self.descriptionTextField setStringValue:item.Description];
-    if (item.project != nil) {
-      [self.projectSelect setStringValue:item.project];
-    } else {
-      [self.projectSelect setStringValue:@""];
-    }
-    [self.durationTextField setStringValue:item.duration];
-    [self.startTime setDateValue:item.started];
-    [self.startDate setDateValue:item.started];
-    [self.endTime setDateValue:item.ended];
-    if (YES == item.billable) {
-      [self.billableCheckbox setState:NSOnState];
-    } else {
-      [self.billableCheckbox setState:NSOffState];
-    }
-    
-    if ([item.tags count] == 0) {
-      [self.tags setObjectValue:nil];
-    } else {
-      [self.tags setObjectValue:item.tags];
-    }
+    [self render:notification.object];
 
   } else if ([notification.name isEqualToString:kUIEventUserLoggedIn]) {
     [self.projectNames removeAllObjects];
