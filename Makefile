@@ -166,6 +166,9 @@ poco:
 	--include-path=$(pwd)/$(openssldir)/include --library-path=$(pwd)/$(openssldir) && \
 	make
 
+stats:
+	./third_party/gitstats/gitstats . stats
+
 .phony:
 	command_line_client
 
