@@ -88,10 +88,10 @@
 
   } else if ([notification.name isEqualToString:kUIEventUpdate]) {
     NSString *GUID = notification.object;
+    TimeEntryViewItem *updated = [TimeEntryViewItem findByGUID:GUID];
     for (int i = 0; i < [viewitems count]; i++) {
       TimeEntryViewItem *item = [viewitems objectAtIndex:i];
       if ([GUID isEqualToString:item.GUID]) {
-        TimeEntryViewItem *updated = [TimeEntryViewItem findByGUID:GUID];
         if (updated != nil) {
           [viewitems replaceObjectAtIndex:i withObject:updated];
           [self.timeEntriesTableView reloadData];
@@ -99,7 +99,12 @@
         return;
       }
     }
-    
+    // Since TE was not found in our list, it must be a new time entry.
+    // Insert it to list, if it's not tracking.
+    if (updated.duration_in_seconds >= 0) {
+      [viewitems insertObject:updated atIndex:0];
+      [self.timeEntriesTableView reloadData];
+    }
   }
 }
 

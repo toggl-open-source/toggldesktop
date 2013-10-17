@@ -59,7 +59,15 @@
     NSString *GUID = notification.object;
     if ([GUID isEqualToString:self.te.GUID]) {
       TimeEntryViewItem *te = [TimeEntryViewItem findByGUID:GUID];
-      [self render:te];
+      if (te.duration_in_seconds >= 0 ) {
+        // Looks like the time entry we thought is running was actually
+        // stopped meanwhile. Pass forward the information.
+        [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerStopped
+                                                            object:nil];
+      } else {
+        // Phew, the updated time entry is still running. Render it.
+        [self render:te];
+      }
     }
   }
 }
