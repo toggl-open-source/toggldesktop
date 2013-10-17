@@ -167,7 +167,8 @@ poco:
 	make
 
 stats:
-	./third_party/gitstats/gitstats . stats
+	rm -rf gitstats
+	./third_party/gitstats/gitstats -c merge_authors="Tanel","Tanel Lebedev" . gitstats
 
 .phony:
 	command_line_client
