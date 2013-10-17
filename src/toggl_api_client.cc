@@ -1231,34 +1231,20 @@ void Tag::LoadFromJSONNode(JSONNODE *data) {
     }
 }
 
-std::time_t TimeEntry::Parse8601(std::string iso_8601_formatted_date) {
-    if ("null" == iso_8601_formatted_date) {
-        return 0;
-    }
-    int tzd;
-    Poco::DateTime dt;
-    Poco::DateTimeParser::parse(Poco::DateTimeFormat::ISO8601_FORMAT,
-        iso_8601_formatted_date, dt, tzd);
-    Poco::Timestamp ts = dt.timestamp();
-    return ts.epochTime();
-}
-
-std::string TimeEntry::Format8601(std::time_t date) {
-    Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
-    return Poco::DateTimeFormatter::format(ts,
-        Poco::DateTimeFormat::ISO8601_FORMAT);
-}
-
 std::string TimeEntry::StartString() {
-     return Format8601(start_);
+     return Formatter::Format8601(start_);
 }
 
 void TimeEntry::SetStartString(std::string value) {
-    SetStart(Parse8601(value));
+    SetStart(Formatter::Parse8601(value));
 }
 
 void TimeEntry::SetUpdatedAtString(std::string value) {
-    SetUpdatedAt(Parse8601(value));
+    SetUpdatedAt(Formatter::Parse8601(value));
+}
+
+std::string TimeEntry::UpdatedAtString() {
+    return Formatter::Format8601(updated_at_);
 }
 
 std::string TimeEntry::DurationString() {
@@ -1298,11 +1284,11 @@ void TimeEntry::SetDurationInSeconds(Poco::Int64 value) {
 }
 
 std::string TimeEntry::StopString() {
-     return Format8601(stop_);
+     return Formatter::Format8601(stop_);
 }
 
 void TimeEntry::SetStopString(std::string value) {
-    SetStop(Parse8601(value));
+    SetStop(Formatter::Parse8601(value));
 }
 
 void TimeEntry::SetStop(Poco::UInt64 value) {
@@ -1514,6 +1500,27 @@ std::string Formatter::FormatDurationInSeconds(const Poco::Int64 value) {
     }
     Poco::Timespan span(duration * Poco::Timespan::SECONDS);
     return Poco::DateTimeFormatter::format(span, "%H:%M:%S");
+}
+
+std::time_t Formatter::Parse8601(std::string iso_8601_formatted_date) {
+    if ("null" == iso_8601_formatted_date) {
+        return 0;
+    }
+    int tzd;
+    Poco::DateTime dt;
+    Poco::DateTimeParser::parse(Poco::DateTimeFormat::ISO8601_FORMAT,
+        iso_8601_formatted_date, dt, tzd);
+    Poco::Timestamp ts = dt.timestamp();
+    return ts.epochTime();
+}
+
+std::string Formatter::Format8601(std::time_t date) {
+    if (!date) {
+        return "null";
+    }
+    Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
+    return Poco::DateTimeFormatter::format(ts,
+        Poco::DateTimeFormat::ISO8601_FORMAT);
 }
 
 }   // namespace kopsik
