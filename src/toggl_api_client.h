@@ -437,8 +437,6 @@ namespace kopsik {
         bool isStatusOK(int status);
         void parseResponseArray(std::string response_body,
             std::vector<BatchUpdateResult> *responses);
-
-        std::string createdWith();
     };
 }  // namespace kopsik
 

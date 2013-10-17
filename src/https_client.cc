@@ -19,6 +19,7 @@
 #include "Poco/Mutex.h"
 
 #include "./libjson.h"
+#include "./version.h"
 
 namespace kopsik {
 
@@ -87,6 +88,7 @@ error HTTPSClient::requestJSON(std::string method,
     req.setContentLength(size);
     req.set("Content-Encoding", "gzip");
     req.set("Accept-Encoding", "gzip");
+    req.set("User-Agent", kopsik::UserAgent());
     req.setChunkedTransferEncoding(true);
 
     Poco::Logger &logger = Poco::Logger::get("https_client");

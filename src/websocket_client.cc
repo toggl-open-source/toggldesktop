@@ -19,6 +19,7 @@
 #include "Poco/Mutex.h"
 
 #include "./libjson.h"
+#include "./version.h"
 
 namespace kopsik {
 
@@ -62,6 +63,7 @@ error WebSocketClient::Start(void *ctx,
     req_ = new Poco::Net::HTTPRequest(Poco::Net::HTTPRequest::HTTP_GET, "/ws",
       Poco::Net::HTTPMessage::HTTP_1_1);
     req_->set("Origin", "https://localhost");
+    req_->set("User-Agent", kopsik::UserAgent());
     if (res_) {
       delete res_;
     }

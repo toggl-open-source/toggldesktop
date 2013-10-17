@@ -44,7 +44,7 @@ TimeEntry *User::Start(std::string description) {
   te->SetDurationInSeconds(-time(0));
   te->SetWID(DefaultWID());
   te->SetUIModifiedAt(time(0));
-  te->SetCreatedWith(createdWith());
+  te->SetCreatedWith(kopsik::UserAgent());
   related.TimeEntries.push_back(te);
   return te;
 }
@@ -62,7 +62,7 @@ TimeEntry *User::Continue(std::string GUID) {
     te->SetPID(existing->PID());
     te->SetTID(existing->TID());
     te->SetUIModifiedAt(time(0));
-    te->SetCreatedWith(createdWith());
+    te->SetCreatedWith(kopsik::UserAgent());
     related.TimeEntries.push_back(te);
     return te;
 }
@@ -72,17 +72,6 @@ void User::MarkTimeEntryAsDeleted(std::string GUID) {
     poco_assert(te);
     te->SetDeletedAt(time(0));
     te->SetUIModifiedAt(time(0));
-}
-
-std::string User::createdWith() {
-    std::stringstream ss;
-    ss  << "libkopsik/"
-        << kopsik::version::Major
-        << "."
-        << kopsik::version::Minor
-        << "."
-        << kopsik::version::Patch;
-    return ss.str();
 }
 
 bool compareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
