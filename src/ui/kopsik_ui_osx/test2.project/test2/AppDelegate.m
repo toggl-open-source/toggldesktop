@@ -68,6 +68,9 @@
   
   ctx = kopsik_context_init();
 
+  NSArray *arguments = [[NSProcessInfo processInfo] arguments];
+  NSLog(@"Command line arguments: %@", arguments);
+
   NSString *app_path = self.applicationSupportDirectory;
 
   NSString *db_path = [app_path stringByAppendingPathComponent:@"kopsik.db"];
