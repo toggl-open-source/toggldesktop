@@ -56,18 +56,24 @@
     self.te = nil;
 
   } else if ([notification.name isEqualToString:kUIEventUpdate]) {
-    NSString *GUID = notification.object;
-    if ([GUID isEqualToString:self.te.GUID]) {
-      TimeEntryViewItem *te = [TimeEntryViewItem findByGUID:GUID];
-      if (te.duration_in_seconds >= 0 ) {
-        // Looks like the time entry we thought is running was actually
-        // stopped meanwhile. Pass forward the information.
-        [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerStopped
-                                                            object:nil];
-      } else {
-        // Phew, the updated time entry is still running. Render it.
-        [self render:te];
-      }
+    TimeEntryViewItem *updated = [TimeEntryViewItem findByGUID:notification.object];
+
+    // Time entry we thought was running, has been stopped.
+    if ((updated.duration_in_seconds >= 0) && [updated.GUID isEqualToString:self.te.GUID]) {
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerStopped object:nil];
+      return;
+    }
+
+    // Time entry we did not know was running, is running.
+    if ((updated.duration_in_seconds < 0) && ![updated.GUID isEqualToString:self.te.GUID]) {
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerRunning object:updated];
+      return;
+    }
+
+    // Time entry is still running and needs to be updated.
+    if ((updated.duration_in_seconds < 0) && [updated.GUID isEqualToString:self.te.GUID]) {
+      [self render:updated];
+      return;
     }
   }
 }
