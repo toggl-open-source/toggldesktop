@@ -103,7 +103,7 @@ std::string WebSocketClient::parseWebSocketMessageType(std::string json) {
 
   const char *str = json.c_str();
   poco_assert(json_is_valid(str));
-  
+
   JSONNODE *root = json_parse(str);
   JSONNODE_ITERATOR i = json_begin(root);
   JSONNODE_ITERATOR e = json_end(root);
