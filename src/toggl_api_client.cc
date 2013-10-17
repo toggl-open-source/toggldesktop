@@ -398,7 +398,7 @@ void BatchUpdateResult::parseResponseJSON(JSONNODE *n) {
             Body = std::string(json_as_string(*i));
         } else if (strcmp(node_name, "guid") == 0) {
             GUID = std::string(json_as_string(*i));
-        } else if (strcmp(node_name, "guid") == 0) {
+        } else if (strcmp(node_name, "content_type") == 0) {
             ContentType = std::string(json_as_string(*i));
         } else if (strcmp(node_name, "method") == 0) {
             Method = std::string(json_as_string(*i));
