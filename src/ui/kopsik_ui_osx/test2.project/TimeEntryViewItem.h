@@ -22,4 +22,5 @@
 @property NSDate *started;
 @property NSDate *ended;
 @property NSArray *tags;
+@property NSString *updatedAt;
 @end

@@ -41,6 +41,11 @@
   }
   self.started = [NSDate dateWithTimeIntervalSince1970:data->Started];
   self.ended = [NSDate dateWithTimeIntervalSince1970:data->Ended];
+  if (data->UpdatedAt) {
+    self.updatedAt = [NSString stringWithUTF8String:data->UpdatedAt];
+  } else {
+    self.updatedAt = nil;
+  }
 }
 
 + (TimeEntryViewItem *)findByGUID:(NSString *)guid {

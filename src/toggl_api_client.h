@@ -268,6 +268,7 @@ namespace kopsik {
 
         Poco::UInt64 UpdatedAt() { return updated_at_; }
         void SetUpdatedAt(Poco::UInt64 value);
+        std::string UpdatedAtString();
         void SetUpdatedAtString(std::string value);
 
         // When time entry is finally deleted
