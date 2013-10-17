@@ -58,39 +58,24 @@ void time_entry_to_view_item(
 
   view_item->DurationInSeconds = static_cast<int>(te->DurationInSeconds());
 
-  if (view_item->Description) {
-    free(view_item->Description);
-    view_item->Description = 0;
-  }
+  poco_assert(!view_item->Description);
   view_item->Description = strdup(te->Description().c_str());
 
-  if (view_item->GUID) {
-    free(view_item->GUID);
-    view_item->GUID = 0;
-  }
+  poco_assert(!view_item->GUID);
   view_item->GUID = strdup(te->GUID().c_str());
 
   if (te->PID()) {
     kopsik::Project *p = user->GetProjectByID(te->PID());
     if (p) {
-      if (view_item->Project) {
-        free(view_item->Project);
-        view_item->Project = 0;
-      }
+      poco_assert(!view_item->Project);
       view_item->Project = strdup(p->Name().c_str());
 
-      if (view_item->Color) {
-        free(view_item->Color);
-        view_item->Color = 0;
-      }
+      poco_assert(!view_item->Color);
       view_item->Color = strdup(p->ColorCode().c_str());
     }
   }
 
-  if (view_item->Duration) {
-    free(view_item->Duration);
-    view_item->Duration = 0;
-  }
+  poco_assert(!view_item->Duration);
   view_item->Duration = strdup(te->DurationString().c_str());
 
   view_item->Started = static_cast<unsigned int>(te->Start());
