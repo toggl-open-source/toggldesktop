@@ -86,12 +86,15 @@ void time_entry_to_view_item(
     view_item->Billable = 0;
   }
 
-  if (view_item->Tags) {
-    free(view_item->Tags);
-    view_item->Tags = 0;
-  }
+  poco_assert(!view_item->Tags);
   if (!te->Tags().empty()) {
     view_item->Tags = strdup(te->Tags().c_str());
+  }
+
+  poco_assert(!view_item->UpdatedAt);
+  std::string updated_at = te->UpdatedAtString();
+  if (!updated_at.empty()) {
+    view_item->UpdatedAt = strdup(updated_at.c_str());
   }
 }
 
@@ -628,6 +631,7 @@ KopsikTimeEntryViewItem *kopsik_time_entry_view_item_init() {
   item->Tags = 0;
   item->Started = 0;
   item->Ended = 0;
+  item->UpdatedAt = 0;
   return item;
 }
 
@@ -656,6 +660,10 @@ void kopsik_time_entry_view_item_clear(KopsikTimeEntryViewItem *item) {
   if (item->Tags) {
     free(item->Tags);
     item->Tags = 0;
+  }
+  if (item->UpdatedAt) {
+    free(item->UpdatedAt);
+    item->UpdatedAt = 0;
   }
   delete item;
   item = 0;
