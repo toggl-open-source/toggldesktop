@@ -200,13 +200,7 @@
       return;
     }
 
-    NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText:msg];
-    [alert addButtonWithTitle:@"Dismiss"];
-    [alert beginSheetModalForWindow:self.window
-                      modalDelegate:self
-                     didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:)
-                        contextInfo:nil];
+    [self performSelectorOnMainThread:@selector(showError:) withObject:msg waitUntilDone:NO];
 
     [Bugsnag notify:[NSException
                      exceptionWithName:@"UI error"
@@ -215,15 +209,14 @@
   }
 }
 
-- (void) alertDidEnd:(NSAlert *)a returnCode:(NSInteger)rc contextInfo:(void *)ci {
-  switch(rc) {
-    case NSAlertFirstButtonReturn:
-      // "First" pressed
-      break;
-    case NSAlertSecondButtonReturn:
-      // "Second" pressed
-      break;
-  }
+- (void)showError:(NSString *)msg {
+  NSAlert *alert = [[NSAlert alloc] init];
+  [alert setMessageText:msg];
+  [alert addButtonWithTitle:@"Dismiss"];
+  [alert beginSheetModalForWindow:self.window
+                    modalDelegate:self
+                   didEndSelector:nil
+                      contextInfo:nil];
 }
 
 - (IBAction)logout:(id)sender {
