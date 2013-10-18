@@ -100,7 +100,8 @@ error Database::deleteAllFromTableByUID(std::string table_name,
     return last_error();
 }
 
-error Database::deleteFromTable(std::string table_name, Poco::Int64 local_id) {
+error Database::deleteFromTable(std::string table_name,
+        Poco::Int64 local_id) {
     poco_assert(session);
     poco_assert(!table_name.empty());
     poco_assert(local_id);
@@ -689,6 +690,9 @@ error Database::saveTimeEntries(Poco::UInt64 UID,
             if (err != noError) {
                 return err;
             }
+            changes->push_back(ModelChange(
+                "time_entry", "DELETE", model->ID(), model->GUID()));
+            continue;
         }
         model->SetUID(UID);
         error err = SaveTimeEntry(model, changes);
