@@ -23,6 +23,16 @@ namespace command_line_client {
             "verbose", "v", "verbose logging, to the console"));
     }
 
+    std::string KopsikModelChangeToString(
+            KopsikModelChange &change) {
+        std::stringstream ss;
+        ss  << "model_type=" << change.ModelType
+            << ", change_type=" << change.ChangeType
+            << ", model_id=" << change.ModelID
+            << ", GUID=" << change.GUID;
+        return ss.str();
+    }
+
     std::string KopsikTimeEntryViewItemToString(
             KopsikTimeEntryViewItem *item) {
         std::stringstream ss;
@@ -39,7 +49,7 @@ namespace command_line_client {
     void on_view_item_change(kopsik_api_result result,
             char *err_string,
             int unsigned err_len,
-            KopsikTimeEntryViewItem *view_item) {
+            KopsikModelChange *change) {
         if (KOPSIK_API_SUCCESS != result) {
             std::string err("");
             err.append(err_string, err_len);
@@ -48,15 +58,9 @@ namespace command_line_client {
             free(err_string);
             return;
         }
-        if (!view_item) {
-            std::cerr << "on_view_item_change but nothing changed"
-                << std::endl;
-            return;
-        }
         std::cout << "on_view_item_change "
-            << KopsikTimeEntryViewItemToString(view_item)
+            << KopsikModelChangeToString(*change)
             << std::endl;
-        kopsik_time_entry_view_item_clear(view_item);
     }
 
     int Main::main(const std::vector<std::string>& args) {

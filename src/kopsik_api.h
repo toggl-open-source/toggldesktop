@@ -263,14 +263,21 @@ KOPSIK_EXPORT kopsik_api_result kopsik_time_entry_view_items(
 
 // Websocket client
 
+typedef struct {
+  char *ModelType;
+  char *ChangeType;
+  unsigned int ModelID;
+  char *GUID;
+} KopsikModelChange;
+
 typedef void (*KopsikViewItemChangeCallback)(
   kopsik_api_result result,
   // NB! you need to free() the memory yourself
   char *errmsg,
   // Length of the returned error string.
   unsigned int errlen,
-  // Actual changes, if no errors
-  KopsikTimeEntryViewItem *view_item);
+  // Actual change, if no errors
+  KopsikModelChange *change);
 
 KOPSIK_EXPORT void kopsik_set_change_callback(
   KopsikContext *ctx,

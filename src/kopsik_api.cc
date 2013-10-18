@@ -1322,6 +1322,49 @@ kopsik_api_result kopsik_time_entry_view_items(
 
 // Websocket client
 
+KopsikModelChange *model_change_init() {
+  KopsikModelChange *change = new KopsikModelChange();
+  change->ModelType = 0;
+  change->ChangeType = 0;
+  change->ModelID = 0;
+  change->GUID = 0;
+  return change;
+}
+
+void model_change_clear(KopsikModelChange *change) {
+  poco_assert(change);
+  if (change->ModelType) {
+    free(change->ModelType);
+    change->ModelType = 0;
+  }
+  if (change->ChangeType) {
+    free(change->ChangeType);
+    change->ChangeType = 0;
+  }
+  if (change->GUID) {
+    free(change->GUID);
+    change->GUID = 0;
+  }
+  delete change;
+  change = 0;
+}
+
+void model_change_to_change_item(
+    kopsik::ModelChange &in,
+    KopsikModelChange &out) {
+
+  poco_assert(!out.ModelType);
+  out.ModelType = strdup(in.ModelType().c_str());
+
+  out.ModelID = (unsigned int)in.ModelID();
+
+  poco_assert(!out.ChangeType);
+  out.ChangeType = strdup(in.ChangeType().c_str());
+
+  poco_assert(!out.GUID);
+  out.GUID = strdup(in.GUID().c_str());
+}
+
 void on_websocket_message(
     void *context,
     std::string json) {
@@ -1358,14 +1401,10 @@ void on_websocket_message(
       it != changes.end();
       it++) {
     kopsik::ModelChange mc = *it;
-    if ("time_entry" == mc.ModelType()) {
-      poco_assert(!mc.GUID().empty());
-      kopsik::TimeEntry *te = user->GetTimeEntryByGUID(mc.GUID());
-      poco_assert(te);
-      KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-      time_entry_to_view_item(te, user, item);
-      callback(KOPSIK_API_SUCCESS, 0, 0, item);
-    }
+    KopsikModelChange *change = model_change_init();
+    model_change_to_change_item(mc, *change);
+    callback(KOPSIK_API_SUCCESS, 0, 0, change);
+    model_change_clear(change);
   }
 }
 
