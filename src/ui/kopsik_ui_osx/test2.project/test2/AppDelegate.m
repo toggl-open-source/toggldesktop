@@ -84,6 +84,10 @@
 
 - (void) dealloc
 {
+  char err[KOPSIK_ERR_LEN];
+  if (KOPSIK_API_SUCCESS != kopsik_websocket_stop(ctx, err, KOPSIK_ERR_LEN)) {
+    NSLog(@"Error while shutting down websocket: %s", err);
+  }
   kopsik_context_clear(ctx);
   ctx = 0;
 }
