@@ -138,11 +138,18 @@ void WebSocketClient::runActivity() {
   while (!activity_.isStopped()) {
     std::string json = receiveWebSocketMessage();
 
-    {
-      std::stringstream ss;
-      ss << "WebSocket message: " << json;
-      logger.debug(ss.str());
+    if (activity_.isStopped()) {
+      break;
     }
+
+    if (json.empty()) {
+      logger.error("WebSocket peer has shut down or closed the connection");
+      break;
+    }
+
+    std::stringstream ss;
+    ss << "WebSocket message: " << json;
+    logger.debug(ss.str());
 
     std::string type = parseWebSocketMessageType(json);
 
@@ -173,9 +180,13 @@ void WebSocketClient::runActivity() {
 
 void WebSocketClient::Stop() {
   Poco::Logger &logger = Poco::Logger::get("websocket_client");
-  logger.debug("WebSocketClient::Stop");
+  logger.debug("shutting down");
+  if (ws_) {
+    ws_->shutdown();
+  }
   activity_.stop();  // request stop
   activity_.wait();  // wait until activity actually stops
+  logger.debug("stopped");
 }
 
 }   // namespace kopsik
