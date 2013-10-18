@@ -173,6 +173,13 @@ void kopsik_set_proxy(
   poco_assert(username);
   poco_assert(password);
 
+  std::stringstream ss;
+  ss  << "kopsik_set_proxy host=" << host
+      << ", username=" << username
+      << ", password=" << password;
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug(ss.str());
+
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
 
@@ -182,6 +189,11 @@ void kopsik_set_proxy(
 void kopsik_set_db_path(KopsikContext *ctx, const char *path) {
   poco_assert(ctx);
   poco_assert(path);
+
+  std::stringstream ss;
+  ss  << "kopsik_set_db_path path=" << path;
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug(ss.str());
 
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
@@ -204,16 +216,21 @@ void kopsik_set_log_path(KopsikContext *ctx, const char *path) {
   Poco::AutoPtr<Poco::SimpleFileChannel> simpleFileChannel(
     new Poco::SimpleFileChannel);
   simpleFileChannel->setProperty("path", path);
-  //simpleFileChannel->setProperty("rotation", "1 M");
+  // simpleFileChannel->setProperty("rotation", "1 M");
 
   Poco::AutoPtr<Poco::FormattingChannel> formattingChannel(
       new Poco::FormattingChannel(
         new Poco::PatternFormatter("%Y-%m-%d %H:%M:%S.%c [%P]:%s:%q:%t")));
   formattingChannel->setChannel(simpleFileChannel);
 
-  Poco::Logger &logger = Poco::Logger::get("");
-  logger.setChannel(formattingChannel);
-  logger.setLevel(Poco::Message::PRIO_DEBUG);
+  Poco::Logger &rootLogger = Poco::Logger::get("");
+  rootLogger.setChannel(formattingChannel);
+  rootLogger.setLevel(Poco::Message::PRIO_DEBUG);
+
+  std::stringstream ss;
+  ss  << "kopsik_set_log_path path=" << path;
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug(ss.str());
 }
 
 // User API.
@@ -244,6 +261,9 @@ kopsik_api_result kopsik_current_user(
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(out_user);
+
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_current_user");
 
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
@@ -278,6 +298,11 @@ kopsik_api_result kopsik_set_api_token(
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(api_token);
+
+  std::stringstream ss;
+  ss << "kopsik_set_api_token api_token=" << api_token;
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug(ss.str());
 
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
@@ -324,6 +349,11 @@ kopsik_api_result kopsik_login(
   poco_assert(errlen);
   poco_assert(in_email);
   poco_assert(in_password);
+
+  std::stringstream ss;
+  ss  << "kopik_login email=" << in_email;
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug(ss.str());
 
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
@@ -377,6 +407,9 @@ kopsik_api_result kopsik_logout(
   poco_assert(errmsg);
   poco_assert(errlen);
 
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_logout");
+
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
 
@@ -398,6 +431,9 @@ kopsik_api_result kopsik_sync(
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
+
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_sync");
 
   if (!ctx->current_user) {
     strncpy(errmsg, "Please login first", errlen);
@@ -425,6 +461,9 @@ kopsik_api_result kopsik_push(
   poco_assert(errmsg);
   poco_assert(errlen);
 
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_push");
+
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
 
@@ -451,6 +490,9 @@ kopsik_api_result kopsik_pushable_models(
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(stats);
+
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_pushable_models");
 
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
@@ -505,6 +547,10 @@ void kopsik_sync_async(
     KopsikResultCallback callback) {
   poco_assert(ctx);
   poco_assert(callback);
+
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_sync_async");
+
   Poco::TaskManager *tm = reinterpret_cast<Poco::TaskManager *>(ctx->tm);
   tm->start(new SyncTask(ctx, full_sync, callback));
 }
@@ -535,6 +581,9 @@ void kopsik_push_async(
     KopsikResultCallback callback) {
   poco_assert(ctx);
   poco_assert(callback);
+
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_push_async");
 
   Poco::TaskManager *tm = reinterpret_cast<Poco::TaskManager *>(ctx->tm);
   tm->start(new PushTask(ctx, callback));
@@ -588,6 +637,9 @@ kopsik_api_result kopsik_project_select_items(
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(list);
+
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_project_select_items");
 
   if (!ctx->current_user) {
     strncpy(errmsg, "Please login first", errlen);
@@ -689,6 +741,11 @@ kopsik_api_result kopsik_start(
   poco_assert(in_description);
   poco_assert(out_view_item);
 
+  std::stringstream ss;
+  ss << "kopsik_start description=" << in_description;
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug(ss.str());
+
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
 
@@ -724,6 +781,11 @@ kopsik_api_result kopsik_time_entry_view_item_by_guid(
   poco_assert(view_item);
   poco_assert(was_found);
 
+  std::stringstream ss;
+  ss << "kopsik_time_entry_view_item_by_guid guid=" << guid;
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug(ss.str());
+
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
 
@@ -758,6 +820,11 @@ kopsik_api_result kopsik_continue(
   poco_assert(guid);
   poco_assert(view_item);
 
+  std::stringstream ss;
+  ss << "kopsik_continue guid=" << guid;
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug(ss.str());
+
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
 
@@ -790,6 +857,11 @@ kopsik_api_result kopsik_delete_time_entry(
   poco_assert(errlen);
   poco_assert(guid);
 
+  std::stringstream ss;
+  ss << "kopsik_delete_time_entry guid=" << guid;
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug(ss.str());
+
   std::string GUID(guid);
   if (GUID.empty()) {
     strncpy(errmsg, "Missing GUID", errlen);
@@ -813,12 +885,17 @@ kopsik_api_result kopsik_set_time_entry_duration(
     char *errmsg, unsigned int errlen,
     const char *guid,
     const char *value) {
-
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(guid);
   poco_assert(value);
+
+  std::stringstream ss;
+  ss  << "kopsik_set_time_entry_duration guid=" << guid
+      << ", value=" << value;
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug(ss.str());
 
   std::string GUID(guid);
   if (GUID.empty()) {
@@ -849,11 +926,16 @@ kopsik_api_result kopsik_set_time_entry_project(
     char *errmsg, unsigned int errlen,
     const char *guid,
     const char *value) {
-
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(guid);
+
+  std::stringstream ss;
+  ss  << "kopsik_set_time_entry_project guid=" << guid
+      << ", value=" << value;
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug(ss.str());
 
   std::string GUID(guid);
   if (GUID.empty()) {
@@ -893,12 +975,17 @@ kopsik_api_result kopsik_set_time_entry_start_iso_8601(
     char *errmsg, unsigned int errlen,
     const char *guid,
     const char *value) {
-
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(guid);
   poco_assert(value);
+
+  std::stringstream ss;
+  ss  << "kopsik_set_time_entry_start_iso_8601 guid=" << guid
+      << ", value=" << value;
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug(ss.str());
 
   std::string GUID(guid);
   if (GUID.empty()) {
@@ -929,12 +1016,17 @@ kopsik_api_result kopsik_set_time_entry_end_iso_8601(
     char *errmsg, unsigned int errlen,
     const char *guid,
     const char *value) {
-
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(guid);
   poco_assert(value);
+
+  std::stringstream ss;
+  ss  << "kopsik_set_time_entry_end_iso_8601 guid=" << guid
+      << ", value=" << value;
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug(ss.str());
 
   std::string GUID(guid);
   if (GUID.empty()) {
@@ -965,12 +1057,17 @@ kopsik_api_result kopsik_set_time_entry_tags(
     char *errmsg, unsigned int errlen,
     const char *guid,
     const char *value) {
-
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(guid);
   poco_assert(value);
+
+  std::stringstream ss;
+  ss  << "kopsik_set_time_entry_tags guid=" << guid
+      << ", value=" << value;
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug(ss.str());
 
   std::string GUID(guid);
   if (GUID.empty()) {
@@ -1001,11 +1098,16 @@ kopsik_api_result kopsik_set_time_entry_billable(
     char *errmsg, unsigned int errlen,
     const char *guid,
     int value) {
-
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(guid);
+
+  std::stringstream ss;
+  ss  << "kopsik_set_time_entry_billable guid=" << guid
+      << ", value=" << value;
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug(ss.str());
 
   std::string GUID(guid);
   if (GUID.empty()) {
@@ -1040,12 +1142,17 @@ kopsik_api_result kopsik_set_time_entry_description(
     char *errmsg, unsigned int errlen,
     const char *guid,
     const char *value) {
-
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(guid);
   poco_assert(value);
+
+  std::stringstream ss;
+  ss  << "kopsik_set_time_entry_description guid=" << guid
+      << ", value=" << value;
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug(ss.str());
 
   std::string GUID(guid);
   if (GUID.empty()) {
@@ -1080,6 +1187,9 @@ kopsik_api_result kopsik_stop(
   poco_assert(errlen);
   poco_assert(out_view_item);
 
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_stop");
+
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
 
@@ -1109,6 +1219,9 @@ kopsik_api_result kopsik_running_time_entry_view_item(
   poco_assert(errlen);
   poco_assert(out_item);
   poco_assert(out_is_tracking);
+
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_running_time_entry_view_item");
 
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
@@ -1156,6 +1269,9 @@ kopsik_api_result kopsik_time_entry_view_items(
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(out_list);
+
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_time_entry_view_items");
 
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
@@ -1212,6 +1328,11 @@ void on_websocket_message(
   poco_assert(context);
   poco_assert(!json.empty());
 
+  std::stringstream ss;
+  ss << "on_websocket_message json=" << json;
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug(ss.str());
+
   KopsikContext *ctx = reinterpret_cast<KopsikContext *>(context);
   poco_assert(ctx->change_callback);
   KopsikViewItemChangeCallback callback =
@@ -1253,6 +1374,9 @@ void kopsik_set_change_callback(
     KopsikViewItemChangeCallback callback) {
   poco_assert(callback);
 
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_set_change_callback");
+
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
 
@@ -1265,6 +1389,9 @@ kopsik_api_result kopsik_websocket_start(
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
+
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_websocket_start");
 
   if (!ctx->current_user) {
     strncpy(errmsg, "Please login first", errlen);
@@ -1294,6 +1421,9 @@ kopsik_api_result kopsik_websocket_stop(
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
+
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_websocket_stop");
 
   if (!ctx->current_user) {
     strncpy(errmsg, "Please login first", errlen);
