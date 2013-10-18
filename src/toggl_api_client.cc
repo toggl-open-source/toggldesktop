@@ -15,6 +15,7 @@
 #include "Poco/DateTimeFormat.h"
 #include "Poco/Timespan.h"
 #include "Poco/NumberParser.h"
+#include "Poco/String.h"
 
 #include "./https_client.h"
 #include "./version.h"
@@ -546,6 +547,7 @@ void User::loadUpdateFromJSONNode(JSONNODE *node) {
             model = std::string(json_as_string(*i));
         } else if (strcmp(node_name, "action") == 0) {
             action = std::string(json_as_string(*i));
+            Poco::toLowerInPlace(action);
         }
         ++i;
     }
@@ -558,7 +560,6 @@ void User::loadUpdateFromJSONNode(JSONNODE *node) {
     logger.debug(ss.str());
 
     if ("time_entry" == model) {
-        // FIXME: check action and handle DELETE?
         loadTimeEntryFromJSONNode(data);
     }
 }
@@ -1407,6 +1408,8 @@ void TimeEntry::LoadFromJSONNode(JSONNODE *data) {
             SetCreatedWith(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "at") == 0) {
             SetUpdatedAtString(std::string(json_as_string(*current_node)));
+        } else if (strcmp(node_name, "server_deleted_at") == 0) {
+            MarkTimeEntryAsDeletedOnServer();
         }
         ++current_node;
     }
