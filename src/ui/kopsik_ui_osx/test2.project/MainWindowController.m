@@ -267,12 +267,10 @@ void renderRunningTimeEntry() {
   kopsik_time_entry_view_item_clear(item);
 }
 
-// FIXME: model changes should get model name, GUID (ID) and action instead.
-// So we can proxy those to kUIEventUpdate, kUIEventDelete etc notifications from here.
 void onModelChange(kopsik_api_result result,
                      char *errmsg,
                      unsigned int errlen,
-                     KopsikTimeEntryViewItem *view_item) {
+                     KopsikModelChange *change) {
   if (KOPSIK_API_SUCCESS != result) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
                                                           object:[NSString stringWithUTF8String:errmsg]];
@@ -280,13 +278,13 @@ void onModelChange(kopsik_api_result result,
     return;
   }
 
-  TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
-  [te load:view_item];
-  kopsik_time_entry_view_item_clear(view_item);
+  NSLog(@"osx_ui.onModelChange %@", change);
 
-  NSLog(@"osx_ui.onModelChange %@", te);
+  NSString *GUID = [NSString stringWithUTF8String:change->GUID];
 
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUpdate object:te.GUID];
+  // FIXME: turn update and delete events into modelchange event
+
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUpdate object:GUID];
 }
 
 - (void)startSync {

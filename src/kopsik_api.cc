@@ -169,7 +169,7 @@ void kopsik_user_agent(
   poco_assert(str);
   poco_assert(len);
   str = strdup(kopsik::UserAgent().c_str());
-  len = strlen(str);
+  len = (unsigned int)strlen(str);
 }
 
 void kopsik_set_proxy(
