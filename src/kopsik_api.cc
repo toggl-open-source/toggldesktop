@@ -164,6 +164,14 @@ void kopsik_version(int *major, int *minor, int *patch) {
   *patch = kopsik::version::Patch;
 }
 
+void kopsik_user_agent(
+    char *str, unsigned int len) {
+  poco_assert(str);
+  poco_assert(len);
+  str = strdup(kopsik::UserAgent().c_str());
+  len = strlen(str);
+}
+
 void kopsik_set_proxy(
     KopsikContext *ctx,
     const char *host, const unsigned int port,

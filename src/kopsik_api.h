@@ -38,6 +38,9 @@ KOPSIK_EXPORT void kopsik_context_clear(KopsikContext *ctx);
 KOPSIK_EXPORT void kopsik_version(
   int *major, int *minor, int *patch);
 
+KOPSIK_EXPORT void kopsik_user_agent(
+  char *str, unsigned int len);
+
 KOPSIK_EXPORT void kopsik_set_proxy(KopsikContext *ctx,
   const char *host, const unsigned int port,
   const char *username, const char *password);
