@@ -30,6 +30,16 @@
   [self.mainWindowController showWindow:self];
 }
 
+- (void)applicationWillTerminate:(NSNotification *)app
+{
+  NSLog(@"applicationWillTerminate");
+  char err[KOPSIK_ERR_LEN];
+  if (KOPSIK_API_SUCCESS != kopsik_websocket_stop(ctx, err, KOPSIK_ERR_LEN)) {
+    NSLog(@"Error while shutting down websocket: %s", err);
+  }
+  NSLog(@"applicationWillTerminate done");
+}
+
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag{
   [self.mainWindowController.window setIsVisible:YES];
   return YES;
@@ -123,12 +133,6 @@
 
 - (void) dealloc
 {
-  NSLog(@"AppDelegate dealloc stopping websocket");
-  char err[KOPSIK_ERR_LEN];
-  if (KOPSIK_API_SUCCESS != kopsik_websocket_stop(ctx, err, KOPSIK_ERR_LEN)) {
-    NSLog(@"Error while shutting down websocket: %s", err);
-  }
-  NSLog(@"AppDelegate dealloc websocket stopped");
   kopsik_context_clear(ctx);
   ctx = 0;
 }

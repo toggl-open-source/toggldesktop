@@ -103,7 +103,10 @@ std::string WebSocketClient::parseWebSocketMessageType(std::string json) {
   std::string type("data");
 
   const char *str = json.c_str();
-  poco_assert(json_is_valid(str));
+
+  if (!json_is_valid(str)) {
+    return "";
+  }
 
   JSONNODE *root = json_parse(str);
   JSONNODE_ITERATOR i = json_begin(root);
@@ -150,6 +153,10 @@ void WebSocketClient::runActivity() {
     logger.debug(ss.str());
 
     std::string type = parseWebSocketMessageType(json);
+
+    if (activity_.isStopped()) {
+      break;
+    }
 
     if ("ping" == type) {
       ws_->sendFrame(kPong.data(),
