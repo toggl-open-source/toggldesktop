@@ -54,7 +54,7 @@
     [self render:notification.object];
     
   } else if ([notification.name isEqualToString:kUIEventTimerStopped]) {
-    self.te = nil;
+    [self render:nil];
 
   } else if ([notification.name isEqualToString:kUIEventModelChange]) {
     
@@ -101,12 +101,14 @@
 
 - (void) render:(TimeEntryViewItem *)view_item {
   self.te = view_item;
-  [self.descriptionTextField setStringValue:self.te.Description];
-  [self.durationTextField setStringValue:self.te.duration];
-  if (self.te.project != nil) {
-    [self.projectTextField setStringValue:self.te.project];
-  } else {
-    [self.projectTextField setStringValue:@""];
+  if (self.te != nil) {
+    [self.descriptionTextField setStringValue:self.te.Description];
+    [self.durationTextField setStringValue:self.te.duration];
+    if (self.te.project != nil) {
+      [self.projectTextField setStringValue:self.te.project];
+    } else {
+      [self.projectTextField setStringValue:@""];
+    }
   }
 }
 
