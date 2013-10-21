@@ -104,6 +104,9 @@ clean:
 osx:
 	xcodebuild -project src/ui/osx/test2.project/kopsik_ui_osx.xcodeproj
 
+osx_test: osx
+	python src/ui/osx/test/guitest.py
+
 cmdline: clean lint
 	mkdir -p build
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/https_client.cc -o build/https_client.o
