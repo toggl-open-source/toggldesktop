@@ -227,10 +227,12 @@
 }
 
 - (IBAction)sync:(id)sender {
+  NSLog(@"MainWindow sync");
   [self startSync];
 }
 
 void finishSync(kopsik_api_result result, char *err, unsigned int errlen) {
+  NSLog(@"MainWindow finishSync");
   if (KOPSIK_API_SUCCESS != result) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
                                                         object:[NSString stringWithUTF8String:err]];
@@ -282,6 +284,7 @@ void onModelChange(kopsik_api_result result,
 }
 
 - (void)startSync {
+  NSLog(@"MainWindow startSync");
   kopsik_sync_async(ctx, 1, finishSync);
 }
 
