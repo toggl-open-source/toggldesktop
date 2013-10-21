@@ -117,10 +117,7 @@ KOPSIK_EXPORT kopsik_api_result kopsik_pushable_models(
 
 typedef void (*KopsikResultCallback)(
   kopsik_api_result result,
-  // NB! you need to free() the memory yourself
-  char *errmsg,
-  // Length of the returned error string.
-  unsigned int errlen);
+  const char *errmsg);
 
 KOPSIK_EXPORT void kopsik_sync_async(
   KopsikContext *ctx,
@@ -282,11 +279,7 @@ typedef struct {
 
 typedef void (*KopsikViewItemChangeCallback)(
   kopsik_api_result result,
-  // NB! you need to free() the memory yourself
-  char *errmsg,
-  // Length of the returned error string.
-  unsigned int errlen,
-  // Actual change, if no errors
+  const char *errmsg,
   KopsikModelChange *change);
 
 KOPSIK_EXPORT void kopsik_set_change_callback(

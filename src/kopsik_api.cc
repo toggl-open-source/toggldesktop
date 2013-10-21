@@ -32,19 +32,117 @@ kopsik::Database *get_db(KopsikContext *ctx) {
   return reinterpret_cast<kopsik::Database *>(ctx->db);
 }
 
+KopsikModelChange *model_change_init() {
+  KopsikModelChange *change = new KopsikModelChange();
+  change->ModelType = 0;
+  change->ChangeType = 0;
+  change->ModelID = 0;
+  change->GUID = 0;
+  return change;
+}
+
+void model_change_clear(KopsikModelChange *change) {
+  poco_assert(change);
+  if (change->ModelType) {
+    free(change->ModelType);
+    change->ModelType = 0;
+  }
+  if (change->ChangeType) {
+    free(change->ChangeType);
+    change->ChangeType = 0;
+  }
+  if (change->GUID) {
+    free(change->GUID);
+    change->GUID = 0;
+  }
+  delete change;
+  change = 0;
+}
+
+void model_change_to_change_item(
+    kopsik::ModelChange &in,
+    KopsikModelChange &out) {
+
+  poco_assert(in.ModelType() == "time_entry" ||
+    in.ModelType() == "workspace" ||
+    in.ModelType() == "client" ||
+    in.ModelType() == "project" ||
+    in.ModelType() == "user" ||
+    in.ModelType() == "task" ||
+    in.ModelType() == "tag");
+
+  poco_assert(in.ChangeType() == "delete" ||
+    in.ChangeType() == "insert" ||
+    in.ChangeType() == "update");
+
+  poco_assert(!in.GUID().empty() || in.ModelID() > 0);
+
+  poco_assert(!out.ModelType);
+  out.ModelType = strdup(in.ModelType().c_str());
+
+  out.ModelID = (unsigned int)in.ModelID();
+
+  poco_assert(!out.ChangeType);
+  out.ChangeType = strdup(in.ChangeType().c_str());
+
+  poco_assert(!out.GUID);
+  out.GUID = strdup(in.GUID().c_str());
+}
+
+void kopsik_set_change_callback(
+    KopsikContext *ctx,
+    KopsikViewItemChangeCallback callback) {
+  poco_assert(callback);
+
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_set_change_callback");
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
+  ctx->change_callback = reinterpret_cast<void *>(callback);
+}
+
 kopsik_api_result save(KopsikContext *ctx,
-  char *errmsg, unsigned int errlen) {
+    char *errmsg, unsigned int errlen) {
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
+
   kopsik::Database *db = get_db(ctx);
   kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
+
+  KopsikViewItemChangeCallback callback = 0;
+  if (ctx->change_callback) {
+    callback =
+      reinterpret_cast<KopsikViewItemChangeCallback>(ctx->change_callback);
+  }
+
   std::vector<kopsik::ModelChange> changes;
   kopsik::error err = db->SaveUser(user, true, &changes);
+
   if (err != kopsik::noError) {
+    if (callback) {
+      callback(KOPSIK_API_FAILURE, err.c_str(), 0);
+    }
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
+
+  if (!callback) {
+    return KOPSIK_API_SUCCESS;
+  }
+
+  for (std::vector<kopsik::ModelChange>::const_iterator it = changes.begin();
+      it != changes.end();
+      it++) {
+    kopsik::ModelChange mc = *it;
+    KopsikModelChange *change = model_change_init();
+    model_change_to_change_item(mc, *change);
+    callback(KOPSIK_API_SUCCESS, 0, change);
+    model_change_clear(change);
+  }
+
   return KOPSIK_API_SUCCESS;
 }
 
@@ -168,8 +266,7 @@ void kopsik_user_agent(
     char *str, unsigned int len) {
   poco_assert(str);
   poco_assert(len);
-  str = strdup(kopsik::UserAgent().c_str());
-  len = (unsigned int)strlen(str);
+  strncpy(str, kopsik::UserAgent().c_str(), len);
 }
 
 void kopsik_set_proxy(
@@ -564,13 +661,7 @@ class SyncTask : public Poco::Task {
       char err[KOPSIK_ERR_LEN];
       kopsik_api_result res = kopsik_sync(
         ctx_, err, KOPSIK_ERR_LEN, full_sync_);
-      char *result_str = 0;
-      unsigned int result_len = 0;
-      if (res != KOPSIK_API_SUCCESS) {
-        result_str = strdup(err);
-        result_len = static_cast<int>(strlen(err));
-      }
-      callback_(res, result_str, result_len);
+      callback_(res, err);
     }
   private:
     KopsikContext *ctx_;
@@ -600,13 +691,7 @@ class PushTask : public Poco::Task {
     void runTask() {
       char err[KOPSIK_ERR_LEN];
       kopsik_api_result res = kopsik_push(ctx_, err, KOPSIK_ERR_LEN);
-      char *result_str = 0;
-      unsigned int result_len = 0;
-      if (res != KOPSIK_API_SUCCESS) {
-        result_str = strdup(err);
-        result_len = static_cast<int>(strlen(err));
-      }
-      callback_(res, result_str, result_len);
+      callback_(res, err);
     }
   private:
     KopsikContext *ctx_;
@@ -1359,63 +1444,6 @@ kopsik_api_result kopsik_time_entry_view_items(
 
 // Websocket client
 
-KopsikModelChange *model_change_init() {
-  KopsikModelChange *change = new KopsikModelChange();
-  change->ModelType = 0;
-  change->ChangeType = 0;
-  change->ModelID = 0;
-  change->GUID = 0;
-  return change;
-}
-
-void model_change_clear(KopsikModelChange *change) {
-  poco_assert(change);
-  if (change->ModelType) {
-    free(change->ModelType);
-    change->ModelType = 0;
-  }
-  if (change->ChangeType) {
-    free(change->ChangeType);
-    change->ChangeType = 0;
-  }
-  if (change->GUID) {
-    free(change->GUID);
-    change->GUID = 0;
-  }
-  delete change;
-  change = 0;
-}
-
-void model_change_to_change_item(
-    kopsik::ModelChange &in,
-    KopsikModelChange &out) {
-
-  poco_assert(in.ModelType() == "time_entry" ||
-    in.ModelType() == "workspace" ||
-    in.ModelType() == "client" ||
-    in.ModelType() == "project" ||
-    in.ModelType() == "user" ||
-    in.ModelType() == "task" ||
-    in.ModelType() == "tag");
-
-  poco_assert(in.ChangeType() == "delete" ||
-    in.ChangeType() == "insert" ||
-    in.ChangeType() == "update");
-
-  poco_assert(!in.GUID().empty() || in.ModelID() > 0);
-
-  poco_assert(!out.ModelType);
-  out.ModelType = strdup(in.ModelType().c_str());
-
-  out.ModelID = (unsigned int)in.ModelID();
-
-  poco_assert(!out.ChangeType);
-  out.ChangeType = strdup(in.ChangeType().c_str());
-
-  poco_assert(!out.GUID);
-  out.GUID = strdup(in.GUID().c_str());
-}
-
 void on_websocket_message(
     void *context,
     std::string json) {
@@ -1428,49 +1456,12 @@ void on_websocket_message(
   logger.debug(ss.str());
 
   KopsikContext *ctx = reinterpret_cast<KopsikContext *>(context);
-  poco_assert(ctx->change_callback);
-  KopsikViewItemChangeCallback callback =
-    reinterpret_cast<KopsikViewItemChangeCallback>(ctx->change_callback);
-  poco_assert(callback);
 
   kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
   user->LoadUpdateFromJSONString(json);
 
-  kopsik::Database *db = get_db(ctx);
-  std::vector<kopsik::ModelChange> changes;
-  kopsik::error err = db->SaveUser(user, true, &changes);
-  if (err != kopsik::noError) {
-    char *result_str = 0;
-    unsigned int result_len = 0;
-    result_str = strdup(err.c_str());
-    result_len = static_cast<int>(err.size());
-    callback(KOPSIK_API_FAILURE, result_str, result_len, 0);
-    return;
-  }
-
-  for (std::vector<kopsik::ModelChange>::const_iterator it = changes.begin();
-      it != changes.end();
-      it++) {
-    kopsik::ModelChange mc = *it;
-    KopsikModelChange *change = model_change_init();
-    model_change_to_change_item(mc, *change);
-    callback(KOPSIK_API_SUCCESS, 0, 0, change);
-    model_change_clear(change);
-  }
-}
-
-void kopsik_set_change_callback(
-    KopsikContext *ctx,
-    KopsikViewItemChangeCallback callback) {
-  poco_assert(callback);
-
-  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
-  logger.debug("kopsik_set_change_callback");
-
-  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
-  Poco::Mutex::ScopedLock lock(*mutex);
-
-  ctx->change_callback = reinterpret_cast<void *>(callback);
+  char err[KOPSIK_ERR_LEN];
+  save(ctx, err, KOPSIK_ERR_LEN);
 }
 
 kopsik_api_result kopsik_websocket_start(
@@ -1515,13 +1506,7 @@ class WebSocketStartTask : public Poco::Task {
       char err[KOPSIK_ERR_LEN];
       kopsik_api_result res = kopsik_websocket_start(
         ctx_, err, KOPSIK_ERR_LEN);
-      char *result_str = 0;
-      unsigned int result_len = 0;
-      if (res != KOPSIK_API_SUCCESS) {
-        result_str = strdup(err);
-        result_len = static_cast<int>(strlen(err));
-      }
-      callback_(res, result_str, result_len);
+      callback_(res, err);
     }
   private:
     KopsikContext *ctx_;
@@ -1575,13 +1560,7 @@ class WebSocketStopTask : public Poco::Task {
       char err[KOPSIK_ERR_LEN];
       kopsik_api_result res = kopsik_websocket_stop(
         ctx_, err, KOPSIK_ERR_LEN);
-      char *result_str = 0;
-      unsigned int result_len = 0;
-      if (res != KOPSIK_API_SUCCESS) {
-        result_str = strdup(err);
-        result_len = static_cast<int>(strlen(err));
-      }
-      callback_(res, result_str, result_len);
+      callback_(res, err);
     }
   private:
     KopsikContext *ctx_;
