@@ -16,7 +16,7 @@ namespace kopsik {
 
     class MockHTTPSClient : public HTTPSClient {
     public:
-        MockHTTPSClient() : HTTPSClient("https://localhost:8088") {}
+        MockHTTPSClient() : HTTPSClient("https://localhost:8080") {}
         MOCK_METHOD0(ListenToWebsocket, kopsik::error());
         MOCK_METHOD5(PostJSON, kopsik::error(
             std::string relative_url,
