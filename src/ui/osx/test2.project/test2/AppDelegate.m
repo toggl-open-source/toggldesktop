@@ -80,19 +80,36 @@
   
   for (int i = 1; i < arguments.count; i++) {
     NSString *argument = [arguments objectAtIndex:i];
-    if ([argument rangeOfString:@"logpath"].location != NSNotFound) {
+    if (([argument rangeOfString:@"log"].location != NSNotFound) &&
+        ([argument rangeOfString:@"path"].location != NSNotFound)) {
       log_path = [arguments objectAtIndex:i+1];
       NSLog(@"log path overriden with '%@'", log_path);
       continue;
     }
-    if ([argument rangeOfString:@"dbpath"].location != NSNotFound) {
+    if (([argument rangeOfString:@"db"].location != NSNotFound) &&
+        ([argument rangeOfString:@"path"].location != NSNotFound)) {
       db_path = [arguments objectAtIndex:i+1];
       NSLog(@"db path overriden with '%@'", db_path);
       continue;
     }
-    if ([argument rangeOfString:@"loglevel"].location != NSNotFound) {
+    if (([argument rangeOfString:@"log"].location != NSNotFound) &&
+        ([argument rangeOfString:@"level"].location != NSNotFound)) {
       log_level = [arguments objectAtIndex:i+1];
       NSLog(@"log level overriden with '%@'", log_level);
+      continue;
+    }
+    if (([argument rangeOfString:@"api"].location != NSNotFound) &&
+        ([argument rangeOfString:@"url"].location != NSNotFound)) {
+      NSString *url = [arguments objectAtIndex:i+1];
+      kopsik_set_api_url(ctx, [url UTF8String]);
+      NSLog(@"API URL overriden with '%@'", url);
+      continue;
+    }
+    if (([argument rangeOfString:@"websocket"].location != NSNotFound) &&
+        ([argument rangeOfString:@"url"].location != NSNotFound)) {
+      NSString *url = [arguments objectAtIndex:i+1];
+      kopsik_set_websocket_url(ctx, [url UTF8String]);
+      NSLog(@"Websocket URL overriden with '%@'", url);
       continue;
     }
   }

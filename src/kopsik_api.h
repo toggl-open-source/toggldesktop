@@ -52,7 +52,13 @@ KOPSIK_EXPORT void kopsik_set_log_path(KopsikContext *ctx,
   const char *path);
 
 KOPSIK_EXPORT void kopsik_set_log_level(KopsikContext *ctx,
-                                        const char *level);
+  const char *level);
+
+KOPSIK_EXPORT void kopsik_set_api_url(KopsikContext *ctx,
+  const char *api_url);
+
+KOPSIK_EXPORT void kopsik_set_websocket_url(KopsikContext *ctx,
+  const char *websocket_url);
 
 // User API
 
