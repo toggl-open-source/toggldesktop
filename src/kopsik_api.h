@@ -115,8 +115,6 @@ KOPSIK_EXPORT kopsik_api_result kopsik_pushable_models(
   char *errmsg, unsigned int errlen,
   KopsikPushableModelStats *stats);
 
-// Async API
-
 typedef void (*KopsikResultCallback)(
   kopsik_api_result result,
   // NB! you need to free() the memory yourself
@@ -302,6 +300,15 @@ KOPSIK_EXPORT kopsik_api_result kopsik_websocket_start(
 KOPSIK_EXPORT kopsik_api_result kopsik_websocket_stop(
   KopsikContext *ctx,
   char *errmsg, unsigned int errlen);
+
+KOPSIK_EXPORT void kopsik_websocket_start_async(
+  KopsikContext *ctx,
+  KopsikResultCallback callback);
+
+KOPSIK_EXPORT void kopsik_websocket_stop_async(
+  KopsikContext *ctx,
+  KopsikResultCallback callback);
+
 
 #undef KOPSIK_EXPORT
 

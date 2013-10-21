@@ -552,8 +552,6 @@ kopsik_api_result kopsik_pushable_models(
   return KOPSIK_API_SUCCESS;
 }
 
-// Async API
-
 class SyncTask : public Poco::Task {
   public:
     SyncTask(KopsikContext *ctx,
@@ -1507,6 +1505,42 @@ kopsik_api_result kopsik_websocket_start(
   return KOPSIK_API_SUCCESS;
 }
 
+class WebSocketStartTask : public Poco::Task {
+  public:
+    WebSocketStartTask(KopsikContext *ctx, KopsikResultCallback callback) :
+      Task("start_websocket"),
+      ctx_(ctx),
+      callback_(callback) {}
+    void runTask() {
+      char err[KOPSIK_ERR_LEN];
+      kopsik_api_result res = kopsik_websocket_start(
+        ctx_, err, KOPSIK_ERR_LEN);
+      char *result_str = 0;
+      unsigned int result_len = 0;
+      if (res != KOPSIK_API_SUCCESS) {
+        result_str = strdup(err);
+        result_len = static_cast<int>(strlen(err));
+      }
+      callback_(res, result_str, result_len);
+    }
+  private:
+    KopsikContext *ctx_;
+    KopsikResultCallback callback_;
+};
+
+void kopsik_websocket_start_async(
+    KopsikContext *ctx,
+    KopsikResultCallback callback) {
+  poco_assert(ctx);
+  poco_assert(callback);
+
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_websocket_start_async");
+
+  Poco::TaskManager *tm = reinterpret_cast<Poco::TaskManager *>(ctx->tm);
+  tm->start(new WebSocketStartTask(ctx, callback));
+}
+
 kopsik_api_result kopsik_websocket_stop(
     KopsikContext *ctx,
     char *errmsg, unsigned int errlen) {
@@ -1529,4 +1563,40 @@ kopsik_api_result kopsik_websocket_stop(
     reinterpret_cast<kopsik::WebSocketClient *>(ctx->ws_client);
   ws_client->Stop();
   return KOPSIK_API_SUCCESS;
+}
+
+class WebSocketStopTask : public Poco::Task {
+  public:
+    WebSocketStopTask(KopsikContext *ctx, KopsikResultCallback callback) :
+      Task("stop_websocket"),
+      ctx_(ctx),
+      callback_(callback) {}
+    void runTask() {
+      char err[KOPSIK_ERR_LEN];
+      kopsik_api_result res = kopsik_websocket_stop(
+        ctx_, err, KOPSIK_ERR_LEN);
+      char *result_str = 0;
+      unsigned int result_len = 0;
+      if (res != KOPSIK_API_SUCCESS) {
+        result_str = strdup(err);
+        result_len = static_cast<int>(strlen(err));
+      }
+      callback_(res, result_str, result_len);
+    }
+  private:
+    KopsikContext *ctx_;
+    KopsikResultCallback callback_;
+};
+
+void kopsik_websocket_stop_async(
+    KopsikContext *ctx,
+    KopsikResultCallback callback) {
+  poco_assert(ctx);
+  poco_assert(callback);
+
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_websocket_stop_async");
+
+  Poco::TaskManager *tm = reinterpret_cast<Poco::TaskManager *>(ctx->tm);
+  tm->start(new WebSocketStopTask(ctx, callback));
 }

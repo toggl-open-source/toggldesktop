@@ -116,6 +116,17 @@
   }
 }
 
+void websocket_action_finished(kopsik_api_result result, char *err, unsigned int errlen) {
+  NSLog(@"MainWindow websocket_action_finished");
+  if (KOPSIK_API_SUCCESS != result) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
+    
+    free(err);
+    return;
+  }
+}
+
 -(void)eventHandler: (NSNotification *) notification
 {
   NSLog(@"osx_ui.%@ %@", notification.name, notification.object);
@@ -140,27 +151,14 @@
     [self startSync];
     
     NSLog(@"MainWindow starting websocket");
-    
-    char err[KOPSIK_ERR_LEN];
-    if (KOPSIK_API_SUCCESS != kopsik_websocket_start(ctx, err, KOPSIK_ERR_LEN)) {
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
-                                                          object:[NSString stringWithUTF8String:err]];
-    }
-
-    NSLog(@"MainWindow websocket started");
+    kopsik_websocket_start_async(ctx, websocket_action_finished);
 
   } else if ([notification.name isEqualToString:kUIEventUserLoggedOut]) {
     [Bugsnag setUserAttribute:@"user_id" withValue:nil];
     
     NSLog(@"MainWindow stopping websocket");
     
-    char err[KOPSIK_ERR_LEN];
-    if (KOPSIK_API_SUCCESS != kopsik_websocket_stop(ctx, err, KOPSIK_ERR_LEN)) {
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
-                                                          object:[NSString stringWithUTF8String:err]];
-    }
-
-    NSLog(@"MainWindow websocket stopped");
+    kopsik_websocket_stop_async(ctx, websocket_action_finished);
 
     // Show login view
     [self.contentView addSubview:self.loginViewController.view];
@@ -242,8 +240,8 @@
   [self startSync];
 }
 
-void finishSync(kopsik_api_result result, char *err, unsigned int errlen) {
-  NSLog(@"MainWindow finishSync");
+void sync_finished(kopsik_api_result result, char *err, unsigned int errlen) {
+  NSLog(@"MainWindow sync_finished");
   if (KOPSIK_API_SUCCESS != result) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
                                                         object:[NSString stringWithUTF8String:err]];
@@ -296,7 +294,7 @@ void onModelChange(kopsik_api_result result,
 
 - (void)startSync {
   NSLog(@"MainWindow startSync");
-  kopsik_sync_async(ctx, 1, finishSync);
+  kopsik_sync_async(ctx, 1, sync_finished);
 }
 
 @end
