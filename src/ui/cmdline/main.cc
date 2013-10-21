@@ -47,15 +47,12 @@ namespace command_line_client {
     }
 
     void on_model_change(kopsik_api_result result,
-            char *err_string,
-            int unsigned err_len,
+            const char *err_string,
             KopsikModelChange *change) {
         if (KOPSIK_API_SUCCESS != result) {
-            std::string err("");
-            err.append(err_string, err_len);
+            std::string err(err_string);
             std::cerr << "on_model_change error! "
                 << err << std::endl;
-            free(err_string);
             return;
         }
         std::cout << "on_view_item_change "
