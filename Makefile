@@ -102,7 +102,7 @@ clean:
 	rm -f $(main)_test
 
 osx:
-	xcodebuild -project src/ui/kopsik_ui_osx/test2.project/kopsik_ui_osx.xcodeproj
+	xcodebuild -project src/ui/osx/test2.project/kopsik_ui_osx.xcodeproj
 
 cmdline: clean lint
 	mkdir -p build
@@ -148,7 +148,7 @@ nightly: #deps test osx
 	git clone gitosis@git.toggl.com:kopsik_branding.git src/branding
 	rm -rf TogglDesktop.app
 	rm -rf kopsik*.tar.gz
-	cp -r src/ui/kopsik_ui_osx/test2.project/build/Release/TogglDesktop.app .
+	cp -r src/ui/osx/test2.project/build/Release/TogglDesktop.app .
 	tar cvfz kopsik-$(timestamp).tar.gz TogglDesktop.app
 	cd src/branding && go get && PLATFORM=osx VERSION=1.0 INSTALLER=../../kopsik-$(timestamp).tar.gz go run upload_to_cdn.go
 
