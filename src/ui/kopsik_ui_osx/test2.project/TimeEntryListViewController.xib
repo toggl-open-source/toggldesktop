@@ -27,7 +27,7 @@
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowHeight="50" rowSizeStyle="automatic" viewBased="YES" id="kSc-tv-Cw1">
                                 <rect key="frame" x="0.0" y="0.0" width="252" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <color key="backgroundColor" red="0.81176477670000002" green="0.2078431547" blue="0.1176470667" alpha="1" colorSpace="deviceRGB"/>
+                                <color key="backgroundColor" red="0.8980392814" green="0.8980392814" blue="0.8980392814" alpha="1" colorSpace="deviceRGB"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
                                     <tableColumn identifier="TimeEntryCell" editable="NO" width="252" minWidth="40" maxWidth="1000" id="Pqa-db-i5f">
@@ -87,7 +87,7 @@
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                 </textField>
-                                                                <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6AJ-WY-06R">
+                                                                <button ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6AJ-WY-06R">
                                                                     <rect key="frame" x="234" y="17" width="18" height="15"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                     <constraints>
@@ -106,7 +106,6 @@
                                                             <constraint firstAttribute="bottom" secondItem="Gdb-3N-fCV" secondAttribute="bottom" constant="11" id="E0f-1h-aSt"/>
                                                             <constraint firstItem="Gdb-3N-fCV" firstAttribute="leading" secondItem="Mwb-xn-Ua3" secondAttribute="leading" id="G2f-p3-cfB"/>
                                                             <constraint firstItem="Mwb-xn-Ua3" firstAttribute="leading" secondItem="lZj-mn-Ej4" secondAttribute="leading" constant="9" id="TzO-4j-WeF"/>
-                                                            <constraint firstItem="6AJ-WY-06R" firstAttribute="centerY" secondItem="zrO-H9-BlH" secondAttribute="centerY" id="dmO-OJ-7xe"/>
                                                             <constraint firstAttribute="height" constant="50" id="il1-aX-Omg"/>
                                                             <constraint firstItem="Mwb-xn-Ua3" firstAttribute="top" secondItem="lZj-mn-Ej4" secondAttribute="top" constant="8" id="otf-zK-I8C"/>
                                                             <constraint firstAttribute="trailing" secondItem="zrO-H9-BlH" secondAttribute="trailing" constant="29" id="pk4-al-QU7"/>
@@ -139,7 +138,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" red="0.89803928136825562" green="0.89803928136825562" blue="0.89803928136825562" alpha="1" colorSpace="deviceRGB"/>
                     </clipView>
                     <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" id="RWC-Ro-rhd">
                         <rect key="frame" x="0.0" y="314" width="255" height="16"/>
