@@ -236,6 +236,18 @@ void kopsik_set_log_path(KopsikContext *ctx, const char *path) {
   rootLogger.setLevel(Poco::Message::PRIO_DEBUG);
 }
 
+void kopsik_set_log_level(KopsikContext *ctx,
+                          const char *level) {
+  poco_assert(ctx);
+  poco_assert(level);
+  
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+  
+  Poco::Logger &rootLogger = Poco::Logger::get("");
+  rootLogger.setLevel(level);
+}
+
 // User API.
 
 KopsikUser *kopsik_user_init() {

@@ -51,6 +51,9 @@ KOPSIK_EXPORT void kopsik_set_db_path(KopsikContext *ctx,
 KOPSIK_EXPORT void kopsik_set_log_path(KopsikContext *ctx,
   const char *path);
 
+KOPSIK_EXPORT void kopsik_set_log_level(KopsikContext *ctx,
+                                        const char *level);
+
 // User API
 
 typedef struct {
