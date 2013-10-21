@@ -72,13 +72,26 @@
 
   NSArray *arguments = [[NSProcessInfo processInfo] arguments];
   NSLog(@"Command line arguments: %@", arguments);
-
+  
   NSString *app_path = self.applicationSupportDirectory;
-
   NSString *db_path = [app_path stringByAppendingPathComponent:@"kopsik.db"];
-  kopsik_set_db_path(ctx, [db_path UTF8String]);
-
   NSString *log_path = [app_path stringByAppendingPathComponent:@"kopsik.log"];
+  
+  for (int i = 1; i < arguments.count; i++) {
+    NSString *argument = [arguments objectAtIndex:i];
+    if ([argument rangeOfString:@"logpath"].location != NSNotFound) {
+      log_path = [arguments objectAtIndex:i+1];
+      NSLog(@"log path overriden with '%@'", log_path);
+      continue;
+    }
+    if ([argument rangeOfString:@"dbpath"].location != NSNotFound) {
+      db_path = [arguments objectAtIndex:i+1];
+      NSLog(@"db path overriden with '%@'", db_path);
+      continue;
+    }
+  }
+
+  kopsik_set_db_path(ctx, [db_path UTF8String]);
   kopsik_set_log_path(ctx, [log_path UTF8String]);
 
   return self;
