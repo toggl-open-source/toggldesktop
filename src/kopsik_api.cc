@@ -224,7 +224,7 @@ void kopsik_set_log_path(KopsikContext *ctx, const char *path) {
   Poco::AutoPtr<Poco::SimpleFileChannel> simpleFileChannel(
     new Poco::SimpleFileChannel);
   simpleFileChannel->setProperty("path", path);
-  // simpleFileChannel->setProperty("rotation", "1 M");
+  simpleFileChannel->setProperty("rotation", "1 M");
 
   Poco::AutoPtr<Poco::FormattingChannel> formattingChannel(
       new Poco::FormattingChannel(
@@ -234,11 +234,6 @@ void kopsik_set_log_path(KopsikContext *ctx, const char *path) {
   Poco::Logger &rootLogger = Poco::Logger::get("");
   rootLogger.setChannel(formattingChannel);
   rootLogger.setLevel(Poco::Message::PRIO_DEBUG);
-
-  std::stringstream ss;
-  ss  << "kopsik_set_log_path path=" << path;
-  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
-  logger.debug(ss.str());
 }
 
 // User API.

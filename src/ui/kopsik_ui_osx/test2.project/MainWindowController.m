@@ -277,7 +277,6 @@ void onModelChange(kopsik_api_result result,
 
   ModelChange *mc = [[ModelChange alloc] init];
   [mc load:change];
-  NSLog(@"osx_ui.onModelChange %@", mc);
 
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventModelChange object:mc];
 }
