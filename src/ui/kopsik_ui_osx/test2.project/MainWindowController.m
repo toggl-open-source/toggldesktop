@@ -89,6 +89,8 @@
 {
   [super windowDidLoad];
   
+  NSLog(@"MainWindow windowDidLoad");
+  
   char err[KOPSIK_ERR_LEN];
   KopsikUser *user = kopsik_user_init();
   if (KOPSIK_API_SUCCESS != kopsik_current_user(ctx, err, KOPSIK_ERR_LEN, user)) {
@@ -135,22 +137,30 @@
     
     [self startSync];
     
+    NSLog(@"MainWindow starting websocket");
+    
     kopsik_set_change_callback(ctx, onModelChange);
     char err[KOPSIK_ERR_LEN];
     if (KOPSIK_API_SUCCESS != kopsik_websocket_start(ctx, err, KOPSIK_ERR_LEN)) {
       [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
                                                           object:[NSString stringWithUTF8String:err]];
     }
-    
+
+    NSLog(@"MainWindow websocket started");
+
   } else if ([notification.name isEqualToString:kUIEventUserLoggedOut]) {
     [Bugsnag setUserAttribute:@"user_id" withValue:nil];
+    
+    NSLog(@"MainWindow stopping websocket");
     
     char err[KOPSIK_ERR_LEN];
     if (KOPSIK_API_SUCCESS != kopsik_websocket_stop(ctx, err, KOPSIK_ERR_LEN)) {
       [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
                                                           object:[NSString stringWithUTF8String:err]];
     }
-    
+
+    NSLog(@"MainWindow websocket stopped");
+
     // Show login view
     [self.contentView addSubview:self.loginViewController.view];
     [self.loginViewController.view setFrame:self.contentView.bounds];
