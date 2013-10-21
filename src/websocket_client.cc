@@ -69,6 +69,7 @@ error WebSocketClient::Start(void *ctx,
       delete ws_;
     }
     ws_ = new Poco::Net::WebSocket(*session_, *req_, *res_);
+    ws_->setBlocking(false);
 
     Poco::Logger &logger = Poco::Logger::get("websocket_client");
     logger.debug("WebSocket connection established.");
@@ -81,6 +82,7 @@ error WebSocketClient::Start(void *ctx,
     std::string payload(jc);
     json_free(jc);
     json_delete(c);
+
     ws_->sendFrame(payload.data(),
       static_cast<int>(payload.size()),
       Poco::Net::WebSocket::FRAME_BINARY);
@@ -132,44 +134,32 @@ std::string WebSocketClient::receiveWebSocketMessage() {
 
 void WebSocketClient::runActivity() {
   Poco::Logger &logger = Poco::Logger::get("websocket_client");
+  Poco::Timespan span(250 * 1000);
   while (!activity_.isStopped()) {
-    std::string json = receiveWebSocketMessage();
-
-    if (activity_.isStopped()) {
-      break;
+    if (!ws_->poll(span, Poco::Net::Socket::SELECT_READ)) {
+      continue;
     }
 
+    std::string json = receiveWebSocketMessage();
     if (json.empty()) {
       logger.error("WebSocket peer has shut down or closed the connection");
       break;
     }
-
     std::stringstream ss;
     ss << "WebSocket message: " << json;
     logger.debug(ss.str());
 
     std::string type = parseWebSocketMessageType(json);
 
-    if (activity_.isStopped()) {
-      break;
-    }
-
     if ("ping" == type) {
       ws_->sendFrame(kPong.data(),
         static_cast<int>(kPong.size()),
         Poco::Net::WebSocket::FRAME_BINARY);
-    } else if ("data" == type) {
+      continue;
+    }
+
+    if ("data" == type) {
       on_websocket_message_(ctx_, json);
-    }
-
-    if (activity_.isStopped()) {
-      break;
-    }
-
-    Poco::Thread::sleep(200);
-
-    if (activity_.isStopped()) {
-      break;
     }
   }
   logger.debug("WebSocketClient::runActivity finished");
