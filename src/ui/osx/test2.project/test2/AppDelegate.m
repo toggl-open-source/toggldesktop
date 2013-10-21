@@ -76,6 +76,7 @@
   NSString *app_path = self.applicationSupportDirectory;
   NSString *db_path = [app_path stringByAppendingPathComponent:@"kopsik.db"];
   NSString *log_path = [app_path stringByAppendingPathComponent:@"kopsik.log"];
+  NSString *log_level = @"debug";
   
   for (int i = 1; i < arguments.count; i++) {
     NSString *argument = [arguments objectAtIndex:i];
@@ -89,10 +90,16 @@
       NSLog(@"db path overriden with '%@'", db_path);
       continue;
     }
+    if ([argument rangeOfString:@"loglevel"].location != NSNotFound) {
+      log_level = [arguments objectAtIndex:i+1];
+      NSLog(@"log level overriden with '%@'", log_level);
+      continue;
+    }
   }
 
   kopsik_set_db_path(ctx, [db_path UTF8String]);
   kopsik_set_log_path(ctx, [log_path UTF8String]);
+  kopsik_set_log_level(ctx, [log_level UTF8String]);
 
   return self;
 }
