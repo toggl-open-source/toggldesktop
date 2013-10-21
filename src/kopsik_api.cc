@@ -1392,6 +1392,20 @@ void model_change_to_change_item(
     kopsik::ModelChange &in,
     KopsikModelChange &out) {
 
+  poco_assert(in.ModelType() == "time_entry" ||
+    in.ModelType() == "workspace" ||
+    in.ModelType() == "client" ||
+    in.ModelType() == "project" ||
+    in.ModelType() == "user" ||
+    in.ModelType() == "task" ||
+    in.ModelType() == "tag");
+
+  poco_assert(in.ChangeType() == "delete" ||
+    in.ChangeType() == "insert" ||
+    in.ChangeType() == "update");
+
+  poco_assert(!in.GUID().empty() || in.ModelID() > 0);
+
   poco_assert(!out.ModelType);
   out.ModelType = strdup(in.ModelType().c_str());
 

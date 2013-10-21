@@ -691,7 +691,7 @@ error Database::saveTimeEntries(Poco::UInt64 UID,
                 return err;
             }
             changes->push_back(ModelChange(
-                "time_entry", "DELETE", model->ID(), model->GUID()));
+                "time_entry", "delete", model->ID(), model->GUID()));
             continue;
         }
         model->SetUID(UID);
@@ -762,7 +762,7 @@ error Database::SaveTimeEntry(TimeEntry *model,
             return err;
           }
           changes->push_back(ModelChange(
-            "time_entry", "UPDATE", model->ID(), model->GUID()));
+            "time_entry", "update", model->ID(), model->GUID()));
         } else {
             logger.debug("Inserting time entry " + model->String());
             *session << "insert into time_entries(id, uid, description, wid, "
@@ -803,7 +803,7 @@ error Database::SaveTimeEntry(TimeEntry *model,
                 Poco::Data::now;
             model->SetLocalID(local_id);
             changes->push_back(ModelChange(
-              "time_entry", "INSERT", model->ID(), model->GUID()));
+              "time_entry", "insert", model->ID(), model->GUID()));
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
@@ -1137,7 +1137,7 @@ error Database::SaveUser(User *model, bool with_related_data,
                     return err;
                 }
                 changes->push_back(ModelChange(
-                    "user", "UPDATE", model->ID(), ""));
+                    "user", "update", model->ID(), ""));
             } else {
                 logger.debug("Inserting user " + model->String());
                 *session << "insert into users("
@@ -1165,7 +1165,7 @@ error Database::SaveUser(User *model, bool with_related_data,
                     return err;
                 }
                 changes->push_back(ModelChange(
-                    "user", "INSERT", model->ID(), ""));
+                    "user", "insert", model->ID(), ""));
             }
             model->ClearDirty();
         } catch(const Poco::Exception& exc) {
