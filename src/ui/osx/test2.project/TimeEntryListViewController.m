@@ -158,10 +158,11 @@
           blue:((colorCode)&0xFF)/255.0 alpha:1.0];
 }
 
-void finishPushAfterContinue(kopsik_api_result result, const char *err) {
+void finishPushAfterContinue(kopsik_api_result result, char *err, unsigned int errlen) {
   if (KOPSIK_API_SUCCESS != result) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
                                                         object:[NSString stringWithUTF8String:err]];
+    free(err);
   }
 }
 

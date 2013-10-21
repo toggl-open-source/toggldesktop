@@ -12,7 +12,6 @@
 #import "TimeEntryViewItem.h"
 #import "Context.h"
 #import "ModelChange.h"
-#import "ErrorHandler.h"
 
 @interface TimerViewController ()
 @property TimeEntryViewItem *te;
@@ -113,14 +112,22 @@
   }
 }
 
+void finishPushAfterStop(kopsik_api_result result, char *err, unsigned int errlen) {
+  if (KOPSIK_API_SUCCESS != result) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
+    free(err);
+  }
+}
+
 - (IBAction)stopButtonClicked:(id)sender
 {
   char err[KOPSIK_ERR_LEN];
   KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-  kopsik_api_result res = kopsik_stop(ctx, err, KOPSIK_ERR_LEN, item);
-  if (KOPSIK_API_SUCCESS != res) {
+  if (KOPSIK_API_SUCCESS != kopsik_stop(ctx, err, KOPSIK_ERR_LEN, item)) {
     kopsik_time_entry_view_item_clear(item);
-    handle_error(res, err);
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
     return;
   }
   
@@ -130,7 +137,7 @@
 
   kopsik_time_entry_view_item_clear(item);
 
-  kopsik_push_async(ctx, handle_error);
+  kopsik_push_async(ctx, finishPushAfterStop);
 }
 
 - (void)timerFired:(NSTimer*)timer

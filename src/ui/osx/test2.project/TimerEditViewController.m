@@ -11,7 +11,6 @@
 #import "Context.h"
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
-#import "ErrorHandler.h"
 
 @interface TimerEditViewController ()
 
@@ -27,6 +26,14 @@
     }
     
     return self;
+}
+
+void finishPushAfterStart(kopsik_api_result result, char *err, unsigned int errlen) {
+  if (KOPSIK_API_SUCCESS != result) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+                                                        object:[NSString stringWithUTF8String:err]];
+    free(err);
+  }
 }
 
 - (IBAction)startButtonClicked:(id)sender {
@@ -50,7 +57,7 @@
   
   [self.descriptionTextField setStringValue:@""];
 
-  kopsik_push_async(ctx, handle_error);
+  kopsik_push_async(ctx, finishPushAfterStart);
 }
 
 @end

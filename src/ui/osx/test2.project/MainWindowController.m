@@ -91,7 +91,7 @@
   
   NSLog(@"MainWindow windowDidLoad");
   
-  kopsik_set_change_callback(ctx, on_model_change);
+  kopsik_set_change_callback(ctx, onModelChange);
   
   char err[KOPSIK_ERR_LEN];
   KopsikUser *user = kopsik_user_init();
@@ -116,12 +116,13 @@
   }
 }
 
-void websocket_action_finished(kopsik_api_result result, const char *err) {
+void websocket_action_finished(kopsik_api_result result, char *err, unsigned int errlen) {
   NSLog(@"MainWindow websocket_action_finished");
   if (KOPSIK_API_SUCCESS != result) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
                                                         object:[NSString stringWithUTF8String:err]];
     
+    free(err);
     return;
   }
 }
@@ -237,12 +238,13 @@ void websocket_action_finished(kopsik_api_result result, const char *err) {
   [self startSync];
 }
 
-void sync_finished(kopsik_api_result result, const char *err) {
+void sync_finished(kopsik_api_result result, char *err, unsigned int errlen) {
   NSLog(@"MainWindow sync_finished");
   if (KOPSIK_API_SUCCESS != result) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
                                                         object:[NSString stringWithUTF8String:err]];
     
+    free(err);
     return;
   }
   renderRunningTimeEntry();
@@ -271,12 +273,14 @@ void renderRunningTimeEntry() {
   kopsik_time_entry_view_item_clear(item);
 }
 
-void on_model_change(kopsik_api_result result,
-                     const char *errmsg,
+void onModelChange(kopsik_api_result result,
+                     char *errmsg,
+                     unsigned int errlen,
                      KopsikModelChange *change) {
   if (KOPSIK_API_SUCCESS != result) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
                                                           object:[NSString stringWithUTF8String:errmsg]];
+    free(errmsg);
     return;
   }
 
@@ -293,8 +297,6 @@ void on_model_change(kopsik_api_result result,
 }
 
 - (void)startWebSocket {
-  return;
-
   NSLog(@"MainWindow startWebSocket");
   kopsik_websocket_start_async(ctx, websocket_action_finished);
   NSLog(@"MainWindow startWebSocket done");
