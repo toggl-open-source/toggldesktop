@@ -11,6 +11,7 @@
 #import "TimeEntryViewItem.h"
 #import "Context.h"
 #import "ModelChange.h"
+#import "ErrorHandler.h"
 
 @interface TimeEntryEditViewController ()
 @property NSString *GUID;
@@ -85,14 +86,16 @@
 {
   if ([notification.name isEqualToString:kUIEventTimeEntrySelected]) {
     [self render:notification.object];
+    return;
+  }
 
-  } else if ([notification.name isEqualToString:kUIEventUserLoggedIn]) {
+  if ([notification.name isEqualToString:kUIEventUserLoggedIn]) {
     [self.projectNames removeAllObjects];
     KopsikProjectSelectItemList *list = kopsik_project_select_item_list_init();
     char err[KOPSIK_ERR_LEN];
-    if (KOPSIK_API_SUCCESS != kopsik_project_select_items(ctx, err, KOPSIK_ERR_LEN, list)) {
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
-                                                          object:[NSString stringWithUTF8String:err]];
+    kopsik_api_result res = kopsik_project_select_items(ctx, err, KOPSIK_ERR_LEN, list);
+    if (KOPSIK_API_SUCCESS != res) {
+      handle_error(res, err);
       kopsik_project_select_item_list_clear(list);
       return;
     }
@@ -106,28 +109,20 @@
   }
 }
 
-void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int errlen) {
-  if (KOPSIK_API_SUCCESS != result) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
-                                                        object:[NSString stringWithUTF8String:err]];
-    free(err);
-  }
-}
-
 - (IBAction)durationTextFieldChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
   const char *value = [[self.durationTextField stringValue] UTF8String];
-  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_duration(ctx,
+  kopsik_api_result res = kopsik_set_time_entry_duration(ctx,
                                                            err,
                                                            KOPSIK_ERR_LEN,
                                                            [self.GUID UTF8String],
-                                                           value)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
-                                                        object:[NSString stringWithUTF8String:err]];
+                                                         value);
+  if (KOPSIK_API_SUCCESS != res) {
+    handle_error(res, err);
     return;
   }
-  kopsik_push_async(ctx, finishPushAfterUpdate);
+  kopsik_push_async(ctx, handle_error);
 }
 
 - (IBAction)projectSelectChanged:(id)sender {
@@ -136,22 +131,22 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
   NSInteger row = [self.projectSelect indexOfSelectedItem];
   NSString *project_name = [self.projectNames objectAtIndex:row];
   const char *value = [project_name UTF8String];
-  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_project(ctx,
-                                                          err,
-                                                          KOPSIK_ERR_LEN,
-                                                          [self.GUID UTF8String],
-                                                          value)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
-                                                        object:[NSString stringWithUTF8String:err]];
+  kopsik_api_result res = kopsik_set_time_entry_project(ctx,
+                                                        err,
+                                                        KOPSIK_ERR_LEN,
+                                                        [self.GUID UTF8String],
+                                                        value);
+  if (KOPSIK_API_SUCCESS != res) {
+    handle_error(res, err);
     return;
   }
-  kopsik_push_async(ctx, finishPushAfterUpdate);
+  kopsik_push_async(ctx, handle_error);
 }
 
 - (IBAction)startTimeChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   [self applyStartTime];
-  kopsik_push_async(ctx, finishPushAfterUpdate);
+  kopsik_push_async(ctx, handle_error);
 }
 
 - (IBAction)applyStartTime {
@@ -173,21 +168,18 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
   NSString *iso8601String = [dateFormatter stringFromDate:combined];
 
   char err[KOPSIK_ERR_LEN];
-  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_start_iso_8601(ctx,
+  kopsik_api_result res = kopsik_set_time_entry_start_iso_8601(ctx,
                                                                  err,
                                                                  KOPSIK_ERR_LEN,
                                                                  [self.GUID UTF8String],
-                                                                 [iso8601String UTF8String])) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
-                                                        object:[NSString stringWithUTF8String:err]];
-    return;
-  }
+                                                               [iso8601String UTF8String]);
+  handle_error(res, err);
 }
 
 - (IBAction)endTimeChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   [self applyEndTime];
-  kopsik_push_async(ctx, finishPushAfterUpdate);
+  kopsik_push_async(ctx, handle_error);
 }
 
 - (IBAction)applyEndTime {
@@ -209,22 +201,19 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
   NSString *iso8601String = [dateFormatter stringFromDate:combined];
   
   char err[KOPSIK_ERR_LEN];
-  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_end_iso_8601(ctx,
+  kopsik_api_result res = kopsik_set_time_entry_end_iso_8601(ctx,
                                                                err,
                                                                KOPSIK_ERR_LEN,
                                                                [self.GUID UTF8String],
-                                                               [iso8601String UTF8String])) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
-                                                        object:[NSString stringWithUTF8String:err]];
-    return;
-  }
+                                                            [iso8601String UTF8String]);
+  handle_error(res, err);
 }
 
 - (IBAction)dateChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   [self applyStartTime];
   [self applyEndTime];
-  kopsik_push_async(ctx, finishPushAfterUpdate);
+  kopsik_push_async(ctx, handle_error);
 }
 
 - (IBAction)tagsChanged:(id)sender {
@@ -232,16 +221,16 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
   char err[KOPSIK_ERR_LEN];
   NSArray *tag_names = [self.tags objectValue];
   const char *value = [[tag_names componentsJoinedByString:@"|"] UTF8String];
-  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_tags(ctx,
+  kopsik_api_result res = kopsik_set_time_entry_tags(ctx,
                                                        err,
                                                        KOPSIK_ERR_LEN,
                                                        [self.GUID UTF8String],
-                                                       value)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
-                                                        object:[NSString stringWithUTF8String:err]];
+                                                     value);
+  if (KOPSIK_API_SUCCESS != res) {
+    handle_error(res, err);
     return;
   }
-  kopsik_push_async(ctx, finishPushAfterUpdate);
+  kopsik_push_async(ctx, handle_error);
 }
 
 - (IBAction)billableCheckBoxClicked:(id)sender {
@@ -251,40 +240,33 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
   if (NSOnState == [self.billableCheckbox state]) {
     value = 1;
   }
-  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_billable(ctx,
+  kopsik_api_result res = kopsik_set_time_entry_billable(ctx,
                                                            err,
                                                            KOPSIK_ERR_LEN,
                                                            [self.GUID UTF8String],
-                                                           value)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
-                                                        object:[NSString stringWithUTF8String:err]];
+                                                         value);
+  if (KOPSIK_API_SUCCESS != res) {
+    handle_error(res, err);
     return;
   }
-  kopsik_push_async(ctx, finishPushAfterUpdate);
+  kopsik_push_async(ctx, handle_error);
 }
 
 - (IBAction)descriptionTextFieldChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
   const char *value = [[self.descriptionTextField stringValue] UTF8String];
-  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_description(ctx,
+  kopsik_api_result res = kopsik_set_time_entry_description(ctx,
                                                               err,
                                                               KOPSIK_ERR_LEN,
                                                               [self.GUID UTF8String],
-                                                              value)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
-                                                        object:[NSString stringWithUTF8String:err]];
+                                                            value);
+  if (KOPSIK_API_SUCCESS != res) {
+    handle_error(res, err);
     return;
   }
-  kopsik_push_async(ctx, finishPushAfterUpdate);
-}
 
-void finishPushAfterDelete(kopsik_api_result result, char *err, unsigned int errlen) {
-  if (KOPSIK_API_SUCCESS != result) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
-                                                        object:[NSString stringWithUTF8String:err]];
-    free(err);
-  }
+  kopsik_push_async(ctx, handle_error);
 }
 
 - (IBAction)deleteButtonClicked:(id)sender {
@@ -304,15 +286,15 @@ void finishPushAfterDelete(kopsik_api_result result, char *err, unsigned int err
   NSAssert(item != nil, @"Time entry view item not found when deleting");
 
   char err[KOPSIK_ERR_LEN];
-  if (KOPSIK_API_SUCCESS != kopsik_delete_time_entry(ctx,
-                                                     err,
-                                                     KOPSIK_ERR_LEN,
-                                                     [self.GUID UTF8String])) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
-                                                        object:[NSString stringWithUTF8String:err]];
+  kopsik_api_result res = kopsik_delete_time_entry(ctx,
+                                                   err,
+                                                   KOPSIK_ERR_LEN,
+                                                   [self.GUID UTF8String]);
+  if (KOPSIK_API_SUCCESS != res) {
+    handle_error(res, err);
     return;
   }
-  kopsik_push_async(ctx, finishPushAfterDelete);
+  kopsik_push_async(ctx, handle_error);
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimeEntryDeselected object:nil];
 }
 
