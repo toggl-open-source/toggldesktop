@@ -91,6 +91,8 @@
   
   NSLog(@"MainWindow windowDidLoad");
   
+  kopsik_set_change_callback(ctx, onModelChange);
+  
   char err[KOPSIK_ERR_LEN];
   KopsikUser *user = kopsik_user_init();
   if (KOPSIK_API_SUCCESS != kopsik_current_user(ctx, err, KOPSIK_ERR_LEN, user)) {
@@ -139,7 +141,6 @@
     
     NSLog(@"MainWindow starting websocket");
     
-    kopsik_set_change_callback(ctx, onModelChange);
     char err[KOPSIK_ERR_LEN];
     if (KOPSIK_API_SUCCESS != kopsik_websocket_start(ctx, err, KOPSIK_ERR_LEN)) {
       [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
