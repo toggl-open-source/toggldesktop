@@ -46,14 +46,14 @@ namespace command_line_client {
         return ss.str();
     }
 
-    void on_view_item_change(kopsik_api_result result,
+    void on_model_change(kopsik_api_result result,
             char *err_string,
             int unsigned err_len,
             KopsikModelChange *change) {
         if (KOPSIK_API_SUCCESS != result) {
             std::string err("");
             err.append(err_string, err_len);
-            std::cerr << "on_view_item_change error! "
+            std::cerr << "on_model_change error! "
                 << err << std::endl;
             free(err_string);
             return;
@@ -198,7 +198,7 @@ namespace command_line_client {
 
         if ("listen" == args[0]) {
             std::cout << "Listening to websocket.. " << std::endl;
-            kopsik_set_change_callback(ctx, on_view_item_change);
+            kopsik_set_change_callback(ctx, on_model_change);
             if (KOPSIK_API_SUCCESS != kopsik_websocket_start(ctx, err, ERRLEN)) {
                 std::cerr << "Error starting websocket: "
                     << err << std::endl;
