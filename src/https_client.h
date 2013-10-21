@@ -17,7 +17,7 @@ namespace kopsik {
 
   class HTTPSClient {
   public:
-    HTTPSClient() {}
+    explicit HTTPSClient(std::string api_url) : api_url_(api_url) {}
     virtual ~HTTPSClient() {}
     virtual error PostJSON(std::string relative_url,
       std::string json,
@@ -29,6 +29,10 @@ namespace kopsik {
       std::string basic_auth_password,
       std::string *response_body);
 
+    void SetApiURL(std::string value) {
+      api_url_ = value;
+    }
+
   private:
     error requestJSON(std::string method,
       std::string relative_url,
@@ -36,6 +40,8 @@ namespace kopsik {
       std::string basic_auth_username,
       std::string basic_auth_password,
       std::string *response_body);
+
+    std::string api_url_;
   };
 }  // namespace kopsik
 

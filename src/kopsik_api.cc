@@ -104,8 +104,8 @@ KopsikContext *kopsik_context_init() {
   KopsikContext *ctx = new KopsikContext();
   ctx->db = 0;
   ctx->current_user = 0;
-  ctx->https_client = new kopsik::HTTPSClient();
-  ctx->ws_client = new kopsik::WebSocketClient();
+  ctx->https_client = new kopsik::HTTPSClient("https://www.toggl.com");
+  ctx->ws_client = new kopsik::WebSocketClient("https://stream.toggl.com");
   ctx->mutex = new Poco::Mutex();
   ctx->tm = new Poco::TaskManager();
   ctx->change_callback = 0;
@@ -240,12 +240,36 @@ void kopsik_set_log_level(KopsikContext *ctx,
                           const char *level) {
   poco_assert(ctx);
   poco_assert(level);
-  
+
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
-  
+
   Poco::Logger &rootLogger = Poco::Logger::get("");
   rootLogger.setLevel(level);
+}
+
+void kopsik_set_api_url(KopsikContext *ctx, const char *api_url) {
+  poco_assert(ctx);
+  poco_assert(api_url);
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
+  kopsik::HTTPSClient *https_client =
+    reinterpret_cast<kopsik::HTTPSClient *>(ctx->https_client);
+  https_client->SetApiURL(api_url);
+}
+
+void kopsik_set_websocket_url(KopsikContext *ctx, const char *websocket_url) {
+  poco_assert(ctx);
+  poco_assert(websocket_url);
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
+  kopsik::WebSocketClient *ws_client =
+    reinterpret_cast<kopsik::WebSocketClient *>(ctx->ws_client);
+  ws_client->SetWebsocketURL(websocket_url);
 }
 
 // User API.

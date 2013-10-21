@@ -23,9 +23,6 @@
 
 namespace kopsik {
 
-const std::string kTogglServerURL = "https://www.toggl.com";
-// const std::string kTogglServerURL = "http://localhost:8080";
-
 error HTTPSClient::PostJSON(std::string relative_url,
     std::string json,
     std::string basic_auth_username,
@@ -62,7 +59,7 @@ error HTTPSClient::requestJSON(std::string method,
   poco_assert(response_body);
   *response_body = "";
   try {
-    const Poco::URI uri(kTogglServerURL);
+    const Poco::URI uri(api_url_);
 
     const Poco::Net::Context::Ptr context(new Poco::Net::Context(
       Poco::Net::Context::CLIENT_USE, "", "", "",

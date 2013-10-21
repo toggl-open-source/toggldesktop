@@ -23,9 +23,6 @@
 
 namespace kopsik {
 
-const std::string kTogglWebSocketServerURL = "https://stream.toggl.com";
-// const std::string kTogglWebSocketServerURL = "https://localhost:8088";
-
 const int kWebsocketBufSize = 1024 * 10;
 
 const std::string kPong("{\"type\": \"pong\"}");
@@ -46,7 +43,7 @@ error WebSocketClient::Start(void *ctx,
   Poco::Logger &logger = Poco::Logger::get("websocket_client");
   logger.debug("WebSocketClient::Start");
   try {
-    const Poco::URI uri(kTogglWebSocketServerURL);
+    const Poco::URI uri(websocket_url_);
     const Poco::Net::Context::Ptr context(new Poco::Net::Context(
       Poco::Net::Context::CLIENT_USE, "", "", "",
       Poco::Net::Context::VERIFY_NONE, 9, false,

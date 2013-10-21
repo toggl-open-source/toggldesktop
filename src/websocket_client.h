@@ -22,13 +22,15 @@ namespace kopsik {
 
   class WebSocketClient {
   public:
-    WebSocketClient() : activity_(this, &WebSocketClient::runActivity),
+    explicit WebSocketClient(std::string websocket_url) :
+      activity_(this, &WebSocketClient::runActivity),
       session_(0),
       req_(0),
       res_(0),
       ws_(0),
       on_websocket_message_(0),
-      ctx_(0) {}
+      ctx_(0),
+      websocket_url_(websocket_url) {}
     virtual ~WebSocketClient() {
       if (ws_) {
         delete ws_;
@@ -53,6 +55,10 @@ namespace kopsik {
       WebSocketMessageCallback on_websocket_message);
     virtual void Stop();
 
+    void SetWebsocketURL(std::string value) {
+      websocket_url_ = value;
+    }
+
   protected:
     void runActivity();
 
@@ -67,6 +73,8 @@ namespace kopsik {
     Poco::Net::WebSocket *ws_;
     WebSocketMessageCallback on_websocket_message_;
     void *ctx_;
+
+    std::string websocket_url_;
   };
 }  // namespace kopsik
 
