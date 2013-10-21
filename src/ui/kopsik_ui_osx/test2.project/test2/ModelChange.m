@@ -17,4 +17,9 @@
   self.ChangeType = [NSString stringWithUTF8String:change->ChangeType];
 }
 
+- (NSString *)description {
+  return [NSString stringWithFormat:@"Model type: %@, change type: %@, GUID: %@, ID: %d",
+          self.ModelType, self.ChangeType, self.GUID, self.ModelID];
+}
+
 @end
