@@ -10,6 +10,7 @@
 #import "UIEvents.h"
 #import "TimeEntryViewItem.h"
 #import "Context.h"
+#import "ModelChange.h"
 
 @interface TimeEntryEditViewController ()
 @property NSString *GUID;
@@ -126,8 +127,6 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUpdate
-                                                      object:self.GUID];
   kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
@@ -146,16 +145,12 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUpdate
-                                                      object:self.GUID];
   kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
 - (IBAction)startTimeChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   [self applyStartTime];
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUpdate
-                                                      object:self.GUID];
   kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
@@ -192,8 +187,6 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
 - (IBAction)endTimeChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   [self applyEndTime];
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUpdate
-                                                      object:self.GUID];
   kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
@@ -231,8 +224,6 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
   NSAssert(self.GUID != nil, @"GUID is nil");
   [self applyStartTime];
   [self applyEndTime];
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUpdate
-                                                      object:self.GUID];
   kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
@@ -250,8 +241,6 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUpdate
-                                                      object:self.GUID];
   kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
@@ -271,8 +260,6 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUpdate
-                                                      object:self.GUID];
   kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
@@ -289,8 +276,6 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUpdate
-                                                      object:self.GUID];
   kopsik_push_async(ctx, finishPushAfterUpdate);
 }
 
@@ -317,9 +302,6 @@ void finishPushAfterDelete(kopsik_api_result result, char *err, unsigned int err
 
   TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:self.GUID];
   NSAssert(item != nil, @"Time entry view item not found when deleting");
-
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventDelete
-                                                      object:item];
 
   char err[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_delete_time_entry(ctx,

@@ -17,6 +17,7 @@
 #import "Context.h"
 #import "Bugsnag.h"
 #import "User.h"
+#import "ModelChange.h"
 
 @interface MainWindowController ()
 @property (nonatomic,strong) IBOutlet LoginViewController *loginViewController;
@@ -62,11 +63,7 @@
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(eventHandler:)
-                                                 name:kUIEventDelete
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(eventHandler:)
-                                                 name:kUIEventUpdate
+                                                 name:kUIEventModelChange
                                                object:nil];
     
     self.loginViewController = [[LoginViewController alloc]
@@ -278,13 +275,11 @@ void onModelChange(kopsik_api_result result,
     return;
   }
 
-  NSLog(@"osx_ui.onModelChange %@", change);
+  ModelChange *mc = [[ModelChange alloc] init];
+  [mc load:change];
+  NSLog(@"osx_ui.onModelChange %@", mc);
 
-  NSString *GUID = [NSString stringWithUTF8String:change->GUID];
-
-  // FIXME: turn update and delete events into modelchange event
-
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUpdate object:GUID];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventModelChange object:mc];
 }
 
 - (void)startSync {

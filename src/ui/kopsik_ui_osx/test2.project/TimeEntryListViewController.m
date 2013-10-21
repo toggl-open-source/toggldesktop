@@ -13,6 +13,7 @@
 #import "TableViewCell.h"
 #import "Context.h"
 #import "UIEvents.h"
+#import "ModelChange.h"
 
 @interface TimeEntryListViewController ()
 
@@ -36,11 +37,7 @@
                                                  object:nil];
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
-                                                   name:kUIEventDelete
-                                                 object:nil];
-      [[NSNotificationCenter defaultCenter] addObserver:self
-                                               selector:@selector(eventHandler:)
-                                                   name:kUIEventUpdate
+                                                   name:kUIEventModelChange
                                                  object:nil];
     }
     return self;
@@ -66,8 +63,11 @@
     }
     kopsik_time_entry_view_item_list_clear(list);
     [self.timeEntriesTableView reloadData];
+    
+    return;
+  }
 
-  } else if ([notification.name isEqualToString:kUIEventTimerStopped]) {
+  if ([notification.name isEqualToString:kUIEventTimerStopped]) {
     if (notification.object == nil) {
       return;
     }
@@ -75,30 +75,44 @@
     [viewitems insertObject:item atIndex:0];
     [self.timeEntriesTableView reloadData];
     
-  } else if ([notification.name isEqualToString:kUIEventDelete]) {
-    TimeEntryViewItem *deleted = notification.object;
+    return;
+  }
+  
+  if ([notification.name isEqualToString:kUIEventModelChange]) {
+    
+    ModelChange *change = notification.object;
+    
+    // We only care about time entry changes
+    if (! [change.ModelType isEqualToString:@"time_entry"]) {
+      return;
+    }
+    
+    // Handle delete
+    if ([change.ChangeType isEqualToString:@"delete"]) {
+      for (int i = 0; i < [viewitems count]; i++) {
+        TimeEntryViewItem *item = [viewitems objectAtIndex:i];
+        if ([change.GUID isEqualToString:item.GUID]) {
+          [viewitems removeObject:item];
+          [self.timeEntriesTableView reloadData];
+          return;
+        }
+      }
+      
+      return;
+    }
+
+    // Handle update
+    TimeEntryViewItem *updated = [TimeEntryViewItem findByGUID:change.GUID];
+
     for (int i = 0; i < [viewitems count]; i++) {
       TimeEntryViewItem *item = [viewitems objectAtIndex:i];
-      if ([deleted.GUID isEqualToString:item.GUID]) {
-        [viewitems removeObject:item];
+      if ([change.GUID isEqualToString:item.GUID]) {
+        [viewitems replaceObjectAtIndex:i withObject:updated];
         [self.timeEntriesTableView reloadData];
         return;
       }
     }
 
-  } else if ([notification.name isEqualToString:kUIEventUpdate]) {
-    NSString *GUID = notification.object;
-    TimeEntryViewItem *updated = [TimeEntryViewItem findByGUID:GUID];
-    for (int i = 0; i < [viewitems count]; i++) {
-      TimeEntryViewItem *item = [viewitems objectAtIndex:i];
-      if ([GUID isEqualToString:item.GUID]) {
-        if (updated != nil) {
-          [viewitems replaceObjectAtIndex:i withObject:updated];
-          [self.timeEntriesTableView reloadData];
-        }
-        return;
-      }
-    }
     // Since TE was not found in our list, it must be a new time entry.
     // Insert it to list, if it's not tracking.
     if (updated.duration_in_seconds >= 0) {

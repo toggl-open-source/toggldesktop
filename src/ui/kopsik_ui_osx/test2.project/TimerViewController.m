@@ -11,6 +11,7 @@
 #import "kopsik_api.h"
 #import "TimeEntryViewItem.h"
 #import "Context.h"
+#import "ModelChange.h"
 
 @interface TimerViewController ()
 @property TimeEntryViewItem *te;
@@ -35,7 +36,7 @@
                                                  object:nil];
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
-                                                   name:kUIEventUpdate
+                                                   name:kUIEventModelChange
                                                  object:nil];
       self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                target:self
@@ -55,8 +56,28 @@
   } else if ([notification.name isEqualToString:kUIEventTimerStopped]) {
     self.te = nil;
 
-  } else if ([notification.name isEqualToString:kUIEventUpdate]) {
-    TimeEntryViewItem *updated = [TimeEntryViewItem findByGUID:notification.object];
+  } else if ([notification.name isEqualToString:kUIEventModelChange]) {
+    
+    ModelChange *change = notification.object;
+    
+    // We only care about time entry changes
+    if (! [change.ModelType isEqualToString:@"time_entry"]) {
+      return;
+    }
+    
+    // Handle delete
+    if ([change.ChangeType isEqualToString:@"delete"]) {
+
+      // Time entry we thought was running, has been deleted.
+      if ([change.GUID isEqualToString:self.te.GUID]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerStopped object:nil];
+      }
+      
+      return;
+    }
+    
+    // Handle update
+    TimeEntryViewItem *updated = [TimeEntryViewItem findByGUID:change.GUID];
 
     // Time entry we thought was running, has been stopped.
     if ((updated.duration_in_seconds >= 0) && [updated.GUID isEqualToString:self.te.GUID]) {
