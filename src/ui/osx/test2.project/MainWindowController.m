@@ -152,6 +152,7 @@ void websocket_action_finished(kopsik_api_result result, char *err, unsigned int
     
     NSLog(@"MainWindow starting websocket");
     kopsik_websocket_start_async(ctx, websocket_action_finished);
+    NSLog(@"MainWindow websocket started");
 
   } else if ([notification.name isEqualToString:kUIEventUserLoggedOut]) {
     [Bugsnag setUserAttribute:@"user_id" withValue:nil];
@@ -295,6 +296,7 @@ void onModelChange(kopsik_api_result result,
 - (void)startSync {
   NSLog(@"MainWindow startSync");
   kopsik_sync_async(ctx, 1, sync_finished);
+  NSLog(@"MainWindow startSync done");
 }
 
 @end
