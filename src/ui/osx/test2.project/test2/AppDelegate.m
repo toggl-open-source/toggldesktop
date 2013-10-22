@@ -28,6 +28,7 @@
   self.mainWindowController = [[MainWindowController alloc] initWithWindowNibName:@"MainWindowController"];
   [self.mainWindowController.window setReleasedWhenClosed:NO];
   [self.mainWindowController showWindow:self];
+  [NSApp activateIgnoringOtherApps:YES];
   
   NSMenu *menu = [[NSMenu alloc] init];
   [menu addItemWithTitle:@"About" action:@selector(onAboutMenuItem) keyEquivalent:@""];
@@ -57,7 +58,8 @@
 }
 
 - (void)onShowMenuItem {
-  [[NSApplication sharedApplication] unhide:self];
+  [self.mainWindowController showWindow:self];
+  [NSApp activateIgnoringOtherApps:YES];
 }
 
 - (void)onQuitMenuItem {
