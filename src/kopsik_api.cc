@@ -269,17 +269,88 @@ void kopsik_user_agent(
   strncpy(str, kopsik::UserAgent().c_str(), len);
 }
 
-void kopsik_set_proxy(
+KopsikProxySettings *kopsik_proxy_settings_init() {
+  KopsikProxySettings *settings = new KopsikProxySettings();
+  settings->UseProxy = 0;
+  settings->Host = 0;
+  settings->Port = 0;
+  settings->Username = 0;
+  settings->Password = 0;
+  return settings;
+}
+
+void kopsik_proxy_settings_clear(KopsikProxySettings *settings) {
+  if (settings->Host) {
+    free(settings->Host);
+    settings->Host = 0;
+  }
+  if (settings->Username) {
+    free(settings->Username);
+    settings->Username = 0;
+  }
+  if (settings->Password) {
+    free(settings->Password);
+    settings->Password = 0;
+  }
+  delete settings;
+  settings = 0;
+}
+
+kopsik_api_result kopsik_get_proxy(KopsikContext *ctx,
+    char *errmsg,
+    unsigned int errlen,
+    KopsikProxySettings *settings) {
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(settings);
+
+  int use_proxy(0);
+  std::string host("");
+  unsigned int port(0);
+  std::string username("");
+  std::string password("");
+
+  kopsik::Database *db = get_db(ctx);
+
+  kopsik::error err = db->LoadProxySettings(
+    &use_proxy, &host, &port, &username, &password);
+  if (err != kopsik::noError) {
+    strncpy(errmsg, err.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
+  settings->UseProxy = use_proxy;
+  poco_assert(!settings->Host);
+  settings->Host = strdup(host.c_str());
+  settings->Port = port;
+  poco_assert(!settings->Username);
+  settings->Username = strdup(username.c_str());
+  poco_assert(!settings->Password);
+  settings->Password = strdup(password.c_str());
+
+  return KOPSIK_API_SUCCESS;
+}
+
+kopsik_api_result kopsik_set_proxy(
     KopsikContext *ctx,
-    const char *host, const unsigned int port,
-    const char *username, const char *password) {
+    char *errmsg,
+    unsigned int errlen,
+    const int use_proxy,
+    const char *host,
+    const unsigned int port,
+    const char *username,
+    const char *password) {
   poco_assert(ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
   poco_assert(host);
   poco_assert(username);
   poco_assert(password);
 
   std::stringstream ss;
-  ss  << "kopsik_set_proxy host=" << host
+  ss  << "kopsik_set_proxy use_proxy=" << use_proxy
+      << ", host=" << host
+      << ", port=" << port
       << ", username=" << username
       << ", password=" << password;
   Poco::Logger &logger = Poco::Logger::get("kopsik_api");
@@ -288,7 +359,16 @@ void kopsik_set_proxy(
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
 
-  // FIXME: implement
+  kopsik::Database *db = get_db(ctx);
+
+  kopsik::error err =
+    db->SaveProxySettings(use_proxy, host, port, username, password);
+  if (err != kopsik::noError) {
+    strncpy(errmsg, err.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
+  return KOPSIK_API_SUCCESS;
 }
 
 void kopsik_set_db_path(KopsikContext *ctx, const char *path) {

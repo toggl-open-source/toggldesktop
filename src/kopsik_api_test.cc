@@ -47,8 +47,31 @@ namespace kopsik {
 
     TEST(KopsikApiTest, kopsik_set_proxy) {
         KopsikContext *ctx = kopsik_context_init();
-        kopsik_set_proxy(ctx, "localhost", 8000, "johnsmith", "secret");
-        ASSERT_TRUE(true);
+
+        {
+            Poco::File f(TESTDB);
+            if (f.exists()) f.remove(false);
+        }
+        kopsik_set_db_path(ctx, TESTDB);
+
+        char err[ERRLEN];
+        kopsik_api_result res = kopsik_set_proxy(
+            ctx,
+            err, ERRLEN,
+            1, "localhost", 8000, "johnsmith", "secret");
+        ASSERT_EQ(KOPSIK_API_SUCCESS, res);
+
+        KopsikProxySettings *settings =
+            kopsik_proxy_settings_init();
+        res = kopsik_get_proxy(ctx, err, ERRLEN, settings);
+        ASSERT_EQ(KOPSIK_API_SUCCESS, res);
+        ASSERT_TRUE(settings->UseProxy);
+        ASSERT_EQ(std::string("localhost"), std::string(settings->Host));
+        ASSERT_EQ(8000, static_cast<int>(settings->Port));
+        ASSERT_EQ(std::string("johnsmith"), std::string(settings->Username));
+        ASSERT_EQ(std::string("secret"), std::string(settings->Password));
+        kopsik_proxy_settings_clear(settings);
+
         kopsik_context_clear(ctx);
     }
 

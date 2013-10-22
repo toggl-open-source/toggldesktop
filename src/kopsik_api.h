@@ -41,9 +41,31 @@ KOPSIK_EXPORT void kopsik_version(
 KOPSIK_EXPORT void kopsik_user_agent(
   char *str, unsigned int len);
 
-KOPSIK_EXPORT void kopsik_set_proxy(KopsikContext *ctx,
-  const char *host, const unsigned int port,
-  const char *username, const char *password);
+typedef struct {
+    int UseProxy;
+    char *Host;
+    unsigned int Port;
+    char *Username;
+    char *Password;
+} KopsikProxySettings;
+
+KOPSIK_EXPORT kopsik_api_result kopsik_get_proxy(KopsikContext *ctx,
+    char *errmsg,
+    unsigned int errlen,
+    KopsikProxySettings *settings);
+
+KOPSIK_EXPORT KopsikProxySettings *kopsik_proxy_settings_init();
+
+KOPSIK_EXPORT void kopsik_proxy_settings_clear(KopsikProxySettings *settings);
+
+KOPSIK_EXPORT kopsik_api_result kopsik_set_proxy(KopsikContext *ctx,
+  char *errmsg,
+  unsigned int errlen,
+  const int use_proxy,
+  const char *host,
+  const unsigned int port,
+  const char *username,
+  const char *password);
 
 KOPSIK_EXPORT void kopsik_set_db_path(KopsikContext *ctx,
   const char *path);

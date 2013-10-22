@@ -71,6 +71,19 @@ class Database {
             bool with_related_data);
         error LoadCurrentUser(User *user, bool with_related_data);
 
+        error LoadProxySettings(
+            int *use_proxy,
+            std::string *host,
+            unsigned int *port,
+            std::string *username,
+            std::string *password);
+        error SaveProxySettings(
+            const int use_proxy,
+            const std::string host,
+            const unsigned int port,
+            const std::string username,
+            const std::string password);
+
         error UInt(std::string sql, Poco::UInt64 *result);
 
         error SaveUser(User *user, bool with_related_data,

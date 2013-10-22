@@ -160,6 +160,73 @@ error Database::LoadCurrentUser(User *user, bool with_related_data) {
     return LoadUserByAPIToken(api_token, user, with_related_data);
 }
 
+error Database::LoadProxySettings(
+        int *use_proxy,
+        std::string *host,
+        unsigned int *port,
+        std::string *username,
+        std::string *password) {
+    poco_assert(session);
+    poco_assert(use_proxy);
+    poco_assert(host);
+    poco_assert(port);
+    poco_assert(username);
+    poco_assert(password);
+    try {
+        *session << "select use_proxy, host, port, username, password "
+            "from proxy_settings",
+            Poco::Data::into(*use_proxy),
+            Poco::Data::into(*host),
+            Poco::Data::into(*port),
+            Poco::Data::into(*username),
+            Poco::Data::into(*password),
+            Poco::Data::limit(1),
+            Poco::Data::now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error();
+}
+
+  error Database::SaveProxySettings(
+        const int use_proxy,
+        const std::string host,
+        const unsigned int port,
+        const std::string username,
+        const std::string password) {
+    poco_assert(session);
+    try {
+        *session << "delete from proxy_settings",
+            Poco::Data::now;
+        kopsik::error err = last_error();
+        if (err != kopsik::noError) {
+            return err;
+        }
+        *session << "insert into proxy_settings "
+            "(use_proxy, host, port, username, password) "
+            "values "
+            "(:use_proxy, :host, :port, :username, :password)",
+            Poco::Data::use(use_proxy),
+            Poco::Data::use(host),
+            Poco::Data::use(port),
+            Poco::Data::use(username),
+            Poco::Data::use(password),
+            Poco::Data::now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error();
+}
+
+
 error Database::LoadUserByAPIToken(std::string api_token, User *model,
         bool with_related_data) {
     poco_assert(session);
@@ -1407,6 +1474,18 @@ error Database::initialize_tables() {
         "active integer not null default 1 "
         "); "
         "CREATE UNIQUE INDEX id_sessions_active ON sessions (active); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("proxy_settings",
+        "create table proxy_settings("
+        "local_id integer primary key, "
+        "use_proxy integer not null default 0, "
+        "host varchar, "
+        "port integer, "
+        "username varchar, "
+        "password varchar)");
     if (err != noError) {
         return err;
     }
