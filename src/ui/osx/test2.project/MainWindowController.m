@@ -115,36 +115,6 @@
   } else {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedIn object:userinfo];
   }
-  
-  NSMenu *menu = [[NSMenu alloc] init];
-  [menu addItemWithTitle:@"About" action:@selector(onAboutMenuItem) keyEquivalent:@""];
-  [menu addItem:[NSMenuItem separatorItem]];
-  [menu addItemWithTitle:@"Show" action:@selector(onShowMenuItem) keyEquivalent:@""];
-  [menu addItem:[NSMenuItem separatorItem]];
-  [menu addItemWithTitle:@"New" action:@selector(onNewMenuItem) keyEquivalent:@""];
-  [menu addItemWithTitle:@"Continue" action:@selector(onContinueMenuItem) keyEquivalent:@""];
-  [menu addItemWithTitle:@"Start" action:@selector(onStartMenuItem) keyEquivalent:@""];
-  [menu addItemWithTitle:@"Stop" action:@selector(onStopMenuItem) keyEquivalent:@""];
-  [menu addItem:[NSMenuItem separatorItem]];
-  [menu addItemWithTitle:@"Preferences" action:@selector(onPreferencesMenuItem) keyEquivalent:@""];
-  [menu addItem:[NSMenuItem separatorItem]];
-  [menu addItemWithTitle:@"Quit" action:@selector(onQuitMenuItem) keyEquivalent:@""];
-  
-  NSStatusBar *bar = [NSStatusBar systemStatusBar];
-  
-  self.statusItem = [bar statusItemWithLength:NSVariableStatusItemLength];
-  [self.statusItem setTitle: @"--:--:--"];
-  [self.statusItem setHighlightMode:YES];
-  [self.statusItem setEnabled:YES];
-  [self.statusItem setMenu:menu];
-}
-
-- (void)onAboutMenuItem {
-  [[NSApplication sharedApplication] orderFrontStandardAboutPanel:self];
-}
-
-- (void)onQuitMenuItem {
-  [[NSApplication sharedApplication] terminate:self];
 }
 
 -(void)eventHandler: (NSNotification *) notification

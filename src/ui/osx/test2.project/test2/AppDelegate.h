@@ -10,4 +10,5 @@
 #import "kopsik_api.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
+@property NSStatusItem *statusItem;
 @end
