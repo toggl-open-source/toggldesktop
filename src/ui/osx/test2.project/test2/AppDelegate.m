@@ -44,7 +44,7 @@
   [menu addItemWithTitle:@"Start" action:@selector(onStartMenuItem) keyEquivalent:@""];
   [menu addItemWithTitle:@"Stop" action:@selector(onStopMenuItem) keyEquivalent:@""];
   [menu addItem:[NSMenuItem separatorItem]];
-  [menu addItemWithTitle:@"Preferences" action:@selector(onPreferencesMenuItem) keyEquivalent:@""];
+  [menu addItemWithTitle:@"Preferences" action:@selector(onPreferencesMenuItem:) keyEquivalent:@""];
   [menu addItem:[NSMenuItem separatorItem]];
   [menu addItemWithTitle:@"Quit" action:@selector(onQuitMenuItem) keyEquivalent:@""];
   
