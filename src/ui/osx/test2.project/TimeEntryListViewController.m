@@ -68,17 +68,6 @@
     return;
   }
 
-  if ([notification.name isEqualToString:kUIEventTimerStopped]) {
-    if (notification.object == nil) {
-      return;
-    }
-    TimeEntryViewItem *item = notification.object;
-    [viewitems insertObject:item atIndex:0];
-    [self.timeEntriesTableView reloadData];
-    
-    return;
-  }
-  
   if ([notification.name isEqualToString:kUIEventModelChange]) {
     
     ModelChange *change = notification.object;
