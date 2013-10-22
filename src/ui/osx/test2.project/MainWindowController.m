@@ -284,7 +284,6 @@ void on_model_change(kopsik_api_result result,
 }
 
 - (void)startWebSocket {
-  return;
   NSLog(@"MainWindow startWebSocket");
   kopsik_websocket_start_async(ctx, handle_error);
   NSLog(@"MainWindow startWebSocket done");
