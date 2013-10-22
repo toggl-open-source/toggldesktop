@@ -15,4 +15,5 @@
 @property (weak) IBOutlet NSView *headerView;
 @property (weak) IBOutlet NSView *contentView;
 @property (weak) IBOutlet NSView *footerView;
+@property NSStatusItem *statusItem;
 @end
