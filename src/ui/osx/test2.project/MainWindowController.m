@@ -143,6 +143,10 @@
   [[NSApplication sharedApplication] orderFrontStandardAboutPanel:self];
 }
 
+- (void)onQuitMenuItem {
+  [[NSApplication sharedApplication] terminate:self];
+}
+
 -(void)eventHandler: (NSNotification *) notification
 {
   NSLog(@"osx_ui.%@ %@", notification.name, notification.object);
