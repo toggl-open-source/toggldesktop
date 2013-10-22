@@ -14,6 +14,7 @@
 #import "Context.h"
 #import "UIEvents.h"
 #import "ModelChange.h"
+#import "ErrorHandler.h"
 
 @interface TimeEntryListViewController ()
 
@@ -158,14 +159,6 @@
           blue:((colorCode)&0xFF)/255.0 alpha:1.0];
 }
 
-void finishPushAfterContinue(kopsik_api_result result, char *err, unsigned int errlen) {
-  if (KOPSIK_API_SUCCESS != result) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
-                                                        object:[NSString stringWithUTF8String:err]];
-    free(err);
-  }
-}
-
 - (IBAction)continueButtonClicked:(id)sender {
   NSButton *btn = sender;
   TableViewCell *cell = (TableViewCell*)[btn superview];
@@ -185,7 +178,7 @@ void finishPushAfterContinue(kopsik_api_result result, char *err, unsigned int e
 
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerRunning object:te];
 
-  kopsik_push_async(ctx, finishPushAfterContinue);
+  kopsik_push_async(ctx, handle_error);
 }
 
 - (IBAction)performClick:(id)sender {

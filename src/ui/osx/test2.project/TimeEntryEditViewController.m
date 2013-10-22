@@ -11,6 +11,7 @@
 #import "TimeEntryViewItem.h"
 #import "Context.h"
 #import "ModelChange.h"
+#import "ErrorHandler.h"
 
 @interface TimeEntryEditViewController ()
 @property NSString *GUID;
@@ -106,14 +107,6 @@
   }
 }
 
-void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int errlen) {
-  if (KOPSIK_API_SUCCESS != result) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
-                                                        object:[NSString stringWithUTF8String:err]];
-    free(err);
-  }
-}
-
 - (IBAction)durationTextFieldChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
@@ -127,7 +120,7 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
-  kopsik_push_async(ctx, finishPushAfterUpdate);
+  kopsik_push_async(ctx, handle_error);
 }
 
 - (IBAction)projectSelectChanged:(id)sender {
@@ -145,13 +138,13 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
-  kopsik_push_async(ctx, finishPushAfterUpdate);
+  kopsik_push_async(ctx, handle_error);
 }
 
 - (IBAction)startTimeChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   [self applyStartTime];
-  kopsik_push_async(ctx, finishPushAfterUpdate);
+  kopsik_push_async(ctx, handle_error);
 }
 
 - (IBAction)applyStartTime {
@@ -187,7 +180,7 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
 - (IBAction)endTimeChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   [self applyEndTime];
-  kopsik_push_async(ctx, finishPushAfterUpdate);
+  kopsik_push_async(ctx, handle_error);
 }
 
 - (IBAction)applyEndTime {
@@ -224,7 +217,7 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
   NSAssert(self.GUID != nil, @"GUID is nil");
   [self applyStartTime];
   [self applyEndTime];
-  kopsik_push_async(ctx, finishPushAfterUpdate);
+  kopsik_push_async(ctx, handle_error);
 }
 
 - (IBAction)tagsChanged:(id)sender {
@@ -241,7 +234,7 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
-  kopsik_push_async(ctx, finishPushAfterUpdate);
+  kopsik_push_async(ctx, handle_error);
 }
 
 - (IBAction)billableCheckBoxClicked:(id)sender {
@@ -260,7 +253,7 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
-  kopsik_push_async(ctx, finishPushAfterUpdate);
+  kopsik_push_async(ctx, handle_error);
 }
 
 - (IBAction)descriptionTextFieldChanged:(id)sender {
@@ -276,15 +269,7 @@ void finishPushAfterUpdate(kopsik_api_result result, char *err, unsigned int err
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
-  kopsik_push_async(ctx, finishPushAfterUpdate);
-}
-
-void finishPushAfterDelete(kopsik_api_result result, char *err, unsigned int errlen) {
-  if (KOPSIK_API_SUCCESS != result) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
-                                                        object:[NSString stringWithUTF8String:err]];
-    free(err);
-  }
+  kopsik_push_async(ctx, handle_error);
 }
 
 - (IBAction)deleteButtonClicked:(id)sender {
@@ -312,7 +297,7 @@ void finishPushAfterDelete(kopsik_api_result result, char *err, unsigned int err
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
-  kopsik_push_async(ctx, finishPushAfterDelete);
+  kopsik_push_async(ctx, handle_error);
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimeEntryDeselected object:nil];
 }
 
