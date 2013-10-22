@@ -11,4 +11,5 @@
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 @property NSStatusItem *statusItem;
+- (IBAction)onPreferencesMenuItem:(id)sender;
 @end

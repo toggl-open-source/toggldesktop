@@ -66,7 +66,7 @@
   [NSApp activateIgnoringOtherApps:YES];
 }
 
-- (void)onPreferencesMenuItem {
+- (IBAction)onPreferencesMenuItem:(id)sender {
   [self.preferencesWindowController showWindow:self];
   [NSApp activateIgnoringOtherApps:YES];
 }
