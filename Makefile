@@ -107,6 +107,9 @@ osx:
 osx_test: osx
 	python src/ui/osx/test/guitest.py
 
+run: osx
+	./src/ui/osx/test2.project/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop
+
 cmdline: clean lint
 	mkdir -p build
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/https_client.cc -o build/https_client.o
