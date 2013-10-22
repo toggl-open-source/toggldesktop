@@ -10,10 +10,12 @@
 #import "kopsik_api.h"
 #import "Context.h"
 #import "MainWindowController.h"
+#import "PreferencesWindowController.h"
 #import "Bugsnag.h"
 
 @interface  AppDelegate()
 @property (nonatomic,strong) IBOutlet MainWindowController *mainWindowController;
+@property (nonatomic,strong) IBOutlet PreferencesWindowController *preferencesWindowController;
 @end
 
 @implementation AppDelegate
@@ -29,6 +31,8 @@
   [self.mainWindowController.window setReleasedWhenClosed:NO];
   [self.mainWindowController showWindow:self];
   [NSApp activateIgnoringOtherApps:YES];
+
+  self.preferencesWindowController = [[PreferencesWindowController alloc] initWithWindowNibName:@"PreferencesWindowController"];
   
   NSMenu *menu = [[NSMenu alloc] init];
   [menu addItemWithTitle:@"About" action:@selector(onAboutMenuItem) keyEquivalent:@""];
@@ -59,6 +63,11 @@
 
 - (void)onShowMenuItem {
   [self.mainWindowController showWindow:self];
+  [NSApp activateIgnoringOtherApps:YES];
+}
+
+- (void)onPreferencesMenuItem {
+  [self.preferencesWindowController showWindow:self];
   [NSApp activateIgnoringOtherApps:YES];
 }
 
