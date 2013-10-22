@@ -162,8 +162,8 @@ bool TimeEntry::NeedsPUT() {
 }
 
 bool TimeEntry::NeedsDELETE() {
-    // TE is deleted, needs a DELETE
-    return deleted_at_ > 0;
+    // TE is deleted, needs a DELETE on server side
+    return id_ && (deleted_at_ > 0);
 }
 
 void User::CollectPushableObjects(std::vector<TimeEntry *> *result) {
