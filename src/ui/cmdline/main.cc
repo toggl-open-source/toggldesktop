@@ -156,8 +156,9 @@ namespace command_line_client {
 
         if ("stop" == args[0]) {
             KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
+            int was_found(0);
             if (KOPSIK_API_SUCCESS != kopsik_stop(
-                    ctx, err, ERRLEN, te)) {
+                    ctx, err, ERRLEN, te, &was_found)) {
                 std::cerr << err << std::endl;
                 kopsik_time_entry_view_item_clear(te);
                 return Poco::Util::Application::EXIT_SOFTWARE;
@@ -165,10 +166,14 @@ namespace command_line_client {
             if (KOPSIK_API_SUCCESS != kopsik_push(ctx, err, ERRLEN)) {
                 std::cerr << err << std::endl;
             }
-            if (te->Description) {
-                std::cout << "Stopped: " << te->Description << std::endl;
+            if (was_found) {
+                if (te->Description) {
+                    std::cout << "Stopped: " << te->Description << std::endl;
+                } else {
+                    std::cout << "Stopped." << std::endl;
+                }
             } else {
-                std::cout << "Stopped." << std::endl;
+                std::cout << "No time entry found to stop." << std::endl;
             }
             kopsik_time_entry_view_item_clear(te);
             return Poco::Util::Application::EXIT_OK;
