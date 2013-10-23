@@ -1685,11 +1685,6 @@ kopsik_api_result kopsik_websocket_stop(
   Poco::Logger &logger = Poco::Logger::get("kopsik_api");
   logger.debug("kopsik_websocket_stop");
 
-  if (!ctx->current_user) {
-    strncpy(errmsg, "Please login first", errlen);
-    return KOPSIK_API_FAILURE;
-  }
-
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
 
