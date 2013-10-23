@@ -149,7 +149,7 @@ namespace kopsik {
             ASSERT_EQ(uint(2), n);
 
             ASSERT_EQ(noError, db.UInt("select count(1) from tags", &n));
-            ASSERT_EQ(uint(0), n);
+            ASSERT_EQ(uint(2), n);
 
             ASSERT_EQ(noError, db.UInt("select count(1) from time_entries",
                     &n));
@@ -189,7 +189,7 @@ namespace kopsik {
         ASSERT_EQ(uint(2), n);
 
         ASSERT_EQ(noError, db.UInt("select count(1) from tags", &n));
-        ASSERT_EQ(uint(0), n);
+        ASSERT_EQ(uint(2), n);
 
         ASSERT_EQ(noError, db.UInt("select count(1) from time_entries", &n));
         ASSERT_EQ(uint(3), n);
@@ -230,7 +230,7 @@ namespace kopsik {
         ASSERT_EQ(uint(2), n);
 
         ASSERT_EQ(noError, db.UInt("select count(1) from tags", &n));
-        ASSERT_EQ(uint(0), n);
+        ASSERT_EQ(uint(2), n);
 
         ASSERT_EQ(noError, db.UInt("select count(1) from time_entries", &n));
         ASSERT_EQ(uint(3), n);
@@ -399,7 +399,21 @@ namespace kopsik {
         ASSERT_EQ(uint(2585208), user.related.Tasks[0]->PID());
         ASSERT_EQ(user.ID(), user.related.Tasks[0]->UID());
 
-        // FIXME: Tags
+        // Tags
+        ASSERT_EQ(uint(2), user.related.Tags.size());
+
+        ASSERT_EQ(uint(27457022), user.related.Tags[0]->ID());
+        ASSERT_EQ("billed", user.related.Tags[0]->Name());
+        ASSERT_EQ(user.ID(), user.related.Tags[0]->UID());
+        ASSERT_EQ(uint(123456788), user.related.Tags[0]->WID());
+        ASSERT_EQ("", user.related.Tags[0]->GUID());
+
+        ASSERT_EQ(uint(36253522), user.related.Tags[1]->ID());
+        ASSERT_EQ("create new", user.related.Tags[1]->Name());
+        ASSERT_EQ(user.ID(), user.related.Tags[1]->UID());
+        ASSERT_EQ(uint(123456788), user.related.Tags[1]->WID());
+        ASSERT_EQ("041390ba-ed9c-b477-b949-1a4ebb60a9ce",
+            user.related.Tags[1]->GUID());
 
         // Workspaces
         ASSERT_EQ(uint(2), user.related.Workspaces.size());
