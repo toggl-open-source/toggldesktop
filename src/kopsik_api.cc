@@ -1383,11 +1383,13 @@ kopsik_api_result kopsik_set_time_entry_description(
 kopsik_api_result kopsik_stop(
     KopsikContext *ctx,
     char *errmsg, unsigned int errlen,
-    KopsikTimeEntryViewItem *out_view_item) {
+    KopsikTimeEntryViewItem *out_view_item,
+    int *was_found) {
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(out_view_item);
+  poco_assert(was_found);
 
   Poco::Logger &logger = Poco::Logger::get("kopsik_api");
   logger.debug("kopsik_stop");
@@ -1401,14 +1403,17 @@ kopsik_api_result kopsik_stop(
   }
   kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
   std::vector<kopsik::TimeEntry *> stopped = user->Stop();
-  if (!stopped.empty()) {
-    kopsik_api_result res = save(ctx, errmsg, errlen);
-    if (res != KOPSIK_API_SUCCESS) {
-      return res;
-    }
-    kopsik::TimeEntry *te = stopped[0];
-    time_entry_to_view_item(te, user, out_view_item);
+  if (stopped.empty()) {
+    *was_found = 0;
+    return KOPSIK_API_SUCCESS;
   }
+  *was_found = 1;
+  kopsik_api_result res = save(ctx, errmsg, errlen);
+  if (res != KOPSIK_API_SUCCESS) {
+    return res;
+  }
+  kopsik::TimeEntry *te = stopped[0];
+  time_entry_to_view_item(te, user, out_view_item);
   return KOPSIK_API_SUCCESS;
 }
 

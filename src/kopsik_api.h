@@ -277,7 +277,8 @@ KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_description(
 KOPSIK_EXPORT kopsik_api_result kopsik_stop(
   KopsikContext *ctx,
   char *errmsg, unsigned int errlen,
-  KopsikTimeEntryViewItem *item);
+  KopsikTimeEntryViewItem *item,
+  int *was_found);
 
 KOPSIK_EXPORT KopsikTimeEntryViewItemList *
   kopsik_time_entry_view_item_list_init();

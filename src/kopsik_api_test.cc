@@ -208,8 +208,10 @@ namespace kopsik {
 
         // Stop the time entry
         KopsikTimeEntryViewItem *stopped = kopsik_time_entry_view_item_init();
+        int was_stopped = 0;
         ASSERT_EQ(KOPSIK_API_SUCCESS,
-            kopsik_stop(ctx, err, ERRLEN, stopped));
+            kopsik_stop(ctx, err, ERRLEN, stopped, &was_stopped));
+        ASSERT_EQ(1, was_stopped);
         ASSERT_EQ(std::string("Test"), std::string(stopped->Description));
         std::string dirty_guid(stopped->GUID);
         kopsik_time_entry_view_item_clear(stopped);
