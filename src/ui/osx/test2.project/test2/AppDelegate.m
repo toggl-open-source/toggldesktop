@@ -21,6 +21,8 @@
 
 @implementation AppDelegate
 
+NSString *kTimeTotalUnknown = @"--:--";
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
   NSLog(@"applicationDidFinishLaunching");
@@ -36,6 +38,30 @@
   self.preferencesWindowController = [[PreferencesWindowController alloc] initWithWindowNibName:@"PreferencesWindowController"];
   
   [self createStatusItem];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(eventHandler:)
+                                               name:kUIStateUserLoggedOut
+                                             object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(eventHandler:)
+                                               name:kUIStateTimerRunning
+                                             object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(eventHandler:)
+                                               name:kUIStateTimerStopped
+                                             object:nil];
+}
+
+-(void)eventHandler: (NSNotification *) notification
+{
+  if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
+    [self.statusItem setTitle: kTimeTotalUnknown];
+  } else if ([notification.name isEqualToString:kUIStateTimerStopped]) {
+    [self.statusItem setTitle: kTimeTotalUnknown];
+  } else {
+    // FIXME: render current TE duration
+  }
 }
 
 - (void)createStatusItem {
@@ -55,7 +81,7 @@
   NSStatusBar *bar = [NSStatusBar systemStatusBar];
   
   self.statusItem = [bar statusItemWithLength:NSVariableStatusItemLength];
-  [self.statusItem setTitle: @"--:--:--"];
+  [self.statusItem setTitle: kTimeTotalUnknown];
   [self.statusItem setHighlightMode:YES];
   [self.statusItem setEnabled:YES];
   [self.statusItem setMenu:menu];
