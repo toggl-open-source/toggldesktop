@@ -379,6 +379,7 @@ namespace kopsik {
         TimeEntry *RunningTimeEntry();
         TimeEntry *Start(std::string description);
         TimeEntry *Continue(std::string GUID);
+        TimeEntry *Latest();
         std::vector<TimeEntry *> Stop();
         void MarkTimeEntryAsDeleted(std::string GUID);
 

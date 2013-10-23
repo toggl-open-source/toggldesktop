@@ -51,14 +51,18 @@
       kopsik_time_entry_view_item_list_clear(list);
       return;
     }
-    [viewitems removeAllObjects];
-    for (int i = 0; i < list->Length; i++) {
-      KopsikTimeEntryViewItem *item = list->ViewItems[i];
-      TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
-      [model load:item];
-      [viewitems addObject:@"Splitter"];
-      [viewitems addObject:model];
+
+    @synchronized(viewitems) {
+      [viewitems removeAllObjects];
+      for (int i = 0; i < list->Length; i++) {
+        KopsikTimeEntryViewItem *item = list->ViewItems[i];
+        TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
+        [model load:item];
+        [viewitems addObject:@"Splitter"];
+        [viewitems addObject:model];
+      }
     }
+
     kopsik_time_entry_view_item_list_clear(list);
     [self.timeEntriesTableView reloadData];
     
@@ -76,42 +80,53 @@
     
     // Handle delete
     if ([change.ChangeType isEqualToString:@"delete"]) {
-      for (int i = 0; i < [viewitems count]; i++) {
-        TimeEntryViewItem *item = [viewitems objectAtIndex:i];
-        if (! [item isKindOfClass:[TimeEntryViewItem class]]) {
-          continue;
+      @synchronized(viewitems) {
+        for (int i = 0; i < [viewitems count]; i++) {
+          TimeEntryViewItem *item = [viewitems objectAtIndex:i];
+          if (! [item isKindOfClass:[TimeEntryViewItem class]]) {
+            continue;
+          }
+          if (! [change.GUID isEqualToString:item.GUID]) {
+            continue;
+          }
+          [viewitems removeObject:item];
+          break;
         }
-        if (! [change.GUID isEqualToString:item.GUID]) {
-          continue;
-        }
-        [viewitems removeObject:item];
-        [self.timeEntriesTableView reloadData];
-        break;
       }
-      
+      [self.timeEntriesTableView reloadData];
       return;
     }
 
     // Handle update
     TimeEntryViewItem *updated = [TimeEntryViewItem findByGUID:change.GUID];
 
-    for (int i = 0; i < [viewitems count]; i++) {
-      TimeEntryViewItem *item = [viewitems objectAtIndex:i];
-      if (![item isKindOfClass:[TimeEntryViewItem class]]) {
-        continue;
+    BOOL found = NO;
+    @synchronized(viewitems) {
+      for (int i = 0; i < [viewitems count]; i++) {
+        TimeEntryViewItem *item = [viewitems objectAtIndex:i];
+        if (![item isKindOfClass:[TimeEntryViewItem class]]) {
+          continue;
+        }
+        if (![change.GUID isEqualToString:item.GUID]) {
+          continue;
+        }
+        [viewitems replaceObjectAtIndex:i withObject:updated];
+        found = YES;
+        break;
       }
-      if (![change.GUID isEqualToString:item.GUID]) {
-        continue;
-      }
-      [viewitems replaceObjectAtIndex:i withObject:updated];
+    }
+    
+    if (found) {
       [self.timeEntriesTableView reloadData];
-      break;
+      return;
     }
 
     // Since TE was not found in our list, it must be a new time entry.
     // Insert it to list, if it's not tracking.
     if (updated.duration_in_seconds >= 0) {
-      [viewitems insertObject:updated atIndex:0];
+      @synchronized(viewitems) {
+        [viewitems insertObject:updated atIndex:0];
+      }
       [self.timeEntriesTableView reloadData];
     }
   }
@@ -119,11 +134,20 @@
 
 - (int)numberOfRowsInTableView:(NSTableView *)tv
 {
-  return (int)[viewitems count];
+  int result = 0;
+  @synchronized(viewitems) {
+    result = (int)[viewitems count];
+  }
+  return result;
 }
 
-- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
-    TimeEntryViewItem *item = [viewitems objectAtIndex:row];
+- (NSView *)tableView:(NSTableView *)tableView
+   viewForTableColumn:(NSTableColumn *)tableColumn
+                  row:(NSInteger)row {
+    TimeEntryViewItem *item = 0;
+    @synchronized(viewitems) {
+      item = [viewitems objectAtIndex:row];
+    }
     NSAssert(item != nil, @"view item from viewitems array is nil");
     TableViewCell *cellView = [tableView makeViewWithIdentifier:@"TimeEntryCell" owner:self];
     if ([item isKindOfClass:[TimeEntryViewItem class]]){
@@ -140,26 +164,20 @@
       //[groupCell setStringValue:@"Today"];
       return groupCell;
     }
-  return nil;
+    return nil;
 }
 
-- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row {
-  NSObject *item = viewitems[row];
+- (CGFloat)tableView:(NSTableView *)tableView
+         heightOfRow:(NSInteger)row {
+  NSObject *item = 0;
+  @synchronized(viewitems) {
+    item = viewitems[row];
+  }
   if ([item isKindOfClass:[TimeEntryViewItem class]]) {
     return [tableView rowHeight];
   }
   return 22;
 }
-
-/*
-- (BOOL)tableView:(NSTableView *)tableView isGroupRow:(NSInteger)row {
-  NSObject *item = viewitems[row];
-  if ([item isKindOfClass:[TimeEntryViewItem class]]) {
-    return NO;
-  }
-  return YES;
-}
-*/
 
 - (NSColor *)hexCodeToNSColor:(NSString *)hexCode {
 	unsigned int colorCode = 0;
@@ -182,7 +200,10 @@
 }
 - (IBAction)performClick:(id)sender {
   NSInteger row = [self.timeEntriesTableView clickedRow];
-  TimeEntryViewItem *item = [viewitems objectAtIndex:row];
+  TimeEntryViewItem *item = 0;
+  @synchronized(viewitems) {
+    item = [viewitems objectAtIndex:row];
+  }
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
                                                       object:item.GUID];
 }

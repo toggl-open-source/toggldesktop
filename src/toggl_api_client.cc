@@ -68,6 +68,13 @@ TimeEntry *User::Continue(std::string GUID) {
     return te;
 }
 
+TimeEntry *User::Latest() {
+    if (related.TimeEntries.empty()) {
+        return 0;
+    }
+    return related.TimeEntries[0];
+}
+
 void User::MarkTimeEntryAsDeleted(std::string GUID) {
     TimeEntry *te = GetTimeEntryByGUID(GUID);
     poco_assert(te);

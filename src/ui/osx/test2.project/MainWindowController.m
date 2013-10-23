@@ -230,10 +230,24 @@
     NSString *guid = notification.object;
     char err[KOPSIK_ERR_LEN];
     KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-    if (KOPSIK_API_SUCCESS != kopsik_continue(ctx, err, KOPSIK_ERR_LEN, [guid UTF8String], item)) {
+    kopsik_api_result res = 0;
+    int was_found = 0;
+    if (guid == nil) {
+      res = kopsik_continue_latest(ctx, err, KOPSIK_ERR_LEN, item, &was_found);
+    } else {
+      was_found = 1;
+      res = kopsik_continue(ctx, err, KOPSIK_ERR_LEN, 0, item);
+    }
+
+    if (res != KOPSIK_API_SUCCESS) {
       kopsik_time_entry_view_item_clear(item);
       [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                           object:[NSString stringWithUTF8String:err]];
+      return;
+    }
+    
+    if (!was_found) {
+      kopsik_time_entry_view_item_clear(item);
       return;
     }
     

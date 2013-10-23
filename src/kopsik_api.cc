@@ -1019,6 +1019,7 @@ kopsik_api_result kopsik_continue(
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
+  poco_assert(guid);
   poco_assert(view_item);
 
   std::stringstream ss;
@@ -1046,6 +1047,49 @@ kopsik_api_result kopsik_continue(
   if (KOPSIK_API_SUCCESS != res) {
     return res;
   }
+  time_entry_to_view_item(te, user, view_item);
+  return KOPSIK_API_SUCCESS;
+}
+
+kopsik_api_result kopsik_continue_latest(
+    KopsikContext *ctx,
+    char *errmsg, unsigned int errlen,
+    KopsikTimeEntryViewItem *view_item,
+    int *was_found) {
+  poco_assert(ctx);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(view_item);
+  poco_assert(was_found);
+
+  std::stringstream ss;
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_continue_latest");
+
+  if (!ctx->current_user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
+  kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
+
+  user->SortTimeEntriesByStart();
+  kopsik::TimeEntry *latest = user->Latest();
+  if (!latest) {
+    *was_found = 0;
+    return KOPSIK_API_SUCCESS;
+  }
+
+  kopsik::TimeEntry *te = user->Continue(latest->GUID());
+  poco_assert(te);
+  kopsik_api_result res = save(ctx, errmsg, errlen);
+  if (KOPSIK_API_SUCCESS != res) {
+    return res;
+  }
+  *was_found = 1;
   time_entry_to_view_item(te, user, view_item);
   return KOPSIK_API_SUCCESS;
 }
