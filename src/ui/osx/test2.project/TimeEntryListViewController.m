@@ -34,10 +34,6 @@
                                                  object:nil];
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
-                                                   name:kUIStateTimerStopped
-                                                 object:nil];
-      [[NSNotificationCenter defaultCenter] addObserver:self
-                                               selector:@selector(eventHandler:)
                                                    name:kUIEventModelChange
                                                  object:nil];
     }
@@ -82,11 +78,15 @@
     if ([change.ChangeType isEqualToString:@"delete"]) {
       for (int i = 0; i < [viewitems count]; i++) {
         TimeEntryViewItem *item = [viewitems objectAtIndex:i];
-        if ([change.GUID isEqualToString:item.GUID]) {
-          [viewitems removeObject:item];
-          [self.timeEntriesTableView reloadData];
-          return;
+        if (! [item isKindOfClass:[TimeEntryViewItem class]]) {
+          continue;
         }
+        if (! [change.GUID isEqualToString:item.GUID]) {
+          continue;
+        }
+        [viewitems removeObject:item];
+        [self.timeEntriesTableView reloadData];
+        break;
       }
       
       return;
@@ -97,11 +97,15 @@
 
     for (int i = 0; i < [viewitems count]; i++) {
       TimeEntryViewItem *item = [viewitems objectAtIndex:i];
-      if ([change.GUID isEqualToString:item.GUID]) {
-        [viewitems replaceObjectAtIndex:i withObject:updated];
-        [self.timeEntriesTableView reloadData];
-        return;
+      if (![item isKindOfClass:[TimeEntryViewItem class]]) {
+        continue;
       }
+      if (![change.GUID isEqualToString:item.GUID]) {
+        continue;
+      }
+      [viewitems replaceObjectAtIndex:i withObject:updated];
+      [self.timeEntriesTableView reloadData];
+      break;
     }
 
     // Since TE was not found in our list, it must be a new time entry.
