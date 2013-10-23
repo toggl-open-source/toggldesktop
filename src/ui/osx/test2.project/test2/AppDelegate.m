@@ -13,10 +13,13 @@
 #import "PreferencesWindowController.h"
 #import "Bugsnag.h"
 #import "UIEvents.h"
+#import "TimeEntryViewItem.h"
 
 @interface  AppDelegate()
 @property (nonatomic,strong) IBOutlet MainWindowController *mainWindowController;
 @property (nonatomic,strong) IBOutlet PreferencesWindowController *preferencesWindowController;
+@property TimeEntryViewItem *running_time_entry;
+@property NSTimer *statusItemTimer;
 @end
 
 @implementation AppDelegate
@@ -56,11 +59,13 @@ NSString *kTimeTotalUnknown = @"--:--";
 -(void)eventHandler: (NSNotification *) notification
 {
   if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
+    self.running_time_entry = nil;
     [self.statusItem setTitle: kTimeTotalUnknown];
   } else if ([notification.name isEqualToString:kUIStateTimerStopped]) {
+    self.running_time_entry = nil;
     [self.statusItem setTitle: kTimeTotalUnknown];
   } else {
-    // FIXME: render current TE duration
+    self.running_time_entry = notification.object;
   }
 }
 
@@ -85,6 +90,12 @@ NSString *kTimeTotalUnknown = @"--:--";
   [self.statusItem setHighlightMode:YES];
   [self.statusItem setEnabled:YES];
   [self.statusItem setMenu:menu];
+
+  self.statusItemTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                          target:self
+                                                        selector:@selector(timerFired:)
+                                                        userInfo:nil
+                                                         repeats:YES];
 }
 
 - (void)onNewMenuItem {
@@ -227,6 +238,14 @@ NSString *kTimeTotalUnknown = @"--:--";
   ctx = 0;
 }
 
-
+- (void)timerFired:(NSTimer*)timer
+{
+  if (self.running_time_entry != nil) {
+    const int duration_str_len = 10;
+    char str[duration_str_len];
+    kopsik_format_duration_in_seconds(self.running_time_entry.duration_in_seconds, str, duration_str_len);
+    [self.statusItem setTitle:[NSString stringWithUTF8String:str]];
+  }
+}
 
 @end

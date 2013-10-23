@@ -15,7 +15,7 @@
 #import "ErrorHandler.h"
 
 @interface TimerViewController ()
-@property TimeEntryViewItem *te;
+@property TimeEntryViewItem *running_time_entry;
 @property NSTimer *timer;
 @end
 
@@ -70,7 +70,7 @@
     if ([change.ChangeType isEqualToString:@"delete"]) {
 
       // Time entry we thought was running, has been deleted.
-      if ([change.GUID isEqualToString:self.te.GUID]) {
+      if ([change.GUID isEqualToString:self.running_time_entry.GUID]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped object:nil];
       }
       
@@ -81,19 +81,19 @@
     TimeEntryViewItem *updated = [TimeEntryViewItem findByGUID:change.GUID];
 
     // Time entry we thought was running, has been stopped.
-    if ((updated.duration_in_seconds >= 0) && [updated.GUID isEqualToString:self.te.GUID]) {
+    if ((updated.duration_in_seconds >= 0) && [updated.GUID isEqualToString:self.running_time_entry.GUID]) {
       [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped object:nil];
       return;
     }
 
     // Time entry we did not know was running, is running.
-    if ((updated.duration_in_seconds < 0) && ![updated.GUID isEqualToString:self.te.GUID]) {
+    if ((updated.duration_in_seconds < 0) && ![updated.GUID isEqualToString:self.running_time_entry.GUID]) {
       [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning object:updated];
       return;
     }
 
     // Time entry is still running and needs to be updated.
-    if ((updated.duration_in_seconds < 0) && [updated.GUID isEqualToString:self.te.GUID]) {
+    if ((updated.duration_in_seconds < 0) && [updated.GUID isEqualToString:self.running_time_entry.GUID]) {
       [self render:updated];
       return;
     }
@@ -101,12 +101,12 @@
 }
 
 - (void) render:(TimeEntryViewItem *)view_item {
-  self.te = view_item;
-  if (self.te != nil) {
-    [self.descriptionTextField setStringValue:self.te.Description];
-    [self.durationTextField setStringValue:self.te.duration];
-    if (self.te.project != nil) {
-      [self.projectTextField setStringValue:self.te.project];
+  self.running_time_entry = view_item;
+  if (self.running_time_entry != nil) {
+    [self.descriptionTextField setStringValue:self.running_time_entry.Description];
+    [self.durationTextField setStringValue:self.running_time_entry.duration];
+    if (self.running_time_entry.project != nil) {
+      [self.projectTextField setStringValue:self.running_time_entry.project];
     } else {
       [self.projectTextField setStringValue:@""];
     }
@@ -121,9 +121,9 @@
 
 - (void)timerFired:(NSTimer*)timer
 {
-  if (self.te != nil) {
+  if (self.running_time_entry != nil) {
     char str[duration_str_len];
-    kopsik_format_duration_in_seconds(self.te.duration_in_seconds, str, duration_str_len);
+    kopsik_format_duration_in_seconds(self.running_time_entry.duration_in_seconds, str, duration_str_len);
     NSString *newValue = [NSString stringWithUTF8String:str];
     [self.durationTextField setStringValue:newValue];
   }

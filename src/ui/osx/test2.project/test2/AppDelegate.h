@@ -7,9 +7,9 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "kopsik_api.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 @property NSStatusItem *statusItem;
 - (IBAction)onPreferencesMenuItem:(id)sender;
+- (void)timerFired:(NSTimer *)timer;
 @end
