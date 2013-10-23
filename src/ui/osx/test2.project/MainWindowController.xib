@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MainWindowController">
@@ -25,7 +25,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="258" height="427"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Ld-I4-6Cu" userLabel="HeaderView">
+                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="5Ld-I4-6Cu" userLabel="HeaderView">
                         <rect key="frame" x="0.0" y="353" width="258" height="74"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
@@ -33,14 +33,15 @@
                         <rect key="frame" x="0.0" y="29" width="258" height="326"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
-                    <customView focusRingType="exterior" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I56-Lj-qTa" userLabel="FooterView">
+                    <customView focusRingType="exterior" translatesAutoresizingMaskIntoConstraints="NO" id="I56-Lj-qTa" userLabel="FooterView">
                         <rect key="frame" x="0.0" y="0.0" width="258" height="29"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <subviews>
-                            <popUpButton ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ar7-s4-8Jz">
+                            <popUpButton translatesAutoresizingMaskIntoConstraints="NO" id="ar7-s4-8Jz">
                                 <rect key="frame" x="2" y="3" width="39" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" constant="39" id="OxH-Mf-U4R"/>
                                     <constraint firstAttribute="height" constant="23" id="zdb-H8-AXX"/>
                                 </constraints>
                                 <popUpButtonCell key="cell" type="smallSquare" bezelStyle="smallSquare" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" pullsDown="YES" selectedItem="iWP-TY-GZW" id="228-43-gNA">
@@ -67,6 +68,8 @@
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="ar7-s4-8Jz" secondAttribute="bottom" constant="3" id="R4z-Dx-V4P"/>
+                            <constraint firstItem="ar7-s4-8Jz" firstAttribute="centerY" secondItem="I56-Lj-qTa" secondAttribute="centerY" id="SpL-hT-Wmh"/>
+                            <constraint firstItem="ar7-s4-8Jz" firstAttribute="leading" secondItem="I56-Lj-qTa" secondAttribute="leading" constant="2" id="Twl-ok-eox"/>
                         </constraints>
                     </customView>
                 </subviews>
@@ -78,7 +81,9 @@
                     <constraint firstAttribute="trailing" secondItem="I56-Lj-qTa" secondAttribute="trailing" id="UeH-1D-1zL"/>
                     <constraint firstItem="5Ld-I4-6Cu" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="XId-R8-zBU"/>
                     <constraint firstItem="I56-Lj-qTa" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="doi-5e-Y0o"/>
+                    <constraint firstAttribute="bottom" secondItem="5Ld-I4-6Cu" secondAttribute="bottom" constant="353" id="ifE-eE-BMQ"/>
                     <constraint firstItem="av5-A6-9S5" firstAttribute="top" secondItem="2" secondAttribute="top" constant="72" id="juq-i1-HoK"/>
+                    <constraint firstItem="5Ld-I4-6Cu" firstAttribute="top" secondItem="2" secondAttribute="top" id="u6L-vS-2UH"/>
                     <constraint firstAttribute="bottom" secondItem="av5-A6-9S5" secondAttribute="bottom" constant="29" id="yWZ-Zg-oVi"/>
                 </constraints>
             </view>
@@ -88,6 +93,6 @@
         </window>
     </objects>
     <resources>
-        <image name="NSActionTemplate" width="15" height="15"/>
+        <image name="NSActionTemplate" width="14" height="14"/>
     </resources>
 </document>
