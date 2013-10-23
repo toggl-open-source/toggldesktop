@@ -30,6 +30,9 @@ NSString *kTimeTotalUnknown = @"--:--";
 {
   NSLog(@"applicationDidFinishLaunching");
 
+  // Hide dock icon
+  [NSApp setActivationPolicy: NSApplicationActivationPolicyAccessory];  
+
   [Bugsnag startBugsnagWithApiKey:@"2a46aa1157256f759053289f2d687c2f"];
   [Bugsnag configuration].releaseStage = @"development";
   
