@@ -639,6 +639,13 @@ kopsik_api_result kopsik_logout(
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
+
+  if (ctx->current_user) {
+    kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
+    delete user;
+    ctx->current_user = 0;
+  }
+
   return KOPSIK_API_SUCCESS;
 }
 
