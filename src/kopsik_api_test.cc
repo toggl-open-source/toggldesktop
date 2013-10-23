@@ -338,21 +338,38 @@ namespace kopsik {
         kopsik_time_entry_view_item_clear(te);
     }
 
-    TEST(KopsikApiTest, kopsik_format_duration_in_seconds) {
+    TEST(KopsikApiTest, kopsik_format_duration_in_seconds_hhmmss) {
         const int kMaxStrLen = 100;
         char str[kMaxStrLen];
-        kopsik_format_duration_in_seconds(10, str, kMaxStrLen);
+        kopsik_format_duration_in_seconds_hhmmss(10, str, kMaxStrLen);
         ASSERT_EQ("00:00:10", std::string(str));
-        kopsik_format_duration_in_seconds(60, str, kMaxStrLen);
+        kopsik_format_duration_in_seconds_hhmmss(60, str, kMaxStrLen);
         ASSERT_EQ("00:01:00", std::string(str));
-        kopsik_format_duration_in_seconds(65, str, kMaxStrLen);
+        kopsik_format_duration_in_seconds_hhmmss(65, str, kMaxStrLen);
         ASSERT_EQ("00:01:05", std::string(str));
-        kopsik_format_duration_in_seconds(3600, str, kMaxStrLen);
+        kopsik_format_duration_in_seconds_hhmmss(3600, str, kMaxStrLen);
         ASSERT_EQ("01:00:00", std::string(str));
-        kopsik_format_duration_in_seconds(5400, str, kMaxStrLen);
+        kopsik_format_duration_in_seconds_hhmmss(5400, str, kMaxStrLen);
         ASSERT_EQ("01:30:00", std::string(str));
-        kopsik_format_duration_in_seconds(5410, str, kMaxStrLen);
+        kopsik_format_duration_in_seconds_hhmmss(5410, str, kMaxStrLen);
         ASSERT_EQ("01:30:10", std::string(str));
+    }
+
+    TEST(KopsikApiTest, kopsik_format_duration_in_seconds_hhmm) {
+        const int kMaxStrLen = 100;
+        char str[kMaxStrLen];
+        kopsik_format_duration_in_seconds_hhmm(10, str, kMaxStrLen);
+        ASSERT_EQ("00:00", std::string(str));
+        kopsik_format_duration_in_seconds_hhmm(60, str, kMaxStrLen);
+        ASSERT_EQ("00:01", std::string(str));
+        kopsik_format_duration_in_seconds_hhmm(65, str, kMaxStrLen);
+        ASSERT_EQ("00:01", std::string(str));
+        kopsik_format_duration_in_seconds_hhmm(3600, str, kMaxStrLen);
+        ASSERT_EQ("01:00", std::string(str));
+        kopsik_format_duration_in_seconds_hhmm(5400, str, kMaxStrLen);
+        ASSERT_EQ("01:30", std::string(str));
+        kopsik_format_duration_in_seconds_hhmm(5410, str, kMaxStrLen);
+        ASSERT_EQ("01:30", std::string(str));
     }
 
     TEST(KopsikApiTest, kopsik_time_entry_view_item_list_init) {
