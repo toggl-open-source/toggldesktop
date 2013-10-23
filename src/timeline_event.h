@@ -1,7 +1,7 @@
 // Copyright (c) 2013 Toggl
 
-#ifndef SRC_TIMELINE_TIMELINE_EVENT_H_
-#define SRC_TIMELINE_TIMELINE_EVENT_H_
+#ifndef SRC_TIMELINE_EVENT_H_
+#define SRC_TIMELINE_EVENT_H_
 
 #include <time.h>
 #include <string>
@@ -27,4 +27,4 @@ class TimelineEvent {
     bool idle;
 };
 
-#endif  // SRC_TIMELINE_TIMELINE_EVENT_H_
+#endif  // SRC_TIMELINE_EVENT_H_

@@ -118,7 +118,10 @@ cmdline: clean lint
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/toggl_api_client.cc -o build/toggl_api_client.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/database.cc -o build/database.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/kopsik_api.cc -o build/kopsik_api.o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/timeline/get_focused_window_mac.cc -o build/get_focused_window_mac.o
+	$(cxx) $(cflags) -O2 -DNDEBUG -c src/get_focused_window_mac.cc -o build/get_focused_window_mac.o
+	$(cxx) $(cflags) -O2 -DNDEBUG -c src/timeline_database.cc -o build/timeline_database.o
+	$(cxx) $(cflags) -O2 -DNDEBUG -c src/timeline_uploader.cc -o build/timeline_uploader.o
+	$(cxx) $(cflags) -O2 -DNDEBUG -c src/window_change_recorder.cc -o build/window_change_recorder.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/ui/cmdline/main.cc -o build/main.o
 	$(cxx) -o $(main) -o $(main) build/*.o $(libs)
 	strip $(main)
@@ -144,10 +147,7 @@ push:
 	./$(main) push
 
 lint:
-	./third_party/cpplint/cpplint.py src/*.cc src/*.h src/ui/cmdline/* \
-		src/timeline/*focused* \
-		src/timeline/*constants* \
-		src/timeline/*event*
+	./third_party/cpplint/cpplint.py src/*.cc src/*.h src/ui/cmdline/*
 
 deps: openssl poco json
 
