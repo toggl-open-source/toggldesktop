@@ -60,6 +60,7 @@
       KopsikTimeEntryViewItem *item = list->ViewItems[i];
       TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
       [model load:item];
+      [viewitems addObject:@"Splitter"];
       [viewitems addObject:model];
     }
     kopsik_time_entry_view_item_list_clear(list);
@@ -121,19 +122,40 @@
     TimeEntryViewItem *item = [viewitems objectAtIndex:row];
     NSAssert(item != nil, @"view item from viewitems array is nil");
     TableViewCell *cellView = [tableView makeViewWithIdentifier:@"TimeEntryCell" owner:self];
-    if (cellView == nil) {
-      cellView = [[TableViewCell alloc] init];
-      cellView.identifier = @"TimeEntryCell";
+    if ([item isKindOfClass:[TimeEntryViewItem class]]){
+      cellView.GUID = item.GUID;
+      cellView.colorTextField.backgroundColor = [self hexCodeToNSColor:item.color];
+      cellView.descriptionTextField.stringValue = item.Description;
+      if (item.project) {
+        cellView.projectTextField.stringValue = item.project;
+      }
+      cellView.durationTextField.stringValue = item.duration;
+      return cellView;
+    } else {
+      NSTableCellView *groupCell = [tableView makeViewWithIdentifier:@"GroupCell" owner:self];
+      //[groupCell setStringValue:@"Today"];
+      return groupCell;
     }
-    cellView.GUID = item.GUID;
-    cellView.colorTextField.backgroundColor = [self hexCodeToNSColor:item.color];
-    cellView.descriptionTextField.stringValue = item.Description;
-    if (item.project) {
-      cellView.projectTextField.stringValue = item.project;
-    }
-    cellView.durationTextField.stringValue = item.duration;
-    return cellView;
+  return nil;
 }
+
+- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row {
+  NSObject *item = viewitems[row];
+  if ([item isKindOfClass:[TimeEntryViewItem class]]) {
+    return [tableView rowHeight];
+  }
+  return 22;
+}
+
+/*
+- (BOOL)tableView:(NSTableView *)tableView isGroupRow:(NSInteger)row {
+  NSObject *item = viewitems[row];
+  if ([item isKindOfClass:[TimeEntryViewItem class]]) {
+    return NO;
+  }
+  return YES;
+}
+*/
 
 - (NSColor *)hexCodeToNSColor:(NSString *)hexCode {
 	unsigned int colorCode = 0;
