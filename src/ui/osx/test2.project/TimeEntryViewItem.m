@@ -59,7 +59,7 @@
                                                                 view_item,
                                                                 &was_found)) {
     kopsik_time_entry_view_item_clear(view_item);
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                         object:[NSString stringWithUTF8String:err]];
     return nil;
   }

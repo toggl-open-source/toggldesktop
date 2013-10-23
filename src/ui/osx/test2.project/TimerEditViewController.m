@@ -39,14 +39,14 @@
   KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
   if (KOPSIK_API_SUCCESS != kopsik_start(ctx, err, KOPSIK_ERR_LEN, [description UTF8String], item)) {
     kopsik_time_entry_view_item_clear(item);
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
 
   TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
   [te load:item];
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerRunning object:te];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning object:te];
   
   [self.descriptionTextField setStringValue:@""];
 

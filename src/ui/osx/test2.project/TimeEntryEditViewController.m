@@ -26,11 +26,11 @@
     if (self) {
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
-                                                   name:kUIEventTimeEntrySelected
+                                                   name:kUIStateTimeEntrySelected
                                                  object:nil];
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
-                                                   name:kUIEventUserLoggedIn
+                                                   name:kUIStateUserLoggedIn
                                                  object:nil];
       self.projectNames = [[NSMutableArray alloc] init];
     }
@@ -39,7 +39,7 @@
 }
 
 - (IBAction)backButtonClicked:(id)sender {
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimeEntryDeselected object:nil];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntryDeselected object:nil];
 }
 
 - (void)render:(NSString *)view_item_guid {
@@ -84,15 +84,15 @@
 
 - (void)eventHandler: (NSNotification *) notification
 {
-  if ([notification.name isEqualToString:kUIEventTimeEntrySelected]) {
+  if ([notification.name isEqualToString:kUIStateTimeEntrySelected]) {
     [self render:notification.object];
 
-  } else if ([notification.name isEqualToString:kUIEventUserLoggedIn]) {
+  } else if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
     [self.projectNames removeAllObjects];
     KopsikProjectSelectItemList *list = kopsik_project_select_item_list_init();
     char err[KOPSIK_ERR_LEN];
     if (KOPSIK_API_SUCCESS != kopsik_project_select_items(ctx, err, KOPSIK_ERR_LEN, list)) {
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                           object:[NSString stringWithUTF8String:err]];
       kopsik_project_select_item_list_clear(list);
       return;
@@ -116,7 +116,7 @@
                                                            KOPSIK_ERR_LEN,
                                                            [self.GUID UTF8String],
                                                            value)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
@@ -134,7 +134,7 @@
                                                           KOPSIK_ERR_LEN,
                                                           [self.GUID UTF8String],
                                                           value)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
@@ -171,7 +171,7 @@
                                                                  KOPSIK_ERR_LEN,
                                                                  [self.GUID UTF8String],
                                                                  [iso8601String UTF8String])) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
@@ -207,7 +207,7 @@
                                                                KOPSIK_ERR_LEN,
                                                                [self.GUID UTF8String],
                                                                [iso8601String UTF8String])) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
@@ -230,7 +230,7 @@
                                                        KOPSIK_ERR_LEN,
                                                        [self.GUID UTF8String],
                                                        value)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
@@ -249,7 +249,7 @@
                                                            KOPSIK_ERR_LEN,
                                                            [self.GUID UTF8String],
                                                            value)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
@@ -265,7 +265,7 @@
                                                               KOPSIK_ERR_LEN,
                                                               [self.GUID UTF8String],
                                                               value)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
@@ -293,12 +293,12 @@
                                                      err,
                                                      KOPSIK_ERR_LEN,
                                                      [self.GUID UTF8String])) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
   kopsik_push_async(ctx, handle_error);
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimeEntryDeselected object:nil];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntryDeselected object:nil];
 }
 
 -(NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox{

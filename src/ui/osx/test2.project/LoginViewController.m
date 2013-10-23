@@ -49,7 +49,7 @@
   }
   
   [self.errorLabel setHidden:YES];
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedIn object:nil];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedIn object:nil];
 }
 
 - (IBAction)clickGoogleLoginButton:(id)sender {
@@ -109,7 +109,7 @@
   }
   
   [self.errorLabel setHidden:YES];
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedIn object:nil];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedIn object:nil];
 }
 
 @end

@@ -29,11 +29,11 @@
     if (self) {
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
-                                                   name:kUIEventTimerRunning
+                                                   name:kUIStateTimerRunning
                                                  object:nil];
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
-                                                   name:kUIEventTimerStopped
+                                                   name:kUIStateTimerStopped
                                                  object:nil];
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
@@ -51,10 +51,10 @@
 
 -(void)eventHandler: (NSNotification *) notification
 {
-  if ([notification.name isEqualToString:kUIEventTimerRunning]) {
+  if ([notification.name isEqualToString:kUIStateTimerRunning]) {
     [self render:notification.object];
     
-  } else if ([notification.name isEqualToString:kUIEventTimerStopped]) {
+  } else if ([notification.name isEqualToString:kUIStateTimerStopped]) {
     [self render:nil];
 
   } else if ([notification.name isEqualToString:kUIEventModelChange]) {
@@ -71,7 +71,7 @@
 
       // Time entry we thought was running, has been deleted.
       if ([change.GUID isEqualToString:self.te.GUID]) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerStopped object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped object:nil];
       }
       
       return;
@@ -82,13 +82,13 @@
 
     // Time entry we thought was running, has been stopped.
     if ((updated.duration_in_seconds >= 0) && [updated.GUID isEqualToString:self.te.GUID]) {
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerStopped object:nil];
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped object:nil];
       return;
     }
 
     // Time entry we did not know was running, is running.
     if ((updated.duration_in_seconds < 0) && ![updated.GUID isEqualToString:self.te.GUID]) {
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerRunning object:updated];
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning object:updated];
       return;
     }
 
@@ -119,14 +119,14 @@
   KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
   if (KOPSIK_API_SUCCESS != kopsik_stop(ctx, err, KOPSIK_ERR_LEN, item)) {
     kopsik_time_entry_view_item_clear(item);
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
   
   TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
   [te load:item];
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerStopped object:te];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped object:te];
 
   kopsik_time_entry_view_item_clear(item);
 

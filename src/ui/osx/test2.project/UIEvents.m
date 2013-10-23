@@ -8,11 +8,19 @@
 
 #import "UIEvents.h"
 
-NSString *const kUIEventUserLoggedIn = @"UserLoggedIn";
-NSString *const kUIEventUserLoggedOut = @"UserLoggedOut";
-NSString *const kUIEventTimerRunning = @"TimerRunning";
-NSString *const kUIEventTimerStopped = @"TimerStopped";
-NSString *const kUIEventTimeEntrySelected = @"TimeEntrySelected";
-NSString *const kUIEventTimeEntryDeselected = @"TimeEntryDeselected";
-NSString *const kUIEventError = @"Error";
+// States
+NSString *const kUIStateUserLoggedIn = @"UserLoggedIn";
+NSString *const kUIStateUserLoggedOut = @"UserLoggedOut";
+NSString *const kUIStateTimerRunning = @"TimerRunning";
+NSString *const kUIStateTimerStopped = @"TimerStopped";
+NSString *const kUIStateTimeEntrySelected = @"TimeEntrySelected";
+NSString *const kUIStateTimeEntryDeselected = @"TimeEntryDeselected";
+NSString *const kUIStateError = @"Error";
+
+// Events
 NSString *const kUIEventModelChange = @"ModelChange";
+
+// Commands
+NSString *const kUICommandNew = @"New";
+NSString *const kUICommandStop = @"Stop";
+NSString *const kUICommandContinue = @"Continue";

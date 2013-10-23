@@ -12,6 +12,7 @@
 #import "MainWindowController.h"
 #import "PreferencesWindowController.h"
 #import "Bugsnag.h"
+#import "UIEvents.h"
 
 @interface  AppDelegate()
 @property (nonatomic,strong) IBOutlet MainWindowController *mainWindowController;
@@ -34,6 +35,10 @@
 
   self.preferencesWindowController = [[PreferencesWindowController alloc] initWithWindowNibName:@"PreferencesWindowController"];
   
+  [self createStatusItem];
+}
+
+- (void)createStatusItem {
   NSMenu *menu = [[NSMenu alloc] init];
   [menu addItemWithTitle:@"About" action:@selector(onAboutMenuItem) keyEquivalent:@""];
   [menu addItem:[NSMenuItem separatorItem]];
@@ -41,7 +46,6 @@
   [menu addItem:[NSMenuItem separatorItem]];
   [menu addItemWithTitle:@"New" action:@selector(onNewMenuItem) keyEquivalent:@""];
   [menu addItemWithTitle:@"Continue" action:@selector(onContinueMenuItem) keyEquivalent:@""];
-  [menu addItemWithTitle:@"Start" action:@selector(onStartMenuItem) keyEquivalent:@""];
   [menu addItemWithTitle:@"Stop" action:@selector(onStopMenuItem) keyEquivalent:@""];
   [menu addItem:[NSMenuItem separatorItem]];
   [menu addItemWithTitle:@"Preferences" action:@selector(onPreferencesMenuItem:) keyEquivalent:@""];
@@ -55,6 +59,21 @@
   [self.statusItem setHighlightMode:YES];
   [self.statusItem setEnabled:YES];
   [self.statusItem setMenu:menu];
+}
+
+- (void)onNewMenuItem {
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandNew
+                                                      object:nil];
+}
+
+- (void)onContinueMenuItem {
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandContinue
+                                                      object:nil];
+}
+
+- (void)onStopMenuItem {
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandStop
+                                                      object:nil];
 }
 
 - (void)onAboutMenuItem {

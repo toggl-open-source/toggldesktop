@@ -36,31 +36,31 @@
   if (self) {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(eventHandler:)
-                                                 name:kUIEventUserLoggedIn
+                                                 name:kUIStateUserLoggedIn
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(eventHandler:)
-                                                 name:kUIEventUserLoggedOut
+                                                 name:kUIStateUserLoggedOut
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(eventHandler:)
-                                                 name:kUIEventTimerRunning
+                                                 name:kUIStateTimerRunning
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(eventHandler:)
-                                                 name:kUIEventTimerStopped
+                                                 name:kUIStateTimerStopped
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(eventHandler:)
-                                                 name:kUIEventTimeEntrySelected
+                                                 name:kUIStateTimeEntrySelected
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(eventHandler:)
-                                                 name:kUIEventTimeEntryDeselected
+                                                 name:kUIStateTimeEntryDeselected
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(eventHandler:)
-                                                 name:kUIEventError
+                                                 name:kUIStateError
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(eventHandler:)
@@ -97,7 +97,7 @@
   char err[KOPSIK_ERR_LEN];
   KopsikUser *user = kopsik_user_init();
   if (KOPSIK_API_SUCCESS != kopsik_current_user(ctx, err, KOPSIK_ERR_LEN, user)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                         object:[NSString stringWithUTF8String:err]];
     kopsik_user_clear(user);
     return;
@@ -111,9 +111,9 @@
   kopsik_user_clear(user);
   
   if (userinfo == nil) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedOut object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedOut object:nil];
   } else {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedIn object:userinfo];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedIn object:userinfo];
   }
 }
 
@@ -121,7 +121,7 @@
 {
   NSLog(@"osx_ui.%@ %@", notification.name, notification.object);
 
-  if ([notification.name isEqualToString:kUIEventUserLoggedIn]) {
+  if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
     User *userinfo = notification.object;
     [Bugsnag setUserAttribute:@"user_id" withValue:[NSString stringWithFormat:@"%ld", userinfo.ID]];
     
@@ -141,7 +141,7 @@
     [self performSelector:@selector(startSync) withObject:nil afterDelay:0.5];
     [self performSelector:@selector(startWebSocket) withObject:nil afterDelay:0.5];
 
-  } else if ([notification.name isEqualToString:kUIEventUserLoggedOut]) {
+  } else if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
     [Bugsnag setUserAttribute:@"user_id" withValue:nil];
     
     NSLog(@"MainWindow stopping websocket");
@@ -159,31 +159,31 @@
     [self.headerView setHidden:YES];
     [self.timerViewController.view removeFromSuperview];
 
-  } else if ([notification.name isEqualToString:kUIEventTimerRunning]) {
+  } else if ([notification.name isEqualToString:kUIStateTimerRunning]) {
     [self.headerView addSubview:self.timerViewController.view];
     [self.timerViewController.view setFrame: self.headerView.bounds];
     
     [self.timerEditViewController.view removeFromSuperview];
     
-  } else if ([notification.name isEqualToString:kUIEventTimerStopped]) {
+  } else if ([notification.name isEqualToString:kUIStateTimerStopped]) {
     [self.timerViewController.view removeFromSuperview];
 
     [self.headerView addSubview:self.timerEditViewController.view];
     [self.timerEditViewController.view setFrame:self.headerView.bounds];
 
-  } else if ([notification.name isEqualToString:kUIEventTimeEntrySelected]) {
+  } else if ([notification.name isEqualToString:kUIStateTimeEntrySelected]) {
     [self.headerView setHidden:YES];
     [self.timeEntryListViewController.view removeFromSuperview];
     [self.contentView addSubview:self.timeEntryEditViewController.view];
     [self.timeEntryEditViewController.view setFrame:self.contentView.bounds];
 
-  } else if ([notification.name isEqualToString:kUIEventTimeEntryDeselected]) {
+  } else if ([notification.name isEqualToString:kUIStateTimeEntryDeselected]) {
     [self.headerView setHidden:NO];
     [self.timeEntryEditViewController.view removeFromSuperview];
     [self.contentView addSubview:self.timeEntryListViewController.view];
     [self.timeEntryListViewController.view setFrame:self.contentView.bounds];
   
-  } else if ([notification.name isEqualToString:kUIEventError]) {
+  } else if ([notification.name isEqualToString:kUIStateError]) {
     // Proxy all app errors through this notification.
 
     NSString *msg = notification.object;
@@ -216,11 +216,11 @@
 - (IBAction)logout:(id)sender {
   char err[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_logout(ctx, err, KOPSIK_ERR_LEN)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventUserLoggedOut object:nil];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedOut object:nil];
 }
 
 - (IBAction)sync:(id)sender {
@@ -231,7 +231,7 @@
 void sync_finished(kopsik_api_result result, const char *err) {
   NSLog(@"MainWindow sync_finished");
   if (KOPSIK_API_SUCCESS != result) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                         object:[NSString stringWithUTF8String:err]];
     
     return;
@@ -246,7 +246,7 @@ void renderRunningTimeEntry() {
   if (KOPSIK_API_SUCCESS != kopsik_running_time_entry_view_item(ctx,
                                                                 err, KOPSIK_ERR_LEN,
                                                                 item, &is_tracking)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                         object:[NSString stringWithUTF8String:err]];
     kopsik_time_entry_view_item_clear(item);
     return;
@@ -255,9 +255,9 @@ void renderRunningTimeEntry() {
   if (is_tracking) {
     TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
     [te load:item];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerRunning object:te];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning object:te];
   } else {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerStopped object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped object:nil];
   }
   kopsik_time_entry_view_item_clear(item);
 }
@@ -266,7 +266,7 @@ void on_model_change(kopsik_api_result result,
                      const char *errmsg,
                      KopsikModelChange *change) {
   if (KOPSIK_API_SUCCESS != result) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                           object:[NSString stringWithUTF8String:errmsg]];
     return;
   }

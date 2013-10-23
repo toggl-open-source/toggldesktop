@@ -10,7 +10,7 @@
 
 void handle_error(kopsik_api_result result, const char *err) {
   if (KOPSIK_API_SUCCESS != result) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                         object:[NSString stringWithUTF8String:err]];
   }
 }

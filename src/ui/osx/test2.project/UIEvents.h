@@ -8,11 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString *const kUIEventUserLoggedIn;
-extern NSString *const kUIEventUserLoggedOut;
-extern NSString *const kUIEventTimerRunning;
-extern NSString *const kUIEventTimerStopped;
-extern NSString *const kUIEventTimeEntrySelected;
-extern NSString *const kUIEventTimeEntryDeselected;
-extern NSString *const kUIEventError;
+// States
+extern NSString *const kUIStateUserLoggedIn;
+extern NSString *const kUIStateUserLoggedOut;
+extern NSString *const kUIStateTimerRunning;
+extern NSString *const kUIStateTimerStopped;
+extern NSString *const kUIStateTimeEntrySelected;
+extern NSString *const kUIStateTimeEntryDeselected;
+extern NSString *const kUIStateError;
+
+// Events
 extern NSString *const kUIEventModelChange;
+
+// Commands
+extern NSString *const kUICommandNew;
+extern NSString *const kUICommandStop;
+extern NSString *const kUICommandContinue;

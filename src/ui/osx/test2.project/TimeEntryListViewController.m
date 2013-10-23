@@ -30,11 +30,11 @@
 
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
-                                                   name:kUIEventUserLoggedIn
+                                                   name:kUIStateUserLoggedIn
                                                  object:nil];
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
-                                                   name:kUIEventTimerStopped
+                                                   name:kUIStateTimerStopped
                                                  object:nil];
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
@@ -46,11 +46,11 @@
 
 -(void)eventHandler: (NSNotification *) notification
 {
-  if ([notification.name isEqualToString:kUIEventUserLoggedIn]) {
+  if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
     char err[KOPSIK_ERR_LEN];
     KopsikTimeEntryViewItemList *list = kopsik_time_entry_view_item_list_init();
     if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(ctx, err, KOPSIK_ERR_LEN, list)) {
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                           object:[NSString stringWithUTF8String:err]];
       kopsik_time_entry_view_item_list_clear(list);
       return;
@@ -156,7 +156,7 @@
   KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
   if (KOPSIK_API_SUCCESS != kopsik_continue(ctx, err, KOPSIK_ERR_LEN, [guid UTF8String], item)) {
     kopsik_time_entry_view_item_clear(item);
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventError
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
@@ -165,7 +165,7 @@
   [te load:item];
   kopsik_time_entry_view_item_clear(item);
 
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimerRunning object:te];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning object:te];
 
   kopsik_push_async(ctx, handle_error);
 }
@@ -173,7 +173,7 @@
 - (IBAction)performClick:(id)sender {
   NSInteger row = [self.timeEntriesTableView clickedRow];
   TimeEntryViewItem *item = [viewitems objectAtIndex:row];
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimeEntrySelected
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
                                                       object:item.GUID];
 }
 
