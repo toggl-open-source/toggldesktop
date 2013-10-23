@@ -1,7 +1,7 @@
 // Copyright 2013 Tanel Lebedev
 
-#ifndef SRC_MAIN_H_
-#define SRC_MAIN_H_
+#ifndef SRC_UI_CMDLINE_MAIN_H_
+#define SRC_UI_CMDLINE_MAIN_H_
 
 #include <string>
 #include <vector>
@@ -42,18 +42,16 @@ namespace command_line_client {
             Poco::Util::Application::initialize(self);
         };
         virtual void uninitialize() {}
-        virtual void reinitialize() {}
         virtual void defineOptions(Poco::Util::OptionSet& options); // NOLINT
         void handleOption(const std::string &name, const std::string &value) {}
 
     private:
         void usage();
         KopsikContext *ctx;
-
 };
 
 }  // namespace command_line_client
 
 POCO_APP_MAIN(command_line_client::Main)
 
-#endif  // SRC_MAIN_H_
+#endif  // SRC_UI_CMDLINE_MAIN_H_

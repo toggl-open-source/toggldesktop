@@ -17,7 +17,7 @@ namespace command_line_client {
             << std::endl;
     }
 
-    void Main::defineOptions(Poco::Util::OptionSet& options) {
+    void Main::defineOptions(Poco::Util::OptionSet& options) { // NOLINT
         Poco::Util::Application::defineOptions(options);
         options.addOption(Poco::Util::Option(
             "verbose", "v", "verbose logging, to the console"));
@@ -36,12 +36,12 @@ namespace command_line_client {
     std::string KopsikTimeEntryViewItemToString(
             KopsikTimeEntryViewItem *item) {
         std::stringstream ss;
-        ss << "description: " << item->Description;
+        ss << item->Description;
         if (item->Project) {
-            ss << " project: " << item->Project;
+            ss << " [" << item->Project << "]";
         }
         if (item->Duration) {
-            ss << " duration: " << item->Duration;
+            ss << " (" << item->Duration << ")";
         }
         return ss.str();
     }
@@ -130,7 +130,8 @@ namespace command_line_client {
                 std::cerr << err << std::endl;
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
-            std::cout << stats.TimeEntries << " pushable time entries." << std::endl;
+            std::cout << stats.TimeEntries
+                << " pushable time entries." << std::endl;
             return Poco::Util::Application::EXIT_OK;
         }
 
@@ -201,7 +202,8 @@ namespace command_line_client {
         if ("listen" == args[0]) {
             std::cout << "Listening to websocket.. " << std::endl;
             kopsik_set_change_callback(ctx, on_model_change);
-            if (KOPSIK_API_SUCCESS != kopsik_websocket_start(ctx, err, ERRLEN)) {
+            kopsik_api_result res = kopsik_websocket_start(ctx, err, ERRLEN);
+            if (KOPSIK_API_SUCCESS != res) {
                 std::cerr << "Error starting websocket: "
                     << err << std::endl;
                 return Poco::Util::Application::EXIT_SOFTWARE;
