@@ -54,7 +54,8 @@ cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
 endif
 
 ifeq ($(uname), Darwin)
-libs=-L$(pocolib) \
+libs=-framework Carbon \
+	-L$(pocolib) \
 	-lPocoDataSQLite \
 	-lPocoData \
 	-lPocoNet \
@@ -117,6 +118,7 @@ cmdline: clean lint
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/toggl_api_client.cc -o build/toggl_api_client.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/database.cc -o build/database.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/kopsik_api.cc -o build/kopsik_api.o
+	$(cxx) $(cflags) -O2 -DNDEBUG -c src/timeline/get_focused_window_mac.cc -o build/get_focused_window_mac.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/ui/cmdline/main.cc -o build/main.o
 	$(cxx) -o $(main) -o $(main) build/*.o $(libs)
 	strip $(main)
@@ -142,7 +144,7 @@ push:
 	./$(main) push
 
 lint:
-	./third_party/cpplint/cpplint.py src/*.cc src/*.h src/ui/cmdline/*
+	./third_party/cpplint/cpplint.py src/*.cc src/*.h src/ui/cmdline/* src/timeline/*focused*
 
 deps: openssl poco json
 
