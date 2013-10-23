@@ -144,7 +144,9 @@ push:
 	./$(main) push
 
 lint:
-	./third_party/cpplint/cpplint.py src/*.cc src/*.h src/ui/cmdline/* src/timeline/*focused*
+	./third_party/cpplint/cpplint.py src/*.cc src/*.h src/ui/cmdline/* \
+		src/timeline/*focused* \
+		src/timeline/*constants*
 
 deps: openssl poco json
 
