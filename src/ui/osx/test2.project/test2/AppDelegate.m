@@ -63,7 +63,7 @@
 
 - (void)onNewMenuItem {
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandNew
-                                                      object:nil];
+                                                      object:@"(no description)"];
 }
 
 - (void)onContinueMenuItem {
@@ -200,5 +200,7 @@
   kopsik_context_clear(ctx);
   ctx = 0;
 }
+
+
 
 @end

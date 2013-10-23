@@ -66,6 +66,18 @@
                                              selector:@selector(eventHandler:)
                                                  name:kUIEventModelChange
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eventHandler:)
+                                                 name:kUICommandNew
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eventHandler:)
+                                                 name:kUICommandContinue
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eventHandler:)
+                                                 name:kUICommandStop
+                                               object:nil];
     
     self.loginViewController = [[LoginViewController alloc]
                                 initWithNibName:@"LoginViewController" bundle:nil];
@@ -182,6 +194,23 @@
     [self.timeEntryEditViewController.view removeFromSuperview];
     [self.contentView addSubview:self.timeEntryListViewController.view];
     [self.timeEntryListViewController.view setFrame:self.contentView.bounds];
+  
+  } else if ([notification.name isEqualToString:kUICommandNew]) {
+    NSString *description = notification.object;
+    char err[KOPSIK_ERR_LEN];
+    KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
+    if (KOPSIK_API_SUCCESS != kopsik_start(ctx, err, KOPSIK_ERR_LEN, [description UTF8String], item)) {
+      kopsik_time_entry_view_item_clear(item);
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
+                                                          object:[NSString stringWithUTF8String:err]];
+      return;
+    }
+    
+    TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
+    [te load:item];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning object:te];
+    
+    kopsik_push_async(ctx, handle_error);
   
   } else if ([notification.name isEqualToString:kUIStateError]) {
     // Proxy all app errors through this notification.

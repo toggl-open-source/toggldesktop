@@ -7,11 +7,7 @@
 //
 
 #import "TimerEditViewController.h"
-#import "kopsik_api.h"
-#import "Context.h"
-#import "TimeEntryViewItem.h"
 #import "UIEvents.h"
-#import "ErrorHandler.h"
 
 @interface TimerEditViewController ()
 
@@ -35,22 +31,10 @@
     [self.descriptionTextField becomeFirstResponder];
     return;
   }
-  char err[KOPSIK_ERR_LEN];
-  KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-  if (KOPSIK_API_SUCCESS != kopsik_start(ctx, err, KOPSIK_ERR_LEN, [description UTF8String], item)) {
-    kopsik_time_entry_view_item_clear(item);
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                        object:[NSString stringWithUTF8String:err]];
-    return;
-  }
-
-  TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
-  [te load:item];
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning object:te];
-  
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandNew
+                                                      object:description];
   [self.descriptionTextField setStringValue:@""];
-
-  kopsik_push_async(ctx, handle_error);
+  
 }
 
 @end
