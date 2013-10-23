@@ -27,6 +27,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
       viewitems = [NSMutableArray array];
+      dateFormat = [[NSDateFormatter alloc] init];
+      [dateFormat setDateFormat:@"yyyy-MM-dd"];
 
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
@@ -58,7 +60,10 @@
         KopsikTimeEntryViewItem *item = list->ViewItems[i];
         TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
         [model load:item];
-        [viewitems addObject:@"Splitter"];
+        if (lastDate == nil || [model isSameDay:lastDate]) {
+          lastDate = model.started;
+          [viewitems addObject:[dateFormat stringFromDate:lastDate]];
+        }
         [viewitems addObject:model];
       }
     }
@@ -161,7 +166,6 @@
       return cellView;
     } else {
       NSTableCellView *groupCell = [tableView makeViewWithIdentifier:@"GroupCell" owner:self];
-      //[groupCell setStringValue:@"Today"];
       return groupCell;
     }
     return nil;

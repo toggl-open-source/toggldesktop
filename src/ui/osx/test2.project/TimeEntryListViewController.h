@@ -12,7 +12,9 @@
 @interface TimeEntryListViewController : NSViewController
 {
   @private
+  NSDate *lastDate;
   NSMutableArray *viewitems;
+  NSDateFormatter *dateFormat;
 }
 @property (weak) IBOutlet NSTableView *timeEntriesTableView;
 - (IBAction)continueButtonClicked:(id)sender;
