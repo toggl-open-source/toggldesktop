@@ -149,7 +149,7 @@ deps: openssl poco json
 json:
 	cd $(jsondir) && make
 
-nightly: #deps test osx
+nightly: deps test osx
 	rm -rf src/branding
 	git clone gitosis@git.toggl.com:kopsik_branding.git src/branding
 	rm -rf TogglDesktop.app
