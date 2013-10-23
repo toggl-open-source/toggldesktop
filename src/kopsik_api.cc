@@ -626,6 +626,10 @@ kopsik_api_result kopsik_logout(
   Poco::Logger &logger = Poco::Logger::get("kopsik_api");
   logger.debug("kopsik_logout");
 
+  if (!ctx->current_user) {
+    return KOPSIK_API_SUCCESS;
+  }
+
   Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
   Poco::Mutex::ScopedLock lock(*mutex);
 
