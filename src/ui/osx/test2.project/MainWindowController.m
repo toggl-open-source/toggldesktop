@@ -172,14 +172,28 @@
     [self.timerViewController.view removeFromSuperview];
 
   } else if ([notification.name isEqualToString:kUIStateTimerRunning]) {
+    // Hide timer editor from header view
+    [self.timerEditViewController.view removeFromSuperview];
+    
+    // If running timer view is not visible yet, add it to header view
+    for (int i = 0; i < [self.headerView subviews].count; i++) {
+      if ([[self.headerView subviews] objectAtIndex:i] == self.timerViewController.view) {
+        return;
+      }
+    }
     [self.headerView addSubview:self.timerViewController.view];
     [self.timerViewController.view setFrame: self.headerView.bounds];
     
-    [self.timerEditViewController.view removeFromSuperview];
-    
   } else if ([notification.name isEqualToString:kUIStateTimerStopped]) {
+    // Hide running timer view from header view
     [self.timerViewController.view removeFromSuperview];
-
+    
+    // If timer editor is not visible yet, add it to header view
+    for (int i = 0; i < [self.headerView subviews].count; i++) {
+      if ([[self.headerView subviews] objectAtIndex:i] == self.timerEditViewController.view) {
+        return;
+      }
+    }
     [self.headerView addSubview:self.timerEditViewController.view];
     [self.timerEditViewController.view setFrame:self.headerView.bounds];
 
@@ -209,6 +223,24 @@
     TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
     [te load:item];
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning object:te];
+    
+    kopsik_push_async(ctx, handle_error);
+    
+  } else if ([notification.name isEqualToString:kUICommandStop]) {
+    char err[KOPSIK_ERR_LEN];
+    KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
+    if (KOPSIK_API_SUCCESS != kopsik_stop(ctx, err, KOPSIK_ERR_LEN, item)) {
+      kopsik_time_entry_view_item_clear(item);
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
+                                                          object:[NSString stringWithUTF8String:err]];
+      return;
+    }
+    
+    TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
+    [te load:item];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped object:te];
+    
+    kopsik_time_entry_view_item_clear(item);
     
     kopsik_push_async(ctx, handle_error);
   

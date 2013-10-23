@@ -115,22 +115,8 @@
 
 - (IBAction)stopButtonClicked:(id)sender
 {
-  char err[KOPSIK_ERR_LEN];
-  KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-  if (KOPSIK_API_SUCCESS != kopsik_stop(ctx, err, KOPSIK_ERR_LEN, item)) {
-    kopsik_time_entry_view_item_clear(item);
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                        object:[NSString stringWithUTF8String:err]];
-    return;
-  }
-  
-  TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
-  [te load:item];
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped object:te];
-
-  kopsik_time_entry_view_item_clear(item);
-
-  kopsik_push_async(ctx, handle_error);
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandStop
+                                                      object:nil];
 }
 
 - (void)timerFired:(NSTimer*)timer
