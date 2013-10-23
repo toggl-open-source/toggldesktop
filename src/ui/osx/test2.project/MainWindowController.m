@@ -34,6 +34,22 @@
 {
   self = [super initWithWindow:window];
   if (self) {
+    self.loginViewController = [[LoginViewController alloc]
+                                initWithNibName:@"LoginViewController" bundle:nil];
+    self.timeEntryListViewController = [[TimeEntryListViewController alloc]
+                                        initWithNibName:@"TimeEntryListViewController" bundle:nil];
+    self.timerViewController = [[TimerViewController alloc]
+                                initWithNibName:@"TimerViewController" bundle:nil];
+    self.timerEditViewController = [[TimerEditViewController alloc]
+                                      initWithNibName:@"TimerEditViewController" bundle:nil];
+    self.timeEntryEditViewController = [[TimeEntryEditViewController alloc]
+                                    initWithNibName:@"TimeEntryEditViewController" bundle:nil];
+    
+    [self.loginViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+    [self.timerViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+    [self.timerEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+    [self.timeEntryListViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(eventHandler:)
                                                  name:kUIStateUserLoggedIn
@@ -78,22 +94,6 @@
                                              selector:@selector(eventHandler:)
                                                  name:kUICommandStop
                                                object:nil];
-    
-    self.loginViewController = [[LoginViewController alloc]
-                                initWithNibName:@"LoginViewController" bundle:nil];
-    self.timeEntryListViewController = [[TimeEntryListViewController alloc]
-                                        initWithNibName:@"TimeEntryListViewController" bundle:nil];
-    self.timerViewController = [[TimerViewController alloc]
-                                initWithNibName:@"TimerViewController" bundle:nil];
-    self.timerEditViewController = [[TimerEditViewController alloc]
-                                      initWithNibName:@"TimerEditViewController" bundle:nil];
-    self.timeEntryEditViewController = [[TimeEntryEditViewController alloc]
-                                    initWithNibName:@"TimeEntryEditViewController" bundle:nil];
-    
-    [self.loginViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-    [self.timerViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-    [self.timerEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-    [self.timeEntryListViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
   }
   return self;
 }
