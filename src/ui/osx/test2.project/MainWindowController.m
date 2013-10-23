@@ -226,10 +226,11 @@
     
     kopsik_push_async(ctx, handle_error);
     
-  } else if ([notification.name isEqualToString:kUICommandStop]) {
+  } else if ([notification.name isEqualToString:kUICommandContinue]) {
+    NSString *guid = notification.object;
     char err[KOPSIK_ERR_LEN];
     KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-    if (KOPSIK_API_SUCCESS != kopsik_stop(ctx, err, KOPSIK_ERR_LEN, item)) {
+    if (KOPSIK_API_SUCCESS != kopsik_continue(ctx, err, KOPSIK_ERR_LEN, [guid UTF8String], item)) {
       kopsik_time_entry_view_item_clear(item);
       [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                           object:[NSString stringWithUTF8String:err]];
@@ -238,12 +239,35 @@
     
     TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
     [te load:item];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped object:te];
-    
     kopsik_time_entry_view_item_clear(item);
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning object:te];
     
     kopsik_push_async(ctx, handle_error);
   
+  } else if ([notification.name isEqualToString:kUICommandStop]) {
+    char err[KOPSIK_ERR_LEN];
+    KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
+    int was_found = 0;
+    if (KOPSIK_API_SUCCESS != kopsik_stop(ctx, err, KOPSIK_ERR_LEN, item, &was_found)) {
+      kopsik_time_entry_view_item_clear(item);
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
+                                                          object:[NSString stringWithUTF8String:err]];
+      return;
+    }
+    
+    if (!was_found) {
+      kopsik_time_entry_view_item_clear(item);
+      return;
+    }
+
+    TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
+    [te load:item];
+    kopsik_time_entry_view_item_clear(item);
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped object:te];
+    
+    kopsik_push_async(ctx, handle_error);
+
   } else if ([notification.name isEqualToString:kUIStateError]) {
     // Proxy all app errors through this notification.
 

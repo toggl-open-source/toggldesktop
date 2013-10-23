@@ -151,25 +151,9 @@
 - (IBAction)continueButtonClicked:(id)sender {
   NSButton *btn = sender;
   TableViewCell *cell = (TableViewCell*)[btn superview];
-  NSString *guid = cell.GUID;
-  char err[KOPSIK_ERR_LEN];
-  KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-  if (KOPSIK_API_SUCCESS != kopsik_continue(ctx, err, KOPSIK_ERR_LEN, [guid UTF8String], item)) {
-    kopsik_time_entry_view_item_clear(item);
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                        object:[NSString stringWithUTF8String:err]];
-    return;
-  }
-
-  TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
-  [te load:item];
-  kopsik_time_entry_view_item_clear(item);
-
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning object:te];
-
-  kopsik_push_async(ctx, handle_error);
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
+                                                      object:cell.GUID];
 }
-
 - (IBAction)performClick:(id)sender {
   NSInteger row = [self.timeEntriesTableView clickedRow];
   TimeEntryViewItem *item = [viewitems objectAtIndex:row];
