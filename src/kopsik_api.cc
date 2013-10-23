@@ -1019,16 +1019,12 @@ kopsik_api_result kopsik_continue(
   poco_assert(ctx);
   poco_assert(errmsg);
   poco_assert(errlen);
-  poco_assert(guid);
   poco_assert(view_item);
 
   std::stringstream ss;
   ss << "kopsik_continue guid=" << guid;
   Poco::Logger &logger = Poco::Logger::get("kopsik_api");
   logger.debug(ss.str());
-
-  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
-  Poco::Mutex::ScopedLock lock(*mutex);
 
   std::string GUID(guid);
   if (GUID.empty()) {
@@ -1039,6 +1035,10 @@ kopsik_api_result kopsik_continue(
     strncpy(errmsg, "Please login first", errlen);
     return KOPSIK_API_FAILURE;
   }
+
+  Poco::Mutex *mutex = reinterpret_cast<Poco::Mutex *>(ctx->mutex);
+  Poco::Mutex::ScopedLock lock(*mutex);
+
   kopsik::User *user = reinterpret_cast<kopsik::User *>(ctx->current_user);
   kopsik::TimeEntry *te = user->Continue(GUID);
   poco_assert(te);
