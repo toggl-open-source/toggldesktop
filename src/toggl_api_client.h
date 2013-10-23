@@ -36,7 +36,11 @@ namespace kopsik {
 
     class Formatter {
     public:
-        static std::string FormatDurationInSeconds(const Poco::Int64 value);
+        static std::string FormatDurationInSeconds(const Poco::Int64 value,
+            const std::string format);
+        static std::string FormatDurationInSecondsHHMMSS(
+            const Poco::Int64 value);
+        static std::string FormatDurationInSecondsHHMM(const Poco::Int64 value);
         static std::time_t Parse8601(std::string iso_8601_formatted_date);
         static std::string Format8601(std::time_t date);
     };

@@ -205,7 +205,10 @@ KOPSIK_EXPORT kopsik_api_result kopsik_running_time_entry_view_item(
   KopsikTimeEntryViewItem *item,
   int *is_tracking);
 
-KOPSIK_EXPORT void kopsik_format_duration_in_seconds(
+KOPSIK_EXPORT void kopsik_format_duration_in_seconds_hhmmss(
+  int duration_in_seconds, char *str, unsigned int max_strlen);
+
+KOPSIK_EXPORT void kopsik_format_duration_in_seconds_hhmm(
   int duration_in_seconds, char *str, unsigned int max_strlen);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_start(

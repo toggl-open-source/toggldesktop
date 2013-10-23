@@ -243,7 +243,7 @@ NSString *kTimeTotalUnknown = @"--:--";
   if (self.running_time_entry != nil) {
     const int duration_str_len = 10;
     char str[duration_str_len];
-    kopsik_format_duration_in_seconds(self.running_time_entry.duration_in_seconds, str, duration_str_len);
+    kopsik_format_duration_in_seconds_hhmm(self.running_time_entry.duration_in_seconds, str, duration_str_len);
     [self.statusItem setTitle:[NSString stringWithUTF8String:str]];
   }
 }

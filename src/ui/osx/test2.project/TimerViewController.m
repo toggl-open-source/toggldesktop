@@ -123,7 +123,7 @@
 {
   if (self.running_time_entry != nil) {
     char str[duration_str_len];
-    kopsik_format_duration_in_seconds(self.running_time_entry.duration_in_seconds, str, duration_str_len);
+    kopsik_format_duration_in_seconds_hhmmss(self.running_time_entry.duration_in_seconds, str, duration_str_len);
     NSString *newValue = [NSString stringWithUTF8String:str];
     [self.durationTextField setStringValue:newValue];
   }

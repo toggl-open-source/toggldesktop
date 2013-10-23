@@ -923,12 +923,21 @@ void kopsik_time_entry_view_item_clear(KopsikTimeEntryViewItem *item) {
   item = 0;
 }
 
-void kopsik_format_duration_in_seconds(
+void kopsik_format_duration_in_seconds_hhmmss(
     int duration_in_seconds, char *out_str, unsigned int max_strlen) {
   poco_assert(out_str);
   poco_assert(max_strlen);
   std::string formatted =
-    kopsik::Formatter::FormatDurationInSeconds(duration_in_seconds);
+    kopsik::Formatter::FormatDurationInSecondsHHMMSS(duration_in_seconds);
+  strncpy(out_str, formatted.c_str(), max_strlen);
+}
+
+void kopsik_format_duration_in_seconds_hhmm(
+    int duration_in_seconds, char *out_str, unsigned int max_strlen) {
+  poco_assert(out_str);
+  poco_assert(max_strlen);
+  std::string formatted =
+    kopsik::Formatter::FormatDurationInSecondsHHMM(duration_in_seconds);
   strncpy(out_str, formatted.c_str(), max_strlen);
 }
 

@@ -1250,7 +1250,7 @@ std::string TimeEntry::UpdatedAtString() {
 }
 
 std::string TimeEntry::DurationString() {
-    return Formatter::FormatDurationInSeconds(duration_in_seconds_);
+    return Formatter::FormatDurationInSecondsHHMMSS(duration_in_seconds_);
 }
 
 void TimeEntry::SetDurationString(std::string value) {
@@ -1497,13 +1497,22 @@ error TimeEntry::loadTagsFromJSONNode(JSONNODE *list) {
     return noError;
 }
 
-std::string Formatter::FormatDurationInSeconds(const Poco::Int64 value) {
+std::string Formatter::FormatDurationInSeconds(const Poco::Int64 value,
+        const std::string format) {
     Poco::Int64 duration = value;
     if (duration < 0) {
         duration += time(0);
     }
     Poco::Timespan span(duration * Poco::Timespan::SECONDS);
-    return Poco::DateTimeFormatter::format(span, "%H:%M:%S");
+    return Poco::DateTimeFormatter::format(span, format);
+}
+
+std::string Formatter::FormatDurationInSecondsHHMMSS(const Poco::Int64 value) {
+    return FormatDurationInSeconds(value, "%H:%M:%S");
+}
+
+std::string Formatter::FormatDurationInSecondsHHMM(const Poco::Int64 value) {
+    return FormatDurationInSeconds(value, "%H:%M");
 }
 
 std::time_t Formatter::Parse8601(std::string iso_8601_formatted_date) {
