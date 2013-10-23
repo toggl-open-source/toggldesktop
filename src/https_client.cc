@@ -61,6 +61,7 @@ error HTTPSClient::requestJSON(std::string method,
   try {
     const Poco::URI uri(api_url_);
 
+    // FIXME: check certification
     const Poco::Net::Context::Ptr context(new Poco::Net::Context(
       Poco::Net::Context::CLIENT_USE, "", "", "",
       Poco::Net::Context::VERIFY_NONE, 9, false,

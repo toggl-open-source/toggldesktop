@@ -44,6 +44,8 @@ error WebSocketClient::Start(void *ctx,
   logger.debug("WebSocketClient::Start");
   try {
     const Poco::URI uri(websocket_url_);
+
+    // FIXME: check certification
     const Poco::Net::Context::Ptr context(new Poco::Net::Context(
       Poco::Net::Context::CLIENT_USE, "", "", "",
       Poco::Net::Context::VERIFY_NONE, 9, false,
