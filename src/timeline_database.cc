@@ -14,14 +14,7 @@
 #include "Poco/UUIDGenerator.h"
 #include "Poco/Util/Option.h"
 #include "Poco/Util/OptionCallback.h"
-
-void TimelineDatabase::initialize(Poco::Util::Application & app) {
-    open_database();
-}
-
-void TimelineDatabase::uninitialize() {
-    close_database();
-}
+#include "Poco/Logger.h"
 
 void TimelineDatabase::open_database() {
     if (!database_location_.empty()) {
@@ -206,16 +199,6 @@ void TimelineDatabase::handleDeleteTimelineBatchNotification(
     Poco::Logger &logger = Poco::Logger::get("timeline_database");
     logger.debug("handleDeleteTimelineBatchNotification");
     delete_batch(notification->batch);
-}
-
-void TimelineDatabase::defineOptions(Poco::Util::OptionSet& options) { // NOLINT
-    options.addOption(
-        Poco::Util::Option("database_path", "", "location of timeline database")
-            .required(true)
-            .repeatable(false)
-            .argument("path")
-            .callback(Poco::Util::OptionCallback<TimelineDatabase>(this,
-                    &TimelineDatabase::handleConfigDataPath)));
 }
 
 void TimelineDatabase::handleConfigDataPath(const std::string& name,

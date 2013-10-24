@@ -9,13 +9,11 @@
 #include "./timeline_notifications.h"
 #include "./timeline_constants.h"
 
-#include "Poco/Util/Subsystem.h"
-#include "Poco/Util/Application.h"
 #include "Poco/NotificationCenter.h"
 #include "Poco/Activity.h"
 #include "Poco/Observer.h"
 
-class WindowChangeRecorder : public Poco::Util::Subsystem {
+class WindowChangeRecorder {
  public:
     WindowChangeRecorder() :
             user_id_(0),
@@ -47,8 +45,6 @@ class WindowChangeRecorder : public Poco::Util::Subsystem {
  protected:
     // Subsystem overrides
     const char* name() const { return "window_change_recorder"; }
-    void initialize(Poco::Util::Application&);
-    void uninitialize();
 
     // Activity callback
     void record_loop();

@@ -21,14 +21,6 @@
 #include "Poco/Thread.h"
 #include "Poco/StreamCopier.h"
 
-void TimelineUploader::initialize(Poco::Util::Application&) {
-    start_uploading();
-}
-
-void TimelineUploader::uninitialize() {
-    stop_uploading();
-}
-
 void TimelineUploader::start_uploading() {
     if (!upload_token_.empty() && user_id_ > 0) {
         std::stringstream out;
@@ -298,26 +290,6 @@ void TimelineUploader::reset_backoff() {
     Poco::Logger &logger = Poco::Logger::get("timeline_uploader");
     logger.debug("reset_backoff");
     current_upload_interval_seconds_ = upload_interval_seconds_;
-}
-
-void TimelineUploader::defineOptions(Poco::Util::OptionSet& options) { // NOLINT
-    options.addOption(
-        Poco::Util::Option("upload_interval", "",
-                "upload and timeline settings check interval")
-            .required(false)
-            .repeatable(false)
-            .argument("seconds")
-            .callback(Poco::Util::OptionCallback<TimelineUploader>(this,
-                &TimelineUploader::handleConfigUploadInterval)));
-
-    options.addOption(
-        Poco::Util::Option("upload_host", "",
-                "API host, must be HTTPS, for example: https://localhost:8080")
-            .required(false)
-            .repeatable(false)
-            .argument("URL")
-            .callback(Poco::Util::OptionCallback<TimelineUploader>(this,
-                &TimelineUploader::handleConfigUploadHost)));
 }
 
 void TimelineUploader::handleConfigUploadInterval(const std::string& name,

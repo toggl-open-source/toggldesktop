@@ -10,13 +10,11 @@
 #include <string>
 #include <vector>
 
-#include "Poco/Util/Subsystem.h"
-#include "Poco/Util/Application.h"
 #include "Poco/Activity.h"
 #include "Poco/Observer.h"
 #include "Poco/NotificationCenter.h"
 
-class TimelineUploader : public Poco::Util::Subsystem {
+class TimelineUploader {
  public:
     TimelineUploader() :
             user_id_(0),
@@ -43,9 +41,6 @@ class TimelineUploader : public Poco::Util::Subsystem {
  protected:
     // Subsystem overrides
     const char* name() const { return "timeline_uploader"; }
-    void initialize(Poco::Util::Application&);
-    void uninitialize();
-    void defineOptions(Poco::Util::OptionSet& options); // NOLINT
 
     // Notification handlers
     void handleConfigureNotification(ConfigureNotification* notification);

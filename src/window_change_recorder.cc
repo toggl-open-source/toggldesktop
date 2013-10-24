@@ -9,16 +9,8 @@
 
 #include "Poco/Thread.h"
 #include "Poco/Util/Option.h"
+#include "Poco/Logger.h"
 #include "Poco/Util/OptionSet.h"
-
-void WindowChangeRecorder::initialize(Poco::Util::Application&) {
-    // Here we don't start_recording(), since
-    // we don't really know yet, if recording is enabled.
-}
-
-void WindowChangeRecorder::uninitialize() {
-    stop_recording();
-}
 
 void WindowChangeRecorder::start_recording() {
     if (user_id_ > 0) {

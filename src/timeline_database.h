@@ -14,8 +14,6 @@
 #include "Poco/Observer.h"
 #include "Poco/Data/Common.h"
 #include "Poco/Data/SQLite/Connector.h"
-#include "Poco/Util/Subsystem.h"
-#include "Poco/Util/Application.h"
 
 class TimelineDatabase {
  public:
@@ -51,9 +49,6 @@ class TimelineDatabase {
  protected:
     // Subsystem overrides
     const char* name() const { return "timeline_database"; }
-    void initialize(Poco::Util::Application &app); // NOLINT
-    void uninitialize();
-    void defineOptions(Poco::Util::OptionSet& options); // NOLINT
 
     // Handle notifications
     void handleTimelineEventNotification(
