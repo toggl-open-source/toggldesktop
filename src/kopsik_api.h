@@ -19,17 +19,12 @@ typedef int kopsik_api_result;
 
 // Context API.
 
-KOPSIK_EXPORT void *kopsik_context_init();
+KOPSIK_EXPORT void *kopsik_context_init(
+  const char *app_name, const char *app_version);
 
 KOPSIK_EXPORT void kopsik_context_clear(void *ctx);
 
 // Configuration API
-
-KOPSIK_EXPORT void kopsik_version(
-  int *major, int *minor, int *patch);
-
-KOPSIK_EXPORT void kopsik_user_agent(
-  char *str, unsigned int len);
 
 typedef struct {
     int UseProxy;

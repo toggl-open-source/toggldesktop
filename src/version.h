@@ -7,19 +7,13 @@
 #include <sstream>
 
 namespace kopsik {
-  namespace version {
-    static const unsigned int Major = 1;
-    static const unsigned int Minor = 0;
-    static const unsigned int Patch = 0;
-  }
-  static std::string UserAgent() {
+  static std::string UserAgent(
+      const std::string app_name,
+      const std::string app_version) {
     std::stringstream ss;
-    ss  << "libkopsik/"
-        << version::Major
-        << "."
-        << version::Minor
-        << "."
-        << version::Patch;
+    ss  << app_name
+        << "/"
+        << app_version;
     return ss.str();
   }
 }  // namespace kopsik

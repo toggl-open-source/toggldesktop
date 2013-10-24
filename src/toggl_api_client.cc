@@ -45,7 +45,7 @@ TimeEntry *User::Start(std::string description) {
   te->SetDurationInSeconds(-time(0));
   te->SetWID(DefaultWID());
   te->SetUIModifiedAt(time(0));
-  te->SetCreatedWith(kopsik::UserAgent());
+  te->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
   related.TimeEntries.push_back(te);
   return te;
 }
@@ -63,7 +63,7 @@ TimeEntry *User::Continue(std::string GUID) {
     te->SetPID(existing->PID());
     te->SetTID(existing->TID());
     te->SetUIModifiedAt(time(0));
-    te->SetCreatedWith(kopsik::UserAgent());
+    te->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
     related.TimeEntries.push_back(te);
     return te;
 }

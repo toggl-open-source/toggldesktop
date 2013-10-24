@@ -62,7 +62,7 @@ error WebSocketClient::Start(void *ctx,
     req_ = new Poco::Net::HTTPRequest(Poco::Net::HTTPRequest::HTTP_GET, "/ws",
       Poco::Net::HTTPMessage::HTTP_1_1);
     req_->set("Origin", "https://localhost");
-    req_->set("User-Agent", kopsik::UserAgent());
+    req_->set("User-Agent", kopsik::UserAgent(app_name_, app_version_));
     if (res_) {
       delete res_;
     }

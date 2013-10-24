@@ -93,6 +93,8 @@ typedef struct {
   Poco::TaskManager *tm;
   KopsikViewItemChangeCallback change_callback;
   TimelineDatabase *timeline_database;
+  std::string app_name;
+  std::string app_version;
 } Context;
 
 void kopsik_set_change_callback(
@@ -195,16 +197,29 @@ void time_entry_to_view_item(
 
 // Context API.
 
-void *kopsik_context_init() {
+void *kopsik_context_init(const char *app_name, const char *app_version) {
+  poco_assert(app_name);
+  poco_assert(app_version);
+
   Context *ctx = new Context();
+
   ctx->db = 0;
+  ctx->timeline_database = 0;
   ctx->user = 0;
-  ctx->https_client = new kopsik::HTTPSClient("https://www.toggl.com");
-  ctx->ws_client = new kopsik::WebSocketClient("https://stream.toggl.com");
+
+  ctx->app_name = std::string(app_name);
+  ctx->app_version = std::string(app_version);
+
+  ctx->https_client = new kopsik::HTTPSClient("https://www.toggl.com",
+    ctx->app_name, ctx->app_version);
+  ctx->ws_client = new kopsik::WebSocketClient("https://stream.toggl.com",
+    ctx->app_name, ctx->app_version);
+
   ctx->mutex = new Poco::Mutex();
   ctx->tm = new Poco::TaskManager();
+
   ctx->change_callback = 0;
-  ctx->timeline_database = 0;
+
   return ctx;
 }
 
@@ -243,22 +258,6 @@ void kopsik_context_clear(void *context) {
 }
 
 // Configuration API.
-
-void kopsik_version(int *major, int *minor, int *patch) {
-  poco_assert(major);
-  poco_assert(minor);
-  poco_assert(patch);
-  *major = kopsik::version::Major;
-  *minor = kopsik::version::Minor;
-  *patch = kopsik::version::Patch;
-}
-
-void kopsik_user_agent(
-    char *str, unsigned int len) {
-  poco_assert(str);
-  poco_assert(len);
-  strncpy(str, kopsik::UserAgent().c_str(), len);
-}
 
 KopsikProxySettings *kopsik_proxy_settings_init() {
   KopsikProxySettings *settings = new KopsikProxySettings();
@@ -488,7 +487,7 @@ kopsik_api_result kopsik_current_user(
   Poco::Mutex::ScopedLock lock(*ctx->mutex);
 
   if (!ctx->user) {
-    kopsik::User *user = new kopsik::User();
+    kopsik::User *user = new kopsik::User(ctx->app_name, ctx->app_version);
     kopsik::error err = ctx->db->LoadCurrentUser(user, true);
     if (err != kopsik::noError) {
       delete user;
@@ -592,7 +591,7 @@ kopsik_api_result kopsik_login(
     ctx->user = 0;
   }
 
-  kopsik::User *user = new kopsik::User();
+  kopsik::User *user = new kopsik::User(ctx->app_name, ctx->app_version);
   kopsik::error err = user->Login(ctx->https_client, email, password);
   if (err != kopsik::noError) {
     delete user;
@@ -1223,11 +1222,11 @@ kopsik_api_result kopsik_set_time_entry_project(
   poco_assert(te);
 
   std::string project_name(value);
-  int project_id = 0;
+  unsigned int project_id = 0;
   if (!project_name.empty()) {
     kopsik::Project *p = ctx->user->GetProjectByName(std::string(value));
     if (p) {
-      project_id = p->ID();
+      project_id = (unsigned int)p->ID();
     }
   }
   te->SetPID(project_id);

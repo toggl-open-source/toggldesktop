@@ -22,7 +22,10 @@ namespace kopsik {
 
   class WebSocketClient {
   public:
-    explicit WebSocketClient(std::string websocket_url) :
+    explicit WebSocketClient(
+        const std::string websocket_url,
+        const std::string app_name,
+        const std::string app_version) :
       activity_(this, &WebSocketClient::runActivity),
       session_(0),
       req_(0),
@@ -30,7 +33,9 @@ namespace kopsik {
       ws_(0),
       on_websocket_message_(0),
       ctx_(0),
-      websocket_url_(websocket_url) {}
+      websocket_url_(websocket_url),
+      app_name_(app_name),
+      app_version_(app_version) {}
     virtual ~WebSocketClient() {
       if (ws_) {
         delete ws_;
@@ -75,6 +80,8 @@ namespace kopsik {
     void *ctx_;
 
     std::string websocket_url_;
+    std::string app_name_;
+    std::string app_version_;
   };
 }  // namespace kopsik
 

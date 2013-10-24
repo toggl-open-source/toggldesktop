@@ -9,14 +9,15 @@
 #include "Poco/FileStream.h"
 #include "Poco/File.h"
 
-#define TESTDB "test.db"
-#define ERRLEN 1024
+const char *TESTDB = "test.db";
+const int ERRLEN = 1024;
 
 namespace kopsik {
 
     class MockHTTPSClient : public HTTPSClient {
     public:
-        MockHTTPSClient() : HTTPSClient("https://localhost:8080") {}
+        MockHTTPSClient() :
+            HTTPSClient("https://localhost:8080", "mock", "0.1") {}
         MOCK_METHOD0(ListenToWebsocket, kopsik::error());
         MOCK_METHOD5(PostJSON, kopsik::error(
             std::string relative_url,
@@ -31,23 +32,18 @@ namespace kopsik {
             std::string *response_body));
     };
 
+    void *create_test_context() {
+        return kopsik_context_init("tests", "0.1");
+    }
+
     TEST(KopsikApiTest, kopsik_context_init) {
-        void *ctx = kopsik_context_init();
+        void *ctx = create_test_context();
         ASSERT_TRUE(ctx);
         kopsik_context_clear(ctx);
     }
 
-    TEST(KopsikApiTest, kopsik_version) {
-        int major = 0;
-        int minor = 0;
-        int patch = 0;
-        kopsik_version(&major, &minor, &patch);
-        ASSERT_TRUE(major || minor || patch);
-    }
-
     TEST(KopsikApiTest, kopsik_set_proxy) {
-        void *ctx = kopsik_context_init();
-
+        void *ctx = create_test_context();
         {
             Poco::File f(TESTDB);
             if (f.exists()) f.remove(false);
@@ -76,7 +72,7 @@ namespace kopsik {
     }
 
     TEST(KopsikApiTest, kopsik_set_db_path) {
-        void *ctx = kopsik_context_init();
+        void *ctx = create_test_context();
         {
             Poco::File f(TESTDB);
             if (f.exists()) f.remove(false);
@@ -88,7 +84,7 @@ namespace kopsik {
     }
 
     TEST(KopsikApiTest, kopsik_set_log_path) {
-        void *ctx = kopsik_context_init();
+        void *ctx = create_test_context();
         kopsik_set_log_path(ctx, "test.log");
         ASSERT_TRUE(true);
         kopsik_context_clear(ctx);
@@ -101,7 +97,7 @@ namespace kopsik {
     }
 
     TEST(KopsikApiTest, kopsik_set_api_token) {
-        void *ctx = kopsik_context_init();
+        void *ctx = create_test_context();
         Poco::File f(TESTDB);
         if (f.exists()) f.remove(false);
         kopsik_set_db_path(ctx, TESTDB);
@@ -117,7 +113,7 @@ namespace kopsik {
     }
 
     TEST(KopsikApiTest, kopsik_lifecycle) {
-        void *ctx = kopsik_context_init();
+        void *ctx = create_test_context();
 
         Poco::File f(TESTDB);
         if (f.exists()) f.remove(false);

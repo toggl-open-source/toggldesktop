@@ -339,9 +339,20 @@ namespace kopsik {
 
     class User {
     public:
-        User() : BasicAuthUsername(""), BasicAuthPassword(""), local_id_(0),
-            id_(0), api_token_(""), default_wid_(0), since_(0), dirty_(false),
-            fullname_("") {}
+        User(
+                const std::string app_name,
+                const std::string app_version) :
+            BasicAuthUsername(""),
+            BasicAuthPassword(""),
+            local_id_(0),
+            id_(0),
+            api_token_(""),
+            default_wid_(0),
+            since_(0),
+            dirty_(false),
+            fullname_(""),
+            app_name_(app_name),
+            app_version_(app_version) {}
         ~User() {
             ClearWorkspaces();
             ClearClients();
@@ -412,15 +423,6 @@ namespace kopsik {
         RelatedData related;
 
     private:
-        Poco::Int64 local_id_;
-        Poco::UInt64 id_;
-        std::string api_token_;
-        Poco::UInt64 default_wid_;
-        // Unix timestamp of the user data; returned from API
-        Poco::UInt64 since_;
-        bool dirty_;
-        std::string fullname_;
-
         error pull(HTTPSClient *https_client,
             bool full_sync);
 
@@ -443,6 +445,18 @@ namespace kopsik {
         bool isStatusOK(int status);
         void parseResponseArray(std::string response_body,
             std::vector<BatchUpdateResult> *responses);
+
+        Poco::Int64 local_id_;
+        Poco::UInt64 id_;
+        std::string api_token_;
+        Poco::UInt64 default_wid_;
+        // Unix timestamp of the user data; returned from API
+        Poco::UInt64 since_;
+        bool dirty_;
+        std::string fullname_;
+
+        std::string app_name_;
+        std::string app_version_;
     };
 }  // namespace kopsik
 

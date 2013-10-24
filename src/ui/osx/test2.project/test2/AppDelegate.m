@@ -190,7 +190,7 @@ NSString *kTimeTotalUnknown = @"--:--";
   
   NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
   NSString* version = [infoDict objectForKey:@"CFBundleShortVersionString"];
-  ctx = kopsik_context_init("osx", [version UTF8String]);
+  ctx = kopsik_context_init("osx_native_app", [version UTF8String]);
 
   NSArray *arguments = [[NSProcessInfo processInfo] arguments];
   NSLog(@"Command line arguments: %@", arguments);

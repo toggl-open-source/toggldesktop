@@ -78,7 +78,7 @@ namespace kopsik {
         }
         Database db(TESTDB);
 
-        User user;
+        User user("kopsik_test", "0.1");
         user.LoadFromJSONString(loadTestData(), true);
 
         TimeEntry *te = user.GetTimeEntryByID(89818605);
@@ -98,7 +98,7 @@ namespace kopsik {
 
         std::string json = loadTestData();
 
-        User user;
+        User user("kopsik_test", "0.1");
         user.LoadFromJSONString(loadTestData(), true);
 
         TimeEntry *te = user.GetTimeEntryByID(89818605);
@@ -122,7 +122,7 @@ namespace kopsik {
         }
         Database db(TESTDB);
 
-        User user;
+        User user("kopsik_test", "0.1");
         user.LoadFromJSONString(loadTestData(), true);
 
         Poco::UInt64 n;
@@ -166,7 +166,7 @@ namespace kopsik {
 
         std::string json = loadTestData();
 
-        User user1;
+        User user1("kopsik_test", "0.1");
         user1.LoadFromJSONString(json, true);
 
         std::vector<ModelChange> changes;
@@ -194,7 +194,7 @@ namespace kopsik {
         ASSERT_EQ(noError, db.UInt("select count(1) from time_entries", &n));
         ASSERT_EQ(uint(3), n);
 
-        User user2;
+        User user2("kopsik_test", "0.1");
         ASSERT_EQ(noError, db.LoadUserByID(user1.ID(), &user2, true));
 
         ASSERT_EQ(user1.related.Workspaces.size(),
@@ -243,7 +243,7 @@ namespace kopsik {
         }
         Database db(TESTDB);
 
-        User user;
+        User user("kopsik_test", "0.1");
         user.LoadFromJSONString(loadTestData(), true);
 
         // first, mark time entry as deleted
@@ -280,7 +280,7 @@ namespace kopsik {
         std::stringstream ss;
         ss << fis.rdbuf();
         fis.close();
-        User user;
+        User user("kopsik_test", "0.1");
         user.LoadFromJSONString(ss.str(), true);
 
         Poco::File f(TESTDB);
@@ -349,7 +349,7 @@ namespace kopsik {
         std::string json = ss.str();
         ASSERT_FALSE(json.empty());
 
-        User user;
+        User user("kopsik_test", "0.1");
         user.LoadFromJSONString(json, true);
         ASSERT_EQ(Poco::UInt64(1379068550), user.Since());
         ASSERT_EQ(Poco::UInt64(10471231), user.ID());
@@ -476,7 +476,7 @@ namespace kopsik {
         ASSERT_EQ(Poco::UInt64(1), n);
 
         // Select
-        User user2;
+        User user2("kopsik_test", "0.1");
         ASSERT_EQ(noError, db.LoadUserByID(user.ID(), &user2, true));
 
         ASSERT_TRUE(user2.ID());
