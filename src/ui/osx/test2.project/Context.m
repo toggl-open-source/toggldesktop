@@ -8,5 +8,5 @@
 
 #import "Context.h"
 
-KopsikContext *ctx;
+void *ctx;
 

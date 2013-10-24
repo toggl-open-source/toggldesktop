@@ -9,4 +9,4 @@
 #import <Foundation/Foundation.h>
 #import "kopsik_api.h"
 
-extern KopsikContext *ctx;
+extern void *ctx;
