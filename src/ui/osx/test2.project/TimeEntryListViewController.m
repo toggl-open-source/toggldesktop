@@ -159,13 +159,7 @@
     NSAssert(item != nil, @"view item from viewitems array is nil");
     TableViewCell *cellView = [tableView makeViewWithIdentifier:@"TimeEntryCell" owner:self];
     if ([item isKindOfClass:[TimeEntryViewItem class]]){
-      cellView.GUID = item.GUID;
-      cellView.colorTextField.backgroundColor = [self hexCodeToNSColor:item.color];
-      cellView.descriptionTextField.stringValue = item.Description;
-      if (item.project) {
-        cellView.projectTextField.stringValue = item.project;
-      }
-      cellView.durationTextField.stringValue = item.duration;
+      [cellView load:item];
       return cellView;
     } else {
       TableGroupCell *groupCell = [tableView makeViewWithIdentifier:@"GroupCell" owner:self];
@@ -187,25 +181,6 @@
   return 22;
 }
 
-- (NSColor *)hexCodeToNSColor:(NSString *)hexCode {
-	unsigned int colorCode = 0;
-  if (hexCode.length > 1) {
-    NSString *numbers = [hexCode substringWithRange:NSMakeRange(1, [hexCode length] - 1)];
-		NSScanner *scanner = [NSScanner scannerWithString:numbers];
-		[scanner scanHexInt:&colorCode];
-	}
-	return [NSColor
-          colorWithDeviceRed:((colorCode>>16)&0xFF)/255.0
-          green:((colorCode>>8)&0xFF)/255.0
-          blue:((colorCode)&0xFF)/255.0 alpha:1.0];
-}
-
-- (IBAction)continueButtonClicked:(id)sender {
-  NSButton *btn = sender;
-  TableViewCell *cell = (TableViewCell*)[btn superview];
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                      object:cell.GUID];
-}
 - (IBAction)performClick:(id)sender {
   NSInteger row = [self.timeEntriesTableView clickedRow];
   TimeEntryViewItem *item = 0;

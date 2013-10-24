@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "TimeEntryViewItem.h"
 
 @interface TableViewCell : NSTableCellView
 @property (nonatomic,strong) IBOutlet NSTextField *colorTextField;
@@ -15,5 +16,6 @@
 @property (nonatomic,strong) IBOutlet NSTextField *durationTextField;
 @property (nonatomic,strong) IBOutlet NSButton *continueButton;
 @property NSString *GUID;
+- (void)load:(TimeEntryViewItem *)view_item;
 @end
 
