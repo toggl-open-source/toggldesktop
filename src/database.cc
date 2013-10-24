@@ -1339,7 +1339,12 @@ error Database::initialize_tables() {
         "default_wid integer, "
         "since integer, "
         "fullname varchar "
-        "); "
+        "); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("users.id",
         "CREATE UNIQUE INDEX id_users_id ON users (id);");
     if (err != noError) {
         return err;
@@ -1353,7 +1358,12 @@ error Database::initialize_tables() {
         "name varchar not null,"
         "constraint fk_workspaces_uid foreign key (uid) "
         "   references users(id) on delete no action on update no action"
-        "); "
+        "); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("workspaces.id",
         "CREATE UNIQUE INDEX id_workspaces_id ON workspaces (id);");
     if (err != noError) {
         return err;
@@ -1371,8 +1381,18 @@ error Database::initialize_tables() {
         "   references workpaces(id) on delete no action on update no action,"
         "constraint fk_clients_uid foreign key (uid) "
         "   references users(id) on delete no action on update no action"
-        "); "
-        "CREATE UNIQUE INDEX id_clients_id ON clients (id); "
+        "); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("clients.id",
+        "CREATE UNIQUE INDEX id_clients_id ON clients (id); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("clients.guid",
         "CREATE UNIQUE INDEX id_clients_guid ON clients (guid);");
     if (err != noError) {
         return err;
@@ -1388,21 +1408,26 @@ error Database::initialize_tables() {
         "color varchar, "
         "wid integer not null, "
         "cid integer, "
+        "active integer not null default 1,"
         "constraint fk_projects_wid foreign key (wid) "
         "   references workpaces(id) on delete no action on update no action,"
         "constraint fk_projects_cid foreign key (cid) "
         "   references clients(id) on delete no action on update no action,"
         "constraint fk_projects_uid foreign key (uid) "
         "   references users(id) ON DELETE NO ACTION ON UPDATE NO ACTION"
-        "); "
-        "CREATE UNIQUE INDEX id_projects_id ON projects (id) "
-        "CREATE UNIQUE INDEX id_projects_guid ON projects (guid) ");
+        "); ");
     if (err != noError) {
         return err;
     }
 
-    err = migrate("projects.active",
-        "alter table projects add active integer not null default 1");
+    err = migrate("projects.id",
+        "CREATE UNIQUE INDEX id_projects_id ON projects (id);");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("projects.guid",
+        "CREATE UNIQUE INDEX id_projects_guid ON projects (guid);");
     if (err != noError) {
         return err;
     }
@@ -1421,7 +1446,12 @@ error Database::initialize_tables() {
         "   references projects(id) on delete no action on update no action, "
         "constraint fk_tasks_uid foreign key (uid) "
         "   references users(id) on delete no action on update no action "
-        "); "
+        "); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("tasks.id",
         "CREATE UNIQUE INDEX id_tasks_id ON tasks (id);");
     if (err != noError) {
         return err;
@@ -1439,8 +1469,18 @@ error Database::initialize_tables() {
         "   references workspaces(id) on delete no action on update no action,"
         "constraint fk_tags_uid foreign key (uid) "
         "   references users(id) on delete no action on update no action"
-        "); "
-        "CREATE UNIQUE INDEX id_tags_id ON tags (id); "
+        "); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("tags.id",
+        "CREATE UNIQUE INDEX id_tags_id ON tags (id); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("tags.guid",
         "CREATE UNIQUE INDEX id_tags_guid ON tags (guid); ");
     if (err != noError) {
         return err;
@@ -1474,8 +1514,18 @@ error Database::initialize_tables() {
         "   references tasks(id) on delete no action on update no action, "
         "constraint fk_time_entries_uid foreign key (uid) "
         "   references users(id) on delete no action on update no action"
-        "); "
-        "CREATE UNIQUE INDEX id_time_entries_id ON time_entries (id); "
+        "); ");
+    if (err != noError) {
+      return err;
+    }
+
+    err = migrate("time_entries.id",
+        "CREATE UNIQUE INDEX id_time_entries_id ON time_entries (id); ");
+    if (err != noError) {
+      return err;
+    }
+
+    err = migrate("time_entries.guid",
         "CREATE UNIQUE INDEX id_time_entries_guid ON time_entries (guid); ");
     if (err != noError) {
       return err;
@@ -1486,7 +1536,12 @@ error Database::initialize_tables() {
         "local_id integer primary key, "
         "api_token varchar not null, "
         "active integer not null default 1 "
-        "); "
+        "); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("sessions.active",
         "CREATE UNIQUE INDEX id_sessions_active ON sessions (active); ");
     if (err != noError) {
         return err;
