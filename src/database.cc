@@ -465,7 +465,8 @@ error Database::loadProjects(Poco::UInt64 UID, std::vector<Project *> *list) {
 
     try {
         Poco::Data::Statement select(*session);
-        select << "SELECT local_id, id, uid, name, guid, wid, color, cid "
+        select << "SELECT local_id, id, uid, name, guid, wid, color, cid, "
+            "active "
             "FROM projects WHERE uid = :uid "
             "ORDER BY name",
             Poco::Data::use(UID);
@@ -487,6 +488,7 @@ error Database::loadProjects(Poco::UInt64 UID, std::vector<Project *> *list) {
                 model->SetWID(rs[5].convert<Poco::UInt64>());
                 model->SetColor(rs[6].convert<std::string>());
                 model->SetCID(rs[7].convert<Poco::UInt64>());
+                model->SetActive(rs[8].convert<bool>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -1001,7 +1003,8 @@ error Database::SaveProject(Project *model) {
             logger.debug("Updating project " + model->String());
             *session << "update projects set "
                 "id = :id, uid = :uid, name = :name, guid = :guid,"
-                "wid = :wid, color = :color, cid = :cid "
+                "wid = :wid, color = :color, cid = :cid, "
+                "active = :active "
                 "where local_id = :local_id",
                 Poco::Data::use(model->ID()),
                 Poco::Data::use(model->UID()),
@@ -1010,6 +1013,7 @@ error Database::SaveProject(Project *model) {
                 Poco::Data::use(model->WID()),
                 Poco::Data::use(model->Color()),
                 Poco::Data::use(model->CID()),
+                Poco::Data::use(model->Active()),
                 Poco::Data::use(model->LocalID()),
                 Poco::Data::now;
           error err = last_error();
@@ -1019,8 +1023,11 @@ error Database::SaveProject(Project *model) {
         } else {
             logger.debug("Inserting project " + model->String());
             *session <<
-                "insert into projects(id, uid, name, guid, wid, color, cid) "
-                "values(:id, :uid, :name, :guid, :wid, :color, :cid)",
+                "insert into projects("
+                "id, uid, name, guid, wid, color, cid, active"
+                ") values("
+                ":id, :uid, :name, :guid, :wid, :color, :cid, :active"
+                ")",
                 Poco::Data::use(model->ID()),
                 Poco::Data::use(model->UID()),
                 Poco::Data::use(model->Name()),
@@ -1028,6 +1035,7 @@ error Database::SaveProject(Project *model) {
                 Poco::Data::use(model->WID()),
                 Poco::Data::use(model->Color()),
                 Poco::Data::use(model->CID()),
+                Poco::Data::use(model->Active()),
                 Poco::Data::now;
             error err = last_error();
             if (err != noError) {
@@ -1389,6 +1397,12 @@ error Database::initialize_tables() {
         "); "
         "CREATE UNIQUE INDEX id_projects_id ON projects (id) "
         "CREATE UNIQUE INDEX id_projects_guid ON projects (guid) ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("projects.active",
+        "alter table projects add active integer not null default 1");
     if (err != noError) {
         return err;
     }

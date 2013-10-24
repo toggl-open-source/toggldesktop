@@ -600,6 +600,13 @@ std::string Project::UppercaseName() {
     return Poco::toUpper(name_);
 }
 
+void Project::SetActive(const bool value) {
+    if (active_ != value) {
+        active_ = value;
+        dirty_ = true;
+    }
+}
+
 void Project::SetName(std::string value) {
     if (name_ != value) {
         name_ = value;

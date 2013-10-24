@@ -879,16 +879,24 @@ kopsik_api_result kopsik_project_select_items(
 
   Poco::Mutex::ScopedLock lock(*ctx->mutex);
 
+  std::vector<kopsik::Project *>active;
+  for (unsigned int i = 0; i < ctx->user->related.Projects.size(); i++) {
+    kopsik::Project *p = ctx->user->related.Projects[i];
+    if (p->Active()) {
+      active.push_back(p);
+    }
+  }
+
   list->Length = 0;
 
   KopsikProjectSelectItem *tmp = project_select_item_init();
-  void *m = malloc(ctx->user->related.Projects.size() * sizeof(tmp));
+  void *m = malloc(active.size() * sizeof(tmp));
   project_select_item_clear(tmp);
   poco_assert(m);
   list->ViewItems =
     reinterpret_cast<KopsikProjectSelectItem **>(m);
-  for (unsigned int i = 0; i < ctx->user->related.Projects.size(); i++) {
-    kopsik::Project *p = ctx->user->related.Projects[i];
+  for (unsigned int i = 0; i < active.size(); i++) {
+    kopsik::Project *p = active[i];
     KopsikProjectSelectItem *view_item = project_select_item_init();
     view_item->Name = strdup(p->Name().c_str());
     list->ViewItems[i] = view_item;
