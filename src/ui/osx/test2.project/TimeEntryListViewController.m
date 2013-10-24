@@ -63,7 +63,7 @@
         [model load:item];
         if (lastDate == nil || ![model isSameDay:lastDate]) {
           lastDate = model.started;
-          [viewitems addObject:[dateFormat stringFromDate:lastDate]];
+          [viewitems addObject:[[dateFormat stringFromDate:lastDate] uppercaseString]];
         }
         [viewitems addObject:model];
       }
