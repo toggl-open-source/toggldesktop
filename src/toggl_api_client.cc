@@ -1195,6 +1195,8 @@ void Project::LoadFromJSONNode(JSONNODE *data) {
             SetCID(json_as_int(*current_node));
         } else if (strcmp(node_name, "color") == 0) {
             SetColor(std::string(json_as_string(*current_node)));
+        } else if (strcmp(node_name, "active") == 0) {
+            SetActive(json_as_bool(*current_node));
         }
         ++current_node;
     }
