@@ -17,7 +17,7 @@
 #include "Poco/Util/Subsystem.h"
 #include "Poco/Util/Application.h"
 
-class TimelineDatabase : public Poco::Util::Subsystem {
+class TimelineDatabase {
  public:
     TimelineDatabase() :
             ses_(0),

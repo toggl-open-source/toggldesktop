@@ -47,7 +47,7 @@ namespace command_line_client {
 
     private:
         void usage();
-        KopsikContext *ctx;
+        void *ctx;
 };
 
 }  // namespace command_line_client

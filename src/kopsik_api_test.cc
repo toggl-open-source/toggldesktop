@@ -32,7 +32,7 @@ namespace kopsik {
     };
 
     TEST(KopsikApiTest, kopsik_context_init) {
-        KopsikContext *ctx = kopsik_context_init();
+        void *ctx = kopsik_context_init();
         ASSERT_TRUE(ctx);
         kopsik_context_clear(ctx);
     }
@@ -46,7 +46,7 @@ namespace kopsik {
     }
 
     TEST(KopsikApiTest, kopsik_set_proxy) {
-        KopsikContext *ctx = kopsik_context_init();
+        void *ctx = kopsik_context_init();
 
         {
             Poco::File f(TESTDB);
@@ -76,7 +76,7 @@ namespace kopsik {
     }
 
     TEST(KopsikApiTest, kopsik_set_db_path) {
-        KopsikContext *ctx = kopsik_context_init();
+        void *ctx = kopsik_context_init();
         {
             Poco::File f(TESTDB);
             if (f.exists()) f.remove(false);
@@ -88,7 +88,7 @@ namespace kopsik {
     }
 
     TEST(KopsikApiTest, kopsik_set_log_path) {
-        KopsikContext *ctx = kopsik_context_init();
+        void *ctx = kopsik_context_init();
         kopsik_set_log_path(ctx, "test.log");
         ASSERT_TRUE(true);
         kopsik_context_clear(ctx);
@@ -101,7 +101,7 @@ namespace kopsik {
     }
 
     TEST(KopsikApiTest, kopsik_set_api_token) {
-        KopsikContext *ctx = kopsik_context_init();
+        void *ctx = kopsik_context_init();
         Poco::File f(TESTDB);
         if (f.exists()) f.remove(false);
         kopsik_set_db_path(ctx, TESTDB);
@@ -117,17 +117,15 @@ namespace kopsik {
     }
 
     TEST(KopsikApiTest, kopsik_lifecycle) {
-        KopsikContext *ctx = kopsik_context_init();
+        void *ctx = kopsik_context_init();
 
         Poco::File f(TESTDB);
         if (f.exists()) f.remove(false);
         kopsik_set_db_path(ctx, TESTDB);
 
-        kopsik::HTTPSClient *client =
-            reinterpret_cast<HTTPSClient *>(ctx->https_client);
-        delete client;
         MockHTTPSClient *mock_client = new MockHTTPSClient();
-        ctx->https_client = mock_client;
+        kopsik_test_set_https_client(ctx,
+            reinterpret_cast<void *>(mock_client));
 
         Poco::FileStream fis("testdata/me.json", std::ios::binary);
         std::stringstream ss;
@@ -145,6 +143,7 @@ namespace kopsik {
             testing::SetArgPointee<3>(json),
             testing::Return("")));
         char err[ERRLEN];
+
         ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_login(
             ctx,
             err, ERRLEN,
