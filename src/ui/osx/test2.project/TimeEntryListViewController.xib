@@ -128,7 +128,7 @@
                                                     <outlet property="projectTextField" destination="Gdb-3N-fCV" id="822-1r-dkY"/>
                                                 </connections>
                                             </tableCellView>
-                                            <customView identifier="GroupCell" id="DKV-Zw-fLF">
+                                            <customView identifier="GroupCell" id="DKV-Zw-fLF" customClass="TableGroupCell">
                                                 <rect key="frame" x="0.0" y="50" width="252" height="24"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <subviews>
