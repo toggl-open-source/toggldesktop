@@ -953,12 +953,8 @@ JSONNODE *TimeEntry::JSON() {
     json_push_back(n, json_new_a("description", description_.c_str()));
     json_push_back(n, json_new_i("wid", (json_int_t)wid_));
     json_push_back(n, json_new_a("guid", guid_.c_str()));
-    if (pid_) {
-        json_push_back(n, json_new_i("pid", (json_int_t)pid_));
-    }
-    if (tid_) {
-        json_push_back(n, json_new_i("tid", (json_int_t)tid_));
-    }
+    json_push_back(n, json_new_i("pid", (json_int_t)pid_));
+    json_push_back(n, json_new_i("tid", (json_int_t)tid_));
     json_push_back(n, json_new_a("start", StartString().c_str()));
     if (stop_) {
         json_push_back(n, json_new_a("stop", StopString().c_str()));
