@@ -24,3 +24,4 @@ NSString *const kUIEventModelChange = @"ModelChange";
 NSString *const kUICommandNew = @"New";
 NSString *const kUICommandStop = @"Stop";
 NSString *const kUICommandContinue = @"Continue";
+NSString *const kUICommandShowPreferences = @"Show Preferences";

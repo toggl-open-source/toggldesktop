@@ -24,3 +24,4 @@ extern NSString *const kUIEventModelChange;
 extern NSString *const kUICommandNew;
 extern NSString *const kUICommandStop;
 extern NSString *const kUICommandContinue;
+extern NSString *const kUICommandShowPreferences;

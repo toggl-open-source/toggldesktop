@@ -54,10 +54,19 @@ NSString *kTimeTotalUnknown = @"--:--";
                                            selector:@selector(eventHandler:)
                                                name:kUIStateTimerStopped
                                              object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(eventHandler:)
+                                               name:kUICommandShowPreferences
+                                             object:nil];
 }
 
 -(void)eventHandler: (NSNotification *) notification
 {
+  if ([notification.name isEqualToString:kUICommandShowPreferences]) {
+    [self onPreferencesMenuItem:self];
+    return;
+  }
+  
   if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
     self.running_time_entry = nil;
   } else if ([notification.name isEqualToString:kUIStateTimerStopped]) {
@@ -65,6 +74,7 @@ NSString *kTimeTotalUnknown = @"--:--";
   } else if ([notification.name isEqualToString:kUIStateTimerRunning]) {
     self.running_time_entry = notification.object;
   }
+  
   if (self.running_time_entry == nil) {
     [self.statusItem setTitle: kTimeTotalUnknown];
     [self.statusItem setImage:self.offImage];

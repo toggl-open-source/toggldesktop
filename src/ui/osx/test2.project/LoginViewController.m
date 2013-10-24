@@ -71,6 +71,10 @@
                        finishedSelector:@selector(viewController:finishedWithAuth:error:)];
 }
 
+- (IBAction)clickProxySettingsButton:(id)sender {
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandShowPreferences object:nil];
+}
+
 - (void)viewController:(GTMOAuth2WindowController *)viewController
       finishedWithAuth:(GTMOAuth2Authentication *)auth
                  error:(NSError *)error {
