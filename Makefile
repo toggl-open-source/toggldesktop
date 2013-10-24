@@ -144,6 +144,12 @@ test: clean lint
 	$(cxx) -o $(main) -o $(main)_test build/*.o $(libs)
 	./$(main)_test
 
+pull:
+	./$(main) pull
+
+push:
+	./$(main) push
+
 lint:
 	./third_party/cpplint/cpplint.py src/*.cc src/*.h src/ui/cmdline/*
 
@@ -152,10 +158,7 @@ deps: openssl poco json
 json:
 	cd $(jsondir) && make
 
-pull:
-	git pull
-
-nightly: pull deps test osx
+nightly: deps test osx
 	rm -rf src/branding
 	git clone gitosis@git.toggl.com:kopsik_branding.git src/branding
 	rm -rf TogglDesktop.app
