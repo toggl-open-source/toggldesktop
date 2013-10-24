@@ -11,6 +11,7 @@
 #import "UIEvents.h"
 #import "kopsik_api.h"
 #import "TableViewCell.h"
+#import "TableGroupCell.h"
 #import "Context.h"
 #import "UIEvents.h"
 #import "ModelChange.h"
@@ -60,7 +61,7 @@
         KopsikTimeEntryViewItem *item = list->ViewItems[i];
         TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
         [model load:item];
-        if (lastDate == nil || [model isSameDay:lastDate]) {
+        if (lastDate == nil || ![model isSameDay:lastDate]) {
           lastDate = model.started;
           [viewitems addObject:[dateFormat stringFromDate:lastDate]];
         }
@@ -165,7 +166,7 @@
       cellView.durationTextField.stringValue = item.duration;
       return cellView;
     } else {
-      NSTableCellView *groupCell = [tableView makeViewWithIdentifier:@"GroupCell" owner:self];
+      TableGroupCell *groupCell = [tableView makeViewWithIdentifier:@"GroupCell" owner:self];
       return groupCell;
     }
     return nil;
