@@ -127,8 +127,13 @@
   NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
   NSInteger row = [self.projectSelect indexOfSelectedItem];
-  NSString *project_name = [self.projectNames objectAtIndex:row];
-  const char *value = [project_name UTF8String];
+  const char *value = 0;
+  if (row < 0) {
+    value = "";
+  } else {
+    NSString *project_name = [self.projectNames objectAtIndex:row];
+    value = [project_name UTF8String];
+  }
   if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_project(ctx,
                                                           err,
                                                           KOPSIK_ERR_LEN,
