@@ -11,23 +11,6 @@
 
 @implementation TableViewCell
 
-- (id)initWithFrame:(NSRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code here.
-      [self.continueButton setAction:@selector(continueTimeEntry:)];
-    }
-    return self;
-}
-
-- (void)drawRect:(NSRect)dirtyRect
-{
-	[super drawRect:dirtyRect];
-	
-    // Drawing code here.
-}
-
 - (IBAction)continueTimeEntry:(id)sender {
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandContinue
                                                       object:self.GUID];

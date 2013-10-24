@@ -160,6 +160,9 @@
     TableViewCell *cellView = [tableView makeViewWithIdentifier:@"TimeEntryCell" owner:self];
     if ([item isKindOfClass:[TimeEntryViewItem class]]){
       [cellView load:item];
+      [cellView.continueButton setTarget:cellView];
+      [cellView.continueButton setAction:@selector(continueTimeEntry:)];
+      
       return cellView;
     } else {
       TableGroupCell *groupCell = [tableView makeViewWithIdentifier:@"GroupCell" owner:self];

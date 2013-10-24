@@ -237,7 +237,7 @@
       res = kopsik_continue_latest(ctx, err, KOPSIK_ERR_LEN, item, &was_found);
     } else {
       was_found = 1;
-      res = kopsik_continue(ctx, err, KOPSIK_ERR_LEN, 0, item);
+      res = kopsik_continue(ctx, err, KOPSIK_ERR_LEN, [guid UTF8String], item);
     }
 
     if (res != KOPSIK_API_SUCCESS) {

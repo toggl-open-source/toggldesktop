@@ -17,5 +17,6 @@
 @property (nonatomic,strong) IBOutlet NSButton *continueButton;
 @property NSString *GUID;
 - (void)load:(TimeEntryViewItem *)view_item;
+- (IBAction)continueTimeEntry:(id)sender;
 @end
 
