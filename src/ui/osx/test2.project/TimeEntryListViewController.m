@@ -60,7 +60,7 @@
         KopsikTimeEntryViewItem *item = list->ViewItems[i];
         TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
         [model load:item];
-        if (lastDate == nil || [model isSameDay:lastDate]) {
+        if (lastDate == nil || ![model isSameDay:lastDate]) {
           lastDate = model.started;
           [viewitems addObject:[dateFormat stringFromDate:lastDate]];
         }
