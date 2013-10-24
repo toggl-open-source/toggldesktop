@@ -122,6 +122,7 @@ namespace kopsik {
         Poco::UInt64 CID() { return cid_; }
         void SetCID(Poco::UInt64 value);
         std::string Name() { return name_; }
+        std::string UppercaseName();
         void SetName(std::string value);
         Poco::UInt64 UID() { return uid_; }
         void SetUID(Poco::UInt64 value);

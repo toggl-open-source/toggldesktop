@@ -596,6 +596,10 @@ std::string Project::String() {
     return ss.str();
 }
 
+std::string Project::UppercaseName() {
+    return Poco::toUpper(name_);
+}
+
 void Project::SetName(std::string value) {
     if (name_ != value) {
         name_ = value;
