@@ -48,6 +48,7 @@
   }
 }
 
+// FIXME: move to lib, so it becomes cross platform
 - (BOOL) isSameDay:(NSDate*)date {
   NSCalendar* calendar = [NSCalendar currentCalendar];
   

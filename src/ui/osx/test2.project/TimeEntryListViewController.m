@@ -28,6 +28,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
       viewitems = [NSMutableArray array];
+      
+      // FIXME: ask lib for date format
       dateFormat = [[NSDateFormatter alloc] init];
       [dateFormat setDateFormat:@"EEE dd. MMM"];
 
@@ -167,7 +169,7 @@
       return cellView;
     } else {
       TableGroupCell *groupCell = [tableView makeViewWithIdentifier:@"GroupCell" owner:self];
-      [groupCell.nameTextField setStringValue:item];
+      [groupCell.nameTextField setStringValue:(NSString *)item];
       return groupCell;
     }
     return nil;
