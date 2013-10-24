@@ -1221,16 +1221,16 @@ kopsik_api_result kopsik_set_time_entry_project(
 
   kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
   poco_assert(te);
-  if (value) {
+
+  std::string project_name(value);
+  int project_id = 0;
+  if (!project_name.empty()) {
     kopsik::Project *p = ctx->user->GetProjectByName(std::string(value));
     if (p) {
-      te->SetPID(p->ID());
-    } else {
-      te->SetPID(0);
+      project_id = p->ID();
     }
-  } else {
-    te->SetPID(0);
   }
+  te->SetPID(project_id);
   if (te->Dirty()) {
     te->SetUIModifiedAt(time(0));
   }
