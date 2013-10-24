@@ -49,6 +49,7 @@
     [self.timerViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
     [self.timerEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
     [self.timeEntryListViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+    [self.timeEntryEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(eventHandler:)
