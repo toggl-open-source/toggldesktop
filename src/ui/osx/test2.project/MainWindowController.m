@@ -26,6 +26,7 @@
 @property (nonatomic,strong) IBOutlet TimerViewController *timerViewController;
 @property (nonatomic,strong) IBOutlet TimerEditViewController *timerEditViewController;
 @property (nonatomic,strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
+@property NSString *lastKnownLoginState;
 @end
 
 @implementation MainWindowController
@@ -95,6 +96,8 @@
                                              selector:@selector(eventHandler:)
                                                  name:kUICommandStop
                                                object:nil];
+    
+    self.lastKnownLoginState = kUIStateUserLoggedOut;
   }
   return self;
 }
@@ -130,6 +133,25 @@
   }
 }
 
+const int kMenuItemTagSync = 1;
+const int kMenuItemTagLogout = 2;
+
+- (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem {
+  switch ([anItem tag]) {
+    case kMenuItemTagSync:
+      if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
+        return NO;
+      }
+      break;
+    case kMenuItemTagLogout:
+      if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
+        return NO;
+      }
+      break;
+  }
+  return YES;
+}
+
 -(void)eventHandler: (NSNotification *) notification
 {
   NSLog(@"osx_ui.%@ %@", notification.name, notification.object);
@@ -150,9 +172,13 @@
     [self.headerView setHidden:NO];
     
     renderRunningTimeEntry();
-    
+
+    // Start syncing after a while.
     [self performSelector:@selector(startSync) withObject:nil afterDelay:0.5];
     [self performSelector:@selector(startWebSocket) withObject:nil afterDelay:0.5];
+    
+    // Remember login state for validation of menu items
+    self.lastKnownLoginState = notification.name;
 
   } else if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
     [Bugsnag setUserAttribute:@"user_id" withValue:nil];
@@ -171,6 +197,9 @@
     [self.footerView setHidden:YES];
     [self.headerView setHidden:YES];
     [self.timerViewController.view removeFromSuperview];
+    
+    // Remember login state for validation of menu items
+    self.lastKnownLoginState = notification.name;
 
   } else if ([notification.name isEqualToString:kUIStateTimerRunning]) {
     // Hide timer editor from header view
