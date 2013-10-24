@@ -9,5 +9,5 @@
 #import <Cocoa/Cocoa.h>
 
 @interface TableGroupCell : NSTableCellView
-
+@property (nonatomic,strong) IBOutlet NSTextField *nameTextField;
 @end

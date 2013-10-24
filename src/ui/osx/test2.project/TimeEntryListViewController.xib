@@ -148,6 +148,9 @@
                                                 <constraints>
                                                     <constraint firstAttribute="trailing" secondItem="12h-j2-Slx" secondAttribute="trailing" constant="6" id="h8E-yk-iHp"/>
                                                 </constraints>
+                                                <connections>
+                                                    <outlet property="nameTextField" destination="12h-j2-Slx" id="VdP-9p-LSU"/>
+                                                </connections>
                                             </customView>
                                         </prototypeCellViews>
                                     </tableColumn>
@@ -238,6 +241,7 @@
             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
         </textFieldCell>
+        <userDefaultsController representsSharedInstance="YES" id="mjY-qd-co3"/>
     </objects>
     <resources>
         <image name="NSGoRightTemplate" width="9" height="9"/>

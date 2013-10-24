@@ -29,7 +29,7 @@
     if (self) {
       viewitems = [NSMutableArray array];
       dateFormat = [[NSDateFormatter alloc] init];
-      [dateFormat setDateFormat:@"yyyy-MM-dd"];
+      [dateFormat setDateFormat:@"EEE dd. MMM"];
 
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
@@ -167,6 +167,7 @@
       return cellView;
     } else {
       TableGroupCell *groupCell = [tableView makeViewWithIdentifier:@"GroupCell" owner:self];
+      [groupCell.nameTextField setStringValue:item];
       return groupCell;
     }
     return nil;
