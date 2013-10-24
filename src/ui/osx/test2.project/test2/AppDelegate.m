@@ -60,12 +60,16 @@ NSString *kTimeTotalUnknown = @"--:--";
 {
   if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
     self.running_time_entry = nil;
-    [self.statusItem setTitle: kTimeTotalUnknown];
   } else if ([notification.name isEqualToString:kUIStateTimerStopped]) {
     self.running_time_entry = nil;
-    [self.statusItem setTitle: kTimeTotalUnknown];
-  } else {
+  } else if ([notification.name isEqualToString:kUIStateTimerRunning]) {
     self.running_time_entry = notification.object;
+  }
+  if (self.running_time_entry == nil) {
+    [self.statusItem setTitle: kTimeTotalUnknown];
+    [self.statusItem setImage:self.offImage];
+  } else {
+    [self.statusItem setImage:self.onImage];
   }
 }
 
@@ -85,11 +89,16 @@ NSString *kTimeTotalUnknown = @"--:--";
   
   NSStatusBar *bar = [NSStatusBar systemStatusBar];
   
+  NSBundle *bundle = [NSBundle mainBundle];
+  self.onImage = [[NSImage alloc] initWithContentsOfFile:[bundle pathForResource:@"on" ofType:@"png"]];
+  self.offImage = [[NSImage alloc] initWithContentsOfFile:[bundle pathForResource:@"off" ofType:@"png"]];
+  
   self.statusItem = [bar statusItemWithLength:NSVariableStatusItemLength];
   [self.statusItem setTitle: kTimeTotalUnknown];
   [self.statusItem setHighlightMode:YES];
   [self.statusItem setEnabled:YES];
   [self.statusItem setMenu:menu];
+  [self.statusItem setImage:self.offImage];
 
   self.statusItemTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                           target:self

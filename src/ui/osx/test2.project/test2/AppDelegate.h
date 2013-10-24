@@ -10,6 +10,8 @@
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 @property NSStatusItem *statusItem;
+@property NSImage* onImage;
+@property NSImage* offImage;
 - (IBAction)onPreferencesMenuItem:(id)sender;
 - (void)timerFired:(NSTimer *)timer;
 @end

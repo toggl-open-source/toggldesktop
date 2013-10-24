@@ -71,6 +71,8 @@
 		74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74E3CDD617FBAE0800C3ADD3 /* SystemConfiguration.framework */; };
 		74E3CDD917FC369700C3ADD3 /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74E3CDD817FC369700C3ADD3 /* ExceptionHandling.framework */; };
 		74E3CDDD17FC8E8000C3ADD3 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDDC17FC8E8000C3ADD3 /* User.m */; };
+		74F7CDD71819897D00630BD0 /* off.png in Resources */ = {isa = PBXBuildFile; fileRef = 74F7CDD51819897D00630BD0 /* off.png */; };
+		74F7CDD81819897D00630BD0 /* on.png in Resources */ = {isa = PBXBuildFile; fileRef = 74F7CDD61819897D00630BD0 /* on.png */; };
 		C5CB7F0417F43EE100A2AEB1 /* TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TableViewCell.m */; };
 		C5D319FD181917EB0017ACBE /* TableGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D319FC181917EB0017ACBE /* TableGroupCell.m */; };
 		C5DA1FB917F19647001C4565 /* Kopsik.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA1FB817F19647001C4565 /* Kopsik.dylib */; };
@@ -187,6 +189,8 @@
 		74E3CDD817FC369700C3ADD3 /* ExceptionHandling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExceptionHandling.framework; path = System/Library/Frameworks/ExceptionHandling.framework; sourceTree = SDKROOT; };
 		74E3CDDB17FC8E8000C3ADD3 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = SOURCE_ROOT; };
 		74E3CDDC17FC8E8000C3ADD3 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = SOURCE_ROOT; };
+		74F7CDD51819897D00630BD0 /* off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = off.png; sourceTree = "<group>"; };
+		74F7CDD61819897D00630BD0 /* on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = on.png; sourceTree = "<group>"; };
 		C5CB7F0217F43EE100A2AEB1 /* TableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCell.h; sourceTree = "<group>"; };
 		C5CB7F0317F43EE100A2AEB1 /* TableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCell.m; sourceTree = "<group>"; };
 		C5D319FB181917EB0017ACBE /* TableGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableGroupCell.h; sourceTree = "<group>"; };
@@ -234,6 +238,8 @@
 				74B680A8180759C300B697AA /* Kopsik.xcodeproj */,
 				74E3CDB117FBABE400C3ADD3 /* bugsnag */,
 				744E126617F22AB900ABE72A /* app.icns */,
+				74F7CDD51819897D00630BD0 /* off.png */,
+				74F7CDD61819897D00630BD0 /* on.png */,
 				74E1682E180F269F0026261C /* gtm */,
 				69FC17FA17E6534400B96425 /* kopsik_ui */,
 				69FC181717E6534500B96425 /* kopsikTests */,
@@ -520,10 +526,12 @@
 				69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */,
 				C5DA1FC517F1B38B001C4565 /* LoginViewController.xib in Resources */,
 				69FC180517E6534400B96425 /* Credits.rtf in Resources */,
+				74F7CDD81819897D00630BD0 /* on.png in Resources */,
 				69FC180B17E6534500B96425 /* MainMenu.xib in Resources */,
 				C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */,
 				74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
 				74D1D25F17EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */,
+				74F7CDD71819897D00630BD0 /* off.png in Resources */,
 				744E126717F22AB900ABE72A /* app.icns in Resources */,
 				74D1D26D17EB728000E709B0 /* TimerViewController.xib in Resources */,
 				74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
