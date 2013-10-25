@@ -94,7 +94,9 @@ error HTTPSClient::requestJSON(std::string method,
 
     Poco::Net::HTTPBasicCredentials cred(
       basic_auth_username, basic_auth_password);
-    cred.authenticate(req);
+    if (!basic_auth_username.empty() && !basic_auth_password.empty()) {
+      cred.authenticate(req);
+    }
     session.sendRequest(req) << pBuff << std::flush;
 
     // Log out request contents
@@ -119,13 +121,20 @@ error HTTPSClient::requestJSON(std::string method,
     std::stringstream response_string;
     response_string << "Response status: " << response.getStatus()
       << ", reason: " << response.getReason()
-      << ", Content type: " << response.getContentType()
-      << ", Content-Encoding: " << response.get("Content-Encoding");
+      << ", Content type: " << response.getContentType();
+    if (response.has("Content-Encoding")) {
+      response_string << ", Content-Encoding: " << response.get("Content-Encoding");
+    }
     logger.debug(response_string.str());
     logger.debug(*response_body);
 
     if (response.getStatus() < 200 || response.getStatus() >= 300) {
       // FIXME: backoff
+      if (response_body->empty()) {
+        std::stringstream description;
+        description << "Request to server failed with status code: " << response.getStatus();
+        return description.str();
+      }
       return "Data push failed with error: " + *response_body;
     }
 

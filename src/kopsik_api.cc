@@ -1751,3 +1751,95 @@ void kopsik_websocket_stop_async(
 
   ctx->tm->start(new WebSocketStopTask(ctx, callback));
 }
+
+// Updates
+
+class FetchUpdatesTask : public Poco::Task {
+  public:
+    FetchUpdatesTask(Context *ctx,
+        KopsikCheckUpdateCallback callback) :
+      Task("check_updates"),
+      ctx_(ctx),
+      callback_(callback) {}
+    void runTask() {
+      std::string response_body("");
+      kopsik::error err = ctx_->https_client->GetJSON(updateURL(),
+                                                     std::string(""),
+                                                     std::string(""),
+                                                     &response_body);
+      if (err != kopsik::noError) {
+        callback_(KOPSIK_API_FAILURE, err.c_str(), 0, 0, 0);
+        return;
+      }
+
+      Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+      logger.debug(response_body);
+      
+      if ("null" == response_body) {
+        callback_(KOPSIK_API_SUCCESS, 0, 0, 0, 0);
+        return;
+      }
+
+      if (!json_is_valid(response_body.c_str())) {
+        callback_(KOPSIK_API_FAILURE, "Invalid response JSON", 0, 0, 0);
+        return;
+      }
+
+      std::string url("");
+      std::string version("");
+
+      JSONNODE *root = json_parse(response_body.c_str());
+      JSONNODE_ITERATOR i = json_begin(root);
+      JSONNODE_ITERATOR e = json_end(root);
+      while (i != e) {
+        json_char *node_name = json_name(*i);
+        if (strcmp(node_name, "version") == 0) {
+          version = std::string(json_as_string(*i));
+        } else if (strcmp(node_name, "url") == 0) {
+          url = std::string(json_as_string(*i));
+        }
+        ++i;
+      }
+      json_delete(root);
+
+      callback_(KOPSIK_API_SUCCESS, err.c_str(), 1, url.c_str(), version.c_str());
+    }
+  private:
+    const std::string updateURL() {
+      std::stringstream relative_url;
+      relative_url << "/api/v8/updates?app=kopsik"
+        << "&channel=" << channel()
+        << "&platform=" << osName()
+        << "&version=" << ctx_->app_version;
+      return relative_url.str();
+    }
+    const std::string channel() {
+      return std::string("dev");
+    }
+    const std::string osName() {
+      if (POCO_OS_LINUX == POCO_OS) {
+        return std::string("linux");
+      }
+      if (POCO_OS_WINDOWS_NT == POCO_OS) {
+        return std::string("windows");
+      }
+      return std::string("darwin");
+    }
+
+    Context *ctx_;
+    KopsikCheckUpdateCallback callback_;
+};
+
+void kopsik_check_for_updates_async(
+    void *context,
+    KopsikCheckUpdateCallback callback) {
+  poco_assert(context);
+
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_check_for_updates");
+
+  Context *ctx = reinterpret_cast<Context *>(context);
+
+  ctx->tm->start(new FetchUpdatesTask(ctx, callback));
+}
+

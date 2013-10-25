@@ -131,6 +131,43 @@
   } else {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedIn object:userinfo];
   }
+  
+  [self checkForUpdates];
+}
+
+- (void) checkForUpdates {
+  kopsik_check_for_updates_async(ctx, check_for_updates_callback);
+}
+
+void check_for_updates_callback(kopsik_api_result result,
+                                const char *errmsg,
+                                const int is_update_available,
+                                const char *url,
+                                const char *version) {
+  if (result != KOPSIK_API_SUCCESS) {
+    handle_error(result, errmsg);
+    return;
+  }
+  if (!is_update_available) {
+    NSLog(@"check_for_updates_callback: no updates available");
+    return;
+  }
+  NSString *urlString = [NSString stringWithUTF8String:url];
+  NSString *versionString = [NSString stringWithUTF8String:version];
+  NSLog(@"check_for_updates_callback: update available, url: %@, version: %@", urlString, versionString);
+  
+  NSAlert *alert = [[NSAlert alloc] init];
+  [alert addButtonWithTitle:@"Yes"];
+  [alert addButtonWithTitle:@"No"];
+  [alert setMessageText:@"Download new version?"];
+  NSString *informative = [NSString stringWithFormat:@"There's a new version of this app available (%@).", versionString];
+  [alert setInformativeText:informative];
+  [alert setAlertStyle:NSWarningAlertStyle];
+  if ([alert runModal] != NSAlertFirstButtonReturn) {
+    return;
+  }
+  
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlString]];
 }
 
 const int kMenuItemTagSync = 1;

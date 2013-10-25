@@ -323,6 +323,17 @@ KOPSIK_EXPORT void kopsik_websocket_stop_async(
   void *ctx,
   KopsikResultCallback callback);
 
+// Updates
+
+typedef void (*KopsikCheckUpdateCallback)(
+  kopsik_api_result result,
+  const char *errmsg,
+  const int is_update_available,
+  const char *url,
+  const char *version);
+
+KOPSIK_EXPORT void kopsik_check_for_updates_async(
+  void *ctx, KopsikCheckUpdateCallback callback);
 
 #undef KOPSIK_EXPORT
 
