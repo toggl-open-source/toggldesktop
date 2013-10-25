@@ -20,9 +20,14 @@
 @property (nonatomic,strong) IBOutlet PreferencesWindowController *preferencesWindowController;
 @property TimeEntryViewItem *running_time_entry;
 @property NSTimer *statusItemTimer;
+@property NSString *lastKnownLoginState;
 @end
 
 @implementation AppDelegate
+
+const int kMenuItemTagNew = 3;
+const int kMenuItemTagContinue = 4;
+const int kMenuItemTagStop = 5;
 
 NSString *kTimeTotalUnknown = @"--:--";
 
@@ -44,6 +49,10 @@ NSString *kTimeTotalUnknown = @"--:--";
   
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(eventHandler:)
+                                               name:kUIStateUserLoggedIn
+                                             object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(eventHandler:)
                                                name:kUIStateUserLoggedOut
                                              object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self
@@ -58,6 +67,7 @@ NSString *kTimeTotalUnknown = @"--:--";
                                            selector:@selector(eventHandler:)
                                                name:kUICommandShowPreferences
                                              object:nil];
+  self.lastKnownLoginState = kUIStateUserLoggedOut;
 }
 
 -(void)eventHandler: (NSNotification *) notification
@@ -67,7 +77,10 @@ NSString *kTimeTotalUnknown = @"--:--";
     return;
   }
   
-  if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
+  if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
+    self.lastKnownLoginState = kUIStateUserLoggedIn;
+  } else if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
+    self.lastKnownLoginState = kUIStateUserLoggedOut;
     self.running_time_entry = nil;
   } else if ([notification.name isEqualToString:kUIStateTimerStopped]) {
     self.running_time_entry = nil;
@@ -89,9 +102,9 @@ NSString *kTimeTotalUnknown = @"--:--";
   [menu addItem:[NSMenuItem separatorItem]];
   [menu addItemWithTitle:@"Show" action:@selector(onShowMenuItem) keyEquivalent:@""];
   [menu addItem:[NSMenuItem separatorItem]];
-  [menu addItemWithTitle:@"New" action:@selector(onNewMenuItem) keyEquivalent:@""];
-  [menu addItemWithTitle:@"Continue" action:@selector(onContinueMenuItem) keyEquivalent:@""];
-  [menu addItemWithTitle:@"Stop" action:@selector(onStopMenuItem) keyEquivalent:@""];
+  [menu addItemWithTitle:@"New" action:@selector(onNewMenuItem) keyEquivalent:@""].tag = kMenuItemTagNew;
+  [menu addItemWithTitle:@"Continue" action:@selector(onContinueMenuItem) keyEquivalent:@""].tag = kMenuItemTagContinue;
+  [menu addItemWithTitle:@"Stop" action:@selector(onStopMenuItem) keyEquivalent:@""].tag = kMenuItemTagStop;
   [menu addItem:[NSMenuItem separatorItem]];
   [menu addItemWithTitle:@"Preferences" action:@selector(onPreferencesMenuItem:) keyEquivalent:@""];
   [menu addItem:[NSMenuItem separatorItem]];
@@ -267,6 +280,27 @@ NSString *kTimeTotalUnknown = @"--:--";
     kopsik_format_duration_in_seconds_hhmm(self.running_time_entry.duration_in_seconds, str, duration_str_len);
     [self.statusItem setTitle:[NSString stringWithUTF8String:str]];
   }
+}
+
+- (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem {
+    switch ([anItem tag]) {
+      case kMenuItemTagNew:
+        if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
+          return NO;
+        }
+        break;
+      case kMenuItemTagContinue:
+        if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
+          return NO;
+        }
+        break;
+      case kMenuItemTagStop:
+        if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
+          return NO;
+        }
+        break;
+    }
+    return YES;
 }
 
 @end
