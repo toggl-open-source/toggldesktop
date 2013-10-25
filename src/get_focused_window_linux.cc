@@ -11,6 +11,7 @@
 #include <X11/Xatom.h>
 
 #include <cstring>
+#include <string>
 
 #define HANDLE_EINTR(x) ({ \
   typeof(x) __eintr_result__; \
@@ -67,13 +68,13 @@ static char *get_property(Display *disp, Window win, Atom xa_prop_type,
     return ret;
 }
 
-void GetFocusedWindowInfo(std::string *title, std::string *filename) {
+int GetFocusedWindowInfo(std::string *title, std::string *filename) {
   *title = "";
   *filename = "";
 
   Display *display = XOpenDisplay(NULL);
   if (!display) {
-    return;
+    return 0;
   }
 
   // get active window
@@ -135,4 +136,6 @@ void GetFocusedWindowInfo(std::string *title, std::string *filename) {
 
   // Must close display, else max window client count is reached quickly
   XCloseDisplay(display);
+
+  return 1;
 }
