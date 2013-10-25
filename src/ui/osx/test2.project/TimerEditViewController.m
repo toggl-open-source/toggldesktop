@@ -27,10 +27,6 @@
 
 - (IBAction)startButtonClicked:(id)sender {
   NSString *description = [self.descriptionTextField stringValue];
-  if ([description length] == 0) {
-    [self.descriptionTextField becomeFirstResponder];
-    return;
-  }
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandNew
                                                       object:description];
   [self.descriptionTextField setStringValue:@""];

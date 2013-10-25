@@ -995,16 +995,11 @@ kopsik_api_result kopsik_start(
 
   Poco::Mutex::ScopedLock lock(*ctx->mutex);
 
-  std::string description(in_description);
-  if (description.empty()) {
-    strncpy(errmsg, "Missing description", errlen);
-    return KOPSIK_API_FAILURE;
-  }
   if (!ctx->user) {
     strncpy(errmsg, "Please login first", errlen);
     return KOPSIK_API_FAILURE;
   }
-  kopsik::TimeEntry *te = ctx->user->Start(description);
+  kopsik::TimeEntry *te = ctx->user->Start(std::string(in_description));
   kopsik_api_result res = save(ctx, errmsg, errlen);
   if (KOPSIK_API_SUCCESS != res) {
     return res;
