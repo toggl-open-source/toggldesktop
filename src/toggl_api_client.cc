@@ -1548,7 +1548,11 @@ std::string Formatter::FormatDurationInSecondsHHMMSS(const Poco::Int64 value) {
     return FormatDurationInSeconds(value, "%H:%M:%S");
 }
 
-std::string Formatter::FormatDurationInSecondsHHMM(const Poco::Int64 value) {
+std::string Formatter::FormatDurationInSecondsHHMM(const Poco::Int64 value,
+        const bool is_blink) {
+    if (is_blink) {
+        return FormatDurationInSeconds(value, "%H %M");
+    }
     return FormatDurationInSeconds(value, "%H:%M");
 }
 

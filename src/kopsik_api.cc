@@ -969,11 +969,14 @@ void kopsik_format_duration_in_seconds_hhmmss(
 }
 
 void kopsik_format_duration_in_seconds_hhmm(
-    int duration_in_seconds, char *out_str, unsigned int max_strlen) {
+    int duration_in_seconds,
+    int is_blink,
+    char *out_str,
+    unsigned int max_strlen) {
   poco_assert(out_str);
   poco_assert(max_strlen);
   std::string formatted =
-    kopsik::Formatter::FormatDurationInSecondsHHMM(duration_in_seconds);
+    kopsik::Formatter::FormatDurationInSecondsHHMM(duration_in_seconds, is_blink);
   strncpy(out_str, formatted.c_str(), max_strlen);
 }
 

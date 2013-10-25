@@ -26,6 +26,8 @@
 
 @implementation AppDelegate
 
+int blink = 0;
+
 const int kMenuItemTagNew = 3;
 const int kMenuItemTagContinue = 4;
 const int kMenuItemTagStop = 5;
@@ -132,7 +134,7 @@ NSString *kTimeTotalUnknown = @"--:--";
 
   self.statusItemTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                           target:self
-                                                        selector:@selector(timerFired:)
+                                                        selector:@selector(statusItemTimerFired:)
                                                         userInfo:nil
                                                          repeats:YES];
 }
@@ -279,12 +281,20 @@ NSString *kTimeTotalUnknown = @"--:--";
   ctx = 0;
 }
 
-- (void)timerFired:(NSTimer*)timer
+- (void)statusItemTimerFired:(NSTimer*)timer
 {
   if (self.running_time_entry != nil) {
     const int duration_str_len = 10;
     char str[duration_str_len];
-    kopsik_format_duration_in_seconds_hhmm(self.running_time_entry.duration_in_seconds, str, duration_str_len);
+    if (blink) {
+      blink = 0;
+    } else {
+      blink = 1;
+    }
+    kopsik_format_duration_in_seconds_hhmm(self.running_time_entry.duration_in_seconds,
+                                           blink,
+                                           str,
+                                           duration_str_len);
     [self.statusItem setTitle:[NSString stringWithUTF8String:str]];
   }
 }

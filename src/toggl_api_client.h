@@ -40,7 +40,8 @@ namespace kopsik {
             const std::string format);
         static std::string FormatDurationInSecondsHHMMSS(
             const Poco::Int64 value);
-        static std::string FormatDurationInSecondsHHMM(const Poco::Int64 value);
+        static std::string FormatDurationInSecondsHHMM(const Poco::Int64 value,
+            const bool is_blink);
         static std::time_t Parse8601(std::string iso_8601_formatted_date);
         static std::string Format8601(std::time_t date);
     };
