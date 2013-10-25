@@ -962,14 +962,25 @@ error Database::SaveClient(Client *model) {
           }
         } else {
             logger.debug("Inserting client " + model->String());
-            *session << "insert into clients(id, uid, name, guid, wid) "
-                "values(:id, :uid, :name, :guid, :wid)",
-                Poco::Data::use(model->ID()),
-                Poco::Data::use(model->UID()),
-                Poco::Data::use(model->Name()),
-                Poco::Data::use(model->GUID()),
-                Poco::Data::use(model->WID()),
-                Poco::Data::now;
+            // FIXME: check how to property insert null :S
+            if (model->GUID().empty()) {
+                *session << "insert into clients(id, uid, name, wid) "
+                    "values(:id, :uid, :name, :wid)",
+                    Poco::Data::use(model->ID()),
+                    Poco::Data::use(model->UID()),
+                    Poco::Data::use(model->Name()),
+                    Poco::Data::use(model->WID()),
+                    Poco::Data::now;
+            } else {
+                *session << "insert into clients(id, uid, name, guid, wid) "
+                    "values(:id, :uid, :name, :guid, :wid)",
+                    Poco::Data::use(model->ID()),
+                    Poco::Data::use(model->UID()),
+                    Poco::Data::use(model->Name()),
+                    Poco::Data::use(model->GUID()),
+                    Poco::Data::use(model->WID()),
+                    Poco::Data::now;
+            }
             error err = last_error();
             if (err != noError) {
                 return err;
@@ -1022,21 +1033,39 @@ error Database::SaveProject(Project *model) {
           }
         } else {
             logger.debug("Inserting project " + model->String());
-            *session <<
-                "insert into projects("
-                "id, uid, name, guid, wid, color, cid, active"
-                ") values("
-                ":id, :uid, :name, :guid, :wid, :color, :cid, :active"
-                ")",
-                Poco::Data::use(model->ID()),
-                Poco::Data::use(model->UID()),
-                Poco::Data::use(model->Name()),
-                Poco::Data::use(model->GUID()),
-                Poco::Data::use(model->WID()),
-                Poco::Data::use(model->Color()),
-                Poco::Data::use(model->CID()),
-                Poco::Data::use(model->Active()),
-                Poco::Data::now;
+            // FIXME: check how to property insert null :S
+            if (model->GUID().empty()) {
+                *session <<
+                    "insert into projects("
+                    "id, uid, name, wid, color, cid, active"
+                    ") values("
+                    ":id, :uid, :name, :wid, :color, :cid, :active"
+                    ")",
+                    Poco::Data::use(model->ID()),
+                    Poco::Data::use(model->UID()),
+                    Poco::Data::use(model->Name()),
+                    Poco::Data::use(model->WID()),
+                    Poco::Data::use(model->Color()),
+                    Poco::Data::use(model->CID()),
+                    Poco::Data::use(model->Active()),
+                    Poco::Data::now;
+            } else {
+                *session <<
+                    "insert into projects("
+                    "id, uid, name, guid, wid, color, cid, active"
+                    ") values("
+                    ":id, :uid, :name, :guid, :wid, :color, :cid, :active"
+                    ")",
+                    Poco::Data::use(model->ID()),
+                    Poco::Data::use(model->UID()),
+                    Poco::Data::use(model->Name()),
+                    Poco::Data::use(model->GUID()),
+                    Poco::Data::use(model->WID()),
+                    Poco::Data::use(model->Color()),
+                    Poco::Data::use(model->CID()),
+                    Poco::Data::use(model->Active()),
+                    Poco::Data::now;
+            }
             error err = last_error();
             if (err != noError) {
                 return err;
@@ -1139,14 +1168,25 @@ error Database::SaveTag(Tag *model) {
             }
         } else {
             logger.debug("Inserting tag " + model->String());
-            *session << "insert into tags(id, uid, name, wid, guid) "
-                "values(:id, :uid, :name, :wid, :guid)",
-                Poco::Data::use(model->ID()),
-                Poco::Data::use(model->UID()),
-                Poco::Data::use(model->Name()),
-                Poco::Data::use(model->WID()),
-                Poco::Data::use(model->GUID()),
-                Poco::Data::now;
+            // FIXME: check how to property insert null :S
+            if (model->GUID().empty()) {
+                *session << "insert into tags(id, uid, name, wid) "
+                    "values(:id, :uid, :name, :wid)",
+                    Poco::Data::use(model->ID()),
+                    Poco::Data::use(model->UID()),
+                    Poco::Data::use(model->Name()),
+                    Poco::Data::use(model->WID()),
+                    Poco::Data::now;
+            } else {
+                *session << "insert into tags(id, uid, name, wid, guid) "
+                    "values(:id, :uid, :name, :wid, :guid)",
+                    Poco::Data::use(model->ID()),
+                    Poco::Data::use(model->UID()),
+                    Poco::Data::use(model->Name()),
+                    Poco::Data::use(model->WID()),
+                    Poco::Data::use(model->GUID()),
+                    Poco::Data::now;
+            }
             error err = last_error();
             if (err != noError) {
                 return err;
