@@ -13,5 +13,4 @@
 @property NSImage* onImage;
 @property NSImage* offImage;
 - (IBAction)onPreferencesMenuItem:(id)sender;
-- (void)onStatusTimerFired:(NSTimer *)timer;
 @end

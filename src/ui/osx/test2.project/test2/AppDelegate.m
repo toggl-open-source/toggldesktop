@@ -50,7 +50,7 @@ NSString *kTimeTotalUnknown = @"--:--";
   
   [self createStatusItem];
   
-  self.lastKnownLoginState = kUIStateUserLoggedOut;
+  self.lastKnownLoginState = kUIStateUserLoggedIn;
   self.lastKnownTrackingState = kUIStateTimerStopped;
 
   [[NSNotificationCenter defaultCenter] addObserver:self
