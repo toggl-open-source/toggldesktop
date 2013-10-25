@@ -28,6 +28,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="252" height="260"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <color key="backgroundColor" red="0.8980392814" green="0.8980392814" blue="0.8980392814" alpha="1" colorSpace="deviceRGB"/>
+                                <tableViewGridLines key="gridStyleMask" horizontal="YES"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
                                     <tableColumn identifier="" editable="NO" width="252" minWidth="40" maxWidth="1000" id="Pqa-db-i5f">
