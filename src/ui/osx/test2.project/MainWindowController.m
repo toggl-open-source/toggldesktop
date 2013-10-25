@@ -178,7 +178,7 @@ const int kMenuItemTagLogout = 2;
     [self performSelector:@selector(startWebSocket) withObject:nil afterDelay:0.5];
     
     // Remember login state for validation of menu items
-    self.lastKnownLoginState = notification.name;
+    self.lastKnownLoginState = kUIStateUserLoggedIn;
 
   } else if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
     [Bugsnag setUserAttribute:@"user_id" withValue:nil];
@@ -199,7 +199,7 @@ const int kMenuItemTagLogout = 2;
     [self.timerViewController.view removeFromSuperview];
     
     // Remember login state for validation of menu items
-    self.lastKnownLoginState = notification.name;
+    self.lastKnownLoginState = kUIStateUserLoggedOut;
 
   } else if ([notification.name isEqualToString:kUIStateTimerRunning]) {
     // Hide timer editor from header view

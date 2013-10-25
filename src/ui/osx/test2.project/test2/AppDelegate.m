@@ -21,6 +21,7 @@
 @property TimeEntryViewItem *running_time_entry;
 @property NSTimer *statusItemTimer;
 @property NSString *lastKnownLoginState;
+@property NSString *lastKnownTrackingState;
 @end
 
 @implementation AppDelegate
@@ -47,6 +48,9 @@ NSString *kTimeTotalUnknown = @"--:--";
   
   [self createStatusItem];
   
+  self.lastKnownLoginState = kUIStateUserLoggedOut;
+  self.lastKnownTrackingState = kUIStateTimerStopped;
+
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(eventHandler:)
                                                name:kUIStateUserLoggedIn
@@ -67,7 +71,7 @@ NSString *kTimeTotalUnknown = @"--:--";
                                            selector:@selector(eventHandler:)
                                                name:kUICommandShowPreferences
                                              object:nil];
-  self.lastKnownLoginState = kUIStateUserLoggedOut;
+
 }
 
 -(void)eventHandler: (NSNotification *) notification
@@ -81,11 +85,14 @@ NSString *kTimeTotalUnknown = @"--:--";
     self.lastKnownLoginState = kUIStateUserLoggedIn;
   } else if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
     self.lastKnownLoginState = kUIStateUserLoggedOut;
+    self.lastKnownTrackingState = kUIStateTimerStopped;
     self.running_time_entry = nil;
   } else if ([notification.name isEqualToString:kUIStateTimerStopped]) {
     self.running_time_entry = nil;
+    self.lastKnownTrackingState = kUIStateTimerStopped;
   } else if ([notification.name isEqualToString:kUIStateTimerRunning]) {
     self.running_time_entry = notification.object;
+    self.lastKnownTrackingState = kUIStateTimerRunning;
   }
   
   if (self.running_time_entry == nil) {
@@ -296,6 +303,9 @@ NSString *kTimeTotalUnknown = @"--:--";
         break;
       case kMenuItemTagStop:
         if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
+          return NO;
+        }
+        if (self.lastKnownTrackingState != kUIStateTimerRunning) {
           return NO;
         }
         break;
