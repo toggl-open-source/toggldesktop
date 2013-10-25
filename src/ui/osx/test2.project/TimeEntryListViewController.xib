@@ -87,29 +87,41 @@
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                 </textField>
-                                                                <button translatesAutoresizingMaskIntoConstraints="NO" id="6AJ-WY-06R">
-                                                                    <rect key="frame" x="228" y="17" width="18" height="15"/>
+                                                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="Bqw-7J-umj">
+                                                                    <rect key="frame" x="228" y="16" width="18" height="16"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                    <subviews>
+                                                                        <button translatesAutoresizingMaskIntoConstraints="NO" id="6AJ-WY-06R">
+                                                                            <rect key="frame" x="0.0" y="1" width="18" height="15"/>
+                                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="height" constant="15" id="cGe-li-hrR"/>
+                                                                                <constraint firstAttribute="width" constant="18" id="xLh-VT-9WE"/>
+                                                                            </constraints>
+                                                                            <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSGoRightTemplate" imagePosition="overlaps" alignment="center" state="on" imageScaling="proportionallyUpOrDown" inset="2" id="4Xq-hN-Oj7">
+                                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                                <font key="font" metaFont="system"/>
+                                                                            </buttonCell>
+                                                                        </button>
+                                                                    </subviews>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="height" constant="15" id="cGe-li-hrR"/>
-                                                                        <constraint firstAttribute="width" constant="18" id="xLh-VT-9WE"/>
+                                                                        <constraint firstAttribute="width" constant="18" id="4xg-k5-xxc"/>
+                                                                        <constraint firstAttribute="height" constant="16" id="7Fw-oC-WSZ"/>
+                                                                        <constraint firstItem="6AJ-WY-06R" firstAttribute="top" secondItem="Bqw-7J-umj" secondAttribute="top" id="KaY-Xo-APo"/>
+                                                                        <constraint firstItem="6AJ-WY-06R" firstAttribute="leading" secondItem="Bqw-7J-umj" secondAttribute="leading" id="dkk-qh-U27"/>
                                                                     </constraints>
-                                                                    <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSGoRightTemplate" imagePosition="overlaps" alignment="center" state="on" imageScaling="proportionallyUpOrDown" inset="2" id="4Xq-hN-Oj7">
-                                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                        <font key="font" metaFont="system"/>
-                                                                    </buttonCell>
-                                                                </button>
+                                                                </customView>
                                                             </subviews>
                                                         </view>
                                                         <constraints>
-                                                            <constraint firstAttribute="trailing" secondItem="6AJ-WY-06R" secondAttribute="trailing" constant="5" id="0Zz-KW-Yz6"/>
                                                             <constraint firstAttribute="bottom" secondItem="Gdb-3N-fCV" secondAttribute="bottom" constant="11" id="E0f-1h-aSt"/>
                                                             <constraint firstItem="Gdb-3N-fCV" firstAttribute="leading" secondItem="Mwb-xn-Ua3" secondAttribute="leading" id="G2f-p3-cfB"/>
                                                             <constraint firstItem="Mwb-xn-Ua3" firstAttribute="leading" secondItem="lZj-mn-Ej4" secondAttribute="leading" constant="9" id="TzO-4j-WeF"/>
-                                                            <constraint firstItem="6AJ-WY-06R" firstAttribute="top" secondItem="lZj-mn-Ej4" secondAttribute="top" constant="17" id="iDx-Vf-ZES"/>
+                                                            <constraint firstItem="Bqw-7J-umj" firstAttribute="top" secondItem="lZj-mn-Ej4" secondAttribute="top" constant="17" id="d7M-pg-Fyc"/>
                                                             <constraint firstAttribute="height" constant="50" id="il1-aX-Omg"/>
                                                             <constraint firstItem="Mwb-xn-Ua3" firstAttribute="top" secondItem="lZj-mn-Ej4" secondAttribute="top" constant="8" id="otf-zK-I8C"/>
                                                             <constraint firstAttribute="trailing" secondItem="zrO-H9-BlH" secondAttribute="trailing" constant="29" id="pk4-al-QU7"/>
+                                                            <constraint firstAttribute="trailing" secondItem="Bqw-7J-umj" secondAttribute="trailing" constant="5" id="sX4-AA-3mF"/>
                                                             <constraint firstItem="zrO-H9-BlH" firstAttribute="top" secondItem="lZj-mn-Ej4" secondAttribute="top" constant="16" id="tdI-Aa-Huw"/>
                                                             <constraint firstItem="zrO-H9-BlH" firstAttribute="centerY" secondItem="lZj-mn-Ej4" secondAttribute="centerY" id="uPY-Oo-JIa"/>
                                                         </constraints>
