@@ -21,7 +21,7 @@
   self.descriptionTextField.stringValue = view_item.Description;
   self.colorTextField.backgroundColor = [self hexCodeToNSColor:view_item.color];
   if (view_item.project) {
-    self.projectTextField.stringValue = view_item.project;
+    self.projectTextField.stringValue = [view_item.project uppercaseString];
     [self.projectTextField setHidden:NO];
   } else {
     self.projectTextField.stringValue = @"";
