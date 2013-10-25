@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4510"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MainWindowController">
@@ -18,23 +18,23 @@
         <window title="Toggl Desktop" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" wantsToBeColor="NO" frameAutosaveName="MainWindow" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="258" height="427"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
-            <value key="minSize" type="size" width="250" height="300"/>
+            <rect key="contentRect" x="196" y="240" width="250" height="350"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
+            <value key="minSize" type="size" width="250" height="350"/>
             <view key="contentView" id="2">
-                <rect key="frame" x="0.0" y="0.0" width="258" height="427"/>
+                <rect key="frame" x="0.0" y="0.0" width="250" height="350"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="5Ld-I4-6Cu" userLabel="HeaderView">
-                        <rect key="frame" x="0.0" y="353" width="258" height="74"/>
+                    <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Ld-I4-6Cu" userLabel="HeaderView">
+                        <rect key="frame" x="0.0" y="277" width="250" height="73"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="av5-A6-9S5" userLabel="ContentView">
-                        <rect key="frame" x="0.0" y="29" width="258" height="326"/>
+                        <rect key="frame" x="0.0" y="29" width="250" height="248"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
                     <customView focusRingType="exterior" translatesAutoresizingMaskIntoConstraints="NO" id="I56-Lj-qTa" userLabel="FooterView">
-                        <rect key="frame" x="0.0" y="0.0" width="258" height="29"/>
+                        <rect key="frame" x="0.0" y="0.0" width="250" height="29"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <subviews>
                             <popUpButton translatesAutoresizingMaskIntoConstraints="NO" id="ar7-s4-8Jz">
@@ -78,11 +78,11 @@
                     <constraint firstAttribute="trailing" secondItem="av5-A6-9S5" secondAttribute="trailing" id="57y-9P-PlT"/>
                     <constraint firstAttribute="bottom" secondItem="I56-Lj-qTa" secondAttribute="bottom" id="A4i-KT-TTQ"/>
                     <constraint firstItem="av5-A6-9S5" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="ESW-fM-7Eo"/>
+                    <constraint firstItem="5Ld-I4-6Cu" firstAttribute="top" secondItem="2" secondAttribute="top" id="FTa-yS-Vna"/>
                     <constraint firstAttribute="trailing" secondItem="I56-Lj-qTa" secondAttribute="trailing" id="UeH-1D-1zL"/>
                     <constraint firstItem="5Ld-I4-6Cu" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="XId-R8-zBU"/>
                     <constraint firstItem="I56-Lj-qTa" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="doi-5e-Y0o"/>
-                    <constraint firstAttribute="bottom" secondItem="5Ld-I4-6Cu" secondAttribute="bottom" constant="353" id="ifE-eE-BMQ"/>
-                    <constraint firstItem="av5-A6-9S5" firstAttribute="top" secondItem="2" secondAttribute="top" constant="72" id="juq-i1-HoK"/>
+                    <constraint firstItem="av5-A6-9S5" firstAttribute="top" secondItem="2" secondAttribute="top" constant="73" id="juq-i1-HoK"/>
                     <constraint firstItem="5Ld-I4-6Cu" firstAttribute="top" secondItem="2" secondAttribute="top" id="u6L-vS-2UH"/>
                     <constraint firstAttribute="bottom" secondItem="av5-A6-9S5" secondAttribute="bottom" constant="29" id="yWZ-Zg-oVi"/>
                 </constraints>
@@ -93,6 +93,6 @@
         </window>
     </objects>
     <resources>
-        <image name="NSActionTemplate" width="14" height="14"/>
+        <image name="NSActionTemplate" width="15" height="15"/>
     </resources>
 </document>
