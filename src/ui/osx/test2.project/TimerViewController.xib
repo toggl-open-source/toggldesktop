@@ -39,23 +39,11 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HQf-TD-Aml">
-                                <rect key="frame" x="136" y="18" width="86" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="80" id="WId-oW-0fF"/>
-                                </constraints>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="00:42:33" id="Ckk-3d-cPG">
-                                    <font key="font" size="17" name="LucidaGrande"/>
-                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
                             <button verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dn7-uI-YOj">
-                                <rect key="frame" x="259" y="15" width="61" height="25"/>
+                                <rect key="frame" x="259" y="14" width="61" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="61" id="iRu-kt-zMv"/>
+                                    <constraint firstAttribute="width" constant="61" id="4Ii-2b-Qpo"/>
                                 </constraints>
                                 <buttonCell key="cell" type="smallSquare" title="Stop" bezelStyle="smallSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="188-ep-H9c">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -74,6 +62,18 @@
                                     <color key="backgroundColor" red="0.2294001115" green="0.69365832270000005" blue="0.2558485224" alpha="1" colorSpace="calibratedRGB"/>
                                 </textFieldCell>
                             </textField>
+                            <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HQf-TD-Aml">
+                                <rect key="frame" x="167" y="17" width="86" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="WId-oW-0fF"/>
+                                </constraints>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="00:42:33" id="Ckk-3d-cPG">
+                                    <font key="font" size="17" name="LucidaGrande"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                     </view>
                     <constraints>
@@ -81,7 +81,8 @@
                         <constraint firstAttribute="bottom" secondItem="X3a-qM-b5Y" secondAttribute="bottom" constant="11" id="Hjz-wL-tSz"/>
                         <constraint firstItem="YXM-R7-dLG" firstAttribute="leading" secondItem="n2B-Hq-XId" secondAttribute="leading" constant="11" id="JAY-HL-fkv"/>
                         <constraint firstItem="X3a-qM-b5Y" firstAttribute="leading" secondItem="YXM-R7-dLG" secondAttribute="leading" id="NLV-EW-1jj"/>
-                        <constraint firstAttribute="trailing" secondItem="HQf-TD-Aml" secondAttribute="trailing" constant="41" id="gG1-Vs-Rgs"/>
+                        <constraint firstAttribute="trailing" secondItem="Dn7-uI-YOj" secondAttribute="trailing" constant="8" id="PCl-ji-AYq"/>
+                        <constraint firstAttribute="trailing" secondItem="HQf-TD-Aml" secondAttribute="trailing" constant="70" id="gG1-Vs-Rgs"/>
                     </constraints>
                     <color key="borderColor" red="0.52834024229999998" green="0.52834024229999998" blue="0.52834024229999998" alpha="0.41999999999999998" colorSpace="calibratedRGB"/>
                     <color key="fillColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
