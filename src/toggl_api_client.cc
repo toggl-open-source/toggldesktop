@@ -91,6 +91,22 @@ void User::SortTimeEntriesByStart() {
     compareTimeEntriesByStart);
 }
 
+std::string User::ProjectNameIncludingClient(Project *p) {
+    poco_assert(p);
+    std::stringstream ss;
+    ss << p->Name();
+    if (p->CID()) {
+        kopsik::Client *c = GetClientByID(p->CID());
+        if (c) {
+            if (!p->Name().empty()) {
+                ss << ". ";
+            }
+            ss << c->Name();
+        }
+    }
+    return ss.str();
+}
+
 void User::SetFullname(std::string value) {
   if (fullname_ != value) {
     fullname_ = value;
@@ -1028,6 +1044,18 @@ Project *User::GetProjectByName(const std::string name) {
             it != related.Projects.end(); it++) {
         if ((*it)->Name() == name) {
             return *it;
+        }
+    }
+    return 0;
+}
+
+Project *User::GetProjectByNameIncludingClient(
+        const std::string name_with_client) {
+    for (std::vector<Project *>::const_iterator it = related.Projects.begin();
+            it != related.Projects.end(); it++) {
+        Project *p = *it;
+        if (ProjectNameIncludingClient(p) == name_with_client) {
+            return p;
         }
     }
     return 0;

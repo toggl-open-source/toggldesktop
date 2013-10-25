@@ -122,9 +122,13 @@ namespace kopsik {
         void SetWID(Poco::UInt64 value);
         Poco::UInt64 CID() { return cid_; }
         void SetCID(Poco::UInt64 value);
-        std::string Name() { return name_; }
+
         std::string UppercaseName();
+        std::string Name() { return name_; }
         void SetName(std::string value);
+
+        std::string NameIncludingClient();
+
         Poco::UInt64 UID() { return uid_; }
         void SetUID(Poco::UInt64 value);
 
@@ -391,10 +395,14 @@ namespace kopsik {
         Client *GetClientByID(const Poco::UInt64 id);
         Project *GetProjectByID(const Poco::UInt64 id);
         Project *GetProjectByName(const std::string name);
+        Project *GetProjectByNameIncludingClient(
+            const std::string name_with_client);
         Task *GetTaskByID(const Poco::UInt64 id);
         Tag *GetTagByID(const Poco::UInt64 id);
         TimeEntry *GetTimeEntryByID(const Poco::UInt64 id);
         TimeEntry *GetTimeEntryByGUID(std::string GUID);
+
+        std::string ProjectNameIncludingClient(Project *p);
 
         void CollectPushableObjects(std::vector<TimeEntry *> *result);
         void SortTimeEntriesByStart();

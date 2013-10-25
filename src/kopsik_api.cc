@@ -898,7 +898,9 @@ kopsik_api_result kopsik_project_select_items(
   for (unsigned int i = 0; i < active.size(); i++) {
     kopsik::Project *p = active[i];
     KopsikProjectSelectItem *view_item = project_select_item_init();
-    view_item->Name = strdup(p->Name().c_str());
+    std::string project_name_with_client =
+      ctx->user->ProjectNameIncludingClient(p);
+    view_item->Name = strdup(project_name_with_client.c_str());
     list->ViewItems[i] = view_item;
     list->Length++;
   }
@@ -1243,7 +1245,8 @@ kopsik_api_result kopsik_set_time_entry_project(
   std::string project_name(value);
   unsigned int project_id = 0;
   if (!project_name.empty()) {
-    kopsik::Project *p = ctx->user->GetProjectByName(std::string(value));
+    kopsik::Project *p =
+      ctx->user->GetProjectByNameIncludingClient(std::string(value));
     if (p) {
       project_id = (unsigned int)p->ID();
     }
