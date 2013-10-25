@@ -27,13 +27,17 @@
 }
 
 -(void)awakeFromNib {
-  // Set google login link color to blue
-  NSColor *color = [NSColor blueColor];
+  [self colorMeBlue:self.loginWithGoogleButton];
+  [self colorMeBlue:self.proxyButton];
+}
+
+- (void)colorMeBlue:(NSButton *)btn {
   NSMutableAttributedString *colorTitle =
-    [[NSMutableAttributedString alloc] initWithAttributedString:[self.loginWithGoogleButton attributedTitle]];
+  [[NSMutableAttributedString alloc] initWithAttributedString:[btn attributedTitle]];
   NSRange titleRange = NSMakeRange(0, [colorTitle length]);
+  NSColor *color = [NSColor blueColor];
   [colorTitle addAttribute:NSForegroundColorAttributeName value:color range:titleRange];
-  [self.loginWithGoogleButton setAttributedTitle:colorTitle];
+  [btn setAttributedTitle:colorTitle];
 }
 
 - (IBAction)clickLoginButton:(id)sender {

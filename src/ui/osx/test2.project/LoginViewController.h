@@ -15,6 +15,7 @@
 @property (weak) IBOutlet NSSecureTextField *password;
 @property (weak) IBOutlet NSTextField *errorLabel;
 @property (weak) IBOutlet NSButton *loginButton;
+@property (weak) IBOutlet NSButton *proxyButton;
 - (IBAction)clickLoginButton:(id)sender;
 - (IBAction)clickGoogleLoginButton:(id)sender;
 - (IBAction)clickProxySettingsButton:(id)sender;
