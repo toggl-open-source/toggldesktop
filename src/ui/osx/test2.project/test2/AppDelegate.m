@@ -300,6 +300,9 @@ NSString *kTimeTotalUnknown = @"--:--";
         if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
           return NO;
         }
+        if (self.lastKnownTrackingState != kUIStateTimerStopped) {
+          return NO;
+        }
         break;
       case kMenuItemTagStop:
         if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
