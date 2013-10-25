@@ -42,6 +42,17 @@
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntryDeselected object:nil];
 }
 
+- (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString
+{
+  for (NSString *project_name in self.projectNames) {
+    if ([[project_name commonPrefixWithString:partialString
+                                    options:NSCaseInsensitiveSearch] length] == [partialString length]) {
+      return project_name;
+    }
+  }
+  return @"";
+}
+
 - (void)render:(NSString *)view_item_guid {
   NSAssert(view_item_guid != nil, @"GUID is nil");
   TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:view_item_guid];
