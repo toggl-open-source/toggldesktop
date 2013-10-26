@@ -74,6 +74,24 @@ NSString *kTimeTotalUnknown = @"--:--";
                                                name:kUICommandShowPreferences
                                              object:nil];
 
+  // Detect when user is idle
+  [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
+                                                         selector: @selector(receiveSleepNote:)
+                                                             name: NSWorkspaceWillSleepNotification object: NULL];
+  
+  [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
+                                                         selector: @selector(receiveWakeNote:)
+                                                             name: NSWorkspaceDidWakeNotification object: NULL];
+}
+
+- (void) receiveSleepNote: (NSNotification*) note
+{
+  NSLog(@"receiveSleepNote: %@", [note name]);
+}
+
+- (void) receiveWakeNote: (NSNotification*) note
+{
+  NSLog(@"receiveWakeNote: %@", [note name]);
 }
 
 -(void)eventHandler: (NSNotification *) notification
