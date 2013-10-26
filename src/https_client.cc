@@ -123,7 +123,8 @@ error HTTPSClient::requestJSON(std::string method,
       << ", reason: " << response.getReason()
       << ", Content type: " << response.getContentType();
     if (response.has("Content-Encoding")) {
-      response_string << ", Content-Encoding: " << response.get("Content-Encoding");
+      response_string << ", Content-Encoding: "
+        << response.get("Content-Encoding");
     }
     logger.debug(response_string.str());
     logger.debug(*response_body);
@@ -132,7 +133,8 @@ error HTTPSClient::requestJSON(std::string method,
       // FIXME: backoff
       if (response_body->empty()) {
         std::stringstream description;
-        description << "Request to server failed with status code: " << response.getStatus();
+        description << "Request to server failed with status code: "
+          << response.getStatus();
         return description.str();
       }
       return "Data push failed with error: " + *response_body;

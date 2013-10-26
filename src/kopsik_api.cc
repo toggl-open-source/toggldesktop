@@ -975,8 +975,8 @@ void kopsik_format_duration_in_seconds_hhmm(
     unsigned int max_strlen) {
   poco_assert(out_str);
   poco_assert(max_strlen);
-  std::string formatted =
-    kopsik::Formatter::FormatDurationInSecondsHHMM(duration_in_seconds, is_blink);
+  std::string formatted = kopsik::Formatter::FormatDurationInSecondsHHMM(
+    duration_in_seconds, is_blink);
   strncpy(out_str, formatted.c_str(), max_strlen);
 }
 
@@ -1777,7 +1777,7 @@ class FetchUpdatesTask : public Poco::Task {
 
       Poco::Logger &logger = Poco::Logger::get("kopsik_api");
       logger.debug(response_body);
-      
+
       if ("null" == response_body) {
         callback_(KOPSIK_API_SUCCESS, 0, 0, 0, 0);
         return;
@@ -1805,8 +1805,10 @@ class FetchUpdatesTask : public Poco::Task {
       }
       json_delete(root);
 
-      callback_(KOPSIK_API_SUCCESS, err.c_str(), 1, url.c_str(), version.c_str());
+      callback_(KOPSIK_API_SUCCESS, err.c_str(), 1, url.c_str(),
+                version.c_str());
     }
+
   private:
     const std::string updateURL() {
       std::stringstream relative_url;
