@@ -89,16 +89,19 @@
     // Handle delete
     if ([change.ChangeType isEqualToString:@"delete"]) {
       @synchronized(viewitems) {
+        TimeEntryViewItem *found = nil;
         for (int i = 0; i < [viewitems count]; i++) {
           TimeEntryViewItem *item = [viewitems objectAtIndex:i];
           if (! [item isKindOfClass:[TimeEntryViewItem class]]) {
             continue;
           }
-          if (! [change.GUID isEqualToString:item.GUID]) {
-            continue;
+          if ([change.GUID isEqualToString:item.GUID]) {
+            found = item;
+            break;
           }
-          [viewitems removeObject:item];
-          break;
+        }
+        if (found) {
+          [viewitems removeObject:found];
         }
       }
       [self.timeEntriesTableView reloadData];
