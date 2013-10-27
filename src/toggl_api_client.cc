@@ -305,19 +305,21 @@ error User::Push(HTTPSClient *https_client) {
             logger.debug(ss.str());
         }
 
-        if ((result.StatusCode < 200) || (result.StatusCode >= 300)) {
-            if ("null" == result.Body) {
-                std::stringstream ss;
-                ss  << "Request failed with status code " << result.StatusCode;
-                errors.push_back(ss.str());
-            } else {
-                errors.push_back(result.Body);
+        if (result.StatusCode != 404)  {
+            if ((result.StatusCode < 200) || (result.StatusCode >= 300)) {
+                if ("null" == result.Body) {
+                    std::stringstream ss;
+                    ss  << "Request failed with status code " << result.StatusCode;
+                    errors.push_back(ss.str());
+                } else {
+                    errors.push_back(result.Body);
+                }
+                continue;
             }
-            continue;
+    
+            poco_assert(!result.GUID.empty());
+            poco_assert(json_is_valid(result.Body.c_str()));
         }
-
-        poco_assert(!result.GUID.empty());
-        poco_assert(json_is_valid(result.Body.c_str()));
 
         TimeEntry *te = 0;
         for (std::vector<TimeEntry *>::const_iterator it =
@@ -330,7 +332,7 @@ error User::Push(HTTPSClient *https_client) {
         poco_assert(te);
 
         // If TE was deleted, the body won't contain useful data.
-        if ("DELETE" == result.Method) {
+        if (("DELETE" == result.Method) || (404 == result.StatusCode)) {
             te->MarkTimeEntryAsDeletedOnServer();
             continue;
         }
