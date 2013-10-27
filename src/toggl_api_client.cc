@@ -114,6 +114,13 @@ void User::SetFullname(std::string value) {
   }
 }
 
+void User::SetEmail(const std::string value) {
+  if (email_ != value) {
+    email_ = value;
+    dirty_ = true;
+  }
+}
+
 void User::SetAPIToken(std::string value) {
     if (api_token_ != value) {
         api_token_ = value;

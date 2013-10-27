@@ -608,7 +608,14 @@ kopsik_api_result kopsik_login(
   }
 
   kopsik::User *user = new kopsik::User(ctx->app_name, ctx->app_version);
-  kopsik::error err = user->Login(ctx->https_client, email, password);
+  kopsik::error err = ctx->db->LoadUserByEmail(email, user, true);
+  if (err != kopsik::noError) {
+    delete user;
+    strncpy(errmsg, err.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
+  err = user->Login(ctx->https_client, email, password);
   if (err != kopsik::noError) {
     delete user;
     strncpy(errmsg, err.c_str(), errlen);

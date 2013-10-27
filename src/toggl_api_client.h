@@ -364,7 +364,8 @@ namespace kopsik {
             dirty_(false),
             fullname_(""),
             app_name_(app_name),
-            app_version_(app_version) {}
+            app_version_(app_version),
+            email_("") {}
         ~User() {
             ClearWorkspaces();
             ClearClients();
@@ -417,19 +418,28 @@ namespace kopsik {
 
         Poco::Int64 LocalID() { return local_id_; }
         void SetLocalID(Poco::Int64 value) { local_id_ = value; }
+
         Poco::UInt64 ID() { return id_; }
         void SetID(Poco::UInt64 value);
+
         std::string APIToken() { return api_token_; }
         void SetAPIToken(std::string api_token);
+
         Poco::UInt64 DefaultWID() { return default_wid_; }
         void SetDefaultWID(Poco::UInt64 value);
+
         // Unix timestamp of the user data; returned from API
         Poco::UInt64 Since() { return since_; }
         void SetSince(Poco::UInt64 value);
+
         bool Dirty() { return dirty_; }
         void ClearDirty() { dirty_ = false; }
+
         std::string Fullname() { return fullname_; }
         void SetFullname(std::string value);
+
+        std::string Email() { return email_; }
+        void SetEmail(const std::string value);
 
         // Following fields are not saved into database:
         // They are only used to log user in.
@@ -470,9 +480,9 @@ namespace kopsik {
         Poco::UInt64 since_;
         bool dirty_;
         std::string fullname_;
-
         std::string app_name_;
         std::string app_version_;
+        std::string email_;
     };
 }  // namespace kopsik
 

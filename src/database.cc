@@ -226,9 +226,38 @@ error Database::LoadProxySettings(
     return last_error();
 }
 
+error Database::LoadUserByEmail(const std::string email, User *model,
+        const bool with_related_data) {
+    poco_assert(session);
+    poco_assert(model);
+    poco_assert(!email.empty());
+    try {
+        Poco::UInt64 uid(0);
+        *session << "select id from users where email = :email",
+            Poco::Data::into(uid),
+            Poco::Data::use(email),
+            Poco::Data::limit(1),
+            Poco::Data::now;
+        error err = last_error();
+        if (err != noError) {
+            return err;
+        }
+        if (uid <= 0) {
+            return noError;
+        }
+        return LoadUserByID(uid, model, with_related_data);
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
 
-error Database::LoadUserByAPIToken(std::string api_token, User *model,
-        bool with_related_data) {
+error Database::LoadUserByAPIToken(const std::string api_token, User *model,
+        const bool with_related_data) {
     poco_assert(session);
     poco_assert(model);
     poco_assert(!api_token.empty());
@@ -287,8 +316,8 @@ error Database::loadUsersRelatedData(User *user) {
     return loadTimeEntries(user->ID(), &user->related.TimeEntries);
 }
 
-error Database::LoadUserByID(Poco::UInt64 UID, User *user,
-        bool with_related_data) {
+error Database::LoadUserByID(const Poco::UInt64 UID, User *user,
+        const bool with_related_data) {
     poco_assert(user);
     poco_assert(session);
     poco_assert(UID > 0);
@@ -305,8 +334,10 @@ error Database::LoadUserByID(Poco::UInt64 UID, User *user,
         Poco::UInt64 default_wid(0);
         Poco::UInt64 since(0);
         std::string fullname("");
+        std::string email("");
         *session <<
-            "select local_id, id, api_token, default_wid, since, fullname "
+            "select local_id, id, api_token, default_wid, since, fullname, "
+            "email "
             "from users where id = :id",
             Poco::Data::into(local_id),
             Poco::Data::into(id),
@@ -314,6 +345,7 @@ error Database::LoadUserByID(Poco::UInt64 UID, User *user,
             Poco::Data::into(default_wid),
             Poco::Data::into(since),
             Poco::Data::into(fullname),
+            Poco::Data::into(email),
             Poco::Data::use(UID),
             Poco::Data::limit(1),
             Poco::Data::now;
@@ -327,6 +359,7 @@ error Database::LoadUserByID(Poco::UInt64 UID, User *user,
         user->SetDefaultWID(default_wid);
         user->SetSince(since);
         user->SetFullname(fullname);
+        user->SetEmail(email);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -1237,13 +1270,15 @@ error Database::SaveUser(User *model, bool with_related_data,
                 logger.debug("Updating user " + model->String());
                 *session << "update users set "
                     "api_token = :api_token, default_wid = :default_wid, "
-                    "since = :since, id = :id, fullname = :fullname "
+                    "since = :since, id = :id, fullname = :fullname, "
+                    "email = :email "
                     "where local_id = :local_id",
                     Poco::Data::use(model->APIToken()),
                     Poco::Data::use(model->DefaultWID()),
                     Poco::Data::use(model->Since()),
                     Poco::Data::use(model->ID()),
                     Poco::Data::use(model->Fullname()),
+                    Poco::Data::use(model->Email()),
                     Poco::Data::use(model->LocalID()),
                     Poco::Data::now;
                 error err = last_error();
@@ -1256,13 +1291,16 @@ error Database::SaveUser(User *model, bool with_related_data,
             } else {
                 logger.debug("Inserting user " + model->String());
                 *session << "insert into users("
-                    "id, api_token, default_wid, since, fullname) "
-                    "values(:id, :api_token, :default_wid, :since, :fullname)",
+                    "id, api_token, default_wid, since, fullname, email"
+                    ")values("
+                    ":id, :api_token, :default_wid, :since, :fullname, :email"
+                    ")",
                     Poco::Data::use(model->ID()),
                     Poco::Data::use(model->APIToken()),
                     Poco::Data::use(model->DefaultWID()),
                     Poco::Data::use(model->Since()),
                     Poco::Data::use(model->Fullname()),
+                    Poco::Data::use(model->Email()),
                     Poco::Data::now;
                 error err = last_error();
                 if (err != noError) {
@@ -1378,7 +1416,8 @@ error Database::initialize_tables() {
         "api_token varchar not null, "
         "default_wid integer, "
         "since integer, "
-        "fullname varchar "
+        "fullname varchar, "
+        "email varchar not null"
         "); ");
     if (err != noError) {
         return err;
@@ -1386,6 +1425,18 @@ error Database::initialize_tables() {
 
     err = migrate("users.id",
         "CREATE UNIQUE INDEX id_users_id ON users (id);");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("users.email",
+        "CREATE UNIQUE INDEX id_users_email ON users (email);");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("users.api_token",
+        "CREATE UNIQUE INDEX id_users_api_token ON users (api_token);");
     if (err != noError) {
         return err;
     }
