@@ -37,7 +37,7 @@ NSString *kTimeTotalUnknown = @"--:--";
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
   NSLog(@"applicationDidFinishLaunching");
-
+ 
   [Bugsnag startBugsnagWithApiKey:@"2a46aa1157256f759053289f2d687c2f"];
   [Bugsnag configuration].releaseStage = @"development";
   
@@ -82,6 +82,21 @@ NSString *kTimeTotalUnknown = @"--:--";
   [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
                                                          selector: @selector(receiveWakeNote:)
                                                              name: NSWorkspaceDidWakeNotification object: NULL];
+
+  [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
+
+  [self showNotification:self];
+}
+
+- (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center shouldPresentNotification:(NSUserNotification *)notification{
+  return YES;
+}
+
+- (IBAction)showNotification:(id)sender{
+  NSUserNotification *notification = [[NSUserNotification alloc] init];
+  notification.title = @"Toggl Desktop";
+  notification.informativeText = @"This is a notification. Click me!";
+  [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
 }
 
 - (void) receiveSleepNote: (NSNotification*) note
