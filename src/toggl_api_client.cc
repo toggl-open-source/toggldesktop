@@ -309,14 +309,15 @@ error User::Push(HTTPSClient *https_client) {
             if ((result.StatusCode < 200) || (result.StatusCode >= 300)) {
                 if ("null" == result.Body) {
                     std::stringstream ss;
-                    ss  << "Request failed with status code " << result.StatusCode;
+                    ss  << "Request failed with status code "
+                        << result.StatusCode;
                     errors.push_back(ss.str());
                 } else {
                     errors.push_back(result.Body);
                 }
                 continue;
             }
-    
+
             poco_assert(!result.GUID.empty());
             poco_assert(json_is_valid(result.Body.c_str()));
         }
