@@ -41,10 +41,11 @@
                                 </textFieldCell>
                             </textField>
                             <button verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dn7-uI-YOj">
-                                <rect key="frame" x="185" y="21" width="61" height="25"/>
+                                <rect key="frame" x="195" y="22" width="61" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="61" id="4Ii-2b-Qpo"/>
+                                    <constraint firstAttribute="height" constant="23" id="ndL-P2-R4Z"/>
                                 </constraints>
                                 <buttonCell key="cell" type="smallSquare" title="Stop" bezelStyle="smallSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="188-ep-H9c">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -55,7 +56,7 @@
                                 </connections>
                             </button>
                             <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HQf-TD-Aml">
-                                <rect key="frame" x="121" y="22" width="76" height="21"/>
+                                <rect key="frame" x="128" y="24" width="76" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="70" id="WId-oW-0fF"/>
@@ -69,15 +70,15 @@
                         </subviews>
                     </view>
                     <constraints>
+                        <constraint firstAttribute="trailing" secondItem="HQf-TD-Aml" secondAttribute="trailing" constant="70" id="3AE-q6-cg7"/>
                         <constraint firstItem="YXM-R7-dLG" firstAttribute="top" secondItem="n2B-Hq-XId" secondAttribute="top" constant="14" id="4Qg-vC-JtF"/>
+                        <constraint firstAttribute="trailing" secondItem="Dn7-uI-YOj" secondAttribute="trailing" constant="15" id="7C5-b0-sS7"/>
                         <constraint firstItem="YXM-R7-dLG" firstAttribute="leading" secondItem="n2B-Hq-XId" secondAttribute="leading" constant="11" id="JAY-HL-fkv"/>
-                        <constraint firstAttribute="trailing" secondItem="Dn7-uI-YOj" secondAttribute="trailing" constant="8" id="PCl-ji-AYq"/>
-                        <constraint firstAttribute="trailing" secondItem="HQf-TD-Aml" secondAttribute="trailing" constant="70" id="gG1-Vs-Rgs"/>
                     </constraints>
                     <color key="borderColor" red="0.78431379795074463" green="0.78431379795074463" blue="0.78431379795074463" alpha="1" colorSpace="deviceRGB"/>
                     <color key="fillColor" red="0.78431379800000001" green="0.78431379800000001" blue="0.78431379800000001" alpha="1" colorSpace="deviceRGB"/>
                 </box>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cc4-YX-Ka5">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cc4-YX-Ka5">
                     <rect key="frame" x="11" y="23" width="78" height="12"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <constraints>
@@ -106,6 +107,7 @@
                 <constraint firstItem="n2B-Hq-XId" firstAttribute="top" secondItem="ZCm-7Z-S1x" secondAttribute="top" id="dYY-5f-LOi"/>
                 <constraint firstItem="n2B-Hq-XId" firstAttribute="leading" secondItem="ZCm-7Z-S1x" secondAttribute="leading" id="lZx-es-VwN"/>
                 <constraint firstAttribute="bottom" secondItem="Iae-Aw-Ngx" secondAttribute="bottom" id="ppQ-SU-lvC"/>
+                <constraint firstItem="Iae-Aw-Ngx" firstAttribute="top" secondItem="cc4-YX-Ka5" secondAttribute="bottom" constant="22" id="tLl-Gf-Ibu"/>
             </constraints>
         </customView>
         <customView id="Bg6-cr-9vb">
