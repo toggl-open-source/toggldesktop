@@ -7,9 +7,10 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimerViewController">
             <connections>
+                <outlet property="colorTextField" destination="cc4-YX-Ka5" id="i4p-8k-mv5"/>
                 <outlet property="descriptionTextField" destination="YXM-R7-dLG" id="tLp-05-Tqu"/>
                 <outlet property="durationTextField" destination="HQf-TD-Aml" id="UK6-mY-ecU"/>
-                <outlet property="projectTextField" destination="X3a-qM-b5Y" id="AjF-XC-eWk"/>
+                <outlet property="projectTextField" destination="cc4-YX-Ka5" id="cMa-ac-WHH"/>
                 <outlet property="stopButton" destination="Dn7-uI-YOj" id="D3v-9x-xnI"/>
                 <outlet property="view" destination="ZCm-7Z-S1x" id="El3-Dq-cnO"/>
             </connections>
@@ -53,15 +54,6 @@
                                     <action selector="stopButtonClicked:" target="-2" id="cl4-55-OQz"/>
                                 </connections>
                             </button>
-                            <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X3a-qM-b5Y">
-                                <rect key="frame" x="15" y="24" width="93" height="11"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Sprint  -  Teamweek" id="A7M-22-MB4">
-                                    <font key="font" metaFont="miniSystem"/>
-                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" red="0.2294001115" green="0.69365832270000005" blue="0.2558485224" alpha="1" colorSpace="calibratedRGB"/>
-                                </textFieldCell>
-                            </textField>
                             <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HQf-TD-Aml">
                                 <rect key="frame" x="121" y="22" width="76" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -78,15 +70,25 @@
                     </view>
                     <constraints>
                         <constraint firstItem="YXM-R7-dLG" firstAttribute="top" secondItem="n2B-Hq-XId" secondAttribute="top" constant="14" id="4Qg-vC-JtF"/>
-                        <constraint firstAttribute="bottom" secondItem="X3a-qM-b5Y" secondAttribute="bottom" constant="11" id="Hjz-wL-tSz"/>
                         <constraint firstItem="YXM-R7-dLG" firstAttribute="leading" secondItem="n2B-Hq-XId" secondAttribute="leading" constant="11" id="JAY-HL-fkv"/>
-                        <constraint firstItem="X3a-qM-b5Y" firstAttribute="leading" secondItem="YXM-R7-dLG" secondAttribute="leading" id="NLV-EW-1jj"/>
                         <constraint firstAttribute="trailing" secondItem="Dn7-uI-YOj" secondAttribute="trailing" constant="8" id="PCl-ji-AYq"/>
                         <constraint firstAttribute="trailing" secondItem="HQf-TD-Aml" secondAttribute="trailing" constant="70" id="gG1-Vs-Rgs"/>
                     </constraints>
                     <color key="borderColor" red="0.78431379795074463" green="0.78431379795074463" blue="0.78431379795074463" alpha="1" colorSpace="deviceRGB"/>
                     <color key="fillColor" red="0.78431379800000001" green="0.78431379800000001" blue="0.78431379800000001" alpha="1" colorSpace="deviceRGB"/>
                 </box>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cc4-YX-Ka5">
+                    <rect key="frame" x="11" y="23" width="78" height="12"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="12" id="xgW-p5-crF"/>
+                    </constraints>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="BIZDEV . TOGGL" drawsBackground="YES" id="dCw-pz-1YG">
+                        <font key="font" size="9" name="LucidaGrande-Bold"/>
+                        <color key="textColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
+                    </textFieldCell>
+                </textField>
                 <box autoresizesSubviews="NO" verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Iae-Aw-Ngx">
                     <rect key="frame" x="0.0" y="-2" width="264" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -96,6 +98,7 @@
                 </box>
             </subviews>
             <constraints>
+                <constraint firstItem="cc4-YX-Ka5" firstAttribute="leading" secondItem="ZCm-7Z-S1x" secondAttribute="leading" constant="11" id="2VL-Cx-7Ut"/>
                 <constraint firstAttribute="trailing" secondItem="Iae-Aw-Ngx" secondAttribute="trailing" id="58M-gO-on6"/>
                 <constraint firstAttribute="trailing" secondItem="n2B-Hq-XId" secondAttribute="trailing" id="5tX-6Z-qZe"/>
                 <constraint firstItem="Iae-Aw-Ngx" firstAttribute="leading" secondItem="ZCm-7Z-S1x" secondAttribute="leading" id="8r4-YL-ZKP"/>
