@@ -10,9 +10,11 @@
 
 @interface TimerViewController : NSViewController
 @property (weak) IBOutlet NSTextField *descriptionTextField;
-@property (weak) IBOutlet NSTextField *projectTextField;
 @property (weak) IBOutlet NSTextField *durationTextField;
 @property (weak) IBOutlet NSButton *stopButton;
+@property (weak) IBOutlet NSTextField *projectTextField;
+@property (weak) IBOutlet NSTextField *colorTextField;
+
 - (IBAction)stopButtonClicked:(id)sender;
 - (void)timerFired:(NSTimer *)timer;
 @end
