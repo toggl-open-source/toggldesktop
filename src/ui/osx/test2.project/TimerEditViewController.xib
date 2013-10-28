@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4510"/>
@@ -18,15 +18,15 @@
             <rect key="frame" x="0.0" y="0.0" width="258" height="74"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Fga-BR-x8G">
-                    <rect key="frame" x="6" y="5" width="242" height="62"/>
+                <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Fga-BR-x8G">
+                    <rect key="frame" x="0.0" y="0.0" width="258" height="74"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView">
-                        <rect key="frame" x="2" y="2" width="238" height="58"/>
+                        <rect key="frame" x="0.0" y="0.0" width="258" height="74"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ulR-eB-96b">
-                                <rect key="frame" x="197" y="17" width="32" height="26"/>
+                                <rect key="frame" x="217" y="33" width="32" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="32" id="ela-5Z-uSj"/>
@@ -44,7 +44,7 @@ DQ
                                 </connections>
                             </button>
                             <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y8j-ZI-jWO">
-                                <rect key="frame" x="6" y="17" width="185" height="26"/>
+                                <rect key="frame" x="6" y="33" width="207" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="26" id="zwQ-0T-4Wg"/>
@@ -64,13 +64,22 @@ DQ
                         <constraint firstItem="Y8j-ZI-jWO" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="15" id="hO9-DA-FVD"/>
                         <constraint firstItem="Y8j-ZI-jWO" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="5" id="rDk-ww-39h"/>
                     </constraints>
-                    <color key="borderColor" red="0.52834024229999998" green="0.52834024229999998" blue="0.52834024229999998" alpha="0.41999999999999998" colorSpace="calibratedRGB"/>
-                    <color key="fillColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="borderColor" red="0.78431379800000001" green="0.78431379800000001" blue="0.78431379800000001" alpha="1" colorSpace="deviceRGB"/>
+                    <color key="fillColor" red="0.78431379800000001" green="0.78431379800000001" blue="0.78431379800000001" alpha="1" colorSpace="deviceRGB"/>
+                </box>
+                <box autoresizesSubviews="NO" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="lEH-md-7M7">
+                    <rect key="frame" x="0.0" y="-1" width="264" height="5"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <font key="titleFont" metaFont="system"/>
                 </box>
             </subviews>
             <constraints>
-                <constraint firstItem="Fga-BR-x8G" firstAttribute="leading" secondItem="M2u-7B-WCs" secondAttribute="leading" constant="9" id="baB-dL-8dh"/>
-                <constraint firstAttribute="trailing" secondItem="Fga-BR-x8G" secondAttribute="trailing" constant="9" id="luy-7J-BcF"/>
+                <constraint firstItem="lEH-md-7M7" firstAttribute="leading" secondItem="M2u-7B-WCs" secondAttribute="leading" id="NhD-nR-elb"/>
+                <constraint firstAttribute="trailing" secondItem="lEH-md-7M7" secondAttribute="trailing" id="VVl-OB-BEb"/>
+                <constraint firstItem="Fga-BR-x8G" firstAttribute="leading" secondItem="M2u-7B-WCs" secondAttribute="leading" id="baB-dL-8dh"/>
+                <constraint firstAttribute="trailing" secondItem="Fga-BR-x8G" secondAttribute="trailing" id="luy-7J-BcF"/>
             </constraints>
         </customView>
     </objects>
