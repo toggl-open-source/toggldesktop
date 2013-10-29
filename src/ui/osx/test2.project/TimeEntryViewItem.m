@@ -46,6 +46,7 @@
   } else {
     self.updatedAt = nil;
   }
+  self.dateHeader = [NSString stringWithUTF8String:data->DateHeader];
 }
 
 // FIXME: move to lib, so it becomes cross platform

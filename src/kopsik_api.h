@@ -175,6 +175,7 @@ typedef struct {
   unsigned int Started;
   unsigned int Ended;
   char *UpdatedAt;
+  char *DateHeader;
 } KopsikTimeEntryViewItem;
 
 typedef struct {

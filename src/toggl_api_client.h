@@ -44,6 +44,7 @@ namespace kopsik {
             const bool is_blink);
         static std::time_t Parse8601(std::string iso_8601_formatted_date);
         static std::string Format8601(std::time_t date);
+        static std::string FormatDateHeader(std::time_t date);
     };
 
     // FIXME: implement base class with common fields, dirtyness etc
@@ -239,42 +240,59 @@ namespace kopsik {
 
         std::string Tags();
         void SetTags(std::string tags);
+
         Poco::UInt64 ID() { return id_; }
         void SetID(Poco::UInt64 value);
+
         Poco::UInt64 WID() { return wid_; }
         void SetWID(Poco::UInt64 value);
+
         Poco::UInt64 UID() { return uid_; }
         void SetUID(Poco::UInt64 value);
+
         Poco::UInt64 PID() { return pid_; }
         void SetPID(Poco::UInt64 value);
+
         Poco::UInt64 TID() { return tid_; }
         void SetTID(Poco::UInt64 value);
+
         Poco::UInt64 UIModifiedAt() { return ui_modified_at_; }
         void SetUIModifiedAt(Poco::UInt64 value);
+
         bool Billable() { return billable_; }
         void SetBillable(bool value);
+
         Poco::Int64 DurationInSeconds() { return duration_in_seconds_; }
         void SetDurationInSeconds(Poco::Int64 value);
         std::string DurationString();
         void SetDurationString(std::string value);
+
         Poco::Int64 LocalID() { return local_id_; }
         void SetLocalID(Poco::Int64 value) { local_id_ = value; }
+
         bool DurOnly() { return duronly_; }
         void SetDurOnly(bool value);
+
         std::string Description() { return description_; }
         void SetDescription(std::string value);
+
         std::string GUID() { return guid_; }
         void SetGUID(std::string value);
+
         std::string StartString();
         void SetStartString(std::string value);
         Poco::UInt64 Start() { return start_; }
         void SetStart(Poco::UInt64 value);
+        std::string DateHeaderString();
+
         std::string StopString();
         void SetStopString(std::string value);
         Poco::UInt64 Stop() { return stop_; }
         void SetStop(Poco::UInt64 value);
+
         bool Dirty() { return dirty_; }
         void ClearDirty() { dirty_ = false; }
+
         std::string CreatedWith() { return created_with_; }
         void SetCreatedWith(std::string value);
         // Deleting a time entry hides it from

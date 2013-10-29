@@ -29,10 +29,6 @@
     if (self) {
       viewitems = [NSMutableArray array];
       
-      // FIXME: ask lib for date format
-      dateFormat = [[NSDateFormatter alloc] init];
-      [dateFormat setDateFormat:@"EEE dd. MMM"];
-
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
                                                    name:kUIStateUserLoggedIn
@@ -59,13 +55,14 @@
 
     @synchronized(viewitems) {
       [viewitems removeAllObjects];
+      NSString *dateHeader = nil;
       for (int i = 0; i < list->Length; i++) {
         KopsikTimeEntryViewItem *item = list->ViewItems[i];
         TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
         [model load:item];
-        if (lastDate == nil || ![model isSameDay:lastDate]) {
-          lastDate = model.started;
-          [viewitems addObject:[[dateFormat stringFromDate:lastDate] uppercaseString]];
+        if (dateHeader == nil || ![model.dateHeader isEqual:dateHeader]) {
+          dateHeader = model.dateHeader;
+          [viewitems addObject:dateHeader];
         }
         [viewitems addObject:model];
       }

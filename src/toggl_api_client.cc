@@ -1299,6 +1299,10 @@ void TimeEntry::SetStartString(std::string value) {
     SetStart(Formatter::Parse8601(value));
 }
 
+std::string TimeEntry::DateHeaderString() {
+    return Formatter::FormatDateHeader(start_);
+}
+
 void TimeEntry::SetUpdatedAtString(std::string value) {
     SetUpdatedAt(Formatter::Parse8601(value));
 }
@@ -1553,6 +1557,12 @@ error TimeEntry::loadTagsFromJSONNode(JSONNODE *list) {
         ++current_node;
     }
     return noError;
+}
+
+std::string Formatter::FormatDateHeader(std::time_t date) {
+    poco_assert(date);
+    Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
+    return Poco::toUpper(Poco::DateTimeFormatter::format(ts, "%w %d. %b"));
 }
 
 std::string Formatter::FormatDurationInSeconds(const Poco::Int64 value,

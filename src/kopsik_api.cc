@@ -197,6 +197,9 @@ void time_entry_to_view_item(
   if (!updated_at.empty()) {
     view_item->UpdatedAt = strdup(updated_at.c_str());
   }
+
+  poco_assert(!view_item->DateHeader);
+  view_item->DateHeader = strdup(te->DateHeaderString().c_str());
 }
 
 // Context API.
@@ -931,6 +934,7 @@ KopsikTimeEntryViewItem *kopsik_time_entry_view_item_init() {
   item->Started = 0;
   item->Ended = 0;
   item->UpdatedAt = 0;
+  item->DateHeader = 0;
   return item;
 }
 
@@ -963,6 +967,10 @@ void kopsik_time_entry_view_item_clear(KopsikTimeEntryViewItem *item) {
   if (item->UpdatedAt) {
     free(item->UpdatedAt);
     item->UpdatedAt = 0;
+  }
+  if (item->DateHeader) {
+    free(item->DateHeader);
+    item->DateHeader = 0;
   }
   delete item;
   item = 0;
