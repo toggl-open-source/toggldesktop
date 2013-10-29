@@ -169,7 +169,7 @@ nightly: deps test osx
 	git add src/ui/osx/test2.project/test2/kopsik_ui_osx-Info.plist && git commit -m $(shell go run src/branding/osx/plist.go -version)
 	rm -rf TogglDesktop.app && cp -r src/ui/osx/test2.project/build/Release/TogglDesktop.app .
 	rm -rf TogglDesktop*.tar.gz && tar cvfz TogglDesktop-$(timestamp).tar.gz TogglDesktop.app
-	PLATFORM=osx VERSION=$(shell go run src/branding/osx/plist.go -version) INSTALLER=../../TogglDesktop-$(timestamp).tar.gz go run src/branding/upload_to_cdn.go
+	PLATFORM=osx VERSION=$(shell go run src/branding/osx/plist.go -version) INSTALLER=TogglDesktop-$(timestamp).tar.gz go run src/branding/upload_to_cdn.go
 	git push origin builds
 
 openssl:
