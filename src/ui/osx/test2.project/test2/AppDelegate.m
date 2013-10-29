@@ -37,9 +37,6 @@ NSString *kTimeTotalUnknown = @"--:--";
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
   NSLog(@"applicationDidFinishLaunching");
- 
-  [Bugsnag startBugsnagWithApiKey:@"2a46aa1157256f759053289f2d687c2f"];
-  [Bugsnag configuration].releaseStage = @"development";
   
   self.mainWindowController = [[MainWindowController alloc] initWithWindowNibName:@"MainWindowController"];
   [self.mainWindowController.window setReleasedWhenClosed:NO];
@@ -257,6 +254,12 @@ NSString *kTimeTotalUnknown = @"--:--";
   NSString* version = [infoDict objectForKey:@"CFBundleShortVersionString"];
   ctx = kopsik_context_init("osx_native_app", [version UTF8String]);
 
+  [Bugsnag startBugsnagWithApiKey:@"2a46aa1157256f759053289f2d687c2f"];
+  NSString* environment = [infoDict objectForKey:@"KopsikEnvironment"];
+  NSAssert(environment != nil, @"Missing environment in plist");
+  [Bugsnag configuration].releaseStage = environment;
+
+  // Parse command line arguments
   NSArray *arguments = [[NSProcessInfo processInfo] arguments];
   NSLog(@"Command line arguments: %@", arguments);
   
