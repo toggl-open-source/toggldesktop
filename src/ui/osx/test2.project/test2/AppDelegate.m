@@ -14,10 +14,12 @@
 #import "Bugsnag.h"
 #import "UIEvents.h"
 #import "TimeEntryViewItem.h"
+#import "AboutWindowController.h"
 
 @interface  AppDelegate()
 @property (nonatomic,strong) IBOutlet MainWindowController *mainWindowController;
 @property (nonatomic,strong) IBOutlet PreferencesWindowController *preferencesWindowController;
+@property (nonatomic,strong) IBOutlet AboutWindowController *aboutWindowController;
 @property TimeEntryViewItem *running_time_entry;
 @property NSTimer *statusItemTimer;
 @property NSString *lastKnownLoginState;
@@ -44,6 +46,8 @@ NSString *kTimeTotalUnknown = @"--:--";
   [NSApp activateIgnoringOtherApps:YES];
 
   self.preferencesWindowController = [[PreferencesWindowController alloc] initWithWindowNibName:@"PreferencesWindowController"];
+
+  self.aboutWindowController = [[AboutWindowController alloc] initWithWindowNibName:@"AboutWindowController"];
   
   [self createStatusItem];
   
@@ -152,7 +156,8 @@ NSString *kTimeTotalUnknown = @"--:--";
 }
 
 - (void)onAboutMenuItem {
-  [[NSApplication sharedApplication] orderFrontStandardAboutPanel:self];
+  [self.aboutWindowController showWindow:self];
+  [NSApp activateIgnoringOtherApps:YES];
 }
 
 - (void)onShowMenuItem {
