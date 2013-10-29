@@ -161,7 +161,7 @@ deps: openssl poco json
 json:
 	cd $(jsondir) && make
 
-nightly: deps test osx_test osx
+nightly: deps test osx
 	(git branch builds || true) #&& git reset head --hard && git clean -df && git pull
 	git checkout builds
 	rm -rf src/branding && git clone gitosis@git.toggl.com:kopsik_branding.git src/branding
