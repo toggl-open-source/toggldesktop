@@ -176,6 +176,7 @@ NSString *kTimeTotalUnknown = @"--:--";
   if (KOPSIK_API_SUCCESS != kopsik_websocket_stop(ctx, err, KOPSIK_ERR_LEN)) {
     NSLog(@"Error while shutting down websocket: %s", err);
   }
+  kopsik_timeline_stop(ctx);
   NSLog(@"applicationWillTerminate done");
 }
 

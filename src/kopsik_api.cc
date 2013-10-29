@@ -1766,6 +1766,20 @@ void kopsik_websocket_stop_async(
   ctx->tm->start(new WebSocketStopTask(ctx, callback));
 }
 
+// Timeline
+
+void kopsik_timeline_start(void *context) {
+  Context *ctx = reinterpret_cast<Context *>(context);
+  ctx->timeline_uploader->Start();
+  ctx->window_change_recorder->Start();
+}
+
+void kopsik_timeline_stop(void *context) {
+  Context *ctx = reinterpret_cast<Context *>(context);
+  ctx->window_change_recorder->Stop();
+  ctx->timeline_uploader->Stop();
+}
+
 // Updates
 
 class FetchUpdatesTask : public Poco::Task {

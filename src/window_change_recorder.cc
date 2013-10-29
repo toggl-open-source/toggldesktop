@@ -14,10 +14,10 @@
 
 namespace kopsik {
 
-void WindowChangeRecorder::start_recording() {
+void WindowChangeRecorder::Start() {
     if (user_id_ > 0) {
         std::stringstream out;
-        out << "start_recording, user_id = " << user_id_;
+        out << "Start, user_id = " << user_id_;
         Poco::Logger &logger = Poco::Logger::get("window_change_recorder");
         logger.debug(out.str());
         if (!recording_.isRunning()) {
@@ -33,7 +33,7 @@ void WindowChangeRecorder::start_recording() {
     }
 }
 
-void WindowChangeRecorder::stop_recording() {
+void WindowChangeRecorder::Stop() {
     if (recording_.isRunning()) {
         recording_.stop();
         recording_.wait();
@@ -104,7 +104,7 @@ void WindowChangeRecorder::handleConfigureNotification(
     logger.debug(out.str());
     if (user_id_ != notification->user_id) {
         logger.debug("user has changed, stopping recording");
-        stop_recording();
+        Stop();
     }
     // Setting the user ID won't start timeline recording, first
     // we'll need confirmation from server, that recording is really
@@ -126,9 +126,9 @@ void WindowChangeRecorder::handleUserTimelineSettingsNotification(
 
     if (user_id_ == notification->user_id) {
         if (notification->record_timeline) {
-            start_recording();
+            Start();
         } else if (!notification->record_timeline) {
-            stop_recording();
+            Stop();
         }
     } else {
         std::stringstream out;

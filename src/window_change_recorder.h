@@ -44,6 +44,9 @@ class WindowChangeRecorder {
     void handleUserTimelineSettingsNotification(
         UserTimelineSettingsNotification* notification);
 
+    void Start();
+    void Stop();
+
  protected:
     // Subsystem overrides
     const char* name() const { return "window_change_recorder"; }
@@ -53,10 +56,6 @@ class WindowChangeRecorder {
 
  private:
     void inspect_focused_window();
-
-    // Start/stop activity
-    void start_recording();
-    void stop_recording();
 
     // User who is recording the events.
     unsigned int user_id_;

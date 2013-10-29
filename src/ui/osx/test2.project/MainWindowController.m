@@ -213,6 +213,7 @@ const int kMenuItemTagLogout = 2;
     // Start syncing after a while.
     [self performSelector:@selector(startSync) withObject:nil afterDelay:0.5];
     [self performSelector:@selector(startWebSocket) withObject:nil afterDelay:0.5];
+    [self performSelector:@selector(startTimeline) withObject:nil afterDelay:0.5];
     
     // Remember login state for validation of menu items
     self.lastKnownLoginState = kUIStateUserLoggedIn;
@@ -223,6 +224,7 @@ const int kMenuItemTagLogout = 2;
     NSLog(@"MainWindow stopping websocket");
     
     kopsik_websocket_stop_async(ctx, handle_error);
+    kopsik_timeline_stop(ctx);
 
     // Show login view
     [self.contentView addSubview:self.loginViewController.view];
@@ -453,6 +455,12 @@ void on_model_change(kopsik_api_result result,
   NSLog(@"MainWindow startWebSocket");
   kopsik_websocket_start_async(ctx, handle_error);
   NSLog(@"MainWindow startWebSocket done");
+}
+
+- (void)startTimeline {
+  NSLog(@"MainWindow startTimeline");
+  kopsik_timeline_start(ctx);
+  NSLog(@"MainWindow startTimeline done");
 }
 
 @end

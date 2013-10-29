@@ -39,6 +39,8 @@ class TimelineUploader {
                 &TimelineUploader::handleTimelineBatchReadyNotification);
         nc.addObserver(observeUpload);
     }
+    void Start();
+    void Stop();
 
  protected:
     // Subsystem overrides
@@ -69,10 +71,6 @@ class TimelineUploader {
         const std::string &desktop_id);
     void json_to_timeline_settings(
         const std::string &json, bool &record_timeline);
-
-    // Actity start/stop
-    void start_uploading();
-    void stop_uploading();
 
     // Hopefully an authenticated user sending the timeline events.
     unsigned int user_id_;

@@ -329,6 +329,12 @@ KOPSIK_EXPORT void kopsik_websocket_stop_async(
   void *ctx,
   KopsikResultCallback callback);
 
+// Timeline
+
+void kopsik_timeline_start(void *ctx);
+
+void kopsik_timeline_stop(void *ctx);
+
 // Updates
 
 typedef void (*KopsikCheckUpdateCallback)(

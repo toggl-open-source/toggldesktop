@@ -23,10 +23,10 @@
 
 namespace kopsik {
 
-void TimelineUploader::start_uploading() {
+void TimelineUploader::Start() {
     if (!upload_token_.empty() && user_id_ > 0) {
         std::stringstream out;
-        out << "start_uploading user_id = " << user_id_;
+        out << "Start user_id = " << user_id_;
         Poco::Logger &logger = Poco::Logger::get("timeline_uploader");
         logger.debug(out.str());
 
@@ -36,7 +36,7 @@ void TimelineUploader::start_uploading() {
     }
 }
 
-void TimelineUploader::stop_uploading() {
+void TimelineUploader::Stop() {
     if (uploading_.isRunning()) {
         uploading_.stop();
         uploading_.wait();
@@ -50,11 +50,11 @@ void TimelineUploader::handleConfigureNotification(
     Poco::Logger &logger = Poco::Logger::get("timeline_uploader");
     logger.debug(out.str());
     if (user_id_ != notification->user_id) {
-        stop_uploading();
+        Stop();
     }
     user_id_ = notification->user_id;
     upload_token_ = notification->upload_token;
-    start_uploading();
+    Start();
 }
 
 void TimelineUploader::handleTimelineBatchReadyNotification(
@@ -298,18 +298,18 @@ void TimelineUploader::handleConfigUploadInterval(const std::string& name,
         const std::string& value) {
     Poco::Logger &logger = Poco::Logger::get("timeline_uploader");
     logger.debug("handleConfigUploadInterval");
-    stop_uploading();
+    Stop();
     upload_interval_seconds_ = atoi(value.c_str());
-    start_uploading();
+    Start();
 }
 
 void TimelineUploader::handleConfigUploadHost(const std::string& name,
         const std::string& value) {
     Poco::Logger &logger = Poco::Logger::get("timeline_uploader");
     logger.debug("handleConfigUploadHost");
-    stop_uploading();
+    Stop();
     upload_host_ = value;
-    start_uploading();
+    Start();
 }
 
 }  // namespace kopsik
