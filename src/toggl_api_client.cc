@@ -434,25 +434,36 @@ error User::Login(HTTPSClient *https_client,
     const std::string &email, const std::string &password) {
   BasicAuthUsername = email;
   BasicAuthPassword = password;
-  return pull(https_client, true);
+  return pull(https_client, true, false);
 }
 
-error User::Sync(HTTPSClient *https_client, bool full_sync) {
+error User::Sync(HTTPSClient *https_client,
+        const bool full_sync,
+        const bool with_related_data) {
     BasicAuthUsername = APIToken();
     BasicAuthPassword = "api_token";
-    error err = pull(https_client, full_sync);
+    error err = pull(https_client, full_sync, with_related_data);
     if (err != noError) {
         return err;
     }
     return Push(https_client);
 }
 
-error User::pull(HTTPSClient *https_client, bool full_sync) {
+error User::pull(HTTPSClient *https_client,
+    const bool full_sync,
+    const bool with_related_data) {
   Poco::Stopwatch stopwatch;
   stopwatch.start();
 
   std::stringstream relative_url;
-  relative_url << "/api/v8/me?app_name=kopsik&with_related_data=true";
+  relative_url << "/api/v8/me?app_name=kopsik";
+
+  if (with_related_data) {
+    relative_url << "&with_related_data=true";
+  } else {
+    relative_url << "&with_related_data=false";
+}
+
   if (!full_sync) {
       relative_url << "&since=" << since_;
   }

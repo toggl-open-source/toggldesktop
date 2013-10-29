@@ -226,36 +226,6 @@ error Database::LoadProxySettings(
     return last_error();
 }
 
-error Database::LoadUserByEmail(const std::string email, User *model,
-        const bool with_related_data) {
-    poco_assert(session);
-    poco_assert(model);
-    poco_assert(!email.empty());
-    try {
-        Poco::UInt64 uid(0);
-        *session << "select id from users where email = :email",
-            Poco::Data::into(uid),
-            Poco::Data::use(email),
-            Poco::Data::limit(1),
-            Poco::Data::now;
-        error err = last_error();
-        if (err != noError) {
-            return err;
-        }
-        if (uid <= 0) {
-            return noError;
-        }
-        return LoadUserByID(uid, model, with_related_data);
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return noError;
-}
-
 error Database::LoadUserByAPIToken(const std::string api_token, User *model,
         const bool with_related_data) {
     poco_assert(session);
@@ -382,7 +352,6 @@ error Database::LoadUserByID(const Poco::UInt64 UID, User *user,
 
     return noError;
 }
-
 
 error Database::UInt(std::string sql, Poco::UInt64 *result) {
     poco_assert(session);

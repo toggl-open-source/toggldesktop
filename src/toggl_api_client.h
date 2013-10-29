@@ -375,7 +375,9 @@ namespace kopsik {
             ClearTimeEntries();
         }
 
-        error Sync(HTTPSClient *https_client, bool full_sync);
+        error Sync(HTTPSClient *https_client,
+            const bool full_sync,
+            const bool with_related_data);
         error Push(HTTPSClient *https_client);
         error Login(HTTPSClient *https_client,
             const std::string &email, const std::string &password);
@@ -450,7 +452,8 @@ namespace kopsik {
 
     private:
         error pull(HTTPSClient *https_client,
-            bool full_sync);
+            const bool full_sync,
+            const bool with_related_data);
 
         void loadProjectsFromJSONNode(JSONNODE *list);
         void loadTagsFromJSONNode(JSONNODE *list);

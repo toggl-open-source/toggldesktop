@@ -608,24 +608,23 @@ kopsik_api_result kopsik_login(
   }
 
   kopsik::User *user = new kopsik::User(ctx->app_name, ctx->app_version);
-  kopsik::error err = ctx->db->LoadUserByEmail(email, user, true);
+
+  kopsik::error err = user->Login(ctx->https_client, email, password);
   if (err != kopsik::noError) {
     delete user;
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
 
-  err = user->Login(ctx->https_client, email, password);
+  err = ctx->db->LoadUserByID(user->ID(), user, true);
   if (err != kopsik::noError) {
     delete user;
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
 
-  std::vector<kopsik::ModelChange> changes;
-  err = ctx->db->SaveUser(user, true, &changes);
+  err = user->Sync(ctx->https_client, true, true);
   if (err != kopsik::noError) {
-    delete user;
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
@@ -638,7 +637,8 @@ kopsik_api_result kopsik_login(
   }
 
   ctx->user = user;
-  return KOPSIK_API_SUCCESS;
+
+  return save(ctx, errmsg, errlen);
 }
 
 kopsik_api_result kopsik_logout(
@@ -695,7 +695,7 @@ kopsik_api_result kopsik_sync(
 
   Poco::Mutex::ScopedLock lock(*ctx->mutex);
 
-  kopsik::error err = ctx->user->Sync(ctx->https_client, full_sync);
+  kopsik::error err = ctx->user->Sync(ctx->https_client, full_sync, true);
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;

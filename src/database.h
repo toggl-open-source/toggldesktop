@@ -69,8 +69,6 @@ class Database {
             const bool with_related_data);
         error LoadUserByAPIToken(const std::string api_token, User *user,
             const bool with_related_data);
-        error LoadUserByEmail(const std::string email, User *user,
-            const bool with_related_data);
         error LoadCurrentUser(User *user, const bool with_related_data);
 
         error LoadProxySettings(
