@@ -161,14 +161,18 @@ deps: openssl poco json
 json:
 	cd $(jsondir) && make
 
-nightly: deps test osx
-	rm -rf src/branding
-	git clone gitosis@git.toggl.com:kopsik_branding.git src/branding
-	rm -rf TogglDesktop.app
-	rm -rf kopsik*.tar.gz
-	cp -r src/ui/osx/test2.project/build/Release/TogglDesktop.app .
-	tar cvfz kopsik-$(timestamp).tar.gz TogglDesktop.app
-	cd src/branding && go get && PLATFORM=osx VERSION=1.0 INSTALLER=../../kopsik-$(timestamp).tar.gz go run upload_to_cdn.go
+#nightly: deps test osx_test osx
+nightly:
+	(git branch builds || true) #&& git reset head --hard && git clean -df && git pull
+	git checkout builds
+	rm -rf src/branding && git clone gitosis@git.toggl.com:kopsik_branding.git src/branding
+	git checkout builds && git merge master
+	go run src/branding/osx/plist.go -environment=production -bump
+	git add src/ui/osx/test2.project/test2/kopsik_ui_osx-Info.plist && git commit -m $(shell go run src/branding/osx/plist.go -version)
+	rm -rf TogglDesktop.app && cp -r src/ui/osx/test2.project/build/Release/TogglDesktop.app .
+	rm -rf TogglDesktop*.tar.gz && tar cvfz TogglDesktop-$(timestamp).tar.gz TogglDesktop.app
+	PLATFORM=osx VERSION=$(shell go run src/branding/osx/plist.go -version) INSTALLER=../../TogglDesktop-$(timestamp).tar.gz go run src/branding/upload_to_cdn.go
+	git push origin builds
 
 openssl:
 ifeq ($(uname), Darwin)
