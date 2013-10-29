@@ -122,7 +122,6 @@ cmdline: clean lint
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/database.cc -o build/database.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/kopsik_api.cc -o build/kopsik_api.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/get_focused_window_$(osname).cc -o build/get_focused_window_$(osname).o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/timeline_database.cc -o build/timeline_database.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/timeline_uploader.cc -o build/timeline_uploader.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/window_change_recorder.cc -o build/window_change_recorder.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/ui/cmdline/main.cc -o build/main.o
@@ -139,7 +138,6 @@ test: clean lint
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/kopsik_api_test.cc -o build/kopsik_api_test.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/kopsik_test.cc -o build/kopsik_test.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/get_focused_window_$(osname).cc -o build/get_focused_window_$(osname).o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/timeline_database.cc -o build/timeline_database.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/timeline_uploader.cc -o build/timeline_uploader.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/window_change_recorder.cc -o build/window_change_recorder.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c $(GTEST_ROOT)/src/gtest-all.cc -o build/gtest-all.o

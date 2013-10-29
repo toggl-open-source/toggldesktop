@@ -12,6 +12,8 @@
 #include "Poco/Logger.h"
 #include "Poco/Util/OptionSet.h"
 
+namespace kopsik {
+
 void WindowChangeRecorder::start_recording() {
     if (user_id_ > 0) {
         std::stringstream out;
@@ -135,3 +137,5 @@ void WindowChangeRecorder::handleUserTimelineSettingsNotification(
         logger.warning(out.str());
     }
 }
+
+}  // namespace kopsik

@@ -21,6 +21,8 @@
 #include "Poco/Thread.h"
 #include "Poco/StreamCopier.h"
 
+namespace kopsik {
+
 void TimelineUploader::start_uploading() {
     if (!upload_token_.empty() && user_id_ > 0) {
         std::stringstream out;
@@ -309,3 +311,5 @@ void TimelineUploader::handleConfigUploadHost(const std::string& name,
     upload_host_ = value;
     start_uploading();
 }
+
+}  // namespace kopsik

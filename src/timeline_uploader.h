@@ -14,6 +14,8 @@
 #include "Poco/Observer.h"
 #include "Poco/NotificationCenter.h"
 
+namespace kopsik {
+
 class TimelineUploader {
  public:
     TimelineUploader() :
@@ -93,5 +95,7 @@ class TimelineUploader {
     // member function running in its own thread.
     Poco::Activity<TimelineUploader> uploading_;
 };
+
+}  // namespace kopsik
 
 #endif  // SRC_TIMELINE_UPLOADER_H_

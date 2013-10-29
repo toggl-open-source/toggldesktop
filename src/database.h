@@ -10,9 +10,12 @@
 #include "Poco/Logger.h"
 #include "Poco/Data/Common.h"
 #include "Poco/Data/SQLite/Connector.h"
+#include "Poco/NotificationCenter.h"
+#include "Poco/Observer.h"
 
 #include "./types.h"
 #include "./toggl_api_client.h"
+#include "./timeline_notifications.h"
 
 namespace kopsik {
 
@@ -48,6 +51,24 @@ class Database {
                 logger.error(err);
             }
             poco_assert(err == noError);
+
+            Poco::NotificationCenter& nc =
+            Poco::NotificationCenter::defaultCenter();
+
+            Poco::Observer<Database, TimelineEventNotification>
+              observeCreate(*this,
+            &Database::handleTimelineEventNotification);
+            nc.addObserver(observeCreate);
+
+            Poco::Observer<Database, CreateTimelineBatchNotification>
+                observeSelect(*this,
+            &Database::handleCreateTimelineBatchNotification);
+            nc.addObserver(observeSelect);
+
+            Poco::Observer<Database, DeleteTimelineBatchNotification>
+                observeDelete(*this,
+            &Database::handleDeleteTimelineBatchNotification);
+            nc.addObserver(observeDelete);
         }
 
         ~Database() {
@@ -102,6 +123,14 @@ class Database {
         error SetCurrentAPIToken(const std::string &token);
         error ClearCurrentAPIToken();
 
+     protected:
+        void handleTimelineEventNotification(
+            TimelineEventNotification* notification);
+        void handleCreateTimelineBatchNotification(
+            CreateTimelineBatchNotification *notification);
+        void handleDeleteTimelineBatchNotification(
+            DeleteTimelineBatchNotification *notification);
+
     private:
         error initialize_tables();
         error migrate(std::string name, std::string sql);
@@ -138,7 +167,15 @@ class Database {
         error deleteFromTable(std::string table_name, Poco::Int64 local_id);
         error deleteAllFromTableByUID(std::string table_name, Poco::Int64 UID);
 
+        void initialize_timeline_tables();
+        void insert_timeline_event(const TimelineEvent& info);
+        void select_timeline_batch(const int user_id,
+            std::vector<TimelineEvent> *timeline_events);
+        void delete_timeline_batch(
+            const std::vector<TimelineEvent> &timeline_events);
+
         Poco::Data::Session *session;
+        std::string desktop_id_;
 };
 
 }  // namespace kopsik

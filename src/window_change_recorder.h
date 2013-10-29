@@ -13,6 +13,8 @@
 #include "Poco/Activity.h"
 #include "Poco/Observer.h"
 
+namespace kopsik {
+
 class WindowChangeRecorder {
  public:
     WindowChangeRecorder() :
@@ -72,5 +74,7 @@ class WindowChangeRecorder {
 
     Poco::Activity<WindowChangeRecorder> recording_;
 };
+
+}  // namespace kopsik
 
 #endif  // SRC_WINDOW_CHANGE_RECORDER_H_

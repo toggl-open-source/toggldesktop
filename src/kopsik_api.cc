@@ -8,7 +8,6 @@
 #include "./https_client.h"
 #include "./websocket_client.h"
 #include "./version.h"
-#include "./timeline_database.h"
 #include "./timeline_uploader.h"
 #include "./window_change_recorder.h"
 
@@ -94,9 +93,8 @@ typedef struct {
   Poco::Mutex *mutex;
   Poco::TaskManager *tm;
   KopsikViewItemChangeCallback change_callback;
-  TimelineDatabase *timeline_database;
-  TimelineUploader *timeline_uploader;
-  WindowChangeRecorder *window_change_recorder;
+  kopsik::TimelineUploader *timeline_uploader;
+  kopsik::WindowChangeRecorder *window_change_recorder;
   std::string app_name;
   std::string app_version;
 } Context;
@@ -211,9 +209,8 @@ void *kopsik_context_init(const char *app_name, const char *app_version) {
   Context *ctx = new Context();
 
   ctx->db = 0;
-  ctx->timeline_database = new TimelineDatabase();
-  ctx->timeline_uploader = new TimelineUploader();
-  ctx->window_change_recorder = new WindowChangeRecorder();
+  ctx->timeline_uploader = new kopsik::TimelineUploader();
+  ctx->window_change_recorder = new kopsik::WindowChangeRecorder();
   ctx->user = 0;
 
   ctx->app_name = std::string(app_name);
@@ -262,9 +259,6 @@ void kopsik_context_clear(void *context) {
     delete ctx->mutex;
     ctx->mutex = 0;
   }
-
-  delete ctx->timeline_database;
-  ctx->timeline_database = 0;
 
   delete ctx->timeline_uploader;
   ctx->timeline_uploader = 0;

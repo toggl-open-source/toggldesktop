@@ -1709,4 +1709,167 @@ error Database::migrate(std::string name, std::string sql) {
     return last_error();
 }
 
+void Database::initialize_timeline_tables() {
+    std::string table_name;
+    *session << "SELECT name "
+        "FROM sqlite_master "
+        "WHERE type='table' "
+        "AND name='timeline_installation'",
+        Poco::Data::into(table_name),
+        Poco::Data::limit(1),
+        Poco::Data::now;
+
+    if (table_name.length() == 0) {
+        *session << "CREATE TABLE timeline_installation("
+            "id INTEGER PRIMARY KEY, "
+            "desktop_id VARCHAR NOT NULL"
+            ")", Poco::Data::now;
+        desktop_id_ = generateGUID();
+        *session << "INSERT INTO timeline_installation(desktop_id) "
+            "VALUES(:desktop_id)",
+            Poco::Data::use(desktop_id_),
+            Poco::Data::now;
+        *session << "CREATE TABLE timeline_events("
+            "id INTEGER PRIMARY KEY, "
+            "user_id INTEGER NOT NULL, "
+            "title VARCHAR, "
+            "filename VARCHAR, "
+            "start_time INTEGER NOT NULL, "
+            "end_time INTEGER, "
+            "idle INTEGER NOT NULL"
+            ")",
+            Poco::Data::now;
+    } else {
+        *session << "SELECT desktop_id FROM timeline_installation",
+            Poco::Data::into(desktop_id_),
+            Poco::Data::lowerLimit(1),
+            Poco::Data::now;
+    }
+
+    Poco::Logger &logger = Poco::Logger::get("database");
+    logger.debug("desktop_id = " + desktop_id_);
+    poco_assert(!desktop_id_.empty());
+}
+
+void Database::select_timeline_batch(
+        const int user_id,
+        std::vector<TimelineEvent> *timeline_events) {
+    std::stringstream out;
+    out << "select_batch, user_id = " << user_id;
+    Poco::Logger &logger = Poco::Logger::get("database");
+    logger.debug(out.str());
+
+    poco_assert(user_id > 0);
+    poco_assert(timeline_events->empty());
+    if (!session) {
+        logger.warning("select_batch database is not open, ignoring request");
+        return;
+    }
+    Poco::Data::Statement select(*session);
+    select << "SELECT id, title, filename, start_time, end_time, idle "
+        "FROM timeline_events WHERE user_id = :user_id LIMIT 100",
+        Poco::Data::use(user_id);
+    Poco::Data::RecordSet rs(select);
+    while (!select.done()) {
+        select.execute();
+        bool more = rs.moveFirst();
+        while (more) {
+            TimelineEvent event;
+            event.id = rs[0].convert<unsigned int>();
+            event.title = rs[1].convert<std::string>();
+            event.filename = rs[2].convert<std::string>();
+            event.start_time = rs[3].convert<int>();
+            event.end_time = rs[4].convert<int>();
+            event.idle = rs[5].convert<bool>();
+            event.user_id = user_id;
+            timeline_events->push_back(event);
+            more = rs.moveNext();
+        }
+    }
+
+    std::stringstream event_count;
+    event_count << "select_batch found " << timeline_events->size()
+        <<  " events.";
+    logger.debug(event_count.str());
+}
+
+void Database::insert_timeline_event(const TimelineEvent& event) {
+    std::stringstream out;
+    out << "insert " << event.start_time << ";" << event.end_time << ";"
+        << event.filename << ";" << event.title;
+    Poco::Logger &logger = Poco::Logger::get("database");
+    logger.information(out.str());
+
+    poco_assert(event.user_id > 0);
+    poco_assert(event.start_time > 0);
+    poco_assert(event.end_time > 0);
+    if (!session) {
+        logger.information("insert database is not open, ignoring request");
+        return;
+    }
+    *session << "INSERT INTO timeline_events("
+        "user_id, title, filename, start_time, end_time, idle"
+        ") VALUES ("
+        ":user_id, :title, :filename, :start_time, :end_time, :idle"
+        ")",
+        Poco::Data::use(event.user_id),
+        Poco::Data::use(event.title),
+        Poco::Data::use(event.filename),
+        Poco::Data::use(event.start_time),
+        Poco::Data::use(event.end_time),
+        Poco::Data::use(event.idle),
+        Poco::Data::now;
+}
+
+void Database::delete_timeline_batch(
+        const std::vector<TimelineEvent> &timeline_events) {
+    std::stringstream out;
+    out << "delete_batch " << timeline_events.size() << " events.";
+    Poco::Logger &logger = Poco::Logger::get("database");
+    logger.debug(out.str());
+
+    poco_assert(!timeline_events.empty());
+    if (!session) {
+        logger.warning("delete_batch database is not open, ignoring request");
+        return;
+    }
+    std::vector<int> ids;
+    for (std::vector<TimelineEvent>::const_iterator i = timeline_events.begin();
+            i != timeline_events.end();
+            ++i) {
+        const TimelineEvent &event = *i;
+        ids.push_back(event.id);
+    }
+    *session << "DELETE FROM timeline_events WHERE id = :id",
+        Poco::Data::use(ids),
+        Poco::Data::now;
+}
+
+void Database::handleTimelineEventNotification(
+        TimelineEventNotification* notification) {
+    Poco::Logger &logger = Poco::Logger::get("database");
+    logger.debug("handleTimelineEventNotification");
+    insert_timeline_event(notification->event);
+}
+
+void Database::handleCreateTimelineBatchNotification(
+        CreateTimelineBatchNotification* notification) {
+    Poco::Logger &logger = Poco::Logger::get("database");
+    logger.debug("handleCreateTimelineBatchNotification");
+    std::vector<TimelineEvent> batch;
+    select_timeline_batch(notification->user_id, &batch);
+    Poco::NotificationCenter& nc = Poco::NotificationCenter::defaultCenter();
+    TimelineBatchReadyNotification response(
+        notification->user_id, batch, desktop_id_);
+    Poco::AutoPtr<TimelineBatchReadyNotification> ptr(&response);
+    nc.postNotification(ptr);
+}
+
+void Database::handleDeleteTimelineBatchNotification(
+        DeleteTimelineBatchNotification* notification) {
+    Poco::Logger &logger = Poco::Logger::get("database");
+    logger.debug("handleDeleteTimelineBatchNotification");
+    delete_timeline_batch(notification->batch);
+}
+
 }   // namespace kopsik
