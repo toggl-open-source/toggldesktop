@@ -131,6 +131,15 @@ namespace kopsik {
 
         // Login
         EXPECT_CALL(*mock_client, GetJSON(
+            std::string("/api/v8/me?app_name=kopsik&with_related_data=true"),
+            std::string("30eb0ae954b536d2f6628f7fec47beb6"),
+            std::string("api_token"),
+            testing::_))
+        .WillOnce(testing::DoAll(
+            testing::SetArgPointee<3>(json),
+            testing::Return("")));
+
+        EXPECT_CALL(*mock_client, GetJSON(
             std::string("/api/v8/me?app_name=kopsik&with_related_data=false"),
             std::string("foo@bar.com"),
             std::string("secret"),
@@ -138,8 +147,8 @@ namespace kopsik {
         .WillOnce(testing::DoAll(
             testing::SetArgPointee<3>(json),
             testing::Return("")));
-        char err[ERRLEN];
 
+        char err[ERRLEN];
         ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_login(
             ctx,
             err, ERRLEN,

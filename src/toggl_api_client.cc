@@ -478,7 +478,7 @@ error User::pull(HTTPSClient *https_client,
     return err;
   }
 
-  LoadFromJSONString(response_body, true);
+  LoadFromJSONString(response_body, with_related_data);
 
   stopwatch.stop();
   std::stringstream ss;

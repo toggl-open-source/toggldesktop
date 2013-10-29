@@ -262,7 +262,6 @@ error Database::loadUsersRelatedData(User *user) {
     if (err != noError) {
         return err;
     }
-
     err = loadClients(user->ID(), &user->related.Clients);
     if (err != noError) {
         return err;
@@ -319,10 +318,17 @@ error Database::LoadUserByID(const Poco::UInt64 UID, User *user,
             Poco::Data::use(UID),
             Poco::Data::limit(1),
             Poco::Data::now;
+
         error err = last_error();
         if (err != noError) {
             return err;
         }
+
+        if (!id) {
+            // No user data found
+            return noError;
+        }
+
         user->SetLocalID(local_id);
         user->SetID(id);
         user->SetAPIToken(api_token);

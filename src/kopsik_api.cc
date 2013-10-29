@@ -616,6 +616,8 @@ kopsik_api_result kopsik_login(
     return KOPSIK_API_FAILURE;
   }
 
+  poco_assert(user->ID() > 0);
+
   err = ctx->db->LoadUserByID(user->ID(), user, true);
   if (err != kopsik::noError) {
     delete user;
