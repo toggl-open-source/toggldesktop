@@ -7,9 +7,13 @@
 //
 
 #import "AboutWindowController.h"
+#import "Context.h"
+#import "kopsik_api.h"
+#import "ErrorHandler.h"
+#import "Update.h"
 
 @interface AboutWindowController ()
-
+@property Update *update;
 @end
 
 @implementation AboutWindowController
@@ -36,8 +40,60 @@
   NSString *path = [[NSBundle mainBundle] pathForResource:@"Credits" ofType:@"rtf"];
   [self.creditsTextView readRTFDFromFile:path];
   
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(eventHandler:)
+                                               name:kUIStateUpdateAvailable
+                                             object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(eventHandler:)
+                                               name:kUIStateUpToDate
+                                             object:nil];
+}
+
+- (IBAction)showWindow:(id)sender
+{
+  [self.checkForUpdateButton setTitle:@"Checking for update.."];
+  kopsik_check_for_updates_async(ctx, about_updates_checked);
+  [super showWindow: sender];
 }
 
 - (IBAction)checkForUpdateClicked:(id)sender {
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:self.update.URL]];
 }
+
+-(void)eventHandler: (NSNotification *) notification
+{
+  if ([notification.name isEqualToString:kUIStateUpToDate]) {
+    self.update = nil;
+    [self.checkForUpdateButton setEnabled:NO];
+    [self.checkForUpdateButton setTitle:@"TogglDesktop is up to date."];
+  } else if ([notification.name isEqualToString:kUIStateUpdateAvailable]) {
+    self.update = notification.object;
+    [self.checkForUpdateButton setEnabled:YES];
+    [self.checkForUpdateButton setTitle:@"Click here to download update!"];
+  }
+}
+
+void about_updates_checked(kopsik_api_result result,
+                           const char *errmsg,
+                           const int is_update_available,
+                           const char *url,
+                           const char *version) {
+  if (result != KOPSIK_API_SUCCESS) {
+    handle_error(result, errmsg);
+    return;
+  }
+  
+  if (!is_update_available) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUpToDate
+                                                        object:nil];
+    return;
+  }
+  Update *update = [[Update alloc] init];
+  update.URL = [NSString stringWithUTF8String:url];
+  update.version = [NSString stringWithUTF8String:version];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUpdateAvailable
+                                                      object:update];
+}
+
 @end

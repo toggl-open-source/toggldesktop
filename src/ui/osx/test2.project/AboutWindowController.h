@@ -14,5 +14,4 @@
 @property (unsafe_unretained) IBOutlet NSTextView *creditsTextView;
 @property (weak) IBOutlet NSButton *checkForUpdateButton;
 - (IBAction)checkForUpdateClicked:(id)sender;
-
 @end

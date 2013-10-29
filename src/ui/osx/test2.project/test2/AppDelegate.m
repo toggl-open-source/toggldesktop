@@ -108,7 +108,7 @@ NSString *kTimeTotalUnknown = @"--:--";
 
 - (void)createStatusItem {
   NSMenu *menu = [[NSMenu alloc] init];
-  [menu addItemWithTitle:@"About" action:@selector(onAboutMenuItem) keyEquivalent:@""];
+  [menu addItemWithTitle:@"About" action:@selector(onAboutMenuItem:) keyEquivalent:@""];
   [menu addItem:[NSMenuItem separatorItem]];
   [menu addItemWithTitle:@"Show" action:@selector(onShowMenuItem) keyEquivalent:@""];
   [menu addItem:[NSMenuItem separatorItem]];
@@ -155,7 +155,7 @@ NSString *kTimeTotalUnknown = @"--:--";
                                                       object:nil];
 }
 
-- (void)onAboutMenuItem {
+- (IBAction)onAboutMenuItem:(id)sender {
   [self.aboutWindowController showWindow:self];
   [NSApp activateIgnoringOtherApps:YES];
 }

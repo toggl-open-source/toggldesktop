@@ -19,6 +19,7 @@
 #import "User.h"
 #import "ModelChange.h"
 #import "ErrorHandler.h"
+#import "Update.h"
 
 @interface MainWindowController ()
 @property (nonatomic,strong) IBOutlet LoginViewController *loginViewController;
@@ -149,25 +150,31 @@ void check_for_updates_callback(kopsik_api_result result,
     return;
   }
   if (!is_update_available) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUpToDate
+                                                        object:nil];
     NSLog(@"check_for_updates_callback: no updates available");
     return;
   }
-  NSString *urlString = [NSString stringWithUTF8String:url];
-  NSString *versionString = [NSString stringWithUTF8String:version];
-  NSLog(@"check_for_updates_callback: update available, url: %@, version: %@", urlString, versionString);
-  
+
+  Update *update = [[Update alloc] init];
+  update.URL = [NSString stringWithUTF8String:url];
+  update.version = [NSString stringWithUTF8String:version];
+
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUpdateAvailable
+                                                      object:update];
+
   NSAlert *alert = [[NSAlert alloc] init];
   [alert addButtonWithTitle:@"Yes"];
   [alert addButtonWithTitle:@"No"];
   [alert setMessageText:@"Download new version?"];
-  NSString *informative = [NSString stringWithFormat:@"There's a new version of this app available (%@).", versionString];
+  NSString *informative = [NSString stringWithFormat:@"There's a new version of this app available (%@).", update.version];
   [alert setInformativeText:informative];
   [alert setAlertStyle:NSWarningAlertStyle];
   if ([alert runModal] != NSAlertFirstButtonReturn) {
     return;
   }
   
-  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlString]];
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:update.URL]];
 }
 
 const int kMenuItemTagSync = 1;
