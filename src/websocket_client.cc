@@ -72,8 +72,8 @@ error WebSocketClient::Start(void *ctx,
     }
     ws_ = new Poco::Net::WebSocket(*session_, *req_, *res_);
     ws_->setBlocking(false);
-    ws_->setReceiveTimeout(Poco::Timespan(5, 0));
-    ws_->setSendTimeout(Poco::Timespan(5, 0));
+    ws_->setReceiveTimeout(Poco::Timespan(5 * Poco::Timespan::SECONDS));
+    ws_->setSendTimeout(Poco::Timespan(5 * Poco::Timespan::SECONDS));
 
     Poco::Logger &logger = Poco::Logger::get("websocket_client");
     logger.debug("WebSocket connection established.");
@@ -141,7 +141,7 @@ std::string WebSocketClient::receiveWebSocketMessage() {
 
 void WebSocketClient::runActivity() {
   Poco::Logger &logger = Poco::Logger::get("websocket_client");
-  Poco::Timespan span(250 * 1000);
+  Poco::Timespan span(250 * Poco::Timespan::MILLISECONDS);
   while (!activity_.isStopped()) {
     if (!ws_->poll(span, Poco::Net::Socket::SELECT_READ)) {
       continue;

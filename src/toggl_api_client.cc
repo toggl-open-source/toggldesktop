@@ -1561,8 +1561,28 @@ error TimeEntry::loadTagsFromJSONNode(JSONNODE *list) {
 
 std::string Formatter::FormatDateHeader(std::time_t date) {
     poco_assert(date);
+
     Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
-    return Poco::toUpper(Poco::DateTimeFormatter::format(ts, "%w %d. %b"));
+    Poco::DateTime datetime(ts);
+
+    Poco::DateTime today;
+    if (today.year() == datetime.year() &&
+            today.month() == datetime.month() &&
+            today.day() == datetime.day()) {
+        return "Today";
+    }
+
+    Poco::DateTime yesterday = today -
+        Poco::Timespan(24 * Poco::Timespan::HOURS);
+    if (yesterday.year() == datetime.year() &&
+            yesterday.month() == datetime.month() &&
+            yesterday.day() == datetime.day()) {
+        return "Yesterday";
+    }
+
+    std::string formatted =
+        Poco::DateTimeFormatter::format(ts, "%w %d. %b");
+    return Poco::toUpper(formatted);
 }
 
 std::string Formatter::FormatDurationInSeconds(const Poco::Int64 value,
