@@ -51,3 +51,5 @@ third_party/poco-1.4.6p1-all/*/*/testsuite/bin/
 src/branding/
 
 gitstats
+
+*.dmg
