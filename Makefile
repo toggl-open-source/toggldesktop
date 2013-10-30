@@ -160,15 +160,10 @@ json:
 	cd $(jsondir) && make
 
 nightly: deps test osx
-	(git branch builds || true) && git checkout builds
-	rm -rf src/branding && git clone gitosis@git.toggl.com:kopsik_branding.git src/branding
-	git checkout builds && git merge master
-	go run src/branding/osx/plist.go -environment=production -bump
-	git add src/ui/osx/test2.project/test2/kopsik_ui_osx-Info.plist && git commit -m $(shell go run src/branding/osx/plist.go -version)
-	rm -rf TogglDesktop.app && cp -r src/ui/osx/test2.project/build/Release/TogglDesktop.app .
-	rm -rf TogglDesktop*.tar.gz && tar cvfz TogglDesktop-$(timestamp).tar.gz TogglDesktop.app
-	PLATFORM=osx VERSION=$(shell go run src/branding/osx/plist.go -version) INSTALLER=TogglDesktop-$(timestamp).tar.gz go run src/branding/upload_to_cdn.go
-	git push origin builds
+	src/branding/nightly.sh
+
+dmg:
+	src/branding/dmg.sh
 
 openssl:
 ifeq ($(uname), Darwin)
