@@ -379,6 +379,26 @@ error Database::UInt(std::string sql, Poco::UInt64 *result) {
     return noError;
 }
 
+error Database::String(std::string sql, std::string *result) {
+    poco_assert(session);
+    poco_assert(result);
+    poco_assert(!sql.empty());
+    try {
+        std::string value("");
+        *session << sql,
+            Poco::Data::into(value),
+            Poco::Data::now;
+        *result = value;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
 error Database::loadWorkspaces(Poco::UInt64 UID,
         std::vector<Workspace *> *list) {
     poco_assert(UID > 0);
@@ -1625,6 +1645,49 @@ error Database::initialize_tables() {
         return err;
     }
 
+    err = migrate("timeline_installation",
+        "CREATE TABLE timeline_installation("
+        "id INTEGER PRIMARY KEY, "
+        "desktop_id VARCHAR NOT NULL"
+        ")");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("timeline_installation.desktop_id",
+        "CREATE UNIQUE INDEX id_timeline_installation_desktop_id "
+        "ON timeline_installation(desktop_id);");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("timeline_events",
+        "CREATE TABLE timeline_events("
+        "id INTEGER PRIMARY KEY, "
+        "user_id INTEGER NOT NULL, "
+        "title VARCHAR, "
+        "filename VARCHAR, "
+        "start_time INTEGER NOT NULL, "
+        "end_time INTEGER, "
+        "idle INTEGER NOT NULL"
+        ")");
+    if (err != noError) {
+        return err;
+    }
+
+    err = String("SELECT desktop_id FROM timeline_installation LIMIT 1",
+        &desktop_id_);
+    if (err != noError) {
+        return err;
+    }
+    if (desktop_id_.empty()) {
+        desktop_id_ = generateGUID();
+        err = SaveDesktopID();
+        if (err != noError) {
+            return err;
+        }
+    }
+
     return noError;
 }
 
@@ -1681,6 +1744,23 @@ error Database::SetCurrentAPIToken(const std::string &token) {
     return last_error();
 }
 
+error Database::SaveDesktopID() {
+    poco_assert(session);
+    try {
+        *session << "INSERT INTO timeline_installation(desktop_id) "
+            "VALUES(:desktop_id)",
+            Poco::Data::use(desktop_id_),
+            Poco::Data::now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error();
+}
+
 error Database::migrate(std::string name, std::string sql) {
     poco_assert(session);
     poco_assert(!name.empty());
@@ -1707,48 +1787,6 @@ error Database::migrate(std::string name, std::string sql) {
         return ex;
     }
     return last_error();
-}
-
-void Database::initialize_timeline_tables() {
-    std::string table_name;
-    *session << "SELECT name "
-        "FROM sqlite_master "
-        "WHERE type='table' "
-        "AND name='timeline_installation'",
-        Poco::Data::into(table_name),
-        Poco::Data::limit(1),
-        Poco::Data::now;
-
-    if (table_name.length() == 0) {
-        *session << "CREATE TABLE timeline_installation("
-            "id INTEGER PRIMARY KEY, "
-            "desktop_id VARCHAR NOT NULL"
-            ")", Poco::Data::now;
-        desktop_id_ = generateGUID();
-        *session << "INSERT INTO timeline_installation(desktop_id) "
-            "VALUES(:desktop_id)",
-            Poco::Data::use(desktop_id_),
-            Poco::Data::now;
-        *session << "CREATE TABLE timeline_events("
-            "id INTEGER PRIMARY KEY, "
-            "user_id INTEGER NOT NULL, "
-            "title VARCHAR, "
-            "filename VARCHAR, "
-            "start_time INTEGER NOT NULL, "
-            "end_time INTEGER, "
-            "idle INTEGER NOT NULL"
-            ")",
-            Poco::Data::now;
-    } else {
-        *session << "SELECT desktop_id FROM timeline_installation",
-            Poco::Data::into(desktop_id_),
-            Poco::Data::lowerLimit(1),
-            Poco::Data::now;
-    }
-
-    Poco::Logger &logger = Poco::Logger::get("database");
-    logger.debug("desktop_id = " + desktop_id_);
-    poco_assert(!desktop_id_.empty());
 }
 
 void Database::select_timeline_batch(

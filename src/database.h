@@ -42,7 +42,8 @@ class ModelChange {
 
 class Database {
     public:
-        explicit Database(std::string db_path) : session(0) {
+        explicit Database(std::string db_path) :
+                session(0), desktop_id_("") {
             Poco::Data::SQLite::Connector::registerConnector();
             session = new Poco::Data::Session("SQLite", db_path);
             error err = initialize_tables();
@@ -106,6 +107,7 @@ class Database {
             const std::string password);
 
         error UInt(std::string sql, Poco::UInt64 *result);
+        error String(std::string sql, std::string *result);
 
         error SaveUser(User *user, bool with_related_data,
             std::vector<ModelChange> *changes);
@@ -122,6 +124,8 @@ class Database {
         error CurrentAPIToken(std::string *token);
         error SetCurrentAPIToken(const std::string &token);
         error ClearCurrentAPIToken();
+
+        error SaveDesktopID();
 
      protected:
         void handleTimelineEventNotification(
@@ -167,7 +171,6 @@ class Database {
         error deleteFromTable(std::string table_name, Poco::Int64 local_id);
         error deleteAllFromTableByUID(std::string table_name, Poco::Int64 UID);
 
-        void initialize_timeline_tables();
         void insert_timeline_event(const TimelineEvent& info);
         void select_timeline_batch(const int user_id,
             std::vector<TimelineEvent> *timeline_events);
