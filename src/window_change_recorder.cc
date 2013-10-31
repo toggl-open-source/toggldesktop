@@ -54,9 +54,7 @@ void WindowChangeRecorder::inspect_focused_window() {
 }
 
 void WindowChangeRecorder::record_loop() {
-    Poco::Logger &logger = Poco::Logger::get("window_change_recorder");
     while (!recording_.isStopped()) {
-        logger.debug("record_loop");
         inspect_focused_window();
         Poco::Thread::sleep(recording_interval_ms_);
     }
