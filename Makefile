@@ -159,12 +159,6 @@ deps: openssl poco json
 json:
 	cd $(jsondir) && make
 
-nightly: deps test osx
-	src/branding/nightly.sh
-
-dmg:
-	src/branding/dmg.sh
-
 openssl:
 ifeq ($(uname), Darwin)
 	cd $(openssldir) && ./config -fPIC no-shared no-dso && ./Configure darwin64-x86_64-cc && make
