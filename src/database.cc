@@ -304,9 +304,10 @@ error Database::LoadUserByID(const Poco::UInt64 UID, User *user,
         Poco::UInt64 since(0);
         std::string fullname("");
         std::string email("");
+        bool record_timeline(false);
         *session <<
             "select local_id, id, api_token, default_wid, since, fullname, "
-            "email "
+            "email, record_timeline "
             "from users where id = :id",
             Poco::Data::into(local_id),
             Poco::Data::into(id),
@@ -315,6 +316,7 @@ error Database::LoadUserByID(const Poco::UInt64 UID, User *user,
             Poco::Data::into(since),
             Poco::Data::into(fullname),
             Poco::Data::into(email),
+            Poco::Data::into(record_timeline),
             Poco::Data::use(UID),
             Poco::Data::limit(1),
             Poco::Data::now;
@@ -336,6 +338,7 @@ error Database::LoadUserByID(const Poco::UInt64 UID, User *user,
         user->SetSince(since);
         user->SetFullname(fullname);
         user->SetEmail(email);
+        user->SetRecordTimeline(record_timeline);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -1266,7 +1269,7 @@ error Database::SaveUser(User *model, bool with_related_data,
                 *session << "update users set "
                     "api_token = :api_token, default_wid = :default_wid, "
                     "since = :since, id = :id, fullname = :fullname, "
-                    "email = :email "
+                    "email = :email, record_timeline = :record_timeline "
                     "where local_id = :local_id",
                     Poco::Data::use(model->APIToken()),
                     Poco::Data::use(model->DefaultWID()),
@@ -1274,6 +1277,7 @@ error Database::SaveUser(User *model, bool with_related_data,
                     Poco::Data::use(model->ID()),
                     Poco::Data::use(model->Fullname()),
                     Poco::Data::use(model->Email()),
+                    Poco::Data::use(model->RecordTimeline()),
                     Poco::Data::use(model->LocalID()),
                     Poco::Data::now;
                 error err = last_error();
@@ -1286,9 +1290,11 @@ error Database::SaveUser(User *model, bool with_related_data,
             } else {
                 logger.debug("Inserting user " + model->String());
                 *session << "insert into users("
-                    "id, api_token, default_wid, since, fullname, email"
+                    "id, api_token, default_wid, since, fullname, email, "
+                    "record_timeline"
                     ")values("
-                    ":id, :api_token, :default_wid, :since, :fullname, :email"
+                    ":id, :api_token, :default_wid, :since, :fullname, :email, "
+                    ":record_timeline"
                     ")",
                     Poco::Data::use(model->ID()),
                     Poco::Data::use(model->APIToken()),
@@ -1296,6 +1302,7 @@ error Database::SaveUser(User *model, bool with_related_data,
                     Poco::Data::use(model->Since()),
                     Poco::Data::use(model->Fullname()),
                     Poco::Data::use(model->Email()),
+                    Poco::Data::use(model->RecordTimeline()),
                     Poco::Data::now;
                 error err = last_error();
                 if (err != noError) {

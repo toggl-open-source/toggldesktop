@@ -369,8 +369,7 @@ namespace kopsik {
 
     class User {
     public:
-        User(
-                const std::string app_name,
+        User(const std::string app_name,
                 const std::string app_version) :
             BasicAuthUsername(""),
             BasicAuthPassword(""),
@@ -383,7 +382,8 @@ namespace kopsik {
             fullname_(""),
             app_name_(app_name),
             app_version_(app_version),
-            email_("") {}
+            email_(""),
+            record_timeline_(false) {}
         ~User() {
             ClearWorkspaces();
             ClearClients();
@@ -461,6 +461,9 @@ namespace kopsik {
         std::string Email() { return email_; }
         void SetEmail(const std::string value);
 
+        bool RecordTimeline() { return record_timeline_; }
+        void SetRecordTimeline(const bool value);
+
         // Following fields are not saved into database:
         // They are only used to log user in.
         std::string BasicAuthUsername;
@@ -504,6 +507,7 @@ namespace kopsik {
         std::string app_name_;
         std::string app_version_;
         std::string email_;
+        bool record_timeline_;
     };
 }  // namespace kopsik
 

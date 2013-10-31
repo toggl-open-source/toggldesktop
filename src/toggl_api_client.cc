@@ -114,6 +114,13 @@ void User::SetFullname(std::string value) {
   }
 }
 
+void User::SetRecordTimeline(const bool value) {
+    if (record_timeline_ != value) {
+        record_timeline_ = value;
+        dirty_ = true;
+    }
+}
+
 void User::SetEmail(const std::string value) {
   if (email_ != value) {
     email_ = value;
@@ -548,6 +555,8 @@ void User::LoadDataFromJSONNode(JSONNODE *data, bool with_related_data) {
             SetAPIToken(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "fullname") == 0) {
             SetFullname(std::string(json_as_string(*current_node)));
+        } else if (strcmp(node_name, "record_timeline") == 0) {
+            SetRecordTimeline(json_as_bool(*current_node));
         } else if (with_related_data) {
             if (strcmp(node_name, "projects") == 0) {
                 loadProjectsFromJSONNode(*current_node);
