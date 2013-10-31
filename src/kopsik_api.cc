@@ -1802,6 +1802,15 @@ kopsik_api_result kopsik_timeline_start(void *context,
   return KOPSIK_API_SUCCESS;
 }
 
+int kopsik_timeline_is_recording(void *context) {
+  poco_assert(context);
+  Context *ctx = reinterpret_cast<Context *>(context);
+  if (!ctx->window_change_recorder) {
+    return 0;
+  }
+  return 1;
+}
+
 void kopsik_timeline_stop(void *context) {
   poco_assert(context);
 

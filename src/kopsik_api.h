@@ -334,6 +334,8 @@ KOPSIK_EXPORT void kopsik_websocket_stop_async(
 KOPSIK_EXPORT kopsik_api_result kopsik_timeline_start(void *ctx,
   char *errmsg, const unsigned int errlen);
 
+int kopsik_timeline_is_recording(void *ctx);
+
 void kopsik_timeline_stop(void *ctx);
 
 // Updates
