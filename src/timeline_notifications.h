@@ -19,16 +19,6 @@ class TimelineEventNotification : public Poco::Notification {
     TimelineEvent event;
 };
 
-// Toggl user data has changed.
-class ConfigureNotification : public Poco::Notification {
- public:
-    ConfigureNotification(unsigned int _user_id, std::string _upload_token) :
-        user_id(_user_id),
-        upload_token(_upload_token) {}
-    unsigned int user_id;
-    std::string upload_token;
-};
-
 // Find timeline events (for upload).
 class CreateTimelineBatchNotification : public Poco::Notification {
  public:
@@ -64,15 +54,6 @@ class DeleteTimelineBatchNotification : public Poco::Notification {
 class RequestShutdownNotification : public Poco::Notification {
  public:
     RequestShutdownNotification() {}
-};
-
-class RecordingStatusNotification : public Poco::Notification {
- public:
-    RecordingStatusNotification(bool _is_recording, unsigned int _user_id) :
-        is_recording(_is_recording),
-        user_id(_user_id) {}
-    bool is_recording;
-    unsigned int user_id;
 };
 
 // User-specific timeline settings; for example, if user has

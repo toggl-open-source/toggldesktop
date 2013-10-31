@@ -9,48 +9,32 @@
 #include "./timeline_notifications.h"
 #include "./timeline_constants.h"
 
-#include "Poco/NotificationCenter.h"
 #include "Poco/Activity.h"
-#include "Poco/Observer.h"
 
 namespace kopsik {
 
 class WindowChangeRecorder {
  public:
-    WindowChangeRecorder() :
-            user_id_(0),
+    explicit WindowChangeRecorder(const unsigned int user_id) :
+            user_id_(user_id),
             last_title_(""),
             last_filename_(""),
             last_event_started_at_(0),
             window_focus_seconds_(kWindowFocusThresholdSeconds),
             recording_interval_ms_(kWindowChangeRecordingIntervalMillis),
             recording_(this, &WindowChangeRecorder::record_loop) {
-        Poco::NotificationCenter& nc =
-            Poco::NotificationCenter::defaultCenter();
-
-        Poco::Observer<WindowChangeRecorder, ConfigureNotification>
-            observeUser(*this,
-                &WindowChangeRecorder::handleConfigureNotification);
-        nc.addObserver(observeUser);
-
-        Poco::Observer<WindowChangeRecorder, UserTimelineSettingsNotification>
-            observeUserTimelineSettings(*this,
-                &WindowChangeRecorder::handleUserTimelineSettingsNotification);
-        nc.addObserver(observeUserTimelineSettings);
+        poco_assert(user_id_);
+        recording_.start();
     }
 
-    // Handle notifications
-    void handleConfigureNotification(ConfigureNotification* notification);
-    void handleUserTimelineSettingsNotification(
-        UserTimelineSettingsNotification* notification);
-
-    void Start();
-    void Stop();
+    ~WindowChangeRecorder() {
+        if (recording_.isRunning()) {
+            recording_.stop();
+            recording_.wait();
+        }
+    }
 
  protected:
-    // Subsystem overrides
-    const char* name() const { return "window_change_recorder"; }
-
     // Activity callback
     void record_loop();
 

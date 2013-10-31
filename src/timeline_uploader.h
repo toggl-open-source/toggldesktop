@@ -18,9 +18,10 @@ namespace kopsik {
 
 class TimelineUploader {
  public:
-    TimelineUploader() :
-            user_id_(0),
-            upload_token_(""),
+    TimelineUploader(const unsigned int user_id,
+                const std::string api_token) :
+            user_id_(user_id),
+            api_token_(api_token),
             upload_interval_seconds_(kTimelineUploadIntervalSeconds),
             current_upload_interval_seconds_(kTimelineUploadIntervalSeconds),
             max_upload_interval_seconds_(kTimelineUploadMaxBackoffSeconds),
@@ -29,33 +30,27 @@ class TimelineUploader {
         Poco::NotificationCenter& nc =
             Poco::NotificationCenter::defaultCenter();
 
-        Poco::Observer<TimelineUploader, ConfigureNotification>
-            observeUser(*this,
-                &TimelineUploader::handleConfigureNotification);
-        nc.addObserver(observeUser);
-
         Poco::Observer<TimelineUploader, TimelineBatchReadyNotification>
             observeUpload(*this,
                 &TimelineUploader::handleTimelineBatchReadyNotification);
         nc.addObserver(observeUpload);
+
+        poco_assert(!api_token_.empty());
+        poco_assert(user_id_ > 0);
+        uploading_.start();
     }
-    void Start();
-    void Stop();
+
+    ~TimelineUploader() {
+        if (uploading_.isRunning()) {
+            uploading_.stop();
+            uploading_.wait();
+        }
+    }
 
  protected:
-    // Subsystem overrides
-    const char* name() const { return "timeline_uploader"; }
-
     // Notification handlers
-    void handleConfigureNotification(ConfigureNotification* notification);
     void handleTimelineBatchReadyNotification(
         TimelineBatchReadyNotification *notification);
-
-    // Handle command line params
-    void handleConfigUploadInterval(
-        const std::string& name, const std::string& value);
-    void handleConfigUploadHost(
-        const std::string& name, const std::string& value);
 
     // Activity callback
     void upload_loop_activity();
@@ -63,9 +58,9 @@ class TimelineUploader {
  private:
     // Sync with server
     bool sync(const unsigned int user_id,
-        const std::string &upload_token,
+        const std::string api_token,
         const std::vector<TimelineEvent> &timeline_events,
-        const std::string &desktop_id);
+        const std::string desktop_id);
     std::string convert_timeline_to_json(
         const std::vector<TimelineEvent> &timeline_events,
         const std::string &desktop_id);
@@ -74,7 +69,7 @@ class TimelineUploader {
 
     // Hopefully an authenticated user sending the timeline events.
     unsigned int user_id_;
-    std::string upload_token_;
+    std::string api_token_;
 
     // How many seconds to wait before send next batch of timeline
     // events to backend.

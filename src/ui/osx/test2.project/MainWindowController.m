@@ -471,7 +471,11 @@ void on_model_change(kopsik_api_result result,
 
 - (void)startTimeline {
   NSLog(@"MainWindow startTimeline");
-  kopsik_timeline_start(ctx);
+  char err[KOPSIK_ERR_LEN];
+  kopsik_api_result res = kopsik_timeline_start(ctx, err, KOPSIK_ERR_LEN);
+  if (KOPSIK_API_SUCCESS != res) {
+    handle_error(res, err);
+  }
   NSLog(@"MainWindow startTimeline done");
 }
 

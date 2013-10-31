@@ -209,8 +209,8 @@ void *kopsik_context_init(const char *app_name, const char *app_version) {
   Context *ctx = new Context();
 
   ctx->db = 0;
-  ctx->timeline_uploader = new kopsik::TimelineUploader();
-  ctx->window_change_recorder = new kopsik::WindowChangeRecorder();
+  ctx->timeline_uploader = 0;
+  ctx->window_change_recorder = 0;
   ctx->user = 0;
 
   ctx->app_name = std::string(app_name);
@@ -1768,15 +1768,38 @@ void kopsik_websocket_stop_async(
 
 // Timeline
 
-void kopsik_timeline_start(void *context) {
+kopsik_api_result kopsik_timeline_start(void *context,
+    char *errmsg, const unsigned int errlen) {
   poco_assert(context);
 
   Poco::Logger &logger = Poco::Logger::get("kopsik_api");
   logger.debug("kopsik_timeline_start");
 
   Context *ctx = reinterpret_cast<Context *>(context);
-  ctx->timeline_uploader->Start();
-  ctx->window_change_recorder->Start();
+
+  if (!ctx->user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
+  Poco::Mutex::ScopedLock lock(*ctx->mutex);
+
+  if (ctx->timeline_uploader) {
+    delete ctx->timeline_uploader;
+    ctx->timeline_uploader = 0;
+  }
+  ctx->timeline_uploader = new kopsik::TimelineUploader(
+    static_cast<unsigned int>(ctx->user->ID()),
+    ctx->user->APIToken());
+
+  if (ctx->window_change_recorder) {
+    delete ctx->window_change_recorder;
+    ctx->window_change_recorder = 0;
+  }
+  ctx->window_change_recorder = new kopsik::WindowChangeRecorder(
+    static_cast<unsigned int>(ctx->user->ID()));
+
+  return KOPSIK_API_SUCCESS;
 }
 
 void kopsik_timeline_stop(void *context) {
@@ -1786,8 +1809,18 @@ void kopsik_timeline_stop(void *context) {
   logger.debug("kopsik_timeline_stop");
 
   Context *ctx = reinterpret_cast<Context *>(context);
-  ctx->window_change_recorder->Stop();
-  ctx->timeline_uploader->Stop();
+
+  Poco::Mutex::ScopedLock lock(*ctx->mutex);
+
+  if (ctx->window_change_recorder) {
+    delete ctx->window_change_recorder;
+    ctx->window_change_recorder = 0;
+  }
+
+  if (ctx->timeline_uploader) {
+    delete ctx->timeline_uploader;
+    ctx->timeline_uploader = 0;
+  }
 }
 
 // Updates

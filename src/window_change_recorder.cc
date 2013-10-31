@@ -8,45 +8,10 @@
 #include "./timeline_event.h"
 
 #include "Poco/Thread.h"
-#include "Poco/Util/Option.h"
 #include "Poco/Logger.h"
-#include "Poco/Util/OptionSet.h"
+#include "Poco/NotificationCenter.h"
 
 namespace kopsik {
-
-void WindowChangeRecorder::Start() {
-    Poco::Logger &logger = Poco::Logger::get("window_change_recorder");
-    logger.debug("WindowChangeRecorder::Start");
-    if (user_id_ > 0) {
-        std::stringstream out;
-        out << "Start, user_id = " << user_id_;
-        logger.debug(out.str());
-        if (!recording_.isRunning()) {
-            recording_.start();
-
-            // Tell all the people
-            Poco::NotificationCenter& nc =
-                Poco::NotificationCenter::defaultCenter();
-            RecordingStatusNotification notification(true, user_id_);
-            Poco::AutoPtr<RecordingStatusNotification> ptr(&notification);
-            nc.postNotification(ptr);
-        }
-    }
-}
-
-void WindowChangeRecorder::Stop() {
-    if (recording_.isRunning()) {
-        recording_.stop();
-        recording_.wait();
-
-        // Tell all the people
-        Poco::NotificationCenter& nc =
-            Poco::NotificationCenter::defaultCenter();
-        RecordingStatusNotification notification(false, user_id_);
-        Poco::AutoPtr<RecordingStatusNotification> ptr(&notification);
-        nc.postNotification(ptr);
-    }
-}
 
 void WindowChangeRecorder::inspect_focused_window() {
     std::string title("");
@@ -89,53 +54,11 @@ void WindowChangeRecorder::inspect_focused_window() {
 }
 
 void WindowChangeRecorder::record_loop() {
+    Poco::Logger &logger = Poco::Logger::get("window_change_recorder");
     while (!recording_.isStopped()) {
-        Poco::Logger &logger = Poco::Logger::get("window_change_recorder");
         logger.debug("record_loop");
         inspect_focused_window();
         Poco::Thread::sleep(recording_interval_ms_);
-    }
-}
-
-void WindowChangeRecorder::handleConfigureNotification(
-        ConfigureNotification* notification) {
-    std::stringstream out;
-    out << "handleConfigureNotification, user_id = " << notification->user_id;
-    Poco::Logger &logger = Poco::Logger::get("window_change_recorder");
-    logger.debug(out.str());
-    if (user_id_ != notification->user_id) {
-        logger.debug("user has changed, stopping recording");
-        Stop();
-    }
-    // Setting the user ID won't start timeline recording, first
-    // we'll need confirmation from server, that recording is really
-    // enabled.
-    user_id_ = notification->user_id;
-}
-
-void WindowChangeRecorder::handleUserTimelineSettingsNotification(
-        UserTimelineSettingsNotification* notification) {
-    Poco::Logger &logger = Poco::Logger::get("window_change_recorder");
-
-    {
-        std::stringstream out;
-        out << "handleUserTimelineSettingsNotification"
-            << ", user_id = " << notification->user_id
-            << ", record_timeline = " << notification->record_timeline;
-        logger.debug(out.str());
-    }
-
-    if (user_id_ == notification->user_id) {
-        if (notification->record_timeline) {
-            Start();
-        } else if (!notification->record_timeline) {
-            Stop();
-        }
-    } else {
-        std::stringstream out;
-        out << "ignoring user " << notification->user_id <<
-            " settings, I know about user " << user_id_;
-        logger.warning(out.str());
     }
 }
 

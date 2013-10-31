@@ -23,41 +23,6 @@
 
 namespace kopsik {
 
-void TimelineUploader::Start() {
-    Poco::Logger &logger = Poco::Logger::get("timeline_uploader");
-    logger.debug("TimelineUploader::Start");
-    if (!upload_token_.empty() && user_id_ > 0) {
-        std::stringstream out;
-        out << "Start user_id = " << user_id_;
-        logger.debug(out.str());
-
-        if (!uploading_.isRunning()) {
-            uploading_.start();
-        }
-    }
-}
-
-void TimelineUploader::Stop() {
-    if (uploading_.isRunning()) {
-        uploading_.stop();
-        uploading_.wait();
-    }
-}
-
-void TimelineUploader::handleConfigureNotification(
-        ConfigureNotification* notification) {
-    std::stringstream out;
-    out << "handleConfigureNotification, user_id = " << notification->user_id;
-    Poco::Logger &logger = Poco::Logger::get("timeline_uploader");
-    logger.debug(out.str());
-    if (user_id_ != notification->user_id) {
-        Stop();
-    }
-    user_id_ = notification->user_id;
-    upload_token_ = notification->upload_token;
-    Start();
-}
-
 void TimelineUploader::handleTimelineBatchReadyNotification(
         TimelineBatchReadyNotification *notification) {
     Poco::Logger &logger = Poco::Logger::get("timeline_uploader");
@@ -70,7 +35,7 @@ void TimelineUploader::handleTimelineBatchReadyNotification(
     out << "Sync " << notification->batch.size() << " timeline event(s).";
     logger.debug(out.str());
 
-    if (sync(user_id_, upload_token_, notification->batch,
+    if (sync(user_id_, api_token_, notification->batch,
             notification->desktop_id)) {
         if (!notification->batch.empty()) {
             std::stringstream out;
@@ -171,9 +136,9 @@ void TimelineUploader::json_to_timeline_settings(const std::string &json,
 }
 
 bool TimelineUploader::sync(const unsigned int user_id,
-                            const std::string &upload_token,
+        const std::string api_token,
         const std::vector<TimelineEvent> &timeline_events,
-        const std::string &desktop_id) {
+        const std::string desktop_id) {
     Poco::Logger &logger = Poco::Logger::get("timeline_uploader");
 
     try {
@@ -184,7 +149,7 @@ bool TimelineUploader::sync(const unsigned int user_id,
         logger.debug(out.str());
 
         poco_assert(user_id > 0);
-        poco_assert(!upload_token.empty());
+        poco_assert(!api_token_.empty());
         std::string json =
             convert_timeline_to_json(timeline_events, desktop_id);
 
@@ -210,7 +175,7 @@ bool TimelineUploader::sync(const unsigned int user_id,
 
         logger.debug("Sending request..");
 
-        Poco::Net::HTTPBasicCredentials cred(upload_token, "upload_token");
+        Poco::Net::HTTPBasicCredentials cred(api_token_, "api_token");
         cred.authenticate(req);
         session.sendRequest(req) << json << std::flush;
 
@@ -293,24 +258,6 @@ void TimelineUploader::reset_backoff() {
     Poco::Logger &logger = Poco::Logger::get("timeline_uploader");
     logger.debug("reset_backoff");
     current_upload_interval_seconds_ = upload_interval_seconds_;
-}
-
-void TimelineUploader::handleConfigUploadInterval(const std::string& name,
-        const std::string& value) {
-    Poco::Logger &logger = Poco::Logger::get("timeline_uploader");
-    logger.debug("handleConfigUploadInterval");
-    Stop();
-    upload_interval_seconds_ = atoi(value.c_str());
-    Start();
-}
-
-void TimelineUploader::handleConfigUploadHost(const std::string& name,
-        const std::string& value) {
-    Poco::Logger &logger = Poco::Logger::get("timeline_uploader");
-    logger.debug("handleConfigUploadHost");
-    Stop();
-    upload_host_ = value;
-    Start();
 }
 
 }  // namespace kopsik
