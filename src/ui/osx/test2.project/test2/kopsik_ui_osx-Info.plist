@@ -34,5 +34,7 @@
 	<string>NSApplication</string>
 	<key>KopsikEnvironment</key>
 	<string>development</string>
+	<key>KopsikCheckForUpdates</key>
+	<false/>
 </dict>
 </plist>

@@ -132,8 +132,13 @@
   } else {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedIn object:userinfo];
   }
-  
-  [self checkForUpdates];
+ 
+  NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
+  NSNumber* checkEnabled = [infoDict objectForKey:@"KopsikCheckForUpdates"];
+  if ([checkEnabled boolValue]) {
+    [self checkForUpdates];
+  }
+
 }
 
 - (void) checkForUpdates {
