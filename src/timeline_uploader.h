@@ -64,8 +64,6 @@ class TimelineUploader {
     std::string convert_timeline_to_json(
         const std::vector<TimelineEvent> &timeline_events,
         const std::string &desktop_id);
-    void json_to_timeline_settings(
-        const std::string &json, bool &record_timeline);
 
     // Hopefully an authenticated user sending the timeline events.
     unsigned int user_id_;

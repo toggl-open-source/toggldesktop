@@ -119,22 +119,6 @@ void TimelineUploader::upload_loop_activity() {
     }
 }
 
-void TimelineUploader::json_to_timeline_settings(const std::string &json,
-        bool &record_timeline) {
-    JSONNODE *n = json_parse(json.c_str());
-    JSONNODE_ITERATOR i = json_begin(n);
-    JSONNODE_ITERATOR e = json_end(n);
-    while (i != e) {
-        json_char *node_name = json_name(*i);
-        if (strcmp(node_name, "record_timeline") == 0) {
-            json_char *node_value = json_as_string(*i);
-            record_timeline = (strcmp(node_value, "true") == 0);
-        }
-        ++i;
-    }
-    json_delete(n);
-}
-
 bool TimelineUploader::sync(const unsigned int user_id,
         const std::string api_token,
         const std::vector<TimelineEvent> &timeline_events,
@@ -188,7 +172,7 @@ bool TimelineUploader::sync(const unsigned int user_id,
 
         // Receive response
         Poco::Net::HTTPResponse response;
-        std::istream& is = session.receiveResponse(response);
+        session.receiveResponse(response);
 
         // Log out response contents
         std::stringstream response_string;
@@ -201,29 +185,7 @@ bool TimelineUploader::sync(const unsigned int user_id,
             return false;
         }
 
-        // Read request body
-        std::ostringstream body;
-        Poco::StreamCopier::copyStream(is, body);
-
         reset_backoff();
-
-        // Parse JSON
-        json = body.str();
-        logger.debug(json);
-
-        bool record_timeline = false;
-        if (json.empty()) {
-            logger.warning("Empty response from server: timeline is disabled?");
-        } else {
-            json_to_timeline_settings(json, record_timeline);
-
-            Poco::NotificationCenter& nc =
-                Poco::NotificationCenter::defaultCenter();
-            UserTimelineSettingsNotification notification(
-                user_id_, record_timeline);
-            Poco::AutoPtr<UserTimelineSettingsNotification> ptr(&notification);
-            nc.postNotification(ptr);
-        }
     } catch(const Poco::Exception& exc) {
         logger.error(exc.displayText());
         exponential_backoff();
@@ -237,7 +199,6 @@ bool TimelineUploader::sync(const unsigned int user_id,
         exponential_backoff();
         return false;
     }
-
     return true;
 }
 
