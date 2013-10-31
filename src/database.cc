@@ -1292,7 +1292,7 @@ error Database::SaveUser(User *model, bool with_related_data,
                 *session << "insert into users("
                     "id, api_token, default_wid, since, fullname, email, "
                     "record_timeline"
-                    ")values("
+                    ") values("
                     ":id, :api_token, :default_wid, :since, :fullname, :email, "
                     ":record_timeline"
                     ")",
@@ -1419,7 +1419,8 @@ error Database::initialize_tables() {
         "default_wid integer, "
         "since integer, "
         "fullname varchar, "
-        "email varchar not null"
+        "email varchar not null, "
+        "record_timeline integer not null default 0"
         "); ");
     if (err != noError) {
         return err;
