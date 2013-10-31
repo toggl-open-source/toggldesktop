@@ -50,23 +50,4 @@ class DeleteTimelineBatchNotification : public Poco::Notification {
     std::vector<TimelineEvent> batch;
 };
 
-// Timeline must shut down.
-class RequestShutdownNotification : public Poco::Notification {
- public:
-    RequestShutdownNotification() {}
-};
-
-// User-specific timeline settings; for example, if user has
-// timeline recording enabled at all. These will be fetched
-// from the server.
-class UserTimelineSettingsNotification : public Poco::Notification {
- public:
-    UserTimelineSettingsNotification(unsigned int _user_id,
-        bool _record_timeline) :
-        user_id(_user_id),
-        record_timeline(_record_timeline) {}
-    unsigned int user_id;
-    bool record_timeline;
-};
-
 #endif  // SRC_TIMELINE_NOTIFICATIONS_H_
