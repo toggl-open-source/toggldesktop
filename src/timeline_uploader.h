@@ -19,13 +19,14 @@ namespace kopsik {
 class TimelineUploader {
  public:
     TimelineUploader(const unsigned int user_id,
-                const std::string api_token) :
+                const std::string api_token,
+                const std::string api_url) :
             user_id_(user_id),
             api_token_(api_token),
             upload_interval_seconds_(kTimelineUploadIntervalSeconds),
             current_upload_interval_seconds_(kTimelineUploadIntervalSeconds),
             max_upload_interval_seconds_(kTimelineUploadMaxBackoffSeconds),
-            upload_host_(kTimelineUploadHost),
+            upload_host_(api_url),
             uploading_(this, &TimelineUploader::upload_loop_activity) {
         Poco::NotificationCenter& nc =
             Poco::NotificationCenter::defaultCenter();

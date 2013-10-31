@@ -97,6 +97,7 @@ typedef struct {
   kopsik::WindowChangeRecorder *window_change_recorder;
   std::string app_name;
   std::string app_version;
+  std::string api_url;
 } Context;
 
 void kopsik_set_change_callback(
@@ -216,7 +217,8 @@ void *kopsik_context_init(const char *app_name, const char *app_version) {
   ctx->app_name = std::string(app_name);
   ctx->app_version = std::string(app_version);
 
-  ctx->https_client = new kopsik::HTTPSClient("https://www.toggl.com",
+  ctx->api_url = "https://www.toggl.com";
+  ctx->https_client = new kopsik::HTTPSClient(ctx->api_url,
     ctx->app_name, ctx->app_version);
   ctx->ws_client = new kopsik::WebSocketClient("https://stream.toggl.com",
     ctx->app_name, ctx->app_version);
@@ -449,6 +451,7 @@ void kopsik_set_api_url(void *context, const char *api_url) {
 
   Poco::Mutex::ScopedLock lock(*ctx->mutex);
 
+  ctx->api_url = api_url;
   ctx->https_client->SetApiURL(api_url);
 }
 
@@ -1790,7 +1793,8 @@ kopsik_api_result kopsik_timeline_start(void *context,
   }
   ctx->timeline_uploader = new kopsik::TimelineUploader(
     static_cast<unsigned int>(ctx->user->ID()),
-    ctx->user->APIToken());
+    ctx->user->APIToken(),
+    ctx->api_url);
 
   if (ctx->window_change_recorder) {
     delete ctx->window_change_recorder;
