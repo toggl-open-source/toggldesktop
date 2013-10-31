@@ -1904,6 +1904,9 @@ void Database::handleCreateTimelineBatchNotification(
     logger.debug("handleCreateTimelineBatchNotification");
     std::vector<TimelineEvent> batch;
     select_timeline_batch(notification->user_id, &batch);
+    if (batch.empty()) {
+        return;
+    }
     Poco::NotificationCenter& nc = Poco::NotificationCenter::defaultCenter();
     TimelineBatchReadyNotification response(
         notification->user_id, batch, desktop_id_);
@@ -1915,6 +1918,7 @@ void Database::handleDeleteTimelineBatchNotification(
         DeleteTimelineBatchNotification* notification) {
     Poco::Logger &logger = Poco::Logger::get("database");
     logger.debug("handleDeleteTimelineBatchNotification");
+    poco_assert(!notification->batch.empty());
     delete_timeline_batch(notification->batch);
 }
 

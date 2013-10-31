@@ -30,32 +30,26 @@ void TimelineUploader::handleTimelineBatchReadyNotification(
 
     poco_assert(user_id_ == notification->user_id);
     poco_assert(!notification->desktop_id.empty());
+    poco_assert(!notification->batch.empty());
 
-    std::stringstream out;
-    out << "Sync " << notification->batch.size() << " timeline event(s).";
-    logger.debug(out.str());
-
-    if (sync(user_id_, api_token_, notification->batch,
+    if (!sync(user_id_, api_token_, notification->batch,
             notification->desktop_id)) {
-        if (!notification->batch.empty()) {
-            std::stringstream out;
-            out << "Sync of " << notification->batch.size()
-                << " event(s) was successful.";
-            logger.information(out.str());
-        }
-
-        if (!notification->batch.empty()) {
-            Poco::NotificationCenter& nc =
-                Poco::NotificationCenter::defaultCenter();
-            DeleteTimelineBatchNotification response(notification->batch);
-            Poco::AutoPtr<DeleteTimelineBatchNotification> ptr(&response);
-            nc.postNotification(ptr);
-        }
-    } else {
         std::stringstream out;
         out << "Sync of " << notification->batch.size() << " event(s) failed.";
         logger.error(out.str());
+        return;
     }
+
+    std::stringstream out;
+    out << "Sync of " << notification->batch.size()
+        << " event(s) was successful.";
+    logger.information(out.str());
+
+    Poco::NotificationCenter& nc =
+        Poco::NotificationCenter::defaultCenter();
+    DeleteTimelineBatchNotification response(notification->batch);
+    Poco::AutoPtr<DeleteTimelineBatchNotification> ptr(&response);
+    nc.postNotification(ptr);
 }
 
 std::string TimelineUploader::convert_timeline_to_json(
@@ -123,6 +117,8 @@ bool TimelineUploader::sync(const unsigned int user_id,
         const std::string api_token,
         const std::vector<TimelineEvent> &timeline_events,
         const std::string desktop_id) {
+    poco_assert(!timeline_events.empty());
+
     Poco::Logger &logger = Poco::Logger::get("timeline_uploader");
 
     try {

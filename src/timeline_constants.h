@@ -4,7 +4,7 @@
 #ifndef SRC_TIMELINE_CONSTANTS_H_
 #define SRC_TIMELINE_CONSTANTS_H_
 
-const unsigned int kTimelineUploadIntervalSeconds = 60;
+const unsigned int kTimelineUploadIntervalSeconds = 5;
 const unsigned int kTimelineUploadMaxBackoffSeconds =
     kTimelineUploadIntervalSeconds * 10;
 static char const kTimelineUploadPath[] = "/api/v8/timeline";
