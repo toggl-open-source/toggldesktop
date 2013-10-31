@@ -1769,12 +1769,22 @@ void kopsik_websocket_stop_async(
 // Timeline
 
 void kopsik_timeline_start(void *context) {
+  poco_assert(context);
+
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_timeline_start");
+
   Context *ctx = reinterpret_cast<Context *>(context);
   ctx->timeline_uploader->Start();
   ctx->window_change_recorder->Start();
 }
 
 void kopsik_timeline_stop(void *context) {
+  poco_assert(context);
+
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_timeline_stop");
+
   Context *ctx = reinterpret_cast<Context *>(context);
   ctx->window_change_recorder->Stop();
   ctx->timeline_uploader->Stop();
