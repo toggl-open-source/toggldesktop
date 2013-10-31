@@ -24,10 +24,11 @@
 namespace kopsik {
 
 void TimelineUploader::Start() {
+    Poco::Logger &logger = Poco::Logger::get("timeline_uploader");
+    logger.debug("TimelineUploader::Start");
     if (!upload_token_.empty() && user_id_ > 0) {
         std::stringstream out;
         out << "Start user_id = " << user_id_;
-        Poco::Logger &logger = Poco::Logger::get("timeline_uploader");
         logger.debug(out.str());
 
         if (!uploading_.isRunning()) {

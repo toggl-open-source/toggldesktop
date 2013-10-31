@@ -15,10 +15,11 @@
 namespace kopsik {
 
 void WindowChangeRecorder::Start() {
+    Poco::Logger &logger = Poco::Logger::get("window_change_recorder");
+    logger.debug("WindowChangeRecorder::Start");
     if (user_id_ > 0) {
         std::stringstream out;
         out << "Start, user_id = " << user_id_;
-        Poco::Logger &logger = Poco::Logger::get("window_change_recorder");
         logger.debug(out.str());
         if (!recording_.isRunning()) {
             recording_.start();
