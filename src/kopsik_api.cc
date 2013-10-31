@@ -1794,7 +1794,9 @@ kopsik_api_result kopsik_timeline_start(void *context,
   ctx->timeline_uploader = new kopsik::TimelineUploader(
     static_cast<unsigned int>(ctx->user->ID()),
     ctx->user->APIToken(),
-    ctx->api_url);
+    ctx->api_url,
+    ctx->app_name,
+    ctx->app_version);
 
   if (ctx->window_change_recorder) {
     delete ctx->window_change_recorder;

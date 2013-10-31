@@ -7,7 +7,6 @@
 const unsigned int kTimelineUploadIntervalSeconds = 60;
 const unsigned int kTimelineUploadMaxBackoffSeconds =
     kTimelineUploadIntervalSeconds * 10;
-static char const kTimelineUploadPath[] = "/api/v8/timeline";
 
 const unsigned int kWindowFocusThresholdSeconds = 5;
 const unsigned int kWindowChangeRecordingIntervalMillis = 500;

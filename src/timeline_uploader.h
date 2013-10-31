@@ -20,13 +20,17 @@ class TimelineUploader {
  public:
     TimelineUploader(const unsigned int user_id,
                 const std::string api_token,
-                const std::string api_url) :
+                const std::string api_url,
+                const std::string app_name,
+                const std::string app_version) :
             user_id_(user_id),
             api_token_(api_token),
             upload_interval_seconds_(kTimelineUploadIntervalSeconds),
             current_upload_interval_seconds_(kTimelineUploadIntervalSeconds),
             max_upload_interval_seconds_(kTimelineUploadMaxBackoffSeconds),
-            upload_host_(api_url),
+            api_url_(api_url),
+            app_name_(app_name),
+            app_version_(app_version),
             uploading_(this, &TimelineUploader::upload_loop_activity) {
         Poco::NotificationCenter& nc =
             Poco::NotificationCenter::defaultCenter();
@@ -80,8 +84,9 @@ class TimelineUploader {
     unsigned int current_upload_interval_seconds_;
     unsigned int max_upload_interval_seconds_;
 
-    // Toggl API host
-    std::string upload_host_;
+    std::string api_url_;
+    std::string app_name_;
+    std::string app_version_;
 
     // An Activity is a possibly long running void/no arguments
     // member function running in its own thread.

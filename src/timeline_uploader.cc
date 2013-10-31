@@ -2,24 +2,17 @@
 
 #include "./timeline_uploader.h"
 
-#include "./timeline_constants.h"
-
 #include <libjson.h>
 
 #include <sstream>
 #include <string>
 
+#include "./timeline_constants.h"
+#include "./https_client.h"
+
 #include "Poco/Foundation.h"
-#include "Poco/Net/HTTPSClientSession.h"
-#include "Poco/Net/HTTPRequest.h"
-#include "Poco/Net/HTTPResponse.h"
-#include "Poco/Net/HTTPBasicCredentials.h"
-#include "Poco/Net/Context.h"
-#include "Poco/Net/HTTPMessage.h"
 #include "Poco/Util/Application.h"
-#include "Poco/URI.h"
 #include "Poco/Thread.h"
-#include "Poco/StreamCopier.h"
 
 namespace kopsik {
 
@@ -118,81 +111,22 @@ bool TimelineUploader::sync(const unsigned int user_id,
         const std::vector<TimelineEvent> &timeline_events,
         const std::string desktop_id) {
     poco_assert(!timeline_events.empty());
+    poco_assert(user_id > 0);
 
+    HTTPSClient client(api_url_, app_name_, app_version_);
+
+    std::stringstream out;
+    out << "Uploading " << timeline_events.size()
+        << " event(s) of user " << user_id;
     Poco::Logger &logger = Poco::Logger::get("timeline_uploader");
+    logger.debug(out.str());
 
-    try {
-        std::stringstream out;
-        out << "Uploading " << timeline_events.size()
-            << " event(s) of user " << user_id
-            << " to " << upload_host_ << kTimelineUploadPath;
-        logger.debug(out.str());
-
-        poco_assert(user_id > 0);
-        poco_assert(!api_token_.empty());
-        std::string json =
-            convert_timeline_to_json(timeline_events, desktop_id);
-
-        logger.debug(json);
-
-        const Poco::URI uri(upload_host_);
-
-        // FIXME: must verify server certificate.
-        const Poco::Net::Context::Ptr context(new Poco::Net::Context(
-            Poco::Net::Context::CLIENT_USE, "", "", "",
-            Poco::Net::Context::VERIFY_NONE, 9, false,
-            "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"));
-
-        Poco::Net::HTTPSClientSession session(
-            uri.getHost(), uri.getPort(), context);
-        session.setKeepAlive(false);
-
-        Poco::Net::HTTPRequest req(Poco::Net::HTTPRequest::HTTP_POST,
-            kTimelineUploadPath, Poco::Net::HTTPMessage::HTTP_1_1);
-        req.setContentType("application/json");
-        req.setKeepAlive(false);
-        req.setContentLength(json.length());
-
-        logger.debug("Sending request..");
-
-        Poco::Net::HTTPBasicCredentials cred(api_token_, "api_token");
-        cred.authenticate(req);
-        session.sendRequest(req) << json << std::flush;
-
-        // Log out request contents
-        std::stringstream request_string;
-        req.write(request_string);
-        logger.debug(request_string.str());
-
-        logger.debug("Request sent. Receiving response..");
-
-        // Receive response
-        Poco::Net::HTTPResponse response;
-        session.receiveResponse(response);
-
-        // Log out response contents
-        std::stringstream response_string;
-        response_string << "Response received: "
-            << response.getStatus() << " " << response.getReason();
-        logger.debug(response_string.str());
-
-        if ((response.getStatus() != 202) && (response.getStatus() != 200)) {
-            exponential_backoff();
-            return false;
-        }
-
-        reset_backoff();
-    } catch(const Poco::Exception& exc) {
-        logger.error(exc.displayText());
-        exponential_backoff();
-        return false;
-    } catch(const std::exception& ex) {
-        logger.error(ex.what());
-        exponential_backoff();
-        return false;
-    } catch(const std::string& ex) {
-        logger.error(ex);
-        exponential_backoff();
+    std::string json = convert_timeline_to_json(timeline_events, desktop_id);
+    std::string response_body("");
+    error err = client.PostJSON("/api/v8/timeline", json,
+      api_token_, "api_token",  &response_body);
+    if (err != noError) {
+        logger.error(err);
         return false;
     }
     return true;
