@@ -116,6 +116,8 @@ NSString *kTimeTotalUnknown = @"--:--";
   [menu addItemWithTitle:@"Continue" action:@selector(onContinueMenuItem) keyEquivalent:@""].tag = kMenuItemTagContinue;
   [menu addItemWithTitle:@"Stop" action:@selector(onStopMenuItem) keyEquivalent:@""].tag = kMenuItemTagStop;
   [menu addItem:[NSMenuItem separatorItem]];
+  [menu addItemWithTitle:@"Sync" action:@selector(onSyncMenuItem:) keyEquivalent:@""];
+  [menu addItem:[NSMenuItem separatorItem]];
   [menu addItemWithTitle:@"Preferences" action:@selector(onPreferencesMenuItem:) keyEquivalent:@""];
   [menu addItem:[NSMenuItem separatorItem]];
   [menu addItemWithTitle:@"Quit" action:@selector(onQuitMenuItem) keyEquivalent:@""];
@@ -153,6 +155,26 @@ NSString *kTimeTotalUnknown = @"--:--";
 - (void)onStopMenuItem {
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandStop
                                                       object:nil];
+}
+
+- (IBAction)onSyncMenuItem:(id)sender {
+  // FIXME: sync
+}
+
+- (IBAction)onHelpMenuItem:(id)sender {
+  // FIXME: help
+}
+
+- (IBAction)onLogoutMenuItem:(id)sender {
+  // FIXME: log out
+}
+
+- (IBAction)onClearCacheMenuItem:(id)sender {
+  char err[KOPSIK_ERR_LEN];
+  kopsik_api_result res = kopsik_clear_cache(ctx, err, KOPSIK_ERR_LEN);
+  if (KOPSIK_API_SUCCESS != res) {
+    handle_error(res, err);
+  }
 }
 
 - (IBAction)onAboutMenuItem:(id)sender {

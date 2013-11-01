@@ -61,6 +61,33 @@
                         </items>
                     </menu>
                 </menuItem>
+                <menuItem title="Account" id="92o-Sa-9cW">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Account" id="ORM-ao-M0m">
+                        <items>
+                            <menuItem title="Sync" id="qrV-uu-7qU">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="onSyncMenuItem:" target="494" id="u4k-n1-pLG"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="Nva-uM-toH"/>
+                            <menuItem title="Clear cache" id="OCn-tS-va2">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="onClearCacheMenuItem:" target="494" id="kgh-DN-75s"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="ocd-ur-e1h"/>
+                            <menuItem title="Logout" id="R7N-z5-83z">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="onLogoutMenuItem:" target="494" id="EQe-ox-ZRs"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
                 <menuItem title="Edit" id="217">
                     <menu key="submenu" title="Edit" id="205">
                         <items>
@@ -298,7 +325,7 @@
                         <items>
                             <menuItem title="Toggl Desktop Help" keyEquivalent="?" id="492">
                                 <connections>
-                                    <action selector="showHelp:" target="-1" id="493"/>
+                                    <action selector="onHelpMenuItem:" target="494" id="Yuo-YB-F1l"/>
                                 </connections>
                             </menuItem>
                         </items>

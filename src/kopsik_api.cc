@@ -675,6 +675,33 @@ kopsik_api_result kopsik_logout(
   return KOPSIK_API_SUCCESS;
 }
 
+kopsik_api_result kopsik_clear_cache(
+    void *context,
+    char *errmsg, unsigned int errlen) {
+  poco_assert(context);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_logout");
+
+  Context *ctx = reinterpret_cast<Context *>(context);
+
+  if (!ctx->user) {
+    return KOPSIK_API_SUCCESS;
+  }
+
+  Poco::Mutex::ScopedLock lock(*ctx->mutex);
+
+  kopsik::error err = ctx->db->DeleteUser(ctx->user, true);
+  if (err != kopsik::noError) {
+    strncpy(errmsg, err.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
+  return kopsik_logout(context, errmsg, errlen);
+}
+
 // Sync
 
 kopsik_api_result kopsik_sync(

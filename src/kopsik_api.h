@@ -106,6 +106,10 @@ KOPSIK_EXPORT kopsik_api_result kopsik_logout(
   void *ctx,
   char *errmsg, unsigned int errlen);
 
+KOPSIK_EXPORT kopsik_api_result kopsik_clear_cache(
+  void *ctx,
+  char *errmsg, unsigned int errlen);
+
 // Sync
 
 typedef struct {

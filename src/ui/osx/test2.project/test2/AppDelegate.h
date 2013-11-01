@@ -14,4 +14,8 @@
 @property NSImage* offImage;
 - (IBAction)onPreferencesMenuItem:(id)sender;
 - (IBAction)onAboutMenuItem:(id)sender;
+- (IBAction)onSyncMenuItem:(id)sender;
+- (IBAction)onClearCacheMenuItem:(id)sender;
+- (IBAction)onLogoutMenuItem:(id)sender;
+- (IBAction)onHelpMenuItem:(id)sender;
 @end
