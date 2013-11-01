@@ -107,7 +107,9 @@
     [self.durationTextField setStringValue:self.running_time_entry.duration];
     if (self.running_time_entry.project != nil) {
       [self.projectTextField setStringValue:[self.running_time_entry.project uppercaseString]];
+      [self.projectTextField setHidden:NO];
     } else {
+      [self.projectTextField setHidden:YES];
       [self.projectTextField setStringValue:@""];
     }
   }
