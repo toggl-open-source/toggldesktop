@@ -15,6 +15,7 @@
 #import "UIEvents.h"
 #import "TimeEntryViewItem.h"
 #import "AboutWindowController.h"
+#import "ErrorHandler.h"
 
 @interface  AppDelegate()
 @property (nonatomic,strong) IBOutlet MainWindowController *mainWindowController;
@@ -170,6 +171,16 @@ NSString *kTimeTotalUnknown = @"--:--";
 }
 
 - (IBAction)onClearCacheMenuItem:(id)sender {
+  NSAlert *alert = [[NSAlert alloc] init];
+  [alert addButtonWithTitle:@"OK"];
+  [alert addButtonWithTitle:@"Cancel"];
+  [alert setMessageText:@"Clear local data and log out?"];
+  [alert setInformativeText:@"Deleted unsynced time entries cannot be restored."];
+  [alert setAlertStyle:NSWarningAlertStyle];
+  if ([alert runModal] != NSAlertFirstButtonReturn) {
+    return;
+  }
+  
   char err[KOPSIK_ERR_LEN];
   kopsik_api_result res = kopsik_clear_cache(ctx, err, KOPSIK_ERR_LEN);
   if (KOPSIK_API_SUCCESS != res) {
