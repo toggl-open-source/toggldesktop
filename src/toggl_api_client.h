@@ -476,6 +476,12 @@ namespace kopsik {
             const bool full_sync,
             const bool with_related_data);
 
+        std::string dirtyObjectsJSON(std::vector<TimeEntry *> *dirty);
+        void processResponseArray(std::vector<BatchUpdateResult> *results,
+            std::vector<TimeEntry *> *dirty,
+            std::vector<error> *errors);
+        error collectErrors(std::vector<error> *errors);
+
         void loadProjectsFromJSONNode(JSONNODE *list);
         void loadTagsFromJSONNode(JSONNODE *list);
         void loadClientsFromJSONNode(JSONNODE *list);

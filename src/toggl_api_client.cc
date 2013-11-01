@@ -216,30 +216,13 @@ void User::CollectPushableObjects(std::vector<TimeEntry *> *result) {
     }
 }
 
-error User::Push(HTTPSClient *https_client) {
-    Poco::Stopwatch stopwatch;
-    stopwatch.start();
-
-    std::vector<TimeEntry *>dirty;
-    CollectPushableObjects(&dirty);
-
+// Convert the dirty objects to batch updates JSON.
+std::string User::dirtyObjectsJSON(std::vector<TimeEntry *> *dirty) {
     Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
-    if (dirty.empty()) {
-        logger.debug("Nothing to push.");
-        return noError;
-    }
-
-    {
-        std::stringstream ss;
-        ss << dirty.size() << " model(s) need a push";
-        logger.debug(ss.str());
-    }
-
-    // Convert the dirty objects to batch updates JSON.
     JSONNODE *c = json_new(JSON_ARRAY);
     for (std::vector<TimeEntry *>::const_iterator it =
-            dirty.begin();
-            it != dirty.end(); it++) {
+            dirty->begin();
+            it != dirty->end(); it++) {
         TimeEntry *te = *it;
         JSONNODE *n = te->JSON();
         json_set_name(n, "time_entry");
@@ -286,38 +269,26 @@ error User::Push(HTTPSClient *https_client) {
     std::string json(jc);
     json_free(jc);
     json_delete(c);
+    return json;
+}
 
-    logger.debug(json);
-
-    std::string response_body("");
-    error err = https_client->PostJSON("/api/v8/batch_updates",
-        json,
-        APIToken(),
-        "api_token",
-        &response_body);
-    if (err != noError) {
-        return err;
-    }
-
-    std::vector<BatchUpdateResult> results;
-    parseResponseArray(response_body, &results);
-
-    // Iterate through response array, parse response bodies.
-    // Collect errors into a vector.
-    std::vector<error> errors;
-    for (std::vector<BatchUpdateResult>::const_iterator it = results.begin();
-            it != results.end();
+// Iterate through response array, parse response bodies.
+// Collect errors into a vector.
+void User::processResponseArray(std::vector<BatchUpdateResult> *results,
+        std::vector<TimeEntry *> *dirty,
+        std::vector<error> *errors) {
+    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
+    for (std::vector<BatchUpdateResult>::const_iterator it = results->begin();
+            it != results->end();
             it++) {
         BatchUpdateResult result = *it;
 
-        {
-            std::stringstream ss;
-            ss  << "batch update result GUID: " << result.GUID
-                << ", StatusCode: " << result.StatusCode
-                << ", ContentType: " << result.ContentType
-                << ", Body: " << result.Body;
-            logger.debug(ss.str());
-        }
+        std::stringstream ss;
+        ss  << "batch update result GUID: " << result.GUID
+            << ", StatusCode: " << result.StatusCode
+            << ", ContentType: " << result.ContentType
+            << ", Body: " << result.Body;
+        logger.debug(ss.str());
 
         if (result.StatusCode != 404)  {
             if ((result.StatusCode < 200) || (result.StatusCode >= 300)) {
@@ -325,9 +296,9 @@ error User::Push(HTTPSClient *https_client) {
                     std::stringstream ss;
                     ss  << "Request failed with status code "
                         << result.StatusCode;
-                    errors.push_back(ss.str());
+                    errors->push_back(ss.str());
                 } else {
-                    errors.push_back(result.Body);
+                    errors->push_back(result.Body);
                 }
                 continue;
             }
@@ -338,7 +309,7 @@ error User::Push(HTTPSClient *https_client) {
 
         TimeEntry *te = 0;
         for (std::vector<TimeEntry *>::const_iterator it =
-                dirty.begin(); it != dirty.end(); it++) {
+                dirty->begin(); it != dirty->end(); it++) {
             if ((*it)->GUID() == result.GUID) {
                 te = *it;
                 break;
@@ -364,27 +335,71 @@ error User::Push(HTTPSClient *https_client) {
         }
         json_delete(n);
     }
+}
 
-    // Collect errors
-    if (!errors.empty()) {
-        std::stringstream ss;
-        ss << "Errors encountered while syncing data: ";
-        for (std::vector<error>::const_iterator it = errors.begin();
-                it != errors.end();
-                it++) {
-            error err = *it;
-            if (!err.empty()) {
-                if (err[err.size() - 1] == '\n') {
-                    err[err.size() - 1] = '.';
-                }
+error User::collectErrors(std::vector<error> *errors) {
+    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
+    std::stringstream ss;
+    ss << "Errors encountered while syncing data: ";
+    for (std::vector<error>::const_iterator it = errors->begin();
+            it != errors->end();
+            it++) {
+        error err = *it;
+        if (!err.empty()) {
+            if (err[err.size() - 1] == '\n') {
+                err[err.size() - 1] = '.';
             }
-            if (it != errors.begin()) {
-                ss << " ";
-            }
-            ss << err;
-            logger.error(err);
         }
-        return error(ss.str());
+        if (it != errors->begin()) {
+            ss << " ";
+        }
+        ss << err;
+        logger.error(err);
+    }
+    return error(ss.str());
+}
+
+error User::Push(HTTPSClient *https_client) {
+    Poco::Stopwatch stopwatch;
+    stopwatch.start();
+
+    std::vector<TimeEntry *>dirty;
+    CollectPushableObjects(&dirty);
+
+    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
+    if (dirty.empty()) {
+        logger.debug("Nothing to push.");
+        return noError;
+    }
+
+    {
+        std::stringstream ss;
+        ss << dirty.size() << " model(s) need a push";
+        logger.debug(ss.str());
+    }
+
+    std::string json = dirtyObjectsJSON(&dirty);
+
+    logger.debug(json);
+
+    std::string response_body("");
+    error err = https_client->PostJSON("/api/v8/batch_updates",
+        json,
+        APIToken(),
+        "api_token",
+        &response_body);
+    if (err != noError) {
+        return err;
+    }
+
+    std::vector<BatchUpdateResult> results;
+    parseResponseArray(response_body, &results);
+
+    std::vector<error> errors;
+    processResponseArray(&results, &dirty, &errors);
+
+    if (!errors.empty()) {
+        return collectErrors(&errors);
     }
 
     stopwatch.stop();
