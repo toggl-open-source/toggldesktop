@@ -1206,7 +1206,19 @@ kopsik_api_result kopsik_delete_time_entry(
 
   Poco::Mutex::ScopedLock lock(*ctx->mutex);
 
-  ctx->user->MarkTimeEntryAsDeleted(GUID);
+  kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
+  poco_assert(te);
+  te->SetDeletedAt(time(0));
+  te->SetUIModifiedAt(time(0));
+
+  if (ctx->change_callback) {
+    kopsik::ModelChange mc("time_entry", "delete", te->ID(), te->GUID());
+    KopsikModelChange *change = model_change_init();
+    model_change_to_change_item(mc, *change);
+    ctx->change_callback(KOPSIK_API_SUCCESS, 0, change);
+    model_change_clear(change);
+  }
+
   return save(ctx, errmsg, errlen);
 }
 
