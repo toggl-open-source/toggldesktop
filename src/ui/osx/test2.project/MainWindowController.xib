@@ -45,7 +45,7 @@
                                     <constraint firstAttribute="width" constant="39" id="OxH-Mf-U4R"/>
                                     <constraint firstAttribute="height" constant="23" id="zdb-H8-AXX"/>
                                 </constraints>
-                                <popUpButtonCell key="cell" type="smallSquare" bezelStyle="smallSquare" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" pullsDown="YES" selectedItem="tHc-0A-qvU" id="228-43-gNA">
+                                <popUpButtonCell key="cell" type="smallSquare" bezelStyle="smallSquare" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" pullsDown="YES" selectedItem="Fl0-Xf-c37" id="228-43-gNA">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
                                     <menu key="menu" title="OtherViews" id="vwC-Ks-dRa">
@@ -53,13 +53,13 @@
                                             <menuItem state="on" image="NSActionTemplate" hidden="YES" id="iWP-TY-GZW"/>
                                             <menuItem title="Sync" tag="1" id="tHc-0A-qvU">
                                                 <connections>
-                                                    <action selector="sync:" target="-2" id="dqy-aI-Fgl"/>
+                                                    <action selector="onSyncMenuItem:" target="-1" id="WRO-ET-qnK"/>
                                                 </connections>
                                             </menuItem>
                                             <menuItem isSeparatorItem="YES" id="9e7-Oe-tdO"/>
                                             <menuItem title="Logout" tag="2" id="Fl0-Xf-c37">
                                                 <connections>
-                                                    <action selector="logout:" target="-2" id="oFZ-EX-oQJ"/>
+                                                    <action selector="onLogoutMenuItem:" target="-1" id="gB3-FU-4LD"/>
                                                 </connections>
                                             </menuItem>
                                         </items>

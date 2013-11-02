@@ -28,7 +28,6 @@
 @property (nonatomic,strong) IBOutlet TimerViewController *timerViewController;
 @property (nonatomic,strong) IBOutlet TimerEditViewController *timerEditViewController;
 @property (nonatomic,strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
-@property NSString *lastKnownLoginState;
 @end
 
 @implementation MainWindowController
@@ -98,8 +97,6 @@
                                              selector:@selector(eventHandler:)
                                                  name:kUICommandStop
                                                object:nil];
-    
-    self.lastKnownLoginState = kUIStateUserLoggedOut;
   }
   return self;
 }
@@ -107,96 +104,6 @@
 - (void)windowDidLoad
 {
   [super windowDidLoad];
-  
-  NSLog(@"MainWindow windowDidLoad");
-  
-  kopsik_set_change_callback(ctx, on_model_change);
-  
-  char err[KOPSIK_ERR_LEN];
-  KopsikUser *user = kopsik_user_init();
-  if (KOPSIK_API_SUCCESS != kopsik_current_user(ctx, err, KOPSIK_ERR_LEN, user)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                        object:[NSString stringWithUTF8String:err]];
-    kopsik_user_clear(user);
-    return;
-  }
-
-  User *userinfo = nil;
-  if (user->ID) {
-    userinfo = [[User alloc] init];
-    [userinfo load:user];
-  }
-  kopsik_user_clear(user);
-  
-  if (userinfo == nil) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedOut object:nil];
-  } else {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedIn object:userinfo];
-  }
- 
-  NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
-  NSNumber* checkEnabled = [infoDict objectForKey:@"KopsikCheckForUpdates"];
-  if ([checkEnabled boolValue]) {
-    [self checkForUpdates];
-  }
-
-}
-
-- (void) checkForUpdates {
-  kopsik_check_for_updates_async(ctx, check_for_updates_callback);
-}
-
-void check_for_updates_callback(kopsik_api_result result,
-                                const char *errmsg,
-                                const int is_update_available,
-                                const char *url,
-                                const char *version) {
-  if (result != KOPSIK_API_SUCCESS) {
-    handle_error(result, errmsg);
-    return;
-  }
-  if (!is_update_available) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUpToDate
-                                                        object:nil];
-    NSLog(@"check_for_updates_callback: no updates available");
-    return;
-  }
-
-  Update *update = [[Update alloc] init];
-  update.URL = [NSString stringWithUTF8String:url];
-  update.version = [NSString stringWithUTF8String:version];
-
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUpdateAvailable
-                                                      object:update];
-
-  NSAlert *alert = [[NSAlert alloc] init];
-  [alert addButtonWithTitle:@"Yes"];
-  [alert addButtonWithTitle:@"No"];
-  [alert setMessageText:@"Download new version?"];
-  NSString *informative = [NSString stringWithFormat:@"There's a new version of this app available (%@).", update.version];
-  [alert setInformativeText:informative];
-  [alert setAlertStyle:NSWarningAlertStyle];
-  if ([alert runModal] != NSAlertFirstButtonReturn) {
-    return;
-  }
-  
-  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:update.URL]];
-}
-
-- (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem {
-  switch ([anItem tag]) {
-    case kMenuItemTagSync:
-      if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
-        return NO;
-      }
-      break;
-    case kMenuItemTagLogout:
-      if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
-        return NO;
-      }
-      break;
-  }
-  return YES;
 }
 
 -(void)eventHandler: (NSNotification *) notification
@@ -218,23 +125,8 @@ void check_for_updates_callback(kopsik_api_result result,
     [self.footerView setHidden:NO];
     [self.headerView setHidden:NO];
     
-    renderRunningTimeEntry();
-
-    // Start syncing after a while.
-    [self performSelector:@selector(startSync) withObject:nil afterDelay:0.5];
-    [self performSelector:@selector(startWebSocket) withObject:nil afterDelay:0.5];
-    [self performSelector:@selector(startTimeline) withObject:nil afterDelay:0.5];
-    
-    // Remember login state for validation of menu items
-    self.lastKnownLoginState = kUIStateUserLoggedIn;
-
   } else if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
     [Bugsnag setUserAttribute:@"user_id" withValue:nil];
-    
-    NSLog(@"MainWindow stopping websocket");
-    
-    kopsik_websocket_stop_async(ctx, handle_error);
-    kopsik_timeline_stop(ctx);
 
     // Show login view
     [self.contentView addSubview:self.loginViewController.view];
@@ -247,9 +139,6 @@ void check_for_updates_callback(kopsik_api_result result,
     [self.headerView setHidden:YES];
     [self.timerViewController.view removeFromSuperview];
     
-    // Remember login state for validation of menu items
-    self.lastKnownLoginState = kUIStateUserLoggedOut;
-
   } else if ([notification.name isEqualToString:kUIStateTimerRunning]) {
     // Hide timer editor from header view
     [self.timerEditViewController.view removeFromSuperview];
@@ -389,92 +278,6 @@ void check_for_updates_callback(kopsik_api_result result,
                     modalDelegate:self
                    didEndSelector:nil
                       contextInfo:nil];
-}
-
-- (IBAction)logout:(id)sender {
-  char err[KOPSIK_ERR_LEN];
-  if (KOPSIK_API_SUCCESS != kopsik_logout(ctx, err, KOPSIK_ERR_LEN)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                        object:[NSString stringWithUTF8String:err]];
-    return;
-  }
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedOut object:nil];
-}
-
-- (IBAction)sync:(id)sender {
-  NSLog(@"MainWindow sync");
-  [self startSync];
-}
-
-void sync_finished(kopsik_api_result result, const char *err) {
-  NSLog(@"MainWindow sync_finished");
-  if (KOPSIK_API_SUCCESS != result) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                        object:[NSString stringWithUTF8String:err]];
-    
-    return;
-  }
-  renderRunningTimeEntry();
-}
-
-void renderRunningTimeEntry() {
-  KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-  int is_tracking = 0;
-  char err[KOPSIK_ERR_LEN];
-  if (KOPSIK_API_SUCCESS != kopsik_running_time_entry_view_item(ctx,
-                                                                err, KOPSIK_ERR_LEN,
-                                                                item, &is_tracking)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                        object:[NSString stringWithUTF8String:err]];
-    kopsik_time_entry_view_item_clear(item);
-    return;
-  }
-
-  if (is_tracking) {
-    TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
-    [te load:item];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning object:te];
-  } else {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped object:nil];
-  }
-  kopsik_time_entry_view_item_clear(item);
-}
-
-void on_model_change(kopsik_api_result result,
-                     const char *errmsg,
-                     KopsikModelChange *change) {
-  if (KOPSIK_API_SUCCESS != result) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                          object:[NSString stringWithUTF8String:errmsg]];
-    return;
-  }
-
-  ModelChange *mc = [[ModelChange alloc] init];
-  [mc load:change];
-
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventModelChange object:mc];
-}
-
-- (void)startSync {
-  NSLog(@"MainWindow startSync");
-  kopsik_sync_async(ctx, 1, sync_finished);
-  NSLog(@"MainWindow startSync done");
-}
-
-- (void)startWebSocket {
-  NSLog(@"MainWindow startWebSocket");
-  kopsik_websocket_start_async(ctx, handle_error);
-  NSLog(@"MainWindow startWebSocket done");
-}
-
-- (void)startTimeline {
-  NSLog(@"MainWindow startTimeline");
-  char err[KOPSIK_ERR_LEN];
-  kopsik_api_result res = kopsik_timeline_start(ctx, err, KOPSIK_ERR_LEN);
-  if (KOPSIK_API_SUCCESS != res) {
-    handle_error(res, err);
-  }
-  NSLog(@"MainWindow startTimeline done");
 }
 
 @end
