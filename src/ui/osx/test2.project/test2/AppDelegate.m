@@ -16,6 +16,7 @@
 #import "TimeEntryViewItem.h"
 #import "AboutWindowController.h"
 #import "ErrorHandler.h"
+#import "ModelChange.h"
 
 @interface  AppDelegate()
 @property (nonatomic,strong) IBOutlet MainWindowController *mainWindowController;
@@ -75,7 +76,10 @@ NSString *kTimeTotalUnknown = @"--:--";
                                            selector:@selector(eventHandler:)
                                                name:kUICommandShowPreferences
                                              object:nil];
-
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(eventHandler:)
+                                               name:kUIEventModelChange
+                                             object:nil];
 }
 
 -(void)eventHandler: (NSNotification *) notification
@@ -87,16 +91,32 @@ NSString *kTimeTotalUnknown = @"--:--";
   
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
     self.lastKnownLoginState = kUIStateUserLoggedIn;
+
   } else if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
     self.lastKnownLoginState = kUIStateUserLoggedOut;
     self.lastKnownTrackingState = kUIStateTimerStopped;
     self.running_time_entry = nil;
+
   } else if ([notification.name isEqualToString:kUIStateTimerStopped]) {
     self.running_time_entry = nil;
     self.lastKnownTrackingState = kUIStateTimerStopped;
+
   } else if ([notification.name isEqualToString:kUIStateTimerRunning]) {
     self.running_time_entry = notification.object;
     self.lastKnownTrackingState = kUIStateTimerRunning;
+
+  } else if ([notification.name isEqualToString:kUIEventModelChange]) {
+    ModelChange *ch = notification.object;
+    if (self.running_time_entry &&
+        [self.running_time_entry.GUID isEqualToString:ch.GUID] &&
+        [ch.ModelType isEqualToString:@"time_entry"] &&
+        [ch.ChangeType isEqualToString:@"update"]) {
+      // Time entry duration can be edited on server side and it's
+      // pushed to us via websocket or pulled via regular sync.
+      // When it happens, timer keeps on running, but the time should be
+      // updated on status item:
+      self.running_time_entry = [TimeEntryViewItem findByGUID:ch.GUID];
+    }
   }
   
   if (self.running_time_entry == nil) {
