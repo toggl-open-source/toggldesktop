@@ -831,8 +831,9 @@ error Database::SaveTimeEntry(TimeEntry *model,
             logger.debug("Updating time entry " + model->String());
             if (model->ID()) {
                 *session << "update time_entries set "
-                    "id = :id, uid = :uid, description = :description, wid = :wid, "
-                    "guid = :guid, pid = :pid, tid = :tid, billable = :billable, "
+                    "id = :id, uid = :uid, description = :description, "
+                    "wid = :wid, guid = :guid, pid = :pid, tid = :tid, "
+                    "billable = :billable, "
                     "duronly = :duronly, ui_modified_at = :ui_modified_at, "
                     "start = :start, stop = :stop, duration = :duration, "
                     "tags = :tags, created_with = :created_with, "
@@ -861,7 +862,8 @@ error Database::SaveTimeEntry(TimeEntry *model,
             } else {
                 *session << "update time_entries set "
                     "uid = :uid, description = :description, wid = :wid, "
-                    "guid = :guid, pid = :pid, tid = :tid, billable = :billable, "
+                    "guid = :guid, pid = :pid, tid = :tid, "
+                    "billable = :billable, "
                     "duronly = :duronly, ui_modified_at = :ui_modified_at, "
                     "start = :start, stop = :stop, duration = :duration, "
                     "tags = :tags, created_with = :created_with, "
@@ -901,8 +903,8 @@ error Database::SaveTimeEntry(TimeEntry *model,
         } else {
             logger.debug("Inserting time entry " + model->String());
             if (model->ID()) {
-                *session << "insert into time_entries(id, uid, description, wid, "
-                    "guid, pid, tid, billable, "
+                *session << "insert into time_entries(id, uid, description, "
+                    "wid, guid, pid, tid, billable, "
                     "duronly, ui_modified_at, "
                     "start, stop, duration, "
                     "tags, created_with, deleted_at, updated_at) "
@@ -1531,7 +1533,7 @@ error Database::initialize_tables() {
     err = migrate("clients",
         "create table clients("
         "local_id integer primary key,"
-        "id integer, " // ID can be null when its not pushed to server yet
+        "id integer, "  // ID can be null when its not pushed to server yet
         "uid integer not null, "
         "name varchar not null, "
         "guid varchar, "
@@ -1560,7 +1562,7 @@ error Database::initialize_tables() {
     err = migrate("projects",
         "create table projects("
         "local_id integer primary key, "
-        "id integer, " // project ID can be null, when its created client side
+        "id integer, "  // project ID can be null, when its created client side
         "uid integer not null, "
         "name varchar not null, "
         "guid varchar, "
@@ -1648,7 +1650,7 @@ error Database::initialize_tables() {
     err = migrate("time_entries",
         "create table time_entries("
         "local_id integer primary key, "
-        "id integer, " // ID can be null when its not pushed to server yet
+        "id integer, "  // ID can be null when its not pushed to server yet
         "uid integer not null, "
         "description varchar, "
         "wid integer not null, "

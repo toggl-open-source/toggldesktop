@@ -251,7 +251,7 @@ namespace kopsik {
         std::vector<ModelChange> changes;
         ASSERT_EQ(noError, db.SaveUser(&user, true, &changes));
 
-        user.MarkTimeEntryAsDeleted(te->GUID());
+        te->MarkAsDeletedOnServer();
         {
             Poco::UInt64 te_count(0);
             std::stringstream query;
