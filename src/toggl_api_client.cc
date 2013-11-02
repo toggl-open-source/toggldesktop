@@ -76,13 +76,6 @@ TimeEntry *User::Latest() {
     return related.TimeEntries[0];
 }
 
-void User::MarkTimeEntryAsDeleted(std::string GUID) {
-    TimeEntry *te = GetTimeEntryByGUID(GUID);
-    poco_assert(te);
-    te->SetDeletedAt(time(0));
-    te->SetUIModifiedAt(time(0));
-}
-
 bool compareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
   return a->Start() > b->Start();
 }
@@ -191,12 +184,12 @@ bool TimeEntry::NeedsPush() {
 
 bool TimeEntry::NeedsPOST() {
     // No server side ID yet, meaning it's not POSTed yet
-    return !id_;
+    return !id_ && !(deleted_at_ > 0);
 }
 
 bool TimeEntry::NeedsPUT() {
     // User has modified model via UI, needs a PUT
-    return ui_modified_at_ > 0;
+    return ui_modified_at_ > 0 && !(deleted_at_ > 0);
 }
 
 bool TimeEntry::NeedsDELETE() {

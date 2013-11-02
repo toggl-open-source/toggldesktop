@@ -483,7 +483,6 @@ namespace kopsik {
         TimeEntry *Continue(std::string GUID);
         TimeEntry *Latest();
         std::vector<TimeEntry *> Stop();
-        void MarkTimeEntryAsDeleted(std::string GUID);
 
         Poco::Int64 LocalID() { return local_id_; }
         void SetLocalID(Poco::Int64 value) { local_id_ = value; }
