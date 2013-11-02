@@ -79,7 +79,7 @@ namespace kopsik {
         Database db(TESTDB);
 
         User user("kopsik_test", "0.1");
-        user.LoadFromJSONString(loadTestData(), true);
+        user.LoadFromJSONString(loadTestData(), true, true);
 
         TimeEntry *te = user.GetTimeEntryByID(89818605);
         ASSERT_TRUE(te);
@@ -99,7 +99,7 @@ namespace kopsik {
         std::string json = loadTestData();
 
         User user("kopsik_test", "0.1");
-        user.LoadFromJSONString(loadTestData(), true);
+        user.LoadFromJSONString(loadTestData(), true, true);
 
         TimeEntry *te = user.GetTimeEntryByID(89818605);
         ASSERT_TRUE(te);
@@ -109,7 +109,7 @@ namespace kopsik {
         json = json.replace(n,
             std::string("Important things").length(), "Even more important!");
 
-        user.LoadFromJSONString(json, true);
+        user.LoadFromJSONString(json, true, true);
         te = user.GetTimeEntryByID(89818605);
         ASSERT_TRUE(te);
         ASSERT_EQ("Even more important!", te->Description());
@@ -123,7 +123,7 @@ namespace kopsik {
         Database db(TESTDB);
 
         User user("kopsik_test", "0.1");
-        user.LoadFromJSONString(loadTestData(), true);
+        user.LoadFromJSONString(loadTestData(), true, true);
 
         Poco::UInt64 n;
         ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
@@ -167,7 +167,7 @@ namespace kopsik {
         std::string json = loadTestData();
 
         User user1("kopsik_test", "0.1");
-        user1.LoadFromJSONString(json, true);
+        user1.LoadFromJSONString(json, true, true);
 
         std::vector<ModelChange> changes;
         ASSERT_EQ(noError, db.SaveUser(&user1, true, &changes));
@@ -210,7 +210,7 @@ namespace kopsik {
         ASSERT_EQ(user1.related.TimeEntries.size(),
             user2.related.TimeEntries.size());
 
-        user2.LoadFromJSONString(json, true);
+        user2.LoadFromJSONString(json, true, true);
 
         ASSERT_EQ(noError, db.SaveUser(&user2, true, &changes));
 
@@ -244,7 +244,7 @@ namespace kopsik {
         Database db(TESTDB);
 
         User user("kopsik_test", "0.1");
-        user.LoadFromJSONString(loadTestData(), true);
+        user.LoadFromJSONString(loadTestData(), true, true);
 
         // first, mark time entry as deleted
         TimeEntry *te = user.Start("My new time entry");
@@ -262,7 +262,7 @@ namespace kopsik {
         }
 
         // now, really delete it
-        te->MarkTimeEntryAsDeletedOnServer();
+        te->MarkAsDeletedOnServer();
         ASSERT_EQ(noError, db.SaveUser(&user, true, &changes));
         {
             Poco::UInt64 te_count(0);
@@ -281,7 +281,7 @@ namespace kopsik {
         ss << fis.rdbuf();
         fis.close();
         User user("kopsik_test", "0.1");
-        user.LoadFromJSONString(ss.str(), true);
+        user.LoadFromJSONString(ss.str(), true, true);
 
         Poco::File f(TESTDB);
         if (f.exists()) {
@@ -350,7 +350,7 @@ namespace kopsik {
         ASSERT_FALSE(json.empty());
 
         User user("kopsik_test", "0.1");
-        user.LoadFromJSONString(json, true);
+        user.LoadFromJSONString(json, true, true);
         ASSERT_EQ(Poco::UInt64(1379068550), user.Since());
         ASSERT_EQ(Poco::UInt64(10471231), user.ID());
         ASSERT_EQ(Poco::UInt64(123456788), user.DefaultWID());

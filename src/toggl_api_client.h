@@ -3,6 +3,7 @@
 #ifndef SRC_TOGGL_API_CLIENT_H_
 #define SRC_TOGGL_API_CLIENT_H_
 
+#include <unordered_set>
 #include <string>
 #include <vector>
 #include <sstream>
@@ -51,7 +52,8 @@ namespace kopsik {
 
     class Workspace {
     public:
-        Workspace() : local_id_(0), id_(0), name_(""), uid_(0), dirty_(false) {}
+        Workspace() : local_id_(0), id_(0), name_(""), uid_(0), dirty_(false),
+            is_marked_as_deleted_on_server_(false) {}
 
         void LoadFromJSONNode(JSONNODE *node);
         std::string String();
@@ -67,18 +69,27 @@ namespace kopsik {
         bool Dirty() { return dirty_; }
         void ClearDirty() { dirty_ = false; }
 
+        bool IsMarkedAsDeletedOnServer() {
+            return is_marked_as_deleted_on_server_;
+        }
+        void MarkAsDeletedOnServer() {
+            is_marked_as_deleted_on_server_ = true;
+            dirty_ = true;
+        }
+
     private:
         Poco::Int64 local_id_;
         Poco::UInt64 id_;
         std::string name_;
         Poco::UInt64 uid_;
         bool dirty_;
+        bool is_marked_as_deleted_on_server_;
     };
 
     class Client {
     public:
         Client() : local_id_(0), id_(0), guid_(""), wid_(0), name_(""), uid_(0),
-            dirty_(false) {}
+            dirty_(false), is_marked_as_deleted_on_server_(false) {}
 
         Poco::Int64 LocalID() { return local_id_; }
         void SetLocalID(Poco::Int64 value) { local_id_ = value; }
@@ -98,6 +109,14 @@ namespace kopsik {
         void LoadFromJSONNode(JSONNODE *node);
         std::string String();
 
+        bool IsMarkedAsDeletedOnServer() {
+            return is_marked_as_deleted_on_server_;
+        }
+        void MarkAsDeletedOnServer() {
+            is_marked_as_deleted_on_server_ = true;
+            dirty_ = true;
+        }
+
     private:
         Poco::Int64 local_id_;
         Poco::UInt64 id_;
@@ -106,13 +125,14 @@ namespace kopsik {
         std::string name_;
         Poco::UInt64 uid_;
         bool dirty_;
+        bool is_marked_as_deleted_on_server_;
     };
 
     class Project {
     public:
         Project() : local_id_(0), id_(0), guid_(""), wid_(0), cid_(0),
             name_(""), uid_(0), dirty_(false), color_(""),
-            active_(false) {}
+            active_(false), is_marked_as_deleted_on_server_(false) {}
 
         Poco::Int64 LocalID() { return local_id_; }
         void SetLocalID(Poco::Int64 value) { local_id_ = value; }
@@ -149,6 +169,14 @@ namespace kopsik {
 
         static std::vector<std::string> color_codes;
 
+        bool IsMarkedAsDeletedOnServer() {
+            return is_marked_as_deleted_on_server_;
+        }
+        void MarkAsDeletedOnServer() {
+            is_marked_as_deleted_on_server_ = true;
+            dirty_ = true;
+        }
+
     private:
         Poco::Int64 local_id_;
         Poco::UInt64 id_;
@@ -160,12 +188,13 @@ namespace kopsik {
         bool dirty_;
         std::string color_;
         bool active_;
+        bool is_marked_as_deleted_on_server_;
     };
 
     class Task {
     public:
         Task() : local_id_(0), id_(0), name_(""), wid_(0), pid_(0), uid_(0),
-            dirty_(false) {}
+            dirty_(false), is_marked_as_deleted_on_server_(false) {}
 
         Poco::Int64 LocalID() { return local_id_; }
         void SetLocalID(Poco::Int64 value) { local_id_ = value; }
@@ -185,6 +214,14 @@ namespace kopsik {
         void LoadFromJSONNode(JSONNODE *node);
         std::string String();
 
+        bool IsMarkedAsDeletedOnServer() {
+            return is_marked_as_deleted_on_server_;
+        }
+        void MarkAsDeletedOnServer() {
+            is_marked_as_deleted_on_server_ = true;
+            dirty_ = true;
+        }
+
     private:
         Poco::Int64 local_id_;
         Poco::UInt64 id_;
@@ -193,12 +230,13 @@ namespace kopsik {
         Poco::UInt64 pid_;
         Poco::UInt64 uid_;
         bool dirty_;
+        bool is_marked_as_deleted_on_server_;
     };
 
     class Tag {
     public:
         Tag() : local_id_(0), id_(0), wid_(0), name_(""), guid_(""), uid_(0),
-            dirty_(false) {}
+            dirty_(false), is_marked_as_deleted_on_server_(false) {}
 
         Poco::Int64 LocalID() { return local_id_; }
         void SetLocalID(Poco::Int64 value) { local_id_ = value; }
@@ -218,6 +256,14 @@ namespace kopsik {
         void LoadFromJSONNode(JSONNODE *node);
         std::string String();
 
+        bool IsMarkedAsDeletedOnServer() {
+            return is_marked_as_deleted_on_server_;
+        }
+        void MarkAsDeletedOnServer() {
+            is_marked_as_deleted_on_server_ = true;
+            dirty_ = true;
+        }
+
     private:
         Poco::Int64 local_id_;
         Poco::UInt64 id_;
@@ -226,6 +272,7 @@ namespace kopsik {
         guid guid_;
         Poco::UInt64 uid_;
         bool dirty_;
+        bool is_marked_as_deleted_on_server_;
     };
 
     class TimeEntry {
@@ -312,7 +359,7 @@ namespace kopsik {
         bool IsMarkedAsDeletedOnServer() {
             return is_marked_as_deleted_on_server_;
         }
-        void MarkTimeEntryAsDeletedOnServer() {
+        void MarkAsDeletedOnServer() {
             is_marked_as_deleted_on_server_ = true;
             dirty_ = true;
         }
@@ -401,9 +448,11 @@ namespace kopsik {
             const std::string &email, const std::string &password);
 
         void LoadFromJSONString(const std::string &json,
-            bool with_related_data);
-        void LoadDataFromJSONNode(JSONNODE *node, bool with_related_data);
-        void LoadUpdateFromJSONString(std::string json);
+            const bool full_sync, const bool with_related_data);
+        void LoadDataFromJSONNode(JSONNODE *node,
+            const bool full_sync,
+            const bool with_related_data);
+        void LoadUpdateFromJSONString(const std::string json);
         std::string String();
 
         void ClearWorkspaces();
@@ -482,13 +531,14 @@ namespace kopsik {
             std::vector<error> *errors);
         error collectErrors(std::vector<error> *errors);
 
-        void loadProjectsFromJSONNode(JSONNODE *list);
-        void loadTagsFromJSONNode(JSONNODE *list);
-        void loadClientsFromJSONNode(JSONNODE *list);
-        void loadTasksFromJSONNode(JSONNODE *list);
-        void loadTimeEntriesFromJSONNode(JSONNODE *list);
-        void loadTimeEntryFromJSONNode(JSONNODE *data);
-        void loadWorkspacesFromJSONNode(JSONNODE *list);
+        void loadProjectsFromJSONNode(JSONNODE *list, const bool full_sync);
+        void loadTagsFromJSONNode(JSONNODE *list, const bool full_sync);
+        void loadClientsFromJSONNode(JSONNODE *list, const bool full_sync);
+        void loadTasksFromJSONNode(JSONNODE *list, const bool full_sync);
+        void loadTimeEntriesFromJSONNode(JSONNODE *list, const bool full_sync);
+        void loadTimeEntryFromJSONNode(JSONNODE *data,
+                                       std::unordered_set<Poco::UInt64> *alive);
+        void loadWorkspacesFromJSONNode(JSONNODE *list, const bool full_sync);
 
         void loadUpdateFromJSONNode(JSONNODE *data);
 
