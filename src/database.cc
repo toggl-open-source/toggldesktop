@@ -829,70 +829,135 @@ error Database::SaveTimeEntry(TimeEntry *model,
         Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID()) {
             logger.debug("Updating time entry " + model->String());
-            *session << "update time_entries set "
-                "id = :id, uid = :uid, description = :description, wid = :wid, "
-                "guid = :guid, pid = :pid, tid = :tid, billable = :billable, "
-                "duronly = :duronly, ui_modified_at = :ui_modified_at, "
-                "start = :start, stop = :stop, duration = :duration, "
-                "tags = :tags, created_with = :created_with, "
-                "deleted_at = :deleted_at, "
-                "updated_at = :updated_at "
-                "where local_id = :local_id",
-                Poco::Data::use(model->ID()),
-                Poco::Data::use(model->UID()),
-                Poco::Data::use(model->Description()),
-                Poco::Data::use(model->WID()),
-                Poco::Data::use(model->GUID()),
-                Poco::Data::use(model->PID()),
-                Poco::Data::use(model->TID()),
-                Poco::Data::use(model->Billable()),
-                Poco::Data::use(model->DurOnly()),
-                Poco::Data::use(model->UIModifiedAt()),
-                Poco::Data::use(model->Start()),
-                Poco::Data::use(model->Stop()),
-                Poco::Data::use(model->DurationInSeconds()),
-                Poco::Data::use(model->Tags()),
-                Poco::Data::use(model->CreatedWith()),
-                Poco::Data::use(model->DeletedAt()),
-                Poco::Data::use(model->UpdatedAt()),
-                Poco::Data::use(model->LocalID()),
-                Poco::Data::now;
-          error err = last_error();
-          if (err != noError) {
-            return err;
-          }
-          changes->push_back(ModelChange(
-            "time_entry", "update", model->ID(), model->GUID()));
+            if (model->ID()) {
+                *session << "update time_entries set "
+                    "id = :id, uid = :uid, description = :description, wid = :wid, "
+                    "guid = :guid, pid = :pid, tid = :tid, billable = :billable, "
+                    "duronly = :duronly, ui_modified_at = :ui_modified_at, "
+                    "start = :start, stop = :stop, duration = :duration, "
+                    "tags = :tags, created_with = :created_with, "
+                    "deleted_at = :deleted_at, "
+                    "updated_at = :updated_at "
+                    "where local_id = :local_id",
+                    Poco::Data::use(model->ID()),
+                    Poco::Data::use(model->UID()),
+                    Poco::Data::use(model->Description()),
+                    Poco::Data::use(model->WID()),
+                    Poco::Data::use(model->GUID()),
+                    Poco::Data::use(model->PID()),
+                    Poco::Data::use(model->TID()),
+                    Poco::Data::use(model->Billable()),
+                    Poco::Data::use(model->DurOnly()),
+                    Poco::Data::use(model->UIModifiedAt()),
+                    Poco::Data::use(model->Start()),
+                    Poco::Data::use(model->Stop()),
+                    Poco::Data::use(model->DurationInSeconds()),
+                    Poco::Data::use(model->Tags()),
+                    Poco::Data::use(model->CreatedWith()),
+                    Poco::Data::use(model->DeletedAt()),
+                    Poco::Data::use(model->UpdatedAt()),
+                    Poco::Data::use(model->LocalID()),
+                    Poco::Data::now;
+            } else {
+                *session << "update time_entries set "
+                    "uid = :uid, description = :description, wid = :wid, "
+                    "guid = :guid, pid = :pid, tid = :tid, billable = :billable, "
+                    "duronly = :duronly, ui_modified_at = :ui_modified_at, "
+                    "start = :start, stop = :stop, duration = :duration, "
+                    "tags = :tags, created_with = :created_with, "
+                    "deleted_at = :deleted_at, "
+                    "updated_at = :updated_at "
+                    "where local_id = :local_id",
+                    Poco::Data::use(model->UID()),
+                    Poco::Data::use(model->Description()),
+                    Poco::Data::use(model->WID()),
+                    Poco::Data::use(model->GUID()),
+                    Poco::Data::use(model->PID()),
+                    Poco::Data::use(model->TID()),
+                    Poco::Data::use(model->Billable()),
+                    Poco::Data::use(model->DurOnly()),
+                    Poco::Data::use(model->UIModifiedAt()),
+                    Poco::Data::use(model->Start()),
+                    Poco::Data::use(model->Stop()),
+                    Poco::Data::use(model->DurationInSeconds()),
+                    Poco::Data::use(model->Tags()),
+                    Poco::Data::use(model->CreatedWith()),
+                    Poco::Data::use(model->DeletedAt()),
+                    Poco::Data::use(model->UpdatedAt()),
+                    Poco::Data::use(model->LocalID()),
+                    Poco::Data::now;
+            }
+            error err = last_error();
+            if (err != noError) {
+                return err;
+            }
+            if (model->DeletedAt()) {
+                changes->push_back(ModelChange(
+                    "time_entry", "delete", model->ID(), model->GUID()));
+            } else {
+                changes->push_back(ModelChange(
+                    "time_entry", "update", model->ID(), model->GUID()));
+            }
         } else {
             logger.debug("Inserting time entry " + model->String());
-            *session << "insert into time_entries(id, uid, description, wid, "
-                "guid, pid, tid, billable, "
-                "duronly, ui_modified_at, "
-                "start, stop, duration, "
-                "tags, created_with, deleted_at, updated_at) "
-                "values(:id, :uid, :description, :wid, "
-                ":guid, :pid, :tid, :billable, "
-                ":duronly, :ui_modified_at, "
-                ":start, :stop, :duration, "
-                ":tags, :created_with, :deleted_at, :updated_at)",
-                Poco::Data::use(model->ID()),
-                Poco::Data::use(model->UID()),
-                Poco::Data::use(model->Description()),
-                Poco::Data::use(model->WID()),
-                Poco::Data::use(model->GUID()),
-                Poco::Data::use(model->PID()),
-                Poco::Data::use(model->TID()),
-                Poco::Data::use(model->Billable()),
-                Poco::Data::use(model->DurOnly()),
-                Poco::Data::use(model->UIModifiedAt()),
-                Poco::Data::use(model->Start()),
-                Poco::Data::use(model->Stop()),
-                Poco::Data::use(model->DurationInSeconds()),
-                Poco::Data::use(model->Tags()),
-                Poco::Data::use(model->CreatedWith()),
-                Poco::Data::use(model->DeletedAt()),
-                Poco::Data::use(model->UpdatedAt()),
-                Poco::Data::now;
+            if (model->ID()) {
+                *session << "insert into time_entries(id, uid, description, wid, "
+                    "guid, pid, tid, billable, "
+                    "duronly, ui_modified_at, "
+                    "start, stop, duration, "
+                    "tags, created_with, deleted_at, updated_at) "
+                    "values(:id, :uid, :description, :wid, "
+                    ":guid, :pid, :tid, :billable, "
+                    ":duronly, :ui_modified_at, "
+                    ":start, :stop, :duration, "
+                    ":tags, :created_with, :deleted_at, :updated_at)",
+                    Poco::Data::use(model->ID()),
+                    Poco::Data::use(model->UID()),
+                    Poco::Data::use(model->Description()),
+                    Poco::Data::use(model->WID()),
+                    Poco::Data::use(model->GUID()),
+                    Poco::Data::use(model->PID()),
+                    Poco::Data::use(model->TID()),
+                    Poco::Data::use(model->Billable()),
+                    Poco::Data::use(model->DurOnly()),
+                    Poco::Data::use(model->UIModifiedAt()),
+                    Poco::Data::use(model->Start()),
+                    Poco::Data::use(model->Stop()),
+                    Poco::Data::use(model->DurationInSeconds()),
+                    Poco::Data::use(model->Tags()),
+                    Poco::Data::use(model->CreatedWith()),
+                    Poco::Data::use(model->DeletedAt()),
+                    Poco::Data::use(model->UpdatedAt()),
+                    Poco::Data::now;
+            } else {
+                *session << "insert into time_entries(uid, description, wid, "
+                    "guid, pid, tid, billable, "
+                    "duronly, ui_modified_at, "
+                    "start, stop, duration, "
+                    "tags, created_with, deleted_at, updated_at) "
+                    "values(:uid, :description, :wid, "
+                    ":guid, :pid, :tid, :billable, "
+                    ":duronly, :ui_modified_at, "
+                    ":start, :stop, :duration, "
+                    ":tags, :created_with, :deleted_at, :updated_at)",
+                    Poco::Data::use(model->UID()),
+                    Poco::Data::use(model->Description()),
+                    Poco::Data::use(model->WID()),
+                    Poco::Data::use(model->GUID()),
+                    Poco::Data::use(model->PID()),
+                    Poco::Data::use(model->TID()),
+                    Poco::Data::use(model->Billable()),
+                    Poco::Data::use(model->DurOnly()),
+                    Poco::Data::use(model->UIModifiedAt()),
+                    Poco::Data::use(model->Start()),
+                    Poco::Data::use(model->Stop()),
+                    Poco::Data::use(model->DurationInSeconds()),
+                    Poco::Data::use(model->Tags()),
+                    Poco::Data::use(model->CreatedWith()),
+                    Poco::Data::use(model->DeletedAt()),
+                    Poco::Data::use(model->UpdatedAt()),
+                    Poco::Data::now;
+                }
             error err = last_error();
             if (err != noError) {
                 return err;
@@ -1466,7 +1531,7 @@ error Database::initialize_tables() {
     err = migrate("clients",
         "create table clients("
         "local_id integer primary key,"
-        "id integer not null, "
+        "id integer, " // ID can be null when its not pushed to server yet
         "uid integer not null, "
         "name varchar not null, "
         "guid varchar, "
@@ -1495,7 +1560,7 @@ error Database::initialize_tables() {
     err = migrate("projects",
         "create table projects("
         "local_id integer primary key, "
-        "id integer not null, "
+        "id integer, " // project ID can be null, when its created client side
         "uid integer not null, "
         "name varchar not null, "
         "guid varchar, "
@@ -1583,7 +1648,7 @@ error Database::initialize_tables() {
     err = migrate("time_entries",
         "create table time_entries("
         "local_id integer primary key, "
-        "id integer not null, "
+        "id integer, " // ID can be null when its not pushed to server yet
         "uid integer not null, "
         "description varchar, "
         "wid integer not null, "
