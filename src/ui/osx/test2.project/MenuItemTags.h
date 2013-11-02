@@ -13,3 +13,4 @@
 #define kMenuItemTagNew 3
 #define kMenuItemTagContinue 4
 #define kMenuItemTagStop 5
+#define kMenuItemTagClearCache 6

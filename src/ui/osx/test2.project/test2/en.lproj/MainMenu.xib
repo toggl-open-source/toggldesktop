@@ -65,21 +65,21 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Account" id="ORM-ao-M0m">
                         <items>
-                            <menuItem title="Sync" id="qrV-uu-7qU">
+                            <menuItem title="Sync" tag="1" id="qrV-uu-7qU">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="onSyncMenuItem:" target="494" id="u4k-n1-pLG"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="Nva-uM-toH"/>
-                            <menuItem title="Clear cache" id="OCn-tS-va2">
+                            <menuItem title="Clear cache" tag="6" id="OCn-tS-va2">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="onClearCacheMenuItem:" target="494" id="kgh-DN-75s"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="ocd-ur-e1h"/>
-                            <menuItem title="Logout" id="R7N-z5-83z">
+                            <menuItem title="Logout" tag="2" id="R7N-z5-83z">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="onLogoutMenuItem:" target="494" id="EQe-ox-ZRs"/>
