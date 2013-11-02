@@ -3,7 +3,7 @@
 #ifndef SRC_TOGGL_API_CLIENT_H_
 #define SRC_TOGGL_API_CLIENT_H_
 
-#include <unordered_set>
+#include <set>
 #include <string>
 #include <vector>
 #include <sstream>
@@ -534,7 +534,7 @@ namespace kopsik {
         void loadTasksFromJSONNode(JSONNODE *list, const bool full_sync);
         void loadTimeEntriesFromJSONNode(JSONNODE *list, const bool full_sync);
         void loadTimeEntryFromJSONNode(JSONNODE *data,
-                                       std::unordered_set<Poco::UInt64> *alive);
+                                       std::set<Poco::UInt64> *alive);
         void loadWorkspacesFromJSONNode(JSONNODE *list, const bool full_sync);
 
         void loadUpdateFromJSONNode(JSONNODE *data);

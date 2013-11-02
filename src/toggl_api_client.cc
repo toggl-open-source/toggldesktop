@@ -2,7 +2,7 @@
 
 #include "./toggl_api_client.h"
 
-#include <unordered_set>
+#include <set>
 #include <string>
 #include <cstring>
 #include <sstream>
@@ -633,7 +633,7 @@ void User::loadUpdateFromJSONNode(JSONNODE *node) {
 void User::loadProjectsFromJSONNode(JSONNODE *list, const bool full_sync) {
     poco_assert(list);
 
-    std::unordered_set<Poco::UInt64> alive;
+    std::set<Poco::UInt64> alive;
 
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
@@ -746,7 +746,7 @@ void Project::SetUID(Poco::UInt64 value) {
 void User::loadTasksFromJSONNode(JSONNODE *list, const bool full_sync) {
     poco_assert(list);
 
-    std::unordered_set<Poco::UInt64> alive;
+    std::set<Poco::UInt64> alive;
 
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
@@ -823,7 +823,7 @@ void Task::SetName(std::string value) {
 void User::loadWorkspacesFromJSONNode(JSONNODE *list, const bool full_sync) {
     poco_assert(list);
 
-    std::unordered_set<Poco::UInt64> alive;
+    std::set<Poco::UInt64> alive;
 
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
@@ -885,7 +885,7 @@ void Workspace::SetName(std::string value) {
 void User::loadTagsFromJSONNode(JSONNODE *list, const bool full_sync) {
     poco_assert(list);
 
-    std::unordered_set<Poco::UInt64> alive;
+    std::set<Poco::UInt64> alive;
 
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
@@ -962,7 +962,7 @@ void Tag::SetGUID(std::string value) {
 void User::loadClientsFromJSONNode(JSONNODE *list, const bool full_sync) {
     poco_assert(list);
 
-    std::unordered_set<Poco::UInt64> alive;
+    std::set<Poco::UInt64> alive;
 
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
@@ -1053,7 +1053,7 @@ Poco::UInt64 User::getIDFromJSONNode(JSONNODE *data) {
 void User::loadTimeEntriesFromJSONNode(JSONNODE *list, const bool full_sync) {
     poco_assert(list);
 
-    std::unordered_set<Poco::UInt64> alive;
+    std::set<Poco::UInt64> alive;
 
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
@@ -1078,7 +1078,7 @@ void User::loadTimeEntriesFromJSONNode(JSONNODE *list, const bool full_sync) {
 }
 
 void User::loadTimeEntryFromJSONNode(JSONNODE *data,
-        std::unordered_set<Poco::UInt64> *alive) {
+        std::set<Poco::UInt64> *alive) {
     poco_assert(data);
 
     Poco::UInt64 id = getIDFromJSONNode(data);
