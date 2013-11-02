@@ -238,7 +238,7 @@ NSString *kTimeTotalUnknown = @"--:--";
 }
 
 - (IBAction)onHelpMenuItem:(id)sender {
-  // FIXME: help
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://support.toggl.com/toggl-on-my-desktop/"]];
 }
 
 - (IBAction)onLogoutMenuItem:(id)sender {
