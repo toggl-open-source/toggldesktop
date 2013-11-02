@@ -1812,6 +1812,10 @@ kopsik_api_result kopsik_timeline_start(void *context,
     return KOPSIK_API_FAILURE;
   }
 
+  if (!ctx->user->RecordTimeline()) {
+    return KOPSIK_API_SUCCESS;
+  }
+
   Poco::Mutex::ScopedLock lock(*ctx->mutex);
 
   if (ctx->timeline_uploader) {

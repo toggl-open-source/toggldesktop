@@ -547,11 +547,12 @@ void User::LoadFromJSONString(const std::string &json,
 
 std::string User::String() {
     std::stringstream ss;
-    ss << "ID=" << id_ <<
-        " default_wid=" << default_wid_ <<
-        " local_id=" << local_id_ <<
-        " api_token=" << api_token_ <<
-        " since=" << since_;
+    ss  << "ID=" << id_
+        << " default_wid=" << default_wid_
+        << " local_id=" << local_id_
+        << " api_token=" << api_token_
+        << " since=" << since_
+        << " record_timeline=" << record_timeline_;
     return ss.str();
 }
 
