@@ -20,6 +20,7 @@
 #import "ModelChange.h"
 #import "ErrorHandler.h"
 #import "Update.h"
+#import "MenuItemTags.h"
 
 @interface MainWindowController ()
 @property (nonatomic,strong) IBOutlet LoginViewController *loginViewController;
@@ -181,9 +182,6 @@ void check_for_updates_callback(kopsik_api_result result,
   
   [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:update.URL]];
 }
-
-const int kMenuItemTagSync = 1;
-const int kMenuItemTagLogout = 2;
 
 - (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem {
   switch ([anItem tag]) {

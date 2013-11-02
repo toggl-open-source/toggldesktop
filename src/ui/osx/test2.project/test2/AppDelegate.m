@@ -17,6 +17,7 @@
 #import "AboutWindowController.h"
 #import "ErrorHandler.h"
 #import "ModelChange.h"
+#import "MenuItemTags.h"
 
 @interface  AppDelegate()
 @property (nonatomic,strong) IBOutlet MainWindowController *mainWindowController;
@@ -31,10 +32,6 @@
 @implementation AppDelegate
 
 int blink = 0;
-
-const int kMenuItemTagNew = 3;
-const int kMenuItemTagContinue = 4;
-const int kMenuItemTagStop = 5;
 
 NSString *kTimeTotalUnknown = @"--:--";
 
