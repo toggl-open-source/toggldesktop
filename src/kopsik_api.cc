@@ -167,8 +167,7 @@ void time_entry_to_view_item(
     kopsik::Project *p = user->GetProjectByID(te->PID());
     if (p) {
       poco_assert(!view_item->Project);
-
-      view_item->Project = strdup(p->Name().c_str());
+      view_item->Project = strdup(user->ProjectNameIncludingClient(p).c_str());
 
       poco_assert(!view_item->Color);
       view_item->Color = strdup(p->ColorCode().c_str());

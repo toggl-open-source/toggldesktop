@@ -149,8 +149,6 @@ namespace kopsik {
         std::string Name() { return name_; }
         void SetName(std::string value);
 
-        std::string NameIncludingClient();
-
         Poco::UInt64 UID() { return uid_; }
         void SetUID(Poco::UInt64 value);
 
