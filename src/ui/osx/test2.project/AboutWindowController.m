@@ -70,7 +70,8 @@
   } else if ([notification.name isEqualToString:kUIStateUpdateAvailable]) {
     self.update = notification.object;
     [self.checkForUpdateButton setEnabled:YES];
-    [self.checkForUpdateButton setTitle:@"Click here to download update!"];
+    NSString *title = [NSString stringWithFormat:@"Click here to download update! (%@)", self.update.version];
+    [self.checkForUpdateButton setTitle:title];
   }
 }
 
