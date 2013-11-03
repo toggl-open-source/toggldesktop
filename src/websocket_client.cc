@@ -149,8 +149,6 @@ error WebSocketClient::receiveWebSocketMessage(std::string *message) {
 }
 
 error WebSocketClient::poll() {
-  Poco::Logger &logger = Poco::Logger::get("websocket_client");
-  logger.debug("poll");
   try {
     Poco::Timespan span(250 * Poco::Timespan::MILLISECONDS);
     if (!ws_->poll(span, Poco::Net::Socket::SELECT_READ)) {
@@ -167,6 +165,7 @@ error WebSocketClient::poll() {
     }
     std::stringstream ss;
     ss << "WebSocket message: " << json;
+    Poco::Logger &logger = Poco::Logger::get("websocket_client");
     logger.debug(ss.str());
 
     std::string type = parseWebSocketMessageType(json);
