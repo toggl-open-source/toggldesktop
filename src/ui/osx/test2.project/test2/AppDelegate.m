@@ -43,8 +43,7 @@ NSString *kTimeTotalUnknown = @"--:--";
   
   self.mainWindowController = [[MainWindowController alloc] initWithWindowNibName:@"MainWindowController"];
   [self.mainWindowController.window setReleasedWhenClosed:NO];
-  [self.mainWindowController showWindow:self];
-  [NSApp activateIgnoringOtherApps:YES];
+  [self onShowMenuItem];
 
   self.preferencesWindowController = [[PreferencesWindowController alloc] initWithWindowNibName:@"PreferencesWindowController"];
 
@@ -279,6 +278,8 @@ NSString *kTimeTotalUnknown = @"--:--";
 - (void)onShowMenuItem {
   [self.mainWindowController showWindow:self];
   [NSApp activateIgnoringOtherApps:YES];
+  ProcessSerialNumber psn = { 0, kCurrentProcess };
+  TransformProcessType(&psn, kProcessTransformToForegroundApplication);
 }
 
 - (IBAction)onPreferencesMenuItem:(id)sender {
