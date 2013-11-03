@@ -128,29 +128,42 @@ std::string WebSocketClient::parseWebSocketMessageType(std::string json) {
   return type;
 }
 
-std::string WebSocketClient::receiveWebSocketMessage() {
-  char buf[kWebsocketBufSize];
+error WebSocketClient::receiveWebSocketMessage(std::string *message) {
   int flags = Poco::Net::WebSocket::FRAME_BINARY;
-  int n = ws_->receiveFrame(buf, kWebsocketBufSize, flags);
-  std::string json;
-  if (n > 0) {
-    json.append(buf, n);
+  std::string json("");
+  try {
+    char buf[kWebsocketBufSize];
+    int n = ws_->receiveFrame(buf, kWebsocketBufSize, flags);
+    if (n > 0) {
+      json.append(buf, n);
+    }
+  } catch(const Poco::Exception& exc) {
+    return error(exc.displayText());
+  } catch(const std::exception& ex) {
+    return error(ex.what());
+  } catch(const std::string& ex) {
+    return error(ex);
   }
-  return json;
+  *message = json;
+  return noError;
 }
 
-void WebSocketClient::runActivity() {
+error WebSocketClient::poll() {
   Poco::Logger &logger = Poco::Logger::get("websocket_client");
-  Poco::Timespan span(250 * Poco::Timespan::MILLISECONDS);
-  while (!activity_.isStopped()) {
+  logger.debug("poll");
+  try {
+    Poco::Timespan span(250 * Poco::Timespan::MILLISECONDS);
     if (!ws_->poll(span, Poco::Net::Socket::SELECT_READ)) {
-      continue;
+      return noError;
     }
 
-    std::string json = receiveWebSocketMessage();
+    std::string json("");
+    error err = receiveWebSocketMessage(&json);
+    if (err != noError) {
+      return err;
+    }
     if (json.empty()) {
-      logger.error("WebSocket peer has shut down or closed the connection");
-      break;
+      return error("WebSocket peer has shut down or closed the connection");
     }
     std::stringstream ss;
     ss << "WebSocket message: " << json;
@@ -159,18 +172,35 @@ void WebSocketClient::runActivity() {
     std::string type = parseWebSocketMessageType(json);
 
     if (activity_.isStopped()) {
-      break;
+      return noError;
     }
 
     if ("ping" == type) {
       ws_->sendFrame(kPong.data(),
         static_cast<int>(kPong.size()),
         Poco::Net::WebSocket::FRAME_BINARY);
-      continue;
+      return noError;
     }
 
     if ("data" == type) {
       on_websocket_message_(ctx_, json);
+    }
+  } catch(const Poco::Exception& exc) {
+    return error(exc.displayText());
+  } catch(const std::exception& ex) {
+    return error(ex.what());
+  } catch(const std::string& ex) {
+    return error(ex);
+  }
+  return noError;
+}
+
+void WebSocketClient::runActivity() {
+  Poco::Logger &logger = Poco::Logger::get("websocket_client");
+  while (!activity_.isStopped()) {
+    error err = poll();
+    if (err != noError) {
+      logger.error(err);
     }
   }
   logger.debug("WebSocketClient::runActivity finished");
