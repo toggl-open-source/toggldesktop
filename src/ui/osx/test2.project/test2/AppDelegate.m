@@ -31,6 +31,8 @@
 @property NSTimer *idleTimer;
 @property NSString *lastKnownLoginState;
 @property NSString *lastKnownTrackingState;
+@property int lastIdleSecondsReading;
+@property NSDate *lastIdleStarted;
 @end
 
 @implementation AppDelegate
@@ -432,12 +434,28 @@ NSString *kTimeTotalUnknown = @"--:--";
   }
 }
 
+const int kIdleThresholdSeconds = 10; // lower value for testing
+
 - (void)idleTimerFired:(NSTimer*)timer {
-  uint64_t tHandle = 0;
-  if (0 == get_idle_time(&tHandle)) {
-    NSLog(@"Idle time: %qi", tHandle);
-    
+  uint64_t idle_seconds = 0;
+  if (0 != get_idle_time(&idle_seconds)) {
+    NSLog(@"Achtung! Failed to get idle status.");
+    return;
   }
+  NSLog(@"Idle seconds: %qi", idle_seconds);
+
+  if (idle_seconds >= kIdleThresholdSeconds && self.lastIdleStarted == nil) {
+    self.lastIdleStarted = [NSDate date];
+    NSLog(@"User is idle since %@", self.lastIdleStarted);
+
+  } else if (self.lastIdleStarted != nil && self.lastIdleSecondsReading >= idle_seconds) {
+    NSLog(@"User is not idle since %@", [NSDate date]);
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventIdleFinished
+                                                        object:nil]; // FIXME: pass idle start and duration
+    self.lastIdleStarted = nil;
+  }
+  
+  self.lastIdleSecondsReading = idle_seconds;
 }
 
 - (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem {
