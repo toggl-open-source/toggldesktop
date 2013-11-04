@@ -506,17 +506,11 @@ const int kIdleThresholdSeconds = 10; // lower value for testing
     return YES;
 }
 
-- (IBAction)sync:(id)sender {
-  NSLog(@"sync");
-  [self startSync];
-}
-
 void sync_finished(kopsik_api_result result, const char *err) {
   NSLog(@"sync_finished");
   if (KOPSIK_API_SUCCESS != result) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                         object:[NSString stringWithUTF8String:err]];
-    
     return;
   }
   renderRunningTimeEntry();
@@ -606,6 +600,5 @@ void check_for_updates_callback(kopsik_api_result result,
   
   [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:update.URL]];
 }
-
 
 @end
