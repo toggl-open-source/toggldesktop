@@ -101,12 +101,12 @@ int get_idle_time(uint64_t *tHandle) {
     
     if (type == CFDataGetTypeID()) {
       CFDataGetBytes((CFDataRef) obj,
-                     CFRangeMake(0, sizeof(tHandle)),
-                     (UInt8*) &tHandle);
+                     CFRangeMake(0, sizeof(*tHandle)),
+                     (UInt8*) tHandle);
     }  else if (type == CFNumberGetTypeID()) {
       CFNumberGetValue((CFNumberRef)obj,
                        kCFNumberSInt64Type,
-                       &tHandle);
+                       tHandle);
     } else {
       printf("%d: unsupported type\n", (int)type);
       return 1;

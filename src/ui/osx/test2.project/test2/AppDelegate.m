@@ -20,6 +20,7 @@
 #import "MenuItemTags.h"
 #import "User.h"
 #import "Update.h"
+#import "idler.h"
 
 @interface  AppDelegate()
 @property (nonatomic,strong) IBOutlet MainWindowController *mainWindowController;
@@ -27,6 +28,7 @@
 @property (nonatomic,strong) IBOutlet AboutWindowController *aboutWindowController;
 @property TimeEntryViewItem *running_time_entry;
 @property NSTimer *statusItemTimer;
+@property NSTimer *idleTimer;
 @property NSString *lastKnownLoginState;
 @property NSString *lastKnownTrackingState;
 @end
@@ -215,6 +217,11 @@ NSString *kTimeTotalUnknown = @"--:--";
                                                         selector:@selector(statusItemTimerFired:)
                                                         userInfo:nil
                                                          repeats:YES];
+  self.idleTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
+                                                    target:self
+                                                  selector:@selector(idleTimerFired:)
+                                                  userInfo:nil
+                                                   repeats:YES];
 }
 
 - (void)onNewMenuItem {
@@ -422,6 +429,14 @@ NSString *kTimeTotalUnknown = @"--:--";
                                            str,
                                            duration_str_len);
     [self.statusItem setTitle:[NSString stringWithUTF8String:str]];
+  }
+}
+
+- (void)idleTimerFired:(NSTimer*)timer {
+  uint64_t tHandle = 0;
+  if (0 == get_idle_time(&tHandle)) {
+    NSLog(@"Idle time: %qi", tHandle);
+    
   }
 }
 
