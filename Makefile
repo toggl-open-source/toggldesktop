@@ -104,6 +104,7 @@ clean:
 	rm -rf build
 	rm -f $(main)
 	rm -f $(main)_test
+	cd third_party/libjson && make clean
 
 osx:
 	xcodebuild -project src/ui/osx/test2.project/kopsik_ui_osx.xcodeproj
