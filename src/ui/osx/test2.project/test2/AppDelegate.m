@@ -21,6 +21,7 @@
 #import "User.h"
 #import "Update.h"
 #import "idler.h"
+#import "IdleEvent.h"
 
 @interface  AppDelegate()
 @property (nonatomic,strong) IBOutlet MainWindowController *mainWindowController;
@@ -449,9 +450,14 @@ const int kIdleThresholdSeconds = 10; // lower value for testing
     NSLog(@"User is idle since %@", self.lastIdleStarted);
 
   } else if (self.lastIdleStarted != nil && self.lastIdleSecondsReading >= idle_seconds) {
-    NSLog(@"User is not idle since %@", [NSDate date]);
+    NSDate *now = [NSDate date];
+    IdleEvent *idleEvent = [[IdleEvent alloc] init];
+    idleEvent.started = self.lastIdleStarted;
+    idleEvent.finished = now;
+    idleEvent.seconds = self.lastIdleSecondsReading;
+    NSLog(@"User is not idle since %@", now);
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventIdleFinished
-                                                        object:nil]; // FIXME: pass idle start and duration
+                                                        object:idleEvent];
     self.lastIdleStarted = nil;
   }
   
