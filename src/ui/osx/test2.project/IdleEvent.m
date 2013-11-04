@@ -10,4 +10,9 @@
 
 @implementation IdleEvent
 
+- (NSString *)description {
+  return [NSString stringWithFormat:@"started: %@, finished: %@, seconds: %d",
+          self.started, self.finished, self.seconds];
+}
+
 @end
