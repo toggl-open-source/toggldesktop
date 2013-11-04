@@ -135,7 +135,7 @@
  *  up memory that has been allocated by the user.  This includes strings, binary data, and
  *  nodes.  It also exposes bulk delete functions.
  */
-//#define JSON_MEMORY_MANAGE
+#define JSON_MEMORY_MANAGE
 
 
 /*
