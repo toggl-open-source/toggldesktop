@@ -104,6 +104,8 @@ clean:
 	rm -rf build
 	rm -f $(main)
 	rm -f $(main)_test
+
+clean_deps:
 	cd third_party/libjson && make clean
 
 osx:
