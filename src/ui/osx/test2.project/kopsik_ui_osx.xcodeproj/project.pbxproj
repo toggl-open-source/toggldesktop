@@ -19,6 +19,8 @@
 		69FC181F17E6534500B96425 /* test2Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 69FC181E17E6534500B96425 /* test2Tests.m */; };
 		74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C9617EC1DE100CA53D3 /* libc++.dylib */; };
 		74033C9817EC1DF100CA53D3 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C8D17EC1CFD00CA53D3 /* libstdc++.dylib */; };
+		7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7423393A1829B99C00063FA9 /* IdleNotificationWindowController.m */; };
+		7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */; };
 		7424949E17F1E3D20030121C /* UIEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 7424949D17F1E3D20030121C /* UIEvents.m */; };
 		7424949F17F1E3D20030121C /* UIEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 7424949D17F1E3D20030121C /* UIEvents.m */; };
 		7430750418204EFB009019CB /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7430750218204EFB009019CB /* AboutWindowController.m */; };
@@ -29,8 +31,6 @@
 		743D942618279290000E6F70 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 743D942518279290000E6F70 /* IOKit.framework */; };
 		743D94281827929C000E6F70 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 743D94271827929C000E6F70 /* Carbon.framework */; };
 		743D942F1827C633000E6F70 /* IdleEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 743D942E1827C633000E6F70 /* IdleEvent.m */; };
-		743D943818282C5A000E6F70 /* IdleDetectedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 743D943618282C5A000E6F70 /* IdleDetectedViewController.m */; };
-		743D943918282C5A000E6F70 /* IdleDetectedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 743D943718282C5A000E6F70 /* IdleDetectedViewController.xib */; };
 		744CE72D1815CF5F00A7BEE4 /* ErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 744CE72C1815CF5F00A7BEE4 /* ErrorHandler.m */; };
 		744E126717F22AB900ABE72A /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 744E126617F22AB900ABE72A /* app.icns */; };
 		745B9CCB18155993006E7F37 /* ModelChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 745B9CCA18155993006E7F37 /* ModelChange.m */; };
@@ -140,6 +140,9 @@
 		69FC181E17E6534500B96425 /* test2Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = test2Tests.m; sourceTree = "<group>"; };
 		74033C8D17EC1CFD00CA53D3 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		74033C9617EC1DE100CA53D3 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
+		742339391829B99C00063FA9 /* IdleNotificationWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdleNotificationWindowController.h; sourceTree = "<group>"; };
+		7423393A1829B99C00063FA9 /* IdleNotificationWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdleNotificationWindowController.m; sourceTree = "<group>"; };
+		7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IdleNotificationWindowController.xib; sourceTree = "<group>"; };
 		7424949C17F1E3D20030121C /* UIEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIEvents.h; path = ../UIEvents.h; sourceTree = "<group>"; };
 		7424949D17F1E3D20030121C /* UIEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIEvents.m; path = ../UIEvents.m; sourceTree = "<group>"; };
 		7430750118204EFB009019CB /* AboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AboutWindowController.h; path = ../AboutWindowController.h; sourceTree = "<group>"; };
@@ -155,9 +158,6 @@
 		743D94291827A0E0000E6F70 /* idler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = idler.h; sourceTree = "<group>"; };
 		743D942D1827C633000E6F70 /* IdleEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IdleEvent.h; path = ../IdleEvent.h; sourceTree = "<group>"; };
 		743D942E1827C633000E6F70 /* IdleEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IdleEvent.m; path = ../IdleEvent.m; sourceTree = "<group>"; };
-		743D943518282C5A000E6F70 /* IdleDetectedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IdleDetectedViewController.h; path = ../IdleDetectedViewController.h; sourceTree = "<group>"; };
-		743D943618282C5A000E6F70 /* IdleDetectedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IdleDetectedViewController.m; path = ../IdleDetectedViewController.m; sourceTree = "<group>"; };
-		743D943718282C5A000E6F70 /* IdleDetectedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = IdleDetectedViewController.xib; path = ../IdleDetectedViewController.xib; sourceTree = "<group>"; };
 		744CE72B1815CF5F00A7BEE4 /* ErrorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ErrorHandler.h; path = ../ErrorHandler.h; sourceTree = "<group>"; };
 		744CE72C1815CF5F00A7BEE4 /* ErrorHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ErrorHandler.m; path = ../ErrorHandler.m; sourceTree = "<group>"; };
 		744E126617F22AB900ABE72A /* app.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = app.icns; sourceTree = "<group>"; };
@@ -319,9 +319,6 @@
 		69FC17FA17E6534400B96425 /* kopsik_ui */ = {
 			isa = PBXGroup;
 			children = (
-				743D943518282C5A000E6F70 /* IdleDetectedViewController.h */,
-				743D943618282C5A000E6F70 /* IdleDetectedViewController.m */,
-				743D943718282C5A000E6F70 /* IdleDetectedViewController.xib */,
 				743D942D1827C633000E6F70 /* IdleEvent.h */,
 				743D942E1827C633000E6F70 /* IdleEvent.m */,
 				743D94291827A0E0000E6F70 /* idler.h */,
@@ -379,6 +376,9 @@
 				745B9CCA18155993006E7F37 /* ModelChange.m */,
 				74A7346818297DD100525BBC /* ConvertHexColor.h */,
 				74A7346918297DD100525BBC /* ConvertHexColor.m */,
+				742339391829B99C00063FA9 /* IdleNotificationWindowController.h */,
+				7423393A1829B99C00063FA9 /* IdleNotificationWindowController.m */,
+				7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */,
 			);
 			name = kopsik_ui;
 			path = test2;
@@ -576,11 +576,11 @@
 				69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */,
 				C5DA1FC517F1B38B001C4565 /* LoginViewController.xib in Resources */,
 				69FC180517E6534400B96425 /* Credits.rtf in Resources */,
+				7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */,
 				74F7CDD81819897D00630BD0 /* on.png in Resources */,
 				69FC180B17E6534500B96425 /* MainMenu.xib in Resources */,
 				C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */,
 				74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
-				743D943918282C5A000E6F70 /* IdleDetectedViewController.xib in Resources */,
 				74D1D25F17EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */,
 				74F7CDD71819897D00630BD0 /* off.png in Resources */,
 				744E126717F22AB900ABE72A /* app.icns in Resources */,
@@ -640,7 +640,6 @@
 			files = (
 				74E3CDDD17FC8E8000C3ADD3 /* User.m in Sources */,
 				7424949E17F1E3D20030121C /* UIEvents.m in Sources */,
-				743D943818282C5A000E6F70 /* IdleDetectedViewController.m in Sources */,
 				C5CB7F0417F43EE100A2AEB1 /* TableViewCell.m in Sources */,
 				C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */,
 				74AA9472180909F50000539F /* GTMHTTPFetchHistory.m in Sources */,
@@ -666,6 +665,7 @@
 				74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */,
 				74D1D26B17EB728000E709B0 /* TimerViewController.m in Sources */,
 				744CE72D1815CF5F00A7BEE4 /* ErrorHandler.m in Sources */,
+				7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */,
 				7430750418204EFB009019CB /* AboutWindowController.m in Sources */,
 				74D1D27217EB72D900E709B0 /* TimerEditViewController.m in Sources */,
 				74E3CDCE17FBABE400C3ADD3 /* BugsnagNotifier.m in Sources */,
