@@ -36,7 +36,7 @@
                             </menuItem>
                             <menuItem title="Hide Toggl Desktop" keyEquivalent="h" id="134">
                                 <connections>
-                                    <action selector="hide:" target="-1" id="367"/>
+                                    <action selector="onHideMenuItem:" target="494" id="Ea0-RN-Fiy"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Hide Others" keyEquivalent="h" id="145">
@@ -308,9 +308,13 @@
                                     <action selector="performZoom:" target="-1" id="240"/>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="92">
-                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            <menuItem isSeparatorItem="YES" id="8qb-je-u7S"/>
+                            <menuItem title="Hide Main Window" keyEquivalent="w" id="O2e-Kb-cHX">
+                                <connections>
+                                    <action selector="onHideMenuItem:" target="494" id="dJX-ZW-bid"/>
+                                </connections>
                             </menuItem>
+                            <menuItem isSeparatorItem="YES" id="8rj-un-SH2"/>
                             <menuItem title="Bring All to Front" id="5">
                                 <connections>
                                     <action selector="arrangeInFront:" target="-1" id="39"/>

@@ -18,4 +18,5 @@
 - (IBAction)onClearCacheMenuItem:(id)sender;
 - (IBAction)onLogoutMenuItem:(id)sender;
 - (IBAction)onHelpMenuItem:(id)sender;
+- (IBAction)onHideMenuItem:(id)sender;
 @end

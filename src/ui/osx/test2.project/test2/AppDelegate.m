@@ -297,6 +297,10 @@ NSString *kTimeTotalUnknown = @"--:--";
   [NSApp activateIgnoringOtherApps:YES];
 }
 
+- (IBAction)onHideMenuItem:(id)sender {
+  [self.mainWindowController.window close];
+}
+
 - (void)onQuitMenuItem {
   [[NSApplication sharedApplication] terminate:self];
 }
