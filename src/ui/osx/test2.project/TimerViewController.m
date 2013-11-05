@@ -13,6 +13,7 @@
 #import "Context.h"
 #import "ModelChange.h"
 #import "ErrorHandler.h"
+#import "ConvertHexColor.h"
 
 @interface TimerViewController ()
 @property TimeEntryViewItem *running_time_entry;
@@ -105,6 +106,7 @@
   if (self.running_time_entry != nil) {
     [self.descriptionTextField setStringValue:self.running_time_entry.Description];
     [self.durationTextField setStringValue:self.running_time_entry.duration];
+    self.projectTextField.backgroundColor = [ConvertHexColor hexCodeToNSColor:view_item.color];
     if (self.running_time_entry.project != nil) {
       [self.projectTextField setStringValue:[self.running_time_entry.project uppercaseString]];
       [self.projectTextField setHidden:NO];

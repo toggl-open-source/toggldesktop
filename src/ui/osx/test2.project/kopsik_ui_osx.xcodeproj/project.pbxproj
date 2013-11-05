@@ -36,6 +36,7 @@
 		745B9CCB18155993006E7F37 /* ModelChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 745B9CCA18155993006E7F37 /* ModelChange.m */; };
 		749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 749CB8CA18167D6E00814841 /* PreferencesWindowController.m */; };
 		749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */; };
+		74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 74A7346918297DD100525BBC /* ConvertHexColor.m */; };
 		74AA94651808B2D00000539F /* TableViewHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA94641808B2D00000539F /* TableViewHeader.m */; };
 		74AA9471180909F50000539F /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA9467180909F50000539F /* GTMHTTPFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74AA9472180909F50000539F /* GTMHTTPFetchHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA9469180909F50000539F /* GTMHTTPFetchHistory.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -165,6 +166,8 @@
 		749CB8C918167D6E00814841 /* PreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesWindowController.h; sourceTree = SOURCE_ROOT; };
 		749CB8CA18167D6E00814841 /* PreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesWindowController.m; sourceTree = SOURCE_ROOT; };
 		749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreferencesWindowController.xib; sourceTree = SOURCE_ROOT; };
+		74A7346818297DD100525BBC /* ConvertHexColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConvertHexColor.h; sourceTree = "<group>"; };
+		74A7346918297DD100525BBC /* ConvertHexColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConvertHexColor.m; sourceTree = "<group>"; };
 		74AA94631808B2D00000539F /* TableViewHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewHeader.h; sourceTree = "<group>"; };
 		74AA94641808B2D00000539F /* TableViewHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewHeader.m; sourceTree = "<group>"; };
 		74AA9466180909F50000539F /* GTMHTTPFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMHTTPFetcher.h; path = "../../../../third_party/gtm-oauth2-read-only/HTTPFetcher/GTMHTTPFetcher.h"; sourceTree = "<group>"; };
@@ -374,6 +377,8 @@
 				69FC17FB17E6534400B96425 /* Supporting Files */,
 				745B9CC918155993006E7F37 /* ModelChange.h */,
 				745B9CCA18155993006E7F37 /* ModelChange.m */,
+				74A7346818297DD100525BBC /* ConvertHexColor.h */,
+				74A7346918297DD100525BBC /* ConvertHexColor.m */,
 			);
 			name = kopsik_ui;
 			path = test2;
@@ -657,6 +662,7 @@
 				74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */,
 				74E3CDD417FBABE400C3ADD3 /* BugsnagOSXNotifier.m in Sources */,
 				74AA9471180909F50000539F /* GTMHTTPFetcher.m in Sources */,
+				74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */,
 				74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */,
 				74D1D26B17EB728000E709B0 /* TimerViewController.m in Sources */,
 				744CE72D1815CF5F00A7BEE4 /* ErrorHandler.m in Sources */,
