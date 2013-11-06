@@ -22,11 +22,13 @@
 #import "Update.h"
 #import "idler.h"
 #import "IdleEvent.h"
+#import "IdleNotificationWindowController.h"
 
 @interface  AppDelegate()
 @property (nonatomic,strong) IBOutlet MainWindowController *mainWindowController;
 @property (nonatomic,strong) IBOutlet PreferencesWindowController *preferencesWindowController;
 @property (nonatomic,strong) IBOutlet AboutWindowController *aboutWindowController;
+@property (nonatomic,strong) IBOutlet IdleNotificationWindowController *idleNotificationWindowController;
 @property TimeEntryViewItem *running_time_entry;
 @property NSTimer *statusItemTimer;
 @property NSTimer *idleTimer;
@@ -48,12 +50,15 @@ NSString *kTimeTotalUnknown = @"--:--";
   
   self.mainWindowController = [[MainWindowController alloc] initWithWindowNibName:@"MainWindowController"];
   [self.mainWindowController.window setReleasedWhenClosed:NO];
+
   [self onShowMenuItem];
 
   self.preferencesWindowController = [[PreferencesWindowController alloc] initWithWindowNibName:@"PreferencesWindowController"];
 
   self.aboutWindowController = [[AboutWindowController alloc] initWithWindowNibName:@"AboutWindowController"];
-  
+
+  self.idleNotificationWindowController = [[IdleNotificationWindowController alloc] initWithWindowNibName:@"IdleNotificationWindowController"];
+
   [self createStatusItem];
   
   self.lastKnownLoginState = kUIStateUserLoggedOut;
@@ -113,7 +118,6 @@ NSString *kTimeTotalUnknown = @"--:--";
   if ([checkEnabled boolValue]) {
     [self checkForUpdates];
   }
-  
 }
 
 - (void)startWebSocket {
@@ -220,7 +224,7 @@ NSString *kTimeTotalUnknown = @"--:--";
                                                         selector:@selector(statusItemTimerFired:)
                                                         userInfo:nil
                                                          repeats:YES];
-  self.idleTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
+  self.idleTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                     target:self
                                                   selector:@selector(idleTimerFired:)
                                                   userInfo:nil
@@ -439,7 +443,7 @@ NSString *kTimeTotalUnknown = @"--:--";
   }
 }
 
-const int kIdleThresholdSeconds = 10; // lower value for testing
+const int kIdleThresholdSeconds = 5; // lower value for testing
 
 - (void)idleTimerFired:(NSTimer*)timer {
   uint64_t idle_seconds = 0;
@@ -459,9 +463,8 @@ const int kIdleThresholdSeconds = 10; // lower value for testing
     idleEvent.started = self.lastIdleStarted;
     idleEvent.finished = now;
     idleEvent.seconds = self.lastIdleSecondsReading;
+    [self.idleNotificationWindowController showWindow:self];
     NSLog(@"User is not idle since %@", now);
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventIdleFinished
-                                                        object:idleEvent];
     self.lastIdleStarted = nil;
   }
   

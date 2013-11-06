@@ -7,9 +7,11 @@
 //
 
 #import "IdleNotificationWindowController.h"
+#import "UIEvents.h"
+#import "IdleEvent.h"
 
 @interface IdleNotificationWindowController ()
-
+@property IdleEvent *idleEvent;
 @end
 
 @implementation IdleNotificationWindowController
@@ -31,12 +33,19 @@
 }
 
 - (IBAction)stopButtonClicked:(id)sender {
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandStopAt
+                                                      object:self.idleEvent];
+  [self close];
 }
 
 - (IBAction)splitButtonClicked:(id)sender {
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandSplitAt
+                                                      object:self.idleEvent];
+  [self close];
 }
 
 - (IBAction)ignoreButtonClicked:(id)sender {
+  [self close];
 }
 
 

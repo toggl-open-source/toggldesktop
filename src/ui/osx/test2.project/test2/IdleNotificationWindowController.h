@@ -9,9 +9,6 @@
 #import <Cocoa/Cocoa.h>
 
 @interface IdleNotificationWindowController : NSWindowController
-@property (weak) IBOutlet NSButton *stopButton;
-@property (weak) IBOutlet NSButton *splitButton;
-@property (weak) IBOutlet NSButton *ignoreButton;
 - (IBAction)stopButtonClicked:(id)sender;
 - (IBAction)splitButtonClicked:(id)sender;
 - (IBAction)ignoreButtonClicked:(id)sender;

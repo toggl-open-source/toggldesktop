@@ -21,10 +21,11 @@ extern NSString *const kUIStateUpToDate;
 
 // Events
 extern NSString *const kUIEventModelChange;
-extern NSString *const kUIEventIdleFinished;
 
 // Commands
 extern NSString *const kUICommandNew;
 extern NSString *const kUICommandStop;
 extern NSString *const kUICommandContinue;
 extern NSString *const kUICommandShowPreferences;
+extern NSString *const kUICommandStopAt;
+extern NSString *const kUICommandSplitAt;
