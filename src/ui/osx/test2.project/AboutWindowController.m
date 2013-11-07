@@ -8,7 +8,6 @@
 
 #import "AboutWindowController.h"
 #import "Context.h"
-#import "kopsik_api.h"
 #import "ErrorHandler.h"
 #import "Update.h"
 
