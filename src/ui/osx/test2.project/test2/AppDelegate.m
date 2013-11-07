@@ -191,6 +191,8 @@ NSString *kTimeTotalUnknown = @"--:--";
 
   } else if ([notification.name isEqualToString:kUICommandSplitAt]) {
     IdleEvent *idleEvent = notification.object;
+    NSLog(@"Idle event: %@", idleEvent);
+    NSAssert(idleEvent != nil, @"idle event cannot be nil");
     char err[KOPSIK_ERR_LEN];
     KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
     int was_found = 0;
@@ -219,6 +221,8 @@ NSString *kTimeTotalUnknown = @"--:--";
 
   } else if ([notification.name isEqualToString:kUICommandStopAt]) {
     IdleEvent *idleEvent = notification.object;
+    NSAssert(idleEvent != nil, @"idle event cannot be nil");
+    NSLog(@"Idle event: %@", idleEvent);
     char err[KOPSIK_ERR_LEN];
     KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
     int was_found = 0;
@@ -526,6 +530,7 @@ const int kIdleThresholdSeconds = 5; // lower value for testing
       idleEvent.started = self.lastIdleStarted;
       idleEvent.finished = now;
       idleEvent.seconds = self.lastIdleSecondsReading;
+      self.idleNotificationWindowController.idleEvent = idleEvent;
       [self.idleNotificationWindowController showWindow:self];
     }
     NSLog(@"User is not idle since %@", now);

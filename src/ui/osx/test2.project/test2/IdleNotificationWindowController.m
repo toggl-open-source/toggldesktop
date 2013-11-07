@@ -11,7 +11,6 @@
 #import "IdleEvent.h"
 
 @interface IdleNotificationWindowController ()
-@property IdleEvent *idleEvent;
 @end
 
 @implementation IdleNotificationWindowController

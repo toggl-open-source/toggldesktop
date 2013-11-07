@@ -7,9 +7,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "IdleEvent.h"
 
 @interface IdleNotificationWindowController : NSWindowController
 - (IBAction)stopButtonClicked:(id)sender;
 - (IBAction)splitButtonClicked:(id)sender;
 - (IBAction)ignoreButtonClicked:(id)sender;
+@property IdleEvent *idleEvent;
 @end
