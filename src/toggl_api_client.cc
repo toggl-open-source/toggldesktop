@@ -166,6 +166,46 @@ std::vector<TimeEntry *> User::Stop() {
     return result;
 }
 
+TimeEntry *User::SplitAt(const unsigned int at) {
+  TimeEntry *running = RunningTimeEntry();
+  if (!running) {
+    return 0;
+  }
+  running->StopAt(at);
+  TimeEntry *te = new TimeEntry();
+  te->SetDescription("");
+  te->SetUID(ID());
+  te->SetStart(time(0));
+  te->SetDurationInSeconds(-at);
+  te->SetWID(running->WID());
+  te->SetPID(running->PID());
+  te->SetTID(running->TID());
+  te->SetUIModifiedAt(time(0));
+  te->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
+  related.TimeEntries.push_back(te);
+  return te;
+}
+
+TimeEntry *User::StopAt(const unsigned int at) {
+  TimeEntry *running = RunningTimeEntry();
+  if (!running) {
+    return 0;
+  }
+  running->StopAt(at);
+  TimeEntry *te = new TimeEntry();
+  te->SetDescription("");
+  te->SetUID(ID());
+  te->SetStart(time(0));
+  te->SetDurationInSeconds(-at);
+  te->SetWID(running->WID());
+  te->SetPID(running->PID());
+  te->SetTID(running->TID());
+  te->SetUIModifiedAt(time(0));
+  te->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
+  related.TimeEntries.push_back(te);
+  return te;
+}
+
 TimeEntry *User::RunningTimeEntry() {
     for (std::vector<TimeEntry *>::const_iterator it =
             related.TimeEntries.begin();
@@ -180,6 +220,12 @@ TimeEntry *User::RunningTimeEntry() {
 
 bool TimeEntry::NeedsPush() {
     return NeedsPOST() || NeedsPUT() || NeedsDELETE();
+}
+
+void TimeEntry::StopAt(const unsigned int at) {
+  SetDurationInSeconds(at + DurationInSeconds());
+  SetStop(at);
+  SetUIModifiedAt(time(0));
 }
 
 bool TimeEntry::NeedsPOST() {

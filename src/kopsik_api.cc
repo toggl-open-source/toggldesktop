@@ -1565,6 +1565,72 @@ kopsik_api_result kopsik_stop(
   return KOPSIK_API_SUCCESS;
 }
 
+kopsik_api_result kopsik_split_running_time_entry_at(
+    void *context,
+    char *errmsg, const unsigned int errlen,
+    const unsigned int at,
+    KopsikTimeEntryViewItem *out_view_item,
+    int *was_found) {
+  poco_assert(context);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(out_view_item);
+  poco_assert(was_found);
+
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_stop");
+
+  Context *ctx = reinterpret_cast<Context *>(context);
+
+  if (!ctx->user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
+  Poco::Mutex::ScopedLock lock(*ctx->mutex);
+
+  *was_found = 0;
+  kopsik::TimeEntry *running = ctx->user->SplitAt(at);
+  if (running) {
+    *was_found = 1;
+    time_entry_to_view_item(running, ctx->user, out_view_item);
+  }
+  return save(ctx, errmsg, errlen);
+}
+
+kopsik_api_result kopsik_stop_running_time_entry_at(
+    void *context,
+    char *errmsg, const unsigned int errlen,
+    const unsigned int at,
+    KopsikTimeEntryViewItem *out_view_item,
+    int *was_found) {
+  poco_assert(context);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(out_view_item);
+  poco_assert(was_found);
+
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_stop");
+
+  Context *ctx = reinterpret_cast<Context *>(context);
+
+  if (!ctx->user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
+  Poco::Mutex::ScopedLock lock(*ctx->mutex);
+
+  *was_found = 0;
+  kopsik::TimeEntry *stopped = ctx->user->StopAt(at);
+  if (stopped) {
+    *was_found = 1;
+    time_entry_to_view_item(stopped, ctx->user, out_view_item);
+  }
+  return save(ctx, errmsg, errlen);
+}
+
 kopsik_api_result kopsik_running_time_entry_view_item(
     void *context,
     char *errmsg, unsigned int errlen,

@@ -88,6 +88,14 @@ NSString *kTimeTotalUnknown = @"--:--";
                                            selector:@selector(eventHandler:)
                                                name:kUIEventModelChange
                                              object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(eventHandler:)
+                                               name:kUICommandSplitAt
+                                             object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(eventHandler:)
+                                               name:kUICommandStopAt
+                                             object:nil];
 
   kopsik_set_change_callback(ctx, on_model_change);
   
@@ -179,6 +187,57 @@ NSString *kTimeTotalUnknown = @"--:--";
       // When it happens, timer keeps on running, but the time should be
       // updated on status item:
       self.running_time_entry = [TimeEntryViewItem findByGUID:ch.GUID];
+    }
+
+  } else if ([notification.name isEqualToString:kUICommandSplitAt]) {
+    IdleEvent *idleEvent = notification.object;
+    char err[KOPSIK_ERR_LEN];
+    KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
+    int was_found = 0;
+    kopsik_api_result res = kopsik_split_running_time_entry_at(ctx,
+                                                               err,
+                                                               KOPSIK_ERR_LEN,
+                                                               [idleEvent.started timeIntervalSince1970],
+                                                               item,
+                                                               &was_found);
+    if (KOPSIK_API_SUCCESS != res) {
+      kopsik_time_entry_view_item_clear(item);
+      handle_error(res, err);
+      return;
+    }
+    
+    if (was_found) {
+      TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
+      [te load:item];
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning
+                                                          object:te];
+    }
+
+    kopsik_time_entry_view_item_clear(item);
+
+  } else if ([notification.name isEqualToString:kUICommandStopAt]) {
+    IdleEvent *idleEvent = notification.object;
+    char err[KOPSIK_ERR_LEN];
+    KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
+    int was_found = 0;
+    NSTimeInterval at = [idleEvent.started timeIntervalSince1970];
+    kopsik_api_result res = kopsik_stop_running_time_entry_at(ctx,
+                                                              err,
+                                                              KOPSIK_ERR_LEN,
+                                                              at,
+                                                              item,
+                                                              &was_found);
+    if (KOPSIK_API_SUCCESS != res) {
+      kopsik_time_entry_view_item_clear(item);
+      handle_error(res, err);
+      return;
+    }
+
+    if (was_found) {
+      TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
+      [te load:item];
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped
+                                                          object:te];
     }
   }
   
@@ -459,11 +518,13 @@ const int kIdleThresholdSeconds = 5; // lower value for testing
 
   } else if (self.lastIdleStarted != nil && self.lastIdleSecondsReading >= idle_seconds) {
     NSDate *now = [NSDate date];
-    IdleEvent *idleEvent = [[IdleEvent alloc] init];
-    idleEvent.started = self.lastIdleStarted;
-    idleEvent.finished = now;
-    idleEvent.seconds = self.lastIdleSecondsReading;
-    [self.idleNotificationWindowController showWindow:self];
+    if (self.running_time_entry != nil) {
+      IdleEvent *idleEvent = [[IdleEvent alloc] init];
+      idleEvent.started = self.lastIdleStarted;
+      idleEvent.finished = now;
+      idleEvent.seconds = self.lastIdleSecondsReading;
+      [self.idleNotificationWindowController showWindow:self];
+    }
     NSLog(@"User is not idle since %@", now);
     self.lastIdleStarted = nil;
   }

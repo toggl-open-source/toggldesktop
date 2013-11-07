@@ -362,6 +362,8 @@ namespace kopsik {
             dirty_ = true;
         }
 
+        void StopAt(const unsigned int at);
+
         std::vector<std::string> TagNames;
 
         void LoadFromJSONNode(JSONNODE *node);
@@ -481,6 +483,8 @@ namespace kopsik {
         TimeEntry *Continue(std::string GUID);
         TimeEntry *Latest();
         std::vector<TimeEntry *> Stop();
+        TimeEntry *SplitAt(const unsigned int at);
+        TimeEntry *StopAt(const unsigned int at);
 
         Poco::Int64 LocalID() { return local_id_; }
         void SetLocalID(Poco::Int64 value) { local_id_ = value; }
