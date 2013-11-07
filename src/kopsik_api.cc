@@ -1576,6 +1576,7 @@ kopsik_api_result kopsik_split_running_time_entry_at(
   poco_assert(errlen);
   poco_assert(out_view_item);
   poco_assert(was_found);
+  poco_assert(at);
 
   Poco::Logger &logger = Poco::Logger::get("kopsik_api");
   logger.debug("kopsik_stop");
@@ -1609,6 +1610,7 @@ kopsik_api_result kopsik_stop_running_time_entry_at(
   poco_assert(errlen);
   poco_assert(out_view_item);
   poco_assert(was_found);
+  poco_assert(at);
 
   Poco::Logger &logger = Poco::Logger::get("kopsik_api");
   logger.debug("kopsik_stop");

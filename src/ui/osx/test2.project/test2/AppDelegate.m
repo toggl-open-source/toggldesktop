@@ -1,5 +1,5 @@
 //
-//  AppDelegate.m
+//  f8ppDelegate.m
 //  test2
 //
 //  Created by Alari on 9/15/13.
@@ -194,10 +194,12 @@ NSString *kTimeTotalUnknown = @"--:--";
     char err[KOPSIK_ERR_LEN];
     KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
     int was_found = 0;
+    NSTimeInterval at = [idleEvent.started timeIntervalSince1970];
+    NSLog(@"Time entry split at %f", at);
     kopsik_api_result res = kopsik_split_running_time_entry_at(ctx,
                                                                err,
                                                                KOPSIK_ERR_LEN,
-                                                               [idleEvent.started timeIntervalSince1970],
+                                                               at,
                                                                item,
                                                                &was_found);
     if (KOPSIK_API_SUCCESS != res) {
@@ -221,6 +223,7 @@ NSString *kTimeTotalUnknown = @"--:--";
     KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
     int was_found = 0;
     NSTimeInterval at = [idleEvent.started timeIntervalSince1970];
+    NSLog(@"Time entry stop at %f", at);
     kopsik_api_result res = kopsik_stop_running_time_entry_at(ctx,
                                                               err,
                                                               KOPSIK_ERR_LEN,
