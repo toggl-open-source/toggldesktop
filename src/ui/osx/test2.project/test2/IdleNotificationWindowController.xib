@@ -7,6 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="IdleNotificationWindowController">
             <connections>
+                <outlet property="informationTextField" destination="Omw-68-CrN" id="ddS-Y2-xFN"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>
         </customObject>

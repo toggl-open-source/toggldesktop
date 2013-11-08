@@ -21,6 +21,8 @@ extern NSString *const kUIStateUpToDate;
 
 // Events
 extern NSString *const kUIEventModelChange;
+extern NSString *const kUIEventIdleFinished;
+
 
 // Commands
 extern NSString *const kUICommandNew;

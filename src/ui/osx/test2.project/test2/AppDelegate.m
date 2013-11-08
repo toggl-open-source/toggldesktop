@@ -530,8 +530,8 @@ const int kIdleThresholdSeconds = 5; // lower value for testing
       idleEvent.started = self.lastIdleStarted;
       idleEvent.finished = now;
       idleEvent.seconds = self.lastIdleSecondsReading;
-      self.idleNotificationWindowController.idleEvent = idleEvent;
-      [self.idleNotificationWindowController showWindow:self];
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventIdleFinished
+                                                          object:idleEvent];
     }
     NSLog(@"User is not idle since %@", now);
     self.lastIdleStarted = nil;

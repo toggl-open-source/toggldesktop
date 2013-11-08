@@ -97,6 +97,10 @@
                                              selector:@selector(eventHandler:)
                                                  name:kUICommandStop
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eventHandler:)
+                                                 name:kUIEventIdleFinished
+                                               object:nil];
   }
   return self;
 }

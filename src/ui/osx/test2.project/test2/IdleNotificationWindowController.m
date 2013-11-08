@@ -11,6 +11,7 @@
 #import "IdleEvent.h"
 
 @interface IdleNotificationWindowController ()
+@property IdleEvent *idleEvent;
 @end
 
 @implementation IdleNotificationWindowController
@@ -19,16 +20,12 @@
 {
     self = [super initWithWindow:window];
     if (self) {
-        // Initialization code here.
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUIEventIdleFinished
+                                                 object:nil];
     }
     return self;
-}
-
-- (void)windowDidLoad
-{
-    [super windowDidLoad];
-    
-    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
 }
 
 - (IBAction)stopButtonClicked:(id)sender {
@@ -47,5 +44,16 @@
   [self close];
 }
 
+-(void)eventHandler: (NSNotification *) notification
+{
+  if ([notification.name isEqualToString:kUIEventIdleFinished]) {
+    self.idleEvent = notification.object;
+    NSString *information = [NSString stringWithFormat:@"You have been idle for %d minutes.", self.idleEvent.seconds / 60];
+    NSAssert(self.informationTextField != nil,
+             @"self.informationTextField cannot be nil at this point");
+    [self.informationTextField setStringValue:information];
+    [self showWindow:self];
+  }
+}
 
 @end
