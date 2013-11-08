@@ -198,6 +198,9 @@ void time_entry_to_view_item(
 
   poco_assert(!view_item->DateHeader);
   view_item->DateHeader = strdup(te->DateHeaderString().c_str());
+
+  poco_assert(!view_item->DateDuration);
+  view_item->DateDuration = strdup("11:23");
 }
 
 // Context API.
@@ -998,6 +1001,10 @@ void kopsik_time_entry_view_item_clear(KopsikTimeEntryViewItem *item) {
   if (item->DateHeader) {
     free(item->DateHeader);
     item->DateHeader = 0;
+  }
+  if (item->DateDuration) {
+    free(item->DateDuration);
+    item->DateDuration = 0;
   }
   delete item;
   item = 0;

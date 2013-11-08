@@ -179,7 +179,11 @@ typedef struct {
   unsigned int Started;
   unsigned int Ended;
   char *UpdatedAt;
+  // in UIs the time entry is propbably going to be shown
+  // under a date header. Add information needed to render
+  // the date header: Yesterday (01:23)
   char *DateHeader;
+  char *DateDuration;
 } KopsikTimeEntryViewItem;
 
 typedef struct {
