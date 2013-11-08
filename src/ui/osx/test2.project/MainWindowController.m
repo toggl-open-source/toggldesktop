@@ -265,6 +265,11 @@
       return;
     }
 
+    // Ignore WEbsocket offline errors too
+    if ([msg rangeOfString:@"WebSocket Exception: Cannot upgrade to WebSocket connection: OK"].location != NSNotFound) {
+      return;
+    }
+
     [self performSelectorOnMainThread:@selector(showError:) withObject:msg waitUntilDone:NO];
 
     [Bugsnag notify:[NSException
