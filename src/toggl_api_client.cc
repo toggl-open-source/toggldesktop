@@ -167,6 +167,14 @@ std::vector<TimeEntry *> User::Stop() {
 }
 
 TimeEntry *User::SplitAt(const unsigned int at) {
+  poco_assert(at > 0);
+
+  std::stringstream ss;
+  ss << "User is splitting running time entry at " << at;
+
+  Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
+  logger.debug(ss.str());
+
   TimeEntry *running = RunningTimeEntry();
   if (!running) {
     return 0;
@@ -187,23 +195,18 @@ TimeEntry *User::SplitAt(const unsigned int at) {
 }
 
 TimeEntry *User::StopAt(const unsigned int at) {
+  poco_assert(at > 0);
+
+  std::stringstream ss;
+  ss << "User is stopping running time entry at " << at;
+  Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
+  logger.debug(ss.str());
+
   TimeEntry *running = RunningTimeEntry();
-  if (!running) {
-    return 0;
+  if (running) {
+    running->StopAt(at);
   }
-  running->StopAt(at);
-  TimeEntry *te = new TimeEntry();
-  te->SetDescription("");
-  te->SetUID(ID());
-  te->SetStart(time(0));
-  te->SetDurationInSeconds(-at);
-  te->SetWID(running->WID());
-  te->SetPID(running->PID());
-  te->SetTID(running->TID());
-  te->SetUIModifiedAt(time(0));
-  te->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
-  related.TimeEntries.push_back(te);
-  return te;
+  return running;
 }
 
 TimeEntry *User::RunningTimeEntry() {
@@ -223,9 +226,11 @@ bool TimeEntry::NeedsPush() {
 }
 
 void TimeEntry::StopAt(const unsigned int at) {
-  SetDurationInSeconds(at + DurationInSeconds());
-  SetStop(at);
-  SetUIModifiedAt(time(0));
+    poco_assert(at);
+    SetDurationInSeconds(at + DurationInSeconds());
+    poco_assert(DurationInSeconds() > 0);
+    SetStop(at);
+    SetUIModifiedAt(time(0));
 }
 
 bool TimeEntry::NeedsPOST() {
