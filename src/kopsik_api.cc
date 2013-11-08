@@ -216,7 +216,11 @@ void *kopsik_context_init(const char *app_name, const char *app_version) {
   ctx->app_name = std::string(app_name);
   ctx->app_version = std::string(app_version);
 
+#ifdef TEST
+  ctx->api_url = "http://0.0.0.0:8080";
+#else
   ctx->api_url = "https://www.toggl.com";
+#endif
   ctx->https_client = new kopsik::HTTPSClient(ctx->api_url,
     ctx->app_name, ctx->app_version);
   ctx->ws_client = new kopsik::WebSocketClient("https://stream.toggl.com",
