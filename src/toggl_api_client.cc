@@ -166,7 +166,7 @@ std::vector<TimeEntry *> User::Stop() {
     return result;
 }
 
-TimeEntry *User::SplitAt(const unsigned int at) {
+TimeEntry *User::SplitAt(const Poco::Int64 at) {
   poco_assert(at > 0);
 
   std::stringstream ss;
@@ -180,21 +180,26 @@ TimeEntry *User::SplitAt(const unsigned int at) {
     return 0;
   }
   running->StopAt(at);
+
   TimeEntry *te = new TimeEntry();
   te->SetDescription("");
   te->SetUID(ID());
-  te->SetStart(time(0));
+  te->SetStart(at);
   te->SetDurationInSeconds(-at);
   te->SetWID(running->WID());
   te->SetPID(running->PID());
   te->SetTID(running->TID());
   te->SetUIModifiedAt(time(0));
   te->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
+
+  poco_assert(te->DurationInSeconds() < 0);
+//  poco_assert(te->Start() == at);
+
   related.TimeEntries.push_back(te);
   return te;
 }
 
-TimeEntry *User::StopAt(const unsigned int at) {
+TimeEntry *User::StopAt(const Poco::Int64 at) {
   poco_assert(at > 0);
 
   std::stringstream ss;
@@ -225,7 +230,7 @@ bool TimeEntry::NeedsPush() {
     return NeedsPOST() || NeedsPUT() || NeedsDELETE();
 }
 
-void TimeEntry::StopAt(const unsigned int at) {
+void TimeEntry::StopAt(const Poco::Int64 at) {
     poco_assert(at);
     SetDurationInSeconds(at + DurationInSeconds());
     poco_assert(DurationInSeconds() > 0);
