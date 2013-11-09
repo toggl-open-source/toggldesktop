@@ -47,6 +47,8 @@
     self.updatedAt = nil;
   }
   self.dateHeader = [NSString stringWithUTF8String:data->DateHeader];
+  self.dateDuration = [NSString stringWithUTF8String:data->DateDuration];
+  
 }
 
 // FIXME: move to lib, so it becomes cross platform

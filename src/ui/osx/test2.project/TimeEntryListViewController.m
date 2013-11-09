@@ -61,8 +61,8 @@
         TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
         [model load:item];
         if (dateHeader == nil || ![model.dateHeader isEqual:dateHeader]) {
+          [viewitems addObject:[NSString stringWithFormat:@"%@ (%@)", model.dateHeader, model.dateDuration]];
           dateHeader = model.dateHeader;
-          [viewitems addObject:dateHeader];
         }
         [viewitems addObject:model];
       }

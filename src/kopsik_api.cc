@@ -150,7 +150,8 @@ kopsik_api_result save(Context *ctx,
 void time_entry_to_view_item(
     kopsik::TimeEntry *te,
     kopsik::User *user,
-    KopsikTimeEntryViewItem *view_item) {
+    KopsikTimeEntryViewItem *view_item,
+    const std::string dateDuration) {
   poco_assert(te);
   poco_assert(user);
   poco_assert(view_item);
@@ -1060,7 +1061,7 @@ kopsik_api_result kopsik_start(
   if (KOPSIK_API_SUCCESS != res) {
     return res;
   }
-  time_entry_to_view_item(te, ctx->user, out_view_item);
+  time_entry_to_view_item(te, ctx->user, out_view_item, ctx->user->DateDuration(te));
   return KOPSIK_API_SUCCESS;
 }
 
