@@ -42,17 +42,27 @@
     return self;
 }
 
--(void) updateHeader:(NSString *)date
+-(void) updateHeader:(NSDate *)date withFormattedDate:(NSString *)formattedDate
 {
   NSLog(@"updateHeader date: %@", date);
+  DateHeader *header = nil;
+  // Find header from view items list.
   for (int i=0; i < viewitems.count; i++) {
     if ([viewitems[i] isKindOfClass:[DateHeader class]]) {
-      DateHeader *header = (DateHeader*)viewitems[i];
-      if ([header.date isEqualToString:date]) {
-        header.duration = [self durationForDate:date];
-        return;
+      DateHeader *h = viewitems[i];
+      if ([h.actualDate isEqualToDate:date]) {
+        NSAssert(header == nil, @"header with same date already found");
+        header = h;
       }
     }
+  }
+  // If header not found, find insert point
+  if (header == nil) {
+    header = [[DateHeader alloc] init];
+    header.formattedDate = formattedDate;
+    header.actualDate = date;
+    header.duration = [self durationForDate:formattedDate];
+    [viewitems addObject:header];
   }
 }
 
@@ -85,26 +95,28 @@
     }
 
     @synchronized(viewitems) {
+      // All time entries are sorted by start at this point.
       [viewitems removeAllObjects];
-      DateHeader *header = nil;
+      NSString *date = nil;
       for (int i = 0; i < list->Length; i++) {
         KopsikTimeEntryViewItem *item = list->ViewItems[i];
         TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
         [model load:item];
-        if (header == nil || ![model.date isEqual:header.date]) {
-          // Add a date + duration per day header before time entry
-          header = [[DateHeader alloc] init];
-          header.date = model.date;
+        // Add header if necessary
+        if (date == nil || ![date isEqualToString:model.date]) {
+          DateHeader *header = [[DateHeader alloc] init];
+          header.actualDate = model.started;
+          header.formattedDate = model.date;
           header.duration = [self durationForDate:model.date];
           [viewitems addObject:header];
         }
+        date = model.date;
         [viewitems addObject:model];
       }
     }
 
     kopsik_time_entry_view_item_list_clear(list);
     [self.timeEntriesTableView reloadData];
-    
     return;
   }
 
@@ -133,7 +145,7 @@
         }
         if (found) {
           [viewitems removeObject:found];
-          [self updateHeader:found.date];
+          [self updateHeader:found.started withFormattedDate:found.date];
         }
       }
       [self.timeEntriesTableView reloadData];
@@ -154,7 +166,7 @@
           continue;
         }
         [viewitems replaceObjectAtIndex:i withObject:updated];
-        [self updateHeader:updated.date];
+        [self updateHeader:updated.started withFormattedDate:updated.date];
         found = YES;
         break;
       }
@@ -162,19 +174,19 @@
     
     if (found) {
       [self.timeEntriesTableView reloadData];
-      
       return;
     }
 
     // Since TE was not found in our list, it must be a new time entry.
     // Insert it to list, if it's not tracking.
-    if (updated.duration_in_seconds >= 0) {
-      @synchronized(viewitems) {
-        [viewitems insertObject:updated atIndex:0];
-        [self updateHeader:updated.date];
-      }
-      [self.timeEntriesTableView reloadData];
+    if (updated.duration_in_seconds < 0) {
+      return;
     }
+    @synchronized(viewitems) {
+      [self updateHeader:updated.started withFormattedDate:updated.date];
+      [viewitems addObject:updated];
+    }
+    [self.timeEntriesTableView reloadData];
   }
 }
 

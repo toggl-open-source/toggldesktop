@@ -12,7 +12,7 @@
 
 - (NSString *)description
 {
-  return [NSString stringWithFormat:@"%@ (%@)", self.date, self.duration];
+  return [NSString stringWithFormat:@"%@ (%@)", self.formattedDate, self.duration];
 }
 
 @end
