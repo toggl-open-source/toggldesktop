@@ -42,6 +42,12 @@
     return self;
 }
 
+-(void) updateHeader:(NSString *)date
+{
+  NSLog(@"updateHeader date: %@", date);
+  // FIXME:
+}
+
 -(NSString *)durationForDate:(NSString *)dateHeader
 {
   char err[KOPSIK_ERR_LEN];
@@ -83,9 +89,6 @@
           header.date = model.date;
           header.duration = [self durationForDate:model.date];
           [viewitems addObject:header];
-
-          // Remember the header
-          model.header = header;
         }
         [viewitems addObject:model];
       }
@@ -122,6 +125,7 @@
         }
         if (found) {
           [viewitems removeObject:found];
+          [self updateHeader:found.date];
         }
       }
       [self.timeEntriesTableView reloadData];
@@ -149,6 +153,7 @@
     
     if (found) {
       [self.timeEntriesTableView reloadData];
+      
       return;
     }
 

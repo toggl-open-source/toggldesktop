@@ -28,7 +28,7 @@
 
 - (void)load:(DateHeader *)header
 {
-  [self.nameTextField setStringValue:[header title]];
+  [self.nameTextField setStringValue:[header description]];
 }
 
 @end

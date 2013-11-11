@@ -11,5 +11,5 @@
 @interface DateHeader : NSObject
 @property NSString *date;
 @property NSString *duration;
-- (NSString *)title;
+- (NSString *)description;
 @end

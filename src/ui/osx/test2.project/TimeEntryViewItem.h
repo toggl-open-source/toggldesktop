@@ -12,7 +12,6 @@
 
 @interface TimeEntryViewItem : NSObject
 - (void)load:(KopsikTimeEntryViewItem *)data;
-- (BOOL)isSameDay:(NSDate*)date;
 + (TimeEntryViewItem *)findByGUID:(NSString *)guid;
 @property int duration_in_seconds;
 @property NSString *Description; // uppercase to avoid clash with [NSObject description]
@@ -26,5 +25,4 @@
 @property NSArray *tags;
 @property NSString *updatedAt;
 @property NSString *date;
-@property DateHeader *header;
 @end

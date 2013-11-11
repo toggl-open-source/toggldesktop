@@ -10,7 +10,7 @@
 
 @implementation DateHeader
 
-- (NSString *)title
+- (NSString *)description
 {
   return [NSString stringWithFormat:@"%@ (%@)", self.date, self.duration];
 }
