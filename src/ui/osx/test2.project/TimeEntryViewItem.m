@@ -47,21 +47,6 @@
     self.updatedAt = nil;
   }
   self.dateHeader = [NSString stringWithUTF8String:data->DateHeader];
-  self.dateDuration = [NSString stringWithUTF8String:data->DateDuration];
-  
-}
-
-// FIXME: move to lib, so it becomes cross platform
-- (BOOL) isSameDay:(NSDate*)date {
-  NSCalendar* calendar = [NSCalendar currentCalendar];
-  
-  unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
-  NSDateComponents* comp1 = [calendar components:unitFlags fromDate:self.started];
-  NSDateComponents* comp2 = [calendar components:unitFlags fromDate:date];
-  
-  return [comp1 day]   == [comp2 day] &&
-  [comp1 month] == [comp2 month] &&
-  [comp1 year]  == [comp2 year];
 }
 
 + (TimeEntryViewItem *)findByGUID:(NSString *)guid {

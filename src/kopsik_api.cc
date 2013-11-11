@@ -150,8 +150,7 @@ kopsik_api_result save(Context *ctx,
 void time_entry_to_view_item(
     kopsik::TimeEntry *te,
     kopsik::User *user,
-    KopsikTimeEntryViewItem *view_item,
-    const std::string date_duration) {
+    KopsikTimeEntryViewItem *view_item) {
   poco_assert(te);
   poco_assert(user);
   poco_assert(view_item);
@@ -199,9 +198,6 @@ void time_entry_to_view_item(
 
   poco_assert(!view_item->DateHeader);
   view_item->DateHeader = strdup(te->DateHeaderString().c_str());
-
-  poco_assert(!view_item->DateDuration);
-  view_item->DateDuration = strdup(date_duration.c_str());
 }
 
 // Context API.
@@ -1003,10 +999,6 @@ void kopsik_time_entry_view_item_clear(KopsikTimeEntryViewItem *item) {
     free(item->DateHeader);
     item->DateHeader = 0;
   }
-  if (item->DateDuration) {
-    free(item->DateDuration);
-    item->DateDuration = 0;
-  }
   delete item;
   item = 0;
 }
@@ -1061,8 +1053,7 @@ kopsik_api_result kopsik_start(
   if (KOPSIK_API_SUCCESS != res) {
     return res;
   }
-  time_entry_to_view_item(te, ctx->user, out_view_item,
-    ctx->user->DateDuration(te));
+  time_entry_to_view_item(te, ctx->user, out_view_item);
   return KOPSIK_API_SUCCESS;
 }
 
@@ -1099,8 +1090,7 @@ kopsik_api_result kopsik_time_entry_view_item_by_guid(
   kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
   if (te) {
     *was_found = 1;
-    time_entry_to_view_item(te, ctx->user, view_item,
-      ctx->user->DateDuration(te));
+    time_entry_to_view_item(te, ctx->user, view_item);
   } else {
     *was_found = 0;
   }
@@ -1144,8 +1134,7 @@ kopsik_api_result kopsik_continue(
   if (KOPSIK_API_SUCCESS != res) {
     return res;
   }
-  time_entry_to_view_item(te, ctx->user, view_item,
-    ctx->user->DateDuration(te));
+  time_entry_to_view_item(te, ctx->user, view_item);
   return KOPSIK_API_SUCCESS;
 }
 
@@ -1187,8 +1176,7 @@ kopsik_api_result kopsik_continue_latest(
     return res;
   }
   *was_found = 1;
-  time_entry_to_view_item(te, ctx->user, view_item,
-    ctx->user->DateDuration(te));
+  time_entry_to_view_item(te, ctx->user, view_item);
   return KOPSIK_API_SUCCESS;
 }
 
@@ -1577,8 +1565,7 @@ kopsik_api_result kopsik_stop(
     return res;
   }
   kopsik::TimeEntry *te = stopped[0];
-  time_entry_to_view_item(te, ctx->user, out_view_item,
-    ctx->user->DateDuration(te));
+  time_entry_to_view_item(te, ctx->user, out_view_item);
   return KOPSIK_API_SUCCESS;
 }
 
@@ -1611,8 +1598,7 @@ kopsik_api_result kopsik_split_running_time_entry_at(
   kopsik::TimeEntry *running = ctx->user->SplitAt(at);
   if (running) {
     *was_found = 1;
-    time_entry_to_view_item(running, ctx->user, out_view_item,
-      ctx->user->DateDuration(running));
+    time_entry_to_view_item(running, ctx->user, out_view_item);
   }
   return save(ctx, errmsg, errlen);
 }
@@ -1646,8 +1632,7 @@ kopsik_api_result kopsik_stop_running_time_entry_at(
   kopsik::TimeEntry *stopped = ctx->user->StopAt(at);
   if (stopped) {
     *was_found = 1;
-    time_entry_to_view_item(stopped, ctx->user, out_view_item,
-      ctx->user->DateDuration(stopped));
+    time_entry_to_view_item(stopped, ctx->user, out_view_item);
   }
   return save(ctx, errmsg, errlen);
 }
@@ -1679,8 +1664,7 @@ kopsik_api_result kopsik_running_time_entry_view_item(
   kopsik::TimeEntry *te = ctx->user->RunningTimeEntry();
   if (te) {
     *out_is_tracking = true;
-    time_entry_to_view_item(te, ctx->user, out_item,
-      ctx->user->DateDuration(te));
+    time_entry_to_view_item(te, ctx->user, out_item);
   }
   return KOPSIK_API_SUCCESS;
 }
@@ -1729,8 +1713,6 @@ kopsik_api_result kopsik_time_entry_view_items(
 
   ctx->user->SortTimeEntriesByStart();
 
-  std::map<std::string, Poco::Int64> date_durations;
-
   std::vector<kopsik::TimeEntry *>visible;
   for (std::vector<kopsik::TimeEntry *>::const_iterator it =
       ctx->user->related.TimeEntries.begin();
@@ -1743,10 +1725,6 @@ kopsik_api_result kopsik_time_entry_view_items(
     if (te->DeletedAt() > 0) {
       continue;
     }
-    std::string date_header_string = te->DateHeaderString();
-    Poco::Int64 duration = date_durations[date_header_string];
-    duration += te->DurationInSeconds();
-    date_durations[date_header_string] = duration;
     visible.push_back(te);
   }
 
@@ -1765,12 +1743,7 @@ kopsik_api_result kopsik_time_entry_view_items(
   for (unsigned int i = 0; i < visible.size(); i++) {
     kopsik::TimeEntry *te = visible[i];
     KopsikTimeEntryViewItem *view_item = kopsik_time_entry_view_item_init();
-    // FIXME: can we cache this or use something else
-    std::string date_header = te->DateHeaderString();
-    Poco::Int64 duration_in_seconds = date_durations[date_header];
-    std::string date_duration =
-      kopsik::Formatter::FormatDurationInSecondsHHMMSS(duration_in_seconds);
-    time_entry_to_view_item(te, ctx->user, view_item, date_duration);
+    time_entry_to_view_item(te, ctx->user, view_item);
     out_list->ViewItems[i] = view_item;
     out_list->Length++;
   }
