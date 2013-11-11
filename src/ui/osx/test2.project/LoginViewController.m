@@ -34,11 +34,11 @@
   if (KOPSIK_API_SUCCESS != kopsik_login(ctx, err, KOPSIK_ERR_LEN, [email UTF8String], [pass UTF8String])) {
     NSLog(@"Login error: %s", err);
     [self.errorLabel setStringValue:[NSString stringWithUTF8String:err]];
-    [self.errorLabel setHidden:NO];
+    [self.troubleBox setHidden:NO];
     return;
   }
   
-  [self.errorLabel setHidden:YES];
+  [self.troubleBox setHidden:YES];
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedIn object:nil];
 }
 
@@ -90,7 +90,7 @@
     }
     NSLog(@"Login error: %@", errorStr);
     [self.errorLabel setStringValue:errorStr];
-    [self.errorLabel setHidden:NO];
+    [self.troubleBox setHidden:NO];
     return;
   }
   
@@ -98,11 +98,11 @@
   if (KOPSIK_API_SUCCESS != kopsik_login(ctx, err, KOPSIK_ERR_LEN, [auth.accessToken UTF8String], "google_access_token")) {
     NSLog(@"Login error: %s", err);
     [self.errorLabel setStringValue:[NSString stringWithUTF8String:err]];
-    [self.errorLabel setHidden:NO];
+    [self.troubleBox setHidden:NO];
     return;
   }
   
-  [self.errorLabel setHidden:YES];
+  [self.troubleBox setHidden:YES];
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedIn object:nil];
 }
 

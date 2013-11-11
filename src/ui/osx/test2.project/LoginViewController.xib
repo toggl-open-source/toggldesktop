@@ -12,6 +12,7 @@
                 <outlet property="googleLoginTextField" destination="3Xk-yW-T0s" id="AEQ-uX-kJE"/>
                 <outlet property="password" destination="4yP-yy-ZcJ" id="rB6-vq-VbU"/>
                 <outlet property="passwordForgotTextField" destination="ZkV-MT-ff5" id="GfC-iH-xIb"/>
+                <outlet property="troubleBox" destination="9t9-6S-fNz" id="rDV-ea-tJ5"/>
                 <outlet property="view" destination="d50-27-v7r" id="fRE-03-vij"/>
             </connections>
         </customObject>
@@ -21,14 +22,14 @@
             <rect key="frame" x="0.0" y="0.0" width="250" height="271"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box autoresizesSubviews="NO" fixedFrame="YES" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="9t9-6S-fNz">
+                <box hidden="YES" autoresizesSubviews="NO" fixedFrame="YES" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="9t9-6S-fNz">
                     <rect key="frame" x="0.0" y="241" width="250" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView">
                         <rect key="frame" x="0.0" y="0.0" width="250" height="30"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5LO-U0-PHD">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5LO-U0-PHD">
                                 <rect key="frame" x="7" y="7" width="93" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Login failed!" id="7El-UK-Q1t">

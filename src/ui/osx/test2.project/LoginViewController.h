@@ -16,5 +16,6 @@
 @property (weak) IBOutlet NSTextField *errorLabel;
 @property (weak) IBOutlet NSTextFieldClickable *googleLoginTextField;
 @property (weak) IBOutlet NSTextFieldClickable *passwordForgotTextField;
+@property (weak) IBOutlet NSBox *troubleBox;
 - (IBAction)clickLoginButton:(id)sender;
 @end
