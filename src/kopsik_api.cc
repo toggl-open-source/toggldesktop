@@ -1787,7 +1787,7 @@ kopsik_api_result kopsik_duration_for_date_header(
       sum += te->DurationInSeconds();
     }
   }
-  
+
   kopsik_format_duration_in_seconds_hhmm(sum, 0, duration, duration_len);
 
   return KOPSIK_API_SUCCESS;
