@@ -125,8 +125,7 @@
     [self.contentView addSubview:self.timeEntryListViewController.view];
     [self.timeEntryListViewController.view setFrame:self.contentView.bounds];
     
-    // Show header and footer
-    [self.footerView setHidden:NO];
+    // Show header
     [self.headerView setHidden:NO];
     
   } else if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
@@ -139,7 +138,6 @@
 
     // Hide all other views
     [self.timeEntryListViewController.view removeFromSuperview];
-    [self.footerView setHidden:YES];
     [self.headerView setHidden:YES];
     [self.timerViewController.view removeFromSuperview];
     

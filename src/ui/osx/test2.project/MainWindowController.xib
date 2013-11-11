@@ -31,61 +31,19 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="av5-A6-9S5" userLabel="ContentView">
-                        <rect key="frame" x="0.0" y="29" width="250" height="248"/>
+                        <rect key="frame" x="0.0" y="0.0" width="250" height="277"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    </customView>
-                    <customView focusRingType="exterior" translatesAutoresizingMaskIntoConstraints="NO" id="I56-Lj-qTa" userLabel="FooterView">
-                        <rect key="frame" x="0.0" y="0.0" width="250" height="29"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <subviews>
-                            <popUpButton translatesAutoresizingMaskIntoConstraints="NO" id="ar7-s4-8Jz">
-                                <rect key="frame" x="2" y="3" width="39" height="23"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="39" id="OxH-Mf-U4R"/>
-                                    <constraint firstAttribute="height" constant="23" id="zdb-H8-AXX"/>
-                                </constraints>
-                                <popUpButtonCell key="cell" type="smallSquare" bezelStyle="smallSquare" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" pullsDown="YES" selectedItem="Fl0-Xf-c37" id="228-43-gNA">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="menu"/>
-                                    <menu key="menu" title="OtherViews" id="vwC-Ks-dRa">
-                                        <items>
-                                            <menuItem state="on" image="NSActionTemplate" hidden="YES" id="iWP-TY-GZW"/>
-                                            <menuItem title="Sync" tag="1" id="tHc-0A-qvU">
-                                                <connections>
-                                                    <action selector="onSyncMenuItem:" target="-1" id="WRO-ET-qnK"/>
-                                                </connections>
-                                            </menuItem>
-                                            <menuItem isSeparatorItem="YES" id="9e7-Oe-tdO"/>
-                                            <menuItem title="Logout" tag="2" id="Fl0-Xf-c37">
-                                                <connections>
-                                                    <action selector="onLogoutMenuItem:" target="-1" id="gB3-FU-4LD"/>
-                                                </connections>
-                                            </menuItem>
-                                        </items>
-                                    </menu>
-                                </popUpButtonCell>
-                            </popUpButton>
-                        </subviews>
-                        <constraints>
-                            <constraint firstAttribute="bottom" secondItem="ar7-s4-8Jz" secondAttribute="bottom" constant="3" id="R4z-Dx-V4P"/>
-                            <constraint firstItem="ar7-s4-8Jz" firstAttribute="centerY" secondItem="I56-Lj-qTa" secondAttribute="centerY" id="SpL-hT-Wmh"/>
-                            <constraint firstItem="ar7-s4-8Jz" firstAttribute="leading" secondItem="I56-Lj-qTa" secondAttribute="leading" constant="2" id="Twl-ok-eox"/>
-                        </constraints>
                     </customView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="5Ld-I4-6Cu" secondAttribute="trailing" id="36u-aa-lo3"/>
                     <constraint firstAttribute="trailing" secondItem="av5-A6-9S5" secondAttribute="trailing" id="57y-9P-PlT"/>
-                    <constraint firstAttribute="bottom" secondItem="I56-Lj-qTa" secondAttribute="bottom" id="A4i-KT-TTQ"/>
                     <constraint firstItem="av5-A6-9S5" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="ESW-fM-7Eo"/>
                     <constraint firstItem="5Ld-I4-6Cu" firstAttribute="top" secondItem="2" secondAttribute="top" id="FTa-yS-Vna"/>
-                    <constraint firstAttribute="trailing" secondItem="I56-Lj-qTa" secondAttribute="trailing" id="UeH-1D-1zL"/>
                     <constraint firstItem="5Ld-I4-6Cu" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="XId-R8-zBU"/>
-                    <constraint firstItem="I56-Lj-qTa" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="doi-5e-Y0o"/>
                     <constraint firstItem="av5-A6-9S5" firstAttribute="top" secondItem="2" secondAttribute="top" constant="73" id="juq-i1-HoK"/>
                     <constraint firstItem="5Ld-I4-6Cu" firstAttribute="top" secondItem="2" secondAttribute="top" id="u6L-vS-2UH"/>
-                    <constraint firstAttribute="bottom" secondItem="av5-A6-9S5" secondAttribute="bottom" constant="29" id="yWZ-Zg-oVi"/>
+                    <constraint firstAttribute="bottom" secondItem="av5-A6-9S5" secondAttribute="bottom" id="yWZ-Zg-oVi"/>
                 </constraints>
             </view>
             <connections>
@@ -93,7 +51,4 @@
             </connections>
         </window>
     </objects>
-    <resources>
-        <image name="NSActionTemplate" width="14" height="14"/>
-    </resources>
 </document>
