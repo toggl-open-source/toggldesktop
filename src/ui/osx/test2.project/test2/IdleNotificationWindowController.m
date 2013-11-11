@@ -20,7 +20,10 @@
 {
     self = [super initWithWindow:window];
     if (self) {
-      NSLog(@"IdleNotificationWindowController initWithWindow");
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUIEventIdleFinished
+                                                 object:nil];
     }
     return self;
 }
@@ -29,10 +32,21 @@
 {
   [super windowDidLoad];
   
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(eventHandler:)
-                                               name:kUIEventIdleFinished
-                                             object:nil];
+  [self renderIdle];
+}
+
+- (void)renderIdle
+{
+  NSLog(@"IdleNotificationWindowController windowDidLoad");
+  NSDateFormatter *format = [[NSDateFormatter alloc] init];
+  [format setDateFormat:@"HH:mm"];
+  NSString *dateString = [format stringFromDate:self.idleEvent.started];
+  
+  NSString *information = [NSString stringWithFormat:@"You have been idle since %@ (%d minutes)",
+                           dateString, self.idleEvent.seconds / 60];
+  NSAssert(self.informationTextField != nil,
+           @"self.informationTextField cannot be nil at this point");
+  [self.informationTextField setStringValue:information];
 }
 
 - (IBAction)stopButtonClicked:(id)sender {
@@ -55,17 +69,8 @@
 {
   if ([notification.name isEqualToString:kUIEventIdleFinished]) {
     self.idleEvent = notification.object;
-
-    NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    [format setDateFormat:@"HH:mm"];
-    NSString *dateString = [format stringFromDate:self.idleEvent.started];
-    
-    NSString *information = [NSString stringWithFormat:@"You have been idle since %@ (%d minutes)",
-                             dateString, self.idleEvent.seconds / 60];
-    NSAssert(self.informationTextField != nil,
-             @"self.informationTextField cannot be nil at this point");
-    [self.informationTextField setStringValue:information];
     [self showWindow:self];
+    [self renderIdle];
   }
 }
 
