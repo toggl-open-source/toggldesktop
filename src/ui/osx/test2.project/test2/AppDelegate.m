@@ -517,7 +517,6 @@ const int kIdleThresholdSeconds = 5 * 60;
     NSLog(@"Achtung! Failed to get idle status.");
     return;
   }
-  NSLog(@"Idle seconds: %qi", idle_seconds);
 
   if (idle_seconds >= kIdleThresholdSeconds && self.lastIdleStarted == nil) {
     self.lastIdleStarted = [NSDate date];
