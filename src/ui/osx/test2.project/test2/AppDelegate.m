@@ -518,7 +518,7 @@ const int kIdleThresholdSeconds = 5 * 60;
     return;
   }
   
-  NSLog(@"Idle seconds: %lld", idle_seconds);
+//  NSLog(@"Idle seconds: %lld", idle_seconds);
 
   if (idle_seconds >= kIdleThresholdSeconds && self.lastIdleStarted == nil) {
     self.lastIdleStarted = [NSDate date];
