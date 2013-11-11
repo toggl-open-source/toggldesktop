@@ -52,24 +52,24 @@
 - (IBAction)stopButtonClicked:(id)sender {
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandStopAt
                                                       object:self.idleEvent];
-  [self close];
+  [self.window orderOut:nil];
 }
 
 - (IBAction)splitButtonClicked:(id)sender {
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandSplitAt
                                                       object:self.idleEvent];
-  [self close];
+  [self.window orderOut:nil];
 }
 
 - (IBAction)ignoreButtonClicked:(id)sender {
-  [self close];
+  [self.window orderOut:nil];
 }
 
 -(void)eventHandler: (NSNotification *) notification
 {
   if ([notification.name isEqualToString:kUIEventIdleFinished]) {
     self.idleEvent = notification.object;
-    [self showWindow:self];
+    [self.window makeKeyAndOrderFront:nil];
     [self renderIdle];
   }
 }

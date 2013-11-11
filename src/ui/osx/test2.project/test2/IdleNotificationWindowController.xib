@@ -8,6 +8,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="IdleNotificationWindowController">
             <connections>
                 <outlet property="informationTextField" destination="sqC-ri-2J8" id="1fV-VL-KZM"/>
+                <outlet property="window" destination="OXh-s9-LHB" id="Cqi-Qk-biq"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
