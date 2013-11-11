@@ -41,6 +41,22 @@
     return self;
 }
 
+-(NSString *)durationForDate:(NSString *)dateHeader
+{
+  char err[KOPSIK_ERR_LEN];
+  const int kMaxDurationLength = 100;
+  char duration[kMaxDurationLength];
+  kopsik_api_result res = kopsik_duration_for_date_header(ctx,
+                                                          err, KOPSIK_ERR_LEN,
+                                                          [dateHeader UTF8String],
+                                                          duration, kMaxDurationLength);
+  if (res != KOPSIK_API_SUCCESS) {
+    handle_error(res, err);
+    return nil;
+  }
+  return [NSString stringWithUTF8String:duration];
+}
+
 -(void)eventHandler: (NSNotification *) notification
 {
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
@@ -61,9 +77,8 @@
         TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
         [model load:item];
         if (dateHeader == nil || ![model.dateHeader isEqual:dateHeader]) {
-          
-          NSString *dateDuration = @"11:23";
-          [viewitems addObject:[NSString stringWithFormat:@"%@ (%@)", model.dateHeader, dateDuration]];
+          NSString *duration = [self durationForDate:model.dateHeader];
+          [viewitems addObject:[NSString stringWithFormat:@"%@ (%@)", model.dateHeader, duration]];
           dateHeader = model.dateHeader;
         }
         [viewitems addObject:model];

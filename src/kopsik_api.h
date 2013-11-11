@@ -311,6 +311,14 @@ KOPSIK_EXPORT kopsik_api_result kopsik_time_entry_view_items(
   char *errmsg, unsigned int errlen,
   KopsikTimeEntryViewItemList *list);
 
+KOPSIK_EXPORT kopsik_api_result kopsik_duration_for_date_header(
+  void *context,
+  char *err,
+  const unsigned int err_len,
+  const char *date,
+  char *duration,
+  const unsigned int duration_len);
+
 // Websocket client
 
 typedef struct {

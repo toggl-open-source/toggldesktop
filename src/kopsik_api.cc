@@ -1750,6 +1750,49 @@ kopsik_api_result kopsik_time_entry_view_items(
   return KOPSIK_API_SUCCESS;
 }
 
+kopsik_api_result kopsik_duration_for_date_header(
+    void *context,
+    char *err,
+    const unsigned int err_len,
+    const char *date,
+    char *duration,
+    const unsigned int duration_len) {
+  poco_assert(context);
+  poco_assert(err);
+  poco_assert(err_len);
+  poco_assert(duration);
+  poco_assert(duration_len);
+  poco_assert(date);
+
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_duration_for_date_header");
+
+  Context *ctx = reinterpret_cast<Context *>(context);
+
+  if (!ctx->user) {
+    strncpy(err, "Please login first", err_len);
+    return KOPSIK_API_FAILURE;
+  }
+
+  Poco::Mutex::ScopedLock lock(*ctx->mutex);
+
+  int sum(0);
+  std::string date_header(date);
+  for (std::vector<kopsik::TimeEntry *>::const_iterator it =
+      ctx->user->related.TimeEntries.begin();
+      it != ctx->user->related.TimeEntries.end(); it++) {
+    kopsik::TimeEntry *te = *it;
+    if (te->DurationInSeconds() >= 0 && !te->DeletedAt() &&
+        te->DateHeaderString() == date_header) {
+      sum += te->DurationInSeconds();
+    }
+  }
+  
+  kopsik_format_duration_in_seconds_hhmm(sum, 0, duration, duration_len);
+
+  return KOPSIK_API_SUCCESS;
+}
+
 // Websocket client
 
 void on_websocket_message(
