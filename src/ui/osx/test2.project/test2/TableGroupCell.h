@@ -7,7 +7,9 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "DateHeader.h"
 
 @interface TableGroupCell : NSTableCellView
 @property (nonatomic,strong) IBOutlet NSTextField *nameTextField;
+- (void)load:(DateHeader *)header;
 @end

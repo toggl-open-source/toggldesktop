@@ -26,4 +26,9 @@
     // Drawing code here.
 }
 
+- (void)load:(DateHeader *)header
+{
+  [self.nameTextField setStringValue:[header title]];
+}
+
 @end

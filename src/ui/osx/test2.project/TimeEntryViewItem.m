@@ -46,7 +46,7 @@
   } else {
     self.updatedAt = nil;
   }
-  self.dateHeader = [NSString stringWithUTF8String:data->DateHeader];
+  self.date = [NSString stringWithUTF8String:data->DateHeader];
 }
 
 + (TimeEntryViewItem *)findByGUID:(NSString *)guid {

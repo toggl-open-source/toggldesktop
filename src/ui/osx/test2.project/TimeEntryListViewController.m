@@ -16,6 +16,7 @@
 #import "UIEvents.h"
 #import "ModelChange.h"
 #import "ErrorHandler.h"
+#import "DateHeader.h"
 
 @interface TimeEntryListViewController ()
 
@@ -71,15 +72,17 @@
 
     @synchronized(viewitems) {
       [viewitems removeAllObjects];
-      NSString *dateHeader = nil;
+      DateHeader *header = nil;
       for (int i = 0; i < list->Length; i++) {
         KopsikTimeEntryViewItem *item = list->ViewItems[i];
         TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
         [model load:item];
-        if (dateHeader == nil || ![model.dateHeader isEqual:dateHeader]) {
-          NSString *duration = [self durationForDate:model.dateHeader];
-          [viewitems addObject:[NSString stringWithFormat:@"%@ (%@)", model.dateHeader, duration]];
-          dateHeader = model.dateHeader;
+        if (header == nil || ![model.date isEqual:header.date]) {
+          header = [[DateHeader alloc] init];
+          header.date = model.date;
+          header.duration = [self durationForDate:model.date];
+          [viewitems addObject:header];
+          model.Header = header;
         }
         [viewitems addObject:model];
       }
@@ -169,7 +172,7 @@
 - (NSView *)tableView:(NSTableView *)tableView
    viewForTableColumn:(NSTableColumn *)tableColumn
                   row:(NSInteger)row {
-    TimeEntryViewItem *item = 0;
+    id item = 0;
     @synchronized(viewitems) {
       item = [viewitems objectAtIndex:row];
     }
@@ -181,11 +184,14 @@
       [cellView.continueButton setAction:@selector(continueTimeEntry:)];
       
       return cellView;
-    } else {
+    }
+    if ([item isKindOfClass:[DateHeader class]]) {
       TableGroupCell *groupCell = [tableView makeViewWithIdentifier:@"GroupCell" owner:self];
-      [groupCell.nameTextField setStringValue:(NSString *)item];
+      [groupCell load:item];
       return groupCell;
     }
+    
+    NSAssert(false, @"Unknown view item class");
     return nil;
 }
 

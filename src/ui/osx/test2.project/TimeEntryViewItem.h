@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "kopsik_api.h"
+#import "DateHeader.h"
 
 @interface TimeEntryViewItem : NSObject
 - (void)load:(KopsikTimeEntryViewItem *)data;
@@ -24,5 +25,6 @@
 @property NSDate *ended;
 @property NSArray *tags;
 @property NSString *updatedAt;
-@property NSString *dateHeader;
+@property NSString *date;
+@property DateHeader *header;
 @end
