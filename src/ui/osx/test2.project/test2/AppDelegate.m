@@ -509,7 +509,7 @@ NSString *kTimeTotalUnknown = @"--:--";
   }
 }
 
-const int kIdleThresholdSeconds = 5 * 60;
+const int kIdleThresholdSeconds = 5;
 
 - (void)idleTimerFired:(NSTimer*)timer {
   uint64_t idle_seconds = 0;
@@ -517,6 +517,8 @@ const int kIdleThresholdSeconds = 5 * 60;
     NSLog(@"Achtung! Failed to get idle status.");
     return;
   }
+  
+  NSLog(@"Idle seconds: %lld", idle_seconds);
 
   if (idle_seconds >= kIdleThresholdSeconds && self.lastIdleStarted == nil) {
     self.lastIdleStarted = [NSDate date];
@@ -531,6 +533,8 @@ const int kIdleThresholdSeconds = 5 * 60;
       idleEvent.seconds = self.lastIdleSecondsReading;
       [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventIdleFinished
                                                           object:idleEvent];
+    } else {
+      NSLog(@"Time entry is not running, ignoring idleness");
     }
     NSLog(@"User is not idle since %@", now);
     self.lastIdleStarted = nil;
