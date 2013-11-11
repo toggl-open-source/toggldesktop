@@ -78,11 +78,14 @@
         TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
         [model load:item];
         if (header == nil || ![model.date isEqual:header.date]) {
+          // Add a date + duration per day header before time entry
           header = [[DateHeader alloc] init];
           header.date = model.date;
           header.duration = [self durationForDate:model.date];
           [viewitems addObject:header];
-          model.Header = header;
+
+          // Remember the header
+          model.header = header;
         }
         [viewitems addObject:model];
       }
