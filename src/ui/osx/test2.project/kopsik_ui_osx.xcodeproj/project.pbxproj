@@ -85,6 +85,7 @@
 		74E3CDDD17FC8E8000C3ADD3 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDDC17FC8E8000C3ADD3 /* User.m */; };
 		74F7CDD71819897D00630BD0 /* off.png in Resources */ = {isa = PBXBuildFile; fileRef = 74F7CDD51819897D00630BD0 /* off.png */; };
 		74F7CDD81819897D00630BD0 /* on.png in Resources */ = {isa = PBXBuildFile; fileRef = 74F7CDD61819897D00630BD0 /* on.png */; };
+		74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */; };
 		C5CB7F0417F43EE100A2AEB1 /* TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TableViewCell.m */; };
 		C5D319FD181917EB0017ACBE /* TableGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D319FC181917EB0017ACBE /* TableGroupCell.m */; };
 		C5DA1FB917F19647001C4565 /* Kopsik.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA1FB817F19647001C4565 /* Kopsik.dylib */; };
@@ -223,6 +224,8 @@
 		74E3CDDC17FC8E8000C3ADD3 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = SOURCE_ROOT; };
 		74F7CDD51819897D00630BD0 /* off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = off.png; sourceTree = "<group>"; };
 		74F7CDD61819897D00630BD0 /* on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = on.png; sourceTree = "<group>"; };
+		74F8FBA118313FA6000F09EE /* NSTextFieldClickable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldClickable.h; sourceTree = "<group>"; };
+		74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldClickable.m; sourceTree = "<group>"; };
 		C5CB7F0217F43EE100A2AEB1 /* TableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCell.h; sourceTree = "<group>"; };
 		C5CB7F0317F43EE100A2AEB1 /* TableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCell.m; sourceTree = "<group>"; };
 		C5D319FB181917EB0017ACBE /* TableGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableGroupCell.h; sourceTree = "<group>"; };
@@ -384,6 +387,8 @@
 				7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */,
 				74BE8E6A18312824009D1E83 /* DateHeader.h */,
 				74BE8E6B18312824009D1E83 /* DateHeader.m */,
+				74F8FBA118313FA6000F09EE /* NSTextFieldClickable.h */,
+				74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */,
 			);
 			name = kopsik_ui;
 			path = test2;
@@ -675,6 +680,7 @@
 				7430750418204EFB009019CB /* AboutWindowController.m in Sources */,
 				74D1D27217EB72D900E709B0 /* TimerEditViewController.m in Sources */,
 				74E3CDCE17FBABE400C3ADD3 /* BugsnagNotifier.m in Sources */,
+				74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */,
 				74E3CDC817FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */,
 				743D782A182791FA00978BCC /* idler.c in Sources */,
 				74AA9473180909F50000539F /* GTMOAuth2Authentication.m in Sources */,

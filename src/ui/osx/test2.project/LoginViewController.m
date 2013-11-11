@@ -26,20 +26,6 @@
     return self;
 }
 
--(void)awakeFromNib {
-  [self colorMeBlue:self.loginWithGoogleButton];
-  [self colorMeBlue:self.proxyButton];
-}
-
-- (void)colorMeBlue:(NSButton *)btn {
-  NSMutableAttributedString *colorTitle =
-  [[NSMutableAttributedString alloc] initWithAttributedString:[btn attributedTitle]];
-  NSRange titleRange = NSMakeRange(0, [colorTitle length]);
-  NSColor *color = [NSColor blueColor];
-  [colorTitle addAttribute:NSForegroundColorAttributeName value:color range:titleRange];
-  [btn setAttributedTitle:colorTitle];
-}
-
 - (IBAction)clickLoginButton:(id)sender {
   NSString *email = [self.email stringValue];
   NSString *pass = [self.password stringValue];
@@ -56,27 +42,27 @@
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedIn object:nil];
 }
 
-- (IBAction)clickGoogleLoginButton:(id)sender {
+-(void)textFieldClicked:(id)sender {
+  if (sender == self.googleLoginTextField) {
+    NSString *scope = @"https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email";
+    NSString *clientID = @"426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com";
+    // According to Google docs, in installed apps the client secret is not expected to stay secret:
+    NSString *clientSecret = @"6IHWKIfTAMF7cPJsBvoGxYui";
   
-  NSString *scope = @"https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email";
-  NSString *clientID = @"426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com";
-  // According to Google docs, in installed apps the client secret is not expected to stay secret:
-  NSString *clientSecret = @"6IHWKIfTAMF7cPJsBvoGxYui";
+    GTMOAuth2WindowController *windowController;
+    windowController = [[GTMOAuth2WindowController alloc] initWithScope:scope
+                                                               clientID:clientID
+                                                           clientSecret:clientSecret
+                                                       keychainItemName:nil
+                                                         resourceBundle:nil];
   
-  GTMOAuth2WindowController *windowController;
-  windowController = [[GTMOAuth2WindowController alloc] initWithScope:scope
-                                                              clientID:clientID
-                                                          clientSecret:clientSecret
-                                                      keychainItemName:nil
-                                                        resourceBundle:nil];
-  
-  [windowController signInSheetModalForWindow:[[NSApplication sharedApplication] mainWindow]
-                               delegate:self
-                       finishedSelector:@selector(viewController:finishedWithAuth:error:)];
-}
-
-- (IBAction)clickProxySettingsButton:(id)sender {
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandShowPreferences object:nil];
+    [windowController signInSheetModalForWindow:[[NSApplication sharedApplication] mainWindow]
+                                       delegate:self
+                               finishedSelector:@selector(viewController:finishedWithAuth:error:)];
+  } else if (sender == self.passwordForgotTextField) {
+    [[NSWorkspace sharedWorkspace]
+      openURL:[NSURL URLWithString:@"https://new.toggl.com/#forgot_password"]];
+  }
 }
 
 - (void)viewController:(GTMOAuth2WindowController *)viewController

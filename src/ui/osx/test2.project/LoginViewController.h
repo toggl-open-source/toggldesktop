@@ -8,15 +8,13 @@
 
 #import <Cocoa/Cocoa.h>
 #import "kopsik_api.h"
+#import "NSTextFieldClickable.h"
 
 @interface LoginViewController : NSViewController
-@property (weak) IBOutlet NSButton *loginWithGoogleButton;
 @property (weak) IBOutlet NSTextField *email;
 @property (weak) IBOutlet NSSecureTextField *password;
 @property (weak) IBOutlet NSTextField *errorLabel;
-@property (weak) IBOutlet NSButton *loginButton;
-@property (weak) IBOutlet NSButton *proxyButton;
+@property (weak) IBOutlet NSTextFieldClickable *googleLoginTextField;
+@property (weak) IBOutlet NSTextFieldClickable *passwordForgotTextField;
 - (IBAction)clickLoginButton:(id)sender;
-- (IBAction)clickGoogleLoginButton:(id)sender;
-- (IBAction)clickProxySettingsButton:(id)sender;
 @end
