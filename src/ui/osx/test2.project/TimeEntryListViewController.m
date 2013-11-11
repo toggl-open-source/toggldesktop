@@ -45,7 +45,15 @@
 -(void) updateHeader:(NSString *)date
 {
   NSLog(@"updateHeader date: %@", date);
-  // FIXME:
+  for (int i=0; i < viewitems.count; i++) {
+    if ([viewitems[i] isKindOfClass:[DateHeader class]]) {
+      DateHeader *header = (DateHeader*)viewitems[i];
+      if ([header.date isEqualToString:date]) {
+        header.duration = [self durationForDate:date];
+        return;
+      }
+    }
+  }
 }
 
 -(NSString *)durationForDate:(NSString *)dateHeader
@@ -146,6 +154,7 @@
           continue;
         }
         [viewitems replaceObjectAtIndex:i withObject:updated];
+        [self updateHeader:updated.date];
         found = YES;
         break;
       }
@@ -162,6 +171,7 @@
     if (updated.duration_in_seconds >= 0) {
       @synchronized(viewitems) {
         [viewitems insertObject:updated atIndex:0];
+        [self updateHeader:updated.date];
       }
       [self.timeEntriesTableView reloadData];
     }
