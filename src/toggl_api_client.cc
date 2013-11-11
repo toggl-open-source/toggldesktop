@@ -85,6 +85,24 @@ void User::SortTimeEntriesByStart() {
     compareTimeEntriesByStart);
 }
 
+std::string User::DateDuration(TimeEntry *te) {
+    Poco::Int64 date_duration(0);
+    std::string date_header = te->DateHeaderString();
+    for (std::vector<TimeEntry *>::const_iterator it =
+            related.TimeEntries.begin();
+            it != related.TimeEntries.end();
+            it++) {
+        TimeEntry *n = *it;
+        if (n->DateHeaderString() == date_header) {
+            Poco::Int64 duration = n->DurationInSeconds();
+            if (duration > 0) {
+                date_duration += duration;
+            }
+        }
+    }
+    return Formatter::FormatDurationInSecondsHHMMSS(date_duration);
+}
+
 std::string User::ProjectNameIncludingClient(Project *p) {
     poco_assert(p);
     std::stringstream ss;

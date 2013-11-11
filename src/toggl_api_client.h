@@ -486,6 +486,8 @@ namespace kopsik {
         TimeEntry *SplitAt(const Poco::Int64 at);
         TimeEntry *StopAt(const Poco::Int64 at);
 
+        std::string DateDuration(TimeEntry *te);
+
         Poco::Int64 LocalID() { return local_id_; }
         void SetLocalID(Poco::Int64 value) { local_id_ = value; }
 
