@@ -71,6 +71,18 @@
                                     <action selector="onSyncMenuItem:" target="494" id="u4k-n1-pLG"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Start timeline recording" tag="7" id="QhL-M5-26D">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="onTimelineMenuItem:" target="-1" id="Bb8-rF-le4"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Connect WebSocket" tag="8" id="jjD-wB-XyK">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="onWebSocketMenuItem:" target="-1" id="pk3-4l-W8D"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="Nva-uM-toH"/>
                             <menuItem title="Clear cache" tag="6" id="OCn-tS-va2">
                                 <modifierMask key="keyEquivalentModifierMask"/>

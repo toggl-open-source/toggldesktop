@@ -267,6 +267,8 @@ NSString *kTimeTotalUnknown = @"--:--";
   [menu addItemWithTitle:@"Stop" action:@selector(onStopMenuItem) keyEquivalent:@""].tag = kMenuItemTagStop;
   [menu addItem:[NSMenuItem separatorItem]];
   [menu addItemWithTitle:@"Sync" action:@selector(onSyncMenuItem:) keyEquivalent:@""].tag = kMenuItemTagSync;
+  [menu addItemWithTitle:@"Start timeline recording" action:@selector(onTimelineMenuItem:) keyEquivalent:@""].tag = kMenuItemTagTimeline;
+  [menu addItemWithTitle:@"Connect WebSocket" action:@selector(onWebSocketMenuItem:) keyEquivalent:@""].tag = kMenuItemTagWebSocket;
   [menu addItem:[NSMenuItem separatorItem]];
   [menu addItemWithTitle:@"Preferences" action:@selector(onPreferencesMenuItem:) keyEquivalent:@""];
   [menu addItem:[NSMenuItem separatorItem]];
@@ -370,6 +372,17 @@ NSString *kTimeTotalUnknown = @"--:--";
 - (IBAction)onHideMenuItem:(id)sender {
   [self.mainWindowController.window close];
 }
+
+- (IBAction)onTimelineMenuItem:(id)sender
+{
+  NSLog(@"onTimelineMenuItem");
+}
+
+- (IBAction)onWebSocketMenuItem:(id)sender
+{
+  NSLog(@"onWebSocketMenuItem");
+}
+
 
 - (void)onQuitMenuItem {
   [[NSApplication sharedApplication] terminate:self];
@@ -567,6 +580,16 @@ const int kIdleThresholdSeconds = 5 * 60;
         }
         break;
       case kMenuItemTagSync:
+        if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
+          return NO;
+        }
+        break;
+      case kMenuItemTagTimeline:
+        if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
+          return NO;
+        }
+        break;
+      case kMenuItemTagWebSocket:
         if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
           return NO;
         }

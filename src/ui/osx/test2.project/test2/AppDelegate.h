@@ -19,4 +19,6 @@
 - (IBAction)onLogoutMenuItem:(id)sender;
 - (IBAction)onHelpMenuItem:(id)sender;
 - (IBAction)onHideMenuItem:(id)sender;
+- (IBAction)onTimelineMenuItem:(id)sender;
+- (IBAction)onWebSocketMenuItem:(id)sender;
 @end
