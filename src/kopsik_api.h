@@ -180,6 +180,7 @@ typedef struct {
   unsigned int Ended;
   char *UpdatedAt;
   char *DateHeader;
+  char *DateDuration;
 } KopsikTimeEntryViewItem;
 
 typedef struct {

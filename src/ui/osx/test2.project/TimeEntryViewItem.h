@@ -25,4 +25,5 @@
 @property NSArray *tags;
 @property NSString *updatedAt;
 @property NSString *date;
+@property NSString *dateDuration;
 @end

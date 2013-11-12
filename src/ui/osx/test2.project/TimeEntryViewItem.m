@@ -47,6 +47,11 @@
     self.updatedAt = nil;
   }
   self.date = [NSString stringWithUTF8String:data->DateHeader];
+  if (data->DateDuration) {
+    self.dateDuration = [NSString stringWithUTF8String:data->DateDuration];
+  } else {
+    self.dateDuration = nil;
+  }
 }
 
 + (TimeEntryViewItem *)findByGUID:(NSString *)guid {

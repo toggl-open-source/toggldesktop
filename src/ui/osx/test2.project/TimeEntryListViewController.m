@@ -68,6 +68,7 @@
         DateHeader *header = [[DateHeader alloc] init];
         header.started = model.started;
         header.date = model.date;
+        header.duration = model.dateDuration;
         [viewitems addObject:header];
       }
       date = model.date;
