@@ -140,12 +140,12 @@
 {
   // Handle log in: reload all time entries
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    [self renderTimeEntries];
+    [self performSelectorOnMainThread:@selector(renderTimeEntries) withObject:nil waitUntilDone:NO];
   } else if ([notification.name isEqualToString:kUIEventModelChange]) {
     ModelChange *change = notification.object;
     // On all TE changes, just re-render the list. It's Simpler.
     if ([change.ModelType isEqualToString:@"time_entry"]) {
-      [self renderTimeEntries];
+      [self performSelectorOnMainThread:@selector(renderTimeEntries) withObject:nil waitUntilDone:NO];
     }
   }
 }
