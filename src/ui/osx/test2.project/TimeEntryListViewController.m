@@ -223,9 +223,9 @@
       
       if (date != nil) {
         if ([item.started compare:date] == NSOrderedDescending) {
-          NSLog(@"Previous date was %@, but now I've found %@ which is larger than date",
-                date, item.started);
-          NSAssert(false, @"Invalid TE list rendering");
+          [NSException raise:@"Invalid TE list rendering"
+                      format:@"Previous date was %@, but now I've found %@ which is larger than date",
+           date, item.started];
         }
       }
 
@@ -234,24 +234,24 @@
 
     } else if ([viewitems[i] isKindOfClass:[DateHeader class]]) {
       if (previousHeader != nil) {
-        NSLog(@"Date headers should contain time entries, but header for %@ seems to be empty",
-              previousHeader.actualDate);
-        NSAssert(false, @"Header found to be empty");
+        [NSException raise:@"Header found to be empty"
+                    format:@"Date headers should contain time entries, but header for %@ seems to be empty", previousHeader.actualDate];
       }
 
       DateHeader *header = viewitems[i];
 
       if ([formattedDates containsObject:header.formattedDate]) {
-        NSLog(@"Header already added with same date: %@", date);
-        NSAssert(false, @"Header already added with same date");
+        [NSException raise:@"Header already added with same date"
+                    format:@"Header already added with same date: %@", date];
       }
       [formattedDates addObject:header.formattedDate];
 
       if (date != nil) {
         if([header.actualDate compare:date] == NSOrderedDescending) {
-          NSLog(@"Previous date was %@, but now I've found %@ which is larger than date",
-                date, header.actualDate);
-          NSAssert(false, @"Invalid header rendering");
+          [NSException raise:@"Invalid header rendering"
+                      format:@"Previous date was %@, but now I've found %@ which is larger than date",
+           date, header.actualDate];
+ 
         }
       }
 
