@@ -42,9 +42,10 @@
     return self;
 }
 
--(void) updateHeader:(NSDate *)date withFormattedDate:(NSString *)formattedDate
+// Returns the headers location in view items list.
+-(int) ensureHeader:(NSDate *)date withFormattedDate:(NSString *)formattedDate
 {
-  NSLog(@"updateHeader date: %@", date);
+  NSLog(@"ensureHeader date: %@", date);
   int insertPoint = -1;
 
   // Find header from view items list.
@@ -53,30 +54,26 @@
       DateHeader *header = viewitems[i];
       if ([header.actualDate isEqualToDate:date]) {
         header.duration = [self durationForDate:formattedDate];
-        return;
+        return i;
       }
 
       // if header.actualDate is earlier than our date
       if (insertPoint < 0 && (NSOrderedAscending == [header.actualDate compare:date])) {
-        NSLog(@"smaller date than %@ found on row %d - found date %@",
-              date, i, header.actualDate);
         insertPoint = i;
       }
     }
   }
 
-  NSLog(@"updateHeader date: %@ header not found, will insert at %d", date, insertPoint);
-  
   // Add new header
   DateHeader *header = [[DateHeader alloc] init];
   header.formattedDate = formattedDate;
   header.actualDate = date;
   header.duration = [self durationForDate:formattedDate];
-  if (insertPoint >= 0) {
-    [viewitems insertObject:header atIndex:insertPoint];
-  } else {
-    [viewitems addObject:header];
+  if (insertPoint < 0) {
+    insertPoint = 0;
   }
+  [viewitems insertObject:header atIndex:insertPoint];
+  return insertPoint;
 }
 
 -(NSString *)durationForDate:(NSString *)dateHeader
@@ -129,7 +126,7 @@
     }
 
     kopsik_time_entry_view_item_list_clear(list);
-    [self.timeEntriesTableView reloadData];
+    [self reloadData];
     return;
   }
 
@@ -158,10 +155,11 @@
         }
         if (found) {
           [viewitems removeObject:found];
-          [self updateHeader:found.started withFormattedDate:found.date];
+          int row =[self ensureHeader:found.started withFormattedDate:found.date];
+          NSLog(@"TE removed from under header located at index %d", row);
         }
       }
-      [self.timeEntriesTableView reloadData];
+      [self reloadData];
       return;
     }
 
@@ -179,14 +177,15 @@
           continue;
         }
         [viewitems replaceObjectAtIndex:i withObject:updated];
-        [self updateHeader:updated.started withFormattedDate:updated.date];
+        int row = [self ensureHeader:updated.started withFormattedDate:updated.date];
+        NSLog(@"TE updated under header located at index %d", row);
         found = YES;
         break;
       }
     }
     
     if (found) {
-      [self.timeEntriesTableView reloadData];
+      [self reloadData];
       return;
     }
 
@@ -196,10 +195,56 @@
       return;
     }
     @synchronized(viewitems) {
-      [self updateHeader:updated.started withFormattedDate:updated.date];
-      [viewitems addObject:updated];
+      int row = [self ensureHeader:updated.started withFormattedDate:updated.date];
+      NSLog(@"TE added under header located at index %d", row);
+      [viewitems insertObject:updated atIndex:row+1];
     }
-    [self.timeEntriesTableView reloadData];
+    [self reloadData];
+  }
+}
+
+- (void)reloadData
+{
+  [self.timeEntriesTableView reloadData];
+
+  // Headers with same date or formatted date are not allowed.
+  NSHashTable *formattedDates = [[NSHashTable alloc] init];
+  
+  // Also, all view items must be ordered in descending order by date.
+  NSDate *date = nil;
+  
+  // Sanity checks, can/will remove when in production.
+  for (int i = 0; i < viewitems.count; i++) {
+    if ([viewitems[i] isKindOfClass:[TimeEntryViewItem class]]) {
+      TimeEntryViewItem *item = viewitems[i];
+      
+      if (date != nil) {
+        if ([item.started compare:date] == NSOrderedDescending) {
+          NSLog(@"Previous date was %@, but now I've found %@ which is larger than date",
+                date, item.started);
+          NSAssert(false, @"Invalid TE list rendering");
+        }
+      }
+
+      date = item.started;
+
+    } else if ([viewitems[i] isKindOfClass:[DateHeader class]]) {
+      DateHeader *header = viewitems[i];
+
+      NSAssert(![formattedDates containsObject:header.formattedDate],
+               @"Header already added with same date");
+      [formattedDates addObject:header.formattedDate];
+
+      if (date != nil) {
+        if([header.actualDate compare:date] == NSOrderedDescending) {
+          NSLog(@"Previous date was %@, but now I've found %@ which is larger than date",
+                date, header.actualDate);
+          NSAssert(false, @"Invalid header rendering");
+        }
+      }
+
+      date = header.actualDate;
+    }
   }
 }
 
