@@ -55,9 +55,20 @@ namespace command_line_client {
                 << err << std::endl;
             return;
         }
-        std::cout << "on_view_item_change "
+        std::cout << "on_model_change "
             << KopsikModelChangeToString(*change)
             << std::endl;
+    }
+
+    void on_websocket_start_callback(kopsik_api_result result,
+            const char *err_string) {
+        if (KOPSIK_API_SUCCESS != result) {
+            std::string err(err_string);
+            std::cerr << "on_websocket_start_callback error! "
+                << err << std::endl;
+            return;
+        }
+        std::cout << "on_websocket_start_callback success" << std::endl;
     }
 
     int Main::main(const std::vector<std::string>& args) {
@@ -202,20 +213,12 @@ namespace command_line_client {
         if ("listen" == args[0]) {
             std::cout << "Listening to websocket.. " << std::endl;
             kopsik_set_change_callback(ctx, on_model_change);
-            kopsik_api_result res = kopsik_websocket_start(ctx, err, ERRLEN);
-            if (KOPSIK_API_SUCCESS != res) {
-                std::cerr << "Error starting websocket: "
-                    << err << std::endl;
-                return Poco::Util::Application::EXIT_SOFTWARE;
-            }
+            kopsik_websocket_start_async(
+                ctx, on_websocket_start_callback);
             while (true) {
                 Poco::Thread::sleep(1000);
             }
-            if (KOPSIK_API_SUCCESS != kopsik_websocket_stop(ctx, err, ERRLEN)) {
-                std::cerr << "Error stopping websocket: "
-                    << err << std::endl;
-                return Poco::Util::Application::EXIT_SOFTWARE;
-            }
+            kopsik_websocket_stop_async(ctx, 0);
             return Poco::Util::Application::EXIT_OK;
         }
 
