@@ -42,24 +42,10 @@
     return self;
 }
 
--(NSString *)durationForDate:(NSString *)dateHeader
-{
-  char err[KOPSIK_ERR_LEN];
-  const int kMaxDurationLength = 100;
-  char duration[kMaxDurationLength];
-  kopsik_api_result res = kopsik_duration_for_date_header(ctx,
-                                                          err, KOPSIK_ERR_LEN,
-                                                          [dateHeader UTF8String],
-                                                          duration, kMaxDurationLength);
-  if (res != KOPSIK_API_SUCCESS) {
-    handle_error(res, err);
-    return nil;
-  }
-  return [NSString stringWithUTF8String:duration];
-}
-
 -(void)renderTimeEntries
 {
+  NSLog(@"TimeEntryListViewController renderTimeEntries");
+  
   char err[KOPSIK_ERR_LEN];
   KopsikTimeEntryViewItemList *list = kopsik_time_entry_view_item_list_init();
   if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(ctx, err, KOPSIK_ERR_LEN, list)) {
@@ -80,9 +66,8 @@
       // Add header if necessary
       if (date == nil || ![date isEqualToString:model.date]) {
         DateHeader *header = [[DateHeader alloc] init];
-        header.actualDate = model.started;
-        header.formattedDate = model.date;
-        header.duration = [self durationForDate:model.date];
+        header.started = model.started;
+        header.date = model.date;
         [viewitems addObject:header];
       }
       date = model.date;
@@ -122,27 +107,27 @@
     } else if ([viewitems[i] isKindOfClass:[DateHeader class]]) {
       if (previousHeader != nil) {
         [NSException raise:@"Header found to be empty"
-                    format:@"Date headers should contain time entries, but header for %@ seems to be empty", previousHeader.actualDate];
+                    format:@"Date headers should contain time entries, but header for %@ seems to be empty", previousHeader.started];
       }
       
       DateHeader *header = viewitems[i];
       
-      if ([formattedDates containsObject:header.formattedDate]) {
+      if ([formattedDates containsObject:header.date]) {
         [NSException raise:@"Header already added with same date"
                     format:@"Header already added with same date: %@", date];
       }
-      [formattedDates addObject:header.formattedDate];
+      [formattedDates addObject:header.date];
       
       if (date != nil) {
-        if([header.actualDate compare:date] == NSOrderedDescending) {
+        if([header.started compare:date] == NSOrderedDescending) {
           [NSException raise:@"Invalid header rendering"
                       format:@"Previous date was %@, but now I've found %@ which is larger than date",
-           date, header.actualDate];
+           date, header.started];
           
         }
       }
       
-      date = header.actualDate;
+      date = header.started;
       previousHeader = header;
     }
   }
@@ -211,12 +196,15 @@
 
 - (IBAction)performClick:(id)sender {
   NSInteger row = [self.timeEntriesTableView clickedRow];
-  TimeEntryViewItem *item = 0;
+  id item = 0;
   @synchronized(viewitems) {
-    item = [viewitems objectAtIndex:row];
+    item = viewitems[row];
   }
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
-                                                      object:item.GUID];
+  if ([item isKindOfClass:[TimeEntryViewItem class]]) {
+    TimeEntryViewItem *te = item;
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
+                                                        object:te.GUID];
+  }
 }
 
 @end
