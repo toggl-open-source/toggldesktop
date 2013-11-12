@@ -46,6 +46,8 @@
 {
   NSLog(@"TimeEntryListViewController renderTimeEntries, thread %@", [NSThread currentThread]);
   
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+  
   char err[KOPSIK_ERR_LEN];
   KopsikTimeEntryViewItemList *list = kopsik_time_entry_view_item_list_init();
   if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(ctx, err, KOPSIK_ERR_LEN, list)) {
