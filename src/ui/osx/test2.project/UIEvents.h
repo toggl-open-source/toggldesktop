@@ -24,6 +24,7 @@ extern NSString *const kUIStateUpToDate;
 extern NSString *const kUIEventModelChange;
 extern NSString *const kUIEventIdleFinished;
 extern NSString *const kUIEventWebSocketConnection;
+extern NSString *const kUIEventTimelineRecording;
 
 
 // Commands

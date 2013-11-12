@@ -108,6 +108,10 @@ NSString *kTimeTotalUnknown = @"--:--";
                                            selector:@selector(eventHandler:)
                                                name:kUIEventWebSocketConnection
                                              object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(eventHandler:)
+                                               name:kUIEventTimelineRecording
+                                             object:nil];
 
   kopsik_set_change_callback(ctx, on_model_change);
   
@@ -175,22 +179,26 @@ void on_websocket_start_callback(kopsik_api_result result, const char *err) {
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventWebSocketConnection object:nil];
 }
 
-- (void)startTimeline {
-  NSLog(@"startTimeline");
-  char err[KOPSIK_ERR_LEN];
-  kopsik_api_result res = kopsik_timeline_start(ctx, err, KOPSIK_ERR_LEN);
+void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   if (KOPSIK_API_SUCCESS != res) {
-    [self updateTimelineRecordingState:NO];
     handle_error(res, err);
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimelineRecording
+                                                        object:[NSString stringWithUTF8String:err]];
     return;
   }
-  [self updateTimelineRecordingState:YES];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimelineRecording
+                                                      object:nil];
+}
+
+- (void)startTimeline {
+  NSLog(@"startTimeline");
+  kopsik_timeline_start_async(ctx, on_timeline_start_callback);
   NSLog(@"startTimeline done");
 }
 
 - (void) stopTimeline {
   NSLog(@"stopTimeline");
-  kopsik_timeline_stop(ctx);
+  kopsik_timeline_stop_async(ctx, 0);
   [self updateTimelineRecordingState:NO];
   NSLog(@"stopTimeline done");
 }
@@ -216,6 +224,11 @@ void on_websocket_start_callback(kopsik_api_result result, const char *err) {
   
   if ([notification.name isEqualToString:kUIEventWebSocketConnection]) {
     [self updateWebSocketConnectedState:(notification.object == nil)];
+    return;
+  }
+  
+  if ([notification.name isEqualToString:kUIEventTimelineRecording]) {
+    [self updateTimelineRecordingState:(notification.object == nil)];
     return;
   }
   
@@ -473,11 +486,7 @@ void on_websocket_start_callback(kopsik_api_result result, const char *err) {
 - (void)applicationWillTerminate:(NSNotification *)app
 {
   NSLog(@"applicationWillTerminate");
-  char err[KOPSIK_ERR_LEN];
-  if (KOPSIK_API_SUCCESS != kopsik_websocket_stop(ctx, err, KOPSIK_ERR_LEN)) {
-    NSLog(@"Error while shutting down websocket: %s", err);
-  }
-  kopsik_timeline_stop(ctx);
+  kopsik_websocket_stop_async(ctx, 0);
   NSLog(@"applicationWillTerminate done");
 }
 

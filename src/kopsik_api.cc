@@ -1836,34 +1836,6 @@ void on_websocket_message(
   save(ctx, err, KOPSIK_ERR_LEN);
 }
 
-kopsik_api_result kopsik_websocket_start(
-    void *context,
-    char *errmsg, unsigned int errlen) {
-  poco_assert(context);
-  poco_assert(errmsg);
-  poco_assert(errlen);
-
-  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
-  logger.debug("kopsik_websocket_start");
-
-  Context *ctx = reinterpret_cast<Context *>(context);
-
-  if (!ctx->user) {
-    strncpy(errmsg, "Please login first", errlen);
-    return KOPSIK_API_FAILURE;
-  }
-
-  kopsik::error err = ctx->ws_client->Start(
-    ctx,
-    ctx->user->APIToken(),
-    on_websocket_message);
-  if (err != kopsik::noError) {
-    strncpy(errmsg, err.c_str(), errlen);
-    return KOPSIK_API_FAILURE;
-  }
-  return KOPSIK_API_SUCCESS;
-}
-
 class WebSocketStartTask : public Poco::Task {
   public:
     WebSocketStartTask(Context *ctx, KopsikResultCallback callback) :
@@ -1871,10 +1843,15 @@ class WebSocketStartTask : public Poco::Task {
       ctx_(ctx),
       callback_(callback) {}
     void runTask() {
-      char err[KOPSIK_ERR_LEN];
-      kopsik_api_result res = kopsik_websocket_start(
-        ctx_, err, KOPSIK_ERR_LEN);
-      callback_(res, err);
+      kopsik::error err = ctx_->ws_client->Start(
+        ctx_,
+        ctx_->user->APIToken(),
+        on_websocket_message);
+      if (err != kopsik::noError) {
+        callback_(KOPSIK_API_FAILURE, err.c_str());
+        return;
+      }
+      callback_(KOPSIK_API_SUCCESS, 0);
     }
   private:
     Context *ctx_;
@@ -1895,22 +1872,6 @@ void kopsik_websocket_start_async(
   ctx->tm->start(new WebSocketStartTask(ctx, callback));
 }
 
-kopsik_api_result kopsik_websocket_stop(
-    void *context,
-    char *errmsg, unsigned int errlen) {
-  poco_assert(context);
-  poco_assert(errmsg);
-  poco_assert(errlen);
-
-  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
-  logger.debug("kopsik_websocket_stop");
-
-  Context *ctx = reinterpret_cast<Context *>(context);
-
-  ctx->ws_client->Stop();
-  return KOPSIK_API_SUCCESS;
-}
-
 class WebSocketStopTask : public Poco::Task {
   public:
     WebSocketStopTask(Context *ctx, KopsikResultCallback callback) :
@@ -1918,10 +1879,10 @@ class WebSocketStopTask : public Poco::Task {
       ctx_(ctx),
       callback_(callback) {}
     void runTask() {
-      char err[KOPSIK_ERR_LEN];
-      kopsik_api_result res = kopsik_websocket_stop(
-        ctx_, err, KOPSIK_ERR_LEN);
-      callback_(res, err);
+      ctx_->ws_client->Stop();
+      if (callback_) {
+        callback_(KOPSIK_API_SUCCESS, 0);
+      }
     }
   private:
     Context *ctx_;
@@ -1932,7 +1893,6 @@ void kopsik_websocket_stop_async(
     void *context,
     KopsikResultCallback callback) {
   poco_assert(context);
-  poco_assert(callback);
 
   Poco::Logger &logger = Poco::Logger::get("kopsik_api");
   logger.debug("kopsik_websocket_stop_async");
@@ -1944,75 +1904,102 @@ void kopsik_websocket_stop_async(
 
 // Timeline
 
-kopsik_api_result kopsik_timeline_start(void *context,
-    char *errmsg, const unsigned int errlen) {
+class TimelineStartTask : public Poco::Task {
+  public:
+    TimelineStartTask(Context *ctx, KopsikResultCallback callback) :
+      Task("start_timeline"),
+      ctx_(ctx),
+      callback_(callback) {}
+    void runTask() {
+      if (!ctx_->user) {
+        callback_(KOPSIK_API_FAILURE, "Please login first");
+        return;
+      }
+
+      if (!ctx_->user->RecordTimeline()) {
+        callback_(KOPSIK_API_FAILURE,
+          "Timeline recording is disabled in Toggl profile");
+        return;
+      }
+
+      Poco::Mutex::ScopedLock lock(*ctx_->mutex, kLockTimeoutMillis);
+
+      if (ctx_->timeline_uploader) {
+        delete ctx_->timeline_uploader;
+        ctx_->timeline_uploader = 0;
+      }
+      ctx_->timeline_uploader = new kopsik::TimelineUploader(
+        static_cast<unsigned int>(ctx_->user->ID()),
+        ctx_->user->APIToken(),
+        ctx_->api_url,
+        ctx_->app_name,
+        ctx_->app_version);
+
+      if (ctx_->window_change_recorder) {
+        delete ctx_->window_change_recorder;
+        ctx_->window_change_recorder = 0;
+      }
+      ctx_->window_change_recorder =new kopsik::WindowChangeRecorder(
+        static_cast<unsigned int>(ctx_->user->ID()));
+
+      callback_(KOPSIK_API_SUCCESS, "");
+    }
+
+  private:
+    Context *ctx_;
+    KopsikResultCallback callback_;
+};
+
+void kopsik_timeline_start_async(void *context,
+    KopsikResultCallback callback) {
   poco_assert(context);
+  poco_assert(callback);
 
   Poco::Logger &logger = Poco::Logger::get("kopsik_api");
   logger.debug("kopsik_timeline_start");
 
   Context *ctx = reinterpret_cast<Context *>(context);
-
-  if (!ctx->user) {
-    strncpy(errmsg, "Please login first", errlen);
-    return KOPSIK_API_FAILURE;
-  }
-
-  if (!ctx->user->RecordTimeline()) {
-    return KOPSIK_API_SUCCESS;
-  }
-
-  Poco::Mutex::ScopedLock lock(*ctx->mutex, kLockTimeoutMillis);
-
-  if (ctx->timeline_uploader) {
-    delete ctx->timeline_uploader;
-    ctx->timeline_uploader = 0;
-  }
-  ctx->timeline_uploader = new kopsik::TimelineUploader(
-    static_cast<unsigned int>(ctx->user->ID()),
-    ctx->user->APIToken(),
-    ctx->api_url,
-    ctx->app_name,
-    ctx->app_version);
-
-  if (ctx->window_change_recorder) {
-    delete ctx->window_change_recorder;
-    ctx->window_change_recorder = 0;
-  }
-  ctx->window_change_recorder = new kopsik::WindowChangeRecorder(
-    static_cast<unsigned int>(ctx->user->ID()));
-
-  return KOPSIK_API_SUCCESS;
+  ctx->tm->start(new TimelineStartTask(ctx, callback));
 }
 
-int kopsik_timeline_is_recording(void *context) {
-  poco_assert(context);
-  Context *ctx = reinterpret_cast<Context *>(context);
-  if (!ctx->window_change_recorder) {
-    return 0;
-  }
-  return 1;
-}
+class TimelineStopTask : public Poco::Task {
+  public:
+    TimelineStopTask(Context *ctx, KopsikResultCallback callback) :
+      Task("stop_timeline"),
+      ctx_(ctx),
+      callback_(callback) {}
+    void runTask() {
+      Poco::Mutex::ScopedLock lock(*ctx_->mutex, kLockTimeoutMillis);
 
-void kopsik_timeline_stop(void *context) {
+      if (ctx_->window_change_recorder) {
+        delete ctx_->window_change_recorder;
+        ctx_->window_change_recorder = 0;
+      }
+
+      if (ctx_->timeline_uploader) {
+        delete ctx_->timeline_uploader;
+        ctx_->timeline_uploader = 0;
+      }
+
+      if (callback_) {
+        callback_(KOPSIK_API_SUCCESS, "");
+      }
+    }
+
+  private:
+    Context *ctx_;
+    KopsikResultCallback callback_;
+};
+
+void kopsik_timeline_stop_async(void *context,
+    KopsikResultCallback callback) {
   poco_assert(context);
 
   Poco::Logger &logger = Poco::Logger::get("kopsik_api");
   logger.debug("kopsik_timeline_stop");
 
   Context *ctx = reinterpret_cast<Context *>(context);
-
-  Poco::Mutex::ScopedLock lock(*ctx->mutex, kLockTimeoutMillis);
-
-  if (ctx->window_change_recorder) {
-    delete ctx->window_change_recorder;
-    ctx->window_change_recorder = 0;
-  }
-
-  if (ctx->timeline_uploader) {
-    delete ctx->timeline_uploader;
-    ctx->timeline_uploader = 0;
-  }
+  ctx->tm->start(new TimelineStopTask(ctx, callback));
 }
 
 // Updates

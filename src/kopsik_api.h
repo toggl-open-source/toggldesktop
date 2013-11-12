@@ -338,14 +338,6 @@ KOPSIK_EXPORT void kopsik_set_change_callback(
   void *ctx,
   KopsikViewItemChangeCallback callback);
 
-KOPSIK_EXPORT kopsik_api_result kopsik_websocket_start(
-  void *ctx,
-  char *errmsg, unsigned int errlen);
-
-KOPSIK_EXPORT kopsik_api_result kopsik_websocket_stop(
-  void *ctx,
-  char *errmsg, unsigned int errlen);
-
 KOPSIK_EXPORT void kopsik_websocket_start_async(
   void *ctx,
   KopsikResultCallback callback);
@@ -356,12 +348,11 @@ KOPSIK_EXPORT void kopsik_websocket_stop_async(
 
 // Timeline
 
-KOPSIK_EXPORT kopsik_api_result kopsik_timeline_start(void *ctx,
-  char *errmsg, const unsigned int errlen);
+KOPSIK_EXPORT void kopsik_timeline_start_async(void *ctx,
+  KopsikResultCallback);
 
-int kopsik_timeline_is_recording(void *ctx);
-
-void kopsik_timeline_stop(void *ctx);
+KOPSIK_EXPORT void kopsik_timeline_stop_async(void *ctx,
+  KopsikResultCallback);
 
 // Updates
 

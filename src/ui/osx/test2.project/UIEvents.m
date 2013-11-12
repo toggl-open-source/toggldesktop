@@ -23,6 +23,7 @@ NSString *const kUIStateUpToDate = @"UpToDate";
 NSString *const kUIEventModelChange = @"ModelChange";
 NSString *const kUIEventIdleFinished = @"IdleFinished";
 NSString *const kUIEventWebSocketConnection = @"WebsocketConnected";
+NSString *const kUIEventTimelineRecording = @"TimelineRecording";
 
 // Commands
 NSString *const kUICommandNew = @"New";
