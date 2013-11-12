@@ -130,8 +130,16 @@ NSString *kTimeTotalUnknown = @"--:--";
 
 - (void)startWebSocket {
   NSLog(@"startWebSocket");
-  kopsik_websocket_start_async(ctx, handle_error);
+  kopsik_websocket_start_async(ctx, on_websocket_start_callback);
   NSLog(@"startWebSocket done");
+}
+
+void on_websocket_start_callback(kopsik_api_result result, const char *err) {
+  if (result != KOPSIK_API_SUCCESS) {
+    handle_error(result, err);
+    return;
+  }
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateWebSocketConnected object:nil];
 }
 
 - (void)startTimeline {
@@ -141,6 +149,7 @@ NSString *kTimeTotalUnknown = @"--:--";
   if (KOPSIK_API_SUCCESS != res) {
     handle_error(res, err);
   }
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimelineRecording object:nil];
   NSLog(@"startTimeline done");
 }
 
