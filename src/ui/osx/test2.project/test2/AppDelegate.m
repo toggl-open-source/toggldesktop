@@ -621,6 +621,8 @@ void renderRunningTimeEntry() {
 void on_model_change(kopsik_api_result result,
                      const char *errmsg,
                      KopsikModelChange *change) {
+  NSLog(@"on_model_change, thread %@", [NSThread currentThread]);
+  
   if (KOPSIK_API_SUCCESS != result) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                           object:[NSString stringWithUTF8String:errmsg]];
