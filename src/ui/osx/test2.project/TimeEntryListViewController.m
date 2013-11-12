@@ -207,11 +207,14 @@
 {
   [self.timeEntriesTableView reloadData];
 
-  // Headers with same date or formatted date are not allowed.
+  // 1) Headers with same date or formatted date are not allowed.
   NSHashTable *formattedDates = [[NSHashTable alloc] init];
   
-  // Also, all view items must be ordered in descending order by date.
+  // 2) all view items must be ordered in descending order by date.
   NSDate *date = nil;
+  
+  // 3) two or more headers cannot follow each other
+  DateHeader *previousHeader = nil;
   
   // Sanity checks, can/will remove when in production.
   for (int i = 0; i < viewitems.count; i++) {
@@ -227,12 +230,21 @@
       }
 
       date = item.started;
+      previousHeader = nil;
 
     } else if ([viewitems[i] isKindOfClass:[DateHeader class]]) {
+      if (previousHeader != nil) {
+        NSLog(@"Date headers should contain time entries, but header for %@ seems to be empty",
+              previousHeader.actualDate);
+        NSAssert(false, @"Header found to be empty");
+      }
+
       DateHeader *header = viewitems[i];
 
-      NSAssert(![formattedDates containsObject:header.formattedDate],
-               @"Header already added with same date");
+      if ([formattedDates containsObject:header.formattedDate]) {
+        NSLog(@"Header already added with same date: %@", date);
+        NSAssert(false, @"Header already added with same date");
+      }
       [formattedDates addObject:header.formattedDate];
 
       if (date != nil) {
@@ -244,6 +256,7 @@
       }
 
       date = header.actualDate;
+      previousHeader = header;
     }
   }
 }
