@@ -18,13 +18,12 @@ extern NSString *const kUIStateTimeEntryDeselected;
 extern NSString *const kUIStateError;
 extern NSString *const kUIStateUpdateAvailable;
 extern NSString *const kUIStateUpToDate;
-extern NSString *const kUIStateWebSocketConnected;
-extern NSString *const kUIStateTimelineRecording;
 
 
 // Events
 extern NSString *const kUIEventModelChange;
 extern NSString *const kUIEventIdleFinished;
+extern NSString *const kUIEventWebSocketConnection;
 
 
 // Commands

@@ -18,12 +18,11 @@ NSString *const kUIStateTimeEntryDeselected = @"TimeEntryDeselected";
 NSString *const kUIStateError = @"Error";
 NSString *const kUIStateUpdateAvailable = @"UpdateAvailable";
 NSString *const kUIStateUpToDate = @"UpToDate";
-NSString *const kUIStateWebSocketConnected = @"WebsocketConnected";
-NSString *const kUIStateTimelineRecording = @"TimelineRecording";
 
 // Events
 NSString *const kUIEventModelChange = @"ModelChange";
 NSString *const kUIEventIdleFinished = @"IdleFinished";
+NSString *const kUIEventWebSocketConnection = @"WebsocketConnected";
 
 // Commands
 NSString *const kUICommandNew = @"New";

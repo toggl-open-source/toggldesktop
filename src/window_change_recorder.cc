@@ -8,7 +8,6 @@
 #include "./timeline_event.h"
 
 #include "Poco/Thread.h"
-#include "Poco/Logger.h"
 #include "Poco/NotificationCenter.h"
 
 namespace kopsik {

@@ -23,6 +23,7 @@
 #import "idler.h"
 #import "IdleEvent.h"
 #import "IdleNotificationWindowController.h"
+#import "MenuItemTitles.h"
 
 @interface  AppDelegate()
 @property (nonatomic,strong) IBOutlet MainWindowController *mainWindowController;
@@ -36,6 +37,13 @@
 @property NSString *lastKnownTrackingState;
 @property int lastIdleSecondsReading;
 @property NSDate *lastIdleStarted;
+@property BOOL timelineRecording  ;
+@property BOOL websocketConnected;
+// Need references to some menu items, we'll change them dynamically
+@property NSMenuItem *websocketMenuItem;
+@property NSMenuItem *timelineMenuItem;
+@property (weak) IBOutlet NSMenuItem *mainWebsocketMenuItem;
+@property (weak) IBOutlet NSMenuItem *mainTimelineMenuItem;
 @end
 
 @implementation AppDelegate
@@ -96,6 +104,10 @@ NSString *kTimeTotalUnknown = @"--:--";
                                            selector:@selector(eventHandler:)
                                                name:kUICommandStopAt
                                              object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(eventHandler:)
+                                               name:kUIEventWebSocketConnection
+                                             object:nil];
 
   kopsik_set_change_callback(ctx, on_model_change);
   
@@ -134,12 +146,33 @@ NSString *kTimeTotalUnknown = @"--:--";
   NSLog(@"startWebSocket done");
 }
 
+- (void)stopWebSocket {
+  NSLog(@"stopWebSocket");
+  kopsik_websocket_stop_async(ctx, handle_error);
+  [self updateWebSocketConnectedState:NO];
+  NSLog(@"stopWebSocket done");
+}
+
+- (void)updateWebSocketConnectedState:(BOOL)state
+{
+  self.websocketConnected = state;
+  if (self.websocketConnected) {
+    [self.websocketMenuItem setTitle:kMenuItemTitleDisconnectWebSocket];
+    [self.mainWebsocketMenuItem setTitle:kMenuItemTitleDisconnectWebSocket];
+    return;
+  }
+  [self.websocketMenuItem setTitle:kMenuItemTitleConnectWebSocket];
+  [self.mainWebsocketMenuItem setTitle:kMenuItemTitleConnectWebSocket];
+}
+
 void on_websocket_start_callback(kopsik_api_result result, const char *err) {
   if (result != KOPSIK_API_SUCCESS) {
     handle_error(result, err);
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventWebSocketConnection
+                                                        object:[NSString stringWithUTF8String:err]];
     return;
   }
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateWebSocketConnected object:nil];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventWebSocketConnection object:nil];
 }
 
 - (void)startTimeline {
@@ -147,16 +180,42 @@ void on_websocket_start_callback(kopsik_api_result result, const char *err) {
   char err[KOPSIK_ERR_LEN];
   kopsik_api_result res = kopsik_timeline_start(ctx, err, KOPSIK_ERR_LEN);
   if (KOPSIK_API_SUCCESS != res) {
+    [self updateTimelineRecordingState:NO];
     handle_error(res, err);
+    return;
   }
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimelineRecording object:nil];
+  [self updateTimelineRecordingState:YES];
   NSLog(@"startTimeline done");
+}
+
+- (void) stopTimeline {
+  NSLog(@"stopTimeline");
+  kopsik_timeline_stop(ctx);
+  [self updateTimelineRecordingState:NO];
+  NSLog(@"stopTimeline done");
+}
+
+- (void)updateTimelineRecordingState:(BOOL)state
+{
+  self.timelineRecording = state;
+  if (self.timelineRecording) {
+    [self.timelineMenuItem setTitle:kMenuItemTitleStopTimelineRecording];
+    [self.mainTimelineMenuItem setTitle:kMenuItemTitleStopTimelineRecording];
+    return;
+  }
+  [self.timelineMenuItem setTitle:kMenuItemTitleStartTimelineRecording];
+  [self.mainTimelineMenuItem setTitle:kMenuItemTitleStartTimelineRecording];
 }
 
 -(void)eventHandler: (NSNotification *) notification
 {
   if ([notification.name isEqualToString:kUICommandShowPreferences]) {
     [self onPreferencesMenuItem:self];
+    return;
+  }
+  
+  if ([notification.name isEqualToString:kUIEventWebSocketConnection]) {
+    [self updateWebSocketConnectedState:(notification.object == nil)];
     return;
   }
   
@@ -174,8 +233,8 @@ void on_websocket_start_callback(kopsik_api_result result, const char *err) {
     self.lastKnownLoginState = kUIStateUserLoggedOut;
     self.lastKnownTrackingState = kUIStateTimerStopped;
     self.running_time_entry = nil;
-    kopsik_websocket_stop_async(ctx, handle_error);
-    kopsik_timeline_stop(ctx);
+    [self stopWebSocket];
+    [self stopTimeline];
 
   } else if ([notification.name isEqualToString:kUIStateTimerStopped]) {
     self.running_time_entry = nil;
@@ -276,8 +335,15 @@ void on_websocket_start_callback(kopsik_api_result result, const char *err) {
   [menu addItemWithTitle:@"Stop" action:@selector(onStopMenuItem) keyEquivalent:@""].tag = kMenuItemTagStop;
   [menu addItem:[NSMenuItem separatorItem]];
   [menu addItemWithTitle:@"Sync" action:@selector(onSyncMenuItem:) keyEquivalent:@""].tag = kMenuItemTagSync;
-  [menu addItemWithTitle:@"Start timeline recording" action:@selector(onTimelineMenuItem:) keyEquivalent:@""].tag = kMenuItemTagTimeline;
-  [menu addItemWithTitle:@"Connect WebSocket" action:@selector(onWebSocketMenuItem:) keyEquivalent:@""].tag = kMenuItemTagWebSocket;
+  [menu addItem:[NSMenuItem separatorItem]];
+  self.timelineMenuItem = [menu addItemWithTitle:kMenuItemTitleStartTimelineRecording
+                                          action:@selector(onTimelineMenuItem:)
+                                   keyEquivalent:@""];
+  self.timelineMenuItem.tag = kMenuItemTagTimeline;
+  self.websocketMenuItem = [menu addItemWithTitle:kMenuItemTitleConnectWebSocket
+                                           action:@selector(onWebSocketMenuItem:)
+                                    keyEquivalent:@""];
+  self.websocketMenuItem.tag = kMenuItemTagWebSocket;
   [menu addItem:[NSMenuItem separatorItem]];
   [menu addItemWithTitle:@"Preferences" action:@selector(onPreferencesMenuItem:) keyEquivalent:@""];
   [menu addItem:[NSMenuItem separatorItem]];
@@ -384,14 +450,21 @@ void on_websocket_start_callback(kopsik_api_result result, const char *err) {
 
 - (IBAction)onTimelineMenuItem:(id)sender
 {
-  NSLog(@"onTimelineMenuItem");
+  if (self.timelineRecording) {
+    [self stopTimeline];
+    return;
+  }
+  [self startTimeline];
 }
 
 - (IBAction)onWebSocketMenuItem:(id)sender
 {
-  NSLog(@"onWebSocketMenuItem");
+  if (self.websocketConnected) {
+    [self stopWebSocket];
+    return;
+  }
+  [self startWebSocket];
 }
-
 
 - (void)onQuitMenuItem {
   [[NSApplication sharedApplication] terminate:self];
