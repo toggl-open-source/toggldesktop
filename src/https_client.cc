@@ -15,8 +15,6 @@
 #include "Poco/Net/NameValueCollection.h"
 #include "Poco/Net/HTTPMessage.h"
 #include "Poco/Net/HTTPBasicCredentials.h"
-#include "Poco/ScopedLock.h"
-#include "Poco/Mutex.h"
 
 #include "./libjson.h"
 #include "./version.h"
