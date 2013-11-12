@@ -45,23 +45,36 @@
 -(void) updateHeader:(NSDate *)date withFormattedDate:(NSString *)formattedDate
 {
   NSLog(@"updateHeader date: %@", date);
-  DateHeader *header = nil;
+  int insertPoint = -1;
+
   // Find header from view items list.
   for (int i=0; i < viewitems.count; i++) {
     if ([viewitems[i] isKindOfClass:[DateHeader class]]) {
-      DateHeader *h = viewitems[i];
-      if ([h.actualDate isEqualToDate:date]) {
-        NSAssert(header == nil, @"header with same date already found");
-        header = h;
+      DateHeader *header = viewitems[i];
+      if ([header.actualDate isEqualToDate:date]) {
+        header.duration = [self durationForDate:formattedDate];
+        return;
+      }
+
+      // if header.actualDate is earlier than our date
+      if (insertPoint < 0 && (NSOrderedAscending == [header.actualDate compare:date])) {
+        NSLog(@"smaller date than %@ found on row %d - found date %@",
+              date, i, header.actualDate);
+        insertPoint = i;
       }
     }
   }
-  // If header not found, find insert point
-  if (header == nil) {
-    header = [[DateHeader alloc] init];
-    header.formattedDate = formattedDate;
-    header.actualDate = date;
-    header.duration = [self durationForDate:formattedDate];
+
+  NSLog(@"updateHeader date: %@ header not found, will insert at %d", date, insertPoint);
+  
+  // Add new header
+  DateHeader *header = [[DateHeader alloc] init];
+  header.formattedDate = formattedDate;
+  header.actualDate = date;
+  header.duration = [self durationForDate:formattedDate];
+  if (insertPoint >= 0) {
+    [viewitems insertObject:header atIndex:insertPoint];
+  } else {
     [viewitems addObject:header];
   }
 }
