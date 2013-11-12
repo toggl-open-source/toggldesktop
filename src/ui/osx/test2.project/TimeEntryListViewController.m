@@ -42,40 +42,6 @@
     return self;
 }
 
-// Returns the headers location in view items list.
--(int) ensureHeader:(NSDate *)date withFormattedDate:(NSString *)formattedDate
-{
-  NSLog(@"ensureHeader date: %@", date);
-  int insertPoint = -1;
-
-  // Find header from view items list.
-  for (int i=0; i < viewitems.count; i++) {
-    if ([viewitems[i] isKindOfClass:[DateHeader class]]) {
-      DateHeader *header = viewitems[i];
-      if ([header.actualDate isEqualToDate:date]) {
-        header.duration = [self durationForDate:formattedDate];
-        return i;
-      }
-
-      // if header.actualDate is earlier than our date
-      if (insertPoint < 0 && (NSOrderedAscending == [header.actualDate compare:date])) {
-        insertPoint = i;
-      }
-    }
-  }
-
-  // Add new header
-  DateHeader *header = [[DateHeader alloc] init];
-  header.formattedDate = formattedDate;
-  header.actualDate = date;
-  header.duration = [self durationForDate:formattedDate];
-  if (insertPoint < 0) {
-    insertPoint = 0;
-  }
-  [viewitems insertObject:header atIndex:insertPoint];
-  return insertPoint;
-}
-
 -(NSString *)durationForDate:(NSString *)dateHeader
 {
   char err[KOPSIK_ERR_LEN];
@@ -92,121 +58,42 @@
   return [NSString stringWithUTF8String:duration];
 }
 
--(void)eventHandler: (NSNotification *) notification
+-(void)renderTimeEntries
 {
-  if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    char err[KOPSIK_ERR_LEN];
-    KopsikTimeEntryViewItemList *list = kopsik_time_entry_view_item_list_init();
-    if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(ctx, err, KOPSIK_ERR_LEN, list)) {
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                          object:[NSString stringWithUTF8String:err]];
-      kopsik_time_entry_view_item_list_clear(list);
-      return;
-    }
-
-    @synchronized(viewitems) {
-      // All time entries are sorted by start at this point.
-      [viewitems removeAllObjects];
-      NSString *date = nil;
-      for (int i = 0; i < list->Length; i++) {
-        KopsikTimeEntryViewItem *item = list->ViewItems[i];
-        TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
-        [model load:item];
-        // Add header if necessary
-        if (date == nil || ![date isEqualToString:model.date]) {
-          DateHeader *header = [[DateHeader alloc] init];
-          header.actualDate = model.started;
-          header.formattedDate = model.date;
-          header.duration = [self durationForDate:model.date];
-          [viewitems addObject:header];
-        }
-        date = model.date;
-        [viewitems addObject:model];
-      }
-    }
-
+  char err[KOPSIK_ERR_LEN];
+  KopsikTimeEntryViewItemList *list = kopsik_time_entry_view_item_list_init();
+  if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(ctx, err, KOPSIK_ERR_LEN, list)) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
+                                                        object:[NSString stringWithUTF8String:err]];
     kopsik_time_entry_view_item_list_clear(list);
-    [self reloadData];
     return;
   }
 
-  if ([notification.name isEqualToString:kUIEventModelChange]) {
-    
-    ModelChange *change = notification.object;
-    
-    // We only care about time entry changes
-    if (! [change.ModelType isEqualToString:@"time_entry"]) {
-      return;
-    }
-    
-    // Handle delete
-    if ([change.ChangeType isEqualToString:@"delete"]) {
-      @synchronized(viewitems) {
-        TimeEntryViewItem *found = nil;
-        for (int i = 0; i < [viewitems count]; i++) {
-          TimeEntryViewItem *item = [viewitems objectAtIndex:i];
-          if (! [item isKindOfClass:[TimeEntryViewItem class]]) {
-            continue;
-          }
-          if ([change.GUID isEqualToString:item.GUID]) {
-            found = item;
-            break;
-          }
-        }
-        if (found) {
-          [viewitems removeObject:found];
-          int row =[self ensureHeader:found.started withFormattedDate:found.date];
-          NSLog(@"TE removed from under header located at index %d", row);
-        }
+  @synchronized(viewitems) {
+    // All time entries are sorted by start at this point.
+    [viewitems removeAllObjects];
+    NSString *date = nil;
+    for (int i = 0; i < list->Length; i++) {
+      KopsikTimeEntryViewItem *item = list->ViewItems[i];
+      TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
+      [model load:item];
+      // Add header if necessary
+      if (date == nil || ![date isEqualToString:model.date]) {
+        DateHeader *header = [[DateHeader alloc] init];
+        header.actualDate = model.started;
+        header.formattedDate = model.date;
+        header.duration = [self durationForDate:model.date];
+        [viewitems addObject:header];
       }
-      [self reloadData];
-      return;
+      date = model.date;
+      [viewitems addObject:model];
     }
-
-    // Handle update
-    TimeEntryViewItem *updated = [TimeEntryViewItem findByGUID:change.GUID];
-
-    BOOL found = NO;
-    @synchronized(viewitems) {
-      for (int i = 0; i < [viewitems count]; i++) {
-        TimeEntryViewItem *item = [viewitems objectAtIndex:i];
-        if (![item isKindOfClass:[TimeEntryViewItem class]]) {
-          continue;
-        }
-        if (![change.GUID isEqualToString:item.GUID]) {
-          continue;
-        }
-        [viewitems replaceObjectAtIndex:i withObject:updated];
-        int row = [self ensureHeader:updated.started withFormattedDate:updated.date];
-        NSLog(@"TE updated under header located at index %d", row);
-        found = YES;
-        break;
-      }
-    }
-    
-    if (found) {
-      [self reloadData];
-      return;
-    }
-
-    // Since TE was not found in our list, it must be a new time entry.
-    // Insert it to list, if it's not tracking.
-    if (updated.duration_in_seconds < 0) {
-      return;
-    }
-    @synchronized(viewitems) {
-      int row = [self ensureHeader:updated.started withFormattedDate:updated.date];
-      NSLog(@"TE added under header located at index %d", row);
-      [viewitems insertObject:updated atIndex:row+1];
-    }
-    [self reloadData];
   }
-}
+  
+  kopsik_time_entry_view_item_list_clear(list);
 
-- (void)reloadData
-{
   [self.timeEntriesTableView reloadData];
-
+  
   // 1) Headers with same date or formatted date are not allowed.
   NSHashTable *formattedDates = [[NSHashTable alloc] init];
   
@@ -228,35 +115,49 @@
            date, item.started];
         }
       }
-
+      
       date = item.started;
       previousHeader = nil;
-
+      
     } else if ([viewitems[i] isKindOfClass:[DateHeader class]]) {
       if (previousHeader != nil) {
         [NSException raise:@"Header found to be empty"
                     format:@"Date headers should contain time entries, but header for %@ seems to be empty", previousHeader.actualDate];
       }
-
+      
       DateHeader *header = viewitems[i];
-
+      
       if ([formattedDates containsObject:header.formattedDate]) {
         [NSException raise:@"Header already added with same date"
                     format:@"Header already added with same date: %@", date];
       }
       [formattedDates addObject:header.formattedDate];
-
+      
       if (date != nil) {
         if([header.actualDate compare:date] == NSOrderedDescending) {
           [NSException raise:@"Invalid header rendering"
                       format:@"Previous date was %@, but now I've found %@ which is larger than date",
            date, header.actualDate];
- 
+          
         }
       }
-
+      
       date = header.actualDate;
       previousHeader = header;
+    }
+  }
+}
+
+-(void)eventHandler: (NSNotification *) notification
+{
+  // Handle log in: reload all time entries
+  if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
+    [self renderTimeEntries];
+  } else if ([notification.name isEqualToString:kUIEventModelChange]) {
+    ModelChange *change = notification.object;
+    // On all TE changes, just re-render the list. It's Simpler.
+    if ([change.ModelType isEqualToString:@"time_entry"]) {
+      [self renderTimeEntries];
     }
   }
 }
