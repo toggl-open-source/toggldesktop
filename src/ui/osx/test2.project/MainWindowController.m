@@ -268,6 +268,11 @@
       return;
     }
 
+    // Failing request
+    if ([msg rangeOfString:@"No message received"].location != NSNotFound) {
+      return;
+    }
+    
     [self performSelectorOnMainThread:@selector(showError:) withObject:msg waitUntilDone:NO];
 
     [Bugsnag notify:[NSException
