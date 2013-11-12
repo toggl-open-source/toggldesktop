@@ -44,7 +44,7 @@
 
 -(void)renderTimeEntries
 {
-  NSLog(@"TimeEntryListViewController renderTimeEntries");
+  NSLog(@"TimeEntryListViewController renderTimeEntries, thread %@", [NSThread currentThread]);
   
   char err[KOPSIK_ERR_LEN];
   KopsikTimeEntryViewItemList *list = kopsik_time_entry_view_item_list_init();
