@@ -1718,7 +1718,7 @@ kopsik_api_result kopsik_time_entry_view_items(
   Poco::Mutex::ScopedLock lock(*ctx->mutex);
 
   ctx->user->SortTimeEntriesByStart();
-  
+
   std::map<std::string, Poco::Int64> date_durations;
 
   std::vector<kopsik::TimeEntry *>visible;
@@ -1758,7 +1758,8 @@ kopsik_api_result kopsik_time_entry_view_items(
     KopsikTimeEntryViewItem *view_item = kopsik_time_entry_view_item_init();
 
     Poco::Int64 duration = date_durations[te->DateHeaderString()];
-    std::string formatted = kopsik::Formatter::FormatDurationInSecondsHHMM(duration, false);
+    std::string formatted =
+      kopsik::Formatter::FormatDurationInSecondsHHMM(duration, false);
     time_entry_to_view_item(te, ctx->user, view_item, formatted);
 
     out_list->ViewItems[i] = view_item;
