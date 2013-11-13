@@ -38,5 +38,7 @@
 	<string>development</string>
 	<key>KopsikCheckForUpdates</key>
 	<false/>
+	<key>KopsikLogUserInterfaceToFile</key>
+	<false/>
 </dict>
 </plist>

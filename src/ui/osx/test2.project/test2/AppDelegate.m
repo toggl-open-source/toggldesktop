@@ -592,8 +592,10 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   kopsik_set_log_path(ctx, [log_path UTF8String]);
   kopsik_set_log_level(ctx, [log_level UTF8String]);
   
-  NSString *logPath = [self.app_path stringByAppendingPathComponent:@"ui.log"];
-  freopen([logPath fileSystemRepresentation],"a+",stderr);
+  if ([[infoDict objectForKey:@"KopsikLogUserInterfaceToFile"] boolValue]) {
+    NSString *logPath = [self.app_path stringByAppendingPathComponent:@"ui.log"];
+    freopen([logPath fileSystemRepresentation],"a+",stderr);
+  }
   
   return self;
 }
