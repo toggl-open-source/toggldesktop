@@ -44,6 +44,8 @@
 @property NSMenuItem *timelineMenuItem;
 @property (weak) IBOutlet NSMenuItem *mainWebsocketMenuItem;
 @property (weak) IBOutlet NSMenuItem *mainTimelineMenuItem;
+// Where logs are written
+@property NSString *app_path;
 @end
 
 @implementation AppDelegate
@@ -541,9 +543,9 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   NSArray *arguments = [[NSProcessInfo processInfo] arguments];
   NSLog(@"Command line arguments: %@", arguments);
   
-  NSString *app_path = self.applicationSupportDirectory;
-  NSString *db_path = [app_path stringByAppendingPathComponent:@"kopsik.db"];
-  NSString *log_path = [app_path stringByAppendingPathComponent:@"kopsik.log"];
+  self.app_path = self.applicationSupportDirectory;
+  NSString *db_path = [self.app_path stringByAppendingPathComponent:@"kopsik.db"];
+  NSString *log_path = [self.app_path stringByAppendingPathComponent:@"kopsik.log"];
   NSString *log_level = @"debug";
   
   for (int i = 1; i < arguments.count; i++) {
@@ -585,7 +587,10 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   kopsik_set_db_path(ctx, [db_path UTF8String]);
   kopsik_set_log_path(ctx, [log_path UTF8String]);
   kopsik_set_log_level(ctx, [log_level UTF8String]);
-
+  
+  NSString *logPath = [self.app_path stringByAppendingPathComponent:@"ui.log"];
+  freopen([logPath fileSystemRepresentation],"a+",stderr);
+  
   return self;
 }
 
