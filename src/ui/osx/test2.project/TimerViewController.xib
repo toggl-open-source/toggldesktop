@@ -20,7 +20,7 @@
             <rect key="frame" x="0.0" y="0.0" width="264" height="69"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box autoresizesSubviews="NO" focusRingType="none" misplaced="YES" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="n2B-Hq-XId">
+                <box autoresizesSubviews="NO" focusRingType="none" misplaced="YES" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="n2B-Hq-XId" customClass="NSBoxClickable">
                     <rect key="frame" x="0.0" y="0.0" width="271" height="69"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView">
