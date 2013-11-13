@@ -701,9 +701,37 @@ void User::loadUpdateFromJSONNode(JSONNODE *node) {
     Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
     logger.debug(ss.str());
 
-    if ("time_entry" == model) {
+    if ("workspace" == model) {
+        loadWorkspaceFromJSONNode(data, 0);
+    } else if ("client" == model) {
+        loadClientFromJSONNode(data, 0);
+    } else if ("project" == model) {
+        loadProjectFromJSONNode(data, 0);
+    } else if ("task" == model) {
+        loadTaskFromJSONNode(data, 0);
+    } else if ("time_entry" == model) {
         loadTimeEntryFromJSONNode(data, 0);
+    } else if ("tag" == model) {
+        loadTagFromJSONNode(data, 0);
     }
+}
+
+void User::loadProjectFromJSONNode(JSONNODE *data,
+        std::set<Poco::UInt64> *alive) {
+  Poco::UInt64 id = getIDFromJSONNode(data);
+  Project *model = GetProjectByID(id);
+  if (!model) {
+    if (isDeletedAtServer(data)) {
+      return;
+    }
+    model = new Project();
+    related.Projects.push_back(model);
+  }
+  if (alive) {
+    alive->insert(id);
+  }
+  model->SetUID(ID());
+  model->LoadFromJSONNode(data);
 }
 
 void User::loadProjectsFromJSONNode(JSONNODE *list, const bool full_sync) {
@@ -714,15 +742,7 @@ void User::loadProjectsFromJSONNode(JSONNODE *list, const bool full_sync) {
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
-        Poco::UInt64 id = getIDFromJSONNode(*current_node);
-        alive.insert(id);
-        Project *model = GetProjectByID(id);
-        if (!model) {
-            model = new Project();
-            related.Projects.push_back(model);
-        }
-        model->SetUID(ID());
-        model->LoadFromJSONNode(*current_node);
+        loadProjectFromJSONNode(*current_node, &alive);
         ++current_node;
     }
 
@@ -819,6 +839,24 @@ void Project::SetUID(Poco::UInt64 value) {
     }
 }
 
+void User::loadTaskFromJSONNode(JSONNODE *data,
+        std::set<Poco::UInt64> *alive) {
+  Poco::UInt64 id = getIDFromJSONNode(data);
+  Task *model = GetTaskByID(id);
+  if (!model) {
+    if (isDeletedAtServer(data)) {
+      return;
+    }
+    model = new Task();
+    related.Tasks.push_back(model);
+  }
+  if (alive) {
+    alive->insert(id);
+  }
+  model->SetUID(ID());
+  model->LoadFromJSONNode(data);
+}
+
 void User::loadTasksFromJSONNode(JSONNODE *list, const bool full_sync) {
     poco_assert(list);
 
@@ -827,15 +865,7 @@ void User::loadTasksFromJSONNode(JSONNODE *list, const bool full_sync) {
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
-        Poco::UInt64 id = getIDFromJSONNode(*current_node);
-        alive.insert(id);
-        Task *model = GetTaskByID(id);
-        if (!model) {
-            model = new Task();
-            related.Tasks.push_back(model);
-        }
-        model->SetUID(ID());
-        model->LoadFromJSONNode(*current_node);
+        loadTaskFromJSONNode(*current_node, &alive);
         ++current_node;
     }
 
@@ -896,6 +926,24 @@ void Task::SetName(std::string value) {
     }
 }
 
+void User::loadWorkspaceFromJSONNode(JSONNODE *data,
+        std::set<Poco::UInt64> *alive) {
+  Poco::UInt64 id = getIDFromJSONNode(data);
+  Workspace *model = GetWorkspaceByID(id);
+  if (!model) {
+    if (isDeletedAtServer(data)) {
+      return;
+    }
+    model = new Workspace();
+    related.Workspaces.push_back(model);
+  }
+  if (alive) {
+    alive->insert(id);
+  }
+  model->SetUID(ID());
+  model->LoadFromJSONNode(data);
+}
+
 void User::loadWorkspacesFromJSONNode(JSONNODE *list, const bool full_sync) {
     poco_assert(list);
 
@@ -904,15 +952,7 @@ void User::loadWorkspacesFromJSONNode(JSONNODE *list, const bool full_sync) {
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
-        Poco::UInt64 id = getIDFromJSONNode(*current_node);
-        alive.insert(id);
-        Workspace *model = GetWorkspaceByID(id);
-        if (!model) {
-            model = new Workspace();
-            related.Workspaces.push_back(model);
-        }
-        model->SetUID(ID());
-        model->LoadFromJSONNode(*current_node);
+      loadWorkspaceFromJSONNode(*current_node, &alive);
         ++current_node;
     }
 
@@ -958,6 +998,24 @@ void Workspace::SetName(std::string value) {
     }
 }
 
+void User::loadTagFromJSONNode(JSONNODE *data,
+        std::set<Poco::UInt64> *alive) {
+  Poco::UInt64 id = getIDFromJSONNode(data);
+  Tag *model = GetTagByID(id);
+  if (!model) {
+    if (isDeletedAtServer(data)) {
+      return;
+    }
+    model = new Tag();
+    related.Tags.push_back(model);
+  }
+  if (alive) {
+    alive->insert(id);
+  }
+  model->SetUID(ID());
+  model->LoadFromJSONNode(data);
+}
+
 void User::loadTagsFromJSONNode(JSONNODE *list, const bool full_sync) {
     poco_assert(list);
 
@@ -966,15 +1024,7 @@ void User::loadTagsFromJSONNode(JSONNODE *list, const bool full_sync) {
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
-        Poco::UInt64 id = getIDFromJSONNode(*current_node);
-        alive.insert(id);
-        Tag *model = GetTagByID(id);
-        if (!model) {
-            model = new Tag();
-            related.Tags.push_back(model);
-        }
-        model->SetUID(ID());
-        model->LoadFromJSONNode(*current_node);
+        loadTagFromJSONNode(*current_node, &alive);
         ++current_node;
     }
 
@@ -1035,6 +1085,24 @@ void Tag::SetGUID(std::string value) {
     }
 }
 
+void User::loadClientFromJSONNode(JSONNODE *data,
+        std::set<Poco::UInt64> *alive) {
+  Poco::UInt64 id = getIDFromJSONNode(data);
+  Client *model = GetClientByID(id);
+  if (!model) {
+    if (isDeletedAtServer(data)) {
+      return;
+    }
+    model = new Client();
+    related.Clients.push_back(model);
+  }
+  if (alive) {
+    alive->insert(id);
+  }
+  model->SetUID(ID());
+  model->LoadFromJSONNode(data);
+}
+
 void User::loadClientsFromJSONNode(JSONNODE *list, const bool full_sync) {
     poco_assert(list);
 
@@ -1043,15 +1111,7 @@ void User::loadClientsFromJSONNode(JSONNODE *list, const bool full_sync) {
     JSONNODE_ITERATOR current_node = json_begin(list);
     JSONNODE_ITERATOR last_node = json_end(list);
     while (current_node != last_node) {
-        Poco::UInt64 id = getIDFromJSONNode(*current_node);
-        alive.insert(id);
-        Client *model = GetClientByID(id);
-        if (!model) {
-            model = new Client();
-            related.Clients.push_back(model);
-        }
-        model->SetUID(ID());
-        model->LoadFromJSONNode(*current_node);
+        loadClientFromJSONNode(*current_node, &alive);
         ++current_node;
     }
 

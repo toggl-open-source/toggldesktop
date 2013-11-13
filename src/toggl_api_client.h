@@ -535,13 +535,28 @@ namespace kopsik {
         error collectErrors(std::vector<error> *errors);
 
         void loadProjectsFromJSONNode(JSONNODE *list, const bool full_sync);
+        void loadProjectFromJSONNode(JSONNODE *data,
+            std::set<Poco::UInt64> *alive);
+
         void loadTagsFromJSONNode(JSONNODE *list, const bool full_sync);
+        void loadTagFromJSONNode(JSONNODE *data,
+            std::set<Poco::UInt64> *alive);
+
         void loadClientsFromJSONNode(JSONNODE *list, const bool full_sync);
+        void loadClientFromJSONNode(JSONNODE *data,
+            std::set<Poco::UInt64> *alive);
+
         void loadTasksFromJSONNode(JSONNODE *list, const bool full_sync);
+        void loadTaskFromJSONNode(JSONNODE *data,
+            std::set<Poco::UInt64> *alive);
+
         void loadTimeEntriesFromJSONNode(JSONNODE *list, const bool full_sync);
         void loadTimeEntryFromJSONNode(JSONNODE *data,
-                                       std::set<Poco::UInt64> *alive);
+            std::set<Poco::UInt64> *alive);
+
         void loadWorkspacesFromJSONNode(JSONNODE *list, const bool full_sync);
+        void loadWorkspaceFromJSONNode(JSONNODE *data,
+            std::set<Poco::UInt64> *alive);
 
         void loadUpdateFromJSONNode(JSONNODE *data);
 

@@ -140,7 +140,7 @@ namespace kopsik {
             ASSERT_EQ(uint(2), n);
 
             ASSERT_EQ(noError, db.UInt("select count(1) from clients", &n));
-            ASSERT_EQ(uint(2), n);
+            ASSERT_EQ(uint(1), n);  // 2 clients in json, but one is deleted
 
             ASSERT_EQ(noError, db.UInt("select count(1) from projects", &n));
             ASSERT_EQ(uint(2), n);
@@ -180,7 +180,7 @@ namespace kopsik {
         ASSERT_EQ(uint(2), n);
 
         ASSERT_EQ(noError, db.UInt("select count(1) from clients", &n));
-        ASSERT_EQ(uint(2), n);
+        ASSERT_EQ(uint(1), n);  // 2 clients in JSON but one is deleted
 
         ASSERT_EQ(noError, db.UInt("select count(1) from projects", &n));
         ASSERT_EQ(uint(2), n);
@@ -221,7 +221,7 @@ namespace kopsik {
         ASSERT_EQ(uint(2), n);
 
         ASSERT_EQ(noError, db.UInt("select count(1) from clients", &n));
-        ASSERT_EQ(uint(2), n);
+        ASSERT_EQ(uint(1), n);  // 2 clients in JSON but 1 is deleted
 
         ASSERT_EQ(noError, db.UInt("select count(1) from projects", &n));
         ASSERT_EQ(uint(2), n);
@@ -422,12 +422,12 @@ namespace kopsik {
         ASSERT_EQ("stuff", user.related.Workspaces[0]->Name());
         ASSERT_EQ(user.ID(), user.related.Workspaces[0]->UID());
 
-        // Clients
-        ASSERT_EQ(uint(2), user.related.Clients.size());
+        // Clients (2 in JSON but 1 is deleted)
+        ASSERT_EQ(uint(1), user.related.Clients.size());
 
-        ASSERT_EQ(uint(1385144), user.related.Clients[0]->ID());
+        ASSERT_EQ(uint(878318), user.related.Clients[0]->ID());
         ASSERT_EQ(uint(123456789), user.related.Clients[0]->WID());
-        ASSERT_EQ("ABC", user.related.Clients[0]->Name());
+        ASSERT_EQ("Big Client", user.related.Clients[0]->Name());
         ASSERT_EQ("59b464cd-0f8e-e601-ff44-f135225a6738",
             user.related.Clients[1]->GUID());
         ASSERT_EQ(user.ID(), user.related.Clients[0]->UID());
