@@ -168,6 +168,9 @@
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
+                                        <connections>
+                                            <action selector="onNewMenuItem:" target="-1" id="R9y-Gp-CtV"/>
+                                        </connections>
                                     </button>
                                     <tokenField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bji-ux-jSe">
                                         <rect key="frame" x="74" y="78" width="159" height="22"/>

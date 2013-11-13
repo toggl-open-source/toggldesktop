@@ -347,7 +347,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   [menu addItem:[NSMenuItem separatorItem]];
   [menu addItemWithTitle:@"Show" action:@selector(onShowMenuItem) keyEquivalent:@""];
   [menu addItem:[NSMenuItem separatorItem]];
-  [menu addItemWithTitle:@"New" action:@selector(onNewMenuItem) keyEquivalent:@""].tag = kMenuItemTagNew;
+  [menu addItemWithTitle:@"New" action:@selector(onNewMenuItem:) keyEquivalent:@""].tag = kMenuItemTagNew;
   [menu addItemWithTitle:@"Continue" action:@selector(onContinueMenuItem) keyEquivalent:@""].tag = kMenuItemTagContinue;
   [menu addItemWithTitle:@"Stop" action:@selector(onStopMenuItem) keyEquivalent:@""].tag = kMenuItemTagStop;
   [menu addItem:[NSMenuItem separatorItem]];
@@ -393,7 +393,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
                                                    repeats:YES];
 }
 
-- (void)onNewMenuItem {
+- (void)onNewMenuItem:(id)sender {
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandNew
                                                       object:@"(no description)"];
 }

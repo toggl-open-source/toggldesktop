@@ -30,7 +30,6 @@
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandNew
                                                       object:description];
   [self.descriptionTextField setStringValue:@""];
-  
 }
 
 @end
