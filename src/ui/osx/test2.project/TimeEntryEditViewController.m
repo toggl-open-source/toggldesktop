@@ -54,6 +54,8 @@
 }
 
 - (void)render:(NSString *)view_item_guid {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+  
   NSAssert(view_item_guid != nil, @"GUID is nil");
   TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:view_item_guid];
   NSAssert(item != nil, @"View item not found by GUID!");
