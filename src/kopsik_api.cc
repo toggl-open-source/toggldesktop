@@ -483,6 +483,7 @@ KopsikUser *kopsik_user_init() {
   KopsikUser *user = new KopsikUser();
   user->ID = 0;
   user->Fullname = 0;
+  user->RecordTimeline = 0;
   return user;
 }
 
@@ -493,6 +494,7 @@ void kopsik_user_clear(KopsikUser *user) {
     free(user->Fullname);
     user->Fullname = 0;
   }
+  user->RecordTimeline = 0;
   delete user;
   user = 0;
 }
@@ -530,6 +532,11 @@ kopsik_api_result kopsik_current_user(
   }
   out_user->Fullname = strdup(ctx->user->Fullname().c_str());
   out_user->ID = (unsigned int)ctx->user->ID();
+  if (ctx->user->RecordTimeline()) {
+    out_user->RecordTimeline = 1;
+  } else {
+    out_user->RecordTimeline = 0;
+  }
   return KOPSIK_API_SUCCESS;
 }
 

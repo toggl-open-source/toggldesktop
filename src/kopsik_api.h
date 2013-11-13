@@ -76,6 +76,7 @@ KOPSIK_EXPORT void kopsik_set_websocket_url(void *ctx,
 typedef struct {
     unsigned int ID;
     char *Fullname;
+    unsigned int RecordTimeline;  // 0=false, 1=true
 } KopsikUser;
 
 KOPSIK_EXPORT KopsikUser *kopsik_user_init();
