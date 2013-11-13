@@ -40,7 +40,6 @@
 @property BOOL timelineRecording  ;
 @property BOOL websocketConnected;
 // Need references to some menu items, we'll change them dynamically
-@property NSMenuItem *websocketMenuItem;
 @property NSMenuItem *timelineMenuItem;
 @property (weak) IBOutlet NSMenuItem *mainWebsocketMenuItem;
 @property (weak) IBOutlet NSMenuItem *mainTimelineMenuItem;
@@ -163,11 +162,9 @@ NSString *kTimeTotalUnknown = @"--:--";
 {
   self.websocketConnected = state;
   if (self.websocketConnected) {
-    [self.websocketMenuItem setTitle:kMenuItemTitleDisconnectWebSocket];
     [self.mainWebsocketMenuItem setTitle:kMenuItemTitleDisconnectWebSocket];
     return;
   }
-  [self.websocketMenuItem setTitle:kMenuItemTitleConnectWebSocket];
   [self.mainWebsocketMenuItem setTitle:kMenuItemTitleConnectWebSocket];
 }
 
@@ -355,10 +352,6 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
                                           action:@selector(onTimelineMenuItem:)
                                    keyEquivalent:@""];
   self.timelineMenuItem.tag = kMenuItemTagTimeline;
-  self.websocketMenuItem = [menu addItemWithTitle:kMenuItemTitleConnectWebSocket
-                                           action:@selector(onWebSocketMenuItem:)
-                                    keyEquivalent:@""];
-  self.websocketMenuItem.tag = kMenuItemTagWebSocket;
   [menu addItem:[NSMenuItem separatorItem]];
   [menu addItemWithTitle:@"Preferences" action:@selector(onPreferencesMenuItem:) keyEquivalent:@""];
   [menu addItem:[NSMenuItem separatorItem]];
