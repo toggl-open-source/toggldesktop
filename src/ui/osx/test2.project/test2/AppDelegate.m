@@ -353,7 +353,13 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
                                    keyEquivalent:@""];
   self.timelineMenuItem.tag = kMenuItemTagTimeline;
   [menu addItem:[NSMenuItem separatorItem]];
-  [menu addItemWithTitle:@"Preferences" action:@selector(onPreferencesMenuItem:) keyEquivalent:@""];
+  [menu addItemWithTitle:@"Preferences"
+                  action:@selector(onPreferencesMenuItem:)
+           keyEquivalent:@""];
+  [menu addItem:[NSMenuItem separatorItem]];
+  [menu addItemWithTitle:@"Logout"
+                  action:@selector(onLogoutMenuItem:)
+           keyEquivalent:@""].tag = kMenuItemTagLogout;;
   [menu addItem:[NSMenuItem separatorItem]];
   [menu addItemWithTitle:@"Quit" action:@selector(onQuitMenuItem) keyEquivalent:@""];
   
