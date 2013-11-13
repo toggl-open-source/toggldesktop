@@ -481,6 +481,7 @@
 		1DEB927508733DD40010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_OBJC_INCOMP_METHOD_TYPES = NO;
 				HEADER_SEARCH_PATHS = ../../../../src;
 				PRODUCT_NAME = crash_report;
 			};
@@ -489,6 +490,8 @@
 		1DEB927608733DD40010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_OBJC_INCOMP_METHOD_TYPES = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = ../../../../src;
 				PRODUCT_NAME = crash_report;
 			};

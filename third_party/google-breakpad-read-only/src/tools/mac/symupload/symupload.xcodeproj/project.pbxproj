@@ -181,6 +181,7 @@
 		1DEB927508733DD40010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = ../../..;
 				PRODUCT_NAME = symupload;
 			};
@@ -189,6 +190,7 @@
 		1DEB927608733DD40010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = ../../..;
 				PRODUCT_NAME = symupload;
 			};
@@ -211,6 +213,8 @@
 		9BD836030B0544BB0055103E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
 				HEADER_SEARCH_PATHS = ../../..;
 				PRODUCT_NAME = minidump_upload;
 			};
@@ -219,6 +223,8 @@
 		9BD836040B0544BB0055103E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
 				HEADER_SEARCH_PATHS = ../../..;
 				PRODUCT_NAME = minidump_upload;
 			};

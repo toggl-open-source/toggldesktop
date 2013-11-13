@@ -1352,6 +1352,7 @@
 		B88FB025116BE00100407530 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1366,6 +1367,7 @@
 		B88FB026116BE00100407530 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,

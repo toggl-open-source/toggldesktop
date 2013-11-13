@@ -67,6 +67,7 @@
 		4DBE49A7134A4F280072546A /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBE4769134A4F080072546A /* CoreServices.framework */; };
 		4DBE49A8134A4F380072546A /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBE4769134A4F080072546A /* CoreServices.framework */; };
 		4DBE49A9134A4F460072546A /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBE4769134A4F080072546A /* CoreServices.framework */; };
+		7414F9441833BB8D004EED89 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3101E911F0CDE300FCF3E4 /* SenTestingKit.framework */; };
 		8B3101C611F0CD9F00FCF3E4 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D6A5FE840307C02AAC07 /* AppKit.framework */; };
 		8B3101C711F0CD9F00FCF3E4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
 		8B3101CA11F0CDB000FCF3E4 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D6A5FE840307C02AAC07 /* AppKit.framework */; };
@@ -800,6 +801,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7414F9441833BB8D004EED89 /* SenTestingKit.framework in Frameworks */,
 				F9C44E000EF077CD003AEBAA /* Breakpad.framework in Frameworks */,
 				8B3101CA11F0CDB000FCF3E4 /* AppKit.framework in Frameworks */,
 				8B3101CB11F0CDB000FCF3E4 /* Foundation.framework in Frameworks */,
@@ -2422,6 +2424,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = "BP_LOGGING_INCLUDE=\\\"client/mac/tests/testlogging.h\\\"";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
@@ -2444,6 +2450,10 @@
 		F93DE32F0F82C55700608B94 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
 				HEADER_SEARCH_PATHS = (
 					../../..,
 					../..,
@@ -2527,7 +2537,10 @@
 		F93DE3BE0F830E7000608B94 /* Debug With Code Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/build/$(CONFIGURATION)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"$(SDKROOT)/Developer/Library/Frameworks",
+				);
 				INFOPLIST_FILE = testapp/Info.plist;
 				PRODUCT_NAME = BreakpadTest;
 			};
@@ -2581,6 +2594,10 @@
 		F93DE3C30F830E7000608B94 /* Debug With Code Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
 				HEADER_SEARCH_PATHS = (
 					../../..,
 					../..,
@@ -2614,7 +2631,10 @@
 		F9C44DA80EF060A8003AEBAA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/build/$(CONFIGURATION)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"$(SDKROOT)/Developer/Library/Frameworks",
+				);
 				INFOPLIST_FILE = testapp/Info.plist;
 				PRODUCT_NAME = BreakpadTest;
 			};
@@ -2623,7 +2643,10 @@
 		F9C44DA90EF060A8003AEBAA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/build/$(CONFIGURATION)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"$(SDKROOT)/Developer/Library/Frameworks",
+				);
 				INFOPLIST_FILE = testapp/Info.plist;
 				PRODUCT_NAME = BreakpadTest;
 			};
