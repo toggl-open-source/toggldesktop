@@ -1110,21 +1110,39 @@ error Database::SaveProject(Project *model) {
         Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID()) {
             logger.debug("Updating project " + model->String());
-            *session << "update projects set "
-                "id = :id, uid = :uid, name = :name, guid = :guid,"
-                "wid = :wid, color = :color, cid = :cid, "
-                "active = :active "
-                "where local_id = :local_id",
-                Poco::Data::use(model->ID()),
-                Poco::Data::use(model->UID()),
-                Poco::Data::use(model->Name()),
-                Poco::Data::use(model->GUID()),
-                Poco::Data::use(model->WID()),
-                Poco::Data::use(model->Color()),
-                Poco::Data::use(model->CID()),
-                Poco::Data::use(model->Active()),
-                Poco::Data::use(model->LocalID()),
-                Poco::Data::now;
+            // FIXME: check how to property insert null :S
+            if (model->GUID().empty()) {
+                *session << "update projects set "
+                    "id = :id, uid = :uid, name = :name, "
+                    "wid = :wid, color = :color, cid = :cid, "
+                    "active = :active "
+                    "where local_id = :local_id",
+                    Poco::Data::use(model->ID()),
+                    Poco::Data::use(model->UID()),
+                    Poco::Data::use(model->Name()),
+                    Poco::Data::use(model->WID()),
+                    Poco::Data::use(model->Color()),
+                    Poco::Data::use(model->CID()),
+                    Poco::Data::use(model->Active()),
+                    Poco::Data::use(model->LocalID()),
+                    Poco::Data::now;
+            } else {
+                *session << "update projects set "
+                    "id = :id, uid = :uid, name = :name, guid = :guid,"
+                    "wid = :wid, color = :color, cid = :cid, "
+                    "active = :active "
+                    "where local_id = :local_id",
+                    Poco::Data::use(model->ID()),
+                    Poco::Data::use(model->UID()),
+                    Poco::Data::use(model->Name()),
+                    Poco::Data::use(model->GUID()),
+                    Poco::Data::use(model->WID()),
+                    Poco::Data::use(model->Color()),
+                    Poco::Data::use(model->CID()),
+                    Poco::Data::use(model->Active()),
+                    Poco::Data::use(model->LocalID()),
+                    Poco::Data::now;
+            }
           error err = last_error();
           if (err != noError) {
             return err;
