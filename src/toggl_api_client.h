@@ -545,8 +545,6 @@ namespace kopsik {
 
         void loadUpdateFromJSONNode(JSONNODE *data);
 
-        Poco::UInt64 getIDFromJSONNode(JSONNODE *list);
-
         error requestJSON(std::string method, std::string relative_url,
                 std::string json,
                 bool authenticate_with_api_token,
@@ -568,6 +566,10 @@ namespace kopsik {
         std::string email_;
         bool record_timeline_;
     };
+
+    Poco::UInt64 getIDFromJSONNode(JSONNODE *list);
+    bool isDeletedAtServer(JSONNODE *data);
+
 }  // namespace kopsik
 
 #endif  // SRC_TOGGL_API_CLIENT_H_

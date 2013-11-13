@@ -1112,7 +1112,7 @@ void Client::SetWID(Poco::UInt64 value) {
     }
 }
 
-Poco::UInt64 User::getIDFromJSONNode(JSONNODE *data) {
+Poco::UInt64 getIDFromJSONNode(JSONNODE *data) {
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
@@ -1124,6 +1124,19 @@ Poco::UInt64 User::getIDFromJSONNode(JSONNODE *data) {
     }
     poco_assert(false);
     return 0;
+}
+
+bool isDeletedAtServer(JSONNODE *data) {
+    JSONNODE_ITERATOR current_node = json_begin(data);
+    JSONNODE_ITERATOR last_node = json_end(data);
+    while (current_node != last_node) {
+        json_char *node_name = json_name(*current_node);
+        if (strcmp(node_name, "server_deleted_at") == 0) {
+            return true;
+        }
+        ++current_node;
+    }
+    return false;
 }
 
 void User::loadTimeEntriesFromJSONNode(JSONNODE *list, const bool full_sync) {

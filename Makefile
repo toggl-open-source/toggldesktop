@@ -119,6 +119,7 @@ run: osx
 
 cmdline: clean lint
 	mkdir -p build
+	$(cxx) $(cflags) -O2 -DNDEBUG -c src/version.cc -o build/version.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/https_client.cc -o build/https_client.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/websocket_client.cc -o build/websocket_client.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/toggl_api_client.cc -o build/toggl_api_client.o
@@ -133,6 +134,7 @@ cmdline: clean lint
 
 test: clean lint
 	mkdir -p build
+	$(cxx) $(cflags) -O2 -DNDEBUG -c src/version.cc -o build/version.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/https_client.cc -o build/https_client.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/websocket_client.cc -o build/websocket_client.o
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/toggl_api_client.cc -o build/toggl_api_client.o
