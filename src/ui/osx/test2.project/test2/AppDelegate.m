@@ -30,7 +30,7 @@
 @property (nonatomic,strong) IBOutlet PreferencesWindowController *preferencesWindowController;
 @property (nonatomic,strong) IBOutlet AboutWindowController *aboutWindowController;
 @property (nonatomic,strong) IBOutlet IdleNotificationWindowController *idleNotificationWindowController;
-@property TimeEntryViewItem *running_time_entry;
+@property TimeEntryViewItem *lastKnownRunningTimeEntry;
 @property NSTimer *statusItemTimer;
 @property NSTimer *idleTimer;
 @property NSString *lastKnownLoginState;
@@ -43,7 +43,9 @@
 @property NSMenuItem *timelineMenuItem;
 @property (weak) IBOutlet NSMenuItem *mainWebsocketMenuItem;
 @property (weak) IBOutlet NSMenuItem *mainTimelineMenuItem;
-// Where logs are written
+// we'll be updating running TE as a menu item, too
+@property (weak) IBOutlet NSMenuItem *runningTimeEntryMenuItem;
+// Where logs are written and db is kept
 @property NSString *app_path;
 @end
 
@@ -249,29 +251,29 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   } else if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
     self.lastKnownLoginState = kUIStateUserLoggedOut;
     self.lastKnownTrackingState = kUIStateTimerStopped;
-    self.running_time_entry = nil;
+    self.lastKnownRunningTimeEntry = nil;
     [self stopWebSocket];
     [self stopTimeline];
 
   } else if ([notification.name isEqualToString:kUIStateTimerStopped]) {
-    self.running_time_entry = nil;
+    self.lastKnownRunningTimeEntry = nil;
     self.lastKnownTrackingState = kUIStateTimerStopped;
 
   } else if ([notification.name isEqualToString:kUIStateTimerRunning]) {
-    self.running_time_entry = notification.object;
+    self.lastKnownRunningTimeEntry = notification.object;
     self.lastKnownTrackingState = kUIStateTimerRunning;
 
   } else if ([notification.name isEqualToString:kUIEventModelChange]) {
     ModelChange *ch = notification.object;
-    if (self.running_time_entry &&
-        [self.running_time_entry.GUID isEqualToString:ch.GUID] &&
+    if (self.lastKnownRunningTimeEntry &&
+        [self.lastKnownRunningTimeEntry.GUID isEqualToString:ch.GUID] &&
         [ch.ModelType isEqualToString:@"time_entry"] &&
         [ch.ChangeType isEqualToString:@"update"]) {
       // Time entry duration can be edited on server side and it's
       // pushed to us via websocket or pulled via regular sync.
       // When it happens, timer keeps on running, but the time should be
       // updated on status item:
-      self.running_time_entry = [TimeEntryViewItem findByGUID:ch.GUID];
+      self.lastKnownRunningTimeEntry = [TimeEntryViewItem findByGUID:ch.GUID];
     }
 
   } else if ([notification.name isEqualToString:kUICommandSplitAt]) {
@@ -332,26 +334,46 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
                                                           object:te];
     }
   }
+
   
-  if (self.running_time_entry == nil) {
+  if (self.lastKnownRunningTimeEntry == nil) {
     [self.statusItem setTitle: kTimeTotalUnknown];
     [self.statusItem setImage:self.offImage];
+    [self.runningTimeEntryMenuItem setTitle:@"Timer is not running."];
   } else {
     [self.statusItem setImage:self.onImage];
+    [self.runningTimeEntryMenuItem setTitle:[NSString stringWithFormat:@"Running: %@",
+                                            self.lastKnownRunningTimeEntry.Description]];
   }
 }
 
 - (void)createStatusItem {
   NSMenu *menu = [[NSMenu alloc] init];
-  [menu addItemWithTitle:@"About" action:@selector(onAboutMenuItem:) keyEquivalent:@""];
+  self.runningTimeEntryMenuItem = [menu addItemWithTitle:@"Timer status"
+                                                  action:nil
+                                           keyEquivalent:@""];
   [menu addItem:[NSMenuItem separatorItem]];
-  [menu addItemWithTitle:@"Show" action:@selector(onShowMenuItem) keyEquivalent:@""];
+  [menu addItemWithTitle:@"About"
+                  action:@selector(onAboutMenuItem:)
+           keyEquivalent:@""];
   [menu addItem:[NSMenuItem separatorItem]];
-  [menu addItemWithTitle:@"New" action:@selector(onNewMenuItem:) keyEquivalent:@""].tag = kMenuItemTagNew;
-  [menu addItemWithTitle:@"Continue" action:@selector(onContinueMenuItem) keyEquivalent:@""].tag = kMenuItemTagContinue;
-  [menu addItemWithTitle:@"Stop" action:@selector(onStopMenuItem) keyEquivalent:@""].tag = kMenuItemTagStop;
+  [menu addItemWithTitle:@"Show"
+                  action:@selector(onShowMenuItem)
+           keyEquivalent:@""];
   [menu addItem:[NSMenuItem separatorItem]];
-  [menu addItemWithTitle:@"Sync" action:@selector(onSyncMenuItem:) keyEquivalent:@""].tag = kMenuItemTagSync;
+  [menu addItemWithTitle:@"New"
+                  action:@selector(onNewMenuItem:)
+           keyEquivalent:@""].tag = kMenuItemTagNew;
+  [menu addItemWithTitle:@"Continue"
+                  action:@selector(onContinueMenuItem)
+           keyEquivalent:@""].tag = kMenuItemTagContinue;
+  [menu addItemWithTitle:@"Stop"
+                  action:@selector(onStopMenuItem)
+           keyEquivalent:@""].tag = kMenuItemTagStop;
+  [menu addItem:[NSMenuItem separatorItem]];
+  [menu addItemWithTitle:@"Sync"
+                  action:@selector(onSyncMenuItem:)
+           keyEquivalent:@""].tag = kMenuItemTagSync;
   [menu addItem:[NSMenuItem separatorItem]];
   self.timelineMenuItem = [menu addItemWithTitle:kMenuItemTitleStartTimelineRecording
                                           action:@selector(onTimelineMenuItem:)
@@ -366,7 +388,9 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
                   action:@selector(onLogoutMenuItem:)
            keyEquivalent:@""].tag = kMenuItemTagLogout;;
   [menu addItem:[NSMenuItem separatorItem]];
-  [menu addItemWithTitle:@"Quit" action:@selector(onQuitMenuItem) keyEquivalent:@""];
+  [menu addItemWithTitle:@"Quit"
+                  action:@selector(onQuitMenuItem)
+           keyEquivalent:@""];
   
   NSStatusBar *bar = [NSStatusBar systemStatusBar];
   
@@ -608,7 +632,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
 
 - (void)statusItemTimerFired:(NSTimer*)timer
 {
-  if (self.running_time_entry != nil) {
+  if (self.lastKnownRunningTimeEntry != nil) {
     const int duration_str_len = 10;
     char str[duration_str_len];
     if (blink) {
@@ -616,7 +640,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
     } else {
       blink = 1;
     }
-    kopsik_format_duration_in_seconds_hhmm(self.running_time_entry.duration_in_seconds,
+    kopsik_format_duration_in_seconds_hhmm(self.lastKnownRunningTimeEntry.duration_in_seconds,
                                            blink,
                                            str,
                                            duration_str_len);
@@ -641,7 +665,7 @@ const int kIdleThresholdSeconds = 5 * 60;
 
   } else if (self.lastIdleStarted != nil && self.lastIdleSecondsReading >= idle_seconds) {
     NSDate *now = [NSDate date];
-    if (self.running_time_entry != nil) {
+    if (self.lastKnownRunningTimeEntry != nil) {
       IdleEvent *idleEvent = [[IdleEvent alloc] init];
       idleEvent.started = self.lastIdleStarted;
       idleEvent.finished = now;
