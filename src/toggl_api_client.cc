@@ -640,6 +640,8 @@ void User::LoadDataFromJSONNode(JSONNODE *data,
             SetDefaultWID(json_as_int(*current_node));
         } else if (strcmp(node_name, "api_token") == 0) {
             SetAPIToken(std::string(json_as_string(*current_node)));
+        } else if (strcmp(node_name, "email") == 0) {
+            SetEmail(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "fullname") == 0) {
             SetFullname(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "record_timeline") == 0) {
