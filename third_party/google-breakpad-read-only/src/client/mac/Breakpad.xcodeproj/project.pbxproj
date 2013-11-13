@@ -68,6 +68,7 @@
 		4DBE49A8134A4F380072546A /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBE4769134A4F080072546A /* CoreServices.framework */; };
 		4DBE49A9134A4F460072546A /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBE4769134A4F080072546A /* CoreServices.framework */; };
 		7414F9441833BB8D004EED89 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3101E911F0CDE300FCF3E4 /* SenTestingKit.framework */; };
+		749BD0A81833C55800980494 /* Breakpad.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* Breakpad.framework */; };
 		8B3101C611F0CD9F00FCF3E4 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D6A5FE840307C02AAC07 /* AppKit.framework */; };
 		8B3101C711F0CD9F00FCF3E4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
 		8B3101CA11F0CDB000FCF3E4 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D6A5FE840307C02AAC07 /* AppKit.framework */; };
@@ -791,6 +792,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				749BD0A81833C55800980494 /* Breakpad.framework in Frameworks */,
 				8B3102E611F0D74C00FCF3E4 /* Foundation.framework in Frameworks */,
 				D2F9A44412131F84002747C1 /* libgtest.a in Frameworks */,
 				4DBE49A8134A4F380072546A /* CoreServices.framework in Frameworks */,
