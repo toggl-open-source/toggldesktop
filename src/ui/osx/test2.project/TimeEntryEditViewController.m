@@ -78,17 +78,15 @@
   }
   
   if ([item.tags count] == 0) {
-    [self.tags setObjectValue:nil];
+    [self.tagsTokenField setObjectValue:nil];
   } else {
-    [self.tags setObjectValue:item.tags];
+    [self.tagsTokenField setObjectValue:item.tags];
   }
   
   if (item.updatedAt != nil) {
-    [self.lastUpdateLabelTextField setHidden:NO];
     [self.lastUpdateTextField setHidden:NO];
     [self.lastUpdateTextField setStringValue:item.updatedAt];
   } else {
-    [self.lastUpdateLabelTextField setHidden:YES];
     [self.lastUpdateTextField setHidden:YES];
   }
 }
@@ -239,7 +237,7 @@
 - (IBAction)tagsChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
-  NSArray *tag_names = [self.tags objectValue];
+  NSArray *tag_names = [self.tagsTokenField objectValue];
   const char *value = [[tag_names componentsJoinedByString:@"|"] UTF8String];
   if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_tags(ctx,
                                                        err,

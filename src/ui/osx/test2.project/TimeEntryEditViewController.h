@@ -15,9 +15,8 @@
 @property (weak) IBOutlet NSDatePicker *startTime;
 @property (weak) IBOutlet NSDatePicker *endTime;
 @property (weak) IBOutlet NSDatePicker *startDate;
-@property (weak) IBOutlet NSTokenField *tags;
+@property (weak) IBOutlet NSTokenField *tagsTokenField;
 @property (weak) IBOutlet NSButton *billableCheckbox;
-@property (weak) IBOutlet NSTextField *lastUpdateLabelTextField;
 @property (weak) IBOutlet NSTextField *lastUpdateTextField;
 @property (weak) IBOutlet NSButton *deleteButton;
 @property (strong) IBOutlet NSArrayController *projectItemsArrayController;
