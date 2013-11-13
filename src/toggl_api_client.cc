@@ -1171,13 +1171,16 @@ void User::loadTimeEntryFromJSONNode(JSONNODE *data,
     poco_assert(data);
 
     Poco::UInt64 id = getIDFromJSONNode(data);
-    if (alive) {
-      alive->insert(id);
-    }
     TimeEntry *model = GetTimeEntryByID(id);
     if (!model) {
+        if (isDeletedAtServer(data)) {
+            return;
+        }
         model = new TimeEntry();
         related.TimeEntries.push_back(model);
+    }
+    if (alive) {
+      alive->insert(id);
     }
     model->SetUID(ID());
     model->LoadFromJSONNode(data);
