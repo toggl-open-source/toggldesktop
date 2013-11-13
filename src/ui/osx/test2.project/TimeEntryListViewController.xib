@@ -56,9 +56,9 @@
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mwb-xn-Ua3">
-                                                                    <rect key="frame" x="5" y="-74" width="111" height="17"/>
+                                                                    <rect key="frame" x="7" y="-74" width="107" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Blogipostitused" id="xhZ-Bu-nRw">
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" borderStyle="border" title="Blogipostitused" usesSingleLineMode="YES" id="xhZ-Bu-nRw">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -116,6 +116,7 @@
                                                             <constraint firstItem="Gdb-3N-fCV" firstAttribute="leading" secondItem="Mwb-xn-Ua3" secondAttribute="leading" id="G2f-p3-cfB"/>
                                                             <constraint firstItem="Mwb-xn-Ua3" firstAttribute="leading" secondItem="lZj-mn-Ej4" secondAttribute="leading" constant="9" id="TzO-4j-WeF"/>
                                                             <constraint firstItem="Bqw-7J-umj" firstAttribute="top" secondItem="lZj-mn-Ej4" secondAttribute="top" constant="17" id="d7M-pg-Fyc"/>
+                                                            <constraint firstItem="Bqw-7J-umj" firstAttribute="leading" secondItem="Mwb-xn-Ua3" secondAttribute="trailing" constant="75" id="g8d-Q1-qML"/>
                                                             <constraint firstAttribute="height" constant="50" id="il1-aX-Omg"/>
                                                             <constraint firstItem="Mwb-xn-Ua3" firstAttribute="top" secondItem="lZj-mn-Ej4" secondAttribute="top" constant="8" id="otf-zK-I8C"/>
                                                             <constraint firstAttribute="trailing" secondItem="zrO-H9-BlH" secondAttribute="trailing" constant="29" id="pk4-al-QU7"/>
