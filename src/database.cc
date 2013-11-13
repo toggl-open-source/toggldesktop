@@ -1317,6 +1317,9 @@ error Database::SaveUser(User *model, bool with_related_data,
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
+    if (model->Email().empty()) {
+        return error("Missing user e-mail, cannot save user");
+    }
     if (model->APIToken().empty()) {
         return error("Missing user API token, cannot save user");
     }
