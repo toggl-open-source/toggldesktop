@@ -106,6 +106,13 @@
 			remoteGlobalIDString = 69FC17F017E6534400B96425;
 			remoteInfo = test2;
 		};
+		7414F9181833B1AF004EED89 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7425050F1833A6A000F02E9B /* Breakpad.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F94585840F782326009A47BF;
+			remoteInfo = All;
+		};
 		742505221833A6A000F02E9B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7425050F1833A6A000F02E9B /* Breakpad.xcodeproj */;
@@ -618,6 +625,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				7414F9191833B1AF004EED89 /* PBXTargetDependency */,
 				74B680AF18075A4300B697AA /* PBXTargetDependency */,
 			);
 			name = kopsik_ui_osx;
@@ -920,6 +928,11 @@
 			isa = PBXTargetDependency;
 			target = 69FC17F017E6534400B96425 /* kopsik_ui_osx */;
 			targetProxy = 69FC181517E6534500B96425 /* PBXContainerItemProxy */;
+		};
+		7414F9191833B1AF004EED89 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = All;
+			targetProxy = 7414F9181833B1AF004EED89 /* PBXContainerItemProxy */;
 		};
 		74B680AF18075A4300B697AA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
