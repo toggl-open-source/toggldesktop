@@ -97,8 +97,10 @@
 {
   if ([notification.name isEqualToString:kUIStateTimeEntrySelected]) {
     [self render:notification.object];
+    return;
+  }
 
-  } else if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
+  if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
     [self.projectNames removeAllObjects];
     KopsikProjectSelectItemList *list = kopsik_project_select_item_list_init();
     char err[KOPSIK_ERR_LEN];
@@ -115,6 +117,7 @@
     }
     kopsik_project_select_item_list_clear(list);
     [self.projectSelect reloadData];
+    return;
   }
 }
 
