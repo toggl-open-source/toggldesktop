@@ -18,6 +18,7 @@
 @interface TimerViewController ()
 @property TimeEntryViewItem *running_time_entry;
 @property NSTimer *timer;
+
 @end
 
 #define duration_str_len 20
@@ -40,26 +41,43 @@
                                                selector:@selector(eventHandler:)
                                                    name:kUIEventModelChange
                                                  object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUICommandEditRunningTimeEntry
+                                                 object:nil];
+      
       self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                target:self
                                              selector:@selector(timerFired:)
                                              userInfo:nil
                                               repeats:YES];
     }
-  
     return self;
 }
 
 -(void)eventHandler: (NSNotification *) notification
 {
   if ([notification.name isEqualToString:kUIStateTimerRunning]) {
-    [self render:notification.object];
-    
-  } else if ([notification.name isEqualToString:kUIStateTimerStopped]) {
-    [self render:nil];
+    [self performSelectorOnMainThread:@selector(render:)
+                           withObject:notification.object
+                        waitUntilDone:NO];
+    return;
+  }
+  
+  if ([notification.name isEqualToString:kUIStateTimerStopped]) {
+    [self performSelectorOnMainThread:@selector(render:)
+                           withObject:nil
+                        waitUntilDone:NO];
+    return;
+  }
+  
+  if ([notification.name isEqualToString:kUICommandEditRunningTimeEntry]) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
+                                                        object:self.running_time_entry.GUID];
+    return;
+  }
 
-  } else if ([notification.name isEqualToString:kUIEventModelChange]) {
-    
+  if ([notification.name isEqualToString:kUIEventModelChange]) {
     ModelChange *change = notification.object;
     
     // We only care about time entry changes
@@ -95,13 +113,17 @@
 
     // Time entry is still running and needs to be updated.
     if ((updated.duration_in_seconds < 0) && [updated.GUID isEqualToString:self.running_time_entry.GUID]) {
-      [self render:updated];
+      [self performSelectorOnMainThread:@selector(render:)
+                             withObject:updated
+                          waitUntilDone:NO];
       return;
     }
   }
 }
 
 - (void) render:(TimeEntryViewItem *)view_item {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
   self.running_time_entry = view_item;
   if (self.running_time_entry != nil) {
     [self.descriptionTextField setStringValue:self.running_time_entry.Description];

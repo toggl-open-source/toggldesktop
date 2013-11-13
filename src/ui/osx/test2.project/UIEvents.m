@@ -32,3 +32,4 @@ NSString *const kUICommandContinue = @"Continue";
 NSString *const kUICommandShowPreferences = @"Show Preferences";
 NSString *const kUICommandStopAt = @"Stop At";
 NSString *const kUICommandSplitAt = @"Split At";
+NSString *const kUICommandEditRunningTimeEntry = @"Edit Running Time Entry";

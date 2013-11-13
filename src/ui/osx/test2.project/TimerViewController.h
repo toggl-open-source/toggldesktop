@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "NSBoxClickable.h"
 
 @interface TimerViewController : NSViewController
 @property (weak) IBOutlet NSTextField *descriptionTextField;

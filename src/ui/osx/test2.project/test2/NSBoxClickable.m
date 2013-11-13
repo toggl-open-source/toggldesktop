@@ -7,11 +7,13 @@
 //
 
 #import "NSBoxClickable.h"
+#import "UIEvents.h"
 
 @implementation NSBoxClickable
 
 - (void)mouseUp:(NSEvent*) event {
-  NSLog(@"Mouse up!");
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandEditRunningTimeEntry
+                                                      object:nil];
 }
 
 - (BOOL)acceptsFirstMouse:(NSEvent *)theEvent

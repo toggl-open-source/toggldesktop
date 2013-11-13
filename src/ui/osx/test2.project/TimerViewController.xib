@@ -7,6 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimerViewController">
             <connections>
+                <outlet property="boxTimer" destination="n2B-Hq-XId" id="QOc-Dl-Ii0"/>
                 <outlet property="descriptionTextField" destination="YXM-R7-dLG" id="tLp-05-Tqu"/>
                 <outlet property="durationTextField" destination="HQf-TD-Aml" id="UK6-mY-ecU"/>
                 <outlet property="projectTextField" destination="cc4-YX-Ka5" id="cMa-ac-WHH"/>
