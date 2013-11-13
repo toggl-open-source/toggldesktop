@@ -26,11 +26,11 @@
                 <rect key="frame" x="0.0" y="0.0" width="250" height="350"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Ld-I4-6Cu" userLabel="HeaderView">
+                    <customView hidden="YES" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Ld-I4-6Cu" userLabel="HeaderView">
                         <rect key="frame" x="0.0" y="277" width="250" height="73"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
-                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="av5-A6-9S5" userLabel="ContentView">
+                    <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="av5-A6-9S5" userLabel="ContentView">
                         <rect key="frame" x="0.0" y="0.0" width="250" height="277"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
@@ -40,8 +40,8 @@
                     <constraint firstAttribute="trailing" secondItem="av5-A6-9S5" secondAttribute="trailing" id="57y-9P-PlT"/>
                     <constraint firstItem="av5-A6-9S5" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="ESW-fM-7Eo"/>
                     <constraint firstItem="5Ld-I4-6Cu" firstAttribute="top" secondItem="2" secondAttribute="top" id="FTa-yS-Vna"/>
+                    <constraint firstItem="av5-A6-9S5" firstAttribute="top" secondItem="5Ld-I4-6Cu" secondAttribute="bottom" id="WSd-YY-Zzh"/>
                     <constraint firstItem="5Ld-I4-6Cu" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="XId-R8-zBU"/>
-                    <constraint firstItem="av5-A6-9S5" firstAttribute="top" secondItem="2" secondAttribute="top" constant="73" id="juq-i1-HoK"/>
                     <constraint firstItem="5Ld-I4-6Cu" firstAttribute="top" secondItem="2" secondAttribute="top" id="u6L-vS-2UH"/>
                     <constraint firstAttribute="bottom" secondItem="av5-A6-9S5" secondAttribute="bottom" id="yWZ-Zg-oVi"/>
                 </constraints>

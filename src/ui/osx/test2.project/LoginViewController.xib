@@ -22,15 +22,15 @@
             <rect key="frame" x="0.0" y="0.0" width="250" height="271"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box hidden="YES" autoresizesSubviews="NO" fixedFrame="YES" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="9t9-6S-fNz">
+                <box hidden="YES" autoresizesSubviews="NO" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="9t9-6S-fNz">
                     <rect key="frame" x="0.0" y="241" width="250" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView">
                         <rect key="frame" x="0.0" y="0.0" width="250" height="30"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5LO-U0-PHD">
-                                <rect key="frame" x="7" y="7" width="93" height="17"/>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5LO-U0-PHD">
+                                <rect key="frame" x="7" y="7" width="150" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Login failed!" id="7El-UK-Q1t">
                                     <font key="font" metaFont="system"/>
@@ -38,7 +38,7 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZkV-MT-ff5" customClass="NSTextFieldClickable">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZkV-MT-ff5" customClass="NSTextFieldClickable">
                                 <rect key="frame" x="161" y="2" width="84" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Forgot password?" id="6cT-5J-NPf">
@@ -52,6 +52,12 @@
                             </textField>
                         </subviews>
                     </view>
+                    <constraints>
+                        <constraint firstItem="5LO-U0-PHD" firstAttribute="top" secondItem="9t9-6S-fNz" secondAttribute="top" constant="6" id="9nd-Nd-8uZ"/>
+                        <constraint firstAttribute="trailing" secondItem="ZkV-MT-ff5" secondAttribute="trailing" constant="7" id="T2g-x4-Ge8"/>
+                        <constraint firstItem="5LO-U0-PHD" firstAttribute="leading" secondItem="9t9-6S-fNz" secondAttribute="leading" constant="9" id="UP4-2e-gCj"/>
+                        <constraint firstAttribute="bottom" secondItem="5LO-U0-PHD" secondAttribute="bottom" constant="7" id="sKe-yq-HVb"/>
+                    </constraints>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" red="0.92484454719387754" green="0.87390986768277279" blue="0.37178904140272706" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
@@ -125,6 +131,9 @@ DQ
                 </box>
             </subviews>
             <constraints>
+                <constraint firstItem="9t9-6S-fNz" firstAttribute="top" secondItem="d50-27-v7r" secondAttribute="top" id="442-g1-Rmm"/>
+                <constraint firstItem="9t9-6S-fNz" firstAttribute="leading" secondItem="d50-27-v7r" secondAttribute="leading" id="G1h-iD-CbT"/>
+                <constraint firstAttribute="trailing" secondItem="9t9-6S-fNz" secondAttribute="trailing" id="gol-74-6Oo"/>
                 <constraint firstAttribute="centerX" secondItem="AeN-Lk-hKy" secondAttribute="centerX" id="xdo-yh-fqg"/>
             </constraints>
         </customView>
