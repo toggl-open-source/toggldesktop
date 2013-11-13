@@ -35,7 +35,6 @@
 		744CE72D1815CF5F00A7BEE4 /* ErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 744CE72C1815CF5F00A7BEE4 /* ErrorHandler.m */; };
 		744E126717F22AB900ABE72A /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 744E126617F22AB900ABE72A /* app.icns */; };
 		745B9CCB18155993006E7F37 /* ModelChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 745B9CCA18155993006E7F37 /* ModelChange.m */; };
-		7482ACE61833A72C000A0DC8 /* Breakpad.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 742505231833A6A000F02E9B /* Breakpad.framework */; };
 		749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 749CB8CA18167D6E00814841 /* PreferencesWindowController.m */; };
 		749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */; };
 		74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 74A7346918297DD100525BBC /* ConvertHexColor.m */; };
@@ -106,97 +105,6 @@
 			remoteGlobalIDString = 69FC17F017E6534400B96425;
 			remoteInfo = test2;
 		};
-		7414F9181833B1AF004EED89 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7425050F1833A6A000F02E9B /* Breakpad.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F94585840F782326009A47BF;
-			remoteInfo = All;
-		};
-		742505221833A6A000F02E9B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7425050F1833A6A000F02E9B /* Breakpad.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
-			remoteInfo = Breakpad;
-		};
-		742505241833A6A000F02E9B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7425050F1833A6A000F02E9B /* Breakpad.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F92C53540ECCE349009BE4BA;
-			remoteInfo = Inspector;
-		};
-		742505261833A6A000F02E9B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7425050F1833A6A000F02E9B /* Breakpad.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F92C563C0ECD10B3009BE4BA;
-			remoteInfo = breakpadUtilities;
-		};
-		742505281833A6A000F02E9B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7425050F1833A6A000F02E9B /* Breakpad.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F92C56A00ECE04A7009BE4BA;
-			remoteInfo = crash_report_sender;
-		};
-		7425052A1833A6A000F02E9B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7425050F1833A6A000F02E9B /* Breakpad.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F9C44DA50EF060A8003AEBAA;
-			remoteInfo = BreakpadTest;
-		};
-		7425052C1833A6A000F02E9B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7425050F1833A6A000F02E9B /* Breakpad.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F9C77DDA0F7DD5CF0045F7DB;
-			remoteInfo = UnitTests;
-		};
-		7425052E1833A6A000F02E9B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7425050F1833A6A000F02E9B /* Breakpad.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F93803BE0F80820F004D428B;
-			remoteInfo = generator_test;
-		};
-		742505301833A6A000F02E9B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7425050F1833A6A000F02E9B /* Breakpad.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F93DE2D10F82A67300608B94;
-			remoteInfo = minidump_file_writer_unittest;
-		};
-		742505321833A6A000F02E9B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7425050F1833A6A000F02E9B /* Breakpad.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F93DE32C0F82C55600608B94;
-			remoteInfo = handler_test;
-		};
-		742505341833A6A000F02E9B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7425050F1833A6A000F02E9B /* Breakpad.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D2F9A41512131EF0002747C1;
-			remoteInfo = gtest;
-		};
-		742505361833A6A000F02E9B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7425050F1833A6A000F02E9B /* Breakpad.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D2F9A546121383A1002747C1;
-			remoteInfo = crash_generation_server_test;
-		};
-		742505381833A6A000F02E9B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7425050F1833A6A000F02E9B /* Breakpad.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D23F4BAB12A868A500686C8D;
-			remoteInfo = minidump_generator_test_helper;
-		};
 		74B680AC180759C300B697AA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 74B680A8180759C300B697AA /* Kopsik.xcodeproj */;
@@ -240,7 +148,6 @@
 		7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IdleNotificationWindowController.xib; sourceTree = "<group>"; };
 		7424949C17F1E3D20030121C /* UIEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIEvents.h; path = ../UIEvents.h; sourceTree = "<group>"; };
 		7424949D17F1E3D20030121C /* UIEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIEvents.m; path = ../UIEvents.m; sourceTree = "<group>"; };
-		7425050F1833A6A000F02E9B /* Breakpad.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Breakpad.xcodeproj; path = "../../../../third_party/google-breakpad-read-only/src/client/mac/Breakpad.xcodeproj"; sourceTree = "<group>"; };
 		7430750118204EFB009019CB /* AboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AboutWindowController.h; path = ../AboutWindowController.h; sourceTree = "<group>"; };
 		7430750218204EFB009019CB /* AboutWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AboutWindowController.m; path = ../AboutWindowController.m; sourceTree = "<group>"; };
 		7430750318204EFB009019CB /* AboutWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AboutWindowController.xib; path = ../AboutWindowController.xib; sourceTree = "<group>"; };
@@ -341,7 +248,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7482ACE61833A72C000A0DC8 /* Breakpad.framework in Frameworks */,
 				743D94281827929C000E6F70 /* Carbon.framework in Frameworks */,
 				743D942618279290000E6F70 /* IOKit.framework in Frameworks */,
 				74AA947818090A8E0000539F /* Security.framework in Frameworks */,
@@ -369,7 +275,6 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
-				7425050F1833A6A000F02E9B /* Breakpad.xcodeproj */,
 				74B680A8180759C300B697AA /* Kopsik.xcodeproj */,
 				74E3CDB117FBABE400C3ADD3 /* bugsnag */,
 				744E126617F22AB900ABE72A /* app.icns */,
@@ -526,25 +431,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		742505101833A6A000F02E9B /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				742505231833A6A000F02E9B /* Breakpad.framework */,
-				742505251833A6A000F02E9B /* Inspector */,
-				742505271833A6A000F02E9B /* breakpadUtilities.dylib */,
-				742505291833A6A000F02E9B /* crash_report_sender.app */,
-				7425052B1833A6A000F02E9B /* BreakpadTest.app */,
-				7425052D1833A6A000F02E9B /* UnitTests.octest */,
-				7425052F1833A6A000F02E9B /* generator_test */,
-				742505311833A6A000F02E9B /* minidump_file_writer_unittest */,
-				742505331833A6A000F02E9B /* handler_test */,
-				742505351833A6A000F02E9B /* libgtest.a */,
-				742505371833A6A000F02E9B /* crash_generation_server_test */,
-				742505391833A6A000F02E9B /* minidump_generator_test_helper */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		74B680A9180759C300B697AA /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -625,7 +511,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				7414F9191833B1AF004EED89 /* PBXTargetDependency */,
 				74B680AF18075A4300B697AA /* PBXTargetDependency */,
 			);
 			name = kopsik_ui_osx;
@@ -673,10 +558,6 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 742505101833A6A000F02E9B /* Products */;
-					ProjectRef = 7425050F1833A6A000F02E9B /* Breakpad.xcodeproj */;
-				},
-				{
 					ProductGroup = 74B680A9180759C300B697AA /* Products */;
 					ProjectRef = 74B680A8180759C300B697AA /* Kopsik.xcodeproj */;
 				},
@@ -690,90 +571,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		742505231833A6A000F02E9B /* Breakpad.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Breakpad.framework;
-			remoteRef = 742505221833A6A000F02E9B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		742505251833A6A000F02E9B /* Inspector */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = Inspector;
-			remoteRef = 742505241833A6A000F02E9B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		742505271833A6A000F02E9B /* breakpadUtilities.dylib */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.dylib";
-			path = breakpadUtilities.dylib;
-			remoteRef = 742505261833A6A000F02E9B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		742505291833A6A000F02E9B /* crash_report_sender.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = crash_report_sender.app;
-			remoteRef = 742505281833A6A000F02E9B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		7425052B1833A6A000F02E9B /* BreakpadTest.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = BreakpadTest.app;
-			remoteRef = 7425052A1833A6A000F02E9B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		7425052D1833A6A000F02E9B /* UnitTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = UnitTests.octest;
-			remoteRef = 7425052C1833A6A000F02E9B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		7425052F1833A6A000F02E9B /* generator_test */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = generator_test;
-			remoteRef = 7425052E1833A6A000F02E9B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		742505311833A6A000F02E9B /* minidump_file_writer_unittest */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = minidump_file_writer_unittest;
-			remoteRef = 742505301833A6A000F02E9B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		742505331833A6A000F02E9B /* handler_test */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = handler_test;
-			remoteRef = 742505321833A6A000F02E9B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		742505351833A6A000F02E9B /* libgtest.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libgtest.a;
-			remoteRef = 742505341833A6A000F02E9B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		742505371833A6A000F02E9B /* crash_generation_server_test */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = crash_generation_server_test;
-			remoteRef = 742505361833A6A000F02E9B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		742505391833A6A000F02E9B /* minidump_generator_test_helper */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = minidump_generator_test_helper;
-			remoteRef = 742505381833A6A000F02E9B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		74B680AD180759C300B697AA /* Kopsik.dylib */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.dylib";
@@ -928,11 +725,6 @@
 			isa = PBXTargetDependency;
 			target = 69FC17F017E6534400B96425 /* kopsik_ui_osx */;
 			targetProxy = 69FC181517E6534500B96425 /* PBXContainerItemProxy */;
-		};
-		7414F9191833B1AF004EED89 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = All;
-			targetProxy = 7414F9181833B1AF004EED89 /* PBXContainerItemProxy */;
 		};
 		74B680AF18075A4300B697AA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
