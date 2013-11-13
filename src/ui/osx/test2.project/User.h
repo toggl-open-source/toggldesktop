@@ -13,4 +13,5 @@
 - (void)load:(KopsikUser *)data;
 @property long ID;
 @property NSString *fullname;
+@property BOOL recordTimeline;
 @end

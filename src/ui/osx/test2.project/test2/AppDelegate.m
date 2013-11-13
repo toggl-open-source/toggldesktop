@@ -237,7 +237,12 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
     // Start syncing after a while.
     [self performSelector:@selector(startSync) withObject:nil afterDelay:0.5];
     [self performSelector:@selector(startWebSocket) withObject:nil afterDelay:0.5];
-    [self performSelector:@selector(startTimeline) withObject:nil afterDelay:0.5];
+
+    // Start timeline only if user has enabled it (known to us)
+    User *user = notification.object;
+    if (user.recordTimeline) {
+      [self performSelector:@selector(startTimeline) withObject:nil afterDelay:0.5];
+    }
     
     renderRunningTimeEntry();
 
