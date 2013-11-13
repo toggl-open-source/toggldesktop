@@ -31,7 +31,7 @@
                             <textField verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YXM-R7-dLG">
                                 <rect key="frame" x="11" y="38" width="117" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" borderStyle="border" title="Arutelu" id="r0z-zY-E4R">
+                                <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Arutelu" usesSingleLineMode="YES" id="r0z-zY-E4R">
                                     <font key="font" metaFont="systemBold"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -66,6 +66,7 @@
                     <constraints>
                         <constraint firstItem="Dn7-uI-YOj" firstAttribute="leading" secondItem="HQf-TD-Aml" secondAttribute="trailing" constant="3" id="0Mv-P3-mSf"/>
                         <constraint firstAttribute="bottom" secondItem="HQf-TD-Aml" secondAttribute="bottom" constant="24" id="0vB-OR-vk6"/>
+                        <constraint firstAttribute="trailing" secondItem="YXM-R7-dLG" secondAttribute="trailing" constant="153" id="3fK-xQ-Bx3"/>
                         <constraint firstItem="YXM-R7-dLG" firstAttribute="top" secondItem="n2B-Hq-XId" secondAttribute="top" constant="14" id="4Qg-vC-JtF"/>
                         <constraint firstItem="HQf-TD-Aml" firstAttribute="top" secondItem="n2B-Hq-XId" secondAttribute="top" constant="24" id="6GX-wk-Vae"/>
                         <constraint firstAttribute="trailing" secondItem="Dn7-uI-YOj" secondAttribute="trailing" constant="15" id="7C5-b0-sS7"/>
