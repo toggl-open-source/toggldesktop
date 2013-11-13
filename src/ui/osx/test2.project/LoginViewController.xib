@@ -55,7 +55,7 @@
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" red="0.92484454719387754" green="0.87390986768277279" blue="0.37178904140272706" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
-                <box autoresizesSubviews="NO" fixedFrame="YES" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="AeN-Lk-hKy">
+                <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="AeN-Lk-hKy">
                     <rect key="frame" x="0.0" y="26" width="250" height="215"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView">
@@ -124,6 +124,9 @@ DQ
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </box>
             </subviews>
+            <constraints>
+                <constraint firstAttribute="centerX" secondItem="AeN-Lk-hKy" secondAttribute="centerX" id="xdo-yh-fqg"/>
+            </constraints>
         </customView>
     </objects>
     <resources>
