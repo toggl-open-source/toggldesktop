@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		748968CB18340F9B00288374 /* version.cc in Sources */ = {isa = PBXBuildFile; fileRef = 748968C918340F9B00288374 /* version.cc */; };
+		748968CC18340F9B00288374 /* version.h in Headers */ = {isa = PBXBuildFile; fileRef = 748968CA18340F9B00288374 /* version.h */; };
 		74AA947A18091AE10000539F /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74AA947918091AE10000539F /* WebKit.framework */; };
 		74CAAD0318185A9B001B77BB /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CAAD0218185A9B001B77BB /* Carbon.framework */; };
 		74CAAD19181860F7001B77BB /* get_focused_window_mac.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74CAAD10181860F7001B77BB /* get_focused_window_mac.cc */; };
@@ -43,6 +45,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		748968C918340F9B00288374 /* version.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = version.cc; path = ../../../version.cc; sourceTree = "<group>"; };
+		748968CA18340F9B00288374 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = version.h; path = ../../../version.h; sourceTree = "<group>"; };
 		74AA947918091AE10000539F /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		74CAAD0218185A9B001B77BB /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		74CAAD10181860F7001B77BB /* get_focused_window_mac.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = get_focused_window_mac.cc; path = ../../../get_focused_window_mac.cc; sourceTree = "<group>"; };
@@ -144,6 +148,8 @@
 		C55DA59E17F06A3B00B42178 /* Kopsik */ = {
 			isa = PBXGroup;
 			children = (
+				748968C918340F9B00288374 /* version.cc */,
+				748968CA18340F9B00288374 /* version.h */,
 				74F7CDD918199FA300630BD0 /* window_change_recorder.cc */,
 				74F7CDDA18199FA300630BD0 /* window_change_recorder.h */,
 				74CAAD10181860F7001B77BB /* get_focused_window_mac.cc */,
@@ -187,6 +193,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				74CAAD1F181860F7001B77BB /* timeline_notifications.h in Headers */,
+				748968CC18340F9B00288374 /* version.h in Headers */,
 				C5DA1FB717F1942A001C4565 /* kopsik_api.h in Headers */,
 				C5DA1FB017F18D7B001C4565 /* toggl_api_client.h in Headers */,
 				74CAAD1E181860F7001B77BB /* timeline_event.h in Headers */,
@@ -273,6 +280,7 @@
 				74F7CDDB18199FA300630BD0 /* window_change_recorder.cc in Sources */,
 				74EB0F1717F9A2600046ABC1 /* https_client.cc in Sources */,
 				74CAAD20181860F7001B77BB /* timeline_uploader.cc in Sources */,
+				748968CB18340F9B00288374 /* version.cc in Sources */,
 				74E16831180F26D90026261C /* websocket_client.cc in Sources */,
 				C5DA1FAB17F18D7B001C4565 /* database.cc in Sources */,
 				C5DA1FAF17F18D7B001C4565 /* toggl_api_client.cc in Sources */,
