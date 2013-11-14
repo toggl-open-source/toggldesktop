@@ -429,7 +429,7 @@ namespace kopsik {
         ASSERT_EQ(uint(123456789), user.related.Clients[0]->WID());
         ASSERT_EQ("Big Client", user.related.Clients[0]->Name());
         ASSERT_EQ("59b464cd-0f8e-e601-ff44-f135225a6738",
-            user.related.Clients[1]->GUID());
+            user.related.Clients[0]->GUID());
         ASSERT_EQ(user.ID(), user.related.Clients[0]->UID());
 
         Poco::File f(TESTDB);
@@ -523,11 +523,9 @@ namespace kopsik {
         ASSERT_EQ(user.related.Tasks[1]->String(),
             user2.related.Tasks[1]->String());
 
-        ASSERT_EQ(uint(2), user2.related.Clients.size());
+        ASSERT_EQ(uint(1), user2.related.Clients.size());
         ASSERT_EQ(user.related.Clients[0]->String(),
             user2.related.Clients[0]->String());
-        ASSERT_EQ(user.related.Clients[1]->String(),
-            user2.related.Clients[1]->String());
 
         // Delete
         ASSERT_EQ(noError, db.DeleteUser(&user, true));
