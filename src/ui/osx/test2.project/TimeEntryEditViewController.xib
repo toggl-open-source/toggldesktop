@@ -17,7 +17,7 @@
                 <outlet property="projectSelect" destination="Sd9-ME-k4V" id="27q-xP-Uuf"/>
                 <outlet property="startDate" destination="K26-NH-zdC" id="xEa-c4-jYa"/>
                 <outlet property="startTime" destination="cCF-WZ-lTH" id="OOo-Yo-eXd"/>
-                <outlet property="tags" destination="Bji-ux-jSe" id="w4O-6J-gFi"/>
+                <outlet property="tagsTokenField" destination="Bji-ux-jSe" id="t2k-sk-wt9"/>
                 <outlet property="view" destination="qjv-II-K0N" id="WWf-UA-X50"/>
             </connections>
         </customObject>
@@ -181,7 +181,7 @@
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </tokenFieldCell>
                                         <connections>
-                                            <action selector="tagsChanged:" target="-2" id="G84-wj-Drd"/>
+                                            <action selector="tagsChanged:" target="-2" id="qrq-3v-QQ2"/>
                                         </connections>
                                     </tokenField>
                                     <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cCF-WZ-lTH">

@@ -1679,11 +1679,13 @@ std::string TimeEntry::Tags() {
 void TimeEntry::SetTags(std::string tags) {
     if (Tags() != tags) {
         TagNames.clear();
-        std::stringstream ss(tags);
-        while (ss.good()) {
-            std::string tag;
-            getline(ss, tag, '|');
-            TagNames.push_back(tag);
+        if (!tags.empty()) {
+          std::stringstream ss(tags);
+          while (ss.good()) {
+              std::string tag;
+              getline(ss, tag, '|');
+              TagNames.push_back(tag);
+          }
         }
         dirty_ = true;
     }

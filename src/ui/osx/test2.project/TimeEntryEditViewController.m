@@ -242,6 +242,7 @@
 - (IBAction)tagsChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
+  NSAssert(self.tagsTokenField != nil, @"tags field cant be nil");
   NSArray *tag_names = [self.tagsTokenField objectValue];
   const char *value = [[tag_names componentsJoinedByString:@"|"] UTF8String];
   if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_tags(ctx,
