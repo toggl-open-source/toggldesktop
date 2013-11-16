@@ -145,8 +145,7 @@
   if (row < 0) {
     value = "";
   } else {
-    NSString *project_name = [self.projectNames objectAtIndex:row];
-    value = [project_name UTF8String];
+    value = [[self.projectNames objectAtIndex:row] UTF8String];
   }
   if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_project(ctx,
                                                           err,
