@@ -21,10 +21,6 @@
 
 namespace kopsik {
 
-const int kWebsocketBufSize = 1024 * 10;
-
-const std::string kPong("{\"type\": \"pong\"}");
-
 error WebSocketClient::Start(void *ctx,
     std::string api_token,
     WebSocketMessageCallback on_websocket_message) {
@@ -37,9 +33,23 @@ error WebSocketClient::Start(void *ctx,
 
   ctx_ = ctx;
   on_websocket_message_ = on_websocket_message;
+  api_token_ = api_token;
 
+  error err = connect();
+
+  activity_.start();
+
+  return err;
+}
+
+error WebSocketClient::connect() {
   Poco::Logger &logger = Poco::Logger::get("websocket_client");
-  logger.debug("WebSocketClient::Start");
+  logger.debug("connecting");
+
+  deleteSession();
+
+  last_connection_at_ = time(0);
+
   try {
     const Poco::URI uri(websocket_url_);
 
@@ -49,37 +59,25 @@ error WebSocketClient::Start(void *ctx,
       Poco::Net::Context::VERIFY_NONE, 9, false,
       "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"));
 
-    if (session_) {
-      delete session_;
-    }
     session_ = new Poco::Net::HTTPSClientSession(uri.getHost(), uri.getPort(),
       context);
-    if (req_) {
-      delete req_;
-    }
     req_ = new Poco::Net::HTTPRequest(Poco::Net::HTTPRequest::HTTP_GET, "/ws",
       Poco::Net::HTTPMessage::HTTP_1_1);
     req_->set("Origin", "https://localhost");
     req_->set("User-Agent", kopsik::UserAgent(app_name_, app_version_));
-    if (res_) {
-      delete res_;
-    }
     res_ = new Poco::Net::HTTPResponse();
-    if (ws_) {
-      delete ws_;
-    }
     ws_ = new Poco::Net::WebSocket(*session_, *req_, *res_);
     ws_->setBlocking(false);
     ws_->setReceiveTimeout(Poco::Timespan(3 * Poco::Timespan::SECONDS));
     ws_->setSendTimeout(Poco::Timespan(3 * Poco::Timespan::SECONDS));
 
     Poco::Logger &logger = Poco::Logger::get("websocket_client");
-    logger.debug("WebSocket connection established.");
+    logger.debug("connection established.");
 
     // Authenticate
     JSONNODE *c = json_new(JSON_NODE);
     json_push_back(c, json_new_a("type", "authenticate"));
-    json_push_back(c, json_new_a("api_token", api_token.c_str()));
+    json_push_back(c, json_new_a("api_token", api_token_.c_str()));
     json_char *jc = json_write_formatted(c);
     std::string payload(jc);
     json_free(jc);
@@ -89,7 +87,6 @@ error WebSocketClient::Start(void *ctx,
       static_cast<int>(payload.size()),
       Poco::Net::WebSocket::FRAME_BINARY);
 
-    activity_.start();
   } catch(const Poco::Exception& exc) {
     return exc.displayText();
   } catch(const std::exception& ex) {
@@ -97,6 +94,7 @@ error WebSocketClient::Start(void *ctx,
   } catch(const std::string& ex) {
     return ex;
   }
+
   return noError;
 }
 
@@ -126,6 +124,8 @@ std::string WebSocketClient::parseWebSocketMessageType(std::string json) {
   return type;
 }
 
+const int kWebsocketBufSize = 1024 * 10;
+
 error WebSocketClient::receiveWebSocketMessage(std::string *message) {
   int flags = Poco::Net::WebSocket::FRAME_BINARY;
   std::string json("");
@@ -146,6 +146,8 @@ error WebSocketClient::receiveWebSocketMessage(std::string *message) {
   return noError;
 }
 
+const std::string kPong("{\"type\": \"pong\"}");
+
 error WebSocketClient::poll() {
   try {
     Poco::Timespan span(250 * Poco::Timespan::MILLISECONDS);
@@ -165,6 +167,8 @@ error WebSocketClient::poll() {
     ss << "WebSocket message: " << json;
     Poco::Logger &logger = Poco::Logger::get("websocket_client");
     logger.debug(ss.str());
+
+    last_connection_at_ = time(0);
 
     std::string type = parseWebSocketMessageType(json);
 
@@ -192,26 +196,73 @@ error WebSocketClient::poll() {
   return noError;
 }
 
+const int kWebSocketRestartThreshold = 30;
+
 void WebSocketClient::runActivity() {
-  Poco::Logger &logger = Poco::Logger::get("websocket_client");
   while (!activity_.isStopped()) {
-    error err = poll();
-    if (err != noError) {
-      logger.error(err);
+
+    if (ws_) {
+      error err = poll();
+      if (err != noError) {
+        Poco::Logger &logger = Poco::Logger::get("websocket_client");
+        logger.error(err);
+      }
+    }
+
+    if (time(0) - last_connection_at_ > kWebSocketRestartThreshold) {
+      Poco::Logger &logger = Poco::Logger::get("websocket_client");
+      logger.debug("restarting");
+      if (ws_) {
+        ws_->shutdown();
+      }
+      connect();
+    }
+
+    if (ws_) {
+      Poco::Thread::sleep(100);
+    } else {
+      Poco::Thread::sleep(1000);
     }
   }
-  logger.debug("WebSocketClient::runActivity finished");
+
+  Poco::Logger &logger = Poco::Logger::get("websocket_client");
+  logger.debug("activity finished");
 }
 
 void WebSocketClient::Stop() {
   Poco::Logger &logger = Poco::Logger::get("websocket_client");
   logger.debug("shutting down");
+
   if (ws_) {
     ws_->shutdown();
   }
   activity_.stop();  // request stop
   activity_.wait();  // wait until activity actually stops
+
   logger.debug("stopped");
+}
+
+WebSocketClient::~WebSocketClient() {
+  deleteSession();
+}
+
+void WebSocketClient::deleteSession() {
+  if (ws_) {
+    delete ws_;
+    ws_ = 0;
+  }
+  if (res_) {
+    delete res_;
+    res_ = 0;
+  }
+  if (req_) {
+    delete req_;
+    req_ = 0;
+  }
+  if (session_) {
+    delete session_;
+    session_ = 0;
+  }
 }
 
 }   // namespace kopsik

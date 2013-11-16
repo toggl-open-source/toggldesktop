@@ -5,6 +5,7 @@
 
 #include <string>
 #include <vector>
+#include <ctime>
 
 #include "Poco/Activity.h"
 #include "Poco/Net/WebSocket.h"
@@ -35,34 +36,17 @@ namespace kopsik {
       ctx_(0),
       websocket_url_(websocket_url),
       app_name_(app_name),
-      app_version_(app_version) {}
-    virtual ~WebSocketClient() {
-      if (ws_) {
-        delete ws_;
-        ws_ = 0;
-      }
-      if (res_) {
-        delete res_;
-        res_ = 0;
-      }
-      if (req_) {
-        delete req_;
-        req_ = 0;
-      }
-      if (session_) {
-        delete session_;
-        session_ = 0;
-      }
-    }
+      app_version_(app_version),
+      last_connection_at_(0),
+      api_token_("") {}
+    virtual ~WebSocketClient();
     virtual error Start(
       void *ctx,
       std::string api_token,
       WebSocketMessageCallback on_websocket_message);
     virtual void Stop();
 
-    void SetWebsocketURL(std::string value) {
-      websocket_url_ = value;
-    }
+    void SetWebsocketURL(std::string value) { websocket_url_ = value; }
 
   protected:
     void runActivity();
@@ -71,6 +55,8 @@ namespace kopsik {
     std::string parseWebSocketMessageType(std::string json);
     error receiveWebSocketMessage(std::string *message);
     error poll();
+    error connect();
+    void deleteSession();
 
     Poco::Activity<WebSocketClient> activity_;
     Poco::Net::HTTPSClientSession *session_;
@@ -83,6 +69,10 @@ namespace kopsik {
     std::string websocket_url_;
     std::string app_name_;
     std::string app_version_;
+
+    std::time_t last_connection_at_;
+
+    std::string api_token_;
   };
 }  // namespace kopsik
 
