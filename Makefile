@@ -111,9 +111,6 @@ clean_deps:
 osx:
 	xcodebuild -project src/ui/osx/test2.project/kopsik_ui_osx.xcodeproj
 
-osx_test: osx
-	python src/ui/osx/test/guitest.py
-
 run: osx
 	./src/ui/osx/test2.project/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop
 
