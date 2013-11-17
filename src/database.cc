@@ -1295,7 +1295,8 @@ error Database::SaveTag(Tag *model) {
                     Poco::Data::now;
             } else {
                 *session << "update tags set "
-                    "id = :id, uid = :uid, name = :name, wid = :wid, guid = :guid "
+                    "id = :id, uid = :uid, name = :name, wid = :wid, "
+                    "guid = :guid "
                     "where local_id = :local_id",
                     Poco::Data::use(model->ID()),
                     Poco::Data::use(model->UID()),
