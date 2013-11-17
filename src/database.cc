@@ -1044,16 +1044,30 @@ error Database::SaveClient(Client *model) {
         Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID()) {
             logger.debug("Updating client " + model->String());
-            *session << "update clients set "
-                "id = :id, uid = :uid, name = :name, guid = :guid, wid = :wid "
-                "where local_id = :local_id",
-                Poco::Data::use(model->ID()),
-                Poco::Data::use(model->UID()),
-                Poco::Data::use(model->Name()),
-                Poco::Data::use(model->GUID()),
-                Poco::Data::use(model->WID()),
-                Poco::Data::use(model->LocalID()),
-                Poco::Data::now;
+            // FIXME: check how to property insert null :S
+            if (model->GUID().empty()) {
+                *session << "update clients set "
+                    "id = :id, uid = :uid, name = :name, wid = :wid "
+                    "where local_id = :local_id",
+                    Poco::Data::use(model->ID()),
+                    Poco::Data::use(model->UID()),
+                    Poco::Data::use(model->Name()),
+                    Poco::Data::use(model->WID()),
+                    Poco::Data::use(model->LocalID()),
+                    Poco::Data::now;
+            } else {
+                *session << "update clients set "
+                    "id = :id, uid = :uid, name = :name, guid = :guid, "
+                    "wid = :wid "
+                    "where local_id = :local_id",
+                    Poco::Data::use(model->ID()),
+                    Poco::Data::use(model->UID()),
+                    Poco::Data::use(model->Name()),
+                    Poco::Data::use(model->GUID()),
+                    Poco::Data::use(model->WID()),
+                    Poco::Data::use(model->LocalID()),
+                    Poco::Data::now;
+                }
           error err = last_error();
           if (err != noError) {
             return err;
