@@ -264,14 +264,13 @@
     if ([msg rangeOfString:@"Host not found"].location != NSNotFound) {
       return;
     }
-
-    // Ignore WEbsocket offline errors too
     if ([msg rangeOfString:@"WebSocket Exception: Cannot upgrade to WebSocket connection: OK"].location != NSNotFound) {
       return;
     }
-
-    // Failing request
     if ([msg rangeOfString:@"No message received"].location != NSNotFound) {
+      return;
+    }
+    if ([msg rangeOfString:@"Connection refused"].location != NSNotFound) {
       return;
     }
     
