@@ -371,7 +371,7 @@ namespace kopsik {
         ASSERT_EQ(uint(2567324), user.related.Projects[1]->ID());
         ASSERT_EQ(uint(123456789), user.related.Projects[1]->WID());
         ASSERT_EQ("Even more work", user.related.Projects[1]->Name());
-        ASSERT_EQ(uint(1129807), user.related.Projects[1]->CID());
+        ASSERT_EQ(uint(1385144), user.related.Projects[1]->CID());
         ASSERT_EQ(user.ID(), user.related.Projects[1]->UID());
 
         // Time entries
@@ -396,7 +396,7 @@ namespace kopsik {
         ASSERT_EQ(uint(1894794), user.related.Tasks[0]->ID());
         ASSERT_EQ("blog (writing)", user.related.Tasks[0]->Name());
         ASSERT_EQ(uint(123456789), user.related.Tasks[0]->WID());
-        ASSERT_EQ(uint(2585208), user.related.Tasks[0]->PID());
+        ASSERT_EQ(uint(2598305), user.related.Tasks[0]->PID());
         ASSERT_EQ(user.ID(), user.related.Tasks[0]->UID());
 
         // Tags
