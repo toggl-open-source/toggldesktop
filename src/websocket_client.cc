@@ -86,7 +86,6 @@ error WebSocketClient::connect() {
     ws_->sendFrame(payload.data(),
       static_cast<int>(payload.size()),
       Poco::Net::WebSocket::FRAME_BINARY);
-
   } catch(const Poco::Exception& exc) {
     return exc.displayText();
   } catch(const std::exception& ex) {
@@ -200,7 +199,6 @@ const int kWebSocketRestartThreshold = 30;
 
 void WebSocketClient::runActivity() {
   while (!activity_.isStopped()) {
-
     if (ws_) {
       error err = poll();
       if (err != noError) {
