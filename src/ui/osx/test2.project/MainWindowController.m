@@ -258,6 +258,8 @@
     NSString *msg = notification.object;
     NSLog(@"Error: %@", msg);
 
+    // FIXME: move these error messages into lib, so we can reuse them in other platforms.
+
     // Ignore offline errors
     if ([msg rangeOfString:@"Host not found"].location != NSNotFound) {
       return;
