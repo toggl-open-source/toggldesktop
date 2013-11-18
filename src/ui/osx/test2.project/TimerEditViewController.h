@@ -8,7 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface TimerEditViewController : NSViewController
+@interface TimerEditViewController : NSViewController <NSComboBoxDataSource> {
+}
 - (IBAction)startButtonClicked:(id)sender;
 @property (weak) IBOutlet NSComboBox *descriptionComboBox;
 @property (weak) IBOutlet NSButton *startButton;
