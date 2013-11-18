@@ -26,10 +26,10 @@
 }
 
 - (IBAction)startButtonClicked:(id)sender {
-  NSString *description = [self.descriptionTextField stringValue];
+  NSString *description = [self.descriptionComboBox stringValue];
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandNew
                                                       object:description];
-  [self.descriptionTextField setStringValue:@""];
+  [self.descriptionComboBox setStringValue:@""];
 }
 
 @end

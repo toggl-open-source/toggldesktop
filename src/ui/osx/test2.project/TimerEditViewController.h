@@ -10,6 +10,6 @@
 
 @interface TimerEditViewController : NSViewController
 - (IBAction)startButtonClicked:(id)sender;
-@property (weak) IBOutlet NSTextField *descriptionTextField;
+@property (weak) IBOutlet NSComboBox *descriptionComboBox;
 @property (weak) IBOutlet NSButton *startButton;
 @end

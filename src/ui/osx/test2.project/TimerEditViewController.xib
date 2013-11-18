@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" defaultVersion="1080" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimerEditViewController">
             <connections>
-                <outlet property="descriptionTextField" destination="Y8j-ZI-jWO" id="YDT-fC-JLf"/>
+                <outlet property="descriptionComboBox" destination="ITa-Jc-jOK" id="aF4-Dr-jdX"/>
                 <outlet property="startButton" destination="ulR-eB-96b" id="8oR-P1-EXW"/>
                 <outlet property="view" destination="M2u-7B-WCs" id="bD3-yq-26j"/>
             </connections>
@@ -43,26 +43,22 @@ DQ
                                     <action selector="startButtonClicked:" target="-2" id="HQW-xO-X1l"/>
                                 </connections>
                             </button>
-                            <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y8j-ZI-jWO">
-                                <rect key="frame" x="6" y="33" width="207" height="26"/>
+                            <comboBox verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ITa-Jc-jOK">
+                                <rect key="frame" x="16" y="34" width="196" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="26" id="zwQ-0T-4Wg"/>
-                                </constraints>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="What are you working on?" drawsBackground="YES" id="GsG-sF-zEn">
+                                <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="What are you working on?" drawsBackground="YES" usesDataSource="YES" numberOfVisibleItems="5" id="SSh-62-AYH">
                                     <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
+                                </comboBoxCell>
+                            </comboBox>
                         </subviews>
                     </view>
                     <constraints>
-                        <constraint firstItem="Y8j-ZI-jWO" firstAttribute="centerY" secondItem="ulR-eB-96b" secondAttribute="centerY" id="4Ix-4w-maI"/>
-                        <constraint firstAttribute="trailing" secondItem="Y8j-ZI-jWO" secondAttribute="trailing" constant="46" id="BdB-vS-BUt"/>
+                        <constraint firstAttribute="trailing" secondItem="ITa-Jc-jOK" secondAttribute="trailing" constant="49" id="FHj-5N-89V"/>
                         <constraint firstAttribute="trailing" secondItem="ulR-eB-96b" secondAttribute="trailing" constant="8" id="ODT-t6-Xxx"/>
-                        <constraint firstItem="Y8j-ZI-jWO" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="15" id="hO9-DA-FVD"/>
-                        <constraint firstItem="Y8j-ZI-jWO" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="5" id="rDk-ww-39h"/>
+                        <constraint firstItem="ITa-Jc-jOK" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="16" id="Zdx-Xm-yGC"/>
+                        <constraint firstItem="ITa-Jc-jOK" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="16" id="q2D-AU-nb5"/>
                     </constraints>
                     <color key="borderColor" red="0.78431379800000001" green="0.78431379800000001" blue="0.78431379800000001" alpha="1" colorSpace="deviceRGB"/>
                     <color key="fillColor" red="0.78431379800000001" green="0.78431379800000001" blue="0.78431379800000001" alpha="1" colorSpace="deviceRGB"/>
