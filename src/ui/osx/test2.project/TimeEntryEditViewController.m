@@ -102,20 +102,20 @@
 
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
     [self.projectNames removeAllObjects];
-    KopsikProjectSelectItemList *list = kopsik_project_select_item_list_init();
+    KopsikSelectItemList *list = kopsik_select_item_list_init();
     char err[KOPSIK_ERR_LEN];
     if (KOPSIK_API_SUCCESS != kopsik_project_select_items(ctx, err, KOPSIK_ERR_LEN, list)) {
       [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                           object:[NSString stringWithUTF8String:err]];
-      kopsik_project_select_item_list_clear(list);
+      kopsik_select_item_list_clear(list);
       return;
     }
     for (int i = 0; i < list->Length; i++) {
-      KopsikProjectSelectItem *item = list->ViewItems[i];
-      NSString *project_name = [NSString stringWithUTF8String:item->Name];
+      KopsikSelectItem *item = list->ViewItems[i];
+      NSString *project_name = [NSString stringWithUTF8String:item->Text];
       [self.projectNames addObject:project_name];
     }
-    kopsik_project_select_item_list_clear(list);
+    kopsik_select_item_list_clear(list);
     if (self.projectSelect.dataSource == nil) {
       self.projectSelect.usesDataSource = YES;
       self.projectSelect.dataSource = self;

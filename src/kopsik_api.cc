@@ -870,31 +870,35 @@ void kopsik_push_async(
   ctx->tm->start(new PushTask(ctx, callback));
 }
 
-// Project list
+// Autocomplete list items
 
-KopsikProjectSelectItemList *
-    kopsik_project_select_item_list_init() {
-  KopsikProjectSelectItemList *result = new KopsikProjectSelectItemList();
+KopsikSelectItemList *
+    kopsik_select_item_list_init() {
+  KopsikSelectItemList *result = new KopsikSelectItemList();
   result->Length = 0;
   result->ViewItems = 0;
   return result;
 }
 
-void project_select_item_clear(KopsikProjectSelectItem *item) {
-  if (item->Name) {
-    free(item->Name);
-    item->Name = 0;
+void select_item_clear(KopsikSelectItem *item) {
+  if (item->Text) {
+    free(item->Text);
+    item->Text = 0;
   }
+  item->ClientID = 0;
+  item->ProjectID = 0;
+  item->TaskID = 0;
+  item->TimeEntryID = 0;
   delete item;
 }
 
-void kopsik_project_select_item_list_clear(
-    KopsikProjectSelectItemList *list) {
+void kopsik_select_item_list_clear(
+    KopsikSelectItemList *list) {
   poco_assert(list);
   for (unsigned int i = 0; i < list->Length; i++) {
-    KopsikProjectSelectItem *item = list->ViewItems[i];
+    KopsikSelectItem *item = list->ViewItems[i];
     poco_assert(item);
-    project_select_item_clear(item);
+    select_item_clear(item);
     list->ViewItems[i] = 0;
   }
   if (list->ViewItems) {
@@ -904,16 +908,68 @@ void kopsik_project_select_item_list_clear(
   list = 0;
 }
 
-KopsikProjectSelectItem *project_select_item_init() {
-  KopsikProjectSelectItem *item = new KopsikProjectSelectItem();
-  item->Name = 0;
+KopsikSelectItem *select_item_init() {
+  KopsikSelectItem *item = new KopsikSelectItem();
+  item->Text = 0;
   return item;;
 }
+
+// Time entry autocomplete list
+
+kopsik_api_result kopsik_time_entry_autocomplete_items(
+    void *context,
+    char *errmsg, unsigned int errlen,
+    KopsikSelectItemList *list) {
+  poco_assert(context);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(list);
+
+  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+  logger.debug("kopsik_time_entry_autocomplete_items");
+
+  Context *ctx = reinterpret_cast<Context *>(context);
+
+  if (!ctx->user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
+  list->Length = 0;
+
+  // Add unique time entries, in format:
+  // description - Client. Project
+
+  // Add unique tasks, in format:
+  // Client. Project. Task
+
+  // Add unique projects, in format:
+  // Client. Project
+
+/*
+  KopsikSelectItem *tmp = select_item_init();
+  void *m = malloc(active.size() * sizeof(tmp));
+  select_item_clear(tmp);
+
+  poco_assert(m);
+  list->ViewItems = reinterpret_cast<KopsikSelectItem **>(m);
+  for (unsigned int i = 0; i < active.size(); i++) {
+    kopsik::TimeEntry *te = active[i];
+    KopsikSelectItem *view_item = select_item_init();
+    view_item->Name = strdup(te->Description().c_str());
+    list->ViewItems[i] = view_item;
+    list->Length++;
+  }
+*/
+  return KOPSIK_API_SUCCESS;
+}
+
+// Project autocomplete list
 
 kopsik_api_result kopsik_project_select_items(
     void *context,
     char *errmsg, unsigned int errlen,
-    KopsikProjectSelectItemList *list) {
+    KopsikSelectItemList *list) {
   poco_assert(context);
   poco_assert(errmsg);
   poco_assert(errlen);
@@ -929,28 +985,22 @@ kopsik_api_result kopsik_project_select_items(
     return KOPSIK_API_FAILURE;
   }
 
-  std::vector<kopsik::Project *>active;
-  for (unsigned int i = 0; i < ctx->user->related.Projects.size(); i++) {
-    kopsik::Project *p = ctx->user->related.Projects[i];
-    if (p->Active()) {
-      active.push_back(p);
-    }
-  }
+  std::vector<kopsik::Project *>active = ctx->user->ActiveProjects();
 
   list->Length = 0;
 
-  KopsikProjectSelectItem *tmp = project_select_item_init();
+  KopsikSelectItem *tmp = select_item_init();
   void *m = malloc(active.size() * sizeof(tmp));
-  project_select_item_clear(tmp);
+  select_item_clear(tmp);
   poco_assert(m);
   list->ViewItems =
-    reinterpret_cast<KopsikProjectSelectItem **>(m);
+    reinterpret_cast<KopsikSelectItem **>(m);
   for (unsigned int i = 0; i < active.size(); i++) {
     kopsik::Project *p = active[i];
-    KopsikProjectSelectItem *view_item = project_select_item_init();
+    KopsikSelectItem *view_item = select_item_init();
     std::string project_name_with_client =
       ctx->user->ProjectNameIncludingClient(p);
-    view_item->Name = strdup(project_name_with_client.c_str());
+    view_item->Text = strdup(project_name_with_client.c_str());
     list->ViewItems[i] = view_item;
     list->Length++;
   }

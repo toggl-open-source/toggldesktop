@@ -144,27 +144,45 @@ KOPSIK_EXPORT void kopsik_push_async(
   void *ctx,
   KopsikResultCallback callback);
 
-// Project list
+// Autocomplete list items
+  
+#define KOPSIK_API_AUTOCOMPLETE_ITEM_TYPE_ENTRY 0
+#define KOPSIK_API_AUTOCOMPLETE_ITEM_TYPE_TASK 1
+#define KOPSIK_API_AUTOCOMPLETE_ITEM_TYPE_PROJECT 2
 
 typedef struct {
-  char *Name;
-} KopsikProjectSelectItem;
+  char *Text;
+  unsigned int TimeEntryID;
+  unsigned int TaskID;
+  unsigned int ProjectID;
+  unsigned int ClientID;
+  unsigned int ItemType;
+} KopsikSelectItem;
 
 typedef struct {
-  KopsikProjectSelectItem **ViewItems;
+  KopsikSelectItem **ViewItems;
   unsigned int Length;
-} KopsikProjectSelectItemList;
+} KopsikSelectItemList;
 
-KOPSIK_EXPORT KopsikProjectSelectItemList *
-  kopsik_project_select_item_list_init();
+KOPSIK_EXPORT KopsikSelectItemList *
+  kopsik_select_item_list_init();
 
-KOPSIK_EXPORT void kopsik_project_select_item_list_clear(
-  KopsikProjectSelectItemList *list);
+KOPSIK_EXPORT void kopsik_select_item_list_clear(
+  KopsikSelectItemList *list);
+
+// Time entry autocomplete list
+
+KOPSIK_EXPORT kopsik_api_result kopsik_time_entry_autocomplete_items(
+    void *ctx,
+    char *errmsg, unsigned int errlen,
+    KopsikSelectItemList *list);
+
+// Project autocomplete list
 
 KOPSIK_EXPORT kopsik_api_result kopsik_project_select_items(
     void *ctx,
     char *errmsg, unsigned int errlen,
-    KopsikProjectSelectItemList *list);
+    KopsikSelectItemList *list);
 
 // Time entries view
 

@@ -35,6 +35,17 @@ template<typename T, size_t N> T *end(T (&ra)[N]) {
 }
 std::vector<std::string> Project::color_codes(known_colors, end(known_colors));
 
+std::vector<Project *> User::ActiveProjects() {
+  std::vector<Project *> active;
+  for (unsigned int i = 0; i < related.Projects.size(); i++) {
+    kopsik::Project *p = related.Projects[i];
+    if (p->Active()) {
+      active.push_back(p);
+    }
+  }
+  return active;
+}
+
 // Start a time entry, mark it as dirty and add to user time entry collection.
 // Do not save here, dirtyness will be handled outside of this module.
 TimeEntry *User::Start(std::string description) {

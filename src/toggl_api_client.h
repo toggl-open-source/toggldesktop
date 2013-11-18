@@ -516,7 +516,9 @@ namespace kopsik {
         bool RecordTimeline() { return record_timeline_; }
         void SetRecordTimeline(const bool value);
 
-        // Following fields are not saved into database:
+        std::vector<Project *> ActiveProjects();
+
+        // Following 2 fields are not saved into database:
         // They are only used to log user in.
         std::string BasicAuthUsername;
         std::string BasicAuthPassword;
