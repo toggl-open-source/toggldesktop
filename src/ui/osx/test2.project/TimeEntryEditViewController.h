@@ -8,7 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface TimeEntryEditViewController : NSViewController
+@interface TimeEntryEditViewController : NSViewController <NSComboBoxDataSource> {
+}
 @property (weak) IBOutlet NSTextField *descriptionTextField;
 @property (weak) IBOutlet NSComboBox *projectSelect;
 @property (weak) IBOutlet NSTextField *durationTextField;

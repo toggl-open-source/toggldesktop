@@ -116,6 +116,10 @@
       [self.projectNames addObject:project_name];
     }
     kopsik_project_select_item_list_clear(list);
+    if (self.projectSelect.dataSource == nil) {
+      self.projectSelect.usesDataSource = YES;
+      self.projectSelect.dataSource = self;
+    }
     [self.projectSelect reloadData];
     return;
   }
@@ -326,6 +330,11 @@
 
 -(id)comboBox:(NSComboBox *)aComboBox objectValueForItemAtIndex:(NSInteger)row{
   return [self.projectNames objectAtIndex:row];
+}
+
+- (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)aString
+{
+  return [self.projectNames indexOfObject:aString];
 }
 
 @end
