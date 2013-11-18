@@ -273,6 +273,9 @@
     if ([msg rangeOfString:@"Connection refused"].location != NSNotFound) {
       return;
     }
+    if ([msg rangeOfString:@"Connection timed out"].location != NSNotFound) {
+      return;
+    }
     
     [self performSelectorOnMainThread:@selector(showError:) withObject:msg waitUntilDone:NO];
 
