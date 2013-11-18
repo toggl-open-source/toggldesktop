@@ -54,13 +54,13 @@
 {
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
     [self.autocompleteItems removeAllObjects];
-    KopsikSelectItemList *list = kopsik_select_item_list_init();
+    KopsikAutocompleteItemList *list = kopsik_autocomplete_item_list_init();
     char err[KOPSIK_ERR_LEN];
-    kopsik_api_result res = kopsik_time_entry_autocomplete_items(ctx,
-    	err, KOPSIK_ERR_LEN, list);
+    kopsik_api_result res = kopsik_autocomplete_items(ctx,
+    	err, KOPSIK_ERR_LEN, list, 1, 1, 1);
     if (KOPSIK_API_SUCCESS != res) {
       handle_error(res, err);
-      kopsik_select_item_list_clear(list);
+      kopsik_autocomplete_item_list_clear(list);
       return;
     }
     for (int i = 0; i < list->Length; i++) {
@@ -68,7 +68,7 @@
       [item load:list->ViewItems[i]];
       [self.autocompleteItems addObject:item];
     }
-    kopsik_select_item_list_clear(list);
+    kopsik_autocomplete_item_list_clear(list);
     if (self.descriptionComboBox.dataSource == nil) {
       self.descriptionComboBox.usesDataSource = YES;
       self.descriptionComboBox.dataSource = self;

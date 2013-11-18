@@ -10,7 +10,7 @@
 
 @implementation AutocompleteItem
 
-- (void)load:(KopsikSelectItem *)data {
+- (void)load:(KopsikAutocompleteItem *)data {
   self.Text = [NSString stringWithUTF8String:data->Text];
   self.TimeEntryID = data->TimeEntryID;
 }

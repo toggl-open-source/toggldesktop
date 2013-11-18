@@ -157,32 +157,26 @@ typedef struct {
   unsigned int ProjectID;
   unsigned int ClientID;
   unsigned int ItemType;
-} KopsikSelectItem;
+} KopsikAutocompleteItem;
 
 typedef struct {
-  KopsikSelectItem **ViewItems;
+  KopsikAutocompleteItem **ViewItems;
   unsigned int Length;
-} KopsikSelectItemList;
+} KopsikAutocompleteItemList;
 
-KOPSIK_EXPORT KopsikSelectItemList *
-  kopsik_select_item_list_init();
+KOPSIK_EXPORT KopsikAutocompleteItemList *
+  kopsik_autocomplete_item_list_init();
 
-KOPSIK_EXPORT void kopsik_select_item_list_clear(
-  KopsikSelectItemList *list);
+KOPSIK_EXPORT void kopsik_autocomplete_item_list_clear(
+  KopsikAutocompleteItemList *list);
 
-// Time entry autocomplete list
-
-KOPSIK_EXPORT kopsik_api_result kopsik_time_entry_autocomplete_items(
+KOPSIK_EXPORT kopsik_api_result kopsik_autocomplete_items(
     void *ctx,
-    char *errmsg, unsigned int errlen,
-    KopsikSelectItemList *list);
-
-// Project autocomplete list
-
-KOPSIK_EXPORT kopsik_api_result kopsik_project_select_items(
-    void *ctx,
-    char *errmsg, unsigned int errlen,
-    KopsikSelectItemList *list);
+    char *errmsg, const unsigned int errlen,
+    KopsikAutocompleteItemList *list,
+    const unsigned int include_time_entries,
+    const unsigned int include_tasks,
+    const unsigned int include_projects);
 
 // Time entries view
 

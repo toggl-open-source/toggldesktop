@@ -10,7 +10,7 @@
 #import "kopsik_api.h"
 
 @interface AutocompleteItem : NSObject
-- (void)load:(KopsikSelectItem *)data;
+- (void)load:(KopsikAutocompleteItem *)data;
 @property NSString *Text;
 @property long ClientID;
 @property long ProjectID;

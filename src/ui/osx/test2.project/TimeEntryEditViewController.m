@@ -12,10 +12,11 @@
 #import "Context.h"
 #import "ModelChange.h"
 #import "ErrorHandler.h"
+#import "AutocompleteItem.h"
 
 @interface TimeEntryEditViewController ()
 @property NSString *GUID;
-@property NSMutableArray *projectNames;
+@property NSMutableArray *autocompleteItems; // Project select data source
 @end
 
 @implementation TimeEntryEditViewController
@@ -32,7 +33,7 @@
                                                selector:@selector(eventHandler:)
                                                    name:kUIStateUserLoggedIn
                                                  object:nil];
-      self.projectNames = [[NSMutableArray alloc] init];
+      self.autocompleteItems = [[NSMutableArray alloc] init];
     }
     
     return self;
@@ -44,10 +45,10 @@
 
 - (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString
 {
-  for (NSString *project_name in self.projectNames) {
-    if ([[project_name commonPrefixWithString:partialString
+  for (AutocompleteItem *item in self.autocompleteItems) {
+    if ([[item.Text commonPrefixWithString:partialString
                                     options:NSCaseInsensitiveSearch] length] == [partialString length]) {
-      return project_name;
+      return item.Text;
     }
   }
   return @"";
@@ -101,21 +102,22 @@
   }
 
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    [self.projectNames removeAllObjects];
-    KopsikSelectItemList *list = kopsik_select_item_list_init();
+    [self.autocompleteItems removeAllObjects];
+    KopsikAutocompleteItemList *list = kopsik_autocomplete_item_list_init();
     char err[KOPSIK_ERR_LEN];
-    if (KOPSIK_API_SUCCESS != kopsik_project_select_items(ctx, err, KOPSIK_ERR_LEN, list)) {
+    if (KOPSIK_API_SUCCESS != kopsik_autocomplete_items(ctx, err, KOPSIK_ERR_LEN, list,
+                                                        0, 0, 1)) {
       [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                           object:[NSString stringWithUTF8String:err]];
-      kopsik_select_item_list_clear(list);
+      kopsik_autocomplete_item_list_clear(list);
       return;
     }
     for (int i = 0; i < list->Length; i++) {
-      KopsikSelectItem *item = list->ViewItems[i];
-      NSString *project_name = [NSString stringWithUTF8String:item->Text];
-      [self.projectNames addObject:project_name];
+      AutocompleteItem *item = [[AutocompleteItem alloc] init];
+      [item load:list->ViewItems[i]];
+      [self.autocompleteItems addObject:item];
     }
-    kopsik_select_item_list_clear(list);
+    kopsik_autocomplete_item_list_clear(list);
     if (self.projectSelect.dataSource == nil) {
       self.projectSelect.usesDataSource = YES;
       self.projectSelect.dataSource = self;
@@ -149,7 +151,7 @@
   if (row < 0) {
     value = "";
   } else {
-    value = [[self.projectNames objectAtIndex:row] UTF8String];
+    value = [[self.autocompleteItems objectAtIndex:row] UTF8String];
   }
   if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_project(ctx,
                                                           err,
@@ -325,16 +327,16 @@
 }
 
 -(NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox{
-  return [self.projectNames count];
+  return [self.autocompleteItems count];
 }
 
 -(id)comboBox:(NSComboBox *)aComboBox objectValueForItemAtIndex:(NSInteger)row{
-  return [self.projectNames objectAtIndex:row];
+  return [self.autocompleteItems objectAtIndex:row];
 }
 
 - (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)aString
 {
-  return [self.projectNames indexOfObject:aString];
+  return [self.autocompleteItems indexOfObject:aString];
 }
 
 @end
