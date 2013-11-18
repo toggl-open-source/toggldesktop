@@ -952,7 +952,7 @@ kopsik_api_result kopsik_autocomplete_items(
   }
 
   list->Length = 0;
-  
+
   size_t list_size = projects.size() + tasks.size();
 
   KopsikAutocompleteItem *tmp = autocomplete_item_init();
@@ -969,9 +969,9 @@ kopsik_api_result kopsik_autocomplete_items(
     kopsik::TimeEntry *te = time_entries[i];
     KopsikAutocompleteItem *view_item = autocomplete_item_init();
     view_item->Text = strdup(te->Description().c_str());
-    view_item->TimeEntryID = int(te->ID());
-    view_item->TaskID = int(te->TID());
-    view_item->ProjectID = int(te->PID());
+    view_item->TimeEntryID = static_cast<int>(te->ID());
+    view_item->TaskID = static_cast<int>(te->TID());
+    view_item->ProjectID = static_cast<int>(te->PID());
     view_item->ClientID = 0;
     view_item->ItemType = KOPSIK_API_AUTOCOMPLETE_ITEM_TYPE_ENTRY;
     list->ViewItems[list->Length] = view_item;
@@ -985,8 +985,8 @@ kopsik_api_result kopsik_autocomplete_items(
     KopsikAutocompleteItem *view_item = autocomplete_item_init();
     view_item->Text = strdup(task->Name().c_str());
     view_item->TimeEntryID = 0;
-    view_item->TaskID = int(task->ID());
-    view_item->ProjectID = int(task->PID());
+    view_item->TaskID = static_cast<int>(task->ID());
+    view_item->ProjectID = static_cast<int>(task->PID());
     view_item->ClientID = 0;
     list->ViewItems[list->Length] = view_item;
     list->Length++;
@@ -1001,8 +1001,8 @@ kopsik_api_result kopsik_autocomplete_items(
     view_item->Text = strdup(name.c_str());
     view_item->TimeEntryID = 0;
     view_item->TaskID = 0;
-    view_item->ProjectID = int(p->ID());
-    view_item->ClientID = int(p->CID());
+    view_item->ProjectID = static_cast<int>(p->ID());
+    view_item->ClientID = static_cast<int>(p->CID());
     list->ViewItems[list->Length] = view_item;
     list->Length++;
   }

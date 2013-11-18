@@ -145,7 +145,7 @@ KOPSIK_EXPORT void kopsik_push_async(
   KopsikResultCallback callback);
 
 // Autocomplete list items
-  
+
 #define KOPSIK_API_AUTOCOMPLETE_ITEM_TYPE_ENTRY 0
 #define KOPSIK_API_AUTOCOMPLETE_ITEM_TYPE_TASK 1
 #define KOPSIK_API_AUTOCOMPLETE_ITEM_TYPE_PROJECT 2
