@@ -952,7 +952,7 @@ kopsik_api_result kopsik_autocomplete_items(
 
   list->Length = 0;
 
-  size_t list_size = projects.size() + tasks.size();
+  size_t list_size = projects.size() + tasks.size() + time_entries.size();
 
   KopsikAutocompleteItem *tmp = kopsik_autocomplete_item_init();
   void *m = malloc(list_size * sizeof(tmp));
