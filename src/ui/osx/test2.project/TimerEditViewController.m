@@ -49,7 +49,7 @@
 - (void)eventHandler: (NSNotification *) notification
 {
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    [self.autocompleteDataSource fetch];
+    [self.autocompleteDataSource fetch:YES withTasks:YES withProjects:YES];
 
     if (self.descriptionComboBox.dataSource == nil) {
       self.descriptionComboBox.usesDataSource = YES;

@@ -155,7 +155,6 @@ typedef struct {
   unsigned int TimeEntryID;
   unsigned int TaskID;
   unsigned int ProjectID;
-  unsigned int ClientID;
   unsigned int ItemType;
 } KopsikAutocompleteItem;
 

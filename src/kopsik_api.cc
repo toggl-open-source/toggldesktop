@@ -891,7 +891,6 @@ void kopsik_autocomplete_item_clear(KopsikAutocompleteItem *item) {
     free(item->Text);
     item->Text = 0;
   }
-  item->ClientID = 0;
   item->ProjectID = 0;
   item->TaskID = 0;
   item->TimeEntryID = 0;
@@ -938,12 +937,12 @@ kopsik_api_result kopsik_autocomplete_items(
 
   std::vector<kopsik::TimeEntry *>time_entries;
   if (include_time_entries) {
-    // FIXME:
+    time_entries = ctx->user->related.TimeEntries;
   }
 
   std::vector<kopsik::Task *> tasks;
   if (include_tasks) {
-    // FIXME:
+    tasks = ctx->user->related.Tasks;
   }
 
   std::vector<kopsik::Project *>projects;
@@ -972,7 +971,6 @@ kopsik_api_result kopsik_autocomplete_items(
     view_item->TimeEntryID = static_cast<int>(te->ID());
     view_item->TaskID = static_cast<int>(te->TID());
     view_item->ProjectID = static_cast<int>(te->PID());
-    view_item->ClientID = 0;
     view_item->ItemType = KOPSIK_API_AUTOCOMPLETE_ITEM_TYPE_ENTRY;
     list->ViewItems[list->Length] = view_item;
     list->Length++;
@@ -987,7 +985,6 @@ kopsik_api_result kopsik_autocomplete_items(
     view_item->TimeEntryID = 0;
     view_item->TaskID = static_cast<int>(task->ID());
     view_item->ProjectID = static_cast<int>(task->PID());
-    view_item->ClientID = 0;
     list->ViewItems[list->Length] = view_item;
     list->Length++;
   }
@@ -1002,7 +999,6 @@ kopsik_api_result kopsik_autocomplete_items(
     view_item->TimeEntryID = 0;
     view_item->TaskID = 0;
     view_item->ProjectID = static_cast<int>(p->ID());
-    view_item->ClientID = static_cast<int>(p->CID());
     list->ViewItems[list->Length] = view_item;
     list->Length++;
   }
@@ -1111,12 +1107,12 @@ kopsik_api_result kopsik_start(
   }
 
   Poco::Mutex::ScopedLock lock(*ctx->mutex, kLockTimeoutMillis);
-  
+
   std::string desc("");
   if (description) {
     desc = std::string(description);
   }
-  
+
   kopsik::TimeEntry *te = ctx->user->Start(desc, project_id, task_id);
   kopsik_api_result res = save(ctx, errmsg, errlen);
   if (KOPSIK_API_SUCCESS != res) {
@@ -1355,7 +1351,6 @@ kopsik_api_result kopsik_set_time_entry_project(
   ss  << ", time entry ID="<< autocomplete_item->TimeEntryID
       << ", task ID=" << autocomplete_item->TaskID
       << ", project ID=" << autocomplete_item->ProjectID
-      << ", client ID=" << autocomplete_item->ClientID
       << ", item type=" << autocomplete_item->ItemType;
 
   Poco::Logger &logger = Poco::Logger::get("kopsik_api");

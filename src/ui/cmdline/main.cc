@@ -149,7 +149,7 @@ namespace command_line_client {
         if ("start" == args[0]) {
             KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
             if (KOPSIK_API_SUCCESS != kopsik_start(
-                    ctx, err, ERRLEN, "New time entry", te)) {
+                    ctx, err, ERRLEN, "New time entry", 0, 0, te)) {
                 std::cerr << err << std::endl;
                 kopsik_time_entry_view_item_clear(te);
                 return Poco::Util::Application::EXIT_SOFTWARE;

@@ -13,7 +13,7 @@
 @property NSMutableArray *autocompleteOrderedKeys;
 @property NSMutableDictionary *autocompleteDictionary;
 - (NSString *)completedString:(NSString *)partialString;
-- (void)fetch;
+- (void)fetch:(BOOL)withTimeEntries withTasks:(BOOL)withTasks withProjects:(BOOL)withProjects;
 - (AutocompleteItem *)get:(NSString *)key;
 - (NSUInteger)count;
 - (NSString *)keyAtIndex:(NSInteger)row;

@@ -97,7 +97,7 @@
   }
 
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    [self.autocompleteDataSource fetch];
+    [self.autocompleteDataSource fetch:NO withTasks:NO withProjects:NO];
     
     if (self.projectSelect.dataSource == nil) {
       self.projectSelect.usesDataSource = YES;

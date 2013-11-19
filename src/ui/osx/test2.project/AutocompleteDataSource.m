@@ -38,11 +38,19 @@
   return [self.autocompleteDictionary objectForKey:key];
 }
 
-- (void) fetch
+- (void) fetch:(BOOL)withTimeEntries
+     withTasks:(BOOL)withTasks
+  withProjects:(BOOL)withProjects
 {
   KopsikAutocompleteItemList *list = kopsik_autocomplete_item_list_init();
   char err[KOPSIK_ERR_LEN];
-  kopsik_api_result res = kopsik_autocomplete_items(ctx, err, KOPSIK_ERR_LEN, list, 0, 0, 1);
+  kopsik_api_result res = kopsik_autocomplete_items(ctx,
+                                                    err,
+                                                    KOPSIK_ERR_LEN,
+                                                    list,
+                                                    withTimeEntries,
+                                                    withTasks,
+                                                    withProjects);
   if (KOPSIK_API_SUCCESS != res) {
     kopsik_autocomplete_item_list_clear(list);
     handle_error(res, err);

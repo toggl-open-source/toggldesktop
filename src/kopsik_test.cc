@@ -247,7 +247,7 @@ namespace kopsik {
         user.LoadFromJSONString(loadTestData(), true, true);
 
         // first, mark time entry as deleted
-        TimeEntry *te = user.Start("My new time entry");
+        TimeEntry *te = user.Start("My new time entry", 0, 0);
         std::vector<ModelChange> changes;
         ASSERT_EQ(noError, db.SaveUser(&user, true, &changes));
 
