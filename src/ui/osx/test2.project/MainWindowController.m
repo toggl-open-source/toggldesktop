@@ -194,6 +194,11 @@
       return;
     }
     
+    if ([msg rangeOfString:@"Request to server failed with status code: 403"].location != NSNotFound)
+    {
+      msg = @"It seems your login credentials have changed in Toggl.com. Please try to logout/login again from TogglDesktop.";
+    }
+    
     [self performSelectorOnMainThread:@selector(showError:) withObject:msg waitUntilDone:NO];
 
     [Bugsnag notify:[NSException
