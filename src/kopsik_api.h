@@ -146,16 +146,11 @@ KOPSIK_EXPORT void kopsik_push_async(
 
 // Autocomplete list items
 
-#define KOPSIK_API_AUTOCOMPLETE_ITEM_TYPE_ENTRY 0
-#define KOPSIK_API_AUTOCOMPLETE_ITEM_TYPE_TASK 1
-#define KOPSIK_API_AUTOCOMPLETE_ITEM_TYPE_PROJECT 2
-
 typedef struct {
   char *Text;
   unsigned int TimeEntryID;
   unsigned int TaskID;
   unsigned int ProjectID;
-  unsigned int ItemType;
 } KopsikAutocompleteItem;
 
 KOPSIK_EXPORT KopsikAutocompleteItem *kopsik_autocomplete_item_init();

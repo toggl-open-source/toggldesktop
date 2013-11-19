@@ -935,41 +935,98 @@ kopsik_api_result kopsik_autocomplete_items(
     return KOPSIK_API_FAILURE;
   }
 
-  std::vector<kopsik::TimeEntry *>time_entries;
+  std::vector<KopsikAutocompleteItem *> autocomplete_items;
+
+  // Add unique time entries, in format:
+  // description - Client. Project
   if (include_time_entries) {
     for (std::vector<kopsik::TimeEntry *>::const_iterator it =
         ctx->user->related.TimeEntries.begin();
         it != ctx->user->related.TimeEntries.end(); it++) {
-      kopsik::TimeEntry *te = *it;
-      if (!te->DeletedAt() && !te->IsMarkedAsDeletedOnServer()) {
-        time_entries.push_back(te);
+      kopsik::TimeEntry *model = *it;
+      if (model->DeletedAt() || model->IsMarkedAsDeletedOnServer() || model->Description().empty()) {
+        continue;
       }
+      std::stringstream ss;
+      ss << model->Description();
+      if (model->PID()) {
+        ss << " - ";
+        kopsik::Project *p = ctx->user->GetProjectByID(model->PID());
+        if (p) {
+          if (p->CID()) {
+            kopsik::Client *c = ctx->user->GetClientByID(p->CID());
+            if (c) {
+              ss << c->Name() << ". ";
+            }
+          }
+          ss << p->Name();
+        }
+      }
+      KopsikAutocompleteItem *autocomplete_item = kopsik_autocomplete_item_init();
+      autocomplete_item->Text = strdup(ss.str().c_str());
+      autocomplete_item->TimeEntryID = static_cast<int>(model->ID());
+      autocomplete_items.push_back(autocomplete_item);
     }
   }
-  // FIXME: sort time entries by name
 
-  std::vector<kopsik::Task *> tasks;
+  // Add unique tasks, in format:
+  // Client. Project. Task
   if (include_tasks) {
     for (std::vector<kopsik::Task *>::const_iterator it =
          ctx->user->related.Tasks.begin();
          it != ctx->user->related.Tasks.end(); it++) {
-      kopsik::Task *t = *it;
-      if (!t->IsMarkedAsDeletedOnServer()) {
-        tasks.push_back(t);
+      kopsik::Task *model = *it;
+      if (model->IsMarkedAsDeletedOnServer()) {
+        continue;
       }
+      std::stringstream ss;
+      if (model->PID()) {
+        kopsik::Project *p = ctx->user->GetProjectByID(model->PID());
+        if (p) {
+          if (p->CID()) {
+            kopsik::Client *c = ctx->user->GetClientByID(p->CID());
+            if (c) {
+              ss << c->Name() << ". ";
+            }
+            ss << p->Name() << ". ";
+          }
+        }
+      }
+      ss << model->Name();
+      KopsikAutocompleteItem *autocomplete_item = kopsik_autocomplete_item_init();
+      autocomplete_item->Text = strdup(ss.str().c_str());
+      autocomplete_item->TaskID = static_cast<int>(model->ID());
+      autocomplete_items.push_back(autocomplete_item);
     }
   }
-  // FIXME: sort tasks by description
-
-  std::vector<kopsik::Project *>projects;
+  
+  // Add unique projects, in format:
+  // Client. Project
   if (include_projects) {
-    ctx->user->ActiveProjects(&projects);
+    for (std::vector<kopsik::Project *>::const_iterator it =
+         ctx->user->related.Projects.begin();
+         it != ctx->user->related.Projects.end(); it++) {
+      kopsik::Project *p = *it;
+      std::stringstream ss;
+      if (p->CID()) {
+        kopsik::Client *c = ctx->user->GetClientByID(p->CID());
+        if (c) {
+          ss << c->Name() << ". ";
+        }
+        ss << p->Name();
+      }
+      KopsikAutocompleteItem *autocomplete_item = kopsik_autocomplete_item_init();
+      autocomplete_item->Text = strdup(ss.str().c_str());
+      autocomplete_item->ProjectID = static_cast<int>(p->ID());
+      autocomplete_items.push_back(autocomplete_item);
+    }
   }
-  // FIXME: sort projects by name
+  
+  // FIXME: sort list by time entry ID, task ID, project ID, text
 
   list->Length = 0;
 
-  size_t list_size = projects.size() + tasks.size() + time_entries.size();
+  size_t list_size = autocomplete_items.size();
 
   KopsikAutocompleteItem *tmp = kopsik_autocomplete_item_init();
   void *m = malloc(list_size * sizeof(tmp));
@@ -978,44 +1035,8 @@ kopsik_api_result kopsik_autocomplete_items(
 
   list->ViewItems = reinterpret_cast<KopsikAutocompleteItem **>(m);
 
-  // Add unique time entries, in format:
-  // description - Client. Project
-  for (unsigned int i = 0; i < time_entries.size(); i++) {
-    kopsik::TimeEntry *te = time_entries[i];
-    KopsikAutocompleteItem *view_item = kopsik_autocomplete_item_init();
-    view_item->Text = strdup(te->Description().c_str());
-    view_item->TimeEntryID = static_cast<int>(te->ID());
-    view_item->TaskID = static_cast<int>(te->TID());
-    view_item->ProjectID = static_cast<int>(te->PID());
-    view_item->ItemType = KOPSIK_API_AUTOCOMPLETE_ITEM_TYPE_ENTRY;
-    list->ViewItems[list->Length] = view_item;
-    list->Length++;
-  }
-
-  // Add unique tasks, in format:
-  // Client. Project. Task
-  for (unsigned int i = 0; i < tasks.size(); i++) {
-    kopsik::Task *task = tasks[i];
-    KopsikAutocompleteItem *view_item = kopsik_autocomplete_item_init();
-    view_item->Text = strdup(task->Name().c_str());
-    view_item->TimeEntryID = 0;
-    view_item->TaskID = static_cast<int>(task->ID());
-    view_item->ProjectID = static_cast<int>(task->PID());
-    list->ViewItems[list->Length] = view_item;
-    list->Length++;
-  }
-
-  // Add unique projects, in format:
-  // Client. Project
-  for (unsigned int i = 0; i < projects.size(); i++) {
-    kopsik::Project *p = projects[i];
-    KopsikAutocompleteItem *view_item = kopsik_autocomplete_item_init();
-    std::string name = ctx->user->ProjectNameIncludingClient(p);
-    view_item->Text = strdup(name.c_str());
-    view_item->TimeEntryID = 0;
-    view_item->TaskID = 0;
-    view_item->ProjectID = static_cast<int>(p->ID());
-    list->ViewItems[list->Length] = view_item;
+  for (unsigned int i = 0; i < autocomplete_items.size(); i++) {
+    list->ViewItems[list->Length] = autocomplete_items[i];
     list->Length++;
   }
 
@@ -1366,8 +1387,7 @@ kopsik_api_result kopsik_set_time_entry_project(
   }
   ss  << ", time entry ID="<< autocomplete_item->TimeEntryID
       << ", task ID=" << autocomplete_item->TaskID
-      << ", project ID=" << autocomplete_item->ProjectID
-      << ", item type=" << autocomplete_item->ItemType;
+      << ", project ID=" << autocomplete_item->ProjectID;
 
   Poco::Logger &logger = Poco::Logger::get("kopsik_api");
   logger.debug(ss.str());
