@@ -13,7 +13,6 @@
 - (void)load:(KopsikAutocompleteItem *)data {
   self.Text = [NSString stringWithUTF8String:data->Text];
   self.TimeEntryID = data->TimeEntryID;
-  self.ClientID = data->ClientID;
   self.ProjectID = data->ProjectID;
   self.TaskID = data->TaskID;
 }
@@ -22,15 +21,13 @@
   NSAssert(!data->Text, @"data already has text");
   data->Text = strdup([self.Text UTF8String]);
   data->TimeEntryID = (unsigned int)self.TimeEntryID;
-  data->ClientID = (unsigned int)self.ClientID;
   data->ProjectID = (unsigned int)self.ProjectID;
   data->TaskID = (unsigned int)self.TaskID;
 }
 
-
 - (NSString *)description {
-  return [NSString stringWithFormat:@"Text: %@, CID: %ld, PID: %ld, TID: %ld, TE ID: %ld",
-          self.Text, self.ClientID, self.ProjectID, self.TaskID, self.TimeEntryID];
+  return [NSString stringWithFormat:@"Text: %@, PID: %ld, TID: %ld, TE ID: %ld",
+          self.Text, self.ProjectID, self.TaskID, self.TimeEntryID];
 }
 
 @end
