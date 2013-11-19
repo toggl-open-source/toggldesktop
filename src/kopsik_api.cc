@@ -959,8 +959,7 @@ kopsik_api_result kopsik_autocomplete_items(
   kopsik_autocomplete_item_clear(tmp);
   poco_assert(m);
 
-  list->ViewItems =
-    reinterpret_cast<KopsikAutocompleteItem **>(m);
+  list->ViewItems = reinterpret_cast<KopsikAutocompleteItem **>(m);
 
   // Add unique time entries, in format:
   // description - Client. Project
