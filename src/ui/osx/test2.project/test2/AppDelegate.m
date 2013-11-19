@@ -253,8 +253,9 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
                                          err,
                                          KOPSIK_ERR_LEN,
                                          [autocomplete.Text UTF8String],
-                                         (unsigned int)autocomplete.ProjectID,
+                                         (unsigned int)autocomplete.TimeEntryID,
                                          (unsigned int)autocomplete.TaskID,
+                                         (unsigned int)autocomplete.ProjectID,
                                          item);
     if (KOPSIK_API_SUCCESS != res) {
       kopsik_time_entry_view_item_clear(item);

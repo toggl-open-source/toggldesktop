@@ -944,7 +944,8 @@ kopsik_api_result kopsik_autocomplete_items(
         ctx->user->related.TimeEntries.begin();
         it != ctx->user->related.TimeEntries.end(); it++) {
       kopsik::TimeEntry *model = *it;
-      if (model->DeletedAt() || model->IsMarkedAsDeletedOnServer() || model->Description().empty()) {
+      if (model->DeletedAt() || model->IsMarkedAsDeletedOnServer()
+          || model->Description().empty()) {
         continue;
       }
       std::stringstream ss;
@@ -962,7 +963,8 @@ kopsik_api_result kopsik_autocomplete_items(
           ss << p->Name();
         }
       }
-      KopsikAutocompleteItem *autocomplete_item = kopsik_autocomplete_item_init();
+      KopsikAutocompleteItem *autocomplete_item =
+        kopsik_autocomplete_item_init();
       autocomplete_item->Text = strdup(ss.str().c_str());
       autocomplete_item->TimeEntryID = static_cast<int>(model->ID());
       autocomplete_items.push_back(autocomplete_item);
@@ -993,13 +995,14 @@ kopsik_api_result kopsik_autocomplete_items(
         }
       }
       ss << model->Name();
-      KopsikAutocompleteItem *autocomplete_item = kopsik_autocomplete_item_init();
+      KopsikAutocompleteItem *autocomplete_item =
+        kopsik_autocomplete_item_init();
       autocomplete_item->Text = strdup(ss.str().c_str());
       autocomplete_item->TaskID = static_cast<int>(model->ID());
       autocomplete_items.push_back(autocomplete_item);
     }
   }
-  
+
   // Add unique projects, in format:
   // Client. Project
   if (include_projects) {
@@ -1015,13 +1018,14 @@ kopsik_api_result kopsik_autocomplete_items(
         }
         ss << p->Name();
       }
-      KopsikAutocompleteItem *autocomplete_item = kopsik_autocomplete_item_init();
+      KopsikAutocompleteItem *autocomplete_item =
+        kopsik_autocomplete_item_init();
       autocomplete_item->Text = strdup(ss.str().c_str());
       autocomplete_item->ProjectID = static_cast<int>(p->ID());
       autocomplete_items.push_back(autocomplete_item);
     }
   }
-  
+
   // FIXME: sort list by time entry ID, task ID, project ID, text
 
   list->Length = 0;
@@ -1125,6 +1129,7 @@ kopsik_api_result kopsik_start(
     void *context,
     char *errmsg, unsigned int errlen,
     const char *description,
+    const unsigned int time_entry_id,
     const unsigned int project_id,
     const unsigned int task_id,
     KopsikTimeEntryViewItem *out_view_item) {
@@ -1150,7 +1155,8 @@ kopsik_api_result kopsik_start(
     desc = std::string(description);
   }
 
-  kopsik::TimeEntry *te = ctx->user->Start(desc, project_id, task_id);
+  kopsik::TimeEntry *te = ctx->user->Start(
+    desc, time_entry_id, task_id, project_id);
   kopsik_api_result res = save(ctx, errmsg, errlen);
   if (KOPSIK_API_SUCCESS != res) {
     return res;
@@ -2183,4 +2189,3 @@ void kopsik_check_for_updates_async(
 
   ctx->tm->start(new FetchUpdatesTask(ctx, callback));
 }
-

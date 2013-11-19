@@ -226,8 +226,9 @@ KOPSIK_EXPORT kopsik_api_result kopsik_start(
   void *ctx,
   char *errmsg, unsigned int errlen,
   const char *description,
-  const unsigned int project_id,
+  const unsigned int time_entry_id,
   const unsigned int task_id,
+  const unsigned int project_id,
   KopsikTimeEntryViewItem *item);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_time_entry_view_item_by_guid(

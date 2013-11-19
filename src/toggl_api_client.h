@@ -480,8 +480,9 @@ namespace kopsik {
 
         TimeEntry *RunningTimeEntry();
         TimeEntry *Start(const std::string description,
-            const Poco::UInt64 project_id,
-            const Poco::UInt64 task_id);
+            const Poco::UInt64 time_entry_id,
+            const Poco::UInt64 task_id,
+            const Poco::UInt64 project_id);
         TimeEntry *Continue(const std::string GUID);
         TimeEntry *Latest();
         std::vector<TimeEntry *> Stop();
