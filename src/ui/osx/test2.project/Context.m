@@ -10,3 +10,5 @@
 
 void *ctx;
 
+NSString *defaultEmail;
+NSString *defaultPassword;

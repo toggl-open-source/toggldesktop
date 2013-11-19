@@ -10,3 +10,7 @@
 #import "kopsik_api.h"
 
 extern void *ctx;
+
+// For testing, prefill fields
+extern NSString *defaultEmail;
+extern NSString *defaultPassword;

@@ -7,6 +7,8 @@
 #include <cstring>
 #include <sstream>
 
+#include <iostream> // NOLINT
+
 #include "Poco/Stopwatch.h"
 #include "Poco/Exception.h"
 #include "Poco/Logger.h"

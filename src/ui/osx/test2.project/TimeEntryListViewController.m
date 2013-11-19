@@ -199,6 +199,7 @@
 
 - (IBAction)performClick:(id)sender {
   NSInteger row = [self.timeEntriesTableView clickedRow];
+  NSLog(@"Row clicked %ld", (long)row);
   id item = 0;
   @synchronized(viewitems) {
     item = viewitems[row];

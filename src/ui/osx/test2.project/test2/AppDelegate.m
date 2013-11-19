@@ -673,6 +673,15 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   
   for (int i = 1; i < arguments.count; i++) {
     NSString *argument = [arguments objectAtIndex:i];
+
+    if ([argument rangeOfString:@"email"].location != NSNotFound) {
+      defaultEmail = [arguments objectAtIndex:i+1];
+      continue;
+    }
+    if ([argument rangeOfString:@"password"].location != NSNotFound) {
+      defaultPassword = [arguments objectAtIndex:i+1];
+      continue;
+    }
     if (([argument rangeOfString:@"log"].location != NSNotFound) &&
         ([argument rangeOfString:@"path"].location != NSNotFound)) {
       log_path = [arguments objectAtIndex:i+1];

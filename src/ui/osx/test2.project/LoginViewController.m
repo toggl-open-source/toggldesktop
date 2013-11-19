@@ -22,8 +22,18 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+      [self performSelector:@selector(setDefaultUser) withObject:nil afterDelay:0.5];
     }
     return self;
+}
+
+- (void)setDefaultUser {
+  if (defaultEmail != nil) {
+    [self.email setStringValue:defaultEmail];
+  }
+  if (defaultPassword != nil) {
+    [self.password setStringValue:defaultPassword];
+  }
 }
 
 - (IBAction)clickLoginButton:(id)sender {
