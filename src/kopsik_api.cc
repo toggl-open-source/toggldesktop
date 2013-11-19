@@ -989,10 +989,13 @@ kopsik_api_result kopsik_autocomplete_items(
           ss << p->Name();
         }
       }
-      ss << " [te]";
+      std::string text = ss.str();
+      if (text.empty()) {
+        continue;
+      }
       KopsikAutocompleteItem *autocomplete_item =
         kopsik_autocomplete_item_init();
-      autocomplete_item->Text = strdup(ss.str().c_str());
+      autocomplete_item->Text = strdup(text.c_str());
       autocomplete_item->TimeEntryID = static_cast<int>(model->ID());
       autocomplete_items.push_back(autocomplete_item);
     }
@@ -1022,10 +1025,13 @@ kopsik_api_result kopsik_autocomplete_items(
         }
       }
       ss << model->Name();
-      ss << " [task]";
+      std::string text = ss.str();
+      if (text.empty()) {
+        continue;
+      }
       KopsikAutocompleteItem *autocomplete_item =
         kopsik_autocomplete_item_init();
-      autocomplete_item->Text = strdup(ss.str().c_str());
+      autocomplete_item->Text = strdup(text.c_str());
       autocomplete_item->TaskID = static_cast<int>(model->ID());
       autocomplete_items.push_back(autocomplete_item);
     }
@@ -1046,10 +1052,13 @@ kopsik_api_result kopsik_autocomplete_items(
         }
         ss << p->Name();
       }
-      ss << " [project]";
+      std::string text = ss.str();
+      if (text.empty()) {
+        continue;
+      }
       KopsikAutocompleteItem *autocomplete_item =
         kopsik_autocomplete_item_init();
-      autocomplete_item->Text = strdup(ss.str().c_str());
+      autocomplete_item->Text = strdup(text.c_str());
       autocomplete_item->ProjectID = static_cast<int>(p->ID());
       autocomplete_items.push_back(autocomplete_item);
     }
