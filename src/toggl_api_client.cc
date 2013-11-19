@@ -811,7 +811,7 @@ void User::loadProjectsFromJSONNode(JSONNODE *list, const bool full_sync) {
 std::string Project::String() {
     std::stringstream ss;
     ss << "ID=" << id_ << " name=" << name_ << " wid=" << wid_ <<
-        " guid=" << guid_;
+        " guid=" << guid_ << " active=" << active_;
     return ss.str();
 }
 
