@@ -1091,18 +1091,17 @@ void kopsik_format_duration_in_seconds_hhmm(
 kopsik_api_result kopsik_start(
     void *context,
     char *errmsg, unsigned int errlen,
-    const char *in_description,
+    const char *description,
+    const unsigned int project_id,
+    const unsigned int task_id,
     KopsikTimeEntryViewItem *out_view_item) {
   poco_assert(context);
   poco_assert(errmsg);
   poco_assert(errlen);
-  poco_assert(in_description);
   poco_assert(out_view_item);
 
-  std::stringstream ss;
-  ss << "kopsik_start description=" << in_description;
   Poco::Logger &logger = Poco::Logger::get("kopsik_api");
-  logger.debug(ss.str());
+  logger.debug("kopsik_start");
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
@@ -1112,8 +1111,13 @@ kopsik_api_result kopsik_start(
   }
 
   Poco::Mutex::ScopedLock lock(*ctx->mutex, kLockTimeoutMillis);
-
-  kopsik::TimeEntry *te = ctx->user->Start(std::string(in_description));
+  
+  std::string desc("");
+  if (description) {
+    desc = std::string(description);
+  }
+  
+  kopsik::TimeEntry *te = ctx->user->Start(desc, project_id, task_id);
   kopsik_api_result res = save(ctx, errmsg, errlen);
   if (KOPSIK_API_SUCCESS != res) {
     return res;

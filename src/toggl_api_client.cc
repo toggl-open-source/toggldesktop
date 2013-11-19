@@ -46,21 +46,46 @@ void User::ActiveProjects(std::vector<Project *> *list) {
 
 // Start a time entry, mark it as dirty and add to user time entry collection.
 // Do not save here, dirtyness will be handled outside of this module.
-TimeEntry *User::Start(std::string description) {
+TimeEntry *User::Start(const std::string description,
+    const Poco::UInt64 project_id,
+    const Poco::UInt64 task_id) {
   Stop();
   TimeEntry *te = new TimeEntry();
   te->SetDescription(description);
   te->SetUID(ID());
+  te->SetPID(project_id);
+  te->SetTID(task_id);
   te->SetStart(time(0));
   te->SetDurationInSeconds(-time(0));
-  te->SetWID(DefaultWID());
   te->SetUIModifiedAt(time(0));
   te->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
+
+  // Try to set workspace ID from project
+  if (te->PID()) {
+    Project *p = GetProjectByID(te->PID());
+    if (p) {
+        te->SetWID(p->WID());
+    }
+  }
+
+  // Try to set workspace ID from task
+  if (!te->WID() && te->TID()) {
+    Task *t = GetTaskByID(te->TID());
+    if (t) {
+        te->SetWID(t->WID());
+    }
+  }
+
+  // Set default wid
+  if (!te->WID()) {
+    te->SetWID(DefaultWID());
+  }
+
   related.TimeEntries.push_back(te);
   return te;
 }
 
-TimeEntry *User::Continue(std::string GUID) {
+TimeEntry *User::Continue(const std::string GUID) {
     Stop();
     TimeEntry *existing = GetTimeEntryByGUID(GUID);
     poco_assert(existing);

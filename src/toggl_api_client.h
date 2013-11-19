@@ -479,8 +479,10 @@ namespace kopsik {
         void SortTimeEntriesByStart();
 
         TimeEntry *RunningTimeEntry();
-        TimeEntry *Start(std::string description);
-        TimeEntry *Continue(std::string GUID);
+        TimeEntry *Start(const std::string description,
+            const Poco::UInt64 project_id,
+            const Poco::UInt64 task_id);
+        TimeEntry *Continue(const std::string GUID);
         TimeEntry *Latest();
         std::vector<TimeEntry *> Stop();
         TimeEntry *SplitAt(const Poco::Int64 at);

@@ -24,6 +24,7 @@
 #import "IdleEvent.h"
 #import "IdleNotificationWindowController.h"
 #import "MenuItemTitles.h"
+#import "AutocompleteItem.h"
 
 @interface  AppDelegate()
 @property (nonatomic,strong) IBOutlet MainWindowController *mainWindowController;
@@ -109,13 +110,24 @@ NSString *kTimeTotalUnknown = @"--:--";
                                              object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(eventHandler:)
+                                               name:kUICommandStop
+                                             object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(eventHandler:)
                                                name:kUIEventWebSocketConnection
                                              object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(eventHandler:)
                                                name:kUIEventTimelineRecording
                                              object:nil];
-
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(eventHandler:)
+                                               name:kUICommandNew
+                                             object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(eventHandler:)
+                                               name:kUICommandContinue
+                                             object:nil];
   kopsik_set_change_callback(ctx, on_model_change);
   
   char err[KOPSIK_ERR_LEN];
@@ -232,6 +244,89 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
     [self updateTimelineRecordingState:(notification.object == nil)];
     return;
   }
+ 
+  if ([notification.name isEqualToString:kUICommandNew]) {
+    char err[KOPSIK_ERR_LEN];
+    KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
+    AutocompleteItem *autocomplete = notification.object;
+    kopsik_api_result res = kopsik_start(ctx,
+                                         err,
+                                         KOPSIK_ERR_LEN,
+                                         [autocomplete.Text UTF8String],
+                                         (unsigned int)autocomplete.ProjectID,
+                                         (unsigned int)autocomplete.TaskID,
+                                         item);
+    if (KOPSIK_API_SUCCESS != res) {
+      kopsik_time_entry_view_item_clear(item);
+      handle_error(res, err);
+      return;
+    }
+    
+    TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
+    [te load:item];
+    kopsik_time_entry_view_item_clear(item);
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning object:te];
+    
+    kopsik_push_async(ctx, handle_error);
+  }
+    
+  if ([notification.name isEqualToString:kUICommandContinue]) {
+    NSString *guid = notification.object;
+    char err[KOPSIK_ERR_LEN];
+    KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
+    kopsik_api_result res = 0;
+    int was_found = 0;
+    if (guid == nil) {
+      res = kopsik_continue_latest(ctx, err, KOPSIK_ERR_LEN, item, &was_found);
+    } else {
+      was_found = 1;
+      res = kopsik_continue(ctx, err, KOPSIK_ERR_LEN, [guid UTF8String], item);
+    }
+
+    if (res != KOPSIK_API_SUCCESS) {
+      kopsik_time_entry_view_item_clear(item);
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
+                                                          object:[NSString stringWithUTF8String:err]];
+      return;
+    }
+    
+    if (!was_found) {
+      kopsik_time_entry_view_item_clear(item);
+      return;
+    }
+    
+    TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
+    [te load:item];
+    kopsik_time_entry_view_item_clear(item);
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning object:te];
+    
+    kopsik_push_async(ctx, handle_error);
+  }
+  
+  if ([notification.name isEqualToString:kUICommandStop]) {
+    char err[KOPSIK_ERR_LEN];
+    KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
+    int was_found = 0;
+    if (KOPSIK_API_SUCCESS != kopsik_stop(ctx, err, KOPSIK_ERR_LEN, item, &was_found)) {
+      kopsik_time_entry_view_item_clear(item);
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
+                                                          object:[NSString stringWithUTF8String:err]];
+      return;
+    }
+    
+    if (!was_found) {
+      kopsik_time_entry_view_item_clear(item);
+      return;
+    }
+
+    TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
+    [te load:item];
+    kopsik_time_entry_view_item_clear(item);
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped object:te];
+    
+    kopsik_push_async(ctx, handle_error);
+  }
   
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
     self.lastKnownLoginState = kUIStateUserLoggedIn;
@@ -334,7 +429,6 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
                                                           object:te];
     }
   }
-
   
   if (self.lastKnownRunningTimeEntry == nil) {
     [self.statusItem setTitle: kTimeTotalUnknown];
@@ -419,7 +513,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
 
 - (void)onNewMenuItem:(id)sender {
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandNew
-                                                      object:@"(no description)"];
+                                                      object:nil];
 }
 
 - (void)onContinueMenuItem {

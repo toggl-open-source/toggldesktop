@@ -81,26 +81,6 @@
                                              selector:@selector(eventHandler:)
                                                  name:kUIStateError
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(eventHandler:)
-                                                 name:kUIEventModelChange
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(eventHandler:)
-                                                 name:kUICommandNew
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(eventHandler:)
-                                                 name:kUICommandContinue
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(eventHandler:)
-                                                 name:kUICommandStop
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(eventHandler:)
-                                                 name:kUIEventIdleFinished
-                                               object:nil];
   }
   return self;
 }
@@ -112,8 +92,6 @@
 
 -(void)eventHandler: (NSNotification *) notification
 {
-  NSLog(@"osx_ui.%@ %@", notification.name, notification.object);
-
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
     User *userinfo = notification.object;
     [Bugsnag setUserAttribute:@"user_id" withValue:[NSString stringWithFormat:@"%ld", userinfo.ID]];
@@ -127,8 +105,10 @@
     
     // Show header
     [self.headerView setHidden:NO];
-    
-  } else if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
+    return;
+  }
+  
+  if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
     [Bugsnag setUserAttribute:@"user_id" withValue:nil];
 
     // Show login view
@@ -140,8 +120,10 @@
     [self.timeEntryListViewController.view removeFromSuperview];
     [self.headerView setHidden:YES];
     [self.timerViewController.view removeFromSuperview];
-    
-  } else if ([notification.name isEqualToString:kUIStateTimerRunning]) {
+    return;
+  }
+  
+  if ([notification.name isEqualToString:kUIStateTimerRunning]) {
     // Hide timer editor from header view
     [self.timerEditViewController.view removeFromSuperview];
     
@@ -153,8 +135,10 @@
     }
     [self.headerView addSubview:self.timerViewController.view];
     [self.timerViewController.view setFrame: self.headerView.bounds];
-    
-  } else if ([notification.name isEqualToString:kUIStateTimerStopped]) {
+    return;
+  }
+  
+  if ([notification.name isEqualToString:kUIStateTimerStopped]) {
     // Hide running timer view from header view
     [self.timerViewController.view removeFromSuperview];
     
@@ -166,93 +150,26 @@
     }
     [self.headerView addSubview:self.timerEditViewController.view];
     [self.timerEditViewController.view setFrame:self.headerView.bounds];
+    return;
+  }
 
-  } else if ([notification.name isEqualToString:kUIStateTimeEntrySelected]) {
+  if ([notification.name isEqualToString:kUIStateTimeEntrySelected]) {
     [self.headerView setHidden:YES];
     [self.timeEntryListViewController.view removeFromSuperview];
     [self.contentView addSubview:self.timeEntryEditViewController.view];
     [self.timeEntryEditViewController.view setFrame:self.contentView.bounds];
+    return;
+  }
 
-  } else if ([notification.name isEqualToString:kUIStateTimeEntryDeselected]) {
+  if ([notification.name isEqualToString:kUIStateTimeEntryDeselected]) {
     [self.headerView setHidden:NO];
     [self.timeEntryEditViewController.view removeFromSuperview];
     [self.contentView addSubview:self.timeEntryListViewController.view];
     [self.timeEntryListViewController.view setFrame:self.contentView.bounds];
-  
-  } else if ([notification.name isEqualToString:kUICommandNew]) {
-    NSString *description = notification.object;
-    char err[KOPSIK_ERR_LEN];
-    KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-    if (KOPSIK_API_SUCCESS != kopsik_start(ctx, err, KOPSIK_ERR_LEN, [description UTF8String], item)) {
-      kopsik_time_entry_view_item_clear(item);
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                          object:[NSString stringWithUTF8String:err]];
-      return;
-    }
-    
-    TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
-    [te load:item];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning object:te];
-    
-    kopsik_push_async(ctx, handle_error);
-    
-  } else if ([notification.name isEqualToString:kUICommandContinue]) {
-    NSString *guid = notification.object;
-    char err[KOPSIK_ERR_LEN];
-    KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-    kopsik_api_result res = 0;
-    int was_found = 0;
-    if (guid == nil) {
-      res = kopsik_continue_latest(ctx, err, KOPSIK_ERR_LEN, item, &was_found);
-    } else {
-      was_found = 1;
-      res = kopsik_continue(ctx, err, KOPSIK_ERR_LEN, [guid UTF8String], item);
-    }
-
-    if (res != KOPSIK_API_SUCCESS) {
-      kopsik_time_entry_view_item_clear(item);
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                          object:[NSString stringWithUTF8String:err]];
-      return;
-    }
-    
-    if (!was_found) {
-      kopsik_time_entry_view_item_clear(item);
-      return;
-    }
-    
-    TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
-    [te load:item];
-    kopsik_time_entry_view_item_clear(item);
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning object:te];
-    
-    kopsik_push_async(ctx, handle_error);
-  
-  } else if ([notification.name isEqualToString:kUICommandStop]) {
-    char err[KOPSIK_ERR_LEN];
-    KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-    int was_found = 0;
-    if (KOPSIK_API_SUCCESS != kopsik_stop(ctx, err, KOPSIK_ERR_LEN, item, &was_found)) {
-      kopsik_time_entry_view_item_clear(item);
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                          object:[NSString stringWithUTF8String:err]];
-      return;
-    }
-    
-    if (!was_found) {
-      kopsik_time_entry_view_item_clear(item);
-      return;
-    }
-
-    TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
-    [te load:item];
-    kopsik_time_entry_view_item_clear(item);
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped object:te];
-    
-    kopsik_push_async(ctx, handle_error);
-
-  } else if ([notification.name isEqualToString:kUIStateError]) {
+    return;
+  }
+ 
+  if ([notification.name isEqualToString:kUIStateError]) {
     // Proxy all app errors through this notification.
 
     NSString *msg = notification.object;
@@ -283,6 +200,7 @@
                      exceptionWithName:@"UI error"
                      reason:msg
                      userInfo:nil]];
+    return;
   }
 }
 

@@ -13,8 +13,8 @@
 - (void)load:(KopsikAutocompleteItem *)data;
 - (void)save:(KopsikAutocompleteItem *)data;
 @property NSString *Text;
-@property long ClientID;
-@property long ProjectID;
-@property long TaskID;
-@property long TimeEntryID;
+@property unsigned long ClientID;
+@property unsigned long ProjectID;
+@property unsigned long TaskID;
+@property unsigned long TimeEntryID;
 @end

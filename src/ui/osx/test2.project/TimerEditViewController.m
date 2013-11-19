@@ -11,9 +11,10 @@
 #import "AutocompleteItem.h"
 #import "Context.h"
 #import "ErrorHandler.h"
+#import "AutocompleteDataSource.h"
 
 @interface TimerEditViewController ()
-@property NSMutableArray *autocompleteItems;
+@property AutocompleteDataSource *autocompleteDataSource;
 @end
 
 @implementation TimerEditViewController
@@ -22,7 +23,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-      self.autocompleteItems = [[NSMutableArray alloc] init];
+      self.autocompleteDataSource = [[AutocompleteDataSource alloc] init];
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
                                                    name:kUIStateUserLoggedIn
@@ -33,62 +34,42 @@
 }
 
 - (IBAction)startButtonClicked:(id)sender {
-  NSString *description = [self.descriptionComboBox stringValue];
+  NSString *key = [self.descriptionComboBox stringValue];
+  AutocompleteItem *item = [self.autocompleteDataSource get:key];
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandNew
-                                                      object:description];
+                                                      object:item];
   [self.descriptionComboBox setStringValue:@""];
 }
 
 - (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString
 {
-  for (NSString *text in self.autocompleteItems) {
-    if ([[text commonPrefixWithString:partialString
-                              options:NSCaseInsensitiveSearch] length] == [partialString length]) {
-      return text;
-    }
-  }
-  return @"";
+  return [self.autocompleteDataSource completedString:partialString];
 }
 
 - (void)eventHandler: (NSNotification *) notification
 {
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    [self.autocompleteItems removeAllObjects];
-    KopsikAutocompleteItemList *list = kopsik_autocomplete_item_list_init();
-    char err[KOPSIK_ERR_LEN];
-    kopsik_api_result res = kopsik_autocomplete_items(ctx,
-    	err, KOPSIK_ERR_LEN, list, 1, 1, 1);
-    if (KOPSIK_API_SUCCESS != res) {
-      handle_error(res, err);
-      kopsik_autocomplete_item_list_clear(list);
-      return;
-    }
-    for (int i = 0; i < list->Length; i++) {
-      AutocompleteItem *item = [[AutocompleteItem alloc] init];
-      [item load:list->ViewItems[i]];
-//FIXME:      [self.autocompleteItems addObject:item];
-    }
-    kopsik_autocomplete_item_list_clear(list);
+    [self.autocompleteDataSource fetch];
+
     if (self.descriptionComboBox.dataSource == nil) {
       self.descriptionComboBox.usesDataSource = YES;
       self.descriptionComboBox.dataSource = self;
     }
     [self.descriptionComboBox reloadData];
-    return;
   }
 }
 
 -(NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox{
-  return [self.autocompleteItems count];
+  return [self.autocompleteDataSource count];
 }
 
 -(id)comboBox:(NSComboBox *)aComboBox objectValueForItemAtIndex:(NSInteger)row{
-  return [self.autocompleteItems objectAtIndex:row];
+  return [self.autocompleteDataSource keyAtIndex:row];
 }
 
 - (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)aString
 {
-  return [self.autocompleteItems indexOfObject:aString];
+  return [self.autocompleteDataSource indexOfKey:aString];
 }
 
 @end
