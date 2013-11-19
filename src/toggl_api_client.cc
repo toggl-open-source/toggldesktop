@@ -35,6 +35,15 @@ template<typename T, size_t N> T *end(T (&ra)[N]) {
 }
 std::vector<std::string> Project::color_codes(known_colors, end(known_colors));
 
+bool compareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
+  return a->Start() > b->Start();
+}
+
+void User::SortTimeEntriesByStart() {
+  std::sort(related.TimeEntries.begin(), related.TimeEntries.end(),
+    compareTimeEntriesByStart);
+}
+
 void User::ActiveProjects(std::vector<Project *> *list) {
   for (unsigned int i = 0; i < related.Projects.size(); i++) {
     kopsik::Project *p = related.Projects[i];
@@ -108,15 +117,6 @@ TimeEntry *User::Latest() {
         return 0;
     }
     return related.TimeEntries[0];
-}
-
-bool compareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
-  return a->Start() > b->Start();
-}
-
-void User::SortTimeEntriesByStart() {
-  std::sort(related.TimeEntries.begin(), related.TimeEntries.end(),
-    compareTimeEntriesByStart);
 }
 
 std::string User::DateDuration(TimeEntry *te) {

@@ -937,18 +937,35 @@ kopsik_api_result kopsik_autocomplete_items(
 
   std::vector<kopsik::TimeEntry *>time_entries;
   if (include_time_entries) {
-    time_entries = ctx->user->related.TimeEntries;
+    for (std::vector<kopsik::TimeEntry *>::const_iterator it =
+        ctx->user->related.TimeEntries.begin();
+        it != ctx->user->related.TimeEntries.end(); it++) {
+      kopsik::TimeEntry *te = *it;
+      if (!te->DeletedAt() && !te->IsMarkedAsDeletedOnServer()) {
+        time_entries.push_back(te);
+      }
+    }
   }
+  // FIXME: sort time entries by name
 
   std::vector<kopsik::Task *> tasks;
   if (include_tasks) {
-    tasks = ctx->user->related.Tasks;
+    for (std::vector<kopsik::Task *>::const_iterator it =
+         ctx->user->related.Tasks.begin();
+         it != ctx->user->related.Tasks.end(); it++) {
+      kopsik::Task *t = *it;
+      if (!t->IsMarkedAsDeletedOnServer()) {
+        tasks.push_back(t);
+      }
+    }
   }
+  // FIXME: sort tasks by description
 
   std::vector<kopsik::Project *>projects;
   if (include_projects) {
     ctx->user->ActiveProjects(&projects);
   }
+  // FIXME: sort projects by name
 
   list->Length = 0;
 
@@ -1225,8 +1242,8 @@ kopsik_api_result kopsik_continue_latest(
   }
 
   Poco::Mutex::ScopedLock lock(*ctx->mutex, kLockTimeoutMillis);
-
   ctx->user->SortTimeEntriesByStart();
+
   kopsik::TimeEntry *latest = ctx->user->Latest();
   if (!latest) {
     *was_found = 0;
