@@ -915,6 +915,27 @@ void kopsik_autocomplete_item_list_clear(
 
 bool compareAutocompleteItems(KopsikAutocompleteItem *a,
     KopsikAutocompleteItem *b) {
+  if (a->TimeEntryID && !b->TimeEntryID) {
+    return true;
+  }
+  if (b->TimeEntryID && !a->TimeEntryID) {
+    return false;
+  }
+
+  if (a->TaskID && !b->TaskID) {
+    return true;
+  }
+  if (b->TaskID && !a->TaskID) {
+    return false;
+  }
+
+  if (a->ProjectID && !b->ProjectID) {
+    return true;
+  }
+  if (b->ProjectID && !a->ProjectID) {
+    return false;
+  }
+
   return (strcmp(a->Text, b->Text) < 0);
 }
 
@@ -968,6 +989,7 @@ kopsik_api_result kopsik_autocomplete_items(
           ss << p->Name();
         }
       }
+      ss << " [te]";
       KopsikAutocompleteItem *autocomplete_item =
         kopsik_autocomplete_item_init();
       autocomplete_item->Text = strdup(ss.str().c_str());
@@ -1000,6 +1022,7 @@ kopsik_api_result kopsik_autocomplete_items(
         }
       }
       ss << model->Name();
+      ss << " [task]";
       KopsikAutocompleteItem *autocomplete_item =
         kopsik_autocomplete_item_init();
       autocomplete_item->Text = strdup(ss.str().c_str());
@@ -1023,6 +1046,7 @@ kopsik_api_result kopsik_autocomplete_items(
         }
         ss << p->Name();
       }
+      ss << " [project]";
       KopsikAutocompleteItem *autocomplete_item =
         kopsik_autocomplete_item_init();
       autocomplete_item->Text = strdup(ss.str().c_str());
