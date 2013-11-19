@@ -71,11 +71,13 @@ TimeEntry *User::Start(const std::string description,
   te->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
 
   if (time_entry_id) {
-    TimeEntry *original = GetTimeEntryByID(te->ID());
-    te->SetDescription(original->Description());
-    te->SetPID(original->PID());
-    te->SetTID(original->TID());
-    te->SetTags(original->Tags());
+    TimeEntry *original = GetTimeEntryByID(time_entry_id);
+    if (original) {
+        te->SetDescription(original->Description());
+        te->SetPID(original->PID());
+        te->SetTID(original->TID());
+        te->SetTags(original->Tags());
+    }
   }
 
   // Try to set workspace ID from project
