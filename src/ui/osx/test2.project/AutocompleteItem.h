@@ -11,6 +11,7 @@
 
 @interface AutocompleteItem : NSObject
 - (void)load:(KopsikAutocompleteItem *)data;
+- (void)save:(KopsikAutocompleteItem *)data;
 @property NSString *Text;
 @property long ClientID;
 @property long ProjectID;

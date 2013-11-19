@@ -159,6 +159,10 @@ typedef struct {
   unsigned int ItemType;
 } KopsikAutocompleteItem;
 
+KOPSIK_EXPORT KopsikAutocompleteItem *kopsik_autocomplete_item_init();
+
+KOPSIK_EXPORT void kopsik_autocomplete_item_clear(KopsikAutocompleteItem *item);
+
 typedef struct {
   KopsikAutocompleteItem **ViewItems;
   unsigned int Length;
@@ -264,7 +268,7 @@ KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_project(
   void *ctx,
   char *errmsg, unsigned int errlen,
   const char *guid,
-  const char *value);
+  const KopsikAutocompleteItem *autocomplete_item);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_start_iso_8601(
   void *ctx,

@@ -880,13 +880,13 @@ KopsikAutocompleteItemList *
   return result;
 }
 
-KopsikAutocompleteItem *autocomplete_item_init() {
+KopsikAutocompleteItem *kopsik_autocomplete_item_init() {
   KopsikAutocompleteItem *item = new KopsikAutocompleteItem();
   item->Text = 0;
   return item;
 }
 
-void autocomplete_item_clear(KopsikAutocompleteItem *item) {
+void kopsik_autocomplete_item_clear(KopsikAutocompleteItem *item) {
   if (item->Text) {
     free(item->Text);
     item->Text = 0;
@@ -904,7 +904,7 @@ void kopsik_autocomplete_item_list_clear(
   for (unsigned int i = 0; i < list->Length; i++) {
     KopsikAutocompleteItem *item = list->ViewItems[i];
     poco_assert(item);
-    autocomplete_item_clear(item);
+    kopsik_autocomplete_item_clear(item);
     list->ViewItems[i] = 0;
   }
   if (list->ViewItems) {
@@ -955,9 +955,9 @@ kopsik_api_result kopsik_autocomplete_items(
 
   size_t list_size = projects.size() + tasks.size();
 
-  KopsikAutocompleteItem *tmp = autocomplete_item_init();
+  KopsikAutocompleteItem *tmp = kopsik_autocomplete_item_init();
   void *m = malloc(list_size * sizeof(tmp));
-  autocomplete_item_clear(tmp);
+  kopsik_autocomplete_item_clear(tmp);
   poco_assert(m);
 
   list->ViewItems =
@@ -967,7 +967,7 @@ kopsik_api_result kopsik_autocomplete_items(
   // description - Client. Project
   for (unsigned int i = 0; i < time_entries.size(); i++) {
     kopsik::TimeEntry *te = time_entries[i];
-    KopsikAutocompleteItem *view_item = autocomplete_item_init();
+    KopsikAutocompleteItem *view_item = kopsik_autocomplete_item_init();
     view_item->Text = strdup(te->Description().c_str());
     view_item->TimeEntryID = static_cast<int>(te->ID());
     view_item->TaskID = static_cast<int>(te->TID());
@@ -982,7 +982,7 @@ kopsik_api_result kopsik_autocomplete_items(
   // Client. Project. Task
   for (unsigned int i = 0; i < tasks.size(); i++) {
     kopsik::Task *task = tasks[i];
-    KopsikAutocompleteItem *view_item = autocomplete_item_init();
+    KopsikAutocompleteItem *view_item = kopsik_autocomplete_item_init();
     view_item->Text = strdup(task->Name().c_str());
     view_item->TimeEntryID = 0;
     view_item->TaskID = static_cast<int>(task->ID());
@@ -996,7 +996,7 @@ kopsik_api_result kopsik_autocomplete_items(
   // Client. Project
   for (unsigned int i = 0; i < projects.size(); i++) {
     kopsik::Project *p = projects[i];
-    KopsikAutocompleteItem *view_item = autocomplete_item_init();
+    KopsikAutocompleteItem *view_item = kopsik_autocomplete_item_init();
     std::string name = ctx->user->ProjectNameIncludingClient(p);
     view_item->Text = strdup(name.c_str());
     view_item->TimeEntryID = 0;
@@ -1336,15 +1336,24 @@ kopsik_api_result kopsik_set_time_entry_project(
     void *context,
     char *errmsg, unsigned int errlen,
     const char *guid,
-    const char *value) {
+    const KopsikAutocompleteItem *autocomplete_item) {
   poco_assert(context);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(guid);
+  poco_assert(autocomplete_item);
 
   std::stringstream ss;
-  ss  << "kopsik_set_time_entry_project guid=" << guid
-      << ", value=" << value;
+  ss  << "kopsik_set_time_entry_project guid=" << guid;
+  if (autocomplete_item->Text) {
+      ss << ", autocomplete text=" << autocomplete_item->Text;
+  }
+  ss  << ", time entry ID="<< autocomplete_item->TimeEntryID
+      << ", task ID=" << autocomplete_item->TaskID
+      << ", project ID=" << autocomplete_item->ProjectID
+      << ", client ID=" << autocomplete_item->ClientID
+      << ", item type=" << autocomplete_item->ItemType;
+
   Poco::Logger &logger = Poco::Logger::get("kopsik_api");
   logger.debug(ss.str());
 
@@ -1366,16 +1375,7 @@ kopsik_api_result kopsik_set_time_entry_project(
   kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
   poco_assert(te);
 
-  std::string project_name(value);
-  unsigned int project_id = 0;
-  if (!project_name.empty()) {
-    kopsik::Project *p =
-      ctx->user->GetProjectByNameIncludingClient(std::string(value));
-    if (p) {
-      project_id = (unsigned int)p->ID();
-    }
-  }
-  te->SetPID(project_id);
+  te->SetPID(autocomplete_item->ProjectID);
   if (te->Dirty()) {
     te->SetUIModifiedAt(time(0));
   }

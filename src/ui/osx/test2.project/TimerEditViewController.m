@@ -66,7 +66,7 @@
     for (int i = 0; i < list->Length; i++) {
       AutocompleteItem *item = [[AutocompleteItem alloc] init];
       [item load:list->ViewItems[i]];
-      [self.autocompleteItems addObject:item];
+//FIXME:      [self.autocompleteItems addObject:item];
     }
     kopsik_autocomplete_item_list_clear(list);
     if (self.descriptionComboBox.dataSource == nil) {

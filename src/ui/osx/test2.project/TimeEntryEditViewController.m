@@ -13,10 +13,11 @@
 #import "ModelChange.h"
 #import "ErrorHandler.h"
 #import "AutocompleteItem.h"
+#import "AutocompleteDataSource.h"
 
 @interface TimeEntryEditViewController ()
 @property NSString *GUID;
-@property NSMutableArray *autocompleteItems; // Project select data source
+@property AutocompleteDataSource *autocompleteDataSource;
 @end
 
 @implementation TimeEntryEditViewController
@@ -33,7 +34,7 @@
                                                selector:@selector(eventHandler:)
                                                    name:kUIStateUserLoggedIn
                                                  object:nil];
-      self.autocompleteItems = [[NSMutableArray alloc] init];
+      self.autocompleteDataSource = [[AutocompleteDataSource alloc] init];
     }
     
     return self;
@@ -45,13 +46,7 @@
 
 - (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString
 {
-  for (AutocompleteItem *item in self.autocompleteItems) {
-    if ([[item.Text commonPrefixWithString:partialString
-                                    options:NSCaseInsensitiveSearch] length] == [partialString length]) {
-      return item.Text;
-    }
-  }
-  return @"";
+  return [self.autocompleteDataSource completedString:partialString];
 }
 
 - (void)render:(NSString *)view_item_guid {
@@ -102,27 +97,14 @@
   }
 
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    [self.autocompleteItems removeAllObjects];
-    KopsikAutocompleteItemList *list = kopsik_autocomplete_item_list_init();
-    char err[KOPSIK_ERR_LEN];
-    if (KOPSIK_API_SUCCESS != kopsik_autocomplete_items(ctx, err, KOPSIK_ERR_LEN, list,
-                                                        0, 0, 1)) {
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                          object:[NSString stringWithUTF8String:err]];
-      kopsik_autocomplete_item_list_clear(list);
-      return;
-    }
-    for (int i = 0; i < list->Length; i++) {
-      AutocompleteItem *item = [[AutocompleteItem alloc] init];
-      [item load:list->ViewItems[i]];
-      [self.autocompleteItems addObject:item];
-    }
-    kopsik_autocomplete_item_list_clear(list);
+    [self.autocompleteDataSource fetch];
+    
     if (self.projectSelect.dataSource == nil) {
       self.projectSelect.usesDataSource = YES;
       self.projectSelect.dataSource = self;
     }
     [self.projectSelect reloadData];
+
     return;
   }
 }
@@ -146,22 +128,24 @@
 - (IBAction)projectSelectChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
-  NSInteger row = [self.projectSelect indexOfSelectedItem];
-  const char *value = 0;
-  if (row < 0) {
-    value = "";
-  } else {
-    value = [[self.autocompleteItems objectAtIndex:row] UTF8String];
+  NSString *key = [self.projectSelect stringValue];
+
+  AutocompleteItem *item = [self.autocompleteDataSource get:key];
+  KopsikAutocompleteItem *autocomplete_item = kopsik_autocomplete_item_init();
+  if (item != nil) {
+    [item save:autocomplete_item];
   }
-  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_project(ctx,
-                                                          err,
-                                                          KOPSIK_ERR_LEN,
-                                                          [self.GUID UTF8String],
-                                                          value)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                        object:[NSString stringWithUTF8String:err]];
+  kopsik_api_result res = kopsik_set_time_entry_project(ctx,
+                                                        err,
+                                                        KOPSIK_ERR_LEN,
+                                                        [self.GUID UTF8String],
+                                                        autocomplete_item);
+  if (KOPSIK_API_SUCCESS != res) {
+    handle_error(res, err);
+    kopsik_autocomplete_item_clear(autocomplete_item);
     return;
   }
+  kopsik_autocomplete_item_clear(autocomplete_item);
   kopsik_push_async(ctx, handle_error);
 }
 
@@ -327,16 +311,16 @@
 }
 
 -(NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox{
-  return [self.autocompleteItems count];
+  return [self.autocompleteDataSource count];
 }
 
 -(id)comboBox:(NSComboBox *)aComboBox objectValueForItemAtIndex:(NSInteger)row{
-  return [self.autocompleteItems objectAtIndex:row];
+  return [self.autocompleteDataSource keyAtIndex:row];
 }
 
 - (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)aString
 {
-  return [self.autocompleteItems indexOfObject:aString];
+  return [self.autocompleteDataSource indexOfKey:aString];
 }
 
 @end
