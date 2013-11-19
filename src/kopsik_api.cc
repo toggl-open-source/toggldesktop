@@ -917,6 +917,20 @@ void kopsik_autocomplete_item_list_clear(
 }
 
 bool compareAutocompleteItems(KopsikAutocompleteItem *a, KopsikAutocompleteItem *b) {
+  if (a->ProjectID < b->ProjectID) {
+    return true;
+  }
+  if (b->ProjectID < a->ProjectID) {
+    return false;
+  }
+
+  if (a->TaskID < b->TaskID) {
+    return true;
+  }
+  if (b->TaskID < a->TaskID) {
+    return false;
+  }
+
   return (strcmp(a->Text, b->Text) < 0);
 }
 
