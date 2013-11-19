@@ -916,6 +916,10 @@ void kopsik_autocomplete_item_list_clear(
   list = 0;
 }
 
+bool compareAutocompleteItems(KopsikAutocompleteItem *a, KopsikAutocompleteItem *b) {
+  return (strcmp(a->Text, b->Text) < 0);
+}
+
 kopsik_api_result kopsik_autocomplete_items(
     void *context,
     char *errmsg, unsigned int errlen,
@@ -1029,7 +1033,8 @@ kopsik_api_result kopsik_autocomplete_items(
     }
   }
 
-  // FIXME: sort list by time entry ID, task ID, project ID, text
+  std::sort(autocomplete_items.begin(), autocomplete_items.end(),
+    compareAutocompleteItems);
 
   list->Length = 0;
 
