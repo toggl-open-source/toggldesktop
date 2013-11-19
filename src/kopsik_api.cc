@@ -883,6 +883,9 @@ KopsikAutocompleteItemList *
 KopsikAutocompleteItem *kopsik_autocomplete_item_init() {
   KopsikAutocompleteItem *item = new KopsikAutocompleteItem();
   item->Text = 0;
+  item->ProjectID = 0;
+  item->TaskID = 0;
+  item->TimeEntryID = 0;
   return item;
 }
 
@@ -1130,8 +1133,8 @@ kopsik_api_result kopsik_start(
     char *errmsg, unsigned int errlen,
     const char *description,
     const unsigned int time_entry_id,
-    const unsigned int project_id,
     const unsigned int task_id,
+    const unsigned int project_id,
     KopsikTimeEntryViewItem *out_view_item) {
   poco_assert(context);
   poco_assert(errmsg);
