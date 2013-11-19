@@ -114,6 +114,12 @@ osx:
 run: osx
 	./src/ui/osx/test2.project/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop
 
+sikuli: osx
+	(pkill TogglDesktop) || true
+	rm -rf kopsik_sikuli.db
+	rm -rf kopsik_sikuli.log
+	./src/ui/osx/test2.project/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop --api_url http://0.0.0.0:8080 --db_path kopsik_sikuli.db --log_path kopsik_sikuli.log
+
 cmdline: clean lint
 	mkdir -p build
 	$(cxx) $(cflags) -O2 -DNDEBUG -c src/version.cc -o build/version.o
