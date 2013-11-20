@@ -19,6 +19,8 @@
 #include "Poco/Timespan.h"
 #include "Poco/NumberParser.h"
 #include "Poco/String.h"
+#include "Poco/RegularExpression.h"
+#include "Poco/StringTokenizer.h"
 
 #include "./https_client.h"
 #include "./version.h"
@@ -1642,6 +1644,29 @@ std::string TimeEntry::DurationString() {
 }
 
 void TimeEntry::SetDurationString(std::string value) {
+    // Parse duration in sconds HH:MM:SS
+    Poco::RegularExpression re(":");
+    Poco::StringTokenizer tokenizer(value, ":");
+    std::cout << "token count=" << tokenizer.count() << std::endl;
+    if (3 == tokenizer.count()) {
+        int hours = 0;
+        if (!Poco::NumberParser::tryParse(tokenizer[0], hours)) {
+            return;
+        }
+        int minutes = 0;
+        if (!Poco::NumberParser::tryParse(tokenizer[1], minutes)) {
+            return;
+        }
+        int seconds = 0;
+        if (!Poco::NumberParser::tryParse(tokenizer[2], seconds)) {
+            return;
+        }
+        std::cout << "hours=" << hours << ", minutes=" << minutes
+            << ", seconds=" << seconds << std::endl;
+        Poco::Timespan span(0, hours, minutes, seconds, 0);
+        std::cout << "span total seconds=" << span.totalSeconds() << std::endl;
+        SetDurationInSeconds(span.totalSeconds());
+    }
     // FIXME: parse duration string into duration in seconds
 }
 
