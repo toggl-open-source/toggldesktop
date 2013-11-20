@@ -887,6 +887,8 @@
 /* Begin PBXProject section */
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = 1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "dump_syms" */;
 			compatibilityVersion = "Xcode 3.1";
 			developmentRegion = English;
@@ -1240,6 +1242,7 @@
 		B84A91F6116CF784006C210E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1248,12 +1251,14 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = stabs_to_module_unittest;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		B84A91F7116CF784006C210E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1262,12 +1267,14 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = stabs_to_module_unittest;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		B88FAF31116A591F00407530 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1281,12 +1288,14 @@
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build/Debug\"";
 				PRODUCT_NAME = dwarf2reader_cfi_unittest;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		B88FAF32116A591F00407530 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1300,20 +1309,25 @@
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build/Debug\"";
 				PRODUCT_NAME = dwarf2reader_cfi_unittest;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		B88FAFCA116BDCAD00407530 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				PRODUCT_NAME = all_unittests;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		B88FAFCB116BDCAD00407530 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				PRODUCT_NAME = all_unittests;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -1321,6 +1335,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_MACH_O_NLIST_H;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1329,6 +1344,7 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = stabs_reader_unittest;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -1336,6 +1352,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_MACH_O_NLIST_H;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1344,12 +1361,20 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = stabs_reader_unittest;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		B88FB025116BE00100407530 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++98";
+				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_WARN_OBJC_ROOT_CLASS = NO;
+				GCC_VERSION = "";
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = NO;
+				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1358,12 +1383,20 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = gtestmockall;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		B88FB026116BE00100407530 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++98";
+				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_WARN_OBJC_ROOT_CLASS = NO;
+				GCC_VERSION = "";
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = NO;
+				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1372,12 +1405,14 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = gtestmockall;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		B88FB0BB116CEAC000407530 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1386,12 +1421,14 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = module_unittest;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		B88FB0BC116CEAC000407530 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1400,12 +1437,14 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = module_unittest;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		B88FB0E1116CEEA800407530 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1414,12 +1453,14 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = dwarf2diehandler_unittest;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		B88FB0E2116CEEA800407530 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1428,12 +1469,14 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = dwarf2diehandler_unittest;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		B88FB0F4116CEF1900407530 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1442,12 +1485,14 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = dwarf_line_to_module_unittest;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		B88FB0F5116CEF1900407530 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1456,12 +1501,14 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = dwarf_line_to_module_unittest;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		B88FB10C116CF07A00407530 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1470,12 +1517,14 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = dwarf_cu_to_module_unittest;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		B88FB10D116CF07A00407530 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1484,12 +1533,14 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = dwarf_cu_to_module_unittest;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		B88FB121116CF28000407530 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1498,12 +1549,14 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = dwarf_cfi_to_module_unittest;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		B88FB122116CF28000407530 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1512,12 +1565,14 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = dwarf_cfi_to_module_unittest;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		B88FB137116CF30F00407530 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1526,12 +1581,14 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = bytereader_unittest;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		B88FB138116CF30F00407530 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1540,12 +1597,14 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = bytereader_unittest;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		B88FB14D116CF4A800407530 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1554,12 +1613,14 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = byte_cursor_unittest;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		B88FB14E116CF4A800407530 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1568,26 +1629,32 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = byte_cursor_unittest;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		B89E0E761166575300DD08C9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				PRODUCT_NAME = macho_dump;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		B89E0E771166575300DD08C9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				PRODUCT_NAME = macho_dump;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		B89E0E9711665A6400DD08C9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1596,12 +1663,14 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = macho_reader_unittest;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		B89E0E9811665A6400DD08C9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1610,28 +1679,36 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = macho_reader_unittest;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		B8C5B5131166531B00D34F4E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++98";
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_MACH_O_NLIST_H;
+				GCC_VERSION = "";
 				PRODUCT_NAME = dump_syms;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		B8C5B5141166531B00D34F4E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++98";
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_MACH_O_NLIST_H;
+				GCC_VERSION = "";
 				PRODUCT_NAME = dump_syms;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		D21F97D411CBA0F200239E38 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1640,12 +1717,14 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = test_assembler_unittest;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		D21F97D511CBA0F200239E38 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					$inherited,
 					../../../testing,
@@ -1654,6 +1733,7 @@
 					../../../testing/gtest/include,
 				);
 				PRODUCT_NAME = test_assembler_unittest;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};

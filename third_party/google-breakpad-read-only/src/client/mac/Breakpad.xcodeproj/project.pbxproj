@@ -1393,6 +1393,8 @@
 /* Begin PBXProject section */
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "Breakpad" */;
 			compatibilityVersion = "Xcode 3.1";
 			developmentRegion = English;
@@ -2090,10 +2092,12 @@
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Framework/Breakpad_Prefix.pch;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../..;
 				INFOPLIST_FILE = Framework/Info.plist;
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				PRODUCT_NAME = Breakpad;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -2106,10 +2110,12 @@
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Framework/Breakpad_Prefix.pch;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../..;
 				INFOPLIST_FILE = Framework/Info.plist;
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				PRODUCT_NAME = Breakpad;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;
@@ -2119,7 +2125,8 @@
 			baseConfigurationReference = 8B31027711F0D3AF00FCF3E4 /* BreakpadDebug.xcconfig */;
 			buildSettings = {
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				SDKROOT = macosx10.5;
+				GCC_VERSION = "";
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -2128,6 +2135,8 @@
 			baseConfigurationReference = 8B31027811F0D3AF00FCF3E4 /* BreakpadRelease.xcconfig */;
 			buildSettings = {
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = "";
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -2140,10 +2149,12 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../..;
 				INSTALL_PATH = /usr/local/bin;
 				PREBINDING = NO;
 				PRODUCT_NAME = minidump_generator_test_helper;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -2153,10 +2164,12 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../..;
 				INSTALL_PATH = /usr/local/bin;
 				PREBINDING = NO;
 				PRODUCT_NAME = minidump_generator_test_helper;
+				SDKROOT = macosx;
 			};
 			name = "Debug With Code Coverage";
 		};
@@ -2168,10 +2181,12 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_MODEL_TUNING = G5;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../..;
 				INSTALL_PATH = /usr/local/bin;
 				PREBINDING = NO;
 				PRODUCT_NAME = minidump_generator_test_helper;
+				SDKROOT = macosx;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -2180,9 +2195,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++98";
+				CLANG_CXX_LIBRARY = "libstdc++";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					../../testing,
@@ -2192,6 +2210,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = gtest;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -2199,6 +2218,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++98";
+				CLANG_CXX_LIBRARY = "libstdc++";
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					../../testing,
@@ -2208,6 +2230,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = gtest;
+				SDKROOT = macosx;
 			};
 			name = "Debug With Code Coverage";
 		};
@@ -2215,9 +2238,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++98";
+				CLANG_CXX_LIBRARY = "libstdc++";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					../../testing,
@@ -2227,6 +2253,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = gtest;
+				SDKROOT = macosx;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -2234,10 +2261,13 @@
 		D2F9A543121383A1002747C1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++98";
+				CLANG_CXX_LIBRARY = "libstdc++";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = "BP_LOGGING_INCLUDE=\\\"client/mac/tests/testlogging.h\\\"";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					../..,
 					../../testing,
@@ -2250,12 +2280,16 @@
 					"\"$(SRCROOT)/build/Debug\"",
 				);
 				PRODUCT_NAME = crash_generation_server_test;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		D2F9A544121383A1002747C1 /* Debug With Code Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++98";
+				CLANG_CXX_LIBRARY = "libstdc++";
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					../..,
 					../../testing,
@@ -2268,12 +2302,16 @@
 					"\\\"$(SRCROOT)/build/Debug\\\"",
 				);
 				PRODUCT_NAME = crash_generation_server_test;
+				SDKROOT = macosx;
 			};
 			name = "Debug With Code Coverage";
 		};
 		D2F9A545121383A1002747C1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++98";
+				CLANG_CXX_LIBRARY = "libstdc++";
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					../..,
 					../../testing,
@@ -2286,22 +2324,27 @@
 					"\\\"$(SRCROOT)/build/Debug\\\"",
 				);
 				PRODUCT_NAME = crash_generation_server_test;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		F92C53560ECCE34A009BE4BA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../..;
 				PRODUCT_NAME = Inspector;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		F92C53570ECCE34A009BE4BA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../..;
 				PRODUCT_NAME = Inspector;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -2310,6 +2353,7 @@
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../..;
 				LD_DYLIB_INSTALL_NAME = "@executable_path/../Resources/$(EXECUTABLE_PATH)";
 				OTHER_LDFLAGS = (
@@ -2317,6 +2361,7 @@
 					"-headerpad_max_install_names",
 				);
 				PRODUCT_NAME = breakpadUtilities;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -2325,6 +2370,7 @@
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../..;
 				LD_DYLIB_INSTALL_NAME = "@executable_path/../Resources/$(EXECUTABLE_PATH)";
 				OTHER_LDFLAGS = (
@@ -2332,24 +2378,29 @@
 					"-headerpad_max_install_names",
 				);
 				PRODUCT_NAME = breakpadUtilities;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		F92C56A30ECE04A8009BE4BA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../..;
 				INFOPLIST_FILE = "sender/crash_report_sender-Info.plist";
 				PRODUCT_NAME = crash_report_sender;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		F92C56A40ECE04A8009BE4BA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../..;
 				INFOPLIST_FILE = "sender/crash_report_sender-Info.plist";
 				PRODUCT_NAME = crash_report_sender;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -2357,6 +2408,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = "BP_LOGGING_INCLUDE=\\\"client/mac/tests/testlogging.h\\\"";
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					../..,
 					../../..,
@@ -2366,12 +2418,14 @@
 					../../testing/gtest/include,
 				);
 				PRODUCT_NAME = generator_test;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		F93803C10F808210004D428B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					../..,
 					../../..,
@@ -2381,22 +2435,27 @@
 					../../testing/gtest/include,
 				);
 				PRODUCT_NAME = generator_test;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		F93DE2D30F82A67400608B94 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../..;
 				PRODUCT_NAME = minidump_file_writer_unittest;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		F93DE2D40F82A67400608B94 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../..;
 				PRODUCT_NAME = minidump_file_writer_unittest;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -2407,6 +2466,7 @@
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = "BP_LOGGING_INCLUDE=\\\"client/mac/tests/testlogging.h\\\"";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					../../..,
 					../..,
@@ -2420,12 +2480,14 @@
 					"\"$(SRCROOT)/build/Debug\"",
 				);
 				PRODUCT_NAME = handler_test;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		F93DE32F0F82C55700608B94 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					../../..,
 					../..,
@@ -2439,6 +2501,7 @@
 					"\"$(SRCROOT)/build/Debug\"",
 				);
 				PRODUCT_NAME = handler_test;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -2447,6 +2510,8 @@
 			baseConfigurationReference = 8B31027711F0D3AF00FCF3E4 /* BreakpadDebug.xcconfig */;
 			buildSettings = {
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = "";
+				SDKROOT = macosx;
 			};
 			name = "Debug With Code Coverage";
 		};
@@ -2458,10 +2523,12 @@
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Framework/Breakpad_Prefix.pch;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../..;
 				INFOPLIST_FILE = Framework/Info.plist;
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				PRODUCT_NAME = Breakpad;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = "Debug With Code Coverage";
@@ -2469,8 +2536,10 @@
 		F93DE3BB0F830E7000608B94 /* Debug With Code Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../..;
 				PRODUCT_NAME = Inspector;
+				SDKROOT = macosx;
 			};
 			name = "Debug With Code Coverage";
 		};
@@ -2479,6 +2548,7 @@
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../..;
 				LD_DYLIB_INSTALL_NAME = "@executable_path/../Resources/$(EXECUTABLE_PATH)";
 				OTHER_LDFLAGS = (
@@ -2486,15 +2556,18 @@
 					"-headerpad_max_install_names",
 				);
 				PRODUCT_NAME = breakpadUtilities;
+				SDKROOT = macosx;
 			};
 			name = "Debug With Code Coverage";
 		};
 		F93DE3BD0F830E7000608B94 /* Debug With Code Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../..;
 				INFOPLIST_FILE = "sender/crash_report_sender-Info.plist";
 				PRODUCT_NAME = crash_report_sender;
+				SDKROOT = macosx;
 			};
 			name = "Debug With Code Coverage";
 		};
@@ -2502,15 +2575,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/build/$(CONFIGURATION)";
+				GCC_VERSION = "";
 				INFOPLIST_FILE = testapp/Info.plist;
 				PRODUCT_NAME = BreakpadTest;
+				SDKROOT = macosx;
 			};
 			name = "Debug With Code Coverage";
 		};
 		F93DE3BF0F830E7000608B94 /* Debug With Code Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				PRODUCT_NAME = All;
+				SDKROOT = macosx;
 			};
 			name = "Debug With Code Coverage";
 		};
@@ -2522,9 +2599,11 @@
 					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../..;
 				INFOPLIST_FILE = "UnitTests-Info.plist";
 				PRODUCT_NAME = UnitTests;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = "Debug With Code Coverage";
@@ -2532,6 +2611,7 @@
 		F93DE3C10F830E7000608B94 /* Debug With Code Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					../..,
 					../../..,
@@ -2541,20 +2621,24 @@
 					../../testing/gtest/include,
 				);
 				PRODUCT_NAME = generator_test;
+				SDKROOT = macosx;
 			};
 			name = "Debug With Code Coverage";
 		};
 		F93DE3C20F830E7000608B94 /* Debug With Code Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../..;
 				PRODUCT_NAME = minidump_file_writer_unittest;
+				SDKROOT = macosx;
 			};
 			name = "Debug With Code Coverage";
 		};
 		F93DE3C30F830E7000608B94 /* Debug With Code Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					../../..,
 					../..,
@@ -2568,20 +2652,25 @@
 					"\"$(SRCROOT)/build/Debug\"",
 				);
 				PRODUCT_NAME = handler_test;
+				SDKROOT = macosx;
 			};
 			name = "Debug With Code Coverage";
 		};
 		F94585850F782326009A47BF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				PRODUCT_NAME = All;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		F94585860F782326009A47BF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				PRODUCT_NAME = All;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -2589,8 +2678,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/build/$(CONFIGURATION)";
+				GCC_VERSION = "";
 				INFOPLIST_FILE = testapp/Info.plist;
 				PRODUCT_NAME = BreakpadTest;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -2598,8 +2689,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/build/$(CONFIGURATION)";
+				GCC_VERSION = "";
 				INFOPLIST_FILE = testapp/Info.plist;
 				PRODUCT_NAME = BreakpadTest;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -2611,8 +2704,10 @@
 					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = "";
 				INFOPLIST_FILE = "UnitTests-Info.plist";
 				PRODUCT_NAME = UnitTests;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
@@ -2625,8 +2720,10 @@
 					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = "";
 				INFOPLIST_FILE = "UnitTests-Info.plist";
 				PRODUCT_NAME = UnitTests;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;

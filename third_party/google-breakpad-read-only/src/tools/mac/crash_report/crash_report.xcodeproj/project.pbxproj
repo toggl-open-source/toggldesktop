@@ -392,8 +392,11 @@
 /* Begin PBXProject section */
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = 1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "crash_report" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -478,16 +481,20 @@
 		1DEB927508733DD40010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../../../../src;
 				PRODUCT_NAME = crash_report;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		1DEB927608733DD40010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../../../../src;
 				PRODUCT_NAME = crash_report;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};

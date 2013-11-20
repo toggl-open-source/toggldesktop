@@ -137,9 +137,15 @@
 /* Begin PBXProject section */
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = 1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "symupload" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 08FB7794FE84155DC02AAC07 /* symupload */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -175,16 +181,20 @@
 		1DEB927508733DD40010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../../..;
 				PRODUCT_NAME = symupload;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		1DEB927608733DD40010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../../..;
 				PRODUCT_NAME = symupload;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -205,16 +215,20 @@
 		9BD836030B0544BB0055103E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../../..;
 				PRODUCT_NAME = minidump_upload;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		9BD836040B0544BB0055103E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = ../../..;
 				PRODUCT_NAME = minidump_upload;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
