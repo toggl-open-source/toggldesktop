@@ -310,7 +310,10 @@ namespace kopsik {
         Poco::Int64 DurationInSeconds() { return duration_in_seconds_; }
         void SetDurationInSeconds(Poco::Int64 value);
         std::string DurationString();
-        void SetDurationString(std::string value);
+        void SetDurationString(const std::string value);
+        bool SetDurationStringHHMMSS(const std::string value);
+        bool SetDurationStringHHMM(const std::string value);
+        bool SetDurationStringMMSS(const std::string value);
 
         Poco::Int64 LocalID() { return local_id_; }
         void SetLocalID(Poco::Int64 value) { local_id_ = value; }
