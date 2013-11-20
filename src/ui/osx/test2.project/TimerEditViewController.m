@@ -36,6 +36,10 @@
 - (IBAction)startButtonClicked:(id)sender {
   NSString *key = [self.descriptionComboBox stringValue];
   AutocompleteItem *item = [self.autocompleteDataSource get:key];
+  if (key != nil) {
+    item = [[AutocompleteItem alloc] init];
+    item.Text = key;
+  }
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandNew
                                                       object:item];
   [self.descriptionComboBox setStringValue:@""];
