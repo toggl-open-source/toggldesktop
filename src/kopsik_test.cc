@@ -569,6 +569,18 @@ namespace kopsik {
         ASSERT_EQ("12:34:56", te.DurationString());
 
         te.SetDurationInSeconds(0);
+        te.SetDurationString("0:1");
+        ASSERT_EQ("00:01:00", te.DurationString());
+
+        te.SetDurationInSeconds(0);
+        te.SetDurationString("1:2");
+        ASSERT_EQ("01:02:00", te.DurationString());
+
+        te.SetDurationInSeconds(0);
+        te.SetDurationString("1:0");
+        ASSERT_EQ("01:00:00", te.DurationString());
+
+        te.SetDurationInSeconds(0);
         te.SetDurationString("05:22 min");
         ASSERT_EQ("00:05:22", te.DurationString());
 
@@ -606,10 +618,6 @@ namespace kopsik {
 
         te.SetDurationInSeconds(0);
         te.SetDurationString("1 minute");
-        ASSERT_EQ("00:01:00", te.DurationString());
-
-        te.SetDurationInSeconds(0);
-        te.SetDurationString("0:1");
         ASSERT_EQ("00:01:00", te.DurationString());
 
         te.SetDurationInSeconds(0);

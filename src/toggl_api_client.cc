@@ -1661,10 +1661,29 @@ void TimeEntry::SetDurationString(std::string value) {
         if (!Poco::NumberParser::tryParse(tokenizer[2], seconds)) {
             return;
         }
-        std::cout << "hours=" << hours << ", minutes=" << minutes
-            << ", seconds=" << seconds << std::endl;
         Poco::Timespan span(0, hours, minutes, seconds, 0);
-        std::cout << "span total seconds=" << span.totalSeconds() << std::endl;
+        std::cout << "input=" << value
+            << ", hours=" << hours
+            << ", minutes=" << minutes
+            << ", seconds=" << seconds
+            << ", span total seconds=" << span.totalSeconds()
+            << std::endl;
+        SetDurationInSeconds(span.totalSeconds());
+    } else if (2 == tokenizer.count()) {
+        int hours = 0;
+        if (!Poco::NumberParser::tryParse(tokenizer[0], hours)) {
+            return;
+        }
+        int minutes = 0;
+        if (!Poco::NumberParser::tryParse(tokenizer[1], minutes)) {
+            return;
+        }
+        Poco::Timespan span(0, hours, minutes, 0, 0);
+        std::cout << "input=" << value
+            << ", hours=" << hours
+            << ", minutes=" << minutes
+            << ", span total seconds=" << span.totalSeconds()
+            << std::endl;
         SetDurationInSeconds(span.totalSeconds());
     }
     // FIXME: parse duration string into duration in seconds
