@@ -554,6 +554,61 @@ namespace kopsik {
         ASSERT_EQ(Poco::UInt64(0), n);
     }
 
+    TEST(KopsikTest, ParsesDurationLikeOnTheWeb) {
+        TimeEntry te;
+
+        te.SetDurationString("00:00:15");
+        ASSERT_EQ("00:00:15", te.DurationString());
+
+        te.SetDurationString("05:22 min");
+        ASSERT_EQ("00:05:22", te.DurationString());
+
+        te.SetDurationString("0 hours");
+        ASSERT_EQ("00:00:00", te.DurationString());
+
+        te.SetDurationString("0,5 hours");
+        ASSERT_EQ("00:30:00", te.DurationString());
+
+        te.SetDurationString("1 hour");
+        ASSERT_EQ("01:00:00", te.DurationString());
+
+        te.SetDurationString("1,5 hours");
+        ASSERT_EQ("01:30:00", te.DurationString());
+
+        te.SetDurationString("1.5 hours");
+        ASSERT_EQ("01:30:00", te.DurationString());
+
+        te.SetDurationString("24 hours");
+        ASSERT_EQ("24:00:00", te.DurationString());
+
+        te.SetDurationString("0 minutes");
+        ASSERT_EQ("00:00:00", te.DurationString());
+
+        te.SetDurationString("0,5 minutes");
+        ASSERT_EQ("00:00:30", te.DurationString());
+
+        te.SetDurationString("1 minute");
+        ASSERT_EQ("00:01:00", te.DurationString());
+
+        te.SetDurationString("0:1");
+        ASSERT_EQ("00:01:00", te.DurationString());
+
+        te.SetDurationString("1,5 minutes");
+        ASSERT_EQ("00:01:30", te.DurationString());
+
+        te.SetDurationString("1.5 minutes");
+        ASSERT_EQ("00:01:30", te.DurationString());
+
+        te.SetDurationString("15");
+        ASSERT_EQ("00:15:00", te.DurationString());
+
+        te.SetDurationString("0 seconds");
+        ASSERT_EQ("00:00:00", te.DurationString());
+
+        te.SetDurationString("1 second");
+        ASSERT_EQ("00:00:01", te.DurationString());
+    }
+
 }  // namespace kopsik
 
 int main(int argc, char **argv) {
