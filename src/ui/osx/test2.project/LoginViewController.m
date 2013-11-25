@@ -43,7 +43,11 @@
   char err[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_login(ctx, err, KOPSIK_ERR_LEN, [email UTF8String], [pass UTF8String])) {
     NSLog(@"Login error: %s", err);
-    [self.errorLabel setStringValue:[NSString stringWithUTF8String:err]];
+    NSString *msg = [NSString stringWithUTF8String:err];
+    if ([msg rangeOfString:@"Request to server failed with status code: 403"].location != NSNotFound) {
+      msg = @"Invalid e-mail or password. Please try again!";
+    }
+    [self.errorLabel setStringValue:msg];
     [self.troubleBox setHidden:NO];
     return;
   }
