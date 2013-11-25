@@ -876,6 +876,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/Crashreporter.framework/Headers",
 				);
 				INFOPLIST_FILE = "test2/kopsik_ui_osx-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -903,6 +904,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/Crashreporter.framework/Headers",
 				);
 				INFOPLIST_FILE = "test2/kopsik_ui_osx-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
