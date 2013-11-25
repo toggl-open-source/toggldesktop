@@ -39,6 +39,7 @@
 		749BD0BD1833E28400980494 /* NSBoxClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 749BD0BC1833E28400980494 /* NSBoxClickable.m */; };
 		749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 749CB8CA18167D6E00814841 /* PreferencesWindowController.m */; };
 		749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */; };
+		74A50AA918434DEC006F37BB /* CrashReporter.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 74793D68183E248C0085E1CF /* CrashReporter.framework */; };
 		74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 74A7346918297DD100525BBC /* ConvertHexColor.m */; };
 		74AA94651808B2D00000539F /* TableViewHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA94641808B2D00000539F /* TableViewHeader.m */; };
 		74AA9471180909F50000539F /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA9467180909F50000539F /* GTMHTTPFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -124,6 +125,19 @@
 			remoteInfo = Kopsik;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		74A50AA818434D90006F37BB /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				74A50AA918434DEC006F37BB /* CrashReporter.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		69FC17F117E6534400B96425 /* TogglDesktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TogglDesktop.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -526,6 +540,7 @@
 				69FC17EE17E6534400B96425 /* Frameworks */,
 				69FC17EF17E6534400B96425 /* Resources */,
 				74E3CDDA17FC37A500C3ADD3 /* ShellScript */,
+				74A50AA818434D90006F37BB /* CopyFiles */,
 			);
 			buildRules = (
 			);
