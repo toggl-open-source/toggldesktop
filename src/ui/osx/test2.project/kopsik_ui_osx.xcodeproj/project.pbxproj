@@ -869,7 +869,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/tanellebedev/projects/kopsik/src/ui/osx/test2.project,
+					"$(SRCROOT)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "test2/kopsik_ui_osx-Prefix.pch";
@@ -897,7 +897,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/tanellebedev/projects/kopsik/src/ui/osx/test2.project,
+					"$(SRCROOT)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "test2/kopsik_ui_osx-Prefix.pch";
