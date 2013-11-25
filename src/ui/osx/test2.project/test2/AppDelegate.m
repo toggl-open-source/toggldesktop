@@ -472,14 +472,6 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
                                                   action:nil
                                            keyEquivalent:@""];
   [menu addItem:[NSMenuItem separatorItem]];
-  [menu addItemWithTitle:@"About"
-                  action:@selector(onAboutMenuItem:)
-           keyEquivalent:@""];
-  [menu addItem:[NSMenuItem separatorItem]];
-  [menu addItemWithTitle:@"Show"
-                  action:@selector(onShowMenuItem)
-           keyEquivalent:@""];
-  [menu addItem:[NSMenuItem separatorItem]];
   [menu addItemWithTitle:@"New"
                   action:@selector(onNewMenuItem:)
            keyEquivalent:@""].tag = kMenuItemTagNew;
@@ -490,23 +482,27 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
                   action:@selector(onStopMenuItem)
            keyEquivalent:@""].tag = kMenuItemTagStop;
   [menu addItem:[NSMenuItem separatorItem]];
+  [menu addItemWithTitle:@"Show"
+                  action:@selector(onShowMenuItem)
+           keyEquivalent:@""];
+  [menu addItem:[NSMenuItem separatorItem]];
   [menu addItemWithTitle:@"Sync"
                   action:@selector(onSyncMenuItem:)
            keyEquivalent:@""].tag = kMenuItemTagSync;
-  [menu addItem:[NSMenuItem separatorItem]];
   self.timelineMenuItem = [menu addItemWithTitle:kMenuItemTitleStartTimelineRecording
                                           action:@selector(onTimelineMenuItem:)
                                    keyEquivalent:@""];
   self.timelineMenuItem.tag = kMenuItemTagTimeline;
-  [menu addItem:[NSMenuItem separatorItem]];
   [menu addItemWithTitle:@"Preferences"
                   action:@selector(onPreferencesMenuItem:)
            keyEquivalent:@""];
   [menu addItem:[NSMenuItem separatorItem]];
+  [menu addItemWithTitle:@"About"
+                  action:@selector(onAboutMenuItem:)
+           keyEquivalent:@""];
   [menu addItemWithTitle:@"Logout"
                   action:@selector(onLogoutMenuItem:)
            keyEquivalent:@""].tag = kMenuItemTagLogout;;
-  [menu addItem:[NSMenuItem separatorItem]];
   [menu addItemWithTitle:@"Quit"
                   action:@selector(onQuitMenuItem)
            keyEquivalent:@""];
