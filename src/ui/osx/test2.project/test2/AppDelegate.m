@@ -41,14 +41,20 @@
 @property NSDate *lastIdleStarted;
 @property BOOL timelineRecording  ;
 @property BOOL websocketConnected;
+
 // Need references to some menu items, we'll change them dynamically
 @property NSMenuItem *timelineMenuItem;
 @property (weak) IBOutlet NSMenuItem *mainWebsocketMenuItem;
 @property (weak) IBOutlet NSMenuItem *mainTimelineMenuItem;
+
 // we'll be updating running TE as a menu item, too
 @property (weak) IBOutlet NSMenuItem *runningTimeEntryMenuItem;
+
 // Where logs are written and db is kept
 @property NSString *app_path;
+
+// For testing crash reporter
+@property BOOL forceCrash;
 @end
 
 @implementation AppDelegate
@@ -75,6 +81,10 @@ NSString *kTimeTotalUnknown = @"--:--";
   // Enable the Crash Reporter
   if (![crashReporter enableCrashReporterAndReturnError: &error]) {
     NSLog(@"Warning: Could not enable crash reporter: %@", error);
+  }
+  
+  if (self.forceCrash) {
+    abort();
   }
   
   [self onShowMenuItem];
@@ -694,6 +704,12 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
     }
     if ([argument rangeOfString:@"password"].location != NSNotFound) {
       defaultPassword = [arguments objectAtIndex:i+1];
+      continue;
+    }
+    if (([argument rangeOfString:@"force"].location != NSNotFound) &&
+        ([argument rangeOfString:@"crash"].location != NSNotFound)) {
+      NSLog(@"forcing crash");
+      self.forceCrash = YES;
       continue;
     }
     if (([argument rangeOfString:@"log"].location != NSNotFound) &&
