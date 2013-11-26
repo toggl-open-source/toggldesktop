@@ -356,12 +356,13 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
     self.lastKnownLoginState = kUIStateUserLoggedIn;
 
+    User *user = notification.object;
+
     // Start syncing after a while.
     [self performSelector:@selector(startSync) withObject:nil afterDelay:0.5];
     [self performSelector:@selector(startWebSocket) withObject:nil afterDelay:0.5];
 
     // Start timeline only if user has enabled it (known to us)
-    User *user = notification.object;
     if (user.recordTimeline) {
       [self performSelector:@selector(startTimeline) withObject:nil afterDelay:0.5];
     }
@@ -661,6 +662,8 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   return path;
 }
 
+const NSString *appName = @"osx_native_app";
+
 - (id) init
 {
   self = [super init];
@@ -675,7 +678,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   
   NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
   NSString* version = [infoDict objectForKey:@"CFBundleShortVersionString"];
-  ctx = kopsik_context_init("osx_native_app", [version UTF8String]);
+  ctx = kopsik_context_init([appName UTF8String], [version UTF8String]);
 
   [Bugsnag startBugsnagWithApiKey:@"2a46aa1157256f759053289f2d687c2f"];
   NSString* environment = [infoDict objectForKey:@"KopsikEnvironment"];
@@ -989,6 +992,21 @@ void check_for_updates_callback(kopsik_api_result result,
   NSLog(@"Crashed on %@", report.systemInfo.timestamp);
   NSLog(@"Crashed with signal %@ (code %@, address=0x%" PRIx64 ")", report.signalInfo.name,
         report.signalInfo.code, report.signalInfo.address);
+
+  // As a temporary solution, report the crash via Bugsnag.
+  // That way we atleast know that something really bad happened to user.
+  NSException* exception;
+  NSMutableDictionary *data = [[NSMutableDictionary alloc] init];;
+  if (report.hasExceptionInfo) {
+    exception = [NSException exceptionWithName:report.exceptionInfo.exceptionName
+                                        reason:report.exceptionInfo.exceptionReason
+                                      userInfo:nil];
+  } else {
+    exception = [NSException exceptionWithName:@"Crash"
+                                        reason:[report description]
+                                      userInfo:nil];
+  }
+  [Bugsnag notify:exception withData:data];
   
   // Purge the report
   [crashReporter purgePendingCrashReport];
