@@ -3,13 +3,13 @@
 #ifndef SRC_TIMELINE_UPLOADER_H_
 #define SRC_TIMELINE_UPLOADER_H_
 
+#include <string>
+#include <vector>
+
 #include "./timeline_event.h"
 #include "./timeline_notifications.h"
 #include "./timeline_constants.h"
 #include "./types.h"
-
-#include <string>
-#include <vector>
 
 #include "Poco/Activity.h"
 #include "Poco/Observer.h"
