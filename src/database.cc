@@ -828,7 +828,11 @@ error Database::SaveTimeEntry(TimeEntry *model,
     try {
         Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID()) {
-            logger.debug("Updating time entry " + model->String());
+            std::stringstream ss;
+            ss << "Updating time entry " + model->String()
+               << " in thread " << Poco::Thread::currentTid();
+            logger.debug(ss.str());
+
             if (model->ID()) {
                 *session << "update time_entries set "
                     "id = :id, uid = :uid, description = :description, "
@@ -901,7 +905,10 @@ error Database::SaveTimeEntry(TimeEntry *model,
                     "time_entry", "update", model->ID(), model->GUID()));
             }
         } else {
-            logger.debug("Inserting time entry " + model->String());
+            std::stringstream ss;
+            ss << "Inserting time entry " + model->String()
+               << " in thread " << Poco::Thread::currentTid();
+            logger.debug(ss.str());
             if (model->ID()) {
                 *session << "insert into time_entries(id, uid, description, "
                     "wid, guid, pid, tid, billable, "
@@ -992,7 +999,11 @@ error Database::SaveWorkspace(Workspace *model) {
     try {
         Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID()) {
-            logger.debug("Updating workspace " + model->String());
+            std::stringstream ss;
+            ss << "Updating workspace " + model->String()
+               << " in thread " << Poco::Thread::currentTid();
+            logger.debug(ss.str());
+
             *session << "update workspaces set "
                 "id = :id, uid = :uid, name = :name "
                 "where local_id = :local_id",
@@ -1006,7 +1017,10 @@ error Database::SaveWorkspace(Workspace *model) {
             return err;
           }
         } else {
-            logger.debug("Inserting workspace " + model->String());
+            std::stringstream ss;
+            ss << "Inserting workspace " + model->String()
+               << " in thread " << Poco::Thread::currentTid();
+            logger.debug(ss.str());
             *session << "insert into workspaces(id, uid, name) "
                 "values(:id, :uid, :name)",
                 Poco::Data::use(model->ID()),
@@ -1043,7 +1057,11 @@ error Database::SaveClient(Client *model) {
     try {
         Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID()) {
-            logger.debug("Updating client " + model->String());
+            std::stringstream ss;
+            ss << "Updating client " + model->String()
+               << " in thread " << Poco::Thread::currentTid();
+            logger.debug(ss.str());
+
             // FIXME: check how to property insert null :S
             if (model->GUID().empty()) {
                 *session << "update clients set "
@@ -1073,7 +1091,10 @@ error Database::SaveClient(Client *model) {
             return err;
           }
         } else {
-            logger.debug("Inserting client " + model->String());
+            std::stringstream ss;
+            ss << "Inserting client " + model->String()
+               << " in thread " << Poco::Thread::currentTid();
+            logger.debug(ss.str());
             // FIXME: check how to property insert null :S
             if (model->GUID().empty()) {
                 *session << "insert into clients(id, uid, name, wid) "
@@ -1123,7 +1144,11 @@ error Database::SaveProject(Project *model) {
     try {
         Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID()) {
-            logger.debug("Updating project " + model->String());
+            std::stringstream ss;
+            ss << "Updating project " + model->String()
+               << " in thread " << Poco::Thread::currentTid();
+            logger.debug(ss.str());
+
             // FIXME: check how to property insert null :S
             if (model->GUID().empty()) {
                 *session << "update projects set "
@@ -1162,7 +1187,10 @@ error Database::SaveProject(Project *model) {
             return err;
           }
         } else {
-            logger.debug("Inserting project " + model->String());
+            std::stringstream ss;
+            ss << "Inserting project " + model->String()
+               << " in thread " << Poco::Thread::currentTid();
+            logger.debug(ss.str());
             // FIXME: check how to property insert null :S
             if (model->GUID().empty()) {
                 *session <<
@@ -1226,7 +1254,11 @@ error Database::SaveTask(Task *model) {
     try {
         Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID()) {
-            logger.debug("Updating task " + model->String());
+            std::stringstream ss;
+            ss << "Updating task " + model->String()
+               << " in thread " << Poco::Thread::currentTid();
+            logger.debug(ss.str());
+          
             *session << "update tasks set "
                 "id = :id, uid = :uid, name = :name, wid = :wid, pid = :pid "
                 "where local_id = :local_id",
@@ -1242,7 +1274,10 @@ error Database::SaveTask(Task *model) {
               return err;
             }
         } else {
-            logger.debug("Inserting task " + model->String());
+            std::stringstream ss;
+            ss << "Inserting task " + model->String()
+               << " in thread " << Poco::Thread::currentTid();
+            logger.debug(ss.str());
             *session << "insert into tasks(id, uid, name, wid, pid) "
                 "values(:id, :uid, :name, :wid, :pid)",
                 Poco::Data::use(model->ID()),
@@ -1281,7 +1316,11 @@ error Database::SaveTag(Tag *model) {
     try {
         Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID()) {
-            logger.debug("Updating tag " + model->String());
+            std::stringstream ss;
+            ss << "Updating tag " + model->String()
+               << " in thread " << Poco::Thread::currentTid();
+            logger.debug(ss.str());
+
             // FIXME: check how to property insert null :S
             if (model->GUID().empty()) {
                 *session << "update tags set "
@@ -1311,7 +1350,10 @@ error Database::SaveTag(Tag *model) {
               return err;
             }
         } else {
-            logger.debug("Inserting tag " + model->String());
+            std::stringstream ss;
+            ss << "Inserting tag " + model->String()
+               << " in thread " << Poco::Thread::currentTid();
+            logger.debug(ss.str());
             // FIXME: check how to property insert null :S
             if (model->GUID().empty()) {
                 *session << "insert into tags(id, uid, name, wid) "
@@ -1381,7 +1423,11 @@ error Database::SaveUser(User *model, bool with_related_data,
     if (!model->LocalID() || model->Dirty()) {
         try {
             if (model->LocalID()) {
-                logger.debug("Updating user " + model->String());
+                std::stringstream ss;
+                ss << "Updating user " + model->String()
+                   << " in thread " << Poco::Thread::currentTid();
+                logger.debug(ss.str());
+
                 *session << "update users set "
                     "api_token = :api_token, default_wid = :default_wid, "
                     "since = :since, id = :id, fullname = :fullname, "
@@ -1404,7 +1450,10 @@ error Database::SaveUser(User *model, bool with_related_data,
                 changes->push_back(ModelChange(
                     "user", "update", model->ID(), ""));
             } else {
-                logger.debug("Inserting user " + model->String());
+                std::stringstream ss;
+                ss << "Inserting user " + model->String()
+                   << " in thread " << Poco::Thread::currentTid();
+                logger.debug(ss.str());
                 *session << "insert into users("
                     "id, api_token, default_wid, since, fullname, email, "
                     "record_timeline"
