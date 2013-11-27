@@ -429,7 +429,6 @@ kopsik_api_result kopsik_set_db_path(void *context,
       ctx->db = 0;
     }
     ctx->db = new kopsik::Database(path);
-
   } catch(const Poco::Exception& exc) {
     err = exc.displayText();
   } catch(const std::exception& ex) {
