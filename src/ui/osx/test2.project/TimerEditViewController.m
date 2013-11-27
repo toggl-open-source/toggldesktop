@@ -36,7 +36,7 @@
 - (IBAction)startButtonClicked:(id)sender {
   NSString *key = [self.descriptionComboBox stringValue];
   AutocompleteItem *item = [self.autocompleteDataSource get:key];
-  if (key == nil) {
+  if (item == nil) {
     item = [[AutocompleteItem alloc] init];
     item.Text = key;
   }

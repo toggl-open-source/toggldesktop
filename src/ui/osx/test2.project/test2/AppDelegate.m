@@ -273,6 +273,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
     char err[KOPSIK_ERR_LEN];
     KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
     AutocompleteItem *autocomplete = notification.object;
+    NSAssert(autocomplete != nil, @"Autocomplete cannot be nil when starting a new time entry");
     kopsik_api_result res = kopsik_start(ctx,
                                          err,
                                          KOPSIK_ERR_LEN,
