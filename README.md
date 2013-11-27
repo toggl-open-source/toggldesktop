@@ -40,12 +40,6 @@ OS X app
 make osx
 ```
 
-OS X app GUI tests
-------------------
-```
-make osx_test
-```
-
 Tests
 -----
 ```
