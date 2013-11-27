@@ -48,10 +48,11 @@ namespace kopsik {
             Poco::File f(TESTDB);
             if (f.exists()) f.remove(false);
         }
-        kopsik_set_db_path(ctx, TESTDB);
-
         char err[ERRLEN];
-        kopsik_api_result res = kopsik_set_proxy(
+        kopsik_api_result res = kopsik_set_db_path(ctx, err, ERRLEN, TESTDB);
+        ASSERT_EQ(KOPSIK_API_SUCCESS, res);
+
+        res = kopsik_set_proxy(
             ctx,
             err, ERRLEN,
             1, "localhost", 8000, "johnsmith", "secret");
@@ -77,7 +78,10 @@ namespace kopsik {
             Poco::File f(TESTDB);
             if (f.exists()) f.remove(false);
         }
-        kopsik_set_db_path(ctx, TESTDB);
+        char err[ERRLEN];
+        kopsik_api_result res = kopsik_set_db_path(ctx, err, ERRLEN, TESTDB);
+        ASSERT_EQ(KOPSIK_API_SUCCESS, res);
+
         kopsik_context_clear(ctx);
         Poco::File f(TESTDB);
         ASSERT_TRUE(f.exists());
@@ -100,8 +104,11 @@ namespace kopsik {
         void *ctx = create_test_context();
         Poco::File f(TESTDB);
         if (f.exists()) f.remove(false);
-        kopsik_set_db_path(ctx, TESTDB);
+
         char err[ERRLEN];
+        kopsik_api_result res = kopsik_set_db_path(ctx, err, ERRLEN, TESTDB);
+        ASSERT_EQ(KOPSIK_API_SUCCESS, res);
+
         ASSERT_EQ(KOPSIK_API_SUCCESS,
             kopsik_set_api_token(ctx, err, ERRLEN, "token"));
         const int kMaxStrLen = 10;
@@ -117,7 +124,9 @@ namespace kopsik {
 
         Poco::File f(TESTDB);
         if (f.exists()) f.remove(false);
-        kopsik_set_db_path(ctx, TESTDB);
+        char err[ERRLEN];
+        kopsik_api_result res = kopsik_set_db_path(ctx, err, ERRLEN, TESTDB);
+        ASSERT_EQ(KOPSIK_API_SUCCESS, res);
 
         MockHTTPSClient *mock_client = new MockHTTPSClient();
         kopsik_test_set_https_client(ctx,
@@ -148,7 +157,6 @@ namespace kopsik {
             testing::SetArgPointee<3>(json),
             testing::Return("")));
 
-        char err[ERRLEN];
         ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_login(
             ctx,
             err, ERRLEN,
