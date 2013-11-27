@@ -1432,6 +1432,9 @@ kopsik_api_result kopsik_set_time_entry_duration(
   kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
   poco_assert(te);
   te->SetDurationString(std::string(value));
+
+  // FIXME: if now - duration != start, calculate new start for the time entry
+
   if (te->Dirty()) {
     te->SetUIModifiedAt(time(0));
   }
@@ -1523,6 +1526,9 @@ kopsik_api_result kopsik_set_time_entry_start_iso_8601(
   kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
   poco_assert(te);
   te->SetStartString(std::string(value));
+
+  // FIXME: if now - start time != duration, then set new duration
+
   if (te->Dirty()) {
     te->SetUIModifiedAt(time(0));
   }
