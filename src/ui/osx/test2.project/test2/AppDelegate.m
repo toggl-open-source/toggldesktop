@@ -272,15 +272,25 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   if ([notification.name isEqualToString:kUICommandNew]) {
     char err[KOPSIK_ERR_LEN];
     KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
+
+    NSString *description = @"";
+    unsigned int project_id = 0;
+    unsigned int task_id = 0;
+    unsigned int time_entry_id = 0;
     AutocompleteItem *autocomplete = notification.object;
-    NSAssert(autocomplete != nil, @"Autocomplete cannot be nil when starting a new time entry");
+    if (autocomplete != nil) {
+      description = autocomplete.Text;
+      time_entry_id = (unsigned int)autocomplete.TimeEntryID;
+      task_id = (unsigned int)autocomplete.TaskID;
+      project_id = (unsigned int)autocomplete.ProjectID;
+    }
     kopsik_api_result res = kopsik_start(ctx,
                                          err,
                                          KOPSIK_ERR_LEN,
-                                         [autocomplete.Text UTF8String],
-                                         (unsigned int)autocomplete.TimeEntryID,
-                                         (unsigned int)autocomplete.TaskID,
-                                         (unsigned int)autocomplete.ProjectID,
+                                         [description UTF8String],
+                                         time_entry_id,
+                                         task_id,
+                                         project_id,
                                          item);
     if (KOPSIK_API_SUCCESS != res) {
       kopsik_time_entry_view_item_clear(item);
