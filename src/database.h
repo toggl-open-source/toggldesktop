@@ -179,6 +179,8 @@ class Database {
 
         Poco::Data::Session *session;
         std::string desktop_id_;
+
+        Poco::Mutex mutex_;
 };
 
 }  // namespace kopsik

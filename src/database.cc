@@ -23,6 +23,9 @@ namespace kopsik {
 
 error Database::DeleteUser(User *model, bool with_related_data) {
     poco_assert(model);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     error err = deleteFromTable("users", model->LocalID());
     if (err != noError) {
         return err;
@@ -58,26 +61,41 @@ error Database::DeleteUser(User *model, bool with_related_data) {
 
 error Database::DeleteTag(Tag *model) {
     poco_assert(model);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     return deleteFromTable("tags", model->LocalID());
 }
 
 error Database::DeleteWorkspace(Workspace *model) {
     poco_assert(model);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     return deleteFromTable("workspaces", model->LocalID());
 }
 
 error Database::DeleteTask(Task *model) {
     poco_assert(model);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     return deleteFromTable("tasks", model->LocalID());
 }
 
 error Database::DeleteProject(Project *model) {
     poco_assert(model);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     return deleteFromTable("projects", model->LocalID());
 }
 
 error Database::DeleteClient(Client *model) {
     poco_assert(model);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     return deleteFromTable("clients", model->LocalID());
 }
 
@@ -149,6 +167,10 @@ std::string Database::generateGUID() {
 }
 
 error Database::LoadCurrentUser(User *user, bool with_related_data) {
+    poco_assert(user);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     std::string api_token("");
     error err = CurrentAPIToken(&api_token);
     if (err != noError) {
@@ -172,6 +194,9 @@ error Database::LoadProxySettings(
     poco_assert(port);
     poco_assert(username);
     poco_assert(password);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     try {
         *session << "select use_proxy, host, port, username, password "
             "from proxy_settings",
@@ -199,6 +224,9 @@ error Database::LoadProxySettings(
         const std::string username,
         const std::string password) {
     poco_assert(session);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     try {
         *session << "delete from proxy_settings",
             Poco::Data::now;
@@ -231,6 +259,9 @@ error Database::LoadUserByAPIToken(const std::string api_token, User *model,
     poco_assert(session);
     poco_assert(model);
     poco_assert(!api_token.empty());
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     model->SetAPIToken(api_token);
     try {
         Poco::UInt64 uid(0);
@@ -290,6 +321,8 @@ error Database::LoadUserByID(const Poco::UInt64 UID, User *user,
     poco_assert(user);
     poco_assert(session);
     poco_assert(UID > 0);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     Poco::Stopwatch stopwatch;
     stopwatch.start();
@@ -366,6 +399,9 @@ error Database::UInt(std::string sql, Poco::UInt64 *result) {
     poco_assert(session);
     poco_assert(result);
     poco_assert(!sql.empty());
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     try {
         Poco::UInt64 value(0);
         *session << sql,
@@ -386,6 +422,9 @@ error Database::String(std::string sql, std::string *result) {
     poco_assert(session);
     poco_assert(result);
     poco_assert(!sql.empty());
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     try {
         std::string value("");
         *session << sql,
@@ -836,6 +875,9 @@ error Database::SaveTimeEntry(TimeEntry *model,
     poco_assert(model);
     poco_assert(session);
     poco_assert(changes);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     if (model->LocalID() && !model->Dirty() && !model->GUID().empty()) {
         return noError;
     }
@@ -1010,6 +1052,9 @@ error Database::SaveTimeEntry(TimeEntry *model,
 error Database::SaveWorkspace(Workspace *model) {
     poco_assert(model);
     poco_assert(session);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     if (model->LocalID() && !model->Dirty()) {
         return noError;
     }
@@ -1068,6 +1113,9 @@ error Database::SaveWorkspace(Workspace *model) {
 error Database::SaveClient(Client *model) {
     poco_assert(model);
     poco_assert(session);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     if (model->LocalID() && !model->Dirty()) {
         return noError;
     }
@@ -1155,6 +1203,9 @@ error Database::SaveClient(Client *model) {
 error Database::SaveProject(Project *model) {
     poco_assert(model);
     poco_assert(session);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     if (model->LocalID() && !model->Dirty()) {
         return noError;
     }
@@ -1265,6 +1316,9 @@ error Database::SaveProject(Project *model) {
 error Database::SaveTask(Task *model) {
     poco_assert(model);
     poco_assert(session);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     if (model->LocalID() && !model->Dirty()) {
         return noError;
     }
@@ -1327,6 +1381,9 @@ error Database::SaveTask(Task *model) {
 error Database::SaveTag(Tag *model) {
     poco_assert(model);
     poco_assert(session);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     if (model->LocalID() && !model->Dirty()) {
         return noError;
     }
@@ -1416,6 +1473,8 @@ error Database::SaveUser(User *model, bool with_related_data,
     poco_assert(model);
     poco_assert(session);
     poco_assert(changes);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     Poco::Logger &logger = Poco::Logger::get("database");
 
@@ -1894,6 +1953,9 @@ error Database::initialize_tables() {
 error Database::CurrentAPIToken(std::string *token) {
     poco_assert(session);
     poco_assert(token);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     *token = "";
     try {
         *session << "select api_token from sessions",
@@ -1912,6 +1974,9 @@ error Database::CurrentAPIToken(std::string *token) {
 
 error Database::ClearCurrentAPIToken() {
     poco_assert(session);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     try {
         *session << "delete from sessions", Poco::Data::now;
     } catch(const Poco::Exception& exc) {
@@ -1926,6 +1991,9 @@ error Database::ClearCurrentAPIToken() {
 
 error Database::SetCurrentAPIToken(const std::string &token) {
     poco_assert(session);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     error err = ClearCurrentAPIToken();
     if (err != noError) {
         return err;
@@ -1946,6 +2014,9 @@ error Database::SetCurrentAPIToken(const std::string &token) {
 
 error Database::SaveDesktopID() {
     poco_assert(session);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     try {
         *session << "INSERT INTO timeline_installation(desktop_id) "
             "VALUES(:desktop_id)",
