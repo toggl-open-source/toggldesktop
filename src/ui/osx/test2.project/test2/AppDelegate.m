@@ -631,9 +631,10 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
 
 - (void)applicationWillTerminate:(NSNotification *)app
 {
-  NSLog(@"applicationWillTerminate");
-  kopsik_websocket_stop_async(ctx, 0);
-  NSLog(@"applicationWillTerminate done");
+  NSLog(@"applicationWillTerminate, shutting down websocket");
+  kopsik_context_clear(ctx);
+  ctx = 0;
+  NSLog(@"applicationWillTerminate done, websocket is shut down");
 }
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag{
@@ -755,12 +756,6 @@ const NSString *appName = @"osx_native_app";
   }
   
   return self;
-}
-
-- (void) dealloc
-{
-  kopsik_context_clear(ctx);
-  ctx = 0;
 }
 
 - (void)statusItemTimerFired:(NSTimer*)timer

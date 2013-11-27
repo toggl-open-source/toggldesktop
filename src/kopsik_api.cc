@@ -248,7 +248,7 @@ void kopsik_context_clear(void *context) {
   Context *ctx = reinterpret_cast<Context *>(context);
 
   if (ctx->tm) {
-    ctx->tm->joinAll();
+    ctx->tm->cancelAll();
     delete ctx->tm;
     ctx->tm = 0;
   }
@@ -265,6 +265,7 @@ void kopsik_context_clear(void *context) {
     ctx->https_client = 0;
   }
   if (ctx->ws_client) {
+    ctx->ws_client->Stop();
     delete ctx->ws_client;
     ctx->ws_client = 0;
   }
@@ -273,11 +274,17 @@ void kopsik_context_clear(void *context) {
     ctx->mutex = 0;
   }
 
-  delete ctx->timeline_uploader;
-  ctx->timeline_uploader = 0;
+  if (ctx->timeline_uploader) {
+    ctx->timeline_uploader->Stop();
+    delete ctx->timeline_uploader;
+    ctx->timeline_uploader = 0;
+  }
 
-  delete ctx->window_change_recorder;
-  ctx->window_change_recorder = 0;
+  if (ctx->window_change_recorder) {
+    ctx->window_change_recorder->Stop();
+    delete ctx->window_change_recorder;
+    ctx->window_change_recorder = 0;
+  }
 
   delete ctx;
   ctx = 0;

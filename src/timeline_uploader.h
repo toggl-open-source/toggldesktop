@@ -6,6 +6,7 @@
 #include "./timeline_event.h"
 #include "./timeline_notifications.h"
 #include "./timeline_constants.h"
+#include "./types.h"
 
 #include <string>
 #include <vector>
@@ -13,6 +14,7 @@
 #include "Poco/Activity.h"
 #include "Poco/Observer.h"
 #include "Poco/NotificationCenter.h"
+#include "Poco/Logger.h"
 
 namespace kopsik {
 
@@ -45,11 +47,24 @@ class TimelineUploader {
         uploading_.start();
     }
 
-    ~TimelineUploader() {
-        if (uploading_.isRunning()) {
-            uploading_.stop();
-            uploading_.wait();
+    error Stop() {
+        try {
+            if (uploading_.isRunning()) {
+                uploading_.stop();
+                uploading_.wait();
+            }
+        } catch(const Poco::Exception& exc) {
+            return exc.displayText();
+        } catch(const std::exception& ex) {
+            return ex.what();
+        } catch(const std::string& ex) {
+            return ex;
         }
+        return noError;
+    }
+
+    ~TimelineUploader() {
+        Stop();
     }
 
  protected:

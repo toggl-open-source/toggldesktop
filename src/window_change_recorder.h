@@ -8,8 +8,10 @@
 #include "./timeline_event.h"
 #include "./timeline_notifications.h"
 #include "./timeline_constants.h"
+#include "./types.h"
 
 #include "Poco/Activity.h"
+#include "Poco/Logger.h"
 
 namespace kopsik {
 
@@ -27,11 +29,24 @@ class WindowChangeRecorder {
         recording_.start();
     }
 
-    ~WindowChangeRecorder() {
-        if (recording_.isRunning()) {
-            recording_.stop();
-            recording_.wait();
+    error Stop() {
+        try {
+            if (recording_.isRunning()) {
+                recording_.stop();
+                recording_.wait();
+            }
+        } catch(const Poco::Exception& exc) {
+            return exc.displayText();
+        } catch(const std::exception& ex) {
+            return ex.what();
+        } catch(const std::string& ex) {
+            return ex;
         }
+        return noError;
+    }
+
+    ~WindowChangeRecorder() {
+        Stop();
     }
 
  protected:
