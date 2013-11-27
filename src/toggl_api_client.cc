@@ -765,8 +765,15 @@ void User::loadUpdateFromJSONNode(JSONNODE *node) {
 
 void User::loadProjectFromJSONNode(JSONNODE *data,
         std::set<Poco::UInt64> *alive) {
+  poco_assert(data);
+
   Poco::UInt64 id = getIDFromJSONNode(data);
   Project *model = GetProjectByID(id);
+
+  if (!model) {
+    model = GetProjectByGUID(getGUIDFromJSONNode(data));
+  }
+
   if (!model) {
     if (isDeletedAtServer(data)) {
       return;
@@ -892,8 +899,13 @@ void Project::SetUID(Poco::UInt64 value) {
 
 void User::loadTaskFromJSONNode(JSONNODE *data,
         std::set<Poco::UInt64> *alive) {
+  poco_assert(data);
+
   Poco::UInt64 id = getIDFromJSONNode(data);
   Task *model = GetTaskByID(id);
+
+  // Tasks have no GUID
+
   if (!model) {
     if (isDeletedAtServer(data)) {
       return;
@@ -982,8 +994,13 @@ void Task::SetName(std::string value) {
 
 void User::loadWorkspaceFromJSONNode(JSONNODE *data,
         std::set<Poco::UInt64> *alive) {
+  poco_assert(data);
+
   Poco::UInt64 id = getIDFromJSONNode(data);
   Workspace *model = GetWorkspaceByID(id);
+
+  // Workspaces have no GUID
+
   if (!model) {
     if (isDeletedAtServer(data)) {
       return;
@@ -1056,8 +1073,15 @@ void Workspace::SetName(std::string value) {
 
 void User::loadTagFromJSONNode(JSONNODE *data,
         std::set<Poco::UInt64> *alive) {
+  poco_assert(data);
+
   Poco::UInt64 id = getIDFromJSONNode(data);
   Tag *model = GetTagByID(id);
+
+  if (!model) {
+    model = GetTagByGUID(getGUIDFromJSONNode(data));
+  }
+
   if (!model) {
     if (isDeletedAtServer(data)) {
       return;
@@ -1146,8 +1170,15 @@ void Tag::SetGUID(std::string value) {
 
 void User::loadClientFromJSONNode(JSONNODE *data,
         std::set<Poco::UInt64> *alive) {
+  poco_assert(data);
+
   Poco::UInt64 id = getIDFromJSONNode(data);
   Client *model = GetClientByID(id);
+
+  if (!model) {
+    model = GetClientByGUID(getGUIDFromJSONNode(data));
+  }
+
   if (!model) {
     if (isDeletedAtServer(data)) {
       return;
@@ -1248,6 +1279,19 @@ Poco::UInt64 getIDFromJSONNode(JSONNODE *data) {
     return 0;
 }
 
+guid getGUIDFromJSONNode(JSONNODE *data) {
+    JSONNODE_ITERATOR current_node = json_begin(data);
+    JSONNODE_ITERATOR last_node = json_end(data);
+    while (current_node != last_node) {
+      json_char *node_name = json_name(*current_node);
+      if (strcmp(node_name, "guid") == 0) {
+        return std::string(json_as_string(*current_node));
+      }
+      ++current_node;
+    }
+    return "";
+}
+
 bool isDeletedAtServer(JSONNODE *data) {
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
@@ -1294,6 +1338,11 @@ void User::loadTimeEntryFromJSONNode(JSONNODE *data,
 
     Poco::UInt64 id = getIDFromJSONNode(data);
     TimeEntry *model = GetTimeEntryByID(id);
+
+    if (!model) {
+      model = GetTimeEntryByGUID(getGUIDFromJSONNode(data));
+    }
+
     if (!model) {
         if (isDeletedAtServer(data)) {
             return;
@@ -1391,11 +1440,37 @@ Client *User::GetClientByID(const Poco::UInt64 id) {
     return 0;
 }
 
+Client *User::GetClientByGUID(const guid GUID) {
+    if (GUID.empty()) {
+      return 0;
+    }
+    for (std::vector<Client *>::const_iterator it = related.Clients.begin();
+         it != related.Clients.end(); it++) {
+      if ((*it)->GUID() == GUID) {
+        return *it;
+      }
+    }
+    return 0;
+}
+
 Project *User::GetProjectByID(const Poco::UInt64 id) {
     poco_assert(id > 0);
     for (std::vector<Project *>::const_iterator it = related.Projects.begin();
             it != related.Projects.end(); it++) {
         if ((*it)->ID() == id) {
+            return *it;
+        }
+    }
+    return 0;
+}
+
+Project *User::GetProjectByGUID(const guid GUID) {
+    if (GUID.empty()) {
+      return 0;
+    }
+    for (std::vector<Project *>::const_iterator it = related.Projects.begin();
+            it != related.Projects.end(); it++) {
+        if ((*it)->GUID() == GUID) {
             return *it;
         }
     }
@@ -1459,11 +1534,28 @@ TimeEntry *User::GetTimeEntryByID(const Poco::UInt64 id) {
     return 0;
 }
 
-TimeEntry *User::GetTimeEntryByGUID(std::string GUID) {
-    poco_assert(!GUID.empty());
+TimeEntry *User::GetTimeEntryByGUID(const guid GUID) {
+    if (GUID.empty()) {
+      return 0;
+    }
     for (std::vector<TimeEntry *>::const_iterator it =
             related.TimeEntries.begin();
             it != related.TimeEntries.end();
+            it++) {
+        if ((*it)->GUID() == GUID) {
+            return *it;
+        }
+    }
+    return 0;
+}
+
+Tag *User::GetTagByGUID(const guid GUID) {
+    if (GUID.empty()) {
+      return 0;
+    }
+    for (std::vector<Tag *>::const_iterator it =
+            related.Tags.begin();
+            it != related.Tags.end();
             it++) {
         if ((*it)->GUID() == GUID) {
             return *it;

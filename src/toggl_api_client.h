@@ -467,14 +467,17 @@ namespace kopsik {
 
         Workspace *GetWorkspaceByID(const Poco::UInt64 id);
         Client *GetClientByID(const Poco::UInt64 id);
+        Client *GetClientByGUID(const guid GUID);
         Project *GetProjectByID(const Poco::UInt64 id);
+        Project *GetProjectByGUID(const guid GUID);
         Project *GetProjectByName(const std::string name);
         Project *GetProjectByNameIncludingClient(
             const std::string name_with_client);
         Task *GetTaskByID(const Poco::UInt64 id);
         Tag *GetTagByID(const Poco::UInt64 id);
+        Tag *GetTagByGUID(const guid GUID);
         TimeEntry *GetTimeEntryByID(const Poco::UInt64 id);
-        TimeEntry *GetTimeEntryByGUID(std::string GUID);
+        TimeEntry *GetTimeEntryByGUID(const guid GUID);
 
         std::string ProjectNameIncludingClient(Project *p);
 
@@ -591,6 +594,7 @@ namespace kopsik {
     };
 
     Poco::UInt64 getIDFromJSONNode(JSONNODE *list);
+    guid getGUIDFromJSONNode(JSONNODE *list);
     bool isDeletedAtServer(JSONNODE *data);
 
 }  // namespace kopsik
