@@ -761,13 +761,21 @@ const NSString *appName = @"osx_native_app";
         db_path, log_path, log_level);
 
   kopsik_set_db_path(ctx, [db_path UTF8String]);
+  NSLog(@"DB path set %@", db_path);
+
   kopsik_set_log_path(ctx, [log_path UTF8String]);
+  NSLog(@"Log path set %@", log_path);
+
   kopsik_set_log_level(ctx, [log_level UTF8String]);
+  NSLog(@"Log level set to %@", log_level);
   
   if ([[infoDict objectForKey:@"KopsikLogUserInterfaceToFile"] boolValue]) {
+    NSLog(@"Redirecting UI log to file");
     NSString *logPath = [self.app_path stringByAppendingPathComponent:@"ui.log"];
     freopen([logPath fileSystemRepresentation],"a+",stderr);
   }
+
+  NSLog(@"AppDelegate init done");
   
   return self;
 }
