@@ -782,6 +782,14 @@ error Database::saveTimeEntries(Poco::UInt64 UID,
     poco_assert(UID > 0);
     poco_assert(list);
     poco_assert(changes);
+
+    {
+        std::stringstream ss;
+        ss << "Saving time entries in thread " << Poco::Thread::currentTid();
+        Poco::Logger &logger = Poco::Logger::get("database");
+        logger.debug(ss.str());
+    }
+
     for (std::vector<TimeEntry *>::iterator it = list->begin();
             it != list->end(); ++it) {
         TimeEntry *model = *it;
@@ -800,6 +808,7 @@ error Database::saveTimeEntries(Poco::UInt64 UID,
             return err;
         }
     }
+
     // Purge deleted time entries from memory
     std::vector<TimeEntry *>::iterator it = list->begin();
     while (it != list->end()) {
@@ -809,6 +818,14 @@ error Database::saveTimeEntries(Poco::UInt64 UID,
         } else {
             ++it;
         }
+    }
+
+    {
+        std::stringstream ss;
+        ss << "Finished saving time entries in thread " <<
+            Poco::Thread::currentTid();
+        Poco::Logger &logger = Poco::Logger::get("database");
+        logger.debug(ss.str());
     }
 
     return noError;
@@ -1258,7 +1275,7 @@ error Database::SaveTask(Task *model) {
             ss << "Updating task " + model->String()
                << " in thread " << Poco::Thread::currentTid();
             logger.debug(ss.str());
-          
+
             *session << "update tasks set "
                 "id = :id, uid = :uid, name = :name, wid = :wid, pid = :pid "
                 "where local_id = :local_id",
@@ -1402,6 +1419,12 @@ error Database::SaveUser(User *model, bool with_related_data,
 
     Poco::Logger &logger = Poco::Logger::get("database");
 
+    {
+        std::stringstream ss;
+        ss << "Saving user in thread " << Poco::Thread::currentTid();
+        logger.debug(ss.str());
+    }
+
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
@@ -1537,10 +1560,14 @@ error Database::SaveUser(User *model, bool with_related_data,
     session->commit();
 
     stopwatch.stop();
-    std::stringstream ss;
-    ss << "User with_related_data=" << with_related_data << " saved in "
-        << stopwatch.elapsed() / 1000 << " ms";
-    logger.debug(ss.str());
+
+    {
+        std::stringstream ss;
+        ss  << "User with_related_data=" << with_related_data << " saved in "
+            << stopwatch.elapsed() / 1000 << " ms in thread "
+            << Poco::Thread::currentTid();
+        logger.debug(ss.str());
+    }
 
     return noError;
 }
