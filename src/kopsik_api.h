@@ -56,8 +56,10 @@ KOPSIK_EXPORT kopsik_api_result kopsik_set_proxy(void *ctx,
 KOPSIK_EXPORT void kopsik_test_set_https_client(void *context,
   void *client);
 
-KOPSIK_EXPORT void kopsik_set_db_path(void *ctx,
-  const char *path);
+KOPSIK_EXPORT kopsik_api_result kopsik_set_db_path(void *ctx,
+                                                   char *errmsg,
+                                                   unsigned int errlen,
+                                                   const char *path);
 
 KOPSIK_EXPORT void kopsik_set_log_path(void *ctx,
   const char *path);

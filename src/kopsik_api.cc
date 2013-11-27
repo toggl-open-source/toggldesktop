@@ -405,24 +405,43 @@ void kopsik_test_set_https_client(void *context, void *client) {
   ctx->https_client = reinterpret_cast<kopsik::HTTPSClient *>(client);
 }
 
-void kopsik_set_db_path(void *context, const char *path) {
+kopsik_api_result kopsik_set_db_path(void *context,
+    char *errmsg,
+    unsigned int errlen,
+    const char *path) {
   poco_assert(context);
   poco_assert(path);
 
-  std::stringstream ss;
-  ss  << "kopsik_set_db_path path=" << path;
-  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
-  logger.debug(ss.str());
+  kopsik::error err = kopsik::noError;
 
-  Context *ctx = reinterpret_cast<Context *>(context);
+  try {
+    std::stringstream ss;
+    ss  << "kopsik_set_db_path path=" << path;
+    Poco::Logger &logger = Poco::Logger::get("kopsik_api");
+    logger.debug(ss.str());
 
-  Poco::Mutex::ScopedLock lock(*ctx->mutex, kLockTimeoutMillis);
+    Context *ctx = reinterpret_cast<Context *>(context);
 
-  if (ctx->db) {
-    delete ctx->db;
-    ctx->db = 0;
+    Poco::Mutex::ScopedLock lock(*ctx->mutex, kLockTimeoutMillis);
+
+    if (ctx->db) {
+      delete ctx->db;
+      ctx->db = 0;
+    }
+    ctx->db = new kopsik::Database(path);
+
+  } catch(const Poco::Exception& exc) {
+    err = exc.displayText();
+  } catch(const std::exception& ex) {
+    err = ex.what();
+  } catch(const std::string& ex) {
+    err = ex;
   }
-  ctx->db = new kopsik::Database(path);
+  if (err != kopsik::noError) {
+    strncpy(errmsg, err.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  return KOPSIK_API_SUCCESS;
 }
 
 void kopsik_set_log_path(void *context, const char *path) {

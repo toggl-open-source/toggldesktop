@@ -760,7 +760,11 @@ const NSString *appName = @"osx_native_app";
   NSLog(@"Starting with db path %@, log path %@, log level %@",
         db_path, log_path, log_level);
 
-  kopsik_set_db_path(ctx, [db_path UTF8String]);
+  char err[KOPSIK_ERR_LEN];
+  kopsik_api_result res = kopsik_set_db_path(ctx, err, KOPSIK_ERR_LEN, [db_path UTF8String]);
+  if (res != KOPSIK_API_SUCCESS) {
+    NSAssert(@"Failed to initialize DB: %s", [NSString stringWithUTF8String:err]);
+  }
   NSLog(@"DB path set %@", db_path);
 
   kopsik_set_log_path(ctx, [log_path UTF8String]);
