@@ -746,6 +746,9 @@ const NSString *appName = @"osx_native_app";
       continue;
     }
   }
+    
+  NSLog(@"Starting with db path %@, log path %@, log level %@",
+        db_path, log_path, log_level);
 
   kopsik_set_db_path(ctx, [db_path UTF8String]);
   kopsik_set_log_path(ctx, [log_path UTF8String]);
