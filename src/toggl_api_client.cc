@@ -664,8 +664,8 @@ void User::LoadFromJSONString(const std::string &json,
 std::string User::String() {
     std::stringstream ss;
     ss  << "ID=" << id_
-        << " default_wid=" << default_wid_
         << " local_id=" << local_id_
+        << " default_wid=" << default_wid_
         << " api_token=" << api_token_
         << " since=" << since_
         << " record_timeline=" << record_timeline_;
@@ -810,8 +810,12 @@ void User::loadProjectsFromJSONNode(JSONNODE *list, const bool full_sync) {
 
 std::string Project::String() {
     std::stringstream ss;
-    ss << "ID=" << id_ << " name=" << name_ << " wid=" << wid_ <<
-        " guid=" << guid_ << " active=" << active_;
+    ss  << "ID=" << id_
+        << " local_id=" << local_id_
+        << " name=" << name_
+        << " wid=" << wid_
+        << " guid=" << guid_
+        << " active=" << active_;
     return ss.str();
 }
 
@@ -933,8 +937,11 @@ void User::loadTasksFromJSONNode(JSONNODE *list, const bool full_sync) {
 
 std::string Task::String() {
     std::stringstream ss;
-    ss << "ID=" << id_ << " name=" << name_ << " wid=" << wid_ <<
-        " pid=" << pid_;
+    ss  << "ID=" << id_
+        << " local_id=" << local_id_
+        << " name=" << name_
+        << " wid=" << wid_
+        << " pid=" << pid_;
     return ss.str();
 }
 
@@ -1020,7 +1027,9 @@ void User::loadWorkspacesFromJSONNode(JSONNODE *list, const bool full_sync) {
 
 std::string Workspace::String() {
     std::stringstream ss;
-    ss << "ID=" << id_ << " name=" << name_;
+    ss  << "ID=" << id_
+        << " local_id=" << local_id_
+        << " name=" << name_;
     return ss.str();
 }
 
@@ -1092,8 +1101,11 @@ void User::loadTagsFromJSONNode(JSONNODE *list, const bool full_sync) {
 
 std::string Tag::String() {
     std::stringstream ss;
-    ss << "ID=" << id_ << " name=" << name_ << " wid=" << wid_ <<
-        " guid=" << guid_;
+    ss  << "ID=" << id_
+        << " local_id=" << local_id_
+        << " name=" << name_
+        << " wid=" << wid_
+        << " guid=" << guid_;
     return ss.str();
 }
 
@@ -1179,8 +1191,11 @@ void User::loadClientsFromJSONNode(JSONNODE *list, const bool full_sync) {
 
 std::string Client::String() {
     std::stringstream ss;
-    ss << "ID=" << id_ << " name=" << name_ << " wid=" << wid_ <<
-        " guid=" << guid_;
+    ss  << "ID=" << id_
+        << " local_id=" << local_id_
+        << " name=" << name_
+        << " wid=" << wid_
+        << " guid=" << guid_;
     return ss.str();
 }
 
@@ -1296,6 +1311,7 @@ void User::loadTimeEntryFromJSONNode(JSONNODE *data,
 std::string TimeEntry::String() {
     std::stringstream ss;
     ss  << "ID=" << id_
+        << " local_id=" << local_id_
         << " description=" << description_
         << " wid=" << wid_
         << " guid=" << guid_
