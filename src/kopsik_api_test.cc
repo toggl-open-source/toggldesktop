@@ -32,6 +32,14 @@ namespace kopsik {
             std::string *response_body));
     };
 
+    std::string meJSON() {
+        Poco::FileStream fis("testdata/me.json", std::ios::binary);
+        std::stringstream ss;
+        ss << fis.rdbuf();
+        fis.close();
+        return ss.str();
+    }
+
     void *create_test_context() {
         return kopsik_context_init("tests", "0.1");
     }
@@ -132,11 +140,7 @@ namespace kopsik {
         kopsik_test_set_https_client(ctx,
             reinterpret_cast<void *>(mock_client));
 
-        Poco::FileStream fis("testdata/me.json", std::ios::binary);
-        std::stringstream ss;
-        ss << fis.rdbuf();
-        fis.close();
-        std::string json = ss.str();
+        std::string json = meJSON();
 
         // Login
         EXPECT_CALL(*mock_client, GetJSON(
