@@ -206,7 +206,7 @@ namespace kopsik {
         ASSERT_TRUE(is_tracking);
         ASSERT_GT(0, running->DurationInSeconds);
         ASSERT_EQ(std::string("Test"), std::string(running->Description));
-        ASSERT_FALSE(running->ProjectAndTaskLabel);
+        ASSERT_EQ(std::string(""), std::string(running->ProjectAndTaskLabel));
         ASSERT_TRUE(running->Duration);
         ASSERT_FALSE(running->Color);
         ASSERT_TRUE(running->GUID);
