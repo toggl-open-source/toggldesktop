@@ -223,7 +223,7 @@ namespace kopsik {
         kopsik_time_entry_view_item_list_clear(list);
 
         // Set a new duration for the time entry.
-        // It should keep on tracking.
+        // It should keep on tracking and also the duration should change.
         ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_set_time_entry_duration(
             ctx, err, ERRLEN, GUID.c_str(), "1 hour"));
         is_tracking = 0;
@@ -231,8 +231,7 @@ namespace kopsik {
         ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_running_time_entry_view_item(
             ctx, err, ERRLEN, running, &is_tracking));
         ASSERT_TRUE(is_tracking);
-        ASSERT_GT(0, running->DurationInSeconds);
-        ASSERT_TRUE(running->Duration);
+        ASSERT_EQ("01:00:00", std::string(running->Duration));
         kopsik_time_entry_view_item_clear(running);
 
         // Stop the time entry
