@@ -234,6 +234,19 @@ namespace kopsik {
         ASSERT_EQ("01:00:00", std::string(running->Duration));
         kopsik_time_entry_view_item_clear(running);
 
+        // Set a new start time for the time entry.
+        // Set it to a certain point in the past.
+        // The duration should change accordingly to be now - start.
+        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_set_time_entry_start_iso_8601(ctx,
+            err, ERRLEN, GUID.c_str(), "2013-11-28T13:15:30Z"));
+        running = kopsik_time_entry_view_item_init();
+        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_running_time_entry_view_item(
+            ctx, err, ERRLEN, running, &is_tracking));
+        ASSERT_TRUE(is_tracking);
+        ASSERT_EQ((unsigned int)1385644530, running->Started);
+        ASSERT_NE("01:00:00", std::string(running->Duration));
+        kopsik_time_entry_view_item_clear(running);
+
         // Stop the time entry
         KopsikTimeEntryViewItem *stopped = kopsik_time_entry_view_item_init();
         int was_stopped = 0;
