@@ -68,7 +68,14 @@
   [self.durationTextField setStringValue:item.duration];
   [self.startTime setDateValue:item.started];
   [self.startDate setDateValue:item.started];
+
   [self.endTime setDateValue:item.ended];
+  if (item.duration_in_seconds < 0) {
+    [self.endTime setHidden:YES];
+  } else {
+    [self.endTime setHidden:NO];
+  }
+  
   if (YES == item.billable) {
     [self.billableCheckbox setState:NSOnState];
   } else {
