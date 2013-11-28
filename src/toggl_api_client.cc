@@ -150,6 +150,7 @@ std::string User::DateDuration(TimeEntry *te) {
     return Formatter::FormatDurationInSecondsHHMMSS(date_duration);
 }
 
+// Project. Client
 std::string User::ProjectNameIncludingClient(Project *p) {
     poco_assert(p);
     std::stringstream ss;

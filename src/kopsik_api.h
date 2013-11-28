@@ -149,7 +149,8 @@ KOPSIK_EXPORT void kopsik_push_async(
 // Autocomplete list items
 
 typedef struct {
-  char *Text;
+  char *Text;  // This is what is displayed to user
+  char *ProjectAndTaskLabel;  // Project label, if has a project
   unsigned int TimeEntryID;
   unsigned int TaskID;
   unsigned int ProjectID;
@@ -183,7 +184,7 @@ KOPSIK_EXPORT kopsik_api_result kopsik_autocomplete_items(
 typedef struct {
   int DurationInSeconds;
   char *Description;
-  char *Project;
+  char *ProjectAndTaskLabel;
   char *Duration;
   char *Color;
   char *GUID;

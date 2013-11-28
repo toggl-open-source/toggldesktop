@@ -37,8 +37,8 @@ namespace command_line_client {
             KopsikTimeEntryViewItem *item) {
         std::stringstream ss;
         ss << item->Description;
-        if (item->Project) {
-            ss << " [" << item->Project << "]";
+        if (item->ProjectAndTaskLabel) {
+            ss << " [" << item->ProjectAndTaskLabel << "]";
         }
         if (item->Duration) {
             ss << " (" << item->Duration << ")";

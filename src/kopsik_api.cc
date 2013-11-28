@@ -166,11 +166,25 @@ void time_entry_to_view_item(
   poco_assert(!view_item->GUID);
   view_item->GUID = strdup(te->GUID().c_str());
 
-  if (te->PID()) {
+  if (te->TID()) {
+    kopsik::Task *t = user->GetTaskByID(te->TID());
+    if (t) {
+      kopsik::Project *p = user->GetProjectByID(t->PID());
+      poco_assert(!view_item->ProjectAndTaskLabel);
+      std::stringstream ss;
+      ss << t->Name() << ". " << p->Name();
+      view_item->ProjectAndTaskLabel = strdup(ss.str().c_str());
+
+      poco_assert(!view_item->Color);
+      view_item->Color = strdup(p->ColorCode().c_str());
+    }
+
+  } else if (te->PID()) {
     kopsik::Project *p = user->GetProjectByID(te->PID());
     if (p) {
-      poco_assert(!view_item->Project);
-      view_item->Project = strdup(user->ProjectNameIncludingClient(p).c_str());
+      poco_assert(!view_item->ProjectAndTaskLabel);
+      view_item->ProjectAndTaskLabel =
+        strdup(user->ProjectNameIncludingClient(p).c_str());
 
       poco_assert(!view_item->Color);
       view_item->Color = strdup(p->ColorCode().c_str());
@@ -908,6 +922,7 @@ KopsikAutocompleteItemList *
 KopsikAutocompleteItem *kopsik_autocomplete_item_init() {
   KopsikAutocompleteItem *item = new KopsikAutocompleteItem();
   item->Text = 0;
+  item->ProjectAndTaskLabel = 0;
   item->ProjectID = 0;
   item->TaskID = 0;
   item->TimeEntryID = 0;
@@ -918,6 +933,10 @@ void kopsik_autocomplete_item_clear(KopsikAutocompleteItem *item) {
   if (item->Text) {
     free(item->Text);
     item->Text = 0;
+  }
+  if (item->ProjectAndTaskLabel) {
+    free(item->ProjectAndTaskLabel);
+    item->ProjectAndTaskLabel = 0;
   }
   delete item;
 }
@@ -1117,7 +1136,7 @@ KopsikTimeEntryViewItem *kopsik_time_entry_view_item_init() {
   KopsikTimeEntryViewItem *item = new KopsikTimeEntryViewItem();
   item->DurationInSeconds = 0;
   item->Description = 0;
-  item->Project = 0;
+  item->ProjectAndTaskLabel = 0;
   item->Duration = 0;
   item->Color = 0;
   item->GUID = 0;
@@ -1136,9 +1155,9 @@ void kopsik_time_entry_view_item_clear(KopsikTimeEntryViewItem *item) {
     free(item->Description);
     item->Description = 0;
   }
-  if (item->Project) {
-    free(item->Project);
-    item->Project = 0;
+  if (item->ProjectAndTaskLabel) {
+    free(item->ProjectAndTaskLabel);
+    item->ProjectAndTaskLabel = 0;
   }
   if (item->Duration) {
     free(item->Duration);
