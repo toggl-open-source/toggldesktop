@@ -60,8 +60,8 @@
   NSAssert(self.GUID != nil, @"GUID is nil");
   
   [self.descriptionTextField setStringValue:item.Description];
-  if (item.project != nil) {
-    [self.projectSelect setStringValue:item.project];
+  if (item.ProjectAndTaskLabel != nil) {
+    [self.projectSelect setStringValue:item.ProjectAndTaskLabel];
   } else {
     [self.projectSelect setStringValue:@""];
   }

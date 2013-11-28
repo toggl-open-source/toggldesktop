@@ -11,6 +11,8 @@
 @interface TimerEditViewController : NSViewController <NSComboBoxDataSource> {
 }
 - (IBAction)startButtonClicked:(id)sender;
+- (IBAction)descriptionComboBoxChanged:(id)sender;
+@property (weak) IBOutlet NSTextField *projectTextField;
 @property (weak) IBOutlet NSComboBox *descriptionComboBox;
 @property (weak) IBOutlet NSButton *startButton;
 @end

@@ -36,6 +36,8 @@
 - (IBAction)startButtonClicked:(id)sender {
   NSString *key = [self.descriptionComboBox stringValue];
   AutocompleteItem *item = [self.autocompleteDataSource get:key];
+  [self.projectTextField setStringValue:@""];
+  [self.projectTextField setHidden:YES];
   if (item == nil) {
     item = [[AutocompleteItem alloc] init];
     item.Text = key;
@@ -74,6 +76,17 @@
 - (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)aString
 {
   return [self.autocompleteDataSource indexOfKey:aString];
+}
+
+- (IBAction)descriptionComboBoxChanged:(id)sender {
+  NSString *key = [self.descriptionComboBox stringValue];
+  AutocompleteItem *item = [self.autocompleteDataSource get:key];
+  if (item == nil) {
+    [self.projectTextField setStringValue:@""];
+    [self.projectTextField setHidden:YES];
+    return;
+  }
+  [self.projectTextField setHidden:NO];
 }
 
 @end

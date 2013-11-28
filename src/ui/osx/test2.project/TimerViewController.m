@@ -129,8 +129,8 @@
     [self.descriptionTextField setStringValue:self.running_time_entry.Description];
     [self.durationTextField setStringValue:self.running_time_entry.duration];
     self.projectTextField.backgroundColor = [ConvertHexColor hexCodeToNSColor:view_item.color];
-    if (self.running_time_entry.project != nil) {
-      [self.projectTextField setStringValue:[self.running_time_entry.project uppercaseString]];
+    if (self.running_time_entry.ProjectAndTaskLabel != nil) {
+      [self.projectTextField setStringValue:[self.running_time_entry.ProjectAndTaskLabel uppercaseString]];
       [self.projectTextField setHidden:NO];
     } else {
       [self.projectTextField setHidden:YES];

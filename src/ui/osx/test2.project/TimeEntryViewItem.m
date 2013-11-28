@@ -17,10 +17,10 @@
   self.GUID = [NSString stringWithUTF8String:data->GUID];
   self.duration_in_seconds = data->DurationInSeconds;
   self.Description = [NSString stringWithUTF8String:data->Description];
-  if (data->Project) {
-    self.project = [NSString stringWithUTF8String:data->Project];
+  if (data->ProjectAndTaskLabel) {
+    self.ProjectAndTaskLabel = [NSString stringWithUTF8String:data->ProjectAndTaskLabel];
   } else {
-    self.project = nil;
+    self.ProjectAndTaskLabel = nil;
   }
   if (data->Color) {
     self.color = [NSString stringWithUTF8String:data->Color];
@@ -85,7 +85,7 @@
 - (NSString *)description {
   return [NSString stringWithFormat:@"GUID: %@, description: %@, started: %@, ended: %@, project: %@, seconds: %d, duration: %@, color: %@, billable: %i, tags: %@",
           self.GUID, self.Description, self.started, self.ended,
-          self.project, self.duration_in_seconds, self.duration,
+          self.ProjectAndTaskLabel, self.duration_in_seconds, self.duration,
           self.color, self.billable, self.tags];
 }
 

@@ -15,7 +15,7 @@
 + (TimeEntryViewItem *)findByGUID:(NSString *)guid;
 @property int duration_in_seconds;
 @property NSString *Description; // uppercase to avoid clash with [NSObject description]
-@property NSString *project;
+@property NSString *ProjectAndTaskLabel;
 @property NSString *duration;
 @property NSString *color;
 @property NSString *GUID;

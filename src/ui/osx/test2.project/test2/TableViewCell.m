@@ -21,8 +21,8 @@
   self.GUID = view_item.GUID;
   self.descriptionTextField.stringValue = view_item.Description;
   self.colorTextField.backgroundColor = [ConvertHexColor hexCodeToNSColor:view_item.color];
-  if (view_item.project) {
-    self.projectTextField.stringValue = [view_item.project uppercaseString];
+  if (view_item.ProjectAndTaskLabel) {
+    self.projectTextField.stringValue = [view_item.ProjectAndTaskLabel uppercaseString];
     [self.projectTextField setHidden:NO];
   } else {
     self.projectTextField.stringValue = @"";
