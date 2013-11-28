@@ -115,9 +115,10 @@
     [self.contentView addSubview:self.loginViewController.view];
     [self.loginViewController.view setFrame:self.contentView.bounds];
     [self.loginViewController.email becomeFirstResponder];
-
+    
     // Hide all other views
     [self.timeEntryListViewController.view removeFromSuperview];
+    [self.timeEntryEditViewController.view removeFromSuperview];
     [self.headerView setHidden:YES];
     [self.timerViewController.view removeFromSuperview];
     return;
