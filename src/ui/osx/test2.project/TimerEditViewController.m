@@ -82,10 +82,11 @@
   NSString *key = [self.descriptionComboBox stringValue];
   AutocompleteItem *item = [self.autocompleteDataSource get:key];
   if (item == nil) {
-    [self.projectTextField setStringValue:@""];
     [self.projectTextField setHidden:YES];
+    [self.projectTextField setStringValue:@""];
     return;
   }
+  [self.projectTextField setStringValue:item.ProjectAndTaskLabel];
   [self.projectTextField setHidden:NO];
 }
 

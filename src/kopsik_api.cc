@@ -1007,40 +1007,65 @@ kopsik_api_result kopsik_autocomplete_items(
 
   std::vector<KopsikAutocompleteItem *> autocomplete_items;
 
-  // Add unique time entries, in format:
-  // description - Client. Project
+  // Add time entries, in format:
+  // Description - Task - Client. Project
   if (include_time_entries) {
     for (std::vector<kopsik::TimeEntry *>::const_iterator it =
         ctx->user->related.TimeEntries.begin();
         it != ctx->user->related.TimeEntries.end(); it++) {
-      kopsik::TimeEntry *model = *it;
-      if (model->DeletedAt() || model->IsMarkedAsDeletedOnServer()
-          || model->Description().empty()) {
+      kopsik::TimeEntry *te = *it;
+
+      if (te->DeletedAt() || te->IsMarkedAsDeletedOnServer()
+          || te->Description().empty()) {
         continue;
       }
-      std::stringstream ss;
-      ss << model->Description();
-      if (model->PID()) {
-        ss << " - ";
-        kopsik::Project *p = ctx->user->GetProjectByID(model->PID());
-        if (p) {
-          if (p->CID()) {
-            kopsik::Client *c = ctx->user->GetClientByID(p->CID());
-            if (c) {
-              ss << c->Name() << ". ";
-            }
-          }
-          ss << p->Name();
-        }
+
+      kopsik::Task *t = 0;
+      if (te->TID()) {
+        t = ctx->user->GetTaskByID(te->TID());
       }
-      std::string text = ss.str();
+
+      kopsik::Project *p = 0;
+      if (t && t->PID()) {
+        p = ctx->user->GetProjectByID(t->PID());
+      } else if (te->PID()) {
+        p = ctx->user->GetProjectByID(te->PID());
+      }
+
+      kopsik::Client *c = 0;
+      if (p && p->CID()) {
+        c = ctx->user->GetClientByID(p->CID());
+      }
+
+      std::stringstream search_parts;
+      search_parts << te->Description();
+      if (t) {
+        search_parts << " - " << t->Name();
+      }
+      if (c && p) {
+        search_parts << " - " << c->Name() << ". " << p->Name();
+      } else if (p) {
+        search_parts << " - " << p->Name();
+      }
+
+      std::string text = search_parts.str();
       if (text.empty()) {
         continue;
       }
+
+      std::stringstream project_and_task_label;
+      if (t && p) {
+        project_and_task_label << t->Name() << ". " << p->Name();
+      } else {
+        project_and_task_label << p->Name();
+      }
+
       KopsikAutocompleteItem *autocomplete_item =
         kopsik_autocomplete_item_init();
       autocomplete_item->Text = strdup(text.c_str());
-      autocomplete_item->TimeEntryID = static_cast<int>(model->ID());
+      autocomplete_item->ProjectAndTaskLabel =
+        strdup(project_and_task_label.str().c_str());
+      autocomplete_item->TimeEntryID = static_cast<int>(te->ID());
       autocomplete_items.push_back(autocomplete_item);
     }
   }
@@ -1051,32 +1076,49 @@ kopsik_api_result kopsik_autocomplete_items(
     for (std::vector<kopsik::Task *>::const_iterator it =
          ctx->user->related.Tasks.begin();
          it != ctx->user->related.Tasks.end(); it++) {
-      kopsik::Task *model = *it;
-      if (model->IsMarkedAsDeletedOnServer()) {
+      kopsik::Task *t = *it;
+
+      if (t->IsMarkedAsDeletedOnServer()) {
         continue;
       }
-      std::stringstream ss;
-      if (model->PID()) {
-        kopsik::Project *p = ctx->user->GetProjectByID(model->PID());
-        if (p) {
-          if (p->CID()) {
-            kopsik::Client *c = ctx->user->GetClientByID(p->CID());
-            if (c) {
-              ss << c->Name() << ". ";
-            }
-            ss << p->Name() << ". ";
-          }
-        }
+
+      kopsik::Project *p = 0;
+      if (t->PID()) {
+        p = ctx->user->GetProjectByID(t->PID());
       }
-      ss << model->Name();
-      std::string text = ss.str();
+
+      kopsik::Client *c = 0;
+      if (p && p->CID()) {
+        c = ctx->user->GetClientByID(p->CID());
+      }
+
+      std::stringstream search_parts;
+      if (c) {
+        search_parts << c->Name() << ". " << p->Name() << ". " << t->Name();
+      } else if (p) {
+        search_parts << p->Name() << ". " << t->Name();
+      } else {
+        search_parts << t->Name();
+      }
+
+      std::string text = search_parts.str();
       if (text.empty()) {
         continue;
       }
+
+      std::stringstream project_and_task_label;
+      if (t && p) {
+        project_and_task_label << t->Name() << ". " << p->Name();
+      } else {
+        project_and_task_label << p->Name();
+      }
+
       KopsikAutocompleteItem *autocomplete_item =
         kopsik_autocomplete_item_init();
       autocomplete_item->Text = strdup(text.c_str());
-      autocomplete_item->TaskID = static_cast<int>(model->ID());
+      autocomplete_item->ProjectAndTaskLabel =
+        strdup(project_and_task_label.str().c_str());
+      autocomplete_item->TaskID = static_cast<int>(t->ID());
       autocomplete_items.push_back(autocomplete_item);
     }
   }
@@ -1088,21 +1130,27 @@ kopsik_api_result kopsik_autocomplete_items(
          ctx->user->related.Projects.begin();
          it != ctx->user->related.Projects.end(); it++) {
       kopsik::Project *p = *it;
-      std::stringstream ss;
+
+      kopsik::Client *c = 0;
       if (p->CID()) {
-        kopsik::Client *c = ctx->user->GetClientByID(p->CID());
-        if (c) {
-          ss << c->Name() << ". ";
-        }
-        ss << p->Name();
+        c = ctx->user->GetClientByID(p->CID());
       }
-      std::string text = ss.str();
+
+      std::stringstream search_parts;
+      if (c) {
+        search_parts << c->Name() << ". ";
+      }
+      search_parts << p->Name();
+
+      std::string text = search_parts.str();
       if (text.empty()) {
         continue;
       }
+
       KopsikAutocompleteItem *autocomplete_item =
         kopsik_autocomplete_item_init();
       autocomplete_item->Text = strdup(text.c_str());
+      autocomplete_item->ProjectAndTaskLabel = strdup(p->Name().c_str());
       autocomplete_item->ProjectID = static_cast<int>(p->ID());
       autocomplete_items.push_back(autocomplete_item);
     }

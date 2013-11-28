@@ -12,6 +12,7 @@
 
 - (void)load:(KopsikAutocompleteItem *)data {
   self.Text = [NSString stringWithUTF8String:data->Text];
+  self.ProjectAndTaskLabel = [NSString stringWithUTF8String:data->ProjectAndTaskLabel];
   self.TimeEntryID = data->TimeEntryID;
   self.ProjectID = data->ProjectID;
   self.TaskID = data->TaskID;
