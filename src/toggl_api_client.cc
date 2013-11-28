@@ -1728,16 +1728,6 @@ std::string TimeEntry::StartString() {
      return Formatter::Format8601(start_);
 }
 
-void TimeEntry::SetStartString(std::string value) {
-    Poco::Int64 start = Formatter::Parse8601(value);
-    if (duration_in_seconds_ < 0) {
-        SetDurationInSeconds(-start);
-    } else {
-        SetStop(start + duration_in_seconds_);
-    }
-    SetStart(start);
-}
-
 std::string TimeEntry::DateHeaderString() {
     return Formatter::FormatDateHeader(start_);
 }
@@ -1764,6 +1754,24 @@ void TimeEntry::SetDurationString(const std::string value) {
     } else {
         SetDurationInSeconds(seconds);
     }
+}
+
+void TimeEntry::SetStartString(std::string value) {
+    Poco::Int64 start = Formatter::Parse8601(value);
+    if (duration_in_seconds_ < 0) {
+        SetDurationInSeconds(-start);
+    } else {
+        SetStop(start + duration_in_seconds_);
+    }
+    SetStart(start);
+}
+
+void TimeEntry::SetStopString(std::string value) {
+    Poco::Int64 stop = Formatter::Parse8601(value);
+    if (duration_in_seconds_ >= 0) {
+        SetDurationInSeconds(stop - start_);
+    }
+    SetStop(stop);
 }
 
 void TimeEntry::SetCreatedWith(std::string value) {
@@ -1796,10 +1804,6 @@ void TimeEntry::SetDurationInSeconds(Poco::Int64 value) {
 
 std::string TimeEntry::StopString() {
      return Formatter::Format8601(stop_);
-}
-
-void TimeEntry::SetStopString(std::string value) {
-    SetStop(Formatter::Parse8601(value));
 }
 
 void TimeEntry::SetStop(Poco::UInt64 value) {

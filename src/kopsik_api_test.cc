@@ -285,6 +285,20 @@ namespace kopsik {
         ASSERT_EQ(stopped->Ended, stopped->Started + 9000);
         kopsik_time_entry_view_item_clear(stopped);
 
+        // Set a new end time for the stopped entry.
+        // Check that the duration changes.
+        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_set_time_entry_end_iso_8601(ctx,
+            err, ERRLEN, dirty_guid.c_str(), "2013-11-27T13:30:00Z"));
+        stopped = kopsik_time_entry_view_item_init();
+        was_found = 0;
+        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_item_by_guid(
+            ctx, err, ERRLEN, dirty_guid.c_str(), stopped, &was_found));
+        ASSERT_TRUE(was_found);
+        ASSERT_EQ((unsigned int)1385555400, stopped->Started);
+        ASSERT_EQ((unsigned int)1385559000, stopped->Ended);
+        ASSERT_EQ("01:00:00", std::string(stopped->Duration));
+        kopsik_time_entry_view_item_clear(stopped);
+
         // Now the stopped time entry should be listed
         // among time entry view items.
         list = kopsik_time_entry_view_item_list_init();
