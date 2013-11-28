@@ -244,6 +244,18 @@ namespace kopsik {
         std::string dirty_guid(stopped->GUID);
         kopsik_time_entry_view_item_clear(stopped);
 
+        // Change duration of the stopped time entry to 1 hour.
+        // Check it was really applied.
+        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_set_time_entry_duration(
+            ctx, err, ERRLEN, dirty_guid.c_str(), "2,5 hours"));
+        stopped = kopsik_time_entry_view_item_init();
+        int was_found = 0;
+        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_item_by_guid(
+            ctx, err, ERRLEN, dirty_guid.c_str(), stopped, &was_found));
+        ASSERT_TRUE(was_found);
+        ASSERT_EQ("02:30:00", std::string(stopped->Duration));
+        kopsik_time_entry_view_item_clear(stopped);
+
         // Now the stopped time entry should be listed
         // among time entry view items.
         list = kopsik_time_entry_view_item_list_init();
@@ -316,7 +328,7 @@ namespace kopsik {
         ASSERT_EQ((unsigned int)1, stats.TimeEntries);
 
         // Get time entry view using GUID
-        int was_found = 0;
+        was_found = 0;
         KopsikTimeEntryViewItem *found = kopsik_time_entry_view_item_init();
         ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_item_by_guid(
             ctx, err, ERRLEN, dirty_guid.c_str(), found, &was_found));
