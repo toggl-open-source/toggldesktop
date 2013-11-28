@@ -105,9 +105,6 @@ clean:
 	rm -f $(main)
 	rm -f $(main)_test
 
-clean_deps:
-	cd third_party/libjson && make clean
-
 osx:
 	xcodebuild -project src/ui/osx/test2.project/kopsik_ui_osx.xcodeproj
 
@@ -167,7 +164,10 @@ push:
 lint:
 	./third_party/cpplint/cpplint.py src/*.cc src/*.h src/ui/cmdline/*
 
-deps: openssl poco json
+clean_deps:
+	cd third_party/libjson && make clean
+
+deps: clean_deps openssl poco json
 
 json:
 	cd $(jsondir) && make
