@@ -1732,13 +1732,13 @@ error Database::initialize_tables() {
     }
 
     err = migrate("clients.id",
-        "CREATE UNIQUE INDEX id_clients_id ON clients (id); ");
+        "CREATE UNIQUE INDEX id_clients_id ON clients (uid, id); ");
     if (err != noError) {
         return err;
     }
 
     err = migrate("clients.guid",
-        "CREATE UNIQUE INDEX id_clients_guid ON clients (guid);");
+        "CREATE UNIQUE INDEX id_clients_guid ON clients (uid, guid);");
     if (err != noError) {
         return err;
     }
@@ -1766,13 +1766,13 @@ error Database::initialize_tables() {
     }
 
     err = migrate("projects.id",
-        "CREATE UNIQUE INDEX id_projects_id ON projects (id);");
+        "CREATE UNIQUE INDEX id_projects_id ON projects (uid, id);");
     if (err != noError) {
         return err;
     }
 
     err = migrate("projects.guid",
-        "CREATE UNIQUE INDEX id_projects_guid ON projects (guid);");
+        "CREATE UNIQUE INDEX id_projects_guid ON projects (uid, guid);");
     if (err != noError) {
         return err;
     }
@@ -1797,7 +1797,7 @@ error Database::initialize_tables() {
     }
 
     err = migrate("tasks.id",
-        "CREATE UNIQUE INDEX id_tasks_id ON tasks (id);");
+        "CREATE UNIQUE INDEX id_tasks_id ON tasks (uid, id);");
     if (err != noError) {
         return err;
     }
@@ -1820,13 +1820,13 @@ error Database::initialize_tables() {
     }
 
     err = migrate("tags.id",
-        "CREATE UNIQUE INDEX id_tags_id ON tags (id); ");
+        "CREATE UNIQUE INDEX id_tags_id ON tags (uid, id); ");
     if (err != noError) {
         return err;
     }
 
     err = migrate("tags.guid",
-        "CREATE UNIQUE INDEX id_tags_guid ON tags (guid); ");
+        "CREATE UNIQUE INDEX id_tags_guid ON tags (uid, guid); ");
     if (err != noError) {
         return err;
     }
@@ -1865,13 +1865,14 @@ error Database::initialize_tables() {
     }
 
     err = migrate("time_entries.id",
-        "CREATE UNIQUE INDEX id_time_entries_id ON time_entries (id); ");
+        "CREATE UNIQUE INDEX id_time_entries_id ON time_entries (uid, id); ");
     if (err != noError) {
       return err;
     }
 
     err = migrate("time_entries.guid",
-        "CREATE UNIQUE INDEX id_time_entries_guid ON time_entries (guid); ");
+        "CREATE UNIQUE INDEX id_time_entries_guid "
+        "   ON time_entries (uid, guid); ");
     if (err != noError) {
       return err;
     }
