@@ -245,6 +245,7 @@ namespace kopsik {
         ASSERT_TRUE(is_tracking);
         ASSERT_EQ((unsigned int)1385644530, running->Started);
         ASSERT_NE("01:00:00", std::string(running->Duration));
+        ASSERT_EQ(-1385644530, running->DurationInSeconds);
         kopsik_time_entry_view_item_clear(running);
 
         // Stop the time entry
@@ -267,6 +268,21 @@ namespace kopsik {
             ctx, err, ERRLEN, dirty_guid.c_str(), stopped, &was_found));
         ASSERT_TRUE(was_found);
         ASSERT_EQ("02:30:00", std::string(stopped->Duration));
+        kopsik_time_entry_view_item_clear(stopped);
+
+        // Set a new start time for the stopped entry.
+        // Check that the duration does not change,
+        // but end time changes instead.
+        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_set_time_entry_start_iso_8601(ctx,
+            err, ERRLEN, dirty_guid.c_str(), "2013-11-27T12:30:00Z"));
+        stopped = kopsik_time_entry_view_item_init();
+        was_found = 0;
+        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_item_by_guid(
+            ctx, err, ERRLEN, dirty_guid.c_str(), stopped, &was_found));
+        ASSERT_TRUE(was_found);
+        ASSERT_EQ((unsigned int)1385555400, stopped->Started);
+        ASSERT_EQ("02:30:00", std::string(stopped->Duration));
+        ASSERT_EQ(stopped->Ended, stopped->Started + 9000);
         kopsik_time_entry_view_item_clear(stopped);
 
         // Now the stopped time entry should be listed

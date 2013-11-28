@@ -1729,7 +1729,13 @@ std::string TimeEntry::StartString() {
 }
 
 void TimeEntry::SetStartString(std::string value) {
-    SetStart(Formatter::Parse8601(value));
+    int start = Formatter::Parse8601(value);
+    if (duration_in_seconds_ < 0) {
+        SetDurationInSeconds(-start);
+    } else {
+        SetStop(start + duration_in_seconds_);
+    }
+    SetStart(start);
 }
 
 std::string TimeEntry::DateHeaderString() {
