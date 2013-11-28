@@ -84,13 +84,19 @@ namespace command_line_client {
             return Poco::Util::Application::EXIT_USAGE;
         }
 
-        kopsik_set_db_path(ctx, "kopsik.db");
+        char err[ERRLEN];
+        std::fill(err, err + ERRLEN, 0);
+
+        if (KOPSIK_API_SUCCESS !=
+                kopsik_set_db_path(ctx, err, ERRLEN, "kopsik.db")) {
+            std::cerr << err << std::endl;
+            return Poco::Util::Application::EXIT_SOFTWARE;
+        }
         kopsik_set_log_path(ctx, "kopsik.log");
 
         Poco::ErrorHandler::set(this);
 
         // Start session in lib
-        char err[ERRLEN];
         std::fill(err, err + ERRLEN, 0);
         if (KOPSIK_API_SUCCESS != kopsik_set_api_token(
                 ctx, err, ERRLEN, apiToken)) {
