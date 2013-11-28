@@ -14,7 +14,8 @@
 - (void)save:(KopsikAutocompleteItem *)data;
 @property NSString *Text;
 @property NSString *ProjectAndTaskLabel;
-@property unsigned long ProjectID;
-@property unsigned long TaskID;
-@property unsigned long TimeEntryID;
+@property NSString *ProjectColor;
+@property unsigned int ProjectID;
+@property unsigned int TaskID;
+@property unsigned int Type;
 @end

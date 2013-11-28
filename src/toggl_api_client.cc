@@ -58,7 +58,6 @@ void User::ActiveProjects(std::vector<Project *> *list) {
 // Start a time entry, mark it as dirty and add to user time entry collection.
 // Do not save here, dirtyness will be handled outside of this module.
 TimeEntry *User::Start(const std::string description,
-    const Poco::UInt64 time_entry_id,
     const Poco::UInt64 task_id,
     const Poco::UInt64 project_id) {
   Stop();
@@ -71,16 +70,6 @@ TimeEntry *User::Start(const std::string description,
   te->SetDurationInSeconds(-time(0));
   te->SetUIModifiedAt(time(0));
   te->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
-
-  if (time_entry_id) {
-    TimeEntry *original = GetTimeEntryByID(time_entry_id);
-    if (original) {
-        te->SetDescription(original->Description());
-        te->SetPID(original->PID());
-        te->SetTID(original->TID());
-        te->SetTags(original->Tags());
-    }
-  }
 
   // Try to set workspace ID from project
   if (te->PID()) {
@@ -150,19 +139,25 @@ std::string User::DateDuration(TimeEntry *te) {
     return Formatter::FormatDurationInSecondsHHMMSS(date_duration);
 }
 
-// Project. Client
-std::string User::ProjectNameIncludingClient(Project *p) {
-    poco_assert(p);
+std::string User::JoinTaskName(Task *t, Project *p, Client *c) {
     std::stringstream ss;
-    ss << p->Name();
-    if (p->CID()) {
-        kopsik::Client *c = GetClientByID(p->CID());
-        if (c) {
-            if (!p->Name().empty()) {
-                ss << ". ";
-            }
-            ss << c->Name();
+    bool empty = true;
+    if (t) {
+        ss << t->Name();
+        empty = false;
+    }
+    if (p) {
+        if (!empty) {
+            ss << ". ";
         }
+        ss << p->Name();
+        empty = false;
+    }
+    if (c) {
+        if (!empty) {
+            ss << ". ";
+        }
+        ss << c->Name();
     }
     return ss.str();
 }
@@ -1482,18 +1477,6 @@ Project *User::GetProjectByName(const std::string name) {
             it != related.Projects.end(); it++) {
         if ((*it)->Name() == name) {
             return *it;
-        }
-    }
-    return 0;
-}
-
-Project *User::GetProjectByNameIncludingClient(
-        const std::string name_with_client) {
-    for (std::vector<Project *>::const_iterator it = related.Projects.begin();
-            it != related.Projects.end(); it++) {
-        Project *p = *it;
-        if (ProjectNameIncludingClient(p) == name_with_client) {
-            return p;
         }
     }
     return 0;

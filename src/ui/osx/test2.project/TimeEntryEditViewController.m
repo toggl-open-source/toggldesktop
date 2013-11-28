@@ -104,7 +104,7 @@
   }
 
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    [self.autocompleteDataSource fetch:NO withTasks:NO withProjects:YES];
+    [self.autocompleteDataSource fetch:NO withTasks:YES withProjects:YES];
     
     if (self.projectSelect.dataSource == nil) {
       self.projectSelect.usesDataSource = YES;
@@ -136,23 +136,23 @@
   NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
   NSString *key = [self.projectSelect stringValue];
-
-  AutocompleteItem *item = [self.autocompleteDataSource get:key];
-  KopsikAutocompleteItem *autocomplete_item = kopsik_autocomplete_item_init();
-  if (item != nil) {
-    [item save:autocomplete_item];
+  AutocompleteItem *autocomplete = [self.autocompleteDataSource get:key];
+  unsigned int task_id = 0;
+  unsigned int project_id = 0;
+  if (autocomplete != nil) {
+    task_id = autocomplete.TaskID;
+    project_id = autocomplete.ProjectID;
   }
   kopsik_api_result res = kopsik_set_time_entry_project(ctx,
                                                         err,
                                                         KOPSIK_ERR_LEN,
                                                         [self.GUID UTF8String],
-                                                        autocomplete_item);
+                                                        task_id,
+                                                        project_id);
   if (KOPSIK_API_SUCCESS != res) {
     handle_error(res, err);
-    kopsik_autocomplete_item_clear(autocomplete_item);
     return;
   }
-  kopsik_autocomplete_item_clear(autocomplete_item);
   kopsik_push_async(ctx, handle_error);
 }
 

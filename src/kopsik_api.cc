@@ -166,29 +166,29 @@ void time_entry_to_view_item(
   poco_assert(!view_item->GUID);
   view_item->GUID = strdup(te->GUID().c_str());
 
+  kopsik::Task *t = 0;
   if (te->TID()) {
-    kopsik::Task *t = user->GetTaskByID(te->TID());
-    if (t) {
-      kopsik::Project *p = user->GetProjectByID(t->PID());
-      poco_assert(!view_item->ProjectAndTaskLabel);
-      std::stringstream ss;
-      ss << t->Name() << ". " << p->Name();
-      view_item->ProjectAndTaskLabel = strdup(ss.str().c_str());
+    t = user->GetTaskByID(te->TID());
+  }
 
-      poco_assert(!view_item->Color);
-      view_item->Color = strdup(p->ColorCode().c_str());
-    }
-
+  kopsik::Project *p = 0;
+  if (t) {
+    p = user->GetProjectByID(t->PID());
   } else if (te->PID()) {
-    kopsik::Project *p = user->GetProjectByID(te->PID());
-    if (p) {
-      poco_assert(!view_item->ProjectAndTaskLabel);
-      view_item->ProjectAndTaskLabel =
-        strdup(user->ProjectNameIncludingClient(p).c_str());
+    p = user->GetProjectByID(te->PID());
+  }
 
-      poco_assert(!view_item->Color);
-      view_item->Color = strdup(p->ColorCode().c_str());
-    }
+  kopsik::Client *c = 0;
+  if (p && p->CID()) {
+    c = user->GetClientByID(p->CID());
+  }
+
+  poco_assert(!view_item->ProjectAndTaskLabel);
+  view_item->ProjectAndTaskLabel = strdup(user->JoinTaskName(t, p, c).c_str());
+
+  poco_assert(!view_item->Color);
+  if (p) {
+    view_item->Color = strdup(p->ColorCode().c_str());
   }
 
   poco_assert(!view_item->Duration);
@@ -919,17 +919,18 @@ KopsikAutocompleteItemList *
   return result;
 }
 
-KopsikAutocompleteItem *kopsik_autocomplete_item_init() {
+KopsikAutocompleteItem *autocomplete_item_init() {
   KopsikAutocompleteItem *item = new KopsikAutocompleteItem();
   item->Text = 0;
   item->ProjectAndTaskLabel = 0;
+  item->ProjectColor = 0;
   item->ProjectID = 0;
   item->TaskID = 0;
-  item->TimeEntryID = 0;
+  item->Type = 0;
   return item;
 }
 
-void kopsik_autocomplete_item_clear(KopsikAutocompleteItem *item) {
+void autocomplete_item_clear(KopsikAutocompleteItem *item) {
   if (item->Text) {
     free(item->Text);
     item->Text = 0;
@@ -937,6 +938,10 @@ void kopsik_autocomplete_item_clear(KopsikAutocompleteItem *item) {
   if (item->ProjectAndTaskLabel) {
     free(item->ProjectAndTaskLabel);
     item->ProjectAndTaskLabel = 0;
+  }
+  if (item->ProjectColor) {
+    free(item->ProjectColor);
+    item->ProjectColor = 0;
   }
   delete item;
 }
@@ -947,7 +952,7 @@ void kopsik_autocomplete_item_list_clear(
   for (unsigned int i = 0; i < list->Length; i++) {
     KopsikAutocompleteItem *item = list->ViewItems[i];
     poco_assert(item);
-    kopsik_autocomplete_item_clear(item);
+    autocomplete_item_clear(item);
     list->ViewItems[i] = 0;
   }
   if (list->ViewItems) {
@@ -957,26 +962,41 @@ void kopsik_autocomplete_item_list_clear(
   list = 0;
 }
 
+bool isTimeEntry(KopsikAutocompleteItem *n) {
+  return KOPSIK_AUTOCOMPLETE_TE == n->Type;
+}
+
+bool isTask(KopsikAutocompleteItem *n) {
+  return KOPSIK_AUTOCOMPLETE_TASK == n->Type;
+}
+
+bool isProject(KopsikAutocompleteItem *n) {
+  return KOPSIK_AUTOCOMPLETE_PROJECT == n->Type;
+}
+
 bool compareAutocompleteItems(KopsikAutocompleteItem *a,
     KopsikAutocompleteItem *b) {
-  if (a->TimeEntryID && !b->TimeEntryID) {
+  // Time entries first
+  if (isTimeEntry(a) && !isTimeEntry(b)) {
     return true;
   }
-  if (b->TimeEntryID && !a->TimeEntryID) {
+  if (isTimeEntry(b) && !(isTimeEntry(a))) {
     return false;
   }
 
-  if (a->TaskID && !b->TaskID) {
+  // Then tasks
+  if (isTask(a) && !isTask(b)) {
     return true;
   }
-  if (b->TaskID && !a->TaskID) {
+  if (isTask(b) && !isTask(a)) {
     return false;
   }
 
-  if (a->ProjectID && !b->ProjectID) {
+  // Then projects
+  if (isProject(a) && !isProject(b)) {
     return true;
   }
-  if (b->ProjectID && !a->ProjectID) {
+  if (isProject(b) && !isProject(a)) {
     return false;
   }
 
@@ -1008,7 +1028,7 @@ kopsik_api_result kopsik_autocomplete_items(
   std::vector<KopsikAutocompleteItem *> autocomplete_items;
 
   // Add time entries, in format:
-  // Description - Task - Client. Project
+  // Description - Task. Project. Client
   if (include_time_entries) {
     for (std::vector<kopsik::TimeEntry *>::const_iterator it =
         ctx->user->related.TimeEntries.begin();
@@ -1037,15 +1057,12 @@ kopsik_api_result kopsik_autocomplete_items(
         c = ctx->user->GetClientByID(p->CID());
       }
 
+      std::string project_label = ctx->user->JoinTaskName(t, p, c);
+
       std::stringstream search_parts;
       search_parts << te->Description();
-      if (t) {
-        search_parts << " - " << t->Name();
-      }
-      if (c && p) {
-        search_parts << " - " << c->Name() << ". " << p->Name();
-      } else if (p) {
-        search_parts << " - " << p->Name();
+      if (!project_label.empty()) {
+        search_parts << " - " << project_label;
       }
 
       std::string text = search_parts.str();
@@ -1053,25 +1070,23 @@ kopsik_api_result kopsik_autocomplete_items(
         continue;
       }
 
-      std::stringstream project_and_task_label;
-      if (t && p) {
-        project_and_task_label << t->Name() << ". " << p->Name();
-      } else {
-        project_and_task_label << p->Name();
-      }
-
-      KopsikAutocompleteItem *autocomplete_item =
-        kopsik_autocomplete_item_init();
+      KopsikAutocompleteItem *autocomplete_item = autocomplete_item_init();
       autocomplete_item->Text = strdup(text.c_str());
-      autocomplete_item->ProjectAndTaskLabel =
-        strdup(project_and_task_label.str().c_str());
-      autocomplete_item->TimeEntryID = static_cast<int>(te->ID());
+      autocomplete_item->ProjectAndTaskLabel = strdup(project_label.c_str());
+      if (p) {
+        autocomplete_item->ProjectColor = strdup(p->ColorCode().c_str());
+        autocomplete_item->ProjectID = static_cast<unsigned int>(p->ID());
+      }
+      if (t) {
+        autocomplete_item->TaskID = static_cast<unsigned int>(t->ID());
+      }
+      autocomplete_item->Type = KOPSIK_AUTOCOMPLETE_TE;
       autocomplete_items.push_back(autocomplete_item);
     }
   }
 
-  // Add unique tasks, in format:
-  // Client. Project. Task
+  // Add tasks, in format:
+  // Task. Project. Client
   if (include_tasks) {
     for (std::vector<kopsik::Task *>::const_iterator it =
          ctx->user->related.Tasks.begin();
@@ -1092,39 +1107,26 @@ kopsik_api_result kopsik_autocomplete_items(
         c = ctx->user->GetClientByID(p->CID());
       }
 
-      std::stringstream search_parts;
-      if (c) {
-        search_parts << c->Name() << ". " << p->Name() << ". " << t->Name();
-      } else if (p) {
-        search_parts << p->Name() << ". " << t->Name();
-      } else {
-        search_parts << t->Name();
-      }
-
-      std::string text = search_parts.str();
+      std::string text = ctx->user->JoinTaskName(t, p, c);
       if (text.empty()) {
         continue;
       }
 
-      std::stringstream project_and_task_label;
-      if (t && p) {
-        project_and_task_label << t->Name() << ". " << p->Name();
-      } else {
-        project_and_task_label << p->Name();
-      }
-
-      KopsikAutocompleteItem *autocomplete_item =
-        kopsik_autocomplete_item_init();
+      KopsikAutocompleteItem *autocomplete_item = autocomplete_item_init();
       autocomplete_item->Text = strdup(text.c_str());
-      autocomplete_item->ProjectAndTaskLabel =
-        strdup(project_and_task_label.str().c_str());
+      autocomplete_item->ProjectAndTaskLabel = strdup(text.c_str());
       autocomplete_item->TaskID = static_cast<int>(t->ID());
+      if (p) {
+        autocomplete_item->ProjectColor = strdup(p->ColorCode().c_str());
+        autocomplete_item->ProjectID = static_cast<unsigned int>(p->ID());
+      }
+      autocomplete_item->Type = KOPSIK_AUTOCOMPLETE_TASK;
       autocomplete_items.push_back(autocomplete_item);
     }
   }
 
-  // Add unique projects, in format:
-  // Client. Project
+  // Add projects, in format:
+  // Project. Client
   if (include_projects) {
     for (std::vector<kopsik::Project *>::const_iterator it =
          ctx->user->related.Projects.begin();
@@ -1136,22 +1138,19 @@ kopsik_api_result kopsik_autocomplete_items(
         c = ctx->user->GetClientByID(p->CID());
       }
 
-      std::stringstream search_parts;
-      if (c) {
-        search_parts << c->Name() << ". ";
-      }
-      search_parts << p->Name();
-
-      std::string text = search_parts.str();
+      std::string text = ctx->user->JoinTaskName(0, p, c);
       if (text.empty()) {
         continue;
       }
 
-      KopsikAutocompleteItem *autocomplete_item =
-        kopsik_autocomplete_item_init();
+      KopsikAutocompleteItem *autocomplete_item = autocomplete_item_init();
       autocomplete_item->Text = strdup(text.c_str());
-      autocomplete_item->ProjectAndTaskLabel = strdup(p->Name().c_str());
+      autocomplete_item->ProjectAndTaskLabel = strdup(text.c_str());
       autocomplete_item->ProjectID = static_cast<int>(p->ID());
+      if (p) {
+        autocomplete_item->ProjectColor = strdup(p->ColorCode().c_str());
+      }
+      autocomplete_item->Type = KOPSIK_AUTOCOMPLETE_PROJECT;
       autocomplete_items.push_back(autocomplete_item);
     }
   }
@@ -1163,9 +1162,9 @@ kopsik_api_result kopsik_autocomplete_items(
 
   size_t list_size = autocomplete_items.size();
 
-  KopsikAutocompleteItem *tmp = kopsik_autocomplete_item_init();
+  KopsikAutocompleteItem *tmp = autocomplete_item_init();
   void *m = malloc(list_size * sizeof(tmp));
-  kopsik_autocomplete_item_clear(tmp);
+  autocomplete_item_clear(tmp);
   poco_assert(m);
 
   list->ViewItems = reinterpret_cast<KopsikAutocompleteItem **>(m);
@@ -1260,7 +1259,6 @@ kopsik_api_result kopsik_start(
     void *context,
     char *errmsg, unsigned int errlen,
     const char *description,
-    const unsigned int time_entry_id,
     const unsigned int task_id,
     const unsigned int project_id,
     KopsikTimeEntryViewItem *out_view_item) {
@@ -1286,8 +1284,7 @@ kopsik_api_result kopsik_start(
     desc = std::string(description);
   }
 
-  kopsik::TimeEntry *te = ctx->user->Start(
-    desc, time_entry_id, task_id, project_id);
+  kopsik::TimeEntry *te = ctx->user->Start(desc, task_id, project_id);
   kopsik_api_result res = save(ctx, errmsg, errlen);
   if (KOPSIK_API_SUCCESS != res) {
     return res;
@@ -1511,24 +1508,12 @@ kopsik_api_result kopsik_set_time_entry_project(
     void *context,
     char *errmsg, unsigned int errlen,
     const char *guid,
-    const KopsikAutocompleteItem *autocomplete_item) {
+    const unsigned int task_id,
+    const unsigned int project_id) {
   poco_assert(context);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(guid);
-  poco_assert(autocomplete_item);
-
-  std::stringstream ss;
-  ss  << "kopsik_set_time_entry_project guid=" << guid;
-  if (autocomplete_item->Text) {
-      ss << ", autocomplete text=" << autocomplete_item->Text;
-  }
-  ss  << ", time entry ID="<< autocomplete_item->TimeEntryID
-      << ", task ID=" << autocomplete_item->TaskID
-      << ", project ID=" << autocomplete_item->ProjectID;
-
-  Poco::Logger &logger = Poco::Logger::get("kopsik_api");
-  logger.debug(ss.str());
 
   std::string GUID(guid);
   if (GUID.empty()) {
@@ -1548,7 +1533,8 @@ kopsik_api_result kopsik_set_time_entry_project(
   kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
   poco_assert(te);
 
-  te->SetPID(autocomplete_item->ProjectID);
+  te->SetTID(task_id);
+  te->SetPID(project_id);
   if (te->Dirty()) {
     te->SetUIModifiedAt(time(0));
   }

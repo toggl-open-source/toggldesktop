@@ -35,6 +35,7 @@
 		744CE72D1815CF5F00A7BEE4 /* ErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 744CE72C1815CF5F00A7BEE4 /* ErrorHandler.m */; };
 		744E126717F22AB900ABE72A /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 744E126617F22AB900ABE72A /* app.icns */; };
 		745B9CCB18155993006E7F37 /* ModelChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 745B9CCA18155993006E7F37 /* ModelChange.m */; };
+		747270751847E4050089860B /* NewTimeEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 747270741847E4050089860B /* NewTimeEntry.m */; };
 		74793D69183E248C0085E1CF /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74793D68183E248C0085E1CF /* CrashReporter.framework */; };
 		749BD0BD1833E28400980494 /* NSBoxClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 749BD0BC1833E28400980494 /* NSBoxClickable.m */; };
 		749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 749CB8CA18167D6E00814841 /* PreferencesWindowController.m */; };
@@ -186,6 +187,8 @@
 		744E126617F22AB900ABE72A /* app.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = app.icns; sourceTree = "<group>"; };
 		745B9CC918155993006E7F37 /* ModelChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelChange.h; sourceTree = "<group>"; };
 		745B9CCA18155993006E7F37 /* ModelChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelChange.m; sourceTree = "<group>"; };
+		747270731847E4050089860B /* NewTimeEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewTimeEntry.h; path = ../NewTimeEntry.h; sourceTree = "<group>"; };
+		747270741847E4050089860B /* NewTimeEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewTimeEntry.m; path = ../NewTimeEntry.m; sourceTree = "<group>"; };
 		74793D68183E248C0085E1CF /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CrashReporter.framework; sourceTree = "<group>"; };
 		749BD0BB1833E28400980494 /* NSBoxClickable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSBoxClickable.h; sourceTree = "<group>"; };
 		749BD0BC1833E28400980494 /* NSBoxClickable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSBoxClickable.m; sourceTree = "<group>"; };
@@ -355,6 +358,8 @@
 		69FC17FA17E6534400B96425 /* kopsik_ui */ = {
 			isa = PBXGroup;
 			children = (
+				747270731847E4050089860B /* NewTimeEntry.h */,
+				747270741847E4050089860B /* NewTimeEntry.m */,
 				74C15799183BA5DA00550613 /* AutocompleteDataSource.h */,
 				74C1579A183BA5DA00550613 /* AutocompleteDataSource.m */,
 				74C15794183A8CE600550613 /* AutocompleteItem.h */,
@@ -711,6 +716,7 @@
 				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,
 				749BD0BD1833E28400980494 /* NSBoxClickable.m in Sources */,
 				745B9CCB18155993006E7F37 /* ModelChange.m in Sources */,
+				747270751847E4050089860B /* NewTimeEntry.m in Sources */,
 				74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */,
 				74E3CDD417FBABE400C3ADD3 /* BugsnagOSXNotifier.m in Sources */,
 				74AA9471180909F50000539F /* GTMHTTPFetcher.m in Sources */,

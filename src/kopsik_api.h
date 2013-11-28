@@ -148,17 +148,18 @@ KOPSIK_EXPORT void kopsik_push_async(
 
 // Autocomplete list items
 
+#define KOPSIK_AUTOCOMPLETE_TE 0
+#define KOPSIK_AUTOCOMPLETE_TASK 1
+#define KOPSIK_AUTOCOMPLETE_PROJECT 2
+
 typedef struct {
   char *Text;  // This is what is displayed to user
   char *ProjectAndTaskLabel;  // Project label, if has a project
-  unsigned int TimeEntryID;
+  char *ProjectColor;
   unsigned int TaskID;
   unsigned int ProjectID;
+  unsigned int Type;
 } KopsikAutocompleteItem;
-
-KOPSIK_EXPORT KopsikAutocompleteItem *kopsik_autocomplete_item_init();
-
-KOPSIK_EXPORT void kopsik_autocomplete_item_clear(KopsikAutocompleteItem *item);
 
 typedef struct {
   KopsikAutocompleteItem **ViewItems;
@@ -229,7 +230,6 @@ KOPSIK_EXPORT kopsik_api_result kopsik_start(
   void *ctx,
   char *errmsg, unsigned int errlen,
   const char *description,
-  const unsigned int time_entry_id,
   const unsigned int task_id,
   const unsigned int project_id,
   KopsikTimeEntryViewItem *item);
@@ -268,7 +268,8 @@ KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_project(
   void *ctx,
   char *errmsg, unsigned int errlen,
   const char *guid,
-  const KopsikAutocompleteItem *autocomplete_item);
+  const unsigned int task_id,
+  const unsigned int project_id);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_start_iso_8601(
   void *ctx,

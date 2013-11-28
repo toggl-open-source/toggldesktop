@@ -13,7 +13,12 @@
 - (void)load:(KopsikAutocompleteItem *)data {
   self.Text = [NSString stringWithUTF8String:data->Text];
   self.ProjectAndTaskLabel = [NSString stringWithUTF8String:data->ProjectAndTaskLabel];
-  self.TimeEntryID = data->TimeEntryID;
+  if (data->ProjectColor) {
+    self.ProjectColor = [NSString stringWithUTF8String:data->ProjectColor];
+  } else {
+    self.ProjectColor = @"";
+  }
+  self.Type = data->Type;
   self.ProjectID = data->ProjectID;
   self.TaskID = data->TaskID;
 }
@@ -21,14 +26,14 @@
 - (void)save:(KopsikAutocompleteItem *)data {
   NSAssert(!data->Text, @"data already has text");
   data->Text = strdup([self.Text UTF8String]);
-  data->TimeEntryID = (unsigned int)self.TimeEntryID;
+  data->Type = (unsigned int)self.Type;
   data->ProjectID = (unsigned int)self.ProjectID;
   data->TaskID = (unsigned int)self.TaskID;
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"Text: %@, PID: %ld, TID: %ld, TE ID: %ld",
-          self.Text, self.ProjectID, self.TaskID, self.TimeEntryID];
+  return [NSString stringWithFormat:@"Text: %@, PID: %d, TID: %d, type: %d",
+          self.Text, self.ProjectID, self.TaskID, self.Type];
 }
 
 @end

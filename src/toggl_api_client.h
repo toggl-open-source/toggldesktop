@@ -473,28 +473,25 @@ namespace kopsik {
         void ClearTags();
         void ClearTimeEntries();
 
+        std::string JoinTaskName(Task *t, Project *p, Client *c);
+
         Workspace *GetWorkspaceByID(const Poco::UInt64 id);
         Client *GetClientByID(const Poco::UInt64 id);
         Client *GetClientByGUID(const guid GUID);
         Project *GetProjectByID(const Poco::UInt64 id);
         Project *GetProjectByGUID(const guid GUID);
         Project *GetProjectByName(const std::string name);
-        Project *GetProjectByNameIncludingClient(
-            const std::string name_with_client);
         Task *GetTaskByID(const Poco::UInt64 id);
         Tag *GetTagByID(const Poco::UInt64 id);
         Tag *GetTagByGUID(const guid GUID);
         TimeEntry *GetTimeEntryByID(const Poco::UInt64 id);
         TimeEntry *GetTimeEntryByGUID(const guid GUID);
 
-        std::string ProjectNameIncludingClient(Project *p);
-
         void CollectPushableObjects(std::vector<TimeEntry *> *result);
         void SortTimeEntriesByStart();
 
         TimeEntry *RunningTimeEntry();
         TimeEntry *Start(const std::string description,
-            const Poco::UInt64 time_entry_id,
             const Poco::UInt64 task_id,
             const Poco::UInt64 project_id);
         TimeEntry *Continue(const std::string GUID);

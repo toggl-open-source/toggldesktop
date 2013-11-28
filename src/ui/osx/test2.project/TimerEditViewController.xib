@@ -8,7 +8,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="TimerEditViewController">
             <connections>
                 <outlet property="descriptionComboBox" destination="ITa-Jc-jOK" id="aF4-Dr-jdX"/>
-                <outlet property="projectTextField" destination="Tn9-Nk-mto" id="QGD-1C-MRW"/>
+                <outlet property="projectTextField" destination="MEp-S6-Ci1" id="yY0-On-9xq"/>
                 <outlet property="startButton" destination="ulR-eB-96b" id="8oR-P1-EXW"/>
                 <outlet property="view" destination="M2u-7B-WCs" id="bD3-yq-26j"/>
             </connections>
@@ -56,6 +56,15 @@ DQ
                                     <action selector="descriptionComboBoxChanged:" target="-2" id="w65-vA-OhX"/>
                                 </connections>
                             </comboBox>
+                            <textField hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MEp-S6-Ci1">
+                                <rect key="frame" x="16" y="16" width="78" height="12"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" state="on" title="BIZDEV . TOGGL" drawsBackground="YES" id="hfH-bI-gyH">
+                                    <font key="font" size="9" name="LucidaGrande-Bold"/>
+                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                     </view>
                     <constraints>
@@ -67,18 +76,6 @@ DQ
                     <color key="borderColor" red="0.78431379800000001" green="0.78431379800000001" blue="0.78431379800000001" alpha="1" colorSpace="deviceRGB"/>
                     <color key="fillColor" red="0.78431379800000001" green="0.78431379800000001" blue="0.78431379800000001" alpha="1" colorSpace="deviceRGB"/>
                 </box>
-                <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tn9-Nk-mto">
-                    <rect key="frame" x="17" y="17" width="78" height="12"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="12" id="VcS-wi-Sv6"/>
-                    </constraints>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="BIZDEV . TOGGL" drawsBackground="YES" id="SEb-de-G2I">
-                        <font key="font" size="9" name="LucidaGrande-Bold"/>
-                        <color key="textColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
-                    </textFieldCell>
-                </textField>
                 <box autoresizesSubviews="NO" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="lEH-md-7M7">
                     <rect key="frame" x="0.0" y="-1" width="264" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>

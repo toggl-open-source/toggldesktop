@@ -21,14 +21,18 @@
   self.GUID = view_item.GUID;
   self.descriptionTextField.stringValue = view_item.Description;
   self.colorTextField.backgroundColor = [ConvertHexColor hexCodeToNSColor:view_item.color];
-  if (view_item.ProjectAndTaskLabel) {
+  self.durationTextField.stringValue = view_item.duration;
+  
+  // Time entry has a project
+  if (view_item.ProjectAndTaskLabel && [view_item.ProjectAndTaskLabel length] > 0) {
     self.projectTextField.stringValue = [view_item.ProjectAndTaskLabel uppercaseString];
     [self.projectTextField setHidden:NO];
-  } else {
-    self.projectTextField.stringValue = @"";
-    [self.projectTextField setHidden:YES];
+    return;
   }
-  self.durationTextField.stringValue = view_item.duration;
+
+  // Time entry has no project
+  self.projectTextField.stringValue = @"";
+  [self.projectTextField setHidden:YES];
 }
 
 @end

@@ -24,8 +24,8 @@
 #import "IdleEvent.h"
 #import "IdleNotificationWindowController.h"
 #import "MenuItemTitles.h"
-#import "AutocompleteItem.h"
 #import "CrashReporter.h"
+#import "NewTimeEntry.h"
 
 @interface  AppDelegate()
 @property (nonatomic,strong) IBOutlet MainWindowController *mainWindowController;
@@ -272,25 +272,14 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   if ([notification.name isEqualToString:kUICommandNew]) {
     char err[KOPSIK_ERR_LEN];
     KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-
-    NSString *description = @"";
-    unsigned int project_id = 0;
-    unsigned int task_id = 0;
-    unsigned int time_entry_id = 0;
-    AutocompleteItem *autocomplete = notification.object;
-    if (autocomplete != nil) {
-      description = autocomplete.Text;
-      time_entry_id = (unsigned int)autocomplete.TimeEntryID;
-      task_id = (unsigned int)autocomplete.TaskID;
-      project_id = (unsigned int)autocomplete.ProjectID;
-    }
+    NewTimeEntry *new_time_entry = notification.object;
+    NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
     kopsik_api_result res = kopsik_start(ctx,
                                          err,
                                          KOPSIK_ERR_LEN,
-                                         [description UTF8String],
-                                         time_entry_id,
-                                         task_id,
-                                         project_id,
+                                         [new_time_entry.Description UTF8String],
+                                         new_time_entry.TaskID,
+                                         new_time_entry.ProjectID,
                                          item);
     if (KOPSIK_API_SUCCESS != res) {
       kopsik_time_entry_view_item_clear(item);
@@ -546,7 +535,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
 
 - (void)onNewMenuItem:(id)sender {
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandNew
-                                                      object:nil];
+                                                      object:[[NewTimeEntry alloc] init]];
 }
 
 - (void)onContinueMenuItem {

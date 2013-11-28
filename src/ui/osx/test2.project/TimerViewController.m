@@ -125,18 +125,24 @@
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
   self.running_time_entry = view_item;
-  if (self.running_time_entry != nil) {
-    [self.descriptionTextField setStringValue:self.running_time_entry.Description];
-    [self.durationTextField setStringValue:self.running_time_entry.duration];
-    self.projectTextField.backgroundColor = [ConvertHexColor hexCodeToNSColor:view_item.color];
-    if (self.running_time_entry.ProjectAndTaskLabel != nil) {
-      [self.projectTextField setStringValue:[self.running_time_entry.ProjectAndTaskLabel uppercaseString]];
-      [self.projectTextField setHidden:NO];
-    } else {
-      [self.projectTextField setHidden:YES];
-      [self.projectTextField setStringValue:@""];
-    }
+  if (self.running_time_entry == nil) {
+    return;
   }
+
+  [self.descriptionTextField setStringValue:self.running_time_entry.Description];
+  [self.durationTextField setStringValue:self.running_time_entry.duration];
+  self.projectTextField.backgroundColor = [ConvertHexColor hexCodeToNSColor:view_item.color];
+
+  // Time entry has project
+  if (self.running_time_entry.ProjectAndTaskLabel && [self.running_time_entry.ProjectAndTaskLabel length] > 0) {
+    [self.projectTextField setStringValue:[self.running_time_entry.ProjectAndTaskLabel uppercaseString]];
+    [self.projectTextField setHidden:NO];
+    return;
+  }
+
+  // Time entry has no project
+  [self.projectTextField setHidden:YES];
+  [self.projectTextField setStringValue:@""];
 }
 
 - (IBAction)stopButtonClicked:(id)sender
