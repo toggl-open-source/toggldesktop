@@ -297,6 +297,23 @@ namespace kopsik {
         ASSERT_EQ((unsigned int)1385555400, stopped->Started);
         ASSERT_EQ((unsigned int)1385559000, stopped->Ended);
         ASSERT_EQ("01:00:00", std::string(stopped->Duration));
+        unsigned int started = stopped->Started;
+        unsigned int ended = stopped->Ended;
+        kopsik_time_entry_view_item_clear(stopped);
+
+        // Change duration of the stopped time entry.
+        // Start time should be the same, but end time should change.
+        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_set_time_entry_duration(
+            ctx, err, ERRLEN, dirty_guid.c_str(), "2 hours"));
+        stopped = kopsik_time_entry_view_item_init();
+        was_found = 0;
+        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_item_by_guid(
+            ctx, err, ERRLEN, dirty_guid.c_str(), stopped, &was_found));
+        ASSERT_TRUE(was_found);
+        ASSERT_EQ("02:00:00", std::string(stopped->Duration));
+        ASSERT_EQ(started, stopped->Started);
+        ASSERT_NE(ended, stopped->Ended);
+        ASSERT_EQ(stopped->Started + 3600*2, stopped->Ended);
         kopsik_time_entry_view_item_clear(stopped);
 
         // Now the stopped time entry should be listed
