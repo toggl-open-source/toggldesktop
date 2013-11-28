@@ -43,9 +43,16 @@ namespace kopsik {
             const Poco::Int64 value);
         static std::string FormatDurationInSecondsHHMM(const Poco::Int64 value,
             const bool is_blink);
-        static std::time_t Parse8601(std::string iso_8601_formatted_date);
-        static std::string Format8601(std::time_t date);
-        static std::string FormatDateHeader(std::time_t date);
+        static std::time_t Parse8601(const std::string iso_8601_formatted_date);
+        static int ParseDurationString(const std::string value);
+        static bool parseDurationStringHHMMSS(const std::string value,
+            int *parsed_seconds);
+        static bool parseDurationStringHHMM(const std::string value,
+            int *parsed_seconds);
+        static bool parseDurationStringMMSS(const std::string value,
+            int *parsed_seconds);
+        static std::string Format8601(const std::time_t date);
+        static std::string FormatDateHeader(const std::time_t date);
     };
 
     // FIXME: implement base class with common fields, dirtyness etc
@@ -311,9 +318,6 @@ namespace kopsik {
         void SetDurationInSeconds(Poco::Int64 value);
         std::string DurationString();
         void SetDurationString(const std::string value);
-        bool SetDurationStringHHMMSS(const std::string value);
-        bool SetDurationStringHHMM(const std::string value);
-        bool SetDurationStringMMSS(const std::string value);
 
         Poco::Int64 LocalID() { return local_id_; }
         void SetLocalID(Poco::Int64 value) { local_id_ = value; }
@@ -405,6 +409,10 @@ namespace kopsik {
 
         error loadTagsFromJSONNode(JSONNODE *list);
         Poco::UInt64 getUIModifiedAtFromJSONNode(JSONNODE *data);
+
+        bool setDurationStringHHMMSS(const std::string value);
+        bool setDurationStringHHMM(const std::string value);
+        bool setDurationStringMMSS(const std::string value);
     };
 
     class RelatedData {
