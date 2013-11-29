@@ -117,6 +117,7 @@ sikuli: osx
 	rm -rf kopsik_sikuli.log
 	./src/ui/osx/test2.project/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop \
 	--api_url http://0.0.0.0:8080 \
+	--websocket_url http://0.0.0.0:8088 \
 	--db_path kopsik_sikuli.db \
 	--log_path kopsik_sikuli.log 
 
