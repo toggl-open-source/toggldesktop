@@ -37,15 +37,6 @@
     return self;
 }
 
-- (IBAction)startButtonClicked:(id)sender {
-  [self.descriptionComboBox setStringValue:@""];
-  [self.projectTextField setStringValue:@""];
-  [self.projectTextField setHidden:YES];
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandNew
-                                                      object:self.time_entry];
-  self.time_entry = [[NewTimeEntry alloc] init];
-}
-
 - (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString
 {
   return [self.autocompleteDataSource completedString:partialString];
@@ -77,8 +68,18 @@
   return [self.autocompleteDataSource indexOfKey:aString];
 }
 
+- (IBAction)startButtonClicked:(id)sender {
+  self.time_entry.Description = self.descriptionComboBox.stringValue;
+  [self.descriptionComboBox setStringValue:@""];
+  [self.projectTextField setStringValue:@""];
+  [self.projectTextField setHidden:YES];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandNew
+                                                      object:self.time_entry];
+  self.time_entry = [[NewTimeEntry alloc] init];
+}
+
 - (IBAction)descriptionComboBoxChanged:(id)sender {
-  
+
   NSString *key = [self.descriptionComboBox stringValue];
   AutocompleteItem *item = [self.autocompleteDataSource get:key];
 
@@ -86,11 +87,11 @@
   if (item == nil) {
     [self.projectTextField setHidden:YES];
     [self.projectTextField setStringValue:@""];
-    
+
     self.time_entry.Description = [self.descriptionComboBox stringValue];
     self.time_entry.TaskID = 0;
     self.time_entry.ProjectID = 0;
-    
+
     return;
   }
 
@@ -99,14 +100,18 @@
   [self.projectTextField setStringValue:[item.ProjectAndTaskLabel uppercaseString]];
   self.projectTextField.backgroundColor = [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
   [self.projectTextField setHidden:NO];
-  
+
   self.time_entry.ProjectID = item.ProjectID;
   self.time_entry.TaskID = item.TaskID;
-  
+
   NSLog(@"New time entry desc: %@, task ID: %u, project ID: %u",
         self.time_entry.Description,
         self.time_entry.TaskID,
         self.time_entry.ProjectID);
+
+  if (self.time_entry.ProjectID) {
+    [self.descriptionComboBox setStringValue:@""];
+  }
 }
 
 @end
