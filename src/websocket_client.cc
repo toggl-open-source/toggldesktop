@@ -45,11 +45,13 @@ error WebSocketClient::Start(void *ctx,
 error WebSocketClient::connect() {
   Poco::Logger &logger = Poco::Logger::get("websocket_client");
   logger.debug("connecting");
+  
+  Poco::ScopedLock<Poco::Mutex> lock(mutex_);
 
   deleteSession();
 
   last_connection_at_ = time(0);
-
+  
   try {
     const Poco::URI uri(websocket_url_);
 

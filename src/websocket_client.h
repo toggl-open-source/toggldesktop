@@ -73,6 +73,8 @@ namespace kopsik {
     std::time_t last_connection_at_;
 
     std::string api_token_;
+    
+    Poco::Mutex mutex_;
   };
 }  // namespace kopsik
 
