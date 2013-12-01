@@ -22,7 +22,7 @@ osname=linux
 endif
 
 ifeq ($(uname), Darwin)
-cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter \
+cflags=-g -DNDEBUG -Wall -Wextra -Wno-deprecated -Wno-unused-parameter \
 	-I$(openssldir)/include \
 	-I$(GTEST_ROOT)/include \
 	-I$(GTEST_ROOT) \
@@ -39,7 +39,7 @@ cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter \
 endif
 
 ifeq ($(uname), Linux)
-cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
+cflags=-g -DNDEBUG -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
 	-I$(openssldir)/include \
 	-I$(GTEST_ROOT)/include \
 	-I$(GTEST_ROOT) \
@@ -121,38 +121,42 @@ sikuli: osx
 	--db_path kopsik_sikuli.db \
 	--log_path kopsik_sikuli.log 
 
-cmdline: clean lint
+cmdline: lint
 	mkdir -p build
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/version.cc -o build/version.o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/https_client.cc -o build/https_client.o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/websocket_client.cc -o build/websocket_client.o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/toggl_api_client.cc -o build/toggl_api_client.o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/database.cc -o build/database.o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/kopsik_api.cc -o build/kopsik_api.o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/get_focused_window_$(osname).cc -o build/get_focused_window_$(osname).o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/timeline_uploader.cc -o build/timeline_uploader.o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/window_change_recorder.cc -o build/window_change_recorder.o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/ui/cmdline/main.cc -o build/main.o
+	$(cxx) $(cflags) -O2 -c src/version.cc -o build/version.o
+	$(cxx) $(cflags) -O2 -c src/https_client.cc -o build/https_client.o
+	$(cxx) $(cflags) -O2 -c src/websocket_client.cc -o build/websocket_client.o
+	$(cxx) $(cflags) -O2 -c src/toggl_api_client.cc -o build/toggl_api_client.o
+	$(cxx) $(cflags) -O2 -c src/database.cc -o build/database.o
+	$(cxx) $(cflags) -O2 -c src/kopsik_api.cc -o build/kopsik_api.o
+	$(cxx) $(cflags) -O2 -c src/get_focused_window_$(osname).cc -o build/get_focused_window_$(osname).o
+	$(cxx) $(cflags) -O2 -c src/timeline_uploader.cc -o build/timeline_uploader.o
+	$(cxx) $(cflags) -O2 -c src/window_change_recorder.cc -o build/window_change_recorder.o
+	$(cxx) $(cflags) -O2 -c src/ui/cmdline/main.cc -o build/main.o
 	$(cxx) -o $(main) -o $(main) build/*.o $(libs)
 	strip $(main)
 
+coverage=-fprofile-arcs -ftest-coverage
+
+test_cflags=$(cflags) -fprofile-arcs -ftest-coverage -DNDEBUG
+
 test: clean lint
 	mkdir -p build
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/version.cc -o build/version.o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/https_client.cc -o build/https_client.o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/websocket_client.cc -o build/websocket_client.o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/toggl_api_client.cc -o build/toggl_api_client.o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/database.cc -o build/database.o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/kopsik_api.cc -o build/kopsik_api.o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/kopsik_api_test.cc -o build/kopsik_api_test.o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/kopsik_test.cc -o build/kopsik_test.o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/get_focused_window_$(osname).cc -o build/get_focused_window_$(osname).o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/timeline_uploader.cc -o build/timeline_uploader.o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c src/window_change_recorder.cc -o build/window_change_recorder.o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c $(GTEST_ROOT)/src/gtest-all.cc -o build/gtest-all.o
-	$(cxx) $(cflags) -O2 -DNDEBUG -c ${GMOCK_DIR}/src/gmock-all.cc -o build/gmock-all.o
-	$(cxx) -o $(main) -o $(main)_test build/*.o $(libs)
-	./$(main)_test
+	$(cxx) $(cflags) $(coverage) -c src/version.cc -o build/version.o
+	$(cxx) $(cflags) $(coverage) -c src/https_client.cc -o build/https_client.o
+	$(cxx) $(cflags) $(coverage) -c src/websocket_client.cc -o build/websocket_client.o
+	$(cxx) $(cflags) $(coverage) -c src/toggl_api_client.cc -o build/toggl_api_client.o
+	$(cxx) $(cflags) $(coverage) -c src/database.cc -o build/database.o
+	$(cxx) $(cflags) $(coverage) -c src/kopsik_api.cc -o build/kopsik_api.o
+	$(cxx) $(cflags) $(coverage) -c src/kopsik_api_test.cc -o build/kopsik_api_test.o
+	$(cxx) $(cflags) $(coverage) -c src/kopsik_test.cc -o build/kopsik_test.o
+	$(cxx) $(cflags) $(coverage) -c src/get_focused_window_$(osname).cc -o build/get_focused_window_$(osname).o
+	$(cxx) $(cflags) $(coverage) -c src/timeline_uploader.cc -o build/timeline_uploader.o
+	$(cxx) $(cflags) $(coverage) -c src/window_change_recorder.cc -o build/window_change_recorder.o
+	$(cxx) $(cflags) $(coverage) -c $(GTEST_ROOT)/src/gtest-all.cc -o build/gtest-all.o
+	$(cxx) $(cflags) $(coverage) -c ${GMOCK_DIR}/src/gmock-all.cc -o build/gmock-all.o
+	$(cxx) -o $(main) -o $(main)_test build/*.o $(libs) $(coverage)
+	./$(main)_test && lcov --capture --directory build --output-file build/coverage.info && mkdir -p coverage && genhtml build/coverage.info --output-directory coverage
 
 pull:
 	./$(main) pull

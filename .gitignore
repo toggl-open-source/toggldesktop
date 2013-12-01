@@ -53,3 +53,5 @@ src/branding/
 gitstats
 
 *.dmg
+
+coverage
