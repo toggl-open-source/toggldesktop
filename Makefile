@@ -154,7 +154,10 @@ test: clean lint
 	$(cxx) $(cflags) $(coverage) -c $(GTEST_ROOT)/src/gtest-all.cc -o build/gtest-all.o
 	$(cxx) $(cflags) $(coverage) -c ${GMOCK_DIR}/src/gmock-all.cc -o build/gmock-all.o
 	$(cxx) -o $(main) -o $(main)_test build/*.o $(libs) $(coverage)
-	./$(main)_test && lcov --capture --directory build --output-file build/coverage.info && mkdir -p coverage && genhtml build/coverage.info --output-directory coverage
+	./$(main)_test
+
+coverage: test
+	lcov --capture --directory build --output-file build/coverage.info && mkdir -p coverage && genhtml build/coverage.info --output-directory coverage
 
 pull:
 	./$(main) pull
