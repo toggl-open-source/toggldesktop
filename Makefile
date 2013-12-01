@@ -138,8 +138,6 @@ cmdline: lint
 
 coverage=-fprofile-arcs -ftest-coverage
 
-test_cflags=$(cflags) -fprofile-arcs -ftest-coverage -DNDEBUG
-
 test: clean lint
 	mkdir -p build
 	$(cxx) $(cflags) $(coverage) -c src/version.cc -o build/version.o
