@@ -98,7 +98,20 @@ endif
 
 cxx=g++
 
-default: cmdline
+cmdline: lint
+	mkdir -p build
+	$(cxx) $(cflags) -O2 -c src/version.cc -o build/version.o
+	$(cxx) $(cflags) -O2 -c src/https_client.cc -o build/https_client.o
+	$(cxx) $(cflags) -O2 -c src/websocket_client.cc -o build/websocket_client.o
+	$(cxx) $(cflags) -O2 -c src/toggl_api_client.cc -o build/toggl_api_client.o
+	$(cxx) $(cflags) -O2 -c src/database.cc -o build/database.o
+	$(cxx) $(cflags) -O2 -c src/kopsik_api.cc -o build/kopsik_api.o
+	$(cxx) $(cflags) -O2 -c src/get_focused_window_$(osname).cc -o build/get_focused_window_$(osname).o
+	$(cxx) $(cflags) -O2 -c src/timeline_uploader.cc -o build/timeline_uploader.o
+	$(cxx) $(cflags) -O2 -c src/window_change_recorder.cc -o build/window_change_recorder.o
+	$(cxx) $(cflags) -O2 -c src/ui/cmdline/main.cc -o build/main.o
+	$(cxx) -o $(main) -o $(main) build/*.o $(libs)
+	strip $(main)
 
 clean:
 	rm -rf build
@@ -120,21 +133,6 @@ sikuli: osx
 	--websocket_url http://0.0.0.0:8088 \
 	--db_path kopsik_sikuli.db \
 	--log_path kopsik_sikuli.log 
-
-cmdline: lint
-	mkdir -p build
-	$(cxx) $(cflags) -O2 -c src/version.cc -o build/version.o
-	$(cxx) $(cflags) -O2 -c src/https_client.cc -o build/https_client.o
-	$(cxx) $(cflags) -O2 -c src/websocket_client.cc -o build/websocket_client.o
-	$(cxx) $(cflags) -O2 -c src/toggl_api_client.cc -o build/toggl_api_client.o
-	$(cxx) $(cflags) -O2 -c src/database.cc -o build/database.o
-	$(cxx) $(cflags) -O2 -c src/kopsik_api.cc -o build/kopsik_api.o
-	$(cxx) $(cflags) -O2 -c src/get_focused_window_$(osname).cc -o build/get_focused_window_$(osname).o
-	$(cxx) $(cflags) -O2 -c src/timeline_uploader.cc -o build/timeline_uploader.o
-	$(cxx) $(cflags) -O2 -c src/window_change_recorder.cc -o build/window_change_recorder.o
-	$(cxx) $(cflags) -O2 -c src/ui/cmdline/main.cc -o build/main.o
-	$(cxx) -o $(main) -o $(main) build/*.o $(libs)
-	strip $(main)
 
 test: clean lint
 	mkdir -p build
@@ -208,6 +206,3 @@ poco:
 stats:
 	rm -rf gitstats
 	./third_party/gitstats/gitstats -c merge_authors="Tanel","Tanel Lebedev" . gitstats
-
-.phony:
-	command_line_client
