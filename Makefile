@@ -98,7 +98,7 @@ endif
 
 cxx=g++
 
-cmdline: lint
+cmdline: clean lint
 	mkdir -p build
 	$(cxx) $(cflags) -O2 -c src/version.cc -o build/version.o
 	$(cxx) $(cflags) -O2 -c src/https_client.cc -o build/https_client.o
