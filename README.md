@@ -1,7 +1,7 @@
 kopsik
 ======
 
-Experimental natitve Toggl API client, using [POCO](http://pocoproject.org/)
+Experimental natitve Toggl API client.
 
 [![Build Status](https://travis-ci.org/tanel/kopsik.png)](https://travis-ci.org/tanel/kopsik)
 
