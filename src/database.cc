@@ -199,9 +199,11 @@ error Database::LoadSettings(
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
+    int has_settings = 0;
+
     try {
         *session << "select use_proxy, proxy_host, proxy_port, "
-                "proxy_username, proxy_password, use_idle_detection "
+                "proxy_username, proxy_password, use_idle_detection, 1 "
                 "from settings",
             Poco::Data::into(*use_proxy),
             Poco::Data::into(*proxy_host),
@@ -209,8 +211,13 @@ error Database::LoadSettings(
             Poco::Data::into(*proxy_username),
             Poco::Data::into(*proxy_password),
             Poco::Data::into(*use_idle_detection),
+            Poco::Data::into(has_settings),
             Poco::Data::limit(1),
             Poco::Data::now;
+      if (!has_settings) {
+        // Defaults:
+        *use_idle_detection = 1;
+      }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
