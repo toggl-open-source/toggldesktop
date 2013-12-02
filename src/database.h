@@ -93,18 +93,20 @@ class Database {
             const bool with_related_data);
         error LoadCurrentUser(User *user, const bool with_related_data);
 
-        error LoadProxySettings(
+        error LoadSettings(
             int *use_proxy,
-            std::string *host,
-            unsigned int *port,
-            std::string *username,
-            std::string *password);
-        error SaveProxySettings(
+            std::string *proxy_host,
+            unsigned int *proxy_port,
+            std::string *proxy_username,
+            std::string *proxy_password,
+            int *use_idle_settings);
+        error SaveSettings(
             const int use_proxy,
-            const std::string host,
-            const unsigned int port,
-            const std::string username,
-            const std::string password);
+            const std::string proxy_host,
+            const unsigned int proxy_port,
+            const std::string proxy_username,
+            const std::string proxy_password,
+            const int use_idle_detection);
 
         error UInt(std::string sql, Poco::UInt64 *result);
         error String(std::string sql, std::string *result);

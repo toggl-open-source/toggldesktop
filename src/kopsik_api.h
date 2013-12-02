@@ -28,29 +28,31 @@ KOPSIK_EXPORT void kopsik_context_clear(void *ctx);
 
 typedef struct {
     int UseProxy;
-    char *Host;
-    unsigned int Port;
-    char *Username;
-    char *Password;
-} KopsikProxySettings;
+    char *ProxyHost;
+    unsigned int ProxyPort;
+    char *ProxyUsername;
+    char *ProxyPassword;
+    int UseIdleDetection;
+} KopsikSettings;
 
-KOPSIK_EXPORT kopsik_api_result kopsik_get_proxy(void *ctx,
+KOPSIK_EXPORT kopsik_api_result kopsik_get_settings(void *ctx,
     char *errmsg,
     unsigned int errlen,
-    KopsikProxySettings *settings);
+    KopsikSettings *settings);
 
-KOPSIK_EXPORT KopsikProxySettings *kopsik_proxy_settings_init();
+KOPSIK_EXPORT KopsikSettings *kopsik_settings_init();
 
-KOPSIK_EXPORT void kopsik_proxy_settings_clear(KopsikProxySettings *settings);
+KOPSIK_EXPORT void kopsik_settings_clear(KopsikSettings *settings);
 
-KOPSIK_EXPORT kopsik_api_result kopsik_set_proxy(void *ctx,
+KOPSIK_EXPORT kopsik_api_result kopsik_set_settings(void *ctx,
   char *errmsg,
   unsigned int errlen,
   const int use_proxy,
-  const char *host,
-  const unsigned int port,
-  const char *username,
-  const char *password);
+  const char *proxy_host,
+  const unsigned int proxy_port,
+  const char *proxy_username,
+  const char *proxy_password,
+  const int use_idle_detection);
 
 // For mock testing only
 KOPSIK_EXPORT void kopsik_test_set_https_client(void *context,

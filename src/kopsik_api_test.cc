@@ -50,7 +50,7 @@ namespace kopsik {
         kopsik_context_clear(ctx);
     }
 
-    TEST(KopsikApiTest, kopsik_set_proxy) {
+    TEST(KopsikApiTest, kopsik_set_settings) {
         void *ctx = create_test_context();
         {
             Poco::File f(TESTDB);
@@ -60,22 +60,23 @@ namespace kopsik {
         kopsik_api_result res = kopsik_set_db_path(ctx, err, ERRLEN, TESTDB);
         ASSERT_EQ(KOPSIK_API_SUCCESS, res);
 
-        res = kopsik_set_proxy(
+        res = kopsik_set_settings(
             ctx,
             err, ERRLEN,
-            1, "localhost", 8000, "johnsmith", "secret");
+            1, "localhost", 8000, "johnsmith", "secret", 0);
         ASSERT_EQ(KOPSIK_API_SUCCESS, res);
 
-        KopsikProxySettings *settings =
-            kopsik_proxy_settings_init();
-        res = kopsik_get_proxy(ctx, err, ERRLEN, settings);
+        KopsikSettings *settings = kopsik_settings_init();
+        res = kopsik_get_settings(ctx, err, ERRLEN, settings);
         ASSERT_EQ(KOPSIK_API_SUCCESS, res);
         ASSERT_TRUE(settings->UseProxy);
-        ASSERT_EQ(std::string("localhost"), std::string(settings->Host));
-        ASSERT_EQ(8000, static_cast<int>(settings->Port));
-        ASSERT_EQ(std::string("johnsmith"), std::string(settings->Username));
-        ASSERT_EQ(std::string("secret"), std::string(settings->Password));
-        kopsik_proxy_settings_clear(settings);
+        ASSERT_EQ(std::string("localhost"), std::string(settings->ProxyHost));
+        ASSERT_EQ(8000, static_cast<int>(settings->ProxyPort));
+        ASSERT_EQ(std::string("johnsmith"),
+            std::string(settings->ProxyUsername));
+        ASSERT_EQ(std::string("secret"), std::string(settings->ProxyPassword));
+        ASSERT_FALSE(settings->UseIdleDetection);
+        kopsik_settings_clear(settings);
 
         kopsik_context_clear(ctx);
     }

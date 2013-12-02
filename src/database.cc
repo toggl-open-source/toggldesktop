@@ -182,29 +182,33 @@ error Database::LoadCurrentUser(User *user, bool with_related_data) {
     return LoadUserByAPIToken(api_token, user, with_related_data);
 }
 
-error Database::LoadProxySettings(
+error Database::LoadSettings(
         int *use_proxy,
-        std::string *host,
-        unsigned int *port,
-        std::string *username,
-        std::string *password) {
+        std::string *proxy_host,
+        unsigned int *proxy_port,
+        std::string *proxy_username,
+        std::string *proxy_password,
+        int *use_idle_detection) {
     poco_assert(session);
     poco_assert(use_proxy);
-    poco_assert(host);
-    poco_assert(port);
-    poco_assert(username);
-    poco_assert(password);
+    poco_assert(proxy_host);
+    poco_assert(proxy_port);
+    poco_assert(proxy_username);
+    poco_assert(proxy_password);
+    poco_assert(use_idle_detection);
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
-        *session << "select use_proxy, host, port, username, password "
-            "from proxy_settings",
+        *session << "select use_proxy, proxy_host, proxy_port, "
+                "proxy_username, proxy_password, use_idle_detection "
+                "from settings",
             Poco::Data::into(*use_proxy),
-            Poco::Data::into(*host),
-            Poco::Data::into(*port),
-            Poco::Data::into(*username),
-            Poco::Data::into(*password),
+            Poco::Data::into(*proxy_host),
+            Poco::Data::into(*proxy_port),
+            Poco::Data::into(*proxy_username),
+            Poco::Data::into(*proxy_password),
+            Poco::Data::into(*use_idle_detection),
             Poco::Data::limit(1),
             Poco::Data::now;
     } catch(const Poco::Exception& exc) {
@@ -217,32 +221,36 @@ error Database::LoadProxySettings(
     return last_error();
 }
 
-  error Database::SaveProxySettings(
+  error Database::SaveSettings(
         const int use_proxy,
-        const std::string host,
-        const unsigned int port,
-        const std::string username,
-        const std::string password) {
+        const std::string proxy_host,
+        const unsigned int proxy_port,
+        const std::string proxy_username,
+        const std::string proxy_password,
+        const int use_idle_detection) {
     poco_assert(session);
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
-        *session << "delete from proxy_settings",
+        *session << "delete from settings",
             Poco::Data::now;
         kopsik::error err = last_error();
         if (err != kopsik::noError) {
             return err;
         }
-        *session << "insert into proxy_settings "
-            "(use_proxy, host, port, username, password) "
+        *session << "insert into settings "
+            "(use_proxy, proxy_host, proxy_port, proxy_username, "
+            "proxy_password, use_idle_detection) "
             "values "
-            "(:use_proxy, :host, :port, :username, :password)",
+            "(:use_proxy, :proxy_host, :proxy_port, :proxy_username, "
+            ":proxy_password, :use_idle_detection)",
             Poco::Data::use(use_proxy),
-            Poco::Data::use(host),
-            Poco::Data::use(port),
-            Poco::Data::use(username),
-            Poco::Data::use(password),
+            Poco::Data::use(proxy_host),
+            Poco::Data::use(proxy_port),
+            Poco::Data::use(proxy_username),
+            Poco::Data::use(proxy_password),
+            Poco::Data::use(use_idle_detection),
             Poco::Data::now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -1893,14 +1901,15 @@ error Database::initialize_tables() {
         return err;
     }
 
-    err = migrate("proxy_settings",
-        "create table proxy_settings("
+    err = migrate("settings",
+        "create table settings("
         "local_id integer primary key, "
         "use_proxy integer not null default 0, "
-        "host varchar, "
-        "port integer, "
-        "username varchar, "
-        "password varchar)");
+        "proxy_host varchar, "
+        "proxy_port integer, "
+        "proxy_username varchar, "
+        "proxy_password varchar, "
+        "use_idle_detection integer not null default 1)");
     if (err != noError) {
         return err;
     }
