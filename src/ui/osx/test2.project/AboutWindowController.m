@@ -58,6 +58,7 @@
 
 - (IBAction)checkForUpdateClicked:(id)sender {
   [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:self.update.URL]];
+  [[NSApplication sharedApplication] terminate:self];
 }
 
 -(void)eventHandler: (NSNotification *) notification
@@ -66,7 +67,10 @@
     self.update = nil;
     [self.checkForUpdateButton setEnabled:NO];
     [self.checkForUpdateButton setTitle:@"TogglDesktop is up to date."];
-  } else if ([notification.name isEqualToString:kUIStateUpdateAvailable]) {
+    return;
+  }
+  
+  if ([notification.name isEqualToString:kUIStateUpdateAvailable]) {
     self.update = notification.object;
     [self.checkForUpdateButton setEnabled:YES];
     NSString *title = [NSString stringWithFormat:@"Click here to download update! (%@)", self.update.version];
