@@ -17,6 +17,7 @@
 
 #include "./types.h"
 #include "./https_client.h"
+#include "./test_data.h"
 
 namespace kopsik {
 

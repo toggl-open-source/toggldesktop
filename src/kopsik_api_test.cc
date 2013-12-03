@@ -5,11 +5,11 @@
 
 #include "./kopsik_api.h"
 #include "./https_client.h"
+#include "./test_data.h"
 
 #include "Poco/FileStream.h"
 #include "Poco/File.h"
 
-const char *TESTDB = "test.db";
 const int ERRLEN = 1024;
 
 namespace kopsik {
@@ -31,14 +31,6 @@ namespace kopsik {
             std::string basic_auth_password,
             std::string *response_body));
     };
-
-    std::string meJSON() {
-        Poco::FileStream fis("testdata/me.json", std::ios::binary);
-        std::stringstream ss;
-        ss << fis.rdbuf();
-        fis.close();
-        return ss.str();
-    }
 
     void *create_test_context() {
         return kopsik_context_init("tests", "0.1");
@@ -141,7 +133,7 @@ namespace kopsik {
         kopsik_test_set_https_client(ctx,
             reinterpret_cast<void *>(mock_client));
 
-        std::string json = meJSON();
+        std::string json = loadTestData();
 
         // Login
         EXPECT_CALL(*mock_client, GetJSON(

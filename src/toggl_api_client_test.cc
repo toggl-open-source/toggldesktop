@@ -8,25 +8,15 @@
 #include "Poco/FileStream.h"
 #include "Poco/File.h"
 
-#define TESTDB "test.db"
-
 namespace kopsik {
 
-    std::string loadTestData() {
-        Poco::FileStream fis("testdata/me.json", std::ios::binary);
-        std::stringstream ss;
-        ss << fis.rdbuf();
-        fis.close();
-        return ss.str();
-    }
-
-    TEST(KopsikTest, TimeEntryReturnsTags) {
+    TEST(TogglApiClientTest, TimeEntryReturnsTags) {
         TimeEntry te;
         te.SetTags("alfa|beeta");
         ASSERT_EQ(std::string("alfa|beeta"), te.Tags());
     }
 
-    TEST(KopsikTest, ProjectsHaveColorCodes) {
+    TEST(TogglApiClientTest, ProjectsHaveColorCodes) {
         Project p;
         p.SetColor("1");
         ASSERT_EQ("#bc85e6", p.ColorCode());
@@ -40,7 +30,7 @@ namespace kopsik {
         ASSERT_EQ("#a4506c", p.ColorCode());
     }
 
-    TEST(KopsikTest, SaveAndLoadCurrentAPIToken) {
+    TEST(TogglApiClientTest, SaveAndLoadCurrentAPIToken) {
         Poco::File f(TESTDB);
         if (f.exists()) {
             f.remove(false);
@@ -71,7 +61,7 @@ namespace kopsik {
         ASSERT_EQ("", api_token_from_db);
     }
 
-    TEST(KopsikTest, UpdatesTimeEntryFromJSON) {
+    TEST(TogglApiClientTest, UpdatesTimeEntryFromJSON) {
         Poco::File f(TESTDB);
         if (f.exists()) {
             f.remove(false);
@@ -89,7 +79,7 @@ namespace kopsik {
         ASSERT_EQ("Changed", te->Description());
     }
 
-    TEST(KopsikTest, UpdatesTimeEntryFromFullUserJSON) {
+    TEST(TogglApiClientTest, UpdatesTimeEntryFromFullUserJSON) {
         Poco::File f(TESTDB);
         if (f.exists()) {
             f.remove(false);
@@ -115,7 +105,7 @@ namespace kopsik {
         ASSERT_EQ("Even more important!", te->Description());
     }
 
-    TEST(KopsikTest, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
+    TEST(TogglApiClientTest, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
         Poco::File f(TESTDB);
         if (f.exists()) {
             f.remove(false);
@@ -157,7 +147,8 @@ namespace kopsik {
         }
     }
 
-    TEST(KopsikTest, SavesModelsAndKnowsToUpdateWithSeparateUserInstances) {
+    TEST(TogglApiClientTest,
+            SavesModelsAndKnowsToUpdateWithSeparateUserInstances) {
         Poco::File f(TESTDB);
         if (f.exists()) {
             f.remove(false);
@@ -236,7 +227,7 @@ namespace kopsik {
         ASSERT_EQ(uint(3), n);
     }
 
-    TEST(KopsikTest, TestDeletionSteps) {
+    TEST(TogglApiClientTest, TestDeletionSteps) {
         Poco::File f(TESTDB);
         if (f.exists()) {
             f.remove(false);
@@ -274,14 +265,9 @@ namespace kopsik {
         }
     }
 
-    TEST(KopsikTest, SavesModels) {
-        Poco::FileStream fis("testdata/me.json", std::ios::binary);
-        ASSERT_TRUE(fis.good());
-        std::stringstream ss;
-        ss << fis.rdbuf();
-        fis.close();
+    TEST(TogglApiClientTest, SavesModels) {
         User user("kopsik_test", "0.1");
-        user.LoadFromJSONString(ss.str(), true, true);
+        user.LoadFromJSONString(loadTestData(), true, true);
 
         Poco::File f(TESTDB);
         if (f.exists()) {
@@ -340,13 +326,8 @@ namespace kopsik {
         ASSERT_EQ(noError, db.DeleteTask(&task));
     }
 
-    TEST(KopsikTest, ParsesAndSavesData) {
-        Poco::FileStream fis("testdata/me.json", std::ios::binary);
-        ASSERT_TRUE(fis.good());
-        std::stringstream ss;
-        ss << fis.rdbuf();
-        fis.close();
-        std::string json = ss.str();
+    TEST(TogglApiClientTest, ParsesAndSavesData) {
+        std::string json = loadTestData();
         ASSERT_FALSE(json.empty());
 
         User user("kopsik_test", "0.1");
@@ -554,7 +535,7 @@ namespace kopsik {
         ASSERT_EQ(Poco::UInt64(0), n);
     }
 
-    TEST(KopsikTest, ParsesDurationLikeOnTheWeb) {
+    TEST(TogglApiClientTest, ParsesDurationLikeOnTheWeb) {
         TimeEntry te;
 
         te.SetDurationString("00:00:15");
