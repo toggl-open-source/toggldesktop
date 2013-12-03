@@ -1,5 +1,5 @@
 //
-//  f8ppDelegate.m
+//  AppDelegate.m
 //  test2
 //
 //  Created by Alari on 9/15/13.
@@ -152,6 +152,11 @@ NSString *kTimeTotalUnknown = @"--:--";
                                            selector:@selector(eventHandler:)
                                                name:kUICommandContinue
                                              object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(eventHandler:)
+                                               name:kUIEventSettingsChanged
+                                             object:nil];
+
   kopsik_set_change_callback(ctx, on_model_change);
   
   char err[KOPSIK_ERR_LEN];
@@ -254,6 +259,11 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
 
 -(void)eventHandler: (NSNotification *) notification
 {
+  if ([notification.name isEqualToString:kUIEventSettingsChanged]) {
+    [self updateIdleDetectionTimer];
+    return;
+  }
+
   if ([notification.name isEqualToString:kUICommandShowPreferences]) {
     [self onPreferencesMenuItem:self];
     return;
@@ -526,6 +536,10 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
                                                         selector:@selector(statusItemTimerFired:)
                                                         userInfo:nil
                                                          repeats:YES];
+  [self updateIdleDetectionTimer];
+}
+
+- (void)updateIdleDetectionTimer {
   // Start idle detection, if its enabled
   KopsikSettings *settings = kopsik_settings_init();
   char err[KOPSIK_ERR_LEN];
@@ -533,8 +547,11 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
                                               err,
                                               KOPSIK_ERR_LEN,
                                               settings);
-  handle_error(res, err);
-  kopsik_settings_clear(settings);
+  if (KOPSIK_API_SUCCESS != res) {
+    kopsik_settings_clear(settings);
+    handle_error(res, err);
+    return;
+  }
   if (settings->UseIdleDetection) {
     NSLog(@"Starting idle detection");
     self.idleTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
@@ -543,8 +560,14 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
                                                     userInfo:nil
                                                      repeats:YES];
   } else {
-    NSLog(@"Idle detection is disabled");
+    NSLog(@"Idle detection is disabled. Stopping idle detection.");
+    if (self.idleTimer != nil) {
+      [self.idleTimer invalidate];
+      self.idleTimer = nil;
+    }
   }
+
+  kopsik_settings_clear(settings);
 }
 
 - (void)onNewMenuItem:(id)sender {

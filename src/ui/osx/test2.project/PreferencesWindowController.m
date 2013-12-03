@@ -10,6 +10,7 @@
 #import "kopsik_api.h"
 #import "ErrorHandler.h"
 #import "Context.h"
+#import "UIEvents.h"
 
 @interface PreferencesWindowController ()
 
@@ -145,6 +146,11 @@
                                               [username UTF8String],
                                               [password UTF8String],
                                               use_idle_detection);
-  handle_error(res, err);
+  if (KOPSIK_API_SUCCESS != res) {
+    handle_error(res, err);
+    return;
+  }
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventSettingsChanged
+                                                      object:nil];
 }
 @end
