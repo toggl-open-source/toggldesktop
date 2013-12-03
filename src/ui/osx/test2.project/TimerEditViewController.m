@@ -1,3 +1,4 @@
+
 //
 //  TimerEditViewController.m
 //  kopsik_ui_osx
@@ -89,8 +90,6 @@
     [self.projectTextField setStringValue:@""];
 
     self.time_entry.Description = [self.descriptionComboBox stringValue];
-    self.time_entry.TaskID = 0;
-    self.time_entry.ProjectID = 0;
 
     return;
   }

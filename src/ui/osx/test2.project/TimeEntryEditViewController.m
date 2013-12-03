@@ -275,7 +275,9 @@
 - (IBAction)descriptionTextFieldChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
-  const char *value = [[self.descriptionTextField stringValue] UTF8String];
+  NSString *stringValue = [self.descriptionTextField stringValue] ;
+  NSLog(@"descriptionTextFieldChanged, stringValue = %@", stringValue);
+  const char *value = [stringValue UTF8String];
   if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_description(ctx,
                                                               err,
                                                               KOPSIK_ERR_LEN,
