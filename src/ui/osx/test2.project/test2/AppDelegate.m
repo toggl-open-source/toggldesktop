@@ -526,11 +526,25 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
                                                         selector:@selector(statusItemTimerFired:)
                                                         userInfo:nil
                                                          repeats:YES];
-  self.idleTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                    target:self
-                                                  selector:@selector(idleTimerFired:)
-                                                  userInfo:nil
-                                                   repeats:YES];
+  // Start idle detection, if its enabled
+  KopsikSettings *settings = kopsik_settings_init();
+  char err[KOPSIK_ERR_LEN];
+  kopsik_api_result res = kopsik_get_settings(ctx,
+                                              err,
+                                              KOPSIK_ERR_LEN,
+                                              settings);
+  handle_error(res, err);
+  kopsik_settings_clear(settings);
+  if (settings->UseIdleDetection) {
+    NSLog(@"Starting idle detection");
+    self.idleTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                      target:self
+                                                    selector:@selector(idleTimerFired:)
+                                                    userInfo:nil
+                                                     repeats:YES];
+  } else {
+    NSLog(@"Idle detection is disabled");
+  }
 }
 
 - (void)onNewMenuItem:(id)sender {
