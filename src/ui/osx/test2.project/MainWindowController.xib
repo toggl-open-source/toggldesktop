@@ -17,20 +17,20 @@
         <customObject id="-3" userLabel="Application"/>
         <window title="Toggl Desktop" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" wantsToBeColor="NO" frameAutosaveName="MainWindow" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
-            <rect key="contentRect" x="196" y="240" width="250" height="350"/>
+            <rect key="contentRect" x="196" y="240" width="250" height="530"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
-            <value key="minSize" type="size" width="250" height="350"/>
+            <value key="minSize" type="size" width="250" height="530"/>
             <value key="maxSize" type="size" width="500" height="5000"/>
             <view key="contentView" id="2">
-                <rect key="frame" x="0.0" y="0.0" width="250" height="350"/>
+                <rect key="frame" x="0.0" y="0.0" width="250" height="530"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <customView hidden="YES" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Ld-I4-6Cu" userLabel="HeaderView">
-                        <rect key="frame" x="0.0" y="277" width="250" height="73"/>
+                        <rect key="frame" x="0.0" y="457" width="250" height="73"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
                     <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="av5-A6-9S5" userLabel="ContentView">
-                        <rect key="frame" x="0.0" y="0.0" width="250" height="277"/>
+                        <rect key="frame" x="0.0" y="180" width="250" height="277"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
                 </subviews>
