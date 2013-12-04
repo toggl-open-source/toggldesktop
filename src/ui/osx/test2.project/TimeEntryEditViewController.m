@@ -337,4 +337,12 @@
   return [self.autocompleteDataSource indexOfKey:aString];
 }
 
+- (void)controlTextDidChange:(NSNotification *)aNotification
+{
+  NSComboBox *box = [aNotification object];
+  NSString *filter = [box stringValue];
+  [self.autocompleteDataSource setFilter:filter];
+  [self.projectSelect reloadData];
+}
+
 @end

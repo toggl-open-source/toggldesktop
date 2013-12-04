@@ -159,6 +159,7 @@
                                         </comboBoxCell>
                                         <connections>
                                             <action selector="projectSelectChanged:" target="-2" id="4iY-oq-tBr"/>
+                                            <outlet property="delegate" destination="-2" id="fLh-Ie-pHZ"/>
                                         </connections>
                                     </comboBox>
                                     <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FuJ-v5-Y4l">
