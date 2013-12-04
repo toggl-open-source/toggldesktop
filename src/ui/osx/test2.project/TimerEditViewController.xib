@@ -47,13 +47,14 @@ DQ
                             <comboBox verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ITa-Jc-jOK">
                                 <rect key="frame" x="16" y="34" width="196" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="What are you working on?" drawsBackground="YES" usesDataSource="YES" numberOfVisibleItems="5" id="SSh-62-AYH">
+                                <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="What are you working on?" drawsBackground="YES" usesDataSource="YES" numberOfVisibleItems="5" id="SSh-62-AYH">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </comboBoxCell>
                                 <connections>
                                     <action selector="descriptionComboBoxChanged:" target="-2" id="w65-vA-OhX"/>
+                                    <outlet property="delegate" destination="-2" id="pE4-7B-qZA"/>
                                 </connections>
                             </comboBox>
                             <textField hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MEp-S6-Ci1">

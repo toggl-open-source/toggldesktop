@@ -113,4 +113,14 @@
   }
 }
 
+- (void)controlTextDidChange:(NSNotification *)aNotification
+{
+  NSComboBox *box = [aNotification object];
+  NSString *value = [box stringValue];
+  NSLog (@"controlTextDidChange, stringValue:%@", value);
+  [self.autocompleteDataSource setFilter:value];
+  [self.descriptionComboBox reloadData];
+}
+
+
 @end

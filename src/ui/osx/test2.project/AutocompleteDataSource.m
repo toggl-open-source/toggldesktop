@@ -24,10 +24,12 @@
 }
 
 - (NSString *)completedString:(NSString *)partialString {
-  for (NSString *text in self.autocompleteOrderedKeys) {
-    if ([[text commonPrefixWithString:partialString
-                              options:NSCaseInsensitiveSearch] length] == [partialString length]) {
-      return text;
+  @synchronized(self) {
+    for (NSString *text in self.autocompleteOrderedKeys) {
+      if ([[text commonPrefixWithString:partialString
+                                options:NSCaseInsensitiveSearch] length] == [partialString length]) {
+        return text;
+      }
     }
   }
   return @"";
@@ -35,7 +37,11 @@
 
 - (NSString *)get:(NSString *)key
 {
-  return [self.autocompleteDictionary objectForKey:key];
+  NSString *object = nil;
+  @synchronized(self) {
+    object = [self.autocompleteDictionary objectForKey:key];
+  }
+  return object;
 }
 
 - (void) fetch:(BOOL)withTimeEntries
@@ -74,17 +80,33 @@
 }
 
 - (NSUInteger)count {
-  return [self.autocompleteOrderedKeys count];
+  NSUInteger result = 0;
+  @synchronized(self) {
+    result = [self.autocompleteOrderedKeys count];
+  }
+  return result;
 }
 
 - (NSString *)keyAtIndex:(NSInteger)row
 {
-  return [self.autocompleteOrderedKeys objectAtIndex:row];
+  NSString *key = nil;
+  @synchronized(self) {
+    key = [self.autocompleteOrderedKeys objectAtIndex:row];
+  }
+  return key;
 }
 
 - (NSUInteger)indexOfKey:(NSString *)key
 {
-  return [self.autocompleteOrderedKeys indexOfObject:key];
+  NSUInteger index = 0;
+  @synchronized(self) {
+    return [self.autocompleteOrderedKeys indexOfObject:key];
+  }
+  return index;
+}
+
+- (void)setFilter:(NSString *)filter {
+  
 }
 
 @end

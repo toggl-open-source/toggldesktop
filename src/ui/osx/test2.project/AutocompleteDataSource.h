@@ -18,4 +18,5 @@
 - (NSUInteger)count;
 - (NSString *)keyAtIndex:(NSInteger)row;
 - (NSUInteger)indexOfKey:(NSString *)key;
+- (void)setFilter:(NSString *)filter;
 @end
