@@ -1997,6 +1997,15 @@ error TimeEntry::loadTagsFromJSONNode(JSONNODE *list) {
     return noError;
 }
 
+std::string Formatter::FormatDateWithTime(const std::time_t date) {
+    poco_assert(date);
+
+    Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
+    Poco::DateTime datetime(ts);
+
+    return Poco::DateTimeFormatter::format(ts, "%w %d. %b %H:%M:");
+}
+
 std::string Formatter::FormatDateHeader(const std::time_t date) {
     poco_assert(date);
 

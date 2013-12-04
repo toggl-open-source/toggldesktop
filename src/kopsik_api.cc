@@ -208,9 +208,12 @@ void time_entry_to_view_item(
   }
 
   poco_assert(!view_item->UpdatedAt);
-  std::string updated_at = te->UpdatedAtString();
-  if (!updated_at.empty()) {
-    view_item->UpdatedAt = strdup(updated_at.c_str());
+  if (te->UpdatedAt()) {
+    std::string updated_at =
+      kopsik::Formatter::FormatDateWithTime(te->UpdatedAt());
+    if (!updated_at.empty()) {
+      view_item->UpdatedAt = strdup(updated_at.c_str());
+    }
   }
 
   poco_assert(!view_item->DateHeader);

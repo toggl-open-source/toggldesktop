@@ -54,6 +54,7 @@ namespace kopsik {
             int *parsed_seconds);
         static std::string Format8601(const std::time_t date);
         static std::string FormatDateHeader(const std::time_t date);
+        static std::string FormatDateWithTime(const std::time_t date);
     };
 
     // FIXME: implement base class with common fields, dirtyness etc
