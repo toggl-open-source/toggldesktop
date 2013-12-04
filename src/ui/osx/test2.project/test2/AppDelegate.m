@@ -1010,6 +1010,7 @@ void check_for_updates_callback(kopsik_api_result result,
   }
   
   [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:update.URL]];
+  [NSApp terminate:nil];
 }
 
 //
