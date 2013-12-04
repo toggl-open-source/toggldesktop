@@ -91,7 +91,7 @@
     [self.tagsTokenField setObjectValue:item.tags];
   }
   
-  if (item.updatedAt != nil) {
+  if (item.updatedAt != nil && ![item.updatedAt isEqualToString:@"null"]) {
     [self.lastUpdateTextField setHidden:NO];
     [self.lastUpdateTextField setStringValue:item.updatedAt];
   } else {
