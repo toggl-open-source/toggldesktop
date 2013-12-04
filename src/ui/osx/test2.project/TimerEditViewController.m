@@ -77,6 +77,10 @@
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandNew
                                                       object:self.time_entry];
   self.time_entry = [[NewTimeEntry alloc] init];
+
+  // Reset autocomplete filter
+  [self.autocompleteDataSource setFilter:@""];
+  [self.descriptionComboBox reloadData];
 }
 
 - (IBAction)descriptionComboBoxChanged:(id)sender {
@@ -116,11 +120,9 @@
 - (void)controlTextDidChange:(NSNotification *)aNotification
 {
   NSComboBox *box = [aNotification object];
-  NSString *value = [box stringValue];
-  NSLog (@"controlTextDidChange, stringValue:%@", value);
-  [self.autocompleteDataSource setFilter:value];
+  NSString *filter = [box stringValue];
+  [self.autocompleteDataSource setFilter:filter];
   [self.descriptionComboBox reloadData];
 }
-
 
 @end

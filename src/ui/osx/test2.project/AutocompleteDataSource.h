@@ -10,8 +10,9 @@
 #import "AutocompleteItem.h"
 
 @interface AutocompleteDataSource : NSObject
-@property NSMutableArray *autocompleteOrderedKeys;
-@property NSMutableDictionary *autocompleteDictionary;
+@property NSMutableArray *orderedKeys;
+@property NSMutableArray *filteredOrderedKeys;
+@property NSMutableDictionary *dictionary;
 - (NSString *)completedString:(NSString *)partialString;
 - (void)fetch:(BOOL)withTimeEntries withTasks:(BOOL)withTasks withProjects:(BOOL)withProjects;
 - (AutocompleteItem *)get:(NSString *)key;

@@ -16,16 +16,17 @@
 - (id) init
 {
   self = [super init];
-  
-  self.autocompleteOrderedKeys = [[NSMutableArray alloc] init];
-  self.autocompleteDictionary = [[NSMutableDictionary alloc] init];
+
+  self.orderedKeys = [[NSMutableArray alloc] init];
+  self.filteredOrderedKeys = [[NSMutableArray alloc] init];
+  self.dictionary = [[NSMutableDictionary alloc] init];
   
   return self;
 }
 
 - (NSString *)completedString:(NSString *)partialString {
   @synchronized(self) {
-    for (NSString *text in self.autocompleteOrderedKeys) {
+    for (NSString *text in self.filteredOrderedKeys) {
       if ([[text commonPrefixWithString:partialString
                                 options:NSCaseInsensitiveSearch] length] == [partialString length]) {
         return text;
@@ -39,7 +40,7 @@
 {
   NSString *object = nil;
   @synchronized(self) {
-    object = [self.autocompleteDictionary objectForKey:key];
+    object = [self.dictionary objectForKey:key];
   }
   return object;
 }
@@ -64,17 +65,18 @@
   }
   
   @synchronized(self) {
-    [self.autocompleteOrderedKeys removeAllObjects];
-    [self.autocompleteDictionary removeAllObjects];
+    [self.orderedKeys removeAllObjects];
+    [self.dictionary removeAllObjects];
     for (int i = 0; i < list->Length; i++) {
       AutocompleteItem *item = [[AutocompleteItem alloc] init];
       [item load:list->ViewItems[i]];
       NSString *key = item.Text;
-      if ([self.autocompleteDictionary valueForKey:key] == nil) {
-        [self.autocompleteOrderedKeys addObject:key];
-        [self.autocompleteDictionary setObject:item forKey:key];
+      if ([self.dictionary valueForKey:key] == nil) {
+        [self.orderedKeys addObject:key];
+        [self.dictionary setObject:item forKey:key];
       }
     }
+    self.filteredOrderedKeys = [NSMutableArray arrayWithArray:self.orderedKeys];
   }
   kopsik_autocomplete_item_list_clear(list);
 }
@@ -82,7 +84,7 @@
 - (NSUInteger)count {
   NSUInteger result = 0;
   @synchronized(self) {
-    result = [self.autocompleteOrderedKeys count];
+    result = [self.filteredOrderedKeys count];
   }
   return result;
 }
@@ -91,7 +93,7 @@
 {
   NSString *key = nil;
   @synchronized(self) {
-    key = [self.autocompleteOrderedKeys objectAtIndex:row];
+    key = [self.filteredOrderedKeys objectAtIndex:row];
   }
   return key;
 }
@@ -100,13 +102,26 @@
 {
   NSUInteger index = 0;
   @synchronized(self) {
-    return [self.autocompleteOrderedKeys indexOfObject:key];
+    return [self.filteredOrderedKeys indexOfObject:key];
   }
   return index;
 }
 
 - (void)setFilter:(NSString *)filter {
-  
+  @synchronized(self) {
+    if (filter == nil || filter.length == 0) {
+      self.filteredOrderedKeys = [NSMutableArray arrayWithArray:self.orderedKeys];
+    } else {
+      NSMutableArray *filtered = [[NSMutableArray alloc] init];
+      for (int i = 0; i < self.orderedKeys.count; i++) {
+        NSString *key = self.orderedKeys[i];
+        if ([key rangeOfString:filter options:NSCaseInsensitiveSearch].location != NSNotFound) {
+          [filtered addObject:key];
+        }
+      }
+      self.filteredOrderedKeys = filtered;
+    }
+  }
 }
 
 @end
