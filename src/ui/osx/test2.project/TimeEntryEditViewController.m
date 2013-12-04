@@ -70,10 +70,13 @@
   [self.startDate setDateValue:item.started];
 
   [self.endTime setDateValue:item.ended];
+
   if (item.duration_in_seconds < 0) {
     [self.endTime setHidden:YES];
+    [self.startDate setEnabled:NO];
   } else {
     [self.endTime setHidden:NO];
+    [self.startDate setEnabled:YES];
   }
   
   if (YES == item.billable) {
