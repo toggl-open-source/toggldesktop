@@ -51,6 +51,10 @@
 
 - (void)render:(NSString *)view_item_guid {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+  // Reset autocomplete filter
+  [self.autocompleteDataSource setFilter:@""];
+  [self.projectSelect reloadData];
   
   NSAssert(view_item_guid != nil, @"GUID is nil");
   TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:view_item_guid];
