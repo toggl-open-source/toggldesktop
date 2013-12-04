@@ -57,16 +57,17 @@
     return;
   }
   
-  // FIXME: synchronize this
-  [self.autocompleteOrderedKeys removeAllObjects];
-  [self.autocompleteDictionary removeAllObjects];
-  for (int i = 0; i < list->Length; i++) {
-    AutocompleteItem *item = [[AutocompleteItem alloc] init];
-    [item load:list->ViewItems[i]];
-    NSString *key = item.Text;
-    if ([self.autocompleteDictionary valueForKey:key] == nil) {
-      [self.autocompleteOrderedKeys addObject:key];
-      [self.autocompleteDictionary setObject:item forKey:key];
+  @synchronized(self) {
+    [self.autocompleteOrderedKeys removeAllObjects];
+    [self.autocompleteDictionary removeAllObjects];
+    for (int i = 0; i < list->Length; i++) {
+      AutocompleteItem *item = [[AutocompleteItem alloc] init];
+      [item load:list->ViewItems[i]];
+      NSString *key = item.Text;
+      if ([self.autocompleteDictionary valueForKey:key] == nil) {
+        [self.autocompleteOrderedKeys addObject:key];
+        [self.autocompleteDictionary setObject:item forKey:key];
+      }
     }
   }
   kopsik_autocomplete_item_list_clear(list);
