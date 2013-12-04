@@ -231,7 +231,9 @@
 - (IBAction)dateChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   [self applyStartTime];
-  [self applyEndTime];
+  if (!self.endTime.isHidden) {
+    [self applyEndTime];
+  }
   kopsik_push_async(ctx, handle_error);
 }
 
