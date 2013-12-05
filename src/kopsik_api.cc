@@ -225,6 +225,32 @@ void time_entry_to_view_item(
   }
 }
 
+int kopsik_is_networking_error(const char *error) {
+  std::string value(error);
+  if (value.find("Host not found") != std::string::npos) {
+    return 1;
+  }
+  if (value.find("WebSocket Exception: Cannot upgrade to WebSocket connection: OK") != std::string::npos) {
+    return 1;
+  }
+  if (value.find("No message received") != std::string::npos) {
+    return 1;
+  }
+  if (value.find("Connection refused") != std::string::npos) {
+    return 1;
+  }
+  if (value.find("Connection timed out") != std::string::npos) {
+    return 1;
+  }
+  if (value.find("connect timed out") != std::string::npos) {
+    return 1;
+  }
+  if (value.find("SSL connection unexpectedly closed") != std::string::npos) {
+    return 1;
+  }
+  return 0;
+}
+
 // Context API.
 
 void *kopsik_context_init(const char *app_name, const char *app_version) {

@@ -17,6 +17,8 @@ extern "C" {
 typedef int kopsik_api_result;
 #define KOPSIK_API_SUCCESS 0
 
+KOPSIK_EXPORT int kopsik_is_networking_error(const char *error);
+
 // Context API.
 
 KOPSIK_EXPORT void *kopsik_context_init(

@@ -179,30 +179,11 @@
     // FIXME: move these error messages into lib, so we can reuse them in other platforms.
 
     // Ignore offline errors
-    if ([msg rangeOfString:@"Host not found"].location != NSNotFound) {
-      return;
-    }
-    if ([msg rangeOfString:@"WebSocket Exception: Cannot upgrade to WebSocket connection: OK"].location != NSNotFound) {
-      return;
-    }
-    if ([msg rangeOfString:@"No message received"].location != NSNotFound) {
-      return;
-    }
-    if ([msg rangeOfString:@"Connection refused"].location != NSNotFound) {
-      return;
-    }
-    if ([msg rangeOfString:@"Connection timed out"].location != NSNotFound) {
-      return;
-    }
-    if ([msg rangeOfString:@"connect timed out"].location != NSNotFound) {
-      return;
-    }
-    if ([msg rangeOfString:@"SSL connection unexpectedly closed"].location != NSNotFound) {
+    if (kopsik_is_networking_error([msg UTF8String])) {
       return;
     }
     
-    if ([msg rangeOfString:@"Request to server failed with status code: 403"].location != NSNotFound)
-    {
+    if ([msg rangeOfString:@"Request to server failed with status code: 403"].location != NSNotFound) {
       msg = @"It seems your login credentials have changed in Toggl.com. Please try to logout/login again from TogglDesktop.";
     }
     
