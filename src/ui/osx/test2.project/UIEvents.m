@@ -35,4 +35,4 @@ NSString *const kUICommandStopAt = @"Stop At";
 NSString *const kUICommandSplitAt = @"Split At";
 NSString *const kUICommandEditRunningTimeEntry = @"Edit Running Time Entry";
 
-float const kThrottleSeconds = 0.5;
+float const kThrottleSeconds = 0.1;
