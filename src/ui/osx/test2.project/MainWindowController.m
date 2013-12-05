@@ -176,9 +176,6 @@
     NSString *msg = notification.object;
     NSLog(@"Error: %@", msg);
 
-    // FIXME: move these error messages into lib, so we can reuse them in other platforms.
-
-    // Ignore offline errors
     if (kopsik_is_networking_error([msg UTF8String])) {
       return;
     }
@@ -198,6 +195,8 @@
 }
 
 - (void)showError:(NSString *)msg {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
   NSAlert *alert = [[NSAlert alloc] init];
   [alert setMessageText:msg];
   [alert addButtonWithTitle:@"Dismiss"];
