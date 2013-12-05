@@ -13,6 +13,7 @@
 @property NSMutableArray *orderedKeys;
 @property NSMutableArray *filteredOrderedKeys;
 @property NSMutableDictionary *dictionary;
+@property NSString *currentFilter;
 - (NSString *)completedString:(NSString *)partialString;
 - (void)fetch:(BOOL)withTimeEntries withTasks:(BOOL)withTasks withProjects:(BOOL)withProjects;
 - (AutocompleteItem *)get:(NSString *)key;

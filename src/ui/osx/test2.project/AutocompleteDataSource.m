@@ -76,8 +76,8 @@
         [self.dictionary setObject:item forKey:key];
       }
     }
-    self.filteredOrderedKeys = [NSMutableArray arrayWithArray:self.orderedKeys];
   }
+  [self setFilter:self.currentFilter];
   kopsik_autocomplete_item_list_clear(list);
 }
 
@@ -109,6 +109,7 @@
 
 - (void)setFilter:(NSString *)filter {
   @synchronized(self) {
+    self.currentFilter = filter;
     if (filter == nil || filter.length == 0) {
       self.filteredOrderedKeys = [NSMutableArray arrayWithArray:self.orderedKeys];
     } else {

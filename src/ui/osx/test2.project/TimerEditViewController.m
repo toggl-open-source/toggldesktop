@@ -32,6 +32,10 @@
                                                selector:@selector(eventHandler:)
                                                    name:kUIStateUserLoggedIn
                                                  object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUIEventModelChange
+                                                 object:nil];
       self.time_entry = [[NewTimeEntry alloc] init];
     }
     
@@ -43,16 +47,32 @@
   return [self.autocompleteDataSource completedString:partialString];
 }
 
+- (void)renderAutocomplete {
+  NSLog(@"TimerEditViewController renderAutoComplete");
+
+  [self.autocompleteDataSource fetch:YES withTasks:YES withProjects:YES];
+
+  if (self.descriptionComboBox.dataSource == nil) {
+    self.descriptionComboBox.usesDataSource = YES;
+    self.descriptionComboBox.dataSource = self;
+  }
+  [self.descriptionComboBox reloadData];
+}
+
 - (void)eventHandler: (NSNotification *) notification
 {
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    [self.autocompleteDataSource fetch:YES withTasks:YES withProjects:YES];
+    [self renderAutocomplete];
+    return;
+  }
 
-    if (self.descriptionComboBox.dataSource == nil) {
-      self.descriptionComboBox.usesDataSource = YES;
-      self.descriptionComboBox.dataSource = self;
-    }
-    [self.descriptionComboBox reloadData];
+  if ([notification.name isEqualToString:kUIEventModelChange]) {
+    // if client, project, task or non-tracking time entry has changed,
+    // we'll need to re-render the auto-complete.
+    // FIXME: this should be queued up somehow, because we'll get
+    // tens and hundreds of model change events when syncing.
+    [self renderAutocomplete];
+    return;
   }
 }
 
