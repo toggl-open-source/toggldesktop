@@ -19,7 +19,7 @@
 #import "DateHeader.h"
 
 @interface TimeEntryListViewController ()
-
+@property NSTimer *timerTimeEntriesRendering;
 @end
 
 @implementation TimeEntryListViewController
@@ -44,10 +44,12 @@
 
 -(void)renderTimeEntries
 {
-  NSLog(@"TimeEntryListViewController renderTimeEntries, thread %@", [NSThread currentThread]);
-  
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-  
+
+  NSLog(@"TimeEntryListViewController renderTimeEntries, thread %@", [NSThread currentThread]);  
+
+  self.timerTimeEntriesRendering = nil;
+
   char err[KOPSIK_ERR_LEN];
   KopsikTimeEntryViewItemList *list = kopsik_time_entry_view_item_list_init();
   if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(ctx, err, KOPSIK_ERR_LEN, list)) {
@@ -138,15 +140,33 @@
 
 -(void)eventHandler: (NSNotification *) notification
 {
-  // Handle log in: reload all time entries
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    [self performSelectorOnMainThread:@selector(renderTimeEntries) withObject:nil waitUntilDone:NO];
-  } else if ([notification.name isEqualToString:kUIEventModelChange]) {
+    [self performSelectorOnMainThread:@selector(scheduleRenderTimeEntries) withObject:nil waitUntilDone:NO];
+    return;
+  }
+
+  if ([notification.name isEqualToString:kUIEventModelChange]) {
     ModelChange *change = notification.object;
     // On all TE changes, just re-render the list. It's Simpler.
     if ([change.ModelType isEqualToString:@"time_entry"]) {
-      [self performSelectorOnMainThread:@selector(renderTimeEntries) withObject:nil waitUntilDone:NO];
+      [self performSelectorOnMainThread:@selector(scheduleRenderTimeEntries) withObject:nil waitUntilDone:NO];
     }
+    return;
+  }
+}
+
+- (void) scheduleRenderTimeEntries {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+  if (self.timerTimeEntriesRendering != nil) {
+    return;
+  }
+  @synchronized(self) {
+    self.timerTimeEntriesRendering = [NSTimer scheduledTimerWithTimeInterval:kThrottleSeconds
+                                                                       target:self
+                                                                     selector:@selector(renderTimeEntries)
+                                                                     userInfo:nil
+                                                                      repeats:NO];
   }
 }
 
