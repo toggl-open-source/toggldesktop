@@ -15,6 +15,7 @@
 #import "AutocompleteDataSource.h"
 #import "ConvertHexColor.h"
 #import "NewTimeEntry.h"
+#import "ModelChange.h"
 
 @interface TimerEditViewController ()
 @property AutocompleteDataSource *autocompleteDataSource;
@@ -81,8 +82,16 @@
 
 - (void)eventHandler: (NSNotification *) notification
 {
-  if ([notification.name isEqualToString:kUIStateUserLoggedIn] ||
-      [notification.name isEqualToString:kUIEventModelChange]) {
+  if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
+    [self performSelectorOnMainThread:@selector(scheduleAutocompleteRendering) withObject:nil waitUntilDone:NO];
+    return;
+  }
+
+  if ([notification.name isEqualToString:kUIEventModelChange]) {
+    ModelChange *mc = notification.object;
+    if ([mc.ModelType isEqualToString:@"tag"]) {
+      return; // Tags dont affect autocomplete
+    }
     [self performSelectorOnMainThread:@selector(scheduleAutocompleteRendering) withObject:nil waitUntilDone:NO];
     return;
   }

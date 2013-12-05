@@ -35,6 +35,10 @@
                                                selector:@selector(eventHandler:)
                                                    name:kUIStateUserLoggedIn
                                                  object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUIEventModelChange
+                                                 object:nil];
       self.autocompleteDataSource = [[AutocompleteDataSource alloc] init];
     }
     
@@ -114,6 +118,15 @@
   }
 
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
+    [self performSelectorOnMainThread:@selector(scheduleAutocompleteRendering) withObject:nil waitUntilDone:NO];
+    return;
+  }
+
+  if ([notification.name isEqualToString:kUIEventModelChange]) {
+    ModelChange *mc = notification.object;
+    if ([mc.ModelType isEqualToString:@"tag"]) {
+      return; // Tags dont affect autocomplete
+    }
     [self performSelectorOnMainThread:@selector(scheduleAutocompleteRendering) withObject:nil waitUntilDone:NO];
     return;
   }

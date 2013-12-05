@@ -146,11 +146,12 @@
   }
 
   if ([notification.name isEqualToString:kUIEventModelChange]) {
-    ModelChange *change = notification.object;
+    ModelChange *mc = notification.object;
     // On all TE changes, just re-render the list. It's Simpler.
-    if ([change.ModelType isEqualToString:@"time_entry"]) {
-      [self performSelectorOnMainThread:@selector(scheduleRenderTimeEntries) withObject:nil waitUntilDone:NO];
+    if ([mc.ModelType isEqualToString:@"tag"]) {
+      return;
     }
+    [self performSelectorOnMainThread:@selector(scheduleRenderTimeEntries) withObject:nil waitUntilDone:NO];
     return;
   }
 }
