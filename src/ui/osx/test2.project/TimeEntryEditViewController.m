@@ -18,6 +18,7 @@
 @interface TimeEntryEditViewController ()
 @property NSString *GUID;
 @property AutocompleteDataSource *autocompleteDataSource;
+@property NSTimer *timerAutocompleteRendering;
 @end
 
 @implementation TimeEntryEditViewController
@@ -49,8 +50,10 @@
   return [self.autocompleteDataSource completedString:partialString];
 }
 
-- (void)render:(NSString *)view_item_guid {
+- (void)renderTimeEntry:(NSString *)view_item_guid {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+  NSLog(@"TimeEntryEditViewController renderTimeEntry");
 
   // Reset autocomplete filter
   [self.autocompleteDataSource setFilter:@""];
@@ -106,21 +109,45 @@
 - (void)eventHandler: (NSNotification *) notification
 {
   if ([notification.name isEqualToString:kUIStateTimeEntrySelected]) {
-    [self render:notification.object];
+    [self performSelectorOnMainThread:@selector(renderTimeEntry:) withObject:notification.object waitUntilDone:NO];
     return;
   }
 
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    [self.autocompleteDataSource fetch:NO withTasks:YES withProjects:YES];
-    
-    if (self.projectSelect.dataSource == nil) {
-      self.projectSelect.usesDataSource = YES;
-      self.projectSelect.dataSource = self;
-    }
-    [self.projectSelect reloadData];
-
+    [self performSelectorOnMainThread:@selector(scheduleAutocompleteRendering) withObject:nil waitUntilDone:NO];
     return;
   }
+}
+
+- (void) scheduleAutocompleteRendering {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+  if (self.timerAutocompleteRendering != nil) {
+    return;
+  }
+  @synchronized(self) {
+    self.timerAutocompleteRendering = [NSTimer scheduledTimerWithTimeInterval:kThrottleSeconds
+                                                                       target:self
+                                                                     selector:@selector(renderAutocomplete)
+                                                                     userInfo:nil
+                                                                      repeats:NO];
+  }
+}
+
+- (void)renderAutocomplete {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+  NSLog(@"TimeEntryEditViewController renderAutocomplete");
+
+  self.timerAutocompleteRendering = nil;
+
+  [self.autocompleteDataSource fetch:NO withTasks:YES withProjects:YES];
+
+  if (self.projectSelect.dataSource == nil) {
+    self.projectSelect.usesDataSource = YES;
+    self.projectSelect.dataSource = self;
+  }
+  [self.projectSelect reloadData];
 }
 
 - (IBAction)durationTextFieldChanged:(id)sender {

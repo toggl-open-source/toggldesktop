@@ -230,7 +230,7 @@ int kopsik_is_networking_error(const char *error) {
   if (value.find("Host not found") != std::string::npos) {
     return 1;
   }
-  if (value.find("WebSocket Exception: Cannot upgrade to WebSocket connection: OK") != std::string::npos) {
+  if (value.find("WebSocket Exception: Cannot upgrade to WebSocket connection: OK") != std::string::npos) { // NOLINT
     return 1;
   }
   if (value.find("No message received") != std::string::npos) {
