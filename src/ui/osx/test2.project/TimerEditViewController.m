@@ -19,6 +19,7 @@
 @interface TimerEditViewController ()
 @property AutocompleteDataSource *autocompleteDataSource;
 @property NewTimeEntry *time_entry;
+@property NSTimer *timerAutocompleteRendering;
 @end
 
 @implementation TimerEditViewController
@@ -48,7 +49,11 @@
 }
 
 - (void)renderAutocomplete {
-  NSLog(@"TimerEditViewController renderAutoComplete");
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+  NSLog(@"TimerEditViewController renderAutocomplete");
+
+  self.timerAutocompleteRendering = nil;
 
   [self.autocompleteDataSource fetch:YES withTasks:YES withProjects:YES];
 
@@ -59,19 +64,26 @@
   [self.descriptionComboBox reloadData];
 }
 
-- (void)eventHandler: (NSNotification *) notification
-{
-  if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    [self renderAutocomplete];
+- (void) scheduleAutocompleteRendering {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+  if (self.timerAutocompleteRendering != nil) {
     return;
   }
+  @synchronized(self) {
+    self.timerAutocompleteRendering = [NSTimer scheduledTimerWithTimeInterval:kThrottleSeconds
+                                                                       target:self
+                                                                     selector:@selector(renderAutocomplete)
+                                                                     userInfo:nil
+                                                                      repeats:NO];
+  }
+}
 
-  if ([notification.name isEqualToString:kUIEventModelChange]) {
-    // if client, project, task or non-tracking time entry has changed,
-    // we'll need to re-render the auto-complete.
-    // FIXME: this should be queued up somehow, because we'll get
-    // tens and hundreds of model change events when syncing.
-    [self renderAutocomplete];
+- (void)eventHandler: (NSNotification *) notification
+{
+  if ([notification.name isEqualToString:kUIStateUserLoggedIn] ||
+      [notification.name isEqualToString:kUIEventModelChange]) {
+    [self performSelectorOnMainThread:@selector(scheduleAutocompleteRendering) withObject:nil waitUntilDone:NO];
     return;
   }
 }
