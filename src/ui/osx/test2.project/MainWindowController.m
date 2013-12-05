@@ -197,6 +197,9 @@
     if ([msg rangeOfString:@"connect timed out"].location != NSNotFound) {
       return;
     }
+    if ([msg rangeOfString:@"SSL connection unexpectedly closed"].location != NSNotFound) {
+      return;
+    }
     
     if ([msg rangeOfString:@"Request to server failed with status code: 403"].location != NSNotFound)
     {
