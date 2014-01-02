@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface NewTimeEntry : NSObject
-@property NSString *Description;
+@property (strong) NSString *Description;
 @property unsigned int TaskID;
 @property unsigned int ProjectID;
 @end

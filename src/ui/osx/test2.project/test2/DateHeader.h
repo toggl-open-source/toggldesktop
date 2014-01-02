@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface DateHeader : NSObject
-@property NSString *date;
-@property NSString *duration;
-@property NSDate *started;
+@property (strong) NSString *date;
+@property (strong) NSString *duration;
+@property (strong) NSDate *started;
 - (NSString *)description;
 @end

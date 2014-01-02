@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface Update : NSObject
-@property NSString *version;
-@property NSString *URL;
+@property (strong) NSString *version;
+@property (strong) NSString *URL;
 @end

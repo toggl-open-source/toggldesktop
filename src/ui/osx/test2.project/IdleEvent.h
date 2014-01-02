@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface IdleEvent : NSObject
-@property NSDate *started;
-@property NSDate *finished;
+@property (strong) NSDate *started;
+@property (strong) NSDate *finished;
 @property int seconds;
 @end

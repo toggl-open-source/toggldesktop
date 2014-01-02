@@ -14,16 +14,16 @@
 - (void)load:(KopsikTimeEntryViewItem *)data;
 + (TimeEntryViewItem *)findByGUID:(NSString *)guid;
 @property int duration_in_seconds;
-@property NSString *Description; // uppercase to avoid clash with [NSObject description]
-@property NSString *ProjectAndTaskLabel;
-@property NSString *duration;
-@property NSString *color;
-@property NSString *GUID;
+@property (strong) NSString *Description; // uppercase to avoid clash with [NSObject description]
+@property (strong) NSString *ProjectAndTaskLabel;
+@property (strong) NSString *duration;
+@property (strong) NSString *color;
+@property (strong) NSString *GUID;
 @property BOOL billable;
-@property NSDate *started;
-@property NSDate *ended;
-@property NSArray *tags;
-@property NSString *updatedAt;
-@property NSString *date;
-@property NSString *dateDuration;
+@property (strong) NSDate *started;
+@property (strong) NSDate *ended;
+@property (strong) NSArray *tags;
+@property (strong) NSString *updatedAt;
+@property (strong) NSString *date;
+@property (strong) NSString *dateDuration;
 @end

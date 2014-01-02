@@ -41,7 +41,7 @@ typedef BOOL (^BugsnagNotifyBlock)(BugsnagEvent*);
 @property (atomic, copy) NSString *notifierName;
 @property (atomic, copy) NSString *notifierVersion;
 @property (atomic, copy) NSString *notifierURL;
-@property (atomic) BugsnagConfiguration *configuration;
+@property (atomic, strong) BugsnagConfiguration *configuration;
 @property (atomic, readonly) NSString *errorPath;
 @property (atomic, readonly) NSString *userUUID;
 

@@ -12,6 +12,6 @@
 @interface User : NSObject
 - (void)load:(KopsikUser *)data;
 @property long ID;
-@property NSString *fullname;
+@property (strong) NSString *fullname;
 @property BOOL recordTimeline;
 @end

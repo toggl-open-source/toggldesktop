@@ -44,11 +44,11 @@
 
 // Need references to some menu items, we'll change them dynamically
 @property NSMenuItem *timelineMenuItem;
-@property (weak) IBOutlet NSMenuItem *mainWebsocketMenuItem;
-@property (weak) IBOutlet NSMenuItem *mainTimelineMenuItem;
+@property (strong) IBOutlet NSMenuItem *mainWebsocketMenuItem;
+@property (strong) IBOutlet NSMenuItem *mainTimelineMenuItem;
 
 // we'll be updating running TE as a menu item, too
-@property (weak) IBOutlet NSMenuItem *runningTimeEntryMenuItem;
+@property (strong) IBOutlet NSMenuItem *runningTimeEntryMenuItem;
 
 // Where logs are written and db is kept
 @property NSString *app_path;

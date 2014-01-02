@@ -11,8 +11,8 @@
 
 @interface ModelChange : NSObject
 - (void)load:(KopsikModelChange *)change;
-@property NSString *GUID;
-@property NSString *ModelType;
-@property NSString *ChangeType;
+@property (strong) NSString *GUID;
+@property (strong) NSString *ModelType;
+@property (strong) NSString *ChangeType;
 @property unsigned int ModelID;
 @end
