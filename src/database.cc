@@ -21,7 +21,9 @@
 
 namespace kopsik {
 
-error Database::DeleteUser(User *model, bool with_related_data) {
+error Database::DeleteUser(
+        User *model,
+        const bool with_related_data) {
     poco_assert(model);
 
     Poco::Mutex::ScopedLock lock(mutex_);
@@ -59,11 +61,13 @@ error Database::DeleteUser(User *model, bool with_related_data) {
     return noError;
 }
 
-error Database::deleteAllFromTableByUID(std::string table_name,
-        Poco::Int64 UID) {
+error Database::deleteAllFromTableByUID(
+        const std::string table_name,
+        const Poco::Int64 UID) {
     poco_assert(session);
     poco_assert(UID > 0);
     poco_assert(!table_name.empty());
+
     try {
         *session << "delete from " + table_name + " where uid = :uid",
             Poco::Data::use(UID),
@@ -78,11 +82,13 @@ error Database::deleteAllFromTableByUID(std::string table_name,
     return last_error();
 }
 
-error Database::deleteFromTable(std::string table_name,
-        Poco::Int64 local_id) {
+error Database::deleteFromTable(
+        const std::string table_name,
+        const Poco::Int64 local_id) {
     poco_assert(session);
     poco_assert(!table_name.empty());
     poco_assert(local_id);
+
     std::stringstream ss;
     ss << "Deleting from table " << table_name
         << ", local ID: " << local_id;
@@ -93,10 +99,6 @@ error Database::deleteFromTable(std::string table_name,
             " where local_id = :local_id",
             Poco::Data::use(local_id),
             Poco::Data::now;
-        error err = last_error();
-        if (err != noError) {
-            return err;
-        }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -104,11 +106,12 @@ error Database::deleteFromTable(std::string table_name,
     } catch(const std::string& ex) {
         return ex;
     }
-    return noError;
+    return last_error();
 }
 
 error Database::last_error() {
     poco_assert(session);
+
     Poco::Data::SessionImpl* impl = session->impl();
     Poco::Data::SQLite::SessionImpl* sqlite =
         static_cast<Poco::Data::SQLite::SessionImpl*>(impl);
@@ -126,7 +129,9 @@ std::string Database::generateGUID() {
     return uuid.toString();
 }
 
-error Database::LoadCurrentUser(User *user, bool with_related_data) {
+error Database::LoadCurrentUser(
+        User *user,
+        const bool with_related_data) {
     poco_assert(user);
 
     Poco::Mutex::ScopedLock lock(mutex_);
@@ -229,7 +234,9 @@ error Database::LoadSettings(
     return last_error();
 }
 
-error Database::LoadUserByAPIToken(const std::string api_token, User *model,
+error Database::LoadUserByAPIToken(
+        const std::string api_token,
+        User *model,
         const bool with_related_data) {
     poco_assert(session);
     poco_assert(model);
@@ -237,9 +244,9 @@ error Database::LoadUserByAPIToken(const std::string api_token, User *model,
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
+    Poco::UInt64 uid(0);
     model->SetAPIToken(api_token);
     try {
-        Poco::UInt64 uid(0);
         *session << "select id from users where api_token = :api_token",
             Poco::Data::into(uid),
             Poco::Data::use(api_token),
@@ -252,7 +259,6 @@ error Database::LoadUserByAPIToken(const std::string api_token, User *model,
         if (uid <= 0) {
             return noError;
         }
-        return LoadUserByID(uid, model, with_related_data);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -260,7 +266,7 @@ error Database::LoadUserByAPIToken(const std::string api_token, User *model,
     } catch(const std::string& ex) {
         return ex;
     }
-    return noError;
+    return LoadUserByID(uid, model, with_related_data);
 }
 
 error Database::loadUsersRelatedData(User *user) {
@@ -291,7 +297,9 @@ error Database::loadUsersRelatedData(User *user) {
     return loadTimeEntries(user->ID(), &user->related.TimeEntries);
 }
 
-error Database::LoadUserByID(const Poco::UInt64 UID, User *user,
+error Database::LoadUserByID(
+        const Poco::UInt64 UID,
+        User *user,
         const bool with_related_data) {
     poco_assert(user);
     poco_assert(session);
@@ -370,7 +378,9 @@ error Database::LoadUserByID(const Poco::UInt64 UID, User *user,
     return noError;
 }
 
-error Database::UInt(std::string sql, Poco::UInt64 *result) {
+error Database::UInt(
+        const std::string sql,
+        Poco::UInt64 *result) {
     poco_assert(session);
     poco_assert(result);
     poco_assert(!sql.empty());
@@ -390,10 +400,12 @@ error Database::UInt(std::string sql, Poco::UInt64 *result) {
     } catch(const std::string& ex) {
         return ex;
     }
-    return noError;
+    return last_error();
 }
 
-error Database::String(std::string sql, std::string *result) {
+error Database::String(
+        const std::string sql,
+        std::string *result) {
     poco_assert(session);
     poco_assert(result);
     poco_assert(!sql.empty());
@@ -413,10 +425,11 @@ error Database::String(std::string sql, std::string *result) {
     } catch(const std::string& ex) {
         return ex;
     }
-    return noError;
+    return last_error();
 }
 
-error Database::loadWorkspaces(Poco::UInt64 UID,
+error Database::loadWorkspaces(
+        const Poco::UInt64 UID,
         std::vector<Workspace *> *list) {
     poco_assert(UID > 0);
     poco_assert(list);
@@ -458,7 +471,9 @@ error Database::loadWorkspaces(Poco::UInt64 UID,
     return last_error();
 }
 
-error Database::loadClients(Poco::UInt64 UID, std::vector<Client *> *list) {
+error Database::loadClients(
+        const Poco::UInt64 UID,
+        std::vector<Client *> *list) {
     poco_assert(UID > 0);
     poco_assert(list);
 
@@ -502,7 +517,9 @@ error Database::loadClients(Poco::UInt64 UID, std::vector<Client *> *list) {
     return last_error();
 }
 
-error Database::loadProjects(Poco::UInt64 UID, std::vector<Project *> *list) {
+error Database::loadProjects(
+        const Poco::UInt64 UID,
+        std::vector<Project *> *list) {
     poco_assert(UID > 0);
     poco_assert(list);
 
@@ -549,7 +566,9 @@ error Database::loadProjects(Poco::UInt64 UID, std::vector<Project *> *list) {
     return last_error();
 }
 
-error Database::loadTasks(Poco::UInt64 UID, std::vector<Task *> *list) {
+error Database::loadTasks(
+        const Poco::UInt64 UID,
+        std::vector<Task *> *list) {
     poco_assert(UID > 0);
     poco_assert(list);
 
@@ -592,7 +611,9 @@ error Database::loadTasks(Poco::UInt64 UID, std::vector<Task *> *list) {
     return last_error();
 }
 
-error Database::loadTags(Poco::UInt64 UID, std::vector<Tag *> *list) {
+error Database::loadTags(
+        const Poco::UInt64 UID,
+        std::vector<Tag *> *list) {
     poco_assert(UID > 0);
     poco_assert(list);
 
@@ -635,7 +656,8 @@ error Database::loadTags(Poco::UInt64 UID, std::vector<Tag *> *list) {
     return last_error();
 }
 
-error Database::loadTimeEntries(Poco::UInt64 UID,
+error Database::loadTimeEntries(
+        const Poco::UInt64 UID,
         std::vector<TimeEntry *> *list) {
     poco_assert(UID > 0);
     poco_assert(list);
@@ -666,7 +688,8 @@ error Database::loadTimeEntries(Poco::UInt64 UID,
     return last_error();
 }
 
-error Database::loadTimeEntriesFromSQLStatement(Poco::Data::Statement *select,
+error Database::loadTimeEntriesFromSQLStatement(
+        Poco::Data::Statement *select,
         std::vector<TimeEntry *> *list) {
     poco_assert(select);
     poco_assert(list);
@@ -711,9 +734,10 @@ error Database::loadTimeEntriesFromSQLStatement(Poco::Data::Statement *select,
 }
 
 // FIXME: user generic saveModels instead, delete this
-error Database::saveWorkspaces(Poco::UInt64 UID,
-                               std::vector<Workspace *> *list,
-                               std::vector<ModelChange> *changes) {
+error Database::saveWorkspaces(
+        const Poco::UInt64 UID,
+        std::vector<Workspace *> *list,
+        std::vector<ModelChange> *changes) {
     poco_assert(UID > 0);
     poco_assert(list);
     for (std::vector<Workspace *>::iterator it = list->begin();
@@ -729,9 +753,10 @@ error Database::saveWorkspaces(Poco::UInt64 UID,
 }
 
 // FIXME: user generic saveModels instead, delete this
-error Database::saveClients(Poco::UInt64 UID,
-                            std::vector<Client *> *list,
-                            std::vector<ModelChange> *changes) {
+error Database::saveClients(
+        const Poco::UInt64 UID,
+        std::vector<Client *> *list,
+        std::vector<ModelChange> *changes) {
     poco_assert(UID > 0);
     poco_assert(list);
     for (std::vector<Client *>::iterator it = list->begin();
@@ -747,9 +772,10 @@ error Database::saveClients(Poco::UInt64 UID,
 }
 
 // FIXME: user generic saveModels instead, delete this
-error Database::saveProjects(Poco::UInt64 UID,
-                             std::vector<Project *> *list,
-                             std::vector<ModelChange> *changes) {
+error Database::saveProjects(
+        const Poco::UInt64 UID,
+         std::vector<Project *> *list,
+         std::vector<ModelChange> *changes) {
     poco_assert(UID > 0);
     poco_assert(list);
     for (std::vector<Project *>::iterator it = list->begin();
@@ -765,9 +791,10 @@ error Database::saveProjects(Poco::UInt64 UID,
 }
 
 // FIXME: user generic saveModels instead, delete this
-error Database::saveTasks(Poco::UInt64 UID,
-                          std::vector<Task *> *list,
-                          std::vector<ModelChange> *changes) {
+error Database::saveTasks(
+        const Poco::UInt64 UID,
+        std::vector<Task *> *list,
+        std::vector<ModelChange> *changes) {
     poco_assert(UID > 0);
     poco_assert(list);
     for (std::vector<Task *>::iterator it = list->begin();
@@ -783,9 +810,10 @@ error Database::saveTasks(Poco::UInt64 UID,
 }
 
 // FIXME: user generic saveModels instead, delete this
-error Database::saveTags(Poco::UInt64 UID,
-                         std::vector<Tag *> *list,
-                         std::vector<ModelChange> *changes) {
+error Database::saveTags(
+        const Poco::UInt64 UID,
+        std::vector<Tag *> *list,
+        std::vector<ModelChange> *changes) {
     poco_assert(UID > 0);
     poco_assert(list);
     for (std::vector<Tag *>::iterator it = list->begin();
@@ -801,7 +829,8 @@ error Database::saveTags(Poco::UInt64 UID,
 }
 
 // FIXME: make this generic saveModels or similar
-error Database::saveTimeEntries(Poco::UInt64 UID,
+error Database::saveTimeEntries(
+        const Poco::UInt64 UID,
         std::vector<TimeEntry *> *list,
         std::vector<ModelChange> *changes) {
     poco_assert(UID > 0);
@@ -856,7 +885,8 @@ error Database::saveTimeEntries(Poco::UInt64 UID,
     return noError;
 }
 
-error Database::SaveTimeEntry(TimeEntry *model,
+error Database::SaveTimeEntry(
+        TimeEntry *model,
         std::vector<ModelChange> *changes) {
     poco_assert(model);
     poco_assert(session);
@@ -1035,7 +1065,8 @@ error Database::SaveTimeEntry(TimeEntry *model,
     return noError;
 }
 
-error Database::SaveWorkspace(Workspace *model,
+error Database::SaveWorkspace(
+        Workspace *model,
         std::vector<ModelChange> *changes) {
     poco_assert(model);
     poco_assert(session);
@@ -1102,7 +1133,8 @@ error Database::SaveWorkspace(Workspace *model,
     return noError;
 }
 
-error Database::SaveClient(Client *model,
+error Database::SaveClient(
+        Client *model,
         std::vector<ModelChange> *changes) {
     poco_assert(model);
     poco_assert(session);
@@ -1198,7 +1230,8 @@ error Database::SaveClient(Client *model,
     return noError;
 }
 
-error Database::SaveProject(Project *model,
+error Database::SaveProject(
+        Project *model,
         std::vector<ModelChange> *changes) {
     poco_assert(model);
     poco_assert(session);
@@ -1317,7 +1350,8 @@ error Database::SaveProject(Project *model,
     return noError;
 }
 
-error Database::SaveTask(Task *model,
+error Database::SaveTask(
+        Task *model,
         std::vector<ModelChange> *changes) {
     poco_assert(model);
     poco_assert(session);
@@ -1388,7 +1422,8 @@ error Database::SaveTask(Task *model,
     return noError;
 }
 
-error Database::SaveTag(Tag *model,
+error Database::SaveTag(
+        Tag *model,
         std::vector<ModelChange> *changes    ) {
     poco_assert(model);
     poco_assert(session);
@@ -1484,7 +1519,9 @@ error Database::SaveTag(Tag *model,
     return noError;
 }
 
-error Database::SaveUser(User *model, bool with_related_data,
+error Database::SaveUser(
+        User *model,
+        const bool with_related_data,
         std::vector<ModelChange> *changes) {
     poco_assert(model);
     poco_assert(session);
@@ -2051,7 +2088,9 @@ error Database::SaveDesktopID() {
     return last_error();
 }
 
-error Database::migrate(std::string name, std::string sql) {
+error Database::migrate(
+        const std::string name,
+        const std::string sql) {
     poco_assert(session);
     poco_assert(!name.empty());
     poco_assert(!sql.empty());
@@ -2079,7 +2118,7 @@ error Database::migrate(std::string name, std::string sql) {
     return last_error();
 }
 
-void Database::select_timeline_batch(
+error Database::select_timeline_batch(
         const int user_id,
         std::vector<TimelineEvent> *timeline_events) {
     std::stringstream out;
@@ -2091,11 +2130,12 @@ void Database::select_timeline_batch(
     poco_assert(timeline_events->empty());
     if (!session) {
         logger.warning("select_batch database is not open, ignoring request");
-        return;
+        return noError;
     }
     Poco::Data::Statement select(*session);
     select << "SELECT id, title, filename, start_time, end_time, idle "
-        "FROM timeline_events WHERE user_id = :user_id LIMIT 100",
+        "FROM timeline_events WHERE user_id = :user_id "
+        "LIMIT 100",
         Poco::Data::use(user_id);
     Poco::Data::RecordSet rs(select);
     while (!select.done()) {
@@ -2119,9 +2159,11 @@ void Database::select_timeline_batch(
     event_count << "select_batch found " << timeline_events->size()
         <<  " events.";
     logger.debug(event_count.str());
+
+    return last_error();
 }
 
-void Database::insert_timeline_event(const TimelineEvent& event) {
+error Database::insert_timeline_event(const TimelineEvent& event) {
     std::stringstream out;
     out << "insert " << event.start_time << ";" << event.end_time << ";"
         << event.filename << ";" << event.title;
@@ -2133,7 +2175,7 @@ void Database::insert_timeline_event(const TimelineEvent& event) {
     poco_assert(event.end_time > 0);
     if (!session) {
         logger.information("insert database is not open, ignoring request");
-        return;
+        return noError;
     }
     *session << "INSERT INTO timeline_events("
         "user_id, title, filename, start_time, end_time, idle"
@@ -2147,9 +2189,10 @@ void Database::insert_timeline_event(const TimelineEvent& event) {
         Poco::Data::use(event.end_time),
         Poco::Data::use(event.idle),
         Poco::Data::now;
+    return last_error();
 }
 
-void Database::delete_timeline_batch(
+error Database::delete_timeline_batch(
         const std::vector<TimelineEvent> &timeline_events) {
     std::stringstream out;
     out << "delete_batch " << timeline_events.size() << " events.";
@@ -2159,7 +2202,7 @@ void Database::delete_timeline_batch(
     poco_assert(!timeline_events.empty());
     if (!session) {
         logger.warning("delete_batch database is not open, ignoring request");
-        return;
+        return noError;
     }
     std::vector<int> ids;
     for (std::vector<TimelineEvent>::const_iterator i = timeline_events.begin();
@@ -2171,6 +2214,7 @@ void Database::delete_timeline_batch(
     *session << "DELETE FROM timeline_events WHERE id = :id",
         Poco::Data::use(ids),
         Poco::Data::now;
+    return last_error();
 }
 
 void Database::handleTimelineEventNotification(

@@ -84,9 +84,13 @@ class Database {
 
         error LoadUserByID(const Poco::UInt64 UID, User *user,
             const bool with_related_data);
-        error LoadUserByAPIToken(const std::string api_token, User *user,
+        error LoadUserByAPIToken(
+            const std::string api_token,
+            User *user,
             const bool with_related_data);
-        error LoadCurrentUser(User *user, const bool with_related_data);
+        error LoadCurrentUser(
+            User *user,
+            const bool with_related_data);
 
         error LoadSettings(
             int *use_proxy,
@@ -103,8 +107,12 @@ class Database {
             const std::string proxy_password,
             const int use_idle_detection);
 
-        error UInt(std::string sql, Poco::UInt64 *result);
-        error String(std::string sql, std::string *result);
+        error UInt(
+            const std::string sql,
+            Poco::UInt64 *result);
+        error String(
+            const std::string sql,
+            std::string *result);
 
         error SaveUser(User *user, bool with_related_data,
             std::vector<ModelChange> *changes);
@@ -139,49 +147,75 @@ class Database {
 
     private:
         error initialize_tables();
-        error migrate(std::string name, std::string sql);
+        error migrate(
+            const std::string name,
+            const std::string sql);
         error last_error();
 
-        std::string generateGUID();
+        static std::string generateGUID();
 
         error loadUsersRelatedData(User *user);
 
-        error loadWorkspaces(Poco::UInt64 UID, std::vector<Workspace *> *list);
-        error loadClients(Poco::UInt64 UID, std::vector<Client *> *list);
-        error loadProjects(Poco::UInt64 UID, std::vector<Project *> *list);
-        error loadTasks(Poco::UInt64 UID, std::vector<Task *> *list);
-        error loadTags(Poco::UInt64 UID, std::vector<Tag *> *list);
-        error loadTimeEntries(Poco::UInt64 UID, std::vector<TimeEntry *> *list);
-
-        error loadTimeEntriesFromSQLStatement(Poco::Data::Statement *select,
+        error loadWorkspaces(
+            const Poco::UInt64 UID,
+            std::vector<Workspace *> *list);
+        error loadClients(
+            const Poco::UInt64 UID,
+            std::vector<Client *> *list);
+        error loadProjects(
+            const Poco::UInt64 UID,
+            std::vector<Project *> *list);
+        error loadTasks(
+            const Poco::UInt64 UID,
+            std::vector<Task *> *list);
+        error loadTags(
+            const Poco::UInt64 UID,
+            std::vector<Tag *> *list);
+        error loadTimeEntries(
+            const Poco::UInt64 UID,
             std::vector<TimeEntry *> *list);
 
-        error saveWorkspaces(Poco::UInt64 UID,
+        error loadTimeEntriesFromSQLStatement(
+            Poco::Data::Statement *select,
+            std::vector<TimeEntry *> *list);
+
+        error saveWorkspaces(
+            const Poco::UInt64 UID,
             std::vector<Workspace *> *list,
             std::vector<ModelChange> *changes);
-        error saveClients(Poco::UInt64 UID,
+        error saveClients(
+            const Poco::UInt64 UID,
             std::vector<Client *> *list,
             std::vector<ModelChange> *changes);
-        error saveProjects(Poco::UInt64 UID,
+        error saveProjects(
+            const Poco::UInt64 UID,
             std::vector<Project *> *list,
             std::vector<ModelChange> *changes);
-        error saveTasks(Poco::UInt64 UID,
+        error saveTasks(
+            const Poco::UInt64 UID,
             std::vector<Task *> *list,
             std::vector<ModelChange> *changes);
-        error saveTags(Poco::UInt64 UID,
+        error saveTags(
+            const Poco::UInt64 UID,
             std::vector<Tag *> *list,
             std::vector<ModelChange> *changes);
-        error saveTimeEntries(Poco::UInt64 UID,
+        error saveTimeEntries(
+            const Poco::UInt64 UID,
             std::vector<TimeEntry *> *list,
             std::vector<ModelChange> *changes);
 
-        error deleteFromTable(std::string table_name, Poco::Int64 local_id);
-        error deleteAllFromTableByUID(std::string table_name, Poco::Int64 UID);
+        error deleteFromTable(
+            const std::string table_name,
+            const Poco::Int64 local_id);
+        error deleteAllFromTableByUID(
+            const std::string table_name,
+            const Poco::Int64 UID);
 
-        void insert_timeline_event(const TimelineEvent& info);
-        void select_timeline_batch(const int user_id,
+        error insert_timeline_event(const TimelineEvent& info);
+        error select_timeline_batch(
+            const int user_id,
             std::vector<TimelineEvent> *timeline_events);
-        void delete_timeline_batch(
+        error delete_timeline_batch(
             const std::vector<TimelineEvent> &timeline_events);
 
         Poco::Data::Session *session;
