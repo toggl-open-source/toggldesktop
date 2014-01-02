@@ -9,6 +9,9 @@ GTEST_ROOT=third_party/googletest-read-only
 GMOCK_DIR=third_party/gmock-1.7.0
 jsondir=third_party/libjson
 
+oclintbin=./third_party/oclint-0.7-x86_64-apple-darwin-10/bin/oclint
+oclintflags=-fatal-assembler-warnings -max-priority-3 0 -max-priority-2 0 -max-priority-1 0 -- -c -Isrc/ui/osx/test2.project -Werror
+
 main=toggl
 
 ifeq ($(uname), Darwin)
@@ -208,3 +211,6 @@ poco:
 stats:
 	rm -rf gitstats
 	./third_party/gitstats/gitstats -c merge_authors="Tanel","Tanel Lebedev" . gitstats
+
+oclint:
+	$(oclintbin) src/ui/osx/test2.project/test2/AppDelegate.m $(oclintflags)
