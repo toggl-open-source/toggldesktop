@@ -63,8 +63,7 @@ int blink = 0;
 
 NSString *kTimeTotalUnknown = @"--:--";
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   NSLog(@"applicationDidFinishLaunching");
   
   self.mainWindowController = [[MainWindowController alloc] initWithWindowNibName:@"MainWindowController"];
@@ -182,7 +181,7 @@ NSString *kTimeTotalUnknown = @"--:--";
   }
  
   NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
-  NSNumber* checkEnabled = [infoDict objectForKey:@"KopsikCheckForUpdates"];
+  NSNumber* checkEnabled = infoDict[@"KopsikCheckForUpdates"];
   if ([checkEnabled boolValue]) {
     [self checkForUpdates];
   }
@@ -201,8 +200,7 @@ NSString *kTimeTotalUnknown = @"--:--";
   NSLog(@"stopWebSocket done");
 }
 
-- (void)updateWebSocketConnectedState:(BOOL)state
-{
+- (void)updateWebSocketConnectedState:(BOOL)state {
   self.websocketConnected = state;
   if (self.websocketConnected) {
     [self.mainWebsocketMenuItem setTitle:kMenuItemTitleDisconnectWebSocket];
@@ -644,8 +642,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   [self.mainWindowController.window close];
 }
 
-- (IBAction)onTimelineMenuItem:(id)sender
-{
+- (IBAction)onTimelineMenuItem:(id)sender {
   if (self.timelineRecording) {
     [self stopTimeline];
     return;
@@ -653,8 +650,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   [self startTimeline];
 }
 
-- (IBAction)onWebSocketMenuItem:(id)sender
-{
+- (IBAction)onWebSocketMenuItem:(id)sender {
   if (self.websocketConnected) {
     [self stopWebSocket];
     return;
@@ -666,8 +662,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   [[NSApplication sharedApplication] terminate:self];
 }
 
-- (void)applicationWillTerminate:(NSNotification *)app
-{
+- (void)applicationWillTerminate:(NSNotification *)app {
   NSLog(@"applicationWillTerminate, shutting down websocket");
   [self.preferencesWindowController.window close];
   kopsik_context_clear(ctx);
@@ -680,15 +675,14 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   return YES;
 }
 
-- (NSString *)applicationSupportDirectory
-{
+- (NSString *)applicationSupportDirectory {
   NSString *path;
   NSError *error;
   NSArray* paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
   if ([paths count] == 0) {
     NSLog(@"Unable to access application support directory!");
   }
-  path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"Kopsik"];
+  path = [paths[0] stringByAppendingPathComponent:@"Kopsik"];
   
 	if (![[NSFileManager defaultManager] fileExistsAtPath:path]){
 		if (![[NSFileManager defaultManager] createDirectoryAtPath:path
@@ -716,11 +710,11 @@ const NSString *appName = @"osx_native_app";
   }
   
   NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
-  NSString* version = [infoDict objectForKey:@"CFBundleShortVersionString"];
+  NSString* version = infoDict[@"CFBundleShortVersionString"];
   ctx = kopsik_context_init([appName UTF8String], [version UTF8String]);
 
   [Bugsnag startBugsnagWithApiKey:@"2a46aa1157256f759053289f2d687c2f"];
-  NSString* environment = [infoDict objectForKey:@"KopsikEnvironment"];
+  NSString* environment = infoDict[@"KopsikEnvironment"];
   NSAssert(environment != nil, @"Missing environment in plist");
   [Bugsnag configuration].releaseStage = environment;
 
@@ -734,14 +728,14 @@ const NSString *appName = @"osx_native_app";
   NSString *log_level = @"debug";
   
   for (int i = 1; i < arguments.count; i++) {
-    NSString *argument = [arguments objectAtIndex:i];
+    NSString *argument = arguments[i];
 
     if ([argument rangeOfString:@"email"].location != NSNotFound) {
-      defaultEmail = [arguments objectAtIndex:i+1];
+      defaultEmail = arguments[i+1];
       continue;
     }
     if ([argument rangeOfString:@"password"].location != NSNotFound) {
-      defaultPassword = [arguments objectAtIndex:i+1];
+      defaultPassword = arguments[i+1];
       continue;
     }
     if (([argument rangeOfString:@"force"].location != NSNotFound) &&
@@ -752,32 +746,32 @@ const NSString *appName = @"osx_native_app";
     }
     if (([argument rangeOfString:@"log"].location != NSNotFound) &&
         ([argument rangeOfString:@"path"].location != NSNotFound)) {
-      log_path = [arguments objectAtIndex:i+1];
+      log_path = arguments[i+1];
       NSLog(@"log path overriden with '%@'", log_path);
       continue;
     }
     if (([argument rangeOfString:@"db"].location != NSNotFound) &&
         ([argument rangeOfString:@"path"].location != NSNotFound)) {
-      db_path = [arguments objectAtIndex:i+1];
+      db_path = arguments[i+1];
       NSLog(@"db path overriden with '%@'", db_path);
       continue;
     }
     if (([argument rangeOfString:@"log"].location != NSNotFound) &&
         ([argument rangeOfString:@"level"].location != NSNotFound)) {
-      log_level = [arguments objectAtIndex:i+1];
+      log_level = arguments[i+1];
       NSLog(@"log level overriden with '%@'", log_level);
       continue;
     }
     if (([argument rangeOfString:@"api"].location != NSNotFound) &&
         ([argument rangeOfString:@"url"].location != NSNotFound)) {
-      NSString *url = [arguments objectAtIndex:i+1];
+      NSString *url = arguments[i+1];
       kopsik_set_api_url(ctx, [url UTF8String]);
       NSLog(@"API URL overriden with '%@'", url);
       continue;
     }
     if (([argument rangeOfString:@"websocket"].location != NSNotFound) &&
         ([argument rangeOfString:@"url"].location != NSNotFound)) {
-      NSString *url = [arguments objectAtIndex:i+1];
+      NSString *url = arguments[i+1];
       kopsik_set_websocket_url(ctx, [url UTF8String]);
       NSLog(@"Websocket URL overriden with '%@'", url);
       continue;
@@ -800,7 +794,8 @@ const NSString *appName = @"osx_native_app";
   kopsik_set_log_level(ctx, [log_level UTF8String]);
   NSLog(@"Log level set to %@", log_level);
   
-  if ([[infoDict objectForKey:@"KopsikLogUserInterfaceToFile"] boolValue]) {
+  id logToFile = infoDict[@"KopsikLogUserInterfaceToFile"];
+  if ([logToFile boolValue]) {
     NSLog(@"Redirecting UI log to file");
     NSString *logPath = [self.app_path stringByAppendingPathComponent:@"ui.log"];
     freopen([logPath fileSystemRepresentation],"a+",stderr);
