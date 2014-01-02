@@ -9,9 +9,9 @@
 #import <Cocoa/Cocoa.h>
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
-@property NSStatusItem *statusItem;
-@property NSImage* onImage;
-@property NSImage* offImage;
+@property (strong) NSStatusItem *statusItem;
+@property (strong) NSImage* onImage;
+@property (strong) NSImage* offImage;
 - (IBAction)onPreferencesMenuItem:(id)sender;
 - (IBAction)onAboutMenuItem:(id)sender;
 - (IBAction)onSyncMenuItem:(id)sender;
