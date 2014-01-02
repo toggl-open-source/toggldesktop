@@ -52,7 +52,6 @@ void model_change_clear(KopsikModelChange *change) {
     change->GUID = 0;
   }
   delete change;
-  change = 0;
 }
 
 void model_change_to_change_item(
@@ -230,7 +229,8 @@ int kopsik_is_networking_error(const char *error) {
   if (value.find("Host not found") != std::string::npos) {
     return 1;
   }
-  if (value.find("WebSocket Exception: Cannot upgrade to WebSocket connection: OK") != std::string::npos) { // NOLINT
+  if (value.find("Cannot upgrade to WebSocket connection")
+      != std::string::npos) { // NOLINT
     return 1;
   }
   if (value.find("No message received") != std::string::npos) {
@@ -356,7 +356,6 @@ void kopsik_settings_clear(KopsikSettings *settings) {
     settings->ProxyPassword = 0;
   }
   delete settings;
-  settings = 0;
 }
 
 kopsik_api_result kopsik_get_settings(void *context,
@@ -563,7 +562,6 @@ void kopsik_user_clear(KopsikUser *user) {
   }
   user->RecordTimeline = 0;
   delete user;
-  user = 0;
 }
 
 kopsik_api_result kopsik_current_user(
@@ -987,7 +985,6 @@ void kopsik_autocomplete_item_list_clear(
     free(list->ViewItems);
   }
   delete list;
-  list = 0;
 }
 
 bool isTimeEntry(KopsikAutocompleteItem *n) {
@@ -1259,7 +1256,6 @@ void kopsik_time_entry_view_item_clear(KopsikTimeEntryViewItem *item) {
     item->DateHeader = 0;
   }
   delete item;
-  item = 0;
 }
 
 void kopsik_format_duration_in_seconds_hhmmss(
@@ -1938,7 +1934,6 @@ void kopsik_time_entry_view_item_list_clear(
     free(in_list->ViewItems);
   }
   delete in_list;
-  in_list = 0;
 }
 
 kopsik_api_result kopsik_time_entry_view_items(

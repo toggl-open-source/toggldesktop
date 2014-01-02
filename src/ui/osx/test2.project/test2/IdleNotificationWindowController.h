@@ -10,7 +10,7 @@
 #import "IdleEvent.h"
 
 @interface IdleNotificationWindowController : NSWindowController
-@property (weak) IBOutlet NSTextField *informationTextField;
+@property (strong) IBOutlet NSTextField *informationTextField;
 - (IBAction)stopButtonClicked:(id)sender;
 - (IBAction)splitButtonClicked:(id)sender;
 - (IBAction)ignoreButtonClicked:(id)sender;

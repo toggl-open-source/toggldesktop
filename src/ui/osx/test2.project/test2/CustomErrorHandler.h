@@ -1,0 +1,28 @@
+//
+//  CustomerErrorHandler.h
+//  kopsik
+//
+//  Created by Tanel Lebedev on 26/12/2013.
+//  Copyright (c) 2013 kopsik developers. All rights reserved.
+//
+
+#ifndef CUSTOMERRORHANDLER_H_
+#define CUSTOMERRORHANDLER_H_
+
+#include "Poco/ErrorHandler.h"
+#include <iostream> // NOLINT
+
+class CustomErrorHandler : public Poco::ErrorHandler {
+ public:
+  void exception(const Poco::Exception& exc) {
+    std::cerr << exc.displayText() << std::endl;
+  }
+  void exception(const std::exception& exc) {
+    std::cerr << exc.what() << std::endl;
+  }
+  void exception() {
+    std::cerr << "unknown exception" << std::endl;
+  }
+};
+
+#endif  // CUSTOMERRORHANDLER_H_

@@ -193,7 +193,7 @@ error Database::LoadSettings(
     return last_error();
 }
 
-  error Database::SaveSettings(
+error Database::SaveSettings(
         const int use_proxy,
         const std::string proxy_host,
         const unsigned int proxy_port,

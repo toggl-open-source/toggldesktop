@@ -17,6 +17,15 @@ oclintflags=-fatal-assembler-warnings -max-priority-3 0 -max-priority-2 0 -max-p
 	-Ithird_party/bugsnag-cocoa/bugsnag \
 	-Isrc/ui/osx/test2.project/test2 \
 	-Ithird_party/PLCrashReporter/Mac\ OS\ X\ Framework/CrashReporter.framework/Versions/Current/Headers \
+	-I$(pocodir)/Foundation/include \
+	-I$(pocodir)/Util/include \
+	-I$(pocodir)/Data/include \
+	-I$(pocodir)/Data/SQLite/include \
+	-I$(pocodir)/Crypto/include \
+	-I$(pocodir)/Net/include \
+	-I$(pocodir)/NetSSL_OpenSSL/include \
+	-I$(jsondir) \
+	-DNDEBUG \
 	-Werror
 
 main=toggl
@@ -32,7 +41,7 @@ osname=linux
 endif
 
 ifeq ($(uname), Darwin)
-cflags=-g -DNDEBUG -Wall -Wextra -Wno-deprecated -Wno-unused-parameter \
+cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter \
 	-I$(openssldir)/include \
 	-I$(GTEST_ROOT)/include \
 	-I$(GTEST_ROOT) \
@@ -45,7 +54,8 @@ cflags=-g -DNDEBUG -Wall -Wextra -Wno-deprecated -Wno-unused-parameter \
 	-I$(pocodir)/Crypto/include \
 	-I$(pocodir)/Net/include \
 	-I$(pocodir)/NetSSL_OpenSSL/include \
-	-I$(jsondir)
+	-I$(jsondir) \
+	-DNDEBUG
 endif
 
 ifeq ($(uname), Linux)
@@ -62,7 +72,9 @@ cflags=-g -DNDEBUG -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
 	-I$(pocodir)/Crypto/include \
 	-I$(pocodir)/Net/include \
 	-I$(pocodir)/NetSSL_OpenSSL/include \
-	-I$(jsondir)
+	-I$(jsondir) \
+	-DNDEBUG \
+	-Werror
 endif
 
 ifeq ($(uname), Darwin)
@@ -182,7 +194,8 @@ coverage: clean
 	$(cxx) $(cflags) $(covflags) -c $(GTEST_ROOT)/src/gtest-all.cc -o build/gtest-all.o
 	$(cxx) $(cflags) $(covflags) -c ${GMOCK_DIR}/src/gmock-all.cc -o build/gmock-all.o
 	$(cxx) -o $(main) -o $(main)_test build/*.o $(libs) $(covflags)
-	./$(main)_test && lcov --capture --directory build --output-file build/coverage.info && mkdir -p coverage && genhtml build/coverage.info --output-directory coverage
+	./$(main)_test && lcov --capture --directory build --output-file build/coverage.info && \
+	mkdir -p coverage && genhtml build/coverage.info --output-directory coverage
 
 pull:
 	./$(main) pull
@@ -220,4 +233,5 @@ stats:
 	./third_party/gitstats/gitstats -c merge_authors="Tanel","Tanel Lebedev" . gitstats
 
 oclint:
-	$(oclintbin) src/ui/osx/test2.project/test2/AppDelegate.m $(oclintflags)
+	$(oclintbin) src/ui/osx/test2.project/test2/*.m src/kopsik_api.cc \
+	src/toggl_api_client.cc src/database.cc $(oclintflags)

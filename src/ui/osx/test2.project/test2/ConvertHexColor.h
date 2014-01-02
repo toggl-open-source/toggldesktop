@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
 @interface ConvertHexColor : NSObject
 + (NSColor *)hexCodeToNSColor:(NSString *)hexCode;

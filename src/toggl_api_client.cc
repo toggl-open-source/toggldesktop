@@ -455,10 +455,8 @@ error User::collectErrors(std::vector<error> *errors) {
             it != errors->end();
             it++) {
         error err = *it;
-        if (!err.empty()) {
-            if (err[err.size() - 1] == '\n') {
-                err[err.size() - 1] = '.';
-            }
+        if (!err.empty() && err[err.size() - 1] == '\n') {
+            err[err.size() - 1] = '.';
         }
         if (it != errors->begin()) {
             ss << " ";
@@ -1999,10 +1997,7 @@ error TimeEntry::loadTagsFromJSONNode(JSONNODE *list) {
 
 std::string Formatter::FormatDateWithTime(const std::time_t date) {
     poco_assert(date);
-
     Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
-    Poco::DateTime datetime(ts);
-
     return Poco::DateTimeFormatter::format(ts, "%w %d. %b %H:%M:");
 }
 
