@@ -1,0 +1,128 @@
+#!/usr/bin/env python
+
+import os
+import json
+import argparse
+import re
+import sys
+
+CURRENT_WORKING_DIRECTORY = os.getcwd()
+XCODEBUILD_LOG_PATH = os.path.join(CURRENT_WORKING_DIRECTORY, "xcodebuild.log")
+
+arg_parser = argparse.ArgumentParser(description='A helper program that converts xcodebuild log to compile_commands.json')
+arg_parser.add_argument("-e", "-exclude", dest="exclusion", help="Exclusion pattern (Regular Expression)")
+arg_parser.add_argument("-l", "-log_path", dest="logpath", help="xcodebuild log path")
+args, unknown = arg_parser.parse_known_args()
+
+if len(sys.argv) == 2:
+    XCODEBUILD_LOG_PATH = os.path.join(CURRENT_WORKING_DIRECTORY, sys.argv[1])
+
+if args.logpath:
+    XCODEBUILD_LOG_PATH = os.path.join(CURRENT_WORKING_DIRECTORY, args.logpath)
+
+print "Looking for xcodebuild.log file at:",XCODEBUILD_LOG_PATH
+
+JSON_COMPILATION_DATABASE = os.path.join(CURRENT_WORKING_DIRECTORY, "compile_commands.json")
+
+SUPPORTED_COMPILERS = [
+    "clang",
+    "clang\+\+",
+    "llvm-cpp-4.2",
+    "llvm-g\+\+",
+    "llvm-g\+\+-4.2",
+    "llvm-gcc",
+    "llvm-gcc-4.2",
+    "arm-apple-darwin10-llvm-g\+\+-4.2",
+    "arm-apple-darwin10-llvm-gcc-4.2",
+    "i686-apple-darwin10-llvm-g\+\+-4.2",
+    "i686-apple-darwin10-llvm-gcc-4.2",
+    "gcc",
+    "g\+\+",
+    "c\+\+",
+    "cc"
+]
+
+pch_dictionary = {}
+source_list_in_cwd = []
+source_list_out_cwd = []
+
+def handle_precompiled_header(clang_commands):
+    rest_commands = clang_commands
+    local_commands = ""
+    while len(rest_commands) > 0:
+        inclusion_re = re.search('-include "(.+?\.pch)"', rest_commands)
+        if not inclusion_re:
+            inclusion_re = re.search('-include (.+?\.pch)', rest_commands)
+        if inclusion_re:
+            pch_include = inclusion_re.group(1)
+            index_of_pch_include = rest_commands.index(pch_include)
+            local_commands += rest_commands[:index_of_pch_include] + pch_dictionary[pch_include]
+            rest_commands = rest_commands[index_of_pch_include+len(pch_include):]
+        else:
+            local_commands += rest_commands
+            break
+    return local_commands
+
+if os.path.isfile(XCODEBUILD_LOG_PATH):
+    with open(XCODEBUILD_LOG_PATH) as xcodebuild_log_file:
+        while 1:
+            log_line = xcodebuild_log_file.readline()
+            if not log_line:
+                break
+            process_pch_re = re.search("^ProcessPCH (.+)\.pch\.(pch|pth) (.+)\.pch", log_line.strip())
+            if process_pch_re:
+                while 1:
+                    log_line = xcodebuild_log_file.readline()
+                    if not log_line:
+                        break
+                    print log_line
+                    working_directory_re = re.search("^cd (.+)", log_line.strip())
+                    if working_directory_re:
+                        pch_dictionary[process_pch_re.group(1) + ".pch"] = working_directory_re.group(1) + "/" + process_pch_re.group(3) + ".pch"
+                        break
+            # below 11 lines of code are duplicated, serious refactoring is needed badly
+            process_pch_with_quote_re = re.search('^ProcessPCH "(.+)\.pch\.(pch|pth)" "(.+)\.pch"', log_line.strip())
+            if process_pch_with_quote_re:
+                while 1:
+                    log_line = xcodebuild_log_file.readline()
+                    if not log_line:
+                        break
+                    print log_line
+                    working_directory_with_quote_re = re.search('^cd "(.+)"', log_line.strip())
+                    if working_directory_with_quote_re:
+                        pch_dictionary[process_pch_with_quote_re.group(1) + ".pch"] = working_directory_with_quote_re.group(1) + "/" + process_pch_with_quote_re.group(3) + ".pch"
+                        break
+            source_compilation_setting_re = re.search("^CompileC", log_line.strip())
+            if source_compilation_setting_re:
+                working_directory = CURRENT_WORKING_DIRECTORY
+                while 1:
+                    log_line = xcodebuild_log_file.readline()
+                    if not log_line:
+                        break
+                    working_directory_re = re.search('^cd "(.+)"', log_line.strip())
+                    if not working_directory_re:
+                        working_directory_re = re.search("^cd (.+)", log_line.strip())
+                    if working_directory_re:
+                        working_directory = working_directory_re.group(1)
+                    clang_compilation_commands_re = re.search("\s*(.*(" + "|".join(SUPPORTED_COMPILERS) + ") .+)", log_line.strip())
+                    if clang_compilation_commands_re:
+                        raw_clang_commands = clang_compilation_commands_re.group(0)
+                        clang_command = handle_precompiled_header(raw_clang_commands)
+
+                        source_file_re = re.search('-c "(.+?)"', clang_command)
+                        if not source_file_re:
+                            source_file_re = re.search(" -c (.+?) -o", clang_command)
+                        if source_file_re:
+                            if not args.exclusion or not re.match(args.exclusion, working_directory):
+                                source_file = source_file_re.group(1)
+                                source_file_group = [{"directory": working_directory, "command": clang_command, "file": source_file}]
+                                if source_file.startswith(CURRENT_WORKING_DIRECTORY):
+                                    source_list_in_cwd += source_file_group
+                                else:
+                                    source_list_out_cwd += source_file_group
+                            break
+    source_list = source_list_in_cwd + source_list_out_cwd
+    with open(JSON_COMPILATION_DATABASE, "w") as json_compilation_database_file:
+        json_compilation_database_file.write(json.dumps(source_list, indent=2))
+else:
+    print "Error: xcodebuild.log not found at",XCODEBUILD_LOG_PATH
