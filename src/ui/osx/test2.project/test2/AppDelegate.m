@@ -28,10 +28,14 @@
 #import "NewTimeEntry.h"
 
 @interface AppDelegate()
-@property (nonatomic,strong) IBOutlet MainWindowController *mainWindowController;
-@property (nonatomic,strong) IBOutlet PreferencesWindowController *preferencesWindowController;
-@property (nonatomic,strong) IBOutlet AboutWindowController *aboutWindowController;
-@property (nonatomic,strong) IBOutlet IdleNotificationWindowController *idleNotificationWindowController;
+@property (nonatomic, strong) IBOutlet MainWindowController *
+  mainWindowController;
+@property (nonatomic, strong) IBOutlet PreferencesWindowController *
+  preferencesWindowController;
+@property (nonatomic, strong) IBOutlet AboutWindowController *
+  aboutWindowController;
+@property (nonatomic, strong) IBOutlet IdleNotificationWindowController *
+  idleNotificationWindowController;
 @property TimeEntryViewItem *lastKnownRunningTimeEntry;
 @property NSTimer *statusItemTimer;
 @property NSTimer *idleTimer;
@@ -66,7 +70,9 @@ NSString *kTimeTotalUnknown = @"--:--";
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   NSLog(@"applicationDidFinishLaunching");
   
-  self.mainWindowController = [[MainWindowController alloc] initWithWindowNibName:@"MainWindowController"];
+  self.mainWindowController =
+    [[MainWindowController alloc]
+      initWithWindowNibName:@"MainWindowController"];
   [self.mainWindowController.window setReleasedWhenClosed:NO];
   
   PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
@@ -88,11 +94,17 @@ NSString *kTimeTotalUnknown = @"--:--";
   
   [self onShowMenuItem];
 
-  self.preferencesWindowController = [[PreferencesWindowController alloc] initWithWindowNibName:@"PreferencesWindowController"];
+  self.preferencesWindowController =
+    [[PreferencesWindowController alloc]
+      initWithWindowNibName:@"PreferencesWindowController"];
 
-  self.aboutWindowController = [[AboutWindowController alloc] initWithWindowNibName:@"AboutWindowController"];
+  self.aboutWindowController =
+    [[AboutWindowController alloc]
+      initWithWindowNibName:@"AboutWindowController"];
 
-  self.idleNotificationWindowController = [[IdleNotificationWindowController alloc] initWithWindowNibName:@"IdleNotificationWindowController"];
+  self.idleNotificationWindowController =
+    [[IdleNotificationWindowController alloc]
+      initWithWindowNibName:@"IdleNotificationWindowController"];
 
   [self createStatusItem];
   
@@ -161,8 +173,9 @@ NSString *kTimeTotalUnknown = @"--:--";
   char err[KOPSIK_ERR_LEN];
   KopsikUser *user = kopsik_user_init();
   if (KOPSIK_API_SUCCESS != kopsik_current_user(ctx, err, KOPSIK_ERR_LEN, user)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                        object:[NSString stringWithUTF8String:err]];
+    [[NSNotificationCenter defaultCenter] 
+      postNotificationName:kUIStateError
+      object:[NSString stringWithUTF8String:err]];
     kopsik_user_clear(user);
     return;
   }
@@ -175,9 +188,11 @@ NSString *kTimeTotalUnknown = @"--:--";
   kopsik_user_clear(user);
   
   if (userinfo == nil) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedOut object:nil];
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:kUIStateUserLoggedOut object:nil];
   } else {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedIn object:userinfo];
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:kUIStateUserLoggedIn object:userinfo];
   }
  
   NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
@@ -212,22 +227,26 @@ NSString *kTimeTotalUnknown = @"--:--";
 void on_websocket_start_callback(kopsik_api_result result, const char *err) {
   if (result != KOPSIK_API_SUCCESS) {
     handle_error(result, err);
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventWebSocketConnection
-                                                        object:[NSString stringWithUTF8String:err]];
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:kUIEventWebSocketConnection
+      object:[NSString stringWithUTF8String:err]];
     return;
   }
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventWebSocketConnection object:nil];
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:kUIEventWebSocketConnection object:nil];
 }
 
 void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   if (KOPSIK_API_SUCCESS != res) {
     handle_error(res, err);
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimelineRecording
-                                                        object:[NSString stringWithUTF8String:err]];
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:kUIEventTimelineRecording
+      object:[NSString stringWithUTF8String:err]];
     return;
   }
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventTimelineRecording
-                                                      object:nil];
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:kUIEventTimelineRecording
+    object:nil];
 }
 
 - (void)startTimeline {
@@ -283,22 +302,23 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
     NewTimeEntry *new_time_entry = notification.object;
     NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
     kopsik_api_result res = kopsik_start(ctx,
-                                         err,
-                                         KOPSIK_ERR_LEN,
-                                         [new_time_entry.Description UTF8String],
-                                         new_time_entry.TaskID,
-                                         new_time_entry.ProjectID,
-                                         item);
+      err,
+      KOPSIK_ERR_LEN,
+      [new_time_entry.Description UTF8String],
+      new_time_entry.TaskID,
+      new_time_entry.ProjectID,
+      item);
     if (KOPSIK_API_SUCCESS != res) {
       kopsik_time_entry_view_item_clear(item);
       handle_error(res, err);
       return;
     }
     
-    TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
-    [te load:item];
+    TimeEntryViewItem *timeEntry = [[TimeEntryViewItem alloc] init];
+    [timeEntry load:item];
     kopsik_time_entry_view_item_clear(item);
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning object:te];
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:kUIStateTimerRunning object:timeEntry];
     
     kopsik_push_async(ctx, handle_error);
   }
@@ -318,8 +338,9 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
 
     if (res != KOPSIK_API_SUCCESS) {
       kopsik_time_entry_view_item_clear(item);
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                          object:[NSString stringWithUTF8String:err]];
+      [[NSNotificationCenter defaultCenter]
+        postNotificationName:kUIStateError
+        object:[NSString stringWithUTF8String:err]];
       return;
     }
     
@@ -328,11 +349,12 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
       return;
     }
     
-    TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
-    [te load:item];
+    TimeEntryViewItem *timeEntry = [[TimeEntryViewItem alloc] init];
+    [timeEntry load:item];
     kopsik_time_entry_view_item_clear(item);
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning object:te];
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:kUIStateTimerRunning object:timeEntry];
     
     kopsik_push_async(ctx, handle_error);
   }
@@ -341,10 +363,12 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
     char err[KOPSIK_ERR_LEN];
     KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
     int was_found = 0;
-    if (KOPSIK_API_SUCCESS != kopsik_stop(ctx, err, KOPSIK_ERR_LEN, item, &was_found)) {
+    if (KOPSIK_API_SUCCESS != kopsik_stop(
+        ctx, err, KOPSIK_ERR_LEN, item, &was_found)) {
       kopsik_time_entry_view_item_clear(item);
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                          object:[NSString stringWithUTF8String:err]];
+      [[NSNotificationCenter defaultCenter]
+        postNotificationName:kUIStateError
+        object:[NSString stringWithUTF8String:err]];
       return;
     }
     
@@ -356,7 +380,8 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
     TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
     [te load:item];
     kopsik_time_entry_view_item_clear(item);
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped object:te];
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:kUIStateTimerStopped object:te];
     
     kopsik_push_async(ctx, handle_error);
   }
@@ -367,12 +392,15 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
     User *user = notification.object;
 
     // Start syncing after a while.
-    [self performSelector:@selector(startSync) withObject:nil afterDelay:0.5];
-    [self performSelector:@selector(startWebSocket) withObject:nil afterDelay:0.5];
+    [self performSelector:@selector(startSync)
+      withObject:nil afterDelay:0.5];
+    [self performSelector:@selector(startWebSocket)
+      withObject:nil afterDelay:0.5];
 
     // Start timeline only if user has enabled it (known to us)
     if (user.recordTimeline) {
-      [self performSelector:@selector(startTimeline) withObject:nil afterDelay:0.5];
+      [self performSelector:@selector(startTimeline)
+        withObject:nil afterDelay:0.5];
     }
     
     renderRunningTimeEntry();
@@ -393,16 +421,16 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
     self.lastKnownTrackingState = kUIStateTimerRunning;
 
   } else if ([notification.name isEqualToString:kUIEventModelChange]) {
-    ModelChange *ch = notification.object;
+    ModelChange *modelChange = notification.object;
     if (self.lastKnownRunningTimeEntry &&
-        [self.lastKnownRunningTimeEntry.GUID isEqualToString:ch.GUID] &&
-        [ch.ModelType isEqualToString:@"time_entry"] &&
-        [ch.ChangeType isEqualToString:@"update"]) {
+        [self.lastKnownRunningTimeEntry.GUID isEqualToString:modelChange.GUID] &&
+        [modelChange.ModelType isEqualToString:@"time_entry"] &&
+        [modelChange.ChangeType isEqualToString:@"update"]) {
       // Time entry duration can be edited on server side and it's
       // pushed to us via websocket or pulled via regular sync.
       // When it happens, timer keeps on running, but the time should be
       // updated on status item:
-      self.lastKnownRunningTimeEntry = [TimeEntryViewItem findByGUID:ch.GUID];
+      self.lastKnownRunningTimeEntry = [TimeEntryViewItem findByGUID:modelChange.GUID];
     }
 
   } else if ([notification.name isEqualToString:kUICommandSplitAt]) {
@@ -412,12 +440,12 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
     char err[KOPSIK_ERR_LEN];
     KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
     int was_found = 0;
-    NSTimeInterval at = [idleEvent.started timeIntervalSince1970];
-    NSLog(@"Time entry split at %f", at);
+    NSTimeInterval startedAt = [idleEvent.started timeIntervalSince1970];
+    NSLog(@"Time entry split at %f", startedAt);
     kopsik_api_result res = kopsik_split_running_time_entry_at(ctx,
                                                                err,
                                                                KOPSIK_ERR_LEN,
-                                                               at,
+                                                               startedAt,
                                                                item,
                                                                &was_found);
     if (KOPSIK_API_SUCCESS != res) {
@@ -427,10 +455,11 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
     }
     
     if (was_found) {
-      TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
-      [te load:item];
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning
-                                                          object:te];
+      TimeEntryViewItem *timeEntry = [[TimeEntryViewItem alloc] init];
+      [timeEntry load:item];
+      [[NSNotificationCenter defaultCenter]
+        postNotificationName:kUIStateTimerRunning
+        object:timeEntry];
     }
 
     kopsik_time_entry_view_item_clear(item);
@@ -442,12 +471,12 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
     char err[KOPSIK_ERR_LEN];
     KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
     int was_found = 0;
-    NSTimeInterval at = [idleEvent.started timeIntervalSince1970];
-    NSLog(@"Time entry stop at %f", at);
+    NSTimeInterval startedAt = [idleEvent.started timeIntervalSince1970];
+    NSLog(@"Time entry stop at %f", startedAt);
     kopsik_api_result res = kopsik_stop_running_time_entry_at(ctx,
                                                               err,
                                                               KOPSIK_ERR_LEN,
-                                                              at,
+                                                              startedAt,
                                                               item,
                                                               &was_found);
     if (KOPSIK_API_SUCCESS != res) {
@@ -457,10 +486,11 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
     }
 
     if (was_found) {
-      TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
-      [te load:item];
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped
-                                                          object:te];
+      TimeEntryViewItem *timeEntry = [[TimeEntryViewItem alloc] init];
+      [timeEntry load:item];
+      [[NSNotificationCenter defaultCenter]
+        postNotificationName:kUIStateTimerStopped
+        object:timeEntry];
     }
   }
   
@@ -470,8 +500,9 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
     [self.runningTimeEntryMenuItem setTitle:@"Timer is not running."];
   } else {
     [self.statusItem setImage:self.onImage];
-    [self.runningTimeEntryMenuItem setTitle:[NSString stringWithFormat:@"Running: %@",
-                                            self.lastKnownRunningTimeEntry.Description]];
+    NSString *msg = [NSString stringWithFormat:@"Running: %@",
+                      self.lastKnownRunningTimeEntry.Description];
+    [self.runningTimeEntryMenuItem setTitle:msg];
   }
 }
 
@@ -498,9 +529,10 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   [menu addItemWithTitle:@"Sync"
                   action:@selector(onSyncMenuItem:)
            keyEquivalent:@""].tag = kMenuItemTagSync;
-  self.timelineMenuItem = [menu addItemWithTitle:kMenuItemTitleStartTimelineRecording
-                                          action:@selector(onTimelineMenuItem:)
-                                   keyEquivalent:@""];
+  self.timelineMenuItem = [menu
+    addItemWithTitle:kMenuItemTitleStartTimelineRecording
+    action:@selector(onTimelineMenuItem:)
+    keyEquivalent:@""];
   self.timelineMenuItem.tag = kMenuItemTagTimeline;
   [menu addItemWithTitle:@"Preferences"
                   action:@selector(onPreferencesMenuItem:)
@@ -519,8 +551,10 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   NSStatusBar *bar = [NSStatusBar systemStatusBar];
   
   NSBundle *bundle = [NSBundle mainBundle];
-  self.onImage = [[NSImage alloc] initWithContentsOfFile:[bundle pathForResource:@"on" ofType:@"png"]];
-  self.offImage = [[NSImage alloc] initWithContentsOfFile:[bundle pathForResource:@"off" ofType:@"png"]];
+  self.onImage = [[NSImage alloc]
+    initWithContentsOfFile:[bundle pathForResource:@"on" ofType:@"png"]];
+  self.offImage = [[NSImage alloc]
+    initWithContentsOfFile:[bundle pathForResource:@"off" ofType:@"png"]];
   
   self.statusItem = [bar statusItemWithLength:NSVariableStatusItemLength];
   [self.statusItem setTitle: kTimeTotalUnknown];
@@ -529,11 +563,12 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   [self.statusItem setMenu:menu];
   [self.statusItem setImage:self.offImage];
 
-  self.statusItemTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                          target:self
-                                                        selector:@selector(statusItemTimerFired:)
-                                                        userInfo:nil
-                                                         repeats:YES];
+  self.statusItemTimer = [NSTimer
+    scheduledTimerWithTimeInterval:1.0
+    target:self
+    selector:@selector(statusItemTimerFired:)
+    userInfo:nil
+    repeats:YES];
   [self updateIdleDetectionTimer];
 }
 
@@ -552,11 +587,12 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   }
   if (settings->UseIdleDetection) {
     NSLog(@"Starting idle detection");
-    self.idleTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                      target:self
-                                                    selector:@selector(idleTimerFired:)
-                                                    userInfo:nil
-                                                     repeats:YES];
+    self.idleTimer = [NSTimer
+      scheduledTimerWithTimeInterval:1.0
+      target:self
+      selector:@selector(idleTimerFired:)
+      userInfo:nil
+      repeats:YES];
   } else {
     NSLog(@"Idle detection is disabled. Stopping idle detection.");
     if (self.idleTimer != nil) {
@@ -569,8 +605,9 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
 }
 
 - (void)onNewMenuItem:(id)sender {
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandNew
-                                                      object:[[NewTimeEntry alloc] init]];
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:kUICommandNew
+    object:[[NewTimeEntry alloc] init]];
 }
 
 - (void)onContinueMenuItem {
@@ -588,17 +625,20 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
 }
 
 - (IBAction)onHelpMenuItem:(id)sender {
-  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://support.toggl.com/toggl-on-my-desktop/"]];
+  [[NSWorkspace sharedWorkspace] openURL:
+    [NSURL URLWithString:@"http://support.toggl.com/toggl-on-my-desktop/"]];
 }
 
 - (IBAction)onLogoutMenuItem:(id)sender {
   char err[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_logout(ctx, err, KOPSIK_ERR_LEN)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                        object:[NSString stringWithUTF8String:err]];
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:kUIStateError
+      object:[NSString stringWithUTF8String:err]];
     return;
   }
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedOut object:nil];
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:kUIStateUserLoggedOut object:nil];
 }
 
 - (IBAction)onClearCacheMenuItem:(id)sender {
@@ -670,7 +710,8 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   NSLog(@"applicationWillTerminate done, websocket is shut down");
 }
 
-- (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag{
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)sender
+    hasVisibleWindows:(BOOL)flag{
   [self.mainWindowController.window setIsVisible:YES];
   return YES;
 }
@@ -678,19 +719,21 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
 - (NSString *)applicationSupportDirectory {
   NSString *path;
   NSError *error;
-  NSArray* paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+  NSArray* paths = NSSearchPathForDirectoriesInDomains(
+    NSApplicationSupportDirectory, NSUserDomainMask, YES);
   if ([paths count] == 0) {
     NSLog(@"Unable to access application support directory!");
   }
   path = [paths[0] stringByAppendingPathComponent:@"Kopsik"];
   
-	if (![[NSFileManager defaultManager] fileExistsAtPath:path]){
-		if (![[NSFileManager defaultManager] createDirectoryAtPath:path
-                                   withIntermediateDirectories:NO
-                                                    attributes:nil
-                                                         error:&error]){
-			NSLog(@"Create directory error: %@", error);
-		}
+	if ([[NSFileManager defaultManager] fileExistsAtPath:path]){
+    return path;
+  }
+	if (![[NSFileManager defaultManager] createDirectoryAtPath:path
+                                 withIntermediateDirectories:NO
+                                                  attributes:nil
+                                                       error:&error]){
+		NSLog(@"Create directory error: %@", error);
 	}
   return path;
 }
@@ -702,9 +745,17 @@ const NSString *appName = @"osx_native_app";
   self = [super init];
   
   // Disallow duplicate instances
-  if ([[NSRunningApplication runningApplicationsWithBundleIdentifier:[[NSBundle mainBundle] bundleIdentifier]] count] > 1) {
-    [[NSAlert alertWithMessageText:[NSString stringWithFormat:@"Another copy of %@ is already running.", [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey]]
-                     defaultButton:nil alternateButton:nil otherButton:nil informativeTextWithFormat:@"This copy will now quit."] runModal];
+  if ([[NSRunningApplication runningApplicationsWithBundleIdentifier:
+      [[NSBundle mainBundle] bundleIdentifier]] count] > 1) {
+    NSString *msg = [NSString
+      stringWithFormat:@"Another copy of %@ is already running.",
+      [[NSBundle mainBundle]
+        objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey]];
+    [[NSAlert alertWithMessageText:msg
+                     defaultButton:nil
+                   alternateButton:nil
+                       otherButton:nil
+         informativeTextWithFormat:@"This copy will now quit."] runModal];
     
     [NSApp terminate:nil];
   }
@@ -723,8 +774,10 @@ const NSString *appName = @"osx_native_app";
   NSLog(@"Command line arguments: %@", arguments);
   
   self.app_path = self.applicationSupportDirectory;
-  NSString *db_path = [self.app_path stringByAppendingPathComponent:@"kopsik.db"];
-  NSString *log_path = [self.app_path stringByAppendingPathComponent:@"kopsik.log"];
+  NSString *db_path =
+    [self.app_path stringByAppendingPathComponent:@"kopsik.db"];
+  NSString *log_path =
+    [self.app_path stringByAppendingPathComponent:@"kopsik.log"];
   NSString *log_level = @"debug";
   
   for (int i = 1; i < arguments.count; i++) {
@@ -782,9 +835,11 @@ const NSString *appName = @"osx_native_app";
         db_path, log_path, log_level);
 
   char err[KOPSIK_ERR_LEN];
-  kopsik_api_result res = kopsik_set_db_path(ctx, err, KOPSIK_ERR_LEN, [db_path UTF8String]);
+  kopsik_api_result res = kopsik_set_db_path(
+    ctx, err, KOPSIK_ERR_LEN, [db_path UTF8String]);
   if (res != KOPSIK_API_SUCCESS) {
-    NSAssert(@"Failed to initialize DB: %s", [NSString stringWithUTF8String:err]);
+    NSAssert(@"Failed to initialize DB: %s",
+      [NSString stringWithUTF8String:err]);
   }
   NSLog(@"DB path set %@", db_path);
 
@@ -797,7 +852,8 @@ const NSString *appName = @"osx_native_app";
   id logToFile = infoDict[@"KopsikLogUserInterfaceToFile"];
   if ([logToFile boolValue]) {
     NSLog(@"Redirecting UI log to file");
-    NSString *logPath = [self.app_path stringByAppendingPathComponent:@"ui.log"];
+    NSString *logPath =
+      [self.app_path stringByAppendingPathComponent:@"ui.log"];
     freopen([logPath fileSystemRepresentation],"a+",stderr);
   }
 
@@ -816,10 +872,11 @@ const NSString *appName = @"osx_native_app";
     } else {
       blink = 1;
     }
-    kopsik_format_duration_in_seconds_hhmm(self.lastKnownRunningTimeEntry.duration_in_seconds,
-                                           blink,
-                                           str,
-                                           duration_str_len);
+    kopsik_format_duration_in_seconds_hhmm(
+      self.lastKnownRunningTimeEntry.duration_in_seconds,
+      blink,
+      str,
+      duration_str_len);
     [self.statusItem setTitle:[NSString stringWithUTF8String:str]];
   }
 }
@@ -839,15 +896,17 @@ const int kIdleThresholdSeconds = 5 * 60;
     self.lastIdleStarted = [NSDate date];
     NSLog(@"User is idle since %@", self.lastIdleStarted);
 
-  } else if (self.lastIdleStarted != nil && self.lastIdleSecondsReading >= idle_seconds) {
+  } else if (self.lastIdleStarted != nil &&
+      self.lastIdleSecondsReading >= idle_seconds) {
     NSDate *now = [NSDate date];
-    if (self.lastKnownRunningTimeEntry != nil) {
+    if (self.lastKnownRunningTimeEntry) {
       IdleEvent *idleEvent = [[IdleEvent alloc] init];
       idleEvent.started = self.lastIdleStarted;
       idleEvent.finished = now;
       idleEvent.seconds = self.lastIdleSecondsReading;
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventIdleFinished
-                                                          object:idleEvent];
+      [[NSNotificationCenter defaultCenter]
+        postNotificationName:kUIEventIdleFinished
+        object:idleEvent];
     } else {
       NSLog(@"Time entry is not running, ignoring idleness");
     }
@@ -906,6 +965,9 @@ const int kIdleThresholdSeconds = 5 * 60;
           return NO;
         }
         break;
+      default:
+        NSAssert(false, @"Invalid switch default");
+        break;
     }
     return YES;
 }
@@ -913,8 +975,9 @@ const int kIdleThresholdSeconds = 5 * 60;
 void sync_finished(kopsik_api_result result, const char *err) {
   NSLog(@"sync_finished");
   if (KOPSIK_API_SUCCESS != result) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                        object:[NSString stringWithUTF8String:err]];
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:kUIStateError
+      object:[NSString stringWithUTF8String:err]];
     return;
   }
   renderRunningTimeEntry();
@@ -925,20 +988,25 @@ void renderRunningTimeEntry() {
   int is_tracking = 0;
   char err[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_running_time_entry_view_item(ctx,
-                                                                err, KOPSIK_ERR_LEN,
-                                                                item, &is_tracking)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                        object:[NSString stringWithUTF8String:err]];
+      err,
+      KOPSIK_ERR_LEN,
+      item,
+      &is_tracking)) {
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:kUIStateError
+      object:[NSString stringWithUTF8String:err]];
     kopsik_time_entry_view_item_clear(item);
     return;
   }
 
   if (is_tracking) {
-    TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
-    [te load:item];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning object:te];
+    TimeEntryViewItem *timeEntry = [[TimeEntryViewItem alloc] init];
+    [timeEntry load:item];
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:kUIStateTimerRunning object:timeEntry];
   } else {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped object:nil];
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:kUIStateTimerStopped object:nil];
   }
   kopsik_time_entry_view_item_clear(item);
 }
@@ -954,15 +1022,17 @@ void on_model_change(kopsik_api_result result,
         [NSThread currentThread]);
   
   if (KOPSIK_API_SUCCESS != result) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                          object:[NSString stringWithUTF8String:errmsg]];
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:kUIStateError
+      object:[NSString stringWithUTF8String:errmsg]];
     return;
   }
 
-  ModelChange *mc = [[ModelChange alloc] init];
-  [mc load:change];
+  ModelChange *modelChange = [[ModelChange alloc] init];
+  [modelChange load:change];
 
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventModelChange object:mc];
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:kUIEventModelChange object:modelChange];
 }
 
 - (void)startSync {
@@ -985,8 +1055,9 @@ void check_for_updates_callback(kopsik_api_result result,
     return;
   }
   if (!is_update_available) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUpToDate
-                                                        object:nil];
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:kUIStateUpToDate
+      object:nil];
     NSLog(@"check_for_updates_callback: no updates available");
     return;
   }
@@ -995,14 +1066,16 @@ void check_for_updates_callback(kopsik_api_result result,
   update.URL = [NSString stringWithUTF8String:url];
   update.version = [NSString stringWithUTF8String:version];
 
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUpdateAvailable
-                                                      object:update];
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:kUIStateUpdateAvailable
+    object:update];
 
   NSAlert *alert = [[NSAlert alloc] init];
   [alert addButtonWithTitle:@"Yes"];
   [alert addButtonWithTitle:@"No"];
   [alert setMessageText:@"Download new version?"];
-  NSString *informative = [NSString stringWithFormat:@"There's a new version of this app available (%@).", update.version];
+  NSString *informative = [NSString stringWithFormat:
+    @"There's a new version of this app available (%@).", update.version];
   [alert setInformativeText:informative];
   [alert setAlertStyle:NSWarningAlertStyle];
   if ([alert runModal] != NSAlertFirstButtonReturn) {
@@ -1031,7 +1104,8 @@ void check_for_updates_callback(kopsik_api_result result,
   
   // We could send the report from here, but we'll just print out
   // some debugging info instead
-  PLCrashReport *report = [[PLCrashReport alloc] initWithData: crashData error: &error];
+  PLCrashReport *report = [[PLCrashReport alloc]
+    initWithData: crashData error: &error];
   if (report == nil) {
     NSLog(@"Could not parse crash report");
     [crashReporter purgePendingCrashReport];
@@ -1039,21 +1113,24 @@ void check_for_updates_callback(kopsik_api_result result,
   }
   
   NSLog(@"Crashed on %@", report.systemInfo.timestamp);
-  NSLog(@"Crashed with signal %@ (code %@, address=0x%" PRIx64 ")", report.signalInfo.name,
-        report.signalInfo.code, report.signalInfo.address);
+  NSLog(@"Crashed with signal %@ (code %@, address=0x%" PRIx64 ")",
+    report.signalInfo.name,
+    report.signalInfo.code, report.signalInfo.address);
 
   // As a temporary solution, report the crash via Bugsnag.
   // That way we atleast know that something really bad happened to user.
   NSException* exception;
   NSMutableDictionary *data = [[NSMutableDictionary alloc] init];;
   if (report.hasExceptionInfo) {
-    exception = [NSException exceptionWithName:report.exceptionInfo.exceptionName
-                                        reason:report.exceptionInfo.exceptionReason
-                                      userInfo:nil];
+    exception = [NSException
+      exceptionWithName:report.exceptionInfo.exceptionName
+      reason:report.exceptionInfo.exceptionReason
+      userInfo:nil];
   } else {
-    exception = [NSException exceptionWithName:@"Crash"
-                                        reason:[report description]
-                                      userInfo:nil];
+    exception = [NSException
+      exceptionWithName:@"Crash"
+      reason:[report description]
+      userInfo:nil];
   }
   [Bugsnag notify:exception withData:data];
   
