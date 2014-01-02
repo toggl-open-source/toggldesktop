@@ -27,7 +27,7 @@
 #import "CrashReporter.h"
 #import "NewTimeEntry.h"
 
-@interface  AppDelegate()
+@interface AppDelegate()
 @property (nonatomic,strong) IBOutlet MainWindowController *mainWindowController;
 @property (nonatomic,strong) IBOutlet PreferencesWindowController *preferencesWindowController;
 @property (nonatomic,strong) IBOutlet AboutWindowController *aboutWindowController;
