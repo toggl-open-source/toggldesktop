@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 kopsik developers. All rights reserved.
 //
 
-#ifndef CUSTOMERRORHANDLER_H_
-#define CUSTOMERRORHANDLER_H_
+#ifndef SRC_CUSTOMERRORHANDLER_H_
+#define SRC_CUSTOMERRORHANDLER_H_
 
 #include "Poco/ErrorHandler.h"
 #include <iostream> // NOLINT
@@ -25,4 +25,4 @@ class CustomErrorHandler : public Poco::ErrorHandler {
   }
 };
 
-#endif  // CUSTOMERRORHANDLER_H_
+#endif  // SRC_CUSTOMERRORHANDLER_H_

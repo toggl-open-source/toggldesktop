@@ -10,6 +10,7 @@
 #include "./version.h"
 #include "./timeline_uploader.h"
 #include "./window_change_recorder.h"
+#include "./CustomErrorHandler.h"
 
 #include "Poco/Bugcheck.h"
 #include "Poco/Path.h"
@@ -97,6 +98,7 @@ class Context {
       app_name(""),
       app_version(""),
       api_url("") {
+      Poco::ErrorHandler::set(&error_handler);
     }
     ~Context() {
       tm.cancelAll();
@@ -146,6 +148,7 @@ class Context {
     std::string api_url;
     Poco::Mutex mutex;
     Poco::TaskManager tm;
+    CustomErrorHandler error_handler;
 };
 
 #define kLockTimeoutMillis 100
