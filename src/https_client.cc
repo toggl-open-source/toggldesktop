@@ -68,7 +68,7 @@ error HTTPSClient::requestJSON(std::string method,
     Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(),
       context);
     session.setKeepAlive(false);
-    session.setTimeout(Poco::Timespan(3 * Poco::Timespan::SECONDS));
+    session.setTimeout(Poco::Timespan(10 * Poco::Timespan::SECONDS));
 
     std::istringstream requestStream(json);
     Poco::DeflatingInputStream gzipRequest(requestStream,
