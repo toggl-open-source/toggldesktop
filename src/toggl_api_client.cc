@@ -564,7 +564,7 @@ error User::Login(HTTPSClient *https_client,
     const std::string &email, const std::string &password) {
   BasicAuthUsername = email;
   BasicAuthPassword = password;
-  return pull(https_client, true, false);
+  return pull(https_client, false, false);
 }
 
 error User::Sync(HTTPSClient *https_client,
