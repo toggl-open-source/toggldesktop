@@ -73,8 +73,7 @@ cflags=-g -DNDEBUG -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
 	-I$(pocodir)/Net/include \
 	-I$(pocodir)/NetSSL_OpenSSL/include \
 	-I$(jsondir) \
-	-DNDEBUG \
-	-Werror
+	-DNDEBUG
 endif
 
 ifeq ($(uname), Darwin)
