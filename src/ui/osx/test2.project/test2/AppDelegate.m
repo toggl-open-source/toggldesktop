@@ -966,7 +966,7 @@ const int kIdleThresholdSeconds = 5 * 60;
         }
         break;
       default:
-        NSAssert(false, @"Invalid switch default");
+        // Dont care about this stuff
         break;
     }
     return YES;
