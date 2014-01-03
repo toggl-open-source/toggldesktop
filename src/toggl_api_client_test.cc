@@ -343,14 +343,14 @@ namespace kopsik {
         ASSERT_EQ("Testing stuff", user.related.Projects[0]->Name());
         ASSERT_EQ("21", user.related.Projects[0]->Color());
         ASSERT_EQ(user.ID(), user.related.Projects[0]->UID());
-        ASSERT_EQ(false, user.related.Projects[0]->Active());
+        ASSERT_FALSE(user.related.Projects[0]->Active());
 
         ASSERT_EQ(uint(2567324), user.related.Projects[1]->ID());
         ASSERT_EQ(uint(123456789), user.related.Projects[1]->WID());
         ASSERT_EQ("Even more work", user.related.Projects[1]->Name());
         ASSERT_EQ(uint(1385144), user.related.Projects[1]->CID());
         ASSERT_EQ(user.ID(), user.related.Projects[1]->UID());
-        ASSERT_EQ(true, user.related.Projects[1]->Active());
+        ASSERT_TRUE(user.related.Projects[1]->Active());
 
         // Time entries
         ASSERT_EQ(uint(3), user.related.TimeEntries.size());
@@ -359,7 +359,7 @@ namespace kopsik {
         ASSERT_EQ("07fba193-91c4-0ec8-2894-820df0548a8f",
             user.related.TimeEntries[0]->GUID());
         ASSERT_EQ(uint(2567324), user.related.TimeEntries[0]->PID());
-        ASSERT_EQ(true, user.related.TimeEntries[0]->Billable());
+        ASSERT_TRUE(user.related.TimeEntries[0]->Billable());
         ASSERT_EQ(uint(1378362830), user.related.TimeEntries[0]->Start());
         ASSERT_EQ(uint(1378369186), user.related.TimeEntries[0]->Stop());
         ASSERT_EQ(6356, user.related.TimeEntries[0]->DurationInSeconds());
