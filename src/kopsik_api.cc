@@ -701,12 +701,6 @@ kopsik_api_result kopsik_login(
     return KOPSIK_API_FAILURE;
   }
 
-  err = user->Sync(ctx->https_client, true, true);
-  if (err != kopsik::noError) {
-    strncpy(errmsg, err.c_str(), errlen);
-    return KOPSIK_API_FAILURE;
-  }
-
   Poco::Mutex::ScopedLock lock(ctx->mutex, kLockTimeoutMillis);
 
   err = ctx->db->SetCurrentAPIToken(user->APIToken());
