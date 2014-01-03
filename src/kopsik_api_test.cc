@@ -136,17 +136,10 @@ namespace kopsik {
         std::string json = loadTestData();
 
         // Login
+        std::stringstream url;
+        url << "/api/v8/me?app_name=kopsik&with_related_data=false&since=0";
         EXPECT_CALL(*mock_client, GetJSON(
-            std::string("/api/v8/me?app_name=kopsik&with_related_data=true"),
-            std::string("30eb0ae954b536d2f6628f7fec47beb6"),
-            std::string("api_token"),
-            testing::_))
-        .WillOnce(testing::DoAll(
-            testing::SetArgPointee<3>(json),
-            testing::Return("")));
-
-        EXPECT_CALL(*mock_client, GetJSON(
-            std::string("/api/v8/me?app_name=kopsik&with_related_data=false"),
+            url.str(),
             std::string("foo@bar.com"),
             std::string("secret"),
             testing::_))
@@ -173,6 +166,18 @@ namespace kopsik {
         ASSERT_EQ((unsigned int)10471231, user->ID);
         ASSERT_EQ(std::string("John Smith"), std::string(user->Fullname));
         kopsik_user_clear(user);
+
+        // Sync
+        EXPECT_CALL(*mock_client, GetJSON(
+            std::string("/api/v8/me?app_name=kopsik&with_related_data=true"),
+            std::string("30eb0ae954b536d2f6628f7fec47beb6"),
+            std::string("api_token"),
+            testing::_))
+        .WillOnce(testing::DoAll(
+            testing::SetArgPointee<3>(json),
+            testing::Return("")));
+        ASSERT_EQ(KOPSIK_API_SUCCESS,
+            kopsik_sync(ctx, err, ERRLEN, 1));
 
         // Count time entry items before start. It should be 3, since
         // there are 3 time entries in the me.json file we're using:
