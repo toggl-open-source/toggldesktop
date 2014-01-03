@@ -89,7 +89,11 @@ error HTTPSClient::requestJSON(std::string method,
     req.setChunkedTransferEncoding(true);
 
     Poco::Logger &logger = Poco::Logger::get("https_client");
-    logger.debug("Sending request..");
+    {
+      std::stringstream ss;
+      ss << "Sending request to " << relative_url << " ..";
+      logger.debug(ss.str());
+    }
 
     Poco::Net::HTTPBasicCredentials cred(
       basic_auth_username, basic_auth_password);
