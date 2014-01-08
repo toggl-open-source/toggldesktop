@@ -390,6 +390,8 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   }
 
   kopsik_time_entry_view_item_clear(item);
+
+  kopsik_push_async(ctx, handle_error);
 }
 
 - (void)stopTimeEntryAfterIdle:(IdleEvent *)idleEvent {
@@ -419,6 +421,8 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
       postNotificationName:kUIStateTimerStopped
       object:timeEntry];
   }
+
+  kopsik_push_async(ctx, handle_error);
 }
 
 - (void)userLoggedIn:(User *)user {
