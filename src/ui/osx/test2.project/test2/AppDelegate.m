@@ -262,8 +262,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   NSLog(@"stopTimeline done");
 }
 
-- (void)updateTimelineRecordingState:(BOOL)state
-{
+- (void)updateTimelineRecordingState:(BOOL)state {
   self.timelineRecording = state;
   if (self.timelineRecording) {
     [self.timelineMenuItem setTitle:kMenuItemTitleStopTimelineRecording];
@@ -274,236 +273,247 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   [self.mainTimelineMenuItem setTitle:kMenuItemTitleStartTimelineRecording];
 }
 
--(void)eventHandler: (NSNotification *) notification
-{
+- (void)startNewTimeEntry:(NewTimeEntry *)new_time_entry {
+  char err[KOPSIK_ERR_LEN];
+  KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
+  NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
+  kopsik_api_result res = kopsik_start(ctx,
+    err,
+    KOPSIK_ERR_LEN,
+    [new_time_entry.Description UTF8String],
+    new_time_entry.TaskID,
+    new_time_entry.ProjectID,
+    item);
+  if (KOPSIK_API_SUCCESS != res) {
+    kopsik_time_entry_view_item_clear(item);
+    handle_error(res, err);
+    return;
+  }
+
+  TimeEntryViewItem *timeEntry = [[TimeEntryViewItem alloc] init];
+  [timeEntry load:item];
+  kopsik_time_entry_view_item_clear(item);
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:kUIStateTimerRunning object:timeEntry];
+
+  kopsik_push_async(ctx, handle_error);
+}
+
+- (void)continueTimeEntry:(NSString *)guid {
+  char err[KOPSIK_ERR_LEN];
+  KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
+  kopsik_api_result res = 0;
+  int was_found = 0;
+  if (guid == nil) {
+    res = kopsik_continue_latest(ctx, err, KOPSIK_ERR_LEN, item, &was_found);
+  } else {
+    was_found = 1;
+    res = kopsik_continue(ctx, err, KOPSIK_ERR_LEN, [guid UTF8String], item);
+  }
+
+  if (res != KOPSIK_API_SUCCESS) {
+    kopsik_time_entry_view_item_clear(item);
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:kUIStateError
+      object:[NSString stringWithUTF8String:err]];
+    return;
+  }
+  
+  if (!was_found) {
+    kopsik_time_entry_view_item_clear(item);
+    return;
+  }
+  
+  TimeEntryViewItem *timeEntry = [[TimeEntryViewItem alloc] init];
+  [timeEntry load:item];
+  kopsik_time_entry_view_item_clear(item);
+  
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:kUIStateTimerRunning object:timeEntry];
+  
+  kopsik_push_async(ctx, handle_error);
+}
+
+- (void)stopTimeEntry {
+  char err[KOPSIK_ERR_LEN];
+  KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
+  int was_found = 0;
+  if (KOPSIK_API_SUCCESS != kopsik_stop(
+      ctx, err, KOPSIK_ERR_LEN, item, &was_found)) {
+    kopsik_time_entry_view_item_clear(item);
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:kUIStateError
+      object:[NSString stringWithUTF8String:err]];
+    return;
+  }
+  
+  if (!was_found) {
+    kopsik_time_entry_view_item_clear(item);
+    return;
+  }
+
+  TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
+  [te load:item];
+  kopsik_time_entry_view_item_clear(item);
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:kUIStateTimerStopped object:te];
+  
+  kopsik_push_async(ctx, handle_error);
+}
+
+- (void)splitTimeEntryAfterIdle:(IdleEvent *)idleEvent {
+  NSLog(@"Idle event: %@", idleEvent);
+  NSAssert(idleEvent != nil, @"idle event cannot be nil");
+  char err[KOPSIK_ERR_LEN];
+  KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
+  int was_found = 0;
+  NSTimeInterval startedAt = [idleEvent.started timeIntervalSince1970];
+  NSLog(@"Time entry split at %f", startedAt);
+  kopsik_api_result res = kopsik_split_running_time_entry_at(ctx,
+                                                             err,
+                                                             KOPSIK_ERR_LEN,
+                                                             startedAt,
+                                                             item,
+                                                             &was_found);
+  if (KOPSIK_API_SUCCESS != res) {
+    kopsik_time_entry_view_item_clear(item);
+    handle_error(res, err);
+    return;
+  }
+  
+  if (was_found) {
+    TimeEntryViewItem *timeEntry = [[TimeEntryViewItem alloc] init];
+    [timeEntry load:item];
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:kUIStateTimerRunning
+      object:timeEntry];
+  }
+
+  kopsik_time_entry_view_item_clear(item);
+}
+
+- (void)stopTimeEntryAfterIdle:(IdleEvent *)idleEvent {
+  NSAssert(idleEvent != nil, @"idle event cannot be nil");
+  NSLog(@"Idle event: %@", idleEvent);
+  char err[KOPSIK_ERR_LEN];
+  KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
+  int was_found = 0;
+  NSTimeInterval startedAt = [idleEvent.started timeIntervalSince1970];
+  NSLog(@"Time entry stop at %f", startedAt);
+  kopsik_api_result res = kopsik_stop_running_time_entry_at(ctx,
+                                                            err,
+                                                            KOPSIK_ERR_LEN,
+                                                            startedAt,
+                                                            item,
+                                                            &was_found);
+  if (KOPSIK_API_SUCCESS != res) {
+    kopsik_time_entry_view_item_clear(item);
+    handle_error(res, err);
+    return;
+  }
+
+  if (was_found) {
+    TimeEntryViewItem *timeEntry = [[TimeEntryViewItem alloc] init];
+    [timeEntry load:item];
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:kUIStateTimerStopped
+      object:timeEntry];
+  }
+}
+
+- (void)userLoggedIn:(User *)user {
+  self.lastKnownLoginState = kUIStateUserLoggedIn;
+
+  // Start syncing after a while.
+  [self performSelector:@selector(startSync)
+    withObject:nil afterDelay:0.5];
+  [self performSelector:@selector(startWebSocket)
+    withObject:nil afterDelay:0.5];
+
+  // Start timeline only if user has enabled it (known to us)
+  if (user.recordTimeline) {
+    [self performSelector:@selector(startTimeline)
+      withObject:nil afterDelay:0.5];
+  }
+  
+  renderRunningTimeEntry();
+}
+
+- (void)userLoggedOut {
+  self.lastKnownLoginState = kUIStateUserLoggedOut;
+  self.lastKnownTrackingState = kUIStateTimerStopped;
+  self.lastKnownRunningTimeEntry = nil;
+  [self stopWebSocket];
+  [self stopTimeline];
+}
+
+- (void)timerStopped {
+  self.lastKnownRunningTimeEntry = nil;
+  self.lastKnownTrackingState = kUIStateTimerStopped;
+}
+
+- (void)timerStarted:(TimeEntryViewItem *)timeEntry {
+  self.lastKnownTrackingState = kUIStateTimerRunning;
+}
+
+- (void)modelChanged:(ModelChange *)modelChange {
+   if (self.lastKnownRunningTimeEntry &&
+      [self.lastKnownRunningTimeEntry.GUID isEqualToString:modelChange.GUID] &&
+      [modelChange.ModelType isEqualToString:@"time_entry"] &&
+      [modelChange.ChangeType isEqualToString:@"update"]) {
+    // Time entry duration can be edited on server side and it's
+    // pushed to us via websocket or pulled via regular sync.
+    // When it happens, timer keeps on running, but the time should be
+    // updated on status item:
+    self.lastKnownRunningTimeEntry = [TimeEntryViewItem findByGUID:modelChange.GUID];
+  }
+}
+
+- (void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIEventSettingsChanged]) {
     [self updateIdleDetectionTimer];
-    return;
-  }
-
-  if ([notification.name isEqualToString:kUICommandShowPreferences]) {
+  } else if ([notification.name isEqualToString:kUICommandShowPreferences]) {
     [self onPreferencesMenuItem:self];
-    return;
-  }
-  
-  if ([notification.name isEqualToString:kUIEventWebSocketConnection]) {
+  } else if ([notification.name isEqualToString:kUIEventWebSocketConnection]) {
     [self updateWebSocketConnectedState:(notification.object == nil)];
-    return;
-  }
-  
-  if ([notification.name isEqualToString:kUIEventTimelineRecording]) {
+  } else if ([notification.name isEqualToString:kUIEventTimelineRecording]) {
     [self updateTimelineRecordingState:(notification.object == nil)];
-    return;
-  }
- 
-  if ([notification.name isEqualToString:kUICommandNew]) {
-    char err[KOPSIK_ERR_LEN];
-    KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-    NewTimeEntry *new_time_entry = notification.object;
-    NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
-    kopsik_api_result res = kopsik_start(ctx,
-      err,
-      KOPSIK_ERR_LEN,
-      [new_time_entry.Description UTF8String],
-      new_time_entry.TaskID,
-      new_time_entry.ProjectID,
-      item);
-    if (KOPSIK_API_SUCCESS != res) {
-      kopsik_time_entry_view_item_clear(item);
-      handle_error(res, err);
-      return;
-    }
-    
-    TimeEntryViewItem *timeEntry = [[TimeEntryViewItem alloc] init];
-    [timeEntry load:item];
-    kopsik_time_entry_view_item_clear(item);
-    [[NSNotificationCenter defaultCenter]
-      postNotificationName:kUIStateTimerRunning object:timeEntry];
-    
-    kopsik_push_async(ctx, handle_error);
-  }
-    
-  if ([notification.name isEqualToString:kUICommandContinue]) {
-    NSString *guid = notification.object;
-    char err[KOPSIK_ERR_LEN];
-    KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-    kopsik_api_result res = 0;
-    int was_found = 0;
-    if (guid == nil) {
-      res = kopsik_continue_latest(ctx, err, KOPSIK_ERR_LEN, item, &was_found);
-    } else {
-      was_found = 1;
-      res = kopsik_continue(ctx, err, KOPSIK_ERR_LEN, [guid UTF8String], item);
-    }
-
-    if (res != KOPSIK_API_SUCCESS) {
-      kopsik_time_entry_view_item_clear(item);
-      [[NSNotificationCenter defaultCenter]
-        postNotificationName:kUIStateError
-        object:[NSString stringWithUTF8String:err]];
-      return;
-    }
-    
-    if (!was_found) {
-      kopsik_time_entry_view_item_clear(item);
-      return;
-    }
-    
-    TimeEntryViewItem *timeEntry = [[TimeEntryViewItem alloc] init];
-    [timeEntry load:item];
-    kopsik_time_entry_view_item_clear(item);
-    
-    [[NSNotificationCenter defaultCenter]
-      postNotificationName:kUIStateTimerRunning object:timeEntry];
-    
-    kopsik_push_async(ctx, handle_error);
-  }
-  
-  if ([notification.name isEqualToString:kUICommandStop]) {
-    char err[KOPSIK_ERR_LEN];
-    KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-    int was_found = 0;
-    if (KOPSIK_API_SUCCESS != kopsik_stop(
-        ctx, err, KOPSIK_ERR_LEN, item, &was_found)) {
-      kopsik_time_entry_view_item_clear(item);
-      [[NSNotificationCenter defaultCenter]
-        postNotificationName:kUIStateError
-        object:[NSString stringWithUTF8String:err]];
-      return;
-    }
-    
-    if (!was_found) {
-      kopsik_time_entry_view_item_clear(item);
-      return;
-    }
-
-    TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
-    [te load:item];
-    kopsik_time_entry_view_item_clear(item);
-    [[NSNotificationCenter defaultCenter]
-      postNotificationName:kUIStateTimerStopped object:te];
-    
-    kopsik_push_async(ctx, handle_error);
-  }
-  
-  if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    self.lastKnownLoginState = kUIStateUserLoggedIn;
-
-    User *user = notification.object;
-
-    // Start syncing after a while.
-    [self performSelector:@selector(startSync)
-      withObject:nil afterDelay:0.5];
-    [self performSelector:@selector(startWebSocket)
-      withObject:nil afterDelay:0.5];
-
-    // Start timeline only if user has enabled it (known to us)
-    if (user.recordTimeline) {
-      [self performSelector:@selector(startTimeline)
-        withObject:nil afterDelay:0.5];
-    }
-    
-    renderRunningTimeEntry();
-
+  } else if ([notification.name isEqualToString:kUICommandNew]) {
+    [self startNewTimeEntry:notification.object];
+  } else if ([notification.name isEqualToString:kUICommandContinue]) {
+    [self continueTimeEntry:notification.object];
+  } else if ([notification.name isEqualToString:kUICommandStop]) {
+    [self stopTimeEntry];
+  } else if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
+    [self userLoggedIn:notification.object];
   } else if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
-    self.lastKnownLoginState = kUIStateUserLoggedOut;
-    self.lastKnownTrackingState = kUIStateTimerStopped;
-    self.lastKnownRunningTimeEntry = nil;
-    [self stopWebSocket];
-    [self stopTimeline];
-
+    [self userLoggedOut];
   } else if ([notification.name isEqualToString:kUIStateTimerStopped]) {
-    self.lastKnownRunningTimeEntry = nil;
-    self.lastKnownTrackingState = kUIStateTimerStopped;
-
+    [self timerStopped];
   } else if ([notification.name isEqualToString:kUIStateTimerRunning]) {
-    self.lastKnownRunningTimeEntry = notification.object;
-    self.lastKnownTrackingState = kUIStateTimerRunning;
-
+    [self timerStarted:notification.object];
   } else if ([notification.name isEqualToString:kUIEventModelChange]) {
-    ModelChange *modelChange = notification.object;
-    if (self.lastKnownRunningTimeEntry &&
-        [self.lastKnownRunningTimeEntry.GUID isEqualToString:modelChange.GUID] &&
-        [modelChange.ModelType isEqualToString:@"time_entry"] &&
-        [modelChange.ChangeType isEqualToString:@"update"]) {
-      // Time entry duration can be edited on server side and it's
-      // pushed to us via websocket or pulled via regular sync.
-      // When it happens, timer keeps on running, but the time should be
-      // updated on status item:
-      self.lastKnownRunningTimeEntry = [TimeEntryViewItem findByGUID:modelChange.GUID];
-    }
-
+    [self modelChanged:notification.object];
   } else if ([notification.name isEqualToString:kUICommandSplitAt]) {
-    IdleEvent *idleEvent = notification.object;
-    NSLog(@"Idle event: %@", idleEvent);
-    NSAssert(idleEvent != nil, @"idle event cannot be nil");
-    char err[KOPSIK_ERR_LEN];
-    KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-    int was_found = 0;
-    NSTimeInterval startedAt = [idleEvent.started timeIntervalSince1970];
-    NSLog(@"Time entry split at %f", startedAt);
-    kopsik_api_result res = kopsik_split_running_time_entry_at(ctx,
-                                                               err,
-                                                               KOPSIK_ERR_LEN,
-                                                               startedAt,
-                                                               item,
-                                                               &was_found);
-    if (KOPSIK_API_SUCCESS != res) {
-      kopsik_time_entry_view_item_clear(item);
-      handle_error(res, err);
-      return;
-    }
-    
-    if (was_found) {
-      TimeEntryViewItem *timeEntry = [[TimeEntryViewItem alloc] init];
-      [timeEntry load:item];
-      [[NSNotificationCenter defaultCenter]
-        postNotificationName:kUIStateTimerRunning
-        object:timeEntry];
-    }
-
-    kopsik_time_entry_view_item_clear(item);
-
+    [self splitTimeEntryAfterIdle:notification.object];
   } else if ([notification.name isEqualToString:kUICommandStopAt]) {
-    IdleEvent *idleEvent = notification.object;
-    NSAssert(idleEvent != nil, @"idle event cannot be nil");
-    NSLog(@"Idle event: %@", idleEvent);
-    char err[KOPSIK_ERR_LEN];
-    KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-    int was_found = 0;
-    NSTimeInterval startedAt = [idleEvent.started timeIntervalSince1970];
-    NSLog(@"Time entry stop at %f", startedAt);
-    kopsik_api_result res = kopsik_stop_running_time_entry_at(ctx,
-                                                              err,
-                                                              KOPSIK_ERR_LEN,
-                                                              startedAt,
-                                                              item,
-                                                              &was_found);
-    if (KOPSIK_API_SUCCESS != res) {
-      kopsik_time_entry_view_item_clear(item);
-      handle_error(res, err);
-      return;
-    }
-
-    if (was_found) {
-      TimeEntryViewItem *timeEntry = [[TimeEntryViewItem alloc] init];
-      [timeEntry load:item];
-      [[NSNotificationCenter defaultCenter]
-        postNotificationName:kUIStateTimerStopped
-        object:timeEntry];
-    }
+    [self stopTimeEntryAfterIdle:notification.object];
   }
-  
+  [self updateStatus];
+}
+
+- (void)updateStatus {
   if (self.lastKnownRunningTimeEntry == nil) {
     [self.statusItem setTitle: kTimeTotalUnknown];
     [self.statusItem setImage:self.offImage];
     [self.runningTimeEntryMenuItem setTitle:@"Timer is not running."];
-  } else {
-    [self.statusItem setImage:self.onImage];
-    NSString *msg = [NSString stringWithFormat:@"Running: %@",
-                      self.lastKnownRunningTimeEntry.Description];
-    [self.runningTimeEntryMenuItem setTitle:msg];
+    return;
   }
+  
+  [self.statusItem setImage:self.onImage];
+  NSString *msg = [NSString stringWithFormat:@"Running: %@",
+                    self.lastKnownRunningTimeEntry.Description];
+  [self.runningTimeEntryMenuItem setTitle:msg];
 }
 
 - (void)createStatusItem {
@@ -880,7 +890,7 @@ const NSString *appName = @"osx_native_app";
   }
 }
 
-const int kIdleThresholdSeconds = 5 * 60;
+const int kIdleThresholdSeconds = 5; // * 60;
 
 - (void)idleTimerFired:(NSTimer*)timer {
   uint64_t idle_seconds = 0;
