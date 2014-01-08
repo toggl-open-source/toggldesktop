@@ -457,6 +457,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
 }
 
 - (void)timerStarted:(TimeEntryViewItem *)timeEntry {
+  self.lastKnownRunningTimeEntry = timeEntry;
   self.lastKnownTrackingState = kUIStateTimerRunning;
 }
 
