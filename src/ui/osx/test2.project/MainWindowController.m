@@ -71,8 +71,7 @@
   return self;
 }
 
-- (void)windowDidLoad
-{
+- (void)windowDidLoad {
   [super windowDidLoad];
 }
 
