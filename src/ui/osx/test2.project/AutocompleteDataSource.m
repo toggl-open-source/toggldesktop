@@ -47,8 +47,7 @@
 
 - (void) fetch:(BOOL)withTimeEntries
      withTasks:(BOOL)withTasks
-  withProjects:(BOOL)withProjects
-{
+  withProjects:(BOOL)withProjects {
   KopsikAutocompleteItemList *list = kopsik_autocomplete_item_list_init();
   char err[KOPSIK_ERR_LEN];
   kopsik_api_result res = kopsik_autocomplete_items(ctx,
@@ -71,12 +70,10 @@
       AutocompleteItem *item = [[AutocompleteItem alloc] init];
       [item load:list->ViewItems[i]];
       NSString *key = item.Text;
-      /* FIXME:
-      if ([self.dictionary valueForKey:key] == nil) {
+      if ([self.dictionary objectForKey:key] == nil) {
         [self.orderedKeys addObject:key];
         [self.dictionary setObject:item forKey:key];
       }
-      */
     }
   }
   [self setFilter:self.currentFilter];
