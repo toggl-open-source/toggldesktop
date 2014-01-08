@@ -407,21 +407,21 @@
 // If duration field is not focused, render ticking time
 // into duration field
 - (void)timerFired:(NSTimer*)timer {
+  if (self.runningTimeEntry == nil || self.runningTimeEntry.duration_in_seconds >= 0) {
+    return; // time entry is not running, ignore
+  }
   if ([self.durationTextField currentEditor] != nil) {
-    return;
+    return; // duration field is not focused
   }
   if ([self.durationTextField currentEditor] == [[NSApp keyWindow] firstResponder]) {
     return;
   }
-  if (self.runningTimeEntry != nil) {
-    char str[duration_str_len];
-    kopsik_format_duration_in_seconds_hhmmss(self.runningTimeEntry.duration_in_seconds,
-                                             str,
-                                             duration_str_len);
-    NSString *newValue = [NSString stringWithUTF8String:str];
-    [self.durationTextField setStringValue:newValue];
-    NSLog(@"Render duration in edit view: %@", newValue);
-  }
+  char str[duration_str_len];
+  kopsik_format_duration_in_seconds_hhmmss(self.runningTimeEntry.duration_in_seconds,
+                                           str,
+                                           duration_str_len);
+  NSString *newValue = [NSString stringWithUTF8String:str];
+  [self.durationTextField setStringValue:newValue];
 }
 
 @end
