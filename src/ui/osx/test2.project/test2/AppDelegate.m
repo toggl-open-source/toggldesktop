@@ -865,7 +865,6 @@ const NSString *appName = @"osx_native_app";
 - (void)statusItemTimerFired:(NSTimer*)timer
 {
   if (self.lastKnownRunningTimeEntry != nil) {
-    const int duration_str_len = 10;
     char str[duration_str_len];
     if (blink) {
       blink = 0;

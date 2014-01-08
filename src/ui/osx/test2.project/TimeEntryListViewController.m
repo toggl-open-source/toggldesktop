@@ -28,8 +28,7 @@
 
 @implementation TimeEntryListViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
 
@@ -67,8 +66,7 @@
     return self;
 }
 
--(void)renderTimeEntries
-{
+-(void)renderTimeEntries {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
   NSLog(@"TimeEntryListViewController renderTimeEntries, thread %@", [NSThread currentThread]);  

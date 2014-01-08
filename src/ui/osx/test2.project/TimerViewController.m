@@ -18,10 +18,7 @@
 @interface TimerViewController ()
 @property TimeEntryViewItem *running_time_entry;
 @property NSTimer *timer;
-
 @end
-
-#define duration_str_len 20
 
 @implementation TimerViewController
 
@@ -145,14 +142,12 @@
   [self.projectTextField setStringValue:@""];
 }
 
-- (IBAction)stopButtonClicked:(id)sender
-{
+- (IBAction)stopButtonClicked:(id)sender {
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandStop
                                                       object:nil];
 }
 
-- (void)timerFired:(NSTimer*)timer
-{
+- (void)timerFired:(NSTimer*)timer {
   if (self.running_time_entry != nil) {
     char str[duration_str_len];
     kopsik_format_duration_in_seconds_hhmmss(self.running_time_entry.duration_in_seconds, str, duration_str_len);

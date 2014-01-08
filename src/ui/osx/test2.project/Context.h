@@ -14,3 +14,5 @@ extern void *ctx;
 // For testing, prefill fields
 extern NSString *defaultEmail;
 extern NSString *defaultPassword;
+
+#define duration_str_len 20

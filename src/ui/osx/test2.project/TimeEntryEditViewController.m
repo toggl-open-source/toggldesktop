@@ -19,6 +19,8 @@
 @property NSString *GUID;
 @property AutocompleteDataSource *autocompleteDataSource;
 @property NSTimer *timerAutocompleteRendering;
+@property NSTimer *timer;
+@property TimeEntryViewItem *runningTimeEntry;
 @end
 
 @implementation TimeEntryEditViewController
@@ -27,6 +29,12 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+      self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                               target:self
+                                             selector:@selector(timerFired:)
+                                             userInfo:nil
+                                              repeats:YES];
+
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
                                                    name:kUIStateTimeEntrySelected
@@ -39,6 +47,7 @@
                                                selector:@selector(eventHandler:)
                                                    name:kUIEventModelChange
                                                  object:nil];
+
       self.autocompleteDataSource = [[AutocompleteDataSource alloc] init];
     }
     
@@ -57,16 +66,18 @@
 - (void)renderTimeEntry:(NSString *)view_item_guid {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
+  NSAssert(view_item_guid != nil, @"GUID is nil");
+  TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:view_item_guid];
+  NSAssert(item != nil, @"View item not found by GUID!");
+
+  self.runningTimeEntry = item;
+
   NSLog(@"TimeEntryEditViewController renderTimeEntry");
 
   // Reset autocomplete filter
   [self.autocompleteDataSource setFilter:@""];
   [self.projectSelect reloadData];
-  
-  NSAssert(view_item_guid != nil, @"GUID is nil");
-  TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:view_item_guid];
-  NSAssert(item != nil, @"View item not found by GUID!");
-  
+    
   self.GUID = view_item_guid;
   NSAssert(self.GUID != nil, @"GUID is nil");
   
@@ -113,12 +124,16 @@
 - (void)eventHandler: (NSNotification *) notification
 {
   if ([notification.name isEqualToString:kUIStateTimeEntrySelected]) {
-    [self performSelectorOnMainThread:@selector(renderTimeEntry:) withObject:notification.object waitUntilDone:NO];
+    [self performSelectorOnMainThread:@selector(renderTimeEntry:)
+                           withObject:notification.object
+                        waitUntilDone:NO];
     return;
   }
 
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    [self performSelectorOnMainThread:@selector(scheduleAutocompleteRendering) withObject:nil waitUntilDone:NO];
+    [self performSelectorOnMainThread:@selector(scheduleAutocompleteRendering)
+                           withObject:nil
+                        waitUntilDone:NO];
     return;
   }
 
@@ -127,7 +142,9 @@
     if ([mc.ModelType isEqualToString:@"tag"]) {
       return; // Tags dont affect autocomplete
     }
-    [self performSelectorOnMainThread:@selector(scheduleAutocompleteRendering) withObject:nil waitUntilDone:NO];
+    [self performSelectorOnMainThread:@selector(scheduleAutocompleteRendering)
+                           withObject:nil
+                        waitUntilDone:NO];
     return;
   }
 }
@@ -376,17 +393,35 @@
   return [self.autocompleteDataSource keyAtIndex:row];
 }
 
-- (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)aString
-{
+- (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)aString {
   return [self.autocompleteDataSource indexOfKey:aString];
 }
 
-- (void)controlTextDidChange:(NSNotification *)aNotification
-{
+- (void)controlTextDidChange:(NSNotification *)aNotification {
   NSComboBox *box = [aNotification object];
   NSString *filter = [box stringValue];
   [self.autocompleteDataSource setFilter:filter];
   [self.projectSelect reloadData];
+}
+
+// If duration field is not focused, render ticking time
+// into duration field
+- (void)timerFired:(NSTimer*)timer {
+  if ([self.durationTextField currentEditor] != nil) {
+    return;
+  }
+  if ([self.durationTextField currentEditor] == [[NSApp keyWindow] firstResponder]) {
+    return;
+  }
+  if (self.runningTimeEntry != nil) {
+    char str[duration_str_len];
+    kopsik_format_duration_in_seconds_hhmmss(self.runningTimeEntry.duration_in_seconds,
+                                             str,
+                                             duration_str_len);
+    NSString *newValue = [NSString stringWithUTF8String:str];
+    [self.durationTextField setStringValue:newValue];
+    NSLog(@"Render duration in edit view: %@", newValue);
+  }
 }
 
 @end

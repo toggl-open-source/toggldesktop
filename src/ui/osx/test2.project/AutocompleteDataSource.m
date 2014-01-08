@@ -71,10 +71,12 @@
       AutocompleteItem *item = [[AutocompleteItem alloc] init];
       [item load:list->ViewItems[i]];
       NSString *key = item.Text;
+      /* FIXME:
       if ([self.dictionary valueForKey:key] == nil) {
         [self.orderedKeys addObject:key];
         [self.dictionary setObject:item forKey:key];
       }
+      */
     }
   }
   [self setFilter:self.currentFilter];
