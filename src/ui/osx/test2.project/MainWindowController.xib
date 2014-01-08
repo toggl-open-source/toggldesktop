@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -9,7 +9,6 @@
             <connections>
                 <outlet property="contentView" destination="av5-A6-9S5" id="g24-fx-drT"/>
                 <outlet property="contentViewController" destination="av5-A6-9S5" id="VD8-35-TOQ"/>
-                <outlet property="headerView" destination="5Ld-I4-6Cu" id="aZt-1o-76f"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>
         </customObject>
@@ -25,23 +24,15 @@
                 <rect key="frame" x="0.0" y="0.0" width="250" height="530"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView hidden="YES" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Ld-I4-6Cu" userLabel="HeaderView">
-                        <rect key="frame" x="0.0" y="457" width="250" height="73"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    </customView>
-                    <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="av5-A6-9S5" userLabel="ContentView">
-                        <rect key="frame" x="0.0" y="180" width="250" height="277"/>
+                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="av5-A6-9S5" userLabel="ContentView">
+                        <rect key="frame" x="0.0" y="180" width="250" height="350"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="5Ld-I4-6Cu" secondAttribute="trailing" id="36u-aa-lo3"/>
                     <constraint firstAttribute="trailing" secondItem="av5-A6-9S5" secondAttribute="trailing" id="57y-9P-PlT"/>
                     <constraint firstItem="av5-A6-9S5" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="ESW-fM-7Eo"/>
-                    <constraint firstItem="5Ld-I4-6Cu" firstAttribute="top" secondItem="2" secondAttribute="top" id="FTa-yS-Vna"/>
-                    <constraint firstItem="av5-A6-9S5" firstAttribute="top" secondItem="5Ld-I4-6Cu" secondAttribute="bottom" id="WSd-YY-Zzh"/>
-                    <constraint firstItem="5Ld-I4-6Cu" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="XId-R8-zBU"/>
-                    <constraint firstItem="5Ld-I4-6Cu" firstAttribute="top" secondItem="2" secondAttribute="top" id="u6L-vS-2UH"/>
+                    <constraint firstItem="av5-A6-9S5" firstAttribute="top" secondItem="2" secondAttribute="top" id="oxa-Vv-QJh"/>
                     <constraint firstAttribute="bottom" secondItem="av5-A6-9S5" secondAttribute="bottom" id="yWZ-Zg-oVi"/>
                 </constraints>
             </view>

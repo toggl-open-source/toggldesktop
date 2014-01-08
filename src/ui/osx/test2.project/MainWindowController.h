@@ -10,6 +10,5 @@
 #import "kopsik_api.h"
 
 @interface MainWindowController : NSWindowController
-@property (weak) IBOutlet NSView *headerView;
 @property (weak) IBOutlet NSView *contentView;
 @end

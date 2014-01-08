@@ -9,8 +9,6 @@
 #import "MainWindowController.h"
 #import "LoginViewController.h"
 #import "TimeEntryListViewController.h"
-#import "TimerViewController.h"
-#import "TimerEditViewController.h"
 #import "TimeEntryEditViewController.h"
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
@@ -25,8 +23,6 @@
 @interface MainWindowController ()
 @property (nonatomic,strong) IBOutlet LoginViewController *loginViewController;
 @property (nonatomic,strong) IBOutlet TimeEntryListViewController *timeEntryListViewController;
-@property (nonatomic,strong) IBOutlet TimerViewController *timerViewController;
-@property (nonatomic,strong) IBOutlet TimerEditViewController *timerEditViewController;
 @property (nonatomic,strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
 @end
 
@@ -40,16 +36,10 @@
                                 initWithNibName:@"LoginViewController" bundle:nil];
     self.timeEntryListViewController = [[TimeEntryListViewController alloc]
                                         initWithNibName:@"TimeEntryListViewController" bundle:nil];
-    self.timerViewController = [[TimerViewController alloc]
-                                initWithNibName:@"TimerViewController" bundle:nil];
-    self.timerEditViewController = [[TimerEditViewController alloc]
-                                      initWithNibName:@"TimerEditViewController" bundle:nil];
     self.timeEntryEditViewController = [[TimeEntryEditViewController alloc]
                                     initWithNibName:@"TimeEntryEditViewController" bundle:nil];
     
     [self.loginViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-    [self.timerViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-    [self.timerEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
     [self.timeEntryListViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
     [self.timeEntryEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
     
@@ -60,10 +50,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(eventHandler:)
                                                  name:kUIStateUserLoggedOut
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(eventHandler:)
-                                                 name:kUIStateTimerRunning
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(eventHandler:)
@@ -103,8 +89,6 @@
     [self.contentView addSubview:self.timeEntryListViewController.view];
     [self.timeEntryListViewController.view setFrame:self.contentView.bounds];
     
-    // Show header
-    [self.headerView setHidden:NO];
     return;
   }
   
@@ -119,43 +103,10 @@
     // Hide all other views
     [self.timeEntryListViewController.view removeFromSuperview];
     [self.timeEntryEditViewController.view removeFromSuperview];
-    [self.headerView setHidden:YES];
-    [self.timerViewController.view removeFromSuperview];
     return;
   }
-  
-  if ([notification.name isEqualToString:kUIStateTimerRunning]) {
-    // Hide timer editor from header view
-    [self.timerEditViewController.view removeFromSuperview];
     
-    // If running timer view is not visible yet, add it to header view
-    for (int i = 0; i < [self.headerView subviews].count; i++) {
-      if ([[self.headerView subviews] objectAtIndex:i] == self.timerViewController.view) {
-        return;
-      }
-    }
-    [self.headerView addSubview:self.timerViewController.view];
-    [self.timerViewController.view setFrame: self.headerView.bounds];
-    return;
-  }
-  
-  if ([notification.name isEqualToString:kUIStateTimerStopped]) {
-    // Hide running timer view from header view
-    [self.timerViewController.view removeFromSuperview];
-    
-    // If timer editor is not visible yet, add it to header view
-    for (int i = 0; i < [self.headerView subviews].count; i++) {
-      if ([[self.headerView subviews] objectAtIndex:i] == self.timerEditViewController.view) {
-        return;
-      }
-    }
-    [self.headerView addSubview:self.timerEditViewController.view];
-    [self.timerEditViewController.view setFrame:self.headerView.bounds];
-    return;
-  }
-
   if ([notification.name isEqualToString:kUIStateTimeEntrySelected]) {
-    [self.headerView setHidden:YES];
     [self.timeEntryListViewController.view removeFromSuperview];
     [self.contentView addSubview:self.timeEntryEditViewController.view];
     [self.timeEntryEditViewController.view setFrame:self.contentView.bounds];
@@ -163,7 +114,6 @@
   }
 
   if ([notification.name isEqualToString:kUIStateTimeEntryDeselected]) {
-    [self.headerView setHidden:NO];
     [self.timeEntryEditViewController.view removeFromSuperview];
     [self.contentView addSubview:self.timeEntryListViewController.view];
     [self.timeEntryListViewController.view setFrame:self.contentView.bounds];
