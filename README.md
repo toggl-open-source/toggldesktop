@@ -7,7 +7,7 @@ Experimental natitve Toggl API client.
 
 Command line client
 -------------------
-The command line app expectes to find *TOGGL_API_TOKEN* in your environment. You could export it in your ~/.bash_profile:
+The command line app expects to find *TOGGL_API_TOKEN* in your environment. You could export it in your ~/.bash_profile:
 
 Recognized commands are: sync, start, stop, status, pushable, list, continue, listen
 
