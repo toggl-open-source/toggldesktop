@@ -895,7 +895,7 @@ const NSString *appName = @"osx_native_app";
   }
 }
 
-const int kIdleThresholdSeconds = 5; // * 60;
+const int kIdleThresholdSeconds = 5 * 60;
 
 - (void)idleTimerFired:(NSTimer*)timer {
   uint64_t idle_seconds = 0;
