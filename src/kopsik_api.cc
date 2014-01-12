@@ -28,6 +28,8 @@
 
 #define KOPSIK_API_FAILURE 1
 
+#define kLockTimeoutMillis 100
+
 // Private helpers
 
 KopsikModelChange *model_change_init() {
@@ -137,6 +139,24 @@ class Context {
         window_change_recorder = 0;
       }
     }
+
+    kopsik::error ConfigureProxy() {
+      bool use_proxy(false);
+      bool tmp(false);
+      kopsik::Proxy proxy;
+      kopsik::error err = db->LoadSettings(&use_proxy, &proxy, &tmp);
+      if (err != kopsik::noError) {
+        return err;
+      }
+      if (!use_proxy) {
+        proxy = kopsik::Proxy();  // reset values
+      }
+      Poco::Mutex::ScopedLock lock(mutex, kLockTimeoutMillis);
+      https_client->SetProxy(proxy);
+      ws_client->SetProxy(proxy);
+      return kopsik::noError;
+    }
+
     kopsik::Database *db;
     kopsik::User *user;
     kopsik::HTTPSClient *https_client;
@@ -151,8 +171,6 @@ class Context {
     Poco::TaskManager tm;
     CustomErrorHandler error_handler;
 };
-
-#define kLockTimeoutMillis 100
 
 void kopsik_set_change_callback(
     void *context,
@@ -374,7 +392,6 @@ kopsik_api_result kopsik_get_settings(void *context,
   bool use_proxy(false);
   bool use_idle_detection(false);
   kopsik::Proxy proxy;
-
   kopsik::error err = ctx->db->LoadSettings(&use_proxy,
                                             &proxy,
                                             &use_idle_detection);
@@ -439,7 +456,7 @@ kopsik_api_result kopsik_set_settings(
     return KOPSIK_API_FAILURE;
   }
 
-  return KOPSIK_API_SUCCESS;
+  return KOPSIK_API_SUCCESS;;
 }
 
 void kopsik_test_set_https_client(void *context, void *client) {
@@ -2252,9 +2269,9 @@ class FetchUpdatesTask : public Poco::Task {
     void runTask() {
       std::string response_body("");
       kopsik::error err = ctx_->https_client->GetJSON(updateURL(),
-                                                     std::string(""),
-                                                     std::string(""),
-                                                     &response_body);
+                                                      std::string(""),
+                                                      std::string(""),
+                                                      &response_body);
       if (err != kopsik::noError) {
         callback_(KOPSIK_API_FAILURE, err.c_str(), 0, 0, 0);
         return;
