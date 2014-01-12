@@ -14,6 +14,7 @@
 #include "Poco/Observer.h"
 
 #include "./types.h"
+#include "./proxy.h"
 #include "./toggl_api_client.h"
 #include "./timeline_notifications.h"
 
@@ -93,19 +94,13 @@ class Database {
             const bool with_related_data);
 
         error LoadSettings(
-            int *use_proxy,
-            std::string *proxy_host,
-            unsigned int *proxy_port,
-            std::string *proxy_username,
-            std::string *proxy_password,
-            int *use_idle_settings);
+            bool *use_proxy,
+            Proxy *proxy,
+            bool *use_idle_settings);
         error SaveSettings(
-            const int use_proxy,
-            const std::string proxy_host,
-            const unsigned int proxy_port,
-            const std::string proxy_username,
-            const std::string proxy_password,
-            const int use_idle_detection);
+            const bool use_proxy,
+            const Proxy *proxy,
+            const bool use_idle_detection);
 
         error UInt(
             const std::string sql,

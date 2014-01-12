@@ -11,6 +11,7 @@
 #include "./timeline_uploader.h"
 #include "./window_change_recorder.h"
 #include "./CustomErrorHandler.h"
+#include "./proxy.h"
 
 #include "Poco/Bugcheck.h"
 #include "Poco/Path.h"
@@ -371,33 +372,35 @@ kopsik_api_result kopsik_get_settings(void *context,
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
-  int use_proxy(0);
-  std::string proxy_host("");
-  unsigned int proxy_port(0);
-  std::string proxy_username("");
-  std::string proxy_password("");
-  int use_idle_detection(0);
+  bool use_proxy(false);
+  bool use_idle_detection(false);
+  kopsik::Proxy proxy;
 
   kopsik::error err = ctx->db->LoadSettings(&use_proxy,
-                                            &proxy_host,
-                                            &proxy_port,
-                                            &proxy_username,
-                                            &proxy_password,
+                                            &proxy,
                                             &use_idle_detection);
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
   }
 
-  settings->UseProxy = use_proxy;
+  settings->UseProxy = 0;
+  if (use_proxy) {
+    settings->UseProxy = 1;
+  }
+
   poco_assert(!settings->ProxyHost);
-  settings->ProxyHost = strdup(proxy_host.c_str());
-  settings->ProxyPort = proxy_port;
+  settings->ProxyHost = strdup(proxy.host.c_str());
+  settings->ProxyPort = proxy.port;
   poco_assert(!settings->ProxyUsername);
-  settings->ProxyUsername = strdup(proxy_username.c_str());
+  settings->ProxyUsername = strdup(proxy.username.c_str());
   poco_assert(!settings->ProxyPassword);
-  settings->ProxyPassword = strdup(proxy_password.c_str());
-  settings->UseIdleDetection = use_idle_detection;
+  settings->ProxyPassword = strdup(proxy.password.c_str());
+
+  settings->UseIdleDetection = 0;
+  if (use_idle_detection) {
+    settings->UseIdleDetection = 1;
+  }
 
   return KOPSIK_API_SUCCESS;
 }
@@ -423,11 +426,14 @@ kopsik_api_result kopsik_set_settings(
 
   Poco::Mutex::ScopedLock lock(ctx->mutex, kLockTimeoutMillis);
 
+  kopsik::Proxy proxy;
+  proxy.host = std::string(proxy_host);
+  proxy.port = proxy_port;
+  proxy.username = std::string(proxy_username);
+  proxy.password = std::string(proxy_password);
+
   kopsik::error err = ctx->db->SaveSettings(use_proxy,
-                                            proxy_host,
-                                            proxy_port,
-                                            proxy_username,
-                                            proxy_password,
+                                            &proxy,
                                             use_idle_detection);
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);

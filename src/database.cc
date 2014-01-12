@@ -148,18 +148,12 @@ error Database::LoadCurrentUser(
 }
 
 error Database::LoadSettings(
-        int *use_proxy,
-        std::string *proxy_host,
-        unsigned int *proxy_port,
-        std::string *proxy_username,
-        std::string *proxy_password,
-        int *use_idle_detection) {
+        bool *use_proxy,
+        Proxy *proxy,
+        bool *use_idle_detection) {
     poco_assert(session);
     poco_assert(use_proxy);
-    poco_assert(proxy_host);
-    poco_assert(proxy_port);
-    poco_assert(proxy_username);
-    poco_assert(proxy_password);
+    poco_assert(proxy);
     poco_assert(use_idle_detection);
 
     Poco::Mutex::ScopedLock lock(mutex_);
@@ -171,10 +165,10 @@ error Database::LoadSettings(
                 "proxy_username, proxy_password, use_idle_detection, 1 "
                 "from settings",
             Poco::Data::into(*use_proxy),
-            Poco::Data::into(*proxy_host),
-            Poco::Data::into(*proxy_port),
-            Poco::Data::into(*proxy_username),
-            Poco::Data::into(*proxy_password),
+            Poco::Data::into(proxy->host),
+            Poco::Data::into(proxy->port),
+            Poco::Data::into(proxy->username),
+            Poco::Data::into(proxy->password),
             Poco::Data::into(*use_idle_detection),
             Poco::Data::into(has_settings),
             Poco::Data::limit(1),
@@ -194,12 +188,9 @@ error Database::LoadSettings(
 }
 
 error Database::SaveSettings(
-        const int use_proxy,
-        const std::string proxy_host,
-        const unsigned int proxy_port,
-        const std::string proxy_username,
-        const std::string proxy_password,
-        const int use_idle_detection) {
+        const bool use_proxy,
+        const Proxy *proxy,
+        const bool use_idle_detection) {
     poco_assert(session);
 
     Poco::Mutex::ScopedLock lock(mutex_);
@@ -218,10 +209,10 @@ error Database::SaveSettings(
             "(:use_proxy, :proxy_host, :proxy_port, :proxy_username, "
             ":proxy_password, :use_idle_detection)",
             Poco::Data::use(use_proxy),
-            Poco::Data::use(proxy_host),
-            Poco::Data::use(proxy_port),
-            Poco::Data::use(proxy_username),
-            Poco::Data::use(proxy_password),
+            Poco::Data::use(proxy->host),
+            Poco::Data::use(proxy->port),
+            Poco::Data::use(proxy->username),
+            Poco::Data::use(proxy->password),
             Poco::Data::use(use_idle_detection),
             Poco::Data::now;
     } catch(const Poco::Exception& exc) {
