@@ -28,6 +28,12 @@
 
 - (void)windowDidLoad {
     [super windowDidLoad];
+
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setUsesGroupingSeparator:NO];
+    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    [self.portTextField setFormatter:formatter];
+
     [self loadPreferences];
     [self enableProxyFields];
 }
