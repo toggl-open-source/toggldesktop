@@ -477,6 +477,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
 - (void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIEventSettingsChanged]) {
     [self updateIdleDetectionTimer];
+    [self startSync];
   } else if ([notification.name isEqualToString:kUICommandShowPreferences]) {
     [self onPreferencesMenuItem:self];
   } else if ([notification.name isEqualToString:kUIEventWebSocketConnection]) {
