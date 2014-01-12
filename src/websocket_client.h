@@ -14,6 +14,7 @@
 #include "Poco/Net/HTTPResponse.h"
 
 #include "./types.h"
+#include "./proxy.h"
 
 namespace kopsik {
 
@@ -40,19 +41,21 @@ namespace kopsik {
       last_connection_at_(0),
       api_token_("") {}
     virtual ~WebSocketClient();
+
     virtual error Start(
       void *ctx,
-      std::string api_token,
+      const std::string api_token,
       WebSocketMessageCallback on_websocket_message);
     virtual void Stop();
 
-    void SetWebsocketURL(std::string value) { websocket_url_ = value; }
+    void SetWebsocketURL(const std::string value) { websocket_url_ = value; }
+    void SetProxy(const Proxy value) { proxy_ = value; }
 
   protected:
     void runActivity();
 
   private:
-    std::string parseWebSocketMessageType(std::string json);
+    std::string parseWebSocketMessageType(const std::string json);
     error receiveWebSocketMessage(std::string *message);
     error poll();
     error connect();
@@ -75,6 +78,8 @@ namespace kopsik {
     std::string api_token_;
 
     Poco::Mutex mutex_;
+
+    Proxy proxy_;
   };
 }  // namespace kopsik
 

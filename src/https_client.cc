@@ -21,10 +21,11 @@
 
 namespace kopsik {
 
-error HTTPSClient::PostJSON(std::string relative_url,
-    std::string json,
-    std::string basic_auth_username,
-    std::string basic_auth_password,
+error HTTPSClient::PostJSON(
+    const std::string relative_url,
+    const std::string json,
+    const std::string basic_auth_username,
+    const std::string basic_auth_password,
     std::string *response_body) {
   return requestJSON(Poco::Net::HTTPRequest::HTTP_POST,
     relative_url,
@@ -34,9 +35,10 @@ error HTTPSClient::PostJSON(std::string relative_url,
     response_body);
 }
 
-error HTTPSClient::GetJSON(std::string relative_url,
-    std::string basic_auth_username,
-    std::string basic_auth_password,
+error HTTPSClient::GetJSON(
+    const std::string relative_url,
+    const std::string basic_auth_username,
+    const std::string basic_auth_password,
     std::string *response_body) {
   return requestJSON(Poco::Net::HTTPRequest::HTTP_GET,
     relative_url,
@@ -46,11 +48,12 @@ error HTTPSClient::GetJSON(std::string relative_url,
     response_body);
 }
 
-error HTTPSClient::requestJSON(std::string method,
-    std::string relative_url,
-    std::string json,
-    std::string basic_auth_username,
-    std::string basic_auth_password,
+error HTTPSClient::requestJSON(
+    const std::string method,
+    const std::string relative_url,
+    const std::string json,
+    const std::string basic_auth_username,
+    const std::string basic_auth_password,
     std::string *response_body) {
   poco_assert(!method.empty());
   poco_assert(!relative_url.empty());

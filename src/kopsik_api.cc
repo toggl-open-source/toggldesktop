@@ -324,7 +324,6 @@ void *kopsik_context_init(const char *app_name, const char *app_version) {
   return ctx;
 }
 
-// FIXME: move into destructor
 void kopsik_context_clear(void *context) {
   poco_assert(context);
 

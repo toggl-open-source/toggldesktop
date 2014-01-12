@@ -21,8 +21,9 @@
 
 namespace kopsik {
 
-error WebSocketClient::Start(void *ctx,
-    std::string api_token,
+error WebSocketClient::Start(
+    void *ctx,
+    const std::string api_token,
     WebSocketMessageCallback on_websocket_message) {
   poco_assert(ctx);
   poco_assert(!api_token.empty());
@@ -99,7 +100,8 @@ error WebSocketClient::connect() {
   return noError;
 }
 
-std::string WebSocketClient::parseWebSocketMessageType(std::string json) {
+std::string WebSocketClient::parseWebSocketMessageType(
+    const std::string json) {
   poco_assert(!json.empty());
   std::string type("data");
 
