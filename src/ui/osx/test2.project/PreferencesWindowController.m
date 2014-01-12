@@ -18,8 +18,7 @@
 
 @implementation PreferencesWindowController
 
-- (id)initWithWindow:(NSWindow *)window
-{
+- (id)initWithWindow:(NSWindow *)window {
     self = [super initWithWindow:window];
     if (self) {
         // Initialization code here.
@@ -27,8 +26,7 @@
     return self;
 }
 
-- (void)windowDidLoad
-{
+- (void)windowDidLoad {
     [super windowDidLoad];
     [self loadPreferences];
     [self enableProxyFields];
