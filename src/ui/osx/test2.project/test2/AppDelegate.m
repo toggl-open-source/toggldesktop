@@ -851,12 +851,9 @@ const NSString *appName = @"osx_native_app";
         db_path, log_path, log_level);
 
   char err[KOPSIK_ERR_LEN];
-  kopsik_api_result res = kopsik_set_db_path(
-    ctx, err, KOPSIK_ERR_LEN, [db_path UTF8String]);
-  if (res != KOPSIK_API_SUCCESS) {
-    NSAssert(@"Failed to initialize DB: %s",
-      [NSString stringWithUTF8String:err]);
-  }
+  kopsik_api_result res =
+    kopsik_set_db_path(ctx, err, KOPSIK_ERR_LEN, [db_path UTF8String]);
+  NSAssert(KOPSIK_API_SUCCESS == res, @"Failed to initialize DB");
   NSLog(@"DB path set %@", db_path);
 
   kopsik_set_log_path(ctx, [log_path UTF8String]);
@@ -872,6 +869,9 @@ const NSString *appName = @"osx_native_app";
       [self.app_path stringByAppendingPathComponent:@"ui.log"];
     freopen([logPath fileSystemRepresentation],"a+",stderr);
   }
+
+  res = kopsik_configure_proxy(ctx, err, KOPSIK_ERR_LEN);
+  NSAssert(KOPSIK_API_SUCCESS == res, @"Failed to initialize DB");
 
   NSLog(@"AppDelegate init done");
   
