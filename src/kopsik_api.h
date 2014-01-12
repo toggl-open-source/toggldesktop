@@ -56,6 +56,11 @@ KOPSIK_EXPORT kopsik_api_result kopsik_set_settings(void *ctx,
   const char *proxy_password,
   const int use_idle_detection);
 
+KOPSIK_EXPORT kopsik_api_result kopsik_configure_proxy(
+  void *context,
+  char *errmsg,
+  unsigned int errlen);
+
 // For mock testing only
 KOPSIK_EXPORT void kopsik_test_set_https_client(void *context,
   void *client);

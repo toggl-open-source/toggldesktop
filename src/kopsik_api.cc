@@ -456,6 +456,31 @@ kopsik_api_result kopsik_set_settings(
     return KOPSIK_API_FAILURE;
   }
 
+  err = ctx->ConfigureProxy();
+  if (err != kopsik::noError) {
+    strncpy(errmsg, err.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
+  return KOPSIK_API_SUCCESS;;
+}
+
+kopsik_api_result kopsik_configure_proxy(
+    void *context,
+    char *errmsg,
+    unsigned int errlen) {
+  poco_assert(context);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+
+  Context *ctx = reinterpret_cast<Context *>(context);
+
+  kopsik::error err = ctx->ConfigureProxy();
+  if (err != kopsik::noError) {
+    strncpy(errmsg, err.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
   return KOPSIK_API_SUCCESS;;
 }
 
