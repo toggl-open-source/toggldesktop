@@ -64,6 +64,12 @@ error WebSocketClient::connect() {
 
     session_ = new Poco::Net::HTTPSClientSession(uri.getHost(), uri.getPort(),
       context);
+    if (proxy_.IsConfigured()) {
+      session_->setProxy(proxy_.host, proxy_.port);
+      if (proxy_.HasCredentials()) {
+        session_->setProxyCredentials(proxy_.username, proxy_.password);
+      }
+    }
     req_ = new Poco::Net::HTTPRequest(Poco::Net::HTTPRequest::HTTP_GET, "/ws",
       Poco::Net::HTTPMessage::HTTP_1_1);
     req_->set("Origin", "https://localhost");

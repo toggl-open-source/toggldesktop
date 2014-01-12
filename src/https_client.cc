@@ -70,6 +70,12 @@ error HTTPSClient::requestJSON(
 
     Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(),
       context);
+    if (proxy_.IsConfigured()) {
+      session.setProxy(proxy_.host, proxy_.port);
+      if (proxy_.HasCredentials()) {
+        session.setProxyCredentials(proxy_.username, proxy_.password);
+      }
+    }
     session.setKeepAlive(false);
     session.setTimeout(Poco::Timespan(10 * Poco::Timespan::SECONDS));
 
