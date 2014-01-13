@@ -2137,7 +2137,7 @@ int Formatter::ParseDurationString(const std::string value) {
         numbers = Poco::replace(numbers, ",", ".");
         double hours = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, hours)) {
-            return static_cast<int>(hours * 60 * 60);
+            return hours * 60 * 60;
         }
     }
 
@@ -2148,7 +2148,7 @@ int Formatter::ParseDurationString(const std::string value) {
         numbers = Poco::replace(numbers, ",", ".");
         double minutes = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, minutes)) {
-            return static_cast<int>(minutes * 60);
+            return minutes * 60;
         }
     }
 
@@ -2159,7 +2159,7 @@ int Formatter::ParseDurationString(const std::string value) {
         numbers = Poco::replace(numbers, ",", ".");
         double seconds = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, seconds)) {
-            return static_cast<int>(seconds);
+            return seconds;
         }
     }
 
@@ -2170,7 +2170,7 @@ int Formatter::ParseDurationString(const std::string value) {
         numbers = Poco::replace(numbers, ",", ".");
         double hours = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, hours)) {
-            return static_cast<int>(hours * 60 * 60);
+            return hours * 60 * 60;
         }
     }
 
@@ -2181,7 +2181,7 @@ int Formatter::ParseDurationString(const std::string value) {
         numbers = Poco::replace(numbers, ",", ".");
         double minutes = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, minutes)) {
-            return static_cast<int>(minutes * 60);
+            return minutes * 60;
         }
     }
 
@@ -2192,7 +2192,7 @@ int Formatter::ParseDurationString(const std::string value) {
         numbers = Poco::replace(numbers, ",", ".");
         double seconds = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, seconds)) {
-            return static_cast<int>(seconds);
+            return seconds;
         }
     }
 
@@ -2200,7 +2200,7 @@ int Formatter::ParseDurationString(const std::string value) {
     // (we're gonna parse it as minutes)
     double minutes = 0;
     if (Poco::NumberParser::tryParseFloat(value, minutes)) {
-        return static_cast<int>(minutes * 60);
+        return minutes * 60;
     }
 
     return 0;

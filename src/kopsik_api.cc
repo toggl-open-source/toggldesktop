@@ -228,7 +228,7 @@ void time_entry_to_view_item(
   poco_assert(user);
   poco_assert(view_item);
 
-  view_item->DurationInSeconds = static_cast<int>(te->DurationInSeconds());
+  view_item->DurationInSeconds = te->DurationInSeconds();
 
   poco_assert(!view_item->Description);
   view_item->Description = strdup(te->Description().c_str());
@@ -264,8 +264,8 @@ void time_entry_to_view_item(
   poco_assert(!view_item->Duration);
   view_item->Duration = strdup(te->DurationString().c_str());
 
-  view_item->Started = static_cast<unsigned int>(te->Start());
-  view_item->Ended = static_cast<unsigned int>(te->Stop());
+  view_item->Started = te->Start();
+  view_item->Ended = te->Stop();
   if (te->Billable()) {
     view_item->Billable = 1;
   } else {
@@ -1143,10 +1143,10 @@ kopsik_api_result kopsik_autocomplete_items(
       autocomplete_item->ProjectAndTaskLabel = strdup(project_label.c_str());
       if (p) {
         autocomplete_item->ProjectColor = strdup(p->ColorCode().c_str());
-        autocomplete_item->ProjectID = static_cast<unsigned int>(p->ID());
+        autocomplete_item->ProjectID = p->ID();
       }
       if (t) {
-        autocomplete_item->TaskID = static_cast<unsigned int>(t->ID());
+        autocomplete_item->TaskID = t->ID();
       }
       autocomplete_item->Type = KOPSIK_AUTOCOMPLETE_TE;
       autocomplete_items.push_back(autocomplete_item);
@@ -1183,10 +1183,10 @@ kopsik_api_result kopsik_autocomplete_items(
       KopsikAutocompleteItem *autocomplete_item = autocomplete_item_init();
       autocomplete_item->Text = strdup(text.c_str());
       autocomplete_item->ProjectAndTaskLabel = strdup(text.c_str());
-      autocomplete_item->TaskID = static_cast<int>(t->ID());
+      autocomplete_item->TaskID = t->ID();
       if (p) {
         autocomplete_item->ProjectColor = strdup(p->ColorCode().c_str());
-        autocomplete_item->ProjectID = static_cast<unsigned int>(p->ID());
+        autocomplete_item->ProjectID = p->ID();
       }
       autocomplete_item->Type = KOPSIK_AUTOCOMPLETE_TASK;
       autocomplete_items.push_back(autocomplete_item);
@@ -1214,7 +1214,7 @@ kopsik_api_result kopsik_autocomplete_items(
       KopsikAutocompleteItem *autocomplete_item = autocomplete_item_init();
       autocomplete_item->Text = strdup(text.c_str());
       autocomplete_item->ProjectAndTaskLabel = strdup(text.c_str());
-      autocomplete_item->ProjectID = static_cast<int>(p->ID());
+      autocomplete_item->ProjectID = p->ID();
       if (p) {
         autocomplete_item->ProjectColor = strdup(p->ColorCode().c_str());
       }
@@ -2209,7 +2209,7 @@ class TimelineStartTask : public Poco::Task {
         ctx_->timeline_uploader = 0;
       }
       ctx_->timeline_uploader = new kopsik::TimelineUploader(
-        static_cast<unsigned int>(ctx_->user->ID()),
+        ctx_->user->ID(),
         ctx_->user->APIToken(),
         ctx_->api_url,
         ctx_->app_name,
@@ -2220,7 +2220,7 @@ class TimelineStartTask : public Poco::Task {
         ctx_->window_change_recorder = 0;
       }
       ctx_->window_change_recorder =new kopsik::WindowChangeRecorder(
-        static_cast<unsigned int>(ctx_->user->ID()));
+        ctx_->user->ID());
 
       callback_(KOPSIK_API_SUCCESS, "");
     }
