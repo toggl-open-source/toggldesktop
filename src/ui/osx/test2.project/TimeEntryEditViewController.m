@@ -72,7 +72,7 @@
 
   self.runningTimeEntry = item;
 
-  NSLog(@"TimeEntryEditViewController renderTimeEntry");
+  NSLog(@"TimeEntryEditViewController renderTimeEntry, %@", item);
 
   // Reset autocomplete filter
   [self.autocompleteDataSource setFilter:@""];
