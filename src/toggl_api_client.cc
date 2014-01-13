@@ -76,6 +76,7 @@ TimeEntry *User::Start(const std::string description,
     Project *p = GetProjectByID(te->PID());
     if (p) {
         te->SetWID(p->WID());
+        te->SetBillable(p->Billable());
     }
   }
 
