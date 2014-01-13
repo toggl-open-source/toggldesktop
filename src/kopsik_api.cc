@@ -1626,13 +1626,16 @@ kopsik_api_result kopsik_set_time_entry_project(
   kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
   poco_assert(te);
 
-  kopsik::Project *p = ctx->user->GetProjectByID(project_id);
-  if (p) {
-    te->SetBillable(p->Billable());
+  if (project_id) {
+    kopsik::Project *p = ctx->user->GetProjectByID(project_id);
+    if (p) {
+      te->SetBillable(p->Billable());
+    }
   }
 
   te->SetTID(task_id);
   te->SetPID(project_id);
+
   if (te->Dirty()) {
     te->SetUIModifiedAt(time(0));
   }
