@@ -140,6 +140,20 @@ std::string User::DateDuration(TimeEntry *te) {
     return Formatter::FormatDurationInSecondsHHMMSS(date_duration);
 }
 
+bool User::HasPremiumWorkspaces() {
+    for (std::vector<Workspace *>::const_iterator it =
+       related.Workspaces.begin();
+       it != related.Workspaces.end();
+       it++) {
+      Workspace *model = *it;
+      if (model->Premium()) {
+        return true;
+      }
+    }
+
+    return false;
+}
+
 std::string User::JoinTaskName(Task *t, Project *p, Client *c) {
     std::stringstream ss;
     bool empty = true;

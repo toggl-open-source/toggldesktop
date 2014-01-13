@@ -25,8 +25,7 @@
 
 @implementation TimeEntryEditViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
       self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
@@ -58,8 +57,7 @@
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntryDeselected object:nil];
 }
 
-- (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString
-{
+- (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString {
   return [self.autocompleteDataSource completedString:partialString];
 }
 
@@ -77,6 +75,24 @@
   // Reset autocomplete filter
   [self.autocompleteDataSource setFilter:@""];
   [self.projectSelect reloadData];
+
+  // Check if TE's can be marked as billable at all
+  char err[KOPSIK_ERR_LEN];
+  int has_premium_workspaces = 0;
+  kopsik_api_result res = kopsik_user_has_premium_workspaces(ctx,
+                                                             err,
+                                                             KOPSIK_ERR_LEN,
+                                                             &has_premium_workspaces);
+  if (KOPSIK_API_SUCCESS != res) {
+    handle_error(res, err);
+    return;
+  }
+
+  if (has_premium_workspaces) {
+    [self.billableCheckbox setHidden:NO];
+  } else {
+    [self.billableCheckbox setHidden:YES];
+  }
     
   self.GUID = view_item_guid;
   NSAssert(self.GUID != nil, @"GUID is nil");
@@ -121,8 +137,7 @@
   }
 }
 
-- (void)eventHandler: (NSNotification *) notification
-{
+- (void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIStateTimeEntrySelected]) {
     [self performSelectorOnMainThread:@selector(renderTimeEntry:)
                            withObject:notification.object
@@ -184,13 +199,13 @@
   NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
   const char *value = [[self.durationTextField stringValue] UTF8String];
-  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_duration(ctx,
+  kopsik_api_result res = kopsik_set_time_entry_duration(ctx,
                                                            err,
                                                            KOPSIK_ERR_LEN,
                                                            [self.GUID UTF8String],
-                                                           value)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                        object:[NSString stringWithUTF8String:err]];
+                                                         value);
+  if (KOPSIK_API_SUCCESS != res) {
+    handle_error(res, err);
     return;
   }
   kopsik_push_async(ctx, handle_error);

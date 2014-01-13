@@ -486,6 +486,8 @@ namespace kopsik {
 
         std::string JoinTaskName(Task *t, Project *p, Client *c);
 
+        bool HasPremiumWorkspaces();
+
         Workspace *GetWorkspaceByID(const Poco::UInt64 id);
         Client *GetClientByID(const Poco::UInt64 id);
         Client *GetClientByGUID(const guid GUID);

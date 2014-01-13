@@ -826,11 +826,37 @@ kopsik_api_result kopsik_clear_cache(
   return kopsik_logout(context, errmsg, errlen);
 }
 
+kopsik_api_result kopsik_user_has_premium_workspaces(
+    void *context,
+    char *errmsg,
+    unsigned int errlen,
+    int *has_premium_workspaces) {
+  poco_assert(context);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(has_premium_workspaces);
+
+  Context *ctx = reinterpret_cast<Context *>(context);
+
+  if (!ctx->user) {
+    strncpy(errmsg, "Please login first", errlen);
+    return KOPSIK_API_FAILURE;
+  }
+
+  *has_premium_workspaces = 0;
+  if (ctx->user->HasPremiumWorkspaces()) {
+    *has_premium_workspaces = 1;
+  }
+
+  return KOPSIK_API_SUCCESS;
+}
+
 // Sync
 
 kopsik_api_result kopsik_sync(
     void *context,
-    char *errmsg, unsigned int errlen,
+    char *errmsg,
+    unsigned int errlen,
     int full_sync) {
   poco_assert(context);
   poco_assert(errmsg);

@@ -122,6 +122,12 @@ KOPSIK_EXPORT kopsik_api_result kopsik_clear_cache(
   void *ctx,
   char *errmsg, unsigned int errlen);
 
+KOPSIK_EXPORT kopsik_api_result kopsik_user_has_premium_workspaces(
+  void *context,
+  char *errmsg,
+  unsigned int errlen,
+  int *has_premium_workspaces);
+
 // Sync
 
 typedef struct {
