@@ -22,8 +22,7 @@
 
 @implementation TimerViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
       [[NSNotificationCenter defaultCenter] addObserver:self
@@ -52,8 +51,7 @@
     return self;
 }
 
--(void)eventHandler: (NSNotification *) notification
-{
+-(void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIStateTimerRunning]) {
     [self performSelectorOnMainThread:@selector(render:)
                            withObject:notification.object

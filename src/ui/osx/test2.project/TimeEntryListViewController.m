@@ -179,7 +179,9 @@
   }
 
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    [self performSelectorOnMainThread:@selector(scheduleRenderTimeEntries) withObject:nil waitUntilDone:NO];
+    [self performSelectorOnMainThread:@selector(scheduleRenderTimeEntries)
+                           withObject:nil
+                        waitUntilDone:NO];
 
     // Show header
     [self.headerView setHidden:NO];
@@ -200,7 +202,9 @@
     if ([mc.ModelType isEqualToString:@"tag"]) {
       return;
     }
-    [self performSelectorOnMainThread:@selector(scheduleRenderTimeEntries) withObject:nil waitUntilDone:NO];
+    [self performSelectorOnMainThread:@selector(scheduleRenderTimeEntries)
+                           withObject:nil
+                        waitUntilDone:NO];
     return;
   }
 

@@ -25,8 +25,7 @@
 
 @implementation TimerEditViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
       self.autocompleteDataSource = [[AutocompleteDataSource alloc] init];
@@ -44,8 +43,7 @@
     return self;
 }
 
-- (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString
-{
+- (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString {
   return [self.autocompleteDataSource completedString:partialString];
 }
 
@@ -80,14 +78,13 @@
   }
 }
 
-- (void)eventHandler: (NSNotification *) notification
-{
+- (void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
     [self performSelectorOnMainThread:@selector(scheduleAutocompleteRendering) withObject:nil waitUntilDone:NO];
     return;
   }
 
-  if ([notification.name isEqualToString:kUIEventModelChange]) {
+  if (![notification.name isEqualToString:kUIEventModelChange]) {
     ModelChange *mc = notification.object;
     if ([mc.ModelType isEqualToString:@"tag"]) {
       return; // Tags dont affect autocomplete
@@ -105,8 +102,7 @@
   return [self.autocompleteDataSource keyAtIndex:row];
 }
 
-- (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)aString
-{
+- (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)aString {
   return [self.autocompleteDataSource indexOfKey:aString];
 }
 
@@ -158,8 +154,7 @@
   }
 }
 
-- (void)controlTextDidChange:(NSNotification *)aNotification
-{
+- (void)controlTextDidChange:(NSNotification *)aNotification {
   NSComboBox *box = [aNotification object];
   NSString *filter = [box stringValue];
   [self.autocompleteDataSource setFilter:filter];

@@ -160,6 +160,11 @@
     [self performSelectorOnMainThread:@selector(scheduleAutocompleteRendering)
                            withObject:nil
                         waitUntilDone:NO];
+    if ([self.GUID isEqualToString:mc.GUID]) {
+      [self performSelectorOnMainThread:@selector(renderTimeEntry:)
+                             withObject:mc.GUID
+                          waitUntilDone:NO];
+    }
     return;
   }
 }
