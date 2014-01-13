@@ -837,6 +837,13 @@ void Project::SetName(std::string value) {
     }
 }
 
+void Project::SetBillable(const bool value) {
+    if (billable_ != value) {
+        billable_ = value;
+        dirty_ = true;
+    }
+}
+
 void Project::SetColor(std::string value) {
     if (color_ != value) {
         color_ = value;
@@ -1670,6 +1677,8 @@ void Project::LoadFromJSONNode(JSONNODE *data) {
             SetColor(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "active") == 0) {
             SetActive(json_as_bool(*current_node));
+        } else if (strcmp(node_name, "billable") == 0) {
+            SetBillable(json_as_bool(*current_node));
         }
         ++current_node;
     }

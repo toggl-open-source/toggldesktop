@@ -1253,7 +1253,7 @@ error Database::SaveProject(
                 *session << "update projects set "
                     "id = :id, uid = :uid, name = :name, "
                     "wid = :wid, color = :color, cid = :cid, "
-                    "active = :active "
+                    "active = :active, billable = :billable "
                     "where local_id = :local_id",
                     Poco::Data::use(model->ID()),
                     Poco::Data::use(model->UID()),
@@ -1262,13 +1262,14 @@ error Database::SaveProject(
                     Poco::Data::use(model->Color()),
                     Poco::Data::use(model->CID()),
                     Poco::Data::use(model->Active()),
+                    Poco::Data::use(model->Billable()),
                     Poco::Data::use(model->LocalID()),
                     Poco::Data::now;
             } else {
                 *session << "update projects set "
                     "id = :id, uid = :uid, name = :name, guid = :guid,"
                     "wid = :wid, color = :color, cid = :cid, "
-                    "active = :active "
+                    "active = :active, billable = :billable "
                     "where local_id = :local_id",
                     Poco::Data::use(model->ID()),
                     Poco::Data::use(model->UID()),
@@ -1278,6 +1279,7 @@ error Database::SaveProject(
                     Poco::Data::use(model->Color()),
                     Poco::Data::use(model->CID()),
                     Poco::Data::use(model->Active()),
+                    Poco::Data::use(model->Billable()),
                     Poco::Data::use(model->LocalID()),
                     Poco::Data::now;
             }
@@ -1297,9 +1299,9 @@ error Database::SaveProject(
             if (model->GUID().empty()) {
                 *session <<
                     "insert into projects("
-                    "id, uid, name, wid, color, cid, active"
+                    "id, uid, name, wid, color, cid, active, billable"
                     ") values("
-                    ":id, :uid, :name, :wid, :color, :cid, :active"
+                    ":id, :uid, :name, :wid, :color, :cid, :active, :billable"
                     ")",
                     Poco::Data::use(model->ID()),
                     Poco::Data::use(model->UID()),
@@ -1308,13 +1310,15 @@ error Database::SaveProject(
                     Poco::Data::use(model->Color()),
                     Poco::Data::use(model->CID()),
                     Poco::Data::use(model->Active()),
+                    Poco::Data::use(model->Billable()),
                     Poco::Data::now;
             } else {
                 *session <<
                     "insert into projects("
-                    "id, uid, name, guid, wid, color, cid, active"
+                    "id, uid, name, guid, wid, color, cid, active, billable"
                     ") values("
-                    ":id, :uid, :name, :guid, :wid, :color, :cid, :active"
+                    ":id, :uid, :name, :guid, :wid, :color, :cid, :active, "
+                    ":billable"
                     ")",
                     Poco::Data::use(model->ID()),
                     Poco::Data::use(model->UID()),
@@ -1324,6 +1328,7 @@ error Database::SaveProject(
                     Poco::Data::use(model->Color()),
                     Poco::Data::use(model->CID()),
                     Poco::Data::use(model->Active()),
+                    Poco::Data::use(model->Billable()),
                     Poco::Data::now;
             }
             error err = last_error();
@@ -1820,6 +1825,12 @@ error Database::initialize_tables() {
         "constraint fk_projects_uid foreign key (uid) "
         "   references users(id) ON DELETE NO ACTION ON UPDATE NO ACTION"
         "); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("projects.billable",
+        "ALTER TABLE projects ADD billable INT NOT NULL DEFAULT 0");
     if (err != noError) {
         return err;
     }

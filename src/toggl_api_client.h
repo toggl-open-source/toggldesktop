@@ -145,7 +145,8 @@ namespace kopsik {
     public:
         Project() : local_id_(0), id_(0), guid_(""), wid_(0), cid_(0),
             name_(""), uid_(0), dirty_(false), color_(""),
-            active_(false), is_marked_as_deleted_on_server_(false) {}
+            active_(false), is_marked_as_deleted_on_server_(false),
+            billable_(false) {}
 
         Poco::Int64 LocalID() { return local_id_; }
         void SetLocalID(Poco::Int64 value) { local_id_ = value; }
@@ -188,6 +189,9 @@ namespace kopsik {
             dirty_ = true;
         }
 
+        bool Billable() { return billable_; }
+        void SetBillable(const bool value);
+
     private:
         Poco::Int64 local_id_;
         Poco::UInt64 id_;
@@ -200,6 +204,7 @@ namespace kopsik {
         std::string color_;
         bool active_;
         bool is_marked_as_deleted_on_server_;
+        bool billable_;
     };
 
     class Task {
