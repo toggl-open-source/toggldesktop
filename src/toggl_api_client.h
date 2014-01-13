@@ -62,7 +62,7 @@ namespace kopsik {
     class Workspace {
     public:
         Workspace() : local_id_(0), id_(0), name_(""), uid_(0), dirty_(false),
-            is_marked_as_deleted_on_server_(false) {}
+            is_marked_as_deleted_on_server_(false), premium_(false) {}
 
         void LoadFromJSONNode(JSONNODE *node);
         std::string String();
@@ -77,6 +77,9 @@ namespace kopsik {
         void SetUID(Poco::UInt64 value);
         bool Dirty() { return dirty_; }
         void ClearDirty() { dirty_ = false; }
+
+        bool Premium() { return premium_; }
+        void SetPremium(const bool value);
 
         bool IsMarkedAsDeletedOnServer() {
             return is_marked_as_deleted_on_server_;
@@ -93,6 +96,7 @@ namespace kopsik {
         Poco::UInt64 uid_;
         bool dirty_;
         bool is_marked_as_deleted_on_server_;
+        bool premium_;
     };
 
     class Client {

@@ -1064,6 +1064,13 @@ void Workspace::SetName(std::string value) {
     }
 }
 
+void Workspace::SetPremium(const bool value) {
+    if (premium_ != value) {
+        premium_ = value;
+        dirty_ = true;
+    }
+}
+
 void User::loadTagFromJSONNode(JSONNODE *data,
         std::set<Poco::UInt64> *alive) {
   poco_assert(data);
@@ -1615,6 +1622,8 @@ void Workspace::LoadFromJSONNode(JSONNODE *n) {
             SetID(json_as_int(*i));
         } else if (strcmp(node_name, "name") == 0) {
             SetName(std::string(json_as_string(*i)));
+        } else if (strcmp(node_name, "premium") == 0) {
+            SetPremium(json_as_bool(*i));
         }
         ++i;
     }

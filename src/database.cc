@@ -429,8 +429,9 @@ error Database::loadWorkspaces(
 
     try {
         Poco::Data::Statement select(*session);
-        select << "SELECT local_id, id, uid, name "
-            "FROM workspaces WHERE uid = :uid "
+        select << "SELECT local_id, id, uid, name, premium "
+            "FROM workspaces "
+            "WHERE uid = :uid "
             "ORDER BY name",
             Poco::Data::use(UID);
         error err = last_error();
@@ -447,6 +448,7 @@ error Database::loadWorkspaces(
                 model->SetID(rs[1].convert<Poco::UInt64>());
                 model->SetUID(rs[2].convert<Poco::UInt64>());
                 model->SetName(rs[3].convert<std::string>());
+                model->SetPremium(rs[4].convert<bool>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -473,7 +475,8 @@ error Database::loadClients(
     try {
         Poco::Data::Statement select(*session);
         select << "SELECT local_id, id, uid, name, guid, wid "
-            "FROM clients WHERE uid = :uid "
+            "FROM clients "
+            "WHERE uid = :uid "
             "ORDER BY name",
             Poco::Data::use(UID);
 
@@ -520,7 +523,8 @@ error Database::loadProjects(
         Poco::Data::Statement select(*session);
         select << "SELECT local_id, id, uid, name, guid, wid, color, cid, "
             "active "
-            "FROM projects WHERE uid = :uid "
+            "FROM projects "
+            "WHERE uid = :uid "
             "ORDER BY name",
             Poco::Data::use(UID);
         error err = last_error();
@@ -568,7 +572,8 @@ error Database::loadTasks(
     try {
         Poco::Data::Statement select(*session);
         select << "SELECT local_id, id, uid, name, wid, pid "
-            "FROM tasks WHERE uid = :uid "
+            "FROM tasks "
+            "WHERE uid = :uid "
             "ORDER BY name",
             Poco::Data::use(UID);
         error err = last_error();
@@ -613,7 +618,8 @@ error Database::loadTags(
     try {
         Poco::Data::Statement select(*session);
         select << "SELECT local_id, id, uid, name, wid, guid "
-            "FROM tags WHERE uid = :uid "
+            "FROM tags "
+            "WHERE uid = :uid "
             "ORDER BY name",
             Poco::Data::use(UID);
         error err = last_error();
@@ -1076,11 +1082,12 @@ error Database::SaveWorkspace(
             logger.debug(ss.str());
 
             *session << "update workspaces set "
-                "id = :id, uid = :uid, name = :name "
+                "id = :id, uid = :uid, name = :name, premium = :premium "
                 "where local_id = :local_id",
                 Poco::Data::use(model->ID()),
                 Poco::Data::use(model->UID()),
                 Poco::Data::use(model->Name()),
+                Poco::Data::use(model->Premium()),
                 Poco::Data::use(model->LocalID()),
                 Poco::Data::now;
             error err = last_error();
@@ -1095,11 +1102,12 @@ error Database::SaveWorkspace(
             ss << "Inserting workspace " + model->String()
                << " in thread " << Poco::Thread::currentTid();
             logger.debug(ss.str());
-            *session << "insert into workspaces(id, uid, name) "
-                "values(:id, :uid, :name)",
+            *session << "insert into workspaces(id, uid, name, premium) "
+                "values(:id, :uid, :name, :premium)",
                 Poco::Data::use(model->ID()),
                 Poco::Data::use(model->UID()),
                 Poco::Data::use(model->Name()),
+                Poco::Data::use(model->Premium()),
                 Poco::Data::now;
             error err = last_error();
             if (err != noError) {
@@ -1755,6 +1763,12 @@ error Database::initialize_tables() {
 
     err = migrate("workspaces.id",
         "CREATE UNIQUE INDEX id_workspaces_id ON workspaces (id);");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("workspaces.premium",
+        "alter table workspaces add column premium int default 0");
     if (err != noError) {
         return err;
     }
