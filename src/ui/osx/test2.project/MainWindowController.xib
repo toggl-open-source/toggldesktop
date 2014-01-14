@@ -16,24 +16,24 @@
         <customObject id="-3" userLabel="Application"/>
         <window title="Toggl Desktop" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" wantsToBeColor="NO" frameAutosaveName="MainWindow" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
-            <rect key="contentRect" x="196" y="240" width="250" height="530"/>
+            <rect key="contentRect" x="196" y="240" width="260" height="450"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
-            <value key="minSize" type="size" width="250" height="530"/>
+            <value key="minSize" type="size" width="260" height="450"/>
             <value key="maxSize" type="size" width="500" height="5000"/>
             <view key="contentView" id="2">
-                <rect key="frame" x="0.0" y="0.0" width="250" height="530"/>
+                <rect key="frame" x="0.0" y="0.0" width="260" height="450"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="av5-A6-9S5" userLabel="ContentView">
-                        <rect key="frame" x="0.0" y="180" width="250" height="350"/>
+                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="av5-A6-9S5" userLabel="ContentView">
+                        <rect key="frame" x="0.0" y="0.0" width="260" height="450"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="av5-A6-9S5" secondAttribute="trailing" id="57y-9P-PlT"/>
-                    <constraint firstItem="av5-A6-9S5" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="ESW-fM-7Eo"/>
-                    <constraint firstItem="av5-A6-9S5" firstAttribute="top" secondItem="2" secondAttribute="top" id="oxa-Vv-QJh"/>
-                    <constraint firstAttribute="bottom" secondItem="av5-A6-9S5" secondAttribute="bottom" id="yWZ-Zg-oVi"/>
+                    <constraint firstAttribute="bottom" secondItem="av5-A6-9S5" secondAttribute="bottom" id="4zZ-n1-ALD"/>
+                    <constraint firstItem="av5-A6-9S5" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="P13-nu-UZ0"/>
+                    <constraint firstItem="av5-A6-9S5" firstAttribute="top" secondItem="2" secondAttribute="top" id="lIn-MP-X7n"/>
+                    <constraint firstAttribute="trailing" secondItem="av5-A6-9S5" secondAttribute="trailing" id="vIk-4N-Ddi"/>
                 </constraints>
             </view>
             <connections>
