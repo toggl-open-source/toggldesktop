@@ -732,7 +732,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   return YES;
 }
 
-- (NSString *)applicationSupportDirectory {
+- (NSString *)applicationSupportDirectory:(NSString *)environmentName {
   NSString *path;
   NSError *error;
   NSArray* paths = NSSearchPathForDirectoriesInDomains(
@@ -741,12 +741,16 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
     NSLog(@"Unable to access application support directory!");
   }
   path = [paths[0] stringByAppendingPathComponent:@"Kopsik"];
+
+  // Append environment name to path. So we can have
+  // production and development running side by side.
+  path = [path stringByAppendingPathComponent:environmentName];
   
 	if ([[NSFileManager defaultManager] fileExistsAtPath:path]){
     return path;
   }
 	if (![[NSFileManager defaultManager] createDirectoryAtPath:path
-                                 withIntermediateDirectories:NO
+                                 withIntermediateDirectories:YES
                                                   attributes:nil
                                                        error:&error]){
 		NSLog(@"Create directory error: %@", error);
@@ -792,7 +796,7 @@ const NSString *appName = @"osx_native_app";
   NSArray *arguments = [[NSProcessInfo processInfo] arguments];
   NSLog(@"Command line arguments: %@", arguments);
   
-  self.app_path = self.applicationSupportDirectory;
+  self.app_path = [self applicationSupportDirectory:environment];
   NSString *db_path =
     [self.app_path stringByAppendingPathComponent:@"kopsik.db"];
   NSString *log_path =
