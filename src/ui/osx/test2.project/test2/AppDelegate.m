@@ -430,14 +430,17 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
 
   // Start syncing after a while.
   [self performSelector:@selector(startSync)
-    withObject:nil afterDelay:0.5];
+             withObject:nil
+             afterDelay:0.5];
   [self performSelector:@selector(startWebSocket)
-    withObject:nil afterDelay:0.5];
+             withObject:nil
+             afterDelay:0.5];
 
   // Start timeline only if user has enabled it (known to us)
   if (user.recordTimeline) {
     [self performSelector:@selector(startTimeline)
-      withObject:nil afterDelay:0.5];
+               withObject:nil
+               afterDelay:0.5];
   }
   
   renderRunningTimeEntry();
@@ -474,10 +477,17 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   }
 }
 
+- (void)settingsChanged {
+  [self updateIdleDetectionTimer];
+  if (![self.lastKnownLoginState isEqualToString:kUIStateUserLoggedOut]) {
+    [self startSync];
+    [self startWebSocket];
+  }
+}
+
 - (void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIEventSettingsChanged]) {
-    [self updateIdleDetectionTimer];
-    [self startSync];
+    [self settingsChanged];
   } else if ([notification.name isEqualToString:kUICommandShowPreferences]) {
     [self onPreferencesMenuItem:self];
   } else if ([notification.name isEqualToString:kUIEventWebSocketConnection]) {
