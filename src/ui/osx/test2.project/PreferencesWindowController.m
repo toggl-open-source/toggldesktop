@@ -38,10 +38,6 @@
     [self enableProxyFields];
 }
 
-- (void)windowWillClose:(NSNotification *)notification {
-    [self savePreferences];
-}
-
 - (void)loadPreferences {
     NSLog(@"loadPreferences");
   
