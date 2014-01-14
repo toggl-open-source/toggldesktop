@@ -759,29 +759,32 @@ const NSString *appName = @"osx_native_app";
 - (id) init
 {
   self = [super init];
-  
-  // Disallow duplicate instances
-  if ([[NSRunningApplication runningApplicationsWithBundleIdentifier:
-      [[NSBundle mainBundle] bundleIdentifier]] count] > 1) {
-    NSString *msg = [NSString
-      stringWithFormat:@"Another copy of %@ is already running.",
-      [[NSBundle mainBundle]
-        objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey]];
-    [[NSAlert alertWithMessageText:msg
-                     defaultButton:nil
-                   alternateButton:nil
-                       otherButton:nil
-         informativeTextWithFormat:@"This copy will now quit."] runModal];
+
+  NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
+  NSString* environment = infoDict[@"KopsikEnvironment"];
+
+  // Disallow duplicate instances in production
+  if ([environment isEqualToString:@"production"]) {
+    if ([[NSRunningApplication runningApplicationsWithBundleIdentifier:
+          [[NSBundle mainBundle] bundleIdentifier]] count] > 1) {
+      NSString *msg = [NSString
+                       stringWithFormat:@"Another copy of %@ is already running.",
+                       [[NSBundle mainBundle]
+                        objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey]];
+      [[NSAlert alertWithMessageText:msg
+                       defaultButton:nil
+                     alternateButton:nil
+                         otherButton:nil
+           informativeTextWithFormat:@"This copy will now quit."] runModal];
     
-    [NSApp terminate:nil];
+      [NSApp terminate:nil];
+    }
   }
   
-  NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
   NSString* version = infoDict[@"CFBundleShortVersionString"];
   ctx = kopsik_context_init([appName UTF8String], [version UTF8String]);
 
   [Bugsnag startBugsnagWithApiKey:@"2a46aa1157256f759053289f2d687c2f"];
-  NSString* environment = infoDict[@"KopsikEnvironment"];
   NSAssert(environment != nil, @"Missing environment in plist");
   [Bugsnag configuration].releaseStage = environment;
 
