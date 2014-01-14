@@ -109,8 +109,6 @@
 - (IBAction)startButtonClicked:(id)sender {
   self.time_entry.Description = self.descriptionComboBox.stringValue;
   [self.descriptionComboBox setStringValue:@""];
-  [self.projectTextField setStringValue:@""];
-  [self.projectTextField setHidden:YES];
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandNew
                                                       object:self.time_entry];
   self.time_entry = [[NewTimeEntry alloc] init];
@@ -127,20 +125,12 @@
 
   // User has entered free text
   if (item == nil) {
-    [self.projectTextField setHidden:YES];
-    [self.projectTextField setStringValue:@""];
-
     self.time_entry.Description = [self.descriptionComboBox stringValue];
-
     return;
   }
 
   // User has selected a autocomplete item.
   // It could be a time entry, a task or a project.
-  [self.projectTextField setStringValue:[item.ProjectAndTaskLabel uppercaseString]];
-  self.projectTextField.backgroundColor = [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
-  [self.projectTextField setHidden:NO];
-
   self.time_entry.ProjectID = item.ProjectID;
   self.time_entry.TaskID = item.TaskID;
 
