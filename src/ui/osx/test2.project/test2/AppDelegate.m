@@ -69,6 +69,9 @@ NSString *kTimeTotalUnknown = @"--:--";
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   NSLog(@"applicationDidFinishLaunching");
+
+  [[NSUserDefaults standardUserDefaults] setBool:YES
+                                          forKey:@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"];
   
   self.mainWindowController =
     [[MainWindowController alloc]
