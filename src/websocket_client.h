@@ -12,6 +12,7 @@
 #include "Poco/Net/HTTPSClientSession.h"
 #include "Poco/Net/HTTPRequest.h"
 #include "Poco/Net/HTTPResponse.h"
+#include "Poco/Logger.h"
 
 #include "./types.h"
 #include "./proxy.h"
@@ -60,6 +61,7 @@ namespace kopsik {
     error poll();
     error connect();
     void deleteSession();
+    Poco::Logger &logger();
 
     Poco::Activity<WebSocketClient> activity_;
     Poco::Net::HTTPSClientSession *session_;
