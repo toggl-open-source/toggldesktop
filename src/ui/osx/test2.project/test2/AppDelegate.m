@@ -56,6 +56,16 @@
 
 // Where logs are written and db is kept
 @property NSString *app_path;
+@property NSString *db_path;
+@property NSString *log_path;
+@property NSString *log_level;
+
+// Environment (development, production, etc)
+@property NSString *environment;
+
+// Websocket and API hosts can be overriden
+@property NSString *websocket_url_override;
+@property NSString *api_url_override;
 
 // For testing crash reporter
 @property BOOL forceCrash;
@@ -743,7 +753,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   return YES;
 }
 
-- (NSString *)applicationSupportDirectory:(NSString *)environmentName {
+- (NSString *)applicationSupportDirectory {
   NSString *path;
   NSError *error;
   NSArray* paths = NSSearchPathForDirectoriesInDomains(
@@ -755,7 +765,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
 
   // Append environment name to path. So we can have
   // production and development running side by side.
-  path = [path stringByAppendingPathComponent:environmentName];
+  path = [path stringByAppendingPathComponent:self.environment];
   
 	if ([[NSFileManager defaultManager] fileExistsAtPath:path]){
     return path;
@@ -771,48 +781,9 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
 
 const NSString *appName = @"osx_native_app";
 
-- (id) init
-{
-  self = [super init];
-
-  NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
-  NSString* environment = infoDict[@"KopsikEnvironment"];
-
-  // Disallow duplicate instances in production
-  if ([environment isEqualToString:@"production"]) {
-    if ([[NSRunningApplication runningApplicationsWithBundleIdentifier:
-          [[NSBundle mainBundle] bundleIdentifier]] count] > 1) {
-      NSString *msg = [NSString
-                       stringWithFormat:@"Another copy of %@ is already running.",
-                       [[NSBundle mainBundle]
-                        objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey]];
-      [[NSAlert alertWithMessageText:msg
-                       defaultButton:nil
-                     alternateButton:nil
-                         otherButton:nil
-           informativeTextWithFormat:@"This copy will now quit."] runModal];
-    
-      [NSApp terminate:nil];
-    }
-  }
-  
-  NSString* version = infoDict[@"CFBundleShortVersionString"];
-  ctx = kopsik_context_init([appName UTF8String], [version UTF8String]);
-
-  [Bugsnag startBugsnagWithApiKey:@"2a46aa1157256f759053289f2d687c2f"];
-  NSAssert(environment != nil, @"Missing environment in plist");
-  [Bugsnag configuration].releaseStage = environment;
-
-  // Parse command line arguments
+- (void)parseCommandLineArguments{
   NSArray *arguments = [[NSProcessInfo processInfo] arguments];
   NSLog(@"Command line arguments: %@", arguments);
-  
-  self.app_path = [self applicationSupportDirectory:environment];
-  NSString *db_path =
-    [self.app_path stringByAppendingPathComponent:@"kopsik.db"];
-  NSString *log_path =
-    [self.app_path stringByAppendingPathComponent:@"kopsik.log"];
-  NSString *log_level = @"debug";
   
   for (int i = 1; i < arguments.count; i++) {
     NSString *argument = arguments[i];
@@ -833,63 +804,112 @@ const NSString *appName = @"osx_native_app";
     }
     if (([argument rangeOfString:@"log"].location != NSNotFound) &&
         ([argument rangeOfString:@"path"].location != NSNotFound)) {
-      log_path = arguments[i+1];
-      NSLog(@"log path overriden with '%@'", log_path);
+      self.log_path = arguments[i+1];
+      NSLog(@"log path overriden with '%@'", self.log_path);
       continue;
     }
     if (([argument rangeOfString:@"db"].location != NSNotFound) &&
         ([argument rangeOfString:@"path"].location != NSNotFound)) {
-      db_path = arguments[i+1];
-      NSLog(@"db path overriden with '%@'", db_path);
+      self.db_path = arguments[i+1];
+      NSLog(@"db path overriden with '%@'", self.db_path);
       continue;
     }
     if (([argument rangeOfString:@"log"].location != NSNotFound) &&
         ([argument rangeOfString:@"level"].location != NSNotFound)) {
-      log_level = arguments[i+1];
-      NSLog(@"log level overriden with '%@'", log_level);
+      self.log_level = arguments[i+1];
+      NSLog(@"log level overriden with '%@'", self.log_level);
       continue;
     }
     if (([argument rangeOfString:@"api"].location != NSNotFound) &&
         ([argument rangeOfString:@"url"].location != NSNotFound)) {
-      NSString *url = arguments[i+1];
-      kopsik_set_api_url(ctx, [url UTF8String]);
-      NSLog(@"API URL overriden with '%@'", url);
+      self.api_url_override = arguments[i+1];
+      NSLog(@"API URL overriden with '%@'", self.api_url_override);
       continue;
     }
     if (([argument rangeOfString:@"websocket"].location != NSNotFound) &&
         ([argument rangeOfString:@"url"].location != NSNotFound)) {
-      NSString *url = arguments[i+1];
-      kopsik_set_websocket_url(ctx, [url UTF8String]);
-      NSLog(@"Websocket URL overriden with '%@'", url);
+      self.websocket_url_override = arguments[i+1];
+      NSLog(@"Websocket URL overriden with '%@'", self.websocket_url_override);
       continue;
     }
   }
+}
+
+- (void)disallowDuplicateInstances {
+  // Disallow duplicate instances in production
+  if ([self.environment isEqualToString:@"production"]) {
+    if ([[NSRunningApplication runningApplicationsWithBundleIdentifier:
+          [[NSBundle mainBundle] bundleIdentifier]] count] > 1) {
+      NSString *msg = [NSString
+                       stringWithFormat:@"Another copy of %@ is already running.",
+                       [[NSBundle mainBundle]
+                        objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey]];
+      [[NSAlert alertWithMessageText:msg
+                       defaultButton:nil
+                     alternateButton:nil
+                         otherButton:nil
+           informativeTextWithFormat:@"This copy will now quit."] runModal];
     
+      [NSApp terminate:nil];
+    }
+  }
+}
+
+- (id) init {
+  self = [super init];
+
+  NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
+  self.environment = infoDict[@"KopsikEnvironment"];
+
+  [self disallowDuplicateInstances];
+
+  [Bugsnag startBugsnagWithApiKey:@"2a46aa1157256f759053289f2d687c2f"];
+  NSAssert(self.environment != nil, @"Missing environment in plist");
+  [Bugsnag configuration].releaseStage = self.environment;
+
+  self.app_path = [self applicationSupportDirectory];
+  self.db_path = [self.app_path stringByAppendingPathComponent:@"kopsik.db"];
+  self.log_path = [self.app_path stringByAppendingPathComponent:@"kopsik.log"];
+  self.log_level = @"debug";
+
+  [self parseCommandLineArguments];
+
   NSLog(@"Starting with db path %@, log path %@, log level %@",
-        db_path, log_path, log_level);
+    self.db_path, self.log_path, self.log_level);
+
+  kopsik_set_log_path([self.log_path UTF8String]);
+  NSLog(@"Log path set %@", self.log_path);
+
+  kopsik_set_log_level([self.log_level UTF8String]);
+  NSLog(@"Log level set to %@", self.log_level);
+
+  NSString* version = infoDict[@"CFBundleShortVersionString"];
+  ctx = kopsik_context_init([appName UTF8String], [version UTF8String]);
 
   char err[KOPSIK_ERR_LEN];
   kopsik_api_result res =
-    kopsik_set_db_path(ctx, err, KOPSIK_ERR_LEN, [db_path UTF8String]);
+    kopsik_set_db_path(ctx, err, KOPSIK_ERR_LEN, [self.db_path UTF8String]);
   NSAssert(KOPSIK_API_SUCCESS == res, @"Failed to initialize DB");
-  NSLog(@"DB path set %@", db_path);
+  NSLog(@"DB path set %@", self.db_path);
 
-  kopsik_set_log_path(ctx, [log_path UTF8String]);
-  NSLog(@"Log path set %@", log_path);
-
-  kopsik_set_log_level(ctx, [log_level UTF8String]);
-  NSLog(@"Log level set to %@", log_level);
-  
   id logToFile = infoDict[@"KopsikLogUserInterfaceToFile"];
   if ([logToFile boolValue]) {
     NSLog(@"Redirecting UI log to file");
     NSString *logPath =
       [self.app_path stringByAppendingPathComponent:@"ui.log"];
-    freopen([logPath fileSystemRepresentation],"a+",stderr);
+    freopen([logPath fileSystemRepresentation],"a+", stderr);
   }
 
   res = kopsik_configure_proxy(ctx, err, KOPSIK_ERR_LEN);
   NSAssert(KOPSIK_API_SUCCESS == res, @"Failed to initialize DB");
+
+  if (self.api_url_override != nil) {
+    kopsik_set_api_url(ctx, [self.api_url_override UTF8String]);
+  }
+
+  if (self.websocket_url_override != nil) {
+    kopsik_set_websocket_url(ctx, [self.websocket_url_override UTF8String]);
+  }
 
   NSLog(@"AppDelegate init done");
   
