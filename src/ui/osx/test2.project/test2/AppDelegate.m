@@ -729,11 +729,9 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
 }
 
 - (void)applicationWillTerminate:(NSNotification *)app {
-  NSLog(@"applicationWillTerminate, shutting down websocket");
-  [self.preferencesWindowController.window close];
+  NSLog(@"applicationWillTerminate");
   kopsik_context_clear(ctx);
   ctx = 0;
-  NSLog(@"applicationWillTerminate done, websocket is shut down");
 }
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender
