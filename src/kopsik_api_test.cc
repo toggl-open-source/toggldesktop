@@ -89,10 +89,11 @@ namespace kopsik {
     }
 
     TEST(KopsikApiTest, kopsik_set_log_path) {
-        void *ctx = create_test_context();
-        kopsik_set_log_path(ctx, "test.log");
-        ASSERT_TRUE(true);
-        kopsik_context_clear(ctx);
+        kopsik_set_log_path("test.log");
+    }
+
+    TEST(KopsikApiTest, kopsik_set_log_level) {
+        kopsik_set_log_level("trace");
     }
 
     TEST(KopsikApiTest, kopsik_user_init) {

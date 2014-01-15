@@ -44,7 +44,7 @@ error WebSocketClient::Start(
   if (err != noError)  {
     return err;
   }
-  
+
   activity_.start();
 
   return noError;

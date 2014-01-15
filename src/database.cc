@@ -2225,4 +2225,29 @@ error Database::String(
     return last_error();
 }
 
+error Database::UInt(
+        const std::string sql,
+        Poco::UInt64 *result) {
+    poco_assert(session);
+    poco_assert(result);
+    poco_assert(!sql.empty());
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
+    try {
+        Poco::UInt64 value(0);
+        *session << sql,
+            Poco::Data::into(value),
+            Poco::Data::now;
+        *result = value;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error();
+}
+
 }   // namespace kopsik
