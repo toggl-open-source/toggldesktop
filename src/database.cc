@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "./toggl_api_client.h"
+#include "./explicit_scoped_lock.h"
 
 #include "Poco/Logger.h"
 #include "Poco/UUID.h"
@@ -26,7 +27,7 @@ error Database::DeleteUser(
         const bool with_related_data) {
     poco_assert(model);
 
-    Poco::Mutex::ScopedLock lock(mutex_);
+    ExplicitScopedLock("Database::DeleteUser", mutex_);
 
     error err = deleteFromTable("users", model->LocalID());
     if (err != noError) {
@@ -82,6 +83,10 @@ error Database::deleteAllFromTableByUID(
     return last_error();
 }
 
+Poco::Logger &Database::logger() {
+    return Poco::Logger::get("database");
+}
+
 error Database::deleteFromTable(
         const std::string table_name,
         const Poco::Int64 local_id) {
@@ -92,8 +97,7 @@ error Database::deleteFromTable(
     std::stringstream ss;
     ss << "Deleting from table " << table_name
         << ", local ID: " << local_id;
-    Poco::Logger &logger = Poco::Logger::get("database");
-    logger.debug(ss.str());
+    logger().debug(ss.str());
     try {
         *session << "delete from " + table_name +
             " where local_id = :local_id",
@@ -134,7 +138,7 @@ error Database::LoadCurrentUser(
         const bool with_related_data) {
     poco_assert(user);
 
-    Poco::Mutex::ScopedLock lock(mutex_);
+    ExplicitScopedLock("Database::LoadCurrentUser", mutex_);
 
     std::string api_token("");
     error err = CurrentAPIToken(&api_token);
@@ -156,7 +160,7 @@ error Database::LoadSettings(
     poco_assert(proxy);
     poco_assert(use_idle_detection);
 
-    Poco::Mutex::ScopedLock lock(mutex_);
+    ExplicitScopedLock("Database::LoadSettings", mutex_);
 
     int has_settings = 0;
 
@@ -193,7 +197,7 @@ error Database::SaveSettings(
         const bool use_idle_detection) {
     poco_assert(session);
 
-    Poco::Mutex::ScopedLock lock(mutex_);
+    ExplicitScopedLock("Database::SaveSettings", mutex_);
 
     try {
         *session << "delete from settings",
@@ -233,7 +237,7 @@ error Database::LoadUserByAPIToken(
     poco_assert(model);
     poco_assert(!api_token.empty());
 
-    Poco::Mutex::ScopedLock lock(mutex_);
+    ExplicitScopedLock("Database::LoadUserByAPIToken", mutex_);
 
     Poco::UInt64 uid(0);
     model->SetAPIToken(api_token);
@@ -296,12 +300,10 @@ error Database::LoadUserByID(
     poco_assert(session);
     poco_assert(UID > 0);
 
-    Poco::Mutex::ScopedLock lock(mutex_);
+    ExplicitScopedLock("Database::LoadUserByID", mutex_);
 
     Poco::Stopwatch stopwatch;
     stopwatch.start();
-
-    Poco::Logger &logger = Poco::Logger::get("database");
 
     try {
         Poco::Int64 local_id(0);
@@ -364,59 +366,9 @@ error Database::LoadUserByID(
     std::stringstream ss;
     ss << "User with_related_data=" << with_related_data << " loaded in "
         << stopwatch.elapsed() / 1000 << " ms";
-    logger.debug(ss.str());
+    logger().debug(ss.str());
 
     return noError;
-}
-
-error Database::UInt(
-        const std::string sql,
-        Poco::UInt64 *result) {
-    poco_assert(session);
-    poco_assert(result);
-    poco_assert(!sql.empty());
-
-    Poco::Mutex::ScopedLock lock(mutex_);
-
-    try {
-        Poco::UInt64 value(0);
-        *session << sql,
-            Poco::Data::into(value),
-            Poco::Data::now;
-        *result = value;
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return last_error();
-}
-
-error Database::String(
-        const std::string sql,
-        std::string *result) {
-    poco_assert(session);
-    poco_assert(result);
-    poco_assert(!sql.empty());
-
-    Poco::Mutex::ScopedLock lock(mutex_);
-
-    try {
-        std::string value("");
-        *session << sql,
-            Poco::Data::into(value),
-            Poco::Data::now;
-        *result = value;
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return last_error();
 }
 
 error Database::loadWorkspaces(
@@ -837,8 +789,7 @@ error Database::saveTimeEntries(
     {
         std::stringstream ss;
         ss << "Saving time entries in thread " << Poco::Thread::currentTid();
-        Poco::Logger &logger = Poco::Logger::get("database");
-        logger.debug(ss.str());
+        logger().debug(ss.str());
     }
 
     for (std::vector<TimeEntry *>::iterator it = list->begin();
@@ -875,8 +826,7 @@ error Database::saveTimeEntries(
         std::stringstream ss;
         ss << "Finished saving time entries in thread " <<
             Poco::Thread::currentTid();
-        Poco::Logger &logger = Poco::Logger::get("database");
-        logger.debug(ss.str());
+        logger().debug(ss.str());
     }
 
     return noError;
@@ -889,7 +839,7 @@ error Database::SaveTimeEntry(
     poco_assert(session);
     poco_assert(changes);
 
-    Poco::Mutex::ScopedLock lock(mutex_);
+    ExplicitScopedLock("Database::SaveTimeEntry", mutex_);
 
     if (model->LocalID() && !model->Dirty() && !model->GUID().empty()) {
         return noError;
@@ -898,12 +848,11 @@ error Database::SaveTimeEntry(
         model->SetGUID(generateGUID());
     }
     try {
-        Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID()) {
             std::stringstream ss;
             ss << "Updating time entry " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger.debug(ss.str());
+            logger().debug(ss.str());
 
             if (model->ID()) {
                 *session << "update time_entries set "
@@ -980,7 +929,7 @@ error Database::SaveTimeEntry(
             std::stringstream ss;
             ss << "Inserting time entry " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger.debug(ss.str());
+            logger().debug(ss.str());
             if (model->ID()) {
                 *session << "insert into time_entries(id, uid, description, "
                     "wid, guid, pid, tid, billable, "
@@ -1068,18 +1017,17 @@ error Database::SaveWorkspace(
     poco_assert(model);
     poco_assert(session);
 
-    Poco::Mutex::ScopedLock lock(mutex_);
+    ExplicitScopedLock("Database::SaveWorkspace", mutex_);
 
     if (model->LocalID() && !model->Dirty()) {
         return noError;
     }
     try {
-        Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID()) {
             std::stringstream ss;
             ss << "Updating workspace " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger.debug(ss.str());
+            logger().debug(ss.str());
 
             *session << "update workspaces set "
                 "id = :id, uid = :uid, name = :name, premium = :premium "
@@ -1101,7 +1049,7 @@ error Database::SaveWorkspace(
             std::stringstream ss;
             ss << "Inserting workspace " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger.debug(ss.str());
+            logger().debug(ss.str());
             *session << "insert into workspaces(id, uid, name, premium) "
                 "values(:id, :uid, :name, :premium)",
                 Poco::Data::use(model->ID()),
@@ -1138,18 +1086,17 @@ error Database::SaveClient(
     poco_assert(model);
     poco_assert(session);
 
-    Poco::Mutex::ScopedLock lock(mutex_);
+    ExplicitScopedLock("Database::SaveClient", mutex_);
 
     if (model->LocalID() && !model->Dirty()) {
         return noError;
     }
     try {
-        Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID()) {
             std::stringstream ss;
             ss << "Updating client " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger.debug(ss.str());
+            logger().debug(ss.str());
 
             // FIXME: check how to property insert null :S
             if (model->GUID().empty()) {
@@ -1186,7 +1133,7 @@ error Database::SaveClient(
             std::stringstream ss;
             ss << "Inserting client " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger.debug(ss.str());
+            logger().debug(ss.str());
             // FIXME: check how to property insert null :S
             if (model->GUID().empty()) {
                 *session << "insert into clients(id, uid, name, wid) "
@@ -1235,18 +1182,17 @@ error Database::SaveProject(
     poco_assert(model);
     poco_assert(session);
 
-    Poco::Mutex::ScopedLock lock(mutex_);
+    ExplicitScopedLock("Database::SaveProject", mutex_);
 
     if (model->LocalID() && !model->Dirty()) {
         return noError;
     }
     try {
-        Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID()) {
             std::stringstream ss;
             ss << "Updating project " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger.debug(ss.str());
+            logger().debug(ss.str());
 
             // FIXME: check how to property insert null :S
             if (model->GUID().empty()) {
@@ -1294,7 +1240,7 @@ error Database::SaveProject(
             std::stringstream ss;
             ss << "Inserting project " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger.debug(ss.str());
+            logger().debug(ss.str());
             // FIXME: check how to property insert null :S
             if (model->GUID().empty()) {
                 *session <<
@@ -1360,18 +1306,17 @@ error Database::SaveTask(
     poco_assert(model);
     poco_assert(session);
 
-    Poco::Mutex::ScopedLock lock(mutex_);
+    ExplicitScopedLock("Database::SaveTask", mutex_);
 
     if (model->LocalID() && !model->Dirty()) {
         return noError;
     }
     try {
-        Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID()) {
             std::stringstream ss;
             ss << "Updating task " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger.debug(ss.str());
+            logger().debug(ss.str());
 
             *session << "update tasks set "
                 "id = :id, uid = :uid, name = :name, wid = :wid, pid = :pid "
@@ -1394,7 +1339,7 @@ error Database::SaveTask(
             std::stringstream ss;
             ss << "Inserting task " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger.debug(ss.str());
+            logger().debug(ss.str());
             *session << "insert into tasks(id, uid, name, wid, pid) "
                 "values(:id, :uid, :name, :wid, :pid)",
                 Poco::Data::use(model->ID()),
@@ -1432,18 +1377,17 @@ error Database::SaveTag(
     poco_assert(model);
     poco_assert(session);
 
-    Poco::Mutex::ScopedLock lock(mutex_);
+    ExplicitScopedLock("Database::SaveTag", mutex_);
 
     if (model->LocalID() && !model->Dirty()) {
         return noError;
     }
     try {
-        Poco::Logger &logger = Poco::Logger::get("database");
         if (model->LocalID()) {
             std::stringstream ss;
             ss << "Updating tag " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger.debug(ss.str());
+            logger().debug(ss.str());
 
             // FIXME: check how to property insert null :S
             if (model->GUID().empty()) {
@@ -1480,7 +1424,7 @@ error Database::SaveTag(
             std::stringstream ss;
             ss << "Inserting tag " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger.debug(ss.str());
+            logger().debug(ss.str());
             // FIXME: check how to property insert null :S
             if (model->GUID().empty()) {
                 *session << "insert into tags(id, uid, name, wid) "
@@ -1531,14 +1475,12 @@ error Database::SaveUser(
     poco_assert(session);
     poco_assert(changes);
 
-    Poco::Mutex::ScopedLock lock(mutex_);
-
-    Poco::Logger &logger = Poco::Logger::get("database");
+    ExplicitScopedLock("Database::SaveUser", mutex_);
 
     {
         std::stringstream ss;
         ss << "Saving user in thread " << Poco::Thread::currentTid();
-        logger.debug(ss.str());
+        logger().debug(ss.str());
     }
 
     Poco::Stopwatch stopwatch;
@@ -1565,7 +1507,7 @@ error Database::SaveUser(
                 std::stringstream ss;
                 ss << "Updating user " + model->String()
                    << " in thread " << Poco::Thread::currentTid();
-                logger.debug(ss.str());
+                logger().debug(ss.str());
 
                 *session << "update users set "
                     "api_token = :api_token, default_wid = :default_wid, "
@@ -1592,7 +1534,7 @@ error Database::SaveUser(
                 std::stringstream ss;
                 ss << "Inserting user " + model->String()
                    << " in thread " << Poco::Thread::currentTid();
-                logger.debug(ss.str());
+                logger().debug(ss.str());
                 *session << "insert into users("
                     "id, api_token, default_wid, since, fullname, email, "
                     "record_timeline"
@@ -1683,7 +1625,7 @@ error Database::SaveUser(
         ss  << "User with_related_data=" << with_related_data << " saved in "
             << stopwatch.elapsed() / 1000 << " ms in thread "
             << Poco::Thread::currentTid();
-        logger.debug(ss.str());
+        logger().debug(ss.str());
     }
 
     return noError;
@@ -2026,7 +1968,7 @@ error Database::CurrentAPIToken(std::string *token) {
     poco_assert(session);
     poco_assert(token);
 
-    Poco::Mutex::ScopedLock lock(mutex_);
+    ExplicitScopedLock("Database::CurrentAPIToken", mutex_);
 
     *token = "";
     try {
@@ -2047,7 +1989,7 @@ error Database::CurrentAPIToken(std::string *token) {
 error Database::ClearCurrentAPIToken() {
     poco_assert(session);
 
-    Poco::Mutex::ScopedLock lock(mutex_);
+    ExplicitScopedLock("Database::ClearCurrentAPIToken", mutex_);
 
     try {
         *session << "delete from sessions", Poco::Data::now;
@@ -2064,7 +2006,7 @@ error Database::ClearCurrentAPIToken() {
 error Database::SetCurrentAPIToken(const std::string &token) {
     poco_assert(session);
 
-    Poco::Mutex::ScopedLock lock(mutex_);
+    ExplicitScopedLock("Database::SetCurrentAPIToken", mutex_);
 
     error err = ClearCurrentAPIToken();
     if (err != noError) {
@@ -2087,7 +2029,7 @@ error Database::SetCurrentAPIToken(const std::string &token) {
 error Database::SaveDesktopID() {
     poco_assert(session);
 
-    Poco::Mutex::ScopedLock lock(mutex_);
+    ExplicitScopedLock("Database::SaveDesktopID", mutex_);
 
     try {
         *session << "INSERT INTO timeline_installation(desktop_id) "
@@ -2139,13 +2081,12 @@ error Database::select_timeline_batch(
         std::vector<TimelineEvent> *timeline_events) {
     std::stringstream out;
     out << "select_batch, user_id = " << user_id;
-    Poco::Logger &logger = Poco::Logger::get("database");
-    logger.debug(out.str());
+    logger().debug(out.str());
 
     poco_assert(user_id > 0);
     poco_assert(timeline_events->empty());
     if (!session) {
-        logger.warning("select_batch database is not open, ignoring request");
+        logger().warning("select_batch database is not open, ignoring request");
         return noError;
     }
     Poco::Data::Statement select(*session);
@@ -2174,7 +2115,7 @@ error Database::select_timeline_batch(
     std::stringstream event_count;
     event_count << "select_batch found " << timeline_events->size()
         <<  " events.";
-    logger.debug(event_count.str());
+    logger().debug(event_count.str());
 
     return last_error();
 }
@@ -2183,14 +2124,13 @@ error Database::insert_timeline_event(const TimelineEvent& event) {
     std::stringstream out;
     out << "insert " << event.start_time << ";" << event.end_time << ";"
         << event.filename << ";" << event.title;
-    Poco::Logger &logger = Poco::Logger::get("database");
-    logger.information(out.str());
+    logger().debug(out.str());
 
     poco_assert(event.user_id > 0);
     poco_assert(event.start_time > 0);
     poco_assert(event.end_time > 0);
     if (!session) {
-        logger.information("insert database is not open, ignoring request");
+        logger().warning("insert database is not open, ignoring request");
         return noError;
     }
     *session << "INSERT INTO timeline_events("
@@ -2212,12 +2152,11 @@ error Database::delete_timeline_batch(
         const std::vector<TimelineEvent> &timeline_events) {
     std::stringstream out;
     out << "delete_batch " << timeline_events.size() << " events.";
-    Poco::Logger &logger = Poco::Logger::get("database");
-    logger.debug(out.str());
+    logger().debug(out.str());
 
     poco_assert(!timeline_events.empty());
     if (!session) {
-        logger.warning("delete_batch database is not open, ignoring request");
+        logger().warning("delete_batch database is not open, ignoring request");
         return noError;
     }
     std::vector<int> ids;
@@ -2235,15 +2174,13 @@ error Database::delete_timeline_batch(
 
 void Database::handleTimelineEventNotification(
         TimelineEventNotification* notification) {
-    Poco::Logger &logger = Poco::Logger::get("database");
-    logger.debug("handleTimelineEventNotification");
+    logger().debug("handleTimelineEventNotification");
     insert_timeline_event(notification->event);
 }
 
 void Database::handleCreateTimelineBatchNotification(
         CreateTimelineBatchNotification* notification) {
-    Poco::Logger &logger = Poco::Logger::get("database");
-    logger.debug("handleCreateTimelineBatchNotification");
+    logger().debug("handleCreateTimelineBatchNotification");
     std::vector<TimelineEvent> batch;
     select_timeline_batch(notification->user_id, &batch);
     if (batch.empty()) {
@@ -2258,10 +2195,34 @@ void Database::handleCreateTimelineBatchNotification(
 
 void Database::handleDeleteTimelineBatchNotification(
         DeleteTimelineBatchNotification* notification) {
-    Poco::Logger &logger = Poco::Logger::get("database");
-    logger.debug("handleDeleteTimelineBatchNotification");
+    logger().debug("handleDeleteTimelineBatchNotification");
     poco_assert(!notification->batch.empty());
     delete_timeline_batch(notification->batch);
+}
+
+error Database::String(
+        const std::string sql,
+        std::string *result) {
+    poco_assert(session);
+    poco_assert(result);
+    poco_assert(!sql.empty());
+
+    ExplicitScopedLock("Database::String", mutex_);
+
+    try {
+        std::string value("");
+        *session << sql,
+            Poco::Data::into(value),
+            Poco::Data::now;
+        *result = value;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error();
 }
 
 }   // namespace kopsik

@@ -70,10 +70,10 @@ KOPSIK_EXPORT kopsik_api_result kopsik_set_db_path(void *ctx,
                                                    unsigned int errlen,
                                                    const char *path);
 
-KOPSIK_EXPORT void kopsik_set_log_path(void *ctx,
+KOPSIK_EXPORT void kopsik_set_log_path(
   const char *path);
 
-KOPSIK_EXPORT void kopsik_set_log_level(void *ctx,
+KOPSIK_EXPORT void kopsik_set_log_level(
   const char *level);
 
 KOPSIK_EXPORT void kopsik_set_api_url(void *ctx,

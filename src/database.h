@@ -5,7 +5,6 @@
 
 #include <string>
 #include <vector>
-#include <iostream> // NOLINT
 
 #include "Poco/Logger.h"
 #include "Poco/Data/Common.h"
@@ -212,6 +211,8 @@ class Database {
             std::vector<TimelineEvent> *timeline_events);
         error delete_timeline_batch(
             const std::vector<TimelineEvent> &timeline_events);
+
+        Poco::Logger &logger();
 
         Poco::Data::Session *session;
         std::string desktop_id_;

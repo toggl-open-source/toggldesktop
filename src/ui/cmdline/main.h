@@ -18,6 +18,8 @@ namespace command_line_client {
     class Main : public Poco::Util::Application, Poco::ErrorHandler {
     public:
         Main() : ctx(0) {
+            kopsik_set_log_path("kopsik.log");
+
             ctx = kopsik_context_init("cmdline", "0.0.1");
             poco_assert(ctx);
         }

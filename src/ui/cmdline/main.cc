@@ -92,7 +92,6 @@ namespace command_line_client {
             std::cerr << err << std::endl;
             return Poco::Util::Application::EXIT_SOFTWARE;
         }
-        kopsik_set_log_path(ctx, "kopsik.log");
 
         Poco::ErrorHandler::set(this);
 
