@@ -14,6 +14,10 @@
 #include "Poco/Net/NameValueCollection.h"
 #include "Poco/Net/HTTPMessage.h"
 #include "Poco/Net/HTTPBasicCredentials.h"
+#include "Poco/Net/InvalidCertificateHandler.h"
+#include "Poco/Net/AcceptCertificateHandler.h"
+#include "Poco/Net/SSLManager.h"
+#include "Poco/Net/PrivateKeyPassphraseHandler.h"
 
 #include "./libjson.h"
 #include "./version.h"
@@ -60,13 +64,17 @@ error WebSocketClient::connect() {
   last_connection_at_ = time(0);
 
   try {
-    const Poco::URI uri(websocket_url_);
+    Poco::URI uri(websocket_url_);
 
-    // FIXME: check certification
-    const Poco::Net::Context::Ptr context(new Poco::Net::Context(
-      Poco::Net::Context::CLIENT_USE, "", "", "",
-      Poco::Net::Context::VERIFY_NONE, 9, false,
-      "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"));
+    Poco::SharedPtr<Poco::Net::InvalidCertificateHandler> acceptCertHandler =
+      new Poco::Net::AcceptCertificateHandler(true);
+
+    Poco::Net::Context::Ptr context(new Poco::Net::Context(
+      Poco::Net::Context::CLIENT_USE, "",
+      Poco::Net::Context::VERIFY_RELAXED, 9, true, "ALL"));
+
+    Poco::Net::SSLManager::instance().initializeClient(
+      0, acceptCertHandler, context);
 
     session_ = new Poco::Net::HTTPSClientSession(uri.getHost(), uri.getPort(),
       context);

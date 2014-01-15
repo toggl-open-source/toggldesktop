@@ -98,17 +98,18 @@ Poco::Logger &rootLogger() {
 class Context {
   public:
     Context() :
-      db(0),
-      user(0),
-      https_client(0),
-      ws_client(0),
-      change_callback(0),
-      timeline_uploader(0),
-      window_change_recorder(0),
-      app_name(""),
-      app_version(""),
-      api_url("") {
+        db(0),
+        user(0),
+        https_client(0),
+        ws_client(0),
+        change_callback(0),
+        timeline_uploader(0),
+        window_change_recorder(0),
+        app_name(""),
+        app_version(""),
+        api_url("") {
       Poco::ErrorHandler::set(&error_handler);
+      Poco::Net::initializeSSL();
     }
     ~Context() {
       tm.cancelAll();
@@ -145,6 +146,8 @@ class Context {
         delete window_change_recorder;
         window_change_recorder = 0;
       }
+
+      Poco::Net::uninitializeSSL();
     }
 
     kopsik::error ConfigureProxy() {

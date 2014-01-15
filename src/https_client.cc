@@ -15,6 +15,11 @@
 #include "Poco/Net/NameValueCollection.h"
 #include "Poco/Net/HTTPMessage.h"
 #include "Poco/Net/HTTPBasicCredentials.h"
+#include "Poco/Net/InvalidCertificateHandler.h"
+#include "Poco/Net/AcceptCertificateHandler.h"
+#include "Poco/Net/SSLManager.h"
+#include "Poco/Net/PrivateKeyPassphraseHandler.h"
+#include "Poco/Net/SecureStreamSocket.h"
 
 #include "./libjson.h"
 #include "./version.h"
@@ -58,15 +63,21 @@ error HTTPSClient::requestJSON(
   poco_assert(!method.empty());
   poco_assert(!relative_url.empty());
   poco_assert(response_body);
-  *response_body = "";
-  try {
-    const Poco::URI uri(api_url_);
 
-    // FIXME: check certification
-    const Poco::Net::Context::Ptr context(new Poco::Net::Context(
-      Poco::Net::Context::CLIENT_USE, "", "", "",
-      Poco::Net::Context::VERIFY_NONE, 9, false,
-      "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"));
+  *response_body = "";
+
+  try {
+    Poco::URI uri(api_url_);
+
+    Poco::SharedPtr<Poco::Net::InvalidCertificateHandler> acceptCertHandler =
+      new Poco::Net::AcceptCertificateHandler(true);
+
+    Poco::Net::Context::Ptr context(new Poco::Net::Context(
+      Poco::Net::Context::CLIENT_USE, "",
+      Poco::Net::Context::VERIFY_RELAXED, 9, true, "ALL"));
+
+    Poco::Net::SSLManager::instance().initializeClient(
+      0, acceptCertHandler, context);
 
     Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(),
       context);
@@ -142,7 +153,6 @@ error HTTPSClient::requestJSON(
     logger.trace(*response_body);
 
     if (response.getStatus() < 200 || response.getStatus() >= 300) {
-      // FIXME: backoff
       if (response_body->empty()) {
         std::stringstream description;
         description << "Request to server failed with status code: "
@@ -151,16 +161,11 @@ error HTTPSClient::requestJSON(
       }
       return "Data push failed with error: " + *response_body;
     }
-
-    // FIXME: reset backoff
   } catch(const Poco::Exception& exc) {
-    // FIXME: backoff
     return exc.displayText();
   } catch(const std::exception& ex) {
-    // FIXME: backoff
     return ex.what();
   } catch(const std::string& ex) {
-    // FIXME: backoff
     return ex;
   }
   return noError;
