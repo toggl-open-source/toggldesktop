@@ -117,6 +117,7 @@ bool X509Certificate::verify(const Poco::Crypto::X509Certificate& certificate, c
 		std::string commonName(buffer); // commonName can contain wildcards like *.appinf.com
 		try
 		{
+
 			// two cases: strData contains wildcards or not
 			if (containsWildcards(commonName))
 			{
@@ -154,6 +155,7 @@ bool X509Certificate::verify(const Poco::Crypto::X509Certificate& certificate, c
 			return false;
 		}
 	}
+
 	return ok;
 }
 
@@ -164,6 +166,13 @@ bool X509Certificate::containsWildcards(const std::string& commonName)
 }
 
 
+bool stringEndsWith(std::string const &full, std::string const &substring) {
+	if (substring.length() > full.length()) {
+		return false;
+	}
+	return (0 == full.compare(full.length() - substring.length(), substring.length(), substring));
+}
+
 bool X509Certificate::matchByAlias(const std::string& alias, const HostEntry& heData)
 {
 	// fix wildcards
@@ -172,6 +181,7 @@ bool X509Certificate::matchByAlias(const std::string& alias, const HostEntry& he
 	Poco::replaceInPlace(aliasRep, "..*", ".*");
 	Poco::replaceInPlace(aliasRep, "?", ".?");
 	Poco::replaceInPlace(aliasRep, "..?", ".?");
+
 	// compare by name
 	Poco::RegularExpression expr(aliasRep);
 	bool found = false;
@@ -187,6 +197,14 @@ bool X509Certificate::matchByAlias(const std::string& alias, const HostEntry& he
 	{
 		// Compare the host name against the wildcard host name in the certificate.
 		found = expr.match(heData.name());
+
+		if (!found) {
+			// Desperate times call for desperate measures.
+			// We have certificate with common name *.toggl.com,
+			// that does not match against toggl.com.
+			// However we know they should match.
+			found = stringEndsWith(alias, heData.name());
+		}
 	}
 	return found;
 }
