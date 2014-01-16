@@ -882,19 +882,16 @@ const NSString *appName = @"osx_native_app";
     self.db_path, self.log_path, self.log_level);
 
   kopsik_set_log_path([self.log_path UTF8String]);
-  NSLog(@"Log path set %@", self.log_path);
-
   kopsik_set_log_level([self.log_level UTF8String]);
-  NSLog(@"Log level set to %@", self.log_level);
 
   NSString* version = infoDict[@"CFBundleShortVersionString"];
   ctx = kopsik_context_init([appName UTF8String], [version UTF8String]);
+  NSLog(@"Version %@", version);
 
   char err[KOPSIK_ERR_LEN];
   kopsik_api_result res =
     kopsik_set_db_path(ctx, err, KOPSIK_ERR_LEN, [self.db_path UTF8String]);
   NSAssert(KOPSIK_API_SUCCESS == res, @"Failed to initialize DB");
-  NSLog(@"DB path set %@", self.db_path);
 
   id logToFile = infoDict[@"KopsikLogUserInterfaceToFile"];
   if ([logToFile boolValue]) {
