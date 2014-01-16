@@ -221,14 +221,12 @@ NSString *kTimeTotalUnknown = @"--:--";
 - (void)startWebSocket {
   NSLog(@"startWebSocket");
   kopsik_websocket_start_async(ctx, on_websocket_start_callback);
-  NSLog(@"startWebSocket done");
 }
 
 - (void)stopWebSocket {
   NSLog(@"stopWebSocket");
   kopsik_websocket_stop_async(ctx, handle_error);
   [self updateWebSocketConnectedState:NO];
-  NSLog(@"stopWebSocket done");
 }
 
 - (void)updateWebSocketConnectedState:(BOOL)state {
@@ -268,14 +266,12 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
 - (void)startTimeline {
   NSLog(@"startTimeline");
   kopsik_timeline_start_async(ctx, on_timeline_start_callback);
-  NSLog(@"startTimeline done");
 }
 
-- (void) stopTimeline {
+- (void)stopTimeline {
   NSLog(@"stopTimeline");
   kopsik_timeline_stop_async(ctx, 0);
   [self updateTimelineRecordingState:NO];
-  NSLog(@"stopTimeline done");
 }
 
 - (void)updateTimelineRecordingState:(BOOL)state {
@@ -1092,10 +1088,9 @@ void on_model_change(kopsik_api_result result,
 - (void)startSync {
   NSLog(@"startSync");
   kopsik_sync_async(ctx, 1, sync_finished);
-  NSLog(@"startSync done");
 }
 
-- (void) checkForUpdates {
+- (void)checkForUpdates {
   kopsik_check_for_updates_async(ctx, check_for_updates_callback);
 }
 
