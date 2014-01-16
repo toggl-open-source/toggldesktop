@@ -80,8 +80,11 @@ NSString *kTimeTotalUnknown = @"--:--";
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   NSLog(@"applicationDidFinishLaunching");
 
-  [[NSUserDefaults standardUserDefaults] setBool:YES
-                                          forKey:@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"];
+  if (![self.environment isEqualToString:@"production"]) {
+    // Turn on UI constraint debugging, if not in production
+    [[NSUserDefaults standardUserDefaults] setBool:YES
+                                            forKey:@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"];
+  }
   
   self.mainWindowController =
     [[MainWindowController alloc]
@@ -837,21 +840,22 @@ const NSString *appName = @"osx_native_app";
 
 - (void)disallowDuplicateInstances {
   // Disallow duplicate instances in production
-  if ([self.environment isEqualToString:@"production"]) {
-    if ([[NSRunningApplication runningApplicationsWithBundleIdentifier:
-          [[NSBundle mainBundle] bundleIdentifier]] count] > 1) {
-      NSString *msg = [NSString
-                       stringWithFormat:@"Another copy of %@ is already running.",
-                       [[NSBundle mainBundle]
-                        objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey]];
-      [[NSAlert alertWithMessageText:msg
-                       defaultButton:nil
-                     alternateButton:nil
-                         otherButton:nil
-           informativeTextWithFormat:@"This copy will now quit."] runModal];
-    
-      [NSApp terminate:nil];
-    }
+  if (![self.environment isEqualToString:@"production"]) {
+    return;
+  }
+  if ([[NSRunningApplication runningApplicationsWithBundleIdentifier:
+        [[NSBundle mainBundle] bundleIdentifier]] count] > 1) {
+    NSString *msg = [NSString
+                     stringWithFormat:@"Another copy of %@ is already running.",
+                     [[NSBundle mainBundle]
+                      objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey]];
+    [[NSAlert alertWithMessageText:msg
+                     defaultButton:nil
+                   alternateButton:nil
+                       otherButton:nil
+         informativeTextWithFormat:@"This copy will now quit."] runModal];
+  
+    [NSApp terminate:nil];
   }
 }
 
