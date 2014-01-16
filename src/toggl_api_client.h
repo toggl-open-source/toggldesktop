@@ -471,7 +471,7 @@ namespace kopsik {
 
         void LoadFromJSONString(const std::string &json,
             const bool full_sync, const bool with_related_data);
-        void LoadDataFromJSONNode(JSONNODE *node,
+        void LoadFromJSONNode(JSONNODE *node,
             const bool full_sync,
             const bool with_related_data);
         void LoadUpdateFromJSONString(const std::string json);
@@ -545,6 +545,9 @@ namespace kopsik {
 
         void ActiveProjects(std::vector<Project *> *list);
 
+        bool StoreStartAndStopTime() { return store_start_and_stop_time_; }
+        void SetStoreStartAndStopTime(const bool value);
+
         // Following 2 fields are not saved into database:
         // They are only used to log user in.
         std::string BasicAuthUsername;
@@ -609,6 +612,7 @@ namespace kopsik {
         std::string app_version_;
         std::string email_;
         bool record_timeline_;
+        bool store_start_and_stop_time_;
     };
 
     Poco::UInt64 getIDFromJSONNode(JSONNODE *list);

@@ -184,6 +184,13 @@ void User::SetFullname(std::string value) {
   }
 }
 
+void User::SetStoreStartAndStopTime(const bool value) {
+  if (store_start_and_stop_time_ != value) {
+    store_start_and_stop_time_ = value;
+    dirty_ = true;
+  }
+}
+
 void User::SetRecordTimeline(const bool value) {
     if (record_timeline_ != value) {
         record_timeline_ = value;
@@ -656,7 +663,7 @@ void User::LoadFromJSONString(const std::string &json,
             s << "User data as of: " << Since();
             logger.debug(s.str());
         } else if (strcmp(node_name, "data") == 0) {
-            LoadDataFromJSONNode(*current_node, full_sync, with_related_data);
+            LoadFromJSONNode(*current_node, full_sync, with_related_data);
         }
         ++current_node;
     }
@@ -680,7 +687,7 @@ std::string User::String() {
     return ss.str();
 }
 
-void User::LoadDataFromJSONNode(JSONNODE *data,
+void User::LoadFromJSONNode(JSONNODE *data,
         const bool full_sync,
         const bool with_related_data) {
     poco_assert(data);
@@ -701,6 +708,8 @@ void User::LoadDataFromJSONNode(JSONNODE *data,
             SetFullname(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "record_timeline") == 0) {
             SetRecordTimeline(json_as_bool(*current_node));
+        } else if (strcmp(node_name, "store_start_and_stop_time") == 0) {
+            SetStoreStartAndStopTime(json_as_bool(*current_node));
         } else if (with_related_data) {
             if (strcmp(node_name, "projects") == 0) {
                 loadProjectsFromJSONNode(*current_node, full_sync);

@@ -314,9 +314,10 @@ error Database::LoadUserByID(
         std::string fullname("");
         std::string email("");
         bool record_timeline(false);
+        bool store_start_and_stop_time(false);
         *session <<
             "select local_id, id, api_token, default_wid, since, fullname, "
-            "email, record_timeline "
+            "email, record_timeline, store_start_and_stop_time "
             "from users where id = :id",
             Poco::Data::into(local_id),
             Poco::Data::into(id),
@@ -326,6 +327,7 @@ error Database::LoadUserByID(
             Poco::Data::into(fullname),
             Poco::Data::into(email),
             Poco::Data::into(record_timeline),
+            Poco::Data::into(store_start_and_stop_time),
             Poco::Data::use(UID),
             Poco::Data::limit(1),
             Poco::Data::now;
@@ -348,6 +350,7 @@ error Database::LoadUserByID(
         user->SetFullname(fullname);
         user->SetEmail(email);
         user->SetRecordTimeline(record_timeline);
+        user->SetStoreStartAndStopTime(store_start_and_stop_time);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -1512,7 +1515,8 @@ error Database::SaveUser(
                 *session << "update users set "
                     "api_token = :api_token, default_wid = :default_wid, "
                     "since = :since, id = :id, fullname = :fullname, "
-                    "email = :email, record_timeline = :record_timeline "
+                    "email = :email, record_timeline = :record_timeline, "
+                    "store_start_and_stop_time = :store_start_and_stop_time "
                     "where local_id = :local_id",
                     Poco::Data::use(model->APIToken()),
                     Poco::Data::use(model->DefaultWID()),
@@ -1521,6 +1525,7 @@ error Database::SaveUser(
                     Poco::Data::use(model->Fullname()),
                     Poco::Data::use(model->Email()),
                     Poco::Data::use(model->RecordTimeline()),
+                    Poco::Data::use(model->StoreStartAndStopTime()),
                     Poco::Data::use(model->LocalID()),
                     Poco::Data::now;
                 error err = last_error();
@@ -1537,10 +1542,10 @@ error Database::SaveUser(
                 logger().debug(ss.str());
                 *session << "insert into users("
                     "id, api_token, default_wid, since, fullname, email, "
-                    "record_timeline"
+                    "record_timeline, store_start_and_stop_time"
                     ") values("
                     ":id, :api_token, :default_wid, :since, :fullname, :email, "
-                    ":record_timeline"
+                    ":record_timeline, :store_start_and_stop_time"
                     ")",
                     Poco::Data::use(model->ID()),
                     Poco::Data::use(model->APIToken()),
@@ -1549,6 +1554,7 @@ error Database::SaveUser(
                     Poco::Data::use(model->Fullname()),
                     Poco::Data::use(model->Email()),
                     Poco::Data::use(model->RecordTimeline()),
+                    Poco::Data::use(model->StoreStartAndStopTime()),
                     Poco::Data::now;
                 error err = last_error();
                 if (err != noError) {
@@ -1673,6 +1679,13 @@ error Database::initialize_tables() {
         "email varchar not null, "
         "record_timeline integer not null default 0"
         "); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("users.store_start_and_stop_time",
+        "ALTER TABLE users "
+        "ADD COLUMN store_start_and_stop_time INT NOT NULL DEFAULT 0;");
     if (err != noError) {
         return err;
     }
