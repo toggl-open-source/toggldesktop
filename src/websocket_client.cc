@@ -106,7 +106,7 @@ error WebSocketClient::connect() {
     json_delete(c);
 
     ws_->sendFrame(payload.data(),
-      payload.size(),
+      static_cast<int>(payload.size()),
       Poco::Net::WebSocket::FRAME_BINARY);
   } catch(const Poco::Exception& exc) {
     return exc.displayText();
@@ -199,7 +199,7 @@ error WebSocketClient::poll() {
 
     if ("ping" == type) {
       ws_->sendFrame(kPong.data(),
-        kPong.size(),
+        static_cast<int>(kPong.size()),
         Poco::Net::WebSocket::FRAME_BINARY);
       return noError;
     }
