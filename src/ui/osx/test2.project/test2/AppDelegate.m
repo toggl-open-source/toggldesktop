@@ -1135,44 +1135,38 @@ void check_for_updates_callback(kopsik_api_result result,
   if ([alert runModal] != NSAlertFirstButtonReturn) {
     return;
   }
-  
+
   [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:update.URL]];
   [NSApp terminate:nil];
 }
 
-//
-// Called to handle a pending crash report.
-//
 - (void) handleCrashReport {
   PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
-  NSData *crashData;
+
   NSError *error;
-  
-  // Try loading the crash report
-  crashData = [crashReporter loadPendingCrashReportDataAndReturnError: &error];
+  NSData *crashData = [crashReporter loadPendingCrashReportDataAndReturnError: &error];
   if (crashData == nil) {
     NSLog(@"Could not load crash report: %@", error);
     [crashReporter purgePendingCrashReport];
     return;
   }
-  
-  // We could send the report from here, but we'll just print out
-  // some debugging info instead
-  PLCrashReport *report = [[PLCrashReport alloc]
-    initWithData: crashData error: &error];
+
+  PLCrashReport *report = [[PLCrashReport alloc] initWithData: crashData
+                                                        error: &error];
   if (report == nil) {
     NSLog(@"Could not parse crash report");
     [crashReporter purgePendingCrashReport];
     return;
   }
-  
-  NSLog(@"Crashed on %@", report.systemInfo.timestamp);
-  NSLog(@"Crashed with signal %@ (code %@, address=0x%" PRIx64 ")",
-    report.signalInfo.name,
-    report.signalInfo.code, report.signalInfo.address);
 
-  // As a temporary solution, report the crash via Bugsnag.
-  // That way we atleast know that something really bad happened to user.
+  NSString *summary = [NSString stringWithFormat:@"Crashed with signal %@ (code %@, address=0x%" PRIx64 ")",
+                       report.signalInfo.name,
+                       report.signalInfo.code,
+                       report.signalInfo.address];
+
+  NSLog(@"Crashed on %@", report.systemInfo.timestamp);
+  NSLog(@"%@", summary);
+
   NSException* exception;
   NSMutableDictionary *data = [[NSMutableDictionary alloc] init];;
   if (report.hasExceptionInfo) {
@@ -1183,14 +1177,12 @@ void check_for_updates_callback(kopsik_api_result result,
   } else {
     exception = [NSException
       exceptionWithName:@"Crash"
-      reason:[report description]
+      reason:summary
       userInfo:nil];
   }
   [Bugsnag notify:exception withData:data];
-  
-  // Purge the report
+
   [crashReporter purgePendingCrashReport];
-  return;
 }
 
 @end
