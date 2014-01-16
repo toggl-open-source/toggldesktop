@@ -24,6 +24,8 @@ KOPSIK_EXPORT int kopsik_is_networking_error(const char *error);
 KOPSIK_EXPORT void *kopsik_context_init(
   const char *app_name, const char *app_version);
 
+KOPSIK_EXPORT void kopsik_context_shutdown(void *ctx);
+
 KOPSIK_EXPORT void kopsik_context_clear(void *ctx);
 
 // Configuration API

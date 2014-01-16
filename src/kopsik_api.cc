@@ -111,8 +111,39 @@ class Context {
       Poco::ErrorHandler::set(&error_handler);
       Poco::Net::initializeSSL();
     }
+    void Shutdown() {
+      tm.joinAll();
+
+      if (window_change_recorder) {
+        window_change_recorder->Stop();
+      }
+      if (ws_client) {
+        ws_client->Stop();
+      }
+      if (timeline_uploader) {
+        timeline_uploader->Stop();
+      }
+    }
     ~Context() {
-      tm.cancelAll();
+      if (window_change_recorder) {
+        delete window_change_recorder;
+        window_change_recorder = 0;
+      }
+
+      if (timeline_uploader) {
+        delete timeline_uploader;
+        timeline_uploader = 0;
+      }
+
+      if (ws_client) {
+        delete ws_client;
+        ws_client = 0;
+      }
+
+      if (https_client) {
+        delete https_client;
+        https_client = 0;
+      }
 
       if (db) {
         delete db;
@@ -122,29 +153,6 @@ class Context {
       if (user) {
         delete user;
         user = 0;
-      }
-
-      if (https_client) {
-        delete https_client;
-        https_client = 0;
-      }
-
-      if (ws_client) {
-        ws_client->Stop();
-        delete ws_client;
-        ws_client = 0;
-      }
-
-      if (timeline_uploader) {
-        timeline_uploader->Stop();
-        delete timeline_uploader;
-        timeline_uploader = 0;
-      }
-
-      if (window_change_recorder) {
-        window_change_recorder->Stop();
-        delete window_change_recorder;
-        window_change_recorder = 0;
       }
 
       Poco::Net::uninitializeSSL();
@@ -352,6 +360,12 @@ void *kopsik_context_init(const char *app_name, const char *app_version) {
     ctx->app_name, ctx->app_version);
 
   return ctx;
+}
+
+void kopsik_context_shutdown(void *context) {
+  poco_assert(context);
+
+  Context *ctx = reinterpret_cast<Context *>(context);
 }
 
 void kopsik_context_clear(void *context) {

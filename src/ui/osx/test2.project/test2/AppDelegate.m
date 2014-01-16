@@ -742,6 +742,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
 
 - (void)applicationWillTerminate:(NSNotification *)app {
   NSLog(@"applicationWillTerminate");
+  kopsik_context_shutdown(ctx);
   kopsik_context_clear(ctx);
   ctx = 0;
 }
