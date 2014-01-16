@@ -75,7 +75,7 @@
                                finishedSelector:@selector(viewController:finishedWithAuth:error:)];
   } else if (sender == self.passwordForgotTextField) {
     [[NSWorkspace sharedWorkspace]
-      openURL:[NSURL URLWithString:@"https://new.toggl.com/#forgot_password"]];
+      openURL:[NSURL URLWithString:@"https://www.toggl.com/lost_passwords/new"]];
   }
 }
 
