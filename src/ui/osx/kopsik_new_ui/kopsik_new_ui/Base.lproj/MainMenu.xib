@@ -1002,10 +1002,6 @@
                 </box>
             </subviews>
         </customView>
-        <customView id="N2x-D2-AFa">
-            <rect key="frame" x="0.0" y="0.0" width="251" height="436"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-        </customView>
     </objects>
     <resources>
         <image name="NSGoRightTemplate" width="9" height="9"/>

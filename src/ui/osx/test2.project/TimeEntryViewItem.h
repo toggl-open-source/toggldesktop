@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "kopsik_api.h"
-#import "DateHeader.h"
 
 @interface TimeEntryViewItem : NSObject
 - (void)load:(KopsikTimeEntryViewItem *)data;
@@ -24,6 +23,10 @@
 @property (strong) NSDate *ended;
 @property (strong) NSArray *tags;
 @property (strong) NSString *updatedAt;
-@property (strong) NSString *date;
+@property (strong) NSString *formattedDate;
+// If this is set to YES, a date header is displayed on top of
+// the time entry cell in the time entry list view:
+@property BOOL isHeader;
+// If it's a header, this is useful:
 @property (strong) NSString *dateDuration;
 @end

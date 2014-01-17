@@ -13,18 +13,15 @@
 #import "UIEvents.h"
 #import "kopsik_api.h"
 #import "TimeEntryCell.h"
-#import "HeaderCell.h"
 #import "Context.h"
 #import "UIEvents.h"
 #import "ModelChange.h"
 #import "ErrorHandler.h"
-#import "DateHeader.h"
 
 @interface TimeEntryListViewController ()
 @property NSTimer *timerTimeEntriesRendering;
 @property (nonatomic, strong) IBOutlet TimerViewController *timerViewController;
 @property (nonatomic, strong) IBOutlet TimerEditViewController *timerEditViewController;
-@property NSNib *nibTableGroupCell;
 @property NSNib *nibTimeEntryCell;
 @end
 
@@ -43,9 +40,6 @@
       [self.timerEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 
       viewitems = [NSMutableArray array];
-
-      self.nibTableGroupCell = [[NSNib alloc] initWithNibNamed:@"HeaderCell"
-                                                        bundle:nil];
 
       self.nibTimeEntryCell = [[NSNib alloc] initWithNibNamed:@"TimeEntryCell"
                                                        bundle:nil];
@@ -76,11 +70,10 @@
 
 -(void)loadView {
   [super loadView];
-
   [self.timeEntriesTableView registerNib:self.nibTimeEntryCell
                            forIdentifier:@"TimeEntryCell"];
-  [self.timeEntriesTableView registerNib:self.nibTableGroupCell
-                           forIdentifier:@"HeaderCell"];
+  [self.timeEntriesTableView registerNib:self.nibTimeEntryCell
+                           forIdentifier:@"TimeEntryCellWithHeader"];
 }
 
 -(void)renderTimeEntries {
@@ -107,15 +100,10 @@
       KopsikTimeEntryViewItem *item = list->ViewItems[i];
       TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
       [model load:item];
-      // Add header if necessary
-      if (date == nil || ![date isEqualToString:model.date]) {
-        DateHeader *header = [[DateHeader alloc] init];
-        header.started = model.started;
-        header.date = model.date;
-        header.duration = model.dateDuration;
-        [viewitems addObject:header];
+      if (date == nil || ![date isEqualToString:model.formattedDate]) {
+        model.isHeader = YES;
       }
-      date = model.date;
+      date = model.formattedDate;
       [viewitems addObject:model];
     }
   }
@@ -123,59 +111,6 @@
   kopsik_time_entry_view_item_list_clear(list);
 
   [self.timeEntriesTableView reloadData];
-  
-  // 1) Headers with same date or formatted date are not allowed.
-  NSHashTable *formattedDates = [[NSHashTable alloc] init];
-  
-  // 2) all view items must be ordered in descending order by date.
-  NSDate *date = nil;
-  
-  // 3) two or more headers cannot follow each other
-  DateHeader *previousHeader = nil;
-  
-  // Sanity checks, can/will remove when in production.
-  for (int i = 0; i < viewitems.count; i++) {
-    if ([viewitems[i] isKindOfClass:[TimeEntryViewItem class]]) {
-      TimeEntryViewItem *item = viewitems[i];
-      
-      if (date != nil) {
-        if ([item.started compare:date] == NSOrderedDescending) {
-          [NSException raise:@"Invalid TE list rendering"
-                      format:@"Previous date was %@, but now I've found %@ which is larger than date",
-           date, item.started];
-        }
-      }
-      
-      date = item.started;
-      previousHeader = nil;
-      
-    } else if ([viewitems[i] isKindOfClass:[DateHeader class]]) {
-      if (previousHeader != nil) {
-        [NSException raise:@"Header found to be empty"
-                    format:@"Date headers should contain time entries, but header for %@ seems to be empty", previousHeader.started];
-      }
-      
-      DateHeader *header = viewitems[i];
-      
-      if ([formattedDates containsObject:header.date]) {
-        [NSException raise:@"Header already added with same date"
-                    format:@"Header already added with same date: %@", date];
-      }
-      [formattedDates addObject:header.date];
-      
-      if (date != nil) {
-        if([header.started compare:date] == NSOrderedDescending) {
-          [NSException raise:@"Invalid header rendering"
-                      format:@"Previous date was %@, but now I've found %@ which is larger than date",
-           date, header.started];
-          
-        }
-      }
-      
-      date = header.started;
-      previousHeader = header;
-    }
-  }
 }
 
 -(void)eventHandler: (NSNotification *) notification
@@ -267,41 +202,35 @@
 - (NSView *)tableView:(NSTableView *)tableView
    viewForTableColumn:(NSTableColumn *)tableColumn
                   row:(NSInteger)row {
-    id item = 0;
-    @synchronized(viewitems) {
-      item = [viewitems objectAtIndex:row];
-    }
-    NSAssert(item != nil, @"view item from viewitems array is nil");
+  TimeEntryViewItem *item = nil;
+  @synchronized(viewitems) {
+    item = [viewitems objectAtIndex:row];
+  }
+  NSAssert(item != nil, @"view item from viewitems array is nil");
+  
+  NSString *identifier = @"TimeEntryCell";
+  if (item.isHeader) {
+    identifier = @"TimeEntryCellWithHeader";
+  }
 
-    if ([item isKindOfClass:[TimeEntryViewItem class]]) {
-      TimeEntryCell *cell = [tableView makeViewWithIdentifier:@"TimeEntryCell" owner:self];
-      [cell load:item];
-      [cell.continueButton setTarget:cell];
-      [cell.continueButton setAction:@selector(continueTimeEntry:)];
-      return cell;
-    }
-
-    if ([item isKindOfClass:[DateHeader class]]) {
-      HeaderCell *cell = [tableView makeViewWithIdentifier:@"HeaderCell" owner:self];
-      [cell load:item];
-      return cell;
-    }
-
-    NSAssert(false, @"Cell can't be nil");
-
-    return nil;
+  TimeEntryCell *cell = [tableView makeViewWithIdentifier:identifier
+                                                    owner:self];
+  [cell load:item];
+  [cell.continueButton setTarget:cell];
+  [cell.continueButton setAction:@selector(continueTimeEntry:)];
+  return cell;
 }
 
 - (CGFloat)tableView:(NSTableView *)tableView
          heightOfRow:(NSInteger)row {
-  NSObject *item = 0;
+  TimeEntryViewItem *item = nil;
   @synchronized(viewitems) {
     item = viewitems[row];
   }
-  if ([item isKindOfClass:[TimeEntryViewItem class]]) {
-    return 50;
+  if (item.isHeader) {
+    return 76;
   }
-  return 22;
+  return 51;
 }
 
 - (IBAction)performClick:(id)sender {
@@ -309,15 +238,20 @@
   if (row < 0) {
     return;
   }
-  id item = 0;
+  TimeEntryViewItem *item = 0;
   @synchronized(viewitems) {
     item = viewitems[row];
   }
-  if ([item isKindOfClass:[TimeEntryViewItem class]]) {
-    TimeEntryViewItem *te = item;
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
-                                                        object:te.GUID];
-  }
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
+                                                      object:item.GUID];
+}
+
+- (void)tableViewSelectionDidChange:(NSNotification *)notification {
+  NSInteger selectedRow = [self.timeEntriesTableView selectedRow];
+  NSTableRowView *rowView = [self.timeEntriesTableView rowViewAtRow:selectedRow
+                                                    makeIfNecessary:NO];
+  [rowView setEmphasized:NO];
+  [rowView setSelected:NO];
 }
 
 @end

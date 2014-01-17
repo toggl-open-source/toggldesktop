@@ -18,5 +18,8 @@
 @property (strong) NSString *GUID;
 - (void)load:(TimeEntryViewItem *)view_item;
 - (IBAction)continueTimeEntry:(id)sender;
+// If it's a header, this is useful:
+@property (nonatomic, strong) IBOutlet NSTextField *formattedDateTextField;
+@property (nonatomic, strong) IBOutlet NSTextField *dateDurationTextField;
 @end
 
