@@ -126,6 +126,8 @@ cmdline: clean lint
 	$(cxx) $(cflags) -O2 -c src/websocket_client.cc -o build/websocket_client.o
 	$(cxx) $(cflags) -O2 -c src/toggl_api_client.cc -o build/toggl_api_client.o
 	$(cxx) $(cflags) -O2 -c src/database.cc -o build/database.o
+	$(cxx) $(cflags) -O2 -c src/context.cc -o build/context.o
+	$(cxx) $(cflags) -O2 -c src/kopsik_api_private.cc -o build/kopsik_api_private.o
 	$(cxx) $(cflags) -O2 -c src/kopsik_api.cc -o build/kopsik_api.o
 	$(cxx) $(cflags) -O2 -c src/get_focused_window_$(osname).cc -o build/get_focused_window_$(osname).o
 	$(cxx) $(cflags) -O2 -c src/timeline_uploader.cc -o build/timeline_uploader.o
@@ -162,6 +164,8 @@ test: clean lint
 	$(cxx) $(cflags) -c src/websocket_client.cc -o build/websocket_client.o
 	$(cxx) $(cflags) -c src/toggl_api_client.cc -o build/toggl_api_client.o
 	$(cxx) $(cflags) -c src/database.cc -o build/database.o
+	$(cxx) $(cflags) -c src/context.cc -o build/context.o
+	$(cxx) $(cflags) -c src/kopsik_api_private.cc -o build/kopsik_api_private.o
 	$(cxx) $(cflags) -c src/kopsik_api.cc -o build/kopsik_api.o
 	$(cxx) $(cflags) -c src/test_data.cc -o build/test_data.o
 	$(cxx) $(cflags) -c src/kopsik_api_test.cc -o build/kopsik_api_test.o
@@ -183,6 +187,8 @@ coverage: clean
 	$(cxx) $(cflags) $(covflags) -c src/websocket_client.cc -o build/websocket_client.o
 	$(cxx) $(cflags) $(coverage) -c src/toggl_api_client.cc -o build/toggl_api_client.o
 	$(cxx) $(cflags) $(covflags) -c src/database.cc -o build/database.o
+	$(cxx) $(cflags) $(covflags) -c src/context.cc -o build/context.o
+	$(cxx) $(cflags) $(covflags) -c src/kopsik_api_private.cc -o build/kopsik_api_private.o
 	$(cxx) $(cflags) $(covflags) -c src/kopsik_api.cc -o build/kopsik_api.o
 	$(cxx) $(cflags) $(covflags) -c src/test_data.cc -o build/test_data.o
 	$(cxx) $(cflags) $(covflags) -c src/kopsik_api_test.cc -o build/kopsik_api_test.o
