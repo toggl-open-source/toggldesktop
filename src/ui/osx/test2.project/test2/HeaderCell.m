@@ -6,12 +6,11 @@
 //  Copyright (c) 2013 kopsik developers. All rights reserved.
 //
 
-#import "TableGroupCell.h"
+#import "HeaderCell.h"
 
-@implementation TableGroupCell
+@implementation HeaderCell
 
-- (id)initWithFrame:(NSRect)frame
-{
+- (id)initWithFrame:(NSRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code here.
@@ -19,15 +18,13 @@
     return self;
 }
 
-- (void)drawRect:(NSRect)dirtyRect
-{
+- (void)drawRect:(NSRect)dirtyRect {
 	[super drawRect:dirtyRect];
 	
     // Drawing code here.
 }
 
-- (void)load:(DateHeader *)header
-{
+- (void)load:(DateHeader *)header {
   [self.nameTextField setStringValue:[header description]];
 }
 

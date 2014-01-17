@@ -37,6 +37,8 @@
 		745B9CCB18155993006E7F37 /* ModelChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 745B9CCA18155993006E7F37 /* ModelChange.m */; };
 		747270751847E4050089860B /* NewTimeEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 747270741847E4050089860B /* NewTimeEntry.m */; };
 		74793D69183E248C0085E1CF /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74793D68183E248C0085E1CF /* CrashReporter.framework */; };
+		7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7498D2471888B226001390B9 /* TimeEntryCell.xib */; };
+		7498D24A1888B2C9001390B9 /* HeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7498D2491888B2C9001390B9 /* HeaderCell.xib */; };
 		749BD0BD1833E28400980494 /* NSBoxClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 749BD0BC1833E28400980494 /* NSBoxClickable.m */; };
 		749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 749CB8CA18167D6E00814841 /* PreferencesWindowController.m */; };
 		749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */; };
@@ -92,8 +94,8 @@
 		74F7CDD71819897D00630BD0 /* off.png in Resources */ = {isa = PBXBuildFile; fileRef = 74F7CDD51819897D00630BD0 /* off.png */; };
 		74F7CDD81819897D00630BD0 /* on.png in Resources */ = {isa = PBXBuildFile; fileRef = 74F7CDD61819897D00630BD0 /* on.png */; };
 		74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */; };
-		C5CB7F0417F43EE100A2AEB1 /* TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TableViewCell.m */; };
-		C5D319FD181917EB0017ACBE /* TableGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D319FC181917EB0017ACBE /* TableGroupCell.m */; };
+		C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */; };
+		C5D319FD181917EB0017ACBE /* HeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D319FC181917EB0017ACBE /* HeaderCell.m */; };
 		C5DA1FB917F19647001C4565 /* Kopsik.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA1FB817F19647001C4565 /* Kopsik.dylib */; };
 		C5DA1FBB17F19F9A001C4565 /* Kopsik.dylib in Resources */ = {isa = PBXBuildFile; fileRef = C5DA1FB817F19647001C4565 /* Kopsik.dylib */; };
 		C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */; };
@@ -189,6 +191,8 @@
 		747270731847E4050089860B /* NewTimeEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewTimeEntry.h; path = ../NewTimeEntry.h; sourceTree = "<group>"; };
 		747270741847E4050089860B /* NewTimeEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewTimeEntry.m; path = ../NewTimeEntry.m; sourceTree = "<group>"; };
 		74793D68183E248C0085E1CF /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CrashReporter.framework; sourceTree = "<group>"; };
+		7498D2471888B226001390B9 /* TimeEntryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeEntryCell.xib; sourceTree = "<group>"; };
+		7498D2491888B2C9001390B9 /* HeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeaderCell.xib; sourceTree = "<group>"; };
 		749BD0BB1833E28400980494 /* NSBoxClickable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSBoxClickable.h; sourceTree = "<group>"; };
 		749BD0BC1833E28400980494 /* NSBoxClickable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSBoxClickable.m; sourceTree = "<group>"; };
 		749CB8C918167D6E00814841 /* PreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesWindowController.h; sourceTree = SOURCE_ROOT; };
@@ -254,10 +258,10 @@
 		74F7CDD61819897D00630BD0 /* on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = on.png; sourceTree = "<group>"; };
 		74F8FBA118313FA6000F09EE /* NSTextFieldClickable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldClickable.h; sourceTree = "<group>"; };
 		74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldClickable.m; sourceTree = "<group>"; };
-		C5CB7F0217F43EE100A2AEB1 /* TableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCell.h; sourceTree = "<group>"; };
-		C5CB7F0317F43EE100A2AEB1 /* TableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCell.m; sourceTree = "<group>"; };
-		C5D319FB181917EB0017ACBE /* TableGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableGroupCell.h; sourceTree = "<group>"; };
-		C5D319FC181917EB0017ACBE /* TableGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableGroupCell.m; sourceTree = "<group>"; };
+		C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCell.h; sourceTree = "<group>"; };
+		C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryCell.m; sourceTree = "<group>"; };
+		C5D319FB181917EB0017ACBE /* HeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeaderCell.h; sourceTree = "<group>"; };
+		C5D319FC181917EB0017ACBE /* HeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeaderCell.m; sourceTree = "<group>"; };
 		C5DA1FB817F19647001C4565 /* Kopsik.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Kopsik.dylib; path = ../../../libkopsik/lib/Kopsik.dylib; sourceTree = "<group>"; };
 		C5DA1FBA17F197BF001C4565 /* kopsik_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kopsik_api.h; path = ../../../../kopsik_api.h; sourceTree = "<group>"; };
 		C5DA1FBC17F1B08A001C4565 /* MainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowController.h; sourceTree = SOURCE_ROOT; };
@@ -405,10 +409,12 @@
 				74D1D25317EB713F00E709B0 /* TimeEntryListViewController.h */,
 				74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */,
 				74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */,
-				C5CB7F0217F43EE100A2AEB1 /* TableViewCell.h */,
-				C5CB7F0317F43EE100A2AEB1 /* TableViewCell.m */,
-				C5D319FB181917EB0017ACBE /* TableGroupCell.h */,
-				C5D319FC181917EB0017ACBE /* TableGroupCell.m */,
+				C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */,
+				7498D2471888B226001390B9 /* TimeEntryCell.xib */,
+				C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */,
+				C5D319FB181917EB0017ACBE /* HeaderCell.h */,
+				C5D319FC181917EB0017ACBE /* HeaderCell.m */,
+				7498D2491888B2C9001390B9 /* HeaderCell.xib */,
 				74BAAA0917F37B140079386F /* TimeEntryViewItem.h */,
 				74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */,
 				69FC17FB17E6534400B96425 /* Supporting Files */,
@@ -629,9 +635,11 @@
 				74F7CDD81819897D00630BD0 /* on.png in Resources */,
 				69FC180B17E6534500B96425 /* MainMenu.xib in Resources */,
 				C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */,
+				7498D24A1888B2C9001390B9 /* HeaderCell.xib in Resources */,
 				74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
 				74D1D25F17EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */,
 				74F7CDD71819897D00630BD0 /* off.png in Resources */,
+				7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */,
 				744E126717F22AB900ABE72A /* app.icns in Resources */,
 				74D1D26D17EB728000E709B0 /* TimerViewController.xib in Resources */,
 				74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
@@ -690,7 +698,7 @@
 				74C15796183A8CE600550613 /* AutocompleteItem.m in Sources */,
 				74E3CDDD17FC8E8000C3ADD3 /* User.m in Sources */,
 				7424949E17F1E3D20030121C /* UIEvents.m in Sources */,
-				C5CB7F0417F43EE100A2AEB1 /* TableViewCell.m in Sources */,
+				C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */,
 				C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */,
 				74AA9472180909F50000539F /* GTMHTTPFetchHistory.m in Sources */,
 				74E3CDC617FBABE400C3ADD3 /* Bugsnag.m in Sources */,
@@ -705,7 +713,7 @@
 				74BAAA0717F32C470079386F /* Context.m in Sources */,
 				69FC180817E6534400B96425 /* AppDelegate.m in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
-				C5D319FD181917EB0017ACBE /* TableGroupCell.m in Sources */,
+				C5D319FD181917EB0017ACBE /* HeaderCell.m in Sources */,
 				74AA9476180909F50000539F /* GTMOAuth2WindowController.m in Sources */,
 				74BE8E6C18312824009D1E83 /* DateHeader.m in Sources */,
 				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,

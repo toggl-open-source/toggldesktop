@@ -6,11 +6,11 @@
 //  Copyright (c) 2013 kopsik developers. All rights reserved.
 //
 
-#import "TableViewCell.h"
+#import "TimeEntryCell.h"
 #import "UIEvents.h"
 #import "ConvertHexColor.h"
 
-@implementation TableViewCell
+@implementation TimeEntryCell
 
 - (IBAction)continueTimeEntry:(id)sender {
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandContinue

@@ -12,8 +12,8 @@
 #import "TimerEditViewController.h"
 #import "UIEvents.h"
 #import "kopsik_api.h"
-#import "TableViewCell.h"
-#import "TableGroupCell.h"
+#import "TimeEntryCell.h"
+#import "HeaderCell.h"
 #import "Context.h"
 #import "UIEvents.h"
 #import "ModelChange.h"
@@ -22,8 +22,10 @@
 
 @interface TimeEntryListViewController ()
 @property NSTimer *timerTimeEntriesRendering;
-@property (nonatomic,strong) IBOutlet TimerViewController *timerViewController;
-@property (nonatomic,strong) IBOutlet TimerEditViewController *timerEditViewController;
+@property (nonatomic, strong) IBOutlet TimerViewController *timerViewController;
+@property (nonatomic, strong) IBOutlet TimerEditViewController *timerEditViewController;
+@property NSNib *nibTableGroupCell;
+@property NSNib *nibTimeEntryCell;
 @end
 
 @implementation TimeEntryListViewController
@@ -41,6 +43,12 @@
       [self.timerEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 
       viewitems = [NSMutableArray array];
+
+      self.nibTableGroupCell = [[NSNib alloc] initWithNibNamed:@"HeaderCell"
+                                                        bundle:nil];
+
+      self.nibTimeEntryCell = [[NSNib alloc] initWithNibNamed:@"TimeEntryCell"
+                                                       bundle:nil];
       
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
@@ -64,6 +72,15 @@
                                                  object:nil];
     }
     return self;
+}
+
+-(void)loadView {
+  [super loadView];
+
+  [self.timeEntriesTableView registerNib:self.nibTimeEntryCell
+                           forIdentifier:@"TimeEntryCell"];
+  [self.timeEntriesTableView registerNib:self.nibTableGroupCell
+                           forIdentifier:@"HeaderCell"];
 }
 
 -(void)renderTimeEntries {
@@ -239,8 +256,7 @@
   }
 }
 
-- (int)numberOfRowsInTableView:(NSTableView *)tv
-{
+- (int)numberOfRowsInTableView:(NSTableView *)tv {
   int result = 0;
   @synchronized(viewitems) {
     result = (int)[viewitems count];
@@ -256,21 +272,23 @@
       item = [viewitems objectAtIndex:row];
     }
     NSAssert(item != nil, @"view item from viewitems array is nil");
-    TableViewCell *cellView = [tableView makeViewWithIdentifier:@"TimeEntryCell" owner:self];
-    if ([item isKindOfClass:[TimeEntryViewItem class]]){
-      [cellView load:item];
-      [cellView.continueButton setTarget:cellView];
-      [cellView.continueButton setAction:@selector(continueTimeEntry:)];
-      
-      return cellView;
+
+    if ([item isKindOfClass:[TimeEntryViewItem class]]) {
+      TimeEntryCell *cell = [tableView makeViewWithIdentifier:@"TimeEntryCell" owner:self];
+      [cell load:item];
+      [cell.continueButton setTarget:cell];
+      [cell.continueButton setAction:@selector(continueTimeEntry:)];
+      return cell;
     }
+
     if ([item isKindOfClass:[DateHeader class]]) {
-      TableGroupCell *groupCell = [tableView makeViewWithIdentifier:@"GroupCell" owner:self];
-      [groupCell load:item];
-      return groupCell;
+      HeaderCell *cell = [tableView makeViewWithIdentifier:@"HeaderCell" owner:self];
+      [cell load:item];
+      return cell;
     }
-    
-    NSAssert(false, @"Unknown view item class");
+
+    NSAssert(false, @"Cell can't be nil");
+
     return nil;
 }
 
@@ -281,7 +299,7 @@
     item = viewitems[row];
   }
   if ([item isKindOfClass:[TimeEntryViewItem class]]) {
-    return [tableView rowHeight];
+    return 50;
   }
   return 22;
 }

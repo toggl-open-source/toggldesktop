@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "TimeEntryViewItem.h"
 
-@interface TableViewCell : NSTableCellView
+@interface TimeEntryCell : NSTableCellView
 @property (nonatomic, strong) IBOutlet NSTextField *colorTextField;
 @property (nonatomic, strong) IBOutlet NSTextField *descriptionTextField;
 @property (nonatomic, strong) IBOutlet NSTextField *projectTextField;

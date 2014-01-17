@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "DateHeader.h"
 
-@interface TableGroupCell : NSTableCellView
+@interface HeaderCell : NSTableCellView
 @property (nonatomic,strong) IBOutlet NSTextField *nameTextField;
 - (void)load:(DateHeader *)header;
 @end
