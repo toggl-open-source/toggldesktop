@@ -6,11 +6,11 @@
 //  Copyright (c) 2013 kopsik developers. All rights reserved.
 //
 
-#import "TimeEntryCell.h"
+#import "TimeEntryCellWithHeader.h"
 #import "UIEvents.h"
 #import "ConvertHexColor.h"
 
-@implementation TimeEntryCell
+@implementation TimeEntryCellWithHeader
 
 - (IBAction)continueTimeEntry:(id)sender {
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandContinue
@@ -21,6 +21,8 @@
   self.GUID = view_item.GUID;
   self.descriptionTextField.stringValue = view_item.Description;
   self.durationTextField.stringValue = view_item.duration;
+  self.dateDurationTextField.stringValue = view_item.dateDuration;
+  self.formattedDateTextField.stringValue = view_item.formattedDate;
   
   // Time entry has a project
   if (view_item.ProjectAndTaskLabel && [view_item.ProjectAndTaskLabel length] > 0) {

@@ -13,6 +13,7 @@
 #import "UIEvents.h"
 #import "kopsik_api.h"
 #import "TimeEntryCell.h"
+#import "TimeEntryCellWithHeader.h"
 #import "Context.h"
 #import "UIEvents.h"
 #import "ModelChange.h"
@@ -23,6 +24,7 @@
 @property (nonatomic, strong) IBOutlet TimerViewController *timerViewController;
 @property (nonatomic, strong) IBOutlet TimerEditViewController *timerEditViewController;
 @property NSNib *nibTimeEntryCell;
+@property NSNib *nibTimeEntryCellWithHeader;
 @end
 
 @implementation TimeEntryListViewController
@@ -43,6 +45,8 @@
 
       self.nibTimeEntryCell = [[NSNib alloc] initWithNibNamed:@"TimeEntryCell"
                                                        bundle:nil];
+      self.nibTimeEntryCellWithHeader = [[NSNib alloc] initWithNibNamed:@"TimeEntryCellWithHeader"
+                                                                 bundle:nil];
       
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
@@ -72,7 +76,7 @@
   [super loadView];
   [self.timeEntriesTableView registerNib:self.nibTimeEntryCell
                            forIdentifier:@"TimeEntryCell"];
-  [self.timeEntriesTableView registerNib:self.nibTimeEntryCell
+  [self.timeEntriesTableView registerNib:self.nibTimeEntryCellWithHeader
                            forIdentifier:@"TimeEntryCellWithHeader"];
 }
 
@@ -208,12 +212,16 @@
   }
   NSAssert(item != nil, @"view item from viewitems array is nil");
   
-  NSString *identifier = @"TimeEntryCell";
   if (item.isHeader) {
-    identifier = @"TimeEntryCellWithHeader";
+    TimeEntryCellWithHeader *cell = [tableView makeViewWithIdentifier: @"TimeEntryCellWithHeader"
+                                                      owner:self];
+    [cell load:item];
+    [cell.continueButton setTarget:cell];
+    [cell.continueButton setAction:@selector(continueTimeEntry:)];
+    return cell;
   }
 
-  TimeEntryCell *cell = [tableView makeViewWithIdentifier:identifier
+  TimeEntryCell *cell = [tableView makeViewWithIdentifier:@"TimeEntryCell"
                                                     owner:self];
   [cell load:item];
   [cell.continueButton setTarget:cell];

@@ -37,6 +37,8 @@
 		745B9CCB18155993006E7F37 /* ModelChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 745B9CCA18155993006E7F37 /* ModelChange.m */; };
 		747270751847E4050089860B /* NewTimeEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 747270741847E4050089860B /* NewTimeEntry.m */; };
 		74793D69183E248C0085E1CF /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74793D68183E248C0085E1CF /* CrashReporter.framework */; };
+		748664D0188D6617006DB4C5 /* TimeEntryCellWithHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 748664CF188D6617006DB4C5 /* TimeEntryCellWithHeader.m */; };
+		748664D2188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 748664D1188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib */; };
 		7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7498D2471888B226001390B9 /* TimeEntryCell.xib */; };
 		749BD0BD1833E28400980494 /* NSBoxClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 749BD0BC1833E28400980494 /* NSBoxClickable.m */; };
 		749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 749CB8CA18167D6E00814841 /* PreferencesWindowController.m */; };
@@ -188,6 +190,9 @@
 		747270731847E4050089860B /* NewTimeEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewTimeEntry.h; path = ../NewTimeEntry.h; sourceTree = "<group>"; };
 		747270741847E4050089860B /* NewTimeEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewTimeEntry.m; path = ../NewTimeEntry.m; sourceTree = "<group>"; };
 		74793D68183E248C0085E1CF /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CrashReporter.framework; sourceTree = "<group>"; };
+		748664CE188D6617006DB4C5 /* TimeEntryCellWithHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCellWithHeader.h; sourceTree = "<group>"; };
+		748664CF188D6617006DB4C5 /* TimeEntryCellWithHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryCellWithHeader.m; sourceTree = "<group>"; };
+		748664D1188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeEntryCellWithHeader.xib; sourceTree = "<group>"; };
 		7498D2471888B226001390B9 /* TimeEntryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeEntryCell.xib; sourceTree = "<group>"; };
 		749BD0BB1833E28400980494 /* NSBoxClickable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSBoxClickable.h; sourceTree = "<group>"; };
 		749BD0BC1833E28400980494 /* NSBoxClickable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSBoxClickable.m; sourceTree = "<group>"; };
@@ -351,6 +356,9 @@
 		69FC17FA17E6534400B96425 /* kopsik_ui */ = {
 			isa = PBXGroup;
 			children = (
+				748664D1188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib */,
+				748664CE188D6617006DB4C5 /* TimeEntryCellWithHeader.h */,
+				748664CF188D6617006DB4C5 /* TimeEntryCellWithHeader.m */,
 				747270731847E4050089860B /* NewTimeEntry.h */,
 				747270741847E4050089860B /* NewTimeEntry.m */,
 				74C15799183BA5DA00550613 /* AutocompleteDataSource.h */,
@@ -626,6 +634,7 @@
 				74D1D25F17EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */,
 				74F7CDD71819897D00630BD0 /* off.png in Resources */,
 				7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */,
+				748664D2188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib in Resources */,
 				744E126717F22AB900ABE72A /* app.icns in Resources */,
 				74D1D26D17EB728000E709B0 /* TimerViewController.xib in Resources */,
 				74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
@@ -695,6 +704,7 @@
 				74E3CDCC17FBABE400C3ADD3 /* BugsnagMetaData.m in Sources */,
 				749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */,
 				74E3CDCA17FBABE400C3ADD3 /* BugsnagEvent.m in Sources */,
+				748664D0188D6617006DB4C5 /* TimeEntryCellWithHeader.m in Sources */,
 				69FC180117E6534400B96425 /* main.m in Sources */,
 				74BAAA0717F32C470079386F /* Context.m in Sources */,
 				69FC180817E6534400B96425 /* AppDelegate.m in Sources */,

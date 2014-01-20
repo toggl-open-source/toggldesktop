@@ -2070,11 +2070,8 @@ std::string Formatter::FormatDateHeader(const std::time_t date) {
         return "YESTERDAY";
     }
 
-    std::string formatted =
-        Poco::DateTimeFormatter::format(ts, "%w %d. %b");
-    return Poco::toUpper(formatted);
+    return Poco::DateTimeFormatter::format(ts, "%w %d. %b");
 }
-
 
 bool Formatter::parseDurationStringHHMMSS(const std::string value,
                                           int *parsed_seconds) {
