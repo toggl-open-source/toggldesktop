@@ -248,6 +248,9 @@
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
   NSInteger selectedRow = [self.timeEntriesTableView selectedRow];
+  if (selectedRow < 0) {
+    return;
+  }
   NSTableRowView *rowView = [self.timeEntriesTableView rowViewAtRow:selectedRow
                                                     makeIfNecessary:NO];
   [rowView setEmphasized:NO];
