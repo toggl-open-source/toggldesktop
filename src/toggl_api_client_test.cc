@@ -259,6 +259,34 @@ namespace kopsik {
         ASSERT_EQ(uint(3), n);
     }
 
+    TEST(TogglApiClientTest, TestStartTimeEntryWithDuration) {
+        Poco::File f(TESTDB);
+        if (f.exists()) {
+            f.remove(false);
+        }
+        Database db(TESTDB);
+
+        User user("kopsik_test", "0.1");
+        user.LoadFromJSONString(loadTestData(), true, true);
+
+        TimeEntry *te = user.Start("Old work", "1 hour", 0, 0);
+        ASSERT_EQ(3600, te->DurationInSeconds());
+    }
+
+    TEST(TogglApiClientTest, TestStartTimeEntryWithoutDuration) {
+        Poco::File f(TESTDB);
+        if (f.exists()) {
+            f.remove(false);
+        }
+        Database db(TESTDB);
+
+        User user("kopsik_test", "0.1");
+        user.LoadFromJSONString(loadTestData(), true, true);
+
+        TimeEntry *te = user.Start("Old work", "1 hour", 0, 0);
+        ASSERT_LT(0, te->DurationInSeconds());
+    }
+
     TEST(TogglApiClientTest, TestDeletionSteps) {
         Poco::File f(TESTDB);
         if (f.exists()) {
@@ -270,7 +298,7 @@ namespace kopsik {
         user.LoadFromJSONString(loadTestData(), true, true);
 
         // first, mark time entry as deleted
-        TimeEntry *te = user.Start("My new time entry", 0, 0);
+        TimeEntry *te = user.Start("My new time entry", "", 0, 0);
         std::vector<ModelChange> changes;
         ASSERT_EQ(noError, db.SaveUser(&user, true, &changes));
 

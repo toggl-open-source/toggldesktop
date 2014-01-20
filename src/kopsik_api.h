@@ -245,8 +245,10 @@ KOPSIK_EXPORT void kopsik_format_duration_in_seconds_hhmm(
 
 KOPSIK_EXPORT kopsik_api_result kopsik_start(
   void *ctx,
-  char *errmsg, unsigned int errlen,
+  char *errmsg,
+  unsigned int errlen,
   const char *description,
+  const char *duration,
   const unsigned int task_id,
   const unsigned int project_id,
   KopsikTimeEntryViewItem *item);

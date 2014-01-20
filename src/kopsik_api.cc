@@ -1058,8 +1058,10 @@ void kopsik_format_duration_in_seconds_hhmm(
 
 kopsik_api_result kopsik_start(
     void *context,
-    char *errmsg, unsigned int errlen,
+    char *errmsg,
+    unsigned int errlen,
     const char *description,
+    const char *duration,
     const unsigned int task_id,
     const unsigned int project_id,
     KopsikTimeEntryViewItem *out_view_item) {
@@ -1084,7 +1086,12 @@ kopsik_api_result kopsik_start(
     desc = std::string(description);
   }
 
-  kopsik::TimeEntry *te = ctx->user->Start(desc, task_id, project_id);
+  std::string dur("");
+  if (duration) {
+    dur = std::string(duration);
+  }
+
+  kopsik::TimeEntry *te = ctx->user->Start(desc, dur, task_id, project_id);
   kopsik_api_result res = save(ctx, errmsg, errlen);
   if (KOPSIK_API_SUCCESS != res) {
     return res;

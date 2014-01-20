@@ -504,7 +504,9 @@ namespace kopsik {
         void SortTimeEntriesByStart();
 
         TimeEntry *RunningTimeEntry();
-        TimeEntry *Start(const std::string description,
+        TimeEntry *Start(
+            const std::string description,
+            const std::string duration,
             const Poco::UInt64 task_id,
             const Poco::UInt64 project_id);
         TimeEntry *Continue(const std::string GUID);

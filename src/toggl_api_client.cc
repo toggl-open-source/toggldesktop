@@ -57,7 +57,9 @@ void User::ActiveProjects(std::vector<Project *> *list) {
 
 // Start a time entry, mark it as dirty and add to user time entry collection.
 // Do not save here, dirtyness will be handled outside of this module.
-TimeEntry *User::Start(const std::string description,
+TimeEntry *User::Start(
+    const std::string description,
+    const std::string duration,
     const Poco::UInt64 task_id,
     const Poco::UInt64 project_id) {
   Stop();
@@ -67,7 +69,11 @@ TimeEntry *User::Start(const std::string description,
   te->SetPID(project_id);
   te->SetTID(task_id);
   te->SetStart(time(0));
-  te->SetDurationInSeconds(-time(0));
+  if (!duration.empty()) {
+    te->SetDurationString(duration);
+  } else {
+    te->SetDurationInSeconds(-time(0));
+  }
   te->SetUIModifiedAt(time(0));
   te->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
 

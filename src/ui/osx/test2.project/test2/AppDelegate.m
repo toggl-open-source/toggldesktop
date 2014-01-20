@@ -290,12 +290,13 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
   NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
   kopsik_api_result res = kopsik_start(ctx,
-    err,
-    KOPSIK_ERR_LEN,
-    [new_time_entry.Description UTF8String],
-    new_time_entry.TaskID,
-    new_time_entry.ProjectID,
-    item);
+                                       err,
+                                       KOPSIK_ERR_LEN,
+                                       [new_time_entry.Description UTF8String],
+                                       [new_time_entry.Duration UTF8String],
+                                       new_time_entry.TaskID,
+                                       new_time_entry.ProjectID,
+                                       item);
   if (KOPSIK_API_SUCCESS != res) {
     kopsik_time_entry_view_item_clear(item);
     handle_error(res, err);

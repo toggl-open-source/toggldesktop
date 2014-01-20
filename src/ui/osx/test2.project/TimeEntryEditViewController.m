@@ -205,9 +205,9 @@
   char err[KOPSIK_ERR_LEN];
   const char *value = [[self.durationTextField stringValue] UTF8String];
   kopsik_api_result res = kopsik_set_time_entry_duration(ctx,
-                                                           err,
-                                                           KOPSIK_ERR_LEN,
-                                                           [self.GUID UTF8String],
+                                                         err,
+                                                         KOPSIK_ERR_LEN,
+                                                         [self.GUID UTF8String],
                                                          value);
   if (KOPSIK_API_SUCCESS != res) {
     handle_error(res, err);
