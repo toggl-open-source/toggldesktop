@@ -52,7 +52,7 @@ Context::~Context() {
 }
 
 void Context::Shutdown() {
-  tm.joinAll();
+  tm.cancelAll();
 
   if (window_change_recorder) {
     window_change_recorder->Stop();
