@@ -1941,7 +1941,7 @@ class TimelineStartTask : public Poco::Task {
         delete ctx_->window_change_recorder;
         ctx_->window_change_recorder = 0;
       }
-      ctx_->window_change_recorder =new kopsik::WindowChangeRecorder(
+      ctx_->window_change_recorder = new kopsik::WindowChangeRecorder(
         ctx_->user->ID());
 
       callback_(KOPSIK_API_SUCCESS, "");

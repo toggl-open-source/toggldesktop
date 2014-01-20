@@ -106,7 +106,8 @@ void TimelineUploader::upload_loop_activity() {
     }
 }
 
-bool TimelineUploader::sync(const unsigned int user_id,
+bool TimelineUploader::sync(
+        const Poco::UInt64 user_id,
         const std::string api_token,
         const std::vector<TimelineEvent> &timeline_events,
         const std::string desktop_id) {

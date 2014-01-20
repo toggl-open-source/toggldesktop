@@ -20,7 +20,8 @@ namespace kopsik {
 
 class TimelineUploader {
  public:
-    TimelineUploader(const unsigned int user_id,
+    TimelineUploader(
+                const Poco::UInt64 user_id,
                 const std::string api_token,
                 const std::string api_url,
                 const std::string app_name,
@@ -77,7 +78,8 @@ class TimelineUploader {
 
  private:
     // Sync with server
-    bool sync(const unsigned int user_id,
+  bool sync(
+        const Poco::UInt64 user_id,
         const std::string api_token,
         const std::vector<TimelineEvent> &timeline_events,
         const std::string desktop_id);
@@ -85,8 +87,7 @@ class TimelineUploader {
         const std::vector<TimelineEvent> &timeline_events,
         const std::string &desktop_id);
 
-    // Hopefully an authenticated user sending the timeline events.
-    unsigned int user_id_;
+    Poco::UInt64 user_id_;
     std::string api_token_;
 
     // How many seconds to wait before send next batch of timeline

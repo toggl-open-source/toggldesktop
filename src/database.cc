@@ -2090,7 +2090,7 @@ error Database::migrate(
 }
 
 error Database::select_timeline_batch(
-        const int user_id,
+        const Poco::UInt64 user_id,
         std::vector<TimelineEvent> *timeline_events) {
     std::stringstream out;
     out << "select_batch, user_id = " << user_id;

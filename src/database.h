@@ -207,7 +207,7 @@ class Database {
 
         error insert_timeline_event(const TimelineEvent& info);
         error select_timeline_batch(
-            const int user_id,
+            const Poco::UInt64 user_id,
             std::vector<TimelineEvent> *timeline_events);
         error delete_timeline_batch(
             const std::vector<TimelineEvent> &timeline_events);

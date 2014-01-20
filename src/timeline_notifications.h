@@ -22,22 +22,22 @@ class TimelineEventNotification : public Poco::Notification {
 // Find timeline events (for upload).
 class CreateTimelineBatchNotification : public Poco::Notification {
  public:
-    explicit CreateTimelineBatchNotification(unsigned int _user_id) :
+  explicit CreateTimelineBatchNotification(const Poco::UInt64 _user_id) :
         user_id(_user_id) {}
-    unsigned int user_id;
+    Poco::UInt64 user_id;
 };
 
 // A batch of timeline events has been found in database, that
 // is ready for upload.
 class TimelineBatchReadyNotification : public Poco::Notification {
  public:
-    TimelineBatchReadyNotification(unsigned int _user_id,
+  TimelineBatchReadyNotification(const Poco::UInt64 _user_id,
             std::vector<TimelineEvent> _batch,
             std::string _desktop_id) :
         user_id(_user_id),
         batch(_batch),
         desktop_id(_desktop_id) {}
-    unsigned int user_id;
+    Poco::UInt64 user_id;
     std::vector<TimelineEvent> batch;
     std::string desktop_id;
 };

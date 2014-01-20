@@ -17,7 +17,7 @@ namespace kopsik {
 
 class WindowChangeRecorder {
  public:
-    explicit WindowChangeRecorder(const unsigned int user_id) :
+  explicit WindowChangeRecorder(const Poco::UInt64 user_id) :
             user_id_(user_id),
             last_title_(""),
             last_filename_(""),
@@ -57,7 +57,7 @@ class WindowChangeRecorder {
     void inspect_focused_window();
 
     // User who is recording the events.
-    unsigned int user_id_;
+    Poco::UInt64 user_id_;
 
     // Last window focus event data
     std::string last_title_;
