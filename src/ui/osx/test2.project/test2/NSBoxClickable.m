@@ -16,8 +16,7 @@
                                                       object:nil];
 }
 
-- (BOOL)acceptsFirstMouse:(NSEvent *)theEvent
-{
+- (BOOL)acceptsFirstMouse:(NSEvent *)theEvent {
   return YES;
 }
 
