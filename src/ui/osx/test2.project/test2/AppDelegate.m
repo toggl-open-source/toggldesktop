@@ -710,8 +710,6 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
 - (void)onShowMenuItem {
   [self.mainWindowController showWindow:self];
   [NSApp activateIgnoringOtherApps:YES];
-  ProcessSerialNumber psn = { 0, kCurrentProcess };
-  TransformProcessType(&psn, kProcessTransformToForegroundApplication);
 }
 
 - (IBAction)onPreferencesMenuItem:(id)sender {

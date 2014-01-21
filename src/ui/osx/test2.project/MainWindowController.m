@@ -155,9 +155,4 @@
                       contextInfo:nil];
 }
 
-- (void)windowWillClose:(NSNotification *)notification {
-  ProcessSerialNumber psn = { 0, kCurrentProcess };
-  TransformProcessType(&psn, kProcessTransformToUIElementApplication);
-}
-
 @end
