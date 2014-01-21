@@ -108,9 +108,11 @@
 
 - (IBAction)startButtonClicked:(id)sender {
   self.time_entry.Duration = self.durationTextField.stringValue;
+  [self.durationTextField setStringValue:@""];
 
   self.time_entry.Description = self.descriptionComboBox.stringValue;
   [self.descriptionComboBox setStringValue:@""];
+
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandNew
                                                       object:self.time_entry];
   self.time_entry = [[NewTimeEntry alloc] init];
