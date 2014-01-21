@@ -13,7 +13,6 @@
 @property (nonatomic, strong) IBOutlet NSTextField *descriptionTextField;
 @property (nonatomic, strong) IBOutlet NSTextField *projectTextField;
 @property (nonatomic, strong) IBOutlet NSTextField *durationTextField;
-@property (nonatomic, strong) IBOutlet NSImageView *continueButton;
 @property (strong) NSString *GUID;
 - (void)load:(TimeEntryViewItem *)view_item;
 - (IBAction)continueTimeEntry:(id)sender;

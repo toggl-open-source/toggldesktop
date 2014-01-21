@@ -31,18 +31,6 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <imageView focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7Zp-0h-PvQ">
-                                <rect key="frame" x="173" y="14" width="24" height="24"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="24" id="AMs-YT-JBn"/>
-                                    <constraint firstAttribute="height" constant="24" id="P6C-1k-mOV"/>
-                                </constraints>
-                                <imageCell key="cell" refusesFirstResponder="YES" focusRingType="none" alignment="left" imageScaling="proportionallyDown" image="NSGoRightTemplate" id="igS-gi-qeU"/>
-                                <connections>
-                                    <action selector="continueTimeEntry:" target="jHy-af-Yta" id="fRS-uS-duo"/>
-                                </connections>
-                            </imageView>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xwb-FG-Z4X">
                                 <rect key="frame" x="207" y="21" width="44" height="11"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -61,20 +49,34 @@
                                     <color key="backgroundColor" red="0.92739556759999997" green="0.124813008" blue="0.11691136570000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </textFieldCell>
                             </textField>
+                            <button translatesAutoresizingMaskIntoConstraints="NO" id="Gcj-ki-Hus">
+                                <rect key="frame" x="181" y="15" width="21" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="FfV-9g-8jU"/>
+                                    <constraint firstAttribute="width" constant="21" id="pmZ-g5-uge"/>
+                                </constraints>
+                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="NSRightFacingTriangleTemplate" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="RwR-fM-rUm">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="continueTimeEntry:" target="jHy-af-Yta" id="33n-9C-eNB"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </view>
                     <constraints>
-                        <constraint firstItem="7Zp-0h-PvQ" firstAttribute="leading" secondItem="CwR-d5-aWs" secondAttribute="trailing" constant="8" id="9O7-LD-8Oh"/>
                         <constraint firstItem="deS-e6-3Ui" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" constant="9" id="FOo-PQ-AK1"/>
                         <constraint firstItem="deS-e6-3Ui" firstAttribute="top" secondItem="CwR-d5-aWs" secondAttribute="bottom" constant="2" id="HZ7-Mc-iQ2"/>
                         <constraint firstItem="xwb-FG-Z4X" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" constant="19" id="HsG-Zm-aF4"/>
                         <constraint firstItem="CwR-d5-aWs" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" constant="8" id="KZ4-JV-5xD"/>
+                        <constraint firstItem="Gcj-ki-Hus" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" constant="15" id="LdL-Mc-D8t"/>
                         <constraint firstAttribute="trailing" secondItem="CwR-d5-aWs" secondAttribute="trailing" constant="87" id="OD9-hN-DXz"/>
+                        <constraint firstItem="xwb-FG-Z4X" firstAttribute="leading" secondItem="Gcj-ki-Hus" secondAttribute="trailing" constant="7" id="QTq-Ke-HV6"/>
                         <constraint firstAttribute="trailing" secondItem="xwb-FG-Z4X" secondAttribute="trailing" constant="3" id="SKX-kj-jDT"/>
-                        <constraint firstItem="xwb-FG-Z4X" firstAttribute="leading" secondItem="7Zp-0h-PvQ" secondAttribute="trailing" constant="12" id="Tp0-z6-ClT"/>
                         <constraint firstAttribute="bottom" secondItem="xwb-FG-Z4X" secondAttribute="bottom" constant="21" id="Wxi-cu-zKj"/>
                         <constraint firstItem="deS-e6-3Ui" firstAttribute="top" secondItem="CwR-d5-aWs" secondAttribute="bottom" constant="2" id="lKU-7W-47l"/>
-                        <constraint firstItem="7Zp-0h-PvQ" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" constant="13" id="nrs-GO-uCs"/>
                         <constraint firstItem="CwR-d5-aWs" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" constant="10" id="p6t-ka-sVG"/>
                         <constraint firstAttribute="bottom" secondItem="deS-e6-3Ui" secondAttribute="bottom" constant="11" id="sXL-6H-yCQ"/>
                     </constraints>
@@ -89,7 +91,6 @@
                 <constraint firstAttribute="trailing" secondItem="ar8-w3-mLZ" secondAttribute="trailing" id="fix-Va-WqO"/>
             </constraints>
             <connections>
-                <outlet property="continueButton" destination="7Zp-0h-PvQ" id="CQF-Zy-2oB"/>
                 <outlet property="descriptionTextField" destination="CwR-d5-aWs" id="Wip-cq-Mwm"/>
                 <outlet property="durationTextField" destination="xwb-FG-Z4X" id="utn-4y-DUw"/>
                 <outlet property="projectTextField" destination="deS-e6-3Ui" id="pIu-QV-GCm"/>
@@ -97,6 +98,6 @@
         </customView>
     </objects>
     <resources>
-        <image name="NSGoRightTemplate" width="9" height="9"/>
+        <image name="NSRightFacingTriangleTemplate" width="9" height="9"/>
     </resources>
 </document>

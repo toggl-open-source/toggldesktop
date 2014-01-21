@@ -216,16 +216,12 @@
     TimeEntryCellWithHeader *cell = [tableView makeViewWithIdentifier: @"TimeEntryCellWithHeader"
                                                       owner:self];
     [cell load:item];
-    [cell.continueButton setTarget:cell];
-    [cell.continueButton setAction:@selector(continueTimeEntry:)];
     return cell;
   }
 
   TimeEntryCell *cell = [tableView makeViewWithIdentifier:@"TimeEntryCell"
                                                     owner:self];
   [cell load:item];
-  [cell.continueButton setTarget:cell];
-  [cell.continueButton setAction:@selector(continueTimeEntry:)];
   return cell;
 }
 
