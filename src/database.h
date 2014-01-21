@@ -1,4 +1,4 @@
-// Copyright 2013 Tanel Lebedev
+// Copyright 2013 kopsik developers
 
 #ifndef SRC_DATABASE_H_
 #define SRC_DATABASE_H_
@@ -110,18 +110,6 @@ class Database {
 
         error SaveUser(User *user, bool with_related_data,
             std::vector<ModelChange> *changes);
-        error SaveWorkspace(Workspace *model,
-                            std::vector<ModelChange> *changes);
-        error SaveClient(Client *model,
-                         std::vector<ModelChange> *changes);
-        error SaveProject(Project *model,
-                          std::vector<ModelChange> *changes);
-        error SaveTask(Task *model,
-                       std::vector<ModelChange> *changes);
-        error SaveTag(Tag *model,
-                      std::vector<ModelChange> *changes);
-        error SaveTimeEntry(TimeEntry *model,
-                            std::vector<ModelChange> *changes);
 
         error LoadTimeEntriesForUpload(User *user);
 
@@ -139,7 +127,7 @@ class Database {
         void handleDeleteTimelineBatchNotification(
             DeleteTimelineBatchNotification *notification);
 
-    private:
+     private:
         error initialize_tables();
         error migrate(
             const std::string name,
@@ -211,6 +199,19 @@ class Database {
             std::vector<TimelineEvent> *timeline_events);
         error delete_timeline_batch(
             const std::vector<TimelineEvent> &timeline_events);
+
+        error saveWorkspace(Workspace *model,
+                            std::vector<ModelChange> *changes);
+        error saveClient(Client *model,
+                         std::vector<ModelChange> *changes);
+        error saveProject(Project *model,
+                          std::vector<ModelChange> *changes);
+        error saveTask(Task *model,
+                       std::vector<ModelChange> *changes);
+        error saveTag(Tag *model,
+                      std::vector<ModelChange> *changes);
+        error saveTimeEntry(TimeEntry *model,
+                            std::vector<ModelChange> *changes);
 
         Poco::Logger &logger();
 

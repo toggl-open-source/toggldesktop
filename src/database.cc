@@ -1,4 +1,4 @@
-// Copyright 2013 Tanel Lebedev
+// Copyright 2013 kopsik developers
 
 #include "./database.h"
 
@@ -685,7 +685,6 @@ error Database::loadTimeEntriesFromSQLStatement(
     return noError;
 }
 
-// FIXME: user generic saveModels instead, delete this
 error Database::saveWorkspaces(
         const Poco::UInt64 UID,
         std::vector<Workspace *> *list,
@@ -696,7 +695,7 @@ error Database::saveWorkspaces(
             it != list->end(); ++it) {
         Workspace *model = *it;
         model->SetUID(UID);
-        error err = SaveWorkspace(model, changes);
+        error err = saveWorkspace(model, changes);
         if (err != noError) {
             return err;
         }
@@ -704,7 +703,6 @@ error Database::saveWorkspaces(
     return noError;
 }
 
-// FIXME: user generic saveModels instead, delete this
 error Database::saveClients(
         const Poco::UInt64 UID,
         std::vector<Client *> *list,
@@ -715,7 +713,7 @@ error Database::saveClients(
             it != list->end(); ++it) {
         Client *model = *it;
         model->SetUID(UID);
-        error err = SaveClient(model, changes);
+        error err = saveClient(model, changes);
         if (err != noError) {
             return err;
         }
@@ -723,7 +721,6 @@ error Database::saveClients(
     return noError;
 }
 
-// FIXME: user generic saveModels instead, delete this
 error Database::saveProjects(
         const Poco::UInt64 UID,
          std::vector<Project *> *list,
@@ -734,7 +731,7 @@ error Database::saveProjects(
             it != list->end(); ++it) {
         Project *model = *it;
         model->SetUID(UID);
-        error err = SaveProject(model, changes);
+        error err = saveProject(model, changes);
         if (err != noError) {
             return err;
         }
@@ -742,7 +739,6 @@ error Database::saveProjects(
     return noError;
 }
 
-// FIXME: user generic saveModels instead, delete this
 error Database::saveTasks(
         const Poco::UInt64 UID,
         std::vector<Task *> *list,
@@ -753,15 +749,14 @@ error Database::saveTasks(
             it != list->end(); ++it) {
         Task *model = *it;
         model->SetUID(UID);
-        error err = SaveTask(model, changes);
+        error err = saveTask(model, changes);
         if (err != noError) {
-            return err;
+          return err;
         }
     }
     return noError;
 }
 
-// FIXME: user generic saveModels instead, delete this
 error Database::saveTags(
         const Poco::UInt64 UID,
         std::vector<Tag *> *list,
@@ -772,7 +767,7 @@ error Database::saveTags(
             it != list->end(); ++it) {
         Tag *model = *it;
         model->SetUID(UID);
-        error err = SaveTag(model, changes);
+        error err = saveTag(model, changes);
         if (err != noError) {
             return err;
         }
@@ -780,7 +775,6 @@ error Database::saveTags(
     return noError;
 }
 
-// FIXME: make this generic saveModels or similar
 error Database::saveTimeEntries(
         const Poco::UInt64 UID,
         std::vector<TimeEntry *> *list,
@@ -808,7 +802,7 @@ error Database::saveTimeEntries(
             continue;
         }
         model->SetUID(UID);
-        error err = SaveTimeEntry(model, changes);
+        error err = saveTimeEntry(model, changes);
         if (err != noError) {
             return err;
         }
@@ -835,14 +829,12 @@ error Database::saveTimeEntries(
     return noError;
 }
 
-error Database::SaveTimeEntry(
+error Database::saveTimeEntry(
         TimeEntry *model,
         std::vector<ModelChange> *changes) {
     poco_assert(model);
     poco_assert(session);
     poco_assert(changes);
-
-    ExplicitScopedLock("Database::SaveTimeEntry", mutex_);
 
     if (model->LocalID() && !model->Dirty() && !model->GUID().empty()) {
         return noError;
@@ -850,6 +842,9 @@ error Database::SaveTimeEntry(
     if (model->GUID().empty()) {
         model->SetGUID(generateGUID());
     }
+
+    ExplicitScopedLock("Database::SaveTimeEntry", mutex_);
+
     try {
         if (model->LocalID()) {
             std::stringstream ss;
@@ -1014,17 +1009,18 @@ error Database::SaveTimeEntry(
     return noError;
 }
 
-error Database::SaveWorkspace(
+error Database::saveWorkspace(
         Workspace *model,
         std::vector<ModelChange> *changes) {
     poco_assert(model);
     poco_assert(session);
 
-    ExplicitScopedLock("Database::SaveWorkspace", mutex_);
-
     if (model->LocalID() && !model->Dirty()) {
         return noError;
     }
+
+    ExplicitScopedLock("Database::SaveWorkspace", mutex_);
+
     try {
         if (model->LocalID()) {
             std::stringstream ss;
@@ -1083,17 +1079,18 @@ error Database::SaveWorkspace(
     return noError;
 }
 
-error Database::SaveClient(
+error Database::saveClient(
         Client *model,
         std::vector<ModelChange> *changes) {
     poco_assert(model);
     poco_assert(session);
 
-    ExplicitScopedLock("Database::SaveClient", mutex_);
-
     if (model->LocalID() && !model->Dirty()) {
         return noError;
     }
+
+    ExplicitScopedLock("Database::SaveClient", mutex_);
+
     try {
         if (model->LocalID()) {
             std::stringstream ss;
@@ -1179,17 +1176,18 @@ error Database::SaveClient(
     return noError;
 }
 
-error Database::SaveProject(
+error Database::saveProject(
         Project *model,
         std::vector<ModelChange> *changes) {
     poco_assert(model);
     poco_assert(session);
 
-    ExplicitScopedLock("Database::SaveProject", mutex_);
-
     if (model->LocalID() && !model->Dirty()) {
         return noError;
     }
+
+    ExplicitScopedLock("Database::SaveProject", mutex_);
+
     try {
         if (model->LocalID()) {
             std::stringstream ss;
@@ -1303,17 +1301,18 @@ error Database::SaveProject(
     return noError;
 }
 
-error Database::SaveTask(
+error Database::saveTask(
         Task *model,
         std::vector<ModelChange> *changes) {
     poco_assert(model);
     poco_assert(session);
 
+    if (model->LocalID() && !model->Dirty()) {
+      return noError;
+    }
+
     ExplicitScopedLock("Database::SaveTask", mutex_);
 
-    if (model->LocalID() && !model->Dirty()) {
-        return noError;
-    }
     try {
         if (model->LocalID()) {
             std::stringstream ss;
@@ -1374,17 +1373,18 @@ error Database::SaveTask(
     return noError;
 }
 
-error Database::SaveTag(
+error Database::saveTag(
         Tag *model,
         std::vector<ModelChange> *changes    ) {
     poco_assert(model);
     poco_assert(session);
 
-    ExplicitScopedLock("Database::SaveTag", mutex_);
-
     if (model->LocalID() && !model->Dirty()) {
         return noError;
     }
+
+    ExplicitScopedLock("Database::SaveTag", mutex_);
+
     try {
         if (model->LocalID()) {
             std::stringstream ss;

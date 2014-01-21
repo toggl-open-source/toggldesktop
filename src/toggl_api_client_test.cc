@@ -338,47 +338,7 @@ namespace kopsik {
         std::vector<ModelChange> changes;
         ASSERT_EQ(noError, db.SaveUser(&user, false, &changes));
 
-        // Time entry
-        TimeEntry te;
-        te.SetUID(user.ID());
-        ASSERT_EQ(noError, db.SaveTimeEntry(&te, &changes));
-        ASSERT_TRUE(te.LocalID());
-        ASSERT_EQ(noError, db.SaveTimeEntry(&te, &changes));
-
-        // Tag
-        Tag t;
-        t.SetUID(user.ID());
-        ASSERT_EQ(noError, db.SaveTag(&t, &changes));
-        ASSERT_TRUE(t.LocalID());
-        ASSERT_EQ(noError, db.SaveTag(&t, &changes));
-
-        // Workspace
-        Workspace w;
-        w.SetUID(user.ID());
-        ASSERT_EQ(noError, db.SaveWorkspace(&w, &changes));
-        ASSERT_TRUE(w.LocalID());
-        ASSERT_EQ(noError, db.SaveWorkspace(&w, &changes));
-
-        // Project
-        Project p;
-        p.SetUID(user.ID());
-        ASSERT_EQ(noError, db.SaveProject(&p, &changes));
-        ASSERT_TRUE(p.LocalID());
-        ASSERT_EQ(noError, db.SaveProject(&p, &changes));
-
-        // Client
-        Client c;
-        c.SetUID(user.ID());
-        ASSERT_EQ(noError, db.SaveClient(&c, &changes));
-        ASSERT_TRUE(c.LocalID());
-        ASSERT_EQ(noError, db.SaveClient(&c, &changes));
-
-        // Workspace
-        Task task;
-        task.SetUID(user.ID());
-        ASSERT_EQ(noError, db.SaveTask(&task, &changes));
-        ASSERT_TRUE(task.LocalID());
-        ASSERT_EQ(noError, db.SaveTask(&task, &changes));
+        ASSERT_EQ(noError, db.SaveUser(&user, false, &changes));
     }
 
     TEST(TogglApiClientTest, ParsesAndSavesData) {
