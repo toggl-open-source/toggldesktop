@@ -160,7 +160,7 @@
     [self performSelectorOnMainThread:@selector(scheduleAutocompleteRendering)
                            withObject:nil
                         waitUntilDone:NO];
-    if ([self.GUID isEqualToString:mc.GUID]) {
+    if ([self.GUID isEqualToString:mc.GUID] && [mc.ChangeType isEqualToString:@"update"]) {
       [self performSelectorOnMainThread:@selector(renderTimeEntry:)
                              withObject:mc.GUID
                           waitUntilDone:NO];
