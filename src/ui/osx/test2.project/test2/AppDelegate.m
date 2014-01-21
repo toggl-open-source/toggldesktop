@@ -306,8 +306,10 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   TimeEntryViewItem *timeEntry = [[TimeEntryViewItem alloc] init];
   [timeEntry load:item];
   kopsik_time_entry_view_item_clear(item);
-  [[NSNotificationCenter defaultCenter]
-    postNotificationName:kUIStateTimerRunning object:timeEntry];
+  if (timeEntry.duration_in_seconds < 0) {
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:kUIStateTimerRunning object:timeEntry];
+  }
 
   kopsik_push_async(ctx, handle_error);
 }
