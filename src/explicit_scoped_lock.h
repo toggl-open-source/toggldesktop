@@ -10,14 +10,12 @@
 
 namespace kopsik {
 
-#define kLockTimeoutMillis 100
-
 class ExplicitScopedLock : public Poco::Mutex::ScopedLock {
    public:
     ExplicitScopedLock(
       const std::string context,
       Poco::Mutex& mutex) :
-        Poco::Mutex::ScopedLock(mutex, kLockTimeoutMillis),
+        Poco::Mutex::ScopedLock(mutex),
         context_(context) {
       std::stringstream text;
       text << context_ << " locking";
