@@ -2245,7 +2245,7 @@ error Database::UInt(
     poco_assert(result);
     poco_assert(!sql.empty());
 
-    Poco::Mutex::ScopedLock lock(mutex_);
+    ExplicitScopedLock("Database::UInt", mutex_);
 
     try {
         Poco::UInt64 value(0);
