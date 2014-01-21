@@ -19,14 +19,14 @@
             <rect key="frame" x="0.0" y="0.0" width="258" height="45"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box autoresizesSubviews="NO" fixedFrame="YES" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Fga-BR-x8G">
+                <box autoresizesSubviews="NO" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Fga-BR-x8G">
                     <rect key="frame" x="1" y="1" width="256" height="43"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView">
                         <rect key="frame" x="0.0" y="0.0" width="256" height="43"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <box autoresizesSubviews="NO" fixedFrame="YES" title="Box" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="nFI-HH-zd7">
+                            <box autoresizesSubviews="NO" title="Box" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="nFI-HH-zd7">
                                 <rect key="frame" x="198" y="-1" width="58" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <view key="contentView">
@@ -55,10 +55,13 @@
                                         </button>
                                     </subviews>
                                 </view>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="58" id="Rff-cG-Y36"/>
+                                </constraints>
                                 <color key="borderColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
                                 <color key="fillColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
                             </box>
-                            <comboBox verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ITa-Jc-jOK" customClass="NSComboboxWithoutButton">
+                            <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ITa-Jc-jOK" customClass="NSComboboxWithoutButton">
                                 <rect key="frame" x="4" y="8" width="149" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" placeholderString="What are you doing?" drawsBackground="YES" buttonBordered="NO" usesDataSource="YES" numberOfVisibleItems="5" id="SSh-62-AYH">
@@ -71,7 +74,7 @@
                                     <outlet property="delegate" destination="-2" id="pE4-7B-qZA"/>
                                 </connections>
                             </comboBox>
-                            <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oie-Un-asQ">
+                            <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oie-Un-asQ">
                                 <rect key="frame" x="150" y="9" width="43" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" focusRingType="none" alignment="right" placeholderString="0 sec" drawsBackground="YES" id="FoD-qd-An1">
@@ -82,6 +85,19 @@
                             </textField>
                         </subviews>
                     </view>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="nFI-HH-zd7" secondAttribute="bottom" constant="-1" id="DHT-6f-0yu"/>
+                        <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="oie-Un-asQ" secondAttribute="trailing" constant="5" id="TI1-iH-Miw"/>
+                        <constraint firstAttribute="bottom" secondItem="ITa-Jc-jOK" secondAttribute="bottom" constant="12" id="XK6-4v-85n"/>
+                        <constraint firstItem="ITa-Jc-jOK" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="14" id="YTj-aa-g8G"/>
+                        <constraint firstItem="oie-Un-asQ" firstAttribute="leading" secondItem="ITa-Jc-jOK" secondAttribute="trailing" id="Ztg-OV-1tQ"/>
+                        <constraint firstAttribute="bottom" secondItem="oie-Un-asQ" secondAttribute="bottom" constant="9" id="bC9-Fi-38J"/>
+                        <constraint firstItem="nFI-HH-zd7" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="-1" id="lMD-AL-Jog"/>
+                        <constraint firstAttribute="trailing" secondItem="nFI-HH-zd7" secondAttribute="trailing" id="lNg-Zn-u1m"/>
+                        <constraint firstItem="oie-Un-asQ" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="12" id="sKm-6j-h1k"/>
+                        <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="ITa-Jc-jOK" secondAttribute="trailing" constant="48" id="sqK-0W-LsG"/>
+                        <constraint firstItem="ITa-Jc-jOK" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="4" id="tbX-SU-uAB"/>
+                    </constraints>
                     <color key="borderColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="fillColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
@@ -93,6 +109,12 @@
                     <font key="titleFont" metaFont="system"/>
                 </box>
             </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Fga-BR-x8G" secondAttribute="trailing" constant="1" id="6oC-eJ-dBs"/>
+                <constraint firstAttribute="bottom" secondItem="Fga-BR-x8G" secondAttribute="bottom" constant="1" id="Cub-Lx-DNo"/>
+                <constraint firstItem="Fga-BR-x8G" firstAttribute="top" secondItem="M2u-7B-WCs" secondAttribute="top" constant="1" id="s0O-bN-wX6"/>
+                <constraint firstItem="Fga-BR-x8G" firstAttribute="leading" secondItem="M2u-7B-WCs" secondAttribute="leading" constant="1" id="wJK-xr-4eQ"/>
+            </constraints>
         </customView>
     </objects>
 </document>
