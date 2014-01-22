@@ -1162,6 +1162,10 @@ void kopsik_time_entry_view_item_clear(
     free(item->DateHeader);
     item->DateHeader = 0;
   }
+  if (item->DateDuration) {
+    free(item->DateDuration);
+    item->DateDuration = 0;
+  }
   delete item;
 }
 
