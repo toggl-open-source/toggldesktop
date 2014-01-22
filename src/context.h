@@ -27,6 +27,7 @@ class Context {
 
     kopsik::Database *db;
     kopsik::User *user;
+    // FIXME: we should not share https client
     kopsik::HTTPSClient *https_client;
     kopsik::WebSocketClient *ws_client;
     KopsikViewItemChangeCallback change_callback;
