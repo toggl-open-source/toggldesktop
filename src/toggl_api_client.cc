@@ -2059,7 +2059,7 @@ std::string Formatter::FormatDateHeader(const std::time_t date) {
     if (today.year() == datetime.year() &&
             today.month() == datetime.month() &&
             today.day() == datetime.day()) {
-        return "TODAY";
+        return "Today";
     }
 
     Poco::DateTime yesterday = today -
@@ -2067,7 +2067,7 @@ std::string Formatter::FormatDateHeader(const std::time_t date) {
     if (yesterday.year() == datetime.year() &&
             yesterday.month() == datetime.month() &&
             yesterday.day() == datetime.day()) {
-        return "YESTERDAY";
+        return "Yesterday";
     }
 
     return Poco::DateTimeFormatter::format(ts, "%w %d. %b");
