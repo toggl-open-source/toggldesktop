@@ -22,7 +22,6 @@ NSString *const kUIStateUpToDate = @"UpToDate";
 // Events
 NSString *const kUIEventModelChange = @"ModelChange";
 NSString *const kUIEventIdleFinished = @"IdleFinished";
-NSString *const kUIEventWebSocketConnection = @"WebsocketConnected";
 NSString *const kUIEventTimelineRecording = @"TimelineRecording";
 NSString *const kUIEventSettingsChanged = @"SettingsChanged";
 

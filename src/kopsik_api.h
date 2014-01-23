@@ -376,12 +376,10 @@ KOPSIK_EXPORT void kopsik_set_change_callback(
   KopsikViewItemChangeCallback callback);
 
 KOPSIK_EXPORT void kopsik_websocket_start_async(
-  void *ctx,
-  KopsikResultCallback callback);
+  void *ctx);
 
 KOPSIK_EXPORT void kopsik_websocket_stop_async(
-  void *ctx,
-  KopsikResultCallback callback);
+  void *ctx);
 
 // Timeline
 

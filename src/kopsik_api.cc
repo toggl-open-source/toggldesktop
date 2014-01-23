@@ -2212,28 +2212,25 @@ void on_websocket_message(
 }
 
 void kopsik_websocket_start_async(
-    void *context,
-    KopsikResultCallback callback) {
+    void *context) {
   poco_assert(context);
-  poco_assert(callback);
 
   logger().debug("kopsik_websocket_start_async");
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
-  ctx->tm.start(new WebSocketStartTask(ctx, callback, on_websocket_message));
+  ctx->tm.start(new WebSocketStartTask(ctx, on_websocket_message));
 }
 
 void kopsik_websocket_stop_async(
-    void *context,
-    KopsikResultCallback callback) {
+    void *context) {
   poco_assert(context);
 
   logger().debug("kopsik_websocket_stop_async");
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
-  ctx->tm.start(new WebSocketStopTask(ctx, callback));
+  ctx->tm.start(new WebSocketStopTask(ctx));
 }
 
 // Timeline

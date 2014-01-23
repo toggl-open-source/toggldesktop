@@ -60,17 +60,6 @@ namespace command_line_client {
             << std::endl;
     }
 
-    void on_websocket_start_callback(kopsik_api_result result,
-            const char *err_string) {
-        if (KOPSIK_API_SUCCESS != result) {
-            std::string err(err_string);
-            std::cerr << "on_websocket_start_callback error! "
-                << err << std::endl;
-            return;
-        }
-        std::cout << "on_websocket_start_callback success" << std::endl;
-    }
-
     int Main::main(const std::vector<std::string>& args) {
         if (args.empty()) {
             usage();
@@ -218,12 +207,11 @@ namespace command_line_client {
         if ("listen" == args[0]) {
             std::cout << "Listening to websocket.. " << std::endl;
             kopsik_set_change_callback(ctx, on_model_change);
-            kopsik_websocket_start_async(
-                ctx, on_websocket_start_callback);
+            kopsik_websocket_start_async(ctx);
             while (true) {
                 Poco::Thread::sleep(1000);
             }
-            kopsik_websocket_stop_async(ctx, 0);
+            kopsik_websocket_stop_async(ctx);
             return Poco::Util::Application::EXIT_OK;
         }
 

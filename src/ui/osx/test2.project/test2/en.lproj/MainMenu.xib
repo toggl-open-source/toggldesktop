@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -76,12 +76,6 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="onTimelineMenuItem:" target="-1" id="Bb8-rF-le4"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Connect WebSocket" tag="8" id="jjD-wB-XyK">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="onWebSocketMenuItem:" target="-1" id="pk3-4l-W8D"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="Nva-uM-toH"/>
@@ -353,7 +347,6 @@
         <customObject id="494" customClass="AppDelegate">
             <connections>
                 <outlet property="mainTimelineMenuItem" destination="QhL-M5-26D" id="SF4-4v-MTB"/>
-                <outlet property="mainWebsocketMenuItem" destination="jjD-wB-XyK" id="4qd-4G-TlC"/>
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>

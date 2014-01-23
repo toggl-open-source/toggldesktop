@@ -47,44 +47,31 @@ class PushTask : public Poco::Task {
 class WebSocketStartTask : public Poco::Task {
   public:
     WebSocketStartTask(Context *ctx,
-                       KopsikResultCallback callback,
                        kopsik::WebSocketMessageCallback websocket_callback) :
       Task("start_websocket"),
       ctx_(ctx),
-      callback_(callback),
       websocket_callback_(websocket_callback) {}
     void runTask() {
-      kopsik::error err = ctx_->ws_client->Start(
+      ctx_->ws_client->Start(
         ctx_,
         ctx_->user->APIToken(),
         websocket_callback_);
-      if (err != kopsik::noError) {
-        callback_(KOPSIK_API_FAILURE, err.c_str());
-        return;
-      }
-      callback_(KOPSIK_API_SUCCESS, 0);
     }
   private:
     Context *ctx_;
-    KopsikResultCallback callback_;
     kopsik::WebSocketMessageCallback websocket_callback_;
 };
 
 class WebSocketStopTask : public Poco::Task {
   public:
-    WebSocketStopTask(Context *ctx, KopsikResultCallback callback) :
+    explicit WebSocketStopTask(Context *ctx) :
       Task("stop_websocket"),
-      ctx_(ctx),
-      callback_(callback) {}
+      ctx_(ctx) {}
     void runTask() {
       ctx_->ws_client->Stop();
-      if (callback_) {
-        callback_(KOPSIK_API_SUCCESS, 0);
-      }
     }
   private:
     Context *ctx_;
-    KopsikResultCallback callback_;
 };
 
 class TimelineStartTask : public Poco::Task {

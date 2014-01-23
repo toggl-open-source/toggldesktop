@@ -30,7 +30,7 @@ Poco::Logger &WebSocketClient::logger() {
   return Poco::Logger::get("websocket_client");
 }
 
-error WebSocketClient::Start(
+void WebSocketClient::Start(
     void *ctx,
     const std::string api_token,
     WebSocketMessageCallback on_websocket_message) {
@@ -38,26 +38,35 @@ error WebSocketClient::Start(
   poco_assert(!api_token.empty());
   poco_assert(on_websocket_message);
 
+  if (activity_.isRunning()) {
+    return;
+  }
+
   ExplicitScopedLock("WebSocketClient::Start", mutex_);
+
+  activity_.start();
 
   ctx_ = ctx;
   on_websocket_message_ = on_websocket_message;
   api_token_ = api_token;
-
-  error err = connect();
-  if (err != noError)  {
-    return err;
-  }
-
-  activity_.start();
-
-  return noError;
 }
 
-error WebSocketClient::connect() {
-  logger().debug("connecting");
+void WebSocketClient::Stop() {
+    logger().debug("Stop");
 
-  ExplicitScopedLock("WebSocketClient::connect", mutex_);
+    if (!activity_.isRunning()) {
+      return;
+    }
+    activity_.stop();  // request stop
+    activity_.wait();  // wait until activity actually stops
+
+    deleteSession();
+}
+
+error WebSocketClient::createSession() {
+  logger().debug("createSession");
+
+  ExplicitScopedLock("WebSocketClient::createSession", mutex_);
 
   deleteSession();
 
@@ -94,20 +103,7 @@ error WebSocketClient::connect() {
     ws_->setReceiveTimeout(Poco::Timespan(3 * Poco::Timespan::SECONDS));
     ws_->setSendTimeout(Poco::Timespan(3 * Poco::Timespan::SECONDS));
 
-    logger().debug("connection established.");
-
-    // Authenticate
-    JSONNODE *c = json_new(JSON_NODE);
-    json_push_back(c, json_new_a("type", "authenticate"));
-    json_push_back(c, json_new_a("api_token", api_token_.c_str()));
-    json_char *jc = json_write_formatted(c);
-    std::string payload(jc);
-    json_free(jc);
-    json_delete(c);
-
-    ws_->sendFrame(payload.data(),
-      static_cast<int>(payload.size()),
-      Poco::Net::WebSocket::FRAME_BINARY);
+    authenticate();
   } catch(const Poco::Exception& exc) {
     return exc.displayText();
   } catch(const std::exception& ex) {
@@ -117,6 +113,22 @@ error WebSocketClient::connect() {
   }
 
   return noError;
+}
+
+void WebSocketClient::authenticate() {
+  logger().debug("authenticate");
+
+  JSONNODE *c = json_new(JSON_NODE);
+  json_push_back(c, json_new_a("type", "authenticate"));
+  json_push_back(c, json_new_a("api_token", api_token_.c_str()));
+  json_char *jc = json_write_formatted(c);
+  std::string payload(jc);
+  json_free(jc);
+  json_delete(c);
+
+  ws_->sendFrame(payload.data(),
+                 static_cast<int>(payload.size()),
+                 Poco::Net::WebSocket::FRAME_BINARY);
 }
 
 std::string WebSocketClient::parseWebSocketMessageType(
@@ -171,6 +183,7 @@ error WebSocketClient::receiveWebSocketMessage(std::string *message) {
 const std::string kPong("{\"type\": \"pong\"}");
 
 error WebSocketClient::poll() {
+  logger().debug("poll");
   try {
     Poco::Timespan span(250 * Poco::Timespan::MILLISECONDS);
     if (!ws_->poll(span, Poco::Net::Socket::SELECT_READ)) {
@@ -221,22 +234,23 @@ const int kWebSocketRestartThreshold = 30;
 
 void WebSocketClient::runActivity() {
   while (!activity_.isStopped()) {
+    logger().debug("runActivity");
+
     if (ws_) {
       error err = poll();
       if (err != noError) {
         logger().error(err);
+        deleteSession();
         Poco::Thread::sleep(10000);
       }
     }
 
     if (time(0) - last_connection_at_ > kWebSocketRestartThreshold) {
-      logger().debug("will restart");
-      if (ws_) {
-        ws_->shutdown();
-      }
-      error err = connect();
+      logger().debug("restarting");
+      error err = createSession();
       if (err != noError) {
         logger().error(err);
+        Poco::Thread::sleep(10000);
       }
     }
 
@@ -246,18 +260,6 @@ void WebSocketClient::runActivity() {
   logger().debug("activity finished");
 }
 
-void WebSocketClient::Stop() {
-  logger().debug("stopping");
-
-  if (ws_) {
-    ws_->shutdown();
-  }
-  activity_.stop();  // request stop
-  activity_.wait();  // wait until activity actually stops
-
-  logger().debug("stopped");
-}
-
 WebSocketClient::~WebSocketClient() {
   deleteSession();
 }
@@ -265,7 +267,10 @@ WebSocketClient::~WebSocketClient() {
 void WebSocketClient::deleteSession() {
   logger().debug("deleteSession");
 
+  ExplicitScopedLock("WebSocketClient::deleteSession", mutex_);
+
   if (ws_) {
+    ws_->shutdown();
     delete ws_;
     ws_ = 0;
   }

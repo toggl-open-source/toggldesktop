@@ -43,7 +43,7 @@ namespace kopsik {
       api_token_("") {}
     virtual ~WebSocketClient();
 
-    virtual error Start(
+    virtual void Start(
       void *ctx,
       const std::string api_token,
       WebSocketMessageCallback on_websocket_message);
@@ -56,11 +56,13 @@ namespace kopsik {
     void runActivity();
 
   private:
+    error createSession();
+    void authenticate();
+    error poll();
     std::string parseWebSocketMessageType(const std::string json);
     error receiveWebSocketMessage(std::string *message);
-    error poll();
-    error connect();
     void deleteSession();
+
     Poco::Logger &logger();
 
     Poco::Activity<WebSocketClient> activity_;
