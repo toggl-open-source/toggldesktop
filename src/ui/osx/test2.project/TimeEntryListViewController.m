@@ -215,13 +215,13 @@
   if (item.isHeader) {
     TimeEntryCellWithHeader *cell = [tableView makeViewWithIdentifier: @"TimeEntryCellWithHeader"
                                                       owner:self];
-    [cell load:item];
+    [cell render:item];
     return cell;
   }
 
   TimeEntryCell *cell = [tableView makeViewWithIdentifier:@"TimeEntryCell"
                                                     owner:self];
-  [cell load:item];
+  [cell render:item];
   return cell;
 }
 

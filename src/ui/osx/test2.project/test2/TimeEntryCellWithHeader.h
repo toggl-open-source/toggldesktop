@@ -13,10 +13,10 @@
 @property (nonatomic, strong) IBOutlet NSTextField *descriptionTextField;
 @property (nonatomic, strong) IBOutlet NSTextField *projectTextField;
 @property (nonatomic, strong) IBOutlet NSTextField *durationTextField;
-@property (strong) NSString *GUID;
-- (void)load:(TimeEntryViewItem *)view_item;
-- (IBAction)continueTimeEntry:(id)sender;
 @property (nonatomic, strong) IBOutlet NSTextField *formattedDateTextField;
 @property (nonatomic, strong) IBOutlet NSTextField *dateDurationTextField;
+@property (strong) NSString *GUID;
+- (void)render:(TimeEntryViewItem *)view_item;
+- (IBAction)continueTimeEntry:(id)sender;
 @end
 

@@ -17,7 +17,9 @@
                                                       object:self.GUID];
 }
 
-- (void)load:(TimeEntryViewItem *)view_item {
+- (void)render:(TimeEntryViewItem *)view_item {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
   self.GUID = view_item.GUID;
   self.descriptionTextField.stringValue = view_item.Description;
   self.durationTextField.stringValue = view_item.duration;
