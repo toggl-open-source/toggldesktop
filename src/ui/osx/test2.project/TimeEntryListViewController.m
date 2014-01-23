@@ -117,8 +117,7 @@
   [self.timeEntriesTableView reloadData];
 }
 
--(void)eventHandler: (NSNotification *) notification
-{
+-(void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIStateTimerStopped]) {
     // Hide running timer view from header view
     [self.timerViewController.view removeFromSuperview];
