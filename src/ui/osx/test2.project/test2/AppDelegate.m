@@ -215,12 +215,6 @@ NSString *kTimeTotalUnknown = @"--:--";
 - (void)startWebSocket {
   NSLog(@"startWebSocket");
   kopsik_websocket_start_async(ctx);
-  kopsik_websocket_start_async(ctx);
-  kopsik_websocket_start_async(ctx);
-  kopsik_websocket_start_async(ctx);
-  kopsik_websocket_start_async(ctx);
-  kopsik_websocket_start_async(ctx);
-  kopsik_websocket_start_async(ctx);
 }
 
 - (void)stopWebSocket {
