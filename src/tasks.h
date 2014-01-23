@@ -8,6 +8,7 @@
 #include "Poco/Task.h"
 #include "./kopsik_api.h"
 #include "./websocket_client.h"
+#include "./https_client.h"
 
 class SyncTask : public Poco::Task {
   public:
@@ -158,7 +159,11 @@ class FetchUpdatesTask : public Poco::Task {
       callback_(callback) {}
     void runTask() {
       std::string response_body("");
-      kopsik::error err = ctx_->https_client->GetJSON(updateURL(),
+      kopsik::HTTPSClient https_client(
+        ctx_->api_url,
+        ctx_->app_name,
+        ctx_->app_version);
+      kopsik::error err = https_client.GetJSON(updateURL(),
                                                       std::string(""),
                                                       std::string(""),
                                                       &response_body);

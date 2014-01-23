@@ -5,7 +5,6 @@
 Context::Context()
   : db(0),
     user(0),
-    https_client(0),
     ws_client(0),
     change_callback(0),
     timeline_uploader(0),
@@ -31,11 +30,6 @@ Context::~Context() {
   if (ws_client) {
     delete ws_client;
     ws_client = 0;
-  }
-
-  if (https_client) {
-    delete https_client;
-    https_client = 0;
   }
 
   if (db) {
@@ -78,7 +72,6 @@ kopsik::error Context::ConfigureProxy() {
   }
   kopsik::ExplicitScopedLock("Context::ConfigureProxy", mutex);
 
-  https_client->SetProxy(proxy);
   ws_client->SetProxy(proxy);
   return kopsik::noError;
 }

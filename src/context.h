@@ -8,7 +8,6 @@
 #include "./types.h"
 #include "./kopsik_api.h"
 #include "./database.h"
-#include "./https_client.h"
 #include "./websocket_client.h"
 #include "./window_change_recorder.h"
 #include "./timeline_uploader.h"
@@ -27,8 +26,6 @@ class Context {
 
     kopsik::Database *db;
     kopsik::User *user;
-    // FIXME: we should not share https client
-    kopsik::HTTPSClient *https_client;
     kopsik::WebSocketClient *ws_client;
     KopsikViewItemChangeCallback change_callback;
     kopsik::TimelineUploader *timeline_uploader;

@@ -135,8 +135,6 @@ void *kopsik_context_init(
   ctx->app_version = std::string(app_version);
 
   ctx->api_url = "https://www.toggl.com";
-  ctx->https_client = new kopsik::HTTPSClient(ctx->api_url,
-    ctx->app_name, ctx->app_version);
   ctx->ws_client = new kopsik::WebSocketClient("https://stream.toggl.com",
     ctx->app_name, ctx->app_version);
 
@@ -331,12 +329,7 @@ void kopsik_test_set_https_client(
     void *client) {
   poco_assert(context);
   poco_assert(client);
-  Context *ctx = reinterpret_cast<Context *>(context);
-  if (ctx->https_client) {
-    delete ctx->https_client;
-    ctx->https_client = 0;
-  }
-  ctx->https_client = reinterpret_cast<kopsik::HTTPSClient *>(client);
+  // FIXME:
 }
 
 kopsik_api_result kopsik_set_db_path(
@@ -412,7 +405,6 @@ void kopsik_set_api_url(
   kopsik::ExplicitScopedLock("kopsik_set_api_url", ctx->mutex);
 
   ctx->api_url = api_url;
-  ctx->https_client->SetApiURL(api_url);
 }
 
 void kopsik_set_websocket_url(
@@ -606,7 +598,10 @@ kopsik_api_result kopsik_login(
 
     kopsik::User *user = new kopsik::User(ctx->app_name, ctx->app_version);
 
-    kopsik::error err = user->Login(ctx->https_client, email, password);
+    kopsik::HTTPSClient https_client(ctx->api_url,
+                                     ctx->app_name,
+                                     ctx->app_version);
+    kopsik::error err = user->Login(&https_client, email, password);
     if (err != kopsik::noError) {
       delete user;
       strncpy(errmsg, err.c_str(), errlen);
@@ -787,7 +782,10 @@ kopsik_api_result kopsik_sync(
       return KOPSIK_API_FAILURE;
     }
 
-    kopsik::error err = ctx->user->Sync(ctx->https_client, full_sync, true);
+    kopsik::HTTPSClient https_client(ctx->api_url,
+                                     ctx->app_name,
+                                     ctx->app_version);
+    kopsik::error err = ctx->user->Sync(&https_client, full_sync, true);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -823,7 +821,10 @@ kopsik_api_result kopsik_push(
     return KOPSIK_API_FAILURE;
   }
 
-  kopsik::error err = ctx->user->Push(ctx->https_client);
+  kopsik::HTTPSClient https_client(ctx->api_url,
+                                   ctx->app_name,
+                                   ctx->app_version);
+  kopsik::error err = ctx->user->Push(&https_client);
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;
