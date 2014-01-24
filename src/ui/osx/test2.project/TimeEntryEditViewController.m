@@ -374,7 +374,7 @@
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
-  kopsik_push_async(ctx, handle_error);
+  kopsik_push(ctx, handle_error);
 }
 
 - (IBAction)deleteButtonClicked:(id)sender {
@@ -402,7 +402,7 @@
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
-  kopsik_push_async(ctx, handle_error);
+  kopsik_push(ctx, handle_error);
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntryDeselected object:nil];
 }
 
