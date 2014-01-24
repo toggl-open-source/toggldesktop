@@ -273,9 +273,6 @@ void WebSocketClient::deleteSession() {
   ExplicitScopedLock("WebSocketClient::deleteSession", mutex_);
 
   if (ws_) {
-    logger().debug("shutting down websocket");
-    ws_->shutdown();
-    logger().debug("websocket shut down");
     delete ws_;
     ws_ = 0;
   }
