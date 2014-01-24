@@ -3,7 +3,7 @@ pwd=$(shell pwd)
 uname=$(shell uname)
 timestamp=$(shell date "+%Y-%m-%d-%H-%M-%S")
 
-pocodir=third_party/poco-1.4.6p1-all
+pocodir=third_party/poco-1.4.6p2-all
 openssldir=third_party/openssl-1.0.1e
 GTEST_ROOT=third_party/googletest-read-only
 GMOCK_DIR=third_party/gmock-1.7.0
