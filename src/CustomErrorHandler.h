@@ -15,13 +15,13 @@
 class CustomErrorHandler : public Poco::ErrorHandler {
  public:
   void exception(const Poco::Exception& exc) {
-    std::cerr << exc.displayText() << std::endl;
+    std::cerr << "unhandled exception! " << exc.displayText() << std::endl;
   }
   void exception(const std::exception& exc) {
-    std::cerr << exc.what() << std::endl;
+    std::cerr << "unhandled exception! " << exc.what() << std::endl;
   }
   void exception() {
-    std::cerr << "unknown exception" << std::endl;
+    std::cerr << "unhandled exception! unknown exception" << std::endl;
   }
 };
 
