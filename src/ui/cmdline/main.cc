@@ -46,18 +46,32 @@ namespace command_line_client {
         return ss.str();
     }
 
-    void on_model_change(kopsik_api_result result,
-            const char *err_string,
+    void on_model_change(
+            kopsik_api_result result,
+            const char *errmsg,
             KopsikModelChange *change) {
         if (KOPSIK_API_SUCCESS != result) {
-            std::string err(err_string);
-            std::cerr << "on_model_change error! "
-                << err << std::endl;
+            std::cerr << "on_model_change error! " <<
+                std::string(errmsg) << std::endl;
             return;
         }
         std::cout << "on_model_change "
             << KopsikModelChangeToString(*change)
             << std::endl;
+    }
+
+    bool syncing(false);
+
+    void on_sync_result(
+            kopsik_api_result result,
+            const char *errmsg) {
+        if (KOPSIK_API_SUCCESS != result) {
+            std::cerr << "Error " << std::string(errmsg) << std::endl;
+            syncing = false;
+            return;
+        }
+        std::cout << "Success" << std::endl;
+        syncing = false;
     }
 
     int Main::main(const std::vector<std::string>& args) {
@@ -102,11 +116,11 @@ namespace command_line_client {
         kopsik_user_clear(user);
 
         if ("sync" == args[0]) {
-            if (KOPSIK_API_SUCCESS != kopsik_sync(ctx, err, ERRLEN, 1)) {
-                std::cerr << err << std::endl;
-                return Poco::Util::Application::EXIT_SOFTWARE;
+            syncing = true;
+            kopsik_sync(ctx, 1, on_sync_result);
+            while (syncing) {
+                Poco::Thread::sleep(1000);
             }
-            std::cout << "Synced." << std::endl;
             return Poco::Util::Application::EXIT_OK;
         }
 
@@ -148,13 +162,10 @@ namespace command_line_client {
                 kopsik_time_entry_view_item_clear(te);
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
-            if (KOPSIK_API_SUCCESS != kopsik_push(ctx, err, ERRLEN)) {
-                std::cerr << err << std::endl;
-            }
-            if (te->Description) {
-                std::cout << "Started: " << te->Description << std::endl;
-            } else {
-                std::cout << "Started." << std::endl;
+            syncing = true;
+            kopsik_push(ctx, on_sync_result);
+            while (syncing) {
+                Poco::Thread::sleep(1000);
             }
             kopsik_time_entry_view_item_clear(te);
             return Poco::Util::Application::EXIT_OK;
@@ -169,14 +180,11 @@ namespace command_line_client {
                 kopsik_time_entry_view_item_clear(te);
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
-            if (KOPSIK_API_SUCCESS != kopsik_push(ctx, err, ERRLEN)) {
-                std::cerr << err << std::endl;
-            }
             if (was_found) {
-                if (te->Description) {
-                    std::cout << "Stopped: " << te->Description << std::endl;
-                } else {
-                    std::cout << "Stopped." << std::endl;
+                syncing = true;
+                kopsik_push(ctx, on_sync_result);
+                while (syncing) {
+                    Poco::Thread::sleep(1000);
                 }
             } else {
                 std::cout << "No time entry found to stop." << std::endl;
@@ -207,11 +215,11 @@ namespace command_line_client {
         if ("listen" == args[0]) {
             std::cout << "Listening to websocket.. " << std::endl;
             kopsik_set_change_callback(ctx, on_model_change);
-            kopsik_websocket_start_async(ctx);
+            kopsik_websocket_start(ctx);
             while (true) {
                 Poco::Thread::sleep(1000);
             }
-            kopsik_websocket_stop_async(ctx);
+            kopsik_websocket_stop(ctx);
             return Poco::Util::Application::EXIT_OK;
         }
 
@@ -241,14 +249,10 @@ namespace command_line_client {
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
 
-            if (KOPSIK_API_SUCCESS != kopsik_push(ctx, err, ERRLEN)) {
-                std::cerr << err << std::endl;
-            }
-
-            if (te->Description) {
-                std::cout << "Started: " << te->Description << std::endl;
-            } else {
-                std::cout << "Started." << std::endl;
+            syncing = true;
+            kopsik_push(ctx, on_sync_result);
+            while (syncing) {
+                Poco::Thread::sleep(1000);
             }
 
             kopsik_time_entry_view_item_list_clear(list);

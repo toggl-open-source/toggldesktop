@@ -52,7 +52,7 @@
 - (IBAction)showWindow:(id)sender
 {
   [self.checkForUpdateButton setTitle:@"Checking for update.."];
-  kopsik_check_for_updates_async(ctx, about_updates_checked);
+  kopsik_check_for_updates(ctx, about_updates_checked);
   [super showWindow: sender];
 }
 

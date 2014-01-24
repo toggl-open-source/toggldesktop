@@ -19,12 +19,26 @@ class SyncTask : public Poco::Task {
       full_sync_(full_sync),
       callback_(callback) {}
     void runTask() {
-      char err[KOPSIK_ERR_LEN];
-      kopsik_api_result res = kopsik_sync(
-        ctx_, err, KOPSIK_ERR_LEN, full_sync_);
-      callback_(res, err);
+      if (isCancelled()) {
+        return;
+      }
+
+      kopsik::HTTPSClient https_client(ctx_->api_url,
+                                       ctx_->app_name,
+                                       ctx_->app_version);
+      char errmsg[KOPSIK_ERR_LEN];
+      kopsik::error err = ctx_->user->Sync(&https_client, full_sync_, true);
+      if (err != kopsik::noError) {
+        strncpy(errmsg, err.c_str(), KOPSIK_ERR_LEN);
+        callback_(KOPSIK_API_FAILURE, errmsg);
+        return;
+      }
+
+      kopsik_api_result res = save(ctx_, errmsg, KOPSIK_ERR_LEN);
+      callback_(res, errmsg);
     }
-  private:
+
+   private:
     Context *ctx_;
     int full_sync_;
     KopsikResultCallback callback_;
@@ -34,12 +48,28 @@ class PushTask : public Poco::Task {
   public:
     PushTask(Context *ctx,
       KopsikResultCallback callback) : Task("push"),
-      ctx_(ctx), callback_(callback) {}
+      ctx_(ctx),
+      callback_(callback) {}
     void runTask() {
-      char err[KOPSIK_ERR_LEN];
-      kopsik_api_result res = kopsik_push(ctx_, err, KOPSIK_ERR_LEN);
-      callback_(res, err);
+      if (isCancelled()) {
+        return;
+      }
+
+      kopsik::HTTPSClient https_client(ctx_->api_url,
+                                       ctx_->app_name,
+                                       ctx_->app_version);
+      char errmsg[KOPSIK_ERR_LEN];
+      kopsik::error err = ctx_->user->Push(&https_client);
+      if (err != kopsik::noError) {
+        strncpy(errmsg, err.c_str(), KOPSIK_ERR_LEN);
+        callback_(KOPSIK_API_FAILURE, errmsg);
+        return;
+      }
+
+      kopsik_api_result res = save(ctx_, errmsg, KOPSIK_ERR_LEN);
+      callback_(res, errmsg);
     }
+
   private:
     Context *ctx_;
     KopsikResultCallback callback_;

@@ -213,7 +213,8 @@
     handle_error(res, err);
     return;
   }
-  kopsik_push_async(ctx, handle_error);
+  // FIXME: move into setter method
+  kopsik_push(ctx, handle_error);
 }
 
 - (IBAction)projectSelectChanged:(id)sender {
@@ -237,13 +238,13 @@
     handle_error(res, err);
     return;
   }
-  kopsik_push_async(ctx, handle_error);
+  kopsik_push(ctx, handle_error);
 }
 
 - (IBAction)startTimeChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   [self applyStartTime];
-  kopsik_push_async(ctx, handle_error);
+  kopsik_push(ctx, handle_error);
 }
 
 - (IBAction)applyStartTime {
@@ -279,7 +280,7 @@
 - (IBAction)endTimeChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   [self applyEndTime];
-  kopsik_push_async(ctx, handle_error);
+  kopsik_push(ctx, handle_error);
 }
 
 - (IBAction)applyEndTime {
@@ -318,7 +319,7 @@
   if (!self.endTime.isHidden) {
     [self applyEndTime];
   }
-  kopsik_push_async(ctx, handle_error);
+  kopsik_push(ctx, handle_error);
 }
 
 - (IBAction)tagsChanged:(id)sender {
@@ -336,7 +337,7 @@
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
-  kopsik_push_async(ctx, handle_error);
+  kopsik_push(ctx, handle_error);
 }
 
 - (IBAction)billableCheckBoxClicked:(id)sender {
@@ -355,7 +356,7 @@
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
-  kopsik_push_async(ctx, handle_error);
+  kopsik_push(ctx, handle_error);
 }
 
 - (IBAction)descriptionTextFieldChanged:(id)sender {

@@ -214,12 +214,12 @@ NSString *kTimeTotalUnknown = @"--:--";
 
 - (void)startWebSocket {
   NSLog(@"startWebSocket");
-  kopsik_websocket_start_async(ctx);
+  kopsik_websocket_start(ctx);
 }
 
 - (void)stopWebSocket {
   NSLog(@"stopWebSocket");
-  kopsik_websocket_stop_async(ctx);
+  kopsik_websocket_stop(ctx);
 }
 
 void on_timeline_start_callback(kopsik_api_result res, const char *err) {
@@ -237,12 +237,12 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
 
 - (void)startTimeline {
   NSLog(@"startTimeline");
-  kopsik_timeline_start_async(ctx, on_timeline_start_callback);
+  kopsik_timeline_start(ctx, on_timeline_start_callback);
 }
 
 - (void)stopTimeline {
   NSLog(@"stopTimeline");
-  kopsik_timeline_stop_async(ctx, 0);
+  kopsik_timeline_stop(ctx, 0);
   [self updateTimelineRecordingState:NO];
 }
 
@@ -283,7 +283,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
      postNotificationName:kUIStateTimerRunning object:timeEntry];
   }
 
-  kopsik_push_async(ctx, handle_error);
+  kopsik_push(ctx, handle_error);
 }
 
 - (void)continueTimeEntry:(NSString *)guid {
@@ -318,7 +318,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   [[NSNotificationCenter defaultCenter]
     postNotificationName:kUIStateTimerRunning object:timeEntry];
   
-  kopsik_push_async(ctx, handle_error);
+  kopsik_push(ctx, handle_error);
 }
 
 - (void)stopTimeEntry {
@@ -345,7 +345,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
   [[NSNotificationCenter defaultCenter]
     postNotificationName:kUIStateTimerStopped object:te];
   
-  kopsik_push_async(ctx, handle_error);
+  kopsik_push(ctx, handle_error);
 }
 
 - (void)splitTimeEntryAfterIdle:(IdleEvent *)idleEvent {
@@ -378,7 +378,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
 
   kopsik_time_entry_view_item_clear(item);
 
-  kopsik_push_async(ctx, handle_error);
+  kopsik_push(ctx, handle_error);
 }
 
 - (void)stopTimeEntryAfterIdle:(IdleEvent *)idleEvent {
@@ -409,7 +409,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
       object:timeEntry];
   }
 
-  kopsik_push_async(ctx, handle_error);
+  kopsik_push(ctx, handle_error);
 }
 
 - (void)userLoggedIn:(User *)user {
@@ -1051,11 +1051,11 @@ void on_model_change(kopsik_api_result result,
 
 - (void)startSync {
   NSLog(@"startSync");
-  kopsik_sync_async(ctx, 1, sync_finished);
+  kopsik_sync(ctx, 1, sync_finished);
 }
 
 - (void)checkForUpdates {
-  kopsik_check_for_updates_async(ctx, check_for_updates_callback);
+  kopsik_check_for_updates(ctx, check_for_updates_callback);
 }
 
 void check_for_updates_callback(kopsik_api_result result,

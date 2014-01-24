@@ -136,15 +136,6 @@ typedef struct {
   unsigned int TimeEntries;
 } KopsikPushableModelStats;
 
-KOPSIK_EXPORT kopsik_api_result kopsik_sync(
-  void *ctx,
-  char *errmsg, unsigned int errlen,
-  int full_sync);
-
-KOPSIK_EXPORT kopsik_api_result kopsik_push(
-  void *ctx,
-  char *errmsg, unsigned int errlen);
-
 KOPSIK_EXPORT kopsik_api_result kopsik_pushable_models(
   void *ctx,
   char *errmsg, unsigned int errlen,
@@ -154,12 +145,12 @@ typedef void (*KopsikResultCallback)(
   kopsik_api_result result,
   const char *errmsg);
 
-KOPSIK_EXPORT void kopsik_sync_async(
+KOPSIK_EXPORT void kopsik_sync(
   void *ctx,
   int full_sync,
   KopsikResultCallback callback);
 
-KOPSIK_EXPORT void kopsik_push_async(
+KOPSIK_EXPORT void kopsik_push(
   void *ctx,
   KopsikResultCallback callback);
 
@@ -375,18 +366,18 @@ KOPSIK_EXPORT void kopsik_set_change_callback(
   void *ctx,
   KopsikViewItemChangeCallback callback);
 
-KOPSIK_EXPORT void kopsik_websocket_start_async(
+KOPSIK_EXPORT void kopsik_websocket_start(
   void *ctx);
 
-KOPSIK_EXPORT void kopsik_websocket_stop_async(
+KOPSIK_EXPORT void kopsik_websocket_stop(
   void *ctx);
 
 // Timeline
 
-KOPSIK_EXPORT void kopsik_timeline_start_async(void *ctx,
+KOPSIK_EXPORT void kopsik_timeline_start(void *ctx,
   KopsikResultCallback);
 
-KOPSIK_EXPORT void kopsik_timeline_stop_async(void *ctx,
+KOPSIK_EXPORT void kopsik_timeline_stop(void *ctx,
   KopsikResultCallback);
 
 // Updates
@@ -398,7 +389,7 @@ typedef void (*KopsikCheckUpdateCallback)(
   const char *url,
   const char *version);
 
-KOPSIK_EXPORT void kopsik_check_for_updates_async(
+KOPSIK_EXPORT void kopsik_check_for_updates(
   void *ctx, KopsikCheckUpdateCallback callback);
 
 #undef KOPSIK_EXPORT

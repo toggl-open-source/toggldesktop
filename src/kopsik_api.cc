@@ -118,6 +118,9 @@ int kopsik_is_networking_error(
   if (value.find("SSL connection unexpectedly closed") != std::string::npos) {
     return 1;
   }
+  if (value.find("Network is down") != std::string::npos) {
+    return 1;
+  }
   return 0;
 }
 
@@ -763,76 +766,6 @@ kopsik_api_result kopsik_user_has_premium_workspaces(
 
 // Sync
 
-kopsik_api_result kopsik_sync(
-    void *context,
-    char *errmsg,
-    unsigned int errlen,
-    int full_sync) {
-  try {
-    poco_assert(context);
-    poco_assert(errmsg);
-    poco_assert(errlen);
-
-    logger().debug("kopsik_sync");
-
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    if (!ctx->user) {
-      strncpy(errmsg, "Please login first", errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    kopsik::HTTPSClient https_client(ctx->api_url,
-                                     ctx->app_name,
-                                     ctx->app_version);
-    kopsik::error err = ctx->user->Sync(&https_client, full_sync, true);
-    if (err != kopsik::noError) {
-      strncpy(errmsg, err.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    return save(ctx, errmsg, errlen);
-  } catch(const Poco::Exception& exc) {
-      strncpy(errmsg, exc.displayText().c_str(), errlen);
-      return KOPSIK_API_FAILURE;
-  } catch(const std::exception& ex) {
-      strncpy(errmsg, ex.what(), errlen);
-      return KOPSIK_API_FAILURE;
-  } catch(const std::string& ex) {
-      strncpy(errmsg, ex.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
-  }
-  return KOPSIK_API_FAILURE;
-}
-
-kopsik_api_result kopsik_push(
-    void *context,
-    char *errmsg, unsigned int errlen) {
-  poco_assert(context);
-  poco_assert(errmsg);
-  poco_assert(errlen);
-
-  logger().debug("kopsik_push");
-
-  Context *ctx = reinterpret_cast<Context *>(context);
-
-  if (!ctx->user) {
-    strncpy(errmsg, "Please login first", errlen);
-    return KOPSIK_API_FAILURE;
-  }
-
-  kopsik::HTTPSClient https_client(ctx->api_url,
-                                   ctx->app_name,
-                                   ctx->app_version);
-  kopsik::error err = ctx->user->Push(&https_client);
-  if (err != kopsik::noError) {
-    strncpy(errmsg, err.c_str(), errlen);
-    return KOPSIK_API_FAILURE;
-  }
-
-  return save(ctx, errmsg, errlen);
-}
-
 kopsik_api_result kopsik_pushable_models(
     void *context,
     char *errmsg,
@@ -873,27 +806,27 @@ kopsik_api_result kopsik_pushable_models(
   return KOPSIK_API_SUCCESS;
 }
 
-void kopsik_sync_async(
+void kopsik_sync(
     void *context,
     int full_sync,
     KopsikResultCallback callback) {
   poco_assert(context);
   poco_assert(callback);
 
-  logger().debug("kopsik_sync_async");
+  logger().debug("kopsik_sync");
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
   ctx->tm.start(new SyncTask(ctx, full_sync, callback));
 }
 
-void kopsik_push_async(
+void kopsik_push(
     void *context,
     KopsikResultCallback callback) {
   poco_assert(context);
   poco_assert(callback);
 
-  logger().debug("kopsik_push_async");
+  logger().debug("kopsik_push");
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
@@ -2212,22 +2145,22 @@ void on_websocket_message(
   save(ctx, err, KOPSIK_ERR_LEN);
 }
 
-void kopsik_websocket_start_async(
+void kopsik_websocket_start(
     void *context) {
   poco_assert(context);
 
-  logger().debug("kopsik_websocket_start_async");
+  logger().debug("kopsik_websocket_start");
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
   ctx->tm.start(new WebSocketStartTask(ctx, on_websocket_message));
 }
 
-void kopsik_websocket_stop_async(
+void kopsik_websocket_stop(
     void *context) {
   poco_assert(context);
 
-  logger().debug("kopsik_websocket_stop_async");
+  logger().debug("kopsik_websocket_stop");
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
@@ -2236,7 +2169,7 @@ void kopsik_websocket_stop_async(
 
 // Timeline
 
-void kopsik_timeline_start_async(
+void kopsik_timeline_start(
     void *context,
     KopsikResultCallback callback) {
   poco_assert(context);
@@ -2248,7 +2181,7 @@ void kopsik_timeline_start_async(
   ctx->tm.start(new TimelineStartTask(ctx, callback));
 }
 
-void kopsik_timeline_stop_async(
+void kopsik_timeline_stop(
     void *context,
     KopsikResultCallback callback) {
   poco_assert(context);
@@ -2261,7 +2194,7 @@ void kopsik_timeline_stop_async(
 
 // Updates
 
-void kopsik_check_for_updates_async(
+void kopsik_check_for_updates(
     void *context,
     KopsikCheckUpdateCallback callback) {
   poco_assert(context);
