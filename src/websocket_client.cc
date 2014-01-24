@@ -240,8 +240,11 @@ void WebSocketClient::runActivity() {
       error err = poll();
       if (err != noError) {
         logger().error(err);
+        logger().debug("encountered an error and will delete session");
         deleteSession();
+        logger().debug("will sleep for 10 sec");
         Poco::Thread::sleep(10000);
+        logger().debug("sleep done");
       }
     }
 
@@ -270,7 +273,9 @@ void WebSocketClient::deleteSession() {
   ExplicitScopedLock("WebSocketClient::deleteSession", mutex_);
 
   if (ws_) {
+    logger().debug("shutting down websocket");
     ws_->shutdown();
+    logger().debug("websocket shut down");
     delete ws_;
     ws_ = 0;
   }
@@ -286,6 +291,8 @@ void WebSocketClient::deleteSession() {
     delete session_;
     session_ = 0;
   }
+
+  logger().debug("session deleted");
 }
 
 }   // namespace kopsik
