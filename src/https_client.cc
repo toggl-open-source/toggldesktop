@@ -40,6 +40,27 @@ error HTTPSClient::PostJSON(
     response_body);
 }
 
+error HTTPSClient::PostForm(
+    const std::string relative_url,
+    Poco::Net::HTMLForm *form,
+    const std::string basic_auth_username,
+    const std::string basic_auth_password,
+    std::string *response_body) {
+  poco_assert(form);
+
+  std::ostringstream ostr;
+  form->write(ostr);
+  std::string payload = ostr.str();
+
+  return request(Poco::Net::HTTPRequest::HTTP_POST,
+    relative_url,
+    payload,
+    "text/plain",
+    basic_auth_username,
+    basic_auth_password,
+    response_body);
+}
+
 error HTTPSClient::GetJSON(
     const std::string relative_url,
     const std::string basic_auth_username,
@@ -60,7 +81,26 @@ error HTTPSClient::requestJSON(
     const std::string basic_auth_username,
     const std::string basic_auth_password,
     std::string *response_body) {
+  return request(
+    method,
+    relative_url,
+    json,
+    "application/json",
+    basic_auth_username,
+    basic_auth_password,
+    response_body);
+}
+
+error HTTPSClient::request(
+    const std::string method,
+    const std::string relative_url,
+    const std::string payload,
+    const std::string content_type,
+    const std::string basic_auth_username,
+    const std::string basic_auth_password,
+    std::string *response_body) {
   poco_assert(!method.empty());
+  poco_assert(!content_type.empty());
   poco_assert(!relative_url.empty());
   poco_assert(response_body);
 
@@ -90,24 +130,6 @@ error HTTPSClient::requestJSON(
     session.setKeepAlive(false);
     session.setTimeout(Poco::Timespan(10 * Poco::Timespan::SECONDS));
 
-    std::istringstream requestStream(json);
-    Poco::DeflatingInputStream gzipRequest(requestStream,
-      Poco::DeflatingStreamBuf::STREAM_GZIP);
-    Poco::DeflatingStreamBuf *pBuff = gzipRequest.rdbuf();
-
-    Poco::Int64 size = pBuff->pubseekoff(0, std::ios::end, std::ios::in);
-    pBuff->pubseekpos(0, std::ios::in);
-
-    Poco::Net::HTTPRequest req(method,
-      relative_url, Poco::Net::HTTPMessage::HTTP_1_1);
-    req.setKeepAlive(false);
-    req.setContentType("application/json");
-    req.setContentLength(size);
-    req.set("Content-Encoding", "gzip");
-    req.set("Accept-Encoding", "gzip");
-    req.set("User-Agent", kopsik::UserAgent(app_name_, app_version_));
-    req.setChunkedTransferEncoding(true);
-
     Poco::Logger &logger = Poco::Logger::get("https_client");
     {
       std::stringstream ss;
@@ -115,11 +137,31 @@ error HTTPSClient::requestJSON(
       logger.debug(ss.str());
     }
 
+    Poco::Net::HTTPRequest req(method,
+      relative_url, Poco::Net::HTTPMessage::HTTP_1_1);
+    req.setKeepAlive(false);
+    req.setContentType(content_type);
+    req.set("User-Agent", kopsik::UserAgent(app_name_, app_version_));
+    req.setChunkedTransferEncoding(true);
+
     Poco::Net::HTTPBasicCredentials cred(
       basic_auth_username, basic_auth_password);
     if (!basic_auth_username.empty() && !basic_auth_password.empty()) {
       cred.authenticate(req);
     }
+
+    std::istringstream requestStream(payload);
+    Poco::DeflatingInputStream gzipRequest(requestStream,
+      Poco::DeflatingStreamBuf::STREAM_GZIP);
+    Poco::DeflatingStreamBuf *pBuff = gzipRequest.rdbuf();
+
+    Poco::Int64 size = pBuff->pubseekoff(0, std::ios::end, std::ios::in);
+    pBuff->pubseekpos(0, std::ios::in);
+
+    req.setContentLength(size);
+    req.set("Content-Encoding", "gzip");
+    req.set("Accept-Encoding", "gzip");
+
     session.sendRequest(req) << pBuff << std::flush;
 
     // Log out request contents
@@ -133,7 +175,7 @@ error HTTPSClient::requestJSON(
     Poco::Net::HTTPResponse response;
     std::istream& is = session.receiveResponse(response);
 
-    // Inflate
+    // Inflatem
     Poco::InflatingInputStream inflater(is,
       Poco::InflatingStreamBuf::STREAM_GZIP);
     std::stringstream ss;

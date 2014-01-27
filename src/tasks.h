@@ -67,6 +67,7 @@ class WebSocketStopTask : public BaseTask {
     void runTask();
 };
 
+// Start timeline recording on local machine
 class TimelineStartTask : public BaseTask {
   public:
     TimelineStartTask(Context *ctx, KopsikResultCallback callback)
@@ -74,10 +75,27 @@ class TimelineStartTask : public BaseTask {
     void runTask();
 };
 
+// Stop timeline recording on local machine
 class TimelineStopTask : public BaseTask {
   public:
     TimelineStopTask(Context *ctx, KopsikResultCallback callback)
       : BaseTask(ctx, "stop_timeline", callback) {}
+    void runTask();
+};
+
+// Enable timeline recording on server side and locally after that
+class TimelineEnableTask : public BaseTask {
+  public:
+    TimelineEnableTask(Context *ctx, KopsikResultCallback callback)
+      : BaseTask(ctx, "enable_timeline", callback) {}
+    void runTask();
+};
+
+// Disable timeline recording on server side and locally after that
+class TimelineDisableTask : public BaseTask {
+  public:
+    TimelineDisableTask(Context *ctx, KopsikResultCallback callback)
+      : BaseTask(ctx, "disable_timeline", callback) {}
     void runTask();
 };
 

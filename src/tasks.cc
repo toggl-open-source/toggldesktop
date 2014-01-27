@@ -16,14 +16,13 @@ void SyncTask::runTask() {
   kopsik::HTTPSClient https_client(context()->api_url,
                                    context()->app_name,
                                    context()->app_version);
-  char errmsg[KOPSIK_ERR_LEN];
   kopsik::error err = context()->user->Sync(&https_client, full_sync_, true);
   if (err != kopsik::noError) {
-    strncpy(errmsg, err.c_str(), KOPSIK_ERR_LEN);
-    callback()(KOPSIK_API_FAILURE, errmsg);
+    callback()(KOPSIK_API_FAILURE, err.c_str());
     return;
   }
 
+  char errmsg[KOPSIK_ERR_LEN];
   kopsik_api_result res = save(context(), errmsg, KOPSIK_ERR_LEN);
   callback()(res, errmsg);
 }
@@ -36,14 +35,13 @@ void PushTask::runTask() {
   kopsik::HTTPSClient https_client(context()->api_url,
                                    context()->app_name,
                                    context()->app_version);
-  char errmsg[KOPSIK_ERR_LEN];
   kopsik::error err = context()->user->Push(&https_client);
   if (err != kopsik::noError) {
-    strncpy(errmsg, err.c_str(), KOPSIK_ERR_LEN);
-    callback()(KOPSIK_API_FAILURE, errmsg);
+    callback()(KOPSIK_API_FAILURE, err.c_str());
     return;
   }
 
+  char errmsg[KOPSIK_ERR_LEN];
   kopsik_api_result res = save(context(), errmsg, KOPSIK_ERR_LEN);
   callback()(res, errmsg);
 }
@@ -110,6 +108,56 @@ void TimelineStopTask::runTask() {
   if (callback()) {
     callback()(KOPSIK_API_SUCCESS, "");
   }
+}
+
+void TimelineEnableTask::runTask() {
+  kopsik::ExplicitScopedLock("TimelineEnableTask", context()->mutex);
+
+  kopsik::HTTPSClient https_client(context()->api_url,
+                                   context()->app_name,
+                                   context()->app_version);
+  Poco::Net::HTMLForm form;
+  form.set("record", "true");
+  form.set("enable", "true");
+
+  std::string response_body("");
+
+  kopsik::error err = https_client.PostForm("/api/v8/toggle_timeline",
+                                            &form,
+                                            context()->user->APIToken(),
+                                            "api_token",
+                                            &response_body);
+  if (err != kopsik::noError) {
+    callback()(KOPSIK_API_FAILURE, err.c_str());
+    return;
+  }
+
+  getOwner()->start(new TimelineStartTask(context(), callback()));
+}
+
+void TimelineDisableTask::runTask() {
+  kopsik::ExplicitScopedLock("TimelineDisableTask", context()->mutex);
+
+  kopsik::HTTPSClient https_client(context()->api_url,
+                                   context()->app_name,
+                                   context()->app_version);
+  Poco::Net::HTMLForm form;
+  form.set("record", "false");
+  form.set("enable", "false");
+
+  std::string response_body("");
+
+  kopsik::error err = https_client.PostForm("/api/v8/toggle_timeline",
+                                            &form,
+                                            context()->user->APIToken(),
+                                            "api_token",
+                                            &response_body);
+  if (err != kopsik::noError) {
+    callback()(KOPSIK_API_FAILURE, err.c_str());
+    return;
+  }
+
+  getOwner()->start(new TimelineStopTask(context(), callback()));
 }
 
 void FetchUpdatesTask::runTask() {
