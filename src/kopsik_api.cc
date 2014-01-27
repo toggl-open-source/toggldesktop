@@ -429,7 +429,6 @@ KopsikUser *kopsik_user_init() {
   KopsikUser *user = new KopsikUser();
   user->ID = 0;
   user->Fullname = 0;
-  user->RecordTimeline = 0;
   return user;
 }
 
@@ -441,7 +440,6 @@ void kopsik_user_clear(
     free(user->Fullname);
     user->Fullname = 0;
   }
-  user->RecordTimeline = 0;
   delete user;
 }
 
@@ -479,11 +477,6 @@ kopsik_api_result kopsik_current_user(
     }
     out_user->Fullname = strdup(ctx->user->Fullname().c_str());
     out_user->ID = (unsigned int)ctx->user->ID();
-    if (ctx->user->RecordTimeline()) {
-      out_user->RecordTimeline = 1;
-    } else {
-      out_user->RecordTimeline = 0;
-    }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -2171,7 +2164,7 @@ void kopsik_websocket_stop(
 
 void kopsik_timeline_start(
     void *context,
-    KopsikResultCallback callback) {
+    KopsikTimelineStateCallback callback) {
   poco_assert(context);
   poco_assert(callback);
 
@@ -2183,13 +2176,35 @@ void kopsik_timeline_start(
 
 void kopsik_timeline_stop(
     void *context,
-    KopsikResultCallback callback) {
+    KopsikTimelineStateCallback callback) {
   poco_assert(context);
 
   logger().debug("kopsik_timeline_stop");
 
   Context *ctx = reinterpret_cast<Context *>(context);
   ctx->tm.start(new TimelineStopTask(ctx, callback));
+}
+
+void kopsik_timeline_enable_recording(
+    void *context,
+    KopsikTimelineStateCallback callback) {
+  poco_assert(context);
+
+  logger().debug("kopsik_timeline_enable");
+
+  Context *ctx = reinterpret_cast<Context *>(context);
+  ctx->tm.start(new TimelineEnableTask(ctx, callback));
+}
+
+void kopsik_timeline_disable_recording(
+    void *context,
+    KopsikTimelineStateCallback callback) {
+  poco_assert(context);
+
+  logger().debug("kopsik_timeline_disable");
+
+  Context *ctx = reinterpret_cast<Context *>(context);
+  ctx->tm.start(new TimelineDisableTask(ctx, callback));
 }
 
 // Updates

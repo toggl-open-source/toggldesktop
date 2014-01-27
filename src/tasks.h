@@ -16,25 +16,30 @@ class BaseTask : public Poco::Task {
   public:
     BaseTask(Context *ctx,
              const std::string task_name,
-             KopsikResultCallback callback)
+             void *callback)
       : Task(task_name)
       , ctx_(ctx)
       , callback_(callback) {}
 
   protected:
     Context *context() { return ctx_; }
-    KopsikResultCallback callback() { return callback_; }
+    void *callback() { return callback_; }
+    KopsikResultCallback result_callback() {
+      poco_assert(callback());
+      return reinterpret_cast<KopsikResultCallback>(callback_);
+    }
 
   private:
     Context *ctx_;
-    KopsikResultCallback callback_;
+    void *callback_;
 };
 
 class SyncTask : public BaseTask {
   public:
     SyncTask(Context *ctx,
       int full_sync,
-      KopsikResultCallback callback) : BaseTask(ctx, "sync", callback),
+      KopsikResultCallback callback)
+        : BaseTask(ctx, "sync", reinterpret_cast<void *>(callback)),
       full_sync_(full_sync) {}
     void runTask();
 
@@ -45,7 +50,8 @@ class SyncTask : public BaseTask {
 class PushTask : public BaseTask {
   public:
     PushTask(Context *ctx,
-      KopsikResultCallback callback) : BaseTask(ctx, "push", callback) {}
+      KopsikResultCallback callback)
+        : BaseTask(ctx, "push", reinterpret_cast<void *>(callback)) {}
     void runTask();
 };
 
@@ -53,11 +59,9 @@ class WebSocketStartTask : public BaseTask {
   public:
     WebSocketStartTask(Context *ctx,
                        kopsik::WebSocketMessageCallback websocket_callback)
-    : BaseTask(ctx, "start_websocket", 0),
-      websocket_callback_(websocket_callback) {}
+      : BaseTask(ctx, "start_websocket",
+          reinterpret_cast<void *>(websocket_callback)) {}
     void runTask();
-  private:
-    kopsik::WebSocketMessageCallback websocket_callback_;
 };
 
 class WebSocketStopTask : public BaseTask {
@@ -67,44 +71,58 @@ class WebSocketStopTask : public BaseTask {
     void runTask();
 };
 
-// Start timeline recording on local machine
-class TimelineStartTask : public BaseTask {
+class TimelineBaseTask : public BaseTask {
   public:
-    TimelineStartTask(Context *ctx, KopsikResultCallback callback)
-      : BaseTask(ctx, "start_timeline", callback) {}
+    TimelineBaseTask(Context *ctx,
+                     const std::string task_name,
+                     KopsikTimelineStateCallback callback)
+      : BaseTask(ctx, task_name, reinterpret_cast<void *>(callback)) {}
+
+  protected:
+    KopsikTimelineStateCallback timeline_state_callback() {
+      poco_assert(callback());
+      return reinterpret_cast<KopsikTimelineStateCallback>(callback());
+    }
+};
+
+// Start timeline recording on local machine
+class TimelineStartTask : public TimelineBaseTask {
+  public:
+    TimelineStartTask(Context *ctx, KopsikTimelineStateCallback callback)
+      : TimelineBaseTask(ctx, "start_timeline", callback) {}
     void runTask();
 };
 
 // Stop timeline recording on local machine
-class TimelineStopTask : public BaseTask {
+class TimelineStopTask : public TimelineBaseTask {
   public:
-    TimelineStopTask(Context *ctx, KopsikResultCallback callback)
-      : BaseTask(ctx, "stop_timeline", callback) {}
+    TimelineStopTask(Context *ctx, KopsikTimelineStateCallback callback)
+      : TimelineBaseTask(ctx, "stop_timeline", callback) {}
     void runTask();
 };
 
 // Enable timeline recording on server side and locally after that
-class TimelineEnableTask : public BaseTask {
+class TimelineEnableTask : public TimelineBaseTask {
   public:
-    TimelineEnableTask(Context *ctx, KopsikResultCallback callback)
-      : BaseTask(ctx, "enable_timeline", callback) {}
+    TimelineEnableTask(Context *ctx, KopsikTimelineStateCallback callback)
+      : TimelineBaseTask(ctx, "enable_timeline", callback) {}
     void runTask();
 };
 
 // Disable timeline recording on server side and locally after that
-class TimelineDisableTask : public BaseTask {
+class TimelineDisableTask : public TimelineBaseTask {
   public:
-    TimelineDisableTask(Context *ctx, KopsikResultCallback callback)
-      : BaseTask(ctx, "disable_timeline", callback) {}
+    TimelineDisableTask(Context *ctx, KopsikTimelineStateCallback callback)
+      : TimelineBaseTask(ctx, "disable_timeline", callback) {}
     void runTask();
 };
 
 class FetchUpdatesTask : public BaseTask {
   public:
     FetchUpdatesTask(Context *ctx,
-        KopsikCheckUpdateCallback updates_callback)
-    : BaseTask(ctx, "check_updates", 0),
-      updates_callback_(updates_callback) {}
+                     KopsikCheckUpdateCallback updates_callback)
+      : BaseTask(ctx, "check_updates",
+          reinterpret_cast<void *>(updates_callback)) {}
     void runTask();
 
   private:
@@ -128,8 +146,6 @@ class FetchUpdatesTask : public BaseTask {
       }
       return std::string("darwin");
     }
-
-  KopsikCheckUpdateCallback updates_callback_;
 };
 
 #endif  // SRC_TASKS_H_

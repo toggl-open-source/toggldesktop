@@ -43,7 +43,7 @@
 @property NSString *lastKnownTrackingState;
 @property int lastIdleSecondsReading;
 @property NSDate *lastIdleStarted;
-@property BOOL timelineRecording  ;
+@property NSString *timelineRecordingState;
 
 // Need references to some menu items, we'll change them dynamically
 @property NSMenuItem *timelineMenuItem;
@@ -163,7 +163,7 @@ NSString *kTimeTotalUnknown = @"--:--";
                                              object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(eventHandler:)
-                                               name:kUIEventTimelineRecording
+                                               name:kUIEventTimelineStateChanged
                                              object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(eventHandler:)
@@ -222,39 +222,42 @@ NSString *kTimeTotalUnknown = @"--:--";
   kopsik_websocket_stop(ctx);
 }
 
-void on_timeline_start_callback(kopsik_api_result res, const char *err) {
+void on_timeline_state_callback(
+    kopsik_api_result res,
+    const char *err,
+    const int is_recording) {
   if (KOPSIK_API_SUCCESS != res) {
     handle_error(res, err);
-    [[NSNotificationCenter defaultCenter]
-      postNotificationName:kUIEventTimelineRecording
-      object:[NSString stringWithUTF8String:err]];
     return;
   }
+  NSString *state = nil;
+  if (is_recording) {
+    state = @"recording";
+  }
   [[NSNotificationCenter defaultCenter]
-    postNotificationName:kUIEventTimelineRecording
-    object:nil];
+    postNotificationName:kUIEventTimelineStateChanged
+    object:state];
 }
 
 - (void)startTimeline {
   NSLog(@"startTimeline");
-  kopsik_timeline_start(ctx, on_timeline_start_callback);
+  kopsik_timeline_start(ctx, on_timeline_state_callback);
 }
 
 - (void)stopTimeline {
   NSLog(@"stopTimeline");
-  kopsik_timeline_stop(ctx, 0);
-  [self updateTimelineRecordingState:NO];
+  kopsik_timeline_stop(ctx, on_timeline_state_callback);
 }
 
-- (void)updateTimelineRecordingState:(BOOL)state {
-  self.timelineRecording = state;
-  if (self.timelineRecording) {
-    [self.timelineMenuItem setTitle:kMenuItemTitleStopTimelineRecording];
-    [self.mainTimelineMenuItem setTitle:kMenuItemTitleStopTimelineRecording];
+- (void)updateTimelineRecordingState:(NSString *)state {
+  self.timelineRecordingState = state;
+  if ([self.timelineRecordingState isEqualToString:@"recording"]) {
+    [self.timelineMenuItem setTitle:kMenuItemTitleDisableTimelineRecording];
+    [self.mainTimelineMenuItem setTitle:kMenuItemTitleDisableTimelineRecording];
     return;
   }
-  [self.timelineMenuItem setTitle:kMenuItemTitleStartTimelineRecording];
-  [self.mainTimelineMenuItem setTitle:kMenuItemTitleStartTimelineRecording];
+  [self.timelineMenuItem setTitle:kMenuItemTitleEnableTimelineRecording];
+  [self.mainTimelineMenuItem setTitle:kMenuItemTitleEnableTimelineRecording];
 }
 
 - (void)startNewTimeEntry:(NewTimeEntry *)new_time_entry {
@@ -423,12 +426,9 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
              withObject:nil
              afterDelay:0.5];
 
-  // Start timeline only if user has enabled it (known to us)
-  if (user.recordTimeline) {
-    [self performSelector:@selector(startTimeline)
-               withObject:nil
-               afterDelay:0.5];
-  }
+  [self performSelector:@selector(startTimeline)
+             withObject:nil
+             afterDelay:0.5];
   
   renderRunningTimeEntry();
 }
@@ -477,8 +477,8 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
     [self settingsChanged];
   } else if ([notification.name isEqualToString:kUICommandShowPreferences]) {
     [self onPreferencesMenuItem:self];
-  } else if ([notification.name isEqualToString:kUIEventTimelineRecording]) {
-    [self updateTimelineRecordingState:(notification.object == nil)];
+  } else if ([notification.name isEqualToString:kUIEventTimelineStateChanged]) {
+    [self updateTimelineRecordingState:notification.object];
   } else if ([notification.name isEqualToString:kUICommandNew]) {
     [self startNewTimeEntry:notification.object];
   } else if ([notification.name isEqualToString:kUICommandContinue]) {
@@ -541,7 +541,7 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
                   action:@selector(onSyncMenuItem:)
            keyEquivalent:@""].tag = kMenuItemTagSync;
   self.timelineMenuItem = [menu
-    addItemWithTitle:kMenuItemTitleStartTimelineRecording
+    addItemWithTitle:kMenuItemTitleEnableTimelineRecording
     action:@selector(onTimelineMenuItem:)
     keyEquivalent:@""];
   self.timelineMenuItem.tag = kMenuItemTagTimeline;
@@ -692,11 +692,11 @@ void on_timeline_start_callback(kopsik_api_result res, const char *err) {
 }
 
 - (IBAction)onTimelineMenuItem:(id)sender {
-  if (self.timelineRecording) {
-    [self stopTimeline];
+  if ([self.timelineRecordingState isEqualToString:@"recording"]) {
+    kopsik_timeline_disable_recording(ctx, on_timeline_state_callback);
     return;
   }
-  [self startTimeline];
+  kopsik_timeline_enable_recording(ctx, on_timeline_state_callback);
 }
 
 - (void)onQuitMenuItem {

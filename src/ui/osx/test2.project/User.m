@@ -14,16 +14,11 @@
 - (void)load:(KopsikUser *)data {
   self.ID = data->ID;
   self.fullname = [NSString stringWithUTF8String:data->Fullname];
-  if (data->RecordTimeline) {
-    self.recordTimeline = YES;
-  } else {
-    self.recordTimeline = NO;
-  }
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"ID: %ld, fullname: %@, record_timeline: %d",
-          self.ID, self.fullname, self.recordTimeline];
+  return [NSString stringWithFormat:@"ID: %ld, fullname: %@",
+          self.ID, self.fullname];
 }
 
 @end

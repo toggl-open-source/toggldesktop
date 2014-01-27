@@ -18,13 +18,13 @@ void SyncTask::runTask() {
                                    context()->app_version);
   kopsik::error err = context()->user->Sync(&https_client, full_sync_, true);
   if (err != kopsik::noError) {
-    callback()(KOPSIK_API_FAILURE, err.c_str());
+    result_callback()(KOPSIK_API_FAILURE, err.c_str());
     return;
   }
 
   char errmsg[KOPSIK_ERR_LEN];
   kopsik_api_result res = save(context(), errmsg, KOPSIK_ERR_LEN);
-  callback()(res, errmsg);
+  result_callback()(res, errmsg);
 }
 
 void PushTask::runTask() {
@@ -37,20 +37,22 @@ void PushTask::runTask() {
                                    context()->app_version);
   kopsik::error err = context()->user->Push(&https_client);
   if (err != kopsik::noError) {
-    callback()(KOPSIK_API_FAILURE, err.c_str());
+    result_callback()(KOPSIK_API_FAILURE, err.c_str());
     return;
   }
 
   char errmsg[KOPSIK_ERR_LEN];
   kopsik_api_result res = save(context(), errmsg, KOPSIK_ERR_LEN);
-  callback()(res, errmsg);
+  result_callback()(res, errmsg);
 }
 
 void WebSocketStartTask::runTask() {
+  kopsik::WebSocketMessageCallback cb =
+    reinterpret_cast<kopsik::WebSocketMessageCallback>(callback());
   context()->ws_client->Start(
     context(),
     context()->user->APIToken(),
-    websocket_callback_);
+    cb);
 }
 
 void WebSocketStopTask::runTask() {
@@ -59,13 +61,7 @@ void WebSocketStopTask::runTask() {
 
 void TimelineStartTask::runTask() {
   if (!context()->user) {
-    callback()(KOPSIK_API_FAILURE, "Please login first");
-    return;
-  }
-
-  if (!context()->user->RecordTimeline()) {
-    callback()(KOPSIK_API_FAILURE,
-      "Timeline recording is disabled in Toggl profile");
+    timeline_state_callback()(KOPSIK_API_FAILURE, "Please login first", 0);
     return;
   }
 
@@ -89,7 +85,7 @@ void TimelineStartTask::runTask() {
   context()->window_change_recorder = new kopsik::WindowChangeRecorder(
     context()->user->ID());
 
-  callback()(KOPSIK_API_SUCCESS, "");
+  timeline_state_callback()(KOPSIK_API_SUCCESS, "", 0);
 }
 
 void TimelineStopTask::runTask() {
@@ -105,9 +101,7 @@ void TimelineStopTask::runTask() {
     context()->timeline_uploader = 0;
   }
 
-  if (callback()) {
-    callback()(KOPSIK_API_SUCCESS, "");
-  }
+  timeline_state_callback()(KOPSIK_API_SUCCESS, "", 0);
 }
 
 void TimelineEnableTask::runTask() {
@@ -128,11 +122,12 @@ void TimelineEnableTask::runTask() {
                                             "api_token",
                                             &response_body);
   if (err != kopsik::noError) {
-    callback()(KOPSIK_API_FAILURE, err.c_str());
+    timeline_state_callback()(KOPSIK_API_FAILURE, err.c_str(), 0);
     return;
   }
 
-  getOwner()->start(new TimelineStartTask(context(), callback()));
+  getOwner()->start(new TimelineStartTask(context(),
+    timeline_state_callback()));
 }
 
 void TimelineDisableTask::runTask() {
@@ -153,11 +148,11 @@ void TimelineDisableTask::runTask() {
                                             "api_token",
                                             &response_body);
   if (err != kopsik::noError) {
-    callback()(KOPSIK_API_FAILURE, err.c_str());
+    timeline_state_callback()(KOPSIK_API_FAILURE, err.c_str(), 0);
     return;
   }
 
-  getOwner()->start(new TimelineStopTask(context(), callback()));
+  getOwner()->start(new TimelineStopTask(context(), timeline_state_callback()));
 }
 
 void FetchUpdatesTask::runTask() {
@@ -170,18 +165,21 @@ void FetchUpdatesTask::runTask() {
                                                   std::string(""),
                                                   std::string(""),
                                                   &response_body);
+  KopsikCheckUpdateCallback updates_callback =
+    reinterpret_cast<KopsikCheckUpdateCallback>(callback());
+
   if (err != kopsik::noError) {
-    updates_callback_(KOPSIK_API_FAILURE, err.c_str(), 0, 0, 0);
+    updates_callback(KOPSIK_API_FAILURE, err.c_str(), 0, 0, 0);
     return;
   }
 
   if ("null" == response_body) {
-    updates_callback_(KOPSIK_API_SUCCESS, 0, 0, 0, 0);
+    updates_callback(KOPSIK_API_SUCCESS, 0, 0, 0, 0);
     return;
   }
 
   if (!json_is_valid(response_body.c_str())) {
-    updates_callback_(KOPSIK_API_FAILURE, "Invalid response JSON", 0, 0, 0);
+    updates_callback(KOPSIK_API_FAILURE, "Invalid response JSON", 0, 0, 0);
     return;
   }
 
@@ -202,6 +200,6 @@ void FetchUpdatesTask::runTask() {
   }
   json_delete(root);
 
-  updates_callback_(KOPSIK_API_SUCCESS, err.c_str(), 1, url.c_str(),
+  updates_callback(KOPSIK_API_SUCCESS, err.c_str(), 1, url.c_str(),
             version.c_str());
 }

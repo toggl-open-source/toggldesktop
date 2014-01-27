@@ -10,5 +10,5 @@
 
 extern NSString *const kMenuItemTitleConnectWebSocket;
 extern NSString *const kMenuItemTitleDisconnectWebSocket;
-extern NSString *const kMenuItemTitleStartTimelineRecording;
-extern NSString *const kMenuItemTitleStopTimelineRecording;
+extern NSString *const kMenuItemTitleEnableTimelineRecording;
+extern NSString *const kMenuItemTitleDisableTimelineRecording;

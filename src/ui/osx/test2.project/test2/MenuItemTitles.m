@@ -10,5 +10,5 @@
 
 NSString *const kMenuItemTitleConnectWebSocket = @"Connect WebSocket";
 NSString *const kMenuItemTitleDisconnectWebSocket = @"Disconnect WebSocket";
-NSString *const kMenuItemTitleStartTimelineRecording = @"Start Timeline Recording";
-NSString *const kMenuItemTitleStopTimelineRecording = @"Stop Timeline Recording";
+NSString *const kMenuItemTitleEnableTimelineRecording = @"Enable Timeline Recording";
+NSString *const kMenuItemTitleDisableTimelineRecording = @"Disable Timeline Recording";

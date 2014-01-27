@@ -89,7 +89,6 @@ KOPSIK_EXPORT void kopsik_set_websocket_url(void *ctx,
 typedef struct {
     unsigned int ID;
     char *Fullname;
-    unsigned int RecordTimeline;  // 0=false, 1=true
 } KopsikUser;
 
 KOPSIK_EXPORT KopsikUser *kopsik_user_init();
@@ -374,11 +373,26 @@ KOPSIK_EXPORT void kopsik_websocket_stop(
 
 // Timeline
 
-KOPSIK_EXPORT void kopsik_timeline_start(void *ctx,
-  KopsikResultCallback);
+typedef void (*KopsikTimelineStateCallback)(
+  kopsik_api_result result,
+  const char *errmsg,
+  const int is_recording);
 
-KOPSIK_EXPORT void kopsik_timeline_stop(void *ctx,
-  KopsikResultCallback);
+KOPSIK_EXPORT void kopsik_timeline_start(
+  void *ctx,
+  KopsikTimelineStateCallback);
+
+KOPSIK_EXPORT void kopsik_timeline_stop(
+  void *ctx,
+  KopsikTimelineStateCallback);
+
+KOPSIK_EXPORT void kopsik_timeline_enable_recording(
+  void *ctx,
+  KopsikTimelineStateCallback);
+
+KOPSIK_EXPORT void kopsik_timeline_disable_recording(
+  void *ctx,
+  KopsikTimelineStateCallback);
 
 // Updates
 
