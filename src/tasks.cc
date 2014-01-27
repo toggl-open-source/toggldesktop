@@ -13,19 +13,19 @@ void SyncTask::runTask() {
     return;
   }
 
-  kopsik::HTTPSClient https_client(ctx_->api_url,
-                                   ctx_->app_name,
-                                   ctx_->app_version);
+  kopsik::HTTPSClient https_client(context()->api_url,
+                                   context()->app_name,
+                                   context()->app_version);
   char errmsg[KOPSIK_ERR_LEN];
-  kopsik::error err = ctx_->user->Sync(&https_client, full_sync_, true);
+  kopsik::error err = context()->user->Sync(&https_client, full_sync_, true);
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), KOPSIK_ERR_LEN);
-    callback_(KOPSIK_API_FAILURE, errmsg);
+    callback()(KOPSIK_API_FAILURE, errmsg);
     return;
   }
 
-  kopsik_api_result res = save(ctx_, errmsg, KOPSIK_ERR_LEN);
-  callback_(res, errmsg);
+  kopsik_api_result res = save(context(), errmsg, KOPSIK_ERR_LEN);
+  callback()(res, errmsg);
 }
 
 void PushTask::runTask() {
@@ -33,107 +33,107 @@ void PushTask::runTask() {
     return;
   }
 
-  kopsik::HTTPSClient https_client(ctx_->api_url,
-                                   ctx_->app_name,
-                                   ctx_->app_version);
+  kopsik::HTTPSClient https_client(context()->api_url,
+                                   context()->app_name,
+                                   context()->app_version);
   char errmsg[KOPSIK_ERR_LEN];
-  kopsik::error err = ctx_->user->Push(&https_client);
+  kopsik::error err = context()->user->Push(&https_client);
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), KOPSIK_ERR_LEN);
-    callback_(KOPSIK_API_FAILURE, errmsg);
+    callback()(KOPSIK_API_FAILURE, errmsg);
     return;
   }
 
-  kopsik_api_result res = save(ctx_, errmsg, KOPSIK_ERR_LEN);
-  callback_(res, errmsg);
+  kopsik_api_result res = save(context(), errmsg, KOPSIK_ERR_LEN);
+  callback()(res, errmsg);
 }
 
 void WebSocketStartTask::runTask() {
-  ctx_->ws_client->Start(
-    ctx_,
-    ctx_->user->APIToken(),
+  context()->ws_client->Start(
+    context(),
+    context()->user->APIToken(),
     websocket_callback_);
 }
 
 void WebSocketStopTask::runTask() {
-  ctx_->ws_client->Stop();
+  context()->ws_client->Stop();
 }
 
 void TimelineStartTask::runTask() {
-  if (!ctx_->user) {
-    callback_(KOPSIK_API_FAILURE, "Please login first");
+  if (!context()->user) {
+    callback()(KOPSIK_API_FAILURE, "Please login first");
     return;
   }
 
-  if (!ctx_->user->RecordTimeline()) {
-    callback_(KOPSIK_API_FAILURE,
+  if (!context()->user->RecordTimeline()) {
+    callback()(KOPSIK_API_FAILURE,
       "Timeline recording is disabled in Toggl profile");
     return;
   }
 
-  kopsik::ExplicitScopedLock("TimelineStartTask", ctx_->mutex);
+  kopsik::ExplicitScopedLock("TimelineStartTask", context()->mutex);
 
-  if (ctx_->timeline_uploader) {
-    delete ctx_->timeline_uploader;
-    ctx_->timeline_uploader = 0;
+  if (context()->timeline_uploader) {
+    delete context()->timeline_uploader;
+    context()->timeline_uploader = 0;
   }
-  ctx_->timeline_uploader = new kopsik::TimelineUploader(
-    ctx_->user->ID(),
-    ctx_->user->APIToken(),
-    ctx_->api_url,
-    ctx_->app_name,
-    ctx_->app_version);
+  context()->timeline_uploader = new kopsik::TimelineUploader(
+    context()->user->ID(),
+    context()->user->APIToken(),
+    context()->api_url,
+    context()->app_name,
+    context()->app_version);
 
-  if (ctx_->window_change_recorder) {
-    delete ctx_->window_change_recorder;
-    ctx_->window_change_recorder = 0;
+  if (context()->window_change_recorder) {
+    delete context()->window_change_recorder;
+    context()->window_change_recorder = 0;
   }
-  ctx_->window_change_recorder = new kopsik::WindowChangeRecorder(
-    ctx_->user->ID());
+  context()->window_change_recorder = new kopsik::WindowChangeRecorder(
+    context()->user->ID());
 
-  callback_(KOPSIK_API_SUCCESS, "");
+  callback()(KOPSIK_API_SUCCESS, "");
 }
 
 void TimelineStopTask::runTask() {
-  kopsik::ExplicitScopedLock("TimelineStopTask", ctx_->mutex);
+  kopsik::ExplicitScopedLock("TimelineStopTask", context()->mutex);
 
-  if (ctx_->window_change_recorder) {
-    delete ctx_->window_change_recorder;
-    ctx_->window_change_recorder = 0;
+  if (context()->window_change_recorder) {
+    delete context()->window_change_recorder;
+    context()->window_change_recorder = 0;
   }
 
-  if (ctx_->timeline_uploader) {
-    delete ctx_->timeline_uploader;
-    ctx_->timeline_uploader = 0;
+  if (context()->timeline_uploader) {
+    delete context()->timeline_uploader;
+    context()->timeline_uploader = 0;
   }
 
-  if (callback_) {
-    callback_(KOPSIK_API_SUCCESS, "");
+  if (callback()) {
+    callback()(KOPSIK_API_SUCCESS, "");
   }
 }
 
 void FetchUpdatesTask::runTask() {
   std::string response_body("");
   kopsik::HTTPSClient https_client(
-    ctx_->api_url,
-    ctx_->app_name,
-    ctx_->app_version);
+    context()->api_url,
+    context()->app_name,
+    context()->app_version);
   kopsik::error err = https_client.GetJSON(updateURL(),
                                                   std::string(""),
                                                   std::string(""),
                                                   &response_body);
   if (err != kopsik::noError) {
-    callback_(KOPSIK_API_FAILURE, err.c_str(), 0, 0, 0);
+    updates_callback_(KOPSIK_API_FAILURE, err.c_str(), 0, 0, 0);
     return;
   }
 
   if ("null" == response_body) {
-    callback_(KOPSIK_API_SUCCESS, 0, 0, 0, 0);
+    updates_callback_(KOPSIK_API_SUCCESS, 0, 0, 0, 0);
     return;
   }
 
   if (!json_is_valid(response_body.c_str())) {
-    callback_(KOPSIK_API_FAILURE, "Invalid response JSON", 0, 0, 0);
+    updates_callback_(KOPSIK_API_FAILURE, "Invalid response JSON", 0, 0, 0);
     return;
   }
 
@@ -154,6 +154,6 @@ void FetchUpdatesTask::runTask() {
   }
   json_delete(root);
 
-  callback_(KOPSIK_API_SUCCESS, err.c_str(), 1, url.c_str(),
+  updates_callback_(KOPSIK_API_SUCCESS, err.c_str(), 1, url.c_str(),
             version.c_str());
 }

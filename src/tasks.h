@@ -12,91 +12,81 @@
 #include "./https_client.h"
 #include "./context.h"
 
-class SyncTask : public Poco::Task {
+class BaseTask : public Poco::Task {
+  public:
+    BaseTask(Context *ctx,
+             const std::string task_name,
+             KopsikResultCallback callback)
+      : Task(task_name)
+      , ctx_(ctx)
+      , callback_(callback) {}
+
+  protected:
+    Context *context() { return ctx_; }
+    KopsikResultCallback callback() { return callback_; }
+
+  private:
+    Context *ctx_;
+    KopsikResultCallback callback_;
+};
+
+class SyncTask : public BaseTask {
   public:
     SyncTask(Context *ctx,
       int full_sync,
-      KopsikResultCallback callback) : Task("sync"),
-      ctx_(ctx),
-      full_sync_(full_sync),
-      callback_(callback) {}
+      KopsikResultCallback callback) : BaseTask(ctx, "sync", callback),
+      full_sync_(full_sync) {}
     void runTask();
 
    private:
-    Context *ctx_;
     int full_sync_;
-    KopsikResultCallback callback_;
 };
 
-class PushTask : public Poco::Task {
+class PushTask : public BaseTask {
   public:
     PushTask(Context *ctx,
-      KopsikResultCallback callback) : Task("push"),
-      ctx_(ctx),
-      callback_(callback) {}
+      KopsikResultCallback callback) : BaseTask(ctx, "push", callback) {}
     void runTask();
-
-  private:
-    Context *ctx_;
-    KopsikResultCallback callback_;
 };
 
-class WebSocketStartTask : public Poco::Task {
+class WebSocketStartTask : public BaseTask {
   public:
     WebSocketStartTask(Context *ctx,
-                       kopsik::WebSocketMessageCallback websocket_callback) :
-      Task("start_websocket"),
-      ctx_(ctx),
+                       kopsik::WebSocketMessageCallback websocket_callback)
+    : BaseTask(ctx, "start_websocket", 0),
       websocket_callback_(websocket_callback) {}
     void runTask();
   private:
-    Context *ctx_;
     kopsik::WebSocketMessageCallback websocket_callback_;
 };
 
-class WebSocketStopTask : public Poco::Task {
+class WebSocketStopTask : public BaseTask {
   public:
-    explicit WebSocketStopTask(Context *ctx) :
-      Task("stop_websocket"),
-      ctx_(ctx) {}
+    explicit WebSocketStopTask(Context *ctx)
+      : BaseTask(ctx, "stop_websocket", 0) {}
     void runTask();
-  private:
-    Context *ctx_;
 };
 
-class TimelineStartTask : public Poco::Task {
+class TimelineStartTask : public BaseTask {
   public:
-    TimelineStartTask(Context *ctx, KopsikResultCallback callback) :
-      Task("start_timeline"),
-      ctx_(ctx),
-      callback_(callback) {}
+    TimelineStartTask(Context *ctx, KopsikResultCallback callback)
+      : BaseTask(ctx, "start_timeline", callback) {}
     void runTask();
-
-  private:
-    Context *ctx_;
-    KopsikResultCallback callback_;
 };
 
-class TimelineStopTask : public Poco::Task {
+class TimelineStopTask : public BaseTask {
   public:
-    TimelineStopTask(Context *ctx, KopsikResultCallback callback) :
-      Task("stop_timeline"),
-      ctx_(ctx),
-      callback_(callback) {}
+    TimelineStopTask(Context *ctx, KopsikResultCallback callback)
+      : BaseTask(ctx, "stop_timeline", callback) {}
     void runTask();
-
-  private:
-    Context *ctx_;
-    KopsikResultCallback callback_;
 };
 
-class FetchUpdatesTask : public Poco::Task {
+class FetchUpdatesTask : public BaseTask {
   public:
     FetchUpdatesTask(Context *ctx,
-        KopsikCheckUpdateCallback callback) :
-      Task("check_updates"),
-      ctx_(ctx),
-      callback_(callback) {}
+        KopsikCheckUpdateCallback updates_callback)
+    : BaseTask(ctx, "check_updates", 0),
+      updates_callback_(updates_callback) {}
     void runTask();
 
   private:
@@ -105,7 +95,7 @@ class FetchUpdatesTask : public Poco::Task {
       relative_url << "/api/v8/updates?app=kopsik"
         << "&channel=" << channel()
         << "&platform=" << osName()
-        << "&version=" << ctx_->app_version;
+        << "&version=" << context()->app_version;
       return relative_url.str();
     }
     const std::string channel() {
@@ -121,8 +111,7 @@ class FetchUpdatesTask : public Poco::Task {
       return std::string("darwin");
     }
 
-    Context *ctx_;
-    KopsikCheckUpdateCallback callback_;
+  KopsikCheckUpdateCallback updates_callback_;
 };
 
 #endif  // SRC_TASKS_H_
