@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		741DB38C189685A2004907F3 /* tasks.cc in Sources */ = {isa = PBXBuildFile; fileRef = 741DB38B189685A2004907F3 /* tasks.cc */; };
 		7484A2A718887BEE0025A88B /* explicit_scoped_lock.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7484A2A118887BEE0025A88B /* explicit_scoped_lock.cc */; };
 		7484A2A818887BEE0025A88B /* kopsik_api_private.h in Headers */ = {isa = PBXBuildFile; fileRef = 7484A2A218887BEE0025A88B /* kopsik_api_private.h */; };
 		7484A2A918887BEE0025A88B /* explicit_scoped_lock.h in Headers */ = {isa = PBXBuildFile; fileRef = 7484A2A318887BEE0025A88B /* explicit_scoped_lock.h */; };
@@ -51,6 +52,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		741DB38B189685A2004907F3 /* tasks.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tasks.cc; path = ../../../tasks.cc; sourceTree = "<group>"; };
 		7484A2A118887BEE0025A88B /* explicit_scoped_lock.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = explicit_scoped_lock.cc; path = ../../../explicit_scoped_lock.cc; sourceTree = "<group>"; };
 		7484A2A218887BEE0025A88B /* kopsik_api_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kopsik_api_private.h; path = ../../../kopsik_api_private.h; sourceTree = "<group>"; };
 		7484A2A318887BEE0025A88B /* explicit_scoped_lock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = explicit_scoped_lock.h; path = ../../../explicit_scoped_lock.h; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 		C55DA59E17F06A3B00B42178 /* Kopsik */ = {
 			isa = PBXGroup;
 			children = (
+				741DB38B189685A2004907F3 /* tasks.cc */,
 				7484A2A118887BEE0025A88B /* explicit_scoped_lock.cc */,
 				7484A2A218887BEE0025A88B /* kopsik_api_private.h */,
 				7484A2A318887BEE0025A88B /* explicit_scoped_lock.h */,
@@ -302,6 +305,7 @@
 				74F7CDDB18199FA300630BD0 /* window_change_recorder.cc in Sources */,
 				74EB0F1717F9A2600046ABC1 /* https_client.cc in Sources */,
 				74CAAD20181860F7001B77BB /* timeline_uploader.cc in Sources */,
+				741DB38C189685A2004907F3 /* tasks.cc in Sources */,
 				7484A2AC18887BEE0025A88B /* kopsik_api_private.cc in Sources */,
 				748968CB18340F9B00288374 /* version.cc in Sources */,
 				7484A2AB18887BEE0025A88B /* context.cc in Sources */,
