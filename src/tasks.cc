@@ -112,8 +112,8 @@ void TimelineEnableTask::runTask() {
                                    context()->app_version);
 
   std::string response_body("");
-  kopsik::error err = https_client.PostJSON("/api/v8/toggle_timeline",
-                                            "{\"record_timeline\": \"true\"}",
+  kopsik::error err = https_client.PostJSON("/api/v8/timeline_settings",
+                                            "{\"record_timeline\": true}",
                                             context()->user->APIToken(),
                                             "api_token",
                                             &response_body);
@@ -134,8 +134,8 @@ void TimelineDisableTask::runTask() {
                                    context()->app_version);
 
   std::string response_body("");
-  kopsik::error err = https_client.PostJSON("/api/v8/toggle_timeline",
-                                            "{\"record_timeline\": \"false\"}",
+  kopsik::error err = https_client.PostJSON("/api/v8/timeline_settings",
+                                            "{\"record_timeline\": false}",
                                             context()->user->APIToken(),
                                             "api_token",
                                             &response_body);
