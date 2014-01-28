@@ -110,13 +110,21 @@
   [self.endTime setDateValue:item.ended];
 
   if (item.duration_in_seconds < 0) {
-    [self.endTime setHidden:YES];
     [self.startDate setEnabled:NO];
   } else {
-    [self.endTime setHidden:NO];
     [self.startDate setEnabled:YES];
   }
-  
+
+  if ((item.duration_in_seconds < 0) || (YES == item.durOnly)) {
+    [self.endTime setHidden:YES];
+  } else {
+    [self.endTime setHidden:NO];
+  }
+
+  [self.startTime setHidden:item.durOnly];
+  [self.labelForStartTime setHidden:item.durOnly];
+  [self.labelForEndTime setHidden:item.durOnly];
+
   if (YES == item.billable) {
     [self.billableCheckbox setState:NSOnState];
   } else {

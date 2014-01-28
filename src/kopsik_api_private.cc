@@ -133,6 +133,12 @@ void time_entry_to_view_item(
   if (!dateDuration.empty()) {
     view_item->DateDuration = strdup(dateDuration.c_str());
   }
+
+  if (te->DurOnly()) {
+    view_item->DurOnly = 1;
+  } else {
+    view_item->DurOnly = 0;
+  }
 }
 
 KopsikAutocompleteItem *autocomplete_item_init() {

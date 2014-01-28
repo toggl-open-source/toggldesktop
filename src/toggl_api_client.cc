@@ -74,7 +74,6 @@ TimeEntry *User::Start(
   } else {
     te->SetDurationInSeconds(-time(0));
   }
-  te->SetUIModifiedAt(time(0));
   te->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
 
   // Try to set workspace ID from project
@@ -99,6 +98,9 @@ TimeEntry *User::Start(
     te->SetWID(DefaultWID());
   }
 
+  te->SetDurOnly(!StoreStartAndStopTime());
+  te->SetUIModifiedAt(time(0));
+
   related.TimeEntries.push_back(te);
   return te;
 }
@@ -107,17 +109,24 @@ TimeEntry *User::Continue(const std::string GUID) {
     Stop();
     TimeEntry *existing = GetTimeEntryByGUID(GUID);
     poco_assert(existing);
-    TimeEntry *te = new TimeEntry();
-    te->SetDescription(existing->Description());
-    te->SetUID(ID());
-    te->SetStart(time(0));
-    te->SetDurationInSeconds(-time(0));
-    te->SetWID(existing->WID());
-    te->SetPID(existing->PID());
-    te->SetTID(existing->TID());
+    TimeEntry *te = 0;
+    if (existing->DurOnly()) {
+        te = existing;
+        te->SetDurationInSeconds(-time(0) + te->DurationInSeconds());
+    } else {
+        te = new TimeEntry();
+        te->SetDescription(existing->Description());
+        te->SetDurOnly(existing->DurOnly());
+        te->SetWID(existing->WID());
+        te->SetPID(existing->PID());
+        te->SetTID(existing->TID());
+        te->SetUID(ID());
+        te->SetStart(time(0));
+        te->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
+        te->SetDurationInSeconds(-time(0));
+        related.TimeEntries.push_back(te);
+    }
     te->SetUIModifiedAt(time(0));
-    te->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
-    related.TimeEntries.push_back(te);
     return te;
 }
 

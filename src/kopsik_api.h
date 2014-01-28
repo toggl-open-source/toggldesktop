@@ -203,6 +203,7 @@ typedef struct {
   char *UpdatedAt;
   char *DateHeader;
   char *DateDuration;
+  unsigned int DurOnly;
 } KopsikTimeEntryViewItem;
 
 typedef struct {

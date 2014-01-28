@@ -21,6 +21,8 @@
 @property (weak) IBOutlet NSTextField *lastUpdateTextField;
 @property (weak) IBOutlet NSButton *deleteButton;
 @property (strong) IBOutlet NSArrayController *projectItemsArrayController;
+@property (weak) IBOutlet NSTextField *labelForStartTime;
+@property (weak) IBOutlet NSTextField *labelForEndTime;
 @property (weak) IBOutlet NSButton *backButton;
 - (IBAction)descriptionTextFieldChanged:(id)sender;
 - (IBAction)durationTextFieldChanged:(id)sender;

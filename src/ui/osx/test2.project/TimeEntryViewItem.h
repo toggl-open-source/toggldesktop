@@ -24,6 +24,7 @@
 @property (strong) NSArray *tags;
 @property (strong) NSString *updatedAt;
 @property (strong) NSString *formattedDate;
+@property BOOL durOnly;
 // If this is set to YES, a date header is displayed on top of
 // the time entry cell in the time entry list view:
 @property BOOL isHeader;

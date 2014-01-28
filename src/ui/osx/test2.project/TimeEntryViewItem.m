@@ -52,6 +52,11 @@
   } else {
     self.dateDuration = nil;
   }
+
+  self.durOnly = NO;
+  if (data->DurOnly) {
+    self.durOnly = YES;
+  }
 }
 
 + (TimeEntryViewItem *)findByGUID:(NSString *)guid {

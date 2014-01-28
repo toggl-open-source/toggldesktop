@@ -1013,6 +1013,7 @@ KopsikTimeEntryViewItem *kopsik_time_entry_view_item_init() {
   item->Ended = 0;
   item->UpdatedAt = 0;
   item->DateHeader = 0;
+  item->DurOnly = 0;
   return item;
 }
 
