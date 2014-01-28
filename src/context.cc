@@ -47,8 +47,6 @@ Context::~Context() {
 }
 
 void Context::Shutdown() {
-  tm.cancelAll();
-
   if (window_change_recorder) {
     window_change_recorder->Stop();
   }
@@ -58,6 +56,8 @@ void Context::Shutdown() {
   if (timeline_uploader) {
     timeline_uploader->Stop();
   }
+
+  tm.joinAll();
 }
 
 kopsik::error Context::ConfigureProxy() {
