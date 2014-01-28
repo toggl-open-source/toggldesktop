@@ -23,6 +23,7 @@ class Context {
     ~Context();
     void Shutdown();
     kopsik::error ConfigureProxy();
+    kopsik::error Save();
 
     kopsik::Database *db;
     kopsik::User *user;

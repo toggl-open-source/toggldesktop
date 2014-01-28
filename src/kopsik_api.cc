@@ -29,48 +29,6 @@
 #include "Poco/Runnable.h"
 #include "Poco/TaskManager.h"
 
-kopsik_api_result save(
-    Context *ctx,
-    char *errmsg,
-    unsigned int errlen) {
-  try {
-    poco_assert(ctx);
-    poco_assert(errmsg);
-    poco_assert(errlen);
-    std::vector<kopsik::ModelChange> changes;
-    kopsik::error err = ctx->db->SaveUser(ctx->user, true, &changes);
-    if (err != kopsik::noError) {
-      if (ctx->change_callback) {
-        ctx->change_callback(KOPSIK_API_FAILURE, err.c_str(), 0);
-      }
-      strncpy(errmsg, err.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
-    }
-    if (!ctx->change_callback) {
-      return KOPSIK_API_SUCCESS;
-    }
-    for (std::vector<kopsik::ModelChange>::const_iterator it = changes.begin();
-        it != changes.end();
-        it++) {
-      kopsik::ModelChange mc = *it;
-      KopsikModelChange *change = model_change_init();
-      model_change_to_change_item(mc, *change);
-      ctx->change_callback(KOPSIK_API_SUCCESS, 0, change);
-      model_change_clear(change);
-    }
-  } catch(const Poco::Exception& exc) {
-      strncpy(errmsg, exc.displayText().c_str(), errlen);
-      return KOPSIK_API_FAILURE;
-  } catch(const std::exception& ex) {
-      strncpy(errmsg, ex.what(), errlen);
-      return KOPSIK_API_FAILURE;
-  } catch(const std::string& ex) {
-      strncpy(errmsg, ex.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
-  }
-  return KOPSIK_API_SUCCESS;
-}
-
 Poco::Logger &logger() {
   return Poco::Logger::get("kopsik_api");
 }
@@ -629,7 +587,11 @@ kopsik_api_result kopsik_login(
 
     ctx->user = user;
 
-    return save(ctx, errmsg, errlen);
+    err = ctx->Save();
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+    }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -640,7 +602,7 @@ kopsik_api_result kopsik_login(
       strncpy(errmsg, ex.c_str(), errlen);
       return KOPSIK_API_FAILURE;
   }
-  return KOPSIK_API_FAILURE;
+  return KOPSIK_API_SUCCESS;
 }
 
 kopsik_api_result kopsik_logout(
@@ -1156,10 +1118,12 @@ kopsik_api_result kopsik_start(
     }
 
     kopsik::TimeEntry *te = ctx->user->Start(desc, dur, task_id, project_id);
-    kopsik_api_result res = save(ctx, errmsg, errlen);
-    if (KOPSIK_API_SUCCESS != res) {
-      return res;
+    kopsik::error err = ctx->Save();
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
     }
+
     time_entry_to_view_item(te, ctx->user, out_view_item, "");
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
@@ -1259,10 +1223,12 @@ kopsik_api_result kopsik_continue(
 
     kopsik::TimeEntry *te = ctx->user->Continue(GUID);
     poco_assert(te);
-    kopsik_api_result res = save(ctx, errmsg, errlen);
-    if (KOPSIK_API_SUCCESS != res) {
-      return res;
+    kopsik::error err = ctx->Save();
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
     }
+
     time_entry_to_view_item(te, ctx->user, view_item, "");
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
@@ -1310,9 +1276,10 @@ kopsik_api_result kopsik_continue_latest(
 
     kopsik::TimeEntry *te = ctx->user->Continue(latest->GUID());
     poco_assert(te);
-    kopsik_api_result res = save(ctx, errmsg, errlen);
-    if (KOPSIK_API_SUCCESS != res) {
-      return res;
+    kopsik::error err = ctx->Save();
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_SUCCESS;
     }
     *was_found = 1;
     time_entry_to_view_item(te, ctx->user, view_item, "");
@@ -1364,15 +1331,17 @@ kopsik_api_result kopsik_delete_time_entry(
     te->SetDeletedAt(time(0));
     te->SetUIModifiedAt(time(0));
 
-    if (ctx->change_callback) {
-      kopsik::ModelChange mc("time_entry", "delete", te->ID(), te->GUID());
-      KopsikModelChange *change = model_change_init();
-      model_change_to_change_item(mc, *change);
-      ctx->change_callback(KOPSIK_API_SUCCESS, 0, change);
-      model_change_clear(change);
-    }
+    kopsik::ModelChange mc("time_entry", "delete", te->ID(), te->GUID());
+    KopsikModelChange *change = model_change_init();
+    model_change_to_change_item(mc, *change);
+    ctx->change_callback(KOPSIK_API_SUCCESS, 0, change);
+    model_change_clear(change);
 
-    return save(ctx, errmsg, errlen);
+    kopsik::error err = ctx->Save();
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+    }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1383,7 +1352,7 @@ kopsik_api_result kopsik_delete_time_entry(
       strncpy(errmsg, ex.c_str(), errlen);
       return KOPSIK_API_FAILURE;
   }
-  return KOPSIK_API_FAILURE;
+  return KOPSIK_API_SUCCESS;
 }
 
 kopsik_api_result kopsik_set_time_entry_duration(
@@ -1427,7 +1396,11 @@ kopsik_api_result kopsik_set_time_entry_duration(
       te->SetUIModifiedAt(time(0));
     }
 
-    return save(ctx, errmsg, errlen);
+    kopsik::error err = ctx->Save();
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+    }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1438,7 +1411,7 @@ kopsik_api_result kopsik_set_time_entry_duration(
       strncpy(errmsg, ex.c_str(), errlen);
       return KOPSIK_API_FAILURE;
   }
-  return KOPSIK_API_FAILURE;
+  return KOPSIK_API_SUCCESS;
 }
 
 kopsik_api_result kopsik_set_time_entry_project(
@@ -1486,7 +1459,11 @@ kopsik_api_result kopsik_set_time_entry_project(
       te->SetUIModifiedAt(time(0));
     }
 
-    return save(ctx, errmsg, errlen);
+    kopsik::error err = ctx->Save();
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+    }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1497,7 +1474,7 @@ kopsik_api_result kopsik_set_time_entry_project(
       strncpy(errmsg, ex.c_str(), errlen);
       return KOPSIK_API_FAILURE;
   }
-  return KOPSIK_API_FAILURE;
+  return KOPSIK_API_SUCCESS;
 }
 
 kopsik_api_result kopsik_set_time_entry_start_iso_8601(
@@ -1542,7 +1519,11 @@ kopsik_api_result kopsik_set_time_entry_start_iso_8601(
       te->SetUIModifiedAt(time(0));
     }
 
-    return save(ctx, errmsg, errlen);
+    kopsik::error err = ctx->Save();
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+    }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1553,7 +1534,7 @@ kopsik_api_result kopsik_set_time_entry_start_iso_8601(
       strncpy(errmsg, ex.c_str(), errlen);
       return KOPSIK_API_FAILURE;
   }
-  return KOPSIK_API_FAILURE;
+  return KOPSIK_API_SUCCESS;
 }
 
 kopsik_api_result kopsik_set_time_entry_end_iso_8601(
@@ -1597,7 +1578,11 @@ kopsik_api_result kopsik_set_time_entry_end_iso_8601(
       te->SetUIModifiedAt(time(0));
     }
 
-    return save(ctx, errmsg, errlen);
+    kopsik::error err = ctx->Save();
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+    }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1608,7 +1593,7 @@ kopsik_api_result kopsik_set_time_entry_end_iso_8601(
       strncpy(errmsg, ex.c_str(), errlen);
       return KOPSIK_API_FAILURE;
   }
-  return KOPSIK_API_FAILURE;
+  return KOPSIK_API_SUCCESS;
 }
 
 kopsik_api_result kopsik_set_time_entry_tags(
@@ -1651,7 +1636,11 @@ kopsik_api_result kopsik_set_time_entry_tags(
       te->SetUIModifiedAt(time(0));
     }
 
-    return save(ctx, errmsg, errlen);
+    kopsik::error err = ctx->Save();
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+    }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1662,7 +1651,7 @@ kopsik_api_result kopsik_set_time_entry_tags(
       strncpy(errmsg, ex.c_str(), errlen);
       return KOPSIK_API_FAILURE;
   }
-  return KOPSIK_API_FAILURE;
+  return KOPSIK_API_SUCCESS;
 }
 
 kopsik_api_result kopsik_set_time_entry_billable(
@@ -1708,7 +1697,11 @@ kopsik_api_result kopsik_set_time_entry_billable(
       te->SetUIModifiedAt(time(0));
     }
 
-    return save(ctx, errmsg, errlen);
+    kopsik::error err = ctx->Save();
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+    }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1719,7 +1712,7 @@ kopsik_api_result kopsik_set_time_entry_billable(
       strncpy(errmsg, ex.c_str(), errlen);
       return KOPSIK_API_FAILURE;
   }
-  return KOPSIK_API_FAILURE;
+  return KOPSIK_API_SUCCESS;
 }
 
 kopsik_api_result kopsik_set_time_entry_description(
@@ -1762,7 +1755,11 @@ kopsik_api_result kopsik_set_time_entry_description(
       te->SetUIModifiedAt(time(0));
     }
 
-    return save(ctx, errmsg, errlen);
+    kopsik::error err = ctx->Save();
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+    }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1773,7 +1770,7 @@ kopsik_api_result kopsik_set_time_entry_description(
       strncpy(errmsg, ex.c_str(), errlen);
       return KOPSIK_API_FAILURE;
   }
-  return KOPSIK_API_FAILURE;
+  return KOPSIK_API_SUCCESS;
 }
 
 kopsik_api_result kopsik_stop(
@@ -1806,10 +1803,13 @@ kopsik_api_result kopsik_stop(
       return KOPSIK_API_SUCCESS;
     }
     *was_found = 1;
-    kopsik_api_result res = save(ctx, errmsg, errlen);
-    if (res != KOPSIK_API_SUCCESS) {
-      return res;
+
+    kopsik::error err = ctx->Save();
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
     }
+
     kopsik::TimeEntry *te = stopped[0];
     time_entry_to_view_item(te, ctx->user, out_view_item, "");
   } catch(const Poco::Exception& exc) {
@@ -1859,7 +1859,11 @@ kopsik_api_result kopsik_split_running_time_entry_at(
       time_entry_to_view_item(running, ctx->user, out_view_item, "");
     }
 
-    return save(ctx, errmsg, errlen);
+    kopsik::error err = ctx->Save();
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+    }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1870,7 +1874,7 @@ kopsik_api_result kopsik_split_running_time_entry_at(
       strncpy(errmsg, ex.c_str(), errlen);
       return KOPSIK_API_FAILURE;
   }
-  return KOPSIK_API_FAILURE;
+  return KOPSIK_API_SUCCESS;
 }
 
 kopsik_api_result kopsik_stop_running_time_entry_at(
@@ -1906,7 +1910,11 @@ kopsik_api_result kopsik_stop_running_time_entry_at(
       time_entry_to_view_item(stopped, ctx->user, out_view_item, "");
     }
 
-    return save(ctx, errmsg, errlen);
+    kopsik::error err = ctx->Save();
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+    }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1917,7 +1925,7 @@ kopsik_api_result kopsik_stop_running_time_entry_at(
       strncpy(errmsg, ex.c_str(), errlen);
       return KOPSIK_API_FAILURE;
   }
-  return KOPSIK_API_FAILURE;
+  return KOPSIK_API_SUCCESS;
 }
 
 kopsik_api_result kopsik_running_time_entry_view_item(
@@ -2134,8 +2142,10 @@ void on_websocket_message(
 
   ctx->user->LoadUpdateFromJSONString(json);
 
-  char err[KOPSIK_ERR_LEN];
-  save(ctx, err, KOPSIK_ERR_LEN);
+  kopsik::error err = ctx->Save();
+  if (err != kopsik::noError) {
+    // FIXME: error handling
+  }
 }
 
 void kopsik_websocket_start(
@@ -2164,7 +2174,7 @@ void kopsik_websocket_stop(
 
 void kopsik_timeline_start(
     void *context,
-    KopsikTimelineStateCallback callback) {
+    KopsikResultCallback callback) {
   poco_assert(context);
   poco_assert(callback);
 
@@ -2176,7 +2186,7 @@ void kopsik_timeline_start(
 
 void kopsik_timeline_stop(
     void *context,
-    KopsikTimelineStateCallback callback) {
+    KopsikResultCallback callback) {
   poco_assert(context);
 
   logger().debug("kopsik_timeline_stop");
@@ -2185,26 +2195,41 @@ void kopsik_timeline_stop(
   ctx->tm.start(new TimelineStopTask(ctx, callback));
 }
 
-void kopsik_timeline_enable_recording(
+void kopsik_timeline_toggle_recording(
     void *context,
-    KopsikTimelineStateCallback callback) {
+    KopsikResultCallback callback) {
   poco_assert(context);
 
-  logger().debug("kopsik_timeline_enable");
+  logger().debug("kopsik_timeline_toggle_recording");
 
   Context *ctx = reinterpret_cast<Context *>(context);
-  ctx->tm.start(new TimelineEnableTask(ctx, callback));
+
+  kopsik::ExplicitScopedLock("kopsik_timeline_toggle_recording", ctx->mutex);
+
+  ctx->user->SetRecordTimeline(!ctx->user->RecordTimeline());
+  kopsik::error err = ctx->Save();
+  if (err != kopsik::noError) {
+    callback(KOPSIK_API_FAILURE, err.c_str());
+    return;
+  }
+
+  ctx->tm.start(new TimelineUpdateServerSettingsTask(ctx, callback));
+  if (ctx->user->RecordTimeline()) {
+    ctx->tm.start(new TimelineStartTask(ctx, callback));
+    return;
+  }
+  ctx->tm.start(new TimelineStopTask(ctx, callback));
 }
 
-void kopsik_timeline_disable_recording(
-    void *context,
-    KopsikTimelineStateCallback callback) {
-  poco_assert(context);
-
-  logger().debug("kopsik_timeline_disable");
-
+int kopsik_timeline_is_recording_enabled(void *context) {
+  if (!context) {
+    return 0;
+  }
   Context *ctx = reinterpret_cast<Context *>(context);
-  ctx->tm.start(new TimelineDisableTask(ctx, callback));
+  if (!ctx->user) {
+    return 0;
+  }
+  return ctx->user->RecordTimeline();
 }
 
 // Updates

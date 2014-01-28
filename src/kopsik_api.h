@@ -373,26 +373,20 @@ KOPSIK_EXPORT void kopsik_websocket_stop(
 
 // Timeline
 
-typedef void (*KopsikTimelineStateCallback)(
-  kopsik_api_result result,
-  const char *errmsg,
-  const int is_recording);
-
 KOPSIK_EXPORT void kopsik_timeline_start(
   void *ctx,
-  KopsikTimelineStateCallback);
+  KopsikResultCallback callback);
 
 KOPSIK_EXPORT void kopsik_timeline_stop(
   void *ctx,
-  KopsikTimelineStateCallback);
+  KopsikResultCallback callback);
 
-KOPSIK_EXPORT void kopsik_timeline_enable_recording(
+KOPSIK_EXPORT void kopsik_timeline_toggle_recording(
   void *ctx,
-  KopsikTimelineStateCallback);
+  KopsikResultCallback callback);
 
-KOPSIK_EXPORT void kopsik_timeline_disable_recording(
-  void *ctx,
-  KopsikTimelineStateCallback);
+KOPSIK_EXPORT int kopsik_timeline_is_recording_enabled(
+  void *ctx);
 
 // Updates
 

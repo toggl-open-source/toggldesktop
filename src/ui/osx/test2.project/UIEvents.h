@@ -23,7 +23,6 @@ extern NSString *const kUIStateUpToDate;
 // Events
 extern NSString *const kUIEventModelChange;
 extern NSString *const kUIEventIdleFinished;
-extern NSString *const kUIEventTimelineStateChanged;
 extern NSString *const kUIEventSettingsChanged;
 
 

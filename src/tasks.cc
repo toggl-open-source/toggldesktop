@@ -22,9 +22,13 @@ void SyncTask::runTask() {
     return;
   }
 
-  char errmsg[KOPSIK_ERR_LEN];
-  kopsik_api_result res = save(context(), errmsg, KOPSIK_ERR_LEN);
-  result_callback()(res, errmsg);
+  err = context()->Save();
+  if (err != kopsik::noError) {
+    result_callback()(KOPSIK_API_FAILURE, err.c_str());
+    return;
+  }
+
+  result_callback()(KOPSIK_API_SUCCESS, 0);
 }
 
 void PushTask::runTask() {
@@ -41,9 +45,13 @@ void PushTask::runTask() {
     return;
   }
 
-  char errmsg[KOPSIK_ERR_LEN];
-  kopsik_api_result res = save(context(), errmsg, KOPSIK_ERR_LEN);
-  result_callback()(res, errmsg);
+  err = context()->Save();
+  if (err != kopsik::noError) {
+    result_callback()(KOPSIK_API_FAILURE, err.c_str());
+    return;
+  }
+
+  result_callback()(KOPSIK_API_SUCCESS, 0);
 }
 
 void WebSocketStartTask::runTask() {
@@ -61,7 +69,12 @@ void WebSocketStopTask::runTask() {
 
 void TimelineStartTask::runTask() {
   if (!context()->user) {
-    timeline_state_callback()(KOPSIK_API_FAILURE, "Please login first", 0);
+    result_callback()(KOPSIK_API_FAILURE, "Please login first");
+    return;
+  }
+
+  if (!context()->user->RecordTimeline()) {
+    result_callback()(KOPSIK_API_SUCCESS, 0);
     return;
   }
 
@@ -85,7 +98,7 @@ void TimelineStartTask::runTask() {
   context()->window_change_recorder = new kopsik::WindowChangeRecorder(
     context()->user->ID());
 
-  timeline_state_callback()(KOPSIK_API_SUCCESS, "", 1);
+  result_callback()(KOPSIK_API_SUCCESS, 0);
 }
 
 void TimelineStopTask::runTask() {
@@ -101,50 +114,32 @@ void TimelineStopTask::runTask() {
     context()->timeline_uploader = 0;
   }
 
-  timeline_state_callback()(KOPSIK_API_SUCCESS, "", 0);
+  result_callback()(KOPSIK_API_SUCCESS, 0);
 }
 
-void TimelineEnableTask::runTask() {
-  kopsik::ExplicitScopedLock("TimelineEnableTask", context()->mutex);
-
+void TimelineUpdateServerSettingsTask::runTask() {
   kopsik::HTTPSClient https_client(context()->api_url,
                                    context()->app_name,
                                    context()->app_version);
 
+  std::string json("{\"record_timeline\": false}");
+  if (context()->user->RecordTimeline()) {
+    json = "{\"record_timeline\": true}";
+  }
+
+  Poco::Logger &logger = Poco::Logger::get("TimelineEnableTask");
+  logger.debug(json);
+
   std::string response_body("");
   kopsik::error err = https_client.PostJSON("/api/v8/timeline_settings",
-                                            "{\"record_timeline\": true}",
+                                            json,
                                             context()->user->APIToken(),
                                             "api_token",
                                             &response_body);
   if (err != kopsik::noError) {
-    timeline_state_callback()(KOPSIK_API_FAILURE, err.c_str(), 0);
-    return;
+    // Network can be down at times, carry on
+    logger.warning(err);
   }
-
-  getOwner()->start(new TimelineStartTask(context(),
-    timeline_state_callback()));
-}
-
-void TimelineDisableTask::runTask() {
-  kopsik::ExplicitScopedLock("TimelineDisableTask", context()->mutex);
-
-  kopsik::HTTPSClient https_client(context()->api_url,
-                                   context()->app_name,
-                                   context()->app_version);
-
-  std::string response_body("");
-  kopsik::error err = https_client.PostJSON("/api/v8/timeline_settings",
-                                            "{\"record_timeline\": false}",
-                                            context()->user->APIToken(),
-                                            "api_token",
-                                            &response_body);
-  if (err != kopsik::noError) {
-    timeline_state_callback()(KOPSIK_API_FAILURE, err.c_str(), 0);
-    return;
-  }
-
-  getOwner()->start(new TimelineStopTask(context(), timeline_state_callback()));
 }
 
 void FetchUpdatesTask::runTask() {

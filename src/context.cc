@@ -1,6 +1,7 @@
 // Copyright 2014 kopsik developers
 
 #include "./context.h"
+#include "./kopsik_api_private.h"
 
 Context::Context()
   : db(0),
@@ -73,5 +74,31 @@ kopsik::error Context::ConfigureProxy() {
   kopsik::ExplicitScopedLock("Context::ConfigureProxy", mutex);
 
   ws_client->SetProxy(proxy);
+  return kopsik::noError;
+}
+
+kopsik::error Context::Save() {
+  try {
+    std::vector<kopsik::ModelChange> changes;
+    kopsik::error err = db->SaveUser(user, true, &changes);
+    if (err != kopsik::noError) {
+      return err;
+    }
+    for (std::vector<kopsik::ModelChange>::const_iterator it = changes.begin();
+        it != changes.end();
+        it++) {
+      kopsik::ModelChange mc = *it;
+      KopsikModelChange *change = model_change_init();
+      model_change_to_change_item(mc, *change);
+      change_callback(KOPSIK_API_SUCCESS, 0, change);
+      model_change_clear(change);
+    }
+  } catch(const Poco::Exception& exc) {
+    return exc.displayText();
+  } catch(const std::exception& ex) {
+    return ex.what();
+  } catch(const std::string& ex) {
+    return ex;
+  }
   return kopsik::noError;
 }

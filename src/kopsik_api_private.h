@@ -10,11 +10,6 @@
 
 #define KOPSIK_API_FAILURE 1
 
-kopsik_api_result save(
-  Context *ctx,
-  char *errmsg,
-  unsigned int errlen);
-
 void time_entry_to_view_item(
     kopsik::TimeEntry *te,
     kopsik::User *user,

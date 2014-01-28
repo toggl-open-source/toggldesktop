@@ -71,49 +71,36 @@ class WebSocketStopTask : public BaseTask {
     void runTask();
 };
 
-class TimelineBaseTask : public BaseTask {
-  public:
-    TimelineBaseTask(Context *ctx,
-                     const std::string task_name,
-                     KopsikTimelineStateCallback callback)
-      : BaseTask(ctx, task_name, reinterpret_cast<void *>(callback)) {}
-
-  protected:
-    KopsikTimelineStateCallback timeline_state_callback() {
-      poco_assert(callback());
-      return reinterpret_cast<KopsikTimelineStateCallback>(callback());
-    }
-};
-
 // Start timeline recording on local machine
-class TimelineStartTask : public TimelineBaseTask {
+class TimelineStartTask : public BaseTask {
   public:
-    TimelineStartTask(Context *ctx, KopsikTimelineStateCallback callback)
-      : TimelineBaseTask(ctx, "start_timeline", callback) {}
+    TimelineStartTask(
+      Context *ctx,
+      KopsikResultCallback callback)
+        : BaseTask(ctx, "TimelineStartTask",
+            reinterpret_cast<void *>(callback)) {}
     void runTask();
 };
 
 // Stop timeline recording on local machine
-class TimelineStopTask : public TimelineBaseTask {
+class TimelineStopTask : public BaseTask {
   public:
-    TimelineStopTask(Context *ctx, KopsikTimelineStateCallback callback)
-      : TimelineBaseTask(ctx, "stop_timeline", callback) {}
+    TimelineStopTask(
+      Context *ctx,
+      KopsikResultCallback callback)
+        : BaseTask(ctx, "TimelineStopTask",
+            reinterpret_cast<void *>(callback)) {}
     void runTask();
 };
 
-// Enable timeline recording on server side and locally after that
-class TimelineEnableTask : public TimelineBaseTask {
+// Enable timeline recording on server side
+class TimelineUpdateServerSettingsTask : public BaseTask {
   public:
-    TimelineEnableTask(Context *ctx, KopsikTimelineStateCallback callback)
-      : TimelineBaseTask(ctx, "enable_timeline", callback) {}
-    void runTask();
-};
-
-// Disable timeline recording on server side and locally after that
-class TimelineDisableTask : public TimelineBaseTask {
-  public:
-    TimelineDisableTask(Context *ctx, KopsikTimelineStateCallback callback)
-      : TimelineBaseTask(ctx, "disable_timeline", callback) {}
+    TimelineUpdateServerSettingsTask(
+      Context *ctx,
+      KopsikResultCallback callback)
+      : BaseTask(ctx, "TimelineUpdateServerSettingsTask",
+                 reinterpret_cast<void *>(callback)) {}
     void runTask();
 };
 
