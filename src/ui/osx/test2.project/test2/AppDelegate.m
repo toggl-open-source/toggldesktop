@@ -224,10 +224,11 @@ NSString *kTimeTotalUnknown = @"--:--";
 
 void on_timeline_state_callback(
     kopsik_api_result res,
-    const char *err,
+    const char *errmsg,
     const int is_recording) {
+  NSLog(@"on_timeline_state_callback res=%d errmsg=%s is_recording=%d", res, errmsg, is_recording);
   if (KOPSIK_API_SUCCESS != res) {
-    handle_error(res, err);
+    handle_error(res, errmsg);
     return;
   }
   NSString *state = nil;
@@ -250,6 +251,7 @@ void on_timeline_state_callback(
 }
 
 - (void)updateTimelineRecordingState:(NSString *)state {
+  NSLog(@"updateTimelineRecordingState state=%@", state);
   self.timelineRecordingState = state;
   if ([self.timelineRecordingState isEqualToString:@"recording"]) {
     [self.timelineMenuItem setTitle:kMenuItemTitleDisableTimelineRecording];

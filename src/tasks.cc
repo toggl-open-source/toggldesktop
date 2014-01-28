@@ -85,7 +85,7 @@ void TimelineStartTask::runTask() {
   context()->window_change_recorder = new kopsik::WindowChangeRecorder(
     context()->user->ID());
 
-  timeline_state_callback()(KOPSIK_API_SUCCESS, "", 0);
+  timeline_state_callback()(KOPSIK_API_SUCCESS, "", 1);
 }
 
 void TimelineStopTask::runTask() {
