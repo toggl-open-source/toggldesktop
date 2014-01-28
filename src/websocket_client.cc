@@ -183,7 +183,6 @@ error WebSocketClient::receiveWebSocketMessage(std::string *message) {
 const std::string kPong("{\"type\": \"pong\"}");
 
 error WebSocketClient::poll() {
-  logger().debug("poll");
   try {
     Poco::Timespan span(250 * Poco::Timespan::MILLISECONDS);
     if (!ws_->poll(span, Poco::Net::Socket::SELECT_READ)) {
@@ -234,8 +233,6 @@ const int kWebSocketRestartThreshold = 30;
 
 void WebSocketClient::runActivity() {
   while (!activity_.isStopped()) {
-    logger().debug("runActivity");
-
     if (ws_) {
       error err = poll();
       if (err != noError) {
