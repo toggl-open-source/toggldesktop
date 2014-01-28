@@ -110,14 +110,10 @@ void TimelineEnableTask::runTask() {
   kopsik::HTTPSClient https_client(context()->api_url,
                                    context()->app_name,
                                    context()->app_version);
-  Poco::Net::HTMLForm form;
-  form.set("record", "true");
-  form.set("enable", "true");
 
   std::string response_body("");
-
-  kopsik::error err = https_client.PostForm("/api/v8/toggle_timeline",
-                                            &form,
+  kopsik::error err = https_client.PostJSON("/api/v8/toggle_timeline",
+                                            "{\"record_timeline\": \"true\"}",
                                             context()->user->APIToken(),
                                             "api_token",
                                             &response_body);
@@ -136,14 +132,10 @@ void TimelineDisableTask::runTask() {
   kopsik::HTTPSClient https_client(context()->api_url,
                                    context()->app_name,
                                    context()->app_version);
-  Poco::Net::HTMLForm form;
-  form.set("record", "false");
-  form.set("enable", "false");
 
   std::string response_body("");
-
-  kopsik::error err = https_client.PostForm("/api/v8/toggle_timeline",
-                                            &form,
+  kopsik::error err = https_client.PostJSON("/api/v8/toggle_timeline",
+                                            "{\"record_timeline\": \"false\"}",
                                             context()->user->APIToken(),
                                             "api_token",
                                             &response_body);

@@ -10,7 +10,6 @@
 #include "Poco/Net/HTTPSClientSession.h"
 #include "Poco/Net/HTTPRequest.h"
 #include "Poco/Net/HTTPResponse.h"
-#include "Poco/Net/HTMLForm.h"
 
 #include "./types.h"
 #include "./proxy.h"
@@ -33,12 +32,6 @@ namespace kopsik {
       const std::string basic_auth_username,
       const std::string basic_auth_password,
       std::string *response_body);
-    virtual error PostForm(
-      const std::string relative_url,
-      Poco::Net::HTMLForm* form,
-      const std::string basic_auth_username,
-      const std::string basic_auth_password,
-      std::string *response_body);
     virtual error GetJSON(
       const std::string relative_url,
       const std::string basic_auth_username,
@@ -53,7 +46,6 @@ namespace kopsik {
         const std::string method,
         const std::string relative_url,
         const std::string payload,
-        const std::string content_type,
         const std::string basic_auth_username,
         const std::string basic_auth_password,
         std::string *response_body);

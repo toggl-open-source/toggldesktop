@@ -40,27 +40,6 @@ error HTTPSClient::PostJSON(
     response_body);
 }
 
-error HTTPSClient::PostForm(
-    const std::string relative_url,
-    Poco::Net::HTMLForm *form,
-    const std::string basic_auth_username,
-    const std::string basic_auth_password,
-    std::string *response_body) {
-  poco_assert(form);
-
-  std::ostringstream ostr;
-  form->write(ostr);
-  std::string payload = ostr.str();
-
-  return request(Poco::Net::HTTPRequest::HTTP_POST,
-    relative_url,
-    payload,
-    "text/plain",
-    basic_auth_username,
-    basic_auth_password,
-    response_body);
-}
-
 error HTTPSClient::GetJSON(
     const std::string relative_url,
     const std::string basic_auth_username,
@@ -85,7 +64,6 @@ error HTTPSClient::requestJSON(
     method,
     relative_url,
     json,
-    "application/json",
     basic_auth_username,
     basic_auth_password,
     response_body);
@@ -95,12 +73,10 @@ error HTTPSClient::request(
     const std::string method,
     const std::string relative_url,
     const std::string payload,
-    const std::string content_type,
     const std::string basic_auth_username,
     const std::string basic_auth_password,
     std::string *response_body) {
   poco_assert(!method.empty());
-  poco_assert(!content_type.empty());
   poco_assert(!relative_url.empty());
   poco_assert(response_body);
 
@@ -115,6 +91,13 @@ error HTTPSClient::request(
     Poco::Net::Context::Ptr context(new Poco::Net::Context(
       Poco::Net::Context::CLIENT_USE, "",
       Poco::Net::Context::VERIFY_RELAXED, 9, true, "ALL"));
+
+/*
+    const Poco::Net::Context::Ptr context(new Poco::Net::Context(
+      Poco::Net::Context::CLIENT_USE, "", "", "",
+      Poco::Net::Context::VERIFY_NONE, 9, false,
+      "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"));
+*/
 
     Poco::Net::SSLManager::instance().initializeClient(
       0, acceptCertHandler, context);
@@ -140,7 +123,7 @@ error HTTPSClient::request(
     Poco::Net::HTTPRequest req(method,
       relative_url, Poco::Net::HTTPMessage::HTTP_1_1);
     req.setKeepAlive(false);
-    req.setContentType(content_type);
+    req.setContentType("application/json");
     req.set("User-Agent", kopsik::UserAgent(app_name_, app_version_));
     req.setChunkedTransferEncoding(true);
 
