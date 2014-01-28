@@ -158,7 +158,7 @@ error HTTPSClient::request(
     Poco::Net::HTTPResponse response;
     std::istream& is = session.receiveResponse(response);
 
-    // Inflatem
+    // Inflate
     Poco::InflatingInputStream inflater(is,
       Poco::InflatingStreamBuf::STREAM_GZIP);
     std::stringstream ss;
