@@ -622,6 +622,8 @@ kopsik_api_result kopsik_logout(
       return KOPSIK_API_SUCCESS;
     }
 
+    ctx->Shutdown();
+
     kopsik::ExplicitScopedLock("kopsik_logout", ctx->mutex);
 
     kopsik::error err = ctx->db->ClearCurrentAPIToken();
