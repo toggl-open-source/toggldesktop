@@ -21,4 +21,5 @@
 - (IBAction)onNewMenuItem:(id)sender;
 - (IBAction)onHideMenuItem:(id)sender;
 - (IBAction)onTimelineMenuItem:(id)sender;
+- (IBAction)onSendFeedbackMainMenuItem:(id)sender;
 @end

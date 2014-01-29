@@ -339,6 +339,12 @@
                                     <action selector="onHelpMenuItem:" target="494" id="Yuo-YB-F1l"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Send Feedback" id="tQk-RP-c2H">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="onSendFeedbackMainMenuItem:" target="494" id="Ezo-qQ-7mP"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>

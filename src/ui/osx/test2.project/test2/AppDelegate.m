@@ -25,6 +25,7 @@
 #import "IdleNotificationWindowController.h"
 #import "CrashReporter.h"
 #import "NewTimeEntry.h"
+#import "FeedbackWindowController.h"
 
 @interface AppDelegate()
 @property (nonatomic, strong) IBOutlet MainWindowController *
@@ -35,6 +36,8 @@
   aboutWindowController;
 @property (nonatomic, strong) IBOutlet IdleNotificationWindowController *
   idleNotificationWindowController;
+@property (nonatomic, strong) IBOutlet FeedbackWindowController *
+  feedbackWindowController;
 @property TimeEntryViewItem *lastKnownRunningTimeEntry;
 @property NSTimer *statusItemTimer;
 @property NSTimer *idleTimer;
@@ -117,6 +120,10 @@ NSString *kTimeTotalUnknown = @"--:--";
   self.idleNotificationWindowController =
     [[IdleNotificationWindowController alloc]
       initWithWindowNibName:@"IdleNotificationWindowController"];
+  
+  self.feedbackWindowController =
+    [[FeedbackWindowController alloc]
+      initWithWindowNibName:@"FeedbackWindowController"];
 
   [self createStatusItem];
   
@@ -527,6 +534,9 @@ NSString *kTimeTotalUnknown = @"--:--";
   [menu addItemWithTitle:@"About"
                   action:@selector(onAboutMenuItem:)
            keyEquivalent:@""];
+  [menu addItemWithTitle:@"Send Feedback"
+                  action:@selector(onSendFeedbackMenuItem)
+           keyEquivalent:@""];
   [menu addItemWithTitle:@"Logout"
                   action:@selector(onLogoutMenuItem:)
            keyEquivalent:@""].tag = kMenuItemTagLogout;;
@@ -594,6 +604,15 @@ NSString *kTimeTotalUnknown = @"--:--";
   [[NSNotificationCenter defaultCenter]
     postNotificationName:kUICommandNew
     object:[[NewTimeEntry alloc] init]];
+}
+
+- (void)onSendFeedbackMenuItem {
+  [self.feedbackWindowController showWindow:self];
+  [NSApp activateIgnoringOtherApps:YES];
+}
+
+- (void)onSendFeedbackMainMenuItem:(id)sender {
+  [self onSendFeedbackMenuItem];
 }
 
 - (void)onContinueMenuItem {
