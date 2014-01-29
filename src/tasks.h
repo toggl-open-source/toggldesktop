@@ -104,6 +104,32 @@ class TimelineUpdateServerSettingsTask : public BaseTask {
     void runTask();
 };
 
+// Send feedback to Toggl support
+class SendFeedbackTask : public BaseTask {
+ public:
+  SendFeedbackTask(Context *ctx,
+                   std::string subject,
+                   std::string details,
+                   std::string attachment_path,
+                   KopsikResultCallback callback)
+  : BaseTask(ctx, "SendFeedbackTask", reinterpret_cast<void *>(callback))
+  , subject_(subject)
+  , details_(details)
+  , attachment_path_(attachment_path) {}
+
+  void runTask();
+
+ private:
+  std::string feedbackJSON();
+  std::string filename();
+  std::string base64encode_attachment();
+
+  std::string subject_;
+  std::string details_;
+  std::string attachment_path_;
+};
+
+// Check if new Toggl-built version is available.
 class FetchUpdatesTask : public BaseTask {
   public:
     FetchUpdatesTask(Context *ctx,

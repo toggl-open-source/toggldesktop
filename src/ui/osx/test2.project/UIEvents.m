@@ -18,6 +18,7 @@ NSString *const kUIStateTimeEntryDeselected = @"TimeEntryDeselected";
 NSString *const kUIStateError = @"Error";
 NSString *const kUIStateUpdateAvailable = @"UpdateAvailable";
 NSString *const kUIStateUpToDate = @"UpToDate";
+NSString *const kUIStateFeedbackSent = @"FeedbackSent";
 
 // Events
 NSString *const kUIEventModelChange = @"ModelChange";

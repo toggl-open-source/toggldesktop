@@ -15,4 +15,4 @@
 #define kMenuItemTagStop 5
 #define kMenuItemTagClearCache 6
 #define kMenuItemTagTimeline 7
-#define kMenuItemTagWebSocket 8
+#define kMenuItemTagSendFeedback 8

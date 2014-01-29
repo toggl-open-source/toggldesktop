@@ -3,6 +3,11 @@
 #include <string>
 
 #include "Poco/Task.h"
+#include "Poco/Base64Encoder.h"
+#include "Poco/FileStream.h"
+#include "Poco/StreamCopier.h"
+#include "Poco/Path.h"
+
 #include "./kopsik_api.h"
 #include "./websocket_client.h"
 #include "./https_client.h"
@@ -69,7 +74,7 @@ void WebSocketStopTask::runTask() {
 
 void TimelineStartTask::runTask() {
   if (!context()->user) {
-    result_callback()(KOPSIK_API_FAILURE, "Please login first");
+    result_callback()(KOPSIK_API_FAILURE, "Please login to start timeline");
     return;
   }
 
@@ -141,6 +146,68 @@ void TimelineUpdateServerSettingsTask::runTask() {
     logger.warning(err);
   }
 }
+
+std::string SendFeedbackTask::feedbackJSON() {
+  JSONNODE *root = json_new(JSON_NODE);
+  json_push_back(root, json_new_b("desktop", true));
+  json_push_back(root, json_new_a("toggl_version",
+    context()->app_version.c_str()));
+  json_push_back(root, json_new_a("details", details_.c_str()));
+  json_push_back(root, json_new_a("subject", subject_.c_str()));
+  if (!attachment_path_.empty()) {
+    json_push_back(root, json_new_a("base64_encoded_attachment",
+                                    base64encode_attachment().c_str()));
+    json_push_back(root, json_new_a("attachment_name",
+                                    filename().c_str()));
+  }
+  json_char *jc = json_write_formatted(root);
+  std::string json(jc);
+  json_free(jc);
+  json_delete(root);
+  return json;
+}
+
+std::string SendFeedbackTask::filename() {
+  Poco::Path p(true);
+  bool ok = p.tryParse(attachment_path_);
+  if (!ok) {
+    return "";
+  }
+  return p.getFileName();
+}
+
+std::string SendFeedbackTask::base64encode_attachment() {
+  std::ostringstream oss;
+  Poco::FileInputStream fis(attachment_path_);
+  if (!fis.good()) {
+    Poco::Logger &logger = Poco::Logger::get("SendFeedbackTask");
+    logger.error("Failed to load attached image");
+    return "";
+  }
+  Poco::Base64Encoder encoder(oss);
+  encoder.rdbuf()->setLineLength(0);  // disable line feeds in output
+  Poco::StreamCopier::copyStream(fis, encoder);
+  encoder.close();
+  return oss.str();
+}
+
+void SendFeedbackTask::runTask() {
+  kopsik::HTTPSClient https_client(context()->api_url,
+                                   context()->app_name,
+                                   context()->app_version);
+  std::string response_body("");
+  kopsik::error err = https_client.PostJSON("/api/v8/feedback",
+                                            feedbackJSON(),
+                                            context()->user->APIToken(),
+                                            "api_token",
+                                            &response_body);
+  if (err != kopsik::noError) {
+    result_callback()(KOPSIK_API_FAILURE, err.c_str());
+    return;
+  }
+
+  result_callback()(KOPSIK_API_SUCCESS, 0);
+};
 
 void FetchUpdatesTask::runTask() {
   std::string response_body("");

@@ -534,9 +534,10 @@ NSString *kTimeTotalUnknown = @"--:--";
   [menu addItemWithTitle:@"About"
                   action:@selector(onAboutMenuItem:)
            keyEquivalent:@""];
-  [menu addItemWithTitle:@"Send Feedback"
+  NSMenuItem *sendFeedbackMenuItem = [menu addItemWithTitle:@"Send Feedback"
                   action:@selector(onSendFeedbackMenuItem)
            keyEquivalent:@""];
+  sendFeedbackMenuItem.tag = kMenuItemTagSendFeedback;
   [menu addItemWithTitle:@"Logout"
                   action:@selector(onLogoutMenuItem:)
            keyEquivalent:@""].tag = kMenuItemTagLogout;;
@@ -960,17 +961,17 @@ const int kIdleThresholdSeconds = 5 * 60;
           return NO;
         }
         break;
-      case kMenuItemTagWebSocket:
-        if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
-          return NO;
-        }
-        break;
       case kMenuItemTagLogout:
         if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
           return NO;
         }
         break;
       case kMenuItemTagClearCache:
+        if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
+          return NO;
+        }
+        break;
+      case kMenuItemTagSendFeedback:
         if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
           return NO;
         }

@@ -700,7 +700,8 @@ kopsik_api_result kopsik_user_has_premium_workspaces(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login first", errlen);
+      strncpy(errmsg, "Please login to check if you have premium workspaces",
+              errlen);
       return KOPSIK_API_FAILURE;
     }
 
@@ -739,7 +740,7 @@ kopsik_api_result kopsik_pushable_models(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login first", errlen);
+      strncpy(errmsg, "Please login to check if sync is required", errlen);
       return KOPSIK_API_FAILURE;
     }
     std::vector<kopsik::TimeEntry *> pushable;
@@ -834,7 +835,7 @@ kopsik_api_result kopsik_autocomplete_items(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login first", errlen);
+      strncpy(errmsg, "Please login to fill autocomplete", errlen);
       return KOPSIK_API_FAILURE;
     }
 
@@ -1104,7 +1105,7 @@ kopsik_api_result kopsik_start(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login first", errlen);
+      strncpy(errmsg, "Please login to start time tracking", errlen);
       return KOPSIK_API_FAILURE;
     }
 
@@ -1169,7 +1170,7 @@ kopsik_api_result kopsik_time_entry_view_item_by_guid(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login first", errlen);
+      strncpy(errmsg, "Please login to load time entry data", errlen);
       return KOPSIK_API_FAILURE;
     }
     kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
@@ -1218,7 +1219,7 @@ kopsik_api_result kopsik_continue(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login first", errlen);
+      strncpy(errmsg, "Please login to continue time tracking", errlen);
       return KOPSIK_API_FAILURE;
     }
 
@@ -1264,7 +1265,8 @@ kopsik_api_result kopsik_continue_latest(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login first", errlen);
+      strncpy(errmsg, "Please login to continue tracking last time entry",
+              errlen);
       return KOPSIK_API_FAILURE;
     }
 
@@ -1323,7 +1325,7 @@ kopsik_api_result kopsik_delete_time_entry(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login first", errlen);
+      strncpy(errmsg, "Please login to delete time entry", errlen);
       return KOPSIK_API_FAILURE;
     }
 
@@ -1385,7 +1387,7 @@ kopsik_api_result kopsik_set_time_entry_duration(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login first", errlen);
+      strncpy(errmsg, "Please login to set time entry duration", errlen);
       return KOPSIK_API_FAILURE;
     }
 
@@ -1439,7 +1441,7 @@ kopsik_api_result kopsik_set_time_entry_project(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login first", errlen);
+      strncpy(errmsg, "Please login to select project", errlen);
       return KOPSIK_API_FAILURE;
     }
 
@@ -1507,7 +1509,7 @@ kopsik_api_result kopsik_set_time_entry_start_iso_8601(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login first", errlen);
+      strncpy(errmsg, "Please login to change time entry start time", errlen);
       return KOPSIK_API_FAILURE;
     }
 
@@ -1567,7 +1569,7 @@ kopsik_api_result kopsik_set_time_entry_end_iso_8601(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login first", errlen);
+      strncpy(errmsg, "Please login to change time entry end time", errlen);
       return KOPSIK_API_FAILURE;
     }
 
@@ -1626,7 +1628,7 @@ kopsik_api_result kopsik_set_time_entry_tags(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login first", errlen);
+      strncpy(errmsg, "Please login to change time entry tags", errlen);
       return KOPSIK_API_FAILURE;
     }
 
@@ -1683,7 +1685,8 @@ kopsik_api_result kopsik_set_time_entry_billable(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login first", errlen);
+      strncpy(errmsg, "Please login to change time entry billable state",
+              errlen);
       return KOPSIK_API_FAILURE;
     }
 
@@ -1745,7 +1748,7 @@ kopsik_api_result kopsik_set_time_entry_description(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login first", errlen);
+      strncpy(errmsg, "Please login to change time entry description", errlen);
       return KOPSIK_API_FAILURE;
     }
 
@@ -1794,7 +1797,7 @@ kopsik_api_result kopsik_stop(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login first", errlen);
+      strncpy(errmsg, "Please login to stop time tracking", errlen);
       return KOPSIK_API_FAILURE;
     }
 
@@ -1848,7 +1851,7 @@ kopsik_api_result kopsik_split_running_time_entry_at(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login first", errlen);
+      strncpy(errmsg, "Please login to split time entry", errlen);
       return KOPSIK_API_FAILURE;
     }
 
@@ -1900,7 +1903,7 @@ kopsik_api_result kopsik_stop_running_time_entry_at(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login first", errlen);
+      strncpy(errmsg, "Please login to stop running time entry", errlen);
       return KOPSIK_API_FAILURE;
     }
 
@@ -1949,7 +1952,7 @@ kopsik_api_result kopsik_running_time_entry_view_item(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login first", errlen);
+      strncpy(errmsg, "Please login to access tracking time entry", errlen);
       return KOPSIK_API_FAILURE;
     }
 
@@ -2009,7 +2012,7 @@ kopsik_api_result kopsik_time_entry_view_items(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login first", errlen);
+      strncpy(errmsg, "Please login to access time entries", errlen);
       return KOPSIK_API_FAILURE;
     }
 
@@ -2097,7 +2100,7 @@ kopsik_api_result kopsik_duration_for_date_header(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login first", errlen);
+      strncpy(errmsg, "Please login to access time entry", errlen);
       return KOPSIK_API_FAILURE;
     }
 
@@ -2233,6 +2236,46 @@ int kopsik_timeline_is_recording_enabled(void *context) {
     return 0;
   }
   return ctx->user->RecordTimeline();
+}
+
+// Feedback
+
+void kopsik_feedback_send(void *context,
+                          const char *topic,
+                          const char *details,
+                          const char *base64encoded_image,
+                          KopsikResultCallback callback) {
+  poco_assert(context);
+  poco_assert(callback);
+
+  logger().debug("kopsik_feedback_send");
+
+  Context *ctx = reinterpret_cast<Context *>(context);
+  if (!ctx->user) {
+    callback(KOPSIK_API_FAILURE, "Please login to send feedback");
+    return;
+  }
+
+  if (!topic || !strlen(topic)) {
+    callback(KOPSIK_API_FAILURE, "Missing topic");
+    return;
+  }
+
+  if (!details || !strlen(details)) {
+    callback(KOPSIK_API_FAILURE, "Missing details");
+    return;
+  }
+
+  std::string image("");
+  if (base64encoded_image && strlen(base64encoded_image)) {
+    image = std::string(base64encoded_image);
+  }
+
+  ctx->tm.start(new SendFeedbackTask(ctx,
+                                     std::string(topic),
+                                     std::string(details),
+                                     image,
+                                     callback));
 }
 
 // Updates

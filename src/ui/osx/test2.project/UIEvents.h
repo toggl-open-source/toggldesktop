@@ -18,6 +18,7 @@ extern NSString *const kUIStateTimeEntryDeselected;
 extern NSString *const kUIStateError;
 extern NSString *const kUIStateUpdateAvailable;
 extern NSString *const kUIStateUpToDate;
+extern NSString *const kUIStateFeedbackSent;
 
 
 // Events

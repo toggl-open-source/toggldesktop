@@ -389,6 +389,14 @@ KOPSIK_EXPORT void kopsik_timeline_toggle_recording(
 KOPSIK_EXPORT int kopsik_timeline_is_recording_enabled(
   void *ctx);
 
+// Feedback
+
+KOPSIK_EXPORT void kopsik_feedback_send(void *ctx,
+                                        const char *topic,
+                                        const char *details,
+                                        const char *base64encoded_image,
+                                        KopsikResultCallback callback);
+
 // Updates
 
 typedef void (*KopsikCheckUpdateCallback)(
