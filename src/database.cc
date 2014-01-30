@@ -1,5 +1,7 @@
 // Copyright 2013 kopsik developers
 
+// Session access is locked with a scoped lock.
+
 #include "./database.h"
 
 #include <limits>
@@ -26,8 +28,6 @@ error Database::DeleteUser(
         User *model,
         const bool with_related_data) {
     poco_assert(model);
-
-    ExplicitScopedLock("Database::DeleteUser", mutex_);
 
     error err = deleteFromTable("users", model->LocalID());
     if (err != noError) {
@@ -69,6 +69,8 @@ error Database::deleteAllFromTableByUID(
     poco_assert(UID > 0);
     poco_assert(!table_name.empty());
 
+    ExplicitScopedLock("Database::deleteAllFromTableByUID", mutex_);
+
     try {
         *session << "delete from " + table_name + " where uid = :uid",
             Poco::Data::use(UID),
@@ -94,6 +96,8 @@ error Database::deleteFromTable(
     poco_assert(!table_name.empty());
     poco_assert(local_id);
 
+    ExplicitScopedLock("Database::deleteFromTable", mutex_);
+
     std::stringstream ss;
     ss << "Deleting from table " << table_name
         << ", local ID: " << local_id;
@@ -115,6 +119,8 @@ error Database::deleteFromTable(
 
 error Database::last_error() {
     poco_assert(session);
+
+    ExplicitScopedLock("Database::last_error", mutex_);
 
     Poco::Data::SessionImpl* impl = session->impl();
     Poco::Data::SQLite::SessionImpl* sqlite =
@@ -138,8 +144,6 @@ error Database::LoadCurrentUser(
         const bool with_related_data) {
     poco_assert(user);
 
-    ExplicitScopedLock("Database::LoadCurrentUser", mutex_);
-
     std::string api_token("");
     error err = CurrentAPIToken(&api_token);
     if (err != noError) {
@@ -160,9 +164,9 @@ error Database::LoadSettings(
     poco_assert(proxy);
     poco_assert(use_idle_detection);
 
-    ExplicitScopedLock("Database::LoadSettings", mutex_);
-
     int has_settings = 0;
+
+    ExplicitScopedLock("Database::LoadSettings", mutex_);
 
     try {
         *session << "select use_proxy, proxy_host, proxy_port, "
@@ -382,6 +386,8 @@ error Database::loadWorkspaces(
 
     list->clear();
 
+    ExplicitScopedLock("Database::loadWorkspaces", mutex_);
+
     try {
         Poco::Data::Statement select(*session);
         select << "SELECT local_id, id, uid, name, premium "
@@ -426,6 +432,8 @@ error Database::loadClients(
     poco_assert(list);
 
     list->clear();
+
+    ExplicitScopedLock("Database::loadClients", mutex_);
 
     try {
         Poco::Data::Statement select(*session);
@@ -473,6 +481,8 @@ error Database::loadProjects(
     poco_assert(list);
 
     list->clear();
+
+    ExplicitScopedLock("Database::loadProjects", mutex_);
 
     try {
         Poco::Data::Statement select(*session);
@@ -524,6 +534,8 @@ error Database::loadTasks(
 
     list->clear();
 
+    ExplicitScopedLock("Database::loadTasks", mutex_);
+
     try {
         Poco::Data::Statement select(*session);
         select << "SELECT local_id, id, uid, name, wid, pid "
@@ -570,6 +582,8 @@ error Database::loadTags(
 
     list->clear();
 
+    ExplicitScopedLock("Database::loadTags", mutex_);
+
     try {
         Poco::Data::Statement select(*session);
         select << "SELECT local_id, id, uid, name, wid, guid "
@@ -615,6 +629,8 @@ error Database::loadTimeEntries(
     poco_assert(list);
 
     list->clear();
+
+    ExplicitScopedLock("Database::loadTimeEntries", mutex_);
 
     try {
         Poco::Data::Statement select(*session);
@@ -1478,8 +1494,6 @@ error Database::SaveUser(
     poco_assert(session);
     poco_assert(changes);
 
-    ExplicitScopedLock("Database::SaveUser", mutex_);
-
     {
         std::stringstream ss;
         ss << "Saving user in thread " << Poco::Thread::currentTid();
@@ -1498,6 +1512,8 @@ error Database::SaveUser(
     if (!model->ID()) {
         return error("Missing user ID, cannot save user");
     }
+
+    ExplicitScopedLock("Database::SaveUser", mutex_);
 
     session->begin();
 
@@ -1639,6 +1655,8 @@ error Database::SaveUser(
 
 error Database::initialize_tables() {
     poco_assert(session);
+
+    ExplicitScopedLock("initialize_tables", mutex_);
 
     std::string table_name;
     // Check if we have migrations table
@@ -2065,6 +2083,9 @@ error Database::migrate(
     poco_assert(session);
     poco_assert(!name.empty());
     poco_assert(!sql.empty());
+
+    ExplicitScopedLock("Database::migrate", mutex_);
+
     try {
         int count = 0;
         *session << "select count(*) from kopsik_migrations where name=:name",
@@ -2102,6 +2123,9 @@ error Database::select_timeline_batch(
         logger().warning("select_batch database is not open, ignoring request");
         return noError;
     }
+
+    ExplicitScopedLock("Database::select_timeline_batch", mutex_);
+
     Poco::Data::Statement select(*session);
     select << "SELECT id, title, filename, start_time, end_time, idle "
         "FROM timeline_events WHERE user_id = :user_id "
@@ -2146,6 +2170,9 @@ error Database::insert_timeline_event(const TimelineEvent& event) {
         logger().warning("insert database is not open, ignoring request");
         return noError;
     }
+
+    ExplicitScopedLock("Database::insert_timeline_event", mutex_);
+
     *session << "INSERT INTO timeline_events("
         "user_id, title, filename, start_time, end_time, idle"
         ") VALUES ("
@@ -2179,6 +2206,9 @@ error Database::delete_timeline_batch(
         const TimelineEvent &event = *i;
         ids.push_back(event.id);
     }
+
+    ExplicitScopedLock("Database::delete_timeline_batch", mutex_);
+
     *session << "DELETE FROM timeline_events WHERE id = :id",
         Poco::Data::use(ids),
         Poco::Data::now;
