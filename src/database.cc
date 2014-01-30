@@ -1010,6 +1010,10 @@ error Database::saveTimeEntry(
             *session << "select last_insert_rowid()",
                 Poco::Data::into(local_id),
                 Poco::Data::now;
+            err = last_error();
+            if (err != noError) {
+                return err;
+            }
             model->SetLocalID(local_id);
             changes->push_back(ModelChange(
               "time_entry", "insert", model->ID(), model->GUID()));
@@ -1080,6 +1084,10 @@ error Database::saveWorkspace(
             *session << "select last_insert_rowid()",
                 Poco::Data::into(local_id),
                 Poco::Data::now;
+            err = last_error();
+            if (err != noError) {
+                return err;
+            }
             model->SetLocalID(local_id);
             changes->push_back(ModelChange(
               "workspace", "insert", model->ID(), ""));
@@ -1177,6 +1185,10 @@ error Database::saveClient(
             *session << "select last_insert_rowid()",
                 Poco::Data::into(local_id),
                 Poco::Data::now;
+            err = last_error();
+            if (err != noError) {
+                return err;
+            }
             model->SetLocalID(local_id);
             changes->push_back(ModelChange(
               "client", "insert", model->ID(), model->GUID()));
@@ -1302,6 +1314,10 @@ error Database::saveProject(
             *session << "select last_insert_rowid()",
                 Poco::Data::into(local_id),
                 Poco::Data::now;
+            err = last_error();
+            if (err != noError) {
+                return err;
+            }
             model->SetLocalID(local_id);
             changes->push_back(ModelChange(
               "project", "insert", model->ID(), model->GUID()));
@@ -1374,6 +1390,10 @@ error Database::saveTask(
             *session << "select last_insert_rowid()",
                 Poco::Data::into(local_id),
                 Poco::Data::now;
+            err = last_error();
+            if (err != noError) {
+                return err;
+            }
             model->SetLocalID(local_id);
             changes->push_back(ModelChange(
               "task", "insert", model->ID(), ""));
@@ -1471,6 +1491,10 @@ error Database::saveTag(
             *session << "select last_insert_rowid()",
                 Poco::Data::into(local_id),
                 Poco::Data::now;
+            err = last_error();
+            if (err != noError) {
+                return err;
+            }
             model->SetLocalID(local_id);
             changes->push_back(ModelChange(
               "tag", "insert", model->ID(), model->GUID()));
@@ -1577,6 +1601,10 @@ error Database::SaveUser(
                 *session << "select last_insert_rowid()",
                     Poco::Data::into(local_id),
                     Poco::Data::now;
+                err = last_error();
+                if (err != noError) {
+                    return err;
+                }
                 model->SetLocalID(local_id);
                 err = last_error();
                 if (err != noError) {
@@ -1650,6 +1678,10 @@ error Database::initialize_tables() {
         Poco::Data::into(table_name),
         Poco::Data::limit(1),
         Poco::Data::now;
+    error err = last_error();
+    if (err != noError) {
+        return err;
+    }
 
     if (table_name.length() == 0) {
         *session <<
@@ -1670,7 +1702,7 @@ error Database::initialize_tables() {
         }
     }
 
-    error err = migrate("users",
+    err = migrate("users",
         "create table users("
         "local_id integer primary key, "
         "id integer not null, "
@@ -2076,13 +2108,25 @@ error Database::migrate(
             Poco::Data::into(count),
             Poco::Data::use(name),
             Poco::Data::now;
+        error err = last_error();
+        if (err != noError) {
+            return err;
+        }
 
         if (count < 1) {
             *session << sql, Poco::Data::now;
+            err = last_error();
+            if (err != noError) {
+                return err;
+            }
 
             *session << "insert into kopsik_migrations(name) values(:name)",
                 Poco::Data::use(name),
                 Poco::Data::now;
+            err = last_error();
+            if (err != noError) {
+                return err;
+            }
         }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -2091,7 +2135,7 @@ error Database::migrate(
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error();
+    return noError;
 }
 
 error Database::select_timeline_batch(
