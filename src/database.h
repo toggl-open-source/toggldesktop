@@ -45,7 +45,9 @@ class Database {
         explicit Database(std::string db_path) :
                 session(0), desktop_id_("") {
             Poco::Data::SQLite::Connector::registerConnector();
+
             session = new Poco::Data::Session("SQLite", db_path);
+
             error err = initialize_tables();
             if (err != noError) {
                 Poco::Logger &logger = Poco::Logger::get("database");
