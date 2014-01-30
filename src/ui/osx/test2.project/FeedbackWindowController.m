@@ -61,6 +61,16 @@
 }
 
 - (IBAction)sendClick:(id)sender {
+  if (self.topicComboBox.stringValue == nil
+      || [self.topicComboBox.stringValue isEqualToString:@""]) {
+    [self.topicComboBox becomeFirstResponder];
+    return;
+  }
+  if (self.contentTextView.string == nil
+      || [self.contentTextView.string isEqualToString:@""]) {
+    [self.contentTextView becomeFirstResponder];
+    return;
+  }
   kopsik_feedback_send(ctx,
                        [self.topicComboBox.stringValue UTF8String],
                        [self.contentTextView.string UTF8String],
