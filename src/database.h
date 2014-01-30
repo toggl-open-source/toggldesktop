@@ -12,6 +12,12 @@
 #include "Poco/NotificationCenter.h"
 #include "Poco/Observer.h"
 
+#if defined(POCO_UNBUNDLED)
+#include <sqlite3.h>
+#else
+#include "sqlite3.h"
+#endif
+
 #include "./types.h"
 #include "./proxy.h"
 #include "./toggl_api_client.h"
@@ -47,6 +53,10 @@ class Database {
             Poco::Data::SQLite::Connector::registerConnector();
 
             session = new Poco::Data::Session("SQLite", db_path);
+
+            std::stringstream ss;
+            ss << "sqlite3_threadsafe()=" << sqlite3_threadsafe();
+            logger().debug(ss.str());
 
             error err = initialize_tables();
             if (err != noError) {
