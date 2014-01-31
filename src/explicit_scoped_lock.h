@@ -19,13 +19,13 @@ class ExplicitScopedLock : public Poco::Mutex::ScopedLock {
         context_(context) {
       std::stringstream text;
       text << context_ << " locking";
-      logger().debug(text.str());
+      logger().trace(text.str());
     }
 
     ~ExplicitScopedLock() {
       std::stringstream text;
       text << context_ << " unlocking";
-      logger().debug(text.str());
+      logger().trace(text.str());
     }
 
    private:
