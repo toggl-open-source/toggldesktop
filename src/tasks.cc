@@ -83,7 +83,7 @@ void TimelineStartTask::runTask() {
     return;
   }
 
-  kopsik::ExplicitScopedLock("TimelineStartTask", context()->mutex);
+  Poco::Mutex::ScopedLock lock(context()->mutex);
 
   if (context()->timeline_uploader) {
     delete context()->timeline_uploader;
@@ -107,7 +107,7 @@ void TimelineStartTask::runTask() {
 }
 
 void TimelineStopTask::runTask() {
-  kopsik::ExplicitScopedLock("TimelineStopTask", context()->mutex);
+  Poco::Mutex::ScopedLock lock(context()->mutex);
 
   if (context()->window_change_recorder) {
     delete context()->window_change_recorder;

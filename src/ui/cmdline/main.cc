@@ -163,7 +163,7 @@ namespace command_line_client {
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
             syncing = true;
-            kopsik_push(ctx, on_sync_result);
+            kopsik_sync(ctx, 0, on_sync_result);
             while (syncing) {
                 Poco::Thread::sleep(1000);
             }
@@ -182,7 +182,7 @@ namespace command_line_client {
             }
             if (was_found) {
                 syncing = true;
-                kopsik_push(ctx, on_sync_result);
+                kopsik_sync(ctx, 0, on_sync_result);
                 while (syncing) {
                     Poco::Thread::sleep(1000);
                 }
@@ -250,7 +250,7 @@ namespace command_line_client {
             }
 
             syncing = true;
-            kopsik_push(ctx, on_sync_result);
+            kopsik_sync(ctx, 0, on_sync_result);
             while (syncing) {
                 Poco::Thread::sleep(1000);
             }

@@ -71,7 +71,7 @@ kopsik::error Context::ConfigureProxy() {
   if (!use_proxy) {
     proxy = kopsik::Proxy();  // reset values
   }
-  kopsik::ExplicitScopedLock("Context::ConfigureProxy", mutex);
+  Poco::Mutex::ScopedLock lock(mutex);
 
   ws_client->SetProxy(proxy);
   return kopsik::noError;

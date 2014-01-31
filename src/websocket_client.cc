@@ -22,8 +22,6 @@
 #include "./libjson.h"
 #include "./version.h"
 
-#include "./explicit_scoped_lock.h"
-
 namespace kopsik {
 
 Poco::Logger &WebSocketClient::logger() {
@@ -42,7 +40,7 @@ void WebSocketClient::Start(
     return;
   }
 
-  ExplicitScopedLock("WebSocketClient::Start", mutex_);
+  Poco::Mutex::ScopedLock lock(mutex_);
 
   activity_.start();
 
@@ -66,7 +64,7 @@ void WebSocketClient::Stop() {
 error WebSocketClient::createSession() {
   logger().debug("createSession");
 
-  ExplicitScopedLock("WebSocketClient::createSession", mutex_);
+  Poco::Mutex::ScopedLock lock(mutex_);
 
   deleteSession();
 
@@ -267,7 +265,7 @@ WebSocketClient::~WebSocketClient() {
 void WebSocketClient::deleteSession() {
   logger().debug("deleteSession");
 
-  ExplicitScopedLock("WebSocketClient::deleteSession", mutex_);
+  Poco::Mutex::ScopedLock lock(mutex_);
 
   if (ws_) {
     delete ws_;

@@ -12,7 +12,6 @@
 #include "./window_change_recorder.h"
 #include "./timeline_uploader.h"
 #include "./CustomErrorHandler.h"
-#include "./explicit_scoped_lock.h"
 
 #include "Poco/TaskManager.h"
 #include "Poco/ErrorHandler.h"

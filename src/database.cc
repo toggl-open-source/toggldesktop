@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "./toggl_api_client.h"
-#include "./explicit_scoped_lock.h"
 
 #include "Poco/Logger.h"
 #include "Poco/UUID.h"
@@ -69,7 +68,7 @@ error Database::deleteAllFromTableByUID(
     poco_assert(UID > 0);
     poco_assert(!table_name.empty());
 
-    ExplicitScopedLock("Database::deleteAllFromTableByUID", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
         *session << "delete from " + table_name + " where uid = :uid",
@@ -96,7 +95,7 @@ error Database::deleteFromTable(
     poco_assert(!table_name.empty());
     poco_assert(local_id);
 
-    ExplicitScopedLock("Database::deleteFromTable", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     std::stringstream ss;
     ss << "Deleting from table " << table_name
@@ -120,7 +119,7 @@ error Database::deleteFromTable(
 error Database::last_error(const std::string was_doing) {
     poco_assert(session);
 
-    ExplicitScopedLock("Database::last_error", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     Poco::Data::SessionImpl* impl = session->impl();
     Poco::Data::SQLite::SessionImpl* sqlite =
@@ -166,7 +165,7 @@ error Database::LoadSettings(
 
     int has_settings = 0;
 
-    ExplicitScopedLock("Database::LoadSettings", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
         *session << "select use_proxy, proxy_host, proxy_port, "
@@ -201,7 +200,7 @@ error Database::SaveSettings(
         const bool use_idle_detection) {
     poco_assert(session);
 
-    ExplicitScopedLock("Database::SaveSettings", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
         *session << "delete from settings",
@@ -241,7 +240,7 @@ error Database::LoadUserByAPIToken(
     poco_assert(model);
     poco_assert(!api_token.empty());
 
-    ExplicitScopedLock("Database::LoadUserByAPIToken", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     Poco::UInt64 uid(0);
     model->SetAPIToken(api_token);
@@ -304,7 +303,7 @@ error Database::LoadUserByID(
     poco_assert(session);
     poco_assert(UID > 0);
 
-    ExplicitScopedLock("Database::LoadUserByID", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     Poco::Stopwatch stopwatch;
     stopwatch.start();
@@ -386,7 +385,7 @@ error Database::loadWorkspaces(
 
     list->clear();
 
-    ExplicitScopedLock("Database::loadWorkspaces", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
         Poco::Data::Statement select(*session);
@@ -433,7 +432,7 @@ error Database::loadClients(
 
     list->clear();
 
-    ExplicitScopedLock("Database::loadClients", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
         Poco::Data::Statement select(*session);
@@ -482,7 +481,7 @@ error Database::loadProjects(
 
     list->clear();
 
-    ExplicitScopedLock("Database::loadProjects", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
         Poco::Data::Statement select(*session);
@@ -534,7 +533,7 @@ error Database::loadTasks(
 
     list->clear();
 
-    ExplicitScopedLock("Database::loadTasks", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
         Poco::Data::Statement select(*session);
@@ -582,7 +581,7 @@ error Database::loadTags(
 
     list->clear();
 
-    ExplicitScopedLock("Database::loadTags", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
         Poco::Data::Statement select(*session);
@@ -630,7 +629,7 @@ error Database::loadTimeEntries(
 
     list->clear();
 
-    ExplicitScopedLock("Database::loadTimeEntries", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
         Poco::Data::Statement select(*session);
@@ -859,7 +858,7 @@ error Database::saveTimeEntry(
         model->SetGUID(generateGUID());
     }
 
-    ExplicitScopedLock("Database::SaveTimeEntry", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
         if (model->LocalID()) {
@@ -1039,7 +1038,7 @@ error Database::saveWorkspace(
         return noError;
     }
 
-    ExplicitScopedLock("Database::saveWorkspace", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
         if (model->LocalID()) {
@@ -1113,7 +1112,7 @@ error Database::saveClient(
         return noError;
     }
 
-    ExplicitScopedLock("Database::saveClient", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
         if (model->LocalID()) {
@@ -1214,7 +1213,7 @@ error Database::saveProject(
         return noError;
     }
 
-    ExplicitScopedLock("Database::SaveProject", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
         if (model->LocalID()) {
@@ -1343,7 +1342,7 @@ error Database::saveTask(
       return noError;
     }
 
-    ExplicitScopedLock("Database::saveTask", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
         if (model->LocalID()) {
@@ -1419,7 +1418,7 @@ error Database::saveTag(
         return noError;
     }
 
-    ExplicitScopedLock("Database::saveTag", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
         if (model->LocalID()) {
@@ -1537,7 +1536,7 @@ error Database::SaveUser(
         return error("Missing user ID, cannot save user");
     }
 
-    ExplicitScopedLock("Database::SaveUser", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     // Check if we really need to save model,
     // *but* do not return if we don't need to.
@@ -1664,7 +1663,7 @@ error Database::SaveUser(
 error Database::initialize_tables() {
     poco_assert(session);
 
-    ExplicitScopedLock("initialize_tables", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     std::string table_name;
     // Check if we have migrations table
@@ -2011,7 +2010,7 @@ error Database::CurrentAPIToken(std::string *token) {
     poco_assert(session);
     poco_assert(token);
 
-    ExplicitScopedLock("Database::CurrentAPIToken", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     *token = "";
     try {
@@ -2032,7 +2031,7 @@ error Database::CurrentAPIToken(std::string *token) {
 error Database::ClearCurrentAPIToken() {
     poco_assert(session);
 
-    ExplicitScopedLock("Database::ClearCurrentAPIToken", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
         *session << "delete from sessions", Poco::Data::now;
@@ -2049,7 +2048,7 @@ error Database::ClearCurrentAPIToken() {
 error Database::SetCurrentAPIToken(const std::string &token) {
     poco_assert(session);
 
-    ExplicitScopedLock("Database::SetCurrentAPIToken", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     error err = ClearCurrentAPIToken();
     if (err != noError) {
@@ -2072,7 +2071,7 @@ error Database::SetCurrentAPIToken(const std::string &token) {
 error Database::SaveDesktopID() {
     poco_assert(session);
 
-    ExplicitScopedLock("Database::SaveDesktopID", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
         *session << "INSERT INTO timeline_installation(desktop_id) "
@@ -2096,7 +2095,7 @@ error Database::migrate(
     poco_assert(!name.empty());
     poco_assert(!sql.empty());
 
-    ExplicitScopedLock("Database::migrate", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
         int count = 0;
@@ -2148,7 +2147,7 @@ error Database::select_timeline_batch(
         return noError;
     }
 
-    ExplicitScopedLock("Database::select_timeline_batch", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     Poco::Data::Statement select(*session);
     select << "SELECT id, title, filename, start_time, end_time, idle "
@@ -2195,7 +2194,7 @@ error Database::insert_timeline_event(const TimelineEvent& event) {
         return noError;
     }
 
-    ExplicitScopedLock("Database::insert_timeline_event", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     *session << "INSERT INTO timeline_events("
         "user_id, title, filename, start_time, end_time, idle"
@@ -2231,7 +2230,7 @@ error Database::delete_timeline_batch(
         ids.push_back(event.id);
     }
 
-    ExplicitScopedLock("Database::delete_timeline_batch", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     *session << "DELETE FROM timeline_events WHERE id = :id",
         Poco::Data::use(ids),
@@ -2274,7 +2273,7 @@ error Database::String(
     poco_assert(result);
     poco_assert(!sql.empty());
 
-    ExplicitScopedLock("Database::String", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
         std::string value("");
@@ -2299,7 +2298,7 @@ error Database::UInt(
     poco_assert(result);
     poco_assert(!sql.empty());
 
-    ExplicitScopedLock("Database::UInt", mutex_);
+    Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
         Poco::UInt64 value(0);

@@ -13,7 +13,6 @@
 #include "./window_change_recorder.h"
 #include "./CustomErrorHandler.h"
 #include "./proxy.h"
-#include "./explicit_scoped_lock.h"
 #include "./context.h"
 #include "./tasks.h"
 
@@ -46,7 +45,7 @@ void kopsik_set_change_callback(
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
-  kopsik::ExplicitScopedLock("kopsik_set_change_callback", ctx->mutex);
+  Poco::Mutex::ScopedLock lock(ctx->mutex);
 
   ctx->change_callback = callback;
 }
@@ -222,7 +221,7 @@ kopsik_api_result kopsik_set_settings(
 
     Context *ctx = reinterpret_cast<Context *>(context);
 
-    kopsik::ExplicitScopedLock("kopsik_set_settings", ctx->mutex);
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     kopsik::Proxy proxy;
     proxy.host = std::string(proxy_host);
@@ -309,7 +308,7 @@ kopsik_api_result kopsik_set_db_path(
 
     Context *ctx = reinterpret_cast<Context *>(context);
 
-    kopsik::ExplicitScopedLock("kopsik_set_db_path", ctx->mutex);
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     if (ctx->db) {
       delete ctx->db;
@@ -341,7 +340,7 @@ void kopsik_set_log_path(
 
   Poco::AutoPtr<Poco::FormattingChannel> formattingChannel(
       new Poco::FormattingChannel(
-        new Poco::PatternFormatter("%Y-%m-%d %H:%M:%S.%c [%P]:%s:%q:%t")));
+        new Poco::PatternFormatter("%Y-%m-%d %H:%M:%S.%i [%P %I]:%s:%q:%t")));
   formattingChannel->setChannel(simpleFileChannel);
 
   rootLogger().setChannel(formattingChannel);
@@ -363,7 +362,7 @@ void kopsik_set_api_url(
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
-  kopsik::ExplicitScopedLock("kopsik_set_api_url", ctx->mutex);
+  Poco::Mutex::ScopedLock lock(ctx->mutex);
 
   ctx->api_url = api_url;
 }
@@ -376,7 +375,7 @@ void kopsik_set_websocket_url(
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
-  kopsik::ExplicitScopedLock("kopsik_set_websocket_url", ctx->mutex);
+  Poco::Mutex::ScopedLock lock(ctx->mutex);
 
   ctx->ws_client->SetWebsocketURL(websocket_url);
 }
@@ -416,7 +415,7 @@ kopsik_api_result kopsik_current_user(
 
     Context *ctx = reinterpret_cast<Context *>(context);
 
-    kopsik::ExplicitScopedLock("kopsik_current_user", ctx->mutex);
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     if (!ctx->user) {
       kopsik::User *user = new kopsik::User(ctx->app_name, ctx->app_version);
@@ -465,7 +464,7 @@ kopsik_api_result kopsik_set_api_token(
 
     Context *ctx = reinterpret_cast<Context *>(context);
 
-    kopsik::ExplicitScopedLock("kopsik_set_api_token", ctx->mutex);
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     kopsik::error err = ctx->db->SetCurrentAPIToken(api_token);
     if (err != kopsik::noError) {
@@ -571,7 +570,7 @@ kopsik_api_result kopsik_login(
       return KOPSIK_API_FAILURE;
     }
 
-    kopsik::ExplicitScopedLock("kopsik_login", ctx->mutex);
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     err = ctx->db->SetCurrentAPIToken(user->APIToken());
     if (err != kopsik::noError) {
@@ -624,7 +623,7 @@ kopsik_api_result kopsik_logout(
 
     ctx->Shutdown();
 
-    kopsik::ExplicitScopedLock("kopsik_logout", ctx->mutex);
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     kopsik::error err = ctx->db->ClearCurrentAPIToken();
     if (err != kopsik::noError) {
@@ -666,7 +665,7 @@ kopsik_api_result kopsik_clear_cache(
       return KOPSIK_API_SUCCESS;
     }
 
-    kopsik::ExplicitScopedLock("kopsik_clear_cache", ctx->mutex);
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     kopsik::error err = ctx->db->DeleteUser(ctx->user, true);
     if (err != kopsik::noError) {
@@ -776,19 +775,6 @@ void kopsik_sync(
   Context *ctx = reinterpret_cast<Context *>(context);
 
   ctx->tm.start(new SyncTask(ctx, full_sync, callback));
-}
-
-void kopsik_push(
-    void *context,
-    KopsikResultCallback callback) {
-  poco_assert(context);
-  poco_assert(callback);
-
-  logger().debug("kopsik_push");
-
-  Context *ctx = reinterpret_cast<Context *>(context);
-
-  ctx->tm.start(new PushTask(ctx, callback));
 }
 
 // Autocomplete list
@@ -1109,7 +1095,7 @@ kopsik_api_result kopsik_start(
       return KOPSIK_API_FAILURE;
     }
 
-    kopsik::ExplicitScopedLock("kopsik_start", ctx->mutex);
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     std::string desc("");
     if (description) {
@@ -1223,7 +1209,7 @@ kopsik_api_result kopsik_continue(
       return KOPSIK_API_FAILURE;
     }
 
-    kopsik::ExplicitScopedLock("kopsik_api_result", ctx->mutex);
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     kopsik::TimeEntry *te = ctx->user->Continue(GUID);
     poco_assert(te);
@@ -1270,7 +1256,7 @@ kopsik_api_result kopsik_continue_latest(
       return KOPSIK_API_FAILURE;
     }
 
-    kopsik::ExplicitScopedLock("kopsik_continue_latest", ctx->mutex);
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
     ctx->user->SortTimeEntriesByStart();
 
     kopsik::TimeEntry *latest = ctx->user->Latest();
@@ -1329,7 +1315,7 @@ kopsik_api_result kopsik_delete_time_entry(
       return KOPSIK_API_FAILURE;
     }
 
-    kopsik::ExplicitScopedLock("kopsik_delete_time_entry", ctx->mutex);
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
     poco_assert(te);
@@ -1391,7 +1377,7 @@ kopsik_api_result kopsik_set_time_entry_duration(
       return KOPSIK_API_FAILURE;
     }
 
-    kopsik::ExplicitScopedLock("kopsik_set_time_entry_duration", ctx->mutex);
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
     poco_assert(te);
@@ -1445,7 +1431,7 @@ kopsik_api_result kopsik_set_time_entry_project(
       return KOPSIK_API_FAILURE;
     }
 
-    kopsik::ExplicitScopedLock("kopsik_set_time_entry_project", ctx->mutex);
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
     poco_assert(te);
@@ -1513,8 +1499,7 @@ kopsik_api_result kopsik_set_time_entry_start_iso_8601(
       return KOPSIK_API_FAILURE;
     }
 
-    kopsik::ExplicitScopedLock("kopsik_set_time_entry_start_iso_8601",
-      ctx->mutex);
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
     poco_assert(te);
@@ -1573,8 +1558,7 @@ kopsik_api_result kopsik_set_time_entry_end_iso_8601(
       return KOPSIK_API_FAILURE;
     }
 
-    kopsik::ExplicitScopedLock("kopsik_set_time_entry_end_iso_8601",
-      ctx->mutex);
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
     poco_assert(te);
@@ -1632,7 +1616,7 @@ kopsik_api_result kopsik_set_time_entry_tags(
       return KOPSIK_API_FAILURE;
     }
 
-    kopsik::ExplicitScopedLock("kopsik_set_time_entry_tags", ctx->mutex);
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
     poco_assert(te);
@@ -1690,7 +1674,7 @@ kopsik_api_result kopsik_set_time_entry_billable(
       return KOPSIK_API_FAILURE;
     }
 
-    kopsik::ExplicitScopedLock("kopsik_set_time_entry_billable", ctx->mutex);
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
     poco_assert(te);
@@ -1752,7 +1736,7 @@ kopsik_api_result kopsik_set_time_entry_description(
       return KOPSIK_API_FAILURE;
     }
 
-    kopsik::ExplicitScopedLock("kopsik_set_time_entry_description", ctx->mutex);
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
     poco_assert(te);
@@ -1801,7 +1785,7 @@ kopsik_api_result kopsik_stop(
       return KOPSIK_API_FAILURE;
     }
 
-    kopsik::ExplicitScopedLock("kopsik_stop", ctx->mutex);
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     std::vector<kopsik::TimeEntry *> stopped = ctx->user->Stop();
     if (stopped.empty()) {
@@ -1855,8 +1839,7 @@ kopsik_api_result kopsik_split_running_time_entry_at(
       return KOPSIK_API_FAILURE;
     }
 
-    kopsik::ExplicitScopedLock("kopsik_split_running_time_entry_at",
-      ctx->mutex);
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     *was_found = 0;
     kopsik::TimeEntry *running = ctx->user->SplitAt(at);
@@ -1907,7 +1890,7 @@ kopsik_api_result kopsik_stop_running_time_entry_at(
       return KOPSIK_API_FAILURE;
     }
 
-    kopsik::ExplicitScopedLock("kopsik_stop_running_time_entry_at", ctx->mutex);
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     *was_found = 0;
     kopsik::TimeEntry *stopped = ctx->user->StopAt(at);
@@ -2017,7 +2000,7 @@ kopsik_api_result kopsik_time_entry_view_items(
     }
 
     {
-      kopsik::ExplicitScopedLock("kopsik_time_entry_view_items", ctx->mutex);
+      Poco::Mutex::ScopedLock lock(ctx->mutex);
       ctx->user->SortTimeEntriesByStart();
     }
 
@@ -2144,7 +2127,7 @@ void on_websocket_message(
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
-  kopsik::ExplicitScopedLock("on_websocket_message", ctx->mutex);
+  Poco::Mutex::ScopedLock lock(ctx->mutex);
 
   ctx->user->LoadUpdateFromJSONString(json);
 
@@ -2210,7 +2193,7 @@ void kopsik_timeline_toggle_recording(
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
-  kopsik::ExplicitScopedLock("kopsik_timeline_toggle_recording", ctx->mutex);
+  Poco::Mutex::ScopedLock lock(ctx->mutex);
 
   ctx->user->SetRecordTimeline(!ctx->user->RecordTimeline());
   kopsik::error err = ctx->Save();

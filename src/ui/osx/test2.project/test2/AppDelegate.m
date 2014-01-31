@@ -270,7 +270,7 @@ NSString *kTimeTotalUnknown = @"--:--";
      postNotificationName:kUIStateTimerRunning object:timeEntry];
   }
 
-  kopsik_push(ctx, handle_error);
+  kopsik_sync(ctx, 0, handle_error);
 }
 
 - (void)continueTimeEntry:(NSString *)guid {
@@ -305,7 +305,7 @@ NSString *kTimeTotalUnknown = @"--:--";
   [[NSNotificationCenter defaultCenter]
     postNotificationName:kUIStateTimerRunning object:timeEntry];
   
-  kopsik_push(ctx, handle_error);
+  kopsik_sync(ctx, 0, handle_error);
 }
 
 - (void)stopTimeEntry {
@@ -332,7 +332,7 @@ NSString *kTimeTotalUnknown = @"--:--";
   [[NSNotificationCenter defaultCenter]
     postNotificationName:kUIStateTimerStopped object:te];
   
-  kopsik_push(ctx, handle_error);
+  kopsik_sync(ctx, 0, handle_error);
 }
 
 - (void)splitTimeEntryAfterIdle:(IdleEvent *)idleEvent {
@@ -365,7 +365,7 @@ NSString *kTimeTotalUnknown = @"--:--";
 
   kopsik_time_entry_view_item_clear(item);
 
-  kopsik_push(ctx, handle_error);
+  kopsik_sync(ctx, 0, handle_error);
 }
 
 - (void)stopTimeEntryAfterIdle:(IdleEvent *)idleEvent {
@@ -396,7 +396,7 @@ NSString *kTimeTotalUnknown = @"--:--";
       object:timeEntry];
   }
 
-  kopsik_push(ctx, handle_error);
+  kopsik_sync(ctx, 0, handle_error);
 }
 
 - (void)userLoggedIn:(User *)user {

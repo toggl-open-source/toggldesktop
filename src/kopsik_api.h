@@ -149,10 +149,6 @@ KOPSIK_EXPORT void kopsik_sync(
   int full_sync,
   KopsikResultCallback callback);
 
-KOPSIK_EXPORT void kopsik_push(
-  void *ctx,
-  KopsikResultCallback callback);
-
 // Autocomplete list items
 
 #define KOPSIK_AUTOCOMPLETE_TE 0

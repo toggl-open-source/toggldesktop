@@ -8,9 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		741DB38C189685A2004907F3 /* tasks.cc in Sources */ = {isa = PBXBuildFile; fileRef = 741DB38B189685A2004907F3 /* tasks.cc */; };
-		7484A2A718887BEE0025A88B /* explicit_scoped_lock.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7484A2A118887BEE0025A88B /* explicit_scoped_lock.cc */; };
 		7484A2A818887BEE0025A88B /* kopsik_api_private.h in Headers */ = {isa = PBXBuildFile; fileRef = 7484A2A218887BEE0025A88B /* kopsik_api_private.h */; };
-		7484A2A918887BEE0025A88B /* explicit_scoped_lock.h in Headers */ = {isa = PBXBuildFile; fileRef = 7484A2A318887BEE0025A88B /* explicit_scoped_lock.h */; };
 		7484A2AA18887BEE0025A88B /* context.h in Headers */ = {isa = PBXBuildFile; fileRef = 7484A2A418887BEE0025A88B /* context.h */; };
 		7484A2AB18887BEE0025A88B /* context.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7484A2A518887BEE0025A88B /* context.cc */; };
 		7484A2AC18887BEE0025A88B /* kopsik_api_private.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7484A2A618887BEE0025A88B /* kopsik_api_private.cc */; };
@@ -53,9 +51,7 @@
 
 /* Begin PBXFileReference section */
 		741DB38B189685A2004907F3 /* tasks.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tasks.cc; path = ../../../tasks.cc; sourceTree = "<group>"; };
-		7484A2A118887BEE0025A88B /* explicit_scoped_lock.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = explicit_scoped_lock.cc; path = ../../../explicit_scoped_lock.cc; sourceTree = "<group>"; };
 		7484A2A218887BEE0025A88B /* kopsik_api_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kopsik_api_private.h; path = ../../../kopsik_api_private.h; sourceTree = "<group>"; };
-		7484A2A318887BEE0025A88B /* explicit_scoped_lock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = explicit_scoped_lock.h; path = ../../../explicit_scoped_lock.h; sourceTree = "<group>"; };
 		7484A2A418887BEE0025A88B /* context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = context.h; path = ../../../context.h; sourceTree = "<group>"; };
 		7484A2A518887BEE0025A88B /* context.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = context.cc; path = ../../../context.cc; sourceTree = "<group>"; };
 		7484A2A618887BEE0025A88B /* kopsik_api_private.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = kopsik_api_private.cc; path = ../../../kopsik_api_private.cc; sourceTree = "<group>"; };
@@ -163,9 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				741DB38B189685A2004907F3 /* tasks.cc */,
-				7484A2A118887BEE0025A88B /* explicit_scoped_lock.cc */,
 				7484A2A218887BEE0025A88B /* kopsik_api_private.h */,
-				7484A2A318887BEE0025A88B /* explicit_scoped_lock.h */,
 				7484A2A418887BEE0025A88B /* context.h */,
 				7484A2A518887BEE0025A88B /* context.cc */,
 				7484A2A618887BEE0025A88B /* kopsik_api_private.cc */,
@@ -219,7 +213,6 @@
 				C5DA1FB017F18D7B001C4565 /* toggl_api_client.h in Headers */,
 				7484A2AA18887BEE0025A88B /* context.h in Headers */,
 				74CAAD1E181860F7001B77BB /* timeline_event.h in Headers */,
-				7484A2A918887BEE0025A88B /* explicit_scoped_lock.h in Headers */,
 				74F7CDDC18199FA300630BD0 /* window_change_recorder.h in Headers */,
 				74CAAD1A181860F7001B77BB /* get_focused_window.h in Headers */,
 				C5DA1FB117F18D7B001C4565 /* types.h in Headers */,
@@ -300,7 +293,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7484A2A718887BEE0025A88B /* explicit_scoped_lock.cc in Sources */,
 				74CAAD19181860F7001B77BB /* get_focused_window_mac.cc in Sources */,
 				74F7CDDB18199FA300630BD0 /* window_change_recorder.cc in Sources */,
 				74EB0F1717F9A2600046ABC1 /* https_client.cc in Sources */,

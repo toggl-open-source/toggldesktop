@@ -513,7 +513,7 @@ error User::Push(HTTPSClient *https_client) {
 
     Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
     if (dirty.empty()) {
-        logger.debug("Nothing to push.");
+        logger.trace("Nothing to push.");
         return noError;
     }
 
