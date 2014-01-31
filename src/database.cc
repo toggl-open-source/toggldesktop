@@ -866,7 +866,7 @@ error Database::saveTimeEntry(
             std::stringstream ss;
             ss << "Updating time entry " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger().debug(ss.str());
+            logger().trace(ss.str());
 
             if (model->ID()) {
                 *session << "update time_entries set "
@@ -943,7 +943,7 @@ error Database::saveTimeEntry(
             std::stringstream ss;
             ss << "Inserting time entry " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger().debug(ss.str());
+            logger().trace(ss.str());
             if (model->ID()) {
                 *session << "insert into time_entries(id, uid, description, "
                     "wid, guid, pid, tid, billable, "
@@ -1046,7 +1046,7 @@ error Database::saveWorkspace(
             std::stringstream ss;
             ss << "Updating workspace " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger().debug(ss.str());
+            logger().trace(ss.str());
 
             *session << "update workspaces set "
                 "id = :id, uid = :uid, name = :name, premium = :premium "
@@ -1068,7 +1068,7 @@ error Database::saveWorkspace(
             std::stringstream ss;
             ss << "Inserting workspace " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger().debug(ss.str());
+            logger().trace(ss.str());
             *session << "insert into workspaces(id, uid, name, premium) "
                 "values(:id, :uid, :name, :premium)",
                 Poco::Data::use(model->ID()),
@@ -1120,7 +1120,7 @@ error Database::saveClient(
             std::stringstream ss;
             ss << "Updating client " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger().debug(ss.str());
+            logger().trace(ss.str());
 
             // FIXME: check how to property insert null :S
             if (model->GUID().empty()) {
@@ -1157,7 +1157,7 @@ error Database::saveClient(
             std::stringstream ss;
             ss << "Inserting client " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger().debug(ss.str());
+            logger().trace(ss.str());
             // FIXME: check how to property insert null :S
             if (model->GUID().empty()) {
                 *session << "insert into clients(id, uid, name, wid) "
@@ -1221,7 +1221,7 @@ error Database::saveProject(
             std::stringstream ss;
             ss << "Updating project " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger().debug(ss.str());
+            logger().trace(ss.str());
 
             // FIXME: check how to property insert null :S
             if (model->GUID().empty()) {
@@ -1269,7 +1269,7 @@ error Database::saveProject(
             std::stringstream ss;
             ss << "Inserting project " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger().debug(ss.str());
+            logger().trace(ss.str());
             // FIXME: check how to property insert null :S
             if (model->GUID().empty()) {
                 *session <<
@@ -1350,7 +1350,7 @@ error Database::saveTask(
             std::stringstream ss;
             ss << "Updating task " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger().debug(ss.str());
+            logger().trace(ss.str());
 
             *session << "update tasks set "
                 "id = :id, uid = :uid, name = :name, wid = :wid, pid = :pid "
@@ -1373,7 +1373,7 @@ error Database::saveTask(
             std::stringstream ss;
             ss << "Inserting task " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger().debug(ss.str());
+            logger().trace(ss.str());
             *session << "insert into tasks(id, uid, name, wid, pid) "
                 "values(:id, :uid, :name, :wid, :pid)",
                 Poco::Data::use(model->ID()),
@@ -1426,7 +1426,7 @@ error Database::saveTag(
             std::stringstream ss;
             ss << "Updating tag " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger().debug(ss.str());
+            logger().trace(ss.str());
 
             // FIXME: check how to property insert null :S
             if (model->GUID().empty()) {
@@ -1463,7 +1463,7 @@ error Database::saveTag(
             std::stringstream ss;
             ss << "Inserting tag " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger().debug(ss.str());
+            logger().trace(ss.str());
             // FIXME: check how to property insert null :S
             if (model->GUID().empty()) {
                 *session << "insert into tags(id, uid, name, wid) "
@@ -1548,7 +1548,7 @@ error Database::SaveUser(
                 std::stringstream ss;
                 ss << "Updating user " + model->String()
                    << " in thread " << Poco::Thread::currentTid();
-                logger().debug(ss.str());
+                logger().trace(ss.str());
 
                 *session << "update users set "
                     "api_token = :api_token, default_wid = :default_wid, "
@@ -1576,7 +1576,7 @@ error Database::SaveUser(
                 std::stringstream ss;
                 ss << "Inserting user " + model->String()
                    << " in thread " << Poco::Thread::currentTid();
-                logger().debug(ss.str());
+                logger().trace(ss.str());
                 *session << "insert into users("
                     "id, api_token, default_wid, since, fullname, email, "
                     "record_timeline, store_start_and_stop_time"

@@ -1159,7 +1159,7 @@ kopsik_api_result kopsik_time_entry_view_item_by_guid(
 
     std::stringstream ss;
     ss << "kopsik_time_entry_view_item_by_guid guid=" << guid;
-    logger().debug(ss.str());
+    logger().trace(ss.str());
 
     std::string GUID(guid);
     if (GUID.empty()) {
