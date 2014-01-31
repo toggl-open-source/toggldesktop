@@ -144,7 +144,8 @@ class Database {
         error migrate(
             const std::string name,
             const std::string sql);
-        error last_error();
+        error last_error(
+            const std::string was_doing);
 
         static std::string generateGUID();
 

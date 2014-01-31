@@ -82,7 +82,7 @@ error Database::deleteAllFromTableByUID(
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error();
+    return last_error("deleteAllFromTableByUID");
 }
 
 Poco::Logger &Database::logger() {
@@ -114,10 +114,10 @@ error Database::deleteFromTable(
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error();
+    return last_error("deleteFromTable");
 }
 
-error Database::last_error() {
+error Database::last_error(const std::string was_doing) {
     poco_assert(session);
 
     ExplicitScopedLock("Database::last_error", mutex_);
@@ -127,7 +127,7 @@ error Database::last_error() {
         static_cast<Poco::Data::SQLite::SessionImpl*>(impl);
     std::string last = Poco::Data::SQLite::Utility::lastError(sqlite->db());
     if (last != "not an error") {
-        return error(last);
+        return error(was_doing + ": " + last);
     }
     return noError;
 }
@@ -192,7 +192,7 @@ error Database::LoadSettings(
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error();
+    return last_error("LoadSettings");
 }
 
 error Database::SaveSettings(
@@ -206,7 +206,7 @@ error Database::SaveSettings(
     try {
         *session << "delete from settings",
             Poco::Data::now;
-        kopsik::error err = last_error();
+        kopsik::error err = last_error("SaveSettings delete");
         if (err != kopsik::noError) {
             return err;
         }
@@ -230,7 +230,7 @@ error Database::SaveSettings(
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error();
+    return last_error("SaveSettings insert");
 }
 
 error Database::LoadUserByAPIToken(
@@ -251,7 +251,7 @@ error Database::LoadUserByAPIToken(
             Poco::Data::use(api_token),
             Poco::Data::limit(1),
             Poco::Data::now;
-        error err = last_error();
+        error err = last_error("LoadUserByAPIToken");
         if (err != noError) {
             return err;
         }
@@ -336,7 +336,7 @@ error Database::LoadUserByID(
             Poco::Data::limit(1),
             Poco::Data::now;
 
-        error err = last_error();
+        error err = last_error("LoadUserByID");
         if (err != noError) {
             return err;
         }
@@ -395,7 +395,7 @@ error Database::loadWorkspaces(
             "WHERE uid = :uid "
             "ORDER BY name",
             Poco::Data::use(UID);
-        error err = last_error();
+        error err = last_error("loadWorkspaces");
         if (err != noError) {
             return err;
         }
@@ -422,7 +422,7 @@ error Database::loadWorkspaces(
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error();
+    return last_error("loadWorkspaces");
 }
 
 error Database::loadClients(
@@ -443,7 +443,7 @@ error Database::loadClients(
             "ORDER BY name",
             Poco::Data::use(UID);
 
-        error err = last_error();
+        error err = last_error("loadClients");
         if (err != noError) {
             return err;
         }
@@ -471,7 +471,7 @@ error Database::loadClients(
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error();
+    return last_error("loadClients");
 }
 
 error Database::loadProjects(
@@ -492,7 +492,7 @@ error Database::loadProjects(
             "WHERE uid = :uid "
             "ORDER BY name",
             Poco::Data::use(UID);
-        error err = last_error();
+        error err = last_error("loadProjects");
         if (err != noError) {
             return err;
         }
@@ -523,7 +523,7 @@ error Database::loadProjects(
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error();
+    return last_error("loadProjects");
 }
 
 error Database::loadTasks(
@@ -543,7 +543,7 @@ error Database::loadTasks(
             "WHERE uid = :uid "
             "ORDER BY name",
             Poco::Data::use(UID);
-        error err = last_error();
+        error err = last_error("loadTasks");
         if (err != noError) {
             return err;
         }
@@ -571,7 +571,7 @@ error Database::loadTasks(
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error();
+    return last_error("loadTasks");
 }
 
 error Database::loadTags(
@@ -591,7 +591,7 @@ error Database::loadTags(
             "WHERE uid = :uid "
             "ORDER BY name",
             Poco::Data::use(UID);
-        error err = last_error();
+        error err = last_error("loadTags");
         if (err != noError) {
             return err;
         }
@@ -619,7 +619,7 @@ error Database::loadTags(
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error();
+    return last_error("loadTags");
 }
 
 error Database::loadTimeEntries(
@@ -641,7 +641,7 @@ error Database::loadTimeEntries(
             "WHERE uid = :uid "
             "ORDER BY start DESC",
             Poco::Data::use(UID);
-        error err = last_error();
+        error err = last_error("loadTimeEntries");
         if (err != noError) {
             return err;
         }
@@ -653,7 +653,7 @@ error Database::loadTimeEntries(
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error();
+    return last_error("loadTimeEntries");
 }
 
 error Database::loadTimeEntriesFromSQLStatement(
@@ -928,7 +928,7 @@ error Database::saveTimeEntry(
                     Poco::Data::use(model->LocalID()),
                     Poco::Data::now;
             }
-            error err = last_error();
+            error err = last_error("saveTimeEntry");
             if (err != noError) {
                 return err;
             }
@@ -1002,7 +1002,7 @@ error Database::saveTimeEntry(
                     Poco::Data::use(model->UpdatedAt()),
                     Poco::Data::now;
                 }
-            error err = last_error();
+            error err = last_error("saveTimeEntry");
             if (err != noError) {
                 return err;
             }
@@ -1010,7 +1010,7 @@ error Database::saveTimeEntry(
             *session << "select last_insert_rowid()",
                 Poco::Data::into(local_id),
                 Poco::Data::now;
-            err = last_error();
+            err = last_error("saveTimeEntry");
             if (err != noError) {
                 return err;
             }
@@ -1039,7 +1039,7 @@ error Database::saveWorkspace(
         return noError;
     }
 
-    ExplicitScopedLock("Database::SaveWorkspace", mutex_);
+    ExplicitScopedLock("Database::saveWorkspace", mutex_);
 
     try {
         if (model->LocalID()) {
@@ -1057,7 +1057,7 @@ error Database::saveWorkspace(
                 Poco::Data::use(model->Premium()),
                 Poco::Data::use(model->LocalID()),
                 Poco::Data::now;
-            error err = last_error();
+            error err = last_error("saveWorkspace");
             if (err != noError) {
                 return err;
             }
@@ -1076,7 +1076,7 @@ error Database::saveWorkspace(
                 Poco::Data::use(model->Name()),
                 Poco::Data::use(model->Premium()),
                 Poco::Data::now;
-            error err = last_error();
+            error err = last_error("saveWorkspace");
             if (err != noError) {
                 return err;
             }
@@ -1084,7 +1084,7 @@ error Database::saveWorkspace(
             *session << "select last_insert_rowid()",
                 Poco::Data::into(local_id),
                 Poco::Data::now;
-            err = last_error();
+            err = last_error("saveWorkspace");
             if (err != noError) {
                 return err;
             }
@@ -1113,7 +1113,7 @@ error Database::saveClient(
         return noError;
     }
 
-    ExplicitScopedLock("Database::SaveClient", mutex_);
+    ExplicitScopedLock("Database::saveClient", mutex_);
 
     try {
         if (model->LocalID()) {
@@ -1146,7 +1146,7 @@ error Database::saveClient(
                     Poco::Data::use(model->LocalID()),
                     Poco::Data::now;
                 }
-            error err = last_error();
+            error err = last_error("saveClient");
             if (err != noError) {
                 return err;
             }
@@ -1177,7 +1177,7 @@ error Database::saveClient(
                     Poco::Data::use(model->WID()),
                     Poco::Data::now;
             }
-            error err = last_error();
+            error err = last_error("saveClient");
             if (err != noError) {
                 return err;
             }
@@ -1185,7 +1185,7 @@ error Database::saveClient(
             *session << "select last_insert_rowid()",
                 Poco::Data::into(local_id),
                 Poco::Data::now;
-            err = last_error();
+            err = last_error("saveClient");
             if (err != noError) {
                 return err;
             }
@@ -1258,7 +1258,7 @@ error Database::saveProject(
                     Poco::Data::use(model->LocalID()),
                     Poco::Data::now;
             }
-            error err = last_error();
+            error err = last_error("saveProject");
             if (err != noError) {
                 return err;
             }
@@ -1306,7 +1306,7 @@ error Database::saveProject(
                     Poco::Data::use(model->Billable()),
                     Poco::Data::now;
             }
-            error err = last_error();
+            error err = last_error("saveProject");
             if (err != noError) {
                 return err;
             }
@@ -1314,7 +1314,7 @@ error Database::saveProject(
             *session << "select last_insert_rowid()",
                 Poco::Data::into(local_id),
                 Poco::Data::now;
-            err = last_error();
+            err = last_error("saveProject");
             if (err != noError) {
                 return err;
             }
@@ -1343,7 +1343,7 @@ error Database::saveTask(
       return noError;
     }
 
-    ExplicitScopedLock("Database::SaveTask", mutex_);
+    ExplicitScopedLock("Database::saveTask", mutex_);
 
     try {
         if (model->LocalID()) {
@@ -1362,7 +1362,7 @@ error Database::saveTask(
                 Poco::Data::use(model->PID()),
                 Poco::Data::use(model->LocalID()),
                 Poco::Data::now;
-            error err = last_error();
+            error err = last_error("saveTask");
             if (err != noError) {
               return err;
             }
@@ -1382,7 +1382,7 @@ error Database::saveTask(
                 Poco::Data::use(model->WID()),
                 Poco::Data::use(model->PID()),
                 Poco::Data::now;
-            error err = last_error();
+            error err = last_error("saveTask");
             if (err != noError) {
                 return err;
             }
@@ -1390,7 +1390,7 @@ error Database::saveTask(
             *session << "select last_insert_rowid()",
                 Poco::Data::into(local_id),
                 Poco::Data::now;
-            err = last_error();
+            err = last_error("saveTask");
             if (err != noError) {
                 return err;
             }
@@ -1419,7 +1419,7 @@ error Database::saveTag(
         return noError;
     }
 
-    ExplicitScopedLock("Database::SaveTag", mutex_);
+    ExplicitScopedLock("Database::saveTag", mutex_);
 
     try {
         if (model->LocalID()) {
@@ -1452,7 +1452,7 @@ error Database::saveTag(
                     Poco::Data::use(model->LocalID()),
                     Poco::Data::now;
             }
-            error err = last_error();
+            error err = last_error("saveTag");
             if (err != noError) {
               return err;
             }
@@ -1483,7 +1483,7 @@ error Database::saveTag(
                     Poco::Data::use(model->GUID()),
                     Poco::Data::now;
             }
-            error err = last_error();
+            error err = last_error("saveTag");
             if (err != noError) {
                 return err;
             }
@@ -1491,7 +1491,7 @@ error Database::saveTag(
             *session << "select last_insert_rowid()",
                 Poco::Data::into(local_id),
                 Poco::Data::now;
-            err = last_error();
+            err = last_error("saveTag");
             if (err != noError) {
                 return err;
             }
@@ -1566,7 +1566,7 @@ error Database::SaveUser(
                     Poco::Data::use(model->StoreStartAndStopTime()),
                     Poco::Data::use(model->LocalID()),
                     Poco::Data::now;
-                error err = last_error();
+                error err = last_error("SaveUser");
                 if (err != noError) {
                     return err;
                 }
@@ -1593,7 +1593,7 @@ error Database::SaveUser(
                     Poco::Data::use(model->RecordTimeline()),
                     Poco::Data::use(model->StoreStartAndStopTime()),
                     Poco::Data::now;
-                error err = last_error();
+                error err = last_error("SaveUser");
                 if (err != noError) {
                     return err;
                 }
@@ -1601,15 +1601,11 @@ error Database::SaveUser(
                 *session << "select last_insert_rowid()",
                     Poco::Data::into(local_id),
                     Poco::Data::now;
-                err = last_error();
+                err = last_error("SaveUser");
                 if (err != noError) {
                     return err;
                 }
                 model->SetLocalID(local_id);
-                err = last_error();
-                if (err != noError) {
-                    return err;
-                }
                 changes->push_back(ModelChange(
                     "user", "insert", model->ID(), ""));
             }
@@ -1678,7 +1674,7 @@ error Database::initialize_tables() {
         Poco::Data::into(table_name),
         Poco::Data::limit(1),
         Poco::Data::now;
-    error err = last_error();
+    error err = last_error("initialize_tables");
     if (err != noError) {
         return err;
     }
@@ -1688,7 +1684,7 @@ error Database::initialize_tables() {
             "create table kopsik_migrations(id integer primary key, "
             "name varchar not null)",
             Poco::Data::now;
-        error err = last_error();
+        error err = last_error("initialize_tables");
         if (err != noError) {
             return err;
         }
@@ -1696,7 +1692,7 @@ error Database::initialize_tables() {
             "CREATE UNIQUE INDEX id_kopsik_migrations_name "
                 "ON kopsik_migrations (name);",
             Poco::Data::now;
-        err = last_error();
+        err = last_error("initialize_tables");
         if (err != noError) {
             return err;
         }
@@ -2030,7 +2026,7 @@ error Database::CurrentAPIToken(std::string *token) {
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error();
+    return last_error("CurrentAPIToken");
 }
 
 error Database::ClearCurrentAPIToken() {
@@ -2047,7 +2043,7 @@ error Database::ClearCurrentAPIToken() {
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error();
+    return last_error("ClearCurrentAPIToken");
 }
 
 error Database::SetCurrentAPIToken(const std::string &token) {
@@ -2070,7 +2066,7 @@ error Database::SetCurrentAPIToken(const std::string &token) {
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error();
+    return last_error("SetCurrentAPIToken");
 }
 
 error Database::SaveDesktopID() {
@@ -2090,7 +2086,7 @@ error Database::SaveDesktopID() {
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error();
+    return last_error("SaveDesktopID");
 }
 
 error Database::migrate(
@@ -2108,14 +2104,14 @@ error Database::migrate(
             Poco::Data::into(count),
             Poco::Data::use(name),
             Poco::Data::now;
-        error err = last_error();
+        error err = last_error("migrate");
         if (err != noError) {
             return err;
         }
 
         if (count < 1) {
             *session << sql, Poco::Data::now;
-            err = last_error();
+            err = last_error("migrate");
             if (err != noError) {
                 return err;
             }
@@ -2123,7 +2119,7 @@ error Database::migrate(
             *session << "insert into kopsik_migrations(name) values(:name)",
                 Poco::Data::use(name),
                 Poco::Data::now;
-            err = last_error();
+            err = last_error("migrate");
             if (err != noError) {
                 return err;
             }
@@ -2182,7 +2178,7 @@ error Database::select_timeline_batch(
         <<  " events.";
     logger().debug(event_count.str());
 
-    return last_error();
+    return last_error("select_timeline_batch");
 }
 
 error Database::insert_timeline_event(const TimelineEvent& event) {
@@ -2213,7 +2209,7 @@ error Database::insert_timeline_event(const TimelineEvent& event) {
         Poco::Data::use(event.end_time),
         Poco::Data::use(event.idle),
         Poco::Data::now;
-    return last_error();
+    return last_error("insert_timeline_event");
 }
 
 error Database::delete_timeline_batch(
@@ -2240,7 +2236,7 @@ error Database::delete_timeline_batch(
     *session << "DELETE FROM timeline_events WHERE id = :id",
         Poco::Data::use(ids),
         Poco::Data::now;
-    return last_error();
+    return last_error("delete_timeline_batch");
 }
 
 void Database::handleTimelineEventNotification(
@@ -2293,7 +2289,7 @@ error Database::String(
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error();
+    return last_error("String");
 }
 
 error Database::UInt(
@@ -2318,7 +2314,7 @@ error Database::UInt(
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error();
+    return last_error("UInt");
 }
 
 }   // namespace kopsik
