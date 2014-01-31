@@ -806,10 +806,14 @@ void User::loadProjectFromJSONNode(JSONNODE *data,
     model = GetProjectByGUID(getGUIDFromJSONNode(data));
   }
 
-  if (!model) {
-    if (isDeletedAtServer(data)) {
-      return;
+  if (isDeletedAtServer(data)) {
+    if (model) {
+      model->MarkAsDeletedOnServer();
     }
+    return;
+  }
+
+  if (!model) {
     model = new Project();
     related.Projects.push_back(model);
   }
@@ -945,10 +949,14 @@ void User::loadTaskFromJSONNode(JSONNODE *data,
 
   // Tasks have no GUID
 
-  if (!model) {
-    if (isDeletedAtServer(data)) {
-      return;
+  if (isDeletedAtServer(data)) {
+    if (model) {
+      model->MarkAsDeletedOnServer();
     }
+    return;
+  }
+
+  if (!model) {
     model = new Task();
     related.Tasks.push_back(model);
   }
@@ -1040,10 +1048,14 @@ void User::loadWorkspaceFromJSONNode(JSONNODE *data,
 
   // Workspaces have no GUID
 
-  if (!model) {
-    if (isDeletedAtServer(data)) {
-      return;
+  if (isDeletedAtServer(data)) {
+    if (model) {
+      model->MarkAsDeletedOnServer();
     }
+    return;
+  }
+
+  if (!model) {
     model = new Workspace();
     related.Workspaces.push_back(model);
   }
@@ -1128,10 +1140,14 @@ void User::loadTagFromJSONNode(JSONNODE *data,
     model = GetTagByGUID(getGUIDFromJSONNode(data));
   }
 
-  if (!model) {
-    if (isDeletedAtServer(data)) {
-      return;
+  if (isDeletedAtServer(data)) {
+    if (model) {
+      model->MarkAsDeletedOnServer();
     }
+    return;
+  }
+
+  if (!model) {
     model = new Tag();
     related.Tags.push_back(model);
   }
@@ -1225,10 +1241,14 @@ void User::loadClientFromJSONNode(JSONNODE *data,
     model = GetClientByGUID(getGUIDFromJSONNode(data));
   }
 
-  if (!model) {
-    if (isDeletedAtServer(data)) {
-      return;
+  if (isDeletedAtServer(data)) {
+    if (model) {
+      model->MarkAsDeletedOnServer();
     }
+    return;
+  }
+
+  if (!model) {
     model = new Client();
     related.Clients.push_back(model);
   }
@@ -1389,10 +1409,14 @@ void User::loadTimeEntryFromJSONNode(JSONNODE *data,
       model = GetTimeEntryByGUID(getGUIDFromJSONNode(data));
     }
 
+    if (isDeletedAtServer(data)) {
+      if (model) {
+        model->MarkAsDeletedOnServer();
+      }
+      return;
+    }
+
     if (!model) {
-        if (isDeletedAtServer(data)) {
-            return;
-        }
         model = new TimeEntry();
         related.TimeEntries.push_back(model);
     }
