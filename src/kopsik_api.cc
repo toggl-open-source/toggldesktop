@@ -852,6 +852,10 @@ kopsik_api_result kopsik_autocomplete_items(
           p = ctx->user->GetProjectByID(te->PID());
         }
 
+        if (p && !p->Active()) {
+          continue;
+        }
+
         kopsik::Client *c = 0;
         if (p && p->CID()) {
           c = ctx->user->GetClientByID(p->CID());
@@ -902,6 +906,10 @@ kopsik_api_result kopsik_autocomplete_items(
           p = ctx->user->GetProjectByID(t->PID());
         }
 
+        if (p && !p->Active()) {
+          continue;
+        }
+
         kopsik::Client *c = 0;
         if (p && p->CID()) {
           c = ctx->user->GetClientByID(p->CID());
@@ -932,6 +940,10 @@ kopsik_api_result kopsik_autocomplete_items(
            ctx->user->related.Projects.begin();
            it != ctx->user->related.Projects.end(); it++) {
         kopsik::Project *p = *it;
+
+        if (p && !p->Active()) {
+          continue;
+        }
 
         kopsik::Client *c = 0;
         if (p->CID()) {
