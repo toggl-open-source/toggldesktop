@@ -1970,8 +1970,6 @@ void TimeEntry::LoadFromJSONNode(JSONNODE *data) {
             SetCreatedWith(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "at") == 0) {
             SetUpdatedAtString(std::string(json_as_string(*current_node)));
-        } else if (strcmp(node_name, "server_deleted_at") == 0) {
-            MarkAsDeletedOnServer();
         }
         ++current_node;
     }

@@ -3,6 +3,12 @@
 #ifndef SRC_DATABASE_H_
 #define SRC_DATABASE_H_
 
+#if defined(POCO_UNBUNDLED)
+#include <sqlite3.h>
+#else
+#include "sqlite3.h" // NOLINT
+#endif
+
 #include <string>
 #include <vector>
 
@@ -11,12 +17,6 @@
 #include "Poco/Data/SQLite/Connector.h"
 #include "Poco/NotificationCenter.h"
 #include "Poco/Observer.h"
-
-#if defined(POCO_UNBUNDLED)
-#include <sqlite3.h>
-#else
-#include "sqlite3.h"
-#endif
 
 #include "./types.h"
 #include "./proxy.h"
