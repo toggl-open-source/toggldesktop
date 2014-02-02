@@ -1538,6 +1538,8 @@ error Database::SaveUser(
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
+    session->begin();
+
     // Check if we really need to save model,
     // *but* do not return if we don't need to.
     // We might need to save related models, still.
@@ -1567,6 +1569,7 @@ error Database::SaveUser(
                     Poco::Data::now;
                 error err = last_error("SaveUser");
                 if (err != noError) {
+                    session->rollback();
                     return err;
                 }
                 changes->push_back(ModelChange(
@@ -1594,6 +1597,7 @@ error Database::SaveUser(
                     Poco::Data::now;
                 error err = last_error("SaveUser");
                 if (err != noError) {
+                    session->rollback();
                     return err;
                 }
                 Poco::Int64 local_id(0);
@@ -1602,6 +1606,7 @@ error Database::SaveUser(
                     Poco::Data::now;
                 err = last_error("SaveUser");
                 if (err != noError) {
+                    session->rollback();
                     return err;
                 }
                 model->SetLocalID(local_id);
@@ -1610,10 +1615,13 @@ error Database::SaveUser(
             }
             model->ClearDirty();
         } catch(const Poco::Exception& exc) {
+            session->rollback();
             return exc.displayText();
         } catch(const std::exception& ex) {
+            session->rollback();
             return ex.what();
         } catch(const std::string& ex) {
+            session->rollback();
             return ex;
         }
     }
@@ -1622,30 +1630,38 @@ error Database::SaveUser(
         error err = saveWorkspaces(model->ID(), &model->related.Workspaces,
             changes);
         if (err != noError) {
+            session->rollback();
             return err;
         }
         err = saveClients(model->ID(), &model->related.Clients, changes);
         if (err != noError) {
+            session->rollback();
             return err;
         }
         err = saveProjects(model->ID(), &model->related.Projects, changes);
         if (err != noError) {
+            session->rollback();
             return err;
         }
         err = saveTasks(model->ID(), &model->related.Tasks, changes);
         if (err != noError) {
+            session->rollback();
             return err;
         }
         err = saveTags(model->ID(), &model->related.Tags, changes);
         if (err != noError) {
+            session->rollback();
             return err;
         }
         err = saveTimeEntries(model->ID(), &model->related.TimeEntries,
             changes);
         if (err != noError) {
+            session->rollback();
             return err;
         }
     }
+
+    session->commit();
 
     stopwatch.stop();
 
