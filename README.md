@@ -30,6 +30,10 @@ OS X app
 make osx
 ```
 
+Windows app
+-----------
+FIXME
+
 Tests
 -----
 ```
