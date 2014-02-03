@@ -109,6 +109,8 @@
 - (IBAction)startButtonClicked:(id)sender {
   self.time_entry.Duration = self.durationTextField.stringValue;
   [self.durationTextField setStringValue:@""];
+  [self.projecetTextField setHidden:YES];
+  [self.projecetTextField setStringValue:@""];
 
   self.time_entry.Description = self.descriptionComboBox.stringValue;
   [self.descriptionComboBox setStringValue:@""];
@@ -145,6 +147,11 @@
 
   if (self.time_entry.ProjectID) {
     [self.descriptionComboBox setStringValue:@""];
+    self.projecetTextField.stringValue = item.ProjectAndTaskLabel;
+    self.projecetTextField.backgroundColor = [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
+    [self.projecetTextField setHidden:NO];
+  } else {
+    [self.projecetTextField setHidden:YES];
   }
 }
 

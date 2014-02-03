@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="descriptionComboBox" destination="ITa-Jc-jOK" id="aF4-Dr-jdX"/>
                 <outlet property="durationTextField" destination="oie-Un-asQ" id="6ad-T9-x8d"/>
+                <outlet property="projecetTextField" destination="tVc-ms-0hr" id="3wY-5V-cQ9"/>
                 <outlet property="startButton" destination="2Fx-4L-YGZ" id="NkN-re-hJo"/>
                 <outlet property="view" destination="M2u-7B-WCs" id="bD3-yq-26j"/>
             </connections>
@@ -108,6 +109,15 @@ DQ
                     <color key="borderColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="fillColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
+                <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tVc-ms-0hr">
+                    <rect key="frame" x="8" y="0.0" width="69" height="11"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="NEW - TOGGL" drawsBackground="YES" id="Wt0-TO-JZG">
+                        <font key="font" size="9" name="LucidaGrande-Bold"/>
+                        <color key="textColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" red="0.92739556759999997" green="0.124813008" blue="0.11691136570000001" alpha="1" colorSpace="calibratedRGB"/>
+                    </textFieldCell>
+                </textField>
                 <box autoresizesSubviews="NO" verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="lEH-md-7M7">
                     <rect key="frame" x="0.0" y="-30" width="264" height="9"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
