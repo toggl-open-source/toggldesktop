@@ -124,6 +124,8 @@ TimeEntry *User::Continue(const std::string GUID) {
         te->SetStart(time(0));
         te->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
         te->SetDurationInSeconds(-time(0));
+        te->SetBillable(existing->Billable());
+        te->SetTags(existing->Tags());
         related.TimeEntries.push_back(te);
     }
     te->SetUIModifiedAt(time(0));
