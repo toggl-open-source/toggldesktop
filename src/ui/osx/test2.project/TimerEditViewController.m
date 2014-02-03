@@ -109,8 +109,8 @@
 - (IBAction)startButtonClicked:(id)sender {
   self.time_entry.Duration = self.durationTextField.stringValue;
   [self.durationTextField setStringValue:@""];
-  [self.projecetTextField setHidden:YES];
-  [self.projecetTextField setStringValue:@""];
+  [self.projectTextField setHidden:YES];
+  [self.projectTextField setStringValue:@""];
 
   self.time_entry.Description = self.descriptionComboBox.stringValue;
   [self.descriptionComboBox setStringValue:@""];
@@ -145,14 +145,21 @@
         self.time_entry.TaskID,
         self.time_entry.ProjectID);
 
+  NSPoint pt;
+  pt.x = self.descriptionComboBox.frame.origin.x;
+  
   if (self.time_entry.ProjectID) {
     [self.descriptionComboBox setStringValue:@""];
-    self.projecetTextField.stringValue = item.ProjectAndTaskLabel;
-    self.projecetTextField.backgroundColor = [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
-    [self.projecetTextField setHidden:NO];
+    self.projectTextField.stringValue = item.ProjectAndTaskLabel;
+    self.projectTextField.backgroundColor = [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
+    [self.projectTextField setHidden:NO];
+    pt.y = 16;
   } else {
-    [self.projecetTextField setHidden:YES];
+    pt.y = 8;
+    [self.projectTextField setHidden:YES];
   }
+
+  [self.descriptionComboBox setFrameOrigin:pt];
 }
 
 - (void)controlTextDidChange:(NSNotification *)aNotification {

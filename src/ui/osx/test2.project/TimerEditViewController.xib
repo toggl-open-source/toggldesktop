@@ -9,7 +9,7 @@
             <connections>
                 <outlet property="descriptionComboBox" destination="ITa-Jc-jOK" id="aF4-Dr-jdX"/>
                 <outlet property="durationTextField" destination="oie-Un-asQ" id="6ad-T9-x8d"/>
-                <outlet property="projecetTextField" destination="tVc-ms-0hr" id="3wY-5V-cQ9"/>
+                <outlet property="projectTextField" destination="tVc-ms-0hr" id="1ee-Q9-eCA"/>
                 <outlet property="startButton" destination="2Fx-4L-YGZ" id="NkN-re-hJo"/>
                 <outlet property="view" destination="M2u-7B-WCs" id="bD3-yq-26j"/>
             </connections>
@@ -66,9 +66,12 @@ DQ
                                 <color key="borderColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
                                 <color key="fillColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
                             </box>
-                            <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ITa-Jc-jOK">
+                            <comboBox verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ITa-Jc-jOK">
                                 <rect key="frame" x="4" y="8" width="149" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="17" id="WR0-PJ-917"/>
+                                </constraints>
                                 <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" placeholderString="What are you doing?" drawsBackground="YES" buttonBordered="NO" usesDataSource="YES" numberOfVisibleItems="5" id="SSh-62-AYH">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -96,8 +99,6 @@ DQ
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="nFI-HH-zd7" secondAttribute="bottom" constant="-1" id="DHT-6f-0yu"/>
                         <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="oie-Un-asQ" secondAttribute="trailing" constant="5" id="TI1-iH-Miw"/>
-                        <constraint firstAttribute="bottom" secondItem="ITa-Jc-jOK" secondAttribute="bottom" constant="12" id="XK6-4v-85n"/>
-                        <constraint firstItem="ITa-Jc-jOK" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="14" id="YTj-aa-g8G"/>
                         <constraint firstItem="oie-Un-asQ" firstAttribute="leading" secondItem="ITa-Jc-jOK" secondAttribute="trailing" id="Ztg-OV-1tQ"/>
                         <constraint firstAttribute="bottom" secondItem="oie-Un-asQ" secondAttribute="bottom" constant="9" id="bC9-Fi-38J"/>
                         <constraint firstItem="nFI-HH-zd7" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="-1" id="lMD-AL-Jog"/>
@@ -109,9 +110,12 @@ DQ
                     <color key="borderColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="fillColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
-                <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tVc-ms-0hr">
-                    <rect key="frame" x="8" y="0.0" width="69" height="11"/>
+                <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tVc-ms-0hr">
+                    <rect key="frame" x="9" y="7" width="69" height="11"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="11" id="wqt-c9-CBt"/>
+                    </constraints>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="NEW - TOGGL" drawsBackground="YES" id="Wt0-TO-JZG">
                         <font key="font" size="9" name="LucidaGrande-Bold"/>
                         <color key="textColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -127,8 +131,11 @@ DQ
                 </box>
             </subviews>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="tVc-ms-0hr" secondAttribute="bottom" constant="7" id="6gw-Sp-I6x"/>
                 <constraint firstAttribute="trailing" secondItem="Fga-BR-x8G" secondAttribute="trailing" constant="1" id="6oC-eJ-dBs"/>
                 <constraint firstAttribute="bottom" secondItem="Fga-BR-x8G" secondAttribute="bottom" constant="1" id="Cub-Lx-DNo"/>
+                <constraint firstItem="tVc-ms-0hr" firstAttribute="leading" secondItem="M2u-7B-WCs" secondAttribute="leading" constant="8" id="HIa-4f-tBL"/>
+                <constraint firstItem="tVc-ms-0hr" firstAttribute="top" secondItem="M2u-7B-WCs" secondAttribute="top" constant="27" id="QSs-0N-tM9"/>
                 <constraint firstItem="Fga-BR-x8G" firstAttribute="top" secondItem="M2u-7B-WCs" secondAttribute="top" constant="1" id="s0O-bN-wX6"/>
                 <constraint firstItem="Fga-BR-x8G" firstAttribute="leading" secondItem="M2u-7B-WCs" secondAttribute="leading" constant="1" id="wJK-xr-4eQ"/>
             </constraints>

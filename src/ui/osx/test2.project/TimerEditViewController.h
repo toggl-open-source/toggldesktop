@@ -15,5 +15,5 @@
 @property (weak) IBOutlet NSTextField *durationTextField;
 @property (weak) IBOutlet NSComboBox *descriptionComboBox;
 @property (weak) IBOutlet NSButton *startButton;
-@property (weak) IBOutlet NSTextField *projecetTextField;
+@property (weak) IBOutlet NSTextField *projectTextField;
 @end
