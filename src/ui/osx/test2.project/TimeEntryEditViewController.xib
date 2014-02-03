@@ -164,17 +164,6 @@
                                             <outlet property="delegate" destination="-2" id="fLh-Ie-pHZ"/>
                                         </connections>
                                     </comboBox>
-                                    <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FuJ-v5-Y4l">
-                                        <rect key="frame" x="82" y="2" width="44" height="32"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSAddTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="wee-JH-wBT">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <action selector="onNewMenuItem:" target="-1" id="R9y-Gp-CtV"/>
-                                        </connections>
-                                    </button>
                                     <tokenField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bji-ux-jSe">
                                         <rect key="frame" x="74" y="72" width="159" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -290,9 +279,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <constraint firstAttribute="bottom" secondItem="zwE-pW-vQN" secondAttribute="bottom" constant="10" id="6Ex-js-L96"/>
                                 <constraint firstItem="52d-4r-KkN" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" constant="16" id="JQW-ld-g9H"/>
                                 <constraint firstItem="zwE-pW-vQN" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" constant="16" id="MD3-wj-cLP"/>
-                                <constraint firstItem="FuJ-v5-Y4l" firstAttribute="leading" secondItem="zwE-pW-vQN" secondAttribute="trailing" constant="12" id="Mqz-m3-5hV"/>
                                 <constraint firstAttribute="trailing" secondItem="52d-4r-KkN" secondAttribute="trailing" constant="16" id="NDz-Ng-f9n"/>
-                                <constraint firstAttribute="bottom" secondItem="FuJ-v5-Y4l" secondAttribute="bottom" constant="10" id="NUu-TY-8Ek"/>
                                 <constraint firstItem="YDr-NN-Yh3" firstAttribute="leading" secondItem="R5F-Jh-UO9" secondAttribute="trailing" constant="7" id="ebr-6T-M5l"/>
                                 <constraint firstItem="Sd9-ME-k4V" firstAttribute="leading" secondItem="Jil-xJ-or2" secondAttribute="trailing" constant="7" id="hwM-8s-bl8"/>
                                 <constraint firstAttribute="trailing" secondItem="YDr-NN-Yh3" secondAttribute="trailing" constant="15" id="itV-qg-VYt"/>
@@ -335,7 +322,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         </customView>
     </objects>
     <resources>
-        <image name="NSAddTemplate" width="8" height="8"/>
         <image name="NSLeftFacingTriangleTemplate" width="9" height="9"/>
         <image name="NSTrashEmpty" width="32" height="32"/>
     </resources>
