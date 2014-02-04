@@ -8,12 +8,13 @@
 
 #import <Cocoa/Cocoa.h>
 #import "kopsik_api.h"
+#import "NSUnstripedTableView.h"
 
 @interface TimeEntryListViewController : NSViewController {
   @private
   NSMutableArray *viewitems;
 }
 @property (weak) IBOutlet NSView *headerView;
-@property (weak) IBOutlet NSTableView *timeEntriesTableView;
+@property (weak) IBOutlet NSUnstripedTableView *timeEntriesTableView;
 - (IBAction)performClick:(id)sender;
 @end

@@ -8,18 +8,17 @@
         <customObject id="-2" userLabel="File's Owner" customClass="TimeEntryEditViewController">
             <connections>
                 <outlet property="backButton" destination="zwE-pW-vQN" id="7gS-kR-H67"/>
-                <outlet property="billableCheckbox" destination="BqH-UT-SOI" id="Kn0-Pc-0B0"/>
+                <outlet property="billableCheckbox" destination="sSX-ad-7XC" id="cVv-CO-AcK"/>
                 <outlet property="deleteButton" destination="Wpz-9G-IOZ" id="opY-mR-5jK"/>
-                <outlet property="descriptionTextField" destination="52d-4r-KkN" id="6Bq-gn-apO"/>
-                <outlet property="durationTextField" destination="YDr-NN-Yh3" id="YlB-ZI-sEb"/>
-                <outlet property="endTime" destination="Brm-LH-ibf" id="w8F-dm-FPJ"/>
-                <outlet property="labelForEndTime" destination="LI4-IW-9ne" id="jr1-A3-Ylo"/>
-                <outlet property="labelForStartTime" destination="0qi-7R-SgH" id="r3N-YH-eLX"/>
+                <outlet property="descriptionTextField" destination="lGX-fG-VqC" id="lvq-HE-BJ6"/>
+                <outlet property="durationTextField" destination="EMR-ul-vEb" id="qbl-PP-fL8"/>
+                <outlet property="endTime" destination="jAD-IY-7K4" id="f67-7l-Df9"/>
                 <outlet property="lastUpdateTextField" destination="byc-AI-Ri7" id="bg3-EU-Pr6"/>
-                <outlet property="projectSelect" destination="Sd9-ME-k4V" id="27q-xP-Uuf"/>
-                <outlet property="startDate" destination="K26-NH-zdC" id="xEa-c4-jYa"/>
-                <outlet property="startTime" destination="cCF-WZ-lTH" id="OOo-Yo-eXd"/>
-                <outlet property="tagsTokenField" destination="Bji-ux-jSe" id="t2k-sk-wt9"/>
+                <outlet property="projectSelect" destination="mxY-tv-UzX" id="eym-qD-quf"/>
+                <outlet property="startDatePlaceholder" destination="Bkn-xN-xEP" id="pf9-VF-JKg"/>
+                <outlet property="startEndTimeBox" destination="TSC-79-BuD" id="xI4-bL-f42"/>
+                <outlet property="startTime" destination="vaF-tJ-dqC" id="8rq-5U-3Qt"/>
+                <outlet property="tagsTokenField" destination="9Uk-YS-6nx" id="Q4X-aI-eeC"/>
                 <outlet property="view" destination="qjv-II-K0N" id="WWf-UA-X50"/>
             </connections>
         </customObject>
@@ -52,95 +51,7 @@
                                         </buttonCell>
                                         <connections>
                                             <action selector="deleteButtonClicked:" target="-2" id="Pi8-oI-sCI"/>
-                                        </connections>
-                                    </button>
-                                    <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="52d-4r-KkN">
-                                        <rect key="frame" x="15" y="400" width="218" height="22"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" placeholderString="No description" drawsBackground="YES" id="Ymb-bh-OCB">
-                                            <font key="font" metaFont="systemBold"/>
-                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                        <connections>
-                                            <action selector="descriptionTextFieldChanged:" target="-2" id="LYG-I6-2er"/>
-                                        </connections>
-                                    </textField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R5F-Jh-UO9">
-                                        <rect key="frame" x="-8" y="370" width="77" height="17"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Duration" id="zSH-h6-hi9">
-                                            <font key="font" size="9" name="LucidaGrande"/>
-                                            <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                    <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YDr-NN-Yh3">
-                                        <rect key="frame" x="74" y="370" width="160" height="22"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" drawsBackground="YES" id="c9y-Mo-cot">
-                                            <font key="font" metaFont="system"/>
-                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                        <connections>
-                                            <action selector="durationTextFieldChanged:" target="-2" id="r8B-bL-xck"/>
-                                        </connections>
-                                    </textField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jil-xJ-or2">
-                                        <rect key="frame" x="-8" y="336" width="77" height="17"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Project" id="MGZ-dC-x3f">
-                                            <font key="font" size="9" name="LucidaGrande"/>
-                                            <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0qi-7R-SgH">
-                                        <rect key="frame" x="-8" y="293" width="77" height="17"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Start time" id="XQ5-Px-fGc">
-                                            <font key="font" size="9" name="LucidaGrande"/>
-                                            <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LI4-IW-9ne">
-                                        <rect key="frame" x="-8" y="263" width="77" height="17"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="End time" id="gqX-Fs-lTA">
-                                            <font key="font" size="9" name="LucidaGrande"/>
-                                            <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WEj-uD-ylC">
-                                        <rect key="frame" x="-8" y="233" width="77" height="17"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Date" id="M6u-En-aFz">
-                                            <font key="font" size="9" name="LucidaGrande"/>
-                                            <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QfT-eZ-zX5">
-                                        <rect key="frame" x="-8" y="75" width="77" height="17"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Tags" id="19l-zh-G6J">
-                                            <font key="font" size="9" name="LucidaGrande"/>
-                                            <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BqH-UT-SOI">
-                                        <rect key="frame" x="72" y="48" width="67" height="18"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="check" title="Billable" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="e7e-FH-zMj">
-                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                            <font key="font" size="9" name="LucidaGrande"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <action selector="billableCheckBoxClicked:" target="-2" id="O9Y-ri-iWI"/>
+                                            <outlet property="nextKeyView" destination="lGX-fG-VqC" id="wJo-mb-Gkx"/>
                                         </connections>
                                     </button>
                                     <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zwE-pW-vQN">
@@ -152,42 +63,147 @@
                                         </buttonCell>
                                         <connections>
                                             <action selector="backButtonClicked:" target="-2" id="GSE-4o-Adz"/>
+                                            <outlet property="nextKeyView" destination="Wpz-9G-IOZ" id="Dpt-Py-zRd"/>
                                         </connections>
                                     </button>
-                                    <comboBox verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sd9-ME-k4V">
-                                        <rect key="frame" x="74" y="330" width="160" height="23"/>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SUF-aH-axf">
+                                        <rect key="frame" x="6" y="390" width="77" height="12"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" drawsBackground="YES" buttonBordered="NO" usesDataSource="YES" numberOfVisibleItems="5" id="w3U-5A-yKE">
-                                            <font key="font" metaFont="system"/>
-                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </comboBoxCell>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Description" id="gYm-QA-VME">
+                                            <font key="font" size="9" name="LucidaGrande"/>
+                                            <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lGX-fG-VqC">
+                                        <rect key="frame" x="85" y="388" width="150" height="17"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="Development" id="cHV-qN-pwr">
+                                            <font key="font" size="13" name="LucidaGrande"/>
+                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
                                         <connections>
-                                            <action selector="projectSelectChanged:" target="-2" id="4iY-oq-tBr"/>
-                                            <outlet property="delegate" destination="-2" id="fLh-Ie-pHZ"/>
+                                            <action selector="descriptionTextFieldChanged:" target="-2" id="c5R-tm-Dk1"/>
+                                            <outlet property="nextKeyView" destination="mxY-tv-UzX" id="QhG-9b-yap"/>
                                         </connections>
-                                    </comboBox>
-                                    <tokenField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bji-ux-jSe">
-                                        <rect key="frame" x="74" y="72" width="159" height="22"/>
+                                    </textField>
+                                    <box autoresizesSubviews="NO" title="Box" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="6Sh-4d-bKb">
+                                        <rect key="frame" x="-1" y="335" width="250" height="41"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <tokenFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" drawsBackground="YES" allowsEditingTextAttributes="YES" id="FfJ-vs-JyY">
-                                            <font key="font" metaFont="system"/>
-                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </tokenFieldCell>
-                                        <connections>
-                                            <action selector="tagsChanged:" target="-2" id="qrq-3v-QQ2"/>
-                                        </connections>
-                                    </tokenField>
-                                    <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cCF-WZ-lTH">
-                                        <rect key="frame" x="74" y="290" width="162" height="27"/>
+                                        <view key="contentView">
+                                            <rect key="frame" x="1" y="1" width="248" height="39"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3CJ-Hi-AsT">
+                                                    <rect key="frame" x="6" y="13" width="77" height="12"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Project" id="vhp-mI-XaK">
+                                                        <font key="font" size="9" name="LucidaGrande"/>
+                                                        <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mxY-tv-UzX">
+                                                    <rect key="frame" x="85" y="8" width="150" height="23"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="UI interactions" placeholderString="" drawsBackground="YES" buttonBordered="NO" usesDataSource="YES" numberOfVisibleItems="5" id="z8M-J4-cIb">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </comboBoxCell>
+                                                    <connections>
+                                                        <action selector="projectSelectChanged:" target="-2" id="zL6-sa-THe"/>
+                                                        <outlet property="delegate" destination="-2" id="N4G-rb-QgM"/>
+                                                        <outlet property="nextKeyView" destination="EMR-ul-vEb" id="fr2-Kv-Asj"/>
+                                                    </connections>
+                                                </comboBox>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="mxY-tv-UzX" secondAttribute="trailing" constant="17" id="Rf3-MZ-Xxm"/>
+                                            <constraint firstAttribute="bottom" secondItem="mxY-tv-UzX" secondAttribute="bottom" constant="13" id="g2w-ya-qxx"/>
+                                            <constraint firstItem="mxY-tv-UzX" firstAttribute="leading" secondItem="6Sh-4d-bKb" secondAttribute="leading" constant="86" id="ogx-6Z-nQo"/>
+                                            <constraint firstItem="mxY-tv-UzX" firstAttribute="top" secondItem="6Sh-4d-bKb" secondAttribute="top" constant="11" id="vJ2-G1-7gf"/>
+                                            <constraint firstAttribute="height" constant="41" id="vTF-aw-67a"/>
+                                        </constraints>
+                                        <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </box>
+                                    <box autoresizesSubviews="NO" title="Box" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="cGh-Uz-aLx">
+                                        <rect key="frame" x="-1" y="295" width="250" height="41"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <datePickerCell key="cell" alignment="left" id="Z2t-SC-TIs">
-                                            <font key="font" metaFont="system"/>
-                                            <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
-                                                <!--1982-02-12 08:00:00 -0800-->
-                                                <timeZone key="timeZone" name="US/Pacific">
-                                                    <data key="data">
+                                        <view key="contentView">
+                                            <rect key="frame" x="1" y="1" width="248" height="39"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TCO-sA-JGh">
+                                                    <rect key="frame" x="6" y="13" width="77" height="12"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Duration" id="GuL-lb-tra">
+                                                        <font key="font" size="9" name="LucidaGrande"/>
+                                                        <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EMR-ul-vEb">
+                                                    <rect key="frame" x="85" y="11" width="150" height="17"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="03:21:30" id="g9Z-PC-eSh">
+                                                        <font key="font" size="13" name="LucidaGrande"/>
+                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <connections>
+                                                        <action selector="durationTextFieldChanged:" target="-2" id="bdv-Xt-UY0"/>
+                                                        <outlet property="nextKeyView" destination="vaF-tJ-dqC" id="37j-14-5bP"/>
+                                                    </connections>
+                                                </textField>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="EMR-ul-vEb" firstAttribute="leading" secondItem="cGh-Uz-aLx" secondAttribute="leading" constant="88" id="SH2-fX-fEp"/>
+                                            <constraint firstAttribute="trailing" secondItem="EMR-ul-vEb" secondAttribute="trailing" constant="16" id="Zgq-ie-sio"/>
+                                            <constraint firstItem="EMR-ul-vEb" firstAttribute="top" secondItem="cGh-Uz-aLx" secondAttribute="top" constant="12" id="lxI-0T-keQ"/>
+                                            <constraint firstAttribute="bottom" secondItem="EMR-ul-vEb" secondAttribute="bottom" constant="12" id="oVd-k7-Mzy"/>
+                                        </constraints>
+                                        <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </box>
+                                    <box autoresizesSubviews="NO" title="Box" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="TSC-79-BuD">
+                                        <rect key="frame" x="-1" y="255" width="250" height="41"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <view key="contentView">
+                                            <rect key="frame" x="1" y="1" width="248" height="39"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cOA-WX-7sp">
+                                                    <rect key="frame" x="6" y="13" width="77" height="12"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Start-end time" id="uFy-pH-4VS">
+                                                        <font key="font" size="9" name="LucidaGrande"/>
+                                                        <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="unm-mE-5mG">
+                                                    <rect key="frame" x="144" y="11" width="28" height="17"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title=" - " id="9em-Zu-DhR">
+                                                        <font key="font" size="13" name="LucidaGrande"/>
+                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vaF-tJ-dqC">
+                                                    <rect key="frame" x="85" y="8" width="56" height="22"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <datePickerCell key="cell" alignment="left" datePickerStyle="textField" id="iLV-Nz-d68">
+                                                        <font key="font" metaFont="system"/>
+                                                        <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
+                                                            <!--1982-02-12 08:00:00 -0800-->
+                                                            <timeZone key="timeZone" name="US/Pacific">
+                                                                <mutableData key="data">
 VFppZgAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAC5AAAABAAAABCepkign7sVkKCGKqChmveQ
 y4kaoNIj9HDSYSYQ1v50INiArZDa/tGg28CQENzes6DdqayQ3r6VoN+JjpDgnneg4WlwkOJ+WaDjSVKQ
 5F47oOUpNJDmR1gg5xJREOgnOiDo8jMQ6gccIOrSFRDr5v4g7LH3EO3G4CDukdkQ76/8oPBxuxDxj96g
@@ -205,26 +221,33 @@ f5gqkAABAAECAwEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
 AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
 AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
 AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
-</data>
-                                                </timeZone>
-                                            </calendarDate>
-                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <datePickerElements key="datePickerElements" hour="YES" minute="YES"/>
-                                        </datePickerCell>
-                                        <connections>
-                                            <action selector="startTimeChanged:" target="-2" id="ODG-ic-bd2"/>
-                                        </connections>
-                                    </datePicker>
-                                    <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Brm-LH-ibf">
-                                        <rect key="frame" x="74" y="260" width="162" height="27"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <datePickerCell key="cell" alignment="left" id="AvY-Sz-qmU">
-                                            <font key="font" metaFont="system"/>
-                                            <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
-                                                <!--1982-02-12 08:00:00 -0800-->
-                                                <timeZone key="timeZone" name="US/Pacific">
-                                                    <data key="data">
+</mutableData>
+                                                            </timeZone>
+                                                        </calendarDate>
+                                                        <date key="minDate" timeIntervalSinceReferenceDate="-978307200">
+                                                            <!--1970-01-01 00:00:00 +0000-->
+                                                        </date>
+                                                        <date key="maxDate" timeIntervalSinceReferenceDate="3124224000">
+                                                            <!--2100-01-02 00:00:00 +0000-->
+                                                        </date>
+                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <datePickerElements key="datePickerElements" hour="YES" minute="YES"/>
+                                                    </datePickerCell>
+                                                    <connections>
+                                                        <action selector="startTimeChanged:" target="-2" id="PIU-pw-wXB"/>
+                                                        <outlet property="nextKeyView" destination="jAD-IY-7K4" id="OMV-rY-0yy"/>
+                                                    </connections>
+                                                </datePicker>
+                                                <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jAD-IY-7K4">
+                                                    <rect key="frame" x="178" y="8" width="56" height="22"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <datePickerCell key="cell" alignment="left" datePickerStyle="textField" id="Euh-iD-5F2">
+                                                        <font key="font" metaFont="system"/>
+                                                        <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
+                                                            <!--1982-02-12 08:00:00 -0800-->
+                                                            <timeZone key="timeZone" name="US/Pacific">
+                                                                <mutableData key="data">
 VFppZgAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAC5AAAABAAAABCepkign7sVkKCGKqChmveQ
 y4kaoNIj9HDSYSYQ1v50INiArZDa/tGg28CQENzes6DdqayQ3r6VoN+JjpDgnneg4WlwkOJ+WaDjSVKQ
 5F47oOUpNJDmR1gg5xJREOgnOiDo8jMQ6gccIOrSFRDr5v4g7LH3EO3G4CDukdkQ76/8oPBxuxDxj96g
@@ -242,52 +265,150 @@ f5gqkAABAAECAwEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
 AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
 AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
 AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
-</data>
-                                                </timeZone>
-                                            </calendarDate>
-                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <datePickerElements key="datePickerElements" hour="YES" minute="YES"/>
-                                        </datePickerCell>
-                                        <connections>
-                                            <action selector="endTimeChanged:" target="-2" id="ANq-42-wbx"/>
-                                        </connections>
-                                    </datePicker>
-                                    <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K26-NH-zdC">
-                                        <rect key="frame" x="74" y="102" width="139" height="148"/>
+</mutableData>
+                                                            </timeZone>
+                                                        </calendarDate>
+                                                        <date key="minDate" timeIntervalSinceReferenceDate="-978307200">
+                                                            <!--1970-01-01 00:00:00 +0000-->
+                                                        </date>
+                                                        <date key="maxDate" timeIntervalSinceReferenceDate="3124224000">
+                                                            <!--2100-01-02 00:00:00 +0000-->
+                                                        </date>
+                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <datePickerElements key="datePickerElements" hour="YES" minute="YES"/>
+                                                    </datePickerCell>
+                                                    <connections>
+                                                        <action selector="endTimeChanged:" target="-2" id="BKk-TY-b8d"/>
+                                                        <outlet property="nextKeyView" destination="Bkn-xN-xEP" id="mly-rb-MsQ"/>
+                                                    </connections>
+                                                </datePicker>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="unm-mE-5mG" firstAttribute="top" secondItem="TSC-79-BuD" secondAttribute="top" constant="12" id="6ge-qs-ATv"/>
+                                            <constraint firstAttribute="height" constant="41" id="xeN-mP-4P9"/>
+                                            <constraint firstAttribute="bottom" secondItem="unm-mE-5mG" secondAttribute="bottom" constant="12" id="z6g-iB-tSy"/>
+                                        </constraints>
+                                        <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </box>
+                                    <box autoresizesSubviews="NO" title="Box" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="r22-gF-YfG">
+                                        <rect key="frame" x="-1" y="215" width="250" height="41"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <datePickerCell key="cell" alignment="left" datePickerStyle="clockAndCalendar" id="atO-Qi-nsA">
-                                            <font key="font" metaFont="system"/>
-                                            <date key="date" timeIntervalSinceReferenceDate="-31618800">
-                                                <!--2000-01-01 01:00:00 +0000-->
-                                            </date>
-                                            <date key="minDate" timeIntervalSinceReferenceDate="-31618800">
-                                                <!--2000-01-01 01:00:00 +0000-->
-                                            </date>
-                                            <date key="maxDate" timeIntervalSinceReferenceDate="3124224000">
-                                                <!--2100-01-02 00:00:00 +0000-->
-                                            </date>
-                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                        </datePickerCell>
+                                        <view key="contentView">
+                                            <rect key="frame" x="1" y="1" width="248" height="39"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C0o-lq-OP0">
+                                                    <rect key="frame" x="6" y="13" width="77" height="12"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Date" id="EJZ-fK-CJa">
+                                                        <font key="font" size="9" name="LucidaGrande"/>
+                                                        <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bkn-xN-xEP">
+                                                    <rect key="frame" x="85" y="11" width="150" height="17"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="25/11/2014" id="MJ2-pn-gLS">
+                                                        <font key="font" size="13" name="LucidaGrande"/>
+                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <connections>
+                                                        <outlet property="nextKeyView" destination="9Uk-YS-6nx" id="XRs-7N-HYV"/>
+                                                    </connections>
+                                                </textField>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="41" id="ghP-Gf-MYa"/>
+                                        </constraints>
+                                        <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </box>
+                                    <box autoresizesSubviews="NO" title="Box" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="ByL-Em-l61">
+                                        <rect key="frame" x="-1" y="175" width="250" height="41"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <view key="contentView">
+                                            <rect key="frame" x="1" y="1" width="248" height="39"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aj8-1w-aCw">
+                                                    <rect key="frame" x="6" y="13" width="77" height="12"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Tags" id="rWN-Hm-fAH">
+                                                        <font key="font" size="9" name="LucidaGrande"/>
+                                                        <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <tokenField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Uk-YS-6nx">
+                                                    <rect key="frame" x="85" y="7" width="150" height="17"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <tokenFieldCell key="cell" selectable="YES" editable="YES" alignment="left" title="tere" allowsEditingTextAttributes="YES" id="Ugp-hu-uZB">
+                                                        <font key="font" size="9" name="LucidaGrande"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </tokenFieldCell>
+                                                    <connections>
+                                                        <action selector="tagsChanged:" target="-2" id="VeF-aF-Zl6"/>
+                                                        <outlet property="nextKeyView" destination="sSX-ad-7XC" id="2e5-Nf-T6v"/>
+                                                    </connections>
+                                                </tokenField>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="9Uk-YS-6nx" firstAttribute="top" secondItem="ByL-Em-l61" secondAttribute="top" constant="16" id="2wA-a7-oRu"/>
+                                            <constraint firstAttribute="trailing" secondItem="9Uk-YS-6nx" secondAttribute="trailing" constant="16" id="PqD-03-wOu"/>
+                                            <constraint firstItem="9Uk-YS-6nx" firstAttribute="leading" secondItem="aj8-1w-aCw" secondAttribute="trailing" constant="6" id="SA1-kl-Yri"/>
+                                            <constraint firstAttribute="bottom" secondItem="9Uk-YS-6nx" secondAttribute="bottom" constant="8" id="rQz-aH-CKw"/>
+                                            <constraint firstAttribute="height" constant="41" id="s9w-LR-Kjh"/>
+                                        </constraints>
+                                        <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </box>
+                                    <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sSX-ad-7XC">
+                                        <rect key="frame" x="87" y="143" width="67" height="18"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="check" title="Billable" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="jlI-qI-Cgm">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" size="13" name="LucidaGrande"/>
+                                        </buttonCell>
                                         <connections>
-                                            <action selector="dateChanged:" target="-2" id="UZI-76-W4F"/>
+                                            <action selector="billableCheckBoxClicked:" target="-2" id="KhO-KD-YIr"/>
+                                            <outlet property="nextKeyView" destination="zwE-pW-vQN" id="d3u-0I-kb8"/>
                                         </connections>
-                                    </datePicker>
+                                    </button>
                                 </subviews>
                             </view>
                             <constraints>
-                                <constraint firstAttribute="trailing" secondItem="Sd9-ME-k4V" secondAttribute="trailing" constant="18" id="4G4-gn-u5E"/>
                                 <constraint firstAttribute="bottom" secondItem="zwE-pW-vQN" secondAttribute="bottom" constant="10" id="6Ex-js-L96"/>
-                                <constraint firstItem="52d-4r-KkN" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" constant="16" id="JQW-ld-g9H"/>
+                                <constraint firstAttribute="trailing" secondItem="lGX-fG-VqC" secondAttribute="trailing" constant="16" id="7M6-hZ-gdf"/>
+                                <constraint firstItem="cGh-Uz-aLx" firstAttribute="top" secondItem="lGX-fG-VqC" secondAttribute="bottom" constant="52" id="EOD-Bt-TWh"/>
+                                <constraint firstAttribute="trailing" secondItem="6Sh-4d-bKb" secondAttribute="trailing" id="Fst-cd-zU2"/>
+                                <constraint firstItem="sSX-ad-7XC" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" constant="90" id="Gc3-8D-GA7"/>
+                                <constraint firstItem="TSC-79-BuD" firstAttribute="top" secondItem="6Sh-4d-bKb" secondAttribute="bottom" constant="39" id="Giu-qY-RP3"/>
+                                <constraint firstAttribute="trailing" secondItem="TSC-79-BuD" secondAttribute="trailing" id="KeO-Xk-LdT"/>
                                 <constraint firstItem="Wpz-9G-IOZ" firstAttribute="leading" secondItem="zwE-pW-vQN" secondAttribute="trailing" constant="12" id="Khd-f7-MEj"/>
                                 <constraint firstItem="zwE-pW-vQN" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" constant="16" id="MD3-wj-cLP"/>
-                                <constraint firstAttribute="trailing" secondItem="52d-4r-KkN" secondAttribute="trailing" constant="16" id="NDz-Ng-f9n"/>
-                                <constraint firstItem="YDr-NN-Yh3" firstAttribute="leading" secondItem="R5F-Jh-UO9" secondAttribute="trailing" constant="7" id="ebr-6T-M5l"/>
-                                <constraint firstItem="Sd9-ME-k4V" firstAttribute="leading" secondItem="Jil-xJ-or2" secondAttribute="trailing" constant="7" id="hwM-8s-bl8"/>
-                                <constraint firstAttribute="trailing" secondItem="YDr-NN-Yh3" secondAttribute="trailing" constant="15" id="itV-qg-VYt"/>
-                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="52d-4r-KkN" secondAttribute="trailing" constant="16" id="sQf-aY-QWO"/>
+                                <constraint firstItem="r22-gF-YfG" firstAttribute="top" secondItem="Mka-gG-oqB" secondAttribute="top" constant="177" id="Vv5-bk-eIP"/>
+                                <constraint firstItem="lGX-fG-VqC" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" constant="88" id="Zc6-kB-4sI"/>
+                                <constraint firstItem="TSC-79-BuD" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" id="bOW-Dg-3oC"/>
+                                <constraint firstItem="cGh-Uz-aLx" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" id="bYk-MB-hGT"/>
+                                <constraint firstAttribute="trailing" secondItem="r22-gF-YfG" secondAttribute="trailing" id="cci-aV-vbw"/>
+                                <constraint firstAttribute="trailing" secondItem="ByL-Em-l61" secondAttribute="trailing" id="dyd-Ur-kaa"/>
+                                <constraint firstItem="r22-gF-YfG" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" id="e48-pY-mFf"/>
+                                <constraint firstItem="lGX-fG-VqC" firstAttribute="top" secondItem="Mka-gG-oqB" secondAttribute="top" constant="28" id="gBU-QM-3IV"/>
+                                <constraint firstItem="ByL-Em-l61" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" id="gvL-dp-FRT"/>
+                                <constraint firstItem="ByL-Em-l61" firstAttribute="top" secondItem="Mka-gG-oqB" secondAttribute="top" constant="217" id="kUh-4B-s8J"/>
+                                <constraint firstItem="sSX-ad-7XC" firstAttribute="top" secondItem="Mka-gG-oqB" secondAttribute="top" constant="274" id="onl-N6-4mj"/>
+                                <constraint firstItem="6Sh-4d-bKb" firstAttribute="top" secondItem="Mka-gG-oqB" secondAttribute="top" constant="57" id="sC4-eT-UGB"/>
+                                <constraint firstItem="6Sh-4d-bKb" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" id="sfG-jz-b9T"/>
                                 <constraint firstAttribute="bottom" secondItem="Wpz-9G-IOZ" secondAttribute="bottom" constant="10" id="upy-Df-Fpu"/>
+                                <constraint firstAttribute="trailing" secondItem="cGh-Uz-aLx" secondAttribute="trailing" id="zmY-Bk-o2I"/>
                             </constraints>
                             <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                             <color key="fillColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>

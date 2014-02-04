@@ -16,6 +16,7 @@
 #import "ConvertHexColor.h"
 #import "NewTimeEntry.h"
 #import "ModelChange.h"
+#import "NSComboBox_Expansion.h"
 
 @interface TimerEditViewController ()
 @property AutocompleteDataSource *autocompleteDataSource;
@@ -167,6 +168,16 @@
   NSString *filter = [box stringValue];
   [self.autocompleteDataSource setFilter:filter];
   [self.descriptionComboBox reloadData];
+
+  if (filter == nil || [filter length] == 0) {
+    if ([box isExpanded] == YES) {
+      [box setExpanded:NO];
+    }
+  } else {
+    if ([box isExpanded] == NO) {
+      [box setExpanded:YES];
+    }
+  }
 }
 
 @end

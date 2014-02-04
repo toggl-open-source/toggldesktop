@@ -55,7 +55,7 @@ DQ
                                             </buttonCell>
                                             <connections>
                                                 <action selector="startButtonClicked:" target="-2" id="mix-z8-qeE"/>
-                                                <outlet property="nextKeyView" destination="ITa-Jc-jOK" id="TKW-Iw-cLw"/>
+                                                <outlet property="nextKeyView" destination="ITa-Jc-jOK" id="HSj-gD-Qbq"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -80,6 +80,7 @@ DQ
                                 <connections>
                                     <action selector="descriptionComboBoxChanged:" target="-2" id="w65-vA-OhX"/>
                                     <outlet property="delegate" destination="-2" id="pE4-7B-qZA"/>
+                                    <outlet property="nextKeyView" destination="oie-Un-asQ" id="14S-Ev-aQF"/>
                                 </connections>
                             </comboBox>
                             <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oie-Un-asQ">

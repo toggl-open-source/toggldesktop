@@ -15,14 +15,14 @@
 @property (weak) IBOutlet NSTextField *durationTextField;
 @property (weak) IBOutlet NSDatePicker *startTime;
 @property (weak) IBOutlet NSDatePicker *endTime;
+@property (weak) IBOutlet NSBox *stardEndTimeBox;
 @property (weak) IBOutlet NSDatePicker *startDate;
+@property (weak) IBOutlet NSTextField *startDatePlaceholder;
 @property (weak) IBOutlet NSTokenField *tagsTokenField;
 @property (weak) IBOutlet NSButton *billableCheckbox;
 @property (weak) IBOutlet NSTextField *lastUpdateTextField;
 @property (weak) IBOutlet NSButton *deleteButton;
 @property (strong) IBOutlet NSArrayController *projectItemsArrayController;
-@property (weak) IBOutlet NSTextField *labelForStartTime;
-@property (weak) IBOutlet NSTextField *labelForEndTime;
 @property (weak) IBOutlet NSButton *backButton;
 - (IBAction)descriptionTextFieldChanged:(id)sender;
 - (IBAction)durationTextFieldChanged:(id)sender;
@@ -30,6 +30,7 @@
 - (IBAction)startTimeChanged:(id)sender;
 - (IBAction)endTimeChanged:(id)sender;
 - (IBAction)dateChanged:(id)sender;
+- (IBAction)startDatePlaceholderClicked:(id)sender;
 - (IBAction)tagsChanged:(id)sender;
 - (IBAction)billableCheckBoxClicked:(id)sender;
 - (IBAction)deleteButtonClicked:(id)sender;

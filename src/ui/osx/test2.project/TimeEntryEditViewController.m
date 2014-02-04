@@ -14,6 +14,7 @@
 #import "ErrorHandler.h"
 #import "AutocompleteItem.h"
 #import "AutocompleteDataSource.h"
+#import "NSComboBox_Expansion.h"
 
 @interface TimeEntryEditViewController ()
 @property NSString *GUID;
@@ -115,15 +116,9 @@
     [self.startDate setEnabled:YES];
   }
 
-  if ((item.duration_in_seconds < 0) || (YES == item.durOnly)) {
-    [self.endTime setHidden:YES];
-  } else {
-    [self.endTime setHidden:NO];
-  }
-
-  [self.startTime setHidden:item.durOnly];
-  [self.labelForStartTime setHidden:item.durOnly];
-  [self.labelForEndTime setHidden:item.durOnly];
+  [self.endTime setHidden:(item.duration_in_seconds < 0)];
+  
+  [self.stardEndTimeBox setHidden:item.durOnly];
 
   if (YES == item.billable) {
     [self.billableCheckbox setState:NSOnState];
@@ -431,6 +426,16 @@
   NSString *filter = [box stringValue];
   [self.autocompleteDataSource setFilter:filter];
   [self.projectSelect reloadData];
+
+  if (filter == nil || [filter length] == 0) {
+    if ([box isExpanded] == YES) {
+      [box setExpanded:NO];
+    }
+  } else {
+    if ([box isExpanded] == NO) {
+      [box setExpanded:YES];
+    }
+  }
 }
 
 // If duration field is not focused, render ticking time
@@ -451,6 +456,24 @@
                                            duration_str_len);
   NSString *newValue = [NSString stringWithUTF8String:str];
   [self.durationTextField setStringValue:newValue];
+}
+
+@end
+
+// http://stackoverflow.com/questions/4499262/how-to-programmatically-open-an-nscomboboxs-list
+
+@implementation NSComboBox (ExpansionAPI)
+
+- (BOOL) isExpanded {
+  id ax = NSAccessibilityUnignoredDescendant(self);
+  return [[ax accessibilityAttributeValue:
+           NSAccessibilityExpandedAttribute] boolValue];
+}
+
+- (void) setExpanded: (BOOL)expanded {
+  id ax = NSAccessibilityUnignoredDescendant(self);
+  [ax accessibilitySetValue: [NSNumber numberWithBool: expanded]
+               forAttribute: NSAccessibilityExpandedAttribute];
 }
 
 @end
