@@ -194,57 +194,69 @@
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
   
   NSLog(@"Timer edit view render");
-
+  
+  // Start/stop button title and color depend on
+  // whether time entry is running
   if (self.running_time_entry != nil) {
-    [self.descriptionComboBox setEnabled:NO];
-    [self.durationTextField setEnabled:NO];
     self.startButtonLabelTextField.stringValue = @"Stop";
     self.startButtonBox.borderColor = [ConvertHexColor hexCodeToNSColor:@"#ec0000"];
     self.startButtonBox.fillColor = [ConvertHexColor hexCodeToNSColor:@"#ec0000"];
   } else {
-    [self.descriptionComboBox setEnabled:YES];
-    [self.durationTextField setEnabled:YES];
     self.startButtonLabelTextField.stringValue = @"Start";
     self.startButtonBox.borderColor = [ConvertHexColor hexCodeToNSColor:@"#4bc800"];
     self.startButtonBox.fillColor = [ConvertHexColor hexCodeToNSColor:@"#4bc800"];
   }
-  
-  NSPoint pt;
-  pt.x = self.descriptionComboBox.frame.origin.x;
-  
-  if (self.next_time_entry.ProjectID) {
-    self.descriptionComboBox.stringValue = @"";
-    [self.projectTextField setHidden:NO];
-    pt.y = 16;
+
+  // Description and duration cannot be edited
+  // while time entry is running
+  if (self.running_time_entry != nil) {
+    [self.descriptionComboBox setEnabled:NO];
+    [self.durationTextField setEnabled:NO];
   } else {
-    pt.y = 8;
+    [self.descriptionComboBox setEnabled:YES];
+    [self.durationTextField setEnabled:YES];
+  }
+  
+  // Display description
+  if (self.running_time_entry != nil) {
+    self.descriptionComboBox.stringValue = self.running_time_entry.Description;
+  } else {
+    self.descriptionComboBox.stringValue = self.next_time_entry.Description;
+  }
+  
+  // If a project is assigned, then project name
+  // is visible.
+  if (self.next_time_entry.ProjectID) {
+    [self.projectTextField setHidden:NO];
+  } else {
     [self.projectTextField setHidden:YES];
   }
   
+  // Display project name
+  if (self.running_time_entry != nil) {
+    self.projectTextField.stringValue =
+      [self.running_time_entry.ProjectAndTaskLabel uppercaseString];
+  } else {
+    self.projectTextField.stringValue = @"FIXME: project name autocomplete?";
+  }
+
+  // If a project is selected then description
+  // field is higher on the screen.
+  NSPoint pt;
+  pt.x = self.descriptionComboBox.frame.origin.x;
+  if (self.next_time_entry.ProjectID) {
+    pt.y = 16;
+  } else {
+    pt.y = 8;
+  }
   [self.descriptionComboBox setFrameOrigin:pt];
   
-  if (self.running_time_entry == nil) {
-    self.durationTextField.stringValue = @"";
-    self.descriptionComboBox.stringValue = @"";
-    self.projectTextField.stringValue = @"";
-    return;
+  // Display duration
+  if (self.running_time_entry != nil) {
+    self.durationTextField.stringValue = self.running_time_entry.duration;
+  } else {
+    self.durationTextField.stringValue = self.next_time_entry.Duration;
   }
-
-  self.descriptionComboBox.stringValue = self.running_time_entry.Description;
-  self.durationTextField.stringValue = self.running_time_entry.duration;
-//  self.projectTextField.backgroundColor = [ConvertHexColor hexCodeToNSColor:view_item.color];
-
-  // Time entry has project
-  if (self.running_time_entry.ProjectAndTaskLabel &&
-      [self.running_time_entry.ProjectAndTaskLabel   length] > 0) {
-    self.projectTextField.stringValue = [self.running_time_entry.ProjectAndTaskLabel uppercaseString];
-    [self.projectTextField setHidden:NO];
-    return;
-  }
-
-  // Time entry has no project
-  [self.projectTextField setHidden:YES];
-  self.projectTextField.stringValue = @"";
 }
 
 -(NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox{
@@ -267,13 +279,7 @@
   }
 
   self.next_time_entry.Duration = self.durationTextField.stringValue;
-  [self.durationTextField setStringValue:@""];
-  [self.projectTextField setHidden:YES];
-  [self.projectTextField setStringValue:@""];
-
   self.next_time_entry.Description = self.descriptionComboBox.stringValue;
-  [self.descriptionComboBox setStringValue:@""];
-
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandNew
                                                       object:self.next_time_entry];
   self.next_time_entry = [[NewTimeEntry alloc] init];
