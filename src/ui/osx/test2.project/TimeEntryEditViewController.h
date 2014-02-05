@@ -15,7 +15,7 @@
 @property (weak) IBOutlet NSTextField *durationTextField;
 @property (weak) IBOutlet NSDatePicker *startTime;
 @property (weak) IBOutlet NSDatePicker *endTime;
-@property (weak) IBOutlet NSBox *stardEndTimeBox;
+@property (weak) IBOutlet NSBox *startEndTimeBox;
 @property (weak) IBOutlet NSDatePicker *startDate;
 @property (weak) IBOutlet NSTextField *startDatePlaceholder;
 @property (weak) IBOutlet NSTokenField *tagsTokenField;

@@ -16,7 +16,7 @@
                 <outlet property="lastUpdateTextField" destination="byc-AI-Ri7" id="bg3-EU-Pr6"/>
                 <outlet property="projectSelect" destination="mxY-tv-UzX" id="eym-qD-quf"/>
                 <outlet property="startDatePlaceholder" destination="Bkn-xN-xEP" id="pf9-VF-JKg"/>
-                <outlet property="startEndTimeBox" destination="TSC-79-BuD" id="xI4-bL-f42"/>
+                <outlet property="startEndTimeBox" destination="TSC-79-BuD" id="6rV-Ia-R9i"/>
                 <outlet property="startTime" destination="vaF-tJ-dqC" id="8rq-5U-3Qt"/>
                 <outlet property="tagsTokenField" destination="9Uk-YS-6nx" id="Q4X-aI-eeC"/>
                 <outlet property="view" destination="qjv-II-K0N" id="WWf-UA-X50"/>

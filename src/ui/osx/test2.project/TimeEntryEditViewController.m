@@ -118,7 +118,7 @@
 
   [self.endTime setHidden:(item.duration_in_seconds < 0)];
   
-  [self.stardEndTimeBox setHidden:item.durOnly];
+  [self.startEndTimeBox setHidden:item.durOnly];
 
   if (YES == item.billable) {
     [self.billableCheckbox setState:NSOnState];
