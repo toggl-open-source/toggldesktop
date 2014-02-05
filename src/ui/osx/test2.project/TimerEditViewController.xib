@@ -66,8 +66,8 @@ DQ
                                 <color key="borderColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
                                 <color key="fillColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
                             </box>
-                            <comboBox verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ITa-Jc-jOK">
-                                <rect key="frame" x="4" y="8" width="149" height="23"/>
+                            <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ITa-Jc-jOK">
+                                <rect key="frame" x="4" y="8" width="127" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="17" id="WR0-PJ-917"/>
@@ -84,9 +84,12 @@ DQ
                                 </connections>
                             </comboBox>
                             <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oie-Un-asQ">
-                                <rect key="frame" x="150" y="9" width="43" height="22"/>
+                                <rect key="frame" x="131" y="9" width="62" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" focusRingType="none" alignment="right" placeholderString="0 sec" drawsBackground="YES" id="FoD-qd-An1">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="62" id="x2K-5w-zfF"/>
+                                </constraints>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" focusRingType="none" alignment="right" placeholderString="00:00:00" drawsBackground="YES" id="FoD-qd-An1">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -98,14 +101,14 @@ DQ
                         </subviews>
                     </view>
                     <constraints>
+                        <constraint firstAttribute="trailing" secondItem="ITa-Jc-jOK" secondAttribute="trailing" constant="128" id="1Qf-HH-85e"/>
                         <constraint firstAttribute="bottom" secondItem="nFI-HH-zd7" secondAttribute="bottom" constant="-1" id="DHT-6f-0yu"/>
-                        <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="oie-Un-asQ" secondAttribute="trailing" constant="5" id="TI1-iH-Miw"/>
-                        <constraint firstItem="oie-Un-asQ" firstAttribute="leading" secondItem="ITa-Jc-jOK" secondAttribute="trailing" id="Ztg-OV-1tQ"/>
                         <constraint firstAttribute="bottom" secondItem="oie-Un-asQ" secondAttribute="bottom" constant="9" id="bC9-Fi-38J"/>
+                        <constraint firstAttribute="trailing" secondItem="oie-Un-asQ" secondAttribute="trailing" constant="63" id="bzC-nz-PQq"/>
+                        <constraint firstItem="ITa-Jc-jOK" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="14" id="hqe-k2-I1S"/>
                         <constraint firstItem="nFI-HH-zd7" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="-1" id="lMD-AL-Jog"/>
                         <constraint firstAttribute="trailing" secondItem="nFI-HH-zd7" secondAttribute="trailing" id="lNg-Zn-u1m"/>
                         <constraint firstItem="oie-Un-asQ" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="12" id="sKm-6j-h1k"/>
-                        <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="ITa-Jc-jOK" secondAttribute="trailing" constant="48" id="sqK-0W-LsG"/>
                         <constraint firstItem="ITa-Jc-jOK" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="4" id="tbX-SU-uAB"/>
                     </constraints>
                     <color key="borderColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
