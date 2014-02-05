@@ -458,6 +458,10 @@
   [self.durationTextField setStringValue:newValue];
 }
 
+- (IBAction)startDatePlaceholderClicked:(id)sender {
+  NSLog(@"FIXME: show pop up calendar on top of the placeholder text field");
+}
+
 @end
 
 // http://stackoverflow.com/questions/4499262/how-to-programmatically-open-an-nscomboboxs-list

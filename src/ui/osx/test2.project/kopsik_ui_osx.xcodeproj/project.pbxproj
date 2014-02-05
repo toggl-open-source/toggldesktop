@@ -66,10 +66,6 @@
 		74D1D25E17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D25B17EB71C100E709B0 /* TimeEntryEditViewController.m */; };
 		74D1D25F17EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D25C17EB71C100E709B0 /* TimeEntryEditViewController.xib */; };
 		74D1D26017EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D25C17EB71C100E709B0 /* TimeEntryEditViewController.xib */; };
-		74D1D26B17EB728000E709B0 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D26917EB728000E709B0 /* TimerViewController.m */; };
-		74D1D26C17EB728000E709B0 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D26917EB728000E709B0 /* TimerViewController.m */; };
-		74D1D26D17EB728000E709B0 /* TimerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D26A17EB728000E709B0 /* TimerViewController.xib */; };
-		74D1D26E17EB728000E709B0 /* TimerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D26A17EB728000E709B0 /* TimerViewController.xib */; };
 		74D1D27217EB72D900E709B0 /* TimerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D27017EB72D900E709B0 /* TimerEditViewController.m */; };
 		74D1D27317EB72D900E709B0 /* TimerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D27017EB72D900E709B0 /* TimerEditViewController.m */; };
 		74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */; };
@@ -231,9 +227,6 @@
 		74D1D25A17EB71C100E709B0 /* TimeEntryEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryEditViewController.h; sourceTree = SOURCE_ROOT; };
 		74D1D25B17EB71C100E709B0 /* TimeEntryEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryEditViewController.m; sourceTree = SOURCE_ROOT; };
 		74D1D25C17EB71C100E709B0 /* TimeEntryEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeEntryEditViewController.xib; sourceTree = SOURCE_ROOT; };
-		74D1D26817EB728000E709B0 /* TimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerViewController.h; sourceTree = SOURCE_ROOT; };
-		74D1D26917EB728000E709B0 /* TimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerViewController.m; sourceTree = SOURCE_ROOT; };
-		74D1D26A17EB728000E709B0 /* TimerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimerViewController.xib; sourceTree = SOURCE_ROOT; };
 		74D1D26F17EB72D900E709B0 /* TimerEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerEditViewController.h; sourceTree = SOURCE_ROOT; };
 		74D1D27017EB72D900E709B0 /* TimerEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerEditViewController.m; sourceTree = SOURCE_ROOT; };
 		74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimerEditViewController.xib; sourceTree = SOURCE_ROOT; };
@@ -403,9 +396,6 @@
 				C5DA1FBE17F1B08A001C4565 /* MainWindowController.xib */,
 				74E3CDDB17FC8E8000C3ADD3 /* User.h */,
 				74E3CDDC17FC8E8000C3ADD3 /* User.m */,
-				74D1D26817EB728000E709B0 /* TimerViewController.h */,
-				74D1D26917EB728000E709B0 /* TimerViewController.m */,
-				74D1D26A17EB728000E709B0 /* TimerViewController.xib */,
 				74D1D26F17EB72D900E709B0 /* TimerEditViewController.h */,
 				74D1D27017EB72D900E709B0 /* TimerEditViewController.m */,
 				74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */,
@@ -647,7 +637,6 @@
 				7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */,
 				748664D2188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib in Resources */,
 				744E126717F22AB900ABE72A /* app.icns in Resources */,
-				74D1D26D17EB728000E709B0 /* TimerViewController.xib in Resources */,
 				74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
 				74AA9475180909F50000539F /* GTMOAuth2Window.xib in Resources */,
 			);
@@ -660,7 +649,6 @@
 				69FC181C17E6534500B96425 /* InfoPlist.strings in Resources */,
 				74D1D25917EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
 				74D1D26017EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */,
-				74D1D26E17EB728000E709B0 /* TimerViewController.xib in Resources */,
 				74D1D27517EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -732,7 +720,6 @@
 				74AA9471180909F50000539F /* GTMHTTPFetcher.m in Sources */,
 				74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */,
 				74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */,
-				74D1D26B17EB728000E709B0 /* TimerViewController.m in Sources */,
 				744CE72D1815CF5F00A7BEE4 /* ErrorHandler.m in Sources */,
 				7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */,
 				7430750418204EFB009019CB /* AboutWindowController.m in Sources */,
@@ -761,7 +748,6 @@
 				74D1D25717EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
 				74E3CDCB17FBABE400C3ADD3 /* BugsnagEvent.m in Sources */,
 				74D1D25E17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,
-				74D1D26C17EB728000E709B0 /* TimerViewController.m in Sources */,
 				74E3CDCF17FBABE400C3ADD3 /* BugsnagNotifier.m in Sources */,
 				74D1D27317EB72D900E709B0 /* TimerEditViewController.m in Sources */,
 				74E3CDC917FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */,

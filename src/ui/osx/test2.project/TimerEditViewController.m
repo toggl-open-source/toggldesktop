@@ -17,11 +17,14 @@
 #import "NewTimeEntry.h"
 #import "ModelChange.h"
 #import "NSComboBox_Expansion.h"
+#import "TimeEntryViewItem.h"
 
 @interface TimerEditViewController ()
 @property AutocompleteDataSource *autocompleteDataSource;
-@property NewTimeEntry *time_entry;
+@property NewTimeEntry *next_time_entry;
+@property TimeEntryViewItem *running_time_entry;
 @property NSTimer *timerAutocompleteRendering;
+@property NSTimer *timer;
 @end
 
 @implementation TimerEditViewController
@@ -30,6 +33,15 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
       self.autocompleteDataSource = [[AutocompleteDataSource alloc] init];
+
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUIStateTimerRunning
+                                                 object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUIStateTimerStopped
+                                                 object:nil];
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
                                                    name:kUIStateUserLoggedIn
@@ -38,7 +50,18 @@
                                                selector:@selector(eventHandler:)
                                                    name:kUIEventModelChange
                                                  object:nil];
-      self.time_entry = [[NewTimeEntry alloc] init];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUICommandEditRunningTimeEntry
+                                                 object:nil];
+
+      self.next_time_entry = [[NewTimeEntry alloc] init];
+      
+      self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                    target:self
+                                                  selector:@selector(timerFired:)
+                                                  userInfo:nil
+                                                   repeats:YES];
     }
     
     return self;
@@ -80,6 +103,26 @@
 }
 
 - (void)eventHandler: (NSNotification *) notification {
+  if ([notification.name isEqualToString:kUIStateTimerRunning]) {
+    [self performSelectorOnMainThread:@selector(render:)
+                           withObject:notification.object
+                        waitUntilDone:NO];
+    return;
+  }
+
+  if ([notification.name isEqualToString:kUIStateTimerStopped]) {
+    [self performSelectorOnMainThread:@selector(render:)
+                           withObject:nil
+                        waitUntilDone:NO];
+    return;
+  }
+
+  if ([notification.name isEqualToString:kUICommandEditRunningTimeEntry]) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
+                                                        object:self.running_time_entry.GUID];
+    return;
+  }
+  
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
     [self performSelectorOnMainThread:@selector(scheduleAutocompleteRendering) withObject:nil waitUntilDone:NO];
     return;
@@ -95,6 +138,31 @@
   }
 }
 
+- (void) render:(TimeEntryViewItem *)view_item {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+  self.running_time_entry = view_item;
+  if (self.running_time_entry == nil) {
+    return;
+  }
+
+  [self.descriptionComboBox setStringValue:@""];
+  [self.durationTextField setStringValue:self.running_time_entry.duration];
+  self.projectTextField.backgroundColor = [ConvertHexColor hexCodeToNSColor:view_item.color];
+
+  // Time entry has project
+  if (self.running_time_entry.ProjectAndTaskLabel &&
+      [self.running_time_entry.ProjectAndTaskLabel   length] > 0) {
+    [self.projectTextField setStringValue:[self.running_time_entry.ProjectAndTaskLabel uppercaseString]];
+    [self.projectTextField setHidden:NO];
+    return;
+  }
+
+  // Time entry has no project
+  [self.projectTextField setHidden:YES];
+  [self.projectTextField setStringValue:@""];
+}
+
 -(NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox{
   return [self.autocompleteDataSource count];
 }
@@ -108,21 +176,26 @@
 }
 
 - (IBAction)startButtonClicked:(id)sender {
-  self.time_entry.Duration = self.durationTextField.stringValue;
+  self.next_time_entry.Duration = self.durationTextField.stringValue;
   [self.durationTextField setStringValue:@""];
   [self.projectTextField setHidden:YES];
   [self.projectTextField setStringValue:@""];
 
-  self.time_entry.Description = self.descriptionComboBox.stringValue;
+  self.next_time_entry.Description = self.descriptionComboBox.stringValue;
   [self.descriptionComboBox setStringValue:@""];
 
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandNew
-                                                      object:self.time_entry];
-  self.time_entry = [[NewTimeEntry alloc] init];
+                                                      object:self.next_time_entry];
+  self.next_time_entry = [[NewTimeEntry alloc] init];
 
   // Reset autocomplete filter
   [self.autocompleteDataSource setFilter:@""];
   [self.descriptionComboBox reloadData];
+}
+
+- (IBAction)stopButtonClicked:(id)sender {
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandStop
+                                                      object:nil];
 }
 
 - (IBAction)descriptionComboBoxChanged:(id)sender {
@@ -132,24 +205,24 @@
 
   // User has entered free text
   if (item == nil) {
-    self.time_entry.Description = [self.descriptionComboBox stringValue];
+    self.next_time_entry.Description = [self.descriptionComboBox stringValue];
     return;
   }
 
   // User has selected a autocomplete item.
   // It could be a time entry, a task or a project.
-  self.time_entry.ProjectID = item.ProjectID;
-  self.time_entry.TaskID = item.TaskID;
+  self.next_time_entry.ProjectID = item.ProjectID;
+  self.next_time_entry.TaskID = item.TaskID;
 
   NSLog(@"New time entry desc: %@, task ID: %u, project ID: %u",
-        self.time_entry.Description,
-        self.time_entry.TaskID,
-        self.time_entry.ProjectID);
+        self.next_time_entry.Description,
+        self.next_time_entry.TaskID,
+        self.next_time_entry.ProjectID);
 
   NSPoint pt;
   pt.x = self.descriptionComboBox.frame.origin.x;
   
-  if (self.time_entry.ProjectID) {
+  if (self.next_time_entry.ProjectID) {
     [self.descriptionComboBox setStringValue:@""];
     self.projectTextField.stringValue = item.ProjectAndTaskLabel;
     self.projectTextField.backgroundColor = [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
@@ -177,6 +250,17 @@
     if ([box isExpanded] == NO) {
       [box setExpanded:YES];
     }
+  }
+}
+
+- (void)timerFired:(NSTimer*)timer {
+  if (self.running_time_entry != nil) {
+    char str[duration_str_len];
+    kopsik_format_duration_in_seconds_hhmmss(self.running_time_entry.duration_in_seconds,
+                                             str,
+                                             duration_str_len);
+    NSString *newValue = [NSString stringWithUTF8String:str];
+    [self.durationTextField setStringValue:newValue];
   }
 }
 

@@ -8,7 +8,6 @@
 
 #import "TimeEntryListViewController.h"
 #import "TimeEntryViewItem.h"
-#import "TimerViewController.h"
 #import "TimerEditViewController.h"
 #import "UIEvents.h"
 #import "kopsik_api.h"
@@ -21,7 +20,6 @@
 
 @interface TimeEntryListViewController ()
 @property NSTimer *timerTimeEntriesRendering;
-@property (nonatomic, strong) IBOutlet TimerViewController *timerViewController;
 @property (nonatomic, strong) IBOutlet TimerEditViewController *timerEditViewController;
 @property NSNib *nibTimeEntryCell;
 @property NSNib *nibTimeEntryCellWithHeader;
@@ -33,10 +31,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
 
-      self.timerViewController = [[TimerViewController alloc]
-                                  initWithNibName:@"TimerViewController" bundle:nil];
-      [self.timerViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-      
       self.timerEditViewController = [[TimerEditViewController alloc]
                                         initWithNibName:@"TimerEditViewController" bundle:nil];
       [self.timerEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
@@ -78,6 +72,9 @@
                            forIdentifier:@"TimeEntryCell"];
   [self.timeEntriesTableView registerNib:self.nibTimeEntryCellWithHeader
                            forIdentifier:@"TimeEntryCellWithHeader"];
+
+  [self.headerView addSubview:self.timerEditViewController.view];
+  [self.timerEditViewController.view setFrame: self.headerView.bounds];
 }
 
 -(void)renderTimeEntries {
@@ -118,21 +115,6 @@
 }
 
 -(void)eventHandler: (NSNotification *) notification {
-  if ([notification.name isEqualToString:kUIStateTimerStopped]) {
-    // Hide running timer view from header view
-    [self.timerViewController.view removeFromSuperview];
-    
-    // If timer editor is not visible yet, add it to header view
-    for (int i = 0; i < [self.headerView subviews].count; i++) {
-      if ([[self.headerView subviews] objectAtIndex:i] == self.timerEditViewController.view) {
-        return;
-      }
-    }
-    [self.headerView addSubview:self.timerEditViewController.view];
-    [self.timerEditViewController.view setFrame:self.headerView.bounds];
-    return;
-  }
-
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
     [self performSelectorOnMainThread:@selector(scheduleRenderTimeEntries)
                            withObject:nil
@@ -146,8 +128,6 @@
 
   if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
     [self.headerView setHidden:YES];
-    [self.timerViewController.view removeFromSuperview];
-
     return;
   }
 
@@ -160,21 +140,6 @@
     [self performSelectorOnMainThread:@selector(scheduleRenderTimeEntries)
                            withObject:nil
                         waitUntilDone:NO];
-    return;
-  }
-
-  if ([notification.name isEqualToString:kUIStateTimerRunning]) {
-    // Hide timer editor from header view
-    [self.timerEditViewController.view removeFromSuperview];
-    
-    // If running timer view is not visible yet, add it to header view
-    for (int i = 0; i < [self.headerView subviews].count; i++) {
-      if ([[self.headerView subviews] objectAtIndex:i] == self.timerViewController.view) {
-        return;
-      }
-    }
-    [self.headerView addSubview:self.timerViewController.view];
-    [self.timerViewController.view setFrame: self.headerView.bounds];
     return;
   }
 }
