@@ -212,8 +212,6 @@
   
   if (self.next_time_entry.ProjectID) {
     self.descriptionComboBox.stringValue = @"";
-//    self.projectTextField.stringValue = item.ProjectAndTaskLabel;
-//    self.projectTextField.backgroundColor = [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
     [self.projectTextField setHidden:NO];
     pt.y = 16;
   } else {
