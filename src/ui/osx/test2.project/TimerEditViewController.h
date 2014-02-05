@@ -14,7 +14,9 @@
 - (IBAction)descriptionComboBoxChanged:(id)sender;
 - (void)timerFired:(NSTimer *)timer;
 @property (weak) IBOutlet NSTextField *durationTextField;
+@property (weak) IBOutlet NSTextField *startButtonLabelTextField;
 @property (weak) IBOutlet NSComboBox *descriptionComboBox;
 @property (weak) IBOutlet NSButton *startButton;
 @property (weak) IBOutlet NSTextField *projectTextField;
+@property (weak) IBOutlet NSBox *startButtonBox;
 @end

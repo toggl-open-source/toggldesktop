@@ -104,14 +104,16 @@
 
 - (void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIStateTimerRunning]) {
-    [self performSelectorOnMainThread:@selector(render:)
-                           withObject:notification.object
+    self.running_time_entry = notification.object;
+    [self performSelectorOnMainThread:@selector(render)
+                           withObject:nil
                         waitUntilDone:NO];
     return;
   }
 
   if ([notification.name isEqualToString:kUIStateTimerStopped]) {
-    [self performSelectorOnMainThread:@selector(render:)
+    self.running_time_entry = nil;
+    [self performSelectorOnMainThread:@selector(render)
                            withObject:nil
                         waitUntilDone:NO];
     return;
@@ -131,83 +133,118 @@
   }
 
   if (![notification.name isEqualToString:kUIEventModelChange]) {
-    ModelChange *change = notification.object;
-    if (![change.ModelType isEqualToString:@"tag"]) {
-      [self performSelectorOnMainThread:@selector(scheduleAutocompleteRendering)
-                             withObject:nil
-                          waitUntilDone:NO];
-    }
+    return;
+  }
+  
+  ModelChange *change = notification.object;
+  if (![change.ModelType isEqualToString:@"tag"]) {
+    [self performSelectorOnMainThread:@selector(scheduleAutocompleteRendering)
+                           withObject:nil
+                        waitUntilDone:NO];
+  }
 
-    // We only care about time entry changes
-    if (! [change.ModelType isEqualToString:@"time_entry"]) {
-      return;
-    }
+  // We only care about time entry changes
+  if (! [change.ModelType isEqualToString:@"time_entry"]) {
+    return;
+  }
 
-    // Handle delete
-    if ([change.ChangeType isEqualToString:@"delete"]) {
-      // Time entry we thought was running, has been deleted.
-      if ([change.GUID isEqualToString:self.running_time_entry.GUID]) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped
-                                                            object:nil];
-      }
-      return;
-    }
-
-    // Handle update
-    TimeEntryViewItem *updated = [TimeEntryViewItem findByGUID:change.GUID];
-
-    // Time entry we thought was running, has been stopped.
-    if ((updated.duration_in_seconds >= 0) &&
-        [updated.GUID isEqualToString:self.running_time_entry.GUID]) {
+  // Handle delete
+  if ([change.ChangeType isEqualToString:@"delete"]) {
+    // Time entry we thought was running, has been deleted.
+    if ([change.GUID isEqualToString:self.running_time_entry.GUID]) {
       [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped
                                                           object:nil];
-      return;
     }
+    return;
+  }
 
-    // Time entry we did not know was running, is running.
-    if ((updated.duration_in_seconds < 0) &&
-        ![updated.GUID isEqualToString:self.running_time_entry.GUID]) {
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning
-                                                          object:updated];
-      return;
-    }
+  // Handle update
+  TimeEntryViewItem *updated = [TimeEntryViewItem findByGUID:change.GUID];
 
-    // Time entry is still running and needs to be updated.
-    if ((updated.duration_in_seconds < 0) &&
-        [updated.GUID isEqualToString:self.running_time_entry.GUID]) {
-      [self performSelectorOnMainThread:@selector(render:)
-                             withObject:updated
-                          waitUntilDone:NO];
-      return;
-    }
+  // Time entry we thought was running, has been stopped.
+  if ((updated.duration_in_seconds >= 0) &&
+      [updated.GUID isEqualToString:self.running_time_entry.GUID]) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped
+                                                        object:nil];
+    return;
+  }
+
+  // Time entry we did not know was running, is running.
+  if ((updated.duration_in_seconds < 0) &&
+      ![updated.GUID isEqualToString:self.running_time_entry.GUID]) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning
+                                                        object:updated];
+    return;
+  }
+
+  // Time entry is still running and needs to be updated.
+  if ((updated.duration_in_seconds < 0) &&
+      [updated.GUID isEqualToString:self.running_time_entry.GUID]) {
+    self.running_time_entry = updated;
+    [self performSelectorOnMainThread:@selector(render)
+                           withObject:nil
+                        waitUntilDone:NO];
+    return;
   }
 }
 
-- (void) render:(TimeEntryViewItem *)view_item {
+- (void) render {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
   
   NSLog(@"Timer edit view render");
 
-  self.running_time_entry = view_item;
+  if (self.running_time_entry != nil) {
+    [self.descriptionComboBox setEnabled:NO];
+    [self.durationTextField setEnabled:NO];
+    self.startButtonLabelTextField.stringValue = @"Stop";
+    self.startButtonBox.borderColor = [ConvertHexColor hexCodeToNSColor:@"#ec0000"];
+    self.startButtonBox.fillColor = [ConvertHexColor hexCodeToNSColor:@"#ec0000"];
+  } else {
+    [self.descriptionComboBox setEnabled:YES];
+    [self.durationTextField setEnabled:YES];
+    self.startButtonLabelTextField.stringValue = @"Start";
+    self.startButtonBox.borderColor = [ConvertHexColor hexCodeToNSColor:@"#4bc800"];
+    self.startButtonBox.fillColor = [ConvertHexColor hexCodeToNSColor:@"#4bc800"];
+  }
+  
+  NSPoint pt;
+  pt.x = self.descriptionComboBox.frame.origin.x;
+  
+  if (self.next_time_entry.ProjectID) {
+    self.descriptionComboBox.stringValue = @"";
+//    self.projectTextField.stringValue = item.ProjectAndTaskLabel;
+//    self.projectTextField.backgroundColor = [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
+    [self.projectTextField setHidden:NO];
+    pt.y = 16;
+  } else {
+    pt.y = 8;
+    [self.projectTextField setHidden:YES];
+  }
+  
+  [self.descriptionComboBox setFrameOrigin:pt];
+  
   if (self.running_time_entry == nil) {
+    self.durationTextField.stringValue = @"";
+    self.descriptionComboBox.stringValue = @"";
+    self.projectTextField.stringValue = @"";
     return;
   }
 
-  [self.descriptionComboBox setStringValue:@""];
-  [self.durationTextField setStringValue:self.running_time_entry.duration];
-  self.projectTextField.backgroundColor = [ConvertHexColor hexCodeToNSColor:view_item.color];
+  self.descriptionComboBox.stringValue = self.running_time_entry.Description;
+  self.durationTextField.stringValue = self.running_time_entry.duration;
+//  self.projectTextField.backgroundColor = [ConvertHexColor hexCodeToNSColor:view_item.color];
 
   // Time entry has project
   if (self.running_time_entry.ProjectAndTaskLabel &&
       [self.running_time_entry.ProjectAndTaskLabel   length] > 0) {
-    [self.projectTextField setStringValue:[self.running_time_entry.ProjectAndTaskLabel uppercaseString]];
+    self.projectTextField.stringValue = [self.running_time_entry.ProjectAndTaskLabel uppercaseString];
     [self.projectTextField setHidden:NO];
     return;
   }
 
   // Time entry has no project
   [self.projectTextField setHidden:YES];
-  [self.projectTextField setStringValue:@""];
+  self.projectTextField.stringValue = @"";
 }
 
 -(NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox{
@@ -223,7 +260,11 @@
 }
 
 - (IBAction)startButtonClicked:(id)sender {
-  NSLog(@"startButtonClicked");
+  if (self.running_time_entry != nil) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandStop
+                                                        object:nil];
+    return;
+  }
 
   self.next_time_entry.Duration = self.durationTextField.stringValue;
   [self.durationTextField setStringValue:@""];
@@ -240,13 +281,6 @@
   // Reset autocomplete filter
   [self.autocompleteDataSource setFilter:@""];
   [self.descriptionComboBox reloadData];
-}
-
-- (IBAction)stopButtonClicked:(id)sender {
-  NSLog(@"stopButtonClicked");
-
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandStop
-                                                      object:nil];
 }
 
 - (IBAction)descriptionComboBoxChanged:(id)sender {
@@ -269,22 +303,8 @@
         self.next_time_entry.Description,
         self.next_time_entry.TaskID,
         self.next_time_entry.ProjectID);
-
-  NSPoint pt;
-  pt.x = self.descriptionComboBox.frame.origin.x;
   
-  if (self.next_time_entry.ProjectID) {
-    [self.descriptionComboBox setStringValue:@""];
-    self.projectTextField.stringValue = item.ProjectAndTaskLabel;
-    self.projectTextField.backgroundColor = [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
-    [self.projectTextField setHidden:NO];
-    pt.y = 16;
-  } else {
-    pt.y = 8;
-    [self.projectTextField setHidden:YES];
-  }
-
-  [self.descriptionComboBox setFrameOrigin:pt];
+  [self render];
 }
 
 - (void)controlTextDidChange:(NSNotification *)aNotification {
@@ -305,7 +325,6 @@
 }
 
 - (void)timerFired:(NSTimer*)timer {
-  NSLog(@"timerFired");
   if (self.running_time_entry != nil) {
     char str[duration_str_len];
     kopsik_format_duration_in_seconds_hhmmss(self.running_time_entry.duration_in_seconds,
