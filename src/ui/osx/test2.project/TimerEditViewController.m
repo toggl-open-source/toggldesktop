@@ -124,22 +124,69 @@
   }
   
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    [self performSelectorOnMainThread:@selector(scheduleAutocompleteRendering) withObject:nil waitUntilDone:NO];
+    [self performSelectorOnMainThread:@selector(scheduleAutocompleteRendering)
+                           withObject:nil
+                        waitUntilDone:NO];
     return;
   }
 
   if (![notification.name isEqualToString:kUIEventModelChange]) {
-    ModelChange *mc = notification.object;
-    if ([mc.ModelType isEqualToString:@"tag"]) {
-      return; // Tags dont affect autocomplete
+    ModelChange *change = notification.object;
+    if (![change.ModelType isEqualToString:@"tag"]) {
+      [self performSelectorOnMainThread:@selector(scheduleAutocompleteRendering)
+                             withObject:nil
+                          waitUntilDone:NO];
     }
-    [self performSelectorOnMainThread:@selector(scheduleAutocompleteRendering) withObject:nil waitUntilDone:NO];
-    return;
+
+    // We only care about time entry changes
+    if (! [change.ModelType isEqualToString:@"time_entry"]) {
+      return;
+    }
+
+    // Handle delete
+    if ([change.ChangeType isEqualToString:@"delete"]) {
+      // Time entry we thought was running, has been deleted.
+      if ([change.GUID isEqualToString:self.running_time_entry.GUID]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped
+                                                            object:nil];
+      }
+      return;
+    }
+
+    // Handle update
+    TimeEntryViewItem *updated = [TimeEntryViewItem findByGUID:change.GUID];
+
+    // Time entry we thought was running, has been stopped.
+    if ((updated.duration_in_seconds >= 0) &&
+        [updated.GUID isEqualToString:self.running_time_entry.GUID]) {
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped
+                                                          object:nil];
+      return;
+    }
+
+    // Time entry we did not know was running, is running.
+    if ((updated.duration_in_seconds < 0) &&
+        ![updated.GUID isEqualToString:self.running_time_entry.GUID]) {
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning
+                                                          object:updated];
+      return;
+    }
+
+    // Time entry is still running and needs to be updated.
+    if ((updated.duration_in_seconds < 0) &&
+        [updated.GUID isEqualToString:self.running_time_entry.GUID]) {
+      [self performSelectorOnMainThread:@selector(render:)
+                             withObject:updated
+                          waitUntilDone:NO];
+      return;
+    }
   }
 }
 
 - (void) render:(TimeEntryViewItem *)view_item {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+  
+  NSLog(@"Timer edit view render");
 
   self.running_time_entry = view_item;
   if (self.running_time_entry == nil) {
@@ -176,6 +223,8 @@
 }
 
 - (IBAction)startButtonClicked:(id)sender {
+  NSLog(@"startButtonClicked");
+
   self.next_time_entry.Duration = self.durationTextField.stringValue;
   [self.durationTextField setStringValue:@""];
   [self.projectTextField setHidden:YES];
@@ -194,6 +243,8 @@
 }
 
 - (IBAction)stopButtonClicked:(id)sender {
+  NSLog(@"stopButtonClicked");
+
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandStop
                                                       object:nil];
 }
@@ -254,6 +305,7 @@
 }
 
 - (void)timerFired:(NSTimer*)timer {
+  NSLog(@"timerFired");
   if (self.running_time_entry != nil) {
     char str[duration_str_len];
     kopsik_format_duration_in_seconds_hhmmss(self.running_time_entry.duration_in_seconds,
