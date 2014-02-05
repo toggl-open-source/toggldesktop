@@ -28,7 +28,7 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4mY-N2-UMI">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4mY-N2-UMI">
                                 <rect key="frame" x="9" y="13" width="120" height="11"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="PROJECT NAME - CLIENT" drawsBackground="YES" id="YKk-bz-65B">
@@ -89,7 +89,7 @@
                         <constraint firstAttribute="trailing" secondItem="IPX-6P-J70" secondAttribute="trailing" constant="86" id="h7j-w1-f9l"/>
                         <constraint firstItem="A9Z-Z5-Qzd" firstAttribute="leading" secondItem="Eux-yk-8iS" secondAttribute="trailing" constant="15" id="jW8-5q-w2m"/>
                         <constraint firstAttribute="trailing" secondItem="chv-we-eud" secondAttribute="trailing" constant="3" id="nuI-jn-FlF"/>
-                        <constraint firstAttribute="trailing" secondItem="4mY-N2-UMI" secondAttribute="trailing" constant="85" id="wki-mh-hyo"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="4mY-N2-UMI" secondAttribute="trailing" constant="85" id="wki-mh-hyo"/>
                         <constraint firstItem="4mY-N2-UMI" firstAttribute="top" secondItem="IPX-6P-J70" secondAttribute="bottom" constant="2" id="xuh-9j-osi"/>
                     </constraints>
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
