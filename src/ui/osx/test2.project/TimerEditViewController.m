@@ -120,8 +120,10 @@
   }
 
   if ([notification.name isEqualToString:kUICommandEditRunningTimeEntry]) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
-                                                        object:self.running_time_entry.GUID];
+    if (self.running_time_entry != nil) {
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
+                                                          object:self.running_time_entry.GUID];
+    }
     return;
   }
   
