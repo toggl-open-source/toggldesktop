@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -19,7 +19,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="252" height="76"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IPX-6P-J70">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IPX-6P-J70">
                                 <rect key="frame" x="6" y="26" width="162" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="This is a time entry" id="bKB-0i-C0M">
@@ -28,7 +28,7 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4mY-N2-UMI">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4mY-N2-UMI">
                                 <rect key="frame" x="9" y="13" width="120" height="11"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="PROJECT NAME - CLIENT" drawsBackground="YES" id="YKk-bz-65B">
@@ -37,7 +37,7 @@
                                     <color key="backgroundColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="chv-we-eud">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="chv-we-eud">
                                 <rect key="frame" x="207" y="21" width="44" height="11"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="03:21:30" id="P10-iS-flR">
@@ -46,7 +46,7 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Eux-yk-8iS">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Eux-yk-8iS">
                                 <rect key="frame" x="6" y="53" width="78" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
@@ -59,7 +59,7 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="A9Z-Z5-Qzd">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A9Z-Z5-Qzd">
                                 <rect key="frame" x="95" y="53" width="61" height="11"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
@@ -89,6 +89,7 @@
                         <constraint firstAttribute="trailing" secondItem="IPX-6P-J70" secondAttribute="trailing" constant="86" id="h7j-w1-f9l"/>
                         <constraint firstItem="A9Z-Z5-Qzd" firstAttribute="leading" secondItem="Eux-yk-8iS" secondAttribute="trailing" constant="15" id="jW8-5q-w2m"/>
                         <constraint firstAttribute="trailing" secondItem="chv-we-eud" secondAttribute="trailing" constant="3" id="nuI-jn-FlF"/>
+                        <constraint firstAttribute="trailing" secondItem="4mY-N2-UMI" secondAttribute="trailing" constant="85" id="wki-mh-hyo"/>
                         <constraint firstItem="4mY-N2-UMI" firstAttribute="top" secondItem="IPX-6P-J70" secondAttribute="bottom" constant="2" id="xuh-9j-osi"/>
                     </constraints>
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>

@@ -40,7 +40,7 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="deS-e6-3Ui">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="deS-e6-3Ui">
                                 <rect key="frame" x="9" y="11" width="69" height="11"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="NEW - TOGGL" drawsBackground="YES" id="apI-Za-Hk2">
@@ -56,6 +56,7 @@
                         <constraint firstItem="deS-e6-3Ui" firstAttribute="top" secondItem="CwR-d5-aWs" secondAttribute="bottom" constant="2" id="HZ7-Mc-iQ2"/>
                         <constraint firstItem="xwb-FG-Z4X" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" constant="19" id="HsG-Zm-aF4"/>
                         <constraint firstItem="CwR-d5-aWs" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" constant="8" id="KZ4-JV-5xD"/>
+                        <constraint firstAttribute="trailing" secondItem="deS-e6-3Ui" secondAttribute="trailing" constant="85" id="L9d-4A-NVt"/>
                         <constraint firstAttribute="trailing" secondItem="CwR-d5-aWs" secondAttribute="trailing" constant="87" id="OD9-hN-DXz"/>
                         <constraint firstAttribute="trailing" secondItem="xwb-FG-Z4X" secondAttribute="trailing" constant="3" id="SKX-kj-jDT"/>
                         <constraint firstAttribute="bottom" secondItem="xwb-FG-Z4X" secondAttribute="bottom" constant="21" id="Wxi-cu-zKj"/>
