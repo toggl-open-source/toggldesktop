@@ -189,6 +189,8 @@ typedef struct {
   int DurationInSeconds;
   char *Description;
   char *ProjectAndTaskLabel;
+  unsigned int PID;
+  unsigned int TID;
   char *Duration;
   char *Color;
   char *GUID;

@@ -190,8 +190,6 @@
 - (void)renderAutocomplete {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-  NSLog(@"TimeEntryEditViewController renderAutocomplete");
-
   self.timerAutocompleteRendering = nil;
 
   [self.autocompleteDataSource fetch:NO withTasks:YES withProjects:YES];

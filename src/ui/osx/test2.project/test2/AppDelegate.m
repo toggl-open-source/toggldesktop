@@ -24,7 +24,6 @@
 #import "IdleEvent.h"
 #import "IdleNotificationWindowController.h"
 #import "CrashReporter.h"
-#import "NewTimeEntry.h"
 #import "FeedbackWindowController.h"
 
 @interface AppDelegate()
@@ -244,7 +243,7 @@ NSString *kTimeTotalUnknown = @"--:--";
   [self.mainTimelineMenuItem setState:state];
 }
 
-- (void)startNewTimeEntry:(NewTimeEntry *)new_time_entry {
+- (void)startNewTimeEntry:(TimeEntryViewItem *)new_time_entry {
   char err[KOPSIK_ERR_LEN];
   KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
   NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
@@ -252,7 +251,7 @@ NSString *kTimeTotalUnknown = @"--:--";
                                        err,
                                        KOPSIK_ERR_LEN,
                                        [new_time_entry.Description UTF8String],
-                                       [new_time_entry.Duration UTF8String],
+                                       [new_time_entry.duration UTF8String],
                                        new_time_entry.TaskID,
                                        new_time_entry.ProjectID,
                                        item);
@@ -604,7 +603,7 @@ NSString *kTimeTotalUnknown = @"--:--";
 - (void)onNewMenuItem:(id)sender {
   [[NSNotificationCenter defaultCenter]
     postNotificationName:kUICommandNew
-    object:[[NewTimeEntry alloc] init]];
+    object:[[TimeEntryViewItem alloc] init]];
 }
 
 - (void)onSendFeedbackMenuItem {

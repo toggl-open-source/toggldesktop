@@ -22,6 +22,8 @@
   } else {
     self.ProjectAndTaskLabel = nil;
   }
+  self.ProjectID = data->PID;
+  self.TaskID = data->TID;
   if (data->Color) {
     self.color = [NSString stringWithUTF8String:data->Color];
   } else {

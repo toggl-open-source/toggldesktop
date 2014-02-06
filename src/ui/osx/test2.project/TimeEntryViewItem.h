@@ -15,6 +15,8 @@
 @property int duration_in_seconds;
 @property (strong) NSString *Description; // uppercase to avoid clash with [NSObject description]
 @property (strong) NSString *ProjectAndTaskLabel;
+@property int ProjectID;
+@property int TaskID;
 @property (strong) NSString *duration;
 @property (strong) NSString *color;
 @property (strong) NSString *GUID;

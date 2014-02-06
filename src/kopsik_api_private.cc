@@ -80,12 +80,18 @@ void time_entry_to_view_item(
   if (te->TID()) {
     t = user->GetTaskByID(te->TID());
   }
+  view_item->TID = te->TID();
 
   kopsik::Project *p = 0;
   if (t) {
     p = user->GetProjectByID(t->PID());
   } else if (te->PID()) {
     p = user->GetProjectByID(te->PID());
+  }
+  if (p) {
+    view_item->PID = p->ID();
+  } else {
+    view_item->PID = 0;
   }
 
   kopsik::Client *c = 0;
