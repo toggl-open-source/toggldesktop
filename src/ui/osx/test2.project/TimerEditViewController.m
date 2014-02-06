@@ -269,8 +269,10 @@
 
 - (IBAction)startButtonClicked:(id)sender {
   if (self.time_entry.duration_in_seconds < 0) {
-    self.durationTextField.stringValue=@"";
-    self.descriptionComboBox.stringValue=@"";
+    self.durationTextField.stringValue = @"";
+    self.descriptionComboBox.stringValue = @"";
+    self.projectTextField.stringValue = @"";
+    [self.projectTextField setHidden:YES];
     [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandStop
                                                         object:nil];
     return;
