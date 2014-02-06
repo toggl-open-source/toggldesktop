@@ -273,6 +273,8 @@
 
 - (IBAction)startButtonClicked:(id)sender {
   if (self.running_time_entry != nil) {
+    self.durationTextField.stringValue=@"";
+    self.descriptionComboBox.stringValue=@"";
     [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandStop
                                                         object:nil];
     return;
