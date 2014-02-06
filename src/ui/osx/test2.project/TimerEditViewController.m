@@ -323,6 +323,7 @@
   self.time_entry.Description = item.Text;
   self.time_entry.ProjectAndTaskLabel = item.ProjectAndTaskLabel;
   self.time_entry.ProjectColor = item.ProjectColor;
+  self.time_entry.Description = item.Description;
 
   [self render];
 }

@@ -157,6 +157,7 @@ KOPSIK_EXPORT void kopsik_sync(
 
 typedef struct {
   char *Text;  // This is what is displayed to user
+  char *Description;  // This is copied to description field if item is selected
   char *ProjectAndTaskLabel;  // Project label, if has a project
   char *ProjectColor;
   unsigned int TaskID;

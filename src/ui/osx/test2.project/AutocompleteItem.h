@@ -13,6 +13,7 @@
 - (void)load:(KopsikAutocompleteItem *)data;
 - (void)save:(KopsikAutocompleteItem *)data;
 @property NSString *Text;
+@property NSString *Description;
 @property NSString *ProjectAndTaskLabel;
 @property NSString *ProjectColor;
 @property unsigned int ProjectID;

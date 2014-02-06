@@ -865,6 +865,7 @@ kopsik_api_result kopsik_autocomplete_items(
 
         std::stringstream search_parts;
         search_parts << te->Description();
+        std::string description = search_parts.str();
         if (!project_label.empty()) {
           search_parts << " - " << project_label;
         }
@@ -875,6 +876,7 @@ kopsik_api_result kopsik_autocomplete_items(
         }
 
         KopsikAutocompleteItem *autocomplete_item = autocomplete_item_init();
+        autocomplete_item->Description = strdup(description.c_str());
         autocomplete_item->Text = strdup(text.c_str());
         autocomplete_item->ProjectAndTaskLabel = strdup(project_label.c_str());
         if (p) {

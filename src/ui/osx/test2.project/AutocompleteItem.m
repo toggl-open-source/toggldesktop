@@ -13,6 +13,11 @@
 - (void)load:(KopsikAutocompleteItem *)data {
   self.Text = [NSString stringWithUTF8String:data->Text];
   self.ProjectAndTaskLabel = [NSString stringWithUTF8String:data->ProjectAndTaskLabel];
+  if (data->Description) {
+    self.Description = [NSString stringWithUTF8String:data->Description];
+  } else {
+    self.Description = @"";
+  }
   if (data->ProjectColor) {
     self.ProjectColor = [NSString stringWithUTF8String:data->ProjectColor];
   } else {
