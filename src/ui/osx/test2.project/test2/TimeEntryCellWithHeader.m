@@ -30,7 +30,8 @@
   if (view_item.ProjectAndTaskLabel && [view_item.ProjectAndTaskLabel length] > 0) {
     self.projectTextField.stringValue = [view_item.ProjectAndTaskLabel uppercaseString];
     [self.projectTextField setHidden:NO];
-    self.projectTextField.backgroundColor = [ConvertHexColor hexCodeToNSColor:view_item.color];
+    self.projectTextField.backgroundColor =
+      [ConvertHexColor hexCodeToNSColor:view_item.ProjectColor];
     return;
   }
 

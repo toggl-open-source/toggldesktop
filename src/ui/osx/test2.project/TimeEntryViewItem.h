@@ -18,7 +18,7 @@
 @property int ProjectID;
 @property int TaskID;
 @property (strong) NSString *duration;
-@property (strong) NSString *color;
+@property (strong) NSString *ProjectColor;
 @property (strong) NSString *GUID;
 @property BOOL billable;
 @property (strong) NSDate *started;

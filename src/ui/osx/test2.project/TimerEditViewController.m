@@ -233,7 +233,8 @@
   } else {
     self.projectTextField.stringValue = @"";
   }
-  self.projectTextField.backgroundColor = [ConvertHexColor hexCodeToNSColor:self.time_entry.color];
+  self.projectTextField.backgroundColor =
+    [ConvertHexColor hexCodeToNSColor:self.time_entry.ProjectColor];
 
   // If a project is selected then description
   // field is higher on the screen.
@@ -308,6 +309,7 @@
   self.time_entry.TaskID = item.TaskID;
   self.time_entry.Description = item.Text;
   self.time_entry.ProjectAndTaskLabel = item.ProjectAndTaskLabel;
+  self.time_entry.ProjectColor = item.ProjectColor;
 
   [self render];
 }
