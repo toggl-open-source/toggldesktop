@@ -62,7 +62,7 @@
   return [self.autocompleteDataSource completedString:partialString];
 }
 
-- (void)renderTimeEntry:(NSString *)view_item_guid {
+- (void)render:(NSString *)view_item_guid {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
   NSAssert(view_item_guid != nil, @"GUID is nil");
@@ -71,7 +71,7 @@
 
   self.runningTimeEntry = item;
 
-  NSLog(@"TimeEntryEditViewController renderTimeEntry, %@", item);
+  NSLog(@"TimeEntryEditViewController render, %@", item);
 
   // Reset autocomplete filter
   [self.autocompleteDataSource setFilter:@""];
@@ -142,7 +142,7 @@
 
 - (void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIStateTimeEntrySelected]) {
-    [self performSelectorOnMainThread:@selector(renderTimeEntry:)
+    [self performSelectorOnMainThread:@selector(render:)
                            withObject:notification.object
                         waitUntilDone:NO];
     return;
@@ -164,7 +164,7 @@
                            withObject:nil
                         waitUntilDone:NO];
     if ([self.GUID isEqualToString:mc.GUID] && [mc.ChangeType isEqualToString:@"update"]) {
-      [self performSelectorOnMainThread:@selector(renderTimeEntry:)
+      [self performSelectorOnMainThread:@selector(render:)
                              withObject:mc.GUID
                           waitUntilDone:NO];
     }

@@ -17,7 +17,6 @@
 @property (weak) IBOutlet NSDatePicker *endTime;
 @property (weak) IBOutlet NSBox *startEndTimeBox;
 @property (weak) IBOutlet NSDatePicker *startDate;
-@property (weak) IBOutlet NSTextField *startDatePlaceholder;
 @property (weak) IBOutlet NSTokenField *tagsTokenField;
 @property (weak) IBOutlet NSButton *billableCheckbox;
 @property (weak) IBOutlet NSTextField *lastUpdateTextField;
@@ -30,7 +29,6 @@
 - (IBAction)startTimeChanged:(id)sender;
 - (IBAction)endTimeChanged:(id)sender;
 - (IBAction)dateChanged:(id)sender;
-- (IBAction)startDatePlaceholderClicked:(id)sender;
 - (IBAction)tagsChanged:(id)sender;
 - (IBAction)billableCheckBoxClicked:(id)sender;
 - (IBAction)deleteButtonClicked:(id)sender;

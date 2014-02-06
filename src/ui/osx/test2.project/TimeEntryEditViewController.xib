@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -15,7 +15,7 @@
                 <outlet property="endTime" destination="jAD-IY-7K4" id="f67-7l-Df9"/>
                 <outlet property="lastUpdateTextField" destination="byc-AI-Ri7" id="bg3-EU-Pr6"/>
                 <outlet property="projectSelect" destination="mxY-tv-UzX" id="eym-qD-quf"/>
-                <outlet property="startDatePlaceholder" destination="Bkn-xN-xEP" id="pf9-VF-JKg"/>
+                <outlet property="startDate" destination="xTj-21-Dv1" id="E4C-ml-uuJ"/>
                 <outlet property="startEndTimeBox" destination="TSC-79-BuD" id="6rV-Ia-R9i"/>
                 <outlet property="startTime" destination="vaF-tJ-dqC" id="8rq-5U-3Qt"/>
                 <outlet property="tagsTokenField" destination="9Uk-YS-6nx" id="Q4X-aI-eeC"/>
@@ -75,7 +75,7 @@
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lGX-fG-VqC">
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lGX-fG-VqC">
                                         <rect key="frame" x="85" y="388" width="150" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="Development" id="cHV-qN-pwr">
@@ -146,7 +146,7 @@
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EMR-ul-vEb">
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EMR-ul-vEb">
                                                     <rect key="frame" x="85" y="11" width="150" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="03:21:30" id="g9Z-PC-eSh">
@@ -236,7 +236,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                     </datePickerCell>
                                                     <connections>
                                                         <action selector="startTimeChanged:" target="-2" id="PIU-pw-wXB"/>
-                                                        <outlet property="nextKeyView" destination="jAD-IY-7K4" id="OMV-rY-0yy"/>
+                                                        <outlet property="nextKeyView" destination="jAD-IY-7K4" id="7pV-2D-vBl"/>
                                                     </connections>
                                                 </datePicker>
                                                 <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jAD-IY-7K4">
@@ -280,7 +280,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                     </datePickerCell>
                                                     <connections>
                                                         <action selector="endTimeChanged:" target="-2" id="BKk-TY-b8d"/>
-                                                        <outlet property="nextKeyView" destination="Bkn-xN-xEP" id="mly-rb-MsQ"/>
+                                                        <outlet property="nextKeyView" destination="xTj-21-Dv1" id="Z9o-Ee-3Hm"/>
                                                     </connections>
                                                 </datePicker>
                                             </subviews>
@@ -309,22 +309,51 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bkn-xN-xEP">
-                                                    <rect key="frame" x="85" y="11" width="150" height="17"/>
+                                                <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xTj-21-Dv1">
+                                                    <rect key="frame" x="85" y="8" width="150" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="25/11/2014" id="MJ2-pn-gLS">
-                                                        <font key="font" size="13" name="LucidaGrande"/>
-                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                    </textFieldCell>
+                                                    <datePickerCell key="cell" alignment="left" drawsBackground="NO" datePickerStyle="textField" id="GUE-OB-dMZ">
+                                                        <font key="font" metaFont="system"/>
+                                                        <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
+                                                            <!--1982-02-12 08:00:00 -0800-->
+                                                            <timeZone key="timeZone" name="US/Pacific">
+                                                                <mutableData key="data">
+VFppZgAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAC5AAAABAAAABCepkign7sVkKCGKqChmveQ
+y4kaoNIj9HDSYSYQ1v50INiArZDa/tGg28CQENzes6DdqayQ3r6VoN+JjpDgnneg4WlwkOJ+WaDjSVKQ
+5F47oOUpNJDmR1gg5xJREOgnOiDo8jMQ6gccIOrSFRDr5v4g7LH3EO3G4CDukdkQ76/8oPBxuxDxj96g
+8n/BkPNvwKD0X6OQ9U+ioPY/hZD3L4Sg+CiiEPkPZqD6CIQQ+viDIPvoZhD82GUg/chIEP64RyD/qCoQ
+AJgpIAGIDBACeAsgA3EokARhJ6AFUQqQBkEJoAcw7JAHjUOgCRDOkAmtvyAK8LCQC+CvoAzZzRANwJGg
+DrmvEA+priAQmZEQEYmQIBJ5cxATaXIgFFlVEBVJVCAWOTcQFyk2IBgiU5AZCRggGgI1kBryNKAb4heQ
+HNIWoB3B+ZAesfigH6HbkCB2KyAhgb2QIlYNICNq2hAkNe8gJUq8ECYV0SAnKp4QJ/7toCkKgBAp3s+g
+KupiECu+saAs036QLZ6ToC6zYJAvfnWgMJNCkDFnkiAycySQM0d0IDRTBpA1J1YgNjLokDcHOCA4HAUQ
+OOcaIDn75xA6xvwgO9vJEDywGKA9u6sQPo/6oD+bjRBAb9ygQYSpkEJPvqBDZIuQRC+goEVEbZBF89Mg
+Ry2KEEfTtSBJDWwQSbOXIErtThBLnLOgTNZqkE18laBOtkyQT1x3oFCWLpBRPFmgUnYQkFMcO6BUVfKQ
+VPwdoFY11JBW5TogWB7xEFjFHCBZ/tMQWqT+IFvetRBchOAgXb6XEF5kwiBfnnkQYE3eoGGHlZBiLcCg
+Y2d3kGQNoqBlR1mQZe2EoGcnO5BnzWagaQcdkGmtSKBq5v+Qa5ZlIGzQHBBtdkcgbq/+EG9WKSBwj+AQ
+cTYLIHJvwhBzFe0gdE+kEHT/CaB2OMCQdt7roHgYopB4vs2gefiEkHqer6B72GaQfH6RoH24SJB+XnOg
+f5gqkAABAAECAwEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
+AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
+AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
+AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
+</mutableData>
+                                                            </timeZone>
+                                                        </calendarDate>
+                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                    </datePickerCell>
                                                     <connections>
-                                                        <outlet property="nextKeyView" destination="9Uk-YS-6nx" id="XRs-7N-HYV"/>
+                                                        <action selector="dateChanged:" target="-2" id="Rss-re-QCV"/>
+                                                        <outlet property="nextKeyView" destination="9Uk-YS-6nx" id="vTD-Fu-7aa"/>
                                                     </connections>
-                                                </textField>
+                                                </datePicker>
                                             </subviews>
                                         </view>
                                         <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="xTj-21-Dv1" secondAttribute="trailing" constant="14" id="Ban-Og-lGa"/>
+                                            <constraint firstItem="xTj-21-Dv1" firstAttribute="leading" secondItem="r22-gF-YfG" secondAttribute="leading" constant="86" id="NUp-Ps-uzX"/>
+                                            <constraint firstAttribute="bottom" secondItem="xTj-21-Dv1" secondAttribute="bottom" constant="9" id="TmZ-xS-a1f"/>
                                             <constraint firstAttribute="height" constant="41" id="ghP-Gf-MYa"/>
+                                            <constraint firstItem="xTj-21-Dv1" firstAttribute="top" secondItem="r22-gF-YfG" secondAttribute="top" constant="15" id="rJ5-6A-Dhi"/>
                                         </constraints>
                                         <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                         <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -370,7 +399,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                         <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </box>
-                                    <button translatesAutoresizingMaskIntoConstraints="NO" id="sSX-ad-7XC">
+                                    <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sSX-ad-7XC">
                                         <rect key="frame" x="87" y="143" width="67" height="18"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="check" title="Billable" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="jlI-qI-Cgm">
