@@ -268,6 +268,8 @@
 
 - (IBAction)startButtonClicked:(id)sender {
   if (self.time_entry.duration_in_seconds < 0) {
+    self.durationTextField.stringValue=@"";
+    self.descriptionComboBox.stringValue=@"";
     [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandStop
                                                         object:nil];
     return;
@@ -281,6 +283,12 @@
   // Reset autocomplete filter
   [self.autocompleteDataSource setFilter:@""];
   [self.descriptionComboBox reloadData];
+
+  // Clear Time entry form fields after stop
+  if ([[self.durationTextField stringValue]length]>0){
+    self.durationTextField.stringValue=@"";
+    self.descriptionComboBox.stringValue=@"";
+  }
 }
 
 - (IBAction)descriptionComboBoxChanged:(id)sender {
@@ -298,9 +306,9 @@
   // It could be a time entry, a task or a project.
   self.time_entry.ProjectID = item.ProjectID;
   self.time_entry.TaskID = item.TaskID;
+  self.time_entry.Description = item.Text;
+  self.time_entry.ProjectAndTaskLabel = item.ProjectAndTaskLabel;
 
-  NSLog(@"New time entry: %@", self.time_entry.description);
-  
   [self render];
 }
 
