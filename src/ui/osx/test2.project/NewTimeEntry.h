@@ -11,6 +11,7 @@
 @interface NewTimeEntry : NSObject
 @property (strong) NSString *Description;
 @property (strong) NSString *Duration;
+@property NSString *ProjectAndTaskLabel;
 @property unsigned int TaskID;
 @property unsigned int ProjectID;
 @end

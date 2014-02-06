@@ -236,8 +236,11 @@
   if (self.running_time_entry != nil) {
     self.projectTextField.stringValue =
       [self.running_time_entry.ProjectAndTaskLabel uppercaseString];
+  } else if (self.next_time_entry != nil) {
+    self.projectTextField.stringValue =
+      [self.next_time_entry.ProjectAndTaskLabel uppercaseString];
   } else {
-    self.projectTextField.stringValue = @"FIXME: project name autocomplete?";
+    self.projectTextField.stringValue = @"";
   }
 
   // If a project is selected then description
@@ -312,11 +315,14 @@
   // It could be a time entry, a task or a project.
   self.next_time_entry.ProjectID = item.ProjectID;
   self.next_time_entry.TaskID = item.TaskID;
+  self.next_time_entry.Description = item.Text;
+  self.next_time_entry.ProjectAndTaskLabel = item.ProjectAndTaskLabel;
 
-  NSLog(@"New time entry desc: %@, task ID: %u, project ID: %u",
+  NSLog(@"New time entry desc: %@, task ID: %u, project ID: %u, projectTaskName: %@",
         self.next_time_entry.Description,
         self.next_time_entry.TaskID,
-        self.next_time_entry.ProjectID);
+        self.next_time_entry.ProjectID,
+        self.next_time_entry.ProjectAndTaskLabel);
   
   [self render];
 }
