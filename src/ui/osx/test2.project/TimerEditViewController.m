@@ -34,6 +34,10 @@
 
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
+                                                   name:kUIStateTimeEntryDeselected
+                                                 object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
                                                    name:kUIStateTimerRunning
                                                  object:nil];
       [[NSNotificationCenter defaultCenter] addObserver:self
@@ -101,6 +105,13 @@
 - (void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIStateTimerRunning]) {
     self.time_entry = notification.object;
+    [self performSelectorOnMainThread:@selector(render)
+                           withObject:nil
+                        waitUntilDone:NO];
+    return;
+  }
+
+  if ([notification.name isEqualToString:kUIStateTimeEntryDeselected]) {
     [self performSelectorOnMainThread:@selector(render)
                            withObject:nil
                         waitUntilDone:NO];
