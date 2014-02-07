@@ -32,10 +32,10 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xwb-FG-Z4X">
-                                <rect key="frame" x="207" y="21" width="44" height="11"/>
+                                <rect key="frame" x="195" y="21" width="56" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="03:21:30" id="Ten-lK-6RR">
-                                    <font key="font" size="9" name="LucidaGrande"/>
+                                    <font key="font" size="12" name="LucidaGrande"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -54,7 +54,7 @@
                     <constraints>
                         <constraint firstItem="deS-e6-3Ui" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" constant="7" id="FOo-PQ-AK1"/>
                         <constraint firstItem="deS-e6-3Ui" firstAttribute="top" secondItem="CwR-d5-aWs" secondAttribute="bottom" constant="2" id="HZ7-Mc-iQ2"/>
-                        <constraint firstItem="xwb-FG-Z4X" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" constant="19" id="HsG-Zm-aF4"/>
+                        <constraint firstItem="xwb-FG-Z4X" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" constant="14" id="HsG-Zm-aF4"/>
                         <constraint firstItem="CwR-d5-aWs" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" constant="8" id="KZ4-JV-5xD"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="deS-e6-3Ui" secondAttribute="trailing" constant="85" id="L9d-4A-NVt"/>
                         <constraint firstAttribute="trailing" secondItem="CwR-d5-aWs" secondAttribute="trailing" constant="87" id="OD9-hN-DXz"/>
@@ -67,7 +67,7 @@
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </box>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="Gcj-ki-Hus">
-                    <rect key="frame" x="181" y="15" width="21" height="21"/>
+                    <rect key="frame" x="176" y="15" width="21" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="FfV-9g-8jU"/>
@@ -87,7 +87,7 @@
                 <constraint firstAttribute="bottom" secondItem="ar8-w3-mLZ" secondAttribute="bottom" constant="1" id="50P-cL-fjI"/>
                 <constraint firstItem="ar8-w3-mLZ" firstAttribute="top" secondItem="jHy-af-Yta" secondAttribute="top" id="BO9-BK-fhw"/>
                 <constraint firstAttribute="trailing" secondItem="ar8-w3-mLZ" secondAttribute="trailing" id="fix-Va-WqO"/>
-                <constraint firstAttribute="trailing" secondItem="Gcj-ki-Hus" secondAttribute="trailing" constant="50" id="nQK-0L-3Rf"/>
+                <constraint firstAttribute="trailing" secondItem="Gcj-ki-Hus" secondAttribute="trailing" constant="55" id="nQK-0L-3Rf"/>
                 <constraint firstAttribute="bottom" secondItem="Gcj-ki-Hus" secondAttribute="bottom" constant="15" id="xzR-RD-GVL"/>
             </constraints>
             <connections>

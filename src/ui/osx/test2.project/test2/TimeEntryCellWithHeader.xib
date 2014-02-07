@@ -38,10 +38,10 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="chv-we-eud">
-                                <rect key="frame" x="207" y="21" width="44" height="11"/>
+                                <rect key="frame" x="195" y="21" width="56" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="03:21:30" id="P10-iS-flR">
-                                    <font key="font" size="9" name="LucidaGrande"/>
+                                    <font key="font" size="12" name="LucidaGrande"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -81,7 +81,7 @@
                         <constraint firstItem="IPX-6P-J70" firstAttribute="top" secondItem="A9Z-Z5-Qzd" secondAttribute="bottom" constant="10" id="EXs-Uc-xRg"/>
                         <constraint firstItem="IPX-6P-J70" firstAttribute="leading" secondItem="HvF-1T-7Z3" secondAttribute="leading" constant="8" id="LMV-jW-9Cu"/>
                         <constraint firstAttribute="bottom" secondItem="4mY-N2-UMI" secondAttribute="bottom" constant="13" id="LqQ-nY-KdU"/>
-                        <constraint firstItem="chv-we-eud" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="44" id="T36-mh-JHV"/>
+                        <constraint firstItem="chv-we-eud" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="39" id="T36-mh-JHV"/>
                         <constraint firstItem="4mY-N2-UMI" firstAttribute="top" secondItem="IPX-6P-J70" secondAttribute="bottom" constant="2" id="bqJ-J2-JcY"/>
                         <constraint firstItem="Eux-yk-8iS" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="6" id="cFj-Kg-rLU"/>
                         <constraint firstItem="A9Z-Z5-Qzd" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="12" id="gBw-ct-rYT"/>
@@ -96,7 +96,7 @@
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </box>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="9cY-Vq-vDS">
-                    <rect key="frame" x="181" y="15" width="21" height="21"/>
+                    <rect key="frame" x="176" y="15" width="21" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="HI5-NI-PWi"/>
@@ -115,7 +115,7 @@
                 <constraint firstItem="HvF-1T-7Z3" firstAttribute="leading" secondItem="WaA-ag-4kh" secondAttribute="leading" id="7ZX-YW-Rrc"/>
                 <constraint firstItem="HvF-1T-7Z3" firstAttribute="top" secondItem="WaA-ag-4kh" secondAttribute="top" id="8zg-d8-7UK"/>
                 <constraint firstAttribute="trailing" secondItem="HvF-1T-7Z3" secondAttribute="trailing" id="YeA-dC-c52"/>
-                <constraint firstAttribute="trailing" secondItem="9cY-Vq-vDS" secondAttribute="trailing" constant="50" id="ZiM-ff-2hj"/>
+                <constraint firstAttribute="trailing" secondItem="9cY-Vq-vDS" secondAttribute="trailing" constant="55" id="ZiM-ff-2hj"/>
                 <constraint firstItem="9cY-Vq-vDS" firstAttribute="top" secondItem="WaA-ag-4kh" secondAttribute="top" constant="40" id="cgL-Yc-UmJ"/>
                 <constraint firstAttribute="bottom" secondItem="HvF-1T-7Z3" secondAttribute="bottom" id="dZ2-E6-deB"/>
             </constraints>
