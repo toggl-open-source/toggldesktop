@@ -19,8 +19,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="252" height="76"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IPX-6P-J70">
-                                <rect key="frame" x="6" y="26" width="162" height="17"/>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IPX-6P-J70">
+                                <rect key="frame" x="6" y="27" width="162" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="This is a time entry" id="bKB-0i-C0M">
                                     <font key="font" metaFont="system"/>
@@ -28,8 +28,8 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4mY-N2-UMI">
-                                <rect key="frame" x="7" y="13" width="120" height="11"/>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4mY-N2-UMI">
+                                <rect key="frame" x="7" y="13" width="120" height="12"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="PROJECT NAME - CLIENT" drawsBackground="YES" id="YKk-bz-65B">
                                     <font key="font" size="9" name="LucidaGrande-Bold"/>
@@ -41,7 +41,7 @@
                                 <rect key="frame" x="195" y="21" width="56" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="03:21:30" id="P10-iS-flR">
-                                    <font key="font" size="12" name="LucidaGrande"/>
+                                    <font key="font" metaFont="cellTitle"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -60,7 +60,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A9Z-Z5-Qzd">
-                                <rect key="frame" x="95" y="53" width="61" height="11"/>
+                                <rect key="frame" x="95" y="54" width="61" height="11"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="11" id="c0p-f3-udt"/>
@@ -84,7 +84,7 @@
                         <constraint firstItem="chv-we-eud" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="39" id="T36-mh-JHV"/>
                         <constraint firstItem="4mY-N2-UMI" firstAttribute="top" secondItem="IPX-6P-J70" secondAttribute="bottom" constant="2" id="bqJ-J2-JcY"/>
                         <constraint firstItem="Eux-yk-8iS" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="6" id="cFj-Kg-rLU"/>
-                        <constraint firstItem="A9Z-Z5-Qzd" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="12" id="gBw-ct-rYT"/>
+                        <constraint firstItem="A9Z-Z5-Qzd" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="11" id="gBw-ct-rYT"/>
                         <constraint firstItem="4mY-N2-UMI" firstAttribute="leading" secondItem="HvF-1T-7Z3" secondAttribute="leading" constant="7" id="gcU-Rf-6ty"/>
                         <constraint firstAttribute="trailing" secondItem="IPX-6P-J70" secondAttribute="trailing" constant="86" id="h7j-w1-f9l"/>
                         <constraint firstItem="A9Z-Z5-Qzd" firstAttribute="leading" secondItem="Eux-yk-8iS" secondAttribute="trailing" constant="15" id="jW8-5q-w2m"/>

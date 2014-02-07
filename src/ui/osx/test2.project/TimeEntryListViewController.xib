@@ -57,7 +57,7 @@
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MEi-4M-qbG">
-                                                        <rect key="frame" x="0.0" y="-34" width="6" height="17"/>
+                                                        <rect key="frame" x="0.0" y="-51" width="6" height="17"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="eTT-uV-85C">
                                                             <font key="font" metaFont="system"/>
@@ -82,7 +82,7 @@
                         </subviews>
                         <color key="backgroundColor" red="0.89803928136825562" green="0.89803928136825562" blue="0.89803928136825562" alpha="1" colorSpace="deviceRGB"/>
                     </clipView>
-                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="RWC-Ro-rhd">
+                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="RWC-Ro-rhd">
                         <rect key="frame" x="0.0" y="314" width="255" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
