@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -116,20 +116,20 @@ DQ
                     <color key="borderColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="fillColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
-                <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tVc-ms-0hr">
+                <textField hidden="YES" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tVc-ms-0hr">
                     <rect key="frame" x="9" y="7" width="69" height="11"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="11" id="wqt-c9-CBt"/>
                     </constraints>
-                    <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="NEW - TOGGL" drawsBackground="YES" id="Wt0-TO-JZG">
+                    <textFieldCell key="cell" lineBreakMode="charWrapping" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="NEW - TOGGL" drawsBackground="YES" id="Wt0-TO-JZG">
                         <font key="font" size="9" name="LucidaGrande-Bold"/>
                         <color key="textColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" red="0.92739556759999997" green="0.124813008" blue="0.11691136570000001" alpha="1" colorSpace="calibratedRGB"/>
                     </textFieldCell>
                 </textField>
                 <box autoresizesSubviews="NO" verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="lEH-md-7M7">
-                    <rect key="frame" x="0.0" y="-30" width="264" height="9"/>
+                    <rect key="frame" x="0.0" y="-30" width="264" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -142,6 +142,7 @@ DQ
                 <constraint firstAttribute="bottom" secondItem="Fga-BR-x8G" secondAttribute="bottom" constant="1" id="Cub-Lx-DNo"/>
                 <constraint firstItem="tVc-ms-0hr" firstAttribute="leading" secondItem="M2u-7B-WCs" secondAttribute="leading" constant="8" id="HIa-4f-tBL"/>
                 <constraint firstItem="tVc-ms-0hr" firstAttribute="top" secondItem="M2u-7B-WCs" secondAttribute="top" constant="27" id="QSs-0N-tM9"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="tVc-ms-0hr" secondAttribute="trailing" constant="137" id="pJ3-a6-t64"/>
                 <constraint firstItem="Fga-BR-x8G" firstAttribute="top" secondItem="M2u-7B-WCs" secondAttribute="top" constant="1" id="s0O-bN-wX6"/>
                 <constraint firstItem="Fga-BR-x8G" firstAttribute="leading" secondItem="M2u-7B-WCs" secondAttribute="leading" constant="1" id="wJK-xr-4eQ"/>
             </constraints>
