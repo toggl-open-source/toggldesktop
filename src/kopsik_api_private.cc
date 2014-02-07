@@ -150,6 +150,7 @@ void time_entry_to_view_item(
 KopsikAutocompleteItem *autocomplete_item_init() {
   KopsikAutocompleteItem *item = new KopsikAutocompleteItem();
   item->Text = 0;
+  item->Description = 0;
   item->ProjectAndTaskLabel = 0;
   item->ProjectColor = 0;
   item->ProjectID = 0;
@@ -167,6 +168,10 @@ void autocomplete_item_clear(
   if (item->ProjectAndTaskLabel) {
     free(item->ProjectAndTaskLabel);
     item->ProjectAndTaskLabel = 0;
+  }
+  if (item->Description) {
+    free(item->Description);
+    item->Description = 0;
   }
   if (item->ProjectColor) {
     free(item->ProjectColor);
