@@ -2300,7 +2300,7 @@ std::string Formatter::FormatDurationInSecondsHHMM(const Poco::Int64 value,
         const int type) {
     if (type == 1) {
         return FormatDurationInSeconds(value, "%H %M");
-    } else if (type == 2){
+    } else if (type == 2) {
         return FormatDurationInSeconds(value, "%Hh:%Mm");
     }
     return FormatDurationInSeconds(value, "%H:%M");
