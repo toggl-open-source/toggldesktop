@@ -107,7 +107,7 @@
                                                 <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mxY-tv-UzX">
                                                     <rect key="frame" x="85" y="8" width="246" height="23"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="UI interactions" placeholderString="" drawsBackground="YES" buttonBordered="NO" usesDataSource="YES" numberOfVisibleItems="5" id="z8M-J4-cIb">
+                                                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="UI interactions" placeholderString="" buttonBordered="NO" usesDataSource="YES" numberOfVisibleItems="5" id="z8M-J4-cIb">
                                                         <font key="font" metaFont="system"/>
                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -204,7 +204,7 @@
                                                 <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vaF-tJ-dqC">
                                                     <rect key="frame" x="85" y="8" width="65" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                    <datePickerCell key="cell" alignment="left" datePickerStyle="textField" id="iLV-Nz-d68">
+                                                    <datePickerCell key="cell" alignment="left" drawsBackground="NO" datePickerStyle="textField" id="iLV-Nz-d68">
                                                         <font key="font" metaFont="system"/>
                                                         <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
                                                             <!--1982-02-12 08:00:00 -0800-->
@@ -251,7 +251,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="65" id="EIX-FS-HOZ"/>
                                                     </constraints>
-                                                    <datePickerCell key="cell" alignment="left" datePickerStyle="textField" id="Euh-iD-5F2">
+                                                    <datePickerCell key="cell" alignment="left" drawsBackground="NO" datePickerStyle="textField" id="Euh-iD-5F2">
                                                         <font key="font" metaFont="system"/>
                                                         <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
                                                             <!--1982-02-12 08:00:00 -0800-->
@@ -464,7 +464,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <constraint firstAttribute="trailing" secondItem="cGh-Uz-aLx" secondAttribute="trailing" id="zmY-Bk-o2I"/>
                             </constraints>
                             <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                            <color key="fillColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </box>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="byc-AI-Ri7">
                             <rect key="frame" x="68" y="5" width="178" height="17"/>
