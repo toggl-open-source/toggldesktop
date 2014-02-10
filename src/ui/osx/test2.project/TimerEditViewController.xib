@@ -69,7 +69,7 @@ DQ
                                 <color key="fillColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
                             </box>
                             <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ITa-Jc-jOK">
-                                <rect key="frame" x="4" y="8" width="127" height="23"/>
+                                <rect key="frame" x="4" y="8" width="142" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="17" id="WR0-PJ-917"/>
@@ -101,10 +101,10 @@ DQ
                                 </connections>
                             </textField>
                             <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" borderWidth="0.0" title="Box" boxType="custom" borderType="none" translatesAutoresizingMaskIntoConstraints="NO" id="ow2-8J-rMh">
-                                <rect key="frame" x="116" y="-35" width="5" height="110"/>
+                                <rect key="frame" x="132" y="30" width="5" height="10"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <view key="contentView">
-                                    <rect key="frame" x="0.0" y="0.0" width="5" height="110"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="5" height="10"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 </view>
                                 <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
@@ -113,7 +113,8 @@ DQ
                         </subviews>
                     </view>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="ITa-Jc-jOK" secondAttribute="trailing" constant="128" id="1Qf-HH-85e"/>
+                        <constraint firstAttribute="trailing" secondItem="ITa-Jc-jOK" secondAttribute="trailing" constant="113" id="1Qf-HH-85e"/>
+                        <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="ow2-8J-rMh" secondAttribute="trailing" constant="61" id="ABe-hl-Ilz"/>
                         <constraint firstAttribute="bottom" secondItem="nFI-HH-zd7" secondAttribute="bottom" constant="-1" id="DHT-6f-0yu"/>
                         <constraint firstAttribute="bottom" secondItem="oie-Un-asQ" secondAttribute="bottom" constant="9" id="bC9-Fi-38J"/>
                         <constraint firstAttribute="trailing" secondItem="oie-Un-asQ" secondAttribute="trailing" constant="63" id="bzC-nz-PQq"/>
@@ -121,7 +122,6 @@ DQ
                         <constraint firstItem="nFI-HH-zd7" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="-1" id="lMD-AL-Jog"/>
                         <constraint firstAttribute="trailing" secondItem="nFI-HH-zd7" secondAttribute="trailing" id="lNg-Zn-u1m"/>
                         <constraint firstItem="oie-Un-asQ" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="12" id="sKm-6j-h1k"/>
-                        <constraint firstItem="oie-Un-asQ" firstAttribute="leading" secondItem="ow2-8J-rMh" secondAttribute="trailing" constant="10" id="saw-yb-D3U"/>
                         <constraint firstItem="ITa-Jc-jOK" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="4" id="tbX-SU-uAB"/>
                     </constraints>
                     <color key="borderColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
