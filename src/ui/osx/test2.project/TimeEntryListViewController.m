@@ -196,7 +196,7 @@
     item = viewitems[row];
   }
   if (item.isHeader) {
-    return 76;
+    return 86;
   }
   return 51;
 }

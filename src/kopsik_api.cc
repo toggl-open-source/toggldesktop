@@ -1077,13 +1077,13 @@ void kopsik_format_duration_in_seconds_hhmmss(
 
 void kopsik_format_duration_in_seconds_hhmm(
     int duration_in_seconds,
-    int is_blink,
+    int type,
     char *out_str,
     unsigned int max_strlen) {
   poco_assert(out_str);
   poco_assert(max_strlen);
   std::string formatted = kopsik::Formatter::FormatDurationInSecondsHHMM(
-    duration_in_seconds, is_blink);
+    duration_in_seconds, type);
   strncpy(out_str, formatted.c_str(), max_strlen);
 }
 
@@ -2060,7 +2060,7 @@ kopsik_api_result kopsik_time_entry_view_items(
 
       Poco::Int64 duration = date_durations[te->DateHeaderString()];
       std::string formatted =
-        kopsik::Formatter::FormatDurationInSecondsHHMM(duration, false);
+        kopsik::Formatter::FormatDurationInSecondsHHMM(duration, 2);
       time_entry_to_view_item(te, ctx->user, view_item, formatted);
 
       out_list->ViewItems[i] = view_item;
