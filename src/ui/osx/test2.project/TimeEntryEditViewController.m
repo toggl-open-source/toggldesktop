@@ -133,8 +133,12 @@
   }
   
   if (item.updatedAt != nil && ![item.updatedAt isEqualToString:@"null"]) {
+    NSString *updatedAt;
+    updatedAt = @"Last update: ";
+    updatedAt = [updatedAt stringByAppendingString:item.updatedAt];
+
     [self.lastUpdateTextField setHidden:NO];
-    [self.lastUpdateTextField setStringValue:item.updatedAt];
+    [self.lastUpdateTextField setStringValue:updatedAt];
   } else {
     [self.lastUpdateTextField setHidden:YES];
   }
