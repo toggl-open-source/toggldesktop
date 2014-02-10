@@ -1,38 +1,21 @@
-kopsik
-======
 
-Experimental native Toggl API client.
+[![Build Status](https://travis-ci.org/toggl/toggldesktop.png)](https://travis-ci.org/toggl/toggldesktop)
 
-[![Build Status](https://travis-ci.org/tanel/kopsik.png)](https://travis-ci.org/tanel/kopsik)
-
-Command line client
--------------------
-The command line app expects to find *TOGGL_API_TOKEN* in your environment. You could export it in your ~/.bash_profile:
-
-Recognized commands are: sync, start, stop, status, pushable, list, continue, listen
-
-```
-export TOGGL_API_TOKEN=<your Toggl API token here>
-```
-
-To build command line app, run:
-```
-make
-```
-An executable named *toggl* should emerge as the result of the build. Run it, to see available commands:
-```
-./toggl
-```
-
-OS X app
---------
+OS X
+----
 ```
 make osx
 ```
 
-Windows app
------------
+Windows
+-------
 FIXME
+
+
+Linux
+-----
+FIXME
+
 
 Tests
 -----
