@@ -57,3 +57,5 @@ gitstats
 *.dmg
 
 coverage
+
+third_party/TFDatePicker/TFDatePicker/build/

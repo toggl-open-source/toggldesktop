@@ -91,6 +91,8 @@
 		74F7CDD71819897D00630BD0 /* off.png in Resources */ = {isa = PBXBuildFile; fileRef = 74F7CDD51819897D00630BD0 /* off.png */; };
 		74F7CDD81819897D00630BD0 /* on.png in Resources */ = {isa = PBXBuildFile; fileRef = 74F7CDD61819897D00630BD0 /* on.png */; };
 		74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */; };
+		74FD8CE018A8EF8300F7DB80 /* TFDatePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74FD8CDF18A8EF8300F7DB80 /* TFDatePicker.framework */; };
+		74FD8CE118A8EFDA00F7DB80 /* TFDatePicker.framework in Resources */ = {isa = PBXBuildFile; fileRef = 74FD8CDC18A8EEE200F7DB80 /* TFDatePicker.framework */; };
 		C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */; };
 		C5DA1FB917F19647001C4565 /* Kopsik.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA1FB817F19647001C4565 /* Kopsik.dylib */; };
 		C5DA1FBB17F19F9A001C4565 /* Kopsik.dylib in Resources */ = {isa = PBXBuildFile; fileRef = C5DA1FB817F19647001C4565 /* Kopsik.dylib */; };
@@ -121,6 +123,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = C55DA59B17F06A3B00B42178;
 			remoteInfo = Kopsik;
+		};
+		74FD8CDB18A8EEE200F7DB80 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2D656E6160A18F100DEC117;
+			remoteInfo = TFDatePicker;
+		};
+		74FD8CDD18A8EF4800F7DB80 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2D656E5160A18F100DEC117;
+			remoteInfo = TFDatePicker;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -253,6 +269,8 @@
 		74F7CDD61819897D00630BD0 /* on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = on.png; sourceTree = "<group>"; };
 		74F8FBA118313FA6000F09EE /* NSTextFieldClickable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldClickable.h; sourceTree = "<group>"; };
 		74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldClickable.m; sourceTree = "<group>"; };
+		74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TFDatePicker.xcodeproj; path = ../../../../third_party/TFDatePicker/TFDatePicker/TFDatePicker.xcodeproj; sourceTree = "<group>"; };
+		74FD8CDF18A8EF8300F7DB80 /* TFDatePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TFDatePicker.framework; path = ../../../../third_party/TFDatePicker/TFDatePicker/build/Release/TFDatePicker.framework; sourceTree = "<group>"; };
 		C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCell.h; sourceTree = "<group>"; };
 		C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryCell.m; sourceTree = "<group>"; };
 		C5DA1FB817F19647001C4565 /* Kopsik.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Kopsik.dylib; path = ../../../libkopsik/lib/Kopsik.dylib; sourceTree = "<group>"; };
@@ -274,6 +292,7 @@
 				743D942618279290000E6F70 /* IOKit.framework in Frameworks */,
 				74AA947818090A8E0000539F /* Security.framework in Frameworks */,
 				74E3CDD917FC369700C3ADD3 /* ExceptionHandling.framework in Frameworks */,
+				74FD8CE018A8EF8300F7DB80 /* TFDatePicker.framework in Frameworks */,
 				74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */,
 				74793D69183E248C0085E1CF /* CrashReporter.framework in Frameworks */,
 				74033C9817EC1DF100CA53D3 /* libstdc++.dylib in Frameworks */,
@@ -298,6 +317,7 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
+				74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */,
 				74B680A8180759C300B697AA /* Kopsik.xcodeproj */,
 				74E3CDB117FBABE400C3ADD3 /* bugsnag */,
 				744E126617F22AB900ABE72A /* app.icns */,
@@ -323,6 +343,7 @@
 		69FC17F317E6534400B96425 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				74FD8CDF18A8EF8300F7DB80 /* TFDatePicker.framework */,
 				74793D68183E248C0085E1CF /* CrashReporter.framework */,
 				743D94271827929C000E6F70 /* Carbon.framework */,
 				743D942518279290000E6F70 /* IOKit.framework */,
@@ -525,6 +546,14 @@
 			path = OSX;
 			sourceTree = "<group>";
 		};
+		74FD8CD818A8EEE200F7DB80 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				74FD8CDC18A8EEE200F7DB80 /* TFDatePicker.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -541,6 +570,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				74FD8CDE18A8EF4800F7DB80 /* PBXTargetDependency */,
 				74B680AF18075A4300B697AA /* PBXTargetDependency */,
 			);
 			name = kopsik_ui_osx;
@@ -591,6 +621,10 @@
 					ProductGroup = 74B680A9180759C300B697AA /* Products */;
 					ProjectRef = 74B680A8180759C300B697AA /* Kopsik.xcodeproj */;
 				},
+				{
+					ProductGroup = 74FD8CD818A8EEE200F7DB80 /* Products */;
+					ProjectRef = 74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -608,6 +642,13 @@
 			remoteRef = 74B680AC180759C300B697AA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		74FD8CDC18A8EEE200F7DB80 /* TFDatePicker.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = TFDatePicker.framework;
+			remoteRef = 74FD8CDB18A8EEE200F7DB80 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -615,6 +656,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74FD8CE118A8EFDA00F7DB80 /* TFDatePicker.framework in Resources */,
 				C5DA1FBB17F19F9A001C4565 /* Kopsik.dylib in Resources */,
 				7430750518204EFB009019CB /* AboutWindowController.xib in Resources */,
 				749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */,
@@ -762,6 +804,11 @@
 			name = Kopsik;
 			targetProxy = 74B680AE18075A4300B697AA /* PBXContainerItemProxy */;
 		};
+		74FD8CDE18A8EF4800F7DB80 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TFDatePicker;
+			targetProxy = 74FD8CDD18A8EF4800F7DB80 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -864,6 +911,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
+					/Users/tanellebedev/projects/kopsik/third_party/TFDatePicker/TFDatePicker/build/Release,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "test2/kopsik_ui_osx-Prefix.pch";
@@ -892,6 +940,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
+					/Users/tanellebedev/projects/kopsik/third_party/TFDatePicker/TFDatePicker/build/Release,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "test2/kopsik_ui_osx-Prefix.pch";
