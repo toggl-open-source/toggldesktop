@@ -911,7 +911,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					/Users/tanellebedev/projects/kopsik/third_party/TFDatePicker/TFDatePicker/build/Release,
+					"$(SRCROOT)/../../../../third_party/TFDatePicker/TFDatePicker/build/Release",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "test2/kopsik_ui_osx-Prefix.pch";
@@ -919,6 +919,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/Crashreporter.framework/Headers",
+					"$(SRCROOT)/../../../../third_party/TFDatePicker/**",
 				);
 				INFOPLIST_FILE = "test2/kopsik_ui_osx-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -940,7 +941,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					/Users/tanellebedev/projects/kopsik/third_party/TFDatePicker/TFDatePicker/build/Release,
+					"$(SRCROOT)/../../../../third_party/TFDatePicker/TFDatePicker/build/Release",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "test2/kopsik_ui_osx-Prefix.pch";
@@ -948,6 +949,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/Crashreporter.framework/Headers",
+					"$(SRCROOT)/../../../../third_party/TFDatePicker/**",
 				);
 				INFOPLIST_FILE = "test2/kopsik_ui_osx-Info.plist";
 				LIBRARY_SEARCH_PATHS = (

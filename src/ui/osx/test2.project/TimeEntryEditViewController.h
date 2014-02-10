@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "TFDatePicker.h"
 
 @interface TimeEntryEditViewController : NSViewController <NSComboBoxDataSource> {
 }
@@ -16,7 +17,7 @@
 @property (weak) IBOutlet NSDatePicker *startTime;
 @property (weak) IBOutlet NSDatePicker *endTime;
 @property (weak) IBOutlet NSBox *startEndTimeBox;
-@property (weak) IBOutlet NSDatePicker *startDate;
+@property (weak) IBOutlet TFDatePicker *startDate;
 @property (weak) IBOutlet NSTokenField *tagsTokenField;
 @property (weak) IBOutlet NSButton *billableCheckbox;
 @property (weak) IBOutlet NSTextField *lastUpdateTextField;

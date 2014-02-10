@@ -8,7 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-
 @interface TFDatePicker : NSDatePicker <NSDatePickerCellDelegate>
-
+@property id listener;
 @end

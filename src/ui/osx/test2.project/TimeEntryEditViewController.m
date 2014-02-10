@@ -73,6 +73,10 @@
 
   NSLog(@"TimeEntryEditViewController render, %@", item);
 
+  if (nil == self.startDate.listener) {
+    self.startDate.listener = self;
+  }
+
   // Reset autocomplete filter
   [self.autocompleteDataSource setFilter:@""];
   [self.projectSelect reloadData];
