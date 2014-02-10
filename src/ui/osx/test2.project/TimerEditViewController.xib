@@ -100,6 +100,16 @@ DQ
                                     <outlet property="nextKeyView" destination="2Fx-4L-YGZ" id="5Y3-fg-tJL"/>
                                 </connections>
                             </textField>
+                            <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" borderWidth="0.0" title="Box" boxType="custom" borderType="none" translatesAutoresizingMaskIntoConstraints="NO" id="ow2-8J-rMh">
+                                <rect key="frame" x="116" y="-35" width="5" height="110"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <view key="contentView">
+                                    <rect key="frame" x="0.0" y="0.0" width="5" height="110"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                                <color key="fillColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </box>
                         </subviews>
                     </view>
                     <constraints>
@@ -111,6 +121,7 @@ DQ
                         <constraint firstItem="nFI-HH-zd7" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="-1" id="lMD-AL-Jog"/>
                         <constraint firstAttribute="trailing" secondItem="nFI-HH-zd7" secondAttribute="trailing" id="lNg-Zn-u1m"/>
                         <constraint firstItem="oie-Un-asQ" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="12" id="sKm-6j-h1k"/>
+                        <constraint firstItem="oie-Un-asQ" firstAttribute="leading" secondItem="ow2-8J-rMh" secondAttribute="trailing" constant="10" id="saw-yb-D3U"/>
                         <constraint firstItem="ITa-Jc-jOK" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="4" id="tbX-SU-uAB"/>
                     </constraints>
                     <color key="borderColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -147,5 +158,14 @@ DQ
                 <constraint firstItem="Fga-BR-x8G" firstAttribute="leading" secondItem="M2u-7B-WCs" secondAttribute="leading" constant="1" id="wJK-xr-4eQ"/>
             </constraints>
         </customView>
+        <comboBox verticalHuggingPriority="750" id="w8Y-Bb-inE">
+            <rect key="frame" x="0.0" y="0.0" width="99" height="26"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="l4S-Ku-oS8">
+                <font key="font" metaFont="system"/>
+                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+            </comboBoxCell>
+        </comboBox>
     </objects>
 </document>
