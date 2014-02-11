@@ -73,7 +73,7 @@
 
 int blink = 0;
 
-NSString *kTimeTotalUnknown = @"--:--";
+NSString *kTimeTotalUnknown = @" --:--";
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   NSLog(@"applicationDidFinishLaunching");
@@ -547,10 +547,8 @@ NSString *kTimeTotalUnknown = @"--:--";
   NSStatusBar *bar = [NSStatusBar systemStatusBar];
   
   NSBundle *bundle = [NSBundle mainBundle];
-  self.onImage = [[NSImage alloc]
-    initWithContentsOfFile:[bundle pathForResource:@"on" ofType:@"png"]];
-  self.offImage = [[NSImage alloc]
-    initWithContentsOfFile:[bundle pathForResource:@"off" ofType:@"png"]];
+  self.onImage = [NSImage imageNamed:@"on"];
+  self.offImage = [NSImage imageNamed:@"off"];
   
   self.statusItem = [bar statusItemWithLength:NSVariableStatusItemLength];
   [self.statusItem setTitle: kTimeTotalUnknown];
@@ -887,7 +885,11 @@ const NSString *appName = @"osx_native_app";
       blink,
       str,
       duration_str_len);
-    [self.statusItem setTitle:[NSString stringWithUTF8String:str]];
+
+    NSString *statusStr;
+    statusStr = @" ";
+    statusStr = [statusStr stringByAppendingString:[NSString stringWithUTF8String:str]];
+    [self.statusItem setTitle:statusStr];
   }
 }
 
