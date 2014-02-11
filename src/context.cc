@@ -12,7 +12,8 @@ Context::Context()
     window_change_recorder(0),
     app_name(""),
     app_version(""),
-    api_url("") {
+    api_url(""),
+    timeline_upload_url("") {
   Poco::ErrorHandler::set(&error_handler);
   Poco::Net::initializeSSL();
 }

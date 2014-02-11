@@ -95,6 +95,8 @@ void *kopsik_context_init(
   ctx->app_version = std::string(app_version);
 
   ctx->api_url = "https://www.toggl.com";
+  ctx->timeline_upload_url = "https://timeline.toggl.com";
+
   ctx->ws_client = new kopsik::WebSocketClient("https://stream.toggl.com",
     ctx->app_name, ctx->app_version);
 

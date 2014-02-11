@@ -92,7 +92,7 @@ void TimelineStartTask::runTask() {
   context()->timeline_uploader = new kopsik::TimelineUploader(
     context()->user->ID(),
     context()->user->APIToken(),
-    context()->api_url,
+    context()->timeline_upload_url,
     context()->app_name,
     context()->app_version);
 

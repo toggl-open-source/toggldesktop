@@ -33,6 +33,7 @@ class Context {
     std::string app_name;
     std::string app_version;
     std::string api_url;
+    std::string timeline_upload_url;
     Poco::Mutex mutex;
     Poco::TaskManager tm;
     CustomErrorHandler error_handler;

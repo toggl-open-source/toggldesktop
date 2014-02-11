@@ -23,7 +23,7 @@ class TimelineUploader {
     TimelineUploader(
                 const Poco::UInt64 user_id,
                 const std::string api_token,
-                const std::string api_url,
+                const std::string timeline_upload_url,
                 const std::string app_name,
                 const std::string app_version) :
             user_id_(user_id),
@@ -31,7 +31,7 @@ class TimelineUploader {
             upload_interval_seconds_(kTimelineUploadIntervalSeconds),
             current_upload_interval_seconds_(kTimelineUploadIntervalSeconds),
             max_upload_interval_seconds_(kTimelineUploadMaxBackoffSeconds),
-            api_url_(api_url),
+            timeline_upload_url_(timeline_upload_url),
             app_name_(app_name),
             app_version_(app_version),
             uploading_(this, &TimelineUploader::upload_loop_activity) {
@@ -45,6 +45,8 @@ class TimelineUploader {
 
         poco_assert(!api_token_.empty());
         poco_assert(user_id_ > 0);
+        poco_assert(!timeline_upload_url.empty());
+
         uploading_.start();
     }
 
@@ -100,7 +102,7 @@ class TimelineUploader {
     unsigned int current_upload_interval_seconds_;
     unsigned int max_upload_interval_seconds_;
 
-    std::string api_url_;
+    std::string timeline_upload_url_;
     std::string app_name_;
     std::string app_version_;
 
