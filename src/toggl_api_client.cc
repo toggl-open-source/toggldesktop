@@ -2077,7 +2077,7 @@ error TimeEntry::loadTagsFromJSONNode(JSONNODE *list) {
 std::string Formatter::FormatDateWithTime(const std::time_t date) {
     poco_assert(date);
     Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
-    return Poco::DateTimeFormatter::format(ts, "%w %d. %b %H:%M:");
+    return Poco::DateTimeFormatter::format(ts, "%w %d. %b %H:%M");
 }
 
 std::string Formatter::FormatDateHeader(const std::time_t date) {
