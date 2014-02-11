@@ -5,9 +5,12 @@ timestamp=$(shell date "+%Y-%m-%d-%H-%M-%S")
 
 pocodir=third_party/poco-1.4.6p2-all
 openssldir=third_party/openssl-1.0.1e
+jsondir=third_party/libjson
+
 GTEST_ROOT=third_party/googletest-read-only
 GMOCK_DIR=third_party/gmock-1.7.0
-jsondir=third_party/libjson
+
+osx_executable=./src/ui/osx/test2.project/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop
 
 oclintbin=./third_party/oclint-0.7-x86_64-apple-darwin-10/bin/oclint
 oclintflags=-fatal-assembler-warnings -max-priority-3 0 -max-priority-2 0 -max-priority-1 0 \
@@ -143,16 +146,17 @@ clean:
 	rm -f $(main)_test
 
 osx:
-	xcodebuild -project src/ui/osx/test2.project/kopsik_ui_osx.xcodeproj
+	xcodebuild -project src/ui/osx/test2.project/kopsik_ui_osx.xcodeproj && \
+	!(otool -L $(osx_executable) | grep "Users" && echo "Executable should not contain hardcoded paths!")
 
 run: osx
-	./src/ui/osx/test2.project/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop
+	$(osx_executable)
 
 sikuli: osx
 	(pkill TogglDesktop) || true
 	rm -rf kopsik_sikuli.db
 	rm -rf kopsik_sikuli.log
-	./src/ui/osx/test2.project/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop \
+	$(osx_executable) \
 	--api_url http://0.0.0.0:8080 \
 	--websocket_url http://0.0.0.0:8088 \
 	--db_path kopsik_sikuli.db \
