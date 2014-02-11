@@ -2290,5 +2290,84 @@ void kopsik_check_for_updates(
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
-  ctx->tm.start(new FetchUpdatesTask(ctx, callback));
+  std::string update_channel("");
+  kopsik::error err = ctx->db->LoadUpdateChannel(&update_channel);
+  if (err != kopsik::noError) {
+    callback(KOPSIK_API_FAILURE, err.c_str(), 0, 0, 0);
+    return;
+  }
+
+  ctx->tm.start(new FetchUpdatesTask(ctx, callback, update_channel));
+}
+
+kopsik_api_result kopsik_set_update_channel(
+    void *context,
+    char *errmsg,
+    unsigned int errlen,
+    const char *update_channel) {
+  try {
+    poco_assert(context);
+    poco_assert(errmsg);
+    poco_assert(errlen);
+    poco_assert(update_channel);
+
+    Context *ctx = reinterpret_cast<Context *>(context);
+
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
+
+    kopsik::error err =
+      ctx->db->SaveUpdateChannel(std::string(update_channel));
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+    }
+  } catch(const Poco::Exception& exc) {
+      strncpy(errmsg, exc.displayText().c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+  } catch(const std::exception& ex) {
+      strncpy(errmsg, ex.what(), errlen);
+      return KOPSIK_API_FAILURE;
+  } catch(const std::string& ex) {
+      strncpy(errmsg, ex.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+  }
+  return KOPSIK_API_SUCCESS;
+}
+
+kopsik_api_result kopsik_get_update_channel(
+    void *context,
+    char *errmsg,
+    unsigned int errlen,
+    char *update_channel,
+    unsigned int update_channel_len) {
+  try {
+    poco_assert(context);
+    poco_assert(errmsg);
+    poco_assert(errlen);
+    poco_assert(update_channel);
+    poco_assert(update_channel_len);
+
+    Context *ctx = reinterpret_cast<Context *>(context);
+
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
+
+    std::string s("");
+    kopsik::error err = ctx->db->LoadUpdateChannel(&s);
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+    }
+
+    strncpy(update_channel, s.c_str(), update_channel_len);
+  } catch(const Poco::Exception& exc) {
+      strncpy(errmsg, exc.displayText().c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+  } catch(const std::exception& ex) {
+      strncpy(errmsg, ex.what(), errlen);
+      return KOPSIK_API_FAILURE;
+  } catch(const std::string& ex) {
+      strncpy(errmsg, ex.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+  }
+  return KOPSIK_API_SUCCESS;
 }

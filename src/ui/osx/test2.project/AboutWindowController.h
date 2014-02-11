@@ -13,5 +13,7 @@
 @property (weak) IBOutlet NSTextField *versionTextField;
 @property (unsafe_unretained) IBOutlet NSTextView *creditsTextView;
 @property (weak) IBOutlet NSButton *checkForUpdateButton;
+@property (weak) IBOutlet NSComboBox *updateChannelComboBox;
 - (IBAction)checkForUpdateClicked:(id)sender;
+- (IBAction)updateChannelSelected:(id)sender;
 @end

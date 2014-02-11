@@ -163,13 +163,11 @@ error Database::LoadSettings(
     poco_assert(proxy);
     poco_assert(use_idle_detection);
 
-    int has_settings = 0;
-
     Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
         *session << "select use_proxy, proxy_host, proxy_port, "
-                "proxy_username, proxy_password, use_idle_detection, 1 "
+                "proxy_username, proxy_password, use_idle_detection "
                 "from settings",
             Poco::Data::into(*use_proxy),
             Poco::Data::into(proxy->host),
@@ -177,13 +175,8 @@ error Database::LoadSettings(
             Poco::Data::into(proxy->username),
             Poco::Data::into(proxy->password),
             Poco::Data::into(*use_idle_detection),
-            Poco::Data::into(has_settings),
             Poco::Data::limit(1),
             Poco::Data::now;
-      if (!has_settings) {
-        // Defaults:
-        *use_idle_detection = 1;
-      }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -225,6 +218,55 @@ error Database::SaveSettings(
         return ex;
     }
     return last_error("SaveSettings");
+}
+
+error Database::LoadUpdateChannel(
+        std::string *update_channel) {
+    poco_assert(session);
+    poco_assert(update_channel);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
+    try {
+        *session << "select update_channel from settings",
+            Poco::Data::into(*update_channel),
+            Poco::Data::limit(1),
+            Poco::Data::now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("LoadUpdateChannel");
+}
+
+error Database::SaveUpdateChannel(
+        const std::string update_channel) {
+  poco_assert(session);
+
+  if (update_channel != "stable" &&
+        update_channel != "beta" &&
+        update_channel != "dev") {
+    return error("Invalid update channel");
+  }
+
+  Poco::Mutex::ScopedLock lock(mutex_);
+
+  try {
+    *session << "update settings set "
+      "update_channel = :update_channel",
+    Poco::Data::use(update_channel),
+    Poco::Data::now;
+  } catch(const Poco::Exception& exc) {
+    return exc.displayText();
+  } catch(const std::exception& ex) {
+    return ex.what();
+  } catch(const std::string& ex) {
+    return ex;
+  }
+  return last_error("SaveUpdateChannel");
 }
 
 error Database::LoadUserByAPIToken(

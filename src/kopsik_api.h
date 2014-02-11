@@ -390,11 +390,12 @@ KOPSIK_EXPORT int kopsik_timeline_is_recording_enabled(
 
 // Feedback
 
-KOPSIK_EXPORT void kopsik_feedback_send(void *ctx,
-                                        const char *topic,
-                                        const char *details,
-                                        const char *base64encoded_image,
-                                        KopsikResultCallback callback);
+KOPSIK_EXPORT void kopsik_feedback_send(
+  void *ctx,
+  const char *topic,
+  const char *details,
+  const char *base64encoded_image,
+  KopsikResultCallback callback);
 
 // Updates
 
@@ -406,7 +407,21 @@ typedef void (*KopsikCheckUpdateCallback)(
   const char *version);
 
 KOPSIK_EXPORT void kopsik_check_for_updates(
-  void *ctx, KopsikCheckUpdateCallback callback);
+  void *context,
+  KopsikCheckUpdateCallback callback);
+
+KOPSIK_EXPORT kopsik_api_result kopsik_set_update_channel(
+  void *context,
+  char *errmsg,
+  unsigned int errlen,
+  const char *update_channel);
+
+KOPSIK_EXPORT kopsik_api_result kopsik_get_update_channel(
+  void *context,
+  char *errmsg,
+  unsigned int errlen,
+  char *update_channel,
+  unsigned int update_channel_len);
 
 #undef KOPSIK_EXPORT
 

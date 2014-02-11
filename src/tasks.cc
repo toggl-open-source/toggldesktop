@@ -257,3 +257,22 @@ void FetchUpdatesTask::runTask() {
   updates_callback(KOPSIK_API_SUCCESS, err.c_str(), 1, url.c_str(),
             version.c_str());
 }
+
+const std::string FetchUpdatesTask::updateURL() {
+  std::stringstream relative_url;
+  relative_url << "/api/v8/updates?app=kopsik"
+    << "&channel=" << update_channel_
+    << "&platform=" << osName()
+    << "&version=" << context()->app_version;
+  return relative_url.str();
+}
+
+const std::string FetchUpdatesTask::osName() {
+  if (POCO_OS_LINUX == POCO_OS) {
+    return std::string("linux");
+  }
+  if (POCO_OS_WINDOWS_NT == POCO_OS) {
+    return std::string("windows");
+  }
+  return std::string("darwin");
+}

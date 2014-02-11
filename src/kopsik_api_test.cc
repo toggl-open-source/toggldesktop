@@ -36,6 +36,13 @@ namespace kopsik {
         return kopsik_context_init("tests", "0.1");
     }
 
+    void wipe_test_db() {
+        Poco::File f(TESTDB);
+        if (f.exists()) {
+            f.remove(false);
+        }
+    }
+
     TEST(KopsikApiTest, kopsik_context_init) {
         void *ctx = create_test_context();
         ASSERT_TRUE(ctx);
@@ -44,10 +51,7 @@ namespace kopsik {
 
     TEST(KopsikApiTest, kopsik_set_settings) {
         void *ctx = create_test_context();
-        {
-            Poco::File f(TESTDB);
-            if (f.exists()) f.remove(false);
-        }
+        wipe_test_db();
         char err[ERRLEN];
         kopsik_api_result res = kopsik_set_db_path(ctx, err, ERRLEN, TESTDB);
         ASSERT_EQ(KOPSIK_API_SUCCESS, res);
@@ -73,12 +77,51 @@ namespace kopsik {
         kopsik_context_clear(ctx);
     }
 
+    TEST(KopsikApiTest, kopsik_set_update_channel) {
+        void *ctx = create_test_context();
+        wipe_test_db();
+
+        char err[ERRLEN];
+        kopsik_api_result res = kopsik_set_db_path(ctx, err, ERRLEN, TESTDB);
+        ASSERT_EQ(KOPSIK_API_SUCCESS, res);
+
+        char update_channel[10];
+
+        res = kopsik_get_update_channel(ctx, err, ERRLEN, update_channel, 10);
+        ASSERT_EQ(KOPSIK_API_SUCCESS, res);
+        ASSERT_EQ(std::string("stable"), std::string(update_channel));
+
+        res = kopsik_set_update_channel(ctx, err, ERRLEN, "invalid");
+        ASSERT_NE(KOPSIK_API_SUCCESS, res);
+
+        res = kopsik_set_update_channel(ctx, err, ERRLEN, "beta");
+        ASSERT_EQ(KOPSIK_API_SUCCESS, res);
+
+        res = kopsik_get_update_channel(ctx, err, ERRLEN, update_channel, 10);
+        ASSERT_EQ(KOPSIK_API_SUCCESS, res);
+        ASSERT_EQ(std::string("beta"), std::string(update_channel));
+
+        res = kopsik_set_update_channel(ctx, err, ERRLEN, "dev");
+        ASSERT_EQ(KOPSIK_API_SUCCESS, res);
+
+        res = kopsik_get_update_channel(ctx, err, ERRLEN, update_channel, 10);
+        ASSERT_EQ(KOPSIK_API_SUCCESS, res);
+        ASSERT_EQ(std::string("dev"), std::string(update_channel));
+
+        res = kopsik_set_update_channel(ctx, err, ERRLEN, "stable");
+        ASSERT_EQ(KOPSIK_API_SUCCESS, res);
+
+        res = kopsik_get_update_channel(ctx, err, ERRLEN, update_channel, 10);
+        ASSERT_EQ(KOPSIK_API_SUCCESS, res);
+        ASSERT_EQ(std::string("stable"), std::string(update_channel));
+
+        kopsik_context_clear(ctx);
+    }
+
     TEST(KopsikApiTest, kopsik_set_db_path) {
         void *ctx = create_test_context();
-        {
-            Poco::File f(TESTDB);
-            if (f.exists()) f.remove(false);
-        }
+        wipe_test_db();
+
         char err[ERRLEN];
         kopsik_api_result res = kopsik_set_db_path(ctx, err, ERRLEN, TESTDB);
         ASSERT_EQ(KOPSIK_API_SUCCESS, res);
@@ -104,8 +147,7 @@ namespace kopsik {
 
     TEST(KopsikApiTest, kopsik_set_api_token) {
         void *ctx = create_test_context();
-        Poco::File f(TESTDB);
-        if (f.exists()) f.remove(false);
+        wipe_test_db();
 
         char err[ERRLEN];
         kopsik_api_result res = kopsik_set_db_path(ctx, err, ERRLEN, TESTDB);
@@ -125,8 +167,8 @@ namespace kopsik {
     TEST(KopsikApiTest, kopsik_lifecycle) {
         void *ctx = create_test_context();
 
-        Poco::File f(TESTDB);
-        if (f.exists()) f.remove(false);
+        wipe_test_db();
+
         char err[ERRLEN];
         kopsik_api_result res = kopsik_set_db_path(ctx, err, ERRLEN, TESTDB);
         ASSERT_EQ(KOPSIK_API_SUCCESS, res);

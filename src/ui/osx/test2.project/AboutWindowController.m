@@ -17,8 +17,7 @@
 
 @implementation AboutWindowController
 
-- (id)initWithWindow:(NSWindow *)window
-{
+- (id)initWithWindow:(NSWindow *)window {
     self = [super initWithWindow:window];
     if (self) {
         // Initialization code here.
@@ -26,8 +25,7 @@
     return self;
 }
 
-- (void)windowDidLoad
-{
+- (void)windowDidLoad {
   [super windowDidLoad];
     
   NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
@@ -47,12 +45,50 @@
                                            selector:@selector(eventHandler:)
                                                name:kUIStateUpToDate
                                              object:nil];
+
+  [self showUpdateChannel];
 }
 
-- (IBAction)showWindow:(id)sender
-{
+- (void)showUpdateChannel {
+  unsigned int update_channel_len = 10;
+  char update_channel[update_channel_len];
+  char errmsg[KOPSIK_ERR_LEN];
+  kopsik_api_result res = kopsik_get_update_channel(ctx,
+                                                    errmsg,
+                                                    KOPSIK_ERR_LEN,
+                                                    update_channel,
+                                                    update_channel_len);
+  if (res != KOPSIK_API_SUCCESS) {
+    handle_error(res, errmsg);
+    return;
+  }
+  self.updateChannelComboBox.stringValue = [NSString stringWithUTF8String:update_channel];
+}
+
+- (IBAction)updateChannelSelected:(id)sender {
+  NSString *updateChannel = self.updateChannelComboBox.stringValue;
+  char errmsg[KOPSIK_ERR_LEN];
+  kopsik_api_result res = kopsik_set_update_channel(ctx,
+                                                    errmsg,
+                                                    KOPSIK_ERR_LEN,
+                                                    [updateChannel UTF8String]);
+  if (res != KOPSIK_API_SUCCESS) {
+    handle_error(res, errmsg);
+    return;
+  }
+  
+  [self check];
+}
+
+- (void)check {
+  [self.checkForUpdateButton setEnabled:NO];
+  [self.updateChannelComboBox setEnabled:NO];
   [self.checkForUpdateButton setTitle:@"Checking for update.."];
   kopsik_check_for_updates(ctx, about_updates_checked);
+}
+
+- (IBAction)showWindow:(id)sender {
+  [self check];
   [super showWindow: sender];
 }
 
@@ -61,11 +97,11 @@
   [[NSApplication sharedApplication] terminate:self];
 }
 
--(void)eventHandler: (NSNotification *) notification
-{
+-(void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIStateUpToDate]) {
     self.update = nil;
     [self.checkForUpdateButton setEnabled:NO];
+    [self.updateChannelComboBox setEnabled:YES];
     [self.checkForUpdateButton setTitle:@"TogglDesktop is up to date."];
     return;
   }
@@ -73,8 +109,11 @@
   if ([notification.name isEqualToString:kUIStateUpdateAvailable]) {
     self.update = notification.object;
     [self.checkForUpdateButton setEnabled:YES];
+    [self.updateChannelComboBox setEnabled:YES];
+
     NSString *title = [NSString stringWithFormat:@"Click here to download update! (%@)", self.update.version];
     [self.checkForUpdateButton setTitle:title];
+    return;
   }
 }
 

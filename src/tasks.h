@@ -133,32 +133,17 @@ class SendFeedbackTask : public BaseTask {
 class FetchUpdatesTask : public BaseTask {
   public:
     FetchUpdatesTask(Context *ctx,
-                     KopsikCheckUpdateCallback updates_callback)
+                     KopsikCheckUpdateCallback updates_callback,
+                     const std::string update_channel)
       : BaseTask(ctx, "check_updates",
-          reinterpret_cast<void *>(updates_callback)) {}
+          reinterpret_cast<void *>(updates_callback))
+      , update_channel_(update_channel) {}
     void runTask();
 
   private:
-    const std::string updateURL() {
-      std::stringstream relative_url;
-      relative_url << "/api/v8/updates?app=kopsik"
-        << "&channel=" << channel()
-        << "&platform=" << osName()
-        << "&version=" << context()->app_version;
-      return relative_url.str();
-    }
-    const std::string channel() {
-      return std::string("dev");
-    }
-    const std::string osName() {
-      if (POCO_OS_LINUX == POCO_OS) {
-        return std::string("linux");
-      }
-      if (POCO_OS_WINDOWS_NT == POCO_OS) {
-        return std::string("windows");
-      }
-      return std::string("darwin");
-    }
+    const std::string updateURL();
+    const std::string osName();
+    std::string update_channel_;
 };
 
 #endif  // SRC_TASKS_H_

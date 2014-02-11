@@ -113,6 +113,11 @@ class Database {
             const Proxy *proxy,
             const bool use_idle_detection);
 
+        error LoadUpdateChannel(
+            std::string *update_channel);
+        error SaveUpdateChannel(
+            const std::string update_channel);
+
         error UInt(
             const std::string sql,
             Poco::UInt64 *result);
