@@ -73,7 +73,7 @@
 
 int blink = 0;
 
-NSString *kTimeTotalUnknown = @"--:--";
+NSString *kTimeTotalUnknown = @" --:--";
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   NSLog(@"applicationDidFinishLaunching");
@@ -887,7 +887,11 @@ const NSString *appName = @"osx_native_app";
       blink,
       str,
       duration_str_len);
-    [self.statusItem setTitle:[NSString stringWithUTF8String:str]];
+
+    NSString *statusStr;
+    statusStr = @" ";
+    statusStr = [statusStr stringByAppendingString:[NSString stringWithUTF8String:str]];
+    [self.statusItem setTitle:statusStr];
   }
 }
 
