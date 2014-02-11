@@ -547,10 +547,8 @@ NSString *kTimeTotalUnknown = @" --:--";
   NSStatusBar *bar = [NSStatusBar systemStatusBar];
   
   NSBundle *bundle = [NSBundle mainBundle];
-  self.onImage = [[NSImage alloc]
-    initWithContentsOfFile:[bundle pathForResource:@"on" ofType:@"png"]];
-  self.offImage = [[NSImage alloc]
-    initWithContentsOfFile:[bundle pathForResource:@"off" ofType:@"png"]];
+  self.onImage = [NSImage imageNamed:@"on"];
+  self.offImage = [NSImage imageNamed:@"off"];
   
   self.statusItem = [bar statusItemWithLength:NSVariableStatusItemLength];
   [self.statusItem setTitle: kTimeTotalUnknown];
