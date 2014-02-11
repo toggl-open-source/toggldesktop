@@ -203,18 +203,13 @@ error Database::SaveSettings(
     Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
-        *session << "delete from settings",
-            Poco::Data::now;
-        kopsik::error err = last_error("SaveSettings delete");
-        if (err != kopsik::noError) {
-            return err;
-        }
-        *session << "insert into settings "
-            "(use_proxy, proxy_host, proxy_port, proxy_username, "
-            "proxy_password, use_idle_detection) "
-            "values "
-            "(:use_proxy, :proxy_host, :proxy_port, :proxy_username, "
-            ":proxy_password, :use_idle_detection)",
+        *session << "update settings set "
+            "use_proxy = :use_proxy, "
+            "proxy_host = :proxy_host, "
+            "proxy_port = :proxy_port, "
+            "proxy_username = :proxy_username, "
+            "proxy_password = :proxy_password, "
+            "use_idle_detection = :use_idle_detection ",
             Poco::Data::use(use_proxy),
             Poco::Data::use(proxy->host),
             Poco::Data::use(proxy->port),
@@ -229,7 +224,7 @@ error Database::SaveSettings(
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error("SaveSettings insert");
+    return last_error("SaveSettings");
 }
 
 error Database::LoadUserByAPIToken(
@@ -1972,6 +1967,20 @@ error Database::initialize_tables() {
         "proxy_username varchar, "
         "proxy_password varchar, "
         "use_idle_detection integer not null default 1)");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("settings.update_channel",
+        "ALTER TABLE settings "
+        "ADD COLUMN update_channel varchar not null default 'stable';");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("settings.default",
+        "INSERT INTO settings(update_channel) "
+        "SELECT 'stable' WHERE NOT EXISTS (SELECT 1 FROM settings LIMIT 1);");
     if (err != noError) {
         return err;
     }
