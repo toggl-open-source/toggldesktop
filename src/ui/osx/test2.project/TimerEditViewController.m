@@ -34,10 +34,6 @@
 
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
-                                                   name:kUIStateTimeEntryDeselected
-                                                 object:nil];
-      [[NSNotificationCenter defaultCenter] addObserver:self
-                                               selector:@selector(eventHandler:)
                                                    name:kUIStateTimerRunning
                                                  object:nil];
       [[NSNotificationCenter defaultCenter] addObserver:self
@@ -105,13 +101,6 @@
 - (void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIStateTimerRunning]) {
     self.time_entry = notification.object;
-    [self performSelectorOnMainThread:@selector(render)
-                           withObject:nil
-                        waitUntilDone:NO];
-    return;
-  }
-
-  if ([notification.name isEqualToString:kUIStateTimeEntryDeselected]) {
     [self performSelectorOnMainThread:@selector(render)
                            withObject:nil
                         waitUntilDone:NO];
@@ -246,17 +235,6 @@
   }
   self.projectTextField.backgroundColor =
     [ConvertHexColor hexCodeToNSColor:self.time_entry.ProjectColor];
-
-  // If a project is selected then description
-  // field is higher on the screen.
-  NSPoint pt;
-  pt.x = self.descriptionComboBox.frame.origin.x;
-  if (self.time_entry.ProjectID) {
-    pt.y = 16;
-  } else {
-    pt.y = 8;
-  }
-  [self.descriptionComboBox setFrameOrigin:pt];
   
   // Display duration
   if (self.time_entry.duration != nil) {
