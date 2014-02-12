@@ -12,6 +12,7 @@
 }
 - (IBAction)startButtonClicked:(id)sender;
 - (IBAction)descriptionComboBoxChanged:(id)sender;
+- (IBAction)durationFieldChanged:(id)sender;
 - (void)timerFired:(NSTimer *)timer;
 @property (weak) IBOutlet NSTextField *durationTextField;
 @property (weak) IBOutlet NSTextField *startButtonLabelTextField;
