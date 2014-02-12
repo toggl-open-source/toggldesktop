@@ -47,14 +47,6 @@ class SyncTask : public BaseTask {
     int full_sync_;
 };
 
-class PushTask : public BaseTask {
-  public:
-    PushTask(Context *ctx,
-      KopsikResultCallback callback)
-        : BaseTask(ctx, "push", reinterpret_cast<void *>(callback)) {}
-    void runTask();
-};
-
 class WebSocketStartTask : public BaseTask {
   public:
     WebSocketStartTask(Context *ctx,

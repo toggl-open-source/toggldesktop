@@ -36,29 +36,6 @@ void SyncTask::runTask() {
   result_callback()(KOPSIK_API_SUCCESS, 0);
 }
 
-void PushTask::runTask() {
-  if (isCancelled()) {
-    return;
-  }
-
-  kopsik::HTTPSClient https_client(context()->api_url,
-                                   context()->app_name,
-                                   context()->app_version);
-  kopsik::error err = context()->user->Push(&https_client);
-  if (err != kopsik::noError) {
-    result_callback()(KOPSIK_API_FAILURE, err.c_str());
-    return;
-  }
-
-  err = context()->Save();
-  if (err != kopsik::noError) {
-    result_callback()(KOPSIK_API_FAILURE, err.c_str());
-    return;
-  }
-
-  result_callback()(KOPSIK_API_SUCCESS, 0);
-}
-
 void WebSocketStartTask::runTask() {
   kopsik::WebSocketMessageCallback cb =
     reinterpret_cast<kopsik::WebSocketMessageCallback>(callback());
