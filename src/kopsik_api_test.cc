@@ -87,9 +87,11 @@ namespace kopsik {
 
         char update_channel[10];
 
+        std::string default_channel("beta");
+
         res = kopsik_get_update_channel(ctx, err, ERRLEN, update_channel, 10);
         ASSERT_EQ(KOPSIK_API_SUCCESS, res);
-        ASSERT_EQ(std::string("stable"), std::string(update_channel));
+        ASSERT_EQ(default_channel, std::string(update_channel));
 
         res = kopsik_set_update_channel(ctx, err, ERRLEN, "invalid");
         ASSERT_NE(KOPSIK_API_SUCCESS, res);
