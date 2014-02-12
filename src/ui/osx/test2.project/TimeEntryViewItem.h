@@ -24,7 +24,7 @@
 @property (strong) NSDate *started;
 @property (strong) NSDate *ended;
 @property (strong) NSArray *tags;
-@property (strong) NSString *updatedAt;
+@property (strong) NSDate *updatedAt;
 @property (strong) NSString *formattedDate;
 @property BOOL durOnly;
 // If this is set to YES, a date header is displayed on top of

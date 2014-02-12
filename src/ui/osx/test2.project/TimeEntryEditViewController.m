@@ -130,13 +130,15 @@
     [self.billableCheckbox setState:NSOffState];
   }
   
-  if (item.updatedAt != nil && ![item.updatedAt isEqualToString:@"null"]) {
-    NSString *updatedAt;
-    updatedAt = @"Last update: ";
-    updatedAt = [updatedAt stringByAppendingString:item.updatedAt];
+  if (item.updatedAt != nil) {
+    NSDateFormatter* df_local = [[NSDateFormatter alloc] init];
+    [df_local setTimeZone:[NSTimeZone defaultTimeZone]];
+    [df_local setDateFormat:@"yyyy.MM.dd 'at' HH:mm:ss"];
+    NSString* localDate = [df_local stringFromDate:item.updatedAt];
+    NSString *updatedAt = [@"Last update " stringByAppendingString:localDate];
+    [self.lastUpdateTextField setStringValue:updatedAt];
 
     [self.lastUpdateTextField setHidden:NO];
-    [self.lastUpdateTextField setStringValue:updatedAt];
   } else {
     [self.lastUpdateTextField setHidden:YES];
   }

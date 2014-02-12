@@ -123,14 +123,7 @@ void time_entry_to_view_item(
     view_item->Tags = strdup(te->Tags().c_str());
   }
 
-  poco_assert(!view_item->UpdatedAt);
-  if (te->UpdatedAt()) {
-    std::string updated_at =
-      kopsik::Formatter::FormatDateWithTime(te->UpdatedAt());
-    if (!updated_at.empty()) {
-      view_item->UpdatedAt = strdup(updated_at.c_str());
-    }
-  }
+  view_item->UpdatedAt = te->UpdatedAt();
 
   poco_assert(!view_item->DateHeader);
   view_item->DateHeader = strdup(te->DateHeaderString().c_str());

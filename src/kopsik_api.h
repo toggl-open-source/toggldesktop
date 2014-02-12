@@ -199,7 +199,7 @@ typedef struct {
   char *Tags;
   unsigned int Started;
   unsigned int Ended;
-  char *UpdatedAt;
+  unsigned int UpdatedAt;
   char *DateHeader;
   char *DateDuration;
   unsigned int DurOnly;

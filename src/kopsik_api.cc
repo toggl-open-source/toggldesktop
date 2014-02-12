@@ -1051,10 +1051,6 @@ void kopsik_time_entry_view_item_clear(
     free(item->Tags);
     item->Tags = 0;
   }
-  if (item->UpdatedAt) {
-    free(item->UpdatedAt);
-    item->UpdatedAt = 0;
-  }
   if (item->DateHeader) {
     free(item->DateHeader);
     item->DateHeader = 0;

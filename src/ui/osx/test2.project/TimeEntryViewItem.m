@@ -44,7 +44,7 @@
   self.started = [NSDate dateWithTimeIntervalSince1970:data->Started];
   self.ended = [NSDate dateWithTimeIntervalSince1970:data->Ended];
   if (data->UpdatedAt) {
-    self.updatedAt = [NSString stringWithUTF8String:data->UpdatedAt];
+    self.updatedAt = [NSDate dateWithTimeIntervalSince1970:data->UpdatedAt];
   } else {
     self.updatedAt = nil;
   }
