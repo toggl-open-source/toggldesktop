@@ -214,23 +214,23 @@ NSString *kTimeTotalUnknown = @" --:--";
 
 - (void)startWebSocket {
   NSLog(@"startWebSocket");
-  kopsik_websocket_start(ctx);
+  kopsik_websocket_switch(ctx, 1);
 }
 
 - (void)stopWebSocket {
   NSLog(@"stopWebSocket");
-  kopsik_websocket_stop(ctx);
+  kopsik_websocket_switch(ctx, 0);
 }
 
 - (void)startTimeline {
   NSLog(@"startTimeline");
-  kopsik_timeline_start(ctx, handle_error);
+  kopsik_timeline_switch(ctx, handle_error, 1);
   [self displayTimelineRecordingState];
 }
 
 - (void)stopTimeline {
   NSLog(@"stopTimeline");
-  kopsik_timeline_stop(ctx, handle_error);
+  kopsik_timeline_switch(ctx, handle_error, 0);
   [self displayTimelineRecordingState];
 }
 

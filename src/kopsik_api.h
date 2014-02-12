@@ -365,21 +365,16 @@ KOPSIK_EXPORT void kopsik_set_change_callback(
   void *ctx,
   KopsikViewItemChangeCallback callback);
 
-KOPSIK_EXPORT void kopsik_websocket_start(
-  void *ctx);
-
-KOPSIK_EXPORT void kopsik_websocket_stop(
-  void *ctx);
+KOPSIK_EXPORT void kopsik_websocket_switch(
+  void *ctx,
+  const unsigned int on);
 
 // Timeline
 
-KOPSIK_EXPORT void kopsik_timeline_start(
+KOPSIK_EXPORT void kopsik_timeline_switch(
   void *ctx,
-  KopsikResultCallback callback);
-
-KOPSIK_EXPORT void kopsik_timeline_stop(
-  void *ctx,
-  KopsikResultCallback callback);
+  KopsikResultCallback callback,
+  const unsigned int on);
 
 KOPSIK_EXPORT void kopsik_timeline_toggle_recording(
   void *ctx,

@@ -36,7 +36,11 @@ void SyncTask::runTask() {
   result_callback()(KOPSIK_API_SUCCESS, 0);
 }
 
-void WebSocketStartTask::runTask() {
+void WebSocketSwitchTask::runTask() {
+  if (!on_) {
+    context()->ws_client->Stop();
+    return;
+  }
   kopsik::WebSocketMessageCallback cb =
     reinterpret_cast<kopsik::WebSocketMessageCallback>(callback());
   context()->ws_client->Start(
@@ -45,11 +49,24 @@ void WebSocketStartTask::runTask() {
     cb);
 }
 
-void WebSocketStopTask::runTask() {
-  context()->ws_client->Stop();
-}
+void TimelineSwitchTask::runTask() {
+  if (!on_) {
+    Poco::Mutex::ScopedLock lock(context()->mutex);
 
-void TimelineStartTask::runTask() {
+    if (context()->window_change_recorder) {
+      delete context()->window_change_recorder;
+      context()->window_change_recorder = 0;
+    }
+
+    if (context()->timeline_uploader) {
+      delete context()->timeline_uploader;
+      context()->timeline_uploader = 0;
+    }
+
+    result_callback()(KOPSIK_API_SUCCESS, 0);
+    return;
+  }
+
   if (!context()->user) {
     result_callback()(KOPSIK_API_FAILURE, "Please login to start timeline");
     return;
@@ -79,22 +96,6 @@ void TimelineStartTask::runTask() {
   }
   context()->window_change_recorder = new kopsik::WindowChangeRecorder(
     context()->user->ID());
-
-  result_callback()(KOPSIK_API_SUCCESS, 0);
-}
-
-void TimelineStopTask::runTask() {
-  Poco::Mutex::ScopedLock lock(context()->mutex);
-
-  if (context()->window_change_recorder) {
-    delete context()->window_change_recorder;
-    context()->window_change_recorder = 0;
-  }
-
-  if (context()->timeline_uploader) {
-    delete context()->timeline_uploader;
-    context()->timeline_uploader = 0;
-  }
 
   result_callback()(KOPSIK_API_SUCCESS, 0);
 }

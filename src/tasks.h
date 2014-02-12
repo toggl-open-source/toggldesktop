@@ -39,7 +39,7 @@ class SyncTask : public BaseTask {
     SyncTask(Context *ctx,
       int full_sync,
       KopsikResultCallback callback)
-        : BaseTask(ctx, "sync", reinterpret_cast<void *>(callback)),
+        : BaseTask(ctx, "SyncTask", reinterpret_cast<void *>(callback)),
       full_sync_(full_sync) {}
     void runTask();
 
@@ -47,42 +47,32 @@ class SyncTask : public BaseTask {
     int full_sync_;
 };
 
-class WebSocketStartTask : public BaseTask {
+class WebSocketSwitchTask : public BaseTask {
   public:
-    WebSocketStartTask(Context *ctx,
-                       kopsik::WebSocketMessageCallback websocket_callback)
-      : BaseTask(ctx, "start_websocket",
-          reinterpret_cast<void *>(websocket_callback)) {}
+    WebSocketSwitchTask(Context *ctx,
+                       kopsik::WebSocketMessageCallback websocket_callback,
+                       const bool on)
+      : BaseTask(ctx, "WebSocketSwitchTask",
+          reinterpret_cast<void *>(websocket_callback))
+      , on_(on) {}
     void runTask();
+  private:
+    bool on_;
 };
 
-class WebSocketStopTask : public BaseTask {
+// Start/stop timeline recording on local machine
+class TimelineSwitchTask : public BaseTask {
   public:
-    explicit WebSocketStopTask(Context *ctx)
-      : BaseTask(ctx, "stop_websocket", 0) {}
-    void runTask();
-};
-
-// Start timeline recording on local machine
-class TimelineStartTask : public BaseTask {
-  public:
-    TimelineStartTask(
+    TimelineSwitchTask(
       Context *ctx,
-      KopsikResultCallback callback)
-        : BaseTask(ctx, "TimelineStartTask",
-            reinterpret_cast<void *>(callback)) {}
+      KopsikResultCallback callback,
+      const bool on)
+        : BaseTask(ctx, "TimelineSwitchTask",
+            reinterpret_cast<void *>(callback))
+        , on_(on) {}
     void runTask();
-};
-
-// Stop timeline recording on local machine
-class TimelineStopTask : public BaseTask {
-  public:
-    TimelineStopTask(
-      Context *ctx,
-      KopsikResultCallback callback)
-        : BaseTask(ctx, "TimelineStopTask",
-            reinterpret_cast<void *>(callback)) {}
-    void runTask();
+  private:
+    bool on_;
 };
 
 // Enable timeline recording on server side

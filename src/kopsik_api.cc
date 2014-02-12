@@ -2147,55 +2147,37 @@ void on_websocket_message(
 
   kopsik::error err = ctx->Save();
   if (err != kopsik::noError) {
-    // FIXME: error handling
+    logger().error(err);
   }
 }
 
-void kopsik_websocket_start(
-    void *context) {
+void kopsik_websocket_switch(
+    void *context,
+    const unsigned int on) {
   poco_assert(context);
 
-  logger().debug("kopsik_websocket_start");
+  logger().debug("kopsik_websocket_switch");
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
-  ctx->tm.start(new WebSocketStartTask(ctx, on_websocket_message));
-}
-
-void kopsik_websocket_stop(
-    void *context) {
-  poco_assert(context);
-
-  logger().debug("kopsik_websocket_stop");
-
-  Context *ctx = reinterpret_cast<Context *>(context);
-
-  ctx->tm.start(new WebSocketStopTask(ctx));
+  ctx->tm.start(new WebSocketSwitchTask(ctx, on_websocket_message, on));
 }
 
 // Timeline
 
-void kopsik_timeline_start(
+void kopsik_timeline_switch(
     void *context,
-    KopsikResultCallback callback) {
+    KopsikResultCallback callback,
+    const unsigned int on) {
   poco_assert(context);
   poco_assert(callback);
 
-  logger().debug("kopsik_timeline_start");
+  std::stringstream ss;
+  ss << "kopsik_timeline_switch on=" << on;
+  logger().debug(ss.str());
 
   Context *ctx = reinterpret_cast<Context *>(context);
-  ctx->tm.start(new TimelineStartTask(ctx, callback));
-}
-
-void kopsik_timeline_stop(
-    void *context,
-    KopsikResultCallback callback) {
-  poco_assert(context);
-
-  logger().debug("kopsik_timeline_stop");
-
-  Context *ctx = reinterpret_cast<Context *>(context);
-  ctx->tm.start(new TimelineStopTask(ctx, callback));
+  ctx->tm.start(new TimelineSwitchTask(ctx, callback, on));
 }
 
 void kopsik_timeline_toggle_recording(
@@ -2217,11 +2199,8 @@ void kopsik_timeline_toggle_recording(
   }
 
   ctx->tm.start(new TimelineUpdateServerSettingsTask(ctx, callback));
-  if (ctx->user->RecordTimeline()) {
-    ctx->tm.start(new TimelineStartTask(ctx, callback));
-    return;
-  }
-  ctx->tm.start(new TimelineStopTask(ctx, callback));
+  ctx->tm.start(new TimelineSwitchTask(
+    ctx, callback, ctx->user->RecordTimeline()));
 }
 
 int kopsik_timeline_is_recording_enabled(void *context) {

@@ -215,11 +215,11 @@ namespace command_line_client {
         if ("listen" == args[0]) {
             std::cout << "Listening to websocket.. " << std::endl;
             kopsik_set_change_callback(ctx, on_model_change);
-            kopsik_websocket_start(ctx);
+            kopsik_websocket_switch(ctx, 1);
             while (true) {
                 Poco::Thread::sleep(1000);
             }
-            kopsik_websocket_stop(ctx);
+            kopsik_websocket_switch(ctx, 0);
             return Poco::Util::Application::EXIT_OK;
         }
 
