@@ -97,7 +97,7 @@
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </box>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="9cY-Vq-vDS">
-                    <rect key="frame" x="176" y="25" width="21" height="21"/>
+                    <rect key="frame" x="176" y="15" width="21" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="HI5-NI-PWi"/>
@@ -117,7 +117,7 @@
                 <constraint firstItem="HvF-1T-7Z3" firstAttribute="top" secondItem="WaA-ag-4kh" secondAttribute="top" constant="10" id="8zg-d8-7UK"/>
                 <constraint firstAttribute="trailing" secondItem="HvF-1T-7Z3" secondAttribute="trailing" id="YeA-dC-c52"/>
                 <constraint firstAttribute="trailing" secondItem="9cY-Vq-vDS" secondAttribute="trailing" constant="55" id="ZiM-ff-2hj"/>
-                <constraint firstItem="9cY-Vq-vDS" firstAttribute="top" secondItem="WaA-ag-4kh" secondAttribute="top" constant="40" id="cgL-Yc-UmJ"/>
+                <constraint firstItem="9cY-Vq-vDS" firstAttribute="top" secondItem="WaA-ag-4kh" secondAttribute="top" constant="50" id="cgL-Yc-UmJ"/>
                 <constraint firstAttribute="bottom" secondItem="HvF-1T-7Z3" secondAttribute="bottom" id="dZ2-E6-deB"/>
             </constraints>
             <connections>
