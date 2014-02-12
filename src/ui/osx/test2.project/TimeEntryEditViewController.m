@@ -130,12 +130,6 @@
     [self.billableCheckbox setState:NSOffState];
   }
   
-  if ([item.tags count] == 0) {
-    [self.tagsTokenField setObjectValue:nil];
-  } else {
-    [self.tagsTokenField setObjectValue:item.tags];
-  }
-  
   if (item.updatedAt != nil && ![item.updatedAt isEqualToString:@"null"]) {
     NSString *updatedAt;
     updatedAt = @"Last update: ";
@@ -331,24 +325,6 @@
   kopsik_sync(ctx, 0, handle_error);
 }
 
-- (IBAction)tagsChanged:(id)sender {
-  NSAssert(self.GUID != nil, @"GUID is nil");
-  char err[KOPSIK_ERR_LEN];
-  NSAssert(self.tagsTokenField != nil, @"tags field cant be nil");
-  NSArray *tag_names = [self.tagsTokenField objectValue];
-  const char *value = [[tag_names componentsJoinedByString:@"|"] UTF8String];
-  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_tags(ctx,
-                                                       err,
-                                                       KOPSIK_ERR_LEN,
-                                                       [self.GUID UTF8String],
-                                                       value)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                        object:[NSString stringWithUTF8String:err]];
-    return;
-  }
-  kopsik_sync(ctx, 0, handle_error);
-}
-
 - (IBAction)billableCheckBoxClicked:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
@@ -462,10 +438,6 @@
                                            duration_str_len);
   NSString *newValue = [NSString stringWithUTF8String:str];
   [self.durationTextField setStringValue:newValue];
-}
-
-- (IBAction)startDatePlaceholderClicked:(id)sender {
-  NSLog(@"FIXME: show pop up calendar on top of the placeholder text field");
 }
 
 @end
