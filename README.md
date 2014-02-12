@@ -1,4 +1,3 @@
-
 [![Build Status](https://travis-ci.org/toggl/toggldesktop.png)](https://travis-ci.org/toggl/toggldesktop)
 
 OS X
@@ -15,6 +14,13 @@ FIXME
 Linux
 -----
 FIXME
+
+
+Command line app
+----------------
+```
+make osx
+```
 
 
 Tests
