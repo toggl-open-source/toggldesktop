@@ -21,10 +21,16 @@
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
   self.GUID = view_item.GUID;
-  self.descriptionTextField.stringValue = view_item.Description;
   self.durationTextField.stringValue = view_item.duration;
   self.dateDurationTextField.stringValue = view_item.dateDuration;
   self.formattedDateTextField.stringValue = view_item.formattedDate;
+
+  // Time entry has a description
+  if (view_item.Description && [view_item.Description length] > 0) {
+    self.descriptionTextField.stringValue = view_item.Description;
+  } else {
+    self.descriptionTextField.stringValue = @"(no description)";
+  }
   
   // Time entry has a project
   if (view_item.ProjectAndTaskLabel && [view_item.ProjectAndTaskLabel length] > 0) {
