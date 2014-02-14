@@ -15,10 +15,12 @@
 @property (weak) IBOutlet NSTextField *passwordTextField;
 @property (weak) IBOutlet NSButton *useProxyButton;
 @property (weak) IBOutlet NSButton *useIdleDetectionButton;
+@property (weak) IBOutlet NSButton *recordTimelineCheckbox;
 - (IBAction)useProxyButtonChanged:(id)sender;
 - (IBAction)hostTextFieldChanged:(id)sender;
 - (IBAction)portTextFieldChanged:(id)sender;
 - (IBAction)usernameTextFieldChanged:(id)sender;
 - (IBAction)passwordTextFieldChanged:(id)sender;
 - (IBAction)useIdleDetectionButtonChanged:(id)sender;
+- (IBAction)recordTimelineCheckboxChanged:(id)sender;
 @end

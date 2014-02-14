@@ -45,10 +45,6 @@
 @property int lastIdleSecondsReading;
 @property NSDate *lastIdleStarted;
 
-// Need references to some menu items, we'll change them dynamically
-@property NSMenuItem *timelineMenuItem;
-@property (strong) IBOutlet NSMenuItem *mainTimelineMenuItem;
-
 // we'll be updating running TE as a menu item, too
 @property (strong) IBOutlet NSMenuItem *runningTimeEntryMenuItem;
 
@@ -225,22 +221,11 @@ NSString *kTimeTotalUnknown = @" --:--";
 - (void)startTimeline {
   NSLog(@"startTimeline");
   kopsik_timeline_switch(ctx, handle_error, 1);
-  [self displayTimelineRecordingState];
 }
 
 - (void)stopTimeline {
   NSLog(@"stopTimeline");
   kopsik_timeline_switch(ctx, handle_error, 0);
-  [self displayTimelineRecordingState];
-}
-
-- (void)displayTimelineRecordingState {
-  NSCellStateValue state = NSOffState;
-  if (kopsik_timeline_is_recording_enabled(ctx)) {
-    state = NSOnState;
-  }
-  [self.timelineMenuItem setState:state];
-  [self.mainTimelineMenuItem setState:state];
 }
 
 - (void)startNewTimeEntry:(TimeEntryViewItem *)new_time_entry {
@@ -521,11 +506,6 @@ NSString *kTimeTotalUnknown = @" --:--";
   [menu addItemWithTitle:@"Sync"
                   action:@selector(onSyncMenuItem:)
            keyEquivalent:@""].tag = kMenuItemTagSync;
-  self.timelineMenuItem = [menu
-    addItemWithTitle:@"Record Timeline"
-    action:@selector(onTimelineMenuItem:)
-    keyEquivalent:@""];
-  self.timelineMenuItem.tag = kMenuItemTagTimeline;
   [menu addItemWithTitle:@"Preferences"
                   action:@selector(onPreferencesMenuItem:)
            keyEquivalent:@""];
@@ -685,11 +665,6 @@ NSString *kTimeTotalUnknown = @" --:--";
 void on_timeline_toggle_recording_result(kopsik_api_result result,
                                          const char *errmsg) {
   handle_error(result, errmsg);
-}
-
-- (IBAction)onTimelineMenuItem:(id)sender {
-  kopsik_timeline_toggle_recording(ctx, handle_error);
-  [self displayTimelineRecordingState];
 }
 
 - (void)onQuitMenuItem {
@@ -952,11 +927,6 @@ const int kIdleThresholdSeconds = 5 * 60;
         }
         break;
       case kMenuItemTagSync:
-        if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
-          return NO;
-        }
-        break;
-      case kMenuItemTagTimeline:
         if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
           return NO;
         }

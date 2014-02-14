@@ -36,6 +36,8 @@
 
     [self loadPreferences];
     [self enableProxyFields];
+  
+    [self displayTimelineRecordingState];
 }
 
 - (void)loadPreferences {
@@ -153,4 +155,18 @@
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventSettingsChanged
                                                       object:nil];
 }
+
+- (IBAction)recordTimelineCheckboxChanged:(id)sender {
+  kopsik_timeline_toggle_recording(ctx, handle_error);
+  [self displayTimelineRecordingState];
+}
+
+- (void)displayTimelineRecordingState {
+  NSCellStateValue state = NSOffState;
+  if (kopsik_timeline_is_recording_enabled(ctx)) {
+    state = NSOnState;
+  }
+  [self.recordTimelineCheckbox setState:state];
+}
+
 @end
