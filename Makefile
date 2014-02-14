@@ -144,6 +144,7 @@ clean:
 	rm -rf build
 	rm -f $(main)
 	rm -f $(main)_test
+	rm -rf src/ui/osx/test2.project/build
 
 osx:
 	xcodebuild -project src/ui/osx/test2.project/kopsik_ui_osx.xcodeproj && \
