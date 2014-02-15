@@ -13,9 +13,7 @@
 #include "./timeline_uploader.h"
 #include "./CustomErrorHandler.h"
 
-#include "Poco/TaskManager.h"
-#include "Poco/ErrorHandler.h"
-
+// FIXME: rename
 class Context {
   public:
     Context();
@@ -24,6 +22,16 @@ class Context {
     void Shutdown();
     kopsik::error ConfigureProxy();
     kopsik::error Save();
+
+    void FullSync();
+    void PartialSync();
+    void SwitchWebSocketOff();
+    void SwitchWebSocketOn();
+    void SwitchTimelineOff();
+    void SwitchTimelineOn();
+    void FetchUpdates();
+    void TimelineUpdateServerSettings();
+    void SendFeedback();
 
     // FIXME: make private
 
@@ -41,15 +49,32 @@ class Context {
 
     std::string app_name;
     std::string app_version;
+
     std::string api_url;
     std::string timeline_upload_url;
 
     Poco::Mutex mutex;
 
-    // FIXME: remove this:
-    Poco::TaskManager tm;
-
     CustomErrorHandler error_handler;
+
+    std::string update_channel;
+
+    std::string feedback_attachment_path_;
+    std::string feedback_subject;
+    std::string feedback_details;
+
+  private:
+    const std::string updateURL();
+    static const std::string osName();
+
+    std::string feedbackJSON();
+
+    Poco::Logger &logger() {
+      return Poco::Logger::get("Context");
+    };
+
+    std::string feedback_filename();
+    std::string base64encode_attachment();
 };
 
 #endif  // SRC_CONTEXT_H_

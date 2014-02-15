@@ -3,6 +3,11 @@
 #include "./context.h"
 #include "./kopsik_api_private.h"
 
+#include "Poco/Path.h"
+#include "Poco/FileStream.h"
+#include "Poco/Base64Encoder.h"
+#include "Poco/StreamCopier.h"
+
 Context::Context()
   : db(0),
     user(0),
@@ -16,7 +21,11 @@ Context::Context()
     app_name(""),
     app_version(""),
     api_url(""),
-    timeline_upload_url("") {
+    timeline_upload_url(""),
+    update_channel(""),
+    feedback_attachment_path_(""),
+    feedback_subject(""),
+    feedback_details("") {
   Poco::ErrorHandler::set(&error_handler);
   Poco::Net::initializeSSL();
 }
@@ -61,7 +70,7 @@ void Context::Shutdown() {
     timeline_uploader->Stop();
   }
 
-  tm.joinAll();
+  Poco::ThreadPool::defaultPool().joinAll();
 }
 
 kopsik::error Context::ConfigureProxy() {
@@ -108,3 +117,253 @@ kopsik::error Context::Save() {
   }
   return kopsik::noError;
 }
+
+void Context::FullSync() {
+  poco_assert(result_callback);
+
+  kopsik::HTTPSClient https_client(api_url, app_name, app_version);
+  kopsik::error err = user->Sync(&https_client, 1, true);
+  if (err != kopsik::noError) {
+    result_callback(KOPSIK_API_FAILURE, err.c_str());
+    return;
+  }
+
+  err = Save();
+  if (err != kopsik::noError) {
+    result_callback(KOPSIK_API_FAILURE, err.c_str());
+    return;
+  }
+
+  result_callback(KOPSIK_API_SUCCESS, 0);
+}
+
+void Context::PartialSync() {
+  poco_assert(result_callback);
+
+  kopsik::HTTPSClient https_client(api_url, app_name, app_version);
+  kopsik::error err = user->Sync(&https_client, 0, true);
+  if (err != kopsik::noError) {
+    result_callback(KOPSIK_API_FAILURE, err.c_str());
+    return;
+  }
+
+  err = Save();
+  if (err != kopsik::noError) {
+    result_callback(KOPSIK_API_FAILURE, err.c_str());
+    return;
+  }
+
+  result_callback(KOPSIK_API_SUCCESS, 0);
+}
+
+void Context::SwitchWebSocketOff() {
+  ws_client->Stop();
+}
+
+void Context::SwitchWebSocketOn() {
+  poco_assert(!user->APIToken().empty());
+  poco_assert(websocket_callback);
+
+  ws_client->Start(this, user->APIToken(), websocket_callback);
+}
+
+// Start/stop timeline recording on local machine
+void Context::SwitchTimelineOff() {
+  Poco::Mutex::ScopedLock lock(mutex);
+
+  if (window_change_recorder) {
+    delete window_change_recorder;
+    window_change_recorder = 0;
+  }
+
+  if (timeline_uploader) {
+    delete timeline_uploader;
+    timeline_uploader = 0;
+  }
+
+  result_callback(KOPSIK_API_SUCCESS, 0);
+}
+
+void Context::SwitchTimelineOn() {
+  if (!user) {
+    result_callback(KOPSIK_API_FAILURE, "Please login to start timeline");
+    return;
+  }
+
+  if (!user->RecordTimeline()) {
+    result_callback(KOPSIK_API_SUCCESS, 0);
+    return;
+  }
+
+  Poco::Mutex::ScopedLock lock(mutex);
+
+  if (timeline_uploader) {
+    delete timeline_uploader;
+    timeline_uploader = 0;
+  }
+  timeline_uploader = new kopsik::TimelineUploader(
+    user->ID(),
+    user->APIToken(),
+    timeline_upload_url,
+    app_name,
+    app_version);
+
+  if (window_change_recorder) {
+    delete window_change_recorder;
+    window_change_recorder = 0;
+  }
+  window_change_recorder = new kopsik::WindowChangeRecorder(user->ID());
+
+  result_callback(KOPSIK_API_SUCCESS, 0);
+}
+
+void Context::FetchUpdates() {
+  poco_assert(check_updates_callback);
+
+  std::string response_body("");
+  kopsik::HTTPSClient https_client(api_url, app_name, app_version);
+  kopsik::error err = https_client.GetJSON(updateURL(),
+                                            std::string(""),
+                                            std::string(""),
+                                            &response_body);
+  if (err != kopsik::noError) {
+    check_updates_callback(KOPSIK_API_FAILURE, err.c_str(), 0, 0, 0);
+    return;
+  }
+
+  if ("null" == response_body) {
+    check_updates_callback(KOPSIK_API_SUCCESS, 0, 0, 0, 0);
+    return;
+  }
+
+  if (!json_is_valid(response_body.c_str())) {
+    check_updates_callback(
+      KOPSIK_API_FAILURE, "Invalid response JSON", 0, 0, 0);
+    return;
+  }
+
+  std::string url("");
+  std::string version("");
+
+  JSONNODE *root = json_parse(response_body.c_str());
+  JSONNODE_ITERATOR i = json_begin(root);
+  JSONNODE_ITERATOR e = json_end(root);
+  while (i != e) {
+    json_char *node_name = json_name(*i);
+    if (strcmp(node_name, "version") == 0) {
+      version = std::string(json_as_string(*i));
+    } else if (strcmp(node_name, "url") == 0) {
+      url = std::string(json_as_string(*i));
+    }
+    ++i;
+  }
+  json_delete(root);
+
+  check_updates_callback(
+    KOPSIK_API_SUCCESS,
+    err.c_str(),
+    1,
+    url.c_str(),
+    version.c_str());
+}
+
+const std::string Context::updateURL() {
+  poco_assert(!update_channel.empty());
+  poco_assert(!app_version.empty());
+
+  std::stringstream relative_url;
+  relative_url << "/api/v8/updates?app=kopsik"
+    << "&channel=" << update_channel
+    << "&platform=" << osName()
+    << "&version=" << app_version;
+  return relative_url.str();
+}
+
+const std::string Context::osName() {
+  if (POCO_OS_LINUX == POCO_OS) {
+    return std::string("linux");
+  }
+  if (POCO_OS_WINDOWS_NT == POCO_OS) {
+    return std::string("windows");
+  }
+  return std::string("darwin");
+}
+
+void Context::TimelineUpdateServerSettings() {
+  kopsik::HTTPSClient https_client(api_url, app_name, app_version);
+
+  std::string json("{\"record_timeline\": false}");
+  if (user->RecordTimeline()) {
+    json = "{\"record_timeline\": true}";
+  }
+
+  std::string response_body("");
+  kopsik::error err = https_client.PostJSON("/api/v8/timeline_settings",
+                                            json,
+                                            user->APIToken(),
+                                            "api_token",
+                                            &response_body);
+  if (err != kopsik::noError) {
+    logger().warning(err);
+  }
+}
+
+std::string Context::feedbackJSON() {
+  JSONNODE *root = json_new(JSON_NODE);
+  json_push_back(root, json_new_b("desktop", true));
+  json_push_back(root, json_new_a("toggl_version", app_version.c_str()));
+  json_push_back(root, json_new_a("details", feedback_details.c_str()));
+  json_push_back(root, json_new_a("subject", feedback_subject.c_str()));
+  if (!feedback_attachment_path_.empty()) {
+    json_push_back(root, json_new_a("base64_encoded_attachment",
+                                    base64encode_attachment().c_str()));
+    json_push_back(root, json_new_a("attachment_name",
+                                    feedback_filename().c_str()));
+  }
+  json_char *jc = json_write_formatted(root);
+  std::string json(jc);
+  json_free(jc);
+  json_delete(root);
+  return json;
+}
+
+std::string Context::feedback_filename() {
+  Poco::Path p(true);
+  bool ok = p.tryParse(feedback_attachment_path_);
+  if (!ok) {
+    return "";
+  }
+  return p.getFileName();
+}
+
+std::string Context::base64encode_attachment() {
+  std::ostringstream oss;
+  Poco::FileInputStream fis(feedback_attachment_path_);
+  if (!fis.good()) {
+    logger().error("Failed to load attached image");
+    return "";
+  }
+  Poco::Base64Encoder encoder(oss);
+  encoder.rdbuf()->setLineLength(0);  // disable line feeds in output
+  Poco::StreamCopier::copyStream(fis, encoder);
+  encoder.close();
+  return oss.str();
+}
+
+void Context::SendFeedback() {
+  poco_assert(result_callback);
+
+  kopsik::HTTPSClient https_client(api_url, app_name, app_version);
+  std::string response_body("");
+  kopsik::error err = https_client.PostJSON("/api/v8/feedback",
+                                            feedbackJSON(),
+                                            user->APIToken(),
+                                            "api_token",
+                                            &response_body);
+  if (err != kopsik::noError) {
+    result_callback(KOPSIK_API_FAILURE, err.c_str());
+    return;
+  }
+
+  result_callback(KOPSIK_API_SUCCESS, 0);
+};

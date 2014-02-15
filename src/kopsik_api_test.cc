@@ -33,22 +33,22 @@ namespace kopsik {
     };
 
     void in_test_change_callback(
-            kopsik_api_result result,
-            const char *errmsg,
-            KopsikModelChange *change) {
+        kopsik_api_result result,
+        const char *errmsg,
+        KopsikModelChange *change) {
     }
 
     void in_test_result_callback(
-            kopsik_api_result result,
-            const char *errmsg) {
+        kopsik_api_result result,
+        const char *errmsg) {
     }
 
     void in_test_check_updates_callback(
-            kopsik_api_result result,
-            const char *errmsg,
-            const int is_update_available,
-            const char *url,
-            const char *version) {
+        kopsik_api_result result,
+        const char *errmsg,
+        const int is_update_available,
+        const char *url,
+        const char *version) {
     }
 
     void *create_test_context() {

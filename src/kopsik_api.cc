@@ -14,7 +14,6 @@
 #include "./CustomErrorHandler.h"
 #include "./proxy.h"
 #include "./context.h"
-#include "./tasks.h"
 
 #include "Poco/Bugcheck.h"
 #include "Poco/Path.h"
@@ -772,7 +771,12 @@ void kopsik_sync(
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
-  ctx->tm.start(new SyncTask(ctx, full_sync));
+  if (full_sync) {
+    ctx->FullSync();
+    return;
+  }
+
+  ctx->PartialSync();
 }
 
 // Autocomplete list
@@ -2152,11 +2156,18 @@ void kopsik_websocket_switch(
     const unsigned int on) {
   poco_assert(context);
 
-  logger().debug("kopsik_websocket_switch");
+  std::stringstream ss;
+  ss << "kopsik_websocket_switch on=" << on;
+  logger().debug(ss.str());
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
-  ctx->tm.start(new WebSocketSwitchTask(ctx, on));
+  if (on) {
+    ctx->SwitchWebSocketOn();
+    return;
+  }
+
+  ctx->SwitchWebSocketOff();
 }
 
 // Timeline
@@ -2171,7 +2182,13 @@ void kopsik_timeline_switch(
   logger().debug(ss.str());
 
   Context *ctx = reinterpret_cast<Context *>(context);
-  ctx->tm.start(new TimelineSwitchTask(ctx, on));
+
+  if (on) {
+    ctx->SwitchTimelineOn();
+    return;
+  }
+
+  ctx->SwitchTimelineOff();
 }
 
 void kopsik_timeline_toggle_recording(
@@ -2191,8 +2208,14 @@ void kopsik_timeline_toggle_recording(
     return;
   }
 
-  ctx->tm.start(new TimelineUpdateServerSettingsTask(ctx));
-  ctx->tm.start(new TimelineSwitchTask(ctx, ctx->user->RecordTimeline()));
+  ctx->TimelineUpdateServerSettings();
+
+  if (ctx->user->RecordTimeline()) {
+    ctx->SwitchTimelineOn();
+    return;
+  }
+
+  ctx->SwitchTimelineOff();
 }
 
 int kopsik_timeline_is_recording_enabled(
@@ -2240,10 +2263,9 @@ void kopsik_feedback_send(
     image = std::string(base64encoded_image);
   }
 
-  ctx->tm.start(new SendFeedbackTask(ctx,
-                                     std::string(topic),
-                                     std::string(details),
-                                     image));
+  ctx->feedback_subject = topic;
+  ctx->feedback_details = details;
+  ctx->SendFeedback();
 }
 
 // Updates
@@ -2256,14 +2278,13 @@ void kopsik_check_for_updates(
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
-  std::string update_channel("");
-  kopsik::error err = ctx->db->LoadUpdateChannel(&update_channel);
+  kopsik::error err = ctx->db->LoadUpdateChannel(&ctx->update_channel);
   if (err != kopsik::noError) {
     ctx->check_updates_callback(KOPSIK_API_FAILURE, err.c_str(), 0, 0, 0);
     return;
   }
 
-  ctx->tm.start(new FetchUpdatesTask(ctx, update_channel));
+  ctx->FetchUpdates();
 }
 
 kopsik_api_result kopsik_set_update_channel(

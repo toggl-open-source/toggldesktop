@@ -132,7 +132,6 @@ cmdline: clean lint
 	$(cxx) $(cflags) -O2 -c src/context.cc -o build/context.o
 	$(cxx) $(cflags) -O2 -c src/kopsik_api_private.cc -o build/kopsik_api_private.o
 	$(cxx) $(cflags) -O2 -c src/kopsik_api.cc -o build/kopsik_api.o
-	$(cxx) $(cflags) -O2 -c src/tasks.cc -o build/tasks.o
 	$(cxx) $(cflags) -O2 -c src/get_focused_window_$(osname).cc -o build/get_focused_window_$(osname).o
 	$(cxx) $(cflags) -O2 -c src/timeline_uploader.cc -o build/timeline_uploader.o
 	$(cxx) $(cflags) -O2 -c src/window_change_recorder.cc -o build/window_change_recorder.o
@@ -173,7 +172,6 @@ test: clean lint
 	$(cxx) $(cflags) -c src/context.cc -o build/context.o
 	$(cxx) $(cflags) -c src/kopsik_api_private.cc -o build/kopsik_api_private.o
 	$(cxx) $(cflags) -c src/kopsik_api.cc -o build/kopsik_api.o
-	$(cxx) $(cflags) -c src/tasks.cc -o build/tasks.o
 	$(cxx) $(cflags) -c src/test_data.cc -o build/test_data.o
 	$(cxx) $(cflags) -c src/kopsik_api_test.cc -o build/kopsik_api_test.o
 	$(cxx) $(cflags) -c src/toggl_api_client_test.cc -o build/toggl_api_client_test.o
@@ -197,7 +195,6 @@ coverage: clean
 	$(cxx) $(cflags) $(covflags) -c src/context.cc -o build/context.o
 	$(cxx) $(cflags) $(covflags) -c src/kopsik_api_private.cc -o build/kopsik_api_private.o
 	$(cxx) $(cflags) $(covflags) -c src/kopsik_api.cc -o build/kopsik_api.o
-	$(cxx) $(cflags) $(covflags) -c src/tasks.cc -o build/tasks.o
 	$(cxx) $(cflags) $(covflags) -c src/test_data.cc -o build/test_data.o
 	$(cxx) $(cflags) $(covflags) -c src/kopsik_api_test.cc -o build/kopsik_api_test.o
 	$(cxx) $(cflags) $(covflags) -c src/toggl_api_client_test.cc -o build/toggl_api_client_test.o
