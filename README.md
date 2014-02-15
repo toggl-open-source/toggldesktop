@@ -19,7 +19,7 @@ FIXME
 Command line app
 ----------------
 ```
-make osx
+make
 ```
 
 
