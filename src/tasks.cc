@@ -14,10 +14,6 @@
 #include "./tasks.h"
 
 void SyncTask::runTask() {
-  if (isCancelled()) {
-    return;
-  }
-
   kopsik::HTTPSClient https_client(context()->api_url,
                                    context()->app_name,
                                    context()->app_version);
