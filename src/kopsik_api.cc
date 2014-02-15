@@ -2129,40 +2129,6 @@ kopsik_api_result kopsik_duration_for_date_header(
 
 // Websocket client
 
-void on_websocket_message(
-    void *context,
-    std::string json) {
-  poco_assert(context);
-  poco_assert(!json.empty());
-
-  Context *ctx = reinterpret_cast<Context *>(context);
-
-  try {
-    std::stringstream ss;
-    ss << "on_websocket_message json=" << json;
-    logger().debug(ss.str());
-
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-    ctx->user->LoadUpdateFromJSONString(json);
-
-    kopsik::error err = ctx->Save();
-    if (err != kopsik::noError) {
-      ctx->on_error_callback(err.c_str());
-      logger().error(err);
-      return;
-    }
-  } catch(const Poco::Exception& exc) {
-    ctx->on_error_callback(exc.displayText().c_str());
-  } catch(const std::exception& ex) {
-    ctx->on_error_callback(ex.what());
-  } catch(const std::string& ex) {
-    ctx->on_error_callback(ex.c_str());
-  }
-}
-
 void kopsik_websocket_switch(
     void *context,
     const unsigned int on) {
