@@ -39,8 +39,7 @@ class Context {
     kopsik::User *user;
 
     KopsikViewItemChangeCallback change_callback;
-    KopsikResultCallback result_callback;
-    kopsik::WebSocketMessageCallback websocket_callback;
+    KopsikErrorCallback on_error_callback;
     KopsikCheckUpdateCallback check_updates_callback;
 
     kopsik::WebSocketClient *ws_client;

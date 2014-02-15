@@ -36,6 +36,9 @@ typedef void (*KopsikResultCallback)(
   kopsik_api_result result,
   const char *errmsg);
 
+typedef void (*KopsikErrorCallback)(
+  const char *errmsg);
+
 typedef void (*KopsikCheckUpdateCallback)(
   kopsik_api_result result,
   const char *errmsg,
@@ -49,7 +52,7 @@ KOPSIK_EXPORT void *kopsik_context_init(
   const char *app_name,
   const char *app_version,
   KopsikViewItemChangeCallback change_callback,
-  KopsikResultCallback result_callback,
+  KopsikErrorCallback on_error_callback,
   KopsikCheckUpdateCallback check_updates_callback);
 
 KOPSIK_EXPORT void kopsik_context_shutdown(

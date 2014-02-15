@@ -12,8 +12,7 @@ Context::Context()
   : db(0),
     user(0),
     change_callback(0),
-    result_callback(0),
-    websocket_callback(0),
+    on_error_callback(0),
     check_updates_callback(0),
     ws_client(0),
     timeline_uploader(0),
@@ -119,41 +118,33 @@ kopsik::error Context::Save() {
 }
 
 void Context::FullSync() {
-  poco_assert(result_callback);
-
   kopsik::HTTPSClient https_client(api_url, app_name, app_version);
   kopsik::error err = user->Sync(&https_client, 1, true);
   if (err != kopsik::noError) {
-    result_callback(KOPSIK_API_FAILURE, err.c_str());
+    on_error_callback(err.c_str());
     return;
   }
 
   err = Save();
   if (err != kopsik::noError) {
-    result_callback(KOPSIK_API_FAILURE, err.c_str());
+    on_error_callback(err.c_str());
     return;
   }
-
-  result_callback(KOPSIK_API_SUCCESS, 0);
 }
 
 void Context::PartialSync() {
-  poco_assert(result_callback);
-
   kopsik::HTTPSClient https_client(api_url, app_name, app_version);
   kopsik::error err = user->Sync(&https_client, 0, true);
   if (err != kopsik::noError) {
-    result_callback(KOPSIK_API_FAILURE, err.c_str());
+    on_error_callback(err.c_str());
     return;
   }
 
   err = Save();
   if (err != kopsik::noError) {
-    result_callback(KOPSIK_API_FAILURE, err.c_str());
+    on_error_callback(err.c_str());
     return;
   }
-
-  result_callback(KOPSIK_API_SUCCESS, 0);
 }
 
 void Context::SwitchWebSocketOff() {
@@ -162,9 +153,7 @@ void Context::SwitchWebSocketOff() {
 
 void Context::SwitchWebSocketOn() {
   poco_assert(!user->APIToken().empty());
-  poco_assert(websocket_callback);
-
-  ws_client->Start(this, user->APIToken(), websocket_callback);
+  ws_client->Start(this, user->APIToken(), 0);
 }
 
 // Start/stop timeline recording on local machine
@@ -180,18 +169,14 @@ void Context::SwitchTimelineOff() {
     delete timeline_uploader;
     timeline_uploader = 0;
   }
-
-  result_callback(KOPSIK_API_SUCCESS, 0);
 }
 
 void Context::SwitchTimelineOn() {
   if (!user) {
-    result_callback(KOPSIK_API_FAILURE, "Please login to start timeline");
     return;
   }
 
   if (!user->RecordTimeline()) {
-    result_callback(KOPSIK_API_SUCCESS, 0);
     return;
   }
 
@@ -213,8 +198,6 @@ void Context::SwitchTimelineOn() {
     window_change_recorder = 0;
   }
   window_change_recorder = new kopsik::WindowChangeRecorder(user->ID());
-
-  result_callback(KOPSIK_API_SUCCESS, 0);
 }
 
 void Context::FetchUpdates() {
@@ -351,8 +334,6 @@ std::string Context::base64encode_attachment() {
 }
 
 void Context::SendFeedback() {
-  poco_assert(result_callback);
-
   kopsik::HTTPSClient https_client(api_url, app_name, app_version);
   std::string response_body("");
   kopsik::error err = https_client.PostJSON("/api/v8/feedback",
@@ -361,9 +342,7 @@ void Context::SendFeedback() {
                                             "api_token",
                                             &response_body);
   if (err != kopsik::noError) {
-    result_callback(KOPSIK_API_FAILURE, err.c_str());
+    on_error_callback(err.c_str());
     return;
   }
-
-  result_callback(KOPSIK_API_SUCCESS, 0);
 };

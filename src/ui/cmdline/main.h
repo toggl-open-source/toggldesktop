@@ -31,26 +31,29 @@ namespace command_line_client {
             const char *errmsg,
             KopsikModelChange *change) {
         if (KOPSIK_API_SUCCESS != result) {
-            std::cerr << "change_callback error! " <<
-                std::string(errmsg) << std::endl;
+            std::cerr << "main_change_callback "
+                << std::string(errmsg)
+                << std::endl;
             return;
         }
-        std::cout << "change_callback "
+        std::cout << "main_change_callback "
             << model_change_to_string(*change)
             << std::endl;
         }
 
-    void main_result_callback(
-        kopsik_api_result result,
-        const char *errmsg) {
+    void main_on_error_callback(
+            const char *errmsg) {
+        std::cerr << "main_on_error_callback "
+            << std::string(errmsg)
+            << std::endl;
     }
 
     void main_check_updates_callback(
-        kopsik_api_result result,
-        const char *errmsg,
-        const int is_update_available,
-        const char *url,
-        const char *version) {
+            kopsik_api_result result,
+            const char *errmsg,
+            const int is_update_available,
+            const char *url,
+            const char *version) {
     }
 
     class Main : public Poco::Util::Application, Poco::ErrorHandler {
@@ -62,7 +65,7 @@ namespace command_line_client {
                 "cmdline",
                 "0.0.1",
                 main_change_callback,
-                main_result_callback,
+                main_on_error_callback,
                 main_check_updates_callback);
             poco_assert(ctx);
         }

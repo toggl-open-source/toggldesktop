@@ -38,8 +38,7 @@ namespace kopsik {
         KopsikModelChange *change) {
     }
 
-    void in_test_result_callback(
-        kopsik_api_result result,
+    void in_test_on_error_callback(
         const char *errmsg) {
     }
 
@@ -54,7 +53,7 @@ namespace kopsik {
     void *create_test_context() {
         return kopsik_context_init("tests", "0.1",
             in_test_change_callback,
-            in_test_result_callback,
+            in_test_on_error_callback,
             in_test_check_updates_callback);
     }
 
