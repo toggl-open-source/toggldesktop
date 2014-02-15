@@ -219,7 +219,7 @@
     return;
   }
   // FIXME: move into setter method
-  kopsik_sync(ctx, 0, handle_error);
+  kopsik_sync(ctx, 0);
 }
 
 - (IBAction)projectSelectChanged:(id)sender {
@@ -243,13 +243,13 @@
     handle_error(res, err);
     return;
   }
-  kopsik_sync(ctx, 0, handle_error);
+  kopsik_sync(ctx, 0);
 }
 
 - (IBAction)startTimeChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   [self applyStartTime];
-  kopsik_sync(ctx, 0, handle_error);
+  kopsik_sync(ctx, 0);
 }
 
 - (IBAction)applyStartTime {
@@ -285,7 +285,7 @@
 - (IBAction)endTimeChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   [self applyEndTime];
-  kopsik_sync(ctx, 0, handle_error);
+  kopsik_sync(ctx, 0);
 }
 
 - (IBAction)applyEndTime {
@@ -324,7 +324,7 @@
   if (!self.endTime.isHidden) {
     [self applyEndTime];
   }
-  kopsik_sync(ctx, 0, handle_error);
+  kopsik_sync(ctx, 0);
 }
 
 - (IBAction)billableCheckBoxClicked:(id)sender {
@@ -343,7 +343,7 @@
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
-  kopsik_sync(ctx, 0, handle_error);
+  kopsik_sync(ctx, 0);
 }
 
 - (IBAction)descriptionTextFieldChanged:(id)sender {
@@ -361,7 +361,7 @@
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
-  kopsik_sync(ctx, 0, handle_error);
+  kopsik_sync(ctx, 0);
 }
 
 - (IBAction)deleteButtonClicked:(id)sender {
@@ -389,7 +389,7 @@
                                                         object:[NSString stringWithUTF8String:err]];
     return;
   }
-  kopsik_sync(ctx, 0, handle_error);
+  kopsik_sync(ctx, 0);
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntryDeselected object:nil];
 }
 

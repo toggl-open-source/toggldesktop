@@ -13,23 +13,27 @@
 #include "./https_client.h"
 #include "./tasks.h"
 
+// FIXME: merge tasks with Context
+
 void SyncTask::runTask() {
+  poco_assert(context()->result_callback);
+
   kopsik::HTTPSClient https_client(context()->api_url,
                                    context()->app_name,
                                    context()->app_version);
   kopsik::error err = context()->user->Sync(&https_client, full_sync_, true);
   if (err != kopsik::noError) {
-    result_callback()(KOPSIK_API_FAILURE, err.c_str());
+    context()->result_callback(KOPSIK_API_FAILURE, err.c_str());
     return;
   }
 
   err = context()->Save();
   if (err != kopsik::noError) {
-    result_callback()(KOPSIK_API_FAILURE, err.c_str());
+    context()->result_callback(KOPSIK_API_FAILURE, err.c_str());
     return;
   }
 
-  result_callback()(KOPSIK_API_SUCCESS, 0);
+  context()->result_callback(KOPSIK_API_SUCCESS, 0);
 }
 
 void WebSocketSwitchTask::runTask() {
@@ -37,15 +41,14 @@ void WebSocketSwitchTask::runTask() {
     context()->ws_client->Stop();
     return;
   }
-  kopsik::WebSocketMessageCallback cb =
-    reinterpret_cast<kopsik::WebSocketMessageCallback>(callback());
-  context()->ws_client->Start(
-    context(),
-    context()->user->APIToken(),
-    cb);
+  context()->ws_client->Start(context(),
+                              context()->user->APIToken(),
+                              context()->websocket_callback);
 }
 
 void TimelineSwitchTask::runTask() {
+  poco_assert(context()->result_callback);
+
   if (!on_) {
     Poco::Mutex::ScopedLock lock(context()->mutex);
 
@@ -59,17 +62,18 @@ void TimelineSwitchTask::runTask() {
       context()->timeline_uploader = 0;
     }
 
-    result_callback()(KOPSIK_API_SUCCESS, 0);
+    context()->result_callback(KOPSIK_API_SUCCESS, 0);
     return;
   }
 
   if (!context()->user) {
-    result_callback()(KOPSIK_API_FAILURE, "Please login to start timeline");
+    context()->result_callback(KOPSIK_API_FAILURE,
+      "Please login to start timeline");
     return;
   }
 
   if (!context()->user->RecordTimeline()) {
-    result_callback()(KOPSIK_API_SUCCESS, 0);
+    context()->result_callback(KOPSIK_API_SUCCESS, 0);
     return;
   }
 
@@ -93,7 +97,7 @@ void TimelineSwitchTask::runTask() {
   context()->window_change_recorder = new kopsik::WindowChangeRecorder(
     context()->user->ID());
 
-  result_callback()(KOPSIK_API_SUCCESS, 0);
+  context()->result_callback(KOPSIK_API_SUCCESS, 0);
 }
 
 void TimelineUpdateServerSettingsTask::runTask() {
@@ -166,6 +170,8 @@ std::string SendFeedbackTask::base64encode_attachment() {
 }
 
 void SendFeedbackTask::runTask() {
+  poco_assert(context()->result_callback);
+
   kopsik::HTTPSClient https_client(context()->api_url,
                                    context()->app_name,
                                    context()->app_version);
@@ -176,38 +182,39 @@ void SendFeedbackTask::runTask() {
                                             "api_token",
                                             &response_body);
   if (err != kopsik::noError) {
-    result_callback()(KOPSIK_API_FAILURE, err.c_str());
+    context()->result_callback(KOPSIK_API_FAILURE, err.c_str());
     return;
   }
 
-  result_callback()(KOPSIK_API_SUCCESS, 0);
+  context()->result_callback(KOPSIK_API_SUCCESS, 0);
 };
 
 void FetchUpdatesTask::runTask() {
+  poco_assert(context()->check_updates_callback);
+
   std::string response_body("");
   kopsik::HTTPSClient https_client(
     context()->api_url,
     context()->app_name,
     context()->app_version);
   kopsik::error err = https_client.GetJSON(updateURL(),
-                                                  std::string(""),
-                                                  std::string(""),
-                                                  &response_body);
-  KopsikCheckUpdateCallback updates_callback =
-    reinterpret_cast<KopsikCheckUpdateCallback>(callback());
-
+                                            std::string(""),
+                                            std::string(""),
+                                            &response_body);
   if (err != kopsik::noError) {
-    updates_callback(KOPSIK_API_FAILURE, err.c_str(), 0, 0, 0);
+    context()->check_updates_callback(
+      KOPSIK_API_FAILURE, err.c_str(), 0, 0, 0);
     return;
   }
 
   if ("null" == response_body) {
-    updates_callback(KOPSIK_API_SUCCESS, 0, 0, 0, 0);
+    context()->check_updates_callback(KOPSIK_API_SUCCESS, 0, 0, 0, 0);
     return;
   }
 
   if (!json_is_valid(response_body.c_str())) {
-    updates_callback(KOPSIK_API_FAILURE, "Invalid response JSON", 0, 0, 0);
+    context()->check_updates_callback(
+      KOPSIK_API_FAILURE, "Invalid response JSON", 0, 0, 0);
     return;
   }
 
@@ -228,8 +235,12 @@ void FetchUpdatesTask::runTask() {
   }
   json_delete(root);
 
-  updates_callback(KOPSIK_API_SUCCESS, err.c_str(), 1, url.c_str(),
-            version.c_str());
+  context()->check_updates_callback(
+    KOPSIK_API_SUCCESS,
+    err.c_str(),
+    1,
+    url.c_str(),
+    version.c_str());
 }
 
 const std::string FetchUpdatesTask::updateURL() {

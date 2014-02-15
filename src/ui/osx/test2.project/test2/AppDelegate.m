@@ -174,8 +174,6 @@ NSString *kTimeTotalUnknown = @" --:--";
                                                name:kUIEventSettingsChanged
                                              object:nil];
 
-  kopsik_set_change_callback(ctx, on_model_change);
-  
   char err[KOPSIK_ERR_LEN];
   KopsikUser *user = kopsik_user_init();
   if (KOPSIK_API_SUCCESS != kopsik_current_user(ctx, err, KOPSIK_ERR_LEN, user)) {
@@ -220,12 +218,12 @@ NSString *kTimeTotalUnknown = @" --:--";
 
 - (void)startTimeline {
   NSLog(@"startTimeline");
-  kopsik_timeline_switch(ctx, handle_error, 1);
+  kopsik_timeline_switch(ctx, 1);
 }
 
 - (void)stopTimeline {
   NSLog(@"stopTimeline");
-  kopsik_timeline_switch(ctx, handle_error, 0);
+  kopsik_timeline_switch(ctx, 0);
 }
 
 - (void)startNewTimeEntry:(TimeEntryViewItem *)new_time_entry {
@@ -254,7 +252,7 @@ NSString *kTimeTotalUnknown = @" --:--";
      postNotificationName:kUIStateTimerRunning object:timeEntry];
   }
 
-  kopsik_sync(ctx, 0, handle_error);
+  kopsik_sync(ctx, 0);
 }
 
 - (void)continueTimeEntry:(NSString *)guid {
@@ -289,7 +287,7 @@ NSString *kTimeTotalUnknown = @" --:--";
   [[NSNotificationCenter defaultCenter]
     postNotificationName:kUIStateTimerRunning object:timeEntry];
   
-  kopsik_sync(ctx, 0, handle_error);
+  kopsik_sync(ctx, 0);
 }
 
 - (void)stopTimeEntry {
@@ -316,7 +314,7 @@ NSString *kTimeTotalUnknown = @" --:--";
   [[NSNotificationCenter defaultCenter]
     postNotificationName:kUIStateTimerStopped object:te];
   
-  kopsik_sync(ctx, 0, handle_error);
+  kopsik_sync(ctx, 0);
 }
 
 - (void)splitTimeEntryAfterIdle:(IdleEvent *)idleEvent {
@@ -349,7 +347,7 @@ NSString *kTimeTotalUnknown = @" --:--";
 
   kopsik_time_entry_view_item_clear(item);
 
-  kopsik_sync(ctx, 0, handle_error);
+  kopsik_sync(ctx, 0);
 }
 
 - (void)stopTimeEntryAfterIdle:(IdleEvent *)idleEvent {
@@ -380,7 +378,7 @@ NSString *kTimeTotalUnknown = @" --:--";
       object:timeEntry];
   }
 
-  kopsik_sync(ctx, 0, handle_error);
+  kopsik_sync(ctx, 0);
 }
 
 - (void)userLoggedIn:(User *)user {
@@ -813,7 +811,12 @@ const NSString *appName = @"osx_native_app";
   kopsik_set_log_level([self.log_level UTF8String]);
 
   NSString* version = infoDict[@"CFBundleShortVersionString"];
-  ctx = kopsik_context_init([appName UTF8String], [version UTF8String]);
+  ctx = kopsik_context_init([appName UTF8String],
+                            [version UTF8String],
+                            on_model_change,
+                            handle_error,
+                            about_updates_checked);
+                            
   NSLog(@"Version %@", version);
 
   char err[KOPSIK_ERR_LEN];
@@ -1018,11 +1021,11 @@ void on_model_change(kopsik_api_result result,
 
 - (void)startSync {
   NSLog(@"startSync");
-  kopsik_sync(ctx, 1, sync_finished);
+  kopsik_sync(ctx, 1);
 }
 
 - (void)checkForUpdates {
-  kopsik_check_for_updates(ctx, check_for_updates_callback);
+  kopsik_check_for_updates(ctx);
 }
 
 void check_for_updates_callback(kopsik_api_result result,
@@ -1109,6 +1112,29 @@ void check_for_updates_callback(kopsik_api_result result,
   [Bugsnag notify:exception withData:data];
 
   [crashReporter purgePendingCrashReport];
+}
+
+void about_updates_checked(
+    kopsik_api_result result,
+    const char *errmsg,
+    const int is_update_available,
+    const char *url,
+    const char *version) {
+  if (result != KOPSIK_API_SUCCESS) {
+    handle_error(result, errmsg);
+    return;
+  }
+  
+  if (!is_update_available) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUpToDate
+                                                        object:nil];
+    return;
+  }
+  Update *update = [[Update alloc] init];
+  update.URL = [NSString stringWithUTF8String:url];
+  update.version = [NSString stringWithUTF8String:version];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUpdateAvailable
+                                                      object:update];
 }
 
 @end

@@ -6,8 +6,11 @@
 Context::Context()
   : db(0),
     user(0),
-    ws_client(0),
     change_callback(0),
+    result_callback(0),
+    websocket_callback(0),
+    check_updates_callback(0),
+    ws_client(0),
     timeline_uploader(0),
     window_change_recorder(0),
     app_name(""),
@@ -79,6 +82,8 @@ kopsik::error Context::ConfigureProxy() {
 }
 
 kopsik::error Context::Save() {
+  poco_assert(change_callback);
+
   try {
     std::vector<kopsik::ModelChange> changes;
     kopsik::error err = db->SaveUser(user, true, &changes);

@@ -14,33 +14,22 @@
 
 class BaseTask : public Poco::Task {
   public:
-    BaseTask(Context *ctx,
-             const std::string task_name,
-             void *callback)
+    BaseTask(Context *ctx, const std::string task_name)
       : Task(task_name)
-      , ctx_(ctx)
-      , callback_(callback) {}
+      , ctx_(ctx) {}
 
   protected:
     Context *context() { return ctx_; }
-    void *callback() { return callback_; }
-    KopsikResultCallback result_callback() {
-      poco_assert(callback());
-      return reinterpret_cast<KopsikResultCallback>(callback_);
-    }
 
   private:
     Context *ctx_;
-    void *callback_;
 };
 
 class SyncTask : public BaseTask {
   public:
-    SyncTask(Context *ctx,
-      int full_sync,
-      KopsikResultCallback callback)
-        : BaseTask(ctx, "SyncTask", reinterpret_cast<void *>(callback)),
-      full_sync_(full_sync) {}
+    SyncTask(Context *ctx, int full_sync)
+        : BaseTask(ctx, "SyncTask")
+        , full_sync_(full_sync) {}
     void runTask();
 
    private:
@@ -49,11 +38,8 @@ class SyncTask : public BaseTask {
 
 class WebSocketSwitchTask : public BaseTask {
   public:
-    WebSocketSwitchTask(Context *ctx,
-                       kopsik::WebSocketMessageCallback websocket_callback,
-                       const bool on)
-      : BaseTask(ctx, "WebSocketSwitchTask",
-          reinterpret_cast<void *>(websocket_callback))
+    WebSocketSwitchTask(Context *ctx, const bool on)
+      : BaseTask(ctx, "WebSocketSwitchTask")
       , on_(on) {}
     void runTask();
   private:
@@ -63,12 +49,8 @@ class WebSocketSwitchTask : public BaseTask {
 // Start/stop timeline recording on local machine
 class TimelineSwitchTask : public BaseTask {
   public:
-    TimelineSwitchTask(
-      Context *ctx,
-      KopsikResultCallback callback,
-      const bool on)
-        : BaseTask(ctx, "TimelineSwitchTask",
-            reinterpret_cast<void *>(callback))
+    TimelineSwitchTask(Context *ctx, const bool on)
+        : BaseTask(ctx, "TimelineSwitchTask")
         , on_(on) {}
     void runTask();
   private:
@@ -78,11 +60,8 @@ class TimelineSwitchTask : public BaseTask {
 // Enable timeline recording on server side
 class TimelineUpdateServerSettingsTask : public BaseTask {
   public:
-    TimelineUpdateServerSettingsTask(
-      Context *ctx,
-      KopsikResultCallback callback)
-      : BaseTask(ctx, "TimelineUpdateServerSettingsTask",
-                 reinterpret_cast<void *>(callback)) {}
+    explicit TimelineUpdateServerSettingsTask(Context *ctx)
+      : BaseTask(ctx, "TimelineUpdateServerSettingsTask") {}
     void runTask();
 };
 
@@ -92,9 +71,8 @@ class SendFeedbackTask : public BaseTask {
   SendFeedbackTask(Context *ctx,
                    std::string subject,
                    std::string details,
-                   std::string attachment_path,
-                   KopsikResultCallback callback)
-  : BaseTask(ctx, "SendFeedbackTask", reinterpret_cast<void *>(callback))
+                   std::string attachment_path)
+  : BaseTask(ctx, "SendFeedbackTask")
   , subject_(subject)
   , details_(details)
   , attachment_path_(attachment_path) {}
@@ -114,11 +92,8 @@ class SendFeedbackTask : public BaseTask {
 // Check if new Toggl-built version is available.
 class FetchUpdatesTask : public BaseTask {
   public:
-    FetchUpdatesTask(Context *ctx,
-                     KopsikCheckUpdateCallback updates_callback,
-                     const std::string update_channel)
-      : BaseTask(ctx, "check_updates",
-          reinterpret_cast<void *>(updates_callback))
+    FetchUpdatesTask(Context *ctx, const std::string update_channel)
+      : BaseTask(ctx, "check_updates")
       , update_channel_(update_channel) {}
     void runTask();
 

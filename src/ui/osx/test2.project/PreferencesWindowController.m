@@ -157,7 +157,7 @@
 }
 
 - (IBAction)recordTimelineCheckboxChanged:(id)sender {
-  kopsik_timeline_toggle_recording(ctx, handle_error);
+  kopsik_timeline_toggle_recording(ctx);
   [self displayTimelineRecordingState];
 }
 

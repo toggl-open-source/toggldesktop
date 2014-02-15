@@ -36,20 +36,6 @@ Poco::Logger &rootLogger() {
   return Poco::Logger::get("");
 }
 
-void kopsik_set_change_callback(
-    void *context,
-    KopsikViewItemChangeCallback callback) {
-  poco_assert(callback);
-
-  logger().debug("kopsik_set_change_callback");
-
-  Context *ctx = reinterpret_cast<Context *>(context);
-
-  Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-  ctx->change_callback = callback;
-}
-
 int kopsik_is_networking_error(
     const char *error) {
   std::string value(error);
@@ -85,11 +71,23 @@ int kopsik_is_networking_error(
 
 void *kopsik_context_init(
     const char *app_name,
-    const char *app_version) {
+    const char *app_version,
+    KopsikViewItemChangeCallback change_callback,
+    KopsikResultCallback result_callback,
+    KopsikCheckUpdateCallback check_updates_callback) {
   poco_assert(app_name);
   poco_assert(app_version);
 
   Context *ctx = new Context();
+
+  poco_assert(change_callback);
+  ctx->change_callback = change_callback;
+
+  poco_assert(result_callback);
+  ctx->result_callback = result_callback;
+
+  poco_assert(check_updates_callback);
+  ctx->check_updates_callback = check_updates_callback;
 
   ctx->app_name = std::string(app_name);
   ctx->app_version = std::string(app_version);
@@ -767,16 +765,14 @@ kopsik_api_result kopsik_pushable_models(
 
 void kopsik_sync(
     void *context,
-    int full_sync,
-    KopsikResultCallback callback) {
+    int full_sync) {
   poco_assert(context);
-  poco_assert(callback);
 
   logger().debug("kopsik_sync");
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
-  ctx->tm.start(new SyncTask(ctx, full_sync, callback));
+  ctx->tm.start(new SyncTask(ctx, full_sync));
 }
 
 // Autocomplete list
@@ -2160,29 +2156,26 @@ void kopsik_websocket_switch(
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
-  ctx->tm.start(new WebSocketSwitchTask(ctx, on_websocket_message, on));
+  ctx->tm.start(new WebSocketSwitchTask(ctx, on));
 }
 
 // Timeline
 
 void kopsik_timeline_switch(
     void *context,
-    KopsikResultCallback callback,
     const unsigned int on) {
   poco_assert(context);
-  poco_assert(callback);
 
   std::stringstream ss;
   ss << "kopsik_timeline_switch on=" << on;
   logger().debug(ss.str());
 
   Context *ctx = reinterpret_cast<Context *>(context);
-  ctx->tm.start(new TimelineSwitchTask(ctx, callback, on));
+  ctx->tm.start(new TimelineSwitchTask(ctx, on));
 }
 
 void kopsik_timeline_toggle_recording(
-    void *context,
-    KopsikResultCallback callback) {
+    void *context) {
   poco_assert(context);
 
   logger().debug("kopsik_timeline_toggle_recording");
@@ -2194,16 +2187,16 @@ void kopsik_timeline_toggle_recording(
   ctx->user->SetRecordTimeline(!ctx->user->RecordTimeline());
   kopsik::error err = ctx->Save();
   if (err != kopsik::noError) {
-    callback(KOPSIK_API_FAILURE, err.c_str());
+    ctx->result_callback(KOPSIK_API_FAILURE, err.c_str());
     return;
   }
 
-  ctx->tm.start(new TimelineUpdateServerSettingsTask(ctx, callback));
-  ctx->tm.start(new TimelineSwitchTask(
-    ctx, callback, ctx->user->RecordTimeline()));
+  ctx->tm.start(new TimelineUpdateServerSettingsTask(ctx));
+  ctx->tm.start(new TimelineSwitchTask(ctx, ctx->user->RecordTimeline()));
 }
 
-int kopsik_timeline_is_recording_enabled(void *context) {
+int kopsik_timeline_is_recording_enabled(
+    void *context) {
   if (!context) {
     return 0;
   }
@@ -2216,29 +2209,29 @@ int kopsik_timeline_is_recording_enabled(void *context) {
 
 // Feedback
 
-void kopsik_feedback_send(void *context,
-                          const char *topic,
-                          const char *details,
-                          const char *base64encoded_image,
-                          KopsikResultCallback callback) {
+void kopsik_feedback_send(
+    void *context,
+    const char *topic,
+    const char *details,
+    const char *base64encoded_image) {
   poco_assert(context);
-  poco_assert(callback);
 
   logger().debug("kopsik_feedback_send");
 
   Context *ctx = reinterpret_cast<Context *>(context);
   if (!ctx->user) {
-    callback(KOPSIK_API_FAILURE, "Please login to send feedback");
+    ctx->result_callback(KOPSIK_API_FAILURE,
+      "Please login to send feedback");
     return;
   }
 
   if (!topic || !strlen(topic)) {
-    callback(KOPSIK_API_FAILURE, "Missing topic");
+    ctx->result_callback(KOPSIK_API_FAILURE, "Missing topic");
     return;
   }
 
   if (!details || !strlen(details)) {
-    callback(KOPSIK_API_FAILURE, "Missing details");
+    ctx->result_callback(KOPSIK_API_FAILURE, "Missing details");
     return;
   }
 
@@ -2250,15 +2243,13 @@ void kopsik_feedback_send(void *context,
   ctx->tm.start(new SendFeedbackTask(ctx,
                                      std::string(topic),
                                      std::string(details),
-                                     image,
-                                     callback));
+                                     image));
 }
 
 // Updates
 
 void kopsik_check_for_updates(
-    void *context,
-    KopsikCheckUpdateCallback callback) {
+    void *context) {
   poco_assert(context);
 
   logger().debug("kopsik_check_for_updates");
@@ -2268,11 +2259,11 @@ void kopsik_check_for_updates(
   std::string update_channel("");
   kopsik::error err = ctx->db->LoadUpdateChannel(&update_channel);
   if (err != kopsik::noError) {
-    callback(KOPSIK_API_FAILURE, err.c_str(), 0, 0, 0);
+    ctx->check_updates_callback(KOPSIK_API_FAILURE, err.c_str(), 0, 0, 0);
     return;
   }
 
-  ctx->tm.start(new FetchUpdatesTask(ctx, callback, update_channel));
+  ctx->tm.start(new FetchUpdatesTask(ctx, update_channel));
 }
 
 kopsik_api_result kopsik_set_update_channel(

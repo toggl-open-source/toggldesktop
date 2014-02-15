@@ -84,7 +84,7 @@
   [self.checkForUpdateButton setEnabled:NO];
   [self.updateChannelComboBox setEnabled:NO];
   [self.checkForUpdateButton setTitle:@"Checking for update.."];
-  kopsik_check_for_updates(ctx, about_updates_checked);
+  kopsik_check_for_updates(ctx);
 }
 
 - (IBAction)showWindow:(id)sender {
@@ -115,28 +115,6 @@
     [self.checkForUpdateButton setTitle:title];
     return;
   }
-}
-
-void about_updates_checked(kopsik_api_result result,
-                           const char *errmsg,
-                           const int is_update_available,
-                           const char *url,
-                           const char *version) {
-  if (result != KOPSIK_API_SUCCESS) {
-    handle_error(result, errmsg);
-    return;
-  }
-  
-  if (!is_update_available) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUpToDate
-                                                        object:nil];
-    return;
-  }
-  Update *update = [[Update alloc] init];
-  update.URL = [NSString stringWithUTF8String:url];
-  update.version = [NSString stringWithUTF8String:version];
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUpdateAvailable
-                                                      object:update];
 }
 
 @end

@@ -20,22 +20,35 @@ class Context {
   public:
     Context();
     ~Context();
+
     void Shutdown();
     kopsik::error ConfigureProxy();
     kopsik::error Save();
 
+    // FIXME: make private
+
     kopsik::Database *db;
     kopsik::User *user;
-    kopsik::WebSocketClient *ws_client;
+
     KopsikViewItemChangeCallback change_callback;
+    KopsikResultCallback result_callback;
+    kopsik::WebSocketMessageCallback websocket_callback;
+    KopsikCheckUpdateCallback check_updates_callback;
+
+    kopsik::WebSocketClient *ws_client;
     kopsik::TimelineUploader *timeline_uploader;
     kopsik::WindowChangeRecorder *window_change_recorder;
+
     std::string app_name;
     std::string app_version;
     std::string api_url;
     std::string timeline_upload_url;
+
     Poco::Mutex mutex;
+
+    // FIXME: remove this:
     Poco::TaskManager tm;
+
     CustomErrorHandler error_handler;
 };
 

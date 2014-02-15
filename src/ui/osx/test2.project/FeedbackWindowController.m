@@ -20,10 +20,6 @@
 - (id)initWithWindow:(NSWindow *)window {
     self = [super initWithWindow:window];
     if (self) {
-      [[NSNotificationCenter defaultCenter] addObserver:self
-                                               selector:@selector(eventHandler:)
-                                                   name:kUIStateFeedbackSent
-                                                 object:nil];
     }
     return self;
 }
@@ -32,20 +28,6 @@
     [super windowDidLoad];
     
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
-}
-
-- (void)eventHandler: (NSNotification *) notification {
-  if ([notification.name isEqualToString:kUIStateFeedbackSent]) {
-    [self performSelectorOnMainThread:@selector(feedbackSent) withObject:nil waitUntilDone:NO];
-  }
-}
-
-- (void)feedbackSent {
-  [self.window close];
-  [self.selectedImageTextField setStringValue:@""];
-  [self.selectedImageTextField setHidden:YES];
-  [self.contentTextView setString:@""];
-  [self.topicComboBox setStringValue:@""];
 }
 
 - (IBAction)uploadImageClick:(id)sender {
@@ -71,21 +53,18 @@
     [self.contentTextView becomeFirstResponder];
     return;
   }
+  
   kopsik_feedback_send(ctx,
                        [self.topicComboBox.stringValue UTF8String],
                        [self.contentTextView.string UTF8String],
-                       [self.selectedImageTextField.stringValue UTF8String],
-                       on_send_result);
-}
+                       [self.selectedImageTextField.stringValue UTF8String]);
 
-void on_send_result(kopsik_api_result res,
-                    const char *errmsg) {
-  if (KOPSIK_API_SUCCESS != res) {
-    handle_error(res, errmsg);
-    return;
-  }
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateFeedbackSent
-                                                      object:nil];
+  [self.window close];
+  [self.selectedImageTextField setStringValue:@""];
+  [self.selectedImageTextField setHidden:YES];
+  [self.contentTextView setString:@""];
+  [self.topicComboBox setStringValue:@""];
+
 }
 
 @end
