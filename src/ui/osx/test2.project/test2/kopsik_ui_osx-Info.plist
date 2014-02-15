@@ -9,7 +9,7 @@
 	<key>CFBundleIconFile</key>
 	<string>app</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.github.tanel.kopsik.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>com.github.toggl.toggldesktop.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
