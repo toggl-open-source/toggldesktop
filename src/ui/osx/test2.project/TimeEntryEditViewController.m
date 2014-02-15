@@ -89,7 +89,7 @@
                                                              KOPSIK_ERR_LEN,
                                                              &has_premium_workspaces);
   if (KOPSIK_API_SUCCESS != res) {
-    handle_error(res, err);
+    handle_error(err);
     return;
   }
 
@@ -215,7 +215,7 @@
                                                          [self.GUID UTF8String],
                                                          value);
   if (KOPSIK_API_SUCCESS != res) {
-    handle_error(res, err);
+    handle_error(err);
     return;
   }
   // FIXME: move into setter method
@@ -240,7 +240,7 @@
                                                         task_id,
                                                         project_id);
   if (KOPSIK_API_SUCCESS != res) {
-    handle_error(res, err);
+    handle_error(err);
     return;
   }
   kopsik_sync(ctx, 0);

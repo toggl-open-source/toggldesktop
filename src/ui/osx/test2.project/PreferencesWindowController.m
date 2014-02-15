@@ -51,7 +51,7 @@
                                              settings);
     if (KOPSIK_API_SUCCESS != res) {
       kopsik_settings_clear(settings);
-      handle_error(res, err);
+      handle_error(err);
       return;
     }
   
@@ -149,7 +149,7 @@
                                               [password UTF8String],
                                               use_idle_detection);
   if (KOPSIK_API_SUCCESS != res) {
-    handle_error(res, err);
+    handle_error(err);
     return;
   }
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventSettingsChanged

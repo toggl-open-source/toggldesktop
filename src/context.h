@@ -38,10 +38,6 @@ class Context {
     kopsik::Database *db;
     kopsik::User *user;
 
-    KopsikViewItemChangeCallback change_callback;
-    KopsikErrorCallback on_error_callback;
-    KopsikCheckUpdateCallback check_updates_callback;
-
     kopsik::WebSocketClient *ws_client;
     kopsik::TimelineUploader *timeline_uploader;
     kopsik::WindowChangeRecorder *window_change_recorder;
@@ -62,18 +58,18 @@ class Context {
     std::string feedback_subject;
     std::string feedback_details;
 
+    KopsikViewItemChangeCallback change_callback;
+    KopsikErrorCallback on_error_callback;
+    KopsikCheckUpdateCallback check_updates_callback;
+
   private:
     const std::string updateURL();
     static const std::string osName();
-
+    Poco::Logger &logger() { return Poco::Logger::get("Context"); }
     std::string feedbackJSON();
-
-    Poco::Logger &logger() {
-      return Poco::Logger::get("Context");
-    };
-
     std::string feedback_filename();
     std::string base64encode_attachment();
+    void sync(const bool full_sync);
 };
 
 #endif  // SRC_CONTEXT_H_

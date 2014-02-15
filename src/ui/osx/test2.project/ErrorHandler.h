@@ -9,4 +9,5 @@
 #import "kopsik_api.h"
 #import "UIEvents.h"
 
-void handle_error(kopsik_api_result result, const char *err);
+void handle_result(kopsik_api_result result, const char *err);
+void handle_error(const char *err);

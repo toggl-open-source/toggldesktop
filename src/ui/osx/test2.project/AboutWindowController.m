@@ -59,7 +59,7 @@
                                                     update_channel,
                                                     update_channel_len);
   if (res != KOPSIK_API_SUCCESS) {
-    handle_error(res, errmsg);
+    handle_error(errmsg);
     return;
   }
   self.updateChannelComboBox.stringValue = [NSString stringWithUTF8String:update_channel];
@@ -73,7 +73,7 @@
                                                     KOPSIK_ERR_LEN,
                                                     [updateChannel UTF8String]);
   if (res != KOPSIK_API_SUCCESS) {
-    handle_error(res, errmsg);
+    handle_error(errmsg);
     return;
   }
   

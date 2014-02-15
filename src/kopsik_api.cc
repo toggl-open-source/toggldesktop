@@ -79,13 +79,8 @@ void *kopsik_context_init(
 
   Context *ctx = new Context();
 
-  poco_assert(change_callback);
   ctx->change_callback = change_callback;
-
-  poco_assert(on_error_callback);
   ctx->on_error_callback = on_error_callback;
-
-  poco_assert(check_updates_callback);
   ctx->check_updates_callback = check_updates_callback;
 
   ctx->app_name = std::string(app_name);
@@ -1226,7 +1221,13 @@ kopsik_api_result kopsik_continue(
     Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     kopsik::TimeEntry *te = ctx->user->Continue(GUID);
-    poco_assert(te);
+    if (!te) {
+      std::stringstream ss;
+      ss << "Time entry not found" << GUID;
+      logger().error(ss.str());
+      return KOPSIK_API_FAILURE;
+    }
+
     kopsik::error err = ctx->Save();
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
@@ -1280,7 +1281,13 @@ kopsik_api_result kopsik_continue_latest(
     }
 
     kopsik::TimeEntry *te = ctx->user->Continue(latest->GUID());
-    poco_assert(te);
+    if (!te) {
+      std::stringstream ss;
+      ss << "Time entry not found" << latest->GUID();
+      logger().error(ss.str());
+      return KOPSIK_API_FAILURE;
+    }
+
     kopsik::error err = ctx->Save();
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);

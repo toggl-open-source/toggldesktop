@@ -11,9 +11,6 @@
 Context::Context()
   : db(0),
     user(0),
-    change_callback(0),
-    on_error_callback(0),
-    check_updates_callback(0),
     ws_client(0),
     timeline_uploader(0),
     window_change_recorder(0),
@@ -24,7 +21,10 @@ Context::Context()
     update_channel(""),
     feedback_attachment_path_(""),
     feedback_subject(""),
-    feedback_details("") {
+    feedback_details(""),
+    change_callback(0),
+    on_error_callback(0),
+    check_updates_callback(0) {
   Poco::ErrorHandler::set(&error_handler);
   Poco::Net::initializeSSL();
 }
@@ -117,9 +117,9 @@ kopsik::error Context::Save() {
   return kopsik::noError;
 }
 
-void Context::FullSync() {
+void Context::sync(const bool full_sync) {
   kopsik::HTTPSClient https_client(api_url, app_name, app_version);
-  kopsik::error err = user->Sync(&https_client, 1, true);
+  kopsik::error err = user->Sync(&https_client, full_sync, true);
   if (err != kopsik::noError) {
     on_error_callback(err.c_str());
     return;
@@ -132,19 +132,12 @@ void Context::FullSync() {
   }
 }
 
-void Context::PartialSync() {
-  kopsik::HTTPSClient https_client(api_url, app_name, app_version);
-  kopsik::error err = user->Sync(&https_client, 0, true);
-  if (err != kopsik::noError) {
-    on_error_callback(err.c_str());
-    return;
-  }
+void Context::FullSync() {
+  sync(true);
+}
 
-  err = Save();
-  if (err != kopsik::noError) {
-    on_error_callback(err.c_str());
-    return;
-  }
+void Context::PartialSync() {
+  sync(false);
 }
 
 void Context::SwitchWebSocketOff() {

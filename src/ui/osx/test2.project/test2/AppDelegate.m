@@ -240,7 +240,7 @@ NSString *kTimeTotalUnknown = @" --:--";
                                        item);
   if (KOPSIK_API_SUCCESS != res) {
     kopsik_time_entry_view_item_clear(item);
-    handle_error(res, err);
+    handle_error(err);
     return;
   }
 
@@ -333,7 +333,7 @@ NSString *kTimeTotalUnknown = @" --:--";
                                                              &was_found);
   if (KOPSIK_API_SUCCESS != res) {
     kopsik_time_entry_view_item_clear(item);
-    handle_error(res, err);
+    handle_error(err);
     return;
   }
   
@@ -366,7 +366,7 @@ NSString *kTimeTotalUnknown = @" --:--";
                                                             &was_found);
   if (KOPSIK_API_SUCCESS != res) {
     kopsik_time_entry_view_item_clear(item);
-    handle_error(res, err);
+    handle_error(err);
     return;
   }
 
@@ -553,7 +553,7 @@ NSString *kTimeTotalUnknown = @" --:--";
                                               settings);
   if (KOPSIK_API_SUCCESS != res) {
     kopsik_settings_clear(settings);
-    handle_error(res, err);
+    handle_error(err);
     return;
   }
   if (settings->UseIdleDetection) {
@@ -635,7 +635,7 @@ NSString *kTimeTotalUnknown = @" --:--";
   char err[KOPSIK_ERR_LEN];
   kopsik_api_result res = kopsik_clear_cache(ctx, err, KOPSIK_ERR_LEN);
   if (KOPSIK_API_SUCCESS != res) {
-    handle_error(res, err);
+    handle_error(err);
   }
   
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedOut object:nil];
@@ -658,11 +658,6 @@ NSString *kTimeTotalUnknown = @" --:--";
 
 - (IBAction)onHideMenuItem:(id)sender {
   [self.mainWindowController.window close];
-}
-
-void on_timeline_toggle_recording_result(kopsik_api_result result,
-                                         const char *errmsg) {
-  handle_error(result, errmsg);
 }
 
 - (void)onQuitMenuItem {
@@ -1033,8 +1028,8 @@ void check_for_updates_callback(kopsik_api_result result,
                                 const int is_update_available,
                                 const char *url,
                                 const char *version) {
-  if (result != KOPSIK_API_SUCCESS) {
-    handle_error(result, errmsg);
+  if (KOPSIK_API_SUCCESS != result) {
+    handle_error(errmsg);
     return;
   }
   if (!is_update_available) {
@@ -1121,7 +1116,7 @@ void about_updates_checked(
     const char *url,
     const char *version) {
   if (result != KOPSIK_API_SUCCESS) {
-    handle_error(result, errmsg);
+    handle_error(errmsg);
     return;
   }
   
