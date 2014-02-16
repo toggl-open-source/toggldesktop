@@ -6,12 +6,14 @@
 #include <string>
 
 #include "./types.h"
-#include "./kopsik_api.h"
 #include "./database.h"
 #include "./websocket_client.h"
 #include "./window_change_recorder.h"
 #include "./timeline_uploader.h"
 #include "./CustomErrorHandler.h"
+
+// FIXME: don't use C API from C++ class
+#include "./kopsik_api.h"
 
 // FIXME: rename
 class Context {
@@ -58,6 +60,7 @@ class Context {
     std::string feedback_subject;
     std::string feedback_details;
 
+    // FIXME: dont use C callbacks in C++ class
     KopsikViewItemChangeCallback change_callback;
     KopsikErrorCallback on_error_callback;
     KopsikCheckUpdateCallback check_updates_callback;

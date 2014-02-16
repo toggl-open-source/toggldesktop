@@ -1,6 +1,8 @@
 // Copyright 2014 kopsik developers
 
 #include "./context.h"
+
+// FIXME: dont use C API from C++ class
 #include "./kopsik_api_private.h"
 
 #include "Poco/Path.h"
