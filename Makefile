@@ -141,10 +141,11 @@ cmdline: clean lint
 	strip $(main)
 
 clean:
-	rm -rf build
-	rm -f $(main)
-	rm -f $(main)_test
-	rm -rf src/ui/osx/test2.project/build
+	rm -rf build && \
+	rm -f $(main) && \
+	rm -f $(main)_test && \
+	rm -rf src/ui/osx/test2.project/build && \
+	rm -rf src/libkopsik/Kopsik/build
 
 osx:
 	xcodebuild -project src/ui/osx/test2.project/kopsik_ui_osx.xcodeproj && \
