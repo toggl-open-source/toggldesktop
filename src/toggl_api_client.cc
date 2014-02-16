@@ -109,7 +109,7 @@ TimeEntry *User::Continue(const std::string GUID) {
     Stop();
     TimeEntry *existing = GetTimeEntryByGUID(GUID);
     if (!existing) {
-        return 0; // may have been deleted meanwhile
+        return 0;
     }
     TimeEntry *te = 0;
     if (existing->DurOnly()) {
