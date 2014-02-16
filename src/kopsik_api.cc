@@ -958,9 +958,7 @@ kopsik_api_result kopsik_autocomplete_items(
         autocomplete_item->Text = strdup(text.c_str());
         autocomplete_item->ProjectAndTaskLabel = strdup(text.c_str());
         autocomplete_item->ProjectID = p->ID();
-        if (p) {
-          autocomplete_item->ProjectColor = strdup(p->ColorCode().c_str());
-        }
+        autocomplete_item->ProjectColor = strdup(p->ColorCode().c_str());
         autocomplete_item->Type = KOPSIK_AUTOCOMPLETE_PROJECT;
         autocomplete_items.push_back(autocomplete_item);
       }
