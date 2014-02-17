@@ -817,8 +817,8 @@ kopsik_api_result kopsik_autocomplete_items(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login to fill autocomplete", errlen);
-      return KOPSIK_API_FAILURE;
+      // User is already logged out
+      return KOPSIK_API_SUCCESS;
     }
 
     std::vector<KopsikAutocompleteItem *> autocomplete_items;
