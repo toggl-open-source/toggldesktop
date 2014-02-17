@@ -146,7 +146,7 @@ clean:
 	rm -f $(main)_test && \
 	rm -rf src/ui/osx/test2.project/build && \
 	rm -rf src/libkopsik/Kopsik/build && \
-	rm TogglDesktop.dmg
+	rm -f TogglDesktop.dmg
 
 osx:
 	xcodebuild -project src/ui/osx/test2.project/kopsik_ui_osx.xcodeproj && \
