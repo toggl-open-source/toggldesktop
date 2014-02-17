@@ -25,7 +25,6 @@
 #include "Poco/Mutex.h"
 #include "Poco/Thread.h"
 #include "Poco/Runnable.h"
-#include "Poco/TaskManager.h"
 
 Poco::Logger &logger() {
   return Poco::Logger::get("kopsik_api");
