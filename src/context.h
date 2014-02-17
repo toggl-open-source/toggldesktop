@@ -15,6 +15,8 @@
 // FIXME: don't use C API from C++ class
 #include "./kopsik_api.h"
 
+#include "Poco/Util/Timer.h"
+
 // FIXME: rename
 class Context {
   public:
@@ -73,6 +75,29 @@ class Context {
     std::string feedback_filename();
     std::string base64encode_attachment();
     void sync(const bool full_sync);
+
+    // timer_ callbacks
+    void onFullSync(Poco::Util::TimerTask& task);  // NOLINT
+    void onPartialSync(Poco::Util::TimerTask& task);  // NOLINT
+    void onSwitchWebSocketOff(Poco::Util::TimerTask& task);  // NOLINT
+    void onSwitchWebSocketOn(Poco::Util::TimerTask& task);  // NOLINT
+    void onSwitchTimelineOff(Poco::Util::TimerTask& task);  // NOLINT
+    void onSwitchTimelineOn(Poco::Util::TimerTask& task);  // NOLINT
+    void onFetchUpdates(Poco::Util::TimerTask& task);  // NOLINT
+    void onTimelineUpdateServerSettings(Poco::Util::TimerTask& task);  // NOLINT
+    void onSendFeedback(Poco::Util::TimerTask& task);  // NOLINT
+
+    // avoid same task running twice by flipping these:
+    bool full_sync_;
+    bool partial_sync_;
+    bool websocket_switch_;
+    bool timeline_switch_;
+    bool fetch_updates_;
+    bool update_timeline_settings_;
+    bool send_feedback_;
+
+    // schedule background tasks using this timer:
+    Poco::Util::Timer timer_;
 };
 
 #endif  // SRC_CONTEXT_H_
