@@ -108,7 +108,9 @@ TimeEntry *User::Start(
 TimeEntry *User::Continue(const std::string GUID) {
     Stop();
     TimeEntry *existing = GetTimeEntryByGUID(GUID);
-    poco_assert(existing);
+    if (!existing) {
+        return 0;
+    }
     TimeEntry *te = 0;
     if (existing->DurOnly()) {
         te = existing;

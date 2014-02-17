@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment version="1070" defaultVersion="1080" identifier="macosx"/>
+        <deployment version="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
     </dependencies>
     <objects>
@@ -19,7 +19,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OXo-Tz-Vbz">
-                    <rect key="frame" x="0.0" y="214" width="253" height="45"/>
+                    <rect key="frame" x="0.0" y="215" width="253" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="45" id="XEz-DW-5eO"/>
@@ -33,7 +33,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="kSc-tv-Cw1" customClass="NSUnstripedTableView">
-                                <rect key="frame" x="0.0" y="0.0" width="252" height="213"/>
+                                <rect key="frame" x="0.0" y="0.0" width="252" height="215"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <color key="backgroundColor" red="0.8980392814" green="0.8980392814" blue="0.8980392814" alpha="1" colorSpace="deviceRGB"/>
                                 <tableViewGridLines key="gridStyleMask" horizontal="YES"/>
@@ -97,7 +97,7 @@
                 <constraint firstItem="fu8-w4-kYq" firstAttribute="leading" secondItem="3" secondAttribute="leading" id="Kzp-8f-L6N"/>
                 <constraint firstAttribute="trailing" secondItem="fu8-w4-kYq" secondAttribute="trailing" id="Mw2-Bk-0wN"/>
                 <constraint firstItem="fu8-w4-kYq" firstAttribute="top" secondItem="3" secondAttribute="top" constant="45" id="Wwe-Qg-cEG"/>
-                <constraint firstItem="OXo-Tz-Vbz" firstAttribute="top" secondItem="3" secondAttribute="top" id="qd7-Ao-IQB"/>
+                <constraint firstItem="OXo-Tz-Vbz" firstAttribute="top" secondItem="3" secondAttribute="top" constant="-1" id="qd7-Ao-IQB"/>
                 <constraint firstAttribute="bottom" secondItem="fu8-w4-kYq" secondAttribute="bottom" id="tZR-YL-cvO"/>
                 <constraint firstItem="OXo-Tz-Vbz" firstAttribute="leading" secondItem="3" secondAttribute="leading" id="twv-Me-Ne4"/>
             </constraints>

@@ -2,8 +2,6 @@
 
 #include "./main.h"
 
-#include <sstream>
-
 #include "Poco/Message.h"
 #include "Poco/Util/Application.h"
 
@@ -23,16 +21,6 @@ namespace command_line_client {
             "verbose", "v", "verbose logging, to the console"));
     }
 
-    std::string KopsikModelChangeToString(
-            KopsikModelChange &change) {
-        std::stringstream ss;
-        ss  << "model_type=" << change.ModelType
-            << ", change_type=" << change.ChangeType
-            << ", model_id=" << change.ModelID
-            << ", GUID=" << change.GUID;
-        return ss.str();
-    }
-
     std::string KopsikTimeEntryViewItemToString(
             KopsikTimeEntryViewItem *item) {
         std::stringstream ss;
@@ -44,20 +32,6 @@ namespace command_line_client {
             ss << " (" << item->Duration << ")";
         }
         return ss.str();
-    }
-
-    void on_model_change(
-            kopsik_api_result result,
-            const char *errmsg,
-            KopsikModelChange *change) {
-        if (KOPSIK_API_SUCCESS != result) {
-            std::cerr << "on_model_change error! " <<
-                std::string(errmsg) << std::endl;
-            return;
-        }
-        std::cout << "on_model_change "
-            << KopsikModelChangeToString(*change)
-            << std::endl;
     }
 
     bool syncing(false);
@@ -117,7 +91,7 @@ namespace command_line_client {
 
         if ("sync" == args[0]) {
             syncing = true;
-            kopsik_sync(ctx, 1, on_sync_result);
+            kopsik_sync(ctx, 1);
             while (syncing) {
                 Poco::Thread::sleep(1000);
             }
@@ -163,7 +137,7 @@ namespace command_line_client {
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
             syncing = true;
-            kopsik_sync(ctx, 0, on_sync_result);
+            kopsik_sync(ctx, 0);
             while (syncing) {
                 Poco::Thread::sleep(1000);
             }
@@ -182,7 +156,7 @@ namespace command_line_client {
             }
             if (was_found) {
                 syncing = true;
-                kopsik_sync(ctx, 0, on_sync_result);
+                kopsik_sync(ctx, 0);
                 while (syncing) {
                     Poco::Thread::sleep(1000);
                 }
@@ -214,7 +188,6 @@ namespace command_line_client {
 
         if ("listen" == args[0]) {
             std::cout << "Listening to websocket.. " << std::endl;
-            kopsik_set_change_callback(ctx, on_model_change);
             kopsik_websocket_switch(ctx, 1);
             while (true) {
                 Poco::Thread::sleep(1000);
@@ -250,7 +223,7 @@ namespace command_line_client {
             }
 
             syncing = true;
-            kopsik_sync(ctx, 0, on_sync_result);
+            kopsik_sync(ctx, 0);
             while (syncing) {
                 Poco::Thread::sleep(1000);
             }

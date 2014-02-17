@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment version="1070" defaultVersion="1080" identifier="macosx"/>
+        <deployment version="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
     </dependencies>
     <objects>
@@ -102,7 +102,7 @@ DQ
                                 </connections>
                             </textField>
                             <textField hidden="YES" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tVc-ms-0hr">
-                                <rect key="frame" x="5" y="1" width="70" height="11"/>
+                                <rect key="frame" x="5" y="2" width="70" height="11"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="11" id="wqt-c9-CBt"/>
@@ -137,7 +137,7 @@ DQ
                         <constraint firstItem="nFI-HH-zd7" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="-1" id="lMD-AL-Jog"/>
                         <constraint firstAttribute="trailing" secondItem="nFI-HH-zd7" secondAttribute="trailing" id="lNg-Zn-u1m"/>
                         <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="tVc-ms-0hr" secondAttribute="trailing" constant="70" id="naG-qG-gq3"/>
-                        <constraint firstAttribute="bottom" secondItem="tVc-ms-0hr" secondAttribute="bottom" constant="1" id="q1b-AH-TNO"/>
+                        <constraint firstAttribute="bottom" secondItem="tVc-ms-0hr" secondAttribute="bottom" constant="2" id="q1b-AH-TNO"/>
                         <constraint firstItem="oie-Un-asQ" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="12" id="sKm-6j-h1k"/>
                         <constraint firstItem="ITa-Jc-jOK" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="4" id="tbX-SU-uAB"/>
                     </constraints>

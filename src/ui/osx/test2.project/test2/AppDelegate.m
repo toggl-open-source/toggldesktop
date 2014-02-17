@@ -45,10 +45,6 @@
 @property int lastIdleSecondsReading;
 @property NSDate *lastIdleStarted;
 
-// Need references to some menu items, we'll change them dynamically
-@property NSMenuItem *timelineMenuItem;
-@property (strong) IBOutlet NSMenuItem *mainTimelineMenuItem;
-
 // we'll be updating running TE as a menu item, too
 @property (strong) IBOutlet NSMenuItem *runningTimeEntryMenuItem;
 
@@ -178,8 +174,6 @@ NSString *kTimeTotalUnknown = @" --:--";
                                                name:kUIEventSettingsChanged
                                              object:nil];
 
-  kopsik_set_change_callback(ctx, on_model_change);
-  
   char err[KOPSIK_ERR_LEN];
   KopsikUser *user = kopsik_user_init();
   if (KOPSIK_API_SUCCESS != kopsik_current_user(ctx, err, KOPSIK_ERR_LEN, user)) {
@@ -224,23 +218,12 @@ NSString *kTimeTotalUnknown = @" --:--";
 
 - (void)startTimeline {
   NSLog(@"startTimeline");
-  kopsik_timeline_switch(ctx, handle_error, 1);
-  [self displayTimelineRecordingState];
+  kopsik_timeline_switch(ctx, 1);
 }
 
 - (void)stopTimeline {
   NSLog(@"stopTimeline");
-  kopsik_timeline_switch(ctx, handle_error, 0);
-  [self displayTimelineRecordingState];
-}
-
-- (void)displayTimelineRecordingState {
-  NSCellStateValue state = NSOffState;
-  if (kopsik_timeline_is_recording_enabled(ctx)) {
-    state = NSOnState;
-  }
-  [self.timelineMenuItem setState:state];
-  [self.mainTimelineMenuItem setState:state];
+  kopsik_timeline_switch(ctx, 0);
 }
 
 - (void)startNewTimeEntry:(TimeEntryViewItem *)new_time_entry {
@@ -257,7 +240,7 @@ NSString *kTimeTotalUnknown = @" --:--";
                                        item);
   if (KOPSIK_API_SUCCESS != res) {
     kopsik_time_entry_view_item_clear(item);
-    handle_error(res, err);
+    handle_error(err);
     return;
   }
 
@@ -269,7 +252,7 @@ NSString *kTimeTotalUnknown = @" --:--";
      postNotificationName:kUIStateTimerRunning object:timeEntry];
   }
 
-  kopsik_sync(ctx, 0, handle_error);
+  kopsik_sync(ctx, 0);
 }
 
 - (void)continueTimeEntry:(NSString *)guid {
@@ -304,7 +287,7 @@ NSString *kTimeTotalUnknown = @" --:--";
   [[NSNotificationCenter defaultCenter]
     postNotificationName:kUIStateTimerRunning object:timeEntry];
   
-  kopsik_sync(ctx, 0, handle_error);
+  kopsik_sync(ctx, 0);
 }
 
 - (void)stopTimeEntry {
@@ -331,7 +314,7 @@ NSString *kTimeTotalUnknown = @" --:--";
   [[NSNotificationCenter defaultCenter]
     postNotificationName:kUIStateTimerStopped object:te];
   
-  kopsik_sync(ctx, 0, handle_error);
+  kopsik_sync(ctx, 0);
 }
 
 - (void)splitTimeEntryAfterIdle:(IdleEvent *)idleEvent {
@@ -350,7 +333,7 @@ NSString *kTimeTotalUnknown = @" --:--";
                                                              &was_found);
   if (KOPSIK_API_SUCCESS != res) {
     kopsik_time_entry_view_item_clear(item);
-    handle_error(res, err);
+    handle_error(err);
     return;
   }
   
@@ -364,7 +347,7 @@ NSString *kTimeTotalUnknown = @" --:--";
 
   kopsik_time_entry_view_item_clear(item);
 
-  kopsik_sync(ctx, 0, handle_error);
+  kopsik_sync(ctx, 0);
 }
 
 - (void)stopTimeEntryAfterIdle:(IdleEvent *)idleEvent {
@@ -383,7 +366,7 @@ NSString *kTimeTotalUnknown = @" --:--";
                                                             &was_found);
   if (KOPSIK_API_SUCCESS != res) {
     kopsik_time_entry_view_item_clear(item);
-    handle_error(res, err);
+    handle_error(err);
     return;
   }
 
@@ -395,7 +378,7 @@ NSString *kTimeTotalUnknown = @" --:--";
       object:timeEntry];
   }
 
-  kopsik_sync(ctx, 0, handle_error);
+  kopsik_sync(ctx, 0);
 }
 
 - (void)userLoggedIn:(User *)user {
@@ -521,11 +504,6 @@ NSString *kTimeTotalUnknown = @" --:--";
   [menu addItemWithTitle:@"Sync"
                   action:@selector(onSyncMenuItem:)
            keyEquivalent:@""].tag = kMenuItemTagSync;
-  self.timelineMenuItem = [menu
-    addItemWithTitle:@"Record Timeline"
-    action:@selector(onTimelineMenuItem:)
-    keyEquivalent:@""];
-  self.timelineMenuItem.tag = kMenuItemTagTimeline;
   [menu addItemWithTitle:@"Preferences"
                   action:@selector(onPreferencesMenuItem:)
            keyEquivalent:@""];
@@ -575,7 +553,7 @@ NSString *kTimeTotalUnknown = @" --:--";
                                               settings);
   if (KOPSIK_API_SUCCESS != res) {
     kopsik_settings_clear(settings);
-    handle_error(res, err);
+    handle_error(err);
     return;
   }
   if (settings->UseIdleDetection) {
@@ -657,7 +635,7 @@ NSString *kTimeTotalUnknown = @" --:--";
   char err[KOPSIK_ERR_LEN];
   kopsik_api_result res = kopsik_clear_cache(ctx, err, KOPSIK_ERR_LEN);
   if (KOPSIK_API_SUCCESS != res) {
-    handle_error(res, err);
+    handle_error(err);
   }
   
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedOut object:nil];
@@ -680,16 +658,6 @@ NSString *kTimeTotalUnknown = @" --:--";
 
 - (IBAction)onHideMenuItem:(id)sender {
   [self.mainWindowController.window close];
-}
-
-void on_timeline_toggle_recording_result(kopsik_api_result result,
-                                         const char *errmsg) {
-  handle_error(result, errmsg);
-}
-
-- (IBAction)onTimelineMenuItem:(id)sender {
-  kopsik_timeline_toggle_recording(ctx, handle_error);
-  [self displayTimelineRecordingState];
 }
 
 - (void)onQuitMenuItem {
@@ -838,7 +806,12 @@ const NSString *appName = @"osx_native_app";
   kopsik_set_log_level([self.log_level UTF8String]);
 
   NSString* version = infoDict[@"CFBundleShortVersionString"];
-  ctx = kopsik_context_init([appName UTF8String], [version UTF8String]);
+  ctx = kopsik_context_init([appName UTF8String],
+                            [version UTF8String],
+                            on_model_change,
+                            handle_error,
+                            about_updates_checked);
+                            
   NSLog(@"Version %@", version);
 
   char err[KOPSIK_ERR_LEN];
@@ -956,11 +929,6 @@ const int kIdleThresholdSeconds = 5 * 60;
           return NO;
         }
         break;
-      case kMenuItemTagTimeline:
-        if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
-          return NO;
-        }
-        break;
       case kMenuItemTagLogout:
         if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
           return NO;
@@ -1048,11 +1016,11 @@ void on_model_change(kopsik_api_result result,
 
 - (void)startSync {
   NSLog(@"startSync");
-  kopsik_sync(ctx, 1, sync_finished);
+  kopsik_sync(ctx, 1);
 }
 
 - (void)checkForUpdates {
-  kopsik_check_for_updates(ctx, check_for_updates_callback);
+  kopsik_check_for_updates(ctx);
 }
 
 void check_for_updates_callback(kopsik_api_result result,
@@ -1060,8 +1028,8 @@ void check_for_updates_callback(kopsik_api_result result,
                                 const int is_update_available,
                                 const char *url,
                                 const char *version) {
-  if (result != KOPSIK_API_SUCCESS) {
-    handle_error(result, errmsg);
+  if (KOPSIK_API_SUCCESS != result) {
+    handle_error(errmsg);
     return;
   }
   if (!is_update_available) {
@@ -1139,6 +1107,29 @@ void check_for_updates_callback(kopsik_api_result result,
   [Bugsnag notify:exception withData:data];
 
   [crashReporter purgePendingCrashReport];
+}
+
+void about_updates_checked(
+    kopsik_api_result result,
+    const char *errmsg,
+    const int is_update_available,
+    const char *url,
+    const char *version) {
+  if (result != KOPSIK_API_SUCCESS) {
+    handle_error(errmsg);
+    return;
+  }
+  
+  if (!is_update_available) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUpToDate
+                                                        object:nil];
+    return;
+  }
+  Update *update = [[Update alloc] init];
+  update.URL = [NSString stringWithUTF8String:url];
+  update.version = [NSString stringWithUTF8String:version];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUpdateAvailable
+                                                      object:update];
 }
 
 @end

@@ -59,7 +59,7 @@
                                                     withProjects);
   if (KOPSIK_API_SUCCESS != res) {
     kopsik_autocomplete_item_list_clear(list);
-    handle_error(res, err);
+    handle_error(err);
     return;
   }
   

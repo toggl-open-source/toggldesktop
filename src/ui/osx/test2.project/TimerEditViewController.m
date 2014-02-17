@@ -282,6 +282,7 @@
     self.descriptionComboBox.stringValue=@"";
   }
 }
+
 - (IBAction)durationFieldChanged:(id)sender {
   char str[duration_str_len];
   kopsik_format_duration_in_seconds_hhmmss([self.durationTextField.stringValue intValue],
@@ -291,6 +292,7 @@
   [self.durationTextField setStringValue:newValue];
   return;
 }
+
 - (IBAction)descriptionComboBoxChanged:(id)sender {
   NSString *key = [self.descriptionComboBox stringValue];
   AutocompleteItem *item = [self.autocompleteDataSource get:key];

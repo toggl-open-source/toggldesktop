@@ -8,9 +8,14 @@
 
 #import "ErrorHandler.h"
 
-void handle_error(kopsik_api_result result, const char *err) {
+void handle_result(kopsik_api_result result, const char *err) {
   if (KOPSIK_API_SUCCESS != result) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                         object:[NSString stringWithUTF8String:err]];
   }
+}
+
+void handle_error(const char *err) {
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
+                                                      object:[NSString stringWithUTF8String:err]];
 }

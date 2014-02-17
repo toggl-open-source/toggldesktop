@@ -14,7 +14,6 @@
 #include "./CustomErrorHandler.h"
 #include "./proxy.h"
 #include "./context.h"
-#include "./tasks.h"
 
 #include "Poco/Bugcheck.h"
 #include "Poco/Path.h"
@@ -26,7 +25,6 @@
 #include "Poco/Mutex.h"
 #include "Poco/Thread.h"
 #include "Poco/Runnable.h"
-#include "Poco/TaskManager.h"
 
 Poco::Logger &logger() {
   return Poco::Logger::get("kopsik_api");
@@ -34,20 +32,6 @@ Poco::Logger &logger() {
 
 Poco::Logger &rootLogger() {
   return Poco::Logger::get("");
-}
-
-void kopsik_set_change_callback(
-    void *context,
-    KopsikViewItemChangeCallback callback) {
-  poco_assert(callback);
-
-  logger().debug("kopsik_set_change_callback");
-
-  Context *ctx = reinterpret_cast<Context *>(context);
-
-  Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-  ctx->change_callback = callback;
 }
 
 int kopsik_is_networking_error(
@@ -85,11 +69,18 @@ int kopsik_is_networking_error(
 
 void *kopsik_context_init(
     const char *app_name,
-    const char *app_version) {
+    const char *app_version,
+    KopsikViewItemChangeCallback change_callback,
+    KopsikErrorCallback on_error_callback,
+    KopsikCheckUpdateCallback check_updates_callback) {
   poco_assert(app_name);
   poco_assert(app_version);
 
   Context *ctx = new Context();
+
+  ctx->change_callback = change_callback;
+  ctx->on_error_callback = on_error_callback;
+  ctx->check_updates_callback = check_updates_callback;
 
   ctx->app_name = std::string(app_name);
   ctx->app_version = std::string(app_version);
@@ -767,16 +758,19 @@ kopsik_api_result kopsik_pushable_models(
 
 void kopsik_sync(
     void *context,
-    int full_sync,
-    KopsikResultCallback callback) {
+    int full_sync) {
   poco_assert(context);
-  poco_assert(callback);
 
   logger().debug("kopsik_sync");
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
-  ctx->tm.start(new SyncTask(ctx, full_sync, callback));
+  if (full_sync) {
+    ctx->FullSync();
+    return;
+  }
+
+  ctx->PartialSync();
 }
 
 // Autocomplete list
@@ -963,9 +957,7 @@ kopsik_api_result kopsik_autocomplete_items(
         autocomplete_item->Text = strdup(text.c_str());
         autocomplete_item->ProjectAndTaskLabel = strdup(text.c_str());
         autocomplete_item->ProjectID = p->ID();
-        if (p) {
-          autocomplete_item->ProjectColor = strdup(p->ColorCode().c_str());
-        }
+        autocomplete_item->ProjectColor = strdup(p->ColorCode().c_str());
         autocomplete_item->Type = KOPSIK_AUTOCOMPLETE_PROJECT;
         autocomplete_items.push_back(autocomplete_item);
       }
@@ -1226,7 +1218,13 @@ kopsik_api_result kopsik_continue(
     Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     kopsik::TimeEntry *te = ctx->user->Continue(GUID);
-    poco_assert(te);
+    if (!te) {
+      std::stringstream ss;
+      ss << "Time entry not found" << GUID;
+      logger().error(ss.str());
+      return KOPSIK_API_FAILURE;
+    }
+
     kopsik::error err = ctx->Save();
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
@@ -1280,7 +1278,13 @@ kopsik_api_result kopsik_continue_latest(
     }
 
     kopsik::TimeEntry *te = ctx->user->Continue(latest->GUID());
-    poco_assert(te);
+    if (!te) {
+      std::stringstream ss;
+      ss << "Time entry not found" << latest->GUID();
+      logger().error(ss.str());
+      return KOPSIK_API_FAILURE;
+    }
+
     kopsik::error err = ctx->Save();
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
@@ -2129,81 +2133,99 @@ kopsik_api_result kopsik_duration_for_date_header(
 
 // Websocket client
 
-void on_websocket_message(
-    void *context,
-    std::string json) {
-  poco_assert(context);
-  poco_assert(!json.empty());
-
-  std::stringstream ss;
-  ss << "on_websocket_message json=" << json;
-  logger().debug(ss.str());
-
-  Context *ctx = reinterpret_cast<Context *>(context);
-
-  Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-  ctx->user->LoadUpdateFromJSONString(json);
-
-  kopsik::error err = ctx->Save();
-  if (err != kopsik::noError) {
-    logger().error(err);
-  }
-}
-
 void kopsik_websocket_switch(
     void *context,
     const unsigned int on) {
   poco_assert(context);
 
-  logger().debug("kopsik_websocket_switch");
-
   Context *ctx = reinterpret_cast<Context *>(context);
 
-  ctx->tm.start(new WebSocketSwitchTask(ctx, on_websocket_message, on));
+  try {
+    std::stringstream ss;
+    ss << "kopsik_websocket_switch on=" << on;
+    logger().debug(ss.str());
+
+    if (on) {
+      ctx->SwitchWebSocketOn();
+      return;
+    }
+
+    ctx->SwitchWebSocketOff();
+  } catch(const Poco::Exception& exc) {
+    ctx->on_error_callback(exc.displayText().c_str());
+  } catch(const std::exception& ex) {
+    ctx->on_error_callback(ex.what());
+  } catch(const std::string& ex) {
+    ctx->on_error_callback(ex.c_str());
+  }
 }
 
 // Timeline
 
 void kopsik_timeline_switch(
     void *context,
-    KopsikResultCallback callback,
     const unsigned int on) {
   poco_assert(context);
-  poco_assert(callback);
-
-  std::stringstream ss;
-  ss << "kopsik_timeline_switch on=" << on;
-  logger().debug(ss.str());
 
   Context *ctx = reinterpret_cast<Context *>(context);
-  ctx->tm.start(new TimelineSwitchTask(ctx, callback, on));
+
+  try {
+    std::stringstream ss;
+    ss << "kopsik_timeline_switch on=" << on;
+    logger().debug(ss.str());
+
+    if (on) {
+      ctx->SwitchTimelineOn();
+      return;
+    }
+
+    ctx->SwitchTimelineOff();
+  } catch(const Poco::Exception& exc) {
+    ctx->on_error_callback(exc.displayText().c_str());
+  } catch(const std::exception& ex) {
+    ctx->on_error_callback(ex.what());
+  } catch(const std::string& ex) {
+    ctx->on_error_callback(ex.c_str());
+  }
 }
 
 void kopsik_timeline_toggle_recording(
-    void *context,
-    KopsikResultCallback callback) {
+    void *context) {
   poco_assert(context);
-
-  logger().debug("kopsik_timeline_toggle_recording");
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
-  Poco::Mutex::ScopedLock lock(ctx->mutex);
+  try {
+    logger().debug("kopsik_timeline_toggle_recording");
 
-  ctx->user->SetRecordTimeline(!ctx->user->RecordTimeline());
-  kopsik::error err = ctx->Save();
-  if (err != kopsik::noError) {
-    callback(KOPSIK_API_FAILURE, err.c_str());
-    return;
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
+
+    ctx->user->SetRecordTimeline(!ctx->user->RecordTimeline());
+    kopsik::error err = ctx->Save();
+    if (err != kopsik::noError) {
+      ctx->on_error_callback(err.c_str());
+      return;
+    }
+
+    ctx->TimelineUpdateServerSettings();
+
+    if (ctx->user->RecordTimeline()) {
+      ctx->SwitchTimelineOn();
+      return;
+    }
+
+    ctx->SwitchTimelineOff();
+  } catch(const Poco::Exception& exc) {
+    ctx->on_error_callback(exc.displayText().c_str());
+  } catch(const std::exception& ex) {
+    ctx->on_error_callback(ex.what());
+  } catch(const std::string& ex) {
+    ctx->on_error_callback(ex.c_str());
   }
-
-  ctx->tm.start(new TimelineUpdateServerSettingsTask(ctx, callback));
-  ctx->tm.start(new TimelineSwitchTask(
-    ctx, callback, ctx->user->RecordTimeline()));
 }
 
-int kopsik_timeline_is_recording_enabled(void *context) {
+int kopsik_timeline_is_recording_enabled(
+    void *context) {
   if (!context) {
     return 0;
   }
@@ -2216,63 +2238,74 @@ int kopsik_timeline_is_recording_enabled(void *context) {
 
 // Feedback
 
-void kopsik_feedback_send(void *context,
-                          const char *topic,
-                          const char *details,
-                          const char *base64encoded_image,
-                          KopsikResultCallback callback) {
+void kopsik_feedback_send(
+    void *context,
+    const char *topic,
+    const char *details,
+    const char *base64encoded_image) {
   poco_assert(context);
-  poco_assert(callback);
-
-  logger().debug("kopsik_feedback_send");
 
   Context *ctx = reinterpret_cast<Context *>(context);
-  if (!ctx->user) {
-    callback(KOPSIK_API_FAILURE, "Please login to send feedback");
-    return;
-  }
 
-  if (!topic || !strlen(topic)) {
-    callback(KOPSIK_API_FAILURE, "Missing topic");
-    return;
-  }
+  try {
+    logger().debug("kopsik_feedback_send");
 
-  if (!details || !strlen(details)) {
-    callback(KOPSIK_API_FAILURE, "Missing details");
-    return;
-  }
+    if (!ctx->user) {
+      return;
+    }
 
-  std::string image("");
-  if (base64encoded_image && strlen(base64encoded_image)) {
-    image = std::string(base64encoded_image);
-  }
+    if (!topic || !strlen(topic)) {
+      ctx->on_error_callback("Missing topic");
+      return;
+    }
 
-  ctx->tm.start(new SendFeedbackTask(ctx,
-                                     std::string(topic),
-                                     std::string(details),
-                                     image,
-                                     callback));
+    if (!details || !strlen(details)) {
+      ctx->on_error_callback("Missing details");
+      return;
+    }
+
+    std::string image("");
+    if (base64encoded_image && strlen(base64encoded_image)) {
+      image = std::string(base64encoded_image);
+    }
+
+    ctx->feedback_subject = topic;
+    ctx->feedback_details = details;
+    ctx->SendFeedback();
+  } catch(const Poco::Exception& exc) {
+    ctx->on_error_callback(exc.displayText().c_str());
+  } catch(const std::exception& ex) {
+    ctx->on_error_callback(ex.what());
+  } catch(const std::string& ex) {
+    ctx->on_error_callback(ex.c_str());
+  }
 }
 
 // Updates
 
 void kopsik_check_for_updates(
-    void *context,
-    KopsikCheckUpdateCallback callback) {
+    void *context) {
   poco_assert(context);
-
-  logger().debug("kopsik_check_for_updates");
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
-  std::string update_channel("");
-  kopsik::error err = ctx->db->LoadUpdateChannel(&update_channel);
-  if (err != kopsik::noError) {
-    callback(KOPSIK_API_FAILURE, err.c_str(), 0, 0, 0);
-    return;
-  }
+  try {
+    logger().debug("kopsik_check_for_updates");
 
-  ctx->tm.start(new FetchUpdatesTask(ctx, callback, update_channel));
+    kopsik::error err = ctx->db->LoadUpdateChannel(&ctx->update_channel);
+    if (err != kopsik::noError) {
+      ctx->check_updates_callback(KOPSIK_API_FAILURE, err.c_str(), 0, 0, 0);
+      return;
+    }
+
+    ctx->FetchUpdates();
+  } catch(const Poco::Exception& exc) {
+    ctx->on_error_callback(exc.displayText().c_str());
+  } catch(const std::exception& ex) {
+    ctx->on_error_callback(ex.what());
+  } catch(const std::string& ex) {
+    ctx->on_error_callback(ex.c_str());
+  }
 }
 
 kopsik_api_result kopsik_set_update_channel(

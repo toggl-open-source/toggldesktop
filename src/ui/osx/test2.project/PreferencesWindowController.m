@@ -36,6 +36,8 @@
 
     [self loadPreferences];
     [self enableProxyFields];
+  
+    [self displayTimelineRecordingState];
 }
 
 - (void)loadPreferences {
@@ -49,7 +51,7 @@
                                              settings);
     if (KOPSIK_API_SUCCESS != res) {
       kopsik_settings_clear(settings);
-      handle_error(res, err);
+      handle_error(err);
       return;
     }
   
@@ -147,10 +149,24 @@
                                               [password UTF8String],
                                               use_idle_detection);
   if (KOPSIK_API_SUCCESS != res) {
-    handle_error(res, err);
+    handle_error(err);
     return;
   }
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventSettingsChanged
                                                       object:nil];
 }
+
+- (IBAction)recordTimelineCheckboxChanged:(id)sender {
+  kopsik_timeline_toggle_recording(ctx);
+  [self displayTimelineRecordingState];
+}
+
+- (void)displayTimelineRecordingState {
+  NSCellStateValue state = NSOffState;
+  if (kopsik_timeline_is_recording_enabled(ctx)) {
+    state = NSOnState;
+  }
+  [self.recordTimelineCheckbox setState:state];
+}
+
 @end

@@ -32,8 +32,29 @@ namespace kopsik {
             std::string *response_body));
     };
 
+    void in_test_change_callback(
+        kopsik_api_result result,
+        const char *errmsg,
+        KopsikModelChange *change) {
+    }
+
+    void in_test_on_error_callback(
+        const char *errmsg) {
+    }
+
+    void in_test_check_updates_callback(
+        kopsik_api_result result,
+        const char *errmsg,
+        const int is_update_available,
+        const char *url,
+        const char *version) {
+    }
+
     void *create_test_context() {
-        return kopsik_context_init("tests", "0.1");
+        return kopsik_context_init("tests", "0.1",
+            in_test_change_callback,
+            in_test_on_error_callback,
+            in_test_check_updates_callback);
     }
 
     void wipe_test_db() {
