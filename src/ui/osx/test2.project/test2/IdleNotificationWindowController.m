@@ -39,7 +39,7 @@
 {
   NSLog(@"IdleNotificationWindowController windowDidLoad");
   NSDateFormatter *format = [[NSDateFormatter alloc] init];
-  [format setDateFormat:@"HH:mm"];
+  [format setDateFormat:@"HH:mm:ss"];
   NSString *dateString = [format stringFromDate:self.idleEvent.started];
   
   NSString *information = [NSString stringWithFormat:@"You have been idle since %@ (%d minutes)",
