@@ -38,8 +38,19 @@
 
 - (IBAction)clickLoginButton:(id)sender {
   NSString *email = [self.email stringValue];
+  if (email == nil || !email.length) {
+    [self.email becomeFirstResponder];
+    return;
+  }
+
   NSString *pass = [self.password stringValue];
+  if (pass == nil || !pass.length) {
+    [self.password becomeFirstResponder];
+    return;
+  }
+
   [self.password setStringValue:@""];
+
   char err[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_login(ctx, err, KOPSIK_ERR_LEN, [email UTF8String], [pass UTF8String])) {
     NSLog(@"Login error: %s", err);
@@ -56,6 +67,7 @@
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedIn object:nil];
 }
 
+// Start Google login.
 -(void)textFieldClicked:(id)sender {
   if (sender == self.googleLoginTextField) {
     NSString *scope = @"https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email";
@@ -73,9 +85,13 @@
     [windowController signInSheetModalForWindow:[[NSApplication sharedApplication] mainWindow]
                                        delegate:self
                                finishedSelector:@selector(viewController:finishedWithAuth:error:)];
-  } else if (sender == self.passwordForgotTextField) {
+    return;
+  }
+
+  if (sender == self.passwordForgotTextField) {
     [[NSWorkspace sharedWorkspace]
       openURL:[NSURL URLWithString:@"https://www.toggl.com/lost_passwords/new"]];
+    return;
   }
 }
 
