@@ -35,4 +35,7 @@ extern NSString *const kUICommandStopAt;
 extern NSString *const kUICommandSplitAt;
 extern NSString *const kUICommandEditRunningTimeEntry;
 
+extern NSString *const kUIDurationClicked;
+
+
 extern float const kThrottleSeconds;
