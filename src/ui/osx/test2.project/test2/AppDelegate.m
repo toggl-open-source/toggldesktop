@@ -253,6 +253,8 @@ NSString *kTimeTotalUnknown = @" --:--";
   }
 
   kopsik_sync(ctx, 0);
+
+  [self onShowMenuItem];
 }
 
 - (void)continueTimeEntry:(NSString *)guid {
@@ -619,6 +621,8 @@ NSString *kTimeTotalUnknown = @" --:--";
   }
   [[NSNotificationCenter defaultCenter]
     postNotificationName:kUIStateUserLoggedOut object:nil];
+
+  [self onShowMenuItem];
 }
 
 - (IBAction)onClearCacheMenuItem:(id)sender {
