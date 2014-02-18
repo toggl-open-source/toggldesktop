@@ -69,8 +69,6 @@
 
 int blink = 0;
 
-NSString *kTimeTotalUnknown = @" --:--";
-
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   NSLog(@"applicationDidFinishLaunching");
 
@@ -475,7 +473,7 @@ NSString *kTimeTotalUnknown = @" --:--";
 
 - (void)updateStatus {
   if (self.lastKnownRunningTimeEntry == nil) {
-    [self.statusItem setTitle: kTimeTotalUnknown];
+    [self.statusItem setTitle:@""];
     [self.statusItem setImage:self.offImage];
     [self.runningTimeEntryMenuItem setTitle:@"Timer is not running."];
     return;
@@ -534,7 +532,7 @@ NSString *kTimeTotalUnknown = @" --:--";
   self.offImage = [NSImage imageNamed:@"off"];
   
   self.statusItem = [bar statusItemWithLength:NSVariableStatusItemLength];
-  [self.statusItem setTitle: kTimeTotalUnknown];
+  [self.statusItem setTitle:@""];
   [self.statusItem setHighlightMode:YES];
   [self.statusItem setEnabled:YES];
   [self.statusItem setMenu:menu];
