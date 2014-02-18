@@ -56,6 +56,7 @@
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedIn object:nil];
 }
 
+// Start Google login.
 -(void)textFieldClicked:(id)sender {
   if (sender == self.googleLoginTextField) {
     NSString *scope = @"https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email";
@@ -73,9 +74,13 @@
     [windowController signInSheetModalForWindow:[[NSApplication sharedApplication] mainWindow]
                                        delegate:self
                                finishedSelector:@selector(viewController:finishedWithAuth:error:)];
-  } else if (sender == self.passwordForgotTextField) {
+    return;
+  }
+
+  if (sender == self.passwordForgotTextField) {
     [[NSWorkspace sharedWorkspace]
       openURL:[NSURL URLWithString:@"https://www.toggl.com/lost_passwords/new"]];
+    return;
   }
 }
 
