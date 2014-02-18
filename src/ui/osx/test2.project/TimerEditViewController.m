@@ -205,10 +205,12 @@
   // while time entry is running
   if (self.time_entry.duration_in_seconds < 0) {
     [self.descriptionComboBox setEnabled:NO];
-    [self.durationTextField setEnabled:NO];
+    [self.durationTextField setEditable:NO];
+    [self.durationTextField setSelectable:NO];
   } else {
     [self.descriptionComboBox setEnabled:YES];
-    [self.durationTextField setEnabled:YES];
+    [self.durationTextField setEditable:YES];
+    [self.durationTextField setSelectable:YES];
   }
   
   // Display description
@@ -284,12 +286,14 @@
 }
 
 - (IBAction)durationFieldChanged:(id)sender {
-  char str[duration_str_len];
-  kopsik_format_duration_in_seconds_hhmmss([self.durationTextField.stringValue intValue],
+  if ([self.durationTextField.stringValue length] > 0){
+    char str[duration_str_len];
+    kopsik_format_duration_in_seconds_hhmmss([self.durationTextField.stringValue intValue],
                                            str,
                                            duration_str_len);
-  NSString *newValue = [NSString stringWithUTF8String:str];
-  [self.durationTextField setStringValue:newValue];
+    NSString *newValue = [NSString stringWithUTF8String:str];
+    [self.durationTextField setStringValue:newValue];
+  }
   return;
 }
 
