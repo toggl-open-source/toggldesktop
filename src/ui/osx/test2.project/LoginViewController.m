@@ -38,8 +38,19 @@
 
 - (IBAction)clickLoginButton:(id)sender {
   NSString *email = [self.email stringValue];
+  if (email == nil || !email.length) {
+    [self.email becomeFirstResponder];
+    return;
+  }
+
   NSString *pass = [self.password stringValue];
+  if (pass == nil || !pass.length) {
+    [self.password becomeFirstResponder];
+    return;
+  }
+
   [self.password setStringValue:@""];
+
   char err[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_login(ctx, err, KOPSIK_ERR_LEN, [email UTF8String], [pass UTF8String])) {
     NSLog(@"Login error: %s", err);
