@@ -871,6 +871,7 @@ const NSString *appName = @"osx_native_app";
   }
 }
 
+// FIXME: move into lib
 const int kIdleThresholdSeconds = 5 * 60;
 
 - (void)idleTimerFired:(NSTimer*)timer {
@@ -883,7 +884,8 @@ const int kIdleThresholdSeconds = 5 * 60;
 //  NSLog(@"Idle seconds: %lld", idle_seconds);
 
   if (idle_seconds >= kIdleThresholdSeconds && self.lastIdleStarted == nil) {
-    self.lastIdleStarted = [NSDate date];
+    NSTimeInterval since = [[NSDate date] timeIntervalSince1970] - idle_seconds;
+    self.lastIdleStarted = [NSDate dateWithTimeIntervalSince1970:since];
     NSLog(@"User is idle since %@", self.lastIdleStarted);
 
   } else if (self.lastIdleStarted != nil &&
