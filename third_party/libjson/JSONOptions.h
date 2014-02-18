@@ -215,7 +215,7 @@
  *  JSON_ESCAPE_WRITES tells the libjson engine to escape special characters when it writes
  *  out.  If this option is turned off, the json it outputs may not adhere to JSON standards
  */
-//#define JSON_ESCAPE_WRITES
+#define JSON_ESCAPE_WRITES
 
 
 /*
