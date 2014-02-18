@@ -205,10 +205,12 @@
   // while time entry is running
   if (self.time_entry.duration_in_seconds < 0) {
     [self.descriptionComboBox setEnabled:NO];
-    [self.durationTextField setEnabled:NO];
+    [self.durationTextField setEditable:NO];
+    [self.durationTextField setSelectable:NO];
   } else {
     [self.descriptionComboBox setEnabled:YES];
-    [self.durationTextField setEnabled:YES];
+    [self.durationTextField setEditable:YES];
+    [self.durationTextField setSelectable:YES];
   }
   
   // Display description
