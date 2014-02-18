@@ -350,6 +350,8 @@ NSString *kTimeTotalUnknown = @" --:--";
   kopsik_time_entry_view_item_clear(item);
 
   kopsik_sync(ctx, 0);
+
+  [self onShowMenuItem];
 }
 
 - (void)stopTimeEntryAfterIdle:(IdleEvent *)idleEvent {
@@ -381,6 +383,8 @@ NSString *kTimeTotalUnknown = @" --:--";
   }
 
   kopsik_sync(ctx, 0);
+
+  [self onShowMenuItem];
 }
 
 - (void)userLoggedIn:(User *)user {
