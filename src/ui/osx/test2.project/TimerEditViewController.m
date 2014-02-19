@@ -6,7 +6,7 @@
 //  Created by Tanel Lebedev on 19/09/2013.
 //  Copyright (c) 2013 kopsik developers. All rights reserved.
 //
-
+#import "EditNotification.h"
 #import "TimerEditViewController.h"
 #import "UIEvents.h"
 #import "AutocompleteItem.h"
@@ -17,6 +17,8 @@
 #import "ModelChange.h"
 #import "NSComboBox_Expansion.h"
 #import "TimeEntryViewItem.h"
+#import "NSTextFieldClickable.h"
+
 
 @interface TimerEditViewController ()
 @property AutocompleteDataSource *autocompleteDataSource;
@@ -117,8 +119,10 @@
 
   if ([notification.name isEqualToString:kUICommandEditRunningTimeEntry]) {
     if (self.time_entry != nil && self.time_entry.GUID != nil) {
+      EditNotification *edit = [[EditNotification alloc] init];
+      edit.EntryGUID = self.time_entry.GUID;
       [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
-                                                        object:self.time_entry.GUID];
+                                                        object:edit];
     }
     return;
   }
@@ -183,6 +187,18 @@
                            withObject:nil
                         waitUntilDone:NO];
     return;
+  }
+}
+
+-(void)textFieldClicked:(id)sender {
+  if (sender == self.durationTextField) {
+    if (self.time_entry != nil && self.time_entry.GUID != nil) {
+      EditNotification *edit = [[EditNotification alloc] init];
+      edit.EntryGUID = self.time_entry.GUID;
+      edit.FieldName = kUIDurationClicked;
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
+                                                        object:edit];
+    }
   }
 }
 
