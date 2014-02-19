@@ -2188,12 +2188,12 @@ int Formatter::ParseDurationString(const std::string value) {
     if (separator_pos != std::string::npos) {
         int parsed_seconds = 0;
 
-        // Parse duration in sconds HH:MM:SS
+        // Parse duration in seconds HH:MM:SS
         if (parseDurationStringHHMMSS(value, &parsed_seconds)) {
             return parsed_seconds;
         }
 
-        // Parse duration in sconds HH:MM
+        // Parse duration in seconds HH:MM
         if (parseDurationStringHHMM(value, &parsed_seconds)) {
             return parsed_seconds;
         }

@@ -2379,3 +2379,10 @@ kopsik_api_result kopsik_get_update_channel(
   }
   return KOPSIK_API_SUCCESS;
 }
+
+int kopsik_parse_duration_string_into_seconds(const char *duration_string) {
+  if (!duration_string) {
+    return 0;
+  }
+  return kopsik::Formatter::ParseDurationString(std::string(duration_string));
+}

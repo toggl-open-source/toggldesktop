@@ -279,6 +279,9 @@ KOPSIK_EXPORT void kopsik_format_duration_in_seconds_hhmm(
   char *str,
   unsigned int max_strlen);
 
+KOPSIK_EXPORT int kopsik_parse_duration_string_into_seconds(
+  const char *duration_string);
+
 KOPSIK_EXPORT kopsik_api_result kopsik_start(
   void *context,
   char *errmsg,
