@@ -11,7 +11,8 @@
 @implementation NSTextFieldClickable
 
 - (void)mouseDown:(NSEvent *)theEvent {
-  [self sendAction:@selector(textFieldClicked:) to:[self delegate]];
+	if (self.isEditable) return;
+  	[self sendAction:@selector(textFieldClicked:) to:[self delegate]];
 }
 
 @end

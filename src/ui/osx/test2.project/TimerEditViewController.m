@@ -227,6 +227,7 @@
   // Description and duration cannot be edited
   // while time entry is running
   if (self.time_entry.duration_in_seconds < 0) {
+    [self.durationTextField setDelegate:self];
     self.descriptionLabel.stringValue = self.time_entry.Description;
     [self.descriptionComboBox setHidden:YES];
     [self.descriptionLabel setHidden:NO];
@@ -237,6 +238,7 @@
     [self.descriptionLabel setHidden:YES];
     [self.durationTextField setEditable:YES];
     [self.durationTextField setSelectable:YES];
+    [self.durationTextField setDelegate:self.durationTextField];
   }
   
   // Display description
