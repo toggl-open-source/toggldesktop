@@ -6,7 +6,7 @@
 //  Created by Tanel Lebedev on 19/09/2013.
 //  Copyright (c) 2013 kopsik developers. All rights reserved.
 //
-
+#import "EditNotification.h"
 #import "TimerEditViewController.h"
 #import "UIEvents.h"
 #import "AutocompleteItem.h"
@@ -17,6 +17,8 @@
 #import "ModelChange.h"
 #import "NSComboBox_Expansion.h"
 #import "TimeEntryViewItem.h"
+#import "NSTextFieldClickable.h"
+
 
 @interface TimerEditViewController ()
 @property AutocompleteDataSource *autocompleteDataSource;
@@ -117,8 +119,10 @@
 
   if ([notification.name isEqualToString:kUICommandEditRunningTimeEntry]) {
     if (self.time_entry != nil && self.time_entry.GUID != nil) {
+      EditNotification *edit = [[EditNotification alloc] init];
+      edit.EntryGUID = self.time_entry.GUID;
       [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
-                                                        object:self.time_entry.GUID];
+                                                        object:edit];
     }
     return;
   }
@@ -186,6 +190,25 @@
   }
 }
 
+-(void)textFieldClicked:(id)sender {
+  if (self.time_entry != nil && self.time_entry.GUID != nil) {
+    if (sender == self.durationTextField) {
+      EditNotification *edit = [[EditNotification alloc] init];
+      edit.EntryGUID = self.time_entry.GUID;
+      edit.FieldName = kUIDurationClicked;
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
+                                                        object:edit];
+    } else if (sender == self.descriptionLabel) {
+      EditNotification *edit = [[EditNotification alloc] init];
+      edit.EntryGUID = self.time_entry.GUID;
+      edit.FieldName = kUIDescriptionClicked;
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
+                                                        object:edit];
+    }
+  }
+
+}
+
 - (void) render {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
   
@@ -204,11 +227,14 @@
   // Description and duration cannot be edited
   // while time entry is running
   if (self.time_entry.duration_in_seconds < 0) {
-    [self.descriptionComboBox setEnabled:NO];
+    self.descriptionLabel.stringValue = self.time_entry.Description;
+    [self.descriptionComboBox setHidden:YES];
+    [self.descriptionLabel setHidden:NO];
     [self.durationTextField setEditable:NO];
     [self.durationTextField setSelectable:NO];
   } else {
-    [self.descriptionComboBox setEnabled:YES];
+    [self.descriptionComboBox setHidden:NO];
+    [self.descriptionLabel setHidden:YES];
     [self.durationTextField setEditable:YES];
     [self.durationTextField setSelectable:YES];
   }

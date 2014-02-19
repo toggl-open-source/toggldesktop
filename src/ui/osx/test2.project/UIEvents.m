@@ -33,4 +33,7 @@ NSString *const kUICommandStopAt = @"Stop At";
 NSString *const kUICommandSplitAt = @"Split At";
 NSString *const kUICommandEditRunningTimeEntry = @"Edit Running Time Entry";
 
+NSString *const kUIDurationClicked = @"duration";
+NSString *const kUIDescriptionClicked = @"description";
+
 float const kThrottleSeconds = 0.1;

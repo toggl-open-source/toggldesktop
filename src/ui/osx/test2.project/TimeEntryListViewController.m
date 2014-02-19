@@ -17,6 +17,7 @@
 #import "UIEvents.h"
 #import "ModelChange.h"
 #import "ErrorHandler.h"
+#import "EditNotification.h"
 
 @interface TimeEntryListViewController ()
 @property NSTimer *timerTimeEntriesRendering;
@@ -210,8 +211,10 @@
   @synchronized(viewitems) {
     item = viewitems[row];
   }
+  EditNotification *edit = [[EditNotification alloc] init];
+  edit.EntryGUID = item.GUID;
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
-                                                      object:item.GUID];
+                                                      object:edit];
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {

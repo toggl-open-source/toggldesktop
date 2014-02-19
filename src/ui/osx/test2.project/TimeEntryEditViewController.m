@@ -5,7 +5,7 @@
 //  Created by Tanel Lebedev on 19/09/2013.
 //  Copyright (c) 2013 kopsik developers. All rights reserved.
 //
-
+#import "EditNotification.h"
 #import "TimeEntryEditViewController.h"
 #import "UIEvents.h"
 #import "TimeEntryViewItem.h"
@@ -62,11 +62,13 @@
   return [self.autocompleteDataSource completedString:partialString];
 }
 
-- (void)render:(NSString *)view_item_guid {
+- (void)render:(EditNotification *)edit {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+  NSAssert(edit != nil, @"EditNotification is nil");
+  NSAssert(edit.EntryGUID != nil, @"EditNotification.GUID is nil");
+  NSAssert([edit isKindOfClass:[EditNotification class]], @"EditNotification expected");
 
-  NSAssert(view_item_guid != nil, @"GUID is nil");
-  TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:view_item_guid];
+  TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:edit.EntryGUID];
   NSAssert(item != nil, @"View item not found by GUID!");
 
   self.runningTimeEntry = item;
@@ -99,7 +101,7 @@
     [self.billableCheckbox setHidden:YES];
   }
     
-  self.GUID = view_item_guid;
+  self.GUID = edit.EntryGUID;
   NSAssert(self.GUID != nil, @"GUID is nil");
   
   [self.descriptionTextField setStringValue:item.Description];
@@ -142,6 +144,13 @@
   } else {
     [self.lastUpdateTextField setHidden:YES];
   }
+
+  if ([edit.FieldName isEqualToString:kUIDurationClicked]){
+    [self.durationTextField becomeFirstResponder];
+  }
+  if ([edit.FieldName isEqualToString:kUIDescriptionClicked]){
+    [self.descriptionTextField becomeFirstResponder];
+  }
 }
 
 - (void)eventHandler: (NSNotification *) notification {
@@ -168,8 +177,10 @@
                            withObject:nil
                         waitUntilDone:NO];
     if ([self.GUID isEqualToString:mc.GUID] && [mc.ChangeType isEqualToString:@"update"]) {
+      EditNotification *edit = [[EditNotification alloc] init];
+      edit.EntryGUID = self.GUID;
       [self performSelectorOnMainThread:@selector(render:)
-                             withObject:mc.GUID
+                             withObject:edit
                           waitUntilDone:NO];
     }
     return;
