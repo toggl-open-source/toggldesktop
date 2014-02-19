@@ -191,15 +191,22 @@
 }
 
 -(void)textFieldClicked:(id)sender {
-  if (sender == self.durationTextField) {
-    if (self.time_entry != nil && self.time_entry.GUID != nil) {
+  if (self.time_entry != nil && self.time_entry.GUID != nil) {
+    if (sender == self.durationTextField) {
       EditNotification *edit = [[EditNotification alloc] init];
       edit.EntryGUID = self.time_entry.GUID;
       edit.FieldName = kUIDurationClicked;
       [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
                                                         object:edit];
+    } else if (sender == self.descriptionLabel) {
+      EditNotification *edit = [[EditNotification alloc] init];
+      edit.EntryGUID = self.time_entry.GUID;
+      edit.FieldName = kUIDescriptionClicked;
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
+                                                        object:edit];
     }
   }
+
 }
 
 - (void) render {
@@ -220,11 +227,14 @@
   // Description and duration cannot be edited
   // while time entry is running
   if (self.time_entry.duration_in_seconds < 0) {
-    [self.descriptionComboBox setEnabled:NO];
+    self.descriptionLabel.stringValue = self.time_entry.Description;
+    [self.descriptionComboBox setHidden:YES];
+    [self.descriptionLabel setHidden:NO];
     [self.durationTextField setEditable:NO];
     [self.durationTextField setSelectable:NO];
   } else {
-    [self.descriptionComboBox setEnabled:YES];
+    [self.descriptionComboBox setHidden:NO];
+    [self.descriptionLabel setHidden:YES];
     [self.durationTextField setEditable:YES];
     [self.durationTextField setSelectable:YES];
   }

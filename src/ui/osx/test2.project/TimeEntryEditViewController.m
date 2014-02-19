@@ -148,6 +148,9 @@
   if ([edit.FieldName isEqualToString:kUIDurationClicked]){
     [self.durationTextField becomeFirstResponder];
   }
+  if ([edit.FieldName isEqualToString:kUIDescriptionClicked]){
+    [self.descriptionTextField becomeFirstResponder];
+  }
 }
 
 - (void)eventHandler: (NSNotification *) notification {

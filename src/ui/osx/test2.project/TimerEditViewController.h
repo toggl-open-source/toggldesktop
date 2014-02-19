@@ -20,5 +20,6 @@
 @property (weak) IBOutlet NSComboBox *descriptionComboBox;
 @property (weak) IBOutlet NSButton *startButton;
 @property (weak) IBOutlet NSTextField *projectTextField;
+@property (weak) IBOutlet NSTextFieldClickable *descriptionLabel;
 @property (weak) IBOutlet NSBox *startButtonBox;
 @end

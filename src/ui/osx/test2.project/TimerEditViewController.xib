@@ -8,6 +8,8 @@
         <customObject id="-2" userLabel="File's Owner" customClass="TimerEditViewController">
             <connections>
                 <outlet property="descriptionComboBox" destination="ITa-Jc-jOK" id="aF4-Dr-jdX"/>
+                <outlet property="descriptionLabel" destination="Fiv-ao-qiA" id="00j-67-MmI"/>
+                <outlet property="descritionLabel" destination="Fiv-ao-qiA" id="Aeu-oh-MiB"/>
                 <outlet property="durationTextField" destination="oie-Un-asQ" id="6ad-T9-x8d"/>
                 <outlet property="projectTextField" destination="tVc-ms-0hr" id="1ee-Q9-eCA"/>
                 <outlet property="startButton" destination="2Fx-4L-YGZ" id="NkN-re-hJo"/>
@@ -124,14 +126,30 @@ DQ
                                 <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                 <color key="fillColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </box>
+                            <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fiv-ao-qiA" customClass="NSTextFieldClickable">
+                                <rect key="frame" x="3" y="12" width="142" height="17"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="Label" placeholderString="What are you doing?" id="V5P-6k-9NM">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <outlet property="delegate" destination="-2" id="oWZ-rz-Xcn"/>
+                                </connections>
+                            </textField>
                         </subviews>
                     </view>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="ITa-Jc-jOK" secondAttribute="trailing" constant="113" id="1Qf-HH-85e"/>
+                        <constraint firstItem="Fiv-ao-qiA" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="9" id="7lz-aM-ViJ"/>
                         <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="ow2-8J-rMh" secondAttribute="trailing" constant="61" id="ABe-hl-Ilz"/>
                         <constraint firstItem="tVc-ms-0hr" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="5" id="CGd-ds-Uhq"/>
                         <constraint firstAttribute="bottom" secondItem="nFI-HH-zd7" secondAttribute="bottom" constant="-1" id="DHT-6f-0yu"/>
+                        <constraint firstItem="tVc-ms-0hr" firstAttribute="top" secondItem="Fiv-ao-qiA" secondAttribute="bottom" constant="1" id="S09-En-VXG"/>
                         <constraint firstAttribute="bottom" secondItem="ITa-Jc-jOK" secondAttribute="bottom" priority="845" constant="8" id="U5f-3j-Kld"/>
+                        <constraint firstItem="oie-Un-asQ" firstAttribute="leading" secondItem="Fiv-ao-qiA" secondAttribute="trailing" id="X05-fF-dAP"/>
+                        <constraint firstItem="Fiv-ao-qiA" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="6" id="YNr-mM-VlW"/>
                         <constraint firstAttribute="bottom" secondItem="oie-Un-asQ" secondAttribute="bottom" constant="9" id="bC9-Fi-38J"/>
                         <constraint firstAttribute="trailing" secondItem="oie-Un-asQ" secondAttribute="trailing" constant="63" id="bzC-nz-PQq"/>
                         <constraint firstItem="ITa-Jc-jOK" firstAttribute="top" relation="lessThanOrEqual" secondItem="Fga-BR-x8G" secondAttribute="top" constant="14" id="hqe-k2-I1S"/>
@@ -169,5 +187,14 @@ DQ
                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
             </comboBoxCell>
         </comboBox>
+        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Lmf-DX-1Mb">
+            <rect key="frame" x="0.0" y="0.0" width="38" height="17"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="DdJ-ZR-qwa">
+                <font key="font" metaFont="system"/>
+                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+            </textFieldCell>
+        </textField>
     </objects>
 </document>
