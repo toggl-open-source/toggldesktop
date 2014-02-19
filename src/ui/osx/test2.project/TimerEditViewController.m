@@ -302,15 +302,21 @@
 }
 
 - (IBAction)durationFieldChanged:(id)sender {
-  if ([self.durationTextField.stringValue length] > 0){
-    char str[duration_str_len];
-    kopsik_format_duration_in_seconds_hhmmss([self.durationTextField.stringValue intValue],
+  if (![self.durationTextField.stringValue length]){
+    return;
+  }
+
+  // Parse text into seconds
+  const char *duration_string = [self.durationTextField.stringValue UTF8String];
+  int seconds = kopsik_parse_duration_string_into_seconds(duration_string);
+
+  // Format seconds as text again
+  char str[duration_str_len];
+  kopsik_format_duration_in_seconds_hhmmss(seconds,
                                            str,
                                            duration_str_len);
-    NSString *newValue = [NSString stringWithUTF8String:str];
-    [self.durationTextField setStringValue:newValue];
-  }
-  return;
+  NSString *newValue = [NSString stringWithUTF8String:str];
+  [self.durationTextField setStringValue:newValue];
 }
 
 - (IBAction)descriptionComboBoxChanged:(id)sender {
