@@ -209,12 +209,6 @@ coverage: clean
 	./$(main)_test && lcov --capture --directory build --output-file build/coverage.info && \
 	mkdir -p coverage && genhtml build/coverage.info --output-directory coverage
 
-pull:
-	./$(main) pull
-
-push:
-	./$(main) push
-
 lint:
 	./third_party/cpplint/cpplint.py src/*.cc src/*.h src/ui/cmdline/*
 
