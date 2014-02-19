@@ -7,7 +7,6 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "NSTextFieldClickable.h"
 
 @interface TimerEditViewController : NSViewController <NSComboBoxDataSource> {
 }
@@ -15,7 +14,7 @@
 - (IBAction)descriptionComboBoxChanged:(id)sender;
 - (IBAction)durationFieldChanged:(id)sender;
 - (void)timerFired:(NSTimer *)timer;
-@property (weak) IBOutlet NSTextFieldClickable *durationTextField;
+@property (weak) IBOutlet NSTextField *durationTextField;
 @property (weak) IBOutlet NSTextField *startButtonLabelTextField;
 @property (weak) IBOutlet NSComboBox *descriptionComboBox;
 @property (weak) IBOutlet NSButton *startButton;

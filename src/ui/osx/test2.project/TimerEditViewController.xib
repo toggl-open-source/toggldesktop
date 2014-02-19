@@ -85,7 +85,7 @@ DQ
                                     <outlet property="nextKeyView" destination="oie-Un-asQ" id="14S-Ev-aQF"/>
                                 </connections>
                             </comboBox>
-                            <textField focusRingType="none" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oie-Un-asQ" customClass="NSTextFieldClickable">
+                            <textField focusRingType="none" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oie-Un-asQ">
                                 <rect key="frame" x="131" y="9" width="62" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
@@ -98,7 +98,6 @@ DQ
                                 </textFieldCell>
                                 <connections>
                                     <action selector="durationFieldChanged:" target="-2" id="5P4-Xn-Y7J"/>
-                                    <outlet property="delegate" destination="-2" id="F3b-cL-8I2"/>
                                     <outlet property="nextKeyView" destination="2Fx-4L-YGZ" id="5Y3-fg-tJL"/>
                                 </connections>
                             </textField>
