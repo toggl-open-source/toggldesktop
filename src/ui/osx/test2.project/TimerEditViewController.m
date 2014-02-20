@@ -356,17 +356,21 @@
 - (void)controlTextDidChange:(NSNotification *)aNotification {
   NSComboBox *box = [aNotification object];
   NSString *filter = [box stringValue];
+
   [self.autocompleteDataSource setFilter:filter];
   [self.descriptionComboBox reloadData];
 
-  if (filter == nil || [filter length] == 0) {
+  // Hide dropdown if filter is empty
+  // or nothing was found
+  if (!filter || ![filter length] || !self.autocompleteDataSource.count) {
     if ([box isExpanded] == YES) {
       [box setExpanded:NO];
     }
-  } else {
-    if ([box isExpanded] == NO) {
-      [box setExpanded:YES];
-    }
+    return;
+  }
+
+  if ([box isExpanded] == NO) {
+    [box setExpanded:YES];
   }
 }
 
