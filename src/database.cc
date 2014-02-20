@@ -1550,7 +1550,11 @@ error Database::SaveUser(
         User *model,
         const bool with_related_data,
         std::vector<ModelChange> *changes) {
-    poco_assert(model);
+    // Do nothing, if user has already logged out
+    if (!model) {
+      logger().warning("Cannot save user, user is logged out");
+      return noError;
+    }
     poco_assert(session);
     poco_assert(changes);
 
