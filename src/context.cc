@@ -13,16 +13,7 @@
 #include "Poco/Util/TimerTask.h"
 #include "Poco/Util/TimerTaskAdapter.h"
 
-const int kThrottleMicros = 1000000;  // 1 second
-
-class Unlocker {
-  public:
-    explicit Unlocker(bool *value) { value_ = value; }
-    ~Unlocker() { *value_ = false; }
-
-  private:
-    bool *value_;
-};
+const int kRequestThrottleMicros = 2 * 1000000;
 
 Context::Context()
   : db(0),
@@ -41,13 +32,10 @@ Context::Context()
     change_callback(0),
     on_error_callback(0),
     check_updates_callback(0),
-    full_sync_(false),
-    partial_sync_(false),
-    websocket_switch_(false),
-    timeline_switch_(false),
-    fetch_updates_(false),
-    update_timeline_settings_(false),
-    send_feedback_(false) {
+    full_sync_queued_(false),
+    partial_sync_queued_(false),
+    fetch_updates_queued_(false),
+    update_timeline_settings_queued_(false) {
   Poco::ErrorHandler::set(&error_handler);
   Poco::Net::initializeSSL();
 }
@@ -161,40 +149,46 @@ void Context::sync(const bool full_sync) {
 void Context::FullSync() {
   logger().debug("FullSync");
 
+  if (full_sync_queued_) {
+    return;
+  }
+
   Poco::Mutex::ScopedLock lock(mutex);
 
-  if (!full_sync_) {
-    full_sync_ = true;
-    Poco::Util::TimerTask::Ptr ptask =
-      new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onFullSync);
-    timer_.schedule(ptask, Poco::Timestamp() + kThrottleMicros);
-  }
+  full_sync_queued_ = true;
+  Poco::Util::TimerTask::Ptr ptask =
+    new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onFullSync);
+  timer_.schedule(ptask, Poco::Timestamp() + kRequestThrottleMicros);
 }
 
 void Context::onFullSync(Poco::Util::TimerTask& task) {  // NOLINT
   logger().debug("onFullSync");
 
-  Unlocker unlocker(&full_sync_);
+  full_sync_queued_ = false;
+
   sync(true);
 }
 
 void Context::PartialSync() {
   logger().debug("PartialSync");
 
+  if (partial_sync_queued_) {
+    return;
+  }
+
   Poco::Mutex::ScopedLock lock(mutex);
 
-  if (!partial_sync_) {
-    partial_sync_ = true;
-    Poco::Util::TimerTask::Ptr ptask =
-      new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onPartialSync);
-    timer_.schedule(ptask, Poco::Timestamp() + kThrottleMicros);
-  }
+  partial_sync_queued_ = true;
+  Poco::Util::TimerTask::Ptr ptask =
+    new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onPartialSync);
+  timer_.schedule(ptask, Poco::Timestamp() + kRequestThrottleMicros);
 }
 
 void Context::onPartialSync(Poco::Util::TimerTask& task) {  // NOLINT
   logger().debug("onPartialSync");
 
-  Unlocker unlocker(&partial_sync_);
+  partial_sync_queued_ = false;
+
   sync(false);
 }
 
@@ -203,19 +197,15 @@ void Context::SwitchWebSocketOff() {
 
   Poco::Mutex::ScopedLock lock(mutex);
 
-  if (!websocket_switch_) {
-    websocket_switch_ = true;
-    Poco::Util::TimerTask::Ptr ptask =
-      new Poco::Util::TimerTaskAdapter<Context>(
-        *this, &Context::onSwitchWebSocketOff);
-    timer_.schedule(ptask, Poco::Timestamp() + kThrottleMicros);
-  }
+  Poco::Util::TimerTask::Ptr ptask =
+    new Poco::Util::TimerTaskAdapter<Context>(
+      *this, &Context::onSwitchWebSocketOff);
+  timer_.schedule(ptask, Poco::Timestamp());
 }
 
 void Context::onSwitchWebSocketOff(Poco::Util::TimerTask& task) {  // NOLINT
   logger().debug("onSwitchWebSocketOff");
 
-  Unlocker unlocker(&websocket_switch_);
   ws_client->Stop();
 }
 
@@ -259,19 +249,15 @@ void Context::SwitchWebSocketOn() {
 
   Poco::Mutex::ScopedLock lock(mutex);
 
-  if (!websocket_switch_) {
-    websocket_switch_ = true;
-    Poco::Util::TimerTask::Ptr ptask =
-      new Poco::Util::TimerTaskAdapter<Context>(
-        *this, &Context::onSwitchWebSocketOn);
-    timer_.schedule(ptask, Poco::Timestamp() + kThrottleMicros);
-  }
+  Poco::Util::TimerTask::Ptr ptask =
+    new Poco::Util::TimerTaskAdapter<Context>(
+      *this, &Context::onSwitchWebSocketOn);
+  timer_.schedule(ptask, Poco::Timestamp());
 }
 
 void Context::onSwitchWebSocketOn(Poco::Util::TimerTask& task) {  // NOLINT
   logger().debug("onSwitchWebSocketOn");
 
-  Unlocker unlocker(&websocket_switch_);
   poco_assert(!user->APIToken().empty());
   ws_client->Start(this, user->APIToken(), on_websocket_message);
 }
@@ -282,21 +268,16 @@ void Context::SwitchTimelineOff() {
 
   Poco::Mutex::ScopedLock lock(mutex);
 
-  if (!timeline_switch_) {
-    timeline_switch_ = true;
-    Poco::Util::TimerTask::Ptr ptask =
-      new Poco::Util::TimerTaskAdapter<Context>(
-        *this, &Context::onSwitchTimelineOff);
-    timer_.schedule(ptask, Poco::Timestamp() + kThrottleMicros);
-  }
+  Poco::Util::TimerTask::Ptr ptask =
+    new Poco::Util::TimerTaskAdapter<Context>(
+      *this, &Context::onSwitchTimelineOff);
+  timer_.schedule(ptask, Poco::Timestamp());
 }
 
 void Context::onSwitchTimelineOff(Poco::Util::TimerTask& task) {  // NOLINT
   logger().debug("onSwitchTimelineOff");
 
   Poco::Mutex::ScopedLock lock(mutex);
-
-  Unlocker unlocker(&timeline_switch_);
 
   if (window_change_recorder) {
     delete window_change_recorder;
@@ -314,20 +295,16 @@ void Context::SwitchTimelineOn() {
 
   Poco::Mutex::ScopedLock lock(mutex);
 
-  if (!timeline_switch_) {
-    timeline_switch_ = true;
-    Poco::Util::TimerTask::Ptr ptask =
-      new Poco::Util::TimerTaskAdapter<Context>(
-        *this, &Context::onSwitchTimelineOn);
-    timer_.schedule(ptask, Poco::Timestamp() + kThrottleMicros);
-  }
+  Poco::Util::TimerTask::Ptr ptask =
+    new Poco::Util::TimerTaskAdapter<Context>(
+      *this, &Context::onSwitchTimelineOn);
+  timer_.schedule(ptask, Poco::Timestamp());
 }
 
 void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
   logger().debug("onSwitchTimelineOn");
 
   Poco::Mutex::ScopedLock lock(mutex);
-  Unlocker unlocker(&timeline_switch_);
 
   if (!user) {
     return;
@@ -360,21 +337,22 @@ void Context::FetchUpdates() {
 
   poco_assert(check_updates_callback);
 
+  if (fetch_updates_queued_) {
+    return;
+  }
+
   Poco::Mutex::ScopedLock lock(mutex);
 
-  if (!fetch_updates_) {
-    fetch_updates_ = true;
-    Poco::Util::TimerTask::Ptr ptask =
-      new Poco::Util::TimerTaskAdapter<Context>(
-        *this, &Context::onFetchUpdates);
-    timer_.schedule(ptask, Poco::Timestamp() + kThrottleMicros);
-  }
+  fetch_updates_queued_ = true;
+  Poco::Util::TimerTask::Ptr ptask =
+    new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onFetchUpdates);
+  timer_.schedule(ptask, Poco::Timestamp() + kRequestThrottleMicros);
 }
 
 void Context::onFetchUpdates(Poco::Util::TimerTask& task) {  // NOLINT
   logger().debug("onFetchUpdates");
 
-  Unlocker unlocker(&fetch_updates_);
+  fetch_updates_queued_ = false;
 
   std::string response_body("");
   kopsik::HTTPSClient https_client(api_url, app_name, app_version);
@@ -448,21 +426,24 @@ const std::string Context::osName() {
 void Context::TimelineUpdateServerSettings() {
   logger().debug("TimelineUpdateServerSettings");
 
+  if (update_timeline_settings_queued_) {
+    return;
+  }
+
   Poco::Mutex::ScopedLock lock(mutex);
 
-  if (!update_timeline_settings_) {
-    update_timeline_settings_ = true;
-    Poco::Util::TimerTask::Ptr ptask =
-      new Poco::Util::TimerTaskAdapter<Context>(*this,
+  update_timeline_settings_queued_ = true;
+
+  Poco::Util::TimerTask::Ptr ptask =
+    new Poco::Util::TimerTaskAdapter<Context>(*this,
         &Context::onTimelineUpdateServerSettings);
-    timer_.schedule(ptask, Poco::Timestamp() + kThrottleMicros);
-  }
+  timer_.schedule(ptask, Poco::Timestamp() + kRequestThrottleMicros);
 }
 
 void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // NOLINT
   logger().debug("onTimelineUpdateServerSettings");
 
-  Unlocker unlocker(&update_timeline_settings_);
+  update_timeline_settings_queued_ = false;
 
   kopsik::HTTPSClient https_client(api_url, app_name, app_version);
 
@@ -529,19 +510,14 @@ void Context::SendFeedback() {
 
   Poco::Mutex::ScopedLock lock(mutex);
 
-  if (!send_feedback_) {
-    send_feedback_ = true;
-    Poco::Util::TimerTask::Ptr ptask =
-      new Poco::Util::TimerTaskAdapter<Context>(
-        *this, &Context::onSendFeedback);
-    timer_.schedule(ptask, Poco::Timestamp() + kThrottleMicros);
-  }
+  Poco::Util::TimerTask::Ptr ptask =
+    new Poco::Util::TimerTaskAdapter<Context>(
+      *this, &Context::onSendFeedback);
+  timer_.schedule(ptask, Poco::Timestamp());
 };
 
 void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
   logger().debug("onSendFeedback");
-
-  Unlocker unlocker(&send_feedback_);
 
   kopsik::HTTPSClient https_client(api_url, app_name, app_version);
   std::string response_body("");
