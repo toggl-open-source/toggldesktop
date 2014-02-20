@@ -417,19 +417,22 @@
 }
 
 - (void)controlTextDidChange:(NSNotification *)aNotification {
+  // FIXME: this looks kind of similar to code in timer edit view
   NSComboBox *box = [aNotification object];
   NSString *filter = [box stringValue];
+
   [self.autocompleteDataSource setFilter:filter];
   [self.projectSelect reloadData];
 
-  if (filter == nil || [filter length] == 0) {
+  if (!filter || ![filter length] || !self.autocompleteDataSource.count) {
     if ([box isExpanded] == YES) {
       [box setExpanded:NO];
     }
-  } else {
-    if ([box isExpanded] == NO) {
-      [box setExpanded:YES];
-    }
+    return;
+  }
+
+  if ([box isExpanded] == NO) {
+    [box setExpanded:YES];
   }
 }
 
