@@ -23,6 +23,7 @@
 @property (weak) IBOutlet NSButton *deleteButton;
 @property (strong) IBOutlet NSArrayController *projectItemsArrayController;
 @property (weak) IBOutlet NSButton *backButton;
+@property (weak) IBOutlet NSButton *continueButton;
 - (IBAction)descriptionTextFieldChanged:(id)sender;
 - (IBAction)durationTextFieldChanged:(id)sender;
 - (IBAction)projectSelectChanged:(id)sender;
@@ -32,4 +33,5 @@
 - (IBAction)billableCheckBoxClicked:(id)sender;
 - (IBAction)deleteButtonClicked:(id)sender;
 - (IBAction)backButtonClicked:(id)sender;
+- (IBAction)continueButtonClicked:(id)sender;
 @end

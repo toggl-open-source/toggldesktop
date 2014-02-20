@@ -55,7 +55,15 @@
 }
 
 - (IBAction)backButtonClicked:(id)sender {
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntryDeselected object:nil];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntryDeselected
+                                                      object:nil];
+}
+
+- (IBAction)continueButtonClicked:(id)sender {
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandContinue
+                                                      object:self.GUID];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntryDeselected
+                                                      object:nil];
 }
 
 - (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString {
