@@ -87,6 +87,7 @@
 
 - (void)dateChanged:(id)sender {
 	_completionHandler(_datePicker.dateValue);
+	[_popover close];
 }
 
 @end
