@@ -92,6 +92,9 @@ void Context::Shutdown() {
     timeline_uploader->Stop();
   }
 
+  // cancel tasks but allow them finish
+  timer_.cancel(true);
+
   Poco::ThreadPool::defaultPool().joinAll();
 }
 
