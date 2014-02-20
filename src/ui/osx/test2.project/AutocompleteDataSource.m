@@ -13,8 +13,7 @@
 
 @implementation AutocompleteDataSource
 
-- (id) init
-{
+- (id) init {
   self = [super init];
 
   self.orderedKeys = [[NSMutableArray alloc] init];
@@ -36,8 +35,7 @@
   return @"";
 }
 
-- (NSString *)get:(NSString *)key
-{
+- (NSString *)get:(NSString *)key {
   NSString *object = nil;
   @synchronized(self) {
     object = [self.dictionary objectForKey:key];
@@ -88,8 +86,7 @@
   return result;
 }
 
-- (NSString *)keyAtIndex:(NSInteger)row
-{
+- (NSString *)keyAtIndex:(NSInteger)row {
   NSString *key = nil;
   @synchronized(self) {
     key = [self.filteredOrderedKeys objectAtIndex:row];
@@ -97,8 +94,7 @@
   return key;
 }
 
-- (NSUInteger)indexOfKey:(NSString *)key
-{
+- (NSUInteger)indexOfKey:(NSString *)key {
   NSUInteger index = 0;
   @synchronized(self) {
     return [self.filteredOrderedKeys indexOfObject:key];
