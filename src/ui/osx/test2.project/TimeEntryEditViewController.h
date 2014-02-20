@@ -24,6 +24,7 @@
 @property (strong) IBOutlet NSArrayController *projectItemsArrayController;
 @property (weak) IBOutlet NSButton *backButton;
 @property (weak) IBOutlet NSButton *continueButton;
+@property (weak) IBOutlet NSButton *addProjectButton;
 - (IBAction)descriptionTextFieldChanged:(id)sender;
 - (IBAction)durationTextFieldChanged:(id)sender;
 - (IBAction)projectSelectChanged:(id)sender;
@@ -34,4 +35,5 @@
 - (IBAction)deleteButtonClicked:(id)sender;
 - (IBAction)backButtonClicked:(id)sender;
 - (IBAction)continueButtonClicked:(id)sender;
+- (IBAction)addProjectButtonClicked:(id)sender;
 @end
