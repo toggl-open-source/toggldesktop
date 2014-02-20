@@ -850,8 +850,7 @@ const NSString *appName = @"osx_native_app";
   return self;
 }
 
-- (void)statusItemTimerFired:(NSTimer*)timer
-{
+- (void)statusItemTimerFired:(NSTimer*)timer {
   if (self.lastKnownRunningTimeEntry != nil) {
     char str[duration_str_len];
     if (blink) {
