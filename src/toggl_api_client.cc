@@ -509,6 +509,7 @@ error User::collectErrors(std::vector<error> *errors) {
 }
 
 error User::Push(HTTPSClient *https_client) {
+  try {
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
@@ -556,8 +557,14 @@ error User::Push(HTTPSClient *https_client) {
     ss << "Changes data JSON pushed and responses parsed in "
         << stopwatch.elapsed() / 1000 << " ms";
     logger.debug(ss.str());
-
-    return noError;
+  } catch(const Poco::Exception& exc) {
+    return exc.displayText();
+  } catch(const std::exception& ex) {
+    return ex.what();
+  } catch(const std::string& ex) {
+    return ex;
+  }
+  return noError;
 }
 
 void User::parseResponseArray(std::string response_body,
@@ -623,41 +630,48 @@ error User::Sync(HTTPSClient *https_client,
 error User::pull(HTTPSClient *https_client,
     const bool full_sync,
     const bool with_related_data) {
-  Poco::Stopwatch stopwatch;
-  stopwatch.start();
+  try {
+    Poco::Stopwatch stopwatch;
+    stopwatch.start();
 
-  std::stringstream relative_url;
-  relative_url << "/api/v8/me?app_name=kopsik";
+    std::stringstream relative_url;
+    relative_url << "/api/v8/me?app_name=kopsik";
 
-  if (with_related_data) {
-    relative_url << "&with_related_data=true";
-  } else {
-    relative_url << "&with_related_data=false";
-}
+    if (with_related_data) {
+      relative_url << "&with_related_data=true";
+    } else {
+      relative_url << "&with_related_data=false";
+    }
 
-  if (!full_sync) {
-      relative_url << "&since=" << since_;
+    if (!full_sync) {
+        relative_url << "&since=" << since_;
+    }
+
+    std::string response_body("");
+
+    error err = https_client->GetJSON(relative_url.str(),
+                                      BasicAuthUsername,
+                                      BasicAuthPassword,
+                                      &response_body);
+    if (err != noError) {
+      return err;
+    }
+
+    LoadFromJSONString(response_body, full_sync, with_related_data);
+
+    stopwatch.stop();
+    std::stringstream ss;
+    ss << "User with related data JSON fetched and parsed in "
+      << stopwatch.elapsed() / 1000 << " ms";
+    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
+    logger.debug(ss.str());
+  } catch(const Poco::Exception& exc) {
+    return exc.displayText();
+  } catch(const std::exception& ex) {
+    return ex.what();
+  } catch(const std::string& ex) {
+    return ex;
   }
-
-  std::string response_body("");
-
-  error err = https_client->GetJSON(relative_url.str(),
-    BasicAuthUsername,
-    BasicAuthPassword,
-    &response_body);
-  if (err != noError) {
-    return err;
-  }
-
-  LoadFromJSONString(response_body, full_sync, with_related_data);
-
-  stopwatch.stop();
-  std::stringstream ss;
-  ss << "User with related data JSON fetched and parsed in "
-    << stopwatch.elapsed() / 1000 << " ms";
-  Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
-  logger.debug(ss.str());
-
   return noError;
 };
 
