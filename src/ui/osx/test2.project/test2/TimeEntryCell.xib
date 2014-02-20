@@ -66,7 +66,7 @@
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </box>
-                <button translatesAutoresizingMaskIntoConstraints="NO" id="Gcj-ki-Hus">
+                <button toolTip="Continue" translatesAutoresizingMaskIntoConstraints="NO" id="Gcj-ki-Hus">
                     <rect key="frame" x="171" y="15" width="21" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <constraints>

@@ -939,7 +939,7 @@ kopsik_api_result kopsik_autocomplete_items(
            it != ctx->user->related.Projects.end(); it++) {
         kopsik::Project *p = *it;
 
-        if (p && !p->Active()) {
+        if (!p->Active()) {
           continue;
         }
 
