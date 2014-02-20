@@ -823,7 +823,8 @@ const NSString *appName = @"osx_native_app";
   char err[KOPSIK_ERR_LEN];
   kopsik_api_result res =
     kopsik_set_db_path(ctx, err, KOPSIK_ERR_LEN, [self.db_path UTF8String]);
-  NSAssert(KOPSIK_API_SUCCESS == res, @"Failed to initialize DB");
+  NSAssert(KOPSIK_API_SUCCESS == res,
+           ([NSString stringWithFormat:@"Failed to initialize DB with path: %@", self.db_path]));
 
   id logToFile = infoDict[@"KopsikLogUserInterfaceToFile"];
   if ([logToFile boolValue]) {
