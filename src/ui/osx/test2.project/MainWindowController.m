@@ -71,10 +71,6 @@
   return self;
 }
 
-- (void)windowDidLoad {
-  [super windowDidLoad];
-}
-
 -(void)eventHandler: (NSNotification *) notification
 {
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
