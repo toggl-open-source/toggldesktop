@@ -129,6 +129,9 @@ DQ
                             <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fiv-ao-qiA" customClass="NSTextFieldClickable">
                                 <rect key="frame" x="4" y="10" width="142" height="8"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="6EN-7v-jSX"/>
+                                </constraints>
                                 <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="Label" placeholderString="What are you doing?" id="V5P-6k-9NM">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -147,7 +150,7 @@ DQ
                         <constraint firstItem="tVc-ms-0hr" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="5" id="CGd-ds-Uhq"/>
                         <constraint firstAttribute="bottom" secondItem="nFI-HH-zd7" secondAttribute="bottom" constant="-1" id="DHT-6f-0yu"/>
                         <constraint firstAttribute="bottom" secondItem="ITa-Jc-jOK" secondAttribute="bottom" priority="845" constant="8" id="U5f-3j-Kld"/>
-                        <constraint firstItem="oie-Un-asQ" firstAttribute="leading" secondItem="Fiv-ao-qiA" secondAttribute="trailing" id="X05-fF-dAP"/>
+                        <constraint firstItem="oie-Un-asQ" firstAttribute="leading" secondItem="Fiv-ao-qiA" secondAttribute="trailing" constant="4" id="X05-fF-dAP"/>
                         <constraint firstItem="Fiv-ao-qiA" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="7" id="YNr-mM-VlW"/>
                         <constraint firstAttribute="bottom" secondItem="oie-Un-asQ" secondAttribute="bottom" constant="9" id="bC9-Fi-38J"/>
                         <constraint firstAttribute="trailing" secondItem="oie-Un-asQ" secondAttribute="trailing" constant="63" id="bzC-nz-PQq"/>
