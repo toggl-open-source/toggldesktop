@@ -994,7 +994,7 @@ kopsik_api_result kopsik_tags(
     void *context,
     char *errmsg,
     unsigned int errlen,
-    KopsikTag **first) {
+    KopsikTagViewItem **first) {
   poco_assert(context);
   poco_assert(errmsg);
   poco_assert(errlen);
@@ -1003,33 +1003,33 @@ kopsik_api_result kopsik_tags(
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
-  *first = 0;
-
-  KopsikTag *previous = 0;
+  std::vector<kopsik::Tag *> tags;
   for (std::vector<kopsik::Tag *>::const_iterator it =
       ctx->user->related.Tags.begin();
         it != ctx->user->related.Tags.end();
         it++) {
     kopsik::Tag *tag = *it;
-
-    KopsikTag *item = new KopsikTag();
-    item->Name = 0;
-    if (!tag->Name().empty()) {
-      item->Name = strdup(tag->Name().c_str());
-    }
-    item->WID = tag->WID();
-    item->Next = previous;
-
-    previous = item;;
+    tags.push_back(tag);
   }
 
-  *first = previous;
+  std::sort(tags.begin(), tags.end(), compareTags);
+
+  *first = 0;
+  for (std::vector<kopsik::Tag *>::const_iterator it = tags.begin();
+       it != tags.end();
+       it++) {
+    kopsik::Tag *tag = *it;
+    KopsikTagViewItem *item = new KopsikTagViewItem();
+    item->Name = strdup(tag->Name().c_str());
+    item->Next = *first;
+    *first = item;
+  }
 
   return KOPSIK_API_SUCCESS;
 }
 
 void kopsik_tags_clear(
-    KopsikTag *first) {
+    KopsikTagViewItem *first) {
   if (!first) {
     return;
   }
@@ -1037,13 +1037,14 @@ void kopsik_tags_clear(
     free(first->Name);
     first->Name = 0;
   }
-  first->WID = 0;
-  if (first->Next) {
-    KopsikTag *next = reinterpret_cast<KopsikTag *>(first->Next);
-    kopsik_tags_clear(next);
-    free(first->Next);
-    first->Next = 0;
+  if (!first->Next) {
+    return;
   }
+  KopsikTagViewItem *next =
+    reinterpret_cast<KopsikTagViewItem *>(first->Next);
+  kopsik_tags_clear(next);
+  free(first->Next);
+  first->Next = 0;
 }
 
 // Time entries view API

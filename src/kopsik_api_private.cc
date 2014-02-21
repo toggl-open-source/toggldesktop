@@ -214,3 +214,9 @@ bool compareAutocompleteItems(
 
   return (strcmp(a->Text, b->Text) < 0);
 }
+
+bool compareTags(
+    kopsik::Tag *a,
+    kopsik::Tag *b) {
+  return (strcmp(a->Name().c_str(), b->Name().c_str()) > 0);
+}
