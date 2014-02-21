@@ -54,6 +54,10 @@
     return self;
 }
 
+- (IBAction)addProjectButtonClicked:(id)sender {
+  
+}
+
 - (IBAction)backButtonClicked:(id)sender {
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntryDeselected
                                                       object:nil];

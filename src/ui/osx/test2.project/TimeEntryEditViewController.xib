@@ -7,6 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimeEntryEditViewController">
             <connections>
+                <outlet property="addProjectButton" destination="mjR-fr-Qy0" id="2fN-So-QBH"/>
                 <outlet property="backButton" destination="zwE-pW-vQN" id="7gS-kR-H67"/>
                 <outlet property="billableCheckbox" destination="sSX-ad-7XC" id="cVv-CO-AcK"/>
                 <outlet property="continueButton" destination="cnb-71-paF" id="vPX-OF-Khm"/>
@@ -114,7 +115,7 @@
                                                     </textFieldCell>
                                                 </textField>
                                                 <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mxY-tv-UzX">
-                                                    <rect key="frame" x="85" y="8" width="246" height="23"/>
+                                                    <rect key="frame" x="85" y="8" width="215" height="23"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="UI interactions" placeholderString="" buttonBordered="NO" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="z8M-J4-cIb">
                                                         <font key="font" metaFont="system"/>
@@ -127,11 +128,30 @@
                                                         <outlet property="nextKeyView" destination="EMR-ul-vEb" id="fr2-Kv-Asj"/>
                                                     </connections>
                                                 </comboBox>
+                                                <button toolTip="Add new project" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mjR-fr-Qy0">
+                                                    <rect key="frame" x="303" y="8" width="23" height="23"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="23" id="CSN-nc-OOp"/>
+                                                        <constraint firstAttribute="height" constant="21" id="Sld-Oy-PuH"/>
+                                                    </constraints>
+                                                    <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSAddTemplate" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="HzE-Jo-vAm">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="addProjectButtonClicked:" target="-2" id="Vel-Va-Chi"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                         </view>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="mxY-tv-UzX" secondAttribute="trailing" constant="17" id="Rf3-MZ-Xxm"/>
+                                            <constraint firstItem="mjR-fr-Qy0" firstAttribute="top" secondItem="6Sh-4d-bKb" secondAttribute="top" constant="10" id="DJ6-55-x7u"/>
+                                            <constraint firstItem="mjR-fr-Qy0" firstAttribute="leading" secondItem="mxY-tv-UzX" secondAttribute="trailing" constant="6" id="YvU-g1-BOh"/>
+                                            <constraint firstAttribute="trailing" secondItem="mjR-fr-Qy0" secondAttribute="trailing" constant="19" id="ce2-eU-5GP"/>
+                                            <constraint firstAttribute="bottom" secondItem="mjR-fr-Qy0" secondAttribute="bottom" constant="10" id="erh-Ma-YHI"/>
                                             <constraint firstAttribute="bottom" secondItem="mxY-tv-UzX" secondAttribute="bottom" constant="13" id="g2w-ya-qxx"/>
+                                            <constraint firstAttribute="trailing" secondItem="mxY-tv-UzX" secondAttribute="trailing" constant="48" id="jQT-if-vmS"/>
                                             <constraint firstItem="mxY-tv-UzX" firstAttribute="leading" secondItem="6Sh-4d-bKb" secondAttribute="leading" constant="86" id="ogx-6Z-nQo"/>
                                             <constraint firstItem="mxY-tv-UzX" firstAttribute="top" secondItem="6Sh-4d-bKb" secondAttribute="top" constant="11" id="vJ2-G1-7gf"/>
                                             <constraint firstAttribute="height" constant="41" id="vTF-aw-67a"/>
@@ -458,6 +478,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         </customView>
     </objects>
     <resources>
+        <image name="NSAddTemplate" width="8" height="8"/>
         <image name="NSLeftFacingTriangleTemplate" width="9" height="9"/>
     </resources>
 </document>
