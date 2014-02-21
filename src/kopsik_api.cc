@@ -2013,8 +2013,8 @@ kopsik_api_result kopsik_time_entry_view_items(
     Context *ctx = reinterpret_cast<Context *>(context);
 
     if (!ctx->user) {
-      strncpy(errmsg, "Please login to access time entries", errlen);
-      return KOPSIK_API_FAILURE;
+      logger().warning("User is logged out, cannot access time entries");
+      return KOPSIK_API_SUCCESS;
     }
 
     {
