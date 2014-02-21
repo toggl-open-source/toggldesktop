@@ -250,8 +250,6 @@ int blink = 0;
      postNotificationName:kUIStateTimerRunning object:timeEntry];
   }
 
-  kopsik_sync(ctx, 0);
-
   [self onShowMenuItem];
 }
 
@@ -286,8 +284,6 @@ int blink = 0;
   
   [[NSNotificationCenter defaultCenter]
     postNotificationName:kUIStateTimerRunning object:timeEntry];
-  
-  kopsik_sync(ctx, 0);
 }
 
 - (void)stopTimeEntry {
@@ -313,8 +309,6 @@ int blink = 0;
   kopsik_time_entry_view_item_clear(item);
   [[NSNotificationCenter defaultCenter]
     postNotificationName:kUIStateTimerStopped object:te];
-  
-  kopsik_sync(ctx, 0);
 }
 
 - (void)splitTimeEntryAfterIdle:(IdleEvent *)idleEvent {
@@ -347,8 +341,6 @@ int blink = 0;
 
   kopsik_time_entry_view_item_clear(item);
 
-  kopsik_sync(ctx, 0);
-
   [self onShowMenuItem];
 }
 
@@ -379,8 +371,6 @@ int blink = 0;
       postNotificationName:kUIStateTimerStopped
       object:timeEntry];
   }
-
-  kopsik_sync(ctx, 0);
 
   [self onShowMenuItem];
 }
@@ -1024,7 +1014,7 @@ void on_model_change(kopsik_api_result result,
 
 - (void)startSync {
   NSLog(@"startSync");
-  kopsik_sync(ctx, 1);
+  kopsik_sync(ctx);
 }
 
 - (void)checkForUpdates {
