@@ -191,8 +191,7 @@ KOPSIK_EXPORT kopsik_api_result kopsik_pushable_models(
   KopsikPushableModelStats *stats);
 
 KOPSIK_EXPORT void kopsik_sync(
-  void *context,
-  int full_sync);
+  void *context);
 
 // Autocomplete list items
 

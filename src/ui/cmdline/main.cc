@@ -90,11 +90,7 @@ namespace command_line_client {
         kopsik_user_clear(user);
 
         if ("sync" == args[0]) {
-            syncing = true;
-            kopsik_sync(ctx, 1);
-            while (syncing) {
-                Poco::Thread::sleep(1000);
-            }
+            kopsik_sync(ctx);
             return Poco::Util::Application::EXIT_OK;
         }
 
@@ -136,11 +132,6 @@ namespace command_line_client {
                 kopsik_time_entry_view_item_clear(te);
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
-            syncing = true;
-            kopsik_sync(ctx, 0);
-            while (syncing) {
-                Poco::Thread::sleep(1000);
-            }
             kopsik_time_entry_view_item_clear(te);
             return Poco::Util::Application::EXIT_OK;
         }
@@ -154,13 +145,7 @@ namespace command_line_client {
                 kopsik_time_entry_view_item_clear(te);
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
-            if (was_found) {
-                syncing = true;
-                kopsik_sync(ctx, 0);
-                while (syncing) {
-                    Poco::Thread::sleep(1000);
-                }
-            } else {
+            if (!was_found) {
                 std::cout << "No time entry found to stop." << std::endl;
             }
             kopsik_time_entry_view_item_clear(te);
@@ -220,12 +205,6 @@ namespace command_line_client {
                 kopsik_time_entry_view_item_list_clear(list);
                 kopsik_time_entry_view_item_clear(te);
                 return Poco::Util::Application::EXIT_SOFTWARE;
-            }
-
-            syncing = true;
-            kopsik_sync(ctx, 0);
-            while (syncing) {
-                Poco::Thread::sleep(1000);
             }
 
             kopsik_time_entry_view_item_list_clear(list);

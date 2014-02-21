@@ -757,20 +757,14 @@ kopsik_api_result kopsik_pushable_models(
 }
 
 void kopsik_sync(
-    void *context,
-    int full_sync) {
+    void *context) {
   poco_assert(context);
 
   logger().debug("kopsik_sync");
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
-  if (full_sync) {
-    ctx->FullSync();
-    return;
-  }
-
-  ctx->PartialSync();
+  ctx->FullSync();
 }
 
 // Autocomplete list
@@ -1121,6 +1115,8 @@ kopsik_api_result kopsik_start(
     }
 
     time_entry_to_view_item(te, ctx->user, out_view_item, "");
+
+    ctx->PartialSync();
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1232,6 +1228,8 @@ kopsik_api_result kopsik_continue(
     }
 
     time_entry_to_view_item(te, ctx->user, view_item, "");
+
+    ctx->PartialSync();
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1292,6 +1290,8 @@ kopsik_api_result kopsik_continue_latest(
     }
     *was_found = 1;
     time_entry_to_view_item(te, ctx->user, view_item, "");
+
+    ctx->PartialSync();
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1351,6 +1351,8 @@ kopsik_api_result kopsik_delete_time_entry(
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
+
+    ctx->PartialSync();
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1410,6 +1412,8 @@ kopsik_api_result kopsik_set_time_entry_duration(
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
+
+    ctx->PartialSync();
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1473,6 +1477,8 @@ kopsik_api_result kopsik_set_time_entry_project(
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
+
+    ctx->PartialSync();
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1532,6 +1538,8 @@ kopsik_api_result kopsik_set_time_entry_start_iso_8601(
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
+
+    ctx->PartialSync();
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1590,6 +1598,8 @@ kopsik_api_result kopsik_set_time_entry_end_iso_8601(
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
+
+    ctx->PartialSync();
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1710,6 +1720,8 @@ kopsik_api_result kopsik_set_time_entry_billable(
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
+
+    ctx->PartialSync();
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1768,6 +1780,8 @@ kopsik_api_result kopsik_set_time_entry_description(
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
+
+    ctx->PartialSync();
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1820,6 +1834,8 @@ kopsik_api_result kopsik_stop(
 
     kopsik::TimeEntry *te = stopped[0];
     time_entry_to_view_item(te, ctx->user, out_view_item, "");
+
+    ctx->PartialSync();
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1871,6 +1887,8 @@ kopsik_api_result kopsik_split_running_time_entry_at(
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
+
+    ctx->PartialSync();
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1922,6 +1940,8 @@ kopsik_api_result kopsik_stop_running_time_entry_at(
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
+
+    ctx->PartialSync();
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
