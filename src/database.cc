@@ -838,7 +838,7 @@ error Database::saveTimeEntries(
     {
         std::stringstream ss;
         ss << "Saving time entries in thread " << Poco::Thread::currentTid();
-        logger().debug(ss.str());
+        logger().trace(ss.str());
     }
 
     for (std::vector<TimeEntry *>::iterator it = list->begin();
@@ -875,7 +875,7 @@ error Database::saveTimeEntries(
         std::stringstream ss;
         ss << "Finished saving time entries in thread " <<
             Poco::Thread::currentTid();
-        logger().debug(ss.str());
+        logger().trace(ss.str());
     }
 
     return noError;
@@ -1561,7 +1561,7 @@ error Database::SaveUser(
     {
         std::stringstream ss;
         ss << "Saving user in thread " << Poco::Thread::currentTid();
-        logger().debug(ss.str());
+        logger().trace(ss.str());
     }
 
     Poco::Stopwatch stopwatch;
