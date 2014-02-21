@@ -18,22 +18,22 @@
             <rect key="frame" x="0.0" y="0.0" width="252" height="260"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OXo-Tz-Vbz">
-                    <rect key="frame" x="18" y="195" width="210" height="45"/>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="OXo-Tz-Vbz">
+                    <rect key="frame" x="13" y="200" width="225" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="45" id="XEz-DW-5eO"/>
                     </constraints>
                 </customView>
                 <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="17" horizontalPageScroll="10" verticalLineScroll="17" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fu8-w4-kYq">
-                    <rect key="frame" x="0.0" y="0.0" width="252" height="175"/>
+                    <rect key="frame" x="0.0" y="0.0" width="252" height="185"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <clipView key="contentView" id="TQQ-db-grk">
-                        <rect key="frame" x="0.0" y="0.0" width="252" height="175"/>
+                        <rect key="frame" x="0.0" y="0.0" width="252" height="185"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="kSc-tv-Cw1" customClass="NSUnstripedTableView">
-                                <rect key="frame" x="0.0" y="0.0" width="252" height="175"/>
+                                <rect key="frame" x="0.0" y="0.0" width="252" height="185"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <color key="backgroundColor" red="0.8980392814" green="0.8980392814" blue="0.8980392814" alpha="1" colorSpace="deviceRGB"/>
                                 <tableViewGridLines key="gridStyleMask" horizontal="YES"/>
@@ -57,7 +57,7 @@
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MEi-4M-qbG">
-                                                        <rect key="frame" x="0.0" y="-102" width="6" height="17"/>
+                                                        <rect key="frame" x="0.0" y="-119" width="6" height="17"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="eTT-uV-85C">
                                                             <font key="font" metaFont="system"/>
@@ -95,12 +95,12 @@
             <constraints>
                 <constraint firstItem="fu8-w4-kYq" firstAttribute="leading" secondItem="3" secondAttribute="leading" id="Kzp-8f-L6N"/>
                 <constraint firstAttribute="trailing" secondItem="fu8-w4-kYq" secondAttribute="trailing" id="Mw2-Bk-0wN"/>
-                <constraint firstItem="fu8-w4-kYq" firstAttribute="top" secondItem="3" secondAttribute="top" constant="85" id="Wwe-Qg-cEG"/>
-                <constraint firstItem="OXo-Tz-Vbz" firstAttribute="top" secondItem="3" secondAttribute="top" constant="20" id="cFn-Dr-igO"/>
-                <constraint firstAttribute="trailing" secondItem="OXo-Tz-Vbz" secondAttribute="trailing" constant="19" id="dob-uI-NdT"/>
-                <constraint firstItem="fu8-w4-kYq" firstAttribute="top" secondItem="OXo-Tz-Vbz" secondAttribute="bottom" constant="20" id="ihN-op-Ey5"/>
+                <constraint firstItem="fu8-w4-kYq" firstAttribute="top" secondItem="3" secondAttribute="top" constant="75" id="Wwe-Qg-cEG"/>
+                <constraint firstItem="OXo-Tz-Vbz" firstAttribute="top" secondItem="3" secondAttribute="top" constant="15" id="cFn-Dr-igO"/>
+                <constraint firstAttribute="trailing" secondItem="OXo-Tz-Vbz" secondAttribute="trailing" constant="14" id="dob-uI-NdT"/>
+                <constraint firstItem="fu8-w4-kYq" firstAttribute="top" secondItem="OXo-Tz-Vbz" secondAttribute="bottom" constant="15" id="ihN-op-Ey5"/>
                 <constraint firstAttribute="bottom" secondItem="fu8-w4-kYq" secondAttribute="bottom" id="tZR-YL-cvO"/>
-                <constraint firstItem="OXo-Tz-Vbz" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="18" id="twv-Me-Ne4"/>
+                <constraint firstItem="OXo-Tz-Vbz" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="13" id="twv-Me-Ne4"/>
             </constraints>
         </customView>
     </objects>
