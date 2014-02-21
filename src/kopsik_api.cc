@@ -1,6 +1,7 @@
 // Copyright 2013 Tanel Lebedev
 
 #include <cstring>
+#include <set>
 
 #include "./kopsik_api.h"
 #include "./kopsik_api_private.h"
@@ -1003,24 +1004,29 @@ kopsik_api_result kopsik_tags(
 
   Context *ctx = reinterpret_cast<Context *>(context);
 
-  std::vector<kopsik::Tag *> tags;
+  std::set<std::string> unique_names;
+  std::vector<std::string> tags;
   for (std::vector<kopsik::Tag *>::const_iterator it =
       ctx->user->related.Tags.begin();
         it != ctx->user->related.Tags.end();
         it++) {
     kopsik::Tag *tag = *it;
-    tags.push_back(tag);
+    if (unique_names.find(tag->Name()) != unique_names.end()) {
+      continue;
+    }
+    unique_names.insert(tag->Name());
+    tags.push_back(tag->Name());
   }
 
-  std::sort(tags.begin(), tags.end(), compareTags);
+  std::sort(tags.rbegin(), tags.rend());
 
   *first = 0;
-  for (std::vector<kopsik::Tag *>::const_iterator it = tags.begin();
+  for (std::vector<std::string>::const_iterator it = tags.begin();
        it != tags.end();
        it++) {
-    kopsik::Tag *tag = *it;
+    std::string name = *it;
     KopsikTagViewItem *item = new KopsikTagViewItem();
-    item->Name = strdup(tag->Name().c_str());
+    item->Name = strdup(name.c_str());
     item->Next = *first;
     *first = item;
   }
