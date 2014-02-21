@@ -32,6 +32,10 @@ bool compareAutocompleteItems(
     KopsikAutocompleteItem *a,
     KopsikAutocompleteItem *b);
 
+bool compareTags(
+    kopsik::Tag *a,
+    kopsik::Tag *b);
+
 KopsikAutocompleteItem *autocomplete_item_init();
 
 #endif  // SRC_KOPSIK_API_PRIVATE_H_

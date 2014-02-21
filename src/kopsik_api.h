@@ -232,19 +232,17 @@ KOPSIK_EXPORT kopsik_api_result kopsik_autocomplete_items(
 
 typedef struct {
   char *Name;
-  unsigned int WID;
-  // If used in a list, point to next Tag in list
   void *Next;
-} KopsikTag;
+} KopsikTagViewItem;
 
 KOPSIK_EXPORT kopsik_api_result kopsik_tags(
   void *context,
   char *errmsg,
   unsigned int errlen,
-  KopsikTag **first);
+  KopsikTagViewItem **first);
 
 KOPSIK_EXPORT void kopsik_tags_clear(
-  KopsikTag *first);
+  KopsikTagViewItem *first);
 
 // Time entries view
 
