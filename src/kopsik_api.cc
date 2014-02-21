@@ -1043,14 +1043,13 @@ void kopsik_tags_clear(
     free(first->Name);
     first->Name = 0;
   }
-  if (!first->Next) {
-    return;
+  if (first->Next) {
+    KopsikTagViewItem *next =
+      reinterpret_cast<KopsikTagViewItem *>(first->Next);
+    kopsik_tags_clear(next);
   }
-  KopsikTagViewItem *next =
-    reinterpret_cast<KopsikTagViewItem *>(first->Next);
-  kopsik_tags_clear(next);
-  free(first->Next);
-  first->Next = 0;
+  delete first;
+  first = 0;
 }
 
 // Time entries view API
