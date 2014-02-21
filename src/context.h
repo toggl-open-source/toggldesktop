@@ -87,11 +87,10 @@ class Context {
     void onTimelineUpdateServerSettings(Poco::Util::TimerTask& task);  // NOLINT
     void onSendFeedback(Poco::Util::TimerTask& task);  // NOLINT
 
-    // avoid same task running twice by flipping these:
-    bool full_sync_queued_;
-    bool partial_sync_queued_;
-    bool fetch_updates_queued_;
-    bool update_timeline_settings_queued_;
+    Poco::Timestamp next_full_sync_at_;
+    Poco::Timestamp next_partial_sync_at_;
+    Poco::Timestamp next_fetch_updates_at_;
+    Poco::Timestamp next_update_timeline_settings_at_;
 
     // schedule background tasks using this timer:
     Poco::Util::Timer timer_;

@@ -175,7 +175,7 @@ error HTTPSClient::request(
         << response.get("Content-Encoding");
     }
     logger.debug(response_string.str());
-    logger.debug(*response_body);
+    logger.trace(*response_body);
 
     if (response.getStatus() < 200 || response.getStatus() >= 300) {
       if (response_body->empty()) {

@@ -32,10 +32,10 @@ Context::Context()
     change_callback(0),
     on_error_callback(0),
     check_updates_callback(0),
-    full_sync_queued_(false),
-    partial_sync_queued_(false),
-    fetch_updates_queued_(false),
-    update_timeline_settings_queued_(false) {
+    next_full_sync_at_(0),
+    next_partial_sync_at_(0),
+    next_fetch_updates_at_(0),
+    next_update_timeline_settings_at_(0) {
   Poco::ErrorHandler::set(&error_handler);
   Poco::Net::initializeSSL();
 }
@@ -149,22 +149,20 @@ void Context::sync(const bool full_sync) {
 void Context::FullSync() {
   logger().debug("FullSync");
 
-  if (full_sync_queued_) {
-    return;
-  }
-
   Poco::Mutex::ScopedLock lock(mutex);
 
-  full_sync_queued_ = true;
+  next_full_sync_at_ = Poco::Timestamp() + kRequestThrottleMicros;
   Poco::Util::TimerTask::Ptr ptask =
     new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onFullSync);
-  timer_.schedule(ptask, Poco::Timestamp() + kRequestThrottleMicros);
+  timer_.schedule(ptask, next_full_sync_at_);
 }
 
 void Context::onFullSync(Poco::Util::TimerTask& task) {  // NOLINT
-  logger().debug("onFullSync");
-
-  full_sync_queued_ = false;
+  if (next_full_sync_at_ > Poco::Timestamp()) {
+    logger().debug("onFullSync postponed");
+    return;
+  }
+  logger().debug("onFullSync executing");
 
   sync(true);
 }
@@ -172,28 +170,25 @@ void Context::onFullSync(Poco::Util::TimerTask& task) {  // NOLINT
 void Context::PartialSync() {
   logger().debug("PartialSync");
 
-  if (partial_sync_queued_) {
-    return;
-  }
-
   Poco::Mutex::ScopedLock lock(mutex);
 
-  partial_sync_queued_ = true;
+  next_partial_sync_at_ = Poco::Timestamp() + kRequestThrottleMicros;
   Poco::Util::TimerTask::Ptr ptask =
     new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onPartialSync);
-  timer_.schedule(ptask, Poco::Timestamp() + kRequestThrottleMicros);
+  timer_.schedule(ptask, next_partial_sync_at_);
 }
 
 void Context::onPartialSync(Poco::Util::TimerTask& task) {  // NOLINT
-  logger().debug("onPartialSync");
-
-  partial_sync_queued_ = false;
-
+  if (next_partial_sync_at_ > Poco::Timestamp()) {
+    logger().debug("onPartialSync postponed");
+    return;
+  }
+  logger().debug("onPartialSync executing");
   sync(false);
 }
 
 void Context::SwitchWebSocketOff() {
-  logger().debug("PartialSync");
+  logger().debug("SwitchWebSocketOff");
 
   Poco::Mutex::ScopedLock lock(mutex);
 
@@ -337,22 +332,22 @@ void Context::FetchUpdates() {
 
   poco_assert(check_updates_callback);
 
-  if (fetch_updates_queued_) {
-    return;
-  }
-
   Poco::Mutex::ScopedLock lock(mutex);
 
-  fetch_updates_queued_ = true;
+  next_fetch_updates_at_ = Poco::Timestamp() + kRequestThrottleMicros;
+
   Poco::Util::TimerTask::Ptr ptask =
     new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onFetchUpdates);
-  timer_.schedule(ptask, Poco::Timestamp() + kRequestThrottleMicros);
+  timer_.schedule(ptask, next_fetch_updates_at_);
 }
 
 void Context::onFetchUpdates(Poco::Util::TimerTask& task) {  // NOLINT
-  logger().debug("onFetchUpdates");
+  if (next_fetch_updates_at_ > Poco::Timestamp()) {
+    logger().debug("onFetchUpdates postponed");
+    return;
+  }
 
-  fetch_updates_queued_ = false;
+  logger().debug("onFetchUpdates executing");
 
   std::string response_body("");
   kopsik::HTTPSClient https_client(api_url, app_name, app_version);
@@ -426,30 +421,33 @@ const std::string Context::osName() {
 void Context::TimelineUpdateServerSettings() {
   logger().debug("TimelineUpdateServerSettings");
 
-  if (update_timeline_settings_queued_) {
-    return;
-  }
-
   Poco::Mutex::ScopedLock lock(mutex);
 
-  update_timeline_settings_queued_ = true;
+  next_update_timeline_settings_at_ =
+    Poco::Timestamp() + kRequestThrottleMicros;
 
   Poco::Util::TimerTask::Ptr ptask =
     new Poco::Util::TimerTaskAdapter<Context>(*this,
         &Context::onTimelineUpdateServerSettings);
-  timer_.schedule(ptask, Poco::Timestamp() + kRequestThrottleMicros);
+  timer_.schedule(ptask, next_update_timeline_settings_at_);
 }
 
-void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // NOLINT
-  logger().debug("onTimelineUpdateServerSettings");
+const std::string kRecordTimelineEnabledJSON = "{\"record_timeline\": true}";
+const std::string kRecordTimelineDisabledJSON = "{\"record_timeline\": false}";
 
-  update_timeline_settings_queued_ = false;
+void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // NOLINT
+  if (next_update_timeline_settings_at_ > Poco::Timestamp()) {
+    logger().debug("onTimelineUpdateServerSettings postponed");
+    return;
+  }
+
+  logger().debug("onTimelineUpdateServerSettings executing");
 
   kopsik::HTTPSClient https_client(api_url, app_name, app_version);
 
-  std::string json("{\"record_timeline\": false}");
+  std::string json(kRecordTimelineDisabledJSON);
   if (user->RecordTimeline()) {
-    json = "{\"record_timeline\": true}";
+    json = kRecordTimelineEnabledJSON;
   }
 
   std::string response_body("");
