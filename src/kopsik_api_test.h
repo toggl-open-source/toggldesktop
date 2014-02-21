@@ -9,6 +9,8 @@ namespace kopsik {
 
     class KopsikApiTest : public ::testing::Test {};
 
+    void wipe_test_db();
+
 }  // namespace kopsik
 
 #endif  // SRC_KOPSIK_API_TEST_H_

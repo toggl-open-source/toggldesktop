@@ -155,6 +155,12 @@ KOPSIK_EXPORT kopsik_api_result kopsik_current_user(
   unsigned int errlen,
   KopsikUser *user);
 
+kopsik_api_result kopsik_set_logged_in_user(
+    void *context,
+    char *errmsg,
+    unsigned int errlen,
+    const char *json);
+
 KOPSIK_EXPORT kopsik_api_result kopsik_login(
   void *context,
   char *errmsg,

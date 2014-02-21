@@ -186,7 +186,6 @@ namespace kopsik {
         kopsik_context_clear(ctx);
     }
 
-/* FIXME: need to set mock https client
     TEST(KopsikApiTest, kopsik_lifecycle) {
         void *ctx = create_test_context();
 
@@ -243,8 +242,7 @@ namespace kopsik {
         .WillOnce(testing::DoAll(
             testing::SetArgPointee<3>(json),
             testing::Return("")));
-        ASSERT_EQ(KOPSIK_API_SUCCESS,
-            kopsik_sync(ctx, err, ERRLEN, 1));
+        kopsik_sync(ctx);
 
         // Count time entry items before start. It should be 3, since
         // there are 3 time entries in the me.json file we're using:
@@ -429,8 +427,7 @@ namespace kopsik {
             testing::SetArgPointee<4>(response_json),
             testing::Return("")));
 
-        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_push(
-            ctx, err, ERRLEN));
+        kopsik_sync(ctx);
 
         // Check that no dirty models are left.
         ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_pushable_models(
@@ -496,7 +493,6 @@ namespace kopsik {
 
         kopsik_context_clear(ctx);
     }
-*/
 
     TEST(KopsikApiTest, kopsik_time_entry_view_item_init) {
         KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();

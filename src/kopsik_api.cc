@@ -513,6 +513,59 @@ kopsik_api_result kopsik_get_api_token(
   return KOPSIK_API_SUCCESS;
 }
 
+kopsik_api_result kopsik_set_logged_in_user(
+    void *context,
+    char *errmsg,
+    unsigned int errlen,
+    const char *json) {
+  poco_assert(context);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(json);
+
+  try {
+    logger().debug("kopsik_set_logged_in_user");
+
+    Context *ctx = reinterpret_cast<Context *>(context);
+
+    kopsik::User *user = new kopsik::User(ctx->app_name, ctx->app_version);
+
+    user->LoadFromJSONString(std::string(json), true, true);
+
+    Poco::Mutex::ScopedLock lock(ctx->mutex);
+
+    kopsik::error err = ctx->db->SetCurrentAPIToken(user->APIToken());
+    if (err != kopsik::noError) {
+      delete user;
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+    }
+
+    if (ctx->user) {
+      delete ctx->user;
+      ctx->user = 0;
+    }
+
+    ctx->user = user;
+
+    err = ctx->Save();
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+    }
+  } catch(const Poco::Exception& exc) {
+    strncpy(errmsg, exc.displayText().c_str(), errlen);
+    return KOPSIK_API_FAILURE;
+  } catch(const std::exception& ex) {
+    strncpy(errmsg, ex.what(), errlen);
+    return KOPSIK_API_FAILURE;
+  } catch(const std::string& ex) {
+    strncpy(errmsg, ex.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  return KOPSIK_API_SUCCESS;
+}
+
 kopsik_api_result kopsik_login(
     void *context,
     char *errmsg,
