@@ -124,7 +124,7 @@
                                                     </textFieldCell>
                                                 </textField>
                                                 <comboBox verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mxY-tv-UzX">
-                                                    <rect key="frame" x="113" y="11" width="200" height="26"/>
+                                                    <rect key="frame" x="114" y="9" width="100" height="26"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="UI interactions" placeholderString="" drawsBackground="YES" buttonBordered="NO" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="z8M-J4-cIb">
                                                         <font key="font" metaFont="system"/>
@@ -137,8 +137,8 @@
                                                         <outlet property="nextKeyView" destination="EMR-ul-vEb" id="fr2-Kv-Asj"/>
                                                     </connections>
                                                 </comboBox>
-                                                <button toolTip="Add new project" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mjR-fr-Qy0">
-                                                    <rect key="frame" x="303" y="8" width="23" height="23"/>
+                                                <button toolTip="Add new project" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mjR-fr-Qy0">
+                                                    <rect key="frame" x="237" y="9" width="23" height="23"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="23" id="CSN-nc-OOp"/>
@@ -155,9 +155,10 @@
                                             </subviews>
                                         </view>
                                         <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="mjR-fr-Qy0" secondAttribute="trailing" constant="16" id="48f-bR-i9I"/>
                                             <constraint firstItem="3CJ-Hi-AsT" firstAttribute="leading" secondItem="6Sh-4d-bKb" secondAttribute="leading" constant="10" id="Fgk-AS-rgF"/>
                                             <constraint firstItem="3CJ-Hi-AsT" firstAttribute="top" secondItem="6Sh-4d-bKb" secondAttribute="top" constant="10" id="LXs-uf-Tbx"/>
-                                            <constraint firstAttribute="trailing" secondItem="mxY-tv-UzX" secondAttribute="trailing" constant="17" id="Rf3-MZ-Xxm"/>
+                                            <constraint firstAttribute="trailing" secondItem="mxY-tv-UzX" secondAttribute="trailing" constant="48" id="Rf3-MZ-Xxm"/>
                                             <constraint firstAttribute="bottom" secondItem="mxY-tv-UzX" secondAttribute="bottom" constant="11" id="g2w-ya-qxx"/>
                                             <constraint firstItem="mxY-tv-UzX" firstAttribute="leading" secondItem="6Sh-4d-bKb" secondAttribute="leading" constant="113" id="ogx-6Z-nQo"/>
                                             <constraint firstAttribute="bottom" secondItem="3CJ-Hi-AsT" secondAttribute="bottom" constant="13" id="put-KJ-iFt"/>
