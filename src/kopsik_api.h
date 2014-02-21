@@ -228,6 +228,24 @@ KOPSIK_EXPORT kopsik_api_result kopsik_autocomplete_items(
   const unsigned int include_tasks,
   const unsigned int include_projects);
 
+// Tags
+
+typedef struct {
+  char *Name;
+  unsigned int WID;
+  // If used in a list, point to next Tag in list
+  void *Next;
+} KopsikTag;
+
+KOPSIK_EXPORT kopsik_api_result kopsik_tags(
+  void *context,
+  char *errmsg,
+  unsigned int errlen,
+  KopsikTag **first);
+
+KOPSIK_EXPORT void kopsik_tags_clear(
+  KopsikTag *first);
+
 // Time entries view
 
 typedef struct {

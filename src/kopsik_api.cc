@@ -988,6 +988,64 @@ kopsik_api_result kopsik_autocomplete_items(
   return KOPSIK_API_SUCCESS;
 }
 
+// Tags
+
+kopsik_api_result kopsik_tags(
+    void *context,
+    char *errmsg,
+    unsigned int errlen,
+    KopsikTag **first) {
+  poco_assert(context);
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(first);
+  poco_assert(!*first);
+
+  Context *ctx = reinterpret_cast<Context *>(context);
+
+  *first = 0;
+
+  KopsikTag *previous = 0;
+  for (std::vector<kopsik::Tag *>::const_iterator it =
+      ctx->user->related.Tags.begin();
+        it != ctx->user->related.Tags.end();
+        it++) {
+    kopsik::Tag *tag = *it;
+
+    KopsikTag *item = new KopsikTag();
+    item->Name = 0;
+    if (!tag->Name().empty()) {
+      item->Name = strdup(tag->Name().c_str());
+    }
+    item->WID = tag->WID();
+    item->Next = previous;
+
+    previous = item;;
+  }
+
+  *first = previous;
+
+  return KOPSIK_API_SUCCESS;
+}
+
+void kopsik_tags_clear(
+    KopsikTag *first) {
+  if (!first) {
+    return;
+  }
+  if (first->Name) {
+    free(first->Name);
+    first->Name = 0;
+  }
+  first->WID = 0;
+  if (first->Next) {
+    KopsikTag *next = reinterpret_cast<KopsikTag *>(first->Next);
+    kopsik_tags_clear(next);
+    free(first->Next);
+    first->Next = 0;
+  }
+}
+
 // Time entries view API
 
 KopsikTimeEntryViewItem *kopsik_time_entry_view_item_init() {

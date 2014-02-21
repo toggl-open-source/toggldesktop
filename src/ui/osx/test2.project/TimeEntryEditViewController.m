@@ -55,7 +55,20 @@
 }
 
 - (IBAction)addProjectButtonClicked:(id)sender {
-  
+  KopsikTag *first = 0;
+  char errmsg[KOPSIK_ERR_LEN];
+  kopsik_api_result res = kopsik_tags(ctx, errmsg, KOPSIK_ERR_LEN, &first);
+  if (res != KOPSIK_API_SUCCESS) {
+    handle_error(errmsg);
+    kopsik_tags_clear(first);
+    return;
+  }
+  KopsikTag *tag = first;
+  while (tag) {
+    NSLog(@"%d: %s", tag->WID, tag->Name);
+    tag = tag->Next;
+  }
+  kopsik_tags_clear(first);
 }
 
 - (IBAction)backButtonClicked:(id)sender {
