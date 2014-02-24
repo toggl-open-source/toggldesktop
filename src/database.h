@@ -20,7 +20,7 @@
 
 #include "./types.h"
 #include "./proxy.h"
-#include "./toggl_api_client.h"
+#include "./user.h"
 #include "./timeline_notifications.h"
 
 namespace kopsik {

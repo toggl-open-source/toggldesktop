@@ -108,7 +108,17 @@ cmdline: clean lint
 	$(cxx) $(cflags) -O2 -c src/version.cc -o build/version.o
 	$(cxx) $(cflags) -O2 -c src/https_client.cc -o build/https_client.o
 	$(cxx) $(cflags) -O2 -c src/websocket_client.cc -o build/websocket_client.o
-	$(cxx) $(cflags) -O2 -c src/toggl_api_client.cc -o build/toggl_api_client.o
+	$(cxx) $(cflags) -O2 -c src/user.cc -o build/user.o
+	$(cxx) $(cflags) -O2 -c src/workspace.cc -o build/workspace.o
+	$(cxx) $(cflags) -O2 -c src/client.cc -o build/client.o
+	$(cxx) $(cflags) -O2 -c src/project.cc -o build/project.o
+	$(cxx) $(cflags) -O2 -c src/task.cc -o build/task.o
+	$(cxx) $(cflags) -O2 -c src/time_entry.cc -o build/time_entry.o
+	$(cxx) $(cflags) -O2 -c src/tag.cc -o build/tag.o
+	$(cxx) $(cflags) -O2 -c src/related_data.cc -o build/related_data.o
+	$(cxx) $(cflags) -O2 -c src/batch_update_result.cc -o build/batch_update_result.o
+	$(cxx) $(cflags) -O2 -c src/formatter.cc -o build/formatter.o
+	$(cxx) $(cflags) -O2 -c src/json.cc -o build/json.o
 	$(cxx) $(cflags) -O2 -c src/database.cc -o build/database.o
 	$(cxx) $(cflags) -O2 -c src/context.cc -o build/context.o
 	$(cxx) $(cflags) -O2 -c src/kopsik_api_private.cc -o build/kopsik_api_private.o
@@ -150,7 +160,17 @@ test: clean lint
 	$(cxx) $(cflags) -c src/version.cc -o build/version.o
 	$(cxx) $(cflags) -c src/https_client.cc -o build/https_client.o
 	$(cxx) $(cflags) -c src/websocket_client.cc -o build/websocket_client.o
-	$(cxx) $(cflags) -c src/toggl_api_client.cc -o build/toggl_api_client.o
+	$(cxx) $(cflags) -c src/user.cc -o build/user.o
+	$(cxx) $(cflags) -c src/workspace.cc -o build/workspace.o
+	$(cxx) $(cflags) -c src/client.cc -o build/client.o
+	$(cxx) $(cflags) -c src/project.cc -o build/project.o
+	$(cxx) $(cflags) -c src/task.cc -o build/task.o
+	$(cxx) $(cflags) -c src/time_entry.cc -o build/time_entry.o
+	$(cxx) $(cflags) -c src/tag.cc -o build/tag.o
+	$(cxx) $(cflags) -c src/related_data.cc -o build/related_data.o
+	$(cxx) $(cflags) -c src/batch_update_result.cc -o build/batch_update_result.o
+	$(cxx) $(cflags) -c src/formatter.cc -o build/formatter.o
+	$(cxx) $(cflags) -c src/json.cc -o build/json.o
 	$(cxx) $(cflags) -c src/database.cc -o build/database.o
 	$(cxx) $(cflags) -c src/context.cc -o build/context.o
 	$(cxx) $(cflags) -c src/kopsik_api_private.cc -o build/kopsik_api_private.o
@@ -173,7 +193,17 @@ coverage: clean
 	$(cxx) $(cflags) $(covflags) -c src/version.cc -o build/version.o
 	$(cxx) $(cflags) $(covflags) -c src/https_client.cc -o build/https_client.o
 	$(cxx) $(cflags) $(covflags) -c src/websocket_client.cc -o build/websocket_client.o
-	$(cxx) $(cflags) $(coverage) -c src/toggl_api_client.cc -o build/toggl_api_client.o
+	$(cxx) $(cflags) $(covflags) -c src/user.cc -o build/user.o
+	$(cxx) $(cflags) $(covflags) -c src/workspace.cc -o build/workspace.o
+	$(cxx) $(cflags) $(covflags) -c src/client.cc -o build/client.o
+	$(cxx) $(cflags) $(covflags) -c src/project.cc -o build/project.o
+	$(cxx) $(cflags) $(covflags) -c src/task.cc -o build/task.o
+	$(cxx) $(cflags) $(covflags) -c src/time_entry.cc -o build/time_entry.o
+	$(cxx) $(cflags) $(covflags) -c src/tag.cc -o build/tag.o
+	$(cxx) $(cflags) $(covflags) -c src/related_data.cc -o build/related_data.o
+	$(cxx) $(cflags) $(covflags) -c src/batch_update_result.cc -o build/batch_update_result.o
+	$(cxx) $(cflags) $(covflags) -c src/formatter.cc -o build/formatter.o
+	$(cxx) $(cflags) $(covflags) -c src/json.cc -o build/json.o
 	$(cxx) $(cflags) $(covflags) -c src/database.cc -o build/database.o
 	$(cxx) $(cflags) $(covflags) -c src/context.cc -o build/context.o
 	$(cxx) $(cflags) $(covflags) -c src/kopsik_api_private.cc -o build/kopsik_api_private.o

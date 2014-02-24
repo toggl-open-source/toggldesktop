@@ -2,6 +2,17 @@
 
 #include "./formatter.h"
 
+#include <sstream>
+
+#include "Poco/Types.h"
+#include "Poco/String.h"
+#include "Poco/Timestamp.h"
+#include "Poco/DateTimeFormatter.h"
+#include "Poco/DateTimeFormat.h"
+#include "Poco/NumberParser.h"
+#include "Poco/StringTokenizer.h"
+#include "Poco/DateTimeParser.h"
+
 namespace kopsik {
 
 std::string Formatter::JoinTaskName(Task *t, Project *p, Client *c) {

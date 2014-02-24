@@ -68,7 +68,7 @@ void time_entry_to_view_item(
   poco_assert(te);
   poco_assert(view_item);
 
-  view_item->DurationInSeconds = te->DurationInSeconds();
+  view_item->DurationInSeconds = static_cast<int>(te->DurationInSeconds());
 
   poco_assert(!view_item->Description);
   view_item->Description = strdup(te->Description().c_str());
@@ -76,8 +76,8 @@ void time_entry_to_view_item(
   poco_assert(!view_item->GUID);
   view_item->GUID = strdup(te->GUID().c_str());
 
-  view_item->TID = te->TID();
-  view_item->PID = te->PID();
+  view_item->TID = static_cast<unsigned int>(te->TID());
+  view_item->PID = static_cast<unsigned int>(te->PID());
 
   poco_assert(!view_item->ProjectAndTaskLabel);
   view_item->ProjectAndTaskLabel = strdup(project_and_task_label.c_str());
@@ -88,8 +88,8 @@ void time_entry_to_view_item(
   poco_assert(!view_item->Duration);
   view_item->Duration = strdup(te->DurationString().c_str());
 
-  view_item->Started = te->Start();
-  view_item->Ended = te->Stop();
+  view_item->Started = static_cast<unsigned int>(te->Start());
+  view_item->Ended = static_cast<unsigned int>(te->Stop());
   if (te->Billable()) {
     view_item->Billable = 1;
   } else {
@@ -101,7 +101,7 @@ void time_entry_to_view_item(
     view_item->Tags = strdup(te->Tags().c_str());
   }
 
-  view_item->UpdatedAt = te->UpdatedAt();
+  view_item->UpdatedAt = static_cast<unsigned int>(te->UpdatedAt());
 
   poco_assert(!view_item->DateHeader);
   view_item->DateHeader = strdup(te->DateHeaderString().c_str());

@@ -7,6 +7,8 @@
 // must not delete the pointers you got.
 
 #include "./context.h"
+#include "./formatter.h"
+#include "./json.h"
 
 // FIXME: dont use C API from C++ class
 #include "./kopsik_api_private.h"
@@ -248,7 +250,7 @@ void Context::LoadUpdateFromJSONString(const std::string json) {
       return;
     }
 
-    user_->LoadUpdateFromJSONString(json);
+    LoadUserUpdateFromJSONString(user_, json);
 
     kopsik::error err = save();
     if (err != kopsik::noError) {
@@ -402,7 +404,7 @@ void Context::onFetchUpdates(Poco::Util::TimerTask& task) {  // NOLINT
     return;
   }
 
-  if (!json_is_valid(response_body.c_str())) {
+  if (!IsValidJSON(response_body)) {
     check_updates_callback_(
       KOPSIK_API_FAILURE, "Invalid response JSON", 0, 0, 0);
     return;
@@ -708,7 +710,7 @@ kopsik::error Context::SetLoggedInUserFromJSON(
     const std::string json) {
   kopsik::User *import = new kopsik::User(app_name_, app_version_);
 
-  import->LoadFromJSONString(json, true, true);
+  LoadUserFromJSONString(import, json, true, true);
 
   kopsik::error err = db_->SetCurrentAPIToken(import->APIToken());
   if (err != kopsik::noError) {
