@@ -43,7 +43,7 @@ class Context {
     kopsik::error SendFeedback(
       const std::string topic,
       const std::string details,
-      const std::string base64encoded_image);
+      const std::string filename);
 
     // Load model update from JSON string (from WebSocket)
     void LoadUpdateFromJSONString(const std::string json);
@@ -138,6 +138,10 @@ class Context {
     kopsik::error SaveUpdateChannel(
       const std::string channel);
     kopsik::error LoadUpdateChannel(std::string *channel);
+    void ProjectLabelAndColorCode(
+      kopsik::TimeEntry *te,
+      std::string *project_and_task_label,
+      std::string *color_code);
 
   private:
     const std::string updateURL() const;

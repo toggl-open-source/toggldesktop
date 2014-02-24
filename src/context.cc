@@ -527,7 +527,7 @@ const std::string Context::base64encode_attachment() const {
 kopsik::error Context::SendFeedback(
     const std::string topic,
     const std::string details,
-    const std::string base64encoded_image) {
+    const std::string filename) {
   if (!user_) {
     return kopsik::error("Please login to send feedback");
   }
@@ -540,7 +540,7 @@ kopsik::error Context::SendFeedback(
   Poco::Mutex::ScopedLock lock(mutex_);
   feedback_subject_ = topic;
   feedback_details_ = details;
-  // FIXME: feedback_image_ = base64encoded_image;
+  feedback_attachment_path_ = filename;
   Poco::Util::TimerTask::Ptr ptask =
     new Poco::Util::TimerTaskAdapter<Context>(
       *this, &Context::onSendFeedback);
@@ -1151,7 +1151,8 @@ kopsik::error Context::TimeEntries(
     std::map<std::string, Poco::Int64> *date_durations,
     std::vector<kopsik::TimeEntry *> *visible) {
   if (!user_) {
-    return kopsik::error("Please login to view time entries");
+    logger().warning("User is already logged out, cannot fetch time entries");
+    return kopsik::noError;
   }
   user_->SortTimeEntriesByStart();
   for (std::vector<kopsik::TimeEntry *>::const_iterator it =
@@ -1205,6 +1206,39 @@ kopsik::error Context::SaveUpdateChannel(
 
 kopsik::error Context::LoadUpdateChannel(std::string *channel) {
   return db_->LoadUpdateChannel(channel);
+}
+
+void Context::ProjectLabelAndColorCode(
+    kopsik::TimeEntry *te,
+    std::string *project_and_task_label,
+    std::string *color_code) {
+  if (!user_) {
+    logger().warning("User is already logged out, cannot fetch project info");
+    return;
+  }
+
+  kopsik::Task *t = 0;
+  if (te->TID()) {
+    t = user_->GetTaskByID(te->TID());
+  }
+
+  kopsik::Project *p = 0;
+  if (t) {
+    p = user_->GetProjectByID(t->PID());
+  } else if (te->PID()) {
+    p = user_->GetProjectByID(te->PID());
+  }
+
+  kopsik::Client *c = 0;
+  if (p && p->CID()) {
+    c = user_->GetClientByID(p->CID());
+  }
+
+  *project_and_task_label = user_->JoinTaskName(t, p, c);
+
+  if (p) {
+    *color_code = p->ColorCode();
+  }
 }
 
 }  // namespace kopsik

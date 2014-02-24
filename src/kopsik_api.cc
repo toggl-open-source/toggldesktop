@@ -1004,8 +1004,10 @@ kopsik_api_result kopsik_start(
 
     kopsik::TimeEntry *te = app(context)->Start(desc, dur, task_id, project_id);
     if (te) {
-      // FIXME: need user instance
-      time_entry_to_view_item(te, 0, out_view_item, "");
+      std::string project_label("");
+      std::string color_code("");
+      app(context)->ProjectLabelAndColorCode(te, &project_label, &color_code);
+      time_entry_to_view_item(te, project_label, color_code, out_view_item, "");
     }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
@@ -1042,13 +1044,18 @@ kopsik_api_result kopsik_time_entry_view_item_by_guid(
     poco_assert(!GUID.empty());
 
     kopsik::TimeEntry *te = app(context)->GetTimeEntryByGUID(GUID);
-    if (te) {
-      *was_found = 1;
-      // FIXME: user rquired here
-      time_entry_to_view_item(te, 0, view_item, "");
-    } else {
+    if (!te) {
       *was_found = 0;
+      return KOPSIK_API_SUCCESS;
     }
+
+    *was_found = 1;
+
+    std::string project_label("");
+    std::string color_code("");
+    app(context)->ProjectLabelAndColorCode(te, &project_label, &color_code);
+
+    time_entry_to_view_item(te, project_label, color_code, view_item, "");
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1086,10 +1093,11 @@ kopsik_api_result kopsik_continue(
     }
 
     kopsik::TimeEntry *te = app(context)->Continue(GUID);
-
     if (te) {
-      // FIXME: needs user
-      time_entry_to_view_item(te, 0, view_item, "");
+      std::string project_label("");
+      std::string color_code("");
+      app(context)->ProjectLabelAndColorCode(te, &project_label, &color_code);
+      time_entry_to_view_item(te, project_label, color_code, view_item, "");
     }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
@@ -1123,7 +1131,10 @@ kopsik_api_result kopsik_continue_latest(
     kopsik::TimeEntry *te = app(context)->ContinueLatest();
     if (te) {
       *was_found = 1;
-      time_entry_to_view_item(te, 0, view_item, "");
+      std::string project_label("");
+      std::string color_code("");
+      app(context)->ProjectLabelAndColorCode(te, &project_label, &color_code);
+      time_entry_to_view_item(te, project_label, color_code, view_item, "");
     }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
@@ -1449,8 +1460,10 @@ kopsik_api_result kopsik_stop(
     }
     if (te) {
       *was_found = 1;
-      // FIXME: requires user
-      time_entry_to_view_item(te, 0, out_view_item, "");
+      std::string project_label("");
+      std::string color_code("");
+      app(context)->ProjectLabelAndColorCode(te, &project_label, &color_code);
+      time_entry_to_view_item(te, project_label, color_code, out_view_item, "");
     }
   } catch(const Poco::Exception& exc) {
     strncpy(errmsg, exc.displayText().c_str(), errlen);
@@ -1482,16 +1495,22 @@ kopsik_api_result kopsik_split_running_time_entry_at(
     logger().debug("kopsik_stop");
 
     *was_found = 0;
-    kopsik::TimeEntry *new_running_entry = 0;
-    kopsik::error err = app(context)->SplitAt(at, new_running_entry);
+    kopsik::TimeEntry *te = 0;
+    kopsik::error err = app(context)->SplitAt(at, te);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
-    if (new_running_entry) {
+    if (te) {
       *was_found = 1;
-      // FIXME: needs user here
-      time_entry_to_view_item(new_running_entry, 0, out_view_item, "");
+      std::string project_label("");
+      std::string color_code("");
+      app(context)->ProjectLabelAndColorCode(te, &project_label, &color_code);
+      time_entry_to_view_item(te,
+                              project_label,
+                              color_code,
+                              out_view_item,
+                              "");
     }
   } catch(const Poco::Exception& exc) {
     strncpy(errmsg, exc.displayText().c_str(), errlen);
@@ -1523,16 +1542,22 @@ kopsik_api_result kopsik_stop_running_time_entry_at(
     logger().debug("kopsik_stop");
 
     *was_found = 0;
-    kopsik::TimeEntry *stopped = 0;
-    kopsik::error err = app(context)->StopAt(at, stopped);
+    kopsik::TimeEntry *te = 0;
+    kopsik::error err = app(context)->StopAt(at, te);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
-    if (stopped) {
+    if (te) {
       *was_found = 1;
-      // FIXME: needs user
-      time_entry_to_view_item(stopped, 0, out_view_item, "");
+      std::string project_label("");
+      std::string color_code("");
+      app(context)->ProjectLabelAndColorCode(te, &project_label, &color_code);
+      time_entry_to_view_item(te,
+                              project_label,
+                              color_code,
+                              out_view_item,
+                              "");
     }
   } catch(const Poco::Exception& exc) {
     strncpy(errmsg, exc.displayText().c_str(), errlen);
@@ -1570,8 +1595,14 @@ kopsik_api_result kopsik_running_time_entry_view_item(
     }
     if (te) {
       *out_is_tracking = true;
-      // FIXME: needs user
-      time_entry_to_view_item(te, 0, out_item, "");
+      std::string project_label("");
+      std::string color_code("");
+      app(context)->ProjectLabelAndColorCode(te, &project_label, &color_code);
+      time_entry_to_view_item(te,
+                              project_label,
+                              color_code,
+                              out_item,
+                              "");
     }
   } catch(const Poco::Exception& exc) {
     strncpy(errmsg, exc.displayText().c_str(), errlen);
@@ -1649,8 +1680,14 @@ kopsik_api_result kopsik_time_entry_view_items(
       std::string formatted =
         kopsik::Formatter::FormatDurationInSecondsHHMM(duration, 2);
 
-      // FIXME: require user
-      time_entry_to_view_item(te, 0, view_item, formatted);
+      std::string project_label("");
+      std::string color_code("");
+      app(context)->ProjectLabelAndColorCode(te, &project_label, &color_code);
+      time_entry_to_view_item(te,
+                              project_label,
+                              color_code,
+                              view_item,
+                              formatted);
 
       out_list->ViewItems[i] = view_item;
       out_list->Length++;
@@ -1753,12 +1790,12 @@ int kopsik_timeline_is_recording_enabled(
 // Feedback
 
 kopsik_api_result kopsik_feedback_send(
-    void *context,
-    char *errmsg,
-    const unsigned int errlen,
-    const char *topic,
-    const char *details,
-    const char *base64encoded_image) {
+                                       void *context,
+                                       char *errmsg,
+                                       const unsigned int errlen,
+                                       const char *topic,
+                                       const char *details,
+                                       const char *filename) {
     std::stringstream ss;
     ss << "kopsik_feedback_send topic=" << topic << " details=" << details;
     logger().debug(ss.str());
@@ -1766,7 +1803,7 @@ kopsik_api_result kopsik_feedback_send(
     kopsik::error err =
       app(context)->SendFeedback(std::string(topic),
                                  std::string(details),
-                                 std::string(base64encoded_image));
+                                 std::string(filename));
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;

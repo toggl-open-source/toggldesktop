@@ -12,7 +12,8 @@
 
 void time_entry_to_view_item(
     kopsik::TimeEntry *te,
-    kopsik::User *user,
+    const std::string project_and_task_label,
+    const std::string color_code,
     KopsikTimeEntryViewItem *view_item,
     const std::string dateDuration);
 
