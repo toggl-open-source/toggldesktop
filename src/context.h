@@ -165,11 +165,19 @@ class Context {
     void onTimelineUpdateServerSettings(Poco::Util::TimerTask& task);  // NOLINT
     void onSendFeedback(Poco::Util::TimerTask& task);  // NOLINT
 
+    Poco::Mutex db_m_;
     kopsik::Database *db_;
+
+    Poco::Mutex user_m_;
     kopsik::User *user_;
 
+    Poco::Mutex ws_client_m_;
     kopsik::WebSocketClient *ws_client_;
+
+    Poco::Mutex timeline_uploader_m_;
     kopsik::TimelineUploader *timeline_uploader_;
+
+    Poco::Mutex window_change_recorder_m_;
     kopsik::WindowChangeRecorder *window_change_recorder_;
 
     std::string app_name_;
@@ -178,12 +186,11 @@ class Context {
     std::string api_url_;
     std::string timeline_upload_url_;
 
-    Poco::Mutex mutex_;
-
     CustomErrorHandler error_handler_;
 
     std::string update_channel_;
 
+    // FIXME: move into class
     std::string feedback_attachment_path_;
     std::string feedback_subject_;
     std::string feedback_details_;
@@ -200,6 +207,7 @@ class Context {
     Poco::Timestamp next_update_timeline_settings_at_;
 
     // Schedule tasks using a timer:
+    Poco::Mutex timer_m_;
     Poco::Util::Timer timer_;
 };
 

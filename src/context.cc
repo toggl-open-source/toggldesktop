@@ -52,26 +52,31 @@ Context::Context(
 
 Context::~Context() {
   if (window_change_recorder_) {
+    Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
     delete window_change_recorder_;
     window_change_recorder_ = 0;
   }
 
   if (timeline_uploader_) {
+    Poco::Mutex::ScopedLock lock(timeline_uploader_m_);
     delete timeline_uploader_;
     timeline_uploader_ = 0;
   }
 
   if (ws_client_) {
+    Poco::Mutex::ScopedLock lock(ws_client_m_);
     delete ws_client_;
     ws_client_ = 0;
   }
 
   if (db_) {
+    Poco::Mutex::ScopedLock lock(db_m_);
     delete db_;
     db_ = 0;
   }
 
   if (user_) {
+    Poco::Mutex::ScopedLock lock(user_m_);
     delete user_;
     user_ = 0;
   }
@@ -81,17 +86,23 @@ Context::~Context() {
 
 void Context::Shutdown() {
   if (window_change_recorder_) {
+    Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
     window_change_recorder_->Stop();
   }
   if (ws_client_) {
+    Poco::Mutex::ScopedLock lock(ws_client_m_);
     ws_client_->Stop();
   }
   if (timeline_uploader_) {
+    Poco::Mutex::ScopedLock lock(timeline_uploader_m_);
     timeline_uploader_->Stop();
   }
 
   // cancel tasks but allow them finish
-  timer_.cancel(true);
+  {
+    Poco::Mutex::ScopedLock lock(timer_m_);
+    timer_.cancel(true);
+  }
 
   Poco::ThreadPool::defaultPool().joinAll();
 }
@@ -107,8 +118,8 @@ kopsik::error Context::ConfigureProxy() {
   if (!use_proxy) {
     proxy = kopsik::Proxy();  // reset values
   }
-  Poco::Mutex::ScopedLock lock(mutex_);
 
+  Poco::Mutex::ScopedLock lock(ws_client_m_);
   ws_client_->SetProxy(proxy);
 
   return kopsik::noError;
@@ -160,11 +171,11 @@ void Context::sync(const bool full_sync) {
 void Context::FullSync() {
   logger().debug("FullSync");
 
-  Poco::Mutex::ScopedLock lock(mutex_);
-
   next_full_sync_at_ = Poco::Timestamp() + kRequestThrottleMicros;
   Poco::Util::TimerTask::Ptr ptask =
     new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onFullSync);
+
+  Poco::Mutex::ScopedLock lock(timer_m_);
   timer_.schedule(ptask, next_full_sync_at_);
 }
 
@@ -181,11 +192,11 @@ void Context::onFullSync(Poco::Util::TimerTask& task) {  // NOLINT
 void Context::partialSync() {
   logger().debug("partialSync");
 
-  Poco::Mutex::ScopedLock lock(mutex_);
-
   next_partial_sync_at_ = Poco::Timestamp() + kRequestThrottleMicros;
   Poco::Util::TimerTask::Ptr ptask =
     new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onPartialSync);
+
+  Poco::Mutex::ScopedLock lock(timer_m_);
   timer_.schedule(ptask, next_partial_sync_at_);
 }
 
@@ -201,17 +212,18 @@ void Context::onPartialSync(Poco::Util::TimerTask& task) {  // NOLINT
 void Context::SwitchWebSocketOff() {
   logger().debug("SwitchWebSocketOff");
 
-  Poco::Mutex::ScopedLock lock(mutex_);
-
   Poco::Util::TimerTask::Ptr ptask =
     new Poco::Util::TimerTaskAdapter<Context>(
       *this, &Context::onSwitchWebSocketOff);
+
+  Poco::Mutex::ScopedLock lock(timer_m_);
   timer_.schedule(ptask, Poco::Timestamp());
 }
 
 void Context::onSwitchWebSocketOff(Poco::Util::TimerTask& task) {  // NOLINT
   logger().debug("onSwitchWebSocketOff");
 
+  Poco::Mutex::ScopedLock lock(ws_client_m_);
   ws_client_->Stop();
 }
 
@@ -230,8 +242,6 @@ void Context::LoadUpdateFromJSONString(const std::string json) {
     std::stringstream ss;
     ss << "LoadUpdateFromJSONString json=" << json;
     logger().debug(ss.str());
-
-    Poco::Mutex::ScopedLock lock(mutex_);
 
     if (!user_) {
       logger().warning("User is already logged out, cannot load update JSON");
@@ -257,11 +267,11 @@ void Context::LoadUpdateFromJSONString(const std::string json) {
 void Context::SwitchWebSocketOn() {
   logger().debug("SwitchWebSocketOn");
 
-  Poco::Mutex::ScopedLock lock(mutex_);
-
   Poco::Util::TimerTask::Ptr ptask =
     new Poco::Util::TimerTaskAdapter<Context>(
       *this, &Context::onSwitchWebSocketOn);
+
+  Poco::Mutex::ScopedLock lock(timer_m_);
   timer_.schedule(ptask, Poco::Timestamp());
 }
 
@@ -269,6 +279,8 @@ void Context::onSwitchWebSocketOn(Poco::Util::TimerTask& task) {  // NOLINT
   logger().debug("onSwitchWebSocketOn");
 
   poco_assert(!user_->APIToken().empty());
+
+  Poco::Mutex::ScopedLock lock(ws_client_m_);
   ws_client_->Start(this, user_->APIToken(), on_websocket_message);
 }
 
@@ -276,25 +288,25 @@ void Context::onSwitchWebSocketOn(Poco::Util::TimerTask& task) {  // NOLINT
 void Context::SwitchTimelineOff() {
   logger().debug("SwitchTimelineOff");
 
-  Poco::Mutex::ScopedLock lock(mutex_);
-
   Poco::Util::TimerTask::Ptr ptask =
     new Poco::Util::TimerTaskAdapter<Context>(
       *this, &Context::onSwitchTimelineOff);
+
+  Poco::Mutex::ScopedLock lock(timer_m_);
   timer_.schedule(ptask, Poco::Timestamp());
 }
 
 void Context::onSwitchTimelineOff(Poco::Util::TimerTask& task) {  // NOLINT
   logger().debug("onSwitchTimelineOff");
 
-  Poco::Mutex::ScopedLock lock(mutex_);
-
   if (window_change_recorder_) {
+    Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
     delete window_change_recorder_;
     window_change_recorder_ = 0;
   }
 
   if (timeline_uploader_) {
+    Poco::Mutex::ScopedLock lock(timeline_uploader_m_);
     delete timeline_uploader_;
     timeline_uploader_ = 0;
   }
@@ -303,18 +315,16 @@ void Context::onSwitchTimelineOff(Poco::Util::TimerTask& task) {  // NOLINT
 void Context::SwitchTimelineOn() {
   logger().debug("SwitchTimelineOn");
 
-  Poco::Mutex::ScopedLock lock(mutex_);
-
   Poco::Util::TimerTask::Ptr ptask =
     new Poco::Util::TimerTaskAdapter<Context>(
       *this, &Context::onSwitchTimelineOn);
+
+  Poco::Mutex::ScopedLock lock(timer_m_);
   timer_.schedule(ptask, Poco::Timestamp());
 }
 
 void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
   logger().debug("onSwitchTimelineOn");
-
-  Poco::Mutex::ScopedLock lock(mutex_);
 
   if (!user_) {
     return;
@@ -324,22 +334,28 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
     return;
   }
 
-  if (timeline_uploader_) {
-    delete timeline_uploader_;
-    timeline_uploader_ = 0;
+  {
+    Poco::Mutex::ScopedLock lock(timeline_uploader_m_);
+    if (timeline_uploader_) {
+      delete timeline_uploader_;
+      timeline_uploader_ = 0;
+    }
+    timeline_uploader_ = new kopsik::TimelineUploader(
+      user_->ID(),
+      user_->APIToken(),
+      timeline_upload_url_,
+      app_name_,
+      app_version_);
   }
-  timeline_uploader_ = new kopsik::TimelineUploader(
-    user_->ID(),
-    user_->APIToken(),
-    timeline_upload_url_,
-    app_name_,
-    app_version_);
 
-  if (window_change_recorder_) {
-    delete window_change_recorder_;
-    window_change_recorder_ = 0;
+  {
+    Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
+    if (window_change_recorder_) {
+      delete window_change_recorder_;
+      window_change_recorder_ = 0;
+    }
+    window_change_recorder_ = new kopsik::WindowChangeRecorder(user_->ID());
   }
-  window_change_recorder_ = new kopsik::WindowChangeRecorder(user_->ID());
 }
 
 void Context::FetchUpdates() {
@@ -354,12 +370,11 @@ void Context::FetchUpdates() {
     return;
   }
 
-  Poco::Mutex::ScopedLock lock(mutex_);
-
   next_fetch_updates_at_ = Poco::Timestamp() + kRequestThrottleMicros;
-
   Poco::Util::TimerTask::Ptr ptask =
     new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onFetchUpdates);
+
+  Poco::Mutex::ScopedLock lock(timer_m_);
   timer_.schedule(ptask, next_fetch_updates_at_);
 }
 
@@ -443,14 +458,13 @@ const std::string Context::osName() {
 void Context::TimelineUpdateServerSettings() {
   logger().debug("TimelineUpdateServerSettings");
 
-  Poco::Mutex::ScopedLock lock(mutex_);
-
   next_update_timeline_settings_at_ =
     Poco::Timestamp() + kRequestThrottleMicros;
-
   Poco::Util::TimerTask::Ptr ptask =
     new Poco::Util::TimerTaskAdapter<Context>(*this,
         &Context::onTimelineUpdateServerSettings);
+
+  Poco::Mutex::ScopedLock lock(timer_m_);
   timer_.schedule(ptask, next_update_timeline_settings_at_);
 }
 
@@ -539,13 +553,15 @@ kopsik::error Context::SendFeedback(
   if (details.empty()) {
     return kopsik::error("Missing details");
   }
-  Poco::Mutex::ScopedLock lock(mutex_);
   feedback_subject_ = topic;
   feedback_details_ = details;
   feedback_attachment_path_ = filename;
+
   Poco::Util::TimerTask::Ptr ptask =
     new Poco::Util::TimerTaskAdapter<Context>(
       *this, &Context::onSendFeedback);
+
+  Poco::Mutex::ScopedLock lock(timer_m_);
   timer_.schedule(ptask, Poco::Timestamp());
 
   return kopsik::noError;
@@ -586,6 +602,7 @@ void Context::SetTimelineUploadURL(const std::string value) {
 }
 
 void Context::SetWebSocketClientURL(const std::string value) {
+  Poco::Mutex::ScopedLock lock(ws_client_m_);
     if (ws_client_) {
         delete ws_client_;
     }
@@ -611,8 +628,7 @@ kopsik::error Context::SaveSettings(
 void Context::SetDBPath(
     const std::string path) {
 
-  Poco::Mutex::ScopedLock lock(mutex_);
-
+  Poco::Mutex::ScopedLock lock(db_m_);
   if (db_) {
     delete db_;
     db_ = 0;
@@ -626,7 +642,6 @@ kopsik::error Context::CurrentAPIToken(std::string *token) {
 
 kopsik::error Context::SetCurrentAPIToken(
     const std::string token) {
-  Poco::Mutex::ScopedLock lock(mutex_);
   return db_->SetCurrentAPIToken(token);
 }
 
@@ -645,8 +660,7 @@ kopsik::error Context::CurrentUser(kopsik::User **result) {
     return err;
   }
 
-  Poco::Mutex::ScopedLock lock(mutex_);
-
+  Poco::Mutex::ScopedLock lock(user_m_);
   user_ = user;
 
   *result = user_;
@@ -681,13 +695,10 @@ kopsik::error Context::Login(
     return err;
   }
 
-  Poco::Mutex::ScopedLock lock(mutex_);
-
+  Poco::Mutex::ScopedLock lock(user_m_);
   if (user_) {
     delete user_;
-    user_ = 0;
   }
-
   user_ = logging_in;
 
   return save();
@@ -705,13 +716,10 @@ kopsik::error Context::SetLoggedInUserFromJSON(
     return err;
   }
 
-  Poco::Mutex::ScopedLock lock(mutex_);
-
+  Poco::Mutex::ScopedLock lock(user_m_);
   if (user_) {
     delete user_;
-    user_ = 0;
   }
-
   user_ = import;
 
   return save();
@@ -731,9 +739,8 @@ kopsik::error Context::Logout() {
       return err;
     }
 
-    Poco::Mutex::ScopedLock lock(mutex_);
-
     if (user_) {
+      Poco::Mutex::ScopedLock lock(user_m_);
       delete user_;
       user_ = 0;
     }
@@ -1071,6 +1078,7 @@ kopsik::error Context::Stop(kopsik::TimeEntry **stopped_entry) {
   if (!user_) {
     return kopsik::error("Please login to stop time tracking");
   }
+
   std::vector<kopsik::TimeEntry *> stopped = user_->Stop();
   if (stopped.empty()) {
     return kopsik::error("No time entry was found to stop");
@@ -1090,6 +1098,7 @@ kopsik::error Context::SplitAt(
   if (!user_) {
     return kopsik::error("Pleae login to split time entry");
   }
+
   *new_running_entry = user_->SplitAt(at);
   if (!*new_running_entry) {
     return kopsik::error("Failed to split tracking time entry");
@@ -1106,6 +1115,7 @@ kopsik::error Context::StopAt(
   if (!user_) {
     return kopsik::error("Please login to stop running time entry");
   }
+
   *stopped = user_->StopAt(at);
   if (!stopped) {
     return kopsik::error("Time entry not found to stop");
@@ -1156,6 +1166,7 @@ kopsik::error Context::TimeEntries(
     logger().warning("User is already logged out, cannot fetch time entries");
     return kopsik::noError;
   }
+
   user_->SortTimeEntriesByStart();
   for (std::vector<kopsik::TimeEntry *>::const_iterator it =
       user_->related.TimeEntries.begin();
