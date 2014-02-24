@@ -36,27 +36,6 @@ namespace kopsik {
         void parseResponseJSONBody(std::string body);
     };
 
-    class Formatter {
-    public:
-        static std::string FormatDurationInSeconds(const Poco::Int64 value,
-            const std::string format);
-        static std::string FormatDurationInSecondsHHMMSS(
-            const Poco::Int64 value);
-        static std::string FormatDurationInSecondsHHMM(const Poco::Int64 value,
-            const int type);
-        static std::time_t Parse8601(const std::string iso_8601_formatted_date);
-        static int ParseDurationString(const std::string value);
-        static bool parseDurationStringHHMMSS(const std::string value,
-            int *parsed_seconds);
-        static bool parseDurationStringHHMM(const std::string value,
-            int *parsed_seconds);
-        static bool parseDurationStringMMSS(const std::string value,
-            int *parsed_seconds);
-        static std::string Format8601(const std::time_t date);
-        static std::string FormatDateHeader(const std::time_t date);
-        static std::string FormatDateWithTime(const std::time_t date);
-    };
-
     // FIXME: implement base class with common fields, dirtyness etc
 
     class Workspace {
@@ -484,8 +463,6 @@ namespace kopsik {
         void ClearTags();
         void ClearTimeEntries();
 
-        std::string JoinTaskName(Task *t, Project *p, Client *c);
-
         bool HasPremiumWorkspaces();
 
         Workspace *GetWorkspaceByID(const Poco::UInt64 id);
@@ -616,6 +593,29 @@ namespace kopsik {
         std::string email_;
         bool record_timeline_;
         bool store_start_and_stop_time_;
+    };
+
+    class Formatter {
+    public:
+      static std::string JoinTaskName(Task *t, Project *p, Client *c);
+      static std::string FormatDurationInSeconds(const Poco::Int64 value,
+        const std::string format);
+      static std::string FormatDurationInSecondsHHMMSS(
+        const Poco::Int64 value);
+      static std::string FormatDurationInSecondsHHMM(const Poco::Int64 value,
+        const int type);
+      static std::time_t Parse8601(const std::string iso_8601_formatted_date);
+      static int ParseDurationString(const std::string value);
+      static bool parseDurationStringHHMMSS(const std::string value,
+        int *parsed_seconds);
+      static bool parseDurationStringHHMM(const std::string value,
+        int *parsed_seconds);
+      static bool parseDurationStringMMSS(const std::string value,
+        int *parsed_seconds);
+      static std::string Format8601(const std::time_t date);
+      static std::string FormatDateHeader(const std::time_t date);
+      static std::string FormatDateWithTime(const std::time_t date);
+      static std::string EscapeJSONString(const std::string input);
     };
 
     Poco::UInt64 getIDFromJSONNode(JSONNODE *list);
