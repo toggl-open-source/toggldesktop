@@ -1,4 +1,4 @@
-// Copyright 2013 Tanel Lebedev
+// Copyright 2014 Toggl Desktop developers.
 
 #ifndef SRC_TOGGL_API_CLIENT_H_
 #define SRC_TOGGL_API_CLIENT_H_
@@ -500,7 +500,8 @@ namespace kopsik {
         TimeEntry *GetTimeEntryByID(const Poco::UInt64 id);
         TimeEntry *GetTimeEntryByGUID(const guid GUID);
 
-        void CollectPushableObjects(std::vector<TimeEntry *> *result);
+        void CollectPushableTimeEntries(
+            std::vector<TimeEntry *> *result);
         void SortTimeEntriesByStart();
 
         TimeEntry *RunningTimeEntry();

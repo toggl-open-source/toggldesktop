@@ -1,4 +1,4 @@
-// Copyright 2013 Tanel Lebedev
+// Copyright 2014 Toggl Desktop developers.
 
 #include "gtest/gtest.h"
 #include "./toggl_api_client.h"
@@ -31,10 +31,7 @@ namespace kopsik {
     }
 
     TEST(TogglApiClientTest, SaveAndLoadCurrentAPIToken) {
-        Poco::File f(TESTDB);
-        if (f.exists()) {
-            f.remove(false);
-        }
+        wipe_test_db();
         Database db(TESTDB);
 
         std::string api_token("");
@@ -62,10 +59,7 @@ namespace kopsik {
     }
 
     TEST(TogglApiClientTest, UpdatesTimeEntryFromJSON) {
-        Poco::File f(TESTDB);
-        if (f.exists()) {
-            f.remove(false);
-        }
+        wipe_test_db();
         Database db(TESTDB);
 
         User user("kopsik_test", "0.1");
@@ -80,10 +74,7 @@ namespace kopsik {
     }
 
     TEST(TogglApiClientTest, UpdatesTimeEntryFromFullUserJSON) {
-        Poco::File f(TESTDB);
-        if (f.exists()) {
-            f.remove(false);
-        }
+        wipe_test_db();
         Database db(TESTDB);
 
         std::string json = loadTestData();
@@ -106,10 +97,7 @@ namespace kopsik {
     }
 
     TEST(TogglApiClientTest, SavesAndLoadsUserFields) {
-        Poco::File f(TESTDB);
-        if (f.exists()) {
-            f.remove(false);
-        }
+        wipe_test_db();
         Database db(TESTDB);
 
         User user("kopsik_test", "0.1");
@@ -138,10 +126,7 @@ namespace kopsik {
     }
 
     TEST(TogglApiClientTest, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
-        Poco::File f(TESTDB);
-        if (f.exists()) {
-            f.remove(false);
-        }
+        wipe_test_db();
         Database db(TESTDB);
 
         User user("kopsik_test", "0.1");
@@ -181,10 +166,7 @@ namespace kopsik {
 
     TEST(TogglApiClientTest,
             SavesModelsAndKnowsToUpdateWithSeparateUserInstances) {
-        Poco::File f(TESTDB);
-        if (f.exists()) {
-            f.remove(false);
-        }
+        wipe_test_db();
         Database db(TESTDB);
 
         std::string json = loadTestData();
@@ -260,10 +242,7 @@ namespace kopsik {
     }
 
     TEST(TogglApiClientTest, TestStartTimeEntryWithDuration) {
-        Poco::File f(TESTDB);
-        if (f.exists()) {
-            f.remove(false);
-        }
+        wipe_test_db();
         Database db(TESTDB);
 
         User user("kopsik_test", "0.1");
@@ -274,10 +253,7 @@ namespace kopsik {
     }
 
     TEST(TogglApiClientTest, TestStartTimeEntryWithoutDuration) {
-        Poco::File f(TESTDB);
-        if (f.exists()) {
-            f.remove(false);
-        }
+        wipe_test_db();
         Database db(TESTDB);
 
         User user("kopsik_test", "0.1");
@@ -288,10 +264,7 @@ namespace kopsik {
     }
 
     TEST(TogglApiClientTest, TestDeletionSteps) {
-        Poco::File f(TESTDB);
-        if (f.exists()) {
-            f.remove(false);
-        }
+        wipe_test_db();
         Database db(TESTDB);
 
         User user("kopsik_test", "0.1");
@@ -329,10 +302,7 @@ namespace kopsik {
         User user("kopsik_test", "0.1");
         user.LoadFromJSONString(loadTestData(), true, true);
 
-        Poco::File f(TESTDB);
-        if (f.exists()) {
-            f.remove(false);
-        }
+        wipe_test_db();
         Database db(TESTDB);
 
         std::vector<ModelChange> changes;
@@ -430,10 +400,7 @@ namespace kopsik {
             user.related.Clients[0]->GUID());
         ASSERT_EQ(user.ID(), user.related.Clients[0]->UID());
 
-        Poco::File f(TESTDB);
-        if (f.exists()) {
-            f.remove(false);
-        }
+        wipe_test_db();
         Database db(TESTDB);
 
         Poco::UInt64 n;

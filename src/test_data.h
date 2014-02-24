@@ -1,4 +1,4 @@
-// Copyright 2013 kopsik developers
+// Copyright 2014 Toggl Desktop developers.
 
 #ifndef SRC_TEST_DATA_H_
 #define SRC_TEST_DATA_H_

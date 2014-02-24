@@ -1,9 +1,11 @@
-// Copyright 2014 kopsik developers
+// Copyright 2014 Toggl Desktop developers.
 
 #ifndef SRC_CONTEXT_H_
 #define SRC_CONTEXT_H_
 
 #include <string>
+#include <vector>
+#include <map>
 
 #include "./types.h"
 #include "./database.h"
@@ -17,64 +19,136 @@
 
 #include "Poco/Util/Timer.h"
 
+namespace kopsik {
+
 // FIXME: rename
 class Context {
   public:
-    Context();
+    Context(
+      const std::string app_name,
+      const std::string app_version);
     ~Context();
 
+    // Close connections and wait for tasks to finish
     void Shutdown();
-    kopsik::error ConfigureProxy();
-    kopsik::error Save();
 
+    // Start tasks
     void FullSync();
-    void PartialSync();
     void SwitchWebSocketOff();
     void SwitchWebSocketOn();
     void SwitchTimelineOff();
     void SwitchTimelineOn();
     void FetchUpdates();
     void TimelineUpdateServerSettings();
-    void SendFeedback();
+    kopsik::error SendFeedback(
+      const std::string topic,
+      const std::string details,
+      const std::string base64encoded_image);
 
-    // FIXME: make private
-
-    kopsik::Database *db;
-    kopsik::User *user;
-
-    kopsik::WebSocketClient *ws_client;
-    kopsik::TimelineUploader *timeline_uploader;
-    kopsik::WindowChangeRecorder *window_change_recorder;
-
-    std::string app_name;
-    std::string app_version;
-
-    std::string api_url;
-    std::string timeline_upload_url;
-
-    Poco::Mutex mutex;
-
-    CustomErrorHandler error_handler;
-
-    std::string update_channel;
-
-    std::string feedback_attachment_path_;
-    std::string feedback_subject;
-    std::string feedback_details;
+    // Load model update from JSON string (from WebSocket)
+    void LoadUpdateFromJSONString(const std::string json);
 
     // FIXME: dont use C callbacks in C++ class
-    KopsikViewItemChangeCallback change_callback;
-    KopsikErrorCallback on_error_callback;
-    KopsikCheckUpdateCallback check_updates_callback;
+    void SetChangeCallback(KopsikViewItemChangeCallback cb);
+    void SetOnErrorCallback(KopsikErrorCallback cb);
+    void SetCheckUpdatesCallback(KopsikCheckUpdateCallback cb);
+
+    // Apply proxy settings
+    kopsik::error ConfigureProxy();
+
+    // Configure
+    void SetAPIURL(const std::string value);
+    void SetTimelineUploadURL(const std::string value);
+    void SetWebSocketClientURL(const std::string value);
+    void SetDBPath(
+      const std::string path);
+    kopsik::error LoadSettings(
+      bool *use_proxy,
+      kopsik::Proxy *proxy,
+      bool *use_idle_settings) const;
+    kopsik::error SaveSettings(
+      const bool use_proxy,
+      const kopsik::Proxy *proxy,
+      const bool use_idle_detection);
+
+    // Session management
+    kopsik::error CurrentAPIToken(std::string *token);
+    kopsik::error SetCurrentAPIToken(const std::string token);
+    kopsik::error CurrentUser(kopsik::User *result);
+    kopsik::error Login(
+      const std::string email,
+      const std::string password);
+    kopsik::error Logout();
+    kopsik::error SetLoggedInUserFromJSON(const std::string json);
+    kopsik::error ClearCache();
+
+    bool UserHasPremiumWorkspaces() const;
+    void CollectPushableTimeEntries(
+      std::vector<kopsik::TimeEntry *> *models) const;
+    std::vector<std::string> Tags() const;
+    kopsik::TimeEntry *GetTimeEntryByGUID(const std::string GUID) const;
+
+    kopsik::TimeEntry *Start(
+      const std::string description,
+      const std::string duration,
+      const Poco::UInt64 task_id,
+      const Poco::UInt64 project_id);
+    kopsik::TimeEntry *ContinueLatest();
+    kopsik::TimeEntry *Continue(const std::string GUID);
+    kopsik::error SetTimeEntryDuration(
+      const std::string GUID,
+      const std::string duration);
+    kopsik::error DeleteTimeEntryByGUID(const std::string GUID);
+    kopsik::error SetTimeEntryProject(
+      const std::string GUID,
+      const Poco::UInt64 task_id,
+      const Poco::UInt64 project_id);
+    kopsik::error SetTimeEntryStartISO8601(
+      const std::string GUID,
+      const std::string value);
+    kopsik::error SetTimeEntryEndISO8601(
+      const std::string GUID,
+      const std::string value);
+    kopsik::error SetTimeEntryTags(
+      const std::string GUID,
+      const std::string value);
+    kopsik::error SetTimeEntryBillable(
+      const std::string GUID,
+      const bool value);
+    kopsik::error SetTimeEntryDescription(
+      const std::string GUID,
+      const std::string value);
+    kopsik::error Stop(kopsik::TimeEntry *stopped_entry);
+    kopsik::error SplitAt(
+      const Poco::Int64 at,
+      kopsik::TimeEntry *new_running_entry);
+    kopsik::error StopAt(
+      const Poco::Int64 at,
+      kopsik::TimeEntry *stopped);
+    kopsik::error RunningTimeEntry(
+      kopsik::TimeEntry *running);
+    kopsik::error ToggleTimelineRecording();
+    kopsik::error TimeEntries(
+      std::map<std::string, Poco::Int64> *date_durations,
+      std::vector<kopsik::TimeEntry *> *visible);
+    kopsik::error TrackedPerDateHeader(
+      const std::string date_header,
+      int *sum);
+    bool RecordTimeline();
+    kopsik::error SaveUpdateChannel(
+      const std::string channel);
+    kopsik::error LoadUpdateChannel(std::string *channel);
 
   private:
-    const std::string updateURL();
+    const std::string updateURL() const;
     static const std::string osName();
     Poco::Logger &logger() { return Poco::Logger::get("Context"); }
-    std::string feedbackJSON();
-    std::string feedback_filename();
-    std::string base64encode_attachment();
+    const std::string feedbackJSON() const;
+    const std::string feedback_filename() const;
+    const std::string base64encode_attachment() const;
     void sync(const bool full_sync);
+    kopsik::error save();
+    void partialSync();
 
     // timer_ callbacks
     void onFullSync(Poco::Util::TimerTask& task);  // NOLINT
@@ -87,13 +161,44 @@ class Context {
     void onTimelineUpdateServerSettings(Poco::Util::TimerTask& task);  // NOLINT
     void onSendFeedback(Poco::Util::TimerTask& task);  // NOLINT
 
+    kopsik::Database *db_;
+    kopsik::User *user_;
+
+    kopsik::WebSocketClient *ws_client_;
+    kopsik::TimelineUploader *timeline_uploader_;
+    kopsik::WindowChangeRecorder *window_change_recorder_;
+
+    std::string app_name_;
+    std::string app_version_;
+
+    std::string api_url_;
+    std::string timeline_upload_url_;
+
+    Poco::Mutex mutex_;
+
+    CustomErrorHandler error_handler_;
+
+    std::string update_channel_;
+
+    std::string feedback_attachment_path_;
+    std::string feedback_subject_;
+    std::string feedback_details_;
+
+    // FIXME: dont use C callbacks in C++ class
+    KopsikViewItemChangeCallback change_callback_;
+    KopsikErrorCallback on_error_callback_;
+    KopsikCheckUpdateCallback check_updates_callback_;
+
+    // Tasks are scheduled at:
     Poco::Timestamp next_full_sync_at_;
     Poco::Timestamp next_partial_sync_at_;
     Poco::Timestamp next_fetch_updates_at_;
     Poco::Timestamp next_update_timeline_settings_at_;
 
-    // schedule background tasks using this timer:
+    // Schedule tasks using a timer:
     Poco::Util::Timer timer_;
 };
+
+}  // namespace kopsik
 
 #endif  // SRC_CONTEXT_H_

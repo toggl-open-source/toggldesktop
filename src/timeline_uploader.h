@@ -1,4 +1,4 @@
-// Copyright (c) 2013 Toggl
+// Copyright 2014 Toggl Desktop developers.
 
 #ifndef SRC_TIMELINE_UPLOADER_H_
 #define SRC_TIMELINE_UPLOADER_H_

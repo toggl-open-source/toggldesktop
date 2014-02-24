@@ -1,9 +1,3 @@
-//
-//  CustomerErrorHandler.cpp
-//  kopsik
-//
-//  Created by Tanel Lebedev on 26/12/2013.
-//  Copyright (c) 2013 kopsik developers. All rights reserved.
-//
+// Copyright 2014 Toggl Desktop developers.
 
 #include "./CustomErrorHandler.h"

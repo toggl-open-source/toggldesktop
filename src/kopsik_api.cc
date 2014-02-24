@@ -1,4 +1,6 @@
-// Copyright 2013 Tanel Lebedev
+// Copyright 2014 Toggl Desktop developers.
+
+// No exceptions should be thrown from this library.
 
 #include <cstring>
 #include <set>
@@ -22,17 +24,18 @@
 #include "Poco/SimpleFileChannel.h"
 #include "Poco/FormattingChannel.h"
 #include "Poco/PatternFormatter.h"
-#include "Poco/ScopedLock.h"
-#include "Poco/Mutex.h"
-#include "Poco/Thread.h"
-#include "Poco/Runnable.h"
 
-Poco::Logger &logger() {
+inline Poco::Logger &logger() {
   return Poco::Logger::get("kopsik_api");
 }
 
-Poco::Logger &rootLogger() {
+inline Poco::Logger &rootLogger() {
   return Poco::Logger::get("");
+}
+
+inline kopsik::Context *app(void *context) {
+  poco_assert(context);
+  return reinterpret_cast<kopsik::Context *>(context);
 }
 
 int kopsik_is_networking_error(
@@ -77,38 +80,26 @@ void *kopsik_context_init(
   poco_assert(app_name);
   poco_assert(app_version);
 
-  Context *ctx = new Context();
+  kopsik::Context *ctx =
+    new kopsik::Context(std::string(app_name), std::string(app_version));
 
-  ctx->change_callback = change_callback;
-  ctx->on_error_callback = on_error_callback;
-  ctx->check_updates_callback = check_updates_callback;
+  ctx->SetChangeCallback(change_callback);
+  ctx->SetOnErrorCallback(on_error_callback);
+  ctx->SetCheckUpdatesCallback(check_updates_callback);
 
-  ctx->app_name = std::string(app_name);
-  ctx->app_version = std::string(app_version);
-
-  ctx->api_url = "https://www.toggl.com";
-  ctx->timeline_upload_url = "https://timeline.toggl.com";
-
-  ctx->ws_client = new kopsik::WebSocketClient("https://stream.toggl.com",
-    ctx->app_name, ctx->app_version);
+  ctx->SetAPIURL("https://www.toggl.com");
+  ctx->SetTimelineUploadURL("https://timeline.toggl.com");
+  ctx->SetWebSocketClientURL("https://stream.toggl.com");
 
   return ctx;
 }
 
-void kopsik_context_shutdown(
-    void *context) {
-  poco_assert(context);
-
-  Context *ctx = reinterpret_cast<Context *>(context);
-  ctx->Shutdown();
+void kopsik_context_shutdown(void *context) {
+  app(context)->Shutdown();
 }
 
-void kopsik_context_clear(
-    void *context) {
-  poco_assert(context);
-
-  Context *ctx = reinterpret_cast<Context *>(context);
-  delete ctx;
+void kopsik_context_clear(void *context) {
+  delete app(context);
 }
 
 // Configuration API.
@@ -147,19 +138,16 @@ kopsik_api_result kopsik_get_settings(
     unsigned int errlen,
     KopsikSettings *settings) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(settings);
 
-    Context *ctx = reinterpret_cast<Context *>(context);
-
     bool use_proxy(false);
     bool use_idle_detection(false);
     kopsik::Proxy proxy;
-    kopsik::error err = ctx->db->LoadSettings(&use_proxy,
-                                              &proxy,
-                                              &use_idle_detection);
+    kopsik::error err = app(context)->LoadSettings(&use_proxy,
+                                          &proxy,
+                                          &use_idle_detection);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -170,12 +158,9 @@ kopsik_api_result kopsik_get_settings(
       settings->UseProxy = 1;
     }
 
-    poco_assert(!settings->ProxyHost);
     settings->ProxyHost = strdup(proxy.host.c_str());
     settings->ProxyPort = proxy.port;
-    poco_assert(!settings->ProxyUsername);
     settings->ProxyUsername = strdup(proxy.username.c_str());
-    poco_assert(!settings->ProxyPassword);
     settings->ProxyPassword = strdup(proxy.password.c_str());
 
     settings->UseIdleDetection = 0;
@@ -206,16 +191,11 @@ kopsik_api_result kopsik_set_settings(
     const char *proxy_password,
     const int use_idle_detection) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(proxy_host);
     poco_assert(proxy_username);
     poco_assert(proxy_password);
-
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     kopsik::Proxy proxy;
     proxy.host = std::string(proxy_host);
@@ -223,19 +203,15 @@ kopsik_api_result kopsik_set_settings(
     proxy.username = std::string(proxy_username);
     proxy.password = std::string(proxy_password);
 
-    kopsik::error err = ctx->db->SaveSettings(use_proxy,
-                                              &proxy,
-                                              use_idle_detection);
+    kopsik::error err = app(context)->SaveSettings(use_proxy,
+                                          &proxy,
+                                          use_idle_detection);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
 
-    err = ctx->ConfigureProxy();
-    if (err != kopsik::noError) {
-      strncpy(errmsg, err.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
-    }
+    return kopsik_configure_proxy(context, errmsg, errlen);
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -254,13 +230,10 @@ kopsik_api_result kopsik_configure_proxy(
     char *errmsg,
     unsigned int errlen) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
 
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    kopsik::error err = ctx->ConfigureProxy();
+    kopsik::error err = app(context)->ConfigureProxy();
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -278,14 +251,6 @@ kopsik_api_result kopsik_configure_proxy(
   return KOPSIK_API_SUCCESS;
 }
 
-void kopsik_test_set_https_client(
-    void *context,
-    void *client) {
-  poco_assert(context);
-  poco_assert(client);
-  // FIXME:
-}
-
 kopsik_api_result kopsik_set_db_path(
     void *context,
     char *errmsg,
@@ -293,22 +258,13 @@ kopsik_api_result kopsik_set_db_path(
     const char *path) {
   kopsik::error err = kopsik::noError;
   try {
-    poco_assert(context);
     poco_assert(path);
 
     std::stringstream ss;
     ss << "kopsik_set_db_path path=" << path;
     logger().debug(ss.str());
 
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-    if (ctx->db) {
-      delete ctx->db;
-      ctx->db = 0;
-    }
-    ctx->db = new kopsik::Database(path);
+    app(context)->SetDBPath(std::string(path));
   } catch(const Poco::Exception& exc) {
     err = exc.displayText();
   } catch(const std::exception& ex) {
@@ -323,8 +279,7 @@ kopsik_api_result kopsik_set_db_path(
   return KOPSIK_API_SUCCESS;
 }
 
-void kopsik_set_log_path(
-    const char *path) {
+void kopsik_set_log_path(const char *path) {
   poco_assert(path);
 
   Poco::AutoPtr<Poco::SimpleFileChannel> simpleFileChannel(
@@ -341,8 +296,7 @@ void kopsik_set_log_path(
   rootLogger().setLevel(Poco::Message::PRIO_DEBUG);
 }
 
-void kopsik_set_log_level(
-    const char *level) {
+void kopsik_set_log_level(const char *level) {
   poco_assert(level);
 
   rootLogger().setLevel(level);
@@ -351,27 +305,17 @@ void kopsik_set_log_level(
 void kopsik_set_api_url(
     void *context,
     const char *api_url) {
-  poco_assert(context);
   poco_assert(api_url);
 
-  Context *ctx = reinterpret_cast<Context *>(context);
-
-  Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-  ctx->api_url = api_url;
+  app(context)->SetAPIURL(std::string(api_url));
 }
 
 void kopsik_set_websocket_url(
     void *context,
     const char *websocket_url) {
-  poco_assert(context);
   poco_assert(websocket_url);
 
-  Context *ctx = reinterpret_cast<Context *>(context);
-
-  Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-  ctx->ws_client->SetWebsocketURL(websocket_url);
+  app(context)->SetWebSocketClientURL(websocket_url);
 }
 
 // User API.
@@ -400,34 +344,30 @@ kopsik_api_result kopsik_current_user(
     unsigned int errlen,
     KopsikUser *out_user) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(out_user);
 
+    out_user = 0;
+
     logger().debug("kopsik_current_user");
 
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-    if (!ctx->user) {
-      kopsik::User *user = new kopsik::User(ctx->app_name, ctx->app_version);
-      kopsik::error err = ctx->db->LoadCurrentUser(user, true);
-      if (err != kopsik::noError) {
-        delete user;
-        strncpy(errmsg, err.c_str(), errlen);
-        return KOPSIK_API_FAILURE;
-      }
-      ctx->user = user;
+    kopsik::User *current_user = 0;
+    kopsik::error err = app(context)->CurrentUser(current_user);
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
     }
-    poco_assert(ctx->user);
+
+    if (!current_user) {
+      return KOPSIK_API_SUCCESS;
+    }
     if (out_user->Fullname) {
       free(out_user->Fullname);
       out_user->Fullname = 0;
     }
-    out_user->Fullname = strdup(ctx->user->Fullname().c_str());
-    out_user->ID = (unsigned int)ctx->user->ID();
+    out_user->Fullname = strdup(current_user->Fullname().c_str());
+    out_user->ID = (unsigned int)current_user->ID();
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -447,7 +387,6 @@ kopsik_api_result kopsik_set_api_token(
     unsigned int errlen,
     const char *api_token) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(api_token);
@@ -456,11 +395,7 @@ kopsik_api_result kopsik_set_api_token(
     ss << "kopsik_set_api_token api_token=" << api_token;
     logger().debug(ss.str());
 
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-    kopsik::error err = ctx->db->SetCurrentAPIToken(api_token);
+    kopsik::error err = app(context)->SetCurrentAPIToken(api_token);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -485,16 +420,13 @@ kopsik_api_result kopsik_get_api_token(
     char *str,
     unsigned int max_strlen) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(str);
     poco_assert(max_strlen);
 
-    Context *ctx = reinterpret_cast<Context *>(context);
-
     std::string token("");
-    kopsik::error err = ctx->db->CurrentAPIToken(&token);
+    kopsik::error err = app(context)->CurrentAPIToken(&token);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -513,6 +445,37 @@ kopsik_api_result kopsik_get_api_token(
   return KOPSIK_API_SUCCESS;
 }
 
+kopsik_api_result kopsik_set_logged_in_user(
+    void *context,
+    char *errmsg,
+    unsigned int errlen,
+    const char *json) {
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(json);
+
+  try {
+    logger().debug("kopsik_set_logged_in_user");
+
+    kopsik::error err =
+      app(context)->SetLoggedInUserFromJSON(std::string(json));
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+    }
+  } catch(const Poco::Exception& exc) {
+    strncpy(errmsg, exc.displayText().c_str(), errlen);
+    return KOPSIK_API_FAILURE;
+  } catch(const std::exception& ex) {
+    strncpy(errmsg, ex.what(), errlen);
+    return KOPSIK_API_FAILURE;
+  } catch(const std::string& ex) {
+    strncpy(errmsg, ex.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  return KOPSIK_API_SUCCESS;
+}
+
 kopsik_api_result kopsik_login(
     void *context,
     char *errmsg,
@@ -520,7 +483,6 @@ kopsik_api_result kopsik_login(
     const char *in_email,
     const char *in_password) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(in_email);
@@ -541,46 +503,7 @@ kopsik_api_result kopsik_login(
       return KOPSIK_API_FAILURE;
     }
 
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    kopsik::User *user = new kopsik::User(ctx->app_name, ctx->app_version);
-
-    kopsik::HTTPSClient https_client(ctx->api_url,
-                                     ctx->app_name,
-                                     ctx->app_version);
-    kopsik::error err = user->Login(&https_client, email, password);
-    if (err != kopsik::noError) {
-      delete user;
-      strncpy(errmsg, err.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    poco_assert(user->ID() > 0);
-
-    err = ctx->db->LoadUserByID(user->ID(), user, true);
-    if (err != kopsik::noError) {
-      delete user;
-      strncpy(errmsg, err.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-    err = ctx->db->SetCurrentAPIToken(user->APIToken());
-    if (err != kopsik::noError) {
-      delete user;
-      strncpy(errmsg, err.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    if (ctx->user) {
-      delete ctx->user;
-      ctx->user = 0;
-    }
-
-    ctx->user = user;
-
-    err = ctx->Save();
+    kopsik::error err = app(context)->Login(email, password);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -602,43 +525,17 @@ kopsik_api_result kopsik_logout(
     void *context,
     char *errmsg,
     unsigned int errlen) {
-  try {
-    poco_assert(context);
-    poco_assert(errmsg);
-    poco_assert(errlen);
+  poco_assert(errmsg);
+  poco_assert(errlen);
 
-    logger().debug("kopsik_logout");
+  logger().debug("kopsik_logout");
 
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    if (!ctx->user) {
-      return KOPSIK_API_SUCCESS;
-    }
-
-    ctx->Shutdown();
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-    kopsik::error err = ctx->db->ClearCurrentAPIToken();
-    if (err != kopsik::noError) {
-      strncpy(errmsg, err.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    if (ctx->user) {
-      delete ctx->user;
-      ctx->user = 0;
-    }
-  } catch(const Poco::Exception& exc) {
-      strncpy(errmsg, exc.displayText().c_str(), errlen);
-      return KOPSIK_API_FAILURE;
-  } catch(const std::exception& ex) {
-      strncpy(errmsg, ex.what(), errlen);
-      return KOPSIK_API_FAILURE;
-  } catch(const std::string& ex) {
-      strncpy(errmsg, ex.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+  kopsik::error err = app(context)->Logout();
+  if (err != kopsik::noError) {
+    strncpy(errmsg, err.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   }
+
   return KOPSIK_API_SUCCESS;
 }
 
@@ -646,37 +543,17 @@ kopsik_api_result kopsik_clear_cache(
     void *context,
     char *errmsg,
     unsigned int errlen) {
-  try {
-    poco_assert(context);
-    poco_assert(errmsg);
-    poco_assert(errlen);
+  poco_assert(errmsg);
+  poco_assert(errlen);
 
-    logger().debug("kopsik_logout");
+  logger().debug("kopsik_clear_cache");
 
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    if (!ctx->user) {
-      return KOPSIK_API_SUCCESS;
-    }
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-    kopsik::error err = ctx->db->DeleteUser(ctx->user, true);
-    if (err != kopsik::noError) {
-      strncpy(errmsg, err.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
-    }
-  } catch(const Poco::Exception& exc) {
-      strncpy(errmsg, exc.displayText().c_str(), errlen);
-      return KOPSIK_API_FAILURE;
-  } catch(const std::exception& ex) {
-      strncpy(errmsg, ex.what(), errlen);
-      return KOPSIK_API_FAILURE;
-  } catch(const std::string& ex) {
-      strncpy(errmsg, ex.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+  kopsik::error err = app(context)->ClearCache();
+  if (err != kopsik::noError) {
+    strncpy(errmsg, err.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   }
-  return kopsik_logout(context, errmsg, errlen);
+  return KOPSIK_API_SUCCESS;
 }
 
 kopsik_api_result kopsik_user_has_premium_workspaces(
@@ -685,21 +562,12 @@ kopsik_api_result kopsik_user_has_premium_workspaces(
     unsigned int errlen,
     int *has_premium_workspaces) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(has_premium_workspaces);
 
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    if (!ctx->user) {
-      strncpy(errmsg, "Please login to check if you have premium workspaces",
-              errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
     *has_premium_workspaces = 0;
-    if (ctx->user->HasPremiumWorkspaces()) {
+    if (app(context)->UserHasPremiumWorkspaces()) {
       *has_premium_workspaces = 1;
     }
   } catch(const Poco::Exception& exc) {
@@ -723,21 +591,15 @@ kopsik_api_result kopsik_pushable_models(
     unsigned int errlen,
     KopsikPushableModelStats *stats) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(stats);
 
     logger().debug("kopsik_pushable_models");
 
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    if (!ctx->user) {
-      strncpy(errmsg, "Please login to check if sync is required", errlen);
-      return KOPSIK_API_FAILURE;
-    }
     std::vector<kopsik::TimeEntry *> pushable;
-    ctx->user->CollectPushableObjects(&pushable);
+    app(context)->CollectPushableTimeEntries(&pushable);
+
     stats->TimeEntries = 0;
     for (std::vector<kopsik::TimeEntry *>::const_iterator it = pushable.begin();
       it != pushable.end();
@@ -757,15 +619,9 @@ kopsik_api_result kopsik_pushable_models(
   return KOPSIK_API_SUCCESS;
 }
 
-void kopsik_sync(
-    void *context) {
-  poco_assert(context);
-
+void kopsik_sync(void *context) {
   logger().debug("kopsik_sync");
-
-  Context *ctx = reinterpret_cast<Context *>(context);
-
-  ctx->FullSync();
+  app(context)->FullSync();
 }
 
 // Autocomplete list
@@ -802,14 +658,13 @@ kopsik_api_result kopsik_autocomplete_items(
     const unsigned int include_tasks,
     const unsigned int include_projects) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(list);
 
     logger().debug("kopsik_autocomplete_items");
 
-    Context *ctx = reinterpret_cast<Context *>(context);
+    /* FIXME: collect autocomplete items
 
     if (!ctx->user) {
       // User is already logged out
@@ -965,6 +820,7 @@ kopsik_api_result kopsik_autocomplete_items(
 
     size_t list_size = autocomplete_items.size();
 
+    // FIXME: get rid of malloc, use a list
     KopsikAutocompleteItem *tmp = autocomplete_item_init();
     void *m = malloc(list_size * sizeof(tmp));
     autocomplete_item_clear(tmp);
@@ -976,6 +832,8 @@ kopsik_api_result kopsik_autocomplete_items(
       list->ViewItems[list->Length] = autocomplete_items[i];
       list->Length++;
     }
+     
+    */
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -996,29 +854,12 @@ kopsik_api_result kopsik_tags(
     char *errmsg,
     unsigned int errlen,
     KopsikTagViewItem **first) {
-  poco_assert(context);
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(first);
   poco_assert(!*first);
 
-  Context *ctx = reinterpret_cast<Context *>(context);
-
-  std::set<std::string> unique_names;
-  std::vector<std::string> tags;
-  for (std::vector<kopsik::Tag *>::const_iterator it =
-      ctx->user->related.Tags.begin();
-        it != ctx->user->related.Tags.end();
-        it++) {
-    kopsik::Tag *tag = *it;
-    if (unique_names.find(tag->Name()) != unique_names.end()) {
-      continue;
-    }
-    unique_names.insert(tag->Name());
-    tags.push_back(tag->Name());
-  }
-
-  std::sort(tags.rbegin(), tags.rend());
+  std::vector<std::string> tags = app(context)->Tags();
 
   *first = 0;
   for (std::vector<std::string>::const_iterator it = tags.begin();
@@ -1145,21 +986,11 @@ kopsik_api_result kopsik_start(
     const unsigned int project_id,
     KopsikTimeEntryViewItem *out_view_item) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(out_view_item);
 
     logger().debug("kopsik_start");
-
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    if (!ctx->user) {
-      strncpy(errmsg, "Please login to start time tracking", errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
 
     std::string desc("");
     if (description) {
@@ -1171,17 +1002,10 @@ kopsik_api_result kopsik_start(
       dur = std::string(duration);
     }
 
-    kopsik::TimeEntry *te = ctx->user->Start(desc, dur, task_id, project_id);
-    kopsik::error err = ctx->Save();
-    if (err != kopsik::noError) {
-      strncpy(errmsg, err.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    time_entry_to_view_item(te, ctx->user, out_view_item, "");
-
-    if (te && te->NeedsPush()) {
-      ctx->PartialSync();
+    kopsik::TimeEntry *te = app(context)->Start(desc, dur, task_id, project_id);
+    if (te) {
+      // FIXME: need user instance
+      time_entry_to_view_item(te, 0, out_view_item, "");
     }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
@@ -1204,7 +1028,6 @@ kopsik_api_result kopsik_time_entry_view_item_by_guid(
     KopsikTimeEntryViewItem *view_item,
     int *was_found) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(guid);
@@ -1216,21 +1039,13 @@ kopsik_api_result kopsik_time_entry_view_item_by_guid(
     logger().trace(ss.str());
 
     std::string GUID(guid);
-    if (GUID.empty()) {
-      strncpy(errmsg, "Missing GUID", errlen);
-      return KOPSIK_API_FAILURE;
-    }
+    poco_assert(!GUID.empty());
 
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    if (!ctx->user) {
-      strncpy(errmsg, "Please login to load time entry data", errlen);
-      return KOPSIK_API_FAILURE;
-    }
-    kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
+    kopsik::TimeEntry *te = app(context)->GetTimeEntryByGUID(GUID);
     if (te) {
       *was_found = 1;
-      time_entry_to_view_item(te, ctx->user, view_item, "");
+      // FIXME: user rquired here
+      time_entry_to_view_item(te, 0, view_item, "");
     } else {
       *was_found = 0;
     }
@@ -1254,7 +1069,6 @@ kopsik_api_result kopsik_continue(
     const char *guid,
     KopsikTimeEntryViewItem *view_item) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(guid);
@@ -1265,38 +1079,17 @@ kopsik_api_result kopsik_continue(
     logger().debug(ss.str());
 
     std::string GUID(guid);
+
     if (GUID.empty()) {
       strncpy(errmsg, "Missing GUID", errlen);
       return KOPSIK_API_FAILURE;
     }
 
-    Context *ctx = reinterpret_cast<Context *>(context);
+    kopsik::TimeEntry *te = app(context)->Continue(GUID);
 
-    if (!ctx->user) {
-      strncpy(errmsg, "Please login to continue time tracking", errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-    kopsik::TimeEntry *te = ctx->user->Continue(GUID);
-    if (!te) {
-      std::stringstream ss;
-      ss << "Time entry not found" << GUID;
-      logger().error(ss.str());
-      return KOPSIK_API_FAILURE;
-    }
-
-    kopsik::error err = ctx->Save();
-    if (err != kopsik::noError) {
-      strncpy(errmsg, err.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    time_entry_to_view_item(te, ctx->user, view_item, "");
-
-    if (te && te->NeedsPush()) {
-      ctx->PartialSync();
+    if (te) {
+      // FIXME: needs user
+      time_entry_to_view_item(te, 0, view_item, "");
     }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
@@ -1318,49 +1111,19 @@ kopsik_api_result kopsik_continue_latest(
     KopsikTimeEntryViewItem *view_item,
     int *was_found) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(view_item);
     poco_assert(was_found);
 
+    *was_found = 0;
+
     logger().debug("kopsik_continue_latest");
 
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    if (!ctx->user) {
-      strncpy(errmsg, "Please login to continue tracking last time entry",
-              errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-    ctx->user->SortTimeEntriesByStart();
-
-    kopsik::TimeEntry *latest = ctx->user->Latest();
-    if (!latest) {
-      *was_found = 0;
-      return KOPSIK_API_SUCCESS;
-    }
-
-    kopsik::TimeEntry *te = ctx->user->Continue(latest->GUID());
-    if (!te) {
-      std::stringstream ss;
-      ss << "Time entry not found" << latest->GUID();
-      logger().error(ss.str());
-      return KOPSIK_API_FAILURE;
-    }
-
-    kopsik::error err = ctx->Save();
-    if (err != kopsik::noError) {
-      strncpy(errmsg, err.c_str(), errlen);
-      return KOPSIK_API_SUCCESS;
-    }
-    *was_found = 1;
-    time_entry_to_view_item(te, ctx->user, view_item, "");
-
-    if (te && te->NeedsPush()) {
-      ctx->PartialSync();
+    kopsik::TimeEntry *te = app(context)->ContinueLatest();
+    if (te) {
+      *was_found = 1;
+      time_entry_to_view_item(te, 0, view_item, "");
     }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
@@ -1381,7 +1144,6 @@ kopsik_api_result kopsik_delete_time_entry(
     unsigned int errlen,
     const char *guid) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(guid);
@@ -1396,33 +1158,11 @@ kopsik_api_result kopsik_delete_time_entry(
       return KOPSIK_API_FAILURE;
     }
 
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    if (!ctx->user) {
-      strncpy(errmsg, "Please login to delete time entry", errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-    kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
-    poco_assert(te);
-    te->SetDeletedAt(time(0));
-    te->SetUIModifiedAt(time(0));
-
-    kopsik::ModelChange mc("time_entry", "delete", te->ID(), te->GUID());
-    KopsikModelChange *change = model_change_init();
-    model_change_to_change_item(mc, *change);
-    ctx->change_callback(KOPSIK_API_SUCCESS, 0, change);
-    model_change_clear(change);
-
-    kopsik::error err = ctx->Save();
+    kopsik::error err = app(context)->DeleteTimeEntryByGUID(GUID);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
-
-    ctx->PartialSync();
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1443,7 +1183,6 @@ kopsik_api_result kopsik_set_time_entry_duration(
     const char *guid,
     const char *value) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(guid);
@@ -1454,37 +1193,11 @@ kopsik_api_result kopsik_set_time_entry_duration(
         << ", value=" << value;
     logger().debug(ss.str());
 
-    std::string GUID(guid);
-    if (GUID.empty()) {
-      strncpy(errmsg, "Missing GUID", errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    if (!ctx->user) {
-      strncpy(errmsg, "Please login to set time entry duration", errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-    kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
-    poco_assert(te);
-    te->SetDurationString(std::string(value));
-
-    if (te->Dirty()) {
-      te->SetUIModifiedAt(time(0));
-    }
-
-    kopsik::error err = ctx->Save();
+    kopsik::error err = app(context)->SetTimeEntryDuration(std::string(guid),
+                                                           std::string(value));
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
-    }
-
-    if (te && te->NeedsPush()) {
-      ctx->PartialSync();
     }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
@@ -1507,51 +1220,15 @@ kopsik_api_result kopsik_set_time_entry_project(
     const unsigned int task_id,
     const unsigned int project_id) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(guid);
-
-    std::string GUID(guid);
-    if (GUID.empty()) {
-      strncpy(errmsg, "Missing GUID", errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    if (!ctx->user) {
-      strncpy(errmsg, "Please login to select project", errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-    kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
-    poco_assert(te);
-
-    if (project_id) {
-      kopsik::Project *p = ctx->user->GetProjectByID(project_id);
-      if (p) {
-        te->SetBillable(p->Billable());
-      }
-    }
-
-    te->SetTID(task_id);
-    te->SetPID(project_id);
-
-    if (te->Dirty()) {
-      te->SetUIModifiedAt(time(0));
-    }
-
-    kopsik::error err = ctx->Save();
+    kopsik::error err = app(context)->SetTimeEntryProject(std::string(guid),
+                                                          task_id,
+                                                          project_id);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
-    }
-
-    if (te && te->NeedsPush()) {
-      ctx->PartialSync();
     }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
@@ -1573,7 +1250,6 @@ kopsik_api_result kopsik_set_time_entry_start_iso_8601(
     const char *guid,
     const char *value) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(guid);
@@ -1584,37 +1260,12 @@ kopsik_api_result kopsik_set_time_entry_start_iso_8601(
         << ", value=" << value;
     logger().debug(ss.str());
 
-    std::string GUID(guid);
-    if (GUID.empty()) {
-      strncpy(errmsg, "Missing GUID", errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    if (!ctx->user) {
-      strncpy(errmsg, "Please login to change time entry start time", errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-    kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
-    poco_assert(te);
-    te->SetStartString(std::string(value));
-
-    if (te->Dirty()) {
-      te->SetUIModifiedAt(time(0));
-    }
-
-    kopsik::error err = ctx->Save();
+    kopsik::error err =
+      app(context)->SetTimeEntryStartISO8601(std::string(guid),
+                                             std::string(value));
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
-    }
-
-    if (te && te->NeedsPush()) {
-      ctx->PartialSync();
     }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
@@ -1636,7 +1287,6 @@ kopsik_api_result kopsik_set_time_entry_end_iso_8601(
     const char *guid,
     const char *value) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(guid);
@@ -1647,36 +1297,12 @@ kopsik_api_result kopsik_set_time_entry_end_iso_8601(
         << ", value=" << value;
     logger().debug(ss.str());
 
-    std::string GUID(guid);
-    if (GUID.empty()) {
-      strncpy(errmsg, "Missing GUID", errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    if (!ctx->user) {
-      strncpy(errmsg, "Please login to change time entry end time", errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-    kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
-    poco_assert(te);
-    te->SetStopString(std::string(value));
-    if (te->Dirty()) {
-      te->SetUIModifiedAt(time(0));
-    }
-
-    kopsik::error err = ctx->Save();
+    kopsik::error err = app(context)->SetTimeEntryEndISO8601(
+      std::string(guid),
+      std::string(value));
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
-    }
-
-    if (te && te->NeedsPush()) {
-      ctx->PartialSync();
     }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
@@ -1698,7 +1324,6 @@ kopsik_api_result kopsik_set_time_entry_tags(
     const char *guid,
     const char *value) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(guid);
@@ -1709,36 +1334,11 @@ kopsik_api_result kopsik_set_time_entry_tags(
         << ", value=" << value;
     logger().debug(ss.str());
 
-    std::string GUID(guid);
-    if (GUID.empty()) {
-      strncpy(errmsg, "Missing GUID", errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    if (!ctx->user) {
-      strncpy(errmsg, "Please login to change time entry tags", errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-    kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
-    poco_assert(te);
-    te->SetTags(std::string(value));
-    if (te->Dirty()) {
-      te->SetUIModifiedAt(time(0));
-    }
-
-    kopsik::error err = ctx->Save();
+    kopsik::error err = app(context)->SetTimeEntryTags(std::string(guid),
+                                                       std::string(value));
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
-    }
-
-    if (te && te->NeedsPush()) {
-      ctx->PartialSync();
     }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
@@ -1760,7 +1360,6 @@ kopsik_api_result kopsik_set_time_entry_billable(
     const char *guid,
     int value) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(guid);
@@ -1770,51 +1369,21 @@ kopsik_api_result kopsik_set_time_entry_billable(
         << ", value=" << value;
     logger().debug(ss.str());
 
-    std::string GUID(guid);
-    if (GUID.empty()) {
-      strncpy(errmsg, "Missing GUID", errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    if (!ctx->user) {
-      strncpy(errmsg, "Please login to change time entry billable state",
-              errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-    kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
-    poco_assert(te);
-    if (value) {
-      te->SetBillable(true);
-    } else {
-      te->SetBillable(false);
-    }
-    if (te->Dirty()) {
-      te->SetUIModifiedAt(time(0));
-    }
-
-    kopsik::error err = ctx->Save();
+    kopsik::error err =
+      app(context)->SetTimeEntryBillable(std::string(guid), value);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
-
-    if (te && te->NeedsPush()) {
-      ctx->PartialSync();
-    }
   } catch(const Poco::Exception& exc) {
-      strncpy(errmsg, exc.displayText().c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, exc.displayText().c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   } catch(const std::exception& ex) {
-      strncpy(errmsg, ex.what(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, ex.what(), errlen);
+    return KOPSIK_API_FAILURE;
   } catch(const std::string& ex) {
-      strncpy(errmsg, ex.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, ex.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   }
   return KOPSIK_API_SUCCESS;
 }
@@ -1826,7 +1395,6 @@ kopsik_api_result kopsik_set_time_entry_description(
     const char *guid,
     const char *value) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(guid);
@@ -1837,46 +1405,22 @@ kopsik_api_result kopsik_set_time_entry_description(
         << ", value=" << value;
     logger().debug(ss.str());
 
-    std::string GUID(guid);
-    if (GUID.empty()) {
-      strncpy(errmsg, "Missing GUID", errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    if (!ctx->user) {
-      strncpy(errmsg, "Please login to change time entry description", errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-    kopsik::TimeEntry *te = ctx->user->GetTimeEntryByGUID(GUID);
-    poco_assert(te);
-    te->SetDescription(std::string(value));
-    if (te->Dirty()) {
-      te->SetUIModifiedAt(time(0));
-    }
-
-    kopsik::error err = ctx->Save();
+    kopsik::error err =
+      app(context)->SetTimeEntryDescription(std::string(guid),
+                                            std::string(value));
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
-
-    if (te && te->NeedsPush()) {
-      ctx->PartialSync();
-    }
   } catch(const Poco::Exception& exc) {
-      strncpy(errmsg, exc.displayText().c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, exc.displayText().c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   } catch(const std::exception& ex) {
-      strncpy(errmsg, ex.what(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, ex.what(), errlen);
+    return KOPSIK_API_FAILURE;
   } catch(const std::string& ex) {
-      strncpy(errmsg, ex.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, ex.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   }
   return KOPSIK_API_SUCCESS;
 }
@@ -1888,7 +1432,6 @@ kopsik_api_result kopsik_stop(
     KopsikTimeEntryViewItem *out_view_item,
     int *was_found) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(out_view_item);
@@ -1896,43 +1439,28 @@ kopsik_api_result kopsik_stop(
 
     logger().debug("kopsik_stop");
 
-    Context *ctx = reinterpret_cast<Context *>(context);
+    *was_found = 0;
 
-    if (!ctx->user) {
-      strncpy(errmsg, "Please login to stop time tracking", errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-    std::vector<kopsik::TimeEntry *> stopped = ctx->user->Stop();
-    if (stopped.empty()) {
-      *was_found = 0;
-      return KOPSIK_API_SUCCESS;
-    }
-    *was_found = 1;
-
-    kopsik::error err = ctx->Save();
+    kopsik::TimeEntry *te = 0;
+    kopsik::error err = app(context)->Stop(te);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
-
-    kopsik::TimeEntry *te = stopped[0];
-    time_entry_to_view_item(te, ctx->user, out_view_item, "");
-
-    if (te && te->NeedsPush()) {
-      ctx->PartialSync();
+    if (te) {
+      *was_found = 1;
+      // FIXME: requires user
+      time_entry_to_view_item(te, 0, out_view_item, "");
     }
   } catch(const Poco::Exception& exc) {
-      strncpy(errmsg, exc.displayText().c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, exc.displayText().c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   } catch(const std::exception& ex) {
-      strncpy(errmsg, ex.what(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, ex.what(), errlen);
+    return KOPSIK_API_FAILURE;
   } catch(const std::string& ex) {
-      strncpy(errmsg, ex.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, ex.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   }
   return KOPSIK_API_SUCCESS;
 }
@@ -1945,7 +1473,6 @@ kopsik_api_result kopsik_split_running_time_entry_at(
     KopsikTimeEntryViewItem *out_view_item,
     int *was_found) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(out_view_item);
@@ -1954,40 +1481,27 @@ kopsik_api_result kopsik_split_running_time_entry_at(
 
     logger().debug("kopsik_stop");
 
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    if (!ctx->user) {
-      strncpy(errmsg, "Please login to split time entry", errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-
     *was_found = 0;
-    kopsik::TimeEntry *running = ctx->user->SplitAt(at);
-    if (running) {
-      *was_found = 1;
-      time_entry_to_view_item(running, ctx->user, out_view_item, "");
-    }
-
-    kopsik::error err = ctx->Save();
+    kopsik::TimeEntry *new_running_entry = 0;
+    kopsik::error err = app(context)->SplitAt(at, new_running_entry);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
-
-    if (running && running->NeedsPush()) {
-      ctx->PartialSync();
+    if (new_running_entry) {
+      *was_found = 1;
+      // FIXME: needs user here
+      time_entry_to_view_item(new_running_entry, 0, out_view_item, "");
     }
   } catch(const Poco::Exception& exc) {
-      strncpy(errmsg, exc.displayText().c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, exc.displayText().c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   } catch(const std::exception& ex) {
-      strncpy(errmsg, ex.what(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, ex.what(), errlen);
+    return KOPSIK_API_FAILURE;
   } catch(const std::string& ex) {
-      strncpy(errmsg, ex.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, ex.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   }
   return KOPSIK_API_SUCCESS;
 }
@@ -2000,7 +1514,6 @@ kopsik_api_result kopsik_stop_running_time_entry_at(
     KopsikTimeEntryViewItem *out_view_item,
     int *was_found) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(out_view_item);
@@ -2009,40 +1522,27 @@ kopsik_api_result kopsik_stop_running_time_entry_at(
 
     logger().debug("kopsik_stop");
 
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    if (!ctx->user) {
-      strncpy(errmsg, "Please login to stop running time entry", errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-
     *was_found = 0;
-    kopsik::TimeEntry *stopped = ctx->user->StopAt(at);
-    if (stopped) {
-      *was_found = 1;
-      time_entry_to_view_item(stopped, ctx->user, out_view_item, "");
-    }
-
-    kopsik::error err = ctx->Save();
+    kopsik::TimeEntry *stopped = 0;
+    kopsik::error err = app(context)->StopAt(at, stopped);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
-
-    if (stopped && stopped->NeedsPush()) {
-      ctx->PartialSync();
+    if (stopped) {
+      *was_found = 1;
+      // FIXME: needs user
+      time_entry_to_view_item(stopped, 0, out_view_item, "");
     }
   } catch(const Poco::Exception& exc) {
-      strncpy(errmsg, exc.displayText().c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, exc.displayText().c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   } catch(const std::exception& ex) {
-      strncpy(errmsg, ex.what(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, ex.what(), errlen);
+    return KOPSIK_API_FAILURE;
   } catch(const std::string& ex) {
-      strncpy(errmsg, ex.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, ex.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   }
   return KOPSIK_API_SUCCESS;
 }
@@ -2054,7 +1554,6 @@ kopsik_api_result kopsik_running_time_entry_view_item(
     KopsikTimeEntryViewItem *out_item,
     int *out_is_tracking) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(out_item);
@@ -2062,29 +1561,27 @@ kopsik_api_result kopsik_running_time_entry_view_item(
 
     logger().debug("kopsik_running_time_entry_view_item");
 
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    if (!ctx->user) {
-      strncpy(errmsg, "Please login to access tracking time entry", errlen);
+    *out_is_tracking = 0;
+    kopsik::TimeEntry *te = 0;
+    kopsik::error err = app(context)->RunningTimeEntry(te);
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
-
-    *out_is_tracking = 0;
-
-    kopsik::TimeEntry *te = ctx->user->RunningTimeEntry();
     if (te) {
       *out_is_tracking = true;
-      time_entry_to_view_item(te, ctx->user, out_item, "");
+      // FIXME: needs user
+      time_entry_to_view_item(te, 0, out_item, "");
     }
   } catch(const Poco::Exception& exc) {
-      strncpy(errmsg, exc.displayText().c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, exc.displayText().c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   } catch(const std::exception& ex) {
-      strncpy(errmsg, ex.what(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, ex.what(), errlen);
+    return KOPSIK_API_FAILURE;
   } catch(const std::string& ex) {
-      strncpy(errmsg, ex.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, ex.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   }
   return KOPSIK_API_SUCCESS;
 }
@@ -2115,45 +1612,20 @@ kopsik_api_result kopsik_time_entry_view_items(
     unsigned int errlen,
     KopsikTimeEntryViewItemList *out_list) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(out_list);
 
     logger().debug("kopsik_time_entry_view_items");
 
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    if (!ctx->user) {
-      logger().warning("User is logged out, cannot access time entries");
-      return KOPSIK_API_SUCCESS;
-    }
-
-    {
-      Poco::Mutex::ScopedLock lock(ctx->mutex);
-      ctx->user->SortTimeEntriesByStart();
-    }
-
     std::map<std::string, Poco::Int64> date_durations;
+    std::vector<kopsik::TimeEntry *> visible;
 
-    std::vector<kopsik::TimeEntry *>visible;
-    for (std::vector<kopsik::TimeEntry *>::const_iterator it =
-        ctx->user->related.TimeEntries.begin();
-        it != ctx->user->related.TimeEntries.end(); it++) {
-      kopsik::TimeEntry *te = *it;
-      poco_assert(!te->GUID().empty());
-      if (te->DurationInSeconds() < 0) {
-        continue;
-      }
-      if (te->DeletedAt() > 0) {
-        continue;
-      }
-      visible.push_back(te);
-
-      std::string date_header = te->DateHeaderString();
-      Poco::Int64 duration = date_durations[date_header];
-      duration += te->DurationInSeconds();
-      date_durations[date_header] = duration;
+    kopsik::error err = app(context)->TimeEntries(&date_durations,
+      &visible);
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
     }
 
     if (visible.empty()) {
@@ -2162,6 +1634,7 @@ kopsik_api_result kopsik_time_entry_view_items(
 
     out_list->Length = 0;
 
+    // FIXME: get rid of malloc, use a list
     KopsikTimeEntryViewItem *tmp = kopsik_time_entry_view_item_init();
     void *m = malloc(visible.size() * sizeof(tmp));
     kopsik_time_entry_view_item_clear(tmp);
@@ -2175,20 +1648,22 @@ kopsik_api_result kopsik_time_entry_view_items(
       Poco::Int64 duration = date_durations[te->DateHeaderString()];
       std::string formatted =
         kopsik::Formatter::FormatDurationInSecondsHHMM(duration, 2);
-      time_entry_to_view_item(te, ctx->user, view_item, formatted);
+
+      // FIXME: require user
+      time_entry_to_view_item(te, 0, view_item, formatted);
 
       out_list->ViewItems[i] = view_item;
       out_list->Length++;
     }
   } catch(const Poco::Exception& exc) {
-      strncpy(errmsg, exc.displayText().c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, exc.displayText().c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   } catch(const std::exception& ex) {
-      strncpy(errmsg, ex.what(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, ex.what(), errlen);
+    return KOPSIK_API_FAILURE;
   } catch(const std::string& ex) {
-      strncpy(errmsg, ex.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, ex.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   }
   return KOPSIK_API_SUCCESS;
 }
@@ -2201,7 +1676,6 @@ kopsik_api_result kopsik_duration_for_date_header(
     char *duration,
     const unsigned int duration_len) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(duration);
@@ -2210,35 +1684,24 @@ kopsik_api_result kopsik_duration_for_date_header(
 
     logger().debug("kopsik_duration_for_date_header");
 
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    if (!ctx->user) {
-      strncpy(errmsg, "Please login to access time entry", errlen);
-      return KOPSIK_API_FAILURE;
-    }
-
     int sum(0);
-    std::string date_header(date);
-    for (std::vector<kopsik::TimeEntry *>::const_iterator it =
-        ctx->user->related.TimeEntries.begin();
-        it != ctx->user->related.TimeEntries.end(); it++) {
-      kopsik::TimeEntry *te = *it;
-      if (te->DurationInSeconds() >= 0 && !te->DeletedAt() &&
-          te->DateHeaderString() == date_header) {
-        sum += te->DurationInSeconds();
-      }
+    kopsik::error err =
+      app(context)->TrackedPerDateHeader(std::string(date), &sum);
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
     }
 
     kopsik_format_duration_in_seconds_hhmm(sum, 0, duration, duration_len);
   } catch(const Poco::Exception& exc) {
-      strncpy(errmsg, exc.displayText().c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, exc.displayText().c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   } catch(const std::exception& ex) {
-      strncpy(errmsg, ex.what(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, ex.what(), errlen);
+    return KOPSIK_API_FAILURE;
   } catch(const std::string& ex) {
-      strncpy(errmsg, ex.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, ex.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   }
   return KOPSIK_API_SUCCESS;
 }
@@ -2248,28 +1711,15 @@ kopsik_api_result kopsik_duration_for_date_header(
 void kopsik_websocket_switch(
     void *context,
     const unsigned int on) {
-  poco_assert(context);
+  std::stringstream ss;
+  ss << "kopsik_websocket_switch on=" << on;
+  logger().debug(ss.str());
 
-  Context *ctx = reinterpret_cast<Context *>(context);
-
-  try {
-    std::stringstream ss;
-    ss << "kopsik_websocket_switch on=" << on;
-    logger().debug(ss.str());
-
-    if (on) {
-      ctx->SwitchWebSocketOn();
-      return;
-    }
-
-    ctx->SwitchWebSocketOff();
-  } catch(const Poco::Exception& exc) {
-    ctx->on_error_callback(exc.displayText().c_str());
-  } catch(const std::exception& ex) {
-    ctx->on_error_callback(ex.what());
-  } catch(const std::string& ex) {
-    ctx->on_error_callback(ex.c_str());
+  if (on) {
+    app(context)->SwitchWebSocketOn();
+    return;
   }
+  app(context)->SwitchWebSocketOff();
 }
 
 // Timeline
@@ -2277,147 +1727,60 @@ void kopsik_websocket_switch(
 void kopsik_timeline_switch(
     void *context,
     const unsigned int on) {
-  poco_assert(context);
+  std::stringstream ss;
+  ss << "kopsik_timeline_switch on=" << on;
+  logger().debug(ss.str());
 
-  Context *ctx = reinterpret_cast<Context *>(context);
-
-  try {
-    std::stringstream ss;
-    ss << "kopsik_timeline_switch on=" << on;
-    logger().debug(ss.str());
-
-    if (on) {
-      ctx->SwitchTimelineOn();
-      return;
-    }
-
-    ctx->SwitchTimelineOff();
-  } catch(const Poco::Exception& exc) {
-    ctx->on_error_callback(exc.displayText().c_str());
-  } catch(const std::exception& ex) {
-    ctx->on_error_callback(ex.what());
-  } catch(const std::string& ex) {
-    ctx->on_error_callback(ex.c_str());
+  if (on) {
+    app(context)->SwitchTimelineOn();
+    return;
   }
+
+  app(context)->SwitchTimelineOff();
 }
 
 void kopsik_timeline_toggle_recording(
     void *context) {
-  poco_assert(context);
-
-  Context *ctx = reinterpret_cast<Context *>(context);
-
-  try {
-    logger().debug("kopsik_timeline_toggle_recording");
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-
-    ctx->user->SetRecordTimeline(!ctx->user->RecordTimeline());
-    kopsik::error err = ctx->Save();
-    if (err != kopsik::noError) {
-      ctx->on_error_callback(err.c_str());
-      return;
-    }
-
-    ctx->TimelineUpdateServerSettings();
-
-    if (ctx->user->RecordTimeline()) {
-      ctx->SwitchTimelineOn();
-      return;
-    }
-
-    ctx->SwitchTimelineOff();
-  } catch(const Poco::Exception& exc) {
-    ctx->on_error_callback(exc.displayText().c_str());
-  } catch(const std::exception& ex) {
-    ctx->on_error_callback(ex.what());
-  } catch(const std::string& ex) {
-    ctx->on_error_callback(ex.c_str());
-  }
+  logger().debug("kopsik_timeline_toggle_recording");
+  app(context)->ToggleTimelineRecording();
 }
 
 int kopsik_timeline_is_recording_enabled(
     void *context) {
-  if (!context) {
-    return 0;
-  }
-  Context *ctx = reinterpret_cast<Context *>(context);
-  if (!ctx->user) {
-    return 0;
-  }
-  return ctx->user->RecordTimeline();
+  return app(context)->RecordTimeline();
 }
 
 // Feedback
 
-void kopsik_feedback_send(
+kopsik_api_result kopsik_feedback_send(
     void *context,
+    char *errmsg,
+    const unsigned int errlen,
     const char *topic,
     const char *details,
     const char *base64encoded_image) {
-  poco_assert(context);
+    std::stringstream ss;
+    ss << "kopsik_feedback_send topic=" << topic << " details=" << details;
+    logger().debug(ss.str());
 
-  Context *ctx = reinterpret_cast<Context *>(context);
-
-  try {
-    logger().debug("kopsik_feedback_send");
-
-    if (!ctx->user) {
-      return;
+    kopsik::error err =
+      app(context)->SendFeedback(std::string(topic),
+                                 std::string(details),
+                                 std::string(base64encoded_image));
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
     }
-
-    if (!topic || !strlen(topic)) {
-      ctx->on_error_callback("Missing topic");
-      return;
-    }
-
-    if (!details || !strlen(details)) {
-      ctx->on_error_callback("Missing details");
-      return;
-    }
-
-    std::string image("");
-    if (base64encoded_image && strlen(base64encoded_image)) {
-      image = std::string(base64encoded_image);
-    }
-
-    ctx->feedback_subject = topic;
-    ctx->feedback_details = details;
-    ctx->SendFeedback();
-  } catch(const Poco::Exception& exc) {
-    ctx->on_error_callback(exc.displayText().c_str());
-  } catch(const std::exception& ex) {
-    ctx->on_error_callback(ex.what());
-  } catch(const std::string& ex) {
-    ctx->on_error_callback(ex.c_str());
-  }
+    return KOPSIK_API_SUCCESS;
 }
 
 // Updates
 
 void kopsik_check_for_updates(
     void *context) {
-  poco_assert(context);
+  logger().debug("kopsik_check_for_updates");
 
-  Context *ctx = reinterpret_cast<Context *>(context);
-
-  try {
-    logger().debug("kopsik_check_for_updates");
-
-    kopsik::error err = ctx->db->LoadUpdateChannel(&ctx->update_channel);
-    if (err != kopsik::noError) {
-      ctx->check_updates_callback(KOPSIK_API_FAILURE, err.c_str(), 0, 0, 0);
-      return;
-    }
-
-    ctx->FetchUpdates();
-  } catch(const Poco::Exception& exc) {
-    ctx->on_error_callback(exc.displayText().c_str());
-  } catch(const std::exception& ex) {
-    ctx->on_error_callback(ex.what());
-  } catch(const std::string& ex) {
-    ctx->on_error_callback(ex.c_str());
-  }
+  app(context)->FetchUpdates();
 }
 
 kopsik_api_result kopsik_set_update_channel(
@@ -2426,17 +1789,12 @@ kopsik_api_result kopsik_set_update_channel(
     unsigned int errlen,
     const char *update_channel) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(update_channel);
 
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-
     kopsik::error err =
-      ctx->db->SaveUpdateChannel(std::string(update_channel));
+      app(context)->SaveUpdateChannel(std::string(update_channel));
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -2461,18 +1819,13 @@ kopsik_api_result kopsik_get_update_channel(
     char *update_channel,
     unsigned int update_channel_len) {
   try {
-    poco_assert(context);
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(update_channel);
     poco_assert(update_channel_len);
 
-    Context *ctx = reinterpret_cast<Context *>(context);
-
-    Poco::Mutex::ScopedLock lock(ctx->mutex);
-
     std::string s("");
-    kopsik::error err = ctx->db->LoadUpdateChannel(&s);
+    kopsik::error err = app(context)->LoadUpdateChannel(&s);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;

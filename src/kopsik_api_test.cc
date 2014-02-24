@@ -1,4 +1,4 @@
-// Copyright 2013 Tanel Lebedev
+// Copyright 2014 Toggl Desktop developers.
 
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
@@ -186,7 +186,7 @@ namespace kopsik {
         kopsik_context_clear(ctx);
     }
 
-/* FIXME: need to set mock https client
+/* FIXME:
     TEST(KopsikApiTest, kopsik_lifecycle) {
         void *ctx = create_test_context();
 
@@ -197,8 +197,6 @@ namespace kopsik {
         ASSERT_EQ(KOPSIK_API_SUCCESS, res);
 
         MockHTTPSClient *mock_client = new MockHTTPSClient();
-        kopsik_test_set_https_client(ctx,
-            reinterpret_cast<void *>(mock_client));
 
         std::string json = loadTestData();
 
@@ -243,8 +241,7 @@ namespace kopsik {
         .WillOnce(testing::DoAll(
             testing::SetArgPointee<3>(json),
             testing::Return("")));
-        ASSERT_EQ(KOPSIK_API_SUCCESS,
-            kopsik_sync(ctx, err, ERRLEN, 1));
+        kopsik_sync(ctx);
 
         // Count time entry items before start. It should be 3, since
         // there are 3 time entries in the me.json file we're using:
@@ -429,8 +426,7 @@ namespace kopsik {
             testing::SetArgPointee<4>(response_json),
             testing::Return("")));
 
-        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_push(
-            ctx, err, ERRLEN));
+        kopsik_sync(ctx);
 
         // Check that no dirty models are left.
         ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_pushable_models(

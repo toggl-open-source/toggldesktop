@@ -1,4 +1,4 @@
-// Copyright 2013 Tanel Lebedev
+// Copyright 2014 Toggl Desktop developers.
 
 #ifndef SRC_KOPSIK_API_H_
 #define SRC_KOPSIK_API_H_
@@ -99,11 +99,6 @@ KOPSIK_EXPORT kopsik_api_result kopsik_configure_proxy(
   char *errmsg,
   unsigned int errlen);
 
-// For mock testing only
-KOPSIK_EXPORT void kopsik_test_set_https_client(
-  void *context,
-  void *client);
-
 KOPSIK_EXPORT kopsik_api_result kopsik_set_db_path(
   void *context,
   char *errmsg,
@@ -154,6 +149,12 @@ KOPSIK_EXPORT kopsik_api_result kopsik_current_user(
   char *errmsg,
   unsigned int errlen,
   KopsikUser *user);
+
+kopsik_api_result kopsik_set_logged_in_user(
+    void *context,
+    char *errmsg,
+    unsigned int errlen,
+    const char *json);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_login(
   void *context,
@@ -448,8 +449,10 @@ KOPSIK_EXPORT int kopsik_timeline_is_recording_enabled(
 
 // Feedback
 
-KOPSIK_EXPORT void kopsik_feedback_send(
+KOPSIK_EXPORT kopsik_api_result kopsik_feedback_send(
   void *context,
+  char *errmsg,
+  const unsigned int errlen,
   const char *topic,
   const char *details,
   const char *base64encoded_image);

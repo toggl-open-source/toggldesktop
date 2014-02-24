@@ -1,4 +1,4 @@
-// Copyright 2013 Tanel Lebedev
+// Copyright 2014 Toggl Desktop developers.
 
 #ifndef SRC_TYPES_H_
 #define SRC_TYPES_H_

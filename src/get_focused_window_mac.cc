@@ -1,5 +1,4 @@
-
-// Copyright (c) 2013 Toggl
+// Copyright 2014 Toggl Desktop developers.
 
 #include <Carbon/Carbon.h>
 #include <string>

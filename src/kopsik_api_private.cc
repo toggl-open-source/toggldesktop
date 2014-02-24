@@ -1,4 +1,4 @@
-// Copyright 2013 Tanel Lebedev
+// Copyright 2014 Toggl Desktop developers.
 
 #include "./kopsik_api_private.h"
 
@@ -65,7 +65,7 @@ void time_entry_to_view_item(
     KopsikTimeEntryViewItem *view_item,
     const std::string dateDuration) {
   poco_assert(te);
-  poco_assert(user);
+  //   FIXME: poco_assert(user);
   poco_assert(view_item);
 
   view_item->DurationInSeconds = te->DurationInSeconds();
@@ -77,12 +77,16 @@ void time_entry_to_view_item(
   view_item->GUID = strdup(te->GUID().c_str());
 
   kopsik::Task *t = 0;
+  kopsik::Project *p = 0;
+  kopsik::Client *c = 0;
+
+  /* FIXME: user is required here
+
   if (te->TID()) {
     t = user->GetTaskByID(te->TID());
   }
   view_item->TID = te->TID();
 
-  kopsik::Project *p = 0;
   if (t) {
     p = user->GetProjectByID(t->PID());
   } else if (te->PID()) {
@@ -94,13 +98,13 @@ void time_entry_to_view_item(
     view_item->PID = 0;
   }
 
-  kopsik::Client *c = 0;
   if (p && p->CID()) {
     c = user->GetClientByID(p->CID());
   }
 
   poco_assert(!view_item->ProjectAndTaskLabel);
   view_item->ProjectAndTaskLabel = strdup(user->JoinTaskName(t, p, c).c_str());
+  */
 
   poco_assert(!view_item->Color);
   if (p) {
