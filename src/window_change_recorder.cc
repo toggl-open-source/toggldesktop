@@ -37,7 +37,7 @@ void WindowChangeRecorder::inspect_focused_window() {
                 event.end_time = now;
                 event.filename = last_filename_;
                 event.title = last_title_;
-                event.user_id = user_id_;
+                event.user_id = static_cast<int>(user_id_);
                 Poco::NotificationCenter& nc =
                     Poco::NotificationCenter::defaultCenter();
                 TimelineEventNotification notification(event);

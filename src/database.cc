@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#include "./toggl_api_client.h"
+#include "./user.h"
 
 #include "Poco/Logger.h"
 #include "Poco/UUID.h"
@@ -2237,7 +2237,7 @@ error Database::select_timeline_batch(
             event.start_time = rs[3].convert<int>();
             event.end_time = rs[4].convert<int>();
             event.idle = rs[5].convert<bool>();
-            event.user_id = user_id;
+            event.user_id = static_cast<unsigned int>(user_id);
             timeline_events->push_back(event);
             more = rs.moveNext();
         }

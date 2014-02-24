@@ -14,6 +14,27 @@
 		748968CB18340F9B00288374 /* version.cc in Sources */ = {isa = PBXBuildFile; fileRef = 748968C918340F9B00288374 /* version.cc */; };
 		748968CC18340F9B00288374 /* version.h in Headers */ = {isa = PBXBuildFile; fileRef = 748968CA18340F9B00288374 /* version.h */; };
 		74AA947A18091AE10000539F /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74AA947918091AE10000539F /* WebKit.framework */; };
+		74B587BB18BBC77E00E9F6CE /* formatter.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587A618BBC77E00E9F6CE /* formatter.cc */; };
+		74B587BC18BBC77E00E9F6CE /* tag.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B587A718BBC77E00E9F6CE /* tag.h */; };
+		74B587BD18BBC77E00E9F6CE /* json.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B587A818BBC77E00E9F6CE /* json.h */; };
+		74B587BE18BBC77E00E9F6CE /* task.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B587A918BBC77E00E9F6CE /* task.h */; };
+		74B587BF18BBC77E00E9F6CE /* user.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B587AA18BBC77E00E9F6CE /* user.h */; };
+		74B587C018BBC77E00E9F6CE /* client.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B587AB18BBC77E00E9F6CE /* client.h */; };
+		74B587C118BBC77E00E9F6CE /* project.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B587AC18BBC77E00E9F6CE /* project.h */; };
+		74B587C218BBC77E00E9F6CE /* workspace.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B587AD18BBC77E00E9F6CE /* workspace.h */; };
+		74B587C318BBC77E00E9F6CE /* time_entry.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B587AE18BBC77E00E9F6CE /* time_entry.h */; };
+		74B587C418BBC77E00E9F6CE /* related_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B587AF18BBC77E00E9F6CE /* related_data.h */; };
+		74B587C518BBC77E00E9F6CE /* batch_update_result.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B587B018BBC77E00E9F6CE /* batch_update_result.h */; };
+		74B587C618BBC77E00E9F6CE /* tag.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587B118BBC77E00E9F6CE /* tag.cc */; };
+		74B587C718BBC77E00E9F6CE /* json.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587B218BBC77E00E9F6CE /* json.cc */; };
+		74B587C818BBC77E00E9F6CE /* task.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587B318BBC77E00E9F6CE /* task.cc */; };
+		74B587C918BBC77E00E9F6CE /* user.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587B418BBC77E00E9F6CE /* user.cc */; };
+		74B587CA18BBC77E00E9F6CE /* client.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587B518BBC77E00E9F6CE /* client.cc */; };
+		74B587CB18BBC77E00E9F6CE /* project.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587B618BBC77E00E9F6CE /* project.cc */; };
+		74B587CC18BBC77E00E9F6CE /* workspace.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587B718BBC77E00E9F6CE /* workspace.cc */; };
+		74B587CD18BBC77E00E9F6CE /* time_entry.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587B818BBC77E00E9F6CE /* time_entry.cc */; };
+		74B587CE18BBC77E00E9F6CE /* related_data.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587B918BBC77E00E9F6CE /* related_data.cc */; };
+		74B587CF18BBC77E00E9F6CE /* batch_update_result.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587BA18BBC77E00E9F6CE /* batch_update_result.cc */; };
 		74CAAD0318185A9B001B77BB /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CAAD0218185A9B001B77BB /* Carbon.framework */; };
 		74CAAD19181860F7001B77BB /* get_focused_window_mac.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74CAAD10181860F7001B77BB /* get_focused_window_mac.cc */; };
 		74CAAD1A181860F7001B77BB /* get_focused_window.h in Headers */ = {isa = PBXBuildFile; fileRef = 74CAAD11181860F7001B77BB /* get_focused_window.h */; };
@@ -41,8 +62,6 @@
 		C5DA1FA317F18D2B001C4565 /* libPocoXML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA1F9B17F18D2B001C4565 /* libPocoXML.a */; };
 		C5DA1FAB17F18D7B001C4565 /* database.cc in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FA417F18D7B001C4565 /* database.cc */; };
 		C5DA1FAC17F18D7B001C4565 /* database.h in Headers */ = {isa = PBXBuildFile; fileRef = C5DA1FA517F18D7B001C4565 /* database.h */; };
-		C5DA1FAF17F18D7B001C4565 /* toggl_api_client.cc in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FA817F18D7B001C4565 /* toggl_api_client.cc */; };
-		C5DA1FB017F18D7B001C4565 /* toggl_api_client.h in Headers */ = {isa = PBXBuildFile; fileRef = C5DA1FA917F18D7B001C4565 /* toggl_api_client.h */; };
 		C5DA1FB117F18D7B001C4565 /* types.h in Headers */ = {isa = PBXBuildFile; fileRef = C5DA1FAA17F18D7B001C4565 /* types.h */; };
 		C5DA1FB617F1942A001C4565 /* kopsik_api.cc in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FB417F1942A001C4565 /* kopsik_api.cc */; };
 		C5DA1FB717F1942A001C4565 /* kopsik_api.h in Headers */ = {isa = PBXBuildFile; fileRef = C5DA1FB517F1942A001C4565 /* kopsik_api.h */; };
@@ -56,6 +75,27 @@
 		748968C918340F9B00288374 /* version.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = version.cc; path = ../../../version.cc; sourceTree = "<group>"; };
 		748968CA18340F9B00288374 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = version.h; path = ../../../version.h; sourceTree = "<group>"; };
 		74AA947918091AE10000539F /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		74B587A618BBC77E00E9F6CE /* formatter.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = formatter.cc; path = ../../../formatter.cc; sourceTree = "<group>"; };
+		74B587A718BBC77E00E9F6CE /* tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tag.h; path = ../../../tag.h; sourceTree = "<group>"; };
+		74B587A818BBC77E00E9F6CE /* json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = json.h; path = ../../../json.h; sourceTree = "<group>"; };
+		74B587A918BBC77E00E9F6CE /* task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = task.h; path = ../../../task.h; sourceTree = "<group>"; };
+		74B587AA18BBC77E00E9F6CE /* user.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = user.h; path = ../../../user.h; sourceTree = "<group>"; };
+		74B587AB18BBC77E00E9F6CE /* client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = client.h; path = ../../../client.h; sourceTree = "<group>"; };
+		74B587AC18BBC77E00E9F6CE /* project.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = project.h; path = ../../../project.h; sourceTree = "<group>"; };
+		74B587AD18BBC77E00E9F6CE /* workspace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = workspace.h; path = ../../../workspace.h; sourceTree = "<group>"; };
+		74B587AE18BBC77E00E9F6CE /* time_entry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = time_entry.h; path = ../../../time_entry.h; sourceTree = "<group>"; };
+		74B587AF18BBC77E00E9F6CE /* related_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = related_data.h; path = ../../../related_data.h; sourceTree = "<group>"; };
+		74B587B018BBC77E00E9F6CE /* batch_update_result.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = batch_update_result.h; path = ../../../batch_update_result.h; sourceTree = "<group>"; };
+		74B587B118BBC77E00E9F6CE /* tag.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tag.cc; path = ../../../tag.cc; sourceTree = "<group>"; };
+		74B587B218BBC77E00E9F6CE /* json.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = json.cc; path = ../../../json.cc; sourceTree = "<group>"; };
+		74B587B318BBC77E00E9F6CE /* task.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = task.cc; path = ../../../task.cc; sourceTree = "<group>"; };
+		74B587B418BBC77E00E9F6CE /* user.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = user.cc; path = ../../../user.cc; sourceTree = "<group>"; };
+		74B587B518BBC77E00E9F6CE /* client.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = client.cc; path = ../../../client.cc; sourceTree = "<group>"; };
+		74B587B618BBC77E00E9F6CE /* project.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = project.cc; path = ../../../project.cc; sourceTree = "<group>"; };
+		74B587B718BBC77E00E9F6CE /* workspace.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = workspace.cc; path = ../../../workspace.cc; sourceTree = "<group>"; };
+		74B587B818BBC77E00E9F6CE /* time_entry.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = time_entry.cc; path = ../../../time_entry.cc; sourceTree = "<group>"; };
+		74B587B918BBC77E00E9F6CE /* related_data.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = related_data.cc; path = ../../../related_data.cc; sourceTree = "<group>"; };
+		74B587BA18BBC77E00E9F6CE /* batch_update_result.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = batch_update_result.cc; path = ../../../batch_update_result.cc; sourceTree = "<group>"; };
 		74CAAD0218185A9B001B77BB /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		74CAAD10181860F7001B77BB /* get_focused_window_mac.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = get_focused_window_mac.cc; path = ../../../get_focused_window_mac.cc; sourceTree = "<group>"; };
 		74CAAD11181860F7001B77BB /* get_focused_window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = get_focused_window.h; path = ../../../get_focused_window.h; sourceTree = "<group>"; };
@@ -90,8 +130,6 @@
 		C5DA1F9B17F18D2B001C4565 /* libPocoXML.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoXML.a; path = "../../../third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoXML.a"; sourceTree = "<group>"; };
 		C5DA1FA417F18D7B001C4565 /* database.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = database.cc; path = ../../../database.cc; sourceTree = "<group>"; };
 		C5DA1FA517F18D7B001C4565 /* database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = database.h; path = ../../../database.h; sourceTree = "<group>"; };
-		C5DA1FA817F18D7B001C4565 /* toggl_api_client.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = toggl_api_client.cc; path = ../../../toggl_api_client.cc; sourceTree = "<group>"; };
-		C5DA1FA917F18D7B001C4565 /* toggl_api_client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = toggl_api_client.h; path = ../../../toggl_api_client.h; sourceTree = "<group>"; };
 		C5DA1FAA17F18D7B001C4565 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = types.h; path = ../../../types.h; sourceTree = "<group>"; };
 		C5DA1FB417F1942A001C4565 /* kopsik_api.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = kopsik_api.cc; path = ../../../kopsik_api.cc; sourceTree = "<group>"; };
 		C5DA1FB517F1942A001C4565 /* kopsik_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kopsik_api.h; path = ../../../kopsik_api.h; sourceTree = "<group>"; };
@@ -156,6 +194,27 @@
 		C55DA59E17F06A3B00B42178 /* Kopsik */ = {
 			isa = PBXGroup;
 			children = (
+				74B587A618BBC77E00E9F6CE /* formatter.cc */,
+				74B587A718BBC77E00E9F6CE /* tag.h */,
+				74B587A818BBC77E00E9F6CE /* json.h */,
+				74B587A918BBC77E00E9F6CE /* task.h */,
+				74B587AA18BBC77E00E9F6CE /* user.h */,
+				74B587AB18BBC77E00E9F6CE /* client.h */,
+				74B587AC18BBC77E00E9F6CE /* project.h */,
+				74B587AD18BBC77E00E9F6CE /* workspace.h */,
+				74B587AE18BBC77E00E9F6CE /* time_entry.h */,
+				74B587AF18BBC77E00E9F6CE /* related_data.h */,
+				74B587B018BBC77E00E9F6CE /* batch_update_result.h */,
+				74B587B118BBC77E00E9F6CE /* tag.cc */,
+				74B587B218BBC77E00E9F6CE /* json.cc */,
+				74B587B318BBC77E00E9F6CE /* task.cc */,
+				74B587B418BBC77E00E9F6CE /* user.cc */,
+				74B587B518BBC77E00E9F6CE /* client.cc */,
+				74B587B618BBC77E00E9F6CE /* project.cc */,
+				74B587B718BBC77E00E9F6CE /* workspace.cc */,
+				74B587B818BBC77E00E9F6CE /* time_entry.cc */,
+				74B587B918BBC77E00E9F6CE /* related_data.cc */,
+				74B587BA18BBC77E00E9F6CE /* batch_update_result.cc */,
 				7484A2A218887BEE0025A88B /* kopsik_api_private.h */,
 				7484A2A418887BEE0025A88B /* context.h */,
 				7484A2A518887BEE0025A88B /* context.cc */,
@@ -179,8 +238,6 @@
 				C5DA1FB517F1942A001C4565 /* kopsik_api.h */,
 				C5DA1FA417F18D7B001C4565 /* database.cc */,
 				C5DA1FA517F18D7B001C4565 /* database.h */,
-				C5DA1FA817F18D7B001C4565 /* toggl_api_client.cc */,
-				C5DA1FA917F18D7B001C4565 /* toggl_api_client.h */,
 				C5DA1FAA17F18D7B001C4565 /* types.h */,
 				C55DA5A117F06A3B00B42178 /* KopsikProj.xcconfig */,
 				C55DA5A217F06A3B00B42178 /* KopsikTarget.xcconfig */,
@@ -204,12 +261,20 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74B587BC18BBC77E00E9F6CE /* tag.h in Headers */,
+				74B587C018BBC77E00E9F6CE /* client.h in Headers */,
+				74B587C318BBC77E00E9F6CE /* time_entry.h in Headers */,
+				74B587C418BBC77E00E9F6CE /* related_data.h in Headers */,
+				74B587BE18BBC77E00E9F6CE /* task.h in Headers */,
+				74B587C218BBC77E00E9F6CE /* workspace.h in Headers */,
 				74CAAD1F181860F7001B77BB /* timeline_notifications.h in Headers */,
+				74B587BF18BBC77E00E9F6CE /* user.h in Headers */,
 				748968CC18340F9B00288374 /* version.h in Headers */,
+				74B587C118BBC77E00E9F6CE /* project.h in Headers */,
 				C5DA1FB717F1942A001C4565 /* kopsik_api.h in Headers */,
-				C5DA1FB017F18D7B001C4565 /* toggl_api_client.h in Headers */,
 				7484A2AA18887BEE0025A88B /* context.h in Headers */,
 				74CAAD1E181860F7001B77BB /* timeline_event.h in Headers */,
+				74B587BD18BBC77E00E9F6CE /* json.h in Headers */,
 				74F7CDDC18199FA300630BD0 /* window_change_recorder.h in Headers */,
 				74CAAD1A181860F7001B77BB /* get_focused_window.h in Headers */,
 				C5DA1FB117F18D7B001C4565 /* types.h in Headers */,
@@ -217,6 +282,7 @@
 				74CAAD1B181860F7001B77BB /* timeline_constants.h in Headers */,
 				7484A2A818887BEE0025A88B /* kopsik_api_private.h in Headers */,
 				74EB0F1817F9A2600046ABC1 /* https_client.h in Headers */,
+				74B587C518BBC77E00E9F6CE /* batch_update_result.h in Headers */,
 				C5DA1FAC17F18D7B001C4565 /* database.h in Headers */,
 				74CAAD21181860F7001B77BB /* timeline_uploader.h in Headers */,
 			);
@@ -293,13 +359,23 @@
 				74CAAD19181860F7001B77BB /* get_focused_window_mac.cc in Sources */,
 				74F7CDDB18199FA300630BD0 /* window_change_recorder.cc in Sources */,
 				74EB0F1717F9A2600046ABC1 /* https_client.cc in Sources */,
+				74B587C918BBC77E00E9F6CE /* user.cc in Sources */,
+				74B587BB18BBC77E00E9F6CE /* formatter.cc in Sources */,
+				74B587CE18BBC77E00E9F6CE /* related_data.cc in Sources */,
+				74B587CC18BBC77E00E9F6CE /* workspace.cc in Sources */,
+				74B587C818BBC77E00E9F6CE /* task.cc in Sources */,
 				74CAAD20181860F7001B77BB /* timeline_uploader.cc in Sources */,
 				7484A2AC18887BEE0025A88B /* kopsik_api_private.cc in Sources */,
+				74B587CB18BBC77E00E9F6CE /* project.cc in Sources */,
+				74B587C718BBC77E00E9F6CE /* json.cc in Sources */,
+				74B587CF18BBC77E00E9F6CE /* batch_update_result.cc in Sources */,
 				748968CB18340F9B00288374 /* version.cc in Sources */,
 				7484A2AB18887BEE0025A88B /* context.cc in Sources */,
+				74B587CD18BBC77E00E9F6CE /* time_entry.cc in Sources */,
 				74E16831180F26D90026261C /* websocket_client.cc in Sources */,
+				74B587CA18BBC77E00E9F6CE /* client.cc in Sources */,
 				C5DA1FAB17F18D7B001C4565 /* database.cc in Sources */,
-				C5DA1FAF17F18D7B001C4565 /* toggl_api_client.cc in Sources */,
+				74B587C618BBC77E00E9F6CE /* tag.cc in Sources */,
 				C5DA1FB617F1942A001C4565 /* kopsik_api.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

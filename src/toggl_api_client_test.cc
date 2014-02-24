@@ -1,9 +1,17 @@
 // Copyright 2014 Toggl Desktop developers.
 
 #include "gtest/gtest.h"
-#include "./toggl_api_client.h"
+#include "./user.h"
+#include "./workspace.h"
+#include "./client.h"
+#include "./project.h"
+#include "./task.h"
+#include "./time_entry.h"
+#include "./tag.h"
 #include "./kopsik_api_test.h"
 #include "./database.h"
+#include "./test_data.h"
+#include "./json.h"
 
 #include "Poco/FileStream.h"
 #include "Poco/File.h"
@@ -63,13 +71,13 @@ namespace kopsik {
         Database db(TESTDB);
 
         User user("kopsik_test", "0.1");
-        user.LoadFromJSONString(loadTestData(), true, true);
+        LoadUserFromJSONString(&user, loadTestData(), true, true);
 
         TimeEntry *te = user.GetTimeEntryByID(89818605);
         ASSERT_TRUE(te);
 
         std::string json = "{\"id\":89818605,\"description\":\"Changed\"}";
-        te->LoadFromJSONString(json);
+        LoadTimeEntryFromJSONString(te, json);
         ASSERT_EQ("Changed", te->Description());
     }
 
@@ -80,7 +88,7 @@ namespace kopsik {
         std::string json = loadTestData();
 
         User user("kopsik_test", "0.1");
-        user.LoadFromJSONString(loadTestData(), true, true);
+        LoadUserFromJSONString(&user, loadTestData(), true, true);
 
         TimeEntry *te = user.GetTimeEntryByID(89818605);
         ASSERT_TRUE(te);
@@ -90,7 +98,7 @@ namespace kopsik {
         json = json.replace(n,
             std::string("Important things").length(), "Even more important!");
 
-        user.LoadFromJSONString(json, true, true);
+        LoadUserFromJSONString(&user, json, true, true);
         te = user.GetTimeEntryByID(89818605);
         ASSERT_TRUE(te);
         ASSERT_EQ("Even more important!", te->Description());
@@ -101,7 +109,7 @@ namespace kopsik {
         Database db(TESTDB);
 
         User user("kopsik_test", "0.1");
-        user.LoadFromJSONString(loadTestData(), true, true);
+        LoadUserFromJSONString(&user, loadTestData(), true, true);
 
         ASSERT_TRUE(user.StoreStartAndStopTime());
         // Change fields
@@ -130,7 +138,7 @@ namespace kopsik {
         Database db(TESTDB);
 
         User user("kopsik_test", "0.1");
-        user.LoadFromJSONString(loadTestData(), true, true);
+        LoadUserFromJSONString(&user, loadTestData(), true, true);
 
         Poco::UInt64 n;
         ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
@@ -172,7 +180,7 @@ namespace kopsik {
         std::string json = loadTestData();
 
         User user1("kopsik_test", "0.1");
-        user1.LoadFromJSONString(json, true, true);
+        LoadUserFromJSONString(&user1, json, true, true);
 
         std::vector<ModelChange> changes;
         ASSERT_EQ(noError, db.SaveUser(&user1, true, &changes));
@@ -215,7 +223,7 @@ namespace kopsik {
         ASSERT_EQ(user1.related.TimeEntries.size(),
             user2.related.TimeEntries.size());
 
-        user2.LoadFromJSONString(json, true, true);
+        LoadUserFromJSONString(&user2, json, true, true);
 
         ASSERT_EQ(noError, db.SaveUser(&user2, true, &changes));
 
@@ -246,7 +254,7 @@ namespace kopsik {
         Database db(TESTDB);
 
         User user("kopsik_test", "0.1");
-        user.LoadFromJSONString(loadTestData(), true, true);
+        LoadUserFromJSONString(&user, loadTestData(), true, true);
 
         TimeEntry *te = user.Start("Old work", "1 hour", 0, 0);
         ASSERT_EQ(3600, te->DurationInSeconds());
@@ -257,7 +265,7 @@ namespace kopsik {
         Database db(TESTDB);
 
         User user("kopsik_test", "0.1");
-        user.LoadFromJSONString(loadTestData(), true, true);
+        LoadUserFromJSONString(&user, loadTestData(), true, true);
 
         TimeEntry *te = user.Start("Old work", "1 hour", 0, 0);
         ASSERT_LT(0, te->DurationInSeconds());
@@ -268,7 +276,7 @@ namespace kopsik {
         Database db(TESTDB);
 
         User user("kopsik_test", "0.1");
-        user.LoadFromJSONString(loadTestData(), true, true);
+        LoadUserFromJSONString(&user, loadTestData(), true, true);
 
         // first, mark time entry as deleted
         TimeEntry *te = user.Start("My new time entry", "", 0, 0);
@@ -300,7 +308,7 @@ namespace kopsik {
 
     TEST(TogglApiClientTest, SavesModels) {
         User user("kopsik_test", "0.1");
-        user.LoadFromJSONString(loadTestData(), true, true);
+        LoadUserFromJSONString(&user, loadTestData(), true, true);
 
         wipe_test_db();
         Database db(TESTDB);
@@ -316,7 +324,7 @@ namespace kopsik {
         ASSERT_FALSE(json.empty());
 
         User user("kopsik_test", "0.1");
-        user.LoadFromJSONString(json, true, true);
+        LoadUserFromJSONString(&user, json, true, true);
         ASSERT_EQ(Poco::UInt64(1379068550), user.Since());
         ASSERT_EQ(Poco::UInt64(10471231), user.ID());
         ASSERT_EQ(Poco::UInt64(123456788), user.DefaultWID());

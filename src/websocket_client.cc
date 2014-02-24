@@ -20,7 +20,9 @@
 #include "Poco/Net/PrivateKeyPassphraseHandler.h"
 
 #include "./libjson.h"
+
 #include "./version.h"
+#include "./json.h"
 
 namespace kopsik {
 
@@ -134,11 +136,11 @@ std::string WebSocketClient::parseWebSocketMessageType(
   poco_assert(!json.empty());
   std::string type("data");
 
-  const char *str = json.c_str();
-
-  if (!json_is_valid(str)) {
+  if (!IsValidJSON(json)) {
     return "";
   }
+
+  const char *str = json.c_str();
 
   JSONNODE *root = json_parse(str);
   JSONNODE_ITERATOR i = json_begin(root);

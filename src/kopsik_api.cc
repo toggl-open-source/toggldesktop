@@ -8,7 +8,7 @@
 #include "./kopsik_api.h"
 #include "./kopsik_api_private.h"
 #include "./database.h"
-#include "./toggl_api_client.h"
+#include "./user.h"
 #include "./https_client.h"
 #include "./websocket_client.h"
 #include "./version.h"
@@ -17,6 +17,7 @@
 #include "./CustomErrorHandler.h"
 #include "./proxy.h"
 #include "./context.h"
+#include "./formatter.h"
 
 #include "Poco/Bugcheck.h"
 #include "Poco/Path.h"
