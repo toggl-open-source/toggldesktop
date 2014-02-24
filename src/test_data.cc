@@ -1,4 +1,4 @@
-// Copyright 2013 kopsik developers
+// Copyright 2014 Toggl Desktop developers.
 
 #include "./test_data.h"
 

@@ -1,4 +1,4 @@
-// Copyright 2014 Tanel Lebedev
+// Copyright 2014 Toggl Desktop developers.
 
 #ifndef SRC_PROXY_H_
 #define SRC_PROXY_H_

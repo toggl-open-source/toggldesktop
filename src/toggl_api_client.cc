@@ -1,4 +1,4 @@
-// Copyright 2013 Tanel Lebedev
+// Copyright 2014 Toggl Desktop developers.
 
 #include "./toggl_api_client.h"
 
@@ -354,7 +354,7 @@ bool TimeEntry::NeedsDELETE() {
     return id_ && (deleted_at_ > 0);
 }
 
-void User::CollectPushableObjects(std::vector<TimeEntry *> *result) {
+void User::CollectPushableTimeEntries(std::vector<TimeEntry *> *result) {
     poco_assert(result);
     for (std::vector<TimeEntry *>::const_iterator it =
             related.TimeEntries.begin();
@@ -513,22 +513,22 @@ error User::Push(HTTPSClient *https_client) {
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
-    std::vector<TimeEntry *>dirty;
-    CollectPushableObjects(&dirty);
+    std::vector<TimeEntry *> pushable;
+    CollectPushableTimeEntries(&pushable);
 
     Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
-    if (dirty.empty()) {
+    if (pushable.empty()) {
         logger.trace("Nothing to push.");
         return noError;
     }
 
     {
         std::stringstream ss;
-        ss << dirty.size() << " model(s) need a push";
+        ss << pushable.size() << " time entries need a push";
         logger.debug(ss.str());
     }
 
-    std::string json = dirtyObjectsJSON(&dirty);
+    std::string json = dirtyObjectsJSON(&pushable);
 
     logger.debug(json);
 
@@ -546,7 +546,7 @@ error User::Push(HTTPSClient *https_client) {
     parseResponseArray(response_body, &results);
 
     std::vector<error> errors;
-    processResponseArray(&results, &dirty, &errors);
+    processResponseArray(&results, &pushable, &errors);
 
     if (!errors.empty()) {
         return collectErrors(&errors);

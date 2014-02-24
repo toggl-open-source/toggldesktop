@@ -1,6 +1,4 @@
-// Copyright 2013 kopsik developers
-
-// Session access is locked with a scoped lock.
+// Copyright 2014 Toggl Desktop developers.
 
 #include "./database.h"
 

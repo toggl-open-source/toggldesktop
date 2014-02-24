@@ -1,4 +1,4 @@
-// Copyright 2013 Tanel Lebedev
+// Copyright 2014 Toggl Desktop developers.
 
 #ifndef SRC_KOPSIK_API_TEST_H_
 #define SRC_KOPSIK_API_TEST_H_

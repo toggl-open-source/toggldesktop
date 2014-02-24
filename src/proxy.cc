@@ -1,4 +1,3 @@
-// Copyright 2014 Tanel Lebedev
+// Copyright 2014 Toggl Desktop developers.
 
 #include "./proxy.h"
-

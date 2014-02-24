@@ -1,4 +1,4 @@
-// Copyright (c) 2013 Toggl
+// Copyright 2014 Toggl Desktop developers.
 
 #ifndef SRC_WINDOW_CHANGE_RECORDER_H_
 #define SRC_WINDOW_CHANGE_RECORDER_H_
