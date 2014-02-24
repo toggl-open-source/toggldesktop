@@ -630,11 +630,11 @@ kopsik::error Context::SetCurrentAPIToken(
   return db_->SetCurrentAPIToken(token);
 }
 
-kopsik::error Context::CurrentUser(kopsik::User *result) {
-  poco_assert(!result);
+kopsik::error Context::CurrentUser(kopsik::User **result) {
+  poco_assert(!*result);
 
   if (user_) {
-    result = user_;
+    *result = user_;
     return kopsik::noError;
   }
 
@@ -649,7 +649,7 @@ kopsik::error Context::CurrentUser(kopsik::User *result) {
 
   user_ = user;
 
-  result = user_;
+  *result = user_;
   return kopsik::noError;
 }
 
@@ -1066,8 +1066,8 @@ kopsik::error Context::SetTimeEntryDescription(
   return kopsik::noError;
 }
 
-kopsik::error Context::Stop(kopsik::TimeEntry *stopped_entry) {
-  stopped_entry = 0;
+kopsik::error Context::Stop(kopsik::TimeEntry **stopped_entry) {
+  *stopped_entry = 0;
   if (!user_) {
     return kopsik::error("Please login to stop time tracking");
   }
@@ -1075,9 +1075,9 @@ kopsik::error Context::Stop(kopsik::TimeEntry *stopped_entry) {
   if (stopped.empty()) {
     return kopsik::error("No time entry was found to stop");
   }
-  stopped_entry = stopped[0];
+  *stopped_entry = stopped[0];
   save();
-  if (stopped_entry->NeedsPush()) {
+  if ((*stopped_entry)->NeedsPush()) {
     partialSync();
   }
   return kopsik::noError;
@@ -1085,16 +1085,16 @@ kopsik::error Context::Stop(kopsik::TimeEntry *stopped_entry) {
 
 kopsik::error Context::SplitAt(
     const Poco::Int64 at,
-    kopsik::TimeEntry *new_running_entry) {
-  new_running_entry = 0;
+    kopsik::TimeEntry **new_running_entry) {
+  *new_running_entry = 0;
   if (!user_) {
     return kopsik::error("Pleae login to split time entry");
   }
-  new_running_entry = user_->SplitAt(at);
-  if (!new_running_entry) {
+  *new_running_entry = user_->SplitAt(at);
+  if (!*new_running_entry) {
     return kopsik::error("Failed to split tracking time entry");
   }
-  if (new_running_entry->NeedsPush()) {
+  if ((*new_running_entry)->NeedsPush()) {
     partialSync();
   }
   return kopsik::noError;
@@ -1102,27 +1102,27 @@ kopsik::error Context::SplitAt(
 
 kopsik::error Context::StopAt(
     const Poco::Int64 at,
-    kopsik::TimeEntry *stopped) {
+    kopsik::TimeEntry **stopped) {
   if (!user_) {
     return kopsik::error("Please login to stop running time entry");
   }
-  stopped = user_->StopAt(at);
+  *stopped = user_->StopAt(at);
   if (!stopped) {
     return kopsik::error("Time entry not found to stop");
   }
   save();
-  if (stopped->NeedsPush()) {
+  if ((*stopped)->NeedsPush()) {
     partialSync();
   }
   return kopsik::noError;
 }
 
 kopsik::error Context::RunningTimeEntry(
-    kopsik::TimeEntry *running) {
+    kopsik::TimeEntry **running) {
   if (!user_) {
     return kopsik::error("Please login to access tracking time entry");
   }
-  running = user_->RunningTimeEntry();
+  *running = user_->RunningTimeEntry();
   return kopsik::noError;
 }
 

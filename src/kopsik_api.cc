@@ -348,12 +348,10 @@ kopsik_api_result kopsik_current_user(
     poco_assert(errlen);
     poco_assert(out_user);
 
-    out_user = 0;
-
     logger().debug("kopsik_current_user");
 
     kopsik::User *current_user = 0;
-    kopsik::error err = app(context)->CurrentUser(current_user);
+    kopsik::error err = app(context)->CurrentUser(&current_user);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1453,7 +1451,7 @@ kopsik_api_result kopsik_stop(
     *was_found = 0;
 
     kopsik::TimeEntry *te = 0;
-    kopsik::error err = app(context)->Stop(te);
+    kopsik::error err = app(context)->Stop(&te);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1496,7 +1494,7 @@ kopsik_api_result kopsik_split_running_time_entry_at(
 
     *was_found = 0;
     kopsik::TimeEntry *te = 0;
-    kopsik::error err = app(context)->SplitAt(at, te);
+    kopsik::error err = app(context)->SplitAt(at, &te);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1543,7 +1541,7 @@ kopsik_api_result kopsik_stop_running_time_entry_at(
 
     *was_found = 0;
     kopsik::TimeEntry *te = 0;
-    kopsik::error err = app(context)->StopAt(at, te);
+    kopsik::error err = app(context)->StopAt(at, &te);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1588,7 +1586,7 @@ kopsik_api_result kopsik_running_time_entry_view_item(
 
     *out_is_tracking = 0;
     kopsik::TimeEntry *te = 0;
-    kopsik::error err = app(context)->RunningTimeEntry(te);
+    kopsik::error err = app(context)->RunningTimeEntry(&te);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;

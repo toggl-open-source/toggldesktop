@@ -1,5 +1,7 @@
 // Copyright 2014 Toggl Desktop developers.
 
+// All session access should be locked.
+
 #include "./database.h"
 
 #include <limits>
