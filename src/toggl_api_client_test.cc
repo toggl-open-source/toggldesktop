@@ -636,6 +636,40 @@ namespace kopsik {
         ASSERT_EQ("00:00:25", te.DurationString());
     }
 
+    TEST(TogglApiClientTest, Continue) {
+        wipe_test_db();
+        Database db(TESTDB);
+
+        User user("kopsik_test", "0.1");
+        LoadUserFromJSONString(&user, loadTestData(), true, true);
+
+        // User wants to continue time entries,
+        // not create new ones
+        user.SetStoreStartAndStopTime(false);
+
+        // Change an old time entry and
+        // change its date to today. Continueing the
+        // entry should not create new record, but
+        // continue the old one.
+        TimeEntry *te = user.GetTimeEntryByID(89818605);
+        ASSERT_TRUE(te);
+        te->SetStart(time(0));
+        te->SetDurOnly(true);
+
+        size_t count = user.related.TimeEntries.size();
+        TimeEntry *continued = user.Continue(te->GUID());
+        ASSERT_TRUE(continued);
+        ASSERT_EQ(count, user.related.TimeEntries.size());
+
+        // If the old time entry date is different than
+        // today, it should create a new entry when
+        // user continues it:
+        te->SetStartString("2013-01-25T01:05:15-22:00");
+        continued = user.Continue(te->GUID());
+        ASSERT_TRUE(continued);
+        ASSERT_EQ(count+1, user.related.TimeEntries.size());
+    }
+
 }  // namespace kopsik
 
 int main(int argc, char **argv) {

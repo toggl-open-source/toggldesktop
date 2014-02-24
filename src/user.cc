@@ -82,32 +82,32 @@ TimeEntry *User::Start(
 }
 
 TimeEntry *User::Continue(const std::string GUID) {
-    Stop();
-    TimeEntry *existing = GetTimeEntryByGUID(GUID);
-    if (!existing) {
-        return 0;
-    }
-    TimeEntry *te = 0;
-    if (existing->DurOnly()) {
-        te = existing;
-        te->SetDurationInSeconds(-time(0) + te->DurationInSeconds());
-    } else {
-        te = new TimeEntry();
-        te->SetDescription(existing->Description());
-        te->SetDurOnly(existing->DurOnly());
-        te->SetWID(existing->WID());
-        te->SetPID(existing->PID());
-        te->SetTID(existing->TID());
-        te->SetUID(ID());
-        te->SetStart(time(0));
-        te->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
-        te->SetDurationInSeconds(-time(0));
-        te->SetBillable(existing->Billable());
-        te->SetTags(existing->Tags());
-        related.TimeEntries.push_back(te);
-    }
-    te->SetUIModifiedAt(time(0));
-    return te;
+  Stop();
+  TimeEntry *existing = GetTimeEntryByGUID(GUID);
+  if (!existing) {
+    return 0;
+  }
+  TimeEntry *te = 0;
+  if (existing->DurOnly() && existing->IsToday()) {
+    te = existing;
+    te->SetDurationInSeconds(-time(0) + te->DurationInSeconds());
+  } else {
+    te = new TimeEntry();
+    te->SetDescription(existing->Description());
+    te->SetDurOnly(existing->DurOnly());
+    te->SetWID(existing->WID());
+    te->SetPID(existing->PID());
+    te->SetTID(existing->TID());
+    te->SetUID(ID());
+    te->SetStart(time(0));
+    te->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
+    te->SetDurationInSeconds(-time(0));
+    te->SetBillable(existing->Billable());
+    te->SetTags(existing->Tags());
+    related.TimeEntries.push_back(te);
+  }
+  te->SetUIModifiedAt(time(0));
+  return te;
 }
 
 TimeEntry *User::Latest() {

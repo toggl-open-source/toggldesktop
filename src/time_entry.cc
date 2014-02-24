@@ -6,6 +6,10 @@
 
 #include "./formatter.h"
 
+#include "Poco/Timestamp.h"
+#include "Poco/DateTime.h"
+#include "Poco/LocalDateTime.h"
+
 namespace kopsik {
 
 bool TimeEntry::NeedsPush() {
@@ -247,6 +251,15 @@ std::string TimeEntry::StopString() {
 
 std::string TimeEntry::StartString() {
     return Formatter::Format8601(start_);
+}
+
+bool TimeEntry::IsToday() {
+  Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(Start());
+  Poco::LocalDateTime datetime(ts);
+  Poco::LocalDateTime today;
+  return today.year() == datetime.year() &&
+      today.month() == datetime.month() &&
+      today.day() == datetime.day();
 }
 
 }   // namespace kopsik
