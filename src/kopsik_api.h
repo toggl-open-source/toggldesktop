@@ -455,7 +455,7 @@ KOPSIK_EXPORT kopsik_api_result kopsik_feedback_send(
   const unsigned int errlen,
   const char *topic,
   const char *details,
-  const char *base64encoded_image);
+  const char *filename);
 
 // Updates
 

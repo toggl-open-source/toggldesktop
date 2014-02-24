@@ -61,11 +61,11 @@ void model_change_to_change_item(
 
 void time_entry_to_view_item(
     kopsik::TimeEntry *te,
-    kopsik::User *user,
+    const std::string project_and_task_label,
+    const std::string color_code,
     KopsikTimeEntryViewItem *view_item,
     const std::string dateDuration) {
   poco_assert(te);
-  //   FIXME: poco_assert(user);
   poco_assert(view_item);
 
   view_item->DurationInSeconds = te->DurationInSeconds();
@@ -76,40 +76,14 @@ void time_entry_to_view_item(
   poco_assert(!view_item->GUID);
   view_item->GUID = strdup(te->GUID().c_str());
 
-  kopsik::Task *t = 0;
-  kopsik::Project *p = 0;
-  kopsik::Client *c = 0;
-
-  /* FIXME: user is required here
-
-  if (te->TID()) {
-    t = user->GetTaskByID(te->TID());
-  }
   view_item->TID = te->TID();
-
-  if (t) {
-    p = user->GetProjectByID(t->PID());
-  } else if (te->PID()) {
-    p = user->GetProjectByID(te->PID());
-  }
-  if (p) {
-    view_item->PID = p->ID();
-  } else {
-    view_item->PID = 0;
-  }
-
-  if (p && p->CID()) {
-    c = user->GetClientByID(p->CID());
-  }
+  view_item->PID = te->PID();
 
   poco_assert(!view_item->ProjectAndTaskLabel);
-  view_item->ProjectAndTaskLabel = strdup(user->JoinTaskName(t, p, c).c_str());
-  */
+  view_item->ProjectAndTaskLabel = strdup(project_and_task_label.c_str());
 
   poco_assert(!view_item->Color);
-  if (p) {
-    view_item->Color = strdup(p->ColorCode().c_str());
-  }
+  view_item->Color = strdup(color_code.c_str());
 
   poco_assert(!view_item->Duration);
   view_item->Duration = strdup(te->DurationString().c_str());
