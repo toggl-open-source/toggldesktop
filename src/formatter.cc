@@ -48,16 +48,16 @@ std::string Formatter::FormatDateHeader(const std::time_t date) {
     poco_assert(date);
 
     Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
-    Poco::DateTime datetime(ts);
+    Poco::LocalDateTime datetime(ts);
 
-    Poco::DateTime today;
+    Poco::LocalDateTime today;
     if (today.year() == datetime.year() &&
             today.month() == datetime.month() &&
             today.day() == datetime.day()) {
         return "Today";
     }
 
-    Poco::DateTime yesterday = today -
+    Poco::LocalDateTime yesterday = today -
         Poco::Timespan(24 * Poco::Timespan::HOURS);
     if (yesterday.year() == datetime.year() &&
             yesterday.month() == datetime.month() &&

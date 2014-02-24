@@ -114,6 +114,8 @@ namespace kopsik {
         bool NeedsPUT();
         bool NeedsDELETE();
 
+        bool IsToday();
+
     private:
         Poco::Int64 local_id_;
         Poco::UInt64 id_;
