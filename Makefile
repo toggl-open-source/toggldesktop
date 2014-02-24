@@ -12,25 +12,6 @@ GMOCK_DIR=third_party/gmock-1.7.0
 
 osx_executable=./src/ui/osx/test2.project/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop
 
-oclintbin=./third_party/oclint-0.7-x86_64-apple-darwin-10/bin/oclint
-oclintflags=-fatal-assembler-warnings -max-priority-3 0 -max-priority-2 0 -max-priority-1 0 \
-	-- -c \
-	-Isrc/ui/osx/test2.project \
-	-Isrc \
-	-Ithird_party/bugsnag-cocoa/bugsnag \
-	-Isrc/ui/osx/test2.project/test2 \
-	-Ithird_party/PLCrashReporter/Mac\ OS\ X\ Framework/CrashReporter.framework/Versions/Current/Headers \
-	-I$(pocodir)/Foundation/include \
-	-I$(pocodir)/Util/include \
-	-I$(pocodir)/Data/include \
-	-I$(pocodir)/Data/SQLite/include \
-	-I$(pocodir)/Crypto/include \
-	-I$(pocodir)/Net/include \
-	-I$(pocodir)/NetSSL_OpenSSL/include \
-	-I$(jsondir) \
-	-DNDEBUG \
-	-Werror
-
 main=toggl
 
 ifeq ($(uname), Darwin)
@@ -237,7 +218,3 @@ poco:
 stats:
 	rm -rf gitstats
 	./third_party/gitstats/gitstats -c merge_authors="Tanel","Tanel Lebedev" . gitstats
-
-oclint:
-	$(oclintbin) src/ui/osx/test2.project/test2/*.m src/kopsik_api.cc \
-	src/toggl_api_client.cc src/database.cc $(oclintflags)

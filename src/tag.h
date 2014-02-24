@@ -1,0 +1,627 @@
+// Copyright 2014 Toggl Desktop developers.
+
+#ifndef SRC_TAG_H_
+#define SRC_TAG_H_
+
+#include <set>
+#include <string>
+#include <vector>
+#include <sstream>
+#include <iterator>
+#include <algorithm>
+#include <ctime>
+
+#include "libjson.h" // NOLINT
+
+#include "Poco/Types.h"
+
+#include "./types.h"
+#include "./https_client.h"
+#include "./test_data.h"
+
+namespace kopsik {
+
+    class BatchUpdateResult {
+    public:
+        BatchUpdateResult() : StatusCode(0), Body(""), GUID(""),
+            ContentType("") {
+        }
+        Poco::Int64 StatusCode;
+        std::string Body;
+        std::string GUID;  // must match the BatchUpdate GUID
+        std::string ContentType;
+        std::string Method;
+
+        void parseResponseJSON(JSONNODE *n);
+        void parseResponseJSONBody(std::string body);
+    };
+
+    // FIXME: implement base class with common fields, dirtyness etc
+
+    class Workspace {
+    public:
+        Workspace() : local_id_(0), id_(0), name_(""), uid_(0), dirty_(false),
+            is_marked_as_deleted_on_server_(false), premium_(false) {}
+
+        void LoadFromJSONNode(JSONNODE *node);
+        std::string String();
+
+        Poco::Int64 LocalID() { return local_id_; }
+        void SetLocalID(Poco::Int64 value) { local_id_ = value; }
+        Poco::UInt64 ID() { return id_; }
+        void SetID(Poco::UInt64 value);
+        std::string Name() { return name_; }
+        void SetName(std::string value);
+        Poco::UInt64 UID() { return uid_; }
+        void SetUID(Poco::UInt64 value);
+        bool Dirty() { return dirty_; }
+        void ClearDirty() { dirty_ = false; }
+
+        bool Premium() { return premium_; }
+        void SetPremium(const bool value);
+
+        bool IsMarkedAsDeletedOnServer() {
+            return is_marked_as_deleted_on_server_;
+        }
+        void MarkAsDeletedOnServer() {
+            is_marked_as_deleted_on_server_ = true;
+            dirty_ = true;
+        }
+
+    private:
+        Poco::Int64 local_id_;
+        Poco::UInt64 id_;
+        std::string name_;
+        Poco::UInt64 uid_;
+        bool dirty_;
+        bool is_marked_as_deleted_on_server_;
+        bool premium_;
+    };
+
+    class Client {
+    public:
+        Client() : local_id_(0), id_(0), guid_(""), wid_(0), name_(""), uid_(0),
+            dirty_(false), is_marked_as_deleted_on_server_(false) {}
+
+        Poco::Int64 LocalID() { return local_id_; }
+        void SetLocalID(Poco::Int64 value) { local_id_ = value; }
+        Poco::UInt64 ID() { return id_; }
+        void SetID(Poco::UInt64 value);
+        guid GUID() { return guid_; }
+        void SetGUID(std::string value);
+        Poco::UInt64 WID() { return wid_; }
+        void SetWID(Poco::UInt64 value);
+        std::string Name() { return name_; }
+        void SetName(std::string value);
+        Poco::UInt64 UID() { return uid_; }
+        void SetUID(Poco::UInt64 value);
+        bool Dirty() { return dirty_; }
+        void ClearDirty() { dirty_ = false; }
+
+        void LoadFromJSONNode(JSONNODE *node);
+        std::string String();
+
+        bool IsMarkedAsDeletedOnServer() {
+            return is_marked_as_deleted_on_server_;
+        }
+        void MarkAsDeletedOnServer() {
+            is_marked_as_deleted_on_server_ = true;
+            dirty_ = true;
+        }
+
+    private:
+        Poco::Int64 local_id_;
+        Poco::UInt64 id_;
+        guid guid_;
+        Poco::UInt64 wid_;
+        std::string name_;
+        Poco::UInt64 uid_;
+        bool dirty_;
+        bool is_marked_as_deleted_on_server_;
+    };
+
+    class Project {
+    public:
+        Project() : local_id_(0), id_(0), guid_(""), wid_(0), cid_(0),
+            name_(""), uid_(0), dirty_(false), color_(""),
+            active_(false), is_marked_as_deleted_on_server_(false),
+            billable_(false) {}
+
+        Poco::Int64 LocalID() { return local_id_; }
+        void SetLocalID(Poco::Int64 value) { local_id_ = value; }
+        Poco::UInt64 ID() { return id_; }
+        void SetID(Poco::UInt64 value);
+        guid GUID() { return guid_; }
+        void SetGUID(std::string value);
+        Poco::UInt64 WID() { return wid_; }
+        void SetWID(Poco::UInt64 value);
+        Poco::UInt64 CID() { return cid_; }
+        void SetCID(Poco::UInt64 value);
+
+        std::string UppercaseName();
+        std::string Name() { return name_; }
+        void SetName(std::string value);
+
+        Poco::UInt64 UID() { return uid_; }
+        void SetUID(Poco::UInt64 value);
+
+        bool Dirty() { return dirty_; }
+        void ClearDirty() { dirty_ = false; }
+
+        std::string Color() { return color_; }
+        void SetColor(std::string value);
+        std::string ColorCode();
+
+        bool Active() { return active_; }
+        void SetActive(const bool value);
+
+        void LoadFromJSONNode(JSONNODE *node);
+        std::string String();
+
+        static std::vector<std::string> color_codes;
+
+        bool IsMarkedAsDeletedOnServer() {
+            return is_marked_as_deleted_on_server_;
+        }
+        void MarkAsDeletedOnServer() {
+            is_marked_as_deleted_on_server_ = true;
+            dirty_ = true;
+        }
+
+        bool Billable() { return billable_; }
+        void SetBillable(const bool value);
+
+    private:
+        Poco::Int64 local_id_;
+        Poco::UInt64 id_;
+        guid guid_;
+        Poco::UInt64 wid_;
+        Poco::UInt64 cid_;
+        std::string name_;
+        Poco::UInt64 uid_;
+        bool dirty_;
+        std::string color_;
+        bool active_;
+        bool is_marked_as_deleted_on_server_;
+        bool billable_;
+    };
+
+    class Task {
+    public:
+        Task() : local_id_(0), id_(0), name_(""), wid_(0), pid_(0), uid_(0),
+            dirty_(false), is_marked_as_deleted_on_server_(false) {}
+
+        Poco::Int64 LocalID() { return local_id_; }
+        void SetLocalID(Poco::Int64 value) { local_id_ = value; }
+        Poco::UInt64 ID() { return id_; }
+        void SetID(Poco::UInt64 value);
+        std::string Name() { return name_; }
+        void SetName(std::string value);
+        Poco::UInt64 WID() { return wid_; }
+        void SetWID(Poco::UInt64 value);
+        Poco::UInt64 PID() { return pid_; }
+        void SetPID(Poco::UInt64 value);
+        Poco::UInt64 UID() { return uid_; }
+        void SetUID(Poco::UInt64 value);
+        bool Dirty() { return dirty_; }
+        void ClearDirty() { dirty_ = false; }
+
+        void LoadFromJSONNode(JSONNODE *node);
+        std::string String();
+
+        bool IsMarkedAsDeletedOnServer() {
+            return is_marked_as_deleted_on_server_;
+        }
+        void MarkAsDeletedOnServer() {
+            is_marked_as_deleted_on_server_ = true;
+            dirty_ = true;
+        }
+
+    private:
+        Poco::Int64 local_id_;
+        Poco::UInt64 id_;
+        std::string name_;
+        Poco::UInt64 wid_;
+        Poco::UInt64 pid_;
+        Poco::UInt64 uid_;
+        bool dirty_;
+        bool is_marked_as_deleted_on_server_;
+    };
+
+    class Tag {
+    public:
+        Tag() : local_id_(0), id_(0), wid_(0), name_(""), guid_(""), uid_(0),
+            dirty_(false), is_marked_as_deleted_on_server_(false) {}
+
+        Poco::Int64 LocalID() { return local_id_; }
+        void SetLocalID(Poco::Int64 value) { local_id_ = value; }
+        Poco::UInt64 ID() { return id_; }
+        void SetID(Poco::UInt64 value);
+        Poco::UInt64 WID() { return wid_; }
+        void SetWID(Poco::UInt64 value);
+        std::string Name() { return name_; }
+        void SetName(std::string value);
+        guid GUID() { return guid_; }
+        void SetGUID(std::string value);
+        Poco::UInt64 UID() { return uid_; }
+        void SetUID(Poco::UInt64 value);
+        bool Dirty() { return dirty_; }
+        void ClearDirty() { dirty_ = false; }
+
+        void LoadFromJSONNode(JSONNODE *node);
+        std::string String();
+
+        bool IsMarkedAsDeletedOnServer() {
+            return is_marked_as_deleted_on_server_;
+        }
+        void MarkAsDeletedOnServer() {
+            is_marked_as_deleted_on_server_ = true;
+            dirty_ = true;
+        }
+
+    private:
+        Poco::Int64 local_id_;
+        Poco::UInt64 id_;
+        Poco::UInt64 wid_;
+        std::string name_;
+        guid guid_;
+        Poco::UInt64 uid_;
+        bool dirty_;
+        bool is_marked_as_deleted_on_server_;
+    };
+
+    class TimeEntry {
+    public:
+        TimeEntry() : local_id_(0),
+            id_(0), guid_(""), wid_(0), pid_(0), tid_(0), billable_(false),
+            start_(0), stop_(0), duration_in_seconds_(0), description_(""),
+            duronly_(false), ui_modified_at_(0), uid_(0), dirty_(false),
+            created_with_(""), deleted_at_(0),
+            is_marked_as_deleted_on_server_(false),
+            updated_at_(0) {}
+
+        std::string Tags();
+        void SetTags(std::string tags);
+
+        Poco::UInt64 ID() { return id_; }
+        void SetID(Poco::UInt64 value);
+
+        Poco::UInt64 WID() { return wid_; }
+        void SetWID(Poco::UInt64 value);
+
+        Poco::UInt64 UID() { return uid_; }
+        void SetUID(Poco::UInt64 value);
+
+        Poco::UInt64 PID() { return pid_; }
+        void SetPID(Poco::UInt64 value);
+
+        Poco::UInt64 TID() { return tid_; }
+        void SetTID(Poco::UInt64 value);
+
+        Poco::UInt64 UIModifiedAt() { return ui_modified_at_; }
+        void SetUIModifiedAt(Poco::UInt64 value);
+
+        bool Billable() { return billable_; }
+        void SetBillable(bool value);
+
+        Poco::Int64 DurationInSeconds() { return duration_in_seconds_; }
+        void SetDurationInSeconds(Poco::Int64 value);
+        std::string DurationString();
+        void SetDurationString(const std::string value);
+
+        Poco::Int64 LocalID() { return local_id_; }
+        void SetLocalID(Poco::Int64 value) { local_id_ = value; }
+
+        bool DurOnly() { return duronly_; }
+        void SetDurOnly(bool value);
+
+        std::string Description() { return description_; }
+        void SetDescription(std::string value);
+
+        std::string GUID() { return guid_; }
+        void SetGUID(std::string value);
+
+        std::string StartString();
+        void SetStartString(std::string value);
+        Poco::UInt64 Start() { return start_; }
+        void SetStart(Poco::UInt64 value);
+        std::string DateHeaderString();
+
+        std::string StopString();
+        void SetStopString(std::string value);
+        Poco::UInt64 Stop() { return stop_; }
+        void SetStop(Poco::UInt64 value);
+
+        bool Dirty() { return dirty_; }
+        void ClearDirty() { dirty_ = false; }
+
+        std::string CreatedWith() { return created_with_; }
+        void SetCreatedWith(std::string value);
+        // Deleting a time entry hides it from
+        // UI and flags it for removal from
+        // server:
+        Poco::UInt64 DeletedAt() { return deleted_at_; }
+        void SetDeletedAt(Poco::UInt64 value);
+
+        Poco::UInt64 UpdatedAt() { return updated_at_; }
+        void SetUpdatedAt(Poco::UInt64 value);
+        std::string UpdatedAtString();
+        void SetUpdatedAtString(std::string value);
+
+        // When time entry is finally deleted
+        // on server, it will be removed from local
+        // DB using this flag:
+        bool IsMarkedAsDeletedOnServer() {
+            return is_marked_as_deleted_on_server_;
+        }
+        void MarkAsDeletedOnServer() {
+            is_marked_as_deleted_on_server_ = true;
+            dirty_ = true;
+        }
+
+        void StopAt(const Poco::Int64 at);
+
+        std::vector<std::string> TagNames;
+
+        void LoadFromJSONNode(JSONNODE *node);
+        void LoadFromJSONString(std::string json);
+
+        std::string String();
+        JSONNODE *JSON();
+
+        bool NeedsPush();
+        bool NeedsPOST();
+        bool NeedsPUT();
+        bool NeedsDELETE();
+
+    private:
+        Poco::Int64 local_id_;
+        Poco::UInt64 id_;
+        guid guid_;
+        Poco::UInt64 wid_;
+        Poco::UInt64 pid_;
+        Poco::UInt64 tid_;
+        bool billable_;
+        Poco::UInt64 start_;
+        Poco::UInt64 stop_;
+        Poco::Int64 duration_in_seconds_;
+        std::string description_;
+        bool duronly_;
+        // TE is the only model that can actually
+        // be updated by user.
+        Poco::UInt64 ui_modified_at_;
+        Poco::UInt64 uid_;
+        bool dirty_;
+        std::string created_with_;
+        Poco::UInt64 deleted_at_;
+        bool is_marked_as_deleted_on_server_;
+        Poco::UInt64 updated_at_;
+
+        error loadTagsFromJSONNode(JSONNODE *list);
+        Poco::UInt64 getUIModifiedAtFromJSONNode(JSONNODE *data);
+
+        bool setDurationStringHHMMSS(const std::string value);
+        bool setDurationStringHHMM(const std::string value);
+        bool setDurationStringMMSS(const std::string value);
+    };
+
+    class RelatedData {
+    public:
+        std::vector<Workspace *> Workspaces;
+        std::vector<Client *> Clients;
+        std::vector<Project *> Projects;
+        std::vector<Task *> Tasks;
+        std::vector<Tag *> Tags;
+        std::vector<TimeEntry *> TimeEntries;
+    };
+
+    class User {
+    public:
+        User(const std::string app_name,
+                const std::string app_version) :
+            BasicAuthUsername(""),
+            BasicAuthPassword(""),
+            local_id_(0),
+            id_(0),
+            api_token_(""),
+            default_wid_(0),
+            since_(0),
+            dirty_(false),
+            fullname_(""),
+            app_name_(app_name),
+            app_version_(app_version),
+            email_(""),
+            record_timeline_(false) {}
+        ~User() {
+            ClearWorkspaces();
+            ClearClients();
+            ClearProjects();
+            ClearTasks();
+            ClearTags();
+            ClearTimeEntries();
+        }
+
+        error Sync(HTTPSClient *https_client,
+            const bool full_sync,
+            const bool with_related_data);
+        error Push(HTTPSClient *https_client);
+        error Login(HTTPSClient *https_client,
+            const std::string &email, const std::string &password);
+
+        void LoadFromJSONString(const std::string &json,
+            const bool full_sync, const bool with_related_data);
+        void LoadFromJSONNode(JSONNODE *node,
+            const bool full_sync,
+            const bool with_related_data);
+        void LoadUpdateFromJSONString(const std::string json);
+        std::string String();
+
+        void ClearWorkspaces();
+        void ClearClients();
+        void ClearProjects();
+        void ClearTasks();
+        void ClearTags();
+        void ClearTimeEntries();
+
+        bool HasPremiumWorkspaces();
+
+        Workspace *GetWorkspaceByID(const Poco::UInt64 id);
+        Client *GetClientByID(const Poco::UInt64 id);
+        Client *GetClientByGUID(const guid GUID);
+        Project *GetProjectByID(const Poco::UInt64 id);
+        Project *GetProjectByGUID(const guid GUID);
+        Project *GetProjectByName(const std::string name);
+        Task *GetTaskByID(const Poco::UInt64 id);
+        Tag *GetTagByID(const Poco::UInt64 id);
+        Tag *GetTagByGUID(const guid GUID);
+        TimeEntry *GetTimeEntryByID(const Poco::UInt64 id);
+        TimeEntry *GetTimeEntryByGUID(const guid GUID);
+
+        void CollectPushableTimeEntries(
+            std::vector<TimeEntry *> *result);
+        void SortTimeEntriesByStart();
+
+        TimeEntry *RunningTimeEntry();
+        TimeEntry *Start(
+            const std::string description,
+            const std::string duration,
+            const Poco::UInt64 task_id,
+            const Poco::UInt64 project_id);
+        TimeEntry *Continue(const std::string GUID);
+        TimeEntry *Latest();
+        std::vector<TimeEntry *> Stop();
+        TimeEntry *SplitAt(const Poco::Int64 at);
+        TimeEntry *StopAt(const Poco::Int64 at);
+
+        std::string DateDuration(TimeEntry *te);
+
+        Poco::Int64 LocalID() { return local_id_; }
+        void SetLocalID(Poco::Int64 value) { local_id_ = value; }
+
+        Poco::UInt64 ID() { return id_; }
+        void SetID(Poco::UInt64 value);
+
+        std::string APIToken() { return api_token_; }
+        void SetAPIToken(std::string api_token);
+
+        Poco::UInt64 DefaultWID() { return default_wid_; }
+        void SetDefaultWID(Poco::UInt64 value);
+
+        // Unix timestamp of the user data; returned from API
+        Poco::UInt64 Since() { return since_; }
+        void SetSince(Poco::UInt64 value);
+
+        bool Dirty() { return dirty_; }
+        void ClearDirty() { dirty_ = false; }
+
+        std::string Fullname() { return fullname_; }
+        void SetFullname(std::string value);
+
+        std::string Email() { return email_; }
+        void SetEmail(const std::string value);
+
+        bool RecordTimeline() { return record_timeline_; }
+        void SetRecordTimeline(const bool value);
+
+        void ActiveProjects(std::vector<Project *> *list);
+
+        bool StoreStartAndStopTime() { return store_start_and_stop_time_; }
+        void SetStoreStartAndStopTime(const bool value);
+
+        // Following 2 fields are not saved into database:
+        // They are only used to log user in.
+        std::string BasicAuthUsername;
+        std::string BasicAuthPassword;
+
+        RelatedData related;
+
+    private:
+        error pull(HTTPSClient *https_client,
+            const bool full_sync,
+            const bool with_related_data);
+
+        std::string dirtyObjectsJSON(std::vector<TimeEntry *> *dirty);
+        void processResponseArray(std::vector<BatchUpdateResult> *results,
+            std::vector<TimeEntry *> *dirty,
+            std::vector<error> *errors);
+        error collectErrors(std::vector<error> *errors);
+
+        void loadProjectsFromJSONNode(JSONNODE *list, const bool full_sync);
+        void loadProjectFromJSONNode(JSONNODE *data,
+            std::set<Poco::UInt64> *alive);
+
+        void loadTagsFromJSONNode(JSONNODE *list, const bool full_sync);
+        void loadTagFromJSONNode(JSONNODE *data,
+            std::set<Poco::UInt64> *alive);
+
+        void loadClientsFromJSONNode(JSONNODE *list, const bool full_sync);
+        void loadClientFromJSONNode(JSONNODE *data,
+            std::set<Poco::UInt64> *alive);
+
+        void loadTasksFromJSONNode(JSONNODE *list, const bool full_sync);
+        void loadTaskFromJSONNode(JSONNODE *data,
+            std::set<Poco::UInt64> *alive);
+
+        void loadTimeEntriesFromJSONNode(JSONNODE *list, const bool full_sync);
+        void loadTimeEntryFromJSONNode(JSONNODE *data,
+            std::set<Poco::UInt64> *alive);
+
+        void loadWorkspacesFromJSONNode(JSONNODE *list, const bool full_sync);
+        void loadWorkspaceFromJSONNode(JSONNODE *data,
+            std::set<Poco::UInt64> *alive);
+
+        void loadUpdateFromJSONNode(JSONNODE *data);
+
+        error requestJSON(std::string method, std::string relative_url,
+                std::string json,
+                bool authenticate_with_api_token,
+                std::string *response_body);
+        bool isStatusOK(int status);
+        void parseResponseArray(std::string response_body,
+            std::vector<BatchUpdateResult> *responses);
+
+        Poco::Int64 local_id_;
+        Poco::UInt64 id_;
+        std::string api_token_;
+        Poco::UInt64 default_wid_;
+        // Unix timestamp of the user data; returned from API
+        Poco::UInt64 since_;
+        bool dirty_;
+        std::string fullname_;
+        std::string app_name_;
+        std::string app_version_;
+        std::string email_;
+        bool record_timeline_;
+        bool store_start_and_stop_time_;
+    };
+
+    class Formatter {
+    public:
+      static std::string JoinTaskName(Task *t, Project *p, Client *c);
+      static std::string FormatDurationInSeconds(const Poco::Int64 value,
+        const std::string format);
+      static std::string FormatDurationInSecondsHHMMSS(
+        const Poco::Int64 value);
+      static std::string FormatDurationInSecondsHHMM(const Poco::Int64 value,
+        const int type);
+      static std::time_t Parse8601(const std::string iso_8601_formatted_date);
+      static int ParseDurationString(const std::string value);
+      static bool parseDurationStringHHMMSS(const std::string value,
+        int *parsed_seconds);
+      static bool parseDurationStringHHMM(const std::string value,
+        int *parsed_seconds);
+      static bool parseDurationStringMMSS(const std::string value,
+        int *parsed_seconds);
+      static std::string Format8601(const std::time_t date);
+      static std::string FormatDateHeader(const std::time_t date);
+      static std::string FormatDateWithTime(const std::time_t date);
+      static std::string EscapeJSONString(const std::string input);
+    };
+
+    Poco::UInt64 getIDFromJSONNode(JSONNODE *list);
+    guid getGUIDFromJSONNode(JSONNODE *list);
+    bool isDeletedAtServer(JSONNODE *data);
+
+}  // namespace kopsik
+
+#endif  // SRC_TAG_H_
