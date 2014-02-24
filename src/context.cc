@@ -487,13 +487,15 @@ const std::string Context::feedbackJSON() const {
   JSONNODE *root = json_new(JSON_NODE);
   json_push_back(root, json_new_b("desktop", true));
   json_push_back(root, json_new_a("toggl_version", app_version_.c_str()));
-  json_push_back(root, json_new_a("details", feedback_details_.c_str()));
-  json_push_back(root, json_new_a("subject", feedback_subject_.c_str()));
+  json_push_back(root, json_new_a("details",
+    Formatter::EscapeJSONString(feedback_details_).c_str()));
+  json_push_back(root, json_new_a("subject",
+    Formatter::EscapeJSONString(feedback_subject_).c_str()));
   if (!feedback_attachment_path_.empty()) {
     json_push_back(root, json_new_a("base64_encoded_attachment",
-                                    base64encode_attachment().c_str()));
+      base64encode_attachment().c_str()));
     json_push_back(root, json_new_a("attachment_name",
-                                    feedback_filename().c_str()));
+      Formatter::EscapeJSONString(feedback_filename()).c_str()));
   }
   json_char *jc = json_write_formatted(root);
   std::string json(jc);
@@ -1234,7 +1236,7 @@ void Context::ProjectLabelAndColorCode(
     c = user_->GetClientByID(p->CID());
   }
 
-  *project_and_task_label = user_->JoinTaskName(t, p, c);
+  *project_and_task_label = Formatter::JoinTaskName(t, p, c);
 
   if (p) {
     *color_code = p->ColorCode();

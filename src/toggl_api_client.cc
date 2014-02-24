@@ -173,29 +173,6 @@ bool User::HasPremiumWorkspaces() {
     return false;
 }
 
-std::string User::JoinTaskName(Task *t, Project *p, Client *c) {
-    std::stringstream ss;
-    bool empty = true;
-    if (t) {
-        ss << t->Name();
-        empty = false;
-    }
-    if (p) {
-        if (!empty) {
-            ss << ". ";
-        }
-        ss << p->Name();
-        empty = false;
-    }
-    if (c) {
-        if (!empty) {
-            ss << ". ";
-        }
-        ss << c->Name();
-    }
-    return ss.str();
-}
-
 void User::SetFullname(std::string value) {
   if (fullname_ != value) {
     fullname_ = value;
@@ -1473,7 +1450,8 @@ JSONNODE *TimeEntry::JSON() {
     if (id_) {
         json_push_back(n, json_new_i("id", (json_int_t)id_));
     }
-    json_push_back(n, json_new_a("description", description_.c_str()));
+    json_push_back(n, json_new_a("description",
+        Formatter::EscapeJSONString(description_).c_str()));
     json_push_back(n, json_new_i("wid", (json_int_t)wid_));
     json_push_back(n, json_new_a("guid", guid_.c_str()));
     json_push_back(n, json_new_i("pid", (json_int_t)pid_));
@@ -1487,7 +1465,8 @@ JSONNODE *TimeEntry::JSON() {
     json_push_back(n, json_new_b("duronly", duronly_));
     json_push_back(n, json_new_i("ui_modified_at",
         (json_int_t)ui_modified_at_));
-    json_push_back(n, json_new_a("created_with", created_with_.c_str()));
+    json_push_back(n, json_new_a("created_with",
+        Formatter::EscapeJSONString(created_with_).c_str()));
 
     JSONNODE *tag_nodes = json_new(JSON_ARRAY);
     json_set_name(tag_nodes, "tags");
@@ -1495,7 +1474,8 @@ JSONNODE *TimeEntry::JSON() {
             it != TagNames.end();
             it++) {
         std::string tag_name = *it;
-        json_push_back(tag_nodes, json_new_a(NULL, tag_name.c_str()));
+        json_push_back(tag_nodes, json_new_a(NULL,
+            Formatter::EscapeJSONString(tag_name).c_str()));
     }
     json_push_back(n, tag_nodes);
 
@@ -2090,6 +2070,29 @@ error TimeEntry::loadTagsFromJSONNode(JSONNODE *list) {
     return noError;
 }
 
+std::string Formatter::JoinTaskName(Task *t, Project *p, Client *c) {
+    std::stringstream ss;
+    bool empty = true;
+    if (t) {
+        ss << t->Name();
+        empty = false;
+    }
+    if (p) {
+        if (!empty) {
+            ss << ". ";
+        }
+        ss << p->Name();
+        empty = false;
+    }
+    if (c) {
+        if (!empty) {
+            ss << ". ";
+        }
+        ss << c->Name();
+    }
+    return ss.str();
+}
+
 std::string Formatter::FormatDateWithTime(const std::time_t date) {
     poco_assert(date);
     Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
@@ -2342,6 +2345,27 @@ std::string Formatter::Format8601(const std::time_t date) {
     Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
     return Poco::DateTimeFormatter::format(ts,
         Poco::DateTimeFormat::ISO8601_FORMAT);
+}
+
+// http://stackoverflow.com/questions/7724448/simple-json-string-escape-for-c
+std::string Formatter::EscapeJSONString(const std::string input) {
+    std::ostringstream ss;
+    for (std::string::const_iterator iter = input.begin();
+            iter != input.end();
+            iter++) {
+        switch (*iter) {
+            case '\\': ss << "\\\\"; break;
+            case '"': ss << "\\\""; break;
+            case '/': ss << "\\/"; break;
+            case '\b': ss << "\\b"; break;
+            case '\f': ss << "\\f"; break;
+            case '\n': ss << "\\n"; break;
+            case '\r': ss << "\\r"; break;
+            case '\t': ss << "\\t"; break;
+            default: ss << *iter; break;
+        }
+    }
+    return ss.str();
 }
 
 }   // namespace kopsik
