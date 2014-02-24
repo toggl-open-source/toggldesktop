@@ -74,7 +74,7 @@ class Context {
     // Session management
     kopsik::error CurrentAPIToken(std::string *token);
     kopsik::error SetCurrentAPIToken(const std::string token);
-    kopsik::error CurrentUser(kopsik::User *result);
+    kopsik::error CurrentUser(kopsik::User **result);
     kopsik::error Login(
       const std::string email,
       const std::string password);
@@ -118,15 +118,15 @@ class Context {
     kopsik::error SetTimeEntryDescription(
       const std::string GUID,
       const std::string value);
-    kopsik::error Stop(kopsik::TimeEntry *stopped_entry);
+    kopsik::error Stop(kopsik::TimeEntry **stopped_entry);
     kopsik::error SplitAt(
       const Poco::Int64 at,
-      kopsik::TimeEntry *new_running_entry);
+      kopsik::TimeEntry **new_running_entry);
     kopsik::error StopAt(
       const Poco::Int64 at,
-      kopsik::TimeEntry *stopped);
+      kopsik::TimeEntry **stopped);
     kopsik::error RunningTimeEntry(
-      kopsik::TimeEntry *running);
+      kopsik::TimeEntry **running);
     kopsik::error ToggleTimelineRecording();
     kopsik::error TimeEntries(
       std::map<std::string, Poco::Int64> *date_durations,
