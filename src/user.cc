@@ -9,7 +9,7 @@
 #include "./json.h"
 
 #include "Poco/Logger.h"
-#include "Poco/StopWatch.h"
+#include "Poco/Stopwatch.h"
 
 namespace kopsik {
 
