@@ -20,9 +20,14 @@
 @property NSString *GUID;
 @property AutocompleteDataSource *autocompleteDataSource;
 @property NSTimer *timerAutocompleteRendering;
+@property NSTimer *timerTagsListRendering;
+@property NSTimer *timerClientsListRendering;
+@property NSTimer *timerWorkspacesListRendering;
 @property NSTimer *timer;
 @property TimeEntryViewItem *runningTimeEntry;
 @property NSMutableArray *tagsList;
+@property NSMutableArray *clientList;
+@property NSMutableArray *workspaceList;
 @end
 
 @implementation TimeEntryEditViewController
@@ -48,6 +53,10 @@
                                                selector:@selector(eventHandler:)
                                                    name:kUIEventModelChange
                                                  object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUIStateTimeEntryDeselected
+                                                 object:nil];
 
       self.autocompleteDataSource = [[AutocompleteDataSource alloc] init];
     }
@@ -56,7 +65,12 @@
 }
 
 - (IBAction)addProjectButtonClicked:(id)sender {
-
+  self.projectNameTextField.stringValue = @"";
+  self.clientSelect.stringValue = @"";
+  self.workspaceSelect.stringValue = @"";
+  [self.addProjectBox setHidden:NO];
+  [self.projectSelectBox setHidden:YES];
+  [self.projectNameTextField becomeFirstResponder];
 }
 
 - (IBAction)backButtonClicked:(id)sender {
@@ -72,7 +86,17 @@
 }
 
 - (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString {
-  return [self.autocompleteDataSource completedString:partialString];
+  if (comboBox == self.projectSelect) {
+    return [self.autocompleteDataSource completedString:partialString];
+  }
+  if (comboBox == self.clientSelect) {
+    return @"FIXME:";
+  }
+  if (comboBox == self.workspaceSelect) {
+    return @"FIXME";
+  }
+  NSAssert(false, @"Invalid combo box");
+  return nil;
 }
 
 - (void)render:(EditNotification *)edit {
@@ -181,25 +205,17 @@
   if ([edit.FieldName isEqualToString:kUIDescriptionClicked]){
     [self.descriptionTextField becomeFirstResponder];
   }
-
-  KopsikTagViewItem *first = 0;
-  char errmsg[KOPSIK_ERR_LEN];
-  kopsik_api_result res_ = kopsik_tags(ctx, errmsg, KOPSIK_ERR_LEN, &first);
-  if (res_ != KOPSIK_API_SUCCESS) {
-    handle_error(errmsg);
-    kopsik_tags_clear(first);
-    return;
-  }
-  KopsikTagViewItem *tag = first;
-  self.tagsList = [[NSMutableArray alloc] init];
-  while (tag) {
-    [self.tagsList addObject:[NSString stringWithCString: tag->Name encoding:NSASCIIStringEncoding]];
-    tag = tag->Next;
-  }
-  kopsik_tags_clear(first);
+  
+  [self startTagsListRendering];
 }
 
 - (void)eventHandler: (NSNotification *) notification {
+  if ([notification.name isEqualToString:kUIStateTimeEntryDeselected]) {
+    [self.addProjectBox setHidden:YES];
+    [self.projectSelectBox setHidden:NO];
+    return;
+  }
+  
   if ([notification.name isEqualToString:kUIStateTimeEntrySelected]) {
     [self performSelectorOnMainThread:@selector(render:)
                            withObject:notification.object
@@ -208,7 +224,13 @@
   }
 
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    [self performSelectorOnMainThread:@selector(scheduleAutocompleteRendering)
+    [self performSelectorOnMainThread:@selector(startAutocompleteRendering)
+                           withObject:nil
+                        waitUntilDone:NO];
+    [self performSelectorOnMainThread:@selector(startClientSelectRendering)
+                           withObject:nil
+                        waitUntilDone:NO];
+    [self performSelectorOnMainThread:@selector(startWorkspaceSelectRendering)
                            withObject:nil
                         waitUntilDone:NO];
     return;
@@ -217,11 +239,28 @@
   if ([notification.name isEqualToString:kUIEventModelChange]) {
     ModelChange *mc = notification.object;
     if ([mc.ModelType isEqualToString:@"tag"]) {
+      [self startTagsListRendering];
       return; // Tags dont affect autocomplete
     }
-    [self performSelectorOnMainThread:@selector(scheduleAutocompleteRendering)
+    
+    [self performSelectorOnMainThread:@selector(startAutocompleteRendering)
                            withObject:nil
                         waitUntilDone:NO];
+    
+
+    if ([mc.ModelType isEqualToString:@"workspace"]
+        || [mc.ModelType isEqualToString:@"client"]) {
+      [self performSelectorOnMainThread:@selector(startClientSelectRendering)
+                             withObject:nil
+                          waitUntilDone:NO];
+    }
+
+    if ([mc.ModelType isEqualToString:@"workspace"]) {
+      [self performSelectorOnMainThread:@selector(startWorkspaceSelectRendering)
+                             withObject:nil
+                          waitUntilDone:NO];
+    }
+    
     if ([self.GUID isEqualToString:mc.GUID] && [mc.ChangeType isEqualToString:@"update"]) {
       EditNotification *edit = [[EditNotification alloc] init];
       edit.EntryGUID = self.GUID;
@@ -233,19 +272,61 @@
   }
 }
 
-- (NSArray *)tokenField:(NSTokenField *)tokenField completionsForSubstring:(NSString *)substring indexOfToken:(NSInteger)tokenIndex indexOfSelectedItem:(NSInteger *)selectedIndex
-{
+- (NSArray *)tokenField:(NSTokenField *)tokenField
+completionsForSubstring:(NSString *)substring
+           indexOfToken:(NSInteger)tokenIndex
+    indexOfSelectedItem:(NSInteger *)selectedIndex {
   NSMutableArray *filteredCompletions = [NSMutableArray array];
 
   [self.tagsList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-  if ([[obj lowercaseString] hasPrefix:[substring lowercaseString]])
-           [filteredCompletions addObject:obj];
+    if ([[obj lowercaseString] hasPrefix:[substring lowercaseString]]) {
+      [filteredCompletions addObject:obj];
+    }
   }];
 
   return filteredCompletions;
 }
 
-- (void) scheduleAutocompleteRendering {
+- (void) startTagsListRendering {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+  
+  if (self.timerTagsListRendering != nil) {
+    return;
+  }
+  @synchronized(self) {
+    self.timerTagsListRendering = [NSTimer scheduledTimerWithTimeInterval:kThrottleSeconds
+                                                                       target:self
+                                                                     selector:@selector(finishTagsListRendering)
+                                                                     userInfo:nil
+                                                                      repeats:NO];
+  }
+}
+
+- (void) finishTagsListRendering {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+  
+  self.timerTagsListRendering = nil;
+  
+  KopsikTagViewItem *tag = 0;
+  char errmsg[KOPSIK_ERR_LEN];
+  if (KOPSIK_API_SUCCESS != kopsik_tags(ctx, errmsg, KOPSIK_ERR_LEN, &tag)) {
+    handle_error(errmsg);
+    kopsik_tags_clear(tag);
+    return;
+  }
+  NSMutableArray *tags = [[NSMutableArray alloc] init];
+  while (tag) {
+    NSString *tagName = [NSString stringWithUTF8String:tag->Name];
+    [self.tagsList addObject:tagName];
+    tag = tag->Next;
+  }
+  kopsik_tags_clear(tag);
+  @synchronized(self) {
+    self.tagsList = tags;
+  }
+}
+
+- (void) startAutocompleteRendering {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
   if (self.timerAutocompleteRendering != nil) {
@@ -254,13 +335,13 @@
   @synchronized(self) {
     self.timerAutocompleteRendering = [NSTimer scheduledTimerWithTimeInterval:kThrottleSeconds
                                                                        target:self
-                                                                     selector:@selector(renderAutocomplete)
+                                                                     selector:@selector(finishRenderAutocomplete)
                                                                      userInfo:nil
                                                                       repeats:NO];
   }
 }
 
-- (void)renderAutocomplete {
+- (void)finishRenderAutocomplete {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
   self.timerAutocompleteRendering = nil;
@@ -272,6 +353,72 @@
     self.projectSelect.dataSource = self;
   }
   [self.projectSelect reloadData];
+}
+
+- (void)startWorkspaceSelectRendering {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+  
+  if (self.timerWorkspacesListRendering != nil) {
+    return;
+  }
+  @synchronized(self) {
+    self.timerWorkspacesListRendering = [NSTimer scheduledTimerWithTimeInterval:kThrottleSeconds
+                                                                         target:self
+                                                                       selector:@selector(finishWorkspaceSelectRendering)
+                                                                       userInfo:nil
+                                                                        repeats:NO];
+   }
+}
+
+- (void)finishWorkspaceSelectRendering {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+  self.timerWorkspacesListRendering = nil;
+  
+  // FIXME: get workspace list from lib
+
+  if (self.workspaceSelect.dataSource == nil) {
+    self.workspaceSelect.usesDataSource = YES;
+    self.workspaceSelect.dataSource = self;
+  }
+
+  [self.workspaceSelect reloadData];
+  
+  // FIXME: If not workspace is selected, select the users default workspace.
+  // FIXME: If no default workspace is found, select the first workspace from list.
+}
+
+- (void)startClientSelectRendering {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+  if (self.timerClientsListRendering != nil) {
+    return;
+  }
+  @synchronized(self) {
+    self.timerClientsListRendering = [NSTimer scheduledTimerWithTimeInterval:kThrottleSeconds
+                                                                       target:self
+                                                                    selector:@selector(finishClientSelectRendering)
+                                                                     userInfo:nil
+                                                                      repeats:NO];
+  }
+}
+
+- (void)finishClientSelectRendering {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+  self.timerClientsListRendering = nil;
+
+  // FIXME: Fetch only clients belonging to the selected workspace.
+  // FIXME: If no workspace is selected, don't render clients yet.
+  
+  if (self.clientSelect.dataSource == nil) {
+    self.clientSelect.usesDataSource = YES;
+    self.clientSelect.dataSource = self;
+  }
+  [self.clientSelect reloadData];
+  
+  // Client selection is not mandatory, so don't select a client
+  // automatically, when nothing's selected yet.
 }
 
 - (IBAction)durationTextFieldChanged:(id)sender {
@@ -454,7 +601,17 @@
 }
 
 -(NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox{
-  return [self.autocompleteDataSource count];
+  if (self.projectSelect == aComboBox) {
+    return [self.autocompleteDataSource count];
+  }
+  if (self.clientSelect == aComboBox) {
+    return [self.clientList count];
+  }
+  if (self.workspaceSelect == aComboBox) {
+    return [self.workspaceList count];
+  }
+  NSAssert(false, @"Invalid combo box");
+  return 0;
 }
 
 -(id)comboBox:(NSComboBox *)aComboBox objectValueForItemAtIndex:(NSInteger)row{
@@ -507,6 +664,18 @@
   NSString *newValue = [NSString stringWithUTF8String:str];
   [self.durationTextField setStringValue:newValue];
 }
+
+- (IBAction)workspaceSelectChanged:(id)sender {
+  NSLog(@"workspaceSelectChanged");
+  // FIXME: Changing workspace should render the clients
+  // of the selected workspace in the client select combobox.
+}
+
+- (IBAction)clientSelectChanged:(id)sender {
+  NSLog(@"clientSelectChanged");
+  // FIXME: Changing client does not change anything in new project view.
+}
+
 
 @end
 

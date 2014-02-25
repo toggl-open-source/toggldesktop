@@ -39,11 +39,12 @@
 - (IBAction)addProjectButtonClicked:(id)sender;
 
 // New project related stuff
+@property (weak) IBOutlet NSBox *projectSelectBox;
 @property (weak) IBOutlet NSBox *addProjectBox;
-@property (weak) IBOutlet NSTextField *addProjectNameTextField;
-@property (weak) IBOutlet NSComboBox *addProjectWorkspaceSelect;
-@property (weak) IBOutlet NSComboBox *addProjectClientSelect;
-- (IBAction)addProjectWorkspaceSelectChanged:(id)sender;
-- (IBAction)addProjectClientSelectChanged:(id)sender;
+@property (weak) IBOutlet NSTextField *projectNameTextField;
+@property (weak) IBOutlet NSComboBox *workspaceSelect;
+@property (weak) IBOutlet NSComboBox *clientSelect;
+- (IBAction)workspaceSelectChanged:(id)sender;
+- (IBAction)clientSelectChanged:(id)sender;
 
 @end

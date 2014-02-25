@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -9,23 +9,24 @@
             <connections>
                 <outlet property="addProjectBox" destination="fz4-yg-eQZ" id="KJH-d8-GtM"/>
                 <outlet property="addProjectButton" destination="mjR-fr-Qy0" id="2fN-So-QBH"/>
-                <outlet property="addProjectClientSelect" destination="Kdc-c6-b4n" id="gXj-Pe-qNH"/>
-                <outlet property="addProjectNameTextField" destination="2Pz-WE-b3h" id="c51-lK-ZoM"/>
-                <outlet property="addProjectWorkspaceSelect" destination="Q41-iI-nk2" id="huV-0D-5e7"/>
                 <outlet property="backButton" destination="zwE-pW-vQN" id="7gS-kR-H67"/>
                 <outlet property="billableCheckbox" destination="sSX-ad-7XC" id="cVv-CO-AcK"/>
+                <outlet property="clientSelect" destination="Kdc-c6-b4n" id="6Uc-1n-CV7"/>
                 <outlet property="continueButton" destination="cnb-71-paF" id="vPX-OF-Khm"/>
                 <outlet property="deleteButton" destination="Wpz-9G-IOZ" id="opY-mR-5jK"/>
                 <outlet property="descriptionTextField" destination="lGX-fG-VqC" id="lvq-HE-BJ6"/>
                 <outlet property="durationTextField" destination="EMR-ul-vEb" id="qbl-PP-fL8"/>
                 <outlet property="endTime" destination="jAD-IY-7K4" id="f67-7l-Df9"/>
                 <outlet property="lastUpdateTextField" destination="byc-AI-Ri7" id="bg3-EU-Pr6"/>
+                <outlet property="projectNameTextField" destination="2Pz-WE-b3h" id="K15-Cv-8rM"/>
                 <outlet property="projectSelect" destination="mxY-tv-UzX" id="eym-qD-quf"/>
+                <outlet property="projectSelectBox" destination="6Sh-4d-bKb" id="gbr-B6-ncX"/>
                 <outlet property="startDate" destination="xTj-21-Dv1" id="E4C-ml-uuJ"/>
                 <outlet property="startEndTimeBox" destination="TSC-79-BuD" id="6rV-Ia-R9i"/>
                 <outlet property="startTime" destination="vaF-tJ-dqC" id="8rq-5U-3Qt"/>
                 <outlet property="tagsTokenField" destination="9Uk-YS-6nx" id="Q4X-aI-eeC"/>
                 <outlet property="view" destination="qjv-II-K0N" id="WWf-UA-X50"/>
+                <outlet property="workspaceSelect" destination="Q41-iI-nk2" id="qA8-5i-Wt5"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
@@ -54,7 +55,7 @@
                                         </buttonCell>
                                         <connections>
                                             <action selector="deleteButtonClicked:" target="-2" id="Pi8-oI-sCI"/>
-                                            <outlet property="nextKeyView" destination="lGX-fG-VqC" id="wJo-mb-Gkx"/>
+                                            <outlet property="nextKeyView" destination="cnb-71-paF" id="EBT-Sa-GGd"/>
                                         </connections>
                                     </button>
                                     <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cnb-71-paF">
@@ -139,7 +140,7 @@
                                                     <connections>
                                                         <action selector="projectSelectChanged:" target="-2" id="zL6-sa-THe"/>
                                                         <outlet property="delegate" destination="-2" id="N4G-rb-QgM"/>
-                                                        <outlet property="nextKeyView" destination="EMR-ul-vEb" id="fr2-Kv-Asj"/>
+                                                        <outlet property="nextKeyView" destination="2Pz-WE-b3h" id="JJU-vv-8Xx"/>
                                                     </connections>
                                                 </comboBox>
                                                 <button toolTip="Add new project" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mjR-fr-Qy0">
@@ -422,7 +423,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                     </datePickerCell>
                                                     <connections>
                                                         <action selector="dateChanged:" target="-2" id="Rss-re-QCV"/>
-                                                        <outlet property="nextKeyView" destination="9Uk-YS-6nx" id="vTD-Fu-7aa"/>
+                                                        <outlet property="nextKeyView" destination="sSX-ad-7XC" id="byc-Br-fcf"/>
                                                     </connections>
                                                 </datePicker>
                                             </subviews>
@@ -471,7 +472,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                     <connections>
                                                         <action selector="tagsChanged:" target="-2" id="VeF-aF-Zl6"/>
                                                         <outlet property="delegate" destination="-2" id="Djs-BZ-TRQ"/>
-                                                        <outlet property="nextKeyView" destination="sSX-ad-7XC" id="2e5-Nf-T6v"/>
+                                                        <outlet property="nextKeyView" destination="zwE-pW-vQN" id="Zvh-2F-oef"/>
                                                     </connections>
                                                 </tokenField>
                                             </subviews>
@@ -497,18 +498,45 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         </buttonCell>
                                         <connections>
                                             <action selector="billableCheckBoxClicked:" target="-2" id="KhO-KD-YIr"/>
-                                            <outlet property="nextKeyView" destination="zwE-pW-vQN" id="d3u-0I-kb8"/>
+                                            <outlet property="nextKeyView" destination="9Uk-YS-6nx" id="3Pd-GL-QAB"/>
                                         </connections>
                                     </button>
-                                    <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" title="Box" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="fz4-yg-eQZ">
+                                    <box hidden="YES" autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="fz4-yg-eQZ">
                                         <rect key="frame" x="-1" y="35" width="346" height="108"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <view key="contentView">
-                                            <rect key="frame" x="1" y="1" width="344" height="106"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="346" height="108"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4nJ-ND-RNO">
+                                                    <rect key="frame" x="6" y="84" width="97" height="16"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="97" id="r4C-ne-4Rp"/>
+                                                    </constraints>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Project name:" id="ZCR-I1-gJU">
+                                                        <font key="font" size="13" name="LucidaGrande"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Pz-WE-b3h">
+                                                    <rect key="frame" x="114" y="74" width="144" height="26"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="26" id="cEX-vD-b7P"/>
+                                                    </constraints>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="Development" drawsBackground="YES" id="bkz-aO-Chr">
+                                                        <font key="font" size="13" name="LucidaGrande"/>
+                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <connections>
+                                                        <outlet property="nextKeyView" destination="Q41-iI-nk2" id="oUX-gQ-xTu"/>
+                                                    </connections>
+                                                </textField>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IVd-y9-OXp">
-                                                    <rect key="frame" x="6" y="42" width="97" height="16"/>
+                                                    <rect key="frame" x="6" y="44" width="97" height="16"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="97" id="t4R-mK-P7j"/>
@@ -520,21 +548,21 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                     </textFieldCell>
                                                 </textField>
                                                 <comboBox verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q41-iI-nk2">
-                                                    <rect key="frame" x="114" y="36" width="144" height="26"/>
+                                                    <rect key="frame" x="114" y="38" width="144" height="26"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="Business" placeholderString="" drawsBackground="YES" buttonBordered="NO" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="AZn-Xk-njT">
+                                                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="Business" placeholderString="" drawsBackground="YES" buttonBordered="NO" usesDataSource="YES" numberOfVisibleItems="10" id="AZn-Xk-njT">
                                                         <font key="font" metaFont="system"/>
                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </comboBoxCell>
                                                     <connections>
-                                                        <action selector="addProjectWorkspaceSelectChanged:" target="-2" id="VAW-0c-GAk"/>
+                                                        <action selector="workspaceSelectChanged:" target="-2" id="5R8-O0-7hg"/>
                                                         <outlet property="delegate" destination="-2" id="hpb-zV-dSg"/>
                                                         <outlet property="nextKeyView" destination="Kdc-c6-b4n" id="6Za-LC-GPL"/>
                                                     </connections>
                                                 </comboBox>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qlN-P5-EqC">
-                                                    <rect key="frame" x="6" y="7" width="97" height="16"/>
+                                                    <rect key="frame" x="6" y="9" width="97" height="16"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="97" id="t9M-qb-c90"/>
@@ -546,16 +574,17 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                     </textFieldCell>
                                                 </textField>
                                                 <comboBox verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kdc-c6-b4n">
-                                                    <rect key="frame" x="114" y="1" width="144" height="26"/>
+                                                    <rect key="frame" x="114" y="3" width="144" height="26"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="ACME" placeholderString="" drawsBackground="YES" buttonBordered="NO" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="kia-Yb-YgV">
+                                                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="ACME" placeholderString="" drawsBackground="YES" buttonBordered="NO" usesDataSource="YES" numberOfVisibleItems="10" id="kia-Yb-YgV">
                                                         <font key="font" metaFont="system"/>
                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </comboBoxCell>
                                                     <connections>
-                                                        <action selector="addProjectClientSelectChanged:" target="-2" id="bQ9-4n-Xar"/>
+                                                        <action selector="clientSelectChanged:" target="-2" id="ZbN-uM-M6d"/>
                                                         <outlet property="delegate" destination="-2" id="FtJ-G7-COO"/>
+                                                        <outlet property="nextKeyView" destination="EMR-ul-vEb" id="316-h5-hTB"/>
                                                     </connections>
                                                 </comboBox>
                                             </subviews>
@@ -563,33 +592,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                         <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </box>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4nJ-ND-RNO">
-                                        <rect key="frame" x="7" y="114" width="97" height="16"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="97" id="r4C-ne-4Rp"/>
-                                        </constraints>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Project name:" id="ZCR-I1-gJU">
-                                            <font key="font" size="13" name="LucidaGrande"/>
-                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Pz-WE-b3h">
-                                        <rect key="frame" x="114" y="108" width="144" height="26"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="26" id="cEX-vD-b7P"/>
-                                        </constraints>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="Development" drawsBackground="YES" id="bkz-aO-Chr">
-                                            <font key="font" size="13" name="LucidaGrande"/>
-                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                        <connections>
-                                            <outlet property="nextKeyView" destination="Q41-iI-nk2" id="vRc-7K-6mt"/>
-                                        </connections>
-                                    </textField>
                                 </subviews>
                             </view>
                             <constraints>
