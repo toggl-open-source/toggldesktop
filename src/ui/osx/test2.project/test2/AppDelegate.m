@@ -426,10 +426,6 @@ int blink = 0;
 
 - (void)settingsChanged {
   [self updateIdleDetectionTimer];
-  if (![self.lastKnownLoginState isEqualToString:kUIStateUserLoggedOut]) {
-    [self startSync];
-    [self startWebSocket];
-  }
 }
 
 - (void)eventHandler: (NSNotification *) notification {
