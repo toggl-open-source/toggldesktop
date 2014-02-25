@@ -22,6 +22,7 @@
 @property NSTimer *timerAutocompleteRendering;
 @property NSTimer *timer;
 @property TimeEntryViewItem *runningTimeEntry;
+@property NSMutableArray *tagsList;
 @end
 
 @implementation TimeEntryEditViewController
@@ -55,20 +56,7 @@
 }
 
 - (IBAction)addProjectButtonClicked:(id)sender {
-  KopsikTagViewItem *first = 0;
-  char errmsg[KOPSIK_ERR_LEN];
-  kopsik_api_result res = kopsik_tags(ctx, errmsg, KOPSIK_ERR_LEN, &first);
-  if (res != KOPSIK_API_SUCCESS) {
-    handle_error(errmsg);
-    kopsik_tags_clear(first);
-    return;
-  }
-  KopsikTagViewItem *tag = first;
-  while (tag) {
-    NSLog(@"%s", tag->Name);
-    tag = tag->Next;
-  }
-  kopsik_tags_clear(first);
+
 }
 
 - (IBAction)backButtonClicked:(id)sender {
@@ -165,7 +153,13 @@
   } else {
     [self.billableCheckbox setState:NSOffState];
   }
-  
+
+  if ([item.tags count] == 0) {
+        [self.tagsTokenField setObjectValue:nil];
+  } else {
+        [self.tagsTokenField setObjectValue:item.tags];
+  }
+
   if (item.updatedAt != nil) {
     NSDateFormatter* df_local = [[NSDateFormatter alloc] init];
     [df_local setTimeZone:[NSTimeZone defaultTimeZone]];
@@ -173,7 +167,6 @@
     NSString* localDate = [df_local stringFromDate:item.updatedAt];
     NSString *updatedAt = [@"Last update " stringByAppendingString:localDate];
     [self.lastUpdateTextField setStringValue:updatedAt];
-
     [self.lastUpdateTextField setHidden:NO];
   } else {
     [self.lastUpdateTextField setHidden:YES];
@@ -185,6 +178,22 @@
   if ([edit.FieldName isEqualToString:kUIDescriptionClicked]){
     [self.descriptionTextField becomeFirstResponder];
   }
+
+  KopsikTagViewItem *first = 0;
+  char errmsg[KOPSIK_ERR_LEN];
+  kopsik_api_result res_ = kopsik_tags(ctx, errmsg, KOPSIK_ERR_LEN, &first);
+  if (res_ != KOPSIK_API_SUCCESS) {
+    handle_error(errmsg);
+    kopsik_tags_clear(first);
+    return;
+  }
+  KopsikTagViewItem *tag = first;
+  self.tagsList = [[NSMutableArray alloc] init];
+  while (tag) {
+    [self.tagsList addObject:[NSString stringWithCString: tag->Name encoding:NSASCIIStringEncoding]];
+    tag = tag->Next;
+  }
+  kopsik_tags_clear(first);
 }
 
 - (void)eventHandler: (NSNotification *) notification {
@@ -219,6 +228,18 @@
     }
     return;
   }
+}
+
+- (NSArray *)tokenField:(NSTokenField *)tokenField completionsForSubstring:(NSString *)substring indexOfToken:(NSInteger)tokenIndex indexOfSelectedItem:(NSInteger *)selectedIndex
+{
+  NSMutableArray *filteredCompletions = [NSMutableArray array];
+
+  [self.tagsList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+  if ([[obj lowercaseString] hasPrefix:[substring lowercaseString]])
+           [filteredCompletions addObject:obj];
+  }];
+
+  return filteredCompletions;
 }
 
 - (void) scheduleAutocompleteRendering {
@@ -354,6 +375,25 @@
   }
 }
 
+- (IBAction)tagsChanged:(id)sender {
+  NSAssert(self.GUID != nil, @"GUID is nil");
+  char err[KOPSIK_ERR_LEN];
+  NSAssert(self.tagsTokenField != nil, @"tags field cant be nil");
+  NSArray *tag_names = [self.tagsTokenField objectValue];
+  const char *value = [[tag_names componentsJoinedByString:@"|"] UTF8String];
+
+  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_tags(ctx,
+                                                       err,
+                                                       KOPSIK_ERR_LEN,
+                                                       [self.GUID UTF8String],
+                                                       value)) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
+                                                        object:[NSString stringWithUTF8String:err]];
+    return;
+  }
+  kopsik_sync(ctx);
+}
+
 - (IBAction)billableCheckBoxClicked:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
@@ -424,6 +464,10 @@
 
 - (void)controlTextDidChange:(NSNotification *)aNotification {
   // FIXME: this looks kind of similar to code in timer edit view
+
+  // Don't trigger combobox autocomplete when inside tags field
+  if (![[aNotification object] isKindOfClass:[NSComboBox class]]) return;
+
   NSComboBox *box = [aNotification object];
   NSString *filter = [box stringValue];
 
