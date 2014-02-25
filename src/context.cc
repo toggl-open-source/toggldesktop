@@ -624,7 +624,41 @@ kopsik::error Context::SaveSettings(
     const bool use_proxy,
     const kopsik::Proxy *proxy,
     const bool use_idle_detection) {
-  return db_->SaveSettings(use_proxy, proxy, use_idle_detection);
+
+  kopsik::Proxy previous_proxy_settings;
+  bool was_using_proxy(false);
+  {
+    bool was_using_idle_detection(false);
+    kopsik::error err = LoadSettings(&was_using_proxy,
+                                     &previous_proxy_settings,
+                                     &was_using_idle_detection);
+    if (err != kopsik::noError) {
+      return err;
+    }
+  }
+
+  kopsik::error err = db_->SaveSettings(use_proxy, proxy, use_idle_detection);
+  if (err != kopsik::noError) {
+    return err;
+  }
+
+  // If proxy settings have changed, apply new settings:
+  if (use_proxy != was_using_proxy
+      || proxy->host != previous_proxy_settings.host
+      || proxy->port != previous_proxy_settings.port
+      || proxy->username != previous_proxy_settings.username
+      || proxy->password != previous_proxy_settings.password) {
+    kopsik::error err = ConfigureProxy();
+    if (err != kopsik::noError) {
+      return err;
+    }
+    if (user_) {
+      FullSync();
+      SwitchWebSocketOn();
+    }
+  }
+
+  return kopsik::noError;
 }
 
 void Context::SetDBPath(

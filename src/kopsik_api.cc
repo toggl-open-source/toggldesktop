@@ -204,15 +204,12 @@ kopsik_api_result kopsik_set_settings(
     proxy.username = std::string(proxy_username);
     proxy.password = std::string(proxy_password);
 
-    kopsik::error err = app(context)->SaveSettings(use_proxy,
-                                          &proxy,
-                                          use_idle_detection);
+    kopsik::error err = app(context)->SaveSettings(
+      use_proxy, &proxy, use_idle_detection);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
-
-    return kopsik_configure_proxy(context, errmsg, errlen);
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
