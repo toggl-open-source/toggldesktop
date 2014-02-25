@@ -113,6 +113,9 @@ class Context {
     void CollectPushableTimeEntries(
       std::vector<kopsik::TimeEntry *> *models) const;
     std::vector<std::string> Tags() const;
+    std::vector<kopsik::Workspace *> Workspaces() const;
+    std::vector<kopsik::Client *> Clients(
+      const Poco::UInt64 workspace_id) const;
     kopsik::TimeEntry *GetTimeEntryByGUID(const std::string GUID) const;
 
     kopsik::TimeEntry *Start(
@@ -153,32 +156,32 @@ class Context {
       const Poco::Int64 at,
       kopsik::TimeEntry **stopped);
     kopsik::error RunningTimeEntry(
-      kopsik::TimeEntry **running);
+      kopsik::TimeEntry **running) const;
     kopsik::error ToggleTimelineRecording();
     kopsik::error TimeEntries(
       std::map<std::string, Poco::Int64> *date_durations,
-      std::vector<kopsik::TimeEntry *> *visible);
+      std::vector<kopsik::TimeEntry *> *visible) const;
     kopsik::error TrackedPerDateHeader(
       const std::string date_header,
-      int *sum);
-    bool RecordTimeline();
+      int *sum) const;
+    bool RecordTimeline() const;
     kopsik::error SaveUpdateChannel(
       const std::string channel);
     kopsik::error LoadUpdateChannel(std::string *channel);
     void ProjectLabelAndColorCode(
       kopsik::TimeEntry *te,
       std::string *project_and_task_label,
-      std::string *color_code);
+      std::string *color_code) const;
     void AutocompleteItems(
       std::vector<AutocompleteItem> *list,
       const bool include_time_entries,
       const bool include_tasks,
-      const bool include_projects);
+      const bool include_projects) const;
 
   private:
     const std::string updateURL() const;
     static const std::string osName();
-    Poco::Logger &logger() { return Poco::Logger::get("Context"); }
+    Poco::Logger &logger() const { return Poco::Logger::get("Context"); }
     const std::string feedbackJSON() const;
     const std::string feedback_filename() const;
     const std::string base64encode_attachment() const;
@@ -197,9 +200,12 @@ class Context {
     void onTimelineUpdateServerSettings(Poco::Util::TimerTask& task);  // NOLINT
     void onSendFeedback(Poco::Util::TimerTask& task);  // NOLINT
 
-    void getTimeEntryAutocompleteItems(std::vector<AutocompleteItem> *list);
-    void getTaskAutocompleteItems(std::vector<AutocompleteItem> *list);
-    void getProjectAutocompleteItems(std::vector<AutocompleteItem> *list);
+    void getTimeEntryAutocompleteItems(
+      std::vector<AutocompleteItem> *list) const;
+    void getTaskAutocompleteItems(
+      std::vector<AutocompleteItem> *list) const;
+    void getProjectAutocompleteItems(
+      std::vector<AutocompleteItem> *list) const;
 
     Poco::Mutex db_m_;
     kopsik::Database *db_;

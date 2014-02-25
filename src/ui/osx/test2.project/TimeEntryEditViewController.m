@@ -307,11 +307,11 @@ completionsForSubstring:(NSString *)substring
   
   self.timerTagsListRendering = nil;
   
-  KopsikTagViewItem *tag = 0;
+  KopsikViewItem *tag = 0;
   char errmsg[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_tags(ctx, errmsg, KOPSIK_ERR_LEN, &tag)) {
     handle_error(errmsg);
-    kopsik_tags_clear(tag);
+    kopsik_view_item_clear(tag);
     return;
   }
   NSMutableArray *tags = [[NSMutableArray alloc] init];
@@ -320,7 +320,7 @@ completionsForSubstring:(NSString *)substring
     [self.tagsList addObject:tagName];
     tag = tag->Next;
   }
-  kopsik_tags_clear(tag);
+  kopsik_view_item_clear(tag);
   @synchronized(self) {
     self.tagsList = tags;
   }
@@ -667,15 +667,15 @@ completionsForSubstring:(NSString *)substring
 
 - (IBAction)workspaceSelectChanged:(id)sender {
   NSLog(@"workspaceSelectChanged");
-  // FIXME: Changing workspace should render the clients
+  // Changing workspace should render the clients
   // of the selected workspace in the client select combobox.
+  [self startClientSelectRendering];
 }
 
 - (IBAction)clientSelectChanged:(id)sender {
   NSLog(@"clientSelectChanged");
-  // FIXME: Changing client does not change anything in new project view.
+  // Changing client does not change anything in new project view.
 }
-
 
 @end
 

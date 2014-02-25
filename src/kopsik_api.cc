@@ -70,6 +70,25 @@ int kopsik_is_networking_error(
   return 0;
 }
 
+// Generic view items
+
+void kopsik_view_item_clear(
+    KopsikViewItem *first) {
+  if (!first) {
+    return;
+  }
+  if (first->Name) {
+    free(first->Name);
+    first->Name = 0;
+  }
+  if (first->Next) {
+    KopsikViewItem *next = reinterpret_cast<KopsikViewItem *>(first->Next);
+    kopsik_view_item_clear(next);
+  }
+  delete first;
+  first = 0;
+}
+
 // Context API.
 
 void *kopsik_context_init(
@@ -718,7 +737,7 @@ kopsik_api_result kopsik_tags(
     void *context,
     char *errmsg,
     unsigned int errlen,
-    KopsikTagViewItem **first) {
+    KopsikViewItem **first) {
   poco_assert(errmsg);
   poco_assert(errlen);
   poco_assert(first);
@@ -731,7 +750,7 @@ kopsik_api_result kopsik_tags(
        it != tags.end();
        it++) {
     std::string name = *it;
-    KopsikTagViewItem *item = new KopsikTagViewItem();
+    KopsikViewItem *item = new KopsikViewItem();
     item->Name = strdup(name.c_str());
     item->Next = *first;
     *first = item;
@@ -740,22 +759,64 @@ kopsik_api_result kopsik_tags(
   return KOPSIK_API_SUCCESS;
 }
 
-void kopsik_tags_clear(
-    KopsikTagViewItem *first) {
-  if (!first) {
-    return;
+// Workpaces
+
+kopsik_api_result kopsik_workspaces(
+    void *context,
+    char *errmsg,
+    unsigned int errlen,
+    KopsikViewItem **first) {
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(first);
+  poco_assert(!*first);
+
+  std::vector<kopsik::Workspace *> workspaces = app(context)->Workspaces();
+
+  *first = 0;
+  for (std::vector<kopsik::Workspace *>::const_iterator it =
+        workspaces.begin();
+      it != workspaces.end();
+      it++) {
+    kopsik::Workspace *workspace = *it;
+    KopsikViewItem *item = new KopsikViewItem();
+    item->ID = static_cast<unsigned int>(workspace->ID());
+    item->Name = strdup(workspace->Name().c_str());
+    item->Next = *first;
+    *first = item;
   }
-  if (first->Name) {
-    free(first->Name);
-    first->Name = 0;
+
+  return KOPSIK_API_SUCCESS;
+}
+
+// Clients
+
+kopsik_api_result kopsik_clients(
+    void *context,
+    char *errmsg,
+    unsigned int errlen,
+    unsigned int workspace_id,
+    KopsikViewItem **first) {
+  poco_assert(errmsg);
+  poco_assert(errlen);
+  poco_assert(first);
+  poco_assert(!*first);
+
+  std::vector<kopsik::Client *> clients = app(context)->Clients(workspace_id);
+
+  *first = 0;
+  for (std::vector<kopsik::Client *>::const_iterator it = clients.begin();
+       it != clients.end();
+       it++) {
+    kopsik::Client *client = *it;
+    KopsikViewItem *item = new KopsikViewItem();
+    item->ID = static_cast<unsigned int>(client->ID());
+    item->Name = strdup(client->Name().c_str());
+    item->Next = *first;
+    *first = item;
   }
-  if (first->Next) {
-    KopsikTagViewItem *next =
-      reinterpret_cast<KopsikTagViewItem *>(first->Next);
-    kopsik_tags_clear(next);
-  }
-  delete first;
-  first = 0;
+
+  return KOPSIK_API_SUCCESS;
 }
 
 // Time entries view API
