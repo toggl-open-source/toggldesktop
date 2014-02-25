@@ -39,6 +39,8 @@ class AutocompleteItem {
   Poco::UInt64 Type;
 };
 
+bool CompareAutocompleteItems(AutocompleteItem a, AutocompleteItem b);
+
 // FIXME: rename
 class Context {
   public:

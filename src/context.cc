@@ -1297,9 +1297,9 @@ void Context::ProjectLabelAndColorCode(
   }
 }
 
-bool compareAutocompleteItems(
-    AutocompleteItem &a,
-    AutocompleteItem &b) {
+bool CompareAutocompleteItems(
+    AutocompleteItem a,
+    AutocompleteItem b) {
 
   // Time entries first
   if (a.IsTimeEntry() && !b.IsTimeEntry()) {
@@ -1515,7 +1515,7 @@ void Context::AutocompleteItems(
     getProjectAutocompleteItems(list);
   }
 
-  std::sort(list->begin(), list->end(), compareAutocompleteItems);
+  std::sort(list->begin(), list->end(), CompareAutocompleteItems);
 
   return;
 }
