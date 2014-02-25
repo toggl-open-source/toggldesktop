@@ -13,15 +13,6 @@
 
 namespace kopsik {
 
-bool compareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
-  return a->Start() > b->Start();
-}
-
-void User::SortTimeEntriesByStart() {
-  std::sort(related.TimeEntries.begin(), related.TimeEntries.end(),
-    compareTimeEntriesByStart);
-}
-
 void User::ActiveProjects(std::vector<Project *> *list) {
   for (unsigned int i = 0; i < related.Projects.size(); i++) {
     kopsik::Project *p = related.Projects[i];
@@ -111,10 +102,12 @@ TimeEntry *User::Continue(const std::string GUID) {
 }
 
 TimeEntry *User::Latest() {
-    if (related.TimeEntries.empty()) {
-        return 0;
-    }
-    return related.TimeEntries[0];
+  if (related.TimeEntries.empty()) {
+    return 0;
+  }
+  std::vector<TimeEntry *> list(related.TimeEntries);
+  std::sort(list.begin(), list.end(), CompareTimeEntriesByStart);
+  return list[0];
 }
 
 std::string User::DateDuration(TimeEntry *te) {

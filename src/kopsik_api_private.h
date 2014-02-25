@@ -29,10 +29,6 @@ void model_change_clear(
 void autocomplete_item_clear(
     KopsikAutocompleteItem *item);
 
-bool compareAutocompleteItems(
-    KopsikAutocompleteItem *a,
-    KopsikAutocompleteItem *b);
-
 KopsikAutocompleteItem *autocomplete_item_init();
 
 #endif  // SRC_KOPSIK_API_PRIVATE_H_

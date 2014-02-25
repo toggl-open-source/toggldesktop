@@ -80,7 +80,6 @@ namespace kopsik {
 
         void CollectPushableTimeEntries(
             std::vector<TimeEntry *> *result);
-        void SortTimeEntriesByStart();
 
         TimeEntry *RunningTimeEntry();
         TimeEntry *Start(

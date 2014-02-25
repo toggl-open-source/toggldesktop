@@ -245,13 +245,12 @@ namespace kopsik {
 
         // Count time entry items before start. It should be 3, since
         // there are 3 time entries in the me.json file we're using:
-        KopsikTimeEntryViewItemList *list =
-            kopsik_time_entry_view_item_list_init();
+        KopsikTimeEntryViewItem *first = 0;
         ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_items(
-            ctx, err, ERRLEN, list));
+            ctx, err, ERRLEN, &first));
         ASSERT_EQ((unsigned int)3, list->Length);
         int number_of_items = list->Length;
-        kopsik_time_entry_view_item_list_clear(list);
+        kopsik_time_entry_view_item_clear(first);
 
         // Start tracking
         KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
@@ -277,12 +276,12 @@ namespace kopsik {
 
         // The running time entry should *not* be listed
         // among time entry view items.
-        list = kopsik_time_entry_view_item_list_init();
+        first = 0;
         ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_items(
-            ctx, err, ERRLEN, list));
-        ASSERT_TRUE(list);
+            ctx, err, ERRLEN, &first));
+        ASSERT_TRUE(first);
         ASSERT_EQ((unsigned int)number_of_items + 0, list->Length);
-        kopsik_time_entry_view_item_list_clear(list);
+        kopsik_time_entry_view_item_clear(first);
 
         // Set a new duration for the time entry.
         // It should keep on tracking and also the duration should change.
@@ -380,12 +379,12 @@ namespace kopsik {
 
         // Now the stopped time entry should be listed
         // among time entry view items.
-        list = kopsik_time_entry_view_item_list_init();
+        first = 0;
         ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_items(
-            ctx, err, ERRLEN, list));
-        ASSERT_TRUE(list);
+            ctx, err, ERRLEN, &first));
+        ASSERT_TRUE(first);
         ASSERT_EQ((unsigned int)number_of_items + 1, list->Length);
-        kopsik_time_entry_view_item_list_clear(list);
+        kopsik_time_entry_view_item_clear(first);
 
         // We should no longer get a running time entry from API.
         is_tracking = 0;
@@ -471,15 +470,14 @@ namespace kopsik {
             ctx, err, ERRLEN, GUID.c_str()));
 
         // We shouldnt be able to retrieve this time entry now in list.
-        KopsikTimeEntryViewItemList *visible =
-            kopsik_time_entry_view_item_list_init();
+        KopsikTimeEntryViewItem *visible = 0;
         ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_items(
-            ctx, err, ERRLEN, visible));
+            ctx, err, ERRLEN, &visible));
         for (unsigned int i = 0; i < visible->Length; i++) {
             KopsikTimeEntryViewItem *n = visible->ViewItems[i];
             ASSERT_FALSE(std::string(n->GUID) == GUID);
         }
-        kopsik_time_entry_view_item_list_clear(visible);
+        kopsik_time_entry_view_item_clear(visible);
 
         // Log out
         ASSERT_EQ(KOPSIK_API_SUCCESS,
@@ -532,13 +530,6 @@ namespace kopsik {
         ASSERT_EQ("01:30", std::string(str));
         kopsik_format_duration_in_seconds_hhmm(5410, 0, str, kMaxStrLen);
         ASSERT_EQ("01:30", std::string(str));
-    }
-
-    TEST(KopsikApiTest, kopsik_time_entry_view_item_list_init) {
-        KopsikTimeEntryViewItemList *list =
-            kopsik_time_entry_view_item_list_init();
-        ASSERT_TRUE(list);
-        kopsik_time_entry_view_item_list_clear(list);
     }
 
 }  // namespace kopsik

@@ -262,4 +262,8 @@ bool TimeEntry::IsToday() {
       today.day() == datetime.day();
 }
 
+bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
+    return a->Start() > b->Start();
+}
+
 }   // namespace kopsik

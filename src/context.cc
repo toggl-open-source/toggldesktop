@@ -7,8 +7,10 @@
 // must not delete the pointers you got.
 
 #include "./context.h"
+
 #include "./formatter.h"
 #include "./json.h"
+#include "./time_entry.h"
 
 // FIXME: dont use C API from C++ class
 #include "./kopsik_api_private.h"
@@ -871,7 +873,6 @@ kopsik::TimeEntry *Context::ContinueLatest() {
   if (!user_) {
     return 0;
   }
-  user_->SortTimeEntriesByStart();
   kopsik::TimeEntry *latest = user_->Latest();
   if (!latest) {
     return 0;
@@ -1203,7 +1204,6 @@ kopsik::error Context::TimeEntries(
     return kopsik::noError;
   }
 
-  user_->SortTimeEntriesByStart();
   for (std::vector<kopsik::TimeEntry *>::const_iterator it =
       user_->related.TimeEntries.begin();
       it != user_->related.TimeEntries.end(); it++) {
@@ -1222,6 +1222,9 @@ kopsik::error Context::TimeEntries(
     duration += te->DurationInSeconds();
     (*date_durations)[date_header] = duration;
   }
+
+  std::sort(visible->begin(), visible->end(), CompareTimeEntriesByStart);
+
   return kopsik::noError;
 }
 
@@ -1261,6 +1264,10 @@ void Context::ProjectLabelAndColorCode(
     kopsik::TimeEntry *te,
     std::string *project_and_task_label,
     std::string *color_code) {
+  poco_assert(te);
+  poco_assert(project_and_task_label);
+  poco_assert(color_code);
+
   if (!user_) {
     logger().warning("User is already logged out, cannot fetch project info");
     return;
@@ -1288,6 +1295,229 @@ void Context::ProjectLabelAndColorCode(
   if (p) {
     *color_code = p->ColorCode();
   }
+}
+
+bool compareAutocompleteItems(
+    AutocompleteItem &a,
+    AutocompleteItem &b) {
+
+  // Time entries first
+  if (a.IsTimeEntry() && !b.IsTimeEntry()) {
+    return true;
+  }
+  if (b.IsTimeEntry() && !(a.IsTimeEntry())) {
+    return false;
+  }
+
+  // Then tasks
+  if (a.IsTask() && !b.IsTask()) {
+    return true;
+  }
+  if (b.IsTask() && !a.IsTask()) {
+    return false;
+  }
+
+  // Then projects
+  if (a.IsProject() && !b.IsProject()) {
+    return true;
+  }
+  if (b.IsProject() && !a.IsProject()) {
+    return false;
+  }
+
+  return (strcmp(a.Text.c_str(), b.Text.c_str()) < 0);
+}
+
+// Add time entries, in format:
+// Description - Task. Project. Client
+void Context::getTimeEntryAutocompleteItems(
+    std::vector<AutocompleteItem> *list) {
+  poco_assert(list);
+
+  if (!user_) {
+    logger().warning("User logged out, cannot fetch   autocomplete items");
+    return;
+  }
+
+  for (std::vector<kopsik::TimeEntry *>::const_iterator it =
+      user_->related.TimeEntries.begin();
+      it != user_->related.TimeEntries.end(); it++) {
+    kopsik::TimeEntry *te = *it;
+
+    if (te->DeletedAt() || te->IsMarkedAsDeletedOnServer()
+        || te->Description().empty()) {
+      continue;
+    }
+
+    kopsik::Task *t = 0;
+    if (te->TID()) {
+      t = user_->GetTaskByID(te->TID());
+    }
+
+    kopsik::Project *p = 0;
+    if (t && t->PID()) {
+      p = user_->GetProjectByID(t->PID());
+    } else if (te->PID()) {
+      p = user_->GetProjectByID(te->PID());
+    }
+
+    if (p && !p->Active()) {
+      continue;
+    }
+
+    kopsik::Client *c = 0;
+    if (p && p->CID()) {
+      c = user_->GetClientByID(p->CID());
+    }
+
+    std::string project_label = Formatter::JoinTaskName(t, p, c);
+
+    std::stringstream search_parts;
+    search_parts << te->Description();
+    std::string description = search_parts.str();
+    if (!project_label.empty()) {
+      search_parts << " - " << project_label;
+    }
+
+    std::string text = search_parts.str();
+    if (text.empty()) {
+      continue;
+    }
+
+    AutocompleteItem autocomplete_item;
+    autocomplete_item.Description = description;
+    autocomplete_item.Text = text;
+    autocomplete_item.ProjectAndTaskLabel = project_label;
+    if (p) {
+      autocomplete_item.ProjectColor = p->ColorCode();
+      autocomplete_item.ProjectID = p->ID();
+    }
+    if (t) {
+      autocomplete_item.TaskID = t->ID();
+    }
+    autocomplete_item.Type = KOPSIK_AUTOCOMPLETE_TE;
+    list->push_back(autocomplete_item);
+  }
+}
+
+// Add tasks, in format:
+// Task. Project. Client
+void Context::getTaskAutocompleteItems(
+    std::vector<AutocompleteItem> *list) {
+  poco_assert(list);
+
+  if (!user_) {
+    logger().warning("User logged out, cannot fetch autocomplete items");
+    return;
+  }
+
+  for (std::vector<kopsik::Task *>::const_iterator it =
+      user_->related.Tasks.begin();
+      it != user_->related.Tasks.end(); it++) {
+    kopsik::Task *t = *it;
+
+    if (t->IsMarkedAsDeletedOnServer()) {
+      continue;
+    }
+
+    kopsik::Project *p = 0;
+    if (t->PID()) {
+      p = user_->GetProjectByID(t->PID());
+    }
+
+    if (p && !p->Active()) {
+      continue;
+    }
+
+    kopsik::Client *c = 0;
+    if (p && p->CID()) {
+      c = user_->GetClientByID(p->CID());
+    }
+
+    std::string text = Formatter::JoinTaskName(t, p, c);
+    if (text.empty()) {
+      continue;
+    }
+
+    AutocompleteItem autocomplete_item;
+    autocomplete_item.Text = text;
+    autocomplete_item.ProjectAndTaskLabel = text;
+    autocomplete_item.TaskID = t->ID();
+    if (p) {
+      autocomplete_item.ProjectColor = p->ColorCode();
+      autocomplete_item.ProjectID = p->ID();
+    }
+    autocomplete_item.Type = KOPSIK_AUTOCOMPLETE_TASK;
+    list->push_back(autocomplete_item);
+  }
+}
+
+// Add projects, in format:
+// Project. Client
+void Context::getProjectAutocompleteItems(
+    std::vector<AutocompleteItem> *list) {
+  poco_assert(list);
+
+  if (!user_) {
+    logger().warning("User logged out, cannot fetch autocomplete items");
+    return;
+  }
+
+  for (std::vector<kopsik::Project *>::const_iterator it =
+       user_->related.Projects.begin();
+       it != user_->related.Projects.end(); it++) {
+    kopsik::Project *p = *it;
+
+    if (!p->Active()) {
+      continue;
+    }
+
+    kopsik::Client *c = 0;
+    if (p->CID()) {
+      c = user_->GetClientByID(p->CID());
+    }
+
+    std::string text = Formatter::JoinTaskName(0, p, c);
+    if (text.empty()) {
+      continue;
+    }
+
+    AutocompleteItem autocomplete_item;
+    autocomplete_item.Text = text;
+    autocomplete_item.ProjectAndTaskLabel = text;
+    autocomplete_item.ProjectID = p->ID();
+    autocomplete_item.ProjectColor = p->ColorCode();
+    autocomplete_item.Type = KOPSIK_AUTOCOMPLETE_PROJECT;
+    list->push_back(autocomplete_item);
+  }
+}
+
+void Context::AutocompleteItems(
+    std::vector<AutocompleteItem> *list,
+    const bool include_time_entries,
+    const bool include_tasks,
+    const bool include_projects) {
+  poco_assert(list);
+  if (!user_) {
+    logger().warning("User is already logged out, cannot fetch autocomplete");
+    return;
+  }
+
+  if (include_time_entries) {
+    getTimeEntryAutocompleteItems(list);
+  }
+
+  if (include_tasks) {
+    getTaskAutocompleteItems(list);
+  }
+
+  if (include_projects) {
+    getProjectAutocompleteItems(list);
+  }
+
+  std::sort(list->begin(), list->end(), compareAutocompleteItems);
+
+  return;
 }
 
 }  // namespace kopsik

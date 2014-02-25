@@ -21,6 +21,24 @@
 
 namespace kopsik {
 
+class AutocompleteItem {
+ public:
+  AutocompleteItem() {}
+  ~AutocompleteItem() {}
+
+  bool IsTimeEntry() { return KOPSIK_AUTOCOMPLETE_TE == Type; }
+  bool IsTask() { return KOPSIK_AUTOCOMPLETE_TASK == Type; }
+  bool IsProject() { return KOPSIK_AUTOCOMPLETE_PROJECT == Type; }
+
+  std::string Text;
+  std::string Description;
+  std::string ProjectAndTaskLabel;
+  std::string ProjectColor;
+  Poco::UInt64 TaskID;
+  Poco::UInt64 ProjectID;
+  Poco::UInt64 Type;
+};
+
 // FIXME: rename
 class Context {
   public:
@@ -142,6 +160,11 @@ class Context {
       kopsik::TimeEntry *te,
       std::string *project_and_task_label,
       std::string *color_code);
+    void AutocompleteItems(
+      std::vector<AutocompleteItem> *list,
+      const bool include_time_entries,
+      const bool include_tasks,
+      const bool include_projects);
 
   private:
     const std::string updateURL() const;
@@ -164,6 +187,10 @@ class Context {
     void onFetchUpdates(Poco::Util::TimerTask& task);  // NOLINT
     void onTimelineUpdateServerSettings(Poco::Util::TimerTask& task);  // NOLINT
     void onSendFeedback(Poco::Util::TimerTask& task);  // NOLINT
+
+    void getTimeEntryAutocompleteItems(std::vector<AutocompleteItem> *list);
+    void getTaskAutocompleteItems(std::vector<AutocompleteItem> *list);
+    void getProjectAutocompleteItems(std::vector<AutocompleteItem> *list);
 
     Poco::Mutex db_m_;
     kopsik::Database *db_;
