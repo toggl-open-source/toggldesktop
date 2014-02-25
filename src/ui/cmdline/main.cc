@@ -153,21 +153,25 @@ namespace command_line_client {
         }
 
         if ("list" == args[0]) {
-            KopsikTimeEntryViewItemList *list =
-                kopsik_time_entry_view_item_list_init();
+            KopsikTimeEntryViewItem *first = 0;
             if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(
-                    ctx, err, ERRLEN, list)) {
+                    ctx, err, ERRLEN, &first)) {
                 std::cerr << err << std::endl;
-                kopsik_time_entry_view_item_list_clear(list);
+                kopsik_time_entry_view_item_clear(first);
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
-            for (unsigned int i = 0; i < list->Length; i++) {
-                KopsikTimeEntryViewItem *item = list->ViewItems[i];
+            KopsikTimeEntryViewItem *item = first;
+            int n = 0;
+            while (true) {
                 std::cout << KopsikTimeEntryViewItemToString(item) << std::endl;
+                n++;
+                if (!item->Next) {
+                    break;
+                }
+                item = reinterpret_cast<KopsikTimeEntryViewItem *>(item->Next);
             }
-            std::cout << "Got " << list->Length << " time entry view items."
-                << std::endl;
-            kopsik_time_entry_view_item_list_clear(list);
+            std::cout << "Got " << n << " time entry view items." << std::endl;
+            kopsik_time_entry_view_item_clear(first);
             return Poco::Util::Application::EXIT_OK;
         }
 
@@ -182,32 +186,30 @@ namespace command_line_client {
         }
 
         if ("continue" == args[0]) {
-            KopsikTimeEntryViewItemList *list =
-                kopsik_time_entry_view_item_list_init();
-
+            KopsikTimeEntryViewItem *first = 0;
             if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(
-                    ctx, err, ERRLEN, list)) {
+                    ctx, err, ERRLEN, &first)) {
                 std::cerr << err << std::endl;
-                kopsik_time_entry_view_item_list_clear(list);
+                kopsik_time_entry_view_item_clear(first);
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
 
-            if (!list->Length) {
+            if (!first) {
                 std::cout << "No time entry found to continue." << std::endl;
-                kopsik_time_entry_view_item_list_clear(list);
+                kopsik_time_entry_view_item_clear(first);
                 return Poco::Util::Application::EXIT_OK;
             }
 
             KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
             if (KOPSIK_API_SUCCESS != kopsik_continue(
-                    ctx, err, ERRLEN, list->ViewItems[0]->GUID, te)) {
+                    ctx, err, ERRLEN, first->GUID, te)) {
                 std::cerr << err << std::endl;
-                kopsik_time_entry_view_item_list_clear(list);
+                kopsik_time_entry_view_item_clear(first);
                 kopsik_time_entry_view_item_clear(te);
                 return Poco::Util::Application::EXIT_SOFTWARE;
             }
 
-            kopsik_time_entry_view_item_list_clear(list);
+            kopsik_time_entry_view_item_clear(first);
             kopsik_time_entry_view_item_clear(te);
             return Poco::Util::Application::EXIT_OK;
         }

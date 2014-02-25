@@ -208,26 +208,20 @@ typedef struct {
   unsigned int TaskID;
   unsigned int ProjectID;
   unsigned int Type;
+  void *Next;
 } KopsikAutocompleteItem;
-
-typedef struct {
-  KopsikAutocompleteItem **ViewItems;
-  unsigned int Length;
-} KopsikAutocompleteItemList;
-
-KOPSIK_EXPORT KopsikAutocompleteItemList *
-  kopsik_autocomplete_item_list_init();
-
-KOPSIK_EXPORT void kopsik_autocomplete_item_list_clear(
-  KopsikAutocompleteItemList *list);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_autocomplete_items(
   void *context,
-  char *errmsg, const unsigned int errlen,
-  KopsikAutocompleteItemList *list,
+  char *errmsg,
+  const unsigned int errlen,
+  KopsikAutocompleteItem **first,
   const unsigned int include_time_entries,
   const unsigned int include_tasks,
   const unsigned int include_projects);
+
+KOPSIK_EXPORT void kopsik_autocomplete_item_clear(
+  KopsikAutocompleteItem *item);
 
 // Tags
 
@@ -264,12 +258,8 @@ typedef struct {
   char *DateHeader;
   char *DateDuration;
   unsigned int DurOnly;
+  void *Next;
 } KopsikTimeEntryViewItem;
-
-typedef struct {
-  KopsikTimeEntryViewItem **ViewItems;
-  unsigned int Length;
-} KopsikTimeEntryViewItemList;
 
 KOPSIK_EXPORT KopsikTimeEntryViewItem *
   kopsik_time_entry_view_item_init();
@@ -409,17 +399,11 @@ KOPSIK_EXPORT kopsik_api_result kopsik_stop_running_time_entry_at(
   KopsikTimeEntryViewItem *item,
   int *was_found);
 
-KOPSIK_EXPORT KopsikTimeEntryViewItemList *
-  kopsik_time_entry_view_item_list_init();
-
-KOPSIK_EXPORT void kopsik_time_entry_view_item_list_clear(
-  KopsikTimeEntryViewItemList *list);
-
 KOPSIK_EXPORT kopsik_api_result kopsik_time_entry_view_items(
   void *context,
   char *errmsg,
   unsigned int errlen,
-  KopsikTimeEntryViewItemList *list);
+  KopsikTimeEntryViewItem **first);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_duration_for_date_header(
   void *context,

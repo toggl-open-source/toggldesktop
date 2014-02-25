@@ -46,17 +46,16 @@
 - (void) fetch:(BOOL)withTimeEntries
      withTasks:(BOOL)withTasks
   withProjects:(BOOL)withProjects {
-  KopsikAutocompleteItemList *list = kopsik_autocomplete_item_list_init();
+  KopsikAutocompleteItem *first = 0;
   char err[KOPSIK_ERR_LEN];
   kopsik_api_result res = kopsik_autocomplete_items(ctx,
                                                     err,
                                                     KOPSIK_ERR_LEN,
-                                                    list,
+                                                    &first,
                                                     withTimeEntries,
                                                     withTasks,
                                                     withProjects);
   if (KOPSIK_API_SUCCESS != res) {
-    kopsik_autocomplete_item_list_clear(list);
     handle_error(err);
     return;
   }
@@ -64,18 +63,20 @@
   @synchronized(self) {
     [self.orderedKeys removeAllObjects];
     [self.dictionary removeAllObjects];
-    for (int i = 0; i < list->Length; i++) {
+    KopsikAutocompleteItem *record = first;
+    while (record) {
       AutocompleteItem *item = [[AutocompleteItem alloc] init];
-      [item load:list->ViewItems[i]];
+      [item load:record];
       NSString *key = item.Text;
       if ([self.dictionary objectForKey:key] == nil) {
         [self.orderedKeys addObject:key];
         [self.dictionary setObject:item forKey:key];
       }
+      record = record->Next;
     }
   }
   [self setFilter:self.currentFilter];
-  kopsik_autocomplete_item_list_clear(list);
+  kopsik_autocomplete_item_clear(first);
 }
 
 - (NSUInteger)count {

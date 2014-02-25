@@ -620,225 +620,94 @@ void kopsik_sync(void *context) {
   app(context)->FullSync();
 }
 
-// Autocomplete list
-
-KopsikAutocompleteItemList *
-    kopsik_autocomplete_item_list_init() {
-  KopsikAutocompleteItemList *result = new KopsikAutocompleteItemList();
-  result->Length = 0;
-  result->ViewItems = 0;
-  return result;
-}
-
-void kopsik_autocomplete_item_list_clear(
-    KopsikAutocompleteItemList *list) {
-  poco_assert(list);
-  for (unsigned int i = 0; i < list->Length; i++) {
-    KopsikAutocompleteItem *item = list->ViewItems[i];
-    poco_assert(item);
-    autocomplete_item_clear(item);
-    list->ViewItems[i] = 0;
+void kopsik_autocomplete_item_clear(
+    KopsikAutocompleteItem *item) {
+  if (!item) {
+    return;
   }
-  if (list->ViewItems) {
-    free(list->ViewItems);
+  if (item->Text) {
+    free(item->Text);
+    item->Text = 0;
   }
-  delete list;
+  if (item->ProjectAndTaskLabel) {
+    free(item->ProjectAndTaskLabel);
+    item->ProjectAndTaskLabel = 0;
+  }
+  if (item->Description) {
+    free(item->Description);
+    item->Description = 0;
+  }
+  if (item->ProjectColor) {
+    free(item->ProjectColor);
+    item->ProjectColor = 0;
+  }
+  if (item->Next) {
+    KopsikAutocompleteItem *next =
+      reinterpret_cast<KopsikAutocompleteItem *>(item->Next);
+    kopsik_autocomplete_item_clear(next);
+    item->Next = 0;
+  }
+  delete item;
 }
 
 kopsik_api_result kopsik_autocomplete_items(
     void *context,
     char *errmsg,
     unsigned int errlen,
-    KopsikAutocompleteItemList *list,
+    KopsikAutocompleteItem **first,
     const unsigned int include_time_entries,
     const unsigned int include_tasks,
     const unsigned int include_projects) {
   try {
     poco_assert(errmsg);
     poco_assert(errlen);
-    poco_assert(list);
+    poco_assert(first);
 
     logger().debug("kopsik_autocomplete_items");
 
-    /* FIXME: collect autocomplete items
+    *first = 0;
 
-    if (!ctx->user) {
-      // User is already logged out
-      return KOPSIK_API_SUCCESS;
-    }
+    std::vector<kopsik::AutocompleteItem> items;
+    app(context)->AutocompleteItems(&items,
+                                    include_time_entries,
+                                    include_tasks,
+                                    include_projects);
 
-    std::vector<KopsikAutocompleteItem *> autocomplete_items;
+    KopsikAutocompleteItem *previous = 0;
+    for (std::vector<kopsik::AutocompleteItem>::iterator it =
+        items.begin();
+        it != items.end();
+        it++) {
+      kopsik::AutocompleteItem &item = *it;
 
-    // Add time entries, in format:
-    // Description - Task. Project. Client
-    if (include_time_entries) {
-      for (std::vector<kopsik::TimeEntry *>::const_iterator it =
-          ctx->user->related.TimeEntries.begin();
-          it != ctx->user->related.TimeEntries.end(); it++) {
-        kopsik::TimeEntry *te = *it;
-
-        if (te->DeletedAt() || te->IsMarkedAsDeletedOnServer()
-            || te->Description().empty()) {
-          continue;
-        }
-
-        kopsik::Task *t = 0;
-        if (te->TID()) {
-          t = ctx->user->GetTaskByID(te->TID());
-        }
-
-        kopsik::Project *p = 0;
-        if (t && t->PID()) {
-          p = ctx->user->GetProjectByID(t->PID());
-        } else if (te->PID()) {
-          p = ctx->user->GetProjectByID(te->PID());
-        }
-
-        if (p && !p->Active()) {
-          continue;
-        }
-
-        kopsik::Client *c = 0;
-        if (p && p->CID()) {
-          c = ctx->user->GetClientByID(p->CID());
-        }
-
-        std::string project_label = ctx->user->JoinTaskName(t, p, c);
-
-        std::stringstream search_parts;
-        search_parts << te->Description();
-        std::string description = search_parts.str();
-        if (!project_label.empty()) {
-          search_parts << " - " << project_label;
-        }
-
-        std::string text = search_parts.str();
-        if (text.empty()) {
-          continue;
-        }
-
-        KopsikAutocompleteItem *autocomplete_item = autocomplete_item_init();
-        autocomplete_item->Description = strdup(description.c_str());
-        autocomplete_item->Text = strdup(text.c_str());
-        autocomplete_item->ProjectAndTaskLabel = strdup(project_label.c_str());
-        if (p) {
-          autocomplete_item->ProjectColor = strdup(p->ColorCode().c_str());
-          autocomplete_item->ProjectID = p->ID();
-        }
-        if (t) {
-          autocomplete_item->TaskID = t->ID();
-        }
-        autocomplete_item->Type = KOPSIK_AUTOCOMPLETE_TE;
-        autocomplete_items.push_back(autocomplete_item);
+      KopsikAutocompleteItem *autocomplete_item = autocomplete_item_init();
+      if (!*first) {
+        *first = autocomplete_item;
       }
-    }
-
-    // Add tasks, in format:
-    // Task. Project. Client
-    if (include_tasks) {
-      for (std::vector<kopsik::Task *>::const_iterator it =
-           ctx->user->related.Tasks.begin();
-           it != ctx->user->related.Tasks.end(); it++) {
-        kopsik::Task *t = *it;
-
-        if (t->IsMarkedAsDeletedOnServer()) {
-          continue;
-        }
-
-        kopsik::Project *p = 0;
-        if (t->PID()) {
-          p = ctx->user->GetProjectByID(t->PID());
-        }
-
-        if (p && !p->Active()) {
-          continue;
-        }
-
-        kopsik::Client *c = 0;
-        if (p && p->CID()) {
-          c = ctx->user->GetClientByID(p->CID());
-        }
-
-        std::string text = ctx->user->JoinTaskName(t, p, c);
-        if (text.empty()) {
-          continue;
-        }
-
-        KopsikAutocompleteItem *autocomplete_item = autocomplete_item_init();
-        autocomplete_item->Text = strdup(text.c_str());
-        autocomplete_item->ProjectAndTaskLabel = strdup(text.c_str());
-        autocomplete_item->TaskID = t->ID();
-        if (p) {
-          autocomplete_item->ProjectColor = strdup(p->ColorCode().c_str());
-          autocomplete_item->ProjectID = p->ID();
-        }
-        autocomplete_item->Type = KOPSIK_AUTOCOMPLETE_TASK;
-        autocomplete_items.push_back(autocomplete_item);
+      if (previous) {
+        previous->Next = autocomplete_item;
       }
+
+      autocomplete_item->Description = strdup(item.Description.c_str());
+      autocomplete_item->Text = strdup(item.Text.c_str());
+      autocomplete_item->ProjectAndTaskLabel =
+        strdup(item.ProjectAndTaskLabel.c_str());
+      autocomplete_item->ProjectColor = strdup(item.ProjectColor.c_str());
+      autocomplete_item->ProjectID = static_cast<unsigned int>(item.ProjectID);
+      autocomplete_item->TaskID = static_cast<unsigned int>(item.TaskID);
+      autocomplete_item->Type = static_cast<unsigned int>(item.Type);
+
+      previous = autocomplete_item;
     }
-
-    // Add projects, in format:
-    // Project. Client
-    if (include_projects) {
-      for (std::vector<kopsik::Project *>::const_iterator it =
-           ctx->user->related.Projects.begin();
-           it != ctx->user->related.Projects.end(); it++) {
-        kopsik::Project *p = *it;
-
-        if (!p->Active()) {
-          continue;
-        }
-
-        kopsik::Client *c = 0;
-        if (p->CID()) {
-          c = ctx->user->GetClientByID(p->CID());
-        }
-
-        std::string text = ctx->user->JoinTaskName(0, p, c);
-        if (text.empty()) {
-          continue;
-        }
-
-        KopsikAutocompleteItem *autocomplete_item = autocomplete_item_init();
-        autocomplete_item->Text = strdup(text.c_str());
-        autocomplete_item->ProjectAndTaskLabel = strdup(text.c_str());
-        autocomplete_item->ProjectID = p->ID();
-        autocomplete_item->ProjectColor = strdup(p->ColorCode().c_str());
-        autocomplete_item->Type = KOPSIK_AUTOCOMPLETE_PROJECT;
-        autocomplete_items.push_back(autocomplete_item);
-      }
-    }
-
-    std::sort(autocomplete_items.begin(), autocomplete_items.end(),
-      compareAutocompleteItems);
-
-    list->Length = 0;
-
-    size_t list_size = autocomplete_items.size();
-
-    // FIXME: get rid of malloc, use a list
-    KopsikAutocompleteItem *tmp = autocomplete_item_init();
-    void *m = malloc(list_size * sizeof(tmp));
-    autocomplete_item_clear(tmp);
-    poco_assert(m);
-
-    list->ViewItems = reinterpret_cast<KopsikAutocompleteItem **>(m);
-
-    for (unsigned int i = 0; i < autocomplete_items.size(); i++) {
-      list->ViewItems[list->Length] = autocomplete_items[i];
-      list->Length++;
-    }
-     
-    */
   } catch(const Poco::Exception& exc) {
-      strncpy(errmsg, exc.displayText().c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, exc.displayText().c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   } catch(const std::exception& ex) {
-      strncpy(errmsg, ex.what(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, ex.what(), errlen);
+    return KOPSIK_API_FAILURE;
   } catch(const std::string& ex) {
-      strncpy(errmsg, ex.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, ex.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   }
   return KOPSIK_API_SUCCESS;
 }
@@ -908,12 +777,15 @@ KopsikTimeEntryViewItem *kopsik_time_entry_view_item_init() {
   item->UpdatedAt = 0;
   item->DateHeader = 0;
   item->DurOnly = 0;
+  item->Next = 0;
   return item;
 }
 
 void kopsik_time_entry_view_item_clear(
     KopsikTimeEntryViewItem *item) {
-  poco_assert(item);
+  if (!item) {
+    return;
+  }
   if (item->Description) {
     free(item->Description);
     item->Description = 0;
@@ -945,6 +817,12 @@ void kopsik_time_entry_view_item_clear(
   if (item->DateDuration) {
     free(item->DateDuration);
     item->DateDuration = 0;
+  }
+  if (item->Next) {
+    KopsikTimeEntryViewItem *next =
+      reinterpret_cast<KopsikTimeEntryViewItem *>(item->Next);
+    kopsik_time_entry_view_item_clear(next);
+    item->Next = 0;
   }
   delete item;
 }
@@ -1613,35 +1491,15 @@ kopsik_api_result kopsik_running_time_entry_view_item(
   return KOPSIK_API_SUCCESS;
 }
 
-KopsikTimeEntryViewItemList *kopsik_time_entry_view_item_list_init() {
-  KopsikTimeEntryViewItemList *result = new KopsikTimeEntryViewItemList();
-  result->Length = 0;
-  result->ViewItems = 0;
-  return result;
-}
-
-void kopsik_time_entry_view_item_list_clear(
-    KopsikTimeEntryViewItemList *in_list) {
-  poco_assert(in_list);
-  for (unsigned int i = 0; i < in_list->Length; i++) {
-    kopsik_time_entry_view_item_clear(in_list->ViewItems[i]);
-    in_list->ViewItems[i] = 0;
-  }
-  if (in_list->ViewItems) {
-    free(in_list->ViewItems);
-  }
-  delete in_list;
-}
-
 kopsik_api_result kopsik_time_entry_view_items(
     void *context,
     char *errmsg,
     unsigned int errlen,
-    KopsikTimeEntryViewItemList *out_list) {
+    KopsikTimeEntryViewItem **first) {
   try {
     poco_assert(errmsg);
     poco_assert(errlen);
-    poco_assert(out_list);
+    poco_assert(first);
 
     logger().debug("kopsik_time_entry_view_items");
 
@@ -1659,18 +1517,17 @@ kopsik_api_result kopsik_time_entry_view_items(
       return KOPSIK_API_SUCCESS;
     }
 
-    out_list->Length = 0;
-
-    // FIXME: get rid of malloc, use a list
-    KopsikTimeEntryViewItem *tmp = kopsik_time_entry_view_item_init();
-    void *m = malloc(visible.size() * sizeof(tmp));
-    kopsik_time_entry_view_item_clear(tmp);
-    poco_assert(m);
-    out_list->ViewItems =
-      reinterpret_cast<KopsikTimeEntryViewItem **>(m);
+    *first = 0;
+    KopsikTimeEntryViewItem *previous = 0;
     for (unsigned int i = 0; i < visible.size(); i++) {
       kopsik::TimeEntry *te = visible[i];
       KopsikTimeEntryViewItem *view_item = kopsik_time_entry_view_item_init();
+      if (previous) {
+        previous->Next = view_item;
+      }
+      if (!*first) {
+        *first = view_item;
+      }
 
       Poco::Int64 duration = date_durations[te->DateHeaderString()];
       std::string formatted =
@@ -1684,9 +1541,7 @@ kopsik_api_result kopsik_time_entry_view_items(
                               color_code,
                               view_item,
                               formatted);
-
-      out_list->ViewItems[i] = view_item;
-      out_list->Length++;
+      previous = view_item;
     }
   } catch(const Poco::Exception& exc) {
     strncpy(errmsg, exc.displayText().c_str(), errlen);

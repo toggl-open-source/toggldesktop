@@ -127,68 +127,6 @@ KopsikAutocompleteItem *autocomplete_item_init() {
   item->ProjectID = 0;
   item->TaskID = 0;
   item->Type = 0;
+  item->Next = 0;
   return item;
-}
-
-void autocomplete_item_clear(
-    KopsikAutocompleteItem *item) {
-  if (item->Text) {
-    free(item->Text);
-    item->Text = 0;
-  }
-  if (item->ProjectAndTaskLabel) {
-    free(item->ProjectAndTaskLabel);
-    item->ProjectAndTaskLabel = 0;
-  }
-  if (item->Description) {
-    free(item->Description);
-    item->Description = 0;
-  }
-  if (item->ProjectColor) {
-    free(item->ProjectColor);
-    item->ProjectColor = 0;
-  }
-  delete item;
-}
-
-bool isTimeEntry(KopsikAutocompleteItem *n) {
-  return KOPSIK_AUTOCOMPLETE_TE == n->Type;
-}
-
-bool isTask(KopsikAutocompleteItem *n) {
-  return KOPSIK_AUTOCOMPLETE_TASK == n->Type;
-}
-
-bool isProject(KopsikAutocompleteItem *n) {
-  return KOPSIK_AUTOCOMPLETE_PROJECT == n->Type;
-}
-
-bool compareAutocompleteItems(
-    KopsikAutocompleteItem *a,
-    KopsikAutocompleteItem *b) {
-  // Time entries first
-  if (isTimeEntry(a) && !isTimeEntry(b)) {
-    return true;
-  }
-  if (isTimeEntry(b) && !(isTimeEntry(a))) {
-    return false;
-  }
-
-  // Then tasks
-  if (isTask(a) && !isTask(b)) {
-    return true;
-  }
-  if (isTask(b) && !isTask(a)) {
-    return false;
-  }
-
-  // Then projects
-  if (isProject(a) && !isProject(b)) {
-    return true;
-  }
-  if (isProject(b) && !isProject(a)) {
-    return false;
-  }
-
-  return (strcmp(a->Text, b->Text) < 0);
 }
