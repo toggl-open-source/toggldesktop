@@ -23,7 +23,14 @@ namespace kopsik {
 
 class AutocompleteItem {
  public:
-  AutocompleteItem() {}
+  AutocompleteItem()
+    : Text("")
+    , Description("")
+    , ProjectAndTaskLabel("")
+    , ProjectColor("")
+    , TaskID(0)
+    , ProjectID(0)
+    , Type(0) {}
   ~AutocompleteItem() {}
 
   bool IsTimeEntry() { return KOPSIK_AUTOCOMPLETE_TE == Type; }
