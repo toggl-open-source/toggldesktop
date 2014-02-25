@@ -469,7 +469,9 @@
   // FIXME: this looks kind of similar to code in timer edit view
 
   // Don't trigger combobox autocomplete when inside tags field
-  if (![[aNotification object] isKindOfClass:[NSComboBox class]]) return;
+  if (![[aNotification object] isKindOfClass:[NSComboBox class]]) {
+    return;
+  }
 
   NSComboBox *box = [aNotification object];
   NSString *filter = [box stringValue];
