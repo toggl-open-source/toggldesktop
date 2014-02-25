@@ -128,14 +128,23 @@
     
   self.GUID = edit.EntryGUID;
   NSAssert(self.GUID != nil, @"GUID is nil");
+
+  // Overwrite description only if user is not editing it:
+  if ([self.descriptionTextField currentEditor] == nil) {
+    [self.descriptionTextField setStringValue:item.Description];
+  }
   
-  [self.descriptionTextField setStringValue:item.Description];
   if (item.ProjectAndTaskLabel != nil) {
     [self.projectSelect setStringValue:item.ProjectAndTaskLabel];
   } else {
     [self.projectSelect setStringValue:@""];
   }
-  [self.durationTextField setStringValue:item.duration];
+
+  // Overwrite duration only if user is not editing it:
+  if ([self.durationTextField currentEditor] == nil) {
+    [self.durationTextField setStringValue:item.duration];
+  }
+
   [self.startTime setDateValue:item.started];
   [self.startDate setDateValue:item.started];
 
