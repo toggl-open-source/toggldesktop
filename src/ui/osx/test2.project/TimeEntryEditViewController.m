@@ -122,10 +122,13 @@
     [self.descriptionTextField setStringValue:item.Description];
   }
   
-  if (item.ProjectAndTaskLabel != nil) {
-    [self.projectSelect setStringValue:item.ProjectAndTaskLabel];
-  } else {
-    [self.projectSelect setStringValue:@""];
+  // Overwrite project only if user is not editing it
+  if ([self.projectSelect currentEditor] == nil) {
+    if (item.ProjectAndTaskLabel != nil) {
+      [self.projectSelect setStringValue:item.ProjectAndTaskLabel];
+    } else {
+      [self.projectSelect setStringValue:@""];
+    }
   }
 
   // Overwrite duration only if user is not editing it:
@@ -493,10 +496,7 @@
     return; // time entry is not running, ignore
   }
   if ([self.durationTextField currentEditor] != nil) {
-    return; // duration field is not focused
-  }
-  if ([self.durationTextField currentEditor] == [[NSApp keyWindow] firstResponder]) {
-    return;
+    return; // duration field is focussed by user, don't mess with it
   }
   char str[duration_str_len];
   kopsik_format_duration_in_seconds_hhmmss(self.runningTimeEntry.duration_in_seconds,
