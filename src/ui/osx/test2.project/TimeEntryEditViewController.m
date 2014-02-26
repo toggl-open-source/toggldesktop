@@ -769,6 +769,7 @@ completionsForSubstring:(NSString *)substring
   NSLog(@"workspaceSelectChanged");
   // Changing workspace should render the clients
   // of the selected workspace in the client select combobox.
+  self.clientSelect.stringValue = @"";
   [self startClientSelectRendering];
 }
 
