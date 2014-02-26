@@ -33,9 +33,9 @@ class AutocompleteItem {
     , Type(0) {}
   ~AutocompleteItem() {}
 
-  bool IsTimeEntry() { return KOPSIK_AUTOCOMPLETE_TE == Type; }
-  bool IsTask() { return KOPSIK_AUTOCOMPLETE_TASK == Type; }
-  bool IsProject() { return KOPSIK_AUTOCOMPLETE_PROJECT == Type; }
+  bool IsTimeEntry() const { return KOPSIK_AUTOCOMPLETE_TE == Type; }
+  bool IsTask() const { return KOPSIK_AUTOCOMPLETE_TASK == Type; }
+  bool IsProject() const { return KOPSIK_AUTOCOMPLETE_PROJECT == Type; }
 
   std::string Text;
   std::string Description;
@@ -178,6 +178,10 @@ class Context {
       const bool include_time_entries,
       const bool include_tasks,
       const bool include_projects) const;
+    kopsik::error AddProject(
+      const Poco::UInt64 workspace_id,
+      const Poco::UInt64 client_id,
+      const std::string project_name);
 
   private:
     const std::string updateURL() const;

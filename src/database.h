@@ -48,7 +48,7 @@ class ModelChange {
 
 class Database {
     public:
-        explicit Database(std::string db_path) :
+        explicit Database(const std::string db_path) :
                 session(0), desktop_id_("") {
             Poco::Data::SQLite::Connector::registerConnector();
 
@@ -92,9 +92,13 @@ class Database {
             Poco::Data::SQLite::Connector::unregisterConnector();
         }
 
-        error DeleteUser(User *model, bool with_related_data);
+        error DeleteUser(
+            User *model,
+            const bool with_related_data);
 
-        error LoadUserByID(const Poco::UInt64 UID, User *user,
+        error LoadUserByID(
+            const Poco::UInt64 UID,
+            User *user,
             const bool with_related_data);
         error LoadUserByAPIToken(
             const std::string api_token,
@@ -218,20 +222,26 @@ class Database {
         error delete_timeline_batch(
             const std::vector<TimelineEvent> &timeline_events);
 
-        error saveWorkspace(Workspace *model,
-                            std::vector<ModelChange> *changes);
-        error saveClient(Client *model,
-                         std::vector<ModelChange> *changes);
-        error saveProject(Project *model,
-                          std::vector<ModelChange> *changes);
-        error saveTask(Task *model,
-                       std::vector<ModelChange> *changes);
-        error saveTag(Tag *model,
-                      std::vector<ModelChange> *changes);
-        error saveTimeEntry(TimeEntry *model,
-                            std::vector<ModelChange> *changes);
+        error saveWorkspace(
+            Workspace *model,
+            std::vector<ModelChange> *changes);
+        error saveClient(
+            Client *model,
+            std::vector<ModelChange> *changes);
+        error saveProject(
+            Project *model,
+            std::vector<ModelChange> *changes);
+        error saveTask(
+            Task *model,
+            std::vector<ModelChange> *changes);
+        error saveTag(
+            Tag *model,
+            std::vector<ModelChange> *changes);
+        error saveTimeEntry(
+            TimeEntry *model,
+            std::vector<ModelChange> *changes);
 
-        Poco::Logger &logger();
+        Poco::Logger &logger() const;
 
         Poco::Data::Session *session;
         std::string desktop_id_;

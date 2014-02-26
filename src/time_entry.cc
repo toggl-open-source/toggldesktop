@@ -12,7 +12,7 @@
 
 namespace kopsik {
 
-bool TimeEntry::NeedsPush() {
+bool TimeEntry::NeedsPush() const {
     return NeedsPOST() || NeedsPUT() || NeedsDELETE();
 }
 
@@ -24,22 +24,22 @@ void TimeEntry::StopAt(const Poco::Int64 at) {
     SetUIModifiedAt(time(0));
 }
 
-bool TimeEntry::NeedsPOST() {
+bool TimeEntry::NeedsPOST() const {
     // No server side ID yet, meaning it's not POSTed yet
     return !id_ && !(deleted_at_ > 0);
 }
 
-bool TimeEntry::NeedsPUT() {
+bool TimeEntry::NeedsPUT() const {
     // User has modified model via UI, needs a PUT
     return ui_modified_at_ > 0 && !(deleted_at_ > 0);
 }
 
-bool TimeEntry::NeedsDELETE() {
+bool TimeEntry::NeedsDELETE() const {
     // TE is deleted, needs a DELETE on server side
     return id_ && (deleted_at_ > 0);
 }
 
-std::string TimeEntry::String() {
+std::string TimeEntry::String() const {
     std::stringstream ss;
     ss  << "ID=" << id_
         << " local_id=" << local_id_
@@ -61,56 +61,56 @@ std::string TimeEntry::String() {
     return ss.str();
 }
 
-void TimeEntry::SetDurOnly(bool value) {
+void TimeEntry::SetDurOnly(const bool value) {
     if (duronly_ != value) {
         duronly_ = value;
         dirty_ = true;
     }
 }
 
-void TimeEntry::SetDeletedAt(Poco::UInt64 value) {
+void TimeEntry::SetDeletedAt(const Poco::UInt64 value) {
     if (deleted_at_ != value) {
         deleted_at_ = value;
         dirty_ = true;
     }
 }
 
-void TimeEntry::SetStart(Poco::UInt64 value) {
+void TimeEntry::SetStart(const Poco::UInt64 value) {
     if (start_ != value) {
         start_ = value;
         dirty_ = true;
     }
 }
 
-void TimeEntry::SetUpdatedAt(Poco::UInt64 value) {
+void TimeEntry::SetUpdatedAt(const Poco::UInt64 value) {
     if (updated_at_ != value) {
         updated_at_ = value;
         dirty_ = true;
     }
 }
 
-void TimeEntry::SetDescription(std::string value) {
+void TimeEntry::SetDescription(const std::string value) {
     if (description_ != value) {
         description_ = value;
         dirty_ = true;
     }
 }
 
-void TimeEntry::SetGUID(std::string value) {
+void TimeEntry::SetGUID(const std::string value) {
     if (guid_ != value) {
         guid_ = value;
         dirty_ = true;
     }
 }
 
-void TimeEntry::SetUIModifiedAt(Poco::UInt64 value) {
+void TimeEntry::SetUIModifiedAt(const Poco::UInt64 value) {
     if (ui_modified_at_ != value) {
         ui_modified_at_ = value;
         dirty_ = true;
     }
 }
 
-void TimeEntry::SetStopString(std::string value) {
+void TimeEntry::SetStopString(const std::string value) {
     Poco::Int64 stop = Formatter::Parse8601(value);
     if (duration_in_seconds_ >= 0) {
         SetDurationInSeconds(stop - start_);
@@ -118,49 +118,49 @@ void TimeEntry::SetStopString(std::string value) {
     SetStop(stop);
 }
 
-void TimeEntry::SetCreatedWith(std::string value) {
+void TimeEntry::SetCreatedWith(const std::string value) {
     if (created_with_ != value) {
         created_with_ = value;
         dirty_ = true;
     }
 }
 
-void TimeEntry::SetBillable(bool value) {
+void TimeEntry::SetBillable(const bool value) {
     if (billable_ != value) {
         billable_ = value;
         dirty_ = true;
     }
 }
 
-void TimeEntry::SetWID(Poco::UInt64 value) {
+void TimeEntry::SetWID(const Poco::UInt64 value) {
     if (wid_ != value) {
         wid_ = value;
         dirty_ = true;
     }
 }
 
-void TimeEntry::SetStop(Poco::UInt64 value) {
+void TimeEntry::SetStop(const Poco::UInt64 value) {
     if (stop_ != value) {
         stop_ = value;
         dirty_ = true;
     }
 }
 
-void TimeEntry::SetTID(Poco::UInt64 value) {
+void TimeEntry::SetTID(const Poco::UInt64 value) {
     if (tid_ != value) {
         tid_ = value;
         dirty_ = true;
     }
 }
 
-void TimeEntry::SetUID(Poco::UInt64 value) {
+void TimeEntry::SetUID(const Poco::UInt64 value) {
     if (uid_ != value) {
         uid_ = value;
         dirty_ = true;
     }
 }
 
-void TimeEntry::SetTags(std::string tags) {
+void TimeEntry::SetTags(const std::string tags) {
     if (Tags() != tags) {
         TagNames.clear();
         if (!tags.empty()) {
@@ -175,28 +175,28 @@ void TimeEntry::SetTags(std::string tags) {
     }
 }
 
-void TimeEntry::SetPID(Poco::UInt64 value) {
+void TimeEntry::SetPID(const Poco::UInt64 value) {
     if (pid_ != value) {
         pid_ = value;
         dirty_ = true;
     }
 }
 
-void TimeEntry::SetID(Poco::UInt64 value) {
+void TimeEntry::SetID(const Poco::UInt64 value) {
     if (id_ != value) {
         id_ = value;
         dirty_ = true;
     }
 }
 
-void TimeEntry::SetDurationInSeconds(Poco::Int64 value) {
+void TimeEntry::SetDurationInSeconds(const Poco::Int64 value) {
     if (duration_in_seconds_ != value) {
         duration_in_seconds_ = value;
         dirty_ = true;
     }
 }
 
-void TimeEntry::SetStartString(std::string value) {
+void TimeEntry::SetStartString(const std::string value) {
     Poco::Int64 start = Formatter::Parse8601(value);
     if (duration_in_seconds_ < 0) {
         SetDurationInSeconds(-start);
@@ -219,7 +219,7 @@ void TimeEntry::SetDurationString(const std::string value) {
     }
 }
 
-std::string TimeEntry::Tags() {
+std::string TimeEntry::Tags() const {
     std::stringstream ss;
     for (std::vector<std::string>::const_iterator it =
             TagNames.begin();
@@ -233,27 +233,27 @@ std::string TimeEntry::Tags() {
     return ss.str();
 }
 
-std::string TimeEntry::DateHeaderString() {
+std::string TimeEntry::DateHeaderString() const {
     return Formatter::FormatDateHeader(start_);
 }
 
-std::string TimeEntry::DurationString() {
+std::string TimeEntry::DurationString() const {
     return Formatter::FormatDurationInSecondsHHMMSS(duration_in_seconds_);
 }
 
-void TimeEntry::SetUpdatedAtString(std::string value) {
+void TimeEntry::SetUpdatedAtString(const std::string value) {
     SetUpdatedAt(Formatter::Parse8601(value));
 }
 
-std::string TimeEntry::StopString() {
+std::string TimeEntry::StopString() const {
     return Formatter::Format8601(stop_);
 }
 
-std::string TimeEntry::StartString() {
+std::string TimeEntry::StartString() const {
     return Formatter::Format8601(start_);
 }
 
-bool TimeEntry::IsToday() {
+bool TimeEntry::IsToday() const {
   Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(Start());
   Poco::LocalDateTime datetime(ts);
   Poco::LocalDateTime today;

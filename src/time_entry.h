@@ -22,78 +22,83 @@ namespace kopsik {
       is_marked_as_deleted_on_server_(false),
       updated_at_(0) {}
 
-    std::string Tags();
-    void SetTags(std::string tags);
+    std::string Tags() const;
+    void SetTags(const std::string tags);
 
-    Poco::UInt64 ID() { return id_; }
-    void SetID(Poco::UInt64 value);
+    Poco::UInt64 ID() const { return id_; }
+    void SetID(const Poco::UInt64 value);
 
-    Poco::UInt64 WID() { return wid_; }
-    void SetWID(Poco::UInt64 value);
+    Poco::UInt64 WID() const { return wid_; }
+    void SetWID(const Poco::UInt64 value);
 
-    Poco::UInt64 UID() { return uid_; }
-    void SetUID(Poco::UInt64 value);
+    Poco::UInt64 UID() const { return uid_; }
+    void SetUID(const Poco::UInt64 value);
 
-    Poco::UInt64 PID() { return pid_; }
-    void SetPID(Poco::UInt64 value);
+    Poco::UInt64 PID() const { return pid_; }
+    void SetPID(const Poco::UInt64 value);
 
-    Poco::UInt64 TID() { return tid_; }
-    void SetTID(Poco::UInt64 value);
+    Poco::UInt64 TID() const { return tid_; }
+    void SetTID(const Poco::UInt64 value);
 
-    Poco::UInt64 UIModifiedAt() { return ui_modified_at_; }
-    void SetUIModifiedAt(Poco::UInt64 value);
+    Poco::UInt64 UIModifiedAt() const { return ui_modified_at_; }
+    void SetUIModifiedAt(const Poco::UInt64 value);
 
-    bool Billable() { return billable_; }
-    void SetBillable(bool value);
+    bool Billable() const { return billable_; }
+    void SetBillable(const bool value);
 
-    Poco::Int64 DurationInSeconds() { return duration_in_seconds_; }
-    void SetDurationInSeconds(Poco::Int64 value);
-    std::string DurationString();
+    Poco::Int64 DurationInSeconds() const { return duration_in_seconds_; }
+    void SetDurationInSeconds(const Poco::Int64 value);
+
+    std::string DurationString() const;
     void SetDurationString(const std::string value);
 
-    Poco::Int64 LocalID() { return local_id_; }
-    void SetLocalID(Poco::Int64 value) { local_id_ = value; }
+    Poco::Int64 LocalID() const { return local_id_; }
+    void SetLocalID(const Poco::Int64 value) { local_id_ = value; }
 
-    bool DurOnly() { return duronly_; }
-    void SetDurOnly(bool value);
+    bool DurOnly() const { return duronly_; }
+    void SetDurOnly(const bool value);
 
-    std::string Description() { return description_; }
-    void SetDescription(std::string value);
+    std::string Description() const { return description_; }
+    void SetDescription(const std::string value);
 
-    std::string GUID() { return guid_; }
-    void SetGUID(std::string value);
+    std::string GUID() const { return guid_; }
+    void SetGUID(const std::string value);
 
-    std::string StartString();
-    void SetStartString(std::string value);
-    Poco::UInt64 Start() { return start_; }
-    void SetStart(Poco::UInt64 value);
-    std::string DateHeaderString();
+    std::string StartString() const;
+    void SetStartString(const std::string value);
 
-    std::string StopString();
-    void SetStopString(std::string value);
+    Poco::UInt64 Start() const { return start_; }
+    void SetStart(const Poco::UInt64 value);
+
+    std::string DateHeaderString() const;
+
+    std::string StopString() const;
+    void SetStopString(const std::string value);
+
     Poco::UInt64 Stop() { return stop_; }
-    void SetStop(Poco::UInt64 value);
+    void SetStop(const Poco::UInt64 value);
 
-    bool Dirty() { return dirty_; }
+    bool Dirty() const { return dirty_; }
     void ClearDirty() { dirty_ = false; }
 
-    std::string CreatedWith() { return created_with_; }
-    void SetCreatedWith(std::string value);
+    std::string CreatedWith() const { return created_with_; }
+    void SetCreatedWith(const std::string value);
     // Deleting a time entry hides it from
     // UI and flags it for removal from
     // server:
-    Poco::UInt64 DeletedAt() { return deleted_at_; }
-    void SetDeletedAt(Poco::UInt64 value);
+    Poco::UInt64 DeletedAt() const { return deleted_at_; }
+    void SetDeletedAt(const Poco::UInt64 value);
 
-    Poco::UInt64 UpdatedAt() { return updated_at_; }
-    void SetUpdatedAt(Poco::UInt64 value);
-    std::string UpdatedAtString();
-    void SetUpdatedAtString(std::string value);
+    Poco::UInt64 UpdatedAt() const { return updated_at_; }
+    void SetUpdatedAt(const Poco::UInt64 value);
+
+    std::string UpdatedAtString() const;
+    void SetUpdatedAtString(const std::string value);
 
     // When time entry is finally deleted
     // on server, it will be removed from local
     // DB using this flag:
-    bool IsMarkedAsDeletedOnServer() {
+    bool IsMarkedAsDeletedOnServer() const {
         return is_marked_as_deleted_on_server_;
     }
     void MarkAsDeletedOnServer() {
@@ -103,18 +108,18 @@ namespace kopsik {
 
     void StopAt(const Poco::Int64 at);
 
+    void LoadFromJSONString(const std::string json);
+
+    std::string String() const;
+
+    bool NeedsPush() const;
+    bool NeedsPOST() const;
+    bool NeedsPUT() const;
+    bool NeedsDELETE() const;
+
+    bool IsToday() const;
+
     std::vector<std::string> TagNames;
-
-    void LoadFromJSONString(std::string json);
-
-    std::string String();
-
-    bool NeedsPush();
-    bool NeedsPOST();
-    bool NeedsPUT();
-    bool NeedsDELETE();
-
-    bool IsToday();
 
   private:
     Poco::Int64 local_id_;

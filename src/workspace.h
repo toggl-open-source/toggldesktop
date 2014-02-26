@@ -14,23 +14,27 @@ namespace kopsik {
     Workspace() : local_id_(0), id_(0), name_(""), uid_(0), dirty_(false),
       is_marked_as_deleted_on_server_(false), premium_(false) {}
 
-    std::string String();
+    std::string String() const;
 
-    Poco::Int64 LocalID() { return local_id_; }
-    void SetLocalID(Poco::Int64 value) { local_id_ = value; }
-    Poco::UInt64 ID() { return id_; }
-    void SetID(Poco::UInt64 value);
-    std::string Name() { return name_; }
-    void SetName(std::string value);
-    Poco::UInt64 UID() { return uid_; }
-    void SetUID(Poco::UInt64 value);
-    bool Dirty() { return dirty_; }
+    Poco::Int64 LocalID() const { return local_id_; }
+    void SetLocalID(const Poco::Int64 value) { local_id_ = value; }
+
+    Poco::UInt64 ID() const { return id_; }
+    void SetID(const Poco::UInt64 value);
+
+    std::string Name() const { return name_; }
+    void SetName(const std::string value);
+
+    Poco::UInt64 UID() const { return uid_; }
+    void SetUID(const Poco::UInt64 value);
+
+    bool Dirty() const { return dirty_; }
     void ClearDirty() { dirty_ = false; }
 
-    bool Premium() { return premium_; }
+    bool Premium() const { return premium_; }
     void SetPremium(const bool value);
 
-    bool IsMarkedAsDeletedOnServer() {
+    bool IsMarkedAsDeletedOnServer() const {
       return is_marked_as_deleted_on_server_;
     }
     void MarkAsDeletedOnServer() {

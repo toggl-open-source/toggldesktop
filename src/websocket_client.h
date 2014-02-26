@@ -63,7 +63,7 @@ namespace kopsik {
     error receiveWebSocketMessage(std::string *message);
     void deleteSession();
 
-    Poco::Logger &logger();
+    Poco::Logger &logger() const;
 
     Poco::Activity<WebSocketClient> activity_;
     Poco::Net::HTTPSClientSession *session_;

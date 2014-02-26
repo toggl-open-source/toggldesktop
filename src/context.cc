@@ -1553,8 +1553,14 @@ void Context::AutocompleteItems(
   }
 
   std::sort(list->begin(), list->end(), CompareAutocompleteItems);
+}
 
-  return;
+kopsik::error Context::AddProject(
+    const Poco::UInt64 workspace_id,
+    const Poco::UInt64 client_id,
+    const std::string project_name) {
+  // FIXME:
+  return kopsik::noError;
 }
 
 }  // namespace kopsik

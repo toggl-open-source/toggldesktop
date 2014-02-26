@@ -49,7 +49,8 @@ namespace kopsik {
         const std::string basic_auth_username,
         const std::string basic_auth_password,
         std::string *response_body);
-    error requestJSON(std::string method,
+    error requestJSON(
+      const std::string method,
       const std::string relative_url,
       const std::string json,
       const std::string basic_auth_username,

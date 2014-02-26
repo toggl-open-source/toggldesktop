@@ -15,7 +15,10 @@
 
 namespace kopsik {
 
-std::string Formatter::JoinTaskName(Task *t, Project *p, Client *c) {
+std::string Formatter::JoinTaskName(
+        Task * const t,
+        Project * const p,
+        Client * const c) {
     std::stringstream ss;
     bool empty = true;
     if (t) {
@@ -246,7 +249,8 @@ int Formatter::ParseDurationString(const std::string value) {
     return 0;
 }
 
-std::string Formatter::FormatDurationInSeconds(const Poco::Int64 value,
+std::string Formatter::FormatDurationInSeconds(
+        const Poco::Int64 value,
         const std::string format) {
     Poco::Int64 duration = value;
     if (duration < 0) {
@@ -260,7 +264,8 @@ std::string Formatter::FormatDurationInSecondsHHMMSS(const Poco::Int64 value) {
     return FormatDurationInSeconds(value, "%H:%M:%S");
 }
 
-std::string Formatter::FormatDurationInSecondsHHMM(const Poco::Int64 value,
+std::string Formatter::FormatDurationInSecondsHHMM(
+        const Poco::Int64 value,
         const int type) {
     if (type == 1) {
         return FormatDurationInSeconds(value, "%H %M");
