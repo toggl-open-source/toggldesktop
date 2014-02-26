@@ -247,23 +247,20 @@
   return filteredCompletions;
 }
 
-- (void) syncTags {
+- (void) applyTags {
   NSAssert(self.GUID != nil, @"GUID is nil");
-  char err[KOPSIK_ERR_LEN];
   NSAssert(self.tagsTokenField != nil, @"tags field cant be nil");
   NSArray *tag_names = [self.tagsTokenField objectValue];
   const char *value = [[tag_names componentsJoinedByString:@"|"] UTF8String];
-
+  char errmsg[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_tags(ctx,
-                                                       err,
+                                                       errmsg,
                                                        KOPSIK_ERR_LEN,
                                                        [self.GUID UTF8String],
                                                        value)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                        object:[NSString stringWithUTF8String:err]];
+    handle_error(errmsg);
     return;
   }
-  kopsik_sync(ctx);
 }
 
 - (void) scheduleAutocompleteRendering {
@@ -400,7 +397,7 @@
 }
 
 - (IBAction)tagsChanged:(id)sender {
-  [self syncTags];
+  [self applyTags];
 }
 
 - (IBAction)billableCheckBoxClicked:(id)sender {
@@ -475,7 +472,7 @@
   if (![[aNotification object] isKindOfClass:[NSTokenField class]]) {
     return;
   }
-  [self syncTags];
+  [self applyTags];
 }
 
 - (void)controlTextDidChange:(NSNotification *)aNotification {
