@@ -15,6 +15,7 @@
 #import "AutocompleteItem.h"
 #import "AutocompleteDataSource.h"
 #import "NSComboBox_Expansion.h"
+#import "ViewItem.h"
 
 @interface TimeEntryEditViewController ()
 @property NSString *GUID;
@@ -388,10 +389,8 @@ completionsForSubstring:(NSString *)substring
 
   NSMutableArray *workspaces = [[NSMutableArray alloc] init];
   while (first) {
-    // FIXME:
-    id workspace = 0;
-    first->ID;
-    first->Name;
+    ViewItem *workspace = [[ViewItem alloc] init];
+    [workspace load:first];
     [workspaces addObject:workspace];
     first = first->Next;
   }
@@ -427,6 +426,11 @@ completionsForSubstring:(NSString *)substring
   }
 }
 
+- (ViewItem *)selectedWorkspace {
+  NSString *key = [self.projectSelect stringValue];
+  return nil;
+}
+
 - (void)finishClientSelectRendering {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
@@ -435,15 +439,14 @@ completionsForSubstring:(NSString *)substring
   // FIXME: get selected workspace ID
   unsigned int workspace_id = 0;
 
-  // FIXME: If no workspace is selected, don't render clients yet.
-  
   KopsikViewItem *first = 0;
   char errmsg[KOPSIK_ERR_LEN];
-  if (KOPSIK_API_SUCCESS != kopsik_clients(ctx,
-                                           errmsg,
-                                           KOPSIK_ERR_LEN,
-                                           workspace_id,
-                                           &first)) {
+  // If no workspace is selected, don't render clients yet.
+  if (workspace_id && KOPSIK_API_SUCCESS != kopsik_clients(ctx,
+                                                           errmsg,
+                                                           KOPSIK_ERR_LEN,
+                                                           workspace_id,
+                                                           &first)) {
     kopsik_view_item_clear(first);
     handle_error(errmsg);
     return;
@@ -451,10 +454,8 @@ completionsForSubstring:(NSString *)substring
 
   NSMutableArray *clients = [[NSMutableArray alloc] init];
   while (first) {
-    // FIXME:
-    id client = 0;
-    first->ID;
-    first->Name;
+    ViewItem *client = [[ViewItem alloc] init];
+    [client load:first];
     [clients addObject:client];
     first = first->Next;
   }
@@ -668,7 +669,19 @@ completionsForSubstring:(NSString *)substring
 }
 
 -(id)comboBox:(NSComboBox *)aComboBox objectValueForItemAtIndex:(NSInteger)row{
-  return [self.autocompleteDataSource keyAtIndex:row];
+  if (self.projectSelect == aComboBox) {
+    return [self.autocompleteDataSource keyAtIndex:row];
+  }
+  if (self.clientSelect == aComboBox) {
+    ViewItem *client = [self.clientList objectAtIndex:row];
+    return client.Name;
+  }
+  if (self.workspaceSelect == aComboBox) {
+    ViewItem *workspace = [self.workspaceList objectAtIndex:row];
+    return workspace.Name;
+  }
+  NSAssert(false, @"Invalid combo box");
+  return nil;
 }
 
 - (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)aString {
