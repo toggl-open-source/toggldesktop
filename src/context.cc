@@ -818,6 +818,10 @@ bool Context::UserHasPremiumWorkspaces() const {
   return (user_ && user_->HasPremiumWorkspaces());
 }
 
+Poco::UInt64 Context::UsersDefaultWID() const {
+  return (user_ && user_->DefaultWID());
+}
+
 void Context::CollectPushableTimeEntries(
     std::vector<kopsik::TimeEntry *> *models) const {
   poco_assert(models);
@@ -847,6 +851,39 @@ std::vector<std::string> Context::Tags() const {
   }
   std::sort(tags.rbegin(), tags.rend());
   return tags;
+}
+
+std::vector<kopsik::Workspace *> Context::Workspaces() const {
+  std::vector<kopsik::Workspace *> result;
+  if (!user_) {
+    logger().warning("User logged out, cannot fetch workspaces");
+    return result;
+  }
+  result = user_->related.Workspaces;
+  std::sort(result.rbegin(), result.rend(), CompareWorkspaceByName);
+  return result;
+}
+
+std::vector<kopsik::Client *> Context::Clients(
+    const Poco::UInt64 workspace_id) const {
+  poco_assert(workspace_id);
+  std::vector<kopsik::Client *> result;
+  if (!user_) {
+    logger().warning("User logged out, cannot fetch clients");
+    return result;
+  }
+  for (std::vector<kopsik::Client *>::const_iterator it =
+      user_->related.Clients.begin();
+        it != user_->related.Clients.end();
+        it++) {
+    kopsik::Client *client = *it;
+    if (client->WID() != workspace_id) {
+      continue;
+    }
+    result.push_back(client);
+  }
+  std::sort(result.rbegin(), result.rend(), CompareClientByName);
+  return result;
 }
 
 kopsik::TimeEntry *Context::Start(
@@ -1165,7 +1202,7 @@ kopsik::error Context::StopAt(
 }
 
 kopsik::error Context::RunningTimeEntry(
-    kopsik::TimeEntry **running) {
+    kopsik::TimeEntry **running) const {
   if (!user_) {
     return kopsik::error("Please login to access tracking time entry");
   }
@@ -1198,7 +1235,7 @@ kopsik::error Context::ToggleTimelineRecording() {
 
 kopsik::error Context::TimeEntries(
     std::map<std::string, Poco::Int64> *date_durations,
-    std::vector<kopsik::TimeEntry *> *visible) {
+    std::vector<kopsik::TimeEntry *> *visible) const {
   if (!user_) {
     logger().warning("User is already logged out, cannot fetch time entries");
     return kopsik::noError;
@@ -1230,7 +1267,7 @@ kopsik::error Context::TimeEntries(
 
 kopsik::error Context::TrackedPerDateHeader(
     const std::string date_header,
-    int *sum) {
+    int *sum) const {
   if (!user_) {
     return kopsik::error("Please login to access time entries");
   }
@@ -1246,7 +1283,7 @@ kopsik::error Context::TrackedPerDateHeader(
   return kopsik::noError;
 }
 
-bool Context::RecordTimeline() {
+bool Context::RecordTimeline() const {
   return user_ && user_->RecordTimeline();
 }
 
@@ -1263,7 +1300,7 @@ kopsik::error Context::LoadUpdateChannel(std::string *channel) {
 void Context::ProjectLabelAndColorCode(
     kopsik::TimeEntry *te,
     std::string *project_and_task_label,
-    std::string *color_code) {
+    std::string *color_code) const {
   poco_assert(te);
   poco_assert(project_and_task_label);
   poco_assert(color_code);
@@ -1331,7 +1368,7 @@ bool CompareAutocompleteItems(
 // Add time entries, in format:
 // Description - Task. Project. Client
 void Context::getTimeEntryAutocompleteItems(
-    std::vector<AutocompleteItem> *list) {
+    std::vector<AutocompleteItem> *list) const {
   poco_assert(list);
 
   if (!user_) {
@@ -1403,7 +1440,7 @@ void Context::getTimeEntryAutocompleteItems(
 // Add tasks, in format:
 // Task. Project. Client
 void Context::getTaskAutocompleteItems(
-    std::vector<AutocompleteItem> *list) {
+    std::vector<AutocompleteItem> *list) const {
   poco_assert(list);
 
   if (!user_) {
@@ -1455,7 +1492,7 @@ void Context::getTaskAutocompleteItems(
 // Add projects, in format:
 // Project. Client
 void Context::getProjectAutocompleteItems(
-    std::vector<AutocompleteItem> *list) {
+    std::vector<AutocompleteItem> *list) const {
   poco_assert(list);
 
   if (!user_) {
@@ -1496,7 +1533,7 @@ void Context::AutocompleteItems(
     std::vector<AutocompleteItem> *list,
     const bool include_time_entries,
     const bool include_tasks,
-    const bool include_projects) {
+    const bool include_projects) const {
   poco_assert(list);
   if (!user_) {
     logger().warning("User is already logged out, cannot fetch autocomplete");

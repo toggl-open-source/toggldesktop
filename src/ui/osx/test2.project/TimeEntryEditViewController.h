@@ -22,7 +22,6 @@
 @property (weak) IBOutlet NSButton *billableCheckbox;
 @property (weak) IBOutlet NSTextField *lastUpdateTextField;
 @property (weak) IBOutlet NSButton *deleteButton;
-@property (strong) IBOutlet NSArrayController *projectItemsArrayController;
 @property (weak) IBOutlet NSButton *backButton;
 @property (weak) IBOutlet NSButton *continueButton;
 @property (weak) IBOutlet NSButton *addProjectButton;
@@ -38,4 +37,14 @@
 - (IBAction)backButtonClicked:(id)sender;
 - (IBAction)continueButtonClicked:(id)sender;
 - (IBAction)addProjectButtonClicked:(id)sender;
+
+// New project related stuff
+@property (weak) IBOutlet NSBox *projectSelectBox;
+@property (weak) IBOutlet NSBox *addProjectBox;
+@property (weak) IBOutlet NSTextField *projectNameTextField;
+@property (weak) IBOutlet NSComboBox *workspaceSelect;
+@property (weak) IBOutlet NSComboBox *clientSelect;
+- (IBAction)workspaceSelectChanged:(id)sender;
+- (IBAction)clientSelectChanged:(id)sender;
+
 @end

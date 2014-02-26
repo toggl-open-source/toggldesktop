@@ -46,6 +46,17 @@ typedef void (*KopsikCheckUpdateCallback)(
   const char *url,
   const char *version);
 
+// Generic view item
+
+typedef struct {
+  unsigned int ID;
+  char *Name;
+  void *Next;
+} KopsikViewItem;
+
+KOPSIK_EXPORT void kopsik_view_item_clear(
+  KopsikViewItem *first);
+
 // Context API.
 
 KOPSIK_EXPORT void *kopsik_context_init(
@@ -179,6 +190,12 @@ KOPSIK_EXPORT kopsik_api_result kopsik_user_has_premium_workspaces(
   unsigned int errlen,
   int *has_premium_workspaces);
 
+KOPSIK_EXPORT kopsik_api_result kopsik_users_default_wid(
+  void *context,
+  char *errmsg,
+  unsigned int errlen,
+  unsigned int *default_wid);
+
 // Sync
 
 typedef struct {
@@ -225,19 +242,28 @@ KOPSIK_EXPORT void kopsik_autocomplete_item_clear(
 
 // Tags
 
-typedef struct {
-  char *Name;
-  void *Next;
-} KopsikTagViewItem;
-
 KOPSIK_EXPORT kopsik_api_result kopsik_tags(
   void *context,
   char *errmsg,
   unsigned int errlen,
-  KopsikTagViewItem **first);
+  KopsikViewItem **first);
 
-KOPSIK_EXPORT void kopsik_tags_clear(
-  KopsikTagViewItem *first);
+// Workspaces
+
+KOPSIK_EXPORT kopsik_api_result kopsik_workspaces(
+  void *context,
+  char *errmsg,
+  unsigned int errlen,
+  KopsikViewItem **first);
+
+// Clients
+
+KOPSIK_EXPORT kopsik_api_result kopsik_clients(
+  void *context,
+  char *errmsg,
+  unsigned int errlen,
+  unsigned int workspace_id,
+  KopsikViewItem **first);
 
 // Time entries view
 
