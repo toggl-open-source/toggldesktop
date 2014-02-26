@@ -700,7 +700,7 @@ completionsForSubstring:(NSString *)substring
         return i;
       }
     }
-    return -1;
+    return NSNotFound;
   }
   if (self.workspaceSelect == aComboBox) {
     for (int i = 0; i < self.workspaceList.count; i++) {
@@ -709,10 +709,10 @@ completionsForSubstring:(NSString *)substring
         return i;
       }
     }
-    return -1;
+    return NSNotFound;
   }
   NSAssert(false, @"Invalid combo box");
-  return -1;
+  return NSNotFound;
 }
 
 - (void)controlTextDidEndEditing:(NSNotification *)aNotification {
