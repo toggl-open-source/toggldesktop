@@ -3,6 +3,7 @@
 #include "./client.h"
 
 #include <sstream>
+#include <cstring>
 
 namespace kopsik {
 
