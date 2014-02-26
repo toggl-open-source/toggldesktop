@@ -216,10 +216,12 @@
   // whether time entry is running
   if (self.time_entry.duration_in_seconds < 0) {
     self.startButtonLabelTextField.stringValue = @"Stop";
+    self.startButton.toolTip = @"Stop";
     self.startButtonBox.borderColor = [ConvertHexColor hexCodeToNSColor:@"#ec0000"];
     self.startButtonBox.fillColor = [ConvertHexColor hexCodeToNSColor:@"#ec0000"];
   } else {
     self.startButtonLabelTextField.stringValue = @"Start";
+    self.startButton.toolTip = @"Start";
     self.startButtonBox.borderColor = [ConvertHexColor hexCodeToNSColor:@"#4bc800"];
     self.startButtonBox.fillColor = [ConvertHexColor hexCodeToNSColor:@"#4bc800"];
   }
