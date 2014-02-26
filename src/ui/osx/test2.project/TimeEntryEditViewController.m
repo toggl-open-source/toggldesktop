@@ -247,7 +247,7 @@
   return filteredCompletions;
 }
 
-- (void) syncTags {
+- (void) applyTags {
   NSAssert(self.GUID != nil, @"GUID is nil");
   NSAssert(self.tagsTokenField != nil, @"tags field cant be nil");
   NSArray *tag_names = [self.tagsTokenField objectValue];
@@ -397,7 +397,7 @@
 }
 
 - (IBAction)tagsChanged:(id)sender {
-  [self syncTags];
+  [self applyTags];
 }
 
 - (IBAction)billableCheckBoxClicked:(id)sender {
@@ -472,7 +472,7 @@
   if (![[aNotification object] isKindOfClass:[NSTokenField class]]) {
     return;
   }
-  [self syncTags];
+  [self applyTags];
 }
 
 - (void)controlTextDidChange:(NSNotification *)aNotification {
