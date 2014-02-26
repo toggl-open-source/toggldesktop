@@ -143,8 +143,10 @@
 
   if (item.duration_in_seconds < 0) {
     [self.startDate setEnabled:NO];
+      [self.continueButton setHidden:YES];
   } else {
     [self.startDate setEnabled:YES];
+      [self.continueButton setHidden:NO];
   }
 
   [self.endTime setHidden:(item.duration_in_seconds < 0)];

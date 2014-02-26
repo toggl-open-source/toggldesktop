@@ -50,7 +50,7 @@
                                         </buttonCell>
                                         <connections>
                                             <action selector="deleteButtonClicked:" target="-2" id="Pi8-oI-sCI"/>
-                                            <outlet property="nextKeyView" destination="lGX-fG-VqC" id="wJo-mb-Gkx"/>
+                                            <outlet property="nextKeyView" destination="cnb-71-paF" id="3Vb-Q4-9Eq"/>
                                         </connections>
                                     </button>
                                     <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cnb-71-paF">
@@ -135,7 +135,7 @@
                                                     <connections>
                                                         <action selector="projectSelectChanged:" target="-2" id="zL6-sa-THe"/>
                                                         <outlet property="delegate" destination="-2" id="N4G-rb-QgM"/>
-                                                        <outlet property="nextKeyView" destination="EMR-ul-vEb" id="fr2-Kv-Asj"/>
+                                                        <outlet property="nextKeyView" destination="mjR-fr-Qy0" id="j3X-Ml-Pt6"/>
                                                     </connections>
                                                 </comboBox>
                                                 <button toolTip="Add new project" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mjR-fr-Qy0">
@@ -151,6 +151,7 @@
                                                     </buttonCell>
                                                     <connections>
                                                         <action selector="addProjectButtonClicked:" target="-2" id="Vel-Va-Chi"/>
+                                                        <outlet property="nextKeyView" destination="EMR-ul-vEb" id="VXh-EF-lVU"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -293,11 +294,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                     </datePickerCell>
                                                     <connections>
                                                         <action selector="startTimeChanged:" target="-2" id="PIU-pw-wXB"/>
-                                                        <outlet property="nextKeyView" destination="jAD-IY-7K4" id="7pV-2D-vBl"/>
+                                                        <outlet property="nextKeyView" destination="jAD-IY-7K4" id="LGN-Gp-o6M"/>
                                                     </connections>
                                                 </datePicker>
-                                                <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jAD-IY-7K4">
-                                                    <rect key="frame" x="213" y="7" width="65" height="25"/>
+                                                <datePicker verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jAD-IY-7K4">
+                                                    <rect key="frame" x="216" y="7" width="65" height="25"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="65" id="EIX-FS-HOZ"/>
@@ -340,7 +341,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                     </datePickerCell>
                                                     <connections>
                                                         <action selector="endTimeChanged:" target="-2" id="BKk-TY-b8d"/>
-                                                        <outlet property="nextKeyView" destination="xTj-21-Dv1" id="Z9o-Ee-3Hm"/>
+                                                        <outlet property="nextKeyView" destination="xTj-21-Dv1" id="xiR-OT-m3z"/>
                                                     </connections>
                                                 </datePicker>
                                             </subviews>
@@ -418,7 +419,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                     </datePickerCell>
                                                     <connections>
                                                         <action selector="dateChanged:" target="-2" id="Rss-re-QCV"/>
-                                                        <outlet property="nextKeyView" destination="9Uk-YS-6nx" id="vTD-Fu-7aa"/>
+                                                        <outlet property="nextKeyView" destination="sSX-ad-7XC" id="oxc-WX-A8W"/>
                                                     </connections>
                                                 </datePicker>
                                             </subviews>
@@ -467,7 +468,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                     <connections>
                                                         <action selector="tagsChanged:" target="-2" id="VeF-aF-Zl6"/>
                                                         <outlet property="delegate" destination="-2" id="Djs-BZ-TRQ"/>
-                                                        <outlet property="nextKeyView" destination="sSX-ad-7XC" id="2e5-Nf-T6v"/>
+                                                        <outlet property="nextKeyView" destination="zwE-pW-vQN" id="vJh-qP-9QQ"/>
                                                     </connections>
                                                 </tokenField>
                                             </subviews>
@@ -493,7 +494,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         </buttonCell>
                                         <connections>
                                             <action selector="billableCheckBoxClicked:" target="-2" id="KhO-KD-YIr"/>
-                                            <outlet property="nextKeyView" destination="zwE-pW-vQN" id="d3u-0I-kb8"/>
+                                            <outlet property="nextKeyView" destination="9Uk-YS-6nx" id="YbA-Li-ic3"/>
                                         </connections>
                                     </button>
                                 </subviews>
