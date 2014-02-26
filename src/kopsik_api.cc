@@ -155,7 +155,7 @@ void kopsik_settings_clear(
 kopsik_api_result kopsik_get_settings(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     KopsikSettings *settings) {
   try {
     poco_assert(errmsg);
@@ -203,7 +203,7 @@ kopsik_api_result kopsik_get_settings(
 kopsik_api_result kopsik_set_settings(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     const int use_proxy,
     const char *proxy_host,
     const unsigned int proxy_port,
@@ -245,7 +245,7 @@ kopsik_api_result kopsik_set_settings(
 kopsik_api_result kopsik_configure_proxy(
     void *context,
     char *errmsg,
-    unsigned int errlen) {
+    const unsigned int errlen) {
   try {
     poco_assert(errmsg);
     poco_assert(errlen);
@@ -271,7 +271,7 @@ kopsik_api_result kopsik_configure_proxy(
 kopsik_api_result kopsik_set_db_path(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     const char *path) {
   kopsik::error err = kopsik::noError;
   try {
@@ -358,7 +358,7 @@ void kopsik_user_clear(
 kopsik_api_result kopsik_current_user(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     KopsikUser *out_user) {
   try {
     poco_assert(errmsg);
@@ -399,7 +399,7 @@ kopsik_api_result kopsik_current_user(
 kopsik_api_result kopsik_set_api_token(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     const char *api_token) {
   try {
     poco_assert(errmsg);
@@ -431,9 +431,9 @@ kopsik_api_result kopsik_set_api_token(
 kopsik_api_result kopsik_get_api_token(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     char *str,
-    unsigned int max_strlen) {
+    const unsigned int max_strlen) {
   try {
     poco_assert(errmsg);
     poco_assert(errlen);
@@ -463,7 +463,7 @@ kopsik_api_result kopsik_get_api_token(
 kopsik_api_result kopsik_set_logged_in_user(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     const char *json) {
   poco_assert(errmsg);
   poco_assert(errlen);
@@ -494,7 +494,7 @@ kopsik_api_result kopsik_set_logged_in_user(
 kopsik_api_result kopsik_login(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     const char *in_email,
     const char *in_password) {
   try {
@@ -539,7 +539,7 @@ kopsik_api_result kopsik_login(
 kopsik_api_result kopsik_logout(
     void *context,
     char *errmsg,
-    unsigned int errlen) {
+    const unsigned int errlen) {
   poco_assert(errmsg);
   poco_assert(errlen);
 
@@ -557,7 +557,7 @@ kopsik_api_result kopsik_logout(
 kopsik_api_result kopsik_clear_cache(
     void *context,
     char *errmsg,
-    unsigned int errlen) {
+    const unsigned int errlen) {
   poco_assert(errmsg);
   poco_assert(errlen);
 
@@ -574,7 +574,7 @@ kopsik_api_result kopsik_clear_cache(
 kopsik_api_result kopsik_user_has_premium_workspaces(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     int *has_premium_workspaces) {
   try {
     poco_assert(errmsg);
@@ -601,7 +601,7 @@ kopsik_api_result kopsik_user_has_premium_workspaces(
 kopsik_api_result kopsik_users_default_wid(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     unsigned int *default_wid) {
   try {
     poco_assert(errmsg);
@@ -627,7 +627,7 @@ kopsik_api_result kopsik_users_default_wid(
 kopsik_api_result kopsik_pushable_models(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     KopsikPushableModelStats *stats) {
   try {
     poco_assert(errmsg);
@@ -696,7 +696,7 @@ void kopsik_autocomplete_item_clear(
 kopsik_api_result kopsik_autocomplete_items(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     KopsikAutocompleteItem **first,
     const unsigned int include_time_entries,
     const unsigned int include_tasks,
@@ -760,7 +760,7 @@ kopsik_api_result kopsik_autocomplete_items(
 kopsik_api_result kopsik_tags(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     KopsikViewItem **first) {
   poco_assert(errmsg);
   poco_assert(errlen);
@@ -788,7 +788,7 @@ kopsik_api_result kopsik_tags(
 kopsik_api_result kopsik_workspaces(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     KopsikViewItem **first) {
   poco_assert(errmsg);
   poco_assert(errlen);
@@ -818,8 +818,8 @@ kopsik_api_result kopsik_workspaces(
 kopsik_api_result kopsik_clients(
     void *context,
     char *errmsg,
-    unsigned int errlen,
-    unsigned int workspace_id,
+    const unsigned int errlen,
+    const unsigned int workspace_id,
     KopsikViewItem **first) {
   poco_assert(errmsg);
   poco_assert(errlen);
@@ -840,6 +840,40 @@ kopsik_api_result kopsik_clients(
     *first = item;
   }
 
+  return KOPSIK_API_SUCCESS;
+}
+
+// Projects
+
+kopsik_api_result kopsik_add_project(
+    void *context,
+    char *errmsg,
+    const unsigned int errlen,
+    const unsigned int workspace_id,
+    const unsigned int client_id,
+    const char *project_name) {
+  try {
+    poco_assert(errmsg);
+    poco_assert(errlen);
+
+    kopsik::error err = app(context)->AddProject(
+      workspace_id,
+      client_id,
+      std::string(project_name));
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+    }
+  } catch(const Poco::Exception& exc) {
+      strncpy(errmsg, exc.displayText().c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+  } catch(const std::exception& ex) {
+      strncpy(errmsg, ex.what(), errlen);
+      return KOPSIK_API_FAILURE;
+  } catch(const std::string& ex) {
+      strncpy(errmsg, ex.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+  }
   return KOPSIK_API_SUCCESS;
 }
 
@@ -914,9 +948,9 @@ void kopsik_time_entry_view_item_clear(
 }
 
 void kopsik_format_duration_in_seconds_hhmmss(
-    int duration_in_seconds,
+    const int duration_in_seconds,
     char *out_str,
-    unsigned int max_strlen) {
+    const unsigned int max_strlen) {
   poco_assert(out_str);
   poco_assert(max_strlen);
   std::string formatted =
@@ -925,10 +959,10 @@ void kopsik_format_duration_in_seconds_hhmmss(
 }
 
 void kopsik_format_duration_in_seconds_hhmm(
-    int duration_in_seconds,
-    int type,
+    const int duration_in_seconds,
+    const int type,
     char *out_str,
-    unsigned int max_strlen) {
+    const unsigned int max_strlen) {
   poco_assert(out_str);
   poco_assert(max_strlen);
   std::string formatted = kopsik::Formatter::FormatDurationInSecondsHHMM(
@@ -939,7 +973,7 @@ void kopsik_format_duration_in_seconds_hhmm(
 kopsik_api_result kopsik_start(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     const char *description,
     const char *duration,
     const unsigned int task_id,
@@ -985,7 +1019,7 @@ kopsik_api_result kopsik_start(
 kopsik_api_result kopsik_time_entry_view_item_by_guid(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     const char *guid,
     KopsikTimeEntryViewItem *view_item,
     int *was_found) {
@@ -1032,7 +1066,7 @@ kopsik_api_result kopsik_time_entry_view_item_by_guid(
 kopsik_api_result kopsik_continue(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     const char *guid,
     KopsikTimeEntryViewItem *view_item) {
   try {
@@ -1075,7 +1109,7 @@ kopsik_api_result kopsik_continue(
 kopsik_api_result kopsik_continue_latest(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     KopsikTimeEntryViewItem *view_item,
     int *was_found) {
   try {
@@ -1112,7 +1146,7 @@ kopsik_api_result kopsik_continue_latest(
 kopsik_api_result kopsik_delete_time_entry(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     const char *guid) {
   try {
     poco_assert(errmsg);
@@ -1150,7 +1184,7 @@ kopsik_api_result kopsik_delete_time_entry(
 kopsik_api_result kopsik_set_time_entry_duration(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     const char *guid,
     const char *value) {
   try {
@@ -1186,7 +1220,7 @@ kopsik_api_result kopsik_set_time_entry_duration(
 kopsik_api_result kopsik_set_time_entry_project(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     const char *guid,
     const unsigned int task_id,
     const unsigned int project_id) {
@@ -1217,7 +1251,7 @@ kopsik_api_result kopsik_set_time_entry_project(
 kopsik_api_result kopsik_set_time_entry_start_iso_8601(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     const char *guid,
     const char *value) {
   try {
@@ -1254,7 +1288,7 @@ kopsik_api_result kopsik_set_time_entry_start_iso_8601(
 kopsik_api_result kopsik_set_time_entry_end_iso_8601(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     const char *guid,
     const char *value) {
   try {
@@ -1291,7 +1325,7 @@ kopsik_api_result kopsik_set_time_entry_end_iso_8601(
 kopsik_api_result kopsik_set_time_entry_tags(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     const char *guid,
     const char *value) {
   try {
@@ -1327,9 +1361,9 @@ kopsik_api_result kopsik_set_time_entry_tags(
 kopsik_api_result kopsik_set_time_entry_billable(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     const char *guid,
-    int value) {
+    const int value) {
   try {
     poco_assert(errmsg);
     poco_assert(errlen);
@@ -1362,7 +1396,7 @@ kopsik_api_result kopsik_set_time_entry_billable(
 kopsik_api_result kopsik_set_time_entry_description(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     const char *guid,
     const char *value) {
   try {
@@ -1399,7 +1433,7 @@ kopsik_api_result kopsik_set_time_entry_description(
 kopsik_api_result kopsik_stop(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     KopsikTimeEntryViewItem *out_view_item,
     int *was_found) {
   try {
@@ -1535,7 +1569,7 @@ kopsik_api_result kopsik_stop_running_time_entry_at(
 kopsik_api_result kopsik_running_time_entry_view_item(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     KopsikTimeEntryViewItem *out_item,
     int *out_is_tracking) {
   try {
@@ -1580,7 +1614,7 @@ kopsik_api_result kopsik_running_time_entry_view_item(
 kopsik_api_result kopsik_time_entry_view_items(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     KopsikTimeEntryViewItem **first) {
   try {
     poco_assert(errmsg);
@@ -1727,25 +1761,25 @@ int kopsik_timeline_is_recording_enabled(
 // Feedback
 
 kopsik_api_result kopsik_feedback_send(
-                                       void *context,
-                                       char *errmsg,
-                                       const unsigned int errlen,
-                                       const char *topic,
-                                       const char *details,
-                                       const char *filename) {
-    std::stringstream ss;
-    ss << "kopsik_feedback_send topic=" << topic << " details=" << details;
-    logger().debug(ss.str());
+    void *context,
+    char *errmsg,
+    const unsigned int errlen,
+    const char *topic,
+    const char *details,
+    const char *filename) {
+  std::stringstream ss;
+  ss << "kopsik_feedback_send topic=" << topic << " details=" << details;
+  logger().debug(ss.str());
 
-    kopsik::error err =
-      app(context)->SendFeedback(std::string(topic),
-                                 std::string(details),
-                                 std::string(filename));
-    if (err != kopsik::noError) {
-      strncpy(errmsg, err.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
-    }
-    return KOPSIK_API_SUCCESS;
+  kopsik::error err =
+    app(context)->SendFeedback(std::string(topic),
+                               std::string(details),
+                               std::string(filename));
+  if (err != kopsik::noError) {
+    strncpy(errmsg, err.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  return KOPSIK_API_SUCCESS;
 }
 
 // Updates
@@ -1760,7 +1794,7 @@ void kopsik_check_for_updates(
 kopsik_api_result kopsik_set_update_channel(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     const char *update_channel) {
   try {
     poco_assert(errmsg);
@@ -1789,9 +1823,9 @@ kopsik_api_result kopsik_set_update_channel(
 kopsik_api_result kopsik_get_update_channel(
     void *context,
     char *errmsg,
-    unsigned int errlen,
+    const unsigned int errlen,
     char *update_channel,
-    unsigned int update_channel_len) {
+    const unsigned int update_channel_len) {
   try {
     poco_assert(errmsg);
     poco_assert(errlen);

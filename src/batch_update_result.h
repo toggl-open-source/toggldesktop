@@ -22,7 +22,7 @@ namespace kopsik {
       std::string ContentType;
       std::string Method;
 
-      void parseResponseJSONBody(std::string body);
+      void parseResponseJSONBody(const std::string body);
   };
 
 }  // namespace kopsik

@@ -60,7 +60,7 @@ void model_change_to_change_item(
 }
 
 void time_entry_to_view_item(
-    kopsik::TimeEntry *te,
+    kopsik::TimeEntry * const te,
     const std::string project_and_task_label,
     const std::string color_code,
     KopsikTimeEntryViewItem *view_item,

@@ -85,7 +85,7 @@ class TimelineUploader {
         const std::string api_token,
         const std::vector<TimelineEvent> &timeline_events,
         const std::string desktop_id);
-    std::string convert_timeline_to_json(
+    static std::string convert_timeline_to_json(
         const std::vector<TimelineEvent> &timeline_events,
         const std::string &desktop_id);
 

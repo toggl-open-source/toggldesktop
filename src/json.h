@@ -21,7 +21,7 @@
 namespace kopsik {
 
   void ParseResponseArray(
-    std::string response_body,
+    const std::string response_body,
     std::vector<BatchUpdateResult> *responses);
   void ProcessResponseArray(
     std::vector<BatchUpdateResult> *results,
@@ -105,20 +105,19 @@ namespace kopsik {
   void LoadTimeEntryFromJSONNode(TimeEntry *model, JSONNODE *node);
   void LoadTimeEntryFromJSONString(TimeEntry *model, std::string json);
 
-  JSONNODE *TimeEntryToJSON(TimeEntry *model);
+  JSONNODE *TimeEntryToJSON(TimeEntry * const);
 
   std::string DirtyUserObjectsJSON(
-    User *user,
-    std::vector<TimeEntry *> *dirty);
+    std::vector<TimeEntry *> * const);
 
   void ParseResponseJSON(
     BatchUpdateResult *model,
     JSONNODE *n);
 
-  Poco::UInt64 GetIDFromJSONNode(JSONNODE *list);
-  guid GetGUIDFromJSONNode(JSONNODE *list);
-  Poco::UInt64 GetUIModifiedAtFromJSONNode(JSONNODE *data);
-  bool IsDeletedAtServer(JSONNODE *data);
+  Poco::UInt64 GetIDFromJSONNode(JSONNODE * const);
+  guid GetGUIDFromJSONNode(JSONNODE * const);
+  Poco::UInt64 GetUIModifiedAtFromJSONNode(JSONNODE * const);
+  bool IsDeletedAtServer(JSONNODE * const);
 
   bool IsValidJSON(const std::string json);
 

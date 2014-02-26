@@ -26,7 +26,7 @@
 
 namespace kopsik {
 
-Poco::Logger &WebSocketClient::logger() {
+Poco::Logger &WebSocketClient::logger() const {
   return Poco::Logger::get("websocket_client");
 }
 

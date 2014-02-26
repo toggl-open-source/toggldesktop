@@ -19,7 +19,7 @@ template<typename T, size_t N> T *end(T (&ra)[N]) {
 }
 std::vector<std::string> Project::color_codes(known_colors, end(known_colors));
 
-std::string Project::String() {
+std::string Project::String() const {
     std::stringstream ss;
     ss  << "ID=" << id_
         << " local_id=" << local_id_
@@ -30,7 +30,7 @@ std::string Project::String() {
     return ss.str();
 }
 
-std::string Project::UppercaseName() {
+std::string Project::UppercaseName() const {
     return Poco::toUpper(name_);
 }
 
@@ -41,7 +41,7 @@ void Project::SetActive(const bool value) {
     }
 }
 
-void Project::SetName(std::string value) {
+void Project::SetName(const std::string value) {
     if (name_ != value) {
         name_ = value;
         dirty_ = true;
@@ -55,14 +55,14 @@ void Project::SetBillable(const bool value) {
     }
 }
 
-void Project::SetColor(std::string value) {
+void Project::SetColor(const std::string value) {
     if (color_ != value) {
         color_ = value;
         dirty_ = true;
     }
 }
 
-std::string Project::ColorCode() {
+std::string Project::ColorCode() const {
     int index(0);
     if (!Poco::NumberParser::tryParse(Color(), index)) {
         return color_codes.back();
@@ -73,35 +73,35 @@ std::string Project::ColorCode() {
     return color_codes[index % color_codes.size()];
 }
 
-void Project::SetID(Poco::UInt64 value) {
+void Project::SetID(const Poco::UInt64 value) {
     if (id_ != value) {
         id_ = value;
         dirty_ = true;
     }
 }
 
-void Project::SetGUID(std::string value) {
+void Project::SetGUID(const std::string value) {
     if (guid_ != value) {
         guid_ = value;
         dirty_ = true;
     }
 }
 
-void Project::SetWID(Poco::UInt64 value) {
+void Project::SetWID(const Poco::UInt64 value) {
     if (wid_ != value) {
         wid_ = value;
         dirty_ = true;
     }
 }
 
-void Project::SetCID(Poco::UInt64 value) {
+void Project::SetCID(const Poco::UInt64 value) {
     if (cid_ != value) {
         cid_ = value;
         dirty_ = true;
     }
 }
 
-void Project::SetUID(Poco::UInt64 value) {
+void Project::SetUID(const Poco::UInt64 value) {
     if (uid_ != value) {
         uid_ = value;
         dirty_ = true;

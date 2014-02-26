@@ -24,7 +24,8 @@ namespace kopsik {
 
     class User {
     public:
-        User(const std::string app_name,
+        User(
+                const std::string app_name,
                 const std::string app_version) :
             BasicAuthUsername(""),
             BasicAuthPassword(""),
@@ -48,14 +49,17 @@ namespace kopsik {
             ClearTimeEntries();
         }
 
-        error Sync(HTTPSClient *https_client,
+        error Sync(
+            HTTPSClient *https_client,
             const bool full_sync,
             const bool with_related_data);
         error Push(HTTPSClient *https_client);
-        error Login(HTTPSClient *https_client,
-            const std::string &email, const std::string &password);
+        error Login(
+            HTTPSClient *https_client,
+            const std::string &email,
+            const std::string &password);
 
-        std::string String();
+        std::string String() const;
 
         void ClearWorkspaces();
         void ClearClients();
@@ -64,68 +68,69 @@ namespace kopsik {
         void ClearTags();
         void ClearTimeEntries();
 
-        bool HasPremiumWorkspaces();
+        bool HasPremiumWorkspaces() const;
 
-        Workspace *GetWorkspaceByID(const Poco::UInt64 id);
-        Client *GetClientByID(const Poco::UInt64 id);
-        Client *GetClientByGUID(const guid GUID);
-        Project *GetProjectByID(const Poco::UInt64 id);
-        Project *GetProjectByGUID(const guid GUID);
-        Project *GetProjectByName(const std::string name);
-        Task *GetTaskByID(const Poco::UInt64 id);
-        Tag *GetTagByID(const Poco::UInt64 id);
-        Tag *GetTagByGUID(const guid GUID);
-        TimeEntry *GetTimeEntryByID(const Poco::UInt64 id);
-        TimeEntry *GetTimeEntryByGUID(const guid GUID);
+        Workspace *GetWorkspaceByID(const Poco::UInt64 id) const;
+        Client *GetClientByID(const Poco::UInt64 id) const;
+        Client *GetClientByGUID(const guid GUID) const;
+        Project *GetProjectByID(const Poco::UInt64 id) const;
+        Project *GetProjectByGUID(const guid GUID) const;
+        Project *GetProjectByName(const std::string name) const;
+        Task *GetTaskByID(const Poco::UInt64 id) const;
+        Tag *GetTagByID(const Poco::UInt64 id) const;
+        Tag *GetTagByGUID(const guid GUID) const;
+        TimeEntry *GetTimeEntryByID(const Poco::UInt64 id) const;
+        TimeEntry *GetTimeEntryByGUID(const guid GUID) const;
 
         void CollectPushableTimeEntries(
-            std::vector<TimeEntry *> *result);
+            std::vector<TimeEntry *> *result) const;
 
-        TimeEntry *RunningTimeEntry();
+        TimeEntry *RunningTimeEntry() const;
         TimeEntry *Start(
             const std::string description,
             const std::string duration,
             const Poco::UInt64 task_id,
             const Poco::UInt64 project_id);
         TimeEntry *Continue(const std::string GUID);
-        TimeEntry *Latest();
+        TimeEntry *Latest() const;
         std::vector<TimeEntry *> Stop();
         TimeEntry *SplitAt(const Poco::Int64 at);
         TimeEntry *StopAt(const Poco::Int64 at);
 
-        std::string DateDuration(TimeEntry *te);
+        std::string DateDuration(TimeEntry *te) const;
 
-        Poco::Int64 LocalID() { return local_id_; }
+        Poco::Int64 LocalID() const { return local_id_; }
         void SetLocalID(Poco::Int64 value) { local_id_ = value; }
 
-        Poco::UInt64 ID() { return id_; }
+        Poco::UInt64 ID() const { return id_; }
         void SetID(Poco::UInt64 value);
 
-        std::string APIToken() { return api_token_; }
+        std::string APIToken() const { return api_token_; }
         void SetAPIToken(std::string api_token);
 
-        Poco::UInt64 DefaultWID() { return default_wid_; }
+        Poco::UInt64 DefaultWID() const { return default_wid_; }
         void SetDefaultWID(Poco::UInt64 value);
 
         // Unix timestamp of the user data; returned from API
-        Poco::UInt64 Since() { return since_; }
+        Poco::UInt64 Since() const { return since_; }
         void SetSince(Poco::UInt64 value);
 
-        bool Dirty() { return dirty_; }
+        bool Dirty() const { return dirty_; }
         void ClearDirty() { dirty_ = false; }
 
-        std::string Fullname() { return fullname_; }
+        std::string Fullname() const { return fullname_; }
         void SetFullname(std::string value);
 
-        std::string Email() { return email_; }
+        std::string Email() const { return email_; }
         void SetEmail(const std::string value);
 
-        bool RecordTimeline() { return record_timeline_; }
+        bool RecordTimeline() const { return record_timeline_; }
         void SetRecordTimeline(const bool value);
 
-        void ActiveProjects(std::vector<Project *> *list);
+        void ActiveProjects(std::vector<Project *> *list) const;
 
-        bool StoreStartAndStopTime() { return store_start_and_stop_time_; }
+        bool StoreStartAndStopTime() const {
+            return store_start_and_stop_time_; }
         void SetStoreStartAndStopTime(const bool value);
 
         // Following 2 fields are not saved into database:
@@ -140,18 +145,22 @@ namespace kopsik {
             const bool full_sync,
             const bool with_related_data);
 
-        std::string dirtyObjectsJSON(std::vector<TimeEntry *> *dirty);
-        void processResponseArray(std::vector<BatchUpdateResult> *results,
+        std::string dirtyObjectsJSON(std::vector<TimeEntry *> * const) const;
+        void processResponseArray(
+            std::vector<BatchUpdateResult> * const results,
             std::vector<TimeEntry *> *dirty,
             std::vector<error> *errors);
-        error collectErrors(std::vector<error> *errors);
+        static error collectErrors(std::vector<error> *errors);
 
-        error requestJSON(std::string method, std::string relative_url,
-                std::string json,
-                bool authenticate_with_api_token,
-                std::string *response_body);
-        bool isStatusOK(int status);
-        void parseResponseArray(std::string response_body,
+        error requestJSON(
+            const std::string method,
+            const std::string relative_url,
+            const std::string json,
+            const bool authenticate_with_api_token,
+            std::string *response_body);
+        static bool isStatusOK(const int status);
+        void parseResponseArray(
+            const std::string response_body,
             std::vector<BatchUpdateResult> *responses);
 
         Poco::Int64 local_id_;

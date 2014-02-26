@@ -10,7 +10,7 @@
 
 namespace kopsik {
 
-Poco::UInt64 GetIDFromJSONNode(JSONNODE *data) {
+Poco::UInt64 GetIDFromJSONNode(JSONNODE * const data) {
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
@@ -24,7 +24,7 @@ Poco::UInt64 GetIDFromJSONNode(JSONNODE *data) {
     return 0;
 }
 
-guid GetGUIDFromJSONNode(JSONNODE *data) {
+guid GetGUIDFromJSONNode(JSONNODE * const data) {
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
@@ -37,7 +37,7 @@ guid GetGUIDFromJSONNode(JSONNODE *data) {
     return "";
 }
 
-bool IsDeletedAtServer(JSONNODE *data) {
+bool IsDeletedAtServer(JSONNODE * const data) {
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
@@ -52,7 +52,7 @@ bool IsDeletedAtServer(JSONNODE *data) {
 
 void ParseBatchUpdateResultJSON(
     BatchUpdateResult *model,
-    JSONNODE *n) {
+    JSONNODE * const n) {
   poco_assert(n);
   poco_assert(model);
 
@@ -113,7 +113,7 @@ void LoadUserFromJSONString(
 
 void LoadUserFromJSONNode(
     User *model,
-    JSONNODE *data,
+    JSONNODE * const data,
     const bool full_sync,
     const bool with_related_data) {
   poco_assert(data);
@@ -157,7 +157,7 @@ void LoadUserFromJSONNode(
 
 void LoadUserTagsFromJSONNode(
     User *model,
-    JSONNODE *list,
+    JSONNODE * const list,
     const bool full_sync) {
   poco_assert(list);
 
@@ -187,7 +187,7 @@ void LoadUserTagsFromJSONNode(
 
 void LoadUserTagFromJSONNode(
     User *user,
-    JSONNODE *data,
+    JSONNODE * const data,
     std::set<Poco::UInt64> *alive) {
   poco_assert(data);
 
@@ -218,7 +218,7 @@ void LoadUserTagFromJSONNode(
 
 void LoadTagFromJSONNode(
     Tag *model,
-    JSONNODE *data) {
+    JSONNODE * const data) {
   poco_assert(data);
 
   JSONNODE_ITERATOR current_node = json_begin(data);
@@ -240,7 +240,8 @@ void LoadTagFromJSONNode(
 
 void LoadUserTasksFromJSONNode(
     User *user,
-    JSONNODE *list, const bool full_sync) {
+    JSONNODE * const list,
+    const bool full_sync) {
   poco_assert(list);
 
   std::set<Poco::UInt64> alive;
@@ -269,7 +270,7 @@ void LoadUserTasksFromJSONNode(
 
 void LoadUserTaskFromJSONNode(
     User *user,
-    JSONNODE *data,
+    JSONNODE * const data,
     std::set<Poco::UInt64> *alive) {
   poco_assert(data);
 
@@ -308,7 +309,7 @@ void LoadUserUpdateFromJSONString(
 
 void LoadTaskFromJSONNode(
     Task *task,
-    JSONNODE *data) {
+    JSONNODE * const data) {
   poco_assert(data);
 
   JSONNODE_ITERATOR current_node = json_begin(data);
@@ -330,7 +331,7 @@ void LoadTaskFromJSONNode(
 
 void LoadUserUpdateFromJSONNode(
     User *user,
-    JSONNODE *node) {
+    JSONNODE * const node) {
   poco_assert(node);
 
   JSONNODE *data = 0;
@@ -376,7 +377,7 @@ void LoadUserUpdateFromJSONNode(
 
 void LoadUserWorkspaceFromJSONNode(
     User *user,
-    JSONNODE *data,
+    JSONNODE * const data,
     std::set<Poco::UInt64> *alive) {
   poco_assert(data);
 
@@ -405,7 +406,7 @@ void LoadUserWorkspaceFromJSONNode(
 
 void LoadWorkspaceFromJSONNode(
     Workspace *model,
-    JSONNODE *n) {
+    JSONNODE * const n) {
   poco_assert(n);
   JSONNODE_ITERATOR i = json_begin(n);
   JSONNODE_ITERATOR e = json_end(n);
@@ -424,7 +425,7 @@ void LoadWorkspaceFromJSONNode(
 
 void LoadTimeEntryFromJSONNode(
     TimeEntry *model,
-    JSONNODE *data) {
+    JSONNODE * const data) {
   poco_assert(data);
 
   Poco::UInt64 ui_modified_at =
@@ -480,7 +481,7 @@ void LoadTimeEntryFromJSONNode(
 
 error LoadTagsFromJSONNode(
     TimeEntry *te,
-    JSONNODE *list) {
+    JSONNODE * const list) {
   poco_assert(list);
 
   te->TagNames.clear();
@@ -499,7 +500,7 @@ error LoadTagsFromJSONNode(
 
 void LoadUserClientFromJSONNode(
     User *user,
-    JSONNODE *data,
+    JSONNODE * const data,
     std::set<Poco::UInt64> *alive) {
   poco_assert(data);
 
@@ -530,7 +531,7 @@ void LoadUserClientFromJSONNode(
 
 void LoadClientFromJSONNode(
     Client *model,
-    JSONNODE *data) {
+    JSONNODE * const data) {
   poco_assert(data);
 
   JSONNODE_ITERATOR current_node = json_begin(data);
@@ -550,7 +551,7 @@ void LoadClientFromJSONNode(
   }
 }
 
-Poco::UInt64 GetUIModifiedAtFromJSONNode(JSONNODE *data) {
+Poco::UInt64 GetUIModifiedAtFromJSONNode(JSONNODE * const data) {
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
@@ -565,7 +566,7 @@ Poco::UInt64 GetUIModifiedAtFromJSONNode(JSONNODE *data) {
 
 void LoadUserClientsFromJSONNode(
     User *user,
-    JSONNODE *list,
+    JSONNODE * const list,
     const bool full_sync) {
   poco_assert(list);
 
@@ -595,7 +596,7 @@ void LoadUserClientsFromJSONNode(
 
 void LoadUserProjectFromJSONNode(
     User *user,
-    JSONNODE *data,
+    JSONNODE * const data,
     std::set<Poco::UInt64> *alive) {
   poco_assert(data);
 
@@ -626,7 +627,7 @@ void LoadUserProjectFromJSONNode(
 
 void LoadProjectFromJSONNode(
     Project *project,
-    JSONNODE *data) {
+    JSONNODE * const data) {
   poco_assert(data);
 
   JSONNODE_ITERATOR current_node = json_begin(data);
@@ -656,7 +657,7 @@ void LoadProjectFromJSONNode(
 
 void LoadUserProjectsFromJSONNode(
     User *user,
-    JSONNODE *list,
+    JSONNODE * const list,
     const bool full_sync) {
   poco_assert(list);
 
@@ -686,7 +687,7 @@ void LoadUserProjectsFromJSONNode(
 
 error LoadTimeEntryTagsFromJSONNode(
     TimeEntry *te,
-    JSONNODE *list) {
+    JSONNODE * const list) {
   poco_assert(list);
 
   te->TagNames.clear();
@@ -705,7 +706,7 @@ error LoadTimeEntryTagsFromJSONNode(
 
 void LoadUserTimeEntryFromJSONNode(
     User *user,
-    JSONNODE *data,
+    JSONNODE * const data,
     std::set<Poco::UInt64> *alive) {
   poco_assert(data);
 
@@ -736,7 +737,7 @@ void LoadUserTimeEntryFromJSONNode(
 
 void LoadUserWorkspacesFromJSONNode(
     User *user,
-    JSONNODE *list,
+    JSONNODE * const list,
     const bool full_sync) {
   poco_assert(list);
 
@@ -766,7 +767,7 @@ void LoadUserWorkspacesFromJSONNode(
 
 void LoadUserTimeEntriesFromJSONNode(
     User *user,
-    JSONNODE *list,
+    JSONNODE * const list,
     const bool full_sync) {
   poco_assert(list);
 
@@ -795,8 +796,7 @@ void LoadUserTimeEntriesFromJSONNode(
 }
 
 std::string DirtyUserObjectsJSON(
-    User *user,
-    std::vector<TimeEntry *> *dirty) {
+    std::vector<TimeEntry *> * const dirty) {
   Poco::Logger &logger = Poco::Logger::get("json");
   JSONNODE *c = json_new(JSON_ARRAY);
   for (std::vector<TimeEntry *>::const_iterator it =
@@ -854,7 +854,7 @@ std::string DirtyUserObjectsJSON(
 // Iterate through response array, parse response bodies.
 // Collect errors into a vector.
 void ProcessResponseArray(
-    std::vector<BatchUpdateResult> *results,
+    std::vector<BatchUpdateResult> * const results,
     std::vector<TimeEntry *> *dirty,
     std::vector<error> *errors) {
   Poco::Logger &logger = Poco::Logger::get("json");
@@ -918,7 +918,7 @@ void ProcessResponseArray(
 }
 
 void ParseResponseArray(
-    std::string response_body,
+    const std::string response_body,
     std::vector<BatchUpdateResult> *responses) {
   poco_assert(responses);
   poco_assert(!response_body.empty());
@@ -934,7 +934,7 @@ void ParseResponseArray(
   json_delete(response_array);
 }
 
-JSONNODE *TimeEntryToJSON(TimeEntry *te) {
+JSONNODE *TimeEntryToJSON(TimeEntry * const te) {
   JSONNODE *n = json_new(JSON_NODE);
   json_set_name(n, "time_entry");
   if (te->ID()) {
@@ -975,7 +975,7 @@ JSONNODE *TimeEntryToJSON(TimeEntry *te) {
 
 void LoadTimeEntryFromJSONString(
     TimeEntry *model,
-    std::string json) {
+     const std::string json) {
   poco_assert(!json.empty());
   JSONNODE *root = json_parse(json.c_str());
   LoadTimeEntryFromJSONNode(model, root);

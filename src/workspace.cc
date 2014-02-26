@@ -7,7 +7,7 @@
 
 namespace kopsik {
 
-std::string Workspace::String() {
+std::string Workspace::String() const {
   std::stringstream ss;
   ss  << "ID=" << id_
       << " local_id=" << local_id_
@@ -15,21 +15,21 @@ std::string Workspace::String() {
   return ss.str();
 }
 
-void Workspace::SetUID(Poco::UInt64 value) {
+void Workspace::SetUID(const Poco::UInt64 value) {
   if (uid_ != value) {
     uid_ = value;
     dirty_ = true;
   }
 }
 
-void Workspace::SetID(Poco::UInt64 value) {
+void Workspace::SetID(const Poco::UInt64 value) {
   if (id_ != value) {
     id_ = value;
     dirty_ = true;
   }
 }
 
-void Workspace::SetName(std::string value) {
+void Workspace::SetName(const std::string value) {
   if (name_ != value) {
     name_ = value;
     dirty_ = true;

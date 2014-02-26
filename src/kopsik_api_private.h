@@ -11,7 +11,7 @@
 #define KOPSIK_API_FAILURE 1
 
 void time_entry_to_view_item(
-    kopsik::TimeEntry *te,
+    kopsik::TimeEntry * const,
     const std::string project_and_task_label,
     const std::string color_code,
     KopsikTimeEntryViewItem *view_item,

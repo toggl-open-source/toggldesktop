@@ -84,7 +84,7 @@ error Database::deleteAllFromTableByUID(
     return last_error("deleteAllFromTableByUID");
 }
 
-Poco::Logger &Database::logger() {
+Poco::Logger &Database::logger() const {
     return Poco::Logger::get("database");
 }
 

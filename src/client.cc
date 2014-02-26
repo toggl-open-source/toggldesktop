@@ -7,7 +7,7 @@
 
 namespace kopsik {
 
-std::string Client::String() {
+std::string Client::String() const {
   std::stringstream ss;
   ss  << "ID=" << id_
   << " local_id=" << local_id_
@@ -17,35 +17,35 @@ std::string Client::String() {
   return ss.str();
 }
 
-void Client::SetID(Poco::UInt64 value) {
+void Client::SetID(const Poco::UInt64 value) {
   if (id_ != value) {
     id_ = value;
     dirty_ = true;
   }
 }
 
-void Client::SetName(std::string value) {
+void Client::SetName(const std::string value) {
   if (name_ != value) {
     name_ = value;
     dirty_ = true;
   }
 }
 
-void Client::SetUID(Poco::UInt64 value) {
+void Client::SetUID(const Poco::UInt64 value) {
   if (uid_ != value) {
     uid_ = value;
     dirty_ = true;
   }
 }
 
-void Client::SetGUID(std::string value) {
+void Client::SetGUID(const std::string value) {
   if (guid_ != value) {
     guid_ = value;
     dirty_ = true;
   }
 }
 
-void Client::SetWID(Poco::UInt64 value) {
+void Client::SetWID(const Poco::UInt64 value) {
   if (wid_ != value) {
     wid_ = value;
     dirty_ = true;

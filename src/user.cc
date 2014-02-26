@@ -13,7 +13,7 @@
 
 namespace kopsik {
 
-void User::ActiveProjects(std::vector<Project *> *list) {
+void User::ActiveProjects(std::vector<Project *> *list) const {
   for (unsigned int i = 0; i < related.Projects.size(); i++) {
     kopsik::Project *p = related.Projects[i];
     if (p->Active()) {
@@ -101,7 +101,7 @@ TimeEntry *User::Continue(const std::string GUID) {
   return te;
 }
 
-TimeEntry *User::Latest() {
+TimeEntry *User::Latest() const {
   if (related.TimeEntries.empty()) {
     return 0;
   }
@@ -110,7 +110,7 @@ TimeEntry *User::Latest() {
   return list[0];
 }
 
-std::string User::DateDuration(TimeEntry *te) {
+std::string User::DateDuration(TimeEntry * const te) const {
     Poco::Int64 date_duration(0);
     std::string date_header = te->DateHeaderString();
     for (std::vector<TimeEntry *>::const_iterator it =
@@ -128,7 +128,7 @@ std::string User::DateDuration(TimeEntry *te) {
     return Formatter::FormatDurationInSecondsHHMMSS(date_duration);
 }
 
-bool User::HasPremiumWorkspaces() {
+bool User::HasPremiumWorkspaces() const {
     for (std::vector<Workspace *>::const_iterator it =
        related.Workspaces.begin();
        it != related.Workspaces.end();
@@ -142,7 +142,7 @@ bool User::HasPremiumWorkspaces() {
     return false;
 }
 
-void User::SetFullname(std::string value) {
+void User::SetFullname(const std::string value) {
   if (fullname_ != value) {
     fullname_ = value;
     dirty_ = true;
@@ -170,28 +170,28 @@ void User::SetEmail(const std::string value) {
   }
 }
 
-void User::SetAPIToken(std::string value) {
+void User::SetAPIToken(const std::string value) {
     if (api_token_ != value) {
         api_token_ = value;
         dirty_ = true;
     }
 }
 
-void User::SetSince(Poco::UInt64 value) {
+void User::SetSince(const Poco::UInt64 value) {
     if (since_ != value) {
         since_ = value;
         dirty_ = true;
     }
 }
 
-void User::SetID(Poco::UInt64 value) {
+void User::SetID(const Poco::UInt64 value) {
     if (id_ != value) {
         id_ = value;
         dirty_ = true;
     }
 }
 
-void User::SetDefaultWID(Poco::UInt64 value) {
+void User::SetDefaultWID(const Poco::UInt64 value) {
     if (default_wid_ != value) {
         default_wid_ = value;
         dirty_ = true;
@@ -261,7 +261,7 @@ TimeEntry *User::StopAt(const Poco::Int64 at) {
   return running;
 }
 
-TimeEntry *User::RunningTimeEntry() {
+TimeEntry *User::RunningTimeEntry() const {
     for (std::vector<TimeEntry *>::const_iterator it =
             related.TimeEntries.begin();
             it != related.TimeEntries.end();
@@ -333,7 +333,7 @@ void User::ClearProjects() {
     related.Projects.clear();
 }
 
-Task *User::GetTaskByID(const Poco::UInt64 id) {
+Task *User::GetTaskByID(const Poco::UInt64 id) const {
     poco_assert(id > 0);
     for (std::vector<Task *>::const_iterator it = related.Tasks.begin();
             it != related.Tasks.end(); it++) {
@@ -344,7 +344,7 @@ Task *User::GetTaskByID(const Poco::UInt64 id) {
     return 0;
 }
 
-Client *User::GetClientByID(const Poco::UInt64 id) {
+Client *User::GetClientByID(const Poco::UInt64 id) const {
     poco_assert(id > 0);
     for (std::vector<Client *>::const_iterator it = related.Clients.begin();
             it != related.Clients.end(); it++) {
@@ -355,7 +355,7 @@ Client *User::GetClientByID(const Poco::UInt64 id) {
     return 0;
 }
 
-Project *User::GetProjectByID(const Poco::UInt64 id) {
+Project *User::GetProjectByID(const Poco::UInt64 id) const {
     poco_assert(id > 0);
     for (std::vector<Project *>::const_iterator it = related.Projects.begin();
             it != related.Projects.end(); it++) {
@@ -366,7 +366,7 @@ Project *User::GetProjectByID(const Poco::UInt64 id) {
     return 0;
 }
 
-TimeEntry *User::GetTimeEntryByGUID(const guid GUID) {
+TimeEntry *User::GetTimeEntryByGUID(const guid GUID) const {
     if (GUID.empty()) {
       return 0;
     }
@@ -381,7 +381,7 @@ TimeEntry *User::GetTimeEntryByGUID(const guid GUID) {
     return 0;
 }
 
-Tag *User::GetTagByGUID(const guid GUID) {
+Tag *User::GetTagByGUID(const guid GUID) const {
   if (GUID.empty()) {
     return 0;
   }
@@ -396,7 +396,7 @@ Tag *User::GetTagByGUID(const guid GUID) {
   return 0;
 }
 
-Tag *User::GetTagByID(const Poco::UInt64 id) {
+Tag *User::GetTagByID(const Poco::UInt64 id) const {
     poco_assert(id > 0);
     for (std::vector<Tag *>::const_iterator it = related.Tags.begin();
             it != related.Tags.end(); it++) {
@@ -407,7 +407,7 @@ Tag *User::GetTagByID(const Poco::UInt64 id) {
     return 0;
 }
 
-void User::CollectPushableTimeEntries(std::vector<TimeEntry *> *result) {
+void User::CollectPushableTimeEntries(std::vector<TimeEntry *> *result) const {
     poco_assert(result);
     for (std::vector<TimeEntry *>::const_iterator it =
             related.TimeEntries.begin();
@@ -420,7 +420,8 @@ void User::CollectPushableTimeEntries(std::vector<TimeEntry *> *result) {
     }
 }
 
-error User::Sync(HTTPSClient *https_client,
+error User::Sync(
+        HTTPSClient *https_client,
         const bool full_sync,
         const bool with_related_data) {
     BasicAuthUsername = APIToken();
@@ -452,7 +453,7 @@ error User::Push(HTTPSClient *https_client) {
         logger.debug(ss.str());
     }
 
-    std::string json = DirtyUserObjectsJSON(this, &pushable);
+    std::string json = DirtyUserObjectsJSON(&pushable);
 
     logger.debug(json);
 
@@ -491,7 +492,7 @@ error User::Push(HTTPSClient *https_client) {
   return noError;
 }
 
-std::string User::String() {
+std::string User::String() const {
   std::stringstream ss;
   ss  << "ID=" << id_
       << " local_id=" << local_id_
@@ -502,14 +503,17 @@ std::string User::String() {
   return ss.str();
 }
 
-error User::Login(HTTPSClient *https_client,
-    const std::string &email, const std::string &password) {
+error User::Login(
+    HTTPSClient *https_client,
+    const std::string &email,
+    const std::string &password) {
   BasicAuthUsername = email;
   BasicAuthPassword = password;
   return pull(https_client, false, false);
 }
 
-error User::pull(HTTPSClient *https_client,
+error User::pull(
+    HTTPSClient *https_client,
     const bool full_sync,
     const bool with_related_data) {
   try {
@@ -557,7 +561,7 @@ error User::pull(HTTPSClient *https_client,
   return noError;
 };
 
-error User::collectErrors(std::vector<error> *errors) {
+error User::collectErrors(std::vector<error> * const errors) {
   Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
   std::stringstream ss;
   ss << "Errors encountered while syncing data: ";
@@ -577,7 +581,7 @@ error User::collectErrors(std::vector<error> *errors) {
   return error(ss.str());
 }
 
-Workspace *User::GetWorkspaceByID(const Poco::UInt64 id) {
+Workspace *User::GetWorkspaceByID(const Poco::UInt64 id) const {
   poco_assert(id > 0);
   for (std::vector<Workspace *>::const_iterator it =
       related.Workspaces.begin();
@@ -590,7 +594,7 @@ Workspace *User::GetWorkspaceByID(const Poco::UInt64 id) {
   return 0;
 }
 
-Project *User::GetProjectByGUID(const guid GUID) {
+Project *User::GetProjectByGUID(const guid GUID) const {
     if (GUID.empty()) {
       return 0;
     }
@@ -603,7 +607,7 @@ Project *User::GetProjectByGUID(const guid GUID) {
     return 0;
 }
 
-Client *User::GetClientByGUID(const guid GUID) {
+Client *User::GetClientByGUID(const guid GUID) const {
     if (GUID.empty()) {
       return 0;
     }
@@ -616,7 +620,7 @@ Client *User::GetClientByGUID(const guid GUID) {
     return 0;
 }
 
-TimeEntry *User::GetTimeEntryByID(const Poco::UInt64 id) {
+TimeEntry *User::GetTimeEntryByID(const Poco::UInt64 id) const {
     poco_assert(id > 0);
     for (std::vector<TimeEntry *>::const_iterator it =
             related.TimeEntries.begin();

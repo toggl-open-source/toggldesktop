@@ -17,8 +17,8 @@ namespace kopsik {
       username(""),
       password("") {}
 
-    bool IsConfigured() { return !host.empty() && port; }
-    bool HasCredentials() {
+    bool IsConfigured() const { return !host.empty() && port; }
+    bool HasCredentials() const {
       return !username.empty() && !password.empty(); }
 
     std::string host;
