@@ -22,6 +22,20 @@ void User::ActiveProjects(std::vector<Project *> *list) const {
   }
 }
 
+Project *User::AddProject(
+    const Poco::UInt64 workspace_id,
+    const Poco::UInt64 client_id,
+    const std::string project_name) {
+  Project *p = new Project();
+  p->SetWID(workspace_id);
+  p->SetName(project_name);
+  p->SetCID(client_id);
+  p->SetUID(ID());
+  p->SetActive(true);
+  related.Projects.push_back(p);
+  return p;
+}
+
 // Start a time entry, mark it as dirty and add to user time entry collection.
 // Do not save here, dirtyness will be handled outside of this module.
 TimeEntry *User::Start(
