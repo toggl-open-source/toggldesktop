@@ -818,6 +818,10 @@ bool Context::UserHasPremiumWorkspaces() const {
   return (user_ && user_->HasPremiumWorkspaces());
 }
 
+Poco::UInt64 Context::UsersDefaultWID() const {
+  return (user_ && user_->DefaultWID());
+}
+
 void Context::CollectPushableTimeEntries(
     std::vector<kopsik::TimeEntry *> *models) const {
   poco_assert(models);

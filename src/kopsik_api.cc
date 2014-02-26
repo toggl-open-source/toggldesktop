@@ -598,6 +598,30 @@ kopsik_api_result kopsik_user_has_premium_workspaces(
   return KOPSIK_API_SUCCESS;
 }
 
+kopsik_api_result kopsik_users_default_wid(
+    void *context,
+    char *errmsg,
+    unsigned int errlen,
+    unsigned int *default_wid) {
+  try {
+    poco_assert(errmsg);
+    poco_assert(errlen);
+    poco_assert(default_wid);
+
+    *default_wid = static_cast<unsigned int>(app(context)->UsersDefaultWID());
+  } catch(const Poco::Exception& exc) {
+      strncpy(errmsg, exc.displayText().c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+  } catch(const std::exception& ex) {
+      strncpy(errmsg, ex.what(), errlen);
+      return KOPSIK_API_FAILURE;
+  } catch(const std::string& ex) {
+      strncpy(errmsg, ex.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+  }
+  return KOPSIK_API_SUCCESS;
+}
+
 // Sync
 
 kopsik_api_result kopsik_pushable_models(

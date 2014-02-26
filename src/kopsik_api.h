@@ -190,6 +190,12 @@ KOPSIK_EXPORT kopsik_api_result kopsik_user_has_premium_workspaces(
   unsigned int errlen,
   int *has_premium_workspaces);
 
+KOPSIK_EXPORT kopsik_api_result kopsik_users_default_wid(
+  void *context,
+  char *errmsg,
+  unsigned int errlen,
+  unsigned int *default_wid);
+
 // Sync
 
 typedef struct {

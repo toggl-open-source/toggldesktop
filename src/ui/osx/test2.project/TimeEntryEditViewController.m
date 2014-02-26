@@ -406,9 +406,6 @@ completionsForSubstring:(NSString *)substring
   }
 
   [self.workspaceSelect reloadData];
-
-  // FIXME: If not workspace is selected, select the users default workspace.
-  // FIXME: If no default workspace is found, select the first workspace from list.
 }
 
 - (void)startClientSelectRendering {
@@ -426,18 +423,19 @@ completionsForSubstring:(NSString *)substring
   }
 }
 
-- (ViewItem *)selectedWorkspace {
-  NSString *key = [self.projectSelect stringValue];
-  return nil;
-}
-
 - (void)finishClientSelectRendering {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
   self.timerClientsListRendering = nil;
 
-  // FIXME: get selected workspace ID
   unsigned int workspace_id = 0;
+  for (int i = 0; i < self.workspaceList.count; i++ ) {
+    ViewItem *workspace = self.workspaceList[i];
+    if ([workspace.Name isEqualToString:self.workspaceSelect.stringValue]) {
+      workspace_id = workspace.ID;
+      break;
+    }
+  }
 
   KopsikViewItem *first = 0;
   char errmsg[KOPSIK_ERR_LEN];
@@ -685,7 +683,29 @@ completionsForSubstring:(NSString *)substring
 }
 
 - (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)aString {
-  return [self.autocompleteDataSource indexOfKey:aString];
+  if (self.projectSelect == aComboBox) {
+    return [self.autocompleteDataSource indexOfKey:aString];
+  }
+  if (self.clientSelect == aComboBox) {
+    for (int i = 0; i < self.clientList.count; i++) {
+      ViewItem *client = [self.clientList objectAtIndex:i];
+      if ([client.Name isEqualToString:aString]) {
+        return i;
+      }
+    }
+    return -1;
+  }
+  if (self.workspaceSelect == aComboBox) {
+    for (int i = 0; i < self.workspaceList.count; i++) {
+      ViewItem *workspace = [self.workspaceList objectAtIndex:i];
+      if ([workspace.Name isEqualToString:aString]) {
+        return i;
+      }
+    }
+    return -1;
+  }
+  NSAssert(false, @"Invalid combo box");
+  return -1;
 }
 
 - (void)controlTextDidChange:(NSNotification *)aNotification {

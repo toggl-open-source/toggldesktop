@@ -110,6 +110,7 @@ class Context {
     kopsik::error ClearCache();
 
     bool UserHasPremiumWorkspaces() const;
+    Poco::UInt64 UsersDefaultWID() const;
     void CollectPushableTimeEntries(
       std::vector<kopsik::TimeEntry *> *models) const;
     std::vector<std::string> Tags() const;
