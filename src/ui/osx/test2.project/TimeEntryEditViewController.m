@@ -247,6 +247,33 @@
   return filteredCompletions;
 }
 
+- (id)tokenField:(NSTokenField *)tokenField
+ representedObjectForEditingString:(NSString *)editingString {
+  [self performSelectorOnMainThread:@selector(syncTags)
+                           withObject:nil
+                        waitUntilDone:NO];
+  return editingString;
+}
+
+- (void) syncTags {
+  NSAssert(self.GUID != nil, @"GUID is nil");
+  char err[KOPSIK_ERR_LEN];
+  NSAssert(self.tagsTokenField != nil, @"tags field cant be nil");
+  NSArray *tag_names = [self.tagsTokenField objectValue];
+  const char *value = [[tag_names componentsJoinedByString:@"|"] UTF8String];
+
+  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_tags(ctx,
+                                                       err,
+                                                       KOPSIK_ERR_LEN,
+                                                       [self.GUID UTF8String],
+                                                       value)) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
+                                                        object:[NSString stringWithUTF8String:err]];
+    return;
+  }
+  kopsik_sync(ctx);
+}
+
 - (void) scheduleAutocompleteRendering {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
@@ -381,22 +408,7 @@
 }
 
 - (IBAction)tagsChanged:(id)sender {
-  NSAssert(self.GUID != nil, @"GUID is nil");
-  char err[KOPSIK_ERR_LEN];
-  NSAssert(self.tagsTokenField != nil, @"tags field cant be nil");
-  NSArray *tag_names = [self.tagsTokenField objectValue];
-  const char *value = [[tag_names componentsJoinedByString:@"|"] UTF8String];
-
-  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_tags(ctx,
-                                                       err,
-                                                       KOPSIK_ERR_LEN,
-                                                       [self.GUID UTF8String],
-                                                       value)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                        object:[NSString stringWithUTF8String:err]];
-    return;
-  }
-  kopsik_sync(ctx);
+  [self syncTags];
 }
 
 - (IBAction)billableCheckBoxClicked:(id)sender {
