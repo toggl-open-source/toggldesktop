@@ -69,8 +69,21 @@
   self.projectNameTextField.stringValue = @"";
   self.clientSelect.stringValue = @"";
   self.workspaceSelect.stringValue = @"";
+
+  TimeEntryViewItem *te = [TimeEntryViewItem findByGUID:self.GUID];
+  if (te && te.WorkspaceID) {
+    for (int i = 0; i < self.workspaceList.count; i++) {
+      ViewItem *workspace = self.workspaceList[i];
+      if (workspace.ID == te.WorkspaceID) {
+        self.workspaceSelect.stringValue = workspace.Name;
+        break;
+      }
+    }
+  }
+
   [self.addProjectBox setHidden:NO];
   [self.projectSelectBox setHidden:YES];
+
   [self.projectNameTextField becomeFirstResponder];
 }
 

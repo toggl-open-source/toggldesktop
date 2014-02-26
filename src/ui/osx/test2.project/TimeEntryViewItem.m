@@ -22,6 +22,7 @@
   } else {
     self.ProjectAndTaskLabel = nil;
   }
+  self.WorkspaceID = data->WID;
   self.ProjectID = data->PID;
   self.TaskID = data->TID;
   if (data->Color) {

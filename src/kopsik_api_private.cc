@@ -76,6 +76,7 @@ void time_entry_to_view_item(
   poco_assert(!view_item->GUID);
   view_item->GUID = strdup(te->GUID().c_str());
 
+  view_item->WID = static_cast<unsigned int>(te->WID());
   view_item->TID = static_cast<unsigned int>(te->TID());
   view_item->PID = static_cast<unsigned int>(te->PID());
 
