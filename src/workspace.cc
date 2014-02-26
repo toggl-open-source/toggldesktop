@@ -3,6 +3,7 @@
 #include "./workspace.h"
 
 #include <sstream>
+#include <cstring>
 
 namespace kopsik {
 
