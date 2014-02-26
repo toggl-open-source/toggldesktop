@@ -850,6 +850,7 @@ KopsikTimeEntryViewItem *kopsik_time_entry_view_item_init() {
   item->DurationInSeconds = 0;
   item->Description = 0;
   item->ProjectAndTaskLabel = 0;
+  item->WID = 0;
   item->PID = 0;
   item->TID = 0;
   item->Duration = 0;
