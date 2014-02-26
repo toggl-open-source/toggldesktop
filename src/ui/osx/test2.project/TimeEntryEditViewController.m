@@ -70,6 +70,7 @@
   self.clientSelect.stringValue = @"";
   self.workspaceSelect.stringValue = @"";
 
+  // Pre-select the workspace that the time entry is tracked to
   TimeEntryViewItem *te = [TimeEntryViewItem findByGUID:self.GUID];
   if (te && te.WorkspaceID) {
     for (int i = 0; i < self.workspaceList.count; i++) {
@@ -88,8 +89,41 @@
 }
 
 - (IBAction)backButtonClicked:(id)sender {
+  // FIXME: this is not a good place for this (on Done button) :S
+  [self applyAddProject];
+
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntryDeselected
                                                       object:nil];
+}
+
+// Returns NO if there's an error and UI should not go out of the add project
+// mode.
+- (BOOL)applyAddProject {
+  if (self.addProjectBox.isHidden) {
+    return YES;
+  }
+  NSString *projectName = self.projectNameTextField.stringValue;
+  if (!projectName || !projectName.length) {
+    return YES;
+  }
+  unsigned int workspaceID = [self selectedWorkspaceID];
+  if (!workspaceID) {
+    [self.workspaceSelect becomeFirstResponder];
+    return NO;
+  }
+  unsigned int clientID = [self selectedClientID];
+
+  // A new project is being added!
+  char errmsg[KOPSIK_ERR_LEN];
+  if (KOPSIK_API_SUCCESS != kopsik_add_project(ctx,
+                                               errmsg,
+                                               KOPSIK_ERR_LEN,
+                                               workspaceID,
+                                               clientID,
+                                               [projectName UTF8String])) {
+    handle_error(errmsg);
+    return NO;
+  }
 }
 
 - (IBAction)continueButtonClicked:(id)sender {
@@ -458,19 +492,32 @@ completionsForSubstring:(NSString *)substring
   }
 }
 
+- (unsigned int)selectedWorkspaceID {
+  for (int i = 0; i < self.workspaceList.count; i++ ) {
+    ViewItem *workspace = self.workspaceList[i];
+    if ([workspace.Name isEqualToString:self.workspaceSelect.stringValue]) {
+      return workspace.ID;
+    }
+  }
+  return 0;
+}
+
+- (unsigned int)selectedClientID {
+  for (int i = 0; i < self.clientList.count; i++ ) {
+    ViewItem *client = self.clientList[i];
+    if ([client.Name isEqualToString:self.clientSelect.stringValue]) {
+      return client.ID;
+    }
+  }
+  return 0;
+}
+
 - (void)finishClientSelectRendering {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
   self.timerClientsListRendering = nil;
 
-  unsigned int workspace_id = 0;
-  for (int i = 0; i < self.workspaceList.count; i++ ) {
-    ViewItem *workspace = self.workspaceList[i];
-    if ([workspace.Name isEqualToString:self.workspaceSelect.stringValue]) {
-      workspace_id = workspace.ID;
-      break;
-    }
-  }
+  unsigned int workspace_id = [self selectedWorkspaceID];
 
   KopsikViewItem *first = 0;
   char errmsg[KOPSIK_ERR_LEN];
