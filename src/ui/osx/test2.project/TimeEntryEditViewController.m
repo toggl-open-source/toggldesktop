@@ -375,7 +375,31 @@ completionsForSubstring:(NSString *)substring
 
   self.timerWorkspacesListRendering = nil;
   
-  // FIXME: get workspace list from lib
+  KopsikViewItem *first = 0;
+  char errmsg[KOPSIK_ERR_LEN];
+  if (KOPSIK_API_SUCCESS != kopsik_workspaces(ctx,
+                                              errmsg,
+                                              KOPSIK_ERR_LEN,
+                                              &first)) {
+    kopsik_view_item_clear(first);
+    handle_error(errmsg);
+    return;
+  }
+
+  NSMutableArray *workspaces = [[NSMutableArray alloc] init];
+  while (first) {
+    // FIXME:
+    id workspace = 0;
+    first->ID;
+    first->Name;
+    [workspaces addObject:workspace];
+    first = first->Next;
+  }
+  kopsik_view_item_clear(first);
+
+  @synchronized(self) {
+    self.workspaceList = workspaces;
+  }
 
   if (self.workspaceSelect.dataSource == nil) {
     self.workspaceSelect.usesDataSource = YES;
@@ -383,7 +407,7 @@ completionsForSubstring:(NSString *)substring
   }
 
   [self.workspaceSelect reloadData];
-  
+
   // FIXME: If not workspace is selected, select the users default workspace.
   // FIXME: If no default workspace is found, select the first workspace from list.
 }
@@ -408,9 +432,38 @@ completionsForSubstring:(NSString *)substring
 
   self.timerClientsListRendering = nil;
 
-  // FIXME: Fetch only clients belonging to the selected workspace.
+  // FIXME: get selected workspace ID
+  unsigned int workspace_id = 0;
+
   // FIXME: If no workspace is selected, don't render clients yet.
   
+  KopsikViewItem *first = 0;
+  char errmsg[KOPSIK_ERR_LEN];
+  if (KOPSIK_API_SUCCESS != kopsik_clients(ctx,
+                                           errmsg,
+                                           KOPSIK_ERR_LEN,
+                                           workspace_id,
+                                           &first)) {
+    kopsik_view_item_clear(first);
+    handle_error(errmsg);
+    return;
+  }
+
+  NSMutableArray *clients = [[NSMutableArray alloc] init];
+  while (first) {
+    // FIXME:
+    id client = 0;
+    first->ID;
+    first->Name;
+    [clients addObject:client];
+    first = first->Next;
+  }
+  kopsik_view_item_clear(first);
+
+  @synchronized(self) {
+    self.clientList = clients;
+  }
+
   if (self.clientSelect.dataSource == nil) {
     self.clientSelect.usesDataSource = YES;
     self.clientSelect.dataSource = self;
