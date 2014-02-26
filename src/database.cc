@@ -1246,8 +1246,12 @@ error Database::saveProject(
     poco_assert(model);
     poco_assert(session);
 
-    if (model->LocalID() && !model->Dirty()) {
+    // FIXME: similar to time entry save, need a base class
+    if (model->LocalID() && !model->Dirty() && !model->GUID().empty()) {
         return noError;
+    }
+    if (model->GUID().empty()) {
+        model->SetGUID(generateGUID());
     }
 
     Poco::Mutex::ScopedLock lock(mutex_);
@@ -1257,42 +1261,77 @@ error Database::saveProject(
             std::stringstream ss;
             ss << "Updating project " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger().trace(ss.str());
+            logger().debug(ss.str());
 
             // FIXME: check how to property insert null :S
-            if (model->GUID().empty()) {
-                *session << "update projects set "
-                    "id = :id, uid = :uid, name = :name, "
-                    "wid = :wid, color = :color, cid = :cid, "
-                    "active = :active, billable = :billable "
-                    "where local_id = :local_id",
-                    Poco::Data::use(model->ID()),
-                    Poco::Data::use(model->UID()),
-                    Poco::Data::use(model->Name()),
-                    Poco::Data::use(model->WID()),
-                    Poco::Data::use(model->Color()),
-                    Poco::Data::use(model->CID()),
-                    Poco::Data::use(model->Active()),
-                    Poco::Data::use(model->Billable()),
-                    Poco::Data::use(model->LocalID()),
-                    Poco::Data::now;
+            if (model->ID()) {
+                if (model->GUID().empty()) {
+                    *session << "update projects set "
+                        "id = :id, uid = :uid, name = :name, "
+                        "wid = :wid, color = :color, cid = :cid, "
+                        "active = :active, billable = :billable "
+                        "where local_id = :local_id",
+                        Poco::Data::use(model->ID()),
+                        Poco::Data::use(model->UID()),
+                        Poco::Data::use(model->Name()),
+                        Poco::Data::use(model->WID()),
+                        Poco::Data::use(model->Color()),
+                        Poco::Data::use(model->CID()),
+                        Poco::Data::use(model->Active()),
+                        Poco::Data::use(model->Billable()),
+                        Poco::Data::use(model->LocalID()),
+                        Poco::Data::now;
+                } else {
+                    *session << "update projects set "
+                        "id = :id, uid = :uid, name = :name, guid = :guid,"
+                        "wid = :wid, color = :color, cid = :cid, "
+                        "active = :active, billable = :billable "
+                        "where local_id = :local_id",
+                        Poco::Data::use(model->ID()),
+                        Poco::Data::use(model->UID()),
+                        Poco::Data::use(model->Name()),
+                        Poco::Data::use(model->GUID()),
+                        Poco::Data::use(model->WID()),
+                        Poco::Data::use(model->Color()),
+                        Poco::Data::use(model->CID()),
+                        Poco::Data::use(model->Active()),
+                        Poco::Data::use(model->Billable()),
+                        Poco::Data::use(model->LocalID()),
+                        Poco::Data::now;
+                }
             } else {
-                *session << "update projects set "
-                    "id = :id, uid = :uid, name = :name, guid = :guid,"
-                    "wid = :wid, color = :color, cid = :cid, "
-                    "active = :active, billable = :billable "
-                    "where local_id = :local_id",
-                    Poco::Data::use(model->ID()),
-                    Poco::Data::use(model->UID()),
-                    Poco::Data::use(model->Name()),
-                    Poco::Data::use(model->GUID()),
-                    Poco::Data::use(model->WID()),
-                    Poco::Data::use(model->Color()),
-                    Poco::Data::use(model->CID()),
-                    Poco::Data::use(model->Active()),
-                    Poco::Data::use(model->Billable()),
-                    Poco::Data::use(model->LocalID()),
-                    Poco::Data::now;
+                if (model->GUID().empty()) {
+                    *session << "update projects set "
+                        "uid = :uid, name = :name, "
+                        "wid = :wid, color = :color, cid = :cid, "
+                        "active = :active, billable = :billable "
+                        "where local_id = :local_id",
+                        Poco::Data::use(model->UID()),
+                        Poco::Data::use(model->Name()),
+                        Poco::Data::use(model->WID()),
+                        Poco::Data::use(model->Color()),
+                        Poco::Data::use(model->CID()),
+                        Poco::Data::use(model->Active()),
+                        Poco::Data::use(model->Billable()),
+                        Poco::Data::use(model->LocalID()),
+                        Poco::Data::now;
+                } else {
+                    *session << "update projects set "
+                        "uid = :uid, name = :name, guid = :guid,"
+                        "wid = :wid, color = :color, cid = :cid, "
+                        "active = :active, billable = :billable "
+                        "where local_id = :local_id",
+                        Poco::Data::use(model->UID()),
+                        Poco::Data::use(model->Name()),
+                        Poco::Data::use(model->GUID()),
+                        Poco::Data::use(model->WID()),
+                        Poco::Data::use(model->Color()),
+                        Poco::Data::use(model->CID()),
+                        Poco::Data::use(model->Active()),
+                        Poco::Data::use(model->Billable()),
+                        Poco::Data::use(model->LocalID()),
+                        Poco::Data::now;
+                }
             }
             error err = last_error("saveProject");
             if (err != noError) {
@@ -1305,42 +1344,80 @@ error Database::saveProject(
             std::stringstream ss;
             ss << "Inserting project " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger().trace(ss.str());
+            logger().debug(ss.str());
             // FIXME: check how to property insert null :S
-            if (model->GUID().empty()) {
-                *session <<
-                    "insert into projects("
-                    "id, uid, name, wid, color, cid, active, billable"
-                    ") values("
-                    ":id, :uid, :name, :wid, :color, :cid, :active, :billable"
-                    ")",
-                    Poco::Data::use(model->ID()),
-                    Poco::Data::use(model->UID()),
-                    Poco::Data::use(model->Name()),
-                    Poco::Data::use(model->WID()),
-                    Poco::Data::use(model->Color()),
-                    Poco::Data::use(model->CID()),
-                    Poco::Data::use(model->Active()),
-                    Poco::Data::use(model->Billable()),
-                    Poco::Data::now;
+            if (model->ID()) {
+                if (model->GUID().empty()) {
+                    *session <<
+                        "insert into projects("
+                        "id, uid, name, wid, color, cid, active, "
+                        "billable"
+                        ") values("
+                        ":id, :uid, :name, :wid, :color, :cid, :active, "
+                        ":billable"
+                        ")",
+                        Poco::Data::use(model->ID()),
+                        Poco::Data::use(model->UID()),
+                        Poco::Data::use(model->Name()),
+                        Poco::Data::use(model->WID()),
+                        Poco::Data::use(model->Color()),
+                        Poco::Data::use(model->CID()),
+                        Poco::Data::use(model->Active()),
+                        Poco::Data::use(model->Billable()),
+                        Poco::Data::now;
+                } else {
+                    *session <<
+                        "insert into projects("
+                        "id, uid, name, guid, wid, color, cid, active, billable"
+                        ") values("
+                        ":id, :uid, :name, :guid, :wid, :color, :cid, :active, "
+                        ":billable"
+                        ")",
+                        Poco::Data::use(model->ID()),
+                        Poco::Data::use(model->UID()),
+                        Poco::Data::use(model->Name()),
+                        Poco::Data::use(model->GUID()),
+                        Poco::Data::use(model->WID()),
+                        Poco::Data::use(model->Color()),
+                        Poco::Data::use(model->CID()),
+                        Poco::Data::use(model->Active()),
+                        Poco::Data::use(model->Billable()),
+                        Poco::Data::now;
+                }
             } else {
-                *session <<
-                    "insert into projects("
-                    "id, uid, name, guid, wid, color, cid, active, billable"
-                    ") values("
-                    ":id, :uid, :name, :guid, :wid, :color, :cid, :active, "
-                    ":billable"
-                    ")",
-                    Poco::Data::use(model->ID()),
-                    Poco::Data::use(model->UID()),
-                    Poco::Data::use(model->Name()),
-                    Poco::Data::use(model->GUID()),
-                    Poco::Data::use(model->WID()),
-                    Poco::Data::use(model->Color()),
-                    Poco::Data::use(model->CID()),
-                    Poco::Data::use(model->Active()),
-                    Poco::Data::use(model->Billable()),
-                    Poco::Data::now;
+                if (model->GUID().empty()) {
+                    *session <<
+                        "insert into projects("
+                        "uid, name, wid, color, cid, active, billable"
+                        ") values("
+                        ":uid, :name, :wid, :color, :cid, :active, :billable"
+                        ")",
+                        Poco::Data::use(model->UID()),
+                        Poco::Data::use(model->Name()),
+                        Poco::Data::use(model->WID()),
+                        Poco::Data::use(model->Color()),
+                        Poco::Data::use(model->CID()),
+                        Poco::Data::use(model->Active()),
+                        Poco::Data::use(model->Billable()),
+                        Poco::Data::now;
+                } else {
+                    *session <<
+                        "insert into projects("
+                        "uid, name, guid, wid, color, cid, active, billable"
+                        ") values("
+                        ":uid, :name, :guid, :wid, :color, :cid, :active, "
+                        ":billable"
+                        ")",
+                        Poco::Data::use(model->UID()),
+                        Poco::Data::use(model->Name()),
+                        Poco::Data::use(model->GUID()),
+                        Poco::Data::use(model->WID()),
+                        Poco::Data::use(model->Color()),
+                        Poco::Data::use(model->CID()),
+                        Poco::Data::use(model->Active()),
+                        Poco::Data::use(model->Billable()),
+                        Poco::Data::now;
+                }
             }
             error err = last_error("saveProject");
             if (err != noError) {

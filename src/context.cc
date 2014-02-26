@@ -1559,8 +1559,19 @@ kopsik::error Context::AddProject(
     const Poco::UInt64 workspace_id,
     const Poco::UInt64 client_id,
     const std::string project_name) {
-  // FIXME:
-  return kopsik::noError;
+  if (!user_) {
+    return kopsik::error("Please login to add a project");
+  }
+  if (!workspace_id) {
+    return kopsik::error("Please select a workspace");
+  }
+  if (project_name.empty()) {
+    return kopsik::error("Project name must not be empty");
+  }
+  kopsik::Project *p =
+    user_->AddProject(workspace_id, client_id, project_name);
+  poco_assert(p);
+  return save();
 }
 
 }  // namespace kopsik

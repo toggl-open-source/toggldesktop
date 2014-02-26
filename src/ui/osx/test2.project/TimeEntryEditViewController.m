@@ -90,8 +90,9 @@
 
 - (IBAction)backButtonClicked:(id)sender {
   // FIXME: this is not a good place for this (on Done button) :S
-  [self applyAddProject];
-
+  if (![self applyAddProject]) {
+    return;
+  }
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntryDeselected
                                                       object:nil];
 }
@@ -124,6 +125,7 @@
     handle_error(errmsg);
     return NO;
   }
+  return YES;
 }
 
 - (IBAction)continueButtonClicked:(id)sender {

@@ -97,6 +97,11 @@ namespace kopsik {
         TimeEntry *SplitAt(const Poco::Int64 at);
         TimeEntry *StopAt(const Poco::Int64 at);
 
+        Project *AddProject(
+            const Poco::UInt64 workspace_id,
+            const Poco::UInt64 client_id,
+            const std::string project_name);
+
         std::string DateDuration(TimeEntry *te) const;
 
         Poco::Int64 LocalID() const { return local_id_; }
