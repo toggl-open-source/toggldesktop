@@ -247,14 +247,6 @@
   return filteredCompletions;
 }
 
-- (id)tokenField:(NSTokenField *)tokenField
- representedObjectForEditingString:(NSString *)editingString {
-  [self performSelectorOnMainThread:@selector(syncTags)
-                           withObject:nil
-                        waitUntilDone:NO];
-  return editingString;
-}
-
 - (void) syncTags {
   NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
@@ -477,6 +469,13 @@
 
 - (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)aString {
   return [self.autocompleteDataSource indexOfKey:aString];
+}
+
+- (void)controlTextDidEndEditing:(NSNotification *)aNotification {
+  if (![[aNotification object] isKindOfClass:[NSTokenField class]]) {
+    return;
+  }
+  [self syncTags];
 }
 
 - (void)controlTextDidChange:(NSNotification *)aNotification {
