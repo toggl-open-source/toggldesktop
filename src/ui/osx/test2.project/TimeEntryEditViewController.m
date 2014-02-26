@@ -184,10 +184,13 @@
     [self.billableCheckbox setState:NSOffState];
   }
 
-  if ([item.tags count] == 0) {
-        [self.tagsTokenField setObjectValue:nil];
-  } else {
-        [self.tagsTokenField setObjectValue:item.tags];
+  // Overwrite tags only if user is not editing them right now
+  if ([self.tagsTokenField currentEditor] == nil) {
+    if ([item.tags count] == 0) {
+      [self.tagsTokenField setObjectValue:nil];
+    } else {
+      [self.tagsTokenField setObjectValue:item.tags];
+    }
   }
 
   if (item.updatedAt != nil) {
@@ -212,6 +215,7 @@
   [self startTagsListRendering];
 }
 
+// FIXME: move into lib
 - (void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIStateTimeEntryDeselected]) {
     [self.addProjectBox setHidden:YES];
