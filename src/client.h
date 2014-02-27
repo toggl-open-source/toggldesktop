@@ -28,6 +28,9 @@ namespace kopsik {
 
     std::string String() const;
 
+    std::string ModelName() const { return "client"; }
+    std::string ModelURL() const { return "/api/v8/clients"; }
+
   private:
     Poco::UInt64 wid_;
     std::string name_;

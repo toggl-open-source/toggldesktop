@@ -30,6 +30,9 @@ namespace kopsik {
 
     std::string String() const;
 
+    std::string ModelName() const { return "task"; }
+    std::string ModelURL() const { return "/api/v8/tasks"; }
+
   private:
     std::string name_;
     Poco::UInt64 wid_;

@@ -480,10 +480,7 @@ error User::Push(HTTPSClient *https_client) {
         logger().debug(ss.str());
     }
 
-    std::string json = DirtyObjectsJSON(
-      "time_entry",
-      "/api/v8/time_entries",
-      &time_entries);
+    std::string json = UpdateJSON(&projects, &time_entries);
 
     logger().debug(json);
 
@@ -501,7 +498,7 @@ error User::Push(HTTPSClient *https_client) {
     ParseResponseArray(response_body, &results);
 
     std::vector<error> errors;
-    ProcessResponseArray(&results, &time_entries, &errors);
+    ProcessResponseArray(&results, &projects, &time_entries, &errors);
 
     if (!errors.empty()) {
         return collectErrors(&errors);

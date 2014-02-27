@@ -81,6 +81,9 @@ namespace kopsik {
 
     std::vector<std::string> TagNames;
 
+    std::string ModelName() const { return "time_entry"; }
+    std::string ModelURL() const { return "/api/v8/time_entries"; }
+
   private:
     Poco::UInt64 wid_;
     Poco::UInt64 pid_;

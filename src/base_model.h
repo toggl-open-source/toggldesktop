@@ -67,12 +67,14 @@ namespace kopsik {
         dirty_ = true;
     }
 
-    virtual std::string String() const = 0;
-
     bool NeedsPush() const;
     bool NeedsPOST() const;
     bool NeedsPUT() const;
     bool NeedsDELETE() const;
+
+    virtual std::string String() const = 0;
+    virtual std::string ModelName() const = 0;
+    virtual std::string ModelURL() const = 0;
 
   private:
     Poco::Int64 local_id_;
