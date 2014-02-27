@@ -480,7 +480,10 @@ error User::Push(HTTPSClient *https_client) {
         logger().debug(ss.str());
     }
 
-    std::string json = DirtyObjectsJSON(&time_entries);
+    std::string json = DirtyObjectsJSON(
+      "time_entry",
+      "/api/v8/time_entries",
+      &time_entries);
 
     logger().debug(json);
 
