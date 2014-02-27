@@ -231,6 +231,7 @@
   if (self.time_entry.duration_in_seconds < 0) {
     [self.durationTextField setDelegate:self];
     self.descriptionLabel.stringValue = self.time_entry.Description;
+    self.descriptionLabel.toolTip = self.time_entry.Description;
     [self.descriptionComboBox setHidden:YES];
     [self.descriptionLabel setHidden:NO];
     [self.durationTextField setEditable:NO];
@@ -246,7 +247,9 @@
   // Display description
   if (self.time_entry.Description != nil) {
     self.descriptionComboBox.stringValue = self.time_entry.Description;
+    self.descriptionComboBox.toolTip = self.time_entry.Description;
   } else {
+    self.descriptionComboBox.toolTip = nil;
     self.descriptionComboBox.stringValue = @"";
   }
   
@@ -262,8 +265,10 @@
   if (self.time_entry.ProjectAndTaskLabel != nil) {
     self.projectTextField.stringValue =
       [self.time_entry.ProjectAndTaskLabel uppercaseString];
+      self.projectTextField.toolTip = self.time_entry.ProjectAndTaskLabel;
   } else {
     self.projectTextField.stringValue = @"";
+    self.projectTextField.toolTip = nil;
   }
   self.projectTextField.backgroundColor =
     [ConvertHexColor hexCodeToNSColor:self.time_entry.ProjectColor];
