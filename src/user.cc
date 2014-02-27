@@ -418,7 +418,6 @@ Tag *User::GetTagByID(const Poco::UInt64 id) const {
     return 0;
 }
 
-// FIXME: move NeedsPush into base class
 void User::CollectPushableTimeEntries(std::vector<TimeEntry *> *result) const {
     poco_assert(result);
     for (std::vector<TimeEntry *>::const_iterator it =
@@ -432,10 +431,17 @@ void User::CollectPushableTimeEntries(std::vector<TimeEntry *> *result) const {
     }
 }
 
-// FIXME: move NeedsPush into base class
 void User::CollectPushableProjects(std::vector<Project *> *result) const {
     poco_assert(result);
-  // FIXME:
+    for (std::vector<Project *>::const_iterator it =
+            related.Projects.begin();
+            it != related.Projects.end();
+            it++) {
+        Project *model = *it;
+        if (model->NeedsPush()) {
+            result->push_back(model);
+        }
+    }
 }
 
 error User::Sync(
