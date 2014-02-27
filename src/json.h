@@ -107,7 +107,7 @@ namespace kopsik {
 
   JSONNODE *TimeEntryToJSON(TimeEntry * const);
 
-  std::string DirtyUserObjectsJSON(
+  std::string DirtyObjectsJSON(
     std::vector<TimeEntry *> * const);
 
   void ParseResponseJSON(

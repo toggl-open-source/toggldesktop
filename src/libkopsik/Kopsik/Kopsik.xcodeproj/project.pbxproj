@@ -35,6 +35,8 @@
 		74B587CD18BBC77E00E9F6CE /* time_entry.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587B818BBC77E00E9F6CE /* time_entry.cc */; };
 		74B587CE18BBC77E00E9F6CE /* related_data.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587B918BBC77E00E9F6CE /* related_data.cc */; };
 		74B587CF18BBC77E00E9F6CE /* batch_update_result.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587BA18BBC77E00E9F6CE /* batch_update_result.cc */; };
+		74BAD32918BEC4FD002FD4CF /* base_model.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74BAD32718BEC4FD002FD4CF /* base_model.cc */; };
+		74BAD32A18BEC4FD002FD4CF /* base_model.h in Headers */ = {isa = PBXBuildFile; fileRef = 74BAD32818BEC4FD002FD4CF /* base_model.h */; };
 		74CAAD0318185A9B001B77BB /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CAAD0218185A9B001B77BB /* Carbon.framework */; };
 		74CAAD19181860F7001B77BB /* get_focused_window_mac.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74CAAD10181860F7001B77BB /* get_focused_window_mac.cc */; };
 		74CAAD1A181860F7001B77BB /* get_focused_window.h in Headers */ = {isa = PBXBuildFile; fileRef = 74CAAD11181860F7001B77BB /* get_focused_window.h */; };
@@ -96,6 +98,8 @@
 		74B587B818BBC77E00E9F6CE /* time_entry.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = time_entry.cc; path = ../../../time_entry.cc; sourceTree = "<group>"; };
 		74B587B918BBC77E00E9F6CE /* related_data.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = related_data.cc; path = ../../../related_data.cc; sourceTree = "<group>"; };
 		74B587BA18BBC77E00E9F6CE /* batch_update_result.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = batch_update_result.cc; path = ../../../batch_update_result.cc; sourceTree = "<group>"; };
+		74BAD32718BEC4FD002FD4CF /* base_model.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = base_model.cc; path = ../../../base_model.cc; sourceTree = "<group>"; };
+		74BAD32818BEC4FD002FD4CF /* base_model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = base_model.h; path = ../../../base_model.h; sourceTree = "<group>"; };
 		74CAAD0218185A9B001B77BB /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		74CAAD10181860F7001B77BB /* get_focused_window_mac.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = get_focused_window_mac.cc; path = ../../../get_focused_window_mac.cc; sourceTree = "<group>"; };
 		74CAAD11181860F7001B77BB /* get_focused_window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = get_focused_window.h; path = ../../../get_focused_window.h; sourceTree = "<group>"; };
@@ -194,6 +198,8 @@
 		C55DA59E17F06A3B00B42178 /* Kopsik */ = {
 			isa = PBXGroup;
 			children = (
+				74BAD32718BEC4FD002FD4CF /* base_model.cc */,
+				74BAD32818BEC4FD002FD4CF /* base_model.h */,
 				74B587A618BBC77E00E9F6CE /* formatter.cc */,
 				74B587A718BBC77E00E9F6CE /* tag.h */,
 				74B587A818BBC77E00E9F6CE /* json.h */,
@@ -282,6 +288,7 @@
 				74CAAD1B181860F7001B77BB /* timeline_constants.h in Headers */,
 				7484A2A818887BEE0025A88B /* kopsik_api_private.h in Headers */,
 				74EB0F1817F9A2600046ABC1 /* https_client.h in Headers */,
+				74BAD32A18BEC4FD002FD4CF /* base_model.h in Headers */,
 				74B587C518BBC77E00E9F6CE /* batch_update_result.h in Headers */,
 				C5DA1FAC17F18D7B001C4565 /* database.h in Headers */,
 				74CAAD21181860F7001B77BB /* timeline_uploader.h in Headers */,
@@ -372,6 +379,7 @@
 				748968CB18340F9B00288374 /* version.cc in Sources */,
 				7484A2AB18887BEE0025A88B /* context.cc in Sources */,
 				74B587CD18BBC77E00E9F6CE /* time_entry.cc in Sources */,
+				74BAD32918BEC4FD002FD4CF /* base_model.cc in Sources */,
 				74E16831180F26D90026261C /* websocket_client.cc in Sources */,
 				74B587CA18BBC77E00E9F6CE /* client.cc in Sources */,
 				C5DA1FAB17F18D7B001C4565 /* database.cc in Sources */,

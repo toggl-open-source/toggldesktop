@@ -186,7 +186,7 @@ class Context {
   private:
     const std::string updateURL() const;
     static const std::string osName();
-    Poco::Logger &logger() const { return Poco::Logger::get("Context"); }
+    Poco::Logger &logger() const { return Poco::Logger::get("context"); }
     const std::string feedbackJSON() const;
     const std::string feedback_filename() const;
     const std::string base64encode_attachment() const;
