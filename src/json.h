@@ -25,7 +25,8 @@ namespace kopsik {
     std::vector<BatchUpdateResult> *responses);
   void ProcessResponseArray(
     std::vector<BatchUpdateResult> *results,
-    std::vector<TimeEntry *> *dirty,
+    std::vector<Project *> *projects,
+    std::vector<TimeEntry *> *time_entries,
     std::vector<error> *errors);
 
   void LoadWorkspaceFromJSONNode(Workspace *model, JSONNODE *node);
@@ -102,14 +103,18 @@ namespace kopsik {
     User *user,
     const std::string json);
 
-  void LoadTimeEntryFromJSONNode(TimeEntry *model, JSONNODE *node);
-  void LoadTimeEntryFromJSONString(TimeEntry *model, std::string json);
+  void LoadTimeEntryFromJSONNode(
+    TimeEntry *model,
+    JSONNODE * const);
+  void LoadTimeEntryFromJSONString(
+    TimeEntry *model,
+    const std::string json);
 
   JSONNODE *TimeEntryToJSON(TimeEntry * const);
+  JSONNODE *ProjectToJSON(Project * const);
 
-  std::string DirtyObjectsJSON(
-    const std::string model_name,
-    const std::string model_url,
+  std::string UpdateJSON(
+    std::vector<Project *> * const,
     std::vector<TimeEntry *> * const);
 
   void ParseResponseJSON(

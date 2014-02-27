@@ -26,6 +26,9 @@ namespace kopsik {
     bool Premium() const { return premium_; }
     void SetPremium(const bool value);
 
+    std::string ModelName() const { return "workspace"; }
+    std::string ModelURL() const { return "/api/v8/workspaces"; }
+
   private:
     std::string name_;
     bool premium_;

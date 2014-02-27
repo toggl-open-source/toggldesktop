@@ -48,6 +48,9 @@ namespace kopsik {
     bool Billable() const { return billable_; }
     void SetBillable(const bool value);
 
+    std::string ModelName() const { return "project"; }
+    std::string ModelURL() const { return "/api/v8/projects"; }
+
   private:
     Poco::UInt64 wid_;
     Poco::UInt64 cid_;
