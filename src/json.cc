@@ -796,6 +796,8 @@ void LoadUserTimeEntriesFromJSONNode(
 }
 
 std::string DirtyObjectsJSON(
+    const std::string model_name,
+    const std::string model_url,
     std::vector<TimeEntry *> * const dirty) {
   Poco::Logger &logger = Poco::Logger::get("json");
   JSONNODE *c = json_new(JSON_ARRAY);
@@ -804,7 +806,7 @@ std::string DirtyObjectsJSON(
       it != dirty->end(); it++) {
     TimeEntry *te = *it;
     JSONNODE *n = TimeEntryToJSON(te);
-    json_set_name(n, "time_entry");
+    json_set_name(n, model_name.c_str());
 
     JSONNODE *body = json_new(JSON_NODE);
     json_set_name(body, "body");
@@ -813,30 +815,27 @@ std::string DirtyObjectsJSON(
     JSONNODE *update = json_new(JSON_NODE);
     if (te->NeedsDELETE()) {
       std::stringstream url;
-      url << "/api/v8/time_entries/" << te->ID();
+      url << model_url << "/" << te->ID();
       json_push_back(update, json_new_a("method", "DELETE"));
-      json_push_back(update, json_new_a("relative_url",
-        url.str().c_str()));
+      json_push_back(update, json_new_a("relative_url", url.str().c_str()));
       std::stringstream ss;
-      ss << "Time entry " << te->String() << " needs a DELETE";
+      ss << model_name << te->String() << " needs a DELETE";
       logger.debug(ss.str());
 
     } else if (te->NeedsPOST()) {
       json_push_back(update, json_new_a("method", "POST"));
-      json_push_back(update, json_new_a("relative_url",
-        "/api/v8/time_entries"));
+      json_push_back(update, json_new_a("relative_url", model_url.c_str()));
       std::stringstream ss;
-      ss << "Time entry " << te->String() << " needs a POST";
+      ss << model_name << te->String() << " needs a POST";
       logger.debug(ss.str());
 
     } else if (te->NeedsPUT()) {
       std::stringstream url;
-      url << "/api/v8/time_entries/" << te->ID();
+      url << model_url << "/" << te->ID();
       json_push_back(update, json_new_a("method", "PUT"));
-      json_push_back(update, json_new_a("relative_url",
-        url.str().c_str()));
+      json_push_back(update, json_new_a("relative_url", url.str().c_str()));
       std::stringstream ss;
-      ss << "Time entry " << te->String() << " needs a PUT";
+      ss << model_name << te->String() << " needs a PUT";
       logger.debug(ss.str());
     }
     json_push_back(update, json_new_a("GUID", te->GUID().c_str()));

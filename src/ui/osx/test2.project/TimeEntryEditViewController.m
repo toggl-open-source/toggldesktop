@@ -295,7 +295,9 @@
   if ([notification.name isEqualToString:kUIEventModelChange]) {
     ModelChange *mc = notification.object;
     if ([mc.ModelType isEqualToString:@"tag"]) {
-      [self startTagsListRendering];
+      [self performSelectorOnMainThread:@selector(startTagsListRendering)
+                             withObject:nil
+                          waitUntilDone:NO];
       return; // Tags dont affect autocomplete
     }
     
