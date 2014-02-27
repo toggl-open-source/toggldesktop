@@ -389,7 +389,7 @@ completionsForSubstring:(NSString *)substring
   NSMutableArray *tags = [[NSMutableArray alloc] init];
   while (tag) {
     NSString *tagName = [NSString stringWithUTF8String:tag->Name];
-    [self.tagsList addObject:tagName];
+    [tags addObject:tagName];
     tag = tag->Next;
   }
   kopsik_view_item_clear(tag);
