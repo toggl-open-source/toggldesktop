@@ -108,6 +108,7 @@ cmdline: clean lint
 	$(cxx) $(cflags) -O2 -c src/version.cc -o build/version.o
 	$(cxx) $(cflags) -O2 -c src/https_client.cc -o build/https_client.o
 	$(cxx) $(cflags) -O2 -c src/websocket_client.cc -o build/websocket_client.o
+	$(cxx) $(cflags) -O2 -c src/base_model.cc -o build/base_model.o
 	$(cxx) $(cflags) -O2 -c src/user.cc -o build/user.o
 	$(cxx) $(cflags) -O2 -c src/workspace.cc -o build/workspace.o
 	$(cxx) $(cflags) -O2 -c src/client.cc -o build/client.o
@@ -160,6 +161,7 @@ test: clean lint
 	$(cxx) $(cflags) -c src/version.cc -o build/version.o
 	$(cxx) $(cflags) -c src/https_client.cc -o build/https_client.o
 	$(cxx) $(cflags) -c src/websocket_client.cc -o build/websocket_client.o
+	$(cxx) $(cflags) -c src/base_model.cc -o build/base_model.o
 	$(cxx) $(cflags) -c src/user.cc -o build/user.o
 	$(cxx) $(cflags) -c src/workspace.cc -o build/workspace.o
 	$(cxx) $(cflags) -c src/client.cc -o build/client.o
@@ -193,6 +195,7 @@ coverage: clean
 	$(cxx) $(cflags) $(covflags) -c src/version.cc -o build/version.o
 	$(cxx) $(cflags) $(covflags) -c src/https_client.cc -o build/https_client.o
 	$(cxx) $(cflags) $(covflags) -c src/websocket_client.cc -o build/websocket_client.o
+	$(cxx) $(cflags) $(covflags) -c src/base_model.cc -o build/base_model.o
 	$(cxx) $(cflags) $(covflags) -c src/user.cc -o build/user.o
 	$(cxx) $(cflags) $(covflags) -c src/workspace.cc -o build/workspace.o
 	$(cxx) $(cflags) $(covflags) -c src/client.cc -o build/client.o

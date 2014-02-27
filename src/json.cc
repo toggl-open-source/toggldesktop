@@ -795,7 +795,7 @@ void LoadUserTimeEntriesFromJSONNode(
   }
 }
 
-std::string DirtyUserObjectsJSON(
+std::string DirtyObjectsJSON(
     std::vector<TimeEntry *> * const dirty) {
   Poco::Logger &logger = Poco::Logger::get("json");
   JSONNODE *c = json_new(JSON_ARRAY);

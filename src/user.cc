@@ -233,9 +233,7 @@ TimeEntry *User::SplitAt(const Poco::Int64 at) {
 
   std::stringstream ss;
   ss << "User is splitting running time entry at " << at;
-
-  Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
-  logger.debug(ss.str());
+  logger().debug(ss.str());
 
   TimeEntry *running = RunningTimeEntry();
   if (!running) {
@@ -265,8 +263,7 @@ TimeEntry *User::StopAt(const Poco::Int64 at) {
 
   std::stringstream ss;
   ss << "User is stopping running time entry at " << at;
-  Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
-  logger.debug(ss.str());
+  logger().debug(ss.str());
 
   TimeEntry *running = RunningTimeEntry();
   if (running) {
@@ -421,17 +418,24 @@ Tag *User::GetTagByID(const Poco::UInt64 id) const {
     return 0;
 }
 
+// FIXME: move NeedsPush into base class
 void User::CollectPushableTimeEntries(std::vector<TimeEntry *> *result) const {
     poco_assert(result);
     for (std::vector<TimeEntry *>::const_iterator it =
             related.TimeEntries.begin();
             it != related.TimeEntries.end();
             it++) {
-        TimeEntry *te = *it;
-        if (te->NeedsPush()) {
-            result->push_back(te);
+        TimeEntry *model = *it;
+        if (model->NeedsPush()) {
+            result->push_back(model);
         }
     }
+}
+
+// FIXME: move NeedsPush into base class
+void User::CollectPushableProjects(std::vector<Project *> *result) const {
+    poco_assert(result);
+  // FIXME:
 }
 
 error User::Sync(
@@ -452,24 +456,27 @@ error User::Push(HTTPSClient *https_client) {
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
-    std::vector<TimeEntry *> pushable;
-    CollectPushableTimeEntries(&pushable);
+    std::vector<TimeEntry *> time_entries;
+    CollectPushableTimeEntries(&time_entries);
 
-    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
-    if (pushable.empty()) {
-        logger.trace("Nothing to push.");
+    std::vector<Project *> projects;
+    CollectPushableProjects(&projects);
+
+    if (time_entries.empty() && projects.empty()) {
+        logger().debug("Nothing to push.");
         return noError;
     }
 
     {
         std::stringstream ss;
-        ss << pushable.size() << " time entries need a push";
-        logger.debug(ss.str());
+        ss  << time_entries.size() << " time entries, "
+            << projects.size() << " projects need a push";
+        logger().debug(ss.str());
     }
 
-    std::string json = DirtyUserObjectsJSON(&pushable);
+    std::string json = DirtyObjectsJSON(&time_entries);
 
-    logger.debug(json);
+    logger().debug(json);
 
     std::string response_body("");
     error err = https_client->PostJSON("/api/v8/batch_updates",
@@ -485,7 +492,7 @@ error User::Push(HTTPSClient *https_client) {
     ParseResponseArray(response_body, &results);
 
     std::vector<error> errors;
-    ProcessResponseArray(&results, &pushable, &errors);
+    ProcessResponseArray(&results, &time_entries, &errors);
 
     if (!errors.empty()) {
         return collectErrors(&errors);
@@ -495,7 +502,7 @@ error User::Push(HTTPSClient *https_client) {
     std::stringstream ss;
     ss << "Changes data JSON pushed and responses parsed in "
         << stopwatch.elapsed() / 1000 << " ms";
-    logger.debug(ss.str());
+    logger().debug(ss.str());
   } catch(const Poco::Exception& exc) {
     return exc.displayText();
   } catch(const std::exception& ex) {
@@ -563,8 +570,7 @@ error User::pull(
     std::stringstream ss;
     ss << "User with related data JSON fetched and parsed in "
       << stopwatch.elapsed() / 1000 << " ms";
-    Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
-    logger.debug(ss.str());
+    logger().debug(ss.str());
   } catch(const Poco::Exception& exc) {
     return exc.displayText();
   } catch(const std::exception& ex) {
@@ -575,8 +581,7 @@ error User::pull(
   return noError;
 };
 
-error User::collectErrors(std::vector<error> * const errors) {
-  Poco::Logger &logger = Poco::Logger::get("toggl_api_client");
+error User::collectErrors(std::vector<error> * const errors) const {
   std::stringstream ss;
   ss << "Errors encountered while syncing data: ";
   for (std::vector<error>::const_iterator it = errors->begin();
@@ -590,7 +595,7 @@ error User::collectErrors(std::vector<error> * const errors) {
       ss << " ";
     }
     ss << err;
-    logger.error(err);
+    logger().error(err);
   }
   return error(ss.str());
 }

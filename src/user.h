@@ -19,6 +19,7 @@
 #include "./batch_update_result.h"
 
 #include "Poco/Types.h"
+#include "Poco/Logger.h"
 
 namespace kopsik {
 
@@ -84,6 +85,8 @@ namespace kopsik {
 
         void CollectPushableTimeEntries(
             std::vector<TimeEntry *> *result) const;
+        void CollectPushableProjects(
+            std::vector<Project *> *result) const;
 
         TimeEntry *RunningTimeEntry() const;
         TimeEntry *Start(
@@ -118,7 +121,7 @@ namespace kopsik {
 
         // Unix timestamp of the user data; returned from API
         Poco::UInt64 Since() const { return since_; }
-        void SetSince(Poco::UInt64 value);
+        void SetSince(const Poco::UInt64 value);
 
         bool Dirty() const { return dirty_; }
         void ClearDirty() { dirty_ = false; }
@@ -146,6 +149,8 @@ namespace kopsik {
         RelatedData related;
 
     private:
+        Poco::Logger &logger() const { return Poco::Logger::get("user"); }
+
         error pull(HTTPSClient *https_client,
             const bool full_sync,
             const bool with_related_data);
@@ -155,7 +160,7 @@ namespace kopsik {
             std::vector<BatchUpdateResult> * const results,
             std::vector<TimeEntry *> *dirty,
             std::vector<error> *errors);
-        static error collectErrors(std::vector<error> *errors);
+        error collectErrors(std::vector<error> *errors) const;
 
         error requestJSON(
             const std::string method,
