@@ -168,7 +168,6 @@ namespace kopsik {
             const std::string json,
             const bool authenticate_with_api_token,
             std::string *response_body);
-        static bool isStatusOK(const int status);
         void parseResponseArray(
             const std::string response_body,
             std::vector<BatchUpdateResult> *responses);

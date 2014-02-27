@@ -21,8 +21,6 @@ namespace kopsik {
       std::string GUID;  // must match the BatchUpdate GUID
       std::string ContentType;
       std::string Method;
-
-      void parseResponseJSONBody(const std::string body);
   };
 
 }  // namespace kopsik
