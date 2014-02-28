@@ -17,25 +17,23 @@
 #include "./tag.h"
 #include "./related_data.h"
 #include "./batch_update_result.h"
+#include "./base_model.h"
 
 #include "Poco/Types.h"
 #include "Poco/Logger.h"
 
 namespace kopsik {
 
-    class User {
+    class User : public BaseModel {
     public:
         User(
                 const std::string app_name,
                 const std::string app_version) :
             BasicAuthUsername(""),
             BasicAuthPassword(""),
-            local_id_(0),
-            id_(0),
             api_token_(""),
             default_wid_(0),
             since_(0),
-            dirty_(false),
             fullname_(""),
             app_name_(app_name),
             app_version_(app_version),
@@ -107,12 +105,6 @@ namespace kopsik {
 
         std::string DateDuration(TimeEntry *te) const;
 
-        Poco::Int64 LocalID() const { return local_id_; }
-        void SetLocalID(Poco::Int64 value) { local_id_ = value; }
-
-        Poco::UInt64 ID() const { return id_; }
-        void SetID(Poco::UInt64 value);
-
         std::string APIToken() const { return api_token_; }
         void SetAPIToken(std::string api_token);
 
@@ -122,9 +114,6 @@ namespace kopsik {
         // Unix timestamp of the user data; returned from API
         Poco::UInt64 Since() const { return since_; }
         void SetSince(const Poco::UInt64 value);
-
-        bool Dirty() const { return dirty_; }
-        void ClearDirty() { dirty_ = false; }
 
         std::string Fullname() const { return fullname_; }
         void SetFullname(std::string value);
@@ -148,9 +137,10 @@ namespace kopsik {
 
         RelatedData related;
 
-    private:
-        Poco::Logger &logger() const { return Poco::Logger::get("user"); }
+        std::string ModelName() const { return "user"; }
+        std::string ModelURL() const { return "/api/v8/me"; }
 
+    private:
         error pull(HTTPSClient *https_client,
             const bool full_sync,
             const bool with_related_data);
@@ -172,13 +162,10 @@ namespace kopsik {
             const std::string response_body,
             std::vector<BatchUpdateResult> *responses);
 
-        Poco::Int64 local_id_;
-        Poco::UInt64 id_;
         std::string api_token_;
         Poco::UInt64 default_wid_;
         // Unix timestamp of the user data; returned from API
         Poco::UInt64 since_;
-        bool dirty_;
         std::string fullname_;
         std::string app_name_;
         std::string app_version_;

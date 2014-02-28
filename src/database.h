@@ -48,49 +48,8 @@ class ModelChange {
 
 class Database {
     public:
-        explicit Database(const std::string db_path) :
-                session(0), desktop_id_("") {
-            Poco::Data::SQLite::Connector::registerConnector();
-
-            session = new Poco::Data::Session("SQLite", db_path);
-
-            std::stringstream ss;
-            ss << "sqlite3_threadsafe()=" << sqlite3_threadsafe();
-            logger().debug(ss.str());
-
-            error err = initialize_tables();
-            if (err != noError) {
-                Poco::Logger &logger = Poco::Logger::get("database");
-                logger.error(err);
-            }
-            poco_assert(err == noError);
-
-            Poco::NotificationCenter& nc =
-            Poco::NotificationCenter::defaultCenter();
-
-            Poco::Observer<Database, TimelineEventNotification>
-              observeCreate(*this,
-            &Database::handleTimelineEventNotification);
-            nc.addObserver(observeCreate);
-
-            Poco::Observer<Database, CreateTimelineBatchNotification>
-                observeSelect(*this,
-            &Database::handleCreateTimelineBatchNotification);
-            nc.addObserver(observeSelect);
-
-            Poco::Observer<Database, DeleteTimelineBatchNotification>
-                observeDelete(*this,
-            &Database::handleDeleteTimelineBatchNotification);
-            nc.addObserver(observeDelete);
-        }
-
-        ~Database() {
-            if (session) {
-                delete session;
-                session = 0;
-            }
-            Poco::Data::SQLite::Connector::unregisterConnector();
-        }
+        explicit Database(const std::string db_path);
+        ~Database();
 
         error DeleteUser(
             User *model,
@@ -140,6 +99,8 @@ class Database {
 
         error SaveDesktopID();
 
+        static std::string GenerateGUID();
+
      protected:
         void handleTimelineEventNotification(
             TimelineEventNotification* notification);
@@ -155,8 +116,6 @@ class Database {
             const std::string sql);
         error last_error(
             const std::string was_doing);
-
-        static std::string generateGUID();
 
         error loadUsersRelatedData(User *user);
 
