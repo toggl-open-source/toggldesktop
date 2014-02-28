@@ -31,19 +31,19 @@ namespace command_line_client {
             const char *errmsg,
             KopsikModelChange *change) {
         if (KOPSIK_API_SUCCESS != result) {
-            std::cerr << "main_change_callback "
+            std::cerr << "main_change_callback errmsg="
                 << std::string(errmsg)
                 << std::endl;
             return;
         }
-        std::cout << "main_change_callback "
+        std::cout << "main_change_callback change="
             << model_change_to_string(*change)
             << std::endl;
         }
 
     void main_on_error_callback(
             const char *errmsg) {
-        std::cerr << "main_on_error_callback "
+        std::cerr << "main_on_error_callback errmsg="
             << std::string(errmsg)
             << std::endl;
     }
@@ -54,9 +54,22 @@ namespace command_line_client {
             const int is_update_available,
             const char *url,
             const char *version) {
+        if (KOPSIK_API_SUCCESS != result) {
+            std::cerr << "main_check_updates_callback errmsg="
+                << std::string(errmsg)
+                << std::endl;
+            return;
+        }
+        std::cout << "main_check_updates_callback is_update_available="
+            << is_update_available
+            << " url=" << std::string(url)
+            << " version=" << std::string(version)
+            << std::endl;
     }
 
-    void main_online_callback() {}
+    void main_online_callback() {
+        std::cout << "main_online_callback" << std::endl;
+    }
 
     class Main : public Poco::Util::Application, Poco::ErrorHandler {
     public:

@@ -1,0 +1,48 @@
+Project files
+-------------
+
+cppcheck GUI handles per-project settings in project files instead of global
+program settings. This allows customizing cppcheck for each project's needs.
+
+The project file is simple XML file easy to edit with your favourite editor
+program. The format is:
+
+<?xml version="1.0"?>
+<project version="1">
+    <root name="c:/projects/cppcheck/" />
+    <paths>
+        <dir name="lib/" />
+    </paths>
+    <includedir>
+        <dir name="lib/" />
+        <dir name="c:/projects/framework/" />
+        <dir name="c:/Program Files/Visual Studio 8/VC/include/" />
+    </includedir>
+    <defines>
+        <define name="__cplusplus" />
+        <define name="_MSC_VER=1400" />
+        <define name="_WIN32" />
+    </defines>
+   <exclude>
+        <path name="gui/temp/" />
+   </exclude>
+</project>
+
+where:
+ - optional root element defines the root directory for the project. All
+   relative paths are considered to be relative to this path. If the root
+   element is missing or it contains "." as value then the project file's
+   location is considered to be the root path.
+-  paths element contains a list of checked paths. The paths can be relative or
+   absolute paths.
+-  indludedir element contains a list of additional include paths. These
+   include paths are used when finding local include files ("#include "file.h")
+   for source files. The paths can be relative or absolute paths. It is highly
+   recommended that relative paths are used for paths inside the project root
+   folder for better portability.
+-  defines element contains a list of C/C++ preprocessor defines.
+-  exclude element contains list of paths to exclude from the check. The path
+   can be a directory (must end with path separator) or a file.
+
+For real life examples see the cppcheck.cppcheck-file in the Cppcheck sources
+root-directory or gui.cppcheck file in gui-directory.

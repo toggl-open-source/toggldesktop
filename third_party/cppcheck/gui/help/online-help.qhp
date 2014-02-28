@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QtHelpProject version="1.0">
+    <namespace>cppcheck.sourceforge.net</namespace>
+    <virtualFolder>doc</virtualFolder>
+    <filterSection>
+        <toc>
+            <section title="Manual" ref="manual.html"/>
+        </toc>
+        <keywords/>
+        <files>
+          <file>manual.html</file>
+        </files>
+    </filterSection>
+</QtHelpProject>
