@@ -159,56 +159,49 @@ bool User::HasPremiumWorkspaces() const {
 void User::SetFullname(const std::string value) {
   if (fullname_ != value) {
     fullname_ = value;
-    dirty_ = true;
+    SetDirty();
   }
 }
 
 void User::SetStoreStartAndStopTime(const bool value) {
   if (store_start_and_stop_time_ != value) {
     store_start_and_stop_time_ = value;
-    dirty_ = true;
+    SetDirty();
   }
 }
 
 void User::SetRecordTimeline(const bool value) {
     if (record_timeline_ != value) {
         record_timeline_ = value;
-        dirty_ = true;
+        SetDirty();
     }
 }
 
 void User::SetEmail(const std::string value) {
   if (email_ != value) {
     email_ = value;
-    dirty_ = true;
+    SetDirty();
   }
 }
 
 void User::SetAPIToken(const std::string value) {
     if (api_token_ != value) {
         api_token_ = value;
-        dirty_ = true;
+        SetDirty();
     }
 }
 
 void User::SetSince(const Poco::UInt64 value) {
     if (since_ != value) {
         since_ = value;
-        dirty_ = true;
-    }
-}
-
-void User::SetID(const Poco::UInt64 value) {
-    if (id_ != value) {
-        id_ = value;
-        dirty_ = true;
+        SetDirty();
     }
 }
 
 void User::SetDefaultWID(const Poco::UInt64 value) {
     if (default_wid_ != value) {
         default_wid_ = value;
-        dirty_ = true;
+        SetDirty();
     }
 }
 
@@ -469,15 +462,7 @@ error User::Push(HTTPSClient *https_client) {
     CollectPushableProjects(&projects);
 
     if (time_entries.empty() && projects.empty()) {
-        logger().debug("Nothing to push.");
         return noError;
-    }
-
-    {
-        std::stringstream ss;
-        ss  << time_entries.size() << " time entries, "
-            << projects.size() << " projects need a push";
-        logger().debug(ss.str());
     }
 
     std::string json = UpdateJSON(&projects, &time_entries);
@@ -521,8 +506,8 @@ error User::Push(HTTPSClient *https_client) {
 
 std::string User::String() const {
   std::stringstream ss;
-  ss  << "ID=" << id_
-      << " local_id=" << local_id_
+  ss  << "ID=" << ID()
+      << " local_id=" << LocalID()
       << " default_wid=" << default_wid_
       << " api_token=" << api_token_
       << " since=" << since_

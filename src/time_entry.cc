@@ -158,6 +158,13 @@ void TimeEntry::SetDurationString(const std::string value) {
     }
 }
 
+void TimeEntry::SetProjectGUID(const std::string value) {
+    if (project_guid_ != value) {
+        project_guid_ = value;
+        SetDirty();
+    }
+}
+
 std::string TimeEntry::Tags() const {
     std::stringstream ss;
     for (std::vector<std::string>::const_iterator it =

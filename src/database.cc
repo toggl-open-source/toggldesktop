@@ -23,6 +23,51 @@
 
 namespace kopsik {
 
+Database::Database(const std::string db_path)
+        : session(0)
+        , desktop_id_("") {
+    Poco::Data::SQLite::Connector::registerConnector();
+
+    session = new Poco::Data::Session("SQLite", db_path);
+
+    std::stringstream ss;
+    ss << "sqlite3_threadsafe()=" << sqlite3_threadsafe();
+    logger().debug(ss.str());
+
+    error err = initialize_tables();
+    if (err != noError) {
+        Poco::Logger &logger = Poco::Logger::get("database");
+        logger.error(err);
+    }
+    poco_assert(err == noError);
+
+    Poco::NotificationCenter& nc =
+    Poco::NotificationCenter::defaultCenter();
+
+    Poco::Observer<Database, TimelineEventNotification>
+      observeCreate(*this,
+    &Database::handleTimelineEventNotification);
+    nc.addObserver(observeCreate);
+
+    Poco::Observer<Database, CreateTimelineBatchNotification>
+        observeSelect(*this,
+    &Database::handleCreateTimelineBatchNotification);
+    nc.addObserver(observeSelect);
+
+    Poco::Observer<Database, DeleteTimelineBatchNotification>
+        observeDelete(*this,
+    &Database::handleDeleteTimelineBatchNotification);
+    nc.addObserver(observeDelete);
+}
+
+Database::~Database() {
+    if (session) {
+        delete session;
+        session = 0;
+    }
+    Poco::Data::SQLite::Connector::unregisterConnector();
+}
+
 error Database::DeleteUser(
         User *model,
         const bool with_related_data) {
@@ -131,9 +176,8 @@ error Database::last_error(const std::string was_doing) {
     return noError;
 }
 
-std::string Database::generateGUID() {
-    Poco::UUIDGenerator& generator =
-        Poco::UUIDGenerator::defaultGenerator();
+std::string Database::GenerateGUID() {
+    Poco::UUIDGenerator& generator = Poco::UUIDGenerator::defaultGenerator();
     Poco::UUID uuid(generator.createRandom());
     return uuid.toString();
 }
@@ -850,7 +894,7 @@ error Database::saveTimeEntries(
                 return err;
             }
             changes->push_back(ModelChange(
-                "time_entry", "delete", model->ID(), model->GUID()));
+                model->ModelName(), "delete", model->ID(), model->GUID()));
             continue;
         }
         model->SetUID(UID);
@@ -888,12 +932,11 @@ error Database::saveTimeEntry(
     poco_assert(session);
     poco_assert(changes);
 
-    if (model->LocalID() && !model->Dirty() && !model->GUID().empty()) {
+    if (!model->NeedsToBeSaved()) {
         return noError;
     }
-    if (model->GUID().empty()) {
-        model->SetGUID(generateGUID());
-    }
+
+    model->EnsureGUID();
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
@@ -913,7 +956,7 @@ error Database::saveTimeEntry(
                     "start = :start, stop = :stop, duration = :duration, "
                     "tags = :tags, created_with = :created_with, "
                     "deleted_at = :deleted_at, "
-                    "updated_at = :updated_at "
+                    "updated_at = :updated_at, project_guid = :project_guid "
                     "where local_id = :local_id",
                     Poco::Data::use(model->ID()),
                     Poco::Data::use(model->UID()),
@@ -932,6 +975,7 @@ error Database::saveTimeEntry(
                     Poco::Data::use(model->CreatedWith()),
                     Poco::Data::use(model->DeletedAt()),
                     Poco::Data::use(model->UpdatedAt()),
+                    Poco::Data::use(model->ProjectGUID()),
                     Poco::Data::use(model->LocalID()),
                     Poco::Data::now;
             } else {
@@ -943,7 +987,7 @@ error Database::saveTimeEntry(
                     "start = :start, stop = :stop, duration = :duration, "
                     "tags = :tags, created_with = :created_with, "
                     "deleted_at = :deleted_at, "
-                    "updated_at = :updated_at "
+                    "updated_at = :updated_at, project_guid = :project_guid "
                     "where local_id = :local_id",
                     Poco::Data::use(model->UID()),
                     Poco::Data::use(model->Description()),
@@ -961,6 +1005,7 @@ error Database::saveTimeEntry(
                     Poco::Data::use(model->CreatedWith()),
                     Poco::Data::use(model->DeletedAt()),
                     Poco::Data::use(model->UpdatedAt()),
+                    Poco::Data::use(model->ProjectGUID()),
                     Poco::Data::use(model->LocalID()),
                     Poco::Data::now;
             }
@@ -970,10 +1015,10 @@ error Database::saveTimeEntry(
             }
             if (model->DeletedAt()) {
                 changes->push_back(ModelChange(
-                    "time_entry", "delete", model->ID(), model->GUID()));
+                    model->ModelName(), "delete", model->ID(), model->GUID()));
             } else {
                 changes->push_back(ModelChange(
-                    "time_entry", "update", model->ID(), model->GUID()));
+                    model->ModelName(), "update", model->ID(), model->GUID()));
             }
         } else {
             std::stringstream ss;
@@ -985,12 +1030,14 @@ error Database::saveTimeEntry(
                     "wid, guid, pid, tid, billable, "
                     "duronly, ui_modified_at, "
                     "start, stop, duration, "
-                    "tags, created_with, deleted_at, updated_at) "
+                    "tags, created_with, deleted_at, updated_at, "
+                    "project_guid) "
                     "values(:id, :uid, :description, :wid, "
                     ":guid, :pid, :tid, :billable, "
                     ":duronly, :ui_modified_at, "
                     ":start, :stop, :duration, "
-                    ":tags, :created_with, :deleted_at, :updated_at)",
+                    ":tags, :created_with, :deleted_at, :updated_at, "
+                    ":project_guid)",
                     Poco::Data::use(model->ID()),
                     Poco::Data::use(model->UID()),
                     Poco::Data::use(model->Description()),
@@ -1008,18 +1055,22 @@ error Database::saveTimeEntry(
                     Poco::Data::use(model->CreatedWith()),
                     Poco::Data::use(model->DeletedAt()),
                     Poco::Data::use(model->UpdatedAt()),
+                    Poco::Data::use(model->ProjectGUID()),
                     Poco::Data::now;
             } else {
                 *session << "insert into time_entries(uid, description, wid, "
                     "guid, pid, tid, billable, "
                     "duronly, ui_modified_at, "
                     "start, stop, duration, "
-                    "tags, created_with, deleted_at, updated_at) "
-                    "values(:uid, :description, :wid, "
+                    "tags, created_with, deleted_at, updated_at, "
+                    "project_guid "
+                    ") values ("
+                    ":uid, :description, :wid, "
                     ":guid, :pid, :tid, :billable, "
                     ":duronly, :ui_modified_at, "
                     ":start, :stop, :duration, "
-                    ":tags, :created_with, :deleted_at, :updated_at)",
+                    ":tags, :created_with, :deleted_at, :updated_at, "
+                    ":project_guid)",
                     Poco::Data::use(model->UID()),
                     Poco::Data::use(model->Description()),
                     Poco::Data::use(model->WID()),
@@ -1036,6 +1087,7 @@ error Database::saveTimeEntry(
                     Poco::Data::use(model->CreatedWith()),
                     Poco::Data::use(model->DeletedAt()),
                     Poco::Data::use(model->UpdatedAt()),
+                    Poco::Data::use(model->ProjectGUID()),
                     Poco::Data::now;
                 }
             error err = last_error("saveTimeEntry");
@@ -1052,7 +1104,7 @@ error Database::saveTimeEntry(
             }
             model->SetLocalID(local_id);
             changes->push_back(ModelChange(
-              "time_entry", "insert", model->ID(), model->GUID()));
+              model->ModelName(), "insert", model->ID(), model->GUID()));
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
@@ -1098,7 +1150,7 @@ error Database::saveWorkspace(
                 return err;
             }
             changes->push_back(ModelChange(
-                    "workspace", "update", model->ID(), ""));
+                    model->ModelName(), "update", model->ID(), ""));
 
         } else {
             std::stringstream ss;
@@ -1126,7 +1178,7 @@ error Database::saveWorkspace(
             }
             model->SetLocalID(local_id);
             changes->push_back(ModelChange(
-              "workspace", "insert", model->ID(), ""));
+              model->ModelName(), "insert", model->ID(), ""));
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
@@ -1187,7 +1239,7 @@ error Database::saveClient(
                 return err;
             }
             changes->push_back(ModelChange(
-              "client", "update", model->ID(), model->GUID()));
+              model->ModelName(), "update", model->ID(), model->GUID()));
 
         } else {
             std::stringstream ss;
@@ -1227,7 +1279,7 @@ error Database::saveClient(
             }
             model->SetLocalID(local_id);
             changes->push_back(ModelChange(
-              "client", "insert", model->ID(), model->GUID()));
+              model->ModelName(), "insert", model->ID(), model->GUID()));
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
@@ -1246,13 +1298,11 @@ error Database::saveProject(
     poco_assert(model);
     poco_assert(session);
 
-    // FIXME: similar to time entry save, need a base class
-    if (model->LocalID() && !model->Dirty() && !model->GUID().empty()) {
+    if (!model->NeedsToBeSaved()) {
         return noError;
     }
-    if (model->GUID().empty()) {
-        model->SetGUID(generateGUID());
-    }
+
+    model->EnsureGUID();
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
@@ -1338,7 +1388,7 @@ error Database::saveProject(
                 return err;
             }
             changes->push_back(ModelChange(
-                    "project", "update", model->ID(), model->GUID()));
+                    model->ModelName(), "update", model->ID(), model->GUID()));
 
         } else {
             std::stringstream ss;
@@ -1433,7 +1483,7 @@ error Database::saveProject(
             }
             model->SetLocalID(local_id);
             changes->push_back(ModelChange(
-              "project", "insert", model->ID(), model->GUID()));
+              model->ModelName(), "insert", model->ID(), model->GUID()));
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
@@ -1480,7 +1530,7 @@ error Database::saveTask(
               return err;
             }
             changes->push_back(ModelChange(
-              "task", "update", model->ID(), ""));
+              model->ModelName(), "update", model->ID(), ""));
 
         } else {
             std::stringstream ss;
@@ -1509,7 +1559,7 @@ error Database::saveTask(
             }
             model->SetLocalID(local_id);
             changes->push_back(ModelChange(
-              "task", "insert", model->ID(), ""));
+              model->ModelName(), "insert", model->ID(), ""));
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
@@ -1570,7 +1620,7 @@ error Database::saveTag(
               return err;
             }
             changes->push_back(ModelChange(
-                "tag", "update", model->ID(), model->GUID()));
+                model->ModelName(), "update", model->ID(), model->GUID()));
 
         } else {
             std::stringstream ss;
@@ -1610,7 +1660,7 @@ error Database::saveTag(
             }
             model->SetLocalID(local_id);
             changes->push_back(ModelChange(
-              "tag", "insert", model->ID(), model->GUID()));
+              model->ModelName(), "insert", model->ID(), model->GUID()));
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
@@ -1691,7 +1741,7 @@ error Database::SaveUser(
                     return err;
                 }
                 changes->push_back(ModelChange(
-                    "user", "update", model->ID(), ""));
+                    model->ModelName(), "update", model->ID(), ""));
             } else {
                 std::stringstream ss;
                 ss << "Inserting user " + model->String()
@@ -1729,7 +1779,7 @@ error Database::SaveUser(
                 }
                 model->SetLocalID(local_id);
                 changes->push_back(ModelChange(
-                    "user", "insert", model->ID(), ""));
+                    model->ModelName(), "insert", model->ID(), ""));
             }
             model->ClearDirty();
         } catch(const Poco::Exception& exc) {
@@ -2065,6 +2115,13 @@ error Database::initialize_tables() {
       return err;
     }
 
+    err = migrate("time_entries.project_guid",
+        "ALTER TABLE time_entries "
+        "ADD COLUMN project_guid VARCHAR;");
+    if (err != noError) {
+        return err;
+    }
+
     err = migrate("sessions",
         "create table sessions("
         "local_id integer primary key, "
@@ -2144,7 +2201,7 @@ error Database::initialize_tables() {
         return err;
     }
     if (desktop_id_.empty()) {
-        desktop_id_ = generateGUID();
+        desktop_id_ = GenerateGUID();
         err = SaveDesktopID();
         if (err != noError) {
             return err;

@@ -9,6 +9,7 @@
 #include "./types.h"
 
 #include "Poco/Types.h"
+#include "Poco/Logger.h"
 
 namespace kopsik {
 
@@ -72,9 +73,16 @@ namespace kopsik {
     bool NeedsPUT() const;
     bool NeedsDELETE() const;
 
+    bool NeedsToBeSaved() const;
+
+    void EnsureGUID();
+
     virtual std::string String() const = 0;
     virtual std::string ModelName() const = 0;
     virtual std::string ModelURL() const = 0;
+
+  protected:
+    Poco::Logger &logger() const { return Poco::Logger::get(ModelName()); }
 
   private:
     Poco::Int64 local_id_;

@@ -5,6 +5,7 @@
 #include <sstream>
 
 #include "./formatter.h"
+#include "./database.h"
 
 #include "Poco/Timestamp.h"
 #include "Poco/DateTime.h"
@@ -29,6 +30,17 @@ bool BaseModel::NeedsPUT() const {
 bool BaseModel::NeedsDELETE() const {
     // TE is deleted, needs a DELETE on server side
     return id_ && (deleted_at_ > 0);
+}
+
+bool BaseModel::NeedsToBeSaved() const {
+  return !local_id_ || dirty_ || guid_.empty();
+}
+
+void BaseModel::EnsureGUID() {
+    if (!guid_.empty()) {
+        return;
+    }
+    SetGUID(Database::GenerateGUID());
 }
 
 void BaseModel::SetDeletedAt(const Poco::UInt64 value) {

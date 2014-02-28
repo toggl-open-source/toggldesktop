@@ -26,7 +26,8 @@ namespace kopsik {
       , duration_in_seconds_(0)
       , description_("")
       , duronly_(false)
-      , created_with_("") {}
+      , created_with_("")
+      , project_guid_("") {}
     virtual ~TimeEntry() {}
 
     std::string Tags() const;
@@ -84,6 +85,9 @@ namespace kopsik {
     std::string ModelName() const { return "time_entry"; }
     std::string ModelURL() const { return "/api/v8/time_entries"; }
 
+    std::string ProjectGUID() const { return project_guid_; }
+    void SetProjectGUID(const std::string value);
+
   private:
     Poco::UInt64 wid_;
     Poco::UInt64 pid_;
@@ -95,6 +99,7 @@ namespace kopsik {
     std::string description_;
     bool duronly_;
     std::string created_with_;
+    std::string project_guid_;
 
     bool setDurationStringHHMMSS(const std::string value);
     bool setDurationStringHHMM(const std::string value);
