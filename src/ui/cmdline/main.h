@@ -56,6 +56,8 @@ namespace command_line_client {
             const char *version) {
     }
 
+    void main_online_callback() {}
+
     class Main : public Poco::Util::Application, Poco::ErrorHandler {
     public:
         Main() : ctx(0) {
@@ -66,7 +68,8 @@ namespace command_line_client {
                 "0.0.1",
                 main_change_callback,
                 main_on_error_callback,
-                main_check_updates_callback);
+                main_check_updates_callback,
+                main_online_callback);
             poco_assert(ctx);
         }
         ~Main() {

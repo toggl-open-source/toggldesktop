@@ -50,11 +50,14 @@ namespace kopsik {
         const char *version) {
     }
 
+    void in_test_online_callback() {}
+
     void *create_test_context() {
         return kopsik_context_init("tests", "0.1",
             in_test_change_callback,
             in_test_on_error_callback,
-            in_test_check_updates_callback);
+            in_test_check_updates_callback,
+            in_test_online_callback);
     }
 
     void wipe_test_db() {
