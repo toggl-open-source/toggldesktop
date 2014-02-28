@@ -170,6 +170,8 @@ void Context::sync(const bool full_sync) {
     on_error_callback_(err.c_str());
     return;
   }
+
+  on_online_callback_();
 }
 
 void Context::FullSync() {
@@ -595,6 +597,9 @@ void Context::SetOnErrorCallback(KopsikErrorCallback cb) {
 }
 void Context::SetCheckUpdatesCallback(KopsikCheckUpdateCallback cb) {
     check_updates_callback_ = cb;
+}
+void Context::SetOnOnlineCallback(KopsikOnOnlineCallback cb) {
+    on_online_callback_ = cb;
 }
 
 void Context::SetAPIURL(const std::string value) {

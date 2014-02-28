@@ -36,4 +36,7 @@ NSString *const kUICommandEditRunningTimeEntry = @"Edit Running Time Entry";
 NSString *const kUIDurationClicked = @"duration";
 NSString *const kUIDescriptionClicked = @"description";
 
+NSString *const kUIStateOffline = @"Offline";
+NSString *const kUIStateOnline = @"Online";
+
 float const kThrottleSeconds = 0.1;

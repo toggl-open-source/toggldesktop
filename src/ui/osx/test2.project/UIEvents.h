@@ -38,5 +38,8 @@ extern NSString *const kUICommandEditRunningTimeEntry;
 extern NSString *const kUIDurationClicked;
 extern NSString *const kUIDescriptionClicked;
 
+extern NSString *const kUIStateOffline;
+extern NSString *const kUIStateOnline;
+
 
 extern float const kThrottleSeconds;

@@ -1,3 +1,4 @@
+
 // Copyright 2014 Toggl Desktop developers.
 
 #ifndef SRC_JSON_H_
@@ -52,56 +53,58 @@ namespace kopsik {
     User *model,
     JSONNODE *list,
     const bool full_sync);
-  void LoadUserProjectFromJSONNode(
-    User *model,
-    JSONNODE *data,
-    std::set<Poco::UInt64> *alive);
   void LoadUserTagsFromJSONNode(
     User *user,
     JSONNODE *list,
     const bool full_sync);
-  void LoadUserTagFromJSONNode(
-    User *user,
-    JSONNODE *data,
-    std::set<Poco::UInt64> *alive);
   void LoadUserClientsFromJSONNode(
     User *user,
     JSONNODE *list,
     const bool full_sync);
-  void LoadUserClientFromJSONNode(
-    User *user,
-    JSONNODE *data,
-    std::set<Poco::UInt64> *alive);
   void LoadUserTasksFromJSONNode(
     User *user,
     JSONNODE *list,
     const bool full_sync);
-  void LoadUserTaskFromJSONNode(
-    User *user,
-    JSONNODE *data,
-    std::set<Poco::UInt64> *alive);
   void LoadUserTimeEntriesFromJSONNode(
     User *user,
     JSONNODE *list,
     const bool full_sync);
-  void LoadUserTimeEntryFromJSONNode(
-    User *user,
-    JSONNODE *data,
-    std::set<Poco::UInt64> *alive);
   void LoadUserWorkspacesFromJSONNode(
     User *user,
     JSONNODE *list,
     const bool full_sync);
-  void LoadUserWorkspaceFromJSONNode(
-    User *user,
-    JSONNODE *data,
-    std::set<Poco::UInt64> *alive);
   void LoadUserUpdateFromJSONNode(
     User *user,
     JSONNODE *data);
   void LoadUserUpdateFromJSONString(
     User *user,
     const std::string json);
+
+  // FIXME: check the alive pointers are not asserted
+  void loadUserProjectFromJSONNode(
+    User *model,
+    JSONNODE *data,
+    std::set<Poco::UInt64> *alive = 0);
+  void loadUserWorkspaceFromJSONNode(
+    User *user,
+    JSONNODE *data,
+    std::set<Poco::UInt64> *alive = 0);
+  void loadUserTagFromJSONNode(
+    User *user,
+    JSONNODE *data,
+    std::set<Poco::UInt64> *alive = 0);
+  void loadUserClientFromJSONNode(
+    User *user,
+    JSONNODE *data,
+    std::set<Poco::UInt64> *alive = 0);
+  void loadUserTaskFromJSONNode(
+    User *user,
+    JSONNODE *data,
+    std::set<Poco::UInt64> *alive = 0);
+  void loadUserTimeEntryFromJSONNode(
+    User *user,
+    JSONNODE *data,
+    std::set<Poco::UInt64> *alive = 0);
 
   void LoadTimeEntryFromJSONNode(
     TimeEntry *model,

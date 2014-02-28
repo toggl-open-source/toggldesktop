@@ -122,6 +122,7 @@
     NSLog(@"Error: %@", msg);
 
     if (kopsik_is_networking_error([msg UTF8String])) {
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateOffline object:nil];
       return;
     }
     

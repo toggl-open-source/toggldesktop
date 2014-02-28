@@ -12,6 +12,10 @@
 @property (strong) NSStatusItem *statusItem;
 @property (strong) NSImage* onImage;
 @property (strong) NSImage* offImage;
+@property (strong) NSImage* offlineOnImage;
+@property (strong) NSImage* offlineOffImage;
+@property (strong) NSImage* currentOnImage;
+@property (strong) NSImage* currentOffImage;
 - (IBAction)onPreferencesMenuItem:(id)sender;
 - (IBAction)onAboutMenuItem:(id)sender;
 - (IBAction)onSyncMenuItem:(id)sender;

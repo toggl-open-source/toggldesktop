@@ -46,6 +46,8 @@ typedef void (*KopsikCheckUpdateCallback)(
   const char *url,
   const char *version);
 
+typedef void (*KopsikOnOnlineCallback)();
+
 // Generic view item
 
 typedef struct {
@@ -64,7 +66,8 @@ KOPSIK_EXPORT void *kopsik_context_init(
   const char *app_version,
   KopsikViewItemChangeCallback change_callback,
   KopsikErrorCallback on_error_callback,
-  KopsikCheckUpdateCallback check_updates_callback);
+  KopsikCheckUpdateCallback check_updates_callback,
+  KopsikOnOnlineCallback on_online_callback);
 
 KOPSIK_EXPORT void kopsik_context_shutdown(
   void *context);
