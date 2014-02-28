@@ -171,6 +171,14 @@ int blink = 0;
                                            selector:@selector(eventHandler:)
                                                name:kUIEventSettingsChanged
                                              object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(eventHandler:)
+                                               name:kUIStateOffline
+                                             object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(eventHandler:)
+                                               name:kUIStateOnline
+                                             object:nil];
 
   char err[KOPSIK_ERR_LEN];
   KopsikUser *user = kopsik_user_init();
@@ -453,19 +461,35 @@ int blink = 0;
     [self splitTimeEntryAfterIdle:notification.object];
   } else if ([notification.name isEqualToString:kUICommandStopAt]) {
     [self stopTimeEntryAfterIdle:notification.object];
+  } else if ([notification.name isEqualToString:kUIStateOffline]) {
+    [self offlineMode:true];
+  } else if ([notification.name isEqualToString:kUIStateOnline]) {
+    [self offlineMode:false];
   }
   [self updateStatus];
+}
+
+- (void)offlineMode:(bool)offline {
+  if (offline){
+    NSLog(@"offline -> TRUE");
+    self.currentOnImage = self.offlineOnImage;
+    self.currentOffImage = self.offlineOffImage;
+  } else {
+    NSLog(@"offline -> FALSE");
+    self.currentOnImage = self.onImage;
+    self.currentOffImage = self.offImage;
+  }
 }
 
 - (void)updateStatus {
   if (self.lastKnownRunningTimeEntry == nil) {
     [self.statusItem setTitle:@""];
-    [self.statusItem setImage:self.offImage];
+    [self.statusItem setImage:self.currentOffImage];
     [self.runningTimeEntryMenuItem setTitle:@"Timer is not running."];
     return;
   }
   
-  [self.statusItem setImage:self.onImage];
+  [self.statusItem setImage:self.currentOnImage];
   NSString *msg = [NSString stringWithFormat:@"Running: %@",
                     self.lastKnownRunningTimeEntry.Description];
   [self.runningTimeEntryMenuItem setTitle:msg];
@@ -516,13 +540,19 @@ int blink = 0;
   
   self.onImage = [NSImage imageNamed:@"on"];
   self.offImage = [NSImage imageNamed:@"off"];
+
+  self.offlineOnImage = [NSImage imageNamed:@"offline_on"];
+  self.offlineOffImage = [NSImage imageNamed:@"offline_off"];
+
+  self.currentOnImage = self.onImage;
+  self.currentOffImage = self.offImage;
   
   self.statusItem = [bar statusItemWithLength:NSVariableStatusItemLength];
   [self.statusItem setTitle:@""];
   [self.statusItem setHighlightMode:YES];
   [self.statusItem setEnabled:YES];
   [self.statusItem setMenu:menu];
-  [self.statusItem setImage:self.offImage];
+  [self.statusItem setImage:self.currentOffImage];
 
   self.statusItemTimer = [NSTimer
     scheduledTimerWithTimeInterval:1.0
@@ -802,7 +832,8 @@ const NSString *appName = @"osx_native_app";
                             [version UTF8String],
                             on_model_change,
                             handle_error,
-                            about_updates_checked);
+                            about_updates_checked,
+                            application_online);
                             
   NSLog(@"Version %@", version);
 
@@ -1124,6 +1155,10 @@ void about_updates_checked(
   update.version = [NSString stringWithUTF8String:version];
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUpdateAvailable
                                                       object:update];
+}
+
+void application_online() {
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateOnline object:nil];
 }
 
 @end

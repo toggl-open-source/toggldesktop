@@ -79,6 +79,7 @@ class Context {
     void SetChangeCallback(KopsikViewItemChangeCallback cb);
     void SetOnErrorCallback(KopsikErrorCallback cb);
     void SetCheckUpdatesCallback(KopsikCheckUpdateCallback cb);
+    void SetOnOnlineCallback(KopsikOnOnlineCallback cb);
 
     // Apply proxy settings
     kopsik::error ConfigureProxy();
@@ -246,6 +247,7 @@ class Context {
     KopsikViewItemChangeCallback change_callback_;
     KopsikErrorCallback on_error_callback_;
     KopsikCheckUpdateCallback check_updates_callback_;
+    KopsikOnOnlineCallback on_online_callback_;
 
     // Tasks are scheduled at:
     Poco::Timestamp next_full_sync_at_;

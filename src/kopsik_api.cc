@@ -96,7 +96,8 @@ void *kopsik_context_init(
     const char *app_version,
     KopsikViewItemChangeCallback change_callback,
     KopsikErrorCallback on_error_callback,
-    KopsikCheckUpdateCallback check_updates_callback) {
+    KopsikCheckUpdateCallback check_updates_callback,
+    KopsikOnOnlineCallback on_online_callback) {
   poco_assert(app_name);
   poco_assert(app_version);
 
@@ -106,6 +107,7 @@ void *kopsik_context_init(
   ctx->SetChangeCallback(change_callback);
   ctx->SetOnErrorCallback(on_error_callback);
   ctx->SetCheckUpdatesCallback(check_updates_callback);
+  ctx->SetOnOnlineCallback(on_online_callback);
 
   ctx->SetAPIURL("https://www.toggl.com");
   ctx->SetTimelineUploadURL("https://timeline.toggl.com");

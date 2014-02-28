@@ -95,6 +95,8 @@
 		74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */; };
 		74FD8CE018A8EF8300F7DB80 /* TFDatePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74FD8CDF18A8EF8300F7DB80 /* TFDatePicker.framework */; };
 		74FD8CE118A8EFDA00F7DB80 /* TFDatePicker.framework in Resources */ = {isa = PBXBuildFile; fileRef = 74FD8CDC18A8EEE200F7DB80 /* TFDatePicker.framework */; };
+		95DBF8CC18BF7A910021FB41 /* offline_off.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CA18BF7A910021FB41 /* offline_off.pdf */; };
+		95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CB18BF7A910021FB41 /* offline_on.pdf */; };
 		95F5657A18B38E3D0052DE9B /* EditNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 95F5657918B38E3D0052DE9B /* EditNotification.m */; };
 		C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */; };
 		C5DA1FB917F19647001C4565 /* Kopsik.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA1FB817F19647001C4565 /* Kopsik.dylib */; };
@@ -278,6 +280,8 @@
 		74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldClickable.m; sourceTree = "<group>"; };
 		74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TFDatePicker.xcodeproj; path = ../../../../third_party/TFDatePicker/TFDatePicker/TFDatePicker.xcodeproj; sourceTree = "<group>"; };
 		74FD8CDF18A8EF8300F7DB80 /* TFDatePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TFDatePicker.framework; path = ../../../../third_party/TFDatePicker/TFDatePicker/build/Release/TFDatePicker.framework; sourceTree = "<group>"; };
+		95DBF8CA18BF7A910021FB41 /* offline_off.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = offline_off.pdf; sourceTree = "<group>"; };
+		95DBF8CB18BF7A910021FB41 /* offline_on.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = offline_on.pdf; sourceTree = "<group>"; };
 		95F5657818B38E3D0052DE9B /* EditNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditNotification.h; sourceTree = "<group>"; };
 		95F5657918B38E3D0052DE9B /* EditNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditNotification.m; sourceTree = "<group>"; };
 		C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCell.h; sourceTree = "<group>"; };
@@ -326,6 +330,8 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
+				95DBF8CA18BF7A910021FB41 /* offline_off.pdf */,
+				95DBF8CB18BF7A910021FB41 /* offline_on.pdf */,
 				74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */,
 				74B680A8180759C300B697AA /* Kopsik.xcodeproj */,
 				74E3CDB117FBABE400C3ADD3 /* bugsnag */,
@@ -682,6 +688,7 @@
 				69FC180517E6534400B96425 /* Credits.rtf in Resources */,
 				74F1070218993FFE00E93BD5 /* FeedbackWindowController.xib in Resources */,
 				7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */,
+				95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */,
 				69FC180B17E6534500B96425 /* MainMenu.xib in Resources */,
 				C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */,
 				74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
@@ -689,6 +696,7 @@
 				7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */,
 				748664D2188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib in Resources */,
 				744E126717F22AB900ABE72A /* app.icns in Resources */,
+				95DBF8CC18BF7A910021FB41 /* offline_off.pdf in Resources */,
 				74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
 				74AA9475180909F50000539F /* GTMOAuth2Window.xib in Resources */,
 			);
