@@ -1,0 +1,74 @@
+*.bak
+*.gcno
+*.o
+*.pyc
+cppcheck
+cppcheck.exe
+dmake
+reduce
+reduce.exe
+tags
+testrunner
+testrunner.exe
+tools/daca2*.html
+tools/dmake
+tools/errmsg
+tools/extracttests
+
+# VS generated files
+*.aps
+*.idb
+*.ncb
+*.obj
+*.opensdf
+*.orig
+*.pdb
+*.sdf
+*.suo
+*.user
+
+# VS build folders
+bin/
+Build/
+BuildTmp/
+cli/temp/
+ipch/
+lib/temp/
+test/temp/
+
+# XCode build folders and files
+*.mode[0-9]v[0-9]
+*.pbxuser
+build/
+
+# GUI build folders
+gui/debug/
+gui/release/
+gui/temp/
+
+# Other (generated) GUI files
+gui/*.qm
+gui/cppcheck-gui
+gui/gui.sln
+gui/gui.vcproj
+gui/Makefile
+gui/Makefile.debug
+gui/Makefile.release
+gui/qrc_gui.cpp
+
+# Doxygen output folder
+doxyoutput/
+
+# qmake generated
+htmlreport/.tox/
+htmlreport/MANIFEST
+
+# Backup files and stuff from patches
+*.orig
+*.rej
+*~
+
+# kdevelop 4.x
+*.kdev4
+
+htdocs/node_modules

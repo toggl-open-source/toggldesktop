@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+  <?ifndef Platform ?> <!-- if platform NOT defined -->
+    <?define Platform = "x86" ?>
+  <?endif ?>
+
+  <?define CliBuildDir = "..\bin" ?>
+  <?define GuiBuildDir = "..\bin" ?>
+  <?define TranslationsDir = "..\gui" ?>
+  <?define CfgsDir = "..\cfg" ?>
+  <?define HelpDir = "..\gui\help" ?>
+  <?define QtDllDir = "..\bin" ?>
+  <?define CrtMergeModule = "$(env.CommonProgramFiles)\Merge Modules\Microsoft_VC100_CRT_x86.msm" ?>
+</Include>

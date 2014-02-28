@@ -1,0 +1,1075 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<book>
+  <bookinfo>
+    <title>Cppcheck 1.64 dev</title>
+
+    <date>2013-12-23</date>
+  </bookinfo>
+
+  <chapter>
+    <title>Introduction</title>
+
+    <para>Cppcheck is an analysis tool for C/C++ code. Unlike C/C++ compilers
+    and many other analysis tools, it doesn't detect syntax errors. Cppcheck
+    only detects the types of bugs that the compilers normally fail to detect.
+    The goal is no false positives.</para>
+
+    <para>Supported code and platforms:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>You can check non-standard code that includes various compiler
+        extensions, inline assembly code, etc.</para>
+      </listitem>
+
+      <listitem>
+        <para>Cppcheck should be compilable by any C++ compiler that handles
+        the latest C++ standard.</para>
+      </listitem>
+
+      <listitem>
+        <para>Cppcheck should work on any platform that has sufficient CPU and
+        memory.</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>Accuracy</para>
+
+    <para>Please understand that there are limits of Cppcheck. Cppcheck is
+    rarely wrong about reported errors. But there are many bugs that it
+    doesn't detect.</para>
+
+    <para>You will find more bugs in your software by testing your software
+    carefully, than by using Cppcheck. You will find more bugs in your
+    software by instrumenting your software, than by using Cppcheck. But
+    Cppcheck can still detect some of the bugs that you miss when testing and
+    instrumenting your software.</para>
+  </chapter>
+
+  <chapter>
+    <title>Getting started</title>
+
+    <section>
+      <title>First test</title>
+
+      <para>Here is a simple code</para>
+
+      <programlisting>int main()
+{
+    char a[10];
+    a[10] = 0;
+    return 0;
+}</programlisting>
+
+      <para>If you save that into <filename>file1.c</filename> and
+      execute:</para>
+
+      <programlisting>cppcheck file1.c</programlisting>
+
+      <para>The output from cppcheck will then be:</para>
+
+      <programlisting>Checking file1.c...
+[file1.c:4]: (error) Array 'a[10]' index 10 out of bounds</programlisting>
+    </section>
+
+    <section>
+      <title>Checking all files in a folder</title>
+
+      <para>Normally a program has many source files. And you want to check
+      them all. Cppcheck can check all source files in a directory:</para>
+
+      <programlisting>cppcheck path</programlisting>
+
+      <para>If "path" is a folder then cppcheck will check all source files in
+      this folder.</para>
+
+      <programlisting>Checking path/file1.cpp...
+1/2 files checked 50% done
+Checking path/file2.cpp...
+2/2 files checked 100% done</programlisting>
+    </section>
+
+    <section>
+      <title>Excluding a file or folder from checking</title>
+
+      <para>To exclude a file or folder, there are two options.</para>
+
+      <para>The first option is to only provide the paths and files you want
+      to check.</para>
+
+      <programlisting>cppcheck src/a src/b</programlisting>
+
+      <para>All files under <filename class="directory">src/a</filename> and
+      <filename class="directory">src/b</filename> are then checked.</para>
+
+      <para>The second option is to use <parameter
+      class="command">-i</parameter>, with it you specify files/paths to
+      ignore. With this command no files in <filename
+      class="directory">src/c</filename> are checked:</para>
+
+      <programlisting>cppcheck -isrc/c src</programlisting>
+    </section>
+
+    <section>
+      <title>Severities</title>
+
+      <para>The possible severities for messages are:</para>
+
+      <variablelist>
+        <varlistentry>
+          <term>error</term>
+
+          <listitem>
+            <para>used when bugs are found</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>warning</term>
+
+          <listitem>
+            <para>suggestions about defensive programming to prevent
+            bugs</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>style</term>
+
+          <listitem>
+            <para>stylistic issues related to code cleanup (unused functions,
+            redundant code, constness, and such)</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>performance</term>
+
+          <listitem>
+            <para>Suggestions for making the code faster. These suggestions
+            are only based on common knowledge. It is not certain you'll get
+            any measurable difference in speed by fixing these
+            messages.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>portability</term>
+
+          <listitem>
+            <para>portability warnings. 64-bit portability. code might work
+            different on different compilers. etc.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>information</term>
+
+          <listitem>
+            <para>Informational messages about checking problems.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </section>
+
+    <section>
+      <title>Enable messages</title>
+
+      <para>By default only <parameter class="command">error</parameter>
+      messages are shown. Through the <parameter
+      class="command">--enable</parameter> command more checks can be
+      enabled.</para>
+
+      <programlisting># enable warning messages
+cppcheck --enable=warning file.c
+
+# enable performance messages
+cppcheck --enable=performance file.c
+
+# enable information messages
+cppcheck --enable=information file.c
+
+# For historical reasons, --enable=style enables warning, performance,
+# portability and style messages. These are all reported as "style" when
+# using the old xml format.
+cppcheck --enable=style file.c
+
+# enable warning and information messages
+cppcheck --enable=warning,information file.c
+
+# enable unusedFunction checking. This is not enabled by --enable=style
+# because it doesn't work well on libraries.
+cppcheck --enable=unusedFunction file.c
+
+# enable all messages
+cppcheck --enable=all</programlisting>
+
+      <para>Please note that <literal>--enable=unusedFunction</literal> should
+      only be used when the whole program is scanned. And therefore
+      <literal>--enable=all</literal> should also only be used when the whole
+      program is scanned. The reason is that the unusedFunction checking will
+      warn if a function is not called. There will be noise if function calls
+      are not seen.</para>
+
+      <section>
+        <title>Inconclusive checks</title>
+
+        <para>By default Cppcheck only writes error messages if it is certain.
+        With <parameter class="command">--inconclusive</parameter> error
+        messages will also be written when the analysis is
+        inconclusive.</para>
+
+        <programlisting>cppcheck --inconclusive path</programlisting>
+
+        <para>This can of course cause false warnings, it might be reported
+        that there are bugs even though there are not. Only use this command
+        if false warnings are acceptable.</para>
+      </section>
+    </section>
+
+    <section>
+      <title>Saving results in file</title>
+
+      <para>Many times you will want to save the results in a file. You can
+      use the normal shell redirection for piping error output to a
+      file.</para>
+
+      <programlisting>cppcheck file1.c 2&gt; err.txt</programlisting>
+    </section>
+
+    <section>
+      <title>Multithreaded checking</title>
+
+      <para>The option -j is used to specify the number of threads you want to
+      use. For example, to use 4 threads to check the files in a
+      folder:</para>
+
+      <programlisting>cppcheck -j 4 path</programlisting>
+    </section>
+  </chapter>
+
+  <chapter id="preprocessor-configurations">
+    <title>Preprocessor configurations</title>
+
+    <para>By default Cppcheck will check all preprocessor configurations
+    (except those that have #error in them).</para>
+
+    <para>You can use -D to change this. When you use -D, cppcheck will by
+    default only check the given configuration and nothing else. This is how
+    compilers work. But you can use <literal>--force</literal> or
+    <literal><literal>--max-configs</literal></literal> to override the number
+    of configurations.</para>
+
+    <programlisting># check all configurations
+cppcheck file.c
+
+# only check the configuration A
+cppcheck -DA file.c
+
+# check all configurations when macro A is defined
+cppcheck -DA --force file.c</programlisting>
+
+    <para>Another useful flag might be -U. It undefines a symbol. Example
+    usage:</para>
+
+    <programlisting>cppcheck -UX file.c</programlisting>
+
+    <para>That will mean that X is not defined. Cppcheck will not check what
+    happens when X is defined.</para>
+  </chapter>
+
+  <chapter>
+    <title>XML output</title>
+
+    <para>Cppcheck can generate the output in <literal>XML</literal> format.
+    There is an old <literal>XML</literal> format (version 1) and a new
+    <literal>XML</literal> format (version 2). Please use the new version if
+    you can.</para>
+
+    <para>The old version is kept for backwards compatibility only. It will
+    not be changed. But it will likely be removed someday. Use
+    <parameter>--xml</parameter> to enable this format.</para>
+
+    <para>The new version fixes a few problems with the old format. The new
+    format will probably be updated in future versions of cppcheck with new
+    attributes and elements. A sample command to check a file and output
+    errors in the new <literal>XML</literal> format:</para>
+
+    <para><programlisting>cppcheck --xml-version=2 file1.cpp</programlisting>Here
+    is a sample version 2 report:</para>
+
+    <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;results version="2"&gt;
+  &lt;cppcheck version="1.53"&gt;
+  &lt;errors&gt;
+    &lt;error id="someError" severity="error" msg="short error text"
+           verbose="long error text" inconclusive="true"&gt;
+      &lt;location file="file.c" line="1"/&gt;
+    &lt;/error&gt;
+  &lt;/errors&gt;
+&lt;/results&gt;</programlisting>
+
+    <section>
+      <title>The &lt;error&gt; element</title>
+
+      <para>Each error is reported in a <literal>&lt;error&gt;</literal>
+      element. Attributes:</para>
+
+      <variablelist>
+        <varlistentry>
+          <term><sgmltag class="attribute">id</sgmltag></term>
+
+          <listitem>
+            <para>id of error. These are always valid symbolnames.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><sgmltag class="attribute">severity</sgmltag></term>
+
+          <listitem>
+            <para>either: <literal>error</literal>,
+            <literal>warning</literal>, <literal>style</literal>,
+            <literal>performance</literal>, <literal>portability</literal> or
+            <literal>information</literal></para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><sgmltag class="attribute">msg</sgmltag></term>
+
+          <listitem>
+            <para>the error message in short format</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><sgmltag>verbose</sgmltag></term>
+
+          <listitem>
+            <para>the error message in long format.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><sgmltag>inconclusive</sgmltag></term>
+
+          <listitem>
+            <para>This attribute is only used when the message is
+            inconclusive.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </section>
+
+    <section>
+      <title>The &lt;location&gt; element</title>
+
+      <para>All locations related to an error is listed with
+      <literal>&lt;location&gt;</literal> elements. The primary location is
+      listed first.</para>
+
+      <para>Attributes:</para>
+
+      <variablelist>
+        <varlistentry>
+          <term><sgmltag class="attribute">file</sgmltag></term>
+
+          <listitem>
+            <para>filename. Both relative and absolute paths are
+            possible</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><sgmltag class="attribute">line</sgmltag></term>
+
+          <listitem>
+            <para>a number</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><sgmltag>msg</sgmltag></term>
+
+          <listitem>
+            <para>this attribute doesn't exist yet. But in the future we may
+            add a short message for each location.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </section>
+  </chapter>
+
+  <chapter>
+    <title>Reformatting the output</title>
+
+    <para>If you want to reformat the output so it looks different you can use
+    templates.</para>
+
+    <para>To get Visual Studio compatible output you can use <parameter
+    class="command">--template=vs</parameter>:</para>
+
+    <programlisting>cppcheck --template=vs gui/test.cpp</programlisting>
+
+    <para>This output will look like this:</para>
+
+    <programlisting>Checking gui/test.cpp...
+gui/test.cpp(31): error: Memory leak: b
+gui/test.cpp(16): error: Mismatching allocation and deallocation: k</programlisting>
+
+    <para>To get gcc compatible output you can use <parameter
+    class="command">--template=gcc</parameter>:</para>
+
+    <programlisting>cppcheck --template=gcc gui/test.cpp</programlisting>
+
+    <para>The output will look like this:</para>
+
+    <programlisting>Checking gui/test.cpp...
+gui/test.cpp:31: error: Memory leak: b
+gui/test.cpp:16: error: Mismatching allocation and deallocation: k</programlisting>
+
+    <para>You can write your own pattern (for example a comma-separated
+    format):</para>
+
+    <programlisting>cppcheck --template="{file},{line},{severity},{id},{message}" gui/test.cpp</programlisting>
+
+    <para>The output will look like this:</para>
+
+    <programlisting>Checking gui/test.cpp...
+gui/test.cpp,31,error,memleak,Memory leak: b
+gui/test.cpp,16,error,mismatchAllocDealloc,Mismatching allocation and deallocation: k</programlisting>
+
+    <para>The following format specifiers are supported:</para>
+
+    <variablelist>
+      <varlistentry>
+        <term>callstack</term>
+
+        <listitem>
+          <para>callstack - if available</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>file</term>
+
+        <listitem>
+          <para>filename</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>id</term>
+
+        <listitem>
+          <para>message id</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>line</term>
+
+        <listitem>
+          <para>line number</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>message</term>
+
+        <listitem>
+          <para>verbose message text</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>severity</term>
+
+        <listitem>
+          <para>severity</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <para>The escape sequences \b (backspace), \n (newline), \r (formfeed) and
+    \t (horizontal tab) are supported.</para>
+  </chapter>
+
+  <chapter>
+    <title>Suppressions</title>
+
+    <para>If you want to filter out certain errors you can suppress
+    these.</para>
+
+    <section>
+      <title>Suppressing a certain error type</title>
+
+      <para>You can suppress certain types of errors. The format for such a
+      suppression is one of:</para>
+
+      <programlisting>[error id]:[filename]:[line]
+[error id]:[filename2]
+[error id]</programlisting>
+
+      <para>The <replaceable>error id</replaceable> is the id that you want to
+      suppress. The easiest way to get it is to use the <parameter
+      class="command">--xml</parameter> command line flag. Copy and paste the
+      <replaceable>id</replaceable> string from the XML output. This may be
+      <literal>*</literal> to suppress all warnings (for a specified file or
+      files).</para>
+
+      <para>The <replaceable>filename</replaceable> may include the wildcard
+      characters <literal>*</literal> or <literal>?</literal>, which match any
+      sequence of characters or any single character respectively. It is
+      recommended that you use "/" as path separator on all operating
+      systems.</para>
+
+      <section>
+        <title>Command line suppression</title>
+
+        <para>The <parameter class="command">--suppress=</parameter> command
+        line option is used to specify suppressions on the command line.
+        Example:</para>
+
+        <programlisting>cppcheck --suppress=memleak:src/file1.cpp src/</programlisting>
+      </section>
+
+      <section>
+        <title>Listing suppressions in a file</title>
+
+        <para>You can create a suppressions file. Example:</para>
+
+        <programlisting>// suppress memleak and exceptNew errors in the file src/file1.cpp
+memleak:src/file1.cpp
+exceptNew:src/file1.cpp
+
+// suppress all uninitvar errors in all files
+uninitvar</programlisting>
+
+        <para>Note that you may add empty lines and comments in the
+        suppressions file.</para>
+
+        <para>You can use the suppressions file like this:</para>
+
+        <programlisting>cppcheck --suppressions suppressions.txt src/</programlisting>
+      </section>
+    </section>
+
+    <section>
+      <title>Inline suppressions</title>
+
+      <para>Suppressions can also be added directly in the code by adding
+      comments that contain special keywords. Before adding such comments,
+      consider that the code readability is sacrificed a little.</para>
+
+      <para>This code will normally generate an error message:</para>
+
+      <programlisting>void f() {
+    char arr[5];
+    arr[10] = 0;
+}</programlisting>
+
+      <para>The output is:</para>
+
+      <programlisting># cppcheck test.c
+Checking test.c...
+[test.c:3]: (error) Array 'arr[5]' index 10 out of bounds</programlisting>
+
+      <para>To suppress the error message, a comment can be added:</para>
+
+      <programlisting>void f() {
+    char arr[5];
+
+    // cppcheck-suppress arrayIndexOutOfBounds
+    arr[10] = 0;
+}</programlisting>
+
+      <para>Now the --inline-suppr flag can be used to suppress the warning.
+      No error is reported when invoking cppcheck this way:</para>
+
+      <programlisting>cppcheck --inline-suppr test.c</programlisting>
+    </section>
+  </chapter>
+
+  <chapter>
+    <title>Rules</title>
+
+    <para>You can define custom rules using regular expressions.</para>
+
+    <para>These rules can not perform sophisticated analysis of the code. But
+    they give you an easy way to check for various simple patterns in the
+    code.</para>
+
+    <para>To get started writing rules, see the related articles here:</para>
+
+    <para><uri>http://sourceforge.net/projects/cppcheck/files/Articles/</uri></para>
+
+    <para>The file format for rules is:</para>
+
+    <programlisting>&lt;?xml version="1.0"?&gt;
+&lt;rule&gt;
+  &lt;tokenlist&gt;LIST&lt;/tokenlist&gt;
+  &lt;pattern&gt;PATTERN&lt;/pattern&gt;
+  &lt;message&gt;
+    &lt;id&gt;ID&lt;/id&gt;
+    &lt;severity&gt;SEVERITY&lt;/severity&gt;
+    &lt;summary&gt;SUMMARY&lt;/summary&gt;
+  &lt;/message&gt;
+&lt;/rule&gt;</programlisting>
+
+    <section>
+      <title>&lt;tokenlist&gt;</title>
+
+      <para>The <literal>&lt;tokenlist&gt;</literal> element is optional. With
+      this element you can control what tokens are checked. The
+      <literal>LIST</literal> can be either <literal>define</literal>,
+      <literal>raw</literal>, <literal>normal</literal> or
+      <literal>simple</literal>.</para>
+
+      <variablelist>
+        <varlistentry>
+          <term>define</term>
+
+          <listitem>
+            <para>used to check #define preprocessor statements.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>raw</term>
+
+          <listitem>
+            <para>used to check the preprocessor output.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>normal</term>
+
+          <listitem>
+            <para>used to check the <literal>normal</literal> token list.
+            There are some simplifications.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>simple</term>
+
+          <listitem>
+            <para>used to check the simple token list. All simplifications are
+            used. Most Cppcheck checks use the simple token list.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+
+      <para>If there is no &lt;tokenlist&gt; element then
+      <literal>simple</literal> is used automatically.</para>
+    </section>
+
+    <section>
+      <title>&lt;pattern&gt;</title>
+
+      <para>The <literal>PATTERN</literal> is the
+      <literal>PCRE</literal>-compatible regular expression that will be
+      executed.</para>
+    </section>
+
+    <section>
+      <title>&lt;id&gt;</title>
+
+      <para>The ID specify the user-defined message id.</para>
+    </section>
+
+    <section>
+      <title>&lt;severity&gt;</title>
+
+      <para>The <literal>SEVERITY</literal> must be one of the
+      <literal>Cppcheck</literal> severities: <literal>information</literal>,
+      <literal>performance</literal>, <literal>portability</literal>,
+      <literal>style</literal>, <literal>warning</literal>, or
+      <literal>error</literal>.</para>
+    </section>
+
+    <section>
+      <title>&lt;summary&gt;</title>
+
+      <para>Optional. The summary for the message. If no summary is given, the
+      matching tokens is written.</para>
+    </section>
+  </chapter>
+
+  <chapter>
+    <title>Library configuration</title>
+
+    <para>When external libraries are used, such as windows/posix/gtk/qt/etc,
+    <literal>Cppcheck</literal> doesn't know how the external functions
+    behave. <literal>Cppcheck</literal> then fails to detect various problems
+    such as leaks, buffer overflows, possible null pointer dereferences, etc.
+    But this can be fixed with configuration files.</para>
+
+    <para>If you create a configuration file for a popular library, we would
+    appreciate if you upload it to us.</para>
+
+    <section>
+      <title>Memory/resource leaks</title>
+
+      <para>Here is an example program:</para>
+
+      <para><programlisting>void test()
+{
+    HPEN pen = CreatePen(PS_SOLID, 1, RGB(255,0,0));
+}</programlisting></para>
+
+      <para>The code example above has a resource leak -
+      <literal>CreatePen()</literal> is a windows function that creates a pen.
+      However Cppcheck doesn't assume that return values from functions must
+      be freed. There is no error message:</para>
+
+      <programlisting># cppcheck pen1.c
+Checking pen1.c...</programlisting>
+
+      <para>If you provide a windows configuration file then
+      <literal>Cppcheck</literal> detects the bug:</para>
+
+      <programlisting># cppcheck --library=windows.cfg pen1.c
+Checking pen1.c...
+[pen1.c:3]: (error) Resource leak: pen</programlisting>
+
+      <para>Here is a minimal <literal>windows.cfg</literal> file:</para>
+
+      <programlisting>&lt;?xml version="1.0"?&gt;
+&lt;def&gt;
+  &lt;resource&gt;
+    &lt;alloc&gt;CreatePen&lt;/alloc&gt;
+    &lt;dealloc&gt;DeleteObject&lt;/dealloc&gt;
+  &lt;/resource&gt;
+&lt;/def&gt;</programlisting>
+    </section>
+
+    <section>
+      <title>Function argument: Uninitialized memory</title>
+
+      <para>Here is an example program:</para>
+
+      <programlisting>void test()
+{
+    char buffer1[1024];
+    char buffer2[1024];
+    CopyMemory(buffer1, buffer2, 1024);
+}</programlisting>
+
+      <para>The bug here is that buffer2 is uninitialized. The second argument
+      for CopyMemory needs to be initialized. However
+      <literal>Cppcheck</literal> assumes that it is fine to pass
+      uninitialized variables to functions:</para>
+
+      <programlisting># cppcheck uninit.c 
+Checking uninit.c...</programlisting>
+
+      <para>If you provide a windows configuration file then Cppcheck detects
+      the bug:</para>
+
+      <programlisting># cppcheck --library=windows.cfg uninit.c 
+Checking uninit.c...
+[uninit.c:5]: (error) Uninitialized variable: buffer2</programlisting>
+
+      <para>Here is the minimal <literal>windows.cfg</literal>:</para>
+
+      <para><programlisting>&lt;?xml version="1.0"?&gt;
+&lt;def&gt;
+  &lt;function name="CopyMemory"&gt;
+    &lt;arg nr="2"&gt;
+      &lt;not-uninit/&gt;
+    &lt;/arg&gt;
+  &lt;/function&gt;
+&lt;/def&gt;</programlisting></para>
+    </section>
+
+    <section>
+      <title>Function Argument: Null pointers</title>
+
+      <para>Cppcheck assumes it's ok to pass NULL pointers to functions. Here
+      is an example program:</para>
+
+      <programlisting>void test()
+{
+    CopyMemory(NULL, NULL, 1024);
+}</programlisting>
+
+      <para>The MSDN documentation is not clear if that is ok or not. But
+      let's assume it's bad. Cppcheck assumes that it's ok to pass NULL to
+      functions so no error is reported:</para>
+
+      <programlisting># cppcheck null.c 
+Checking null.c...</programlisting>
+
+      <para>If you provide a windows configuration file then
+      <literal>Cppcheck</literal> detects the bug:</para>
+
+      <programlisting>cppcheck --library=windows.cfg null.c 
+Checking null.c...
+[null.c:3]: (error) Null pointer dereference</programlisting>
+
+      <para>Here is a minimal <literal>windows.cfg</literal> file:</para>
+
+      <programlisting>&lt;?xml version="1.0"?&gt;
+&lt;def&gt;
+  &lt;function name="CopyMemory"&gt;
+    &lt;arg nr="1"&gt;
+      &lt;not-null/&gt;
+    &lt;/arg&gt;
+  &lt;/function&gt;
+&lt;/def&gt;</programlisting>
+    </section>
+
+    <section>
+      <title>Function Argument: Format string</title>
+
+      <para>You can define that a function takes a format string.
+      Example:</para>
+
+      <programlisting>void test()
+{
+    do_something("%i %i\n", 1024);
+}</programlisting>
+
+      <para>No error is reported for that:</para>
+
+      <programlisting># cppcheck formatstring.c 
+Checking formatstring.c...</programlisting>
+
+      <para>A configuration file can be created that says that the string is a
+      format string. For instance:</para>
+
+      <para><programlisting>&lt;?xml version="1.0"?&gt;
+&lt;def&gt;
+  &lt;function name="do_something"&gt;
+    &lt;arg nr="1"&gt;
+      &lt;formatstr/&gt;
+    &lt;/arg&gt;
+  &lt;/function&gt;
+&lt;/def&gt;</programlisting>Now Cppcheck will report an error:</para>
+
+      <programlisting>cppcheck --library=test.cfg formatstring.c 
+Checking formatstring.c...
+[formatstring.c:3]: (error) do_something format string requires 2 parameters but only 1 is given.</programlisting>
+    </section>
+
+    <section>
+      <title>Function Argument: Value range</title>
+
+      <para>The valid values can be defined. Imagine:</para>
+
+      <programlisting>void test()
+{
+    do_something(1024);
+}</programlisting>
+
+      <para>No error is reported for that:</para>
+
+      <programlisting># cppcheck valuerange.c 
+Checking valuerange.c...</programlisting>
+
+      <para>A configuration file can be created that says that 1024 is out of
+      bounds. For instance:</para>
+
+      <para><programlisting>&lt;?xml version="1.0"?&gt;
+&lt;def&gt;
+  &lt;function name="do_something"&gt;
+    &lt;arg nr="1"&gt;
+      &lt;valid&gt;0-1023&lt;/valid&gt;
+    &lt;/arg&gt;
+  &lt;/function&gt;
+&lt;/def&gt;</programlisting>Now Cppcheck will report an error:</para>
+
+      <programlisting>cppcheck --library=test.cfg range.c 
+Checking range.c...
+[range.c:3]: (error) Invalid do_something() argument nr 1. The value is 1024 but the valid values are '0-1023'.</programlisting>
+    </section>
+
+    <section>
+      <title>noreturn</title>
+
+      <para>Cppcheck doesn't assume that functions always return. Here is an
+      example code:</para>
+
+      <programlisting>void test(int x)
+{
+    int data, buffer[1024];
+    if (x == 1)
+        data = 123;
+    else
+        ZeroMemory(buffer, sizeof(buffer));
+    buffer[0] = data;  // &lt;- error: data is uninitialized if x is not 1
+}</programlisting>
+
+      <para>In theory, if <literal>ZeroMemory</literal> terminates the program
+      then there is no bug. Cppcheck therefore reports no error:</para>
+
+      <programlisting># cppcheck noreturn.c 
+Checking noreturn.c...</programlisting>
+
+      <para>However if you use <literal>--check-library</literal> and
+      <literal>--enable=information</literal> you'll get this:</para>
+
+      <programlisting># cppcheck --check-library --enable=information noreturn.c 
+Checking noreturn.c...
+[noreturn.c:7]: (information) --check-library: Function ZeroMemory() should have &lt;noreturn&gt; configuration
+</programlisting>
+
+      <para>If a proper <literal>windows.cfg</literal> is provided, the bug is
+      detected:</para>
+
+      <programlisting># cppcheck --library=windows.cfg noreturn.c 
+Checking noreturn.c...
+[noreturn.c:8]: (error) Uninitialized variable: data</programlisting>
+
+      <para>Here is a minimal <literal>windows.cfg</literal> file:</para>
+
+      <programlisting>&lt;?xml version="1.0"?&gt;
+&lt;def&gt;
+  &lt;function name="ZeroMemory"&gt;
+    &lt;noreturn&gt;false&lt;/noreturn&gt;
+  &lt;/function&gt;
+&lt;/def&gt;</programlisting>
+    </section>
+
+    <section>
+      <title>Example configuration for strcpy()</title>
+
+      <para>The proper configuration for the standard strcpy() function would
+      be:</para>
+
+      <programlisting>  &lt;function name="strcpy"&gt;
+    &lt;leak-ignore/&gt;
+    &lt;noreturn&gt;false&lt;/noreturn&gt;
+    &lt;arg nr="1"&gt;
+      &lt;not-null/&gt;
+    &lt;/arg&gt;
+    &lt;arg nr="2"&gt;
+      &lt;not-null/&gt;
+      &lt;not-uninit/&gt;
+    &lt;/arg&gt;
+  &lt;/function&gt;</programlisting>
+
+      <para>The <literal>&lt;leak-ignore/&gt;</literal> tells Cppcheck to
+      ignore this function call in the leaks checking. Passing allocated
+      memory to this function won't mean it will be deallocated.</para>
+
+      <para>The <literal>&lt;noreturn&gt;</literal> tells Cppcheck if this
+      function returns or not.</para>
+
+      <para>The first argument that the function takes is a pointer. It must
+      not be a null pointer, therefore <literal>&lt;not-null&gt;</literal> is
+      used.</para>
+
+      <para>The second argument the function takes is a pointer. It must not
+      be null. And it must point at initialized data. Using
+      <literal>&lt;not-null&gt;</literal> and
+      <literal>&lt;not-uninit&gt;</literal> is correct.</para>
+    </section>
+  </chapter>
+
+  <chapter>
+    <title>HTML report</title>
+
+    <para>You can convert the XML output from cppcheck into a HTML report.
+    You'll need Python and the pygments module (<ulink
+    url="http://pygments.org/">http://pygments.org/</ulink>) for this to work.
+    In the Cppcheck source tree there is a folder <filename
+    class="directory">htmlreport</filename> that contains a script that
+    transforms a Cppcheck XML file into HTML output.</para>
+
+    <para>This command generates the help screen:</para>
+
+    <programlisting>htmlreport/cppcheck-htmlreport -h</programlisting>
+
+    <para>The output screen says:</para>
+
+    <programlisting>Usage: cppcheck-htmlreport [options]
+
+Options:
+  -h, --help      show this help message and exit
+  --file=FILE     The cppcheck xml output file to read defects from.
+                  Default is reading from stdin.
+  --report-dir=REPORT_DIR
+                  The directory where the html report content is written.
+  --source-dir=SOURCE_DIR
+                  Base directory where source code files can be found.</programlisting>
+
+    <para>An example usage:</para>
+
+    <programlisting>./cppcheck gui/test.cpp --xml 2&gt; err.xml
+htmlreport/cppcheck-htmlreport --file=err.xml --report-dir=test1 --source-dir=.</programlisting>
+  </chapter>
+
+  <chapter>
+    <title>Graphical user interface</title>
+
+    <section>
+      <title>Introduction</title>
+
+      <para>A Cppcheck GUI is available.</para>
+
+      <para>The main screen is shown immediately when the GUI is
+      started.</para>
+    </section>
+
+    <section>
+      <title>Check source code</title>
+
+      <para>Use the <guimenu>Check</guimenu> menu.</para>
+    </section>
+
+    <section>
+      <title>Inspecting results</title>
+
+      <para>The results are shown in a list.</para>
+
+      <para>You can show/hide certain types of messages through the
+      <guimenu>View</guimenu> menu.</para>
+
+      <para>Results can be saved to an XML file that can later be opened. See
+      <literal>Save results to file</literal> and <literal>Open
+      XML</literal>.</para>
+    </section>
+
+    <section>
+      <title>Settings</title>
+
+      <para>The language can be changed at any time by using the
+      <guimenu>Language</guimenu> menu.</para>
+
+      <para>More settings are available in <menuchoice>
+          <guimenu>Edit</guimenu>
+
+          <guimenuitem>Preferences</guimenuitem>
+        </menuchoice>.</para>
+    </section>
+
+    <section>
+      <title>Project files</title>
+
+      <para>The project files are used to store project specific settings.
+      These settings are:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>include folders</para>
+        </listitem>
+
+        <listitem>
+          <para>preprocessor defines</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>As you can read in <link
+      linkend="preprocessor-configurations">chapter 3</link> in this manual
+      the default is that Cppcheck checks all configurations. So only provide
+      preprocessor defines if you want to limit the checking.</para>
+    </section>
+  </chapter>
+</book>
