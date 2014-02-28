@@ -4,7 +4,6 @@
 #define SRC_UI_CMDLINE_MAIN_H_
 
 #include <string>
-#include <sstream>
 #include <vector>
 #include <iostream> // NOLINT
 
@@ -16,102 +15,40 @@
 
 namespace command_line_client {
 
-    std::string model_change_to_string(
-            KopsikModelChange &change) {
-        std::stringstream ss;
-        ss  << "model_type=" << change.ModelType
-            << ", change_type=" << change.ChangeType
-            << ", model_id=" << change.ModelID
-            << ", GUID=" << change.GUID;
-        return ss.str();
-    }
+class Main : public Poco::Util::Application, Poco::ErrorHandler {
+  public:
+    Main();
+    ~Main();
 
-    void main_change_callback(
-            kopsik_api_result result,
-            const char *errmsg,
-            KopsikModelChange *change) {
-        if (KOPSIK_API_SUCCESS != result) {
-            std::cerr << "main_change_callback errmsg="
-                << std::string(errmsg)
-                << std::endl;
-            return;
-        }
-        std::cout << "main_change_callback change="
-            << model_change_to_string(*change)
-            << std::endl;
-        }
+    // ErrorHandler
+    void exception(const Poco::Exception& exc);
+    void exception(const std::exception& exc);
+    void exception();
 
-    void main_on_error_callback(
-            const char *errmsg) {
-        std::cerr << "main_on_error_callback errmsg="
-            << std::string(errmsg)
-            << std::endl;
-    }
+  protected:
+    // Application
+    int main(const std::vector<std::string>& args);
+    virtual void initialize(Poco::Util::Application &self); // NOLINT
+    virtual void uninitialize() {}
+    virtual void defineOptions(Poco::Util::OptionSet& options); // NOLINT
+    void handleOption(const std::string &name, const std::string &value) {}
 
-    void main_check_updates_callback(
-            kopsik_api_result result,
-            const char *errmsg,
-            const int is_update_available,
-            const char *url,
-            const char *version) {
-        if (KOPSIK_API_SUCCESS != result) {
-            std::cerr << "main_check_updates_callback errmsg="
-                << std::string(errmsg)
-                << std::endl;
-            return;
-        }
-        std::cout << "main_check_updates_callback is_update_available="
-            << is_update_available
-            << " url=" << std::string(url)
-            << " version=" << std::string(version)
-            << std::endl;
-    }
+  private:
+    void *ctx_;
 
-    void main_online_callback() {
-        std::cout << "main_online_callback" << std::endl;
-    }
+    void usage() const;
 
-    class Main : public Poco::Util::Application, Poco::ErrorHandler {
-    public:
-        Main() : ctx(0) {
-            kopsik_set_log_path("kopsik.log");
+    int sync();
+    int continueTimeEntry();
+    int status();
+    int listenToWebSocket();
+    int showPushableData();
+    int listTimeEntries();
+    int startTimeEntry();
+    int stopTimeEntry();
 
-            ctx = kopsik_context_init(
-                "cmdline",
-                "0.0.1",
-                main_change_callback,
-                main_on_error_callback,
-                main_check_updates_callback,
-                main_online_callback);
-            poco_assert(ctx);
-        }
-        ~Main() {
-            kopsik_context_clear(ctx);
-        }
-
-        // ErrorHandler
-        void exception(const Poco::Exception& exc) {
-            std::cerr << exc.displayText() << std::endl;
-        }
-        void exception(const std::exception& exc) {
-            std::cerr << exc.what() << std::endl;
-        }
-        void exception() {
-            std::cerr << "unknown exception" << std::endl;
-        }
-
-    protected:
-        int main(const std::vector<std::string>& args);
-        virtual void initialize(Poco::Util::Application &self) { // NOLINT
-            Poco::Util::Application::initialize(self);
-        };
-        virtual void uninitialize() {}
-        virtual void defineOptions(Poco::Util::OptionSet& options); // NOLINT
-        void handleOption(const std::string &name, const std::string &value) {}
-
-    private:
-        void usage();
-        void *ctx;
+    static std::string modelChangeToString(KopsikModelChange * const);
+    static std::string timeEntryToString(KopsikTimeEntryViewItem * const);
 };
 
 }  // namespace command_line_client
