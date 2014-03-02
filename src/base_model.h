@@ -88,6 +88,8 @@ namespace kopsik {
     virtual std::string ModelURL() const = 0;
     virtual void LoadFromJSONNode(JSONNODE * const) = 0;
 
+    virtual kopsik::error ResolveError(const kopsik::error err) { return err; }
+
     void LoadFromDataString(const std::string);
 
   protected:

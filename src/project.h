@@ -53,6 +53,8 @@ namespace kopsik {
 
     void LoadFromJSONNode(JSONNODE * const);
 
+    kopsik::error ResolveError(const kopsik::error err);
+
   private:
     Poco::UInt64 wid_;
     Poco::UInt64 cid_;
