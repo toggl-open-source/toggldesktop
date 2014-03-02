@@ -759,7 +759,6 @@ void ProcessResponseArray(
     logger.debug(result.String());
 
     poco_assert(!result.GUID.empty());
-
     BaseModel *model = (*models)[result.GUID];
     poco_assert(model);
 
@@ -770,13 +769,15 @@ void ProcessResponseArray(
 
     kopsik::error err = result.Error();
     if (err != kopsik::noError) {
+      err = model->ResolveError(err);
+    }
+    if (err != kopsik::noError) {
       errors->push_back(err);
       model->SetError(err);
       continue;
     }
 
     poco_assert(json_is_valid(result.Body.c_str()));
-
     model->LoadFromDataString(result.Body);
   }
 }
