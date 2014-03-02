@@ -7,6 +7,8 @@
 
 #include "./types.h"
 
+#include "libjson.h" // NOLINT
+
 #include "Poco/Types.h"
 
 #include "./base_model.h"
@@ -30,6 +32,8 @@ namespace kopsik {
 
     std::string ModelName() const { return "client"; }
     std::string ModelURL() const { return "/api/v8/clients"; }
+
+    void LoadFromJSONNode(JSONNODE * const);
 
   private:
     Poco::UInt64 wid_;

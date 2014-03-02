@@ -7,6 +7,7 @@
 #include <string>
 #include <set>
 #include <vector>
+#include <map>
 
 #include "libjson.h" // NOLINT
 
@@ -25,19 +26,9 @@ namespace kopsik {
     const std::string response_body,
     std::vector<BatchUpdateResult> *responses);
   void ProcessResponseArray(
-    std::vector<BatchUpdateResult> *results,
-    std::vector<Project *> *projects,
-    std::vector<TimeEntry *> *time_entries,
+    std::vector<BatchUpdateResult> * const results,
+    std::map<std::string, BaseModel *> *models,
     std::vector<error> *errors);
-
-  void LoadWorkspaceFromJSONNode(Workspace *model, JSONNODE *node);
-  void LoadClientFromJSONNode(Client *model, JSONNODE *node);
-  void LoadProjectFromJSONNode(Project *model, JSONNODE *node);
-  void LoadTaskFromJSONNode(Task *model, JSONNODE *node);
-  void LoadTagFromJSONNode(Tag *model, JSONNODE *node);
-  error LoadTimeEntryTagsFromJSONNode(
-    TimeEntry *model,
-    JSONNODE *list);
 
   void LoadUserFromJSONNode(
     User *model,
@@ -105,6 +96,10 @@ namespace kopsik {
     User *user,
     JSONNODE *data,
     std::set<Poco::UInt64> *alive = 0);
+
+  void loadTimeEntryFromDataString(
+    TimeEntry *model,
+    const std::string data_string);
 
   void LoadTimeEntryFromJSONNode(
     TimeEntry *model,

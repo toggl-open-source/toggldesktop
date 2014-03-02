@@ -89,4 +89,18 @@ void BaseModel::SetUpdatedAtString(const std::string value) {
     SetUpdatedAt(Formatter::Parse8601(value));
 }
 
+void BaseModel::LoadFromDataString(const std::string data_string) {
+  JSONNODE *n = json_parse(data_string.c_str());
+  JSONNODE_ITERATOR i = json_begin(n);
+  JSONNODE_ITERATOR e = json_end(n);
+  while (i != e) {
+    json_char *node_name = json_name(*i);
+    if (strcmp(node_name, "data") == 0) {
+      LoadFromJSONNode(*i);
+    }
+    ++i;
+  }
+  json_delete(n);
+}
+
 }   // namespace kopsik

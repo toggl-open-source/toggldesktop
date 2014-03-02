@@ -31,6 +31,8 @@ namespace kopsik {
     std::string ModelName() const { return "tag"; }
     std::string ModelURL() const { return "/api/v8/tags"; }
 
+    void LoadFromJSONNode(JSONNODE * const data);
+
   private:
     Poco::UInt64 wid_;
     std::string name_;

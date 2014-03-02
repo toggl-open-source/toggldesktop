@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include "libjson.h" // NOLINT
+
 #include "./types.h"
 
 #include "Poco/Types.h"
@@ -80,6 +82,9 @@ namespace kopsik {
     virtual std::string String() const = 0;
     virtual std::string ModelName() const = 0;
     virtual std::string ModelURL() const = 0;
+    virtual void LoadFromJSONNode(JSONNODE * const) = 0;
+
+    void LoadFromDataString(const std::string);
 
   protected:
     Poco::Logger &logger() const { return Poco::Logger::get(ModelName()); }

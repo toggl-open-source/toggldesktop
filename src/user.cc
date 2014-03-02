@@ -411,30 +411,40 @@ Tag *User::GetTagByID(const Poco::UInt64 id) const {
     return 0;
 }
 
-void User::CollectPushableTimeEntries(std::vector<TimeEntry *> *result) const {
-    poco_assert(result);
-    for (std::vector<TimeEntry *>::const_iterator it =
-            related.TimeEntries.begin();
-            it != related.TimeEntries.end();
-            it++) {
-        TimeEntry *model = *it;
-        if (model->NeedsPush()) {
-            result->push_back(model);
-        }
+void User::CollectPushableTimeEntries(
+    std::vector<TimeEntry *> *result,
+    std::map<std::string, BaseModel *> *models) const {
+  poco_assert(result);
+  for (std::vector<TimeEntry *>::const_iterator it =
+      related.TimeEntries.begin();
+      it != related.TimeEntries.end();
+      it++) {
+    TimeEntry *model = *it;
+    if (model->NeedsPush()) {
+      result->push_back(model);
+      if (models) {
+        (*models)[model->GUID()] = model;
+      }
     }
+  }
 }
 
-void User::CollectPushableProjects(std::vector<Project *> *result) const {
-    poco_assert(result);
-    for (std::vector<Project *>::const_iterator it =
-            related.Projects.begin();
-            it != related.Projects.end();
-            it++) {
-        Project *model = *it;
-        if (model->NeedsPush()) {
-            result->push_back(model);
-        }
+void User::CollectPushableProjects(
+    std::vector<Project *> *result,
+    std::map<std::string, BaseModel *> *models) const {
+  poco_assert(result);
+  for (std::vector<Project *>::const_iterator it =
+      related.Projects.begin();
+      it != related.Projects.end();
+      it++) {
+    Project *model = *it;
+    if (model->NeedsPush()) {
+      result->push_back(model);
+      if (models) {
+        (*models)[model->GUID()] = model;
+      }
     }
+  }
 }
 
 error User::Sync(
@@ -455,11 +465,13 @@ error User::Push(HTTPSClient *https_client) {
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
+    std::map<std::string, BaseModel *> models;
+
     std::vector<TimeEntry *> time_entries;
-    CollectPushableTimeEntries(&time_entries);
+    CollectPushableTimeEntries(&time_entries, &models);
 
     std::vector<Project *> projects;
-    CollectPushableProjects(&projects);
+    CollectPushableProjects(&projects, &models);
 
     if (time_entries.empty() && projects.empty()) {
         return noError;
@@ -483,7 +495,8 @@ error User::Push(HTTPSClient *https_client) {
     ParseResponseArray(response_body, &results);
 
     std::vector<error> errors;
-    ProcessResponseArray(&results, &projects, &time_entries, &errors);
+
+    ProcessResponseArray(&results, &models, &errors);
 
     if (!errors.empty()) {
         return collectErrors(&errors);
@@ -641,6 +654,9 @@ TimeEntry *User::GetTimeEntryByID(const Poco::UInt64 id) const {
         }
     }
     return 0;
+}
+
+void User::LoadFromJSONNode(JSONNODE * const) {
 }
 
 }   // namespace kopsik

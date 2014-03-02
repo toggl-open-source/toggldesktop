@@ -51,6 +51,8 @@ namespace kopsik {
     std::string ModelName() const { return "project"; }
     std::string ModelURL() const { return "/api/v8/projects"; }
 
+    void LoadFromJSONNode(JSONNODE * const);
+
   private:
     Poco::UInt64 wid_;
     Poco::UInt64 cid_;
