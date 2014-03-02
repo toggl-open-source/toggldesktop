@@ -106,6 +106,10 @@ namespace kopsik {
     JSONNODE *data,
     std::set<Poco::UInt64> *alive = 0);
 
+  void loadTimeEntryFromDataString(
+    TimeEntry *model,
+    const std::string data_string);
+
   void LoadTimeEntryFromJSONNode(
     TimeEntry *model,
     JSONNODE * const);

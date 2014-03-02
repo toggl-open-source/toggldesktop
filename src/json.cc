@@ -975,18 +975,24 @@ void ProcessResponseArray(
           continue;
       }
 
-      JSONNODE *n = json_parse(result.Body.c_str());
-      JSONNODE_ITERATOR i = json_begin(n);
-      JSONNODE_ITERATOR e = json_end(n);
-      while (i != e) {
-          json_char *node_name = json_name(*i);
-          if (strcmp(node_name, "data") == 0) {
-              LoadTimeEntryFromJSONNode(te, *i);
-          }
-          ++i;
-      }
-      json_delete(n);
+      loadTimeEntryFromDataString(te, result.Body);
   }
+}
+
+void loadTimeEntryFromDataString(
+    TimeEntry *model,
+    const std::string data_string) {
+  JSONNODE *n = json_parse(data_string.c_str());
+  JSONNODE_ITERATOR i = json_begin(n);
+  JSONNODE_ITERATOR e = json_end(n);
+  while (i != e) {
+    json_char *node_name = json_name(*i);
+    if (strcmp(node_name, "data") == 0) {
+      LoadTimeEntryFromJSONNode(model, *i);
+    }
+    ++i;
+  }
+  json_delete(n);
 }
 
 void ParseResponseArray(
