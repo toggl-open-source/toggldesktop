@@ -122,15 +122,7 @@ kopsik::error Project::ResolveError(const kopsik::error err) {
     std::stringstream new_err;
     new_err << "Project name '" << Name()
             << "' was already present in your workspace. ";
-
-    std::stringstream ss;
-    ss << Name() << "_" << time(0);
-    std::string new_name = ss.str();
-
-    SetName(new_name);
-
-    new_err << "The project you created with the same name, "
-            << "has been renamed to '" << Name() << "'";
+    Delete();
     return kopsik::error(new_err.str());
   }
   return err;
