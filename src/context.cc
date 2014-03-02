@@ -1335,8 +1335,12 @@ void Context::ProjectLabelAndColorCode(
   kopsik::Project *p = 0;
   if (t) {
     p = user_->GetProjectByID(t->PID());
-  } else if (te->PID()) {
+  }
+  if (!p && te->PID()) {
     p = user_->GetProjectByID(te->PID());
+  }
+  if (!p && !te->ProjectGUID().empty()) {
+    p = user_->GetProjectByGUID(te->ProjectGUID());
   }
 
   kopsik::Client *c = 0;

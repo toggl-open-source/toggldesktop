@@ -1020,7 +1020,11 @@ JSONNODE *TimeEntryToJSON(TimeEntry * const te) {
     Formatter::EscapeJSONString(te->Description()).c_str()));
   json_push_back(n, json_new_i("wid", (json_int_t)te->WID()));
   json_push_back(n, json_new_a("guid", te->GUID().c_str()));
-  json_push_back(n, json_new_i("pid", (json_int_t)te->PID()));
+  if (!te->PID() && !te->ProjectGUID().empty()) {
+    json_push_back(n, json_new_a("pid", te->ProjectGUID().c_str()));
+  } else {
+    json_push_back(n, json_new_i("pid", (json_int_t)te->PID()));
+  }
   json_push_back(n, json_new_i("tid", (json_int_t)te->TID()));
   json_push_back(n, json_new_a("start", te->StartString().c_str()));
   if (te->Stop()) {
