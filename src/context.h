@@ -134,7 +134,8 @@ class Context {
     kopsik::error SetTimeEntryProject(
       const std::string GUID,
       const Poco::UInt64 task_id,
-      const Poco::UInt64 project_id);
+      const Poco::UInt64 project_id,
+      const std::string project_guid);
     kopsik::error SetTimeEntryStartISO8601(
       const std::string GUID,
       const std::string value);
@@ -182,7 +183,8 @@ class Context {
     kopsik::error AddProject(
       const Poco::UInt64 workspace_id,
       const Poco::UInt64 client_id,
-      const std::string project_name);
+      const std::string project_name,
+      Project **result);
 
   private:
     const std::string updateURL() const;

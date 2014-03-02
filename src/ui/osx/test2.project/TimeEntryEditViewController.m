@@ -116,15 +116,30 @@
 
   // A new project is being added!
   char errmsg[KOPSIK_ERR_LEN];
+  KopsikViewItem *project = 0;
   if (KOPSIK_API_SUCCESS != kopsik_add_project(ctx,
                                                errmsg,
                                                KOPSIK_ERR_LEN,
                                                workspaceID,
                                                clientID,
-                                               [projectName UTF8String])) {
+                                               [projectName UTF8String],
+                                               &project)) {
+    kopsik_view_item_clear(project);
     handle_error(errmsg);
     return NO;
   }
+  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_project(ctx,
+                                                          errmsg,
+                                                          KOPSIK_ERR_LEN,
+                                                          [self.GUID UTF8String],
+                                                          0,
+                                                          project->ID,
+                                                          project->GUID)) {
+    kopsik_view_item_clear(project);
+    handle_error(errmsg);
+    return NO;
+  }
+  kopsik_view_item_clear(project);
   return YES;
 }
 
@@ -587,7 +602,8 @@ completionsForSubstring:(NSString *)substring
                                                         KOPSIK_ERR_LEN,
                                                         [self.GUID UTF8String],
                                                         task_id,
-                                                        project_id);
+                                                        project_id,
+                                                        0);
   handle_result(res, err);
 }
 

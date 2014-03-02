@@ -1003,32 +1003,44 @@ kopsik::error Context::SetTimeEntryDuration(
 kopsik::error Context::SetTimeEntryProject(
     const std::string GUID,
     const Poco::UInt64 task_id,
-    const Poco::UInt64 project_id) {
+    const Poco::UInt64 project_id,
+    const std::string project_guid) {
   if (GUID.empty()) {
     return kopsik::error("Missing GUID");
   }
   if (!user_) {
     return kopsik::error("Please login to select project");
   }
+
   kopsik::TimeEntry *te = user_->GetTimeEntryByGUID(GUID);
   if (!te) {
     return kopsik::error("Time entry not found");
   }
+
+  kopsik::Project *p = 0;
   if (project_id) {
-    kopsik::Project *p = user_->GetProjectByID(project_id);
-    if (p) {
-      te->SetBillable(p->Billable());
-    }
+    p = user_->GetProjectByID(project_id);
+  }
+  if (!project_guid.empty()) {
+    p = user_->GetProjectByGUID(project_guid);
+  }
+
+  if (p) {
+    te->SetBillable(p->Billable());
   }
   te->SetTID(task_id);
   te->SetPID(project_id);
+  te->SetProjectGUID(project_guid);
+
   if (te->Dirty()) {
     te->SetUIModifiedAt(time(0));
   }
+
   save();
   if (te->NeedsPush()) {
     partialSync();
   }
+
   return kopsik::noError;
 }
 
@@ -1563,7 +1575,10 @@ void Context::AutocompleteItems(
 kopsik::error Context::AddProject(
     const Poco::UInt64 workspace_id,
     const Poco::UInt64 client_id,
-    const std::string project_name) {
+    const std::string project_name,
+    Project **result) {
+  poco_assert(result);
+
   if (!user_) {
     return kopsik::error("Please login to add a project");
   }
@@ -1573,9 +1588,10 @@ kopsik::error Context::AddProject(
   if (project_name.empty()) {
     return kopsik::error("Project name must not be empty");
   }
-  kopsik::Project *p =
-    user_->AddProject(workspace_id, client_id, project_name);
-  poco_assert(p);
+
+  *result = user_->AddProject(workspace_id, client_id, project_name);
+  poco_assert(*result);
+
   return save();
 }
 
