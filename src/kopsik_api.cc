@@ -73,20 +73,24 @@ int kopsik_is_networking_error(
 // Generic view items
 
 void kopsik_view_item_clear(
-    KopsikViewItem *first) {
-  if (!first) {
+    KopsikViewItem *item) {
+  if (!item) {
     return;
   }
-  if (first->Name) {
-    free(first->Name);
-    first->Name = 0;
+  if (item->Name) {
+    free(item->Name);
+    item->Name = 0;
   }
-  if (first->Next) {
-    KopsikViewItem *next = reinterpret_cast<KopsikViewItem *>(first->Next);
+  if (item->GUID) {
+    free(item->GUID);
+    item->GUID = 0;
+  }
+  if (item->Next) {
+    KopsikViewItem *next = reinterpret_cast<KopsikViewItem *>(item->Next);
     kopsik_view_item_clear(next);
   }
-  delete first;
-  first = 0;
+  delete item;
+  item = 0;
 }
 
 // Context API.
@@ -776,8 +780,7 @@ kopsik_api_result kopsik_tags(
        it != tags.end();
        it++) {
     std::string name = *it;
-    KopsikViewItem *item = new KopsikViewItem();
-    item->Name = strdup(name.c_str());
+    KopsikViewItem *item = tag_to_view_item(name);
     item->Next = *first;
     *first = item;
   }
@@ -804,10 +807,7 @@ kopsik_api_result kopsik_workspaces(
         workspaces.begin();
       it != workspaces.end();
       it++) {
-    kopsik::Workspace *workspace = *it;
-    KopsikViewItem *item = new KopsikViewItem();
-    item->ID = static_cast<unsigned int>(workspace->ID());
-    item->Name = strdup(workspace->Name().c_str());
+    KopsikViewItem *item = workspace_to_view_item(*it);
     item->Next = *first;
     *first = item;
   }
@@ -834,10 +834,7 @@ kopsik_api_result kopsik_clients(
   for (std::vector<kopsik::Client *>::const_iterator it = clients.begin();
        it != clients.end();
        it++) {
-    kopsik::Client *client = *it;
-    KopsikViewItem *item = new KopsikViewItem();
-    item->ID = static_cast<unsigned int>(client->ID());
-    item->Name = strdup(client->Name().c_str());
+    KopsikViewItem *item = client_to_view_item(*it);
     item->Next = *first;
     *first = item;
   }
@@ -853,19 +850,26 @@ kopsik_api_result kopsik_add_project(
     const unsigned int errlen,
     const unsigned int workspace_id,
     const unsigned int client_id,
-    const char *project_name) {
+    const char *project_name,
+    KopsikViewItem **resulting_project) {
   try {
     poco_assert(errmsg);
     poco_assert(errlen);
+    poco_assert(resulting_project);
 
+    kopsik::Project *p = 0;
     kopsik::error err = app(context)->AddProject(
       workspace_id,
       client_id,
-      std::string(project_name));
+      std::string(project_name),
+      &p);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
+    poco_assert(p);
+
+    *resulting_project = project_to_view_item(p);
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -1225,14 +1229,20 @@ kopsik_api_result kopsik_set_time_entry_project(
     const unsigned int errlen,
     const char *guid,
     const unsigned int task_id,
-    const unsigned int project_id) {
+    const unsigned int project_id,
+    const char *project_guid) {
   try {
     poco_assert(errmsg);
     poco_assert(errlen);
     poco_assert(guid);
+    std::string pguid("");
+    if (project_guid) {
+      pguid = std::string(project_guid);
+    }
     kopsik::error err = app(context)->SetTimeEntryProject(std::string(guid),
                                                           task_id,
-                                                          project_id);
+                                                          project_id,
+                                                          pguid);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;

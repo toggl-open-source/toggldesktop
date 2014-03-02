@@ -52,6 +52,7 @@ typedef void (*KopsikOnOnlineCallback)();
 
 typedef struct {
   unsigned int ID;
+  char *GUID;
   char *Name;
   void *Next;
 } KopsikViewItem;
@@ -276,7 +277,8 @@ KOPSIK_EXPORT kopsik_api_result kopsik_add_project(
   const unsigned int errlen,
   const unsigned int workspace_id,
   const unsigned int client_id,
-  const char *project_name);
+  const char *project_name,
+  KopsikViewItem **resulting_project);
 
 // Time entries view
 
@@ -379,7 +381,8 @@ KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_project(
   const unsigned int errlen,
   const char *guid,
   const unsigned int task_id,
-  const unsigned int project_id);
+  const unsigned int project_id,
+  const char *project_guid);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_set_time_entry_start_iso_8601(
   void *context,

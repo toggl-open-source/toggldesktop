@@ -10,24 +10,38 @@
 
 #define KOPSIK_API_FAILURE 1
 
+KopsikViewItem *view_item_init();
+
 void time_entry_to_view_item(
-    kopsik::TimeEntry * const,
-    const std::string project_and_task_label,
-    const std::string color_code,
-    KopsikTimeEntryViewItem *view_item,
-    const std::string dateDuration);
+  kopsik::TimeEntry * const,
+  const std::string project_and_task_label,
+  const std::string color_code,
+  KopsikTimeEntryViewItem *view_item,
+  const std::string dateDuration);
+
+KopsikViewItem *project_to_view_item(
+  kopsik::Project * const);
+
+KopsikViewItem *tag_to_view_item(
+  const std::string tag_name);
+
+KopsikViewItem *workspace_to_view_item(
+  kopsik::Workspace * const);
+
+KopsikViewItem *client_to_view_item(
+  kopsik::Client * const);
 
 KopsikModelChange *model_change_init();
 
 void model_change_to_change_item(
-    kopsik::ModelChange &in,
-    KopsikModelChange &out);
+  kopsik::ModelChange &in,
+  KopsikModelChange &out);
 
 void model_change_clear(
-    KopsikModelChange *change);
+  KopsikModelChange *change);
 
 void autocomplete_item_clear(
-    KopsikAutocompleteItem *item);
+  KopsikAutocompleteItem *item);
 
 KopsikAutocompleteItem *autocomplete_item_init();
 
