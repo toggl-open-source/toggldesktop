@@ -5,6 +5,8 @@
 
 #include <string>
 
+#include "./types.h"
+
 #include "Poco/Types.h"
 
 namespace kopsik {
@@ -21,6 +23,10 @@ namespace kopsik {
       std::string GUID;  // must match the BatchUpdate GUID
       std::string ContentType;
       std::string Method;
+
+      error Error() const;
+      std::string String() const;
+      bool ResourceIsGone() const;
   };
 
 }  // namespace kopsik

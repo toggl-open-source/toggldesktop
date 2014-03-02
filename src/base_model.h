@@ -5,6 +5,7 @@
 
 #include <string>
 #include <vector>
+#include <cstring>
 
 #include "libjson.h" // NOLINT
 
@@ -79,6 +80,9 @@ namespace kopsik {
 
     void EnsureGUID();
 
+    void SetError(const kopsik::error value) { error_ = value; }
+    kopsik::error Error() const { return error_; }
+
     virtual std::string String() const = 0;
     virtual std::string ModelName() const = 0;
     virtual std::string ModelURL() const = 0;
@@ -99,6 +103,10 @@ namespace kopsik {
     Poco::UInt64 deleted_at_;
     bool is_marked_as_deleted_on_server_;
     Poco::UInt64 updated_at_;
+
+    // If model push to backend results in an error,
+    // the error is attached to the model for later inspection.
+    kopsik::error error_;
   };
 
 }  // namespace kopsik
