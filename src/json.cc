@@ -3,6 +3,7 @@
 #include "./json.h"
 
 #include <sstream>
+#include <cstring>
 
 #include "./formatter.h"
 
@@ -755,43 +756,26 @@ void ProcessResponseArray(
       it++) {
     BatchUpdateResult result = *it;
 
-    std::stringstream ss;
-    ss  << "batch update result GUID: " << result.GUID
-        << ", StatusCode: " << result.StatusCode
-        << ", ContentType: " << result.ContentType
-        << ", Body: " << result.Body;
-    logger.debug(ss.str());
+    logger.debug(result.String());
+
+    poco_assert(!result.GUID.empty());
 
     BaseModel *model = (*models)[result.GUID];
     poco_assert(model);
 
-    if (result.StatusCode != 404)  {
-      if ((result.StatusCode < 200) || (result.StatusCode >= 300)) {
-        kopsik::error err;
-        if ("null" == result.Body) {
-          std::stringstream ss;
-          ss  << "Request failed with status code "
-              << result.StatusCode;
-          err = ss.str();
-        } else {
-          err = result.Body;
-        }
-
-        errors->push_back(err);
-        model->SetError(err);
-
-        continue;
-      }
-
-      poco_assert(!result.GUID.empty());
-      poco_assert(json_is_valid(result.Body.c_str()));
+    if (result.ResourceIsGone()) {
+      model->MarkAsDeletedOnServer();
+      continue;
     }
 
-    // If model was deleted, the body won't contain useful data.
-    if (("DELETE" == result.Method) || (404 == result.StatusCode)) {
-        model->MarkAsDeletedOnServer();
-        continue;
+    kopsik::error err = result.Error();
+    if (err != kopsik::noError) {
+      errors->push_back(err);
+      model->SetError(err);
+      continue;
     }
+
+    poco_assert(json_is_valid(result.Body.c_str()));
 
     model->LoadFromDataString(result.Body);
   }
