@@ -716,7 +716,8 @@ error Database::loadTimeEntries(
         Poco::Data::Statement select(*session);
         select << "SELECT local_id, id, uid, description, wid, guid, pid, "
             "tid, billable, duronly, ui_modified_at, start, stop, "
-            "duration, tags, created_with, deleted_at, updated_at "
+            "duration, tags, created_with, deleted_at, updated_at, "
+            "project_guid "
             "FROM time_entries "
             "WHERE uid = :uid "
             "ORDER BY start DESC",
@@ -766,6 +767,7 @@ error Database::loadTimeEntriesFromSQLStatement(
                 model->SetCreatedWith(rs[15].convert<std::string>());
                 model->SetDeletedAt(rs[16].convert<Poco::UInt64>());
                 model->SetUpdatedAt(rs[17].convert<Poco::UInt64>());
+                model->SetProjectGUID(rs[18].convert<std::string>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
