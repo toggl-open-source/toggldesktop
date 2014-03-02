@@ -64,11 +64,7 @@ void TimeEntry::SetDescription(const std::string value) {
 }
 
 void TimeEntry::SetStopString(const std::string value) {
-    Poco::Int64 stop = Formatter::Parse8601(value);
-    if (duration_in_seconds_ >= 0) {
-        SetDurationInSeconds(stop - start_);
-    }
-    SetStop(stop);
+    SetStop(Formatter::Parse8601(value));
 }
 
 void TimeEntry::SetCreatedWith(const std::string value) {
@@ -92,11 +88,28 @@ void TimeEntry::SetWID(const Poco::UInt64 value) {
     }
 }
 
+void TimeEntry::recalculateDuration() {
+  if (duration_in_seconds_ >= 0) {
+    SetDurationInSeconds(stop_ - start_);
+  }
+}
+
 void TimeEntry::SetStop(const Poco::UInt64 value) {
-    if (stop_ != value) {
-        stop_ = value;
-        SetDirty();
-    }
+  if (stop_ == value) {
+    return;
+  }
+  stop_ = value;
+  SetDirty();
+  if (stop_ >= start_) {
+    recalculateDuration();
+    return;
+  }
+  // Stop time cannot be before start time, it'll get an error from backend.
+  Poco::Timestamp ts =
+    Poco::Timestamp::fromEpochTime(stop_) + 1*Poco::Timespan::DAYS;
+  stop_ = ts.epochTime();
+  poco_assert(stop_ >= start_);
+  recalculateDuration();
 }
 
 void TimeEntry::SetTID(const Poco::UInt64 value) {
