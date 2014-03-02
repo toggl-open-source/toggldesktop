@@ -104,6 +104,8 @@ namespace kopsik {
     bool setDurationStringHHMMSS(const std::string value);
     bool setDurationStringHHMM(const std::string value);
     bool setDurationStringMMSS(const std::string value);
+
+    void recalculateDuration();
   };
 
   bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b);
