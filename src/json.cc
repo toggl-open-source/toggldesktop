@@ -759,7 +759,6 @@ void ProcessResponseArray(
     logger.debug(result.String());
 
     poco_assert(!result.GUID.empty());
-
     BaseModel *model = (*models)[result.GUID];
     poco_assert(model);
 
@@ -776,7 +775,6 @@ void ProcessResponseArray(
     }
 
     poco_assert(json_is_valid(result.Body.c_str()));
-
     model->LoadFromDataString(result.Body);
   }
 }
