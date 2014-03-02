@@ -30,6 +30,8 @@ namespace kopsik {
       , project_guid_("") {}
     virtual ~TimeEntry() {}
 
+    std::vector<std::string> TagNames;
+
     std::string Tags() const;
     void SetTags(const std::string tags);
 
@@ -80,13 +82,13 @@ namespace kopsik {
 
     bool IsToday() const;
 
-    std::vector<std::string> TagNames;
+    std::string ProjectGUID() const { return project_guid_; }
+    void SetProjectGUID(const std::string value);
 
     std::string ModelName() const { return "time_entry"; }
     std::string ModelURL() const { return "/api/v8/time_entries"; }
 
-    std::string ProjectGUID() const { return project_guid_; }
-    void SetProjectGUID(const std::string value);
+    void LoadFromJSONNode(JSONNODE * const);
 
   private:
     Poco::UInt64 wid_;
@@ -106,6 +108,8 @@ namespace kopsik {
     bool setDurationStringMMSS(const std::string value);
 
     void recalculateDuration();
+
+    void loadTagsFromJSONNode(JSONNODE * const);
   };
 
   bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b);

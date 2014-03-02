@@ -33,4 +33,22 @@ bool CompareWorkspaceByName(Workspace *a, Workspace *b) {
   return (strcmp(a->Name().c_str(), b->Name().c_str()) < 0);
 }
 
+void Workspace::LoadFromJSONNode(JSONNODE * const n) {
+  poco_assert(n);
+
+  JSONNODE_ITERATOR i = json_begin(n);
+  JSONNODE_ITERATOR e = json_end(n);
+  while (i != e) {
+    json_char *node_name = json_name(*i);
+    if (strcmp(node_name, "id") == 0) {
+      SetID(json_as_int(*i));
+    } else if (strcmp(node_name, "name") == 0) {
+      SetName(std::string(json_as_string(*i)));
+    } else if (strcmp(node_name, "premium") == 0) {
+      SetPremium(json_as_bool(*i));
+    }
+    ++i;
+  }
+}
+
 }   // namespace kopsik

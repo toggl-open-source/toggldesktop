@@ -5,6 +5,8 @@
 
 #include <string>
 
+#include "libjson.h" // NOLINT
+
 #include "Poco/Types.h"
 
 #include "./base_model.h"
@@ -28,6 +30,8 @@ namespace kopsik {
 
     std::string ModelName() const { return "workspace"; }
     std::string ModelURL() const { return "/api/v8/workspaces"; }
+
+    void LoadFromJSONNode(JSONNODE * const);
 
   private:
     std::string name_;

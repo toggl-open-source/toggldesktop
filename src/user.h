@@ -6,6 +6,9 @@
 #include <string>
 #include <vector>
 #include <set>
+#include <map>
+
+#include "libjson.h" // NOLINT
 
 #include "./types.h"
 #include "./https_client.h"
@@ -82,9 +85,11 @@ namespace kopsik {
         TimeEntry *GetTimeEntryByGUID(const guid GUID) const;
 
         void CollectPushableTimeEntries(
-            std::vector<TimeEntry *> *result) const;
+            std::vector<TimeEntry *> *result,
+            std::map<std::string, BaseModel *> *models = 0) const;
         void CollectPushableProjects(
-            std::vector<Project *> *result) const;
+            std::vector<Project *> *result,
+            std::map<std::string, BaseModel *> *models = 0) const;
 
         TimeEntry *RunningTimeEntry() const;
         TimeEntry *Start(
@@ -139,6 +144,8 @@ namespace kopsik {
 
         std::string ModelName() const { return "user"; }
         std::string ModelURL() const { return "/api/v8/me"; }
+
+        void LoadFromJSONNode(JSONNODE * const);
 
     private:
         error pull(HTTPSClient *https_client,

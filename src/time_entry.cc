@@ -5,6 +5,7 @@
 #include <sstream>
 
 #include "./formatter.h"
+#include "./json.h"
 
 #include "Poco/Timestamp.h"
 #include "Poco/DateTime.h"
@@ -219,6 +220,76 @@ bool TimeEntry::IsToday() const {
 
 bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
     return a->Start() > b->Start();
+}
+
+void TimeEntry::LoadFromJSONNode(JSONNODE * const data) {
+  poco_assert(data);
+
+  Poco::UInt64 ui_modified_at =
+      GetUIModifiedAtFromJSONNode(data);
+  if (UIModifiedAt() > ui_modified_at) {
+      Poco::Logger &logger = Poco::Logger::get("json");
+      std::stringstream ss;
+      ss  << "Will not overwrite time entry "
+          << String()
+          << " with server data because we have a ui_modified_at";
+      logger.debug(ss.str());
+      return;
+  }
+
+  JSONNODE_ITERATOR current_node = json_begin(data);
+  JSONNODE_ITERATOR last_node = json_end(data);
+  while (current_node != last_node) {
+    json_char *node_name = json_name(*current_node);
+    if (strcmp(node_name, "id") == 0) {
+      SetID(json_as_int(*current_node));
+    } else if (strcmp(node_name, "description") == 0) {
+      SetDescription(std::string(json_as_string(*current_node)));
+    } else if (strcmp(node_name, "guid") == 0) {
+      SetGUID(std::string(json_as_string(*current_node)));
+    } else if (strcmp(node_name, "wid") == 0) {
+      SetWID(json_as_int(*current_node));
+    } else if (strcmp(node_name, "pid") == 0) {
+      SetPID(json_as_int(*current_node));
+    } else if (strcmp(node_name, "tid") == 0) {
+      SetTID(json_as_int(*current_node));
+    } else if (strcmp(node_name, "start") == 0) {
+      SetStartString(std::string(json_as_string(*current_node)));
+    } else if (strcmp(node_name, "stop") == 0) {
+      SetStopString(std::string(json_as_string(*current_node)));
+    } else if (strcmp(node_name, "duration") == 0) {
+      SetDurationInSeconds(json_as_int(*current_node));
+    } else if (strcmp(node_name, "billable") == 0) {
+      SetBillable(json_as_bool(*current_node));
+    } else if (strcmp(node_name, "duronly") == 0) {
+      SetDurOnly(json_as_bool(*current_node));
+    } else if (strcmp(node_name, "tags") == 0) {
+      loadTagsFromJSONNode(*current_node);
+    } else if (strcmp(node_name, "created_with") == 0) {
+      SetCreatedWith(std::string(json_as_string(*current_node)));
+    } else if (strcmp(node_name, "at") == 0) {
+      SetUpdatedAtString(std::string(json_as_string(*current_node)));
+    }
+    ++current_node;
+  }
+
+  SetUIModifiedAt(0);
+}
+
+void TimeEntry::loadTagsFromJSONNode(JSONNODE * const list) {
+  poco_assert(list);
+
+  TagNames.clear();
+
+  JSONNODE_ITERATOR current_node = json_begin(list);
+  JSONNODE_ITERATOR last_node = json_end(list);
+  while (current_node != last_node) {
+    std::string tag = std::string(json_as_string(*current_node));
+    if (!tag.empty()) {
+      TagNames.push_back(tag);
+    }
+    ++current_node;
+  }
 }
 
 }   // namespace kopsik
