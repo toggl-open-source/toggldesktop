@@ -92,6 +92,8 @@ namespace kopsik {
 
     void LoadFromDataString(const std::string);
 
+    void Delete();
+
   protected:
     Poco::Logger &logger() const { return Poco::Logger::get(ModelName()); }
 

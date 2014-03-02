@@ -103,4 +103,9 @@ void BaseModel::LoadFromDataString(const std::string data_string) {
   json_delete(n);
 }
 
+void BaseModel::Delete() {
+  SetDeletedAt(time(0));
+  SetUIModifiedAt(time(0));
+}
+
 }   // namespace kopsik

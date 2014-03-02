@@ -953,8 +953,7 @@ kopsik::error Context::DeleteTimeEntryByGUID(const std::string GUID) {
   if (!te) {
     return kopsik::error("Time entry not found");
   }
-  te->SetDeletedAt(time(0));
-  te->SetUIModifiedAt(time(0));
+  te->Delete();
 
 /* FIXME: callback
   kopsik::ModelChange mc("time_entry", "delete", te->ID(), te->GUID());
