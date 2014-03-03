@@ -35,10 +35,10 @@ class ModelChange {
           change_type_(change_type),
           model_id_(model_id),
           GUID_(GUID) {}
-        std::string const& GUID() { return GUID_; }
-        std::string const& ModelType() { return model_type_; }
-        Poco::UInt64 const& ModelID() { return model_id_; }
-        std::string const& ChangeType() { return change_type_; }
+        std::string GUID() const { return GUID_; }
+        std::string ModelType() const { return model_type_; }
+        Poco::UInt64 ModelID() const { return model_id_; }
+        std::string ChangeType() const { return change_type_; }
     private:
         std::string model_type_;
         std::string change_type_;

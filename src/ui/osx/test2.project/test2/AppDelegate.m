@@ -25,6 +25,7 @@
 #import "IdleNotificationWindowController.h"
 #import "CrashReporter.h"
 #import "FeedbackWindowController.h"
+#import "const.h"
 
 @interface AppDelegate()
 @property (nonatomic, strong) IBOutlet MainWindowController *
@@ -887,9 +888,6 @@ const NSString *appName = @"osx_native_app";
     [self.statusItem setTitle:statusStr];
   }
 }
-
-// FIXME: move into lib
-const int kIdleThresholdSeconds = 5 * 60;
 
 - (void)idleTimerFired:(NSTimer*)timer {
   uint64_t idle_seconds = 0;

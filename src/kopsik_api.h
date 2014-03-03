@@ -217,10 +217,6 @@ KOPSIK_EXPORT void kopsik_sync(
 
 // Autocomplete list items
 
-#define KOPSIK_AUTOCOMPLETE_TE 0
-#define KOPSIK_AUTOCOMPLETE_TASK 1
-#define KOPSIK_AUTOCOMPLETE_PROJECT 2
-
 typedef struct {
   char *Text;  // This is what is displayed to user
   char *Description;  // This is copied to description field if item is selected

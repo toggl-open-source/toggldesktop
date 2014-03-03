@@ -30,8 +30,8 @@ void model_change_clear(
 }
 
 void model_change_to_change_item(
-    kopsik::ModelChange &in,
-    KopsikModelChange &out) {
+    const kopsik::ModelChange in,
+    KopsikModelChange *out) {
 
   poco_assert(in.ModelType() == "time_entry" ||
     in.ModelType() == "workspace" ||
@@ -47,16 +47,16 @@ void model_change_to_change_item(
 
   poco_assert(!in.GUID().empty() || in.ModelID() > 0);
 
-  poco_assert(!out.ModelType);
-  out.ModelType = strdup(in.ModelType().c_str());
+  poco_assert(!out->ModelType);
+  out->ModelType = strdup(in.ModelType().c_str());
 
-  out.ModelID = (unsigned int)in.ModelID();
+  out->ModelID = (unsigned int)in.ModelID();
 
-  poco_assert(!out.ChangeType);
-  out.ChangeType = strdup(in.ChangeType().c_str());
+  poco_assert(!out->ChangeType);
+  out->ChangeType = strdup(in.ChangeType().c_str());
 
-  poco_assert(!out.GUID);
-  out.GUID = strdup(in.GUID().c_str());
+  poco_assert(!out->GUID);
+  out->GUID = strdup(in.GUID().c_str());
 }
 
 void time_entry_to_view_item(
