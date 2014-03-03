@@ -18,6 +18,7 @@
 #include "./proxy.h"
 #include "./context.h"
 #include "./formatter.h"
+#include "./feedback.h"
 
 #include "Poco/Bugcheck.h"
 #include "Poco/Path.h"
@@ -95,27 +96,77 @@ void kopsik_view_item_clear(
 
 // Context API.
 
+KopsikViewItemChangeCallback user_data_change_callback_ = 0;
+
+void export_on_change_callback(
+    const kopsik::ModelChange mc) {
+  poco_assert(user_data_change_callback_);
+
+  KopsikModelChange *change = model_change_init();
+  model_change_to_change_item(mc, change);
+  user_data_change_callback_(KOPSIK_API_SUCCESS, 0, change);
+  model_change_clear(change);
+}
+
+KopsikErrorCallback user_data_error_callback_ = 0;
+
+void export_on_error_callback(
+    const kopsik::error err) {
+  poco_assert(user_data_error_callback_);
+
+  user_data_error_callback_(err.c_str());
+}
+
+KopsikCheckUpdateCallback user_data_check_updates_callback_ = 0;
+
+void export_on_check_update_callback(
+    const kopsik::error err,
+    const bool is_update_available,
+    const std::string url,
+    const std::string version) {
+  poco_assert(user_data_check_updates_callback_);
+
+  if (err != kopsik::noError) {
+    user_data_check_updates_callback_(
+      KOPSIK_API_FAILURE, err.c_str(), 0, 0, 0);
+    return;
+  }
+
+  unsigned int avail = 0;
+  if (is_update_available) {
+    avail = 1;
+  }
+  user_data_check_updates_callback_(
+    KOPSIK_API_SUCCESS, err.c_str(), avail, url.c_str(), version.c_str());
+}
+
 void *kopsik_context_init(
     const char *app_name,
     const char *app_version,
     KopsikViewItemChangeCallback change_callback,
-    KopsikErrorCallback on_error_callback,
+    KopsikErrorCallback error_callback,
     KopsikCheckUpdateCallback check_updates_callback,
-    KopsikOnOnlineCallback on_online_callback) {
+    KopsikOnOnlineCallback online_callback) {
   poco_assert(app_name);
   poco_assert(app_version);
 
   kopsik::Context *ctx =
     new kopsik::Context(std::string(app_name), std::string(app_version));
 
-  ctx->SetChangeCallback(change_callback);
-  ctx->SetOnErrorCallback(on_error_callback);
-  ctx->SetCheckUpdatesCallback(check_updates_callback);
-  ctx->SetOnOnlineCallback(on_online_callback);
+  user_data_change_callback_ = change_callback;
+  ctx->SetModelChangeCallback(export_on_change_callback);
 
-  ctx->SetAPIURL("https://www.toggl.com");
-  ctx->SetTimelineUploadURL("https://timeline.toggl.com");
-  ctx->SetWebSocketClientURL("https://stream.toggl.com");
+  user_data_error_callback_ = error_callback;
+  ctx->SetOnErrorCallback(export_on_error_callback);
+
+  user_data_check_updates_callback_ = check_updates_callback;
+  ctx->SetCheckUpdateCallback(export_on_check_update_callback);
+
+  ctx->SetOnOnlineCallback(online_callback);
+
+  ctx->SetAPIURL(kAPIURL);
+  ctx->SetTimelineUploadURL(kTimelineUploadURL);
+  ctx->SetWebSocketClientURL(kWebSocketURL);
 
   return ctx;
 }
@@ -1783,10 +1834,9 @@ kopsik_api_result kopsik_feedback_send(
   ss << "kopsik_feedback_send topic=" << topic << " details=" << details;
   logger().debug(ss.str());
 
-  kopsik::error err =
-    app(context)->SendFeedback(std::string(topic),
-                               std::string(details),
-                               std::string(filename));
+  kopsik::Feedback feedback(topic, details, filename);
+
+  kopsik::error err = app(context)->SendFeedback(feedback);
   if (err != kopsik::noError) {
     strncpy(errmsg, err.c_str(), errlen);
     return KOPSIK_API_FAILURE;

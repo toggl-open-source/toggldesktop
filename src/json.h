@@ -71,7 +71,6 @@ namespace kopsik {
     User *user,
     const std::string json);
 
-  // FIXME: check the alive pointers are not asserted
   void loadUserProjectFromJSONNode(
     User *model,
     JSONNODE *data,

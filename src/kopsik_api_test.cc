@@ -189,7 +189,6 @@ namespace kopsik {
         kopsik_context_clear(ctx);
     }
 
-/* FIXME:
     TEST(KopsikApiTest, kopsik_lifecycle) {
         void *ctx = create_test_context();
 
@@ -199,26 +198,10 @@ namespace kopsik {
         kopsik_api_result res = kopsik_set_db_path(ctx, err, ERRLEN, TESTDB);
         ASSERT_EQ(KOPSIK_API_SUCCESS, res);
 
-        MockHTTPSClient *mock_client = new MockHTTPSClient();
-
         std::string json = loadTestData();
 
-        // Login
-        std::stringstream url;
-        url << "/api/v8/me?app_name=kopsik&with_related_data=false&since=0";
-        EXPECT_CALL(*mock_client, GetJSON(
-            url.str(),
-            std::string("foo@bar.com"),
-            std::string("secret"),
-            testing::_))
-        .WillOnce(testing::DoAll(
-            testing::SetArgPointee<3>(json),
-            testing::Return("")));
-
-        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_login(
-            ctx,
-            err, ERRLEN,
-            "foo@bar.com", "secret"));
+        res = kopsik_set_logged_in_user(ctx, err, ERRLEN, json.c_str());
+        ASSERT_EQ(KOPSIK_API_SUCCESS, res);
 
         // We should have the API token now
         const int kMaxStrLen = 100;

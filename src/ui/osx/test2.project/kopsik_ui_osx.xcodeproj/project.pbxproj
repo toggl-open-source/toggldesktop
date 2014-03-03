@@ -181,6 +181,7 @@
 		69FC181E17E6534500B96425 /* test2Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = test2Tests.m; sourceTree = "<group>"; };
 		74033C8D17EC1CFD00CA53D3 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		74033C9617EC1DE100CA53D3 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
+		7408EDB918C532C200CBE8F1 /* const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = const.h; path = ../../../../const.h; sourceTree = "<group>"; };
 		742339391829B99C00063FA9 /* IdleNotificationWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdleNotificationWindowController.h; sourceTree = "<group>"; };
 		7423393A1829B99C00063FA9 /* IdleNotificationWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdleNotificationWindowController.m; sourceTree = "<group>"; };
 		7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IdleNotificationWindowController.xib; sourceTree = "<group>"; };
@@ -390,6 +391,7 @@
 		69FC17FA17E6534400B96425 /* kopsik_ui */ = {
 			isa = PBXGroup;
 			children = (
+				7408EDB918C532C200CBE8F1 /* const.h */,
 				95DBF8D618C48B300021FB41 /* logo.png */,
 				74F106FE18993FFE00E93BD5 /* FeedbackWindowController.h */,
 				74F106FF18993FFE00E93BD5 /* FeedbackWindowController.m */,

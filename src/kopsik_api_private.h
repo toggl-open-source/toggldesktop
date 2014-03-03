@@ -34,8 +34,8 @@ KopsikViewItem *client_to_view_item(
 KopsikModelChange *model_change_init();
 
 void model_change_to_change_item(
-  kopsik::ModelChange &in,
-  KopsikModelChange &out);
+  const kopsik::ModelChange in,
+  KopsikModelChange *out);
 
 void model_change_clear(
   KopsikModelChange *change);

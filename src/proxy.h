@@ -7,6 +7,8 @@
 
 #include "./types.h"
 
+#include "Poco/Types.h"
+
 namespace kopsik {
 
   class Proxy {

@@ -89,7 +89,7 @@
 }
 
 - (IBAction)backButtonClicked:(id)sender {
-  // FIXME: this is not a good place for this (on Done button) :S
+  // This is not a good place for this (on Done button!)
   if (![self applyAddProject]) {
     return;
   }
@@ -155,10 +155,10 @@
     return [self.autocompleteDataSource completedString:partialString];
   }
   if (comboBox == self.clientSelect) {
-    return @"FIXME:";
+    return @":"; // Not supported at the moment
   }
   if (comboBox == self.workspaceSelect) {
-    return @"FIXME";
+    return @""; // Not supported at the moment
   }
   NSAssert(false, @"Invalid combo box");
   return nil;
@@ -279,7 +279,6 @@
   [self startTagsListRendering];
 }
 
-// FIXME: move into lib
 - (void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIStateTimeEntryDeselected]) {
     [self.addProjectBox setHidden:YES];
@@ -803,8 +802,6 @@ completionsForSubstring:(NSString *)substring
 }
 
 - (void)controlTextDidChange:(NSNotification *)aNotification {
-  // FIXME: this looks kind of similar to code in timer edit view
-
   // Don't trigger combobox autocomplete when inside tags field
   if (![[aNotification object] isKindOfClass:[NSComboBox class]]) {
     return;

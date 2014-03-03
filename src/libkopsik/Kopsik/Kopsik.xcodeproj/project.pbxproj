@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7408EDB118C51CEB00CBE8F1 /* proxy.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7408EDA918C51CEB00CBE8F1 /* proxy.cc */; };
+		7408EDB218C51CEB00CBE8F1 /* autocomplete_item.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7408EDAA18C51CEB00CBE8F1 /* autocomplete_item.cc */; };
+		7408EDB318C51CEB00CBE8F1 /* const.h in Headers */ = {isa = PBXBuildFile; fileRef = 7408EDAB18C51CEB00CBE8F1 /* const.h */; };
+		7408EDB418C51CEB00CBE8F1 /* proxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 7408EDAC18C51CEB00CBE8F1 /* proxy.h */; };
+		7408EDB518C51CEB00CBE8F1 /* feedback.h in Headers */ = {isa = PBXBuildFile; fileRef = 7408EDAD18C51CEB00CBE8F1 /* feedback.h */; };
+		7408EDB618C51CEB00CBE8F1 /* autocomplete_item.h in Headers */ = {isa = PBXBuildFile; fileRef = 7408EDAE18C51CEB00CBE8F1 /* autocomplete_item.h */; };
+		7408EDB718C51CEB00CBE8F1 /* formatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 7408EDAF18C51CEB00CBE8F1 /* formatter.h */; };
+		7408EDB818C51CEB00CBE8F1 /* feedback.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7408EDB018C51CEB00CBE8F1 /* feedback.cc */; };
 		7484A2A818887BEE0025A88B /* kopsik_api_private.h in Headers */ = {isa = PBXBuildFile; fileRef = 7484A2A218887BEE0025A88B /* kopsik_api_private.h */; };
 		7484A2AA18887BEE0025A88B /* context.h in Headers */ = {isa = PBXBuildFile; fileRef = 7484A2A418887BEE0025A88B /* context.h */; };
 		7484A2AB18887BEE0025A88B /* context.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7484A2A518887BEE0025A88B /* context.cc */; };
@@ -70,6 +78,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7408EDA918C51CEB00CBE8F1 /* proxy.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = proxy.cc; path = ../../../proxy.cc; sourceTree = "<group>"; };
+		7408EDAA18C51CEB00CBE8F1 /* autocomplete_item.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = autocomplete_item.cc; path = ../../../autocomplete_item.cc; sourceTree = "<group>"; };
+		7408EDAB18C51CEB00CBE8F1 /* const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = const.h; path = ../../../const.h; sourceTree = "<group>"; };
+		7408EDAC18C51CEB00CBE8F1 /* proxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = proxy.h; path = ../../../proxy.h; sourceTree = "<group>"; };
+		7408EDAD18C51CEB00CBE8F1 /* feedback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = feedback.h; path = ../../../feedback.h; sourceTree = "<group>"; };
+		7408EDAE18C51CEB00CBE8F1 /* autocomplete_item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = autocomplete_item.h; path = ../../../autocomplete_item.h; sourceTree = "<group>"; };
+		7408EDAF18C51CEB00CBE8F1 /* formatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = formatter.h; path = ../../../formatter.h; sourceTree = "<group>"; };
+		7408EDB018C51CEB00CBE8F1 /* feedback.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = feedback.cc; path = ../../../feedback.cc; sourceTree = "<group>"; };
 		7484A2A218887BEE0025A88B /* kopsik_api_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kopsik_api_private.h; path = ../../../kopsik_api_private.h; sourceTree = "<group>"; };
 		7484A2A418887BEE0025A88B /* context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = context.h; path = ../../../context.h; sourceTree = "<group>"; };
 		7484A2A518887BEE0025A88B /* context.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = context.cc; path = ../../../context.cc; sourceTree = "<group>"; };
@@ -198,6 +214,14 @@
 		C55DA59E17F06A3B00B42178 /* Kopsik */ = {
 			isa = PBXGroup;
 			children = (
+				7408EDA918C51CEB00CBE8F1 /* proxy.cc */,
+				7408EDAA18C51CEB00CBE8F1 /* autocomplete_item.cc */,
+				7408EDAB18C51CEB00CBE8F1 /* const.h */,
+				7408EDAC18C51CEB00CBE8F1 /* proxy.h */,
+				7408EDAD18C51CEB00CBE8F1 /* feedback.h */,
+				7408EDAE18C51CEB00CBE8F1 /* autocomplete_item.h */,
+				7408EDAF18C51CEB00CBE8F1 /* formatter.h */,
+				7408EDB018C51CEB00CBE8F1 /* feedback.cc */,
 				74BAD32718BEC4FD002FD4CF /* base_model.cc */,
 				74BAD32818BEC4FD002FD4CF /* base_model.h */,
 				74B587A618BBC77E00E9F6CE /* formatter.cc */,
@@ -267,9 +291,11 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7408EDB418C51CEB00CBE8F1 /* proxy.h in Headers */,
 				74B587BC18BBC77E00E9F6CE /* tag.h in Headers */,
 				74B587C018BBC77E00E9F6CE /* client.h in Headers */,
 				74B587C318BBC77E00E9F6CE /* time_entry.h in Headers */,
+				7408EDB618C51CEB00CBE8F1 /* autocomplete_item.h in Headers */,
 				74B587C418BBC77E00E9F6CE /* related_data.h in Headers */,
 				74B587BE18BBC77E00E9F6CE /* task.h in Headers */,
 				74B587C218BBC77E00E9F6CE /* workspace.h in Headers */,
@@ -277,11 +303,14 @@
 				74B587BF18BBC77E00E9F6CE /* user.h in Headers */,
 				748968CC18340F9B00288374 /* version.h in Headers */,
 				74B587C118BBC77E00E9F6CE /* project.h in Headers */,
+				7408EDB318C51CEB00CBE8F1 /* const.h in Headers */,
 				C5DA1FB717F1942A001C4565 /* kopsik_api.h in Headers */,
 				7484A2AA18887BEE0025A88B /* context.h in Headers */,
 				74CAAD1E181860F7001B77BB /* timeline_event.h in Headers */,
 				74B587BD18BBC77E00E9F6CE /* json.h in Headers */,
 				74F7CDDC18199FA300630BD0 /* window_change_recorder.h in Headers */,
+				7408EDB518C51CEB00CBE8F1 /* feedback.h in Headers */,
+				7408EDB718C51CEB00CBE8F1 /* formatter.h in Headers */,
 				74CAAD1A181860F7001B77BB /* get_focused_window.h in Headers */,
 				C5DA1FB117F18D7B001C4565 /* types.h in Headers */,
 				74E16832180F26D90026261C /* websocket_client.h in Headers */,
@@ -363,6 +392,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7408EDB218C51CEB00CBE8F1 /* autocomplete_item.cc in Sources */,
 				74CAAD19181860F7001B77BB /* get_focused_window_mac.cc in Sources */,
 				74F7CDDB18199FA300630BD0 /* window_change_recorder.cc in Sources */,
 				74EB0F1717F9A2600046ABC1 /* https_client.cc in Sources */,
@@ -380,8 +410,10 @@
 				7484A2AB18887BEE0025A88B /* context.cc in Sources */,
 				74B587CD18BBC77E00E9F6CE /* time_entry.cc in Sources */,
 				74BAD32918BEC4FD002FD4CF /* base_model.cc in Sources */,
+				7408EDB818C51CEB00CBE8F1 /* feedback.cc in Sources */,
 				74E16831180F26D90026261C /* websocket_client.cc in Sources */,
 				74B587CA18BBC77E00E9F6CE /* client.cc in Sources */,
+				7408EDB118C51CEB00CBE8F1 /* proxy.cc in Sources */,
 				C5DA1FAB17F18D7B001C4565 /* database.cc in Sources */,
 				74B587C618BBC77E00E9F6CE /* tag.cc in Sources */,
 				C5DA1FB617F1942A001C4565 /* kopsik_api.cc in Sources */,

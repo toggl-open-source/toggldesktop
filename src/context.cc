@@ -12,20 +12,11 @@
 #include "./json.h"
 #include "./time_entry.h"
 
-// FIXME: dont use C API from C++ class
-#include "./kopsik_api_private.h"
-
-#include "Poco/Path.h"
-#include "Poco/FileStream.h"
-#include "Poco/Base64Encoder.h"
-#include "Poco/StreamCopier.h"
 #include "Poco/Util/Timer.h"
 #include "Poco/Util/TimerTask.h"
 #include "Poco/Util/TimerTaskAdapter.h"
 
 namespace kopsik {
-
-const int kRequestThrottleMicros = 2 * 1000000;
 
 Context::Context(
     const std::string app_name,
@@ -40,12 +31,10 @@ Context::Context(
     api_url_(""),
     timeline_upload_url_(""),
     update_channel_(""),
-    feedback_attachment_path_(""),
-    feedback_subject_(""),
-    feedback_details_(""),
-    change_callback_(0),
+    feedback_("", "", ""),
+    on_model_change_callback_(0),
     on_error_callback_(0),
-    check_updates_callback_(0),
+    on_check_update_callback_(0),
     next_full_sync_at_(0),
     next_partial_sync_at_(0),
     next_fetch_updates_at_(0),
@@ -130,7 +119,7 @@ kopsik::error Context::ConfigureProxy() {
 }
 
 kopsik::error Context::save() {
-  poco_assert(change_callback_);
+  poco_assert(on_model_change_callback_);
 
   try {
     std::vector<kopsik::ModelChange> changes;
@@ -141,11 +130,7 @@ kopsik::error Context::save() {
     for (std::vector<kopsik::ModelChange>::const_iterator it = changes.begin();
         it != changes.end();
         it++) {
-      kopsik::ModelChange mc = *it;
-      KopsikModelChange *change = model_change_init();
-      model_change_to_change_item(mc, *change);
-      change_callback_(KOPSIK_API_SUCCESS, 0, change);
-      model_change_clear(change);
+      on_model_change_callback_(*it);
     }
   } catch(const Poco::Exception& exc) {
     return exc.displayText();
@@ -367,12 +352,11 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
 void Context::FetchUpdates() {
   logger().debug("FetchUpdates");
 
-  poco_assert(check_updates_callback_);
+  poco_assert(on_check_update_callback_);
 
   kopsik::error err = db_->LoadUpdateChannel(&update_channel_);
   if (err != kopsik::noError) {
-    // FIXME: don't use c callbacks from here
-    check_updates_callback_(KOPSIK_API_FAILURE, err.c_str(), 0, 0, 0);
+    on_check_update_callback_(err, false, "", "");
     return;
   }
 
@@ -399,18 +383,18 @@ void Context::onFetchUpdates(Poco::Util::TimerTask& task) {  // NOLINT
                                             std::string(""),
                                             &response_body);
   if (err != kopsik::noError) {
-    check_updates_callback_(KOPSIK_API_FAILURE, err.c_str(), 0, 0, 0);
+    on_check_update_callback_(err, false, "", "");
     return;
   }
 
   if ("null" == response_body) {
-    check_updates_callback_(KOPSIK_API_SUCCESS, 0, 0, 0, 0);
+    on_check_update_callback_(kopsik::noError, false, "", "");
     return;
   }
 
   if (!IsValidJSON(response_body)) {
-    check_updates_callback_(
-      KOPSIK_API_FAILURE, "Invalid response JSON", 0, 0, 0);
+    on_check_update_callback_(kopsik::error("Invalid response JSON"),
+                              false, "", "");
     return;
   }
 
@@ -431,12 +415,7 @@ void Context::onFetchUpdates(Poco::Util::TimerTask& task) {  // NOLINT
   }
   json_delete(root);
 
-  check_updates_callback_(
-    KOPSIK_API_SUCCESS,
-    err.c_str(),
-    1,
-    url.c_str(),
-    version.c_str());
+  on_check_update_callback_(kopsik::noError, true, url, version);
 }
 
 const std::string Context::updateURL() const {
@@ -503,65 +482,19 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
   }
 }
 
-const std::string Context::feedbackJSON() const {
-  JSONNODE *root = json_new(JSON_NODE);
-  json_push_back(root, json_new_b("desktop", true));
-  json_push_back(root, json_new_a("toggl_version", app_version_.c_str()));
-  json_push_back(root, json_new_a("details",
-    Formatter::EscapeJSONString(feedback_details_).c_str()));
-  json_push_back(root, json_new_a("subject",
-    Formatter::EscapeJSONString(feedback_subject_).c_str()));
-  if (!feedback_attachment_path_.empty()) {
-    json_push_back(root, json_new_a("base64_encoded_attachment",
-      base64encode_attachment().c_str()));
-    json_push_back(root, json_new_a("attachment_name",
-      Formatter::EscapeJSONString(feedback_filename()).c_str()));
-  }
-  json_char *jc = json_write_formatted(root);
-  std::string json(jc);
-  json_free(jc);
-  json_delete(root);
-  return json;
-}
-
-const std::string Context::feedback_filename() const {
-  Poco::Path p(true);
-  bool ok = p.tryParse(feedback_attachment_path_);
-  if (!ok) {
-    return "";
-  }
-  return p.getFileName();
-}
-
-const std::string Context::base64encode_attachment() const {
-  std::ostringstream oss;
-  Poco::FileInputStream fis(feedback_attachment_path_);
-  if (!fis.good()) {
-    return "";
-  }
-  Poco::Base64Encoder encoder(oss);
-  encoder.rdbuf()->setLineLength(0);  // disable line feeds in output
-  Poco::StreamCopier::copyStream(fis, encoder);
-  encoder.close();
-  return oss.str();
-}
-
-kopsik::error Context::SendFeedback(
-    const std::string topic,
-    const std::string details,
-    const std::string filename) {
+kopsik::error Context::SendFeedback(Feedback fb) {
   if (!user_) {
     return kopsik::error("Please login to send feedback");
   }
-  if (topic.empty()) {
-    return kopsik::error("Missing topic");
+
+  fb.SetAppVersion(app_version_);
+
+  kopsik::error err = fb.Validate();
+  if (err != kopsik::noError) {
+    return err;
   }
-  if (details.empty()) {
-    return kopsik::error("Missing details");
-  }
-  feedback_subject_ = topic;
-  feedback_details_ = details;
-  feedback_attachment_path_ = filename;
+
+  feedback_ = fb;
 
   Poco::Util::TimerTask::Ptr ptask =
     new Poco::Util::TimerTaskAdapter<Context>(
@@ -579,7 +512,7 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
   kopsik::HTTPSClient https_client(api_url_, app_name_, app_version_);
   std::string response_body("");
   kopsik::error err = https_client.PostJSON("/api/v8/feedback",
-                                            feedbackJSON(),
+                                            feedback_.JSON(),
                                             user_->APIToken(),
                                             "api_token",
                                             &response_body);
@@ -587,27 +520,6 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     on_error_callback_(err.c_str());
     return;
   }
-}
-
-void Context::SetChangeCallback(KopsikViewItemChangeCallback cb) {
-    change_callback_ = cb;
-}
-void Context::SetOnErrorCallback(KopsikErrorCallback cb) {
-    on_error_callback_ = cb;
-}
-void Context::SetCheckUpdatesCallback(KopsikCheckUpdateCallback cb) {
-    check_updates_callback_ = cb;
-}
-void Context::SetOnOnlineCallback(KopsikOnOnlineCallback cb) {
-    on_online_callback_ = cb;
-}
-
-void Context::SetAPIURL(const std::string value) {
-  api_url_ = value;
-}
-
-void Context::SetTimelineUploadURL(const std::string value) {
-    timeline_upload_url_ = value;
 }
 
 void Context::SetWebSocketClientURL(const std::string value) {
@@ -956,10 +868,7 @@ kopsik::error Context::DeleteTimeEntryByGUID(const std::string GUID) {
   te->Delete();
 
   kopsik::ModelChange mc("time_entry", "delete", te->ID(), te->GUID());
-  KopsikModelChange *change = model_change_init();
-  model_change_to_change_item(mc, *change);
-  change_callback_(KOPSIK_API_SUCCESS, 0, change);
-  model_change_clear(change);
+  on_model_change_callback_(mc);
 
   save();
   partialSync();
@@ -1450,7 +1359,7 @@ void Context::getTimeEntryAutocompleteItems(
     if (t) {
       autocomplete_item.TaskID = t->ID();
     }
-    autocomplete_item.Type = KOPSIK_AUTOCOMPLETE_TE;
+    autocomplete_item.Type = kAutocompleteItemTE;
     list->push_back(autocomplete_item);
   }
 }
@@ -1502,7 +1411,7 @@ void Context::getTaskAutocompleteItems(
       autocomplete_item.ProjectColor = p->ColorCode();
       autocomplete_item.ProjectID = p->ID();
     }
-    autocomplete_item.Type = KOPSIK_AUTOCOMPLETE_TASK;
+    autocomplete_item.Type = kAutocompleteItemTask;
     list->push_back(autocomplete_item);
   }
 }
@@ -1542,7 +1451,7 @@ void Context::getProjectAutocompleteItems(
     autocomplete_item.ProjectAndTaskLabel = text;
     autocomplete_item.ProjectID = p->ID();
     autocomplete_item.ProjectColor = p->ColorCode();
-    autocomplete_item.Type = KOPSIK_AUTOCOMPLETE_PROJECT;
+    autocomplete_item.Type = kAutocompleteItemProject;
     list->push_back(autocomplete_item);
   }
 }

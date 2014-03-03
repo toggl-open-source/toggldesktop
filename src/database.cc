@@ -1212,7 +1212,6 @@ error Database::saveClient(
                << " in thread " << Poco::Thread::currentTid();
             logger().trace(ss.str());
 
-            // FIXME: check how to property insert null :S
             if (model->GUID().empty()) {
                 *session << "update clients set "
                     "id = :id, uid = :uid, name = :name, wid = :wid "
@@ -1248,7 +1247,6 @@ error Database::saveClient(
             ss << "Inserting client " + model->String()
                << " in thread " << Poco::Thread::currentTid();
             logger().trace(ss.str());
-            // FIXME: check how to property insert null :S
             if (model->GUID().empty()) {
                 *session << "insert into clients(id, uid, name, wid) "
                     "values(:id, :uid, :name, :wid)",
@@ -1315,7 +1313,6 @@ error Database::saveProject(
                << " in thread " << Poco::Thread::currentTid();
             logger().debug(ss.str());
 
-            // FIXME: check how to property insert null :S
             if (model->ID()) {
                 if (model->GUID().empty()) {
                     *session << "update projects set "
@@ -1397,7 +1394,6 @@ error Database::saveProject(
             ss << "Inserting project " + model->String()
                << " in thread " << Poco::Thread::currentTid();
             logger().debug(ss.str());
-            // FIXME: check how to property insert null :S
             if (model->ID()) {
                 if (model->GUID().empty()) {
                     *session <<
@@ -1593,7 +1589,6 @@ error Database::saveTag(
                << " in thread " << Poco::Thread::currentTid();
             logger().trace(ss.str());
 
-            // FIXME: check how to property insert null :S
             if (model->GUID().empty()) {
                 *session << "update tags set "
                     "id = :id, uid = :uid, name = :name, wid = :wid "
@@ -1629,7 +1624,6 @@ error Database::saveTag(
             ss << "Inserting tag " + model->String()
                << " in thread " << Poco::Thread::currentTid();
             logger().trace(ss.str());
-            // FIXME: check how to property insert null :S
             if (model->GUID().empty()) {
                 *session << "insert into tags(id, uid, name, wid) "
                     "values(:id, :uid, :name, :wid)",

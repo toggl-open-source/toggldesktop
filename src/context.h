@@ -13,42 +13,27 @@
 #include "./window_change_recorder.h"
 #include "./timeline_uploader.h"
 #include "./CustomErrorHandler.h"
-
-// FIXME: don't use C API from C++ class
-#include "./kopsik_api.h"
+#include "./autocomplete_item.h"
+#include "./feedback.h"
 
 #include "Poco/Util/Timer.h"
 
 namespace kopsik {
 
-class AutocompleteItem {
- public:
-  AutocompleteItem()
-    : Text("")
-    , Description("")
-    , ProjectAndTaskLabel("")
-    , ProjectColor("")
-    , TaskID(0)
-    , ProjectID(0)
-    , Type(0) {}
-  ~AutocompleteItem() {}
+typedef void (*ModelChangeCallback)(
+  const ModelChange change);
 
-  bool IsTimeEntry() const { return KOPSIK_AUTOCOMPLETE_TE == Type; }
-  bool IsTask() const { return KOPSIK_AUTOCOMPLETE_TASK == Type; }
-  bool IsProject() const { return KOPSIK_AUTOCOMPLETE_PROJECT == Type; }
+typedef void (*ErrorCallback)(
+  const error err);
 
-  std::string Text;
-  std::string Description;
-  std::string ProjectAndTaskLabel;
-  std::string ProjectColor;
-  Poco::UInt64 TaskID;
-  Poco::UInt64 ProjectID;
-  Poco::UInt64 Type;
-};
+typedef void (*CheckUpdateCallback)(
+  const error err,
+  const bool is_update_available,
+  const std::string url,
+  const std::string version);
 
-bool CompareAutocompleteItems(AutocompleteItem a, AutocompleteItem b);
+typedef void (*OnlineCallback)();
 
-// FIXME: rename
 class Context {
   public:
     Context(
@@ -67,26 +52,25 @@ class Context {
     void SwitchTimelineOn();
     void FetchUpdates();
     void TimelineUpdateServerSettings();
-    kopsik::error SendFeedback(
-      const std::string topic,
-      const std::string details,
-      const std::string filename);
+    kopsik::error SendFeedback(Feedback);
 
     // Load model update from JSON string (from WebSocket)
     void LoadUpdateFromJSONString(const std::string json);
 
-    // FIXME: dont use C callbacks in C++ class
-    void SetChangeCallback(KopsikViewItemChangeCallback cb);
-    void SetOnErrorCallback(KopsikErrorCallback cb);
-    void SetCheckUpdatesCallback(KopsikCheckUpdateCallback cb);
-    void SetOnOnlineCallback(KopsikOnOnlineCallback cb);
+    void SetModelChangeCallback(ModelChangeCallback cb) {
+      on_model_change_callback_ = cb; }
+    void SetOnErrorCallback(ErrorCallback cb) { on_error_callback_ = cb; }
+    void SetCheckUpdateCallback(CheckUpdateCallback cb) {
+      on_check_update_callback_ = cb; }
+    void SetOnOnlineCallback(OnlineCallback cb) { on_online_callback_ = cb; }
 
     // Apply proxy settings
     kopsik::error ConfigureProxy();
 
     // Configure
-    void SetAPIURL(const std::string value);
-    void SetTimelineUploadURL(const std::string value);
+    void SetAPIURL(const std::string value) { api_url_ = value; }
+    void SetTimelineUploadURL(const std::string value) {
+        timeline_upload_url_ = value; }
     void SetWebSocketClientURL(const std::string value);
     void SetDBPath(
       const std::string path);
@@ -188,13 +172,15 @@ class Context {
 
   private:
     const std::string updateURL() const;
+
     static const std::string osName();
+
     Poco::Logger &logger() const { return Poco::Logger::get("context"); }
-    const std::string feedbackJSON() const;
-    const std::string feedback_filename() const;
-    const std::string base64encode_attachment() const;
+
     void sync(const bool full_sync);
+
     kopsik::error save();
+
     void partialSync();
 
     // timer_ callbacks
@@ -240,16 +226,12 @@ class Context {
 
     std::string update_channel_;
 
-    // FIXME: move into class
-    std::string feedback_attachment_path_;
-    std::string feedback_subject_;
-    std::string feedback_details_;
+    Feedback feedback_;
 
-    // FIXME: dont use C callbacks in C++ class
-    KopsikViewItemChangeCallback change_callback_;
-    KopsikErrorCallback on_error_callback_;
-    KopsikCheckUpdateCallback check_updates_callback_;
-    KopsikOnOnlineCallback on_online_callback_;
+    ModelChangeCallback on_model_change_callback_;
+    ErrorCallback on_error_callback_;
+    CheckUpdateCallback on_check_update_callback_;
+    OnlineCallback on_online_callback_;
 
     // Tasks are scheduled at:
     Poco::Timestamp next_full_sync_at_;
