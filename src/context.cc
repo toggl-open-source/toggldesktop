@@ -955,13 +955,11 @@ kopsik::error Context::DeleteTimeEntryByGUID(const std::string GUID) {
   }
   te->Delete();
 
-/* FIXME: callback
   kopsik::ModelChange mc("time_entry", "delete", te->ID(), te->GUID());
   KopsikModelChange *change = model_change_init();
   model_change_to_change_item(mc, *change);
-  ctx->change_callback(KOPSIK_API_SUCCESS, 0, change);
+  change_callback_(KOPSIK_API_SUCCESS, 0, change);
   model_change_clear(change);
-*/
 
   save();
   partialSync();
