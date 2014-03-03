@@ -534,7 +534,7 @@ error User::Login(
     const std::string &password) {
   BasicAuthUsername = email;
   BasicAuthPassword = password;
-  return pull(https_client, false, false);
+  return pull(https_client, true, true);
 }
 
 error User::pull(
