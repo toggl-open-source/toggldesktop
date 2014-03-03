@@ -110,6 +110,8 @@ namespace kopsik {
     void recalculateDuration();
 
     void loadTagsFromJSONNode(JSONNODE * const);
+
+    Poco::Logger &logger() { return Poco::Logger::get("time_entry"); }
   };
 
   bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b);
