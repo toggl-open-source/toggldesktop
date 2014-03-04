@@ -1,5 +1,14 @@
 // Copyright 2014 Toggl Desktop developers.
 
+// NB! Setters should not directly calculate
+// anything besides setting the field asked.
+// This is because same setters are used when
+// loading from database, JSON etc. If time entry
+// needs to be recalculated after some user
+// action, the recalculation should be started
+// from context, using specific functions, not
+// setters.
+
 #include "./time_entry.h"
 
 #include <sstream>
@@ -96,9 +105,11 @@ void TimeEntry::recalculateDuration() {
 }
 
 void TimeEntry::SetStop(const Poco::UInt64 value) {
-  if (stop_ == value) {
-    return;
+  if (stop_ != value) {
+    stop_ = value;
+    SetDirty();
   }
+  /* FIXME:
   stop_ = value;
   SetDirty();
   if (stop_ >= start_) {
@@ -111,6 +122,7 @@ void TimeEntry::SetStop(const Poco::UInt64 value) {
   stop_ = ts.epochTime();
   poco_assert(stop_ >= start_);
   recalculateDuration();
+  */
 }
 
 void TimeEntry::SetTID(const Poco::UInt64 value) {
@@ -151,16 +163,19 @@ void TimeEntry::SetDurationInSeconds(const Poco::Int64 value) {
 
 void TimeEntry::SetStartString(const std::string value) {
     Poco::Int64 start = Formatter::Parse8601(value);
+    /* FIXME: 
     if (duration_in_seconds_ < 0) {
         SetDurationInSeconds(-start);
     } else {
         SetStop(start + duration_in_seconds_);
     }
+    */
     SetStart(start);
 }
 
 void TimeEntry::SetDurationString(const std::string value) {
     int seconds = Formatter::ParseDurationString(value);
+    /* FIXME:
     if (duration_in_seconds_ < 0) {
         time_t now = time(0);
         time_t start = now - seconds;
@@ -170,6 +185,8 @@ void TimeEntry::SetDurationString(const std::string value) {
         SetDurationInSeconds(seconds);
         SetStop(start_ + seconds);
     }
+    */
+    SetDurationInSeconds(seconds);
 }
 
 void TimeEntry::SetProjectGUID(const std::string value) {
