@@ -895,7 +895,7 @@ kopsik::error Context::SetTimeEntryDuration(
   if (!te) {
     return kopsik::error("Time entry not found");
   }
-  te->SetDurationString(duration);
+  te->SetDurationUserInput(duration);
   if (te->Dirty()) {
     te->SetUIModifiedAt(time(0));
   }
@@ -963,7 +963,7 @@ kopsik::error Context::SetTimeEntryStartISO8601(
   if (!te) {
     return kopsik::error("Time entry not found");
   }
-  te->SetStartString(value);
+  te->SetStartUserInput(value);
   if (te->Dirty()) {
     te->SetUIModifiedAt(time(0));
   }
@@ -987,7 +987,7 @@ kopsik::error Context::SetTimeEntryEndISO8601(
   if (!te) {
     return kopsik::error("Time entry not found");
   }
-  te->SetStopString(value);
+  te->SetStopUserInput(value);
   if (te->Dirty()) {
     te->SetUIModifiedAt(time(0));
   }

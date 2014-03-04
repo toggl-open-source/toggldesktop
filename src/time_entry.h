@@ -51,7 +51,6 @@ namespace kopsik {
     void SetDurationInSeconds(const Poco::Int64 value);
 
     std::string DurationString() const;
-    void SetDurationString(const std::string value);
 
     bool DurOnly() const { return duronly_; }
     void SetDurOnly(const bool value);
@@ -76,19 +75,26 @@ namespace kopsik {
     std::string CreatedWith() const { return created_with_; }
     void SetCreatedWith(const std::string value);
 
-    void StopAt(const Poco::Int64 at);
+    void StopAt(const Poco::Int64);
 
     std::string String() const;
 
     bool IsToday() const;
 
     std::string ProjectGUID() const { return project_guid_; }
-    void SetProjectGUID(const std::string value);
+    void SetProjectGUID(const std::string);
 
     std::string ModelName() const { return "time_entry"; }
     std::string ModelURL() const { return "/api/v8/time_entries"; }
 
     void LoadFromJSONNode(JSONNODE * const);
+
+    // User-triggered changes to timer:
+    void SetDurationUserInput(const std::string);
+    void SetStopUserInput(const std::string);
+    void SetStartUserInput(const std::string);
+
+    bool IsTracking() const { return duration_in_seconds_ < 0; }
 
   private:
     Poco::UInt64 wid_;
@@ -106,8 +112,6 @@ namespace kopsik {
     bool setDurationStringHHMMSS(const std::string value);
     bool setDurationStringHHMM(const std::string value);
     bool setDurationStringMMSS(const std::string value);
-
-    void recalculateDuration();
 
     void loadTagsFromJSONNode(JSONNODE * const);
 

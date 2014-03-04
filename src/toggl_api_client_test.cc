@@ -528,111 +528,111 @@ namespace kopsik {
     TEST(TogglApiClientTest, ParsesDurationLikeOnTheWeb) {
         TimeEntry te;
 
-        te.SetDurationString("00:00:15");
+        te.SetDurationUserInput("00:00:15");
         ASSERT_EQ("00:00:15", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("00:23:15");
+        te.SetDurationUserInput("00:23:15");
         ASSERT_EQ("00:23:15", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("12:34:56");
+        te.SetDurationUserInput("12:34:56");
         ASSERT_EQ("12:34:56", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("0:1");
+        te.SetDurationUserInput("0:1");
         ASSERT_EQ("00:01:00", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("1:2");
+        te.SetDurationUserInput("1:2");
         ASSERT_EQ("01:02:00", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("1:0");
+        te.SetDurationUserInput("1:0");
         ASSERT_EQ("01:00:00", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("05:22 min");
+        te.SetDurationUserInput("05:22 min");
         ASSERT_EQ("00:05:22", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("00:22 min");
+        te.SetDurationUserInput("00:22 min");
         ASSERT_EQ("00:00:22", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("0 hours");
+        te.SetDurationUserInput("0 hours");
         ASSERT_EQ("00:00:00", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("0.5 hours");
+        te.SetDurationUserInput("0.5 hours");
         ASSERT_EQ("00:30:00", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("0,5 hours");
+        te.SetDurationUserInput("0,5 hours");
         ASSERT_EQ("00:30:00", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("1 hour");
+        te.SetDurationUserInput("1 hour");
         ASSERT_EQ("01:00:00", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("1,5 hours");
+        te.SetDurationUserInput("1,5 hours");
         ASSERT_EQ("01:30:00", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("1.5 hours");
+        te.SetDurationUserInput("1.5 hours");
         ASSERT_EQ("01:30:00", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("24 hours");
+        te.SetDurationUserInput("24 hours");
         ASSERT_EQ(86400, te.DurationInSeconds());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("0 minutes");
+        te.SetDurationUserInput("0 minutes");
         ASSERT_EQ("00:00:00", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("0 min");
+        te.SetDurationUserInput("0 min");
         ASSERT_EQ("00:00:00", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("0,5 minutes");
+        te.SetDurationUserInput("0,5 minutes");
         ASSERT_EQ("00:00:30", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("1 minute");
+        te.SetDurationUserInput("1 minute");
         ASSERT_EQ("00:01:00", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("1,5 minutes");
+        te.SetDurationUserInput("1,5 minutes");
         ASSERT_EQ("00:01:30", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("1.5 minutes");
+        te.SetDurationUserInput("1.5 minutes");
         ASSERT_EQ("00:01:30", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("15");
+        te.SetDurationUserInput("15");
         ASSERT_EQ("00:15:00", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("0 seconds");
+        te.SetDurationUserInput("0 seconds");
         ASSERT_EQ("00:00:00", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("1 second");
+        te.SetDurationUserInput("1 second");
         ASSERT_EQ("00:00:01", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("1.5h");
+        te.SetDurationUserInput("1.5h");
         ASSERT_EQ("01:30:00", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("15m");
+        te.SetDurationUserInput("15m");
         ASSERT_EQ("00:15:00", te.DurationString());
 
         te.SetDurationInSeconds(0);
-        te.SetDurationString("25s");
+        te.SetDurationUserInput("25s");
         ASSERT_EQ("00:00:25", te.DurationString());
     }
 
