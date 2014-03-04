@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1080" identifier="macosx"/>
+        <deployment defaultVersion="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
     </dependencies>
     <objects>
@@ -72,13 +72,6 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="wuv-bR-uz5"/>
-                            <menuItem title="Start Timeline Recording" tag="7" id="QhL-M5-26D">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="onTimelineMenuItem:" target="-1" id="Bb8-rF-le4"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem isSeparatorItem="YES" id="Nva-uM-toH"/>
                             <menuItem title="Clear cache" tag="6" id="OCn-tS-va2">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
@@ -350,11 +343,7 @@
                 </menuItem>
             </items>
         </menu>
-        <customObject id="494" customClass="AppDelegate">
-            <connections>
-                <outlet property="mainTimelineMenuItem" destination="QhL-M5-26D" id="SF4-4v-MTB"/>
-            </connections>
-        </customObject>
+        <customObject id="494" customClass="AppDelegate"/>
         <customObject id="420" customClass="NSFontManager"/>
         <segmentedControl verticalHuggingPriority="750" id="1458">
             <rect key="frame" x="0.0" y="0.0" width="164" height="23"/>

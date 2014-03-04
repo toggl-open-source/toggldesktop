@@ -394,7 +394,6 @@ int blink = 0;
   [self performSelector:@selector(startWebSocket)
              withObject:nil
              afterDelay:0.5];
-
   [self performSelector:@selector(startTimeline)
              withObject:nil
              afterDelay:0.5];
