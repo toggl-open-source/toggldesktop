@@ -634,6 +634,22 @@ namespace kopsik {
         te.SetDurationInSeconds(0);
         te.SetDurationUserInput("25s");
         ASSERT_EQ("00:00:25", te.DurationString());
+
+        te.SetDurationInSeconds(0);
+        te.SetDurationUserInput("1.5");
+        ASSERT_EQ("01:30:00", te.DurationString());
+
+        te.SetDurationInSeconds(0);
+        te.SetDurationUserInput("1,5");
+        ASSERT_EQ("01:30:00", te.DurationString());
+
+        te.SetDurationInSeconds(0);
+        te.SetDurationUserInput("0.25");
+        ASSERT_EQ("00:15:00", te.DurationString());
+
+        te.SetDurationInSeconds(0);
+        te.SetDurationUserInput("0.025");
+        ASSERT_EQ("00:01:30", te.DurationString());
     }
 
     TEST(TogglApiClientTest, Continue) {

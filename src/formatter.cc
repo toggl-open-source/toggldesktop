@@ -173,11 +173,14 @@ int Formatter::ParseDurationString(const std::string value) {
         }
     }
 
+    return parseDurationFromDecimal(Poco::replace(value, ",", "."));
+}
+
+int Formatter::parseDurationFromDecimal(const std::string value) {
     // 1,5 hours
     size_t pos = value.find(" hour");
     if (pos != std::string::npos) {
         std::string numbers = value.substr(0, pos);
-        numbers = Poco::replace(numbers, ",", ".");
         double hours = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, hours)) {
             return hours * 60 * 60;
@@ -188,7 +191,6 @@ int Formatter::ParseDurationString(const std::string value) {
     pos = value.find(" min");
     if (pos != std::string::npos) {
         std::string numbers = value.substr(0, pos);
-        numbers = Poco::replace(numbers, ",", ".");
         double minutes = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, minutes)) {
             return minutes * 60;
@@ -199,7 +201,6 @@ int Formatter::ParseDurationString(const std::string value) {
     pos = value.find(" sec");
     if (pos != std::string::npos) {
         std::string numbers = value.substr(0, pos);
-        numbers = Poco::replace(numbers, ",", ".");
         double seconds = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, seconds)) {
             return seconds;
@@ -210,7 +211,6 @@ int Formatter::ParseDurationString(const std::string value) {
     pos = value.find("h");
     if (pos != std::string::npos) {
         std::string numbers = value.substr(0, pos);
-        numbers = Poco::replace(numbers, ",", ".");
         double hours = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, hours)) {
             return hours * 60 * 60;
@@ -221,7 +221,6 @@ int Formatter::ParseDurationString(const std::string value) {
     pos = value.find("m");
     if (pos != std::string::npos) {
         std::string numbers = value.substr(0, pos);
-        numbers = Poco::replace(numbers, ",", ".");
         double minutes = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, minutes)) {
             return minutes * 60;
@@ -232,18 +231,24 @@ int Formatter::ParseDurationString(const std::string value) {
     pos = value.find("s");
     if (pos != std::string::npos) {
         std::string numbers = value.substr(0, pos);
-        numbers = Poco::replace(numbers, ",", ".");
         double seconds = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, seconds)) {
             return seconds;
         }
     }
 
+    // 15
+    if (value.find(".") == std::string::npos) {
+        int minutes = 0;
+        if (Poco::NumberParser::tryParse(value, minutes)) {
+            return minutes * 60;
+        }
+    }
+
     // 1,5
-    // (we're gonna parse it as minutes)
-    double minutes = 0;
-    if (Poco::NumberParser::tryParseFloat(value, minutes)) {
-        return minutes * 60;
+    double hours = 0;
+    if (Poco::NumberParser::tryParseFloat(value, hours)) {
+        return hours * 60 * 60;
     }
 
     return 0;

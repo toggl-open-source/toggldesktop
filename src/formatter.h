@@ -39,6 +39,8 @@ namespace kopsik {
       static bool parseDurationStringMMSS(
         const std::string value,
         int *parsed_seconds);
+      static int parseDurationFromDecimal(
+        const std::string value);
       static std::string Format8601(
         const std::time_t date);
       static std::string FormatDateHeader(
