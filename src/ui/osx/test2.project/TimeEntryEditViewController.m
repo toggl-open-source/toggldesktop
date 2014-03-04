@@ -58,6 +58,11 @@
                                                selector:@selector(eventHandler:)
                                                    name:kUIStateTimeEntryDeselected
                                                  object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:NSWindowWillStartLiveResizeNotification
+                                                 object:nil];
+
 
       self.autocompleteDataSource = [[AutocompleteDataSource alloc] init];
     }
@@ -83,6 +88,12 @@
   }
 
   [self.addProjectBox setHidden:NO];
+
+  NSPoint pt;
+  pt.x = self.dataholderBox.frame.origin.x;
+  pt.y = 155;
+  [self.dataholderBox setFrameOrigin:pt];
+
   [self.projectSelectBox setHidden:YES];
 
   [self.projectNameTextField becomeFirstResponder];
@@ -285,7 +296,13 @@
     [self.projectSelectBox setHidden:NO];
     return;
   }
-  
+
+  if ([notification.name isEqualToString:NSWindowWillStartLiveResizeNotification]) {
+    [self.addProjectBox setHidden:YES];
+    [self.projectSelectBox setHidden:NO];
+    return;
+  }
+
   if ([notification.name isEqualToString:kUIStateTimeEntrySelected]) {
     [self performSelectorOnMainThread:@selector(render:)
                            withObject:notification.object
