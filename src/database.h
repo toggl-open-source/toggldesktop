@@ -117,6 +117,9 @@ class Database {
         error last_error(
             const std::string was_doing);
 
+        error journalMode(std::string *);
+        error setJournalMode(const std::string);
+
         error loadUsersRelatedData(User *user);
 
         error loadWorkspaces(
