@@ -20,6 +20,7 @@
 @property int TaskID;
 @property (strong) NSString *duration;
 @property (strong) NSString *ProjectColor;
+@property (strong) NSString *ProjectGUID; // when project is not saved to backend yet
 @property (strong) NSString *GUID;
 @property BOOL billable;
 @property (strong) NSDate *started;

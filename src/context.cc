@@ -142,23 +142,6 @@ kopsik::error Context::save() {
   return kopsik::noError;
 }
 
-void Context::sync(const bool full_sync) {
-  kopsik::HTTPSClient https_client(api_url_, app_name_, app_version_);
-  kopsik::error err = user_->Sync(&https_client, full_sync, true);
-  if (err != kopsik::noError) {
-    on_error_callback_(err.c_str());
-    return;
-  }
-
-  err = save();
-  if (err != kopsik::noError) {
-    on_error_callback_(err.c_str());
-    return;
-  }
-
-  on_online_callback_();
-}
-
 void Context::FullSync() {
   logger().debug("FullSync");
 
@@ -177,7 +160,20 @@ void Context::onFullSync(Poco::Util::TimerTask& task) {  // NOLINT
   }
   logger().debug("onFullSync executing");
 
-  sync(true);
+  kopsik::HTTPSClient https_client(api_url_, app_name_, app_version_);
+  kopsik::error err = user_->FullSync(&https_client);
+  if (err != kopsik::noError) {
+    on_error_callback_(err.c_str());
+    return;
+  }
+
+  err = save();
+  if (err != kopsik::noError) {
+    on_error_callback_(err.c_str());
+    return;
+  }
+
+  on_online_callback_();
 }
 
 void Context::partialSync() {
@@ -197,7 +193,21 @@ void Context::onPartialSync(Poco::Util::TimerTask& task) {  // NOLINT
     return;
   }
   logger().debug("onPartialSync executing");
-  sync(false);
+
+  kopsik::HTTPSClient https_client(api_url_, app_name_, app_version_);
+  kopsik::error err = user_->PartialSync(&https_client);
+  if (err != kopsik::noError) {
+    on_error_callback_(err.c_str());
+    return;
+  }
+
+  err = save();
+  if (err != kopsik::noError) {
+    on_error_callback_(err.c_str());
+    return;
+  }
+
+  on_online_callback_();
 }
 
 void Context::SwitchWebSocketOff() {
