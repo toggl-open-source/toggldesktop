@@ -12,10 +12,6 @@
 #import "Context.h"
 #import "UIEvents.h"
 
-@interface PreferencesWindowController ()
-
-@end
-
 @implementation PreferencesWindowController
 
 - (void)windowDidLoad {
@@ -30,6 +26,15 @@
     [self enableProxyFields];
   
     [self displayTimelineRecordingState];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eventHandler:)
+                                                 name:kUIStateUserLoggedIn
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eventHandler:)
+                                                 name:kUIStateUserLoggedOut
+                                               object:nil];
 }
 
 - (void)loadPreferences {
@@ -159,6 +164,32 @@
     state = NSOnState;
   }
   [self.recordTimelineCheckbox setState:state];
+}
+
+- (void)eventHandler: (NSNotification *) notification {
+  if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
+    [self performSelectorOnMainThread:@selector(enableTimelineSettings)
+                           withObject:nil
+                        waitUntilDone:NO];
+    return;
+  }
+
+  if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
+    [self performSelectorOnMainThread:@selector(disableTimelineSettings)
+                           withObject:nil
+                        waitUntilDone:NO];
+    return;
+  }
+}
+
+- (void)enableTimelineSettings {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+  [self.recordTimelineCheckbox setEnabled:YES];
+}
+
+- (void)disableTimelineSettings {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+  [self.recordTimelineCheckbox setEnabled:NO];
 }
 
 @end
