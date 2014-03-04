@@ -30,14 +30,33 @@ Database::Database(const std::string db_path)
 
     session = new Poco::Data::Session("SQLite", db_path);
 
-    std::stringstream ss;
-    ss << "sqlite3_threadsafe()=" << sqlite3_threadsafe();
-    logger().debug(ss.str());
+    {
+        int is_sqlite_threadsafe = sqlite3_threadsafe();
 
-    error err = initialize_tables();
+        std::stringstream ss;
+        ss << "sqlite3_threadsafe()=" << is_sqlite_threadsafe;
+        logger().debug(ss.str());
+
+        poco_assert(is_sqlite_threadsafe);
+    }
+
+    error err = setJournalMode("wal");
+    poco_assert(err == noError);
+    {
+        std::string mode("");
+        error err = journalMode(&mode);
+        poco_assert(err == noError);
+
+        std::stringstream ss;
+        ss << "PRAGMA journal_mode=" << mode;
+        logger().debug(ss.str());
+
+        poco_assert("wal" == mode);
+    }
+
+    err = initialize_tables();
     if (err != noError) {
-        Poco::Logger &logger = Poco::Logger::get("database");
-        logger.error(err);
+        logger().error(err);
     }
     poco_assert(err == noError);
 
@@ -127,6 +146,45 @@ error Database::deleteAllFromTableByUID(
         return ex;
     }
     return last_error("deleteAllFromTableByUID");
+}
+
+error Database::journalMode(std::string *mode) {
+    poco_assert(session);
+    poco_assert(mode);
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
+    try {
+        *session << "PRAGMA journal_mode",
+            Poco::Data::into(*mode),
+            Poco::Data::now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("journalMode");
+}
+
+error Database::setJournalMode(const std::string mode) {
+    poco_assert(session);
+    poco_assert(!mode.empty());
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
+    try {
+        *session << "PRAGMA journal_mode=" << mode,
+          Poco::Data::now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("setJournalMode");
 }
 
 Poco::Logger &Database::logger() const {
