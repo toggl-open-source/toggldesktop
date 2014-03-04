@@ -51,7 +51,7 @@ TimeEntry *User::Start(
   te->SetTID(task_id);
   te->SetStart(time(0));
   if (!duration.empty()) {
-    te->SetDurationString(duration);
+    te->SetDurationUserInput(duration);
   } else {
     te->SetDurationInSeconds(-time(0));
   }

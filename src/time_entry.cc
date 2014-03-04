@@ -66,6 +66,13 @@ void TimeEntry::SetStart(const Poco::UInt64 value) {
     }
 }
 
+void TimeEntry::SetStop(const Poco::UInt64 value) {
+    if (stop_ != value) {
+        stop_ = value;
+        SetDirty();
+    }
+}
+
 void TimeEntry::SetDescription(const std::string value) {
     if (description_ != value) {
         description_ = value;
@@ -98,31 +105,20 @@ void TimeEntry::SetWID(const Poco::UInt64 value) {
     }
 }
 
-void TimeEntry::recalculateDuration() {
-  if (duration_in_seconds_ >= 0) {
-    SetDurationInSeconds(stop_ - start_);
-  }
-}
+void TimeEntry::SetStopUserInput(const std::string value) {
+  SetStopString(value);
 
-void TimeEntry::SetStop(const Poco::UInt64 value) {
-  if (stop_ != value) {
-    stop_ = value;
-    SetDirty();
+  if (Stop() < Start()) {
+    // Stop time cannot be before start time, it'll get an error from backend.
+    Poco::Timestamp ts =
+      Poco::Timestamp::fromEpochTime(Stop()) + 1*Poco::Timespan::DAYS;
+    SetStop(ts.epochTime());
   }
-  /* FIXME:
-  stop_ = value;
-  SetDirty();
-  if (stop_ >= start_) {
-    recalculateDuration();
-    return;
+
+  poco_assert(Stop() >= Start());
+  if (!IsTracking()) {
+    SetDurationInSeconds(Stop() - Start());
   }
-  // Stop time cannot be before start time, it'll get an error from backend.
-  Poco::Timestamp ts =
-    Poco::Timestamp::fromEpochTime(stop_) + 1*Poco::Timespan::DAYS;
-  stop_ = ts.epochTime();
-  poco_assert(stop_ >= start_);
-  recalculateDuration();
-  */
 }
 
 void TimeEntry::SetTID(const Poco::UInt64 value) {
@@ -161,21 +157,22 @@ void TimeEntry::SetDurationInSeconds(const Poco::Int64 value) {
     }
 }
 
-void TimeEntry::SetStartString(const std::string value) {
+void TimeEntry::SetStartUserInput(const std::string value) {
     Poco::Int64 start = Formatter::Parse8601(value);
-    /* FIXME: 
-    if (duration_in_seconds_ < 0) {
+    if (IsTracking()) {
         SetDurationInSeconds(-start);
     } else {
-        SetStop(start + duration_in_seconds_);
+        SetStop(start + DurationInSeconds());
     }
-    */
     SetStart(start);
 }
 
-void TimeEntry::SetDurationString(const std::string value) {
+void TimeEntry::SetStartString(const std::string value) {
+    SetStart(Formatter::Parse8601(value));
+}
+
+void TimeEntry::SetDurationUserInput(const std::string value) {
     int seconds = Formatter::ParseDurationString(value);
-    /* FIXME:
     if (duration_in_seconds_ < 0) {
         time_t now = time(0);
         time_t start = now - seconds;
@@ -185,8 +182,6 @@ void TimeEntry::SetDurationString(const std::string value) {
         SetDurationInSeconds(seconds);
         SetStop(start_ + seconds);
     }
-    */
-    SetDurationInSeconds(seconds);
 }
 
 void TimeEntry::SetProjectGUID(const std::string value) {
