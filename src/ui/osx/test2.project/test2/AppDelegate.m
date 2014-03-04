@@ -101,7 +101,7 @@ int blink = 0;
     abort();
   }
   
-  [self onShowMenuItem];
+  [self onShowMenuItem:self];
 
   self.preferencesWindowController =
     [[PreferencesWindowController alloc]
@@ -259,7 +259,7 @@ int blink = 0;
      postNotificationName:kUIStateTimerRunning object:timeEntry];
   }
 
-  [self onShowMenuItem];
+  [self onShowMenuItem:self];
 }
 
 - (void)continueTimeEntry:(NSString *)guid {
@@ -293,6 +293,8 @@ int blink = 0;
   
   [[NSNotificationCenter defaultCenter]
     postNotificationName:kUIStateTimerRunning object:timeEntry];
+
+  [self onShowMenuItem:self];
 }
 
 - (void)stopTimeEntry {
@@ -318,6 +320,8 @@ int blink = 0;
   kopsik_time_entry_view_item_clear(item);
   [[NSNotificationCenter defaultCenter]
     postNotificationName:kUIStateTimerStopped object:te];
+
+  [self onShowMenuItem:self];
 }
 
 - (void)splitTimeEntryAfterIdle:(IdleEvent *)idleEvent {
@@ -350,7 +354,7 @@ int blink = 0;
 
   kopsik_time_entry_view_item_clear(item);
 
-  [self onShowMenuItem];
+  [self onShowMenuItem:self];
 }
 
 - (void)stopTimeEntryAfterIdle:(IdleEvent *)idleEvent {
@@ -381,7 +385,7 @@ int blink = 0;
       object:timeEntry];
   }
 
-  [self onShowMenuItem];
+  [self onShowMenuItem:self];
 }
 
 - (void)userLoggedIn:(User *)user {
@@ -503,17 +507,17 @@ int blink = 0;
   [menu addItem:[NSMenuItem separatorItem]];
   [menu addItemWithTitle:@"New"
                   action:@selector(onNewMenuItem:)
-           keyEquivalent:@""].tag = kMenuItemTagNew;
+           keyEquivalent:@"n"].tag = kMenuItemTagNew;
   [menu addItemWithTitle:@"Continue"
-                  action:@selector(onContinueMenuItem)
-           keyEquivalent:@""].tag = kMenuItemTagContinue;
+                  action:@selector(onContinueMenuItem:)
+           keyEquivalent:@"o"].tag = kMenuItemTagContinue;
   [menu addItemWithTitle:@"Stop"
-                  action:@selector(onStopMenuItem)
-           keyEquivalent:@""].tag = kMenuItemTagStop;
+                  action:@selector(onStopMenuItem:)
+           keyEquivalent:@"s"].tag = kMenuItemTagStop;
   [menu addItem:[NSMenuItem separatorItem]];
   [menu addItemWithTitle:@"Show"
-                  action:@selector(onShowMenuItem)
-           keyEquivalent:@""];
+                  action:@selector(onShowMenuItem:)
+           keyEquivalent:@"t"];
   [menu addItem:[NSMenuItem separatorItem]];
   [menu addItemWithTitle:@"Sync"
                   action:@selector(onSyncMenuItem:)
@@ -610,12 +614,12 @@ int blink = 0;
   [self onSendFeedbackMenuItem];
 }
 
-- (void)onContinueMenuItem {
+- (IBAction)onContinueMenuItem:(id)sender {
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandContinue
                                                       object:nil];
 }
 
-- (void)onStopMenuItem {
+- (IBAction)onStopMenuItem:(id)sender {
   [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandStop
                                                       object:nil];
 }
@@ -640,7 +644,7 @@ int blink = 0;
   [[NSNotificationCenter defaultCenter]
     postNotificationName:kUIStateUserLoggedOut object:nil];
 
-  [self onShowMenuItem];
+  [self onShowMenuItem:self];
 }
 
 - (IBAction)onClearCacheMenuItem:(id)sender {
@@ -668,7 +672,7 @@ int blink = 0;
   [NSApp activateIgnoringOtherApps:YES];
 }
 
-- (void)onShowMenuItem {
+- (IBAction)onShowMenuItem:(id)sender {
   [self.mainWindowController showWindow:self];
   [NSApp activateIgnoringOtherApps:YES];
 }

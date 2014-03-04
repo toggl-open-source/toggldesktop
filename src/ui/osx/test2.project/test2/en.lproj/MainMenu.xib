@@ -65,8 +65,7 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Account" id="ORM-ao-M0m">
                         <items>
-                            <menuItem title="Sync" tag="1" id="qrV-uu-7qU">
-                                <modifierMask key="keyEquivalentModifierMask"/>
+                            <menuItem title="Sync" tag="1" keyEquivalent="r" id="qrV-uu-7qU">
                                 <connections>
                                     <action selector="onSyncMenuItem:" target="494" id="u4k-n1-pLG"/>
                                 </connections>
@@ -83,6 +82,34 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="onLogoutMenuItem:" target="494" id="EQe-ox-ZRs"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="Timer" id="GTG-gQ-pHZ">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Timer" id="fl1-3L-kSt">
+                        <items>
+                            <menuItem title="New" tag="3" keyEquivalent="n" id="eJF-ps-vzM">
+                                <connections>
+                                    <action selector="onNewMenuItem:" target="494" id="eDY-C4-z93"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Continue" tag="4" keyEquivalent="o" id="iZQ-ua-rvv">
+                                <connections>
+                                    <action selector="onContinueMenuItem:" target="494" id="g0n-gC-tZY"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Stop" tag="5" keyEquivalent="s" id="oJx-X6-U4T">
+                                <connections>
+                                    <action selector="onStopMenuItem:" target="494" id="HDs-7K-Vr9"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="6hq-7B-iuE"/>
+                            <menuItem title="Show" keyEquivalent="t" id="er4-3b-wWC">
+                                <connections>
+                                    <action selector="onShowMenuItem:" target="494" id="Hpe-w8-Q4z"/>
                                 </connections>
                             </menuItem>
                         </items>
