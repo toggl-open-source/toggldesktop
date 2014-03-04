@@ -57,7 +57,7 @@
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MEi-4M-qbG">
-                                                        <rect key="frame" x="0.0" y="-136" width="6" height="17"/>
+                                                        <rect key="frame" x="0.0" y="-153" width="6" height="17"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="eTT-uV-85C">
                                                             <font key="font" metaFont="system"/>

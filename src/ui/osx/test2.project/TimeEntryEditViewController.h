@@ -41,6 +41,7 @@
 // New project related stuff
 @property (weak) IBOutlet NSBox *projectSelectBox;
 @property (weak) IBOutlet NSBox *addProjectBox;
+@property (weak) IBOutlet NSBox *dataholderBox;
 @property (weak) IBOutlet NSTextField *projectNameTextField;
 @property (weak) IBOutlet NSComboBox *workspaceSelect;
 @property (weak) IBOutlet NSComboBox *clientSelect;
