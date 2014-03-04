@@ -51,11 +51,8 @@ namespace kopsik {
             ClearTimeEntries();
         }
 
-        error Sync(
-            HTTPSClient *https_client,
-            const bool full_sync,
-            const bool with_related_data);
-        error Push(HTTPSClient *https_client);
+        error FullSync(HTTPSClient *https_client);
+        error PartialSync(HTTPSClient *https_client);
         error Login(
             HTTPSClient *https_client,
             const std::string &email,
@@ -148,9 +145,12 @@ namespace kopsik {
         void LoadFromJSONNode(JSONNODE * const);
 
     private:
-        error pull(HTTPSClient *https_client,
+        error pull(
+            HTTPSClient *https_client,
             const bool full_sync,
             const bool with_related_data);
+        error push(
+            HTTPSClient *https_client);
 
         std::string dirtyObjectsJSON(std::vector<TimeEntry *> * const) const;
         void processResponseArray(

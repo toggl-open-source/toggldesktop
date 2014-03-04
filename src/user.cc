@@ -447,20 +447,26 @@ void User::CollectPushableProjects(
   }
 }
 
-error User::Sync(
-        HTTPSClient *https_client,
-        const bool full_sync,
-        const bool with_related_data) {
+error User::FullSync(
+        HTTPSClient *https_client) {
     BasicAuthUsername = APIToken();
     BasicAuthPassword = "api_token";
-    error err = pull(https_client, full_sync, with_related_data);
+    error err = pull(https_client, true, true);
     if (err != noError) {
         return err;
     }
-    return Push(https_client);
+    return push(https_client);
 }
 
-error User::Push(HTTPSClient *https_client) {
+error User::PartialSync(
+        HTTPSClient *https_client) {
+    BasicAuthUsername = APIToken();
+    BasicAuthPassword = "api_token";
+    // FIXME: if last sync was a while ago, fetch data using "since" parameter
+    return push(https_client);
+}
+
+error User::push(HTTPSClient *https_client) {
   try {
     Poco::Stopwatch stopwatch;
     stopwatch.start();

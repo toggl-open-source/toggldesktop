@@ -19,7 +19,6 @@
 #import "TimeEntryViewItem.h"
 #import "NSTextFieldClickable.h"
 
-
 @interface TimerEditViewController ()
 @property AutocompleteDataSource *autocompleteDataSource;
 @property TimeEntryViewItem *time_entry;
@@ -255,7 +254,7 @@
   
   // If a project is assigned, then project name
   // is visible.
-  if (self.time_entry.ProjectID) {
+  if (self.time_entry.ProjectID || self.time_entry.ProjectGUID) {
     [self.projectTextField setHidden:NO];
   } else {
     [self.projectTextField setHidden:YES];
