@@ -1931,7 +1931,7 @@ error Database::initialize_tables() {
     }
 
     err = migrate("workspaces.id",
-        "CREATE UNIQUE INDEX id_workspaces_id ON workspaces (id);");
+        "CREATE UNIQUE INDEX id_workspaces_id ON workspaces (uid, id);");
     if (err != noError) {
         return err;
     }
