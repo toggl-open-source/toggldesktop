@@ -19,6 +19,7 @@
 		69FC181F17E6534500B96425 /* test2Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 69FC181E17E6534500B96425 /* test2Tests.m */; };
 		74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C9617EC1DE100CA53D3 /* libc++.dylib */; };
 		74033C9817EC1DF100CA53D3 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C8D17EC1CFD00CA53D3 /* libstdc++.dylib */; };
+		741104BF18C7682700BC7A49 /* NSTextFieldWithBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */; };
 		7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7423393A1829B99C00063FA9 /* IdleNotificationWindowController.m */; };
 		7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */; };
 		7424949E17F1E3D20030121C /* UIEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 7424949D17F1E3D20030121C /* UIEvents.m */; };
@@ -183,6 +184,8 @@
 		74033C8D17EC1CFD00CA53D3 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		74033C9617EC1DE100CA53D3 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		7408EDB918C532C200CBE8F1 /* const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = const.h; path = ../../../../const.h; sourceTree = "<group>"; };
+		741104BD18C7682700BC7A49 /* NSTextFieldWithBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldWithBackground.h; sourceTree = "<group>"; };
+		741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldWithBackground.m; sourceTree = "<group>"; };
 		742339391829B99C00063FA9 /* IdleNotificationWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdleNotificationWindowController.h; sourceTree = "<group>"; };
 		7423393A1829B99C00063FA9 /* IdleNotificationWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdleNotificationWindowController.m; sourceTree = "<group>"; };
 		7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IdleNotificationWindowController.xib; sourceTree = "<group>"; };
@@ -335,6 +338,8 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
+				741104BD18C7682700BC7A49 /* NSTextFieldWithBackground.h */,
+				741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */,
 				74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */,
 				74B680A8180759C300B697AA /* Kopsik.xcodeproj */,
 				74E3CDB117FBABE400C3ADD3 /* bugsnag */,
@@ -795,6 +800,7 @@
 				7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */,
 				7430750418204EFB009019CB /* AboutWindowController.m in Sources */,
 				74D1D27217EB72D900E709B0 /* TimerEditViewController.m in Sources */,
+				741104BF18C7682700BC7A49 /* NSTextFieldWithBackground.m in Sources */,
 				74E3CDCE17FBABE400C3ADD3 /* BugsnagNotifier.m in Sources */,
 				74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */,
 				95F5657A18B38E3D0052DE9B /* EditNotification.m in Sources */,
