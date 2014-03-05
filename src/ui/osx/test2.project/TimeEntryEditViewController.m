@@ -29,6 +29,8 @@
 @property NSMutableArray *tagsList;
 @property NSMutableArray *clientList;
 @property NSMutableArray *workspaceList;
+@property NSMutableArray *constraints;
+@property NSLayoutConstraint *topConstraint;
 @end
 
 @implementation TimeEntryEditViewController
@@ -58,11 +60,6 @@
                                                selector:@selector(eventHandler:)
                                                    name:kUIStateTimeEntryDeselected
                                                  object:nil];
-      [[NSNotificationCenter defaultCenter] addObserver:self
-                                               selector:@selector(eventHandler:)
-                                                   name:NSWindowWillStartLiveResizeNotification
-                                                 object:nil];
-
 
       self.autocompleteDataSource = [[AutocompleteDataSource alloc] init];
     }
@@ -89,21 +86,29 @@
 
   [self.addProjectBox setHidden:NO];
 
-  NSPoint pt;
-  pt.x = self.dataholderBox.frame.origin.x;
-  pt.y = 155;
-  [self.dataholderBox setFrameOrigin:pt];
+  NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_addProjectBox, _dataholderBox);
+  self.topConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_addProjectBox]-[_dataholderBox]"
+                                             options:0
+                                             metrics:nil
+                                               views:viewsDict];
+  self.constraints = self.view.constraints;
+  [self.view addConstraints:self.topConstraint];
 
   [self.projectSelectBox setHidden:YES];
-
   [self.projectNameTextField becomeFirstResponder];
 }
 
 - (IBAction)backButtonClicked:(id)sender {
+  if (self.topConstraint){
+    [self.view removeConstraints:self.view.constraints];
+    [self.view addConstraints:self.constraints];
+    self.topConstraint = nil;
+  }
   // This is not a good place for this (on Done button!)
   if (![self applyAddProject]) {
     return;
   }
+
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntryDeselected
                                                       object:nil];
 }
@@ -292,12 +297,6 @@
 
 - (void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIStateTimeEntryDeselected]) {
-    [self.addProjectBox setHidden:YES];
-    [self.projectSelectBox setHidden:NO];
-    return;
-  }
-
-  if ([notification.name isEqualToString:NSWindowWillStartLiveResizeNotification]) {
     [self.addProjectBox setHidden:YES];
     [self.projectSelectBox setHidden:NO];
     return;
