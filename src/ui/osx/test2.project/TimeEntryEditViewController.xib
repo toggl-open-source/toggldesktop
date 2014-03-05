@@ -289,20 +289,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="346" height="214"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <button ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sSX-ad-7XC">
-                                                    <rect key="frame" x="116" y="66" width="67" height="18"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                    <buttonCell key="cell" type="check" title="Billable" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="jlI-qI-Cgm">
-                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                        <font key="font" metaFont="system"/>
-                                                    </buttonCell>
-                                                    <connections>
-                                                        <action selector="billableCheckBoxClicked:" target="-2" id="KhO-KD-YIr"/>
-                                                        <outlet property="nextKeyView" destination="9Uk-YS-6nx" id="3Pd-GL-QAB"/>
-                                                    </connections>
-                                                </button>
                                                 <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="ByL-Em-l61">
-                                                    <rect key="frame" x="2" y="26" width="346" height="41"/>
+                                                    <rect key="frame" x="0.0" y="55" width="346" height="41"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <view key="contentView">
                                                         <rect key="frame" x="0.0" y="0.0" width="346" height="41"/>
@@ -617,12 +605,24 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </box>
+                                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sSX-ad-7XC">
+                                                    <rect key="frame" x="116" y="24" width="67" height="18"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <buttonCell key="cell" type="check" title="Billable" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="jlI-qI-Cgm">
+                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="billableCheckBoxClicked:" target="-2" id="KhO-KD-YIr"/>
+                                                        <outlet property="nextKeyView" destination="9Uk-YS-6nx" id="3Pd-GL-QAB"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                         </view>
                                         <constraints>
+                                            <constraint firstItem="ByL-Em-l61" firstAttribute="top" secondItem="r22-gF-YfG" secondAttribute="bottom" id="B0A-nP-80d"/>
                                             <constraint firstAttribute="trailing" secondItem="ByL-Em-l61" secondAttribute="trailing" id="CvY-gc-mYB"/>
                                             <constraint firstItem="ByL-Em-l61" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9Ap-t2-bTq" secondAttribute="leading" id="DTC-6w-qfV"/>
-                                            <constraint firstItem="ByL-Em-l61" firstAttribute="top" secondItem="sSX-ad-7XC" secondAttribute="bottom" constant="10" id="GNv-T2-sBf"/>
                                             <constraint firstItem="ByL-Em-l61" firstAttribute="leading" secondItem="9Ap-t2-bTq" secondAttribute="leading" constant="2" id="VK8-gJ-qKp"/>
                                             <constraint firstAttribute="trailing" secondItem="cGh-Uz-aLx" secondAttribute="trailing" id="XtM-7v-z27"/>
                                             <constraint firstItem="cGh-Uz-aLx" firstAttribute="leading" secondItem="9Ap-t2-bTq" secondAttribute="leading" id="YuP-h8-Ykd"/>
