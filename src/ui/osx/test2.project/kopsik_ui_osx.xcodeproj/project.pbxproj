@@ -98,6 +98,7 @@
 		95DBF8CC18BF7A910021FB41 /* offline_off.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CA18BF7A910021FB41 /* offline_off.pdf */; };
 		95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CB18BF7A910021FB41 /* offline_on.pdf */; };
 		95DBF8D718C48B300021FB41 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8D618C48B300021FB41 /* logo.png */; };
+		95DBF8DF18C75F560021FB41 /* td7_logo_final.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8DE18C75F560021FB41 /* td7_logo_final.pdf */; };
 		95F5657A18B38E3D0052DE9B /* EditNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 95F5657918B38E3D0052DE9B /* EditNotification.m */; };
 		C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */; };
 		C5DA1FB917F19647001C4565 /* Kopsik.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA1FB817F19647001C4565 /* Kopsik.dylib */; };
@@ -285,6 +286,7 @@
 		95DBF8CA18BF7A910021FB41 /* offline_off.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = offline_off.pdf; sourceTree = "<group>"; };
 		95DBF8CB18BF7A910021FB41 /* offline_on.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = offline_on.pdf; sourceTree = "<group>"; };
 		95DBF8D618C48B300021FB41 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
+		95DBF8DE18C75F560021FB41 /* td7_logo_final.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = td7_logo_final.pdf; sourceTree = "<group>"; };
 		95F5657818B38E3D0052DE9B /* EditNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditNotification.h; sourceTree = "<group>"; };
 		95F5657918B38E3D0052DE9B /* EditNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditNotification.m; sourceTree = "<group>"; };
 		C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCell.h; sourceTree = "<group>"; };
@@ -333,14 +335,15 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
-				95DBF8CA18BF7A910021FB41 /* offline_off.pdf */,
-				95DBF8CB18BF7A910021FB41 /* offline_on.pdf */,
 				74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */,
 				74B680A8180759C300B697AA /* Kopsik.xcodeproj */,
 				74E3CDB117FBABE400C3ADD3 /* bugsnag */,
 				744E126617F22AB900ABE72A /* app.icns */,
 				74664DAF18AA860800AAD282 /* on.pdf */,
 				74664DB018AA860800AAD282 /* off.pdf */,
+				95DBF8CA18BF7A910021FB41 /* offline_off.pdf */,
+				95DBF8CB18BF7A910021FB41 /* offline_on.pdf */,
+				95DBF8DE18C75F560021FB41 /* td7_logo_final.pdf */,
 				74E1682E180F269F0026261C /* gtm */,
 				69FC17FA17E6534400B96425 /* kopsik_ui */,
 				69FC181717E6534500B96425 /* kopsikTests */,
@@ -692,6 +695,7 @@
 				C5DA1FC517F1B38B001C4565 /* LoginViewController.xib in Resources */,
 				74664DB118AA860800AAD282 /* on.pdf in Resources */,
 				69FC180517E6534400B96425 /* Credits.rtf in Resources */,
+				95DBF8DF18C75F560021FB41 /* td7_logo_final.pdf in Resources */,
 				74F1070218993FFE00E93BD5 /* FeedbackWindowController.xib in Resources */,
 				7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */,
 				95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */,
