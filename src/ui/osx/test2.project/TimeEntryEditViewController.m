@@ -29,7 +29,6 @@
 @property NSMutableArray *tagsList;
 @property NSMutableArray *clientList;
 @property NSMutableArray *workspaceList;
-@property NSArray *constraints;
 @property NSArray *topConstraint;
 @end
 
@@ -91,7 +90,6 @@
                                              options:0
                                              metrics:nil
                                                views:viewsDict];
-  self.constraints = self.view.constraints;
   [self.view addConstraints:self.topConstraint];
 
   [self.projectSelectBox setHidden:YES];
@@ -100,8 +98,7 @@
 
 - (IBAction)backButtonClicked:(id)sender {
   if (self.topConstraint){
-    [self.view removeConstraints:self.view.constraints];
-    [self.view addConstraints:self.constraints];
+    [self.view removeConstraints:self.topConstraint];
     self.topConstraint = nil;
   }
   // This is not a good place for this (on Done button!)
