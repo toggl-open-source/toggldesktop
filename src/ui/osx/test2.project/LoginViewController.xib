@@ -72,7 +72,7 @@
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kmn-TG-CZe">
                                 <rect key="frame" x="15" y="158" width="213" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="logo" id="bAv-hB-mKS"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="td7_logo_final" id="bAv-hB-mKS"/>
                             </imageView>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oP1-rJ-O83">
                                 <rect key="frame" x="15" y="105" width="218" height="26"/>
@@ -140,6 +140,6 @@ DQ
         </customView>
     </objects>
     <resources>
-        <image name="logo" width="218" height="35"/>
+        <image name="td7_logo_final" width="416" height="68"/>
     </resources>
 </document>
