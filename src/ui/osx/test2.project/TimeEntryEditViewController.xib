@@ -492,8 +492,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
-                                                            <datePicker verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vaF-tJ-dqC">
-                                                                <rect key="frame" x="116" y="7" width="68" height="22"/>
+                                                            <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vaF-tJ-dqC">
+                                                                <rect key="frame" x="116" y="7" width="68" height="25"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="68" id="Bsf-Gk-FIp"/>
@@ -532,7 +532,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                     </date>
                                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                    <datePickerElements key="datePickerElements" hour="YES" minute="YES"/>
+                                                                    <datePickerElements key="datePickerElements" hour="YES" minute="YES" second="YES"/>
                                                                 </datePickerCell>
                                                                 <connections>
                                                                     <action selector="startTimeChanged:" target="-2" id="PIU-pw-wXB"/>
@@ -540,7 +540,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                 </connections>
                                                             </datePicker>
                                                             <datePicker verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jAD-IY-7K4">
-                                                                <rect key="frame" x="216" y="7" width="68" height="22"/>
+                                                                <rect key="frame" x="216" y="7" width="68" height="25"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="68" id="EIX-FS-HOZ"/>
@@ -579,7 +579,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                     </date>
                                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                    <datePickerElements key="datePickerElements" hour="YES" minute="YES"/>
+                                                                    <datePickerElements key="datePickerElements" hour="YES" minute="YES" second="YES"/>
                                                                 </datePickerCell>
                                                                 <connections>
                                                                     <action selector="endTimeChanged:" target="-2" id="BKk-TY-b8d"/>
