@@ -29,8 +29,8 @@
 @property NSMutableArray *tagsList;
 @property NSMutableArray *clientList;
 @property NSMutableArray *workspaceList;
-@property NSMutableArray *constraints;
-@property NSLayoutConstraint *topConstraint;
+@property NSArray *constraints;
+@property NSArray *topConstraint;
 @end
 
 @implementation TimeEntryEditViewController
