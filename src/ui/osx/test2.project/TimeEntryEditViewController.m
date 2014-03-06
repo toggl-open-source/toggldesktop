@@ -30,6 +30,7 @@
 @property NSMutableArray *clientList;
 @property NSMutableArray *workspaceList;
 @property NSArray *topConstraint;
+@property NSLayoutConstraint *addProjectBoxHeight;
 @end
 
 @implementation TimeEntryEditViewController
@@ -71,10 +72,24 @@
   self.clientSelect.stringValue = @"";
   self.workspaceSelect.stringValue = @"";
 
+  if (!self.addProjectBoxHeight) {
+    self.addProjectBoxHeight = [NSLayoutConstraint constraintWithItem:self.addProjectBox
+                                                        attribute:NSLayoutAttributeHeight
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:nil
+                                                         attribute:NSLayoutAttributeNotAnAttribute
+                                                       multiplier:1
+                                                         constant:108];
+    [self.view addConstraint: self.addProjectBoxHeight];
+  }
+
   // If user has only one workspace, do not show the workspace combobox at all.
   BOOL singleWorkspace = YES;
   if (self.workspaceList.count > 1) {
     singleWorkspace = NO;
+    _addProjectBoxHeight.constant = 108;
+  } else {
+    _addProjectBoxHeight.constant = 75;
   }
   [self.workspaceLabel setHidden:singleWorkspace];
   [self.workspaceSelect setHidden:singleWorkspace];
@@ -94,7 +109,7 @@
   [self.addProjectBox setHidden:NO];
 
   NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_addProjectBox, _dataholderBox);
-  self.topConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_addProjectBox]-[_dataholderBox]"
+  self.topConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_addProjectBox]-0-[_dataholderBox]"
                                              options:0
                                              metrics:nil
                                                views:viewsDict];
