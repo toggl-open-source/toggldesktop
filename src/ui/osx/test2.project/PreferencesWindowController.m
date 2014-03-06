@@ -164,6 +164,19 @@
     state = NSOnState;
   }
   [self.recordTimelineCheckbox setState:state];
+
+  char err[KOPSIK_ERR_LEN];
+  unsigned int logged_in = 0;
+  if (KOPSIK_API_SUCCESS != kopsik_user_is_logged_in(
+      ctx, err, KOPSIK_ERR_LEN, &logged_in)) {
+    handle_error(err);
+    return;
+  }
+  if (logged_in) {
+    [self enableTimelineSettings];
+    return;
+  }
+  [self disableTimelineSettings];
 }
 
 - (void)eventHandler: (NSNotification *) notification {

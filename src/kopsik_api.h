@@ -192,7 +192,13 @@ KOPSIK_EXPORT kopsik_api_result kopsik_user_has_premium_workspaces(
   void *context,
   char *errmsg,
   const unsigned int errlen,
-  int *has_premium_workspaces);
+  unsigned int *has_premium_workspaces);
+
+KOPSIK_EXPORT kopsik_api_result kopsik_user_is_logged_in(
+  void *context,
+  char *errmsg,
+  const unsigned int errlen,
+  unsigned int *is_logged_in);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_users_default_wid(
   void *context,
