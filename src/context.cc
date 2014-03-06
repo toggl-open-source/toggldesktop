@@ -745,6 +745,10 @@ bool Context::UserHasPremiumWorkspaces() const {
   return (user_ && user_->HasPremiumWorkspaces());
 }
 
+bool Context::UserIsLoggedIn() const {
+  return (user_ && user_->ID());
+}
+
 Poco::UInt64 Context::UsersDefaultWID() const {
   return (user_ && user_->DefaultWID());
 }

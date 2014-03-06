@@ -632,7 +632,7 @@ kopsik_api_result kopsik_user_has_premium_workspaces(
     void *context,
     char *errmsg,
     const unsigned int errlen,
-    int *has_premium_workspaces) {
+    unsigned int *has_premium_workspaces) {
   try {
     poco_assert(errmsg);
     poco_assert(errlen);
@@ -654,6 +654,34 @@ kopsik_api_result kopsik_user_has_premium_workspaces(
   }
   return KOPSIK_API_SUCCESS;
 }
+
+kopsik_api_result kopsik_user_is_logged_in(
+    void *context,
+    char *errmsg,
+    const unsigned int errlen,
+    unsigned int *is_logged_in) {
+  try {
+    poco_assert(errmsg);
+    poco_assert(errlen);
+    poco_assert(is_logged_in);
+
+    *is_logged_in = 0;
+    if (app(context)->UserIsLoggedIn()) {
+      *is_logged_in = 1;
+    }
+  } catch(const Poco::Exception& exc) {
+      strncpy(errmsg, exc.displayText().c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+  } catch(const std::exception& ex) {
+      strncpy(errmsg, ex.what(), errlen);
+      return KOPSIK_API_FAILURE;
+  } catch(const std::string& ex) {
+      strncpy(errmsg, ex.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+  }
+  return KOPSIK_API_SUCCESS;
+}
+
 
 kopsik_api_result kopsik_users_default_wid(
     void *context,
