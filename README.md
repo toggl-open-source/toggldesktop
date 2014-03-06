@@ -38,3 +38,4 @@ Code coverage
 make coverage
 open coverage/index.html
 ```
+
