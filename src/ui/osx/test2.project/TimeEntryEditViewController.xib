@@ -28,6 +28,7 @@
                 <outlet property="startTime" destination="vaF-tJ-dqC" id="8rq-5U-3Qt"/>
                 <outlet property="tagsTokenField" destination="9Uk-YS-6nx" id="Q4X-aI-eeC"/>
                 <outlet property="view" destination="qjv-II-K0N" id="WWf-UA-X50"/>
+                <outlet property="workspaceLabel" destination="IVd-y9-OXp" id="Ug1-qq-rB4"/>
                 <outlet property="workspaceSelect" destination="Q41-iI-nk2" id="qA8-5i-Wt5"/>
             </connections>
         </customObject>
@@ -492,8 +493,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
-                                                            <datePicker verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vaF-tJ-dqC">
-                                                                <rect key="frame" x="116" y="7" width="68" height="22"/>
+                                                            <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vaF-tJ-dqC">
+                                                                <rect key="frame" x="116" y="7" width="68" height="25"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="68" id="Bsf-Gk-FIp"/>
@@ -540,7 +541,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                 </connections>
                                                             </datePicker>
                                                             <datePicker verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jAD-IY-7K4">
-                                                                <rect key="frame" x="216" y="7" width="68" height="22"/>
+                                                                <rect key="frame" x="216" y="7" width="68" height="25"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="68" id="EIX-FS-HOZ"/>

@@ -3,7 +3,7 @@
 //  kopsik_ui_osx
 //
 //  Created by Tanel Lebedev on 19/09/2013.
-//  Copyright (c) 2013 kopsik developers. All rights reserved.
+//  Copyright (c) 2013 TogglDesktop developers. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
@@ -25,6 +25,7 @@
 @property (weak) IBOutlet NSButton *backButton;
 @property (weak) IBOutlet NSButton *continueButton;
 @property (weak) IBOutlet NSButton *addProjectButton;
+@property (weak) IBOutlet NSTextField *workspaceLabel;
 - (IBAction)descriptionTextFieldChanged:(id)sender;
 - (IBAction)durationTextFieldChanged:(id)sender;
 - (IBAction)projectSelectChanged:(id)sender;
