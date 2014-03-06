@@ -433,7 +433,7 @@ const std::string Context::updateURL() const {
   poco_assert(!app_version_.empty());
 
   std::stringstream relative_url;
-  relative_url << "/api/v8/updates?app=kopsik"
+  relative_url << "/api/v8/updates?app=td"
     << "&channel=" << update_channel_
     << "&platform=" << osName()
     << "&version=" << app_version_;
