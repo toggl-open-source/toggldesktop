@@ -71,6 +71,14 @@
   self.clientSelect.stringValue = @"";
   self.workspaceSelect.stringValue = @"";
 
+  // If user has only one workspace, do not show the workspace combobox at all.
+  BOOL singleWorkspace = YES;
+  if (self.workspaceList.count > 1) {
+    singleWorkspace = NO;
+  }
+  [self.workspaceLabel setHidden:singleWorkspace];
+  [self.workspaceSelect setHidden:singleWorkspace];
+
   // Pre-select the workspace that the time entry is tracked to
   TimeEntryViewItem *te = [TimeEntryViewItem findByGUID:self.GUID];
   if (te && te.WorkspaceID) {

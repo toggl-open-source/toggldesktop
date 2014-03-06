@@ -25,6 +25,7 @@
 @property (weak) IBOutlet NSButton *backButton;
 @property (weak) IBOutlet NSButton *continueButton;
 @property (weak) IBOutlet NSButton *addProjectButton;
+@property (weak) IBOutlet NSTextField *workspaceLabel;
 - (IBAction)descriptionTextFieldChanged:(id)sender;
 - (IBAction)durationTextFieldChanged:(id)sender;
 - (IBAction)projectSelectChanged:(id)sender;
