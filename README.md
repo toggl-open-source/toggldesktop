@@ -7,7 +7,7 @@ OS X
 ```
 make osx
 ```
-Toggl built and signed app is [available for download](https://www.toggl.com/api/v8/installer?platform=darwin&app=kopsik&channel=beta), set to beta release channel. 
+Toggl built and signed app is [available for download](https://www.toggl.com/api/v8/installer?platform=darwin&app=td&channel=stable). 
 
 Windows
 -------
