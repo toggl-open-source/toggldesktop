@@ -3,7 +3,7 @@
 //  kopsik_ui_osx
 //
 //  Created by Tanel Lebedev on 04/02/2014.
-//  Copyright (c) 2014 kopsik developers. All rights reserved.
+//  Copyright (c) 2014 TogglDesktop developers. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

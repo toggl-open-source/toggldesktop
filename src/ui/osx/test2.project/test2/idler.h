@@ -3,7 +3,7 @@
 //  kopsik_ui_osx
 //
 //  Created by Tanel Lebedev on 04/11/2013.
-//  Copyright (c) 2013 kopsik developers. All rights reserved.
+//  Copyright (c) 2013 TogglDesktop developers. All rights reserved.
 //
 
 #ifndef kopsik_ui_osx_idler_h
