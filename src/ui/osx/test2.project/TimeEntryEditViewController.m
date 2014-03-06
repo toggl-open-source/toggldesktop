@@ -109,7 +109,7 @@
   [self.addProjectBox setHidden:NO];
 
   NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_addProjectBox, _dataholderBox);
-  self.topConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_addProjectBox]-[_dataholderBox]"
+  self.topConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_addProjectBox]-0-[_dataholderBox]"
                                              options:0
                                              metrics:nil
                                                views:viewsDict];
