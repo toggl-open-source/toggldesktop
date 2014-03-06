@@ -142,7 +142,7 @@ clean:
 	rm -f TogglDesktop.dmg
 
 osx:
-	xcodebuild -project src/ui/osx/test2.project/kopsik_ui_osx.xcodeproj && \
+	xcodebuild -project src/ui/osx/test2.project/TogglDesktop.xcodeproj && \
 	!(otool -L $(osx_executable) | grep "Users" && echo "Executable should not contain hardcoded paths!")
 
 run: osx

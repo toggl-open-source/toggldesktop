@@ -167,17 +167,17 @@
 		69FC17F717E6534400B96425 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		69FC17F817E6534400B96425 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		69FC17F917E6534400B96425 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		69FC17FC17E6534400B96425 /* kopsik_ui_osx-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "kopsik_ui_osx-Info.plist"; sourceTree = "<group>"; };
+		69FC17FC17E6534400B96425 /* TogglDesktop-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TogglDesktop-Info.plist"; sourceTree = "<group>"; };
 		69FC17FE17E6534400B96425 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		69FC180017E6534400B96425 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		69FC180217E6534400B96425 /* kopsik_ui_osx-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "kopsik_ui_osx-Prefix.pch"; sourceTree = "<group>"; };
+		69FC180217E6534400B96425 /* TogglDesktop-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TogglDesktop-Prefix.pch"; sourceTree = "<group>"; };
 		69FC180417E6534400B96425 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		69FC180617E6534400B96425 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		69FC180717E6534400B96425 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		69FC180A17E6534500B96425 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		69FC181117E6534500B96425 /* kopsik_ui_osxTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kopsik_ui_osxTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		69FC181117E6534500B96425 /* TogglDesktopTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TogglDesktopTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		69FC181217E6534500B96425 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		69FC181917E6534500B96425 /* kopsik_ui_osxTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "kopsik_ui_osxTests-Info.plist"; sourceTree = "<group>"; };
+		69FC181917E6534500B96425 /* TogglDesktopTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TogglDesktopTests-Info.plist"; sourceTree = "<group>"; };
 		69FC181B17E6534500B96425 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		69FC181D17E6534500B96425 /* test2Tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = test2Tests.h; sourceTree = "<group>"; };
 		69FC181E17E6534500B96425 /* test2Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = test2Tests.m; sourceTree = "<group>"; };
@@ -350,7 +350,7 @@
 				95DBF8CB18BF7A910021FB41 /* offline_on.pdf */,
 				95DBF8DE18C75F560021FB41 /* td7_logo_final.pdf */,
 				74E1682E180F269F0026261C /* gtm */,
-				69FC17FA17E6534400B96425 /* kopsik_ui */,
+				69FC17FA17E6534400B96425 /* ui */,
 				69FC181717E6534500B96425 /* kopsikTests */,
 				69FC17F317E6534400B96425 /* Frameworks */,
 				69FC17F217E6534400B96425 /* Products */,
@@ -361,7 +361,7 @@
 			isa = PBXGroup;
 			children = (
 				69FC17F117E6534400B96425 /* TogglDesktop.app */,
-				69FC181117E6534500B96425 /* kopsik_ui_osxTests.octest */,
+				69FC181117E6534500B96425 /* TogglDesktopTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -396,7 +396,7 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
-		69FC17FA17E6534400B96425 /* kopsik_ui */ = {
+		69FC17FA17E6534400B96425 /* ui */ = {
 			isa = PBXGroup;
 			children = (
 				7408EDB918C532C200CBE8F1 /* const.h */,
@@ -479,17 +479,17 @@
 				74BAD31C18BD7D83002FD4CF /* ViewItem.h */,
 				74BAD31D18BD7D83002FD4CF /* ViewItem.m */,
 			);
-			name = kopsik_ui;
+			name = ui;
 			path = test2;
 			sourceTree = "<group>";
 		};
 		69FC17FB17E6534400B96425 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				69FC17FC17E6534400B96425 /* kopsik_ui_osx-Info.plist */,
+				69FC17FC17E6534400B96425 /* TogglDesktop-Info.plist */,
 				69FC17FD17E6534400B96425 /* InfoPlist.strings */,
 				69FC180017E6534400B96425 /* main.m */,
-				69FC180217E6534400B96425 /* kopsik_ui_osx-Prefix.pch */,
+				69FC180217E6534400B96425 /* TogglDesktop-Prefix.pch */,
 				69FC180317E6534400B96425 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
@@ -509,7 +509,7 @@
 		69FC181817E6534500B96425 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				69FC181917E6534500B96425 /* kopsik_ui_osxTests-Info.plist */,
+				69FC181917E6534500B96425 /* TogglDesktopTests-Info.plist */,
 				69FC181A17E6534500B96425 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -591,9 +591,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		69FC17F017E6534400B96425 /* kopsik_ui_osx */ = {
+		69FC17F017E6534400B96425 /* TogglDesktop */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 69FC182217E6534500B96425 /* Build configuration list for PBXNativeTarget "kopsik_ui_osx" */;
+			buildConfigurationList = 69FC182217E6534500B96425 /* Build configuration list for PBXNativeTarget "TogglDesktop" */;
 			buildPhases = (
 				69FC17ED17E6534400B96425 /* Sources */,
 				69FC17EE17E6534400B96425 /* Frameworks */,
@@ -607,14 +607,14 @@
 				74FD8CDE18A8EF4800F7DB80 /* PBXTargetDependency */,
 				74B680AF18075A4300B697AA /* PBXTargetDependency */,
 			);
-			name = kopsik_ui_osx;
+			name = TogglDesktop;
 			productName = test2;
 			productReference = 69FC17F117E6534400B96425 /* TogglDesktop.app */;
 			productType = "com.apple.product-type.application";
 		};
-		69FC181017E6534500B96425 /* kopsik_ui_osxTests */ = {
+		69FC181017E6534500B96425 /* TogglDesktopTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 69FC182517E6534500B96425 /* Build configuration list for PBXNativeTarget "kopsik_ui_osxTests" */;
+			buildConfigurationList = 69FC182517E6534500B96425 /* Build configuration list for PBXNativeTarget "TogglDesktopTests" */;
 			buildPhases = (
 				69FC180C17E6534500B96425 /* Sources */,
 				69FC180D17E6534500B96425 /* Frameworks */,
@@ -626,9 +626,9 @@
 			dependencies = (
 				69FC181617E6534500B96425 /* PBXTargetDependency */,
 			);
-			name = kopsik_ui_osxTests;
+			name = TogglDesktopTests;
 			productName = test2Tests;
-			productReference = 69FC181117E6534500B96425 /* kopsik_ui_osxTests.octest */;
+			productReference = 69FC181117E6534500B96425 /* TogglDesktopTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -640,7 +640,7 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = Alari;
 			};
-			buildConfigurationList = 69FC17EC17E6534400B96425 /* Build configuration list for PBXProject "kopsik_ui_osx" */;
+			buildConfigurationList = 69FC17EC17E6534400B96425 /* Build configuration list for PBXProject "TogglDesktop" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -662,8 +662,8 @@
 			);
 			projectRoot = "";
 			targets = (
-				69FC17F017E6534400B96425 /* kopsik_ui_osx */,
-				69FC181017E6534500B96425 /* kopsik_ui_osxTests */,
+				69FC17F017E6534400B96425 /* TogglDesktop */,
+				69FC181017E6534500B96425 /* TogglDesktopTests */,
 			);
 		};
 /* End PBXProject section */
@@ -838,7 +838,7 @@
 /* Begin PBXTargetDependency section */
 		69FC181617E6534500B96425 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 69FC17F017E6534400B96425 /* kopsik_ui_osx */;
+			target = 69FC17F017E6534400B96425 /* TogglDesktop */;
 			targetProxy = 69FC181517E6534500B96425 /* PBXContainerItemProxy */;
 		};
 		74B680AF18075A4300B697AA /* PBXTargetDependency */ = {
@@ -956,14 +956,14 @@
 					"$(SRCROOT)/../../../../third_party/TFDatePicker/TFDatePicker/build/Release",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "test2/kopsik_ui_osx-Prefix.pch";
+				GCC_PREFIX_HEADER = "test2/TogglDesktop-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/Crashreporter.framework/Headers",
 					"$(SRCROOT)/../../../../third_party/TFDatePicker/**",
 				);
-				INFOPLIST_FILE = "test2/kopsik_ui_osx-Info.plist";
+				INFOPLIST_FILE = "test2/TogglDesktop-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -987,14 +987,14 @@
 					"$(SRCROOT)/../../../../third_party/TFDatePicker/TFDatePicker/build/Release",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "test2/kopsik_ui_osx-Prefix.pch";
+				GCC_PREFIX_HEADER = "test2/TogglDesktop-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/Crashreporter.framework/Headers",
 					"$(SRCROOT)/../../../../third_party/TFDatePicker/**",
 				);
-				INFOPLIST_FILE = "test2/kopsik_ui_osx-Info.plist";
+				INFOPLIST_FILE = "test2/TogglDesktop-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1016,13 +1016,13 @@
 				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "test2/test2-Prefix.pch";
-				INFOPLIST_FILE = "test2Tests/kopsik_ui_osxTests-Info.plist";
+				INFOPLIST_FILE = "test2Tests/TogglDesktopTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\\\\\\\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/kopsik-gdrqxzhkjpeomlgorxydlstyhljk/Build/Products/Debug\\\\\\\"",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Kopsik-cptvydtiosmzancjbyyzuervwdsl/Build/Products/Debug",
 				);
-				PRODUCT_NAME = kopsik_ui_osxTests;
+				PRODUCT_NAME = TogglDesktopTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -1036,13 +1036,13 @@
 				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "test2/test2-Prefix.pch";
-				INFOPLIST_FILE = "test2Tests/kopsik_ui_osxTests-Info.plist";
+				INFOPLIST_FILE = "test2Tests/TogglDesktopTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\\\\\\\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/kopsik-gdrqxzhkjpeomlgorxydlstyhljk/Build/Products/Debug\\\\\\\"",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Kopsik-cptvydtiosmzancjbyyzuervwdsl/Build/Products/Debug",
 				);
-				PRODUCT_NAME = kopsik_ui_osxTests;
+				PRODUCT_NAME = TogglDesktopTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -1051,7 +1051,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		69FC17EC17E6534400B96425 /* Build configuration list for PBXProject "kopsik_ui_osx" */ = {
+		69FC17EC17E6534400B96425 /* Build configuration list for PBXProject "TogglDesktop" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				69FC182017E6534500B96425 /* Debug */,
@@ -1060,7 +1060,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		69FC182217E6534500B96425 /* Build configuration list for PBXNativeTarget "kopsik_ui_osx" */ = {
+		69FC182217E6534500B96425 /* Build configuration list for PBXNativeTarget "TogglDesktop" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				69FC182317E6534500B96425 /* Debug */,
@@ -1069,7 +1069,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		69FC182517E6534500B96425 /* Build configuration list for PBXNativeTarget "kopsik_ui_osxTests" */ = {
+		69FC182517E6534500B96425 /* Build configuration list for PBXNativeTarget "TogglDesktopTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				69FC182617E6534500B96425 /* Debug */,
