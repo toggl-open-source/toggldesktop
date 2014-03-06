@@ -116,16 +116,9 @@ void Project::LoadFromJSONNode(JSONNODE * const data) {
   }
 }
 
-kopsik::error Project::ResolveError(const kopsik::error err) {
-  std::string s = std::string(err);
-  if (std::string::npos != s.find("Name has already been taken")) {
-    std::stringstream new_err;
-    new_err << "Project name '" << Name()
-            << "' was already present in your workspace. ";
-    Delete();
-    return kopsik::error(new_err.str());
-  }
-  return err;
+bool Project::IsDuplicateResourceError(const kopsik::error err) const {
+  return (std::string::npos !=
+      std::string(err).find("Name has already been taken"));
 }
 
 }   // namespace kopsik

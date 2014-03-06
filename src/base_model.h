@@ -68,7 +68,7 @@ namespace kopsik {
     }
     void MarkAsDeletedOnServer() {
         is_marked_as_deleted_on_server_ = true;
-        dirty_ = true;
+        SetDirty();
     }
 
     bool NeedsPush() const;
@@ -88,7 +88,8 @@ namespace kopsik {
     virtual std::string ModelURL() const = 0;
     virtual void LoadFromJSONNode(JSONNODE * const) = 0;
 
-    virtual kopsik::error ResolveError(const kopsik::error err) { return err; }
+    virtual bool IsDuplicateResourceError(const kopsik::error err) const {
+        return false; }
 
     void LoadFromDataString(const std::string);
 

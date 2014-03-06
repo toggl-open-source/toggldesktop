@@ -877,22 +877,59 @@ error Database::saveClients(
     return noError;
 }
 
+// FIXME: copy paste from time enty save, needs refactoring using base model
 error Database::saveProjects(
-        const Poco::UInt64 UID,
-         std::vector<Project *> *list,
-         std::vector<ModelChange> *changes) {
-    poco_assert(UID > 0);
-    poco_assert(list);
-    for (std::vector<Project *>::iterator it = list->begin();
-            it != list->end(); ++it) {
-        Project *model = *it;
-        model->SetUID(UID);
-        error err = saveProject(model, changes);
-        if (err != noError) {
-            return err;
-        }
+    const Poco::UInt64 UID,
+    std::vector<Project *> *list,
+    std::vector<ModelChange> *changes) {
+  poco_assert(UID > 0);
+  poco_assert(list);
+  poco_assert(changes);
+
+  {
+    std::stringstream ss;
+    ss << "Saving projects in thread " << Poco::Thread::currentTid();
+    logger().trace(ss.str());
+  }
+
+  for (std::vector<Project *>::iterator it = list->begin();
+       it != list->end(); ++it) {
+    Project *model = *it;
+    if (model->IsMarkedAsDeletedOnServer()) {
+      error err = deleteFromTable("projects", model->LocalID());
+      if (err != noError) {
+        return err;
+      }
+      changes->push_back(ModelChange(
+        model->ModelName(), "delete", model->ID(), model->GUID()));
+      continue;
     }
-    return noError;
+    model->SetUID(UID);
+    error err = saveProject(model, changes);
+    if (err != noError) {
+      return err;
+    }
+  }
+
+  // Purge deleted models from memory
+  std::vector<Project *>::iterator it = list->begin();
+  while (it != list->end()) {
+    Project *model = *it;
+    if (model->IsMarkedAsDeletedOnServer()) {
+      it = list->erase(it);
+    } else {
+      ++it;
+    }
+  }
+
+  {
+    std::stringstream ss;
+    ss << "Finished saving time entries in thread " <<
+    Poco::Thread::currentTid();
+    logger().trace(ss.str());
+  }
+
+  return noError;
 }
 
 error Database::saveTasks(
@@ -930,6 +967,9 @@ error Database::saveTags(
     }
     return noError;
 }
+
+typedef kopsik::error (Database::*saveModel)(
+  BaseModel *model, std::vector<ModelChange> *changes);
 
 error Database::saveTimeEntries(
         const Poco::UInt64 UID,

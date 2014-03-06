@@ -53,7 +53,7 @@ namespace kopsik {
 
     void LoadFromJSONNode(JSONNODE * const);
 
-    kopsik::error ResolveError(const kopsik::error err);
+    bool IsDuplicateResourceError(const kopsik::error err) const;
 
   private:
     Poco::UInt64 wid_;
