@@ -2247,14 +2247,14 @@ error Database::initialize_tables() {
 
     err = migrate("settings.update_channel",
         "ALTER TABLE settings "
-        "ADD COLUMN update_channel varchar not null default 'beta';");
+        "ADD COLUMN update_channel varchar not null default 'stable';");
     if (err != noError) {
         return err;
     }
 
     err = migrate("settings.default",
         "INSERT INTO settings(update_channel) "
-        "SELECT 'beta' WHERE NOT EXISTS (SELECT 1 FROM settings LIMIT 1);");
+        "SELECT 'stable' WHERE NOT EXISTS (SELECT 1 FROM settings LIMIT 1);");
     if (err != noError) {
         return err;
     }
