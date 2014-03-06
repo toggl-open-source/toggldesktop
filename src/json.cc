@@ -769,9 +769,10 @@ void ProcessResponseArray(
 
     kopsik::error err = result.Error();
     if (err != kopsik::noError) {
-      err = model->ResolveError(err);
-    }
-    if (err != kopsik::noError) {
+      if (model->IsDuplicateResourceError(err)) {
+        model->MarkAsDeletedOnServer();
+        continue;
+      }
       errors->push_back(err);
       model->SetError(err);
       continue;
