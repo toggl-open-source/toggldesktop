@@ -787,8 +787,15 @@ void ParseResponseArray(
     const std::string response_body,
     std::vector<BatchUpdateResult> *responses) {
   poco_assert(responses);
-  poco_assert(!response_body.empty());
   poco_assert(responses);
+
+  // There seem to be cases where response body is 0.
+  // Must investigate further.
+  if (!response_body.empty()) {
+    Poco::Logger &logger = Poco::Logger::get("json");
+    logger.warning("Response is empty!");
+    return;
+  }
 
   JSONNODE *response_array = json_parse(response_body.c_str());
   JSONNODE_ITERATOR i = json_begin(response_array);
