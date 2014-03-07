@@ -83,6 +83,7 @@
     // Show time entry list
     [self.contentView addSubview:self.timeEntryListViewController.view];
     [self.timeEntryListViewController.view setFrame:self.contentView.bounds];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventShowListView object:nil];
     
     return;
   }
@@ -112,6 +113,7 @@
     [self.timeEntryEditViewController.view removeFromSuperview];
     [self.contentView addSubview:self.timeEntryListViewController.view];
     [self.timeEntryListViewController.view setFrame:self.contentView.bounds];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventShowListView object:nil];
     return;
   }
  

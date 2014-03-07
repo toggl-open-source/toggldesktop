@@ -23,6 +23,7 @@ NSString *const kUIStateUpToDate = @"UpToDate";
 NSString *const kUIEventModelChange = @"ModelChange";
 NSString *const kUIEventIdleFinished = @"IdleFinished";
 NSString *const kUIEventSettingsChanged = @"SettingsChanged";
+NSString *const kUIEventShowListView = @"ShowListView";
 
 // Commands
 NSString *const kUICommandNew = @"New";

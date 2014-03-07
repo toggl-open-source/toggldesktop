@@ -53,6 +53,10 @@
                                                selector:@selector(eventHandler:)
                                                    name:kUICommandEditRunningTimeEntry
                                                  object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUIEventShowListView
+                                                 object:nil];
 
       self.time_entry = [[TimeEntryViewItem alloc] init];
       
@@ -100,6 +104,11 @@
 }
 
 - (void)eventHandler: (NSNotification *) notification {
+  if ([notification.name isEqualToString:kUIEventShowListView]) {
+    [self.descriptionComboBox becomeFirstResponder];
+    return;
+  }
+
   if ([notification.name isEqualToString:kUIStateTimerRunning]) {
     self.time_entry = notification.object;
     [self performSelectorOnMainThread:@selector(render)
