@@ -116,6 +116,7 @@
   [self.view addConstraints:self.topConstraint];
 
   [self.projectSelectBox setHidden:YES];
+  [self.addProjectButton setHidden:YES];
   [self.projectNameTextField becomeFirstResponder];
 }
 
@@ -198,6 +199,26 @@
   }
   NSAssert(false, @"Invalid combo box");
   return nil;
+}
+
+- (void)viewDidLoad {
+ // Setting button text color to blue
+    NSColor *color = [NSColor alternateSelectedControlColor];
+    NSMutableAttributedString *colorTitle =
+    [[NSMutableAttributedString alloc] initWithAttributedString:[self.addProjectButton attributedTitle]];
+
+    NSRange titleRange = NSMakeRange(0, [colorTitle length]);
+
+    [colorTitle addAttribute:NSForegroundColorAttributeName
+                     value:color
+                     range:titleRange];
+
+    [self.addProjectButton setAttributedTitle:colorTitle];
+}
+
+- (void)loadView {
+    [super loadView];
+    [self viewDidLoad];
 }
 
 - (void)render:(EditNotification *)edit {
@@ -319,6 +340,7 @@
   if ([notification.name isEqualToString:kUIStateTimeEntryDeselected]) {
     [self.addProjectBox setHidden:YES];
     [self.projectSelectBox setHidden:NO];
+    [self.addProjectButton setHidden:NO];
     return;
   }
 
