@@ -1348,7 +1348,7 @@ void Context::getTimeEntryAutocompleteItems(
       c = user_->GetClientByID(p->CID());
     }
 
-    std::string project_label = Formatter::JoinTaskName(t, p, c);
+    std::string project_label = Formatter::JoinTaskNameReverse(t, p, c);
 
     std::stringstream search_parts;
     search_parts << te->Description();
@@ -1412,7 +1412,7 @@ void Context::getTaskAutocompleteItems(
       c = user_->GetClientByID(p->CID());
     }
 
-    std::string text = Formatter::JoinTaskName(t, p, c);
+    std::string text = Formatter::JoinTaskNameReverse(t, p, c);
     if (text.empty()) {
       continue;
     }
@@ -1455,7 +1455,7 @@ void Context::getProjectAutocompleteItems(
       c = user_->GetClientByID(p->CID());
     }
 
-    std::string text = Formatter::JoinTaskName(0, p, c);
+    std::string text = Formatter::JoinTaskNameReverse(0, p, c);
     if (text.empty()) {
       continue;
     }
