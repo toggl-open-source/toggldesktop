@@ -52,6 +52,7 @@ namespace kopsik {
     std::string ModelURL() const { return "/api/v8/projects"; }
 
     void LoadFromJSONNode(JSONNODE * const);
+    JSONNODE *SaveToJSONNode() const;
 
     bool IsDuplicateResourceError(const kopsik::error err) const;
 
