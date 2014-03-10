@@ -8,6 +8,8 @@
 #include "Poco/String.h"
 #include "Poco/NumberParser.h"
 
+#include "./formatter.h"
+
 namespace kopsik {
 
 const char *known_colors[] = {
@@ -114,6 +116,24 @@ void Project::LoadFromJSONNode(JSONNODE * const data) {
     }
     ++current_node;
   }
+}
+
+JSONNODE *Project::SaveToJSONNode() const {
+  JSONNODE *n = json_new(JSON_NODE);
+  json_set_name(n, ModelName().c_str());
+  if (ID()) {
+    json_push_back(n, json_new_i("id", (json_int_t)ID()));
+  }
+  json_push_back(n, json_new_a("name",
+    Formatter::EscapeJSONString(Name()).c_str()));
+  json_push_back(n, json_new_i("wid", (json_int_t)WID()));
+  json_push_back(n, json_new_a("guid", GUID().c_str()));
+  json_push_back(n, json_new_i("cid", (json_int_t)CID()));
+  json_push_back(n, json_new_b("billable", Billable()));
+  json_push_back(n, json_new_i("ui_modified_at",
+      (json_int_t)UIModifiedAt()));
+
+  return n;
 }
 
 bool Project::IsDuplicateResourceError(const kopsik::error err) const {

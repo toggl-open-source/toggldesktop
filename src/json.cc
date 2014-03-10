@@ -5,8 +5,6 @@
 #include <sstream>
 #include <cstring>
 
-#include "./formatter.h"
-
 #include "Poco/Logger.h"
 
 namespace kopsik {
@@ -56,35 +54,6 @@ bool IsDeletedAtServer(JSONNODE * const data) {
     ++current_node;
   }
   return false;
-}
-
-void ParseBatchUpdateResultJSON(
-    BatchUpdateResult *model,
-    JSONNODE * const n) {
-  poco_assert(n);
-  poco_assert(model);
-
-  model->StatusCode = 0;
-  model->Body = "";
-  model->GUID = "";
-  model->ContentType = "";
-  JSONNODE_ITERATOR i = json_begin(n);
-  JSONNODE_ITERATOR e = json_end(n);
-  while (i != e) {
-    json_char *node_name = json_name(*i);
-    if (strcmp(node_name, "status") == 0) {
-      model->StatusCode = json_as_int(*i);
-    } else if (strcmp(node_name, "body") == 0) {
-      model->Body = std::string(json_as_string(*i));
-    } else if (strcmp(node_name, "guid") == 0) {
-      model->GUID = std::string(json_as_string(*i));
-    } else if (strcmp(node_name, "content_type") == 0) {
-      model->ContentType = std::string(json_as_string(*i));
-    } else if (strcmp(node_name, "method") == 0) {
-      model->Method = std::string(json_as_string(*i));
-    }
-    ++i;
-  }
 }
 
 bool IsValidJSON(const std::string json) {
@@ -595,7 +564,7 @@ void loadUserTimeEntryFromJSONNode(
     alive->insert(id);
   }
   model->SetUID(user->ID());
-  LoadTimeEntryFromJSONNode(model, data);
+  model->LoadFromJSONNode(data);
 }
 
 void LoadUserWorkspacesFromJSONNode(
@@ -720,7 +689,7 @@ std::string UpdateJSON(
       projects->begin();
       it != projects->end(); it++) {
     Project *model = *it;
-    JSONNODE *update = modelUpdateJSON(model, ProjectToJSON(model));
+    JSONNODE *update = modelUpdateJSON(model, model->SaveToJSONNode());
     json_push_back(c, update);
   }
 
@@ -729,7 +698,7 @@ std::string UpdateJSON(
       time_entries->begin();
       it != time_entries->end(); it++) {
     TimeEntry *te = *it;
-    JSONNODE *update = modelUpdateJSON(te, TimeEntryToJSON(te));
+    JSONNODE *update = modelUpdateJSON(te, te->SaveToJSONNode());
     json_push_back(c, update);
   }
 
@@ -791,7 +760,7 @@ void ParseResponseArray(
 
   // There seem to be cases where response body is 0.
   // Must investigate further.
-  if (!response_body.empty()) {
+  if (response_body.empty()) {
     Poco::Logger &logger = Poco::Logger::get("json");
     logger.warning("Response is empty!");
     return;
@@ -802,144 +771,11 @@ void ParseResponseArray(
   JSONNODE_ITERATOR e = json_end(response_array);
   while (i != e) {
     BatchUpdateResult result;
-    ParseBatchUpdateResultJSON(&result, *i);
+    result.LoadFromJSONNode(*i);
     responses->push_back(result);
     ++i;
   }
   json_delete(response_array);
-}
-
-JSONNODE *TimeEntryToJSON(TimeEntry * const te) {
-  poco_assert(te);
-
-  JSONNODE *n = json_new(JSON_NODE);
-  json_set_name(n, te->ModelName().c_str());
-  if (te->ID()) {
-    json_push_back(n, json_new_i("id", (json_int_t)te->ID()));
-  }
-  json_push_back(n, json_new_a("description",
-    Formatter::EscapeJSONString(te->Description()).c_str()));
-  json_push_back(n, json_new_i("wid", (json_int_t)te->WID()));
-  json_push_back(n, json_new_a("guid", te->GUID().c_str()));
-  if (!te->PID() && !te->ProjectGUID().empty()) {
-    json_push_back(n, json_new_a("pid", te->ProjectGUID().c_str()));
-  } else {
-    json_push_back(n, json_new_i("pid", (json_int_t)te->PID()));
-  }
-  json_push_back(n, json_new_i("tid", (json_int_t)te->TID()));
-  json_push_back(n, json_new_a("start", te->StartString().c_str()));
-  if (te->Stop()) {
-    json_push_back(n, json_new_a("stop", te->StopString().c_str()));
-  }
-  json_push_back(n, json_new_i("duration",
-    (json_int_t)te->DurationInSeconds()));
-  json_push_back(n, json_new_b("billable", te->Billable()));
-  json_push_back(n, json_new_b("duronly", te->DurOnly()));
-  json_push_back(n, json_new_i("ui_modified_at",
-      (json_int_t)te->UIModifiedAt()));
-  json_push_back(n, json_new_a("created_with",
-      Formatter::EscapeJSONString(te->CreatedWith()).c_str()));
-
-  JSONNODE *tag_nodes = json_new(JSON_ARRAY);
-  json_set_name(tag_nodes, "tags");
-  for (std::vector<std::string>::const_iterator it = te->TagNames.begin();
-          it != te->TagNames.end();
-          it++) {
-      std::string tag_name = *it;
-      json_push_back(tag_nodes, json_new_a(NULL,
-          Formatter::EscapeJSONString(tag_name).c_str()));
-  }
-  json_push_back(n, tag_nodes);
-
-  return n;
-}
-
-void LoadTimeEntryFromJSONString(
-    TimeEntry *model,
-    const std::string json) {
-  poco_assert(model);
-  poco_assert(!json.empty());
-
-  JSONNODE *root = json_parse(json.c_str());
-  LoadTimeEntryFromJSONNode(model, root);
-  json_delete(root);
-}
-
-JSONNODE *ProjectToJSON(Project * const model) {
-  poco_assert(model);
-
-  JSONNODE *n = json_new(JSON_NODE);
-  json_set_name(n, model->ModelName().c_str());
-  if (model->ID()) {
-    json_push_back(n, json_new_i("id", (json_int_t)model->ID()));
-  }
-  json_push_back(n, json_new_a("name",
-    Formatter::EscapeJSONString(model->Name()).c_str()));
-  json_push_back(n, json_new_i("wid", (json_int_t)model->WID()));
-  json_push_back(n, json_new_a("guid", model->GUID().c_str()));
-  json_push_back(n, json_new_i("cid", (json_int_t)model->CID()));
-  json_push_back(n, json_new_b("billable", model->Billable()));
-  json_push_back(n, json_new_i("ui_modified_at",
-      (json_int_t)model->UIModifiedAt()));
-
-  return n;
-}
-
-void LoadTimeEntryFromJSONNode(
-    TimeEntry *model,
-    JSONNODE * const data) {
-  poco_assert(model);
-  poco_assert(data);
-
-  Poco::UInt64 ui_modified_at =
-      GetUIModifiedAtFromJSONNode(data);
-  if (model->UIModifiedAt() > ui_modified_at) {
-      Poco::Logger &logger = Poco::Logger::get("json");
-      std::stringstream ss;
-      ss  << "Will not overwrite time entry "
-          << model->String()
-          << " with server data because we have a ui_modified_at";
-      logger.debug(ss.str());
-      return;
-  }
-
-  JSONNODE_ITERATOR current_node = json_begin(data);
-  JSONNODE_ITERATOR last_node = json_end(data);
-  while (current_node != last_node) {
-    json_char *node_name = json_name(*current_node);
-    if (strcmp(node_name, "id") == 0) {
-      model->SetID(json_as_int(*current_node));
-    } else if (strcmp(node_name, "description") == 0) {
-      model->SetDescription(std::string(json_as_string(*current_node)));
-    } else if (strcmp(node_name, "guid") == 0) {
-      model->SetGUID(std::string(json_as_string(*current_node)));
-    } else if (strcmp(node_name, "wid") == 0) {
-      model->SetWID(json_as_int(*current_node));
-    } else if (strcmp(node_name, "pid") == 0) {
-      model->SetPID(json_as_int(*current_node));
-    } else if (strcmp(node_name, "tid") == 0) {
-      model->SetTID(json_as_int(*current_node));
-    } else if (strcmp(node_name, "start") == 0) {
-      model->SetStartString(std::string(json_as_string(*current_node)));
-    } else if (strcmp(node_name, "stop") == 0) {
-      model->SetStopString(std::string(json_as_string(*current_node)));
-    } else if (strcmp(node_name, "duration") == 0) {
-      model->SetDurationInSeconds(json_as_int(*current_node));
-    } else if (strcmp(node_name, "billable") == 0) {
-      model->SetBillable(json_as_bool(*current_node));
-    } else if (strcmp(node_name, "duronly") == 0) {
-      model->SetDurOnly(json_as_bool(*current_node));
-    } else if (strcmp(node_name, "tags") == 0) {
-      LoadTimeEntryTagsFromJSONNode(model, *current_node);
-    } else if (strcmp(node_name, "created_with") == 0) {
-      model->SetCreatedWith(std::string(json_as_string(*current_node)));
-    } else if (strcmp(node_name, "at") == 0) {
-      model->SetUpdatedAtString(std::string(json_as_string(*current_node)));
-    }
-    ++current_node;
-  }
-
-  model->SetUIModifiedAt(0);
 }
 
 }   // namespace kopsik

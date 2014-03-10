@@ -244,7 +244,7 @@ void TimeEntry::LoadFromJSONNode(JSONNODE * const data) {
       std::stringstream ss;
       ss  << "Will not overwrite time entry "
           << String()
-          << " with server data because we have a ui_modified_at";
+          << " with server data because we have a newer ui_modified_at";
       logger.debug(ss.str());
       return;
   }
@@ -286,6 +286,49 @@ void TimeEntry::LoadFromJSONNode(JSONNODE * const data) {
   }
 
   SetUIModifiedAt(0);
+}
+
+JSONNODE *TimeEntry::SaveToJSONNode() const {
+  JSONNODE *n = json_new(JSON_NODE);
+  json_set_name(n, ModelName().c_str());
+  if (ID()) {
+    json_push_back(n, json_new_i("id", (json_int_t)ID()));
+  }
+  json_push_back(n, json_new_a("description",
+    Formatter::EscapeJSONString(Description()).c_str()));
+  json_push_back(n, json_new_i("wid", (json_int_t)WID()));
+  json_push_back(n, json_new_a("guid", GUID().c_str()));
+  if (!PID() && !ProjectGUID().empty()) {
+    json_push_back(n, json_new_a("pid", ProjectGUID().c_str()));
+  } else {
+    json_push_back(n, json_new_i("pid", (json_int_t)PID()));
+  }
+  json_push_back(n, json_new_i("tid", (json_int_t)TID()));
+  json_push_back(n, json_new_a("start", StartString().c_str()));
+  if (Stop()) {
+    json_push_back(n, json_new_a("stop", StopString().c_str()));
+  }
+  json_push_back(n, json_new_i("duration",
+    (json_int_t)DurationInSeconds()));
+  json_push_back(n, json_new_b("billable", Billable()));
+  json_push_back(n, json_new_b("duronly", DurOnly()));
+  json_push_back(n, json_new_i("ui_modified_at",
+      (json_int_t)UIModifiedAt()));
+  json_push_back(n, json_new_a("created_with",
+      Formatter::EscapeJSONString(CreatedWith()).c_str()));
+
+  JSONNODE *tag_nodes = json_new(JSON_ARRAY);
+  json_set_name(tag_nodes, "tags");
+  for (std::vector<std::string>::const_iterator it = TagNames.begin();
+          it != TagNames.end();
+          it++) {
+      std::string tag_name = *it;
+      json_push_back(tag_nodes, json_new_a(NULL,
+          Formatter::EscapeJSONString(tag_name).c_str()));
+  }
+  json_push_back(n, tag_nodes);
+
+  return n;
 }
 
 void TimeEntry::loadTagsFromJSONNode(JSONNODE * const list) {

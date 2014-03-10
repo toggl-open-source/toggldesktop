@@ -103,6 +103,14 @@ void BaseModel::LoadFromDataString(const std::string data_string) {
   json_delete(n);
 }
 
+void BaseModel::LoadFromJSONString(const std::string json_string) {
+  poco_assert(!json_string.empty());
+
+  JSONNODE *root = json_parse(json_string.c_str());
+  this->LoadFromJSONNode(root);
+  json_delete(root);
+}
+
 void BaseModel::Delete() {
   SetDeletedAt(time(0));
   SetUIModifiedAt(time(0));

@@ -77,7 +77,7 @@ namespace kopsik {
         ASSERT_TRUE(te);
 
         std::string json = "{\"id\":89818605,\"description\":\"Changed\"}";
-        LoadTimeEntryFromJSONString(te, json);
+        te->LoadFromJSONString(json);
         ASSERT_EQ("Changed", te->Description());
     }
 

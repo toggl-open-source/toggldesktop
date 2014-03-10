@@ -32,6 +32,7 @@ namespace kopsik {
     std::string ModelURL() const { return "/api/v8/workspaces"; }
 
     void LoadFromJSONNode(JSONNODE * const);
+    JSONNODE *SaveToJSONNode() const { return 0; }
 
   private:
     std::string name_;

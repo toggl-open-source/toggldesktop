@@ -69,7 +69,7 @@ namespace kopsik {
     std::string StopString() const;
     void SetStopString(const std::string value);
 
-    Poco::UInt64 Stop() { return stop_; }
+    Poco::UInt64 Stop() const { return stop_; }
     void SetStop(const Poco::UInt64 value);
 
     std::string CreatedWith() const { return created_with_; }
@@ -88,6 +88,7 @@ namespace kopsik {
     std::string ModelURL() const { return "/api/v8/time_entries"; }
 
     void LoadFromJSONNode(JSONNODE * const);
+    JSONNODE *SaveToJSONNode() const;
 
     // User-triggered changes to timer:
     void SetDurationUserInput(const std::string);

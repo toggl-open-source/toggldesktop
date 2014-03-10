@@ -7,6 +7,8 @@
 
 #include "./types.h"
 
+#include "libjson.h"  // NOLINT
+
 #include "Poco/Types.h"
 
 namespace kopsik {
@@ -27,6 +29,8 @@ namespace kopsik {
       error Error() const;
       std::string String() const;
       bool ResourceIsGone() const;
+
+      void LoadFromJSONNode(JSONNODE * const);
   };
 
 }  // namespace kopsik

@@ -96,27 +96,9 @@ namespace kopsik {
     JSONNODE *data,
     std::set<Poco::UInt64> *alive = 0);
 
-  void loadTimeEntryFromDataString(
-    TimeEntry *model,
-    const std::string data_string);
-
-  void LoadTimeEntryFromJSONNode(
-    TimeEntry *model,
-    JSONNODE * const);
-  void LoadTimeEntryFromJSONString(
-    TimeEntry *model,
-    const std::string json);
-
-  JSONNODE *TimeEntryToJSON(TimeEntry * const);
-  JSONNODE *ProjectToJSON(Project * const);
-
   std::string UpdateJSON(
     std::vector<Project *> * const,
     std::vector<TimeEntry *> * const);
-
-  void ParseResponseJSON(
-    BatchUpdateResult *model,
-    JSONNODE *n);
 
   Poco::UInt64 GetIDFromJSONNode(JSONNODE * const);
   guid GetGUIDFromJSONNode(JSONNODE * const);
