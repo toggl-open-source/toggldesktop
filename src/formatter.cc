@@ -41,6 +41,32 @@ std::string Formatter::JoinTaskName(
     return ss.str();
 }
 
+std::string Formatter::JoinTaskNameReverse(
+        Task * const t,
+        Project * const p,
+        Client * const c) {
+    std::stringstream ss;
+    bool empty = true;
+    if (c) {
+        ss << c->Name();
+        empty = false;
+    }
+    if (p) {
+        if (!empty) {
+            ss << ". ";
+        }
+        ss << p->Name();
+        empty = false;
+    }
+    if (t) {
+        if (!empty) {
+            ss << ". ";
+        }
+        ss << t->Name();
+    }
+    return ss.str();
+}
+
 std::string Formatter::FormatDateWithTime(const std::time_t date) {
     poco_assert(date);
     Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
