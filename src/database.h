@@ -70,11 +70,13 @@ class Database {
         error LoadSettings(
             bool *use_proxy,
             Proxy *proxy,
-            bool *use_idle_settings);
+            bool *use_idle_settings,
+            bool *menubar_timer);
         error SaveSettings(
             const bool use_proxy,
             const Proxy *proxy,
-            const bool use_idle_detection);
+            const bool use_idle_detection,
+            const bool menubar_timer);
 
         error LoadUpdateChannel(
             std::string *update_channel);

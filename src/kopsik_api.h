@@ -79,12 +79,13 @@ KOPSIK_EXPORT void kopsik_context_clear(
 // Configuration API
 
 typedef struct {
-  int UseProxy;
+  unsigned int UseProxy;
   char *ProxyHost;
   unsigned int ProxyPort;
   char *ProxyUsername;
   char *ProxyPassword;
-  int UseIdleDetection;
+  unsigned int UseIdleDetection;
+  unsigned int MenubarTimer;
 } KopsikSettings;
 
 KOPSIK_EXPORT kopsik_api_result kopsik_get_settings(
@@ -102,12 +103,13 @@ KOPSIK_EXPORT kopsik_api_result kopsik_set_settings(
   void *context,
   char *errmsg,
   const unsigned int errlen,
-  const int use_proxy,
+  const unsigned int use_proxy,
   const char *proxy_host,
   const unsigned int proxy_port,
   const char *proxy_username,
   const char *proxy_password,
-  const int use_idle_detection);
+  const unsigned int use_idle_detection,
+  const unsigned int menubar_timer);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_configure_proxy(
   void *context,

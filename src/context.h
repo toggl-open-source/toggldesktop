@@ -77,11 +77,13 @@ class Context {
     kopsik::error LoadSettings(
       bool *use_proxy,
       kopsik::Proxy *proxy,
-      bool *use_idle_settings) const;
+      bool *use_idle_settings,
+      bool *menubar_timer) const;
     kopsik::error SaveSettings(
       const bool use_proxy,
       const kopsik::Proxy *proxy,
-      const bool use_idle_detection);
+      const bool use_idle_detection,
+      const bool menubar_timer);
 
     // Session management
     kopsik::error CurrentAPIToken(std::string *token);

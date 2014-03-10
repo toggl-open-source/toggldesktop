@@ -82,6 +82,11 @@
     } else {
       [self.useIdleDetectionButton setState:NSOffState];
     }
+    if (settings->MenubarTimer) {
+      [self.menubarTimerCheckbox setState:NSOnState];
+    } else {
+      [self.menubarTimerCheckbox setState:NSOffState];
+    }
     kopsik_settings_clear(settings);
 }
 
@@ -121,7 +126,7 @@
 - (void)savePreferences {
   NSLog(@"savePreferences");
 
-  int use_proxy = 0;
+  unsigned int use_proxy = 0;
   if ([self.useProxyButton state] == NSOnState) {
     use_proxy = 1;
   }
@@ -130,9 +135,14 @@
   NSString *username = [self.usernameTextField stringValue];
   NSString *password = [self.passwordTextField stringValue];
 
-  int use_idle_detection = 0;
+  unsigned int use_idle_detection = 0;
   if ([self.useIdleDetectionButton state] == NSOnState) {
     use_idle_detection = 1;
+  }
+
+  unsigned int menubar_timer = 0;
+  if ([self.menubarTimerCheckbox state] == NSOnState) {
+    menubar_timer = 1;
   }
 
   char err[KOPSIK_ERR_LEN];
@@ -144,7 +154,8 @@
                                               (unsigned int)port,
                                               [username UTF8String],
                                               [password UTF8String],
-                                              use_idle_detection);
+                                              use_idle_detection,
+                                              menubar_timer);
   if (KOPSIK_API_SUCCESS != res) {
     handle_error(err);
     return;
@@ -156,6 +167,10 @@
 - (IBAction)recordTimelineCheckboxChanged:(id)sender {
   kopsik_timeline_toggle_recording(ctx);
   [self displayTimelineRecordingState];
+}
+
+- (IBAction)menubarTimerCheckboxChanged:(id)sender {
+  [self savePreferences];
 }
 
 - (void)displayTimelineRecordingState {

@@ -65,7 +65,7 @@ namespace kopsik {
         res = kopsik_set_settings(
             ctx,
             err, ERRLEN,
-            1, "localhost", 8000, "johnsmith", "secret", 0);
+            1, "localhost", 8000, "johnsmith", "secret", 0, 0);
         ASSERT_EQ(KOPSIK_API_SUCCESS, res);
 
         KopsikSettings *settings = kopsik_settings_init();
@@ -78,6 +78,7 @@ namespace kopsik {
             std::string(settings->ProxyUsername));
         ASSERT_EQ(std::string("secret"), std::string(settings->ProxyPassword));
         ASSERT_FALSE(settings->UseIdleDetection);
+        ASSERT_FALSE(settings->MenubarTimer);
         kopsik_settings_clear(settings);
 
         kopsik_context_clear(ctx);
