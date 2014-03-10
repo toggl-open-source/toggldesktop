@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -15,7 +15,7 @@
                 <outlet property="continueButton" destination="cnb-71-paF" id="vPX-OF-Khm"/>
                 <outlet property="dataholderBox" destination="9Ap-t2-bTq" id="Wci-J0-Sba"/>
                 <outlet property="deleteButton" destination="Wpz-9G-IOZ" id="opY-mR-5jK"/>
-                <outlet property="descriptionTextField" destination="lGX-fG-VqC" id="lvq-HE-BJ6"/>
+                <outlet property="descriptionCombobox" destination="6rO-vx-iLH" id="O03-KW-wgi"/>
                 <outlet property="durationBox" destination="cGh-Uz-aLx" id="MWW-uN-tyN"/>
                 <outlet property="durationTextField" destination="EMR-ul-vEb" id="qbl-PP-fL8"/>
                 <outlet property="endTime" destination="jAD-IY-7K4" id="f67-7l-Df9"/>
@@ -70,7 +70,7 @@
                                         </buttonCell>
                                         <connections>
                                             <action selector="continueButtonClicked:" target="-2" id="ndj-DE-cJE"/>
-                                            <outlet property="nextKeyView" destination="lGX-fG-VqC" id="9eE-DG-7qA"/>
+                                            <outlet property="nextKeyView" destination="6rO-vx-iLH" id="uA0-Kj-H8A"/>
                                         </connections>
                                     </button>
                                     <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zwE-pW-vQN">
@@ -96,22 +96,6 @@
                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
-                                    </textField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lGX-fG-VqC">
-                                        <rect key="frame" x="113" y="384" width="144" height="26"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="26" id="zCZ-AI-GCu"/>
-                                        </constraints>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="cHV-qN-pwr">
-                                            <font key="font" size="13" name="LucidaGrande"/>
-                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                        <connections>
-                                            <action selector="descriptionTextFieldChanged:" target="-2" id="c5R-tm-Dk1"/>
-                                            <outlet property="nextKeyView" destination="mxY-tv-UzX" id="QhG-9b-yap"/>
-                                        </connections>
                                     </textField>
                                     <box autoresizesSubviews="NO" misplaced="YES" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="6Sh-4d-bKb">
                                         <rect key="frame" x="-1" y="335" width="270" height="41"/>
@@ -633,12 +617,25 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                             <outlet property="nextKeyView" destination="EMR-ul-vEb" id="bya-uz-QTd"/>
                                         </connections>
                                     </button>
+                                    <comboBox verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6rO-vx-iLH">
+                                        <rect key="frame" x="114" y="381" width="144" height="26"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" buttonBordered="NO" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="OPO-6N-qwd">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </comboBoxCell>
+                                        <connections>
+                                            <action selector="descriptionComboboxChanged:" target="-2" id="ZHb-go-DNC"/>
+                                            <outlet property="delegate" destination="-2" id="c1M-Pl-g8L"/>
+                                            <outlet property="nextKeyView" destination="mxY-tv-UzX" id="xmm-5f-Z5P"/>
+                                        </connections>
+                                    </comboBox>
                                 </subviews>
                             </view>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="fz4-yg-eQZ" secondAttribute="trailing" id="57L-lf-wcd"/>
                                 <constraint firstAttribute="bottom" secondItem="zwE-pW-vQN" secondAttribute="bottom" constant="10" id="6Ex-js-L96"/>
-                                <constraint firstAttribute="trailing" secondItem="lGX-fG-VqC" secondAttribute="trailing" constant="16" id="7M6-hZ-gdf"/>
                                 <constraint firstItem="SUF-aH-axf" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" constant="15" id="86b-AG-Ecz"/>
                                 <constraint firstAttribute="bottom" secondItem="cnb-71-paF" secondAttribute="bottom" constant="10" id="F6r-VA-O4M"/>
                                 <constraint firstAttribute="trailing" secondItem="6Sh-4d-bKb" secondAttribute="trailing" id="Fst-cd-zU2"/>
@@ -646,13 +643,12 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <constraint firstItem="zwE-pW-vQN" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" constant="16" id="MD3-wj-cLP"/>
                                 <constraint firstItem="9Ap-t2-bTq" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" id="Rtf-EH-rFR"/>
                                 <constraint firstItem="fz4-yg-eQZ" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" id="YWE-qg-Y32"/>
-                                <constraint firstItem="lGX-fG-VqC" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" constant="118" id="Zc6-kB-4sI"/>
                                 <constraint firstAttribute="trailing" secondItem="mjR-fr-Qy0" secondAttribute="trailing" constant="16" id="aBm-pK-h6g"/>
                                 <constraint firstAttribute="trailing" secondItem="cnb-71-paF" secondAttribute="trailing" constant="16" id="d4c-bX-EBD"/>
-                                <constraint firstItem="lGX-fG-VqC" firstAttribute="top" secondItem="Mka-gG-oqB" secondAttribute="top" constant="23" id="gBU-QM-3IV"/>
-                                <constraint firstItem="fz4-yg-eQZ" firstAttribute="top" secondItem="lGX-fG-VqC" secondAttribute="bottom" constant="9" id="igw-e1-Sdk"/>
+                                <constraint firstAttribute="trailing" secondItem="6rO-vx-iLH" secondAttribute="trailing" constant="16" id="fNk-og-RRY"/>
                                 <constraint firstItem="mjR-fr-Qy0" firstAttribute="top" secondItem="Mka-gG-oqB" secondAttribute="top" constant="91" id="qMc-Md-zoU"/>
                                 <constraint firstItem="6Sh-4d-bKb" firstAttribute="top" secondItem="SUF-aH-axf" secondAttribute="bottom" constant="14" id="qYE-Mc-WOC"/>
+                                <constraint firstItem="6rO-vx-iLH" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" constant="118" id="rsw-CB-Mgl"/>
                                 <constraint firstItem="6Sh-4d-bKb" firstAttribute="top" secondItem="Mka-gG-oqB" secondAttribute="top" constant="57" id="sC4-eT-UGB"/>
                                 <constraint firstItem="6Sh-4d-bKb" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" id="sfG-jz-b9T"/>
                                 <constraint firstAttribute="bottom" secondItem="Wpz-9G-IOZ" secondAttribute="bottom" constant="10" id="upy-Df-Fpu"/>

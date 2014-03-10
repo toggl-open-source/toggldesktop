@@ -11,7 +11,7 @@
 
 @interface TimeEntryEditViewController : NSViewController <NSComboBoxDataSource> {
 }
-@property (weak) IBOutlet NSTextField *descriptionTextField;
+@property (weak) IBOutlet NSComboBox *descriptionCombobox;
 @property (weak) IBOutlet NSComboBox *projectSelect;
 @property (weak) IBOutlet NSTextField *durationTextField;
 @property (weak) IBOutlet NSDatePicker *startTime;
@@ -26,7 +26,7 @@
 @property (weak) IBOutlet NSButton *continueButton;
 @property (weak) IBOutlet NSButton *addProjectButton;
 @property (weak) IBOutlet NSTextField *workspaceLabel;
-- (IBAction)descriptionTextFieldChanged:(id)sender;
+- (IBAction)descriptionComboboxChanged:(id)sender;
 - (IBAction)durationTextFieldChanged:(id)sender;
 - (IBAction)projectSelectChanged:(id)sender;
 - (IBAction)startTimeChanged:(id)sender;
