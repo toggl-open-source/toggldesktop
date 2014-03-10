@@ -107,13 +107,17 @@ class Context {
       const Poco::UInt64 workspace_id) const;
     kopsik::TimeEntry *GetTimeEntryByGUID(const std::string GUID) const;
 
-    kopsik::TimeEntry *Start(
+    kopsik::error Start(
       const std::string description,
       const std::string duration,
       const Poco::UInt64 task_id,
-      const Poco::UInt64 project_id);
-    kopsik::TimeEntry *ContinueLatest();
-    kopsik::TimeEntry *Continue(const std::string GUID);
+      const Poco::UInt64 project_id,
+      kopsik::TimeEntry **);
+    kopsik::error ContinueLatest(
+      kopsik::TimeEntry **);
+    kopsik::error Continue(
+      const std::string GUID,
+      kopsik::TimeEntry **);
     kopsik::error SetTimeEntryDuration(
       const std::string GUID,
       const std::string duration);

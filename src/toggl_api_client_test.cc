@@ -673,7 +673,8 @@ namespace kopsik {
         te->SetDurOnly(true);
 
         size_t count = user.related.TimeEntries.size();
-        TimeEntry *continued = user.Continue(te->GUID());
+        TimeEntry *continued = 0;
+        ASSERT_EQ(kopsik::noError, user.Continue(te->GUID(), &continued));
         ASSERT_TRUE(continued);
         ASSERT_EQ(count, user.related.TimeEntries.size());
 
@@ -681,7 +682,7 @@ namespace kopsik {
         // today, it should create a new entry when
         // user continues it:
         te->SetStartString("2013-01-25T01:05:15-22:00");
-        continued = user.Continue(te->GUID());
+        ASSERT_EQ(kopsik::noError, user.Continue(te->GUID(), &continued));
         ASSERT_TRUE(continued);
         ASSERT_EQ(count+1, user.related.TimeEntries.size());
     }

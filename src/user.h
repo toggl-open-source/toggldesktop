@@ -94,7 +94,9 @@ namespace kopsik {
             const std::string duration,
             const Poco::UInt64 task_id,
             const Poco::UInt64 project_id);
-        TimeEntry *Continue(const std::string GUID);
+        kopsik::error Continue(
+            const std::string GUID,
+            TimeEntry **);
         TimeEntry *Latest() const;
         std::vector<TimeEntry *> Stop();
         TimeEntry *SplitAt(const Poco::Int64 at);
