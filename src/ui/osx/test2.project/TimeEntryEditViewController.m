@@ -20,11 +20,13 @@
 @interface TimeEntryEditViewController ()
 @property NSString *GUID;
 @property AutocompleteDataSource *projectAutocompleteDataSource;
+@property AutocompleteDataSource *descriptionComboboxDataSource;
 @property NSTimer *timerProjectAutocompleteRendering;
+@property NSTimer *timerDescriptionComboboxRendering;
 @property NSTimer *timerTagsListRendering;
 @property NSTimer *timerClientsListRendering;
 @property NSTimer *timerWorkspacesListRendering;
-@property NSTimer *timer;
+@property NSTimer *timerMenubarTimer;
 @property TimeEntryViewItem *runningTimeEntry;
 @property NSMutableArray *tagsList;
 @property NSMutableArray *clientList;
@@ -38,11 +40,11 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-      self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                               target:self
-                                             selector:@selector(timerFired:)
-                                             userInfo:nil
-                                              repeats:YES];
+      self.timerMenubarTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                                target:self
+                                                              selector:@selector(timerFired:)
+                                                              userInfo:nil
+                                                               repeats:YES];
 
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(eventHandler:)
@@ -62,6 +64,8 @@
                                                  object:nil];
 
       self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] init];
+
+      self.descriptionComboboxDataSource = [[AutocompleteDataSource alloc] init];
     }
     
     return self;
@@ -188,6 +192,9 @@
 }
 
 - (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString {
+  if (comboBox == self.descriptionCombobox) {
+    return [self.descriptionComboboxDataSource completedString:partialString];
+  }
   if (comboBox == self.projectSelect) {
     return [self.projectAutocompleteDataSource completedString:partialString];
   }
@@ -241,6 +248,10 @@
   // Reset project autocomplete filter
   [self.projectAutocompleteDataSource setFilter:@""];
   [self.projectSelect reloadData];
+
+  // Reset description autocomplete filter
+  [self.descriptionComboboxDataSource setFilter:@""];
+  [self.descriptionCombobox reloadData];
 
   // Check if TE's can be marked as billable at all
   char err[KOPSIK_ERR_LEN];
@@ -351,6 +362,9 @@
   }
 
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
+    [self performSelectorOnMainThread:@selector(startDescriptionComboboxRendering)
+                           withObject:nil
+                        waitUntilDone:NO];
     [self performSelectorOnMainThread:@selector(startProjectAutocompleteRendering)
                            withObject:nil
                         waitUntilDone:NO];
@@ -373,6 +387,9 @@
                            withObject:nil
                         waitUntilDone:NO];
     
+    [self performSelectorOnMainThread:@selector(startDescriptionComboboxRendering)
+                           withObject:nil
+                        waitUntilDone:NO];
 
     if ([mc.ModelType isEqualToString:@"workspace"]
         || [mc.ModelType isEqualToString:@"client"]) {
@@ -495,6 +512,35 @@ completionsForSubstring:(NSString *)substring
     self.projectSelect.dataSource = self;
   }
   [self.projectSelect reloadData];
+}
+
+- (void)startDescriptionComboboxRendering {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+  if (self.timerDescriptionComboboxRendering != nil) {
+    return;
+  }
+  @synchronized(self) {
+    self.timerDescriptionComboboxRendering = [NSTimer scheduledTimerWithTimeInterval:kThrottleSeconds
+                                                                              target:self
+                                                                            selector:@selector(finishDescriptionComboboxRendering)
+                                                                            userInfo:nil
+                                                                             repeats:NO];
+  }
+}
+
+- (void)finishDescriptionComboboxRendering {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+  
+  self.timerDescriptionComboboxRendering = nil;
+  
+  [self.descriptionComboboxDataSource fetch:YES withTasks:YES withProjects:YES];
+  
+  if (self.descriptionCombobox.dataSource == nil) {
+    self.descriptionCombobox.usesDataSource = YES;
+    self.descriptionCombobox.dataSource = self;
+  }
+  [self.descriptionCombobox reloadData];
 }
 
 - (void)startWorkspaceSelectRendering {
@@ -826,6 +872,9 @@ completionsForSubstring:(NSString *)substring
 }
 
 -(NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox{
+  if (self.descriptionCombobox == aComboBox) {
+    return [self.descriptionComboboxDataSource count];
+  }
   if (self.projectSelect == aComboBox) {
     return [self.projectAutocompleteDataSource count];
   }
@@ -840,6 +889,9 @@ completionsForSubstring:(NSString *)substring
 }
 
 -(id)comboBox:(NSComboBox *)aComboBox objectValueForItemAtIndex:(NSInteger)row{
+  if (self.descriptionCombobox == aComboBox) {
+    return [self.descriptionComboboxDataSource keyAtIndex:row];
+  }
   if (self.projectSelect == aComboBox) {
     return [self.projectAutocompleteDataSource keyAtIndex:row];
   }
@@ -856,6 +908,9 @@ completionsForSubstring:(NSString *)substring
 }
 
 - (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)aString {
+  if (self.descriptionCombobox == aComboBox) {
+    return [self.descriptionComboboxDataSource indexOfKey:aString];
+  }
   if (self.projectSelect == aComboBox) {
     return [self.projectAutocompleteDataSource indexOfKey:aString];
   }
@@ -894,21 +949,29 @@ completionsForSubstring:(NSString *)substring
     return;
   }
 
-  NSComboBox *box = [aNotification object];
-  NSString *filter = [box stringValue];
+  NSComboBox *comboBox = [aNotification object];
+  NSString *filter = [comboBox stringValue];
 
-  [self.projectAutocompleteDataSource setFilter:filter];
-  [self.projectSelect reloadData];
+  AutocompleteDataSource *dataSource = nil;
+  if (comboBox == self.projectSelect) {
+    dataSource = self.projectAutocompleteDataSource;
+  }
+  if (comboBox == self.descriptionCombobox) {
+    dataSource = self.descriptionComboboxDataSource;
+  }
 
-  if (!filter || ![filter length] || !self.projectAutocompleteDataSource.count) {
-    if ([box isExpanded] == YES) {
-      [box setExpanded:NO];
+  [dataSource setFilter:filter];
+  [comboBox reloadData];
+
+  if (!filter || ![filter length] || !dataSource.count) {
+    if ([comboBox isExpanded] == YES) {
+      [comboBox setExpanded:NO];
     }
     return;
   }
 
-  if ([box isExpanded] == NO) {
-    [box setExpanded:YES];
+  if ([comboBox isExpanded] == NO) {
+    [comboBox setExpanded:YES];
   }
 }
 
