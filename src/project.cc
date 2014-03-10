@@ -29,7 +29,8 @@ std::string Project::String() const {
       << " name=" << name_
       << " wid=" << wid_
       << " guid=" << GUID()
-      << " active=" << active_;
+      << " active=" << active_
+      << " billable=" << billable_;
   return ss.str();
 }
 
