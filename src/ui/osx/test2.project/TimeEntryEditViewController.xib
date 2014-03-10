@@ -143,7 +143,7 @@
                                                     <connections>
                                                         <action selector="projectSelectChanged:" target="-2" id="zL6-sa-THe"/>
                                                         <outlet property="delegate" destination="-2" id="N4G-rb-QgM"/>
-                                                        <outlet property="nextKeyView" destination="2Pz-WE-b3h" id="JJU-vv-8Xx"/>
+                                                        <outlet property="nextKeyView" destination="mjR-fr-Qy0" id="nU8-El-a5b"/>
                                                     </connections>
                                                 </comboBox>
                                             </subviews>
@@ -189,7 +189,7 @@
                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                     <connections>
-                                                        <outlet property="nextKeyView" destination="Q41-iI-nk2" id="oUX-gQ-xTu"/>
+                                                        <outlet property="nextKeyView" destination="Q41-iI-nk2" id="nNJ-aT-yux"/>
                                                     </connections>
                                                 </textField>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IVd-y9-OXp">
@@ -216,7 +216,7 @@
                                                     <connections>
                                                         <action selector="workspaceSelectChanged:" target="-2" id="5R8-O0-7hg"/>
                                                         <outlet property="delegate" destination="-2" id="hpb-zV-dSg"/>
-                                                        <outlet property="nextKeyView" destination="Kdc-c6-b4n" id="6Za-LC-GPL"/>
+                                                        <outlet property="nextKeyView" destination="Kdc-c6-b4n" id="Qed-P3-sUf"/>
                                                     </connections>
                                                 </comboBox>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qlN-P5-EqC">
@@ -243,7 +243,7 @@
                                                     <connections>
                                                         <action selector="clientSelectChanged:" target="-2" id="ZbN-uM-M6d"/>
                                                         <outlet property="delegate" destination="-2" id="FtJ-G7-COO"/>
-                                                        <outlet property="nextKeyView" destination="EMR-ul-vEb" id="316-h5-hTB"/>
+                                                        <outlet property="nextKeyView" destination="EMR-ul-vEb" id="FcR-hA-6P5"/>
                                                     </connections>
                                                 </comboBox>
                                             </subviews>
@@ -305,7 +305,7 @@
                                                                 <connections>
                                                                     <action selector="tagsChanged:" target="-2" id="VeF-aF-Zl6"/>
                                                                     <outlet property="delegate" destination="-2" id="Djs-BZ-TRQ"/>
-                                                                    <outlet property="nextKeyView" destination="zwE-pW-vQN" id="Zvh-2F-oef"/>
+                                                                    <outlet property="nextKeyView" destination="sSX-ad-7XC" id="sdQ-RG-g1O"/>
                                                                 </connections>
                                                             </tokenField>
                                                         </subviews>
@@ -427,7 +427,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                 </datePickerCell>
                                                                 <connections>
                                                                     <action selector="dateChanged:" target="-2" id="Rss-re-QCV"/>
-                                                                    <outlet property="nextKeyView" destination="sSX-ad-7XC" id="byc-Br-fcf"/>
+                                                                    <outlet property="nextKeyView" destination="9Uk-YS-6nx" id="myz-iB-pXF"/>
                                                                 </connections>
                                                             </datePicker>
                                                         </subviews>
@@ -588,7 +588,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </box>
                                                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sSX-ad-7XC">
-                                                    <rect key="frame" x="116" y="24" width="67" height="18"/>
+                                                    <rect key="frame" x="116" y="23" width="67" height="18"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <buttonCell key="cell" type="check" title="Billable" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="jlI-qI-Cgm">
                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -596,7 +596,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                     </buttonCell>
                                                     <connections>
                                                         <action selector="billableCheckBoxClicked:" target="-2" id="KhO-KD-YIr"/>
-                                                        <outlet property="nextKeyView" destination="9Uk-YS-6nx" id="3Pd-GL-QAB"/>
+                                                        <outlet property="nextKeyView" destination="zwE-pW-vQN" id="ZFt-wi-muf"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -630,7 +630,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         </buttonCell>
                                         <connections>
                                             <action selector="addProjectButtonClicked:" target="-2" id="Vel-Va-Chi"/>
-                                            <outlet property="nextKeyView" destination="EMR-ul-vEb" id="VXh-EF-lVU"/>
+                                            <outlet property="nextKeyView" destination="EMR-ul-vEb" id="bya-uz-QTd"/>
                                         </connections>
                                     </button>
                                 </subviews>
