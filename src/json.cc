@@ -791,7 +791,7 @@ void ParseResponseArray(
 
   // There seem to be cases where response body is 0.
   // Must investigate further.
-  if (!response_body.empty()) {
+  if (response_body.empty()) {
     Poco::Logger &logger = Poco::Logger::get("json");
     logger.warning("Response is empty!");
     return;
