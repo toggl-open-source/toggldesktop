@@ -259,7 +259,8 @@ error Database::LoadCurrentUser(
 error Database::LoadSettings(
         bool *use_proxy,
         Proxy *proxy,
-        bool *use_idle_detection) {
+        bool *use_idle_detection,
+        bool *menubar_timer) {
     poco_assert(session);
     poco_assert(use_proxy);
     poco_assert(proxy);
@@ -269,7 +270,8 @@ error Database::LoadSettings(
 
     try {
         *session << "select use_proxy, proxy_host, proxy_port, "
-                "proxy_username, proxy_password, use_idle_detection "
+                "proxy_username, proxy_password, use_idle_detection, "
+                "menubar_timer "
                 "from settings",
             Poco::Data::into(*use_proxy),
             Poco::Data::into(proxy->host),
@@ -277,6 +279,7 @@ error Database::LoadSettings(
             Poco::Data::into(proxy->username),
             Poco::Data::into(proxy->password),
             Poco::Data::into(*use_idle_detection),
+            Poco::Data::into(*menubar_timer),
             Poco::Data::limit(1),
             Poco::Data::now;
     } catch(const Poco::Exception& exc) {
@@ -292,7 +295,8 @@ error Database::LoadSettings(
 error Database::SaveSettings(
         const bool use_proxy,
         const Proxy *proxy,
-        const bool use_idle_detection) {
+        const bool use_idle_detection,
+        const bool menubar_timer) {
     poco_assert(session);
 
     Poco::Mutex::ScopedLock lock(mutex_);
@@ -304,13 +308,15 @@ error Database::SaveSettings(
             "proxy_port = :proxy_port, "
             "proxy_username = :proxy_username, "
             "proxy_password = :proxy_password, "
-            "use_idle_detection = :use_idle_detection ",
+            "use_idle_detection = :use_idle_detection, "
+            "menubar_timer = :menubar_timer",
             Poco::Data::use(use_proxy),
             Poco::Data::use(proxy->host),
             Poco::Data::use(proxy->port),
             Poco::Data::use(proxy->username),
             Poco::Data::use(proxy->password),
             Poco::Data::use(use_idle_detection),
+            Poco::Data::use(menubar_timer),
             Poco::Data::now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -2255,6 +2261,13 @@ error Database::initialize_tables() {
     err = migrate("settings.default",
         "INSERT INTO settings(update_channel) "
         "SELECT 'stable' WHERE NOT EXISTS (SELECT 1 FROM settings LIMIT 1);");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("settings.menubar_timer",
+        "ALTER TABLE settings "
+        "ADD COLUMN menubar_timer integer not null default 0;");
     if (err != noError) {
         return err;
     }

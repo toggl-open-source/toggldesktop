@@ -189,6 +189,7 @@ KopsikSettings *kopsik_settings_init() {
   settings->ProxyUsername = 0;
   settings->ProxyPassword = 0;
   settings->UseIdleDetection = 0;
+  settings->MenubarTimer = 0;
   return settings;
 }
 
@@ -221,10 +222,12 @@ kopsik_api_result kopsik_get_settings(
 
     bool use_proxy(false);
     bool use_idle_detection(false);
+    bool menubar_timer(false);
     kopsik::Proxy proxy;
     kopsik::error err = app(context)->LoadSettings(&use_proxy,
                                           &proxy,
-                                          &use_idle_detection);
+                                          &use_idle_detection,
+                                          &menubar_timer);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -244,6 +247,11 @@ kopsik_api_result kopsik_get_settings(
     if (use_idle_detection) {
       settings->UseIdleDetection = 1;
     }
+
+    settings->MenubarTimer = 0;
+    if (menubar_timer) {
+      settings->MenubarTimer = 1;
+    }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
       return KOPSIK_API_FAILURE;
@@ -261,12 +269,13 @@ kopsik_api_result kopsik_set_settings(
     void *context,
     char *errmsg,
     const unsigned int errlen,
-    const int use_proxy,
+    const unsigned int use_proxy,
     const char *proxy_host,
     const unsigned int proxy_port,
     const char *proxy_username,
     const char *proxy_password,
-    const int use_idle_detection) {
+    const unsigned int use_idle_detection,
+    const unsigned int menubar_timer) {
   try {
     poco_assert(errmsg);
     poco_assert(errlen);
@@ -281,7 +290,7 @@ kopsik_api_result kopsik_set_settings(
     proxy.password = std::string(proxy_password);
 
     kopsik::error err = app(context)->SaveSettings(
-      use_proxy, &proxy, use_idle_detection);
+      use_proxy, &proxy, use_idle_detection, menubar_timer);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;

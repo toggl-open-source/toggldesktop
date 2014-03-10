@@ -16,6 +16,7 @@
 @property (weak) IBOutlet NSButton *useProxyButton;
 @property (weak) IBOutlet NSButton *useIdleDetectionButton;
 @property (weak) IBOutlet NSButton *recordTimelineCheckbox;
+@property (weak) IBOutlet NSButton *menubarTimerCheckbox;
 - (IBAction)useProxyButtonChanged:(id)sender;
 - (IBAction)hostTextFieldChanged:(id)sender;
 - (IBAction)portTextFieldChanged:(id)sender;
@@ -23,4 +24,5 @@
 - (IBAction)passwordTextFieldChanged:(id)sender;
 - (IBAction)useIdleDetectionButtonChanged:(id)sender;
 - (IBAction)recordTimelineCheckboxChanged:(id)sender;
+- (IBAction)menubarTimerCheckboxChanged:(id)sender;
 @end
