@@ -355,9 +355,6 @@
     [self performSelectorOnMainThread:@selector(startAutocompleteRendering)
                            withObject:nil
                         waitUntilDone:NO];
-    [self performSelectorOnMainThread:@selector(startClientSelectRendering)
-                           withObject:nil
-                        waitUntilDone:NO];
     [self performSelectorOnMainThread:@selector(startWorkspaceSelectRendering)
                            withObject:nil
                         waitUntilDone:NO];
@@ -551,6 +548,39 @@ completionsForSubstring:(NSString *)substring
   }
 
   [self.workspaceSelect reloadData];
+
+  NSString *workspaceName = [self.workspaceSelect stringValue];
+
+  // If no workspace is selected, attempt to select the user's
+  // default workspace.
+  if (!workspaceName.length && self.workspaceList.count) {
+    char errmsg[KOPSIK_ERR_LEN];
+    unsigned int default_wid = 0;
+    if (KOPSIK_API_SUCCESS != kopsik_users_default_wid(
+        ctx, errmsg, KOPSIK_ERR_LEN, &default_wid)) {
+      handle_error(errmsg);
+      return;
+    }
+    for (int i = 0; i < self.workspaceList.count; i++) {
+      ViewItem *workspace = self.workspaceList[i];
+      if (workspace.ID == default_wid) {
+        workspaceName = workspace.Name;
+        break;
+      }
+    }
+  }
+
+  // If user has no default workspace available, select the first WS in the
+  // workspace list.
+  if (!workspaceName.length && self.workspaceList.count) {
+    ViewItem *workspace = self.workspaceList[0];
+    workspaceName = workspace.Name;
+  }
+  [self.workspaceSelect setStringValue:workspaceName];
+
+  [self performSelectorOnMainThread:@selector(startClientSelectRendering)
+                         withObject:nil
+                      waitUntilDone:NO];
 }
 
 - (void)startClientSelectRendering {
