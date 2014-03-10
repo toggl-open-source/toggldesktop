@@ -19,8 +19,8 @@
 
 @interface TimeEntryEditViewController ()
 @property NSString *GUID;
-@property AutocompleteDataSource *autocompleteDataSource;
-@property NSTimer *timerAutocompleteRendering;
+@property AutocompleteDataSource *projectAutocompleteDataSource;
+@property NSTimer *timerProjectAutocompleteRendering;
 @property NSTimer *timerTagsListRendering;
 @property NSTimer *timerClientsListRendering;
 @property NSTimer *timerWorkspacesListRendering;
@@ -61,7 +61,7 @@
                                                    name:kUIStateTimeEntryDeselected
                                                  object:nil];
 
-      self.autocompleteDataSource = [[AutocompleteDataSource alloc] init];
+      self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] init];
     }
     
     return self;
@@ -189,7 +189,7 @@
 
 - (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString {
   if (comboBox == self.projectSelect) {
-    return [self.autocompleteDataSource completedString:partialString];
+    return [self.projectAutocompleteDataSource completedString:partialString];
   }
   if (comboBox == self.clientSelect) {
     return @":"; // Not supported at the moment
@@ -238,8 +238,8 @@
     self.startDate.listener = self;
   }
 
-  // Reset autocomplete filter
-  [self.autocompleteDataSource setFilter:@""];
+  // Reset project autocomplete filter
+  [self.projectAutocompleteDataSource setFilter:@""];
   [self.projectSelect reloadData];
 
   // Check if TE's can be marked as billable at all
@@ -352,7 +352,7 @@
   }
 
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    [self performSelectorOnMainThread:@selector(startAutocompleteRendering)
+    [self performSelectorOnMainThread:@selector(startProjectAutocompleteRendering)
                            withObject:nil
                         waitUntilDone:NO];
     [self performSelectorOnMainThread:@selector(startWorkspaceSelectRendering)
@@ -367,10 +367,10 @@
       [self performSelectorOnMainThread:@selector(startTagsListRendering)
                              withObject:nil
                           waitUntilDone:NO];
-      return; // Tags dont affect autocomplete
+      return; // Tags dont affect autocompletes
     }
     
-    [self performSelectorOnMainThread:@selector(startAutocompleteRendering)
+    [self performSelectorOnMainThread:@selector(startProjectAutocompleteRendering)
                            withObject:nil
                         waitUntilDone:NO];
     
@@ -469,27 +469,27 @@ completionsForSubstring:(NSString *)substring
   }
 }
 
-- (void) startAutocompleteRendering {
+- (void) startProjectAutocompleteRendering {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-  if (self.timerAutocompleteRendering != nil) {
+  if (self.timerProjectAutocompleteRendering != nil) {
     return;
   }
   @synchronized(self) {
-    self.timerAutocompleteRendering = [NSTimer scheduledTimerWithTimeInterval:kThrottleSeconds
+    self.timerProjectAutocompleteRendering = [NSTimer scheduledTimerWithTimeInterval:kThrottleSeconds
                                                                        target:self
-                                                                     selector:@selector(finishRenderAutocomplete)
+                                                                     selector:@selector(finishProjectAutocompleteRendering)
                                                                      userInfo:nil
                                                                       repeats:NO];
   }
 }
 
-- (void)finishRenderAutocomplete {
+- (void)finishProjectAutocompleteRendering {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-  self.timerAutocompleteRendering = nil;
+  self.timerProjectAutocompleteRendering = nil;
 
-  [self.autocompleteDataSource fetch:NO withTasks:YES withProjects:YES];
+  [self.projectAutocompleteDataSource fetch:NO withTasks:YES withProjects:YES];
 
   if (self.projectSelect.dataSource == nil) {
     self.projectSelect.usesDataSource = YES;
@@ -677,7 +677,7 @@ completionsForSubstring:(NSString *)substring
   NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
   NSString *key = [self.projectSelect stringValue];
-  AutocompleteItem *autocomplete = [self.autocompleteDataSource get:key];
+  AutocompleteItem *autocomplete = [self.projectAutocompleteDataSource get:key];
   unsigned int task_id = 0;
   unsigned int project_id = 0;
   if (autocomplete != nil) {
@@ -828,7 +828,7 @@ completionsForSubstring:(NSString *)substring
 
 -(NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox{
   if (self.projectSelect == aComboBox) {
-    return [self.autocompleteDataSource count];
+    return [self.projectAutocompleteDataSource count];
   }
   if (self.clientSelect == aComboBox) {
     return [self.clientList count];
@@ -842,7 +842,7 @@ completionsForSubstring:(NSString *)substring
 
 -(id)comboBox:(NSComboBox *)aComboBox objectValueForItemAtIndex:(NSInteger)row{
   if (self.projectSelect == aComboBox) {
-    return [self.autocompleteDataSource keyAtIndex:row];
+    return [self.projectAutocompleteDataSource keyAtIndex:row];
   }
   if (self.clientSelect == aComboBox) {
     ViewItem *client = [self.clientList objectAtIndex:row];
@@ -858,7 +858,7 @@ completionsForSubstring:(NSString *)substring
 
 - (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)aString {
   if (self.projectSelect == aComboBox) {
-    return [self.autocompleteDataSource indexOfKey:aString];
+    return [self.projectAutocompleteDataSource indexOfKey:aString];
   }
   if (self.clientSelect == aComboBox) {
     for (int i = 0; i < self.clientList.count; i++) {
@@ -898,10 +898,10 @@ completionsForSubstring:(NSString *)substring
   NSComboBox *box = [aNotification object];
   NSString *filter = [box stringValue];
 
-  [self.autocompleteDataSource setFilter:filter];
+  [self.projectAutocompleteDataSource setFilter:filter];
   [self.projectSelect reloadData];
 
-  if (!filter || ![filter length] || !self.autocompleteDataSource.count) {
+  if (!filter || ![filter length] || !self.projectAutocompleteDataSource.count) {
     if ([box isExpanded] == YES) {
       [box setExpanded:NO];
     }
