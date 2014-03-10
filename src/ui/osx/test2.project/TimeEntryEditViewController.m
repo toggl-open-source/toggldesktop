@@ -244,12 +244,11 @@
 
   // Check if TE's can be marked as billable at all
   char err[KOPSIK_ERR_LEN];
-  int has_premium_workspaces = 0;
-  kopsik_api_result res = kopsik_user_has_premium_workspaces(ctx,
+  unsigned int has_premium_workspaces = 0;
+  if (KOPSIK_API_SUCCESS != kopsik_user_has_premium_workspaces(ctx,
                                                              err,
                                                              KOPSIK_ERR_LEN,
-                                                             &has_premium_workspaces);
-  if (KOPSIK_API_SUCCESS != res) {
+                                                            &has_premium_workspaces)) {
     handle_error(err);
     return;
   }
@@ -264,8 +263,8 @@
   NSAssert(self.GUID != nil, @"GUID is nil");
 
   // Overwrite description only if user is not editing it:
-  if ([self.descriptionTextField currentEditor] == nil) {
-    [self.descriptionTextField setStringValue:item.Description];
+  if ([self.descriptionCombobox currentEditor] == nil) {
+    [self.descriptionCombobox setStringValue:item.Description];
   }
   
   // Overwrite project only if user is not editing it
@@ -330,7 +329,7 @@
     [self.durationTextField becomeFirstResponder];
   }
   if ([edit.FieldName isEqualToString:kUIDescriptionClicked]){
-    [self.descriptionTextField becomeFirstResponder];
+    [self.descriptionCombobox becomeFirstResponder];
   }
   
   [self startTagsListRendering];
@@ -785,11 +784,11 @@ completionsForSubstring:(NSString *)substring
   handle_result(res, err);
 }
 
-- (IBAction)descriptionTextFieldChanged:(id)sender {
+- (IBAction)descriptionComboboxChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
   char err[KOPSIK_ERR_LEN];
-  NSString *stringValue = [self.descriptionTextField stringValue] ;
-  NSLog(@"descriptionTextFieldChanged, stringValue = %@", stringValue);
+  NSString *stringValue = [self.descriptionCombobox stringValue] ;
+  NSLog(@"descriptionComboboxChanged, stringValue = %@", stringValue);
   const char *value = [stringValue UTF8String];
   kopsik_api_result res = kopsik_set_time_entry_description(ctx,
                                                             err,
