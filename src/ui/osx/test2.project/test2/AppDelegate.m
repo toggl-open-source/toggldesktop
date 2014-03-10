@@ -437,7 +437,7 @@ int blink = 0;
 }
 
 - (void)settingsChanged {
-  [self updateIdleDetectionTimer];
+  [self updateTimersBasedOnUserSettings];
 }
 
 - (void)eventHandler: (NSNotification *) notification {
@@ -558,17 +558,10 @@ int blink = 0;
   [self.statusItem setMenu:menu];
   [self.statusItem setImage:self.currentOffImage];
 
-  self.statusItemTimer = [NSTimer
-    scheduledTimerWithTimeInterval:1.0
-    target:self
-    selector:@selector(statusItemTimerFired:)
-    userInfo:nil
-    repeats:YES];
-  [self updateIdleDetectionTimer];
+  [self updateTimersBasedOnUserSettings];
 }
 
-- (void)updateIdleDetectionTimer {
-  // Start idle detection, if its enabled
+- (void)updateTimersBasedOnUserSettings {
   KopsikSettings *settings = kopsik_settings_init();
   char err[KOPSIK_ERR_LEN];
   kopsik_api_result res = kopsik_get_settings(ctx,
@@ -580,6 +573,8 @@ int blink = 0;
     handle_error(err);
     return;
   }
+
+  // Start idle detection, if its enabled
   if (settings->UseIdleDetection) {
     NSLog(@"Starting idle detection");
     self.idleTimer = [NSTimer
@@ -594,8 +589,25 @@ int blink = 0;
       [self.idleTimer invalidate];
       self.idleTimer = nil;
     }
+    [self.statusItem setTitle:@""];
   }
 
+  // Start menubar timer if its enabled
+  if (settings->MenubarTimer) {
+    NSLog(@"Starting menubar timer");
+    self.statusItemTimer = [NSTimer
+      scheduledTimerWithTimeInterval:1.0
+      target:self
+      selector:@selector(statusItemTimerFired:)
+      userInfo:nil
+      repeats:YES];
+  } else {
+    NSLog(@"Menubar timer is disabled. Stopping menubar timer.");
+    if (self.statusItemTimer != nil) {
+      [self.statusItemTimer invalidate];
+      self.statusItemTimer = nil;
+    }
+  }
   kopsik_settings_clear(settings);
 }
 
