@@ -832,16 +832,45 @@ completionsForSubstring:(NSString *)substring
 
 - (IBAction)descriptionComboboxChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
-  char err[KOPSIK_ERR_LEN];
-  NSString *stringValue = [self.descriptionCombobox stringValue] ;
-  NSLog(@"descriptionComboboxChanged, stringValue = %@", stringValue);
-  const char *value = [stringValue UTF8String];
+
+  NSString *key = [self.descriptionCombobox stringValue];
+
+  NSLog(@"descriptionComboboxChanged, stringValue = %@", key);
+
+  AutocompleteItem *autocomplete =
+    [self.descriptionComboboxDataSource get:key];
+
+  if (!autocomplete) {
+    char errmsg[KOPSIK_ERR_LEN];
+    kopsik_api_result res = kopsik_set_time_entry_description(ctx,
+                                                              errmsg,
+                                                              KOPSIK_ERR_LEN,
+                                                              [self.GUID UTF8String],
+                                                              [key UTF8String]);
+    handle_result(res, errmsg);
+    return;
+
+  }
+
+  char errmsg[KOPSIK_ERR_LEN];
+  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_project(ctx,
+                                                          errmsg,
+                                                          KOPSIK_ERR_LEN,
+                                                          [self.GUID UTF8String],
+                                                          autocomplete.TaskID,
+                                                          autocomplete.ProjectID,
+                                                          0)) {
+    handle_error(errmsg);
+    return;
+  }
+
+  self.descriptionCombobox.stringValue = autocomplete.Description;
   kopsik_api_result res = kopsik_set_time_entry_description(ctx,
-                                                            err,
+                                                            errmsg,
                                                             KOPSIK_ERR_LEN,
                                                             [self.GUID UTF8String],
-                                                            value);
-  handle_result(res, err);
+                                                            [autocomplete.Description UTF8String]);
+  handle_result(res, errmsg);
 }
 
 - (IBAction)deleteButtonClicked:(id)sender {

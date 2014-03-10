@@ -326,9 +326,9 @@
   [self.descriptionComboBox reloadData];
 
   // Clear Time entry form fields after stop
-  if ([[self.durationTextField stringValue]length]>0){
-    self.durationTextField.stringValue=@"";
-    self.descriptionComboBox.stringValue=@"";
+  if ([[self.durationTextField stringValue] length] > 0){
+    self.durationTextField.stringValue = @"";
+    self.descriptionComboBox.stringValue = @"";
   }
 }
 
