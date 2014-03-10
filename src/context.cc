@@ -750,7 +750,10 @@ bool Context::UserIsLoggedIn() const {
 }
 
 Poco::UInt64 Context::UsersDefaultWID() const {
-  return (user_ && user_->DefaultWID());
+  if (!user_) {
+    return 0;
+  }
+  return user_->DefaultWID();
 }
 
 void Context::CollectPushableTimeEntries(
