@@ -18,6 +18,8 @@
 #import "NSComboBox_Expansion.h"
 #import "TimeEntryViewItem.h"
 #import "NSTextFieldClickable.h"
+#import "NSCustomComboBoxCell.h"
+#import "NSCustomComboBox.h"
 
 @interface TimerEditViewController ()
 @property AutocompleteDataSource *autocompleteDataSource;

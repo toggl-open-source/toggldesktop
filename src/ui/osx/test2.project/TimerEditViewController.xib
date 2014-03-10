@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -70,13 +70,13 @@ DQ
                                 <color key="borderColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
                                 <color key="fillColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
                             </box>
-                            <comboBox focusRingType="none" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ITa-Jc-jOK">
+                            <comboBox focusRingType="none" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ITa-Jc-jOK" customClass="NSCustomComboBox">
                                 <rect key="frame" x="4" y="10" width="142" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="14" id="WR0-PJ-917"/>
                                 </constraints>
-                                <comboBoxCell key="cell" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" focusRingType="none" placeholderString="What are you doing?" drawsBackground="YES" buttonBordered="NO" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="SSh-62-AYH">
+                                <comboBoxCell key="cell" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" focusRingType="none" placeholderString="What are you doing?" drawsBackground="YES" buttonBordered="NO" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="SSh-62-AYH" customClass="NSCustomComboBoxCell">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -166,7 +166,7 @@ DQ
                     <color key="fillColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
                 <box autoresizesSubviews="NO" verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="lEH-md-7M7">
-                    <rect key="frame" x="0.0" y="-37" width="264" height="9"/>
+                    <rect key="frame" x="0.0" y="-37" width="264" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -180,23 +180,5 @@ DQ
                 <constraint firstItem="Fga-BR-x8G" firstAttribute="leading" secondItem="M2u-7B-WCs" secondAttribute="leading" constant="1" id="wJK-xr-4eQ"/>
             </constraints>
         </customView>
-        <comboBox verticalHuggingPriority="750" id="w8Y-Bb-inE">
-            <rect key="frame" x="0.0" y="0.0" width="99" height="26"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-            <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="l4S-Ku-oS8">
-                <font key="font" metaFont="system"/>
-                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-            </comboBoxCell>
-        </comboBox>
-        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Lmf-DX-1Mb">
-            <rect key="frame" x="0.0" y="0.0" width="38" height="17"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="DdJ-ZR-qwa">
-                <font key="font" metaFont="system"/>
-                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-            </textFieldCell>
-        </textField>
     </objects>
 </document>
