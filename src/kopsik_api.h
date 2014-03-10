@@ -327,7 +327,6 @@ KOPSIK_EXPORT void kopsik_format_duration_in_seconds_hhmmss(
 
 KOPSIK_EXPORT void kopsik_format_duration_in_seconds_hhmm(
   const int duration_in_seconds,
-  const int is_blink,
   char *str,
   const unsigned int max_strlen);
 

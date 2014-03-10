@@ -295,14 +295,7 @@ std::string Formatter::FormatDurationInSecondsHHMMSS(const Poco::Int64 value) {
     return FormatDurationInSeconds(value, "%H:%M:%S");
 }
 
-std::string Formatter::FormatDurationInSecondsHHMM(
-        const Poco::Int64 value,
-        const int type) {
-    if (type == 1) {
-        return FormatDurationInSeconds(value, "%H %M");
-    } else if (type == 2) {
-        return FormatDurationInSeconds(value, "%Hh:%Mm");
-    }
+std::string Formatter::FormatDurationInSecondsHHMM(const Poco::Int64 value) {
     return FormatDurationInSeconds(value, "%H:%M");
 }
 
