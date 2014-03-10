@@ -68,8 +68,6 @@
 
 @implementation AppDelegate
 
-int blink = 0;
-
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   NSLog(@"applicationDidFinishLaunching");
 
@@ -886,19 +884,11 @@ const NSString *appName = @"osx_native_app";
 - (void)statusItemTimerFired:(NSTimer*)timer {
   if (self.lastKnownRunningTimeEntry != nil) {
     char str[duration_str_len];
-    if (blink) {
-      blink = 0;
-    } else {
-      blink = 1;
-    }
     kopsik_format_duration_in_seconds_hhmm(
       self.lastKnownRunningTimeEntry.duration_in_seconds,
-      blink,
       str,
       duration_str_len);
-
-    NSString *statusStr;
-    statusStr = @" ";
+    NSString *statusStr = @" ";
     statusStr = [statusStr stringByAppendingString:[NSString stringWithUTF8String:str]];
     [self.statusItem setTitle:statusStr];
   }

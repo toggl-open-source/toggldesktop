@@ -452,17 +452,17 @@ namespace kopsik {
     TEST(KopsikApiTest, kopsik_format_duration_in_seconds_hhmm) {
         const int kMaxStrLen = 100;
         char str[kMaxStrLen];
-        kopsik_format_duration_in_seconds_hhmm(10, 0, str, kMaxStrLen);
+        kopsik_format_duration_in_seconds_hhmm(10, str, kMaxStrLen);
         ASSERT_EQ("00:00", std::string(str));
-        kopsik_format_duration_in_seconds_hhmm(60, 0, str, kMaxStrLen);
+        kopsik_format_duration_in_seconds_hhmm(60, str, kMaxStrLen);
         ASSERT_EQ("00:01", std::string(str));
-        kopsik_format_duration_in_seconds_hhmm(65, 0, str, kMaxStrLen);
+        kopsik_format_duration_in_seconds_hhmm(65, str, kMaxStrLen);
         ASSERT_EQ("00:01", std::string(str));
-        kopsik_format_duration_in_seconds_hhmm(3600, 0, str, kMaxStrLen);
+        kopsik_format_duration_in_seconds_hhmm(3600, str, kMaxStrLen);
         ASSERT_EQ("01:00", std::string(str));
-        kopsik_format_duration_in_seconds_hhmm(5400, 0, str, kMaxStrLen);
+        kopsik_format_duration_in_seconds_hhmm(5400, str, kMaxStrLen);
         ASSERT_EQ("01:30", std::string(str));
-        kopsik_format_duration_in_seconds_hhmm(5410, 0, str, kMaxStrLen);
+        kopsik_format_duration_in_seconds_hhmm(5410, str, kMaxStrLen);
         ASSERT_EQ("01:30", std::string(str));
     }
 

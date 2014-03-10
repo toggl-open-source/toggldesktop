@@ -1054,13 +1054,12 @@ void kopsik_format_duration_in_seconds_hhmmss(
 
 void kopsik_format_duration_in_seconds_hhmm(
     const int duration_in_seconds,
-    const int type,
     char *out_str,
     const unsigned int max_strlen) {
   poco_assert(out_str);
   poco_assert(max_strlen);
   std::string formatted = kopsik::Formatter::FormatDurationInSecondsHHMM(
-    duration_in_seconds, type);
+    duration_in_seconds);
   strncpy(out_str, formatted.c_str(), max_strlen);
 }
 
@@ -1751,7 +1750,7 @@ kopsik_api_result kopsik_time_entry_view_items(
 
       Poco::Int64 duration = date_durations[te->DateHeaderString()];
       std::string formatted =
-        kopsik::Formatter::FormatDurationInSecondsHHMM(duration, 2);
+        kopsik::Formatter::FormatDurationInSecondsHHMM(duration);
 
       std::string project_label("");
       std::string color_code("");
@@ -1800,7 +1799,7 @@ kopsik_api_result kopsik_duration_for_date_header(
       return KOPSIK_API_FAILURE;
     }
 
-    kopsik_format_duration_in_seconds_hhmm(sum, 0, duration, duration_len);
+    kopsik_format_duration_in_seconds_hhmm(sum, duration, duration_len);
   } catch(const Poco::Exception& exc) {
     strncpy(errmsg, exc.displayText().c_str(), errlen);
     return KOPSIK_API_FAILURE;

@@ -28,8 +28,7 @@ namespace kopsik {
       static std::string FormatDurationInSecondsHHMMSS(
         const Poco::Int64 value);
       static std::string FormatDurationInSecondsHHMM(
-        const Poco::Int64 value,
-        const int type);
+        const Poco::Int64 value);
       static std::time_t Parse8601(
         const std::string iso_8601_formatted_date);
       static int ParseDurationString(
