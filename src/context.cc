@@ -827,58 +827,87 @@ std::vector<kopsik::Client *> Context::Clients(
   return result;
 }
 
-kopsik::TimeEntry *Context::Start(
+kopsik::error Context::Start(
     const std::string description,
     const std::string duration,
     const Poco::UInt64 task_id,
-    const Poco::UInt64 project_id) {
+    const Poco::UInt64 project_id,
+    kopsik::TimeEntry **result) {
+  poco_assert(result);
+
   if (!user_) {
-    return 0;
+    return kopsik::error("Please login to start tracking");
   }
-  kopsik::TimeEntry *te =
-    user_->Start(description, duration, task_id, project_id);
-  if (!te) {
-    return 0;
+
+  *result = user_->Start(description, duration, task_id, project_id);
+  poco_assert(*result);
+
+  kopsik::error err = save();
+  if (err != kopsik::noError) {
+    return err;
   }
-  save();
-  if (te->NeedsPush()) {
+
+  if ((*result)->NeedsPush()) {
     partialSync();
   }
-  return te;
+
+  return kopsik::noError;
 }
 
-kopsik::TimeEntry *Context::ContinueLatest() {
+kopsik::error Context::ContinueLatest(
+    kopsik::TimeEntry **result) {
+  poco_assert(result);
+
   if (!user_) {
-    return 0;
+    return kopsik::error("Pleae login to continue latest time entry");
   }
+
   kopsik::TimeEntry *latest = user_->Latest();
   if (!latest) {
     return 0;
   }
-  kopsik::TimeEntry *te = user_->Continue(latest->GUID());
-  if (!te) {
-    return 0;
+
+  kopsik::error err = user_->Continue(latest->GUID(), result);
+  if (err != kopsik::noError) {
+    return err;
   }
-  save();
-  if (te->NeedsPush()) {
+
+  err = save();
+  if (err != kopsik::noError) {
+    return err;
+  }
+
+  if ((*result)->NeedsPush()) {
     partialSync();
   }
-  return te;
+
+  return kopsik::noError;
 }
 
-kopsik::TimeEntry *Context::Continue(const std::string GUID) {
+kopsik::error Context::Continue(
+    const std::string GUID,
+    kopsik::TimeEntry **result) {
+  poco_assert(result);
+
   if (!user_) {
-    return 0;
+    return kopsik::error("Please login to continue time entry");
   }
-  kopsik::TimeEntry *te = user_->Continue(GUID);
-  if (!te) {
-    return 0;
+
+  kopsik::error err = user_->Continue(GUID, result);
+  if (err != kopsik::noError) {
+    return err;
   }
-  save();
-  if (te->NeedsPush()) {
+
+  err = save();
+  if (err != kopsik::noError) {
+    return err;
+  }
+
+  if ((*result)->NeedsPush()) {
     partialSync();
   }
-  return te;
+
+  return kopsik::noError;
 }
 
 kopsik::error Context::DeleteTimeEntryByGUID(const std::string GUID) {
@@ -894,7 +923,11 @@ kopsik::error Context::DeleteTimeEntryByGUID(const std::string GUID) {
   kopsik::ModelChange mc("time_entry", "delete", te->ID(), te->GUID());
   on_model_change_callback_(mc);
 
-  save();
+  kopsik::error err = save();
+  if (err != kopsik::noError) {
+    return err;
+  }
+
   partialSync();
   return kopsik::noError;
 }
@@ -923,7 +956,12 @@ kopsik::error Context::SetTimeEntryDuration(
   if (te->Dirty()) {
     te->SetUIModifiedAt(time(0));
   }
-  save();
+
+  kopsik::error err = save();
+  if (err != kopsik::noError) {
+    return err;
+  }
+
   if (te->NeedsPush()) {
     partialSync();
   }
@@ -966,7 +1004,11 @@ kopsik::error Context::SetTimeEntryProject(
     te->SetUIModifiedAt(time(0));
   }
 
-  save();
+  kopsik::error err = save();
+  if (err != kopsik::noError) {
+    return err;
+  }
+
   if (te->NeedsPush()) {
     partialSync();
   }
@@ -991,7 +1033,12 @@ kopsik::error Context::SetTimeEntryStartISO8601(
   if (te->Dirty()) {
     te->SetUIModifiedAt(time(0));
   }
-  save();
+
+  kopsik::error err = save();
+  if (err != kopsik::noError) {
+    return err;
+  }
+
   if (te->NeedsPush()) {
     partialSync();
   }
@@ -1015,7 +1062,12 @@ kopsik::error Context::SetTimeEntryEndISO8601(
   if (te->Dirty()) {
     te->SetUIModifiedAt(time(0));
   }
-  save();
+
+  kopsik::error err = save();
+  if (err != kopsik::noError) {
+    return err;
+  }
+
   if (te->NeedsPush()) {
     partialSync();
   }
@@ -1039,7 +1091,12 @@ kopsik::error Context::SetTimeEntryTags(
   if (te->Dirty()) {
     te->SetUIModifiedAt(time(0));
   }
-  save();
+
+  kopsik::error err = save();
+  if (err != kopsik::noError) {
+    return err;
+  }
+
   if (te->NeedsPush()) {
     partialSync();
   }
@@ -1063,7 +1120,12 @@ kopsik::error Context::SetTimeEntryBillable(
   if (te->Dirty()) {
     te->SetUIModifiedAt(time(0));
   }
-  save();
+
+  kopsik::error err = save();
+  if (err != kopsik::noError) {
+    return err;
+  }
+
   if (te->NeedsPush()) {
     partialSync();
   }
@@ -1087,7 +1149,12 @@ kopsik::error Context::SetTimeEntryDescription(
   if (te->Dirty()) {
     te->SetUIModifiedAt(time(0));
   }
-  save();
+
+  kopsik::error err = save();
+  if (err != kopsik::noError) {
+    return err;
+  }
+
   if (te->NeedsPush()) {
     partialSync();
   }
@@ -1105,7 +1172,12 @@ kopsik::error Context::Stop(kopsik::TimeEntry **stopped_entry) {
     return kopsik::error("No time entry was found to stop");
   }
   *stopped_entry = stopped[0];
-  save();
+
+  kopsik::error err = save();
+  if (err != kopsik::noError) {
+    return err;
+  }
+
   if ((*stopped_entry)->NeedsPush()) {
     partialSync();
   }
@@ -1141,7 +1213,12 @@ kopsik::error Context::StopAt(
   if (!stopped) {
     return kopsik::error("Time entry not found to stop");
   }
-  save();
+
+  kopsik::error err = save();
+  if (err != kopsik::noError) {
+    return err;
+  }
+
   if ((*stopped)->NeedsPush()) {
     partialSync();
   }
@@ -1163,7 +1240,12 @@ kopsik::error Context::ToggleTimelineRecording() {
   }
   try {
     user_->SetRecordTimeline(!user_->RecordTimeline());
-    save();
+
+    kopsik::error err = save();
+    if (err != kopsik::noError) {
+      return err;
+    }
+
     TimelineUpdateServerSettings();
     if (user_->RecordTimeline()) {
       SwitchTimelineOn();

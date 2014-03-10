@@ -1089,7 +1089,14 @@ kopsik_api_result kopsik_start(
       dur = std::string(duration);
     }
 
-    kopsik::TimeEntry *te = app(context)->Start(desc, dur, task_id, project_id);
+    kopsik::TimeEntry *te = 0;
+    kopsik::error err =
+      app(context)->Start(desc, dur, task_id, project_id, &te);
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), err.length());
+      return KOPSIK_API_FAILURE;
+    }
+
     if (te) {
       std::string project_label("");
       std::string color_code("");
@@ -1179,7 +1186,13 @@ kopsik_api_result kopsik_continue(
       return KOPSIK_API_FAILURE;
     }
 
-    kopsik::TimeEntry *te = app(context)->Continue(GUID);
+    kopsik::TimeEntry *te = 0;
+    kopsik::error err = app(context)->Continue(GUID, &te);
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), err.length());
+      return KOPSIK_API_FAILURE;
+    }
+
     if (te) {
       std::string project_label("");
       std::string color_code("");
@@ -1215,7 +1228,13 @@ kopsik_api_result kopsik_continue_latest(
 
     logger().debug("kopsik_continue_latest");
 
-    kopsik::TimeEntry *te = app(context)->ContinueLatest();
+    kopsik::TimeEntry *te = 0;
+    kopsik::error err = app(context)->ContinueLatest(&te);
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), err.length());
+      return KOPSIK_API_FAILURE;
+    }
+
     if (te) {
       *was_found = 1;
       std::string project_label("");

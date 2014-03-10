@@ -86,33 +86,38 @@ TimeEntry *User::Start(
   return te;
 }
 
-TimeEntry *User::Continue(const std::string GUID) {
+kopsik::error User::Continue(
+    const std::string GUID,
+    TimeEntry **result) {
+  poco_assert(result);
+
   Stop();
   TimeEntry *existing = GetTimeEntryByGUID(GUID);
   if (!existing) {
-    return 0;
+    return kopsik::error("Time entry not found");
   }
-  TimeEntry *te = 0;
+
+  *result = 0;
   if (existing->DurOnly() && existing->IsToday()) {
-    te = existing;
-    te->SetDurationInSeconds(-time(0) + te->DurationInSeconds());
+    *result = existing;
+    (*result)->SetDurationInSeconds(-time(0) + (*result)->DurationInSeconds());
   } else {
-    te = new TimeEntry();
-    te->SetDescription(existing->Description());
-    te->SetDurOnly(existing->DurOnly());
-    te->SetWID(existing->WID());
-    te->SetPID(existing->PID());
-    te->SetTID(existing->TID());
-    te->SetUID(ID());
-    te->SetStart(time(0));
-    te->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
-    te->SetDurationInSeconds(-time(0));
-    te->SetBillable(existing->Billable());
-    te->SetTags(existing->Tags());
-    related.TimeEntries.push_back(te);
+    *result = new TimeEntry();
+    (*result)->SetDescription(existing->Description());
+    (*result)->SetDurOnly(existing->DurOnly());
+    (*result)->SetWID(existing->WID());
+    (*result)->SetPID(existing->PID());
+    (*result)->SetTID(existing->TID());
+    (*result)->SetUID(ID());
+    (*result)->SetStart(time(0));
+    (*result)->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
+    (*result)->SetDurationInSeconds(-time(0));
+    (*result)->SetBillable(existing->Billable());
+    (*result)->SetTags(existing->Tags());
+    related.TimeEntries.push_back((*result));
   }
-  te->SetUIModifiedAt(time(0));
-  return te;
+  (*result)->SetUIModifiedAt(time(0));
+  return kopsik::noError;
 }
 
 TimeEntry *User::Latest() const {
