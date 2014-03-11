@@ -631,7 +631,7 @@ error Database::loadProjects(
     try {
         Poco::Data::Statement select(*session);
         select << "SELECT local_id, id, uid, name, guid, wid, color, cid, "
-            "active "
+            "active, billable "
             "FROM projects "
             "WHERE uid = :uid "
             "ORDER BY name",
@@ -655,6 +655,7 @@ error Database::loadProjects(
                 model->SetColor(rs[6].convert<std::string>());
                 model->SetCID(rs[7].convert<Poco::UInt64>());
                 model->SetActive(rs[8].convert<bool>());
+                model->SetBillable(rs[9].convert<bool>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
