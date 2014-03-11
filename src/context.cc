@@ -15,6 +15,7 @@
 #include "Poco/Util/Timer.h"
 #include "Poco/Util/TimerTask.h"
 #include "Poco/Util/TimerTaskAdapter.h"
+#include "Poco/Environment.h"
 
 namespace kopsik {
 
@@ -436,7 +437,10 @@ const std::string Context::updateURL() const {
   relative_url << "/api/v8/updates?app=td"
     << "&channel=" << update_channel_
     << "&platform=" << osName()
-    << "&version=" << app_version_;
+    << "&version=" << app_version_
+    << "&osname=" << Poco::Environment::osName()
+    << "&osversion=" << Poco::Environment::osVersion()
+    << "&osarch=" << Poco::Environment::osArchitecture();
   return relative_url.str();
 }
 
