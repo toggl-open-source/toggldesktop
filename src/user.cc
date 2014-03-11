@@ -215,15 +215,14 @@ void User::SetDefaultWID(const Poco::UInt64 value) {
 // all of them are stopped (multi-tracking is not supported by Toggl).
 // Do not save here, dirtyness will be handled outside of this module.
 std::vector<TimeEntry *> User::Stop() {
-    std::vector<TimeEntry *> result;
-    TimeEntry *te = RunningTimeEntry();
-    while (te) {
-        result.push_back(te);
-        te->SetDurationInSeconds(time(0) + te->DurationInSeconds());
-        te->SetUIModifiedAt(time(0));
-        te = RunningTimeEntry();
-    }
-    return result;
+  std::vector<TimeEntry *> result;
+  TimeEntry *te = RunningTimeEntry();
+  while (te) {
+    result.push_back(te);
+    te->StopTracking();
+    te = RunningTimeEntry();
+  }
+  return result;
 }
 
 TimeEntry *User::SplitAt(const Poco::Int64 at) {

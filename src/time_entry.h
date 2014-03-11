@@ -97,6 +97,8 @@ namespace kopsik {
 
     bool IsTracking() const { return duration_in_seconds_ < 0; }
 
+    void StopTracking();
+
   private:
     Poco::UInt64 wid_;
     Poco::UInt64 pid_;
