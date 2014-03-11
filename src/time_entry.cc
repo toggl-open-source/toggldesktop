@@ -23,11 +23,20 @@
 namespace kopsik {
 
 void TimeEntry::StopAt(const Poco::Int64 at) {
-    poco_assert(at);
-    SetDurationInSeconds(at + DurationInSeconds());
-    poco_assert(DurationInSeconds() > 0);
-    SetStop(at);
-    SetUIModifiedAt(time(0));
+  poco_assert(at);
+  poco_assert(IsTracking());
+
+  SetDurationInSeconds(at + DurationInSeconds());
+
+  poco_assert(DurationInSeconds() >= 0);
+
+  SetStop(at);
+
+  SetUIModifiedAt(time(0));
+}
+
+void TimeEntry::StopTracking() {
+  StopAt(time(0));
 }
 
 std::string TimeEntry::String() const {
