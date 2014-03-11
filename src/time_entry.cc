@@ -181,16 +181,16 @@ void TimeEntry::SetStartString(const std::string value) {
 }
 
 void TimeEntry::SetDurationUserInput(const std::string value) {
-    int seconds = Formatter::ParseDurationString(value);
-    if (duration_in_seconds_ < 0) {
-        time_t now = time(0);
-        time_t start = now - seconds;
-        SetStart(start);
-        SetDurationInSeconds(-start);
-    } else {
-        SetDurationInSeconds(seconds);
-        SetStop(start_ + seconds);
-    }
+  int seconds = Formatter::ParseDurationString(value);
+  if (IsTracking()) {
+    time_t now = time(0);
+    time_t start = now - seconds;
+    SetStart(start);
+    SetDurationInSeconds(-start);
+  } else {
+    SetDurationInSeconds(seconds);
+    SetStop(start_ + seconds);
+  }
 }
 
 void TimeEntry::SetProjectGUID(const std::string value) {
