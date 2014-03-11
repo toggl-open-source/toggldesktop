@@ -16,6 +16,8 @@
 #import "AutocompleteDataSource.h"
 #import "NSComboBox_Expansion.h"
 #import "ViewItem.h"
+#import "NSCustomComboBoxCell.h"
+#import "NSCustomComboBox.h"
 
 @interface TimeEntryEditViewController ()
 @property NSString *GUID;
@@ -984,13 +986,14 @@ completionsForSubstring:(NSString *)substring
   AutocompleteDataSource *dataSource = nil;
   if (comboBox == self.projectSelect) {
     dataSource = self.projectAutocompleteDataSource;
+    [dataSource setFilter:filter];
+    [comboBox reloadData];
   }
   if (comboBox == self.descriptionCombobox) {
     dataSource = self.descriptionComboboxDataSource;
+    [dataSource setFilter:filter];
+    [self.descriptionCombobox reloadingData:dataSource.textLength];
   }
-
-  [dataSource setFilter:filter];
-  [comboBox reloadData];
 
   if (!filter || ![filter length] || !dataSource.count) {
     if ([comboBox isExpanded] == YES) {
