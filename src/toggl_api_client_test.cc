@@ -661,6 +661,10 @@ namespace kopsik {
         te.SetDurationInSeconds(0);
         te.SetDurationUserInput("0.025");
         ASSERT_EQ("00:01:30", te.DurationString());
+
+        te.SetDurationInSeconds(0);
+        te.SetDurationUserInput("2h45");
+        ASSERT_EQ("02:45:00", te.DurationString());
     }
 
     TEST(TogglApiClientTest, Continue) {
