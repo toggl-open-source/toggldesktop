@@ -6,6 +6,7 @@
 
 #include "./formatter.h"
 #include "./database.h"
+#include "./model_change.h"
 
 #include "Poco/Timestamp.h"
 #include "Poco/DateTime.h"

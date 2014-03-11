@@ -120,6 +120,7 @@ cmdline: clean lint
 	$(cxx) $(cflags) -O2 -c src/batch_update_result.cc -o build/batch_update_result.o
 	$(cxx) $(cflags) -O2 -c src/formatter.cc -o build/formatter.o
 	$(cxx) $(cflags) -O2 -c src/json.cc -o build/json.o
+	$(cxx) $(cflags) -O2 -c src/model_change.cc -o build/model_change.o
 	$(cxx) $(cflags) -O2 -c src/database.cc -o build/database.o
 	$(cxx) $(cflags) -O2 -c src/autocomplete_item.cc -o build/autocomplete_item.o
 	$(cxx) $(cflags) -O2 -c src/feedback.cc -o build/feedback.o
@@ -175,6 +176,7 @@ test: clean lint
 	$(cxx) $(cflags) -c src/batch_update_result.cc -o build/batch_update_result.o
 	$(cxx) $(cflags) -c src/formatter.cc -o build/formatter.o
 	$(cxx) $(cflags) -c src/json.cc -o build/json.o
+	$(cxx) $(cflags) -c src/model_change.cc -o build/model_change.o
 	$(cxx) $(cflags) -c src/database.cc -o build/database.o
 	$(cxx) $(cflags) -c src/autocomplete_item.cc -o build/autocomplete_item.o
 	$(cxx) $(cflags) -c src/feedback.cc -o build/feedback.o
@@ -211,6 +213,7 @@ coverage: clean
 	$(cxx) $(cflags) $(covflags) -c src/batch_update_result.cc -o build/batch_update_result.o
 	$(cxx) $(cflags) $(covflags) -c src/formatter.cc -o build/formatter.o
 	$(cxx) $(cflags) $(covflags) -c src/json.cc -o build/json.o
+	$(cxx) $(cflags) $(covflags) -c src/model_change.cc -o build/model_change.o
 	$(cxx) $(cflags) $(covflags) -c src/database.cc -o build/database.o
 	$(cxx) $(cflags) $(covflags) -c src/autocomplete_item.cc -o build/autocomplete_item.o
 	$(cxx) $(cflags) $(covflags) -c src/feedback.cc -o build/feedback.o

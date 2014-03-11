@@ -22,29 +22,9 @@
 #include "./proxy.h"
 #include "./user.h"
 #include "./timeline_notifications.h"
+#include "./model_change.h"
 
 namespace kopsik {
-
-class ModelChange {
-    public:
-        ModelChange(const std::string model_type,
-                    const std::string change_type,
-                    const Poco::UInt64 model_id,
-                    const std::string GUID) :
-          model_type_(model_type),
-          change_type_(change_type),
-          model_id_(model_id),
-          GUID_(GUID) {}
-        std::string GUID() const { return GUID_; }
-        std::string ModelType() const { return model_type_; }
-        Poco::UInt64 ModelID() const { return model_id_; }
-        std::string ChangeType() const { return change_type_; }
-    private:
-        std::string model_type_;
-        std::string change_type_;
-        Poco::UInt64 model_id_;
-        std::string GUID_;
-};
 
 class Database {
     public:
