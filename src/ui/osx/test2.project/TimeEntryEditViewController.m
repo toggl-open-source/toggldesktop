@@ -980,20 +980,19 @@ completionsForSubstring:(NSString *)substring
     return;
   }
 
-  NSComboBox *comboBox = [aNotification object];
+  NSCustomComboBox *comboBox = [aNotification object];
   NSString *filter = [comboBox stringValue];
 
   AutocompleteDataSource *dataSource = nil;
   if (comboBox == self.projectSelect) {
     dataSource = self.projectAutocompleteDataSource;
-    [dataSource setFilter:filter];
-    [comboBox reloadData];
   }
   if (comboBox == self.descriptionCombobox) {
     dataSource = self.descriptionComboboxDataSource;
-    [dataSource setFilter:filter];
-    [self.descriptionCombobox reloadingData:dataSource.textLength];
   }
+
+  [dataSource setFilter:filter];
+  [comboBox reloadingData:dataSource.textLength];
 
   if (!filter || ![filter length] || !dataSource.count) {
     if ([comboBox isExpanded] == YES) {

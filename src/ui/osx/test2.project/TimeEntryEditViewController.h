@@ -13,7 +13,7 @@
 @interface TimeEntryEditViewController : NSViewController <NSComboBoxDataSource> {
 }
 @property (weak) IBOutlet NSCustomComboBox *descriptionCombobox;
-@property (weak) IBOutlet NSComboBox *projectSelect;
+@property (weak) IBOutlet NSCustomComboBox *projectSelect;
 @property (weak) IBOutlet NSTextField *durationTextField;
 @property (weak) IBOutlet NSDatePicker *startTime;
 @property (weak) IBOutlet NSDatePicker *endTime;
