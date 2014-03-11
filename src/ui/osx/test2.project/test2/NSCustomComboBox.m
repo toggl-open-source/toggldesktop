@@ -12,7 +12,6 @@
 @implementation NSCustomComboBox
 +(void)load
 {
-	NSLog(@"SET NSCustomComboBox");
     [self setCellClass:[NSCustomComboBoxCell class]];
 }
 @end
