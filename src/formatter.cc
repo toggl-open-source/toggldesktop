@@ -213,6 +213,15 @@ int Formatter::parseDurationFromDecimal(const std::string value) {
         }
     }
 
+    pos = value.find(" hr");
+    if (pos != std::string::npos) {
+        std::string numbers = value.substr(0, pos);
+        double hours = 0;
+        if (Poco::NumberParser::tryParseFloat(numbers, hours)) {
+            return hours * 60 * 60;
+        }
+    }
+
     // 1,5 minutes
     pos = value.find(" min");
     if (pos != std::string::npos) {

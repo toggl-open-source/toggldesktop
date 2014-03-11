@@ -1,6 +1,7 @@
 // Copyright 2014 Toggl Desktop developers.
 
 #include "gtest/gtest.h"
+
 #include "./user.h"
 #include "./workspace.h"
 #include "./client.h"
@@ -12,6 +13,7 @@
 #include "./database.h"
 #include "./test_data.h"
 #include "./json.h"
+#include "./formatter.h"
 
 #include "Poco/FileStream.h"
 #include "Poco/File.h"
@@ -573,6 +575,10 @@ namespace kopsik {
 
         te.SetDurationInSeconds(0);
         te.SetDurationUserInput("1 hour");
+        ASSERT_EQ("01:00:00", te.DurationString());
+
+        te.SetDurationInSeconds(0);
+        te.SetDurationUserInput("1 hr");
         ASSERT_EQ("01:00:00", te.DurationString());
 
         te.SetDurationInSeconds(0);
