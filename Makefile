@@ -257,3 +257,7 @@ poco:
 stats:
 	rm -rf gitstats
 	./third_party/gitstats/gitstats -c merge_authors="Tanel","Tanel Lebedev" . gitstats
+
+simian:
+	java -jar third_party/simian/bin/simian-2.3.35.jar src/*
+
