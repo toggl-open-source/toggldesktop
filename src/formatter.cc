@@ -338,7 +338,6 @@ std::string Formatter::EscapeJSONString(const std::string input) {
             iter++) {
         switch (*iter) {
             case '"': ss << "\""; break;
-            case '/': ss << "\\/"; break;
             case '\b': ss << "\\b"; break;
             case '\f': ss << "\\f"; break;
             case '\n': ss << "\\n"; break;

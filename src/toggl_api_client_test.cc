@@ -83,6 +83,11 @@ namespace kopsik {
         ASSERT_EQ("Changed", te->Description());
     }
 
+    TEST(TogglApiClientTest, EscapeJSONString) {
+        std::string text("https://github.com/bartschuller");
+        ASSERT_EQ(text, Formatter::EscapeJSONString(text));
+    }
+
     TEST(TogglApiClientTest, UpdatesTimeEntryFromFullUserJSON) {
         wipe_test_db();
         Database db(TESTDB);
