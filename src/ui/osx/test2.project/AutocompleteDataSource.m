@@ -104,6 +104,7 @@
 }
 
 - (void)setFilter:(NSString *)filter {
+  self.textLength = 0;
   @synchronized(self) {
     self.currentFilter = filter;
     if (filter == nil || filter.length == 0) {
@@ -113,6 +114,9 @@
       for (int i = 0; i < self.orderedKeys.count; i++) {
         NSString *key = self.orderedKeys[i];
         if ([key rangeOfString:filter options:NSCaseInsensitiveSearch].location != NSNotFound) {
+          if ([key length] > self.textLength){
+            self.textLength = [key length];
+          }
           [filtered addObject:key];
         }
       }

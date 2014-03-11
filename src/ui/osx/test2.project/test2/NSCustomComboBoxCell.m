@@ -9,10 +9,14 @@
 #import "NSCustomComboBoxCell.h"
 
 @implementation NSCustomComboBoxCell
+- (void)setCalculatedMaxWidth:(double)length{
+	self.cellLength = length;
+}
+
 - (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
     NSRect myRect = NSMakeRect(cellFrame.origin.x,cellFrame.origin.y,
-                               500,cellFrame.size.height);
+                               fmin(_cellLength,500),cellFrame.size.height);
     [super drawWithFrame:myRect inView:controlView];
 }
 @end

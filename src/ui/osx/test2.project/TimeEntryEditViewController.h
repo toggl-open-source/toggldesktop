@@ -8,10 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 #import "TFDatePicker.h"
+#import "NSCustomComboBox.h"
 
 @interface TimeEntryEditViewController : NSViewController <NSComboBoxDataSource> {
 }
-@property (weak) IBOutlet NSComboBox *descriptionCombobox;
+@property (weak) IBOutlet NSCustomComboBox *descriptionCombobox;
 @property (weak) IBOutlet NSComboBox *projectSelect;
 @property (weak) IBOutlet NSTextField *durationTextField;
 @property (weak) IBOutlet NSDatePicker *startTime;
