@@ -520,6 +520,9 @@
   [menu addItemWithTitle:@"Sync"
                   action:@selector(onSyncMenuItem:)
            keyEquivalent:@""].tag = kMenuItemTagSync;
+  [menu addItemWithTitle:@"Open in browser"
+                  action:@selector(onOpenBrowserMenuItem:)
+           keyEquivalent:@""].tag = kMenuItemTagOpenBrowser;
   [menu addItemWithTitle:@"Preferences"
                   action:@selector(onPreferencesMenuItem:)
            keyEquivalent:@""];
@@ -636,6 +639,11 @@
 
 - (IBAction)onSyncMenuItem:(id)sender {
   [self startSync];
+}
+
+- (IBAction)onOpenBrowserMenuItem:(id)sender {
+  [[NSWorkspace sharedWorkspace] openURL:
+    [NSURL URLWithString:@"https://new.toggl.com/"]];
 }
 
 - (IBAction)onHelpMenuItem:(id)sender {
@@ -968,6 +976,11 @@ const NSString *appName = @"osx_native_app";
         }
         break;
       case kMenuItemTagSendFeedback:
+        if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
+          return NO;
+        }
+        break;
+      case kMenuItemTagOpenBrowser:
         if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
           return NO;
         }

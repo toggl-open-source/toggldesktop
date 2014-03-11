@@ -15,3 +15,4 @@
 #define kMenuItemTagStop 5
 #define kMenuItemTagClearCache 6
 #define kMenuItemTagSendFeedback 8
+#define kMenuItemTagOpenBrowser 9
