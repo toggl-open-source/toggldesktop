@@ -1,0 +1,199 @@
+<html>
+    <head>
+        <title>Simian - Similarity Analyser | Duplicate Code Detection for the Enterprise | Features</title>
+        <meta name="description" content="Identifies duplication in Java, C#, C, CPP, COBOL, JSP, HTML source code and even plain text files."/>
+        <meta name="keywords" content="source, code, duplicate, duplication, duplicates, copy, paste, duplicates, detect, detection, detects, detector, finds, similar, similarity, analyse, analyser, java, c#, c++, c, javascript, cobol, ant, maven, checkstyle, jsp, html, ruby, visual basic, eclipse, intellij, idea, xml, text, .net, microsoft, windows, nant"/>
+    </head>
+
+    <body>
+        <div style="position: relative; float: left; width: 18%">
+            <p align="center"><a href="http://www.harukizaemon.com/simian"><img alt="Home" src="simian.jpg" border="0" /></a></p>
+            <p><ul>
+                <li><a href="index.html">Overview</a></li>
+                <li><a href="features.html">Features</a></li>
+                <li><a href="get_it_now.html">Get It Now!</a></li>
+                <li><a href="installation.html">Installation</a></li>
+                <li><a href="customers.html">Customers</a></li>
+                <li><a href="changes.html">Changes</a></li>
+                <li><a href="LICENSE.txt">LICENSE</a></li>
+            </ul></p>
+
+            <p align="center"><a href="http://jars.developer.com/programming/resource.php/25857"><img src="http://jars.developer.com/img/jars_top_rated_1.gif" alt="Jars Top 1% Rated" title="Jars Top 1% Rated" border="0"/></a></p>
+            <p align="center"><a href="http://www.java.com"><img src="get_java_blue-button.gif" alt="Built for Java&trade;" title="Get Java&trade;" border="0"/></a></p>
+            <p align="center"><a href="http://www.microsoft.com/net"><img src="get_dotnet.png" alt="Built for .NET&trade;" title="Get .NET&trade;" border="0"/></a></p>
+            <p align="center">
+                <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                    <input type="hidden" name="cmd" value="_s-xclick">
+                    <input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but21.gif" border="0" name="submit"
+                           alt="Make payments with PayPal - it's fast, free and secure!">
+                    <img alt="" border="0" src="https://www.paypal.com/en_AU/i/scr/pixel.gif" width="1" height="1">
+                    <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----">
+                </form>
+            </p>
+        </div>
+
+        <div style="position:relative; float: right; width: 82%">
+            <h3>Features</h3>
+            <p>Simian version runs under any Java2 1.4 or higher
+            <a href="http://www.java.com/en/index.jsp" target="_blank"> Java Virtual Machine (JVM)</a> and any Dot Net 1.1
+            or higher environment, meaning Simian can be run on anything from windows, macOS and linux to zOS.</p>
+
+            <p>The distribution contains everything you need to be up and running in minutes:</p>
+            <ul>
+                <li>Application .jar file</li>
+                <li>Application .exe file</li>
+                <li>Full HTML Documentation (including <a href="installation.html">Installation Guide</a>)</li>
+                <li><a href="installation.html#checksyle">Checkstyle Plugin</a></li>
+                <li><a href="installation.html#ant">Ant Task</a></li>
+                <li><a href="installation.html#cli">Command line Interface</a></li>
+                <li><a href="installation.html#intellij">Simple IntelliJ Integration</a></li>
+                <li><a href="javadoc/index.html">Programmatic Interface</a></li>
+            </ul>
+
+            <p>Aslak Hellesoy has kindly donated a <a href="http://www.maven.org/" target="_blank">Maven plugin</a>.</p>
+
+            <p>Neil Bartlett has kindly donated an <a href="http://www.integility.com/simianui.html" target="_blank">Eclipse
+            plugin</a>.</p>
+
+            <p>Simian fully supports the following languges:
+            <ul>
+                <li>Java</li>
+                <li>C#</li>
+                <li>C++</li>
+                <li>C</li>
+                <li>Objective-C</li>
+                <li>JavaScript (ECMAScript)</li>
+                <li>COBOL, ABAP</li>
+                <li>Ruby</li>
+                <li>Lisp</li>
+                <li>SQL</li>
+                <li>Visual Basic</li>
+                <li>Groovy</li>
+            </ul></p>
+
+            <p>with partial support for the following languages:
+            <ul>
+                <li>JSP</li>
+                <li>ASP</li>
+                <li>HTML</li>
+                <li>XML</li>
+            </ul></p>
+
+            <p>If the file is not of a supported type, it is treated as plain text. This means that you can usually run
+            Simian on just about any type of human-readable file with good results.</p>
+
+            <p>Ignores whitespace, curly braces, comments, imports, includes, package declarations, etc.</p>
+
+            <p>Supports the following processing options:<br><br>
+            <table cellpadding="6" rules="groups" frame="box">
+                <colgroup span="1"/><colgroup span="1"/><colgroup span="1"/><colgroup span="1"/><colgroup span="1"/>
+                <thead align="left">
+                    <tr><th>Option</th><th>Languages</th><th>Default</th><th>Possible values</th><th>Description</th></tr>
+                </thead>
+                <tbody align="left">
+                    <tr><td>formatter</td><td>all</td><td>none</td><td>plain, xml, emacs, vs (visual studio), yaml</td><td>Specifies the format in which processing results will be produced.</td></tr>
+                    <tr><td>threshold</td><td>all</td><td>6</td> <td>integer >= 2</td><td>Matches will contain at least the specified number of lines.</td></tr>
+                    <tr><td>language</td><td>n/a</td><td>none</td><td>java, c#, cs, csharp, c, c++, cpp, cplusplus, js, javascript, cobol, abap, rb, ruby, vb, jsp, html, xml, groovy, asm390</td><td>Assumes all files are in the specified language</td></tr>
+                    <tr><td>defaultLanguage</td><td>n/a</td><td>none</td><td>java, c#, cs, csharp, c, c++, cpp, cplusplus, js, javascript, cobol, abap, rb, ruby, vb, jsp, html, xml, groovy, asm390</td><td>Assumes files are in the specified language if none can be inferred</td></tr>
+                    <tr><td>failOnDuplication</td><td>all</td><td>true</td><td>boolean</td><td>Causes the checker to fail the current process if duplication is detected</td></tr>
+                    <tr><td>reportDuplicateText</td><td>all</td><td>false</td><td>boolean</td><td>Prints the duplicate text in reports</td></tr>
+                    <tr><td>ignoreBlocks</td><td>all</td><td>none</td><td>string</td><td>Ignores all lines between specified START/END markers</td></tr>
+                    <tr><td>ignoreCurlyBraces</td><td>Java, C#, C, C++, JavaScript, Ruby, Groovy</td><td>false</td><td>boolean</td><td>Curly braces are ignored.</td></tr>
+                    <tr><td>ignoreIdentifiers</td><td>Java, C#, C, C++, JavaScript, COBOL, Ruby, Groovy</td><td>false</td><td>boolean</td><td>Completely ignores all identfiers.</td></tr>
+                    <tr><td>ignoreIdentifierCase</td><td>Java, C#, C, C++, JavaScript, COBOL, Ruby, Groovy</td><td>true</td><td>boolean</td><td>Matches identifiers irrespective of case. Eg. <tt>MyVariableName</tt> and <tt>myvariablename</tt> would both match.</td></tr>
+                    <tr><td>ignoreRegions</td><td >C#</td><td>false</td><td>boolean</td><td>Ignore lines between #region/#endregion.</td></tr>
+                    <tr><td>ignoreStrings</td><td>Java, C#, C, C++, JavaScript, COBOL, Ruby, SQL, Groovy</td><td>false</td><td>boolean</td><td><tt>MyVariable</tt> and <tt>myvariable</tt>would both match.</td></tr>
+                    <tr><td>ignoreStringCase</td><td>Java, C#, C, C++, JavaScript, COBOL, Ruby, SQL, Groovy</td><td>true</td><td>boolean</td><td><tt>"Hello, World"</tt> and <tt>"HELLO, WORLD"</tt> would both match.</td></tr>
+                    <tr><td>ignoreNumbers</td><td>Java, C#, C, C++, JavaScript, COBOL, Ruby, SQL, Groovy</td><td>false</td><td>boolean</td><td><tt>int x = 1;</tt> and <tt>int x = 576;</tt> would both match.</td></tr>
+                    <tr><td>ignoreCharacters</td><td>Java, C#, C, C++, JavaScript, COBOL, Ruby, Groovy</td><td>false</td><td>boolean</td><td><tt>'A'</tt> and <tt>'Z'</tt>would both match.</td></tr>
+                    <tr><td>ignoreCharacterCase</td><td>Java, C#, C, C++, JavaScript, COBOL, Ruby, Groovy</td><td>true</td><td>boolean</td><td><tt>'A'</tt> and <tt>'a'</tt>would both match.</td></tr>
+                    <tr><td>ignoreLiterals</td><td>Java, C#, C, C++, JavaScript, COBOL, Ruby, SQL, Groovy</td><td>false</td><td>boolean</td><td><tt>'A'</tt>, <tt>"one"</tt> and <tt>27.8</tt>would all match.</td></tr>
+                    <tr><td>ignoreSubtypeNames</td><td>Java, C, Groovy</td> <td>false</td> <td>boolean</td><td><tt>BufferedReader</tt>, <tt>StringReader</tt> and <tt>Reader</tt> would all match.</td></tr>
+                    <tr><td>ignoreModifiers</td><td>Java, C#, C, C++, JavaScript, Groovy</td> <td>true</td><td>boolean</td><td><tt>public</tt>, <tt>protected</tt>, <tt>static</tt>, etc.</td></tr>
+                    <tr><td>ignoreVariableNames</td><td>Java, C, Groovy</td> <td>false</td><td>boolean</td><td>Completely ignores variable names (field, parameter and local). Eg. <tt>int foo = 1;</tt> and <tt>int bar = 1</tt> would both match</td></tr>
+                    <tr><td>balanceParentheses</td><td>Java, C#, C, C++, JavaScript, COBOL, Ruby, SQL, Groovy</td><td>false</td><td>boolean</td><td>Ensures that expressions inside parenthesis that are split across multiple physical lines are considered as one.</td></tr>
+                    <tr><td>balanceCurlyBraces</td><td>Ruby</td> <td>false</td><td>boolean</td><td>Ensures that expressions inside curly braces that are split across multiple physical lines are considered as one.</td></tr>
+                    <tr><td>balanceSquareBrackets</td><td>Java, C#, C, C++, JavaScript, Ruby, Groovy</td><td>false</td><td>boolean</td><td>Ensures that expressions inside square brackets that are split across multiple physical lines are considered as one. Defaults to false.</td></tr>
+                </tbody>
+            </table>
+
+            <p>Recognises the following file extensions/language options:<br><br>
+            <table cellpadding="6" rules="groups" frame="box">
+                <colgroup span="1"/><colgroup span="1"/>
+                <thead align="left">
+                    <tr><th>Language</th><th>Extensions</th></tr>
+                </thead>
+                <tbody align="left">
+                    <tr><td>java</td><td>java</td></tr>
+                    <tr><td>c sharp</td><td>cs, c#, csharp</td></tr>
+                    <tr><td>c</td><td>c, h, m</td></tr>
+                    <tr><td>cpp</td><td>cpp, c++, hpp, cplusplus</td></tr>
+                    <tr><td>ruby</td><td>rb, ruby</td></tr>
+                    <tr><td>cobol</td><td>cobol</td></tr>
+                    <tr><td>abap</td><td>abap</td></tr>
+                    <tr><td>xml</td><td>xml, xsl, xsd</td></tr>
+                    <tr><td>jsp</td><td>jsp</td></tr>
+                    <tr><td>asp</td><td>asp</td></tr>
+                    <tr><td>javascript</td><td>js, javascript</td></tr>
+                    <tr><td>html</td><td>html, htm</td></tr>
+                    <tr><td>vb</td><td>vb, bas, cls, frm</td></tr>
+                    <tr><td>lisp</td><td>lisp, lsp</td></tr>
+                    <tr><td>groovy</td><td>groovy</td></tr>
+                    <tr><td>text</td><td>this is the default when no appropriate language can be determined</td></tr>
+                </tbody>
+            </table>
+            </p>
+
+            <h3>Sample Output</h3>
+            <p>Here is an example of the standard output produced by Simian (version 2.2.23) when run against the JDK
+            1.5.0_13 source code:</p>
+            <p><pre>Similarity Analyser 2.2.23 - http://www.harukizaemon.com/simian
+Copyright (c) 2003-11 Simon Harris.  All rights reserved.
+Simian is not free unless used solely for non-commercial or evaluation purposes.
+{failOnDuplication=true, ignoreCharacterCase=true, ignoreCurlyBraces=true, ignoreIdentifierCase=true, ignoreModifiers=true, ignoreStringCase=true, threshold=6}
+Found 6 duplicate lines in the following files:
+ Between lines 201 and 207 in simian/build/dist/src/java/awt/image/WritableRaster.java
+ Between lines 1305 and 1311 in simian/build/dist/src/java/awt/image/Raster.java
+Found 6 duplicate lines in the following files:
+ Between lines 920 and 926 in simian/build/dist/src/com/sun/imageio/plugins/jpeg/JFIFMarkerSegment.java
+ Between lines 908 and 914 in simian/build/dist/src/com/sun/imageio/plugins/jpeg/JFIFMarkerSegment.java
+Found 6 duplicate lines in the following files:
+ Between lines 553 and 558 in simian/build/dist/src/java/net/URLStreamHandler.java
+ Between lines 1262 and 1267 in simian/build/dist/src/java/net/URL.java
+ Between lines 1245 and 1250 in simian/build/dist/src/java/net/URL.java
+ Between lines 656 and 661 in simian/build/dist/src/java/net/URL.java
+Found 6 duplicate lines in the following files:
+ Between lines 509 and 514 in simian/build/dist/src/java/util/concurrent/ConcurrentHashMap.java
+ Between lines 413 and 418 in simian/build/dist/src/java/util/concurrent/ConcurrentHashMap.java
+...
+Found 167 duplicate lines in the following files:
+ Between lines 7172 and 7579 in simian/build/dist/src/javax/swing/JTable.java
+ Between lines 1016 and 1273 in simian/build/dist/src/javax/swing/table/JTableHeader.java
+Found 199 duplicate lines in the following files:
+ Between lines 6380 and 6854 in simian/build/dist/src/javax/swing/JTable.java
+ Between lines 7181 and 7655 in simian/build/dist/src/javax/swing/JTable.java
+Found 216 duplicate lines in the following files:
+ Between lines 48 and 451 in simian/build/dist/src/org/omg/CosNaming/_NamingContextStub.java
+ Between lines 203 and 606 in simian/build/dist/src/org/omg/CosNaming/_NamingContextExtStub.java
+Found 232 duplicate lines in the following files:
+ Between lines 22 and 343 in simian/build/dist/src/com/sun/corba/se/PortableActivationIDL/_ServerManagerStub.java
+ Between lines 17 and 338 in simian/build/dist/src/com/sun/corba/se/PortableActivationIDL/_ActivatorStub.java
+Found 66375 duplicate lines in 5949 blocks in 1260 files
+Processed a total of 390309 significant (1196065 raw) lines in 4242 files
+Processing time: 9.490sec</pre></p>
+
+            <p>To see the full results* for the JDK 1.5.0_13 source code, download the
+             <a href="jdk-1.5.0_13.log.tar.gz">compressed file</a>.</p>
+
+            <p>* Results may vary depending on factors such as hardware used, number of duplicate lines, etc.</p>
+
+            <hr>
+            <p align="center"><font size=".5">Java and all Java-based marks are trademarks or registered trademarks of Sun
+            Microsystems, Inc. in the United States and other countries.</br ><br />
+
+            .NET and all .NET-based marks are trademarks or registered trademarks of Microsoft&reg; in the United States and
+            other countries.<br /><br />
+
+            Copyright (c) 2003-2013 Simon Harris.  All rights reserved.</p>
+    </body>
+</html>

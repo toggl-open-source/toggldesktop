@@ -1,0 +1,105 @@
+SIMIAN SOFTWARE LICENSE AGREEMENT
+
+1. Licenses and Software
+
+Simon Harris ("HARRIS") hereby grants to the purchaser (the "LICENSEE") a limited, revocable, worldwide, non-exclusive,
+nontransferable, non-sublicensable license to use the Simian software (the "SOFTWARE"), including any minor upgrades
+thereof during the Term (hereinafter defined) up to, but not including the next major version of the Software. The
+Licensee shall not, or knowingly allow others to, reverse engineer, decompile, disassemble, modify, adapt, create
+derivative works from or otherwise attempt to derive source code from the Software provided. And, in accordance with the
+terms and conditions of this Software License Agreement (the "AGREEMENT"), the Software shall be used solely by the
+Licensee in accordance with the following specific conditions:
+
+    A. Personal/SOHO License
+
+       A Personal/SOHO License entitles the Licensee to use the Software on one (1) machine only. A Personal/SOHO
+       License does not permit the generation of reports for distribution nor use by other than the licensee.
+
+    B. Project License
+
+       A Project License entitles the Licensee to use the Software on any number of machines solely for the licensed
+       project.
+
+    C. Server License
+
+       A Server License entitles the Licensee to use the Software on one (1) machine only. Reports generated are
+       strictly for use by the Licensee only.
+
+    D. Enterprise License
+
+       An Enterprise License entitles the Licensee to use the Software on any number of machines. Reports generated are
+       strictly for use by the Licensee only.
+
+2. License Fee
+
+In exchange for the License(s), the Licensee shall pay to HARRIS a one-time, up front, non-refundable license fee.
+At the sole discretion of HARRIS, this fee will be waived for non-commercial/non-government projects and for evaluation
+purposes for a period of fifteen (15) days only. The Licensee is also entitled to all upgrades including major versions
+of the Software at no charge. Notwithstanding the Licensee's payment of the License Fee, HARRIS reserves the right to
+terminate the License if HARRIS discovers that the Licensee and/or the Licensee's use of the Software is in breach of
+this Agreement.
+
+3. Proprietary Rights
+
+HARRIS will retain all right, title and interest in and to the Software, all copies thereof, and HARRIS website(s),
+software, and other intellectual property, including, but not limited to, ownership of all copyrights, look and feel,
+trademark rights, design rights, trade secret rights and any and all other intellectual property and other proprietary
+rights therein. The Licensee will not directly or indirectly obtain or attempt to obtain at any time, any right, title
+or interest by registration or otherwise in or to the trademarks, service marks, copyrights, trade names, symbols,
+logos or designations or other intellectual property rights owned or used by HARRIS. All technical manuals or other
+information provided by HARRIS to the Licensee shall be the sole property of HARRIS.
+
+4. Term and Termination
+
+Subject to the other provisions hereof, this Agreement shall commence upon the Licensee's opting into this Agreement
+and continue until the Licensee discontinues use of the Software or the Agreement terminates automatically upon the
+Licensee's breach of any term or condition of this Agreement (the "Term"). Upon any such termination, the Licensee will
+delete the Software immediately.
+
+5. Copying & Transfer
+
+The Licensee may copy the Software to use the Software and for back-up purposes only. The Licensee may not assign or
+otherwise transfer the Software to any third party unless each of the following conditions is met:
+
+1. Redistributions are made at no charge and in accordance with these License terms.
+
+    A. Redistributions are made by and for non-commercial/non-government Licensee(s) or for evaluation purposes set
+       forth as Article 2.
+
+    B. Redistributions must faithfully reproduce all accompanying materials, including these License terms, and the
+       disclaimer/limitation of liability set forth as Article 6, in the documentation and/or other materials provided
+       with the distribution.
+
+6. Specific Disclaimer of Warranty and Limitation of Liability
+
+THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL HARRIS
+CONSULTING OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+
+7. Warranties and Representations
+
+Indemnification. The Licensee warrants and represents that the Licensee's actions with regard to the Software will be
+in compliance with all applicable laws; and the Licensee will indemnify, defend, and hold HARRIS harmless from and
+against any and all liabilities, damages, losses, claims, costs, and expenses (including legal fees) arising out of or
+resulting from the Licensee's failure to observe the use restrictions set forth herein.
+
+8. Governing Law
+
+This Agreement shall be governed by the laws of Victoria, Australia.
+
+9. Independent Contractors
+
+Assignment: The parties are independent contractors with respect to each other, and nothing in this Agreement shall be
+construed as creating an employer-employee relationship, a partnership, agency relationship or a joint venture between
+the parties. This Agreement is not assignable or transferable by the Licensee.
+
+10. Entire Agreement
+
+This Agreement constitutes the entire agreement between the parties concerning the Licensee's use of the Software. This
+Agreement supersedes any prior verbal understanding between the parties and any Licensee purchase order or other
+ordering document, regardless of whether such document is received by HARRIS before or after execution of this
+Agreement. This Agreement may be amended only in writing by HARRIS.

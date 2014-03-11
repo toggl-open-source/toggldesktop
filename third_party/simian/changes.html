@@ -1,0 +1,481 @@
+<html>
+    <head>
+        <title>Simian - Similarity Analyser | Duplicate Code Detection for the Enterprise | Change History</title>
+        <meta name="description" content="Identifies duplication in Java, C#, C, CPP, COBOL, JSP, HTML source code and even plain text files."/>
+        <meta name="keywords" content="source, code, duplicate, duplication, duplicates, copy, paste, duplicates, detect, detection, detects, detector, finds, similar, similarity, analyse, analyser, java, c#, c++, c, javascript, cobol, ant, maven, checkstyle, jsp, html, ruby, visual basic, eclipse, intellij, idea, xml, text, .net, microsoft, windows, nant"/>
+    </head>
+
+    <body>
+        <div style="position: relative; float: left; width: 18%">
+            <p align="center"><a href="http://www.harukizaemon.com/simian"><img alt="Home" src="simian.jpg" border="0" /></a></p>
+            <p><ul>
+                <li><a href="index.html">Overview</a></li>
+                <li><a href="features.html">Features</a></li>
+                <li><a href="get_it_now.html">Get It Now!</a></li>
+                <li><a href="installation.html">Installation</a></li>
+                <li><a href="customers.html">Customers</a></li>
+                <li><a href="changes.html">Changes</a></li>
+                <li><a href="LICENSE.txt">LICENSE</a></li>
+            </ul></p>
+
+            <p align="center"><a href="http://jars.developer.com/programming/resource.php/25857"><img src="http://jars.developer.com/img/jars_top_rated_1.gif" alt="Jars Top 1% Rated" title="Jars Top 1% Rated" border="0"/></a></p>
+            <p align="center"><a href="http://www.java.com"><img src="get_java_blue-button.gif" alt="Built for Java&trade;" title="Get Java&trade;" border="0"/></a></p>
+            <p align="center"><a href="http://www.microsoft.com/net"><img src="get_dotnet.png" alt="Built for .NET&trade;" title="Get .NET&trade;" border="0"/></a></p>
+            <p align="center">
+                <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                    <input type="hidden" name="cmd" value="_s-xclick">
+                    <input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but21.gif" border="0" name="submit"
+                           alt="Make payments with PayPal - it's fast, free and secure!">
+                    <img alt="" border="0" src="https://www.paypal.com/en_AU/i/scr/pixel.gif" width="1" height="1">
+                    <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----MIIHPwYJKoZIhvcNAQcEoIIHMDCCBywCAQExggEwMIIBLAIBADCBlDCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb20CAQAwDQYJKoZIhvcNAQEBBQAEgYA8j1w6JwNO9TUvvgwoj84iZbbHNaJoRDtxrDTz2zZFE9q0jfjv7T3b5cjlqNiR02erUe1uADJeKqD1NCxQwtH1yV72lRDxqF97ERLsBZGtZfBx3hzsnDsuup8626LcSiB5wlBOwQeiIfGVpB4KeZ5dlKk1iPzbDb94TeDxwHYETTELMAkGBSsOAwIaBQAwgbwGCSqGSIb3DQEHATAUBggqhkiG9w0DBwQITvOc+moD8COAgZj+yeKLygSkA5dvrkf2OGIV3JibR0j6+DpVrjZO/S97ic644Do7WTCrT8ZIRNioTjXlW9wy6TVIZLNmxPcUWwbKlEIFsOdLJhRMIjg/rW1rzCcqKSGZqLU41Z+wCK+PGxc/JfOOJswy0dpYPw3Jk2qVFudZ2n7+8X7th/7Nn2f1lhrIpoaFj+DWDVu2MElsSiI1Luv6MNuN4aCCA4cwggODMIIC7KADAgECAgEAMA0GCSqGSIb3DQEBBQUAMIGOMQswCQYDVQQGEwJVUzELMAkGA1UECBMCQ0ExFjAUBgNVBAcTDU1vdW50YWluIFZpZXcxFDASBgNVBAoTC1BheVBhbCBJbmMuMRMwEQYDVQQLFApsaXZlX2NlcnRzMREwDwYDVQQDFAhsaXZlX2FwaTEcMBoGCSqGSIb3DQEJARYNcmVAcGF5cGFsLmNvbTAeFw0wNDAyMTMxMDEzMTVaFw0zNTAyMTMxMDEzMTVaMIGOMQswCQYDVQQGEwJVUzELMAkGA1UECBMCQ0ExFjAUBgNVBAcTDU1vdW50YWluIFZpZXcxFDASBgNVBAoTC1BheVBhbCBJbmMuMRMwEQYDVQQLFApsaXZlX2NlcnRzMREwDwYDVQQDFAhsaXZlX2FwaTEcMBoGCSqGSIb3DQEJARYNcmVAcGF5cGFsLmNvbTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAwUdO3fxEzEtcnI7ZKZL412XvZPugoni7i7D7prCe0AtaHTc97CYgm7NsAtJyxNLixmhLV8pyIEaiHXWAh8fPKW+R017+EmXrr9EaquPmsVvTywAAE1PMNOKqo2kl4Gxiz9zZqIajOm1fZGWcGS0f5JQ2kBqNbvbg2/Za+GJ/qwUCAwEAAaOB7jCB6zAdBgNVHQ4EFgQUlp98u8ZvF71ZP1LXChvsENZklGswgbsGA1UdIwSBszCBsIAUlp98u8ZvF71ZP1LXChvsENZklGuhgZSkgZEwgY4xCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJDQTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEUMBIGA1UEChMLUGF5UGFsIEluYy4xEzARBgNVBAsUCmxpdmVfY2VydHMxETAPBgNVBAMUCGxpdmVfYXBpMRwwGgYJKoZIhvcNAQkBFg1yZUBwYXlwYWwuY29tggEAMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADgYEAgV86VpqAWuXvX6Oro4qJ1tYVIT5DgWpE692Ag422H7yRIr/9j/iKG4Thia/Oflx4TdL+IFJBAyPK9v6zZNZtBgPBynXb048hsP16l2vi0k5Q2JKiPDsEfBhGI+HnxLXEaUWAcVfCsQFvd2A1sxRr67ip5y2wwBelUecP3AjJ+YcxggGaMIIBlgIBATCBlDCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb20CAQAwCQYFKw4DAhoFAKBdMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTA2MDkyMTExMDkyNlowIwYJKoZIhvcNAQkEMRYEFA18tNT8BUB8WGCaSlRb3FnUUA6gMA0GCSqGSIb3DQEBAQUABIGAIYEneDyEaoh/C4RP8lYfxcjRz0DPBSwCiKK7WUTYhuXsFCXd8Pw3IpbBAIRuWPISEnTBcgx8k25tKO6W/VGkuBpCCv3E4UEyRO8HnoTZAIQQFBvLooTBAj6ywjLE/l+JZJaeTANUgYEzyFh2sghtVvl9af76aQtmYXmK4MSnn4w=-----END PKCS7-----">
+                </form>
+            </p>
+        </div>
+
+        <div style="position:relative; float: right; width: 82%">
+            <h3>Version 2.3.35 - 18 December 2013</h3>
+            <ul>
+                <li>Fixed: UTF-16/32 Byte-Order-Mark encoded files not detected correctly.</li>
+            </ul>
+            <h3>Version 2.3.34 - 3 June 2013</h3>
+            <ul>
+                <li>New: ignoreOverlappingBlocks to ignore wholly or partially overlapping blocks.</li>
+            </ul>
+            <h3>Version 2.3.33 - 15 August 2011</h3>
+            <ul>
+                <li>Fixed: Visual Studio formatter not producing messages with the correct syntax.</li>
+            </ul>
+            <h3>Version 2.3.32 - 28 April 2011</h3>
+            <ul>
+                <li>New: you can now specify multiple ignoreBlocks arguments.</li>
+                <li>Changed: SourceFile is now part of the public API.</li>
+            </ul>
+            <h3>Version 2.3.31 - 3 February 2011</h3>
+            <ul>
+                <li>Fixed: XML reports could be rendered invalid by nested CDATA sections.</li>
+            </ul>
+            <h3>Version 2.3.30 - 1 February 2011</h3>
+            <ul>
+                <li>New: Requires Java 5 or higher.</li>
+                <li>New: Updated checkstyle support to 5.x.</li>
+                <li>Fixed: A little too aggressive when identifying COBOL comments.</li>
+                <li>Fixed: Unable to use failOnDuplication=true when % duplication &lt; 1%.</li>
+                <li>New: Language extension recognition is now case-insensitive.</li>
+                <li>New: More recognised file extensions for HTML: sht, shtm, shtml, and xhtml.</li>
+                <li>New: More recognised file extensions for Ruby: rjs, rake, and gemspec.</li>
+                <li>New: More recognised file extensions for JSP: jsf, jspf, tag, and tagf.</li>
+                <li>New: More recognised file extensions for XML: jspx, tagx, and tld.</li>
+            </ul>
+            <h3>Version 2.2.25 - 10 June 2009</h3>
+            <ul>
+                <li>New: IBM System/360 Family Assembler support.</li>
+                <li>New: defaultLanguage option to set the default language to use when none can be inferred.</li>
+                <li>Fixed: The same file in multiple includes will only be loaded once.</li>
+                <li>Changed: Latest version (0.36.0.8) of IKVM for .Net.</li>
+                <li>Fixed: ampersand (&) in source file name causes invalid XML report.</li>
+            </ul>
+            <h3>Version 2.2.24 - 20 February 2008</h3>
+            <ul>
+                <li>Fixed: ignoreBlocks not being handled correctly.</li>
+                <li>Fixed: SQL -- comments not being ignored correctly.</li>
+            </ul>
+            <h3>Version 2.2.23 - 4 February 2008</h3>
+            <ul>
+                <li>New: Initial Groovy support.</li>
+            </ul>
+            <h3>Version 2.2.22 - 29 January 2008</h3>
+            <ul>
+                <li>Fixed: Failure return code even when no duplication.</li>
+            </ul>
+            <h3>Version 2.2.21 - 23 November 2007</h3>
+            <ul>
+                <li>Fixed: Output from XML formatter not well formed.</li>
+            </ul>
+            <h3>Version 2.2.20 - 21 November 2007</h3>
+            <ul>
+                <li>Fixed: IllegalStateException from XML formatter.</li>
+            </ul>
+            <h3>Version 2.2.19 - 16 November 2007</h3>
+            <ul>
+                <li>Fixed: Reports sent to STDOUT may not be flushed.</li>
+            </ul>
+            <h3>Version 2.2.18 - 8 November 2007</h3>
+            <ul>
+                <li>New: Option to print the duplicate text in reports (reportDuplicateText).</li>
+            </ul>
+            <h3>Version 2.2.17 - 14 March 2007</h3>
+            <ul>
+                <li>Fixed bug: COBOL/ABAP comment lines considered significant.</li>
+            </ul>
+            <h3>Version 2.2.16 - 6 March 2007</h3>
+            <ul>
+                <li>Fixed bug: YAML formatter missing version number.</li>
+            </ul>
+            <h3>Version 2.2.15 - 1 March 2007</h3>
+            <ul>
+                <li><strong>Public API changed slightly with respect to loading of files into a checker.</strong></li>
+                <li>Added YAML formatter (yaml).</li>
+            </ul>
+            <h3>Version 2.2.14 - 8 February 2007</h3>
+            <ul>
+                <li>Fixed bug: "Error: Illegal path" under Microsoft Windows.</li>
+                <li>Updated to latest version (0.32.0.0) of IKVM for .Net.</li>
+            </ul>
+            <h3>Version 2.2.13 - 7 January 2007</h3>
+            <ul>
+                <li><strong>Removed -recurse options and replaced with -includes and -excludes which both support shell-like
+                    file globbing.</strong></li>
+            </ul>
+            <ul>
+                <li><strong>No longer defaults to *.java</strong></li>
+            </ul>
+            <ul>
+                <li>Added support for ignoring modifiers (private, protected, class, def, module, begin, end, etc.) in Ruby.</li>
+            </ul>
+            <h3>Version 2.2.12 - 3 October 2006</h3>
+            <ul>
+                <li>Minor documentation fixes.</li>
+            </ul>
+            <h3>Version 2.2.11 - 21 September 2006</h3>
+            <ul>
+                <li>Minor documentation fixes.</li>
+                <li>Fixed formatting of command-line options.</li>
+                <li>Fixed ignore blocks not matching with -ignoreIdentifierCase.</li>
+            </ul>
+            <h3>Version 2.2.10 - 23 July 2006</h3>
+            <ul>
+                <li>Fixed bug: Visual Studio output format (formatter=vs) not recognised as command-line option.</li>
+            </ul>
+            <h3>Version 2.2.9 - 3 July 2006</h3>
+            <ul>
+                <li>Added Visual Studio output format (formatter=vs).</li>
+                <li>Included a very simple DTD for describing the XML output format.</li>
+            </ul>
+            <h3>Version 2.2.8 - 1 December 2005</h3>
+            <ul>
+                <li>Fixed bug: -ignoreBlocks not working with regions in C# (Jay Fields).</li>
+                <li>Updated to latest version (0.22.0.0) of IKVM for .Net.</li>
+            </ul>
+            <h3>Version 2.2.7 - 12th August 2005</h3>
+            <ul>
+                <li>Added full support for Visual Base (language=vb) (Robert Cass).</li>
+            </ul>
+            <h3>Version 2.2.6 - 30th July 2005</h3>
+            <ul>
+                <li>Added support for Objective-C (*.c, *.h, *.m) as an enhancement to the existing C language support.</li>
+                <li>Added support for SQL (*.sql) that correctly ignores comments .</li>
+            </ul>
+            <h3>Version 2.2.5 - 26th July 2005</h3>
+            <ul>
+                <li>Updated to latest version (0.14.0.1) of IKVM for .Net.</li>
+                <li>Added a default stylesheet element (for simian.xsl) to the XML report (Einar Hoest).</li>
+                <li>Added option <code>ignoreBlocks</code> to ignore blocks with the specified start and end markers (Mark Webb).</li>
+            </ul>
+            <h3>Version 2.2.4 - 30th March 2005</h3>
+            <ul>
+                <li>Updated to latest version (0.12.0.0) of IKVM for .Net.</li>
+                <li>Added command line option <code>failOnDuplication[+|-]</code> (default <code>true</code>). If true,
+                the command line version will exit with retun code 1 if duplication is found; 0 otherwise. (Manoj Bharadwaj)</li>
+            </ul>
+            <h3>Version 2.2.3 - 19th January 2005</h3>
+            <ul>
+                <li>Updated Open API - SourceFile is now included (Neil Bartlett).</li>
+            </ul>
+            <h3>Version 2.2.2 - 7th November 2004</h3>
+            <ul>
+                <li>Updated Open API - Introduced language as an enumerated type.</li>
+                <li>Fixed bug: Invalid language options silently ignored.</li>
+            </ul>
+            <h3>Version 2.2.1 - 13th September 2004</h3>
+            <ul>
+                <li>Open API to facilitate 3rd party open source tool development - refer to <a href="LICENSE.txt">Licence Agreement</a> and <a href="javadoc/index.html">examples</a>.</li>
+                <li>Reorganised distribution zip file slightly to relieve clutter.</li>
+            </ul>
+            <h3>Version 2.1.6-beta2 - 5th July 2004</h3>
+            <ul>
+                <li>Updated XSLT to include additional statistics (Robert Watkins).</li>
+                <li>Fixed bug: Incorrect statistics generated with XSLT (Benoit Xhenseval).</li>
+            </ul>
+            <h3>Version 2.1.6-beta - 2nd July 2004</h3>
+            <ul>
+                <li>Now using <a href="http://www.go-mono.com">IKVM</a> for dot net integration.</li>
+                <li>Fixed missing link (jdk1.4.2_03.log.zip)</li>
+                <li>Changed default threshold from 9 to 6.</li>
+                <li>#region/#endregion lines are always ignored in C#. This is different to ignoreRegions which will
+                ignore lines between (inclusive of) #region/#endregion.</li>
+                <li>Added option ignoreCharacterCase - Matches character literals irrespective of case.</li>
+                <li>Added option ignoreIdentifiers - Completely ignores all identifiers.</li>
+                <li>Added option ignoreVariableNames - Completely ignores variable names (field, parameter and local). Eg.
+                <tt>int foo = 1;</tt> and <tt>int bar = 1</tt> would both match. This option is currently only supported in
+                Java and C.</li>
+            </ul>
+            <h3>Version 2.1.5a - 23rd June 2004</h3>
+            <ul>
+                <li>Fixed bug: ignoreSubtypeNames and ignoreIdentifierCase conflicting in limited cases.</li>
+            </ul>
+            <h3>Version 2.1.5 - 19th June 2004</h3>
+            <ul>
+                <li>Added option ignoreIdentifierCase - Matches identifiers irrespective of case. Eg. <tt>MyVariableName</tt>
+                and <tt>myvariablename</tt> would both match.</li>
+            </ul>
+            <h3>Version 2.1.4 - 18th June 2004</h3>
+            <ul>
+                <li>Added option ignoreRegions - ignores lines between #region/#endregion in C# (Randy Ridge)</li>
+                <li>Added c#, c++ and cplusplus as valid language options (Randy Ridge)</li>
+                <li>Updated wording of personal license agreement to avoid confusion. This doesn't affect existing
+                personal license holders.</li>
+            </ul>
+            <h3>Version 2.1.3 - 12th February 2004</h3>
+            <ul>
+                <li>Added summary details to xml formatter</li>
+                <li>Added option ignoreCharacters (Derek M Jones)</li>
+                <li>Added option ignoreLiterals - strings, numbers and characters (Derek M Jones)</li>
+            </ul>
+            <h3>Version 2.1.2 - 4th February 2004</h3>
+            <ul>
+                <li>Command-line now exits with -1 on error, 1 if duplicates found and 0 if no duplicates found.</li>
+                <li>Added command-line option -config=FNAME to read the configuration from a file (where each line of the
+                file specifies at most one of any of the valid command-line arguments).</li>
+                <li>Fixed bug: simian.exe produces a cast exception when formatting as XML (Matt Berther) </li>
+            </ul>
+            <h3>Version 2.1.1 - 28th January 2004</h3>
+            <ul>
+                <li>Fixed bug: "Invalid option ..." (Andrew Harris)</li>
+                <li>Fixed bug: "Error: element already exists" (Andrew Harris)</li>
+            </ul>
+            <h3>Version 2.1.0 - 27th January 2004</h3>
+            <ul>
+                <li>Now includes .NET version (simian.exe)</li>
+                <li>Java 1.3 no longer supported. Requires Java 1.4+</li>
+                <li>Command-line no longer silently ignores invalid options</li>
+                <li>Supports multiple filespecs (and recurse filespecs)</li>
+                <li>File names are now always absolute when reporting. Previous versions had left names as relative</li>
+                <li>Command-line Main class name changed from <tt>Main</tt> to <tt>SimianMain</tt>.</li>
+                <li>Command-line changed so that options must now be prefixed with a minus symbol (-) in addition to the
+                now optional suffix (+/-) where appropriate, to indicate if the opion is to be enabled/disabled. This is in
+                keeping with most command-line utilities. See <a href="installation.html#cli">command-line reference</a> for
+                more details.</li>
+                <li>Timing now reported as seconds instead of milliseconds.</li>
+            </ul>
+            <h3>Version 2.0.3 - 18th January 2004</h3>
+            <ul>
+                <li>Increased file loading speed - JDK down by around 7 sec, Linux kernel down by around 11 sec</li>
+            </ul>
+            <h3>Version 2.0.2 - 6th January 2004</h3>
+            <ul>
+                <li>Increased processing speed - JDK down from 48 to 32 sec, Linux kernel down from 4 to 3 min</li>
+                <li>Slightly reduced memory consumption - Linux 2.4 kernel down from 420 to 415MB</li>
+                <li>Command-line now warns when multiple filespecs found (Derek M Jones)</li>
+            </ul>
+            <h3>Version 2.0.1 - 5th January 2004</h3>
+            <ul>
+                <li>Reduced memory consumption again. Linux 2.4 source base can be processed in 420MB of RAM and JDK in 60MB
+                of RAM!</li>
+                <li>Fixed bug: Main incorrectly closing standard output stream.</li>
+            </ul>
+            <h3>Version 2.0.0 - 4th January 2004</h3>
+            <ul>
+                <li>Significant improvements in memory consumption with no degredation in performance. Proccesses the
+                entire linux 2.4 source base (3.6 million raw source lines) in under 4 mins on a P1.8GHz DELL laptop using
+                under 512MB of RAM. Significantly, the JDK can now be processed in the same duration as previous versions
+                in under 80MB of RAM. Version 1.x required around 512MB of ram! Many thanks to David Pattinson.</li>
+                <li>Text reporting now includes the raw source as well as the significant line total. (Derek M Jones)</li>
+                <li>Licensing changed to include a personal license in addition to the project and enterprise licenses.</li>
+            </ul>
+            <h3>Version 1.9.14a - 3rd January 2004</h3>
+            <ul>
+                <li>Command-line recurse option now requires a suffix of +/- inline with other options. (Derek M Jones)</li>
+                <li>Command-line options now require +/- as a suffux rather than a prefix to fit in with standard Un*x-style
+                commands. (Derek M Jones)</li>
+                <li>Added option ignoreCurlyBraces. Default is true for backwards compatibility. (Derek M Jones)</li>
+                <li>ignoreStringCase and ignoreStringContents no longer affect character literals. (Derek M Jones)</li>
+            </ul>
+            <h3>Version 1.9.13k - 2nd January 2004</h3>
+            <ul>
+                <li>Added command-line option (recurse) to indicate directory recursion. Default is not to recurse.
+                (Derek M Jones)</li>
+                <li>Fixed bug: Incorrect handling of line numbers when parsing mulit-line C-style comments.
+                (Derek M Jones)</li>
+            </ul>
+            <h3>Version 1.9.13g - 30th November 2003</h3>
+            <ul>
+                <li>Fixed bug: IllegalStateException when no formatter define for ant task. Now defaults to a plain
+                formatter. (James Ross)</li>
+            </ul>
+            <h3>Version 1.9.13e - 22 November 2003</h3>
+            <ul>
+                <li>Replaced +E emacs option on commmand-line interface with formatter=plain|xml|emacs parameter</li>
+                <li>Added emacs as a formatter type to ant task</li>
+                <li>Added command-line interface parameter toFile= to redirect output to a file</li>
+                <li>Renamed all instances of lineCount parameter to threshold</li>
+                <li>Renamed stylesheet.xsl to simian.xsl</li>
+            </ul>
+            <h3>Version 1.9.13d - 19 November 2003</h3>
+            <ul>
+                <li>Command-line now supports language=value parameter (Pieter Bloemendaal)</li>
+                <li>Command-line now requires line count to be specified by lineCount=value</li>
+            </ul>
+            <h3>Version 1.9.13a - 8 November 2003</h3>
+            <ul>
+                <li>Added emacs friendly output option (+E) for command-line version (Elliott Hughes)</li>
+                <li>Fixed bug: Ruby =begin/=end comment blocks not always ignored (Elliott Hughes)</li>
+            </ul>
+            <h3>Version 1.9.13 - 5th November 2003</h3>
+            <ul>
+                <li>Added option to set language independent of file extension (Pieter Bloemendaal)</li>
+                <li>Ruby support for =begin/=end block comments (Elliot Hughes)</li>
+                <li>Ruby support for balancing parenthesis</li>
+                <li>COBOL support for balancing parenthesis</li>
+                <li>Balance square brackets (Java, C#, C, C++, JavaScript, Ruby): Ensures that expressions inside square
+                brackets that are split across multiple physical lines are considered as one. Defaults to false.</li>
+                <li>Balance curly braces (Ruby): Ensures that expressions inside curly braces that are split across
+                multiple physical lines are considered as one. Defaults to false.</li>
+                <li>Starting with this release, odd numbered versions will add new features, even number verisons will be
+                bug fixes</li>
+            </ul>
+            <h3>Version 1.9.12</h3>
+            <ul>
+                <li>Documentation updates (Pieter Bloemendaal)</li>
+                <li>Initial Ruby support</li>
+            </ul>
+            <h3>Version 1.9.10 - 7th October 2003</h3>
+            <ul>
+                <li>Documentation updates</li>
+            </ul>
+            <h3>Version 1.9.9 - 16th September 2003</h3>
+            <ul>
+                <li>Added stylesheet (kindly donated by Arvid Halsebus) to transform the XML report.</li>
+                <li>Fixed bug: Ant task fails even when 0 duplicates are found (Jason Yip).</li>
+            </ul>
+            <h3>Version 1.9.8 - 27th August 2003</h3>
+            <ul>
+                <li>Ant task now reports duplications as warnings instead of errors if the failOnDuplication property is
+                set to false. Defaults to false.</li>
+                <li>Added new property failOnDuplication to Checkstyle check. Defaults to true. Note this is different to
+                the Ant task which defaults to false.</li>
+                <li>Checkstyle check now reports duplications as warnings instead of errors if the newly added
+                failOnDuplication property is set to false.</li>
+            </ul>
+            <h3>Version 1.9.7 - 23rd August 2003</h3>
+            <ul>
+                <li>Fixed bug: I/O error (such as no permissions) listing files will cause IllegalStateException</li>
+                <li>Minor documentation updates</li>
+            </ul>
+            <h3>Version 1.9.6 - 13th August 2003</h3>
+            <ul>
+                <li>Fixed bug: command-line filespec incorrectly including partial matches</li>
+            </ul>
+            <h3>Version 1.9.5 - 31st July 2003</h3>
+            <ul>
+                <li>Fixed bug: Incompatibility with JDK 1.3.1</li>
+            </ul>
+            <h3>Version 1.9.4 - 26th July 2003</h3>
+            <ul>
+                <li>Added XML output as an <a href="installation.html#ant">Ant task</a> formatter</li>
+                <li>Default (plain) <a href="installation.html#ant">Ant task</a> formatter supports output to a file</li>
+            </ul>
+
+            <h3>Version 1.9.3 - 10th July 2003</h3>
+            <ul>
+                <li>Added all fuzzy matching options to <a href="installation.html#cli">command line interface</a></li>
+            </ul>
+
+            <h3>Version 1.9.2 - 9th July 2003</h3>
+            <ul>
+                <li>Added more fuzzy matching options for Ant and Checkstyle:
+                <ul>
+                    <li>Balance Parentheses (Java, C#, C, C++, JavaScript): Ensures that expressions inside parenthesis that
+                    are split across multiple physical lines are considered as one.</li>
+                </ul></li>
+                <li>Added instructions for integrating with IntelliJ as an external tool.</li>
+            </ul>
+
+            <h3>Version 1.9.1 - 8th July 2003</h3>
+            <ul>
+                <li>Fixed bug: introduced bug with 1.9 not ignoring import statements</li>
+                <li>Added fuzzy matching options for Ant and Checkstyle:
+                <ul>
+                    <li>Ignore strings (Java, C#, C, C++, JavaScript, COBOL): <tt>"one"</tt> and <tt>"two"</tt>
+                    would both match</li>
+                    <li>Ignore string case (Java, C#, C, C++, JavaScript, COBOL): <tt>"Hello, World"</tt> and
+                    <tt>"HELLO, WORLD"</tt> would both match</li>
+                    <li>Ignore numbers (Java, C#, C, C++, JavaScript, COBOL): <tt>int x = 1;</tt> and <tt>int x = 576;</tt>
+                    would both match</li>
+                    <li>Ignore subtype names (Java): <tt>BufferedReader</tt>, <tt>StringReader</tt> and <tt>Reader</tt>
+                    would all match</li>
+                    <li>Ignore modifiers (Java, C#, C, C++, JavaScript): <tt>public</tt>, <tt>protected</tt>,
+                    <tt>static</tt>, etc.</li>
+                </ul></li>
+            </ul>
+
+            <h3>Version 1.8 - 26th June 2003</h3>
+            <ul>
+                <li>Added SAP/ABAP (.abap files) support</li>
+                <li>Updated documentation for command line interface</li>
+                <li>Command line filespec is no longer case sensitive</li>
+                <li>Removed some inadvertant dependencies on JDK 1.4</li>
+            </ul>
+
+            <h3>Version 1.7 - 24th June 2003</h3>
+            <ul>
+                <li>License now permits redistribution for non-commerical/open source projects</li>
+            </ul>
+
+            <h3>Version 1.6 - 24th June 2003</h3>
+            <ul>
+                <li>Added <code>public void setOutput(OutputStream)</code> to SimianTask to facilitate
+                <a href="http://maven.apache.org" target="_blank">Maven</a> plugin development</li>
+                <li>Reduced memory footprint by as much as 23% when run against the JDK 1.4 source base</li>
+            </ul>
+
+            <h3>Version 1.5 - June 23rd 2003</h3>
+            <ul>
+                <li>Added Javascript (.js files) support</li>
+                <li>Command line now supports comma separated filespec such as "*.java,*.js" for all java and javascript
+                files</li>
+            </ul>
+
+            <h3>Version 1.4 - June 23nd 2003</h3>
+            <ul>
+                <li>Added COBOL (.cbl, .cob, .sqb files) support</li>
+            </ul>
+
+            <h3>Version 1.3 - June 22nd 2003</h3>
+            <ul>
+                <li>Fixed bug: comment characters not handled corrrectly in all appropriate places</li>
+                <li>Fixed bug: C and CPP #includes not handled correctly</li>
+                <li>Fixed bug: Java package and imports not handled correctly in all cases</li>
+                <li>Fixed bug: Total number of lines and files processed is incorrect</li>
+            </ul>
+
+            <h3>Version 1.2 - June 21st 2003</h3>
+            <ul>
+                <li>Fixed bug: whitespace not ignored in all appropriate places</li>
+                <li>Ignores curly braces, default min number of lines now set to 9 to compensate</li>
+            </ul>
+
+            <h3>Version 1.1 - June 21st 2003</h3>
+            <ul>
+                <li>Added C# (.cs files) support</li>
+                <li>Added C/CPP (.c, .cpp, .h and .hpp files) support</li>
+                <li>Added preliminary JSP (.jsp files) support</li>
+                <li>Main now supports file masks on the command line</li>
+            </ul>
+
+            <h3>Version 1.0 - June 19th 2003</h3>
+            <ul>
+                <li>Initial release</li>
+                <li>Java (*.java files) support</li>
+            </ul>
+
+            <hr />
+            <p align="center"><font size=".5">Java and all Java-based marks are trademarks or registered trademarks of Sun
+            Microsystems, Inc. in the United States and other countries.<br /><br />
+
+            .NET and all .NET-based marks are trademarks or registered trademarks of Microsoft&reg; in the United States and
+            other countries.<br /><br />
+
+            Copyright (c) 2003-2013 Simon Harris.  All rights reserved.</font></p>
+        </div>
+    </body>
+</html>
