@@ -44,16 +44,24 @@ TimeEntry *User::Start(
     const Poco::UInt64 task_id,
     const Poco::UInt64 project_id) {
   Stop();
+
+  time_t now = time(0);
+
   TimeEntry *te = new TimeEntry();
   te->SetDescription(description);
   te->SetUID(ID());
   te->SetPID(project_id);
   te->SetTID(task_id);
-  te->SetStart(time(0));
+
   if (!duration.empty()) {
-    te->SetDurationUserInput(duration);
+    int seconds = Formatter::ParseDurationString(duration);
+    te->SetDurationInSeconds(seconds);
+    te->SetStop(now);
+    te->SetStart(te->Stop() - te->DurationInSeconds());
   } else {
-    te->SetDurationInSeconds(-time(0));
+    te->SetDurationInSeconds(-now);
+    // dont set Stop, TE is running
+    te->SetStart(now);
   }
   te->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
 
@@ -61,8 +69,8 @@ TimeEntry *User::Start(
   if (te->PID()) {
     Project *p = GetProjectByID(te->PID());
     if (p) {
-        te->SetWID(p->WID());
-        te->SetBillable(p->Billable());
+      te->SetWID(p->WID());
+      te->SetBillable(p->Billable());
     }
   }
 
@@ -70,7 +78,7 @@ TimeEntry *User::Start(
   if (!te->WID() && te->TID()) {
     Task *t = GetTaskByID(te->TID());
     if (t) {
-        te->SetWID(t->WID());
+      te->SetWID(t->WID());
     }
   }
 
