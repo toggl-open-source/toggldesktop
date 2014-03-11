@@ -9,4 +9,5 @@
 #import <Cocoa/Cocoa.h>
 
 @interface NSCustomComboBox: NSComboBox
+- (void)reloadingData:(NSInteger *)length;
 @end

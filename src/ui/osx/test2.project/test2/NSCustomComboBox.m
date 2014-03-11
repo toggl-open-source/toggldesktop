@@ -14,4 +14,9 @@
 {
     [self setCellClass:[NSCustomComboBoxCell class]];
 }
+-(void)reloadingData:(NSInteger *)length {
+	[super reloadData];
+	[_cell setCalculatedMaxWidth:fmax((8*(int)length),_frame.size.width)];
+}
+
 @end

@@ -377,7 +377,7 @@
   NSString *filter = [box stringValue];
 
   [self.autocompleteDataSource setFilter:filter];
-  [self.descriptionComboBox reloadData];
+  [self.descriptionComboBox reloadingData:self.autocompleteDataSource.textLength];
 
   // Hide dropdown if filter is empty
   // or nothing was found
