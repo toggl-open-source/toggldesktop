@@ -189,7 +189,7 @@ void TimeEntry::SetDurationUserInput(const std::string value) {
     SetDurationInSeconds(-start);
   } else {
     SetDurationInSeconds(seconds);
-    SetStop(start_ + seconds);
+    SetStop(Start() + seconds);
   }
 }
 
