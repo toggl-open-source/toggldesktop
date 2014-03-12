@@ -321,7 +321,7 @@
  *  compatibility between major releases.  It is highly recommended that you move your functions
  *  over to the new equivalents
  */
-#define JSON_DEPRECATED_FUNCTIONS
+//#define JSON_DEPRECATED_FUNCTIONS
 
 
 /*
