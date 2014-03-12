@@ -10,7 +10,11 @@ extern "C" {
 #include <stddef.h>
 #include <stdio.h>
 
-#define KOPSIK_EXPORT
+#ifdef _WIN32
+	#define KOPSIK_EXPORT __declspec(dllimport) 
+#else
+	#define KOPSIK_EXPORT
+#endif
 
 #define KOPSIK_ERR_LEN 1024
 
