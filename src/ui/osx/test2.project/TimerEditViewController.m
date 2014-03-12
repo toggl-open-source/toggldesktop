@@ -107,7 +107,9 @@
 
 - (void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIEventShowListView]) {
-    [self.descriptionComboBox becomeFirstResponder];
+    if (self.time_entry.duration_in_seconds > -1) {
+      [self.descriptionComboBox becomeFirstResponder];
+    }
     return;
   }
 
