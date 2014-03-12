@@ -9,8 +9,8 @@ Toggl built and signed app is [available for download](https://www.toggl.com/api
 
 Windows
 -------
-FIXME
-
+* [build OpenSSL for Visual Studio](http://developer.covenanteyes.com/building-openssl-for-visual-studio/)
+* [build POCO, using Visual Studio](https://github.com/pocoproject/poco/blob/develop/README)
 
 Linux
 -----
