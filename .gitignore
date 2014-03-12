@@ -61,3 +61,15 @@ coverage
 third_party/TFDatePicker/TFDatePicker/build/
 
 xcshareddata
+*.obj
+*.lib
+*.dll
+*.pdb
+*.pdb
+*.tlog
+*.exe
+*.idb
+*.pch
+
+tmp32
+obj
