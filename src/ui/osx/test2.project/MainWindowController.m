@@ -133,7 +133,7 @@
     [self performSelectorOnMainThread:@selector(showError:) withObject:msg waitUntilDone:NO];
 
     [Bugsnag notify:[NSException
-                     exceptionWithName:@"UI error"
+                     exceptionWithName:msg
                      reason:msg
                      userInfo:nil]];
     return;
