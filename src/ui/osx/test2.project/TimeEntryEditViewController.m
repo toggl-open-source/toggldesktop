@@ -931,7 +931,10 @@ completionsForSubstring:(NSString *)substring
   }
 
   TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:self.GUID];
-  NSAssert(item != nil, @"Time entry view item not found when deleting");
+  if (nil == item) {
+    NSLog(@"Cannot delete time entry, not found by GUID %@", self.GUID);
+    return;
+  }
 
   char err[KOPSIK_ERR_LEN];
   kopsik_api_result res = kopsik_delete_time_entry(ctx,

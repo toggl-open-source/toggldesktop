@@ -174,6 +174,10 @@
 
   // Handle update
   TimeEntryViewItem *updated = [TimeEntryViewItem findByGUID:change.GUID];
+  if (nil == updated) {
+    NSLog(@"Cannot handle model change, model not found by GUID %@", change.GUID);
+    return;
+  }
 
   // Time entry we thought was running, has been stopped.
   if ((updated.duration_in_seconds >= 0) &&
