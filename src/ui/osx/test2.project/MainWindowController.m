@@ -28,8 +28,7 @@
 
 @implementation MainWindowController
 
-- (id)initWithWindow:(NSWindow *)window
-{
+- (id)initWithWindow:(NSWindow *)window {
   self = [super initWithWindow:window];
   if (self) {
     self.loginViewController = [[LoginViewController alloc]
@@ -71,8 +70,7 @@
   return self;
 }
 
--(void)eventHandler: (NSNotification *) notification
-{
+-(void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
     User *userinfo = notification.object;
     [Bugsnag setUserAttribute:@"user_id" withValue:[NSString stringWithFormat:@"%ld", userinfo.ID]];
