@@ -5,6 +5,10 @@
 #include <sstream>
 #include <cstring>
 
+#include "./base_model.h"
+
+#include "Poco/Logger.h"
+
 namespace kopsik {
 
 error BatchUpdateResult::Error() const {
@@ -81,24 +85,10 @@ void BatchUpdateResult::ProcessResponseArray(
     BaseModel *model = (*models)[result.GUID];
     poco_assert(model);
 
-    if (result.ResourceIsGone()) {
-      model->MarkAsDeletedOnServer();
-      continue;
-    }
-
-    kopsik::error err = result.Error();
-    if (err != kopsik::noError) {
-      if (model->IsDuplicateResourceError(err)) {
-        model->MarkAsDeletedOnServer();
-        continue;
-      }
+    error err = model->ApplyBatchUpdateResult(&result);
+    if (err != noError) {
       errors->push_back(err);
-      model->SetError(err);
-      continue;
     }
-
-    poco_assert(json_is_valid(result.Body.c_str()));
-    model->LoadFromDataString(result.Body);
   }
 }
 

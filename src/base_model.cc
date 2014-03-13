@@ -117,4 +117,29 @@ void BaseModel::Delete() {
   SetUIModifiedAt(time(0));
 }
 
+error BaseModel::ApplyBatchUpdateResult(
+    BatchUpdateResult * const update) {
+  poco_assert(update);
+
+  if (update->ResourceIsGone()) {
+    MarkAsDeletedOnServer();
+    return noError;
+  }
+
+  kopsik::error err = update->Error();
+  if (err != kopsik::noError) {
+    if (IsDuplicateResourceError(err)) {
+      MarkAsDeletedOnServer();
+      return noError;
+    }
+    SetError(err);
+    return err;
+  }
+
+  poco_assert(json_is_valid(update->Body.c_str()));
+  LoadFromDataString(update->Body);
+
+  return noError;
+}
+
 }   // namespace kopsik

@@ -10,6 +10,7 @@
 #include "libjson.h" // NOLINT
 
 #include "./types.h"
+#include "./batch_update_result.h"
 
 #include "Poco/Types.h"
 #include "Poco/Logger.h"
@@ -96,6 +97,8 @@ namespace kopsik {
     void LoadFromJSONString(const std::string);
 
     void Delete();
+
+    error ApplyBatchUpdateResult(BatchUpdateResult * const);
 
   protected:
     Poco::Logger &logger() const { return Poco::Logger::get(ModelName()); }

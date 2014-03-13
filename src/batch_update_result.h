@@ -8,13 +8,14 @@
 #include <map>
 
 #include "./types.h"
-#include "./base_model.h"
 
 #include "libjson.h"  // NOLINT
 
 #include "Poco/Types.h"
 
 namespace kopsik {
+
+class BaseModel;
 
 class BatchUpdateResult {
   public:
