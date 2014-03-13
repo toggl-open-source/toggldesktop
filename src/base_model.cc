@@ -128,10 +128,15 @@ error BaseModel::ApplyBatchUpdateResult(
 
   kopsik::error err = update->Error();
   if (err != kopsik::noError) {
-    if (IsDuplicateResourceError(err)) {
+    if (DuplicateResource(err)) {
       MarkAsDeletedOnServer();
       return noError;
     }
+
+    if (ResolveError(err)) {
+      return noError;
+    }
+
     SetError(err);
     return err;
   }

@@ -90,8 +90,8 @@ namespace kopsik {
     virtual void LoadFromJSONNode(JSONNODE * const) = 0;
     virtual JSONNODE *SaveToJSONNode() const = 0;
 
-    virtual bool IsDuplicateResourceError(const kopsik::error err) const {
-        return false; }
+    virtual bool DuplicateResource(const kopsik::error) const { return false; }
+    virtual bool ResolveError(const kopsik::error) { return false; }
 
     void LoadFromDataString(const std::string);
     void LoadFromJSONString(const std::string);

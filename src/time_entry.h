@@ -13,7 +13,7 @@
 
 namespace kopsik {
 
-  class TimeEntry : public BaseModel {
+class TimeEntry : public BaseModel {
   public:
     TimeEntry()
       : BaseModel()
@@ -99,6 +99,8 @@ namespace kopsik {
 
     void StopTracking();
 
+    virtual bool ResolveError(const kopsik::error err);
+
   private:
     Poco::UInt64 wid_;
     Poco::UInt64 pid_;
@@ -118,7 +120,7 @@ namespace kopsik {
 
     void loadTagsFromJSONNode(JSONNODE * const);
 
-    Poco::Logger &logger() { return Poco::Logger::get("time_entry"); }
+    bool durationTooLarge(const kopsik::error) const;
   };
 
   bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b);
