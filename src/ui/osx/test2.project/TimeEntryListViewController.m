@@ -191,16 +191,20 @@
   return cell;
 }
 
+const int kDefaultRowHeight = 51;
+const int kHeaderRowHeight = 86;
+
 - (CGFloat)tableView:(NSTableView *)tableView
          heightOfRow:(NSInteger)row {
   TimeEntryViewItem *item = nil;
   @synchronized(viewitems) {
+    if (row < viewitems.count)
     item = viewitems[row];
   }
-  if (item.isHeader) {
-    return 86;
+  if (item && item.isHeader) {
+    return kHeaderRowHeight;
   }
-  return 51;
+  return kDefaultRowHeight;
 }
 
 - (IBAction)performClick:(id)sender {
