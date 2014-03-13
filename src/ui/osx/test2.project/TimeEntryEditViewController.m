@@ -235,16 +235,16 @@
 
   NSAssert(edit != nil, @"EditNotification is nil");
 
-  if (nil == edit.EntryGUID) {
+  if (nil == edit.GUID) {
     NSLog(@"Cannot render, EditNotification.EntryGUID is nil");
     return;
   }
 
   NSAssert([edit isKindOfClass:[EditNotification class]], @"EditNotification expected");
 
-  TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:edit.EntryGUID];
+  TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:edit.GUID];
   if (nil == item) {
-    NSLog(@"Cannot render, time entry not found by GUID %@", edit.EntryGUID);
+    NSLog(@"Cannot render, time entry not found by GUID %@", edit.GUID);
     return;
   }
 
@@ -281,7 +281,7 @@
     [self.billableCheckbox setHidden:YES];
   }
     
-  self.GUID = edit.EntryGUID;
+  self.GUID = edit.GUID;
   NSAssert(self.GUID != nil, @"GUID is nil");
 
   // Overwrite description only if user is not editing it:
@@ -417,7 +417,7 @@
     
     if ([self.GUID isEqualToString:mc.GUID] && [mc.ChangeType isEqualToString:@"update"]) {
       EditNotification *edit = [[EditNotification alloc] init];
-      edit.EntryGUID = self.GUID;
+      edit.GUID = self.GUID;
       [self performSelectorOnMainThread:@selector(render:)
                              withObject:edit
                           waitUntilDone:NO];

@@ -217,7 +217,7 @@ const int kHeaderRowHeight = 86;
     item = viewitems[row];
   }
   EditNotification *edit = [[EditNotification alloc] init];
-  edit.EntryGUID = item.GUID;
+  edit.GUID = item.GUID;
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
                                                       object:edit];
 }
