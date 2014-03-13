@@ -510,11 +510,11 @@ error User::push(HTTPSClient *https_client) {
     }
 
     std::vector<BatchUpdateResult> results;
-    ParseResponseArray(response_body, &results);
+    BatchUpdateResult::ParseResponseArray(response_body, &results);
 
     std::vector<error> errors;
 
-    ProcessResponseArray(&results, &models, &errors);
+    BatchUpdateResult::ProcessResponseArray(&results, &models, &errors);
 
     if (!errors.empty()) {
         return collectErrors(&errors);

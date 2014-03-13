@@ -59,4 +59,73 @@ void BatchUpdateResult::LoadFromJSONNode(JSONNODE * const n) {
   }
 }
 
+// Iterate through response array, parse response bodies.
+// Collect errors into a vector.
+void BatchUpdateResult::ProcessResponseArray(
+    std::vector<BatchUpdateResult> * const results,
+    std::map<std::string, BaseModel *> *models,
+    std::vector<error> *errors) {
+  poco_assert(results);
+  poco_assert(models);
+  poco_assert(errors);
+
+  Poco::Logger &logger = Poco::Logger::get("json");
+  for (std::vector<BatchUpdateResult>::const_iterator it = results->begin();
+      it != results->end();
+      it++) {
+    BatchUpdateResult result = *it;
+
+    logger.debug(result.String());
+
+    poco_assert(!result.GUID.empty());
+    BaseModel *model = (*models)[result.GUID];
+    poco_assert(model);
+
+    if (result.ResourceIsGone()) {
+      model->MarkAsDeletedOnServer();
+      continue;
+    }
+
+    kopsik::error err = result.Error();
+    if (err != kopsik::noError) {
+      if (model->IsDuplicateResourceError(err)) {
+        model->MarkAsDeletedOnServer();
+        continue;
+      }
+      errors->push_back(err);
+      model->SetError(err);
+      continue;
+    }
+
+    poco_assert(json_is_valid(result.Body.c_str()));
+    model->LoadFromDataString(result.Body);
+  }
+}
+
+void BatchUpdateResult::ParseResponseArray(
+    const std::string response_body,
+    std::vector<BatchUpdateResult> *responses) {
+  poco_assert(responses);
+  poco_assert(responses);
+
+  // There seem to be cases where response body is 0.
+  // Must investigate further.
+  if (response_body.empty()) {
+    Poco::Logger &logger = Poco::Logger::get("json");
+    logger.warning("Response is empty!");
+    return;
+  }
+
+  JSONNODE *response_array = json_parse(response_body.c_str());
+  JSONNODE_ITERATOR i = json_begin(response_array);
+  JSONNODE_ITERATOR e = json_end(response_array);
+  while (i != e) {
+    BatchUpdateResult result;
+    result.LoadFromJSONNode(*i);
+    responses->push_back(result);
+    ++i;
+  }
+  json_delete(response_array);
+}
+
 }   // namespace kopsik
