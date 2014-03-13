@@ -232,8 +232,14 @@
 
 - (void)render:(EditNotification *)edit {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
   NSAssert(edit != nil, @"EditNotification is nil");
-  NSAssert(edit.EntryGUID != nil, @"EditNotification.GUID is nil");
+
+  if (nil == edit.EntryGUID) {
+    NSLog(@"Cannot render, EditNotification.EntryGUID is nil");
+    return;
+  }
+
   NSAssert([edit isKindOfClass:[EditNotification class]], @"EditNotification expected");
 
   TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:edit.EntryGUID];
