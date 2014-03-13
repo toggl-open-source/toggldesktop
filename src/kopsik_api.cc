@@ -68,6 +68,9 @@ int kopsik_is_networking_error(
   if (value.find("Network is down") != std::string::npos) {
     return 1;
   }
+  if (value.find("Network is unreachable") != std::string::npos) {
+    return 1;
+  }
   return 0;
 }
 
