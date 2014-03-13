@@ -237,7 +237,10 @@
   NSAssert([edit isKindOfClass:[EditNotification class]], @"EditNotification expected");
 
   TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:edit.EntryGUID];
-  NSAssert(item != nil, @"View item not found by GUID!");
+  if (nil == item) {
+    NSLog(@"Cannot render, time entry not found by GUID %@", edit.EntryGUID);
+    return;
+  }
 
   self.runningTimeEntry = item;
 
