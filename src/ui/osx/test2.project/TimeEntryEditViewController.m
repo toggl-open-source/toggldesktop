@@ -722,6 +722,7 @@ completionsForSubstring:(NSString *)substring
 
 - (IBAction)projectSelectChanged:(id)sender {
   NSAssert(self.GUID != nil, @"GUID is nil");
+  [self.projectSelect.cell setCalculatedMaxWidth:0];
   char err[KOPSIK_ERR_LEN];
   NSString *key = [self.projectSelect stringValue];
   AutocompleteItem *autocomplete = [self.projectAutocompleteDataSource get:key];
@@ -838,6 +839,8 @@ completionsForSubstring:(NSString *)substring
   NSString *key = [self.descriptionCombobox stringValue];
 
   NSLog(@"descriptionComboboxChanged, stringValue = %@", key);
+
+  [self.descriptionCombobox.cell setCalculatedMaxWidth:0];
 
   AutocompleteItem *autocomplete =
     [self.descriptionComboboxDataSource get:key];

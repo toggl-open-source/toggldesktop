@@ -473,11 +473,9 @@
 
 - (void)offlineMode:(bool)offline {
   if (offline){
-    NSLog(@"offline -> TRUE");
     self.currentOnImage = self.offlineOnImage;
     self.currentOffImage = self.offlineOffImage;
   } else {
-    NSLog(@"offline -> FALSE");
     self.currentOnImage = self.onImage;
     self.currentOffImage = self.offImage;
   }
