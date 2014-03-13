@@ -73,7 +73,7 @@
 -(void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
     User *userinfo = notification.object;
-    [Bugsnag setUserAttribute:@"user_id" withValue:[NSString stringWithFormat:@"%ld", userinfo.ID]];
+    [Bugsnag configuration].userId = [NSString stringWithFormat:@"%ld", userinfo.ID];
     
     // Hide login view
     [self.loginViewController.view removeFromSuperview];
