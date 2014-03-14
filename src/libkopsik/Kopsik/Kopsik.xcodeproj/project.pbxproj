@@ -21,6 +21,8 @@
 		7484A2AC18887BEE0025A88B /* kopsik_api_private.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7484A2A618887BEE0025A88B /* kopsik_api_private.cc */; };
 		748968CB18340F9B00288374 /* version.cc in Sources */ = {isa = PBXBuildFile; fileRef = 748968C918340F9B00288374 /* version.cc */; };
 		748968CC18340F9B00288374 /* version.h in Headers */ = {isa = PBXBuildFile; fileRef = 748968CA18340F9B00288374 /* version.h */; };
+		7498ACE218D2EEFC00A42CA0 /* notifications.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7498ACE018D2EEFC00A42CA0 /* notifications.cc */; };
+		7498ACE318D2EEFC00A42CA0 /* notifications.h in Headers */ = {isa = PBXBuildFile; fileRef = 7498ACE118D2EEFC00A42CA0 /* notifications.h */; };
 		74AA947A18091AE10000539F /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74AA947918091AE10000539F /* WebKit.framework */; };
 		74B587BB18BBC77E00E9F6CE /* formatter.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587A618BBC77E00E9F6CE /* formatter.cc */; };
 		74B587BC18BBC77E00E9F6CE /* tag.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B587A718BBC77E00E9F6CE /* tag.h */; };
@@ -92,6 +94,8 @@
 		7484A2A618887BEE0025A88B /* kopsik_api_private.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = kopsik_api_private.cc; path = ../../../kopsik_api_private.cc; sourceTree = "<group>"; };
 		748968C918340F9B00288374 /* version.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = version.cc; path = ../../../version.cc; sourceTree = "<group>"; };
 		748968CA18340F9B00288374 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = version.h; path = ../../../version.h; sourceTree = "<group>"; };
+		7498ACE018D2EEFC00A42CA0 /* notifications.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = notifications.cc; path = ../../ui/common/notifications.cc; sourceTree = "<group>"; };
+		7498ACE118D2EEFC00A42CA0 /* notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = notifications.h; path = ../../ui/common/notifications.h; sourceTree = "<group>"; };
 		74AA947918091AE10000539F /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		74B587A618BBC77E00E9F6CE /* formatter.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = formatter.cc; path = ../../../formatter.cc; sourceTree = "<group>"; };
 		74B587A718BBC77E00E9F6CE /* tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tag.h; path = ../../../tag.h; sourceTree = "<group>"; };
@@ -179,6 +183,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7498ACDF18D2EED300A42CA0 /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				7498ACE018D2EEFC00A42CA0 /* notifications.cc */,
+				7498ACE118D2EEFC00A42CA0 /* notifications.h */,
+			);
+			name = ui;
+			sourceTree = "<group>";
+		};
 		C55DA59317F06A3B00B42178 = {
 			isa = PBXGroup;
 			children = (
@@ -198,7 +211,8 @@
 				C55DA5DA17F06EF200B42178 /* libc++.dylib */,
 				C55DA5DB17F06EF200B42178 /* libc++abi.dylib */,
 				C55DA5D817F06EDA00B42178 /* libstdc++.dylib */,
-				C55DA59E17F06A3B00B42178 /* Kopsik */,
+				7498ACDF18D2EED300A42CA0 /* ui */,
+				C55DA59E17F06A3B00B42178 /* lib */,
 				C55DA59D17F06A3B00B42178 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -211,7 +225,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C55DA59E17F06A3B00B42178 /* Kopsik */ = {
+		C55DA59E17F06A3B00B42178 /* lib */ = {
 			isa = PBXGroup;
 			children = (
 				7408EDA918C51CEB00CBE8F1 /* proxy.cc */,
@@ -273,6 +287,7 @@
 				C55DA5A217F06A3B00B42178 /* KopsikTarget.xcconfig */,
 				C55DA59F17F06A3B00B42178 /* Supporting Files */,
 			);
+			name = lib;
 			path = Kopsik;
 			sourceTree = "<group>";
 		};
@@ -304,6 +319,7 @@
 				748968CC18340F9B00288374 /* version.h in Headers */,
 				74B587C118BBC77E00E9F6CE /* project.h in Headers */,
 				7408EDB318C51CEB00CBE8F1 /* const.h in Headers */,
+				7498ACE318D2EEFC00A42CA0 /* notifications.h in Headers */,
 				C5DA1FB717F1942A001C4565 /* kopsik_api.h in Headers */,
 				7484A2AA18887BEE0025A88B /* context.h in Headers */,
 				74CAAD1E181860F7001B77BB /* timeline_event.h in Headers */,
@@ -400,6 +416,7 @@
 				74B587BB18BBC77E00E9F6CE /* formatter.cc in Sources */,
 				74B587CE18BBC77E00E9F6CE /* related_data.cc in Sources */,
 				74B587CC18BBC77E00E9F6CE /* workspace.cc in Sources */,
+				7498ACE218D2EEFC00A42CA0 /* notifications.cc in Sources */,
 				74B587C818BBC77E00E9F6CE /* task.cc in Sources */,
 				74CAAD20181860F7001B77BB /* timeline_uploader.cc in Sources */,
 				7484A2AC18887BEE0025A88B /* kopsik_api_private.cc in Sources */,
