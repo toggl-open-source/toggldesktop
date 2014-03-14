@@ -77,6 +77,7 @@
   self.projectNameTextField.stringValue = @"";
   self.clientSelect.stringValue = @"";
   self.workspaceSelect.stringValue = @"";
+  [self.descriptionCombobox setNextKeyView:self.projectNameTextField];
 
   if (!self.addProjectBoxHeight) {
     self.addProjectBoxHeight = [NSLayoutConstraint constraintWithItem:self.addProjectBox
@@ -131,6 +132,7 @@
     [self.view removeConstraints:self.topConstraint];
     self.topConstraint = nil;
   }
+  [self.descriptionCombobox setNextKeyView:self.projectSelect];
   // This is not a good place for this (on Done button!)
   if (![self applyAddProject]) {
     return;
