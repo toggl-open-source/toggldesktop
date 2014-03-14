@@ -77,6 +77,7 @@
   self.projectNameTextField.stringValue = @"";
   self.clientSelect.stringValue = @"";
   self.workspaceSelect.stringValue = @"";
+  [self.descriptionCombobox setNextKeyView:self.projectNameTextField];
 
   if (!self.addProjectBoxHeight) {
     self.addProjectBoxHeight = [NSLayoutConstraint constraintWithItem:self.addProjectBox
@@ -131,6 +132,7 @@
     [self.view removeConstraints:self.topConstraint];
     self.topConstraint = nil;
   }
+  [self.descriptionCombobox setNextKeyView:self.projectSelect];
   // This is not a good place for this (on Done button!)
   if (![self applyAddProject]) {
     return;
@@ -742,6 +744,8 @@ completionsForSubstring:(NSString *)substring
     return;
   }
 
+  [self.projectSelect.cell setCalculatedMaxWidth:0];
+
   char err[KOPSIK_ERR_LEN];
   NSString *key = [self.projectSelect stringValue];
   AutocompleteItem *autocomplete = [self.projectAutocompleteDataSource get:key];
@@ -877,6 +881,8 @@ completionsForSubstring:(NSString *)substring
   NSString *key = [self.descriptionCombobox stringValue];
 
   NSLog(@"descriptionComboboxChanged, stringValue = %@", key);
+
+  [self.descriptionCombobox.cell setCalculatedMaxWidth:0];
 
   AutocompleteItem *autocomplete =
     [self.descriptionComboboxDataSource get:key];
