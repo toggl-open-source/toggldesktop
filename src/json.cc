@@ -670,7 +670,7 @@ JSONNODE *modelUpdateJSON(
     ss << model->ModelName() << " " << model->String() << " needs a PUT";
     logger.debug(ss.str());
   }
-  json_push_back(update, json_new_a("GUID", model->GUID().c_str()));
+  json_push_back(update, json_new_a("guid", model->GUID().c_str()));
   json_push_back(update, body);
 
   return update;
