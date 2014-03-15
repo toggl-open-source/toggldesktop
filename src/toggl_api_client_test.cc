@@ -175,7 +175,7 @@ namespace kopsik {
 
             ASSERT_EQ(noError, db.UInt("select count(1) from time_entries",
                     &n));
-            ASSERT_EQ(uint(4), n);
+            ASSERT_EQ(uint(5), n);
         }
     }
 
@@ -212,7 +212,7 @@ namespace kopsik {
         ASSERT_EQ(uint(2), n);
 
         ASSERT_EQ(noError, db.UInt("select count(1) from time_entries", &n));
-        ASSERT_EQ(uint(4), n);
+        ASSERT_EQ(uint(5), n);
 
         User user2("kopsik_test", "0.1");
         ASSERT_EQ(noError, db.LoadUserByID(user1.ID(), &user2, true));
@@ -665,6 +665,18 @@ namespace kopsik {
         te.SetDurationInSeconds(0);
         te.SetDurationUserInput("2h45");
         ASSERT_EQ("02:45:00", te.DurationString());
+    }
+
+    TEST(TogglApiClientTest, InterpretsCrazyStartAndStopAsMissingValues) {
+        TimeEntry te;
+
+        ASSERT_EQ(0, te.Start());
+        te.SetStartString("0003-03-16T-7:-19:-24Z");
+        ASSERT_EQ(0, te.Start());
+
+        ASSERT_EQ(0, te.Stop());
+        te.SetStopString("0003-03-16T-5:-52:-51Z");
+        ASSERT_EQ(0, te.Stop());
     }
 
     TEST(TogglApiClientTest, Continue) {

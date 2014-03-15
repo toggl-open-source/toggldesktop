@@ -320,11 +320,34 @@ std::time_t Formatter::Parse8601(const std::string iso_8601_formatted_date) {
     }
     int tzd;
     Poco::DateTime dt;
-    Poco::DateTimeParser::parse(Poco::DateTimeFormat::ISO8601_FORMAT,
-        iso_8601_formatted_date, dt, tzd);
+    if (!Poco::DateTimeParser::tryParse(Poco::DateTimeFormat::ISO8601_FORMAT,
+            iso_8601_formatted_date, dt, tzd)) {
+        return 0;
+    }
     dt.makeUTC(tzd);
     Poco::Timestamp ts = dt.timestamp();
-    return ts.epochTime();
+    time_t epoch_time = ts.epochTime();
+
+    // Sun  9 Sep 2001 03:46:40 EET
+    if (epoch_time < 1000000000) {
+        Poco::Logger &logger = Poco::Logger::get("Formatter");
+        std::stringstream ss;
+        ss  << "Parsed timestamp is too small, will interpret as 0: "
+            << epoch_time;
+        logger.warning(ss.str());
+        return 0;
+    }
+
+    if (epoch_time > 2000000000) {
+        Poco::Logger &logger = Poco::Logger::get("Formatter");
+        std::stringstream ss;
+        ss  << "Parsed timestamp is too large, will interpret as 0: "
+            << epoch_time;
+        logger.warning(ss.str());
+        return 0;
+    }
+
+    return epoch_time;
 }
 
 std::string Formatter::Format8601(const std::time_t date) {
