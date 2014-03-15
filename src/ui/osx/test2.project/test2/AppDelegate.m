@@ -43,7 +43,7 @@
 @property NSTimer *idleTimer;
 @property NSString *lastKnownLoginState;
 @property NSString *lastKnownTrackingState;
-@property int lastIdleSecondsReading;
+@property long lastIdleSecondsReading;
 @property NSDate *lastIdleStarted;
 
 // we'll be updating running TE as a menu item, too
