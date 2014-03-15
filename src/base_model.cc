@@ -34,7 +34,7 @@ bool BaseModel::NeedsDELETE() const {
 }
 
 bool BaseModel::NeedsToBeSaved() const {
-  return !local_id_ || dirty_ || guid_.empty();
+  return !local_id_ || dirty_;
 }
 
 void BaseModel::EnsureGUID() {

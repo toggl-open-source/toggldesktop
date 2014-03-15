@@ -1057,12 +1057,14 @@ error Database::saveTimeEntry(
     poco_assert(session);
     poco_assert(changes);
 
+    // Time entries need to have a GUID,
+    // we expect it everywhere in the UI
+    model->EnsureGUID();
+    poco_assert(!model->GUID().empty());
+
     if (!model->NeedsToBeSaved()) {
         return noError;
     }
-
-    model->EnsureGUID();
-    poco_assert(!model->GUID().empty());
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
@@ -1422,12 +1424,17 @@ error Database::saveProject(
     poco_assert(model);
     poco_assert(session);
 
+    // Generate GUID only for locally-created
+    // projects. User cannot update existing
+    // projects, so don't mess with their GUIDs
+    if (!model->ID()) {
+        model->EnsureGUID();
+        poco_assert(!model->GUID().empty());
+    }
+
     if (!model->NeedsToBeSaved()) {
         return noError;
     }
-
-    model->EnsureGUID();
-    poco_assert(!model->GUID().empty());
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
