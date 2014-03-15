@@ -39,7 +39,7 @@
 @property (nonatomic, strong) IBOutlet FeedbackWindowController *
   feedbackWindowController;
 @property TimeEntryViewItem *lastKnownRunningTimeEntry;
-@property NSTimer *statusItemTimer;
+@property NSTimer *menubarTimer;
 @property NSTimer *idleTimer;
 @property NSString *lastKnownLoginState;
 @property NSString *lastKnownTrackingState;
@@ -594,18 +594,19 @@
   // Start menubar timer if its enabled
   if (settings->MenubarTimer) {
     NSLog(@"Starting menubar timer");
-    self.statusItemTimer = [NSTimer
+    self.menubarTimer = [NSTimer
       scheduledTimerWithTimeInterval:1.0
       target:self
-      selector:@selector(statusItemTimerFired:)
+      selector:@selector(menubarTimerFired:)
       userInfo:nil
       repeats:YES];
   } else {
     NSLog(@"Menubar timer is disabled. Stopping menubar timer.");
-    if (self.statusItemTimer != nil) {
-      [self.statusItemTimer invalidate];
-      self.statusItemTimer = nil;
+    if (self.menubarTimer != nil) {
+      [self.menubarTimer invalidate];
+      self.menubarTimer = nil;
     }
+    [self.statusItem setTitle:@""];
   }
   kopsik_settings_clear(settings);
 }
@@ -887,7 +888,7 @@ const NSString *appName = @"osx_native_app";
   return self;
 }
 
-- (void)statusItemTimerFired:(NSTimer*)timer {
+- (void)menubarTimerFired:(NSTimer*)timer {
   if (self.lastKnownRunningTimeEntry != nil) {
     char str[duration_str_len];
     kopsik_format_duration_in_seconds_hhmm(
