@@ -39,6 +39,7 @@ namespace kopsik {
 
     Poco::UInt64 UIModifiedAt() const { return ui_modified_at_; }
     void SetUIModifiedAt(const Poco::UInt64 value);
+    void SetUIModified() { SetUIModifiedAt(time(0)); }
 
     std::string GUID() const { return guid_; }
     void SetGUID(const std::string value);

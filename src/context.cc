@@ -966,7 +966,7 @@ kopsik::error Context::SetTimeEntryDuration(
   }
   te->SetDurationUserInput(duration);
   if (te->Dirty()) {
-    te->SetUIModifiedAt(time(0));
+    te->SetUIModified();
   }
 
   kopsik::error err = save();
@@ -1013,7 +1013,7 @@ kopsik::error Context::SetTimeEntryProject(
   te->SetProjectGUID(project_guid);
 
   if (te->Dirty()) {
-    te->SetUIModifiedAt(time(0));
+    te->SetUIModified();
   }
 
   kopsik::error err = save();
@@ -1043,7 +1043,7 @@ kopsik::error Context::SetTimeEntryStartISO8601(
   }
   te->SetStartUserInput(value);
   if (te->Dirty()) {
-    te->SetUIModifiedAt(time(0));
+    te->SetUIModified();
   }
 
   kopsik::error err = save();
@@ -1072,7 +1072,7 @@ kopsik::error Context::SetTimeEntryEndISO8601(
   }
   te->SetStopUserInput(value);
   if (te->Dirty()) {
-    te->SetUIModifiedAt(time(0));
+    te->SetUIModified();
   }
 
   kopsik::error err = save();
@@ -1101,7 +1101,7 @@ kopsik::error Context::SetTimeEntryTags(
   }
   te->SetTags(value);
   if (te->Dirty()) {
-    te->SetUIModifiedAt(time(0));
+    te->SetUIModified();
   }
 
   kopsik::error err = save();
@@ -1130,7 +1130,7 @@ kopsik::error Context::SetTimeEntryBillable(
   }
   te->SetBillable(value);
   if (te->Dirty()) {
-    te->SetUIModifiedAt(time(0));
+    te->SetUIModified();
   }
 
   kopsik::error err = save();
@@ -1159,7 +1159,7 @@ kopsik::error Context::SetTimeEntryDescription(
   }
   te->SetDescription(value);
   if (te->Dirty()) {
-    te->SetUIModifiedAt(time(0));
+    te->SetUIModified();
   }
 
   kopsik::error err = save();

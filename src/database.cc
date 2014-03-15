@@ -481,7 +481,12 @@ error Database::loadUsersRelatedData(User *user) {
         return err;
     }
 
-    return loadTimeEntries(user->ID(), &user->related.TimeEntries);
+    err = loadTimeEntries(user->ID(), &user->related.TimeEntries);
+    if (err != noError) {
+        return err;
+    }
+
+    return noError;
 }
 
 error Database::LoadUserByID(
@@ -835,7 +840,21 @@ error Database::loadTimeEntries(
         if (err != noError) {
             return err;
         }
-        return loadTimeEntriesFromSQLStatement(&select, list);
+        err = loadTimeEntriesFromSQLStatement(&select, list);
+        if (err != noError) {
+            return err;
+        }
+
+        // Ensure all time entries have a GUID.
+        for (std::vector<TimeEntry *>::iterator it = list->begin();
+                it != list->end();
+                ++it) {
+            TimeEntry *te = *it;
+            te->EnsureGUID();
+            if (te->Dirty()) {
+                te->SetUIModified();
+            }
+        }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -843,7 +862,7 @@ error Database::loadTimeEntries(
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error("loadTimeEntries");
+    return noError;
 }
 
 error Database::loadTimeEntriesFromSQLStatement(
@@ -2534,8 +2553,7 @@ error Database::migrate(
             << sql << "\n";
         logger().debug(ss.str());
 
-        *session << sql, Poco::Data::now;
-        err = last_error("migrate");
+        err = execute(sql);
         if (err != noError) {
             return err;
         }
@@ -2544,6 +2562,29 @@ error Database::migrate(
             Poco::Data::use(name),
             Poco::Data::now;
         err = last_error("migrate");
+        if (err != noError) {
+            return err;
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
+error Database::execute(
+        const std::string sql) {
+    poco_assert(session);
+    poco_assert(!sql.empty());
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
+    try {
+        *session << sql, Poco::Data::now;
+        error err = last_error("execute");
         if (err != noError) {
             return err;
         }

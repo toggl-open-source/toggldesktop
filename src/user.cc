@@ -88,7 +88,7 @@ TimeEntry *User::Start(
   }
 
   te->SetDurOnly(!StoreStartAndStopTime());
-  te->SetUIModifiedAt(time(0));
+  te->SetUIModified();
 
   related.TimeEntries.push_back(te);
   return te;
@@ -124,7 +124,7 @@ kopsik::error User::Continue(
     (*result)->SetTags(existing->Tags());
     related.TimeEntries.push_back((*result));
   }
-  (*result)->SetUIModifiedAt(time(0));
+  (*result)->SetUIModified();
   return kopsik::noError;
 }
 
@@ -254,7 +254,7 @@ TimeEntry *User::SplitAt(const Poco::Int64 at) {
   te->SetWID(running->WID());
   te->SetPID(running->PID());
   te->SetTID(running->TID());
-  te->SetUIModifiedAt(time(0));
+  te->SetUIModified();
   te->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
 
   poco_assert(te->DurationInSeconds() < 0);

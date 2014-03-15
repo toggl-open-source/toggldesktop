@@ -106,9 +106,13 @@ class Database {
 
   private:
     error initialize_tables();
+
     error migrate(
       const std::string name,
       const std::string sql);
+
+    error execute(
+        const std::string sql);
 
     error last_error(
       const std::string was_doing);

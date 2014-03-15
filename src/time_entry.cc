@@ -48,7 +48,7 @@ void TimeEntry::StopAt(const Poco::Int64 at) {
 
   SetStop(at);
 
-  SetUIModifiedAt(time(0));
+  SetUIModified();
 }
 
 void TimeEntry::StopTracking() {
