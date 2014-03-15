@@ -175,7 +175,7 @@ namespace kopsik {
 
             ASSERT_EQ(noError, db.UInt("select count(1) from time_entries",
                     &n));
-            ASSERT_EQ(uint(3), n);
+            ASSERT_EQ(uint(4), n);
         }
     }
 
@@ -212,7 +212,7 @@ namespace kopsik {
         ASSERT_EQ(uint(2), n);
 
         ASSERT_EQ(noError, db.UInt("select count(1) from time_entries", &n));
-        ASSERT_EQ(uint(3), n);
+        ASSERT_EQ(uint(4), n);
 
         User user2("kopsik_test", "0.1");
         ASSERT_EQ(noError, db.LoadUserByID(user1.ID(), &user2, true));
@@ -253,7 +253,7 @@ namespace kopsik {
         ASSERT_EQ(uint(2), n);
 
         ASSERT_EQ(noError, db.UInt("select count(1) from time_entries", &n));
-        ASSERT_EQ(uint(3), n);
+        ASSERT_EQ(uint(4), n);
     }
 
     TEST(TogglApiClientTest, TestStartTimeEntryWithDuration) {
@@ -358,7 +358,7 @@ namespace kopsik {
         ASSERT_TRUE(user.related.Projects[1]->Active());
 
         // Time entries
-        ASSERT_EQ(uint(3), user.related.TimeEntries.size());
+        ASSERT_EQ(uint(4), user.related.TimeEntries.size());
 
         ASSERT_EQ(uint(89818605), user.related.TimeEntries[0]->ID());
         ASSERT_EQ("07fba193-91c4-0ec8-2894-820df0548a8f",
@@ -476,7 +476,7 @@ namespace kopsik {
         ASSERT_EQ(user.related.Projects[1]->String(),
             project_from_db->String());
 
-        ASSERT_EQ(uint(3), user2.related.TimeEntries.size());
+        ASSERT_EQ(uint(4), user2.related.TimeEntries.size());
         TimeEntry *te_from_db =
             user2.GetTimeEntryByID(user.related.TimeEntries[0]->ID());
         ASSERT_TRUE(te_from_db);

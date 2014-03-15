@@ -257,7 +257,7 @@ namespace kopsik {
         ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_items(
             ctx, err, ERRLEN, &first));
         int number_of_items = list_length(first);
-        ASSERT_EQ(3, number_of_items);
+        ASSERT_EQ(4, number_of_items);
         kopsik_time_entry_view_item_clear(first);
 
         // Start tracking
