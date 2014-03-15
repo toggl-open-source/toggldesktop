@@ -634,6 +634,7 @@ JSONNODE *modelUpdateJSON(
     JSONNODE * const n) {
   poco_assert(model);
   poco_assert(n);
+  poco_assert(!model->GUID().empty());
 
   json_set_name(n, model->ModelName().c_str());
 
