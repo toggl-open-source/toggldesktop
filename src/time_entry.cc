@@ -24,7 +24,7 @@
 namespace kopsik {
 
 bool TimeEntry::ResolveError(const kopsik::error err) {
-  if (durationTooLarge(err)) {
+  if (durationTooLarge(err) && Stop() && Start()) {
     Poco::UInt64 max_seconds = 3600000;
     Poco::UInt64 seconds = std::min(Stop() - Start(), max_seconds);
     SetDurationInSeconds(seconds);
