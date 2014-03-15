@@ -26,7 +26,8 @@
 			{"id":89818605,"guid":"07fba193-91c4-0ec8-2894-820df0548a8f","wid":123456789,"pid":2567324,"billable":true,"start":"2013-09-05T06:33:50+00:00","stop":"2013-09-05T08:19:46+00:00","duration":6356,"description":"Important things","tags":[""],"duronly":false,"at":"2013-09-05T08:19:45+00:00"},
 			{"id":89833438,"guid":"6c97dc31-582e-7662-1d6f-5e9d623b1685","wid":123456789,"pid":2567324,"billable":true,"start":"2013-09-05T08:19:47+00:00","stop":"2013-09-05T08:41:02+00:00","duration":1275,"description":"More work","tags":[""],"duronly":false,"at":"2013-09-05T08:41:00+00:00"},
 			{"id":89837259,"guid":"6a958efd-0e9a-d777-7e19-001b2d7ced92","wid":123456789,"pid":2567324,"billable":true,"start":"2013-09-05T08:41:04+00:00","stop":"2013-09-05T09:09:15+00:00","duration":1691,"description":"arendus käib","tags":[""],"duronly":false,"at":"2013-09-05T09:09:13+00:00"},
-			{"id":89837444,"wid":123456789,"pid":2567324,"start":"2013-09-05T12:15:00+00:00","stop":"2013-09-05T09:09:15+00:00","duration":360,"description":"guidless entry","at":"2013-09-05T11:09:13+00:00"}
+			{"id":89837444,"wid":123456789,"pid":2567324,"start":"2013-09-05T12:15:00+00:00","stop":"2013-09-05T09:09:15+00:00","duration":360,"description":"guidless entry","at":"2013-09-05T11:09:13+00:00"},
+			{"id":89837445,"wid":123456789,"pid":2567324,"start":"0003-03-16T-7:-19:-24Z","stop":"0003-03-16T-5:-52:-51Z","duration":360,"description":"guidless entry","at":"2013-09-05T11:09:13+00:00"}
 		],
 		"tags":[
 			{"id":27457033,"wid":123456788,"name":"A deleted tag","server_deleted_at":"2013-08-22T09:05:31+00:00"},

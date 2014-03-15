@@ -254,10 +254,13 @@ namespace kopsik {
         // Count time entry items before start. It should be 3, since
         // there are 3 time entries in the me.json file we're using:
         KopsikTimeEntryViewItem *first = 0;
-        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_items(
-            ctx, err, ERRLEN, &first));
+        if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(
+                ctx, err, ERRLEN, &first)) {
+            ASSERT_EQ(std::string(""), std::string(err));
+            FAIL();
+        }
         int number_of_items = list_length(first);
-        ASSERT_EQ(4, number_of_items);
+        ASSERT_EQ(5, number_of_items);
         kopsik_time_entry_view_item_clear(first);
 
         // Start tracking

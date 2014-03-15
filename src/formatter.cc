@@ -74,7 +74,9 @@ std::string Formatter::FormatDateWithTime(const std::time_t date) {
 }
 
 std::string Formatter::FormatDateHeader(const std::time_t date) {
-    poco_assert(date);
+    if (!date) {
+        return "";
+    }
 
     Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
     Poco::LocalDateTime datetime(ts);
