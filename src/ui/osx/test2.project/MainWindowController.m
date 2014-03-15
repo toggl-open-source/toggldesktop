@@ -66,11 +66,15 @@
                                              selector:@selector(eventHandler:)
                                                  name:kUIStateError
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eventHandler:)
+                                                 name:kUIEventSettingsChanged
+                                               object:nil];
   }
   return self;
 }
 
--(void)eventHandler: (NSNotification *) notification {
+- (void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
     User *userinfo = notification.object;
     [Bugsnag configuration].userId = [NSString stringWithFormat:@"%ld", userinfo.ID];

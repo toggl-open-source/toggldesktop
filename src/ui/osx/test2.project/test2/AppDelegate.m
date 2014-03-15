@@ -119,6 +119,8 @@
 
   [self createStatusItem];
   
+  [self applySettings];
+
   self.lastKnownLoginState = kUIStateUserLoggedOut;
   self.lastKnownTrackingState = kUIStateTimerStopped;
 
@@ -434,13 +436,9 @@
   }
 }
 
-- (void)settingsChanged {
-  [self applySettings];
-}
-
 - (void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIEventSettingsChanged]) {
-    [self settingsChanged];
+    [self applySettings];
   } else if ([notification.name isEqualToString:kUICommandShowPreferences]) {
     [self onPreferencesMenuItem:self];
   } else if ([notification.name isEqualToString:kUICommandNew]) {
@@ -556,8 +554,6 @@
   [self.statusItem setEnabled:YES];
   [self.statusItem setMenu:menu];
   [self.statusItem setImage:self.currentOffImage];
-
-  [self applySettings];
 }
 
 - (void)applySettings {
@@ -610,13 +606,15 @@
     }
     [self.statusItem setTitle:@""];
   }
-  
+
+  // Show/Hide dock icon
+  ProcessSerialNumber psn = { 0, kCurrentProcess };
   if (dock_icon) {
     NSLog(@"Showing dock icon");
-    // FIXME: show/hide dock icon
+    TransformProcessType(&psn, kProcessTransformToForegroundApplication);
   } else {
     NSLog(@"Hiding dock icon.");
-    // FIXME: show/hide dock icon
+    TransformProcessType(&psn, kProcessTransformToUIElementApplication);
   }
 }
 
