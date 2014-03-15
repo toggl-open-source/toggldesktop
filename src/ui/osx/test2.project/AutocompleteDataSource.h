@@ -14,7 +14,7 @@
 @property NSMutableArray *filteredOrderedKeys;
 @property NSMutableDictionary *dictionary;
 @property NSString *currentFilter;
-@property NSInteger *textLength;
+@property NSInteger textLength;
 - (NSString *)completedString:(NSString *)partialString;
 - (void)fetch:(BOOL)withTimeEntries withTasks:(BOOL)withTasks withProjects:(BOOL)withProjects;
 - (AutocompleteItem *)get:(NSString *)key;
