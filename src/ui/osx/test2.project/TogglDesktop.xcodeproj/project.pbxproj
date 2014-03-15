@@ -186,8 +186,8 @@
 		74033C8D17EC1CFD00CA53D3 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		74033C9617EC1DE100CA53D3 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		7408EDB918C532C200CBE8F1 /* const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = const.h; path = ../../../../const.h; sourceTree = "<group>"; };
-		741104BD18C7682700BC7A49 /* NSTextFieldWithBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldWithBackground.h; sourceTree = "<group>"; };
-		741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldWithBackground.m; sourceTree = "<group>"; };
+		741104BD18C7682700BC7A49 /* NSTextFieldWithBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSTextFieldWithBackground.h; path = ../NSTextFieldWithBackground.h; sourceTree = "<group>"; };
+		741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSTextFieldWithBackground.m; path = ../NSTextFieldWithBackground.m; sourceTree = "<group>"; };
 		742339391829B99C00063FA9 /* IdleNotificationWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdleNotificationWindowController.h; sourceTree = "<group>"; };
 		7423393A1829B99C00063FA9 /* IdleNotificationWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdleNotificationWindowController.m; sourceTree = "<group>"; };
 		7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IdleNotificationWindowController.xib; sourceTree = "<group>"; };
@@ -344,8 +344,6 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
-				741104BD18C7682700BC7A49 /* NSTextFieldWithBackground.h */,
-				741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */,
 				74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */,
 				74B680A8180759C300B697AA /* Kopsik.xcodeproj */,
 				74E3CDB117FBABE400C3ADD3 /* bugsnag */,
@@ -405,6 +403,8 @@
 		69FC17FA17E6534400B96425 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				741104BD18C7682700BC7A49 /* NSTextFieldWithBackground.h */,
+				741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */,
 				95C0707818CDB91500A34D0D /* NSCustomComboBox.h */,
 				95C0707918CDB91500A34D0D /* NSCustomComboBox.m */,
 				95C0707518CDB67300A34D0D /* NSCustomComboBoxCell.h */,
