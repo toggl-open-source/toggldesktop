@@ -42,6 +42,10 @@ third_party/poco-1.4.6p2-all/*/*/testsuite/bin/
 .dep
 
 *.db
+*.db-wal
+*.db-shm
+
+
 .DS_Store
 *.xcuserstate
 *.xcuserdatad/
