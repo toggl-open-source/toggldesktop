@@ -435,7 +435,7 @@
 }
 
 - (void)settingsChanged {
-  [self updateTimersBasedOnUserSettings];
+  [self applySettings];
 }
 
 - (void)eventHandler: (NSNotification *) notification {
@@ -557,24 +557,26 @@
   [self.statusItem setMenu:menu];
   [self.statusItem setImage:self.currentOffImage];
 
-  [self updateTimersBasedOnUserSettings];
+  [self applySettings];
 }
 
-- (void)updateTimersBasedOnUserSettings {
-  KopsikSettings *settings = kopsik_settings_init();
+- (void)applySettings {
+  unsigned int use_idle_detection = 0;
+  unsigned int menubar_timer = 0;
+  unsigned int dock_icon = 0;
   char err[KOPSIK_ERR_LEN];
-  kopsik_api_result res = kopsik_get_settings(ctx,
-                                              err,
-                                              KOPSIK_ERR_LEN,
-                                              settings);
-  if (KOPSIK_API_SUCCESS != res) {
-    kopsik_settings_clear(settings);
+  if (KOPSIK_API_SUCCESS != kopsik_get_settings(ctx,
+                                                err,
+                                                KOPSIK_ERR_LEN,
+                                                &use_idle_detection,
+                                                &menubar_timer,
+                                                &dock_icon)) {
     handle_error(err);
     return;
   }
 
   // Start idle detection, if its enabled
-  if (settings->UseIdleDetection) {
+  if (use_idle_detection) {
     NSLog(@"Starting idle detection");
     self.idleTimer = [NSTimer
       scheduledTimerWithTimeInterval:1.0
@@ -592,7 +594,7 @@
   }
 
   // Start menubar timer if its enabled
-  if (settings->MenubarTimer) {
+  if (menubar_timer) {
     NSLog(@"Starting menubar timer");
     self.menubarTimer = [NSTimer
       scheduledTimerWithTimeInterval:1.0
@@ -608,7 +610,14 @@
     }
     [self.statusItem setTitle:@""];
   }
-  kopsik_settings_clear(settings);
+  
+  if (dock_icon) {
+    NSLog(@"Showing dock icon");
+    // FIXME: show/hide dock icon
+  } else {
+    NSLog(@"Hiding dock icon.");
+    // FIXME: show/hide dock icon
+  }
 }
 
 - (void)onNewMenuItem:(id)sender {

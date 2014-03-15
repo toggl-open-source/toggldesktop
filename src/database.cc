@@ -257,75 +257,119 @@ error Database::LoadCurrentUser(
 }
 
 error Database::LoadSettings(
-        bool *use_proxy,
-        Proxy *proxy,
-        bool *use_idle_detection,
-        bool *menubar_timer) {
-    poco_assert(session);
-    poco_assert(use_proxy);
-    poco_assert(proxy);
-    poco_assert(use_idle_detection);
+    bool *use_idle_detection,
+    bool *menubar_timer,
+    bool *dock_icon) {
+  poco_assert(session);
+  poco_assert(use_idle_detection);
+  poco_assert(menubar_timer);
+  poco_assert(dock_icon);
 
-    Poco::Mutex::ScopedLock lock(mutex_);
+  Poco::Mutex::ScopedLock lock(mutex_);
 
-    try {
-        *session << "select use_proxy, proxy_host, proxy_port, "
-                "proxy_username, proxy_password, use_idle_detection, "
-                "menubar_timer "
-                "from settings",
-            Poco::Data::into(*use_proxy),
-            Poco::Data::into(proxy->host),
-            Poco::Data::into(proxy->port),
-            Poco::Data::into(proxy->username),
-            Poco::Data::into(proxy->password),
-            Poco::Data::into(*use_idle_detection),
-            Poco::Data::into(*menubar_timer),
-            Poco::Data::limit(1),
-            Poco::Data::now;
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return last_error("LoadSettings");
+  try {
+    *session << "select use_idle_detection, menubar_timer, dock_icon "
+        "from settings",
+      Poco::Data::into(*use_idle_detection),
+      Poco::Data::into(*menubar_timer),
+      Poco::Data::into(*dock_icon),
+      Poco::Data::limit(1),
+      Poco::Data::now;
+  } catch(const Poco::Exception& exc) {
+    return exc.displayText();
+  } catch(const std::exception& ex) {
+    return ex.what();
+  } catch(const std::string& ex) {
+    return ex;
+  }
+  return last_error("LoadSettings");
+}
+
+error Database::LoadProxySettings(
+    bool *use_proxy,
+    Proxy *proxy) {
+  poco_assert(session);
+  poco_assert(use_proxy);
+  poco_assert(proxy);
+
+  Poco::Mutex::ScopedLock lock(mutex_);
+
+  try {
+    *session << "select use_proxy, proxy_host, proxy_port, "
+        "proxy_username, proxy_password "
+        "from settings",
+      Poco::Data::into(*use_proxy),
+      Poco::Data::into(proxy->host),
+      Poco::Data::into(proxy->port),
+      Poco::Data::into(proxy->username),
+      Poco::Data::into(proxy->password),
+      Poco::Data::limit(1),
+      Poco::Data::now;
+  } catch(const Poco::Exception& exc) {
+    return exc.displayText();
+  } catch(const std::exception& ex) {
+    return ex.what();
+  } catch(const std::string& ex) {
+    return ex;
+  }
+  return last_error("LoadProxySettings");
 }
 
 error Database::SaveSettings(
-        const bool use_proxy,
-        const Proxy *proxy,
-        const bool use_idle_detection,
-        const bool menubar_timer) {
-    poco_assert(session);
+    const bool use_idle_detection,
+    const bool menubar_timer,
+    const bool dock_icon) {
+  poco_assert(session);
 
-    Poco::Mutex::ScopedLock lock(mutex_);
+  Poco::Mutex::ScopedLock lock(mutex_);
 
-    try {
-        *session << "update settings set "
-            "use_proxy = :use_proxy, "
-            "proxy_host = :proxy_host, "
-            "proxy_port = :proxy_port, "
-            "proxy_username = :proxy_username, "
-            "proxy_password = :proxy_password, "
-            "use_idle_detection = :use_idle_detection, "
-            "menubar_timer = :menubar_timer",
-            Poco::Data::use(use_proxy),
-            Poco::Data::use(proxy->host),
-            Poco::Data::use(proxy->port),
-            Poco::Data::use(proxy->username),
-            Poco::Data::use(proxy->password),
-            Poco::Data::use(use_idle_detection),
-            Poco::Data::use(menubar_timer),
-            Poco::Data::now;
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return last_error("SaveSettings");
+  try {
+    *session << "update settings set "
+      "use_idle_detection = :use_idle_detection, "
+      "menubar_timer = :menubar_timer, "
+      "dock_icon = :dock_icon",
+      Poco::Data::use(use_idle_detection),
+      Poco::Data::use(menubar_timer),
+      Poco::Data::use(dock_icon),
+      Poco::Data::now;
+  } catch(const Poco::Exception& exc) {
+    return exc.displayText();
+  } catch(const std::exception& ex) {
+    return ex.what();
+  } catch(const std::string& ex) {
+    return ex;
+  }
+  return last_error("SaveSettings");
+}
+
+error Database::SaveProxySettings(
+    const bool use_proxy,
+    const Proxy *proxy) {
+  poco_assert(session);
+
+  Poco::Mutex::ScopedLock lock(mutex_);
+
+  try {
+    *session << "update settings set "
+      "use_proxy = :use_proxy, "
+      "proxy_host = :proxy_host, "
+      "proxy_port = :proxy_port, "
+      "proxy_username = :proxy_username, "
+      "proxy_password = :proxy_password ",
+      Poco::Data::use(use_proxy),
+      Poco::Data::use(proxy->host),
+      Poco::Data::use(proxy->port),
+      Poco::Data::use(proxy->username),
+      Poco::Data::use(proxy->password),
+      Poco::Data::now;
+  } catch(const Poco::Exception& exc) {
+    return exc.displayText();
+  } catch(const std::exception& ex) {
+    return ex.what();
+  } catch(const std::string& ex) {
+    return ex;
+  }
+  return last_error("SaveProxySettings");
 }
 
 error Database::LoadUpdateChannel(
@@ -2269,6 +2313,13 @@ error Database::initialize_tables() {
     err = migrate("settings.menubar_timer",
         "ALTER TABLE settings "
         "ADD COLUMN menubar_timer integer not null default 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("settings.dock_icon",
+        "ALTER TABLE settings "
+        "ADD COLUMN dock_icon INTEGER NOT NULL DEFAULT 1;");
     if (err != noError) {
         return err;
     }

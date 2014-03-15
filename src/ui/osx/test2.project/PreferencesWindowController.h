@@ -17,6 +17,7 @@
 @property (weak) IBOutlet NSButton *useIdleDetectionButton;
 @property (weak) IBOutlet NSButton *recordTimelineCheckbox;
 @property (weak) IBOutlet NSButton *menubarTimerCheckbox;
+@property (weak) IBOutlet NSButton *dockIconCheckbox;
 - (IBAction)useProxyButtonChanged:(id)sender;
 - (IBAction)hostTextFieldChanged:(id)sender;
 - (IBAction)portTextFieldChanged:(id)sender;
@@ -25,4 +26,5 @@
 - (IBAction)useIdleDetectionButtonChanged:(id)sender;
 - (IBAction)recordTimelineCheckboxChanged:(id)sender;
 - (IBAction)menubarTimerCheckboxChanged:(id)sender;
+- (IBAction)dockIconCheckboxChanged:(id)sender;
 @end
