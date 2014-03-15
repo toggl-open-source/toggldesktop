@@ -937,12 +937,6 @@ error Database::saveProjects(
   poco_assert(list);
   poco_assert(changes);
 
-  {
-    std::stringstream ss;
-    ss << "Saving projects in thread " << Poco::Thread::currentTid();
-    logger().trace(ss.str());
-  }
-
   for (std::vector<Project *>::iterator it = list->begin();
        it != list->end(); ++it) {
     Project *model = *it;
@@ -971,13 +965,6 @@ error Database::saveProjects(
     } else {
       ++it;
     }
-  }
-
-  {
-    std::stringstream ss;
-    ss << "Finished saving time entries in thread " <<
-    Poco::Thread::currentTid();
-    logger().trace(ss.str());
   }
 
   return noError;
@@ -1030,12 +1017,6 @@ error Database::saveTimeEntries(
     poco_assert(list);
     poco_assert(changes);
 
-    {
-        std::stringstream ss;
-        ss << "Saving time entries in thread " << Poco::Thread::currentTid();
-        logger().trace(ss.str());
-    }
-
     for (std::vector<TimeEntry *>::iterator it = list->begin();
             it != list->end(); ++it) {
         TimeEntry *model = *it;
@@ -1066,13 +1047,6 @@ error Database::saveTimeEntries(
         }
     }
 
-    {
-        std::stringstream ss;
-        ss << "Finished saving time entries in thread " <<
-            Poco::Thread::currentTid();
-        logger().trace(ss.str());
-    }
-
     return noError;
 }
 
@@ -1088,6 +1062,7 @@ error Database::saveTimeEntry(
     }
 
     model->EnsureGUID();
+    poco_assert(!model->GUID().empty());
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
@@ -1096,7 +1071,7 @@ error Database::saveTimeEntry(
             std::stringstream ss;
             ss << "Updating time entry " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger().trace(ss.str());
+            logger().debug(ss.str());
 
             if (model->ID()) {
                 *session << "update time_entries set "
@@ -1175,7 +1150,7 @@ error Database::saveTimeEntry(
             std::stringstream ss;
             ss << "Inserting time entry " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger().trace(ss.str());
+            logger().debug(ss.str());
             if (model->ID()) {
                 *session << "insert into time_entries(id, uid, description, "
                     "wid, guid, pid, tid, billable, "
@@ -1452,6 +1427,7 @@ error Database::saveProject(
     }
 
     model->EnsureGUID();
+    poco_assert(!model->GUID().empty());
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
@@ -1829,12 +1805,6 @@ error Database::SaveUser(
     }
     poco_assert(session);
     poco_assert(changes);
-
-    {
-        std::stringstream ss;
-        ss << "Saving user in thread " << Poco::Thread::currentTid();
-        logger().trace(ss.str());
-    }
 
     Poco::Stopwatch stopwatch;
     stopwatch.start();
@@ -2248,14 +2218,15 @@ error Database::initialize_tables() {
     }
 
     err = migrate("time_entries.id",
-        "CREATE UNIQUE INDEX id_time_entries_id ON time_entries (uid, id); ");
+        "CREATE UNIQUE INDEX id_time_entries_id "
+        "ON time_entries (uid, id); ");
     if (err != noError) {
       return err;
     }
 
     err = migrate("time_entries.guid",
         "CREATE UNIQUE INDEX id_time_entries_guid "
-        "   ON time_entries (uid, guid); ");
+        "ON time_entries (uid, guid); ");
     if (err != noError) {
       return err;
     }
@@ -2263,6 +2234,80 @@ error Database::initialize_tables() {
     err = migrate("time_entries.project_guid",
         "ALTER TABLE time_entries "
         "ADD COLUMN project_guid VARCHAR;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("time_entries.guid not null, step 1",
+        "ALTER TABLE time_entries RENAME TO tmp_time_entries; ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("time_entries.guid not null, step 2",
+        "create table time_entries("
+        "local_id integer primary key, "
+        "id integer, "
+        "uid integer not null, "
+        "description varchar, "
+        "wid integer not null, "
+        "guid varchar NOT NULL, "
+        "pid integer, "
+        "tid integer, "
+        "billable integer not null default 0,"
+        "duronly integer not null default 0, "
+        "ui_modified_at integer, "
+        "start integer not null, "
+        "stop integer, "
+        "duration integer not null,"
+        "tags text,"
+        "created_with varchar,"
+        "deleted_at integer,"
+        "updated_at integer,"
+        "project_guid VARCHAR,"
+        "constraint fk_time_entries_wid foreign key (wid) "
+        "   references workspaces(id) on delete no action on update no action, "
+        "constraint fk_time_entries_pid foreign key (pid) "
+        "   references projects(id) on delete no action on update no action, "
+        "constraint fk_time_entries_tid foreign key (tid) "
+        "   references tasks(id) on delete no action on update no action, "
+        "constraint fk_time_entries_uid foreign key (uid) "
+        "   references users(id) on delete no action on update no action"
+        "); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("time_entries.guid not null, step 3",
+        "insert into time_entries("
+        "   local_id, id, uid, description, wid, guid, pid, tid, billable, "
+        "   duronly, ui_modified_at, start, stop, duration, tags, "
+        "   created_with, deleted_at, updated_at, project_guid) "
+        "select "
+        "   local_id, id, uid, description, wid, guid, pid, tid, billable, "
+        "   duronly, ui_modified_at, start, stop, duration, tags, "
+        "   created_with, deleted_at, updated_at, project_guid "
+        "from tmp_time_entries;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("time_entries.guid not null, step 4",
+        "drop table tmp_time_entries;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("time_entries.guid not null, step 5",
+        "CREATE UNIQUE INDEX id_time_entries_id "
+        "   ON time_entries (uid, id); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("time_entries.guid not null, step 6",
+        "CREATE UNIQUE INDEX id_time_entries_guid "
+        "   ON time_entries (uid, guid); ");
     if (err != noError) {
         return err;
     }
@@ -2472,20 +2517,28 @@ error Database::migrate(
             return err;
         }
 
-        if (count < 1) {
-            *session << sql, Poco::Data::now;
-            err = last_error("migrate");
-            if (err != noError) {
-                return err;
-            }
+        if (count) {
+            return noError;
+        }
 
-            *session << "insert into kopsik_migrations(name) values(:name)",
-                Poco::Data::use(name),
-                Poco::Data::now;
-            err = last_error("migrate");
-            if (err != noError) {
-                return err;
-            }
+        std::stringstream ss;
+        ss  << "Migrating" << "\n"
+            << name << "\n"
+            << sql << "\n";
+        logger().debug(ss.str());
+
+        *session << sql, Poco::Data::now;
+        err = last_error("migrate");
+        if (err != noError) {
+            return err;
+        }
+
+        *session << "insert into kopsik_migrations(name) values(:name)",
+            Poco::Data::use(name),
+            Poco::Data::now;
+        err = last_error("migrate");
+        if (err != noError) {
+            return err;
         }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
