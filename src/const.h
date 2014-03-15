@@ -15,4 +15,6 @@
 #define kTimelineUploadURL "https://timeline.toggl.com"
 #define kWebSocketURL "https://stream.toggl.com"
 
+#define kCheckUpdateIntervalSeconds 3600
+
 #endif  // SRC_CONST_H_
