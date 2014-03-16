@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <deployment defaultVersion="1070" identifier="macosx"/>
+        <deployment defaultVersion="1060" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
     </dependencies>
     <objects>
@@ -12,26 +12,23 @@
             <rect key="frame" x="0.0" y="0.0" width="252" height="51"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box autoresizesSubviews="NO" borderWidth="0.0" title="Box" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="ar8-w3-mLZ">
+                <box autoresizesSubviews="NO" borderWidth="0.0" title="Box" boxType="custom" borderType="line" titlePosition="noTitle" id="ar8-w3-mLZ">
                     <rect key="frame" x="0.0" y="1" width="252" height="50"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView">
                         <rect key="frame" x="0.0" y="0.0" width="252" height="50"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CwR-d5-aWs">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="CwR-d5-aWs">
                                 <rect key="frame" x="18" y="25" width="161" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="17" id="QDn-DF-0mF"/>
-                                </constraints>
                                 <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="Blogpost about ne..." id="KGe-cR-NlL">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xwb-FG-Z4X">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="xwb-FG-Z4X">
                                 <rect key="frame" x="195" y="17" width="56" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="03:21:30" id="Ten-lK-6RR">
@@ -40,7 +37,7 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="deS-e6-3Ui" customClass="NSTextFieldWithBackground">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="deS-e6-3Ui" customClass="NSTextFieldWithBackground">
                                 <rect key="frame" x="14" y="12" width="120" height="11"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="NEW - TOGGL" drawsBackground="YES" id="apI-Za-Hk2">
@@ -51,28 +48,12 @@
                             </textField>
                         </subviews>
                     </view>
-                    <constraints>
-                        <constraint firstItem="deS-e6-3Ui" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" constant="14" id="FOo-PQ-AK1"/>
-                        <constraint firstItem="deS-e6-3Ui" firstAttribute="top" secondItem="CwR-d5-aWs" secondAttribute="bottom" constant="2" id="HZ7-Mc-iQ2"/>
-                        <constraint firstItem="xwb-FG-Z4X" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" constant="17" id="HsG-Zm-aF4"/>
-                        <constraint firstItem="CwR-d5-aWs" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" constant="15" id="KZ4-JV-5xD"/>
-                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="deS-e6-3Ui" secondAttribute="trailing" constant="92" id="L9d-4A-NVt"/>
-                        <constraint firstAttribute="trailing" secondItem="CwR-d5-aWs" secondAttribute="trailing" constant="94" id="OD9-hN-DXz"/>
-                        <constraint firstAttribute="trailing" secondItem="xwb-FG-Z4X" secondAttribute="trailing" constant="15" id="SKX-kj-jDT"/>
-                        <constraint firstAttribute="bottom" secondItem="xwb-FG-Z4X" secondAttribute="bottom" constant="17" id="Wxi-cu-zKj"/>
-                        <constraint firstItem="CwR-d5-aWs" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" constant="8" id="p6t-ka-sVG"/>
-                        <constraint firstAttribute="bottom" secondItem="deS-e6-3Ui" secondAttribute="bottom" constant="12" id="sXL-6H-yCQ"/>
-                    </constraints>
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </box>
-                <button toolTip="Continue with this time entry" translatesAutoresizingMaskIntoConstraints="NO" id="Gcj-ki-Hus" customClass="NSHoverButton">
+                <button toolTip="Continue with this time entry" id="Gcj-ki-Hus" customClass="NSHoverButton">
                     <rect key="frame" x="162" y="12" width="21" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="21" id="FfV-9g-8jU"/>
-                        <constraint firstAttribute="width" constant="21" id="pmZ-g5-uge"/>
-                    </constraints>
                     <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="NSRightFacingTriangleTemplate" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="RwR-fM-rUm">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -82,14 +63,6 @@
                     </connections>
                 </button>
             </subviews>
-            <constraints>
-                <constraint firstItem="ar8-w3-mLZ" firstAttribute="leading" secondItem="jHy-af-Yta" secondAttribute="leading" id="1aX-SP-Ibf"/>
-                <constraint firstAttribute="bottom" secondItem="ar8-w3-mLZ" secondAttribute="bottom" constant="1" id="50P-cL-fjI"/>
-                <constraint firstItem="ar8-w3-mLZ" firstAttribute="top" secondItem="jHy-af-Yta" secondAttribute="top" id="BO9-BK-fhw"/>
-                <constraint firstAttribute="trailing" secondItem="ar8-w3-mLZ" secondAttribute="trailing" id="fix-Va-WqO"/>
-                <constraint firstAttribute="trailing" secondItem="Gcj-ki-Hus" secondAttribute="trailing" constant="69" id="nQK-0L-3Rf"/>
-                <constraint firstAttribute="bottom" secondItem="Gcj-ki-Hus" secondAttribute="bottom" constant="12" id="xzR-RD-GVL"/>
-            </constraints>
             <connections>
                 <outlet property="descriptionTextField" destination="CwR-d5-aWs" id="Wip-cq-Mwm"/>
                 <outlet property="durationTextField" destination="xwb-FG-Z4X" id="utn-4y-DUw"/>
