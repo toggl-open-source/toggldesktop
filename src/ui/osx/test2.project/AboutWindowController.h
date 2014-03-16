@@ -9,11 +9,11 @@
 #import <Cocoa/Cocoa.h>
 
 @interface AboutWindowController : NSWindowController
-@property (weak) IBOutlet NSTextField *appnameTextField;
-@property (weak) IBOutlet NSTextField *versionTextField;
-@property (unsafe_unretained) IBOutlet NSTextView *creditsTextView;
-@property (weak) IBOutlet NSButton *checkForUpdateButton;
-@property (weak) IBOutlet NSComboBox *updateChannelComboBox;
+@property IBOutlet NSTextField *appnameTextField;
+@property IBOutlet NSTextField *versionTextField;
+@property IBOutlet NSTextView *creditsTextView;
+@property IBOutlet NSButton *checkForUpdateButton;
+@property IBOutlet NSComboBox *updateChannelComboBox;
 - (IBAction)checkForUpdateClicked:(id)sender;
 - (IBAction)updateChannelSelected:(id)sender;
 @end

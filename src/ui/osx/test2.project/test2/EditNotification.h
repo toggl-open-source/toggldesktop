@@ -8,6 +8,6 @@
 #import <Foundation/Foundation.h>
 
 @interface EditNotification : NSObject
-@property (weak) NSString *GUID;
-@property (weak) NSString *FieldName;
+@property NSString *GUID;
+@property NSString *FieldName;
 @end

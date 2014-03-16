@@ -14,7 +14,7 @@
   @private
   NSMutableArray *viewitems;
 }
-@property (weak) IBOutlet NSView *headerView;
-@property (weak) IBOutlet NSUnstripedTableView *timeEntriesTableView;
+@property (unsafe_unretained) IBOutlet NSView *headerView;
+@property (unsafe_unretained) IBOutlet NSUnstripedTableView *timeEntriesTableView;
 - (IBAction)performClick:(id)sender;
 @end

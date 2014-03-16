@@ -11,11 +11,11 @@
 #import "NSTextFieldClickable.h"
 
 @interface LoginViewController : NSViewController
-@property (weak) IBOutlet NSTextField *email;
-@property (weak) IBOutlet NSSecureTextField *password;
-@property (weak) IBOutlet NSTextField *errorLabel;
-@property (weak) IBOutlet NSTextFieldClickable *googleLoginTextField;
-@property (weak) IBOutlet NSTextFieldClickable *passwordForgotTextField;
-@property (weak) IBOutlet NSBox *troubleBox;
+@property IBOutlet NSTextField *email;
+@property IBOutlet NSSecureTextField *password;
+@property IBOutlet NSTextField *errorLabel;
+@property IBOutlet NSTextFieldClickable *googleLoginTextField;
+@property IBOutlet NSTextFieldClickable *passwordForgotTextField;
+@property IBOutlet NSBox *troubleBox;
 - (IBAction)clickLoginButton:(id)sender;
 @end

@@ -9,15 +9,15 @@
 #import <Cocoa/Cocoa.h>
 
 @interface PreferencesWindowController : NSWindowController
-@property (weak) IBOutlet NSTextField *hostTextField;
-@property (weak) IBOutlet NSTextField *portTextField;
-@property (weak) IBOutlet NSTextField *usernameTextField;
-@property (weak) IBOutlet NSTextField *passwordTextField;
-@property (weak) IBOutlet NSButton *useProxyButton;
-@property (weak) IBOutlet NSButton *useIdleDetectionButton;
-@property (weak) IBOutlet NSButton *recordTimelineCheckbox;
-@property (weak) IBOutlet NSButton *menubarTimerCheckbox;
-@property (weak) IBOutlet NSButton *dockIconCheckbox;
+@property IBOutlet NSTextField *hostTextField;
+@property IBOutlet NSTextField *portTextField;
+@property IBOutlet NSTextField *usernameTextField;
+@property IBOutlet NSTextField *passwordTextField;
+@property IBOutlet NSButton *useProxyButton;
+@property IBOutlet NSButton *useIdleDetectionButton;
+@property IBOutlet NSButton *recordTimelineCheckbox;
+@property IBOutlet NSButton *menubarTimerCheckbox;
+@property IBOutlet NSButton *dockIconCheckbox;
 - (IBAction)useProxyButtonChanged:(id)sender;
 - (IBAction)hostTextFieldChanged:(id)sender;
 - (IBAction)portTextFieldChanged:(id)sender;
