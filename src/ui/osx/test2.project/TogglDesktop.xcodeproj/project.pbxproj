@@ -281,7 +281,6 @@
 		74E3CDD817FC369700C3ADD3 /* ExceptionHandling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExceptionHandling.framework; path = System/Library/Frameworks/ExceptionHandling.framework; sourceTree = SDKROOT; };
 		74E3CDDB17FC8E8000C3ADD3 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = SOURCE_ROOT; };
 		74E3CDDC17FC8E8000C3ADD3 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = SOURCE_ROOT; };
-		74E749F018D519D8004F4904 /* TogglDesktop.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TogglDesktop.entitlements; sourceTree = "<group>"; };
 		74F106FE18993FFE00E93BD5 /* FeedbackWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeedbackWindowController.h; path = ../FeedbackWindowController.h; sourceTree = "<group>"; };
 		74F106FF18993FFE00E93BD5 /* FeedbackWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FeedbackWindowController.m; path = ../FeedbackWindowController.m; sourceTree = "<group>"; };
 		74F1070018993FFE00E93BD5 /* FeedbackWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FeedbackWindowController.xib; path = ../FeedbackWindowController.xib; sourceTree = "<group>"; };
@@ -345,7 +344,6 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
-				74E749F018D519D8004F4904 /* TogglDesktop.entitlements */,
 				74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */,
 				74B680A8180759C300B697AA /* Kopsik.xcodeproj */,
 				74E3CDB117FBABE400C3ADD3 /* bugsnag */,
@@ -651,15 +649,6 @@
 			attributes = {
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = Alari;
-				TargetAttributes = {
-					69FC17F017E6534400B96425 = {
-						SystemCapabilities = {
-							com.apple.Sandbox = {
-								enabled = 1;
-							};
-						};
-					};
-				};
 			};
 			buildConfigurationList = 69FC17EC17E6534400B96425 /* Build configuration list for PBXProject "TogglDesktop" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -972,8 +961,6 @@
 		69FC182317E6534500B96425 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = TogglDesktop.entitlements;
-				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1005,8 +992,6 @@
 		69FC182417E6534500B96425 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = TogglDesktop.entitlements;
-				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
