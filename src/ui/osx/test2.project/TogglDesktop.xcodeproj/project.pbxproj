@@ -985,6 +985,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = TogglDesktop;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
+				STRIP_INSTALLED_PRODUCT = NO;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -993,6 +994,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1016,6 +1018,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = TogglDesktop;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
+				STRIP_INSTALLED_PRODUCT = NO;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

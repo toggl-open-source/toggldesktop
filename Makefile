@@ -133,7 +133,6 @@ cmdline: clean lint
 	$(cxx) $(cflags) -O2 -c src/window_change_recorder.cc -o build/window_change_recorder.o
 	$(cxx) $(cflags) -O2 -c src/ui/cmdline/main.cc -o build/main.o
 	$(cxx) -o $(main) -o $(main) build/*.o $(libs)
-	strip $(main)
 
 clean:
 	rm -rf build && \
