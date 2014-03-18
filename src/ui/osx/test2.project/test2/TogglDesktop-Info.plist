@@ -17,17 +17,17 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>7.550</string>
+	<string>7.551</string>
 	<key>CFBundleSignature</key>
 	<string>td70</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>KopsikCheckForUpdates</key>
-	<false/>
+	<true/>
 	<key>KopsikEnvironment</key>
-	<string>development</string>
+	<string>production</string>
 	<key>KopsikLogUserInterfaceToFile</key>
-	<false/>
+	<true/>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
 	<key>LSMinimumSystemVersion</key>
