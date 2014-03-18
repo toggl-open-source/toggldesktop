@@ -82,8 +82,7 @@
       initWithWindowNibName:@"MainWindowController"];
   [self.mainWindowController.window setReleasedWhenClosed:NO];
   
-  PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
-  NSError *error;
+  PLCrashReporter *crashReporter = [self configuredCrashReporter];
   
   // Check if we previously crashed
   if ([crashReporter hasPendingCrashReport]) {
@@ -91,6 +90,7 @@
   }
   
   // Enable the Crash Reporter
+  NSError *error;
   if (![crashReporter enableCrashReporterAndReturnError: &error]) {
     NSLog(@"Warning: Could not enable crash reporter: %@", error);
   }
@@ -1111,8 +1111,15 @@ void check_for_updates_callback(kopsik_api_result result,
   [NSApp terminate:nil];
 }
 
+- (PLCrashReporter *)configuredCrashReporter {
+  PLCrashReporterConfig *config = [[PLCrashReporterConfig alloc]
+                                   initWithSignalHandlerType:PLCrashReporterSignalHandlerTypeBSD
+                                   symbolicationStrategy:PLCrashReporterSymbolicationStrategyAll];
+  return [[PLCrashReporter alloc] initWithConfiguration: config];
+}
+
 - (void) handleCrashReport {
-  PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
+  PLCrashReporter *crashReporter = [self configuredCrashReporter];
 
   NSError *error;
   NSData *crashData = [crashReporter loadPendingCrashReportDataAndReturnError: &error];
