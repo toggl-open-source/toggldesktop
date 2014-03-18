@@ -1130,13 +1130,14 @@ void check_for_updates_callback(kopsik_api_result result,
     return;
   }
 
-  NSString *summary = [NSString stringWithFormat:@"Crashed with signal %@ (code %@, address=0x%" PRIx64 ")",
+  NSString *summary = [NSString stringWithFormat:@"Crashed with signal %@ (code %@)",
                        report.signalInfo.name,
-                       report.signalInfo.code,
-                       report.signalInfo.address];
+                       report.signalInfo.code];
 
+  NSString *humanReadable = [PLCrashReportTextFormatter stringValueForCrashReport:report
+                                                                   withTextFormat:PLCrashReportTextFormatiOS];
   NSLog(@"Crashed on %@", report.systemInfo.timestamp);
-  NSLog(@"%@", summary);
+  NSLog(@"Report: %@", humanReadable);
 
   NSException* exception;
   NSMutableDictionary *data = [[NSMutableDictionary alloc] init];;
@@ -1147,8 +1148,8 @@ void check_for_updates_callback(kopsik_api_result result,
       userInfo:nil];
   } else {
     exception = [NSException
-      exceptionWithName:@"Crash"
-      reason:summary
+      exceptionWithName:summary
+      reason:humanReadable
       userInfo:nil];
   }
   [Bugsnag notify:exception withData:data];
