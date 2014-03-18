@@ -22,21 +22,23 @@
 	<string>td70</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>KopsikCheckForUpdates</key>
+	<false/>
+	<key>KopsikEnvironment</key>
+	<string>development</string>
+	<key>KopsikLogUserInterfaceToFile</key>
+	<false/>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
+	<key>LSUIElement</key>
+	<true/>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2014 Toggl Desktop developers. All rights reserved.</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>KopsikEnvironment</key>
-	<string>production</string>
-	<key>KopsikCheckForUpdates</key>
-	<true/>
-	<key>KopsikLogUserInterfaceToFile</key>
-	<true/>
 </dict>
 </plist>

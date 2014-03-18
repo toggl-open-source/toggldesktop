@@ -39,11 +39,11 @@
 @property (nonatomic, strong) IBOutlet FeedbackWindowController *
   feedbackWindowController;
 @property TimeEntryViewItem *lastKnownRunningTimeEntry;
-@property NSTimer *statusItemTimer;
+@property NSTimer *menubarTimer;
 @property NSTimer *idleTimer;
 @property NSString *lastKnownLoginState;
 @property NSString *lastKnownTrackingState;
-@property int lastIdleSecondsReading;
+@property long lastIdleSecondsReading;
 @property NSDate *lastIdleStarted;
 
 // we'll be updating running TE as a menu item, too
@@ -119,6 +119,8 @@
 
   [self createStatusItem];
   
+  [self applySettings];
+
   self.lastKnownLoginState = kUIStateUserLoggedOut;
   self.lastKnownTrackingState = kUIStateTimerStopped;
 
@@ -434,13 +436,9 @@
   }
 }
 
-- (void)settingsChanged {
-  [self updateTimersBasedOnUserSettings];
-}
-
 - (void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIEventSettingsChanged]) {
-    [self settingsChanged];
+    [self applySettings];
   } else if ([notification.name isEqualToString:kUICommandShowPreferences]) {
     [self onPreferencesMenuItem:self];
   } else if ([notification.name isEqualToString:kUICommandNew]) {
@@ -556,25 +554,25 @@
   [self.statusItem setEnabled:YES];
   [self.statusItem setMenu:menu];
   [self.statusItem setImage:self.currentOffImage];
-
-  [self updateTimersBasedOnUserSettings];
 }
 
-- (void)updateTimersBasedOnUserSettings {
-  KopsikSettings *settings = kopsik_settings_init();
+- (void)applySettings {
+  unsigned int use_idle_detection = 0;
+  unsigned int menubar_timer = 0;
+  unsigned int dock_icon = 0;
   char err[KOPSIK_ERR_LEN];
-  kopsik_api_result res = kopsik_get_settings(ctx,
-                                              err,
-                                              KOPSIK_ERR_LEN,
-                                              settings);
-  if (KOPSIK_API_SUCCESS != res) {
-    kopsik_settings_clear(settings);
+  if (KOPSIK_API_SUCCESS != kopsik_get_settings(ctx,
+                                                err,
+                                                KOPSIK_ERR_LEN,
+                                                &use_idle_detection,
+                                                &menubar_timer,
+                                                &dock_icon)) {
     handle_error(err);
     return;
   }
 
   // Start idle detection, if its enabled
-  if (settings->UseIdleDetection) {
+  if (use_idle_detection) {
     NSLog(@"Starting idle detection");
     self.idleTimer = [NSTimer
       scheduledTimerWithTimeInterval:1.0
@@ -592,22 +590,32 @@
   }
 
   // Start menubar timer if its enabled
-  if (settings->MenubarTimer) {
+  if (menubar_timer) {
     NSLog(@"Starting menubar timer");
-    self.statusItemTimer = [NSTimer
+    self.menubarTimer = [NSTimer
       scheduledTimerWithTimeInterval:1.0
       target:self
-      selector:@selector(statusItemTimerFired:)
+      selector:@selector(menubarTimerFired:)
       userInfo:nil
       repeats:YES];
   } else {
     NSLog(@"Menubar timer is disabled. Stopping menubar timer.");
-    if (self.statusItemTimer != nil) {
-      [self.statusItemTimer invalidate];
-      self.statusItemTimer = nil;
+    if (self.menubarTimer != nil) {
+      [self.menubarTimer invalidate];
+      self.menubarTimer = nil;
     }
+    [self.statusItem setTitle:@""];
   }
-  kopsik_settings_clear(settings);
+
+  // Show/Hide dock icon
+  ProcessSerialNumber psn = { 0, kCurrentProcess };
+  if (dock_icon) {
+    NSLog(@"Showing dock icon");
+    TransformProcessType(&psn, kProcessTransformToForegroundApplication);
+  } else {
+    NSLog(@"Hiding dock icon.");
+    TransformProcessType(&psn, kProcessTransformToUIElementApplication);
+  }
 }
 
 - (void)onNewMenuItem:(id)sender {
@@ -887,7 +895,7 @@ const NSString *appName = @"osx_native_app";
   return self;
 }
 
-- (void)statusItemTimerFired:(NSTimer*)timer {
+- (void)menubarTimerFired:(NSTimer*)timer {
   if (self.lastKnownRunningTimeEntry != nil) {
     char str[duration_str_len];
     kopsik_format_duration_in_seconds_hhmm(
@@ -1122,13 +1130,14 @@ void check_for_updates_callback(kopsik_api_result result,
     return;
   }
 
-  NSString *summary = [NSString stringWithFormat:@"Crashed with signal %@ (code %@, address=0x%" PRIx64 ")",
+  NSString *summary = [NSString stringWithFormat:@"Crashed with signal %@ (code %@)",
                        report.signalInfo.name,
-                       report.signalInfo.code,
-                       report.signalInfo.address];
+                       report.signalInfo.code];
 
+  NSString *humanReadable = [PLCrashReportTextFormatter stringValueForCrashReport:report
+                                                                   withTextFormat:PLCrashReportTextFormatiOS];
   NSLog(@"Crashed on %@", report.systemInfo.timestamp);
-  NSLog(@"%@", summary);
+  NSLog(@"Report: %@", humanReadable);
 
   NSException* exception;
   NSMutableDictionary *data = [[NSMutableDictionary alloc] init];;
@@ -1139,8 +1148,8 @@ void check_for_updates_callback(kopsik_api_result result,
       userInfo:nil];
   } else {
     exception = [NSException
-      exceptionWithName:@"Crash"
-      reason:summary
+      exceptionWithName:summary
+      reason:humanReadable
       userInfo:nil];
   }
   [Bugsnag notify:exception withData:data];

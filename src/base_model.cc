@@ -24,17 +24,17 @@ bool BaseModel::NeedsPOST() const {
 }
 
 bool BaseModel::NeedsPUT() const {
-    // User has modified model via UI, needs a PUT
+    // Model has been updated and is not deleted, needs a PUT
     return ui_modified_at_ > 0 && !(deleted_at_ > 0);
 }
 
 bool BaseModel::NeedsDELETE() const {
-    // TE is deleted, needs a DELETE on server side
+    // Model is deleted, needs a DELETE on server side
     return id_ && (deleted_at_ > 0);
 }
 
 bool BaseModel::NeedsToBeSaved() const {
-  return !local_id_ || dirty_ || guid_.empty();
+  return !local_id_ || dirty_;
 }
 
 void BaseModel::EnsureGUID() {
@@ -114,7 +114,37 @@ void BaseModel::LoadFromJSONString(const std::string json_string) {
 
 void BaseModel::Delete() {
   SetDeletedAt(time(0));
-  SetUIModifiedAt(time(0));
+  SetUIModified();
+}
+
+error BaseModel::ApplyBatchUpdateResult(
+    BatchUpdateResult * const update) {
+  poco_assert(update);
+
+  if (update->ResourceIsGone()) {
+    MarkAsDeletedOnServer();
+    return noError;
+  }
+
+  kopsik::error err = update->Error();
+  if (err != kopsik::noError) {
+    if (DuplicateResource(err)) {
+      MarkAsDeletedOnServer();
+      return noError;
+    }
+
+    if (ResolveError(err)) {
+      return noError;
+    }
+
+    SetError(err);
+    return err;
+  }
+
+  poco_assert(json_is_valid(update->Body.c_str()));
+  LoadFromDataString(update->Body);
+
+  return noError;
 }
 
 }   // namespace kopsik

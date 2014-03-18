@@ -81,13 +81,13 @@ class TimelineUploader {
  private:
     // Sync with server
   bool sync(
-        const Poco::UInt64 user_id,
-        const std::string api_token,
-        const std::vector<TimelineEvent> &timeline_events,
-        const std::string desktop_id);
+      const Poco::UInt64 user_id,
+      const std::string api_token,
+      const std::vector<TimelineEvent> &timeline_events,
+      const std::string desktop_id);
     static std::string convert_timeline_to_json(
-        const std::vector<TimelineEvent> &timeline_events,
-        const std::string &desktop_id);
+      const std::vector<TimelineEvent> &timeline_events,
+      const std::string &desktop_id);
 
     Poco::UInt64 user_id_;
     std::string api_token_;
@@ -109,6 +109,9 @@ class TimelineUploader {
     // An Activity is a possibly long running void/no arguments
     // member function running in its own thread.
     Poco::Activity<TimelineUploader> uploading_;
+
+    Poco::Logger &logger() const {
+      return Poco::Logger::get("timeline_uploader"); }
 };
 
 }  // namespace kopsik

@@ -88,7 +88,7 @@ TimeEntry *User::Start(
   }
 
   te->SetDurOnly(!StoreStartAndStopTime());
-  te->SetUIModifiedAt(time(0));
+  te->SetUIModified();
 
   related.TimeEntries.push_back(te);
   return te;
@@ -124,7 +124,7 @@ kopsik::error User::Continue(
     (*result)->SetTags(existing->Tags());
     related.TimeEntries.push_back((*result));
   }
-  (*result)->SetUIModifiedAt(time(0));
+  (*result)->SetUIModified();
   return kopsik::noError;
 }
 
@@ -254,7 +254,7 @@ TimeEntry *User::SplitAt(const Poco::Int64 at) {
   te->SetWID(running->WID());
   te->SetPID(running->PID());
   te->SetTID(running->TID());
-  te->SetUIModifiedAt(time(0));
+  te->SetUIModified();
   te->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
 
   poco_assert(te->DurationInSeconds() < 0);
@@ -510,11 +510,11 @@ error User::push(HTTPSClient *https_client) {
     }
 
     std::vector<BatchUpdateResult> results;
-    ParseResponseArray(response_body, &results);
+    BatchUpdateResult::ParseResponseArray(response_body, &results);
 
     std::vector<error> errors;
 
-    ProcessResponseArray(&results, &models, &errors);
+    BatchUpdateResult::ProcessResponseArray(&results, &models, &errors);
 
     if (!errors.empty()) {
         return collectErrors(&errors);
@@ -677,4 +677,4 @@ TimeEntry *User::GetTimeEntryByID(const Poco::UInt64 id) const {
 void User::LoadFromJSONNode(JSONNODE * const) {
 }
 
-}   // namespace kopsik
+}  // namespace kopsik

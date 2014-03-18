@@ -103,9 +103,8 @@ void Context::Shutdown() {
 
 kopsik::error Context::ConfigureProxy() {
   bool use_proxy(false);
-  bool tmp1(false), tmp2(false);
   kopsik::Proxy proxy;
-  kopsik::error err = db_->LoadSettings(&use_proxy, &proxy, &tmp1, &tmp2);
+  kopsik::error err = db_->LoadProxySettings(&use_proxy, &proxy);
   if (err != kopsik::noError) {
     return err;
   }
@@ -547,37 +546,46 @@ void Context::SetWebSocketClientURL(const std::string value) {
 }
 
 kopsik::error Context::LoadSettings(
-    bool *use_proxy,
-    kopsik::Proxy *proxy,
     bool *use_idle_settings,
-    bool *menubar_timer) const {
-  return db_->LoadSettings(use_proxy, proxy, use_idle_settings, menubar_timer);
+    bool *menubar_timer,
+    bool *dock_icon) const {
+  return db_->LoadSettings(
+    use_idle_settings,
+    menubar_timer,
+    dock_icon);
+}
+
+kopsik::error Context::LoadProxySettings(
+    bool *use_proxy,
+    kopsik::Proxy *proxy) const {
+  return db_->LoadProxySettings(
+    use_proxy,
+    proxy);
 }
 
 kopsik::error Context::SaveSettings(
-    const bool use_proxy,
-    const kopsik::Proxy *proxy,
     const bool use_idle_detection,
-    const bool menubar_timer) {
+    const bool menubar_timer,
+    const bool dock_icon) {
+  return db_->SaveSettings(
+    use_idle_detection, menubar_timer, dock_icon);
+}
+
+kopsik::error Context::SaveProxySettings(
+    const bool use_proxy,
+    const kopsik::Proxy *proxy) {
 
   kopsik::Proxy previous_proxy_settings;
   bool was_using_proxy(false);
-  {
-    bool was_using_idle_detection(false);
-    bool tmp(false);
-    kopsik::error err = LoadSettings(&was_using_proxy,
-                                     &previous_proxy_settings,
-                                     &was_using_idle_detection,
-                                     &tmp);
-    if (err != kopsik::noError) {
-      return err;
-    }
+  kopsik::error err = LoadProxySettings(
+    &was_using_proxy,
+    &previous_proxy_settings);
+  if (err != kopsik::noError) {
+    return err;
   }
 
-  kopsik::error err = db_->SaveSettings(use_proxy,
-                                        proxy,
-                                        use_idle_detection,
-                                        menubar_timer);
+  err = db_->SaveProxySettings(
+    use_proxy, proxy);
   if (err != kopsik::noError) {
     return err;
   }
@@ -958,7 +966,7 @@ kopsik::error Context::SetTimeEntryDuration(
   }
   te->SetDurationUserInput(duration);
   if (te->Dirty()) {
-    te->SetUIModifiedAt(time(0));
+    te->SetUIModified();
   }
 
   kopsik::error err = save();
@@ -1005,7 +1013,7 @@ kopsik::error Context::SetTimeEntryProject(
   te->SetProjectGUID(project_guid);
 
   if (te->Dirty()) {
-    te->SetUIModifiedAt(time(0));
+    te->SetUIModified();
   }
 
   kopsik::error err = save();
@@ -1035,7 +1043,7 @@ kopsik::error Context::SetTimeEntryStartISO8601(
   }
   te->SetStartUserInput(value);
   if (te->Dirty()) {
-    te->SetUIModifiedAt(time(0));
+    te->SetUIModified();
   }
 
   kopsik::error err = save();
@@ -1064,7 +1072,7 @@ kopsik::error Context::SetTimeEntryEndISO8601(
   }
   te->SetStopUserInput(value);
   if (te->Dirty()) {
-    te->SetUIModifiedAt(time(0));
+    te->SetUIModified();
   }
 
   kopsik::error err = save();
@@ -1093,7 +1101,7 @@ kopsik::error Context::SetTimeEntryTags(
   }
   te->SetTags(value);
   if (te->Dirty()) {
-    te->SetUIModifiedAt(time(0));
+    te->SetUIModified();
   }
 
   kopsik::error err = save();
@@ -1122,7 +1130,7 @@ kopsik::error Context::SetTimeEntryBillable(
   }
   te->SetBillable(value);
   if (te->Dirty()) {
-    te->SetUIModifiedAt(time(0));
+    te->SetUIModified();
   }
 
   kopsik::error err = save();
@@ -1151,7 +1159,7 @@ kopsik::error Context::SetTimeEntryDescription(
   }
   te->SetDescription(value);
   if (te->Dirty()) {
-    te->SetUIModifiedAt(time(0));
+    te->SetUIModified();
   }
 
   kopsik::error err = save();

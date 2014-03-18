@@ -137,7 +137,7 @@ JSONNODE *Project::SaveToJSONNode() const {
   return n;
 }
 
-bool Project::IsDuplicateResourceError(const kopsik::error err) const {
+bool Project::DuplicateResource(const kopsik::error err) const {
   return (std::string::npos !=
       std::string(err).find("Name has already been taken"));
 }

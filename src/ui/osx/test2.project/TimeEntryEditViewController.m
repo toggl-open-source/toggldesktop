@@ -234,12 +234,21 @@
 
 - (void)render:(EditNotification *)edit {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
   NSAssert(edit != nil, @"EditNotification is nil");
-  NSAssert(edit.EntryGUID != nil, @"EditNotification.GUID is nil");
+
+  if (nil == edit.GUID) {
+    NSLog(@"Cannot render, EditNotification.GUID is nil");
+    return;
+  }
+
   NSAssert([edit isKindOfClass:[EditNotification class]], @"EditNotification expected");
 
-  TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:edit.EntryGUID];
-  NSAssert(item != nil, @"View item not found by GUID!");
+  TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:edit.GUID];
+  if (nil == item) {
+    NSLog(@"Cannot render, time entry not found by GUID %@", edit.GUID);
+    return;
+  }
 
   self.runningTimeEntry = item;
 
@@ -274,7 +283,7 @@
     [self.billableCheckbox setHidden:YES];
   }
     
-  self.GUID = edit.EntryGUID;
+  self.GUID = edit.GUID;
   NSAssert(self.GUID != nil, @"GUID is nil");
 
   // Overwrite description only if user is not editing it:
@@ -410,7 +419,7 @@
     
     if ([self.GUID isEqualToString:mc.GUID] && [mc.ChangeType isEqualToString:@"update"]) {
       EditNotification *edit = [[EditNotification alloc] init];
-      edit.EntryGUID = self.GUID;
+      edit.GUID = self.GUID;
       [self performSelectorOnMainThread:@selector(render:)
                              withObject:edit
                           waitUntilDone:NO];
@@ -435,7 +444,10 @@ completionsForSubstring:(NSString *)substring
 }
 
 - (void) applyTags {
-  NSAssert(self.GUID != nil, @"GUID is nil");
+  if (nil == self.GUID) {
+    NSLog(@"Cannot apply tags, self.GUID is nil");
+    return;
+  }
   NSAssert(self.tagsTokenField != nil, @"tags field cant be nil");
   NSArray *tag_names = [self.tagsTokenField objectValue];
   const char *value = [[tag_names componentsJoinedByString:@"|"] UTF8String];
@@ -711,7 +723,11 @@ completionsForSubstring:(NSString *)substring
 }
 
 - (IBAction)durationTextFieldChanged:(id)sender {
-  NSAssert(self.GUID != nil, @"GUID is nil");
+  if (nil == self.GUID) {
+    NSLog(@"Cannot apply duration text field changes, self.GUID is nil");
+    return;
+  }
+
   char err[KOPSIK_ERR_LEN];
   const char *value = [[self.durationTextField stringValue] UTF8String];
   kopsik_api_result res = kopsik_set_time_entry_duration(ctx,
@@ -723,8 +739,13 @@ completionsForSubstring:(NSString *)substring
 }
 
 - (IBAction)projectSelectChanged:(id)sender {
-  NSAssert(self.GUID != nil, @"GUID is nil");
+  if (nil == self.GUID) {
+    NSLog(@"Cannot apply project selection changes, self.GUID is nil");
+    return;
+  }
+
   [self.projectSelect.cell setCalculatedMaxWidth:0];
+
   char err[KOPSIK_ERR_LEN];
   NSString *key = [self.projectSelect stringValue];
   AutocompleteItem *autocomplete = [self.projectAutocompleteDataSource get:key];
@@ -745,7 +766,11 @@ completionsForSubstring:(NSString *)substring
 }
 
 - (IBAction)startTimeChanged:(id)sender {
-  NSAssert(self.GUID != nil, @"GUID is nil");
+  if (nil == self.GUID) {
+    NSLog(@"Cannot apply start time change, self.GUID is nil");
+    return;
+  }
+
   [self applyStartTime];
 }
 
@@ -777,7 +802,11 @@ completionsForSubstring:(NSString *)substring
 }
 
 - (IBAction)endTimeChanged:(id)sender {
-  NSAssert(self.GUID != nil, @"GUID is nil");
+  if (nil == self.GUID) {
+    NSLog(@"Cannot apply end time change, self.GUID is nil");
+    return;
+  }
+
   [self applyEndTime];
 }
 
@@ -809,7 +838,11 @@ completionsForSubstring:(NSString *)substring
 }
 
 - (IBAction)dateChanged:(id)sender {
-  NSAssert(self.GUID != nil, @"GUID is nil");
+  if (nil == self.GUID) {
+    NSLog(@"Cannot apply date change, self.GUID is nil");
+    return;
+  }
+
   [self applyStartTime];
   if (!self.endTime.isHidden) {
     [self applyEndTime];
@@ -821,7 +854,11 @@ completionsForSubstring:(NSString *)substring
 }
 
 - (IBAction)billableCheckBoxClicked:(id)sender {
-  NSAssert(self.GUID != nil, @"GUID is nil");
+  if (nil == self.GUID) {
+    NSLog(@"Cannot apply billable checkbox change, self.GUID is nil");
+    return;
+  }
+
   char err[KOPSIK_ERR_LEN];
   int value = 0;
   if (NSOnState == [self.billableCheckbox state]) {
@@ -836,7 +873,10 @@ completionsForSubstring:(NSString *)substring
 }
 
 - (IBAction)descriptionComboboxChanged:(id)sender {
-  NSAssert(self.GUID != nil, @"GUID is nil");
+  if (nil == self.GUID) {
+    NSLog(@"Cannot apply description change, self.GUID is nil");
+    return;
+  }
 
   NSString *key = [self.descriptionCombobox stringValue];
 
@@ -881,7 +921,10 @@ completionsForSubstring:(NSString *)substring
 }
 
 - (IBAction)deleteButtonClicked:(id)sender {
-  NSAssert(self.GUID != nil, @"GUID is nil");
+  if (nil == self.GUID) {
+    NSLog(@"Cannot delete time entry, self.GUID is nil");
+    return;
+  }
   
   NSAlert *alert = [[NSAlert alloc] init];
   [alert addButtonWithTitle:@"OK"];
@@ -894,7 +937,10 @@ completionsForSubstring:(NSString *)substring
   }
 
   TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:self.GUID];
-  NSAssert(item != nil, @"Time entry view item not found when deleting");
+  if (nil == item) {
+    NSLog(@"Cannot delete time entry, not found by GUID %@", self.GUID);
+    return;
+  }
 
   char err[KOPSIK_ERR_LEN];
   kopsik_api_result res = kopsik_delete_time_entry(ctx,

@@ -68,6 +68,9 @@ int kopsik_is_networking_error(
   if (value.find("Network is down") != std::string::npos) {
     return 1;
   }
+  if (value.find("Network is unreachable") != std::string::npos) {
+    return 1;
+  }
   return 0;
 }
 
@@ -181,76 +184,127 @@ void kopsik_context_clear(void *context) {
 
 // Configuration API.
 
-KopsikSettings *kopsik_settings_init() {
-  KopsikSettings *settings = new KopsikSettings();
-  settings->UseProxy = 0;
-  settings->ProxyHost = 0;
-  settings->ProxyPort = 0;
-  settings->ProxyUsername = 0;
-  settings->ProxyPassword = 0;
-  settings->UseIdleDetection = 0;
-  settings->MenubarTimer = 0;
-  return settings;
-}
-
-void kopsik_settings_clear(
-    KopsikSettings *settings) {
-  if (settings->ProxyHost) {
-    free(settings->ProxyHost);
-    settings->ProxyHost = 0;
-  }
-  if (settings->ProxyUsername) {
-    free(settings->ProxyUsername);
-    settings->ProxyUsername = 0;
-  }
-  if (settings->ProxyPassword) {
-    free(settings->ProxyPassword);
-    settings->ProxyPassword = 0;
-  }
-  delete settings;
-}
-
 kopsik_api_result kopsik_get_settings(
     void *context,
     char *errmsg,
     const unsigned int errlen,
-    KopsikSettings *settings) {
+    unsigned int *out_use_idle_detection,
+    unsigned int *out_menubar_timer,
+    unsigned int *out_dock_icon) {
   try {
     poco_assert(errmsg);
     poco_assert(errlen);
-    poco_assert(settings);
+    poco_assert(out_use_idle_detection);
+    poco_assert(out_menubar_timer);
+    poco_assert(out_dock_icon);
 
-    bool use_proxy(false);
     bool use_idle_detection(false);
     bool menubar_timer(false);
-    kopsik::Proxy proxy;
-    kopsik::error err = app(context)->LoadSettings(&use_proxy,
-                                          &proxy,
-                                          &use_idle_detection,
-                                          &menubar_timer);
+    bool dock_icon(false);
+
+    kopsik::error err = app(context)->LoadSettings(&use_idle_detection,
+                                                   &menubar_timer,
+                                                   &dock_icon);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
 
-    settings->UseProxy = 0;
-    if (use_proxy) {
-      settings->UseProxy = 1;
-    }
-
-    settings->ProxyHost = strdup(proxy.host.c_str());
-    settings->ProxyPort = proxy.port;
-    settings->ProxyUsername = strdup(proxy.username.c_str());
-    settings->ProxyPassword = strdup(proxy.password.c_str());
-
-    settings->UseIdleDetection = 0;
+    *out_use_idle_detection = 0;
     if (use_idle_detection) {
-      settings->UseIdleDetection = 1;
+      *out_use_idle_detection = 1;
     }
 
-    settings->MenubarTimer = 0;
+    *out_menubar_timer = 0;
     if (menubar_timer) {
-      settings->MenubarTimer = 1;
+      *out_menubar_timer = 1;
+    }
+
+    *out_dock_icon = 0;
+    if (dock_icon) {
+      *out_dock_icon = 1;
+    }
+  } catch(const Poco::Exception& exc) {
+    strncpy(errmsg, exc.displayText().c_str(), errlen);
+    return KOPSIK_API_FAILURE;
+  } catch(const std::exception& ex) {
+    strncpy(errmsg, ex.what(), errlen);
+    return KOPSIK_API_FAILURE;
+  } catch(const std::string& ex) {
+    strncpy(errmsg, ex.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  return KOPSIK_API_SUCCESS;
+}
+
+kopsik_api_result kopsik_get_proxy_settings(
+    void *context,
+    char *errmsg,
+    const unsigned int errlen,
+    unsigned int *out_use_proxy,
+    char **out_proxy_host,
+    unsigned int *out_proxy_port,
+    char **out_proxy_username,
+    char **out_proxy_password) {
+  try {
+    poco_assert(errmsg);
+    poco_assert(errlen);
+    poco_assert(out_use_proxy);
+    poco_assert(out_proxy_host);
+    poco_assert(out_proxy_port);
+    poco_assert(out_proxy_username);
+    poco_assert(out_proxy_password);
+
+    bool use_proxy(false);
+    kopsik::Proxy proxy;
+    kopsik::error err = app(context)->LoadProxySettings(
+      &use_proxy,
+      &proxy);
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
+    }
+
+    *out_use_proxy = 0;
+    if (use_proxy) {
+      *out_use_proxy = 1;
+    }
+
+    *out_proxy_host = strdup(proxy.host.c_str());
+    *out_proxy_port = proxy.port;
+    *out_proxy_username = strdup(proxy.username.c_str());
+    *out_proxy_password = strdup(proxy.password.c_str());
+  } catch(const Poco::Exception& exc) {
+    strncpy(errmsg, exc.displayText().c_str(), errlen);
+    return KOPSIK_API_FAILURE;
+  } catch(const std::exception& ex) {
+    strncpy(errmsg, ex.what(), errlen);
+    return KOPSIK_API_FAILURE;
+  } catch(const std::string& ex) {
+    strncpy(errmsg, ex.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
+  }
+  return KOPSIK_API_SUCCESS;
+}
+
+kopsik_api_result kopsik_set_settings(
+    void *context,
+    char *errmsg,
+    const unsigned int errlen,
+    const unsigned int use_idle_detection,
+    const unsigned int menubar_timer,
+    const unsigned int dock_icon) {
+  try {
+    poco_assert(errmsg);
+    poco_assert(errlen);
+
+    kopsik::error err = app(context)->SaveSettings(
+      use_idle_detection,
+      menubar_timer,
+      dock_icon);
+    if (err != kopsik::noError) {
+      strncpy(errmsg, err.c_str(), errlen);
+      return KOPSIK_API_FAILURE;
     }
   } catch(const Poco::Exception& exc) {
       strncpy(errmsg, exc.displayText().c_str(), errlen);
@@ -265,17 +319,14 @@ kopsik_api_result kopsik_get_settings(
   return KOPSIK_API_SUCCESS;
 }
 
-kopsik_api_result kopsik_set_settings(
-    void *context,
-    char *errmsg,
-    const unsigned int errlen,
-    const unsigned int use_proxy,
-    const char *proxy_host,
-    const unsigned int proxy_port,
-    const char *proxy_username,
-    const char *proxy_password,
-    const unsigned int use_idle_detection,
-    const unsigned int menubar_timer) {
+kopsik_api_result kopsik_set_proxy_settings(void *context,
+                                            char *errmsg,
+                                            const unsigned int errlen,
+                                            const unsigned int use_proxy,
+                                            const char *proxy_host,
+                                            const unsigned int proxy_port,
+                                            const char *proxy_username,
+                                            const char *proxy_password) {
   try {
     poco_assert(errmsg);
     poco_assert(errlen);
@@ -289,21 +340,20 @@ kopsik_api_result kopsik_set_settings(
     proxy.username = std::string(proxy_username);
     proxy.password = std::string(proxy_password);
 
-    kopsik::error err = app(context)->SaveSettings(
-      use_proxy, &proxy, use_idle_detection, menubar_timer);
+    kopsik::error err = app(context)->SaveProxySettings(use_proxy, &proxy);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;
     }
   } catch(const Poco::Exception& exc) {
-      strncpy(errmsg, exc.displayText().c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, exc.displayText().c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   } catch(const std::exception& ex) {
-      strncpy(errmsg, ex.what(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, ex.what(), errlen);
+    return KOPSIK_API_FAILURE;
   } catch(const std::string& ex) {
-      strncpy(errmsg, ex.c_str(), errlen);
-      return KOPSIK_API_FAILURE;
+    strncpy(errmsg, ex.c_str(), errlen);
+    return KOPSIK_API_FAILURE;
   }
   return KOPSIK_API_SUCCESS;
 }

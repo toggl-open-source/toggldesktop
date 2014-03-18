@@ -4,6 +4,8 @@
 #define SRC_BATCH_UPDATE_RESULT_H_
 
 #include <string>
+#include <vector>
+#include <map>
 
 #include "./types.h"
 
@@ -13,25 +15,35 @@
 
 namespace kopsik {
 
-  class BatchUpdateResult {
-    public:
-      BatchUpdateResult()
-        : StatusCode(0)
-        , Body("")
-        , GUID("")
-        , ContentType("") {}
-      Poco::Int64 StatusCode;
-      std::string Body;
-      std::string GUID;  // must match the BatchUpdate GUID
-      std::string ContentType;
-      std::string Method;
+class BaseModel;
 
-      error Error() const;
-      std::string String() const;
-      bool ResourceIsGone() const;
+class BatchUpdateResult {
+  public:
+    BatchUpdateResult()
+      : StatusCode(0)
+      , Body("")
+      , GUID("")
+      , ContentType("") {}
+    Poco::Int64 StatusCode;
+    std::string Body;
+    std::string GUID;  // must match the BatchUpdate GUID
+    std::string ContentType;
+    std::string Method;
 
-      void LoadFromJSONNode(JSONNODE * const);
-  };
+    error Error() const;
+    std::string String() const;
+    bool ResourceIsGone() const;
+
+    void LoadFromJSONNode(JSONNODE * const);
+
+    static void ParseResponseArray(
+      const std::string response_body,
+      std::vector<BatchUpdateResult> *responses);
+    static void ProcessResponseArray(
+      std::vector<BatchUpdateResult> * const results,
+      std::map<std::string, BaseModel *> *models,
+      std::vector<error> *errors);
+};
 
 }  // namespace kopsik
 

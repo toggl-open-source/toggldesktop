@@ -63,6 +63,9 @@
 }
 
 + (TimeEntryViewItem *)findByGUID:(NSString *)guid {
+  if (nil == guid || 0 == guid.length) {
+    return nil;
+  }
   int was_found = 0;
   KopsikTimeEntryViewItem *view_item = kopsik_time_entry_view_item_init();
   char err[KOPSIK_ERR_LEN];

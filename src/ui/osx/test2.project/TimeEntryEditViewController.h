@@ -12,21 +12,21 @@
 
 @interface TimeEntryEditViewController : NSViewController <NSComboBoxDataSource> {
 }
-@property (weak) IBOutlet NSCustomComboBox *descriptionCombobox;
-@property (weak) IBOutlet NSCustomComboBox *projectSelect;
-@property (weak) IBOutlet NSTextField *durationTextField;
-@property (weak) IBOutlet NSDatePicker *startTime;
-@property (weak) IBOutlet NSDatePicker *endTime;
-@property (weak) IBOutlet NSBox *startEndTimeBox;
-@property (weak) IBOutlet TFDatePicker *startDate;
-@property (weak) IBOutlet NSTokenField *tagsTokenField;
-@property (weak) IBOutlet NSButton *billableCheckbox;
-@property (weak) IBOutlet NSTextField *lastUpdateTextField;
-@property (weak) IBOutlet NSButton *deleteButton;
-@property (weak) IBOutlet NSButton *backButton;
-@property (weak) IBOutlet NSButton *continueButton;
-@property (weak) IBOutlet NSButton *addProjectButton;
-@property (weak) IBOutlet NSTextField *workspaceLabel;
+@property IBOutlet NSCustomComboBox *descriptionCombobox;
+@property IBOutlet NSCustomComboBox *projectSelect;
+@property IBOutlet NSTextField *durationTextField;
+@property IBOutlet NSDatePicker *startTime;
+@property IBOutlet NSDatePicker *endTime;
+@property IBOutlet NSBox *startEndTimeBox;
+@property IBOutlet TFDatePicker *startDate;
+@property IBOutlet NSTokenField *tagsTokenField;
+@property IBOutlet NSButton *billableCheckbox;
+@property IBOutlet NSTextField *lastUpdateTextField;
+@property IBOutlet NSButton *deleteButton;
+@property IBOutlet NSButton *backButton;
+@property IBOutlet NSButton *continueButton;
+@property IBOutlet NSButton *addProjectButton;
+@property IBOutlet NSTextField *workspaceLabel;
 - (IBAction)descriptionComboboxChanged:(id)sender;
 - (IBAction)durationTextFieldChanged:(id)sender;
 - (IBAction)projectSelectChanged:(id)sender;
@@ -41,12 +41,12 @@
 - (IBAction)addProjectButtonClicked:(id)sender;
 
 // New project related stuff
-@property (weak) IBOutlet NSBox *projectSelectBox;
-@property (weak) IBOutlet NSBox *addProjectBox;
-@property (weak) IBOutlet NSBox *dataholderBox;
-@property (weak) IBOutlet NSTextField *projectNameTextField;
-@property (weak) IBOutlet NSCustomComboBox *workspaceSelect;
-@property (weak) IBOutlet NSCustomComboBox *clientSelect;
+@property IBOutlet NSBox *projectSelectBox;
+@property IBOutlet NSBox *addProjectBox;
+@property IBOutlet NSBox *dataholderBox;
+@property IBOutlet NSTextField *projectNameTextField;
+@property IBOutlet NSCustomComboBox *workspaceSelect;
+@property IBOutlet NSCustomComboBox *clientSelect;
 - (IBAction)workspaceSelectChanged:(id)sender;
 - (IBAction)clientSelectChanged:(id)sender;
 

@@ -11,5 +11,5 @@
 @interface IdleEvent : NSObject
 @property (strong) NSDate *started;
 @property (strong) NSDate *finished;
-@property int seconds;
+@property long seconds;
 @end

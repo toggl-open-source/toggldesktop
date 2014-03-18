@@ -10,6 +10,7 @@
 #include "libjson.h" // NOLINT
 
 #include "./types.h"
+#include "./batch_update_result.h"
 
 #include "Poco/Types.h"
 #include "Poco/Logger.h"
@@ -38,6 +39,7 @@ namespace kopsik {
 
     Poco::UInt64 UIModifiedAt() const { return ui_modified_at_; }
     void SetUIModifiedAt(const Poco::UInt64 value);
+    void SetUIModified() { SetUIModifiedAt(time(0)); }
 
     std::string GUID() const { return guid_; }
     void SetGUID(const std::string value);
@@ -89,13 +91,15 @@ namespace kopsik {
     virtual void LoadFromJSONNode(JSONNODE * const) = 0;
     virtual JSONNODE *SaveToJSONNode() const = 0;
 
-    virtual bool IsDuplicateResourceError(const kopsik::error err) const {
-        return false; }
+    virtual bool DuplicateResource(const kopsik::error) const { return false; }
+    virtual bool ResolveError(const kopsik::error) { return false; }
 
     void LoadFromDataString(const std::string);
     void LoadFromJSONString(const std::string);
 
     void Delete();
+
+    error ApplyBatchUpdateResult(BatchUpdateResult * const);
 
   protected:
     Poco::Logger &logger() const { return Poco::Logger::get(ModelName()); }

@@ -634,6 +634,7 @@ JSONNODE *modelUpdateJSON(
     JSONNODE * const n) {
   poco_assert(model);
   poco_assert(n);
+  poco_assert(!model->GUID().empty());
 
   json_set_name(n, model->ModelName().c_str());
 
@@ -670,7 +671,7 @@ JSONNODE *modelUpdateJSON(
     ss << model->ModelName() << " " << model->String() << " needs a PUT";
     logger.debug(ss.str());
   }
-  json_push_back(update, json_new_a("GUID", model->GUID().c_str()));
+  json_push_back(update, json_new_a("guid", model->GUID().c_str()));
   json_push_back(update, body);
 
   return update;
@@ -707,75 +708,6 @@ std::string UpdateJSON(
   json_free(jc);
   json_delete(c);
   return json;
-}
-
-// Iterate through response array, parse response bodies.
-// Collect errors into a vector.
-void ProcessResponseArray(
-    std::vector<BatchUpdateResult> * const results,
-    std::map<std::string, BaseModel *> *models,
-    std::vector<error> *errors) {
-  poco_assert(results);
-  poco_assert(models);
-  poco_assert(errors);
-
-  Poco::Logger &logger = Poco::Logger::get("json");
-  for (std::vector<BatchUpdateResult>::const_iterator it = results->begin();
-      it != results->end();
-      it++) {
-    BatchUpdateResult result = *it;
-
-    logger.debug(result.String());
-
-    poco_assert(!result.GUID.empty());
-    BaseModel *model = (*models)[result.GUID];
-    poco_assert(model);
-
-    if (result.ResourceIsGone()) {
-      model->MarkAsDeletedOnServer();
-      continue;
-    }
-
-    kopsik::error err = result.Error();
-    if (err != kopsik::noError) {
-      if (model->IsDuplicateResourceError(err)) {
-        model->MarkAsDeletedOnServer();
-        continue;
-      }
-      errors->push_back(err);
-      model->SetError(err);
-      continue;
-    }
-
-    poco_assert(json_is_valid(result.Body.c_str()));
-    model->LoadFromDataString(result.Body);
-  }
-}
-
-void ParseResponseArray(
-    const std::string response_body,
-    std::vector<BatchUpdateResult> *responses) {
-  poco_assert(responses);
-  poco_assert(responses);
-
-  // There seem to be cases where response body is 0.
-  // Must investigate further.
-  if (response_body.empty()) {
-    Poco::Logger &logger = Poco::Logger::get("json");
-    logger.warning("Response is empty!");
-    return;
-  }
-
-  JSONNODE *response_array = json_parse(response_body.c_str());
-  JSONNODE_ITERATOR i = json_begin(response_array);
-  JSONNODE_ITERATOR e = json_end(response_array);
-  while (i != e) {
-    BatchUpdateResult result;
-    result.LoadFromJSONNode(*i);
-    responses->push_back(result);
-    ++i;
-  }
-  json_delete(response_array);
 }
 
 }   // namespace kopsik
