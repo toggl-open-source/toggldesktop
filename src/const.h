@@ -17,4 +17,6 @@
 
 #define kCheckUpdateIntervalSeconds 3600
 
+#define kMaxTimeEntryDurationSeconds 3600000
+
 #endif  // SRC_CONST_H_

@@ -121,6 +121,7 @@ class TimeEntry : public BaseModel {
     void loadTagsFromJSONNode(JSONNODE * const);
 
     bool durationTooLarge(const kopsik::error) const;
+    bool stopTimeMustBeAfterStartTime(const kopsik::error err) const;
   };
 
   bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b);

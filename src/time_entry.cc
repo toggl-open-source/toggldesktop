@@ -16,6 +16,7 @@
 
 #include "./formatter.h"
 #include "./json.h"
+#include "./const.h"
 
 #include "Poco/Timestamp.h"
 #include "Poco/DateTime.h"
@@ -25,9 +26,13 @@ namespace kopsik {
 
 bool TimeEntry::ResolveError(const kopsik::error err) {
   if (durationTooLarge(err) && Stop() && Start()) {
-    Poco::UInt64 max_seconds = 3600000;
-    Poco::UInt64 seconds = std::min(Stop() - Start(), max_seconds);
+    Poco::UInt64 seconds =
+      std::min(Stop() - Start(), Poco::UInt64(kMaxTimeEntryDurationSeconds));
     SetDurationInSeconds(seconds);
+    return true;
+  }
+  if (stopTimeMustBeAfterStartTime(err) && Stop() && Start()) {
+    SetStop(Start() + DurationInSeconds());
     return true;
   }
   if (userCannotAccessWorkspace(err)) {
@@ -42,6 +47,11 @@ bool TimeEntry::ResolveError(const kopsik::error err) {
 bool TimeEntry::durationTooLarge(const kopsik::error err) const {
   return (std::string::npos != std::string(err).find(
     "Max allowed duration per 1 time entry is 1000 hours"));
+}
+
+bool TimeEntry::stopTimeMustBeAfterStartTime(const kopsik::error err) const {
+  return (std::string::npos != std::string(err).find(
+    "Stop time must be after start time"));
 }
 
 void TimeEntry::StopAt(const Poco::Int64 at) {
