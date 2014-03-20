@@ -134,6 +134,24 @@ void LoadUserFromJSONNode(
   }
 }
 
+template<class T>
+void deleteZombies(
+    std::vector<T> &list,
+    std::set<Poco::UInt64> &alive) {
+  for (size_t i = 0; i < list.size(); ++i) {
+    BaseModel *model = list[i];
+    if (!model->ID()) {
+      // If model has no server-assigned ID, it's not even
+      // pushed to server. So actually we don't know if it's
+      // a zombie or not. Ignore:
+      continue;
+    }
+    if (alive.end() == alive.find(model->ID())) {
+      model->MarkAsDeletedOnServer();
+    }
+  }
+}
+
 void LoadUserTagsFromJSONNode(
     User *model,
     JSONNODE * const list,
@@ -154,15 +172,7 @@ void LoadUserTagsFromJSONNode(
     return;
   }
 
-  for (std::vector<Tag *>::const_iterator it =
-      model->related.Tags.begin();
-      it != model->related.Tags.end();
-      it++) {
-    Tag *model = *it;
-    if (alive.end() == alive.find(model->ID())) {
-      model->MarkAsDeletedOnServer();
-    }
-  }
+  deleteZombies(model->related.Tags, alive);
 }
 
 void loadUserTagFromJSONNode(
@@ -218,15 +228,7 @@ void LoadUserTasksFromJSONNode(
     return;
   }
 
-  for (std::vector<Task *>::const_iterator it =
-      user->related.Tasks.begin();
-      it != user->related.Tasks.end();
-      it++) {
-    Task *model = *it;
-    if (alive.end() == alive.find(model->ID())) {
-      model->MarkAsDeletedOnServer();
-    }
-  }
+  deleteZombies(user->related.Tasks, alive);
 }
 
 void loadUserTaskFromJSONNode(
@@ -439,15 +441,7 @@ void LoadUserClientsFromJSONNode(
     return;
   }
 
-  for (std::vector<Client *>::const_iterator it =
-      user->related.Clients.begin();
-      it != user->related.Clients.end();
-      it++) {
-    Client *model = *it;
-    if (alive.end() == alive.find(model->ID())) {
-      model->MarkAsDeletedOnServer();
-    }
-  }
+  deleteZombies(user->related.Clients, alive);
 }
 
 void loadUserProjectFromJSONNode(
@@ -503,15 +497,7 @@ void LoadUserProjectsFromJSONNode(
     return;
   }
 
-  for (std::vector<Project *>::const_iterator it =
-      user->related.Projects.begin();
-      it != user->related.Projects.end();
-      it++) {
-    Project *model = *it;
-    if (alive.end() == alive.find(model->ID())) {
-        model->MarkAsDeletedOnServer();
-    }
-  }
+  deleteZombies(user->related.Projects, alive);
 }
 
 error LoadTimeEntryTagsFromJSONNode(
@@ -587,15 +573,7 @@ void LoadUserWorkspacesFromJSONNode(
     return;
   }
 
-  for (std::vector<Workspace *>::const_iterator it =
-      user->related.Workspaces.begin();
-      it != user->related.Workspaces.end();
-      it++) {
-    Workspace *model = *it;
-    if (alive.end() == alive.find(model->ID())) {
-      model->MarkAsDeletedOnServer();
-    }
-  }
+  deleteZombies(user->related.Workspaces, alive);
 }
 
 void LoadUserTimeEntriesFromJSONNode(

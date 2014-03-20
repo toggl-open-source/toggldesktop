@@ -147,4 +147,9 @@ error BaseModel::ApplyBatchUpdateResult(
   return noError;
 }
 
+bool BaseModel::userCannotAccessWorkspace(const kopsik::error err) const {
+  return (std::string::npos != std::string(err).find(
+    "User cannot access workspace"));
+}
+
 }   // namespace kopsik

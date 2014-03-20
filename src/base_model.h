@@ -17,7 +17,7 @@
 
 namespace kopsik {
 
-  class BaseModel {
+class BaseModel {
   public:
     BaseModel()
       : local_id_(0)
@@ -66,11 +66,11 @@ namespace kopsik {
     // on server, it will be removed from local
     // DB using this flag:
     bool IsMarkedAsDeletedOnServer() const {
-        return is_marked_as_deleted_on_server_;
+      return is_marked_as_deleted_on_server_;
     }
     void MarkAsDeletedOnServer() {
-        is_marked_as_deleted_on_server_ = true;
-        SetDirty();
+      is_marked_as_deleted_on_server_ = true;
+      SetDirty();
     }
 
     bool NeedsPush() const;
@@ -104,6 +104,8 @@ namespace kopsik {
   protected:
     Poco::Logger &logger() const { return Poco::Logger::get(ModelName()); }
 
+    bool userCannotAccessWorkspace(const kopsik::error err) const;
+
   private:
     Poco::Int64 local_id_;
     Poco::UInt64 id_;
@@ -118,7 +120,7 @@ namespace kopsik {
     // If model push to backend results in an error,
     // the error is attached to the model for later inspection.
     kopsik::error error_;
-  };
+};
 
 }  // namespace kopsik
 

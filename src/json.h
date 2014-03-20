@@ -97,6 +97,11 @@ namespace kopsik {
   Poco::UInt64 GetUIModifiedAtFromJSONNode(JSONNODE * const);
   bool IsDeletedAtServer(JSONNODE * const);
 
+  template<class T>
+  void deleteZombies(
+    std::vector<T> &list,
+    std::set<Poco::UInt64> &alive);
+
   bool IsValidJSON(const std::string json);
 
 }  // namespace kopsik

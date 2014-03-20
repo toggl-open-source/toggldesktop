@@ -139,7 +139,15 @@ JSONNODE *Project::SaveToJSONNode() const {
 
 bool Project::DuplicateResource(const kopsik::error err) const {
   return (std::string::npos !=
-      std::string(err).find("Name has already been taken"));
+    std::string(err).find("Name has already been taken"));
+}
+
+bool Project::ResolveError(const kopsik::error err) {
+  if (userCannotAccessWorkspace(err)) {
+    SetWID(0);
+    return true;
+  }
+  return false;
 }
 
 }   // namespace kopsik

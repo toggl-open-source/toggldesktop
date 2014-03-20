@@ -42,14 +42,7 @@ namespace kopsik {
             app_version_(app_version),
             email_(""),
             record_timeline_(false) {}
-        ~User() {
-            ClearWorkspaces();
-            ClearClients();
-            ClearProjects();
-            ClearTasks();
-            ClearTags();
-            ClearTimeEntries();
-        }
+        ~User();
 
         error FullSync(HTTPSClient *https_client);
         error PartialSync(HTTPSClient *https_client);
@@ -168,6 +161,8 @@ namespace kopsik {
         void parseResponseArray(
             const std::string response_body,
             std::vector<BatchUpdateResult> *responses);
+
+        void ensureWID(TimeEntry *te) const;
 
         std::string api_token_;
         Poco::UInt64 default_wid_;

@@ -13,6 +13,15 @@
 
 namespace kopsik {
 
+User::~User() {
+  ClearWorkspaces();
+  ClearClients();
+  ClearProjects();
+  ClearTasks();
+  ClearTags();
+  ClearTimeEntries();
+}
+
 void User::ActiveProjects(std::vector<Project *> *list) const {
   for (unsigned int i = 0; i < related.Projects.size(); i++) {
     kopsik::Project *p = related.Projects[i];
@@ -82,16 +91,20 @@ TimeEntry *User::Start(
     }
   }
 
-  // Set default wid
-  if (!te->WID()) {
-    te->SetWID(DefaultWID());
-  }
+  ensureWID(te);
 
   te->SetDurOnly(!StoreStartAndStopTime());
   te->SetUIModified();
 
   related.TimeEntries.push_back(te);
   return te;
+}
+
+void User::ensureWID(TimeEntry *te) const {
+  // Set default wid
+  if (!te->WID()) {
+    te->SetWID(DefaultWID());
+  }
 }
 
 kopsik::error User::Continue(
@@ -432,11 +445,13 @@ void User::CollectPushableTimeEntries(
       it != related.TimeEntries.end();
       it++) {
     TimeEntry *model = *it;
-    if (model->NeedsPush()) {
-      result->push_back(model);
-      if (models) {
-        (*models)[model->GUID()] = model;
-      }
+    if (!model->NeedsPush()) {
+      continue;
+    }
+    ensureWID(model);
+    result->push_back(model);
+    if (models) {
+      (*models)[model->GUID()] = model;
     }
   }
 }

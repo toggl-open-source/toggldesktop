@@ -30,6 +30,12 @@ bool TimeEntry::ResolveError(const kopsik::error err) {
     SetDurationInSeconds(seconds);
     return true;
   }
+  if (userCannotAccessWorkspace(err)) {
+    SetWID(0);
+    SetPID(0);
+    SetTID(0);
+    return true;
+  }
   return false;
 }
 
