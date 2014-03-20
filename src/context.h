@@ -206,8 +206,12 @@ class Context {
     void onSwitchTimelineOff(Poco::Util::TimerTask& task);  // NOLINT
     void onSwitchTimelineOn(Poco::Util::TimerTask& task);  // NOLINT
     void onFetchUpdates(Poco::Util::TimerTask& task);  // NOLINT
+    void onPeriodicUpdateCheck(Poco::Util::TimerTask& task);  // NOLINT
     void onTimelineUpdateServerSettings(Poco::Util::TimerTask& task);  // NOLINT
     void onSendFeedback(Poco::Util::TimerTask& task);  // NOLINT
+
+    void startPeriodicUpdateCheck();
+    void executeUpdateCheck();
 
     void getTimeEntryAutocompleteItems(
       std::vector<AutocompleteItem> *list) const;

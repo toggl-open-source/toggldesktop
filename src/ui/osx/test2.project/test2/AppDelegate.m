@@ -64,6 +64,10 @@
 
 // For testing crash reporter
 @property BOOL forceCrash;
+
+// Avoid showing multiple upgrade dialogs
+@property BOOL upgradeDialogVisible;
+
 @end
 
 @implementation AppDelegate
@@ -179,6 +183,10 @@
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(eventHandler:)
                                                name:kUIStateOnline
+                                             object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(eventHandler:)
+                                               name:kUIStateUpdateAvailable
                                              object:nil];
 
   char err[KOPSIK_ERR_LEN];
@@ -465,6 +473,9 @@
     [self offlineMode:true];
   } else if ([notification.name isEqualToString:kUIStateOnline]) {
     [self offlineMode:false];
+  } else if ([notification.name isEqualToString:kUIStateUpdateAvailable]) {
+    [self performSelectorOnMainThread:@selector(presentUpgradeDialog:)
+      withObject:notification.object waitUntilDone:NO];
   }
   [self updateStatus];
 }
@@ -1094,6 +1105,14 @@ void check_for_updates_callback(kopsik_api_result result,
   [[NSNotificationCenter defaultCenter]
     postNotificationName:kUIStateUpdateAvailable
     object:update];
+}
+
+- (void)presentUpgradeDialog:(Update *)update {
+  if (self.upgradeDialogVisible) {
+    NSLog(@"Upgrade dialog already visible");
+    return;
+  }
+  self.upgradeDialogVisible = YES;
 
   NSAlert *alert = [[NSAlert alloc] init];
   [alert addButtonWithTitle:@"Yes"];
@@ -1104,6 +1123,7 @@ void check_for_updates_callback(kopsik_api_result result,
   [alert setInformativeText:informative];
   [alert setAlertStyle:NSWarningAlertStyle];
   if ([alert runModal] != NSAlertFirstButtonReturn) {
+    self.upgradeDialogVisible = NO;
     return;
   }
 

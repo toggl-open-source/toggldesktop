@@ -16,6 +16,7 @@
 #include "Poco/Util/TimerTask.h"
 #include "Poco/Util/TimerTaskAdapter.h"
 #include "Poco/Environment.h"
+#include "Poco/Timespan.h"
 
 namespace kopsik {
 
@@ -42,6 +43,8 @@ Context::Context(
     next_update_timeline_settings_at_(0) {
   Poco::ErrorHandler::set(&error_handler_);
   Poco::Net::initializeSSL();
+
+  startPeriodicUpdateCheck();
 }
 
 Context::~Context() {
@@ -362,14 +365,6 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
 void Context::FetchUpdates() {
   logger().debug("FetchUpdates");
 
-  poco_assert(on_check_update_callback_);
-
-  kopsik::error err = db_->LoadUpdateChannel(&update_channel_);
-  if (err != kopsik::noError) {
-    on_check_update_callback_(err, false, "", "");
-    return;
-  }
-
   next_fetch_updates_at_ = Poco::Timestamp() + kRequestThrottleMicros;
   Poco::Util::TimerTask::Ptr ptask =
     new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onFetchUpdates);
@@ -384,11 +379,44 @@ void Context::onFetchUpdates(Poco::Util::TimerTask& task) {  // NOLINT
     return;
   }
 
-  logger().debug("onFetchUpdates executing");
+  executeUpdateCheck();
+}
+
+void Context::startPeriodicUpdateCheck() {
+  logger().debug("startPeriodicUpdateCheck");
+
+  Poco::Util::TimerTask::Ptr ptask =
+    new Poco::Util::TimerTaskAdapter<Context>
+      (*this, &Context::onPeriodicUpdateCheck);
+
+  Poco::Timestamp next_periodic_check_at =
+    Poco::Timestamp() + kCheckUpdateIntervalMicros;
+  Poco::Mutex::ScopedLock lock(timer_m_);
+  timer_.schedule(ptask, next_periodic_check_at);
+}
+
+void Context::onPeriodicUpdateCheck(Poco::Util::TimerTask& task) {  // NOLINT
+  logger().debug("onPeriodicUpdateCheck");
+
+  executeUpdateCheck();
+
+  startPeriodicUpdateCheck();
+}
+
+void Context::executeUpdateCheck() {
+  logger().debug("executeUpdateCheck");
+
+  poco_assert(on_check_update_callback_);
+
+  kopsik::error err = db_->LoadUpdateChannel(&update_channel_);
+  if (err != kopsik::noError) {
+    on_check_update_callback_(err, false, "", "");
+    return;
+  }
 
   std::string response_body("");
   kopsik::HTTPSClient https_client(api_url_, app_name_, app_version_);
-  kopsik::error err = https_client.GetJSON(updateURL(),
+  err = https_client.GetJSON(updateURL(),
                                             std::string(""),
                                             std::string(""),
                                             &response_body);

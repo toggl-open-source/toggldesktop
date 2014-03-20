@@ -15,7 +15,7 @@
 #define kTimelineUploadURL "https://timeline.toggl.com"
 #define kWebSocketURL "https://stream.toggl.com"
 
-#define kCheckUpdateIntervalSeconds 3600
+#define kCheckUpdateIntervalMicros 86400000000
 
 #define kMaxTimeEntryDurationSeconds 3600000
 
