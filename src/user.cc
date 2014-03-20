@@ -674,7 +674,4 @@ TimeEntry *User::GetTimeEntryByID(const Poco::UInt64 id) const {
     return 0;
 }
 
-void User::LoadFromJSONNode(JSONNODE * const) {
-}
-
 }  // namespace kopsik

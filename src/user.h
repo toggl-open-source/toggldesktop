@@ -144,9 +144,6 @@ namespace kopsik {
         std::string ModelName() const { return "user"; }
         std::string ModelURL() const { return "/api/v8/me"; }
 
-        void LoadFromJSONNode(JSONNODE * const);
-        JSONNODE *SaveToJSONNode() const { return 0; }
-
     private:
         error pull(
             HTTPSClient *https_client,
