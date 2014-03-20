@@ -124,7 +124,6 @@ cmdline: clean lint
 	$(cxx) $(cflags) -O2 -c src/database.cc -o build/database.o
 	$(cxx) $(cflags) -O2 -c src/autocomplete_item.cc -o build/autocomplete_item.o
 	$(cxx) $(cflags) -O2 -c src/feedback.cc -o build/feedback.o
-	$(cxx) $(cflags) -O2 -c src/periodic_update_checker.cc -o build/periodic_update_checker.o
 	$(cxx) $(cflags) -O2 -c src/context.cc -o build/context.o
 	$(cxx) $(cflags) -O2 -c src/kopsik_api_private.cc -o build/kopsik_api_private.o
 	$(cxx) $(cflags) -O2 -c src/kopsik_api.cc -o build/kopsik_api.o
@@ -182,7 +181,6 @@ test: clean lint
 	$(cxx) $(cflags) -c src/autocomplete_item.cc -o build/autocomplete_item.o
 	$(cxx) $(cflags) -c src/feedback.cc -o build/feedback.o
 	$(cxx) $(cflags) -c src/ui/common/notifications.cc -o build/notifications.o
-	$(cxx) $(cflags) -c src/periodic_update_checker.cc -o build/periodic_update_checker.o
 	$(cxx) $(cflags) -c src/context.cc -o build/context.o
 	$(cxx) $(cflags) -c src/kopsik_api_private.cc -o build/kopsik_api_private.o
 	$(cxx) $(cflags) -c src/kopsik_api.cc -o build/kopsik_api.o
@@ -220,7 +218,6 @@ coverage: clean
 	$(cxx) $(cflags) $(covflags) -c src/database.cc -o build/database.o
 	$(cxx) $(cflags) $(covflags) -c src/autocomplete_item.cc -o build/autocomplete_item.o
 	$(cxx) $(cflags) $(covflags) -c src/feedback.cc -o build/feedback.o
-	$(cxx) $(cflags) $(covflags) -c src/periodic_update_checker.cc -o build/periodic_update_checker.o
 	$(cxx) $(cflags) $(covflags) -c src/context.cc -o build/context.o
 	$(cxx) $(cflags) $(covflags) -c src/kopsik_api_private.cc -o build/kopsik_api_private.o
 	$(cxx) $(cflags) $(covflags) -c src/kopsik_api.cc -o build/kopsik_api.o
