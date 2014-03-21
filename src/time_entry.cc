@@ -336,7 +336,12 @@ JSONNODE *TimeEntry::SaveToJSONNode() const {
   }
   json_push_back(n, json_new_a("description",
     Formatter::EscapeJSONString(Description()).c_str()));
-  json_push_back(n, json_new_i("wid", (json_int_t)WID()));
+  // Workspace ID can't be 0 on server side. So don't
+  // send 0 if we have no default workspace ID, because
+  // NULL is not 0
+  if (WID()) {
+    json_push_back(n, json_new_i("wid", (json_int_t)WID()));
+  }
   json_push_back(n, json_new_a("guid", GUID().c_str()));
   if (!PID() && !ProjectGUID().empty()) {
     json_push_back(n, json_new_a("pid", ProjectGUID().c_str()));
