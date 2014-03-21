@@ -14,6 +14,7 @@
 #define kAPIURL "https://www.toggl.com"
 #define kTimelineUploadURL "https://timeline.toggl.com"
 #define kWebSocketURL "https://stream.toggl.com"
+#define kLostPasswordURL "https://www.toggl.com/lost_passwords/new"
 
 #define kCheckUpdateIntervalMicros 86400000000
 
