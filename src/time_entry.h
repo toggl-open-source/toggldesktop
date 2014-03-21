@@ -122,6 +122,7 @@ class TimeEntry : public BaseModel {
 
     bool durationTooLarge(const kopsik::error) const;
     bool stopTimeMustBeAfterStartTime(const kopsik::error err) const;
+    bool userCannotAccessTheSelectedProject(const kopsik::error err) const;
   };
 
   bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b);
