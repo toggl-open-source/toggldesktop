@@ -659,13 +659,15 @@
 }
 
 - (IBAction)onOpenBrowserMenuItem:(id)sender {
+  NSString *togglWebsiteURL = [NSString stringWithUTF8String:kTogglWebsiteURL];
   [[NSWorkspace sharedWorkspace] openURL:
-    [NSURL URLWithString:@"https://new.toggl.com/"]];
+    [NSURL URLWithString:togglWebsiteURL]];
 }
 
 - (IBAction)onHelpMenuItem:(id)sender {
+  NSString *supportURL = [NSString stringWithUTF8String:kSupportURL];
   [[NSWorkspace sharedWorkspace] openURL:
-    [NSURL URLWithString:@"http://support.toggl.com/toggl-on-my-desktop/"]];
+    [NSURL URLWithString:supportURL]];
 }
 
 - (IBAction)onLogoutMenuItem:(id)sender {
