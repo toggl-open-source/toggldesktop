@@ -63,6 +63,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LoginViewController.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LoginViewController.Designer.cs">
+      <DependentUpon>LoginViewController.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainWindowController.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -71,6 +77,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="LoginViewController.resx">
+      <DependentUpon>LoginViewController.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainWindowController.resx">
       <DependentUpon>MainWindowController.cs</DependentUpon>
     </EmbeddedResource>

@@ -12,9 +12,13 @@ namespace TogglDesktop
 {
     public partial class MainWindowController : Form
     {
+        private LoginViewController loginViewController;
+
         public MainWindowController()
         {
             InitializeComponent();
+
+            loginViewController = new LoginViewController();
         }
 
         private void MainWindowController_Load(object sender, EventArgs e)
@@ -36,6 +40,10 @@ namespace TogglDesktop
                 Location = Properties.Settings.Default.Location;
                 Size = Properties.Settings.Default.Size;
             }
+
+            // FIXME: do this when told that user is not logged in
+            Controls.Add(loginViewController);
+            loginViewController.SetAcceptButton(this);
         }
 
         private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)
