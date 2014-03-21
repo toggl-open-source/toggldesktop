@@ -86,3 +86,8 @@ src/libkopsik/TogglDesktopDLL/TogglDesktopDLL/Release
 *.dSYM
 
 third_party/plcrashreporter-1.2-rc4/build
+
+*.sdf
+*.opensdf
+*.suo
+*.vcxproj.user

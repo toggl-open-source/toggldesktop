@@ -38,6 +38,7 @@
             this.Name = "MainWindowController";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Toggl Desktop";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindowController_FormClosing);
             this.Load += new System.EventHandler(this.MainWindowController_Load);
             this.ResumeLayout(false);
 
