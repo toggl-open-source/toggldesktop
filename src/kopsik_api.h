@@ -32,16 +32,10 @@ typedef void (*KopsikViewItemChangeCallback)(
   const char *errmsg,
   KopsikModelChange *change);
 
-typedef void (*KopsikResultCallback)(
-  kopsik_api_result result,
-  const char *errmsg);
-
 typedef void (*KopsikErrorCallback)(
   const char *errmsg);
 
 typedef void (*KopsikCheckUpdateCallback)(
-  kopsik_api_result result,
-  const char *errmsg,
   const int is_update_available,
   const char *url,
   const char *version);

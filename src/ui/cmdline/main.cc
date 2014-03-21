@@ -46,8 +46,6 @@ void main_on_error_callback(
 }
 
 void main_check_updates_callback(
-    kopsik_api_result result,
-    const char *errmsg,
     const int is_update_available,
     const char *url,
     const char *version) {

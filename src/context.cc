@@ -410,7 +410,7 @@ void Context::executeUpdateCheck() {
 
   kopsik::error err = db_->LoadUpdateChannel(&update_channel_);
   if (err != kopsik::noError) {
-    on_check_update_callback_(err, false, "", "");
+    on_error_callback_(err);
     return;
   }
 
@@ -421,18 +421,17 @@ void Context::executeUpdateCheck() {
                                             std::string(""),
                                             &response_body);
   if (err != kopsik::noError) {
-    on_check_update_callback_(err, false, "", "");
+    on_error_callback_(err);
     return;
   }
 
   if ("null" == response_body) {
-    on_check_update_callback_(kopsik::noError, false, "", "");
+    on_check_update_callback_(false, "", "");
     return;
   }
 
   if (!IsValidJSON(response_body)) {
-    on_check_update_callback_(kopsik::error("Invalid response JSON"),
-                              false, "", "");
+    on_error_callback_(kopsik::error("Invalid response JSON"));
     return;
   }
 
@@ -453,7 +452,7 @@ void Context::executeUpdateCheck() {
   }
   json_delete(root);
 
-  on_check_update_callback_(kopsik::noError, true, url, version);
+  on_check_update_callback_(true, url, version);
 }
 
 const std::string Context::updateURL() const {

@@ -123,24 +123,16 @@ void export_on_error_callback(
 KopsikCheckUpdateCallback user_data_check_updates_callback_ = 0;
 
 void export_on_check_update_callback(
-    const kopsik::error err,
     const bool is_update_available,
     const std::string url,
     const std::string version) {
   poco_assert(user_data_check_updates_callback_);
 
-  if (err != kopsik::noError) {
-    user_data_check_updates_callback_(
-      KOPSIK_API_FAILURE, err.c_str(), 0, 0, 0);
-    return;
-  }
-
   unsigned int avail = 0;
   if (is_update_available) {
     avail = 1;
   }
-  user_data_check_updates_callback_(
-    KOPSIK_API_SUCCESS, err.c_str(), avail, url.c_str(), version.c_str());
+  user_data_check_updates_callback_(avail, url.c_str(), version.c_str());
 }
 
 void *kopsik_context_init(

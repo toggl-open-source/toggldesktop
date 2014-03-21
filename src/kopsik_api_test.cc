@@ -25,8 +25,6 @@ namespace kopsik {
     }
 
     void in_test_check_updates_callback(
-        kopsik_api_result result,
-        const char *errmsg,
         const int is_update_available,
         const char *url,
         const char *version) {

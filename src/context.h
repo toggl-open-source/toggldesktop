@@ -20,6 +20,7 @@
 
 namespace kopsik {
 
+// FIXME: this is too low-level, we should not export it
 typedef void (*ModelChangeCallback)(
   const ModelChange change);
 
@@ -27,11 +28,11 @@ typedef void (*ErrorCallback)(
   const error err);
 
 typedef void (*CheckUpdateCallback)(
-  const error err,
   const bool is_update_available,
   const std::string url,
   const std::string version);
 
+// FIXME: add flag indicating online/offline state
 typedef void (*OnlineCallback)();
 
 class Context {
@@ -59,10 +60,12 @@ class Context {
 
     void SetModelChangeCallback(ModelChangeCallback cb) {
       on_model_change_callback_ = cb; }
-    void SetOnErrorCallback(ErrorCallback cb) { on_error_callback_ = cb; }
+    void SetOnErrorCallback(ErrorCallback cb) {
+      on_error_callback_ = cb; }
     void SetCheckUpdateCallback(CheckUpdateCallback cb) {
       on_check_update_callback_ = cb; }
-    void SetOnOnlineCallback(OnlineCallback cb) { on_online_callback_ = cb; }
+    void SetOnOnlineCallback(OnlineCallback cb) {
+      on_online_callback_ = cb; }
 
     // Apply proxy settings
     kopsik::error ConfigureProxy();

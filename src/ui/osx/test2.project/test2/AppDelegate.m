@@ -1187,16 +1187,9 @@ void check_for_updates_callback(kopsik_api_result result,
 }
 
 void about_updates_checked(
-    kopsik_api_result result,
-    const char *errmsg,
     const int is_update_available,
     const char *url,
     const char *version) {
-  if (result != KOPSIK_API_SUCCESS) {
-    handle_error(errmsg);
-    return;
-  }
-  
   if (!is_update_available) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUpToDate
                                                         object:nil];
