@@ -1542,8 +1542,9 @@ kopsik_api_result kopsik_set_time_entry_billable(
         << ", value=" << value;
     logger().debug(ss.str());
 
+	bool is_billable = value ? true : false;
     kopsik::error err =
-      app(context)->SetTimeEntryBillable(std::string(guid), value);
+      app(context)->SetTimeEntryBillable(std::string(guid), is_billable);
     if (err != kopsik::noError) {
       strncpy(errmsg, err.c_str(), errlen);
       return KOPSIK_API_FAILURE;

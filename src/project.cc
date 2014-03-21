@@ -111,9 +111,9 @@ void Project::LoadFromJSONNode(JSONNODE * const data) {
     } else if (strcmp(node_name, "color") == 0) {
       SetColor(std::string(json_as_string(*current_node)));
     } else if (strcmp(node_name, "active") == 0) {
-      SetActive(json_as_bool(*current_node));
+      SetActive(json_as_bool(*current_node) ? true : false);
     } else if (strcmp(node_name, "billable") == 0) {
-      SetBillable(json_as_bool(*current_node));
+      SetBillable(json_as_bool(*current_node) ? true : false);
     }
     ++current_node;
   }

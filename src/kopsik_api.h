@@ -11,7 +11,7 @@ extern "C" {
 #include <stdio.h>
 
 #ifdef _WIN32
-	#define KOPSIK_EXPORT __declspec(dllimport) 
+	#define KOPSIK_EXPORT __declspec(dllexport) 
 #else
 	#define KOPSIK_EXPORT
 #endif

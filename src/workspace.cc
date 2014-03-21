@@ -45,7 +45,7 @@ void Workspace::LoadFromJSONNode(JSONNODE * const n) {
     } else if (strcmp(node_name, "name") == 0) {
       SetName(std::string(json_as_string(*i)));
     } else if (strcmp(node_name, "premium") == 0) {
-      SetPremium(json_as_bool(*i));
+      SetPremium(json_as_bool(*i) ? true : false);
     }
     ++i;
   }
