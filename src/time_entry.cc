@@ -27,7 +27,7 @@ namespace kopsik {
 bool TimeEntry::ResolveError(const kopsik::error err) {
   if (durationTooLarge(err) && Stop() && Start()) {
     Poco::UInt64 seconds =
-      std::min(Stop() - Start(), Poco::UInt64(kMaxTimeEntryDurationSeconds));
+      (std::min)(Stop() - Start(), Poco::UInt64(kMaxTimeEntryDurationSeconds));
     SetDurationInSeconds(seconds);
     return true;
   }
@@ -312,9 +312,9 @@ void TimeEntry::LoadFromJSONNode(JSONNODE * const data) {
     } else if (strcmp(node_name, "duration") == 0) {
       SetDurationInSeconds(json_as_int(*current_node));
     } else if (strcmp(node_name, "billable") == 0) {
-      SetBillable(json_as_bool(*current_node));
+      SetBillable(json_as_bool(*current_node) ? true : false);
     } else if (strcmp(node_name, "duronly") == 0) {
-      SetDurOnly(json_as_bool(*current_node));
+      SetDurOnly(json_as_bool(*current_node) ?  true : false);
     } else if (strcmp(node_name, "tags") == 0) {
       loadTagsFromJSONNode(*current_node);
     } else if (strcmp(node_name, "created_with") == 0) {
