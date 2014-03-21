@@ -102,7 +102,7 @@ class BaseModel {
     error ApplyBatchUpdateResult(BatchUpdateResult * const);
 
     // Convert model JSON into batch update format.
-    JSONNODE *BatchUpdateJSON();
+    JSONNODE *BatchUpdateJSON() const;
 
   protected:
     Poco::Logger &logger() const { return Poco::Logger::get(ModelName()); }
@@ -110,6 +110,9 @@ class BaseModel {
     bool userCannotAccessWorkspace(const kopsik::error err) const;
 
   private:
+    std::string batchUpdateRelativeURL() const;
+    std::string batchUpdateMethod() const;
+
     Poco::Int64 local_id_;
     Poco::UInt64 id_;
     guid guid_;

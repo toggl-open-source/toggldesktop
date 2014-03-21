@@ -152,8 +152,30 @@ bool BaseModel::userCannotAccessWorkspace(const kopsik::error err) const {
     "User cannot access workspace"));
 }
 
+std::string BaseModel::batchUpdateRelativeURL() const {
+  if (NeedsPOST()) {
+    return ModelURL();
+  }
+
+  std::stringstream url;
+  url << ModelURL() << "/" << ID();
+  return url.str();
+}
+
+std::string BaseModel::batchUpdateMethod() const {
+  if (NeedsDELETE()) {
+    return "DELETE";
+  }
+
+  if (NeedsPOST()) {
+    return "POST";
+  }
+
+  return "PUT";
+}
+
 // Convert model JSON into batch update format.
-JSONNODE *BaseModel::BatchUpdateJSON() {
+JSONNODE *BaseModel::BatchUpdateJSON() const {
   poco_assert(!GUID().empty());
 
   JSONNODE *n = SaveToJSONNode();
@@ -164,34 +186,11 @@ JSONNODE *BaseModel::BatchUpdateJSON() {
   json_set_name(body, "body");
   json_push_back(body, n);
 
-  Poco::Logger &logger = Poco::Logger::get("json");
-
   JSONNODE *update = json_new(JSON_NODE);
-  if (NeedsDELETE()) {
-    std::stringstream url;
-    url << ModelURL() << "/" << ID();
-    json_push_back(update, json_new_a("method", "DELETE"));
-    json_push_back(update, json_new_a("relative_url", url.str().c_str()));
-    std::stringstream ss;
-    ss << ModelName() << " " << String() << " needs a DELETE";
-    logger.debug(ss.str());
-
-  } else if (NeedsPOST()) {
-    json_push_back(update, json_new_a("method", "POST"));
-    json_push_back(update, json_new_a("relative_url", ModelURL().c_str()));
-    std::stringstream ss;
-    ss << ModelName() << " " << String() << " needs a POST";
-    logger.debug(ss.str());
-
-  } else if (NeedsPUT()) {
-    std::stringstream url;
-    url << ModelURL() << "/" << ID();
-    json_push_back(update, json_new_a("method", "PUT"));
-    json_push_back(update, json_new_a("relative_url", url.str().c_str()));
-    std::stringstream ss;
-    ss << ModelName() << " " << String() << " needs a PUT";
-    logger.debug(ss.str());
-  }
+  json_push_back(update,
+    json_new_a("method", batchUpdateMethod().c_str()));
+  json_push_back(update,
+    json_new_a("relative_url", batchUpdateRelativeURL().c_str()));
   json_push_back(update, json_new_a("guid", GUID().c_str()));
   json_push_back(update, body);
 
