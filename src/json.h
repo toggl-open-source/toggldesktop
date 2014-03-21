@@ -22,14 +22,6 @@
 
 namespace kopsik {
 
-  void ParseResponseArray(
-    const std::string response_body,
-    std::vector<BatchUpdateResult> *responses);
-  void ProcessResponseArray(
-    std::vector<BatchUpdateResult> * const results,
-    std::map<std::string, BaseModel *> *models,
-    std::vector<error> *errors);
-
   void LoadUserFromJSONNode(
     User *model,
     JSONNODE *node,
@@ -104,6 +96,11 @@ namespace kopsik {
   guid GetGUIDFromJSONNode(JSONNODE * const);
   Poco::UInt64 GetUIModifiedAtFromJSONNode(JSONNODE * const);
   bool IsDeletedAtServer(JSONNODE * const);
+
+  template<class T>
+  void deleteZombies(
+    std::vector<T> &list,
+    std::set<Poco::UInt64> &alive);
 
   bool IsValidJSON(const std::string json);
 

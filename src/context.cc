@@ -16,6 +16,7 @@
 #include "Poco/Util/TimerTask.h"
 #include "Poco/Util/TimerTaskAdapter.h"
 #include "Poco/Environment.h"
+#include "Poco/Timespan.h"
 
 namespace kopsik {
 
@@ -42,6 +43,8 @@ Context::Context(
     next_update_timeline_settings_at_(0) {
   Poco::ErrorHandler::set(&error_handler_);
   Poco::Net::initializeSSL();
+
+  startPeriodicUpdateCheck();
 }
 
 Context::~Context() {
@@ -103,9 +106,8 @@ void Context::Shutdown() {
 
 kopsik::error Context::ConfigureProxy() {
   bool use_proxy(false);
-  bool tmp1(false), tmp2(false);
   kopsik::Proxy proxy;
-  kopsik::error err = db_->LoadSettings(&use_proxy, &proxy, &tmp1, &tmp2);
+  kopsik::error err = db_->LoadProxySettings(&use_proxy, &proxy);
   if (err != kopsik::noError) {
     return err;
   }
@@ -363,14 +365,6 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
 void Context::FetchUpdates() {
   logger().debug("FetchUpdates");
 
-  poco_assert(on_check_update_callback_);
-
-  kopsik::error err = db_->LoadUpdateChannel(&update_channel_);
-  if (err != kopsik::noError) {
-    on_check_update_callback_(err, false, "", "");
-    return;
-  }
-
   next_fetch_updates_at_ = Poco::Timestamp() + kRequestThrottleMicros;
   Poco::Util::TimerTask::Ptr ptask =
     new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onFetchUpdates);
@@ -385,11 +379,44 @@ void Context::onFetchUpdates(Poco::Util::TimerTask& task) {  // NOLINT
     return;
   }
 
-  logger().debug("onFetchUpdates executing");
+  executeUpdateCheck();
+}
+
+void Context::startPeriodicUpdateCheck() {
+  logger().debug("startPeriodicUpdateCheck");
+
+  Poco::Util::TimerTask::Ptr ptask =
+    new Poco::Util::TimerTaskAdapter<Context>
+      (*this, &Context::onPeriodicUpdateCheck);
+
+  Poco::Timestamp next_periodic_check_at =
+    Poco::Timestamp() + kCheckUpdateIntervalMicros;
+  Poco::Mutex::ScopedLock lock(timer_m_);
+  timer_.schedule(ptask, next_periodic_check_at);
+}
+
+void Context::onPeriodicUpdateCheck(Poco::Util::TimerTask& task) {  // NOLINT
+  logger().debug("onPeriodicUpdateCheck");
+
+  executeUpdateCheck();
+
+  startPeriodicUpdateCheck();
+}
+
+void Context::executeUpdateCheck() {
+  logger().debug("executeUpdateCheck");
+
+  poco_assert(on_check_update_callback_);
+
+  kopsik::error err = db_->LoadUpdateChannel(&update_channel_);
+  if (err != kopsik::noError) {
+    on_check_update_callback_(err, false, "", "");
+    return;
+  }
 
   std::string response_body("");
   kopsik::HTTPSClient https_client(api_url_, app_name_, app_version_);
-  kopsik::error err = https_client.GetJSON(updateURL(),
+  err = https_client.GetJSON(updateURL(),
                                             std::string(""),
                                             std::string(""),
                                             &response_body);
@@ -547,37 +574,46 @@ void Context::SetWebSocketClientURL(const std::string value) {
 }
 
 kopsik::error Context::LoadSettings(
-    bool *use_proxy,
-    kopsik::Proxy *proxy,
     bool *use_idle_settings,
-    bool *menubar_timer) const {
-  return db_->LoadSettings(use_proxy, proxy, use_idle_settings, menubar_timer);
+    bool *menubar_timer,
+    bool *dock_icon) const {
+  return db_->LoadSettings(
+    use_idle_settings,
+    menubar_timer,
+    dock_icon);
+}
+
+kopsik::error Context::LoadProxySettings(
+    bool *use_proxy,
+    kopsik::Proxy *proxy) const {
+  return db_->LoadProxySettings(
+    use_proxy,
+    proxy);
 }
 
 kopsik::error Context::SaveSettings(
-    const bool use_proxy,
-    const kopsik::Proxy *proxy,
     const bool use_idle_detection,
-    const bool menubar_timer) {
+    const bool menubar_timer,
+    const bool dock_icon) {
+  return db_->SaveSettings(
+    use_idle_detection, menubar_timer, dock_icon);
+}
+
+kopsik::error Context::SaveProxySettings(
+    const bool use_proxy,
+    const kopsik::Proxy *proxy) {
 
   kopsik::Proxy previous_proxy_settings;
   bool was_using_proxy(false);
-  {
-    bool was_using_idle_detection(false);
-    bool tmp(false);
-    kopsik::error err = LoadSettings(&was_using_proxy,
-                                     &previous_proxy_settings,
-                                     &was_using_idle_detection,
-                                     &tmp);
-    if (err != kopsik::noError) {
-      return err;
-    }
+  kopsik::error err = LoadProxySettings(
+    &was_using_proxy,
+    &previous_proxy_settings);
+  if (err != kopsik::noError) {
+    return err;
   }
 
-  kopsik::error err = db_->SaveSettings(use_proxy,
-                                        proxy,
-                                        use_idle_detection,
-                                        menubar_timer);
+  err = db_->SaveProxySettings(
+    use_proxy, proxy);
   if (err != kopsik::noError) {
     return err;
   }
@@ -958,7 +994,7 @@ kopsik::error Context::SetTimeEntryDuration(
   }
   te->SetDurationUserInput(duration);
   if (te->Dirty()) {
-    te->SetUIModifiedAt(time(0));
+    te->SetUIModified();
   }
 
   kopsik::error err = save();
@@ -1005,7 +1041,7 @@ kopsik::error Context::SetTimeEntryProject(
   te->SetProjectGUID(project_guid);
 
   if (te->Dirty()) {
-    te->SetUIModifiedAt(time(0));
+    te->SetUIModified();
   }
 
   kopsik::error err = save();
@@ -1035,7 +1071,7 @@ kopsik::error Context::SetTimeEntryStartISO8601(
   }
   te->SetStartUserInput(value);
   if (te->Dirty()) {
-    te->SetUIModifiedAt(time(0));
+    te->SetUIModified();
   }
 
   kopsik::error err = save();
@@ -1064,7 +1100,7 @@ kopsik::error Context::SetTimeEntryEndISO8601(
   }
   te->SetStopUserInput(value);
   if (te->Dirty()) {
-    te->SetUIModifiedAt(time(0));
+    te->SetUIModified();
   }
 
   kopsik::error err = save();
@@ -1093,7 +1129,7 @@ kopsik::error Context::SetTimeEntryTags(
   }
   te->SetTags(value);
   if (te->Dirty()) {
-    te->SetUIModifiedAt(time(0));
+    te->SetUIModified();
   }
 
   kopsik::error err = save();
@@ -1122,7 +1158,7 @@ kopsik::error Context::SetTimeEntryBillable(
   }
   te->SetBillable(value);
   if (te->Dirty()) {
-    te->SetUIModifiedAt(time(0));
+    te->SetUIModified();
   }
 
   kopsik::error err = save();
@@ -1151,7 +1187,7 @@ kopsik::error Context::SetTimeEntryDescription(
   }
   te->SetDescription(value);
   if (te->Dirty()) {
-    te->SetUIModifiedAt(time(0));
+    te->SetUIModified();
   }
 
   kopsik::error err = save();

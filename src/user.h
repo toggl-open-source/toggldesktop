@@ -42,14 +42,7 @@ namespace kopsik {
             app_version_(app_version),
             email_(""),
             record_timeline_(false) {}
-        ~User() {
-            ClearWorkspaces();
-            ClearClients();
-            ClearProjects();
-            ClearTasks();
-            ClearTags();
-            ClearTimeEntries();
-        }
+        ~User();
 
         error FullSync(HTTPSClient *https_client);
         error PartialSync(HTTPSClient *https_client);
@@ -144,9 +137,6 @@ namespace kopsik {
         std::string ModelName() const { return "user"; }
         std::string ModelURL() const { return "/api/v8/me"; }
 
-        void LoadFromJSONNode(JSONNODE * const);
-        JSONNODE *SaveToJSONNode() const { return 0; }
-
     private:
         error pull(
             HTTPSClient *https_client,
@@ -171,6 +161,8 @@ namespace kopsik {
         void parseResponseArray(
             const std::string response_body,
             std::vector<BatchUpdateResult> *responses);
+
+        void ensureWID(TimeEntry *te) const;
 
         std::string api_token_;
         Poco::UInt64 default_wid_;

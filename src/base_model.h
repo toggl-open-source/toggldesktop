@@ -10,13 +10,14 @@
 #include "libjson.h" // NOLINT
 
 #include "./types.h"
+#include "./batch_update_result.h"
 
 #include "Poco/Types.h"
 #include "Poco/Logger.h"
 
 namespace kopsik {
 
-  class BaseModel {
+class BaseModel {
   public:
     BaseModel()
       : local_id_(0)
@@ -38,6 +39,7 @@ namespace kopsik {
 
     Poco::UInt64 UIModifiedAt() const { return ui_modified_at_; }
     void SetUIModifiedAt(const Poco::UInt64 value);
+    void SetUIModified() { SetUIModifiedAt(time(0)); }
 
     std::string GUID() const { return guid_; }
     void SetGUID(const std::string value);
@@ -64,11 +66,11 @@ namespace kopsik {
     // on server, it will be removed from local
     // DB using this flag:
     bool IsMarkedAsDeletedOnServer() const {
-        return is_marked_as_deleted_on_server_;
+      return is_marked_as_deleted_on_server_;
     }
     void MarkAsDeletedOnServer() {
-        is_marked_as_deleted_on_server_ = true;
-        SetDirty();
+      is_marked_as_deleted_on_server_ = true;
+      SetDirty();
     }
 
     bool NeedsPush() const;
@@ -86,21 +88,31 @@ namespace kopsik {
     virtual std::string String() const = 0;
     virtual std::string ModelName() const = 0;
     virtual std::string ModelURL() const = 0;
-    virtual void LoadFromJSONNode(JSONNODE * const) = 0;
-    virtual JSONNODE *SaveToJSONNode() const = 0;
+    virtual void LoadFromJSONNode(JSONNODE * const) {}
+    virtual JSONNODE *SaveToJSONNode() const { return 0; }
 
-    virtual bool IsDuplicateResourceError(const kopsik::error err) const {
-        return false; }
+    virtual bool DuplicateResource(const kopsik::error) const { return false; }
+    virtual bool ResolveError(const kopsik::error) { return false; }
 
     void LoadFromDataString(const std::string);
     void LoadFromJSONString(const std::string);
 
     void Delete();
 
+    error ApplyBatchUpdateResult(BatchUpdateResult * const);
+
+    // Convert model JSON into batch update format.
+    JSONNODE *BatchUpdateJSON() const;
+
   protected:
     Poco::Logger &logger() const { return Poco::Logger::get(ModelName()); }
 
+    bool userCannotAccessWorkspace(const kopsik::error err) const;
+
   private:
+    std::string batchUpdateRelativeURL() const;
+    std::string batchUpdateMethod() const;
+
     Poco::Int64 local_id_;
     Poco::UInt64 id_;
     guid guid_;
@@ -114,7 +126,7 @@ namespace kopsik {
     // If model push to backend results in an error,
     // the error is attached to the model for later inspection.
     kopsik::error error_;
-  };
+};
 
 }  // namespace kopsik
 

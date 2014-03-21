@@ -22,7 +22,9 @@
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
     [self.portTextField setFormatter:formatter];
 
-    [self loadPreferences];
+    [self loadSettings];
+    [self loadProxySettings];
+
     [self enableProxyFields];
   
     [self displayTimelineRecordingState];
@@ -37,66 +39,100 @@
                                                object:nil];
 }
 
-- (void)loadPreferences {
-    NSLog(@"loadPreferences");
+- (NSInteger)boolToState:(BOOL)value {
+  if (value) {
+    return NSOnState;
+  }
+  return NSOffState;
+}
+
+- (void)loadSettings {
+  unsigned int idle_detection = 0;
+  unsigned int menubar_timer = 0;
+  unsigned int dock_icon = 0;
+
+  char err[KOPSIK_ERR_LEN];
+  if (KOPSIK_API_SUCCESS != kopsik_get_settings(ctx,
+                                                err,
+                                                KOPSIK_ERR_LEN,
+                                                &idle_detection,
+                                                &menubar_timer,
+                                                &dock_icon)) {
+    handle_error(err);
+    return;
+  }
   
-    KopsikSettings *settings = kopsik_settings_init();
-    char err[KOPSIK_ERR_LEN];
-    kopsik_api_result res = kopsik_get_settings(ctx,
-                                             err,
-                                             KOPSIK_ERR_LEN,
-                                             settings);
-    if (KOPSIK_API_SUCCESS != res) {
-      kopsik_settings_clear(settings);
-      handle_error(err);
-      return;
-    }
+  [self.useIdleDetectionButton setState:[self boolToState:idle_detection]];
+  [self.menubarTimerCheckbox setState:[self boolToState:menubar_timer]];
+  [self.dockIconCheckbox setState:[self boolToState:dock_icon]];
+
+}
+
+- (void)loadProxySettings {
+  unsigned int use_proxy = 0;
+  char *proxy_host = 0;
+  unsigned int proxy_port = 0;
+  char *proxy_username = 0;
+  char *proxy_password = 0;
+
+  char err[KOPSIK_ERR_LEN];
+  if (KOPSIK_API_SUCCESS != kopsik_get_proxy_settings(ctx,
+                                                      err,
+                                                      KOPSIK_ERR_LEN,
+                                                      &use_proxy,
+                                                      &proxy_host,
+                                                      &proxy_port,
+                                                      &proxy_username,
+                                                      &proxy_password)) {
+    handle_error(err);
+    return;
+  }
   
-    if (settings->UseProxy) {
-      [self.useProxyButton setState:NSOnState];
-    } else {
-      [self.useProxyButton setState:NSOffState];
-    }
-    if (settings->ProxyHost) {
-      [self.hostTextField setStringValue:[NSString stringWithUTF8String:settings->ProxyHost]];
-    } else {
-      [self.hostTextField setStringValue:@""];
-    }
-    if (settings->ProxyPort) {
-      [self.portTextField setIntegerValue:settings->ProxyPort];
-    } else {
-      [self.portTextField setStringValue:@""];
-    }
-    if (settings->ProxyUsername) {
-      [self.usernameTextField setStringValue:[NSString stringWithUTF8String:settings->ProxyUsername]];
-    } else {
-      [self.usernameTextField setStringValue:@""];
-    }
-    if (settings->ProxyPassword) {
-      [self.passwordTextField setStringValue:[NSString stringWithUTF8String:settings->ProxyPassword]];
-    } else {
-      [self.passwordTextField setStringValue:@""];
-    }
-    if (settings->UseIdleDetection) {
-      [self.useIdleDetectionButton setState:NSOnState];
-    } else {
-      [self.useIdleDetectionButton setState:NSOffState];
-    }
-    if (settings->MenubarTimer) {
-      [self.menubarTimerCheckbox setState:NSOnState];
-    } else {
-      [self.menubarTimerCheckbox setState:NSOffState];
-    }
-    kopsik_settings_clear(settings);
+  [self.useProxyButton setState:[self boolToState:use_proxy]];
+
+  if (proxy_host) {
+    [self.hostTextField setStringValue:[NSString stringWithUTF8String:proxy_host]];
+  } else {
+    [self.hostTextField setStringValue:@""];
+  }
+
+  if (proxy_port) {
+    [self.portTextField setIntegerValue:proxy_port];
+  } else {
+    [self.portTextField setStringValue:@""];
+  }
+
+  if (proxy_username) {
+    [self.usernameTextField setStringValue:[NSString stringWithUTF8String:proxy_username]];
+  } else {
+    [self.usernameTextField setStringValue:@""];
+  }
+
+  if (proxy_password) {
+    [self.passwordTextField setStringValue:[NSString stringWithUTF8String:proxy_password]];
+  } else {
+    [self.passwordTextField setStringValue:@""];
+  }
+
+  if (proxy_host) {
+    free(proxy_host);
+  }
+  if (proxy_username) {
+    free(proxy_username);
+  }
+  if (proxy_password) {
+    free(proxy_password);
+  }
 }
 
 - (IBAction)useProxyButtonChanged:(id)sender {
   [self enableProxyFields];
-  [self savePreferences];
+
+  [self saveProxySettings];
 }
 
 - (IBAction)useIdleDetectionButtonChanged:(id)sender {
-  [self savePreferences];
+  [self saveSettings];
 }
 
 - (void)enableProxyFields {
@@ -108,24 +144,48 @@
 }
 
 - (IBAction)hostTextFieldChanged:(id)sender {
-  [self savePreferences];
+  [self saveProxySettings];
 }
 
 - (IBAction)portTextFieldChanged:(id)sender {
-  [self savePreferences];
+  [self saveProxySettings];
 }
 
 - (IBAction)usernameTextFieldChanged:(id)sender {
-  [self savePreferences];
+  [self saveProxySettings];
 }
 
 - (IBAction)passwordTextFieldChanged:(id)sender {
-  [self savePreferences];
+  [self saveProxySettings];
 }
 
-- (void)savePreferences {
-  NSLog(@"savePreferences");
+- (unsigned int)stateToBool:(NSInteger)state {
+  if (NSOnState == state) {
+    return 1;
+  }
+  return 0;
+}
 
+- (void)saveSettings {
+  NSLog(@"saveSettings");
+
+  char err[KOPSIK_ERR_LEN];
+  if (KOPSIK_API_SUCCESS != kopsik_set_settings(ctx,
+                                                err,
+                                                KOPSIK_ERR_LEN,
+                                                [self stateToBool:[self.useIdleDetectionButton state]],
+                                                [self stateToBool:[self.menubarTimerCheckbox state]],
+                                                [self stateToBool:[self.dockIconCheckbox state]])) {
+    handle_error(err);
+    return;
+  }
+  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventSettingsChanged
+                                                      object:nil];
+}
+
+- (void)saveProxySettings {
+  NSLog(@"saveProxySettings");
+  
   unsigned int use_proxy = 0;
   if ([self.useProxyButton state] == NSOnState) {
     use_proxy = 1;
@@ -134,29 +194,16 @@
   NSInteger port = [self.portTextField integerValue];
   NSString *username = [self.usernameTextField stringValue];
   NSString *password = [self.passwordTextField stringValue];
-
-  unsigned int use_idle_detection = 0;
-  if ([self.useIdleDetectionButton state] == NSOnState) {
-    use_idle_detection = 1;
-  }
-
-  unsigned int menubar_timer = 0;
-  if ([self.menubarTimerCheckbox state] == NSOnState) {
-    menubar_timer = 1;
-  }
-
+  
   char err[KOPSIK_ERR_LEN];
-  kopsik_api_result res = kopsik_set_settings(ctx,
-                                              err,
-                                              KOPSIK_ERR_LEN,
-                                              use_proxy,
-                                              [host UTF8String],
-                                              (unsigned int)port,
-                                              [username UTF8String],
-                                              [password UTF8String],
-                                              use_idle_detection,
-                                              menubar_timer);
-  if (KOPSIK_API_SUCCESS != res) {
+  if (KOPSIK_API_SUCCESS != kopsik_set_proxy_settings(ctx,
+                                                      err,
+                                                      KOPSIK_ERR_LEN,
+                                                      use_proxy,
+                                                      [host UTF8String],
+                                                      (unsigned int)port,
+                                                      [username UTF8String],
+                                                      [password UTF8String])) {
     handle_error(err);
     return;
   }
@@ -170,7 +217,11 @@
 }
 
 - (IBAction)menubarTimerCheckboxChanged:(id)sender {
-  [self savePreferences];
+  [self saveSettings];
+}
+
+- (IBAction)dockIconCheckboxChanged:(id)sender {
+  [self saveSettings];
 }
 
 - (void)displayTimelineRecordingState {

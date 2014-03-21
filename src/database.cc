@@ -257,75 +257,119 @@ error Database::LoadCurrentUser(
 }
 
 error Database::LoadSettings(
-        bool *use_proxy,
-        Proxy *proxy,
-        bool *use_idle_detection,
-        bool *menubar_timer) {
-    poco_assert(session);
-    poco_assert(use_proxy);
-    poco_assert(proxy);
-    poco_assert(use_idle_detection);
+    bool *use_idle_detection,
+    bool *menubar_timer,
+    bool *dock_icon) {
+  poco_assert(session);
+  poco_assert(use_idle_detection);
+  poco_assert(menubar_timer);
+  poco_assert(dock_icon);
 
-    Poco::Mutex::ScopedLock lock(mutex_);
+  Poco::Mutex::ScopedLock lock(mutex_);
 
-    try {
-        *session << "select use_proxy, proxy_host, proxy_port, "
-                "proxy_username, proxy_password, use_idle_detection, "
-                "menubar_timer "
-                "from settings",
-            Poco::Data::into(*use_proxy),
-            Poco::Data::into(proxy->host),
-            Poco::Data::into(proxy->port),
-            Poco::Data::into(proxy->username),
-            Poco::Data::into(proxy->password),
-            Poco::Data::into(*use_idle_detection),
-            Poco::Data::into(*menubar_timer),
-            Poco::Data::limit(1),
-            Poco::Data::now;
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return last_error("LoadSettings");
+  try {
+    *session << "select use_idle_detection, menubar_timer, dock_icon "
+        "from settings",
+      Poco::Data::into(*use_idle_detection),
+      Poco::Data::into(*menubar_timer),
+      Poco::Data::into(*dock_icon),
+      Poco::Data::limit(1),
+      Poco::Data::now;
+  } catch(const Poco::Exception& exc) {
+    return exc.displayText();
+  } catch(const std::exception& ex) {
+    return ex.what();
+  } catch(const std::string& ex) {
+    return ex;
+  }
+  return last_error("LoadSettings");
+}
+
+error Database::LoadProxySettings(
+    bool *use_proxy,
+    Proxy *proxy) {
+  poco_assert(session);
+  poco_assert(use_proxy);
+  poco_assert(proxy);
+
+  Poco::Mutex::ScopedLock lock(mutex_);
+
+  try {
+    *session << "select use_proxy, proxy_host, proxy_port, "
+        "proxy_username, proxy_password "
+        "from settings",
+      Poco::Data::into(*use_proxy),
+      Poco::Data::into(proxy->host),
+      Poco::Data::into(proxy->port),
+      Poco::Data::into(proxy->username),
+      Poco::Data::into(proxy->password),
+      Poco::Data::limit(1),
+      Poco::Data::now;
+  } catch(const Poco::Exception& exc) {
+    return exc.displayText();
+  } catch(const std::exception& ex) {
+    return ex.what();
+  } catch(const std::string& ex) {
+    return ex;
+  }
+  return last_error("LoadProxySettings");
 }
 
 error Database::SaveSettings(
-        const bool use_proxy,
-        const Proxy *proxy,
-        const bool use_idle_detection,
-        const bool menubar_timer) {
-    poco_assert(session);
+    const bool use_idle_detection,
+    const bool menubar_timer,
+    const bool dock_icon) {
+  poco_assert(session);
 
-    Poco::Mutex::ScopedLock lock(mutex_);
+  Poco::Mutex::ScopedLock lock(mutex_);
 
-    try {
-        *session << "update settings set "
-            "use_proxy = :use_proxy, "
-            "proxy_host = :proxy_host, "
-            "proxy_port = :proxy_port, "
-            "proxy_username = :proxy_username, "
-            "proxy_password = :proxy_password, "
-            "use_idle_detection = :use_idle_detection, "
-            "menubar_timer = :menubar_timer",
-            Poco::Data::use(use_proxy),
-            Poco::Data::use(proxy->host),
-            Poco::Data::use(proxy->port),
-            Poco::Data::use(proxy->username),
-            Poco::Data::use(proxy->password),
-            Poco::Data::use(use_idle_detection),
-            Poco::Data::use(menubar_timer),
-            Poco::Data::now;
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return last_error("SaveSettings");
+  try {
+    *session << "update settings set "
+      "use_idle_detection = :use_idle_detection, "
+      "menubar_timer = :menubar_timer, "
+      "dock_icon = :dock_icon",
+      Poco::Data::use(use_idle_detection),
+      Poco::Data::use(menubar_timer),
+      Poco::Data::use(dock_icon),
+      Poco::Data::now;
+  } catch(const Poco::Exception& exc) {
+    return exc.displayText();
+  } catch(const std::exception& ex) {
+    return ex.what();
+  } catch(const std::string& ex) {
+    return ex;
+  }
+  return last_error("SaveSettings");
+}
+
+error Database::SaveProxySettings(
+    const bool use_proxy,
+    const Proxy *proxy) {
+  poco_assert(session);
+
+  Poco::Mutex::ScopedLock lock(mutex_);
+
+  try {
+    *session << "update settings set "
+      "use_proxy = :use_proxy, "
+      "proxy_host = :proxy_host, "
+      "proxy_port = :proxy_port, "
+      "proxy_username = :proxy_username, "
+      "proxy_password = :proxy_password ",
+      Poco::Data::use(use_proxy),
+      Poco::Data::use(proxy->host),
+      Poco::Data::use(proxy->port),
+      Poco::Data::use(proxy->username),
+      Poco::Data::use(proxy->password),
+      Poco::Data::now;
+  } catch(const Poco::Exception& exc) {
+    return exc.displayText();
+  } catch(const std::exception& ex) {
+    return ex.what();
+  } catch(const std::string& ex) {
+    return ex;
+  }
+  return last_error("SaveProxySettings");
 }
 
 error Database::LoadUpdateChannel(
@@ -437,7 +481,12 @@ error Database::loadUsersRelatedData(User *user) {
         return err;
     }
 
-    return loadTimeEntries(user->ID(), &user->related.TimeEntries);
+    err = loadTimeEntries(user->ID(), &user->related.TimeEntries);
+    if (err != noError) {
+        return err;
+    }
+
+    return noError;
 }
 
 error Database::LoadUserByID(
@@ -791,7 +840,21 @@ error Database::loadTimeEntries(
         if (err != noError) {
             return err;
         }
-        return loadTimeEntriesFromSQLStatement(&select, list);
+        err = loadTimeEntriesFromSQLStatement(&select, list);
+        if (err != noError) {
+            return err;
+        }
+
+        // Ensure all time entries have a GUID.
+        for (std::vector<TimeEntry *>::iterator it = list->begin();
+                it != list->end();
+                ++it) {
+            TimeEntry *te = *it;
+            te->EnsureGUID();
+            if (te->Dirty()) {
+                te->SetUIModified();
+            }
+        }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -799,7 +862,7 @@ error Database::loadTimeEntries(
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error("loadTimeEntries");
+    return noError;
 }
 
 error Database::loadTimeEntriesFromSQLStatement(
@@ -893,12 +956,6 @@ error Database::saveProjects(
   poco_assert(list);
   poco_assert(changes);
 
-  {
-    std::stringstream ss;
-    ss << "Saving projects in thread " << Poco::Thread::currentTid();
-    logger().trace(ss.str());
-  }
-
   for (std::vector<Project *>::iterator it = list->begin();
        it != list->end(); ++it) {
     Project *model = *it;
@@ -927,13 +984,6 @@ error Database::saveProjects(
     } else {
       ++it;
     }
-  }
-
-  {
-    std::stringstream ss;
-    ss << "Finished saving time entries in thread " <<
-    Poco::Thread::currentTid();
-    logger().trace(ss.str());
   }
 
   return noError;
@@ -986,12 +1036,6 @@ error Database::saveTimeEntries(
     poco_assert(list);
     poco_assert(changes);
 
-    {
-        std::stringstream ss;
-        ss << "Saving time entries in thread " << Poco::Thread::currentTid();
-        logger().trace(ss.str());
-    }
-
     for (std::vector<TimeEntry *>::iterator it = list->begin();
             it != list->end(); ++it) {
         TimeEntry *model = *it;
@@ -1022,13 +1066,6 @@ error Database::saveTimeEntries(
         }
     }
 
-    {
-        std::stringstream ss;
-        ss << "Finished saving time entries in thread " <<
-            Poco::Thread::currentTid();
-        logger().trace(ss.str());
-    }
-
     return noError;
 }
 
@@ -1039,11 +1076,14 @@ error Database::saveTimeEntry(
     poco_assert(session);
     poco_assert(changes);
 
+    // Time entries need to have a GUID,
+    // we expect it everywhere in the UI
+    model->EnsureGUID();
+    poco_assert(!model->GUID().empty());
+
     if (!model->NeedsToBeSaved()) {
         return noError;
     }
-
-    model->EnsureGUID();
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
@@ -1052,7 +1092,7 @@ error Database::saveTimeEntry(
             std::stringstream ss;
             ss << "Updating time entry " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger().trace(ss.str());
+            logger().debug(ss.str());
 
             if (model->ID()) {
                 *session << "update time_entries set "
@@ -1131,7 +1171,7 @@ error Database::saveTimeEntry(
             std::stringstream ss;
             ss << "Inserting time entry " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger().trace(ss.str());
+            logger().debug(ss.str());
             if (model->ID()) {
                 *session << "insert into time_entries(id, uid, description, "
                     "wid, guid, pid, tid, billable, "
@@ -1403,11 +1443,17 @@ error Database::saveProject(
     poco_assert(model);
     poco_assert(session);
 
+    // Generate GUID only for locally-created
+    // projects. User cannot update existing
+    // projects, so don't mess with their GUIDs
+    if (!model->ID()) {
+        model->EnsureGUID();
+        poco_assert(!model->GUID().empty());
+    }
+
     if (!model->NeedsToBeSaved()) {
         return noError;
     }
-
-    model->EnsureGUID();
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
@@ -1785,12 +1831,6 @@ error Database::SaveUser(
     }
     poco_assert(session);
     poco_assert(changes);
-
-    {
-        std::stringstream ss;
-        ss << "Saving user in thread " << Poco::Thread::currentTid();
-        logger().trace(ss.str());
-    }
 
     Poco::Stopwatch stopwatch;
     stopwatch.start();
@@ -2204,14 +2244,15 @@ error Database::initialize_tables() {
     }
 
     err = migrate("time_entries.id",
-        "CREATE UNIQUE INDEX id_time_entries_id ON time_entries (uid, id); ");
+        "CREATE UNIQUE INDEX id_time_entries_id "
+        "ON time_entries (uid, id); ");
     if (err != noError) {
       return err;
     }
 
     err = migrate("time_entries.guid",
         "CREATE UNIQUE INDEX id_time_entries_guid "
-        "   ON time_entries (uid, guid); ");
+        "ON time_entries (uid, guid); ");
     if (err != noError) {
       return err;
     }
@@ -2219,6 +2260,80 @@ error Database::initialize_tables() {
     err = migrate("time_entries.project_guid",
         "ALTER TABLE time_entries "
         "ADD COLUMN project_guid VARCHAR;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("time_entries.guid not null, step 1",
+        "ALTER TABLE time_entries RENAME TO tmp_time_entries; ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("time_entries.guid not null, step 2",
+        "create table time_entries("
+        "local_id integer primary key, "
+        "id integer, "
+        "uid integer not null, "
+        "description varchar, "
+        "wid integer not null, "
+        "guid varchar NOT NULL, "
+        "pid integer, "
+        "tid integer, "
+        "billable integer not null default 0,"
+        "duronly integer not null default 0, "
+        "ui_modified_at integer, "
+        "start integer not null, "
+        "stop integer, "
+        "duration integer not null,"
+        "tags text,"
+        "created_with varchar,"
+        "deleted_at integer,"
+        "updated_at integer,"
+        "project_guid VARCHAR,"
+        "constraint fk_time_entries_wid foreign key (wid) "
+        "   references workspaces(id) on delete no action on update no action, "
+        "constraint fk_time_entries_pid foreign key (pid) "
+        "   references projects(id) on delete no action on update no action, "
+        "constraint fk_time_entries_tid foreign key (tid) "
+        "   references tasks(id) on delete no action on update no action, "
+        "constraint fk_time_entries_uid foreign key (uid) "
+        "   references users(id) on delete no action on update no action"
+        "); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("time_entries.guid not null, step 3",
+        "insert into time_entries("
+        "   local_id, id, uid, description, wid, guid, pid, tid, billable, "
+        "   duronly, ui_modified_at, start, stop, duration, tags, "
+        "   created_with, deleted_at, updated_at, project_guid) "
+        "select "
+        "   local_id, id, uid, description, wid, guid, pid, tid, billable, "
+        "   duronly, ui_modified_at, start, stop, duration, tags, "
+        "   created_with, deleted_at, updated_at, project_guid "
+        "from tmp_time_entries;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("time_entries.guid not null, step 4",
+        "drop table tmp_time_entries;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("time_entries.guid not null, step 5",
+        "CREATE UNIQUE INDEX id_time_entries_id "
+        "   ON time_entries (uid, id); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("time_entries.guid not null, step 6",
+        "CREATE UNIQUE INDEX id_time_entries_guid "
+        "   ON time_entries (uid, guid); ");
     if (err != noError) {
         return err;
     }
@@ -2269,6 +2384,13 @@ error Database::initialize_tables() {
     err = migrate("settings.menubar_timer",
         "ALTER TABLE settings "
         "ADD COLUMN menubar_timer integer not null default 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("settings.dock_icon",
+        "ALTER TABLE settings "
+        "ADD COLUMN dock_icon INTEGER NOT NULL DEFAULT 1;");
     if (err != noError) {
         return err;
     }
@@ -2421,20 +2543,50 @@ error Database::migrate(
             return err;
         }
 
-        if (count < 1) {
-            *session << sql, Poco::Data::now;
-            err = last_error("migrate");
-            if (err != noError) {
-                return err;
-            }
+        if (count) {
+            return noError;
+        }
 
-            *session << "insert into kopsik_migrations(name) values(:name)",
-                Poco::Data::use(name),
-                Poco::Data::now;
-            err = last_error("migrate");
-            if (err != noError) {
-                return err;
-            }
+        std::stringstream ss;
+        ss  << "Migrating" << "\n"
+            << name << "\n"
+            << sql << "\n";
+        logger().debug(ss.str());
+
+        err = execute(sql);
+        if (err != noError) {
+            return err;
+        }
+
+        *session << "insert into kopsik_migrations(name) values(:name)",
+            Poco::Data::use(name),
+            Poco::Data::now;
+        err = last_error("migrate");
+        if (err != noError) {
+            return err;
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
+error Database::execute(
+        const std::string sql) {
+    poco_assert(session);
+    poco_assert(!sql.empty());
+
+    Poco::Mutex::ScopedLock lock(mutex_);
+
+    try {
+        *session << sql, Poco::Data::now;
+        error err = last_error("execute");
+        if (err != noError) {
+            return err;
         }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();

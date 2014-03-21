@@ -9,6 +9,8 @@ Toggl built and signed app is [available for download](https://www.toggl.com/api
 
 XCode Version 5.0.2 is required to hack on the project.
 
+Currently OSX 10.8 is the minimum version supported.
+
 Windows
 -------
 * [build OpenSSL for Visual Studio](http://developer.covenanteyes.com/building-openssl-for-visual-studio/)

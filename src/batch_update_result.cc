@@ -5,6 +5,10 @@
 #include <sstream>
 #include <cstring>
 
+#include "./base_model.h"
+
+#include "Poco/Logger.h"
+
 namespace kopsik {
 
 error BatchUpdateResult::Error() const {
@@ -57,6 +61,63 @@ void BatchUpdateResult::LoadFromJSONNode(JSONNODE * const n) {
     }
     ++i;
   }
+}
+
+// Iterate through response array, parse response bodies.
+// Collect errors into a vector.
+void BatchUpdateResult::ProcessResponseArray(
+    std::vector<BatchUpdateResult> * const results,
+    std::map<std::string, BaseModel *> *models,
+    std::vector<error> *errors) {
+  poco_assert(results);
+  poco_assert(models);
+  poco_assert(errors);
+
+  Poco::Logger &logger = Poco::Logger::get("json");
+  for (std::vector<BatchUpdateResult>::const_iterator it = results->begin();
+      it != results->end();
+      it++) {
+    BatchUpdateResult result = *it;
+
+    logger.debug(result.String());
+
+    poco_assert(!result.GUID.empty());
+    BaseModel *model = (*models)[result.GUID];
+    poco_assert(model);
+
+    error err = model->ApplyBatchUpdateResult(&result);
+    if (err != noError) {
+      errors->push_back(err);
+    }
+  }
+}
+
+void BatchUpdateResult::ParseResponseArray(
+    const std::string response_body,
+    std::vector<BatchUpdateResult> *responses) {
+  poco_assert(responses);
+
+  Poco::Logger &logger = Poco::Logger::get("json");
+
+  // There seem to be cases where response body is 0.
+  // Must investigate further.
+  if (response_body.empty()) {
+    logger.warning("Response is empty!");
+    return;
+  }
+
+  logger.debug(response_body);
+
+  JSONNODE *response_array = json_parse(response_body.c_str());
+  JSONNODE_ITERATOR i = json_begin(response_array);
+  JSONNODE_ITERATOR e = json_end(response_array);
+  while (i != e) {
+    BatchUpdateResult result;
+    result.LoadFromJSONNode(*i);
+    responses->push_back(result);
+    ++i;
+  }
+  json_delete(response_array);
 }
 
 }   // namespace kopsik

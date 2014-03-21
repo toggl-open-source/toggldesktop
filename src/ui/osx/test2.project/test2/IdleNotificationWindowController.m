@@ -42,7 +42,7 @@
   [format setDateFormat:@"HH:mm:ss"];
   NSString *dateString = [format stringFromDate:self.idleEvent.started];
   
-  NSString *information = [NSString stringWithFormat:@"You have been idle since %@ (%d minutes)",
+  NSString *information = [NSString stringWithFormat:@"You have been idle since %@ (%ld minutes)",
                            dateString, self.idleEvent.seconds / 60];
   NSAssert(self.informationTextField != nil,
            @"self.informationTextField cannot be nil at this point");

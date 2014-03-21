@@ -134,6 +134,24 @@ void LoadUserFromJSONNode(
   }
 }
 
+template<class T>
+void deleteZombies(
+    std::vector<T> &list,
+    std::set<Poco::UInt64> &alive) {
+  for (size_t i = 0; i < list.size(); ++i) {
+    BaseModel *model = list[i];
+    if (!model->ID()) {
+      // If model has no server-assigned ID, it's not even
+      // pushed to server. So actually we don't know if it's
+      // a zombie or not. Ignore:
+      continue;
+    }
+    if (alive.end() == alive.find(model->ID())) {
+      model->MarkAsDeletedOnServer();
+    }
+  }
+}
+
 void LoadUserTagsFromJSONNode(
     User *model,
     JSONNODE * const list,
@@ -154,15 +172,7 @@ void LoadUserTagsFromJSONNode(
     return;
   }
 
-  for (std::vector<Tag *>::const_iterator it =
-      model->related.Tags.begin();
-      it != model->related.Tags.end();
-      it++) {
-    Tag *model = *it;
-    if (alive.end() == alive.find(model->ID())) {
-      model->MarkAsDeletedOnServer();
-    }
-  }
+  deleteZombies(model->related.Tags, alive);
 }
 
 void loadUserTagFromJSONNode(
@@ -218,15 +228,7 @@ void LoadUserTasksFromJSONNode(
     return;
   }
 
-  for (std::vector<Task *>::const_iterator it =
-      user->related.Tasks.begin();
-      it != user->related.Tasks.end();
-      it++) {
-    Task *model = *it;
-    if (alive.end() == alive.find(model->ID())) {
-      model->MarkAsDeletedOnServer();
-    }
-  }
+  deleteZombies(user->related.Tasks, alive);
 }
 
 void loadUserTaskFromJSONNode(
@@ -439,15 +441,7 @@ void LoadUserClientsFromJSONNode(
     return;
   }
 
-  for (std::vector<Client *>::const_iterator it =
-      user->related.Clients.begin();
-      it != user->related.Clients.end();
-      it++) {
-    Client *model = *it;
-    if (alive.end() == alive.find(model->ID())) {
-      model->MarkAsDeletedOnServer();
-    }
-  }
+  deleteZombies(user->related.Clients, alive);
 }
 
 void loadUserProjectFromJSONNode(
@@ -503,15 +497,7 @@ void LoadUserProjectsFromJSONNode(
     return;
   }
 
-  for (std::vector<Project *>::const_iterator it =
-      user->related.Projects.begin();
-      it != user->related.Projects.end();
-      it++) {
-    Project *model = *it;
-    if (alive.end() == alive.find(model->ID())) {
-        model->MarkAsDeletedOnServer();
-    }
-  }
+  deleteZombies(user->related.Projects, alive);
 }
 
 error LoadTimeEntryTagsFromJSONNode(
@@ -587,15 +573,7 @@ void LoadUserWorkspacesFromJSONNode(
     return;
   }
 
-  for (std::vector<Workspace *>::const_iterator it =
-      user->related.Workspaces.begin();
-      it != user->related.Workspaces.end();
-      it++) {
-    Workspace *model = *it;
-    if (alive.end() == alive.find(model->ID())) {
-      model->MarkAsDeletedOnServer();
-    }
-  }
+  deleteZombies(user->related.Workspaces, alive);
 }
 
 void LoadUserTimeEntriesFromJSONNode(
@@ -629,53 +607,6 @@ void LoadUserTimeEntriesFromJSONNode(
   }
 }
 
-JSONNODE *modelUpdateJSON(
-    BaseModel * const model,
-    JSONNODE * const n) {
-  poco_assert(model);
-  poco_assert(n);
-
-  json_set_name(n, model->ModelName().c_str());
-
-  JSONNODE *body = json_new(JSON_NODE);
-  json_set_name(body, "body");
-  json_push_back(body, n);
-
-  Poco::Logger &logger = Poco::Logger::get("json");
-
-  JSONNODE *update = json_new(JSON_NODE);
-  if (model->NeedsDELETE()) {
-    std::stringstream url;
-    url << model->ModelURL() << "/" << model->ID();
-    json_push_back(update, json_new_a("method", "DELETE"));
-    json_push_back(update, json_new_a("relative_url", url.str().c_str()));
-    std::stringstream ss;
-    ss << model->ModelName() << " " << model->String() << " needs a DELETE";
-    logger.debug(ss.str());
-
-  } else if (model->NeedsPOST()) {
-    json_push_back(update, json_new_a("method", "POST"));
-    json_push_back(update, json_new_a("relative_url",
-      model->ModelURL().c_str()));
-    std::stringstream ss;
-    ss << model->ModelName() << " " << model->String() << " needs a POST";
-    logger.debug(ss.str());
-
-  } else if (model->NeedsPUT()) {
-    std::stringstream url;
-    url << model->ModelURL() << "/" << model->ID();
-    json_push_back(update, json_new_a("method", "PUT"));
-    json_push_back(update, json_new_a("relative_url", url.str().c_str()));
-    std::stringstream ss;
-    ss << model->ModelName() << " " << model->String() << " needs a PUT";
-    logger.debug(ss.str());
-  }
-  json_push_back(update, json_new_a("GUID", model->GUID().c_str()));
-  json_push_back(update, body);
-
-  return update;
-}
-
 std::string UpdateJSON(
     std::vector<Project *> * const projects,
     std::vector<TimeEntry *> * const time_entries) {
@@ -688,18 +619,14 @@ std::string UpdateJSON(
   for (std::vector<Project *>::const_iterator it =
       projects->begin();
       it != projects->end(); it++) {
-    Project *model = *it;
-    JSONNODE *update = modelUpdateJSON(model, model->SaveToJSONNode());
-    json_push_back(c, update);
+    json_push_back(c, (*it)->BatchUpdateJSON());
   }
 
   // Time entries go last
   for (std::vector<TimeEntry *>::const_iterator it =
       time_entries->begin();
       it != time_entries->end(); it++) {
-    TimeEntry *te = *it;
-    JSONNODE *update = modelUpdateJSON(te, te->SaveToJSONNode());
-    json_push_back(c, update);
+    json_push_back(c, (*it)->BatchUpdateJSON());
   }
 
   json_char *jc = json_write_formatted(c);
@@ -707,75 +634,6 @@ std::string UpdateJSON(
   json_free(jc);
   json_delete(c);
   return json;
-}
-
-// Iterate through response array, parse response bodies.
-// Collect errors into a vector.
-void ProcessResponseArray(
-    std::vector<BatchUpdateResult> * const results,
-    std::map<std::string, BaseModel *> *models,
-    std::vector<error> *errors) {
-  poco_assert(results);
-  poco_assert(models);
-  poco_assert(errors);
-
-  Poco::Logger &logger = Poco::Logger::get("json");
-  for (std::vector<BatchUpdateResult>::const_iterator it = results->begin();
-      it != results->end();
-      it++) {
-    BatchUpdateResult result = *it;
-
-    logger.debug(result.String());
-
-    poco_assert(!result.GUID.empty());
-    BaseModel *model = (*models)[result.GUID];
-    poco_assert(model);
-
-    if (result.ResourceIsGone()) {
-      model->MarkAsDeletedOnServer();
-      continue;
-    }
-
-    kopsik::error err = result.Error();
-    if (err != kopsik::noError) {
-      if (model->IsDuplicateResourceError(err)) {
-        model->MarkAsDeletedOnServer();
-        continue;
-      }
-      errors->push_back(err);
-      model->SetError(err);
-      continue;
-    }
-
-    poco_assert(json_is_valid(result.Body.c_str()));
-    model->LoadFromDataString(result.Body);
-  }
-}
-
-void ParseResponseArray(
-    const std::string response_body,
-    std::vector<BatchUpdateResult> *responses) {
-  poco_assert(responses);
-  poco_assert(responses);
-
-  // There seem to be cases where response body is 0.
-  // Must investigate further.
-  if (response_body.empty()) {
-    Poco::Logger &logger = Poco::Logger::get("json");
-    logger.warning("Response is empty!");
-    return;
-  }
-
-  JSONNODE *response_array = json_parse(response_body.c_str());
-  JSONNODE_ITERATOR i = json_begin(response_array);
-  JSONNODE_ITERATOR e = json_end(response_array);
-  while (i != e) {
-    BatchUpdateResult result;
-    result.LoadFromJSONNode(*i);
-    responses->push_back(result);
-    ++i;
-  }
-  json_delete(response_array);
 }
 
 }   // namespace kopsik

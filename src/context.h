@@ -74,16 +74,24 @@ class Context {
     void SetWebSocketClientURL(const std::string value);
     void SetDBPath(
       const std::string path);
+
     kopsik::error LoadSettings(
-      bool *use_proxy,
-      kopsik::Proxy *proxy,
       bool *use_idle_settings,
-      bool *menubar_timer) const;
+      bool *menubar_timer,
+      bool *dock_icon) const;
+
     kopsik::error SaveSettings(
-      const bool use_proxy,
-      const kopsik::Proxy *proxy,
       const bool use_idle_detection,
-      const bool menubar_timer);
+      const bool menubar_timer,
+      const bool dock_icon);
+
+    kopsik::error LoadProxySettings(
+      bool *use_proxy,
+      kopsik::Proxy *proxy) const;
+
+    kopsik::error SaveProxySettings(
+      const bool use_proxy,
+      const kopsik::Proxy *proxy);
 
     // Session management
     kopsik::error CurrentAPIToken(std::string *token);
@@ -198,8 +206,12 @@ class Context {
     void onSwitchTimelineOff(Poco::Util::TimerTask& task);  // NOLINT
     void onSwitchTimelineOn(Poco::Util::TimerTask& task);  // NOLINT
     void onFetchUpdates(Poco::Util::TimerTask& task);  // NOLINT
+    void onPeriodicUpdateCheck(Poco::Util::TimerTask& task);  // NOLINT
     void onTimelineUpdateServerSettings(Poco::Util::TimerTask& task);  // NOLINT
     void onSendFeedback(Poco::Util::TimerTask& task);  // NOLINT
+
+    void startPeriodicUpdateCheck();
+    void executeUpdateCheck();
 
     void getTimeEntryAutocompleteItems(
       std::vector<AutocompleteItem> *list) const;

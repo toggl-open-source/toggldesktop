@@ -56,32 +56,72 @@ namespace kopsik {
     }
 
     TEST(KopsikApiTest, kopsik_set_settings) {
-        void *ctx = create_test_context();
-        wipe_test_db();
-        char err[ERRLEN];
-        kopsik_api_result res = kopsik_set_db_path(ctx, err, ERRLEN, TESTDB);
-        ASSERT_EQ(KOPSIK_API_SUCCESS, res);
+      void *ctx = create_test_context();
+      wipe_test_db();
+      char err[ERRLEN];
 
-        res = kopsik_set_settings(
-            ctx,
-            err, ERRLEN,
-            1, "localhost", 8000, "johnsmith", "secret", 0, 0);
-        ASSERT_EQ(KOPSIK_API_SUCCESS, res);
+      ASSERT_EQ(KOPSIK_API_SUCCESS,
+        kopsik_set_db_path(ctx, err, ERRLEN, TESTDB));
 
-        KopsikSettings *settings = kopsik_settings_init();
-        res = kopsik_get_settings(ctx, err, ERRLEN, settings);
-        ASSERT_EQ(KOPSIK_API_SUCCESS, res);
-        ASSERT_TRUE(settings->UseProxy);
-        ASSERT_EQ(std::string("localhost"), std::string(settings->ProxyHost));
-        ASSERT_EQ(8000, static_cast<int>(settings->ProxyPort));
-        ASSERT_EQ(std::string("johnsmith"),
-            std::string(settings->ProxyUsername));
-        ASSERT_EQ(std::string("secret"), std::string(settings->ProxyPassword));
-        ASSERT_FALSE(settings->UseIdleDetection);
-        ASSERT_FALSE(settings->MenubarTimer);
-        kopsik_settings_clear(settings);
+      ASSERT_EQ(KOPSIK_API_SUCCESS,
+        kopsik_set_settings(ctx, err, ERRLEN, 0, 0, 0));
 
-        kopsik_context_clear(ctx);
+      unsigned int idle_detection(0), menubar_timer(0), dock_icon(0);
+
+      ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_get_settings(
+        ctx, err, ERRLEN, &idle_detection, &menubar_timer, &dock_icon));
+
+      ASSERT_FALSE(idle_detection);
+      ASSERT_FALSE(menubar_timer);
+      ASSERT_FALSE(dock_icon);
+
+      ASSERT_EQ(KOPSIK_API_SUCCESS,
+        kopsik_set_settings(ctx, err, ERRLEN, 1, 1, 1));
+
+      ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_get_settings(
+        ctx, err, ERRLEN, &idle_detection, &menubar_timer, &dock_icon));
+
+      ASSERT_TRUE(idle_detection);
+      ASSERT_TRUE(menubar_timer);
+      ASSERT_TRUE(dock_icon);
+    }
+
+    TEST(KopsikApiTest, kopsik_set_proxy_settings) {
+      void *ctx = create_test_context();
+      wipe_test_db();
+      char err[ERRLEN];
+
+      ASSERT_EQ(KOPSIK_API_SUCCESS,
+        kopsik_set_db_path(ctx, err, ERRLEN, TESTDB));
+
+      ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_set_proxy_settings(
+        ctx, err, ERRLEN, 1, "localhost", 8000, "johnsmith", "secret"));
+
+      unsigned int use_proxy = 0;
+      char *host = 0;
+      unsigned int port = 0;
+      char *username = 0;
+      char *password = 0;
+      ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_get_proxy_settings(
+        ctx, err, ERRLEN, &use_proxy, &host, &port, &username, &password));
+
+      ASSERT_TRUE(use_proxy);
+      ASSERT_EQ(std::string("localhost"), std::string(host));
+      ASSERT_EQ(8000, static_cast<int>(port));
+      ASSERT_EQ(std::string("johnsmith"), std::string(username));
+      ASSERT_EQ(std::string("secret"), std::string(password));
+
+      if (host) {
+        free(host);
+      }
+      if (username) {
+        free(username);
+      }
+      if (password) {
+        free(password);
+      }
+
+      kopsik_context_clear(ctx);
     }
 
     TEST(KopsikApiTest, kopsik_set_update_channel) {
@@ -214,10 +254,13 @@ namespace kopsik {
         // Count time entry items before start. It should be 3, since
         // there are 3 time entries in the me.json file we're using:
         KopsikTimeEntryViewItem *first = 0;
-        ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_items(
-            ctx, err, ERRLEN, &first));
+        if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(
+                ctx, err, ERRLEN, &first)) {
+            ASSERT_EQ(std::string(""), std::string(err));
+            FAIL();
+        }
         int number_of_items = list_length(first);
-        ASSERT_EQ(3, number_of_items);
+        ASSERT_EQ(5, number_of_items);
         kopsik_time_entry_view_item_clear(first);
 
         // Start tracking

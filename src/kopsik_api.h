@@ -82,28 +82,33 @@ KOPSIK_EXPORT void kopsik_context_clear(
 
 // Configuration API
 
-typedef struct {
-  unsigned int UseProxy;
-  char *ProxyHost;
-  unsigned int ProxyPort;
-  char *ProxyUsername;
-  char *ProxyPassword;
-  unsigned int UseIdleDetection;
-  unsigned int MenubarTimer;
-} KopsikSettings;
-
 KOPSIK_EXPORT kopsik_api_result kopsik_get_settings(
   void *context,
   char *errmsg,
   const unsigned int errlen,
-  KopsikSettings *settings);
+  unsigned int *use_idle_detection,
+  unsigned int *menubar_timer,
+  unsigned int *dock_icon);
 
-KOPSIK_EXPORT KopsikSettings *kopsik_settings_init();
-
-KOPSIK_EXPORT void kopsik_settings_clear(
-  KopsikSettings *settings);
+KOPSIK_EXPORT kopsik_api_result kopsik_get_proxy_settings(
+  void *context,
+  char *errmsg,
+  const unsigned int errlen,
+  unsigned int *use_proxy,
+  char **proxy_host,
+  unsigned int *proxy_port,
+  char **proxy_username,
+  char **proxy_password);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_set_settings(
+  void *context,
+  char *errmsg,
+  const unsigned int errlen,
+  const unsigned int use_idle_detection,
+  const unsigned int menubar_timer,
+  const unsigned int dock_icon);
+
+KOPSIK_EXPORT kopsik_api_result kopsik_set_proxy_settings(
   void *context,
   char *errmsg,
   const unsigned int errlen,
@@ -111,9 +116,7 @@ KOPSIK_EXPORT kopsik_api_result kopsik_set_settings(
   const char *proxy_host,
   const unsigned int proxy_port,
   const char *proxy_username,
-  const char *proxy_password,
-  const unsigned int use_idle_detection,
-  const unsigned int menubar_timer);
+  const char *proxy_password);
 
 KOPSIK_EXPORT kopsik_api_result kopsik_configure_proxy(
   void *context,

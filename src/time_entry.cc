@@ -12,15 +12,47 @@
 #include "./time_entry.h"
 
 #include <sstream>
+#include <algorithm>
 
 #include "./formatter.h"
 #include "./json.h"
+#include "./const.h"
 
 #include "Poco/Timestamp.h"
 #include "Poco/DateTime.h"
 #include "Poco/LocalDateTime.h"
 
 namespace kopsik {
+
+bool TimeEntry::ResolveError(const kopsik::error err) {
+  if (durationTooLarge(err) && Stop() && Start()) {
+    Poco::UInt64 seconds =
+      std::min(Stop() - Start(), Poco::UInt64(kMaxTimeEntryDurationSeconds));
+    SetDurationInSeconds(seconds);
+    return true;
+  }
+  if (stopTimeMustBeAfterStartTime(err) && Stop() && Start()) {
+    SetStop(Start() + DurationInSeconds());
+    return true;
+  }
+  if (userCannotAccessWorkspace(err)) {
+    SetWID(0);
+    SetPID(0);
+    SetTID(0);
+    return true;
+  }
+  return false;
+}
+
+bool TimeEntry::durationTooLarge(const kopsik::error err) const {
+  return (std::string::npos != std::string(err).find(
+    "Max allowed duration per 1 time entry is 1000 hours"));
+}
+
+bool TimeEntry::stopTimeMustBeAfterStartTime(const kopsik::error err) const {
+  return (std::string::npos != std::string(err).find(
+    "Stop time must be after start time"));
+}
 
 void TimeEntry::StopAt(const Poco::Int64 at) {
   poco_assert(at);
@@ -32,7 +64,7 @@ void TimeEntry::StopAt(const Poco::Int64 at) {
 
   SetStop(at);
 
-  SetUIModifiedAt(time(0));
+  SetUIModified();
 }
 
 void TimeEntry::StopTracking() {
@@ -249,12 +281,11 @@ void TimeEntry::LoadFromJSONNode(JSONNODE * const data) {
   Poco::UInt64 ui_modified_at =
       GetUIModifiedAtFromJSONNode(data);
   if (UIModifiedAt() > ui_modified_at) {
-      Poco::Logger &logger = Poco::Logger::get("json");
       std::stringstream ss;
       ss  << "Will not overwrite time entry "
           << String()
           << " with server data because we have a newer ui_modified_at";
-      logger.debug(ss.str());
+      logger().debug(ss.str());
       return;
   }
 
@@ -305,7 +336,12 @@ JSONNODE *TimeEntry::SaveToJSONNode() const {
   }
   json_push_back(n, json_new_a("description",
     Formatter::EscapeJSONString(Description()).c_str()));
-  json_push_back(n, json_new_i("wid", (json_int_t)WID()));
+  // Workspace ID can't be 0 on server side. So don't
+  // send 0 if we have no default workspace ID, because
+  // NULL is not 0
+  if (WID()) {
+    json_push_back(n, json_new_i("wid", (json_int_t)WID()));
+  }
   json_push_back(n, json_new_a("guid", GUID().c_str()));
   if (!PID() && !ProjectGUID().empty()) {
     json_push_back(n, json_new_a("pid", ProjectGUID().c_str()));

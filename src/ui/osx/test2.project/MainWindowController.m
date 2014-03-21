@@ -28,8 +28,7 @@
 
 @implementation MainWindowController
 
-- (id)initWithWindow:(NSWindow *)window
-{
+- (id)initWithWindow:(NSWindow *)window {
   self = [super initWithWindow:window];
   if (self) {
     self.loginViewController = [[LoginViewController alloc]
@@ -67,15 +66,18 @@
                                              selector:@selector(eventHandler:)
                                                  name:kUIStateError
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eventHandler:)
+                                                 name:kUIEventSettingsChanged
+                                               object:nil];
   }
   return self;
 }
 
--(void)eventHandler: (NSNotification *) notification
-{
+- (void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
     User *userinfo = notification.object;
-    [Bugsnag setUserAttribute:@"user_id" withValue:[NSString stringWithFormat:@"%ld", userinfo.ID]];
+    [Bugsnag configuration].userId = [NSString stringWithFormat:@"%ld", userinfo.ID];
     
     // Hide login view
     [self.loginViewController.view removeFromSuperview];
@@ -135,7 +137,7 @@
     [self performSelectorOnMainThread:@selector(showError:) withObject:msg waitUntilDone:NO];
 
     [Bugsnag notify:[NSException
-                     exceptionWithName:@"UI error"
+                     exceptionWithName:msg
                      reason:msg
                      userInfo:nil]];
     return;

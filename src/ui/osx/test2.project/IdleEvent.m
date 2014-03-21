@@ -11,7 +11,7 @@
 @implementation IdleEvent
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"started: %@, finished: %@, seconds: %d",
+  return [NSString stringWithFormat:@"started: %@, finished: %@, seconds: %ld",
           self.started, self.finished, self.seconds];
 }
 

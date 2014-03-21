@@ -42,6 +42,10 @@ third_party/poco-1.4.6p2-all/*/*/testsuite/bin/
 .dep
 
 *.db
+*.db-wal
+*.db-shm
+
+
 .DS_Store
 *.xcuserstate
 *.xcuserdatad/
@@ -61,6 +65,7 @@ coverage
 third_party/TFDatePicker/TFDatePicker/build/
 
 xcshareddata
+
 *.obj
 *.lib
 *.dll
@@ -76,3 +81,7 @@ obj
 
 src/ui/windows/TogglDesktop/TogglDesktop/bin
 src/ui/windows/TogglDesktop/Release
+
+*.dSYM
+
+third_party/plcrashreporter-1.2-rc4/build

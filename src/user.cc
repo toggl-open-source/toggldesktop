@@ -13,6 +13,15 @@
 
 namespace kopsik {
 
+User::~User() {
+  ClearWorkspaces();
+  ClearClients();
+  ClearProjects();
+  ClearTasks();
+  ClearTags();
+  ClearTimeEntries();
+}
+
 void User::ActiveProjects(std::vector<Project *> *list) const {
   for (unsigned int i = 0; i < related.Projects.size(); i++) {
     kopsik::Project *p = related.Projects[i];
@@ -82,16 +91,20 @@ TimeEntry *User::Start(
     }
   }
 
+  ensureWID(te);
+
+  te->SetDurOnly(!StoreStartAndStopTime());
+  te->SetUIModified();
+
+  related.TimeEntries.push_back(te);
+  return te;
+}
+
+void User::ensureWID(TimeEntry *te) const {
   // Set default wid
   if (!te->WID()) {
     te->SetWID(DefaultWID());
   }
-
-  te->SetDurOnly(!StoreStartAndStopTime());
-  te->SetUIModifiedAt(time(0));
-
-  related.TimeEntries.push_back(te);
-  return te;
 }
 
 kopsik::error User::Continue(
@@ -124,7 +137,7 @@ kopsik::error User::Continue(
     (*result)->SetTags(existing->Tags());
     related.TimeEntries.push_back((*result));
   }
-  (*result)->SetUIModifiedAt(time(0));
+  (*result)->SetUIModified();
   return kopsik::noError;
 }
 
@@ -254,7 +267,7 @@ TimeEntry *User::SplitAt(const Poco::Int64 at) {
   te->SetWID(running->WID());
   te->SetPID(running->PID());
   te->SetTID(running->TID());
-  te->SetUIModifiedAt(time(0));
+  te->SetUIModified();
   te->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
 
   poco_assert(te->DurationInSeconds() < 0);
@@ -432,11 +445,13 @@ void User::CollectPushableTimeEntries(
       it != related.TimeEntries.end();
       it++) {
     TimeEntry *model = *it;
-    if (model->NeedsPush()) {
-      result->push_back(model);
-      if (models) {
-        (*models)[model->GUID()] = model;
-      }
+    if (!model->NeedsPush()) {
+      continue;
+    }
+    ensureWID(model);
+    result->push_back(model);
+    if (models) {
+      (*models)[model->GUID()] = model;
     }
   }
 }
@@ -510,11 +525,11 @@ error User::push(HTTPSClient *https_client) {
     }
 
     std::vector<BatchUpdateResult> results;
-    ParseResponseArray(response_body, &results);
+    BatchUpdateResult::ParseResponseArray(response_body, &results);
 
     std::vector<error> errors;
 
-    ProcessResponseArray(&results, &models, &errors);
+    BatchUpdateResult::ProcessResponseArray(&results, &models, &errors);
 
     if (!errors.empty()) {
         return collectErrors(&errors);
@@ -674,7 +689,4 @@ TimeEntry *User::GetTimeEntryByID(const Poco::UInt64 id) const {
     return 0;
 }
 
-void User::LoadFromJSONNode(JSONNODE * const) {
-}
-
-}   // namespace kopsik
+}  // namespace kopsik

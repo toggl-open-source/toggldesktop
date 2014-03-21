@@ -24,17 +24,17 @@ bool BaseModel::NeedsPOST() const {
 }
 
 bool BaseModel::NeedsPUT() const {
-    // User has modified model via UI, needs a PUT
+    // Model has been updated and is not deleted, needs a PUT
     return ui_modified_at_ > 0 && !(deleted_at_ > 0);
 }
 
 bool BaseModel::NeedsDELETE() const {
-    // TE is deleted, needs a DELETE on server side
+    // Model is deleted, needs a DELETE on server side
     return id_ && (deleted_at_ > 0);
 }
 
 bool BaseModel::NeedsToBeSaved() const {
-  return !local_id_ || dirty_ || guid_.empty();
+  return !local_id_ || dirty_;
 }
 
 void BaseModel::EnsureGUID() {
@@ -114,7 +114,87 @@ void BaseModel::LoadFromJSONString(const std::string json_string) {
 
 void BaseModel::Delete() {
   SetDeletedAt(time(0));
-  SetUIModifiedAt(time(0));
+  SetUIModified();
+}
+
+error BaseModel::ApplyBatchUpdateResult(
+    BatchUpdateResult * const update) {
+  poco_assert(update);
+
+  if (update->ResourceIsGone()) {
+    MarkAsDeletedOnServer();
+    return noError;
+  }
+
+  kopsik::error err = update->Error();
+  if (err != kopsik::noError) {
+    if (DuplicateResource(err)) {
+      MarkAsDeletedOnServer();
+      return noError;
+    }
+
+    if (ResolveError(err)) {
+      return noError;
+    }
+
+    SetError(err);
+    return err;
+  }
+
+  poco_assert(json_is_valid(update->Body.c_str()));
+  LoadFromDataString(update->Body);
+
+  return noError;
+}
+
+bool BaseModel::userCannotAccessWorkspace(const kopsik::error err) const {
+  return (std::string::npos != std::string(err).find(
+    "User cannot access workspace"));
+}
+
+std::string BaseModel::batchUpdateRelativeURL() const {
+  if (NeedsPOST()) {
+    return ModelURL();
+  }
+
+  std::stringstream url;
+  url << ModelURL() << "/" << ID();
+  return url.str();
+}
+
+std::string BaseModel::batchUpdateMethod() const {
+  if (NeedsDELETE()) {
+    return "DELETE";
+  }
+
+  if (NeedsPOST()) {
+    return "POST";
+  }
+
+  return "PUT";
+}
+
+// Convert model JSON into batch update format.
+JSONNODE *BaseModel::BatchUpdateJSON() const {
+  poco_assert(!GUID().empty());
+
+  JSONNODE *n = SaveToJSONNode();
+
+  json_set_name(n, ModelName().c_str());
+
+  JSONNODE *body = json_new(JSON_NODE);
+  json_set_name(body, "body");
+  json_push_back(body, n);
+
+  JSONNODE *update = json_new(JSON_NODE);
+  json_push_back(update,
+    json_new_a("method", batchUpdateMethod().c_str()));
+  json_push_back(update,
+    json_new_a("relative_url", batchUpdateRelativeURL().c_str()));
+  json_push_back(update, json_new_a("guid", GUID().c_str()));
+  json_push_back(update, body);
+
+  return update;
 }
 
 }   // namespace kopsik
