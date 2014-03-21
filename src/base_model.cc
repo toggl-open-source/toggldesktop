@@ -152,4 +152,50 @@ bool BaseModel::userCannotAccessWorkspace(const kopsik::error err) const {
     "User cannot access workspace"));
 }
 
+// Convert model JSON into batch update format.
+JSONNODE *BaseModel::BatchUpdateJSON() {
+  poco_assert(!GUID().empty());
+
+  JSONNODE *n = SaveToJSONNode();
+
+  json_set_name(n, ModelName().c_str());
+
+  JSONNODE *body = json_new(JSON_NODE);
+  json_set_name(body, "body");
+  json_push_back(body, n);
+
+  Poco::Logger &logger = Poco::Logger::get("json");
+
+  JSONNODE *update = json_new(JSON_NODE);
+  if (NeedsDELETE()) {
+    std::stringstream url;
+    url << ModelURL() << "/" << ID();
+    json_push_back(update, json_new_a("method", "DELETE"));
+    json_push_back(update, json_new_a("relative_url", url.str().c_str()));
+    std::stringstream ss;
+    ss << ModelName() << " " << String() << " needs a DELETE";
+    logger.debug(ss.str());
+
+  } else if (NeedsPOST()) {
+    json_push_back(update, json_new_a("method", "POST"));
+    json_push_back(update, json_new_a("relative_url", ModelURL().c_str()));
+    std::stringstream ss;
+    ss << ModelName() << " " << String() << " needs a POST";
+    logger.debug(ss.str());
+
+  } else if (NeedsPUT()) {
+    std::stringstream url;
+    url << ModelURL() << "/" << ID();
+    json_push_back(update, json_new_a("method", "PUT"));
+    json_push_back(update, json_new_a("relative_url", url.str().c_str()));
+    std::stringstream ss;
+    ss << ModelName() << " " << String() << " needs a PUT";
+    logger.debug(ss.str());
+  }
+  json_push_back(update, json_new_a("guid", GUID().c_str()));
+  json_push_back(update, body);
+
+  return update;
+}
+
 }   // namespace kopsik

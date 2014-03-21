@@ -607,54 +607,6 @@ void LoadUserTimeEntriesFromJSONNode(
   }
 }
 
-JSONNODE *modelUpdateJSON(
-    BaseModel * const model,
-    JSONNODE * const n) {
-  poco_assert(model);
-  poco_assert(n);
-  poco_assert(!model->GUID().empty());
-
-  json_set_name(n, model->ModelName().c_str());
-
-  JSONNODE *body = json_new(JSON_NODE);
-  json_set_name(body, "body");
-  json_push_back(body, n);
-
-  Poco::Logger &logger = Poco::Logger::get("json");
-
-  JSONNODE *update = json_new(JSON_NODE);
-  if (model->NeedsDELETE()) {
-    std::stringstream url;
-    url << model->ModelURL() << "/" << model->ID();
-    json_push_back(update, json_new_a("method", "DELETE"));
-    json_push_back(update, json_new_a("relative_url", url.str().c_str()));
-    std::stringstream ss;
-    ss << model->ModelName() << " " << model->String() << " needs a DELETE";
-    logger.debug(ss.str());
-
-  } else if (model->NeedsPOST()) {
-    json_push_back(update, json_new_a("method", "POST"));
-    json_push_back(update, json_new_a("relative_url",
-      model->ModelURL().c_str()));
-    std::stringstream ss;
-    ss << model->ModelName() << " " << model->String() << " needs a POST";
-    logger.debug(ss.str());
-
-  } else if (model->NeedsPUT()) {
-    std::stringstream url;
-    url << model->ModelURL() << "/" << model->ID();
-    json_push_back(update, json_new_a("method", "PUT"));
-    json_push_back(update, json_new_a("relative_url", url.str().c_str()));
-    std::stringstream ss;
-    ss << model->ModelName() << " " << model->String() << " needs a PUT";
-    logger.debug(ss.str());
-  }
-  json_push_back(update, json_new_a("guid", model->GUID().c_str()));
-  json_push_back(update, body);
-
-  return update;
-}
-
 std::string UpdateJSON(
     std::vector<Project *> * const projects,
     std::vector<TimeEntry *> * const time_entries) {
@@ -667,18 +619,14 @@ std::string UpdateJSON(
   for (std::vector<Project *>::const_iterator it =
       projects->begin();
       it != projects->end(); it++) {
-    Project *model = *it;
-    JSONNODE *update = modelUpdateJSON(model, model->SaveToJSONNode());
-    json_push_back(c, update);
+    json_push_back(c, (*it)->BatchUpdateJSON());
   }
 
   // Time entries go last
   for (std::vector<TimeEntry *>::const_iterator it =
       time_entries->begin();
       it != time_entries->end(); it++) {
-    TimeEntry *te = *it;
-    JSONNODE *update = modelUpdateJSON(te, te->SaveToJSONNode());
-    json_push_back(c, update);
+    json_push_back(c, (*it)->BatchUpdateJSON());
   }
 
   json_char *jc = json_write_formatted(c);

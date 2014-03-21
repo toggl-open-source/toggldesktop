@@ -101,6 +101,9 @@ class BaseModel {
 
     error ApplyBatchUpdateResult(BatchUpdateResult * const);
 
+    // Convert model JSON into batch update format.
+    JSONNODE *BatchUpdateJSON();
+
   protected:
     Poco::Logger &logger() const { return Poco::Logger::get(ModelName()); }
 
