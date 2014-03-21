@@ -49,12 +49,6 @@ void main_check_updates_callback(
     const int is_update_available,
     const char *url,
     const char *version) {
-  if (KOPSIK_API_SUCCESS != result) {
-    std::cerr << "main_check_updates_callback errmsg="
-              << std::string(errmsg)
-              << std::endl;
-    return;
-  }
   std::cout << "main_check_updates_callback is_update_available="
             << is_update_available
             << " url=" << std::string(url)
