@@ -69,3 +69,4 @@ xcshareddata
 *.dSYM
 
 third_party/plcrashreporter-1.2-rc4/build
+third_party/google-astyle/build/

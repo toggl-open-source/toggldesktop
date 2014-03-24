@@ -265,3 +265,9 @@ stats:
 simian:
 	java -jar third_party/simian/bin/simian-2.3.35.jar src/*
 
+third_party/google-astyle/build/google-astyle:
+	cd third_party/google-astyle && mkdir -p build && g++ *.cpp -o build/google-astyle
+
+fmt: third_party/google-astyle/build/google-astyle
+	third_party/google-astyle/build/google-astyle -n src/*.cc src/*.h src/ui/cmdline/* src/ui/common/*
+
