@@ -103,7 +103,7 @@ endif
 
 cxx=g++
 
-cmdline: clean lint
+cmdline: clean fmt lint
 	mkdir -p build
 	$(cxx) $(cflags) -O2 -c src/version.cc -o build/version.o
 	$(cxx) $(cflags) -O2 -c src/https_client.cc -o build/https_client.o
@@ -159,7 +159,7 @@ sikuli: osx
 	--db_path kopsik_sikuli.db \
 	--log_path kopsik_sikuli.log 
 
-test: clean lint
+test: clean fmt lint
 	mkdir -p build
 	$(cxx) $(cflags) -c src/version.cc -o build/version.o
 	$(cxx) $(cflags) -c src/https_client.cc -o build/https_client.o
