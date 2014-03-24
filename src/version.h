@@ -7,9 +7,9 @@
 
 namespace kopsik {
 
-  std::string UserAgent(
-      const std::string app_name,
-      const std::string app_version);
+std::string UserAgent(
+    const std::string app_name,
+    const std::string app_version);
 
 }  // namespace kopsik
 

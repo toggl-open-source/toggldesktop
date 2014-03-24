@@ -13,33 +13,43 @@
 
 namespace kopsik {
 
-  class Workspace : public BaseModel {
-  public:
+class Workspace : public BaseModel {
+ public:
     Workspace()
-      : BaseModel()
-      , name_("")
-      , premium_(false) {}
+        : BaseModel()
+    , name_("")
+    , premium_(false) {}
 
     std::string String() const;
 
-    std::string Name() const { return name_; }
+    std::string Name() const {
+        return name_;
+    }
     void SetName(const std::string value);
 
-    bool Premium() const { return premium_; }
+    bool Premium() const {
+        return premium_;
+    }
     void SetPremium(const bool value);
 
-    std::string ModelName() const { return "workspace"; }
-    std::string ModelURL() const { return "/api/v8/workspaces"; }
+    std::string ModelName() const {
+        return "workspace";
+    }
+    std::string ModelURL() const {
+        return "/api/v8/workspaces";
+    }
 
     void LoadFromJSONNode(JSONNODE * const);
-    JSONNODE *SaveToJSONNode() const { return 0; }
+    JSONNODE *SaveToJSONNode() const {
+        return 0;
+    }
 
-  private:
+ private:
     std::string name_;
     bool premium_;
-  };
+};
 
-  bool CompareWorkspaceByName(Workspace *a, Workspace *b);
+bool CompareWorkspaceByName(Workspace *a, Workspace *b);
 
 }  // namespace kopsik
 

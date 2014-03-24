@@ -14,20 +14,20 @@
 namespace kopsik {
 
 class TimeEntry : public BaseModel {
-  public:
+ public:
     TimeEntry()
-      : BaseModel()
-      , wid_(0)
-      , pid_(0)
-      , tid_(0)
-      , billable_(false)
-      , start_(0)
-      , stop_(0)
-      , duration_in_seconds_(0)
-      , description_("")
-      , duronly_(false)
-      , created_with_("")
-      , project_guid_("") {}
+        : BaseModel()
+    , wid_(0)
+    , pid_(0)
+    , tid_(0)
+    , billable_(false)
+    , start_(0)
+    , stop_(0)
+    , duration_in_seconds_(0)
+    , description_("")
+    , duronly_(false)
+    , created_with_("")
+    , project_guid_("") {}
     virtual ~TimeEntry() {}
 
     std::vector<std::string> TagNames;
@@ -35,33 +35,49 @@ class TimeEntry : public BaseModel {
     std::string Tags() const;
     void SetTags(const std::string tags);
 
-    Poco::UInt64 WID() const { return wid_; }
+    Poco::UInt64 WID() const {
+        return wid_;
+    }
     void SetWID(const Poco::UInt64 value);
 
-    Poco::UInt64 PID() const { return pid_; }
+    Poco::UInt64 PID() const {
+        return pid_;
+    }
     void SetPID(const Poco::UInt64 value);
 
-    Poco::UInt64 TID() const { return tid_; }
+    Poco::UInt64 TID() const {
+        return tid_;
+    }
     void SetTID(const Poco::UInt64 value);
 
-    bool Billable() const { return billable_; }
+    bool Billable() const {
+        return billable_;
+    }
     void SetBillable(const bool value);
 
-    Poco::Int64 DurationInSeconds() const { return duration_in_seconds_; }
+    Poco::Int64 DurationInSeconds() const {
+        return duration_in_seconds_;
+    }
     void SetDurationInSeconds(const Poco::Int64 value);
 
     std::string DurationString() const;
 
-    bool DurOnly() const { return duronly_; }
+    bool DurOnly() const {
+        return duronly_;
+    }
     void SetDurOnly(const bool value);
 
-    std::string Description() const { return description_; }
+    std::string Description() const {
+        return description_;
+    }
     void SetDescription(const std::string value);
 
     std::string StartString() const;
     void SetStartString(const std::string value);
 
-    Poco::UInt64 Start() const { return start_; }
+    Poco::UInt64 Start() const {
+        return start_;
+    }
     void SetStart(const Poco::UInt64 value);
 
     std::string DateHeaderString() const;
@@ -69,10 +85,14 @@ class TimeEntry : public BaseModel {
     std::string StopString() const;
     void SetStopString(const std::string value);
 
-    Poco::UInt64 Stop() const { return stop_; }
+    Poco::UInt64 Stop() const {
+        return stop_;
+    }
     void SetStop(const Poco::UInt64 value);
 
-    std::string CreatedWith() const { return created_with_; }
+    std::string CreatedWith() const {
+        return created_with_;
+    }
     void SetCreatedWith(const std::string value);
 
     void StopAt(const Poco::Int64);
@@ -81,11 +101,17 @@ class TimeEntry : public BaseModel {
 
     bool IsToday() const;
 
-    std::string ProjectGUID() const { return project_guid_; }
+    std::string ProjectGUID() const {
+        return project_guid_;
+    }
     void SetProjectGUID(const std::string);
 
-    std::string ModelName() const { return "time_entry"; }
-    std::string ModelURL() const { return "/api/v8/time_entries"; }
+    std::string ModelName() const {
+        return "time_entry";
+    }
+    std::string ModelURL() const {
+        return "/api/v8/time_entries";
+    }
 
     void LoadFromJSONNode(JSONNODE * const);
     JSONNODE *SaveToJSONNode() const;
@@ -95,13 +121,15 @@ class TimeEntry : public BaseModel {
     void SetStopUserInput(const std::string);
     void SetStartUserInput(const std::string);
 
-    bool IsTracking() const { return duration_in_seconds_ < 0; }
+    bool IsTracking() const {
+        return duration_in_seconds_ < 0;
+    }
 
     void StopTracking();
 
     virtual bool ResolveError(const kopsik::error err);
 
-  private:
+ private:
     Poco::UInt64 wid_;
     Poco::UInt64 pid_;
     Poco::UInt64 tid_;
@@ -123,9 +151,9 @@ class TimeEntry : public BaseModel {
     bool durationTooLarge(const kopsik::error) const;
     bool stopTimeMustBeAfterStartTime(const kopsik::error err) const;
     bool userCannotAccessTheSelectedProject(const kopsik::error err) const;
-  };
+};
 
-  bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b);
+bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b);
 
 }  // namespace kopsik
 

@@ -19,43 +19,47 @@
 
 namespace kopsik {
 
-  typedef void (*WebSocketMessageCallback)(
+typedef void (*WebSocketMessageCallback)(
     void *callback,
     std::string json);
 
-  class WebSocketClient {
-  public:
+class WebSocketClient {
+ public:
     explicit WebSocketClient(
         const std::string websocket_url,
         const std::string app_name,
         const std::string app_version) :
-      activity_(this, &WebSocketClient::runActivity),
-      session_(0),
-      req_(0),
-      res_(0),
-      ws_(0),
-      on_websocket_message_(0),
-      ctx_(0),
-      websocket_url_(websocket_url),
-      app_name_(app_name),
-      app_version_(app_version),
-      last_connection_at_(0),
-      api_token_("") {}
+    activity_(this, &WebSocketClient::runActivity),
+    session_(0),
+    req_(0),
+    res_(0),
+    ws_(0),
+    on_websocket_message_(0),
+    ctx_(0),
+    websocket_url_(websocket_url),
+    app_name_(app_name),
+    app_version_(app_version),
+    last_connection_at_(0),
+    api_token_("") {}
     virtual ~WebSocketClient();
 
     virtual void Start(
-      void *ctx,
-      const std::string api_token,
-      WebSocketMessageCallback on_websocket_message);
+        void *ctx,
+        const std::string api_token,
+        WebSocketMessageCallback on_websocket_message);
     virtual void Stop();
 
-    void SetWebsocketURL(const std::string value) { websocket_url_ = value; }
-    void SetProxy(const Proxy value) { proxy_ = value; }
+    void SetWebsocketURL(const std::string value) {
+        websocket_url_ = value;
+    }
+    void SetProxy(const Proxy value) {
+        proxy_ = value;
+    }
 
-  protected:
+ protected:
     void runActivity();
 
-  private:
+ private:
     error createSession();
     void authenticate();
     error poll();
@@ -84,7 +88,7 @@ namespace kopsik {
     Poco::Mutex mutex_;
 
     Proxy proxy_;
-  };
+};
 }  // namespace kopsik
 
 #endif  // SRC_WEBSOCKET_CLIENT_H_

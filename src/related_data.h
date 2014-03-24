@@ -14,15 +14,15 @@
 
 namespace kopsik {
 
-  class RelatedData {
-  public:
+class RelatedData {
+ public:
     std::vector<Workspace *> Workspaces;
     std::vector<Client *> Clients;
     std::vector<Project *> Projects;
     std::vector<Task *> Tasks;
     std::vector<Tag *> Tags;
     std::vector<TimeEntry *> TimeEntries;
-  };
+};
 
 }  // namespace kopsik
 

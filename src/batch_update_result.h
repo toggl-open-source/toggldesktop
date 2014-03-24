@@ -18,12 +18,12 @@ namespace kopsik {
 class BaseModel;
 
 class BatchUpdateResult {
-  public:
+ public:
     BatchUpdateResult()
-      : StatusCode(0)
-      , Body("")
-      , GUID("")
-      , ContentType("") {}
+        : StatusCode(0)
+    , Body("")
+    , GUID("")
+    , ContentType("") {}
     Poco::Int64 StatusCode;
     std::string Body;
     std::string GUID;  // must match the BatchUpdate GUID
@@ -37,12 +37,12 @@ class BatchUpdateResult {
     void LoadFromJSONNode(JSONNODE * const);
 
     static void ParseResponseArray(
-      const std::string response_body,
-      std::vector<BatchUpdateResult> *responses);
+        const std::string response_body,
+        std::vector<BatchUpdateResult> *responses);
     static void ProcessResponseArray(
-      std::vector<BatchUpdateResult> * const results,
-      std::map<std::string, BaseModel *> *models,
-      std::vector<error> *errors);
+        std::vector<BatchUpdateResult> * const results,
+        std::map<std::string, BaseModel *> *models,
+        std::vector<error> *errors);
 };
 
 }  // namespace kopsik

@@ -18,45 +18,69 @@
 namespace kopsik {
 
 class BaseModel {
-  public:
+ public:
     BaseModel()
-      : local_id_(0)
-      , id_(0)
-      , guid_("")
-      , ui_modified_at_(0)
-      , uid_(0)
-      , dirty_(false)
-      , deleted_at_(0)
-      , is_marked_as_deleted_on_server_(false)
-      , updated_at_(0) {}
+        : local_id_(0)
+    , id_(0)
+    , guid_("")
+    , ui_modified_at_(0)
+    , uid_(0)
+    , dirty_(false)
+    , deleted_at_(0)
+    , is_marked_as_deleted_on_server_(false)
+    , updated_at_(0) {}
     virtual ~BaseModel() {}
 
-    Poco::Int64 LocalID() const { return local_id_; }
-    void SetLocalID(const Poco::Int64 value) { local_id_ = value; }
+    Poco::Int64 LocalID() const {
+        return local_id_;
+    }
+    void SetLocalID(const Poco::Int64 value) {
+        local_id_ = value;
+    }
 
-    Poco::UInt64 ID() const { return id_; }
+    Poco::UInt64 ID() const {
+        return id_;
+    }
     void SetID(const Poco::UInt64 value);
 
-    Poco::UInt64 UIModifiedAt() const { return ui_modified_at_; }
+    Poco::UInt64 UIModifiedAt() const {
+        return ui_modified_at_;
+    }
     void SetUIModifiedAt(const Poco::UInt64 value);
-    void SetUIModified() { SetUIModifiedAt(time(0)); }
+    void SetUIModified() {
+        SetUIModifiedAt(time(0));
+    }
 
-    std::string GUID() const { return guid_; }
+    std::string GUID() const {
+        return guid_;
+    }
     void SetGUID(const std::string value);
 
-    Poco::UInt64 UID() const { return uid_; }
+    Poco::UInt64 UID() const {
+        return uid_;
+    }
     void SetUID(const Poco::UInt64 value);
 
-    void SetDirty() { dirty_ = true; }
-    bool Dirty() const { return dirty_; }
-    void ClearDirty() { dirty_ = false; }
+    void SetDirty() {
+        dirty_ = true;
+    }
+    bool Dirty() const {
+        return dirty_;
+    }
+    void ClearDirty() {
+        dirty_ = false;
+    }
 
     // Deleting a time entry hides it from
     // UI and flags it for removal from server:
-    Poco::UInt64 DeletedAt() const { return deleted_at_; }
+    Poco::UInt64 DeletedAt() const {
+        return deleted_at_;
+    }
     void SetDeletedAt(const Poco::UInt64 value);
 
-    Poco::UInt64 UpdatedAt() const { return updated_at_; }
+    Poco::UInt64 UpdatedAt() const {
+        return updated_at_;
+    }
     void SetUpdatedAt(const Poco::UInt64 value);
 
     std::string UpdatedAtString() const;
@@ -66,11 +90,11 @@ class BaseModel {
     // on server, it will be removed from local
     // DB using this flag:
     bool IsMarkedAsDeletedOnServer() const {
-      return is_marked_as_deleted_on_server_;
+        return is_marked_as_deleted_on_server_;
     }
     void MarkAsDeletedOnServer() {
-      is_marked_as_deleted_on_server_ = true;
-      SetDirty();
+        is_marked_as_deleted_on_server_ = true;
+        SetDirty();
     }
 
     bool NeedsPush() const;
@@ -82,17 +106,27 @@ class BaseModel {
 
     void EnsureGUID();
 
-    void SetError(const kopsik::error value) { error_ = value; }
-    kopsik::error Error() const { return error_; }
+    void SetError(const kopsik::error value) {
+        error_ = value;
+    }
+    kopsik::error Error() const {
+        return error_;
+    }
 
     virtual std::string String() const = 0;
     virtual std::string ModelName() const = 0;
     virtual std::string ModelURL() const = 0;
     virtual void LoadFromJSONNode(JSONNODE * const) {}
-    virtual JSONNODE *SaveToJSONNode() const { return 0; }
+    virtual JSONNODE *SaveToJSONNode() const {
+        return 0;
+    }
 
-    virtual bool DuplicateResource(const kopsik::error) const { return false; }
-    virtual bool ResolveError(const kopsik::error) { return false; }
+    virtual bool DuplicateResource(const kopsik::error) const {
+        return false;
+    }
+    virtual bool ResolveError(const kopsik::error) {
+        return false;
+    }
 
     void LoadFromDataString(const std::string);
     void LoadFromJSONString(const std::string);
@@ -104,12 +138,14 @@ class BaseModel {
     // Convert model JSON into batch update format.
     JSONNODE *BatchUpdateJSON() const;
 
-  protected:
-    Poco::Logger &logger() const { return Poco::Logger::get(ModelName()); }
+ protected:
+    Poco::Logger &logger() const {
+        return Poco::Logger::get(ModelName());
+    }
 
     bool userCannotAccessWorkspace(const kopsik::error err) const;
 
-  private:
+ private:
     std::string batchUpdateRelativeURL() const;
     std::string batchUpdateMethod() const;
 
