@@ -316,12 +316,16 @@
   return [self.autocompleteDataSource indexOfKey:aString];
 }
 
+- (void)clear {
+  self.durationTextField.stringValue = @"";
+  self.descriptionComboBox.stringValue = @"";
+  self.projectTextField.stringValue = @"";
+  [self.projectTextField setHidden:YES];
+}
+
 - (IBAction)startButtonClicked:(id)sender {
   if (self.time_entry.duration_in_seconds < 0) {
-    self.durationTextField.stringValue = @"";
-    self.descriptionComboBox.stringValue = @"";
-    self.projectTextField.stringValue = @"";
-    [self.projectTextField setHidden:YES];
+    [self clear];
     [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandStop
                                                         object:nil];
     return;
@@ -338,10 +342,9 @@
   [self.autocompleteDataSource setFilter:@""];
   [self.descriptionComboBox reloadData];
 
-  // Clear Time entry form fields after stop
-  if ([[self.durationTextField stringValue] length] > 0){
-    self.durationTextField.stringValue = @"";
-    self.descriptionComboBox.stringValue = @"";
+  if (self.time_entry.duration_in_seconds >= 0) {
+    [self clear];
+    self.time_entry = [[TimeEntryViewItem alloc] init];
   }
 }
 
