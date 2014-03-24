@@ -207,22 +207,29 @@
 }
 
 -(void)textFieldClicked:(id)sender {
-  if (self.time_entry != nil && self.time_entry.GUID != nil) {
-    if (sender == self.durationTextField) {
-      EditNotification *edit = [[EditNotification alloc] init];
-      edit.GUID = self.time_entry.GUID;
-      edit.FieldName = kUIDurationClicked;
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
-                                                        object:edit];
-    } else if (sender == self.descriptionLabel) {
-      EditNotification *edit = [[EditNotification alloc] init];
-      edit.GUID = self.time_entry.GUID;
-      edit.FieldName = kUIDescriptionClicked;
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
-                                                        object:edit];
-    }
+  if (nil == self.time_entry) {
+    return;
+  }
+  if (nil == self.time_entry.GUID) {
+    return;
   }
 
+  if (sender == self.durationTextField) {
+    EditNotification *edit = [[EditNotification alloc] init];
+    edit.GUID = self.time_entry.GUID;
+    edit.FieldName = kUIDurationClicked;
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
+                                                      object:edit];
+    return;
+  }
+
+  if (sender == self.descriptionLabel) {
+    EditNotification *edit = [[EditNotification alloc] init];
+    edit.GUID = self.time_entry.GUID;
+    edit.FieldName = kUIDescriptionClicked;
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
+                                                      object:edit];
+  }
 }
 
 - (void) render {

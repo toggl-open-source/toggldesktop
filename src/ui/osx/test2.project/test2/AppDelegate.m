@@ -26,6 +26,7 @@
 #import "CrashReporter.h"
 #import "FeedbackWindowController.h"
 #import "const.h"
+#import "EditNotification.h"
 
 @interface AppDelegate()
 @property (nonatomic, strong) IBOutlet MainWindowController *
@@ -265,6 +266,12 @@
   if (timeEntry.duration_in_seconds < 0) {
     [[NSNotificationCenter defaultCenter]
      postNotificationName:kUIStateTimerRunning object:timeEntry];
+
+    EditNotification *edit = [[EditNotification alloc] init];
+    edit.GUID = timeEntry.GUID;
+    edit.FieldName = kUIDescriptionClicked;
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
+                                                      object:edit];
   }
 
   [self onShowMenuItem:self];
