@@ -103,123 +103,40 @@ endif
 
 cxx=g++
 
-default: cmdline
-
-mkdir_build:
-	mkdir -p build/cmdline && mkdir -p build/test
-
-build/version.o:
+cmdline: clean fmt lint
+	mkdir -p build
 	$(cxx) $(cflags) -O2 -c src/version.cc -o build/version.o
-
-build/https_client.o:
 	$(cxx) $(cflags) -O2 -c src/https_client.cc -o build/https_client.o
-
-build/websocket_client.o:
 	$(cxx) $(cflags) -O2 -c src/websocket_client.cc -o build/websocket_client.o
-
-build/base_model.o:
 	$(cxx) $(cflags) -O2 -c src/base_model.cc -o build/base_model.o
-
-build/user.o:
 	$(cxx) $(cflags) -O2 -c src/user.cc -o build/user.o
-
-build/workspace.o:
 	$(cxx) $(cflags) -O2 -c src/workspace.cc -o build/workspace.o
-
-build/client.o:
 	$(cxx) $(cflags) -O2 -c src/client.cc -o build/client.o
-
-build/project.o:
 	$(cxx) $(cflags) -O2 -c src/project.cc -o build/project.o
-
-build/task.o:
 	$(cxx) $(cflags) -O2 -c src/task.cc -o build/task.o
-
-build/time_entry.o:
 	$(cxx) $(cflags) -O2 -c src/time_entry.cc -o build/time_entry.o
-
-build/tag.o:
 	$(cxx) $(cflags) -O2 -c src/tag.cc -o build/tag.o
-
-build/related_data.o:
 	$(cxx) $(cflags) -O2 -c src/related_data.cc -o build/related_data.o
-
-build/batch_update_result.o:
 	$(cxx) $(cflags) -O2 -c src/batch_update_result.cc -o build/batch_update_result.o
-
-build/formatter.o:
 	$(cxx) $(cflags) -O2 -c src/formatter.cc -o build/formatter.o
-
-build/json.o:
 	$(cxx) $(cflags) -O2 -c src/json.cc -o build/json.o
-
-build/model_change.o:
 	$(cxx) $(cflags) -O2 -c src/model_change.cc -o build/model_change.o
-
-build/database.o:
 	$(cxx) $(cflags) -O2 -c src/database.cc -o build/database.o
-
-build/autocomplete_item.o:
 	$(cxx) $(cflags) -O2 -c src/autocomplete_item.cc -o build/autocomplete_item.o
-
-build/feedback.o:
 	$(cxx) $(cflags) -O2 -c src/feedback.cc -o build/feedback.o
-
-build/context.o:
 	$(cxx) $(cflags) -O2 -c src/context.cc -o build/context.o
-
-build/kopsik_api_private.o:
 	$(cxx) $(cflags) -O2 -c src/kopsik_api_private.cc -o build/kopsik_api_private.o
-
-build/kopsik_api.o:
 	$(cxx) $(cflags) -O2 -c src/kopsik_api.cc -o build/kopsik_api.o
-
-build/get_focused_window_$(osname).o:
 	$(cxx) $(cflags) -O2 -c src/get_focused_window_$(osname).cc -o build/get_focused_window_$(osname).o
-
-build/timeline_uploader.o:
 	$(cxx) $(cflags) -O2 -c src/timeline_uploader.cc -o build/timeline_uploader.o
-
-build/window_change_recorder.o:
 	$(cxx) $(cflags) -O2 -c src/window_change_recorder.cc -o build/window_change_recorder.o
-
-build/cmdline/main.o:
-	$(cxx) $(cflags) -O2 -c src/ui/cmdline/main.cc -o build/cmdline/main.o
-
-build/notifications.o:
-	$(cxx) $(cflags) -O2 -c src/ui/common/notifications.cc -o build/notifications.o
-
-cmdline: mkdir_build fmt lint \
-	build/version.o \
-	build/https_client.o \
-	build/websocket_client.o \
-	build/base_model.o \
-	build/user.o \
-	build/workspace.o \
-	build/client.o \
-	build/project.o \
-	build/task.o \
-	build/time_entry.o \
-	build/tag.o \
-	build/related_data.o \
-	build/batch_update_result.o \
-	build/formatter.o \
-	build/json.o \
-	build/model_change.o \
-	build/database.o \
-	build/autocomplete_item.o \
-	build/feedback.o \
-	build/context.o \
-	build/kopsik_api_private.o \
-	build/kopsik_api.o \
-	build/get_focused_window_$(osname).o \
-	build/timeline_uploader.o \
-	build/window_change_recorder.o \
-	build/cmdline/main.o
-	$(cxx) -o $(main) -o build/cmdline/$(main) build/*.o build/cmdline/main.o $(libs)
+	$(cxx) $(cflags) -O2 -c src/ui/cmdline/main.cc -o build/main.o
+	$(cxx) -o $(main) -o $(main) build/*.o $(libs)
 
 clean:
 	rm -rf build && \
+	rm -f $(main) && \
+	rm -f $(main)_test && \
 	rm -rf src/ui/osx/test2.project/build && \
 	rm -rf src/libkopsik/Kopsik/build && \
 	rm -rf third_party/TFDatePicker/TFDatePicker/build/ \
@@ -241,61 +158,48 @@ sikuli: osx
 	--api_url http://0.0.0.0:8080 \
 	--websocket_url http://0.0.0.0:8088 \
 	--db_path kopsik_sikuli.db \
-	--log_path kopsik_sikuli.log
+	--log_path kopsik_sikuli.log 
 
-build/test/gtest-all.o:
-	$(cxx) $(cflags) -c $(GTEST_ROOT)/src/gtest-all.cc -o build/test/gtest-all.o
-
-build/test/gmock-all.o:
-	$(cxx) $(cflags) -c ${GMOCK_DIR}/src/gmock-all.cc -o build/test/gmock-all.o
-
-build/test/test_data.o:
-	$(cxx) $(cflags) -O2 -c src/test_data.cc -o build/test/test_data.o
-
-build/test/kopsik_api_test.o:
-	$(cxx) $(cflags) -O2 -c src/kopsik_api_test.cc -o build/test/kopsik_api_test.o
-
-build/test/toggl_api_client_test.o:
-	$(cxx) $(cflags) -O2 -c src/toggl_api_client_test.cc -o build/test/toggl_api_client_test.o
-
-test: mkdir_build fmt lint \
-	build/version.o \
-	build/https_client.o \
-	build/websocket_client.o \
-	build/base_model.o \
-	build/user.o \
-	build/workspace.o \
-	build/client.o \
-	build/project.o \
-	build/task.o \
-	build/time_entry.o \
-	build/tag.o \
-	build/related_data.o \
-	build/batch_update_result.o \
-	build/formatter.o \
-	build/json.o \
-	build/model_change.o \
-	build/database.o \
-	build/autocomplete_item.o \
-	build/feedback.o \
-	build/notifications.o \
-	build/context.o \
-	build/kopsik_api_private.o \
-	build/kopsik_api.o \
-	build/test/test_data.o \
-	build/test/kopsik_api_test.o \
-	build/test/toggl_api_client_test.o \
-	build/get_focused_window_$(osname).o \
-	build/timeline_uploader.o \
-	build/window_change_recorder.o \
-	build/test/gtest-all.o \
-	build/test/gmock-all.o
-	$(cxx) -o $(main) -o build/test/$(main)_test build/*.o build/test/*.o $(libs)
-	./build/test/$(main)_test
+test: clean fmt lint
+	mkdir -p build
+	$(cxx) $(cflags) -c src/version.cc -o build/version.o
+	$(cxx) $(cflags) -c src/https_client.cc -o build/https_client.o
+	$(cxx) $(cflags) -c src/websocket_client.cc -o build/websocket_client.o
+	$(cxx) $(cflags) -c src/base_model.cc -o build/base_model.o
+	$(cxx) $(cflags) -c src/user.cc -o build/user.o
+	$(cxx) $(cflags) -c src/workspace.cc -o build/workspace.o
+	$(cxx) $(cflags) -c src/client.cc -o build/client.o
+	$(cxx) $(cflags) -c src/project.cc -o build/project.o
+	$(cxx) $(cflags) -c src/task.cc -o build/task.o
+	$(cxx) $(cflags) -c src/time_entry.cc -o build/time_entry.o
+	$(cxx) $(cflags) -c src/tag.cc -o build/tag.o
+	$(cxx) $(cflags) -c src/related_data.cc -o build/related_data.o
+	$(cxx) $(cflags) -c src/batch_update_result.cc -o build/batch_update_result.o
+	$(cxx) $(cflags) -c src/formatter.cc -o build/formatter.o
+	$(cxx) $(cflags) -c src/json.cc -o build/json.o
+	$(cxx) $(cflags) -c src/model_change.cc -o build/model_change.o
+	$(cxx) $(cflags) -c src/database.cc -o build/database.o
+	$(cxx) $(cflags) -c src/autocomplete_item.cc -o build/autocomplete_item.o
+	$(cxx) $(cflags) -c src/feedback.cc -o build/feedback.o
+	$(cxx) $(cflags) -c src/ui/common/notifications.cc -o build/notifications.o
+	$(cxx) $(cflags) -c src/context.cc -o build/context.o
+	$(cxx) $(cflags) -c src/kopsik_api_private.cc -o build/kopsik_api_private.o
+	$(cxx) $(cflags) -c src/kopsik_api.cc -o build/kopsik_api.o
+	$(cxx) $(cflags) -c src/test_data.cc -o build/test_data.o
+	$(cxx) $(cflags) -c src/kopsik_api_test.cc -o build/kopsik_api_test.o
+	$(cxx) $(cflags) -c src/toggl_api_client_test.cc -o build/toggl_api_client_test.o
+	$(cxx) $(cflags) -c src/get_focused_window_$(osname).cc -o build/get_focused_window_$(osname).o
+	$(cxx) $(cflags) -c src/timeline_uploader.cc -o build/timeline_uploader.o
+	$(cxx) $(cflags) -c src/window_change_recorder.cc -o build/window_change_recorder.o
+	$(cxx) $(cflags) -c $(GTEST_ROOT)/src/gtest-all.cc -o build/gtest-all.o
+	$(cxx) $(cflags) -c ${GMOCK_DIR}/src/gmock-all.cc -o build/gmock-all.o
+	$(cxx) -o $(main) -o $(main)_test build/*.o $(libs)
+	./$(main)_test
 
 covflags=-fprofile-arcs -ftest-coverage
 
-coverage: mkdir_build clean
+coverage: clean
+	mkdir -p build
 	$(cxx) $(cflags) $(covflags) -c src/version.cc -o build/version.o
 	$(cxx) $(cflags) $(covflags) -c src/https_client.cc -o build/https_client.o
 	$(cxx) $(cflags) $(covflags) -c src/websocket_client.cc -o build/websocket_client.o
