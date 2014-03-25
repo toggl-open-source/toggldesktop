@@ -637,10 +637,15 @@ error User::pull(
 error User::collectErrors(std::vector<error> * const errors) const {
     std::stringstream ss;
     ss << "Errors encountered while syncing data: ";
+    std::set<error> unique;
     for (std::vector<error>::const_iterator it = errors->begin();
             it != errors->end();
             it++) {
         error err = *it;
+        // skip error if not unique
+        if (unique.end() != unique.find(err)) {
+            continue;
+        }
         if (!err.empty() && err[err.size() - 1] == '\n') {
             err[err.size() - 1] = '.';
         }
@@ -648,6 +653,7 @@ error User::collectErrors(std::vector<error> * const errors) const {
             ss << " ";
         }
         ss << err;
+        unique.insert(err);
         logger().error(err);
     }
     return error(ss.str());
