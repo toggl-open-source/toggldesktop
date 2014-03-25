@@ -61,6 +61,7 @@ class User : public BaseModel {
     void ClearTimeEntries();
 
     bool HasPremiumWorkspaces() const;
+    bool CanAddProjects() const;
 
     Workspace *GetWorkspaceByID(const Poco::UInt64 id) const;
     Client *GetClientByID(const Poco::UInt64 id) const;

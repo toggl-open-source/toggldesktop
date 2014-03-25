@@ -115,6 +115,7 @@ class Context {
     kopsik::error ClearCache();
 
     bool CanSeeBillable(const std::string GUID) const;
+    bool CanAddProjects(const Poco::UInt64 workspace_id) const;
 
     bool UserIsLoggedIn() const;
 

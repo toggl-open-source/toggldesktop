@@ -179,8 +179,20 @@ bool User::HasPremiumWorkspaces() const {
             return true;
         }
     }
-
     return false;
+}
+
+bool User::CanAddProjects() const {
+    for (std::vector<Workspace *>::const_iterator it =
+        related.Workspaces.begin();
+            it != related.Workspaces.end();
+            it++) {
+        Workspace *model = *it;
+        if (model->OnlyAdminsMayCreateProjects()) {
+            return false;
+        }
+    }
+    return true;
 }
 
 void User::SetFullname(const std::string value) {

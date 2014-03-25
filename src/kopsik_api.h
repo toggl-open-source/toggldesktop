@@ -194,6 +194,13 @@ extern "C" {
         const char *guid,
         unsigned int *can_see);
 
+    KOPSIK_EXPORT kopsik_api_result kopsik_user_can_add_projects(
+        void *context,
+        char *errmsg,
+        const unsigned int errlen,
+        const unsigned int workspace_id,
+        unsigned int *can_add);
+
     KOPSIK_EXPORT kopsik_api_result kopsik_user_is_logged_in(
         void *context,
         char *errmsg,

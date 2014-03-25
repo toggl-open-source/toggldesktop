@@ -19,7 +19,8 @@ class Workspace : public BaseModel {
         : BaseModel()
     , name_("")
     , premium_(false)
-    , only_admins_may_create_projects_(false) {}
+    , only_admins_may_create_projects_(false)
+    , admin_(false) {}
 
     std::string String() const;
 
@@ -36,8 +37,12 @@ class Workspace : public BaseModel {
     bool OnlyAdminsMayCreateProjects() const {
         return only_admins_may_create_projects_;
     }
-
     void SetOnlyAdminsMayCreateProjects(const bool);
+
+    bool Admin() const {
+        return admin_;
+    }
+    void SetAdmin(const bool);
 
     std::string ModelName() const {
         return "workspace";
@@ -56,6 +61,7 @@ class Workspace : public BaseModel {
     std::string name_;
     bool premium_;
     bool only_admins_may_create_projects_;
+    bool admin_;
 };
 
 bool CompareWorkspaceByName(Workspace *a, Workspace *b);

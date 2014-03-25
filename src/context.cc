@@ -810,6 +810,20 @@ bool Context::CanSeeBillable(const std::string GUID) const {
     return true;
 }
 
+bool Context::CanAddProjects(const Poco::UInt64 workspace_id) const {
+    if (!user_) {
+        return false;
+    }
+    Workspace *ws = 0;
+    if (workspace_id) {
+        ws = user_->GetWorkspaceByID(workspace_id);
+    }
+    if (ws) {
+        return ws->Admin() || !ws->OnlyAdminsMayCreateProjects();
+    }
+    return user_->CanAddProjects();
+}
+
 bool Context::UserIsLoggedIn() const {
     return (user_ && user_->ID());
 }

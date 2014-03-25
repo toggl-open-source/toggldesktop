@@ -36,6 +36,13 @@ void Workspace::SetOnlyAdminsMayCreateProjects(const bool value) {
     }
 }
 
+void Workspace::SetAdmin(const bool value) {
+    if (admin_ != value) {
+        admin_ = value;
+        SetDirty();
+    }
+}
+
 bool CompareWorkspaceByName(Workspace *a, Workspace *b) {
     return (strcmp(a->Name().c_str(), b->Name().c_str()) < 0);
 }
@@ -55,6 +62,8 @@ void Workspace::LoadFromJSONNode(JSONNODE * const n) {
             SetPremium(json_as_bool(*i));
         } else if (strcmp(node_name, "only_admins_may_create_projects") == 0) {
             SetOnlyAdminsMayCreateProjects(json_as_bool(*i));
+        } else if (strcmp(node_name, "admin") == 0) {
+            SetAdmin(json_as_bool(*i));
         }
         ++i;
     }

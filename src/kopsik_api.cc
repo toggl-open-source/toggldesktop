@@ -686,6 +686,7 @@ kopsik_api_result kopsik_user_can_see_billable_flag(
     const unsigned int errlen,
     const char *guid,
     unsigned int *can_see) {
+
     try {
         poco_assert(errmsg);
         poco_assert(errlen);
@@ -695,6 +696,36 @@ kopsik_api_result kopsik_user_can_see_billable_flag(
         *can_see = 0;
         if (app(context)->CanSeeBillable(std::string(guid))) {
             *can_see = 1;
+        }
+    } catch(const Poco::Exception& exc) {
+        strncpy(errmsg, exc.displayText().c_str(), errlen);
+        return KOPSIK_API_FAILURE;
+    } catch(const std::exception& ex) {
+        strncpy(errmsg, ex.what(), errlen);
+        return KOPSIK_API_FAILURE;
+    } catch(const std::string& ex) {
+        strncpy(errmsg, ex.c_str(), errlen);
+        return KOPSIK_API_FAILURE;
+    }
+    return KOPSIK_API_SUCCESS;
+}
+
+kopsik_api_result kopsik_user_can_add_projects(
+    void *context,
+    char *errmsg,
+    const unsigned int errlen,
+    const unsigned int workspace_id,
+    unsigned int *can_add) {
+
+    try {
+        poco_assert(errmsg);
+        poco_assert(errlen);
+        poco_assert(can_add);
+        poco_assert(workspace_id);
+
+        *can_add = 0;
+        if (app(context)->CanAddProjects(workspace_id)) {
+            *can_add = 1;
         }
     } catch(const Poco::Exception& exc) {
         strncpy(errmsg, exc.displayText().c_str(), errlen);
@@ -735,7 +766,6 @@ kopsik_api_result kopsik_user_is_logged_in(
     }
     return KOPSIK_API_SUCCESS;
 }
-
 
 kopsik_api_result kopsik_users_default_wid(
     void *context,

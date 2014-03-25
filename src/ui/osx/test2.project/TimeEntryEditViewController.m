@@ -290,6 +290,22 @@
     [self.billableCheckbox setState:NSOffState];
   }
 
+  // Check if user can add projects
+  unsigned int can_add_projects = 0;
+  if (KOPSIK_API_SUCCESS != kopsik_user_can_add_projects(ctx,
+                                                         err,
+                                                         KOPSIK_ERR_LEN,
+                                                         item.WorkspaceID,
+                                                         &can_add_projects)) {
+    handle_error(err);
+    return;
+  }
+  if (!can_add_projects) {
+    [self.addProjectButton setHidden:YES];
+  } else if ([self.addProjectBox isHidden]) {
+    [self.addProjectButton setHidden:NO];
+  }
+
   self.GUID = edit.GUID;
   NSAssert(self.GUID != nil, @"GUID is nil");
 
@@ -364,7 +380,6 @@
   if ([notification.name isEqualToString:kUIStateTimeEntryDeselected]) {
     [self.addProjectBox setHidden:YES];
     [self.projectSelectBox setHidden:NO];
-    [self.addProjectButton setHidden:NO];
     return;
   }
 
