@@ -268,21 +268,28 @@
 
   // Check if TE's can be marked as billable at all
   char err[KOPSIK_ERR_LEN];
-  unsigned int has_premium_workspaces = 0;
-  if (KOPSIK_API_SUCCESS != kopsik_user_has_premium_workspaces(ctx,
+  unsigned int can_see_billable = 0;
+  if (KOPSIK_API_SUCCESS != kopsik_user_can_see_billable_flag(ctx,
                                                              err,
                                                              KOPSIK_ERR_LEN,
-                                                            &has_premium_workspaces)) {
+                                                             [item.GUID UTF8String],
+                                                             &can_see_billable)) {
     handle_error(err);
     return;
   }
 
-  if (has_premium_workspaces) {
+  if (can_see_billable) {
     [self.billableCheckbox setHidden:NO];
   } else {
     [self.billableCheckbox setHidden:YES];
   }
-    
+
+  if (item.billable) {
+    [self.billableCheckbox setState:NSOnState];
+  } else {
+    [self.billableCheckbox setState:NSOffState];
+  }
+
   self.GUID = edit.GUID;
   NSAssert(self.GUID != nil, @"GUID is nil");
 
@@ -321,12 +328,6 @@
   [self.endTime setHidden:(item.duration_in_seconds < 0)];
   
   [self.startEndTimeBox setHidden:item.durOnly];
-
-  if (YES == item.billable) {
-    [self.billableCheckbox setState:NSOnState];
-  } else {
-    [self.billableCheckbox setState:NSOffState];
-  }
 
   // Overwrite tags only if user is not editing them right now
   if ([self.tagsTokenField currentEditor] == nil) {

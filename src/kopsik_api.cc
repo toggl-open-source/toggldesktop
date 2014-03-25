@@ -680,19 +680,21 @@ kopsik_api_result kopsik_clear_cache(
     return KOPSIK_API_SUCCESS;
 }
 
-kopsik_api_result kopsik_user_has_premium_workspaces(
+kopsik_api_result kopsik_user_can_see_billable_flag(
     void *context,
     char *errmsg,
     const unsigned int errlen,
-    unsigned int *has_premium_workspaces) {
+    const char *guid,
+    unsigned int *can_see) {
     try {
         poco_assert(errmsg);
         poco_assert(errlen);
-        poco_assert(has_premium_workspaces);
+        poco_assert(can_see);
+        poco_assert(guid);
 
-        *has_premium_workspaces = 0;
-        if (app(context)->UserHasPremiumWorkspaces()) {
-            *has_premium_workspaces = 1;
+        *can_see = 0;
+        if (app(context)->CanSeeBillable(std::string(guid))) {
+            *can_see = 1;
         }
     } catch(const Poco::Exception& exc) {
         strncpy(errmsg, exc.displayText().c_str(), errlen);

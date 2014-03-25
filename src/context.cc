@@ -789,8 +789,25 @@ kopsik::error Context::ClearCache() {
     return kopsik::noError;
 }
 
-bool Context::UserHasPremiumWorkspaces() const {
-    return (user_ && user_->HasPremiumWorkspaces());
+bool Context::CanSeeBillable(const std::string GUID) const {
+    if (!user_) {
+        return false;
+    }
+    if (!user_->HasPremiumWorkspaces()) {
+        return false;
+    }
+    TimeEntry *te = GetTimeEntryByGUID(GUID);
+    if (!te) {
+        return false;
+    }
+    Workspace *ws = 0;
+    if (te->WID()) {
+        ws = user_->GetWorkspaceByID(te->WID());
+    }
+    if (ws && !ws->Premium()) {
+        return false;
+    }
+    return true;
 }
 
 bool Context::UserIsLoggedIn() const {

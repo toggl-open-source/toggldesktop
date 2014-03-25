@@ -187,11 +187,12 @@ extern "C" {
         char *errmsg,
         const unsigned int errlen);
 
-    KOPSIK_EXPORT kopsik_api_result kopsik_user_has_premium_workspaces(
+    KOPSIK_EXPORT kopsik_api_result kopsik_user_can_see_billable_flag(
         void *context,
         char *errmsg,
         const unsigned int errlen,
-        unsigned int *has_premium_workspaces);
+        const char *guid,
+        unsigned int *can_see);
 
     KOPSIK_EXPORT kopsik_api_result kopsik_user_is_logged_in(
         void *context,
