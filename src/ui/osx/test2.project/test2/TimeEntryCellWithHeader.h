@@ -15,7 +15,9 @@
 @property (nonatomic, strong) IBOutlet NSTextField *durationTextField;
 @property (nonatomic, strong) IBOutlet NSTextField *formattedDateTextField;
 @property (nonatomic, strong) IBOutlet NSTextField *dateDurationTextField;
+@property (nonatomic, strong) IBOutlet NSTextField *billableTextField;
 @property (strong) NSString *GUID;
+@property NSArray *billableConstraint;
 - (void)render:(TimeEntryViewItem *)view_item;
 - (IBAction)continueTimeEntry:(id)sender;
 @end
