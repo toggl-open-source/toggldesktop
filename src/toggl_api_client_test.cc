@@ -406,6 +406,9 @@ TEST(TogglApiClientTest, ParsesAndSavesData) {
     ASSERT_EQ("stuff", user.related.Workspaces[0]->Name());
     ASSERT_EQ(user.ID(), user.related.Workspaces[0]->UID());
 
+    ASSERT_FALSE(user.related.Workspaces[0]->OnlyAdminsMayCreateProjects());
+    ASSERT_TRUE(user.related.Workspaces[1]->OnlyAdminsMayCreateProjects());
+
     // Clients (2 in JSON but 1 is deleted)
     ASSERT_EQ(uint(1), user.related.Clients.size());
 

@@ -584,7 +584,9 @@ error Database::loadWorkspaces(
 
     try {
         Poco::Data::Statement select(*session);
-        select << "SELECT local_id, id, uid, name, premium "
+        select <<
+               "SELECT local_id, id, uid, name, premium, "
+               "only_admins_may_create_projects "
                "FROM workspaces "
                "WHERE uid = :uid "
                "ORDER BY name",
@@ -604,6 +606,7 @@ error Database::loadWorkspaces(
                 model->SetUID(rs[2].convert<Poco::UInt64>());
                 model->SetName(rs[3].convert<std::string>());
                 model->SetPremium(rs[4].convert<bool>());
+                model->SetOnlyAdminsMayCreateProjects(rs[5].convert<bool>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -1289,12 +1292,15 @@ error Database::saveWorkspace(
             logger().trace(ss.str());
 
             *session << "update workspaces set "
-                     "id = :id, uid = :uid, name = :name, premium = :premium "
+                     "id = :id, uid = :uid, name = :name, premium = :premium, "
+                     "only_admins_may_create_projects = "
+                     ":only_admins_may_create_projects "
                      "where local_id = :local_id",
                      Poco::Data::use(model->ID()),
                      Poco::Data::use(model->UID()),
                      Poco::Data::use(model->Name()),
                      Poco::Data::use(model->Premium()),
+                     Poco::Data::use(model->OnlyAdminsMayCreateProjects()),
                      Poco::Data::use(model->LocalID()),
                      Poco::Data::now;
             error err = last_error("saveWorkspace");
@@ -1309,12 +1315,16 @@ error Database::saveWorkspace(
             ss << "Inserting workspace " + model->String()
                << " in thread " << Poco::Thread::currentTid();
             logger().trace(ss.str());
-            *session << "insert into workspaces(id, uid, name, premium) "
-                     "values(:id, :uid, :name, :premium)",
+            *session <<
+                     "insert into workspaces(id, uid, name, premium, "
+                     "only_admins_may_create_projects) "
+                     "values(:id, :uid, :name, :premium, "
+                     ":only_admins_may_create_projects)",
                      Poco::Data::use(model->ID()),
                      Poco::Data::use(model->UID()),
                      Poco::Data::use(model->Name()),
                      Poco::Data::use(model->Premium()),
+                     Poco::Data::use(model->OnlyAdminsMayCreateProjects()),
                      Poco::Data::now;
             error err = last_error("saveWorkspace");
             if (err != noError) {
@@ -2076,16 +2086,17 @@ error Database::initialize_tables() {
         return err;
     }
 
-    err = migrate("workspaces",
-                  "create table workspaces("
-                  "local_id integer primary key,"
-                  "id integer not null, "
-                  "uid integer not null, "
-                  "name varchar not null,"
-                  "constraint fk_workspaces_uid foreign key (uid) "
-                  "   references users(id) "
-                  "     on delete no action on update no action"
-                  "); ");
+    err = migrate(
+        "workspaces",
+        "create table workspaces("
+        "local_id integer primary key,"
+        "id integer not null, "
+        "uid integer not null, "
+        "name varchar not null, "
+        "constraint fk_workspaces_uid foreign key (uid) "
+        "   references users(id) "
+        "     on delete no action on update no action"
+        "); ");
     if (err != noError) {
         return err;
     }
@@ -2097,8 +2108,17 @@ error Database::initialize_tables() {
         return err;
     }
 
-    err = migrate("workspaces.premium",
-                  "alter table workspaces add column premium int default 0");
+    err = migrate(
+        "workspaces.premium",
+        "alter table workspaces add column premium int default 0");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "workspaces.only_admins_may_create_projects",
+        "alter table workspaces add column "
+        "   only_admins_may_create_projects integer not null default 0; ");
     if (err != noError) {
         return err;
     }
