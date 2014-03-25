@@ -7,9 +7,9 @@
 
 namespace kopsik {
 
-    class KopsikApiTest : public ::testing::Test {};
+class KopsikApiTest : public ::testing::Test {};
 
-    void wipe_test_db();
+void wipe_test_db();
 
 }  // namespace kopsik
 

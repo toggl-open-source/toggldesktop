@@ -911,7 +911,6 @@ completionsForSubstring:(NSString *)substring
     return;
   }
 
-  self.descriptionCombobox.stringValue = autocomplete.Description;
   kopsik_api_result res = kopsik_set_time_entry_description(ctx,
                                                             errmsg,
                                                             KOPSIK_ERR_LEN,

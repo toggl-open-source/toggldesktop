@@ -7,11 +7,11 @@
 
 namespace kopsik {
 
-    typedef std::string error;
+typedef std::string error;
 
-    const error noError = "";
+const error noError = "";
 
-    typedef std::string guid;
+typedef std::string guid;
 }
 
 #endif  // SRC_TYPES_H_

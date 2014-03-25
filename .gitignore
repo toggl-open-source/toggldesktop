@@ -26,8 +26,8 @@ third_party/openssl-1.0.1e/**/*.bak
 third_party/openssl-1.0.1e/apps/openssl
 third_party/openssl-1.0.1e/crypto/buildinf.h
 third_party/openssl-1.0.1e/test/sha*t
+third_party/openssl-1.0.1e/crypto/**/*.s
 /
-*.s
 *.0
 *.pc
 *.time
@@ -65,3 +65,8 @@ coverage
 third_party/TFDatePicker/TFDatePicker/build/
 
 xcshareddata
+
+*.dSYM
+
+third_party/plcrashreporter-1.2-rc4/build
+third_party/google-astyle/build/

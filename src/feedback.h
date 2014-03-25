@@ -12,21 +12,24 @@
 namespace kopsik {
 
 class Feedback {
-  public:
+ public:
     Feedback(
-      const std::string topic,
-      const std::string details,
-      const std::string attachment_path)
-      : subject_(topic)
-      , details_(details)
-      , attachment_path_(attachment_path)
-      , app_version_("") {}
+        const std::string topic,
+        const std::string details,
+        const std::string attachment_path)
+        : subject_(topic)
+    , details_(details)
+    , attachment_path_(attachment_path)
+    , app_version_("") {}
     ~Feedback() {}
 
     kopsik::error Validate() const;
     const std::string JSON() const;
-    void SetAppVersion(const std::string value) { app_version_ = value; }
-  private:
+    void SetAppVersion(const std::string value) {
+        app_version_ = value;
+    }
+
+ private:
     const std::string filename() const;
     const std::string base64encode_attachment() const;
 

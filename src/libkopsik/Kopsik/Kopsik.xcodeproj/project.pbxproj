@@ -15,8 +15,6 @@
 		7408EDB618C51CEB00CBE8F1 /* autocomplete_item.h in Headers */ = {isa = PBXBuildFile; fileRef = 7408EDAE18C51CEB00CBE8F1 /* autocomplete_item.h */; };
 		7408EDB718C51CEB00CBE8F1 /* formatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 7408EDAF18C51CEB00CBE8F1 /* formatter.h */; };
 		7408EDB818C51CEB00CBE8F1 /* feedback.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7408EDB018C51CEB00CBE8F1 /* feedback.cc */; };
-		743FB0A318D4506A006C2844 /* periodic_update_checker.cc in Sources */ = {isa = PBXBuildFile; fileRef = 743FB0A118D4506A006C2844 /* periodic_update_checker.cc */; };
-		743FB0A418D4506A006C2844 /* periodic_update_checker.h in Headers */ = {isa = PBXBuildFile; fileRef = 743FB0A218D4506A006C2844 /* periodic_update_checker.h */; };
 		7484A2A818887BEE0025A88B /* kopsik_api_private.h in Headers */ = {isa = PBXBuildFile; fileRef = 7484A2A218887BEE0025A88B /* kopsik_api_private.h */; };
 		7484A2AA18887BEE0025A88B /* context.h in Headers */ = {isa = PBXBuildFile; fileRef = 7484A2A418887BEE0025A88B /* context.h */; };
 		7484A2AB18887BEE0025A88B /* context.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7484A2A518887BEE0025A88B /* context.cc */; };
@@ -90,8 +88,6 @@
 		7408EDAE18C51CEB00CBE8F1 /* autocomplete_item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = autocomplete_item.h; path = ../../../autocomplete_item.h; sourceTree = "<group>"; };
 		7408EDAF18C51CEB00CBE8F1 /* formatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = formatter.h; path = ../../../formatter.h; sourceTree = "<group>"; };
 		7408EDB018C51CEB00CBE8F1 /* feedback.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = feedback.cc; path = ../../../feedback.cc; sourceTree = "<group>"; };
-		743FB0A118D4506A006C2844 /* periodic_update_checker.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = periodic_update_checker.cc; path = ../../../periodic_update_checker.cc; sourceTree = "<group>"; };
-		743FB0A218D4506A006C2844 /* periodic_update_checker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = periodic_update_checker.h; path = ../../../periodic_update_checker.h; sourceTree = "<group>"; };
 		7484A2A218887BEE0025A88B /* kopsik_api_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kopsik_api_private.h; path = ../../../kopsik_api_private.h; sourceTree = "<group>"; };
 		7484A2A418887BEE0025A88B /* context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = context.h; path = ../../../context.h; sourceTree = "<group>"; };
 		7484A2A518887BEE0025A88B /* context.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = context.cc; path = ../../../context.cc; sourceTree = "<group>"; };
@@ -232,8 +228,6 @@
 		C55DA59E17F06A3B00B42178 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				743FB0A118D4506A006C2844 /* periodic_update_checker.cc */,
-				743FB0A218D4506A006C2844 /* periodic_update_checker.h */,
 				7408EDA918C51CEB00CBE8F1 /* proxy.cc */,
 				7408EDAA18C51CEB00CBE8F1 /* autocomplete_item.cc */,
 				7408EDAB18C51CEB00CBE8F1 /* const.h */,
@@ -332,7 +326,6 @@
 				74B587BD18BBC77E00E9F6CE /* json.h in Headers */,
 				74F7CDDC18199FA300630BD0 /* window_change_recorder.h in Headers */,
 				7408EDB518C51CEB00CBE8F1 /* feedback.h in Headers */,
-				743FB0A418D4506A006C2844 /* periodic_update_checker.h in Headers */,
 				7408EDB718C51CEB00CBE8F1 /* formatter.h in Headers */,
 				74CAAD1A181860F7001B77BB /* get_focused_window.h in Headers */,
 				C5DA1FB117F18D7B001C4565 /* types.h in Headers */,
@@ -422,7 +415,6 @@
 				74B587C918BBC77E00E9F6CE /* user.cc in Sources */,
 				74B587BB18BBC77E00E9F6CE /* formatter.cc in Sources */,
 				74B587CE18BBC77E00E9F6CE /* related_data.cc in Sources */,
-				743FB0A318D4506A006C2844 /* periodic_update_checker.cc in Sources */,
 				74B587CC18BBC77E00E9F6CE /* workspace.cc in Sources */,
 				7498ACE218D2EEFC00A42CA0 /* notifications.cc in Sources */,
 				74B587C818BBC77E00E9F6CE /* task.cc in Sources */,

@@ -6,14 +6,14 @@
 
 namespace kopsik {
 
-  std::string UserAgent(
-      const std::string app_name,
-      const std::string app_version) {
+std::string UserAgent(
+    const std::string app_name,
+    const std::string app_version) {
     std::stringstream ss;
     ss  << app_name
         << "/"
         << app_version;
     return ss.str();
-  }
+}
 
 }  // namespace kopsik

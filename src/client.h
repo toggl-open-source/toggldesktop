@@ -15,34 +15,44 @@
 
 namespace kopsik {
 
-  class Client : public BaseModel {
-  public:
+class Client : public BaseModel {
+ public:
     Client()
-      : BaseModel()
-      , wid_(0)
-      , name_("") {}
+        : BaseModel()
+    , wid_(0)
+    , name_("") {}
 
-    Poco::UInt64 WID() const { return wid_; }
+    Poco::UInt64 WID() const {
+        return wid_;
+    }
     void SetWID(const Poco::UInt64 value);
 
-    std::string Name() const { return name_; }
+    std::string Name() const {
+        return name_;
+    }
     void SetName(const std::string value);
 
     std::string String() const;
 
-    std::string ModelName() const { return "client"; }
-    std::string ModelURL() const { return "/api/v8/clients"; }
+    std::string ModelName() const {
+        return "client";
+    }
+    std::string ModelURL() const {
+        return "/api/v8/clients";
+    }
 
     void LoadFromJSONNode(JSONNODE * const);
-    JSONNODE *SaveToJSONNode() const { return 0; }
+    JSONNODE *SaveToJSONNode() const {
+        return 0;
+    }
 
-  private:
+ private:
     Poco::UInt64 wid_;
     std::string name_;
     bool dirty_;
-  };
+};
 
-  bool CompareClientByName(Client *a, Client *b);
+bool CompareClientByName(Client *a, Client *b);
 
 }  // namespace kopsik
 

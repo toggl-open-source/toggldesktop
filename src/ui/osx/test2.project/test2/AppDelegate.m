@@ -26,6 +26,7 @@
 #import "CrashReporter.h"
 #import "FeedbackWindowController.h"
 #import "const.h"
+#import "EditNotification.h"
 
 @interface AppDelegate()
 @property (nonatomic, strong) IBOutlet MainWindowController *
@@ -64,6 +65,10 @@
 
 // For testing crash reporter
 @property BOOL forceCrash;
+
+// Avoid showing multiple upgrade dialogs
+@property BOOL upgradeDialogVisible;
+
 @end
 
 @implementation AppDelegate
@@ -82,8 +87,7 @@
       initWithWindowNibName:@"MainWindowController"];
   [self.mainWindowController.window setReleasedWhenClosed:NO];
   
-  PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
-  NSError *error;
+  PLCrashReporter *crashReporter = [self configuredCrashReporter];
   
   // Check if we previously crashed
   if ([crashReporter hasPendingCrashReport]) {
@@ -91,6 +95,7 @@
   }
   
   // Enable the Crash Reporter
+  NSError *error;
   if (![crashReporter enableCrashReporterAndReturnError: &error]) {
     NSLog(@"Warning: Could not enable crash reporter: %@", error);
   }
@@ -180,6 +185,10 @@
                                            selector:@selector(eventHandler:)
                                                name:kUIStateOnline
                                              object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(eventHandler:)
+                                               name:kUIStateUpdateAvailable
+                                             object:nil];
 
   char err[KOPSIK_ERR_LEN];
   KopsikUser *user = kopsik_user_init();
@@ -257,6 +266,12 @@
   if (timeEntry.duration_in_seconds < 0) {
     [[NSNotificationCenter defaultCenter]
      postNotificationName:kUIStateTimerRunning object:timeEntry];
+
+    EditNotification *edit = [[EditNotification alloc] init];
+    edit.GUID = timeEntry.GUID;
+    edit.FieldName = kUIDescriptionClicked;
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
+                                                      object:edit];
   }
 
   [self onShowMenuItem:self];
@@ -465,6 +480,9 @@
     [self offlineMode:true];
   } else if ([notification.name isEqualToString:kUIStateOnline]) {
     [self offlineMode:false];
+  } else if ([notification.name isEqualToString:kUIStateUpdateAvailable]) {
+    [self performSelectorOnMainThread:@selector(presentUpgradeDialog:)
+      withObject:notification.object waitUntilDone:NO];
   }
   [self updateStatus];
 }
@@ -648,13 +666,15 @@
 }
 
 - (IBAction)onOpenBrowserMenuItem:(id)sender {
+  NSString *togglWebsiteURL = [NSString stringWithUTF8String:kTogglWebsiteURL];
   [[NSWorkspace sharedWorkspace] openURL:
-    [NSURL URLWithString:@"https://new.toggl.com/"]];
+    [NSURL URLWithString:togglWebsiteURL]];
 }
 
 - (IBAction)onHelpMenuItem:(id)sender {
+  NSString *supportURL = [NSString stringWithUTF8String:kSupportURL];
   [[NSWorkspace sharedWorkspace] openURL:
-    [NSURL URLWithString:@"http://support.toggl.com/toggl-on-my-desktop/"]];
+    [NSURL URLWithString:supportURL]];
 }
 
 - (IBAction)onLogoutMenuItem:(id)sender {
@@ -1094,6 +1114,14 @@ void check_for_updates_callback(kopsik_api_result result,
   [[NSNotificationCenter defaultCenter]
     postNotificationName:kUIStateUpdateAvailable
     object:update];
+}
+
+- (void)presentUpgradeDialog:(Update *)update {
+  if (self.upgradeDialogVisible) {
+    NSLog(@"Upgrade dialog already visible");
+    return;
+  }
+  self.upgradeDialogVisible = YES;
 
   NSAlert *alert = [[NSAlert alloc] init];
   [alert addButtonWithTitle:@"Yes"];
@@ -1104,6 +1132,7 @@ void check_for_updates_callback(kopsik_api_result result,
   [alert setInformativeText:informative];
   [alert setAlertStyle:NSWarningAlertStyle];
   if ([alert runModal] != NSAlertFirstButtonReturn) {
+    self.upgradeDialogVisible = NO;
     return;
   }
 
@@ -1111,8 +1140,15 @@ void check_for_updates_callback(kopsik_api_result result,
   [NSApp terminate:nil];
 }
 
+- (PLCrashReporter *)configuredCrashReporter {
+  PLCrashReporterConfig *config = [[PLCrashReporterConfig alloc]
+                                   initWithSignalHandlerType:PLCrashReporterSignalHandlerTypeBSD
+                                   symbolicationStrategy:PLCrashReporterSymbolicationStrategyAll];
+  return [[PLCrashReporter alloc] initWithConfiguration: config];
+}
+
 - (void) handleCrashReport {
-  PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
+  PLCrashReporter *crashReporter = [self configuredCrashReporter];
 
   NSError *error;
   NSData *crashData = [crashReporter loadPendingCrashReportDataAndReturnError: &error];
@@ -1158,16 +1194,9 @@ void check_for_updates_callback(kopsik_api_result result,
 }
 
 void about_updates_checked(
-    kopsik_api_result result,
-    const char *errmsg,
     const int is_update_available,
     const char *url,
     const char *version) {
-  if (result != KOPSIK_API_SUCCESS) {
-    handle_error(errmsg);
-    return;
-  }
-  
   if (!is_update_available) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUpToDate
                                                         object:nil];

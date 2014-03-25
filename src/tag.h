@@ -13,31 +13,41 @@
 
 namespace kopsik {
 
-  class Tag : public BaseModel {
-  public:
+class Tag : public BaseModel {
+ public:
     Tag()
-      : BaseModel()
-      , wid_(0)
-      , name_("") {}
+        : BaseModel()
+    , wid_(0)
+    , name_("") {}
 
-    Poco::UInt64 WID() const { return wid_; }
+    Poco::UInt64 WID() const {
+        return wid_;
+    }
     void SetWID(const Poco::UInt64 value);
 
-    std::string Name() const { return name_; }
+    std::string Name() const {
+        return name_;
+    }
     void SetName(const std::string value);
 
     std::string String() const;
 
-    std::string ModelName() const { return "tag"; }
-    std::string ModelURL() const { return "/api/v8/tags"; }
+    std::string ModelName() const {
+        return "tag";
+    }
+    std::string ModelURL() const {
+        return "/api/v8/tags";
+    }
 
     void LoadFromJSONNode(JSONNODE * const data);
-    JSONNODE *SaveToJSONNode() const { return 0; }
+    JSONNODE *SaveToJSONNode() const {
+        return 0;
+    }
 
-  private:
+ private:
     Poco::UInt64 wid_;
     std::string name_;
-  };
+};
 
 }  // namespace kopsik
 

@@ -14,7 +14,12 @@
 #define kAPIURL "https://www.toggl.com"
 #define kTimelineUploadURL "https://timeline.toggl.com"
 #define kWebSocketURL "https://stream.toggl.com"
+#define kLostPasswordURL "https://www.toggl.com/lost_passwords/new"
+#define kSupportURL "http://support.toggl.com/toggl-on-my-desktop/"
+#define kTogglWebsiteURL "https://new.toggl.com/"
 
-#define kCheckUpdateIntervalSeconds 3600
+#define kCheckUpdateIntervalMicros 86400000000
+
+#define kMaxTimeEntryDurationSeconds 3600000
 
 #endif  // SRC_CONST_H_

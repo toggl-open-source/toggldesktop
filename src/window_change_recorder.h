@@ -17,14 +17,14 @@ namespace kopsik {
 
 class WindowChangeRecorder {
  public:
-  explicit WindowChangeRecorder(const Poco::UInt64 user_id) :
-            user_id_(user_id),
-            last_title_(""),
-            last_filename_(""),
-            last_event_started_at_(0),
-            window_focus_seconds_(kWindowFocusThresholdSeconds),
-            recording_interval_ms_(kWindowChangeRecordingIntervalMillis),
-            recording_(this, &WindowChangeRecorder::record_loop) {
+    explicit WindowChangeRecorder(const Poco::UInt64 user_id) :
+    user_id_(user_id),
+    last_title_(""),
+    last_filename_(""),
+    last_event_started_at_(0),
+    window_focus_seconds_(kWindowFocusThresholdSeconds),
+    recording_interval_ms_(kWindowChangeRecordingIntervalMillis),
+    recording_(this, &WindowChangeRecorder::record_loop) {
         poco_assert(user_id_);
         recording_.start();
     }

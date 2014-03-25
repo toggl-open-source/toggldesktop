@@ -103,7 +103,7 @@ endif
 
 cxx=g++
 
-cmdline: clean lint
+cmdline: clean fmt lint
 	mkdir -p build
 	$(cxx) $(cflags) -O2 -c src/version.cc -o build/version.o
 	$(cxx) $(cflags) -O2 -c src/https_client.cc -o build/https_client.o
@@ -124,7 +124,6 @@ cmdline: clean lint
 	$(cxx) $(cflags) -O2 -c src/database.cc -o build/database.o
 	$(cxx) $(cflags) -O2 -c src/autocomplete_item.cc -o build/autocomplete_item.o
 	$(cxx) $(cflags) -O2 -c src/feedback.cc -o build/feedback.o
-	$(cxx) $(cflags) -O2 -c src/periodic_update_checker.cc -o build/periodic_update_checker.o
 	$(cxx) $(cflags) -O2 -c src/context.cc -o build/context.o
 	$(cxx) $(cflags) -O2 -c src/kopsik_api_private.cc -o build/kopsik_api_private.o
 	$(cxx) $(cflags) -O2 -c src/kopsik_api.cc -o build/kopsik_api.o
@@ -140,7 +139,8 @@ clean:
 	rm -f $(main)_test && \
 	rm -rf src/ui/osx/test2.project/build && \
 	rm -rf src/libkopsik/Kopsik/build && \
-	rm -f TogglDesktop.dmg
+	rm -f TogglDesktop*.dmg \
+	rm -f TogglDesktop*.tar.gz
 
 osx:
 	xcodebuild -project src/ui/osx/test2.project/TogglDesktop.xcodeproj && \
@@ -159,7 +159,7 @@ sikuli: osx
 	--db_path kopsik_sikuli.db \
 	--log_path kopsik_sikuli.log 
 
-test: clean lint
+test: clean fmt lint
 	mkdir -p build
 	$(cxx) $(cflags) -c src/version.cc -o build/version.o
 	$(cxx) $(cflags) -c src/https_client.cc -o build/https_client.o
@@ -181,7 +181,6 @@ test: clean lint
 	$(cxx) $(cflags) -c src/autocomplete_item.cc -o build/autocomplete_item.o
 	$(cxx) $(cflags) -c src/feedback.cc -o build/feedback.o
 	$(cxx) $(cflags) -c src/ui/common/notifications.cc -o build/notifications.o
-	$(cxx) $(cflags) -c src/periodic_update_checker.cc -o build/periodic_update_checker.o
 	$(cxx) $(cflags) -c src/context.cc -o build/context.o
 	$(cxx) $(cflags) -c src/kopsik_api_private.cc -o build/kopsik_api_private.o
 	$(cxx) $(cflags) -c src/kopsik_api.cc -o build/kopsik_api.o
@@ -219,7 +218,6 @@ coverage: clean
 	$(cxx) $(cflags) $(covflags) -c src/database.cc -o build/database.o
 	$(cxx) $(cflags) $(covflags) -c src/autocomplete_item.cc -o build/autocomplete_item.o
 	$(cxx) $(cflags) $(covflags) -c src/feedback.cc -o build/feedback.o
-	$(cxx) $(cflags) $(covflags) -c src/periodic_update_checker.cc -o build/periodic_update_checker.o
 	$(cxx) $(cflags) $(covflags) -c src/context.cc -o build/context.o
 	$(cxx) $(cflags) $(covflags) -c src/kopsik_api_private.cc -o build/kopsik_api_private.o
 	$(cxx) $(cflags) $(covflags) -c src/kopsik_api.cc -o build/kopsik_api.o
@@ -266,4 +264,10 @@ stats:
 
 simian:
 	java -jar third_party/simian/bin/simian-2.3.35.jar src/*
+
+third_party/google-astyle/build/google-astyle:
+	cd third_party/google-astyle && mkdir -p build && g++ *.cpp -o build/google-astyle
+
+fmt: third_party/google-astyle/build/google-astyle
+	third_party/google-astyle/build/google-astyle -n src/*.cc src/*.h src/ui/cmdline/* src/ui/common/*
 

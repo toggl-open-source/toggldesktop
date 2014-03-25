@@ -12,14 +12,15 @@
 #import "Context.h"
 #import "GTMOAuth2WindowController.h"
 
+#import "const.h"
+
 @interface LoginViewController ()
 
 @end
 
 @implementation LoginViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
       [self performSelector:@selector(setDefaultUser) withObject:nil afterDelay:0.5];
@@ -89,8 +90,8 @@
   }
 
   if (sender == self.passwordForgotTextField) {
-    [[NSWorkspace sharedWorkspace]
-      openURL:[NSURL URLWithString:@"https://www.toggl.com/lost_passwords/new"]];
+    NSString *lostPasswordURL = [NSString stringWithUTF8String:kLostPasswordURL];
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:lostPasswordURL]];
     return;
   }
 }

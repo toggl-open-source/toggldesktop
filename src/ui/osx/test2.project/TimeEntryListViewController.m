@@ -198,8 +198,9 @@ const int kHeaderRowHeight = 86;
          heightOfRow:(NSInteger)row {
   TimeEntryViewItem *item = nil;
   @synchronized(viewitems) {
-    if (row < viewitems.count)
-    item = viewitems[row];
+    if (row < viewitems.count) {
+      item = viewitems[row];
+    }
   }
   if (item && item.isHeader) {
     return kHeaderRowHeight;

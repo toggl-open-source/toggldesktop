@@ -13,27 +13,33 @@ namespace kopsik {
 
 class AutocompleteItem {
  public:
-  AutocompleteItem()
-    : Text("")
+    AutocompleteItem()
+        : Text("")
     , Description("")
     , ProjectAndTaskLabel("")
     , ProjectColor("")
     , TaskID(0)
     , ProjectID(0)
     , Type(0) {}
-  ~AutocompleteItem() {}
+    ~AutocompleteItem() {}
 
-  bool IsTimeEntry() const { return kAutocompleteItemTE == Type; }
-  bool IsTask() const { return kAutocompleteItemTask == Type; }
-  bool IsProject() const { return kAutocompleteItemProject == Type; }
+    bool IsTimeEntry() const {
+        return kAutocompleteItemTE == Type;
+    }
+    bool IsTask() const {
+        return kAutocompleteItemTask == Type;
+    }
+    bool IsProject() const {
+        return kAutocompleteItemProject == Type;
+    }
 
-  std::string Text;
-  std::string Description;
-  std::string ProjectAndTaskLabel;
-  std::string ProjectColor;
-  Poco::UInt64 TaskID;
-  Poco::UInt64 ProjectID;
-  Poco::UInt64 Type;
+    std::string Text;
+    std::string Description;
+    std::string ProjectAndTaskLabel;
+    std::string ProjectColor;
+    Poco::UInt64 TaskID;
+    Poco::UInt64 ProjectID;
+    Poco::UInt64 Type;
 };
 
 bool CompareAutocompleteItems(AutocompleteItem a, AutocompleteItem b);

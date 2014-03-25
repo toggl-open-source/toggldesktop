@@ -16,7 +16,7 @@
 namespace command_line_client {
 
 class Main : public Poco::Util::Application, Poco::ErrorHandler {
-  public:
+ public:
     Main();
     ~Main();
 
@@ -25,7 +25,7 @@ class Main : public Poco::Util::Application, Poco::ErrorHandler {
     void exception(const std::exception& exc);
     void exception();
 
-  protected:
+ protected:
     // Application
     int main(const std::vector<std::string>& args);
     virtual void initialize(Poco::Util::Application &self); // NOLINT
@@ -33,7 +33,7 @@ class Main : public Poco::Util::Application, Poco::ErrorHandler {
     virtual void defineOptions(Poco::Util::OptionSet& options); // NOLINT
     void handleOption(const std::string &name, const std::string &value) {}
 
-  private:
+ private:
     void *ctx_;
 
     void usage() const;

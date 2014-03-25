@@ -12,47 +12,47 @@
 
 namespace kopsik {
 
-  class Formatter {
-    public:
-      static std::string JoinTaskName(
+class Formatter {
+ public:
+    static std::string JoinTaskName(
         Task * const,
         Project * const,
         Client * const);
-      static std::string JoinTaskNameReverse(
+    static std::string JoinTaskNameReverse(
         Task * const,
         Project * const,
         Client * const);
-      static std::string FormatDurationInSeconds(
+    static std::string FormatDurationInSeconds(
         const Poco::Int64 value,
         const std::string format);
-      static std::string FormatDurationInSecondsHHMMSS(
+    static std::string FormatDurationInSecondsHHMMSS(
         const Poco::Int64 value);
-      static std::string FormatDurationInSecondsHHMM(
+    static std::string FormatDurationInSecondsHHMM(
         const Poco::Int64 value);
-      static std::time_t Parse8601(
+    static std::time_t Parse8601(
         const std::string iso_8601_formatted_date);
-      static int ParseDurationString(
+    static int ParseDurationString(
         const std::string value);
-      static bool parseDurationStringHHMMSS(
+    static bool parseDurationStringHHMMSS(
         const std::string value,
         int *parsed_seconds);
-      static bool parseDurationStringHHMM(
+    static bool parseDurationStringHHMM(
         const std::string value,
         int *parsed_seconds);
-      static bool parseDurationStringMMSS(
+    static bool parseDurationStringMMSS(
         const std::string value,
         int *parsed_seconds);
-      static int parseDurationFromDecimal(
+    static int parseDurationFromDecimal(
         const std::string value);
-      static std::string Format8601(
+    static std::string Format8601(
         const std::time_t date);
-      static std::string FormatDateHeader(
+    static std::string FormatDateHeader(
         const std::time_t date);
-      static std::string FormatDateWithTime(
+    static std::string FormatDateWithTime(
         const std::time_t date);
-      static std::string EscapeJSONString(
+    static std::string EscapeJSONString(
         const std::string input);
-  };
+};
 
 }  // namespace kopsik
 

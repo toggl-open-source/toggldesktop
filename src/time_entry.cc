@@ -16,6 +16,7 @@
 
 #include "./formatter.h"
 #include "./json.h"
+#include "./const.h"
 
 #include "Poco/Timestamp.h"
 #include "Poco/DateTime.h"
@@ -24,35 +25,62 @@
 namespace kopsik {
 
 bool TimeEntry::ResolveError(const kopsik::error err) {
-  if (durationTooLarge(err) && Stop() && Start()) {
-    Poco::UInt64 max_seconds = 3600000;
-    Poco::UInt64 seconds = std::min(Stop() - Start(), max_seconds);
-    SetDurationInSeconds(seconds);
-    return true;
-  }
-  return false;
+    if (durationTooLarge(err) && Stop() && Start()) {
+        Poco::UInt64 seconds =
+            std::min(Stop() - Start(),
+                     Poco::UInt64(kMaxTimeEntryDurationSeconds));
+        SetDurationInSeconds(seconds);
+        return true;
+    }
+    if (stopTimeMustBeAfterStartTime(err) && Stop() && Start()) {
+        SetStop(Start() + DurationInSeconds());
+        return true;
+    }
+    if (userCannotAccessWorkspace(err)) {
+        SetWID(0);
+        SetPID(0);
+        SetTID(0);
+        return true;
+    }
+    if (userCannotAccessTheSelectedProject(err)) {
+        SetPID(0);
+        SetTID(0);
+        return true;
+    }
+    return false;
+}
+
+bool TimeEntry::userCannotAccessTheSelectedProject(
+    const kopsik::error err) const {
+    return (std::string::npos != std::string(err).find(
+        "User cannot access the selected project"));
 }
 
 bool TimeEntry::durationTooLarge(const kopsik::error err) const {
-  return (std::string::npos != std::string(err).find(
-    "Max allowed duration per 1 time entry is 1000 hours"));
+    return (std::string::npos != std::string(err).find(
+        "Max allowed duration per 1 time entry is 1000 hours"));
+}
+
+bool TimeEntry::stopTimeMustBeAfterStartTime(const kopsik::error err) const {
+    return (std::string::npos != std::string(err).find(
+        "Stop time must be after start time"));
 }
 
 void TimeEntry::StopAt(const Poco::Int64 at) {
-  poco_assert(at);
-  poco_assert(IsTracking());
+    poco_assert(at);
+    poco_assert(IsTracking());
 
-  SetDurationInSeconds(at + DurationInSeconds());
+    SetDurationInSeconds(at + DurationInSeconds());
 
-  poco_assert(DurationInSeconds() >= 0);
+    poco_assert(DurationInSeconds() >= 0);
 
-  SetStop(at);
+    SetStop(at);
 
-  SetUIModified();
+    SetUIModified();
 }
 
 void TimeEntry::StopTracking() {
-  StopAt(time(0));
+    StopAt(time(0));
 }
 
 std::string TimeEntry::String() const {
@@ -131,19 +159,20 @@ void TimeEntry::SetWID(const Poco::UInt64 value) {
 }
 
 void TimeEntry::SetStopUserInput(const std::string value) {
-  SetStopString(value);
+    SetStopString(value);
 
-  if (Stop() < Start()) {
-    // Stop time cannot be before start time, it'll get an error from backend.
-    Poco::Timestamp ts =
-      Poco::Timestamp::fromEpochTime(Stop()) + 1*Poco::Timespan::DAYS;
-    SetStop(ts.epochTime());
-  }
+    if (Stop() < Start()) {
+        // Stop time cannot be before start time,
+        // it'll get an error from backend.
+        Poco::Timestamp ts =
+            Poco::Timestamp::fromEpochTime(Stop()) + 1*Poco::Timespan::DAYS;
+        SetStop(ts.epochTime());
+    }
 
-  poco_assert(Stop() >= Start());
-  if (!IsTracking()) {
-    SetDurationInSeconds(Stop() - Start());
-  }
+    poco_assert(Stop() >= Start());
+    if (!IsTracking()) {
+        SetDurationInSeconds(Stop() - Start());
+    }
 }
 
 void TimeEntry::SetTID(const Poco::UInt64 value) {
@@ -157,12 +186,12 @@ void TimeEntry::SetTags(const std::string tags) {
     if (Tags() != tags) {
         TagNames.clear();
         if (!tags.empty()) {
-          std::stringstream ss(tags);
-          while (ss.good()) {
-              std::string tag;
-              getline(ss, tag, '|');
-              TagNames.push_back(tag);
-          }
+            std::stringstream ss(tags);
+            while (ss.good()) {
+                std::string tag;
+                getline(ss, tag, '|');
+                TagNames.push_back(tag);
+            }
         }
         SetDirty();
     }
@@ -197,16 +226,16 @@ void TimeEntry::SetStartString(const std::string value) {
 }
 
 void TimeEntry::SetDurationUserInput(const std::string value) {
-  int seconds = Formatter::ParseDurationString(value);
-  if (IsTracking()) {
-    time_t now = time(0);
-    time_t start = now - seconds;
-    SetStart(start);
-    SetDurationInSeconds(-start);
-  } else {
-    SetDurationInSeconds(seconds);
-    SetStop(Start() + seconds);
-  }
+    int seconds = Formatter::ParseDurationString(value);
+    if (IsTracking()) {
+        time_t now = time(0);
+        time_t start = now - seconds;
+        SetStart(start);
+        SetDurationInSeconds(-start);
+    } else {
+        SetDurationInSeconds(seconds);
+        SetStop(Start() + seconds);
+    }
 }
 
 void TimeEntry::SetProjectGUID(const std::string value) {
@@ -219,7 +248,7 @@ void TimeEntry::SetProjectGUID(const std::string value) {
 std::string TimeEntry::Tags() const {
     std::stringstream ss;
     for (std::vector<std::string>::const_iterator it =
-            TagNames.begin();
+        TagNames.begin();
             it != TagNames.end();
             it++) {
         if (it != TagNames.begin()) {
@@ -247,12 +276,12 @@ std::string TimeEntry::StartString() const {
 }
 
 bool TimeEntry::IsToday() const {
-  Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(Start());
-  Poco::LocalDateTime datetime(ts);
-  Poco::LocalDateTime today;
-  return today.year() == datetime.year() &&
-      today.month() == datetime.month() &&
-      today.day() == datetime.day();
+    Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(Start());
+    Poco::LocalDateTime datetime(ts);
+    Poco::LocalDateTime today;
+    return today.year() == datetime.year() &&
+           today.month() == datetime.month() &&
+           today.day() == datetime.day();
 }
 
 bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
@@ -260,115 +289,126 @@ bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
 }
 
 void TimeEntry::LoadFromJSONNode(JSONNODE * const data) {
-  poco_assert(data);
+    poco_assert(data);
 
-  Poco::UInt64 ui_modified_at =
-      GetUIModifiedAtFromJSONNode(data);
-  if (UIModifiedAt() > ui_modified_at) {
-      std::stringstream ss;
-      ss  << "Will not overwrite time entry "
-          << String()
-          << " with server data because we have a newer ui_modified_at";
-      logger().debug(ss.str());
-      return;
-  }
-
-  JSONNODE_ITERATOR current_node = json_begin(data);
-  JSONNODE_ITERATOR last_node = json_end(data);
-  while (current_node != last_node) {
-    json_char *node_name = json_name(*current_node);
-    if (strcmp(node_name, "id") == 0) {
-      SetID(json_as_int(*current_node));
-    } else if (strcmp(node_name, "description") == 0) {
-      SetDescription(std::string(json_as_string(*current_node)));
-    } else if (strcmp(node_name, "guid") == 0) {
-      SetGUID(std::string(json_as_string(*current_node)));
-    } else if (strcmp(node_name, "wid") == 0) {
-      SetWID(json_as_int(*current_node));
-    } else if (strcmp(node_name, "pid") == 0) {
-      SetPID(json_as_int(*current_node));
-    } else if (strcmp(node_name, "tid") == 0) {
-      SetTID(json_as_int(*current_node));
-    } else if (strcmp(node_name, "start") == 0) {
-      SetStartString(std::string(json_as_string(*current_node)));
-    } else if (strcmp(node_name, "stop") == 0) {
-      SetStopString(std::string(json_as_string(*current_node)));
-    } else if (strcmp(node_name, "duration") == 0) {
-      SetDurationInSeconds(json_as_int(*current_node));
-    } else if (strcmp(node_name, "billable") == 0) {
-      SetBillable(json_as_bool(*current_node));
-    } else if (strcmp(node_name, "duronly") == 0) {
-      SetDurOnly(json_as_bool(*current_node));
-    } else if (strcmp(node_name, "tags") == 0) {
-      loadTagsFromJSONNode(*current_node);
-    } else if (strcmp(node_name, "created_with") == 0) {
-      SetCreatedWith(std::string(json_as_string(*current_node)));
-    } else if (strcmp(node_name, "at") == 0) {
-      SetUpdatedAtString(std::string(json_as_string(*current_node)));
+    Poco::UInt64 ui_modified_at =
+        GetUIModifiedAtFromJSONNode(data);
+    if (UIModifiedAt() > ui_modified_at) {
+        std::stringstream ss;
+        ss  << "Will not overwrite time entry "
+            << String()
+            << " with server data because we have a newer ui_modified_at";
+        logger().debug(ss.str());
+        return;
     }
-    ++current_node;
-  }
 
-  SetUIModifiedAt(0);
+    JSONNODE_ITERATOR current_node = json_begin(data);
+    JSONNODE_ITERATOR last_node = json_end(data);
+    while (current_node != last_node) {
+        json_char *node_name = json_name(*current_node);
+        if (strcmp(node_name, "id") == 0) {
+            SetID(json_as_int(*current_node));
+        } else if (strcmp(node_name, "description") == 0) {
+            SetDescription(std::string(json_as_string(*current_node)));
+        } else if (strcmp(node_name, "guid") == 0) {
+            SetGUID(std::string(json_as_string(*current_node)));
+        } else if (strcmp(node_name, "wid") == 0) {
+            SetWID(json_as_int(*current_node));
+        } else if (strcmp(node_name, "pid") == 0) {
+            SetPID(json_as_int(*current_node));
+        } else if (strcmp(node_name, "tid") == 0) {
+            SetTID(json_as_int(*current_node));
+        } else if (strcmp(node_name, "start") == 0) {
+            SetStartString(std::string(json_as_string(*current_node)));
+        } else if (strcmp(node_name, "stop") == 0) {
+            SetStopString(std::string(json_as_string(*current_node)));
+        } else if (strcmp(node_name, "duration") == 0) {
+            SetDurationInSeconds(json_as_int(*current_node));
+        } else if (strcmp(node_name, "billable") == 0) {
+            SetBillable(json_as_bool(*current_node));
+        } else if (strcmp(node_name, "duronly") == 0) {
+            SetDurOnly(json_as_bool(*current_node));
+        } else if (strcmp(node_name, "tags") == 0) {
+            loadTagsFromJSONNode(*current_node);
+        } else if (strcmp(node_name, "created_with") == 0) {
+            SetCreatedWith(std::string(json_as_string(*current_node)));
+        } else if (strcmp(node_name, "at") == 0) {
+            SetUpdatedAtString(std::string(json_as_string(*current_node)));
+        }
+        ++current_node;
+    }
+
+    SetUIModifiedAt(0);
 }
 
 JSONNODE *TimeEntry::SaveToJSONNode() const {
-  JSONNODE *n = json_new(JSON_NODE);
-  json_set_name(n, ModelName().c_str());
-  if (ID()) {
-    json_push_back(n, json_new_i("id", (json_int_t)ID()));
-  }
-  json_push_back(n, json_new_a("description",
-    Formatter::EscapeJSONString(Description()).c_str()));
-  json_push_back(n, json_new_i("wid", (json_int_t)WID()));
-  json_push_back(n, json_new_a("guid", GUID().c_str()));
-  if (!PID() && !ProjectGUID().empty()) {
-    json_push_back(n, json_new_a("pid", ProjectGUID().c_str()));
-  } else {
-    json_push_back(n, json_new_i("pid", (json_int_t)PID()));
-  }
-  json_push_back(n, json_new_i("tid", (json_int_t)TID()));
-  json_push_back(n, json_new_a("start", StartString().c_str()));
-  if (Stop()) {
-    json_push_back(n, json_new_a("stop", StopString().c_str()));
-  }
-  json_push_back(n, json_new_i("duration",
-    (json_int_t)DurationInSeconds()));
-  json_push_back(n, json_new_b("billable", Billable()));
-  json_push_back(n, json_new_b("duronly", DurOnly()));
-  json_push_back(n, json_new_i("ui_modified_at",
-      (json_int_t)UIModifiedAt()));
-  json_push_back(n, json_new_a("created_with",
-      Formatter::EscapeJSONString(CreatedWith()).c_str()));
+    JSONNODE *n = json_new(JSON_NODE);
+    json_set_name(n, ModelName().c_str());
+    if (ID()) {
+        json_push_back(n, json_new_i("id", (json_int_t)ID()));
+    }
+    json_push_back(n,
+                   json_new_a(
+                       "description",
+                       Formatter::EscapeJSONString(Description()).c_str()));
+    // Workspace ID can't be 0 on server side. So don't
+    // send 0 if we have no default workspace ID, because
+    // NULL is not 0
+    if (WID()) {
+        json_push_back(n, json_new_i("wid", (json_int_t)WID()));
+    }
+    json_push_back(n, json_new_a("guid", GUID().c_str()));
+    if (!PID() && !ProjectGUID().empty()) {
+        json_push_back(n, json_new_a("pid", ProjectGUID().c_str()));
+    } else {
+        json_push_back(n, json_new_i("pid", (json_int_t)PID()));
+    }
+    json_push_back(n, json_new_i("tid", (json_int_t)TID()));
+    json_push_back(n, json_new_a("start", StartString().c_str()));
+    if (Stop()) {
+        json_push_back(n, json_new_a("stop", StopString().c_str()));
+    }
+    json_push_back(n, json_new_i("duration",
+                                 (json_int_t)DurationInSeconds()));
+    json_push_back(n, json_new_b("billable", Billable()));
+    json_push_back(n, json_new_b("duronly", DurOnly()));
+    json_push_back(n, json_new_i("ui_modified_at",
+                                 (json_int_t)UIModifiedAt()));
+    json_push_back(n,
+                   json_new_a(
+                       "created_with",
+                       Formatter::EscapeJSONString(CreatedWith()).c_str()));
 
-  JSONNODE *tag_nodes = json_new(JSON_ARRAY);
-  json_set_name(tag_nodes, "tags");
-  for (std::vector<std::string>::const_iterator it = TagNames.begin();
-          it != TagNames.end();
-          it++) {
-      std::string tag_name = *it;
-      json_push_back(tag_nodes, json_new_a(NULL,
-          Formatter::EscapeJSONString(tag_name).c_str()));
-  }
-  json_push_back(n, tag_nodes);
+    JSONNODE *tag_nodes = json_new(JSON_ARRAY);
+    json_set_name(tag_nodes, "tags");
+    for (std::vector<std::string>::const_iterator it = TagNames.begin();
+            it != TagNames.end();
+            it++) {
+        std::string tag_name = *it;
+        json_push_back(
+            tag_nodes,
+            json_new_a(NULL,
+                       Formatter::EscapeJSONString(tag_name).c_str()));
+    }
+    json_push_back(n, tag_nodes);
 
-  return n;
+    return n;
 }
 
 void TimeEntry::loadTagsFromJSONNode(JSONNODE * const list) {
-  poco_assert(list);
+    poco_assert(list);
 
-  TagNames.clear();
+    TagNames.clear();
 
-  JSONNODE_ITERATOR current_node = json_begin(list);
-  JSONNODE_ITERATOR last_node = json_end(list);
-  while (current_node != last_node) {
-    std::string tag = std::string(json_as_string(*current_node));
-    if (!tag.empty()) {
-      TagNames.push_back(tag);
+    JSONNODE_ITERATOR current_node = json_begin(list);
+    JSONNODE_ITERATOR last_node = json_end(list);
+    while (current_node != last_node) {
+        std::string tag = std::string(json_as_string(*current_node));
+        if (!tag.empty()) {
+            TagNames.push_back(tag);
+        }
+        ++current_node;
     }
-    ++current_node;
-  }
 }
 
 }   // namespace kopsik

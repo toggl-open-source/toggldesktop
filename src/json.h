@@ -22,82 +22,87 @@
 
 namespace kopsik {
 
-  void LoadUserFromJSONNode(
+void LoadUserFromJSONNode(
     User *model,
     JSONNODE *node,
     const bool full_sync,
     const bool with_related_data);
-  void LoadUserFromJSONString(
+void LoadUserFromJSONString(
     User *model,
     const std::string &json,
     const bool full_sync,
     const bool with_related_data);
-  void LoadUserProjectsFromJSONNode(
+void LoadUserProjectsFromJSONNode(
     User *model,
     JSONNODE *list,
     const bool full_sync);
-  void LoadUserTagsFromJSONNode(
+void LoadUserTagsFromJSONNode(
     User *user,
     JSONNODE *list,
     const bool full_sync);
-  void LoadUserClientsFromJSONNode(
+void LoadUserClientsFromJSONNode(
     User *user,
     JSONNODE *list,
     const bool full_sync);
-  void LoadUserTasksFromJSONNode(
+void LoadUserTasksFromJSONNode(
     User *user,
     JSONNODE *list,
     const bool full_sync);
-  void LoadUserTimeEntriesFromJSONNode(
+void LoadUserTimeEntriesFromJSONNode(
     User *user,
     JSONNODE *list,
     const bool full_sync);
-  void LoadUserWorkspacesFromJSONNode(
+void LoadUserWorkspacesFromJSONNode(
     User *user,
     JSONNODE *list,
     const bool full_sync);
-  void LoadUserUpdateFromJSONNode(
+void LoadUserUpdateFromJSONNode(
     User *user,
     JSONNODE *data);
-  void LoadUserUpdateFromJSONString(
+void LoadUserUpdateFromJSONString(
     User *user,
     const std::string json);
 
-  void loadUserProjectFromJSONNode(
+void loadUserProjectFromJSONNode(
     User *model,
     JSONNODE *data,
     std::set<Poco::UInt64> *alive = 0);
-  void loadUserWorkspaceFromJSONNode(
+void loadUserWorkspaceFromJSONNode(
     User *user,
     JSONNODE *data,
     std::set<Poco::UInt64> *alive = 0);
-  void loadUserTagFromJSONNode(
+void loadUserTagFromJSONNode(
     User *user,
     JSONNODE *data,
     std::set<Poco::UInt64> *alive = 0);
-  void loadUserClientFromJSONNode(
+void loadUserClientFromJSONNode(
     User *user,
     JSONNODE *data,
     std::set<Poco::UInt64> *alive = 0);
-  void loadUserTaskFromJSONNode(
+void loadUserTaskFromJSONNode(
     User *user,
     JSONNODE *data,
     std::set<Poco::UInt64> *alive = 0);
-  void loadUserTimeEntryFromJSONNode(
+void loadUserTimeEntryFromJSONNode(
     User *user,
     JSONNODE *data,
     std::set<Poco::UInt64> *alive = 0);
 
-  std::string UpdateJSON(
+std::string UpdateJSON(
     std::vector<Project *> * const,
     std::vector<TimeEntry *> * const);
 
-  Poco::UInt64 GetIDFromJSONNode(JSONNODE * const);
-  guid GetGUIDFromJSONNode(JSONNODE * const);
-  Poco::UInt64 GetUIModifiedAtFromJSONNode(JSONNODE * const);
-  bool IsDeletedAtServer(JSONNODE * const);
+Poco::UInt64 GetIDFromJSONNode(JSONNODE * const);
+guid GetGUIDFromJSONNode(JSONNODE * const);
+Poco::UInt64 GetUIModifiedAtFromJSONNode(JSONNODE * const);
+bool IsDeletedAtServer(JSONNODE * const);
 
-  bool IsValidJSON(const std::string json);
+template<class T>
+void deleteZombies(
+    std::vector<T> &list,
+    std::set<Poco::UInt64> &alive);
+
+bool IsValidJSON(const std::string json);
 
 }  // namespace kopsik
 
