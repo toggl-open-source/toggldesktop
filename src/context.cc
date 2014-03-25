@@ -1036,6 +1036,7 @@ kopsik::error Context::SetTimeEntryProject(
 
     if (p) {
         te->SetBillable(p->Billable());
+        te->SetWID(p->WID());
     }
     te->SetTID(task_id);
     te->SetPID(project_id);
