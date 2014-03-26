@@ -675,6 +675,14 @@ TEST(TogglApiClientTest, ParsesDurationLikeOnTheWeb) {
     ASSERT_EQ("02:45:00", te.DurationString());
 }
 
+TEST(TogglApiClientTest, ParseDurationLargerThan24Hours) {
+    TimeEntry te;
+
+    te.SetDurationInSeconds(0);
+    te.SetDurationUserInput("90:10:00");
+    ASSERT_EQ("90:10:00", te.DurationString());
+}
+
 TEST(TogglApiClientTest, InterpretsCrazyStartAndStopAsMissingValues) {
     TimeEntry te;
 
