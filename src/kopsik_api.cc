@@ -1697,55 +1697,6 @@ kopsik_api_result kopsik_stop(
     return KOPSIK_API_SUCCESS;
 }
 
-kopsik_api_result kopsik_split_running_time_entry_at(
-    void *context,
-    char *errmsg,
-    const unsigned int errlen,
-    const unsigned int at,
-    KopsikTimeEntryViewItem *out_view_item,
-    int *was_found) {
-    try {
-        poco_assert(errmsg);
-        poco_assert(errlen);
-        poco_assert(out_view_item);
-        poco_assert(was_found);
-        poco_assert(at);
-
-        logger().debug("kopsik_stop");
-
-        *was_found = 0;
-        kopsik::TimeEntry *te = 0;
-        kopsik::error err = app(context)->SplitAt(at, &te);
-        if (err != kopsik::noError) {
-            strncpy(errmsg, err.c_str(), errlen);
-            return KOPSIK_API_FAILURE;
-        }
-        if (te) {
-            *was_found = 1;
-            std::string project_label("");
-            std::string color_code("");
-            app(context)->ProjectLabelAndColorCode(te,
-                                                   &project_label,
-                                                   &color_code);
-            time_entry_to_view_item(te,
-                                    project_label,
-                                    color_code,
-                                    out_view_item,
-                                    "");
-        }
-    } catch(const Poco::Exception& exc) {
-        strncpy(errmsg, exc.displayText().c_str(), errlen);
-        return KOPSIK_API_FAILURE;
-    } catch(const std::exception& ex) {
-        strncpy(errmsg, ex.what(), errlen);
-        return KOPSIK_API_FAILURE;
-    } catch(const std::string& ex) {
-        strncpy(errmsg, ex.c_str(), errlen);
-        return KOPSIK_API_FAILURE;
-    }
-    return KOPSIK_API_SUCCESS;
-}
-
 kopsik_api_result kopsik_stop_running_time_entry_at(
     void *context,
     char *errmsg,

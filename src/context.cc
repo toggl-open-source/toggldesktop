@@ -1257,24 +1257,6 @@ kopsik::error Context::Stop(kopsik::TimeEntry **stopped_entry) {
     return kopsik::noError;
 }
 
-kopsik::error Context::SplitAt(
-    const Poco::Int64 at,
-    kopsik::TimeEntry **new_running_entry) {
-    *new_running_entry = 0;
-    if (!user_) {
-        return kopsik::error("Pleae login to split time entry");
-    }
-
-    *new_running_entry = user_->SplitAt(at);
-    if (!*new_running_entry) {
-        return kopsik::error("Failed to split tracking time entry");
-    }
-    if ((*new_running_entry)->NeedsPush()) {
-        partialSync();
-    }
-    return kopsik::noError;
-}
-
 kopsik::error Context::StopAt(
     const Poco::Int64 at,
     kopsik::TimeEntry **stopped) {

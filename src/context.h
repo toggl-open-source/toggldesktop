@@ -168,13 +168,13 @@ class Context {
     kopsik::error SetTimeEntryDescription(
         const std::string GUID,
         const std::string value);
+
     kopsik::error Stop(kopsik::TimeEntry **stopped_entry);
-    kopsik::error SplitAt(
-        const Poco::Int64 at,
-        kopsik::TimeEntry **new_running_entry);
+
     kopsik::error StopAt(
         const Poco::Int64 at,
         kopsik::TimeEntry **stopped);
+
     kopsik::error RunningTimeEntry(
         kopsik::TimeEntry **running) const;
     kopsik::error ToggleTimelineRecording();

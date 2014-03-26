@@ -93,7 +93,7 @@ class User : public BaseModel {
         TimeEntry **);
     TimeEntry *Latest() const;
     std::vector<TimeEntry *> Stop();
-    TimeEntry *SplitAt(const Poco::Int64 at);
+
     TimeEntry *StopAt(const Poco::Int64 at);
 
     Project *AddProject(

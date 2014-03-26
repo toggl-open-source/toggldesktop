@@ -106,6 +106,8 @@
   
   [self onShowMenuItem:self];
 
+  self.inactiveAppIcon = [NSImage imageNamed:@"app_inactive"];
+
   self.preferencesWindowController =
     [[PreferencesWindowController alloc]
       initWithWindowNibName:@"PreferencesWindowController"];
@@ -152,10 +154,6 @@
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(eventHandler:)
                                                name:kUIEventModelChange
-                                             object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(eventHandler:)
-                                               name:kUICommandSplitAt
                                              object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(eventHandler:)
@@ -339,39 +337,6 @@
   [self onShowMenuItem:self];
 }
 
-- (void)splitTimeEntryAfterIdle:(IdleEvent *)idleEvent {
-  NSLog(@"Idle event: %@", idleEvent);
-  NSAssert(idleEvent != nil, @"idle event cannot be nil");
-  char err[KOPSIK_ERR_LEN];
-  KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-  int was_found = 0;
-  NSTimeInterval startedAt = [idleEvent.started timeIntervalSince1970];
-  NSLog(@"Time entry split at %f", startedAt);
-  kopsik_api_result res = kopsik_split_running_time_entry_at(ctx,
-                                                             err,
-                                                             KOPSIK_ERR_LEN,
-                                                             startedAt,
-                                                             item,
-                                                             &was_found);
-  if (KOPSIK_API_SUCCESS != res) {
-    kopsik_time_entry_view_item_clear(item);
-    handle_error(err);
-    return;
-  }
-  
-  if (was_found) {
-    TimeEntryViewItem *timeEntry = [[TimeEntryViewItem alloc] init];
-    [timeEntry load:item];
-    [[NSNotificationCenter defaultCenter]
-      postNotificationName:kUIStateTimerRunning
-      object:timeEntry];
-  }
-
-  kopsik_time_entry_view_item_clear(item);
-
-  [self onShowMenuItem:self];
-}
-
 - (void)stopTimeEntryAfterIdle:(IdleEvent *)idleEvent {
   NSAssert(idleEvent != nil, @"idle event cannot be nil");
   NSLog(@"Idle event: %@", idleEvent);
@@ -426,16 +391,24 @@
   self.lastKnownRunningTimeEntry = nil;
   [self stopWebSocket];
   [self stopTimeline];
+
+  [NSApp setApplicationIconImage: self.inactiveAppIcon];
 }
 
 - (void)timerStopped {
   self.lastKnownRunningTimeEntry = nil;
   self.lastKnownTrackingState = kUIStateTimerStopped;
+
+  [NSApp setApplicationIconImage: self.inactiveAppIcon];
 }
 
 - (void)timerStarted:(TimeEntryViewItem *)timeEntry {
   self.lastKnownRunningTimeEntry = timeEntry;
   self.lastKnownTrackingState = kUIStateTimerRunning;
+
+  // Change app dock icon to default, which is red / tracking
+  // See https://developer.apple.com/library/mac/documentation/Carbon/Conceptual/customizing_docktile/dockconcepts.pdf
+  [NSApp setApplicationIconImage: nil];
 }
 
 - (void)modelChanged:(ModelChange *)modelChange {
@@ -472,8 +445,6 @@
     [self timerStarted:notification.object];
   } else if ([notification.name isEqualToString:kUIEventModelChange]) {
     [self modelChanged:notification.object];
-  } else if ([notification.name isEqualToString:kUICommandSplitAt]) {
-    [self splitTimeEntryAfterIdle:notification.object];
   } else if ([notification.name isEqualToString:kUICommandStopAt]) {
     [self stopTimeEntryAfterIdle:notification.object];
   } else if ([notification.name isEqualToString:kUIStateOffline]) {
