@@ -46,8 +46,6 @@ class ShowPreferencesNotification : public Poco::Notification {};
 
 class StopAtNotification : public Poco::Notification {};
 
-class SplitAtNotification : public Poco::Notification {};
-
 class EditRunningTimeEntryNotification : public Poco::Notification {};
 
 class OfflineNotification : public Poco::Notification {};

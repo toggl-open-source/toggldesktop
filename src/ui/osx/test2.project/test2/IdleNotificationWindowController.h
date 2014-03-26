@@ -12,6 +12,5 @@
 @interface IdleNotificationWindowController : NSWindowController
 @property (strong) IBOutlet NSTextField *informationTextField;
 - (IBAction)stopButtonClicked:(id)sender;
-- (IBAction)splitButtonClicked:(id)sender;
 - (IBAction)ignoreButtonClicked:(id)sender;
 @end

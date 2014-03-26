@@ -55,12 +55,6 @@
   [self.window orderOut:nil];
 }
 
-- (IBAction)splitButtonClicked:(id)sender {
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandSplitAt
-                                                      object:self.idleEvent];
-  [self.window orderOut:nil];
-}
-
 - (IBAction)ignoreButtonClicked:(id)sender {
   [self.window orderOut:nil];
 }

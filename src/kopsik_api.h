@@ -437,14 +437,6 @@ extern "C" {
         KopsikTimeEntryViewItem *item,
         int *was_found);
 
-    KOPSIK_EXPORT kopsik_api_result kopsik_split_running_time_entry_at(
-        void *context,
-        char *err,
-        const unsigned int errlen,
-        const unsigned int at,
-        KopsikTimeEntryViewItem *item,
-        int *was_found);
-
     KOPSIK_EXPORT kopsik_api_result kopsik_stop_running_time_entry_at(
         void *context,
         char *err,
