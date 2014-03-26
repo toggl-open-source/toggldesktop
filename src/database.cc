@@ -2113,7 +2113,7 @@ error Database::initialize_tables() {
 
     err = migrate(
         "workspaces.premium",
-        "alter table workspaces add column premium int default 0");
+        "alter table workspaces add column premium int default 0;");
     if (err != noError) {
         return err;
     }
