@@ -106,6 +106,8 @@
   
   [self onShowMenuItem:self];
 
+  self.inactiveAppIcon = [NSImage imageNamed:@"app_inactive"];
+
   self.preferencesWindowController =
     [[PreferencesWindowController alloc]
       initWithWindowNibName:@"PreferencesWindowController"];
@@ -389,16 +391,24 @@
   self.lastKnownRunningTimeEntry = nil;
   [self stopWebSocket];
   [self stopTimeline];
+
+  [NSApp setApplicationIconImage: self.inactiveAppIcon];
 }
 
 - (void)timerStopped {
   self.lastKnownRunningTimeEntry = nil;
   self.lastKnownTrackingState = kUIStateTimerStopped;
+
+  [NSApp setApplicationIconImage: self.inactiveAppIcon];
 }
 
 - (void)timerStarted:(TimeEntryViewItem *)timeEntry {
   self.lastKnownRunningTimeEntry = timeEntry;
   self.lastKnownTrackingState = kUIStateTimerRunning;
+
+  // Change app dock icon to default, which is red / tracking
+  // See https://developer.apple.com/library/mac/documentation/Carbon/Conceptual/customizing_docktile/dockconcepts.pdf
+  [NSApp setApplicationIconImage: nil];
 }
 
 - (void)modelChanged:(ModelChange *)modelChange {

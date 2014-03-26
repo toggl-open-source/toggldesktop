@@ -16,6 +16,7 @@
 @property (strong) NSImage* offlineOffImage;
 @property (strong) NSImage* currentOnImage;
 @property (strong) NSImage* currentOffImage;
+@property (strong) NSImage* inactiveAppIcon;
 - (IBAction)onPreferencesMenuItem:(id)sender;
 - (IBAction)onAboutMenuItem:(id)sender;
 - (IBAction)onSyncMenuItem:(id)sender;
