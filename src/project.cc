@@ -142,9 +142,19 @@ bool Project::DuplicateResource(const kopsik::error err) const {
             std::string(err).find("Name has already been taken"));
 }
 
+bool Project::userCannotAddOrEditProjectsInWorkspace(const error err) const {
+    return (std::string::npos !=
+            std::string(err).find(
+                "User cannot add or edit projects in workspace"));
+}
+
 bool Project::ResolveError(const kopsik::error err) {
     if (userCannotAccessWorkspace(err)) {
         SetWID(0);
+        return true;
+    }
+    if (userCannotAddOrEditProjectsInWorkspace(err)) {
+        Delete();
         return true;
     }
     return false;
