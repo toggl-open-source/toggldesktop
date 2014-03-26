@@ -196,7 +196,10 @@ error Database::deleteFromTable(
     const Poco::Int64 local_id) {
     poco_assert(session);
     poco_assert(!table_name.empty());
-    poco_assert(local_id);
+
+    if (!local_id) {
+        return noError;
+    }
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
