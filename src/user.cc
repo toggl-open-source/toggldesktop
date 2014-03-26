@@ -110,12 +110,14 @@ void User::ensureWID(TimeEntry *te) const {
 kopsik::error User::Continue(
     const std::string GUID,
     TimeEntry **result) {
+
     poco_assert(result);
 
     Stop();
     TimeEntry *existing = GetTimeEntryByGUID(GUID);
     if (!existing) {
-        return kopsik::error("Time entry not found");
+        logger().warning("Time entry not found: " + GUID);
+        return noError;
     }
 
     *result = 0;
