@@ -27,6 +27,7 @@
 #import "FeedbackWindowController.h"
 #import "const.h"
 #import "EditNotification.h"
+#import "MASShortcut+UserDefaults.h"
 
 @interface AppDelegate()
 @property (nonatomic, strong) IBOutlet MainWindowController *
@@ -218,6 +219,22 @@
   if ([checkEnabled boolValue]) {
     [self checkForUpdates];
   }
+
+  [MASShortcut registerGlobalShortcutWithUserDefaultsKey:kPreferenceGlobalShortcutShowHide handler:^{
+    if ([self.mainWindowController.window isVisible]) {
+      [self.mainWindowController.window close];
+    } else {
+      [self onShowMenuItem:self];
+    }
+  }];
+
+  [MASShortcut registerGlobalShortcutWithUserDefaultsKey:kPreferenceGlobalShortcutStartStop handler:^{
+    if ([self.lastKnownTrackingState isEqualTo:kUIStateTimerStopped]) {
+      [self onNewMenuItem:self];
+    } else {
+      [self onStopMenuItem:self];
+    }
+  }];
 }
 
 - (void)startWebSocket {

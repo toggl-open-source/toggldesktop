@@ -97,6 +97,14 @@
 		74FD8CE018A8EF8300F7DB80 /* TFDatePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74FD8CDF18A8EF8300F7DB80 /* TFDatePicker.framework */; };
 		74FD8CE118A8EFDA00F7DB80 /* TFDatePicker.framework in Resources */ = {isa = PBXBuildFile; fileRef = 74FD8CDC18A8EEE200F7DB80 /* TFDatePicker.framework */; };
 		74FE0D3C18E25E8400ECFED2 /* app_inactive.icns in Resources */ = {isa = PBXBuildFile; fileRef = 74FE0D3B18E25E8400ECFED2 /* app_inactive.icns */; };
+		74FE0D5A18E260A000ECFED2 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 74FE0D4D18E260A000ECFED2 /* .gitignore */; };
+		74FE0D5B18E260A000ECFED2 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 74FE0D4E18E260A000ECFED2 /* LICENSE */; };
+		74FE0D5C18E260A000ECFED2 /* MASShortcut+Monitoring.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5018E260A000ECFED2 /* MASShortcut+Monitoring.m */; };
+		74FE0D5D18E260A000ECFED2 /* MASShortcut+UserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5218E260A000ECFED2 /* MASShortcut+UserDefaults.m */; };
+		74FE0D5E18E260A000ECFED2 /* MASShortcut.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5418E260A000ECFED2 /* MASShortcut.m */; };
+		74FE0D5F18E260A000ECFED2 /* MASShortcutView+UserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5618E260A000ECFED2 /* MASShortcutView+UserDefaults.m */; };
+		74FE0D6018E260A000ECFED2 /* MASShortcutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5818E260A000ECFED2 /* MASShortcutView.m */; };
+		74FE0D6118E260A000ECFED2 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 74FE0D5918E260A000ECFED2 /* README.md */; };
 		95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */; };
 		95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707918CDB91500A34D0D /* NSCustomComboBox.m */; };
 		95DBF8CC18BF7A910021FB41 /* offline_off.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CA18BF7A910021FB41 /* offline_off.pdf */; };
@@ -386,6 +394,19 @@
 		74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TFDatePicker.xcodeproj; path = ../../../../third_party/TFDatePicker/TFDatePicker/TFDatePicker.xcodeproj; sourceTree = "<group>"; };
 		74FD8CDF18A8EF8300F7DB80 /* TFDatePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TFDatePicker.framework; path = ../../../../third_party/TFDatePicker/TFDatePicker/build/Release/TFDatePicker.framework; sourceTree = "<group>"; };
 		74FE0D3B18E25E8400ECFED2 /* app_inactive.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = app_inactive.icns; sourceTree = "<group>"; };
+		74FE0D4D18E260A000ECFED2 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		74FE0D4E18E260A000ECFED2 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		74FE0D4F18E260A000ECFED2 /* MASShortcut+Monitoring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MASShortcut+Monitoring.h"; sourceTree = "<group>"; };
+		74FE0D5018E260A000ECFED2 /* MASShortcut+Monitoring.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MASShortcut+Monitoring.m"; sourceTree = "<group>"; };
+		74FE0D5118E260A000ECFED2 /* MASShortcut+UserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MASShortcut+UserDefaults.h"; sourceTree = "<group>"; };
+		74FE0D5218E260A000ECFED2 /* MASShortcut+UserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MASShortcut+UserDefaults.m"; sourceTree = "<group>"; };
+		74FE0D5318E260A000ECFED2 /* MASShortcut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASShortcut.h; sourceTree = "<group>"; };
+		74FE0D5418E260A000ECFED2 /* MASShortcut.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASShortcut.m; sourceTree = "<group>"; };
+		74FE0D5518E260A000ECFED2 /* MASShortcutView+UserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MASShortcutView+UserDefaults.h"; sourceTree = "<group>"; };
+		74FE0D5618E260A000ECFED2 /* MASShortcutView+UserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MASShortcutView+UserDefaults.m"; sourceTree = "<group>"; };
+		74FE0D5718E260A000ECFED2 /* MASShortcutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASShortcutView.h; sourceTree = "<group>"; };
+		74FE0D5818E260A000ECFED2 /* MASShortcutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASShortcutView.m; sourceTree = "<group>"; };
+		74FE0D5918E260A000ECFED2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		95C0707518CDB67300A34D0D /* NSCustomComboBoxCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomComboBoxCell.h; sourceTree = "<group>"; };
 		95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomComboBoxCell.m; sourceTree = "<group>"; };
 		95C0707818CDB91500A34D0D /* NSCustomComboBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomComboBox.h; sourceTree = "<group>"; };
@@ -454,6 +475,7 @@
 				95DBF8CB18BF7A910021FB41 /* offline_on.pdf */,
 				95DBF8DE18C75F560021FB41 /* td7_logo_final.pdf */,
 				74E1682E180F269F0026261C /* gtm */,
+				74FE0D4C18E260A000ECFED2 /* MASShortcut */,
 				69FC17FA17E6534400B96425 /* ui */,
 				69FC181717E6534500B96425 /* kopsikTests */,
 				69FC17F317E6534400B96425 /* Frameworks */,
@@ -716,6 +738,27 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		74FE0D4C18E260A000ECFED2 /* MASShortcut */ = {
+			isa = PBXGroup;
+			children = (
+				74FE0D4D18E260A000ECFED2 /* .gitignore */,
+				74FE0D4E18E260A000ECFED2 /* LICENSE */,
+				74FE0D4F18E260A000ECFED2 /* MASShortcut+Monitoring.h */,
+				74FE0D5018E260A000ECFED2 /* MASShortcut+Monitoring.m */,
+				74FE0D5118E260A000ECFED2 /* MASShortcut+UserDefaults.h */,
+				74FE0D5218E260A000ECFED2 /* MASShortcut+UserDefaults.m */,
+				74FE0D5318E260A000ECFED2 /* MASShortcut.h */,
+				74FE0D5418E260A000ECFED2 /* MASShortcut.m */,
+				74FE0D5518E260A000ECFED2 /* MASShortcutView+UserDefaults.h */,
+				74FE0D5618E260A000ECFED2 /* MASShortcutView+UserDefaults.m */,
+				74FE0D5718E260A000ECFED2 /* MASShortcutView.h */,
+				74FE0D5818E260A000ECFED2 /* MASShortcutView.m */,
+				74FE0D5918E260A000ECFED2 /* README.md */,
+			);
+			name = MASShortcut;
+			path = ../../../../third_party/MASShortcut;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -921,10 +964,13 @@
 				74664DB218AA860800AAD282 /* off.pdf in Resources */,
 				7430750518204EFB009019CB /* AboutWindowController.xib in Resources */,
 				749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */,
+				74FE0D5A18E260A000ECFED2 /* .gitignore in Resources */,
 				69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */,
 				C5DA1FC517F1B38B001C4565 /* LoginViewController.xib in Resources */,
+				74FE0D5B18E260A000ECFED2 /* LICENSE in Resources */,
 				74664DB118AA860800AAD282 /* on.pdf in Resources */,
 				69FC180517E6534400B96425 /* Credits.rtf in Resources */,
+				74FE0D6118E260A000ECFED2 /* README.md in Resources */,
 				95DBF8DF18C75F560021FB41 /* td7_logo_final.pdf in Resources */,
 				74F1070218993FFE00E93BD5 /* FeedbackWindowController.xib in Resources */,
 				7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */,
@@ -991,6 +1037,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				74C15796183A8CE600550613 /* AutocompleteItem.m in Sources */,
+				74FE0D5E18E260A000ECFED2 /* MASShortcut.m in Sources */,
 				95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */,
 				74E3CDDD17FC8E8000C3ADD3 /* User.m in Sources */,
 				7424949E17F1E3D20030121C /* UIEvents.m in Sources */,
@@ -1001,16 +1048,19 @@
 				74E3CDC617FBABE400C3ADD3 /* Bugsnag.m in Sources */,
 				74C1579B183BA5DA00550613 /* AutocompleteDataSource.m in Sources */,
 				74BA5FCF18B6E770009DAA2D /* NSHoverButton.m in Sources */,
+				74FE0D5F18E260A000ECFED2 /* MASShortcutView+UserDefaults.m in Sources */,
 				7430750818205B88009019CB /* Update.m in Sources */,
 				74E3CDD017FBABE400C3ADD3 /* BugsnagReachability.m in Sources */,
 				7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */,
 				74E3CDCC17FBABE400C3ADD3 /* BugsnagMetaData.m in Sources */,
 				749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */,
 				74E3CDCA17FBABE400C3ADD3 /* BugsnagEvent.m in Sources */,
+				74FE0D5C18E260A000ECFED2 /* MASShortcut+Monitoring.m in Sources */,
 				748664D0188D6617006DB4C5 /* TimeEntryCellWithHeader.m in Sources */,
 				69FC180117E6534400B96425 /* main.m in Sources */,
 				74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */,
 				74BAAA0717F32C470079386F /* Context.m in Sources */,
+				74FE0D6018E260A000ECFED2 /* MASShortcutView.m in Sources */,
 				69FC180817E6534400B96425 /* AppDelegate.m in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
 				74AA9476180909F50000539F /* GTMOAuth2WindowController.m in Sources */,
@@ -1021,6 +1071,7 @@
 				74BAD31E18BD7D83002FD4CF /* ViewItem.m in Sources */,
 				74E3CDD417FBABE400C3ADD3 /* BugsnagOSXNotifier.m in Sources */,
 				74AA9471180909F50000539F /* GTMHTTPFetcher.m in Sources */,
+				74FE0D5D18E260A000ECFED2 /* MASShortcut+UserDefaults.m in Sources */,
 				74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */,
 				74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */,
 				744CE72D1815CF5F00A7BEE4 /* ErrorHandler.m in Sources */,

@@ -11,11 +11,18 @@
 #import "ErrorHandler.h"
 #import "Context.h"
 #import "UIEvents.h"
+#import "MASShortcutView+UserDefaults.h"
+
+NSString *const kPreferenceGlobalShortcutShowHide = @"TogglDesktopGlobalShortcutShowHide";
+NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcutStartStop";
 
 @implementation PreferencesWindowController
 
 - (void)windowDidLoad {
     [super windowDidLoad];
+
+    self.showHideShortcutView.associatedUserDefaultsKey = kPreferenceGlobalShortcutShowHide;
+    self.startStopShortcutView.associatedUserDefaultsKey = kPreferenceGlobalShortcutStartStop;
 
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setUsesGroupingSeparator:NO];
