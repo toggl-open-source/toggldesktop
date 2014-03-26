@@ -988,7 +988,8 @@ kopsik::error Context::DeleteTimeEntryByGUID(const std::string GUID) {
     }
     kopsik::TimeEntry *te = user_->GetTimeEntryByGUID(GUID);
     if (!te) {
-        return kopsik::error("Time entry not found");
+        logger().warning("Time entry not found: " + GUID);
+        return noError;
     }
     te->Delete();
 
@@ -1022,7 +1023,8 @@ kopsik::error Context::SetTimeEntryDuration(
     }
     kopsik::TimeEntry *te = user_->GetTimeEntryByGUID(GUID);
     if (!te) {
-        return kopsik::error("Time entry not found");
+        logger().warning("Time entry not found: " + GUID);
+        return noError;
     }
     te->SetDurationUserInput(duration);
     if (te->Dirty()) {
@@ -1054,7 +1056,8 @@ kopsik::error Context::SetTimeEntryProject(
 
     kopsik::TimeEntry *te = user_->GetTimeEntryByGUID(GUID);
     if (!te) {
-        return kopsik::error("Time entry not found");
+        logger().warning("Time entry not found: " + GUID);
+        return noError;
     }
 
     kopsik::Project *p = 0;
@@ -1100,7 +1103,8 @@ kopsik::error Context::SetTimeEntryStartISO8601(
     }
     kopsik::TimeEntry *te = user_->GetTimeEntryByGUID(GUID);
     if (!te) {
-        return kopsik::error("Time entry not found");
+        logger().warning("Time entry not found: " + GUID);
+        return noError;
     }
     te->SetStartUserInput(value);
     if (te->Dirty()) {
@@ -1129,7 +1133,8 @@ kopsik::error Context::SetTimeEntryEndISO8601(
     }
     kopsik::TimeEntry *te = user_->GetTimeEntryByGUID(GUID);
     if (!te) {
-        return kopsik::error("Time entry not found");
+        logger().warning("Time entry not found: " + GUID);
+        return noError;
     }
     te->SetStopUserInput(value);
     if (te->Dirty()) {
@@ -1158,7 +1163,8 @@ kopsik::error Context::SetTimeEntryTags(
     }
     kopsik::TimeEntry *te = user_->GetTimeEntryByGUID(GUID);
     if (!te) {
-        return kopsik::error("Time entry not found");
+        logger().warning("Time entry not found: " + GUID);
+        return noError;
     }
     te->SetTags(value);
     if (te->Dirty()) {
@@ -1187,7 +1193,8 @@ kopsik::error Context::SetTimeEntryBillable(
     }
     kopsik::TimeEntry *te = user_->GetTimeEntryByGUID(GUID);
     if (!te) {
-        return kopsik::error("Time entry not found");
+        logger().warning("Time entry not found: " + GUID);
+        return noError;
     }
     te->SetBillable(value);
     if (te->Dirty()) {
@@ -1216,7 +1223,8 @@ kopsik::error Context::SetTimeEntryDescription(
     }
     kopsik::TimeEntry *te = user_->GetTimeEntryByGUID(GUID);
     if (!te) {
-        return kopsik::error("Time entry not found");
+        logger().warning("Time entry not found: " + GUID);
+        return noError;
     }
     te->SetDescription(value);
     if (te->Dirty()) {
@@ -1266,7 +1274,8 @@ kopsik::error Context::StopAt(
 
     *stopped = user_->StopAt(at);
     if (!stopped) {
-        return kopsik::error("Time entry not found to stop");
+        logger().warning("Time entry not found");
+        return noError;
     }
 
     kopsik::error err = save();
@@ -1458,7 +1467,7 @@ void Context::getTimeEntryAutocompleteItems(
     poco_assert(list);
 
     if (!user_) {
-        logger().warning("User logged out, cannot fetch   autocomplete items");
+        logger().warning("User logged out, cannot fetch autocomplete items");
         return;
     }
 
