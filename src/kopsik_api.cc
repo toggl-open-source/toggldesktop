@@ -721,7 +721,6 @@ kopsik_api_result kopsik_user_can_add_projects(
         poco_assert(errmsg);
         poco_assert(errlen);
         poco_assert(can_add);
-        poco_assert(workspace_id);
 
         *can_add = 0;
         if (app(context)->CanAddProjects(workspace_id)) {
