@@ -789,8 +789,39 @@ kopsik::error Context::ClearCache() {
     return kopsik::noError;
 }
 
-bool Context::UserHasPremiumWorkspaces() const {
-    return (user_ && user_->HasPremiumWorkspaces());
+bool Context::CanSeeBillable(const std::string GUID) const {
+    if (!user_) {
+        return false;
+    }
+    if (!user_->HasPremiumWorkspaces()) {
+        return false;
+    }
+    TimeEntry *te = GetTimeEntryByGUID(GUID);
+    if (!te) {
+        return false;
+    }
+    Workspace *ws = 0;
+    if (te->WID()) {
+        ws = user_->GetWorkspaceByID(te->WID());
+    }
+    if (ws && !ws->Premium()) {
+        return false;
+    }
+    return true;
+}
+
+bool Context::CanAddProjects(const Poco::UInt64 workspace_id) const {
+    if (!user_) {
+        return false;
+    }
+    Workspace *ws = 0;
+    if (workspace_id) {
+        ws = user_->GetWorkspaceByID(workspace_id);
+    }
+    if (ws) {
+        return ws->Admin() || !ws->OnlyAdminsMayCreateProjects();
+    }
+    return user_->CanAddProjects();
 }
 
 bool Context::UserIsLoggedIn() const {
@@ -1036,6 +1067,7 @@ kopsik::error Context::SetTimeEntryProject(
 
     if (p) {
         te->SetBillable(p->Billable());
+        te->SetWID(p->WID());
     }
     te->SetTID(task_id);
     te->SetPID(project_id);
@@ -1220,24 +1252,6 @@ kopsik::error Context::Stop(kopsik::TimeEntry **stopped_entry) {
     }
 
     if ((*stopped_entry)->NeedsPush()) {
-        partialSync();
-    }
-    return kopsik::noError;
-}
-
-kopsik::error Context::SplitAt(
-    const Poco::Int64 at,
-    kopsik::TimeEntry **new_running_entry) {
-    *new_running_entry = 0;
-    if (!user_) {
-        return kopsik::error("Pleae login to split time entry");
-    }
-
-    *new_running_entry = user_->SplitAt(at);
-    if (!*new_running_entry) {
-        return kopsik::error("Failed to split tracking time entry");
-    }
-    if ((*new_running_entry)->NeedsPush()) {
         partialSync();
     }
     return kopsik::noError;

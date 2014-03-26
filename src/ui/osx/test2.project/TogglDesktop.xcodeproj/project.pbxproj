@@ -96,6 +96,7 @@
 		74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */; };
 		74FD8CE018A8EF8300F7DB80 /* TFDatePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74FD8CDF18A8EF8300F7DB80 /* TFDatePicker.framework */; };
 		74FD8CE118A8EFDA00F7DB80 /* TFDatePicker.framework in Resources */ = {isa = PBXBuildFile; fileRef = 74FD8CDC18A8EEE200F7DB80 /* TFDatePicker.framework */; };
+		74FE0D3C18E25E8400ECFED2 /* app_inactive.icns in Resources */ = {isa = PBXBuildFile; fileRef = 74FE0D3B18E25E8400ECFED2 /* app_inactive.icns */; };
 		95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */; };
 		95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707918CDB91500A34D0D /* NSCustomComboBox.m */; };
 		95DBF8CC18BF7A910021FB41 /* offline_off.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CA18BF7A910021FB41 /* offline_off.pdf */; };
@@ -384,6 +385,7 @@
 		74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldClickable.m; sourceTree = "<group>"; };
 		74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TFDatePicker.xcodeproj; path = ../../../../third_party/TFDatePicker/TFDatePicker/TFDatePicker.xcodeproj; sourceTree = "<group>"; };
 		74FD8CDF18A8EF8300F7DB80 /* TFDatePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TFDatePicker.framework; path = ../../../../third_party/TFDatePicker/TFDatePicker/build/Release/TFDatePicker.framework; sourceTree = "<group>"; };
+		74FE0D3B18E25E8400ECFED2 /* app_inactive.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = app_inactive.icns; sourceTree = "<group>"; };
 		95C0707518CDB67300A34D0D /* NSCustomComboBoxCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomComboBoxCell.h; sourceTree = "<group>"; };
 		95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomComboBoxCell.m; sourceTree = "<group>"; };
 		95C0707818CDB91500A34D0D /* NSCustomComboBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomComboBox.h; sourceTree = "<group>"; };
@@ -445,6 +447,7 @@
 				74B680A8180759C300B697AA /* Kopsik.xcodeproj */,
 				74E3CDB117FBABE400C3ADD3 /* bugsnag */,
 				744E126617F22AB900ABE72A /* app.icns */,
+				74FE0D3B18E25E8400ECFED2 /* app_inactive.icns */,
 				74664DAF18AA860800AAD282 /* on.pdf */,
 				74664DB018AA860800AAD282 /* off.pdf */,
 				95DBF8CA18BF7A910021FB41 /* offline_off.pdf */,
@@ -934,6 +937,7 @@
 				748664D2188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib in Resources */,
 				744E126717F22AB900ABE72A /* app.icns in Resources */,
 				95DBF8CC18BF7A910021FB41 /* offline_off.pdf in Resources */,
+				74FE0D3C18E25E8400ECFED2 /* app_inactive.icns in Resources */,
 				74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
 				74AA9475180909F50000539F /* GTMOAuth2Window.xib in Resources */,
 			);

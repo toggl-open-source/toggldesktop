@@ -187,11 +187,19 @@ extern "C" {
         char *errmsg,
         const unsigned int errlen);
 
-    KOPSIK_EXPORT kopsik_api_result kopsik_user_has_premium_workspaces(
+    KOPSIK_EXPORT kopsik_api_result kopsik_user_can_see_billable_flag(
         void *context,
         char *errmsg,
         const unsigned int errlen,
-        unsigned int *has_premium_workspaces);
+        const char *guid,
+        unsigned int *can_see);
+
+    KOPSIK_EXPORT kopsik_api_result kopsik_user_can_add_projects(
+        void *context,
+        char *errmsg,
+        const unsigned int errlen,
+        const unsigned int workspace_id,
+        unsigned int *can_add);
 
     KOPSIK_EXPORT kopsik_api_result kopsik_user_is_logged_in(
         void *context,
@@ -426,14 +434,6 @@ extern "C" {
         void *context,
         char *errmsg,
         const unsigned int errlen,
-        KopsikTimeEntryViewItem *item,
-        int *was_found);
-
-    KOPSIK_EXPORT kopsik_api_result kopsik_split_running_time_entry_at(
-        void *context,
-        char *err,
-        const unsigned int errlen,
-        const unsigned int at,
         KopsikTimeEntryViewItem *item,
         int *was_found);
 

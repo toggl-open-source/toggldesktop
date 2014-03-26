@@ -144,6 +144,17 @@
   }
 }
 
+-(void)windowDidLoad {
+    // Make the window visible on all Spaces
+    // http://stackoverflow.com/questions/7458353/cocoa-programmatically-adding-an-application-to-all-spaces
+    if([[self window] respondsToSelector: @selector(setCollectionBehavior:)]) {
+        [[self window] setCollectionBehavior: NSWindowCollectionBehaviorCanJoinAllSpaces];
+    }
+    else if([[self window] respondsToSelector: @selector(canBeVisibleOnAllSpaces)]) {
+        [[self window] canBeVisibleOnAllSpaces]; // AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER_BUT_DEPRECATED
+    }
+}
+
 - (void)showError:(NSString *)msg {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 

@@ -139,6 +139,7 @@ clean:
 	rm -f $(main)_test && \
 	rm -rf src/ui/osx/test2.project/build && \
 	rm -rf src/libkopsik/Kopsik/build && \
+	rm -rf third_party/TFDatePicker/TFDatePicker/build/ \
 	rm -f TogglDesktop*.dmg \
 	rm -f TogglDesktop*.tar.gz
 

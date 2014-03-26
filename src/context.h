@@ -114,15 +114,23 @@ class Context {
     kopsik::error SetLoggedInUserFromJSON(const std::string json);
     kopsik::error ClearCache();
 
-    bool UserHasPremiumWorkspaces() const;
+    bool CanSeeBillable(const std::string GUID) const;
+    bool CanAddProjects(const Poco::UInt64 workspace_id) const;
+
     bool UserIsLoggedIn() const;
+
     Poco::UInt64 UsersDefaultWID() const;
+
     void CollectPushableTimeEntries(
         std::vector<kopsik::TimeEntry *> *models) const;
+
     std::vector<std::string> Tags() const;
+
     std::vector<kopsik::Workspace *> Workspaces() const;
+
     std::vector<kopsik::Client *> Clients(
         const Poco::UInt64 workspace_id) const;
+
     kopsik::TimeEntry *GetTimeEntryByGUID(const std::string GUID) const;
 
     kopsik::error Start(
@@ -160,13 +168,13 @@ class Context {
     kopsik::error SetTimeEntryDescription(
         const std::string GUID,
         const std::string value);
+
     kopsik::error Stop(kopsik::TimeEntry **stopped_entry);
-    kopsik::error SplitAt(
-        const Poco::Int64 at,
-        kopsik::TimeEntry **new_running_entry);
+
     kopsik::error StopAt(
         const Poco::Int64 at,
         kopsik::TimeEntry **stopped);
+
     kopsik::error RunningTimeEntry(
         kopsik::TimeEntry **running) const;
     kopsik::error ToggleTimelineRecording();

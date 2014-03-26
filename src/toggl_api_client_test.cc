@@ -406,6 +406,13 @@ TEST(TogglApiClientTest, ParsesAndSavesData) {
     ASSERT_EQ("stuff", user.related.Workspaces[0]->Name());
     ASSERT_EQ(user.ID(), user.related.Workspaces[0]->UID());
 
+    ASSERT_FALSE(user.related.Workspaces[0]->OnlyAdminsMayCreateProjects());
+    ASSERT_TRUE(user.related.Workspaces[0]->Admin());
+
+    ASSERT_TRUE(user.related.Workspaces[1]->OnlyAdminsMayCreateProjects());
+    ASSERT_TRUE(user.related.Workspaces[1]->Admin());
+    ASSERT_EQ(uint(123456789), user.related.Workspaces[1]->ID());
+
     // Clients (2 in JSON but 1 is deleted)
     ASSERT_EQ(uint(1), user.related.Clients.size());
 

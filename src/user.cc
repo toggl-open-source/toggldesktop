@@ -179,8 +179,20 @@ bool User::HasPremiumWorkspaces() const {
             return true;
         }
     }
-
     return false;
+}
+
+bool User::CanAddProjects() const {
+    for (std::vector<Workspace *>::const_iterator it =
+        related.Workspaces.begin();
+            it != related.Workspaces.end();
+            it++) {
+        Workspace *model = *it;
+        if (model->OnlyAdminsMayCreateProjects()) {
+            return false;
+        }
+    }
+    return true;
 }
 
 void User::SetFullname(const std::string value) {
@@ -245,36 +257,6 @@ std::vector<TimeEntry *> User::Stop() {
         te = RunningTimeEntry();
     }
     return result;
-}
-
-TimeEntry *User::SplitAt(const Poco::Int64 at) {
-    poco_assert(at > 0);
-
-    std::stringstream ss;
-    ss << "User is splitting running time entry at " << at;
-    logger().debug(ss.str());
-
-    TimeEntry *running = RunningTimeEntry();
-    if (!running) {
-        return 0;
-    }
-    running->StopAt(at);
-
-    TimeEntry *te = new TimeEntry();
-    te->SetDescription("");
-    te->SetUID(ID());
-    te->SetStart(at);
-    te->SetDurationInSeconds(-at);
-    te->SetWID(running->WID());
-    te->SetPID(running->PID());
-    te->SetTID(running->TID());
-    te->SetUIModified();
-    te->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
-
-    poco_assert(te->DurationInSeconds() < 0);
-
-    related.TimeEntries.push_back(te);
-    return te;
 }
 
 TimeEntry *User::StopAt(const Poco::Int64 at) {
@@ -625,10 +607,15 @@ error User::pull(
 error User::collectErrors(std::vector<error> * const errors) const {
     std::stringstream ss;
     ss << "Errors encountered while syncing data: ";
+    std::set<error> unique;
     for (std::vector<error>::const_iterator it = errors->begin();
             it != errors->end();
             it++) {
         error err = *it;
+        // skip error if not unique
+        if (unique.end() != unique.find(err)) {
+            continue;
+        }
         if (!err.empty() && err[err.size() - 1] == '\n') {
             err[err.size() - 1] = '.';
         }
@@ -636,6 +623,7 @@ error User::collectErrors(std::vector<error> * const errors) const {
             ss << " ";
         }
         ss << err;
+        unique.insert(err);
         logger().error(err);
     }
     return error(ss.str());

@@ -29,6 +29,20 @@ void Workspace::SetPremium(const bool value) {
     }
 }
 
+void Workspace::SetOnlyAdminsMayCreateProjects(const bool value) {
+    if (only_admins_may_create_projects_ != value) {
+        only_admins_may_create_projects_ = value;
+        SetDirty();
+    }
+}
+
+void Workspace::SetAdmin(const bool value) {
+    if (admin_ != value) {
+        admin_ = value;
+        SetDirty();
+    }
+}
+
 bool CompareWorkspaceByName(Workspace *a, Workspace *b) {
     return (strcmp(a->Name().c_str(), b->Name().c_str()) < 0);
 }
@@ -46,6 +60,10 @@ void Workspace::LoadFromJSONNode(JSONNODE * const n) {
             SetName(std::string(json_as_string(*i)));
         } else if (strcmp(node_name, "premium") == 0) {
             SetPremium(json_as_bool(*i));
+        } else if (strcmp(node_name, "only_admins_may_create_projects") == 0) {
+            SetOnlyAdminsMayCreateProjects(json_as_bool(*i));
+        } else if (strcmp(node_name, "admin") == 0) {
+            SetAdmin(json_as_bool(*i));
         }
         ++i;
     }

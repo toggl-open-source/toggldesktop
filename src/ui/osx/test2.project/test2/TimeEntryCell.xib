@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner"/>
@@ -49,17 +49,28 @@
                                     <color key="backgroundColor" red="0.92739556759999997" green="0.124813008" blue="0.11691136570000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </textFieldCell>
                             </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2k6-j2-GWi" customClass="NSTextFieldWithBackground">
+                                <rect key="frame" x="14" y="26" width="12" height="15"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="$" drawsBackground="YES" id="JEc-2W-xDo">
+                                    <font key="font" size="11" name="LucidaGrande-Bold"/>
+                                    <color key="textColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlShadowColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                     </view>
                     <constraints>
                         <constraint firstItem="deS-e6-3Ui" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" constant="14" id="FOo-PQ-AK1"/>
+                        <constraint firstItem="CwR-d5-aWs" firstAttribute="leading" secondItem="2k6-j2-GWi" secondAttribute="trailing" constant="2" id="GnS-F9-01O"/>
                         <constraint firstItem="deS-e6-3Ui" firstAttribute="top" secondItem="CwR-d5-aWs" secondAttribute="bottom" constant="2" id="HZ7-Mc-iQ2"/>
                         <constraint firstItem="xwb-FG-Z4X" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" constant="17" id="HsG-Zm-aF4"/>
-                        <constraint firstItem="CwR-d5-aWs" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" constant="15" id="KZ4-JV-5xD"/>
+                        <constraint firstItem="CwR-d5-aWs" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" priority="750" constant="15" id="KZ4-JV-5xD"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="deS-e6-3Ui" secondAttribute="trailing" constant="92" id="L9d-4A-NVt"/>
                         <constraint firstAttribute="trailing" secondItem="CwR-d5-aWs" secondAttribute="trailing" constant="94" id="OD9-hN-DXz"/>
                         <constraint firstAttribute="trailing" secondItem="xwb-FG-Z4X" secondAttribute="trailing" constant="15" id="SKX-kj-jDT"/>
                         <constraint firstAttribute="bottom" secondItem="xwb-FG-Z4X" secondAttribute="bottom" constant="17" id="Wxi-cu-zKj"/>
+                        <constraint firstItem="2k6-j2-GWi" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" constant="9" id="eeE-x8-PUA"/>
                         <constraint firstItem="CwR-d5-aWs" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" constant="8" id="p6t-ka-sVG"/>
                         <constraint firstAttribute="bottom" secondItem="deS-e6-3Ui" secondAttribute="bottom" constant="12" id="sXL-6H-yCQ"/>
                     </constraints>
@@ -91,6 +102,7 @@
                 <constraint firstAttribute="bottom" secondItem="Gcj-ki-Hus" secondAttribute="bottom" constant="12" id="xzR-RD-GVL"/>
             </constraints>
             <connections>
+                <outlet property="billableTextField" destination="2k6-j2-GWi" id="oRx-4z-pjd"/>
                 <outlet property="descriptionTextField" destination="CwR-d5-aWs" id="Wip-cq-Mwm"/>
                 <outlet property="durationTextField" destination="xwb-FG-Z4X" id="utn-4y-DUw"/>
                 <outlet property="projectTextField" destination="deS-e6-3Ui" id="pIu-QV-GCm"/>
