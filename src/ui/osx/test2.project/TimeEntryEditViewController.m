@@ -35,6 +35,9 @@
 @property NSMutableArray *workspaceList;
 @property NSArray *topConstraint;
 @property NSLayoutConstraint *addProjectBoxHeight;
+@property NSDateFormatter *format;
+@property NSDate *startTimeDate;
+@property NSDate *endTimeDate;
 @end
 
 @implementation TimeEntryEditViewController
@@ -64,6 +67,8 @@
                                                selector:@selector(eventHandler:)
                                                    name:kUIStateTimeEntryDeselected
                                                  object:nil];
+      self.format = [[NSDateFormatter alloc] init];
+      [self.format setDateFormat:@"HH:mm a"];
 
       self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] init];
 
@@ -328,10 +333,12 @@
     [self.durationTextField setStringValue:item.duration];
   }
 
-  [self.startTime setDateValue:item.started];
-  [self.startDate setDateValue:item.started];
+  [self.startTime setStringValue:[[_format stringFromDate:item.started] uppercaseString]];
+  [self.endTime setStringValue:[[_format stringFromDate:item.ended] uppercaseString]];
 
-  [self.endTime setDateValue:item.ended];
+  [self.startDate setDateValue:item.started];
+  self.startTimeDate = item.started;
+  self.endTimeDate = item.ended;
 
   if (item.duration_in_seconds < 0) {
     [self.startDate setEnabled:NO];
@@ -781,6 +788,88 @@ completionsForSubstring:(NSString *)substring
   handle_result(res, err);
 }
 
+/*
+    Returns whether or not an NSString represents a numeric value.
+    For more info see:  http://appliedsoftwaredesign.com/blog/iphone-sdk-nsstring-numeric/
+*/
+-(bool) isNumeric:(NSString*) checkText
+{
+  NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
+  NSNumber* number = [numberFormatter numberFromString:checkText];
+  if (number != nil) {
+    return true;
+  }
+  return false;
+}
+
+- (NSDateComponents*)parseTime:(NSTextField*)field current:(NSDateComponents*)component {
+  NSString *input = [field stringValue];
+  BOOL hasPM = false;
+  NSRange range;
+  NSInteger hours;
+  range = [[input uppercaseString] rangeOfString:@"A"];
+  if (range.location == NSNotFound) {
+    range = [[input uppercaseString] rangeOfString:@"P"];
+    hasPM = TRUE;
+  }
+  if (range.location != NSNotFound){
+    // Found AM/PM
+    // Handle formats: HHa, HHmma
+    NSString *numbers = [[[input substringToIndex:range.location] stringByReplacingOccurrencesOfString: @":" withString:@""] stringByReplacingOccurrencesOfString: @" " withString:@""];
+    // INPUT is not valid
+    if (![self isNumeric:numbers]) {
+        if (field == self.startTime) {
+            [field setStringValue:[[_format stringFromDate:_startTimeDate] uppercaseString]];
+        } else if (field == self.endTime) {
+            [field setStringValue:[[_format stringFromDate:_endTimeDate] uppercaseString]];
+        }
+        return component;
+    }
+
+
+    if ([numbers length] > 4) {
+        NSArray *components = [numbers componentsSeparatedByString:@":"];
+        hours = [[components firstObject] integerValue];
+        [component setMinute: [[components lastObject] integerValue]];
+    } else if ([numbers length] > 2) {
+        hours = [[numbers substringToIndex:[numbers length]-2] integerValue];
+        [component setMinute: [[numbers substringFromIndex: [numbers length]-2] integerValue]];
+    } else {
+        hours = [numbers integerValue];
+        [component setMinute: 0];
+    }
+
+    if (hasPM && hours < 12) {
+        hours += 12;
+    } else if (hours == 12 && !hasPM){
+        hours = 0;
+    }
+
+    [component setHour: hours];
+  } else {
+    NSString *numbers = [[input stringByReplacingOccurrencesOfString: @":" withString:@""] stringByReplacingOccurrencesOfString: @" " withString:@""];
+    // INPUT is not valid
+    if (![self isNumeric:numbers]) {
+      if (field == self.startTime) {
+        [field setStringValue:[[_format stringFromDate:_startTimeDate] uppercaseString]];
+      } else if (field == self.endTime) {
+        [field setStringValue:[[_format stringFromDate:_endTimeDate] uppercaseString]];
+      }
+    }
+
+    //Handle formats: HH:mm, HHmm, HH
+    if ([numbers length] > 2) {
+      [component setHour:   [[numbers substringToIndex:[numbers length]-2] integerValue]];
+      [component setMinute: [[numbers substringFromIndex: [numbers length]-2] integerValue]];
+    } else {
+      [component setHour:   [numbers integerValue]];
+      [component setMinute: 0];
+    }
+  }
+  [component setSecond: 0];
+  return component;
+}
+
 - (IBAction)startTimeChanged:(id)sender {
   if (nil == self.GUID) {
     NSLog(@"Cannot apply start time change, self.GUID is nil");
@@ -792,14 +881,15 @@ completionsForSubstring:(NSString *)substring
 
 - (IBAction)applyStartTime {
   NSDate *startDate = [self.startDate dateValue];
-  NSDate *startTime = [self.startTime dateValue];
   
   unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
   NSDateComponents *comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:startDate];
   NSDate *combined = [[NSCalendar currentCalendar] dateFromComponents:comps];
   
   unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
-  comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:startTime];
+  comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:_startTimeDate];
+  comps = [self parseTime:_startTime current:comps];
+
   combined = [[NSCalendar currentCalendar] dateByAddingComponents:comps toDate:combined options:0];
 
   NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -807,6 +897,7 @@ completionsForSubstring:(NSString *)substring
   [dateFormatter setLocale:enUSPOSIXLocale];
   [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
   NSString *iso8601String = [dateFormatter stringFromDate:combined];
+  self.startTimeDate = combined;
 
   char err[KOPSIK_ERR_LEN];
   kopsik_api_result res = kopsik_set_time_entry_start_iso_8601(ctx,
@@ -828,14 +919,14 @@ completionsForSubstring:(NSString *)substring
 
 - (IBAction)applyEndTime {
   NSDate *startDate = [self.startDate dateValue];
-  NSDate *endTime = [self.endTime dateValue];
   
   unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
   NSDateComponents *comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:startDate];
   NSDate *combined = [[NSCalendar currentCalendar] dateFromComponents:comps];
   
   unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
-  comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:endTime];
+  comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:_endTimeDate];
+  comps = [self parseTime:_endTime current:comps];
   combined = [[NSCalendar currentCalendar] dateByAddingComponents:comps toDate:combined options:0];
   
   NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
