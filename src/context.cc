@@ -939,7 +939,7 @@ kopsik::error Context::ContinueLatest(
 
     kopsik::TimeEntry *latest = user_->Latest();
     if (!latest) {
-        return 0;
+        return noError;
     }
 
     kopsik::error err = user_->Continue(latest->GUID(), result);
