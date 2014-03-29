@@ -526,7 +526,8 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
 
 kopsik::error Context::SendFeedback(Feedback fb) {
     if (!user_) {
-        return kopsik::error("Please login to send feedback");
+        logger().warning("Cannot send feedback, user logged out");
+        return noError;
     }
 
     fb.SetAppVersion(app_version_);
@@ -908,7 +909,8 @@ kopsik::error Context::Start(
     poco_assert(result);
 
     if (!user_) {
-        return kopsik::error("Please login to start tracking");
+        logger().warning("Cannot start tracking, user logged out");
+        return noError;
     }
 
     *result = user_->Start(description, duration, task_id, project_id);
@@ -931,12 +933,13 @@ kopsik::error Context::ContinueLatest(
     poco_assert(result);
 
     if (!user_) {
-        return kopsik::error("Pleae login to continue latest time entry");
+        logger().warning("Cannot continue tracking, user logged out");
+        return noError;
     }
 
     kopsik::TimeEntry *latest = user_->Latest();
     if (!latest) {
-        return 0;
+        return noError;
     }
 
     kopsik::error err = user_->Continue(latest->GUID(), result);
@@ -962,7 +965,8 @@ kopsik::error Context::Continue(
     poco_assert(result);
 
     if (!user_) {
-        return kopsik::error("Please login to continue time entry");
+        logger().warning("Cannot continue time entry, user logged out");
+        return noError;
     }
 
     kopsik::error err = user_->Continue(GUID, result);
@@ -984,7 +988,8 @@ kopsik::error Context::Continue(
 
 kopsik::error Context::DeleteTimeEntryByGUID(const std::string GUID) {
     if (!user_) {
-        return kopsik::error("Please login to delete time entry");
+        logger().warning("Cannot delete time entry, user logged out");
+        return noError;
     }
     kopsik::TimeEntry *te = user_->GetTimeEntryByGUID(GUID);
     if (!te) {
@@ -1007,6 +1012,7 @@ kopsik::error Context::DeleteTimeEntryByGUID(const std::string GUID) {
 
 kopsik::TimeEntry *Context::GetTimeEntryByGUID(const std::string GUID) const {
     if (!user_) {
+        logger().warning("Cannot get time entry, user logged out");
         return 0;
     }
     return user_->GetTimeEntryByGUID(GUID);
@@ -1019,7 +1025,8 @@ kopsik::error Context::SetTimeEntryDuration(
         return kopsik::error("Missing GUID");
     }
     if (!user_) {
-        return kopsik::error("Log in to set time entry duration");
+        logger().warning("Cannot set duration, user logged out");
+        return noError;
     }
     kopsik::TimeEntry *te = user_->GetTimeEntryByGUID(GUID);
     if (!te) {
@@ -1051,7 +1058,8 @@ kopsik::error Context::SetTimeEntryProject(
         return kopsik::error("Missing GUID");
     }
     if (!user_) {
-        return kopsik::error("Please login to select project");
+        logger().warning("Cannot set project, user logged out");
+        return noError;
     }
 
     kopsik::TimeEntry *te = user_->GetTimeEntryByGUID(GUID);
@@ -1099,7 +1107,8 @@ kopsik::error Context::SetTimeEntryStartISO8601(
         return kopsik::error("Missing GUID");
     }
     if (!user_) {
-        return kopsik::error("Please login to change time entry start time");
+        logger().warning("Cannot change start time, user logged out");
+        return noError;
     }
     kopsik::TimeEntry *te = user_->GetTimeEntryByGUID(GUID);
     if (!te) {
@@ -1129,7 +1138,8 @@ kopsik::error Context::SetTimeEntryEndISO8601(
         return kopsik::error("Missing GUID");
     }
     if (!user_) {
-        return kopsik::error("Please login to change time entry end time");
+        logger().warning("Cannot change end time, user logged out");
+        return noError;
     }
     kopsik::TimeEntry *te = user_->GetTimeEntryByGUID(GUID);
     if (!te) {
@@ -1159,7 +1169,8 @@ kopsik::error Context::SetTimeEntryTags(
         return kopsik::error("Missing GUID");
     }
     if (!user_) {
-        return kopsik::error("Please login to change time entry tags");
+        logger().warning("Cannot set tags, user logged out");
+        return noError;
     }
     kopsik::TimeEntry *te = user_->GetTimeEntryByGUID(GUID);
     if (!te) {
@@ -1189,7 +1200,8 @@ kopsik::error Context::SetTimeEntryBillable(
         return kopsik::error("Missing GUID");
     }
     if (!user_) {
-        return kopsik::error("Please login to change time entry");
+        logger().warning("Cannot set billable, user logged out");
+        return noError;
     }
     kopsik::TimeEntry *te = user_->GetTimeEntryByGUID(GUID);
     if (!te) {
@@ -1219,7 +1231,8 @@ kopsik::error Context::SetTimeEntryDescription(
         return kopsik::error("Missing GUID");
     }
     if (!user_) {
-        return kopsik::error("Please login to change time entry description");
+        logger().warning("Cannot set description, user logged out");
+        return noError;
     }
     kopsik::TimeEntry *te = user_->GetTimeEntryByGUID(GUID);
     if (!te) {
@@ -1245,7 +1258,8 @@ kopsik::error Context::SetTimeEntryDescription(
 kopsik::error Context::Stop(kopsik::TimeEntry **stopped_entry) {
     *stopped_entry = 0;
     if (!user_) {
-        return kopsik::error("Please login to stop time tracking");
+        logger().warning("Cannot stop tracking, user logged out");
+        return noError;
     }
 
     std::vector<kopsik::TimeEntry *> stopped = user_->Stop();
@@ -1267,23 +1281,29 @@ kopsik::error Context::Stop(kopsik::TimeEntry **stopped_entry) {
 
 kopsik::error Context::StopAt(
     const Poco::Int64 at,
-    kopsik::TimeEntry **stopped) {
+    kopsik::TimeEntry **result) {
+
+    poco_assert(result);
+
     if (!user_) {
-        return kopsik::error("Please login to stop running time entry");
+        logger().warning("Cannot stop time entry, user logged out");
+        return noError;
     }
 
-    *stopped = user_->StopAt(at);
+    TimeEntry *stopped = user_->StopAt(at);
     if (!stopped) {
         logger().warning("Time entry not found");
         return noError;
     }
+
+    *result = stopped;
 
     kopsik::error err = save();
     if (err != kopsik::noError) {
         return err;
     }
 
-    if ((*stopped)->NeedsPush()) {
+    if (stopped->NeedsPush()) {
         partialSync();
     }
     return kopsik::noError;
@@ -1292,7 +1312,8 @@ kopsik::error Context::StopAt(
 kopsik::error Context::RunningTimeEntry(
     kopsik::TimeEntry **running) const {
     if (!user_) {
-        return kopsik::error("Please login to access tracking time entry");
+        logger().warning("Cannot fetch time entry, user logged out");
+        return noError;
     }
     *running = user_->RunningTimeEntry();
     return kopsik::noError;
@@ -1300,7 +1321,8 @@ kopsik::error Context::RunningTimeEntry(
 
 kopsik::error Context::ToggleTimelineRecording() {
     if (!user_) {
-        return kopsik::error("Please login to change timeline settings");
+        logger().warning("Cannot toggle timeline, user logged out");
+        return noError;
     }
     try {
         user_->SetRecordTimeline(!user_->RecordTimeline());
@@ -1361,7 +1383,8 @@ kopsik::error Context::TrackedPerDateHeader(
     const std::string date_header,
     int *sum) const {
     if (!user_) {
-        return kopsik::error("Please login to access time entries");
+        logger().warning("Cannot access time entries, user logged out");
+        return noError;
     }
     for (std::vector<kopsik::TimeEntry *>::const_iterator it =
         user_->related.TimeEntries.begin();
@@ -1657,7 +1680,8 @@ kopsik::error Context::AddProject(
     poco_assert(result);
 
     if (!user_) {
-        return kopsik::error("Please login to add a project");
+        logger().warning("Cannot add project, user logged out");
+        return noError;
     }
     if (!workspace_id) {
         return kopsik::error("Please select a workspace");

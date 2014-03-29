@@ -9,6 +9,7 @@
 
 #include "./timeline_constants.h"
 #include "./https_client.h"
+#include "./formatter.h"
 
 #include "Poco/Foundation.h"
 #include "Poco/Util/Application.h"
@@ -59,8 +60,12 @@ std::string TimelineUploader::convert_timeline_to_json(
         if (event.idle) {
             json_push_back(n, json_new_b("idle", true));
         } else {
-            json_push_back(n, json_new_a("filename", event.filename.c_str()));
-            json_push_back(n, json_new_a("title", event.title.c_str()));
+            json_push_back(n, json_new_a(
+                "filename",
+                Formatter::EscapeJSONString(event.filename).c_str()));
+            json_push_back(n, json_new_a(
+                "title",
+                Formatter::EscapeJSONString(event.title).c_str()));
         }
         json_push_back(n,
                        json_new_i("start_time", (json_int_t)event.start_time));

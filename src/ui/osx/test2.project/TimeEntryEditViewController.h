@@ -15,8 +15,8 @@
 @property IBOutlet NSCustomComboBox *descriptionCombobox;
 @property IBOutlet NSCustomComboBox *projectSelect;
 @property IBOutlet NSTextField *durationTextField;
-@property IBOutlet NSDatePicker *startTime;
-@property IBOutlet NSDatePicker *endTime;
+@property IBOutlet NSTextField *startTime;
+@property IBOutlet NSTextField *endTime;
 @property IBOutlet NSBox *startEndTimeBox;
 @property IBOutlet TFDatePicker *startDate;
 @property IBOutlet NSTokenField *tagsTokenField;
@@ -39,6 +39,8 @@
 - (IBAction)backButtonClicked:(id)sender;
 - (IBAction)continueButtonClicked:(id)sender;
 - (IBAction)addProjectButtonClicked:(id)sender;
+- (NSDateComponents*)parseTime:(NSTextField*)field current:(NSDateComponents*)component;
+- (bool) isNumeric:(NSString*) checkText;
 
 // New project related stuff
 @property IBOutlet NSBox *projectSelectBox;
