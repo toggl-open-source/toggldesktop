@@ -66,11 +66,11 @@ bool TimeEntry::stopTimeMustBeAfterStartTime(const kopsik::error err) const {
         "Stop time must be after start time"));
 }
 
-void TimeEntry::StopAt(const Poco::Int64 at) {
+void TimeEntry::StopAt(const Poco::UInt64 at) {
     poco_assert(at);
     poco_assert(IsTracking());
 
-    SetDurationInSeconds(at + DurationInSeconds());
+    SetDurationInSeconds(std::max(Poco::UInt64(0), at + DurationInSeconds()));
 
     poco_assert(DurationInSeconds() >= 0);
 
