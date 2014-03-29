@@ -1281,24 +1281,29 @@ kopsik::error Context::Stop(kopsik::TimeEntry **stopped_entry) {
 
 kopsik::error Context::StopAt(
     const Poco::Int64 at,
-    kopsik::TimeEntry **stopped) {
+    kopsik::TimeEntry **result) {
+
+    poco_assert(result);
+
     if (!user_) {
         logger().warning("Cannot stop time entry, user logged out");
         return noError;
     }
 
-    *stopped = user_->StopAt(at);
+    TimeEntry *stopped = user_->StopAt(at);
     if (!stopped) {
         logger().warning("Time entry not found");
         return noError;
     }
+
+    *result = stopped;
 
     kopsik::error err = save();
     if (err != kopsik::noError) {
         return err;
     }
 
-    if ((*stopped)->NeedsPush()) {
+    if (stopped->NeedsPush()) {
         partialSync();
     }
     return kopsik::noError;
