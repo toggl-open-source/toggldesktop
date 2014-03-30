@@ -71,7 +71,7 @@
 // Start Google login.
 -(void)textFieldClicked:(id)sender {
   if (sender == self.googleLoginTextField) {
-    NSString *scope = @"https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email";
+    NSString *scope = @"profile email";
     NSString *clientID = @"426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com";
     // According to Google docs, in installed apps the client secret is not expected to stay secret:
     NSString *clientSecret = @"6IHWKIfTAMF7cPJsBvoGxYui";
