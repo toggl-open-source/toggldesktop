@@ -500,7 +500,8 @@ kopsik_api_result kopsik_current_user(
             free(out_user->Fullname);
             out_user->Fullname = 0;
         }
-        out_user->TimeOfDayFormat = strdup(current_user->TimeOfDayFormat().c_str());
+        out_user->TimeOfDayFormat =
+            strdup(current_user->TimeOfDayFormat().c_str());
         out_user->Fullname = strdup(current_user->Fullname().c_str());
         out_user->ID = (unsigned int)current_user->ID();
     } catch(const Poco::Exception& exc) {

@@ -519,7 +519,8 @@ error Database::LoadUserByID(
         *session <<
                  "select local_id, id, api_token, default_wid, since, "
                  "fullname, "
-                 "email, record_timeline, store_start_and_stop_time, timeofday_format "
+                 "email, record_timeline, store_start_and_stop_time, "
+                 "timeofday_format "
                  "from users where id = :id",
                  Poco::Data::into(local_id),
                  Poco::Data::into(id),
@@ -1922,11 +1923,13 @@ error Database::SaveUser(
                 logger().trace(ss.str());
                 *session << "insert into users("
                          "id, api_token, default_wid, since, fullname, email, "
-                         "record_timeline, store_start_and_stop_time, timeofday_format"
+                         "record_timeline, store_start_and_stop_time, "
+                         "timeofday_format"
                          ") values("
                          ":id, :api_token, :default_wid, :since, :fullname, "
                          ":email, "
-                         ":record_timeline, :store_start_and_stop_time, :timeofday_format"
+                         ":record_timeline, :store_start_and_stop_time, "
+                         ":timeofday_format"
                          ")",
                          Poco::Data::use(model->ID()),
                          Poco::Data::use(model->APIToken()),
