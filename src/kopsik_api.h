@@ -9,7 +9,12 @@ extern "C" {
 
 #include <stddef.h>
 #include <stdio.h>
-#include <stdbool.h>
+
+#ifdef _WIN32
+	#define _Bool bool
+#else	
+	#include <stdbool.h>
+#endif
 
 #ifdef _WIN32
 	#define KOPSIK_EXPORT __declspec(dllexport) 
