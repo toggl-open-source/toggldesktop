@@ -138,6 +138,7 @@ extern "C" {
     typedef struct {
         unsigned int ID;
         char *Fullname;
+        char *TimeOfDayFormat;
     } KopsikUser;
 
     KOPSIK_EXPORT KopsikUser *kopsik_user_init();

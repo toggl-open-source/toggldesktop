@@ -38,6 +38,7 @@ class User : public BaseModel {
     default_wid_(0),
     since_(0),
     fullname_(""),
+    timeofday_format_(""),
     app_name_(app_name),
     app_version_(app_version),
     email_(""),
@@ -124,6 +125,11 @@ class User : public BaseModel {
     }
     void SetFullname(std::string value);
 
+    std::string TimeOfDayFormat() const {
+        return timeofday_format_;
+    }
+    void SetTimeOfDayFormat(std::string value);
+
     std::string Email() const {
         return email_;
     }
@@ -192,6 +198,7 @@ class User : public BaseModel {
     std::string email_;
     bool record_timeline_;
     bool store_start_and_stop_time_;
+    std::string timeofday_format_;
 };
 
 }  // namespace kopsik

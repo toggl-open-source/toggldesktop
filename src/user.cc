@@ -204,6 +204,13 @@ void User::SetFullname(const std::string value) {
     }
 }
 
+void User::SetTimeOfDayFormat(const std::string value) {
+    if (timeofday_format_ != value) {
+        timeofday_format_ = value;
+        SetDirty();
+    }
+}
+
 void User::SetStoreStartAndStopTime(const bool value) {
     if (store_start_and_stop_time_ != value) {
         store_start_and_stop_time_ = value;

@@ -515,10 +515,11 @@ error Database::LoadUserByID(
         std::string email("");
         bool record_timeline(false);
         bool store_start_and_stop_time(false);
+        std::string timeofday_format("");
         *session <<
                  "select local_id, id, api_token, default_wid, since, "
                  "fullname, "
-                 "email, record_timeline, store_start_and_stop_time "
+                 "email, record_timeline, store_start_and_stop_time, timeofday_format "
                  "from users where id = :id",
                  Poco::Data::into(local_id),
                  Poco::Data::into(id),
@@ -529,6 +530,7 @@ error Database::LoadUserByID(
                  Poco::Data::into(email),
                  Poco::Data::into(record_timeline),
                  Poco::Data::into(store_start_and_stop_time),
+                 Poco::Data::into(timeofday_format),
                  Poco::Data::use(UID),
                  Poco::Data::limit(1),
                  Poco::Data::now;
@@ -552,6 +554,7 @@ error Database::LoadUserByID(
         user->SetEmail(email);
         user->SetRecordTimeline(record_timeline);
         user->SetStoreStartAndStopTime(store_start_and_stop_time);
+        user->SetTimeOfDayFormat(timeofday_format);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -1891,7 +1894,8 @@ error Database::SaveUser(
                          "since = :since, id = :id, fullname = :fullname, "
                          "email = :email, record_timeline = :record_timeline, "
                          "store_start_and_stop_time = "
-                         "  :store_start_and_stop_time "
+                         " :store_start_and_stop_time, "
+                         "timeofday_format = :timeofday_format "
                          "where local_id = :local_id",
                          Poco::Data::use(model->APIToken()),
                          Poco::Data::use(model->DefaultWID()),
@@ -1901,6 +1905,7 @@ error Database::SaveUser(
                          Poco::Data::use(model->Email()),
                          Poco::Data::use(model->RecordTimeline()),
                          Poco::Data::use(model->StoreStartAndStopTime()),
+                         Poco::Data::use(model->TimeOfDayFormat()),
                          Poco::Data::use(model->LocalID()),
                          Poco::Data::now;
                 error err = last_error("SaveUser");
@@ -1917,11 +1922,11 @@ error Database::SaveUser(
                 logger().trace(ss.str());
                 *session << "insert into users("
                          "id, api_token, default_wid, since, fullname, email, "
-                         "record_timeline, store_start_and_stop_time"
+                         "record_timeline, store_start_and_stop_time, timeofday_format"
                          ") values("
                          ":id, :api_token, :default_wid, :since, :fullname, "
                          ":email, "
-                         ":record_timeline, :store_start_and_stop_time"
+                         ":record_timeline, :store_start_and_stop_time, :timeofday_format"
                          ")",
                          Poco::Data::use(model->ID()),
                          Poco::Data::use(model->APIToken()),
@@ -1931,6 +1936,7 @@ error Database::SaveUser(
                          Poco::Data::use(model->Email()),
                          Poco::Data::use(model->RecordTimeline()),
                          Poco::Data::use(model->StoreStartAndStopTime()),
+                         Poco::Data::use(model->TimeOfDayFormat()),
                          Poco::Data::now;
                 error err = last_error("SaveUser");
                 if (err != noError) {
@@ -2069,6 +2075,14 @@ error Database::initialize_tables() {
         "users.store_start_and_stop_time",
         "ALTER TABLE users "
         "ADD COLUMN store_start_and_stop_time INT NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "users.timeofday_format",
+        "ALTER TABLE users "
+        "ADD COLUMN timeofday_format varchar NOT NULL DEFAULT 'HH:mm';");
     if (err != noError) {
         return err;
     }
