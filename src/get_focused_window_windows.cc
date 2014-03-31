@@ -4,7 +4,6 @@
 #include <psapi.h>
 #pragma comment(lib, "psapi.lib")
 #include <time.h>
-#include <string>
 
 static const int kFilenameBufferSize = 255;
 
