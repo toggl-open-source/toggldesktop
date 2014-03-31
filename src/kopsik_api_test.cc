@@ -10,13 +10,9 @@
 #include "Poco/FileStream.h"
 #include "Poco/File.h"
 
-const int ERRLEN = 1024;
-
 namespace kopsik {
 
 void in_test_change_callback(
-    kopsik_api_result result,
-    const char *errmsg,
     KopsikModelChange *change) {
 }
 
@@ -25,7 +21,7 @@ void in_test_on_error_callback(
 }
 
 void in_test_check_updates_callback(
-    const int is_update_available,
+    const _Bool is_update_available,
     const char *url,
     const char *version) {
 }
@@ -56,28 +52,26 @@ TEST(KopsikApiTest, kopsik_context_init) {
 TEST(KopsikApiTest, kopsik_set_settings) {
     void *ctx = create_test_context();
     wipe_test_db();
-    char err[ERRLEN];
 
-    ASSERT_EQ(KOPSIK_API_SUCCESS,
-              kopsik_set_db_path(ctx, err, ERRLEN, TESTDB));
+    ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_set_db_path(ctx, TESTDB));
 
-    ASSERT_EQ(KOPSIK_API_SUCCESS,
-              kopsik_set_settings(ctx, err, ERRLEN, 0, 0, 0));
+    ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_set_settings(ctx,
+              false, false, false));
 
-    unsigned int idle_detection(0), menubar_timer(0), dock_icon(0);
+    _Bool idle_detection(false), menubar_timer(false), dock_icon(false);
 
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_get_settings(
-        ctx, err, ERRLEN, &idle_detection, &menubar_timer, &dock_icon));
+        ctx, &idle_detection, &menubar_timer, &dock_icon));
 
     ASSERT_FALSE(idle_detection);
     ASSERT_FALSE(menubar_timer);
     ASSERT_FALSE(dock_icon);
 
     ASSERT_EQ(KOPSIK_API_SUCCESS,
-              kopsik_set_settings(ctx, err, ERRLEN, 1, 1, 1));
+              kopsik_set_settings(ctx, true, true, true));
 
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_get_settings(
-        ctx, err, ERRLEN, &idle_detection, &menubar_timer, &dock_icon));
+        ctx, &idle_detection, &menubar_timer, &dock_icon));
 
     ASSERT_TRUE(idle_detection);
     ASSERT_TRUE(menubar_timer);
@@ -87,21 +81,19 @@ TEST(KopsikApiTest, kopsik_set_settings) {
 TEST(KopsikApiTest, kopsik_set_proxy_settings) {
     void *ctx = create_test_context();
     wipe_test_db();
-    char err[ERRLEN];
 
-    ASSERT_EQ(KOPSIK_API_SUCCESS,
-              kopsik_set_db_path(ctx, err, ERRLEN, TESTDB));
+    ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_set_db_path(ctx, TESTDB));
 
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_set_proxy_settings(
-        ctx, err, ERRLEN, 1, "localhost", 8000, "johnsmith", "secret"));
+        ctx, 1, "localhost", 8000, "johnsmith", "secret"));
 
-    unsigned int use_proxy = 0;
+    _Bool use_proxy = false;
     char *host = 0;
     unsigned int port = 0;
     char *username = 0;
     char *password = 0;
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_get_proxy_settings(
-        ctx, err, ERRLEN, &use_proxy, &host, &port, &username, &password));
+        ctx, &use_proxy, &host, &port, &username, &password));
 
     ASSERT_TRUE(use_proxy);
     ASSERT_EQ(std::string("localhost"), std::string(host));
@@ -126,39 +118,38 @@ TEST(KopsikApiTest, kopsik_set_update_channel) {
     void *ctx = create_test_context();
     wipe_test_db();
 
-    char err[ERRLEN];
-    kopsik_api_result res = kopsik_set_db_path(ctx, err, ERRLEN, TESTDB);
+    kopsik_api_result res = kopsik_set_db_path(ctx, TESTDB);
     ASSERT_EQ(KOPSIK_API_SUCCESS, res);
 
     char update_channel[10];
 
     std::string default_channel("stable");
 
-    res = kopsik_get_update_channel(ctx, err, ERRLEN, update_channel, 10);
+    res = kopsik_get_update_channel(ctx, update_channel, 10);
     ASSERT_EQ(KOPSIK_API_SUCCESS, res);
     ASSERT_EQ(default_channel, std::string(update_channel));
 
-    res = kopsik_set_update_channel(ctx, err, ERRLEN, "invalid");
+    res = kopsik_set_update_channel(ctx, "invalid");
     ASSERT_NE(KOPSIK_API_SUCCESS, res);
 
-    res = kopsik_set_update_channel(ctx, err, ERRLEN, "beta");
+    res = kopsik_set_update_channel(ctx, "beta");
     ASSERT_EQ(KOPSIK_API_SUCCESS, res);
 
-    res = kopsik_get_update_channel(ctx, err, ERRLEN, update_channel, 10);
+    res = kopsik_get_update_channel(ctx, update_channel, 10);
     ASSERT_EQ(KOPSIK_API_SUCCESS, res);
     ASSERT_EQ(std::string("beta"), std::string(update_channel));
 
-    res = kopsik_set_update_channel(ctx, err, ERRLEN, "dev");
+    res = kopsik_set_update_channel(ctx, "dev");
     ASSERT_EQ(KOPSIK_API_SUCCESS, res);
 
-    res = kopsik_get_update_channel(ctx, err, ERRLEN, update_channel, 10);
+    res = kopsik_get_update_channel(ctx, update_channel, 10);
     ASSERT_EQ(KOPSIK_API_SUCCESS, res);
     ASSERT_EQ(std::string("dev"), std::string(update_channel));
 
-    res = kopsik_set_update_channel(ctx, err, ERRLEN, "stable");
+    res = kopsik_set_update_channel(ctx, "stable");
     ASSERT_EQ(KOPSIK_API_SUCCESS, res);
 
-    res = kopsik_get_update_channel(ctx, err, ERRLEN, update_channel, 10);
+    res = kopsik_get_update_channel(ctx, update_channel, 10);
     ASSERT_EQ(KOPSIK_API_SUCCESS, res);
     ASSERT_EQ(std::string("stable"), std::string(update_channel));
 
@@ -169,8 +160,7 @@ TEST(KopsikApiTest, kopsik_set_db_path) {
     void *ctx = create_test_context();
     wipe_test_db();
 
-    char err[ERRLEN];
-    kopsik_api_result res = kopsik_set_db_path(ctx, err, ERRLEN, TESTDB);
+    kopsik_api_result res = kopsik_set_db_path(ctx, TESTDB);
     ASSERT_EQ(KOPSIK_API_SUCCESS, res);
 
     kopsik_context_clear(ctx);
@@ -196,16 +186,15 @@ TEST(KopsikApiTest, kopsik_set_api_token) {
     void *ctx = create_test_context();
     wipe_test_db();
 
-    char err[ERRLEN];
-    kopsik_api_result res = kopsik_set_db_path(ctx, err, ERRLEN, TESTDB);
+    kopsik_api_result res = kopsik_set_db_path(ctx, TESTDB);
     ASSERT_EQ(KOPSIK_API_SUCCESS, res);
 
     ASSERT_EQ(KOPSIK_API_SUCCESS,
-              kopsik_set_api_token(ctx, err, ERRLEN, "token"));
+              kopsik_set_api_token(ctx, "token"));
     const int kMaxStrLen = 10;
     char str[kMaxStrLen];
     ASSERT_EQ(KOPSIK_API_SUCCESS,
-              kopsik_get_api_token(ctx, err, ERRLEN, str, kMaxStrLen));
+              kopsik_get_api_token(ctx, str, kMaxStrLen));
     ASSERT_EQ("token", std::string(str));
     kopsik_context_clear(ctx);
 }
@@ -225,26 +214,25 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
 
     wipe_test_db();
 
-    char err[ERRLEN];
-    kopsik_api_result res = kopsik_set_db_path(ctx, err, ERRLEN, TESTDB);
+    kopsik_api_result res = kopsik_set_db_path(ctx, TESTDB);
     ASSERT_EQ(KOPSIK_API_SUCCESS, res);
 
     std::string json = loadTestData();
 
-    res = kopsik_set_logged_in_user(ctx, err, ERRLEN, json.c_str());
+    res = kopsik_set_logged_in_user(ctx, json.c_str());
     ASSERT_EQ(KOPSIK_API_SUCCESS, res);
 
     // We should have the API token now
     const int kMaxStrLen = 100;
     char str[kMaxStrLen];
     ASSERT_EQ(KOPSIK_API_SUCCESS,
-              kopsik_get_api_token(ctx, err, ERRLEN, str, kMaxStrLen));
+              kopsik_get_api_token(ctx, str, kMaxStrLen));
     ASSERT_EQ("30eb0ae954b536d2f6628f7fec47beb6", std::string(str));
 
     // We should have current user now
     KopsikUser *user = kopsik_user_init();
     ASSERT_EQ(KOPSIK_API_SUCCESS,
-              kopsik_current_user(ctx, err, ERRLEN, user));
+              kopsik_current_user(ctx, user));
     ASSERT_EQ((unsigned int)10471231, user->ID);
     ASSERT_EQ(std::string("John Smith"), std::string(user->Fullname));
     kopsik_user_clear(user);
@@ -252,11 +240,7 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     // Count time entry items before start. It should be 3, since
     // there are 3 time entries in the me.json file we're using:
     KopsikTimeEntryViewItem *first = 0;
-    if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(
-        ctx, err, ERRLEN, &first)) {
-        ASSERT_EQ(std::string(""), std::string(err));
-        FAIL();
-    }
+    ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_items(ctx, &first));
     int number_of_items = list_length(first);
     ASSERT_EQ(5, number_of_items);
     kopsik_time_entry_view_item_clear(first);
@@ -264,15 +248,15 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     // Start tracking
     KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
     ASSERT_EQ(KOPSIK_API_SUCCESS,
-              kopsik_start(ctx, err, ERRLEN, "Test", 0, 0, 0, item));
+              kopsik_start(ctx, "Test", 0, 0, 0, item));
     ASSERT_EQ(std::string("Test"), std::string(item->Description));
     kopsik_time_entry_view_item_clear(item);
 
     // We should now have a running time entry
-    int is_tracking = 0;
+    _Bool is_tracking = false;
     KopsikTimeEntryViewItem *running = kopsik_time_entry_view_item_init();
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_running_time_entry_view_item(
-        ctx, err, ERRLEN, running, &is_tracking));
+        ctx, running, &is_tracking));
     ASSERT_TRUE(is_tracking);
     ASSERT_GT(0, running->DurationInSeconds);
     ASSERT_EQ(std::string("Test"), std::string(running->Description));
@@ -286,7 +270,7 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     // among time entry view items.
     first = 0;
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_items(
-        ctx, err, ERRLEN, &first));
+        ctx, &first));
     ASSERT_TRUE(first);
     ASSERT_EQ((unsigned int)number_of_items + 0, list_length(first));
     kopsik_time_entry_view_item_clear(first);
@@ -294,11 +278,11 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     // Set a new duration for the time entry.
     // It should keep on tracking and also the duration should change.
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_set_time_entry_duration(
-        ctx, err, ERRLEN, GUID.c_str(), "1 hour"));
-    is_tracking = 0;
+        ctx, GUID.c_str(), "1 hour"));
+    is_tracking = false;
     running = kopsik_time_entry_view_item_init();
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_running_time_entry_view_item(
-        ctx, err, ERRLEN, running, &is_tracking));
+        ctx, running, &is_tracking));
     ASSERT_TRUE(is_tracking);
     ASSERT_EQ("01:00:00", std::string(running->Duration));
     kopsik_time_entry_view_item_clear(running);
@@ -307,10 +291,10 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     // Set it to a certain point in the past.
     // The duration should change accordingly to be now - start.
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_set_time_entry_start_iso_8601(ctx,
-              err, ERRLEN, GUID.c_str(), "2013-11-28T13:15:30Z"));
+              GUID.c_str(), "2013-11-28T13:15:30Z"));
     running = kopsik_time_entry_view_item_init();
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_running_time_entry_view_item(
-        ctx, err, ERRLEN, running, &is_tracking));
+        ctx, running, &is_tracking));
     ASSERT_TRUE(is_tracking);
     ASSERT_EQ((unsigned int)1385644530, running->Started);
     ASSERT_NE("01:00:00", std::string(running->Duration));
@@ -319,10 +303,10 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
 
     // Stop the time entry
     KopsikTimeEntryViewItem *stopped = kopsik_time_entry_view_item_init();
-    int was_stopped = 0;
+    _Bool was_stopped = false;
     ASSERT_EQ(KOPSIK_API_SUCCESS,
-              kopsik_stop(ctx, err, ERRLEN, stopped, &was_stopped));
-    ASSERT_EQ(1, was_stopped);
+              kopsik_stop(ctx, stopped, &was_stopped));
+    ASSERT_TRUE(was_stopped);
     ASSERT_EQ(std::string("Test"), std::string(stopped->Description));
     std::string dirty_guid(stopped->GUID);
     kopsik_time_entry_view_item_clear(stopped);
@@ -330,22 +314,22 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     // Change duration of the stopped time entry to 1 hour.
     // Check it was really applied.
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_set_time_entry_duration(
-        ctx, err, ERRLEN, dirty_guid.c_str(), "2,5 hours"));
+        ctx, dirty_guid.c_str(), "2,5 hours"));
     stopped = kopsik_time_entry_view_item_init();
-    int was_found = 0;
+    _Bool was_found = false;
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_item_by_guid(
-        ctx, err, ERRLEN, dirty_guid.c_str(), stopped, &was_found));
+        ctx, dirty_guid.c_str(), stopped, &was_found));
     ASSERT_TRUE(was_found);
     ASSERT_EQ("02:30:00", std::string(stopped->Duration));
     kopsik_time_entry_view_item_clear(stopped);
 
     // Set a new start time for the stopped entry.
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_set_time_entry_start_iso_8601(ctx,
-              err, ERRLEN, dirty_guid.c_str(), "2013-11-27T12:30:00Z"));
+              dirty_guid.c_str(), "2013-11-27T12:30:00Z"));
     stopped = kopsik_time_entry_view_item_init();
-    was_found = 0;
+    was_found = false;
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_item_by_guid(
-        ctx, err, ERRLEN, dirty_guid.c_str(), stopped, &was_found));
+        ctx, dirty_guid.c_str(), stopped, &was_found));
     ASSERT_TRUE(was_found);
     ASSERT_EQ((unsigned int)1385555400, stopped->Started);
     ASSERT_EQ("02:30:00", std::string(stopped->Duration));
@@ -355,11 +339,11 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     // Set a new end time for the stopped entry.
     // Check that the duration changes.
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_set_time_entry_end_iso_8601(ctx,
-              err, ERRLEN, dirty_guid.c_str(), "2013-11-27T13:30:00Z"));
+              dirty_guid.c_str(), "2013-11-27T13:30:00Z"));
     stopped = kopsik_time_entry_view_item_init();
-    was_found = 0;
+    was_found = false;
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_item_by_guid(
-        ctx, err, ERRLEN, dirty_guid.c_str(), stopped, &was_found));
+        ctx, dirty_guid.c_str(), stopped, &was_found));
     ASSERT_TRUE(was_found);
     ASSERT_EQ((unsigned int)1385555400, stopped->Started);
     ASSERT_EQ((unsigned int)1385559000, stopped->Ended);
@@ -371,11 +355,11 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     // Change duration of the stopped time entry.
     // Start time should be the same, but end time should change.
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_set_time_entry_duration(
-        ctx, err, ERRLEN, dirty_guid.c_str(), "2 hours"));
+        ctx, dirty_guid.c_str(), "2 hours"));
     stopped = kopsik_time_entry_view_item_init();
-    was_found = 0;
+    was_found = false;
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_item_by_guid(
-        ctx, err, ERRLEN, dirty_guid.c_str(), stopped, &was_found));
+        ctx, dirty_guid.c_str(), stopped, &was_found));
     ASSERT_TRUE(was_found);
     ASSERT_EQ("02:00:00", std::string(stopped->Duration));
     ASSERT_EQ(started, stopped->Started);
@@ -387,46 +371,34 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     // among time entry view items.
     first = 0;
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_items(
-        ctx, err, ERRLEN, &first));
+        ctx, &first));
     ASSERT_TRUE(first);
     ASSERT_EQ((unsigned int)number_of_items + 1, list_length(first));
     kopsik_time_entry_view_item_clear(first);
 
     // We should no longer get a running time entry from API.
-    is_tracking = 0;
+    is_tracking = false;
     running = kopsik_time_entry_view_item_init();
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_running_time_entry_view_item(
-        ctx, err, ERRLEN, running, &is_tracking));
+        ctx, running, &is_tracking));
     ASSERT_FALSE(is_tracking);
     kopsik_time_entry_view_item_clear(running);
-
-    // We started and stopped one time entry.
-    // This means we should have one dirty model now.
-    KopsikPushableModelStats stats;
-    ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_pushable_models(
-        ctx, err, ERRLEN, &stats));
-    ASSERT_EQ((unsigned int)1, stats.TimeEntries);
 
     // Continue the time entry we created in the start.
     KopsikTimeEntryViewItem *continued =
         kopsik_time_entry_view_item_init();
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_continue(
-        ctx, err, ERRLEN, GUID.c_str(), continued));
+        ctx, GUID.c_str(), continued));
     ASSERT_NE(std::string(GUID), std::string(continued->GUID));
     ASSERT_FALSE(std::string(continued->Duration).empty());
     ASSERT_GT(0, continued->DurationInSeconds);
     kopsik_time_entry_view_item_clear(continued);
 
-    // We should now once again have a dirty model.
-    ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_pushable_models(
-        ctx, err, ERRLEN, &stats));
-    ASSERT_EQ((unsigned int)2, stats.TimeEntries);
-
     // Get time entry view using GUID
-    was_found = 0;
+    was_found = false;
     KopsikTimeEntryViewItem *found = kopsik_time_entry_view_item_init();
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_item_by_guid(
-        ctx, err, ERRLEN, dirty_guid.c_str(), found, &was_found));
+        ctx, dirty_guid.c_str(), found, &was_found));
     ASSERT_EQ(dirty_guid, std::string(found->GUID));
     ASSERT_TRUE(was_found);
     kopsik_time_entry_view_item_clear(found);
@@ -435,19 +407,19 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     KopsikTimeEntryViewItem *nonexistant =
         kopsik_time_entry_view_item_init();
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_item_by_guid(
-        ctx, err, ERRLEN, "bad guid", nonexistant, &was_found));
+        ctx, "bad guid", nonexistant, &was_found));
     ASSERT_FALSE(nonexistant->GUID);
     ASSERT_FALSE(was_found);
     kopsik_time_entry_view_item_clear(nonexistant);
 
     // Delete the time entry we created in the start.
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_delete_time_entry(
-        ctx, err, ERRLEN, GUID.c_str()));
+        ctx, GUID.c_str()));
 
     // We shouldnt be able to retrieve this time entry now in list.
     KopsikTimeEntryViewItem *visible = 0;
     ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_time_entry_view_items(
-        ctx, err, ERRLEN, &visible));
+        ctx, &visible));
     KopsikTimeEntryViewItem *it = visible;
     while (it) {
         ASSERT_FALSE(std::string(it->GUID) == GUID);
@@ -456,12 +428,11 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     kopsik_time_entry_view_item_clear(visible);
 
     // Log out
-    ASSERT_EQ(KOPSIK_API_SUCCESS,
-              kopsik_logout(ctx, err, ERRLEN));
+    ASSERT_EQ(KOPSIK_API_SUCCESS, kopsik_logout(ctx));
 
     // Check that we have no API token after user logged out.
     ASSERT_EQ(KOPSIK_API_SUCCESS,
-              kopsik_get_api_token(ctx, err, ERRLEN, str, kMaxStrLen));
+              kopsik_get_api_token(ctx, str, kMaxStrLen));
     ASSERT_EQ("", std::string(str));
 
     kopsik_context_clear(ctx);

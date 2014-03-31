@@ -47,16 +47,12 @@
      withTasks:(BOOL)withTasks
   withProjects:(BOOL)withProjects {
   KopsikAutocompleteItem *first = 0;
-  char err[KOPSIK_ERR_LEN];
   kopsik_api_result res = kopsik_autocomplete_items(ctx,
-                                                    err,
-                                                    KOPSIK_ERR_LEN,
                                                     &first,
                                                     withTimeEntries,
                                                     withTasks,
                                                     withProjects);
   if (KOPSIK_API_SUCCESS != res) {
-    handle_error(err);
     return;
   }
   
