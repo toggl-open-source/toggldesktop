@@ -16,7 +16,7 @@
 #include "Poco/Util/TimerTask.h"
 #include "Poco/Util/TimerTaskAdapter.h"
 #include "Poco/Environment.h"
-#include "Poco/Timespan.h"
+#include "Poco/Timestamp.h"
 
 namespace kopsik {
 
@@ -149,7 +149,7 @@ kopsik::error Context::save() {
 void Context::FullSync() {
     logger().debug("FullSync");
 
-    next_full_sync_at_ = Poco::Timestamp() + kRequestThrottleMicros;
+    next_full_sync_at_ = postpone();
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onFullSync);
 
@@ -157,8 +157,25 @@ void Context::FullSync() {
     timer_.schedule(ptask, next_full_sync_at_);
 }
 
+Poco::Timestamp Context::postpone() {
+    return Poco::Timestamp() + kRequestThrottleMicros;
+}
+
+bool Context::isPostponed(const Poco::Timestamp value) const {
+    Poco::Timestamp now;
+    if (now > value) {
+        return false;
+    }
+    Poco::Timestamp::TimeDiff diff = value - now;
+    if (diff > 2*kRequestThrottleMicros) {
+        logger().warning("Cannot postpone task, its foo far in the future");
+        return false;
+    }
+    return true;
+}
+
 void Context::onFullSync(Poco::Util::TimerTask& task) {  // NOLINT
-    if (next_full_sync_at_ > Poco::Timestamp()) {
+    if (isPostponed(next_full_sync_at_)) {
         logger().debug("onFullSync postponed");
         return;
     }
@@ -183,7 +200,7 @@ void Context::onFullSync(Poco::Util::TimerTask& task) {  // NOLINT
 void Context::partialSync() {
     logger().debug("partialSync");
 
-    next_partial_sync_at_ = Poco::Timestamp() + kRequestThrottleMicros;
+    next_partial_sync_at_ = postpone();
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(
             *this, &Context::onPartialSync);
@@ -193,7 +210,7 @@ void Context::partialSync() {
 }
 
 void Context::onPartialSync(Poco::Util::TimerTask& task) {  // NOLINT
-    if (next_partial_sync_at_ > Poco::Timestamp()) {
+    if (isPostponed(next_partial_sync_at_)) {
         logger().debug("onPartialSync postponed");
         return;
     }
@@ -366,7 +383,7 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
 void Context::FetchUpdates() {
     logger().debug("FetchUpdates");
 
-    next_fetch_updates_at_ = Poco::Timestamp() + kRequestThrottleMicros;
+    next_fetch_updates_at_ = postpone();
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(
             *this, &Context::onFetchUpdates);
@@ -376,7 +393,7 @@ void Context::FetchUpdates() {
 }
 
 void Context::onFetchUpdates(Poco::Util::TimerTask& task) {  // NOLINT
-    if (next_fetch_updates_at_ > Poco::Timestamp()) {
+    if (isPostponed(next_fetch_updates_at_)) {
         logger().debug("onFetchUpdates postponed");
         return;
     }
@@ -484,8 +501,7 @@ const std::string Context::osName() {
 void Context::TimelineUpdateServerSettings() {
     logger().debug("TimelineUpdateServerSettings");
 
-    next_update_timeline_settings_at_ =
-        Poco::Timestamp() + kRequestThrottleMicros;
+    next_update_timeline_settings_at_ = postpone();
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(*this,
                 &Context::onTimelineUpdateServerSettings);
@@ -498,7 +514,7 @@ const std::string kRecordTimelineEnabledJSON = "{\"record_timeline\": true}";
 const std::string kRecordTimelineDisabledJSON = "{\"record_timeline\": false}";
 
 void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // NOLINT
-    if (next_update_timeline_settings_at_ > Poco::Timestamp()) {
+    if (isPostponed(next_update_timeline_settings_at_)) {
         logger().debug("onTimelineUpdateServerSettings postponed");
         return;
     }
