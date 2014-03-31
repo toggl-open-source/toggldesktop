@@ -11,15 +11,15 @@ extern "C" {
 #include <stdio.h>
 
 #ifdef _WIN32
-	#define _Bool bool
-#else	
-	#include <stdbool.h>
+#define _Bool bool
+#else
+#include <stdbool.h>
 #endif
 
 #ifdef _WIN32
-	#define KOPSIK_EXPORT __declspec(dllexport) 
+#define KOPSIK_EXPORT __declspec(dllexport)
 #else
-	#define KOPSIK_EXPORT
+#define KOPSIK_EXPORT
 #endif
 
 #define KOPSIK_ERR_LEN 1024
