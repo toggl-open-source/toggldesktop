@@ -7,6 +7,10 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "MASShortcutView+UserDefaults.h"
+
+extern NSString *const kPreferenceGlobalShortcutShowHide;
+extern NSString *const kPreferenceGlobalShortcutStartStop;
 
 @interface PreferencesWindowController : NSWindowController
 @property IBOutlet NSTextField *hostTextField;
@@ -18,6 +22,8 @@
 @property IBOutlet NSButton *recordTimelineCheckbox;
 @property IBOutlet NSButton *menubarTimerCheckbox;
 @property IBOutlet NSButton *dockIconCheckbox;
+@property IBOutlet MASShortcutView *showHideShortcutView;
+@property IBOutlet MASShortcutView *startStopShortcutView;
 - (IBAction)useProxyButtonChanged:(id)sender;
 - (IBAction)hostTextFieldChanged:(id)sender;
 - (IBAction)portTextFieldChanged:(id)sender;

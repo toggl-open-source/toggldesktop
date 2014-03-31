@@ -35,6 +35,30 @@
     self.descriptionTextField.stringValue = @"(no description)";
     self.descriptionTextField.toolTip = nil;
   }
+
+  // Set billable label
+  if (YES == view_item.billable) {
+    [self.billableTextField setHidden:NO];
+    if ([self.billableConstraint count]){
+      [self removeConstraints:self.billableConstraint];
+    }
+    NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_billableTextField);
+    self.billableConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"|-14-[_billableTextField]"
+                                             options:0
+                                             metrics:nil
+                                               views:viewsDict];
+    [self addConstraints:self.billableConstraint];
+  } else {
+    [self.billableTextField setHidden:YES];
+    if ([self.billableConstraint count]){
+      [self removeConstraints:self.billableConstraint];
+    }
+    NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_billableTextField);
+    self.billableConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"|-0-[_billableTextField]"
+                                             options:0
+                                             metrics:nil
+                                               views:viewsDict];
+  }
   
   // Time entry has a project
   if (view_item.ProjectAndTaskLabel && [view_item.ProjectAndTaskLabel length] > 0) {

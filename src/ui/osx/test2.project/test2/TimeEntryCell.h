@@ -12,8 +12,10 @@
 @interface TimeEntryCell : NSTableCellView
 @property (nonatomic, strong) IBOutlet NSTextField *descriptionTextField;
 @property (nonatomic, strong) IBOutlet NSTextField *projectTextField;
+@property (nonatomic, strong) IBOutlet NSTextField *billableTextField;
 @property (nonatomic, strong) IBOutlet NSTextField *durationTextField;
 @property (strong) NSString *GUID;
+@property NSArray *billableConstraint;
 - (void)render:(TimeEntryViewItem *)view_item;
 - (IBAction)continueTimeEntry:(id)sender;
 @end

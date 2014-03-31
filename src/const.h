@@ -15,6 +15,8 @@
 #define kTimelineUploadURL "https://timeline.toggl.com"
 #define kWebSocketURL "https://stream.toggl.com"
 #define kLostPasswordURL "https://www.toggl.com/lost_passwords/new"
+#define kSupportURL "http://support.toggl.com/toggl-on-my-desktop/"
+#define kTogglWebsiteURL "https://www.toggl.com/"
 
 #define kCheckUpdateIntervalMicros 86400000000
 

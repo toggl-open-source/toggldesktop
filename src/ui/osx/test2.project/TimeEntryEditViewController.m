@@ -18,6 +18,7 @@
 #import "ViewItem.h"
 #import "NSCustomComboBoxCell.h"
 #import "NSCustomComboBox.h"
+#import "User.h"
 
 @interface TimeEntryEditViewController ()
 @property NSString *GUID;
@@ -35,6 +36,10 @@
 @property NSMutableArray *workspaceList;
 @property NSArray *topConstraint;
 @property NSLayoutConstraint *addProjectBoxHeight;
+@property NSDateFormatter *format;
+@property NSDate *startTimeDate;
+@property NSDate *endTimeDate;
+@property User *userinfo;
 @end
 
 @implementation TimeEntryEditViewController
@@ -64,6 +69,11 @@
                                                selector:@selector(eventHandler:)
                                                    name:kUIStateTimeEntryDeselected
                                                  object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eventHandler:)
+                                                 name:kUIStateUserLoggedIn
+                                               object:nil];
+      self.format = [[NSDateFormatter alloc] init];
 
       self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] init];
 
@@ -94,9 +104,9 @@
   BOOL singleWorkspace = YES;
   if (self.workspaceList.count > 1) {
     singleWorkspace = NO;
-    _addProjectBoxHeight.constant = 108;
+    self.addProjectBoxHeight.constant = 108;
   } else {
-    _addProjectBoxHeight.constant = 75;
+    self.addProjectBoxHeight.constant = 75;
   }
   [self.workspaceLabel setHidden:singleWorkspace];
   [self.workspaceSelect setHidden:singleWorkspace];
@@ -160,28 +170,21 @@
   unsigned int clientID = [self selectedClientID];
 
   // A new project is being added!
-  char errmsg[KOPSIK_ERR_LEN];
   KopsikViewItem *project = 0;
   if (KOPSIK_API_SUCCESS != kopsik_add_project(ctx,
-                                               errmsg,
-                                               KOPSIK_ERR_LEN,
                                                workspaceID,
                                                clientID,
                                                [projectName UTF8String],
                                                &project)) {
     kopsik_view_item_clear(project);
-    handle_error(errmsg);
     return NO;
   }
   if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_project(ctx,
-                                                          errmsg,
-                                                          KOPSIK_ERR_LEN,
                                                           [self.GUID UTF8String],
                                                           0,
                                                           project->ID,
                                                           project->GUID)) {
     kopsik_view_item_clear(project);
-    handle_error(errmsg);
     return NO;
   }
   kopsik_view_item_clear(project);
@@ -267,22 +270,38 @@
   [self.descriptionCombobox reloadData];
 
   // Check if TE's can be marked as billable at all
-  char err[KOPSIK_ERR_LEN];
-  unsigned int has_premium_workspaces = 0;
-  if (KOPSIK_API_SUCCESS != kopsik_user_has_premium_workspaces(ctx,
-                                                             err,
-                                                             KOPSIK_ERR_LEN,
-                                                            &has_premium_workspaces)) {
-    handle_error(err);
+  _Bool can_see_billable = false;
+  if (KOPSIK_API_SUCCESS != kopsik_user_can_see_billable_flag(ctx,
+                                                             [item.GUID UTF8String],
+                                                             &can_see_billable)) {
     return;
   }
 
-  if (has_premium_workspaces) {
+  if (can_see_billable) {
     [self.billableCheckbox setHidden:NO];
   } else {
     [self.billableCheckbox setHidden:YES];
   }
-    
+
+  if (item.billable) {
+    [self.billableCheckbox setState:NSOnState];
+  } else {
+    [self.billableCheckbox setState:NSOffState];
+  }
+
+  // Check if user can add projects
+  _Bool can_add_projects = false;
+  if (KOPSIK_API_SUCCESS != kopsik_user_can_add_projects(ctx,
+                                                         item.WorkspaceID,
+                                                         &can_add_projects)) {
+    return;
+  }
+  if (!can_add_projects) {
+    [self.addProjectButton setHidden:YES];
+  } else if ([self.addProjectBox isHidden]) {
+    [self.addProjectButton setHidden:NO];
+  }
+
   self.GUID = edit.GUID;
   NSAssert(self.GUID != nil, @"GUID is nil");
 
@@ -305,10 +324,12 @@
     [self.durationTextField setStringValue:item.duration];
   }
 
-  [self.startTime setDateValue:item.started];
-  [self.startDate setDateValue:item.started];
+  [self.startTime setStringValue:[[_format stringFromDate:item.started] uppercaseString]];
+  [self.endTime setStringValue:[[_format stringFromDate:item.ended] uppercaseString]];
 
-  [self.endTime setDateValue:item.ended];
+  [self.startDate setDateValue:item.started];
+  self.startTimeDate = item.started;
+  self.endTimeDate = item.ended;
 
   if (item.duration_in_seconds < 0) {
     [self.startDate setEnabled:NO];
@@ -321,12 +342,6 @@
   [self.endTime setHidden:(item.duration_in_seconds < 0)];
   
   [self.startEndTimeBox setHidden:item.durOnly];
-
-  if (YES == item.billable) {
-    [self.billableCheckbox setState:NSOnState];
-  } else {
-    [self.billableCheckbox setState:NSOffState];
-  }
 
   // Overwrite tags only if user is not editing them right now
   if ([self.tagsTokenField currentEditor] == nil) {
@@ -360,10 +375,20 @@
 }
 
 - (void)eventHandler: (NSNotification *) notification {
+  if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
+    self.userinfo = notification.object;
+
+    if ([self.userinfo.timeOfDayFormat isEqualToString:@"H:mm"]){
+      [self.format setDateFormat:@"HH:mm"];
+    } else {
+      [self.format setDateFormat:@"HH:mm a"];
+    }
+    return;
+  }
+
   if ([notification.name isEqualToString:kUIStateTimeEntryDeselected]) {
     [self.addProjectBox setHidden:YES];
     [self.projectSelectBox setHidden:NO];
-    [self.addProjectButton setHidden:NO];
     return;
   }
 
@@ -451,13 +476,9 @@ completionsForSubstring:(NSString *)substring
   NSAssert(self.tagsTokenField != nil, @"tags field cant be nil");
   NSArray *tag_names = [self.tagsTokenField objectValue];
   const char *value = [[tag_names componentsJoinedByString:@"|"] UTF8String];
-  char errmsg[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_tags(ctx,
-                                                       errmsg,
-                                                       KOPSIK_ERR_LEN,
                                                        [self.GUID UTF8String],
                                                        value)) {
-    handle_error(errmsg);
     return;
   }
 }
@@ -483,9 +504,7 @@ completionsForSubstring:(NSString *)substring
   self.timerTagsListRendering = nil;
   
   KopsikViewItem *tag = 0;
-  char errmsg[KOPSIK_ERR_LEN];
-  if (KOPSIK_API_SUCCESS != kopsik_tags(ctx, errmsg, KOPSIK_ERR_LEN, &tag)) {
-    handle_error(errmsg);
+  if (KOPSIK_API_SUCCESS != kopsik_tags(ctx, &tag)) {
     kopsik_view_item_clear(tag);
     return;
   }
@@ -580,13 +599,9 @@ completionsForSubstring:(NSString *)substring
   self.timerWorkspacesListRendering = nil;
   
   KopsikViewItem *first = 0;
-  char errmsg[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_workspaces(ctx,
-                                              errmsg,
-                                              KOPSIK_ERR_LEN,
                                               &first)) {
     kopsik_view_item_clear(first);
-    handle_error(errmsg);
     return;
   }
 
@@ -615,11 +630,8 @@ completionsForSubstring:(NSString *)substring
   // If no workspace is selected, attempt to select the user's
   // default workspace.
   if (!workspaceName.length && self.workspaceList.count) {
-    char errmsg[KOPSIK_ERR_LEN];
     unsigned int default_wid = 0;
-    if (KOPSIK_API_SUCCESS != kopsik_users_default_wid(
-        ctx, errmsg, KOPSIK_ERR_LEN, &default_wid)) {
-      handle_error(errmsg);
+    if (KOPSIK_API_SUCCESS != kopsik_users_default_wid(ctx, &default_wid)) {
       return;
     }
     for (int i = 0; i < self.workspaceList.count; i++) {
@@ -687,15 +699,11 @@ completionsForSubstring:(NSString *)substring
   unsigned int workspace_id = [self selectedWorkspaceID];
 
   KopsikViewItem *first = 0;
-  char errmsg[KOPSIK_ERR_LEN];
   // If no workspace is selected, don't render clients yet.
   if (workspace_id && KOPSIK_API_SUCCESS != kopsik_clients(ctx,
-                                                           errmsg,
-                                                           KOPSIK_ERR_LEN,
                                                            workspace_id,
                                                            &first)) {
     kopsik_view_item_clear(first);
-    handle_error(errmsg);
     return;
   }
 
@@ -728,14 +736,8 @@ completionsForSubstring:(NSString *)substring
     return;
   }
 
-  char err[KOPSIK_ERR_LEN];
   const char *value = [[self.durationTextField stringValue] UTF8String];
-  kopsik_api_result res = kopsik_set_time_entry_duration(ctx,
-                                                         err,
-                                                         KOPSIK_ERR_LEN,
-                                                         [self.GUID UTF8String],
-                                                         value);
-  handle_result(res, err);
+  kopsik_set_time_entry_duration(ctx, [self.GUID UTF8String], value);
 }
 
 - (IBAction)projectSelectChanged:(id)sender {
@@ -746,7 +748,6 @@ completionsForSubstring:(NSString *)substring
 
   [self.projectSelect.cell setCalculatedMaxWidth:0];
 
-  char err[KOPSIK_ERR_LEN];
   NSString *key = [self.projectSelect stringValue];
   AutocompleteItem *autocomplete = [self.projectAutocompleteDataSource get:key];
   unsigned int task_id = 0;
@@ -755,14 +756,89 @@ completionsForSubstring:(NSString *)substring
     task_id = autocomplete.TaskID;
     project_id = autocomplete.ProjectID;
   }
-  kopsik_api_result res = kopsik_set_time_entry_project(ctx,
-                                                        err,
-                                                        KOPSIK_ERR_LEN,
-                                                        [self.GUID UTF8String],
-                                                        task_id,
-                                                        project_id,
-                                                        0);
-  handle_result(res, err);
+  kopsik_set_time_entry_project(ctx, [self.GUID UTF8String], task_id, project_id, 0);
+}
+
+/*
+    Returns whether or not an NSString represents a numeric value.
+    For more info see:  http://appliedsoftwaredesign.com/blog/iphone-sdk-nsstring-numeric/
+*/
+-(bool) isNumeric:(NSString*) checkText
+{
+  NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
+  NSNumber* number = [numberFormatter numberFromString:checkText];
+  if (number != nil) {
+    return true;
+  }
+  return false;
+}
+
+- (NSDateComponents*)parseTime:(NSTextField*)field current:(NSDateComponents*)component {
+  NSString *input = [field stringValue];
+  BOOL hasPM = false;
+  NSRange range;
+  NSInteger hours;
+  range = [[input uppercaseString] rangeOfString:@"A"];
+  if (range.location == NSNotFound) {
+    range = [[input uppercaseString] rangeOfString:@"P"];
+    hasPM = TRUE;
+  }
+  if (range.location != NSNotFound){
+    // Found AM/PM
+    // Handle formats: HHa, HHmma
+    NSString *numbers = [[[input substringToIndex:range.location] stringByReplacingOccurrencesOfString: @":" withString:@""] stringByReplacingOccurrencesOfString: @" " withString:@""];
+    // INPUT is not valid
+    if (![self isNumeric:numbers]) {
+        if (field == self.startTime) {
+            [field setStringValue:[[self.format stringFromDate:self.startTimeDate] uppercaseString]];
+        } else if (field == self.endTime) {
+            [field setStringValue:[[self.format stringFromDate:self.endTimeDate] uppercaseString]];
+        }
+        return component;
+    }
+
+
+    if ([numbers length] > 4) {
+        NSArray *components = [numbers componentsSeparatedByString:@":"];
+        hours = [[components firstObject] integerValue];
+        [component setMinute: [[components lastObject] integerValue]];
+    } else if ([numbers length] > 2) {
+        hours = [[numbers substringToIndex:[numbers length]-2] integerValue];
+        [component setMinute: [[numbers substringFromIndex: [numbers length]-2] integerValue]];
+    } else {
+        hours = [numbers integerValue];
+        [component setMinute: 0];
+    }
+
+    if (hasPM && hours < 12) {
+        hours += 12;
+    } else if (hours == 12 && !hasPM){
+        hours = 0;
+    }
+
+    [component setHour: hours];
+  } else {
+    NSString *numbers = [[input stringByReplacingOccurrencesOfString: @":" withString:@""] stringByReplacingOccurrencesOfString: @" " withString:@""];
+    // INPUT is not valid
+    if (![self isNumeric:numbers]) {
+      if (field == self.startTime) {
+        [field setStringValue:[[self.format stringFromDate:self.startTimeDate] uppercaseString]];
+      } else if (field == self.endTime) {
+        [field setStringValue:[[self.format stringFromDate:self.endTimeDate] uppercaseString]];
+      }
+    }
+
+    //Handle formats: HH:mm, HHmm, HH
+    if ([numbers length] > 2) {
+      [component setHour:   [[numbers substringToIndex:[numbers length]-2] integerValue]];
+      [component setMinute: [[numbers substringFromIndex: [numbers length]-2] integerValue]];
+    } else {
+      [component setHour:   [numbers integerValue]];
+      [component setMinute: 0];
+    }
+  }
+  [component setSecond: 0];
+  return component;
 }
 
 - (IBAction)startTimeChanged:(id)sender {
@@ -776,14 +852,15 @@ completionsForSubstring:(NSString *)substring
 
 - (IBAction)applyStartTime {
   NSDate *startDate = [self.startDate dateValue];
-  NSDate *startTime = [self.startTime dateValue];
   
   unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
   NSDateComponents *comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:startDate];
   NSDate *combined = [[NSCalendar currentCalendar] dateFromComponents:comps];
   
   unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
-  comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:startTime];
+  comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:self.startTimeDate];
+  comps = [self parseTime:self.startTime current:comps];
+
   combined = [[NSCalendar currentCalendar] dateByAddingComponents:comps toDate:combined options:0];
 
   NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -791,14 +868,9 @@ completionsForSubstring:(NSString *)substring
   [dateFormatter setLocale:enUSPOSIXLocale];
   [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
   NSString *iso8601String = [dateFormatter stringFromDate:combined];
+  self.startTimeDate = combined;
 
-  char err[KOPSIK_ERR_LEN];
-  kopsik_api_result res = kopsik_set_time_entry_start_iso_8601(ctx,
-                                                               err,
-                                                               KOPSIK_ERR_LEN,
-                                                               [self.GUID UTF8String],
-                                                               [iso8601String UTF8String]);
-  handle_result(res, err);
+  kopsik_set_time_entry_start_iso_8601(ctx, [self.GUID UTF8String], [iso8601String UTF8String]);
 }
 
 - (IBAction)endTimeChanged:(id)sender {
@@ -812,14 +884,14 @@ completionsForSubstring:(NSString *)substring
 
 - (IBAction)applyEndTime {
   NSDate *startDate = [self.startDate dateValue];
-  NSDate *endTime = [self.endTime dateValue];
   
   unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
   NSDateComponents *comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:startDate];
   NSDate *combined = [[NSCalendar currentCalendar] dateFromComponents:comps];
   
   unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
-  comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:endTime];
+  comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:self.endTimeDate];
+  comps = [self parseTime:self.endTime current:comps];
   combined = [[NSCalendar currentCalendar] dateByAddingComponents:comps toDate:combined options:0];
   
   NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -828,13 +900,7 @@ completionsForSubstring:(NSString *)substring
   [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
   NSString *iso8601String = [dateFormatter stringFromDate:combined];
   
-  char err[KOPSIK_ERR_LEN];
-  kopsik_api_result res = kopsik_set_time_entry_end_iso_8601(ctx,
-                                                             err,
-                                                             KOPSIK_ERR_LEN,
-                                                             [self.GUID UTF8String],
-                                                             [iso8601String UTF8String]);
-  handle_result(res, err);
+  kopsik_set_time_entry_end_iso_8601(ctx, [self.GUID UTF8String], [iso8601String UTF8String]);
 }
 
 - (IBAction)dateChanged:(id)sender {
@@ -859,17 +925,11 @@ completionsForSubstring:(NSString *)substring
     return;
   }
 
-  char err[KOPSIK_ERR_LEN];
-  int value = 0;
+  _Bool value = false;
   if (NSOnState == [self.billableCheckbox state]) {
-    value = 1;
+    value = true;
   }
-  kopsik_api_result res = kopsik_set_time_entry_billable(ctx,
-                                                         err,
-                                                         KOPSIK_ERR_LEN,
-                                                         [self.GUID UTF8String],
-                                                         value);
-  handle_result(res, err);
+  kopsik_set_time_entry_billable(ctx, [self.GUID UTF8String], value);
 }
 
 - (IBAction)descriptionComboboxChanged:(id)sender {
@@ -888,36 +948,23 @@ completionsForSubstring:(NSString *)substring
     [self.descriptionComboboxDataSource get:key];
 
   if (!autocomplete) {
-    char errmsg[KOPSIK_ERR_LEN];
-    kopsik_api_result res = kopsik_set_time_entry_description(ctx,
-                                                              errmsg,
-                                                              KOPSIK_ERR_LEN,
+    if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_description(ctx,
                                                               [self.GUID UTF8String],
-                                                              [key UTF8String]);
-    handle_result(res, errmsg);
-    return;
-
+                                                                [key UTF8String])) {
+      return;
+    }
   }
 
-  char errmsg[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_project(ctx,
-                                                          errmsg,
-                                                          KOPSIK_ERR_LEN,
                                                           [self.GUID UTF8String],
                                                           autocomplete.TaskID,
                                                           autocomplete.ProjectID,
                                                           0)) {
-    handle_error(errmsg);
     return;
   }
 
   self.descriptionCombobox.stringValue = autocomplete.Description;
-  kopsik_api_result res = kopsik_set_time_entry_description(ctx,
-                                                            errmsg,
-                                                            KOPSIK_ERR_LEN,
-                                                            [self.GUID UTF8String],
-                                                            [autocomplete.Description UTF8String]);
-  handle_result(res, errmsg);
+  kopsik_set_time_entry_description(ctx, [self.GUID UTF8String], [autocomplete.Description UTF8String]);
 }
 
 - (IBAction)deleteButtonClicked:(id)sender {
@@ -942,13 +989,9 @@ completionsForSubstring:(NSString *)substring
     return;
   }
 
-  char err[KOPSIK_ERR_LEN];
-  kopsik_api_result res = kopsik_delete_time_entry(ctx,
-                                                   err,
-                                                   KOPSIK_ERR_LEN,
-                                                   [self.GUID UTF8String]);
+  kopsik_api_result res = kopsik_delete_time_entry(ctx, [self.GUID UTF8String]);
   if (res != KOPSIK_API_SUCCESS) {
-    handle_error(err);
+    return;
   }
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntryDeselected object:nil];
 }

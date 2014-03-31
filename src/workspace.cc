@@ -8,47 +8,65 @@
 namespace kopsik {
 
 std::string Workspace::String() const {
-  std::stringstream ss;
-  ss  << "ID=" << ID()
-      << " local_id=" << LocalID()
-      << " name=" << name_;
-  return ss.str();
+    std::stringstream ss;
+    ss  << "ID=" << ID()
+        << " local_id=" << LocalID()
+        << " name=" << name_;
+    return ss.str();
 }
 
 void Workspace::SetName(const std::string value) {
-  if (name_ != value) {
-    name_ = value;
-    SetDirty();
-  }
+    if (name_ != value) {
+        name_ = value;
+        SetDirty();
+    }
 }
 
 void Workspace::SetPremium(const bool value) {
-  if (premium_ != value) {
-    premium_ = value;
-    SetDirty();
-  }
+    if (premium_ != value) {
+        premium_ = value;
+        SetDirty();
+    }
+}
+
+void Workspace::SetOnlyAdminsMayCreateProjects(const bool value) {
+    if (only_admins_may_create_projects_ != value) {
+        only_admins_may_create_projects_ = value;
+        SetDirty();
+    }
+}
+
+void Workspace::SetAdmin(const bool value) {
+    if (admin_ != value) {
+        admin_ = value;
+        SetDirty();
+    }
 }
 
 bool CompareWorkspaceByName(Workspace *a, Workspace *b) {
-  return (strcmp(a->Name().c_str(), b->Name().c_str()) < 0);
+    return (strcmp(a->Name().c_str(), b->Name().c_str()) < 0);
 }
 
 void Workspace::LoadFromJSONNode(JSONNODE * const n) {
-  poco_assert(n);
+    poco_assert(n);
 
-  JSONNODE_ITERATOR i = json_begin(n);
-  JSONNODE_ITERATOR e = json_end(n);
-  while (i != e) {
-    json_char *node_name = json_name(*i);
-    if (strcmp(node_name, "id") == 0) {
-      SetID(json_as_int(*i));
-    } else if (strcmp(node_name, "name") == 0) {
-      SetName(std::string(json_as_string(*i)));
-    } else if (strcmp(node_name, "premium") == 0) {
-      SetPremium(json_as_bool(*i) ? true : false);
+    JSONNODE_ITERATOR i = json_begin(n);
+    JSONNODE_ITERATOR e = json_end(n);
+    while (i != e) {
+        json_char *node_name = json_name(*i);
+        if (strcmp(node_name, "id") == 0) {
+            SetID(json_as_int(*i));
+        } else if (strcmp(node_name, "name") == 0) {
+            SetName(std::string(json_as_string(*i)));
+        } else if (strcmp(node_name, "premium") == 0) {
+            SetPremium(json_as_bool(*i));
+        } else if (strcmp(node_name, "only_admins_may_create_projects") == 0) {
+            SetOnlyAdminsMayCreateProjects(json_as_bool(*i));
+        } else if (strcmp(node_name, "admin") == 0) {
+            SetAdmin(json_as_bool(*i));
+        }
+        ++i;
     }
-    ++i;
-  }
 }
 
 }   // namespace kopsik

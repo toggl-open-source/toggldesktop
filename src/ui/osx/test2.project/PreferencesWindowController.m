@@ -11,11 +11,18 @@
 #import "ErrorHandler.h"
 #import "Context.h"
 #import "UIEvents.h"
+#import "MASShortcutView+UserDefaults.h"
+
+NSString *const kPreferenceGlobalShortcutShowHide = @"TogglDesktopGlobalShortcutShowHide";
+NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcutStartStop";
 
 @implementation PreferencesWindowController
 
 - (void)windowDidLoad {
     [super windowDidLoad];
+
+    self.showHideShortcutView.associatedUserDefaultsKey = kPreferenceGlobalShortcutShowHide;
+    self.startStopShortcutView.associatedUserDefaultsKey = kPreferenceGlobalShortcutStartStop;
 
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setUsesGroupingSeparator:NO];
@@ -47,18 +54,14 @@
 }
 
 - (void)loadSettings {
-  unsigned int idle_detection = 0;
-  unsigned int menubar_timer = 0;
-  unsigned int dock_icon = 0;
+  _Bool idle_detection = false;
+  _Bool menubar_timer = false;
+  _Bool dock_icon = false;
 
-  char err[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_get_settings(ctx,
-                                                err,
-                                                KOPSIK_ERR_LEN,
                                                 &idle_detection,
                                                 &menubar_timer,
                                                 &dock_icon)) {
-    handle_error(err);
     return;
   }
   
@@ -69,22 +72,18 @@
 }
 
 - (void)loadProxySettings {
-  unsigned int use_proxy = 0;
+  _Bool use_proxy = false;
   char *proxy_host = 0;
   unsigned int proxy_port = 0;
   char *proxy_username = 0;
   char *proxy_password = 0;
 
-  char err[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_get_proxy_settings(ctx,
-                                                      err,
-                                                      KOPSIK_ERR_LEN,
                                                       &use_proxy,
                                                       &proxy_host,
                                                       &proxy_port,
                                                       &proxy_username,
                                                       &proxy_password)) {
-    handle_error(err);
     return;
   }
   
@@ -169,14 +168,10 @@
 - (void)saveSettings {
   NSLog(@"saveSettings");
 
-  char err[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_set_settings(ctx,
-                                                err,
-                                                KOPSIK_ERR_LEN,
                                                 [self stateToBool:[self.useIdleDetectionButton state]],
                                                 [self stateToBool:[self.menubarTimerCheckbox state]],
                                                 [self stateToBool:[self.dockIconCheckbox state]])) {
-    handle_error(err);
     return;
   }
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventSettingsChanged
@@ -186,25 +181,21 @@
 - (void)saveProxySettings {
   NSLog(@"saveProxySettings");
   
-  unsigned int use_proxy = 0;
+  _Bool use_proxy = false;
   if ([self.useProxyButton state] == NSOnState) {
-    use_proxy = 1;
+    use_proxy = true;
   }
   NSString *host = [self.hostTextField stringValue];
   NSInteger port = [self.portTextField integerValue];
   NSString *username = [self.usernameTextField stringValue];
   NSString *password = [self.passwordTextField stringValue];
   
-  char err[KOPSIK_ERR_LEN];
   if (KOPSIK_API_SUCCESS != kopsik_set_proxy_settings(ctx,
-                                                      err,
-                                                      KOPSIK_ERR_LEN,
                                                       use_proxy,
                                                       [host UTF8String],
                                                       (unsigned int)port,
                                                       [username UTF8String],
                                                       [password UTF8String])) {
-    handle_error(err);
     return;
   }
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventSettingsChanged
@@ -231,11 +222,8 @@
   }
   [self.recordTimelineCheckbox setState:state];
 
-  char err[KOPSIK_ERR_LEN];
-  unsigned int logged_in = 0;
-  if (KOPSIK_API_SUCCESS != kopsik_user_is_logged_in(
-      ctx, err, KOPSIK_ERR_LEN, &logged_in)) {
-    handle_error(err);
+  _Bool logged_in = false;
+  if (KOPSIK_API_SUCCESS != kopsik_user_is_logged_in(ctx, &logged_in)) {
     return;
   }
   if (logged_in) {

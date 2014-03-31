@@ -103,9 +103,10 @@ endif
 
 cxx=g++
 
-cmdline: clean lint
+cmdline: clean fmt lint
 	mkdir -p build
 	$(cxx) $(cflags) -O2 -c src/version.cc -o build/version.o
+	$(cxx) $(cflags) -O2 -c src/proxy.cc -o build/proxy.o
 	$(cxx) $(cflags) -O2 -c src/https_client.cc -o build/https_client.o
 	$(cxx) $(cflags) -O2 -c src/websocket_client.cc -o build/websocket_client.o
 	$(cxx) $(cflags) -O2 -c src/base_model.cc -o build/base_model.o
@@ -139,6 +140,7 @@ clean:
 	rm -f $(main)_test && \
 	rm -rf src/ui/osx/test2.project/build && \
 	rm -rf src/libkopsik/Kopsik/build && \
+	rm -rf third_party/TFDatePicker/TFDatePicker/build/ \
 	rm -f TogglDesktop*.dmg \
 	rm -f TogglDesktop*.tar.gz
 
@@ -159,9 +161,10 @@ sikuli: osx
 	--db_path kopsik_sikuli.db \
 	--log_path kopsik_sikuli.log 
 
-test: clean lint
+test: clean fmt lint
 	mkdir -p build
 	$(cxx) $(cflags) -c src/version.cc -o build/version.o
+	$(cxx) $(cflags) -c src/proxy.cc -o build/proxy.o
 	$(cxx) $(cflags) -c src/https_client.cc -o build/https_client.o
 	$(cxx) $(cflags) -c src/websocket_client.cc -o build/websocket_client.o
 	$(cxx) $(cflags) -c src/base_model.cc -o build/base_model.o
@@ -200,6 +203,7 @@ covflags=-fprofile-arcs -ftest-coverage
 coverage: clean
 	mkdir -p build
 	$(cxx) $(cflags) $(covflags) -c src/version.cc -o build/version.o
+	$(cxx) $(cflags) $(covflags) -c src/proxy.cc -o build/proxy.o
 	$(cxx) $(cflags) $(covflags) -c src/https_client.cc -o build/https_client.o
 	$(cxx) $(cflags) $(covflags) -c src/websocket_client.cc -o build/websocket_client.o
 	$(cxx) $(cflags) $(covflags) -c src/base_model.cc -o build/base_model.o
@@ -264,4 +268,10 @@ stats:
 
 simian:
 	java -jar third_party/simian/bin/simian-2.3.35.jar src/*
+
+third_party/google-astyle/build/google-astyle:
+	cd third_party/google-astyle && mkdir -p build && g++ *.cpp -o build/google-astyle
+
+fmt: third_party/google-astyle/build/google-astyle
+	third_party/google-astyle/build/google-astyle -n src/*.cc src/*.h src/ui/cmdline/* src/ui/common/*
 

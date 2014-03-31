@@ -7,7 +7,7 @@
 
 namespace kopsik {
 
-    class TogglApiClientTest : public ::testing::Test {};
+class TogglApiClientTest : public ::testing::Test {};
 
 }  // namespace kopsik
 

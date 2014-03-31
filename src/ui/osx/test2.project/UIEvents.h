@@ -33,7 +33,6 @@ extern NSString *const kUICommandStop;
 extern NSString *const kUICommandContinue;
 extern NSString *const kUICommandShowPreferences;
 extern NSString *const kUICommandStopAt;
-extern NSString *const kUICommandSplitAt;
 extern NSString *const kUICommandEditRunningTimeEntry;
 
 extern NSString *const kUIDurationClicked;

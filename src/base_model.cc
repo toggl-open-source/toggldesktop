@@ -34,7 +34,7 @@ bool BaseModel::NeedsDELETE() const {
 }
 
 bool BaseModel::NeedsToBeSaved() const {
-  return !local_id_ || dirty_;
+    return !local_id_ || dirty_;
 }
 
 void BaseModel::EnsureGUID() {
@@ -91,110 +91,112 @@ void BaseModel::SetUpdatedAtString(const std::string value) {
 }
 
 void BaseModel::LoadFromDataString(const std::string data_string) {
-  JSONNODE *n = json_parse(data_string.c_str());
-  JSONNODE_ITERATOR i = json_begin(n);
-  JSONNODE_ITERATOR e = json_end(n);
-  while (i != e) {
-    json_char *node_name = json_name(*i);
-    if (strcmp(node_name, "data") == 0) {
-      LoadFromJSONNode(*i);
+    JSONNODE *n = json_parse(data_string.c_str());
+    JSONNODE_ITERATOR i = json_begin(n);
+    JSONNODE_ITERATOR e = json_end(n);
+    while (i != e) {
+        json_char *node_name = json_name(*i);
+        if (strcmp(node_name, "data") == 0) {
+            LoadFromJSONNode(*i);
+        }
+        ++i;
     }
-    ++i;
-  }
-  json_delete(n);
+    json_delete(n);
 }
 
 void BaseModel::LoadFromJSONString(const std::string json_string) {
-  poco_assert(!json_string.empty());
+    poco_assert(!json_string.empty());
 
-  JSONNODE *root = json_parse(json_string.c_str());
-  this->LoadFromJSONNode(root);
-  json_delete(root);
+    JSONNODE *root = json_parse(json_string.c_str());
+    this->LoadFromJSONNode(root);
+    json_delete(root);
 }
 
 void BaseModel::Delete() {
-  SetDeletedAt(time(0));
-  SetUIModified();
+    SetDeletedAt(time(0));
+    SetUIModified();
 }
 
 error BaseModel::ApplyBatchUpdateResult(
     BatchUpdateResult * const update) {
-  poco_assert(update);
+    poco_assert(update);
 
-  if (update->ResourceIsGone()) {
-    MarkAsDeletedOnServer();
+    if (update->ResourceIsGone()) {
+        MarkAsDeletedOnServer();
+        return noError;
+    }
+
+    kopsik::error err = update->Error();
+    if (err != kopsik::noError) {
+        if (DuplicateResource(err)) {
+            MarkAsDeletedOnServer();
+            return noError;
+        }
+
+        if (ResolveError(err)) {
+            return noError;
+        }
+
+        SetError(err);
+        return err;
+    }
+
+    poco_assert(json_is_valid(update->Body.c_str()));
+    LoadFromDataString(update->Body);
+
     return noError;
-  }
-
-  kopsik::error err = update->Error();
-  if (err != kopsik::noError) {
-    if (DuplicateResource(err)) {
-      MarkAsDeletedOnServer();
-      return noError;
-    }
-
-    if (ResolveError(err)) {
-      return noError;
-    }
-
-    SetError(err);
-    return err;
-  }
-
-  poco_assert(json_is_valid(update->Body.c_str()));
-  LoadFromDataString(update->Body);
-
-  return noError;
 }
 
 bool BaseModel::userCannotAccessWorkspace(const kopsik::error err) const {
-  return (std::string::npos != std::string(err).find(
-    "User cannot access workspace"));
+    return (std::string::npos != std::string(err).find(
+        "User cannot access workspace"));
 }
 
 std::string BaseModel::batchUpdateRelativeURL() const {
-  if (NeedsPOST()) {
-    return ModelURL();
-  }
+    if (NeedsPOST()) {
+        return ModelURL();
+    }
 
-  std::stringstream url;
-  url << ModelURL() << "/" << ID();
-  return url.str();
+    std::stringstream url;
+    url << ModelURL() << "/" << ID();
+    return url.str();
 }
 
 std::string BaseModel::batchUpdateMethod() const {
-  if (NeedsDELETE()) {
-    return "DELETE";
-  }
+    if (NeedsDELETE()) {
+        return "DELETE";
+    }
 
-  if (NeedsPOST()) {
-    return "POST";
-  }
+    if (NeedsPOST()) {
+        return "POST";
+    }
 
-  return "PUT";
+    return "PUT";
 }
 
 // Convert model JSON into batch update format.
 JSONNODE *BaseModel::BatchUpdateJSON() const {
-  poco_assert(!GUID().empty());
+    poco_assert(!GUID().empty());
 
-  JSONNODE *n = SaveToJSONNode();
+    JSONNODE *n = SaveToJSONNode();
 
-  json_set_name(n, ModelName().c_str());
+    json_set_name(n, ModelName().c_str());
 
-  JSONNODE *body = json_new(JSON_NODE);
-  json_set_name(body, "body");
-  json_push_back(body, n);
+    JSONNODE *body = json_new(JSON_NODE);
+    json_set_name(body, "body");
+    json_push_back(body, n);
 
-  JSONNODE *update = json_new(JSON_NODE);
-  json_push_back(update,
-    json_new_a("method", batchUpdateMethod().c_str()));
-  json_push_back(update,
-    json_new_a("relative_url", batchUpdateRelativeURL().c_str()));
-  json_push_back(update, json_new_a("guid", GUID().c_str()));
-  json_push_back(update, body);
+    JSONNODE *update = json_new(JSON_NODE);
+    json_push_back(update,
+                   json_new_a("method", batchUpdateMethod().c_str()));
+    json_push_back(update,
+                   json_new_a(
+                       "relative_url",
+                       batchUpdateRelativeURL().c_str()));
+    json_push_back(update, json_new_a("guid", GUID().c_str()));
+    json_push_back(update, body);
 
-  return update;
+    return update;
 }
 
 }   // namespace kopsik

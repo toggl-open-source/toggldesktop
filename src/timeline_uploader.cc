@@ -9,6 +9,7 @@
 
 #include "./timeline_constants.h"
 #include "./https_client.h"
+#include "./formatter.h"
 
 #include "Poco/Foundation.h"
 #include "Poco/Util/Application.h"
@@ -17,7 +18,7 @@
 namespace kopsik {
 
 void TimelineUploader::handleTimelineBatchReadyNotification(
-        TimelineBatchReadyNotification *notification) {
+    TimelineBatchReadyNotification *notification) {
     logger().debug("handleTimelineBatchReadyNotification");
 
     poco_assert(user_id_ == notification->user_id);
@@ -25,7 +26,7 @@ void TimelineUploader::handleTimelineBatchReadyNotification(
     poco_assert(!notification->batch.empty());
 
     if (!sync(user_id_, api_token_, notification->batch,
-            notification->desktop_id)) {
+              notification->desktop_id)) {
         std::stringstream out;
         out << "Sync of " << notification->batch.size() << " event(s) failed.";
         logger().error(out.str());
@@ -45,8 +46,8 @@ void TimelineUploader::handleTimelineBatchReadyNotification(
 }
 
 std::string TimelineUploader::convert_timeline_to_json(
-        const std::vector<TimelineEvent> &timeline_events,
-        const std::string &desktop_id) {
+    const std::vector<TimelineEvent> &timeline_events,
+    const std::string &desktop_id) {
     // initialize a new JSON array
     JSONNODE *c = json_new(JSON_ARRAY);
     for (std::vector<TimelineEvent>::const_iterator i = timeline_events.begin();
@@ -59,13 +60,17 @@ std::string TimelineUploader::convert_timeline_to_json(
         if (event.idle) {
             json_push_back(n, json_new_b("idle", true));
         } else {
-            json_push_back(n, json_new_a("filename", event.filename.c_str()));
-            json_push_back(n, json_new_a("title", event.title.c_str()));
+            json_push_back(n, json_new_a(
+                "filename",
+                Formatter::EscapeJSONString(event.filename).c_str()));
+            json_push_back(n, json_new_a(
+                "title",
+                Formatter::EscapeJSONString(event.title).c_str()));
         }
         json_push_back(n,
-            json_new_i("start_time", (json_int_t)event.start_time));
+                       json_new_i("start_time", (json_int_t)event.start_time));
         json_push_back(n,
-            json_new_i("end_time", (json_int_t)event.end_time));
+                       json_new_i("end_time", (json_int_t)event.end_time));
         json_push_back(n, json_new_a("desktop_id", desktop_id.c_str()));
         json_push_back(n, json_new_a("created_with", "timeline"));
         // Push event node to array
@@ -105,10 +110,10 @@ void TimelineUploader::upload_loop_activity() {
 }
 
 bool TimelineUploader::sync(
-        const Poco::UInt64 user_id,
-        const std::string api_token,
-        const std::vector<TimelineEvent> &timeline_events,
-        const std::string desktop_id) {
+    const Poco::UInt64 user_id,
+    const std::string api_token,
+    const std::vector<TimelineEvent> &timeline_events,
+    const std::string desktop_id) {
     poco_assert(!timeline_events.empty());
     poco_assert(user_id > 0);
 
@@ -122,7 +127,7 @@ bool TimelineUploader::sync(
     std::string json = convert_timeline_to_json(timeline_events, desktop_id);
     std::string response_body("");
     error err = client.PostJSON("/api/v8/timeline", json,
-      api_token_, "api_token",  &response_body);
+                                api_token_, "api_token",  &response_body);
     if (err != noError) {
         logger().error(err);
         return false;

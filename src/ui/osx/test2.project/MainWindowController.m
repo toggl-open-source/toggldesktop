@@ -131,7 +131,13 @@
     }
     
     if ([msg rangeOfString:@"Request to server failed with status code: 403"].location != NSNotFound) {
-      msg = @"It seems your login credentials have changed in Toggl.com. Please try to logout/login again from TogglDesktop.";
+      _Bool logged_in = false;
+      if (KOPSIK_API_SUCCESS == kopsik_user_is_logged_in(ctx, &logged_in)) {
+        if (!logged_in) {
+          return; // because login screen handles it
+        }
+        msg = @"It seems your login credentials have changed in Toggl.com. Please try to logout/login again from TogglDesktop.";
+      }
     }
     
     [self performSelectorOnMainThread:@selector(showError:) withObject:msg waitUntilDone:NO];
@@ -142,6 +148,16 @@
                      userInfo:nil]];
     return;
   }
+}
+
+-(void)windowDidLoad {
+    // Make the window visible on all Spaces
+    // http://stackoverflow.com/questions/7458353/cocoa-programmatically-adding-an-application-to-all-spaces
+    if ([[self window] respondsToSelector: @selector(setCollectionBehavior:)]) {
+        [[self window] setCollectionBehavior: NSWindowCollectionBehaviorCanJoinAllSpaces];
+    } else if ([[self window] respondsToSelector: @selector(canBeVisibleOnAllSpaces)]) {
+        [[self window] canBeVisibleOnAllSpaces]; // AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER_BUT_DEPRECATED
+    }
 }
 
 - (void)showError:(NSString *)msg {

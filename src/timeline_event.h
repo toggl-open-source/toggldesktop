@@ -9,13 +9,13 @@
 class TimelineEvent {
  public:
     TimelineEvent() :
-        id(0),
-        user_id(0),
-        title(""),
-        filename(""),
-        start_time(0),
-        end_time(0),
-        idle(false) {
+    id(0),
+    user_id(0),
+    title(""),
+    filename(""),
+    start_time(0),
+    end_time(0),
+    idle(false) {
     };
 
     unsigned int id;

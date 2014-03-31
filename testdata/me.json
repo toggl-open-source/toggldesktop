@@ -5,7 +5,7 @@
 		"workspaces":[
 			{"id":123456722,"name":"A deleted workspace","premium":false,"admin":true,"default_hourly_rate":0,"default_currency":"USD","only_admins_may_create_projects":false,"only_admins_see_billable_rates":false,"rounding":1,"rounding_minutes":0,"at":"2013-07-02T13:45:36+00:00","server_deleted_at":"2013-08-22T09:05:31+00:00"},
 			{"id":123456788,"name":"stuff","premium":false,"admin":true,"default_hourly_rate":0,"default_currency":"USD","only_admins_may_create_projects":false,"only_admins_see_billable_rates":false,"rounding":1,"rounding_minutes":0,"at":"2013-07-02T13:45:36+00:00"},
-			{"id":123456789,"name":"Toggl","premium":true,"admin":true,"default_hourly_rate":0,"default_currency":"USD","only_admins_may_create_projects":false,"only_admins_see_billable_rates":false,"rounding":1,"rounding_minutes":15,"at":"2013-08-28T13:22:21+00:00"}
+			{"id":123456789,"name":"Toggl","premium":true,"admin":true,"default_hourly_rate":0,"default_currency":"USD","only_admins_may_create_projects":true,"only_admins_see_billable_rates":false,"rounding":1,"rounding_minutes":15,"at":"2013-08-28T13:22:21+00:00"}
 		],
 		"projects":[
 			{"id":2598323,"guid":"2f0b8f11-f898-d992-3e1a-6bc261fc41ef","wid":123456789,"name":"A deleted project","billable":true,"is_private":false,"active":false,"template":false,"at":"2013-05-13T10:19:24+00:00","color":"21","auto_estimates":true,"server_deleted_at":"2013-08-22T09:05:31+00:00"},

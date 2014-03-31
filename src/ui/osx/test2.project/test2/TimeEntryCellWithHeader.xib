@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner"/>
@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IPX-6P-J70">
-                                <rect key="frame" x="5" y="17" width="183" height="17"/>
+                                <rect key="frame" x="17" y="18" width="183" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="This is a time entry" id="bKB-0i-C0M">
                                     <font key="font" metaFont="system"/>
@@ -75,6 +75,15 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="749" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zWp-bg-ZH9" customClass="NSTextFieldWithBackground">
+                                <rect key="frame" x="7" y="18" width="12" height="15"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="$" drawsBackground="YES" id="aCf-RK-BW6">
+                                    <font key="font" size="11" name="LucidaGrande-Bold"/>
+                                    <color key="textColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlShadowColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                     </view>
                     <constraints>
@@ -82,11 +91,13 @@
                         <constraint firstItem="Eux-yk-8iS" firstAttribute="leading" secondItem="HvF-1T-7Z3" secondAttribute="leading" constant="15" id="A8Z-So-Phd"/>
                         <constraint firstAttribute="bottom" secondItem="chv-we-eud" secondAttribute="bottom" constant="21" id="DfN-j5-3fA"/>
                         <constraint firstItem="IPX-6P-J70" firstAttribute="top" secondItem="A9Z-Z5-Qzd" secondAttribute="bottom" constant="10" id="EXs-Uc-xRg"/>
-                        <constraint firstItem="IPX-6P-J70" firstAttribute="leading" secondItem="HvF-1T-7Z3" secondAttribute="leading" constant="15" id="LMV-jW-9Cu"/>
+                        <constraint firstItem="IPX-6P-J70" firstAttribute="leading" secondItem="HvF-1T-7Z3" secondAttribute="leading" priority="750" constant="15" id="LMV-jW-9Cu"/>
                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="4mY-N2-UMI" secondAttribute="bottom" constant="13" id="LqQ-nY-KdU"/>
+                        <constraint firstItem="zWp-bg-ZH9" firstAttribute="top" secondItem="Eux-yk-8iS" secondAttribute="bottom" constant="11" id="Qqy-oF-tuo"/>
                         <constraint firstItem="chv-we-eud" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="39" id="T36-mh-JHV"/>
                         <constraint firstItem="4mY-N2-UMI" firstAttribute="top" secondItem="IPX-6P-J70" secondAttribute="bottom" constant="2" id="bqJ-J2-JcY"/>
                         <constraint firstItem="Eux-yk-8iS" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="6" id="cFj-Kg-rLU"/>
+                        <constraint firstItem="IPX-6P-J70" firstAttribute="leading" secondItem="zWp-bg-ZH9" secondAttribute="trailing" constant="6" id="cZY-5Q-Eqe"/>
                         <constraint firstItem="A9Z-Z5-Qzd" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="11" id="gBw-ct-rYT"/>
                         <constraint firstItem="4mY-N2-UMI" firstAttribute="leading" secondItem="HvF-1T-7Z3" secondAttribute="leading" constant="14" id="gcU-Rf-6ty"/>
                         <constraint firstAttribute="trailing" secondItem="IPX-6P-J70" secondAttribute="trailing" constant="93" id="h7j-w1-f9l"/>
@@ -124,6 +135,7 @@
                 <constraint firstAttribute="bottom" secondItem="HvF-1T-7Z3" secondAttribute="bottom" id="dZ2-E6-deB"/>
             </constraints>
             <connections>
+                <outlet property="billableTextField" destination="zWp-bg-ZH9" id="4rT-Nh-7ih"/>
                 <outlet property="dateDurationTextField" destination="A9Z-Z5-Qzd" id="Pb9-ly-e1l"/>
                 <outlet property="descriptionTextField" destination="IPX-6P-J70" id="zcg-pi-ncm"/>
                 <outlet property="durationTextField" destination="chv-we-eud" id="qWe-PN-bgP"/>

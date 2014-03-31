@@ -21,26 +21,26 @@ namespace kopsik {
 class TimelineUploader {
  public:
     TimelineUploader(
-                const Poco::UInt64 user_id,
-                const std::string api_token,
-                const std::string timeline_upload_url,
-                const std::string app_name,
-                const std::string app_version) :
-            user_id_(user_id),
-            api_token_(api_token),
-            upload_interval_seconds_(kTimelineUploadIntervalSeconds),
-            current_upload_interval_seconds_(kTimelineUploadIntervalSeconds),
-            max_upload_interval_seconds_(kTimelineUploadMaxBackoffSeconds),
-            timeline_upload_url_(timeline_upload_url),
-            app_name_(app_name),
-            app_version_(app_version),
-            uploading_(this, &TimelineUploader::upload_loop_activity) {
+        const Poco::UInt64 user_id,
+        const std::string api_token,
+        const std::string timeline_upload_url,
+        const std::string app_name,
+        const std::string app_version) :
+    user_id_(user_id),
+    api_token_(api_token),
+    upload_interval_seconds_(kTimelineUploadIntervalSeconds),
+    current_upload_interval_seconds_(kTimelineUploadIntervalSeconds),
+    max_upload_interval_seconds_(kTimelineUploadMaxBackoffSeconds),
+    timeline_upload_url_(timeline_upload_url),
+    app_name_(app_name),
+    app_version_(app_version),
+    uploading_(this, &TimelineUploader::upload_loop_activity) {
         Poco::NotificationCenter& nc =
             Poco::NotificationCenter::defaultCenter();
 
         Poco::Observer<TimelineUploader, TimelineBatchReadyNotification>
-            observeUpload(*this,
-                &TimelineUploader::handleTimelineBatchReadyNotification);
+        observeUpload(*this,
+                      &TimelineUploader::handleTimelineBatchReadyNotification);
         nc.addObserver(observeUpload);
 
         poco_assert(!api_token_.empty());
@@ -80,14 +80,14 @@ class TimelineUploader {
 
  private:
     // Sync with server
-  bool sync(
-      const Poco::UInt64 user_id,
-      const std::string api_token,
-      const std::vector<TimelineEvent> &timeline_events,
-      const std::string desktop_id);
+    bool sync(
+        const Poco::UInt64 user_id,
+        const std::string api_token,
+        const std::vector<TimelineEvent> &timeline_events,
+        const std::string desktop_id);
     static std::string convert_timeline_to_json(
-      const std::vector<TimelineEvent> &timeline_events,
-      const std::string &desktop_id);
+        const std::vector<TimelineEvent> &timeline_events,
+        const std::string &desktop_id);
 
     Poco::UInt64 user_id_;
     std::string api_token_;
@@ -111,7 +111,8 @@ class TimelineUploader {
     Poco::Activity<TimelineUploader> uploading_;
 
     Poco::Logger &logger() const {
-      return Poco::Logger::get("timeline_uploader"); }
+        return Poco::Logger::get("timeline_uploader");
+    }
 };
 
 }  // namespace kopsik

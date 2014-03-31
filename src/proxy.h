@@ -11,23 +11,23 @@
 
 namespace kopsik {
 
-  class Proxy {
-   public:
+class Proxy {
+ public:
     Proxy() :
-      host(""),
-      port(0),
-      username(""),
-      password("") {}
+    host(""),
+    port(0),
+    username(""),
+    password("") {}
 
-    bool IsConfigured() const { return !host.empty() && port; }
-    bool HasCredentials() const {
-      return !username.empty() && !password.empty(); }
+    bool IsConfigured() const;
+    bool HasCredentials() const;
+    std::string String() const;
 
     std::string host;
     Poco::UInt16 port;
     std::string username;
     std::string password;
-  };
+};
 
 }  // namespace kopsik
 

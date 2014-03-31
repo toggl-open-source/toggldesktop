@@ -66,6 +66,24 @@
 }
 
 - (BOOL)exceptionHandler:(NSExceptionHandler *)sender shouldLogException:(NSException *)exception mask:(NSUInteger)aMask {
+    NSString *theName = [exception name];
+
+    // Some exceptions can be effectively ignored, see
+    // https://github.com/adium/adium/blob/master/Source/AIExceptionController.m
+    // for inspiration
+
+    if ([theName isEqualToString:@"NSPortTimeoutException"]) {
+      return NO;
+    }
+
+    if ([theName isEqualToString:@"NSAccessibilityException"]) {
+      return NO;
+    }
+
+    if ([theName isEqualToString:@"NSObjectInaccessibleException"]) {
+      return NO;
+    }
+
     [self notifyException:exception withData:nil inBackground:YES];
     return NO;
 }
