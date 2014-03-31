@@ -18,6 +18,7 @@
 #import "ViewItem.h"
 #import "NSCustomComboBoxCell.h"
 #import "NSCustomComboBox.h"
+#import "User.h"
 
 @interface TimeEntryEditViewController ()
 @property NSString *GUID;
@@ -38,6 +39,7 @@
 @property NSDateFormatter *format;
 @property NSDate *startTimeDate;
 @property NSDate *endTimeDate;
+@property User *userinfo;
 @end
 
 @implementation TimeEntryEditViewController
@@ -67,8 +69,11 @@
                                                selector:@selector(eventHandler:)
                                                    name:kUIStateTimeEntryDeselected
                                                  object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eventHandler:)
+                                                 name:kUIStateUserLoggedIn
+                                               object:nil];
       self.format = [[NSDateFormatter alloc] init];
-      [self.format setDateFormat:@"HH:mm a"];
 
       self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] init];
 
@@ -99,9 +104,9 @@
   BOOL singleWorkspace = YES;
   if (self.workspaceList.count > 1) {
     singleWorkspace = NO;
-    _addProjectBoxHeight.constant = 108;
+    self.addProjectBoxHeight.constant = 108;
   } else {
-    _addProjectBoxHeight.constant = 75;
+    self.addProjectBoxHeight.constant = 75;
   }
   [self.workspaceLabel setHidden:singleWorkspace];
   [self.workspaceSelect setHidden:singleWorkspace];
@@ -384,6 +389,17 @@
 }
 
 - (void)eventHandler: (NSNotification *) notification {
+  if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
+    self.userinfo = notification.object;
+
+    if ([self.userinfo.timeOfDayFormat isEqualToString:@"H:mm"]){
+      [self.format setDateFormat:@"HH:mm"];
+    } else {
+      [self.format setDateFormat:@"HH:mm a"];
+    }
+    return;
+  }
+
   if ([notification.name isEqualToString:kUIStateTimeEntryDeselected]) {
     [self.addProjectBox setHidden:YES];
     [self.projectSelectBox setHidden:NO];
@@ -819,9 +835,9 @@ completionsForSubstring:(NSString *)substring
     // INPUT is not valid
     if (![self isNumeric:numbers]) {
         if (field == self.startTime) {
-            [field setStringValue:[[_format stringFromDate:_startTimeDate] uppercaseString]];
+            [field setStringValue:[[self.format stringFromDate:self.startTimeDate] uppercaseString]];
         } else if (field == self.endTime) {
-            [field setStringValue:[[_format stringFromDate:_endTimeDate] uppercaseString]];
+            [field setStringValue:[[self.format stringFromDate:self.endTimeDate] uppercaseString]];
         }
         return component;
     }
@@ -851,9 +867,9 @@ completionsForSubstring:(NSString *)substring
     // INPUT is not valid
     if (![self isNumeric:numbers]) {
       if (field == self.startTime) {
-        [field setStringValue:[[_format stringFromDate:_startTimeDate] uppercaseString]];
+        [field setStringValue:[[self.format stringFromDate:self.startTimeDate] uppercaseString]];
       } else if (field == self.endTime) {
-        [field setStringValue:[[_format stringFromDate:_endTimeDate] uppercaseString]];
+        [field setStringValue:[[self.format stringFromDate:self.endTimeDate] uppercaseString]];
       }
     }
 
@@ -887,8 +903,8 @@ completionsForSubstring:(NSString *)substring
   NSDate *combined = [[NSCalendar currentCalendar] dateFromComponents:comps];
   
   unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
-  comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:_startTimeDate];
-  comps = [self parseTime:_startTime current:comps];
+  comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:self.startTimeDate];
+  comps = [self parseTime:self.startTime current:comps];
 
   combined = [[NSCalendar currentCalendar] dateByAddingComponents:comps toDate:combined options:0];
 
@@ -925,8 +941,8 @@ completionsForSubstring:(NSString *)substring
   NSDate *combined = [[NSCalendar currentCalendar] dateFromComponents:comps];
   
   unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
-  comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:_endTimeDate];
-  comps = [self parseTime:_endTime current:comps];
+  comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:self.endTimeDate];
+  comps = [self parseTime:self.endTime current:comps];
   combined = [[NSCalendar currentCalendar] dateByAddingComponents:comps toDate:combined options:0];
   
   NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];

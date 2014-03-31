@@ -453,6 +453,7 @@ KopsikUser *kopsik_user_init() {
     KopsikUser *user = new KopsikUser();
     user->ID = 0;
     user->Fullname = 0;
+    user->TimeOfDayFormat = 0;
     return user;
 }
 
@@ -460,6 +461,8 @@ void kopsik_user_clear(
     KopsikUser *user) {
     poco_assert(user);
     user->ID = 0;
+    free(user->TimeOfDayFormat);
+    user->TimeOfDayFormat = 0;
     if (user->Fullname) {
         free(user->Fullname);
         user->Fullname = 0;
@@ -489,10 +492,16 @@ kopsik_api_result kopsik_current_user(
         if (!current_user) {
             return KOPSIK_API_SUCCESS;
         }
+        if (out_user->TimeOfDayFormat) {
+            free(out_user->TimeOfDayFormat);
+            out_user->TimeOfDayFormat = 0;
+        }
         if (out_user->Fullname) {
             free(out_user->Fullname);
             out_user->Fullname = 0;
         }
+        out_user->TimeOfDayFormat =
+            strdup(current_user->TimeOfDayFormat().c_str());
         out_user->Fullname = strdup(current_user->Fullname().c_str());
         out_user->ID = (unsigned int)current_user->ID();
     } catch(const Poco::Exception& exc) {

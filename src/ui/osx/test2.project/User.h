@@ -13,4 +13,5 @@
 - (void)load:(KopsikUser *)data;
 @property long ID;
 @property (strong) NSString *fullname;
+@property (strong) NSString *timeOfDayFormat;
 @end

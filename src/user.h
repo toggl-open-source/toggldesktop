@@ -41,7 +41,9 @@ class User : public BaseModel {
     app_name_(app_name),
     app_version_(app_version),
     email_(""),
-    record_timeline_(false) {}
+    record_timeline_(false),
+    timeofday_format_("") {}
+
     ~User();
 
     error FullSync(HTTPSClient *https_client);
@@ -124,6 +126,11 @@ class User : public BaseModel {
     }
     void SetFullname(std::string value);
 
+    std::string TimeOfDayFormat() const {
+        return timeofday_format_;
+    }
+    void SetTimeOfDayFormat(std::string value);
+
     std::string Email() const {
         return email_;
     }
@@ -192,6 +199,7 @@ class User : public BaseModel {
     std::string email_;
     bool record_timeline_;
     bool store_start_and_stop_time_;
+    std::string timeofday_format_;
 };
 
 }  // namespace kopsik

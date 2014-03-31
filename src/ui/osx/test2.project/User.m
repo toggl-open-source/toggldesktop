@@ -14,6 +14,7 @@
 - (void)load:(KopsikUser *)data {
   self.ID = data->ID;
   self.fullname = [NSString stringWithUTF8String:data->Fullname];
+  self.timeOfDayFormat = [NSString stringWithUTF8String:data->TimeOfDayFormat];
 }
 
 - (NSString *)description {
