@@ -18,6 +18,7 @@
 #import "ViewItem.h"
 #import "NSCustomComboBoxCell.h"
 #import "NSCustomComboBox.h"
+#import "User.h"
 
 @interface TimeEntryEditViewController ()
 @property NSString *GUID;
@@ -38,6 +39,7 @@
 @property NSDateFormatter *format;
 @property NSDate *startTimeDate;
 @property NSDate *endTimeDate;
+@property User *userinfo;
 @end
 
 @implementation TimeEntryEditViewController
@@ -67,8 +69,11 @@
                                                selector:@selector(eventHandler:)
                                                    name:kUIStateTimeEntryDeselected
                                                  object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eventHandler:)
+                                                 name:kUIStateUserLoggedIn
+                                               object:nil];
       self.format = [[NSDateFormatter alloc] init];
-      [self.format setDateFormat:@"HH:mm a"];
 
       self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] init];
 
@@ -384,6 +389,17 @@
 }
 
 - (void)eventHandler: (NSNotification *) notification {
+  if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
+    self.userinfo = notification.object;
+
+    if ([_userinfo.timeOfDayFormat isEqualToString:@"H:mm"]){
+      [self.format setDateFormat:@"HH:mm"];
+    } else {
+      [self.format setDateFormat:@"HH:mm a"];
+    }
+    return;
+  }
+
   if ([notification.name isEqualToString:kUIStateTimeEntryDeselected]) {
     [self.addProjectBox setHidden:YES];
     [self.projectSelectBox setHidden:NO];
