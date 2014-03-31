@@ -203,6 +203,9 @@ class Context {
         const std::string project_name,
         Project **result);
 
+ protected:
+    kopsik::HTTPSClient get_https_client();
+
  private:
     const std::string updateURL() const;
 

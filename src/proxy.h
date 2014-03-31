@@ -19,12 +19,9 @@ class Proxy {
     username(""),
     password("") {}
 
-    bool IsConfigured() const {
-        return !host.empty() && port;
-    }
-    bool HasCredentials() const {
-        return !username.empty() && !password.empty();
-    }
+    bool IsConfigured() const;
+    bool HasCredentials() const;
+    std::string String() const;
 
     std::string host;
     Poco::UInt16 port;
