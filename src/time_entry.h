@@ -95,7 +95,7 @@ class TimeEntry : public BaseModel {
     }
     void SetCreatedWith(const std::string value);
 
-    void StopAt(const Poco::Int64);
+    void StopAt(const Poco::UInt64);
 
     std::string String() const;
 

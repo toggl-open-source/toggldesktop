@@ -173,7 +173,7 @@ class Context {
 
     kopsik::error StopAt(
         const Poco::Int64 at,
-        kopsik::TimeEntry **stopped);
+        kopsik::TimeEntry **result);
 
     kopsik::error RunningTimeEntry(
         kopsik::TimeEntry **running) const;
