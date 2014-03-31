@@ -88,8 +88,8 @@ std::string Formatter::FormatDateHeader(const std::time_t date) {
         return "Today";
     }
 
-    Poco::LocalDateTime yesterday = today -
-                                    Poco::Timespan(24 * Poco::Timespan::HOURS);
+    Poco::LocalDateTime yesterday =
+        today - Poco::Timespan(24 * Poco::Timespan::HOURS);
     if (yesterday.year() == datetime.year() &&
             yesterday.month() == datetime.month() &&
             yesterday.day() == datetime.day()) {
@@ -119,7 +119,8 @@ bool Formatter::parseDurationStringHHMMSS(const std::string value,
     if (!Poco::NumberParser::tryParse(tokenizer[2], seconds)) {
         return false;
     }
-    Poco::Timespan span(0, hours, minutes, seconds, 0);
+
+    Poco::Timespan span(hours*3600 + minutes*60 + seconds, 0);
 
     *parsed_seconds = span.totalSeconds();
 
@@ -142,7 +143,7 @@ bool Formatter::parseDurationStringHHMM(const std::string value,
     if (!Poco::NumberParser::tryParse(tokenizer[1], minutes)) {
         return false;
     }
-    Poco::Timespan span(0, hours, minutes, 0, 0);
+    Poco::Timespan span(hours*3600 + minutes*60, 0);
 
     *parsed_seconds = span.totalSeconds();
 
@@ -165,7 +166,7 @@ bool Formatter::parseDurationStringMMSS(const std::string value,
     if (!Poco::NumberParser::tryParse(tokenizer[1], seconds)) {
         return false;
     }
-    Poco::Timespan span(0, 0, minutes, seconds, 0);
+    Poco::Timespan span(minutes*60 + seconds, 0);
 
     *parsed_seconds = span.totalSeconds();
 
@@ -211,7 +212,7 @@ int Formatter::parseDurationFromDecimal(const std::string value) {
         std::string numbers = value.substr(0, pos);
         double hours = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, hours)) {
-            return static_cast<int>(hours * 60 * 60);
+            return hours * 60 * 60;
         }
     }
 
@@ -220,7 +221,7 @@ int Formatter::parseDurationFromDecimal(const std::string value) {
         std::string numbers = value.substr(0, pos);
         double hours = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, hours)) {
-            return static_cast<int>(hours * 60 * 60);
+            return hours * 60 * 60;
         }
     }
 
@@ -230,7 +231,7 @@ int Formatter::parseDurationFromDecimal(const std::string value) {
         std::string numbers = value.substr(0, pos);
         double minutes = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, minutes)) {
-            return static_cast<int>(minutes * 60);
+            return minutes * 60;
         }
     }
 
@@ -240,7 +241,7 @@ int Formatter::parseDurationFromDecimal(const std::string value) {
         std::string numbers = value.substr(0, pos);
         double seconds = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, seconds)) {
-            return static_cast<int>(seconds);
+            return seconds;
         }
     }
 
@@ -254,9 +255,9 @@ int Formatter::parseDurationFromDecimal(const std::string value) {
             numbers = value.substr(pos+1, std::string::npos);
             double minutes = 0;
             if (Poco::NumberParser::tryParseFloat(numbers, minutes)) {
-                return static_cast<int>((hours * 60 * 60) + (minutes * 60));
+                return (hours * 60 * 60) + (minutes * 60);
             }
-            return static_cast<int>(hours * 60 * 60);
+            return hours * 60 * 60;
         }
     }
 
@@ -266,7 +267,7 @@ int Formatter::parseDurationFromDecimal(const std::string value) {
         std::string numbers = value.substr(0, pos);
         double minutes = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, minutes)) {
-            return static_cast<int>(minutes * 60);
+            return minutes * 60;
         }
     }
 
@@ -276,7 +277,7 @@ int Formatter::parseDurationFromDecimal(const std::string value) {
         std::string numbers = value.substr(0, pos);
         double seconds = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, seconds)) {
-            return static_cast<int>(seconds);
+            return seconds;
         }
     }
 
@@ -291,7 +292,7 @@ int Formatter::parseDurationFromDecimal(const std::string value) {
     // 1,5
     double hours = 0;
     if (Poco::NumberParser::tryParseFloat(value, hours)) {
-        return static_cast<int>(hours * 60 * 60);
+        return hours * 60 * 60;
     }
 
     return 0;
@@ -305,15 +306,25 @@ std::string Formatter::FormatDurationInSeconds(
         duration += time(0);
     }
     Poco::Timespan span(duration * Poco::Timespan::SECONDS);
-    return Poco::DateTimeFormatter::format(span, format);
+    // Poco DateTimeFormatter will not format hours above 24h.
+    // So format hours by hand:
+    std::stringstream ss;
+    Poco::Int64 hours = duration / 3600;
+    if (hours < 10) {
+        ss << "0";
+    }
+    ss << hours;
+    ss << ":";
+    ss << Poco::DateTimeFormatter::format(span, format);
+    return ss.str();
 }
 
 std::string Formatter::FormatDurationInSecondsHHMMSS(const Poco::Int64 value) {
-    return FormatDurationInSeconds(value, "%H:%M:%S");
+    return FormatDurationInSeconds(value, "%M:%S");
 }
 
 std::string Formatter::FormatDurationInSecondsHHMM(const Poco::Int64 value) {
-    return FormatDurationInSeconds(value, "%H:%M");
+    return FormatDurationInSeconds(value, "%M");
 }
 
 std::time_t Formatter::Parse8601(const std::string iso_8601_formatted_date) {
