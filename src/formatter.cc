@@ -107,7 +107,7 @@ bool Formatter::ParseTimeInput(const std::string input,
 
     std::string value = input;
     std::transform(value.begin(), value.end(), value.begin(), ::toupper);
-    for (int i = 0; i < value.length(); i++) {
+    for (size_t i = 0; i < value.length(); i++) {
         if (value[i] == ' ') {
             value.erase(i, 1);
         }
@@ -168,14 +168,13 @@ bool Formatter::ParseTimeInput(const std::string input,
         // Handle formats: HH:mm, HHmm, HH
         if (value.length() > 4) {
             Poco::StringTokenizer tokenizer(value, ":");
-            if (2 == tokenizer.count()) {
-                if (!Poco::NumberParser::tryParse(tokenizer[0], *hours)) {
-                    return false;
-                }
-                if (!Poco::NumberParser::tryParse(tokenizer[1], *minutes)) {
-                    return false;
-                }
-            } else {
+            if (2 != tokenizer.count()) {
+                return false;
+            }
+            if (!Poco::NumberParser::tryParse(tokenizer[0], *hours)) {
+                return false;
+            }
+            if (!Poco::NumberParser::tryParse(tokenizer[1], *minutes)) {
                 return false;
             }
 

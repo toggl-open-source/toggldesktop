@@ -24,7 +24,7 @@ class Proxy {
     std::string String() const;
 
     std::string host;
-    Poco::UInt16 port;
+    Poco::UInt64 port;
     std::string username;
     std::string password;
 };
