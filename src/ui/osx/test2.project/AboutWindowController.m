@@ -44,10 +44,9 @@
 - (void)showUpdateChannel {
   unsigned int update_channel_len = 10;
   char update_channel[update_channel_len];
-  kopsik_api_result res = kopsik_get_update_channel(ctx,
-                                                    update_channel,
-                                                    update_channel_len);
-  if (res != KOPSIK_API_SUCCESS) {
+  if (!kopsik_get_update_channel(ctx,
+                                 update_channel,
+                                 update_channel_len)) {
     return;
   }
   self.updateChannelComboBox.stringValue = [NSString stringWithUTF8String:update_channel];
@@ -55,9 +54,8 @@
 
 - (IBAction)updateChannelSelected:(id)sender {
   NSString *updateChannel = self.updateChannelComboBox.stringValue;
-  kopsik_api_result res = kopsik_set_update_channel(ctx,
-                                                    [updateChannel UTF8String]);
-  if (res != KOPSIK_API_SUCCESS) {
+  if (!kopsik_set_update_channel(ctx,
+                                 [updateChannel UTF8String])) {
     return;
   }
   

@@ -50,18 +50,6 @@ void main_online_callback() {
     std::cout << "main_online_callback" << std::endl;
 }
 
-void on_sync_result(
-    kopsik_api_result result,
-    const char *errmsg) {
-    if (KOPSIK_API_SUCCESS != result) {
-        std::cerr << "Error " << std::string(errmsg) << std::endl;
-        syncing = false;
-        return;
-    }
-    std::cout << "Success" << std::endl;
-    syncing = false;
-}
-
 Main::Main()
     : ctx_(0) {
     kopsik_set_log_path("kopsik.log");
@@ -118,7 +106,7 @@ int Main::sync() {
 
 int Main::continueTimeEntry() {
     KopsikTimeEntryViewItem *first = 0;
-    if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(
+    if (!kopsik_time_entry_view_items(
         ctx_, &first)) {
         kopsik_time_entry_view_item_clear(first);
         return Poco::Util::Application::EXIT_SOFTWARE;
@@ -131,7 +119,7 @@ int Main::continueTimeEntry() {
     }
 
     KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
-    if (KOPSIK_API_SUCCESS != kopsik_continue(
+    if (!kopsik_continue(
         ctx_, first->GUID, te)) {
         kopsik_time_entry_view_item_clear(first);
         kopsik_time_entry_view_item_clear(te);
@@ -146,7 +134,7 @@ int Main::continueTimeEntry() {
 int Main::status() {
     KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
     _Bool found(false);
-    if (KOPSIK_API_SUCCESS != kopsik_running_time_entry_view_item(
+    if (!kopsik_running_time_entry_view_item(
         ctx_, te, &found)) {
         kopsik_time_entry_view_item_clear(te);
         return Poco::Util::Application::EXIT_SOFTWARE;
@@ -173,20 +161,20 @@ int Main::main(const std::vector<std::string>& args) {
         return Poco::Util::Application::EXIT_USAGE;
     }
 
-    if (KOPSIK_API_SUCCESS != kopsik_set_db_path(ctx_, "kopsik.db")) {
+    if (!kopsik_set_db_path(ctx_, "kopsik.db")) {
         return Poco::Util::Application::EXIT_SOFTWARE;
     }
 
     Poco::ErrorHandler::set(this);
 
     // Start session in lib
-    if (KOPSIK_API_SUCCESS != kopsik_set_api_token(ctx_, apitoken)) {
+    if (!kopsik_set_api_token(ctx_, apitoken)) {
         return Poco::Util::Application::EXIT_SOFTWARE;
     }
 
     // Load user that is referenced by the session
     KopsikUser *user = kopsik_user_init();
-    if (KOPSIK_API_SUCCESS != kopsik_current_user(ctx_, user)) {
+    if (!kopsik_current_user(ctx_, user)) {
         return Poco::Util::Application::EXIT_SOFTWARE;
     }
     kopsik_user_clear(user);
@@ -243,7 +231,7 @@ int Main::listenToWebSocket() {
 
 int Main::listTimeEntries() {
     KopsikTimeEntryViewItem *first = 0;
-    if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(ctx_, &first)) {
+    if (!kopsik_time_entry_view_items(ctx_, &first)) {
         kopsik_time_entry_view_item_clear(first);
         return Poco::Util::Application::EXIT_SOFTWARE;
     }
@@ -263,7 +251,7 @@ int Main::listTimeEntries() {
 
 int Main::startTimeEntry() {
     KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
-    if (KOPSIK_API_SUCCESS != kopsik_start(
+    if (!kopsik_start(
         ctx_, "New time entry", "", 0, 0, te)) {
         kopsik_time_entry_view_item_clear(te);
         return Poco::Util::Application::EXIT_SOFTWARE;
@@ -275,7 +263,7 @@ int Main::startTimeEntry() {
 int Main::stopTimeEntry() {
     KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
     _Bool was_found(false);
-    if (KOPSIK_API_SUCCESS != kopsik_stop(ctx_, te, &was_found)) {
+    if (!kopsik_stop(ctx_, te, &was_found)) {
         kopsik_time_entry_view_item_clear(te);
         return Poco::Util::Application::EXIT_SOFTWARE;
     }

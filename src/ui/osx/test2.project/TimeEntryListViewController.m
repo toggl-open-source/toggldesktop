@@ -86,7 +86,7 @@
   self.timerTimeEntriesRendering = nil;
 
   KopsikTimeEntryViewItem *first = 0;
-  if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(ctx, &first)) {
+  if (!kopsik_time_entry_view_items(ctx, &first)) {
     return;
   }
 
