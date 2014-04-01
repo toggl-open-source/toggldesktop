@@ -77,8 +77,6 @@ _Bool kopsik_is_networking_error(
     return false;
 }
 
-// Generic view items
-
 void kopsik_view_item_clear(
     KopsikViewItem *item) {
     if (!item) {
@@ -99,8 +97,6 @@ void kopsik_view_item_clear(
     delete item;
     item = 0;
 }
-
-// Context API.
 
 KopsikViewItemChangeCallback user_data_change_callback_ = 0;
 
@@ -176,8 +172,6 @@ void kopsik_context_shutdown(void *context) {
 void kopsik_context_clear(void *context) {
     delete app(context);
 }
-
-// Configuration API.
 
 _Bool kopsik_get_settings(
     void *context,
@@ -422,8 +416,6 @@ void kopsik_set_websocket_url(
 
     app(context)->SetWebSocketClientURL(websocket_url);
 }
-
-// User API.
 
 KopsikUser *kopsik_user_init() {
     KopsikUser *user = new KopsikUser();
@@ -835,8 +827,6 @@ _Bool kopsik_autocomplete_items(
     return true;
 }
 
-// Tags
-
 _Bool kopsik_tags(
     void *context,
     KopsikViewItem **first) {
@@ -858,8 +848,6 @@ _Bool kopsik_tags(
 
     return true;
 }
-
-// Workpaces
 
 _Bool kopsik_workspaces(
     void *context,
@@ -883,8 +871,6 @@ _Bool kopsik_workspaces(
     return true;
 }
 
-// Clients
-
 _Bool kopsik_clients(
     void *context,
     const unsigned int workspace_id,
@@ -906,8 +892,6 @@ _Bool kopsik_clients(
 
     return true;
 }
-
-// Projects
 
 _Bool kopsik_add_project(
     void *context,
@@ -943,8 +927,6 @@ _Bool kopsik_add_project(
     }
     return true;
 }
-
-// Time entries view API
 
 KopsikTimeEntryViewItem *kopsik_time_entry_view_item_init() {
     KopsikTimeEntryViewItem *item = new KopsikTimeEntryViewItem();
@@ -1723,8 +1705,6 @@ _Bool kopsik_duration_for_date_header(
     return true;
 }
 
-// Websocket client
-
 void kopsik_websocket_switch(
     void *context,
     const _Bool on) {
@@ -1738,8 +1718,6 @@ void kopsik_websocket_switch(
     }
     app(context)->SwitchWebSocketOff();
 }
-
-// Timeline
 
 void kopsik_timeline_switch(
     void *context,
@@ -1767,8 +1745,6 @@ int kopsik_timeline_is_recording_enabled(
     return app(context)->RecordTimeline();
 }
 
-// Feedback
-
 _Bool kopsik_feedback_send(
     void *context,
     const char *topic,
@@ -1787,8 +1763,6 @@ _Bool kopsik_feedback_send(
     }
     return true;
 }
-
-// Updates
 
 void kopsik_check_for_updates(
     void *context) {

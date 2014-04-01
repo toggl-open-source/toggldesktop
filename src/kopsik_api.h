@@ -355,13 +355,9 @@ extern "C" {
         char *duration,
         const unsigned int duration_len);
 
-// Websocket client
-
     KOPSIK_EXPORT void kopsik_websocket_switch(
         void *context,
         const _Bool on);
-
-// Timeline
 
     KOPSIK_EXPORT void kopsik_timeline_switch(
         void *context,
@@ -373,15 +369,11 @@ extern "C" {
     KOPSIK_EXPORT int kopsik_timeline_is_recording_enabled(
         void *context);
 
-// Feedback
-
     KOPSIK_EXPORT _Bool kopsik_feedback_send(
         void *context,
         const char *topic,
         const char *details,
         const char *filename);
-
-// Updates
 
     KOPSIK_EXPORT void kopsik_check_for_updates(
         void *context);
