@@ -144,9 +144,9 @@ bool Formatter::ParseTimeInput(const std::string input,
                 }
             } else {
                 if (!Poco::NumberParser::tryParse(
-                        numbers.substr(0, numbers.length()-2), *hours)
-                    || !Poco::NumberParser::tryParse(
-                        numbers.substr((numbers.length()-2), 2), *minutes)
+                    numbers.substr(0, numbers.length()-2), *hours)
+                        || !Poco::NumberParser::tryParse(
+                            numbers.substr((numbers.length()-2), 2), *minutes)
                    ) {
                     return false;
                 }
@@ -181,9 +181,9 @@ bool Formatter::ParseTimeInput(const std::string input,
 
         } else if (value.length() > 2) {
             if (!Poco::NumberParser::tryParse(
-                    value.substr(0, value.length()-2), *hours)
-                || !Poco::NumberParser::tryParse(
-                    value.substr((value.length()-2), 2), *minutes)) {
+                value.substr(0, value.length()-2), *hours)
+                    || !Poco::NumberParser::tryParse(
+                        value.substr((value.length()-2), 2), *minutes)) {
                 return false;
             }
         } else {
