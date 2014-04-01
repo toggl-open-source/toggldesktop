@@ -16,7 +16,7 @@
 @property NSString *Description;
 @property NSString *ProjectAndTaskLabel;
 @property NSString *ProjectColor;
-@property unsigned int ProjectID;
-@property unsigned int TaskID;
-@property unsigned int Type;
+@property uint64_t ProjectID;
+@property uint64_t TaskID;
+@property uint64_t Type;
 @end

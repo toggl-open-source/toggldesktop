@@ -10,7 +10,6 @@
 #import "kopsik_api.h"
 
 @interface User : NSObject
-- (void)load:(KopsikUser *)data;
 @property long ID;
 @property (strong) NSString *fullname;
 @property (strong) NSString *timeOfDayFormat;

@@ -14,5 +14,5 @@
 @property (strong) NSString *GUID;
 @property (strong) NSString *ModelType;
 @property (strong) NSString *ChangeType;
-@property unsigned int ModelID;
+@property uint64_t ModelID;
 @end

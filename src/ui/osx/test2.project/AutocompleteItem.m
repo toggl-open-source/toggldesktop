@@ -37,7 +37,7 @@
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"Text: %@, PID: %d, TID: %d, type: %d",
+  return [NSString stringWithFormat:@"Text: %@, PID: %llu, TID: %llu, type: %llu",
           self.Text, self.ProjectID, self.TaskID, self.Type];
 }
 

@@ -11,7 +11,7 @@
 
 @interface ViewItem : NSObject
 - (void)load:(KopsikViewItem *)data;
-@property unsigned int ID;
+@property uint64_t ID;
 @property (strong) NSString *GUID;
 @property (strong) NSString *Name;
 @end

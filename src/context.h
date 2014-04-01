@@ -15,6 +15,7 @@
 #include "./CustomErrorHandler.h"
 #include "./autocomplete_item.h"
 #include "./feedback.h"
+#include "./kopsik_api.h"
 
 #include "Poco/Util/Timer.h"
 
@@ -42,6 +43,8 @@ class Context {
         const std::string app_version);
     ~Context();
 
+    // Check for logged in user etc, start up the app
+    void Startup();
     // Close connections and wait for tasks to finish
     void Shutdown();
 
@@ -69,6 +72,9 @@ class Context {
     }
     void SetOnOnlineCallback(OnlineCallback cb) {
         on_online_callback_ = cb;
+    }
+    void SetUserLoginCallback(KopsikUserLoginCallback cb) {
+        on_user_login_callback_ = cb;
     }
 
     // Apply proxy settings
@@ -246,6 +252,9 @@ class Context {
     bool isPostponed(const Poco::Timestamp value) const;
     static Poco::Timestamp postpone();
 
+    // Export user login state to UI
+    void exportUserLoginState();
+
     Poco::Mutex db_m_;
     kopsik::Database *db_;
 
@@ -277,6 +286,7 @@ class Context {
     ErrorCallback on_error_callback_;
     CheckUpdateCallback on_check_update_callback_;
     OnlineCallback on_online_callback_;
+    KopsikUserLoginCallback on_user_login_callback_;
 
     // Tasks are scheduled at:
     Poco::Timestamp next_full_sync_at_;

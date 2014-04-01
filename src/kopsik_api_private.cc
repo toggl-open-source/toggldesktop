@@ -92,9 +92,9 @@ void time_entry_to_view_item(
     view_item->Started = static_cast<unsigned int>(te->Start());
     view_item->Ended = static_cast<unsigned int>(te->Stop());
     if (te->Billable()) {
-        view_item->Billable = 1;
+        view_item->Billable = true;
     } else {
-        view_item->Billable = 0;
+        view_item->Billable = false;
     }
 
     poco_assert(!view_item->Tags);
@@ -113,9 +113,9 @@ void time_entry_to_view_item(
     }
 
     if (te->DurOnly()) {
-        view_item->DurOnly = 1;
+        view_item->DurOnly = true;
     } else {
-        view_item->DurOnly = 0;
+        view_item->DurOnly = false;
     }
 }
 
