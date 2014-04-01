@@ -13,13 +13,22 @@
 
 namespace kopsik {
 
+template<typename T>
+void clearList(std::vector<T *> *list) {
+    for (size_t i = 0; i < list->size(); i++) {
+        T *value = (*list)[i];
+        delete value;
+    }
+    list->clear();
+}
+
 User::~User() {
-    ClearWorkspaces();
-    ClearClients();
-    ClearProjects();
-    ClearTasks();
-    ClearTags();
-    ClearTimeEntries();
+    clearList(&related.Workspaces);
+    clearList(&related.Clients);
+    clearList(&related.Projects);
+    clearList(&related.Tasks);
+    clearList(&related.Tags);
+    clearList(&related.TimeEntries);
 }
 
 void User::ActiveProjects(std::vector<Project *> *list) const {
@@ -294,66 +303,6 @@ TimeEntry *User::RunningTimeEntry() const {
         }
     }
     return 0;
-}
-
-void User::ClearTasks() {
-    for (std::vector<Task *>::const_iterator it =
-        related.Tasks.begin();
-            it != related.Tasks.end();
-            it++) {
-        delete *it;
-    }
-    related.Tasks.clear();
-}
-
-void User::ClearTags() {
-    for (std::vector<Tag *>::const_iterator it =
-        related.Tags.begin();
-            it != related.Tags.end();
-            it++) {
-        delete *it;
-    }
-    related.Tags.clear();
-}
-
-void User::ClearClients() {
-    for (std::vector<Client *>::const_iterator it =
-        related.Clients.begin();
-            it != related.Clients.end();
-            it++) {
-        delete *it;
-    }
-    related.Clients.clear();
-}
-
-void User::ClearTimeEntries() {
-    for (std::vector<TimeEntry *>::const_iterator it =
-        related.TimeEntries.begin();
-            it != related.TimeEntries.end();
-            it++) {
-        delete *it;
-    }
-    related.TimeEntries.clear();
-}
-
-void User::ClearWorkspaces() {
-    for (std::vector<Workspace *>::const_iterator it =
-        related.Workspaces.begin();
-            it != related.Workspaces.end();
-            it++) {
-        delete *it;
-    }
-    related.Workspaces.clear();
-}
-
-void User::ClearProjects() {
-    for (std::vector<Project *>::const_iterator it =
-        related.Projects.begin();
-            it != related.Projects.end();
-            it++) {
-        delete *it;
-    }
-    related.Projects.clear();
 }
 
 Task *User::GetTaskByID(const Poco::UInt64 id) const {

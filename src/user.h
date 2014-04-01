@@ -55,13 +55,6 @@ class User : public BaseModel {
 
     std::string String() const;
 
-    void ClearWorkspaces();
-    void ClearClients();
-    void ClearProjects();
-    void ClearTasks();
-    void ClearTags();
-    void ClearTimeEntries();
-
     bool HasPremiumWorkspaces() const;
     bool CanAddProjects() const;
 
