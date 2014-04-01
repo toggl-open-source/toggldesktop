@@ -150,34 +150,11 @@ class Database {
         Poco::Data::Statement *select,
         std::vector<TimeEntry *> *list);
 
-    error saveWorkspaces(
+    template <typename T>
+    error saveRelatedModels(
         const Poco::UInt64 UID,
-        std::vector<Workspace *> *list,
-        std::vector<ModelChange> *changes);
-
-    error saveClients(
-        const Poco::UInt64 UID,
-        std::vector<Client *> *list,
-        std::vector<ModelChange> *changes);
-
-    error saveProjects(
-        const Poco::UInt64 UID,
-        std::vector<Project *> *list,
-        std::vector<ModelChange> *changes);
-
-    error saveTasks(
-        const Poco::UInt64 UID,
-        std::vector<Task *> *list,
-        std::vector<ModelChange> *changes);
-
-    error saveTags(
-        const Poco::UInt64 UID,
-        std::vector<Tag *> *list,
-        std::vector<ModelChange> *changes);
-
-    error saveTimeEntries(
-        const Poco::UInt64 UID,
-        std::vector<TimeEntry *> *list,
+        const std::string table_name,
+        std::vector<T *> *list,
         std::vector<ModelChange> *changes);
 
     error deleteFromTable(
@@ -197,27 +174,27 @@ class Database {
     error delete_timeline_batch(
         const std::vector<TimelineEvent> &timeline_events);
 
-    error saveWorkspace(
+    error saveModel(
         Workspace *model,
         std::vector<ModelChange> *changes);
 
-    error saveClient(
+    error saveModel(
         Client *model,
         std::vector<ModelChange> *changes);
 
-    error saveProject(
+    error saveModel(
         Project *model,
         std::vector<ModelChange> *changes);
 
-    error saveTask(
+    error saveModel(
         Task *model,
         std::vector<ModelChange> *changes);
 
-    error saveTag(
+    error saveModel(
         Tag *model,
         std::vector<ModelChange> *changes);
 
-    error saveTimeEntry(
+    error saveModel(
         TimeEntry *model,
         std::vector<ModelChange> *changes);
 
