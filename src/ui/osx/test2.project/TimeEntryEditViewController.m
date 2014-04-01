@@ -819,70 +819,22 @@ completionsForSubstring:(NSString *)substring
 }
 
 - (NSDateComponents*)parseTime:(NSTextField*)field current:(NSDateComponents*)component {
-  NSString *input = [field stringValue];
-  BOOL hasPM = false;
-  NSRange range;
-  NSInteger hours;
-  range = [[input uppercaseString] rangeOfString:@"A"];
-  if (range.location == NSNotFound) {
-    range = [[input uppercaseString] rangeOfString:@"P"];
-    hasPM = TRUE;
+  unsigned int hours = 0;
+  unsigned int minutes = 0;  
+  const char *input_string = [[field stringValue] UTF8String];
+  // INPUT is not valid
+  if (!kopsik_parse_time(input_string, &hours, &minutes)) {
+    if (field == self.startTime) {
+      [field setStringValue:[[self.format stringFromDate:self.startTimeDate] uppercaseString]];
+    } else if (field == self.endTime) {
+      [field setStringValue:[[self.format stringFromDate:self.endTimeDate] uppercaseString]];
+    }
+    return component;
   }
-  if (range.location != NSNotFound){
-    // Found AM/PM
-    // Handle formats: HHa, HHmma
-    NSString *numbers = [[[input substringToIndex:range.location] stringByReplacingOccurrencesOfString: @":" withString:@""] stringByReplacingOccurrencesOfString: @" " withString:@""];
-    // INPUT is not valid
-    if (![self isNumeric:numbers]) {
-        if (field == self.startTime) {
-            [field setStringValue:[[self.format stringFromDate:self.startTimeDate] uppercaseString]];
-        } else if (field == self.endTime) {
-            [field setStringValue:[[self.format stringFromDate:self.endTimeDate] uppercaseString]];
-        }
-        return component;
-    }
 
+  [component setHour:   hours];
+  [component setMinute: minutes];
 
-    if ([numbers length] > 4) {
-        NSArray *components = [numbers componentsSeparatedByString:@":"];
-        hours = [[components firstObject] integerValue];
-        [component setMinute: [[components lastObject] integerValue]];
-    } else if ([numbers length] > 2) {
-        hours = [[numbers substringToIndex:[numbers length]-2] integerValue];
-        [component setMinute: [[numbers substringFromIndex: [numbers length]-2] integerValue]];
-    } else {
-        hours = [numbers integerValue];
-        [component setMinute: 0];
-    }
-
-    if (hasPM && hours < 12) {
-        hours += 12;
-    } else if (hours == 12 && !hasPM){
-        hours = 0;
-    }
-
-    [component setHour: hours];
-  } else {
-    NSString *numbers = [[input stringByReplacingOccurrencesOfString: @":" withString:@""] stringByReplacingOccurrencesOfString: @" " withString:@""];
-    // INPUT is not valid
-    if (![self isNumeric:numbers]) {
-      if (field == self.startTime) {
-        [field setStringValue:[[self.format stringFromDate:self.startTimeDate] uppercaseString]];
-      } else if (field == self.endTime) {
-        [field setStringValue:[[self.format stringFromDate:self.endTimeDate] uppercaseString]];
-      }
-    }
-
-    //Handle formats: HH:mm, HHmm, HH
-    if ([numbers length] > 2) {
-      [component setHour:   [[numbers substringToIndex:[numbers length]-2] integerValue]];
-      [component setMinute: [[numbers substringFromIndex: [numbers length]-2] integerValue]];
-    } else {
-      [component setHour:   [numbers integerValue]];
-      [component setMinute: 0];
-    }
-  }
-  [component setSecond: 0];
   return component;
 }
 
