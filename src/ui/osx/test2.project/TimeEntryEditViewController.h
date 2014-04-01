@@ -21,6 +21,7 @@
 @property IBOutlet TFDatePicker *startDate;
 @property IBOutlet NSTokenField *tagsTokenField;
 @property IBOutlet NSButton *billableCheckbox;
+@property IBOutlet NSButton *projectPublicCheckbox;
 @property IBOutlet NSTextField *lastUpdateTextField;
 @property IBOutlet NSButton *deleteButton;
 @property IBOutlet NSButton *backButton;

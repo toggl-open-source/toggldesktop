@@ -1718,6 +1718,7 @@ kopsik::error Context::AddProject(
     const Poco::UInt64 workspace_id,
     const Poco::UInt64 client_id,
     const std::string project_name,
+    const _Bool is_private,
     Project **result) {
     poco_assert(result);
 
@@ -1732,7 +1733,8 @@ kopsik::error Context::AddProject(
         return kopsik::error("Project name must not be empty");
     }
 
-    *result = user_->AddProject(workspace_id, client_id, project_name);
+    *result = user_->AddProject(
+        workspace_id, client_id, project_name, is_private);
     poco_assert(*result);
 
     return save();

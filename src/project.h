@@ -22,6 +22,7 @@ class Project : public BaseModel {
     , name_("")
     , color_("")
     , active_(false)
+    , private_(false)
     , billable_(false) {}
 
     Poco::UInt64 WID() const {
@@ -50,6 +51,11 @@ class Project : public BaseModel {
         return active_;
     }
     void SetActive(const bool value);
+
+    bool IsPrivate() const {
+        return private_;
+    }
+    void SetPrivate(const bool value);
 
     std::string String() const;
 
@@ -81,6 +87,7 @@ class Project : public BaseModel {
     std::string name_;
     std::string color_;
     bool active_;
+    bool private_;
     bool billable_;
 };
 

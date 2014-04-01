@@ -34,13 +34,15 @@ void User::ActiveProjects(std::vector<Project *> *list) const {
 Project *User::AddProject(
     const Poco::UInt64 workspace_id,
     const Poco::UInt64 client_id,
-    const std::string project_name) {
+    const std::string project_name,
+    const _Bool is_private) {
     Project *p = new Project();
     p->SetWID(workspace_id);
     p->SetName(project_name);
     p->SetCID(client_id);
     p->SetUID(ID());
     p->SetActive(true);
+    p->SetPrivate(is_private);
     related.Projects.push_back(p);
     return p;
 }

@@ -69,10 +69,6 @@
                                                selector:@selector(eventHandler:)
                                                    name:kUIStateTimeEntryDeselected
                                                  object:nil];
-      [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(eventHandler:)
-                                                 name:kUIStateUserLoggedIn
-                                               object:nil];
       self.format = [[NSDateFormatter alloc] init];
 
       self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] init];
@@ -96,7 +92,7 @@
                                                            toItem:nil
                                                          attribute:NSLayoutAttributeNotAnAttribute
                                                        multiplier:1
-                                                         constant:108];
+                                                         constant:129];
     [self.view addConstraint: self.addProjectBoxHeight];
   }
 
@@ -104,9 +100,9 @@
   BOOL singleWorkspace = YES;
   if (self.workspaceList.count > 1) {
     singleWorkspace = NO;
-    self.addProjectBoxHeight.constant = 108;
+    self.addProjectBoxHeight.constant = 129;
   } else {
-    self.addProjectBoxHeight.constant = 75;
+    self.addProjectBoxHeight.constant = 96;
   }
   [self.workspaceLabel setHidden:singleWorkspace];
   [self.workspaceSelect setHidden:singleWorkspace];
@@ -162,6 +158,10 @@
   if (!projectName || !projectName.length) {
     return YES;
   }
+  _Bool is_private = true;
+  if (NSOnState == [self.projectPublicCheckbox state]) {
+    is_private = false;
+  }
   uint64_t workspaceID = [self selectedWorkspaceID];
   if (!workspaceID) {
     [self.workspaceSelect becomeFirstResponder];
@@ -175,6 +175,7 @@
                           workspaceID,
                           clientID,
                           [projectName UTF8String],
+                          is_private,
                           &project)) {
     kopsik_view_item_clear(project);
     return NO;
@@ -375,20 +376,10 @@
 }
 
 - (void)eventHandler: (NSNotification *) notification {
-  if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    self.userinfo = notification.object;
-
-    if ([self.userinfo.timeOfDayFormat isEqualToString:@"H:mm"]){
-      [self.format setDateFormat:@"HH:mm"];
-    } else {
-      [self.format setDateFormat:@"HH:mm a"];
-    }
-    return;
-  }
-
   if ([notification.name isEqualToString:kUIStateTimeEntryDeselected]) {
     [self.addProjectBox setHidden:YES];
     [self.projectSelectBox setHidden:NO];
+    [self.projectPublicCheckbox setState:NSOffState];
     return;
   }
 
@@ -409,6 +400,14 @@
     [self performSelectorOnMainThread:@selector(startWorkspaceSelectRendering)
                            withObject:nil
                         waitUntilDone:NO];
+
+    self.userinfo = notification.object;
+
+    if ([self.userinfo.timeOfDayFormat isEqualToString:@"H:mm"]){
+      [self.format setDateFormat:@"HH:mm"];
+    } else {
+      [self.format setDateFormat:@"HH:mm a"];
+    }
     return;
   }
 

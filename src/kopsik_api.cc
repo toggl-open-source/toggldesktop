@@ -841,6 +841,7 @@ _Bool kopsik_add_project(
     const uint64_t workspace_id,
     const uint64_t client_id,
     const char *project_name,
+    const _Bool is_private,
     KopsikViewItem **resulting_project) {
     try {
         poco_assert(resulting_project);
@@ -850,6 +851,7 @@ _Bool kopsik_add_project(
             workspace_id,
             client_id,
             std::string(project_name),
+            is_private,
             &p);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
