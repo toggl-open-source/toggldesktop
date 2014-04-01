@@ -9,6 +9,7 @@ extern "C" {
 
 #include <stddef.h>
 #include <stdio.h>
+#include <stdint.h>
 
 #ifdef _WIN32
 #define _Bool bool
