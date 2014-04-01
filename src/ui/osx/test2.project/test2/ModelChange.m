@@ -18,7 +18,7 @@
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"Model type: %@, change type: %@, GUID: %@, ID: %d",
+  return [NSString stringWithFormat:@"Model type: %@, change type: %@, GUID: %@, ID: %llu",
           self.ModelType, self.ChangeType, self.GUID, self.ModelID];
 }
 

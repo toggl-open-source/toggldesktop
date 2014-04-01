@@ -74,7 +74,7 @@ NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcu
 - (void)loadProxySettings {
   _Bool use_proxy = false;
   char *proxy_host = 0;
-  unsigned int proxy_port = 0;
+  uint64_t proxy_port = 0;
   char *proxy_username = 0;
   char *proxy_password = 0;
 

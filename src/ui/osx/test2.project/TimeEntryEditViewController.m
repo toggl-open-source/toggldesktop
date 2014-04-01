@@ -162,12 +162,12 @@
   if (!projectName || !projectName.length) {
     return YES;
   }
-  unsigned int workspaceID = [self selectedWorkspaceID];
+  uint64_t workspaceID = [self selectedWorkspaceID];
   if (!workspaceID) {
     [self.workspaceSelect becomeFirstResponder];
     return NO;
   }
-  unsigned int clientID = [self selectedClientID];
+  uint64_t clientID = [self selectedClientID];
 
   // A new project is being added!
   KopsikViewItem *project = 0;
@@ -630,7 +630,7 @@ completionsForSubstring:(NSString *)substring
   // If no workspace is selected, attempt to select the user's
   // default workspace.
   if (!workspaceName.length && self.workspaceList.count) {
-    unsigned int default_wid = 0;
+    uint64_t default_wid = 0;
     if (!kopsik_users_default_wid(ctx, &default_wid)) {
       return;
     }
@@ -671,7 +671,7 @@ completionsForSubstring:(NSString *)substring
   }
 }
 
-- (unsigned int)selectedWorkspaceID {
+- (uint64_t)selectedWorkspaceID {
   for (int i = 0; i < self.workspaceList.count; i++ ) {
     ViewItem *workspace = self.workspaceList[i];
     if ([workspace.Name isEqualToString:self.workspaceSelect.stringValue]) {
@@ -681,7 +681,7 @@ completionsForSubstring:(NSString *)substring
   return 0;
 }
 
-- (unsigned int)selectedClientID {
+- (uint64_t)selectedClientID {
   for (int i = 0; i < self.clientList.count; i++ ) {
     ViewItem *client = self.clientList[i];
     if ([client.Name isEqualToString:self.clientSelect.stringValue]) {
@@ -750,8 +750,8 @@ completionsForSubstring:(NSString *)substring
 
   NSString *key = [self.projectSelect stringValue];
   AutocompleteItem *autocomplete = [self.projectAutocompleteDataSource get:key];
-  unsigned int task_id = 0;
-  unsigned int project_id = 0;
+  uint64_t task_id = 0;
+  uint64_t project_id = 0;
   if (autocomplete != nil) {
     task_id = autocomplete.TaskID;
     project_id = autocomplete.ProjectID;
@@ -948,11 +948,10 @@ completionsForSubstring:(NSString *)substring
     [self.descriptionComboboxDataSource get:key];
 
   if (!autocomplete) {
-    if (!kopsik_set_time_entry_description(ctx,
-                                           [self.GUID UTF8String],
-                                           [key UTF8String])) {
-      return;
-    }
+    kopsik_set_time_entry_description(ctx,
+                                      [self.GUID UTF8String],
+                                      [key UTF8String]);
+    return;
   }
 
   if (!kopsik_set_time_entry_project(ctx,

@@ -355,7 +355,7 @@
 
   // Parse text into seconds
   const char *duration_string = [self.durationTextField.stringValue UTF8String];
-  int seconds = kopsik_parse_duration_string_into_seconds(duration_string);
+  int64_t seconds = kopsik_parse_duration_string_into_seconds(duration_string);
 
   // Format seconds as text again
   char str[duration_str_len];

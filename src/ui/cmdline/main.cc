@@ -50,6 +50,15 @@ void main_online_callback() {
     std::cout << "main_online_callback" << std::endl;
 }
 
+void main_user_login_callback(const uint64_t user_id,
+                              const char *fullname,
+                              const char *timeofdayformat) {
+    std::cout << "main_user_login_callback user_id=" << user_id
+              << " fullname=" << fullname
+              << " timeofdayformat=" << timeofdayformat
+              << std::endl;
+}
+
 Main::Main()
     : ctx_(0) {
     kopsik_set_log_path("kopsik.log");
@@ -59,11 +68,13 @@ Main::Main()
         main_change_callback,
         main_on_error_callback,
         main_check_updates_callback,
-        main_online_callback);
+        main_online_callback,
+        main_user_login_callback);
     poco_assert(ctx_);
 }
 
 Main::~Main() {
+    kopsik_context_shutdown(ctx_);
     kopsik_context_clear(ctx_);
 }
 
@@ -172,12 +183,7 @@ int Main::main(const std::vector<std::string>& args) {
         return Poco::Util::Application::EXIT_SOFTWARE;
     }
 
-    // Load user that is referenced by the session
-    KopsikUser *user = kopsik_user_init();
-    if (!kopsik_current_user(ctx_, user)) {
-        return Poco::Util::Application::EXIT_SOFTWARE;
-    }
-    kopsik_user_clear(user);
+    kopsik_context_startup(ctx_);
 
     // Handle commands
     if ("sync" == args[0]) {

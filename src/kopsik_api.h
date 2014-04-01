@@ -28,9 +28,19 @@ extern "C" {
     typedef struct {
         char *ModelType;
         char *ChangeType;
-        unsigned int ModelID;
+        uint64_t ModelID;
         char *GUID;
     } KopsikModelChange;
+
+    typedef struct {
+        uint64_t ID;
+        char *GUID;
+        char *Name;
+        void *Next;
+    } KopsikViewItem;
+
+    KOPSIK_EXPORT void kopsik_view_item_clear(
+        KopsikViewItem *first);
 
     typedef void (*KopsikViewItemChangeCallback)(
         KopsikModelChange *change);
@@ -45,23 +55,22 @@ extern "C" {
 
     typedef void (*KopsikOnOnlineCallback)();
 
-    typedef struct {
-        unsigned int ID;
-        char *GUID;
-        char *Name;
-        void *Next;
-    } KopsikViewItem;
-
-    KOPSIK_EXPORT void kopsik_view_item_clear(
-        KopsikViewItem *first);
+    typedef void (*KopsikUserLoginCallback)(
+        uint64_t id,
+        const char *fullname,
+        const char *timeofdayformat);
 
     KOPSIK_EXPORT void *kopsik_context_init(
         const char *app_name,
         const char *app_version,
-        KopsikViewItemChangeCallback change_callback,
-        KopsikErrorCallback on_error_callback,
-        KopsikCheckUpdateCallback check_updates_callback,
-        KopsikOnOnlineCallback on_online_callback);
+        KopsikViewItemChangeCallback,
+        KopsikErrorCallback,
+        KopsikCheckUpdateCallback,
+        KopsikOnOnlineCallback,
+        KopsikUserLoginCallback);
+
+    KOPSIK_EXPORT void kopsik_context_startup(
+        void *context);
 
     KOPSIK_EXPORT void kopsik_context_shutdown(
         void *context);
@@ -79,7 +88,7 @@ extern "C" {
         void *context,
         _Bool *use_proxy,
         char **proxy_host,
-        unsigned int *proxy_port,
+        uint64_t *proxy_port,
         char **proxy_username,
         char **proxy_password);
 
@@ -93,7 +102,7 @@ extern "C" {
         void *context,
         const _Bool use_proxy,
         const char *proxy_host,
-        const unsigned int proxy_port,
+        const uint64_t proxy_port,
         const char *proxy_username,
         const char *proxy_password);
 
@@ -118,19 +127,6 @@ extern "C" {
         void *context,
         const char *websocket_url);
 
-// User API
-
-    typedef struct {
-        unsigned int ID;
-        char *Fullname;
-        char *TimeOfDayFormat;
-    } KopsikUser;
-
-    KOPSIK_EXPORT KopsikUser *kopsik_user_init();
-
-    KOPSIK_EXPORT void kopsik_user_clear(
-        KopsikUser *user);
-
     KOPSIK_EXPORT _Bool kopsik_set_api_token(
         void *context,
         const char *api_token);
@@ -138,11 +134,7 @@ extern "C" {
     KOPSIK_EXPORT _Bool kopsik_get_api_token(
         void *context,
         char *str,
-        const unsigned int max_strlen);
-
-    KOPSIK_EXPORT _Bool kopsik_current_user(
-        void *context,
-        KopsikUser *user);
+        const uint64_t max_strlen);
 
     _Bool kopsik_set_logged_in_user(
         void *context,
@@ -166,7 +158,7 @@ extern "C" {
 
     KOPSIK_EXPORT _Bool kopsik_user_can_add_projects(
         void *context,
-        const unsigned int workspace_id,
+        const uint64_t workspace_id,
         _Bool *can_add);
 
     KOPSIK_EXPORT _Bool kopsik_user_is_logged_in(
@@ -175,7 +167,7 @@ extern "C" {
 
     KOPSIK_EXPORT _Bool kopsik_users_default_wid(
         void *context,
-        unsigned int *default_wid);
+        uint64_t *default_wid);
 
     KOPSIK_EXPORT void kopsik_sync(
         void *context);
@@ -188,9 +180,9 @@ extern "C" {
         // Project label, if has a project
         char *ProjectAndTaskLabel;
         char *ProjectColor;
-        unsigned int TaskID;
-        unsigned int ProjectID;
-        unsigned int Type;
+        uint64_t TaskID;
+        uint64_t ProjectID;
+        uint64_t Type;
         void *Next;
     } KopsikAutocompleteItem;
 
@@ -214,34 +206,34 @@ extern "C" {
 
     KOPSIK_EXPORT _Bool kopsik_clients(
         void *context,
-        const unsigned int workspace_id,
+        const uint64_t workspace_id,
         KopsikViewItem **first);
 
     KOPSIK_EXPORT _Bool kopsik_add_project(
         void *context,
-        const unsigned int workspace_id,
-        const unsigned int client_id,
+        const uint64_t workspace_id,
+        const uint64_t client_id,
         const char *project_name,
         KopsikViewItem **resulting_project);
 
     typedef struct {
-        int DurationInSeconds;
+        int64_t DurationInSeconds;
         char *Description;
         char *ProjectAndTaskLabel;
-        unsigned int WID;
-        unsigned int PID;
-        unsigned int TID;
+        uint64_t WID;
+        uint64_t PID;
+        uint64_t TID;
         char *Duration;
         char *Color;
         char *GUID;
-        int Billable;
+        _Bool Billable;
         char *Tags;
-        unsigned int Started;
-        unsigned int Ended;
-        unsigned int UpdatedAt;
+        uint64_t Started;
+        uint64_t Ended;
+        uint64_t UpdatedAt;
         char *DateHeader;
         char *DateDuration;
-        unsigned int DurOnly;
+        _Bool DurOnly;
         void *Next;
     } KopsikTimeEntryViewItem;
 
@@ -257,24 +249,24 @@ extern "C" {
         _Bool *is_tracking);
 
     KOPSIK_EXPORT void kopsik_format_duration_in_seconds_hhmmss(
-        const int duration_in_seconds,
+        const int64_t duration_in_seconds,
         char *str,
-        const unsigned int max_strlen);
+        const uint64_t max_strlen);
 
     KOPSIK_EXPORT void kopsik_format_duration_in_seconds_hhmm(
-        const int duration_in_seconds,
+        const int64_t duration_in_seconds,
         char *str,
-        const unsigned int max_strlen);
+        const uint64_t max_strlen);
 
-    KOPSIK_EXPORT int kopsik_parse_duration_string_into_seconds(
+    KOPSIK_EXPORT int64_t kopsik_parse_duration_string_into_seconds(
         const char *duration_string);
 
     KOPSIK_EXPORT _Bool kopsik_start(
         void *context,
         const char *description,
         const char *duration,
-        const unsigned int task_id,
-        const unsigned int project_id,
+        const uint64_t task_id,
+        const uint64_t project_id,
         KopsikTimeEntryViewItem *item);
 
     KOPSIK_EXPORT _Bool kopsik_time_entry_view_item_by_guid(
@@ -305,8 +297,8 @@ extern "C" {
     KOPSIK_EXPORT _Bool kopsik_set_time_entry_project(
         void *context,
         const char *guid,
-        const unsigned int task_id,
-        const unsigned int project_id,
+        const uint64_t task_id,
+        const uint64_t project_id,
         const char *project_guid);
 
     KOPSIK_EXPORT _Bool kopsik_set_time_entry_start_iso_8601(
@@ -327,7 +319,7 @@ extern "C" {
     KOPSIK_EXPORT _Bool kopsik_set_time_entry_billable(
         void *context,
         const char *guid,
-        int value);
+        _Bool);
 
     KOPSIK_EXPORT _Bool kopsik_set_time_entry_description(
         void *context,
@@ -341,7 +333,7 @@ extern "C" {
 
     KOPSIK_EXPORT _Bool kopsik_stop_running_time_entry_at(
         void *context,
-        const unsigned int at,
+        const uint64_t at,
         KopsikTimeEntryViewItem *item,
         _Bool *was_found);
 
@@ -353,7 +345,7 @@ extern "C" {
         void *context,
         const char *date,
         char *duration,
-        const unsigned int duration_len);
+        const uint64_t duration_len);
 
     KOPSIK_EXPORT void kopsik_websocket_switch(
         void *context,
@@ -366,7 +358,7 @@ extern "C" {
     KOPSIK_EXPORT void kopsik_timeline_toggle_recording(
         void *context);
 
-    KOPSIK_EXPORT int kopsik_timeline_is_recording_enabled(
+    KOPSIK_EXPORT _Bool kopsik_timeline_is_recording_enabled(
         void *context);
 
     KOPSIK_EXPORT _Bool kopsik_feedback_send(
@@ -385,7 +377,7 @@ extern "C" {
     KOPSIK_EXPORT _Bool kopsik_get_update_channel(
         void *context,
         char *update_channel,
-        const unsigned int update_channel_len);
+        const uint64_t update_channel_len);
 
 #undef KOPSIK_EXPORT
 
