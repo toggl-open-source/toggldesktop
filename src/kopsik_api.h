@@ -9,6 +9,7 @@ extern "C" {
 
 #include <stddef.h>
 #include <stdio.h>
+#include <stdint.h>
 
 #ifdef _WIN32
 #define _Bool bool
@@ -247,6 +248,11 @@ extern "C" {
         void *context,
         KopsikTimeEntryViewItem *item,
         _Bool *is_tracking);
+
+    KOPSIK_EXPORT _Bool kopsik_parse_time(
+        const char *input,
+        int *hours,
+        int *minutes);
 
     KOPSIK_EXPORT void kopsik_format_duration_in_seconds_hhmmss(
         const int64_t duration_in_seconds,

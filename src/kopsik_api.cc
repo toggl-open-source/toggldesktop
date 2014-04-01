@@ -939,6 +939,23 @@ void kopsik_time_entry_view_item_clear(
     delete item;
 }
 
+_Bool kopsik_parse_time(
+    const char *input,
+    int *hours,
+    int *minutes) {
+    poco_assert(hours);
+    poco_assert(minutes);
+    *hours = 0;
+    *minutes = 0;
+
+    if (!input) {
+        return true;
+    }
+
+    return kopsik::Formatter::ParseTimeInput(
+        std::string(input), hours, minutes);
+}
+
 void kopsik_format_duration_in_seconds_hhmmss(
     const int64_t duration_in_seconds,
     char *out_str,

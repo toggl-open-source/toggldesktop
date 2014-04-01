@@ -430,6 +430,50 @@ TEST(KopsikApiTest, kopsik_time_entry_view_item_init) {
     kopsik_time_entry_view_item_clear(te);
 }
 
+TEST(KopsikApiTest, kopsik_parse_time) {
+    int hours = 0;
+    int minutes = 0;
+    bool valid = true;
+
+    valid = kopsik_parse_time("120a", &hours, &minutes);
+    ASSERT_EQ(true, valid);
+    ASSERT_EQ(1, hours);
+    ASSERT_EQ(20, minutes);
+
+    valid = kopsik_parse_time("1P", &hours, &minutes);
+    ASSERT_EQ(true, valid);
+    ASSERT_EQ(13, hours);
+    ASSERT_EQ(0, minutes);
+
+    valid = kopsik_parse_time("1230", &hours, &minutes);
+    ASSERT_EQ(true, valid);
+    ASSERT_EQ(12, hours);
+    ASSERT_EQ(30, minutes);
+
+    valid = kopsik_parse_time("11:20", &hours, &minutes);
+    ASSERT_EQ(true, valid);
+    ASSERT_EQ(11, hours);
+    ASSERT_EQ(20, minutes);
+
+    valid = kopsik_parse_time("5:30 PM", &hours, &minutes);
+    ASSERT_EQ(true, valid);
+    ASSERT_EQ(17, hours);
+    ASSERT_EQ(30, minutes);
+
+    valid = kopsik_parse_time("17:10", &hours, &minutes);
+    ASSERT_EQ(true, valid);
+    ASSERT_EQ(17, hours);
+    ASSERT_EQ(10, minutes);
+
+    valid = kopsik_parse_time("12:00 AM", &hours, &minutes);
+    ASSERT_EQ(true, valid);
+    ASSERT_EQ(0, hours);
+    ASSERT_EQ(0, minutes);
+
+    valid = kopsik_parse_time("NOT VALID", &hours, &minutes);
+    ASSERT_EQ(false, valid);
+}
+
 TEST(KopsikApiTest, kopsik_format_duration_in_seconds_hhmmss) {
     const int kMaxStrLen = 100;
     char str[kMaxStrLen];

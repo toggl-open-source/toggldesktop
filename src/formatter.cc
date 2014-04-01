@@ -99,6 +99,101 @@ std::string Formatter::FormatDateHeader(const std::time_t date) {
     return Poco::DateTimeFormatter::format(ts, "%w %d. %b");
 }
 
+bool Formatter::ParseTimeInput(const std::string input,
+                               int *hours,
+                               int *minutes) {
+    *hours = 0;
+    *minutes = 0;
+
+    std::string value = input;
+    std::transform(value.begin(), value.end(), value.begin(), ::toupper);
+    for (size_t i = 0; i < value.length(); i++) {
+        if (value[i] == ' ') {
+            value.erase(i, 1);
+        }
+    }
+
+    bool has_pm = false;
+    bool has_am_pm = false;
+
+    // Look for AM/PM
+    size_t pos = value.find("A");
+    if (pos != std::string::npos) {
+        has_am_pm = true;
+    } else {
+        pos = value.find("P");
+        if (pos != std::string::npos) {
+            has_am_pm = true;
+            has_pm = true;
+        }
+    }
+
+    if (has_am_pm) {
+        std::string numbers = value.substr(0, pos);
+
+        // Found AM/PM
+        // Handle formats: HHa, HHmma, HH:mm a
+        if (numbers.length() > 2) {
+            Poco::StringTokenizer tokenizer(numbers, ":");
+            if (2 == tokenizer.count()) {
+                if (!Poco::NumberParser::tryParse(tokenizer[0], *hours)) {
+                    return false;
+                }
+                if (!Poco::NumberParser::tryParse(tokenizer[1], *minutes)) {
+                    return false;
+                }
+            } else {
+                if (!Poco::NumberParser::tryParse(
+                    numbers.substr(0, numbers.length()-2), *hours)
+                        || !Poco::NumberParser::tryParse(
+                            numbers.substr((numbers.length()-2), 2), *minutes)
+                   ) {
+                    return false;
+                }
+            }
+
+        } else {
+            if (!Poco::NumberParser::tryParse(numbers, *hours)) {
+                return false;
+            }
+        }
+
+        if (has_pm && *hours < 12) {
+            *hours = *hours + 12;
+        } else if (*hours == 12 && !has_pm) {
+            *hours = 0;
+        }
+
+    } else {
+        // Handle formats: HH:mm, HHmm, HH
+        if (value.length() > 4) {
+            Poco::StringTokenizer tokenizer(value, ":");
+            if (2 != tokenizer.count()) {
+                return false;
+            }
+            if (!Poco::NumberParser::tryParse(tokenizer[0], *hours)) {
+                return false;
+            }
+            if (!Poco::NumberParser::tryParse(tokenizer[1], *minutes)) {
+                return false;
+            }
+
+        } else if (value.length() > 2) {
+            if (!Poco::NumberParser::tryParse(
+                value.substr(0, value.length()-2), *hours)
+                    || !Poco::NumberParser::tryParse(
+                        value.substr((value.length()-2), 2), *minutes)) {
+                return false;
+            }
+        } else {
+            if (!Poco::NumberParser::tryParse(value, *hours)) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 bool Formatter::parseDurationStringHHMMSS(const std::string value,
         int *parsed_seconds) {
     *parsed_seconds = 0;
