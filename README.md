@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.org/toggl/toggldesktop.png)](https://travis-ci.org/toggl/toggldesktop)
 
 OS X
 ----
@@ -21,7 +20,7 @@ We're building the Windows app using [Visual Studio Express 2013 for Windows Des
 
 Linux
 -----
-FIXME
+[![Build Status](https://travis-ci.org/toggl/toggldesktop.png)](https://travis-ci.org/toggl/toggldesktop)
 
 
 Cross platform command line app
