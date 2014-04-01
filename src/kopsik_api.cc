@@ -1727,7 +1727,7 @@ kopsik_api_result kopsik_duration_for_date_header(
 
 void kopsik_websocket_switch(
     void *context,
-    const unsigned int on) {
+    const _Bool on) {
     std::stringstream ss;
     ss << "kopsik_websocket_switch on=" << on;
     logger().debug(ss.str());
@@ -1743,7 +1743,7 @@ void kopsik_websocket_switch(
 
 void kopsik_timeline_switch(
     void *context,
-    const unsigned int on) {
+    const _Bool on) {
     std::stringstream ss;
     ss << "kopsik_timeline_switch on=" << on;
     logger().debug(ss.str());
