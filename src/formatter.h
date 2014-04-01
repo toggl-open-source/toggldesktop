@@ -25,7 +25,6 @@ class Formatter {
     static std::string FormatDurationInSeconds(
         const Poco::Int64 value,
         const std::string format);
-
     static bool ParseTimeInput(
         const std::string value,
         int *hours,
