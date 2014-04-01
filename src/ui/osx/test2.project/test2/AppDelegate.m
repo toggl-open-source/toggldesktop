@@ -190,7 +190,7 @@
                                              object:nil];
 
   KopsikUser *user = kopsik_user_init();
-  if (KOPSIK_API_SUCCESS != kopsik_current_user(ctx, user)) {
+  if (!kopsik_current_user(ctx, user)) {
     kopsik_user_clear(user);
     return;
   }
@@ -256,13 +256,12 @@
 - (void)startNewTimeEntry:(TimeEntryViewItem *)new_time_entry {
   KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
   NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
-  kopsik_api_result res = kopsik_start(ctx,
-                                       [new_time_entry.Description UTF8String],
-                                       [new_time_entry.duration UTF8String],
-                                       new_time_entry.TaskID,
-                                       new_time_entry.ProjectID,
-                                       item);
-  if (KOPSIK_API_SUCCESS != res) {
+  if (!kopsik_start(ctx,
+                    [new_time_entry.Description UTF8String],
+                    [new_time_entry.duration UTF8String],
+                    new_time_entry.TaskID,
+                    new_time_entry.ProjectID,
+                    item)) {
     kopsik_time_entry_view_item_clear(item);
     return;
   }
@@ -286,7 +285,7 @@
 
 - (void)continueTimeEntry:(NSString *)guid {
   KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-  kopsik_api_result res = 0;
+  _Bool res = false;
   _Bool was_found = false;
   if (guid == nil) {
     res = kopsik_continue_latest(ctx, item, &was_found);
@@ -295,7 +294,7 @@
     res = kopsik_continue(ctx, [guid UTF8String], item);
   }
 
-  if (res != KOPSIK_API_SUCCESS) {
+  if (!res) {
     kopsik_time_entry_view_item_clear(item);
     return;
   }
@@ -318,7 +317,7 @@
 - (void)stopTimeEntry {
   KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
   _Bool was_found = false;
-  if (KOPSIK_API_SUCCESS != kopsik_stop(ctx, item, &was_found)) {
+  if (!kopsik_stop(ctx, item, &was_found)) {
     kopsik_time_entry_view_item_clear(item);
     return;
   }
@@ -344,11 +343,10 @@
   _Bool was_found = false;
   NSTimeInterval startedAt = [idleEvent.started timeIntervalSince1970];
   NSLog(@"Time entry stop at %f", startedAt);
-  kopsik_api_result res = kopsik_stop_running_time_entry_at(ctx,
-                                                            startedAt,
-                                                            item,
-                                                            &was_found);
-  if (KOPSIK_API_SUCCESS != res) {
+  if (!kopsik_stop_running_time_entry_at(ctx,
+                                         startedAt,
+                                         item,
+                                         &was_found)) {
     kopsik_time_entry_view_item_clear(item);
     return;
   }
@@ -545,10 +543,10 @@
   _Bool use_idle_detection = false;
   _Bool menubar_timer = false;
   _Bool dock_icon = false;
-  if (KOPSIK_API_SUCCESS != kopsik_get_settings(ctx,
-                                                &use_idle_detection,
-                                                &menubar_timer,
-                                                &dock_icon)) {
+  if (!kopsik_get_settings(ctx,
+                           &use_idle_detection,
+                           &menubar_timer,
+                           &dock_icon)) {
     return;
   }
 
@@ -641,7 +639,7 @@
 }
 
 - (IBAction)onLogoutMenuItem:(id)sender {
-  if (KOPSIK_API_SUCCESS != kopsik_logout(ctx)) {
+  if (!kopsik_logout(ctx)) {
     return;
   }
   [[NSNotificationCenter defaultCenter]
@@ -661,7 +659,7 @@
     return;
   }
   
-  if (KOPSIK_API_SUCCESS != kopsik_clear_cache(ctx)) {
+  if (!kopsik_clear_cache(ctx)) {
     return;
   }
   
@@ -842,8 +840,8 @@ const NSString *appName = @"osx_native_app";
                             
   NSLog(@"Version %@", version);
 
-  kopsik_api_result res = kopsik_set_db_path(ctx, [self.db_path UTF8String]);
-  NSAssert(KOPSIK_API_SUCCESS == res,
+  _Bool res = kopsik_set_db_path(ctx, [self.db_path UTF8String]);
+  NSAssert(res,
            ([NSString stringWithFormat:@"Failed to initialize DB with path: %@", self.db_path]));
 
   id logToFile = infoDict[@"KopsikLogUserInterfaceToFile"];
@@ -855,7 +853,7 @@ const NSString *appName = @"osx_native_app";
   }
 
   res = kopsik_configure_proxy(ctx);
-  NSAssert(KOPSIK_API_SUCCESS == res, @"Failed to initialize DB");
+  NSAssert(res, @"Failed to initialize DB");
 
   if (self.api_url_override != nil) {
     kopsik_set_api_url(ctx, [self.api_url_override UTF8String]);
@@ -973,21 +971,10 @@ const NSString *appName = @"osx_native_app";
     return YES;
 }
 
-void sync_finished(kopsik_api_result result, const char *err) {
-  NSLog(@"sync_finished");
-  if (KOPSIK_API_SUCCESS != result) {
-    [[NSNotificationCenter defaultCenter]
-      postNotificationName:kUIStateError
-      object:[NSString stringWithUTF8String:err]];
-    return;
-  }
-  renderRunningTimeEntry();
-}
-
 void renderRunningTimeEntry() {
   KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
   _Bool is_tracking = false;
-  if (KOPSIK_API_SUCCESS != kopsik_running_time_entry_view_item(ctx, item, &is_tracking)) {
+  if (!kopsik_running_time_entry_view_item(ctx, item, &is_tracking)) {
     kopsik_time_entry_view_item_clear(item);
     return;
   }
@@ -1026,32 +1013,6 @@ void on_model_change(KopsikModelChange *change) {
 
 - (void)checkForUpdates {
   kopsik_check_for_updates(ctx);
-}
-
-void check_for_updates_callback(kopsik_api_result result,
-                                const char *errmsg,
-                                const _Bool is_update_available,
-                                const char *url,
-                                const char *version) {
-  if (KOPSIK_API_SUCCESS != result) {
-    handle_error(errmsg);
-    return;
-  }
-  if (!is_update_available) {
-    [[NSNotificationCenter defaultCenter]
-      postNotificationName:kUIStateUpToDate
-      object:nil];
-    NSLog(@"check_for_updates_callback: no updates available");
-    return;
-  }
-
-  Update *update = [[Update alloc] init];
-  update.URL = [NSString stringWithUTF8String:url];
-  update.version = [NSString stringWithUTF8String:version];
-
-  [[NSNotificationCenter defaultCenter]
-    postNotificationName:kUIStateUpdateAvailable
-    object:update];
 }
 
 - (void)presentUpgradeDialog:(Update *)update {

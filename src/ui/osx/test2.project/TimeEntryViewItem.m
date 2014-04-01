@@ -68,11 +68,11 @@
   }
   _Bool was_found = false;
   KopsikTimeEntryViewItem *view_item = kopsik_time_entry_view_item_init();
-  if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_item_by_guid(ctx,
-                                                                [guid UTF8String],
-                                                                view_item,
-                                                                &was_found)) {
-
+  if (!kopsik_time_entry_view_item_by_guid(ctx,
+                                           [guid UTF8String],
+                                           view_item,
+                                           &was_found)) {
+    
     kopsik_time_entry_view_item_clear(view_item);
     return nil;
   }

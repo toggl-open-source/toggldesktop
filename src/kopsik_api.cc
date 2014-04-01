@@ -179,7 +179,7 @@ void kopsik_context_clear(void *context) {
 
 // Configuration API.
 
-kopsik_api_result kopsik_get_settings(
+_Bool kopsik_get_settings(
     void *context,
     _Bool *out_use_idle_detection,
     _Bool *out_menubar_timer,
@@ -198,7 +198,7 @@ kopsik_api_result kopsik_get_settings(
                             &dock_icon);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
 
         *out_use_idle_detection = false;
@@ -217,18 +217,18 @@ kopsik_api_result kopsik_get_settings(
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_get_proxy_settings(
+_Bool kopsik_get_proxy_settings(
     void *context,
     _Bool *out_use_proxy,
     char **out_proxy_host,
@@ -249,7 +249,7 @@ kopsik_api_result kopsik_get_proxy_settings(
             &proxy);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
 
         *out_use_proxy = false;
@@ -263,18 +263,18 @@ kopsik_api_result kopsik_get_proxy_settings(
         *out_proxy_password = strdup(proxy.password.c_str());
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_set_settings(
+_Bool kopsik_set_settings(
     void *context,
     const _Bool use_idle_detection,
     const _Bool menubar_timer,
@@ -286,27 +286,27 @@ kopsik_api_result kopsik_set_settings(
             dock_icon);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_set_proxy_settings(void *context,
-        const _Bool use_proxy,
-        const char *proxy_host,
-        const unsigned int proxy_port,
-        const char *proxy_username,
-        const char *proxy_password) {
+_Bool kopsik_set_proxy_settings(void *context,
+                                const _Bool use_proxy,
+                                const char *proxy_host,
+                                const unsigned int proxy_port,
+                                const char *proxy_username,
+                                const char *proxy_password) {
     try {
         poco_assert(proxy_host);
         poco_assert(proxy_username);
@@ -321,43 +321,43 @@ kopsik_api_result kopsik_set_proxy_settings(void *context,
         kopsik::error err = app(context)->SaveProxySettings(use_proxy, &proxy);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_configure_proxy(
+_Bool kopsik_configure_proxy(
     void *context) {
     try {
         kopsik::error err = app(context)->ConfigureProxy();
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_set_db_path(
+_Bool kopsik_set_db_path(
     void *context,
     const char *path) {
     kopsik::error err = kopsik::noError;
@@ -378,9 +378,9 @@ kopsik_api_result kopsik_set_db_path(
     }
     if (err != kopsik::noError) {
         export_on_error_callback(err);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
 void kopsik_set_log_path(const char *path) {
@@ -446,7 +446,7 @@ void kopsik_user_clear(
     delete user;
 }
 
-kopsik_api_result kopsik_current_user(
+_Bool kopsik_current_user(
     void *context,
     KopsikUser *out_user) {
     try {
@@ -458,11 +458,11 @@ kopsik_api_result kopsik_current_user(
         kopsik::error err = app(context)->CurrentUser(&current_user);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
 
         if (!current_user) {
-            return KOPSIK_API_SUCCESS;
+            return true;
         }
         if (out_user->TimeOfDayFormat) {
             free(out_user->TimeOfDayFormat);
@@ -478,18 +478,18 @@ kopsik_api_result kopsik_current_user(
         out_user->ID = (unsigned int)current_user->ID();
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_set_api_token(
+_Bool kopsik_set_api_token(
     void *context,
     const char *api_token) {
     try {
@@ -502,22 +502,22 @@ kopsik_api_result kopsik_set_api_token(
         kopsik::error err = app(context)->SetCurrentAPIToken(api_token);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_get_api_token(
+_Bool kopsik_get_api_token(
     void *context,
     char *str,
     const unsigned int max_strlen) {
@@ -529,23 +529,23 @@ kopsik_api_result kopsik_get_api_token(
         kopsik::error err = app(context)->CurrentAPIToken(&token);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
         strncpy(str, token.c_str(), max_strlen);
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_set_logged_in_user(
+_Bool kopsik_set_logged_in_user(
     void *context,
     const char *json) {
     poco_assert(json);
@@ -557,22 +557,22 @@ kopsik_api_result kopsik_set_logged_in_user(
             app(context)->SetLoggedInUserFromJSON(std::string(json));
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_login(
+_Bool kopsik_login(
     void *context,
     const char *in_email,
     const char *in_password) {
@@ -588,32 +588,32 @@ kopsik_api_result kopsik_login(
         std::string password(in_password);
         if (email.empty()) {
             export_on_error_callback("Empty email");
-            return KOPSIK_API_FAILURE;
+            return false;
         }
         if (password.empty()) {
             export_on_error_callback("Empty password");
-            return KOPSIK_API_FAILURE;
+            return false;
         }
 
         kopsik::error err = app(context)->Login(email, password);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_logout(
+_Bool kopsik_logout(
     void *context) {
 
     logger().debug("kopsik_logout");
@@ -621,13 +621,13 @@ kopsik_api_result kopsik_logout(
     kopsik::error err = app(context)->Logout();
     if (err != kopsik::noError) {
         export_on_error_callback(err);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
 
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_clear_cache(
+_Bool kopsik_clear_cache(
     void *context) {
 
     logger().debug("kopsik_clear_cache");
@@ -635,12 +635,12 @@ kopsik_api_result kopsik_clear_cache(
     kopsik::error err = app(context)->ClearCache();
     if (err != kopsik::noError) {
         export_on_error_callback(err);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_user_can_see_billable_flag(
+_Bool kopsik_user_can_see_billable_flag(
     void *context,
     const char *guid,
     _Bool *can_see) {
@@ -655,18 +655,18 @@ kopsik_api_result kopsik_user_can_see_billable_flag(
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_user_can_add_projects(
+_Bool kopsik_user_can_add_projects(
     void *context,
     const unsigned int workspace_id,
     _Bool *can_add) {
@@ -680,18 +680,18 @@ kopsik_api_result kopsik_user_can_add_projects(
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_user_is_logged_in(
+_Bool kopsik_user_is_logged_in(
     void *context,
     _Bool *is_logged_in) {
     try {
@@ -703,18 +703,18 @@ kopsik_api_result kopsik_user_is_logged_in(
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_users_default_wid(
+_Bool kopsik_users_default_wid(
     void *context,
     unsigned int *default_wid) {
     try {
@@ -724,15 +724,15 @@ kopsik_api_result kopsik_users_default_wid(
             static_cast<unsigned int>(app(context)->UsersDefaultWID());
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
 // Sync
@@ -772,7 +772,7 @@ void kopsik_autocomplete_item_clear(
     delete item;
 }
 
-kopsik_api_result kopsik_autocomplete_items(
+_Bool kopsik_autocomplete_items(
     void *context,
     KopsikAutocompleteItem **first,
     const _Bool include_time_entries,
@@ -824,20 +824,20 @@ kopsik_api_result kopsik_autocomplete_items(
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
 // Tags
 
-kopsik_api_result kopsik_tags(
+_Bool kopsik_tags(
     void *context,
     KopsikViewItem **first) {
 
@@ -856,12 +856,12 @@ kopsik_api_result kopsik_tags(
         *first = item;
     }
 
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
 // Workpaces
 
-kopsik_api_result kopsik_workspaces(
+_Bool kopsik_workspaces(
     void *context,
     KopsikViewItem **first) {
 
@@ -880,12 +880,12 @@ kopsik_api_result kopsik_workspaces(
         *first = item;
     }
 
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
 // Clients
 
-kopsik_api_result kopsik_clients(
+_Bool kopsik_clients(
     void *context,
     const unsigned int workspace_id,
     KopsikViewItem **first) {
@@ -904,12 +904,12 @@ kopsik_api_result kopsik_clients(
         *first = item;
     }
 
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
 // Projects
 
-kopsik_api_result kopsik_add_project(
+_Bool kopsik_add_project(
     void *context,
     const unsigned int workspace_id,
     const unsigned int client_id,
@@ -926,22 +926,22 @@ kopsik_api_result kopsik_add_project(
             &p);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
         poco_assert(p);
 
         *resulting_project = project_to_view_item(p);
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
 // Time entries view API
@@ -1036,7 +1036,7 @@ void kopsik_format_duration_in_seconds_hhmm(
     strncpy(out_str, formatted.c_str(), max_strlen);
 }
 
-kopsik_api_result kopsik_start(
+_Bool kopsik_start(
     void *context,
     const char *description,
     const char *duration,
@@ -1063,7 +1063,7 @@ kopsik_api_result kopsik_start(
             app(context)->Start(desc, dur, task_id, project_id, &te);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
 
         if (te) {
@@ -1080,18 +1080,18 @@ kopsik_api_result kopsik_start(
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_time_entry_view_item_by_guid(
+_Bool kopsik_time_entry_view_item_by_guid(
     void *context,
     const char *guid,
     KopsikTimeEntryViewItem *view_item,
@@ -1111,7 +1111,7 @@ kopsik_api_result kopsik_time_entry_view_item_by_guid(
         kopsik::TimeEntry *te = app(context)->GetTimeEntryByGUID(GUID);
         if (!te) {
             *was_found = false;
-            return KOPSIK_API_SUCCESS;
+            return true;
         }
 
         *was_found = true;
@@ -1123,18 +1123,18 @@ kopsik_api_result kopsik_time_entry_view_item_by_guid(
         time_entry_to_view_item(te, project_label, color_code, view_item, "");
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_continue(
+_Bool kopsik_continue(
     void *context,
     const char *guid,
     KopsikTimeEntryViewItem *view_item) {
@@ -1150,14 +1150,14 @@ kopsik_api_result kopsik_continue(
 
         if (GUID.empty()) {
             export_on_error_callback("Missing GUID");
-            return KOPSIK_API_FAILURE;
+            return false;
         }
 
         kopsik::TimeEntry *te = 0;
         kopsik::error err = app(context)->Continue(GUID, &te);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
 
         if (te) {
@@ -1174,18 +1174,18 @@ kopsik_api_result kopsik_continue(
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_continue_latest(
+_Bool kopsik_continue_latest(
     void *context,
     KopsikTimeEntryViewItem *view_item,
     _Bool *was_found) {
@@ -1202,7 +1202,7 @@ kopsik_api_result kopsik_continue_latest(
         kopsik::error err = app(context)->ContinueLatest(&te);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
 
         if (te) {
@@ -1220,18 +1220,18 @@ kopsik_api_result kopsik_continue_latest(
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_delete_time_entry(
+_Bool kopsik_delete_time_entry(
     void *context,
     const char *guid) {
     try {
@@ -1244,28 +1244,28 @@ kopsik_api_result kopsik_delete_time_entry(
         std::string GUID(guid);
         if (GUID.empty()) {
             export_on_error_callback("Missing GUID");
-            return KOPSIK_API_FAILURE;
+            return false;
         }
 
         kopsik::error err = app(context)->DeleteTimeEntryByGUID(GUID);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_set_time_entry_duration(
+_Bool kopsik_set_time_entry_duration(
     void *context,
     const char *guid,
     const char *value) {
@@ -1283,22 +1283,22 @@ kopsik_api_result kopsik_set_time_entry_duration(
             std::string(value));
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_set_time_entry_project(
+_Bool kopsik_set_time_entry_project(
     void *context,
     const char *guid,
     const unsigned int task_id,
@@ -1316,22 +1316,22 @@ kopsik_api_result kopsik_set_time_entry_project(
                             pguid);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_set_time_entry_start_iso_8601(
+_Bool kopsik_set_time_entry_start_iso_8601(
     void *context,
     const char *guid,
     const char *value) {
@@ -1349,22 +1349,22 @@ kopsik_api_result kopsik_set_time_entry_start_iso_8601(
                     std::string(value));
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_set_time_entry_end_iso_8601(
+_Bool kopsik_set_time_entry_end_iso_8601(
     void *context,
     const char *guid,
     const char *value) {
@@ -1382,22 +1382,22 @@ kopsik_api_result kopsik_set_time_entry_end_iso_8601(
             std::string(value));
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_set_time_entry_tags(
+_Bool kopsik_set_time_entry_tags(
     void *context,
     const char *guid,
     const char *value) {
@@ -1414,22 +1414,22 @@ kopsik_api_result kopsik_set_time_entry_tags(
                             std::string(value));
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_set_time_entry_billable(
+_Bool kopsik_set_time_entry_billable(
     void *context,
     const char *guid,
     const int value) {
@@ -1445,22 +1445,22 @@ kopsik_api_result kopsik_set_time_entry_billable(
             app(context)->SetTimeEntryBillable(std::string(guid), value);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_set_time_entry_description(
+_Bool kopsik_set_time_entry_description(
     void *context,
     const char *guid,
     const char *value) {
@@ -1478,22 +1478,22 @@ kopsik_api_result kopsik_set_time_entry_description(
                     std::string(value));
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_stop(
+_Bool kopsik_stop(
     void *context,
     KopsikTimeEntryViewItem *out_view_item,
     _Bool *was_found) {
@@ -1509,7 +1509,7 @@ kopsik_api_result kopsik_stop(
         kopsik::error err = app(context)->Stop(&te);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
         if (te) {
             *was_found = true;
@@ -1526,18 +1526,18 @@ kopsik_api_result kopsik_stop(
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_stop_running_time_entry_at(
+_Bool kopsik_stop_running_time_entry_at(
     void *context,
     const unsigned int at,
     KopsikTimeEntryViewItem *out_view_item,
@@ -1554,7 +1554,7 @@ kopsik_api_result kopsik_stop_running_time_entry_at(
         kopsik::error err = app(context)->StopAt(at, &te);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
         if (te) {
             *was_found = true;
@@ -1571,18 +1571,18 @@ kopsik_api_result kopsik_stop_running_time_entry_at(
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_running_time_entry_view_item(
+_Bool kopsik_running_time_entry_view_item(
     void *context,
     KopsikTimeEntryViewItem *out_item,
     _Bool *out_is_tracking) {
@@ -1597,7 +1597,7 @@ kopsik_api_result kopsik_running_time_entry_view_item(
         kopsik::error err = app(context)->RunningTimeEntry(&te);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
         if (te) {
             *out_is_tracking = true;
@@ -1614,18 +1614,18 @@ kopsik_api_result kopsik_running_time_entry_view_item(
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_time_entry_view_items(
+_Bool kopsik_time_entry_view_items(
     void *context,
     KopsikTimeEntryViewItem **first) {
     try {
@@ -1640,11 +1640,11 @@ kopsik_api_result kopsik_time_entry_view_items(
                             &visible);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
 
         if (visible.empty()) {
-            return KOPSIK_API_SUCCESS;
+            return true;
         }
 
         *first = 0;
@@ -1678,18 +1678,18 @@ kopsik_api_result kopsik_time_entry_view_items(
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_duration_for_date_header(
+_Bool kopsik_duration_for_date_header(
     void *context,
     const char *date,
     char *duration,
@@ -1706,21 +1706,21 @@ kopsik_api_result kopsik_duration_for_date_header(
             app(context)->TrackedPerDateHeader(std::string(date), &sum);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
 
         kopsik_format_duration_in_seconds_hhmm(sum, duration, duration_len);
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
 // Websocket client
@@ -1769,7 +1769,7 @@ int kopsik_timeline_is_recording_enabled(
 
 // Feedback
 
-kopsik_api_result kopsik_feedback_send(
+_Bool kopsik_feedback_send(
     void *context,
     const char *topic,
     const char *details,
@@ -1783,9 +1783,9 @@ kopsik_api_result kopsik_feedback_send(
     kopsik::error err = app(context)->SendFeedback(feedback);
     if (err != kopsik::noError) {
         export_on_error_callback(err);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
 // Updates
@@ -1797,7 +1797,7 @@ void kopsik_check_for_updates(
     app(context)->FetchUpdates();
 }
 
-kopsik_api_result kopsik_set_update_channel(
+_Bool kopsik_set_update_channel(
     void *context,
     const char *update_channel) {
     try {
@@ -1807,22 +1807,22 @@ kopsik_api_result kopsik_set_update_channel(
             app(context)->SaveUpdateChannel(std::string(update_channel));
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
-kopsik_api_result kopsik_get_update_channel(
+_Bool kopsik_get_update_channel(
     void *context,
     char *update_channel,
     const unsigned int update_channel_len) {
@@ -1834,21 +1834,21 @@ kopsik_api_result kopsik_get_update_channel(
         kopsik::error err = app(context)->LoadUpdateChannel(&s);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
-            return KOPSIK_API_FAILURE;
+            return false;
         }
 
         strncpy(update_channel, s.c_str(), update_channel_len);
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::exception& ex) {
         export_on_error_callback(ex.what());
-        return KOPSIK_API_FAILURE;
+        return false;
     } catch(const std::string& ex) {
         export_on_error_callback(ex);
-        return KOPSIK_API_FAILURE;
+        return false;
     }
-    return KOPSIK_API_SUCCESS;
+    return true;
 }
 
 int kopsik_parse_duration_string_into_seconds(const char *duration_string) {

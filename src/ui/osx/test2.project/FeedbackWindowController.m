@@ -41,15 +41,13 @@
     return;
   }
   
-  kopsik_api_result res =
-    kopsik_feedback_send(ctx,
-                        [self.topicComboBox.stringValue UTF8String],
-                        [self.contentTextView.string UTF8String],
-                        [self.selectedImageTextField.stringValue UTF8String]);
-  if (res != KOPSIK_API_SUCCESS) {
+  if (!kopsik_feedback_send(ctx,
+                            [self.topicComboBox.stringValue UTF8String],
+                            [self.contentTextView.string UTF8String],
+                            [self.selectedImageTextField.stringValue UTF8String])) {
     return;
   }
-
+  
   [self.window close];
   [self.selectedImageTextField setStringValue:@""];
   [self.selectedImageTextField setHidden:YES];

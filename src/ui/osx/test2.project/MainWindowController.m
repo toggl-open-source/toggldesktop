@@ -132,7 +132,7 @@
     
     if ([msg rangeOfString:@"Request to server failed with status code: 403"].location != NSNotFound) {
       _Bool logged_in = false;
-      if (KOPSIK_API_SUCCESS == kopsik_user_is_logged_in(ctx, &logged_in)) {
+      if (kopsik_user_is_logged_in(ctx, &logged_in)) {
         if (!logged_in) {
           return; // because login screen handles it
         }

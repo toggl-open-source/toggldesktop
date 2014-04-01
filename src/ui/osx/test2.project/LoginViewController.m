@@ -55,7 +55,7 @@
 
   [self.password setStringValue:@""];
 
-  if (KOPSIK_API_SUCCESS != kopsik_login(ctx, [email UTF8String], [pass UTF8String])) {
+  if (!kopsik_login(ctx, [email UTF8String], [pass UTF8String])) {
     return;
   }
   
@@ -120,7 +120,7 @@
     return;
   }
   
-  if (KOPSIK_API_SUCCESS != kopsik_login(ctx, [auth.accessToken UTF8String], "google_access_token")) {
+  if (!kopsik_login(ctx, [auth.accessToken UTF8String], "google_access_token")) {
     return;
   }
   

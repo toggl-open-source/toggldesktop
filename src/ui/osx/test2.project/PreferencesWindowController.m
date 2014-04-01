@@ -58,10 +58,10 @@ NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcu
   _Bool menubar_timer = false;
   _Bool dock_icon = false;
 
-  if (KOPSIK_API_SUCCESS != kopsik_get_settings(ctx,
-                                                &idle_detection,
-                                                &menubar_timer,
-                                                &dock_icon)) {
+  if (!kopsik_get_settings(ctx,
+                           &idle_detection,
+                           &menubar_timer,
+                           &dock_icon)) {
     return;
   }
   
@@ -78,12 +78,12 @@ NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcu
   char *proxy_username = 0;
   char *proxy_password = 0;
 
-  if (KOPSIK_API_SUCCESS != kopsik_get_proxy_settings(ctx,
-                                                      &use_proxy,
-                                                      &proxy_host,
-                                                      &proxy_port,
-                                                      &proxy_username,
-                                                      &proxy_password)) {
+  if (!kopsik_get_proxy_settings(ctx,
+                                 &use_proxy,
+                                 &proxy_host,
+                                 &proxy_port,
+                                 &proxy_username,
+                                 &proxy_password)) {
     return;
   }
   
@@ -168,10 +168,10 @@ NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcu
 - (void)saveSettings {
   NSLog(@"saveSettings");
 
-  if (KOPSIK_API_SUCCESS != kopsik_set_settings(ctx,
-                                                [self stateToBool:[self.useIdleDetectionButton state]],
-                                                [self stateToBool:[self.menubarTimerCheckbox state]],
-                                                [self stateToBool:[self.dockIconCheckbox state]])) {
+  if (!kopsik_set_settings(ctx,
+                           [self stateToBool:[self.useIdleDetectionButton state]],
+                           [self stateToBool:[self.menubarTimerCheckbox state]],
+                           [self stateToBool:[self.dockIconCheckbox state]])) {
     return;
   }
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventSettingsChanged
@@ -190,12 +190,12 @@ NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcu
   NSString *username = [self.usernameTextField stringValue];
   NSString *password = [self.passwordTextField stringValue];
   
-  if (KOPSIK_API_SUCCESS != kopsik_set_proxy_settings(ctx,
-                                                      use_proxy,
-                                                      [host UTF8String],
-                                                      (unsigned int)port,
-                                                      [username UTF8String],
-                                                      [password UTF8String])) {
+  if (!kopsik_set_proxy_settings(ctx,
+                                 use_proxy,
+                                 [host UTF8String],
+                                 (unsigned int)port,
+                                 [username UTF8String],
+                                 [password UTF8String])) {
     return;
   }
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventSettingsChanged
@@ -223,7 +223,7 @@ NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcu
   [self.recordTimelineCheckbox setState:state];
 
   _Bool logged_in = false;
-  if (KOPSIK_API_SUCCESS != kopsik_user_is_logged_in(ctx, &logged_in)) {
+  if (!kopsik_user_is_logged_in(ctx, &logged_in)) {
     return;
   }
   if (logged_in) {
