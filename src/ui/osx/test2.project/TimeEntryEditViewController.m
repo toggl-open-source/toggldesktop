@@ -69,10 +69,6 @@
                                                selector:@selector(eventHandler:)
                                                    name:kUIStateTimeEntryDeselected
                                                  object:nil];
-      [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(eventHandler:)
-                                                 name:kUIStateUserLoggedIn
-                                               object:nil];
       self.format = [[NSDateFormatter alloc] init];
 
       self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] init];
@@ -375,17 +371,6 @@
 }
 
 - (void)eventHandler: (NSNotification *) notification {
-  if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    self.userinfo = notification.object;
-
-    if ([self.userinfo.timeOfDayFormat isEqualToString:@"H:mm"]){
-      [self.format setDateFormat:@"HH:mm"];
-    } else {
-      [self.format setDateFormat:@"HH:mm a"];
-    }
-    return;
-  }
-
   if ([notification.name isEqualToString:kUIStateTimeEntryDeselected]) {
     [self.addProjectBox setHidden:YES];
     [self.projectSelectBox setHidden:NO];
@@ -409,6 +394,14 @@
     [self performSelectorOnMainThread:@selector(startWorkspaceSelectRendering)
                            withObject:nil
                         waitUntilDone:NO];
+
+    self.userinfo = notification.object;
+
+    if ([self.userinfo.timeOfDayFormat isEqualToString:@"H:mm"]){
+      [self.format setDateFormat:@"HH:mm"];
+    } else {
+      [self.format setDateFormat:@"HH:mm a"];
+    }
     return;
   }
 
