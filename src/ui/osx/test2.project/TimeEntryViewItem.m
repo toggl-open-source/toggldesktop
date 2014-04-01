@@ -66,18 +66,14 @@
   if (nil == guid || 0 == guid.length) {
     return nil;
   }
-  int was_found = 0;
+  _Bool was_found = false;
   KopsikTimeEntryViewItem *view_item = kopsik_time_entry_view_item_init();
-  char err[KOPSIK_ERR_LEN];
-  if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_item_by_guid(ctx,
-                                                                err,
-                                                                KOPSIK_ERR_LEN,
-                                                                [guid UTF8String],
-                                                                view_item,
-                                                                &was_found)) {
+  if (!kopsik_time_entry_view_item_by_guid(ctx,
+                                           [guid UTF8String],
+                                           view_item,
+                                           &was_found)) {
+    
     kopsik_time_entry_view_item_clear(view_item);
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                        object:[NSString stringWithUTF8String:err]];
     return nil;
   }
   

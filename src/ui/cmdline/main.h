@@ -42,7 +42,6 @@ class Main : public Poco::Util::Application, Poco::ErrorHandler {
     int continueTimeEntry();
     int status();
     int listenToWebSocket();
-    int showPushableData();
     int listTimeEntries();
     int startTimeEntry();
     int stopTimeEntry();

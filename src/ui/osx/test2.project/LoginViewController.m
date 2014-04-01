@@ -23,7 +23,10 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-      [self performSelector:@selector(setDefaultUser) withObject:nil afterDelay:0.5];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(eventHandler:)
+                                                   name:kUIStateError
+                                                 object:nil];
     }
     return self;
 }
@@ -52,15 +55,7 @@
 
   [self.password setStringValue:@""];
 
-  char err[KOPSIK_ERR_LEN];
-  if (KOPSIK_API_SUCCESS != kopsik_login(ctx, err, KOPSIK_ERR_LEN, [email UTF8String], [pass UTF8String])) {
-    NSLog(@"Login error: %s", err);
-    NSString *msg = [NSString stringWithUTF8String:err];
-    if ([msg rangeOfString:@"Request to server failed with status code: 403"].location != NSNotFound) {
-      msg = @"Invalid e-mail or password. Please try again!";
-    }
-    [self.errorLabel setStringValue:msg];
-    [self.troubleBox setHidden:NO];
+  if (!kopsik_login(ctx, [email UTF8String], [pass UTF8String])) {
     return;
   }
   
@@ -125,16 +120,26 @@
     return;
   }
   
-  char err[KOPSIK_ERR_LEN];
-  if (KOPSIK_API_SUCCESS != kopsik_login(ctx, err, KOPSIK_ERR_LEN, [auth.accessToken UTF8String], "google_access_token")) {
-    NSLog(@"Login error: %s", err);
-    [self.errorLabel setStringValue:[NSString stringWithUTF8String:err]];
-    [self.troubleBox setHidden:NO];
+  if (!kopsik_login(ctx, [auth.accessToken UTF8String], "google_access_token")) {
     return;
   }
   
   [self.troubleBox setHidden:YES];
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedIn object:nil];
+}
+
+- (void)eventHandler: (NSNotification *) notification {
+  if ([notification.name isEqualToString:kUIStateError]) {
+    NSString *msg = notification.object;
+    if ([msg rangeOfString:@"Request to server failed with status code: 403"].location != NSNotFound) {
+      msg = @"Invalid e-mail or password. Please try again!";
+    }
+
+    [self.errorLabel setStringValue:msg];
+    [self.troubleBox setHidden:NO];
+
+    return;
+  }
 }
 
 @end

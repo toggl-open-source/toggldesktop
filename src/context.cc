@@ -16,7 +16,7 @@
 #include "Poco/Util/TimerTask.h"
 #include "Poco/Util/TimerTaskAdapter.h"
 #include "Poco/Environment.h"
-#include "Poco/Timespan.h"
+#include "Poco/Timestamp.h"
 
 namespace kopsik {
 
@@ -149,7 +149,7 @@ kopsik::error Context::save() {
 void Context::FullSync() {
     logger().debug("FullSync");
 
-    next_full_sync_at_ = Poco::Timestamp() + kRequestThrottleMicros;
+    next_full_sync_at_ = postpone();
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onFullSync);
 
@@ -157,14 +157,31 @@ void Context::FullSync() {
     timer_.schedule(ptask, next_full_sync_at_);
 }
 
+Poco::Timestamp Context::postpone() {
+    return Poco::Timestamp() + kRequestThrottleMicros;
+}
+
+bool Context::isPostponed(const Poco::Timestamp value) const {
+    Poco::Timestamp now;
+    if (now > value) {
+        return false;
+    }
+    Poco::Timestamp::TimeDiff diff = value - now;
+    if (diff > 2*kRequestThrottleMicros) {
+        logger().warning("Cannot postpone task, its foo far in the future");
+        return false;
+    }
+    return true;
+}
+
 void Context::onFullSync(Poco::Util::TimerTask& task) {  // NOLINT
-    if (next_full_sync_at_ > Poco::Timestamp()) {
+    if (isPostponed(next_full_sync_at_)) {
         logger().debug("onFullSync postponed");
         return;
     }
     logger().debug("onFullSync executing");
 
-    kopsik::HTTPSClient https_client(api_url_, app_name_, app_version_);
+    kopsik::HTTPSClient https_client = get_https_client();
     kopsik::error err = user_->FullSync(&https_client);
     if (err != kopsik::noError) {
         on_error_callback_(err.c_str());
@@ -183,7 +200,7 @@ void Context::onFullSync(Poco::Util::TimerTask& task) {  // NOLINT
 void Context::partialSync() {
     logger().debug("partialSync");
 
-    next_partial_sync_at_ = Poco::Timestamp() + kRequestThrottleMicros;
+    next_partial_sync_at_ = postpone();
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(
             *this, &Context::onPartialSync);
@@ -193,13 +210,13 @@ void Context::partialSync() {
 }
 
 void Context::onPartialSync(Poco::Util::TimerTask& task) {  // NOLINT
-    if (next_partial_sync_at_ > Poco::Timestamp()) {
+    if (isPostponed(next_partial_sync_at_)) {
         logger().debug("onPartialSync postponed");
         return;
     }
     logger().debug("onPartialSync executing");
 
-    kopsik::HTTPSClient https_client(api_url_, app_name_, app_version_);
+    kopsik::HTTPSClient https_client = get_https_client();
     kopsik::error err = user_->PartialSync(&https_client);
     if (err != kopsik::noError) {
         on_error_callback_(err.c_str());
@@ -366,7 +383,7 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
 void Context::FetchUpdates() {
     logger().debug("FetchUpdates");
 
-    next_fetch_updates_at_ = Poco::Timestamp() + kRequestThrottleMicros;
+    next_fetch_updates_at_ = postpone();
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(
             *this, &Context::onFetchUpdates);
@@ -376,7 +393,7 @@ void Context::FetchUpdates() {
 }
 
 void Context::onFetchUpdates(Poco::Util::TimerTask& task) {  // NOLINT
-    if (next_fetch_updates_at_ > Poco::Timestamp()) {
+    if (isPostponed(next_fetch_updates_at_)) {
         logger().debug("onFetchUpdates postponed");
         return;
     }
@@ -417,11 +434,10 @@ void Context::executeUpdateCheck() {
     }
 
     std::string response_body("");
-    kopsik::HTTPSClient https_client(api_url_, app_name_, app_version_);
-    err = https_client.GetJSON(updateURL(),
-                               std::string(""),
-                               std::string(""),
-                               &response_body);
+    err = get_https_client().GetJSON(updateURL(),
+                                     std::string(""),
+                                     std::string(""),
+                                     &response_body);
     if (err != kopsik::noError) {
         on_error_callback_(err);
         return;
@@ -485,8 +501,7 @@ const std::string Context::osName() {
 void Context::TimelineUpdateServerSettings() {
     logger().debug("TimelineUpdateServerSettings");
 
-    next_update_timeline_settings_at_ =
-        Poco::Timestamp() + kRequestThrottleMicros;
+    next_update_timeline_settings_at_ = postpone();
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(*this,
                 &Context::onTimelineUpdateServerSettings);
@@ -499,14 +514,12 @@ const std::string kRecordTimelineEnabledJSON = "{\"record_timeline\": true}";
 const std::string kRecordTimelineDisabledJSON = "{\"record_timeline\": false}";
 
 void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // NOLINT
-    if (next_update_timeline_settings_at_ > Poco::Timestamp()) {
+    if (isPostponed(next_update_timeline_settings_at_)) {
         logger().debug("onTimelineUpdateServerSettings postponed");
         return;
     }
 
     logger().debug("onTimelineUpdateServerSettings executing");
-
-    kopsik::HTTPSClient https_client(api_url_, app_name_, app_version_);
 
     std::string json(kRecordTimelineDisabledJSON);
     if (user_->RecordTimeline()) {
@@ -514,7 +527,7 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
     }
 
     std::string response_body("");
-    kopsik::error err = https_client.PostJSON("/api/v8/timeline_settings",
+    kopsik::error err = get_https_client().PostJSON("/api/v8/timeline_settings",
                         json,
                         user_->APIToken(),
                         "api_token",
@@ -552,9 +565,8 @@ kopsik::error Context::SendFeedback(Feedback fb) {
 void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onSendFeedback");
 
-    kopsik::HTTPSClient https_client(api_url_, app_name_, app_version_);
     std::string response_body("");
-    kopsik::error err = https_client.PostJSON("/api/v8/feedback",
+    kopsik::error err = get_https_client().PostJSON("/api/v8/feedback",
                         feedback_.JSON(),
                         user_->APIToken(),
                         "api_token",
@@ -686,9 +698,7 @@ kopsik::error Context::Login(
     const std::string password) {
     kopsik::User *logging_in = new kopsik::User(app_name_, app_version_);
 
-    kopsik::HTTPSClient https_client(api_url_,
-                                     app_name_,
-                                     app_version_);
+    kopsik::HTTPSClient https_client = get_https_client();
     kopsik::error err = logging_in->Login(&https_client, email, password);
     if (err != kopsik::noError) {
         delete logging_in;
@@ -1694,6 +1704,18 @@ kopsik::error Context::AddProject(
     poco_assert(*result);
 
     return save();
+}
+
+kopsik::HTTPSClient Context::get_https_client() {
+    kopsik::HTTPSClient result(api_url_, app_name_, app_version_);
+    bool use_proxy(false);
+    kopsik::Proxy proxy;
+    poco_assert(noError == db_->LoadProxySettings(&use_proxy, &proxy));
+    if (use_proxy) {
+        result.SetProxy(proxy);
+        logger().debug("Using proxy to connect: " + proxy.String());
+    }
+    return result;
 }
 
 }  // namespace kopsik

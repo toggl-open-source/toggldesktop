@@ -8,8 +8,8 @@
 
 #import "ErrorHandler.h"
 
-void handle_result(kopsik_api_result result, const char *errmsg) {
-  if (KOPSIK_API_SUCCESS == result) {
+void handle_result(_Bool result, const char *errmsg) {
+  if (result) {
     return;
   }
   handle_error(errmsg);

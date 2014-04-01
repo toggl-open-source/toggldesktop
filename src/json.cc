@@ -119,7 +119,8 @@ void LoadUserFromJSONNode(
         } else if (strcmp(node_name, "store_start_and_stop_time") == 0) {
             model->SetStoreStartAndStopTime(json_as_bool(*current_node));
         } else if (strcmp(node_name, "timeofday_format") == 0) {
-            model->SetTimeOfDayFormat(std::string(json_as_string(*current_node)));
+            model->SetTimeOfDayFormat(
+                std::string(json_as_string(*current_node)));
         } else if (with_related_data) {
             if (strcmp(node_name, "projects") == 0) {
                 LoadUserProjectsFromJSONNode(model, *current_node, full_sync);

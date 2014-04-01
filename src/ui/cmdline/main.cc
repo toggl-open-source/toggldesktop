@@ -7,8 +7,6 @@
 #include "Poco/Message.h"
 #include "Poco/Util/Application.h"
 
-#define ERRLEN 1024
-
 namespace command_line_client {
 
 bool syncing = false;
@@ -24,15 +22,7 @@ std::string model_change_to_string(
 }
 
 void main_change_callback(
-    kopsik_api_result result,
-    const char *errmsg,
     KopsikModelChange *change) {
-    if (KOPSIK_API_SUCCESS != result) {
-        std::cerr << "main_change_callback errmsg="
-                  << std::string(errmsg)
-                  << std::endl;
-        return;
-    }
     std::cout << "main_change_callback change="
               << model_change_to_string(*change)
               << std::endl;
@@ -46,7 +36,7 @@ void main_on_error_callback(
 }
 
 void main_check_updates_callback(
-    const int is_update_available,
+    const _Bool is_update_available,
     const char *url,
     const char *version) {
     std::cout << "main_check_updates_callback is_update_available="
@@ -58,18 +48,6 @@ void main_check_updates_callback(
 
 void main_online_callback() {
     std::cout << "main_online_callback" << std::endl;
-}
-
-void on_sync_result(
-    kopsik_api_result result,
-    const char *errmsg) {
-    if (KOPSIK_API_SUCCESS != result) {
-        std::cerr << "Error " << std::string(errmsg) << std::endl;
-        syncing = false;
-        return;
-    }
-    std::cout << "Success" << std::endl;
-    syncing = false;
 }
 
 Main::Main()
@@ -107,7 +85,7 @@ void Main::initialize(Poco::Util::Application &self) { // NOLINT
 
 void Main::usage() const {
     std::cout << "Recognized commands are: "
-              "sync, start, stop, status, pushable, list, continue, listen"
+              "sync, start, stop, status, list, continue, listen"
               << std::endl;
 }
 
@@ -127,11 +105,9 @@ int Main::sync() {
 }
 
 int Main::continueTimeEntry() {
-    char errmsg[ERRLEN];
     KopsikTimeEntryViewItem *first = 0;
-    if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(
-        ctx_, errmsg, ERRLEN, &first)) {
-        std::cerr << std::string(errmsg) << std::endl;
+    if (!kopsik_time_entry_view_items(
+        ctx_, &first)) {
         kopsik_time_entry_view_item_clear(first);
         return Poco::Util::Application::EXIT_SOFTWARE;
     }
@@ -143,9 +119,8 @@ int Main::continueTimeEntry() {
     }
 
     KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
-    if (KOPSIK_API_SUCCESS != kopsik_continue(
-        ctx_, errmsg, ERRLEN, first->GUID, te)) {
-        std::cerr << std::string(errmsg) << std::endl;
+    if (!kopsik_continue(
+        ctx_, first->GUID, te)) {
         kopsik_time_entry_view_item_clear(first);
         kopsik_time_entry_view_item_clear(te);
         return Poco::Util::Application::EXIT_SOFTWARE;
@@ -158,11 +133,9 @@ int Main::continueTimeEntry() {
 
 int Main::status() {
     KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
-    int found(0);
-    char errmsg[ERRLEN];
-    if (KOPSIK_API_SUCCESS != kopsik_running_time_entry_view_item(
-        ctx_, errmsg, ERRLEN, te, &found)) {
-        std::cerr << std::string(errmsg) << std::endl;
+    _Bool found(false);
+    if (!kopsik_running_time_entry_view_item(
+        ctx_, te, &found)) {
         kopsik_time_entry_view_item_clear(te);
         return Poco::Util::Application::EXIT_SOFTWARE;
     }
@@ -188,27 +161,20 @@ int Main::main(const std::vector<std::string>& args) {
         return Poco::Util::Application::EXIT_USAGE;
     }
 
-    char errmsg[ERRLEN];
-    if (KOPSIK_API_SUCCESS != kopsik_set_db_path(
-        ctx_, errmsg, ERRLEN, "kopsik.db")) {
-        std::cerr << errmsg << std::endl;
+    if (!kopsik_set_db_path(ctx_, "kopsik.db")) {
         return Poco::Util::Application::EXIT_SOFTWARE;
     }
 
     Poco::ErrorHandler::set(this);
 
     // Start session in lib
-    if (KOPSIK_API_SUCCESS != kopsik_set_api_token(
-        ctx_, errmsg, ERRLEN, apitoken)) {
-        std::cerr << errmsg << std::endl;
+    if (!kopsik_set_api_token(ctx_, apitoken)) {
         return Poco::Util::Application::EXIT_SOFTWARE;
     }
 
     // Load user that is referenced by the session
     KopsikUser *user = kopsik_user_init();
-    if (KOPSIK_API_SUCCESS != kopsik_current_user(
-        ctx_, errmsg, ERRLEN, user)) {
-        std::cerr << std::string(errmsg) << std::endl;
+    if (!kopsik_current_user(ctx_, user)) {
         return Poco::Util::Application::EXIT_SOFTWARE;
     }
     kopsik_user_clear(user);
@@ -219,9 +185,6 @@ int Main::main(const std::vector<std::string>& args) {
     }
     if ("status" == args[0]) {
         return status();
-    }
-    if ("pushable" == args[0]) {
-        return showPushableData();
     }
     if ("start" == args[0]) {
         return startTimeEntry();
@@ -241,20 +204,6 @@ int Main::main(const std::vector<std::string>& args) {
 
     usage();
     return Poco::Util::Application::EXIT_USAGE;
-}
-
-int Main::showPushableData() {
-    KopsikPushableModelStats stats;
-    char errmsg[ERRLEN];
-    if (KOPSIK_API_SUCCESS != kopsik_pushable_models(
-        ctx_, errmsg, ERRLEN, &stats)) {
-        std::cerr << std::string(errmsg) << std::endl;
-        return Poco::Util::Application::EXIT_SOFTWARE;
-    }
-    std::cout << stats.TimeEntries
-              << " pushable time entries."
-              << std::endl;
-    return Poco::Util::Application::EXIT_OK;
 }
 
 std::string Main::timeEntryToString(
@@ -282,10 +231,7 @@ int Main::listenToWebSocket() {
 
 int Main::listTimeEntries() {
     KopsikTimeEntryViewItem *first = 0;
-    char errmsg[ERRLEN];
-    if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(
-        ctx_, errmsg, ERRLEN, &first)) {
-        std::cerr << std::string(errmsg) << std::endl;
+    if (!kopsik_time_entry_view_items(ctx_, &first)) {
         kopsik_time_entry_view_item_clear(first);
         return Poco::Util::Application::EXIT_SOFTWARE;
     }
@@ -305,10 +251,8 @@ int Main::listTimeEntries() {
 
 int Main::startTimeEntry() {
     KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
-    char errmsg[ERRLEN];
-    if (KOPSIK_API_SUCCESS != kopsik_start(
-        ctx_, errmsg, ERRLEN, "New time entry", "", 0, 0, te)) {
-        std::cerr << errmsg << std::endl;
+    if (!kopsik_start(
+        ctx_, "New time entry", "", 0, 0, te)) {
         kopsik_time_entry_view_item_clear(te);
         return Poco::Util::Application::EXIT_SOFTWARE;
     }
@@ -318,11 +262,8 @@ int Main::startTimeEntry() {
 
 int Main::stopTimeEntry() {
     KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
-    int was_found(0);
-    char errmsg[ERRLEN];
-    if (KOPSIK_API_SUCCESS != kopsik_stop(
-        ctx_, errmsg, ERRLEN, te, &was_found)) {
-        std::cerr << errmsg << std::endl;
+    _Bool was_found(false);
+    if (!kopsik_stop(ctx_, te, &was_found)) {
         kopsik_time_entry_view_item_clear(te);
         return Poco::Util::Application::EXIT_SOFTWARE;
     }

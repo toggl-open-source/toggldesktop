@@ -111,9 +111,9 @@ void Project::LoadFromJSONNode(JSONNODE * const data) {
         } else if (strcmp(node_name, "color") == 0) {
             SetColor(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "active") == 0) {
-            SetActive(json_as_bool(*current_node));
+            SetActive(json_as_bool(*current_node) ? true : false);
         } else if (strcmp(node_name, "billable") == 0) {
-            SetBillable(json_as_bool(*current_node));
+            SetBillable(json_as_bool(*current_node) ? true : false);
         }
         ++current_node;
     }
@@ -142,19 +142,9 @@ bool Project::DuplicateResource(const kopsik::error err) const {
             std::string(err).find("Name has already been taken"));
 }
 
-bool Project::userCannotAddOrEditProjectsInWorkspace(const error err) const {
-    return (std::string::npos !=
-            std::string(err).find(
-                "User cannot add or edit projects in workspace"));
-}
-
 bool Project::ResolveError(const kopsik::error err) {
     if (userCannotAccessWorkspace(err)) {
         SetWID(0);
-        return true;
-    }
-    if (userCannotAddOrEditProjectsInWorkspace(err)) {
-        Delete();
         return true;
     }
     return false;

@@ -38,11 +38,12 @@ class User : public BaseModel {
     default_wid_(0),
     since_(0),
     fullname_(""),
-    timeofday_format_(""),
     app_name_(app_name),
     app_version_(app_version),
     email_(""),
-    record_timeline_(false) {}
+    record_timeline_(false),
+    timeofday_format_("") {}
+
     ~User();
 
     error FullSync(HTTPSClient *https_client);

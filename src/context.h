@@ -203,6 +203,9 @@ class Context {
         const std::string project_name,
         Project **result);
 
+ protected:
+    kopsik::HTTPSClient get_https_client();
+
  private:
     const std::string updateURL() const;
 
@@ -239,6 +242,9 @@ class Context {
         std::vector<AutocompleteItem> *list) const;
     void getProjectAutocompleteItems(
         std::vector<AutocompleteItem> *list) const;
+
+    bool isPostponed(const Poco::Timestamp value) const;
+    static Poco::Timestamp postpone();
 
     Poco::Mutex db_m_;
     kopsik::Database *db_;

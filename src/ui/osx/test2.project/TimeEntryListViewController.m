@@ -85,11 +85,8 @@
 
   self.timerTimeEntriesRendering = nil;
 
-  char err[KOPSIK_ERR_LEN];
   KopsikTimeEntryViewItem *first = 0;
-  if (KOPSIK_API_SUCCESS != kopsik_time_entry_view_items(ctx, err, KOPSIK_ERR_LEN, &first)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
-                                                        object:[NSString stringWithUTF8String:err]];
+  if (!kopsik_time_entry_view_items(ctx, &first)) {
     return;
   }
 

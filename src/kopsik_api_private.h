@@ -8,8 +8,6 @@
 #include "./kopsik_api.h"
 #include "./context.h"
 
-#define KOPSIK_API_FAILURE 1
-
 KopsikViewItem *view_item_init();
 
 void time_entry_to_view_item(

@@ -170,28 +170,21 @@
   unsigned int clientID = [self selectedClientID];
 
   // A new project is being added!
-  char errmsg[KOPSIK_ERR_LEN];
   KopsikViewItem *project = 0;
-  if (KOPSIK_API_SUCCESS != kopsik_add_project(ctx,
-                                               errmsg,
-                                               KOPSIK_ERR_LEN,
-                                               workspaceID,
-                                               clientID,
-                                               [projectName UTF8String],
-                                               &project)) {
+  if (!kopsik_add_project(ctx,
+                          workspaceID,
+                          clientID,
+                          [projectName UTF8String],
+                          &project)) {
     kopsik_view_item_clear(project);
-    handle_error(errmsg);
     return NO;
   }
-  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_project(ctx,
-                                                          errmsg,
-                                                          KOPSIK_ERR_LEN,
-                                                          [self.GUID UTF8String],
-                                                          0,
-                                                          project->ID,
-                                                          project->GUID)) {
+  if (!kopsik_set_time_entry_project(ctx,
+                                     [self.GUID UTF8String],
+                                     0,
+                                     project->ID,
+                                     project->GUID)) {
     kopsik_view_item_clear(project);
-    handle_error(errmsg);
     return NO;
   }
   kopsik_view_item_clear(project);
@@ -277,14 +270,10 @@
   [self.descriptionCombobox reloadData];
 
   // Check if TE's can be marked as billable at all
-  char err[KOPSIK_ERR_LEN];
-  unsigned int can_see_billable = 0;
-  if (KOPSIK_API_SUCCESS != kopsik_user_can_see_billable_flag(ctx,
-                                                             err,
-                                                             KOPSIK_ERR_LEN,
-                                                             [item.GUID UTF8String],
-                                                             &can_see_billable)) {
-    handle_error(err);
+  _Bool can_see_billable = false;
+  if (!kopsik_user_can_see_billable_flag(ctx,
+                                         [item.GUID UTF8String],
+                                         &can_see_billable)) {
     return;
   }
 
@@ -301,13 +290,10 @@
   }
 
   // Check if user can add projects
-  unsigned int can_add_projects = 0;
-  if (KOPSIK_API_SUCCESS != kopsik_user_can_add_projects(ctx,
-                                                         err,
-                                                         KOPSIK_ERR_LEN,
-                                                         item.WorkspaceID,
-                                                         &can_add_projects)) {
-    handle_error(err);
+  _Bool can_add_projects = false;
+  if (!kopsik_user_can_add_projects(ctx,
+                                    item.WorkspaceID,
+                                    &can_add_projects)) {
     return;
   }
   if (!can_add_projects) {
@@ -490,13 +476,9 @@ completionsForSubstring:(NSString *)substring
   NSAssert(self.tagsTokenField != nil, @"tags field cant be nil");
   NSArray *tag_names = [self.tagsTokenField objectValue];
   const char *value = [[tag_names componentsJoinedByString:@"|"] UTF8String];
-  char errmsg[KOPSIK_ERR_LEN];
-  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_tags(ctx,
-                                                       errmsg,
-                                                       KOPSIK_ERR_LEN,
-                                                       [self.GUID UTF8String],
-                                                       value)) {
-    handle_error(errmsg);
+  if (!kopsik_set_time_entry_tags(ctx,
+                                  [self.GUID UTF8String],
+                                  value)) {
     return;
   }
 }
@@ -522,9 +504,7 @@ completionsForSubstring:(NSString *)substring
   self.timerTagsListRendering = nil;
   
   KopsikViewItem *tag = 0;
-  char errmsg[KOPSIK_ERR_LEN];
-  if (KOPSIK_API_SUCCESS != kopsik_tags(ctx, errmsg, KOPSIK_ERR_LEN, &tag)) {
-    handle_error(errmsg);
+  if (!kopsik_tags(ctx, &tag)) {
     kopsik_view_item_clear(tag);
     return;
   }
@@ -619,13 +599,9 @@ completionsForSubstring:(NSString *)substring
   self.timerWorkspacesListRendering = nil;
   
   KopsikViewItem *first = 0;
-  char errmsg[KOPSIK_ERR_LEN];
-  if (KOPSIK_API_SUCCESS != kopsik_workspaces(ctx,
-                                              errmsg,
-                                              KOPSIK_ERR_LEN,
-                                              &first)) {
+  if (!kopsik_workspaces(ctx,
+                         &first)) {
     kopsik_view_item_clear(first);
-    handle_error(errmsg);
     return;
   }
 
@@ -654,11 +630,8 @@ completionsForSubstring:(NSString *)substring
   // If no workspace is selected, attempt to select the user's
   // default workspace.
   if (!workspaceName.length && self.workspaceList.count) {
-    char errmsg[KOPSIK_ERR_LEN];
     unsigned int default_wid = 0;
-    if (KOPSIK_API_SUCCESS != kopsik_users_default_wid(
-        ctx, errmsg, KOPSIK_ERR_LEN, &default_wid)) {
-      handle_error(errmsg);
+    if (!kopsik_users_default_wid(ctx, &default_wid)) {
       return;
     }
     for (int i = 0; i < self.workspaceList.count; i++) {
@@ -726,15 +699,11 @@ completionsForSubstring:(NSString *)substring
   unsigned int workspace_id = [self selectedWorkspaceID];
 
   KopsikViewItem *first = 0;
-  char errmsg[KOPSIK_ERR_LEN];
   // If no workspace is selected, don't render clients yet.
-  if (workspace_id && KOPSIK_API_SUCCESS != kopsik_clients(ctx,
-                                                           errmsg,
-                                                           KOPSIK_ERR_LEN,
-                                                           workspace_id,
-                                                           &first)) {
+  if (workspace_id && !kopsik_clients(ctx,
+                                      workspace_id,
+                                      &first)) {
     kopsik_view_item_clear(first);
-    handle_error(errmsg);
     return;
   }
 
@@ -767,14 +736,8 @@ completionsForSubstring:(NSString *)substring
     return;
   }
 
-  char err[KOPSIK_ERR_LEN];
   const char *value = [[self.durationTextField stringValue] UTF8String];
-  kopsik_api_result res = kopsik_set_time_entry_duration(ctx,
-                                                         err,
-                                                         KOPSIK_ERR_LEN,
-                                                         [self.GUID UTF8String],
-                                                         value);
-  handle_result(res, err);
+  kopsik_set_time_entry_duration(ctx, [self.GUID UTF8String], value);
 }
 
 - (IBAction)projectSelectChanged:(id)sender {
@@ -785,7 +748,6 @@ completionsForSubstring:(NSString *)substring
 
   [self.projectSelect.cell setCalculatedMaxWidth:0];
 
-  char err[KOPSIK_ERR_LEN];
   NSString *key = [self.projectSelect stringValue];
   AutocompleteItem *autocomplete = [self.projectAutocompleteDataSource get:key];
   unsigned int task_id = 0;
@@ -794,14 +756,7 @@ completionsForSubstring:(NSString *)substring
     task_id = autocomplete.TaskID;
     project_id = autocomplete.ProjectID;
   }
-  kopsik_api_result res = kopsik_set_time_entry_project(ctx,
-                                                        err,
-                                                        KOPSIK_ERR_LEN,
-                                                        [self.GUID UTF8String],
-                                                        task_id,
-                                                        project_id,
-                                                        0);
-  handle_result(res, err);
+  kopsik_set_time_entry_project(ctx, [self.GUID UTF8String], task_id, project_id, 0);
 }
 
 /*
@@ -867,13 +822,7 @@ completionsForSubstring:(NSString *)substring
   NSString *iso8601String = [dateFormatter stringFromDate:combined];
   self.startTimeDate = combined;
 
-  char err[KOPSIK_ERR_LEN];
-  kopsik_api_result res = kopsik_set_time_entry_start_iso_8601(ctx,
-                                                               err,
-                                                               KOPSIK_ERR_LEN,
-                                                               [self.GUID UTF8String],
-                                                               [iso8601String UTF8String]);
-  handle_result(res, err);
+  kopsik_set_time_entry_start_iso_8601(ctx, [self.GUID UTF8String], [iso8601String UTF8String]);
 }
 
 - (IBAction)endTimeChanged:(id)sender {
@@ -903,13 +852,7 @@ completionsForSubstring:(NSString *)substring
   [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
   NSString *iso8601String = [dateFormatter stringFromDate:combined];
   
-  char err[KOPSIK_ERR_LEN];
-  kopsik_api_result res = kopsik_set_time_entry_end_iso_8601(ctx,
-                                                             err,
-                                                             KOPSIK_ERR_LEN,
-                                                             [self.GUID UTF8String],
-                                                             [iso8601String UTF8String]);
-  handle_result(res, err);
+  kopsik_set_time_entry_end_iso_8601(ctx, [self.GUID UTF8String], [iso8601String UTF8String]);
 }
 
 - (IBAction)dateChanged:(id)sender {
@@ -934,17 +877,11 @@ completionsForSubstring:(NSString *)substring
     return;
   }
 
-  char err[KOPSIK_ERR_LEN];
-  int value = 0;
+  _Bool value = false;
   if (NSOnState == [self.billableCheckbox state]) {
-    value = 1;
+    value = true;
   }
-  kopsik_api_result res = kopsik_set_time_entry_billable(ctx,
-                                                         err,
-                                                         KOPSIK_ERR_LEN,
-                                                         [self.GUID UTF8String],
-                                                         value);
-  handle_result(res, err);
+  kopsik_set_time_entry_billable(ctx, [self.GUID UTF8String], value);
 }
 
 - (IBAction)descriptionComboboxChanged:(id)sender {
@@ -963,36 +900,23 @@ completionsForSubstring:(NSString *)substring
     [self.descriptionComboboxDataSource get:key];
 
   if (!autocomplete) {
-    char errmsg[KOPSIK_ERR_LEN];
-    kopsik_api_result res = kopsik_set_time_entry_description(ctx,
-                                                              errmsg,
-                                                              KOPSIK_ERR_LEN,
-                                                              [self.GUID UTF8String],
-                                                              [key UTF8String]);
-    handle_result(res, errmsg);
-    return;
-
+    if (!kopsik_set_time_entry_description(ctx,
+                                           [self.GUID UTF8String],
+                                           [key UTF8String])) {
+      return;
+    }
   }
 
-  char errmsg[KOPSIK_ERR_LEN];
-  if (KOPSIK_API_SUCCESS != kopsik_set_time_entry_project(ctx,
-                                                          errmsg,
-                                                          KOPSIK_ERR_LEN,
-                                                          [self.GUID UTF8String],
-                                                          autocomplete.TaskID,
-                                                          autocomplete.ProjectID,
-                                                          0)) {
-    handle_error(errmsg);
+  if (!kopsik_set_time_entry_project(ctx,
+                                     [self.GUID UTF8String],
+                                     autocomplete.TaskID,
+                                     autocomplete.ProjectID,
+                                     0)) {
     return;
   }
 
   self.descriptionCombobox.stringValue = autocomplete.Description;
-  kopsik_api_result res = kopsik_set_time_entry_description(ctx,
-                                                            errmsg,
-                                                            KOPSIK_ERR_LEN,
-                                                            [self.GUID UTF8String],
-                                                            [autocomplete.Description UTF8String]);
-  handle_result(res, errmsg);
+  kopsik_set_time_entry_description(ctx, [self.GUID UTF8String], [autocomplete.Description UTF8String]);
 }
 
 - (IBAction)deleteButtonClicked:(id)sender {
@@ -1017,13 +941,8 @@ completionsForSubstring:(NSString *)substring
     return;
   }
 
-  char err[KOPSIK_ERR_LEN];
-  kopsik_api_result res = kopsik_delete_time_entry(ctx,
-                                                   err,
-                                                   KOPSIK_ERR_LEN,
-                                                   [self.GUID UTF8String]);
-  if (res != KOPSIK_API_SUCCESS) {
-    handle_error(err);
+  if (!kopsik_delete_time_entry(ctx, [self.GUID UTF8String])) {
+    return;
   }
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntryDeselected object:nil];
 }

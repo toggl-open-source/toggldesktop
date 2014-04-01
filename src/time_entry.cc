@@ -27,8 +27,8 @@ namespace kopsik {
 bool TimeEntry::ResolveError(const kopsik::error err) {
     if (durationTooLarge(err) && Stop() && Start()) {
         Poco::UInt64 seconds =
-            std::min(Stop() - Start(),
-                     Poco::UInt64(kMaxTimeEntryDurationSeconds));
+            (std::min)(Stop() - Start(),
+                       Poco::UInt64(kMaxTimeEntryDurationSeconds));
         SetDurationInSeconds(seconds);
         return true;
     }
@@ -70,7 +70,8 @@ void TimeEntry::StopAt(const Poco::UInt64 at) {
     poco_assert(at);
     poco_assert(IsTracking());
 
-    SetDurationInSeconds(std::max(Poco::UInt64(0), at + DurationInSeconds()));
+    SetDurationInSeconds(
+        (std::max)(Poco::UInt64(0), at + DurationInSeconds()));
 
     poco_assert(DurationInSeconds() >= 0);
 
