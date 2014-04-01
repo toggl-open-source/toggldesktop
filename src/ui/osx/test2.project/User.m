@@ -11,12 +11,6 @@
 
 @implementation User
 
-- (void)load:(KopsikUser *)data {
-  self.ID = data->ID;
-  self.fullname = [NSString stringWithUTF8String:data->Fullname];
-  self.timeOfDayFormat = [NSString stringWithUTF8String:data->TimeOfDayFormat];
-}
-
 - (NSString *)description {
   return [NSString stringWithFormat:@"ID: %ld, fullname: %@",
           self.ID, self.fullname];

@@ -140,7 +140,8 @@ void *kopsik_context_init(
     KopsikViewItemChangeCallback change_callback,
     KopsikErrorCallback error_callback,
     KopsikCheckUpdateCallback check_updates_callback,
-    KopsikOnOnlineCallback online_callback) {
+    KopsikOnOnlineCallback online_callback,
+    KopsikUserLoginCallback user_login_callback) {
     poco_assert(app_name);
     poco_assert(app_version);
 
@@ -158,11 +159,17 @@ void *kopsik_context_init(
 
     ctx->SetOnOnlineCallback(online_callback);
 
+    ctx->SetUserLoginCallback(user_login_callback);
+
     ctx->SetAPIURL(kAPIURL);
     ctx->SetTimelineUploadURL(kTimelineUploadURL);
     ctx->SetWebSocketClientURL(kWebSocketURL);
 
     return ctx;
+}
+
+void kopsik_context_startup(void *context) {
+    app(context)->Startup();
 }
 
 void kopsik_context_shutdown(void *context) {
@@ -226,7 +233,7 @@ _Bool kopsik_get_proxy_settings(
     void *context,
     _Bool *out_use_proxy,
     char **out_proxy_host,
-    unsigned int *out_proxy_port,
+    uint64_t *out_proxy_port,
     char **out_proxy_username,
     char **out_proxy_password) {
     try {
@@ -298,7 +305,7 @@ _Bool kopsik_set_settings(
 _Bool kopsik_set_proxy_settings(void *context,
                                 const _Bool use_proxy,
                                 const char *proxy_host,
-                                const unsigned int proxy_port,
+                                const uint64_t proxy_port,
                                 const char *proxy_username,
                                 const char *proxy_password) {
     try {
@@ -417,70 +424,6 @@ void kopsik_set_websocket_url(
     app(context)->SetWebSocketClientURL(websocket_url);
 }
 
-KopsikUser *kopsik_user_init() {
-    KopsikUser *user = new KopsikUser();
-    user->ID = 0;
-    user->Fullname = 0;
-    user->TimeOfDayFormat = 0;
-    return user;
-}
-
-void kopsik_user_clear(
-    KopsikUser *user) {
-    poco_assert(user);
-    user->ID = 0;
-    free(user->TimeOfDayFormat);
-    user->TimeOfDayFormat = 0;
-    if (user->Fullname) {
-        free(user->Fullname);
-        user->Fullname = 0;
-    }
-    delete user;
-}
-
-_Bool kopsik_current_user(
-    void *context,
-    KopsikUser *out_user) {
-    try {
-        poco_assert(out_user);
-
-        logger().debug("kopsik_current_user");
-
-        kopsik::User *current_user = 0;
-        kopsik::error err = app(context)->CurrentUser(&current_user);
-        if (err != kopsik::noError) {
-            export_on_error_callback(err);
-            return false;
-        }
-
-        if (!current_user) {
-            return true;
-        }
-        if (out_user->TimeOfDayFormat) {
-            free(out_user->TimeOfDayFormat);
-            out_user->TimeOfDayFormat = 0;
-        }
-        if (out_user->Fullname) {
-            free(out_user->Fullname);
-            out_user->Fullname = 0;
-        }
-        out_user->TimeOfDayFormat =
-            strdup(current_user->TimeOfDayFormat().c_str());
-        out_user->Fullname = strdup(current_user->Fullname().c_str());
-        out_user->ID = (unsigned int)current_user->ID();
-    } catch(const Poco::Exception& exc) {
-        export_on_error_callback(exc.displayText());
-        return false;
-    } catch(const std::exception& ex) {
-        export_on_error_callback(ex.what());
-        return false;
-    } catch(const std::string& ex) {
-        export_on_error_callback(ex);
-        return false;
-    }
-    return true;
-}
-
 _Bool kopsik_set_api_token(
     void *context,
     const char *api_token) {
@@ -512,7 +455,7 @@ _Bool kopsik_set_api_token(
 _Bool kopsik_get_api_token(
     void *context,
     char *str,
-    const unsigned int max_strlen) {
+    const uint64_t max_strlen) {
     try {
         poco_assert(str);
         poco_assert(max_strlen);
@@ -660,7 +603,7 @@ _Bool kopsik_user_can_see_billable_flag(
 
 _Bool kopsik_user_can_add_projects(
     void *context,
-    const unsigned int workspace_id,
+    const uint64_t workspace_id,
     _Bool *can_add) {
 
     try {
@@ -708,7 +651,7 @@ _Bool kopsik_user_is_logged_in(
 
 _Bool kopsik_users_default_wid(
     void *context,
-    unsigned int *default_wid) {
+    uint64_t *default_wid) {
     try {
         poco_assert(default_wid);
 
@@ -873,7 +816,7 @@ _Bool kopsik_workspaces(
 
 _Bool kopsik_clients(
     void *context,
-    const unsigned int workspace_id,
+    const uint64_t workspace_id,
     KopsikViewItem **first) {
 
     poco_assert(first);
@@ -895,8 +838,8 @@ _Bool kopsik_clients(
 
 _Bool kopsik_add_project(
     void *context,
-    const unsigned int workspace_id,
-    const unsigned int client_id,
+    const uint64_t workspace_id,
+    const uint64_t client_id,
     const char *project_name,
     KopsikViewItem **resulting_project) {
     try {
@@ -939,13 +882,13 @@ KopsikTimeEntryViewItem *kopsik_time_entry_view_item_init() {
     item->Duration = 0;
     item->Color = 0;
     item->GUID = 0;
-    item->Billable = 0;
+    item->Billable = false;
     item->Tags = 0;
     item->Started = 0;
     item->Ended = 0;
     item->UpdatedAt = 0;
     item->DateHeader = 0;
-    item->DurOnly = 0;
+    item->DurOnly = false;
     item->Next = 0;
     return item;
 }
@@ -1011,9 +954,9 @@ bool kopsik_parse_time(
 }
 
 void kopsik_format_duration_in_seconds_hhmmss(
-    const int duration_in_seconds,
+    const int64_t duration_in_seconds,
     char *out_str,
-    const unsigned int max_strlen) {
+    const uint64_t max_strlen) {
     poco_assert(out_str);
     poco_assert(max_strlen);
     std::string formatted =
@@ -1022,9 +965,9 @@ void kopsik_format_duration_in_seconds_hhmmss(
 }
 
 void kopsik_format_duration_in_seconds_hhmm(
-    const int duration_in_seconds,
+    const int64_t duration_in_seconds,
     char *out_str,
-    const unsigned int max_strlen) {
+    const uint64_t max_strlen) {
     poco_assert(out_str);
     poco_assert(max_strlen);
     std::string formatted = kopsik::Formatter::FormatDurationInSecondsHHMM(
@@ -1036,8 +979,8 @@ _Bool kopsik_start(
     void *context,
     const char *description,
     const char *duration,
-    const unsigned int task_id,
-    const unsigned int project_id,
+    const uint64_t task_id,
+    const uint64_t project_id,
     KopsikTimeEntryViewItem *out_view_item) {
     try {
         poco_assert(out_view_item);
@@ -1297,8 +1240,8 @@ _Bool kopsik_set_time_entry_duration(
 _Bool kopsik_set_time_entry_project(
     void *context,
     const char *guid,
-    const unsigned int task_id,
-    const unsigned int project_id,
+    const uint64_t task_id,
+    const uint64_t project_id,
     const char *project_guid) {
     try {
         poco_assert(guid);
@@ -1428,7 +1371,7 @@ _Bool kopsik_set_time_entry_tags(
 _Bool kopsik_set_time_entry_billable(
     void *context,
     const char *guid,
-    const int value) {
+    const _Bool value) {
     try {
         poco_assert(guid);
 
@@ -1535,7 +1478,7 @@ _Bool kopsik_stop(
 
 _Bool kopsik_stop_running_time_entry_at(
     void *context,
-    const unsigned int at,
+    const uint64_t at,
     KopsikTimeEntryViewItem *out_view_item,
     _Bool *was_found) {
     try {
@@ -1689,7 +1632,7 @@ _Bool kopsik_duration_for_date_header(
     void *context,
     const char *date,
     char *duration,
-    const unsigned int duration_len) {
+    const uint64_t duration_len) {
     try {
         poco_assert(duration);
         poco_assert(duration_len);
@@ -1754,7 +1697,7 @@ void kopsik_timeline_toggle_recording(
     app(context)->ToggleTimelineRecording();
 }
 
-int kopsik_timeline_is_recording_enabled(
+_Bool kopsik_timeline_is_recording_enabled(
     void *context) {
     return app(context)->RecordTimeline();
 }
@@ -1813,7 +1756,7 @@ _Bool kopsik_set_update_channel(
 _Bool kopsik_get_update_channel(
     void *context,
     char *update_channel,
-    const unsigned int update_channel_len) {
+    const uint64_t update_channel_len) {
     try {
         poco_assert(update_channel);
         poco_assert(update_channel_len);
@@ -1839,7 +1782,7 @@ _Bool kopsik_get_update_channel(
     return true;
 }
 
-int kopsik_parse_duration_string_into_seconds(const char *duration_string) {
+int64_t kopsik_parse_duration_string_into_seconds(const char *duration_string) {
     if (!duration_string) {
         return 0;
     }

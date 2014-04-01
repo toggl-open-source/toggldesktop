@@ -90,7 +90,7 @@
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"GUID: %@, description: %@, started: %@, ended: %@, project: %@, seconds: %d, duration: %@, color: %@, billable: %i, tags: %@",
+  return [NSString stringWithFormat:@"GUID: %@, description: %@, started: %@, ended: %@, project: %@, seconds: %lld, duration: %@, color: %@, billable: %i, tags: %@",
           self.GUID, self.Description, self.started, self.ended,
           self.ProjectAndTaskLabel, self.duration_in_seconds, self.duration,
           self.ProjectColor, self.billable, self.tags];

@@ -37,6 +37,7 @@ Context::Context(
   on_model_change_callback_(0),
   on_error_callback_(0),
   on_check_update_callback_(0),
+  on_user_login_callback_(0),
   next_full_sync_at_(0),
   next_partial_sync_at_(0),
   next_fetch_updates_at_(0),
@@ -79,6 +80,28 @@ Context::~Context() {
     }
 
     Poco::Net::uninitializeSSL();
+}
+
+void Context::Startup() {
+    exportUserLoginState();
+}
+
+void Context::exportUserLoginState() {
+    poco_assert(on_user_login_callback_);
+
+    kopsik::User *user = 0;
+    kopsik::error err = CurrentUser(&user);
+    if (err != kopsik::noError) {
+        on_error_callback_(err);
+        return;
+    }
+    if (!user) {
+        on_user_login_callback_(0, "", "");
+        return;
+    }
+    on_user_login_callback_(user->ID(),
+                            user->Fullname().c_str(),
+                            user->TimeOfDayFormat().c_str());
 }
 
 void Context::Shutdown() {
@@ -746,7 +769,14 @@ kopsik::error Context::SetLoggedInUserFromJSON(
     }
     user_ = import;
 
-    return save();
+    err = save();
+    if (err != noError) {
+        return err;
+    }
+
+    exportUserLoginState();
+
+    return noError;
 }
 
 kopsik::error Context::Logout() {
@@ -768,6 +798,8 @@ kopsik::error Context::Logout() {
             delete user_;
             user_ = 0;
         }
+
+        on_user_login_callback_(0, "", "");
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {

@@ -189,26 +189,7 @@
                                                name:kUIStateUpdateAvailable
                                              object:nil];
 
-  KopsikUser *user = kopsik_user_init();
-  if (!kopsik_current_user(ctx, user)) {
-    kopsik_user_clear(user);
-    return;
-  }
-
-  User *userinfo = nil;
-  if (user->ID) {
-    userinfo = [[User alloc] init];
-    [userinfo load:user];
-  }
-  kopsik_user_clear(user);
-  
-  if (userinfo == nil) {
-    [[NSNotificationCenter defaultCenter]
-      postNotificationName:kUIStateUserLoggedOut object:nil];
-  } else {
-    [[NSNotificationCenter defaultCenter]
-      postNotificationName:kUIStateUserLoggedIn object:userinfo];
-  }
+  kopsik_context_startup(ctx);
  
   NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
   NSNumber* checkEnabled = infoDict[@"KopsikCheckForUpdates"];
@@ -639,12 +620,7 @@
 }
 
 - (IBAction)onLogoutMenuItem:(id)sender {
-  if (!kopsik_logout(ctx)) {
-    return;
-  }
-  [[NSNotificationCenter defaultCenter]
-    postNotificationName:kUIStateUserLoggedOut object:nil];
-
+  kopsik_logout(ctx);
   [self onShowMenuItem:self];
 }
 
@@ -659,11 +635,7 @@
     return;
   }
   
-  if (!kopsik_clear_cache(ctx)) {
-    return;
-  }
-  
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedOut object:nil];
+  kopsik_clear_cache(ctx);
 }
 
 - (IBAction)onAboutMenuItem:(id)sender {
@@ -833,10 +805,11 @@ const NSString *appName = @"osx_native_app";
   NSString* version = infoDict[@"CFBundleShortVersionString"];
   ctx = kopsik_context_init([appName UTF8String],
                             [version UTF8String],
-                            on_model_change,
+                            on_model_change_callback,
                             handle_error,
-                            about_updates_checked,
-                            application_online);
+                            on_update_checked_callback,
+                            on_online_callback,
+                            on_user_login_callback);
                             
   NSLog(@"Version %@", version);
 
@@ -991,8 +964,8 @@ void renderRunningTimeEntry() {
   kopsik_time_entry_view_item_clear(item);
 }
 
-void on_model_change(KopsikModelChange *change) {
-  NSLog(@"on_model_change %s %s ID=%d GUID=%s in thread %@",
+void on_model_change_callback(KopsikModelChange *change) {
+  NSLog(@"on_model_change_callback %s %s ID=%llu GUID=%s in thread %@",
         change->ChangeType,
         change->ModelType,
         change->ModelID,
@@ -1092,7 +1065,7 @@ void on_model_change(KopsikModelChange *change) {
   [crashReporter purgePendingCrashReport];
 }
 
-void about_updates_checked(
+void on_update_checked_callback(
     const _Bool is_update_available,
     const char *url,
     const char *version) {
@@ -1108,8 +1081,22 @@ void about_updates_checked(
                                                       object:update];
 }
 
-void application_online() {
+void on_online_callback() {
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateOnline object:nil];
+}
+
+void on_user_login_callback(const uint64_t user_id,
+                            const char *fullname,
+                            const char *timeofdayformat) {
+    if (!user_id) {
+      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedOut object:nil];
+      return;
+    }
+    User *userinfo = [[User alloc] init];
+    userinfo.ID = user_id;
+    userinfo.fullname = [NSString stringWithUTF8String:fullname];
+    userinfo.timeOfDayFormat = [NSString stringWithUTF8String:timeofdayformat];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedIn object:userinfo];
 }
 
 @end

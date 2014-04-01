@@ -12,12 +12,12 @@
 @interface TimeEntryViewItem : NSObject
 - (void)load:(KopsikTimeEntryViewItem *)data;
 + (TimeEntryViewItem *)findByGUID:(NSString *)guid;
-@property int duration_in_seconds;
+@property int64_t duration_in_seconds;
 @property (strong) NSString *Description; // uppercase to avoid clash with [NSObject description]
 @property (strong) NSString *ProjectAndTaskLabel;
-@property int WorkspaceID;
-@property int ProjectID;
-@property int TaskID;
+@property uint64_t WorkspaceID;
+@property uint64_t ProjectID;
+@property uint64_t TaskID;
 @property (strong) NSString *duration;
 @property (strong) NSString *ProjectColor;
 @property (strong) NSString *ProjectGUID; // when project is not saved to backend yet

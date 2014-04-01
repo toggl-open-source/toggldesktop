@@ -28,12 +28,27 @@ void in_test_check_updates_callback(
 
 void in_test_online_callback() {}
 
+unsigned int g_user_id = 0;
+std::string g_user_fullname = "";
+std::string g_user_timeofdayformat = "";
+
+void in_test_user_login_callback(
+    const uint64_t id,
+    const char *fullname,
+    const char *timeofdayformat) {
+
+    g_user_id = id;
+    g_user_fullname = std::string(fullname);
+    g_user_timeofdayformat = std::string(timeofdayformat);
+}
+
 void *create_test_context() {
     return kopsik_context_init("tests", "0.1",
                                in_test_change_callback,
                                in_test_on_error_callback,
                                in_test_check_updates_callback,
-                               in_test_online_callback);
+                               in_test_online_callback,
+                               in_test_user_login_callback);
 }
 
 void wipe_test_db() {
@@ -88,7 +103,7 @@ TEST(KopsikApiTest, kopsik_set_proxy_settings) {
 
     _Bool use_proxy = false;
     char *host = 0;
-    unsigned int port = 0;
+    uint64_t port = 0;
     char *username = 0;
     char *password = 0;
     ASSERT_TRUE(kopsik_get_proxy_settings(
@@ -165,12 +180,6 @@ TEST(KopsikApiTest, kopsik_set_log_level) {
     kopsik_set_log_level("trace");
 }
 
-TEST(KopsikApiTest, kopsik_user_init) {
-    KopsikUser *user = kopsik_user_init();
-    ASSERT_TRUE(user);
-    kopsik_user_clear(user);
-}
-
 TEST(KopsikApiTest, kopsik_set_api_token) {
     void *ctx = create_test_context();
     wipe_test_db();
@@ -213,11 +222,9 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     ASSERT_EQ("30eb0ae954b536d2f6628f7fec47beb6", std::string(str));
 
     // We should have current user now
-    KopsikUser *user = kopsik_user_init();
-    ASSERT_TRUE(kopsik_current_user(ctx, user));
-    ASSERT_EQ((unsigned int)10471231, user->ID);
-    ASSERT_EQ(std::string("John Smith"), std::string(user->Fullname));
-    kopsik_user_clear(user);
+    ASSERT_EQ((unsigned int)10471231, g_user_id);
+    ASSERT_EQ(std::string("John Smith"), g_user_fullname);
+    ASSERT_EQ(std::string("H:mm"), g_user_timeofdayformat);
 
     // Count time entry items before start. It should be 3, since
     // there are 3 time entries in the me.json file we're using:
