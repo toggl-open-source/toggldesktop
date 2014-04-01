@@ -30,6 +30,7 @@ std::string Project::String() const {
         << " wid=" << wid_
         << " guid=" << GUID()
         << " active=" << active_
+        << " public=" << private_
         << " billable=" << billable_;
     return ss.str();
 }
@@ -41,6 +42,13 @@ std::string Project::UppercaseName() const {
 void Project::SetActive(const bool value) {
     if (active_ != value) {
         active_ = value;
+        SetDirty();
+    }
+}
+
+void Project::SetPrivate(const bool value) {
+    if (private_ != value) {
+        private_ = value;
         SetDirty();
     }
 }
@@ -131,6 +139,7 @@ JSONNODE *Project::SaveToJSONNode() const {
     json_push_back(n, json_new_a("guid", GUID().c_str()));
     json_push_back(n, json_new_i("cid", (json_int_t)CID()));
     json_push_back(n, json_new_b("billable", Billable()));
+    json_push_back(n, json_new_b("is_private", IsPrivate()));
     json_push_back(n, json_new_i("ui_modified_at",
                                  (json_int_t)UIModifiedAt()));
 

@@ -1575,10 +1575,10 @@ error Database::saveProject(
                     *session <<
                              "insert into projects("
                              "id, uid, name, wid, color, cid, active, "
-                             "billable"
+                             "is_private, billable"
                              ") values("
                              ":id, :uid, :name, :wid, :color, :cid, :active, "
-                             ":billable"
+                             ":is_private, :billable"
                              ")",
                              Poco::Data::use(model->ID()),
                              Poco::Data::use(model->UID()),
@@ -1587,16 +1587,17 @@ error Database::saveProject(
                              Poco::Data::use(model->Color()),
                              Poco::Data::use(model->CID()),
                              Poco::Data::use(model->Active()),
+                             Poco::Data::use(model->IsPrivate()),
                              Poco::Data::use(model->Billable()),
                              Poco::Data::now;
                 } else {
                     *session <<
                              "insert into projects("
                              "id, uid, name, guid, wid, color, cid, active, "
-                             "billable"
+                             "is_private, billable"
                              ") values("
                              ":id, :uid, :name, :guid, :wid, :color, :cid, "
-                             ":active, "
+                             ":active, :is_private, "
                              ":billable"
                              ")",
                              Poco::Data::use(model->ID()),
@@ -1607,6 +1608,7 @@ error Database::saveProject(
                              Poco::Data::use(model->Color()),
                              Poco::Data::use(model->CID()),
                              Poco::Data::use(model->Active()),
+                             Poco::Data::use(model->IsPrivate()),
                              Poco::Data::use(model->Billable()),
                              Poco::Data::now;
                 }
@@ -1614,10 +1616,11 @@ error Database::saveProject(
                 if (model->GUID().empty()) {
                     *session <<
                              "insert into projects("
-                             "uid, name, wid, color, cid, active, billable"
+                             "uid, name, wid, color, cid, active, "
+                             "is_private, billable"
                              ") values("
                              ":uid, :name, :wid, :color, :cid, :active, "
-                             ":billable"
+                             ":is_private, :billable"
                              ")",
                              Poco::Data::use(model->UID()),
                              Poco::Data::use(model->Name()),
@@ -1625,16 +1628,17 @@ error Database::saveProject(
                              Poco::Data::use(model->Color()),
                              Poco::Data::use(model->CID()),
                              Poco::Data::use(model->Active()),
+                             Poco::Data::use(model->IsPrivate()),
                              Poco::Data::use(model->Billable()),
                              Poco::Data::now;
                 } else {
                     *session <<
                              "insert into projects("
                              "uid, name, guid, wid, color, cid, active, "
-                             "billable"
+                             "is_private, billable"
                              ") values("
                              ":uid, :name, :guid, :wid, :color, :cid, :active, "
-                             ":billable"
+                             ":is_private, :billable"
                              ")",
                              Poco::Data::use(model->UID()),
                              Poco::Data::use(model->Name()),
@@ -1643,6 +1647,7 @@ error Database::saveProject(
                              Poco::Data::use(model->Color()),
                              Poco::Data::use(model->CID()),
                              Poco::Data::use(model->Active()),
+                             Poco::Data::use(model->IsPrivate()),
                              Poco::Data::use(model->Billable()),
                              Poco::Data::now;
                 }
@@ -2210,6 +2215,12 @@ error Database::initialize_tables() {
 
     err = migrate("projects.billable",
                   "ALTER TABLE projects ADD billable INT NOT NULL DEFAULT 0");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("projects.is_private",
+                  "ALTER TABLE projects ADD is_private INT NOT NULL DEFAULT 0");
     if (err != noError) {
         return err;
     }

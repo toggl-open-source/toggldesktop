@@ -214,6 +214,7 @@ extern "C" {
         const uint64_t workspace_id,
         const uint64_t client_id,
         const char *project_name,
+        const _Bool is_private,
         KopsikViewItem **resulting_project);
 
     typedef struct {
