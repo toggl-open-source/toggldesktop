@@ -99,18 +99,23 @@ std::string Formatter::FormatDateHeader(const std::time_t date) {
     return Poco::DateTimeFormatter::format(ts, "%w %d. %b");
 }
 
-bool Formatter::parseTimeInput(std::string value,
-                               int *hours, int *minutes) {
+bool Formatter::ParseTimeInput(const std::string input,
+                               int *hours,
+                               int *minutes) {
     *hours = 0;
     *minutes = 0;
-    bool has_pm = false;
-    bool has_am_pm = false;
-    std::transform(value.begin(), value.end(),value.begin(), ::toupper);
-    for(int i=0; i<value.length(); i++) {
-        if(value[i] == ' ') {
-            value.erase(i,1);
+
+    std::string value = input;
+
+    std::transform(value.begin(), value.end(), value.begin(), ::toupper);
+    for (int i = 0; i < value.length(); i++) {
+        if (value[i] == ' ') {
+            value.erase(i, 1);
         }
     }
+
+    bool has_pm = false;
+    bool has_am_pm = false;
 
     // Look for AM/PM
     size_t pos = value.find("A");
@@ -139,7 +144,8 @@ bool Formatter::parseTimeInput(std::string value,
                     return false;
                 }
             } else {
-                if (!Poco::NumberParser::tryParse(numbers.substr(0, numbers.length()-2), *hours) || !Poco::NumberParser::tryParse(numbers.substr((numbers.length()-2), 2), *minutes)) {
+                if (!Poco::NumberParser::tryParse(numbers.substr(0, numbers.length()-2), *hours)
+                        || !Poco::NumberParser::tryParse(numbers.substr((numbers.length()-2), 2), *minutes)) {
                     return false;
                 }
             }
@@ -157,7 +163,7 @@ bool Formatter::parseTimeInput(std::string value,
         }
 
     } else {
-        //Handle formats: HH:mm, HHmm, HH
+        // Handle formats: HH:mm, HHmm, HH
         if (value.length() > 4) {
             Poco::StringTokenizer tokenizer(value, ":");
             if (tokenizer.count() > 0) {
@@ -172,7 +178,8 @@ bool Formatter::parseTimeInput(std::string value,
             }
 
         } else if (value.length() > 2) {
-            if (!Poco::NumberParser::tryParse(value.substr(0, value.length()-2), *hours) || !Poco::NumberParser::tryParse(value.substr((value.length()-2), 2), *minutes)) {
+            if (!Poco::NumberParser::tryParse(value.substr(0, value.length()-2), *hours)
+                    || !Poco::NumberParser::tryParse(value.substr((value.length()-2), 2), *minutes)) {
                 return false;
             }
         } else {
@@ -183,7 +190,6 @@ bool Formatter::parseTimeInput(std::string value,
     }
 
     return true;
-
 }
 
 bool Formatter::parseDurationStringHHMMSS(const std::string value,

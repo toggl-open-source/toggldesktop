@@ -696,7 +696,7 @@ completionsForSubstring:(NSString *)substring
 
   self.timerClientsListRendering = nil;
 
-  unsigned int workspace_id = [self selectedWorkspaceID];
+  uint64_t workspace_id = [self selectedWorkspaceID];
 
   KopsikViewItem *first = 0;
   // If no workspace is selected, don't render clients yet.
@@ -774,11 +774,9 @@ completionsForSubstring:(NSString *)substring
 }
 
 - (NSDateComponents*)parseTime:(NSTextField*)field current:(NSDateComponents*)component {
-  unsigned int hours = 0;
-  unsigned int minutes = 0;  
-  const char *input_string = [[field stringValue] UTF8String];
-  // INPUT is not valid
-  if (!kopsik_parse_time(input_string, &hours, &minutes)) {
+  int hours = 0;
+  int minutes = 0;
+  if (!kopsik_parse_time([[field stringValue] UTF8String], &hours, &minutes)) {
     if (field == self.startTime) {
       [field setStringValue:[[self.format stringFromDate:self.startTimeDate] uppercaseString]];
     } else if (field == self.endTime) {

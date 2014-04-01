@@ -939,9 +939,7 @@ void kopsik_time_entry_view_item_clear(
     delete item;
 }
 
-// Time input parser
-
-bool kopsik_parse_time(
+_Bool kopsik_parse_time(
     const char *input,
     int *hours,
     int *minutes) {
@@ -950,7 +948,12 @@ bool kopsik_parse_time(
     *hours = 0;
     *minutes = 0;
 
-    return kopsik::Formatter::parseTimeInput(std::string(input), hours, minutes);
+    if (!input) {
+        return true;
+    }
+
+    return kopsik::Formatter::ParseTimeInput(
+        std::string(input), hours, minutes);
 }
 
 void kopsik_format_duration_in_seconds_hhmmss(

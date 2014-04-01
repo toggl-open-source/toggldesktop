@@ -248,7 +248,7 @@ extern "C" {
         KopsikTimeEntryViewItem *item,
         _Bool *is_tracking);
 
-    KOPSIK_EXPORT bool kopsik_parse_time(
+    KOPSIK_EXPORT _Bool kopsik_parse_time(
         const char *input,
         int *hours,
         int *minutes);
