@@ -382,13 +382,13 @@ extern "C" {
 
     KOPSIK_EXPORT void kopsik_websocket_switch(
         void *context,
-        const unsigned int on);
+        const _Bool on);
 
 // Timeline
 
     KOPSIK_EXPORT void kopsik_timeline_switch(
         void *context,
-        const unsigned int on);
+        const _Bool on);
 
     KOPSIK_EXPORT void kopsik_timeline_toggle_recording(
         void *context);
