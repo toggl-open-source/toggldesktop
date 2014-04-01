@@ -128,7 +128,7 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>XCOPY $(SolutionDir)$(ConfigurationName)\*.dll $(TargetDir) /Y
+    <PostBuildEvent>XCOPY $(SolutionDir)\$(ConfigurationName)\TogglDesktopDLL.dll $(TargetDir) /Y
 XCOPY $(SolutionDir)..\..\..\..\third_party\poco-1.4.6p2-all\bin\*.dll $(TargetDir) /Y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
