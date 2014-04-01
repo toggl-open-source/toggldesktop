@@ -21,6 +21,7 @@
                 <outlet property="endTime" destination="2xJ-Tl-Bgy" id="Dcb-yl-aR2"/>
                 <outlet property="lastUpdateTextField" destination="byc-AI-Ri7" id="bg3-EU-Pr6"/>
                 <outlet property="projectNameTextField" destination="2Pz-WE-b3h" id="K15-Cv-8rM"/>
+                <outlet property="projectPublicCheckbox" destination="b5J-U3-cc3" id="qbw-vP-7Yw"/>
                 <outlet property="projectSelect" destination="mxY-tv-UzX" id="eym-qD-quf"/>
                 <outlet property="projectSelectBox" destination="6Sh-4d-bKb" id="gbr-B6-ncX"/>
                 <outlet property="startDate" destination="xTj-21-Dv1" id="E4C-ml-uuJ"/>
@@ -176,7 +177,7 @@
                                                         <outlet property="nextKeyView" destination="Q41-iI-nk2" id="nNJ-aT-yux"/>
                                                     </connections>
                                                 </textField>
-                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IVd-y9-OXp">
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IVd-y9-OXp">
                                                     <rect key="frame" x="6" y="15" width="97" height="16"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <constraints>
@@ -189,7 +190,7 @@
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <comboBox verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q41-iI-nk2">
+                                                <comboBox verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q41-iI-nk2">
                                                     <rect key="frame" x="114" y="9" width="144" height="26"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" usesDataSource="YES" numberOfVisibleItems="10" id="AZn-Xk-njT">
@@ -230,6 +231,14 @@
                                                         <outlet property="nextKeyView" destination="EMR-ul-vEb" id="FcR-hA-6P5"/>
                                                     </connections>
                                                 </comboBox>
+                                                <button ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b5J-U3-cc3">
+                                                    <rect key="frame" x="119" y="31" width="230" height="18"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <buttonCell key="cell" type="check" title="Public (visible to the whole team)" bezelStyle="regularSquare" imagePosition="left" inset="2" id="BcI-iU-p6J">
+                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                        <font key="font" metaFont="smallSystem"/>
+                                                    </buttonCell>
+                                                </button>
                                             </subviews>
                                         </view>
                                         <constraints>
@@ -238,11 +247,16 @@
                                             <constraint firstItem="2Pz-WE-b3h" firstAttribute="leading" secondItem="4nJ-ND-RNO" secondAttribute="trailing" constant="6" id="3qJ-WZ-I91"/>
                                             <constraint firstItem="IVd-y9-OXp" firstAttribute="leading" secondItem="fz4-yg-eQZ" secondAttribute="leading" constant="15" id="7ZE-zh-bfr"/>
                                             <constraint firstItem="4nJ-ND-RNO" firstAttribute="leading" secondItem="fz4-yg-eQZ" secondAttribute="leading" constant="15" id="GPi-bF-eoP"/>
+                                            <constraint firstItem="b5J-U3-cc3" firstAttribute="leading" secondItem="fz4-yg-eQZ" secondAttribute="leading" constant="118" id="VPm-8L-c1Z"/>
                                             <constraint firstItem="qlN-P5-EqC" firstAttribute="leading" secondItem="fz4-yg-eQZ" secondAttribute="leading" constant="15" id="XqX-pg-7H3"/>
                                             <constraint firstAttribute="bottom" secondItem="Kdc-c6-b4n" secondAttribute="bottom" constant="8" id="YQX-i8-qQW"/>
                                             <constraint firstAttribute="trailing" secondItem="2Pz-WE-b3h" secondAttribute="trailing" constant="16" id="ZLU-1I-gYf"/>
                                             <constraint firstItem="Kdc-c6-b4n" firstAttribute="leading" secondItem="qlN-P5-EqC" secondAttribute="trailing" constant="6" id="cac-OP-GiD"/>
+                                            <constraint firstItem="Kdc-c6-b4n" firstAttribute="top" secondItem="Q41-iI-nk2" secondAttribute="bottom" constant="13" id="ct7-Ea-YIq"/>
                                             <constraint firstItem="Q41-iI-nk2" firstAttribute="leading" secondItem="IVd-y9-OXp" secondAttribute="trailing" constant="6" id="h6G-vu-vX3"/>
+                                            <constraint firstItem="qlN-P5-EqC" firstAttribute="top" secondItem="IVd-y9-OXp" secondAttribute="bottom" constant="11" id="m5V-0l-nd8"/>
+                                            <constraint firstItem="b5J-U3-cc3" firstAttribute="top" secondItem="fz4-yg-eQZ" secondAttribute="top" constant="42" id="rdd-c3-q9F"/>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="b5J-U3-cc3" secondAttribute="trailing" constant="16" id="tad-S8-4Kd"/>
                                             <constraint firstAttribute="trailing" secondItem="Q41-iI-nk2" secondAttribute="trailing" constant="16" id="u1n-M8-GpJ"/>
                                         </constraints>
                                         <color key="borderColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
