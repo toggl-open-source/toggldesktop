@@ -923,56 +923,22 @@ error Database::loadTimeEntriesFromSQLStatement(
     return noError;
 }
 
-error Database::saveWorkspaces(
+template <typename T>
+error Database::saveRelatedModels(
     const Poco::UInt64 UID,
-    std::vector<Workspace *> *list,
-    std::vector<ModelChange> *changes) {
-    poco_assert(UID > 0);
-    poco_assert(list);
-    for (std::vector<Workspace *>::iterator it = list->begin();
-            it != list->end(); ++it) {
-        Workspace *model = *it;
-        model->SetUID(UID);
-        error err = saveWorkspace(model, changes);
-        if (err != noError) {
-            return err;
-        }
-    }
-    return noError;
-}
-
-error Database::saveClients(
-    const Poco::UInt64 UID,
-    std::vector<Client *> *list,
-    std::vector<ModelChange> *changes) {
-    poco_assert(UID > 0);
-    poco_assert(list);
-    for (std::vector<Client *>::iterator it = list->begin();
-            it != list->end(); ++it) {
-        Client *model = *it;
-        model->SetUID(UID);
-        error err = saveClient(model, changes);
-        if (err != noError) {
-            return err;
-        }
-    }
-    return noError;
-}
-
-// FIXME: copy paste from time enty save, needs refactoring using base model
-error Database::saveProjects(
-    const Poco::UInt64 UID,
-    std::vector<Project *> *list,
+    const std::string table_name,
+    std::vector<T *> *list,
     std::vector<ModelChange> *changes) {
     poco_assert(UID > 0);
     poco_assert(list);
     poco_assert(changes);
 
-    for (std::vector<Project *>::iterator it = list->begin();
-            it != list->end(); ++it) {
-        Project *model = *it;
+    typedef typename std::vector<T *>::iterator iterator;
+
+    for (size_t i = 0; i < list->size(); i++) {
+        T *model = list->at(i);
         if (model->IsMarkedAsDeletedOnServer()) {
-            error err = deleteFromTable("projects", model->LocalID());
+            error err = deleteFromTable(table_name, model->LocalID());
             if (err != noError) {
                 return err;
             }
@@ -981,16 +947,16 @@ error Database::saveProjects(
             continue;
         }
         model->SetUID(UID);
-        error err = saveProject(model, changes);
+        error err = saveModel(model, changes);
         if (err != noError) {
             return err;
         }
     }
 
     // Purge deleted models from memory
-    std::vector<Project *>::iterator it = list->begin();
+    iterator it = list->begin();
     while (it != list->end()) {
-        Project *model = *it;
+        T *model = *it;
         if (model->IsMarkedAsDeletedOnServer()) {
             it = list->erase(it);
         } else {
@@ -998,90 +964,13 @@ error Database::saveProjects(
         }
     }
 
-    return noError;
-}
-
-error Database::saveTasks(
-    const Poco::UInt64 UID,
-    std::vector<Task *> *list,
-    std::vector<ModelChange> *changes) {
-    poco_assert(UID > 0);
-    poco_assert(list);
-    for (std::vector<Task *>::iterator it = list->begin();
-            it != list->end(); ++it) {
-        Task *model = *it;
-        model->SetUID(UID);
-        error err = saveTask(model, changes);
-        if (err != noError) {
-            return err;
-        }
-    }
-    return noError;
-}
-
-error Database::saveTags(
-    const Poco::UInt64 UID,
-    std::vector<Tag *> *list,
-    std::vector<ModelChange> *changes) {
-    poco_assert(UID > 0);
-    poco_assert(list);
-    for (std::vector<Tag *>::iterator it = list->begin();
-            it != list->end(); ++it) {
-        Tag *model = *it;
-        model->SetUID(UID);
-        error err = saveTag(model, changes);
-        if (err != noError) {
-            return err;
-        }
-    }
     return noError;
 }
 
 typedef kopsik::error (Database::*saveModel)(
     BaseModel *model, std::vector<ModelChange> *changes);
 
-error Database::saveTimeEntries(
-    const Poco::UInt64 UID,
-    std::vector<TimeEntry *> *list,
-    std::vector<ModelChange> *changes) {
-    poco_assert(UID > 0);
-    poco_assert(list);
-    poco_assert(changes);
-
-    for (std::vector<TimeEntry *>::iterator it = list->begin();
-            it != list->end(); ++it) {
-        TimeEntry *model = *it;
-        if (model->IsMarkedAsDeletedOnServer()) {
-            error err = deleteFromTable("time_entries", model->LocalID());
-            if (err != noError) {
-                return err;
-            }
-            changes->push_back(ModelChange(
-                model->ModelName(), "delete", model->ID(), model->GUID()));
-            continue;
-        }
-        model->SetUID(UID);
-        error err = saveTimeEntry(model, changes);
-        if (err != noError) {
-            return err;
-        }
-    }
-
-    // Purge deleted time entries from memory
-    std::vector<TimeEntry *>::iterator it = list->begin();
-    while (it != list->end()) {
-        TimeEntry *te = *it;
-        if (te->IsMarkedAsDeletedOnServer()) {
-            it = list->erase(it);
-        } else {
-            ++it;
-        }
-    }
-
-    return noError;
-}
-
-error Database::saveTimeEntry(
+error Database::saveModel(
     TimeEntry *model,
     std::vector<ModelChange> *changes) {
     poco_assert(model);
@@ -1280,7 +1169,7 @@ error Database::saveTimeEntry(
     return noError;
 }
 
-error Database::saveWorkspace(
+error Database::saveModel(
     Workspace *model,
     std::vector<ModelChange> *changes) {
     poco_assert(model);
@@ -1363,7 +1252,7 @@ error Database::saveWorkspace(
     return noError;
 }
 
-error Database::saveClient(
+error Database::saveModel(
     Client *model,
     std::vector<ModelChange> *changes) {
     poco_assert(model);
@@ -1462,7 +1351,7 @@ error Database::saveClient(
     return noError;
 }
 
-error Database::saveProject(
+error Database::saveModel(
     Project *model,
     std::vector<ModelChange> *changes) {
     poco_assert(model);
@@ -1679,7 +1568,7 @@ error Database::saveProject(
     return noError;
 }
 
-error Database::saveTask(
+error Database::saveModel(
     Task *model,
     std::vector<ModelChange> *changes) {
     poco_assert(model);
@@ -1756,7 +1645,7 @@ error Database::saveTask(
     return noError;
 }
 
-error Database::saveTag(
+error Database::saveModel(
     Tag *model,
     std::vector<ModelChange> *changes    ) {
     poco_assert(model);
@@ -1856,11 +1745,11 @@ error Database::saveTag(
 }
 
 error Database::SaveUser(
-    User *model,
+    User *user,
     const bool with_related_data,
     std::vector<ModelChange> *changes) {
     // Do nothing, if user has already logged out
-    if (!model) {
+    if (!user) {
         logger().warning("Cannot save user, user is logged out");
         return noError;
     }
@@ -1870,13 +1759,13 @@ error Database::SaveUser(
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
-    if (model->Email().empty()) {
+    if (user->Email().empty()) {
         return error("Missing user e-mail, cannot save user");
     }
-    if (model->APIToken().empty()) {
+    if (user->APIToken().empty()) {
         return error("Missing user API token, cannot save user");
     }
-    if (!model->ID()) {
+    if (!user->ID()) {
         return error("Missing user ID, cannot save user");
     }
 
@@ -1887,11 +1776,11 @@ error Database::SaveUser(
     // Check if we really need to save model,
     // *but* do not return if we don't need to.
     // We might need to save related models, still.
-    if (!model->LocalID() || model->Dirty()) {
+    if (!user->LocalID() || user->Dirty()) {
         try {
-            if (model->LocalID()) {
+            if (user->LocalID()) {
                 std::stringstream ss;
-                ss << "Updating user " + model->String()
+                ss << "Updating user " + user->String()
                    << " in thread " << Poco::Thread::currentTid();
                 logger().trace(ss.str());
 
@@ -1903,16 +1792,16 @@ error Database::SaveUser(
                          " :store_start_and_stop_time, "
                          "timeofday_format = :timeofday_format "
                          "where local_id = :local_id",
-                         Poco::Data::use(model->APIToken()),
-                         Poco::Data::use(model->DefaultWID()),
-                         Poco::Data::use(model->Since()),
-                         Poco::Data::use(model->ID()),
-                         Poco::Data::use(model->Fullname()),
-                         Poco::Data::use(model->Email()),
-                         Poco::Data::use(model->RecordTimeline()),
-                         Poco::Data::use(model->StoreStartAndStopTime()),
-                         Poco::Data::use(model->TimeOfDayFormat()),
-                         Poco::Data::use(model->LocalID()),
+                         Poco::Data::use(user->APIToken()),
+                         Poco::Data::use(user->DefaultWID()),
+                         Poco::Data::use(user->Since()),
+                         Poco::Data::use(user->ID()),
+                         Poco::Data::use(user->Fullname()),
+                         Poco::Data::use(user->Email()),
+                         Poco::Data::use(user->RecordTimeline()),
+                         Poco::Data::use(user->StoreStartAndStopTime()),
+                         Poco::Data::use(user->TimeOfDayFormat()),
+                         Poco::Data::use(user->LocalID()),
                          Poco::Data::now;
                 error err = last_error("SaveUser");
                 if (err != noError) {
@@ -1920,10 +1809,10 @@ error Database::SaveUser(
                     return err;
                 }
                 changes->push_back(ModelChange(
-                    model->ModelName(), "update", model->ID(), ""));
+                    user->ModelName(), "update", user->ID(), ""));
             } else {
                 std::stringstream ss;
-                ss << "Inserting user " + model->String()
+                ss << "Inserting user " + user->String()
                    << " in thread " << Poco::Thread::currentTid();
                 logger().trace(ss.str());
                 *session << "insert into users("
@@ -1936,15 +1825,15 @@ error Database::SaveUser(
                          ":record_timeline, :store_start_and_stop_time, "
                          ":timeofday_format"
                          ")",
-                         Poco::Data::use(model->ID()),
-                         Poco::Data::use(model->APIToken()),
-                         Poco::Data::use(model->DefaultWID()),
-                         Poco::Data::use(model->Since()),
-                         Poco::Data::use(model->Fullname()),
-                         Poco::Data::use(model->Email()),
-                         Poco::Data::use(model->RecordTimeline()),
-                         Poco::Data::use(model->StoreStartAndStopTime()),
-                         Poco::Data::use(model->TimeOfDayFormat()),
+                         Poco::Data::use(user->ID()),
+                         Poco::Data::use(user->APIToken()),
+                         Poco::Data::use(user->DefaultWID()),
+                         Poco::Data::use(user->Since()),
+                         Poco::Data::use(user->Fullname()),
+                         Poco::Data::use(user->Email()),
+                         Poco::Data::use(user->RecordTimeline()),
+                         Poco::Data::use(user->StoreStartAndStopTime()),
+                         Poco::Data::use(user->TimeOfDayFormat()),
                          Poco::Data::now;
                 error err = last_error("SaveUser");
                 if (err != noError) {
@@ -1960,11 +1849,11 @@ error Database::SaveUser(
                     session->rollback();
                     return err;
                 }
-                model->SetLocalID(local_id);
+                user->SetLocalID(local_id);
                 changes->push_back(ModelChange(
-                    model->ModelName(), "insert", model->ID(), ""));
+                    user->ModelName(), "insert", user->ID(), ""));
             }
-            model->ClearDirty();
+            user->ClearDirty();
         } catch(const Poco::Exception& exc) {
             session->rollback();
             return exc.displayText();
@@ -1978,34 +1867,50 @@ error Database::SaveUser(
     }
 
     if (with_related_data) {
-        error err = saveWorkspaces(model->ID(), &model->related.Workspaces,
-                                   changes);
+        error err = saveRelatedModels(user->ID(),
+                                      "workspaces",
+                                      &user->related.Workspaces,
+                                      changes);
         if (err != noError) {
             session->rollback();
             return err;
         }
-        err = saveClients(model->ID(), &model->related.Clients, changes);
+        err = saveRelatedModels(user->ID(),
+                                "clients",
+                                &user->related.Clients,
+                                changes);
         if (err != noError) {
             session->rollback();
             return err;
         }
-        err = saveProjects(model->ID(), &model->related.Projects, changes);
+        err = saveRelatedModels(user->ID(),
+                                "projects",
+                                &user->related.Projects,
+                                changes);
         if (err != noError) {
             session->rollback();
             return err;
         }
-        err = saveTasks(model->ID(), &model->related.Tasks, changes);
+        err = saveRelatedModels(user->ID(),
+                                "tasks",
+                                &user->related.Tasks,
+                                changes);
         if (err != noError) {
             session->rollback();
             return err;
         }
-        err = saveTags(model->ID(), &model->related.Tags, changes);
+        err = saveRelatedModels(user->ID(),
+                                "tags",
+                                &user->related.Tags,
+                                changes);
         if (err != noError) {
             session->rollback();
             return err;
         }
-        err = saveTimeEntries(model->ID(), &model->related.TimeEntries,
-                              changes);
+        err = saveRelatedModels(user->ID(),
+                                "time_entries",
+                                &user->related.TimeEntries,
+                                changes);
         if (err != noError) {
             session->rollback();
             return err;
