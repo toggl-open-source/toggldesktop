@@ -95,7 +95,7 @@ class User : public BaseModel {
         const Poco::UInt64 workspace_id,
         const Poco::UInt64 client_id,
         const std::string project_name,
-        const _Bool is_private);
+        const bool is_private);
 
     std::string DateDuration(TimeEntry *te) const;
 
