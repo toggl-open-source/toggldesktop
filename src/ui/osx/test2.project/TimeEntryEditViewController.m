@@ -325,13 +325,8 @@
     [self.durationTextField setStringValue:item.duration];
   }
 
-  if ([self.startTime currentEditor] == nil) {
-    [self.startTime setStringValue:[[_format stringFromDate:item.started] uppercaseString]];
-  }
-
-  if ([self.endTime currentEditor] == nil) {
-    [self.endTime setStringValue:[[_format stringFromDate:item.ended] uppercaseString]];
-  }
+  [self.startTime setStringValue:[[_format stringFromDate:item.started] uppercaseString]];
+  [self.endTime setStringValue:[[_format stringFromDate:item.ended] uppercaseString]];
 
   [self.startDate setDateValue:item.started];
   self.startTimeDate = item.started;

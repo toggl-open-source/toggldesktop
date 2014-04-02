@@ -16,8 +16,7 @@
 
 @implementation IdleNotificationWindowController
 
-- (id)initWithWindow:(NSWindow *)window
-{
+- (id)initWithWindow:(NSWindow *)window {
     self = [super initWithWindow:window];
     if (self) {
       [[NSNotificationCenter defaultCenter] addObserver:self
@@ -28,25 +27,24 @@
     return self;
 }
 
-- (void)windowDidLoad
-{
+- (void)windowDidLoad {
   [super windowDidLoad];
   
   [self renderIdle];
 }
 
-- (void)renderIdle
-{
+- (void)renderIdle {
   NSLog(@"IdleNotificationWindowController windowDidLoad");
   NSDateFormatter *format = [[NSDateFormatter alloc] init];
   [format setDateFormat:@"HH:mm:ss"];
   NSString *dateString = [format stringFromDate:self.idleEvent.started];
   
-  NSString *information = [NSString stringWithFormat:@"You have been idle since %@ (%ld minutes)",
-                           dateString, self.idleEvent.seconds / 60];
-  NSAssert(self.informationTextField != nil,
-           @"self.informationTextField cannot be nil at this point");
-  [self.informationTextField setStringValue:information];
+  NSString *idleSince = [NSString stringWithFormat:@"You have been idle since %@", dateString];
+  [self.idleSinceTextField setStringValue:idleSince];
+
+  NSString *idleAmount = [NSString stringWithFormat:@" (%ld minutes)", self.idleEvent.seconds / 60];
+  [self.idleAmountTextField setStringValue:idleAmount];
+
 }
 
 - (IBAction)stopButtonClicked:(id)sender {
@@ -59,8 +57,7 @@
   [self.window orderOut:nil];
 }
 
--(void)eventHandler: (NSNotification *) notification
-{
+-(void)eventHandler: (NSNotification *) notification {
   if ([notification.name isEqualToString:kUIEventIdleFinished]) {
     self.idleEvent = notification.object;
     [self.window makeKeyAndOrderFront:nil];
