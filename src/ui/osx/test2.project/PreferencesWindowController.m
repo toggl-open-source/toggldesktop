@@ -58,12 +58,14 @@ NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcu
   _Bool menubar_timer = false;
   _Bool dock_icon = false;
   _Bool on_top = false;
+  _Bool reminder = false;
 
   if (!kopsik_get_settings(ctx,
                            &idle_detection,
                            &menubar_timer,
                            &dock_icon,
-                           &on_top)) {
+                           &on_top,
+                           &reminder)) {
     return;
   }
   
@@ -71,6 +73,7 @@ NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcu
   [self.menubarTimerCheckbox setState:[self boolToState:menubar_timer]];
   [self.dockIconCheckbox setState:[self boolToState:dock_icon]];
   [self.ontopCheckbox setState:[self boolToState:on_top]];
+  [self.reminderCheckbox setState:[self boolToState:reminder]];
 }
 
 - (void)loadProxySettings {
@@ -140,6 +143,10 @@ NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcu
   [self saveSettings];  
 }
 
+- (IBAction)reminderCheckboxChanged:(id)sender {
+  [self saveSettings];
+}
+
 - (void)enableProxyFields {
   bool use_proxy = [self.useProxyButton state] == NSOnState;
   [self.hostTextField setEnabled:use_proxy];
@@ -178,7 +185,8 @@ NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcu
                            [self stateToBool:[self.useIdleDetectionButton state]],
                            [self stateToBool:[self.menubarTimerCheckbox state]],
                            [self stateToBool:[self.dockIconCheckbox state]],
-                           [self stateToBool:[self.ontopCheckbox state]])) {
+                           [self stateToBool:[self.ontopCheckbox state]],
+                           [self stateToBool:[self.reminderCheckbox state]])) {
     return;
   }
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventSettingsChanged

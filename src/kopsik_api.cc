@@ -169,7 +169,8 @@ _Bool kopsik_get_settings(
     _Bool *out_use_idle_detection,
     _Bool *out_menubar_timer,
     _Bool *out_dock_icon,
-    _Bool *out_on_top) {
+    _Bool *out_on_top,
+    _Bool *out_reminder) {
     try {
         poco_assert(out_use_idle_detection);
         poco_assert(out_menubar_timer);
@@ -180,11 +181,14 @@ _Bool kopsik_get_settings(
         bool menubar_timer(false);
         bool dock_icon(false);
         bool on_top(false);
+        bool reminder(false);
 
-        kopsik::error err = app(context)->LoadSettings(&use_idle_detection,
-                            &menubar_timer,
-                            &dock_icon,
-                            &on_top);
+        kopsik::error err =
+            app(context)->LoadSettings(&use_idle_detection,
+                                       &menubar_timer,
+                                       &dock_icon,
+                                       &on_top,
+                                       &reminder);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
             return false;
@@ -208,6 +212,11 @@ _Bool kopsik_get_settings(
         *out_on_top = false;
         if (on_top) {
             *out_on_top = true;
+        }
+      
+        *out_reminder = false;
+        if (reminder) {
+            *out_reminder = true;
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
@@ -273,13 +282,15 @@ _Bool kopsik_set_settings(
     const _Bool use_idle_detection,
     const _Bool menubar_timer,
     const _Bool dock_icon,
-    const _Bool on_top) {
+    const _Bool on_top,
+    const _Bool reminder) {
     try {
         kopsik::error err = app(context)->SaveSettings(
             use_idle_detection,
             menubar_timer,
             dock_icon,
-            on_top);
+            on_top,
+            reminder);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
             return false;

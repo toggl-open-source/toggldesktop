@@ -527,11 +527,13 @@ feedbackWindowController;
   _Bool menubar_timer = false;
   _Bool dock_icon = false;
   _Bool on_top = false;
+  _Bool reminder = false;
   if (!kopsik_get_settings(ctx,
                            &use_idle_detection,
                            &menubar_timer,
                            &dock_icon,
-                           &on_top)) {
+                           &on_top,
+                           &reminder)) {
     return;
   }
   
@@ -1115,7 +1117,7 @@ void on_remind() {
   NSUserNotification *notification = [[NSUserNotification alloc] init];
   [notification setTitle:@"Reminder from Toggl Desktop"];
   [notification setInformativeText:@"Shouldn't you be tracking?"];
-  [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
+  [notification setDeliveryDate:[NSDate dateWithTimeInterval:5 sinceDate:[NSDate date]]];
   [notification setSoundName:NSUserNotificationDefaultSoundName];
   NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
   [center scheduleNotification:notification];
