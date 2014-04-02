@@ -411,7 +411,7 @@
     if ([self.userinfo.timeOfDayFormat isEqualToString:@"H:mm"]){
       [self.format setDateFormat:@"HH:mm"];
     } else {
-      [self.format setDateFormat:@"HH:mm a"];
+      [self.format setDateFormat:@"hh:mm a"];
     }
     return;
   }
