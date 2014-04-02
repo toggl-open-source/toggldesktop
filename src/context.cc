@@ -613,11 +613,13 @@ void Context::SetWebSocketClientURL(const std::string value) {
 kopsik::error Context::LoadSettings(
     bool *use_idle_settings,
     bool *menubar_timer,
-    bool *dock_icon) const {
+    bool *dock_icon,
+    bool *on_top) const {
     return db_->LoadSettings(
         use_idle_settings,
         menubar_timer,
-        dock_icon);
+        dock_icon,
+        on_top);
 }
 
 kopsik::error Context::LoadProxySettings(
@@ -631,9 +633,10 @@ kopsik::error Context::LoadProxySettings(
 kopsik::error Context::SaveSettings(
     const bool use_idle_detection,
     const bool menubar_timer,
-    const bool dock_icon) {
+    const bool dock_icon,
+    const bool on_top) {
     return db_->SaveSettings(
-        use_idle_detection, menubar_timer, dock_icon);
+        use_idle_detection, menubar_timer, dock_icon, on_top);
 }
 
 kopsik::error Context::SaveProxySettings(

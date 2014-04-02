@@ -524,10 +524,12 @@
   _Bool use_idle_detection = false;
   _Bool menubar_timer = false;
   _Bool dock_icon = false;
+  _Bool on_top = false;
   if (!kopsik_get_settings(ctx,
                            &use_idle_detection,
                            &menubar_timer,
-                           &dock_icon)) {
+                           &dock_icon,
+                           &on_top)) {
     return;
   }
 
@@ -575,6 +577,13 @@
   } else {
     NSLog(@"Hiding dock icon.");
     TransformProcessType(&psn, kProcessTransformToUIElementApplication);
+  }
+  
+  // Stay on top
+  if (on_top) {
+    [self.mainWindowController.window setLevel:NSFloatingWindowLevel];
+  } else {
+    [self.mainWindowController.window setLevel:NSNormalWindowLevel];
   }
 }
 

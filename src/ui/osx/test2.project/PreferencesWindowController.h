@@ -22,6 +22,7 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 @property IBOutlet NSButton *recordTimelineCheckbox;
 @property IBOutlet NSButton *menubarTimerCheckbox;
 @property IBOutlet NSButton *dockIconCheckbox;
+@property IBOutlet NSButton *ontopCheckbox;
 @property IBOutlet MASShortcutView *showHideShortcutView;
 @property IBOutlet MASShortcutView *startStopShortcutView;
 - (IBAction)useProxyButtonChanged:(id)sender;
@@ -33,4 +34,5 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 - (IBAction)recordTimelineCheckboxChanged:(id)sender;
 - (IBAction)menubarTimerCheckboxChanged:(id)sender;
 - (IBAction)dockIconCheckboxChanged:(id)sender;
+- (IBAction)ontopCheckboxChanged:(id)sender;
 @end
