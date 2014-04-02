@@ -305,78 +305,57 @@ TimeEntry *User::RunningTimeEntry() const {
     return 0;
 }
 
-Task *User::GetTaskByID(const Poco::UInt64 id) const {
+template<typename T>
+T *getModelByID(const Poco::UInt64 id, std::vector<T *> *list) {
     poco_assert(id > 0);
-    for (std::vector<Task *>::const_iterator it = related.Tasks.begin();
-            it != related.Tasks.end(); it++) {
-        if ((*it)->ID() == id) {
-            return *it;
+    typedef typename std::vector<T *>::const_iterator iterator;
+    for (iterator it = list->begin(); it != list->end(); it++) {
+        T *model = *it;
+        if (model->ID() == id) {
+            return model;
         }
     }
     return 0;
 }
 
-Client *User::GetClientByID(const Poco::UInt64 id) const {
-    poco_assert(id > 0);
-    for (std::vector<Client *>::const_iterator it = related.Clients.begin();
-            it != related.Clients.end(); it++) {
-        if ((*it)->ID() == id) {
-            return *it;
-        }
-    }
-    return 0;
+Task *User::GetTaskByID(const Poco::UInt64 id) {
+    return getModelByID<Task>(id, &related.Tasks);
 }
 
-Project *User::GetProjectByID(const Poco::UInt64 id) const {
-    poco_assert(id > 0);
-    for (std::vector<Project *>::const_iterator it = related.Projects.begin();
-            it != related.Projects.end(); it++) {
-        if ((*it)->ID() == id) {
-            return *it;
-        }
-    }
-    return 0;
+Client *User::GetClientByID(const Poco::UInt64 id) {
+    return getModelByID(id, &related.Clients);
 }
 
-TimeEntry *User::GetTimeEntryByGUID(const guid GUID) const {
+Project *User::GetProjectByID(const Poco::UInt64 id) {
+    return getModelByID(id, &related.Projects);
+}
+
+template <typename T>
+T *getModelByGUID(const guid GUID, std::vector<T *> *list) {
     if (GUID.empty()) {
         return 0;
     }
-    for (std::vector<TimeEntry *>::const_iterator it =
-        related.TimeEntries.begin();
-            it != related.TimeEntries.end();
-            it++) {
-        if ((*it)->GUID() == GUID) {
-            return *it;
+    typedef typename std::vector<T *>::const_iterator iterator;
+    for (iterator it = list->begin(); it != list->end(); it++) {
+        T *model = *it;
+        if (model->GUID() == GUID) {
+            return model;
         }
     }
     return 0;
 }
 
-Tag *User::GetTagByGUID(const guid GUID) const {
-    if (GUID.empty()) {
-        return 0;
-    }
-    for (std::vector<Tag *>::const_iterator it =
-        related.Tags.begin();
-            it != related.Tags.end();
-            it++) {
-        if ((*it)->GUID() == GUID) {
-            return *it;
-        }
-    }
-    return 0;
+
+TimeEntry *User::GetTimeEntryByGUID(const guid GUID) {
+    return getModelByGUID(GUID, &related.TimeEntries);
 }
 
-Tag *User::GetTagByID(const Poco::UInt64 id) const {
-    poco_assert(id > 0);
-    for (std::vector<Tag *>::const_iterator it = related.Tags.begin();
-            it != related.Tags.end(); it++) {
-        if ((*it)->ID() == id) {
-            return *it;
-        }
-    }
-    return 0;
+Tag *User::GetTagByGUID(const guid GUID) {
+    return getModelByGUID(GUID, &related.Tags);
+}
+
+Tag *User::GetTagByID(const Poco::UInt64 id) {
+    return getModelByID(id, &related.Tags);
 }
 
 void User::CollectPushableTimeEntries(
@@ -589,56 +568,77 @@ error User::collectErrors(std::vector<error> * const errors) const {
     return error(ss.str());
 }
 
-Workspace *User::GetWorkspaceByID(const Poco::UInt64 id) const {
-    poco_assert(id > 0);
-    for (std::vector<Workspace *>::const_iterator it =
-        related.Workspaces.begin();
-            it != related.Workspaces.end();
-            it++) {
-        if ((*it)->ID() == id) {
-            return *it;
-        }
-    }
-    return 0;
+Workspace *User::GetWorkspaceByID(const Poco::UInt64 id) {
+    return getModelByID(id, &related.Workspaces);
 }
 
-Project *User::GetProjectByGUID(const guid GUID) const {
-    if (GUID.empty()) {
-        return 0;
+Project *User::GetProjectByGUID(const guid GUID) {
+    return getModelByGUID(GUID, &related.Projects);
+}
+
+Client *User::GetClientByGUID(const guid GUID) {
+    return getModelByGUID(GUID, &related.Clients);
+}
+
+TimeEntry *User::GetTimeEntryByID(const Poco::UInt64 id) {
+    return getModelByID(id, &related.TimeEntries);
+}
+
+template <typename T>
+void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
+                                      std::vector<T *> *list) {
+    typedef typename std::vector<T *>::iterator iterator;
+    for (iterator it = list->begin(); it != list->end(); it++) {
+        T *model = *it;
+        if (model->WID() == wid) {
+            model->MarkAsDeletedOnServer();
+        }
     }
-    for (std::vector<Project *>::const_iterator it = related.Projects.begin();
+}
+
+void User::DeleteRelatedModelsWithWorkspace(const Poco::UInt64 wid) {
+    deleteRelatedModelsWithWorkspace(wid, &related.Clients);
+    deleteRelatedModelsWithWorkspace(wid, &related.Projects);
+    deleteRelatedModelsWithWorkspace(wid, &related.Tasks);
+    deleteRelatedModelsWithWorkspace(wid, &related.TimeEntries);
+    deleteRelatedModelsWithWorkspace(wid, &related.Tags);
+}
+
+void User::RemoveClientFromRelatedModels(const Poco::UInt64 cid) {
+    for (std::vector<Project *>::iterator it = related.Projects.begin();
             it != related.Projects.end(); it++) {
-        if ((*it)->GUID() == GUID) {
-            return *it;
+        Project *model = *it;
+        if (model->CID() == cid) {
+            model->SetCID(0);
         }
     }
-    return 0;
 }
 
-Client *User::GetClientByGUID(const guid GUID) const {
-    if (GUID.empty()) {
-        return 0;
-    }
-    for (std::vector<Client *>::const_iterator it = related.Clients.begin();
-            it != related.Clients.end(); it++) {
-        if ((*it)->GUID() == GUID) {
-            return *it;
+template <typename T>
+void removeProjectFromRelatedModels(const Poco::UInt64 pid,
+                                    std::vector<T *> *list) {
+    typedef typename std::vector<T *>::iterator iterator;
+    for (iterator it = list->begin(); it != list->end(); it++) {
+        T *model = *it;
+        if (model->PID() == pid) {
+            model->SetPID(0);
         }
     }
-    return 0;
 }
 
-TimeEntry *User::GetTimeEntryByID(const Poco::UInt64 id) const {
-    poco_assert(id > 0);
-    for (std::vector<TimeEntry *>::const_iterator it =
-        related.TimeEntries.begin();
-            it != related.TimeEntries.end();
-            it++) {
-        if ((*it)->ID() == id) {
-            return *it;
+void User::RemoveProjectFromRelatedModels(const Poco::UInt64 pid) {
+    removeProjectFromRelatedModels(pid, &related.Tasks);
+    removeProjectFromRelatedModels(pid, &related.TimeEntries);
+}
+
+void User::RemoveTaskFromRelatedModels(const Poco::UInt64 tid) {
+    for (std::vector<TimeEntry *>::iterator it = related.TimeEntries.begin();
+            it != related.TimeEntries.end(); it++) {
+        TimeEntry *model = *it;
+        if (model->TID() == tid) {
+            model->SetTID(0);
         }
     }
-    return 0;
 }
 
 }  // namespace kopsik

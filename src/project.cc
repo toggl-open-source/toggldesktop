@@ -28,6 +28,7 @@ std::string Project::String() const {
         << " local_id=" << LocalID()
         << " name=" << name_
         << " wid=" << wid_
+        << " cid=" << cid_
         << " guid=" << GUID()
         << " active=" << active_
         << " public=" << private_

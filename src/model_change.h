@@ -33,6 +33,9 @@ class ModelChange {
     std::string ChangeType() const {
         return change_type_;
     }
+    bool IsDeletion() const {
+        return "delete" == change_type_;
+    }
 
  private:
     std::string model_type_;
