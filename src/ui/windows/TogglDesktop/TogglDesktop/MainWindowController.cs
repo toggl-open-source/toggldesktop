@@ -41,7 +41,8 @@ namespace TogglDesktop
                 Size = Properties.Settings.Default.Size;
             }
 
-            // FIXME: do this when told that user is not logged in
+            Core.Startup("windows_native_app", "1.0");
+
             Controls.Add(loginViewController);
             loginViewController.SetAcceptButton(this);
         }
