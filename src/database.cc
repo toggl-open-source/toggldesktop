@@ -1867,38 +1867,90 @@ error Database::SaveUser(
     }
 
     if (with_related_data) {
+        // Workspaces
+        std::vector<ModelChange> workspace_changes;
         error err = saveRelatedModels(user->ID(),
                                       "workspaces",
                                       &user->related.Workspaces,
-                                      changes);
+                                      &workspace_changes);
         if (err != noError) {
             session->rollback();
             return err;
         }
+        for (std::vector<ModelChange>::const_iterator
+                it = workspace_changes.begin();
+                it != workspace_changes.end();
+                ++it) {
+            ModelChange change = *it;
+            if (change.IsDeletion()) {
+                user->DeleteRelatedModelsWithWorkspace(change.ModelID());
+            }
+            changes->push_back(change);
+        }
+
+        // Clients
+        std::vector<ModelChange> client_changes;
         err = saveRelatedModels(user->ID(),
                                 "clients",
                                 &user->related.Clients,
-                                changes);
+                                &client_changes);
         if (err != noError) {
             session->rollback();
             return err;
         }
+        for (std::vector<ModelChange>::const_iterator
+                it = client_changes.begin();
+                it != client_changes.end();
+                ++it) {
+            ModelChange change = *it;
+            if (change.IsDeletion()) {
+                user->RemoveClientFromRelatedModels(change.ModelID());
+            }
+            changes->push_back(change);
+        }
+
+        // Projects
+        std::vector<ModelChange> project_changes;
         err = saveRelatedModels(user->ID(),
                                 "projects",
                                 &user->related.Projects,
-                                changes);
+                                &project_changes);
         if (err != noError) {
             session->rollback();
             return err;
         }
+        for (std::vector<ModelChange>::const_iterator
+                it = project_changes.begin();
+                it != project_changes.end();
+                ++it) {
+            ModelChange change = *it;
+            if (change.IsDeletion()) {
+                user->RemoveProjectFromRelatedModels(change.ModelID());
+            }
+            changes->push_back(change);
+        }
+
+        // Tasks
+        std::vector<ModelChange> task_changes;
         err = saveRelatedModels(user->ID(),
                                 "tasks",
                                 &user->related.Tasks,
-                                changes);
+                                &task_changes);
         if (err != noError) {
             session->rollback();
             return err;
         }
+        for (std::vector<ModelChange>::const_iterator
+                it = task_changes.begin();
+                it != task_changes.end();
+                ++it) {
+            ModelChange change = *it;
+            if (change.IsDeletion()) {
+                user->RemoveTaskFromRelatedModels(change.ModelID());
+            }
+            changes->push_back(change);
+        }
+
         err = saveRelatedModels(user->ID(),
                                 "tags",
                                 &user->related.Tags,
@@ -1907,6 +1959,7 @@ error Database::SaveUser(
             session->rollback();
             return err;
         }
+
         err = saveRelatedModels(user->ID(),
                                 "time_entries",
                                 &user->related.TimeEntries,

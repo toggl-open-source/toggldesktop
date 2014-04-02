@@ -58,17 +58,17 @@ class User : public BaseModel {
     bool HasPremiumWorkspaces() const;
     bool CanAddProjects() const;
 
-    Workspace *GetWorkspaceByID(const Poco::UInt64 id) const;
-    Client *GetClientByID(const Poco::UInt64 id) const;
-    Client *GetClientByGUID(const guid GUID) const;
-    Project *GetProjectByID(const Poco::UInt64 id) const;
-    Project *GetProjectByGUID(const guid GUID) const;
+    Workspace *GetWorkspaceByID(const Poco::UInt64 id);
+    Client *GetClientByID(const Poco::UInt64 id);
+    Client *GetClientByGUID(const guid GUID);
+    Project *GetProjectByID(const Poco::UInt64 id);
+    Project *GetProjectByGUID(const guid GUID);
     Project *GetProjectByName(const std::string name) const;
-    Task *GetTaskByID(const Poco::UInt64 id) const;
-    Tag *GetTagByID(const Poco::UInt64 id) const;
-    Tag *GetTagByGUID(const guid GUID) const;
-    TimeEntry *GetTimeEntryByID(const Poco::UInt64 id) const;
-    TimeEntry *GetTimeEntryByGUID(const guid GUID) const;
+    Task *GetTaskByID(const Poco::UInt64 id);
+    Tag *GetTagByID(const Poco::UInt64 id);
+    Tag *GetTagByGUID(const guid GUID);
+    TimeEntry *GetTimeEntryByID(const Poco::UInt64 id);
+    TimeEntry *GetTimeEntryByGUID(const guid GUID);
 
     void CollectPushableTimeEntries(
         std::vector<TimeEntry *> *result,
@@ -155,6 +155,12 @@ class User : public BaseModel {
     std::string ModelURL() const {
         return "/api/v8/me";
     }
+
+    // Handle related model deletions
+    void DeleteRelatedModelsWithWorkspace(const Poco::UInt64 wid);
+    void RemoveClientFromRelatedModels(const Poco::UInt64 cid);
+    void RemoveProjectFromRelatedModels(const Poco::UInt64 pid);
+    void RemoveTaskFromRelatedModels(const Poco::UInt64 tid);
 
  private:
     error pull(
