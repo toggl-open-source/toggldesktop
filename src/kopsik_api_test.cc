@@ -71,25 +71,28 @@ TEST(KopsikApiTest, kopsik_set_settings) {
     ASSERT_TRUE(kopsik_set_db_path(ctx, TESTDB));
 
     ASSERT_TRUE(kopsik_set_settings(ctx,
-                                    false, false, false));
+                                    false, false, false, false));
 
-    _Bool idle_detection(false), menubar_timer(false), dock_icon(false);
+    _Bool idle_detection(false), menubar_timer(false), dock_icon(false),
+          on_top(false);
 
     ASSERT_TRUE(kopsik_get_settings(
-        ctx, &idle_detection, &menubar_timer, &dock_icon));
+        ctx, &idle_detection, &menubar_timer, &dock_icon, &on_top));
 
     ASSERT_FALSE(idle_detection);
     ASSERT_FALSE(menubar_timer);
     ASSERT_FALSE(dock_icon);
+    ASSERT_FALSE(on_top);
 
-    ASSERT_TRUE(kopsik_set_settings(ctx, true, true, true));
+    ASSERT_TRUE(kopsik_set_settings(ctx, true, true, true, true));
 
     ASSERT_TRUE(kopsik_get_settings(
-        ctx, &idle_detection, &menubar_timer, &dock_icon));
+        ctx, &idle_detection, &menubar_timer, &dock_icon, &on_top));
 
     ASSERT_TRUE(idle_detection);
     ASSERT_TRUE(menubar_timer);
     ASSERT_TRUE(dock_icon);
+    ASSERT_TRUE(on_top);
 }
 
 TEST(KopsikApiTest, kopsik_set_proxy_settings) {

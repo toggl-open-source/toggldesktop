@@ -94,12 +94,14 @@ class Context {
     kopsik::error LoadSettings(
         bool *use_idle_settings,
         bool *menubar_timer,
-        bool *dock_icon) const;
+        bool *dock_icon,
+        bool *on_top) const;
 
     kopsik::error SaveSettings(
         const bool use_idle_detection,
         const bool menubar_timer,
-        const bool dock_icon);
+        const bool dock_icon,
+        const bool on_top);
 
     kopsik::error LoadProxySettings(
         bool *use_proxy,

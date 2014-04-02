@@ -262,20 +262,24 @@ error Database::LoadCurrentUser(
 error Database::LoadSettings(
     bool *use_idle_detection,
     bool *menubar_timer,
-    bool *dock_icon) {
+    bool *dock_icon,
+    bool *on_top) {
     poco_assert(session);
     poco_assert(use_idle_detection);
     poco_assert(menubar_timer);
     poco_assert(dock_icon);
+    poco_assert(on_top);
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
-        *session << "select use_idle_detection, menubar_timer, dock_icon "
+        *session << "select use_idle_detection, menubar_timer, dock_icon, "
+                 "on_top "
                  "from settings",
                  Poco::Data::into(*use_idle_detection),
                  Poco::Data::into(*menubar_timer),
                  Poco::Data::into(*dock_icon),
+                 Poco::Data::into(*on_top),
                  Poco::Data::limit(1),
                  Poco::Data::now;
     } catch(const Poco::Exception& exc) {
@@ -321,7 +325,8 @@ error Database::LoadProxySettings(
 error Database::SaveSettings(
     const bool use_idle_detection,
     const bool menubar_timer,
-    const bool dock_icon) {
+    const bool dock_icon,
+    const bool on_top) {
     poco_assert(session);
 
     Poco::Mutex::ScopedLock lock(mutex_);
@@ -330,10 +335,12 @@ error Database::SaveSettings(
         *session << "update settings set "
                  "use_idle_detection = :use_idle_detection, "
                  "menubar_timer = :menubar_timer, "
-                 "dock_icon = :dock_icon",
+                 "dock_icon = :dock_icon, "
+                 "on_top = :on_top",
                  Poco::Data::use(use_idle_detection),
                  Poco::Data::use(menubar_timer),
                  Poco::Data::use(dock_icon),
+                 Poco::Data::use(on_top),
                  Poco::Data::now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -2442,6 +2449,13 @@ error Database::initialize_tables() {
     err = migrate("settings.dock_icon",
                   "ALTER TABLE settings "
                   "ADD COLUMN dock_icon INTEGER NOT NULL DEFAULT 1;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("settings.on_top",
+                  "ALTER TABLE settings "
+                  "ADD COLUMN on_top INTEGER NOT NULL DEFAULT 0;");
     if (err != noError) {
         return err;
     }

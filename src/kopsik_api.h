@@ -83,7 +83,8 @@ extern "C" {
         void *context,
         _Bool *use_idle_detection,
         _Bool *menubar_timer,
-        _Bool *dock_icon);
+        _Bool *dock_icon,
+        _Bool *on_top);
 
     KOPSIK_EXPORT _Bool kopsik_get_proxy_settings(
         void *context,
@@ -97,7 +98,8 @@ extern "C" {
         void *context,
         const _Bool use_idle_detection,
         const _Bool menubar_timer,
-        const _Bool dock_icon);
+        const _Bool dock_icon,
+        const _Bool on_top);
 
     KOPSIK_EXPORT _Bool kopsik_set_proxy_settings(
         void *context,

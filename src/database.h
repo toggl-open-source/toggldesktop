@@ -52,12 +52,14 @@ class Database {
     error LoadSettings(
         bool *use_idle_settings,
         bool *menubar_timer,
-        bool *dock_icon);
+        bool *dock_icon,
+        bool *on_top);
 
     error SaveSettings(
         const bool use_idle_detection,
         const bool menubar_timer,
-        const bool dock_icon);
+        const bool dock_icon,
+        const bool on_top);
 
     error LoadProxySettings(
         bool *use_proxy,
