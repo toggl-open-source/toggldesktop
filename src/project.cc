@@ -32,6 +32,7 @@ std::string Project::String() const {
         << " guid=" << GUID()
         << " active=" << active_
         << " public=" << private_
+        << " color=" << color_
         << " billable=" << billable_;
     return ss.str();
 }
