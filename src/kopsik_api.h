@@ -23,6 +23,51 @@ extern "C" {
 #define KOPSIK_EXPORT
 #endif
 
+    typedef void (*KopsikErrorCallback)(
+        const char *errmsg);
+
+    typedef void (*KopsikCheckUpdateCallback)(
+        const _Bool is_update_available,
+        const char *url,
+        const char *version);
+
+    typedef void (*KopsikOnOnlineCallback)();
+
+    typedef void (*KopsikUserLoginCallback)(
+        uint64_t id,
+        const char *fullname,
+        const char *timeofdayformat);
+
+    KOPSIK_EXPORT void *kopsik_context_init(
+        const char *app_name,
+        const char *app_version);
+
+    KOPSIK_EXPORT void kopsik_context_set_error_callback(
+        void *context,
+        KopsikErrorCallback);
+
+    KOPSIK_EXPORT void kopsik_context_set_check_update_callback(
+        void *context,
+        KopsikCheckUpdateCallback);
+
+    KOPSIK_EXPORT void kopsik_context_set_online_callback(
+        void *context,
+        KopsikOnOnlineCallback);
+
+    KOPSIK_EXPORT void kopsik_context_set_user_login_callback(
+        void *context,
+        KopsikUserLoginCallback);
+
+    KOPSIK_EXPORT void kopsik_context_startup(
+        void *context);
+
+    KOPSIK_EXPORT void kopsik_context_shutdown(
+        void *context);
+
+    KOPSIK_EXPORT void kopsik_context_clear(
+        void *context);
+
+// FIXME: stuff below should not be exported
     KOPSIK_EXPORT _Bool kopsik_is_networking_error(
         const char *error);
 
@@ -46,38 +91,10 @@ extern "C" {
     typedef void (*KopsikViewItemChangeCallback)(
         KopsikModelChange *change);
 
-    typedef void (*KopsikErrorCallback)(
-        const char *errmsg);
-
-    typedef void (*KopsikCheckUpdateCallback)(
-        const _Bool is_update_available,
-        const char *url,
-        const char *version);
-
-    typedef void (*KopsikOnOnlineCallback)();
-
-    typedef void (*KopsikUserLoginCallback)(
-        uint64_t id,
-        const char *fullname,
-        const char *timeofdayformat);
-
-    KOPSIK_EXPORT void *kopsik_context_init(
-        const char *app_name,
-        const char *app_version,
-        KopsikViewItemChangeCallback,
-        KopsikErrorCallback,
-        KopsikCheckUpdateCallback,
-        KopsikOnOnlineCallback,
-        KopsikUserLoginCallback);
-
-    KOPSIK_EXPORT void kopsik_context_startup(
-        void *context);
-
-    KOPSIK_EXPORT void kopsik_context_shutdown(
-        void *context);
-
-    KOPSIK_EXPORT void kopsik_context_clear(
-        void *context);
+    // FIXME: this is too low level, dont export it
+    KOPSIK_EXPORT void kopsik_context_set_view_item_change_callback(
+        void *context,
+        KopsikViewItemChangeCallback);
 
     KOPSIK_EXPORT _Bool kopsik_get_settings(
         void *context,

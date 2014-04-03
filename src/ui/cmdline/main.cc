@@ -62,14 +62,14 @@ void main_user_login_callback(const uint64_t user_id,
 Main::Main()
     : ctx_(0) {
     kopsik_set_log_path("kopsik.log");
-    ctx_ = kopsik_context_init(
-        "cmdline",
-        "0.0.1",
-        main_change_callback,
-        main_on_error_callback,
-        main_check_updates_callback,
-        main_online_callback,
-        main_user_login_callback);
+    ctx_ = kopsik_context_init("cmdline", "0.0.1");
+
+    kopsik_context_set_view_item_change_callback(ctx_, main_change_callback);
+    kopsik_context_set_error_callback(ctx_, main_on_error_callback);
+    kopsik_context_set_check_update_callback(ctx_, main_check_updates_callback);
+    kopsik_context_set_online_callback(ctx_, main_online_callback);
+    kopsik_context_set_user_login_callback(ctx_, main_user_login_callback);
+
     poco_assert(ctx_);
 }
 

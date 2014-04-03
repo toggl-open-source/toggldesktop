@@ -812,13 +812,13 @@ const NSString *appName = @"osx_native_app";
   kopsik_set_log_level([self.log_level UTF8String]);
 
   NSString* version = infoDict[@"CFBundleShortVersionString"];
-  ctx = kopsik_context_init([appName UTF8String],
-                            [version UTF8String],
-                            on_model_change_callback,
-                            handle_error,
-                            on_update_checked_callback,
-                            on_online_callback,
-                            on_user_login_callback);
+  ctx = kopsik_context_init([appName UTF8String], [version UTF8String]);
+  
+  kopsik_context_set_view_item_change_callback(ctx, on_model_change_callback);
+  kopsik_context_set_error_callback(ctx, handle_error);
+  kopsik_context_set_check_update_callback(ctx, on_update_checked_callback);
+  kopsik_context_set_online_callback(ctx, on_online_callback);
+  kopsik_context_set_user_login_callback(ctx, on_user_login_callback);
                             
   NSLog(@"Version %@", version);
 
