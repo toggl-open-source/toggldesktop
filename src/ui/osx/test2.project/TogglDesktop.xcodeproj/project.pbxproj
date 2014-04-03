@@ -6,6 +6,34 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		74607C2418EDE79200571BA6 /* deps */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 74607C2518EDE79200571BA6 /* Build configuration list for PBXAggregateTarget "deps" */;
+			buildPhases = (
+			);
+			dependencies = (
+				74607C2918EDE79900571BA6 /* PBXTargetDependency */,
+				74607C2B18EDE79C00571BA6 /* PBXTargetDependency */,
+				74607C2D18EDE79E00571BA6 /* PBXTargetDependency */,
+			);
+			name = deps;
+			productName = deps;
+		};
+		74607C2E18EDE84700571BA6 /* CI build */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 74607C2F18EDE84700571BA6 /* Build configuration list for PBXAggregateTarget "CI build" */;
+			buildPhases = (
+			);
+			dependencies = (
+				74607C3318EDE84C00571BA6 /* PBXTargetDependency */,
+				74607C3518EDE85000571BA6 /* PBXTargetDependency */,
+			);
+			name = "CI build";
+			productName = "CI build";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
 		69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69FC17FD17E6534400B96425 /* InfoPlist.strings */; };
@@ -102,6 +130,41 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		74607C2818EDE79900571BA6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69FC17E917E6534400B96425 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 74607C1818EDE6BB00571BA6;
+			remoteInfo = json;
+		};
+		74607C2A18EDE79C00571BA6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69FC17E917E6534400B96425 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 74607C1C18EDE6D800571BA6;
+			remoteInfo = poco;
+		};
+		74607C2C18EDE79E00571BA6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69FC17E917E6534400B96425 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 74607C2018EDE70C00571BA6;
+			remoteInfo = openssl;
+		};
+		74607C3218EDE84C00571BA6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69FC17E917E6534400B96425 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 74607C2418EDE79200571BA6;
+			remoteInfo = deps;
+		};
+		74607C3418EDE85000571BA6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69FC17E917E6534400B96425 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 69FC17F017E6534400B96425;
+			remoteInfo = TogglDesktop;
+		};
 		749A3A5618D889BE000AD2DB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 749A3A4318D889BD000AD2DB /* CrashReporter.xcodeproj */;
@@ -724,24 +787,10 @@
 /* End PBXGroup section */
 
 /* Begin PBXLegacyTarget section */
-		749A739718EDD8DE00EAA35D /* poco */ = {
-			isa = PBXLegacyTarget;
-			buildArgumentsString = poco;
-			buildConfigurationList = 749A73A918EDD8DE00EAA35D /* Build configuration list for PBXLegacyTarget "poco" */;
-			buildPhases = (
-			);
-			buildToolPath = /usr/bin/make;
-			buildWorkingDirectory = ./../../../../;
-			dependencies = (
-			);
-			name = poco;
-			passBuildSettingsInEnvironment = 1;
-			productName = deps;
-		};
-		749A73BC18EDDF5200EAA35D /* json */ = {
+		74607C1818EDE6BB00571BA6 /* json */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = json;
-			buildConfigurationList = 749A73BD18EDDF5200EAA35D /* Build configuration list for PBXLegacyTarget "json" */;
+			buildConfigurationList = 74607C1918EDE6BB00571BA6 /* Build configuration list for PBXLegacyTarget "json" */;
 			buildPhases = (
 			);
 			buildToolPath = /usr/bin/make;
@@ -750,12 +799,26 @@
 			);
 			name = json;
 			passBuildSettingsInEnvironment = 1;
-			productName = deps;
+			productName = json;
 		};
-		749A73C018EDDF7A00EAA35D /* openssl */ = {
+		74607C1C18EDE6D800571BA6 /* poco */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = poco;
+			buildConfigurationList = 74607C1D18EDE6D800571BA6 /* Build configuration list for PBXLegacyTarget "poco" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = ./../../../../;
+			dependencies = (
+			);
+			name = poco;
+			passBuildSettingsInEnvironment = 1;
+			productName = poco;
+		};
+		74607C2018EDE70C00571BA6 /* openssl */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = openssl;
-			buildConfigurationList = 749A73C118EDDF7A00EAA35D /* Build configuration list for PBXLegacyTarget "openssl" */;
+			buildConfigurationList = 74607C2118EDE70C00571BA6 /* Build configuration list for PBXLegacyTarget "openssl" */;
 			buildPhases = (
 			);
 			buildToolPath = /usr/bin/make;
@@ -764,7 +827,7 @@
 			);
 			name = openssl;
 			passBuildSettingsInEnvironment = 1;
-			productName = deps;
+			productName = openssl;
 		};
 /* End PBXLegacyTarget section */
 
@@ -827,9 +890,11 @@
 			projectRoot = "";
 			targets = (
 				69FC17F017E6534400B96425 /* TogglDesktop */,
-				749A739718EDD8DE00EAA35D /* poco */,
-				749A73BC18EDDF5200EAA35D /* json */,
-				749A73C018EDDF7A00EAA35D /* openssl */,
+				74607C1818EDE6BB00571BA6 /* json */,
+				74607C1C18EDE6D800571BA6 /* poco */,
+				74607C2018EDE70C00571BA6 /* openssl */,
+				74607C2418EDE79200571BA6 /* deps */,
+				74607C2E18EDE84700571BA6 /* CI build */,
 			);
 		};
 /* End PBXProject section */
@@ -1060,6 +1125,31 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		74607C2918EDE79900571BA6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 74607C1818EDE6BB00571BA6 /* json */;
+			targetProxy = 74607C2818EDE79900571BA6 /* PBXContainerItemProxy */;
+		};
+		74607C2B18EDE79C00571BA6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 74607C1C18EDE6D800571BA6 /* poco */;
+			targetProxy = 74607C2A18EDE79C00571BA6 /* PBXContainerItemProxy */;
+		};
+		74607C2D18EDE79E00571BA6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 74607C2018EDE70C00571BA6 /* openssl */;
+			targetProxy = 74607C2C18EDE79E00571BA6 /* PBXContainerItemProxy */;
+		};
+		74607C3318EDE84C00571BA6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 74607C2418EDE79200571BA6 /* deps */;
+			targetProxy = 74607C3218EDE84C00571BA6 /* PBXContainerItemProxy */;
+		};
+		74607C3518EDE85000571BA6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 69FC17F017E6534400B96425 /* TogglDesktop */;
+			targetProxy = 74607C3418EDE85000571BA6 /* PBXContainerItemProxy */;
+		};
 		749A3A7318D89F23000AD2DB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "CrashReporter-MacOSX";
@@ -1237,7 +1327,7 @@
 			};
 			name = Release;
 		};
-		749A739818EDD8DE00EAA35D /* Debug */ = {
+		74607C1A18EDE6BB00571BA6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -1262,7 +1352,7 @@
 			};
 			name = Debug;
 		};
-		749A739918EDD8DE00EAA35D /* Release */ = {
+		74607C1B18EDE6BB00571BA6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -1281,7 +1371,7 @@
 			};
 			name = Release;
 		};
-		749A73BE18EDDF5200EAA35D /* Debug */ = {
+		74607C1E18EDE6D800571BA6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -1302,11 +1392,11 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "deps copy";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
-		749A73BF18EDDF5200EAA35D /* Release */ = {
+		74607C1F18EDE6D800571BA6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -1321,11 +1411,11 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "deps copy";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
-		749A73C218EDDF7A00EAA35D /* Debug */ = {
+		74607C2218EDE70C00571BA6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -1346,11 +1436,11 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "json copy";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
-		749A73C318EDDF7A00EAA35D /* Release */ = {
+		74607C2318EDE70C00571BA6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -1365,7 +1455,35 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "json copy";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		74607C2618EDE79200571BA6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		74607C2718EDE79200571BA6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		74607C3018EDE84700571BA6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		74607C3118EDE84700571BA6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -1390,32 +1508,45 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		749A73A918EDD8DE00EAA35D /* Build configuration list for PBXLegacyTarget "poco" */ = {
+		74607C1918EDE6BB00571BA6 /* Build configuration list for PBXLegacyTarget "json" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				749A739818EDD8DE00EAA35D /* Debug */,
-				749A739918EDD8DE00EAA35D /* Release */,
+				74607C1A18EDE6BB00571BA6 /* Debug */,
+				74607C1B18EDE6BB00571BA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
 		};
-		749A73BD18EDDF5200EAA35D /* Build configuration list for PBXLegacyTarget "json" */ = {
+		74607C1D18EDE6D800571BA6 /* Build configuration list for PBXLegacyTarget "poco" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				749A73BE18EDDF5200EAA35D /* Debug */,
-				749A73BF18EDDF5200EAA35D /* Release */,
+				74607C1E18EDE6D800571BA6 /* Debug */,
+				74607C1F18EDE6D800571BA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
 		};
-		749A73C118EDDF7A00EAA35D /* Build configuration list for PBXLegacyTarget "openssl" */ = {
+		74607C2118EDE70C00571BA6 /* Build configuration list for PBXLegacyTarget "openssl" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				749A73C218EDDF7A00EAA35D /* Debug */,
-				749A73C318EDDF7A00EAA35D /* Release */,
+				74607C2218EDE70C00571BA6 /* Debug */,
+				74607C2318EDE70C00571BA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+		};
+		74607C2518EDE79200571BA6 /* Build configuration list for PBXAggregateTarget "deps" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				74607C2618EDE79200571BA6 /* Debug */,
+				74607C2718EDE79200571BA6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		74607C2F18EDE84700571BA6 /* Build configuration list for PBXAggregateTarget "CI build" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				74607C3018EDE84700571BA6 /* Debug */,
+				74607C3118EDE84700571BA6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
