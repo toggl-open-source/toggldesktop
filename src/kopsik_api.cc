@@ -40,6 +40,7 @@ inline kopsik::Context *app(void *context) {
     return reinterpret_cast<kopsik::Context *>(context);
 }
 
+// FIXME: move into Context
 _Bool kopsik_is_networking_error(
     const char *error) {
     std::string value(error);
@@ -77,6 +78,7 @@ _Bool kopsik_is_networking_error(
     return false;
 }
 
+// FIXME: delete
 void kopsik_view_item_clear(
     KopsikViewItem *item) {
     if (!item) {
@@ -136,30 +138,12 @@ void export_on_check_update_callback(
 
 void *kopsik_context_init(
     const char *app_name,
-    const char *app_version,
-    KopsikViewItemChangeCallback change_callback,
-    KopsikErrorCallback error_callback,
-    KopsikCheckUpdateCallback check_updates_callback,
-    KopsikOnOnlineCallback online_callback,
-    KopsikUserLoginCallback user_login_callback) {
+    const char *app_version) {
     poco_assert(app_name);
     poco_assert(app_version);
 
     kopsik::Context *ctx =
         new kopsik::Context(std::string(app_name), std::string(app_version));
-
-    user_data_change_callback_ = change_callback;
-    ctx->SetModelChangeCallback(export_on_change_callback);
-
-    user_data_error_callback_ = error_callback;
-    ctx->SetOnErrorCallback(export_on_error_callback);
-
-    user_data_check_updates_callback_ = check_updates_callback;
-    ctx->SetCheckUpdateCallback(export_on_check_update_callback);
-
-    ctx->SetOnOnlineCallback(online_callback);
-
-    ctx->SetUserLoginCallback(user_login_callback);
 
     ctx->SetAPIURL(kAPIURL);
     ctx->SetTimelineUploadURL(kTimelineUploadURL);
@@ -1803,4 +1787,43 @@ int64_t kopsik_parse_duration_string_into_seconds(const char *duration_string) {
         return 0;
     }
     return kopsik::Formatter::ParseDurationString(std::string(duration_string));
+}
+
+// FIXME: delete
+void kopsik_context_set_view_item_change_callback(
+    void *context,
+    KopsikViewItemChangeCallback cb) {
+
+    user_data_change_callback_ = cb;
+    app(context)->SetModelChangeCallback(export_on_change_callback);
+}
+
+void kopsik_context_set_error_callback(
+    void *context,
+    KopsikErrorCallback cb) {
+
+    user_data_error_callback_ = cb;
+    app(context)->SetOnErrorCallback(export_on_error_callback);
+}
+
+void kopsik_context_set_check_update_callback(
+    void *context,
+    KopsikCheckUpdateCallback cb) {
+
+    user_data_check_updates_callback_ = cb;
+    app(context)->SetCheckUpdateCallback(export_on_check_update_callback);
+}
+
+void kopsik_context_set_online_callback(
+    void *context,
+    KopsikOnOnlineCallback cb) {
+
+    app(context)->SetOnOnlineCallback(cb);
+}
+
+void kopsik_context_set_user_login_callback(
+    void *context,
+    KopsikUserLoginCallback cb) {
+
+    app(context)->SetUserLoginCallback(cb);
 }

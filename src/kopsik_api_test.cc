@@ -43,12 +43,16 @@ void in_test_user_login_callback(
 }
 
 void *create_test_context() {
-    return kopsik_context_init("tests", "0.1",
-                               in_test_change_callback,
-                               in_test_on_error_callback,
-                               in_test_check_updates_callback,
-                               in_test_online_callback,
-                               in_test_user_login_callback);
+    void *ctx = kopsik_context_init("tests", "0.1");
+
+    kopsik_context_set_view_item_change_callback(ctx, in_test_change_callback);
+    kopsik_context_set_error_callback(ctx, in_test_on_error_callback);
+    kopsik_context_set_check_update_callback(ctx,
+            in_test_check_updates_callback);
+    kopsik_context_set_online_callback(ctx, in_test_online_callback);
+    kopsik_context_set_user_login_callback(ctx, in_test_user_login_callback);
+
+    return ctx;
 }
 
 void wipe_test_db() {
