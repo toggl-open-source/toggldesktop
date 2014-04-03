@@ -4,20 +4,15 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>CI build.xcscheme</key>
+		<key>TogglDesktop CI.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>22</integer>
+			<integer>23</integer>
 		</dict>
 		<key>TogglDesktop.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>17</integer>
-		</dict>
-		<key>deps.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>21</integer>
 		</dict>
 		<key>json.xcscheme</key>
 		<dict>
@@ -108,6 +103,11 @@
 			<true/>
 		</dict>
 		<key>74D1CBC518EDE4B2003EAF45</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>74E20DE618EE0A3D00695787</key>
 		<dict>
 			<key>primary</key>
 			<true/>
