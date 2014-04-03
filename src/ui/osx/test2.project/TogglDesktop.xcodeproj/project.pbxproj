@@ -889,8 +889,8 @@
 			);
 			projectRoot = "";
 			targets = (
-				74607C2E18EDE84700571BA6 /* CI build */,
 				69FC17F017E6534400B96425 /* TogglDesktop */,
+				74607C2E18EDE84700571BA6 /* CI build */,
 				74607C1818EDE6BB00571BA6 /* json */,
 				74607C1C18EDE6D800571BA6 /* poco */,
 				74607C2018EDE70C00571BA6 /* openssl */,
@@ -1515,6 +1515,7 @@
 				74607C1B18EDE6BB00571BA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		74607C1D18EDE6D800571BA6 /* Build configuration list for PBXLegacyTarget "poco" */ = {
 			isa = XCConfigurationList;
@@ -1523,6 +1524,7 @@
 				74607C1F18EDE6D800571BA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		74607C2118EDE70C00571BA6 /* Build configuration list for PBXLegacyTarget "openssl" */ = {
 			isa = XCConfigurationList;
@@ -1531,6 +1533,7 @@
 				74607C2318EDE70C00571BA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		74607C2518EDE79200571BA6 /* Build configuration list for PBXAggregateTarget "deps" */ = {
 			isa = XCConfigurationList;
@@ -1539,6 +1542,7 @@
 				74607C2718EDE79200571BA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		74607C2F18EDE84700571BA6 /* Build configuration list for PBXAggregateTarget "CI build" */ = {
 			isa = XCConfigurationList;
@@ -1547,6 +1551,7 @@
 				74607C3118EDE84700571BA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
