@@ -7,37 +7,37 @@
 		<key>CI build.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>19</integer>
+			<integer>22</integer>
 		</dict>
 		<key>TogglDesktop.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>17</integer>
 		</dict>
-		<key>deps 2.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>22</integer>
-		</dict>
-		<key>deps copy.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>20</integer>
-		</dict>
 		<key>deps.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>18</integer>
+			<integer>21</integer>
 		</dict>
-		<key>json copy.xcscheme</key>
+		<key>json.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>21</integer>
+			<integer>18</integer>
 		</dict>
 		<key>kopsik_ui_osx.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>1</integer>
+		</dict>
+		<key>openssl.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>20</integer>
+		</dict>
+		<key>poco.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>19</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -48,6 +48,31 @@
 			<true/>
 		</dict>
 		<key>69FC181017E6534500B96425</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>74607C1818EDE6BB00571BA6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>74607C1C18EDE6D800571BA6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>74607C2018EDE70C00571BA6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>74607C2418EDE79200571BA6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>74607C2E18EDE84700571BA6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -78,6 +103,11 @@
 			<true/>
 		</dict>
 		<key>749A73C418EDDFB700EAA35D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>74D1CBC518EDE4B2003EAF45</key>
 		<dict>
 			<key>primary</key>
 			<true/>
