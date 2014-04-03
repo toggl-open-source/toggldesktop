@@ -889,12 +889,12 @@
 			);
 			projectRoot = "";
 			targets = (
+				74607C2E18EDE84700571BA6 /* CI build */,
 				69FC17F017E6534400B96425 /* TogglDesktop */,
 				74607C1818EDE6BB00571BA6 /* json */,
 				74607C1C18EDE6D800571BA6 /* poco */,
 				74607C2018EDE70C00571BA6 /* openssl */,
 				74607C2418EDE79200571BA6 /* deps */,
-				74607C2E18EDE84700571BA6 /* CI build */,
 			);
 		};
 /* End PBXProject section */
