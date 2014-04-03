@@ -32,7 +32,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xwb-FG-Z4X">
-                                <rect key="frame" x="195" y="17" width="56" height="16"/>
+                                <rect key="frame" x="195" y="15" width="56" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="03:21:30" id="Ten-lK-6RR">
                                     <font key="font" metaFont="cellTitle"/>
@@ -64,12 +64,12 @@
                         <constraint firstItem="deS-e6-3Ui" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" constant="14" id="FOo-PQ-AK1"/>
                         <constraint firstItem="CwR-d5-aWs" firstAttribute="leading" secondItem="2k6-j2-GWi" secondAttribute="trailing" constant="6" id="GnS-F9-01O"/>
                         <constraint firstItem="deS-e6-3Ui" firstAttribute="top" secondItem="CwR-d5-aWs" secondAttribute="bottom" constant="2" id="HZ7-Mc-iQ2"/>
-                        <constraint firstItem="xwb-FG-Z4X" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" constant="17" id="HsG-Zm-aF4"/>
+                        <constraint firstItem="xwb-FG-Z4X" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" constant="19" id="HsG-Zm-aF4"/>
                         <constraint firstItem="CwR-d5-aWs" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" priority="750" constant="15" id="KZ4-JV-5xD"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="deS-e6-3Ui" secondAttribute="trailing" constant="92" id="L9d-4A-NVt"/>
                         <constraint firstAttribute="trailing" secondItem="CwR-d5-aWs" secondAttribute="trailing" constant="94" id="OD9-hN-DXz"/>
                         <constraint firstAttribute="trailing" secondItem="xwb-FG-Z4X" secondAttribute="trailing" constant="15" id="SKX-kj-jDT"/>
-                        <constraint firstAttribute="bottom" secondItem="xwb-FG-Z4X" secondAttribute="bottom" constant="17" id="Wxi-cu-zKj"/>
+                        <constraint firstAttribute="bottom" secondItem="xwb-FG-Z4X" secondAttribute="bottom" constant="15" id="Wxi-cu-zKj"/>
                         <constraint firstItem="2k6-j2-GWi" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" constant="10" id="eeE-x8-PUA"/>
                         <constraint firstItem="CwR-d5-aWs" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" constant="8" id="p6t-ka-sVG"/>
                         <constraint firstAttribute="bottom" secondItem="deS-e6-3Ui" secondAttribute="bottom" constant="12" id="sXL-6H-yCQ"/>
