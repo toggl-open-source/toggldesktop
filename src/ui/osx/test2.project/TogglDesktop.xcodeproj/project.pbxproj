@@ -13,17 +13,12 @@
 		69FC180517E6534400B96425 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 69FC180317E6534400B96425 /* Credits.rtf */; };
 		69FC180817E6534400B96425 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 69FC180717E6534400B96425 /* AppDelegate.m */; };
 		69FC180B17E6534500B96425 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69FC180917E6534500B96425 /* MainMenu.xib */; };
-		69FC181317E6534500B96425 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC181217E6534500B96425 /* SenTestingKit.framework */; };
-		69FC181417E6534500B96425 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
-		69FC181C17E6534500B96425 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69FC181A17E6534500B96425 /* InfoPlist.strings */; };
-		69FC181F17E6534500B96425 /* test2Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 69FC181E17E6534500B96425 /* test2Tests.m */; };
 		74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C9617EC1DE100CA53D3 /* libc++.dylib */; };
 		74033C9817EC1DF100CA53D3 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C8D17EC1CFD00CA53D3 /* libstdc++.dylib */; };
 		741104BF18C7682700BC7A49 /* NSTextFieldWithBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */; };
 		7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7423393A1829B99C00063FA9 /* IdleNotificationWindowController.m */; };
 		7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */; };
 		7424949E17F1E3D20030121C /* UIEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 7424949D17F1E3D20030121C /* UIEvents.m */; };
-		7424949F17F1E3D20030121C /* UIEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 7424949D17F1E3D20030121C /* UIEvents.m */; };
 		7430750418204EFB009019CB /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7430750218204EFB009019CB /* AboutWindowController.m */; };
 		7430750518204EFB009019CB /* AboutWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7430750318204EFB009019CB /* AboutWindowController.xib */; };
 		7430750818205B88009019CB /* Update.m in Sources */ = {isa = PBXBuildFile; fileRef = 7430750718205B88009019CB /* Update.m */; };
@@ -56,38 +51,23 @@
 		74AA947818090A8E0000539F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74AA947718090A8E0000539F /* Security.framework */; };
 		74BA5FCF18B6E770009DAA2D /* NSHoverButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BA5FCE18B6E770009DAA2D /* NSHoverButton.m */; };
 		74BAAA0717F32C470079386F /* Context.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0617F32C470079386F /* Context.m */; };
-		74BAAA0817F32C470079386F /* Context.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0617F32C470079386F /* Context.m */; };
 		74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */; };
-		74BAAA0C17F37B140079386F /* TimeEntryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */; };
 		74BAD31E18BD7D83002FD4CF /* ViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAD31D18BD7D83002FD4CF /* ViewItem.m */; };
 		74C15796183A8CE600550613 /* AutocompleteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74C15795183A8CE600550613 /* AutocompleteItem.m */; };
 		74C1579B183BA5DA00550613 /* AutocompleteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 74C1579A183BA5DA00550613 /* AutocompleteDataSource.m */; };
 		74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */; };
-		74D1D25717EB713F00E709B0 /* TimeEntryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */; };
 		74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */; };
-		74D1D25917EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */; };
 		74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D25B17EB71C100E709B0 /* TimeEntryEditViewController.m */; };
-		74D1D25E17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D25B17EB71C100E709B0 /* TimeEntryEditViewController.m */; };
 		74D1D25F17EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D25C17EB71C100E709B0 /* TimeEntryEditViewController.xib */; };
-		74D1D26017EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D25C17EB71C100E709B0 /* TimeEntryEditViewController.xib */; };
 		74D1D27217EB72D900E709B0 /* TimerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D27017EB72D900E709B0 /* TimerEditViewController.m */; };
-		74D1D27317EB72D900E709B0 /* TimerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D27017EB72D900E709B0 /* TimerEditViewController.m */; };
 		74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */; };
-		74D1D27517EB72D900E709B0 /* TimerEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */; };
 		74E3CDC617FBABE400C3ADD3 /* Bugsnag.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDB317FBABE400C3ADD3 /* Bugsnag.m */; };
-		74E3CDC717FBABE400C3ADD3 /* Bugsnag.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDB317FBABE400C3ADD3 /* Bugsnag.m */; };
 		74E3CDC817FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDB517FBABE400C3ADD3 /* BugsnagConfiguration.m */; };
-		74E3CDC917FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDB517FBABE400C3ADD3 /* BugsnagConfiguration.m */; };
 		74E3CDCA17FBABE400C3ADD3 /* BugsnagEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDB717FBABE400C3ADD3 /* BugsnagEvent.m */; };
-		74E3CDCB17FBABE400C3ADD3 /* BugsnagEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDB717FBABE400C3ADD3 /* BugsnagEvent.m */; };
 		74E3CDCC17FBABE400C3ADD3 /* BugsnagMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDBA17FBABE400C3ADD3 /* BugsnagMetaData.m */; };
-		74E3CDCD17FBABE400C3ADD3 /* BugsnagMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDBA17FBABE400C3ADD3 /* BugsnagMetaData.m */; };
 		74E3CDCE17FBABE400C3ADD3 /* BugsnagNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDBC17FBABE400C3ADD3 /* BugsnagNotifier.m */; };
-		74E3CDCF17FBABE400C3ADD3 /* BugsnagNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDBC17FBABE400C3ADD3 /* BugsnagNotifier.m */; };
 		74E3CDD017FBABE400C3ADD3 /* BugsnagReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDBF17FBABE400C3ADD3 /* BugsnagReachability.m */; };
-		74E3CDD117FBABE400C3ADD3 /* BugsnagReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDBF17FBABE400C3ADD3 /* BugsnagReachability.m */; };
 		74E3CDD417FBABE400C3ADD3 /* BugsnagOSXNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDC517FBABE400C3ADD3 /* BugsnagOSXNotifier.m */; };
-		74E3CDD517FBABE400C3ADD3 /* BugsnagOSXNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDC517FBABE400C3ADD3 /* BugsnagOSXNotifier.m */; };
 		74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74E3CDD617FBAE0800C3ADD3 /* SystemConfiguration.framework */; };
 		74E3CDD917FC369700C3ADD3 /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74E3CDD817FC369700C3ADD3 /* ExceptionHandling.framework */; };
 		74E3CDDD17FC8E8000C3ADD3 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDDC17FC8E8000C3ADD3 /* User.m */; };
@@ -122,13 +102,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		69FC181517E6534500B96425 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 69FC17E917E6534400B96425 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 69FC17F017E6534400B96425;
-			remoteInfo = test2;
-		};
 		749A3A5618D889BE000AD2DB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 749A3A4318D889BD000AD2DB /* CrashReporter.xcodeproj */;
@@ -282,7 +255,6 @@
 		69FC180617E6534400B96425 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		69FC180717E6534400B96425 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		69FC180A17E6534500B96425 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		69FC181117E6534500B96425 /* TogglDesktopTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TogglDesktopTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		69FC181217E6534500B96425 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		69FC181917E6534500B96425 /* TogglDesktopTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TogglDesktopTests-Info.plist"; sourceTree = "<group>"; };
 		69FC181B17E6534500B96425 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -448,15 +420,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		69FC180D17E6534500B96425 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				69FC181317E6534500B96425 /* SenTestingKit.framework in Frameworks */,
-				69FC181417E6534500B96425 /* Cocoa.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -487,7 +450,6 @@
 			isa = PBXGroup;
 			children = (
 				69FC17F117E6534400B96425 /* TogglDesktop.app */,
-				69FC181117E6534500B96425 /* TogglDesktopTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -761,6 +723,51 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXLegacyTarget section */
+		749A739718EDD8DE00EAA35D /* poco */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = poco;
+			buildConfigurationList = 749A73A918EDD8DE00EAA35D /* Build configuration list for PBXLegacyTarget "poco" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = ./../../../../;
+			dependencies = (
+			);
+			name = poco;
+			passBuildSettingsInEnvironment = 1;
+			productName = deps;
+		};
+		749A73BC18EDDF5200EAA35D /* json */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = json;
+			buildConfigurationList = 749A73BD18EDDF5200EAA35D /* Build configuration list for PBXLegacyTarget "json" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = ./../../../../;
+			dependencies = (
+			);
+			name = json;
+			passBuildSettingsInEnvironment = 1;
+			productName = deps;
+		};
+		749A73C018EDDF7A00EAA35D /* openssl */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = openssl;
+			buildConfigurationList = 749A73C118EDDF7A00EAA35D /* Build configuration list for PBXLegacyTarget "openssl" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = ./../../../../;
+			dependencies = (
+			);
+			name = openssl;
+			passBuildSettingsInEnvironment = 1;
+			productName = deps;
+		};
+/* End PBXLegacyTarget section */
+
 /* Begin PBXNativeTarget section */
 		69FC17F017E6534400B96425 /* TogglDesktop */ = {
 			isa = PBXNativeTarget;
@@ -783,25 +790,6 @@
 			productName = test2;
 			productReference = 69FC17F117E6534400B96425 /* TogglDesktop.app */;
 			productType = "com.apple.product-type.application";
-		};
-		69FC181017E6534500B96425 /* TogglDesktopTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 69FC182517E6534500B96425 /* Build configuration list for PBXNativeTarget "TogglDesktopTests" */;
-			buildPhases = (
-				69FC180C17E6534500B96425 /* Sources */,
-				69FC180D17E6534500B96425 /* Frameworks */,
-				69FC180E17E6534500B96425 /* Resources */,
-				69FC180F17E6534500B96425 /* ShellScript */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				69FC181617E6534500B96425 /* PBXTargetDependency */,
-			);
-			name = TogglDesktopTests;
-			productName = test2Tests;
-			productReference = 69FC181117E6534500B96425 /* TogglDesktopTests.octest */;
-			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
 
@@ -839,7 +827,9 @@
 			projectRoot = "";
 			targets = (
 				69FC17F017E6534400B96425 /* TogglDesktop */,
-				69FC181017E6534500B96425 /* TogglDesktopTests */,
+				749A739718EDD8DE00EAA35D /* poco */,
+				749A73BC18EDDF5200EAA35D /* json */,
+				749A73C018EDDF7A00EAA35D /* openssl */,
 			);
 		};
 /* End PBXProject section */
@@ -989,33 +979,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		69FC180E17E6534500B96425 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				69FC181C17E6534500B96425 /* InfoPlist.strings in Resources */,
-				74D1D25917EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
-				74D1D26017EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */,
-				74D1D27517EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		69FC180F17E6534500B96425 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
-		};
 		74E3CDDA17FC37A500C3ADD3 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1091,35 +1057,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		69FC180C17E6534500B96425 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				74E3CDD517FBABE400C3ADD3 /* BugsnagOSXNotifier.m in Sources */,
-				74E3CDD117FBABE400C3ADD3 /* BugsnagReachability.m in Sources */,
-				74E3CDC717FBABE400C3ADD3 /* Bugsnag.m in Sources */,
-				7424949F17F1E3D20030121C /* UIEvents.m in Sources */,
-				74BAAA0C17F37B140079386F /* TimeEntryViewItem.m in Sources */,
-				69FC181F17E6534500B96425 /* test2Tests.m in Sources */,
-				74E3CDCD17FBABE400C3ADD3 /* BugsnagMetaData.m in Sources */,
-				74D1D25717EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
-				74E3CDCB17FBABE400C3ADD3 /* BugsnagEvent.m in Sources */,
-				74D1D25E17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,
-				74E3CDCF17FBABE400C3ADD3 /* BugsnagNotifier.m in Sources */,
-				74D1D27317EB72D900E709B0 /* TimerEditViewController.m in Sources */,
-				74E3CDC917FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */,
-				74BAAA0817F32C470079386F /* Context.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		69FC181617E6534500B96425 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 69FC17F017E6534400B96425 /* TogglDesktop */;
-			targetProxy = 69FC181517E6534500B96425 /* PBXContainerItemProxy */;
-		};
 		749A3A7318D89F23000AD2DB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "CrashReporter-MacOSX";
@@ -1297,43 +1237,135 @@
 			};
 			name = Release;
 		};
-		69FC182617E6534500B96425 /* Debug */ = {
+		749A739818EDD8DE00EAA35D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/test2.app/Contents/MacOS/test2";
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "test2/test2-Prefix.pch";
-				INFOPLIST_FILE = "test2Tests/TogglDesktopTests-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				DEBUGGING_SYMBOLS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
 					"$(inherited)",
-					"\\\\\\\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/kopsik-gdrqxzhkjpeomlgorxydlstyhljk/Build/Products/Debug\\\\\\\"",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Kopsik-cptvydtiosmzancjbyyzuervwdsl/Build/Products/Debug",
 				);
-				PRODUCT_NAME = TogglDesktopTests;
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
-		69FC182717E6534500B96425 /* Release */ = {
+		749A739918EDD8DE00EAA35D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/test2.app/Contents/MacOS/test2";
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "test2/test2-Prefix.pch";
-				INFOPLIST_FILE = "test2Tests/TogglDesktopTests-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		749A73BE18EDDF5200EAA35D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				DEBUGGING_SYMBOLS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
 					"$(inherited)",
-					"\\\\\\\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/kopsik-gdrqxzhkjpeomlgorxydlstyhljk/Build/Products/Debug\\\\\\\"",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Kopsik-cptvydtiosmzancjbyyzuervwdsl/Build/Products/Debug",
 				);
-				PRODUCT_NAME = TogglDesktopTests;
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "deps copy";
+			};
+			name = Debug;
+		};
+		749A73BF18EDDF5200EAA35D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "deps copy";
+			};
+			name = Release;
+		};
+		749A73C218EDDF7A00EAA35D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				DEBUGGING_SYMBOLS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "json copy";
+			};
+			name = Debug;
+		};
+		749A73C318EDDF7A00EAA35D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "json copy";
 			};
 			name = Release;
 		};
@@ -1358,11 +1390,29 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		69FC182517E6534500B96425 /* Build configuration list for PBXNativeTarget "TogglDesktopTests" */ = {
+		749A73A918EDD8DE00EAA35D /* Build configuration list for PBXLegacyTarget "poco" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				69FC182617E6534500B96425 /* Debug */,
-				69FC182717E6534500B96425 /* Release */,
+				749A739818EDD8DE00EAA35D /* Debug */,
+				749A739918EDD8DE00EAA35D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		749A73BD18EDDF5200EAA35D /* Build configuration list for PBXLegacyTarget "json" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				749A73BE18EDDF5200EAA35D /* Debug */,
+				749A73BF18EDDF5200EAA35D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		749A73C118EDDF7A00EAA35D /* Build configuration list for PBXLegacyTarget "openssl" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				749A73C218EDDF7A00EAA35D /* Debug */,
+				749A73C318EDDF7A00EAA35D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
