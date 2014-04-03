@@ -4,6 +4,36 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>CI build.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>19</integer>
+		</dict>
+		<key>TogglDesktop.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>17</integer>
+		</dict>
+		<key>deps 2.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>22</integer>
+		</dict>
+		<key>deps copy.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>20</integer>
+		</dict>
+		<key>deps.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>18</integer>
+		</dict>
+		<key>json copy.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>21</integer>
+		</dict>
 		<key>kopsik_ui_osx.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -18,6 +48,36 @@
 			<true/>
 		</dict>
 		<key>69FC181017E6534500B96425</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>749A739718EDD8DE00EAA35D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>749A73AA18EDDB3000EAA35D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>749A73B218EDDD6F00EAA35D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>749A73BC18EDDF5200EAA35D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>749A73C018EDDF7A00EAA35D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>749A73C418EDDFB700EAA35D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
