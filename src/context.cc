@@ -83,7 +83,6 @@ Context::~Context() {
 }
 
 void Context::StartEvents() {
-    poco_assert(on_model_change_callback_);
     poco_assert(on_error_callback_);
     poco_assert(on_check_update_callback_);
     poco_assert(on_online_callback_);
@@ -154,6 +153,9 @@ kopsik::error Context::save() {
         kopsik::error err = db_->SaveUser(user_, true, &changes);
         if (err != kopsik::noError) {
             return err;
+        }
+        if (!on_model_change_callback_) {
+            return noError;
         }
         for (std::vector<kopsik::ModelChange>::const_iterator it =
             changes.begin();
@@ -1047,7 +1049,9 @@ kopsik::error Context::DeleteTimeEntryByGUID(const std::string GUID) {
     te->Delete();
 
     kopsik::ModelChange mc("time_entry", "delete", te->ID(), te->GUID());
-    on_model_change_callback_(mc);
+    if (on_model_change_callback_) {
+        on_model_change_callback_(mc);
+    }
 
     kopsik::error err = save();
     if (err != kopsik::noError) {
