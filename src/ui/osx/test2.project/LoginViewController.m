@@ -62,8 +62,7 @@ extern void *ctx;
   }
 
   if (sender == self.passwordForgotTextField) {
-    NSString *lostPasswordURL = [NSString stringWithUTF8String:kLostPasswordURL];
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:lostPasswordURL]];
+    kopsik_password_forgot(ctx);
     return;
   }
 }

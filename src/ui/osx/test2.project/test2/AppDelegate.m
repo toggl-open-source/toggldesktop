@@ -741,6 +741,7 @@ const NSString *appName = @"osx_native_app";
   kopsik_context_set_check_update_callback(ctx, on_update_checked_callback);
   kopsik_context_set_online_callback(ctx, on_online_callback);
   kopsik_context_set_user_login_callback(ctx, on_user_login_callback);
+  kopsik_set_open_url_callback(ctx, on_open_url_callback);
                             
   NSLog(@"Version %@", version);
   
@@ -1038,6 +1039,10 @@ void on_remind() {
   [notification setSoundName:NSUserNotificationDefaultSoundName];
   NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
   [center scheduleNotification:notification];
+}
+
+void on_open_url_callback(const char *url) {
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[NSString stringWithUTF8String:url]]];
 }
 
 @end
