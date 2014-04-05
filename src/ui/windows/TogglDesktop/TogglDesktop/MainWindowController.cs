@@ -41,7 +41,7 @@ namespace TogglDesktop
                 Size = Properties.Settings.Default.Size;
             }
 
-            Core.Startup("windows_native_app", "1.0");
+            Core.Init("windows_native_app", "1.0");
 
             Controls.Add(loginViewController);
             loginViewController.SetAcceptButton(this);

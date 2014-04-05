@@ -152,8 +152,8 @@ void *kopsik_context_init(
     return ctx;
 }
 
-void kopsik_context_startup(void *context) {
-    app(context)->Startup();
+void kopsik_context_start_events(void *context) {
+    app(context)->StartEvents();
 }
 
 void kopsik_context_shutdown(void *context) {

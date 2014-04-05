@@ -44,7 +44,7 @@ class Context {
     ~Context();
 
     // Check for logged in user etc, start up the app
-    void Startup();
+    void StartEvents();
     // Close connections and wait for tasks to finish
     void Shutdown();
 

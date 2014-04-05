@@ -82,7 +82,7 @@ Context::~Context() {
     Poco::Net::uninitializeSSL();
 }
 
-void Context::Startup() {
+void Context::StartEvents() {
     exportUserLoginState();
 }
 

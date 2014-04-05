@@ -40,7 +40,7 @@ namespace TogglDesktop
                 password.Focus();
                 return;
             }
-            MessageBox.Show("FIXME: invoke login");
+            Core.Login(email.Text, password.Text);
         }
 
         private void passwordForgotTextField_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
