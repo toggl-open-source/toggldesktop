@@ -13,6 +13,8 @@
 
 @implementation AutocompleteDataSource
 
+extern void *ctx;
+
 - (id) init {
   self = [super init];
 

@@ -273,10 +273,7 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     ASSERT_EQ("", g_errmsg);
 
     // Start tracking
-    KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-    ASSERT_TRUE(kopsik_start(ctx, "Test", 0, 0, 0, item));
-    ASSERT_EQ(std::string("Test"), std::string(item->Description));
-    kopsik_time_entry_view_item_clear(item);
+    ASSERT_TRUE(kopsik_start(ctx, "Test", 0, 0, 0));
 
     ASSERT_EQ("", g_errmsg);
 

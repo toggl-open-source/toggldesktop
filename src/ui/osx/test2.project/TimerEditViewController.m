@@ -30,6 +30,9 @@
 
 @implementation TimerEditViewController
 
+extern int kDurationStringLength;
+extern void *ctx;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -358,10 +361,10 @@
   int64_t seconds = kopsik_parse_duration_string_into_seconds(duration_string);
 
   // Format seconds as text again
-  char str[duration_str_len];
+  char str[kDurationStringLength];
   kopsik_format_duration_in_seconds_hhmmss(seconds,
                                            str,
-                                           duration_str_len);
+                                           kDurationStringLength);
   NSString *newValue = [NSString stringWithUTF8String:str];
   [self.durationTextField setStringValue:newValue];
 }
@@ -411,10 +414,10 @@
 
 - (void)timerFired:(NSTimer*)timer {
   if (self.time_entry != nil && self.time_entry.duration_in_seconds < 0) {
-    char str[duration_str_len];
+    char str[kDurationStringLength];
     kopsik_format_duration_in_seconds_hhmmss(self.time_entry.duration_in_seconds,
                                              str,
-                                             duration_str_len);
+                                             kDurationStringLength);
     NSString *newValue = [NSString stringWithUTF8String:str];
     [self.durationTextField setStringValue:newValue];
   }

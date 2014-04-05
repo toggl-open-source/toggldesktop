@@ -251,13 +251,10 @@ int Main::listTimeEntries() {
 }
 
 int Main::startTimeEntry() {
-    KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
     if (!kopsik_start(
-        ctx_, "New time entry", "", 0, 0, te)) {
-        kopsik_time_entry_view_item_clear(te);
+        ctx_, "New time entry", "", 0, 0)) {
         return Poco::Util::Application::EXIT_SOFTWARE;
     }
-    kopsik_time_entry_view_item_clear(te);
     return Poco::Util::Application::EXIT_OK;
 }
 

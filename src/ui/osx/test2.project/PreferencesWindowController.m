@@ -18,6 +18,8 @@ NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcu
 
 @implementation PreferencesWindowController
 
+extern void *ctx;
+
 - (void)windowDidLoad {
     [super windowDidLoad];
 

@@ -14,11 +14,9 @@
 
 #import "const.h"
 
-@interface LoginViewController ()
-
-@end
-
 @implementation LoginViewController
+
+extern void *ctx;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

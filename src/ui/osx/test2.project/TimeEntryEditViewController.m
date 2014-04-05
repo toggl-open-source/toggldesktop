@@ -44,6 +44,9 @@
 
 @implementation TimeEntryEditViewController
 
+extern void *ctx;
+extern int kDurationStringLength;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -170,26 +173,12 @@
   uint64_t clientID = [self selectedClientID];
 
   // A new project is being added!
-  KopsikViewItem *project = 0;
-  if (!kopsik_add_project(ctx,
+  return kopsik_add_project(ctx,
+                          [self.GUID UTF8String],
                           workspaceID,
                           clientID,
                           [projectName UTF8String],
-                          is_private,
-                          &project)) {
-    kopsik_view_item_clear(project);
-    return NO;
-  }
-  if (!kopsik_set_time_entry_project(ctx,
-                                     [self.GUID UTF8String],
-                                     0,
-                                     project->ID,
-                                     project->GUID)) {
-    kopsik_view_item_clear(project);
-    return NO;
-  }
-  kopsik_view_item_clear(project);
-  return YES;
+                          is_private);
 }
 
 - (IBAction)continueButtonClicked:(id)sender {
@@ -1056,10 +1045,10 @@ completionsForSubstring:(NSString *)substring
   if ([self.durationTextField currentEditor] != nil) {
     return; // duration field is focussed by user, don't mess with it
   }
-  char str[duration_str_len];
+  char str[kDurationStringLength];
   kopsik_format_duration_in_seconds_hhmmss(self.runningTimeEntry.duration_in_seconds,
                                            str,
-                                           duration_str_len);
+                                           kDurationStringLength);
   NSString *newValue = [NSString stringWithUTF8String:str];
   [self.durationTextField setStringValue:newValue];
 }

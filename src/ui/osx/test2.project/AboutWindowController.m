@@ -17,6 +17,8 @@
 
 @implementation AboutWindowController
 
+extern void *ctx;
+
 - (void)windowDidLoad {
   [super windowDidLoad];
     

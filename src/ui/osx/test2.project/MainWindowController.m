@@ -28,6 +28,8 @@
 
 @implementation MainWindowController
 
+extern void *ctx;
+
 - (id)initWithWindow:(NSWindow *)window {
   self = [super initWithWindow:window];
   if (self) {

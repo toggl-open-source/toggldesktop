@@ -13,6 +13,8 @@
 
 @implementation TimeEntryViewItem
 
+extern void *ctx;
+
 - (void)load:(KopsikTimeEntryViewItem *)data {
   self.GUID = [NSString stringWithUTF8String:data->GUID];
   self.duration_in_seconds = data->DurationInSeconds;

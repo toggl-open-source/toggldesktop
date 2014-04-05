@@ -843,13 +843,13 @@ _Bool kopsik_clients(
 
 _Bool kopsik_add_project(
     void *context,
+    const char *time_entry_guid,
     const uint64_t workspace_id,
     const uint64_t client_id,
     const char *project_name,
-    const _Bool is_private,
-    KopsikViewItem **resulting_project) {
+    const _Bool is_private) {
     try {
-        poco_assert(resulting_project);
+        poco_assert(time_entry_guid);
 
         kopsik::Project *p = 0;
         kopsik::error err = app(context)->AddProject(
@@ -864,7 +864,12 @@ _Bool kopsik_add_project(
         }
         poco_assert(p);
 
-        *resulting_project = project_to_view_item(p);
+        return kopsik_set_time_entry_project(
+            context,
+            time_entry_guid,
+            0, /* no task ID */
+            p->ID(),
+            p->GUID().c_str());
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
         return false;
@@ -990,11 +995,8 @@ _Bool kopsik_start(
     const char *description,
     const char *duration,
     const uint64_t task_id,
-    const uint64_t project_id,
-    KopsikTimeEntryViewItem *out_view_item) {
+    const uint64_t project_id) {
     try {
-        poco_assert(out_view_item);
-
         logger().debug("kopsik_start");
 
         std::string desc("");
@@ -1013,19 +1015,6 @@ _Bool kopsik_start(
         if (err != kopsik::noError) {
             export_on_error_callback(err);
             return false;
-        }
-
-        if (te) {
-            std::string project_label("");
-            std::string color_code("");
-            app(context)->ProjectLabelAndColorCode(te,
-                                                   &project_label,
-                                                   &color_code);
-            time_entry_to_view_item(te,
-                                    project_label,
-                                    color_code,
-                                    out_view_item,
-                                    "");
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());

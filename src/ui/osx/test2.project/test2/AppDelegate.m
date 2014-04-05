@@ -30,16 +30,11 @@
 #import "MASShortcut+UserDefaults.h"
 
 @interface AppDelegate()
-@property (nonatomic, strong) IBOutlet MainWindowController *
-mainWindowController;
-@property (nonatomic, strong) IBOutlet PreferencesWindowController *
-preferencesWindowController;
-@property (nonatomic, strong) IBOutlet AboutWindowController *
-aboutWindowController;
-@property (nonatomic, strong) IBOutlet IdleNotificationWindowController *
-idleNotificationWindowController;
-@property (nonatomic, strong) IBOutlet FeedbackWindowController *
-feedbackWindowController;
+@property (nonatomic, strong) IBOutlet MainWindowController *mainWindowController;
+@property (nonatomic, strong) IBOutlet PreferencesWindowController *preferencesWindowController;
+@property (nonatomic, strong) IBOutlet AboutWindowController *aboutWindowController;
+@property (nonatomic, strong) IBOutlet IdleNotificationWindowController *idleNotificationWindowController;
+@property (nonatomic, strong) IBOutlet FeedbackWindowController *feedbackWindowController;
 @property TimeEntryViewItem *lastKnownRunningTimeEntry;
 @property NSTimer *menubarTimer;
 @property NSTimer *idleTimer;
@@ -73,6 +68,9 @@ feedbackWindowController;
 @end
 
 @implementation AppDelegate
+
+void *ctx;
+const int kDurationStringLength = 20;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   NSLog(@"applicationDidFinishLaunching");
@@ -237,30 +235,13 @@ feedbackWindowController;
 }
 
 - (void)startNewTimeEntry:(TimeEntryViewItem *)new_time_entry {
-  KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
   NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
   if (!kopsik_start(ctx,
                     [new_time_entry.Description UTF8String],
                     [new_time_entry.duration UTF8String],
                     new_time_entry.TaskID,
-                    new_time_entry.ProjectID,
-                    item)) {
-    kopsik_time_entry_view_item_clear(item);
+                    new_time_entry.ProjectID)) {
     return;
-  }
-  
-  TimeEntryViewItem *timeEntry = [[TimeEntryViewItem alloc] init];
-  [timeEntry load:item];
-  kopsik_time_entry_view_item_clear(item);
-  if (timeEntry.duration_in_seconds < 0) {
-    [[NSNotificationCenter defaultCenter]
-     postNotificationName:kUIStateTimerRunning object:timeEntry];
-    
-    EditNotification *edit = [[EditNotification alloc] init];
-    edit.GUID = timeEntry.GUID;
-    edit.FieldName = kUIDescriptionClicked;
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
-                                                        object:edit];
   }
   
   [self onShowMenuItem:self];
@@ -795,11 +776,11 @@ const NSString *appName = @"osx_native_app";
 
 - (void)menubarTimerFired:(NSTimer*)timer {
   if (self.lastKnownRunningTimeEntry != nil) {
-    char str[duration_str_len];
+    char str[kDurationStringLength];
     kopsik_format_duration_in_seconds_hhmm(
                                            self.lastKnownRunningTimeEntry.duration_in_seconds,
                                            str,
-                                           duration_str_len);
+                                           kDurationStringLength);
     NSString *statusStr = @" ";
     statusStr = [statusStr stringByAppendingString:[NSString stringWithUTF8String:str]];
     [self.statusItem setTitle:statusStr];
