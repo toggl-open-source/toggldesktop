@@ -1,14 +1,17 @@
+Project dependencies
+--------------------
+First, build dependencies:
+```
+make deps
+```
 
 OS X
-----
+---
 ```
 make osx
 ```
-Toggl built and signed app is [available for download](https://www.toggl.com/api/v8/installer?platform=darwin&app=td&channel=stable).
 
-XCode Version 5.0.2 is required to hack on the project.
-
-Currently OSX 10.8 is the minimum version supported.
+Toggl built and signed app is [available for download](https://www.toggl.com/api/v8/installer?platform=darwin&app=td&channel=stable). Currently OSX 10.8 is the minimum version supported.
 
 Windows
 -------
