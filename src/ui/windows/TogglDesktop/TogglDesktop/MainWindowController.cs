@@ -27,6 +27,20 @@ namespace TogglDesktop
         {
             troubleBox.BackColor = Color.FromArgb(239, 226, 121);
 
+            loadWindowLocation();
+
+            Core.OnUserLogin += Core_OnUserLogin;
+            Core.OnError += Core_OnError;
+            Core.OnCheckUpdate += Core_OnCheckUpdate;
+            Core.OnOnline += Core_OnOnline;
+
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+            Core.Init("windows_native_app", versionInfo.ProductVersion);
+        }
+
+        private void loadWindowLocation()
+        {
             if (Properties.Settings.Default.Maximized)
             {
                 WindowState = FormWindowState.Maximized;
@@ -44,15 +58,6 @@ namespace TogglDesktop
                 Location = Properties.Settings.Default.Location;
                 Size = Properties.Settings.Default.Size;
             }
-
-            Core.OnUserLogin += Core_OnUserLogin;
-            Core.OnError += Core_OnError;
-            Core.OnCheckUpdate += Core_OnCheckUpdate;
-            Core.OnOnline += Core_OnOnline;
-
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
-            Core.Init("windows_native_app", versionInfo.ProductVersion);
         }
 
         void Core_OnOnline()
@@ -81,6 +86,11 @@ namespace TogglDesktop
         }
 
         private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            saveWindowLocation();
+        }
+
+        private void saveWindowLocation()
         {
             if (WindowState == FormWindowState.Maximized)
             {

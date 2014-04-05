@@ -38,14 +38,19 @@ namespace TogglDesktop
             Core.Login(email.Text, password.Text);
         }
 
-        private void passwordForgotTextField_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void passwordForgotTextField_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("FIXME: forgot password is a const");
+            Core.PasswordForgot();
         }
 
-        private void googleLoginTextField_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void LoginViewController_Load(object sender, EventArgs e)
         {
-            MessageBox.Show("FIXME: google login");
+            Core.OnOpenURL += Core_OnOpenURL;
+        }
+
+        void Core_OnOpenURL(string url)
+        {
+            Process.Start(url);
         }
 
     }

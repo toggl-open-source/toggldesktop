@@ -48,6 +48,12 @@ extern "C" {
         void *context,
         KopsikOnOnlineCallback);
 
+	typedef void(*KopsikOpenURLCallback)(const char *url);
+
+	KOPSIK_EXPORT void kopsik_set_open_url_callback(
+		void *context,
+		KopsikOpenURLCallback);
+
     typedef void (*KopsikUserLoginCallback)(
         uint64_t id,
         const char *fullname,
@@ -82,6 +88,9 @@ extern "C" {
         void *context,
         const char *email,
         const char *password);
+
+	KOPSIK_EXPORT void kopsik_password_forgot(
+		void *context);
 
     KOPSIK_EXPORT _Bool kopsik_feedback_send(
         void *context,

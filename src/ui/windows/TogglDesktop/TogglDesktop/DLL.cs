@@ -38,6 +38,10 @@ namespace TogglDesktop
             IntPtr context, KopsikUserLoginCallback cb);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        public static extern void kopsik_set_open_url_callback(
+            IntPtr context, KopsikOpenURLCallback cb);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_set_log_path(string path);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -49,6 +53,9 @@ namespace TogglDesktop
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern bool kopsik_login(
             IntPtr context, string email, string password);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        public static extern void kopsik_password_forgot();
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_context_clear(IntPtr context);
@@ -66,6 +73,9 @@ namespace TogglDesktop
 
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikOnOnlineCallback();
+
+        [UnmanagedFunctionPointer(convention)]
+        public delegate void KopsikOpenURLCallback(string url);
     }
 }
 

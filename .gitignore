@@ -95,3 +95,5 @@ third_party/google-astyle/build/
 
 out32dll
 tmp32dll
+
+ipch

@@ -20,6 +20,7 @@ namespace TogglDesktop
             DLL.kopsik_context_set_check_update_callback(ctx_, OnCheckUpdate);
             DLL.kopsik_context_set_online_callback(ctx_, OnOnline);
             DLL.kopsik_context_set_user_login_callback(ctx_, OnUserLogin);
+            DLL.kopsik_set_open_url_callback(ctx_, OnOpenURL);
 
             string path = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -37,6 +38,11 @@ namespace TogglDesktop
             return DLL.kopsik_login(ctx_, email, password);
         }
 
+        public static void PasswordForgot()
+        {
+            DLL.kopsik_password_forgot();
+        }
+
         public static void Clear()
         {
             if (IntPtr.Zero == ctx_)
@@ -51,6 +57,7 @@ namespace TogglDesktop
         public static event DLL.KopsikUserLoginCallback OnUserLogin = delegate { };
         public static event DLL.KopsikCheckUpdateCallback OnCheckUpdate = delegate {};
         public static event DLL.KopsikOnOnlineCallback OnOnline = delegate { };
+        public static event DLL.KopsikOpenURLCallback OnOpenURL = delegate { };
     }
 }
 

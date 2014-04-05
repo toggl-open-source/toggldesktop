@@ -54,7 +54,6 @@
             this.googleLoginTextField.TabIndex = 3;
             this.googleLoginTextField.TabStop = true;
             this.googleLoginTextField.Text = "Google login";
-            this.googleLoginTextField.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.googleLoginTextField_LinkClicked);
             // 
             // password
             // 
@@ -80,6 +79,7 @@
             this.passwordForgotTextField.TabIndex = 7;
             this.passwordForgotTextField.TabStop = true;
             this.passwordForgotTextField.Text = "Forgot password?";
+            this.passwordForgotTextField.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.passwordForgotTextField_LinkClicked_1);
             // 
             // LoginViewController
             // 
@@ -92,6 +92,7 @@
             this.Controls.Add(this.loginButton);
             this.Name = "LoginViewController";
             this.Size = new System.Drawing.Size(279, 345);
+            this.Load += new System.EventHandler(this.LoginViewController_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
