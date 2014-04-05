@@ -18,11 +18,6 @@ namespace TogglDesktop
             InitializeComponent();
         }
 
-        private void LoginViewController_Load(object sender, EventArgs e)
-        {
-            troubleBox.BackColor = Color.FromArgb(239, 226, 121);
-        }
-
         public void SetAcceptButton(Form frm)
         {
             frm.AcceptButton = loginButton;

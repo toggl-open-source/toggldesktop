@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace TogglDesktop
 {
@@ -23,6 +25,8 @@ namespace TogglDesktop
 
         private void MainWindowController_Load(object sender, EventArgs e)
         {
+            troubleBox.BackColor = Color.FromArgb(239, 226, 121);
+
             if (Properties.Settings.Default.Maximized)
             {
                 WindowState = FormWindowState.Maximized;
@@ -42,8 +46,17 @@ namespace TogglDesktop
             }
 
             Core.OnUserLogin += Core_OnUserLogin;
+            Core.OnError += Core_OnError;
 
-            Core.Init("windows_native_app", "1.0");
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+            Core.Init("windows_native_app", versionInfo.ProductVersion);
+        }
+
+        void Core_OnError(string errmsg)
+        {
+            errorLabel.Text = errmsg;
+            troubleBox.Visible = true;
         }
 
         void Core_OnUserLogin(ulong id, string fullname, string timeofdayformat)

@@ -31,11 +31,8 @@
             this.loginButton = new System.Windows.Forms.Button();
             this.googleLoginTextField = new System.Windows.Forms.LinkLabel();
             this.password = new System.Windows.Forms.MaskedTextBox();
-            this.troubleBox = new System.Windows.Forms.Panel();
-            this.errorLabel = new System.Windows.Forms.Label();
-            this.passwordForgotTextField = new System.Windows.Forms.LinkLabel();
             this.email = new System.Windows.Forms.TextBox();
-            this.troubleBox.SuspendLayout();
+            this.passwordForgotTextField = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // loginButton
@@ -67,36 +64,6 @@
             this.password.TabIndex = 1;
             this.password.UseSystemPasswordChar = true;
             // 
-            // troubleBox
-            // 
-            this.troubleBox.Controls.Add(this.errorLabel);
-            this.troubleBox.Controls.Add(this.passwordForgotTextField);
-            this.troubleBox.Location = new System.Drawing.Point(0, 0);
-            this.troubleBox.Name = "troubleBox";
-            this.troubleBox.Size = new System.Drawing.Size(276, 31);
-            this.troubleBox.TabIndex = 4;
-            this.troubleBox.Visible = false;
-            // 
-            // errorLabel
-            // 
-            this.errorLabel.AutoSize = true;
-            this.errorLabel.Location = new System.Drawing.Point(4, 4);
-            this.errorLabel.Name = "errorLabel";
-            this.errorLabel.Size = new System.Drawing.Size(64, 13);
-            this.errorLabel.TabIndex = 5;
-            this.errorLabel.Text = "Login failed!";
-            // 
-            // passwordForgotTextField
-            // 
-            this.passwordForgotTextField.AutoSize = true;
-            this.passwordForgotTextField.Location = new System.Drawing.Point(182, 4);
-            this.passwordForgotTextField.Name = "passwordForgotTextField";
-            this.passwordForgotTextField.Size = new System.Drawing.Size(91, 13);
-            this.passwordForgotTextField.TabIndex = 6;
-            this.passwordForgotTextField.TabStop = true;
-            this.passwordForgotTextField.Text = "Forgot password?";
-            this.passwordForgotTextField.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.passwordForgotTextField_LinkClicked);
-            // 
             // email
             // 
             this.email.Location = new System.Drawing.Point(4, 110);
@@ -104,20 +71,27 @@
             this.email.Size = new System.Drawing.Size(272, 20);
             this.email.TabIndex = 0;
             // 
+            // passwordForgotTextField
+            // 
+            this.passwordForgotTextField.AutoSize = true;
+            this.passwordForgotTextField.Location = new System.Drawing.Point(95, 210);
+            this.passwordForgotTextField.Name = "passwordForgotTextField";
+            this.passwordForgotTextField.Size = new System.Drawing.Size(91, 13);
+            this.passwordForgotTextField.TabIndex = 7;
+            this.passwordForgotTextField.TabStop = true;
+            this.passwordForgotTextField.Text = "Forgot password?";
+            // 
             // LoginViewController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.passwordForgotTextField);
             this.Controls.Add(this.email);
-            this.Controls.Add(this.troubleBox);
             this.Controls.Add(this.password);
             this.Controls.Add(this.googleLoginTextField);
             this.Controls.Add(this.loginButton);
             this.Name = "LoginViewController";
             this.Size = new System.Drawing.Size(279, 345);
-            this.Load += new System.EventHandler(this.LoginViewController_Load);
-            this.troubleBox.ResumeLayout(false);
-            this.troubleBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -128,9 +102,7 @@
         private System.Windows.Forms.Button loginButton;
         private System.Windows.Forms.LinkLabel googleLoginTextField;
         private System.Windows.Forms.MaskedTextBox password;
-        private System.Windows.Forms.Panel troubleBox;
-        private System.Windows.Forms.Label errorLabel;
-        private System.Windows.Forms.LinkLabel passwordForgotTextField;
         private System.Windows.Forms.TextBox email;
+        private System.Windows.Forms.LinkLabel passwordForgotTextField;
     }
 }
