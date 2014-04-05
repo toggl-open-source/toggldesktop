@@ -717,10 +717,10 @@ kopsik::error Context::CurrentUser(kopsik::User **result) {
         return err;
     }
 
-	if (!user->ID()) {
-		delete user;
-		return noError;
-	}
+    if (!user->ID()) {
+        delete user;
+        return noError;
+    }
 
     Poco::Mutex::ScopedLock lock(user_m_);
     user_ = user;
