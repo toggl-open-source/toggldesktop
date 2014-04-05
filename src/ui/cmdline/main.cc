@@ -74,7 +74,6 @@ Main::Main()
 }
 
 Main::~Main() {
-    kopsik_context_shutdown(ctx_);
     kopsik_context_clear(ctx_);
 }
 

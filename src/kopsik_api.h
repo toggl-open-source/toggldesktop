@@ -61,11 +61,6 @@ extern "C" {
     KOPSIK_EXPORT void kopsik_context_startup(
         void *context);
 
-// FIXME: merge shutdown and clear
-
-    KOPSIK_EXPORT void kopsik_context_shutdown(
-        void *context);
-
     KOPSIK_EXPORT void kopsik_context_clear(
         void *context);
 

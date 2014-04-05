@@ -156,11 +156,10 @@ void kopsik_context_start_events(void *context) {
     app(context)->StartEvents();
 }
 
-void kopsik_context_shutdown(void *context) {
-    app(context)->Shutdown();
-}
-
 void kopsik_context_clear(void *context) {
+    if (context) {
+        app(context)->Shutdown();
+    }
     delete app(context);
 }
 
