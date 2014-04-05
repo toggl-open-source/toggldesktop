@@ -209,6 +209,16 @@ extern "C" {
     KOPSIK_EXPORT void kopsik_context_clear(
         void *context);
 
+    KOPSIK_EXPORT void kopsik_websocket_switch(
+        void *context,
+        const _Bool on);
+
+    KOPSIK_EXPORT void kopsik_timeline_switch(
+        void *context,
+        const _Bool on);
+
+    KOPSIK_EXPORT void kopsik_timeline_toggle_recording(
+        void *context);
 
     // FIXME: stuff below should not be exported
 
@@ -362,17 +372,6 @@ extern "C" {
         const char *date,
         char *duration,
         const uint64_t duration_len);
-
-    KOPSIK_EXPORT void kopsik_websocket_switch(
-        void *context,
-        const _Bool on);
-
-    KOPSIK_EXPORT void kopsik_timeline_switch(
-        void *context,
-        const _Bool on);
-
-    KOPSIK_EXPORT void kopsik_timeline_toggle_recording(
-        void *context);
 
     KOPSIK_EXPORT _Bool kopsik_timeline_is_recording_enabled(
         void *context);
