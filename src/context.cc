@@ -83,12 +83,16 @@ Context::~Context() {
 }
 
 void Context::StartEvents() {
+    poco_assert(on_model_change_callback_);
+    poco_assert(on_error_callback_);
+    poco_assert(on_check_update_callback_);
+    poco_assert(on_online_callback_);
+    poco_assert(on_user_login_callback_);
+
     exportUserLoginState();
 }
 
 void Context::exportUserLoginState() {
-    poco_assert(on_user_login_callback_);
-
     kopsik::User *user = 0;
     kopsik::error err = CurrentUser(&user);
     if (err != kopsik::noError) {
@@ -145,8 +149,6 @@ kopsik::error Context::ConfigureProxy() {
 }
 
 kopsik::error Context::save() {
-    poco_assert(on_model_change_callback_);
-
     try {
         std::vector<kopsik::ModelChange> changes;
         kopsik::error err = db_->SaveUser(user_, true, &changes);
@@ -447,8 +449,6 @@ void Context::onPeriodicUpdateCheck(Poco::Util::TimerTask& task) {  // NOLINT
 
 void Context::executeUpdateCheck() {
     logger().debug("executeUpdateCheck");
-
-    poco_assert(on_check_update_callback_);
 
     kopsik::error err = db_->LoadUpdateChannel(&update_channel_);
     if (err != kopsik::noError) {
