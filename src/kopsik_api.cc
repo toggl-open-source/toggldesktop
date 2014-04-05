@@ -1085,11 +1085,9 @@ _Bool kopsik_time_entry_view_item_by_guid(
 
 _Bool kopsik_continue(
     void *context,
-    const char *guid,
-    KopsikTimeEntryViewItem *view_item) {
+    const char *guid) {
     try {
         poco_assert(guid);
-        poco_assert(view_item);
 
         std::stringstream ss;
         ss << "kopsik_continue guid=" << guid;
@@ -1108,19 +1106,6 @@ _Bool kopsik_continue(
             export_on_error_callback(err);
             return false;
         }
-
-        if (te) {
-            std::string project_label("");
-            std::string color_code("");
-            app(context)->ProjectLabelAndColorCode(te,
-                                                   &project_label,
-                                                   &color_code);
-            time_entry_to_view_item(te,
-                                    project_label,
-                                    color_code,
-                                    view_item,
-                                    "");
-        }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
         return false;
@@ -1135,16 +1120,9 @@ _Bool kopsik_continue(
 }
 
 _Bool kopsik_continue_latest(
-    void *context,
-    KopsikTimeEntryViewItem *view_item,
-    _Bool *was_found) {
+    void *context) {
 
     try {
-        poco_assert(view_item);
-        poco_assert(was_found);
-
-        *was_found = false;
-
         logger().debug("kopsik_continue_latest");
 
         kopsik::TimeEntry *te = 0;
@@ -1152,20 +1130,6 @@ _Bool kopsik_continue_latest(
         if (err != kopsik::noError) {
             export_on_error_callback(err);
             return false;
-        }
-
-        if (te) {
-            *was_found = true;
-            std::string project_label("");
-            std::string color_code("");
-            app(context)->ProjectLabelAndColorCode(te,
-                                                   &project_label,
-                                                   &color_code);
-            time_entry_to_view_item(te,
-                                    project_label,
-                                    color_code,
-                                    view_item,
-                                    "");
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
@@ -1443,35 +1407,15 @@ _Bool kopsik_set_time_entry_description(
 }
 
 _Bool kopsik_stop(
-    void *context,
-    KopsikTimeEntryViewItem *out_view_item,
-    _Bool *was_found) {
+    void *context) {
     try {
-        poco_assert(out_view_item);
-        poco_assert(was_found);
-
         logger().debug("kopsik_stop");
-
-        *was_found = false;
 
         kopsik::TimeEntry *te = 0;
         kopsik::error err = app(context)->Stop(&te);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
             return false;
-        }
-        if (te) {
-            *was_found = true;
-            std::string project_label("");
-            std::string color_code("");
-            app(context)->ProjectLabelAndColorCode(te,
-                                                   &project_label,
-                                                   &color_code);
-            time_entry_to_view_item(te,
-                                    project_label,
-                                    color_code,
-                                    out_view_item,
-                                    "");
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());
@@ -1488,35 +1432,17 @@ _Bool kopsik_stop(
 
 _Bool kopsik_stop_running_time_entry_at(
     void *context,
-    const uint64_t at,
-    KopsikTimeEntryViewItem *out_view_item,
-    _Bool *was_found) {
+    const uint64_t at) {
     try {
-        poco_assert(out_view_item);
-        poco_assert(was_found);
         poco_assert(at);
 
         logger().debug("kopsik_stop");
 
-        *was_found = false;
         kopsik::TimeEntry *te = 0;
         kopsik::error err = app(context)->StopAt(at, &te);
         if (err != kopsik::noError) {
             export_on_error_callback(err);
             return false;
-        }
-        if (te) {
-            *was_found = true;
-            std::string project_label("");
-            std::string color_code("");
-            app(context)->ProjectLabelAndColorCode(te,
-                                                   &project_label,
-                                                   &color_code);
-            time_entry_to_view_item(te,
-                                    project_label,
-                                    color_code,
-                                    out_view_item,
-                                    "");
         }
     } catch(const Poco::Exception& exc) {
         export_on_error_callback(exc.displayText());

@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "kopsik_api.h"
-#import "Context.h"
+#import "Core.h"
 #import "MainWindowController.h"
 #import "PreferencesWindowController.h"
 #import "Bugsnag.h"
@@ -189,7 +189,7 @@ feedbackWindowController;
                                                name:kUIStateUpdateAvailable
                                              object:nil];
   
-  kopsik_context_startup(ctx);
+  kopsik_context_start_events(ctx);
   
   NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
   NSNumber* checkEnabled = infoDict[@"KopsikCheckForUpdates"];
@@ -267,54 +267,17 @@ feedbackWindowController;
 }
 
 - (void)continueTimeEntry:(NSString *)guid {
-  KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-  _Bool res = false;
-  _Bool was_found = false;
   if (guid == nil) {
-    res = kopsik_continue_latest(ctx, item, &was_found);
+    kopsik_continue_latest(ctx);
   } else {
-    was_found = 1;
-    res = kopsik_continue(ctx, [guid UTF8String], item);
+    kopsik_continue(ctx, [guid UTF8String]);
   }
-  
-  if (!res) {
-    kopsik_time_entry_view_item_clear(item);
-    return;
-  }
-  
-  if (!was_found) {
-    kopsik_time_entry_view_item_clear(item);
-    return;
-  }
-  
-  TimeEntryViewItem *timeEntry = [[TimeEntryViewItem alloc] init];
-  [timeEntry load:item];
-  kopsik_time_entry_view_item_clear(item);
-  
-  [[NSNotificationCenter defaultCenter]
-   postNotificationName:kUIStateTimerRunning object:timeEntry];
   
   [self onShowMenuItem:self];
 }
 
 - (void)stopTimeEntry {
-  KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-  _Bool was_found = false;
-  if (!kopsik_stop(ctx, item, &was_found)) {
-    kopsik_time_entry_view_item_clear(item);
-    return;
-  }
-  
-  if (!was_found) {
-    kopsik_time_entry_view_item_clear(item);
-    return;
-  }
-  
-  TimeEntryViewItem *te = [[TimeEntryViewItem alloc] init];
-  [te load:item];
-  kopsik_time_entry_view_item_clear(item);
-  [[NSNotificationCenter defaultCenter]
-   postNotificationName:kUIStateTimerStopped object:te];
+  kopsik_stop(ctx);
   
   [self onShowMenuItem:self];
 }
@@ -322,26 +285,10 @@ feedbackWindowController;
 - (void)stopTimeEntryAfterIdle:(IdleEvent *)idleEvent {
   NSAssert(idleEvent != nil, @"idle event cannot be nil");
   NSLog(@"Idle event: %@", idleEvent);
-  KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-  _Bool was_found = false;
   NSTimeInterval startedAt = [idleEvent.started timeIntervalSince1970];
   NSLog(@"Time entry stop at %f", startedAt);
-  if (!kopsik_stop_running_time_entry_at(ctx,
-                                         startedAt,
-                                         item,
-                                         &was_found)) {
-    kopsik_time_entry_view_item_clear(item);
-    return;
-  }
-  
-  if (was_found) {
-    TimeEntryViewItem *timeEntry = [[TimeEntryViewItem alloc] init];
-    [timeEntry load:item];
-    [[NSNotificationCenter defaultCenter]
-     postNotificationName:kUIStateTimerStopped
-     object:timeEntry];
-  }
-  
+  kopsik_stop_running_time_entry_at(ctx, startedAt);
+
   [self onShowMenuItem:self];
 }
 
@@ -721,14 +668,6 @@ const NSString *appName = @"osx_native_app";
   for (int i = 1; i < arguments.count; i++) {
     NSString *argument = arguments[i];
     
-    if ([argument rangeOfString:@"email"].location != NSNotFound) {
-      defaultEmail = arguments[i+1];
-      continue;
-    }
-    if ([argument rangeOfString:@"password"].location != NSNotFound) {
-      defaultPassword = arguments[i+1];
-      continue;
-    }
     if (([argument rangeOfString:@"force"].location != NSNotFound) &&
         ([argument rangeOfString:@"crash"].location != NSNotFound)) {
       NSLog(@"forcing crash");

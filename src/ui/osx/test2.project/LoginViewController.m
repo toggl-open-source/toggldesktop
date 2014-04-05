@@ -9,7 +9,7 @@
 #import "LoginViewController.h"
 #import "kopsik_api.h"
 #import "UIEvents.h"
-#import "Context.h"
+#import "Core.h"
 #import "GTMOAuth2WindowController.h"
 
 #import "const.h"
@@ -29,15 +29,6 @@
                                                  object:nil];
     }
     return self;
-}
-
-- (void)setDefaultUser {
-  if (defaultEmail != nil) {
-    [self.email setStringValue:defaultEmail];
-  }
-  if (defaultPassword != nil) {
-    [self.password setStringValue:defaultPassword];
-  }
 }
 
 - (IBAction)clickLoginButton:(id)sender {

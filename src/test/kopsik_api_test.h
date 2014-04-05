@@ -1,7 +1,7 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#ifndef SRC_KOPSIK_API_TEST_H_
-#define SRC_KOPSIK_API_TEST_H_
+#ifndef SRC_TEST_KOPSIK_API_TEST_H_
+#define SRC_TEST_KOPSIK_API_TEST_H_
 
 #include "gtest/gtest.h"
 
@@ -13,4 +13,4 @@ void wipe_test_db();
 
 }  // namespace kopsik
 
-#endif  // SRC_KOPSIK_API_TEST_H_
+#endif  // SRC_TEST_KOPSIK_API_TEST_H_

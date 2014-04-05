@@ -8,7 +8,7 @@
 
 #import "TimeEntryViewItem.h"
 #import "kopsik_api.h"
-#import "Context.h"
+#import "Core.h"
 #import "UIEvents.h"  
 
 @implementation TimeEntryViewItem

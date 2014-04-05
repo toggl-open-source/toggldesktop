@@ -9,7 +9,7 @@
 #import "TimeEntryEditViewController.h"
 #import "UIEvents.h"
 #import "TimeEntryViewItem.h"
-#import "Context.h"
+#import "Core.h"
 #import "ModelChange.h"
 #import "ErrorHandler.h"
 #import "AutocompleteItem.h"

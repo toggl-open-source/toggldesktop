@@ -9,7 +9,7 @@
 #import "PreferencesWindowController.h"
 #import "kopsik_api.h"
 #import "ErrorHandler.h"
-#import "Context.h"
+#import "Core.h"
 #import "UIEvents.h"
 #import "MASShortcutView+UserDefaults.h"
 

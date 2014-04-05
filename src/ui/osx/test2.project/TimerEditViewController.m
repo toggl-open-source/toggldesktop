@@ -10,7 +10,7 @@
 #import "TimerEditViewController.h"
 #import "UIEvents.h"
 #import "AutocompleteItem.h"
-#import "Context.h"
+#import "Core.h"
 #import "ErrorHandler.h"
 #import "AutocompleteDataSource.h"
 #import "ConvertHexColor.h"

@@ -3,8 +3,10 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
-#include "./kopsik_api.h"
-#include "./https_client.h"
+#include <iostream>  // NOLINT
+
+#include "./../kopsik_api.h"
+#include "./../https_client.h"
 #include "./test_data.h"
 
 #include "Poco/FileStream.h"
@@ -12,12 +14,28 @@
 
 namespace kopsik {
 
+std::string g_model_change_model_type("");
+std::string g_model_change_change_type("");
+uint64_t g_model_change_model_id(0);
+std::string g_model_change_guid("");
+
 void in_test_change_callback(
     KopsikModelChange *change) {
+    g_model_change_model_type = std::string(change->ModelType);
+    g_model_change_change_type = std::string(change->ChangeType);
+    g_model_change_model_id = change->ModelID;
+    g_model_change_guid = std::string(change->GUID);
 }
+
+std::string g_errmsg("");
 
 void in_test_on_error_callback(
     const char *errmsg) {
+    if (errmsg) {
+        g_errmsg = std::string(errmsg);
+        return;
+    }
+    g_errmsg = std::string("");
 }
 
 void in_test_check_updates_callback(
@@ -223,7 +241,11 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
 
     std::string json = loadTestData();
 
+    g_errmsg = "";
+
     ASSERT_TRUE(kopsik_set_logged_in_user(ctx, json.c_str()));
+
+    ASSERT_EQ("", g_errmsg);
 
     // We should have the API token now
     const int kMaxStrLen = 100;
@@ -231,10 +253,14 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     ASSERT_TRUE(kopsik_get_api_token(ctx, str, kMaxStrLen));
     ASSERT_EQ("30eb0ae954b536d2f6628f7fec47beb6", std::string(str));
 
+    ASSERT_EQ("", g_errmsg);
+
     // We should have current user now
     ASSERT_EQ((unsigned int)10471231, g_user_id);
     ASSERT_EQ(std::string("John Smith"), g_user_fullname);
     ASSERT_EQ(std::string("H:mm"), g_user_timeofdayformat);
+
+    ASSERT_EQ("", g_errmsg);
 
     // Count time entry items before start. It should be 3, since
     // there are 3 time entries in the me.json file we're using:
@@ -244,11 +270,15 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     ASSERT_EQ(5, number_of_items);
     kopsik_time_entry_view_item_clear(first);
 
+    ASSERT_EQ("", g_errmsg);
+
     // Start tracking
     KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
     ASSERT_TRUE(kopsik_start(ctx, "Test", 0, 0, 0, item));
     ASSERT_EQ(std::string("Test"), std::string(item->Description));
     kopsik_time_entry_view_item_clear(item);
+
+    ASSERT_EQ("", g_errmsg);
 
     // We should now have a running time entry
     _Bool is_tracking = false;
@@ -264,6 +294,8 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     std::string GUID(running->GUID);
     kopsik_time_entry_view_item_clear(running);
 
+    ASSERT_EQ("", g_errmsg);
+
     // The running time entry should *not* be listed
     // among time entry view items.
     first = 0;
@@ -272,6 +304,8 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     ASSERT_TRUE(first);
     ASSERT_EQ((unsigned int)number_of_items + 0, list_length(first));
     kopsik_time_entry_view_item_clear(first);
+
+    ASSERT_EQ("", g_errmsg);
 
     // Set a new duration for the time entry.
     // It should keep on tracking and also the duration should change.
@@ -284,6 +318,8 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     ASSERT_TRUE(is_tracking);
     ASSERT_EQ("01:00:00", std::string(running->Duration));
     kopsik_time_entry_view_item_clear(running);
+
+    ASSERT_EQ("", g_errmsg);
 
     // Set a new start time for the time entry.
     // Set it to a certain point in the past.
@@ -299,48 +335,55 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     ASSERT_EQ(-1385644530, running->DurationInSeconds);
     kopsik_time_entry_view_item_clear(running);
 
+    ASSERT_EQ("", g_errmsg);
+
     // Stop the time entry
-    KopsikTimeEntryViewItem *stopped = kopsik_time_entry_view_item_init();
-    _Bool was_stopped = false;
-    ASSERT_TRUE(kopsik_stop(ctx, stopped, &was_stopped));
-    ASSERT_TRUE(was_stopped);
-    ASSERT_EQ(std::string("Test"), std::string(stopped->Description));
-    std::string dirty_guid(stopped->GUID);
-    kopsik_time_entry_view_item_clear(stopped);
+    ASSERT_TRUE(kopsik_stop(ctx));
+    ASSERT_EQ(std::string("time_entry"), g_model_change_model_type);
+    ASSERT_EQ(std::string("update"), g_model_change_change_type);
+
+    ASSERT_EQ("", g_errmsg);
 
     // Change duration of the stopped time entry to 1 hour.
     // Check it was really applied.
     ASSERT_TRUE(kopsik_set_time_entry_duration(
-        ctx, dirty_guid.c_str(), "2,5 hours"));
-    stopped = kopsik_time_entry_view_item_init();
+        ctx, g_model_change_guid.c_str(), "2,5 hours"));
+    KopsikTimeEntryViewItem *stopped = kopsik_time_entry_view_item_init();
     _Bool was_found = false;
     ASSERT_TRUE(kopsik_time_entry_view_item_by_guid(
-        ctx, dirty_guid.c_str(), stopped, &was_found));
+        ctx, g_model_change_guid.c_str(), stopped, &was_found));
+    if (!was_found) {
+        std::cerr << "TE not found: " << g_model_change_guid << std::endl;
+    }
     ASSERT_TRUE(was_found);
     ASSERT_EQ("02:30:00", std::string(stopped->Duration));
     kopsik_time_entry_view_item_clear(stopped);
 
+    ASSERT_EQ("", g_errmsg);
+
     // Set a new start time for the stopped entry.
     ASSERT_TRUE(kopsik_set_time_entry_start_iso_8601(ctx,
-                dirty_guid.c_str(), "2013-11-27T12:30:00Z"));
+                g_model_change_guid.c_str(), "2013-11-27T12:30:00Z"));
     stopped = kopsik_time_entry_view_item_init();
     was_found = false;
     ASSERT_TRUE(kopsik_time_entry_view_item_by_guid(
-        ctx, dirty_guid.c_str(), stopped, &was_found));
+        ctx, g_model_change_guid.c_str(), stopped, &was_found));
     ASSERT_TRUE(was_found);
     ASSERT_EQ((unsigned int)1385555400, stopped->Started);
     ASSERT_EQ("02:30:00", std::string(stopped->Duration));
     ASSERT_EQ(stopped->Ended, stopped->Started + 9000);
     kopsik_time_entry_view_item_clear(stopped);
 
+    ASSERT_EQ("", g_errmsg);
+
     // Set a new end time for the stopped entry.
     // Check that the duration changes.
     ASSERT_TRUE(kopsik_set_time_entry_end_iso_8601(ctx,
-                dirty_guid.c_str(), "2013-11-27T13:30:00Z"));
+                g_model_change_guid.c_str(), "2013-11-27T13:30:00Z"));
     stopped = kopsik_time_entry_view_item_init();
     was_found = false;
     ASSERT_TRUE(kopsik_time_entry_view_item_by_guid(
-        ctx, dirty_guid.c_str(), stopped, &was_found));
+        ctx, g_model_change_guid.c_str(), stopped, &was_found));
     ASSERT_TRUE(was_found);
     ASSERT_EQ((unsigned int)1385555400, stopped->Started);
     ASSERT_EQ((unsigned int)1385559000, stopped->Ended);
@@ -349,20 +392,24 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     unsigned int ended = stopped->Ended;
     kopsik_time_entry_view_item_clear(stopped);
 
+    ASSERT_EQ("", g_errmsg);
+
     // Change duration of the stopped time entry.
     // Start time should be the same, but end time should change.
     ASSERT_TRUE(kopsik_set_time_entry_duration(
-        ctx, dirty_guid.c_str(), "2 hours"));
+        ctx, g_model_change_guid.c_str(), "2 hours"));
     stopped = kopsik_time_entry_view_item_init();
     was_found = false;
     ASSERT_TRUE(kopsik_time_entry_view_item_by_guid(
-        ctx, dirty_guid.c_str(), stopped, &was_found));
+        ctx, g_model_change_guid.c_str(), stopped, &was_found));
     ASSERT_TRUE(was_found);
     ASSERT_EQ("02:00:00", std::string(stopped->Duration));
     ASSERT_EQ(started, stopped->Started);
     ASSERT_NE(ended, stopped->Ended);
     ASSERT_EQ(stopped->Started + 3600*2, stopped->Ended);
     kopsik_time_entry_view_item_clear(stopped);
+
+    ASSERT_EQ("", g_errmsg);
 
     // Now the stopped time entry should be listed
     // among time entry view items.
@@ -373,6 +420,8 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     ASSERT_EQ((unsigned int)number_of_items + 1, list_length(first));
     kopsik_time_entry_view_item_clear(first);
 
+    ASSERT_EQ("", g_errmsg);
+
     // We should no longer get a running time entry from API.
     is_tracking = false;
     running = kopsik_time_entry_view_item_init();
@@ -381,24 +430,34 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     ASSERT_FALSE(is_tracking);
     kopsik_time_entry_view_item_clear(running);
 
+    ASSERT_EQ("", g_errmsg);
+
     // Continue the time entry we created in the start.
+    ASSERT_TRUE(kopsik_continue(ctx, GUID.c_str()));
+    ASSERT_NE(std::string(GUID), g_model_change_guid);
+
+    ASSERT_EQ("", g_errmsg);
+
     KopsikTimeEntryViewItem *continued =
         kopsik_time_entry_view_item_init();
-    ASSERT_TRUE(kopsik_continue(
-        ctx, GUID.c_str(), continued));
-    ASSERT_NE(std::string(GUID), std::string(continued->GUID));
+    ASSERT_TRUE(kopsik_time_entry_view_item_by_guid(
+        ctx, g_model_change_guid.c_str(), continued, &was_found));
     ASSERT_FALSE(std::string(continued->Duration).empty());
     ASSERT_GT(0, continued->DurationInSeconds);
     kopsik_time_entry_view_item_clear(continued);
+
+    ASSERT_EQ("", g_errmsg);
 
     // Get time entry view using GUID
     was_found = false;
     KopsikTimeEntryViewItem *found = kopsik_time_entry_view_item_init();
     ASSERT_TRUE(kopsik_time_entry_view_item_by_guid(
-        ctx, dirty_guid.c_str(), found, &was_found));
-    ASSERT_EQ(dirty_guid, std::string(found->GUID));
+        ctx, g_model_change_guid.c_str(), found, &was_found));
+    ASSERT_EQ(g_model_change_guid, std::string(found->GUID));
     ASSERT_TRUE(was_found);
     kopsik_time_entry_view_item_clear(found);
+
+    ASSERT_EQ("", g_errmsg);
 
     // Ask for a non-existant time entry
     KopsikTimeEntryViewItem *nonexistant =
@@ -408,6 +467,8 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
     ASSERT_FALSE(nonexistant->GUID);
     ASSERT_FALSE(was_found);
     kopsik_time_entry_view_item_clear(nonexistant);
+
+    ASSERT_EQ("", g_errmsg);
 
     // Delete the time entry we created in the start.
     ASSERT_TRUE(kopsik_delete_time_entry(
@@ -423,6 +484,8 @@ TEST(KopsikApiTest, kopsik_lifecycle) {
         it = reinterpret_cast<KopsikTimeEntryViewItem *>(it->Next);
     }
     kopsik_time_entry_view_item_clear(visible);
+
+    ASSERT_EQ("", g_errmsg);
 
     // Log out
     ASSERT_TRUE(kopsik_logout(ctx));

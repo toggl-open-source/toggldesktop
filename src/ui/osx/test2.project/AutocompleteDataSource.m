@@ -8,7 +8,7 @@
 
 #import "AutocompleteDataSource.h"
 #import "kopsik_api.h"
-#import "Context.h"
+#import "Core.h"
 #import "ErrorHandler.h"
 
 @implementation AutocompleteDataSource

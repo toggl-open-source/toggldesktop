@@ -23,48 +23,137 @@ extern "C" {
 #define KOPSIK_EXPORT
 #endif
 
-    typedef void (*KopsikErrorCallback)(
-        const char *errmsg);
+    KOPSIK_EXPORT void *kopsik_context_init(
+        const char *app_name,
+        const char *app_version);
+
+    typedef void (*KopsikErrorCallback)(const char *errmsg);
+
+    KOPSIK_EXPORT void kopsik_context_set_error_callback(
+        void *context,
+        KopsikErrorCallback);
 
     typedef void (*KopsikCheckUpdateCallback)(
         const _Bool is_update_available,
         const char *url,
         const char *version);
 
+    KOPSIK_EXPORT void kopsik_context_set_check_update_callback(
+        void *context,
+        KopsikCheckUpdateCallback);
+
     typedef void (*KopsikOnOnlineCallback)();
+
+    KOPSIK_EXPORT void kopsik_context_set_online_callback(
+        void *context,
+        KopsikOnOnlineCallback);
 
     typedef void (*KopsikUserLoginCallback)(
         uint64_t id,
         const char *fullname,
         const char *timeofdayformat);
 
-    KOPSIK_EXPORT void *kopsik_context_init(
-        const char *app_name,
-        const char *app_version);
-
-    KOPSIK_EXPORT void kopsik_context_set_error_callback(
-        void *context,
-        KopsikErrorCallback);
-
-    KOPSIK_EXPORT void kopsik_context_set_check_update_callback(
-        void *context,
-        KopsikCheckUpdateCallback);
-
-    KOPSIK_EXPORT void kopsik_context_set_online_callback(
-        void *context,
-        KopsikOnOnlineCallback);
-
     KOPSIK_EXPORT void kopsik_context_set_user_login_callback(
         void *context,
         KopsikUserLoginCallback);
 
-    KOPSIK_EXPORT void kopsik_context_startup(
+    KOPSIK_EXPORT _Bool kopsik_set_db_path(
+        void *context,
+        const char *path);
+
+    KOPSIK_EXPORT void kopsik_set_log_path(
+        const char *path);
+
+    KOPSIK_EXPORT void kopsik_set_log_level(
+        const char *level);
+
+    KOPSIK_EXPORT void kopsik_set_api_url(
+        void *context,
+        const char *api_url);
+
+    KOPSIK_EXPORT void kopsik_set_websocket_url(
+        void *context,
+        const char *websocket_url);
+
+    KOPSIK_EXPORT void kopsik_context_start_events(
         void *context);
+
+    KOPSIK_EXPORT _Bool kopsik_feedback_send(
+        void *context,
+        const char *topic,
+        const char *details,
+        const char *filename);
+
+    KOPSIK_EXPORT _Bool kopsik_continue(
+        void *context,
+        const char *guid);
+
+    KOPSIK_EXPORT _Bool kopsik_continue_latest(
+        void *context);
+
+    KOPSIK_EXPORT _Bool kopsik_delete_time_entry(
+        void *context,
+        const char *guid);
+
+    KOPSIK_EXPORT _Bool kopsik_set_time_entry_duration(
+        void *context,
+        const char *guid,
+        const char *value);
+
+    KOPSIK_EXPORT _Bool kopsik_set_time_entry_project(
+        void *context,
+        const char *guid,
+        const uint64_t task_id,
+        const uint64_t project_id,
+        const char *project_guid);
+
+    KOPSIK_EXPORT _Bool kopsik_set_time_entry_start_iso_8601(
+        void *context,
+        const char *guid,
+        const char *value);
+
+    KOPSIK_EXPORT _Bool kopsik_set_time_entry_end_iso_8601(
+        void *context,
+        const char *guid,
+        const char *value);
+
+    KOPSIK_EXPORT _Bool kopsik_set_time_entry_tags(
+        void *context,
+        const char *guid,
+        const char *value);
+
+    KOPSIK_EXPORT _Bool kopsik_set_time_entry_billable(
+        void *context,
+        const char *guid,
+        _Bool);
+
+    KOPSIK_EXPORT _Bool kopsik_set_time_entry_description(
+        void *context,
+        const char *guid,
+        const char *value);
+
+    KOPSIK_EXPORT _Bool kopsik_stop(
+        void *context);
+
+    KOPSIK_EXPORT _Bool kopsik_stop_running_time_entry_at(
+        void *context,
+        const uint64_t at);
+
+    KOPSIK_EXPORT _Bool kopsik_set_settings(
+        void *context,
+        const _Bool use_idle_detection,
+        const _Bool menubar_timer,
+        const _Bool dock_icon,
+        const _Bool on_top,
+        const _Bool reminder);
 
     KOPSIK_EXPORT void kopsik_context_clear(
         void *context);
 
-// FIXME: stuff below should not be exported
+
+
+    // FIXME: stuff below should not be exported
+
     KOPSIK_EXPORT _Bool kopsik_is_networking_error(
         const char *error);
 
@@ -89,6 +178,7 @@ extern "C" {
         KopsikModelChange *change);
 
     // FIXME: this is too low level, dont export it
+
     KOPSIK_EXPORT void kopsik_context_set_view_item_change_callback(
         void *context,
         KopsikViewItemChangeCallback);
@@ -109,14 +199,6 @@ extern "C" {
         char **proxy_username,
         char **proxy_password);
 
-    KOPSIK_EXPORT _Bool kopsik_set_settings(
-        void *context,
-        const _Bool use_idle_detection,
-        const _Bool menubar_timer,
-        const _Bool dock_icon,
-        const _Bool on_top,
-        const _Bool reminder);
-
     KOPSIK_EXPORT _Bool kopsik_set_proxy_settings(
         void *context,
         const _Bool use_proxy,
@@ -127,37 +209,6 @@ extern "C" {
 
     KOPSIK_EXPORT _Bool kopsik_configure_proxy(
         void *context);
-
-    KOPSIK_EXPORT _Bool kopsik_set_db_path(
-        void *context,
-        const char *path);
-
-    KOPSIK_EXPORT void kopsik_set_log_path(
-        const char *path);
-
-    KOPSIK_EXPORT void kopsik_set_log_level(
-        const char *level);
-
-    KOPSIK_EXPORT void kopsik_set_api_url(
-        void *context,
-        const char *api_url);
-
-    KOPSIK_EXPORT void kopsik_set_websocket_url(
-        void *context,
-        const char *websocket_url);
-
-    KOPSIK_EXPORT _Bool kopsik_set_api_token(
-        void *context,
-        const char *api_token);
-
-    KOPSIK_EXPORT _Bool kopsik_get_api_token(
-        void *context,
-        char *str,
-        const uint64_t max_strlen);
-
-    _Bool kopsik_set_logged_in_user(
-        void *context,
-        const char *json);
 
     KOPSIK_EXPORT _Bool kopsik_login(
         void *context,
@@ -300,68 +351,6 @@ extern "C" {
         KopsikTimeEntryViewItem *item,
         _Bool *was_found);
 
-    KOPSIK_EXPORT _Bool kopsik_continue(
-        void *context,
-        const char *guid,
-        KopsikTimeEntryViewItem *item);
-
-    KOPSIK_EXPORT _Bool kopsik_continue_latest(
-        void *context,
-        KopsikTimeEntryViewItem *item,
-        _Bool *was_found);
-
-    KOPSIK_EXPORT _Bool kopsik_delete_time_entry(
-        void *context,
-        const char *guid);
-
-    KOPSIK_EXPORT _Bool kopsik_set_time_entry_duration(
-        void *context,
-        const char *guid,
-        const char *value);
-
-    KOPSIK_EXPORT _Bool kopsik_set_time_entry_project(
-        void *context,
-        const char *guid,
-        const uint64_t task_id,
-        const uint64_t project_id,
-        const char *project_guid);
-
-    KOPSIK_EXPORT _Bool kopsik_set_time_entry_start_iso_8601(
-        void *context,
-        const char *guid,
-        const char *value);
-
-    KOPSIK_EXPORT _Bool kopsik_set_time_entry_end_iso_8601(
-        void *context,
-        const char *guid,
-        const char *value);
-
-    KOPSIK_EXPORT _Bool kopsik_set_time_entry_tags(
-        void *context,
-        const char *guid,
-        const char *value);
-
-    KOPSIK_EXPORT _Bool kopsik_set_time_entry_billable(
-        void *context,
-        const char *guid,
-        _Bool);
-
-    KOPSIK_EXPORT _Bool kopsik_set_time_entry_description(
-        void *context,
-        const char *guid,
-        const char *value);
-
-    KOPSIK_EXPORT _Bool kopsik_stop(
-        void *context,
-        KopsikTimeEntryViewItem *item,
-        _Bool *was_found);
-
-    KOPSIK_EXPORT _Bool kopsik_stop_running_time_entry_at(
-        void *context,
-        const uint64_t at,
-        KopsikTimeEntryViewItem *item,
-        _Bool *was_found);
-
     KOPSIK_EXPORT _Bool kopsik_time_entry_view_items(
         void *context,
         KopsikTimeEntryViewItem **first);
@@ -386,12 +375,6 @@ extern "C" {
     KOPSIK_EXPORT _Bool kopsik_timeline_is_recording_enabled(
         void *context);
 
-    KOPSIK_EXPORT _Bool kopsik_feedback_send(
-        void *context,
-        const char *topic,
-        const char *details,
-        const char *filename);
-
     KOPSIK_EXPORT void kopsik_check_for_updates(
         void *context);
 
@@ -403,6 +386,21 @@ extern "C" {
         void *context,
         char *update_channel,
         const uint64_t update_channel_len);
+
+    // For testing only
+    _Bool kopsik_set_api_token(
+        void *context,
+        const char *api_token);
+
+    // For testing only
+    _Bool kopsik_get_api_token(
+        void *context,
+        char *str,
+        const uint64_t max_strlen);
+
+    _Bool kopsik_set_logged_in_user(
+        void *context,
+        const char *json);
 
 #undef KOPSIK_EXPORT
 

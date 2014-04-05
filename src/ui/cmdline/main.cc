@@ -128,16 +128,12 @@ int Main::continueTimeEntry() {
         return Poco::Util::Application::EXIT_OK;
     }
 
-    KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
-    if (!kopsik_continue(
-        ctx_, first->GUID, te)) {
+    if (!kopsik_continue(ctx_, first->GUID)) {
         kopsik_time_entry_view_item_clear(first);
-        kopsik_time_entry_view_item_clear(te);
         return Poco::Util::Application::EXIT_SOFTWARE;
     }
 
     kopsik_time_entry_view_item_clear(first);
-    kopsik_time_entry_view_item_clear(te);
     return Poco::Util::Application::EXIT_OK;
 }
 
@@ -182,7 +178,7 @@ int Main::main(const std::vector<std::string>& args) {
         return Poco::Util::Application::EXIT_SOFTWARE;
     }
 
-    kopsik_context_startup(ctx_);
+    kopsik_context_start_events(ctx_);
 
     // Handle commands
     if ("sync" == args[0]) {
@@ -266,16 +262,9 @@ int Main::startTimeEntry() {
 }
 
 int Main::stopTimeEntry() {
-    KopsikTimeEntryViewItem *te = kopsik_time_entry_view_item_init();
-    _Bool was_found(false);
-    if (!kopsik_stop(ctx_, te, &was_found)) {
-        kopsik_time_entry_view_item_clear(te);
+    if (!kopsik_stop(ctx_)) {
         return Poco::Util::Application::EXIT_SOFTWARE;
     }
-    if (!was_found) {
-        std::cout << "No time entry found to stop." << std::endl;
-    }
-    kopsik_time_entry_view_item_clear(te);
     return Poco::Util::Application::EXIT_OK;
 }
 

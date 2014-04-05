@@ -1,7 +1,7 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#ifndef SRC_TOGGL_API_CLIENT_TEST_H_
-#define SRC_TOGGL_API_CLIENT_TEST_H_
+#ifndef SRC_TEST_TOGGL_API_CLIENT_TEST_H_
+#define SRC_TEST_TOGGL_API_CLIENT_TEST_H_
 
 #include "gtest/gtest.h"
 
@@ -13,4 +13,4 @@ class TogglApiClientTest : public ::testing::Test {};
 
 int main(int argc, char **argv);
 
-#endif  // SRC_TOGGL_API_CLIENT_TEST_H_
+#endif  // SRC_TEST_TOGGL_API_CLIENT_TEST_H_

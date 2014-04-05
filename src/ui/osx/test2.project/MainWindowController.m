@@ -12,7 +12,7 @@
 #import "TimeEntryEditViewController.h"
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
-#import "Context.h"
+#import "Core.h"
 #import "Bugsnag.h"
 #import "User.h"
 #import "ModelChange.h"

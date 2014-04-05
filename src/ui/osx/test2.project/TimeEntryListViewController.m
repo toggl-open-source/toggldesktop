@@ -13,7 +13,7 @@
 #import "kopsik_api.h"
 #import "TimeEntryCell.h"
 #import "TimeEntryCellWithHeader.h"
-#import "Context.h"
+#import "Core.h"
 #import "UIEvents.h"
 #import "ModelChange.h"
 #import "ErrorHandler.h"
