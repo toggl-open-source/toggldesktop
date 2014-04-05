@@ -41,12 +41,18 @@ namespace TogglDesktop
                 Size = Properties.Settings.Default.Size;
             }
 
+            Core.OnUserLogin += Core_OnUserLogin;
+
             Core.Init("windows_native_app", "1.0");
+        }
 
-            Core.StartEvents();
-
-            Controls.Add(loginViewController);
-            loginViewController.SetAcceptButton(this);
+        void Core_OnUserLogin(ulong id, string fullname, string timeofdayformat)
+        {
+            if (0 == id) {
+                Controls.Add(loginViewController);
+                loginViewController.SetAcceptButton(this);
+                return;
+            }
         }
 
         private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)

@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DLL.cs" />
     <Compile Include="LoginViewController.cs">
       <SubType>UserControl</SubType>
     </Compile>
