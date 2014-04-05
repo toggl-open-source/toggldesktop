@@ -47,10 +47,22 @@ namespace TogglDesktop
 
             Core.OnUserLogin += Core_OnUserLogin;
             Core.OnError += Core_OnError;
+            Core.OnCheckUpdate += Core_OnCheckUpdate;
+            Core.OnOnline += Core_OnOnline;
 
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
             Core.Init("windows_native_app", versionInfo.ProductVersion);
+        }
+
+        void Core_OnOnline()
+        {
+            throw new NotImplementedException();
+        }
+
+        void Core_OnCheckUpdate(bool is_update_available, string url, string version)
+        {
+            throw new NotImplementedException();
         }
 
         void Core_OnError(string errmsg)
