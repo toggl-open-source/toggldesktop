@@ -393,7 +393,7 @@ extern "C" {
     _Bool kopsik_get_api_token(
         void *context,
         char *str,
-        const uint64_t max_strlen);
+        const size_t max_strlen);
 
     _Bool kopsik_set_logged_in_user(
         void *context,
