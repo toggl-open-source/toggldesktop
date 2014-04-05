@@ -43,6 +43,8 @@ namespace TogglDesktop
 
             Core.Init("windows_native_app", "1.0");
 
+            Core.StartEvents();
+
             Controls.Add(loginViewController);
             loginViewController.SetAcceptButton(this);
         }
