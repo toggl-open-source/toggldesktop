@@ -213,7 +213,7 @@ _Bool kopsik_get_settings(
         if (on_top) {
             *out_on_top = true;
         }
-      
+
         *out_reminder = false;
         if (reminder) {
             *out_reminder = true;
