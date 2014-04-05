@@ -132,16 +132,6 @@ extern void *ctx;
       return;
     }
     
-    if ([msg rangeOfString:@"Request to server failed with status code: 403"].location != NSNotFound) {
-      _Bool logged_in = false;
-      if (kopsik_user_is_logged_in(ctx, &logged_in)) {
-        if (!logged_in) {
-          return; // because login screen handles it
-        }
-        msg = @"It seems your login credentials have changed in Toggl.com. Please try to logout/login again from TogglDesktop.";
-      }
-    }
-    
     [self performSelectorOnMainThread:@selector(showError:) withObject:msg waitUntilDone:NO];
 
     [Bugsnag notify:[NSException
@@ -165,13 +155,12 @@ extern void *ctx;
 - (void)showError:(NSString *)msg {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-  NSAlert *alert = [[NSAlert alloc] init];
-  [alert setMessageText:msg];
-  [alert addButtonWithTitle:@"Dismiss"];
-  [alert beginSheetModalForWindow:self.window
-                    modalDelegate:self
-                   didEndSelector:nil
-                      contextInfo:nil];
+  if ([msg rangeOfString:@"Request to server failed with status code: 403"].location != NSNotFound) {
+    msg = @"Invalid e-mail or password. Please try again!";
+  }
+
+  [self.errorLabel setStringValue:msg];
+  [self.troubleBox setHidden:NO];
 }
 
 @end
