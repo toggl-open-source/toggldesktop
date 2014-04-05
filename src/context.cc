@@ -90,14 +90,14 @@ void Context::StartEvents() {
     poco_assert(on_check_update_callback_);
     poco_assert(on_online_callback_);
     poco_assert(on_user_login_callback_);
-	poco_assert(on_open_url_callback_);
+    poco_assert(on_open_url_callback_);
 
     exportUserLoginState();
 }
 
 void Context::exportUserLoginState() {
     kopsik::User *user = 0;
-	if (!CurrentUser(&user)) {
+    if (!CurrentUser(&user)) {
         return;
     }
     if (!user) {
@@ -133,7 +133,7 @@ void Context::Shutdown() {
 }
 
 void Context::PasswordForgot() {
-	on_open_url_callback_(kLostPasswordURL);
+    on_open_url_callback_(kLostPasswordURL);
 }
 
 _Bool Context::ConfigureProxy() {
@@ -154,27 +154,27 @@ _Bool Context::ConfigureProxy() {
 }
 
 error Context::save() {
-        std::vector<kopsik::ModelChange> changes;
-        kopsik::error err = db_->SaveUser(user_, true, &changes);
-        if (err != kopsik::noError) {
-            return err;
-        }
-        if (!on_model_change_callback_) {
-            return noError;
-        }
-        for (std::vector<kopsik::ModelChange>::const_iterator it =
-            changes.begin();
-                it != changes.end();
-                it++) {
-			KopsikModelChange *ch = model_change_init();
-			model_change_to_change_item(*it, ch);
-            on_model_change_callback_(ch);
-			model_change_clear(ch);
-        }
+    std::vector<kopsik::ModelChange> changes;
+    kopsik::error err = db_->SaveUser(user_, true, &changes);
+    if (err != kopsik::noError) {
+        return err;
+    }
+    if (!on_model_change_callback_) {
+        return noError;
+    }
+    for (std::vector<kopsik::ModelChange>::const_iterator it =
+        changes.begin();
+            it != changes.end();
+            it++) {
+        KopsikModelChange *ch = model_change_init();
+        model_change_to_change_item(*it, ch);
+        on_model_change_callback_(ch);
+        model_change_clear(ch);
+    }
 
     partialSync();
 
-	return noError;
+    return noError;
 }
 
 void Context::FullSync() {
@@ -292,17 +292,17 @@ void on_websocket_message(
 }
 
 _Bool Context::LoadUpdateFromJSONString(const std::string json) {
-        std::stringstream ss;
-        ss << "LoadUpdateFromJSONString json=" << json;
-        logger().debug(ss.str());
+    std::stringstream ss;
+    ss << "LoadUpdateFromJSONString json=" << json;
+    logger().debug(ss.str());
 
-        if (!user_) {
-            return false;
-        }
+    if (!user_) {
+        return false;
+    }
 
-		LoadUserUpdateFromJSONString(user_, json);
-		
-        return exportErrorState(save());
+    LoadUserUpdateFromJSONString(user_, json);
+
+    return exportErrorState(save());
 }
 
 void Context::SwitchWebSocketOn() {
@@ -610,7 +610,7 @@ _Bool Context::LoadSettings(
     bool *dock_icon,
     bool *on_top,
     bool *reminder) const {
-	return exportErrorState(db_->LoadSettings(
+    return exportErrorState(db_->LoadSettings(
         use_idle_settings,
         menubar_timer,
         dock_icon,
@@ -621,17 +621,17 @@ _Bool Context::LoadSettings(
 _Bool Context::LoadProxySettings(
     bool *use_proxy,
     kopsik::Proxy *proxy) const {
-	return exportErrorState(db_->LoadProxySettings(
-		use_proxy,
-		proxy));
+    return exportErrorState(db_->LoadProxySettings(
+        use_proxy,
+        proxy));
 }
 
 _Bool Context::exportErrorState(const error err) const {
-	if (err != noError) {
-		on_error_callback_(err.c_str());
-		return false;
-	}
-	return true;
+    if (err != noError) {
+        on_error_callback_(err.c_str());
+        return false;
+    }
+    return true;
 }
 
 _Bool Context::SaveSettings(
@@ -650,11 +650,11 @@ _Bool Context::SaveProxySettings(
 
     kopsik::Proxy previous_proxy_settings;
     bool was_using_proxy(false);
-	if (!LoadProxySettings(
-		&was_using_proxy,
-		&previous_proxy_settings)) {
-		return false;
-	};
+    if (!LoadProxySettings(
+        &was_using_proxy,
+        &previous_proxy_settings)) {
+        return false;
+    };
 
     error err = db_->SaveProxySettings(
         use_proxy, proxy);
@@ -668,38 +668,35 @@ _Bool Context::SaveProxySettings(
             || proxy->port != previous_proxy_settings.port
             || proxy->username != previous_proxy_settings.username
             || proxy->password != previous_proxy_settings.password) {
-		if (!ConfigureProxy()) {
-			return false;
-		}
+        if (!ConfigureProxy()) {
+            return false;
+        }
         if (user_) {
             FullSync();
             SwitchWebSocketOn();
         }
     }
 
-    return false;
+    return true;
 }
 
 _Bool Context::SetDBPath(
     const std::string path) {
-	try {
-		Poco::Mutex::ScopedLock lock(db_m_);
-		if (db_) {
-			delete db_;
-			db_ = 0;
-		}
-		db_ = new kopsik::Database(path);
-	}
-	catch (const Poco::Exception& exc) {
-		return exportErrorState(exc.displayText());
-	}
-	catch (const std::exception& ex) {
-		return exportErrorState(ex.what());
-	}
-	catch (const std::string& ex) {
-		return exportErrorState(ex);
-	}
-	return true;
+    try {
+        Poco::Mutex::ScopedLock lock(db_m_);
+        if (db_) {
+            delete db_;
+            db_ = 0;
+        }
+        db_ = new kopsik::Database(path);
+    } catch(const Poco::Exception& exc) {
+        return exportErrorState(exc.displayText());
+    } catch(const std::exception& ex) {
+        return exportErrorState(ex.what());
+    } catch(const std::string& ex) {
+        return exportErrorState(ex);
+    }
+    return true;
 }
 
 _Bool Context::CurrentAPIToken(std::string *token) {
@@ -743,13 +740,13 @@ _Bool Context::Login(
     const std::string email,
     const std::string password) {
 
-	if (email.empty()) {
-		return exportErrorState("Empty email");
-	}
+    if (email.empty()) {
+        return exportErrorState("Empty email");
+    }
 
-	if (password.empty()) {
-		return exportErrorState("Empty password");
-	}
+    if (password.empty()) {
+        return exportErrorState("Empty password");
+    }
 
     kopsik::User *logging_in = new kopsik::User(app_name_, app_version_);
 
@@ -990,7 +987,7 @@ _Bool Context::Start(
     *result = user_->Start(description, duration, task_id, project_id);
     poco_assert(*result);
 
-	return exportErrorState(save());
+    return exportErrorState(save());
 }
 
 _Bool Context::ContinueLatest(
@@ -1012,7 +1009,7 @@ _Bool Context::ContinueLatest(
         return exportErrorState(err);
     }
 
-	return exportErrorState(save());
+    return exportErrorState(save());
 }
 
 _Bool Context::Continue(
@@ -1025,9 +1022,9 @@ _Bool Context::Continue(
         return true;
     }
 
-	if (GUID.empty()) {
-		return exportErrorState("Missing GUID");
-	}
+    if (GUID.empty()) {
+        return exportErrorState("Missing GUID");
+    }
 
 
     kopsik::error err = user_->Continue(GUID, result);
@@ -1043,9 +1040,9 @@ _Bool Context::DeleteTimeEntryByGUID(const std::string GUID) {
         logger().warning("Cannot delete time entry, user logged out");
         return true;
     }
-	if (GUID.empty()) {
-		return exportErrorState("Missing GUID");
-	}
+    if (GUID.empty()) {
+        return exportErrorState("Missing GUID");
+    }
     kopsik::TimeEntry *te = user_->GetTimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
@@ -1055,13 +1052,13 @@ _Bool Context::DeleteTimeEntryByGUID(const std::string GUID) {
 
     kopsik::ModelChange mc("time_entry", "delete", te->ID(), te->GUID());
     if (on_model_change_callback_) {
-		KopsikModelChange *ch = model_change_init();
-		model_change_to_change_item(mc, ch);
+        KopsikModelChange *ch = model_change_init();
+        model_change_to_change_item(mc, ch);
         on_model_change_callback_(ch);
-		model_change_clear(ch);
+        model_change_clear(ch);
     }
 
-	return exportErrorState(save());
+    return exportErrorState(save());
 }
 
 kopsik::TimeEntry *Context::GetTimeEntryByGUID(const std::string GUID) const {
@@ -1092,7 +1089,7 @@ _Bool Context::SetTimeEntryDuration(
         te->SetUIModified();
     }
 
-	return exportErrorState(save());
+    return exportErrorState(save());
 }
 
 _Bool Context::SetTimeEntryProject(
@@ -1101,7 +1098,7 @@ _Bool Context::SetTimeEntryProject(
     const Poco::UInt64 project_id,
     const std::string project_guid) {
     if (GUID.empty()) {
-		return exportErrorState("Missing GUID");
+        return exportErrorState("Missing GUID");
     }
     if (!user_) {
         logger().warning("Cannot set project, user logged out");
@@ -1134,7 +1131,7 @@ _Bool Context::SetTimeEntryProject(
         te->SetUIModified();
     }
 
-	return exportErrorState(save());
+    return exportErrorState(save());
 }
 
 _Bool Context::SetTimeEntryStartISO8601(
@@ -1157,7 +1154,7 @@ _Bool Context::SetTimeEntryStartISO8601(
         te->SetUIModified();
     }
 
-	return exportErrorState(save());
+    return exportErrorState(save());
 }
 
 _Bool Context::SetTimeEntryEndISO8601(
@@ -1180,7 +1177,7 @@ _Bool Context::SetTimeEntryEndISO8601(
         te->SetUIModified();
     }
 
-	return exportErrorState(save());
+    return exportErrorState(save());
 }
 
 _Bool Context::SetTimeEntryTags(
@@ -1203,7 +1200,7 @@ _Bool Context::SetTimeEntryTags(
         te->SetUIModified();
     }
 
-	return exportErrorState(save());
+    return exportErrorState(save());
 }
 
 _Bool Context::SetTimeEntryBillable(
@@ -1226,7 +1223,7 @@ _Bool Context::SetTimeEntryBillable(
         te->SetUIModified();
     }
 
-	return exportErrorState(save());
+    return exportErrorState(save());
 }
 
 _Bool Context::SetTimeEntryDescription(
@@ -1249,7 +1246,7 @@ _Bool Context::SetTimeEntryDescription(
         te->SetUIModified();
     }
 
-	return exportErrorState(save());
+    return exportErrorState(save());
 }
 
 _Bool Context::Stop(kopsik::TimeEntry **stopped_entry) {
@@ -1264,7 +1261,7 @@ _Bool Context::Stop(kopsik::TimeEntry **stopped_entry) {
         return exportErrorState("No time entry was found to stop");
     }
     *stopped_entry = stopped[0];
-	return exportErrorState(save());
+    return exportErrorState(save());
 }
 
 _Bool Context::StopAt(
@@ -1286,7 +1283,7 @@ _Bool Context::StopAt(
 
     *result = stopped;
 
-	return exportErrorState(save());
+    return exportErrorState(save());
 }
 
 _Bool Context::RunningTimeEntry(

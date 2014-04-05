@@ -284,7 +284,6 @@ void LoadUserUpdateFromJSONString(
     JSONNODE *root = json_parse(json.c_str());
     LoadUserUpdateFromJSONNode(user, root);
     json_delete(root);
-
 }
 
 void LoadUserUpdateFromJSONNode(

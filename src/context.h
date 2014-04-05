@@ -42,12 +42,12 @@ class Context {
     void SwitchTimelineOn();
     void FetchUpdates();
     void TimelineUpdateServerSettings();
-	_Bool SendFeedback(Feedback);
+    _Bool SendFeedback(Feedback);
 
     // Load model update from JSON string (from WebSocket)
     _Bool LoadUpdateFromJSONString(const std::string json);
 
-	void SetModelChangeCallback(KopsikViewItemChangeCallback cb) {
+    void SetModelChangeCallback(KopsikViewItemChangeCallback cb) {
         on_model_change_callback_ = cb;
     }
     void SetOnErrorCallback(KopsikErrorCallback cb) {
@@ -62,9 +62,9 @@ class Context {
     void SetUserLoginCallback(KopsikUserLoginCallback cb) {
         on_user_login_callback_ = cb;
     }
-	void SetOpenURLCallback(KopsikOpenURLCallback cb) {
-		on_open_url_callback_ = cb;
-	}
+    void SetOpenURLCallback(KopsikOpenURLCallback cb) {
+        on_open_url_callback_ = cb;
+    }
 
     // Apply proxy settings
     _Bool ConfigureProxy();
@@ -78,49 +78,49 @@ class Context {
     }
     void SetWebSocketClientURL(const std::string value);
 
-	_Bool SetDBPath(
+    _Bool SetDBPath(
         const std::string path);
 
-	_Bool LoadSettings(
+    _Bool LoadSettings(
         bool *use_idle_settings,
         bool *menubar_timer,
         bool *dock_icon,
         bool *on_top,
         bool *reminder) const;
 
-	_Bool SaveSettings(
+    _Bool SaveSettings(
         const bool use_idle_detection,
         const bool menubar_timer,
         const bool dock_icon,
         const bool on_top,
         const bool reminder);
 
-	_Bool LoadProxySettings(
+    _Bool LoadProxySettings(
         bool *use_proxy,
         kopsik::Proxy *proxy) const;
 
-	_Bool SaveProxySettings(
+    _Bool SaveProxySettings(
         const bool use_proxy,
         const kopsik::Proxy *proxy);
 
     // Session management
-	_Bool CurrentAPIToken(std::string *token);
+    _Bool CurrentAPIToken(std::string *token);
 
-	_Bool SetCurrentAPIToken(const std::string token);
+    _Bool SetCurrentAPIToken(const std::string token);
 
-	_Bool CurrentUser(kopsik::User **result);
-    
-	_Bool Login(
+    _Bool CurrentUser(kopsik::User **result);
+
+    _Bool Login(
         const std::string email,
         const std::string password);
 
-	_Bool Logout();
+    _Bool Logout();
 
-	_Bool SetLoggedInUserFromJSON(const std::string json);
+    _Bool SetLoggedInUserFromJSON(const std::string json);
 
-	_Bool ClearCache();
+    _Bool ClearCache();
 
-	void PasswordForgot();
+    void PasswordForgot();
 
     bool CanSeeBillable(const std::string GUID) const;
     bool CanAddProjects(const Poco::UInt64 workspace_id) const;
@@ -141,64 +141,64 @@ class Context {
 
     kopsik::TimeEntry *GetTimeEntryByGUID(const std::string GUID) const;
 
-	_Bool Start(
+    _Bool Start(
         const std::string description,
         const std::string duration,
         const Poco::UInt64 task_id,
         const Poco::UInt64 project_id,
         kopsik::TimeEntry **);
 
-	_Bool ContinueLatest(
+    _Bool ContinueLatest(
         kopsik::TimeEntry **);
 
     _Bool Continue(
         const std::string GUID,
         kopsik::TimeEntry **);
 
-	_Bool SetTimeEntryDuration(
+    _Bool SetTimeEntryDuration(
         const std::string GUID,
         const std::string duration);
-    
-	_Bool DeleteTimeEntryByGUID(const std::string GUID);
 
-	_Bool SetTimeEntryProject(
+    _Bool DeleteTimeEntryByGUID(const std::string GUID);
+
+    _Bool SetTimeEntryProject(
         const std::string GUID,
         const Poco::UInt64 task_id,
         const Poco::UInt64 project_id,
         const std::string project_guid);
 
-	_Bool SetTimeEntryStartISO8601(
+    _Bool SetTimeEntryStartISO8601(
         const std::string GUID,
         const std::string value);
 
-	_Bool SetTimeEntryEndISO8601(
+    _Bool SetTimeEntryEndISO8601(
         const std::string GUID,
         const std::string value);
 
-	_Bool SetTimeEntryTags(
+    _Bool SetTimeEntryTags(
         const std::string GUID,
         const std::string value);
 
-	_Bool SetTimeEntryBillable(
+    _Bool SetTimeEntryBillable(
         const std::string GUID,
         const bool value);
 
-	_Bool SetTimeEntryDescription(
+    _Bool SetTimeEntryDescription(
         const std::string GUID,
         const std::string value);
 
-	_Bool Stop(kopsik::TimeEntry **stopped_entry);
+    _Bool Stop(kopsik::TimeEntry **stopped_entry);
 
-	_Bool StopAt(
+    _Bool StopAt(
         const Poco::Int64 at,
         kopsik::TimeEntry **result);
 
-	_Bool RunningTimeEntry(
+    _Bool RunningTimeEntry(
         kopsik::TimeEntry **running) const;
 
-	_Bool ToggleTimelineRecording();
+    _Bool ToggleTimelineRecording();
 
-	_Bool TimeEntries(
+    _Bool TimeEntries(
         std::map<std::string, Poco::Int64> *date_durations,
         std::vector<kopsik::TimeEntry *> *visible) const;
 
@@ -211,7 +211,7 @@ class Context {
     _Bool SaveUpdateChannel(
         const std::string channel);
 
-	_Bool LoadUpdateChannel(std::string *channel);
+    _Bool LoadUpdateChannel(std::string *channel);
 
     void ProjectLabelAndColorCode(
         kopsik::TimeEntry *te,
@@ -276,7 +276,7 @@ class Context {
 
     // Export user login state to UI
     void exportUserLoginState();
-	_Bool exportErrorState(const error err) const;
+    _Bool exportErrorState(const error err) const;
 
     Poco::Mutex db_m_;
     kopsik::Database *db_;
@@ -305,12 +305,12 @@ class Context {
 
     Feedback feedback_;
 
-	KopsikViewItemChangeCallback on_model_change_callback_;
+    KopsikViewItemChangeCallback on_model_change_callback_;
     KopsikErrorCallback on_error_callback_;
     KopsikCheckUpdateCallback on_check_update_callback_;
     KopsikOnOnlineCallback on_online_callback_;
     KopsikUserLoginCallback on_user_login_callback_;
-	KopsikOpenURLCallback on_open_url_callback_;
+    KopsikOpenURLCallback on_open_url_callback_;
 
     // Tasks are scheduled at:
     Poco::Timestamp next_full_sync_at_;
