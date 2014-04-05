@@ -131,7 +131,10 @@
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>XCOPY $(SolutionDir)\$(ConfigurationName)\TogglDesktopDLL.dll $(TargetDir) /Y
-XCOPY $(SolutionDir)..\..\..\..\third_party\poco-1.4.6p2-all\bin\*.dll $(TargetDir) /Y</PostBuildEvent>
+XCOPY $(SolutionDir)..\..\..\..\third_party\poco-1.4.6p2-all\bin\*.dll $(TargetDir) /Y
+XCOPY $(SolutionDir)..\..\..\..\third_party\openssl-1.0.1e\out32dll\libeay32.dll $(TargetDir) /Y
+XCOPY $(SolutionDir)..\..\..\..\third_party\openssl-1.0.1e\out32dll\ssleay32.dll $(TargetDir) /Y
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
