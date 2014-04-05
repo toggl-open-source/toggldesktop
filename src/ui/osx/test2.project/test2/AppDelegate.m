@@ -210,8 +210,6 @@ const int kDurationStringLength = 20;
       [self onStopMenuItem:self];
     }
   }];
-  
-  on_remind();
 }
 
 - (void)startWebSocket {
