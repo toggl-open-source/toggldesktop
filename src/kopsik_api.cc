@@ -460,7 +460,7 @@ _Bool kopsik_set_api_token(
 _Bool kopsik_get_api_token(
     void *context,
     char *str,
-    const uint64_t max_strlen) {
+    const size_t max_strlen) {
     try {
         poco_assert(str);
         poco_assert(max_strlen);
@@ -971,7 +971,7 @@ _Bool kopsik_parse_time(
 void kopsik_format_duration_in_seconds_hhmmss(
     const int64_t duration_in_seconds,
     char *out_str,
-    const uint64_t max_strlen) {
+    const size_t max_strlen) {
     poco_assert(out_str);
     poco_assert(max_strlen);
     std::string formatted =
@@ -982,7 +982,7 @@ void kopsik_format_duration_in_seconds_hhmmss(
 void kopsik_format_duration_in_seconds_hhmm(
     const int64_t duration_in_seconds,
     char *out_str,
-    const uint64_t max_strlen) {
+    const size_t max_strlen) {
     poco_assert(out_str);
     poco_assert(max_strlen);
     std::string formatted = kopsik::Formatter::FormatDurationInSecondsHHMM(
@@ -1557,7 +1557,7 @@ _Bool kopsik_duration_for_date_header(
     void *context,
     const char *date,
     char *duration,
-    const uint64_t duration_len) {
+    const size_t duration_len) {
     try {
         poco_assert(duration);
         poco_assert(duration_len);
@@ -1681,7 +1681,7 @@ _Bool kopsik_set_update_channel(
 _Bool kopsik_get_update_channel(
     void *context,
     char *update_channel,
-    const uint64_t update_channel_len) {
+    const size_t update_channel_len) {
     try {
         poco_assert(update_channel);
         poco_assert(update_channel_len);

@@ -181,12 +181,12 @@ extern "C" {
     KOPSIK_EXPORT void kopsik_format_duration_in_seconds_hhmmss(
         const int64_t duration_in_seconds,
         char *str,
-        const uint64_t max_strlen);
+        const size_t max_strlen);
 
     KOPSIK_EXPORT void kopsik_format_duration_in_seconds_hhmm(
         const int64_t duration_in_seconds,
         char *str,
-        const uint64_t max_strlen);
+        const size_t max_strlen);
 
     KOPSIK_EXPORT int64_t kopsik_parse_duration_string_into_seconds(
         const char *duration_string);
@@ -371,7 +371,7 @@ extern "C" {
         void *context,
         const char *date,
         char *duration,
-        const uint64_t duration_len);
+        const size_t duration_len);
 
     KOPSIK_EXPORT _Bool kopsik_timeline_is_recording_enabled(
         void *context);
@@ -382,7 +382,7 @@ extern "C" {
     KOPSIK_EXPORT _Bool kopsik_get_update_channel(
         void *context,
         char *update_channel,
-        const uint64_t update_channel_len);
+        const size_t update_channel_len);
 
     // For testing only
     _Bool kopsik_set_api_token(
