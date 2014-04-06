@@ -49,12 +49,12 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Eux-yk-8iS">
-                                <rect key="frame" x="5" y="43" width="80" height="17"/>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Eux-yk-8iS">
+                                <rect key="frame" x="13" y="43" width="80" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="17" id="ABy-En-546"/>
-                                    <constraint firstAttribute="width" constant="74" id="W2B-17-IX3"/>
+                                    <constraint firstAttribute="width" constant="76" id="W2B-17-IX3"/>
                                 </constraints>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Thu 22. Jan" id="Rk2-8z-I6y">
                                     <font key="font" metaFont="system"/>
