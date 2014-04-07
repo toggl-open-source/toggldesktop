@@ -41,6 +41,7 @@ class User : public BaseModel {
     app_name_(app_name),
     app_version_(app_version),
     email_(""),
+    last_date_(""),
     record_timeline_(false),
     timeofday_format_("") {}
 
@@ -69,6 +70,8 @@ class User : public BaseModel {
     Tag *GetTagByGUID(const guid GUID);
     TimeEntry *GetTimeEntryByID(const Poco::UInt64 id);
     TimeEntry *GetTimeEntryByGUID(const guid GUID);
+
+    void SetLastTEDate(const std::string value);
 
     void CollectPushableTimeEntries(
         std::vector<TimeEntry *> *result,
@@ -197,6 +200,7 @@ class User : public BaseModel {
     std::string app_name_;
     std::string app_version_;
     std::string email_;
+    std::string last_date_;
     bool record_timeline_;
     bool store_start_and_stop_time_;
     std::string timeofday_format_;
