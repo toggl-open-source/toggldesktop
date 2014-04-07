@@ -203,12 +203,12 @@ time_t Formatter::ParseLastDate(const std::string value,
 
     strptime(c, "%Y-%m-%d %H:%M:%S%Z", &t);
 
-    timeinfo = gmtime ( &now );
+    timeinfo = localtime ( &now );
     timeinfo->tm_year = t.tm_year;
     timeinfo->tm_mon = t.tm_mon;
     timeinfo->tm_mday = t.tm_mday;
 
-    return mktime(timeinfo) - timezone;
+    return mktime(timeinfo);
 }
 
 bool Formatter::parseDurationStringHHMMSS(const std::string value,
