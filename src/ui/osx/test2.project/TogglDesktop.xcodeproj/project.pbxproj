@@ -6,34 +6,6 @@
 	objectVersion = 46;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		74607C2418EDE79200571BA6 /* deps */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 74607C2518EDE79200571BA6 /* Build configuration list for PBXAggregateTarget "deps" */;
-			buildPhases = (
-			);
-			dependencies = (
-				74607C2918EDE79900571BA6 /* PBXTargetDependency */,
-				74607C2B18EDE79C00571BA6 /* PBXTargetDependency */,
-				74607C2D18EDE79E00571BA6 /* PBXTargetDependency */,
-			);
-			name = deps;
-			productName = deps;
-		};
-		74607C2E18EDE84700571BA6 /* CI build */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 74607C2F18EDE84700571BA6 /* Build configuration list for PBXAggregateTarget "CI build" */;
-			buildPhases = (
-			);
-			dependencies = (
-				74607C3318EDE84C00571BA6 /* PBXTargetDependency */,
-				74607C3518EDE85000571BA6 /* PBXTargetDependency */,
-			);
-			name = "CI build";
-			productName = "CI build";
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
 		69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69FC17FD17E6534400B96425 /* InfoPlist.strings */; };
@@ -78,7 +50,7 @@
 		74AA9476180909F50000539F /* GTMOAuth2WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA9470180909F50000539F /* GTMOAuth2WindowController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74AA947818090A8E0000539F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74AA947718090A8E0000539F /* Security.framework */; };
 		74BA5FCF18B6E770009DAA2D /* NSHoverButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BA5FCE18B6E770009DAA2D /* NSHoverButton.m */; };
-		74BAAA0717F32C470079386F /* Context.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0617F32C470079386F /* Context.m */; };
+		74BAAA0717F32C470079386F /* Core.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0617F32C470079386F /* Core.m */; };
 		74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */; };
 		74BAD31E18BD7D83002FD4CF /* ViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAD31D18BD7D83002FD4CF /* ViewItem.m */; };
 		74C15796183A8CE600550613 /* AutocompleteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74C15795183A8CE600550613 /* AutocompleteItem.m */; };
@@ -89,6 +61,98 @@
 		74D1D25F17EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D25C17EB71C100E709B0 /* TimeEntryEditViewController.xib */; };
 		74D1D27217EB72D900E709B0 /* TimerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D27017EB72D900E709B0 /* TimerEditViewController.m */; };
 		74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */; };
+		74E20DEE18EE0A3D00695787 /* AutocompleteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74C15795183A8CE600550613 /* AutocompleteItem.m */; };
+		74E20DEF18EE0A3D00695787 /* MASShortcut.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5418E260A000ECFED2 /* MASShortcut.m */; };
+		74E20DF018EE0A3D00695787 /* NSCustomComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707918CDB91500A34D0D /* NSCustomComboBox.m */; };
+		74E20DF118EE0A3D00695787 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDDC17FC8E8000C3ADD3 /* User.m */; };
+		74E20DF218EE0A3D00695787 /* UIEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 7424949D17F1E3D20030121C /* UIEvents.m */; };
+		74E20DF318EE0A3D00695787 /* TimeEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */; };
+		74E20DF418EE0A3D00695787 /* NSUnstripedTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 74762BA018A139D4004433A9 /* NSUnstripedTableView.m */; };
+		74E20DF518EE0A3D00695787 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */; };
+		74E20DF618EE0A3D00695787 /* GTMHTTPFetchHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA9469180909F50000539F /* GTMHTTPFetchHistory.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		74E20DF718EE0A3D00695787 /* Bugsnag.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDB317FBABE400C3ADD3 /* Bugsnag.m */; };
+		74E20DF818EE0A3D00695787 /* AutocompleteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 74C1579A183BA5DA00550613 /* AutocompleteDataSource.m */; };
+		74E20DF918EE0A3D00695787 /* NSHoverButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BA5FCE18B6E770009DAA2D /* NSHoverButton.m */; };
+		74E20DFA18EE0A3D00695787 /* MASShortcutView+UserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5618E260A000ECFED2 /* MASShortcutView+UserDefaults.m */; };
+		74E20DFB18EE0A3D00695787 /* Update.m in Sources */ = {isa = PBXBuildFile; fileRef = 7430750718205B88009019CB /* Update.m */; };
+		74E20DFC18EE0A3D00695787 /* BugsnagReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDBF17FBABE400C3ADD3 /* BugsnagReachability.m */; };
+		74E20DFD18EE0A3D00695787 /* MenuItemTags.m in Sources */ = {isa = PBXBuildFile; fileRef = 7438B3D218253CD2002AE43C /* MenuItemTags.m */; };
+		74E20DFE18EE0A3D00695787 /* BugsnagMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDBA17FBABE400C3ADD3 /* BugsnagMetaData.m */; };
+		74E20DFF18EE0A3D00695787 /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 749CB8CA18167D6E00814841 /* PreferencesWindowController.m */; };
+		74E20E0018EE0A3D00695787 /* BugsnagEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDB717FBABE400C3ADD3 /* BugsnagEvent.m */; };
+		74E20E0118EE0A3D00695787 /* MASShortcut+Monitoring.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5018E260A000ECFED2 /* MASShortcut+Monitoring.m */; };
+		74E20E0218EE0A3D00695787 /* TimeEntryCellWithHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 748664CF188D6617006DB4C5 /* TimeEntryCellWithHeader.m */; };
+		74E20E0318EE0A3D00695787 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 69FC180017E6534400B96425 /* main.m */; };
+		74E20E0418EE0A3D00695787 /* FeedbackWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F106FF18993FFE00E93BD5 /* FeedbackWindowController.m */; };
+		74E20E0518EE0A3D00695787 /* Core.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0617F32C470079386F /* Core.m */; };
+		74E20E0618EE0A3D00695787 /* MASShortcutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5818E260A000ECFED2 /* MASShortcutView.m */; };
+		74E20E0718EE0A3D00695787 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 69FC180717E6534400B96425 /* AppDelegate.m */; };
+		74E20E0818EE0A3D00695787 /* TimeEntryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */; };
+		74E20E0918EE0A3D00695787 /* GTMOAuth2WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA9470180909F50000539F /* GTMOAuth2WindowController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		74E20E0A18EE0A3D00695787 /* TimeEntryEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D25B17EB71C100E709B0 /* TimeEntryEditViewController.m */; };
+		74E20E0B18EE0A3D00695787 /* NSBoxClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 749BD0BC1833E28400980494 /* NSBoxClickable.m */; };
+		74E20E0C18EE0A3D00695787 /* ModelChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 745B9CCA18155993006E7F37 /* ModelChange.m */; };
+		74E20E0D18EE0A3D00695787 /* GTMOAuth2SignIn.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA946D180909F50000539F /* GTMOAuth2SignIn.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		74E20E0E18EE0A3D00695787 /* ViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAD31D18BD7D83002FD4CF /* ViewItem.m */; };
+		74E20E0F18EE0A3D00695787 /* BugsnagOSXNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDC517FBABE400C3ADD3 /* BugsnagOSXNotifier.m */; };
+		74E20E1018EE0A3D00695787 /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA9467180909F50000539F /* GTMHTTPFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		74E20E1118EE0A3D00695787 /* MASShortcut+UserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5218E260A000ECFED2 /* MASShortcut+UserDefaults.m */; };
+		74E20E1218EE0A3D00695787 /* ConvertHexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 74A7346918297DD100525BBC /* ConvertHexColor.m */; };
+		74E20E1318EE0A3D00695787 /* TimeEntryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */; };
+		74E20E1418EE0A3D00695787 /* ErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 744CE72C1815CF5F00A7BEE4 /* ErrorHandler.m */; };
+		74E20E1518EE0A3D00695787 /* IdleNotificationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7423393A1829B99C00063FA9 /* IdleNotificationWindowController.m */; };
+		74E20E1618EE0A3D00695787 /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7430750218204EFB009019CB /* AboutWindowController.m */; };
+		74E20E1718EE0A3D00695787 /* TimerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D27017EB72D900E709B0 /* TimerEditViewController.m */; };
+		74E20E1818EE0A3D00695787 /* NSTextFieldWithBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */; };
+		74E20E1918EE0A3D00695787 /* BugsnagNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDBC17FBABE400C3ADD3 /* BugsnagNotifier.m */; };
+		74E20E1A18EE0A3D00695787 /* NSTextFieldClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */; };
+		74E20E1B18EE0A3D00695787 /* EditNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 95F5657918B38E3D0052DE9B /* EditNotification.m */; };
+		74E20E1C18EE0A3D00695787 /* NSCustomComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */; };
+		74E20E1D18EE0A3D00695787 /* BugsnagConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDB517FBABE400C3ADD3 /* BugsnagConfiguration.m */; };
+		74E20E1E18EE0A3D00695787 /* idler.c in Sources */ = {isa = PBXBuildFile; fileRef = 743D7829182791FA00978BCC /* idler.c */; };
+		74E20E1F18EE0A3D00695787 /* GTMOAuth2Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA946B180909F50000539F /* GTMOAuth2Authentication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		74E20E2018EE0A3D00695787 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FC217F1B38B001C4565 /* LoginViewController.m */; };
+		74E20E2118EE0A3D00695787 /* IdleEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 743D942E1827C633000E6F70 /* IdleEvent.m */; };
+		74E20E2318EE0A3D00695787 /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 749A3A5918D889BE000AD2DB /* CrashReporter.framework */; };
+		74E20E2418EE0A3D00695787 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 743D94271827929C000E6F70 /* Carbon.framework */; };
+		74E20E2518EE0A3D00695787 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 743D942518279290000E6F70 /* IOKit.framework */; };
+		74E20E2618EE0A3D00695787 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74AA947718090A8E0000539F /* Security.framework */; };
+		74E20E2718EE0A3D00695787 /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74E3CDD817FC369700C3ADD3 /* ExceptionHandling.framework */; };
+		74E20E2818EE0A3D00695787 /* TFDatePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74FD8CDF18A8EF8300F7DB80 /* TFDatePicker.framework */; };
+		74E20E2918EE0A3D00695787 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74E3CDD617FBAE0800C3ADD3 /* SystemConfiguration.framework */; };
+		74E20E2A18EE0A3D00695787 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C8D17EC1CFD00CA53D3 /* libstdc++.dylib */; };
+		74E20E2B18EE0A3D00695787 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C9617EC1DE100CA53D3 /* libc++.dylib */; };
+		74E20E2C18EE0A3D00695787 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
+		74E20E2D18EE0A3D00695787 /* Kopsik.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA1FB817F19647001C4565 /* Kopsik.dylib */; };
+		74E20E2F18EE0A3D00695787 /* TFDatePicker.framework in Resources */ = {isa = PBXBuildFile; fileRef = 74FD8CDC18A8EEE200F7DB80 /* TFDatePicker.framework */; };
+		74E20E3018EE0A3D00695787 /* CrashReporter.framework in Resources */ = {isa = PBXBuildFile; fileRef = 749A3A5918D889BE000AD2DB /* CrashReporter.framework */; };
+		74E20E3118EE0A3D00695787 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8D618C48B300021FB41 /* logo.png */; };
+		74E20E3218EE0A3D00695787 /* Kopsik.dylib in Resources */ = {isa = PBXBuildFile; fileRef = C5DA1FB817F19647001C4565 /* Kopsik.dylib */; };
+		74E20E3318EE0A3D00695787 /* off.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 74664DB018AA860800AAD282 /* off.pdf */; };
+		74E20E3418EE0A3D00695787 /* AboutWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7430750318204EFB009019CB /* AboutWindowController.xib */; };
+		74E20E3518EE0A3D00695787 /* PreferencesWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */; };
+		74E20E3618EE0A3D00695787 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 74FE0D4D18E260A000ECFED2 /* .gitignore */; };
+		74E20E3718EE0A3D00695787 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69FC17FD17E6534400B96425 /* InfoPlist.strings */; };
+		74E20E3818EE0A3D00695787 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5DA1FC317F1B38B001C4565 /* LoginViewController.xib */; };
+		74E20E3918EE0A3D00695787 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 74FE0D4E18E260A000ECFED2 /* LICENSE */; };
+		74E20E3A18EE0A3D00695787 /* on.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 74664DAF18AA860800AAD282 /* on.pdf */; };
+		74E20E3B18EE0A3D00695787 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 69FC180317E6534400B96425 /* Credits.rtf */; };
+		74E20E3C18EE0A3D00695787 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 74FE0D5918E260A000ECFED2 /* README.md */; };
+		74E20E3D18EE0A3D00695787 /* td7_logo_final.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8DE18C75F560021FB41 /* td7_logo_final.pdf */; };
+		74E20E3E18EE0A3D00695787 /* FeedbackWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74F1070018993FFE00E93BD5 /* FeedbackWindowController.xib */; };
+		74E20E3F18EE0A3D00695787 /* IdleNotificationWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */; };
+		74E20E4018EE0A3D00695787 /* offline_on.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CB18BF7A910021FB41 /* offline_on.pdf */; };
+		74E20E4118EE0A3D00695787 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69FC180917E6534500B96425 /* MainMenu.xib */; };
+		74E20E4218EE0A3D00695787 /* MainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5DA1FBE17F1B08A001C4565 /* MainWindowController.xib */; };
+		74E20E4318EE0A3D00695787 /* TimeEntryListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */; };
+		74E20E4418EE0A3D00695787 /* TimeEntryEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D25C17EB71C100E709B0 /* TimeEntryEditViewController.xib */; };
+		74E20E4518EE0A3D00695787 /* TimeEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7498D2471888B226001390B9 /* TimeEntryCell.xib */; };
+		74E20E4618EE0A3D00695787 /* TimeEntryCellWithHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 748664D1188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib */; };
+		74E20E4718EE0A3D00695787 /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 744E126617F22AB900ABE72A /* app.icns */; };
+		74E20E4818EE0A3D00695787 /* offline_off.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CA18BF7A910021FB41 /* offline_off.pdf */; };
+		74E20E4918EE0A3D00695787 /* app_inactive.icns in Resources */ = {isa = PBXBuildFile; fileRef = 74FE0D3B18E25E8400ECFED2 /* app_inactive.icns */; };
+		74E20E4A18EE0A3D00695787 /* TimerEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */; };
+		74E20E4B18EE0A3D00695787 /* GTMOAuth2Window.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74AA946E180909F50000539F /* GTMOAuth2Window.xib */; };
 		74E3CDC617FBABE400C3ADD3 /* Bugsnag.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDB317FBABE400C3ADD3 /* Bugsnag.m */; };
 		74E3CDC817FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDB517FBABE400C3ADD3 /* BugsnagConfiguration.m */; };
 		74E3CDCA17FBABE400C3ADD3 /* BugsnagEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDB717FBABE400C3ADD3 /* BugsnagEvent.m */; };
@@ -130,41 +194,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		74607C2818EDE79900571BA6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 69FC17E917E6534400B96425 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 74607C1818EDE6BB00571BA6;
-			remoteInfo = json;
-		};
-		74607C2A18EDE79C00571BA6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 69FC17E917E6534400B96425 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 74607C1C18EDE6D800571BA6;
-			remoteInfo = poco;
-		};
-		74607C2C18EDE79E00571BA6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 69FC17E917E6534400B96425 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 74607C2018EDE70C00571BA6;
-			remoteInfo = openssl;
-		};
-		74607C3218EDE84C00571BA6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 69FC17E917E6534400B96425 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 74607C2418EDE79200571BA6;
-			remoteInfo = deps;
-		};
-		74607C3418EDE85000571BA6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 69FC17E917E6534400B96425 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 69FC17F017E6534400B96425;
-			remoteInfo = TogglDesktop;
-		};
 		749A3A5618D889BE000AD2DB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 749A3A4318D889BD000AD2DB /* CrashReporter.xcodeproj */;
@@ -277,6 +306,48 @@
 			remoteGlobalIDString = C55DA59B17F06A3B00B42178;
 			remoteInfo = Kopsik;
 		};
+		74E20DE818EE0A3D00695787 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 749A3A4318D889BD000AD2DB /* CrashReporter.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = "CrashReporter-MacOSX";
+		};
+		74E20DEA18EE0A3D00695787 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2D656E5160A18F100DEC117;
+			remoteInfo = TFDatePicker;
+		};
+		74E20DEC18EE0A3D00695787 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 74B680A8180759C300B697AA /* Kopsik.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C55DA59B17F06A3B00B42178;
+			remoteInfo = Kopsik;
+		};
+		74E20E5318EE0A6F00695787 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69FC17E917E6534400B96425 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 74607C2018EDE70C00571BA6;
+			remoteInfo = openssl;
+		};
+		74E20E5518EE0A7100695787 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69FC17E917E6534400B96425 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 74607C1C18EDE6D800571BA6;
+			remoteInfo = poco;
+		};
+		74E20E5718EE0A7500695787 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69FC17E917E6534400B96425 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 74607C1818EDE6BB00571BA6;
+			remoteInfo = json;
+		};
 		74FD8CDB18A8EEE200F7DB80 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */;
@@ -295,6 +366,15 @@
 
 /* Begin PBXCopyFilesBuildPhase section */
 		74A50AA818434D90006F37BB /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		74E20E4D18EE0A3D00695787 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
@@ -383,8 +463,8 @@
 		74B680A8180759C300B697AA /* Kopsik.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kopsik.xcodeproj; path = ../../../libkopsik/Kopsik/Kopsik.xcodeproj; sourceTree = "<group>"; };
 		74BA5FCD18B6E770009DAA2D /* NSHoverButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSHoverButton.h; sourceTree = "<group>"; };
 		74BA5FCE18B6E770009DAA2D /* NSHoverButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSHoverButton.m; sourceTree = "<group>"; };
-		74BAAA0517F32C470079386F /* Context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Context.h; path = ../Context.h; sourceTree = "<group>"; };
-		74BAAA0617F32C470079386F /* Context.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Context.m; path = ../Context.m; sourceTree = "<group>"; };
+		74BAAA0517F32C470079386F /* Core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Core.h; path = ../Core.h; sourceTree = "<group>"; };
+		74BAAA0617F32C470079386F /* Core.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Core.m; path = ../Core.m; sourceTree = "<group>"; };
 		74BAAA0917F37B140079386F /* TimeEntryViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryViewItem.h; sourceTree = SOURCE_ROOT; };
 		74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryViewItem.m; sourceTree = SOURCE_ROOT; };
 		74BAD31C18BD7D83002FD4CF /* ViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewItem.h; sourceTree = "<group>"; };
@@ -402,6 +482,8 @@
 		74D1D26F17EB72D900E709B0 /* TimerEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerEditViewController.h; sourceTree = SOURCE_ROOT; };
 		74D1D27017EB72D900E709B0 /* TimerEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerEditViewController.m; sourceTree = SOURCE_ROOT; };
 		74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimerEditViewController.xib; sourceTree = SOURCE_ROOT; };
+		74E20E5118EE0A3D00695787 /* TogglDesktop copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TogglDesktop copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		74E20E5218EE0A3D00695787 /* TogglDesktop copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "TogglDesktop copy-Info.plist"; path = "/Users/tanellebedev/projects/toggldesktop/src/ui/osx/test2.project/TogglDesktop copy-Info.plist"; sourceTree = "<absolute>"; };
 		74E3CDB217FBABE400C3ADD3 /* Bugsnag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bugsnag.h; sourceTree = "<group>"; };
 		74E3CDB317FBABE400C3ADD3 /* Bugsnag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bugsnag.m; sourceTree = "<group>"; };
 		74E3CDB417FBABE400C3ADD3 /* BugsnagConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugsnagConfiguration.h; sourceTree = "<group>"; };
@@ -483,6 +565,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		74E20E2218EE0A3D00695787 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				74E20E2318EE0A3D00695787 /* CrashReporter.framework in Frameworks */,
+				74E20E2418EE0A3D00695787 /* Carbon.framework in Frameworks */,
+				74E20E2518EE0A3D00695787 /* IOKit.framework in Frameworks */,
+				74E20E2618EE0A3D00695787 /* Security.framework in Frameworks */,
+				74E20E2718EE0A3D00695787 /* ExceptionHandling.framework in Frameworks */,
+				74E20E2818EE0A3D00695787 /* TFDatePicker.framework in Frameworks */,
+				74E20E2918EE0A3D00695787 /* SystemConfiguration.framework in Frameworks */,
+				74E20E2A18EE0A3D00695787 /* libstdc++.dylib in Frameworks */,
+				74E20E2B18EE0A3D00695787 /* libc++.dylib in Frameworks */,
+				74E20E2C18EE0A3D00695787 /* Cocoa.framework in Frameworks */,
+				74E20E2D18EE0A3D00695787 /* Kopsik.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -506,6 +606,7 @@
 				69FC181717E6534500B96425 /* kopsikTests */,
 				69FC17F317E6534400B96425 /* Frameworks */,
 				69FC17F217E6534400B96425 /* Products */,
+				74E20E5218EE0A3D00695787 /* TogglDesktop copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -513,6 +614,7 @@
 			isa = PBXGroup;
 			children = (
 				69FC17F117E6534400B96425 /* TogglDesktop.app */,
+				74E20E5118EE0A3D00695787 /* TogglDesktop copy.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -580,8 +682,8 @@
 				749CB8C918167D6E00814841 /* PreferencesWindowController.h */,
 				749CB8CA18167D6E00814841 /* PreferencesWindowController.m */,
 				749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */,
-				74BAAA0517F32C470079386F /* Context.h */,
-				74BAAA0617F32C470079386F /* Context.m */,
+				74BAAA0517F32C470079386F /* Core.h */,
+				74BAAA0617F32C470079386F /* Core.m */,
 				7424949C17F1E3D20030121C /* UIEvents.h */,
 				7424949D17F1E3D20030121C /* UIEvents.m */,
 				C5DA1FBA17F197BF001C4565 /* kopsik_api.h */,
@@ -854,6 +956,31 @@
 			productReference = 69FC17F117E6534400B96425 /* TogglDesktop.app */;
 			productType = "com.apple.product-type.application";
 		};
+		74E20DE618EE0A3D00695787 /* TogglDesktop CI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 74E20E4E18EE0A3D00695787 /* Build configuration list for PBXNativeTarget "TogglDesktop CI" */;
+			buildPhases = (
+				74E20DED18EE0A3D00695787 /* Sources */,
+				74E20E2218EE0A3D00695787 /* Frameworks */,
+				74E20E2E18EE0A3D00695787 /* Resources */,
+				74E20E4C18EE0A3D00695787 /* ShellScript */,
+				74E20E4D18EE0A3D00695787 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				74E20E5818EE0A7500695787 /* PBXTargetDependency */,
+				74E20E5618EE0A7100695787 /* PBXTargetDependency */,
+				74E20E5418EE0A6F00695787 /* PBXTargetDependency */,
+				74E20DE718EE0A3D00695787 /* PBXTargetDependency */,
+				74E20DE918EE0A3D00695787 /* PBXTargetDependency */,
+				74E20DEB18EE0A3D00695787 /* PBXTargetDependency */,
+			);
+			name = "TogglDesktop CI";
+			productName = test2;
+			productReference = 74E20E5118EE0A3D00695787 /* TogglDesktop copy.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -889,12 +1016,11 @@
 			);
 			projectRoot = "";
 			targets = (
-				74607C2E18EDE84700571BA6 /* CI build */,
 				69FC17F017E6534400B96425 /* TogglDesktop */,
 				74607C1818EDE6BB00571BA6 /* json */,
 				74607C1C18EDE6D800571BA6 /* poco */,
 				74607C2018EDE70C00571BA6 /* openssl */,
-				74607C2418EDE79200571BA6 /* deps */,
+				74E20DE618EE0A3D00695787 /* TogglDesktop CI */,
 			);
 		};
 /* End PBXProject section */
@@ -1044,9 +1170,58 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		74E20E2E18EE0A3D00695787 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				74E20E2F18EE0A3D00695787 /* TFDatePicker.framework in Resources */,
+				74E20E3018EE0A3D00695787 /* CrashReporter.framework in Resources */,
+				74E20E3118EE0A3D00695787 /* logo.png in Resources */,
+				74E20E3218EE0A3D00695787 /* Kopsik.dylib in Resources */,
+				74E20E3318EE0A3D00695787 /* off.pdf in Resources */,
+				74E20E3418EE0A3D00695787 /* AboutWindowController.xib in Resources */,
+				74E20E3518EE0A3D00695787 /* PreferencesWindowController.xib in Resources */,
+				74E20E3618EE0A3D00695787 /* .gitignore in Resources */,
+				74E20E3718EE0A3D00695787 /* InfoPlist.strings in Resources */,
+				74E20E3818EE0A3D00695787 /* LoginViewController.xib in Resources */,
+				74E20E3918EE0A3D00695787 /* LICENSE in Resources */,
+				74E20E3A18EE0A3D00695787 /* on.pdf in Resources */,
+				74E20E3B18EE0A3D00695787 /* Credits.rtf in Resources */,
+				74E20E3C18EE0A3D00695787 /* README.md in Resources */,
+				74E20E3D18EE0A3D00695787 /* td7_logo_final.pdf in Resources */,
+				74E20E3E18EE0A3D00695787 /* FeedbackWindowController.xib in Resources */,
+				74E20E3F18EE0A3D00695787 /* IdleNotificationWindowController.xib in Resources */,
+				74E20E4018EE0A3D00695787 /* offline_on.pdf in Resources */,
+				74E20E4118EE0A3D00695787 /* MainMenu.xib in Resources */,
+				74E20E4218EE0A3D00695787 /* MainWindowController.xib in Resources */,
+				74E20E4318EE0A3D00695787 /* TimeEntryListViewController.xib in Resources */,
+				74E20E4418EE0A3D00695787 /* TimeEntryEditViewController.xib in Resources */,
+				74E20E4518EE0A3D00695787 /* TimeEntryCell.xib in Resources */,
+				74E20E4618EE0A3D00695787 /* TimeEntryCellWithHeader.xib in Resources */,
+				74E20E4718EE0A3D00695787 /* app.icns in Resources */,
+				74E20E4818EE0A3D00695787 /* offline_off.pdf in Resources */,
+				74E20E4918EE0A3D00695787 /* app_inactive.icns in Resources */,
+				74E20E4A18EE0A3D00695787 /* TimerEditViewController.xib in Resources */,
+				74E20E4B18EE0A3D00695787 /* GTMOAuth2Window.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		74E20E4C18EE0A3D00695787 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /usr/bin/ruby;
+			shellScript = "if ENV[\"DEBUG_INFORMATION_FORMAT\"] != \"dwarf-with-dsym\"\nexit\nend\n\nfork do\nProcess.setsid\nSTDIN.reopen(\"/dev/null\")\nSTDOUT.reopen(\"/dev/null\", \"a\")\nSTDERR.reopen(\"/dev/null\", \"a\")\n\nrequire 'shellwords'\n\nDir[\"#{ENV[\"DWARF_DSYM_FOLDER_PATH\"]}/#{ENV[\"DWARF_DSYM_FILE_NAME\"]}/Contents/Resources/DWARF/*\"].each do |dsym|\nsystem(\"curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV[\"PROJECT_DIR\"])} https://upload.bugsnag.com/\")\nend\nend";
+		};
 		74E3CDDA17FC37A500C3ADD3 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1090,7 +1265,7 @@
 				748664D0188D6617006DB4C5 /* TimeEntryCellWithHeader.m in Sources */,
 				69FC180117E6534400B96425 /* main.m in Sources */,
 				74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */,
-				74BAAA0717F32C470079386F /* Context.m in Sources */,
+				74BAAA0717F32C470079386F /* Core.m in Sources */,
 				74FE0D6018E260A000ECFED2 /* MASShortcutView.m in Sources */,
 				69FC180817E6534400B96425 /* AppDelegate.m in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
@@ -1122,34 +1297,68 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		74E20DED18EE0A3D00695787 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				74E20DEE18EE0A3D00695787 /* AutocompleteItem.m in Sources */,
+				74E20DEF18EE0A3D00695787 /* MASShortcut.m in Sources */,
+				74E20DF018EE0A3D00695787 /* NSCustomComboBox.m in Sources */,
+				74E20DF118EE0A3D00695787 /* User.m in Sources */,
+				74E20DF218EE0A3D00695787 /* UIEvents.m in Sources */,
+				74E20DF318EE0A3D00695787 /* TimeEntryCell.m in Sources */,
+				74E20DF418EE0A3D00695787 /* NSUnstripedTableView.m in Sources */,
+				74E20DF518EE0A3D00695787 /* MainWindowController.m in Sources */,
+				74E20DF618EE0A3D00695787 /* GTMHTTPFetchHistory.m in Sources */,
+				74E20DF718EE0A3D00695787 /* Bugsnag.m in Sources */,
+				74E20DF818EE0A3D00695787 /* AutocompleteDataSource.m in Sources */,
+				74E20DF918EE0A3D00695787 /* NSHoverButton.m in Sources */,
+				74E20DFA18EE0A3D00695787 /* MASShortcutView+UserDefaults.m in Sources */,
+				74E20DFB18EE0A3D00695787 /* Update.m in Sources */,
+				74E20DFC18EE0A3D00695787 /* BugsnagReachability.m in Sources */,
+				74E20DFD18EE0A3D00695787 /* MenuItemTags.m in Sources */,
+				74E20DFE18EE0A3D00695787 /* BugsnagMetaData.m in Sources */,
+				74E20DFF18EE0A3D00695787 /* PreferencesWindowController.m in Sources */,
+				74E20E0018EE0A3D00695787 /* BugsnagEvent.m in Sources */,
+				74E20E0118EE0A3D00695787 /* MASShortcut+Monitoring.m in Sources */,
+				74E20E0218EE0A3D00695787 /* TimeEntryCellWithHeader.m in Sources */,
+				74E20E0318EE0A3D00695787 /* main.m in Sources */,
+				74E20E0418EE0A3D00695787 /* FeedbackWindowController.m in Sources */,
+				74E20E0518EE0A3D00695787 /* Core.m in Sources */,
+				74E20E0618EE0A3D00695787 /* MASShortcutView.m in Sources */,
+				74E20E0718EE0A3D00695787 /* AppDelegate.m in Sources */,
+				74E20E0818EE0A3D00695787 /* TimeEntryListViewController.m in Sources */,
+				74E20E0918EE0A3D00695787 /* GTMOAuth2WindowController.m in Sources */,
+				74E20E0A18EE0A3D00695787 /* TimeEntryEditViewController.m in Sources */,
+				74E20E0B18EE0A3D00695787 /* NSBoxClickable.m in Sources */,
+				74E20E0C18EE0A3D00695787 /* ModelChange.m in Sources */,
+				74E20E0D18EE0A3D00695787 /* GTMOAuth2SignIn.m in Sources */,
+				74E20E0E18EE0A3D00695787 /* ViewItem.m in Sources */,
+				74E20E0F18EE0A3D00695787 /* BugsnagOSXNotifier.m in Sources */,
+				74E20E1018EE0A3D00695787 /* GTMHTTPFetcher.m in Sources */,
+				74E20E1118EE0A3D00695787 /* MASShortcut+UserDefaults.m in Sources */,
+				74E20E1218EE0A3D00695787 /* ConvertHexColor.m in Sources */,
+				74E20E1318EE0A3D00695787 /* TimeEntryViewItem.m in Sources */,
+				74E20E1418EE0A3D00695787 /* ErrorHandler.m in Sources */,
+				74E20E1518EE0A3D00695787 /* IdleNotificationWindowController.m in Sources */,
+				74E20E1618EE0A3D00695787 /* AboutWindowController.m in Sources */,
+				74E20E1718EE0A3D00695787 /* TimerEditViewController.m in Sources */,
+				74E20E1818EE0A3D00695787 /* NSTextFieldWithBackground.m in Sources */,
+				74E20E1918EE0A3D00695787 /* BugsnagNotifier.m in Sources */,
+				74E20E1A18EE0A3D00695787 /* NSTextFieldClickable.m in Sources */,
+				74E20E1B18EE0A3D00695787 /* EditNotification.m in Sources */,
+				74E20E1C18EE0A3D00695787 /* NSCustomComboBoxCell.m in Sources */,
+				74E20E1D18EE0A3D00695787 /* BugsnagConfiguration.m in Sources */,
+				74E20E1E18EE0A3D00695787 /* idler.c in Sources */,
+				74E20E1F18EE0A3D00695787 /* GTMOAuth2Authentication.m in Sources */,
+				74E20E2018EE0A3D00695787 /* LoginViewController.m in Sources */,
+				74E20E2118EE0A3D00695787 /* IdleEvent.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		74607C2918EDE79900571BA6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 74607C1818EDE6BB00571BA6 /* json */;
-			targetProxy = 74607C2818EDE79900571BA6 /* PBXContainerItemProxy */;
-		};
-		74607C2B18EDE79C00571BA6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 74607C1C18EDE6D800571BA6 /* poco */;
-			targetProxy = 74607C2A18EDE79C00571BA6 /* PBXContainerItemProxy */;
-		};
-		74607C2D18EDE79E00571BA6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 74607C2018EDE70C00571BA6 /* openssl */;
-			targetProxy = 74607C2C18EDE79E00571BA6 /* PBXContainerItemProxy */;
-		};
-		74607C3318EDE84C00571BA6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 74607C2418EDE79200571BA6 /* deps */;
-			targetProxy = 74607C3218EDE84C00571BA6 /* PBXContainerItemProxy */;
-		};
-		74607C3518EDE85000571BA6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 69FC17F017E6534400B96425 /* TogglDesktop */;
-			targetProxy = 74607C3418EDE85000571BA6 /* PBXContainerItemProxy */;
-		};
 		749A3A7318D89F23000AD2DB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "CrashReporter-MacOSX";
@@ -1159,6 +1368,36 @@
 			isa = PBXTargetDependency;
 			name = Kopsik;
 			targetProxy = 74B680AE18075A4300B697AA /* PBXContainerItemProxy */;
+		};
+		74E20DE718EE0A3D00695787 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CrashReporter-MacOSX";
+			targetProxy = 74E20DE818EE0A3D00695787 /* PBXContainerItemProxy */;
+		};
+		74E20DE918EE0A3D00695787 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TFDatePicker;
+			targetProxy = 74E20DEA18EE0A3D00695787 /* PBXContainerItemProxy */;
+		};
+		74E20DEB18EE0A3D00695787 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Kopsik;
+			targetProxy = 74E20DEC18EE0A3D00695787 /* PBXContainerItemProxy */;
+		};
+		74E20E5418EE0A6F00695787 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 74607C2018EDE70C00571BA6 /* openssl */;
+			targetProxy = 74E20E5318EE0A6F00695787 /* PBXContainerItemProxy */;
+		};
+		74E20E5618EE0A7100695787 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 74607C1C18EDE6D800571BA6 /* poco */;
+			targetProxy = 74E20E5518EE0A7100695787 /* PBXContainerItemProxy */;
+		};
+		74E20E5818EE0A7500695787 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 74607C1818EDE6BB00571BA6 /* json */;
+			targetProxy = 74E20E5718EE0A7500695787 /* PBXContainerItemProxy */;
 		};
 		74FD8CDE18A8EF4800F7DB80 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1263,6 +1502,7 @@
 		69FC182317E6534500B96425 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LIBRARY = "compiler-default";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1284,7 +1524,7 @@
 					"$(SRCROOT)",
 					../../../libkopsik/lib,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = TogglDesktop;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
@@ -1296,6 +1536,7 @@
 		69FC182417E6534500B96425 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LIBRARY = "compiler-default";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1318,7 +1559,7 @@
 					"$(SRCROOT)",
 					../../../libkopsik/lib,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = TogglDesktop;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
@@ -1459,31 +1700,70 @@
 			};
 			name = Release;
 		};
-		74607C2618EDE79200571BA6 /* Debug */ = {
+		74E20E4F18EE0A3D00695787 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					"$(SRCROOT)/../../../../third_party/plcrashreporter-1.2-rc4/**",
+					"$(SRCROOT)/../../../../third_party/TFDatePicker/TFDatePicker/build/Release",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "test2/TogglDesktop-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../../../../third_party/TFDatePicker/**",
+					"$(SRCROOT)/../../../../third_party/plcrashreporter-1.2-rc4/**",
+				);
+				INFOPLIST_FILE = "TogglDesktop copy-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					../../../libkopsik/lib,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "TogglDesktop copy";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
+				STRIP_INSTALLED_PRODUCT = NO;
+				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
 		};
-		74607C2718EDE79200571BA6 /* Release */ = {
+		74E20E5018EE0A3D00695787 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
-		74607C3018EDE84700571BA6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		74607C3118EDE84700571BA6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					"$(SRCROOT)/../../../../third_party/plcrashreporter-1.2-rc4/**",
+					"$(SRCROOT)/../../../../third_party/TFDatePicker/TFDatePicker/build/Release",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "test2/TogglDesktop-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../../../../third_party/TFDatePicker/**",
+					"$(SRCROOT)/../../../../third_party/plcrashreporter-1.2-rc4/**",
+				);
+				INFOPLIST_FILE = "TogglDesktop copy-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					../../../libkopsik/lib,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "TogglDesktop copy";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
+				STRIP_INSTALLED_PRODUCT = NO;
+				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
 		};
@@ -1515,6 +1795,7 @@
 				74607C1B18EDE6BB00571BA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		74607C1D18EDE6D800571BA6 /* Build configuration list for PBXLegacyTarget "poco" */ = {
 			isa = XCConfigurationList;
@@ -1523,6 +1804,7 @@
 				74607C1F18EDE6D800571BA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		74607C2118EDE70C00571BA6 /* Build configuration list for PBXLegacyTarget "openssl" */ = {
 			isa = XCConfigurationList;
@@ -1531,22 +1813,16 @@
 				74607C2318EDE70C00571BA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
-		74607C2518EDE79200571BA6 /* Build configuration list for PBXAggregateTarget "deps" */ = {
+		74E20E4E18EE0A3D00695787 /* Build configuration list for PBXNativeTarget "TogglDesktop CI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				74607C2618EDE79200571BA6 /* Debug */,
-				74607C2718EDE79200571BA6 /* Release */,
+				74E20E4F18EE0A3D00695787 /* Debug */,
+				74E20E5018EE0A3D00695787 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-		};
-		74607C2F18EDE84700571BA6 /* Build configuration list for PBXAggregateTarget "CI build" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				74607C3018EDE84700571BA6 /* Debug */,
-				74607C3118EDE84700571BA6 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -8,14 +8,12 @@
 
 #import "FeedbackWindowController.h"
 #import "kopsik_api.h"
-#import "Context.h"
+#import "Core.h"
 #import "ErrorHandler.h"
 
-@interface FeedbackWindowController ()
-
-@end
-
 @implementation FeedbackWindowController
+
+extern void *ctx;
 
 - (IBAction)uploadImageClick:(id)sender {
   NSOpenPanel* panel = [NSOpenPanel openPanel];

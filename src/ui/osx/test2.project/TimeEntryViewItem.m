@@ -8,10 +8,12 @@
 
 #import "TimeEntryViewItem.h"
 #import "kopsik_api.h"
-#import "Context.h"
+#import "Core.h"
 #import "UIEvents.h"  
 
 @implementation TimeEntryViewItem
+
+extern void *ctx;
 
 - (void)load:(KopsikTimeEntryViewItem *)data {
   self.GUID = [NSString stringWithUTF8String:data->GUID];

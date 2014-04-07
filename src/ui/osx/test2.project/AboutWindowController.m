@@ -7,7 +7,7 @@
 //
 
 #import "AboutWindowController.h"
-#import "Context.h"
+#import "Core.h"
 #import "ErrorHandler.h"
 #import "Update.h"
 
@@ -16,6 +16,8 @@
 @end
 
 @implementation AboutWindowController
+
+extern void *ctx;
 
 - (void)windowDidLoad {
   [super windowDidLoad];

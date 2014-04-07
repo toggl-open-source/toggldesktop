@@ -8,10 +8,12 @@
 
 #import "AutocompleteDataSource.h"
 #import "kopsik_api.h"
-#import "Context.h"
+#import "Core.h"
 #import "ErrorHandler.h"
 
 @implementation AutocompleteDataSource
+
+extern void *ctx;
 
 - (id) init {
   self = [super init];

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
@@ -9,44 +10,54 @@ namespace TogglDesktop
 {
     static class Core
     {
-        public static void Startup(string app_name, string app_version)
+        private static IntPtr ctx_ = IntPtr.Zero;
+
+        public static void Init(string app_name, string app_version)
         {
-            ctx_ = kopsik_context_init(app_name, app_version);
-            kopsik_context_init(app_name, app_version);
+            ctx_ = DLL.kopsik_context_init(app_name, app_version);
+
+            DLL.kopsik_context_set_error_callback(ctx_, OnError);
+            DLL.kopsik_context_set_check_update_callback(ctx_, OnCheckUpdate);
+            DLL.kopsik_context_set_online_callback(ctx_, OnOnline);
+            DLL.kopsik_context_set_user_login_callback(ctx_, OnUserLogin);
+            DLL.kopsik_set_open_url_callback(ctx_, OnOpenURL);
+
+            string path = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "Kopsik");
+            System.IO.Directory.CreateDirectory(path);
+            DLL.kopsik_set_log_path(Path.Combine(path, "kopsik.log"));
+            DLL.kopsik_set_log_level("debug");
+            DLL.kopsik_set_db_path(ctx_, Path.Combine(path, "kopsik.db"));
+
+            DLL.kopsik_context_start_events(ctx_);
         }
 
-        public static void Shutdown()
+        public static bool Login(string email, string password)
+        {
+            return DLL.kopsik_login(ctx_, email, password);
+        }
+
+        public static void PasswordForgot()
+        {
+            DLL.kopsik_password_forgot();
+        }
+
+        public static void Clear()
         {
             if (IntPtr.Zero == ctx_)
             {
                 return;
             }
-            kopsik_context_shutdown(ctx_);
-            kopsik_context_clear(ctx_);
+            DLL.kopsik_context_clear(ctx_);
             ctx_ = IntPtr.Zero;
         }
 
-        private static IntPtr ctx_ = IntPtr.Zero;
-
-        private const string dll = "TogglDesktopDLL.dll";
-
-        [DllImport(dll, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static extern System.IntPtr kopsik_context_init(string app_name, string app_version);
-
-        [DllImport(dll, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static extern void kopsik_context_startup();
-
-        [DllImport(dll, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static extern void kopsik_context_shutdown(IntPtr context);
-
-        [DllImport(dll, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static extern void kopsik_context_clear(IntPtr context);
-
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate void KopsikErrorCallback(string errmsg);
-
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate void KopsikUserLoginCallback();
+        public static event DLL.KopsikErrorCallback OnError = delegate { };
+        public static event DLL.KopsikUserLoginCallback OnUserLogin = delegate { };
+        public static event DLL.KopsikCheckUpdateCallback OnCheckUpdate = delegate {};
+        public static event DLL.KopsikOnOnlineCallback OnOnline = delegate { };
+        public static event DLL.KopsikOpenURLCallback OnOpenURL = delegate { };
     }
 }
 

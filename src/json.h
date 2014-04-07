@@ -59,6 +59,7 @@ void LoadUserWorkspacesFromJSONNode(
 void LoadUserUpdateFromJSONNode(
     User *user,
     JSONNODE *data);
+
 void LoadUserUpdateFromJSONString(
     User *user,
     const std::string json);

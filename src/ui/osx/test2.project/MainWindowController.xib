@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MainWindowController">
             <connections>
                 <outlet property="contentView" destination="av5-A6-9S5" id="g24-fx-drT"/>
                 <outlet property="contentViewController" destination="av5-A6-9S5" id="VD8-35-TOQ"/>
+                <outlet property="errorLabel" destination="3yn-Zh-JYn" id="2lh-8u-0eG"/>
+                <outlet property="troubleBox" destination="gBV-Qp-t6E" id="7gd-fC-wYR"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application"/>
-        <window title="Toggl Desktop" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" wantsToBeColor="NO" frameAutosaveName="MainWindow" animationBehavior="default" id="1">
+        <window title="Toggl Desktop" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" frameAutosaveName="MainWindow" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="300" height="450"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
@@ -24,13 +25,43 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="av5-A6-9S5" userLabel="ContentView">
-                        <rect key="frame" x="0.0" y="0.0" width="260" height="450"/>
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="419"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
+                    <box hidden="YES" autoresizesSubviews="NO" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="gBV-Qp-t6E">
+                        <rect key="frame" x="0.0" y="419" width="300" height="30"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <view key="contentView">
+                            <rect key="frame" x="0.0" y="0.0" width="300" height="30"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3yn-Zh-JYn">
+                                    <rect key="frame" x="7" y="7" width="286" height="17"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="center" title="Login failed!" id="epU-2w-W4x">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                            </subviews>
+                        </view>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="3yn-Zh-JYn" secondAttribute="trailing" constant="9" id="BZS-wx-X75"/>
+                            <constraint firstItem="3yn-Zh-JYn" firstAttribute="leading" secondItem="gBV-Qp-t6E" secondAttribute="leading" constant="9" id="ljv-uS-Mff"/>
+                            <constraint firstAttribute="bottom" secondItem="3yn-Zh-JYn" secondAttribute="bottom" constant="7" id="mt7-0l-Mff"/>
+                            <constraint firstItem="3yn-Zh-JYn" firstAttribute="top" secondItem="gBV-Qp-t6E" secondAttribute="top" constant="6" id="tW0-nR-BCV"/>
+                        </constraints>
+                        <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                        <color key="fillColor" red="0.92484454719999998" green="0.87390986770000001" blue="0.37178904140000002" alpha="1" colorSpace="calibratedRGB"/>
+                    </box>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="av5-A6-9S5" secondAttribute="bottom" id="4zZ-n1-ALD"/>
+                    <constraint firstItem="gBV-Qp-t6E" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="H4l-Qk-9du"/>
                     <constraint firstItem="av5-A6-9S5" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="P13-nu-UZ0"/>
+                    <constraint firstItem="gBV-Qp-t6E" firstAttribute="top" secondItem="2" secondAttribute="top" constant="1" id="acY-4H-9r7"/>
+                    <constraint firstAttribute="trailing" secondItem="gBV-Qp-t6E" secondAttribute="trailing" id="hAW-oO-ES1"/>
                     <constraint firstItem="av5-A6-9S5" firstAttribute="top" secondItem="2" secondAttribute="top" id="lIn-MP-X7n"/>
                     <constraint firstAttribute="trailing" secondItem="av5-A6-9S5" secondAttribute="trailing" id="vIk-4N-Ddi"/>
                 </constraints>

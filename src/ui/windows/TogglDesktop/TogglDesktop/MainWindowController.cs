@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace TogglDesktop
 {
@@ -22,6 +24,22 @@ namespace TogglDesktop
         }
 
         private void MainWindowController_Load(object sender, EventArgs e)
+        {
+            troubleBox.BackColor = Color.FromArgb(239, 226, 121);
+
+            loadWindowLocation();
+
+            Core.OnUserLogin += Core_OnUserLogin;
+            Core.OnError += Core_OnError;
+            Core.OnCheckUpdate += Core_OnCheckUpdate;
+            Core.OnOnline += Core_OnOnline;
+
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+            Core.Init("windows_native_app", versionInfo.ProductVersion);
+        }
+
+        private void loadWindowLocation()
         {
             if (Properties.Settings.Default.Maximized)
             {
@@ -40,14 +58,39 @@ namespace TogglDesktop
                 Location = Properties.Settings.Default.Location;
                 Size = Properties.Settings.Default.Size;
             }
+        }
 
-            Core.Startup("windows_native_app", "1.0");
+        void Core_OnOnline()
+        {
+            throw new NotImplementedException();
+        }
 
-            Controls.Add(loginViewController);
-            loginViewController.SetAcceptButton(this);
+        void Core_OnCheckUpdate(bool is_update_available, string url, string version)
+        {
+            throw new NotImplementedException();
+        }
+
+        void Core_OnError(string errmsg)
+        {
+            errorLabel.Text = errmsg;
+            troubleBox.Visible = true;
+        }
+
+        void Core_OnUserLogin(ulong id, string fullname, string timeofdayformat)
+        {
+            if (0 == id) {
+                Controls.Add(loginViewController);
+                loginViewController.SetAcceptButton(this);
+                return;
+            }
         }
 
         private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            saveWindowLocation();
+        }
+
+        private void saveWindowLocation()
         {
             if (WindowState == FormWindowState.Maximized)
             {

@@ -9,36 +9,14 @@
 #import "LoginViewController.h"
 #import "kopsik_api.h"
 #import "UIEvents.h"
-#import "Context.h"
+#import "Core.h"
 #import "GTMOAuth2WindowController.h"
 
 #import "const.h"
 
-@interface LoginViewController ()
-
-@end
-
 @implementation LoginViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-      [[NSNotificationCenter defaultCenter] addObserver:self
-                                               selector:@selector(eventHandler:)
-                                                   name:kUIStateError
-                                                 object:nil];
-    }
-    return self;
-}
-
-- (void)setDefaultUser {
-  if (defaultEmail != nil) {
-    [self.email setStringValue:defaultEmail];
-  }
-  if (defaultPassword != nil) {
-    [self.password setStringValue:defaultPassword];
-  }
-}
+extern void *ctx;
 
 - (IBAction)clickLoginButton:(id)sender {
   NSString *email = [self.email stringValue];
@@ -59,7 +37,6 @@
     return;
   }
   
-  [self.troubleBox setHidden:YES];
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedIn object:nil];
 }
 
@@ -85,8 +62,7 @@
   }
 
   if (sender == self.passwordForgotTextField) {
-    NSString *lostPasswordURL = [NSString stringWithUTF8String:kLostPasswordURL];
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:lostPasswordURL]];
+    kopsik_password_forgot(ctx);
     return;
   }
 }
@@ -115,8 +91,8 @@
       return;
     }
     NSLog(@"Login error: %@", errorStr);
-    [self.errorLabel setStringValue:errorStr];
-    [self.troubleBox setHidden:NO];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
+                                                        object:errorStr];
     return;
   }
   
@@ -124,22 +100,7 @@
     return;
   }
   
-  [self.troubleBox setHidden:YES];
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedIn object:nil];
-}
-
-- (void)eventHandler: (NSNotification *) notification {
-  if ([notification.name isEqualToString:kUIStateError]) {
-    NSString *msg = notification.object;
-    if ([msg rangeOfString:@"Request to server failed with status code: 403"].location != NSNotFound) {
-      msg = @"Invalid e-mail or password. Please try again!";
-    }
-
-    [self.errorLabel setStringValue:msg];
-    [self.troubleBox setHidden:NO];
-
-    return;
-  }
 }
 
 @end

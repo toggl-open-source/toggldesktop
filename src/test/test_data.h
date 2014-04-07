@@ -1,7 +1,7 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#ifndef SRC_TEST_DATA_H_
-#define SRC_TEST_DATA_H_
+#ifndef SRC_TEST_TEST_DATA_H_
+#define SRC_TEST_TEST_DATA_H_
 
 #include <string>
 
@@ -9,4 +9,4 @@
 
 std::string loadTestData();
 
-#endif  // SRC_TEST_DATA_H_
+#endif  // SRC_TEST_TEST_DATA_H_

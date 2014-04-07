@@ -21,8 +21,6 @@
 		7484A2AC18887BEE0025A88B /* kopsik_api_private.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7484A2A618887BEE0025A88B /* kopsik_api_private.cc */; };
 		748968CB18340F9B00288374 /* version.cc in Sources */ = {isa = PBXBuildFile; fileRef = 748968C918340F9B00288374 /* version.cc */; };
 		748968CC18340F9B00288374 /* version.h in Headers */ = {isa = PBXBuildFile; fileRef = 748968CA18340F9B00288374 /* version.h */; };
-		7498ACE218D2EEFC00A42CA0 /* notifications.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7498ACE018D2EEFC00A42CA0 /* notifications.cc */; };
-		7498ACE318D2EEFC00A42CA0 /* notifications.h in Headers */ = {isa = PBXBuildFile; fileRef = 7498ACE118D2EEFC00A42CA0 /* notifications.h */; };
 		74AA947A18091AE10000539F /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74AA947918091AE10000539F /* WebKit.framework */; };
 		74B587BB18BBC77E00E9F6CE /* formatter.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587A618BBC77E00E9F6CE /* formatter.cc */; };
 		74B587BC18BBC77E00E9F6CE /* tag.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B587A718BBC77E00E9F6CE /* tag.h */; };
@@ -94,8 +92,6 @@
 		7484A2A618887BEE0025A88B /* kopsik_api_private.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = kopsik_api_private.cc; path = ../../../kopsik_api_private.cc; sourceTree = "<group>"; };
 		748968C918340F9B00288374 /* version.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = version.cc; path = ../../../version.cc; sourceTree = "<group>"; };
 		748968CA18340F9B00288374 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = version.h; path = ../../../version.h; sourceTree = "<group>"; };
-		7498ACE018D2EEFC00A42CA0 /* notifications.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = notifications.cc; path = ../../ui/common/notifications.cc; sourceTree = "<group>"; };
-		7498ACE118D2EEFC00A42CA0 /* notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = notifications.h; path = ../../ui/common/notifications.h; sourceTree = "<group>"; };
 		74AA947918091AE10000539F /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		74B587A618BBC77E00E9F6CE /* formatter.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = formatter.cc; path = ../../../formatter.cc; sourceTree = "<group>"; };
 		74B587A718BBC77E00E9F6CE /* tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tag.h; path = ../../../tag.h; sourceTree = "<group>"; };
@@ -144,14 +140,14 @@
 		C5DA1F8E17F18CAA001C4565 /* libjson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjson.a; path = ../../../third_party/libjson/libjson.a; sourceTree = "<group>"; };
 		C5DA1F9017F18CB6001C4565 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../../third_party/openssl-1.0.1e/libssl.a"; sourceTree = "<group>"; };
 		C5DA1F9217F18CBB001C4565 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../../third_party/openssl-1.0.1e/libcrypto.a"; sourceTree = "<group>"; };
-		C5DA1F9417F18D2B001C4565 /* libPocoCrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoCrypto.a; path = "../../../third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoCrypto.a"; sourceTree = "<group>"; };
-		C5DA1F9517F18D2B001C4565 /* libPocoData.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoData.a; path = "../../../third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoData.a"; sourceTree = "<group>"; };
-		C5DA1F9617F18D2B001C4565 /* libPocoDataSQLite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoDataSQLite.a; path = "../../../third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoDataSQLite.a"; sourceTree = "<group>"; };
-		C5DA1F9717F18D2B001C4565 /* libPocoFoundation.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoFoundation.a; path = "../../../third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoFoundation.a"; sourceTree = "<group>"; };
-		C5DA1F9817F18D2B001C4565 /* libPocoNet.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNet.a; path = "../../../third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoNet.a"; sourceTree = "<group>"; };
-		C5DA1F9917F18D2B001C4565 /* libPocoNetSSL.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNetSSL.a; path = "../../../third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoNetSSL.a"; sourceTree = "<group>"; };
-		C5DA1F9A17F18D2B001C4565 /* libPocoUtil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoUtil.a; path = "../../../third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoUtil.a"; sourceTree = "<group>"; };
-		C5DA1F9B17F18D2B001C4565 /* libPocoXML.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoXML.a; path = "../../../third_party/poco-1.4.6p1-all/lib/Darwin/x86_64/libPocoXML.a"; sourceTree = "<group>"; };
+		C5DA1F9417F18D2B001C4565 /* libPocoCrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoCrypto.a; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoCrypto.a"; sourceTree = "<group>"; };
+		C5DA1F9517F18D2B001C4565 /* libPocoData.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoData.a; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoData.a"; sourceTree = "<group>"; };
+		C5DA1F9617F18D2B001C4565 /* libPocoDataSQLite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoDataSQLite.a; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoDataSQLite.a"; sourceTree = "<group>"; };
+		C5DA1F9717F18D2B001C4565 /* libPocoFoundation.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoFoundation.a; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoFoundation.a"; sourceTree = "<group>"; };
+		C5DA1F9817F18D2B001C4565 /* libPocoNet.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNet.a; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoNet.a"; sourceTree = "<group>"; };
+		C5DA1F9917F18D2B001C4565 /* libPocoNetSSL.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNetSSL.a; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoNetSSL.a"; sourceTree = "<group>"; };
+		C5DA1F9A17F18D2B001C4565 /* libPocoUtil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoUtil.a; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoUtil.a"; sourceTree = "<group>"; };
+		C5DA1F9B17F18D2B001C4565 /* libPocoXML.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoXML.a; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoXML.a"; sourceTree = "<group>"; };
 		C5DA1FA417F18D7B001C4565 /* database.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = database.cc; path = ../../../database.cc; sourceTree = "<group>"; };
 		C5DA1FA517F18D7B001C4565 /* database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = database.h; path = ../../../database.h; sourceTree = "<group>"; };
 		C5DA1FAA17F18D7B001C4565 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = types.h; path = ../../../types.h; sourceTree = "<group>"; };
@@ -183,15 +179,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7498ACDF18D2EED300A42CA0 /* ui */ = {
-			isa = PBXGroup;
-			children = (
-				7498ACE018D2EEFC00A42CA0 /* notifications.cc */,
-				7498ACE118D2EEFC00A42CA0 /* notifications.h */,
-			);
-			name = ui;
-			sourceTree = "<group>";
-		};
 		C55DA59317F06A3B00B42178 = {
 			isa = PBXGroup;
 			children = (
@@ -211,7 +198,6 @@
 				C55DA5DA17F06EF200B42178 /* libc++.dylib */,
 				C55DA5DB17F06EF200B42178 /* libc++abi.dylib */,
 				C55DA5D817F06EDA00B42178 /* libstdc++.dylib */,
-				7498ACDF18D2EED300A42CA0 /* ui */,
 				C55DA59E17F06A3B00B42178 /* lib */,
 				C55DA59D17F06A3B00B42178 /* Products */,
 			);
@@ -319,7 +305,6 @@
 				748968CC18340F9B00288374 /* version.h in Headers */,
 				74B587C118BBC77E00E9F6CE /* project.h in Headers */,
 				7408EDB318C51CEB00CBE8F1 /* const.h in Headers */,
-				7498ACE318D2EEFC00A42CA0 /* notifications.h in Headers */,
 				C5DA1FB717F1942A001C4565 /* kopsik_api.h in Headers */,
 				7484A2AA18887BEE0025A88B /* context.h in Headers */,
 				74CAAD1E181860F7001B77BB /* timeline_event.h in Headers */,
@@ -416,7 +401,6 @@
 				74B587BB18BBC77E00E9F6CE /* formatter.cc in Sources */,
 				74B587CE18BBC77E00E9F6CE /* related_data.cc in Sources */,
 				74B587CC18BBC77E00E9F6CE /* workspace.cc in Sources */,
-				7498ACE218D2EEFC00A42CA0 /* notifications.cc in Sources */,
 				74B587C818BBC77E00E9F6CE /* task.cc in Sources */,
 				74CAAD20181860F7001B77BB /* timeline_uploader.cc in Sources */,
 				7484A2AC18887BEE0025A88B /* kopsik_api_private.cc in Sources */,

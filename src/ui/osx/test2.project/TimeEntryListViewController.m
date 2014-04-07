@@ -13,7 +13,7 @@
 #import "kopsik_api.h"
 #import "TimeEntryCell.h"
 #import "TimeEntryCellWithHeader.h"
-#import "Context.h"
+#import "Core.h"
 #import "UIEvents.h"
 #import "ModelChange.h"
 #import "ErrorHandler.h"
@@ -27,6 +27,8 @@
 @end
 
 @implementation TimeEntryListViewController
+
+extern void *ctx;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

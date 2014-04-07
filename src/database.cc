@@ -263,23 +263,26 @@ error Database::LoadSettings(
     bool *use_idle_detection,
     bool *menubar_timer,
     bool *dock_icon,
-    bool *on_top) {
+    bool *on_top,
+    bool *reminder) {
     poco_assert(session);
     poco_assert(use_idle_detection);
     poco_assert(menubar_timer);
     poco_assert(dock_icon);
     poco_assert(on_top);
+    poco_assert(reminder);
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
     try {
         *session << "select use_idle_detection, menubar_timer, dock_icon, "
-                 "on_top "
+                 "on_top, reminder "
                  "from settings",
                  Poco::Data::into(*use_idle_detection),
                  Poco::Data::into(*menubar_timer),
                  Poco::Data::into(*dock_icon),
                  Poco::Data::into(*on_top),
+                 Poco::Data::into(*reminder),
                  Poco::Data::limit(1),
                  Poco::Data::now;
     } catch(const Poco::Exception& exc) {
@@ -326,7 +329,8 @@ error Database::SaveSettings(
     const bool use_idle_detection,
     const bool menubar_timer,
     const bool dock_icon,
-    const bool on_top) {
+    const bool on_top,
+    const bool reminder) {
     poco_assert(session);
 
     Poco::Mutex::ScopedLock lock(mutex_);
@@ -336,11 +340,13 @@ error Database::SaveSettings(
                  "use_idle_detection = :use_idle_detection, "
                  "menubar_timer = :menubar_timer, "
                  "dock_icon = :dock_icon, "
-                 "on_top = :on_top",
+                 "on_top = :on_top, "
+                 "reminder = :reminder",
                  Poco::Data::use(use_idle_detection),
                  Poco::Data::use(menubar_timer),
                  Poco::Data::use(dock_icon),
                  Poco::Data::use(on_top),
+                 Poco::Data::use(reminder),
                  Poco::Data::now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -2456,6 +2462,13 @@ error Database::initialize_tables() {
     err = migrate("settings.on_top",
                   "ALTER TABLE settings "
                   "ADD COLUMN on_top INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("settings.reminder",
+                  "ALTER TABLE settings "
+                  "ADD COLUMN reminder INTEGER NOT NULL DEFAULT 1;");
     if (err != noError) {
         return err;
     }
