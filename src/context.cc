@@ -1149,6 +1149,7 @@ _Bool Context::SetTimeEntryStartISO8601(
         logger().warning("Time entry not found: " + GUID);
         return true;
     }
+    user_->SetLastTEDate(value);
     te->SetStartUserInput(value);
     if (te->Dirty()) {
         te->SetUIModified();
@@ -1172,6 +1173,7 @@ _Bool Context::SetTimeEntryEndISO8601(
         logger().warning("Time entry not found: " + GUID);
         return true;
     }
+    user_->SetLastTEDate(value);
     te->SetStopUserInput(value);
     if (te->Dirty()) {
         te->SetUIModified();

@@ -76,6 +76,9 @@ TimeEntry *User::Start(
     if (!duration.empty()) {
         int seconds = Formatter::ParseDurationString(duration);
         te->SetDurationInSeconds(seconds);
+        if (!last_date_.empty()) {
+            now = Formatter::ParseLastDate(last_date_, now);
+        }
         te->SetStop(now);
         te->SetStart(te->Stop() - te->DurationInSeconds());
     } else {
@@ -261,6 +264,12 @@ void User::SetDefaultWID(const Poco::UInt64 value) {
     if (default_wid_ != value) {
         default_wid_ = value;
         SetDirty();
+    }
+}
+
+void User::SetLastTEDate(const std::string value) {
+    if (last_date_ != value) {
+        last_date_ = value;
     }
 }
 
