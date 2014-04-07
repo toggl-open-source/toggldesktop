@@ -76,7 +76,9 @@ TimeEntry *User::Start(
     if (!duration.empty()) {
         int seconds = Formatter::ParseDurationString(duration);
         te->SetDurationInSeconds(seconds);
-        now = Formatter::ParseLastDate(last_date_, now);
+        if (!last_date_.empty()) {
+            now = Formatter::ParseLastDate(last_date_, now);
+        }
         te->SetStop(now);
         te->SetStart(te->Stop() - te->DurationInSeconds());
     } else {
