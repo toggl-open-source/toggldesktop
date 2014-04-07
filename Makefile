@@ -98,6 +98,7 @@ libs=-lX11 \
 	-L$(openssldir) \
 	-lssl \
 	-lcrypto \
+	-lrt \
 	-ldl
 endif
 
