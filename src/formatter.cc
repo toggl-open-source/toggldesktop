@@ -196,14 +196,14 @@ bool Formatter::ParseTimeInput(const std::string input,
 }
 
 time_t Formatter::ParseLastDate(const std::string value,
-    time_t *now) {
+    const time_t now) {
     struct tm * timeinfo;
     struct tm t;
     const char * c = value.c_str();
 
     strptime(c, "%Y-%m-%d %H:%M:%S%Z", &t);
 
-    timeinfo = gmtime ( now );
+    timeinfo = gmtime ( &now );
     timeinfo->tm_year = t.tm_year;
     timeinfo->tm_mon = t.tm_mon;
     timeinfo->tm_mday = t.tm_mday;
