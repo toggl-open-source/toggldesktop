@@ -100,7 +100,8 @@ std::string Formatter::FormatDateHeader(const std::time_t date) {
     return Poco::DateTimeFormatter::format(ts, "%w %d. %b");
 }
 
-std::string Formatter::EscapeTabsAndLineBreaks(const std::string value, bool replace) {
+std::string Formatter::EscapeTabsAndLineBreaks(const std::string value,
+        bool replace) {
     std::string description(value);
     for (size_t i = 0; i < description.length(); i++) {
         if (description[i] == '\n' || description[i] == '\t') {
