@@ -26,6 +26,10 @@ class Formatter {
         const Poco::Int64 value,
         const std::string format);
 
+    static std::string EscapeTabsAndLineBreaks(
+        const std::string value,
+        bool replace);
+
     static bool ParseTimeInput(
         const std::string value,
         int *hours,
