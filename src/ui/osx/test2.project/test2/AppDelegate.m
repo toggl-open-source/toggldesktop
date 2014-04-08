@@ -210,6 +210,22 @@ const int kDurationStringLength = 20;
       [self onStopMenuItem:self];
     }
   }];
+
+  [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
+          selector: @selector(receiveSleepNote:)
+          name: NSWorkspaceWillSleepNotification object: NULL];
+
+  [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
+          selector: @selector(receiveWakeNote:)
+          name: NSWorkspaceDidWakeNotification object: NULL];
+}
+
+- (void) receiveSleepNote: (NSNotification*) note {
+    NSLog(@"receiveSleepNote: %@", [note name]);
+}
+
+- (void) receiveWakeNote: (NSNotification*) note {
+    NSLog(@"receiveWakeNote: %@", [note name]);
 }
 
 - (void)startWebSocket {
