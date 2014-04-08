@@ -742,6 +742,7 @@ const NSString *appName = @"osx_native_app";
   kopsik_context_set_online_callback(ctx, on_online_callback);
   kopsik_context_set_user_login_callback(ctx, on_user_login_callback);
   kopsik_set_open_url_callback(ctx, on_open_url_callback);
+  kopsik_set_remind_callback(ctx, on_remind);
                             
   NSLog(@"Version %@", version);
   

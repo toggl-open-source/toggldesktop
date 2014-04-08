@@ -86,13 +86,40 @@ Context::~Context() {
 }
 
 void Context::StartEvents() {
-    poco_assert(on_error_callback_);
-    poco_assert(on_check_update_callback_);
-    poco_assert(on_online_callback_);
-    poco_assert(on_user_login_callback_);
-    poco_assert(on_open_url_callback_);
+    error err = verifyCallbacks();
+    if (err != noError) {
+        logger().error(err);
+        poco_assert(on_error_callback_);
+        on_error_callback_(err.c_str());
+        return;
+    }
 
     exportUserLoginState();
+}
+
+error Context::verifyCallbacks() {
+    if (!on_error_callback_) {
+        return error("missing on_error_callback_");
+    }
+    if (!on_error_callback_) {
+        return error("missing on_error_callback_");
+    }
+    if (!on_check_update_callback_) {
+        return error("missing on on_check_update_callback_");
+    }
+    if (!on_online_callback_) {
+        return error("missing on on_online_callback_");
+    }
+    if (!on_user_login_callback_) {
+        return error("missing on on_user_login_callback_");
+    }
+    if (!on_open_url_callback_) {
+        return error("missing on on_open_url_callback_");
+    }
+    if (!on_remind_callback_) {
+        return error("missing on on_remind_callback_");
+    }
+    return noError;
 }
 
 void Context::exportUserLoginState() {

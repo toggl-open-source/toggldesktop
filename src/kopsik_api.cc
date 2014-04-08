@@ -1214,3 +1214,10 @@ void kopsik_context_set_user_login_callback(
 
     app(context)->SetUserLoginCallback(cb);
 }
+
+void kopsik_set_remind_callback(
+    void *context,
+    KopsikRemindCallback cb) {
+
+    app(context)->SetRemindCallback(cb);
+}

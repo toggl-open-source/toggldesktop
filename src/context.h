@@ -65,6 +65,9 @@ class Context {
     void SetOpenURLCallback(KopsikOpenURLCallback cb) {
         on_open_url_callback_ = cb;
     }
+    void SetRemindCallback(KopsikRemindCallback cb) {
+        on_remind_callback_ = cb;
+    }
 
     // Apply proxy settings
     _Bool ConfigureProxy();
@@ -278,6 +281,8 @@ class Context {
     void exportUserLoginState();
     _Bool exportErrorState(const error err) const;
 
+    error verifyCallbacks();
+
     Poco::Mutex db_m_;
     kopsik::Database *db_;
 
@@ -311,6 +316,7 @@ class Context {
     KopsikOnOnlineCallback on_online_callback_;
     KopsikUserLoginCallback on_user_login_callback_;
     KopsikOpenURLCallback on_open_url_callback_;
+    KopsikRemindCallback on_remind_callback_;
 
     // Tasks are scheduled at:
     Poco::Timestamp next_full_sync_at_;
