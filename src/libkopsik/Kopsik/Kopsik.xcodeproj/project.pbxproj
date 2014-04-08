@@ -138,8 +138,8 @@
 		C55DA5DA17F06EF200B42178 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		C55DA5DB17F06EF200B42178 /* libc++abi.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++abi.dylib"; path = "usr/lib/libc++abi.dylib"; sourceTree = SDKROOT; };
 		C5DA1F8E17F18CAA001C4565 /* libjson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjson.a; path = ../../../third_party/libjson/libjson.a; sourceTree = "<group>"; };
-		C5DA1F9017F18CB6001C4565 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../../third_party/openssl-1.0.1e/libssl.a"; sourceTree = "<group>"; };
-		C5DA1F9217F18CBB001C4565 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../../third_party/openssl-1.0.1e/libcrypto.a"; sourceTree = "<group>"; };
+		C5DA1F9017F18CB6001C4565 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../../third_party/openssl/libssl.a"; sourceTree = "<group>"; };
+		C5DA1F9217F18CBB001C4565 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../../third_party/openssl/libcrypto.a"; sourceTree = "<group>"; };
 		C5DA1F9417F18D2B001C4565 /* libPocoCrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoCrypto.a; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoCrypto.a"; sourceTree = "<group>"; };
 		C5DA1F9517F18D2B001C4565 /* libPocoData.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoData.a; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoData.a"; sourceTree = "<group>"; };
 		C5DA1F9617F18D2B001C4565 /* libPocoDataSQLite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoDataSQLite.a; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoDataSQLite.a"; sourceTree = "<group>"; };
