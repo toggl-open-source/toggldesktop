@@ -195,20 +195,20 @@ bool Formatter::ParseTimeInput(const std::string input,
     return true;
 }
 
-time_t Formatter::ParseLastDate(const std::string value,
+time_t Formatter::ParseLastDate(const std::time_t value,
                                 const time_t now) {
-    struct tm * timeinfo = NULL;
-    struct tm t;
-    const char * c = value.c_str();
+    struct tm now_date;
+    struct tm last_date;
 
-    strptime(c, "%Y-%m-%d %H:%M:%S%Z", &t);
+    localtime_r(&now, &now_date);
+    localtime_r(&value, &last_date);
+    now_date.tm_year = last_date.tm_year;
+    now_date.tm_mon = last_date.tm_mon;
+    now_date.tm_mday = last_date.tm_mday;
 
-    localtime_r(&now, timeinfo);
-    timeinfo->tm_year = t.tm_year;
-    timeinfo->tm_mon = t.tm_mon;
-    timeinfo->tm_mday = t.tm_mday;
+    time_t test = mktime(&now_date);
 
-    return mktime(timeinfo);
+    return test;
 }
 
 bool Formatter::parseDurationStringHHMMSS(const std::string value,

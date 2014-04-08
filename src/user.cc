@@ -1,7 +1,7 @@
 // Copyright 2014 Toggl Desktop developers.
 
 #include "./user.h"
-
+#include <time.h>
 #include <sstream>
 
 #include "./version.h"
@@ -76,7 +76,7 @@ TimeEntry *User::Start(
     if (!duration.empty()) {
         int seconds = Formatter::ParseDurationString(duration);
         te->SetDurationInSeconds(seconds);
-        if (!last_date_.empty()) {
+        if (last_date_ != 0) {
             now = Formatter::ParseLastDate(last_date_, now);
         }
         te->SetStop(now);
@@ -268,8 +268,12 @@ void User::SetDefaultWID(const Poco::UInt64 value) {
 }
 
 void User::SetLastTEDate(const std::string value) {
-    if (last_date_ != value) {
-        last_date_ = value;
+    struct tm t;
+    const char * c = value.c_str();
+    strptime(c, "%Y-%m-%dT%H:%M:%S%Z", &t);
+
+    if (difftime(last_date_, mktime(&t)) != 0) {
+        last_date_ = mktime(&t);
     }
 }
 
