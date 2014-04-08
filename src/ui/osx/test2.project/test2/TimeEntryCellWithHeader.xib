@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
     </dependencies>
     <objects>
@@ -63,10 +62,10 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="A9Z-Z5-Qzd">
-                                <rect key="frame" x="112" y="48" width="63" height="11"/>
+                                <rect key="frame" x="112" y="46" width="63" height="12"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="11" id="c0p-f3-udt"/>
+                                    <constraint firstAttribute="height" constant="12" id="c0p-f3-udt"/>
                                     <constraint firstAttribute="width" constant="59" id="s4q-xF-eo4"/>
                                 </constraints>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="2 h  12 min" id="6GT-P9-Wsv">
@@ -98,7 +97,7 @@
                         <constraint firstItem="4mY-N2-UMI" firstAttribute="top" secondItem="IPX-6P-J70" secondAttribute="bottom" constant="2" id="bqJ-J2-JcY"/>
                         <constraint firstItem="Eux-yk-8iS" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="6" id="cFj-Kg-rLU"/>
                         <constraint firstItem="IPX-6P-J70" firstAttribute="leading" secondItem="zWp-bg-ZH9" secondAttribute="trailing" constant="6" id="cZY-5Q-Eqe"/>
-                        <constraint firstItem="A9Z-Z5-Qzd" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="7" id="gBw-ct-rYT"/>
+                        <constraint firstItem="A9Z-Z5-Qzd" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="8" id="gBw-ct-rYT"/>
                         <constraint firstItem="4mY-N2-UMI" firstAttribute="leading" secondItem="HvF-1T-7Z3" secondAttribute="leading" constant="14" id="gcU-Rf-6ty"/>
                         <constraint firstAttribute="trailing" secondItem="IPX-6P-J70" secondAttribute="trailing" constant="93" id="h7j-w1-f9l"/>
                         <constraint firstItem="A9Z-Z5-Qzd" firstAttribute="leading" secondItem="Eux-yk-8iS" secondAttribute="trailing" constant="15" id="jW8-5q-w2m"/>
