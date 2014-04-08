@@ -234,6 +234,9 @@ class Context {
         const _Bool is_private,
         Project **result);
 
+    void SetSleep();
+    void SetWake();
+
  protected:
     kopsik::HTTPSClient get_https_client();
 
@@ -248,7 +251,7 @@ class Context {
 
     void sync(const bool full_sync);
 
-    error save();
+    error save(const bool push_changes = true);
 
     void partialSync();
 

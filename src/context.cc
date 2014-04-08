@@ -180,7 +180,9 @@ _Bool Context::ConfigureProxy() {
     return true;
 }
 
-error Context::save() {
+error Context::save(const bool push_changes) {
+    logger().debug("save");
+
     std::vector<kopsik::ModelChange> changes;
     kopsik::error err = db_->SaveUser(user_, true, &changes);
     if (err != kopsik::noError) {
@@ -199,7 +201,9 @@ error Context::save() {
         model_change_clear(ch);
     }
 
-    partialSync();
+    if (push_changes) {
+        partialSync();
+    }
 
     return noError;
 }
@@ -246,7 +250,7 @@ void Context::onFullSync(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
 
-    err = save();
+    err = save(false);
     if (err != kopsik::noError) {
         on_error_callback_(err.c_str());
         return;
@@ -281,7 +285,7 @@ void Context::onPartialSync(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
 
-    err = save();
+    err = save(false);
     if (err != kopsik::noError) {
         on_error_callback_(err.c_str());
         return;
@@ -1714,6 +1718,14 @@ kopsik::HTTPSClient Context::get_https_client() {
         logger().debug("Using proxy to connect: " + proxy.String());
     }
     return result;
+}
+
+void Context::SetSleep() {
+    logger().debug("SetSleep");
+}
+
+void Context::SetWake() {
+    logger().debug("SetWake");
 }
 
 }  // namespace kopsik

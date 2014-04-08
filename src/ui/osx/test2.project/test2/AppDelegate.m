@@ -222,10 +222,12 @@ const int kDurationStringLength = 20;
 
 - (void) receiveSleepNote: (NSNotification*) note {
     NSLog(@"receiveSleepNote: %@", [note name]);
+    kopsik_set_sleep(ctx);
 }
 
 - (void) receiveWakeNote: (NSNotification*) note {
     NSLog(@"receiveWakeNote: %@", [note name]);
+    kopsik_set_wake(ctx);
 }
 
 - (void)startWebSocket {

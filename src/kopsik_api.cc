@@ -1221,3 +1221,11 @@ void kopsik_set_remind_callback(
 
     app(context)->SetRemindCallback(cb);
 }
+
+void kopsik_set_sleep(void *context) {
+    app(context)->SetSleep();
+}
+
+void kopsik_set_wake(void *context) {
+    app(context)->SetWake();
+}
