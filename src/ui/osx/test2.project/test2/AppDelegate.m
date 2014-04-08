@@ -756,10 +756,10 @@ const NSString *appName = @"osx_native_app";
   
   kopsik_context_set_view_item_change_callback(ctx, on_model_change_callback);
   kopsik_context_set_error_callback(ctx, handle_error);
-  kopsik_context_set_check_update_callback(ctx, on_update_checked_callback);
-  kopsik_context_set_online_callback(ctx, on_online_callback);
-  kopsik_context_set_user_login_callback(ctx, on_user_login_callback);
-  kopsik_set_open_url_callback(ctx, on_open_url_callback);
+  kopsik_context_set_check_update_callback(ctx, on_update_checked);
+  kopsik_context_set_online_callback(ctx, on_online);
+  kopsik_context_set_user_login_callback(ctx, on_user_login);
+  kopsik_set_open_url_callback(ctx, on_open_url);
   kopsik_set_remind_callback(ctx, on_remind);
                             
   NSLog(@"Version %@", version);
@@ -915,6 +915,7 @@ void renderRunningTimeEntry() {
   kopsik_time_entry_view_item_clear(item);
 }
 
+// FIXME: delete
 void on_model_change_callback(KopsikModelChange *change) {
   NSLog(@"on_model_change_callback %s %s ID=%llu GUID=%s in thread %@",
         change->ChangeType,
@@ -1016,7 +1017,7 @@ void on_model_change_callback(KopsikModelChange *change) {
   [crashReporter purgePendingCrashReport];
 }
 
-void on_update_checked_callback(
+void on_update_checked(
                                 const _Bool is_update_available,
                                 const char *url,
                                 const char *version) {
@@ -1032,11 +1033,11 @@ void on_update_checked_callback(
                                                       object:update];
 }
 
-void on_online_callback() {
+void on_online() {
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateOnline object:nil];
 }
 
-void on_user_login_callback(const uint64_t user_id,
+void on_user_login(const uint64_t user_id,
                             const char *fullname,
                             const char *timeofdayformat) {
   if (!user_id) {
@@ -1060,7 +1061,7 @@ void on_remind() {
   [center scheduleNotification:notification];
 }
 
-void on_open_url_callback(const char *url) {
+void on_open_url(const char *url) {
   [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[NSString stringWithUTF8String:url]]];
 }
 
