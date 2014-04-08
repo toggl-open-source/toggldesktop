@@ -18,15 +18,15 @@ src/ui/osx/test2.project/build/
 toggl_test
 toggl
 
-third_party/openssl-1.0.1e/Makefile*
-third_party/openssl-1.0.1e/test/*test
-third_party/openssl-1.0.1e/*/lib
-third_party/openssl-1.0.1e/*/*/lib
-third_party/openssl-1.0.1e/**/*.bak
-third_party/openssl-1.0.1e/apps/openssl
-third_party/openssl-1.0.1e/crypto/buildinf.h
-third_party/openssl-1.0.1e/test/sha*t
-third_party/openssl-1.0.1e/crypto/**/*.s
+third_party/openssl/Makefile*
+third_party/openssl/test/*test
+third_party/openssl/*/lib
+third_party/openssl/*/*/lib
+third_party/openssl/**/*.bak
+third_party/openssl/apps/openssl
+third_party/openssl/crypto/buildinf.h
+third_party/openssl/test/sha*t
+third_party/openssl/crypto/**/*.s
 /
 *.0
 *.pc
