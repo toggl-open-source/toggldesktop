@@ -32,7 +32,7 @@ class Formatter {
         int *minutes);
 
     static time_t ParseLastDate(
-        const std::string value,
+        const std::time_t value,
         const time_t now);
 
     static std::string FormatDurationInSecondsHHMMSS(
