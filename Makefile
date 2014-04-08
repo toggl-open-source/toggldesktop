@@ -183,7 +183,7 @@ clean_deps:
 	cd third_party/libjson && make clean
 	cd third_party/poco-1.4.6p2-all/ && (make clean || true)
 	rm -rf third_party/poco-1.4.6p2-all/**/.dep
-	cd third_party/openssl && make clean
+	cd third_party/openssl && (make clean || true)
 
 deps: clean_deps openssl poco json
 
