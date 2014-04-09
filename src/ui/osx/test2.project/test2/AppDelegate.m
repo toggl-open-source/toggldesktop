@@ -218,6 +218,12 @@ const int kDurationStringLength = 20;
   [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
           selector: @selector(receiveWakeNote:)
           name: NSWorkspaceDidWakeNotification object: NULL];
+
+  [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
+}
+
+- (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center shouldPresentNotification:(NSUserNotification *)notification{
+  return YES;
 }
 
 - (void) receiveSleepNote: (NSNotification*) note {
@@ -1055,7 +1061,7 @@ void on_remind() {
   NSUserNotification *notification = [[NSUserNotification alloc] init];
   [notification setTitle:@"Reminder from Toggl Desktop"];
   [notification setInformativeText:@"Shouldn't you be tracking?"];
-  [notification setDeliveryDate:[NSDate dateWithTimeInterval:5 sinceDate:[NSDate date]]];
+  [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
   [notification setSoundName:NSUserNotificationDefaultSoundName];
   NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
   [center scheduleNotification:notification];
