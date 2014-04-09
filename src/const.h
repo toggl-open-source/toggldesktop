@@ -7,6 +7,8 @@
 
 #define kRequestThrottleMicros 2000000
 
+#define kReminderThrottleMicros 5000000
+
 #define kAutocompleteItemTE  0
 #define kAutocompleteItemTask 1
 #define kAutocompleteItemProject 2

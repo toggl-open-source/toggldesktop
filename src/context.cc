@@ -44,11 +44,14 @@ Context::Context(
   next_full_sync_at_(0),
   next_partial_sync_at_(0),
   next_fetch_updates_at_(0),
-  next_update_timeline_settings_at_(0) {
+  next_update_timeline_settings_at_(0),
+  next_reminder_at_(0) {
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
     startPeriodicUpdateCheck();
+
+    SetWake();  // obviously, we're wake
 }
 
 Context::~Context() {
@@ -76,11 +79,7 @@ Context::~Context() {
         db_ = 0;
     }
 
-    if (user_) {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        delete user_;
-        user_ = 0;
-    }
+    setUser(0);
 
     Poco::Net::uninitializeSSL();
 }
@@ -94,6 +93,10 @@ void Context::StartEvents() {
         return;
     }
 
+    User *user = 0;
+    if (!LoadCurrentUser(&user)) {
+        return;
+    }
     exportUserLoginState();
 }
 
@@ -123,17 +126,14 @@ error Context::verifyCallbacks() {
 }
 
 void Context::exportUserLoginState() {
-    kopsik::User *user = 0;
-    if (!CurrentUser(&user)) {
-        return;
-    }
-    if (!user) {
+    if (!user_) {
         on_user_login_callback_(0, "", "");
         return;
     }
-    on_user_login_callback_(user->ID(),
-                            user->Fullname().c_str(),
-                            user->TimeOfDayFormat().c_str());
+    SetWake();  // obviously, we're wake
+    on_user_login_callback_(user_->ID(),
+                            user_->Fullname().c_str(),
+                            user_->TimeOfDayFormat().c_str());
 }
 
 void Context::Shutdown() {
@@ -219,17 +219,20 @@ void Context::FullSync() {
     timer_.schedule(ptask, next_full_sync_at_);
 }
 
-Poco::Timestamp Context::postpone() {
-    return Poco::Timestamp() + kRequestThrottleMicros;
+Poco::Timestamp Context::postpone(
+    const Poco::Timestamp::TimeDiff throttleMicros) {
+    return Poco::Timestamp() + throttleMicros;
 }
 
-bool Context::isPostponed(const Poco::Timestamp value) const {
+bool Context::isPostponed(
+    const Poco::Timestamp value,
+    const Poco::Timestamp::TimeDiff throttleMicros) const {
     Poco::Timestamp now;
     if (now > value) {
         return false;
     }
     Poco::Timestamp::TimeDiff diff = value - now;
-    if (diff > 2*kRequestThrottleMicros) {
+    if (diff > 2*throttleMicros) {
         logger().warning("Cannot postpone task, its foo far in the future");
         return false;
     }
@@ -739,7 +742,7 @@ _Bool Context::SetCurrentAPIToken(
     return exportErrorState(db_->SetCurrentAPIToken(token));
 }
 
-_Bool Context::CurrentUser(kopsik::User **result) {
+_Bool Context::LoadCurrentUser(kopsik::User **result) {
     poco_assert(!*result);
 
     if (user_) {
@@ -759,9 +762,7 @@ _Bool Context::CurrentUser(kopsik::User **result) {
         return true;
     }
 
-    Poco::Mutex::ScopedLock lock(user_m_);
-    user_ = user;
-
+    setUser(user);
     *result = user_;
 
     return true;
@@ -802,13 +803,18 @@ _Bool Context::Login(
         return exportErrorState(err);
     }
 
+    setUser(logging_in);
+
+    return exportErrorState(save());
+}
+
+void Context::setUser(User *value) {
     Poco::Mutex::ScopedLock lock(user_m_);
     if (user_) {
         delete user_;
     }
-    user_ = logging_in;
-
-    return exportErrorState(save());
+    user_ = value;
+    exportUserLoginState();
 }
 
 _Bool Context::SetLoggedInUserFromJSON(
@@ -823,18 +829,12 @@ _Bool Context::SetLoggedInUserFromJSON(
         return exportErrorState(err);
     }
 
-    Poco::Mutex::ScopedLock lock(user_m_);
-    if (user_) {
-        delete user_;
-    }
-    user_ = import;
+    setUser(import);
 
     err = save();
     if (err != noError) {
         return exportErrorState(err);
     }
-
-    exportUserLoginState();
 
     return true;
 }
@@ -853,13 +853,7 @@ _Bool Context::Logout() {
             return exportErrorState(err);
         }
 
-        if (user_) {
-            Poco::Mutex::ScopedLock lock(user_m_);
-            delete user_;
-            user_ = 0;
-        }
-
-        on_user_login_callback_(0, "", "");
+        setUser(0);
     } catch(const Poco::Exception& exc) {
         return exportErrorState(exc.displayText());
     } catch(const std::exception& ex) {
@@ -1726,6 +1720,54 @@ void Context::SetSleep() {
 
 void Context::SetWake() {
     logger().debug("SetWake");
+
+    next_reminder_at_ = postpone(kReminderThrottleMicros);
+    Poco::Util::TimerTask::Ptr ptask =
+        new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onRemind);
+
+    Poco::Mutex::ScopedLock lock(timer_m_);
+    timer_.schedule(ptask, next_reminder_at_);
+}
+
+void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
+    if (isPostponed(next_reminder_at_, kReminderThrottleMicros)) {
+        logger().debug("onRemind postponed");
+        return;
+    }
+    logger().debug("onRemind executing");
+
+    if (!user_) {
+        logger().warning("User logged out, cannot remind");
+    }
+
+    bool use_idle_settings(false),
+         menubar_timer(false),
+         dock_icon(false),
+         on_top(false),
+         reminder(false);
+    if (!LoadSettings(&use_idle_settings,
+                      &menubar_timer,
+                      &dock_icon,
+                      &on_top,
+                      &reminder)) {
+        logger().error("Could not load settings");
+        return;
+    }
+
+    if (!reminder) {
+        logger().debug("Reminder is not enabled by user");
+        return;
+    }
+
+    if (user_->RunningTimeEntry()) {
+        logger().debug("User is already tracking time, no need to remind");
+    }
+
+    if (user_->HasTrackedTimeToday()) {
+        logger().debug("Already tracked time today, no need to remind");
+    }
+
+    on_remind_callback_();
 }
 
 }  // namespace kopsik

@@ -76,20 +76,27 @@ class User : public BaseModel {
     void CollectPushableTimeEntries(
         std::vector<TimeEntry *> *result,
         std::map<std::string, BaseModel *> *models = 0) const;
+
     void CollectPushableProjects(
         std::vector<Project *> *result,
         std::map<std::string, BaseModel *> *models = 0) const;
 
     TimeEntry *RunningTimeEntry() const;
+
+    bool HasTrackedTimeToday() const;
+
     TimeEntry *Start(
         const std::string description,
         const std::string duration,
         const Poco::UInt64 task_id,
         const Poco::UInt64 project_id);
+
     kopsik::error Continue(
         const std::string GUID,
         TimeEntry **);
+
     TimeEntry *Latest() const;
+
     std::vector<TimeEntry *> Stop();
 
     TimeEntry *StopAt(const Poco::Int64 at);
