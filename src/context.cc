@@ -49,6 +49,8 @@ Context::Context(
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
+	Poco::Crypto::OpenSSLInitializer::initialize();
+
     startPeriodicUpdateCheck();
 
     SetWake();  // obviously, we're wake
