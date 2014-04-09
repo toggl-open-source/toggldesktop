@@ -75,6 +75,9 @@ _Bool kopsik_is_networking_error(
     if (value.find("Host is down") != std::string::npos) {
         return true;
     }
+    if (value.find("No route to host") != std::string::npos) {
+        return true;
+    }
     return false;
 }
 
