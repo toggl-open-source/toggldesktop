@@ -222,8 +222,19 @@ const int kDurationStringLength = 20;
   [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
 }
 
-- (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center shouldPresentNotification:(NSUserNotification *)notification{
+- (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center
+     shouldPresentNotification:(NSUserNotification *)notification {
   return YES;
+}
+
+- (void)userNotificationCenter:(NSUserNotificationCenter *)center
+       didActivateNotification:(NSUserNotification *)notification {
+  NSLog(@"didActivateNotification %@", notification);
+}
+
+- (void) userNotificationCenter:(NSUserNotificationCenter *)center
+         didDeliverNotification:(NSUserNotification *)notification {
+  NSLog(@"didDeliverNotification %@", notification);
 }
 
 - (void) receiveSleepNote: (NSNotification*) note {
