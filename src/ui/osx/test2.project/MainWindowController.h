@@ -13,4 +13,5 @@
 @property IBOutlet NSView *contentView;
 @property IBOutlet NSTextField *errorLabel;
 @property IBOutlet NSBox *troubleBox;
+@property IBOutlet NSButton *closeTroubleBoxButton;
 @end

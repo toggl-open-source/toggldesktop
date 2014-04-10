@@ -5,7 +5,7 @@ uname=$(shell uname)
 timestamp=$(shell date "+%Y-%m-%d-%H-%M-%S")
 
 pocodir=third_party/poco-1.4.6p2-all
-openssldir=third_party/openssl-1.0.1e
+openssldir=third_party/openssl
 jsondir=third_party/libjson
 
 GTEST_ROOT=third_party/googletest-read-only
@@ -181,6 +181,9 @@ lint:
 
 clean_deps:
 	cd third_party/libjson && make clean
+	cd third_party/poco-1.4.6p2-all/ && (make clean || true)
+	rm -rf third_party/poco-1.4.6p2-all/**/.dep
+	cd third_party/openssl && (make clean || true)
 
 deps: clean_deps openssl poco json
 

@@ -163,4 +163,9 @@ extern void *ctx;
   [self.troubleBox setHidden:NO];
 }
 
+- (IBAction)errorCloseButtonClicked:(id)sender {
+    [self.troubleBox setHidden:YES];
+    [self.errorLabel setStringValue:@""];
+}
+
 @end

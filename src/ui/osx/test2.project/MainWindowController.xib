@@ -6,6 +6,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MainWindowController">
             <connections>
+                <outlet property="closeTroubleBoxButton" destination="tgB-wf-G92" id="pzI-01-7SG"/>
                 <outlet property="contentView" destination="av5-A6-9S5" id="g24-fx-drT"/>
                 <outlet property="contentViewController" destination="av5-A6-9S5" id="VD8-35-TOQ"/>
                 <outlet property="errorLabel" destination="3yn-Zh-JYn" id="2lh-8u-0eG"/>
@@ -18,7 +19,7 @@
         <window title="Toggl Desktop" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" frameAutosaveName="MainWindow" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="300" height="450"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1058"/>
             <value key="minSize" type="size" width="300" height="420"/>
             <view key="contentView" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="300" height="450"/>
@@ -44,10 +45,26 @@
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
+                                <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tgB-wf-G92">
+                                    <rect key="frame" x="5" y="7" width="8" height="17"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="8" id="WmO-N8-iCw"/>
+                                    </constraints>
+                                    <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSStopProgressTemplate" imagePosition="overlaps" alignment="center" controlSize="mini" state="on" imageScaling="proportionallyDown" inset="2" id="mM6-E6-qpw">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system" size="7"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="errorCloseButtonClicked:" target="-2" id="GHW-09-Ovo"/>
+                                    </connections>
+                                </button>
                             </subviews>
                         </view>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="3yn-Zh-JYn" secondAttribute="trailing" constant="9" id="BZS-wx-X75"/>
+                            <constraint firstItem="tgB-wf-G92" firstAttribute="leading" secondItem="gBV-Qp-t6E" secondAttribute="leading" constant="5" id="ges-aK-beH"/>
+                            <constraint firstItem="tgB-wf-G92" firstAttribute="top" secondItem="gBV-Qp-t6E" secondAttribute="top" id="huo-Nk-H8b"/>
                             <constraint firstItem="3yn-Zh-JYn" firstAttribute="leading" secondItem="gBV-Qp-t6E" secondAttribute="leading" constant="9" id="ljv-uS-Mff"/>
                             <constraint firstAttribute="bottom" secondItem="3yn-Zh-JYn" secondAttribute="bottom" constant="7" id="mt7-0l-Mff"/>
                             <constraint firstItem="3yn-Zh-JYn" firstAttribute="top" secondItem="gBV-Qp-t6E" secondAttribute="top" constant="6" id="tW0-nR-BCV"/>
@@ -71,4 +88,7 @@
             </connections>
         </window>
     </objects>
+    <resources>
+        <image name="NSStopProgressTemplate" width="11" height="11"/>
+    </resources>
 </document>

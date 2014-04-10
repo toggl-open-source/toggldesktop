@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
+@interface AppDelegate : NSObject <NSApplicationDelegate, NSUserNotificationCenterDelegate>
 @property (strong) NSStatusItem *statusItem;
 @property (strong) NSImage* onImage;
 @property (strong) NSImage* offImage;

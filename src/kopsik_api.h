@@ -63,6 +63,12 @@ extern "C" {
         void *context,
         KopsikUserLoginCallback);
 
+    typedef void (*KopsikRemindCallback)();
+
+    KOPSIK_EXPORT void kopsik_set_remind_callback(
+        void *context,
+        KopsikRemindCallback);
+
     KOPSIK_EXPORT _Bool kopsik_set_db_path(
         void *context,
         const char *path);
@@ -229,6 +235,12 @@ extern "C" {
     KOPSIK_EXPORT void kopsik_timeline_toggle_recording(
         void *context);
 
+    KOPSIK_EXPORT void kopsik_set_sleep(
+        void *context);
+
+    KOPSIK_EXPORT void kopsik_set_wake(
+        void *context);
+
     // FIXME: stuff below should not be exported
 
     KOPSIK_EXPORT _Bool kopsik_users_default_wid(
@@ -257,8 +269,6 @@ extern "C" {
 
     typedef void (*KopsikViewItemChangeCallback)(
         KopsikModelChange *change);
-
-    // FIXME: this is too low level, dont export it
 
     KOPSIK_EXPORT void kopsik_context_set_view_item_change_callback(
         void *context,

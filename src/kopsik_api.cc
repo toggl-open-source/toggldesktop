@@ -75,6 +75,9 @@ _Bool kopsik_is_networking_error(
     if (value.find("Host is down") != std::string::npos) {
         return true;
     }
+    if (value.find("No route to host") != std::string::npos) {
+        return true;
+    }
     return false;
 }
 
@@ -1213,4 +1216,19 @@ void kopsik_context_set_user_login_callback(
     KopsikUserLoginCallback cb) {
 
     app(context)->SetUserLoginCallback(cb);
+}
+
+void kopsik_set_remind_callback(
+    void *context,
+    KopsikRemindCallback cb) {
+
+    app(context)->SetRemindCallback(cb);
+}
+
+void kopsik_set_sleep(void *context) {
+    app(context)->SetSleep();
+}
+
+void kopsik_set_wake(void *context) {
+    app(context)->SetWake();
 }

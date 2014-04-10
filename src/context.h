@@ -17,7 +17,10 @@
 #include "./feedback.h"
 #include "./kopsik_api.h"
 
+#include "Poco/Timestamp.h"
+#include "Poco/Util/TimerTask.h"
 #include "Poco/Util/Timer.h"
+#include "Poco/LocalDateTime.h"
 
 namespace kopsik {
 
@@ -65,6 +68,9 @@ class Context {
     void SetOpenURLCallback(KopsikOpenURLCallback cb) {
         on_open_url_callback_ = cb;
     }
+    void SetRemindCallback(KopsikRemindCallback cb) {
+        on_remind_callback_ = cb;
+    }
 
     // Apply proxy settings
     _Bool ConfigureProxy();
@@ -108,7 +114,7 @@ class Context {
 
     _Bool SetCurrentAPIToken(const std::string token);
 
-    _Bool CurrentUser(kopsik::User **result);
+    _Bool LoadCurrentUser(kopsik::User **result);
 
     _Bool Login(
         const std::string email,
@@ -231,6 +237,9 @@ class Context {
         const _Bool is_private,
         Project **result);
 
+    void SetSleep();
+    void SetWake();
+
  protected:
     kopsik::HTTPSClient get_https_client();
 
@@ -245,7 +254,7 @@ class Context {
 
     void sync(const bool full_sync);
 
-    error save();
+    error save(const bool push_changes = true);
 
     void partialSync();
 
@@ -260,6 +269,7 @@ class Context {
     void onPeriodicUpdateCheck(Poco::Util::TimerTask& task);  // NOLINT
     void onTimelineUpdateServerSettings(Poco::Util::TimerTask& task);  // NOLINT
     void onSendFeedback(Poco::Util::TimerTask& task);  // NOLINT
+    void onRemind(Poco::Util::TimerTask&);  // NOLINT
 
     void startPeriodicUpdateCheck();
     void executeUpdateCheck();
@@ -271,12 +281,21 @@ class Context {
     void getProjectAutocompleteItems(
         std::vector<AutocompleteItem> *list) const;
 
-    bool isPostponed(const Poco::Timestamp value) const;
-    static Poco::Timestamp postpone();
+    bool isPostponed(
+        const Poco::Timestamp value,
+        const Poco::Timestamp::TimeDiff
+        throttleMicros = kRequestThrottleMicros) const;
+    static Poco::Timestamp postpone(
+        const Poco::Timestamp::TimeDiff
+        throttleMicros = kRequestThrottleMicros);
 
     // Export user login state to UI
     void exportUserLoginState();
     _Bool exportErrorState(const error err) const;
+
+    error verifyCallbacks();
+
+    void setUser(User *value);
 
     Poco::Mutex db_m_;
     kopsik::Database *db_;
@@ -311,12 +330,14 @@ class Context {
     KopsikOnOnlineCallback on_online_callback_;
     KopsikUserLoginCallback on_user_login_callback_;
     KopsikOpenURLCallback on_open_url_callback_;
+    KopsikRemindCallback on_remind_callback_;
 
     // Tasks are scheduled at:
     Poco::Timestamp next_full_sync_at_;
     Poco::Timestamp next_partial_sync_at_;
     Poco::Timestamp next_fetch_updates_at_;
     Poco::Timestamp next_update_timeline_settings_at_;
+    Poco::Timestamp next_reminder_at_;
 
     // Schedule tasks using a timer:
     Poco::Mutex timer_m_;
