@@ -69,7 +69,7 @@ void LoadUserFromJSONString(
 
     if (json.empty()) {
         Poco::Logger &logger = Poco::Logger::get("json");
-        logger().warning("LoadUserFromJSONString cannot load empty JSON");
+        logger.warning("LoadUserFromJSONString cannot load empty JSON");
         return;
     }
 
