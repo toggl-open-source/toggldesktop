@@ -1,8 +1,8 @@
 [![Build Status](https://drone.io/github.com/toggl/toggldesktop/status.png)](https://drone.io/github.com/toggl/toggldesktop/latest)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/8uic9ed9xyspt87f)](https://ci.appveyor.com/project/tanel/toggl-toggldesktop)
-
 [![Build Status](https://travis-ci.org/toggl/toggldesktop.png)](https://travis-ci.org/toggl/toggldesktop)
+
+[![Build status](https://ci.appveyor.com/api/projects/status/8uic9ed9xyspt87f)](https://ci.appveyor.com/project/tanel/toggl-toggldesktop)
 
 
 Project dependencies
