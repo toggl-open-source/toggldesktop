@@ -106,26 +106,20 @@ const int kDurationStringLength = 20;
   if (self.forceCrash) {
     abort();
   }
-  
-  [self onShowMenuItem:self];
+
+  if (!wasLaunchedAsHiddenLoginItem()) {
+    [self onShowMenuItem:self];
+  }
   
   self.inactiveAppIcon = [NSImage imageNamed:@"app_inactive"];
   
-  self.preferencesWindowController =
-  [[PreferencesWindowController alloc]
-   initWithWindowNibName:@"PreferencesWindowController"];
+  self.preferencesWindowController = [[PreferencesWindowController alloc] initWithWindowNibName:@"PreferencesWindowController"];
+
+  self.aboutWindowController = [[AboutWindowController alloc] initWithWindowNibName:@"AboutWindowController"];
   
-  self.aboutWindowController =
-  [[AboutWindowController alloc]
-   initWithWindowNibName:@"AboutWindowController"];
+  self.idleNotificationWindowController = [[IdleNotificationWindowController alloc] initWithWindowNibName:@"IdleNotificationWindowController"];
   
-  self.idleNotificationWindowController =
-  [[IdleNotificationWindowController alloc]
-   initWithWindowNibName:@"IdleNotificationWindowController"];
-  
-  self.feedbackWindowController =
-  [[FeedbackWindowController alloc]
-   initWithWindowNibName:@"FeedbackWindowController"];
+  self.feedbackWindowController = [[FeedbackWindowController alloc] initWithWindowNibName:@"FeedbackWindowController"];
   
   [self createStatusItem];
   
@@ -1092,6 +1086,54 @@ void on_remind() {
 
 void on_open_url(const char *url) {
   [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[NSString stringWithUTF8String:url]]];
+}
+
+// See https://codereview.chromium.org/7497056/patch/2002/4002 for inspiration
+BOOL wasLaunchedAsLoginOrResumeItem() {
+  ProcessSerialNumber psn = {0, kCurrentProcess};
+  NSDictionary *process_info = (__bridge NSDictionary *)ProcessInformationCopyDictionary(&psn, kProcessDictionaryIncludeAllInformationMask);
+
+  long long temp = [[process_info objectForKey:@"ParentPSN"] longLongValue];
+  ProcessSerialNumber parent_psn = {(temp >> 32) & 0x00000000FFFFFFFFLL, temp & 0x00000000FFFFFFFFLL};
+
+  NSDictionary *parent_info = (__bridge NSDictionary *)ProcessInformationCopyDictionary(&parent_psn,
+                                                               kProcessDictionaryIncludeAllInformationMask);
+
+  return [[parent_info objectForKey:@"FileCreator"] isEqualToString:@"lgnw"];
+}
+
+// See https://codereview.chromium.org/7497056/patch/2002/4002 for inspiration
+BOOL wasLaunchedAsHiddenLoginItem() {
+  if (!wasLaunchedAsLoginOrResumeItem()) {
+    return NO;
+  }
+
+  LSSharedFileListRef login_items = LSSharedFileListCreate(NULL,
+                                                           kLSSharedFileListSessionLoginItems,
+                                                           NULL);
+
+  if (!login_items) {
+    return NO;
+  }
+
+  CFArrayRef login_items_array = LSSharedFileListCopySnapshot(login_items,
+                                                              NULL);
+
+  CFURLRef url_ref = (__bridge CFURLRef)[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]];
+
+  for (int i = 0 ; i < CFArrayGetCount(login_items_array); i++) {
+    LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(login_items_array, i);
+    CFURLRef item_url_ref = NULL;
+    if (!LSSharedFileListItemResolve(item, 0, &item_url_ref, NULL) == noErr) {
+      continue;
+    }
+    if (CFEqual(item_url_ref, url_ref)) {
+      CFBooleanRef hidden = LSSharedFileListItemCopyProperty(item, kLSSharedFileListLoginItemHidden);
+      return (hidden && kCFBooleanTrue == hidden);
+    }
+  }
+
+  return NO;
 }
 
 @end
