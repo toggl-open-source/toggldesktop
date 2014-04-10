@@ -230,6 +230,7 @@ const int kDurationStringLength = 20;
 - (void)userNotificationCenter:(NSUserNotificationCenter *)center
        didActivateNotification:(NSUserNotification *)notification {
   NSLog(@"didActivateNotification %@", notification);
+  [self onShowMenuItem:self];
 }
 
 - (void) userNotificationCenter:(NSUserNotificationCenter *)center
