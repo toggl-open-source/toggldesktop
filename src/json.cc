@@ -66,7 +66,12 @@ void LoadUserFromJSONString(
     const bool full_sync,
     const bool with_related_data) {
     poco_assert(model);
-    poco_assert(!json.empty());
+
+    if (json.empty()) {
+        Poco::Logger &logger = Poco::Logger::get("json");
+        logger.warning("LoadUserFromJSONString cannot load empty JSON");
+        return;
+    }
 
     JSONNODE *root = json_parse(json.c_str());
     JSONNODE_ITERATOR current_node = json_begin(root);

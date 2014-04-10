@@ -134,6 +134,10 @@ extern void *ctx;
     
     [self performSelectorOnMainThread:@selector(showError:) withObject:msg waitUntilDone:NO];
 
+    if (kopsik_is_user_error([msg UTF8String])) {
+      // Don't send business logic errors to bugsnag, a la when Workspace is suspended-
+      return;
+    }
     [Bugsnag notify:[NSException
                      exceptionWithName:msg
                      reason:msg
