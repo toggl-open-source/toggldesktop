@@ -250,6 +250,9 @@ extern "C" {
     KOPSIK_EXPORT _Bool kopsik_is_networking_error(
         const char *error);
 
+    KOPSIK_EXPORT _Bool kopsik_is_user_error(
+        const char *error);
+
     typedef struct {
         char *ModelType;
         char *ChangeType;

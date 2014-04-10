@@ -81,6 +81,17 @@ _Bool kopsik_is_networking_error(
     return false;
 }
 
+_Bool kopsik_is_user_error(const char *error) {
+    if (!error) {
+        return false;
+    }
+    std::string value(error);
+    if (value.find("is suspended") != std::string::npos) {
+        return true;
+    }
+    return false;
+}
+
 // FIXME: delete
 void kopsik_view_item_clear(
     KopsikViewItem *item) {
