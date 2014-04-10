@@ -65,6 +65,8 @@
 // Avoid showing multiple upgrade dialogs
 @property BOOL upgradeDialogVisible;
 
+@property BOOL willTerminate;
+
 @end
 
 @implementation AppDelegate
@@ -74,6 +76,8 @@ const int kDurationStringLength = 20;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   NSLog(@"applicationDidFinishLaunching");
+
+  self.willTerminate = NO;
   
   if (![self.environment isEqualToString:@"production"]) {
     // Turn on UI constraint debugging, if not in production
@@ -330,15 +334,19 @@ const int kDurationStringLength = 20;
   self.lastKnownRunningTimeEntry = nil;
   [self stopWebSocket];
   [self stopTimeline];
-  
-  [NSApp setApplicationIconImage: self.inactiveAppIcon];
+
+  if (!self.willTerminate) {
+    [NSApp setApplicationIconImage: self.inactiveAppIcon];
+  }
 }
 
 - (void)timerStopped {
   self.lastKnownRunningTimeEntry = nil;
   self.lastKnownTrackingState = kUIStateTimerStopped;
   
-  [NSApp setApplicationIconImage: self.inactiveAppIcon];
+  if (!self.willTerminate) {
+    [NSApp setApplicationIconImage: self.inactiveAppIcon];
+  }
 }
 
 - (void)timerStarted:(TimeEntryViewItem *)timeEntry {
@@ -347,7 +355,9 @@ const int kDurationStringLength = 20;
   
   // Change app dock icon to default, which is red / tracking
   // See https://developer.apple.com/library/mac/documentation/Carbon/Conceptual/customizing_docktile/dockconcepts.pdf
-  [NSApp setApplicationIconImage: nil];
+  if (!self.willTerminate) {
+    [NSApp setApplicationIconImage: nil];
+  }
 }
 
 - (void)modelChanged:(ModelChange *)modelChange {
@@ -638,6 +648,7 @@ const int kDurationStringLength = 20;
 
 - (void)applicationWillTerminate:(NSNotification *)app {
   NSLog(@"applicationWillTerminate");
+  self.willTerminate = YES;
   kopsik_context_clear(ctx);
   ctx = 0;
 }

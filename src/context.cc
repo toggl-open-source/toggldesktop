@@ -313,6 +313,10 @@ void Context::SwitchWebSocketOff() {
 void Context::onSwitchWebSocketOff(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onSwitchWebSocketOff");
 
+    if (!ws_client_) {
+        return;
+    }
+
     Poco::Mutex::ScopedLock lock(ws_client_m_);
     ws_client_->Stop();
 }
