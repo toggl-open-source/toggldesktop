@@ -211,22 +211,6 @@ bool Formatter::ParseTimeInput(const std::string input,
     return true;
 }
 
-time_t Formatter::ParseLastDate(const std::time_t value,
-                                const time_t now) {
-    struct tm now_date;
-    struct tm last_date;
-
-    localtime_r(&now, &now_date);
-    localtime_r(&value, &last_date);
-    now_date.tm_year = last_date.tm_year;
-    now_date.tm_mon = last_date.tm_mon;
-    now_date.tm_mday = last_date.tm_mday;
-
-    time_t test = mktime(&now_date);
-
-    return test;
-}
-
 bool Formatter::parseDurationStringHHMMSS(const std::string value,
         int *parsed_seconds) {
     *parsed_seconds = 0;
