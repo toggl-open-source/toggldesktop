@@ -97,7 +97,7 @@ std::string Formatter::FormatDateHeader(const std::time_t date) {
         return "Yesterday";
     }
 
-    return Poco::DateTimeFormatter::format(ts, "%w %d. %b");
+    return Poco::DateTimeFormatter::format(datetime, "%w %d. %b");
 }
 
 std::string Formatter::EscapeTabsAndLineBreaks(const std::string value,
