@@ -5,19 +5,18 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/8uic9ed9xyspt87f)](https://ci.appveyor.com/project/tanel/toggl-toggldesktop)
 
 
-Project dependencies
---------------------
+OS X
+---
 First, build dependencies:
 ```
 make deps
 ```
-
-OS X
----
+then the app itself:
 ```
 make osx
 ```
-or to build and run the app:
+
+To build and run the app:
 ```
 make run
 ```
