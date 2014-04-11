@@ -47,7 +47,7 @@
             this.troubleBox.Controls.Add(this.panel1);
             this.troubleBox.Location = new System.Drawing.Point(0, 0);
             this.troubleBox.Name = "troubleBox";
-            this.troubleBox.Size = new System.Drawing.Size(370, 31);
+            this.troubleBox.Size = new System.Drawing.Size(697, 31);
             this.troubleBox.TabIndex = 5;
             this.troubleBox.Visible = false;
             // 
@@ -64,7 +64,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(370, 292);
+            this.ClientSize = new System.Drawing.Size(698, 292);
             this.Controls.Add(this.troubleBox);
             this.Name = "MainWindowController";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

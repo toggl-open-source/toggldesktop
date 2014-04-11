@@ -42,6 +42,10 @@ namespace TogglDesktop
             IntPtr context, KopsikOpenURLCallback cb);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        public static extern void kopsik_set_remind_callback(
+            IntPtr context, KopsikRemindCallback cb);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_set_log_path(string path);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -76,6 +80,9 @@ namespace TogglDesktop
 
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikOpenURLCallback(string url);
+
+        [UnmanagedFunctionPointer(convention)]
+        public delegate void KopsikRemindCallback();
     }
 }
 

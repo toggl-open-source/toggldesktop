@@ -18,10 +18,12 @@ class Formatter {
         Task * const,
         Project * const,
         Client * const);
+
     static std::string JoinTaskNameReverse(
         Task * const,
         Project * const,
         Client * const);
+
     static std::string FormatDurationInSeconds(
         const Poco::Int64 value,
         const std::string format);
@@ -35,14 +37,12 @@ class Formatter {
         int *hours,
         int *minutes);
 
-    static time_t ParseLastDate(
-        const std::time_t value,
-        const time_t now);
-
     static std::string FormatDurationInSecondsHHMMSS(
         const Poco::Int64 value);
+
     static std::string FormatDurationInSecondsHHMM(
         const Poco::Int64 value);
+
     static std::time_t Parse8601(
         const std::string iso_8601_formatted_date);
 
@@ -52,20 +52,27 @@ class Formatter {
     static bool parseDurationStringHHMMSS(
         const std::string value,
         int *parsed_seconds);
+
     static bool parseDurationStringHHMM(
         const std::string value,
         int *parsed_seconds);
+
     static bool parseDurationStringMMSS(
         const std::string value,
         int *parsed_seconds);
+
     static int parseDurationFromDecimal(
         const std::string value);
+
     static std::string Format8601(
         const std::time_t date);
+
     static std::string FormatDateHeader(
         const std::time_t date);
+
     static std::string FormatDateWithTime(
         const std::time_t date);
+
     static std::string EscapeJSONString(
         const std::string input);
 };
