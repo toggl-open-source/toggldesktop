@@ -80,7 +80,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>E:\toggldesktop\src\ui\windows\TogglDesktop\Release\;E:\toggldesktop\third_party\poco-1.4.6p2-all\Data\SQLite\obj\release_shared;E:\toggldesktop\third_party\poco-1.4.6p2-all\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>E:\toggldesktop\src\ui\windows\TogglDesktop\Release\;E:\toggldesktop\third_party\poco-1.4.6p2-all\Data\SQLite\obj\release_shared;E:\toggldesktop\third_party\openssl\out32dll;E:\toggldesktop\third_party\poco-1.4.6p2-all\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>statLibJson.lib;PocoFoundation.lib;PocoUtil.lib;PocoXML.lib;PocoNet.lib;PocoCrypto.lib;PocoNetSSL.lib;PocoData.lib;PocoDataSQLite.lib;sqlite3;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

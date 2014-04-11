@@ -21,6 +21,7 @@ namespace TogglDesktop
             DLL.kopsik_context_set_online_callback(ctx_, OnOnline);
             DLL.kopsik_context_set_user_login_callback(ctx_, OnUserLogin);
             DLL.kopsik_set_open_url_callback(ctx_, OnOpenURL);
+            DLL.kopsik_set_remind_callback(ctx_, OnRemind);
 
             string path = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -58,6 +59,7 @@ namespace TogglDesktop
         public static event DLL.KopsikCheckUpdateCallback OnCheckUpdate = delegate {};
         public static event DLL.KopsikOnOnlineCallback OnOnline = delegate { };
         public static event DLL.KopsikOpenURLCallback OnOpenURL = delegate { };
+        public static event DLL.KopsikRemindCallback OnRemind = delegate { };
     }
 }
 
