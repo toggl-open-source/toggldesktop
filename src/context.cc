@@ -1767,10 +1767,12 @@ void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
 
     if (user_->RunningTimeEntry()) {
         logger().debug("User is already tracking time, no need to remind");
+        return;
     }
 
     if (user_->HasTrackedTimeToday()) {
         logger().debug("Already tracked time today, no need to remind");
+        return;
     }
 
     on_remind_callback_();
