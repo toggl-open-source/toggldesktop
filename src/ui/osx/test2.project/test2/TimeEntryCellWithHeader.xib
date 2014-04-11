@@ -49,10 +49,10 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Eux-yk-8iS">
-                                <rect key="frame" x="13" y="43" width="88" height="17"/>
+                                <rect key="frame" x="13" y="42" width="88" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="17" id="ABy-En-546"/>
+                                    <constraint firstAttribute="height" constant="18" id="ABy-En-546"/>
                                     <constraint firstAttribute="width" constant="84" id="W2B-17-IX3"/>
                                 </constraints>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Thu 22. Jan" id="Rk2-8z-I6y">
@@ -62,7 +62,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="A9Z-Z5-Qzd">
-                                <rect key="frame" x="112" y="46" width="63" height="12"/>
+                                <rect key="frame" x="112" y="47" width="63" height="12"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="12" id="c0p-f3-udt"/>
@@ -97,7 +97,7 @@
                         <constraint firstItem="4mY-N2-UMI" firstAttribute="top" secondItem="IPX-6P-J70" secondAttribute="bottom" constant="2" id="bqJ-J2-JcY"/>
                         <constraint firstItem="Eux-yk-8iS" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="6" id="cFj-Kg-rLU"/>
                         <constraint firstItem="IPX-6P-J70" firstAttribute="leading" secondItem="zWp-bg-ZH9" secondAttribute="trailing" constant="6" id="cZY-5Q-Eqe"/>
-                        <constraint firstItem="A9Z-Z5-Qzd" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="8" id="gBw-ct-rYT"/>
+                        <constraint firstItem="A9Z-Z5-Qzd" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="7" id="gBw-ct-rYT"/>
                         <constraint firstItem="4mY-N2-UMI" firstAttribute="leading" secondItem="HvF-1T-7Z3" secondAttribute="leading" constant="14" id="gcU-Rf-6ty"/>
                         <constraint firstAttribute="trailing" secondItem="IPX-6P-J70" secondAttribute="trailing" constant="93" id="h7j-w1-f9l"/>
                         <constraint firstItem="A9Z-Z5-Qzd" firstAttribute="leading" secondItem="Eux-yk-8iS" secondAttribute="trailing" constant="15" id="jW8-5q-w2m"/>
