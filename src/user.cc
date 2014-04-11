@@ -77,7 +77,7 @@ TimeEntry *User::Start(
         int seconds = Formatter::ParseDurationString(duration);
         te->SetDurationInSeconds(seconds);
         if (last_date_) {
-			// FIXME: use year, month and day from last_date_
+            // FIXME: use year, month and day from last_date_
         }
         te->SetStop(now);
         te->SetStart(te->Stop() - te->DurationInSeconds());

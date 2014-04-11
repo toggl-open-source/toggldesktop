@@ -40,10 +40,10 @@ class Formatter {
     static std::string FormatDurationInSecondsHHMMSS(
         const Poco::Int64 value);
 
-	static std::string FormatDurationInSecondsHHMM(
+    static std::string FormatDurationInSecondsHHMM(
         const Poco::Int64 value);
 
-	static std::time_t Parse8601(
+    static std::time_t Parse8601(
         const std::string iso_8601_formatted_date);
 
     static int ParseDurationString(
@@ -53,27 +53,27 @@ class Formatter {
         const std::string value,
         int *parsed_seconds);
 
-	static bool parseDurationStringHHMM(
+    static bool parseDurationStringHHMM(
         const std::string value,
         int *parsed_seconds);
 
-	static bool parseDurationStringMMSS(
+    static bool parseDurationStringMMSS(
         const std::string value,
         int *parsed_seconds);
 
-	static int parseDurationFromDecimal(
+    static int parseDurationFromDecimal(
         const std::string value);
 
-	static std::string Format8601(
+    static std::string Format8601(
         const std::time_t date);
 
-	static std::string FormatDateHeader(
+    static std::string FormatDateHeader(
         const std::time_t date);
 
-	static std::string FormatDateWithTime(
+    static std::string FormatDateWithTime(
         const std::time_t date);
 
-	static std::string EscapeJSONString(
+    static std::string EscapeJSONString(
         const std::string input);
 };
 
