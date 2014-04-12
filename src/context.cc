@@ -1291,7 +1291,8 @@ _Bool Context::Stop(kopsik::TimeEntry **stopped_entry) {
 
     std::vector<kopsik::TimeEntry *> stopped = user_->Stop();
     if (stopped.empty()) {
-        return exportErrorState("No time entry was found to stop");
+        logger().warning("No time entry was found to stop");
+        return true;
     }
     *stopped_entry = stopped[0];
     return exportErrorState(save());
