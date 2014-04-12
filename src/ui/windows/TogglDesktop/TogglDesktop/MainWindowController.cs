@@ -15,12 +15,14 @@ namespace TogglDesktop
     public partial class MainWindowController : Form
     {
         private LoginViewController loginViewController;
+        private TimeEntryListViewController timeEntryListViewController;
 
         public MainWindowController()
         {
             InitializeComponent();
 
             loginViewController = new LoginViewController();
+            timeEntryListViewController = new TimeEntryListViewController();
         }
 
         private void MainWindowController_Load(object sender, EventArgs e)
@@ -79,10 +81,13 @@ namespace TogglDesktop
         void Core_OnUserLogin(ulong id, string fullname, string timeofdayformat)
         {
             if (0 == id) {
+                Controls.Remove(timeEntryListViewController);
                 Controls.Add(loginViewController);
                 loginViewController.SetAcceptButton(this);
                 return;
             }
+            Controls.Remove(loginViewController);
+            Controls.Add(timeEntryListViewController);
         }
 
         private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)
