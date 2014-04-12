@@ -115,5 +115,10 @@ namespace TogglDesktop
             }
             Properties.Settings.Default.Save();
         }
+
+        private void buttonDismissError_Click(object sender, EventArgs e)
+        {
+            troubleBox.Visible = false;
+        }
     }
 }

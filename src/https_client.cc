@@ -23,6 +23,7 @@
 
 #include "./libjson.h"
 #include "./version.h"
+#include "./const.h"
 
 namespace kopsik {
 
@@ -69,6 +70,18 @@ error HTTPSClient::requestJSON(
         response_body);
 }
 
+Poco::Net::Context *HTTPSClient::get_context() const {
+	if (kVerifyServerCertificate) {
+		return new Poco::Net::Context(
+			Poco::Net::Context::CLIENT_USE, "",
+			Poco::Net::Context::VERIFY_RELAXED, 9, true, "ALL");
+	}
+	return new Poco::Net::Context(
+		Poco::Net::Context::CLIENT_USE, "", "", "",
+		Poco::Net::Context::VERIFY_NONE, 9, false,
+		"ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
+}
+
 error HTTPSClient::request(
     const std::string method,
     const std::string relative_url,
@@ -89,16 +102,7 @@ error HTTPSClient::request(
         acceptCertHandler =
             new Poco::Net::AcceptCertificateHandler(true);
 
-        Poco::Net::Context::Ptr context(new Poco::Net::Context(
-            Poco::Net::Context::CLIENT_USE, "",
-            Poco::Net::Context::VERIFY_RELAXED, 9, true, "ALL"));
-
-        /*
-            const Poco::Net::Context::Ptr context(new Poco::Net::Context(
-              Poco::Net::Context::CLIENT_USE, "", "", "",
-              Poco::Net::Context::VERIFY_NONE, 9, false,
-              "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"));
-        */
+		Poco::Net::Context::Ptr context(get_context());
 
         Poco::Net::SSLManager::instance().initializeClient(
             0, acceptCertHandler, context);

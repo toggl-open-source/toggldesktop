@@ -59,7 +59,7 @@ namespace TogglDesktop
             IntPtr context, string email, string password);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_password_forgot();
+        public static extern void kopsik_password_forgot(IntPtr context);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_context_clear(IntPtr context);

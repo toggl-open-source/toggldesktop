@@ -45,6 +45,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <RunCodeAnalysis>false</RunCodeAnalysis>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -83,6 +84,10 @@
       <AdditionalLibraryDirectories>E:\toggldesktop\src\ui\windows\TogglDesktop\Release\;E:\toggldesktop\third_party\poco-1.4.6p2-all\Data\SQLite\obj\release_shared;E:\toggldesktop\third_party\openssl\out32dll;E:\toggldesktop\third_party\poco-1.4.6p2-all\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>statLibJson.lib;PocoFoundation.lib;PocoUtil.lib;PocoXML.lib;PocoNet.lib;PocoCrypto.lib;PocoNetSSL.lib;PocoData.lib;PocoDataSQLite.lib;sqlite3;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

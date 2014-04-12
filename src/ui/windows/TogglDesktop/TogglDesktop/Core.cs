@@ -41,7 +41,7 @@ namespace TogglDesktop
 
         public static void PasswordForgot()
         {
-            DLL.kopsik_password_forgot();
+            DLL.kopsik_password_forgot(ctx_);
         }
 
         public static void Clear()
