@@ -71,15 +71,15 @@ error HTTPSClient::requestJSON(
 }
 
 Poco::Net::Context *HTTPSClient::get_context() const {
-	if (kVerifyServerCertificate) {
-		return new Poco::Net::Context(
-			Poco::Net::Context::CLIENT_USE, "",
-			Poco::Net::Context::VERIFY_RELAXED, 9, true, "ALL");
-	}
-	return new Poco::Net::Context(
-		Poco::Net::Context::CLIENT_USE, "", "", "",
-		Poco::Net::Context::VERIFY_NONE, 9, false,
-		"ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
+    if (kVerifyServerCertificate) {
+        return new Poco::Net::Context(
+            Poco::Net::Context::CLIENT_USE, "",
+            Poco::Net::Context::VERIFY_RELAXED, 9, true, "ALL");
+    }
+    return new Poco::Net::Context(
+        Poco::Net::Context::CLIENT_USE, "", "", "",
+        Poco::Net::Context::VERIFY_NONE, 9, false,
+        "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
 }
 
 error HTTPSClient::request(
@@ -102,7 +102,7 @@ error HTTPSClient::request(
         acceptCertHandler =
             new Poco::Net::AcceptCertificateHandler(true);
 
-		Poco::Net::Context::Ptr context(get_context());
+        Poco::Net::Context::Ptr context(get_context());
 
         Poco::Net::SSLManager::instance().initializeClient(
             0, acceptCertHandler, context);
