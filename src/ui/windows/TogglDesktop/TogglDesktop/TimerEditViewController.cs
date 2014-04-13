@@ -29,7 +29,19 @@ namespace TogglDesktop
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
-            // FIXME: start or stop time entry
+            if (buttonStart.Text == "Start") {
+                Core.Start(comboBoxDescription.Text,
+                    textBoxDuration.Text,
+                    0,
+                    0);
+                return;
+            }
+            Core.Stop();
+        }
+
+        public void SetAcceptButton(Form frm)
+        {
+            frm.AcceptButton = buttonStart;
         }
     }
 }

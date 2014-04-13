@@ -88,6 +88,7 @@ namespace TogglDesktop
             }
             Controls.Remove(loginViewController);
             Controls.Add(timeEntryListViewController);
+            timeEntryListViewController.SetAcceptButton(this);
         }
 
         private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)

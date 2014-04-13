@@ -64,6 +64,13 @@ namespace TogglDesktop
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_context_clear(IntPtr context);
 
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        public static extern void kopsik_start(IntPtr context,
+            string description, string duration, int task_id, int project_id);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        public static extern void kopsik_stop(IntPtr context);
+
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikErrorCallback(string errmsg);
 

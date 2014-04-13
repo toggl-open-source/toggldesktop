@@ -17,6 +17,11 @@ namespace TogglDesktop
             InitializeComponent();
         }
 
+        public void SetAcceptButton(Form frm)
+        {
+            timerEditViewController.SetAcceptButton(frm);
+        }
+
         private void TimeEntryListViewController_Load(object sender, EventArgs e)
         {
             // FIXME:

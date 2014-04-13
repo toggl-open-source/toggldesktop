@@ -54,6 +54,16 @@ namespace TogglDesktop
             ctx_ = IntPtr.Zero;
         }
 
+        public static void Start(string description, string duration, int task_id, int project_id)
+        {
+            DLL.kopsik_start(ctx_, description, duration, task_id, project_id);
+        }
+
+        public static void Stop()
+        {
+            DLL.kopsik_stop(ctx_);
+        }
+
         public static event DLL.KopsikErrorCallback OnError = delegate { };
         public static event DLL.KopsikUserLoginCallback OnUserLogin = delegate { };
         public static event DLL.KopsikCheckUpdateCallback OnCheckUpdate = delegate {};
