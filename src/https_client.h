@@ -21,17 +21,19 @@ class HTTPSClient {
     explicit HTTPSClient(
         const std::string api_url,
         const std::string app_name,
-        const std::string app_version) :
-    api_url_(api_url),
-    app_name_(app_name),
-    app_version_(app_version) {}
+        const std::string app_version)
+        : api_url_(api_url)
+    , app_name_(app_name)
+    , app_version_(app_version) {}
     virtual ~HTTPSClient() {}
+
     virtual error PostJSON(
         const std::string relative_url,
         const std::string json,
         const std::string basic_auth_username,
         const std::string basic_auth_password,
         std::string *response_body);
+
     virtual error GetJSON(
         const std::string relative_url,
         const std::string basic_auth_username,
@@ -60,6 +62,7 @@ class HTTPSClient {
         const std::string basic_auth_username,
         const std::string basic_auth_password,
         std::string *response_body);
+    Poco::Net::Context *get_context() const;
 
     std::string api_url_;
     std::string app_name_;
@@ -67,6 +70,7 @@ class HTTPSClient {
 
     Proxy proxy_;
 };
+
 }  // namespace kopsik
 
 #endif  // SRC_HTTPS_CLIENT_H_

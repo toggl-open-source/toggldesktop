@@ -41,7 +41,7 @@ namespace TogglDesktop
 
         public static void PasswordForgot()
         {
-            DLL.kopsik_password_forgot();
+            DLL.kopsik_password_forgot(ctx_);
         }
 
         public static void Clear()
@@ -52,6 +52,16 @@ namespace TogglDesktop
             }
             DLL.kopsik_context_clear(ctx_);
             ctx_ = IntPtr.Zero;
+        }
+
+        public static void Start(string description, string duration, int task_id, int project_id)
+        {
+            DLL.kopsik_start(ctx_, description, duration, task_id, project_id);
+        }
+
+        public static void Stop()
+        {
+            DLL.kopsik_stop(ctx_);
         }
 
         public static event DLL.KopsikErrorCallback OnError = delegate { };

@@ -28,33 +28,36 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
             this.troubleBox = new System.Windows.Forms.Panel();
+            this.buttonDismissError = new System.Windows.Forms.Button();
             this.errorLabel = new System.Windows.Forms.Label();
             this.troubleBox.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panel1
-            // 
-            this.panel1.Location = new System.Drawing.Point(0, 37);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(276, 222);
-            this.panel1.TabIndex = 0;
-            // 
             // troubleBox
             // 
+            this.troubleBox.Controls.Add(this.buttonDismissError);
             this.troubleBox.Controls.Add(this.errorLabel);
-            this.troubleBox.Controls.Add(this.panel1);
             this.troubleBox.Location = new System.Drawing.Point(0, 0);
             this.troubleBox.Name = "troubleBox";
-            this.troubleBox.Size = new System.Drawing.Size(697, 31);
+            this.troubleBox.Size = new System.Drawing.Size(276, 30);
             this.troubleBox.TabIndex = 5;
             this.troubleBox.Visible = false;
+            // 
+            // buttonDismissError
+            // 
+            this.buttonDismissError.Location = new System.Drawing.Point(3, 3);
+            this.buttonDismissError.Name = "buttonDismissError";
+            this.buttonDismissError.Size = new System.Drawing.Size(16, 23);
+            this.buttonDismissError.TabIndex = 6;
+            this.buttonDismissError.Text = "X";
+            this.buttonDismissError.UseVisualStyleBackColor = true;
+            this.buttonDismissError.Click += new System.EventHandler(this.buttonDismissError_Click);
             // 
             // errorLabel
             // 
             this.errorLabel.AutoSize = true;
-            this.errorLabel.Location = new System.Drawing.Point(4, 4);
+            this.errorLabel.Location = new System.Drawing.Point(25, 8);
             this.errorLabel.Name = "errorLabel";
             this.errorLabel.Size = new System.Drawing.Size(64, 13);
             this.errorLabel.TabIndex = 5;
@@ -64,7 +67,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(698, 292);
+            this.ClientSize = new System.Drawing.Size(277, 292);
             this.Controls.Add(this.troubleBox);
             this.Name = "MainWindowController";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -79,9 +82,9 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel troubleBox;
         private System.Windows.Forms.Label errorLabel;
+        private System.Windows.Forms.Button buttonDismissError;
     }
 }
 

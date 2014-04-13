@@ -50,6 +50,9 @@
   <PropertyGroup>
     <StartupObject>TogglDesktop.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -79,6 +82,18 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core.cs" />
+    <Compile Include="TimeEntryListViewController.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TimeEntryListViewController.Designer.cs">
+      <DependentUpon>TimeEntryListViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TimerEditViewController.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TimerEditViewController.Designer.cs">
+      <DependentUpon>TimerEditViewController.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="LoginViewController.resx">
       <DependentUpon>LoginViewController.cs</DependentUpon>
     </EmbeddedResource>
@@ -94,6 +109,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TimeEntryListViewController.resx">
+      <DependentUpon>TimeEntryListViewController.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimerEditViewController.resx">
+      <DependentUpon>TimerEditViewController.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -132,8 +153,7 @@
   <PropertyGroup>
     <PostBuildEvent>XCOPY $(SolutionDir)\$(ConfigurationName)\TogglDesktopDLL.dll $(TargetDir) /Y
 XCOPY $(SolutionDir)..\..\..\..\third_party\poco-1.4.6p2-all\bin\*.dll $(TargetDir) /Y
-XCOPY $(SolutionDir)..\..\..\..\third_party\openssl\out32dll\libeay32.dll $(TargetDir) /Y
-XCOPY $(SolutionDir)..\..\..\..\third_party\openssl\out32dll\ssleay32.dll $(TargetDir) /Y
+XCOPY $(SolutionDir)..\..\..\..\third_party\openssl\out32dll\*eay32.dll $(TargetDir) /Y
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
