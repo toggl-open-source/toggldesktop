@@ -18,12 +18,10 @@ class Formatter {
         Task * const,
         Project * const,
         Client * const);
-
     static std::string JoinTaskNameReverse(
         Task * const,
         Project * const,
         Client * const);
-
     static std::string FormatDurationInSeconds(
         const Poco::Int64 value,
         const std::string format);
@@ -36,6 +34,10 @@ class Formatter {
         const std::string value,
         int *hours,
         int *minutes);
+
+    static time_t ParseLastDate(
+        const std::time_t last,
+        const std::time_t current);
 
     static std::string FormatDurationInSecondsHHMMSS(
         const Poco::Int64 value);

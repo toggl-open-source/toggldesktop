@@ -13,6 +13,7 @@
 #include "Poco/NumberParser.h"
 #include "Poco/StringTokenizer.h"
 #include "Poco/DateTimeParser.h"
+#include "Poco/LocalDateTime.h"
 
 namespace kopsik {
 
@@ -209,6 +210,19 @@ bool Formatter::ParseTimeInput(const std::string input,
         }
     }
     return true;
+}
+
+time_t Formatter::ParseLastDate(const std::time_t last,
+                                const std::time_t current) {
+    Poco::Timestamp last_ts = Poco::Timestamp::fromEpochTime(last);
+    Poco::LocalDateTime last_date(last_ts);
+
+    Poco::Timestamp current_ts = Poco::Timestamp::fromEpochTime(current);
+    Poco::LocalDateTime current_date(current_ts);
+
+    current_date.assign(last_date.year(), last_date.month(), last_date.day());
+
+    return current_date.timestamp().epochTime();
 }
 
 bool Formatter::parseDurationStringHHMMSS(const std::string value,

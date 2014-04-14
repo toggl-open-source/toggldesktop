@@ -71,6 +71,8 @@ class User : public BaseModel {
     TimeEntry *GetTimeEntryByID(const Poco::UInt64 id);
     TimeEntry *GetTimeEntryByGUID(const guid GUID);
 
+    void SetLastTEDate(const std::string value);
+
     void CollectPushableTimeEntries(
         std::vector<TimeEntry *> *result,
         std::map<std::string, BaseModel *> *models = 0) const;
