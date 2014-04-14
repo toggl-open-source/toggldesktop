@@ -268,12 +268,9 @@ void User::SetDefaultWID(const Poco::UInt64 value) {
 }
 
 void User::SetLastTEDate(const std::string value) {
-    struct tm t;
-    const char * c = value.c_str();
-    strptime(c, "%Y-%m-%dT%H:%M:%S%Z", &t);
-
-    if (difftime(last_date_, mktime(&t)) != 0) {
-        last_date_ = mktime(&t);
+    std::time_t t = Formatter::Parse8601(value);
+    if (last_date_ != t) {
+        last_date_ = t;
     }
 }
 

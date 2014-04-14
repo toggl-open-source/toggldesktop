@@ -36,8 +36,8 @@ class Formatter {
         int *minutes);
 
     static time_t ParseLastDate(
-        const std::time_t value,
-        const time_t now);
+        const std::time_t last,
+        const std::time_t current);
 
     static std::string FormatDurationInSecondsHHMMSS(
         const Poco::Int64 value);
