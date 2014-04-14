@@ -76,8 +76,8 @@ TimeEntry *User::Start(
     if (!duration.empty()) {
         int seconds = Formatter::ParseDurationString(duration);
         te->SetDurationInSeconds(seconds);
-        if (last_date_) {
-            // FIXME: use year, month and day from last_date_
+        if (last_date_ != 0) {
+            now = Formatter::ParseLastDate(last_date_, now);
         }
         te->SetStop(now);
         te->SetStart(te->Stop() - te->DurationInSeconds());
@@ -264,6 +264,16 @@ void User::SetDefaultWID(const Poco::UInt64 value) {
     if (default_wid_ != value) {
         default_wid_ = value;
         SetDirty();
+    }
+}
+
+void User::SetLastTEDate(const std::string value) {
+    struct tm t;
+    const char * c = value.c_str();
+    strptime(c, "%Y-%m-%dT%H:%M:%S%Z", &t);
+
+    if (difftime(last_date_, mktime(&t)) != 0) {
+        last_date_ = mktime(&t);
     }
 }
 
