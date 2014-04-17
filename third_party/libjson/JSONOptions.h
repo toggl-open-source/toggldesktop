@@ -28,7 +28,7 @@
  *  it simply tells you about them, which is nice for debugging, but not preferable
  *  for release candidates
  */
-//#define JSON_DEBUG
+#define JSON_DEBUG
 
 
 /*
