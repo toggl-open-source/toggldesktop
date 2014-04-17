@@ -87,7 +87,7 @@
  *  and passing them around much faster.  It is recommended that this stay on for
  *  most uses
  */
-#define JSON_REF_COUNT
+//#define JSON_REF_COUNT
 
 
 /*
