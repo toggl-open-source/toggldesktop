@@ -27,8 +27,7 @@ class Formatter {
         const std::string format);
 
     static std::string EscapeTabsAndLineBreaks(
-        const std::string value,
-        bool replace);
+        const std::string value);
 
     static bool ParseTimeInput(
         const std::string value,
