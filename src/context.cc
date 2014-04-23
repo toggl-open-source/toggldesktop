@@ -1778,7 +1778,8 @@ void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
 
-    on_remind_callback_();
+    on_remind_callback_("Reminder from Toggl Desktop",
+                        "Don't forget to track your time!");
 }
 
 }  // namespace kopsik
