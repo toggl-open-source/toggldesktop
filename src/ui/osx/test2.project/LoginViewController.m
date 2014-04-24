@@ -103,4 +103,19 @@ extern void *ctx;
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedIn object:nil];
 }
 
+- (void)viewDidLoad {
+  // adding underline to google login text
+
+  NSMutableAttributedString *str = [[self.googleLoginTextField attributedStringValue] mutableCopy];
+
+  [str addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSUnderlineStyleSingle] range:NSMakeRange(0, str.length)];
+
+  [self.googleLoginTextField setAttributedStringValue:str];
+}
+
+- (void)loadView {
+    [super loadView];
+    [self viewDidLoad];
+}
+
 @end
