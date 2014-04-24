@@ -160,7 +160,7 @@ extern void *ctx;
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
   if ([msg rangeOfString:@"Request to server failed with status code: 403"].location != NSNotFound) {
-    msg = @"Invalid e-mail or password. Please try again!";
+    msg = @"Invalid e-mail or password!";
   }
 
   [self.errorLabel setStringValue:msg];
