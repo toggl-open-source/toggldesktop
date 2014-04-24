@@ -104,13 +104,17 @@ extern void *ctx;
 }
 
 - (void)viewDidLoad {
-  // adding underline to google login text
+  // Add underline to google login text
 
-  NSMutableAttributedString *str = [[self.googleLoginTextField attributedStringValue] mutableCopy];
+  NSMutableAttributedString *google = [[self.googleLoginTextField attributedStringValue] mutableCopy];
+  [google addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSUnderlineStyleSingle] range:NSMakeRange(0, google.length)];
+  [self.googleLoginTextField setAttributedStringValue:google];
 
-  [str addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSUnderlineStyleSingle] range:NSMakeRange(0, str.length)];
+  // Add underline to forgot password text
 
-  [self.googleLoginTextField setAttributedStringValue:str];
+  NSMutableAttributedString *forgot = [[self.passwordForgotTextField attributedStringValue] mutableCopy];
+  [forgot addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSUnderlineStyleSingle] range:NSMakeRange(0, forgot.length)];
+  [self.passwordForgotTextField setAttributedStringValue:forgot];
 }
 
 - (void)loadView {
