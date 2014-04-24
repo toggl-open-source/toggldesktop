@@ -88,6 +88,7 @@ extern void *ctx;
     [self.contentView addSubview:self.timeEntryListViewController.view];
     [self.timeEntryListViewController.view setFrame:self.contentView.bounds];
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventShowListView object:nil];
+    [self closeError];
     
     return;
   }
@@ -167,9 +168,13 @@ extern void *ctx;
   [self.troubleBox setHidden:NO];
 }
 
-- (IBAction)errorCloseButtonClicked:(id)sender {
+- (void)closeError {
     [self.troubleBox setHidden:YES];
     [self.errorLabel setStringValue:@""];
+}
+
+- (IBAction)errorCloseButtonClicked:(id)sender {
+    [self closeError];
 }
 
 @end
