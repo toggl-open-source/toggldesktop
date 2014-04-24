@@ -277,7 +277,6 @@ void User::SetLastTEDate(const std::string value) {
 // Stop a time entry, mark it as dirty.
 // Note that there may be multiple TE-s running. If there are,
 // all of them are stopped (multi-tracking is not supported by Toggl).
-// Do not save here, dirtyness will be handled outside of this module.
 std::vector<TimeEntry *> User::Stop() {
     std::vector<TimeEntry *> result;
     TimeEntry *te = RunningTimeEntry();

@@ -104,25 +104,22 @@ void Context::StartEvents() {
 
 error Context::verifyCallbacks() {
     if (!on_error_callback_) {
-        return error("missing on_error_callback_");
-    }
-    if (!on_error_callback_) {
-        return error("missing on_error_callback_");
+        return error("!on_error_callback_");
     }
     if (!on_check_update_callback_) {
-        return error("missing on on_check_update_callback_");
+        return error("!on_check_update_callback_");
     }
     if (!on_online_callback_) {
-        return error("missing on on_online_callback_");
+        return error("!on_online_callback_");
     }
     if (!on_user_login_callback_) {
-        return error("missing on on_user_login_callback_");
+        return error("!on_user_login_callback_");
     }
     if (!on_open_url_callback_) {
-        return error("missing on on_open_url_callback_");
+        return error("!on_open_url_callback_");
     }
     if (!on_remind_callback_) {
-        return error("missing on on_remind_callback_");
+        return error("!on_remind_callback_");
     }
     return noError;
 }
