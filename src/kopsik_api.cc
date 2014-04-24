@@ -89,6 +89,9 @@ _Bool kopsik_is_user_error(const char *error) {
     if (value.find("is suspended") != std::string::npos) {
         return true;
     }
+    if (value.find("Request to server failed with status code: 403") != std::string::npos) {
+        return true;
+    }
     return false;
 }
 
