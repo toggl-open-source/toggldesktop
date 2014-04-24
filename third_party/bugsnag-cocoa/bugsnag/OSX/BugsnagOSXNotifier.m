@@ -84,6 +84,10 @@
       return NO;
     }
 
+    if ([theName isEqualToString:@"NSPortTimeoutException"]) {
+      return NO;
+    }
+
     [self notifyException:exception withData:nil inBackground:YES];
     return NO;
 }
