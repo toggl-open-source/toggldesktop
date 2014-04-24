@@ -84,7 +84,7 @@
       return NO;
     }
 
-    if ([theName isEqualToString:@"NSPortTimeoutException"]) {
+    if ([theName isEqualToString:@"NSInvalidReceivePortException"]) {
       return NO;
     }
 
