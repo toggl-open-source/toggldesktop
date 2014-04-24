@@ -78,6 +78,10 @@ _Bool kopsik_is_networking_error(
     if (value.find("No route to host") != std::string::npos) {
         return true;
     }
+    if ((value.find("I/O error: 1") != std::string::npos)
+            && (value.find(":443") != std::string::npos)) {
+        return true;
+    }
     return false;
 }
 
@@ -89,7 +93,8 @@ _Bool kopsik_is_user_error(const char *error) {
     if (value.find("is suspended") != std::string::npos) {
         return true;
     }
-    if (value.find("Request to server failed with status code: 403") != std::string::npos) {
+    if (value.find("Request to server failed with status code: 403")
+            != std::string::npos) {
         return true;
     }
     return false;
