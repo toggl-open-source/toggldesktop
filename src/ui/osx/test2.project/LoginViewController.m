@@ -1,9 +1,7 @@
 //
 //  LoginViewController.m
-//  kopsik_ui_osx
 //
-//  Created by Tambet Masik on 9/24/13.
-//  Copyright (c) 2013 TogglDesktop developers. All rights reserved.
+//  Copyright (c) 2014 TogglDesktop developers. All rights reserved.
 //
 
 #import "LoginViewController.h"
