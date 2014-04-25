@@ -38,31 +38,33 @@ extern void *ctx;
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedIn object:nil];
 }
 
-// Start Google login.
 -(void)textFieldClicked:(id)sender {
   if (sender == self.googleLoginTextField) {
-    NSString *scope = @"profile email";
-    NSString *clientID = @"426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com";
-    // According to Google docs, in installed apps the client secret is not expected to stay secret:
-    NSString *clientSecret = @"6IHWKIfTAMF7cPJsBvoGxYui";
-  
-    GTMOAuth2WindowController *windowController;
-    windowController = [[GTMOAuth2WindowController alloc] initWithScope:scope
-                                                               clientID:clientID
-                                                           clientSecret:clientSecret
-                                                       keychainItemName:nil
-                                                         resourceBundle:nil];
-  
-    [windowController signInSheetModalForWindow:[[NSApplication sharedApplication] mainWindow]
-                                       delegate:self
-                               finishedSelector:@selector(viewController:finishedWithAuth:error:)];
+    [self startGoogleLogin];
     return;
   }
-
   if (sender == self.passwordForgotTextField) {
     kopsik_password_forgot(ctx);
     return;
   }
+}
+
+- (void)startGoogleLogin {
+  NSString *scope = @"profile email";
+  NSString *clientID = @"426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com";
+  // According to Google docs, in installed apps the client secret is not expected to stay secret:
+  NSString *clientSecret = @"6IHWKIfTAMF7cPJsBvoGxYui";
+
+  GTMOAuth2WindowController *windowController;
+  windowController = [[GTMOAuth2WindowController alloc] initWithScope:scope
+                                                             clientID:clientID
+                                                         clientSecret:clientSecret
+                                                     keychainItemName:nil
+                                                       resourceBundle:nil];
+
+  [windowController signInSheetModalForWindow:[[NSApplication sharedApplication] mainWindow]
+                                     delegate:self
+                             finishedSelector:@selector(viewController:finishedWithAuth:error:)];
 }
 
 - (void)viewController:(GTMOAuth2WindowController *)viewController
@@ -87,9 +89,12 @@ extern void *ctx;
 
     NSLog(@"Login error: %@", errorStr);
 
-    // User denied access to app
     if ([errorStr isEqualToString:@"access_denied"]) {
-      errorStr = @"Access was denied to app";
+      errorStr = @"Google login access was denied to app.";
+    }
+
+    if ([errorStr isEqualToString:@"The operation couldn’t be completed. (com.google.GTMOAuth2 error -1000.)"]) {
+      errorStr = @"Window was closed before login completed.";
     }
 
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
@@ -105,17 +110,14 @@ extern void *ctx;
 }
 
 - (void)viewDidLoad {
-  // Add underline to google login text
+  [self addUnderlineToTextField:self.googleLoginTextField];
+  [self addUnderlineToTextField:self.passwordForgotTextField];
+}
 
-  NSMutableAttributedString *google = [[self.googleLoginTextField attributedStringValue] mutableCopy];
-  [google addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSUnderlineStyleSingle] range:NSMakeRange(0, google.length)];
-  [self.googleLoginTextField setAttributedStringValue:google];
-
-  // Add underline to forgot password text
-
-  NSMutableAttributedString *forgot = [[self.passwordForgotTextField attributedStringValue] mutableCopy];
+- (void)addUnderlineToTextField:(NSTextField *)field {
+  NSMutableAttributedString *forgot = [[field attributedStringValue] mutableCopy];
   [forgot addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSUnderlineStyleSingle] range:NSMakeRange(0, forgot.length)];
-  [self.passwordForgotTextField setAttributedStringValue:forgot];
+  [field setAttributedStringValue:forgot];
 }
 
 - (void)loadView {

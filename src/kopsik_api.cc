@@ -97,6 +97,12 @@ _Bool kopsik_is_user_error(const char *error) {
             != std::string::npos) {
         return true;
     }
+    if ("Google login access was denied to app." == value) {
+        return true;
+    }
+    if ("Window was closed before login completed." == value) {
+        return true;
+    }
     return false;
 }
 
