@@ -422,8 +422,16 @@ std::string Formatter::FormatDurationInSeconds(
     const Poco::Int64 value,
     const std::string format) {
     Poco::Int64 duration = value;
+    // Duration is negative when time is tracking
     if (duration < 0) {
         duration += time(0);
+    }
+    // If after calculation time is still negative,
+    // either computer clock is wrong or user
+    // has set start time to the future. Render positive
+    // duration only:
+    if (duration < 0) {
+        duration *= -1;
     }
     Poco::Timespan span(duration * Poco::Timespan::SECONDS);
     // Poco DateTimeFormatter will not format hours above 24h.
