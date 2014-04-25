@@ -47,6 +47,10 @@ bool TimeEntry::ResolveError(const kopsik::error err) {
         SetTID(0);
         return true;
     }
+    if (userCannotAccessSelectedTask(err)) {
+        SetTID(0);
+        return true;
+    }
     return false;
 }
 
@@ -54,6 +58,12 @@ bool TimeEntry::userCannotAccessTheSelectedProject(
     const kopsik::error err) const {
     return (std::string::npos != std::string(err).find(
         "User cannot access the selected project"));
+}
+
+bool TimeEntry::userCannotAccessSelectedTask(
+    const kopsik::error err) const {
+    return (std::string::npos != std::string(err).find(
+        "User cannot access selected task."));
 }
 
 bool TimeEntry::durationTooLarge(const kopsik::error err) const {
