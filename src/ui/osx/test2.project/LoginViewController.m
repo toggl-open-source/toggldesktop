@@ -86,11 +86,14 @@ extern void *ctx;
         }
       }
     }
-    if ([errorStr isEqualToString:@"access_denied"]) {
-      // User canceled login, nothing to do here.
-      return;
-    }
+
     NSLog(@"Login error: %@", errorStr);
+
+    // User denied access to app
+    if ([errorStr isEqualToString:@"access_denied"]) {
+      errorStr = @"Access was denied to app";
+    }
+
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
                                                         object:errorStr];
     return;
