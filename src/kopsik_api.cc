@@ -125,8 +125,8 @@ void kopsik_view_item_clear(
 void *kopsik_context_init(
     const char *app_name,
     const char *app_version) {
-    poco_assert(app_name);
-    poco_assert(app_version);
+    poco_check_ptr(app_name);
+    poco_check_ptr(app_version);
 
     kopsik::Context *ctx =
         new kopsik::Context(std::string(app_name), std::string(app_version));
@@ -153,6 +153,7 @@ void kopsik_context_clear(void *context) {
     delete app(context);
 }
 
+// FIXME: create a struct for settings
 _Bool kopsik_get_settings(
     void *context,
     _Bool *out_use_idle_detection,
@@ -161,10 +162,10 @@ _Bool kopsik_get_settings(
     _Bool *out_on_top,
     _Bool *out_reminder) {
 
-    poco_assert(out_use_idle_detection);
-    poco_assert(out_menubar_timer);
-    poco_assert(out_dock_icon);
-    poco_assert(out_on_top);
+    poco_check_ptr(out_use_idle_detection);
+    poco_check_ptr(out_menubar_timer);
+    poco_check_ptr(out_dock_icon);
+    poco_check_ptr(out_on_top);
 
     bool use_idle_detection(false);
     bool menubar_timer(false);
@@ -207,6 +208,7 @@ _Bool kopsik_get_settings(
     return true;
 }
 
+// FIXME: create a struct for proxy settings
 _Bool kopsik_get_proxy_settings(
     void *context,
     _Bool *out_use_proxy,
@@ -215,11 +217,11 @@ _Bool kopsik_get_proxy_settings(
     char **out_proxy_username,
     char **out_proxy_password) {
 
-    poco_assert(out_use_proxy);
-    poco_assert(out_proxy_host);
-    poco_assert(out_proxy_port);
-    poco_assert(out_proxy_username);
-    poco_assert(out_proxy_password);
+    poco_check_ptr(out_use_proxy);
+    poco_check_ptr(out_proxy_host);
+    poco_check_ptr(out_proxy_port);
+    poco_check_ptr(out_proxy_username);
+    poco_check_ptr(out_proxy_password);
 
     bool use_proxy(false);
     kopsik::Proxy proxy;
@@ -258,15 +260,16 @@ _Bool kopsik_set_settings(
         reminder);
 }
 
+// FIXME: use struct
 _Bool kopsik_set_proxy_settings(void *context,
                                 const _Bool use_proxy,
                                 const char *proxy_host,
                                 const uint64_t proxy_port,
                                 const char *proxy_username,
                                 const char *proxy_password) {
-    poco_assert(proxy_host);
-    poco_assert(proxy_username);
-    poco_assert(proxy_password);
+    poco_check_ptr(proxy_host);
+    poco_check_ptr(proxy_username);
+    poco_check_ptr(proxy_password);
 
     kopsik::Proxy proxy;
     proxy.host = std::string(proxy_host);
@@ -285,7 +288,7 @@ _Bool kopsik_configure_proxy(
 _Bool kopsik_set_db_path(
     void *context,
     const char *path) {
-    poco_assert(path);
+    poco_check_ptr(path);
 
     std::stringstream ss;
     ss << "kopsik_set_db_path path=" << path;
@@ -295,7 +298,7 @@ _Bool kopsik_set_db_path(
 }
 
 void kopsik_set_log_path(const char *path) {
-    poco_assert(path);
+    poco_check_ptr(path);
 
     Poco::AutoPtr<Poco::SimpleFileChannel> simpleFileChannel(
         new Poco::SimpleFileChannel);
@@ -313,7 +316,7 @@ void kopsik_set_log_path(const char *path) {
 }
 
 void kopsik_set_log_level(const char *level) {
-    poco_assert(level);
+    poco_check_ptr(level);
 
     rootLogger().setLevel(level);
 }
@@ -321,7 +324,7 @@ void kopsik_set_log_level(const char *level) {
 void kopsik_set_api_url(
     void *context,
     const char *api_url) {
-    poco_assert(api_url);
+    poco_check_ptr(api_url);
 
     app(context)->SetAPIURL(std::string(api_url));
 }
@@ -329,7 +332,7 @@ void kopsik_set_api_url(
 void kopsik_set_websocket_url(
     void *context,
     const char *websocket_url) {
-    poco_assert(websocket_url);
+    poco_check_ptr(websocket_url);
 
     app(context)->SetWebSocketClientURL(websocket_url);
 }
@@ -337,7 +340,7 @@ void kopsik_set_websocket_url(
 _Bool kopsik_set_api_token(
     void *context,
     const char *api_token) {
-    poco_assert(api_token);
+    poco_check_ptr(api_token);
 
     std::stringstream ss;
     ss << "kopsik_set_api_token api_token=" << api_token;
@@ -351,7 +354,7 @@ _Bool kopsik_get_api_token(
     char *str,
     const size_t max_strlen) {
 
-    poco_assert(str);
+    poco_check_ptr(str);
     poco_assert(max_strlen);
 
     std::string token("");
@@ -367,7 +370,7 @@ _Bool kopsik_get_api_token(
 _Bool kopsik_set_logged_in_user(
     void *context,
     const char *json) {
-    poco_assert(json);
+    poco_check_ptr(json);
 
     logger().debug("kopsik_set_logged_in_user");
 
@@ -376,20 +379,14 @@ _Bool kopsik_set_logged_in_user(
 
 _Bool kopsik_login(
     void *context,
-    const char *in_email,
-    const char *in_password) {
+    const char *email,
+    const char *password) {
 
-    poco_assert(in_email);
-    poco_assert(in_password);
+    poco_check_ptr(email);
+    poco_check_ptr(password);
 
-    std::stringstream ss;
-    ss << "kopik_login email=" << in_email;
-    logger().debug(ss.str());
-
-    std::string email(in_email);
-    std::string password(in_password);
-
-    return app(context)->Login(email, password);
+    return app(context)->Login(std::string(email),
+                               std::string(password));
 }
 
 _Bool kopsik_logout(
@@ -413,7 +410,7 @@ _Bool kopsik_user_can_see_billable_flag(
     const char *guid,
     _Bool *can_see) {
 
-    poco_assert(can_see);
+    poco_check_ptr(can_see);
     poco_check_ptr(guid);
 
     *can_see = false;
@@ -429,7 +426,7 @@ _Bool kopsik_user_can_add_projects(
     const uint64_t workspace_id,
     _Bool *can_add) {
 
-    poco_assert(can_add);
+    poco_check_ptr(can_add);
 
     *can_add = false;
     if (app(context)->CanAddProjects(workspace_id)) {
@@ -443,7 +440,7 @@ _Bool kopsik_user_is_logged_in(
     void *context,
     _Bool *is_logged_in) {
 
-    poco_assert(is_logged_in);
+    poco_check_ptr(is_logged_in);
 
     *is_logged_in = false;
     if (app(context)->UserIsLoggedIn()) {
@@ -457,7 +454,7 @@ _Bool kopsik_users_default_wid(
     void *context,
     uint64_t *default_wid) {
 
-    poco_assert(default_wid);
+    poco_check_ptr(default_wid);
 
     *default_wid =
         static_cast<unsigned int>(app(context)->UsersDefaultWID());
@@ -509,7 +506,7 @@ _Bool kopsik_autocomplete_items(
     const _Bool include_tasks,
     const _Bool include_projects) {
 
-    poco_assert(first);
+    poco_check_ptr(first);
 
     logger().debug("kopsik_autocomplete_items");
 
@@ -560,7 +557,7 @@ _Bool kopsik_tags(
     void *context,
     KopsikViewItem **first) {
 
-    poco_assert(first);
+    poco_check_ptr(first);
     poco_assert(!*first);
 
     std::vector<std::string> tags = app(context)->Tags();
@@ -582,7 +579,7 @@ _Bool kopsik_workspaces(
     void *context,
     KopsikViewItem **first) {
 
-    poco_assert(first);
+    poco_check_ptr(first);
     poco_assert(!*first);
 
     std::vector<kopsik::Workspace *> workspaces = app(context)->Workspaces();
@@ -605,7 +602,7 @@ _Bool kopsik_clients(
     const uint64_t workspace_id,
     KopsikViewItem **first) {
 
-    poco_assert(first);
+    poco_check_ptr(first);
     poco_assert(!*first);
 
     std::vector<kopsik::Client *> clients = app(context)->Clients(workspace_id);
@@ -630,7 +627,7 @@ _Bool kopsik_add_project(
     const char *project_name,
     const _Bool is_private) {
 
-    poco_assert(time_entry_guid);
+    poco_check_ptr(time_entry_guid);
 
     kopsik::Project *p = 0;
     if (!app(context)->AddProject(
@@ -642,7 +639,7 @@ _Bool kopsik_add_project(
         return false;
     }
 
-    poco_assert(p);
+    poco_check_ptr(p);
 
     return kopsik_set_time_entry_project(
         context,
@@ -724,8 +721,9 @@ _Bool kopsik_parse_time(
     const char *input,
     int *hours,
     int *minutes) {
-    poco_assert(hours);
-    poco_assert(minutes);
+    poco_check_ptr(hours);
+    poco_check_ptr(minutes);
+
     *hours = 0;
     *minutes = 0;
 
@@ -741,8 +739,11 @@ void kopsik_format_duration_in_seconds_hhmmss(
     const int64_t duration_in_seconds,
     char *out_str,
     const size_t max_strlen) {
-    poco_assert(out_str);
+
+    poco_check_ptr(out_str);
+
     poco_assert(max_strlen);
+
     std::string formatted =
         kopsik::Formatter::FormatDurationInSecondsHHMMSS(duration_in_seconds);
     strncpy(out_str, formatted.c_str(), max_strlen);
@@ -752,8 +753,11 @@ void kopsik_format_duration_in_seconds_hhmm(
     const int64_t duration_in_seconds,
     char *out_str,
     const size_t max_strlen) {
-    poco_assert(out_str);
+
+    poco_check_ptr(out_str);
+
     poco_assert(max_strlen);
+
     std::string formatted = kopsik::Formatter::FormatDurationInSecondsHHMM(
         duration_in_seconds);
     strncpy(out_str, formatted.c_str(), max_strlen);
@@ -789,12 +793,8 @@ _Bool kopsik_time_entry_view_item_by_guid(
     _Bool *was_found) {
 
     poco_check_ptr(guid);
-    poco_assert(view_item);
-    poco_assert(was_found);
-
-    std::stringstream ss;
-    ss << "kopsik_time_entry_view_item_by_guid guid=" << guid;
-    logger().trace(ss.str());
+    poco_check_ptr(view_item);
+    poco_check_ptr(was_found);
 
     std::string GUID(guid);
     poco_assert(!GUID.empty());
@@ -863,7 +863,7 @@ _Bool kopsik_set_time_entry_duration(
     const char *value) {
 
     poco_check_ptr(guid);
-    poco_assert(value);
+    poco_check_ptr(value);
 
     std::stringstream ss;
     ss  << "kopsik_set_time_entry_duration guid=" << guid
@@ -899,7 +899,7 @@ _Bool kopsik_set_time_entry_start_iso_8601(
     const char *value) {
 
     poco_check_ptr(guid);
-    poco_assert(value);
+    poco_check_ptr(value);
 
     std::stringstream ss;
     ss  << "kopsik_set_time_entry_start_iso_8601 guid=" << guid
@@ -916,7 +916,7 @@ _Bool kopsik_set_time_entry_end_iso_8601(
     const char *value) {
 
     poco_check_ptr(guid);
-    poco_assert(value);
+    poco_check_ptr(value);
 
     std::stringstream ss;
     ss  << "kopsik_set_time_entry_end_iso_8601 guid=" << guid
@@ -934,7 +934,7 @@ _Bool kopsik_set_time_entry_tags(
     const char *value) {
 
     poco_check_ptr(guid);
-    poco_assert(value);
+    poco_check_ptr(value);
 
     std::stringstream ss;
     ss  << "kopsik_set_time_entry_tags guid=" << guid
@@ -965,7 +965,7 @@ _Bool kopsik_set_time_entry_description(
     const char *guid,
     const char *value) {
     poco_check_ptr(guid);
-    poco_assert(value);
+    poco_check_ptr(value);
 
     std::stringstream ss;
     ss  << "kopsik_set_time_entry_description guid=" << guid
@@ -1000,8 +1000,8 @@ _Bool kopsik_running_time_entry_view_item(
     KopsikTimeEntryViewItem *out_item,
     _Bool *out_is_tracking) {
 
-    poco_assert(out_item);
-    poco_assert(out_is_tracking);
+    poco_check_ptr(out_item);
+    poco_check_ptr(out_is_tracking);
 
     logger().debug("kopsik_running_time_entry_view_item");
 
@@ -1030,7 +1030,7 @@ _Bool kopsik_time_entry_view_items(
     void *context,
     KopsikTimeEntryViewItem **first) {
 
-    poco_assert(first);
+    poco_check_ptr(first);
 
     logger().debug("kopsik_time_entry_view_items");
 
@@ -1084,11 +1084,10 @@ _Bool kopsik_duration_for_date_header(
     char *duration,
     const size_t duration_len) {
 
-    poco_assert(duration);
-    poco_assert(duration_len);
-    poco_assert(date);
+    poco_check_ptr(duration);
+    poco_check_ptr(date);
 
-    logger().debug("kopsik_duration_for_date_header");
+    poco_assert(duration_len);
 
     int sum(0);
     if (!app(context)->TrackedPerDateHeader(std::string(date), &sum)) {
@@ -1164,7 +1163,7 @@ _Bool kopsik_set_update_channel(
     void *context,
     const char *update_channel) {
 
-    poco_assert(update_channel);
+    poco_check_ptr(update_channel);
 
     return app(context)->SaveUpdateChannel(std::string(update_channel));
 }
@@ -1174,7 +1173,8 @@ _Bool kopsik_get_update_channel(
     char *update_channel,
     const size_t update_channel_len) {
 
-    poco_assert(update_channel);
+    poco_check_ptr(update_channel);
+
     poco_assert(update_channel_len);
 
     std::string s("");
