@@ -414,7 +414,7 @@ _Bool kopsik_user_can_see_billable_flag(
     _Bool *can_see) {
 
     poco_assert(can_see);
-    poco_assert(guid);
+    poco_check_ptr(guid);
 
     *can_see = false;
     if (app(context)->CanSeeBillable(std::string(guid))) {
@@ -788,7 +788,7 @@ _Bool kopsik_time_entry_view_item_by_guid(
     KopsikTimeEntryViewItem *view_item,
     _Bool *was_found) {
 
-    poco_assert(guid);
+    poco_check_ptr(guid);
     poco_assert(view_item);
     poco_assert(was_found);
 
@@ -820,7 +820,7 @@ _Bool kopsik_continue(
     void *context,
     const char *guid) {
 
-    poco_assert(guid);
+    poco_check_ptr(guid);
 
     std::stringstream ss;
     ss << "kopsik_continue guid=" << guid;
@@ -846,7 +846,7 @@ _Bool kopsik_delete_time_entry(
     void *context,
     const char *guid) {
 
-    poco_assert(guid);
+    poco_check_ptr(guid);
 
     std::stringstream ss;
     ss << "kopsik_delete_time_entry guid=" << guid;
@@ -862,7 +862,7 @@ _Bool kopsik_set_time_entry_duration(
     const char *guid,
     const char *value) {
 
-    poco_assert(guid);
+    poco_check_ptr(guid);
     poco_assert(value);
 
     std::stringstream ss;
@@ -882,7 +882,7 @@ _Bool kopsik_set_time_entry_project(
     const uint64_t project_id,
     const char *project_guid) {
 
-    poco_assert(guid);
+    poco_check_ptr(guid);
     std::string pguid("");
     if (project_guid) {
         pguid = std::string(project_guid);
@@ -898,7 +898,7 @@ _Bool kopsik_set_time_entry_start_iso_8601(
     const char *guid,
     const char *value) {
 
-    poco_assert(guid);
+    poco_check_ptr(guid);
     poco_assert(value);
 
     std::stringstream ss;
@@ -915,7 +915,7 @@ _Bool kopsik_set_time_entry_end_iso_8601(
     const char *guid,
     const char *value) {
 
-    poco_assert(guid);
+    poco_check_ptr(guid);
     poco_assert(value);
 
     std::stringstream ss;
@@ -933,7 +933,7 @@ _Bool kopsik_set_time_entry_tags(
     const char *guid,
     const char *value) {
 
-    poco_assert(guid);
+    poco_check_ptr(guid);
     poco_assert(value);
 
     std::stringstream ss;
@@ -950,7 +950,7 @@ _Bool kopsik_set_time_entry_billable(
     const char *guid,
     const _Bool value) {
 
-    poco_assert(guid);
+    poco_check_ptr(guid);
 
     std::stringstream ss;
     ss  << "kopsik_set_time_entry_billable guid=" << guid
@@ -964,7 +964,7 @@ _Bool kopsik_set_time_entry_description(
     void *context,
     const char *guid,
     const char *value) {
-    poco_assert(guid);
+    poco_check_ptr(guid);
     poco_assert(value);
 
     std::stringstream ss;
