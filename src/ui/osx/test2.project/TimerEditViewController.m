@@ -26,6 +26,7 @@
 @property TimeEntryViewItem *time_entry;
 @property NSTimer *timerAutocompleteRendering;
 @property NSTimer *timer;
+@property BOOL *constraintsAdded;
 @end
 
 @implementation TimerEditViewController
@@ -70,6 +71,7 @@ extern void *ctx;
                                                   selector:@selector(timerFired:)
                                                   userInfo:nil
                                                    repeats:YES];
+      self.constraintsAdded = false;
     }
     
     return self;
@@ -284,9 +286,23 @@ extern void *ctx;
   // If a project is assigned, then project name
   // is visible.
   if (self.time_entry.ProjectID || self.time_entry.ProjectGUID) {
+    if (![self.projectComboConstraint count]) {
+      [self createConstraints];
+    }
+    if (!self.constraintsAdded) {
+        [self.view addConstraints:self.projectComboConstraint];
+        [self.view addConstraints:self.projectLabelConstraint];
+        self.constraintsAdded = true;
+    }
+
     [self.projectTextField setHidden:NO];
   } else {
     [self.projectTextField setHidden:YES];
+    if (self.constraintsAdded) {
+          [self.view removeConstraints:self.projectComboConstraint];
+          [self.view removeConstraints:self.projectLabelConstraint];
+          self.constraintsAdded = false;
+    }
   }
   
   // Display project name
@@ -319,6 +335,21 @@ extern void *ctx;
 
 - (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)aString {
   return [self.autocompleteDataSource indexOfKey:aString];
+}
+
+- (void)createConstraints {
+    NSLog(@"Create constraints");
+  NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_descriptionComboBox, _projectTextField);
+  self.projectComboConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_descriptionComboBox]-1@1000-[_projectTextField]"
+                                           options:0
+                                           metrics:nil
+                                             views:viewsDict];
+
+  NSDictionary *viewsDict_ = NSDictionaryOfVariableBindings(_descriptionLabel, _projectTextField);
+  self.projectLabelConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_descriptionLabel]-1@1000-[_projectTextField]"
+                                           options:0
+                                           metrics:nil
+                                             views:viewsDict_];
 }
 
 - (void)clear {

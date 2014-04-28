@@ -19,6 +19,8 @@
 @property IBOutlet NSTextField *projectTextField;
 @property IBOutlet NSTextFieldClickable *descriptionLabel;
 @property IBOutlet NSBox *startButtonBox;
+@property NSArray *projectComboConstraint;
+@property NSArray *projectLabelConstraint;
 - (IBAction)startButtonClicked:(id)sender;
 - (IBAction)descriptionComboBoxChanged:(id)sender;
 - (IBAction)durationFieldChanged:(id)sender;
