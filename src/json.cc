@@ -588,6 +588,7 @@ void loadUserTimeEntryFromJSONNode(
     }
     model->SetUID(user->ID());
     model->LoadFromJSONNode(data);
+    model->EnsureGUID();
 }
 
 void LoadUserWorkspacesFromJSONNode(
