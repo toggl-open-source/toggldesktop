@@ -18,16 +18,15 @@ class Formatter {
         Task * const,
         Project * const,
         Client * const);
+
     static std::string JoinTaskNameReverse(
         Task * const,
         Project * const,
         Client * const);
+
     static std::string FormatDurationInSeconds(
         const Poco::Int64 value,
         const std::string format);
-
-    static std::string EscapeTabsAndLineBreaks(
-        const std::string value);
 
     static bool ParseTimeInput(
         const std::string value,
