@@ -39,7 +39,7 @@
                                         <button toolTip="Start" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Fx-4L-YGZ">
                                             <rect key="frame" x="11" y="6" width="39" height="38"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="round" bezelStyle="circular" image="NSGoRightTemplate" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="jVO-3V-i8I">
+                                            <buttonCell key="cell" type="round" bezelStyle="circular" image="icon-start-green" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="jVO-3V-i8I">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                                 <string key="keyEquivalent" base64-UTF8="YES">
@@ -174,6 +174,6 @@ DQ
         </customView>
     </objects>
     <resources>
-        <image name="NSGoRightTemplate" width="9" height="9"/>
+        <image name="icon-start-green" width="6.5" height="9"/>
     </resources>
 </document>
