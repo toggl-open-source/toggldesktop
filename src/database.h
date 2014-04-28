@@ -204,10 +204,10 @@ class Database {
 
     Poco::Logger &logger() const;
 
-    Poco::Data::Session *session;
-    std::string desktop_id_;
+    Poco::Mutex session_m_;
+    Poco::Data::Session *session_;
 
-    Poco::Mutex mutex_;
+    std::string desktop_id_;
 };
 
 }  // namespace kopsik
