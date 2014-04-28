@@ -124,6 +124,9 @@ class BaseModel {
     virtual bool DuplicateResource(const kopsik::error) const {
         return false;
     }
+    virtual bool ResourceCannotBeCreated(const kopsik::error) const {
+        return false;
+    }
     virtual bool ResolveError(const kopsik::error) {
         return false;
     }

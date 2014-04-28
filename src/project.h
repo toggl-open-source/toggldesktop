@@ -76,11 +76,12 @@ class Project : public BaseModel {
     void LoadFromJSONNode(JSONNODE * const);
     JSONNODE *SaveToJSONNode() const;
 
-    bool DuplicateResource(const kopsik::error err) const;
+    bool DuplicateResource(const kopsik::error) const;
+    bool ResourceCannotBeCreated(const kopsik::error) const;
     bool ResolveError(const kopsik::error);
 
  private:
-    bool userCannotAddOrEditProjectsInWorkspace(const error err) const;
+    bool userCannotAddOrEditProjectsInWorkspace(const error) const;
 
     Poco::UInt64 wid_;
     Poco::UInt64 cid_;

@@ -129,7 +129,7 @@ error BaseModel::ApplyBatchUpdateResult(
 
     kopsik::error err = update->Error();
     if (err != kopsik::noError) {
-        if (DuplicateResource(err)) {
+        if (DuplicateResource(err) || ResourceCannotBeCreated(err)) {
             MarkAsDeletedOnServer();
             return noError;
         }
