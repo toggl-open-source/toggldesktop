@@ -34,9 +34,11 @@ void WebSocketClient::Start(
     void *ctx,
     const std::string api_token,
     WebSocketMessageCallback on_websocket_message) {
-    poco_assert(ctx);
+
+    poco_check_ptr(ctx);
+    poco_check_ptr(on_websocket_message);
+
     poco_assert(!api_token.empty());
-    poco_assert(on_websocket_message);
 
     if (activity_.isRunning()) {
         return;
@@ -137,16 +139,17 @@ void WebSocketClient::authenticate() {
 
 std::string WebSocketClient::parseWebSocketMessageType(
     const std::string json) {
-    poco_assert(!json.empty());
-    std::string type("data");
 
+    if (json.empty()) {
+        return "";
+    }
     if (!IsValidJSON(json)) {
         return "";
     }
 
-    const char *str = json.c_str();
+    std::string type("data");
 
-    JSONNODE *root = json_parse(str);
+    JSONNODE *root = json_parse(json.c_str());
     JSONNODE_ITERATOR i = json_begin(root);
     JSONNODE_ITERATOR e = json_end(root);
     while (i != e) {

@@ -90,7 +90,7 @@ void Context::StartEvents() {
     error err = verifyCallbacks();
     if (err != noError) {
         logger().error(err);
-        poco_assert(on_error_callback_);
+        poco_check_ptr(on_error_callback_);
         on_error_callback_(err.c_str());
         return;
     }
@@ -321,8 +321,12 @@ void Context::onSwitchWebSocketOff(Poco::Util::TimerTask& task) {  // NOLINT
 void on_websocket_message(
     void *context,
     std::string json) {
-    poco_assert(context);
-    poco_assert(!json.empty());
+
+    poco_check_ptr(context);
+
+    if (json.empty()) {
+        return;
+    }
 
     Context *ctx = reinterpret_cast<Context *>(context);
     ctx->LoadUpdateFromJSONString(json);
@@ -937,7 +941,8 @@ Poco::UInt64 Context::UsersDefaultWID() const {
 
 void Context::CollectPushableTimeEntries(
     std::vector<kopsik::TimeEntry *> *models) const {
-    poco_assert(models);
+
+    poco_check_ptr(models);
 
     if (!user_) {
         return;
@@ -979,7 +984,9 @@ std::vector<kopsik::Workspace *> Context::Workspaces() const {
 
 std::vector<kopsik::Client *> Context::Clients(
     const Poco::UInt64 workspace_id) const {
+
     poco_assert(workspace_id);
+
     std::vector<kopsik::Client *> result;
     if (!user_) {
         logger().warning("User logged out, cannot fetch clients");
@@ -1005,7 +1012,8 @@ _Bool Context::Start(
     const Poco::UInt64 task_id,
     const Poco::UInt64 project_id,
     kopsik::TimeEntry **result) {
-    poco_assert(result);
+
+    poco_check_ptr(result);
 
     if (!user_) {
         logger().warning("Cannot start tracking, user logged out");
@@ -1013,14 +1021,14 @@ _Bool Context::Start(
     }
 
     *result = user_->Start(description, duration, task_id, project_id);
-    poco_assert(*result);
 
     return exportErrorState(save());
 }
 
 _Bool Context::ContinueLatest(
     kopsik::TimeEntry **result) {
-    poco_assert(result);
+
+    poco_check_ptr(result);
 
     if (!user_) {
         logger().warning("Cannot continue tracking, user logged out");
@@ -1043,7 +1051,8 @@ _Bool Context::ContinueLatest(
 _Bool Context::Continue(
     const std::string GUID,
     kopsik::TimeEntry **result) {
-    poco_assert(result);
+
+    poco_check_ptr(result);
 
     if (!user_) {
         logger().warning("Cannot continue time entry, user logged out");
@@ -1301,7 +1310,7 @@ _Bool Context::StopAt(
     const Poco::Int64 at,
     kopsik::TimeEntry **result) {
 
-    poco_assert(result);
+    poco_check_ptr(result);
 
     if (!user_) {
         logger().warning("Cannot stop time entry, user logged out");
@@ -1369,7 +1378,9 @@ _Bool Context::TimeEntries(
         user_->related.TimeEntries.begin();
             it != user_->related.TimeEntries.end(); it++) {
         kopsik::TimeEntry *te = *it;
+
         poco_assert(!te->GUID().empty());
+
         if (te->DurationInSeconds() < 0) {
             continue;
         }
@@ -1426,9 +1437,10 @@ void Context::ProjectLabelAndColorCode(
     kopsik::TimeEntry *te,
     std::string *project_and_task_label,
     std::string *color_code) const {
-    poco_assert(te);
-    poco_assert(project_and_task_label);
-    poco_assert(color_code);
+
+    poco_check_ptr(te);
+    poco_check_ptr(project_and_task_label);
+    poco_check_ptr(color_code);
 
     if (!user_) {
         return;
@@ -1497,7 +1509,8 @@ bool CompareAutocompleteItems(
 // Description - Task. Project. Client
 void Context::getTimeEntryAutocompleteItems(
     std::vector<AutocompleteItem> *list) const {
-    poco_assert(list);
+
+    poco_check_ptr(list);
 
     if (!user_) {
         logger().warning("User logged out, cannot fetch autocomplete items");
@@ -1569,7 +1582,8 @@ void Context::getTimeEntryAutocompleteItems(
 // Task. Project. Client
 void Context::getTaskAutocompleteItems(
     std::vector<AutocompleteItem> *list) const {
-    poco_assert(list);
+
+    poco_check_ptr(list);
 
     if (!user_) {
         logger().warning("User logged out, cannot fetch autocomplete items");
@@ -1621,7 +1635,8 @@ void Context::getTaskAutocompleteItems(
 // Project. Client
 void Context::getProjectAutocompleteItems(
     std::vector<AutocompleteItem> *list) const {
-    poco_assert(list);
+
+    poco_check_ptr(list);
 
     if (!user_) {
         logger().warning("User logged out, cannot fetch autocomplete items");
@@ -1662,7 +1677,9 @@ void Context::AutocompleteItems(
     const bool include_time_entries,
     const bool include_tasks,
     const bool include_projects) const {
-    poco_assert(list);
+
+    poco_check_ptr(list);
+
     if (!user_) {
         return;
     }
@@ -1688,7 +1705,8 @@ _Bool Context::AddProject(
     const std::string project_name,
     const _Bool is_private,
     Project **result) {
-    poco_assert(result);
+
+    poco_check_ptr(result);
 
     if (!user_) {
         logger().warning("Cannot add project, user logged out");
@@ -1703,7 +1721,6 @@ _Bool Context::AddProject(
 
     *result = user_->AddProject(
         workspace_id, client_id, project_name, is_private);
-    poco_assert(*result);
 
     return exportErrorState(save());
 }
@@ -1712,7 +1729,9 @@ kopsik::HTTPSClient Context::get_https_client() {
     kopsik::HTTPSClient result(api_url_, app_name_, app_version_);
     bool use_proxy(false);
     kopsik::Proxy proxy;
+
     poco_assert(noError == db_->LoadProxySettings(&use_proxy, &proxy));
+
     if (use_proxy) {
         result.SetProxy(proxy);
         logger().debug("Using proxy to connect: " + proxy.String());

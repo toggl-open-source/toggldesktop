@@ -68,7 +68,7 @@ TimeEntry *User::Start(
     time_t now = time(0);
 
     TimeEntry *te = new TimeEntry();
-    te->SetDescription(Formatter::EscapeTabsAndLineBreaks(description));
+    te->SetDescription(description);
     te->SetUID(ID());
     te->SetPID(project_id);
     te->SetTID(task_id);
@@ -125,7 +125,7 @@ kopsik::error User::Continue(
     const std::string GUID,
     TimeEntry **result) {
 
-    poco_assert(result);
+    poco_check_ptr(result);
 
     Stop();
     TimeEntry *existing = GetTimeEntryByGUID(GUID);
@@ -382,7 +382,9 @@ Tag *User::GetTagByID(const Poco::UInt64 id) {
 void User::CollectPushableTimeEntries(
     std::vector<TimeEntry *> *result,
     std::map<std::string, BaseModel *> *models) const {
-    poco_assert(result);
+
+    poco_check_ptr(result);
+
     for (std::vector<TimeEntry *>::const_iterator it =
         related.TimeEntries.begin();
             it != related.TimeEntries.end();
@@ -402,7 +404,9 @@ void User::CollectPushableTimeEntries(
 void User::CollectPushableProjects(
     std::vector<Project *> *result,
     std::map<std::string, BaseModel *> *models) const {
-    poco_assert(result);
+
+    poco_check_ptr(result);
+
     for (std::vector<Project *>::const_iterator it =
         related.Projects.begin();
             it != related.Projects.end();
