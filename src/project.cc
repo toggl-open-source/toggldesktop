@@ -102,7 +102,7 @@ void Project::SetCID(const Poco::UInt64 value) {
 }
 
 void Project::LoadFromJSONNode(JSONNODE * const data) {
-    poco_assert(data);
+    poco_check_ptr(data);
 
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);

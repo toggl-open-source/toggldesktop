@@ -90,7 +90,8 @@ Database::~Database() {
 error Database::DeleteUser(
     User *model,
     const bool with_related_data) {
-    poco_assert(model);
+
+    poco_check_ptr(model);
 
     error err = deleteFromTable("users", model->LocalID());
     if (err != noError) {
@@ -128,7 +129,9 @@ error Database::DeleteUser(
 error Database::deleteAllFromTableByUID(
     const std::string table_name,
     const Poco::Int64 UID) {
-    poco_assert(session);
+
+    poco_check_ptr(session);
+
     poco_assert(UID > 0);
     poco_assert(!table_name.empty());
 
@@ -149,8 +152,8 @@ error Database::deleteAllFromTableByUID(
 }
 
 error Database::journalMode(std::string *mode) {
-    poco_assert(session);
-    poco_assert(mode);
+    poco_check_ptr(session);
+    poco_check_ptr(mode);
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
@@ -169,7 +172,8 @@ error Database::journalMode(std::string *mode) {
 }
 
 error Database::setJournalMode(const std::string mode) {
-    poco_assert(session);
+    poco_check_ptr(session);
+
     poco_assert(!mode.empty());
 
     Poco::Mutex::ScopedLock lock(mutex_);
@@ -194,7 +198,8 @@ Poco::Logger &Database::logger() const {
 error Database::deleteFromTable(
     const std::string table_name,
     const Poco::Int64 local_id) {
-    poco_assert(session);
+    poco_check_ptr(session);
+
     poco_assert(!table_name.empty());
 
     if (!local_id) {
@@ -223,7 +228,7 @@ error Database::deleteFromTable(
 }
 
 error Database::last_error(const std::string was_doing) {
-    poco_assert(session);
+    poco_check_ptr(session);
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
@@ -246,7 +251,8 @@ std::string Database::GenerateGUID() {
 error Database::LoadCurrentUser(
     User *user,
     const bool with_related_data) {
-    poco_assert(user);
+
+    poco_check_ptr(user);
 
     std::string api_token("");
     error err = CurrentAPIToken(&api_token);
@@ -265,12 +271,13 @@ error Database::LoadSettings(
     bool *dock_icon,
     bool *on_top,
     bool *reminder) {
-    poco_assert(session);
-    poco_assert(use_idle_detection);
-    poco_assert(menubar_timer);
-    poco_assert(dock_icon);
-    poco_assert(on_top);
-    poco_assert(reminder);
+
+    poco_check_ptr(session);
+    poco_check_ptr(use_idle_detection);
+    poco_check_ptr(menubar_timer);
+    poco_check_ptr(dock_icon);
+    poco_check_ptr(on_top);
+    poco_check_ptr(reminder);
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
@@ -298,9 +305,10 @@ error Database::LoadSettings(
 error Database::LoadProxySettings(
     bool *use_proxy,
     Proxy *proxy) {
-    poco_assert(session);
-    poco_assert(use_proxy);
-    poco_assert(proxy);
+
+    poco_check_ptr(session);
+    poco_check_ptr(use_proxy);
+    poco_check_ptr(proxy);
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
@@ -331,7 +339,8 @@ error Database::SaveSettings(
     const bool dock_icon,
     const bool on_top,
     const bool reminder) {
-    poco_assert(session);
+
+    poco_check_ptr(session);
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
@@ -361,7 +370,8 @@ error Database::SaveSettings(
 error Database::SaveProxySettings(
     const bool use_proxy,
     const Proxy *proxy) {
-    poco_assert(session);
+
+    poco_check_ptr(session);
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
@@ -390,8 +400,9 @@ error Database::SaveProxySettings(
 
 error Database::LoadUpdateChannel(
     std::string *update_channel) {
-    poco_assert(session);
-    poco_assert(update_channel);
+
+    poco_check_ptr(session);
+    poco_check_ptr(update_channel);
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
@@ -412,7 +423,8 @@ error Database::LoadUpdateChannel(
 
 error Database::SaveUpdateChannel(
     const std::string update_channel) {
-    poco_assert(session);
+
+    poco_check_ptr(session);
 
     if (update_channel != "stable" &&
             update_channel != "beta" &&
@@ -441,8 +453,10 @@ error Database::LoadUserByAPIToken(
     const std::string api_token,
     User *model,
     const bool with_related_data) {
-    poco_assert(session);
-    poco_assert(model);
+
+    poco_check_ptr(session);
+    poco_check_ptr(model);
+
     poco_assert(!api_token.empty());
 
     Poco::Mutex::ScopedLock lock(mutex_);
@@ -509,8 +523,10 @@ error Database::LoadUserByID(
     const Poco::UInt64 UID,
     User *user,
     const bool with_related_data) {
-    poco_assert(user);
-    poco_assert(session);
+
+    poco_check_ptr(user);
+    poco_check_ptr(session);
+
     poco_assert(UID > 0);
 
     Poco::Mutex::ScopedLock lock(mutex_);
@@ -595,8 +611,10 @@ error Database::LoadUserByID(
 error Database::loadWorkspaces(
     const Poco::UInt64 UID,
     std::vector<Workspace *> *list) {
+
     poco_assert(UID > 0);
-    poco_assert(list);
+
+    poco_check_ptr(list);
 
     list->clear();
 
@@ -646,8 +664,10 @@ error Database::loadWorkspaces(
 error Database::loadClients(
     const Poco::UInt64 UID,
     std::vector<Client *> *list) {
+
     poco_assert(UID > 0);
-    poco_assert(list);
+
+    poco_check_ptr(list);
 
     list->clear();
 
@@ -695,8 +715,10 @@ error Database::loadClients(
 error Database::loadProjects(
     const Poco::UInt64 UID,
     std::vector<Project *> *list) {
+
     poco_assert(UID > 0);
-    poco_assert(list);
+
+    poco_check_ptr(list);
 
     list->clear();
 
@@ -748,8 +770,10 @@ error Database::loadProjects(
 error Database::loadTasks(
     const Poco::UInt64 UID,
     std::vector<Task *> *list) {
+
     poco_assert(UID > 0);
-    poco_assert(list);
+
+    poco_check_ptr(list);
 
     list->clear();
 
@@ -796,8 +820,10 @@ error Database::loadTasks(
 error Database::loadTags(
     const Poco::UInt64 UID,
     std::vector<Tag *> *list) {
+
     poco_assert(UID > 0);
-    poco_assert(list);
+
+    poco_check_ptr(list);
 
     list->clear();
 
@@ -844,8 +870,10 @@ error Database::loadTags(
 error Database::loadTimeEntries(
     const Poco::UInt64 UID,
     std::vector<TimeEntry *> *list) {
+
     poco_assert(UID > 0);
-    poco_assert(list);
+
+    poco_check_ptr(list);
 
     list->clear();
 
@@ -893,8 +921,10 @@ error Database::loadTimeEntries(
 error Database::loadTimeEntriesFromSQLStatement(
     Poco::Data::Statement *select,
     std::vector<TimeEntry *> *list) {
-    poco_assert(select);
-    poco_assert(list);
+
+    poco_check_ptr(select);
+    poco_check_ptr(list);
+
     try {
         Poco::Data::RecordSet rs(*select);
         while (!select->done()) {
@@ -942,9 +972,11 @@ error Database::saveRelatedModels(
     const std::string table_name,
     std::vector<T *> *list,
     std::vector<ModelChange> *changes) {
+
     poco_assert(UID > 0);
-    poco_assert(list);
-    poco_assert(changes);
+
+    poco_check_ptr(list);
+    poco_check_ptr(changes);
 
     typedef typename std::vector<T *>::iterator iterator;
 
@@ -986,9 +1018,10 @@ typedef kopsik::error (Database::*saveModel)(
 error Database::saveModel(
     TimeEntry *model,
     std::vector<ModelChange> *changes) {
-    poco_assert(model);
-    poco_assert(session);
-    poco_assert(changes);
+
+    poco_check_ptr(model);
+    poco_check_ptr(session);
+    poco_check_ptr(changes);
 
     // Time entries need to have a GUID,
     // we expect it everywhere in the UI
@@ -1185,8 +1218,9 @@ error Database::saveModel(
 error Database::saveModel(
     Workspace *model,
     std::vector<ModelChange> *changes) {
-    poco_assert(model);
-    poco_assert(session);
+
+    poco_check_ptr(model);
+    poco_check_ptr(session);
 
     if (model->LocalID() && !model->Dirty()) {
         return noError;
@@ -1268,8 +1302,9 @@ error Database::saveModel(
 error Database::saveModel(
     Client *model,
     std::vector<ModelChange> *changes) {
-    poco_assert(model);
-    poco_assert(session);
+
+    poco_check_ptr(model);
+    poco_check_ptr(session);
 
     if (model->LocalID() && !model->Dirty()) {
         return noError;
@@ -1367,8 +1402,9 @@ error Database::saveModel(
 error Database::saveModel(
     Project *model,
     std::vector<ModelChange> *changes) {
-    poco_assert(model);
-    poco_assert(session);
+
+    poco_check_ptr(model);
+    poco_check_ptr(session);
 
     // Generate GUID only for locally-created
     // projects. User cannot update existing
@@ -1584,8 +1620,9 @@ error Database::saveModel(
 error Database::saveModel(
     Task *model,
     std::vector<ModelChange> *changes) {
-    poco_assert(model);
-    poco_assert(session);
+
+    poco_check_ptr(model);
+    poco_check_ptr(session);
 
     if (model->LocalID() && !model->Dirty()) {
         return noError;
@@ -1661,8 +1698,9 @@ error Database::saveModel(
 error Database::saveModel(
     Tag *model,
     std::vector<ModelChange> *changes    ) {
-    poco_assert(model);
-    poco_assert(session);
+
+    poco_check_ptr(model);
+    poco_check_ptr(session);
 
     if (model->LocalID() && !model->Dirty()) {
         return noError;
@@ -1766,8 +1804,9 @@ error Database::SaveUser(
         logger().warning("Cannot save user, user is logged out");
         return noError;
     }
-    poco_assert(session);
-    poco_assert(changes);
+
+    poco_check_ptr(session);
+    poco_check_ptr(changes);
 
     Poco::Stopwatch stopwatch;
     stopwatch.start();
@@ -1999,7 +2038,7 @@ error Database::SaveUser(
 }
 
 error Database::initialize_tables() {
-    poco_assert(session);
+    poco_check_ptr(session);
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
@@ -2520,8 +2559,8 @@ error Database::initialize_tables() {
 }
 
 error Database::CurrentAPIToken(std::string *token) {
-    poco_assert(session);
-    poco_assert(token);
+    poco_check_ptr(session);
+    poco_check_ptr(token);
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
@@ -2542,7 +2581,7 @@ error Database::CurrentAPIToken(std::string *token) {
 }
 
 error Database::ClearCurrentAPIToken() {
-    poco_assert(session);
+    poco_check_ptr(session);
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
@@ -2559,7 +2598,7 @@ error Database::ClearCurrentAPIToken() {
 }
 
 error Database::SetCurrentAPIToken(const std::string &token) {
-    poco_assert(session);
+    poco_check_ptr(session);
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
@@ -2582,7 +2621,7 @@ error Database::SetCurrentAPIToken(const std::string &token) {
 }
 
 error Database::SaveDesktopID() {
-    poco_assert(session);
+    poco_check_ptr(session);
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
@@ -2604,7 +2643,9 @@ error Database::SaveDesktopID() {
 error Database::migrate(
     const std::string name,
     const std::string sql) {
-    poco_assert(session);
+
+    poco_check_ptr(session);
+
     poco_assert(!name.empty());
     poco_assert(!sql.empty());
 
@@ -2655,7 +2696,9 @@ error Database::migrate(
 
 error Database::execute(
     const std::string sql) {
-    poco_assert(session);
+
+    poco_check_ptr(session);
+
     poco_assert(!sql.empty());
 
     Poco::Mutex::ScopedLock lock(mutex_);
@@ -2805,15 +2848,19 @@ void Database::handleCreateTimelineBatchNotification(
 void Database::handleDeleteTimelineBatchNotification(
     DeleteTimelineBatchNotification* notification) {
     logger().debug("handleDeleteTimelineBatchNotification");
+
     poco_assert(!notification->batch.empty());
+
     delete_timeline_batch(notification->batch);
 }
 
 error Database::String(
     const std::string sql,
     std::string *result) {
-    poco_assert(session);
-    poco_assert(result);
+
+    poco_check_ptr(session);
+    poco_check_ptr(result);
+
     poco_assert(!sql.empty());
 
     Poco::Mutex::ScopedLock lock(mutex_);
@@ -2837,8 +2884,10 @@ error Database::String(
 error Database::UInt(
     const std::string sql,
     Poco::UInt64 *result) {
-    poco_assert(session);
-    poco_assert(result);
+
+    poco_check_ptr(session);
+    poco_check_ptr(result);
+
     poco_assert(!sql.empty());
 
     Poco::Mutex::ScopedLock lock(mutex_);

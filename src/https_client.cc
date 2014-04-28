@@ -89,9 +89,11 @@ error HTTPSClient::request(
     const std::string basic_auth_username,
     const std::string basic_auth_password,
     std::string *response_body) {
+
     poco_assert(!method.empty());
     poco_assert(!relative_url.empty());
-    poco_assert(response_body);
+
+    poco_check_ptr(response_body);
 
     *response_body = "";
 

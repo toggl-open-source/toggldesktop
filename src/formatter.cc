@@ -71,6 +71,7 @@ std::string Formatter::JoinTaskNameReverse(
 
 std::string Formatter::FormatDateWithTime(const std::time_t date) {
     poco_assert(date);
+
     Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
     return Poco::DateTimeFormatter::format(ts, "%w %d. %b %H:%M");
 }

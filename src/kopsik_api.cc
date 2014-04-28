@@ -36,7 +36,8 @@ inline Poco::Logger &rootLogger() {
 }
 
 inline kopsik::Context *app(void *context) {
-    poco_assert(context);
+    poco_check_ptr(context);
+
     return reinterpret_cast<kopsik::Context *>(context);
 }
 
