@@ -101,16 +101,6 @@ std::string Formatter::FormatDateHeader(const std::time_t date) {
     return Poco::DateTimeFormatter::format(datetime, "%w %d. %b");
 }
 
-std::string Formatter::EscapeTabsAndLineBreaks(const std::string value) {
-    std::string description(value);
-    for (size_t i = 0; i < description.length(); i++) {
-        if (description[i] == '\n' || description[i] == '\t') {
-            description[i] = ' ';
-        }
-    }
-    return description;
-}
-
 bool Formatter::ParseTimeInput(const std::string input,
                                int *hours,
                                int *minutes) {
@@ -501,7 +491,6 @@ std::string Formatter::Format8601(const std::time_t date) {
         Poco::DateTimeFormat::ISO8601_FORMAT);
 }
 
-// http://stackoverflow.com/questions/7724448/simple-json-string-escape-for-c
 std::string Formatter::EscapeJSONString(const std::string input) {
     std::ostringstream ss;
     for (std::string::const_iterator iter = input.begin();
@@ -512,19 +501,11 @@ std::string Formatter::EscapeJSONString(const std::string input) {
             ss << "\"";
             break;
         case '\b':
-            ss << "\\b";
-            break;
         case '\f':
-            ss << "\\f";
-            break;
         case '\n':
-            ss << "\\n";
-            break;
         case '\r':
-            ss << "\\r";
-            break;
         case '\t':
-            ss << "\\t";
+            ss << " ";
             break;
         default:
             ss << *iter;

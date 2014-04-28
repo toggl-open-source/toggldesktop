@@ -68,7 +68,7 @@ TimeEntry *User::Start(
     time_t now = time(0);
 
     TimeEntry *te = new TimeEntry();
-    te->SetDescription(Formatter::EscapeTabsAndLineBreaks(description));
+    te->SetDescription(description);
     te->SetUID(ID());
     te->SetPID(project_id);
     te->SetTID(task_id);
