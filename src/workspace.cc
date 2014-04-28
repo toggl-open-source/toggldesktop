@@ -48,7 +48,7 @@ bool CompareWorkspaceByName(Workspace *a, Workspace *b) {
 }
 
 void Workspace::LoadFromJSONNode(JSONNODE * const n) {
-    poco_assert(n);
+    poco_check_ptr(n);
 
     JSONNODE_ITERATOR i = json_begin(n);
     JSONNODE_ITERATOR e = json_end(n);
