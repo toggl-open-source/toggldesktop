@@ -126,5 +126,14 @@ namespace TogglDesktop
         {
             troubleBox.Visible = false;
         }
+
+        private void sendFeedbackToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void quitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }
