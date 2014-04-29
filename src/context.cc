@@ -162,6 +162,14 @@ void Context::PasswordForgot() {
     on_open_url_callback_(kLostPasswordURL);
 }
 
+void Context::OpenInBrowser() {
+    on_open_url_callback_(kTogglWebsiteURL);
+}
+
+void Context::GetSupport() {
+    on_open_url_callback_(kSupportURL);
+}
+
 _Bool Context::ConfigureProxy() {
     bool use_proxy(false);
     kopsik::Proxy proxy;

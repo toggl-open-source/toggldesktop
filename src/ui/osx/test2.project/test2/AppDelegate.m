@@ -587,15 +587,11 @@ const int kDurationStringLength = 20;
 }
 
 - (IBAction)onOpenBrowserMenuItem:(id)sender {
-  NSString *togglWebsiteURL = [NSString stringWithUTF8String:kTogglWebsiteURL];
-  [[NSWorkspace sharedWorkspace] openURL:
-   [NSURL URLWithString:togglWebsiteURL]];
+  kopsik_open_in_browser(ctx);
 }
 
 - (IBAction)onHelpMenuItem:(id)sender {
-  NSString *supportURL = [NSString stringWithUTF8String:kSupportURL];
-  [[NSWorkspace sharedWorkspace] openURL:
-   [NSURL URLWithString:supportURL]];
+  kopsik_get_support(ctx);
 }
 
 - (IBAction)onLogoutMenuItem:(id)sender {

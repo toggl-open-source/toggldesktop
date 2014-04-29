@@ -127,6 +127,8 @@ class Context {
     _Bool ClearCache();
 
     void PasswordForgot();
+    void OpenInBrowser();
+    void GetSupport();
 
     bool CanSeeBillable(const std::string GUID) const;
     bool CanAddProjects(const Poco::UInt64 workspace_id) const;

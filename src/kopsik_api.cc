@@ -153,6 +153,14 @@ void kopsik_password_forgot(void *context) {
     app(context)->PasswordForgot();
 }
 
+void kopsik_open_in_browser(void *context) {
+    app(context)->OpenInBrowser();
+}
+
+void kopsik_get_support(void *context) {
+    app(context)->GetSupport();
+}
+
 void kopsik_context_clear(void *context) {
     if (context) {
         app(context)->Shutdown();
