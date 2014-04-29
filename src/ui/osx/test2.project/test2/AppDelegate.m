@@ -203,7 +203,7 @@ const int kDurationStringLength = 20;
   
   [MASShortcut registerGlobalShortcutWithUserDefaultsKey:kPreferenceGlobalShortcutStartStop handler:^{
     if ([self.lastKnownTrackingState isEqualTo:kUIStateTimerStopped]) {
-      [self onNewMenuItem:self];
+      [self onContinueMenuItem:self];
     } else {
       [self onStopMenuItem:self];
     }
