@@ -266,12 +266,14 @@ extern void *ctx;
     [self.descriptionLabel setHidden:NO];
     [self.durationTextField setEditable:NO];
     [self.durationTextField setSelectable:NO];
+    [self.durationTextField setTextColor:[NSColor whiteColor]];
   } else {
     [self.descriptionComboBox setHidden:NO];
     [self.descriptionLabel setHidden:YES];
     [self.durationTextField setEditable:YES];
     [self.durationTextField setSelectable:YES];
     [self.durationTextField setDelegate:self.durationTextField];
+    [self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:@"#999999"]];
   }
   
   // Display description
