@@ -30,7 +30,7 @@
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kmn-TG-CZe">
                                 <rect key="frame" x="15" y="201" width="213" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="logo" id="bAv-hB-mKS"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="logo-white" id="bAv-hB-mKS"/>
                             </imageView>
                             <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oP1-rJ-O83">
                                 <rect key="frame" x="15" y="152" width="218" height="30"/>
@@ -130,6 +130,6 @@ DQ
         </customView>
     </objects>
     <resources>
-        <image name="logo" width="218" height="35"/>
+        <image name="logo-white" width="119.5" height="36"/>
     </resources>
 </document>
