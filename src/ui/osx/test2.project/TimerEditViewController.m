@@ -26,7 +26,7 @@
 @property TimeEntryViewItem *time_entry;
 @property NSTimer *timerAutocompleteRendering;
 @property NSTimer *timer;
-@property BOOL *constraintsAdded;
+@property BOOL constraintsAdded;
 @end
 
 @implementation TimerEditViewController
@@ -71,7 +71,7 @@ extern void *ctx;
                                                   selector:@selector(timerFired:)
                                                   userInfo:nil
                                                    repeats:YES];
-      self.constraintsAdded = false;
+      self.constraintsAdded = NO;
     }
     
     return self;
@@ -292,7 +292,7 @@ extern void *ctx;
     if (!self.constraintsAdded) {
         [self.view addConstraints:self.projectComboConstraint];
         [self.view addConstraints:self.projectLabelConstraint];
-        self.constraintsAdded = true;
+        self.constraintsAdded = YES;
     }
 
     [self.projectTextField setHidden:NO];
@@ -301,7 +301,7 @@ extern void *ctx;
     if (self.constraintsAdded) {
           [self.view removeConstraints:self.projectComboConstraint];
           [self.view removeConstraints:self.projectLabelConstraint];
-          self.constraintsAdded = false;
+          self.constraintsAdded = NO;
     }
   }
   
