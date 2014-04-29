@@ -21,6 +21,10 @@
 		7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7423393A1829B99C00063FA9 /* IdleNotificationWindowController.m */; };
 		7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */; };
 		7424949E17F1E3D20030121C /* UIEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 7424949D17F1E3D20030121C /* UIEvents.m */; };
+		742E5A46190F724C00C8A391 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 742E5A45190F724C00C8A391 /* Sparkle.framework */; };
+		742E5A47190F724C00C8A391 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 742E5A45190F724C00C8A391 /* Sparkle.framework */; };
+		742E5A57190F732600C8A391 /* Sparkle.framework in Resources */ = {isa = PBXBuildFile; fileRef = 742E5A45190F724C00C8A391 /* Sparkle.framework */; };
+		742E5A58190F733400C8A391 /* Sparkle.framework in Resources */ = {isa = PBXBuildFile; fileRef = 742E5A45190F724C00C8A391 /* Sparkle.framework */; };
 		7430750418204EFB009019CB /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7430750218204EFB009019CB /* AboutWindowController.m */; };
 		7430750518204EFB009019CB /* AboutWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7430750318204EFB009019CB /* AboutWindowController.xib */; };
 		7430750818205B88009019CB /* Update.m in Sources */ = {isa = PBXBuildFile; fileRef = 7430750718205B88009019CB /* Update.m */; };
@@ -417,6 +421,7 @@
 		7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IdleNotificationWindowController.xib; sourceTree = "<group>"; };
 		7424949C17F1E3D20030121C /* UIEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIEvents.h; path = ../UIEvents.h; sourceTree = "<group>"; };
 		7424949D17F1E3D20030121C /* UIEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIEvents.m; path = ../UIEvents.m; sourceTree = "<group>"; };
+		742E5A45190F724C00C8A391 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		7430750118204EFB009019CB /* AboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AboutWindowController.h; path = ../AboutWindowController.h; sourceTree = "<group>"; };
 		7430750218204EFB009019CB /* AboutWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AboutWindowController.m; path = ../AboutWindowController.m; sourceTree = "<group>"; };
 		7430750318204EFB009019CB /* AboutWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AboutWindowController.xib; path = ../AboutWindowController.xib; sourceTree = "<group>"; };
@@ -562,6 +567,7 @@
 				74E3CDD917FC369700C3ADD3 /* ExceptionHandling.framework in Frameworks */,
 				74FD8CE018A8EF8300F7DB80 /* TFDatePicker.framework in Frameworks */,
 				74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */,
+				742E5A46190F724C00C8A391 /* Sparkle.framework in Frameworks */,
 				74033C9817EC1DF100CA53D3 /* libstdc++.dylib in Frameworks */,
 				74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */,
 				69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */,
@@ -580,6 +586,7 @@
 				74E20E2718EE0A3D00695787 /* ExceptionHandling.framework in Frameworks */,
 				74E20E2818EE0A3D00695787 /* TFDatePicker.framework in Frameworks */,
 				74E20E2918EE0A3D00695787 /* SystemConfiguration.framework in Frameworks */,
+				742E5A47190F724C00C8A391 /* Sparkle.framework in Frameworks */,
 				74E20E2A18EE0A3D00695787 /* libstdc++.dylib in Frameworks */,
 				74E20E2B18EE0A3D00695787 /* libc++.dylib in Frameworks */,
 				74E20E2C18EE0A3D00695787 /* Cocoa.framework in Frameworks */,
@@ -628,6 +635,7 @@
 		69FC17F317E6534400B96425 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				742E5A45190F724C00C8A391 /* Sparkle.framework */,
 				74FD8CDF18A8EF8300F7DB80 /* TFDatePicker.framework */,
 				743D94271827929C000E6F70 /* Carbon.framework */,
 				743D942518279290000E6F70 /* IOKit.framework */,
@@ -1144,6 +1152,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				742E5A57190F732600C8A391 /* Sparkle.framework in Resources */,
 				74FD8CE118A8EFDA00F7DB80 /* TFDatePicker.framework in Resources */,
 				749A3A7718D8A176000AD2DB /* CrashReporter.framework in Resources */,
 				95DBF8D718C48B300021FB41 /* logo.png in Resources */,
@@ -1182,6 +1191,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				742E5A58190F733400C8A391 /* Sparkle.framework in Resources */,
 				74E20E2F18EE0A3D00695787 /* TFDatePicker.framework in Resources */,
 				74E20E3018EE0A3D00695787 /* CrashReporter.framework in Resources */,
 				74E20E3118EE0A3D00695787 /* logo.png in Resources */,
@@ -1517,6 +1527,7 @@
 					"$(SRCROOT)",
 					"$(SRCROOT)/../../../../third_party/plcrashreporter-1.2-rc4/**",
 					"$(SRCROOT)/../../../../third_party/TFDatePicker/TFDatePicker/build/Release",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "test2/TogglDesktop-Prefix.pch";
@@ -1552,6 +1563,7 @@
 					"$(SRCROOT)",
 					"$(SRCROOT)/../../../../third_party/plcrashreporter-1.2-rc4/**",
 					"$(SRCROOT)/../../../../third_party/TFDatePicker/TFDatePicker/build/Release",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "test2/TogglDesktop-Prefix.pch";
@@ -1717,6 +1729,7 @@
 					"$(SRCROOT)",
 					"$(SRCROOT)/../../../../third_party/plcrashreporter-1.2-rc4/**",
 					"$(SRCROOT)/../../../../third_party/TFDatePicker/TFDatePicker/build/Release",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "test2/TogglDesktop-Prefix.pch";
@@ -1751,6 +1764,7 @@
 					"$(SRCROOT)",
 					"$(SRCROOT)/../../../../third_party/plcrashreporter-1.2-rc4/**",
 					"$(SRCROOT)/../../../../third_party/TFDatePicker/TFDatePicker/build/Release",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "test2/TogglDesktop-Prefix.pch";
