@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace TogglDesktop
 {
-    static class Core
+    static class Kopsik
     {
         private static IntPtr ctx_ = IntPtr.Zero;
 
@@ -37,6 +37,11 @@ namespace TogglDesktop
         public static bool Login(string email, string password)
         {
             return DLL.kopsik_login(ctx_, email, password);
+        }
+
+        public static bool Logout()
+        {
+            return DLL.kopsik_logout(ctx_);
         }
 
         public static void PasswordForgot()

@@ -35,17 +35,18 @@ namespace TogglDesktop
                 password.Focus();
                 return;
             }
-            Core.Login(email.Text, password.Text);
+            Kopsik.Login(email.Text, password.Text);
+            password.Clear();
         }
 
         private void passwordForgotTextField_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Core.PasswordForgot();
+            Kopsik.PasswordForgot();
         }
 
         private void LoginViewController_Load(object sender, EventArgs e)
         {
-            Core.OnOpenURL += Core_OnOpenURL;
+            Kopsik.OnOpenURL += Core_OnOpenURL;
         }
 
         void Core_OnOpenURL(string url)

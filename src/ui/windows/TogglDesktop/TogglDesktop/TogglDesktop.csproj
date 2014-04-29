@@ -81,7 +81,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Core.cs" />
+    <Compile Include="Kopsik.cs" />
     <Compile Include="TimeEntryListViewController.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -31,14 +31,14 @@ namespace TogglDesktop
 
             loadWindowLocation();
 
-            Core.OnUserLogin += Core_OnUserLogin;
-            Core.OnError += Core_OnError;
-            Core.OnCheckUpdate += Core_OnCheckUpdate;
-            Core.OnOnline += Core_OnOnline;
+            Kopsik.OnUserLogin += Core_OnUserLogin;
+            Kopsik.OnError += Core_OnError;
+            Kopsik.OnCheckUpdate += Core_OnCheckUpdate;
+            Kopsik.OnOnline += Core_OnOnline;
 
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
-            Core.Init("windows_native_app", versionInfo.ProductVersion);
+            Kopsik.Init("windows_native_app", versionInfo.ProductVersion);
         }
 
         private void loadWindowLocation()
@@ -94,6 +94,10 @@ namespace TogglDesktop
         private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)
         {
             saveWindowLocation();
+
+            // Instead of closing the application, just hide the window
+            this.Hide();
+            e.Cancel = true;
         }
 
         private void saveWindowLocation()
@@ -134,6 +138,61 @@ namespace TogglDesktop
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void trayIcon_DoubleClick(object sender, EventArgs e)
+        {
+            if (this.Visible)
+            {
+                this.Hide();
+                return;
+            }
+            this.Show();
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void continueToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void stopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void showToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Show();
+        }
+
+        private void syncToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void openInBrowserToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Kopsik.Logout();
         }
     }
 }
