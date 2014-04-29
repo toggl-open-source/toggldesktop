@@ -10,7 +10,6 @@
                 <outlet property="email" destination="oP1-rJ-O83" id="h76-Hp-DQv"/>
                 <outlet property="googleLoginTextField" destination="3Xk-yW-T0s" id="AEQ-uX-kJE"/>
                 <outlet property="password" destination="Sok-9q-fwV" id="lVF-3a-D5b"/>
-                <outlet property="passwordForgotTextField" destination="dYC-Ta-afs" id="4q7-Mo-xBW"/>
                 <outlet property="view" destination="d50-27-v7r" id="fRE-03-vij"/>
             </connections>
         </customObject>
@@ -72,20 +71,6 @@
                                 </textFieldCell>
                                 <connections>
                                     <outlet property="delegate" destination="-2" id="qtU-ic-uLL"/>
-                                    <outlet property="nextKeyView" destination="dYC-Ta-afs" id="TOH-w6-Py5"/>
-                                </connections>
-                            </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dYC-Ta-afs" customClass="NSTextFieldClickable">
-                                <rect key="frame" x="13" y="16" width="222" height="17"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Forgot password?" id="CxZ-hF-88E">
-                                    <font key="font" size="11" name="LucidaGrande"/>
-                                    <color key="textColor" red="0.38823529411764707" green="0.38823529411764707" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                                <connections>
-                                    <outlet property="delegate" destination="-2" id="Ava-be-Rmf"/>
-                                    <outlet property="nextKeyView" destination="oP1-rJ-O83" id="SNR-5l-Nr7"/>
                                 </connections>
                             </textField>
                             <button verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MMO-z4-qcY">
@@ -109,7 +94,6 @@ DQ
                         </subviews>
                     </view>
                     <constraints>
-                        <constraint firstAttribute="centerX" secondItem="dYC-Ta-afs" secondAttribute="centerX" id="5LI-sp-XPh"/>
                         <constraint firstAttribute="centerX" secondItem="3Xk-yW-T0s" secondAttribute="centerX" id="LXH-Ma-Rya"/>
                         <constraint firstItem="Kmn-TG-CZe" firstAttribute="leading" secondItem="AeN-Lk-hKy" secondAttribute="leading" constant="20" id="VSo-Hz-jdc"/>
                         <constraint firstAttribute="centerX" secondItem="MMO-z4-qcY" secondAttribute="centerX" id="gv7-LY-8d4"/>
