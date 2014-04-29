@@ -147,14 +147,6 @@ extern void *ctx;
   }
 }
 
--(void)windowDidLoad {
-    // Make the window visible on all Spaces
-    // http://stackoverflow.com/questions/7458353/cocoa-programmatically-adding-an-application-to-all-spaces
-    if ([[self window] respondsToSelector: @selector(setCollectionBehavior:)]) {
-        [[self window] setCollectionBehavior: NSWindowCollectionBehaviorCanJoinAllSpaces];
-    }
-}
-
 - (void)showError:(NSString *)msg {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
