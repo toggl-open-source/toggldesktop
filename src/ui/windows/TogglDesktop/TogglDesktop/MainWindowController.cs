@@ -16,6 +16,10 @@ namespace TogglDesktop
     {
         private LoginViewController loginViewController;
         private TimeEntryListViewController timeEntryListViewController;
+        private AboutWindowController aboutWindowController;
+        private PreferencesWindowController preferencesWindowController;
+        private FeedbackWindowController feedbackWindowController;
+        private bool shuttingDown = false;
 
         public MainWindowController()
         {
@@ -23,6 +27,9 @@ namespace TogglDesktop
 
             loginViewController = new LoginViewController();
             timeEntryListViewController = new TimeEntryListViewController();
+            aboutWindowController = new AboutWindowController();
+            preferencesWindowController = new PreferencesWindowController();
+            feedbackWindowController = new FeedbackWindowController();
         }
 
         private void MainWindowController_Load(object sender, EventArgs e)
@@ -95,9 +102,10 @@ namespace TogglDesktop
         {
             saveWindowLocation();
 
-            // Instead of closing the application, just hide the window
-            this.Hide();
-            e.Cancel = true;
+            if (!shuttingDown) {
+                this.Hide();
+                e.Cancel = true;
+            }   
         }
 
         private void saveWindowLocation()
@@ -133,10 +141,13 @@ namespace TogglDesktop
 
         private void sendFeedbackToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            feedbackWindowController.Show();
+            feedbackWindowController.BringToFront();
         }
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            shuttingDown = true;
             Application.Exit();
         }
 
@@ -147,52 +158,63 @@ namespace TogglDesktop
                 this.Hide();
                 return;
             }
-            this.Show();
+            show();
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Kopsik.Start("", "", 0, 0);
+            show();
         }
 
         private void continueToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Kopsik.ContinueLatest();
+            show();
         }
 
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Kopsik.Stop();
+            show();
         }
 
         private void showToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Show();
+            show();
         }
 
         private void syncToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Kopsik.Sync();
         }
 
         private void openInBrowserToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Kopsik.OpenInBrowser();
         }
 
         private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            preferencesWindowController.Show();
+            preferencesWindowController.BringToFront();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            aboutWindowController.Show();
+            aboutWindowController.BringToFront();
         }
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Kopsik.Logout();
+        }
+
+        private void show()
+        {
+            this.Show();
+            this.BringToFront();
         }
     }
 }

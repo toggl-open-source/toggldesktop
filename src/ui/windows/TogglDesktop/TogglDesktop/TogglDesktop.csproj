@@ -66,7 +66,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AboutWindowController.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutWindowController.Designer.cs">
+      <DependentUpon>AboutWindowController.cs</DependentUpon>
+    </Compile>
     <Compile Include="DLL.cs" />
+    <Compile Include="FeedbackWindowController.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeedbackWindowController.Designer.cs">
+      <DependentUpon>FeedbackWindowController.cs</DependentUpon>
+    </Compile>
     <Compile Include="LoginViewController.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -78,6 +90,12 @@
     </Compile>
     <Compile Include="MainWindowController.Designer.cs">
       <DependentUpon>MainWindowController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PreferencesWindowController.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PreferencesWindowController.Designer.cs">
+      <DependentUpon>PreferencesWindowController.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -94,11 +112,20 @@
     <Compile Include="TimerEditViewController.Designer.cs">
       <DependentUpon>TimerEditViewController.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="AboutWindowController.resx">
+      <DependentUpon>AboutWindowController.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeedbackWindowController.resx">
+      <DependentUpon>FeedbackWindowController.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LoginViewController.resx">
       <DependentUpon>LoginViewController.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainWindowController.resx">
       <DependentUpon>MainWindowController.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PreferencesWindowController.resx">
+      <DependentUpon>PreferencesWindowController.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
