@@ -12,7 +12,7 @@
 
 @interface LoginViewController : NSViewController
 @property IBOutlet NSTextField *email;
-@property IBOutlet NSSecureTextField *password;
+@property IBOutlet NSTextField *password;
 @property IBOutlet NSTextFieldClickable *googleLoginTextField;
 @property IBOutlet NSTextFieldClickable *passwordForgotTextField;
 - (IBAction)clickLoginButton:(id)sender;

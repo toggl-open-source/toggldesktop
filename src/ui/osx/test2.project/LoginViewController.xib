@@ -9,7 +9,7 @@
             <connections>
                 <outlet property="email" destination="oP1-rJ-O83" id="h76-Hp-DQv"/>
                 <outlet property="googleLoginTextField" destination="3Xk-yW-T0s" id="AEQ-uX-kJE"/>
-                <outlet property="password" destination="4yP-yy-ZcJ" id="rB6-vq-VbU"/>
+                <outlet property="password" destination="Sok-9q-fwV" id="lVF-3a-D5b"/>
                 <outlet property="passwordForgotTextField" destination="dYC-Ta-afs" id="4q7-Mo-xBW"/>
                 <outlet property="view" destination="d50-27-v7r" id="fRE-03-vij"/>
             </connections>
@@ -38,30 +38,30 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="FQH-VE-Gcc"/>
                                 </constraints>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Your email address" drawsBackground="YES" id="2P3-Ts-4er">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Your email address" drawsBackground="YES" id="2P3-Ts-4er" customClass="NSTextFieldVerticallyAligned">
                                     <font key="font" size="12" name="LucidaGrande"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <outlet property="nextKeyView" destination="4yP-yy-ZcJ" id="oiB-eJ-zaO"/>
+                                    <outlet property="nextKeyView" destination="Sok-9q-fwV" id="9ri-zq-zcl"/>
                                 </connections>
                             </textField>
-                            <secureTextField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4yP-yy-ZcJ">
-                                <rect key="frame" x="15" y="112" width="218" height="30"/>
+                            <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sok-9q-fwV">
+                                <rect key="frame" x="15" y="108" width="218" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="WTG-7k-0ci"/>
+                                    <constraint firstAttribute="height" constant="30" id="c1m-OY-oBi"/>
                                 </constraints>
-                                <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Password" drawsBackground="YES" usesSingleLineMode="YES" id="qxt-zO-SKr">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Password" drawsBackground="YES" id="0Xp-Z1-qCJ" customClass="NSSecureTextFieldVerticallyAligned">
                                     <font key="font" size="12" name="LucidaGrande"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    <allowedInputSourceLocales>
-                                        <string>NSAllRomanInputSourcesLocaleIdentifier</string>
-                                    </allowedInputSourceLocales>
-                                </secureTextFieldCell>
-                            </secureTextField>
+                                </textFieldCell>
+                                <connections>
+                                    <outlet property="nextKeyView" destination="MMO-z4-qcY" id="DFu-Vs-Mus"/>
+                                </connections>
+                            </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Xk-yW-T0s" customClass="NSTextFieldClickable">
                                 <rect key="frame" x="13" y="40" width="223" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -72,6 +72,7 @@
                                 </textFieldCell>
                                 <connections>
                                     <outlet property="delegate" destination="-2" id="qtU-ic-uLL"/>
+                                    <outlet property="nextKeyView" destination="dYC-Ta-afs" id="TOH-w6-Py5"/>
                                 </connections>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dYC-Ta-afs" customClass="NSTextFieldClickable">
@@ -84,6 +85,7 @@
                                 </textFieldCell>
                                 <connections>
                                     <outlet property="delegate" destination="-2" id="Ava-be-Rmf"/>
+                                    <outlet property="nextKeyView" destination="oP1-rJ-O83" id="SNR-5l-Nr7"/>
                                 </connections>
                             </textField>
                             <button verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MMO-z4-qcY">
@@ -110,9 +112,9 @@ DQ
                         <constraint firstAttribute="centerX" secondItem="dYC-Ta-afs" secondAttribute="centerX" id="5LI-sp-XPh"/>
                         <constraint firstAttribute="centerX" secondItem="3Xk-yW-T0s" secondAttribute="centerX" id="LXH-Ma-Rya"/>
                         <constraint firstItem="Kmn-TG-CZe" firstAttribute="leading" secondItem="AeN-Lk-hKy" secondAttribute="leading" constant="20" id="VSo-Hz-jdc"/>
-                        <constraint firstAttribute="centerX" secondItem="4yP-yy-ZcJ" secondAttribute="centerX" id="XC3-Os-S2Y"/>
                         <constraint firstAttribute="centerX" secondItem="MMO-z4-qcY" secondAttribute="centerX" id="gv7-LY-8d4"/>
                         <constraint firstAttribute="centerX" secondItem="oP1-rJ-O83" secondAttribute="centerX" id="kd4-jf-yf7"/>
+                        <constraint firstItem="Sok-9q-fwV" firstAttribute="centerX" secondItem="oP1-rJ-O83" secondAttribute="centerX" id="rsN-lc-xqa"/>
                         <constraint firstAttribute="centerX" secondItem="Kmn-TG-CZe" secondAttribute="centerX" id="snE-Wb-daX"/>
                         <constraint firstAttribute="trailing" secondItem="Kmn-TG-CZe" secondAttribute="trailing" constant="20" id="xBv-Af-W6D"/>
                     </constraints>
