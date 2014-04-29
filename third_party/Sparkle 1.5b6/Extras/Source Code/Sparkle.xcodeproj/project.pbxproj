@@ -674,8 +674,11 @@
 /* Begin PBXProject section */
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "Sparkle" */;
 			compatibilityVersion = "Xcode 3.0";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -976,6 +979,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FA1941CA0D94A70100DD942E /* ConfigFrameworkDebug.xcconfig */;
 			buildSettings = {
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				INSTALL_PATH = "@executable_path/../../Contents/Resources";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				OTHER_CFLAGS = "-DDEBUG";
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -984,12 +993,22 @@
 			baseConfigurationReference = FA1941D50D94A70100DD942E /* ConfigFrameworkRelease.xcconfig */;
 			buildSettings = {
 				GCC_DEBUGGING_SYMBOLS = full;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				INSTALL_PATH = "@executable_path/../../Contents/Resources";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		1DEB91B208733DA50010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
 				WARNING_CFLAGS = "-Wundeclared-selector";
 			};
 			name = Debug;
@@ -997,6 +1016,10 @@
 		1DEB91B308733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
 				WARNING_CFLAGS = "-Wundeclared-selector";
 			};
 			name = Release;
@@ -1005,6 +1028,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_VERSION = "";
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
 				WARNING_CFLAGS = "-Wundeclared-selector";
 			};
 			name = "Release (GC dual-mode; 10.5-only)";
@@ -1013,7 +1040,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 61072EB20DF2640C008FE88B /* ConfigFrameworkReleaseGCSupport.xcconfig */;
 			buildSettings = {
-				INSTALL_PATH = "@loader_path/../Frameworks";
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				INSTALL_PATH = "@executable_path/../../Contents/Resources";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
 			};
 			name = "Release (GC dual-mode; 10.5-only)";
 		};
@@ -1021,6 +1052,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FA1941D20D94A70100DD942E /* ConfigTestAppRelease.xcconfig */;
 			buildSettings = {
+				"MACOSX_DEPLOYMENT_TARGET[arch=i386]" = 10.8;
+				"MACOSX_DEPLOYMENT_TARGET[arch=ppc64]" = 10.8;
+				"MACOSX_DEPLOYMENT_TARGET[arch=ppc]" = 10.8;
+				"MACOSX_DEPLOYMENT_TARGET[arch=x86_64]" = 10.8;
+				SDKROOT = macosx;
 			};
 			name = "Release (GC dual-mode; 10.5-only)";
 		};
@@ -1028,6 +1064,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FA1941D40D94A70100DD942E /* ConfigRelaunchRelease.xcconfig */;
 			buildSettings = {
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
 			};
 			name = "Release (GC dual-mode; 10.5-only)";
 		};
@@ -1054,6 +1094,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = "Sparkle Unit Tests";
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = octest;
 				ZERO_LINK = NO;
 			};
@@ -1083,6 +1124,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = "Sparkle Unit Tests";
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = octest;
 				ZERO_LINK = NO;
 			};
@@ -1111,6 +1153,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = "Sparkle Unit Tests";
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = octest;
 				ZERO_LINK = NO;
 			};
@@ -1120,6 +1163,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FA1941CB0D94A70100DD942E /* ConfigTestAppDebug.xcconfig */;
 			buildSettings = {
+				"MACOSX_DEPLOYMENT_TARGET[arch=i386]" = 10.8;
+				"MACOSX_DEPLOYMENT_TARGET[arch=ppc64]" = 10.8;
+				"MACOSX_DEPLOYMENT_TARGET[arch=ppc]" = 10.8;
+				"MACOSX_DEPLOYMENT_TARGET[arch=x86_64]" = 10.8;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -1127,6 +1175,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FA1941D20D94A70100DD942E /* ConfigTestAppRelease.xcconfig */;
 			buildSettings = {
+				"MACOSX_DEPLOYMENT_TARGET[arch=i386]" = 10.8;
+				"MACOSX_DEPLOYMENT_TARGET[arch=ppc64]" = 10.8;
+				"MACOSX_DEPLOYMENT_TARGET[arch=ppc]" = 10.8;
+				"MACOSX_DEPLOYMENT_TARGET[arch=x86_64]" = 10.8;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -1134,6 +1187,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FA1941D30D94A70100DD942E /* ConfigRelaunchDebug.xcconfig */;
 			buildSettings = {
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				OTHER_CFLAGS = "-DDEBUG";
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -1141,6 +1199,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FA1941D40D94A70100DD942E /* ConfigRelaunchRelease.xcconfig */;
 			buildSettings = {
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
