@@ -83,6 +83,9 @@ _Bool kopsik_is_networking_error(
             && (value.find(":443") != std::string::npos)) {
         return true;
     }
+    if (value.find("The request timed out") != std::string::npos) {
+        return true;
+    }
     return false;
 }
 
