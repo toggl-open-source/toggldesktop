@@ -19,7 +19,7 @@
 	{
         bundle = [aBundle retain];
 		if (![bundle bundleIdentifier])
-			NSLog(@"Sparkle Error: the bundle being updated has no CFBundleIdentifier! This will cause preference read/write to not work properly.");
+			NSLog(@"Sparkle Error: the bundle being updated at %@ has no CFBundleIdentifier! This will cause preference read/write to not work properly.");
     }
     return self;
 }
@@ -211,7 +211,7 @@
 	OSErr err3 = Gestalt(gestaltSystemVersionBugFix, &bugfix);
 	if (!err1 && !err2 && !err3)
 	{
-		verStr = [NSString stringWithFormat:@"%d.%d.%d", (int)major, (int)minor, (int)bugfix];
+		verStr = [NSString stringWithFormat:@"%d.%d.%d", major, minor, bugfix];
 	}
 	else
 #endif
