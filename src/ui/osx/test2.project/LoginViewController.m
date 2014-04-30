@@ -107,7 +107,6 @@ extern void *ctx;
 
 - (void)viewDidLoad {
   [self addUnderlineToTextField:self.googleLoginTextField];
-  [self addUnderlineToTextField:self.passwordForgotTextField];
 }
 
 - (void)addUnderlineToTextField:(NSTextField *)field {
