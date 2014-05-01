@@ -72,6 +72,12 @@
     <Compile Include="AboutWindowController.Designer.cs">
       <DependentUpon>AboutWindowController.cs</DependentUpon>
     </Compile>
+    <Compile Include="AddProjectViewController.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AddProjectViewController.Designer.cs">
+      <DependentUpon>AddProjectViewController.cs</DependentUpon>
+    </Compile>
     <Compile Include="DLL.cs" />
     <Compile Include="FeedbackWindowController.cs">
       <SubType>Form</SubType>
@@ -100,6 +106,24 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Kopsik.cs" />
+    <Compile Include="TimeEntryCell.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TimeEntryCell.Designer.cs">
+      <DependentUpon>TimeEntryCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TimeEntryCellWithHeader.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TimeEntryCellWithHeader.Designer.cs">
+      <DependentUpon>TimeEntryCellWithHeader.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TimeEntryEditViewController.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TimeEntryEditViewController.Designer.cs">
+      <DependentUpon>TimeEntryEditViewController.cs</DependentUpon>
+    </Compile>
     <Compile Include="TimeEntryListViewController.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -114,6 +138,9 @@
     </Compile>
     <EmbeddedResource Include="AboutWindowController.resx">
       <DependentUpon>AboutWindowController.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddProjectViewController.resx">
+      <DependentUpon>AddProjectViewController.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FeedbackWindowController.resx">
       <DependentUpon>FeedbackWindowController.cs</DependentUpon>
@@ -136,6 +163,15 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TimeEntryCell.resx">
+      <DependentUpon>TimeEntryCell.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeEntryCellWithHeader.resx">
+      <DependentUpon>TimeEntryCellWithHeader.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeEntryEditViewController.resx">
+      <DependentUpon>TimeEntryEditViewController.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TimeEntryListViewController.resx">
       <DependentUpon>TimeEntryListViewController.cs</DependentUpon>
     </EmbeddedResource>
