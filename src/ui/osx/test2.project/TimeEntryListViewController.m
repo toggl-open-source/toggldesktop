@@ -191,7 +191,7 @@ extern void *ctx;
 }
 
 const int kDefaultRowHeight = 51;
-const int kHeaderRowHeight = 86;
+const int kHeaderRowHeight = 102;
 
 - (CGFloat)tableView:(NSTableView *)tableView
          heightOfRow:(NSInteger)row {
