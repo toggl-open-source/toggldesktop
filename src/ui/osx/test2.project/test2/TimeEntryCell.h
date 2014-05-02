@@ -12,7 +12,8 @@
 @interface TimeEntryCell : NSTableCellView
 @property (nonatomic, strong) IBOutlet NSTextField *descriptionTextField;
 @property (nonatomic, strong) IBOutlet NSTextField *projectTextField;
-@property (nonatomic, strong) IBOutlet NSTextField *billableTextField;
+@property (nonatomic, strong) IBOutlet NSImageView *billableFlag;
+@property (nonatomic, strong) IBOutlet NSImageView *tagFlag;
 @property (nonatomic, strong) IBOutlet NSTextField *durationTextField;
 @property (strong) NSString *GUID;
 @property NSArray *billableConstraint;
