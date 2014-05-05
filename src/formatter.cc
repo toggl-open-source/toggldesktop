@@ -4,6 +4,7 @@
 
 #include <time.h>
 #include <sstream>
+#include <cctype>
 
 #include "Poco/Types.h"
 #include "Poco/String.h"
@@ -509,7 +510,11 @@ std::string Formatter::EscapeJSONString(const std::string input) {
             ss << " ";
             break;
         default:
-            ss << *iter;
+            if (iscntrl(*iter)) {
+                ss << " ";
+            } else {
+                ss << *iter;
+            }
             break;
         }
     }

@@ -88,6 +88,11 @@ TEST(TogglApiClientTest, EscapeJSONString) {
     ASSERT_EQ(text, Formatter::EscapeJSONString(text));
 }
 
+TEST(TogglApiClientTest, EscapeControlCharactersInJSONString) {
+    std::string text("\x16");
+    ASSERT_EQ(" ", Formatter::EscapeJSONString(text));
+}
+
 TEST(TogglApiClientTest, UpdatesTimeEntryFromFullUserJSON) {
     wipe_test_db();
     Database db(TESTDB);
