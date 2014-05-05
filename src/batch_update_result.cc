@@ -38,7 +38,7 @@ bool BatchUpdateResult::ResourceIsGone() const {
 }
 
 void BatchUpdateResult::LoadFromJSONNode(JSONNODE * const n) {
-    poco_assert(n);
+    poco_check_ptr(n);
 
     StatusCode = 0;
     Body = "";
@@ -69,9 +69,10 @@ void BatchUpdateResult::ProcessResponseArray(
     std::vector<BatchUpdateResult> * const results,
     std::map<std::string, BaseModel *> *models,
     std::vector<error> *errors) {
-    poco_assert(results);
-    poco_assert(models);
-    poco_assert(errors);
+
+    poco_check_ptr(results);
+    poco_check_ptr(models);
+    poco_check_ptr(errors);
 
     Poco::Logger &logger = Poco::Logger::get("json");
     for (std::vector<BatchUpdateResult>::const_iterator it = results->begin();
@@ -95,7 +96,8 @@ void BatchUpdateResult::ProcessResponseArray(
 void BatchUpdateResult::ParseResponseArray(
     const std::string response_body,
     std::vector<BatchUpdateResult> *responses) {
-    poco_assert(responses);
+
+    poco_check_ptr(responses);
 
     Poco::Logger &logger = Poco::Logger::get("json");
 

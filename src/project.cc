@@ -102,7 +102,7 @@ void Project::SetCID(const Poco::UInt64 value) {
 }
 
 void Project::LoadFromJSONNode(JSONNODE * const data) {
-    poco_assert(data);
+    poco_check_ptr(data);
 
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
@@ -151,6 +151,11 @@ JSONNODE *Project::SaveToJSONNode() const {
 bool Project::DuplicateResource(const kopsik::error err) const {
     return (std::string::npos !=
             std::string(err).find("Name has already been taken"));
+}
+
+bool Project::ResourceCannotBeCreated(const kopsik::error err) const {
+    return (std::string::npos != std::string(err).find(
+        "User cannot add or edit projects in workspace"));
 }
 
 bool Project::ResolveError(const kopsik::error err) {

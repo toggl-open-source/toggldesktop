@@ -84,6 +84,14 @@
       return NO;
     }
 
+    if ([theName isEqualToString:@"NSInvalidSendPortException"]) {
+      return NO;
+    }
+
+    if ([theName isEqualToString:@"NSInvalidReceivePortException"]) {
+      return NO;
+    }
+
     [self notifyException:exception withData:nil inBackground:YES];
     return NO;
 }

@@ -63,7 +63,9 @@ extern "C" {
         void *context,
         KopsikUserLoginCallback);
 
-    typedef void (*KopsikRemindCallback)();
+    typedef void (*KopsikRemindCallback)(
+        const char *title,
+        const char *informative_text);
 
     KOPSIK_EXPORT void kopsik_set_remind_callback(
         void *context,

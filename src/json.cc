@@ -10,7 +10,7 @@
 namespace kopsik {
 
 Poco::UInt64 GetIDFromJSONNode(JSONNODE * const data) {
-    poco_assert(data);
+    poco_check_ptr(data);
 
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
@@ -27,7 +27,7 @@ Poco::UInt64 GetIDFromJSONNode(JSONNODE * const data) {
 }
 
 guid GetGUIDFromJSONNode(JSONNODE * const data) {
-    poco_assert(data);
+    poco_check_ptr(data);
 
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
@@ -42,7 +42,7 @@ guid GetGUIDFromJSONNode(JSONNODE * const data) {
 }
 
 bool IsDeletedAtServer(JSONNODE * const data) {
-    poco_assert(data);
+    poco_check_ptr(data);
 
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
@@ -65,7 +65,8 @@ void LoadUserFromJSONString(
     const std::string &json,
     const bool full_sync,
     const bool with_related_data) {
-    poco_assert(model);
+
+    poco_check_ptr(model);
 
     if (json.empty()) {
         Poco::Logger &logger = Poco::Logger::get("json");
@@ -102,8 +103,9 @@ void LoadUserFromJSONNode(
     JSONNODE * const data,
     const bool full_sync,
     const bool with_related_data) {
-    poco_assert(model);
-    poco_assert(data);
+
+    poco_check_ptr(model);
+    poco_check_ptr(data);
 
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
@@ -173,8 +175,9 @@ void LoadUserTagsFromJSONNode(
     User *model,
     JSONNODE * const list,
     const bool full_sync) {
-    poco_assert(model);
-    poco_assert(list);
+
+    poco_check_ptr(model);
+    poco_check_ptr(list);
 
     std::set<Poco::UInt64> alive;
 
@@ -196,9 +199,10 @@ void loadUserTagFromJSONNode(
     User *user,
     JSONNODE * const data,
     std::set<Poco::UInt64> *alive) {
-    poco_assert(user);
-    poco_assert(data);
-    // alive can be 0
+
+    poco_check_ptr(user);
+    poco_check_ptr(data);
+    // alive can be 0, dont assert/check it
 
     Poco::UInt64 id = GetIDFromJSONNode(data);
     Tag *model = user->GetTagByID(id);
@@ -229,8 +233,9 @@ void LoadUserTasksFromJSONNode(
     User *user,
     JSONNODE * const list,
     const bool full_sync) {
-    poco_assert(user);
-    poco_assert(list);
+
+    poco_check_ptr(user);
+    poco_check_ptr(list);
 
     std::set<Poco::UInt64> alive;
 
@@ -252,9 +257,10 @@ void loadUserTaskFromJSONNode(
     User *user,
     JSONNODE * const data,
     std::set<Poco::UInt64> *alive) {
-    poco_assert(user);
-    poco_assert(data);
-    // alive can be 0
+
+    poco_check_ptr(user);
+    poco_check_ptr(data);
+    // alive can be 0, dont assert/check it
 
     Poco::UInt64 id = GetIDFromJSONNode(data);
     Task *model = user->GetTaskByID(id);
@@ -283,8 +289,12 @@ void loadUserTaskFromJSONNode(
 void LoadUserUpdateFromJSONString(
     User *user,
     const std::string json) {
-    poco_assert(user);
-    poco_assert(!json.empty());
+
+    if (json.empty()) {
+        return;
+    }
+
+    poco_check_ptr(user);
 
     JSONNODE *root = json_parse(json.c_str());
     LoadUserUpdateFromJSONNode(user, root);
@@ -294,8 +304,9 @@ void LoadUserUpdateFromJSONString(
 void LoadUserUpdateFromJSONNode(
     User *user,
     JSONNODE * const node) {
-    poco_assert(user);
-    poco_assert(node);
+
+    poco_check_ptr(user);
+    poco_check_ptr(node);
 
     JSONNODE *data = 0;
     std::string model("");
@@ -315,7 +326,7 @@ void LoadUserUpdateFromJSONNode(
         }
         ++i;
     }
-    poco_assert(data);
+    poco_check_ptr(data);
 
     std::stringstream ss;
     ss << "Update parsed into action=" << action
@@ -342,9 +353,10 @@ void loadUserWorkspaceFromJSONNode(
     User *user,
     JSONNODE * const data,
     std::set<Poco::UInt64> *alive) {
-    poco_assert(user);
-    poco_assert(data);
-    // alive can be 0
+
+    poco_check_ptr(user);
+    poco_check_ptr(data);
+    // alive can be 0, dont assert/check it
 
     Poco::UInt64 id = GetIDFromJSONNode(data);
     Workspace *model = user->GetWorkspaceByID(id);
@@ -372,8 +384,9 @@ void loadUserWorkspaceFromJSONNode(
 error LoadTagsFromJSONNode(
     TimeEntry *te,
     JSONNODE * const list) {
-    poco_assert(te);
-    poco_assert(list);
+
+    poco_check_ptr(te);
+    poco_check_ptr(list);
 
     te->TagNames.clear();
 
@@ -393,9 +406,10 @@ void loadUserClientFromJSONNode(
     User *user,
     JSONNODE * const data,
     std::set<Poco::UInt64> *alive) {
-    poco_assert(user);
-    poco_assert(data);
-    // alive can be 0
+
+    poco_check_ptr(user);
+    poco_check_ptr(data);
+    // alive can be 0, dont assert/check it
 
     Poco::UInt64 id = GetIDFromJSONNode(data);
     Client *model = user->GetClientByID(id);
@@ -424,7 +438,8 @@ void loadUserClientFromJSONNode(
 
 Poco::UInt64 GetUIModifiedAtFromJSONNode(
     JSONNODE * const data) {
-    poco_assert(data);
+
+    poco_check_ptr(data);
 
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
@@ -442,8 +457,9 @@ void LoadUserClientsFromJSONNode(
     User *user,
     JSONNODE * const list,
     const bool full_sync) {
-    poco_assert(user);
-    poco_assert(list);
+
+    poco_check_ptr(user);
+    poco_check_ptr(list);
 
     std::set<Poco::UInt64> alive;
 
@@ -465,9 +481,10 @@ void loadUserProjectFromJSONNode(
     User *user,
     JSONNODE * const data,
     std::set<Poco::UInt64> *alive) {
-    poco_assert(user);
-    poco_assert(data);
-    // alive can be 0
+
+    poco_check_ptr(user);
+    poco_check_ptr(data);
+    // alive can be 0, dont assert/check it
 
     Poco::UInt64 id = GetIDFromJSONNode(data);
     Project *model = user->GetProjectByID(id);
@@ -498,8 +515,9 @@ void LoadUserProjectsFromJSONNode(
     User *user,
     JSONNODE * const list,
     const bool full_sync) {
-    poco_assert(user);
-    poco_assert(list);
+
+    poco_check_ptr(user);
+    poco_check_ptr(list);
 
     std::set<Poco::UInt64> alive;
 
@@ -520,8 +538,9 @@ void LoadUserProjectsFromJSONNode(
 error LoadTimeEntryTagsFromJSONNode(
     TimeEntry *te,
     JSONNODE * const list) {
-    poco_assert(te);
-    poco_assert(list);
+
+    poco_check_ptr(te);
+    poco_check_ptr(list);
 
     te->TagNames.clear();
 
@@ -541,9 +560,10 @@ void loadUserTimeEntryFromJSONNode(
     User *user,
     JSONNODE * const data,
     std::set<Poco::UInt64> *alive) {
-    poco_assert(user);
-    poco_assert(data);
-    // alive can be 0
+
+    poco_check_ptr(user);
+    poco_check_ptr(data);
+    // alive can be 0, dont assert/check it
 
     Poco::UInt64 id = GetIDFromJSONNode(data);
     TimeEntry *model = user->GetTimeEntryByID(id);
@@ -568,14 +588,16 @@ void loadUserTimeEntryFromJSONNode(
     }
     model->SetUID(user->ID());
     model->LoadFromJSONNode(data);
+    model->EnsureGUID();
 }
 
 void LoadUserWorkspacesFromJSONNode(
     User *user,
     JSONNODE * const list,
     const bool full_sync) {
-    poco_assert(user);
-    poco_assert(list);
+
+    poco_check_ptr(user);
+    poco_check_ptr(list);
 
     std::set<Poco::UInt64> alive;
 
@@ -597,8 +619,9 @@ void LoadUserTimeEntriesFromJSONNode(
     User *user,
     JSONNODE * const list,
     const bool full_sync) {
-    poco_assert(user);
-    poco_assert(list);
+
+    poco_check_ptr(user);
+    poco_check_ptr(list);
 
     std::set<Poco::UInt64> alive;
 
@@ -627,8 +650,9 @@ void LoadUserTimeEntriesFromJSONNode(
 std::string UpdateJSON(
     std::vector<Project *> * const projects,
     std::vector<TimeEntry *> * const time_entries) {
-    poco_assert(projects);
-    poco_assert(time_entries);
+
+    poco_check_ptr(projects);
+    poco_check_ptr(time_entries);
 
     JSONNODE *c = json_new(JSON_ARRAY);
 

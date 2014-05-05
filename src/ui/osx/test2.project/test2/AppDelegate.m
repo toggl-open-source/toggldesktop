@@ -203,7 +203,7 @@ const int kDurationStringLength = 20;
   
   [MASShortcut registerGlobalShortcutWithUserDefaultsKey:kPreferenceGlobalShortcutStartStop handler:^{
     if ([self.lastKnownTrackingState isEqualTo:kUIStateTimerStopped]) {
-      [self onNewMenuItem:self];
+      [self onContinueMenuItem:self];
     } else {
       [self onStopMenuItem:self];
     }
@@ -1074,10 +1074,10 @@ void on_user_login(const uint64_t user_id,
   [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedIn object:userinfo];
 }
 
-void on_remind() {
+void on_remind(const char *title, const char *informative_text) {
   NSUserNotification *notification = [[NSUserNotification alloc] init];
-  [notification setTitle:@"Reminder from Toggl Desktop"];
-  [notification setInformativeText:@"Shouldn't you be tracking?"];
+  [notification setTitle:[NSString stringWithUTF8String:title]];
+  [notification setInformativeText:[NSString stringWithUTF8String:informative_text]];
   [notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
   [notification setSoundName:NSUserNotificationDefaultSoundName];
   NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];

@@ -47,6 +47,10 @@ bool TimeEntry::ResolveError(const kopsik::error err) {
         SetTID(0);
         return true;
     }
+    if (userCannotAccessSelectedTask(err)) {
+        SetTID(0);
+        return true;
+    }
     return false;
 }
 
@@ -54,6 +58,12 @@ bool TimeEntry::userCannotAccessTheSelectedProject(
     const kopsik::error err) const {
     return (std::string::npos != std::string(err).find(
         "User cannot access the selected project"));
+}
+
+bool TimeEntry::userCannotAccessSelectedTask(
+    const kopsik::error err) const {
+    return (std::string::npos != std::string(err).find(
+        "User cannot access selected task."));
 }
 
 bool TimeEntry::durationTooLarge(const kopsik::error err) const {
@@ -67,11 +77,18 @@ bool TimeEntry::stopTimeMustBeAfterStartTime(const kopsik::error err) const {
 }
 
 void TimeEntry::StopAt(const Poco::UInt64 at) {
-    poco_assert(at);
-    poco_assert(IsTracking());
+    if (!IsTracking()) {
+        return;
+    }
 
-    SetDurationInSeconds(
-        (std::max)(Poco::UInt64(0), at + DurationInSeconds()));
+    poco_assert(at);
+
+    Poco::Int64 duration = at + DurationInSeconds();
+    if (duration < 0) {
+        duration = -1 * duration;
+    }
+
+    SetDurationInSeconds(duration);
 
     poco_assert(DurationInSeconds() >= 0);
 
@@ -171,6 +188,7 @@ void TimeEntry::SetStopUserInput(const std::string value) {
     }
 
     poco_assert(Stop() >= Start());
+
     if (!IsTracking()) {
         SetDurationInSeconds(Stop() - Start());
     }
@@ -290,7 +308,7 @@ bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
 }
 
 void TimeEntry::LoadFromJSONNode(JSONNODE * const data) {
-    poco_assert(data);
+    poco_check_ptr(data);
 
     Poco::UInt64 ui_modified_at =
         GetUIModifiedAtFromJSONNode(data);
@@ -397,7 +415,7 @@ JSONNODE *TimeEntry::SaveToJSONNode() const {
 }
 
 void TimeEntry::loadTagsFromJSONNode(JSONNODE * const list) {
-    poco_assert(list);
+    poco_check_ptr(list);
 
     TagNames.clear();
 

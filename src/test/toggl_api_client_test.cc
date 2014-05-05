@@ -88,6 +88,11 @@ TEST(TogglApiClientTest, EscapeJSONString) {
     ASSERT_EQ(text, Formatter::EscapeJSONString(text));
 }
 
+TEST(TogglApiClientTest, EscapeControlCharactersInJSONString) {
+    std::string text("\x16");
+    ASSERT_EQ(" ", Formatter::EscapeJSONString(text));
+}
+
 TEST(TogglApiClientTest, UpdatesTimeEntryFromFullUserJSON) {
     wipe_test_db();
     Database db(TESTDB);
@@ -325,6 +330,27 @@ TEST(TogglApiClientTest, SavesModels) {
     ASSERT_EQ(noError, db.SaveUser(&user, false, &changes));
 
     ASSERT_EQ(noError, db.SaveUser(&user, false, &changes));
+}
+
+TEST(TogglApiClientTest, AssignsGUID) {
+    std::string json = loadTestData();
+    ASSERT_FALSE(json.empty());
+
+    User user("kopsik_test", "0.1");
+    LoadUserFromJSONString(&user, json, true, true);
+
+    ASSERT_EQ(uint(5), user.related.TimeEntries.size());
+    TimeEntry *te = user.GetTimeEntryByID(89837445);
+    ASSERT_TRUE(te);
+
+    ASSERT_NE("", te->GUID());
+    ASSERT_TRUE(te->GUID().size());
+
+    TimeEntry *te2 = user.GetTimeEntryByGUID(te->GUID());
+    ASSERT_TRUE(te2);
+
+    ASSERT_EQ(te->GUID(), te2->GUID());
+    ASSERT_EQ(te->ID(), te2->ID());
 }
 
 TEST(TogglApiClientTest, ParsesAndSavesData) {

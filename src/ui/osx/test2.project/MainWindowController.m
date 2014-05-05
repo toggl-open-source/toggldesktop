@@ -88,6 +88,7 @@ extern void *ctx;
     [self.contentView addSubview:self.timeEntryListViewController.view];
     [self.timeEntryListViewController.view setFrame:self.contentView.bounds];
     [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventShowListView object:nil];
+    [self closeError];
     
     return;
   }
@@ -146,16 +147,6 @@ extern void *ctx;
   }
 }
 
--(void)windowDidLoad {
-    // Make the window visible on all Spaces
-    // http://stackoverflow.com/questions/7458353/cocoa-programmatically-adding-an-application-to-all-spaces
-    if ([[self window] respondsToSelector: @selector(setCollectionBehavior:)]) {
-        [[self window] setCollectionBehavior: NSWindowCollectionBehaviorCanJoinAllSpaces];
-    } else if ([[self window] respondsToSelector: @selector(canBeVisibleOnAllSpaces)]) {
-        [[self window] canBeVisibleOnAllSpaces]; // AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER_BUT_DEPRECATED
-    }
-}
-
 - (void)showError:(NSString *)msg {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
@@ -167,9 +158,13 @@ extern void *ctx;
   [self.troubleBox setHidden:NO];
 }
 
-- (IBAction)errorCloseButtonClicked:(id)sender {
+- (void)closeError {
     [self.troubleBox setHidden:YES];
     [self.errorLabel setStringValue:@""];
+}
+
+- (IBAction)errorCloseButtonClicked:(id)sender {
+    [self closeError];
 }
 
 @end

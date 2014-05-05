@@ -105,8 +105,9 @@ void BaseModel::LoadFromDataString(const std::string data_string) {
 }
 
 void BaseModel::LoadFromJSONString(const std::string json_string) {
-    poco_assert(!json_string.empty());
-
+    if (json_string.empty()) {
+        return;
+    }
     JSONNODE *root = json_parse(json_string.c_str());
     this->LoadFromJSONNode(root);
     json_delete(root);
@@ -119,7 +120,7 @@ void BaseModel::Delete() {
 
 error BaseModel::ApplyBatchUpdateResult(
     BatchUpdateResult * const update) {
-    poco_assert(update);
+    poco_check_ptr(update);
 
     if (update->ResourceIsGone()) {
         MarkAsDeletedOnServer();
@@ -128,7 +129,7 @@ error BaseModel::ApplyBatchUpdateResult(
 
     kopsik::error err = update->Error();
     if (err != kopsik::noError) {
-        if (DuplicateResource(err)) {
+        if (DuplicateResource(err) || ResourceCannotBeCreated(err)) {
             MarkAsDeletedOnServer();
             return noError;
         }
@@ -141,7 +142,9 @@ error BaseModel::ApplyBatchUpdateResult(
         return err;
     }
 
-    poco_assert(json_is_valid(update->Body.c_str()));
+    if (!json_is_valid(update->Body.c_str())) {
+        return error("Invalid JSON");
+    }
     LoadFromDataString(update->Body);
 
     return noError;

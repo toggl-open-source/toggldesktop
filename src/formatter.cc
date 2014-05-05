@@ -4,6 +4,7 @@
 
 #include <time.h>
 #include <sstream>
+#include <cctype>
 
 #include "Poco/Types.h"
 #include "Poco/String.h"
@@ -71,6 +72,7 @@ std::string Formatter::JoinTaskNameReverse(
 
 std::string Formatter::FormatDateWithTime(const std::time_t date) {
     poco_assert(date);
+
     Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
     return Poco::DateTimeFormatter::format(ts, "%w %d. %b %H:%M");
 }
@@ -99,22 +101,6 @@ std::string Formatter::FormatDateHeader(const std::time_t date) {
     }
 
     return Poco::DateTimeFormatter::format(datetime, "%w %d. %b");
-}
-
-std::string Formatter::EscapeTabsAndLineBreaks(const std::string value,
-        bool replace) {
-    std::string description(value);
-    for (size_t i = 0; i < description.length(); i++) {
-        if (description[i] == '\n' || description[i] == '\t') {
-            if (replace) {
-                description[i] = ' ';
-            } else {
-                description.erase(i, 1);
-            }
-        }
-    }
-
-    return description;
 }
 
 bool Formatter::ParseTimeInput(const std::string input,
@@ -428,8 +414,16 @@ std::string Formatter::FormatDurationInSeconds(
     const Poco::Int64 value,
     const std::string format) {
     Poco::Int64 duration = value;
+    // Duration is negative when time is tracking
     if (duration < 0) {
         duration += time(0);
+    }
+    // If after calculation time is still negative,
+    // either computer clock is wrong or user
+    // has set start time to the future. Render positive
+    // duration only:
+    if (duration < 0) {
+        duration *= -1;
     }
     Poco::Timespan span(duration * Poco::Timespan::SECONDS);
     // Poco DateTimeFormatter will not format hours above 24h.
@@ -499,7 +493,6 @@ std::string Formatter::Format8601(const std::time_t date) {
         Poco::DateTimeFormat::ISO8601_FORMAT);
 }
 
-// http://stackoverflow.com/questions/7724448/simple-json-string-escape-for-c
 std::string Formatter::EscapeJSONString(const std::string input) {
     std::ostringstream ss;
     for (std::string::const_iterator iter = input.begin();
@@ -510,22 +503,18 @@ std::string Formatter::EscapeJSONString(const std::string input) {
             ss << "\"";
             break;
         case '\b':
-            ss << "\\b";
-            break;
         case '\f':
-            ss << "\\f";
-            break;
         case '\n':
-            ss << "\\n";
-            break;
         case '\r':
-            ss << "\\r";
-            break;
         case '\t':
-            ss << "\\t";
+            ss << " ";
             break;
         default:
-            ss << *iter;
+            if (iscntrl(*iter)) {
+                ss << " ";
+            } else {
+                ss << *iter;
+            }
             break;
         }
     }
