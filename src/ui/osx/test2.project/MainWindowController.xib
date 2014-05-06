@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MainWindowController">
@@ -10,6 +10,7 @@
                 <outlet property="contentView" destination="av5-A6-9S5" id="g24-fx-drT"/>
                 <outlet property="contentViewController" destination="av5-A6-9S5" id="VD8-35-TOQ"/>
                 <outlet property="errorLabel" destination="3yn-Zh-JYn" id="2lh-8u-0eG"/>
+                <outlet property="errorLink" destination="z6G-IB-XP8" id="G7m-Qe-GhW"/>
                 <outlet property="troubleBox" destination="gBV-Qp-t6E" id="7gd-fC-wYR"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>
@@ -29,24 +30,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="300" height="419"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
-                    <box hidden="YES" autoresizesSubviews="NO" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="gBV-Qp-t6E">
-                        <rect key="frame" x="0.0" y="419" width="300" height="30"/>
+                    <box hidden="YES" autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="gBV-Qp-t6E">
+                        <rect key="frame" x="0.0" y="400" width="300" height="50"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <view key="contentView">
-                            <rect key="frame" x="0.0" y="0.0" width="300" height="30"/>
+                            <rect key="frame" x="0.0" y="0.0" width="300" height="50"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3yn-Zh-JYn">
-                                    <rect key="frame" x="7" y="7" width="286" height="17"/>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3yn-Zh-JYn">
+                                    <rect key="frame" x="7" y="27" width="275" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="center" title="Login failed!" id="epU-2w-W4x">
+                                    <textFieldCell key="cell" truncatesLastVisibleLine="YES" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Login failed!" id="epU-2w-W4x">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tgB-wf-G92">
-                                    <rect key="frame" x="5" y="7" width="8" height="17"/>
+                                <button ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tgB-wf-G92">
+                                    <rect key="frame" x="283" y="28" width="8" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="8" id="WmO-N8-iCw"/>
@@ -59,15 +60,29 @@
                                         <action selector="errorCloseButtonClicked:" target="-2" id="GHW-09-Ovo"/>
                                     </connections>
                                 </button>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z6G-IB-XP8" customClass="NSTextFieldClickable">
+                                    <rect key="frame" x="7" y="7" width="275" height="17"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" truncatesLastVisibleLine="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Forgot password?" id="UWw-mV-y9L">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="selectedMenuItemColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                    <connections>
+                                        <action selector="forgotPasswordLinkClicked:" target="-2" id="C1v-d8-QeM"/>
+                                        <outlet property="delegate" destination="-2" id="CCw-oI-jqR"/>
+                                    </connections>
+                                </textField>
                             </subviews>
                         </view>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="3yn-Zh-JYn" secondAttribute="trailing" constant="9" id="BZS-wx-X75"/>
-                            <constraint firstItem="tgB-wf-G92" firstAttribute="leading" secondItem="gBV-Qp-t6E" secondAttribute="leading" constant="5" id="ges-aK-beH"/>
-                            <constraint firstItem="tgB-wf-G92" firstAttribute="top" secondItem="gBV-Qp-t6E" secondAttribute="top" id="huo-Nk-H8b"/>
+                            <constraint firstAttribute="trailing" secondItem="tgB-wf-G92" secondAttribute="trailing" constant="10" id="3Ha-Uc-4xw"/>
+                            <constraint firstAttribute="trailing" secondItem="3yn-Zh-JYn" secondAttribute="trailing" constant="20" id="BZS-wx-X75"/>
+                            <constraint firstItem="tgB-wf-G92" firstAttribute="top" secondItem="gBV-Qp-t6E" secondAttribute="top" constant="5" id="huo-Nk-H8b"/>
                             <constraint firstItem="3yn-Zh-JYn" firstAttribute="leading" secondItem="gBV-Qp-t6E" secondAttribute="leading" constant="9" id="ljv-uS-Mff"/>
-                            <constraint firstAttribute="bottom" secondItem="3yn-Zh-JYn" secondAttribute="bottom" constant="7" id="mt7-0l-Mff"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="3yn-Zh-JYn" secondAttribute="bottom" constant="7" id="mt7-0l-Mff"/>
                             <constraint firstItem="3yn-Zh-JYn" firstAttribute="top" secondItem="gBV-Qp-t6E" secondAttribute="top" constant="6" id="tW0-nR-BCV"/>
+                            <constraint firstItem="z6G-IB-XP8" firstAttribute="top" secondItem="3yn-Zh-JYn" secondAttribute="bottom" constant="3" id="x8o-BX-MZx"/>
                         </constraints>
                         <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                         <color key="fillColor" red="0.92484454719999998" green="0.87390986770000001" blue="0.37178904140000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -77,7 +92,7 @@
                     <constraint firstAttribute="bottom" secondItem="av5-A6-9S5" secondAttribute="bottom" id="4zZ-n1-ALD"/>
                     <constraint firstItem="gBV-Qp-t6E" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="H4l-Qk-9du"/>
                     <constraint firstItem="av5-A6-9S5" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="P13-nu-UZ0"/>
-                    <constraint firstItem="gBV-Qp-t6E" firstAttribute="top" secondItem="2" secondAttribute="top" constant="1" id="acY-4H-9r7"/>
+                    <constraint firstItem="gBV-Qp-t6E" firstAttribute="top" secondItem="2" secondAttribute="top" id="acY-4H-9r7"/>
                     <constraint firstAttribute="trailing" secondItem="gBV-Qp-t6E" secondAttribute="trailing" id="hAW-oO-ES1"/>
                     <constraint firstItem="av5-A6-9S5" firstAttribute="top" secondItem="2" secondAttribute="top" id="lIn-MP-X7n"/>
                     <constraint firstAttribute="trailing" secondItem="av5-A6-9S5" secondAttribute="trailing" id="vIk-4N-Ddi"/>

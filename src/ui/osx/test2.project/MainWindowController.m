@@ -147,11 +147,19 @@ extern void *ctx;
   }
 }
 
+- (void)addUnderlineToTextField:(NSTextField *)field {
+  NSMutableAttributedString *forgot = [[field attributedStringValue] mutableCopy];
+  [forgot addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSUnderlineStyleSingle] range:NSMakeRange(0, forgot.length)];
+  [field setAttributedStringValue:forgot];
+}
+
 - (void)showError:(NSString *)msg {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
   if ([msg rangeOfString:@"Request to server failed with status code: 403"].location != NSNotFound) {
-    msg = @"Invalid e-mail or password. Please try again!";
+    msg = @"Invalid e-mail or password!";
+    [self.errorLink setStringValue:@"Forgot your password?"];
+    [self addUnderlineToTextField:self.errorLink];
   }
 
   [self.errorLabel setStringValue:msg];
@@ -161,10 +169,18 @@ extern void *ctx;
 - (void)closeError {
     [self.troubleBox setHidden:YES];
     [self.errorLabel setStringValue:@""];
+    [self.errorLink setStringValue:@""];
 }
 
 - (IBAction)errorCloseButtonClicked:(id)sender {
     [self closeError];
+}
+
+-(void)textFieldClicked:(id)sender {
+  if (sender == self.errorLink) {
+    kopsik_password_forgot(ctx);
+    return;
+  }
 }
 
 @end

@@ -16,6 +16,10 @@ namespace TogglDesktop
     {
         private LoginViewController loginViewController;
         private TimeEntryListViewController timeEntryListViewController;
+        private AboutWindowController aboutWindowController;
+        private PreferencesWindowController preferencesWindowController;
+        private FeedbackWindowController feedbackWindowController;
+        private bool shuttingDown = false;
 
         public MainWindowController()
         {
@@ -23,6 +27,9 @@ namespace TogglDesktop
 
             loginViewController = new LoginViewController();
             timeEntryListViewController = new TimeEntryListViewController();
+            aboutWindowController = new AboutWindowController();
+            preferencesWindowController = new PreferencesWindowController();
+            feedbackWindowController = new FeedbackWindowController();
         }
 
         private void MainWindowController_Load(object sender, EventArgs e)
@@ -31,14 +38,14 @@ namespace TogglDesktop
 
             loadWindowLocation();
 
-            Core.OnUserLogin += Core_OnUserLogin;
-            Core.OnError += Core_OnError;
-            Core.OnCheckUpdate += Core_OnCheckUpdate;
-            Core.OnOnline += Core_OnOnline;
+            Kopsik.OnUserLogin += Core_OnUserLogin;
+            Kopsik.OnError += Core_OnError;
+            Kopsik.OnCheckUpdate += Core_OnCheckUpdate;
+            Kopsik.OnOnline += Core_OnOnline;
 
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
-            Core.Init("windows_native_app", versionInfo.ProductVersion);
+            Kopsik.Init("windows_native_app", versionInfo.ProductVersion);
         }
 
         private void loadWindowLocation()
@@ -94,6 +101,11 @@ namespace TogglDesktop
         private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)
         {
             saveWindowLocation();
+
+            if (!shuttingDown) {
+                this.Hide();
+                e.Cancel = true;
+            }   
         }
 
         private void saveWindowLocation()
@@ -125,6 +137,84 @@ namespace TogglDesktop
         private void buttonDismissError_Click(object sender, EventArgs e)
         {
             troubleBox.Visible = false;
+        }
+
+        private void sendFeedbackToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            feedbackWindowController.Show();
+            feedbackWindowController.BringToFront();
+        }
+
+        private void quitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            shuttingDown = true;
+            Application.Exit();
+        }
+
+        private void trayIcon_DoubleClick(object sender, EventArgs e)
+        {
+            if (this.Visible)
+            {
+                this.Hide();
+                return;
+            }
+            show();
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Kopsik.Start("", "", 0, 0);
+            show();
+        }
+
+        private void continueToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Kopsik.ContinueLatest();
+            show();
+        }
+
+        private void stopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Kopsik.Stop();
+            show();
+        }
+
+        private void showToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            show();
+        }
+
+        private void syncToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Kopsik.Sync();
+        }
+
+        private void openInBrowserToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Kopsik.OpenInBrowser();
+        }
+
+        private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            preferencesWindowController.Show();
+            preferencesWindowController.BringToFront();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            aboutWindowController.Show();
+            aboutWindowController.BringToFront();
+        }
+
+        private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Kopsik.Logout();
+        }
+
+        private void show()
+        {
+            this.Show();
+            this.BringToFront();
         }
     }
 }

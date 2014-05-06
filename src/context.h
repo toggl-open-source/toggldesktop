@@ -24,7 +24,6 @@
 
 namespace kopsik {
 
-// FIXME: this is too low-level, we should not export it
 class Context {
  public:
     Context(
@@ -123,6 +122,8 @@ class Context {
     _Bool ClearCache();
 
     void PasswordForgot();
+    void OpenInBrowser();
+    void GetSupport();
 
     bool CanSeeBillable(const std::string GUID) const;
     bool CanAddProjects(const Poco::UInt64 workspace_id) const;

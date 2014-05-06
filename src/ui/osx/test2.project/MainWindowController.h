@@ -12,6 +12,7 @@
 @interface MainWindowController : NSWindowController
 @property IBOutlet NSView *contentView;
 @property IBOutlet NSTextField *errorLabel;
+@property IBOutlet NSTextField *errorLink;
 @property IBOutlet NSBox *troubleBox;
 @property IBOutlet NSButton *closeTroubleBoxButton;
 @end

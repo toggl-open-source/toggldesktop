@@ -59,17 +59,33 @@ namespace TogglDesktop
             IntPtr context, string email, string password);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        public static extern bool kopsik_logout(
+            IntPtr context);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_password_forgot(IntPtr context);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_context_clear(IntPtr context);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_start(IntPtr context,
+        public static extern bool kopsik_start(IntPtr context,
             string description, string duration, int task_id, int project_id);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_stop(IntPtr context);
+        public static extern bool kopsik_continue(IntPtr context, string guid);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        public static extern bool kopsik_continue_latest(IntPtr context);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        public static extern bool kopsik_stop(IntPtr context);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        public static extern void kopsik_sync(IntPtr context);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        public static extern void kopsik_open_in_browser(IntPtr context);
 
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikErrorCallback(string errmsg);

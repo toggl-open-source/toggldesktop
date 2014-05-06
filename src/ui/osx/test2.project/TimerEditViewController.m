@@ -26,6 +26,7 @@
 @property TimeEntryViewItem *time_entry;
 @property NSTimer *timerAutocompleteRendering;
 @property NSTimer *timer;
+@property BOOL constraintsAdded;
 @end
 
 @implementation TimerEditViewController
@@ -70,6 +71,7 @@ extern void *ctx;
                                                   selector:@selector(timerFired:)
                                                   userInfo:nil
                                                    repeats:YES];
+      self.constraintsAdded = NO;
     }
     
     return self;
@@ -241,13 +243,13 @@ extern void *ctx;
   // Start/stop button title and color depend on
   // whether time entry is running
   if (self.time_entry.duration_in_seconds < 0) {
-    self.startButtonLabelTextField.stringValue = @"Stop";
+    [self.startButton setImage:[NSImage imageNamed:@"icon-stop-red@2x.png"]];
     self.startButton.toolTip = @"Stop";
     self.startButtonBox.borderColor = [ConvertHexColor hexCodeToNSColor:@"#ec0000"];
     self.startButtonBox.fillColor = [ConvertHexColor hexCodeToNSColor:@"#ec0000"];
   } else {
-    self.startButtonLabelTextField.stringValue = @"Start";
     self.startButton.toolTip = @"Start";
+    [self.startButton setImage:[NSImage imageNamed:@"icon-start-green@2x.png"]];
     self.startButtonBox.borderColor = [ConvertHexColor hexCodeToNSColor:@"#4bc800"];
     self.startButtonBox.fillColor = [ConvertHexColor hexCodeToNSColor:@"#4bc800"];
   }
@@ -262,12 +264,14 @@ extern void *ctx;
     [self.descriptionLabel setHidden:NO];
     [self.durationTextField setEditable:NO];
     [self.durationTextField setSelectable:NO];
+    [self.durationTextField setTextColor:[NSColor whiteColor]];
   } else {
     [self.descriptionComboBox setHidden:NO];
     [self.descriptionLabel setHidden:YES];
     [self.durationTextField setEditable:YES];
     [self.durationTextField setSelectable:YES];
     [self.durationTextField setDelegate:self.durationTextField];
+    [self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:@"#999999"]];
   }
   
   // Display description
@@ -282,9 +286,23 @@ extern void *ctx;
   // If a project is assigned, then project name
   // is visible.
   if (self.time_entry.ProjectID || self.time_entry.ProjectGUID) {
+    if (![self.projectComboConstraint count]) {
+      [self createConstraints];
+    }
+    if (!self.constraintsAdded) {
+        [self.view addConstraints:self.projectComboConstraint];
+        [self.view addConstraints:self.projectLabelConstraint];
+        self.constraintsAdded = YES;
+    }
+
     [self.projectTextField setHidden:NO];
   } else {
     [self.projectTextField setHidden:YES];
+    if (self.constraintsAdded) {
+          [self.view removeConstraints:self.projectComboConstraint];
+          [self.view removeConstraints:self.projectLabelConstraint];
+          self.constraintsAdded = NO;
+    }
   }
   
   // Display project name
@@ -317,6 +335,21 @@ extern void *ctx;
 
 - (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)aString {
   return [self.autocompleteDataSource indexOfKey:aString];
+}
+
+- (void)createConstraints {
+    NSLog(@"Create constraints");
+  NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_descriptionComboBox, _projectTextField);
+  self.projectComboConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_descriptionComboBox]-1@1000-[_projectTextField]"
+                                           options:0
+                                           metrics:nil
+                                             views:viewsDict];
+
+  NSDictionary *viewsDict_ = NSDictionaryOfVariableBindings(_descriptionLabel, _projectTextField);
+  self.projectLabelConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_descriptionLabel]-1@1000-[_projectTextField]"
+                                           options:0
+                                           metrics:nil
+                                             views:viewsDict_];
 }
 
 - (void)clear {

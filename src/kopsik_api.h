@@ -100,6 +100,12 @@ extern "C" {
     KOPSIK_EXPORT void kopsik_password_forgot(
         void *context);
 
+    KOPSIK_EXPORT void kopsik_open_in_browser(
+        void *context);
+
+    KOPSIK_EXPORT void kopsik_get_support(
+        void *context);
+
     KOPSIK_EXPORT _Bool kopsik_feedback_send(
         void *context,
         const char *topic,

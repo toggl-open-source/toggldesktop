@@ -23,7 +23,7 @@ namespace TogglDesktop
 
         private static void onApplicationExit(object sender, EventArgs e)
         {
-            Core.Clear();
+            Kopsik.Clear();
         }
     }
 }

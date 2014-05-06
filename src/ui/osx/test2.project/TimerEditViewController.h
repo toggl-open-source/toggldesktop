@@ -13,12 +13,13 @@
 @interface TimerEditViewController : NSViewController <NSComboBoxDataSource> {
 }
 @property IBOutlet NSTextFieldClickable *durationTextField;
-@property IBOutlet NSTextField *startButtonLabelTextField;
 @property IBOutlet NSCustomComboBox *descriptionComboBox;
 @property IBOutlet NSButton *startButton;
 @property IBOutlet NSTextField *projectTextField;
 @property IBOutlet NSTextFieldClickable *descriptionLabel;
 @property IBOutlet NSBox *startButtonBox;
+@property NSArray *projectComboConstraint;
+@property NSArray *projectLabelConstraint;
 - (IBAction)startButtonClicked:(id)sender;
 - (IBAction)descriptionComboBoxChanged:(id)sender;
 - (IBAction)durationFieldChanged:(id)sender;

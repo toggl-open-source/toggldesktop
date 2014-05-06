@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */; };
+		3C7B4E9E190FA7F900627DC3 /* logo-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */; };
+		3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */; };
+		3C996F7D190E4A34005066F6 /* icon-stop-red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C996F7C190E4A34005066F6 /* icon-stop-red@2x.png */; };
+		3C996F8E190E4A3E005066F6 /* icon-start-green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C996F8D190E4A3E005066F6 /* icon-start-green@2x.png */; };
+		3CDA2C581913A4E200A94967 /* icon-start-gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDA2C571913A4E200A94967 /* icon-start-gray@2x.png */; };
+		3CDA2C5B1913B61000A94967 /* icon-billable@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDA2C591913B60F00A94967 /* icon-billable@2x.png */; };
+		3CDA2C5C1913B61000A94967 /* icon-tags@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDA2C5A1913B60F00A94967 /* icon-tags@2x.png */; };
 		69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
 		69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69FC17FD17E6534400B96425 /* InfoPlist.strings */; };
 		69FC180117E6534400B96425 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 69FC180017E6534400B96425 /* main.m */; };
@@ -138,7 +146,6 @@
 		74E20E3A18EE0A3D00695787 /* on.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 74664DAF18AA860800AAD282 /* on.pdf */; };
 		74E20E3B18EE0A3D00695787 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 69FC180317E6534400B96425 /* Credits.rtf */; };
 		74E20E3C18EE0A3D00695787 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 74FE0D5918E260A000ECFED2 /* README.md */; };
-		74E20E3D18EE0A3D00695787 /* td7_logo_final.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8DE18C75F560021FB41 /* td7_logo_final.pdf */; };
 		74E20E3E18EE0A3D00695787 /* FeedbackWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74F1070018993FFE00E93BD5 /* FeedbackWindowController.xib */; };
 		74E20E3F18EE0A3D00695787 /* IdleNotificationWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */; };
 		74E20E4018EE0A3D00695787 /* offline_on.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CB18BF7A910021FB41 /* offline_on.pdf */; };
@@ -182,7 +189,6 @@
 		95DBF8CC18BF7A910021FB41 /* offline_off.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CA18BF7A910021FB41 /* offline_off.pdf */; };
 		95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CB18BF7A910021FB41 /* offline_on.pdf */; };
 		95DBF8D718C48B300021FB41 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8D618C48B300021FB41 /* logo.png */; };
-		95DBF8DF18C75F560021FB41 /* td7_logo_final.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8DE18C75F560021FB41 /* td7_logo_final.pdf */; };
 		95F5657A18B38E3D0052DE9B /* EditNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 95F5657918B38E3D0052DE9B /* EditNotification.m */; };
 		C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */; };
 		C5DA1FB917F19647001C4565 /* Kopsik.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA1FB817F19647001C4565 /* Kopsik.dylib */; };
@@ -386,6 +392,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3C7B4E8B190FA6D200627DC3 /* NSTextFieldVerticallyAligned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldVerticallyAligned.h; sourceTree = "<group>"; };
+		3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldVerticallyAligned.m; sourceTree = "<group>"; };
+		3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-white@2x.png"; sourceTree = "<group>"; };
+		3C7B4EB1190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSecureTextFieldVerticallyAligned.h; sourceTree = "<group>"; };
+		3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSecureTextFieldVerticallyAligned.m; sourceTree = "<group>"; };
+		3C996F7C190E4A34005066F6 /* icon-stop-red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-stop-red@2x.png"; sourceTree = "<group>"; };
+		3C996F8D190E4A3E005066F6 /* icon-start-green@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-start-green@2x.png"; sourceTree = "<group>"; };
+		3CDA2C571913A4E200A94967 /* icon-start-gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-start-gray@2x.png"; sourceTree = "<group>"; };
+		3CDA2C591913B60F00A94967 /* icon-billable@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-billable@2x.png"; sourceTree = "<group>"; };
+		3CDA2C5A1913B60F00A94967 /* icon-tags@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tags@2x.png"; sourceTree = "<group>"; };
 		69FC17F117E6534400B96425 /* TogglDesktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TogglDesktop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		69FC17F417E6534400B96425 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		69FC17F717E6534400B96425 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -531,7 +547,6 @@
 		95DBF8CA18BF7A910021FB41 /* offline_off.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = offline_off.pdf; sourceTree = "<group>"; };
 		95DBF8CB18BF7A910021FB41 /* offline_on.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = offline_on.pdf; sourceTree = "<group>"; };
 		95DBF8D618C48B300021FB41 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
-		95DBF8DE18C75F560021FB41 /* td7_logo_final.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = td7_logo_final.pdf; sourceTree = "<group>"; };
 		95F5657818B38E3D0052DE9B /* EditNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditNotification.h; sourceTree = "<group>"; };
 		95F5657918B38E3D0052DE9B /* EditNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditNotification.m; sourceTree = "<group>"; };
 		C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCell.h; sourceTree = "<group>"; };
@@ -599,7 +614,12 @@
 				74664DB018AA860800AAD282 /* off.pdf */,
 				95DBF8CA18BF7A910021FB41 /* offline_off.pdf */,
 				95DBF8CB18BF7A910021FB41 /* offline_on.pdf */,
-				95DBF8DE18C75F560021FB41 /* td7_logo_final.pdf */,
+				3C996F7C190E4A34005066F6 /* icon-stop-red@2x.png */,
+				3C996F8D190E4A3E005066F6 /* icon-start-green@2x.png */,
+				3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */,
+				3CDA2C571913A4E200A94967 /* icon-start-gray@2x.png */,
+				3CDA2C591913B60F00A94967 /* icon-billable@2x.png */,
+				3CDA2C5A1913B60F00A94967 /* icon-tags@2x.png */,
 				74E1682E180F269F0026261C /* gtm */,
 				74FE0D4C18E260A000ECFED2 /* MASShortcut */,
 				69FC17FA17E6534400B96425 /* ui */,
@@ -650,6 +670,10 @@
 		69FC17FA17E6534400B96425 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				3C7B4E8B190FA6D200627DC3 /* NSTextFieldVerticallyAligned.h */,
+				3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */,
+				3C7B4EB1190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.h */,
+				3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */,
 				741104BD18C7682700BC7A49 /* NSTextFieldWithBackground.h */,
 				741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */,
 				95C0707818CDB91500A34D0D /* NSCustomComboBox.h */,
@@ -1142,24 +1166,28 @@
 				749A3A7718D8A176000AD2DB /* CrashReporter.framework in Resources */,
 				95DBF8D718C48B300021FB41 /* logo.png in Resources */,
 				C5DA1FBB17F19F9A001C4565 /* Kopsik.dylib in Resources */,
+				3CDA2C5B1913B61000A94967 /* icon-billable@2x.png in Resources */,
 				74664DB218AA860800AAD282 /* off.pdf in Resources */,
 				7430750518204EFB009019CB /* AboutWindowController.xib in Resources */,
 				749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */,
 				74FE0D5A18E260A000ECFED2 /* .gitignore in Resources */,
 				69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */,
+				3CDA2C5C1913B61000A94967 /* icon-tags@2x.png in Resources */,
 				C5DA1FC517F1B38B001C4565 /* LoginViewController.xib in Resources */,
 				74FE0D5B18E260A000ECFED2 /* LICENSE in Resources */,
 				74664DB118AA860800AAD282 /* on.pdf in Resources */,
 				69FC180517E6534400B96425 /* Credits.rtf in Resources */,
+				3C7B4E9E190FA7F900627DC3 /* logo-white@2x.png in Resources */,
 				74FE0D6118E260A000ECFED2 /* README.md in Resources */,
-				95DBF8DF18C75F560021FB41 /* td7_logo_final.pdf in Resources */,
 				74F1070218993FFE00E93BD5 /* FeedbackWindowController.xib in Resources */,
 				7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */,
 				95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */,
 				69FC180B17E6534500B96425 /* MainMenu.xib in Resources */,
 				C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */,
 				74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
+				3C996F7D190E4A34005066F6 /* icon-stop-red@2x.png in Resources */,
 				74D1D25F17EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */,
+				3CDA2C581913A4E200A94967 /* icon-start-gray@2x.png in Resources */,
 				7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */,
 				748664D2188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib in Resources */,
 				744E126717F22AB900ABE72A /* app.icns in Resources */,
@@ -1167,6 +1195,7 @@
 				74FE0D3C18E25E8400ECFED2 /* app_inactive.icns in Resources */,
 				74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
 				74AA9475180909F50000539F /* GTMOAuth2Window.xib in Resources */,
+				3C996F8E190E4A3E005066F6 /* icon-start-green@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1188,7 +1217,6 @@
 				74E20E3A18EE0A3D00695787 /* on.pdf in Resources */,
 				74E20E3B18EE0A3D00695787 /* Credits.rtf in Resources */,
 				74E20E3C18EE0A3D00695787 /* README.md in Resources */,
-				74E20E3D18EE0A3D00695787 /* td7_logo_final.pdf in Resources */,
 				74E20E3E18EE0A3D00695787 /* FeedbackWindowController.xib in Resources */,
 				74E20E3F18EE0A3D00695787 /* IdleNotificationWindowController.xib in Resources */,
 				74E20E4018EE0A3D00695787 /* offline_on.pdf in Resources */,
@@ -1260,6 +1288,8 @@
 				7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */,
 				74E3CDCC17FBABE400C3ADD3 /* BugsnagMetaData.m in Sources */,
 				749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */,
+				3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */,
+				3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */,
 				74E3CDCA17FBABE400C3ADD3 /* BugsnagEvent.m in Sources */,
 				74FE0D5C18E260A000ECFED2 /* MASShortcut+Monitoring.m in Sources */,
 				748664D0188D6617006DB4C5 /* TimeEntryCellWithHeader.m in Sources */,

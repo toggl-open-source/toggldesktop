@@ -38,26 +38,16 @@
 
   // Set billable label
   if (YES == view_item.billable) {
-    [self.billableTextField setHidden:NO];
-    if ([self.billableConstraint count]){
-      [self removeConstraints:self.billableConstraint];
-    }
-    NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_billableTextField);
-    self.billableConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"|-14-[_billableTextField]"
-                                             options:0
-                                             metrics:nil
-                                               views:viewsDict];
-    [self addConstraints:self.billableConstraint];
+    [self.billableFlag setHidden:NO];
   } else {
-    [self.billableTextField setHidden:YES];
-    if ([self.billableConstraint count]){
-      [self removeConstraints:self.billableConstraint];
-    }
-    NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_billableTextField);
-    self.billableConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"|-0-[_billableTextField]"
-                                             options:0
-                                             metrics:nil
-                                               views:viewsDict];
+    [self.billableFlag setHidden:YES];
+  }
+    
+  // Time entry tags icon
+  if ([view_item.tags count]) {
+    [self.tagFlag setHidden:NO];
+  } else {
+    [self.tagFlag setHidden:YES];
   }
   
   // Time entry has a project
