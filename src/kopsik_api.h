@@ -226,14 +226,6 @@ extern "C" {
     KOPSIK_EXPORT void kopsik_context_clear(
         void *context);
 
-    KOPSIK_EXPORT void kopsik_websocket_switch(
-        void *context,
-        const _Bool on);
-
-    KOPSIK_EXPORT void kopsik_timeline_switch(
-        void *context,
-        const _Bool on);
-
     KOPSIK_EXPORT void kopsik_timeline_toggle_recording(
         void *context);
 
