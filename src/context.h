@@ -39,10 +39,6 @@ class Context {
 
     // Start tasks
     void FullSync();
-    void SwitchWebSocketOff();
-    void SwitchWebSocketOn();
-    void SwitchTimelineOff();
-    void SwitchTimelineOn();
     void FetchUpdates();
     void TimelineUpdateServerSettings();
     _Bool SendFeedback(Feedback);
@@ -296,6 +292,11 @@ class Context {
     error verifyCallbacks();
 
     void setUser(User *value);
+
+    void switchWebSocketOff();
+    void switchWebSocketOn();
+    void switchTimelineOff();
+    void switchTimelineOn();
 
     Poco::Mutex db_m_;
     kopsik::Database *db_;

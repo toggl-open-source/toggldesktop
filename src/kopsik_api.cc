@@ -1105,35 +1105,6 @@ _Bool kopsik_duration_for_date_header(
     return true;
 }
 
-void kopsik_websocket_switch(
-    void *context,
-    const _Bool on) {
-    std::stringstream ss;
-    ss << "kopsik_websocket_switch on=" << on;
-    logger().debug(ss.str());
-
-    if (on) {
-        app(context)->SwitchWebSocketOn();
-        return;
-    }
-    app(context)->SwitchWebSocketOff();
-}
-
-void kopsik_timeline_switch(
-    void *context,
-    const _Bool on) {
-    std::stringstream ss;
-    ss << "kopsik_timeline_switch on=" << on;
-    logger().debug(ss.str());
-
-    if (on) {
-        app(context)->SwitchTimelineOn();
-        return;
-    }
-
-    app(context)->SwitchTimelineOff();
-}
-
 void kopsik_timeline_toggle_recording(
     void *context) {
     logger().debug("kopsik_timeline_toggle_recording");
