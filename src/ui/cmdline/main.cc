@@ -95,7 +95,7 @@ void Main::initialize(Poco::Util::Application &self) { // NOLINT
 
 void Main::usage() const {
     std::cout << "Recognized commands are: "
-              "sync, start, stop, status, list, continue, listen"
+              "sync, start, stop, status, list, continue"
               << std::endl;
 }
 
@@ -196,9 +196,6 @@ int Main::main(const std::vector<std::string>& args) {
     if ("list" == args[0]) {
         return listTimeEntries();
     }
-    if ("listen" == args[0]) {
-        return listenToWebSocket();
-    }
     if ("continue" == args[0]) {
         return continueTimeEntry();
     }
@@ -218,16 +215,6 @@ std::string Main::timeEntryToString(
         ss << " (" << item->Duration << ")";
     }
     return ss.str();
-}
-
-int Main::listenToWebSocket() {
-    std::cout << "Listening to websocket.. " << std::endl;
-    kopsik_websocket_switch(ctx_, 1);
-    while (true) {
-        Poco::Thread::sleep(1000);
-    }
-    kopsik_websocket_switch(ctx_, 0);
-    return Poco::Util::Application::EXIT_OK;
 }
 
 int Main::listTimeEntries() {
