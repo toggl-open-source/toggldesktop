@@ -86,6 +86,9 @@ _Bool kopsik_is_networking_error(
     if (value.find("The request timed out") != std::string::npos) {
         return true;
     }
+    if (value.find("Could not connect to the server") != std::string::npos) {
+        return true;
+    }
     return false;
 }
 
