@@ -1229,3 +1229,11 @@ void kopsik_set_sleep(void *context) {
 void kopsik_set_wake(void *context) {
     app(context)->SetWake();
 }
+
+void kopsik_open_in_browser(void *context) {
+    app(context)->OpenInBrowser();
+}
+
+void kopsik_get_support(void *context) {
+    app(context)->GetSupport();
+}

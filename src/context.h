@@ -24,7 +24,6 @@
 
 namespace kopsik {
 
-// FIXME: this is too low-level, we should not export it
 class Context {
  public:
     Context(
