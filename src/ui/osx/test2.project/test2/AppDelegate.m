@@ -28,6 +28,7 @@
 #import "const.h"
 #import "EditNotification.h"
 #import "MASShortcut+UserDefaults.h"
+#import "Utils.h"
 
 @interface AppDelegate()
 @property (nonatomic, strong) IBOutlet MainWindowController *mainWindowController;
@@ -38,8 +39,7 @@
 @property TimeEntryViewItem *lastKnownRunningTimeEntry;
 @property NSTimer *menubarTimer;
 @property NSTimer *idleTimer;
-@property NSString *lastKnownLoginState;
-@property NSString *lastKnownTrackingState;
+@property BOOL lastKnownLoginState;
 @property long lastIdleSecondsReading;
 @property NSDate *lastIdleStarted;
 
@@ -125,8 +125,7 @@ const int kDurationStringLength = 20;
   
   [self applySettings];
   
-  self.lastKnownLoginState = kUIStateUserLoggedOut;
-  self.lastKnownTrackingState = kUIStateTimerStopped;
+  self.lastKnownLoginState = NO;
   
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(eventHandler:)
@@ -202,7 +201,7 @@ const int kDurationStringLength = 20;
   }];
   
   [MASShortcut registerGlobalShortcutWithUserDefaultsKey:kPreferenceGlobalShortcutStartStop handler:^{
-    if ([self.lastKnownTrackingState isEqualTo:kUIStateTimerStopped]) {
+    if (self.lastKnownRunningTimeEntry == nil) {
       [self onContinueMenuItem:self];
     } else {
       [self onStopMenuItem:self];
@@ -286,14 +285,13 @@ const int kDurationStringLength = 20;
 }
 
 - (void)userLoggedIn:(User *)user {
-  self.lastKnownLoginState = kUIStateUserLoggedIn;
+  self.lastKnownLoginState = YES;
   
   renderRunningTimeEntry();
 }
 
 - (void)userLoggedOut {
-  self.lastKnownLoginState = kUIStateUserLoggedOut;
-  self.lastKnownTrackingState = kUIStateTimerStopped;
+  self.lastKnownLoginState = NO;
   self.lastKnownRunningTimeEntry = nil;
 
   if (!self.willTerminate) {
@@ -303,7 +301,6 @@ const int kDurationStringLength = 20;
 
 - (void)timerStopped {
   self.lastKnownRunningTimeEntry = nil;
-  self.lastKnownTrackingState = kUIStateTimerStopped;
   
   if (!self.willTerminate) {
     [NSApp setApplicationIconImage: self.inactiveAppIcon];
@@ -312,7 +309,6 @@ const int kDurationStringLength = 20;
 
 - (void)timerStarted:(TimeEntryViewItem *)timeEntry {
   self.lastKnownRunningTimeEntry = timeEntry;
-  self.lastKnownTrackingState = kUIStateTimerRunning;
   
   // Change app dock icon to default, which is red / tracking
   // See https://developer.apple.com/library/mac/documentation/Carbon/Conceptual/customizing_docktile/dockconcepts.pdf
@@ -616,32 +612,6 @@ const int kDurationStringLength = 20;
   return YES;
 }
 
-- (NSString *)applicationSupportDirectory {
-  NSString *path;
-  NSError *error;
-  NSArray* paths = NSSearchPathForDirectoriesInDomains(
-                                                       NSApplicationSupportDirectory, NSUserDomainMask, YES);
-  if ([paths count] == 0) {
-    NSLog(@"Unable to access application support directory!");
-  }
-  path = [paths[0] stringByAppendingPathComponent:@"Kopsik"];
-  
-  // Append environment name to path. So we can have
-  // production and development running side by side.
-  path = [path stringByAppendingPathComponent:self.environment];
-  
-	if ([[NSFileManager defaultManager] fileExistsAtPath:path]){
-    return path;
-  }
-	if (![[NSFileManager defaultManager] createDirectoryAtPath:path
-                                 withIntermediateDirectories:YES
-                                                  attributes:nil
-                                                       error:&error]){
-		NSLog(@"Create directory error: %@", error);
-	}
-  return path;
-}
-
 const NSString *appName = @"osx_native_app";
 
 - (void)parseCommandLineArguments{
@@ -690,40 +660,22 @@ const NSString *appName = @"osx_native_app";
   }
 }
 
-- (void)disallowDuplicateInstances {
-  // Disallow duplicate instances in production
-  if (![self.environment isEqualToString:@"production"]) {
-    return;
-  }
-  if ([[NSRunningApplication runningApplicationsWithBundleIdentifier:
-        [[NSBundle mainBundle] bundleIdentifier]] count] > 1) {
-    NSString *msg = [NSString
-                     stringWithFormat:@"Another copy of %@ is already running.",
-                     [[NSBundle mainBundle]
-                      objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey]];
-    [[NSAlert alertWithMessageText:msg
-                     defaultButton:nil
-                   alternateButton:nil
-                       otherButton:nil
-         informativeTextWithFormat:@"This copy will now quit."] runModal];
-    
-    [NSApp terminate:nil];
-  }
-}
-
 - (id) init {
   self = [super init];
   
   NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
   self.environment = infoDict[@"KopsikEnvironment"];
-  
-  [self disallowDuplicateInstances];
+
+  // Disallow duplicate instances in production
+  if ([self.environment isEqualToString:@"production"]) {
+    [Utils disallowDuplicateInstances];
+  }
   
   [Bugsnag startBugsnagWithApiKey:@"2a46aa1157256f759053289f2d687c2f"];
   NSAssert(self.environment != nil, @"Missing environment in plist");
   [Bugsnag configuration].releaseStage = self.environment;
   
-  self.app_path = [self applicationSupportDirectory];
+  self.app_path = [Utils applicationSupportDirectory:self.environment];
   self.db_path = [self.app_path stringByAppendingPathComponent:@"kopsik.db"];
   self.log_path = [self.app_path stringByAppendingPathComponent:@"kopsik.log"];
   self.log_level = @"debug";
@@ -751,8 +703,7 @@ const NSString *appName = @"osx_native_app";
   NSLog(@"Version %@", version);
   
   _Bool res = kopsik_set_db_path(ctx, [self.db_path UTF8String]);
-  NSAssert(res,
-           ([NSString stringWithFormat:@"Failed to initialize DB with path: %@", self.db_path]));
+  NSAssert(res, ([NSString stringWithFormat:@"Failed to initialize DB with path: %@", self.db_path]));
   
   id logToFile = infoDict[@"KopsikLogUserInterfaceToFile"];
   if ([logToFile boolValue]) {
@@ -829,48 +780,48 @@ const NSString *appName = @"osx_native_app";
 - (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem {
   switch ([anItem tag]) {
     case kMenuItemTagNew:
-      if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
+      if (self.lastKnownLoginState != YES) {
         return NO;
       }
       break;
     case kMenuItemTagContinue:
-      if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
+      if (self.lastKnownLoginState != YES) {
         return NO;
       }
-      if (self.lastKnownTrackingState != kUIStateTimerStopped) {
+      if (self.lastKnownRunningTimeEntry != nil) {
         return NO;
       }
       break;
     case kMenuItemTagStop:
-      if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
+      if (self.lastKnownLoginState != YES) {
         return NO;
       }
-      if (self.lastKnownTrackingState != kUIStateTimerRunning) {
+      if (self.lastKnownRunningTimeEntry == nil) {
         return NO;
       }
       break;
     case kMenuItemTagSync:
-      if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
+      if (self.lastKnownLoginState != YES) {
         return NO;
       }
       break;
     case kMenuItemTagLogout:
-      if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
+      if (self.lastKnownLoginState != YES) {
         return NO;
       }
       break;
     case kMenuItemTagClearCache:
-      if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
+      if (self.lastKnownLoginState != YES) {
         return NO;
       }
       break;
     case kMenuItemTagSendFeedback:
-      if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
+      if (self.lastKnownLoginState != YES) {
         return NO;
       }
       break;
     case kMenuItemTagOpenBrowser:
-      if (self.lastKnownLoginState != kUIStateUserLoggedIn) {
+      if (self.lastKnownLoginState != YES) {
         return NO;
       }
       break;
@@ -1044,54 +995,6 @@ void on_remind(const char *title, const char *informative_text) {
 
 void on_open_url(const char *url) {
   [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[NSString stringWithUTF8String:url]]];
-}
-
-// See https://codereview.chromium.org/7497056/patch/2002/4002 for inspiration
-BOOL wasLaunchedAsLoginOrResumeItem() {
-  ProcessSerialNumber psn = {0, kCurrentProcess};
-  NSDictionary *process_info = (__bridge NSDictionary *)ProcessInformationCopyDictionary(&psn, kProcessDictionaryIncludeAllInformationMask);
-
-  long long temp = [[process_info objectForKey:@"ParentPSN"] longLongValue];
-  ProcessSerialNumber parent_psn = {(temp >> 32) & 0x00000000FFFFFFFFLL, temp & 0x00000000FFFFFFFFLL};
-
-  NSDictionary *parent_info = (__bridge NSDictionary *)ProcessInformationCopyDictionary(&parent_psn,
-                                                               kProcessDictionaryIncludeAllInformationMask);
-
-  return [[parent_info objectForKey:@"FileCreator"] isEqualToString:@"lgnw"];
-}
-
-// See https://codereview.chromium.org/7497056/patch/2002/4002 for inspiration
-BOOL wasLaunchedAsHiddenLoginItem() {
-  if (!wasLaunchedAsLoginOrResumeItem()) {
-    return NO;
-  }
-
-  LSSharedFileListRef login_items = LSSharedFileListCreate(NULL,
-                                                           kLSSharedFileListSessionLoginItems,
-                                                           NULL);
-
-  if (!login_items) {
-    return NO;
-  }
-
-  CFArrayRef login_items_array = LSSharedFileListCopySnapshot(login_items,
-                                                              NULL);
-
-  CFURLRef url_ref = (__bridge CFURLRef)[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]];
-
-  for (int i = 0 ; i < CFArrayGetCount(login_items_array); i++) {
-    LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(login_items_array, i);
-    CFURLRef item_url_ref = NULL;
-    if (!LSSharedFileListItemResolve(item, 0, &item_url_ref, NULL) == noErr) {
-      continue;
-    }
-    if (CFEqual(item_url_ref, url_ref)) {
-      CFBooleanRef hidden = LSSharedFileListItemCopyProperty(item, kLSSharedFileListLoginItemHidden);
-      return (hidden && kCFBooleanTrue == hidden);
-    }
-  }
-
-  return NO;
 }
 
 @end
