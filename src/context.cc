@@ -99,7 +99,6 @@ void Context::StartEvents() {
     if (!LoadCurrentUser(&user)) {
         return;
     }
-    exportUserLoginState();
 }
 
 error Context::verifyCallbacks() {
@@ -129,7 +128,6 @@ void Context::exportUserLoginState() {
         on_user_login_callback_(0, "", "");
         return;
     }
-    SetWake();  // obviously, we're wake
     on_user_login_callback_(user_->ID(),
                             user_->Fullname().c_str(),
                             user_->TimeOfDayFormat().c_str());
@@ -304,8 +302,8 @@ void Context::onPartialSync(Poco::Util::TimerTask& task) {  // NOLINT
     on_online_callback_();
 }
 
-void Context::SwitchWebSocketOff() {
-    logger().debug("SwitchWebSocketOff");
+void Context::switchWebSocketOff() {
+    logger().debug("switchWebSocketOff");
 
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(
@@ -354,8 +352,8 @@ _Bool Context::LoadUpdateFromJSONString(const std::string json) {
     return exportErrorState(save());
 }
 
-void Context::SwitchWebSocketOn() {
-    logger().debug("SwitchWebSocketOn");
+void Context::switchWebSocketOn() {
+    logger().debug("switchWebSocketOn");
 
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(
@@ -375,8 +373,8 @@ void Context::onSwitchWebSocketOn(Poco::Util::TimerTask& task) {  // NOLINT
 }
 
 // Start/stop timeline recording on local machine
-void Context::SwitchTimelineOff() {
-    logger().debug("SwitchTimelineOff");
+void Context::switchTimelineOff() {
+    logger().debug("switchTimelineOff");
 
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(
@@ -402,8 +400,8 @@ void Context::onSwitchTimelineOff(Poco::Util::TimerTask& task) {  // NOLINT
     }
 }
 
-void Context::SwitchTimelineOn() {
-    logger().debug("SwitchTimelineOn");
+void Context::switchTimelineOn() {
+    logger().debug("switchTimelineOn");
 
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(
@@ -722,7 +720,7 @@ _Bool Context::SaveProxySettings(
         }
         if (user_) {
             FullSync();
-            SwitchWebSocketOn();
+            switchWebSocketOn();
         }
     }
 
@@ -829,7 +827,22 @@ void Context::setUser(User *value) {
         delete user_;
     }
     user_ = value;
+
+    SetWake();
+
     exportUserLoginState();
+
+    if (user_) {
+        switchTimelineOn();
+        switchWebSocketOn();
+    } else {
+        switchTimelineOff();
+        switchWebSocketOff();
+    }
+
+    if (user_) {
+        FullSync();
+    }
 }
 
 _Bool Context::SetLoggedInUserFromJSON(
@@ -1361,10 +1374,10 @@ _Bool Context::ToggleTimelineRecording() {
 
         TimelineUpdateServerSettings();
         if (user_->RecordTimeline()) {
-            SwitchTimelineOn();
-            return true;
+            switchTimelineOn();
+        } else {
+            switchTimelineOff();
         }
-        SwitchTimelineOff();
     } catch(const Poco::Exception& exc) {
         return exportErrorState(exc.displayText());
     } catch(const std::exception& ex) {

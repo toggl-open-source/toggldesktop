@@ -246,26 +246,6 @@ const int kDurationStringLength = 20;
     kopsik_set_wake(ctx);
 }
 
-- (void)startWebSocket {
-  NSLog(@"startWebSocket");
-  kopsik_websocket_switch(ctx, 1);
-}
-
-- (void)stopWebSocket {
-  NSLog(@"stopWebSocket");
-  kopsik_websocket_switch(ctx, 0);
-}
-
-- (void)startTimeline {
-  NSLog(@"startTimeline");
-  kopsik_timeline_switch(ctx, 1);
-}
-
-- (void)stopTimeline {
-  NSLog(@"stopTimeline");
-  kopsik_timeline_switch(ctx, 0);
-}
-
 - (void)startNewTimeEntry:(TimeEntryViewItem *)new_time_entry {
   NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
   if (!kopsik_start(ctx,
@@ -308,17 +288,6 @@ const int kDurationStringLength = 20;
 - (void)userLoggedIn:(User *)user {
   self.lastKnownLoginState = kUIStateUserLoggedIn;
   
-  // Start syncing after a while.
-  [self performSelector:@selector(startSync)
-             withObject:nil
-             afterDelay:0.5];
-  [self performSelector:@selector(startWebSocket)
-             withObject:nil
-             afterDelay:0.5];
-  [self performSelector:@selector(startTimeline)
-             withObject:nil
-             afterDelay:0.5];
-  
   renderRunningTimeEntry();
 }
 
@@ -326,8 +295,6 @@ const int kDurationStringLength = 20;
   self.lastKnownLoginState = kUIStateUserLoggedOut;
   self.lastKnownTrackingState = kUIStateTimerStopped;
   self.lastKnownRunningTimeEntry = nil;
-  [self stopWebSocket];
-  [self stopTimeline];
 
   if (!self.willTerminate) {
     [NSApp setApplicationIconImage: self.inactiveAppIcon];
@@ -583,7 +550,7 @@ const int kDurationStringLength = 20;
 }
 
 - (IBAction)onSyncMenuItem:(id)sender {
-  [self startSync];
+  kopsik_sync(ctx);
 }
 
 - (IBAction)onOpenBrowserMenuItem:(id)sender {
@@ -948,11 +915,6 @@ void on_model_change_callback(KopsikModelChange *change) {
   
   [[NSNotificationCenter defaultCenter]
    postNotificationName:kUIEventModelChange object:modelChange];
-}
-
-- (void)startSync {
-  NSLog(@"startSync");
-  kopsik_sync(ctx);
 }
 
 - (void)checkForUpdates {

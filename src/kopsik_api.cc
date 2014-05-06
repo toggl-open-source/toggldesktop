@@ -86,6 +86,9 @@ _Bool kopsik_is_networking_error(
     if (value.find("The request timed out") != std::string::npos) {
         return true;
     }
+    if (value.find("Could not connect to the server") != std::string::npos) {
+        return true;
+    }
     return false;
 }
 
@@ -99,12 +102,6 @@ _Bool kopsik_is_user_error(const char *error) {
     }
     if (value.find("Request to server failed with status code: 403")
             != std::string::npos) {
-        return true;
-    }
-    if ("Google login access was denied to app." == value) {
-        return true;
-    }
-    if ("Window was closed before login completed." == value) {
         return true;
     }
     return false;
@@ -154,14 +151,6 @@ void kopsik_context_start_events(void *context) {
 
 void kopsik_password_forgot(void *context) {
     app(context)->PasswordForgot();
-}
-
-void kopsik_open_in_browser(void *context) {
-    app(context)->OpenInBrowser();
-}
-
-void kopsik_get_support(void *context) {
-    app(context)->GetSupport();
 }
 
 void kopsik_context_clear(void *context) {
@@ -1114,35 +1103,6 @@ _Bool kopsik_duration_for_date_header(
 
     kopsik_format_duration_in_seconds_hhmm(sum, duration, duration_len);
     return true;
-}
-
-void kopsik_websocket_switch(
-    void *context,
-    const _Bool on) {
-    std::stringstream ss;
-    ss << "kopsik_websocket_switch on=" << on;
-    logger().debug(ss.str());
-
-    if (on) {
-        app(context)->SwitchWebSocketOn();
-        return;
-    }
-    app(context)->SwitchWebSocketOff();
-}
-
-void kopsik_timeline_switch(
-    void *context,
-    const _Bool on) {
-    std::stringstream ss;
-    ss << "kopsik_timeline_switch on=" << on;
-    logger().debug(ss.str());
-
-    if (on) {
-        app(context)->SwitchTimelineOn();
-        return;
-    }
-
-    app(context)->SwitchTimelineOff();
 }
 
 void kopsik_timeline_toggle_recording(
