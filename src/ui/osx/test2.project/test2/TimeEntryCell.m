@@ -53,7 +53,7 @@
 
   // Time entry has a project
   if (view_item.ProjectAndTaskLabel && [view_item.ProjectAndTaskLabel length] > 0) {
-    self.projectTextField.stringValue = [view_item.ProjectAndTaskLabel uppercaseString];
+    self.projectTextField.stringValue = view_item.ProjectAndTaskLabel;
     [self.projectTextField setHidden:NO];
     self.projectTextField.toolTip = view_item.ProjectAndTaskLabel;
     self.projectTextField.textColor =
