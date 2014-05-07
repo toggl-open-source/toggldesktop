@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Utils
+@interface Utils : NSObject
 
 + (void)disallowDuplicateInstances;
 + (NSString *)applicationSupportDirectory:(NSString *)environment;
