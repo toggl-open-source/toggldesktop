@@ -58,7 +58,7 @@
                     <color key="fillColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.92156862745098034" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
                 <box autoresizesSubviews="NO" borderWidth="0.0" title="Box" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="HvF-1T-7Z3">
-                    <rect key="frame" x="0.0" y="0.0" width="285" height="56"/>
+                    <rect key="frame" x="0.0" y="1" width="285" height="56"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView">
                         <rect key="frame" x="0.0" y="10" width="285" height="36"/>
@@ -86,13 +86,13 @@
                                 </textFieldCell>
                             </textField>
                             <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9cY-Vq-vDS" customClass="NSHoverButton">
-                                <rect key="frame" x="181" y="-1" width="33" height="33"/>
+                                <rect key="frame" x="181" y="-1" width="34" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="HI5-NI-PWi"/>
                                     <constraint firstAttribute="width" constant="21" id="hX0-sf-ChR"/>
                                 </constraints>
-                                <buttonCell key="cell" type="round" bezelStyle="circular" image="icon-start-gray" imagePosition="overlaps" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yOr-J1-pTl">
+                                <buttonCell key="cell" type="round" bezelStyle="circular" image="icon-start-gray" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yOr-J1-pTl">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="smallSystem"/>
                                 </buttonCell>
@@ -143,7 +143,7 @@
             </subviews>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="PuG-98-30a" secondAttribute="trailing" id="47D-mj-HIO"/>
-                <constraint firstItem="HvF-1T-7Z3" firstAttribute="top" secondItem="WaA-ag-4kh" secondAttribute="top" constant="46" id="8zg-d8-7UK"/>
+                <constraint firstItem="HvF-1T-7Z3" firstAttribute="top" secondItem="WaA-ag-4kh" secondAttribute="top" constant="45" id="8zg-d8-7UK"/>
                 <constraint firstAttribute="trailing" secondItem="HvF-1T-7Z3" secondAttribute="trailing" id="LHb-oP-ZhG"/>
                 <constraint firstItem="PuG-98-30a" firstAttribute="top" secondItem="WaA-ag-4kh" secondAttribute="top" id="fjK-BY-ENj"/>
                 <constraint firstItem="HvF-1T-7Z3" firstAttribute="leading" secondItem="WaA-ag-4kh" secondAttribute="leading" id="mlc-4c-pPf"/>
