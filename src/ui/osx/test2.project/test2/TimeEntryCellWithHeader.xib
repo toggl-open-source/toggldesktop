@@ -71,7 +71,7 @@
                                     <constraint firstAttribute="height" constant="17" id="iQU-pZ-Vow"/>
                                 </constraints>
                                 <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="PROJECT NAME - CLIENT" drawsBackground="YES" id="YKk-bz-65B">
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" metaFont="systemBold"/>
                                     <color key="textColor" name="controlDarkShadowColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                                 </textFieldCell>
@@ -101,12 +101,12 @@
                                 </connections>
                             </button>
                             <imageView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HgZ-sm-ajS">
-                                <rect key="frame" x="169" y="11" width="16" height="13"/>
+                                <rect key="frame" x="169" y="11" width="7" height="13"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="icon-billable" id="Fxk-x5-AcD"/>
                             </imageView>
                             <imageView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uzs-Rq-HN0">
-                                <rect key="frame" x="151" y="11" width="19" height="13"/>
+                                <rect key="frame" x="151" y="11" width="13" height="11"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="icon-tags" id="YVT-IH-Brh"/>
                             </imageView>
@@ -129,9 +129,9 @@
                         <constraint firstItem="4mY-N2-UMI" firstAttribute="leading" secondItem="HvF-1T-7Z3" secondAttribute="leading" constant="14" id="gcU-Rf-6ty"/>
                         <constraint firstAttribute="trailing" secondItem="IPX-6P-J70" secondAttribute="trailing" constant="93" id="h7j-w1-f9l"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="4mY-N2-UMI" secondAttribute="trailing" constant="92" id="wki-mh-hyo"/>
-                        <constraint firstAttribute="trailing" secondItem="HgZ-sm-ajS" secondAttribute="trailing" constant="100" id="xAd-NE-flQ"/>
+                        <constraint firstAttribute="trailing" secondItem="HgZ-sm-ajS" secondAttribute="trailing" constant="105" id="xAd-NE-flQ"/>
                         <constraint firstAttribute="trailing" secondItem="9cY-Vq-vDS" secondAttribute="trailing" constant="77" id="xT0-DH-Dat"/>
-                        <constraint firstAttribute="trailing" secondItem="Uzs-Rq-HN0" secondAttribute="trailing" constant="116" id="zu9-ZU-mpw"/>
+                        <constraint firstAttribute="trailing" secondItem="Uzs-Rq-HN0" secondAttribute="trailing" priority="750" constant="105" id="zu9-ZU-mpw"/>
                     </constraints>
                     <size key="contentViewMargins" width="0.0" height="10"/>
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>

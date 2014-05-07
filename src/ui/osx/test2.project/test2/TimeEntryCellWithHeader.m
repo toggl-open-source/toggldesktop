@@ -35,6 +35,9 @@
     self.descriptionTextField.stringValue = @"(no description)";
     self.descriptionTextField.toolTip = nil;
   }
+    
+  // Set billable and tag constraints
+  [self toggleTagConstraints: (view_item.billable && [view_item.tags count])];
 
   // Set billable label
   if (YES == view_item.billable) {
@@ -52,7 +55,7 @@
   
   // Time entry has a project
   if (view_item.ProjectAndTaskLabel && [view_item.ProjectAndTaskLabel length] > 0) {
-    self.projectTextField.stringValue = [view_item.ProjectAndTaskLabel uppercaseString];
+      self.projectTextField.stringValue = view_item.ProjectAndTaskLabel;
     [self.projectTextField setHidden:NO];
     self.projectTextField.toolTip = view_item.ProjectAndTaskLabel;
     self.projectTextField.textColor =
@@ -64,6 +67,26 @@
   self.projectTextField.stringValue = @"";
   [self.projectTextField setHidden:YES];
   self.projectTextField.toolTip = nil;
+}
+
+- (void)toggleTagConstraints:(BOOL)flag {
+    if(YES==flag) {
+        if (!self.billableConstraint) {
+            NSLog(@"Create constraints");
+            NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_billableFlag, _tagFlag);
+            self.billableConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"[_tagFlag]-8@1000-[_billableFlag]"
+                                                                              options:0
+                                                                              metrics:nil
+                                                                                views:viewsDict];
+        }
+        [self addConstraints:self.billableConstraint];
+        self.constraintsAdded = YES;
+    } else {
+        if (self.constraintsAdded) {
+            [self removeConstraints:self.billableConstraint];
+            self.constraintsAdded = NO;
+        }
+    }
 }
 
 @end
