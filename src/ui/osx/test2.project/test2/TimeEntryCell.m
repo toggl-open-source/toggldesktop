@@ -53,7 +53,7 @@
     self.projectTextField.stringValue = [view_item.ProjectAndTaskLabel uppercaseString];
     [self.projectTextField setHidden:NO];
     self.projectTextField.toolTip = view_item.ProjectAndTaskLabel;
-    self.projectTextField.backgroundColor =
+    self.projectTextField.textColor =
       [ConvertHexColor hexCodeToNSColor:view_item.ProjectColor];
     return;
   }
