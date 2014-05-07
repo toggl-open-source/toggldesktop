@@ -17,6 +17,7 @@
 @property (nonatomic, strong) IBOutlet NSTextField *durationTextField;
 @property (strong) NSString *GUID;
 @property NSArray *billableConstraint;
+@property BOOL constraintsAdded;
 - (void)render:(TimeEntryViewItem *)view_item;
 - (IBAction)continueTimeEntry:(id)sender;
 @end

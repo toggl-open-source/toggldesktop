@@ -84,7 +84,7 @@
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="deS-e6-3Ui" secondAttribute="trailing" constant="92" id="L9d-4A-NVt"/>
                         <constraint firstAttribute="trailing" secondItem="CwR-d5-aWs" secondAttribute="trailing" constant="94" id="OD9-hN-DXz"/>
                         <constraint firstAttribute="trailing" secondItem="xwb-FG-Z4X" secondAttribute="trailing" constant="15" id="SKX-kj-jDT"/>
-                        <constraint firstAttribute="trailing" secondItem="29c-rg-nft" secondAttribute="trailing" constant="121" id="UBl-Ai-aSo"/>
+                        <constraint firstAttribute="trailing" secondItem="29c-rg-nft" secondAttribute="trailing" priority="750" constant="105" id="UBl-Ai-aSo"/>
                         <constraint firstAttribute="bottom" secondItem="xwb-FG-Z4X" secondAttribute="bottom" constant="15" id="Wxi-cu-zKj"/>
                     </constraints>
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
@@ -98,9 +98,11 @@
                 <constraint firstAttribute="trailing" secondItem="ar8-w3-mLZ" secondAttribute="trailing" id="fix-Va-WqO"/>
             </constraints>
             <connections>
+                <outlet property="billableFlag" destination="QS9-7g-WQN" id="ftI-OL-nFL"/>
                 <outlet property="descriptionTextField" destination="CwR-d5-aWs" id="Wip-cq-Mwm"/>
                 <outlet property="durationTextField" destination="xwb-FG-Z4X" id="utn-4y-DUw"/>
                 <outlet property="projectTextField" destination="deS-e6-3Ui" id="pIu-QV-GCm"/>
+                <outlet property="tagFlag" destination="29c-rg-nft" id="LV9-V1-NQ1"/>
             </connections>
         </customView>
     </objects>
