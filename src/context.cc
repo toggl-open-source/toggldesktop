@@ -99,6 +99,7 @@ void Context::StartEvents() {
     if (!LoadCurrentUser(&user)) {
         return;
     }
+    exportUserLoginState();
 }
 
 error Context::verifyCallbacks() {
