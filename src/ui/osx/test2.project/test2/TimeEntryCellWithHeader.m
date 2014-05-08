@@ -60,6 +60,7 @@
     self.projectTextField.toolTip = view_item.ProjectAndTaskLabel;
     self.projectTextField.textColor =
       [ConvertHexColor hexCodeToNSColor:view_item.ProjectColor];
+    [self setClient:self.projectTextField];
     return;
   }
 
@@ -67,6 +68,29 @@
   self.projectTextField.stringValue = @"";
   [self.projectTextField setHidden:YES];
   self.projectTextField.toolTip = nil;
+}
+
+-(void)setClient:(NSTextField*)inTextField
+{
+    NSArray *chunks = [[inTextField stringValue] componentsSeparatedByString: @"."];
+
+    if ([chunks count] == 1) {
+        return;
+    }
+
+    NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:chunks[1]];
+    [clientName setAttributes:
+       @{
+         NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+         NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
+       }
+       range:NSMakeRange(0, [clientName length])];
+
+    NSMutableAttributedString* string = [[NSMutableAttributedString alloc] initWithString:[chunks[0] stringByAppendingString:@" "]];
+    [string appendAttributedString: clientName];
+
+    // set the attributed string to the NSTextField
+    [inTextField setAttributedStringValue: string];
 }
 
 - (void)toggleTagConstraints:(BOOL)flag {
