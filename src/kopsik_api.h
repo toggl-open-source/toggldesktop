@@ -211,6 +211,11 @@ extern "C" {
         char *str,
         const size_t max_strlen);
 
+    KOPSIK_EXPORT void kopsik_format_duration_in_seconds_pretty_hhmm(
+        const int64_t duration_in_seconds,
+        char *str,
+        const size_t max_strlen);
+
     KOPSIK_EXPORT int64_t kopsik_parse_duration_string_into_seconds(
         const char *duration_string);
 

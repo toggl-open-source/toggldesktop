@@ -439,12 +439,44 @@ std::string Formatter::FormatDurationInSeconds(
     return ss.str();
 }
 
+std::string Formatter::FormatDurationInSecondsToHM(
+    const Poco::Int64 value) {
+    Poco::Int64 duration = value;
+    // Duration is negative when time is tracking
+    if (duration < 0) {
+        duration += time(0);
+    }
+    // If after calculation time is still negative,
+    // either computer clock is wrong or user
+    // has set start time to the future. Render positive
+    // duration only:
+    if (duration < 0) {
+        duration *= -1;
+    }
+    Poco::Timespan span(duration * Poco::Timespan::SECONDS);
+    // Poco DateTimeFormatter will not format hours above 24h.
+    // So format hours by hand:
+    std::stringstream ss;
+    Poco::Int64 hours = duration / 3600;
+    Poco::Int64 minutes = (duration - (hours * 3600)) / 60;
+    if (hours > 0) {
+        ss << hours << " h ";
+    }
+    ss << minutes << " min";
+
+    return ss.str();
+}
+
 std::string Formatter::FormatDurationInSecondsHHMMSS(const Poco::Int64 value) {
     return FormatDurationInSeconds(value, "%M:%S");
 }
 
 std::string Formatter::FormatDurationInSecondsHHMM(const Poco::Int64 value) {
     return FormatDurationInSeconds(value, "%M");
+}
+
+std::string Formatter::FormatDurationInSecondsPrettyHHMM(const Poco::Int64 value) {
+    return FormatDurationInSecondsToHM(value);
 }
 
 std::time_t Formatter::Parse8601(const std::string iso_8601_formatted_date) {

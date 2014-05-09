@@ -36,7 +36,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="c0p-f3-udt"/>
-                                    <constraint firstAttribute="width" constant="59" id="s4q-xF-eo4"/>
+                                    <constraint firstAttribute="width" constant="80" id="s4q-xF-eo4"/>
                                 </constraints>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="2 h  12 min" id="6GT-P9-Wsv">
                                     <font key="font" size="11" name="LucidaGrande"/>

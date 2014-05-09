@@ -28,6 +28,9 @@ class Formatter {
         const Poco::Int64 value,
         const std::string format);
 
+    static std::string FormatDurationInSecondsToHM(
+        const Poco::Int64 value);
+
     static bool ParseTimeInput(
         const std::string value,
         int *hours,
@@ -41,6 +44,9 @@ class Formatter {
         const Poco::Int64 value);
 
     static std::string FormatDurationInSecondsHHMM(
+        const Poco::Int64 value);
+
+    static std::string FormatDurationInSecondsPrettyHHMM(
         const Poco::Int64 value);
 
     static std::time_t Parse8601(
