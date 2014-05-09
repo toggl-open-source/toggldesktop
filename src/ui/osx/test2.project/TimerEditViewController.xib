@@ -22,15 +22,15 @@
             <rect key="frame" x="0.0" y="0.0" width="258" height="48"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box autoresizesSubviews="NO" misplaced="YES" title="Box" boxType="custom" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Fga-BR-x8G" customClass="NSBoxClickable">
+                <box autoresizesSubviews="NO" misplaced="YES" borderWidth="0.0" title="Box" boxType="custom" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Fga-BR-x8G" customClass="NSBoxClickable">
                     <rect key="frame" x="1" y="-8" width="256" height="56"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView">
-                        <rect key="frame" x="1" y="1" width="254" height="54"/>
+                        <rect key="frame" x="0.0" y="0.0" width="256" height="56"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <box autoresizesSubviews="NO" misplaced="YES" transparent="YES" borderWidth="0.0" title="Box" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="nFI-HH-zd7">
-                                <rect key="frame" x="197" y="0.0" width="58" height="56"/>
+                                <rect key="frame" x="197" y="2" width="58" height="56"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <view key="contentView">
                                     <rect key="frame" x="0.0" y="0.0" width="58" height="56"/>
@@ -62,7 +62,7 @@ DQ
                                 <color key="fillColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
                             </box>
                             <comboBox toolTip="Description" focusRingType="none" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ITa-Jc-jOK" customClass="NSCustomComboBox">
-                                <rect key="frame" x="4" y="27" width="136" height="20"/>
+                                <rect key="frame" x="4" y="29" width="136" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="14" id="WR0-PJ-917"/>
@@ -79,7 +79,7 @@ DQ
                                 </connections>
                             </comboBox>
                             <textField toolTip="Duration" focusRingType="none" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oie-Un-asQ" customClass="NSTextFieldClickable">
-                                <rect key="frame" x="132" y="22" width="75" height="18"/>
+                                <rect key="frame" x="132" y="24" width="75" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="76" id="x2K-5w-zfF"/>
@@ -96,19 +96,19 @@ DQ
                                 </connections>
                             </textField>
                             <textField hidden="YES" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tVc-ms-0hr">
-                                <rect key="frame" x="3" y="17" width="200" height="11"/>
+                                <rect key="frame" x="3" y="19" width="200" height="11"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="14" id="wqt-c9-CBt"/>
                                 </constraints>
                                 <textFieldCell key="cell" lineBreakMode="charWrapping" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="NEW - TOGGL" id="Wt0-TO-JZG">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    <font key="font" metaFont="systemBold"/>
+                                    <color key="textColor" red="0.38823529411764707" green="0.38823529411764707" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="backgroundColor" red="0.92739556759999997" green="0.124813008" blue="0.11691136570000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </textFieldCell>
                             </textField>
                             <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" borderWidth="0.0" title="Box" boxType="custom" borderType="none" translatesAutoresizingMaskIntoConstraints="NO" id="ow2-8J-rMh">
-                                <rect key="frame" x="132" y="41" width="5" height="30"/>
+                                <rect key="frame" x="132" y="43" width="5" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <view key="contentView">
                                     <rect key="frame" x="0.0" y="0.0" width="5" height="30"/>
@@ -121,14 +121,14 @@ DQ
                                 <color key="fillColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
                             </box>
                             <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fiv-ao-qiA" customClass="NSTextFieldClickable">
-                                <rect key="frame" x="4" y="27" width="142" height="8"/>
+                                <rect key="frame" x="4" y="29" width="142" height="8"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="6EN-7v-jSX"/>
                                 </constraints>
                                 <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="Label" placeholderString="What are you doing?" id="V5P-6k-9NM">
                                     <font key="font" metaFont="system"/>
-                                    <color key="textColor" red="0.38823529411764707" green="0.38823529411764707" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="textColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>

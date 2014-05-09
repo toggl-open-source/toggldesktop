@@ -308,9 +308,9 @@ extern void *ctx;
   
   // Display project name
   if (self.time_entry.ProjectAndTaskLabel != nil) {
-    self.projectTextField.stringValue =
-      [self.time_entry.ProjectAndTaskLabel uppercaseString];
+    self.projectTextField.stringValue = self.time_entry.ProjectAndTaskLabel;
       self.projectTextField.toolTip = self.time_entry.ProjectAndTaskLabel;
+      [self setClient:self.projectTextField];
   } else {
     self.projectTextField.stringValue = @"";
     self.projectTextField.toolTip = nil;
@@ -325,6 +325,26 @@ extern void *ctx;
     self.durationTextField.stringValue = @"";
   }
 }
+
+-(void)setClient:(NSTextField*)inTextField
+{
+    NSArray *chunks = [[inTextField stringValue] componentsSeparatedByString: @"."];
+    if ([chunks count] == 1) {
+        return;
+    }
+    NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:chunks[1]];
+    [clientName setAttributes:
+     @{
+       NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+       NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
+     }
+     range:NSMakeRange(0, [clientName length])];
+    NSMutableAttributedString* string = [[NSMutableAttributedString alloc] initWithString:[chunks[0] stringByAppendingString:@" "]];
+    [string appendAttributedString: clientName];
+    // set the attributed string to the NSTextField
+    [inTextField setAttributedStringValue: string];
+}
+
 
 -(NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox{
   return [self.autocompleteDataSource count];
