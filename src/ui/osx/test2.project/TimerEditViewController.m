@@ -254,6 +254,15 @@ extern void *ctx;
     self.startButtonBox.fillColor = [ConvertHexColor hexCodeToNSColor:@"#4bc800"];
   }
 
+  // Display description
+  if (self.time_entry.Description != nil) {
+    self.descriptionComboBox.stringValue = self.time_entry.Description;
+    self.descriptionComboBox.toolTip = self.time_entry.Description;
+  } else {
+    self.descriptionComboBox.toolTip = nil;
+    self.descriptionComboBox.stringValue = @"";
+  }
+
   // Description and duration cannot be edited
   // while time entry is running
   if (self.time_entry.duration_in_seconds < 0) {
@@ -273,15 +282,7 @@ extern void *ctx;
     [self.durationTextField setDelegate:self.durationTextField];
     [self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:@"#999999"]];
   }
-  
-  // Display description
-  if (self.time_entry.Description != nil) {
-    self.descriptionComboBox.stringValue = self.time_entry.Description;
-    self.descriptionComboBox.toolTip = self.time_entry.Description;
-  } else {
-    self.descriptionComboBox.toolTip = nil;
-    self.descriptionComboBox.stringValue = @"";
-  }
+
   
   // If a project is assigned, then project name
   // is visible.
