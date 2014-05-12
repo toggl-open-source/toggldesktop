@@ -10,6 +10,7 @@
 		3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */; };
 		3C7B4E9E190FA7F900627DC3 /* logo-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */; };
 		3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */; };
+		3C8979B71920B7B7007061E0 /* continue.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C8979B61920B7B7007061E0 /* continue.pdf */; };
 		3C996F7D190E4A34005066F6 /* icon-stop-red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C996F7C190E4A34005066F6 /* icon-stop-red@2x.png */; };
 		3C996F8E190E4A3E005066F6 /* icon-start-green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C996F8D190E4A3E005066F6 /* icon-start-green@2x.png */; };
 		3CDA2C581913A4E200A94967 /* icon-start-gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDA2C571913A4E200A94967 /* icon-start-gray@2x.png */; };
@@ -399,6 +400,7 @@
 		3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-white@2x.png"; sourceTree = "<group>"; };
 		3C7B4EB1190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSecureTextFieldVerticallyAligned.h; sourceTree = "<group>"; };
 		3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSecureTextFieldVerticallyAligned.m; sourceTree = "<group>"; };
+		3C8979B61920B7B7007061E0 /* continue.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = continue.pdf; sourceTree = "<group>"; };
 		3C996F7C190E4A34005066F6 /* icon-stop-red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-stop-red@2x.png"; sourceTree = "<group>"; };
 		3C996F8D190E4A3E005066F6 /* icon-start-green@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-start-green@2x.png"; sourceTree = "<group>"; };
 		3CDA2C571913A4E200A94967 /* icon-start-gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-start-gray@2x.png"; sourceTree = "<group>"; };
@@ -626,6 +628,7 @@
 				3CDA2C571913A4E200A94967 /* icon-start-gray@2x.png */,
 				3CDA2C591913B60F00A94967 /* icon-billable@2x.png */,
 				3CDA2C5A1913B60F00A94967 /* icon-tags@2x.png */,
+				3C8979B61920B7B7007061E0 /* continue.pdf */,
 				74E1682E180F269F0026261C /* gtm */,
 				74FE0D4C18E260A000ECFED2 /* MASShortcut */,
 				69FC17FA17E6534400B96425 /* ui */,
@@ -1192,6 +1195,7 @@
 				C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */,
 				74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
 				3C996F7D190E4A34005066F6 /* icon-stop-red@2x.png in Resources */,
+				3C8979B71920B7B7007061E0 /* continue.pdf in Resources */,
 				74D1D25F17EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */,
 				3CDA2C581913A4E200A94967 /* icon-start-gray@2x.png in Resources */,
 				7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */,

@@ -86,15 +86,15 @@
                                 </textFieldCell>
                             </textField>
                             <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9cY-Vq-vDS" customClass="NSHoverButton">
-                                <rect key="frame" x="181" y="-1" width="34" height="33"/>
+                                <rect key="frame" x="184" y="5" width="24" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="HI5-NI-PWi"/>
-                                    <constraint firstAttribute="width" constant="21" id="hX0-sf-ChR"/>
+                                    <constraint firstAttribute="height" constant="24" id="HI5-NI-PWi"/>
+                                    <constraint firstAttribute="width" constant="24" id="hX0-sf-ChR"/>
                                 </constraints>
-                                <buttonCell key="cell" type="round" bezelStyle="circular" image="icon-start-gray" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yOr-J1-pTl">
+                                <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="continue" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="yOr-J1-pTl">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="smallSystem"/>
+                                    <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
                                     <action selector="continueTimeEntry:" target="WaA-ag-4kh" id="uYE-sb-Y9H"/>
@@ -158,8 +158,8 @@
         </customView>
     </objects>
     <resources>
+        <image name="continue" width="23" height="23"/>
         <image name="icon-billable" width="6.5" height="12.5"/>
-        <image name="icon-start-gray" width="6.5" height="9"/>
         <image name="icon-tags" width="13" height="10.5"/>
     </resources>
 </document>

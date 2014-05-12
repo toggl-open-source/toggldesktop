@@ -12,7 +12,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box autoresizesSubviews="NO" misplaced="YES" borderWidth="0.0" title="Box" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="ar8-w3-mLZ">
-                    <rect key="frame" x="0.0" y="-5" width="252" height="56"/>
+                    <rect key="frame" x="0.0" y="1" width="252" height="56"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView">
                         <rect key="frame" x="0.0" y="0.0" width="252" height="56"/>
@@ -49,15 +49,15 @@
                                 </textFieldCell>
                             </textField>
                             <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gcj-ki-Hus" customClass="NSHoverButton">
-                                <rect key="frame" x="163" y="13" width="34" height="33"/>
+                                <rect key="frame" x="171" y="16" width="24" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="FfV-9g-8jU"/>
-                                    <constraint firstAttribute="width" constant="21" id="pmZ-g5-uge"/>
+                                    <constraint firstAttribute="height" constant="24" id="FfV-9g-8jU"/>
+                                    <constraint firstAttribute="width" constant="24" id="pmZ-g5-uge"/>
                                 </constraints>
-                                <buttonCell key="cell" type="round" bezelStyle="circular" image="icon-start-gray" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="RwR-fM-rUm">
+                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="continue" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="RwR-fM-rUm">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="smallSystem"/>
+                                    <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
                                     <action selector="continueTimeEntry:" target="jHy-af-Yta" id="33n-9C-eNB"/>
@@ -107,8 +107,8 @@
         </customView>
     </objects>
     <resources>
+        <image name="continue" width="23" height="23"/>
         <image name="icon-billable" width="6.5" height="12.5"/>
-        <image name="icon-start-gray" width="6.5" height="9"/>
         <image name="icon-tags" width="13" height="10.5"/>
     </resources>
 </document>
