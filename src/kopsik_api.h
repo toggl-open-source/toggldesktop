@@ -110,6 +110,12 @@ extern "C" {
         const _Bool on_top,
         const _Bool reminder);
 
+    typedef void (*KopsikApplySettings)(
+        const _Bool use_idle_detection,
+        const _Bool menubar_timer,
+        const _Bool dock_icon,
+        const _Bool on_top);
+
     typedef void (*KopsikDisplayProxySettings)(
         const _Bool use_proxy,
         const char *proxy_host,
@@ -118,8 +124,7 @@ extern "C" {
         const char *proxy_password);
 
     typedef void (*KopsikDisplayTimerState)(
-        const _Bool is_tracking,
-        KopsikTimeEntryViewItem *first);
+        KopsikTimeEntryViewItem *te);
 
     // Initialize/destroy an instance of the app
 
@@ -219,6 +224,10 @@ extern "C" {
     KOPSIK_EXPORT void kopsik_on_timer_state(
         void *context,
         KopsikDisplayTimerState);
+
+    KOPSIK_EXPORT void kopsik_on_apply_settings(
+        void *context,
+        KopsikApplySettings);
 
     // After UI callbacks are configured, start pumping UI events
 

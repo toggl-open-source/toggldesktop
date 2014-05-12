@@ -858,3 +858,9 @@ void kopsik_on_timer_state(
     KopsikDisplayTimerState cb) {
     app(context)->UI()->OnDisplayTimerState(cb);
 }
+
+void kopsik_on_apply_settings(
+    void *context,
+    KopsikApplySettings cb) {
+    app(context)->UI()->OnApplySettings(cb);
+}

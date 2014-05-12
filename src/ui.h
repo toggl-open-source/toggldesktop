@@ -36,7 +36,8 @@ class UI {
     , on_display_time_entry_editor_(0)
     , on_display_settings_(0)
     , on_display_proxy_settings_(0)
-    , on_display_timer_state_(0) {}
+    , on_display_timer_state_(0)
+    , on_apply_settings_(0) {}
 
     ~UI() {}
 
@@ -58,7 +59,8 @@ class UI {
     void DisplayLogin();
     void DisplaySettings(const Settings);
     void DisplayProxySettings(const _Bool use_proxy, const Proxy proxy);
-    void DisplayTimerState(const _Bool is_tracking, kopsik::TimeEntry *te);
+    void DisplayTimerState(kopsik::TimeEntry *te);
+    void ApplySettings(const Settings);
 
     error VerifyCallbacks();
 
@@ -122,6 +124,10 @@ class UI {
         on_display_timer_state_ = cb;
     }
 
+    void OnApplySettings(KopsikApplySettings cb) {
+        on_apply_settings_ = cb;
+    }
+
  protected:
     _Bool isNetworkingError(const error) const;
     _Bool isUserError(const error) const;
@@ -141,6 +147,7 @@ class UI {
     KopsikDisplaySettings on_display_settings_;
     KopsikDisplayProxySettings on_display_proxy_settings_;
     KopsikDisplayTimerState on_display_timer_state_;
+    KopsikApplySettings on_apply_settings_;
 
  private:
     Poco::Logger &logger() const {

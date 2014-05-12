@@ -91,6 +91,7 @@ _Bool Context::StartEvents() {
 
     poco_assert(!user_);
 
+    // Check that UI is wired up
     error err = UI()->VerifyCallbacks();
     if (err != noError) {
         logger().error(err);
@@ -99,30 +100,32 @@ _Bool Context::StartEvents() {
         return false;
     }
 
+    // Export settings to UI
     kopsik::Settings settings;
     err = db()->LoadSettings(&settings);
     if (err != kopsik::noError) {
         setUser(0);
         return UI()->DisplayError(err);
     }
+    UI()->ApplySettings(settings);
 
+    // See was logged in into app previously
     kopsik::User *user = new kopsik::User(app_name_, app_version_);
-
     err = db()->LoadCurrentUser(user, true);
     if (err != kopsik::noError) {
         delete user;
         setUser(0);
         return UI()->DisplayError(err);
     }
-
     if (!user->ID()) {
         delete user;
         setUser(0);
         return true;
     }
-
-    logger().debug("setUser from loadCurrentUser");
     setUser(user);
+
+    // Display timer state in UI
+    UI()->DisplayTimerState(user_->RunningTimeEntry());
 
     return true;
 }
