@@ -41,7 +41,7 @@ class UI {
 
     ~UI() {}
 
-    _Bool DisplayError(const error) const;
+    _Bool DisplayError(const error);
     void DisplayOnlineState(const _Bool);
     void DisplayReminder();
     void DisplayUpdate(

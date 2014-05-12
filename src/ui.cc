@@ -11,9 +11,14 @@ void UI::DisplayLogin() {
     on_display_login_();
 }
 
-_Bool UI::DisplayError(const error err) const {
+_Bool UI::DisplayError(const error err) {
     if (noError == err) {
         return true;
+    }
+
+    if (isNetworkingError(err)) {
+        DisplayOnlineState(false);
+        return false;
     }
 
     logger().debug("DisplayError");
@@ -23,10 +28,7 @@ _Bool UI::DisplayError(const error err) const {
         on_display_error_("Invalid e-mail or password!", true);
         return false;
     }
-    if (isNetworkingError(err)) {
-        on_display_online_state_(false);
-        return false;
-    }
+
     on_display_error_(err.c_str(), isUserError(err));
     return false;
 }
