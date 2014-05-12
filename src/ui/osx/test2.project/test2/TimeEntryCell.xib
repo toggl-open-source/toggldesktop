@@ -40,8 +40,11 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="deS-e6-3Ui" customClass="NSTextFieldWithBackground">
-                                <rect key="frame" x="14" y="11" width="120" height="17"/>
+                                <rect key="frame" x="14" y="11" width="103" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="17" id="ffb-Ge-3EA"/>
+                                </constraints>
                                 <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="NEW - TOGGL" drawsBackground="YES" id="apI-Za-Hk2">
                                     <font key="font" metaFont="systemBold"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -66,11 +69,19 @@
                             <imageView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="29c-rg-nft">
                                 <rect key="frame" x="135" y="24" width="13" height="11"/>
                                 <autoresizingMask key="autoresizingMask"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="11" id="YY5-Sx-e5g"/>
+                                    <constraint firstAttribute="width" constant="13" id="lfJ-Eg-GOT"/>
+                                </constraints>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="icon-tags" id="gwR-Vc-IFY"/>
                             </imageView>
                             <imageView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QS9-7g-WQN">
                                 <rect key="frame" x="156" y="24" width="7" height="13"/>
                                 <autoresizingMask key="autoresizingMask"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="7" id="21i-pO-LrG"/>
+                                    <constraint firstAttribute="height" constant="13" id="hp4-bJ-sJJ"/>
+                                </constraints>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="icon-billable" id="sn7-iN-p3j"/>
                             </imageView>
                         </subviews>
@@ -79,12 +90,12 @@
                         <constraint firstAttribute="trailing" secondItem="QS9-7g-WQN" secondAttribute="trailing" constant="105" id="2Mb-xj-1TO"/>
                         <constraint firstItem="deS-e6-3Ui" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" constant="14" id="FOo-PQ-AK1"/>
                         <constraint firstItem="xwb-FG-Z4X" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" constant="19" id="HsG-Zm-aF4"/>
-                        <constraint firstItem="CwR-d5-aWs" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" priority="750" constant="15" id="KZ4-JV-5xD"/>
+                        <constraint firstItem="CwR-d5-aWs" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" constant="15" id="KZ4-JV-5xD"/>
                         <constraint firstAttribute="trailing" secondItem="Gcj-ki-Hus" secondAttribute="trailing" constant="77" id="KeA-dg-xG5"/>
-                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="deS-e6-3Ui" secondAttribute="trailing" constant="92" id="L9d-4A-NVt"/>
-                        <constraint firstAttribute="trailing" secondItem="CwR-d5-aWs" secondAttribute="trailing" constant="94" id="OD9-hN-DXz"/>
+                        <constraint firstAttribute="trailing" secondItem="deS-e6-3Ui" secondAttribute="trailing" priority="850" constant="105" id="L9d-4A-NVt"/>
+                        <constraint firstAttribute="trailing" secondItem="CwR-d5-aWs" secondAttribute="trailing" priority="600" constant="105" id="OD9-hN-DXz"/>
                         <constraint firstAttribute="trailing" secondItem="xwb-FG-Z4X" secondAttribute="trailing" constant="15" id="SKX-kj-jDT"/>
-                        <constraint firstAttribute="trailing" secondItem="29c-rg-nft" secondAttribute="trailing" priority="750" constant="105" id="UBl-Ai-aSo"/>
+                        <constraint firstAttribute="trailing" secondItem="29c-rg-nft" secondAttribute="trailing" priority="950" constant="105" id="UBl-Ai-aSo"/>
                         <constraint firstAttribute="bottom" secondItem="xwb-FG-Z4X" secondAttribute="bottom" constant="15" id="Wxi-cu-zKj"/>
                     </constraints>
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>

@@ -19,7 +19,10 @@
 @property (nonatomic, strong) IBOutlet NSImageView *tagFlag;
 @property (strong) NSString *GUID;
 @property NSArray *billableConstraint;
+@property NSArray *projectConstraint;
+@property NSArray *descriptionConstraint;
 @property BOOL constraintsAdded;
+@property BOOL projectConstraintsAdded;
 - (void)render:(TimeEntryViewItem *)view_item;
 - (IBAction)continueTimeEntry:(id)sender;
 @end
