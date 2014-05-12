@@ -146,7 +146,6 @@ class UI {
     Poco::Logger &logger() const {
         return Poco::Logger::get("ui");
     }
-
 };
 
 }  // namespace kopsik
