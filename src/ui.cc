@@ -79,6 +79,9 @@ error UI::VerifyCallbacks() {
     if (!on_display_timer_state_) {
         return error("!on_display_timer_state_");
     }
+    if (!on_apply_settings_) {
+        return error("!on_apply_settings_");
+    }
     return noError;
 }
 
@@ -204,6 +207,15 @@ void UI::DisplaySettings(const Settings settings) {
                          settings.reminder);
 }
 
+void UI::ApplySettings(const Settings settings) {
+    logger().debug("ApplySettings");
+
+    on_apply_settings_(settings.use_idle_detection,
+                       settings.menubar_timer,
+                       settings.dock_icon,
+                       settings.on_top);
+}
+
 void UI::DisplayProxySettings(const _Bool use_proxy, const Proxy proxy) {
     logger().debug("DisplayProxySettings");
 
@@ -214,14 +226,14 @@ void UI::DisplayProxySettings(const _Bool use_proxy, const Proxy proxy) {
                                proxy.password.c_str());
 }
 
-void UI::DisplayTimerState(const _Bool is_tracking, kopsik::TimeEntry *te) {
+void UI::DisplayTimerState(kopsik::TimeEntry *te) {
     logger().debug("DisplayTimerState");
 
     KopsikTimeEntryViewItem *view_item = 0;
     if (te) {
         view_item = time_entry_view_item_init(te);
     }
-    on_display_timer_state_(is_tracking, view_item);
+    on_display_timer_state_(view_item);
     if (view_item) {
         time_entry_view_item_clear(view_item);
     }

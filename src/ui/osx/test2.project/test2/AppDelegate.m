@@ -641,6 +641,7 @@ const NSString *appName = @"osx_native_app";
   kopsik_on_settings(ctx, on_settings);
   kopsik_on_proxy_settings(ctx, on_proxy_settings);
   kopsik_on_timer_state(ctx, on_timer_state);
+  kopsik_on_apply_settings(ctx, on_apply_settings);
 
   NSLog(@"Version %@", version);
   
@@ -965,6 +966,13 @@ void on_settings(const _Bool use_idle_detection,
   // FIXME: UI
 }
 
+void on_apply_settings(const _Bool use_idle_detection,
+                 const _Bool menubar_timer,
+                 const _Bool dock_icon,
+                 const _Bool on_top) {
+  // FIXME: UI
+}
+
 void on_proxy_settings(const _Bool use_proxy,
                        const char *proxy_host,
                        const uint64_t proxy_port,
@@ -973,8 +981,7 @@ void on_proxy_settings(const _Bool use_proxy,
   // FIXME: UI
 }
 
-void on_timer_state(const _Bool is_tracking,
-                    KopsikTimeEntryViewItem *te) {
+void on_timer_state(KopsikTimeEntryViewItem *te) {
   // FIXME: UI
 }
 

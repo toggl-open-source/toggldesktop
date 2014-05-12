@@ -109,9 +109,14 @@ void on_display_proxy_settings(
     testresult::proxy.password = std::string(proxy_password);
 }
 
-void on_display_timer_state(const _Bool is_tracking,
-                            KopsikTimeEntryViewItem *te) {
-    testresult::is_tracking = is_tracking;
+void on_display_timer_state(KopsikTimeEntryViewItem *te) {
+}
+
+void on_apply_settings(
+    const _Bool use_idle_detection,
+    const _Bool menubar_timer,
+    const _Bool dock_icon,
+    const _Bool on_top) {
 }
 
 class App {
@@ -143,6 +148,7 @@ class App {
         kopsik_on_settings(ctx_, on_display_settings);
         kopsik_on_proxy_settings(ctx_, on_display_proxy_settings);
         kopsik_on_timer_state(ctx_, on_display_timer_state);
+        kopsik_on_apply_settings(ctx_, on_apply_settings);
     }
     ~App() {
         kopsik_context_clear(ctx_);
@@ -157,7 +163,7 @@ class App {
     void *ctx_;
 };
 
-};  // namespace testing
+}  // namespace testing
 
 TEST(KopsikApiTest, kopsik_context_init) {
     testing::App app;
