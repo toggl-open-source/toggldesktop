@@ -93,9 +93,9 @@ std::string UpdateJSON(
     std::vector<Project *> * const,
     std::vector<TimeEntry *> * const);
 
-Poco::UInt64 GetIDFromJSONNode(JSONNODE * const);
-guid GetGUIDFromJSONNode(JSONNODE * const);
-Poco::UInt64 GetUIModifiedAtFromJSONNode(JSONNODE * const);
+Poco::UInt64 IDFromJSONNode(JSONNODE * const);
+guid GUIDFromJSONNode(JSONNODE * const);
+Poco::UInt64 UIModifiedAtFromJSONNode(JSONNODE * const);
 bool IsDeletedAtServer(JSONNODE * const);
 
 template<class T>

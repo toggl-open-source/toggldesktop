@@ -10,6 +10,7 @@
 		3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */; };
 		3C7B4E9E190FA7F900627DC3 /* logo-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */; };
 		3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */; };
+		3C8979B71920B7B7007061E0 /* continue.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C8979B61920B7B7007061E0 /* continue.pdf */; };
 		3C996F7D190E4A34005066F6 /* icon-stop-red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C996F7C190E4A34005066F6 /* icon-stop-red@2x.png */; };
 		3C996F8E190E4A3E005066F6 /* icon-start-green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C996F8D190E4A3E005066F6 /* icon-start-green@2x.png */; };
 		3CDA2C581913A4E200A94967 /* icon-start-gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDA2C571913A4E200A94967 /* icon-start-gray@2x.png */; };
@@ -37,12 +38,12 @@
 		743D942618279290000E6F70 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 743D942518279290000E6F70 /* IOKit.framework */; };
 		743D94281827929C000E6F70 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 743D94271827929C000E6F70 /* Carbon.framework */; };
 		743D942F1827C633000E6F70 /* IdleEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 743D942E1827C633000E6F70 /* IdleEvent.m */; };
-		744CE72D1815CF5F00A7BEE4 /* ErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 744CE72C1815CF5F00A7BEE4 /* ErrorHandler.m */; };
 		744E126717F22AB900ABE72A /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 744E126617F22AB900ABE72A /* app.icns */; };
-		745B9CCB18155993006E7F37 /* ModelChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 745B9CCA18155993006E7F37 /* ModelChange.m */; };
 		74664DB118AA860800AAD282 /* on.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 74664DAF18AA860800AAD282 /* on.pdf */; };
 		74664DB218AA860800AAD282 /* off.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 74664DB018AA860800AAD282 /* off.pdf */; };
 		74762BA118A139D4004433A9 /* NSUnstripedTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 74762BA018A139D4004433A9 /* NSUnstripedTableView.m */; };
+		7484F622191D92C30038885C /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7484F621191D92C30038885C /* Settings.m */; };
+		7484F625191D93B80038885C /* ProxySettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7484F624191D93B80038885C /* ProxySettings.m */; };
 		748664D0188D6617006DB4C5 /* TimeEntryCellWithHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 748664CF188D6617006DB4C5 /* TimeEntryCellWithHeader.m */; };
 		748664D2188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 748664D1188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib */; };
 		7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7498D2471888B226001390B9 /* TimeEntryCell.xib */; };
@@ -60,7 +61,6 @@
 		74AA9476180909F50000539F /* GTMOAuth2WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA9470180909F50000539F /* GTMOAuth2WindowController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74AA947818090A8E0000539F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74AA947718090A8E0000539F /* Security.framework */; };
 		74BA5FCF18B6E770009DAA2D /* NSHoverButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BA5FCE18B6E770009DAA2D /* NSHoverButton.m */; };
-		74BAAA0717F32C470079386F /* Core.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0617F32C470079386F /* Core.m */; };
 		74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */; };
 		74BAD31E18BD7D83002FD4CF /* ViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAD31D18BD7D83002FD4CF /* ViewItem.m */; };
 		74C15796183A8CE600550613 /* AutocompleteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74C15795183A8CE600550613 /* AutocompleteItem.m */; };
@@ -74,7 +74,6 @@
 		74E20DEE18EE0A3D00695787 /* AutocompleteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74C15795183A8CE600550613 /* AutocompleteItem.m */; };
 		74E20DEF18EE0A3D00695787 /* MASShortcut.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5418E260A000ECFED2 /* MASShortcut.m */; };
 		74E20DF018EE0A3D00695787 /* NSCustomComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707918CDB91500A34D0D /* NSCustomComboBox.m */; };
-		74E20DF118EE0A3D00695787 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDDC17FC8E8000C3ADD3 /* User.m */; };
 		74E20DF218EE0A3D00695787 /* UIEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 7424949D17F1E3D20030121C /* UIEvents.m */; };
 		74E20DF318EE0A3D00695787 /* TimeEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */; };
 		74E20DF418EE0A3D00695787 /* NSUnstripedTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 74762BA018A139D4004433A9 /* NSUnstripedTableView.m */; };
@@ -94,14 +93,12 @@
 		74E20E0218EE0A3D00695787 /* TimeEntryCellWithHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 748664CF188D6617006DB4C5 /* TimeEntryCellWithHeader.m */; };
 		74E20E0318EE0A3D00695787 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 69FC180017E6534400B96425 /* main.m */; };
 		74E20E0418EE0A3D00695787 /* FeedbackWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F106FF18993FFE00E93BD5 /* FeedbackWindowController.m */; };
-		74E20E0518EE0A3D00695787 /* Core.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0617F32C470079386F /* Core.m */; };
 		74E20E0618EE0A3D00695787 /* MASShortcutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5818E260A000ECFED2 /* MASShortcutView.m */; };
 		74E20E0718EE0A3D00695787 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 69FC180717E6534400B96425 /* AppDelegate.m */; };
 		74E20E0818EE0A3D00695787 /* TimeEntryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */; };
 		74E20E0918EE0A3D00695787 /* GTMOAuth2WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA9470180909F50000539F /* GTMOAuth2WindowController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74E20E0A18EE0A3D00695787 /* TimeEntryEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D25B17EB71C100E709B0 /* TimeEntryEditViewController.m */; };
 		74E20E0B18EE0A3D00695787 /* NSBoxClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 749BD0BC1833E28400980494 /* NSBoxClickable.m */; };
-		74E20E0C18EE0A3D00695787 /* ModelChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 745B9CCA18155993006E7F37 /* ModelChange.m */; };
 		74E20E0D18EE0A3D00695787 /* GTMOAuth2SignIn.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA946D180909F50000539F /* GTMOAuth2SignIn.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74E20E0E18EE0A3D00695787 /* ViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAD31D18BD7D83002FD4CF /* ViewItem.m */; };
 		74E20E0F18EE0A3D00695787 /* BugsnagOSXNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDC517FBABE400C3ADD3 /* BugsnagOSXNotifier.m */; };
@@ -109,14 +106,12 @@
 		74E20E1118EE0A3D00695787 /* MASShortcut+UserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5218E260A000ECFED2 /* MASShortcut+UserDefaults.m */; };
 		74E20E1218EE0A3D00695787 /* ConvertHexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 74A7346918297DD100525BBC /* ConvertHexColor.m */; };
 		74E20E1318EE0A3D00695787 /* TimeEntryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */; };
-		74E20E1418EE0A3D00695787 /* ErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 744CE72C1815CF5F00A7BEE4 /* ErrorHandler.m */; };
 		74E20E1518EE0A3D00695787 /* IdleNotificationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7423393A1829B99C00063FA9 /* IdleNotificationWindowController.m */; };
 		74E20E1618EE0A3D00695787 /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7430750218204EFB009019CB /* AboutWindowController.m */; };
 		74E20E1718EE0A3D00695787 /* TimerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D27017EB72D900E709B0 /* TimerEditViewController.m */; };
 		74E20E1818EE0A3D00695787 /* NSTextFieldWithBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */; };
 		74E20E1918EE0A3D00695787 /* BugsnagNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDBC17FBABE400C3ADD3 /* BugsnagNotifier.m */; };
 		74E20E1A18EE0A3D00695787 /* NSTextFieldClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */; };
-		74E20E1B18EE0A3D00695787 /* EditNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 95F5657918B38E3D0052DE9B /* EditNotification.m */; };
 		74E20E1C18EE0A3D00695787 /* NSCustomComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */; };
 		74E20E1D18EE0A3D00695787 /* BugsnagConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDB517FBABE400C3ADD3 /* BugsnagConfiguration.m */; };
 		74E20E1E18EE0A3D00695787 /* idler.c in Sources */ = {isa = PBXBuildFile; fileRef = 743D7829182791FA00978BCC /* idler.c */; };
@@ -171,7 +166,6 @@
 		74E3CDD417FBABE400C3ADD3 /* BugsnagOSXNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDC517FBABE400C3ADD3 /* BugsnagOSXNotifier.m */; };
 		74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74E3CDD617FBAE0800C3ADD3 /* SystemConfiguration.framework */; };
 		74E3CDD917FC369700C3ADD3 /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74E3CDD817FC369700C3ADD3 /* ExceptionHandling.framework */; };
-		74E3CDDD17FC8E8000C3ADD3 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDDC17FC8E8000C3ADD3 /* User.m */; };
 		74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F106FF18993FFE00E93BD5 /* FeedbackWindowController.m */; };
 		74F1070218993FFE00E93BD5 /* FeedbackWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74F1070018993FFE00E93BD5 /* FeedbackWindowController.xib */; };
 		74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */; };
@@ -191,7 +185,6 @@
 		95DBF8CC18BF7A910021FB41 /* offline_off.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CA18BF7A910021FB41 /* offline_off.pdf */; };
 		95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CB18BF7A910021FB41 /* offline_on.pdf */; };
 		95DBF8D718C48B300021FB41 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8D618C48B300021FB41 /* logo.png */; };
-		95F5657A18B38E3D0052DE9B /* EditNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 95F5657918B38E3D0052DE9B /* EditNotification.m */; };
 		C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */; };
 		C5DA1FB917F19647001C4565 /* Kopsik.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA1FB817F19647001C4565 /* Kopsik.dylib */; };
 		C5DA1FBB17F19F9A001C4565 /* Kopsik.dylib in Resources */ = {isa = PBXBuildFile; fileRef = C5DA1FB817F19647001C4565 /* Kopsik.dylib */; };
@@ -399,6 +392,7 @@
 		3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-white@2x.png"; sourceTree = "<group>"; };
 		3C7B4EB1190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSecureTextFieldVerticallyAligned.h; sourceTree = "<group>"; };
 		3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSecureTextFieldVerticallyAligned.m; sourceTree = "<group>"; };
+		3C8979B61920B7B7007061E0 /* continue.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = continue.pdf; sourceTree = "<group>"; };
 		3C996F7C190E4A34005066F6 /* icon-stop-red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-stop-red@2x.png"; sourceTree = "<group>"; };
 		3C996F8D190E4A3E005066F6 /* icon-start-green@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-start-green@2x.png"; sourceTree = "<group>"; };
 		3CDA2C571913A4E200A94967 /* icon-start-gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-start-gray@2x.png"; sourceTree = "<group>"; };
@@ -424,8 +418,8 @@
 		74033C8D17EC1CFD00CA53D3 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		74033C9617EC1DE100CA53D3 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		7408EDB918C532C200CBE8F1 /* const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = const.h; path = ../../../../const.h; sourceTree = "<group>"; };
-		74098C311919899600CBDFB9 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
-		74098C321919899600CBDFB9 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
+		74098C311919899600CBDFB9 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utils.h; path = ../Utils.h; sourceTree = "<group>"; };
+		74098C321919899600CBDFB9 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Utils.m; path = ../Utils.m; sourceTree = "<group>"; };
 		741104BD18C7682700BC7A49 /* NSTextFieldWithBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSTextFieldWithBackground.h; path = ../NSTextFieldWithBackground.h; sourceTree = "<group>"; };
 		741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSTextFieldWithBackground.m; path = ../NSTextFieldWithBackground.m; sourceTree = "<group>"; };
 		742339391829B99C00063FA9 /* IdleNotificationWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdleNotificationWindowController.h; sourceTree = "<group>"; };
@@ -446,16 +440,16 @@
 		743D94291827A0E0000E6F70 /* idler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = idler.h; sourceTree = "<group>"; };
 		743D942D1827C633000E6F70 /* IdleEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IdleEvent.h; path = ../IdleEvent.h; sourceTree = "<group>"; };
 		743D942E1827C633000E6F70 /* IdleEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IdleEvent.m; path = ../IdleEvent.m; sourceTree = "<group>"; };
-		744CE72B1815CF5F00A7BEE4 /* ErrorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ErrorHandler.h; path = ../ErrorHandler.h; sourceTree = "<group>"; };
-		744CE72C1815CF5F00A7BEE4 /* ErrorHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ErrorHandler.m; path = ../ErrorHandler.m; sourceTree = "<group>"; };
 		744E126617F22AB900ABE72A /* app.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = app.icns; sourceTree = "<group>"; };
-		745B9CC918155993006E7F37 /* ModelChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelChange.h; sourceTree = "<group>"; };
-		745B9CCA18155993006E7F37 /* ModelChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelChange.m; sourceTree = "<group>"; };
 		74664DAF18AA860800AAD282 /* on.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = on.pdf; sourceTree = "<group>"; };
 		74664DB018AA860800AAD282 /* off.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = off.pdf; sourceTree = "<group>"; };
 		74762B9E18A12DB8004433A9 /* NSComboBox_Expansion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSComboBox_Expansion.h; sourceTree = "<group>"; };
 		74762B9F18A139D4004433A9 /* NSUnstripedTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUnstripedTableView.h; sourceTree = "<group>"; };
 		74762BA018A139D4004433A9 /* NSUnstripedTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSUnstripedTableView.m; sourceTree = "<group>"; };
+		7484F620191D92C30038885C /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
+		7484F621191D92C30038885C /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
+		7484F623191D93B80038885C /* ProxySettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProxySettings.h; sourceTree = "<group>"; };
+		7484F624191D93B80038885C /* ProxySettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProxySettings.m; sourceTree = "<group>"; };
 		748664CE188D6617006DB4C5 /* TimeEntryCellWithHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCellWithHeader.h; sourceTree = "<group>"; };
 		748664CF188D6617006DB4C5 /* TimeEntryCellWithHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryCellWithHeader.m; sourceTree = "<group>"; };
 		748664D1188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeEntryCellWithHeader.xib; sourceTree = "<group>"; };
@@ -483,8 +477,6 @@
 		74B680A8180759C300B697AA /* Kopsik.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kopsik.xcodeproj; path = ../../../libkopsik/Kopsik/Kopsik.xcodeproj; sourceTree = "<group>"; };
 		74BA5FCD18B6E770009DAA2D /* NSHoverButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSHoverButton.h; sourceTree = "<group>"; };
 		74BA5FCE18B6E770009DAA2D /* NSHoverButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSHoverButton.m; sourceTree = "<group>"; };
-		74BAAA0517F32C470079386F /* Core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Core.h; path = ../Core.h; sourceTree = "<group>"; };
-		74BAAA0617F32C470079386F /* Core.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Core.m; path = ../Core.m; sourceTree = "<group>"; };
 		74BAAA0917F37B140079386F /* TimeEntryViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryViewItem.h; sourceTree = SOURCE_ROOT; };
 		74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryViewItem.m; sourceTree = SOURCE_ROOT; };
 		74BAD31C18BD7D83002FD4CF /* ViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewItem.h; sourceTree = "<group>"; };
@@ -521,8 +513,6 @@
 		74E3CDC517FBABE400C3ADD3 /* BugsnagOSXNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugsnagOSXNotifier.m; sourceTree = "<group>"; };
 		74E3CDD617FBAE0800C3ADD3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		74E3CDD817FC369700C3ADD3 /* ExceptionHandling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExceptionHandling.framework; path = System/Library/Frameworks/ExceptionHandling.framework; sourceTree = SDKROOT; };
-		74E3CDDB17FC8E8000C3ADD3 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = SOURCE_ROOT; };
-		74E3CDDC17FC8E8000C3ADD3 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = SOURCE_ROOT; };
 		74F106FE18993FFE00E93BD5 /* FeedbackWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeedbackWindowController.h; path = ../FeedbackWindowController.h; sourceTree = "<group>"; };
 		74F106FF18993FFE00E93BD5 /* FeedbackWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FeedbackWindowController.m; path = ../FeedbackWindowController.m; sourceTree = "<group>"; };
 		74F1070018993FFE00E93BD5 /* FeedbackWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FeedbackWindowController.xib; path = ../FeedbackWindowController.xib; sourceTree = "<group>"; };
@@ -551,8 +541,6 @@
 		95DBF8CA18BF7A910021FB41 /* offline_off.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = offline_off.pdf; sourceTree = "<group>"; };
 		95DBF8CB18BF7A910021FB41 /* offline_on.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = offline_on.pdf; sourceTree = "<group>"; };
 		95DBF8D618C48B300021FB41 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
-		95F5657818B38E3D0052DE9B /* EditNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditNotification.h; sourceTree = "<group>"; };
-		95F5657918B38E3D0052DE9B /* EditNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditNotification.m; sourceTree = "<group>"; };
 		C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCell.h; sourceTree = "<group>"; };
 		C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryCell.m; sourceTree = "<group>"; };
 		C5DA1FB817F19647001C4565 /* Kopsik.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Kopsik.dylib; path = ../../../libkopsik/lib/Kopsik.dylib; sourceTree = "<group>"; };
@@ -608,8 +596,10 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
-				74098C311919899600CBDFB9 /* Utils.h */,
-				74098C321919899600CBDFB9 /* Utils.m */,
+				7484F623191D93B80038885C /* ProxySettings.h */,
+				7484F624191D93B80038885C /* ProxySettings.m */,
+				7484F620191D92C30038885C /* Settings.h */,
+				7484F621191D92C30038885C /* Settings.m */,
 				749A3A4318D889BD000AD2DB /* CrashReporter.xcodeproj */,
 				74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */,
 				74B680A8180759C300B697AA /* Kopsik.xcodeproj */,
@@ -626,6 +616,7 @@
 				3CDA2C571913A4E200A94967 /* icon-start-gray@2x.png */,
 				3CDA2C591913B60F00A94967 /* icon-billable@2x.png */,
 				3CDA2C5A1913B60F00A94967 /* icon-tags@2x.png */,
+				3C8979B61920B7B7007061E0 /* continue.pdf */,
 				74E1682E180F269F0026261C /* gtm */,
 				74FE0D4C18E260A000ECFED2 /* MASShortcut */,
 				69FC17FA17E6534400B96425 /* ui */,
@@ -676,6 +667,8 @@
 		69FC17FA17E6534400B96425 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				74098C311919899600CBDFB9 /* Utils.h */,
+				74098C321919899600CBDFB9 /* Utils.m */,
 				3C7B4E8B190FA6D200627DC3 /* NSTextFieldVerticallyAligned.h */,
 				3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */,
 				3C7B4EB1190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.h */,
@@ -712,21 +705,15 @@
 				749CB8C918167D6E00814841 /* PreferencesWindowController.h */,
 				749CB8CA18167D6E00814841 /* PreferencesWindowController.m */,
 				749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */,
-				74BAAA0517F32C470079386F /* Core.h */,
-				74BAAA0617F32C470079386F /* Core.m */,
 				7424949C17F1E3D20030121C /* UIEvents.h */,
 				7424949D17F1E3D20030121C /* UIEvents.m */,
 				C5DA1FBA17F197BF001C4565 /* kopsik_api.h */,
 				69FC180617E6534400B96425 /* AppDelegate.h */,
 				69FC180717E6534400B96425 /* AppDelegate.m */,
-				744CE72B1815CF5F00A7BEE4 /* ErrorHandler.h */,
-				744CE72C1815CF5F00A7BEE4 /* ErrorHandler.m */,
 				69FC180917E6534500B96425 /* MainMenu.xib */,
 				C5DA1FBC17F1B08A001C4565 /* MainWindowController.h */,
 				C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */,
 				C5DA1FBE17F1B08A001C4565 /* MainWindowController.xib */,
-				74E3CDDB17FC8E8000C3ADD3 /* User.h */,
-				74E3CDDC17FC8E8000C3ADD3 /* User.m */,
 				74D1D26F17EB72D900E709B0 /* TimerEditViewController.h */,
 				74D1D27017EB72D900E709B0 /* TimerEditViewController.m */,
 				74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */,
@@ -745,8 +732,6 @@
 				74BAAA0917F37B140079386F /* TimeEntryViewItem.h */,
 				74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */,
 				69FC17FB17E6534400B96425 /* Supporting Files */,
-				745B9CC918155993006E7F37 /* ModelChange.h */,
-				745B9CCA18155993006E7F37 /* ModelChange.m */,
 				74A7346818297DD100525BBC /* ConvertHexColor.h */,
 				74A7346918297DD100525BBC /* ConvertHexColor.m */,
 				742339391829B99C00063FA9 /* IdleNotificationWindowController.h */,
@@ -759,8 +744,6 @@
 				74762B9E18A12DB8004433A9 /* NSComboBox_Expansion.h */,
 				74762B9F18A139D4004433A9 /* NSUnstripedTableView.h */,
 				74762BA018A139D4004433A9 /* NSUnstripedTableView.m */,
-				95F5657818B38E3D0052DE9B /* EditNotification.h */,
-				95F5657918B38E3D0052DE9B /* EditNotification.m */,
 				74BA5FCD18B6E770009DAA2D /* NSHoverButton.h */,
 				74BA5FCE18B6E770009DAA2D /* NSHoverButton.m */,
 				74BAD31C18BD7D83002FD4CF /* ViewItem.h */,
@@ -1192,6 +1175,7 @@
 				C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */,
 				74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
 				3C996F7D190E4A34005066F6 /* icon-stop-red@2x.png in Resources */,
+				3C8979B71920B7B7007061E0 /* continue.pdf in Resources */,
 				74D1D25F17EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */,
 				3CDA2C581913A4E200A94967 /* icon-start-gray@2x.png in Resources */,
 				7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */,
@@ -1278,8 +1262,8 @@
 			files = (
 				74C15796183A8CE600550613 /* AutocompleteItem.m in Sources */,
 				74FE0D5E18E260A000ECFED2 /* MASShortcut.m in Sources */,
+				7484F622191D92C30038885C /* Settings.m in Sources */,
 				95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */,
-				74E3CDDD17FC8E8000C3ADD3 /* User.m in Sources */,
 				7424949E17F1E3D20030121C /* UIEvents.m in Sources */,
 				C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */,
 				74762BA118A139D4004433A9 /* NSUnstripedTableView.m in Sources */,
@@ -1287,6 +1271,7 @@
 				74AA9472180909F50000539F /* GTMHTTPFetchHistory.m in Sources */,
 				74E3CDC617FBABE400C3ADD3 /* Bugsnag.m in Sources */,
 				74C1579B183BA5DA00550613 /* AutocompleteDataSource.m in Sources */,
+				7484F625191D93B80038885C /* ProxySettings.m in Sources */,
 				74BA5FCF18B6E770009DAA2D /* NSHoverButton.m in Sources */,
 				74FE0D5F18E260A000ECFED2 /* MASShortcutView+UserDefaults.m in Sources */,
 				7430750818205B88009019CB /* Update.m in Sources */,
@@ -1302,14 +1287,12 @@
 				74098C331919899600CBDFB9 /* Utils.m in Sources */,
 				69FC180117E6534400B96425 /* main.m in Sources */,
 				74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */,
-				74BAAA0717F32C470079386F /* Core.m in Sources */,
 				74FE0D6018E260A000ECFED2 /* MASShortcutView.m in Sources */,
 				69FC180817E6534400B96425 /* AppDelegate.m in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
 				74AA9476180909F50000539F /* GTMOAuth2WindowController.m in Sources */,
 				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,
 				749BD0BD1833E28400980494 /* NSBoxClickable.m in Sources */,
-				745B9CCB18155993006E7F37 /* ModelChange.m in Sources */,
 				74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */,
 				74BAD31E18BD7D83002FD4CF /* ViewItem.m in Sources */,
 				74E3CDD417FBABE400C3ADD3 /* BugsnagOSXNotifier.m in Sources */,
@@ -1317,14 +1300,12 @@
 				74FE0D5D18E260A000ECFED2 /* MASShortcut+UserDefaults.m in Sources */,
 				74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */,
 				74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */,
-				744CE72D1815CF5F00A7BEE4 /* ErrorHandler.m in Sources */,
 				7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */,
 				7430750418204EFB009019CB /* AboutWindowController.m in Sources */,
 				74D1D27217EB72D900E709B0 /* TimerEditViewController.m in Sources */,
 				741104BF18C7682700BC7A49 /* NSTextFieldWithBackground.m in Sources */,
 				74E3CDCE17FBABE400C3ADD3 /* BugsnagNotifier.m in Sources */,
 				74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */,
-				95F5657A18B38E3D0052DE9B /* EditNotification.m in Sources */,
 				95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */,
 				74E3CDC817FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */,
 				743D782A182791FA00978BCC /* idler.c in Sources */,
@@ -1341,7 +1322,6 @@
 				74E20DEE18EE0A3D00695787 /* AutocompleteItem.m in Sources */,
 				74E20DEF18EE0A3D00695787 /* MASShortcut.m in Sources */,
 				74E20DF018EE0A3D00695787 /* NSCustomComboBox.m in Sources */,
-				74E20DF118EE0A3D00695787 /* User.m in Sources */,
 				74E20DF218EE0A3D00695787 /* UIEvents.m in Sources */,
 				74E20DF318EE0A3D00695787 /* TimeEntryCell.m in Sources */,
 				74E20DF418EE0A3D00695787 /* NSUnstripedTableView.m in Sources */,
@@ -1361,14 +1341,12 @@
 				74E20E0218EE0A3D00695787 /* TimeEntryCellWithHeader.m in Sources */,
 				74E20E0318EE0A3D00695787 /* main.m in Sources */,
 				74E20E0418EE0A3D00695787 /* FeedbackWindowController.m in Sources */,
-				74E20E0518EE0A3D00695787 /* Core.m in Sources */,
 				74E20E0618EE0A3D00695787 /* MASShortcutView.m in Sources */,
 				74E20E0718EE0A3D00695787 /* AppDelegate.m in Sources */,
 				74E20E0818EE0A3D00695787 /* TimeEntryListViewController.m in Sources */,
 				74E20E0918EE0A3D00695787 /* GTMOAuth2WindowController.m in Sources */,
 				74E20E0A18EE0A3D00695787 /* TimeEntryEditViewController.m in Sources */,
 				74E20E0B18EE0A3D00695787 /* NSBoxClickable.m in Sources */,
-				74E20E0C18EE0A3D00695787 /* ModelChange.m in Sources */,
 				74E20E0D18EE0A3D00695787 /* GTMOAuth2SignIn.m in Sources */,
 				74E20E0E18EE0A3D00695787 /* ViewItem.m in Sources */,
 				74E20E0F18EE0A3D00695787 /* BugsnagOSXNotifier.m in Sources */,
@@ -1376,14 +1354,12 @@
 				74E20E1118EE0A3D00695787 /* MASShortcut+UserDefaults.m in Sources */,
 				74E20E1218EE0A3D00695787 /* ConvertHexColor.m in Sources */,
 				74E20E1318EE0A3D00695787 /* TimeEntryViewItem.m in Sources */,
-				74E20E1418EE0A3D00695787 /* ErrorHandler.m in Sources */,
 				74E20E1518EE0A3D00695787 /* IdleNotificationWindowController.m in Sources */,
 				74E20E1618EE0A3D00695787 /* AboutWindowController.m in Sources */,
 				74E20E1718EE0A3D00695787 /* TimerEditViewController.m in Sources */,
 				74E20E1818EE0A3D00695787 /* NSTextFieldWithBackground.m in Sources */,
 				74E20E1918EE0A3D00695787 /* BugsnagNotifier.m in Sources */,
 				74E20E1A18EE0A3D00695787 /* NSTextFieldClickable.m in Sources */,
-				74E20E1B18EE0A3D00695787 /* EditNotification.m in Sources */,
 				74E20E1C18EE0A3D00695787 /* NSCustomComboBoxCell.m in Sources */,
 				74E20E1D18EE0A3D00695787 /* BugsnagConfiguration.m in Sources */,
 				74098C341919899600CBDFB9 /* Utils.m in Sources */,

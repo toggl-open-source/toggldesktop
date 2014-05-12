@@ -41,94 +41,6 @@ inline kopsik::Context *app(void *context) {
     return reinterpret_cast<kopsik::Context *>(context);
 }
 
-// FIXME: move into Context
-_Bool kopsik_is_networking_error(
-    const char *error) {
-    std::string value(error);
-    if (value.find("Host not found") != std::string::npos) {
-        return true;
-    }
-    if (value.find("Cannot upgrade to WebSocket connection")
-            != std::string::npos) { // NOLINT
-        return true;
-    }
-    if (value.find("No message received") != std::string::npos) {
-        return true;
-    }
-    if (value.find("Connection refused") != std::string::npos) {
-        return true;
-    }
-    if (value.find("Connection timed out") != std::string::npos) {
-        return true;
-    }
-    if (value.find("connect timed out") != std::string::npos) {
-        return true;
-    }
-    if (value.find("SSL connection unexpectedly closed") != std::string::npos) {
-        return true;
-    }
-    if (value.find("Network is down") != std::string::npos) {
-        return true;
-    }
-    if (value.find("Network is unreachable") != std::string::npos) {
-        return true;
-    }
-    if (value.find("Host is down") != std::string::npos) {
-        return true;
-    }
-    if (value.find("No route to host") != std::string::npos) {
-        return true;
-    }
-    if ((value.find("I/O error: 1") != std::string::npos)
-            && (value.find(":443") != std::string::npos)) {
-        return true;
-    }
-    if (value.find("The request timed out") != std::string::npos) {
-        return true;
-    }
-    if (value.find("Could not connect to the server") != std::string::npos) {
-        return true;
-    }
-    return false;
-}
-
-_Bool kopsik_is_user_error(const char *error) {
-    if (!error) {
-        return false;
-    }
-    std::string value(error);
-    if (value.find("is suspended") != std::string::npos) {
-        return true;
-    }
-    if (value.find("Request to server failed with status code: 403")
-            != std::string::npos) {
-        return true;
-    }
-    return false;
-}
-
-// FIXME: delete
-void kopsik_view_item_clear(
-    KopsikViewItem *item) {
-    if (!item) {
-        return;
-    }
-    if (item->Name) {
-        free(item->Name);
-        item->Name = 0;
-    }
-    if (item->GUID) {
-        free(item->GUID);
-        item->GUID = 0;
-    }
-    if (item->Next) {
-        KopsikViewItem *next = reinterpret_cast<KopsikViewItem *>(item->Next);
-        kopsik_view_item_clear(next);
-    }
-    delete item;
-    item = 0;
-}
-
 void *kopsik_context_init(
     const char *app_name,
     const char *app_version) {
@@ -145,12 +57,12 @@ void *kopsik_context_init(
     return ctx;
 }
 
-void kopsik_context_start_events(void *context) {
-    app(context)->StartEvents();
+_Bool kopsik_context_start_events(void *context) {
+    return app(context)->StartEvents();
 }
 
 void kopsik_password_forgot(void *context) {
-    app(context)->PasswordForgot();
+    app(context)->UI()->DisplayURL(kLostPasswordURL);
 }
 
 void kopsik_context_clear(void *context) {
@@ -160,7 +72,6 @@ void kopsik_context_clear(void *context) {
     delete app(context);
 }
 
-// FIXME: create a struct for settings
 _Bool kopsik_get_settings(
     void *context,
     _Bool *out_use_idle_detection,
@@ -174,48 +85,20 @@ _Bool kopsik_get_settings(
     poco_check_ptr(out_dock_icon);
     poco_check_ptr(out_on_top);
 
-    bool use_idle_detection(false);
-    bool menubar_timer(false);
-    bool dock_icon(false);
-    bool on_top(false);
-    bool reminder(false);
-
-    if (!app(context)->LoadSettings(&use_idle_detection,
-                                    &menubar_timer,
-                                    &dock_icon,
-                                    &on_top,
-                                    &reminder)) {
+    kopsik::Settings settings;
+    if (!app(context)->Settings(&settings)) {
         return false;
     }
 
-    *out_use_idle_detection = false;
-    if (use_idle_detection) {
-        *out_use_idle_detection = true;
-    }
+    *out_use_idle_detection = settings.use_idle_detection;
+    *out_menubar_timer = settings.menubar_timer;
+    *out_dock_icon = settings.dock_icon;
+    *out_on_top = settings.on_top;
+    *out_reminder = settings.reminder;
 
-    *out_menubar_timer = false;
-    if (menubar_timer) {
-        *out_menubar_timer = true;
-    }
-
-    *out_dock_icon = false;
-    if (dock_icon) {
-        *out_dock_icon = true;
-    }
-
-    *out_on_top = false;
-    if (on_top) {
-        *out_on_top = true;
-    }
-
-    *out_reminder = false;
-    if (reminder) {
-        *out_reminder = true;
-    }
     return true;
 }
 
-// FIXME: create a struct for proxy settings
 _Bool kopsik_get_proxy_settings(
     void *context,
     _Bool *out_use_proxy,
@@ -232,9 +115,7 @@ _Bool kopsik_get_proxy_settings(
 
     bool use_proxy(false);
     kopsik::Proxy proxy;
-    if (!app(context)->LoadProxySettings(
-        &use_proxy,
-        &proxy)) {
+    if (!app(context)->ProxySettings(&use_proxy, &proxy)) {
         return false;
     }
 
@@ -259,15 +140,16 @@ _Bool kopsik_set_settings(
     const _Bool on_top,
     const _Bool reminder) {
 
-    return app(context)->SaveSettings(
-        use_idle_detection,
-        menubar_timer,
-        dock_icon,
-        on_top,
-        reminder);
+    kopsik::Settings settings;
+    settings.use_idle_detection = use_idle_detection;
+    settings.menubar_timer = menubar_timer;
+    settings.dock_icon = dock_icon;
+    settings.on_top = on_top;
+    settings.reminder = reminder;
+
+    return app(context)->SetSettings(settings);
 }
 
-// FIXME: use struct
 _Bool kopsik_set_proxy_settings(void *context,
                                 const _Bool use_proxy,
                                 const char *proxy_host,
@@ -284,7 +166,7 @@ _Bool kopsik_set_proxy_settings(void *context,
     proxy.username = std::string(proxy_username);
     proxy.password = std::string(proxy_password);
 
-    return app(context)->SaveProxySettings(use_proxy, &proxy);
+    return app(context)->SetProxySettings(use_proxy, proxy);
 }
 
 _Bool kopsik_configure_proxy(
@@ -476,156 +358,6 @@ void kopsik_sync(void *context) {
     app(context)->FullSync();
 }
 
-void kopsik_autocomplete_item_clear(
-    KopsikAutocompleteItem *item) {
-    if (!item) {
-        return;
-    }
-    if (item->Text) {
-        free(item->Text);
-        item->Text = 0;
-    }
-    if (item->ProjectAndTaskLabel) {
-        free(item->ProjectAndTaskLabel);
-        item->ProjectAndTaskLabel = 0;
-    }
-    if (item->Description) {
-        free(item->Description);
-        item->Description = 0;
-    }
-    if (item->ProjectColor) {
-        free(item->ProjectColor);
-        item->ProjectColor = 0;
-    }
-    if (item->Next) {
-        KopsikAutocompleteItem *next =
-            reinterpret_cast<KopsikAutocompleteItem *>(item->Next);
-        kopsik_autocomplete_item_clear(next);
-        item->Next = 0;
-    }
-    delete item;
-}
-
-_Bool kopsik_autocomplete_items(
-    void *context,
-    KopsikAutocompleteItem **first,
-    const _Bool include_time_entries,
-    const _Bool include_tasks,
-    const _Bool include_projects) {
-
-    poco_check_ptr(first);
-
-    logger().debug("kopsik_autocomplete_items");
-
-    *first = 0;
-
-    std::vector<kopsik::AutocompleteItem> items;
-    app(context)->AutocompleteItems(&items,
-                                    include_time_entries,
-                                    include_tasks,
-                                    include_projects);
-
-    KopsikAutocompleteItem *previous = 0;
-    for (std::vector<kopsik::AutocompleteItem>::iterator it =
-        items.begin();
-            it != items.end();
-            it++) {
-        kopsik::AutocompleteItem &item = *it;
-
-        KopsikAutocompleteItem *autocomplete_item =
-            autocomplete_item_init();
-        if (!*first) {
-            *first = autocomplete_item;
-        }
-        if (previous) {
-            previous->Next = autocomplete_item;
-        }
-
-        autocomplete_item->Description = strdup(item.Description.c_str());
-        autocomplete_item->Text = strdup(item.Text.c_str());
-        autocomplete_item->ProjectAndTaskLabel =
-            strdup(item.ProjectAndTaskLabel.c_str());
-        autocomplete_item->ProjectColor =
-            strdup(item.ProjectColor.c_str());
-        autocomplete_item->ProjectID =
-            static_cast<unsigned int>(item.ProjectID);
-        autocomplete_item->TaskID =
-            static_cast<unsigned int>(item.TaskID);
-        autocomplete_item->Type =
-            static_cast<unsigned int>(item.Type);
-
-        previous = autocomplete_item;
-    }
-
-    return true;
-}
-
-_Bool kopsik_tags(
-    void *context,
-    KopsikViewItem **first) {
-
-    poco_check_ptr(first);
-    poco_assert(!*first);
-
-    std::vector<std::string> tags = app(context)->Tags();
-
-    *first = 0;
-    for (std::vector<std::string>::const_iterator it = tags.begin();
-            it != tags.end();
-            it++) {
-        std::string name = *it;
-        KopsikViewItem *item = tag_to_view_item(name);
-        item->Next = *first;
-        *first = item;
-    }
-
-    return true;
-}
-
-_Bool kopsik_workspaces(
-    void *context,
-    KopsikViewItem **first) {
-
-    poco_check_ptr(first);
-    poco_assert(!*first);
-
-    std::vector<kopsik::Workspace *> workspaces = app(context)->Workspaces();
-
-    *first = 0;
-    for (std::vector<kopsik::Workspace *>::const_iterator it =
-        workspaces.begin();
-            it != workspaces.end();
-            it++) {
-        KopsikViewItem *item = workspace_to_view_item(*it);
-        item->Next = *first;
-        *first = item;
-    }
-
-    return true;
-}
-
-_Bool kopsik_clients(
-    void *context,
-    const uint64_t workspace_id,
-    KopsikViewItem **first) {
-
-    poco_check_ptr(first);
-    poco_assert(!*first);
-
-    std::vector<kopsik::Client *> clients = app(context)->Clients(workspace_id);
-
-    *first = 0;
-    for (std::vector<kopsik::Client *>::const_iterator it = clients.begin();
-            it != clients.end();
-            it++) {
-        KopsikViewItem *item = client_to_view_item(*it);
-        item->Next = *first;
-        *first = item;
-    }
-
-    return true;
-}
-
 _Bool kopsik_add_project(
     void *context,
     const char *time_entry_guid,
@@ -654,74 +386,6 @@ _Bool kopsik_add_project(
         0, /* no task ID */
         p->ID(),
         p->GUID().c_str());
-}
-
-KopsikTimeEntryViewItem *kopsik_time_entry_view_item_init() {
-    KopsikTimeEntryViewItem *item = new KopsikTimeEntryViewItem();
-    item->DurationInSeconds = 0;
-    item->Description = 0;
-    item->ProjectAndTaskLabel = 0;
-    item->WID = 0;
-    item->PID = 0;
-    item->TID = 0;
-    item->Duration = 0;
-    item->Color = 0;
-    item->GUID = 0;
-    item->Billable = false;
-    item->Tags = 0;
-    item->Started = 0;
-    item->Ended = 0;
-    item->UpdatedAt = 0;
-    item->DateHeader = 0;
-    item->DurOnly = false;
-    item->Next = 0;
-    return item;
-}
-
-void kopsik_time_entry_view_item_clear(
-    KopsikTimeEntryViewItem *item) {
-    if (!item) {
-        return;
-    }
-    if (item->Description) {
-        free(item->Description);
-        item->Description = 0;
-    }
-    if (item->ProjectAndTaskLabel) {
-        free(item->ProjectAndTaskLabel);
-        item->ProjectAndTaskLabel = 0;
-    }
-    if (item->Duration) {
-        free(item->Duration);
-        item->Duration = 0;
-    }
-    if (item->Color) {
-        free(item->Color);
-        item->Color = 0;
-    }
-    if (item->GUID) {
-        free(item->GUID);
-        item->GUID = 0;
-    }
-    if (item->Tags) {
-        free(item->Tags);
-        item->Tags = 0;
-    }
-    if (item->DateHeader) {
-        free(item->DateHeader);
-        item->DateHeader = 0;
-    }
-    if (item->DateDuration) {
-        free(item->DateDuration);
-        item->DateDuration = 0;
-    }
-    if (item->Next) {
-        KopsikTimeEntryViewItem *next =
-            reinterpret_cast<KopsikTimeEntryViewItem *>(item->Next);
-        kopsik_time_entry_view_item_clear(next);
-        item->Next = 0;
-    }
-    delete item;
 }
 
 _Bool kopsik_parse_time(
@@ -793,36 +457,6 @@ _Bool kopsik_start(
     return app(context)->Start(desc, dur, task_id, project_id, &te);
 }
 
-_Bool kopsik_time_entry_view_item_by_guid(
-    void *context,
-    const char *guid,
-    KopsikTimeEntryViewItem *view_item,
-    _Bool *was_found) {
-
-    poco_check_ptr(guid);
-    poco_check_ptr(view_item);
-    poco_check_ptr(was_found);
-
-    std::string GUID(guid);
-    poco_assert(!GUID.empty());
-
-    kopsik::TimeEntry *te = app(context)->GetTimeEntryByGUID(GUID);
-    if (!te) {
-        *was_found = false;
-        return true;
-    }
-
-    *was_found = true;
-
-    std::string project_label("");
-    std::string color_code("");
-    app(context)->ProjectLabelAndColorCode(te, &project_label, &color_code);
-
-    time_entry_to_view_item(te, project_label, color_code, view_item, "");
-
-    return true;
-}
-
 _Bool kopsik_continue(
     void *context,
     const char *guid) {
@@ -838,6 +472,30 @@ _Bool kopsik_continue(
 
     kopsik::TimeEntry *te = 0;
     return app(context)->Continue(GUID, &te);
+}
+
+void kopsik_view_time_entry_list(void *context) {
+    app(context)->DisplayTimeEntryList();
+}
+
+void kopsik_edit(
+    void *context,
+    const char *guid,
+    const _Bool edit_running_entry,
+    const char *focused_field_name) {
+
+    poco_check_ptr(guid);
+    poco_check_ptr(focused_field_name);
+
+    std::stringstream ss;
+    ss << "kopsik_edit guid=" << guid
+       << ", edit_running_entry = " << edit_running_entry
+       << ", focused_field_name = " << focused_field_name;
+    logger().debug(ss.str());
+
+    app(context)->Edit(std::string(guid),
+                       edit_running_entry,
+                       std::string(focused_field_name));
 }
 
 _Bool kopsik_continue_latest(
@@ -1002,89 +660,6 @@ _Bool kopsik_stop_running_time_entry_at(
     return app(context)->StopAt(at, &te);
 }
 
-_Bool kopsik_running_time_entry_view_item(
-    void *context,
-    KopsikTimeEntryViewItem *out_item,
-    _Bool *out_is_tracking) {
-
-    poco_check_ptr(out_item);
-    poco_check_ptr(out_is_tracking);
-
-    logger().debug("kopsik_running_time_entry_view_item");
-
-    *out_is_tracking = false;
-    kopsik::TimeEntry *te = 0;
-    if (!app(context)->RunningTimeEntry(&te)) {
-        return false;
-    }
-    if (te) {
-        *out_is_tracking = true;
-        std::string project_label("");
-        std::string color_code("");
-        app(context)->ProjectLabelAndColorCode(te,
-                                               &project_label,
-                                               &color_code);
-        time_entry_to_view_item(te,
-                                project_label,
-                                color_code,
-                                out_item,
-                                "");
-    }
-    return true;
-}
-
-_Bool kopsik_time_entry_view_items(
-    void *context,
-    KopsikTimeEntryViewItem **first) {
-
-    poco_check_ptr(first);
-
-    logger().debug("kopsik_time_entry_view_items");
-
-    std::map<std::string, Poco::Int64> date_durations;
-    std::vector<kopsik::TimeEntry *> visible;
-
-    if (!app(context)->TimeEntries(&date_durations,
-                                   &visible)) {
-        return false;
-    }
-
-    if (visible.empty()) {
-        return true;
-    }
-
-    *first = 0;
-    KopsikTimeEntryViewItem *previous = 0;
-    for (unsigned int i = 0; i < visible.size(); i++) {
-        kopsik::TimeEntry *te = visible[i];
-        KopsikTimeEntryViewItem *view_item =
-            kopsik_time_entry_view_item_init();
-        if (previous) {
-            previous->Next = view_item;
-        }
-        if (!*first) {
-            *first = view_item;
-        }
-
-        Poco::Int64 duration = date_durations[te->DateHeaderString()];
-        std::string formatted =
-            kopsik::Formatter::FormatDurationInSecondsHHMM(duration);
-
-        std::string project_label("");
-        std::string color_code("");
-        app(context)->ProjectLabelAndColorCode(te,
-                                               &project_label,
-                                               &color_code);
-        time_entry_to_view_item(te,
-                                project_label,
-                                color_code,
-                                view_item,
-                                formatted);
-        previous = view_item;
-    }
-    return true;
-}
-
 _Bool kopsik_duration_for_date_header(
     void *context,
     const char *date,
@@ -1172,54 +747,46 @@ int64_t kopsik_parse_duration_string_into_seconds(const char *duration_string) {
     return kopsik::Formatter::ParseDurationString(std::string(duration_string));
 }
 
-// FIXME: delete
-void kopsik_context_set_view_item_change_callback(
+void kopsik_on_error(
     void *context,
-    KopsikViewItemChangeCallback cb) {
+    KopsikDisplayError cb) {
 
-    app(context)->SetModelChangeCallback(cb);
+    app(context)->UI()->OnDisplayError(cb);
 }
 
-void kopsik_context_set_error_callback(
+void kopsik_on_update(
     void *context,
-    KopsikErrorCallback cb) {
+    KopsikDisplayUpdate cb) {
 
-    app(context)->SetOnErrorCallback(cb);
+    app(context)->UI()->OnDisplayUpdate(cb);
 }
 
-void kopsik_context_set_check_update_callback(
+void kopsik_on_online_state(
     void *context,
-    KopsikCheckUpdateCallback cb) {
+    KopsikDisplayOnlineState cb) {
 
-    app(context)->SetCheckUpdateCallback(cb);
+    app(context)->UI()->OnDisplayOnlineState(cb);
 }
 
-void kopsik_context_set_online_callback(
+void kopsik_on_url(
     void *context,
-    KopsikOnOnlineCallback cb) {
+    KopsikDisplayURL cb) {
 
-    app(context)->SetOnOnlineCallback(cb);
+    app(context)->UI()->OnDisplayURL(cb);
 }
 
-void kopsik_set_open_url_callback(
+void kopsik_on_login(
     void *context,
-    KopsikOpenURLCallback cb) {
+    KopsikDisplayLogin cb) {
 
-    app(context)->SetOpenURLCallback(cb);
+    app(context)->UI()->OnDisplayLogin(cb);
 }
 
-void kopsik_context_set_user_login_callback(
+void kopsik_on_reminder(
     void *context,
-    KopsikUserLoginCallback cb) {
+    KopsikDisplayReminder cb) {
 
-    app(context)->SetUserLoginCallback(cb);
-}
-
-void kopsik_set_remind_callback(
-    void *context,
-    KopsikRemindCallback cb) {
-
-    app(context)->SetRemindCallback(cb);
+    app(context)->UI()->OnDisplayReminder(cb);
 }
 
 void kopsik_set_sleep(void *context) {
@@ -1231,9 +798,63 @@ void kopsik_set_wake(void *context) {
 }
 
 void kopsik_open_in_browser(void *context) {
-    app(context)->OpenInBrowser();
+    app(context)->UI()->DisplayURL(kTogglWebsiteURL);
 }
 
 void kopsik_get_support(void *context) {
-    app(context)->GetSupport();
+    app(context)->UI()->DisplayURL(kSupportURL);
+}
+
+void kopsik_on_workspace_select(
+    void *context,
+    KopsikDisplayViewItems cb) {
+    app(context)->UI()->OnDisplayWorkspaceSelect(cb);
+}
+
+void kopsik_on_client_select(
+    void *context,
+    KopsikDisplayViewItems cb) {
+    app(context)->UI()->OnDisplayClientSelect(cb);
+}
+
+void kopsik_on_tags(
+    void *context,
+    KopsikDisplayViewItems cb) {
+    app(context)->UI()->OnDisplayTags(cb);
+}
+
+void kopsik_on_time_entry_list(
+    void *context,
+    KopsikDisplayTimeEntryList cb) {
+    app(context)->UI()->OnDisplayTimeEntryList(cb);
+}
+
+void kopsik_on_autocomplete(
+    void *context,
+    KopsikDisplayAutocomplete cb) {
+    app(context)->UI()->OnDisplayAutocomplete(cb);
+}
+
+void kopsik_on_time_entry_editor(
+    void *context,
+    KopsikDisplayTimeEntryEditor cb) {
+    app(context)->UI()->OnDisplayTimeEntryEditor(cb);
+}
+
+void kopsik_on_settings(
+    void *context,
+    KopsikDisplaySettings cb) {
+    app(context)->UI()->OnDisplaySettings(cb);
+}
+
+void kopsik_on_proxy_settings(
+    void *context,
+    KopsikDisplayProxySettings cb) {
+    app(context)->UI()->OnDisplayProxySettings(cb);
+}
+
+void kopsik_on_timer_state(
+    void *context,
+    KopsikDisplayTimerState cb) {
+    app(context)->UI()->OnDisplayTimerState(cb);
 }

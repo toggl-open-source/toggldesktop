@@ -310,8 +310,7 @@ bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
 void TimeEntry::LoadFromJSONNode(JSONNODE * const data) {
     poco_check_ptr(data);
 
-    Poco::UInt64 ui_modified_at =
-        GetUIModifiedAtFromJSONNode(data);
+    Poco::UInt64 ui_modified_at = UIModifiedAtFromJSONNode(data);
     if (UIModifiedAt() > ui_modified_at) {
         std::stringstream ss;
         ss  << "Will not overwrite time entry "

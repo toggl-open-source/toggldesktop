@@ -59,17 +59,17 @@ class User : public BaseModel {
     bool HasPremiumWorkspaces() const;
     bool CanAddProjects() const;
 
-    Workspace *GetWorkspaceByID(const Poco::UInt64 id);
-    Client *GetClientByID(const Poco::UInt64 id);
-    Client *GetClientByGUID(const guid GUID);
-    Project *GetProjectByID(const Poco::UInt64 id);
-    Project *GetProjectByGUID(const guid GUID);
-    Project *GetProjectByName(const std::string name) const;
-    Task *GetTaskByID(const Poco::UInt64 id);
-    Tag *GetTagByID(const Poco::UInt64 id);
-    Tag *GetTagByGUID(const guid GUID);
-    TimeEntry *GetTimeEntryByID(const Poco::UInt64 id);
-    TimeEntry *GetTimeEntryByGUID(const guid GUID);
+    Workspace *WorkspaceByID(const Poco::UInt64 id);
+    Client *ClientByID(const Poco::UInt64 id);
+    Client *ClientByGUID(const guid GUID);
+    Project *ProjectByID(const Poco::UInt64 id);
+    Project *ProjectByGUID(const guid GUID);
+    Project *ProjectByName(const std::string name) const;
+    Task *TaskByID(const Poco::UInt64 id);
+    Tag *TagByID(const Poco::UInt64 id);
+    Tag *TagByGUID(const guid GUID);
+    TimeEntry *TimeEntryByID(const Poco::UInt64 id);
+    TimeEntry *TimeEntryByGUID(const guid GUID);
 
     void SetLastTEDate(const std::string value);
 

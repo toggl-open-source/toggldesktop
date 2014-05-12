@@ -8,9 +8,9 @@
 
 #import "PreferencesWindowController.h"
 #import "kopsik_api.h"
-#import "ErrorHandler.h"
-#import "Core.h"
 #import "UIEvents.h"
+#import "Settings.h"
+#import "ProxySettings.h"
 #import "MASShortcutView+UserDefaults.h"
 
 NSString *const kPreferenceGlobalShortcutShowHide = @"TogglDesktopGlobalShortcutShowHide";
@@ -31,20 +31,13 @@ extern void *ctx;
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
     [self.portTextField setFormatter:formatter];
 
-    [self loadSettings];
-    [self loadProxySettings];
-
     [self enableProxyFields];
   
     [self displayTimelineRecordingState];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(eventHandler:)
-                                                 name:kUIStateUserLoggedIn
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(eventHandler:)
-                                                 name:kUIStateUserLoggedOut
+                                             selector:@selector(startDisplaySettings:)
+                                                 name:kDisplaySettings
                                                object:nil];
 }
 
@@ -55,79 +48,33 @@ extern void *ctx;
   return NSOffState;
 }
 
-- (void)loadSettings {
-  _Bool idle_detection = false;
-  _Bool menubar_timer = false;
-  _Bool dock_icon = false;
-  _Bool on_top = false;
-  _Bool reminder = false;
+- (void)displayProxySettings:(ProxySettings *)proxySettings {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-  if (!kopsik_get_settings(ctx,
-                           &idle_detection,
-                           &menubar_timer,
-                           &dock_icon,
-                           &on_top,
-                           &reminder)) {
-    return;
-  }
-  
-  [self.useIdleDetectionButton setState:[self boolToState:idle_detection]];
-  [self.menubarTimerCheckbox setState:[self boolToState:menubar_timer]];
-  [self.dockIconCheckbox setState:[self boolToState:dock_icon]];
-  [self.ontopCheckbox setState:[self boolToState:on_top]];
-  [self.reminderCheckbox setState:[self boolToState:reminder]];
-}
+  [self.useProxyButton setState:[self boolToState:proxySettings.use_proxy]];
 
-- (void)loadProxySettings {
-  _Bool use_proxy = false;
-  char *proxy_host = 0;
-  uint64_t proxy_port = 0;
-  char *proxy_username = 0;
-  char *proxy_password = 0;
-
-  if (!kopsik_get_proxy_settings(ctx,
-                                 &use_proxy,
-                                 &proxy_host,
-                                 &proxy_port,
-                                 &proxy_username,
-                                 &proxy_password)) {
-    return;
-  }
-  
-  [self.useProxyButton setState:[self boolToState:use_proxy]];
-
-  if (proxy_host) {
-    [self.hostTextField setStringValue:[NSString stringWithUTF8String:proxy_host]];
+  if (proxySettings.proxy_host) {
+    [self.hostTextField setStringValue:proxySettings.proxy_host];
   } else {
     [self.hostTextField setStringValue:@""];
   }
 
-  if (proxy_port) {
-    [self.portTextField setIntegerValue:proxy_port];
+  if (proxySettings.proxy_port) {
+    [self.portTextField setIntegerValue:proxySettings.proxy_port];
   } else {
     [self.portTextField setStringValue:@""];
   }
 
-  if (proxy_username) {
-    [self.usernameTextField setStringValue:[NSString stringWithUTF8String:proxy_username]];
+  if (proxySettings.proxy_username) {
+    [self.usernameTextField setStringValue:proxySettings.proxy_username];
   } else {
     [self.usernameTextField setStringValue:@""];
   }
 
-  if (proxy_password) {
-    [self.passwordTextField setStringValue:[NSString stringWithUTF8String:proxy_password]];
+  if (proxySettings.proxy_password) {
+    [self.passwordTextField setStringValue:proxySettings.proxy_password];
   } else {
     [self.passwordTextField setStringValue:@""];
-  }
-
-  if (proxy_host) {
-    free(proxy_host);
-  }
-  if (proxy_username) {
-    free(proxy_username);
-  }
-  if (proxy_password) {
-    free(proxy_password);
   }
 }
 
@@ -183,16 +130,12 @@ extern void *ctx;
 - (void)saveSettings {
   NSLog(@"saveSettings");
 
-  if (!kopsik_set_settings(ctx,
-                           [self stateToBool:[self.useIdleDetectionButton state]],
-                           [self stateToBool:[self.menubarTimerCheckbox state]],
-                           [self stateToBool:[self.dockIconCheckbox state]],
-                           [self stateToBool:[self.ontopCheckbox state]],
-                           [self stateToBool:[self.reminderCheckbox state]])) {
-    return;
-  }
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventSettingsChanged
-                                                      object:nil];
+  kopsik_set_settings(ctx,
+                      [self stateToBool:[self.useIdleDetectionButton state]],
+                      [self stateToBool:[self.menubarTimerCheckbox state]],
+                      [self stateToBool:[self.dockIconCheckbox state]],
+                      [self stateToBool:[self.ontopCheckbox state]],
+                      [self stateToBool:[self.reminderCheckbox state]]);
 }
 
 - (void)saveProxySettings {
@@ -207,16 +150,12 @@ extern void *ctx;
   NSString *username = [self.usernameTextField stringValue];
   NSString *password = [self.passwordTextField stringValue];
   
-  if (!kopsik_set_proxy_settings(ctx,
-                                 use_proxy,
-                                 [host UTF8String],
-                                 (unsigned int)port,
-                                 [username UTF8String],
-                                 [password UTF8String])) {
-    return;
-  }
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventSettingsChanged
-                                                      object:nil];
+  kopsik_set_proxy_settings(ctx,
+                            use_proxy,
+                            [host UTF8String],
+                            (unsigned int)port,
+                            [username UTF8String],
+                            [password UTF8String]);
 }
 
 - (IBAction)recordTimelineCheckboxChanged:(id)sender {
@@ -250,20 +189,20 @@ extern void *ctx;
   [self disableTimelineSettings];
 }
 
-- (void)eventHandler: (NSNotification *) notification {
-  if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    [self performSelectorOnMainThread:@selector(enableTimelineSettings)
-                           withObject:nil
+- (void)startDisplaySettings:(NSNotification *)notification {
+  [self performSelectorOnMainThread:@selector(displaySettings:)
+                           withObject:notification.object
                         waitUntilDone:NO];
-    return;
-  }
+}
 
-  if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
-    [self performSelectorOnMainThread:@selector(disableTimelineSettings)
-                           withObject:nil
-                        waitUntilDone:NO];
-    return;
-  }
+- (void)displaySettings:(Settings *)settings {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+  
+  [self.useIdleDetectionButton setState:[self boolToState:settings.idle_detection]];
+  [self.menubarTimerCheckbox setState:[self boolToState:settings.menubar_timer]];
+  [self.dockIconCheckbox setState:[self boolToState:settings.dock_icon]];
+  [self.ontopCheckbox setState:[self boolToState:settings.on_top]];
+  [self.reminderCheckbox setState:[self boolToState:settings.reminder]];
 }
 
 - (void)enableTimelineSettings {

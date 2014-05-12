@@ -10,6 +10,7 @@
 #import "kopsik_api.h"
 
 @interface ViewItem : NSObject
++ (NSMutableArray *)loadAll:(KopsikViewItem *)first;
 - (void)load:(KopsikViewItem *)data;
 @property uint64_t ID;
 @property (strong) NSString *GUID;

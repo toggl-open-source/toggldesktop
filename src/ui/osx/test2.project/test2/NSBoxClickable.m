@@ -7,13 +7,14 @@
 //
 
 #import "NSBoxClickable.h"
-#import "UIEvents.h"
+#import "kopsik_api.h"
 
 @implementation NSBoxClickable
 
+extern void *ctx;
+
 - (void)mouseUp:(NSEvent*) event {
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandEditRunningTimeEntry
-                                                      object:nil];
+  kopsik_edit(ctx, "", true, "");
 }
 
 - (BOOL)acceptsFirstMouse:(NSEvent *)theEvent {

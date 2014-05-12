@@ -8,11 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Utils
+@interface Utils : NSObject
 
 + (void)disallowDuplicateInstances;
 + (NSString *)applicationSupportDirectory:(NSString *)environment;
-
++ (bool) isNumeric:(NSString *) checkText;
+  
 @end
 
 BOOL wasLaunchedAsLoginOrResumeItem();

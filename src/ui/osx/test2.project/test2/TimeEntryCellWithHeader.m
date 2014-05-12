@@ -15,7 +15,7 @@
 - (IBAction)continueTimeEntry:(id)sender {
   NSLog(@"TimeEntryCell continueTimeEntry GUID=%@", self.GUID);
 
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandContinue
+  [[NSNotificationCenter defaultCenter] postNotificationName:kCommandContinue
                                                       object:self.GUID];
 }
 
@@ -36,6 +36,9 @@
     self.descriptionTextField.toolTip = nil;
   }
     
+  // Set project and description to tag constraints
+  [self toggleProjectConstraints: (view_item.billable || [view_item.tags count])];
+
   // Set billable and tag constraints
   [self toggleTagConstraints: (view_item.billable && [view_item.tags count])];
 
@@ -92,6 +95,35 @@
     // set the attributed string to the NSTextField
     [inTextField setAttributedStringValue: string];
 }
+
+
+- (void)toggleProjectConstraints:(BOOL)flag {
+    if(YES==flag) {
+        if (!self.projectConstraint) {
+            NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_descriptionTextField, _tagFlag);
+            self.descriptionConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"[_descriptionTextField]-3@900-[_tagFlag]"
+                                                                                 options:0
+                                                                                 metrics:nil
+                                                                                   views:viewsDict];
+
+            NSDictionary *viewsDict_ = NSDictionaryOfVariableBindings(_projectTextField, _tagFlag);
+            self.projectConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"[_projectTextField]-3@900-[_tagFlag]"
+                                                                             options:0
+                                                                             metrics:nil
+                                                                               views:viewsDict_];
+        }
+        [self addConstraints:self.projectConstraint];
+        [self addConstraints:self.descriptionConstraint];
+        self.projectConstraintsAdded = YES;
+    } else {
+        if (self.projectConstraintsAdded) {
+            [self removeConstraints:self.projectConstraint];
+            [self removeConstraints:self.descriptionConstraint];
+            self.projectConstraintsAdded = NO;
+        }
+    }
+}
+
 
 - (void)toggleTagConstraints:(BOOL)flag {
     if(YES==flag) {

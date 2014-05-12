@@ -6,16 +6,13 @@
 #include <string>
 
 #include "./kopsik_api.h"
-#include "./context.h"
+#include "./project.h"
+#include "./client.h"
+#include "./autocomplete_item.h"
+#include "./workspace.h"
+#include "./time_entry.h"
 
 KopsikViewItem *view_item_init();
-
-void time_entry_to_view_item(
-    kopsik::TimeEntry * const,
-    const std::string project_and_task_label,
-    const std::string color_code,
-    KopsikTimeEntryViewItem *view_item,
-    const std::string dateDuration);
 
 KopsikViewItem *project_to_view_item(
     kopsik::Project * const);
@@ -29,18 +26,15 @@ KopsikViewItem *workspace_to_view_item(
 KopsikViewItem *client_to_view_item(
     kopsik::Client * const);
 
-KopsikModelChange *model_change_init();
+KopsikAutocompleteItem *autocomplete_item_init(
+    const kopsik::AutocompleteItem item);
 
-void model_change_to_change_item(
-    const kopsik::ModelChange in,
-    KopsikModelChange *out);
+void view_item_clear(KopsikViewItem *item);
 
-void model_change_clear(
-    KopsikModelChange *change);
+void autocomplete_item_clear(KopsikAutocompleteItem *item);
 
-void autocomplete_item_clear(
-    KopsikAutocompleteItem *item);
+KopsikTimeEntryViewItem *time_entry_view_item_init(kopsik::TimeEntry *te);
 
-KopsikAutocompleteItem *autocomplete_item_init();
+void time_entry_view_item_clear(KopsikTimeEntryViewItem *item);
 
 #endif  // SRC_KOPSIK_API_PRIVATE_H_

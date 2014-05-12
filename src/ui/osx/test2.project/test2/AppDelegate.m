@@ -8,27 +8,25 @@
 
 #import "AppDelegate.h"
 #import "kopsik_api.h"
-#import "Core.h"
 #import "MainWindowController.h"
 #import "PreferencesWindowController.h"
 #import "Bugsnag.h"
 #import "UIEvents.h"
 #import "TimeEntryViewItem.h"
 #import "AboutWindowController.h"
-#import "ErrorHandler.h"
-#import "ModelChange.h"
 #import "MenuItemTags.h"
-#import "User.h"
 #import "Update.h"
 #import "idler.h"
 #import "IdleEvent.h"
 #import "IdleNotificationWindowController.h"
 #import "CrashReporter.h"
 #import "FeedbackWindowController.h"
+#import "AutocompleteItem.h"
 #import "const.h"
-#import "EditNotification.h"
 #import "MASShortcut+UserDefaults.h"
+#import "ViewItem.h"
 #import "Utils.h"
+#import "Settings.h"
 
 @interface AppDelegate()
 @property (nonatomic, strong) IBOutlet MainWindowController *mainWindowController;
@@ -85,9 +83,7 @@ const int kDurationStringLength = 20;
                                             forKey:@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"];
   }
   
-  self.mainWindowController =
-  [[MainWindowController alloc]
-   initWithWindowNibName:@"MainWindowController"];
+  self.mainWindowController = [[MainWindowController alloc] initWithWindowNibName:@"MainWindowController"];
   [self.mainWindowController.window setReleasedWhenClosed:NO];
   
   PLCrashReporter *crashReporter = [self configuredCrashReporter];
@@ -123,73 +119,44 @@ const int kDurationStringLength = 20;
   
   [self createStatusItem];
   
-  [self applySettings];
-  
   self.lastKnownLoginState = NO;
   
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(eventHandler:)
-                                               name:kUIStateUserLoggedIn
+                                           selector:@selector(startStopAt:)
+                                               name:kCommandStopAt
                                              object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(eventHandler:)
-                                               name:kUIStateUserLoggedOut
+                                           selector:@selector(startStop:)
+                                               name:kCommandStop
                                              object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(eventHandler:)
-                                               name:kUIStateTimerRunning
+                                           selector:@selector(startNew:)
+                                               name:kCommandNew
                                              object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(eventHandler:)
-                                               name:kUIStateTimerStopped
+                                           selector:@selector(startContinueTimeEntry:)
+                                               name:kCommandContinue
                                              object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(eventHandler:)
-                                               name:kUICommandShowPreferences
+                                           selector:@selector(startDisplayUpdate:)
+                                               name:kDisplayUpdate
                                              object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(eventHandler:)
-                                               name:kUIEventModelChange
+                                           selector:@selector(startDisplayOnlineState:)
+                                               name:kDisplayOnlineState
                                              object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(eventHandler:)
-                                               name:kUICommandStopAt
-                                             object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(eventHandler:)
-                                               name:kUICommandStop
-                                             object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(eventHandler:)
-                                               name:kUICommandNew
-                                             object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(eventHandler:)
-                                               name:kUICommandContinue
-                                             object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(eventHandler:)
-                                               name:kUIEventSettingsChanged
-                                             object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(eventHandler:)
-                                               name:kUIStateOffline
-                                             object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(eventHandler:)
-                                               name:kUIStateOnline
-                                             object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(eventHandler:)
-                                               name:kUIStateUpdateAvailable
+                                           selector:@selector(startDisplayTimerState:)
+                                               name:kDisplayTimerState
                                              object:nil];
   
-  kopsik_context_start_events(ctx);
+  _Bool started = kopsik_context_start_events(ctx);
+  NSAssert(started, @"Failed to start UI");
   
   NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
   NSNumber* checkEnabled = infoDict[@"KopsikCheckForUpdates"];
   if ([checkEnabled boolValue]) {
-    [self checkForUpdates];
+    kopsik_check_for_updates(ctx);
   }
   
   [MASShortcut registerGlobalShortcutWithUserDefaultsKey:kPreferenceGlobalShortcutShowHide handler:^{
@@ -245,20 +212,34 @@ const int kDurationStringLength = 20;
     kopsik_set_wake(ctx);
 }
 
-- (void)startNewTimeEntry:(TimeEntryViewItem *)new_time_entry {
+- (void)startNew:(NSNotification *)notification {
+  [self performSelectorOnMainThread:@selector(new:)
+                         withObject:notification.object
+                      waitUntilDone:NO];
+}
+
+- (void)new:(TimeEntryViewItem *)new_time_entry {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
   NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
-  if (!kopsik_start(ctx,
-                    [new_time_entry.Description UTF8String],
-                    [new_time_entry.duration UTF8String],
-                    new_time_entry.TaskID,
-                    new_time_entry.ProjectID)) {
-    return;
-  }
-  
+
+  kopsik_start(ctx,
+              [new_time_entry.Description UTF8String],
+              [new_time_entry.duration UTF8String],
+              new_time_entry.TaskID,
+              new_time_entry.ProjectID);
+
   [self onShowMenuItem:self];
 }
 
+- (void)startContinueTimeEntry:(NSNotification *)notification {
+  [self performSelectorOnMainThread:@selector(continueTimeEntry:)
+                         withObject:notification.object
+                      waitUntilDone:NO];
+}
+
 - (void)continueTimeEntry:(NSString *)guid {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
   if (guid == nil) {
     kopsik_continue_latest(ctx);
   } else {
@@ -268,13 +249,29 @@ const int kDurationStringLength = 20;
   [self onShowMenuItem:self];
 }
 
-- (void)stopTimeEntry {
+- (void)startStop:(NSNotification *)notification {
+  [self performSelectorOnMainThread:@selector(stop)
+                         withObject:nil
+                      waitUntilDone:NO];
+}
+
+- (void)stop {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
   kopsik_stop(ctx);
   
   [self onShowMenuItem:self];
 }
 
-- (void)stopTimeEntryAfterIdle:(IdleEvent *)idleEvent {
+- (void)startStopAt:(NSNotification *)notification {
+  [self performSelectorOnMainThread:@selector(stopAt:)
+                         withObject:notification.object
+                      waitUntilDone:NO];
+}
+
+- (void)stopAt:(IdleEvent *)idleEvent {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
   NSAssert(idleEvent != nil, @"idle event cannot be nil");
   NSLog(@"Idle event: %@", idleEvent);
   NSTimeInterval startedAt = [idleEvent.started timeIntervalSince1970];
@@ -284,88 +281,16 @@ const int kDurationStringLength = 20;
   [self onShowMenuItem:self];
 }
 
-- (void)userLoggedIn:(User *)user {
-  self.lastKnownLoginState = YES;
-  
-  renderRunningTimeEntry();
+- (void)startDisplayOnlineState: (NSNotification *) notification {
+    [self performSelectorOnMainThread:@selector(displayOnlineState:)
+                           withObject:notification.object
+                        waitUntilDone:NO];
 }
 
-- (void)userLoggedOut {
-  self.lastKnownLoginState = NO;
-  self.lastKnownRunningTimeEntry = nil;
+- (void)displayOnlineState:(NSString *)is_online {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-  if (!self.willTerminate) {
-    [NSApp setApplicationIconImage: self.inactiveAppIcon];
-  }
-}
-
-- (void)timerStopped {
-  self.lastKnownRunningTimeEntry = nil;
-  
-  if (!self.willTerminate) {
-    [NSApp setApplicationIconImage: self.inactiveAppIcon];
-  }
-}
-
-- (void)timerStarted:(TimeEntryViewItem *)timeEntry {
-  self.lastKnownRunningTimeEntry = timeEntry;
-  
-  // Change app dock icon to default, which is red / tracking
-  // See https://developer.apple.com/library/mac/documentation/Carbon/Conceptual/customizing_docktile/dockconcepts.pdf
-  if (!self.willTerminate) {
-    [NSApp setApplicationIconImage: nil];
-  }
-}
-
-- (void)modelChanged:(ModelChange *)modelChange {
-  if (self.lastKnownRunningTimeEntry &&
-      [self.lastKnownRunningTimeEntry.GUID isEqualToString:modelChange.GUID] &&
-      [modelChange.ModelType isEqualToString:@"time_entry"] &&
-      [modelChange.ChangeType isEqualToString:@"update"]) {
-    // Time entry duration can be edited on server side and it's
-    // pushed to us via websocket or pulled via regular sync.
-    // When it happens, timer keeps on running, but the time should be
-    // updated on status item:
-    self.lastKnownRunningTimeEntry = [TimeEntryViewItem findByGUID:modelChange.GUID];
-  }
-}
-
-- (void)eventHandler: (NSNotification *) notification {
-  if ([notification.name isEqualToString:kUIEventSettingsChanged]) {
-    [self applySettings];
-  } else if ([notification.name isEqualToString:kUICommandShowPreferences]) {
-    [self onPreferencesMenuItem:self];
-  } else if ([notification.name isEqualToString:kUICommandNew]) {
-    [self startNewTimeEntry:notification.object];
-  } else if ([notification.name isEqualToString:kUICommandContinue]) {
-    [self continueTimeEntry:notification.object];
-  } else if ([notification.name isEqualToString:kUICommandStop]) {
-    [self stopTimeEntry];
-  } else if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    [self userLoggedIn:notification.object];
-  } else if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
-    [self userLoggedOut];
-  } else if ([notification.name isEqualToString:kUIStateTimerStopped]) {
-    [self timerStopped];
-  } else if ([notification.name isEqualToString:kUIStateTimerRunning]) {
-    [self timerStarted:notification.object];
-  } else if ([notification.name isEqualToString:kUIEventModelChange]) {
-    [self modelChanged:notification.object];
-  } else if ([notification.name isEqualToString:kUICommandStopAt]) {
-    [self stopTimeEntryAfterIdle:notification.object];
-  } else if ([notification.name isEqualToString:kUIStateOffline]) {
-    [self offlineMode:true];
-  } else if ([notification.name isEqualToString:kUIStateOnline]) {
-    [self offlineMode:false];
-  } else if ([notification.name isEqualToString:kUIStateUpdateAvailable]) {
-    [self performSelectorOnMainThread:@selector(presentUpgradeDialog:)
-                           withObject:notification.object waitUntilDone:NO];
-  }
-  [self updateStatus];
-}
-
-- (void)offlineMode:(bool)offline {
-  if (offline){
+  if (is_online) {
     self.currentOnImage = self.offlineOnImage;
     self.currentOffImage = self.offlineOffImage;
   } else {
@@ -374,21 +299,44 @@ const int kDurationStringLength = 20;
   }
 }
 
-- (void)updateStatus {
-  if (self.lastKnownRunningTimeEntry == nil) {
-    [self.statusItem setTitle:@""];
-    [self.statusItem setImage:self.currentOffImage];
-    [self.runningTimeEntryMenuItem setTitle:@"Timer is not running."];
+- (void)startDisplayTimerState:(NSNotification *)notification {
+  [self performSelectorOnMainThread:@selector(displayTimerState:)
+                         withObject:notification.object
+                      waitUntilDone:NO];
+}
+
+- (void)displayTimerState:(TimeEntryViewItem *)timeEntry {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+  self.lastKnownRunningTimeEntry = timeEntry;
+  
+  if (timeEntry) {
+    // Change app dock icon to default, which is red / tracking
+    // See https://developer.apple.com/library/mac/documentation/Carbon/Conceptual/customizing_docktile/dockconcepts.pdf
+    if (!self.willTerminate) {
+      [NSApp setApplicationIconImage: nil];
+    }
+
+    // Change tracking time entry row in menu
+    [self.statusItem setImage:self.currentOnImage];
+    NSString *msg = [NSString stringWithFormat:@"Running: %@",
+                     self.lastKnownRunningTimeEntry.Description];
+    [self.runningTimeEntryMenuItem setTitle:msg];
+
     return;
   }
   
-  [self.statusItem setImage:self.currentOnImage];
-  NSString *msg = [NSString stringWithFormat:@"Running: %@",
-                   self.lastKnownRunningTimeEntry.Description];
-  [self.runningTimeEntryMenuItem setTitle:msg];
+  if (!self.willTerminate) {
+    [NSApp setApplicationIconImage: self.inactiveAppIcon];
+  }
+  [self.statusItem setTitle:@""];
+  [self.statusItem setImage:self.currentOffImage];
+  [self.runningTimeEntryMenuItem setTitle:@"Timer is not running."];
 }
 
 - (void)createStatusItem {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
   NSMenu *menu = [[NSMenu alloc] init];
   self.runningTimeEntryMenuItem = [menu addItemWithTitle:@"Timer status"
                                                   action:nil
@@ -451,23 +399,11 @@ const int kDurationStringLength = 20;
   [self.statusItem setImage:self.currentOffImage];
 }
 
-- (void)applySettings {
-  _Bool use_idle_detection = false;
-  _Bool menubar_timer = false;
-  _Bool dock_icon = false;
-  _Bool on_top = false;
-  _Bool reminder = false;
-  if (!kopsik_get_settings(ctx,
-                           &use_idle_detection,
-                           &menubar_timer,
-                           &dock_icon,
-                           &on_top,
-                           &reminder)) {
-    return;
-  }
+- (void)displaySettings:(Settings *)settings {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
   
   // Start idle detection, if its enabled
-  if (use_idle_detection) {
+  if (settings.idle_detection) {
     NSLog(@"Starting idle detection");
     self.idleTimer = [NSTimer
                       scheduledTimerWithTimeInterval:1.0
@@ -485,7 +421,7 @@ const int kDurationStringLength = 20;
   }
   
   // Start menubar timer if its enabled
-  if (menubar_timer) {
+  if (settings.menubar_timer) {
     NSLog(@"Starting menubar timer");
     self.menubarTimer = [NSTimer
                          scheduledTimerWithTimeInterval:1.0
@@ -504,7 +440,7 @@ const int kDurationStringLength = 20;
   
   // Show/Hide dock icon
   ProcessSerialNumber psn = { 0, kCurrentProcess };
-  if (dock_icon) {
+  if (settings.dock_icon) {
     NSLog(@"Showing dock icon");
     TransformProcessType(&psn, kProcessTransformToForegroundApplication);
   } else {
@@ -513,7 +449,7 @@ const int kDurationStringLength = 20;
   }
   
   // Stay on top
-  if (on_top) {
+  if (settings.on_top) {
     [self.mainWindowController.window setLevel:NSFloatingWindowLevel];
   } else {
     [self.mainWindowController.window setLevel:NSNormalWindowLevel];
@@ -521,9 +457,8 @@ const int kDurationStringLength = 20;
 }
 
 - (void)onNewMenuItem:(id)sender {
-  [[NSNotificationCenter defaultCenter]
-   postNotificationName:kUICommandNew
-   object:[[TimeEntryViewItem alloc] init]];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kCommandNew
+                                                      object:[[TimeEntryViewItem alloc] init]];
 }
 
 - (void)onSendFeedbackMenuItem {
@@ -536,12 +471,12 @@ const int kDurationStringLength = 20;
 }
 
 - (IBAction)onContinueMenuItem:(id)sender {
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandContinue
+  [[NSNotificationCenter defaultCenter] postNotificationName:kCommandContinue
                                                       object:nil];
 }
 
 - (IBAction)onStopMenuItem:(id)sender {
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandStop
+  [[NSNotificationCenter defaultCenter] postNotificationName:kCommandStop
                                                       object:nil];
 }
 
@@ -572,7 +507,6 @@ const int kDurationStringLength = 20;
   if ([alert runModal] != NSAlertFirstButtonReturn) {
     return;
   }
-  
   kopsik_clear_cache(ctx);
 }
 
@@ -692,14 +626,22 @@ const NSString *appName = @"osx_native_app";
   
   ctx = kopsik_context_init([appName UTF8String], [version UTF8String]);
   
-  kopsik_context_set_view_item_change_callback(ctx, on_model_change_callback);
-  kopsik_context_set_error_callback(ctx, handle_error);
-  kopsik_context_set_check_update_callback(ctx, on_update_checked);
-  kopsik_context_set_online_callback(ctx, on_online);
-  kopsik_context_set_user_login_callback(ctx, on_user_login);
-  kopsik_set_open_url_callback(ctx, on_open_url);
-  kopsik_set_remind_callback(ctx, on_remind);
-                            
+  kopsik_on_error(ctx, on_error);
+  kopsik_on_update(ctx, on_update);
+  kopsik_on_online_state(ctx, on_online_state);
+  kopsik_on_login(ctx, on_login);
+  kopsik_on_url(ctx, on_url);
+  kopsik_on_reminder(ctx, on_reminder);
+  kopsik_on_time_entry_list(ctx, on_time_entry_list);
+  kopsik_on_autocomplete(ctx, on_autocomplete);
+  kopsik_on_workspace_select(ctx, on_workspace_select);
+  kopsik_on_client_select(ctx, on_client_select);
+  kopsik_on_tags(ctx, on_tags);
+  kopsik_on_time_entry_editor(ctx, on_time_entry_editor);
+  kopsik_on_settings(ctx, on_settings);
+  kopsik_on_proxy_settings(ctx, on_proxy_settings);
+  kopsik_on_timer_state(ctx, on_timer_state);
+
   NSLog(@"Version %@", version);
   
   _Bool res = kopsik_set_db_path(ctx, [self.db_path UTF8String]);
@@ -764,9 +706,8 @@ const NSString *appName = @"osx_native_app";
       idleEvent.started = self.lastIdleStarted;
       idleEvent.finished = now;
       idleEvent.seconds = self.lastIdleSecondsReading;
-      [[NSNotificationCenter defaultCenter]
-       postNotificationName:kUIEventIdleFinished
-       object:idleEvent];
+      [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayIdleNotification
+                                                          object:idleEvent];
     } else {
       NSLog(@"Time entry is not running, ignoring idleness");
     }
@@ -832,47 +773,13 @@ const NSString *appName = @"osx_native_app";
   return YES;
 }
 
-void renderRunningTimeEntry() {
-  KopsikTimeEntryViewItem *item = kopsik_time_entry_view_item_init();
-  _Bool is_tracking = false;
-  if (!kopsik_running_time_entry_view_item(ctx, item, &is_tracking)) {
-    kopsik_time_entry_view_item_clear(item);
-    return;
-  }
-  
-  if (is_tracking) {
-    TimeEntryViewItem *timeEntry = [[TimeEntryViewItem alloc] init];
-    [timeEntry load:item];
-    [[NSNotificationCenter defaultCenter]
-     postNotificationName:kUIStateTimerRunning object:timeEntry];
-  } else {
-    [[NSNotificationCenter defaultCenter]
-     postNotificationName:kUIStateTimerStopped object:nil];
-  }
-  kopsik_time_entry_view_item_clear(item);
+- (void)startDisplayUpdate:(NSNotification *)notification {
+  [self performSelectorOnMainThread:@selector(displayUpdate:)
+                       withObject:notification.object
+                    waitUntilDone:NO];
 }
 
-// FIXME: delete
-void on_model_change_callback(KopsikModelChange *change) {
-  NSLog(@"on_model_change_callback %s %s ID=%llu GUID=%s in thread %@",
-        change->ChangeType,
-        change->ModelType,
-        change->ModelID,
-        change->GUID,
-        [NSThread currentThread]);
-  
-  ModelChange *modelChange = [[ModelChange alloc] init];
-  [modelChange load:change];
-  
-  [[NSNotificationCenter defaultCenter]
-   postNotificationName:kUIEventModelChange object:modelChange];
-}
-
-- (void)checkForUpdates {
-  kopsik_check_for_updates(ctx);
-}
-
-- (void)presentUpgradeDialog:(Update *)update {
+- (void)displayUpdate:(Update *)update {
   if (self.upgradeDialogVisible) {
     NSLog(@"Upgrade dialog already visible");
     return;
@@ -949,41 +856,31 @@ void on_model_change_callback(KopsikModelChange *change) {
   [crashReporter purgePendingCrashReport];
 }
 
-void on_update_checked(
-                                const _Bool is_update_available,
-                                const char *url,
-                                const char *version) {
-  if (!is_update_available) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUpToDate
-                                                        object:nil];
-    return;
+void on_update(const _Bool is_update_available,
+               const char *url,
+               const char *version) {
+  Update *update = nil;
+  if (is_update_available) {
+    update = [[Update alloc] init];
+    update.URL = [NSString stringWithUTF8String:url];
+    update.version = [NSString stringWithUTF8String:version];
   }
-  Update *update = [[Update alloc] init];
-  update.URL = [NSString stringWithUTF8String:url];
-  update.version = [NSString stringWithUTF8String:version];
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUpdateAvailable
+  [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayUpdate
                                                       object:update];
 }
 
-void on_online() {
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateOnline object:nil];
+void on_online_state(const _Bool is_online) {
+  NSString *value = is_online ? @"online" : nil;
+  [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayOnlineState
+                                                      object:value];
 }
 
-void on_user_login(const uint64_t user_id,
-                            const char *fullname,
-                            const char *timeofdayformat) {
-  if (!user_id) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedOut object:nil];
-    return;
-  }
-  User *userinfo = [[User alloc] init];
-  userinfo.ID = user_id;
-  userinfo.fullname = [NSString stringWithUTF8String:fullname];
-  userinfo.timeOfDayFormat = [NSString stringWithUTF8String:timeofdayformat];
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedIn object:userinfo];
+void on_login() {
+  [Bugsnag setUserAttribute:@"user_id" withValue:nil];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayLogin object:nil];
 }
 
-void on_remind(const char *title, const char *informative_text) {
+void on_reminder(const char *title, const char *informative_text) {
   NSUserNotification *notification = [[NSUserNotification alloc] init];
   [notification setTitle:[NSString stringWithUTF8String:title]];
   [notification setInformativeText:[NSString stringWithUTF8String:informative_text]];
@@ -993,8 +890,92 @@ void on_remind(const char *title, const char *informative_text) {
   [center scheduleNotification:notification];
 }
 
-void on_open_url(const char *url) {
+void on_url(const char *url) {
   [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[NSString stringWithUTF8String:url]]];
+}
+
+void on_time_entry_list(KopsikTimeEntryViewItem *first) {
+  NSMutableArray *viewitems = [[NSMutableArray alloc] init];
+  NSString *date = nil;
+  KopsikTimeEntryViewItem *it = first;
+  while (it) {
+    TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
+    [model load:it];
+    // FIXME: move into lib
+    if (date == nil || ![date isEqualToString:model.formattedDate]) {
+      model.isHeader = YES;
+    }
+    date = model.formattedDate;
+    [viewitems addObject:model];
+    it = it->Next;
+  }
+  [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimeEntryList
+                                                      object:viewitems];
+}
+
+void on_autocomplete(KopsikAutocompleteItem *first) {
+  NSMutableArray *viewitems = [[NSMutableArray alloc] init];
+  KopsikAutocompleteItem *record = first;
+  while (record) {
+    AutocompleteItem *item = [[AutocompleteItem alloc] init];
+    [item load:record];
+    [viewitems addObject:item];
+    record = record->Next;
+  }
+  [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayAutocomplete
+                                                      object:viewitems];
+}
+
+void on_tags(KopsikViewItem *first) {
+  [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTags
+                                                      object:[ViewItem loadAll:first]];
+}
+
+void on_client_select(KopsikViewItem *first) {
+  [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayClientSelect
+                                                      object:[ViewItem loadAll:first]];
+}
+
+void on_workspace_select(KopsikViewItem *first) {
+  [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayWorkspaceSelect
+                                                      object:[ViewItem loadAll:first]];
+}
+
+void on_time_entry_editor(KopsikTimeEntryViewItem *te, const char *focused_field_name) {
+  TimeEntryViewItem *item = [[TimeEntryViewItem alloc] init];
+  [item load:te];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimeEntryEditor
+                                                      object:item];
+}
+
+void on_error(const char *errmsg, const _Bool is_user_error) {
+  NSString *msg = [NSString stringWithUTF8String:errmsg];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayError
+                                                      object:msg];
+  if (!is_user_error) {
+    [Bugsnag notify:[NSException exceptionWithName:msg reason:msg userInfo:nil]];
+  }
+}
+
+void on_settings(const _Bool use_idle_detection,
+                 const _Bool menubar_timer,
+                 const _Bool dock_icon,
+                 const _Bool on_top,
+                 const _Bool reminder) {
+  // FIXME: UI
+}
+
+void on_proxy_settings(const _Bool use_proxy,
+                       const char *proxy_host,
+                       const uint64_t proxy_port,
+                       const char *proxy_username,
+                       const char *proxy_password) {
+  // FIXME: UI
+}
+
+void on_timer_state(const _Bool is_tracking,
+                    KopsikTimeEntryViewItem *te) {
+  // FIXME: UI
 }
 
 @end

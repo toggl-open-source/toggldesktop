@@ -7,88 +7,66 @@
 //
 
 #import "TimeEntryViewItem.h"
-#import "kopsik_api.h"
-#import "Core.h"
-#import "UIEvents.h"  
 
 @implementation TimeEntryViewItem
 
-extern void *ctx;
-
-- (void)load:(KopsikTimeEntryViewItem *)data {
-  self.GUID = [NSString stringWithUTF8String:data->GUID];
-  self.duration_in_seconds = data->DurationInSeconds;
-  self.Description = [NSString stringWithUTF8String:data->Description];
-  if (data->ProjectAndTaskLabel) {
-    self.ProjectAndTaskLabel = [NSString stringWithUTF8String:data->ProjectAndTaskLabel];
+- (void)load:(KopsikTimeEntryViewItem *)te {
+  self.GUID = [NSString stringWithUTF8String:te->GUID];
+  self.duration_in_seconds = te->DurationInSeconds;
+  self.Description = [NSString stringWithUTF8String:te->Description];
+  if (te->ProjectAndTaskLabel) {
+    self.ProjectAndTaskLabel = [NSString stringWithUTF8String:te->ProjectAndTaskLabel];
   } else {
     self.ProjectAndTaskLabel = nil;
   }
-  self.WorkspaceID = data->WID;
-  self.ProjectID = data->PID;
-  self.TaskID = data->TID;
-  if (data->Color) {
-    self.ProjectColor = [NSString stringWithUTF8String:data->Color];
+  self.WorkspaceID = te->WID;
+  self.ProjectID = te->PID;
+  self.TaskID = te->TID;
+  if (te->Color) {
+    self.ProjectColor = [NSString stringWithUTF8String:te->Color];
   } else {
     self.ProjectColor = nil;
   }
-  self.duration = [NSString stringWithUTF8String:data->Duration];
-  if (data->Tags) {
-    NSString *tagList = [NSString stringWithUTF8String:data->Tags];
+  self.duration = [NSString stringWithUTF8String:te->Duration];
+  if (te->Tags) {
+    NSString *tagList = [NSString stringWithUTF8String:te->Tags];
     self.tags = [tagList componentsSeparatedByString:@"|"];
   } else {
     self.tags = nil;
   }
-  if (data->Billable) {
+  if (te->Billable) {
     self.Billable = YES;
   } else {
     self.Billable = NO;
   }
-  self.started = [NSDate dateWithTimeIntervalSince1970:data->Started];
-  self.ended = [NSDate dateWithTimeIntervalSince1970:data->Ended];
-  if (data->UpdatedAt) {
-    self.updatedAt = [NSDate dateWithTimeIntervalSince1970:data->UpdatedAt];
+  self.started = [NSDate dateWithTimeIntervalSince1970:te->Started];
+  self.ended = [NSDate dateWithTimeIntervalSince1970:te->Ended];
+  if (te->StartTimeString) {
+    self.startTimeString = [NSString stringWithUTF8String:te->StartTimeString];
+  } else {
+    self.startTimeString = nil;
+  }
+  if (te->EndTimeString) {
+    self.endTimeString = [NSString stringWithUTF8String:te->EndTimeString];
+  } else {
+    self.endTimeString = nil;
+  }
+  if (te->UpdatedAt) {
+    self.updatedAt = [NSDate dateWithTimeIntervalSince1970:te->UpdatedAt];
   } else {
     self.updatedAt = nil;
   }
-  self.formattedDate = [NSString stringWithUTF8String:data->DateHeader];
-  if (data->DateDuration) {
-    self.dateDuration = [NSString stringWithUTF8String:data->DateDuration];
+  self.formattedDate = [NSString stringWithUTF8String:te->DateHeader];
+  if (te->DateDuration) {
+    self.dateDuration = [NSString stringWithUTF8String:te->DateDuration];
   } else {
     self.dateDuration = nil;
   }
 
   self.durOnly = NO;
-  if (data->DurOnly) {
+  if (te->DurOnly) {
     self.durOnly = YES;
   }
-}
-
-+ (TimeEntryViewItem *)findByGUID:(NSString *)guid {
-  if (nil == guid || 0 == guid.length) {
-    return nil;
-  }
-  _Bool was_found = false;
-  KopsikTimeEntryViewItem *view_item = kopsik_time_entry_view_item_init();
-  if (!kopsik_time_entry_view_item_by_guid(ctx,
-                                           [guid UTF8String],
-                                           view_item,
-                                           &was_found)) {
-    
-    kopsik_time_entry_view_item_clear(view_item);
-    return nil;
-  }
-  
-  if (!was_found) {
-    kopsik_time_entry_view_item_clear(view_item);
-    return nil;
-  }
-  
-  TimeEntryViewItem *item = [[TimeEntryViewItem alloc] init];
-  [item load:view_item];
-  kopsik_time_entry_view_item_clear(view_item);
-
-  return item;
 }
 
 - (NSString *)description {

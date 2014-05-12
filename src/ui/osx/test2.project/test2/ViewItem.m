@@ -18,4 +18,16 @@
   }
 }
 
++ (NSMutableArray *)loadAll:(KopsikViewItem *)first {
+	NSMutableArray *result = [[NSMutableArray alloc] init];
+  KopsikViewItem *it = first;
+  while (it) {
+    ViewItem *item = [[ViewItem alloc] init];
+    [item load:it];
+    [result addObject:item];
+    it = it->Next;
+  }
+  return result;
+}
+
 @end

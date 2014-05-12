@@ -41,7 +41,6 @@
 - (IBAction)continueButtonClicked:(id)sender;
 - (IBAction)addProjectButtonClicked:(id)sender;
 - (NSDateComponents*)parseTime:(NSTextField*)field current:(NSDateComponents*)component;
-- (bool) isNumeric:(NSString*) checkText;
 
 // New project related stuff
 @property IBOutlet NSBox *projectSelectBox;

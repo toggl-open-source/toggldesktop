@@ -52,6 +52,16 @@
   return path;
 }
 
+/*
+ Returns whether or not an NSString represents a numeric value.
+ For more info see:  http://appliedsoftwaredesign.com/blog/iphone-sdk-nsstring-numeric/
+ */
++ (bool) isNumeric:(NSString*) checkText {
+  NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
+  NSNumber* number = [numberFormatter numberFromString:checkText];
+  return number != nil;
+}
+
 @end
 
 // See https://codereview.chromium.org/7497056/patch/2002/4002 for inspiration

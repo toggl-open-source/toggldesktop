@@ -5,41 +5,28 @@
 //  Created by Tanel Lebedev on 19/09/2013.
 //  Copyright (c) 2013 TogglDesktop developers. All rights reserved.
 //
-#import "EditNotification.h"
 #import "TimeEntryEditViewController.h"
 #import "UIEvents.h"
 #import "TimeEntryViewItem.h"
-#import "Core.h"
-#import "ModelChange.h"
-#import "ErrorHandler.h"
 #import "AutocompleteItem.h"
 #import "AutocompleteDataSource.h"
 #import "NSComboBox_Expansion.h"
 #import "ViewItem.h"
 #import "NSCustomComboBoxCell.h"
 #import "NSCustomComboBox.h"
-#import "User.h"
+#import "kopsik_api.h"
 
 @interface TimeEntryEditViewController ()
-@property NSString *GUID;
 @property AutocompleteDataSource *projectAutocompleteDataSource;
 @property AutocompleteDataSource *descriptionComboboxDataSource;
-@property NSTimer *timerProjectAutocompleteRendering;
-@property NSTimer *timerDescriptionComboboxRendering;
-@property NSTimer *timerTagsListRendering;
-@property NSTimer *timerClientsListRendering;
-@property NSTimer *timerWorkspacesListRendering;
 @property NSTimer *timerMenubarTimer;
-@property TimeEntryViewItem *runningTimeEntry;
+@property TimeEntryViewItem *timeEntry; // Time entry being edited
 @property NSMutableArray *tagsList;
 @property NSMutableArray *clientList;
 @property NSMutableArray *workspaceList;
 @property NSArray *topConstraint;
 @property NSLayoutConstraint *addProjectBoxHeight;
 @property NSDateFormatter *format;
-@property NSDate *startTimeDate;
-@property NSDate *endTimeDate;
-@property User *userinfo;
 @end
 
 @implementation TimeEntryEditViewController
@@ -50,6 +37,12 @@ extern int kDurationStringLength;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+      self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] init];
+      self.projectAutocompleteDataSource.combobox = self.projectSelect;
+      
+      self.descriptionComboboxDataSource = [[AutocompleteDataSource alloc] init];
+      self.descriptionComboboxDataSource.combobox = self.descriptionCombobox;
+      
       self.timerMenubarTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                                 target:self
                                                               selector:@selector(timerFired:)
@@ -57,26 +50,21 @@ extern int kDurationStringLength;
                                                                repeats:YES];
 
       [[NSNotificationCenter defaultCenter] addObserver:self
-                                               selector:@selector(eventHandler:)
-                                                   name:kUIStateTimeEntrySelected
+                                               selector:@selector(startDisplayTimeEntryEditor:)
+                                                   name:kDisplayTimeEntryEditor
                                                  object:nil];
       [[NSNotificationCenter defaultCenter] addObserver:self
-                                               selector:@selector(eventHandler:)
-                                                   name:kUIStateUserLoggedIn
+                                               selector:@selector(startDisplayClientSelect:)
+                                                   name:kDisplayClientSelect
                                                  object:nil];
       [[NSNotificationCenter defaultCenter] addObserver:self
-                                               selector:@selector(eventHandler:)
-                                                   name:kUIEventModelChange
+                                               selector:@selector(startDisplayWorkspaceSelect:)
+                                                   name:kDisplayWorkspaceSelect
                                                  object:nil];
       [[NSNotificationCenter defaultCenter] addObserver:self
-                                               selector:@selector(eventHandler:)
-                                                   name:kUIStateTimeEntryDeselected
+                                               selector:@selector(startDisplayTags:)
+                                                   name:kDisplayTags
                                                  object:nil];
-      self.format = [[NSDateFormatter alloc] init];
-
-      self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] init];
-
-      self.descriptionComboboxDataSource = [[AutocompleteDataSource alloc] init];
     }
     
     return self;
@@ -110,18 +98,6 @@ extern int kDurationStringLength;
   [self.workspaceLabel setHidden:singleWorkspace];
   [self.workspaceSelect setHidden:singleWorkspace];
 
-  // Pre-select the workspace that the time entry is tracked to
-  TimeEntryViewItem *te = [TimeEntryViewItem findByGUID:self.GUID];
-  if (te && te.WorkspaceID) {
-    for (int i = 0; i < self.workspaceList.count; i++) {
-      ViewItem *workspace = self.workspaceList[i];
-      if (workspace.ID == te.WorkspaceID) {
-        self.workspaceSelect.stringValue = workspace.Name;
-        break;
-      }
-    }
-  }
-
   [self.addProjectBox setHidden:NO];
 
   NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_addProjectBox, _dataholderBox);
@@ -147,8 +123,7 @@ extern int kDurationStringLength;
     return;
   }
 
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntryDeselected
-                                                      object:nil];
+  kopsik_view_time_entry_list(ctx);
 }
 
 // Returns NO if there's an error and UI should not go out of the add project
@@ -174,7 +149,7 @@ extern int kDurationStringLength;
 
   // A new project is being added!
   return kopsik_add_project(ctx,
-                          [self.GUID UTF8String],
+                          [self.timeEntry.GUID UTF8String],
                           workspaceID,
                           clientID,
                           [projectName UTF8String],
@@ -182,10 +157,8 @@ extern int kDurationStringLength;
 }
 
 - (IBAction)continueButtonClicked:(id)sender {
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandContinue
-                                                      object:self.GUID];
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntryDeselected
-                                                      object:nil];
+  kopsik_continue(ctx, [self.timeEntry.GUID UTF8String]);
+  kopsik_view_time_entry_list(ctx);
 }
 
 - (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString {
@@ -225,25 +198,16 @@ extern int kDurationStringLength;
     [self viewDidLoad];
 }
 
-- (void)render:(EditNotification *)edit {
+- (void)startDisplayTimeEntryEditor:(NSNotification *)notification {
+  [self performSelectorOnMainThread:@selector(displayTimeEntryEditor:)
+                         withObject:notification.object
+                      waitUntilDone:NO];
+}
+
+- (void)displayTimeEntryEditor:(TimeEntryViewItem *)item {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-  NSAssert(edit != nil, @"EditNotification is nil");
-
-  if (nil == edit.GUID) {
-    NSLog(@"Cannot render, EditNotification.GUID is nil");
-    return;
-  }
-
-  NSAssert([edit isKindOfClass:[EditNotification class]], @"EditNotification expected");
-
-  TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:edit.GUID];
-  if (nil == item) {
-    NSLog(@"Cannot render, time entry not found by GUID %@", edit.GUID);
-    return;
-  }
-
-  self.runningTimeEntry = item;
+  self.timeEntry = item;
 
   NSLog(@"TimeEntryEditViewController render, %@", item);
 
@@ -292,9 +256,6 @@ extern int kDurationStringLength;
     [self.addProjectButton setHidden:NO];
   }
 
-  self.GUID = edit.GUID;
-  NSAssert(self.GUID != nil, @"GUID is nil");
-
   // Overwrite description only if user is not editing it:
   if ([self.descriptionCombobox currentEditor] == nil) {
     [self.descriptionCombobox setStringValue:item.Description];
@@ -314,12 +275,10 @@ extern int kDurationStringLength;
     [self.durationTextField setStringValue:item.duration];
   }
 
-  [self.startTime setStringValue:[[_format stringFromDate:item.started] uppercaseString]];
-  [self.endTime setStringValue:[[_format stringFromDate:item.ended] uppercaseString]];
+  [self.startTime setStringValue:item.startTimeString];
+  [self.endTime setStringValue:item.endTimeString];
 
   [self.startDate setDateValue:item.started];
-  self.startTimeDate = item.started;
-  self.endTimeDate = item.ended;
 
   if (item.duration_in_seconds < 0) {
     [self.startDate setEnabled:NO];
@@ -354,93 +313,28 @@ extern int kDurationStringLength;
     [self.lastUpdateTextField setHidden:YES];
   }
 
-  if ([edit.FieldName isEqualToString:kUIDurationClicked]){
+  if ([item.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDuration]]) {
     [self.durationTextField becomeFirstResponder];
   }
-  if ([edit.FieldName isEqualToString:kUIDescriptionClicked]){
+  if ([item.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDescription]]) {
     [self.descriptionCombobox becomeFirstResponder];
   }
+}
+
+- (void)startDisplayTimeEntryList:(NSNotification *) notification {
+  [self performSelectorOnMainThread:@selector(displayTimeEntryList:)
+                         withObject:notification.object
+                      waitUntilDone:NO];
+}
+
+- (void)displayTimeEntryList:(NSMutableArray *)list {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+  [self.addProjectBox setHidden:YES];
+  [self.projectSelectBox setHidden:NO];
+  [self.projectPublicCheckbox setState:NSOffState];
+}
   
-  [self startTagsListRendering];
-}
-
-- (void)eventHandler: (NSNotification *) notification {
-  if ([notification.name isEqualToString:kUIStateTimeEntryDeselected]) {
-    [self.addProjectBox setHidden:YES];
-    [self.projectSelectBox setHidden:NO];
-    [self.projectPublicCheckbox setState:NSOffState];
-    return;
-  }
-
-  if ([notification.name isEqualToString:kUIStateTimeEntrySelected]) {
-    [self performSelectorOnMainThread:@selector(render:)
-                           withObject:notification.object
-                        waitUntilDone:NO];
-    return;
-  }
-
-  if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    [self performSelectorOnMainThread:@selector(startDescriptionComboboxRendering)
-                           withObject:nil
-                        waitUntilDone:NO];
-    [self performSelectorOnMainThread:@selector(startProjectAutocompleteRendering)
-                           withObject:nil
-                        waitUntilDone:NO];
-    [self performSelectorOnMainThread:@selector(startWorkspaceSelectRendering)
-                           withObject:nil
-                        waitUntilDone:NO];
-
-    self.userinfo = notification.object;
-
-    if ([self.userinfo.timeOfDayFormat isEqualToString:@"H:mm"]){
-      [self.format setDateFormat:@"HH:mm"];
-    } else {
-      [self.format setDateFormat:@"hh:mm a"];
-    }
-    return;
-  }
-
-  if ([notification.name isEqualToString:kUIEventModelChange]) {
-    ModelChange *mc = notification.object;
-    if ([mc.ModelType isEqualToString:@"tag"]) {
-      [self performSelectorOnMainThread:@selector(startTagsListRendering)
-                             withObject:nil
-                          waitUntilDone:NO];
-      return; // Tags dont affect autocompletes
-    }
-    
-    [self performSelectorOnMainThread:@selector(startProjectAutocompleteRendering)
-                           withObject:nil
-                        waitUntilDone:NO];
-    
-    [self performSelectorOnMainThread:@selector(startDescriptionComboboxRendering)
-                           withObject:nil
-                        waitUntilDone:NO];
-
-    if ([mc.ModelType isEqualToString:@"workspace"]
-        || [mc.ModelType isEqualToString:@"client"]) {
-      [self performSelectorOnMainThread:@selector(startClientSelectRendering)
-                             withObject:nil
-                          waitUntilDone:NO];
-    }
-
-    if ([mc.ModelType isEqualToString:@"workspace"]) {
-      [self performSelectorOnMainThread:@selector(startWorkspaceSelectRendering)
-                             withObject:nil
-                          waitUntilDone:NO];
-    }
-    
-    if ([self.GUID isEqualToString:mc.GUID] && [mc.ChangeType isEqualToString:@"update"]) {
-      EditNotification *edit = [[EditNotification alloc] init];
-      edit.GUID = self.GUID;
-      [self performSelectorOnMainThread:@selector(render:)
-                             withObject:edit
-                          waitUntilDone:NO];
-    }
-    return;
-  }
-}
-
 - (NSArray *)tokenField:(NSTokenField *)tokenField
 completionsForSubstring:(NSString *)substring
            indexOfToken:(NSInteger)tokenIndex
@@ -457,150 +351,37 @@ completionsForSubstring:(NSString *)substring
 }
 
 - (void) applyTags {
-  if (nil == self.GUID) {
-    NSLog(@"Cannot apply tags, self.GUID is nil");
-    return;
-  }
+  NSAssert(self.timeEntry != nil, @"Cannot edit nil time entry");
   NSAssert(self.tagsTokenField != nil, @"tags field cant be nil");
+
   NSArray *tag_names = [self.tagsTokenField objectValue];
   const char *value = [[tag_names componentsJoinedByString:@"|"] UTF8String];
-  if (!kopsik_set_time_entry_tags(ctx,
-                                  [self.GUID UTF8String],
-                                  value)) {
-    return;
-  }
+  kopsik_set_time_entry_tags(ctx,
+                             [self.timeEntry.GUID UTF8String],
+                             value);
 }
 
-- (void) startTagsListRendering {
-  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-  
-  if (self.timerTagsListRendering != nil) {
-    return;
-  }
-  @synchronized(self) {
-    self.timerTagsListRendering = [NSTimer scheduledTimerWithTimeInterval:kThrottleSeconds
-                                                                       target:self
-                                                                     selector:@selector(finishTagsListRendering)
-                                                                     userInfo:nil
-                                                                      repeats:NO];
-  }
+- (void)startDisplayTags:(NSNotification *)notification {
+    [self performSelectorOnMainThread:@selector(displayTags:)
+                           withObject:notification.object
+                        waitUntilDone:NO];
 }
 
-- (void) finishTagsListRendering {
+- (void)displayTags:(NSMutableArray *)tags {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-  
-  self.timerTagsListRendering = nil;
-  
-  KopsikViewItem *tag = 0;
-  if (!kopsik_tags(ctx, &tag)) {
-    kopsik_view_item_clear(tag);
-    return;
-  }
-  NSMutableArray *tags = [[NSMutableArray alloc] init];
-  while (tag) {
-    NSString *tagName = [NSString stringWithUTF8String:tag->Name];
-    [tags addObject:tagName];
-    tag = tag->Next;
-  }
-  kopsik_view_item_clear(tag);
   @synchronized(self) {
     self.tagsList = tags;
   }
 }
 
-- (void) startProjectAutocompleteRendering {
-  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-  if (self.timerProjectAutocompleteRendering != nil) {
-    return;
-  }
-  @synchronized(self) {
-    self.timerProjectAutocompleteRendering = [NSTimer scheduledTimerWithTimeInterval:kThrottleSeconds
-                                                                       target:self
-                                                                     selector:@selector(finishProjectAutocompleteRendering)
-                                                                     userInfo:nil
-                                                                      repeats:NO];
-  }
+- (void)startDisplayWorkspaceSelect:(NSNotification *)notification {
+  [self performSelectorOnMainThread:@selector(displayWorkspaceSelect:)
+                         withObject:notification.object
+                      waitUntilDone:NO];
 }
 
-- (void)finishProjectAutocompleteRendering {
+- (void)displayWorkspaceSelect:(NSMutableArray *)workspaces {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-  self.timerProjectAutocompleteRendering = nil;
-
-  [self.projectAutocompleteDataSource fetch:NO withTasks:YES withProjects:YES];
-
-  if (self.projectSelect.dataSource == nil) {
-    self.projectSelect.usesDataSource = YES;
-    self.projectSelect.dataSource = self;
-  }
-  [self.projectSelect reloadData];
-}
-
-- (void)startDescriptionComboboxRendering {
-  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-  if (self.timerDescriptionComboboxRendering != nil) {
-    return;
-  }
-  @synchronized(self) {
-    self.timerDescriptionComboboxRendering = [NSTimer scheduledTimerWithTimeInterval:kThrottleSeconds
-                                                                              target:self
-                                                                            selector:@selector(finishDescriptionComboboxRendering)
-                                                                            userInfo:nil
-                                                                             repeats:NO];
-  }
-}
-
-- (void)finishDescriptionComboboxRendering {
-  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-  
-  self.timerDescriptionComboboxRendering = nil;
-  
-  [self.descriptionComboboxDataSource fetch:YES withTasks:YES withProjects:YES];
-  
-  if (self.descriptionCombobox.dataSource == nil) {
-    self.descriptionCombobox.usesDataSource = YES;
-    self.descriptionCombobox.dataSource = self;
-  }
-  [self.descriptionCombobox reloadData];
-}
-
-- (void)startWorkspaceSelectRendering {
-  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-  
-  if (self.timerWorkspacesListRendering != nil) {
-    return;
-  }
-  @synchronized(self) {
-    self.timerWorkspacesListRendering = [NSTimer scheduledTimerWithTimeInterval:kThrottleSeconds
-                                                                         target:self
-                                                                       selector:@selector(finishWorkspaceSelectRendering)
-                                                                       userInfo:nil
-                                                                        repeats:NO];
-   }
-}
-
-- (void)finishWorkspaceSelectRendering {
-  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-  self.timerWorkspacesListRendering = nil;
-  
-  KopsikViewItem *first = 0;
-  if (!kopsik_workspaces(ctx,
-                         &first)) {
-    kopsik_view_item_clear(first);
-    return;
-  }
-
-  NSMutableArray *workspaces = [[NSMutableArray alloc] init];
-  while (first) {
-    ViewItem *workspace = [[ViewItem alloc] init];
-    [workspace load:first];
-    [workspaces addObject:workspace];
-    first = first->Next;
-  }
-  kopsik_view_item_clear(first);
 
   @synchronized(self) {
     self.workspaceList = workspaces;
@@ -638,24 +419,21 @@ completionsForSubstring:(NSString *)substring
     workspaceName = workspace.Name;
   }
   [self.workspaceSelect setStringValue:workspaceName];
+}
 
-  [self performSelectorOnMainThread:@selector(startClientSelectRendering)
-                         withObject:nil
+- (void)startDisplayClientSelect:(NSNotification *)notification {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+  [self performSelectorOnMainThread:@selector(displayClientSelect:)
+                         withObject:notification.object
                       waitUntilDone:NO];
 }
 
-- (void)startClientSelectRendering {
+- (void)displayClientSelect:(NSMutableArray *)clients {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-  if (self.timerClientsListRendering != nil) {
-    return;
-  }
+  
   @synchronized(self) {
-    self.timerClientsListRendering = [NSTimer scheduledTimerWithTimeInterval:kThrottleSeconds
-                                                                       target:self
-                                                                    selector:@selector(finishClientSelectRendering)
-                                                                     userInfo:nil
-                                                                      repeats:NO];
+    self.clientList = clients;
   }
 }
 
@@ -679,60 +457,18 @@ completionsForSubstring:(NSString *)substring
   return 0;
 }
 
-- (void)finishClientSelectRendering {
-  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-  self.timerClientsListRendering = nil;
-
-  uint64_t workspace_id = [self selectedWorkspaceID];
-
-  KopsikViewItem *first = 0;
-  // If no workspace is selected, don't render clients yet.
-  if (workspace_id && !kopsik_clients(ctx,
-                                      workspace_id,
-                                      &first)) {
-    kopsik_view_item_clear(first);
-    return;
-  }
-
-  NSMutableArray *clients = [[NSMutableArray alloc] init];
-  while (first) {
-    ViewItem *client = [[ViewItem alloc] init];
-    [client load:first];
-    [clients addObject:client];
-    first = first->Next;
-  }
-  kopsik_view_item_clear(first);
-
-  @synchronized(self) {
-    self.clientList = clients;
-  }
-
-  if (self.clientSelect.dataSource == nil) {
-    self.clientSelect.usesDataSource = YES;
-    self.clientSelect.dataSource = self;
-  }
-  [self.clientSelect reloadData];
-  
-  // Client selection is not mandatory, so don't select a client
-  // automatically, when nothing's selected yet.
-}
-
 - (IBAction)durationTextFieldChanged:(id)sender {
-  if (nil == self.GUID) {
+  if (nil == self.timeEntry) {
     NSLog(@"Cannot apply duration text field changes, self.GUID is nil");
     return;
   }
 
   const char *value = [[self.durationTextField stringValue] UTF8String];
-  kopsik_set_time_entry_duration(ctx, [self.GUID UTF8String], value);
+  kopsik_set_time_entry_duration(ctx, [self.timeEntry.GUID UTF8String], value);
 }
 
 - (IBAction)projectSelectChanged:(id)sender {
-  if (nil == self.GUID) {
-    NSLog(@"Cannot apply project selection changes, self.GUID is nil");
-    return;
-  }
+  NSAssert(self.timeEntry != nil, @"Expected time entry");
 
   [self.projectSelect.cell setCalculatedMaxWidth:0];
 
@@ -744,21 +480,7 @@ completionsForSubstring:(NSString *)substring
     task_id = autocomplete.TaskID;
     project_id = autocomplete.ProjectID;
   }
-  kopsik_set_time_entry_project(ctx, [self.GUID UTF8String], task_id, project_id, 0);
-}
-
-/*
-    Returns whether or not an NSString represents a numeric value.
-    For more info see:  http://appliedsoftwaredesign.com/blog/iphone-sdk-nsstring-numeric/
-*/
--(bool) isNumeric:(NSString*) checkText
-{
-  NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
-  NSNumber* number = [numberFormatter numberFromString:checkText];
-  if (number != nil) {
-    return true;
-  }
-  return false;
+  kopsik_set_time_entry_project(ctx, [self.timeEntry.GUID UTF8String], task_id, project_id, 0);
 }
 
 - (NSDateComponents*)parseTime:(NSTextField*)field current:(NSDateComponents*)component {
@@ -766,9 +488,9 @@ completionsForSubstring:(NSString *)substring
   int minutes = 0;
   if (!kopsik_parse_time([[field stringValue] UTF8String], &hours, &minutes)) {
     if (field == self.startTime) {
-      [field setStringValue:[[self.format stringFromDate:self.startTimeDate] uppercaseString]];
+      [field setStringValue:self.timeEntry.startTimeString];
     } else if (field == self.endTime) {
-      [field setStringValue:[[self.format stringFromDate:self.endTimeDate] uppercaseString]];
+      [field setStringValue:self.timeEntry.endTimeString];
     }
     return component;
   }
@@ -780,8 +502,8 @@ completionsForSubstring:(NSString *)substring
 }
 
 - (IBAction)startTimeChanged:(id)sender {
-  if (nil == self.GUID) {
-    NSLog(@"Cannot apply start time change, self.GUID is nil");
+  if (nil == self.timeEntry) {
+    NSLog(@"Cannot apply start time change, self.timeEntry is nil");
     return;
   }
 
@@ -789,6 +511,8 @@ completionsForSubstring:(NSString *)substring
 }
 
 - (IBAction)applyStartTime {
+  NSAssert(self.timeEntry != nil, @"Time entry expected");
+
   NSDate *startDate = [self.startDate dateValue];
   
   unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
@@ -796,7 +520,7 @@ completionsForSubstring:(NSString *)substring
   NSDate *combined = [[NSCalendar currentCalendar] dateFromComponents:comps];
   
   unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
-  comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:self.startTimeDate];
+  comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:self.timeEntry.started];
   comps = [self parseTime:self.startTime current:comps];
 
   combined = [[NSCalendar currentCalendar] dateByAddingComponents:comps toDate:combined options:0];
@@ -806,21 +530,17 @@ completionsForSubstring:(NSString *)substring
   [dateFormatter setLocale:enUSPOSIXLocale];
   [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
   NSString *iso8601String = [dateFormatter stringFromDate:combined];
-  self.startTimeDate = combined;
 
-  kopsik_set_time_entry_start_iso_8601(ctx, [self.GUID UTF8String], [iso8601String UTF8String]);
+  kopsik_set_time_entry_start_iso_8601(ctx, [self.timeEntry.GUID UTF8String], [iso8601String UTF8String]);
 }
 
 - (IBAction)endTimeChanged:(id)sender {
-  if (nil == self.GUID) {
-    NSLog(@"Cannot apply end time change, self.GUID is nil");
-    return;
-  }
-
   [self applyEndTime];
 }
 
 - (IBAction)applyEndTime {
+  NSAssert(self.timeEntry != nil, @"Time entry expected");
+
   NSDate *startDate = [self.startDate dateValue];
   
   unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
@@ -828,7 +548,7 @@ completionsForSubstring:(NSString *)substring
   NSDate *combined = [[NSCalendar currentCalendar] dateFromComponents:comps];
   
   unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
-  comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:self.endTimeDate];
+  comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:self.timeEntry.ended];
   comps = [self parseTime:self.endTime current:comps];
   combined = [[NSCalendar currentCalendar] dateByAddingComponents:comps toDate:combined options:0];
   
@@ -838,15 +558,10 @@ completionsForSubstring:(NSString *)substring
   [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
   NSString *iso8601String = [dateFormatter stringFromDate:combined];
   
-  kopsik_set_time_entry_end_iso_8601(ctx, [self.GUID UTF8String], [iso8601String UTF8String]);
+  kopsik_set_time_entry_end_iso_8601(ctx, [self.timeEntry.GUID UTF8String], [iso8601String UTF8String]);
 }
 
 - (IBAction)dateChanged:(id)sender {
-  if (nil == self.GUID) {
-    NSLog(@"Cannot apply date change, self.GUID is nil");
-    return;
-  }
-
   [self applyStartTime];
   if (!self.endTime.isHidden) {
     [self applyEndTime];
@@ -858,23 +573,17 @@ completionsForSubstring:(NSString *)substring
 }
 
 - (IBAction)billableCheckBoxClicked:(id)sender {
-  if (nil == self.GUID) {
-    NSLog(@"Cannot apply billable checkbox change, self.GUID is nil");
-    return;
-  }
+  NSAssert(self.timeEntry != nil, @"Time entry expected");
 
   _Bool value = false;
   if (NSOnState == [self.billableCheckbox state]) {
     value = true;
   }
-  kopsik_set_time_entry_billable(ctx, [self.GUID UTF8String], value);
+  kopsik_set_time_entry_billable(ctx, [self.timeEntry.GUID UTF8String], value);
 }
 
 - (IBAction)descriptionComboboxChanged:(id)sender {
-  if (nil == self.GUID) {
-    NSLog(@"Cannot apply description change, self.GUID is nil");
-    return;
-  }
+  NSAssert(self.timeEntry != nil, @"Time entry expected");
 
   NSString *key = [self.descriptionCombobox stringValue];
 
@@ -885,15 +594,17 @@ completionsForSubstring:(NSString *)substring
   AutocompleteItem *autocomplete =
     [self.descriptionComboboxDataSource get:key];
 
+  const char *GUID = [self.timeEntry.GUID UTF8String];
+  
   if (!autocomplete) {
     kopsik_set_time_entry_description(ctx,
-                                      [self.GUID UTF8String],
+                                      GUID,
                                       [key UTF8String]);
     return;
   }
 
   if (!kopsik_set_time_entry_project(ctx,
-                                     [self.GUID UTF8String],
+                                     GUID,
                                      autocomplete.TaskID,
                                      autocomplete.ProjectID,
                                      0)) {
@@ -901,14 +612,11 @@ completionsForSubstring:(NSString *)substring
   }
 
   self.descriptionCombobox.stringValue = autocomplete.Description;
-  kopsik_set_time_entry_description(ctx, [self.GUID UTF8String], [autocomplete.Description UTF8String]);
+  kopsik_set_time_entry_description(ctx, GUID, [autocomplete.Description UTF8String]);
 }
 
 - (IBAction)deleteButtonClicked:(id)sender {
-  if (nil == self.GUID) {
-    NSLog(@"Cannot delete time entry, self.GUID is nil");
-    return;
-  }
+  NSAssert(self.timeEntry != nil, @"Time entry expected");
   
   NSAlert *alert = [[NSAlert alloc] init];
   [alert addButtonWithTitle:@"OK"];
@@ -920,16 +628,7 @@ completionsForSubstring:(NSString *)substring
     return;
   }
 
-  TimeEntryViewItem *item = [TimeEntryViewItem findByGUID:self.GUID];
-  if (nil == item) {
-    NSLog(@"Cannot delete time entry, not found by GUID %@", self.GUID);
-    return;
-  }
-
-  if (!kopsik_delete_time_entry(ctx, [self.GUID UTF8String])) {
-    return;
-  }
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntryDeselected object:nil];
+  kopsik_delete_time_entry(ctx, [self.timeEntry.GUID UTF8String]);
 }
 
 -(NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox{
@@ -1039,14 +738,14 @@ completionsForSubstring:(NSString *)substring
 // If duration field is not focused, render ticking time
 // into duration field
 - (void)timerFired:(NSTimer*)timer {
-  if (self.runningTimeEntry == nil || self.runningTimeEntry.duration_in_seconds >= 0) {
+  if (self.timeEntry == nil || self.timeEntry.duration_in_seconds >= 0) {
     return; // time entry is not running, ignore
   }
   if ([self.durationTextField currentEditor] != nil) {
     return; // duration field is focussed by user, don't mess with it
   }
   char str[kDurationStringLength];
-  kopsik_format_duration_in_seconds_hhmmss(self.runningTimeEntry.duration_in_seconds,
+  kopsik_format_duration_in_seconds_hhmmss(self.timeEntry.duration_in_seconds,
                                            str,
                                            kDurationStringLength);
   NSString *newValue = [NSString stringWithUTF8String:str];
@@ -1058,7 +757,6 @@ completionsForSubstring:(NSString *)substring
   // Changing workspace should render the clients
   // of the selected workspace in the client select combobox.
   self.clientSelect.stringValue = @"";
-  [self startClientSelectRendering];
 }
 
 - (IBAction)clientSelectChanged:(id)sender {
