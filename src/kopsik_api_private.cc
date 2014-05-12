@@ -2,111 +2,20 @@
 
 #include "./kopsik_api_private.h"
 
-KopsikModelChange *model_change_init() {
-    KopsikModelChange *change = new KopsikModelChange();
-    change->ModelType = 0;
-    change->ChangeType = 0;
-    change->ModelID = 0;
-    change->GUID = 0;
-    return change;
-}
+#include <cstdlib>
 
-void model_change_clear(
-    KopsikModelChange *change) {
-
-    poco_check_ptr(change);
-
-    if (change->ModelType) {
-        free(change->ModelType);
-        change->ModelType = 0;
-    }
-    if (change->ChangeType) {
-        free(change->ChangeType);
-        change->ChangeType = 0;
-    }
-    if (change->GUID) {
-        free(change->GUID);
-        change->GUID = 0;
-    }
-    delete change;
-}
-
-void model_change_to_change_item(
-    const kopsik::ModelChange in,
-    KopsikModelChange *out) {
-
-    poco_assert(in.ModelType() == "time_entry" ||
-                in.ModelType() == "workspace" ||
-                in.ModelType() == "client" ||
-                in.ModelType() == "project" ||
-                in.ModelType() == "user" ||
-                in.ModelType() == "task" ||
-                in.ModelType() == "tag");
-
-    poco_assert(in.ChangeType() == "delete" ||
-                in.ChangeType() == "insert" ||
-                in.ChangeType() == "update");
-
-    poco_assert(!in.GUID().empty() || in.ModelID() > 0);
-
-    out->ModelType = strdup(in.ModelType().c_str());
-    out->ModelID = (unsigned int)in.ModelID();
-    out->ChangeType = strdup(in.ChangeType().c_str());
-    out->GUID = strdup(in.GUID().c_str());
-}
-
-void time_entry_to_view_item(
-    kopsik::TimeEntry * const te,
-    const std::string project_and_task_label,
-    const std::string color_code,
-    KopsikTimeEntryViewItem *view_item,
-    const std::string dateDuration) {
-
-    poco_check_ptr(te);
-    poco_check_ptr(view_item);
-
-    view_item->DurationInSeconds = static_cast<int>(te->DurationInSeconds());
-    view_item->Description = strdup(te->Description().c_str());
-    view_item->GUID = strdup(te->GUID().c_str());
-    view_item->WID = static_cast<unsigned int>(te->WID());
-    view_item->TID = static_cast<unsigned int>(te->TID());
-    view_item->PID = static_cast<unsigned int>(te->PID());
-    view_item->ProjectAndTaskLabel = strdup(project_and_task_label.c_str());
-    view_item->Color = strdup(color_code.c_str());
-    view_item->Duration = strdup(te->DurationString().c_str());
-    view_item->Started = static_cast<unsigned int>(te->Start());
-    view_item->Ended = static_cast<unsigned int>(te->Stop());
-    if (te->Billable()) {
-        view_item->Billable = true;
-    } else {
-        view_item->Billable = false;
-    }
-    if (!te->Tags().empty()) {
-        view_item->Tags = strdup(te->Tags().c_str());
-    }
-    view_item->UpdatedAt = static_cast<unsigned int>(te->UpdatedAt());
-    view_item->DateHeader = strdup(te->DateHeaderString().c_str());
-    if (!dateDuration.empty()) {
-        view_item->DateDuration = strdup(dateDuration.c_str());
-    }
-    if (te->DurOnly()) {
-        view_item->DurOnly = true;
-    } else {
-        view_item->DurOnly = false;
-    }
-}
-
-KopsikAutocompleteItem *autocomplete_item_init() {
-    KopsikAutocompleteItem *item = new KopsikAutocompleteItem();
-    item->Text = 0;
-    item->Description = 0;
-    item->ProjectAndTaskLabel = 0;
-    item->ProjectColor = 0;
-    item->ProjectID = 0;
-    item->TaskID = 0;
-    item->Type = 0;
-    item->Next = 0;
-    return item;
+KopsikAutocompleteItem *autocomplete_item_init(
+    const kopsik::AutocompleteItem item) {
+    KopsikAutocompleteItem *result = new KopsikAutocompleteItem();
+    result->Description = strdup(item.Description.c_str());
+    result->Text = strdup(item.Text.c_str());
+    result->ProjectAndTaskLabel = strdup(item.ProjectAndTaskLabel.c_str());
+    result->ProjectColor = strdup(item.ProjectColor.c_str());
+    result->ProjectID = static_cast<unsigned int>(item.ProjectID);
+    result->TaskID = static_cast<unsigned int>(item.TaskID);
+    result->Type = static_cast<unsigned int>(item.Type);
+    result->Next = 0;
+    return result;
 }
 
 KopsikViewItem *view_item_init() {
@@ -150,4 +59,147 @@ KopsikViewItem *client_to_view_item(
     result->GUID = strdup(c->GUID().c_str());
     result->Name = strdup(c->Name().c_str());
     return result;
+}
+
+void view_item_clear(
+    KopsikViewItem *item) {
+    if (!item) {
+        return;
+    }
+    if (item->Name) {
+        free(item->Name);
+        item->Name = 0;
+    }
+    if (item->GUID) {
+        free(item->GUID);
+        item->GUID = 0;
+    }
+    if (item->Next) {
+        KopsikViewItem *next = reinterpret_cast<KopsikViewItem *>(item->Next);
+        view_item_clear(next);
+    }
+    delete item;
+    item = 0;
+}
+
+void autocomplete_item_clear(KopsikAutocompleteItem *item) {
+    if (!item) {
+        return;
+    }
+    if (item->Text) {
+        free(item->Text);
+        item->Text = 0;
+    }
+    if (item->ProjectAndTaskLabel) {
+        free(item->ProjectAndTaskLabel);
+        item->ProjectAndTaskLabel = 0;
+    }
+    if (item->Description) {
+        free(item->Description);
+        item->Description = 0;
+    }
+    if (item->ProjectColor) {
+        free(item->ProjectColor);
+        item->ProjectColor = 0;
+    }
+    if (item->Next) {
+        KopsikAutocompleteItem *next =
+            reinterpret_cast<KopsikAutocompleteItem *>(item->Next);
+        autocomplete_item_clear(next);
+        item->Next = 0;
+    }
+    delete item;
+}
+
+KopsikTimeEntryViewItem *time_entry_view_item_init(kopsik::TimeEntry *te) {
+    poco_check_ptr(te);
+    KopsikTimeEntryViewItem *view_item = new KopsikTimeEntryViewItem();
+    poco_check_ptr(view_item);
+    view_item->DurationInSeconds = static_cast<int>(te->DurationInSeconds());
+    view_item->Description = strdup(te->Description().c_str());
+    view_item->GUID = strdup(te->GUID().c_str());
+    view_item->WID = static_cast<unsigned int>(te->WID());
+    view_item->TID = static_cast<unsigned int>(te->TID());
+    view_item->PID = static_cast<unsigned int>(te->PID());
+    view_item->ProjectAndTaskLabel = strdup(te->ProjectAndTaskLabel().c_str());
+    view_item->Color = strdup(te->ColorCode().c_str());
+    view_item->Duration = strdup(te->DurationString().c_str());
+    view_item->Started = static_cast<unsigned int>(te->Start());
+    view_item->Ended = static_cast<unsigned int>(te->Stop());
+    view_item->StartTimeString = strdup(te->StartTimeString().c_str());
+    view_item->EndTimeString = strdup(te->EndTimeString().c_str());
+    if (te->Billable()) {
+        view_item->Billable = true;
+    } else {
+        view_item->Billable = false;
+    }
+    if (!te->Tags().empty()) {
+        view_item->Tags = strdup(te->Tags().c_str());
+    }
+    view_item->UpdatedAt = static_cast<unsigned int>(te->UpdatedAt());
+    view_item->DateHeader = strdup(te->DateHeaderString().c_str());
+    if (!te->DateDuration().empty()) {
+        view_item->DateDuration = strdup(te->DateDuration().c_str());
+    }
+    if (te->DurOnly()) {
+        view_item->DurOnly = true;
+    } else {
+        view_item->DurOnly = false;
+    }
+    view_item->Next = 0;
+    return view_item;
+}
+
+void time_entry_view_item_clear(
+    KopsikTimeEntryViewItem *item) {
+    if (!item) {
+        return;
+    }
+    if (item->Description) {
+        free(item->Description);
+        item->Description = 0;
+    }
+    if (item->ProjectAndTaskLabel) {
+        free(item->ProjectAndTaskLabel);
+        item->ProjectAndTaskLabel = 0;
+    }
+    if (item->Duration) {
+        free(item->Duration);
+        item->Duration = 0;
+    }
+    if (item->Color) {
+        free(item->Color);
+        item->Color = 0;
+    }
+    if (item->GUID) {
+        free(item->GUID);
+        item->GUID = 0;
+    }
+    if (item->Tags) {
+        free(item->Tags);
+        item->Tags = 0;
+    }
+    if (item->DateHeader) {
+        free(item->DateHeader);
+        item->DateHeader = 0;
+    }
+    if (item->DateDuration) {
+        free(item->DateDuration);
+        item->DateDuration = 0;
+    }
+    if (item->StartTimeString) {
+        free(item->StartTimeString);
+        item->StartTimeString = 0;
+    }
+    if (item->EndTimeString) {
+        free(item->EndTimeString);
+        item->EndTimeString = 0;
+    }
+    if (item->Next) {
+        KopsikTimeEntryViewItem *next =
+            reinterpret_cast<KopsikTimeEntryViewItem *>(item->Next);
+        time_entry_view_item_clear(next);
+        item->Next = 0;
+    }
+    delete item;
 }

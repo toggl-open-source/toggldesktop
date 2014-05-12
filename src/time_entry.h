@@ -27,7 +27,12 @@ class TimeEntry : public BaseModel {
     , description_("")
     , duronly_(false)
     , created_with_("")
-    , project_guid_("") {}
+    , project_guid_("")
+    , project_and_task_label_("")
+    , color_code_("")
+    , date_duration_("")
+    , start_time_string_("")
+    , end_time_string_("") {}
     virtual ~TimeEntry() {}
 
     std::vector<std::string> TagNames;
@@ -129,6 +134,46 @@ class TimeEntry : public BaseModel {
 
     virtual bool ResolveError(const kopsik::error err);
 
+    // For displaying time entries, will not be saved etc
+    void SetProjectAndTaskLabel(const std::string value) {
+        project_and_task_label_ = value;
+    }
+    std::string ProjectAndTaskLabel() const {
+        return project_and_task_label_;
+    }
+
+    // For displaying time entries, will not be saved etc
+    void SetColorCode(const std::string value) {
+        color_code_ = value;
+    }
+    std::string ColorCode() const {
+        return color_code_;
+    }
+
+    // For displaying time entries, will not be saved etc
+    void SetDateDuration(const std::string value) {
+        date_duration_ = value;
+    }
+    std::string DateDuration() const {
+        return date_duration_;
+    }
+
+    // For displaying time entries, will not be saved etc
+    void SetStartTimeString(const std::string value) {
+        start_time_string_ = value;
+    }
+    std::string StartTimeString() const {
+        return start_time_string_;
+    }
+
+    // For displaying time entries, will not be saved etc
+    void SetEndTimeString(const std::string value) {
+        end_time_string_ = value;
+    }
+    std::string EndTimeString() const {
+        return end_time_string_;
+    }
+
  private:
     Poco::UInt64 wid_;
     Poco::UInt64 pid_;
@@ -141,6 +186,13 @@ class TimeEntry : public BaseModel {
     bool duronly_;
     std::string created_with_;
     std::string project_guid_;
+
+    // For displaying time entries, will not be saved etc
+    std::string project_and_task_label_;
+    std::string color_code_;
+    std::string date_duration_;
+    std::string start_time_string_;
+    std::string end_time_string_;
 
     bool setDurationStringHHMMSS(const std::string value);
     bool setDurationStringHHMM(const std::string value);

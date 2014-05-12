@@ -20,7 +20,7 @@
         <window title="Toggl Desktop" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" frameAutosaveName="MainWindow" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="300" height="450"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1058"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
             <value key="minSize" type="size" width="300" height="420"/>
             <view key="contentView" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="300" height="450"/>
@@ -69,7 +69,6 @@
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                     <connections>
-                                        <action selector="forgotPasswordLinkClicked:" target="-2" id="C1v-d8-QeM"/>
                                         <outlet property="delegate" destination="-2" id="CCw-oI-jqR"/>
                                     </connections>
                                 </textField>

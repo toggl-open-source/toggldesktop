@@ -8,35 +8,24 @@
 
 #import "UIEvents.h"
 
-// States
-NSString *const kUIStateUserLoggedIn = @"UserLoggedIn";
-NSString *const kUIStateUserLoggedOut = @"UserLoggedOut";
-NSString *const kUIStateTimerRunning = @"TimerRunning";
-NSString *const kUIStateTimerStopped = @"TimerStopped";
-NSString *const kUIStateTimeEntrySelected = @"TimeEntrySelected";
-NSString *const kUIStateTimeEntryDeselected = @"TimeEntryDeselected";
-NSString *const kUIStateError = @"Error";
-NSString *const kUIStateUpdateAvailable = @"UpdateAvailable";
-NSString *const kUIStateUpToDate = @"UpToDate";
+NSString *const kCommandNew = @"New";
+NSString *const kCommandStop = @"Stop";
+NSString *const kCommandContinue = @"Continue";
+NSString *const kCommandStopAt = @"Stop At";
 
-// Events
-NSString *const kUIEventModelChange = @"ModelChange";
-NSString *const kUIEventIdleFinished = @"IdleFinished";
-NSString *const kUIEventSettingsChanged = @"SettingsChanged";
-NSString *const kUIEventShowListView = @"ShowListView";
+NSString *const kDisplayTimeEntryList = @"kDisplayTimeEntryList";
+NSString *const kDisplayAutocomplete = @"kDisplayAutocomplete";
+NSString *const kDisplayClientSelect = @"kDisplayClientSelect";
+NSString *const kDisplayWorkspaceSelect = @"kDisplayWorkspaceSelect";
+NSString *const kDisplayTags = @"kDisplayTags";
+NSString *const kDisplayTimeEntryEditor = @"kDisplayTimeEntryEditor";
+NSString *const kDisplayLogin = @"kDisplayLogin";
+NSString *const kDisplayError = @"kDisplayError";
+NSString *const kDisplayUpdate = @"kDisplayUpdate";
+NSString *const kDisplayIdleNotification = @"kDisplayIdleNotification";
+NSString *const kDisplayOnlineState = @"kDisplayOnlineState";
+NSString *const kDisplaySettings = @"kDisplaySettings";
+NSString *const kDisplayTimerState = @"kDisplayTimerState";
 
-// Commands
-NSString *const kUICommandNew = @"New";
-NSString *const kUICommandStop = @"Stop";
-NSString *const kUICommandContinue = @"Continue";
-NSString *const kUICommandShowPreferences = @"Show Preferences";
-NSString *const kUICommandStopAt = @"Stop At";
-NSString *const kUICommandEditRunningTimeEntry = @"Edit Running Time Entry";
-
-NSString *const kUIDurationClicked = @"duration";
-NSString *const kUIDescriptionClicked = @"description";
-
-NSString *const kUIStateOffline = @"Offline";
-NSString *const kUIStateOnline = @"Online";
-
-float const kThrottleSeconds = 0.1;
+const char *kFocusedFieldNameDuration = "duration";
+const char *kFocusedFieldNameDescription = "description";

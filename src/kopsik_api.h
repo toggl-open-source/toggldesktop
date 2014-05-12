@@ -23,74 +23,209 @@ extern "C" {
 #define KOPSIK_EXPORT
 #endif
 
-    KOPSIK_EXPORT void *kopsik_context_init(
-        const char *app_name,
-        const char *app_version);
+    // Models
 
-    typedef void (*KopsikErrorCallback)(const char *errmsg);
+    typedef struct {
+        int64_t DurationInSeconds;
+        char *Description;
+        char *ProjectAndTaskLabel;
+        uint64_t WID;
+        uint64_t PID;
+        uint64_t TID;
+        char *Duration;
+        char *Color;
+        char *GUID;
+        _Bool Billable;
+        char *Tags;
+        uint64_t Started;
+        uint64_t Ended;
+        char *StartTimeString;
+        char *EndTimeString;
+        uint64_t UpdatedAt;
+        char *DateHeader;
+        char *DateDuration;
+        _Bool DurOnly;
+        void *Next;
+    } KopsikTimeEntryViewItem;
 
-    KOPSIK_EXPORT void kopsik_context_set_error_callback(
-        void *context,
-        KopsikErrorCallback);
+    typedef struct {
+        // This is what is displayed to user
+        char *Text;
+        // This is copied to description field if item is selected
+        char *Description;
+        // Project label, if has a project
+        char *ProjectAndTaskLabel;
+        char *ProjectColor;
+        uint64_t TaskID;
+        uint64_t ProjectID;
+        uint64_t Type;
+        void *Next;
+    } KopsikAutocompleteItem;
 
-    typedef void (*KopsikCheckUpdateCallback)(
+    typedef struct {
+        uint64_t ID;
+        char *GUID;
+        char *Name;
+        void *Next;
+    } KopsikViewItem;
+
+    // Callbacks that need to be implemented in UI
+
+    typedef void (*KopsikDisplayError)(
+        const char *errmsg,
+        const _Bool user_error);
+
+    typedef void (*KopsikDisplayUpdate)(
         const _Bool is_update_available,
         const char *url,
         const char *version);
 
-    KOPSIK_EXPORT void kopsik_context_set_check_update_callback(
-        void *context,
-        KopsikCheckUpdateCallback);
+    typedef void (*KopsikDisplayOnlineState)(const _Bool is_online);
 
-    typedef void (*KopsikOnOnlineCallback)();
+    typedef void(*KopsikDisplayURL)(const char *url);
 
-    KOPSIK_EXPORT void kopsik_context_set_online_callback(
-        void *context,
-        KopsikOnOnlineCallback);
+    typedef void (*KopsikDisplayLogin)();
 
-    typedef void(*KopsikOpenURLCallback)(const char *url);
-
-    KOPSIK_EXPORT void kopsik_set_open_url_callback(
-        void *context,
-        KopsikOpenURLCallback);
-
-    typedef void (*KopsikUserLoginCallback)(
-        uint64_t id,
-        const char *fullname,
-        const char *timeofdayformat);
-
-    KOPSIK_EXPORT void kopsik_context_set_user_login_callback(
-        void *context,
-        KopsikUserLoginCallback);
-
-    typedef void (*KopsikRemindCallback)(
+    typedef void (*KopsikDisplayReminder)(
         const char *title,
         const char *informative_text);
 
-    KOPSIK_EXPORT void kopsik_set_remind_callback(
-        void *context,
-        KopsikRemindCallback);
+    typedef void (*KopsikDisplayTimeEntryList)(
+        KopsikTimeEntryViewItem *first);
+
+    typedef void (*KopsikDisplayAutocomplete)(
+        KopsikAutocompleteItem *first);
+
+    typedef void (*KopsikDisplayViewItems)(
+        KopsikViewItem *first);
+
+    typedef void (*KopsikDisplayTimeEntryEditor)(
+        KopsikTimeEntryViewItem *te,
+        const char *focused_field_name);
+
+    typedef void (*KopsikDisplaySettings)(
+        const _Bool use_idle_detection,
+        const _Bool menubar_timer,
+        const _Bool dock_icon,
+        const _Bool on_top,
+        const _Bool reminder);
+
+    typedef void (*KopsikDisplayProxySettings)(
+        const _Bool use_proxy,
+        const char *proxy_host,
+        const uint64_t proxy_port,
+        const char *proxy_username,
+        const char *proxy_password);
+
+    typedef void (*KopsikDisplayTimerState)(
+        const _Bool is_tracking,
+        KopsikTimeEntryViewItem *first);
+
+    // Initialize/destroy an instance of the app
+
+    KOPSIK_EXPORT void *kopsik_context_init(
+        const char *app_name,
+        const char *app_version);
+
+    KOPSIK_EXPORT void kopsik_context_clear(
+        void *context);
+
+    // DB path must be configured from UI
 
     KOPSIK_EXPORT _Bool kopsik_set_db_path(
         void *context,
         const char *path);
 
+    // Log path must be configured from UI
+
     KOPSIK_EXPORT void kopsik_set_log_path(
         const char *path);
 
+    // Log level is optional
+
     KOPSIK_EXPORT void kopsik_set_log_level(
         const char *level);
+
+    // API URL can be overriden from UI. Optional
 
     KOPSIK_EXPORT void kopsik_set_api_url(
         void *context,
         const char *api_url);
 
+    // WebSocket URL can be overriden from UI. Optional
+
     KOPSIK_EXPORT void kopsik_set_websocket_url(
         void *context,
         const char *websocket_url);
 
-    KOPSIK_EXPORT void kopsik_context_start_events(
+    // Configure the UI callbacks. Required.
+
+    KOPSIK_EXPORT void kopsik_on_error(
+        void *context,
+        KopsikDisplayError);
+
+    KOPSIK_EXPORT void kopsik_on_update(
+        void *context,
+        KopsikDisplayUpdate);
+
+    KOPSIK_EXPORT void kopsik_on_online_state(
+        void *context,
+        KopsikDisplayOnlineState);
+
+    KOPSIK_EXPORT void kopsik_on_url(
+        void *context,
+        KopsikDisplayURL);
+
+    KOPSIK_EXPORT void kopsik_on_login(
+        void *context,
+        KopsikDisplayLogin);
+
+    KOPSIK_EXPORT void kopsik_on_reminder(
+        void *context,
+        KopsikDisplayReminder);
+
+    KOPSIK_EXPORT void kopsik_on_time_entry_list(
+        void *context,
+        KopsikDisplayTimeEntryList);
+
+    KOPSIK_EXPORT void kopsik_on_autocomplete(
+        void *context,
+        KopsikDisplayAutocomplete);
+
+    KOPSIK_EXPORT void kopsik_on_workspace_select(
+        void *context,
+        KopsikDisplayViewItems);
+
+    KOPSIK_EXPORT void kopsik_on_client_select(
+        void *context,
+        KopsikDisplayViewItems);
+
+    KOPSIK_EXPORT void kopsik_on_tags(
+        void *context,
+        KopsikDisplayViewItems);
+
+    KOPSIK_EXPORT void kopsik_on_time_entry_editor(
+        void *context,
+        KopsikDisplayTimeEntryEditor);
+
+    KOPSIK_EXPORT void kopsik_on_settings(
+        void *context,
+        KopsikDisplaySettings);
+
+    KOPSIK_EXPORT void kopsik_on_proxy_settings(
+        void *context,
+        KopsikDisplayProxySettings);
+
+    KOPSIK_EXPORT void kopsik_on_timer_state(
+        void *context,
+        KopsikDisplayTimerState);
+
+    // After UI callbacks are configured, start pumping UI events
+
+    KOPSIK_EXPORT _Bool kopsik_context_start_events(
         void *context);
+
+    // User interaction with the app
 
     KOPSIK_EXPORT _Bool kopsik_login(
         void *context,
@@ -111,6 +246,15 @@ extern "C" {
         const char *topic,
         const char *details,
         const char *filename);
+
+    KOPSIK_EXPORT void kopsik_view_time_entry_list(
+        void *context);
+
+    KOPSIK_EXPORT void kopsik_edit(
+        void *context,
+        const char *guid,
+        const _Bool edit_running_time_entry,
+        const char *focused_field_name);
 
     KOPSIK_EXPORT _Bool kopsik_continue(
         void *context,
@@ -181,11 +325,6 @@ extern "C" {
     KOPSIK_EXPORT _Bool kopsik_clear_cache(
         void *context);
 
-    KOPSIK_EXPORT _Bool kopsik_parse_time(
-        const char *input,
-        int *hours,
-        int *minutes);
-
     KOPSIK_EXPORT _Bool kopsik_start(
         void *context,
         const char *description,
@@ -201,23 +340,8 @@ extern "C" {
         const char *project_name,
         const _Bool is_private);
 
-    KOPSIK_EXPORT void kopsik_format_duration_in_seconds_hhmmss(
-        const int64_t duration_in_seconds,
-        char *str,
-        const size_t max_strlen);
-
-    KOPSIK_EXPORT void kopsik_format_duration_in_seconds_hhmm(
-        const int64_t duration_in_seconds,
-        char *str,
-        const size_t max_strlen);
-
-    KOPSIK_EXPORT void kopsik_format_duration_in_seconds_pretty_hhmm(
-        const int64_t duration_in_seconds,
-        char *str,
-        const size_t max_strlen);
-
-    KOPSIK_EXPORT int64_t kopsik_parse_duration_string_into_seconds(
-        const char *duration_string);
+    KOPSIK_EXPORT void kopsik_check_for_updates(
+        void *context);
 
     KOPSIK_EXPORT _Bool kopsik_set_update_channel(
         void *context,
@@ -234,9 +358,6 @@ extern "C" {
     KOPSIK_EXPORT void kopsik_sync(
         void *context);
 
-    KOPSIK_EXPORT void kopsik_context_clear(
-        void *context);
-
     KOPSIK_EXPORT void kopsik_timeline_toggle_recording(
         void *context);
 
@@ -246,57 +367,30 @@ extern "C" {
     KOPSIK_EXPORT void kopsik_set_wake(
         void *context);
 
-    // FIXME: stuff below should not be exported
+    // Shared helpers
 
+    KOPSIK_EXPORT _Bool kopsik_parse_time(
+        const char *input,
+        int *hours,
+        int *minutes);
+
+    KOPSIK_EXPORT void kopsik_format_duration_in_seconds_hhmmss(
+        const int64_t duration_in_seconds,
+        char *str,
+        const size_t max_strlen);
+
+    KOPSIK_EXPORT void kopsik_format_duration_in_seconds_hhmm(
+        const int64_t duration_in_seconds,
+        char *str,
+        const size_t max_strlen);
+
+    KOPSIK_EXPORT int64_t kopsik_parse_duration_string_into_seconds(
+        const char *duration_string);
+
+    // FIXME: should not be exported, pass default WID via callback instead
     KOPSIK_EXPORT _Bool kopsik_users_default_wid(
         void *context,
         uint64_t *default_wid);
-
-    KOPSIK_EXPORT _Bool kopsik_is_networking_error(
-        const char *error);
-
-    KOPSIK_EXPORT _Bool kopsik_is_user_error(
-        const char *error);
-
-    typedef struct {
-        char *ModelType;
-        char *ChangeType;
-        uint64_t ModelID;
-        char *GUID;
-    } KopsikModelChange;
-
-    typedef struct {
-        uint64_t ID;
-        char *GUID;
-        char *Name;
-        void *Next;
-    } KopsikViewItem;
-
-    KOPSIK_EXPORT void kopsik_view_item_clear(
-        KopsikViewItem *first);
-
-    typedef void (*KopsikViewItemChangeCallback)(
-        KopsikModelChange *change);
-
-    KOPSIK_EXPORT void kopsik_context_set_view_item_change_callback(
-        void *context,
-        KopsikViewItemChangeCallback);
-
-    KOPSIK_EXPORT _Bool kopsik_get_settings(
-        void *context,
-        _Bool *use_idle_detection,
-        _Bool *menubar_timer,
-        _Bool *dock_icon,
-        _Bool *on_top,
-        _Bool *reminder);
-
-    KOPSIK_EXPORT _Bool kopsik_get_proxy_settings(
-        void *context,
-        _Bool *use_proxy,
-        char **proxy_host,
-        uint64_t *proxy_port,
-        char **proxy_username,
-        char **proxy_password);
 
     KOPSIK_EXPORT _Bool kopsik_configure_proxy(
         void *context);
@@ -315,85 +409,6 @@ extern "C" {
         void *context,
         _Bool *is_logged_in);
 
-    typedef struct {
-        // This is what is displayed to user
-        char *Text;
-        // This is copied to description field if item is selected
-        char *Description;
-        // Project label, if has a project
-        char *ProjectAndTaskLabel;
-        char *ProjectColor;
-        uint64_t TaskID;
-        uint64_t ProjectID;
-        uint64_t Type;
-        void *Next;
-    } KopsikAutocompleteItem;
-
-    KOPSIK_EXPORT _Bool kopsik_autocomplete_items(
-        void *context,
-        KopsikAutocompleteItem **first,
-        const _Bool include_time_entries,
-        const _Bool include_tasks,
-        const _Bool include_projects);
-
-    KOPSIK_EXPORT void kopsik_autocomplete_item_clear(
-        KopsikAutocompleteItem *item);
-
-    KOPSIK_EXPORT _Bool kopsik_tags(
-        void *context,
-        KopsikViewItem **first);
-
-    KOPSIK_EXPORT _Bool kopsik_workspaces(
-        void *context,
-        KopsikViewItem **first);
-
-    KOPSIK_EXPORT _Bool kopsik_clients(
-        void *context,
-        const uint64_t workspace_id,
-        KopsikViewItem **first);
-
-    typedef struct {
-        int64_t DurationInSeconds;
-        char *Description;
-        char *ProjectAndTaskLabel;
-        uint64_t WID;
-        uint64_t PID;
-        uint64_t TID;
-        char *Duration;
-        char *Color;
-        char *GUID;
-        _Bool Billable;
-        char *Tags;
-        uint64_t Started;
-        uint64_t Ended;
-        uint64_t UpdatedAt;
-        char *DateHeader;
-        char *DateDuration;
-        _Bool DurOnly;
-        void *Next;
-    } KopsikTimeEntryViewItem;
-
-    KOPSIK_EXPORT KopsikTimeEntryViewItem *
-    kopsik_time_entry_view_item_init();
-
-    KOPSIK_EXPORT void kopsik_time_entry_view_item_clear(
-        KopsikTimeEntryViewItem *item);
-
-    KOPSIK_EXPORT _Bool kopsik_running_time_entry_view_item(
-        void *context,
-        KopsikTimeEntryViewItem *item,
-        _Bool *is_tracking);
-
-    KOPSIK_EXPORT _Bool kopsik_time_entry_view_item_by_guid(
-        void *context,
-        const char *guid,
-        KopsikTimeEntryViewItem *item,
-        _Bool *was_found);
-
-    KOPSIK_EXPORT _Bool kopsik_time_entry_view_items(
-        void *context,
-        KopsikTimeEntryViewItem **first);
-
     KOPSIK_EXPORT _Bool kopsik_duration_for_date_header(
         void *context,
         const char *date,
@@ -401,9 +416,6 @@ extern "C" {
         const size_t duration_len);
 
     KOPSIK_EXPORT _Bool kopsik_timeline_is_recording_enabled(
-        void *context);
-
-    KOPSIK_EXPORT void kopsik_check_for_updates(
         void *context);
 
     KOPSIK_EXPORT _Bool kopsik_get_update_channel(
@@ -422,6 +434,7 @@ extern "C" {
         char *str,
         const size_t max_strlen);
 
+    // For testing only
     _Bool kopsik_set_logged_in_user(
         void *context,
         const char *json);

@@ -9,7 +9,6 @@
 #include "./../task.h"
 #include "./../time_entry.h"
 #include "./../tag.h"
-#include "./kopsik_api_test.h"
 #include "./../database.h"
 #include "./test_data.h"
 #include "./../json.h"
@@ -19,6 +18,30 @@
 #include "Poco/File.h"
 
 namespace kopsik {
+
+namespace testing {
+class Database {
+ public:
+    Database() : db_(0) {
+        Poco::File f(TESTDB);
+        if (f.exists()) {
+            f.remove(false);
+        }
+        db_ = new kopsik::Database(TESTDB);
+    }
+    ~Database() {
+        if (db_) {
+            delete db_;
+        }
+    }
+    kopsik::Database *instance() {
+        return db_;
+    }
+
+ private:
+    kopsik::Database *db_;
+};
+}  // namespace testing
 
 TEST(TogglApiClientTest, TimeEntryReturnsTags) {
     TimeEntry te;
@@ -41,41 +64,40 @@ TEST(TogglApiClientTest, ProjectsHaveColorCodes) {
 }
 
 TEST(TogglApiClientTest, SaveAndLoadCurrentAPIToken) {
-    wipe_test_db();
-    Database db(TESTDB);
-
+    testing::Database db;
     std::string api_token("");
-    ASSERT_EQ(noError, db.CurrentAPIToken(&api_token));
+    ASSERT_EQ(noError, db.instance()->CurrentAPIToken(&api_token));
     ASSERT_EQ("", api_token);
 
     api_token = "abc123";
-    ASSERT_EQ(noError, db.SetCurrentAPIToken(api_token));
-    ASSERT_EQ(noError, db.SetCurrentAPIToken(api_token));
+    ASSERT_EQ(noError, db.instance()->SetCurrentAPIToken(api_token));
+    ASSERT_EQ(noError, db.instance()->SetCurrentAPIToken(api_token));
 
     Poco::UInt64 n(0);
-    ASSERT_EQ(noError, db.UInt("select count(1) from sessions", &n));
+    ASSERT_EQ(noError,
+              db.instance()->UInt("select count(1) from sessions", &n));
     ASSERT_EQ(Poco::UInt64(1), n);
 
     std::string api_token_from_db("");
-    ASSERT_EQ(noError, db.CurrentAPIToken(&api_token_from_db));
+    ASSERT_EQ(noError, db.instance()->CurrentAPIToken(&api_token_from_db));
     ASSERT_EQ("abc123", api_token_from_db);
 
-    ASSERT_EQ(noError, db.ClearCurrentAPIToken());
-    ASSERT_EQ(noError, db.UInt("select count(1) from sessions", &n));
+    ASSERT_EQ(noError, db.instance()->ClearCurrentAPIToken());
+    ASSERT_EQ(noError,
+              db.instance()->UInt("select count(1) from sessions", &n));
     ASSERT_EQ(Poco::UInt64(0), n);
 
-    ASSERT_EQ(noError, db.CurrentAPIToken(&api_token_from_db));
+    ASSERT_EQ(noError, db.instance()->CurrentAPIToken(&api_token_from_db));
     ASSERT_EQ("", api_token_from_db);
 }
 
 TEST(TogglApiClientTest, UpdatesTimeEntryFromJSON) {
-    wipe_test_db();
-    Database db(TESTDB);
+    testing::Database db;
 
     User user("kopsik_test", "0.1");
     LoadUserFromJSONString(&user, loadTestData(), true, true);
 
-    TimeEntry *te = user.GetTimeEntryByID(89818605);
+    TimeEntry *te = user.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
 
     std::string json = "{\"id\":89818605,\"description\":\"Changed\"}";
@@ -94,15 +116,14 @@ TEST(TogglApiClientTest, EscapeControlCharactersInJSONString) {
 }
 
 TEST(TogglApiClientTest, UpdatesTimeEntryFromFullUserJSON) {
-    wipe_test_db();
-    Database db(TESTDB);
+    testing::Database db;
 
     std::string json = loadTestData();
 
     User user("kopsik_test", "0.1");
     LoadUserFromJSONString(&user, loadTestData(), true, true);
 
-    TimeEntry *te = user.GetTimeEntryByID(89818605);
+    TimeEntry *te = user.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
 
     size_t n = json.find("Important things");
@@ -112,14 +133,13 @@ TEST(TogglApiClientTest, UpdatesTimeEntryFromFullUserJSON) {
                         "Even more important!");
 
     LoadUserFromJSONString(&user, json, true, true);
-    te = user.GetTimeEntryByID(89818605);
+    te = user.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
     ASSERT_EQ("Even more important!", te->Description());
 }
 
 TEST(TogglApiClientTest, SavesAndLoadsUserFields) {
-    wipe_test_db();
-    Database db(TESTDB);
+    testing::Database db;
 
     User user("kopsik_test", "0.1");
     LoadUserFromJSONString(&user, loadTestData(), true, true);
@@ -129,66 +149,71 @@ TEST(TogglApiClientTest, SavesAndLoadsUserFields) {
     user.SetStoreStartAndStopTime(false);
 
     std::vector<ModelChange> changes;
-    ASSERT_EQ(noError, db.SaveUser(&user, true, &changes));
+    ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
 
     // Load user into another instance
     User user2("kopsik_test", "0.1");
-    ASSERT_EQ(noError, db.LoadUserByID(user.ID(), &user2, false));
+    ASSERT_EQ(noError, db.instance()->LoadUserByID(user.ID(), &user2, false));
     ASSERT_FALSE(user2.StoreStartAndStopTime());
 
     // Change fields, again
     user.SetStoreStartAndStopTime(true);
-    ASSERT_EQ(noError, db.SaveUser(&user, true, &changes));
+    ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
 
     // Load user into another instance
     User user3("kopsik_test", "0.1");
-    ASSERT_EQ(noError, db.LoadUserByID(user.ID(), &user3, false));
+    ASSERT_EQ(noError, db.instance()->LoadUserByID(user.ID(), &user3, false));
     ASSERT_TRUE(user3.StoreStartAndStopTime());
 }
 
 TEST(TogglApiClientTest, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
-    wipe_test_db();
-    Database db(TESTDB);
+    testing::Database db;
 
     User user("kopsik_test", "0.1");
     LoadUserFromJSONString(&user, loadTestData(), true, true);
 
     Poco::UInt64 n;
-    ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
+    ASSERT_EQ(noError, db.instance()->UInt("select count(1) from users", &n));
     ASSERT_EQ(Poco::UInt64(0), n);
 
     for (int i = 0; i < 3; i++) {
         std::vector<ModelChange> changes;
-        ASSERT_EQ(noError, db.SaveUser(&user, true, &changes));
+        ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
 
-        ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
+        ASSERT_EQ(noError,
+                  db.instance()->UInt("select count(1) from users", &n));
         ASSERT_EQ(Poco::UInt64(1), n);
 
-        ASSERT_EQ(noError, db.UInt("select count(1) from workspaces", &n));
+        ASSERT_EQ(noError,
+                  db.instance()->UInt("select count(1) from workspaces", &n));
         ASSERT_EQ(uint(2), n);
 
-        ASSERT_EQ(noError, db.UInt("select count(1) from clients", &n));
+        ASSERT_EQ(noError,
+                  db.instance()->UInt("select count(1) from clients", &n));
         ASSERT_EQ(uint(1), n);  // 2 clients in json, but one is deleted
 
-        ASSERT_EQ(noError, db.UInt("select count(1) from projects", &n));
+        ASSERT_EQ(noError,
+                  db.instance()->UInt("select count(1) from projects", &n));
         ASSERT_EQ(uint(2), n);
 
-        ASSERT_EQ(noError, db.UInt("select count(1) from tasks", &n));
+        ASSERT_EQ(noError,
+                  db.instance()->UInt("select count(1) from tasks", &n));
         ASSERT_EQ(uint(2), n);
 
-        ASSERT_EQ(noError, db.UInt("select count(1) from tags", &n));
+        ASSERT_EQ(noError,
+                  db.instance()->UInt("select count(1) from tags", &n));
         ASSERT_EQ(uint(2), n);
 
-        ASSERT_EQ(noError, db.UInt("select count(1) from time_entries",
-                                   &n));
+        ASSERT_EQ(noError,
+                  db.instance()->UInt("select count(1) from time_entries",
+                                      &n));
         ASSERT_EQ(uint(5), n);
     }
 }
 
 TEST(TogglApiClientTest,
      SavesModelsAndKnowsToUpdateWithSeparateUserInstances) {
-    wipe_test_db();
-    Database db(TESTDB);
+    testing::Database db;
 
     std::string json = loadTestData();
 
@@ -196,32 +221,38 @@ TEST(TogglApiClientTest,
     LoadUserFromJSONString(&user1, json, true, true);
 
     std::vector<ModelChange> changes;
-    ASSERT_EQ(noError, db.SaveUser(&user1, true, &changes));
+    ASSERT_EQ(noError, db.instance()->SaveUser(&user1, true, &changes));
 
     Poco::UInt64 n;
-    ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
+    ASSERT_EQ(noError, db.instance()->UInt("select count(1) from users", &n));
     ASSERT_EQ(Poco::UInt64(1), n);
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from workspaces", &n));
+    ASSERT_EQ(noError,
+              db.instance()->UInt("select count(1) from workspaces", &n));
     ASSERT_EQ(uint(2), n);
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from clients", &n));
+    ASSERT_EQ(noError,
+              db.instance()->UInt("select count(1) from clients", &n));
     ASSERT_EQ(uint(1), n);  // 2 clients in JSON but one is deleted
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from projects", &n));
+    ASSERT_EQ(noError,
+              db.instance()->UInt("select count(1) from projects", &n));
     ASSERT_EQ(uint(2), n);
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from tasks", &n));
+    ASSERT_EQ(noError,
+              db.instance()->UInt("select count(1) from tasks", &n));
     ASSERT_EQ(uint(2), n);
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from tags", &n));
+    ASSERT_EQ(noError,
+              db.instance()->UInt("select count(1) from tags", &n));
     ASSERT_EQ(uint(2), n);
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from time_entries", &n));
+    ASSERT_EQ(noError,
+              db.instance()->UInt("select count(1) from time_entries", &n));
     ASSERT_EQ(Poco::UInt64(5), n);
 
     User user2("kopsik_test", "0.1");
-    ASSERT_EQ(noError, db.LoadUserByID(user1.ID(), &user2, true));
+    ASSERT_EQ(noError, db.instance()->LoadUserByID(user1.ID(), &user2, true));
 
     ASSERT_EQ(user1.related.Workspaces.size(),
               user2.related.Workspaces.size());
@@ -238,33 +269,36 @@ TEST(TogglApiClientTest,
 
     LoadUserFromJSONString(&user2, json, true, true);
 
-    ASSERT_EQ(noError, db.SaveUser(&user2, true, &changes));
+    ASSERT_EQ(noError, db.instance()->SaveUser(&user2, true, &changes));
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
+    ASSERT_EQ(noError, db.instance()->UInt("select count(1) from users", &n));
     ASSERT_EQ(Poco::UInt64(1), n);
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from workspaces", &n));
+    ASSERT_EQ(noError,
+              db.instance()->UInt("select count(1) from workspaces", &n));
     ASSERT_EQ(uint(2), n);
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from clients", &n));
+    ASSERT_EQ(noError,
+              db.instance()->UInt("select count(1) from clients", &n));
     ASSERT_EQ(uint(1), n);  // 2 clients in JSON but 1 is deleted
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from projects", &n));
+    ASSERT_EQ(noError,
+              db.instance()->UInt("select count(1) from projects", &n));
     ASSERT_EQ(uint(2), n);
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from tasks", &n));
+    ASSERT_EQ(noError, db.instance()->UInt("select count(1) from tasks", &n));
     ASSERT_EQ(uint(2), n);
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from tags", &n));
+    ASSERT_EQ(noError, db.instance()->UInt("select count(1) from tags", &n));
     ASSERT_EQ(uint(2), n);
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from time_entries", &n));
+    ASSERT_EQ(noError,
+              db.instance()->UInt("select count(1) from time_entries", &n));
     ASSERT_EQ(uint(5), n);
 }
 
 TEST(TogglApiClientTest, TestStartTimeEntryWithDuration) {
-    wipe_test_db();
-    Database db(TESTDB);
+    testing::Database db;
 
     User user("kopsik_test", "0.1");
     LoadUserFromJSONString(&user, loadTestData(), true, true);
@@ -274,8 +308,7 @@ TEST(TogglApiClientTest, TestStartTimeEntryWithDuration) {
 }
 
 TEST(TogglApiClientTest, TestStartTimeEntryWithoutDuration) {
-    wipe_test_db();
-    Database db(TESTDB);
+    testing::Database db;
 
     User user("kopsik_test", "0.1");
     LoadUserFromJSONString(&user, loadTestData(), true, true);
@@ -285,8 +318,7 @@ TEST(TogglApiClientTest, TestStartTimeEntryWithoutDuration) {
 }
 
 TEST(TogglApiClientTest, TestDeletionSteps) {
-    wipe_test_db();
-    Database db(TESTDB);
+    testing::Database db;
 
     User user("kopsik_test", "0.1");
     LoadUserFromJSONString(&user, loadTestData(), true, true);
@@ -294,7 +326,7 @@ TEST(TogglApiClientTest, TestDeletionSteps) {
     // first, mark time entry as deleted
     TimeEntry *te = user.Start("My new time entry", "", 0, 0);
     std::vector<ModelChange> changes;
-    ASSERT_EQ(noError, db.SaveUser(&user, true, &changes));
+    ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
 
     te->MarkAsDeletedOnServer();
     {
@@ -302,19 +334,19 @@ TEST(TogglApiClientTest, TestDeletionSteps) {
         std::stringstream query;
         query << "select count(1) from time_entries where local_id = "
               << te->LocalID();
-        ASSERT_EQ(noError, db.UInt(query.str(), &te_count));
+        ASSERT_EQ(noError, db.instance()->UInt(query.str(), &te_count));
         ASSERT_EQ(Poco::UInt64(1), te_count);
     }
 
     // now, really delete it
     te->MarkAsDeletedOnServer();
-    ASSERT_EQ(noError, db.SaveUser(&user, true, &changes));
+    ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
     {
         Poco::UInt64 te_count(0);
         std::stringstream query;
         query << "select count(1) from time_entries where local_id = "
               << te->LocalID();
-        ASSERT_EQ(noError, db.UInt(query.str(), &te_count));
+        ASSERT_EQ(noError, db.instance()->UInt(query.str(), &te_count));
         ASSERT_EQ(Poco::UInt64(0), te_count);
     }
 }
@@ -323,13 +355,12 @@ TEST(TogglApiClientTest, SavesModels) {
     User user("kopsik_test", "0.1");
     LoadUserFromJSONString(&user, loadTestData(), true, true);
 
-    wipe_test_db();
-    Database db(TESTDB);
+    testing::Database db;
 
     std::vector<ModelChange> changes;
-    ASSERT_EQ(noError, db.SaveUser(&user, false, &changes));
+    ASSERT_EQ(noError, db.instance()->SaveUser(&user, false, &changes));
 
-    ASSERT_EQ(noError, db.SaveUser(&user, false, &changes));
+    ASSERT_EQ(noError, db.instance()->SaveUser(&user, false, &changes));
 }
 
 TEST(TogglApiClientTest, AssignsGUID) {
@@ -340,13 +371,13 @@ TEST(TogglApiClientTest, AssignsGUID) {
     LoadUserFromJSONString(&user, json, true, true);
 
     ASSERT_EQ(uint(5), user.related.TimeEntries.size());
-    TimeEntry *te = user.GetTimeEntryByID(89837445);
+    TimeEntry *te = user.TimeEntryByID(89837445);
     ASSERT_TRUE(te);
 
     ASSERT_NE("", te->GUID());
     ASSERT_TRUE(te->GUID().size());
 
-    TimeEntry *te2 = user.GetTimeEntryByGUID(te->GUID());
+    TimeEntry *te2 = user.TimeEntryByGUID(te->GUID());
     ASSERT_TRUE(te2);
 
     ASSERT_EQ(te->GUID(), te2->GUID());
@@ -449,49 +480,53 @@ TEST(TogglApiClientTest, ParsesAndSavesData) {
               user.related.Clients[0]->GUID());
     ASSERT_EQ(user.ID(), user.related.Clients[0]->UID());
 
-    wipe_test_db();
-    Database db(TESTDB);
+    testing::Database db;
 
     Poco::UInt64 n;
-    ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
+    ASSERT_EQ(noError, db.instance()->UInt("select count(1) from users", &n));
     ASSERT_EQ(Poco::UInt64(0), n);
 
     // Insert
     std::vector<ModelChange> changes;
-    ASSERT_EQ(noError, db.SaveUser(&user, true, &changes));
+    ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
     ASSERT_GT(user.LocalID(), uint(0));
     ASSERT_GT(user.ID(), uint(0));
     ASSERT_FALSE(user.APIToken().empty());
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
+    ASSERT_EQ(noError,
+              db.instance()->UInt("select count(1) from users", &n));
     ASSERT_EQ(Poco::UInt64(1), n);
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from workspaces", &n));
+    ASSERT_EQ(noError,
+              db.instance()->UInt("select count(1) from workspaces", &n));
     ASSERT_EQ(Poco::UInt64(user.related.Workspaces.size()), n);
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from clients", &n));
+    ASSERT_EQ(noError,
+              db.instance()->UInt("select count(1) from clients", &n));
     ASSERT_EQ(Poco::UInt64(user.related.Clients.size()), n);
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from projects", &n));
+    ASSERT_EQ(noError,
+              db.instance()->UInt("select count(1) from projects", &n));
     ASSERT_EQ(Poco::UInt64(user.related.Projects.size()), n);
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from tasks", &n));
+    ASSERT_EQ(noError, db.instance()->UInt("select count(1) from tasks", &n));
     ASSERT_EQ(Poco::UInt64(user.related.Tasks.size()), n);
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from tags", &n));
+    ASSERT_EQ(noError, db.instance()->UInt("select count(1) from tags", &n));
     ASSERT_EQ(Poco::UInt64(user.related.Tags.size()), n);
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from time_entries", &n));
+    ASSERT_EQ(noError,
+              db.instance()->UInt("select count(1) from time_entries", &n));
     ASSERT_EQ(Poco::UInt64(user.related.TimeEntries.size()), n);
 
     // Update
-    ASSERT_EQ(noError, db.SaveUser(&user, true, &changes));
-    ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
+    ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
+    ASSERT_EQ(noError, db.instance()->UInt("select count(1) from users", &n));
     ASSERT_EQ(Poco::UInt64(1), n);
 
     // Select
     User user2("kopsik_test", "0.1");
-    ASSERT_EQ(noError, db.LoadUserByID(user.ID(), &user2, true));
+    ASSERT_EQ(noError, db.instance()->LoadUserByID(user.ID(), &user2, true));
 
     ASSERT_TRUE(user2.ID());
     ASSERT_EQ(user.ID(), user2.ID());
@@ -502,37 +537,37 @@ TEST(TogglApiClientTest, ParsesAndSavesData) {
 
     ASSERT_EQ(uint(2), user2.related.Projects.size());
     Project *project_from_db =
-        user2.GetProjectByID(user.related.Projects[0]->ID());
+        user2.ProjectByID(user.related.Projects[0]->ID());
     ASSERT_TRUE(project_from_db);
     ASSERT_EQ(user.related.Projects[0]->String(),
               project_from_db->String());
-    project_from_db = user2.GetProjectByID(user.related.Projects[1]->ID());
+    project_from_db = user2.ProjectByID(user.related.Projects[1]->ID());
     ASSERT_EQ(user.related.Projects[1]->String(),
               project_from_db->String());
 
     ASSERT_EQ(uint(5), user2.related.TimeEntries.size());
     TimeEntry *te_from_db =
-        user2.GetTimeEntryByID(user.related.TimeEntries[0]->ID());
+        user2.TimeEntryByID(user.related.TimeEntries[0]->ID());
     ASSERT_TRUE(te_from_db);
     ASSERT_EQ(user.related.TimeEntries[0]->String(), te_from_db->String());
-    te_from_db = user2.GetTimeEntryByID(user.related.TimeEntries[1]->ID());
+    te_from_db = user2.TimeEntryByID(user.related.TimeEntries[1]->ID());
     ASSERT_TRUE(te_from_db);
     ASSERT_EQ(user.related.TimeEntries[1]->String(), te_from_db->String());
-    te_from_db = user2.GetTimeEntryByID(user.related.TimeEntries[2]->ID());
+    te_from_db = user2.TimeEntryByID(user.related.TimeEntries[2]->ID());
     ASSERT_TRUE(te_from_db);
     ASSERT_EQ(user.related.TimeEntries[2]->String(), te_from_db->String());
 
     ASSERT_EQ(uint(2), user2.related.Workspaces.size());
     Workspace *ws_from_db =
-        user2.GetWorkspaceByID(user.related.Workspaces[0]->ID());
+        user2.WorkspaceByID(user.related.Workspaces[0]->ID());
     ASSERT_TRUE(ws_from_db);
     ASSERT_EQ(user.related.Workspaces[0]->String(), ws_from_db->String());
-    ws_from_db = user2.GetWorkspaceByID(user.related.Workspaces[1]->ID());
+    ws_from_db = user2.WorkspaceByID(user.related.Workspaces[1]->ID());
     ASSERT_TRUE(ws_from_db);
     ASSERT_EQ(user.related.Workspaces[1]->String(), ws_from_db->String());
 
     ASSERT_EQ(uint(2), user2.related.Tasks.size());
-    Task *task_from_db = user2.GetTaskByID(user2.related.Tasks[0]->ID());
+    Task *task_from_db = user2.TaskByID(user2.related.Tasks[0]->ID());
     ASSERT_EQ(user.related.Tasks[0]->String(), task_from_db->String());
     ASSERT_EQ(user.related.Tasks[1]->String(),
               user2.related.Tasks[1]->String());
@@ -542,27 +577,31 @@ TEST(TogglApiClientTest, ParsesAndSavesData) {
               user2.related.Clients[0]->String());
 
     // Delete
-    ASSERT_EQ(noError, db.DeleteUser(&user, true));
+    ASSERT_EQ(noError, db.instance()->DeleteUser(&user, true));
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from users", &n));
+    ASSERT_EQ(noError, db.instance()->UInt("select count(1) from users", &n));
     ASSERT_EQ(Poco::UInt64(0), n);
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from projects", &n));
+    ASSERT_EQ(noError,
+              db.instance()->UInt("select count(1) from projects", &n));
     ASSERT_EQ(Poco::UInt64(0), n);
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from workspaces", &n));
+    ASSERT_EQ(noError,
+              db.instance()->UInt("select count(1) from workspaces", &n));
     ASSERT_EQ(Poco::UInt64(0), n);
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from tasks", &n));
+    ASSERT_EQ(noError,
+              db.instance()->UInt("select count(1) from tasks", &n));
     ASSERT_EQ(Poco::UInt64(0), n);
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from time_entries", &n));
+    ASSERT_EQ(noError,
+              db.instance()->UInt("select count(1) from time_entries", &n));
     ASSERT_EQ(Poco::UInt64(0), n);
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from tags", &n));
+    ASSERT_EQ(noError, db.instance()->UInt("select count(1) from tags", &n));
     ASSERT_EQ(Poco::UInt64(0), n);
 
-    ASSERT_EQ(noError, db.UInt("select count(1) from clients", &n));
+    ASSERT_EQ(noError, db.instance()->UInt("select count(1) from clients", &n));
     ASSERT_EQ(Poco::UInt64(0), n);
 }
 
@@ -722,8 +761,7 @@ TEST(TogglApiClientTest, InterpretsCrazyStartAndStopAsMissingValues) {
 }
 
 TEST(TogglApiClientTest, Continue) {
-    wipe_test_db();
-    Database db(TESTDB);
+    testing::Database db;
 
     User user("kopsik_test", "0.1");
     LoadUserFromJSONString(&user, loadTestData(), true, true);
@@ -736,7 +774,7 @@ TEST(TogglApiClientTest, Continue) {
     // change its date to today. Continueing the
     // entry should not create new record, but
     // continue the old one.
-    TimeEntry *te = user.GetTimeEntryByID(89818605);
+    TimeEntry *te = user.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
     te->SetStart(time(0));
     te->SetDurOnly(true);

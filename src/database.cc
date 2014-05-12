@@ -263,30 +263,19 @@ error Database::LoadCurrentUser(
     return LoadUserByAPIToken(api_token, user, with_related_data);
 }
 
-error Database::LoadSettings(
-    bool *use_idle_detection,
-    bool *menubar_timer,
-    bool *dock_icon,
-    bool *on_top,
-    bool *reminder) {
-
+error Database::LoadSettings(Settings *settings) {
     poco_check_ptr(session_);
-    poco_check_ptr(use_idle_detection);
-    poco_check_ptr(menubar_timer);
-    poco_check_ptr(dock_icon);
-    poco_check_ptr(on_top);
-    poco_check_ptr(reminder);
 
     Poco::Mutex::ScopedLock lock(session_m_);
     try {
         *session_ << "select use_idle_detection, menubar_timer, dock_icon, "
                   "on_top, reminder "
                   "from settings",
-                  Poco::Data::into(*use_idle_detection),
-                  Poco::Data::into(*menubar_timer),
-                  Poco::Data::into(*dock_icon),
-                  Poco::Data::into(*on_top),
-                  Poco::Data::into(*reminder),
+                  Poco::Data::into(settings->use_idle_detection),
+                  Poco::Data::into(settings->menubar_timer),
+                  Poco::Data::into(settings->dock_icon),
+                  Poco::Data::into(settings->on_top),
+                  Poco::Data::into(settings->reminder),
                   Poco::Data::limit(1),
                   Poco::Data::now;
     } catch(const Poco::Exception& exc) {
@@ -329,13 +318,7 @@ error Database::LoadProxySettings(
     return last_error("LoadProxySettings");
 }
 
-error Database::SaveSettings(
-    const bool use_idle_detection,
-    const bool menubar_timer,
-    const bool dock_icon,
-    const bool on_top,
-    const bool reminder) {
-
+error Database::SaveSettings(const Settings settings) {
     poco_check_ptr(session_);
 
     Poco::Mutex::ScopedLock lock(session_m_);
@@ -346,11 +329,11 @@ error Database::SaveSettings(
                   "dock_icon = :dock_icon, "
                   "on_top = :on_top, "
                   "reminder = :reminder",
-                  Poco::Data::use(use_idle_detection),
-                  Poco::Data::use(menubar_timer),
-                  Poco::Data::use(dock_icon),
-                  Poco::Data::use(on_top),
-                  Poco::Data::use(reminder),
+                  Poco::Data::use(settings.use_idle_detection),
+                  Poco::Data::use(settings.menubar_timer),
+                  Poco::Data::use(settings.dock_icon),
+                  Poco::Data::use(settings.on_top),
+                  Poco::Data::use(settings.reminder),
                   Poco::Data::now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -364,7 +347,7 @@ error Database::SaveSettings(
 
 error Database::SaveProxySettings(
     const bool use_proxy,
-    const Proxy *proxy) {
+    const Proxy proxy) {
 
     poco_check_ptr(session_);
 
@@ -377,10 +360,10 @@ error Database::SaveProxySettings(
                   "proxy_username = :proxy_username, "
                   "proxy_password = :proxy_password ",
                   Poco::Data::use(use_proxy),
-                  Poco::Data::use(proxy->host),
-                  Poco::Data::use(proxy->port),
-                  Poco::Data::use(proxy->username),
-                  Poco::Data::use(proxy->password),
+                  Poco::Data::use(proxy.host),
+                  Poco::Data::use(proxy.port),
+                  Poco::Data::use(proxy.username),
+                  Poco::Data::use(proxy.password),
                   Poco::Data::now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -972,7 +955,10 @@ error Database::saveRelatedModels(
                 return err;
             }
             changes->push_back(ModelChange(
-                model->ModelName(), "delete", model->ID(), model->GUID()));
+                model->ModelName(),
+                "delete",
+                model->ID(),
+                model->GUID()));
             continue;
         }
         model->SetUID(UID);

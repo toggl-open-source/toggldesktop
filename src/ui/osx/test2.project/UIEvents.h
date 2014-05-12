@@ -8,38 +8,26 @@
 
 #import <Foundation/Foundation.h>
 
-// States
-extern NSString *const kUIStateUserLoggedIn;
-extern NSString *const kUIStateUserLoggedOut;
-extern NSString *const kUIStateTimerRunning;
-extern NSString *const kUIStateTimerStopped;
-extern NSString *const kUIStateTimeEntrySelected;
-extern NSString *const kUIStateTimeEntryDeselected;
-extern NSString *const kUIStateError;
-extern NSString *const kUIStateUpdateAvailable;
-extern NSString *const kUIStateUpToDate;
+// Commands, backend <- UI
+extern NSString *const kCommandNew;
+extern NSString *const kCommandStop;
+extern NSString *const kCommandContinue;
+extern NSString *const kCommandStopAt;
 
+// Display events, UI <- backend
+extern NSString *const kDisplayTimeEntryList;
+extern NSString *const kDisplayAutocomplete;
+extern NSString *const kDisplayClientSelect;
+extern NSString *const kDisplayWorkspaceSelect;
+extern NSString *const kDisplayTags;
+extern NSString *const kDisplayTimeEntryEditor;
+extern NSString *const kDisplayLogin;
+extern NSString *const kDisplayError;
+extern NSString *const kDisplayUpdate;
+extern NSString *const kDisplayIdleNotification;
+extern NSString *const kDisplayOnlineState;
+extern NSString *const kDisplaySettings;
+extern NSString *const kDisplayTimerState;
 
-// Events
-extern NSString *const kUIEventModelChange;
-extern NSString *const kUIEventIdleFinished;
-extern NSString *const kUIEventSettingsChanged;
-extern NSString *const kUIEventShowListView;
-
-
-// Commands
-extern NSString *const kUICommandNew;
-extern NSString *const kUICommandStop;
-extern NSString *const kUICommandContinue;
-extern NSString *const kUICommandShowPreferences;
-extern NSString *const kUICommandStopAt;
-extern NSString *const kUICommandEditRunningTimeEntry;
-
-extern NSString *const kUIDurationClicked;
-extern NSString *const kUIDescriptionClicked;
-
-extern NSString *const kUIStateOffline;
-extern NSString *const kUIStateOnline;
-
-
-extern float const kThrottleSeconds;
+const char *kFocusedFieldNameDuration;
+const char *kFocusedFieldNameDescription;

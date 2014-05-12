@@ -9,7 +9,7 @@
 
 namespace kopsik {
 
-Poco::UInt64 GetIDFromJSONNode(JSONNODE * const data) {
+Poco::UInt64 IDFromJSONNode(JSONNODE * const data) {
     poco_check_ptr(data);
 
     JSONNODE_ITERATOR current_node = json_begin(data);
@@ -26,7 +26,7 @@ Poco::UInt64 GetIDFromJSONNode(JSONNODE * const data) {
     return 0;
 }
 
-guid GetGUIDFromJSONNode(JSONNODE * const data) {
+guid GUIDFromJSONNode(JSONNODE * const data) {
     poco_check_ptr(data);
 
     JSONNODE_ITERATOR current_node = json_begin(data);
@@ -107,49 +107,42 @@ void LoadUserFromJSONNode(
     poco_check_ptr(model);
     poco_check_ptr(data);
 
-    JSONNODE_ITERATOR current_node = json_begin(data);
+    JSONNODE_ITERATOR n = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
-    while (current_node != last_node) {
-        json_char *node_name = json_name(*current_node);
+    while (n != last_node) {
+        json_char *node_name = json_name(*n);
         if (strcmp(node_name, "id") == 0) {
-            model->SetID(json_as_int(*current_node));
+            model->SetID(json_as_int(*n));
         } else if (strcmp(node_name, "default_wid") == 0) {
-            model->SetDefaultWID(json_as_int(*current_node));
+            model->SetDefaultWID(json_as_int(*n));
         } else if (strcmp(node_name, "api_token") == 0) {
-            model->SetAPIToken(std::string(json_as_string(*current_node)));
+            model->SetAPIToken(std::string(json_as_string(*n)));
         } else if (strcmp(node_name, "email") == 0) {
-            model->SetEmail(std::string(json_as_string(*current_node)));
+            model->SetEmail(std::string(json_as_string(*n)));
         } else if (strcmp(node_name, "fullname") == 0) {
-            model->SetFullname(std::string(json_as_string(*current_node)));
+            model->SetFullname(std::string(json_as_string(*n)));
         } else if (strcmp(node_name, "record_timeline") == 0) {
-            model->SetRecordTimeline(json_as_bool(*current_node));
+            model->SetRecordTimeline(json_as_bool(*n));
         } else if (strcmp(node_name, "store_start_and_stop_time") == 0) {
-            model->SetStoreStartAndStopTime(json_as_bool(*current_node));
+            model->SetStoreStartAndStopTime(json_as_bool(*n));
         } else if (strcmp(node_name, "timeofday_format") == 0) {
-            model->SetTimeOfDayFormat(
-                std::string(json_as_string(*current_node)));
+            model->SetTimeOfDayFormat(std::string(json_as_string(*n)));
         } else if (with_related_data) {
             if (strcmp(node_name, "projects") == 0) {
-                LoadUserProjectsFromJSONNode(model, *current_node, full_sync);
+                LoadUserProjectsFromJSONNode(model, *n, full_sync);
             } else if (strcmp(node_name, "tags") == 0) {
-                LoadUserTagsFromJSONNode(model, *current_node, full_sync);
+                LoadUserTagsFromJSONNode(model, *n, full_sync);
             } else if (strcmp(node_name, "tasks") == 0) {
-                LoadUserTasksFromJSONNode(model, *current_node, full_sync);
+                LoadUserTasksFromJSONNode(model, *n, full_sync);
             } else if (strcmp(node_name, "time_entries") == 0) {
-                LoadUserTimeEntriesFromJSONNode(model,
-                                                *current_node,
-                                                full_sync);
+                LoadUserTimeEntriesFromJSONNode(model, *n, full_sync);
             } else if (strcmp(node_name, "workspaces") == 0) {
-                LoadUserWorkspacesFromJSONNode(model,
-                                               *current_node,
-                                               full_sync);
+                LoadUserWorkspacesFromJSONNode(model, *n, full_sync);
             } else if (strcmp(node_name, "clients") == 0) {
-                LoadUserClientsFromJSONNode(model,
-                                            *current_node,
-                                            full_sync);
+                LoadUserClientsFromJSONNode(model, *n, full_sync);
             }
         }
-        ++current_node;
+        ++n;
     }
 }
 
@@ -204,11 +197,11 @@ void loadUserTagFromJSONNode(
     poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = GetIDFromJSONNode(data);
-    Tag *model = user->GetTagByID(id);
+    Poco::UInt64 id = IDFromJSONNode(data);
+    Tag *model = user->TagByID(id);
 
     if (!model) {
-        model = user->GetTagByGUID(GetGUIDFromJSONNode(data));
+        model = user->TagByGUID(GUIDFromJSONNode(data));
     }
 
     if (IsDeletedAtServer(data)) {
@@ -262,8 +255,8 @@ void loadUserTaskFromJSONNode(
     poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = GetIDFromJSONNode(data);
-    Task *model = user->GetTaskByID(id);
+    Poco::UInt64 id = IDFromJSONNode(data);
+    Task *model = user->TaskByID(id);
 
     // Tasks have no GUID
 
@@ -358,8 +351,8 @@ void loadUserWorkspaceFromJSONNode(
     poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = GetIDFromJSONNode(data);
-    Workspace *model = user->GetWorkspaceByID(id);
+    Poco::UInt64 id = IDFromJSONNode(data);
+    Workspace *model = user->WorkspaceByID(id);
 
     // Workspaces have no GUID
 
@@ -411,11 +404,11 @@ void loadUserClientFromJSONNode(
     poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = GetIDFromJSONNode(data);
-    Client *model = user->GetClientByID(id);
+    Poco::UInt64 id = IDFromJSONNode(data);
+    Client *model = user->ClientByID(id);
 
     if (!model) {
-        model = user->GetClientByGUID(GetGUIDFromJSONNode(data));
+        model = user->ClientByGUID(GUIDFromJSONNode(data));
     }
 
     if (IsDeletedAtServer(data)) {
@@ -436,7 +429,7 @@ void loadUserClientFromJSONNode(
     model->LoadFromJSONNode(data);
 }
 
-Poco::UInt64 GetUIModifiedAtFromJSONNode(
+Poco::UInt64 UIModifiedAtFromJSONNode(
     JSONNODE * const data) {
 
     poco_check_ptr(data);
@@ -486,11 +479,11 @@ void loadUserProjectFromJSONNode(
     poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = GetIDFromJSONNode(data);
-    Project *model = user->GetProjectByID(id);
+    Poco::UInt64 id = IDFromJSONNode(data);
+    Project *model = user->ProjectByID(id);
 
     if (!model) {
-        model = user->GetProjectByGUID(GetGUIDFromJSONNode(data));
+        model = user->ProjectByGUID(GUIDFromJSONNode(data));
     }
 
     if (IsDeletedAtServer(data)) {
@@ -565,11 +558,11 @@ void loadUserTimeEntryFromJSONNode(
     poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = GetIDFromJSONNode(data);
-    TimeEntry *model = user->GetTimeEntryByID(id);
+    Poco::UInt64 id = IDFromJSONNode(data);
+    TimeEntry *model = user->TimeEntryByID(id);
 
     if (!model) {
-        model = user->GetTimeEntryByGUID(GetGUIDFromJSONNode(data));
+        model = user->TimeEntryByGUID(GUIDFromJSONNode(data));
     }
 
     if (IsDeletedAtServer(data)) {

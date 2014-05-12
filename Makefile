@@ -1,4 +1,4 @@
-$(shell mkdir -p build/ui/cmdline build/test coverage build/test)
+$(shell mkdir -p build/test coverage build/test)
 
 pwd=$(shell pwd)
 uname=$(shell uname)
@@ -13,7 +13,7 @@ GMOCK_DIR=third_party/gmock-1.7.0
 
 osx_executable=./src/ui/osx/test2.project/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop
 
-source_dirs=src/*.cc src/*.h src/test/* src/ui/cmdline/* 
+source_dirs=src/*.cc src/*.h src/test/* 
 
 ifeq ($(uname), Darwin)
 pocolib=$(pocodir)/lib/Darwin/x86_64/
@@ -104,15 +104,7 @@ endif
 
 cxx=g++
 
-default: cmdline
-
-build/ui/cmdline/main.o: src/ui/cmdline/main.cc
-	$(cxx) $(cflags) -O2 -c src/ui/cmdline/main.cc -o build/ui/cmdline/main.o
-
-cmdline: fmt lint objects build/ui/cmdline/main.o toggl
-
-toggl:
-	$(cxx) -o toggl build/*.o build/ui/cmdline/main.o $(libs)
+default: osx
 
 clean:
 	rm -rf build gitstats && \
@@ -161,6 +153,7 @@ coverage: clean
 	$(cxx) $(cflags) $(covflags) -c src/database.cc -o build/database.o
 	$(cxx) $(cflags) $(covflags) -c src/autocomplete_item.cc -o build/autocomplete_item.o
 	$(cxx) $(cflags) $(covflags) -c src/feedback.cc -o build/feedback.o
+	$(cxx) $(cflags) $(covflags) -c src/ui.cc -o build/ui.o
 	$(cxx) $(cflags) $(covflags) -c src/context.cc -o build/context.o
 	$(cxx) $(cflags) $(covflags) -c src/kopsik_api_private.cc -o build/kopsik_api_private.o
 	$(cxx) $(cflags) $(covflags) -c src/kopsik_api.cc -o build/kopsik_api.o
@@ -281,6 +274,9 @@ build/autocomplete_item.o: src/autocomplete_item.cc
 build/feedback.o: src/feedback.cc
 	$(cxx) $(cflags) -c src/feedback.cc -o build/feedback.o
 
+build/ui.o: src/ui.cc
+	$(cxx) $(cflags) -c src/ui.cc -o build/ui.o
+
 build/context.o: src/context.cc
 	$(cxx) $(cflags) -c src/context.cc -o build/context.o
 
@@ -334,6 +330,7 @@ objects: build/version.o \
 	build/database.o \
 	build/autocomplete_item.o \
 	build/feedback.o \
+	build/ui.o \
 	build/context.o \
 	build/kopsik_api_private.o \
 	build/kopsik_api.o \

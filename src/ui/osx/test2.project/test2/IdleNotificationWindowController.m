@@ -20,8 +20,8 @@
     self = [super initWithWindow:window];
     if (self) {
       [[NSNotificationCenter defaultCenter] addObserver:self
-                                               selector:@selector(eventHandler:)
-                                                   name:kUIEventIdleFinished
+                                               selector:@selector(idleFinished:)
+                                                   name:kDisplayIdleNotification
                                                  object:nil];
     }
     return self;
@@ -44,11 +44,10 @@
 
   NSString *idleAmount = [NSString stringWithFormat:@" (%ld minutes)", self.idleEvent.seconds / 60];
   [self.idleAmountTextField setStringValue:idleAmount];
-
 }
 
 - (IBAction)stopButtonClicked:(id)sender {
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandStopAt
+  [[NSNotificationCenter defaultCenter] postNotificationName:kCommandStopAt
                                                       object:self.idleEvent];
   [self.window orderOut:nil];
 }
@@ -57,12 +56,10 @@
   [self.window orderOut:nil];
 }
 
--(void)eventHandler: (NSNotification *) notification {
-  if ([notification.name isEqualToString:kUIEventIdleFinished]) {
-    self.idleEvent = notification.object;
-    [self.window makeKeyAndOrderFront:nil];
-    [self renderIdle];
-  }
+-(void)idleFinished: (NSNotification *) notification {
+  self.idleEvent = notification.object;
+  [self.window makeKeyAndOrderFront:nil];
+  [self renderIdle];
 }
 
 @end

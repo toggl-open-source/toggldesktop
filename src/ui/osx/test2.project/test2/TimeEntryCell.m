@@ -15,8 +15,7 @@
 - (IBAction)continueTimeEntry:(id)sender {
   NSLog(@"TimeEntryCell continueTimeEntry GUID=%@", self.GUID);
 
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUICommandContinue
-                                                      object:self.GUID];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kCommandContinue object:self.GUID];
 }
 
 - (void)render:(TimeEntryViewItem *)view_item {

@@ -12,11 +12,6 @@
 #import "TimeEntryEditViewController.h"
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
-#import "Core.h"
-#import "Bugsnag.h"
-#import "User.h"
-#import "ModelChange.h"
-#import "ErrorHandler.h"
 #import "Update.h"
 #import "MenuItemTags.h"
 
@@ -45,119 +40,90 @@ extern void *ctx;
     [self.timeEntryEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(eventHandler:)
-                                                 name:kUIStateUserLoggedIn
+                                             selector:@selector(startDisplayLogin)
+                                                 name:kDisplayLogin
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(eventHandler:)
-                                                 name:kUIStateUserLoggedOut
+                                             selector:@selector(startDisplayTimeEntryEditor:)
+                                                 name:kDisplayTimeEntryEditor
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(eventHandler:)
-                                                 name:kUIStateTimerStopped
+                                             selector:@selector(startDisplayTimeEntryList:)
+                                                 name:kDisplayTimeEntryList
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(eventHandler:)
-                                                 name:kUIStateTimeEntrySelected
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(eventHandler:)
-                                                 name:kUIStateTimeEntryDeselected
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(eventHandler:)
-                                                 name:kUIStateError
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(eventHandler:)
-                                                 name:kUIEventSettingsChanged
+                                             selector:@selector(startDisplayError:)
+                                                 name:kDisplayError
                                                object:nil];
   }
   return self;
 }
 
-- (void)eventHandler: (NSNotification *) notification {
-  if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    User *userinfo = notification.object;
-    [Bugsnag configuration].userId = [NSString stringWithFormat:@"%ld", userinfo.ID];
-    
-    // Hide login view
-    [self.loginViewController.view removeFromSuperview];
+- (void)startDisplayLogin {
+  [self performSelectorOnMainThread:@selector(displayLogin) withObject:nil waitUntilDone:NO];
+}
 
-    // Show time entry list
-    [self.contentView addSubview:self.timeEntryListViewController.view];
-    [self.timeEntryListViewController.view setFrame:self.contentView.bounds];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventShowListView object:nil];
-    [self closeError];
-    
-    return;
-  }
+- (void)displayLogin {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+  [self.contentView addSubview:self.loginViewController.view];
+  [self.loginViewController.view setFrame:self.contentView.bounds];
+  [self.loginViewController.email becomeFirstResponder];
   
-  if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
-    [Bugsnag setUserAttribute:@"user_id" withValue:nil];
-
-    // Show login view
-    [self.contentView addSubview:self.loginViewController.view];
-    [self.loginViewController.view setFrame:self.contentView.bounds];
-    [self.loginViewController.email becomeFirstResponder];
-    
-    // Hide all other views
-    [self.timeEntryListViewController.view removeFromSuperview];
-    [self.timeEntryEditViewController.view removeFromSuperview];
-    return;
-  }
-    
-  if ([notification.name isEqualToString:kUIStateTimeEntrySelected]) {
-    [self.timeEntryListViewController.view removeFromSuperview];
-    [self.contentView addSubview:self.timeEntryEditViewController.view];
-    [self.timeEntryEditViewController.view setFrame:self.contentView.bounds];
-    return;
-  }
-
-  if ([notification.name isEqualToString:kUIStateTimeEntryDeselected]) {
-    [self.timeEntryEditViewController.view removeFromSuperview];
-    [self.contentView addSubview:self.timeEntryListViewController.view];
-    [self.timeEntryListViewController.view setFrame:self.contentView.bounds];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIEventShowListView object:nil];
-    return;
-  }
- 
-  if ([notification.name isEqualToString:kUIStateError]) {
-    // Proxy all app errors through this notification.
-
-    NSString *msg = notification.object;
-    NSLog(@"Error: %@", msg);
-
-    if (kopsik_is_networking_error([msg UTF8String])) {
-      [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateOffline object:nil];
-      return;
-    }
-    
-    [self performSelectorOnMainThread:@selector(showError:) withObject:msg waitUntilDone:NO];
-
-    if (kopsik_is_user_error([msg UTF8String])) {
-      // Don't send business logic errors to bugsnag, a la when Workspace is suspended-
-      return;
-    }
-    [Bugsnag notify:[NSException
-                     exceptionWithName:msg
-                     reason:msg
-                     userInfo:nil]];
-    return;
-  }
+  [self.timeEntryListViewController.view removeFromSuperview];
+  [self.timeEntryEditViewController.view removeFromSuperview];
 }
 
 - (void)addUnderlineToTextField:(NSTextField *)field {
   NSMutableAttributedString *forgot = [[field attributedStringValue] mutableCopy];
-  [forgot addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSUnderlineStyleSingle] range:NSMakeRange(0, forgot.length)];
+  [forgot addAttribute:NSUnderlineStyleAttributeName
+      value:[NSNumber numberWithInt:NSUnderlineStyleSingle]
+      range:NSMakeRange(0, forgot.length)];
   [field setAttributedStringValue:forgot];
 }
 
-- (void)showError:(NSString *)msg {
+- (void)startDisplayTimeEntryEditor:(NSNotification *)notification {
+  [self performSelectorOnMainThread:@selector(displayTimeEntryEditor:)
+                         withObject:notification.object
+                      waitUntilDone:NO];
+}
+
+- (void)displayTimeEntryEditor:(TimeEntryViewItem *)te {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-  if ([msg rangeOfString:@"Request to server failed with status code: 403"].location != NSNotFound) {
-    msg = @"Invalid e-mail or password!";
+  [self.contentView addSubview:self.timeEntryEditViewController.view];
+  [self.timeEntryEditViewController.view setFrame:self.contentView.bounds];
+
+  [self.loginViewController.view removeFromSuperview];
+  [self.timeEntryListViewController.view removeFromSuperview];
+}
+
+- (void)startDisplayTimeEntryList:(NSNotification *)notification {
+  [self performSelectorOnMainThread:@selector(displayTimeEntryList:)
+                         withObject:notification.object
+                      waitUntilDone:NO];
+}
+
+- (void)displayTimeEntryList:(NSMutableArray *)list {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+  [self.contentView addSubview:self.timeEntryListViewController.view];
+  [self.timeEntryListViewController.view setFrame:self.contentView.bounds];
+
+  [self.loginViewController.view removeFromSuperview];
+  [self.timeEntryEditViewController.view removeFromSuperview];
+}
+
+- (void)startDisplayError:(NSNotification *)notification {
+  [self performSelectorOnMainThread:@selector(displayError:)
+                         withObject:notification.object
+                      waitUntilDone:NO];
+}
+
+- (void)displayError:(NSString *)msg {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+  if ([msg rangeOfString:@"Invalid e-mail or password"].location != NSNotFound) {
     [self.errorLink setStringValue:@"Forgot your password?"];
     [self addUnderlineToTextField:self.errorLink];
   }
@@ -167,9 +133,10 @@ extern void *ctx;
 }
 
 - (void)closeError {
-    [self.troubleBox setHidden:YES];
-    [self.errorLabel setStringValue:@""];
-    [self.errorLink setStringValue:@""];
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+  [self.troubleBox setHidden:YES];
+  [self.errorLabel setStringValue:@""];
+  [self.errorLink setStringValue:@""];
 }
 
 - (IBAction)errorCloseButtonClicked:(id)sender {
@@ -179,7 +146,6 @@ extern void *ctx;
 -(void)textFieldClicked:(id)sender {
   if (sender == self.errorLink) {
     kopsik_password_forgot(ctx);
-    return;
   }
 }
 

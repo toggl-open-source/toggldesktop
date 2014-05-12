@@ -13,14 +13,9 @@
 #import "kopsik_api.h"
 #import "TimeEntryCell.h"
 #import "TimeEntryCellWithHeader.h"
-#import "Core.h"
 #import "UIEvents.h"
-#import "ModelChange.h"
-#import "ErrorHandler.h"
-#import "EditNotification.h"
 
 @interface TimeEntryListViewController ()
-@property NSTimer *timerTimeEntriesRendering;
 @property (nonatomic, strong) IBOutlet TimerEditViewController *timerEditViewController;
 @property NSNib *nibTimeEntryCell;
 @property NSNib *nibTimeEntryCellWithHeader;
@@ -46,24 +41,8 @@ extern void *ctx;
                                                                  bundle:nil];
       
       [[NSNotificationCenter defaultCenter] addObserver:self
-                                               selector:@selector(eventHandler:)
-                                                   name:kUIStateUserLoggedIn
-                                                 object:nil];
-      [[NSNotificationCenter defaultCenter] addObserver:self
-                                               selector:@selector(eventHandler:)
-                                                   name:kUIEventModelChange
-                                                 object:nil];
-      [[NSNotificationCenter defaultCenter] addObserver:self
-                                               selector:@selector(eventHandler:)
-                                                   name:kUIStateUserLoggedOut
-                                                 object:nil];
-      [[NSNotificationCenter defaultCenter] addObserver:self
-                                               selector:@selector(eventHandler:)
-                                                   name:kUIStateTimerRunning
-                                                 object:nil];
-      [[NSNotificationCenter defaultCenter] addObserver:self
-                                               selector:@selector(eventHandler:)
-                                                   name:kUIStateTimerStopped
+                                               selector:@selector(startDisplayTimeEntryList:)
+                                                   name:kDisplayTimeEntryList
                                                  object:nil];
     }
     return self;
@@ -80,84 +59,23 @@ extern void *ctx;
   [self.timerEditViewController.view setFrame: self.headerView.bounds];
 }
 
--(void)renderTimeEntries {
+-(void)displayTimeEntryList:(NSMutableArray *)list {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-  NSLog(@"TimeEntryListViewController renderTimeEntries, thread %@", [NSThread currentThread]);  
-
-  self.timerTimeEntriesRendering = nil;
-
-  KopsikTimeEntryViewItem *first = 0;
-  if (!kopsik_time_entry_view_items(ctx, &first)) {
-    return;
-  }
+  NSLog(@"TimeEntryListViewController displayTimeEntryList, thread %@", [NSThread currentThread]);
 
   @synchronized(viewitems) {
-    // All time entries are sorted by start at this point.
     [viewitems removeAllObjects];
-    NSString *date = nil;
-    
-    KopsikTimeEntryViewItem *item = first;
-    while (item) {
-      TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
-      [model load:item];
-      if (date == nil || ![date isEqualToString:model.formattedDate]) {
-        model.isHeader = YES;
-      }
-      date = model.formattedDate;
-      [viewitems addObject:model];
-      item = item->Next;
-    }
+    [viewitems addObjectsFromArray:list];
   }
-  
-  kopsik_time_entry_view_item_clear(first);
 
   [self.timeEntriesTableView reloadData];
 }
 
--(void)eventHandler: (NSNotification *) notification {
-  if ([notification.name isEqualToString:kUIStateUserLoggedIn]) {
-    [self performSelectorOnMainThread:@selector(scheduleRenderTimeEntries)
-                           withObject:nil
+-(void)startDisplayTimeEntryList:(NSNotification *)notification {
+    [self performSelectorOnMainThread:@selector(displayTimeEntryList:)
+                           withObject:notification.object
                         waitUntilDone:NO];
-
-    // Show header
-    [self.headerView setHidden:NO];
-
-    return;
-  }
-
-  if ([notification.name isEqualToString:kUIStateUserLoggedOut]) {
-    [self.headerView setHidden:YES];
-    return;
-  }
-
-  if ([notification.name isEqualToString:kUIEventModelChange]) {
-    ModelChange *mc = notification.object;
-    // On all TE changes, just re-render the list. It's Simpler.
-    if ([mc.ModelType isEqualToString:@"tag"]) {
-      return;
-    }
-    [self performSelectorOnMainThread:@selector(scheduleRenderTimeEntries)
-                           withObject:nil
-                        waitUntilDone:NO];
-    return;
-  }
-}
-
-- (void) scheduleRenderTimeEntries {
-  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-  if (self.timerTimeEntriesRendering != nil) {
-    return;
-  }
-  @synchronized(self) {
-    self.timerTimeEntriesRendering = [NSTimer scheduledTimerWithTimeInterval:kThrottleSeconds
-                                                                       target:self
-                                                                     selector:@selector(renderTimeEntries)
-                                                                     userInfo:nil
-                                                                      repeats:NO];
-  }
 }
 
 - (int)numberOfRowsInTableView:(NSTableView *)tv {
@@ -190,9 +108,6 @@ extern void *ctx;
   return cell;
 }
 
-const int kDefaultRowHeight = 56;
-const int kHeaderRowHeight = 102;
-
 - (CGFloat)tableView:(NSTableView *)tableView
          heightOfRow:(NSInteger)row {
   TimeEntryViewItem *item = nil;
@@ -202,9 +117,9 @@ const int kHeaderRowHeight = 102;
     }
   }
   if (item && item.isHeader) {
-    return kHeaderRowHeight;
+    return 102;
   }
-  return kDefaultRowHeight;
+  return 56;
 }
 
 - (IBAction)performClick:(id)sender {
@@ -216,10 +131,7 @@ const int kHeaderRowHeight = 102;
   @synchronized(viewitems) {
     item = viewitems[row];
   }
-  EditNotification *edit = [[EditNotification alloc] init];
-  edit.GUID = item.GUID;
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimeEntrySelected
-                                                      object:edit];
+  kopsik_edit(ctx, [item.GUID UTF8String], false, "");
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {

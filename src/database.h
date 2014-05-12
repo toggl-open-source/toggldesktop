@@ -23,6 +23,7 @@
 #include "./user.h"
 #include "./timeline_notifications.h"
 #include "./model_change.h"
+#include "./settings.h"
 
 namespace kopsik {
 
@@ -49,19 +50,9 @@ class Database {
         User *user,
         const bool with_related_data);
 
-    error LoadSettings(
-        bool *use_idle_settings,
-        bool *menubar_timer,
-        bool *dock_icon,
-        bool *on_top,
-        bool *reminder);
+    error LoadSettings(Settings *settings);
 
-    error SaveSettings(
-        const bool use_idle_detection,
-        const bool menubar_timer,
-        const bool dock_icon,
-        const bool on_top,
-        const bool reminder);
+    error SaveSettings(const Settings);
 
     error LoadProxySettings(
         bool *use_proxy,
@@ -69,7 +60,7 @@ class Database {
 
     error SaveProxySettings(
         const bool use_proxy,
-        const Proxy *proxy);
+        const Proxy proxy);
 
     error LoadUpdateChannel(
         std::string *update_channel);

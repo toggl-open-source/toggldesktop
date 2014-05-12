@@ -15,8 +15,8 @@
 @property NSMutableDictionary *dictionary;
 @property NSString *currentFilter;
 @property NSInteger textLength;
+@property NSComboBox *combobox;
 - (NSString *)completedString:(NSString *)partialString;
-- (void)fetch:(BOOL)withTimeEntries withTasks:(BOOL)withTasks withProjects:(BOOL)withProjects;
 - (AutocompleteItem *)get:(NSString *)key;
 - (NSUInteger)count;
 - (NSString *)keyAtIndex:(NSInteger)row;

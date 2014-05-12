@@ -90,7 +90,7 @@ TimeEntry *User::Start(
 
     // Try to set workspace ID from project
     if (te->PID()) {
-        Project *p = GetProjectByID(te->PID());
+        Project *p = ProjectByID(te->PID());
         if (p) {
             te->SetWID(p->WID());
             te->SetBillable(p->Billable());
@@ -99,7 +99,7 @@ TimeEntry *User::Start(
 
     // Try to set workspace ID from task
     if (!te->WID() && te->TID()) {
-        Task *t = GetTaskByID(te->TID());
+        Task *t = TaskByID(te->TID());
         if (t) {
             te->SetWID(t->WID());
         }
@@ -128,7 +128,7 @@ kopsik::error User::Continue(
     poco_check_ptr(result);
 
     Stop();
-    TimeEntry *existing = GetTimeEntryByGUID(GUID);
+    TimeEntry *existing = TimeEntryByGUID(GUID);
     if (!existing) {
         logger().warning("Time entry not found: " + GUID);
         return noError;
@@ -327,7 +327,7 @@ bool User::HasTrackedTimeToday() const {
 }
 
 template<typename T>
-T *getModelByID(const Poco::UInt64 id, std::vector<T *> *list) {
+T *modelByID(const Poco::UInt64 id, std::vector<T *> *list) {
     poco_assert(id > 0);
     typedef typename std::vector<T *>::const_iterator iterator;
     for (iterator it = list->begin(); it != list->end(); it++) {
@@ -339,20 +339,20 @@ T *getModelByID(const Poco::UInt64 id, std::vector<T *> *list) {
     return 0;
 }
 
-Task *User::GetTaskByID(const Poco::UInt64 id) {
-    return getModelByID<Task>(id, &related.Tasks);
+Task *User::TaskByID(const Poco::UInt64 id) {
+    return modelByID<Task>(id, &related.Tasks);
 }
 
-Client *User::GetClientByID(const Poco::UInt64 id) {
-    return getModelByID(id, &related.Clients);
+Client *User::ClientByID(const Poco::UInt64 id) {
+    return modelByID(id, &related.Clients);
 }
 
-Project *User::GetProjectByID(const Poco::UInt64 id) {
-    return getModelByID(id, &related.Projects);
+Project *User::ProjectByID(const Poco::UInt64 id) {
+    return modelByID(id, &related.Projects);
 }
 
 template <typename T>
-T *getModelByGUID(const guid GUID, std::vector<T *> *list) {
+T *modelByGUID(const guid GUID, std::vector<T *> *list) {
     if (GUID.empty()) {
         return 0;
     }
@@ -367,16 +367,16 @@ T *getModelByGUID(const guid GUID, std::vector<T *> *list) {
 }
 
 
-TimeEntry *User::GetTimeEntryByGUID(const guid GUID) {
-    return getModelByGUID(GUID, &related.TimeEntries);
+TimeEntry *User::TimeEntryByGUID(const guid GUID) {
+    return modelByGUID(GUID, &related.TimeEntries);
 }
 
-Tag *User::GetTagByGUID(const guid GUID) {
-    return getModelByGUID(GUID, &related.Tags);
+Tag *User::TagByGUID(const guid GUID) {
+    return modelByGUID(GUID, &related.Tags);
 }
 
-Tag *User::GetTagByID(const Poco::UInt64 id) {
-    return getModelByID(id, &related.Tags);
+Tag *User::TagByID(const Poco::UInt64 id) {
+    return modelByID(id, &related.Tags);
 }
 
 void User::CollectPushableTimeEntries(
@@ -593,20 +593,20 @@ error User::collectErrors(std::vector<error> * const errors) const {
     return error(ss.str());
 }
 
-Workspace *User::GetWorkspaceByID(const Poco::UInt64 id) {
-    return getModelByID(id, &related.Workspaces);
+Workspace *User::WorkspaceByID(const Poco::UInt64 id) {
+    return modelByID(id, &related.Workspaces);
 }
 
-Project *User::GetProjectByGUID(const guid GUID) {
-    return getModelByGUID(GUID, &related.Projects);
+Project *User::ProjectByGUID(const guid GUID) {
+    return modelByGUID(GUID, &related.Projects);
 }
 
-Client *User::GetClientByGUID(const guid GUID) {
-    return getModelByGUID(GUID, &related.Clients);
+Client *User::ClientByGUID(const guid GUID) {
+    return modelByGUID(GUID, &related.Clients);
 }
 
-TimeEntry *User::GetTimeEntryByID(const Poco::UInt64 id) {
-    return getModelByID(id, &related.TimeEntries);
+TimeEntry *User::TimeEntryByID(const Poco::UInt64 id) {
+    return modelByID(id, &related.TimeEntries);
 }
 
 template <typename T>

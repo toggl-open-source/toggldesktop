@@ -8,8 +8,6 @@
 
 #import "FeedbackWindowController.h"
 #import "kopsik_api.h"
-#import "Core.h"
-#import "ErrorHandler.h"
 
 @implementation FeedbackWindowController
 

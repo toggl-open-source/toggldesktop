@@ -11,7 +11,6 @@
 
 @interface TimeEntryViewItem : NSObject
 - (void)load:(KopsikTimeEntryViewItem *)data;
-+ (TimeEntryViewItem *)findByGUID:(NSString *)guid;
 @property int64_t duration_in_seconds;
 @property (strong) NSString *Description; // uppercase to avoid clash with [NSObject description]
 @property (strong) NSString *ProjectAndTaskLabel;
@@ -25,6 +24,8 @@
 @property BOOL billable;
 @property (strong) NSDate *started;
 @property (strong) NSDate *ended;
+@property (strong) NSString *startTimeString;
+@property (strong) NSString *endTimeString;
 @property (strong) NSArray *tags;
 @property (strong) NSDate *updatedAt;
 @property (strong) NSString *formattedDate;
@@ -34,4 +35,6 @@
 @property BOOL isHeader;
 // If it's a header, this is useful:
 @property (strong) NSString *dateDuration;
+// If TE is passed for editing, this is the field that should be focussed
+@property (strong) NSString *focusedFieldName;
 @end

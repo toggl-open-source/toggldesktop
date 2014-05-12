@@ -7,7 +7,6 @@
 #import "LoginViewController.h"
 #import "kopsik_api.h"
 #import "UIEvents.h"
-#import "Core.h"
 #import "GTMOAuth2WindowController.h"
 
 #import "const.h"
@@ -34,8 +33,6 @@ extern void *ctx;
   if (!kopsik_login(ctx, [email UTF8String], [pass UTF8String])) {
     return;
   }
-  
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedIn object:nil];
 }
 
 -(void)textFieldClicked:(id)sender {
@@ -93,7 +90,7 @@ extern void *ctx;
       errorStr = @"Window was closed before login completed.";
     }
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateError
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayError
                                                         object:errorStr];
     return;
   }
@@ -101,8 +98,6 @@ extern void *ctx;
   if (!kopsik_login(ctx, [auth.accessToken UTF8String], "google_access_token")) {
     return;
   }
-  
-  [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateUserLoggedIn object:nil];
 }
 
 - (void)viewDidLoad {

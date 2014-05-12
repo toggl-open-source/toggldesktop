@@ -12,7 +12,8 @@
 
 + (void)disallowDuplicateInstances;
 + (NSString *)applicationSupportDirectory:(NSString *)environment;
-
++ (bool) isNumeric:(NSString *) checkText;
+  
 @end
 
 BOOL wasLaunchedAsLoginOrResumeItem();

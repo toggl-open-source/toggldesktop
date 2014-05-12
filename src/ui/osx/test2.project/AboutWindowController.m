@@ -7,9 +7,9 @@
 //
 
 #import "AboutWindowController.h"
-#import "Core.h"
-#import "ErrorHandler.h"
 #import "Update.h"
+#import "UIEvents.h"
+#import "kopsik_api.h"
 
 @interface AboutWindowController ()
 @property Update *update;
@@ -32,12 +32,8 @@ extern void *ctx;
   [self.creditsTextView readRTFDFromFile:path];
   
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(eventHandler:)
-                                               name:kUIStateUpdateAvailable
-                                             object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(eventHandler:)
-                                               name:kUIStateUpToDate
+                                           selector:@selector(startDisplayUpdate:)
+                                               name:kDisplayUpdate
                                              object:nil];
 
   [self showUpdateChannel];
@@ -81,8 +77,16 @@ extern void *ctx;
   [[NSApplication sharedApplication] terminate:self];
 }
 
--(void)eventHandler: (NSNotification *) notification {
-  if ([notification.name isEqualToString:kUIStateUpToDate]) {
+-(void)startDisplayUpdate:(NSNotification *)notification {
+  [self performSelectorOnMainThread:@selector(displayUpdate:)
+                         withObject:notification.object
+                      waitUntilDone:NO];
+}
+
+-(void)displayUpdate:(Update *)update {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+  
+  if (!update) {
     self.update = nil;
     [self.checkForUpdateButton setEnabled:NO];
     [self.updateChannelComboBox setEnabled:YES];
@@ -90,15 +94,12 @@ extern void *ctx;
     return;
   }
   
-  if ([notification.name isEqualToString:kUIStateUpdateAvailable]) {
-    self.update = notification.object;
-    [self.checkForUpdateButton setEnabled:YES];
-    [self.updateChannelComboBox setEnabled:YES];
+  self.update = update;
+  [self.checkForUpdateButton setEnabled:YES];
+  [self.updateChannelComboBox setEnabled:YES];
 
-    NSString *title = [NSString stringWithFormat:@"Click here to download update! (%@)", self.update.version];
+  NSString *title = [NSString stringWithFormat:@"Click here to download update! (%@)", self.update.version];
     [self.checkForUpdateButton setTitle:title];
-    return;
-  }
 }
 
 @end

@@ -8,8 +8,8 @@
 
 #import "AutocompleteDataSource.h"
 #import "kopsik_api.h"
-#import "Core.h"
-#import "ErrorHandler.h"
+#import "UIEvents.h"
+#import "AutocompleteItem.h"
 
 @implementation AutocompleteDataSource
 
@@ -21,7 +21,11 @@ extern void *ctx;
   self.orderedKeys = [[NSMutableArray alloc] init];
   self.filteredOrderedKeys = [[NSMutableArray alloc] init];
   self.dictionary = [[NSMutableDictionary alloc] init];
-  
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(startDisplayAutocomplete:)
+                                               name:kDisplayAutocomplete
+                                             object:nil];
   return self;
 }
 
@@ -45,35 +49,33 @@ extern void *ctx;
   return object;
 }
 
-- (void) fetch:(BOOL)withTimeEntries
-     withTasks:(BOOL)withTasks
-  withProjects:(BOOL)withProjects {
-  KopsikAutocompleteItem *first = 0;
-  if (!kopsik_autocomplete_items(ctx,
-                                 &first,
-                                 withTimeEntries,
-                                 withTasks,
-                                 withProjects)) {
-    return;
-  }
-  
+- (void) startDisplayAutocomplete:(NSNotification *)notification {
+  [self performSelectorOnMainThread:@selector(displayAutocomplete:)
+                         withObject:notification.object
+                      waitUntilDone:NO];
+}
+
+- (void) displayAutocomplete:(NSMutableArray *)entries {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
   @synchronized(self) {
     [self.orderedKeys removeAllObjects];
     [self.dictionary removeAllObjects];
-    KopsikAutocompleteItem *record = first;
-    while (record) {
-      AutocompleteItem *item = [[AutocompleteItem alloc] init];
-      [item load:record];
+    for (AutocompleteItem *item in entries) {
       NSString *key = item.Text;
       if ([self.dictionary objectForKey:key] == nil) {
         [self.orderedKeys addObject:key];
         [self.dictionary setObject:item forKey:key];
       }
-      record = record->Next;
     }
+    [self setFilter:self.currentFilter];
+
+    if (self.combobox.dataSource == nil) {
+      self.combobox.usesDataSource = YES;
+      self.combobox.dataSource = self;
+    }
+    [self.combobox reloadData];
   }
-  [self setFilter:self.currentFilter];
-  kopsik_autocomplete_item_clear(first);
 }
 
 - (NSUInteger)count {
@@ -106,19 +108,19 @@ extern void *ctx;
     self.currentFilter = filter;
     if (filter == nil || filter.length == 0) {
       self.filteredOrderedKeys = [NSMutableArray arrayWithArray:self.orderedKeys];
-    } else {
-      NSMutableArray *filtered = [[NSMutableArray alloc] init];
-      for (int i = 0; i < self.orderedKeys.count; i++) {
-        NSString *key = self.orderedKeys[i];
-        if ([key rangeOfString:filter options:NSCaseInsensitiveSearch].location != NSNotFound) {
-          if ([key length] > self.textLength){
-            self.textLength = [key length];
-          }
-          [filtered addObject:key];
-        }
-      }
-      self.filteredOrderedKeys = filtered;
+      return;
     }
+    NSMutableArray *filtered = [[NSMutableArray alloc] init];
+    for (int i = 0; i < self.orderedKeys.count; i++) {
+      NSString *key = self.orderedKeys[i];
+      if ([key rangeOfString:filter options:NSCaseInsensitiveSearch].location != NSNotFound) {
+        if ([key length] > self.textLength){
+          self.textLength = [key length];
+        }
+        [filtered addObject:key];
+      }
+    }
+    self.filteredOrderedKeys = filtered;
   }
 }
 
