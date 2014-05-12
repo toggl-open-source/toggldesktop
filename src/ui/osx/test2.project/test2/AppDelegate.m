@@ -291,12 +291,13 @@ const int kDurationStringLength = 20;
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
   if (is_online) {
-    self.currentOnImage = self.offlineOnImage;
-    self.currentOffImage = self.offlineOffImage;
-  } else {
     self.currentOnImage = self.onImage;
     self.currentOffImage = self.offImage;
+    return;
   }
+
+  self.currentOnImage = self.offlineOnImage;
+  self.currentOffImage = self.offlineOffImage;
 }
 
 - (void)startDisplayTimerState:(NSNotification *)notification {
@@ -982,6 +983,14 @@ void on_proxy_settings(const _Bool use_proxy,
 }
 
 void on_timer_state(KopsikTimeEntryViewItem *te) {
+  TimeEntryViewItem *view_item = nil;
+  if (te) {
+    view_item = [[TimeEntryViewItem alloc] init];
+    [view_item load:te];
+  }
+  [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimerState
+                                                      object:view_item];
+  
   // FIXME: UI
 }
 

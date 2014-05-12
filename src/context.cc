@@ -179,61 +179,12 @@ error Context::save(const bool push_changes) {
         return err;
     }
 
-    /* FIXME: UI
-    // We only care about time entry changes
-    if (! [change.ModelType isEqualToString:@"time_entry"]) {
-    return;
-    }
-
-    // Handle delete
-    if ([change.ChangeType isEqualToString:@"delete"]) {
-    // Time entry we thought was running, has been deleted.
-    if ([change.GUID isEqualToString:self.time_entry.GUID]) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped
-    object:nil];
-    }
-    return;
-    }
-
-    // Handle update
-    TimeEntryViewItem *updated = [TimeEntryViewItem findByGUID:change.GUID];
-    if (nil == updated) {
-    NSLog(@"Cannot handle model change, model not found by GUID %@", change.GUID);
-    return;
-    }
-
-    // Time entry we thought was running, has been stopped.
-    if ((updated.duration_in_seconds >= 0) &&
-    [updated.GUID isEqualToString:self.time_entry.GUID]) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerStopped
-    object:nil];
-    return;
-    }
-
-    // Time entry we did not know was running, is running.
-    if ((updated.duration_in_seconds < 0) &&
-    ![updated.GUID isEqualToString:self.time_entry.GUID]) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUIStateTimerRunning
-    object:updated];
-    return;
-    }
-
-    // Time entry is still running and needs to be updated.
-    if ((updated.duration_in_seconds < 0) &&
-    [updated.GUID isEqualToString:self.time_entry.GUID]) {
-    self.time_entry = updated;
-    [self performSelectorOnMainThread:@selector(render)
-    withObject:nil
-    waitUntilDone:NO];
-    return;
-    }
-    */
-
     bool display_time_entries(false);
     bool display_autocomplete(false);
     bool display_client_select(false);
     bool display_tags(false);
     bool display_workspace_select(false);
+    bool display_timer_state(false);
     for (std::vector<kopsik::ModelChange>::const_iterator it =
         changes.begin();
             it != changes.end();
@@ -248,6 +199,9 @@ error Context::save(const bool push_changes) {
         }
         if (ch.ModelType() == "client" || ch.ModelType() == "workspace") {
             display_client_select = true;
+        }
+        if (ch.ModelType() == "time_entry") {
+            display_timer_state = true;
         }
     }
     if (display_time_entries) {
@@ -269,6 +223,9 @@ error Context::save(const bool push_changes) {
     if (display_tags) {
         std::vector<std::string> list = tags();
         UI()->DisplayTags(&list);
+    }
+    if (display_timer_state) {
+        UI()->DisplayTimerState(user_->RunningTimeEntry());
     }
 
     if (push_changes) {
