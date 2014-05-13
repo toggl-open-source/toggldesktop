@@ -461,6 +461,10 @@ void kopsik_edit(
                        std::string(focused_field_name));
 }
 
+void kopsik_edit_preferences(void *context) {
+    app(context)->DisplaySettings(true);
+}
+
 _Bool kopsik_continue_latest(
     void *context) {
 

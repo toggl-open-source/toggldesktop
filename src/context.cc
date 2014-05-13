@@ -100,7 +100,7 @@ _Bool Context::StartEvents() {
         return false;
     }
 
-    if (!applySettings()) {
+    if (!DisplaySettings(false)) {
         return false;
     }
 
@@ -662,7 +662,7 @@ _Bool Context::SetSettings(const kopsik::Settings settings) {
     if (err != noError) {
         return UI()->DisplayError(err);
     }
-    return applySettings();
+    return DisplaySettings(false);
 }
 
 _Bool Context::SetProxySettings(
@@ -682,7 +682,7 @@ _Bool Context::SetProxySettings(
         return UI()->DisplayError(err);
     }
 
-    if (!applySettings()) {
+    if (!DisplaySettings(false)) {
         return false;
     }
 
@@ -697,13 +697,12 @@ _Bool Context::SetProxySettings(
             || proxy.password != previous_proxy_settings.password) {
         FullSync();
         switchWebSocketOn();
-        FetchUpdates();
     }
 
     return true;
 }
 
-_Bool Context::applySettings() {
+_Bool Context::DisplaySettings(const bool open) {
     kopsik::Settings settings;
     error err = db()->LoadSettings(&settings);
     if (err != kopsik::noError) {
@@ -724,8 +723,11 @@ _Bool Context::applySettings() {
         record_timeline = user_->RecordTimeline();
     }
 
-    UI()->DisplaySettings(false,
-                          record_timeline, settings, use_proxy, proxy);
+    UI()->DisplaySettings(open,
+                          record_timeline,
+                          settings,
+                          use_proxy,
+                          proxy);
 
     Poco::Mutex::ScopedLock lock(ws_client_m_);
     if (!use_proxy) {

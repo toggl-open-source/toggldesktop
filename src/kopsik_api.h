@@ -263,6 +263,9 @@ extern "C" {
         const _Bool edit_running_time_entry,
         const char *focused_field_name);
 
+    KOPSIK_EXPORT void kopsik_edit_preferences(
+        void *context);
+
     KOPSIK_EXPORT _Bool kopsik_continue(
         void *context,
         const char *guid);
