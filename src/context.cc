@@ -1,5 +1,5 @@
 
-// Copyright 2014 Toggl Desktop developers::kopsik_timeline_is_recording_enabled
+// Copyright 2014 Toggl Desktop developers
 
 // No exceptions should be thrown from this class.
 // If pointers to models are returned from this
