@@ -304,7 +304,7 @@ bool TimeEntry::IsToday() const {
 }
 
 bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
-    return a->Start() > b->Start();
+    return a->Start() < b->Start();
 }
 
 void TimeEntry::LoadFromJSONNode(JSONNODE * const data) {
