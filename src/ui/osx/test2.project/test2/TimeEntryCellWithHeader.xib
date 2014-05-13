@@ -104,7 +104,7 @@
                                 </connections>
                             </button>
                             <imageView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HgZ-sm-ajS">
-                                <rect key="frame" x="169" y="11" width="7" height="13"/>
+                                <rect key="frame" x="169" y="10" width="7" height="13"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="7" id="ZuG-bv-Rm0"/>

@@ -76,7 +76,7 @@
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="icon-tags" id="gwR-Vc-IFY"/>
                             </imageView>
                             <imageView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QS9-7g-WQN">
-                                <rect key="frame" x="156" y="24" width="7" height="13"/>
+                                <rect key="frame" x="156" y="23" width="7" height="13"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="7" id="21i-pO-LrG"/>
