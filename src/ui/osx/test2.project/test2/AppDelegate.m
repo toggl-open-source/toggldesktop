@@ -291,7 +291,7 @@ const int kDurationStringLength = 20;
 
 - (void)displaySettings:(DisplayCommand *)cmd {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-  
+
   // Start idle detection, if its enabled
   if (cmd.settings.idle_detection) {
     NSLog(@"Starting idle detection");
@@ -344,6 +344,12 @@ const int kDurationStringLength = 20;
   } else {
     [self.mainWindowController.window setLevel:NSNormalWindowLevel];
   }
+
+  if (cmd.open) {
+    self.preferencesWindowController.originalCmd = cmd;
+    [self.preferencesWindowController showWindow:self];
+    [NSApp activateIgnoringOtherApps:YES];
+  }
 }
 
 - (void)startDisplayLogin:(NSNotification *)notification {
@@ -370,17 +376,16 @@ const int kDurationStringLength = 20;
   if (is_online) {
     self.currentOnImage = self.onImage;
     self.currentOffImage = self.offImage;
-    return;
+  } else {
+    self.currentOnImage = self.offlineOnImage;
+    self.currentOffImage = self.offlineOffImage;
   }
-
-  self.currentOnImage = self.offlineOnImage;
-  self.currentOffImage = self.offlineOffImage;
 
   if (self.lastKnownRunningTimeEntry) {
     [self.statusItem setImage:self.currentOnImage];
-    return;
+  } else {
+    [self.statusItem setImage:self.currentOffImage];
   }
-  [self.statusItem setImage:self.currentOffImage];
 }
 
 - (void)startDisplayTimerState:(NSNotification *)notification {
@@ -549,8 +554,7 @@ const int kDurationStringLength = 20;
 }
 
 - (IBAction)onPreferencesMenuItem:(id)sender {
-  [self.preferencesWindowController showWindow:self];
-  [NSApp activateIgnoringOtherApps:YES];
+  kopsik_edit_preferences(ctx);
 }
 
 - (IBAction)onHideMenuItem:(id)sender {

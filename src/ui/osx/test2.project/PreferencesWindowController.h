@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "MASShortcutView+UserDefaults.h"
+#import "DisplayCommand.h"
 
 extern NSString *const kPreferenceGlobalShortcutShowHide;
 extern NSString *const kPreferenceGlobalShortcutStartStop;
@@ -38,4 +39,5 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 - (IBAction)ontopCheckboxChanged:(id)sender;
 - (IBAction)reminderCheckboxChanged:(id)sender;
 @property BOOL loggedIn;
+@property DisplayCommand *originalCmd;
 @end

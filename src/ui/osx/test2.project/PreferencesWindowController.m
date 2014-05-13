@@ -42,6 +42,8 @@ extern void *ctx;
                                              selector:@selector(startDisplayLogin:)
                                                  name:kDisplayLogin
                                                object:nil];
+  
+    [self displaySettings:self.originalCmd];
 }
 
 - (IBAction)useProxyButtonChanged:(id)sender {
