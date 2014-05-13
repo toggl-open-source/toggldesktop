@@ -285,15 +285,15 @@ const int kDurationStringLength = 20;
 
 - (void)startDisplaySettings:(NSNotification *)notification {
   [self performSelectorOnMainThread:@selector(displaySettings:)
-                         withObject:nil
+                         withObject:notification.object
                       waitUntilDone:NO];
 }
 
-- (void)displaySettings:(Settings *)settings {
+- (void)displaySettings:(DisplayCommand *)cmd {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
   
   // Start idle detection, if its enabled
-  if (settings.idle_detection) {
+  if (cmd.settings.idle_detection) {
     NSLog(@"Starting idle detection");
     self.idleTimer = [NSTimer
                       scheduledTimerWithTimeInterval:1.0
@@ -311,7 +311,7 @@ const int kDurationStringLength = 20;
   }
   
   // Start menubar timer if its enabled
-  if (settings.menubar_timer) {
+  if (cmd.settings.menubar_timer) {
     NSLog(@"Starting menubar timer");
     self.menubarTimer = [NSTimer
                          scheduledTimerWithTimeInterval:1.0
@@ -330,7 +330,7 @@ const int kDurationStringLength = 20;
   
   // Show/Hide dock icon
   ProcessSerialNumber psn = { 0, kCurrentProcess };
-  if (settings.dock_icon) {
+  if (cmd.settings.dock_icon) {
     NSLog(@"Showing dock icon");
     TransformProcessType(&psn, kProcessTransformToForegroundApplication);
   } else {
@@ -339,7 +339,7 @@ const int kDurationStringLength = 20;
   }
   
   // Stay on top
-  if (settings.on_top) {
+  if (cmd.settings.on_top) {
     [self.mainWindowController.window setLevel:NSFloatingWindowLevel];
   } else {
     [self.mainWindowController.window setLevel:NSNormalWindowLevel];
