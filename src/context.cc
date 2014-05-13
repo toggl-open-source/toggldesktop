@@ -1425,7 +1425,7 @@ std::vector<kopsik::TimeEntry *> Context::timeEntries() const {
         TimeEntry *te = *it;
         Poco::Int64 duration = date_durations[te->DateHeaderString()];
         std::string formatted =
-            kopsik::Formatter::FormatDurationInSecondsHHMM(duration);
+            kopsik::Formatter::FormatDurationInSecondsPrettyHHMM(duration);
         te->SetDateDuration(formatted);
     }
 
