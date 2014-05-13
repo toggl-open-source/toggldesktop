@@ -12,6 +12,7 @@
 #import "Settings.h"
 #import "ProxySettings.h"
 #import "MASShortcutView+UserDefaults.h"
+#import "DisplayCommand.h"
 
 NSString *const kPreferenceGlobalShortcutShowHide = @"TogglDesktopGlobalShortcutShowHide";
 NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcutStartStop";
@@ -195,8 +196,10 @@ extern void *ctx;
                         waitUntilDone:NO];
 }
 
-- (void)displaySettings:(Settings *)settings {
+- (void)displaySettings:(DisplayCommand *)cmd {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+  Settings *settings = cmd.settings;
   
   [self.useIdleDetectionButton setState:[self boolToState:settings.idle_detection]];
   [self.menubarTimerCheckbox setState:[self boolToState:settings.menubar_timer]];

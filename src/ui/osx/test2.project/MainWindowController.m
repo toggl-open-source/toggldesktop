@@ -14,6 +14,7 @@
 #import "UIEvents.h"
 #import "Update.h"
 #import "MenuItemTags.h"
+#import "DisplayCommand.h"
 
 @interface MainWindowController ()
 @property (nonatomic,strong) IBOutlet LoginViewController *loginViewController;
@@ -88,14 +89,16 @@ extern void *ctx;
                       waitUntilDone:NO];
 }
 
-- (void)displayTimeEntryEditor:(TimeEntryViewItem *)te {
+- (void)displayTimeEntryEditor:(DisplayCommand *)cmd {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-  [self.contentView addSubview:self.timeEntryEditViewController.view];
-  [self.timeEntryEditViewController.view setFrame:self.contentView.bounds];
+  if (cmd.open) {
+    [self.contentView addSubview:self.timeEntryEditViewController.view];
+    [self.timeEntryEditViewController.view setFrame:self.contentView.bounds];
 
-  [self.loginViewController.view removeFromSuperview];
-  [self.timeEntryListViewController.view removeFromSuperview];
+    [self.loginViewController.view removeFromSuperview];
+    [self.timeEntryListViewController.view removeFromSuperview];
+  }
 }
 
 - (void)startDisplayTimeEntryList:(NSNotification *)notification {
@@ -104,14 +107,15 @@ extern void *ctx;
                       waitUntilDone:NO];
 }
 
-- (void)displayTimeEntryList:(NSMutableArray *)list {
+- (void)displayTimeEntryList:(DisplayCommand *)cmd {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+  if (cmd.open) {
+    [self.contentView addSubview:self.timeEntryListViewController.view];
+    [self.timeEntryListViewController.view setFrame:self.contentView.bounds];
 
-  [self.contentView addSubview:self.timeEntryListViewController.view];
-  [self.timeEntryListViewController.view setFrame:self.contentView.bounds];
-
-  [self.loginViewController.view removeFromSuperview];
-  [self.timeEntryEditViewController.view removeFromSuperview];
+    [self.loginViewController.view removeFromSuperview];
+    [self.timeEntryEditViewController.view removeFromSuperview];
+  }
 }
 
 - (void)startDisplayError:(NSNotification *)notification {

@@ -16,6 +16,7 @@
 #import "NSTextFieldClickable.h"
 #import "NSCustomComboBoxCell.h"
 #import "NSCustomComboBox.h"
+#import "DisplayCommand.h"
 
 @interface TimerEditViewController ()
 @property AutocompleteDataSource *autocompleteDataSource;
@@ -67,10 +68,10 @@ extern void *ctx;
                       waitUntilDone:NO];
 }
 
-- (void)displayTimeEntryList:(id)list {
+- (void)displayTimeEntryList:(DisplayCommand *)cmd {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-  if (self.time_entry && self.time_entry.duration_in_seconds >= 0) {
+  if (cmd.open && self.time_entry && self.time_entry.duration_in_seconds >= 0) {
     [self.descriptionComboBox becomeFirstResponder];
   }
 }

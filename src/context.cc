@@ -205,7 +205,8 @@ error Context::save(const bool push_changes) {
         }
     }
     if (display_time_entries) {
-        DisplayTimeEntryList();
+        std::vector<TimeEntry *> list = timeEntries();
+        UI()->DisplayTimeEntryList(false, &list);
     }
     if (display_autocomplete) {
         std::vector<kopsik::AutocompleteItem> list =
@@ -683,7 +684,8 @@ _Bool Context::SetSettings(const kopsik::Settings settings) {
     if (err != noError) {
         return UI()->DisplayError(err);
     }
-    UI()->DisplaySettings(settings);
+    UI()->DisplaySettings(false, settings);
+    UI()->ApplySettings(settings);
     return true;
 }
 
@@ -725,7 +727,7 @@ _Bool Context::SetProxySettings(
         }
     }
 
-    UI()->DisplayProxySettings(use_proxy, proxy);
+    UI()->DisplayProxySettings(false, use_proxy, proxy);
 
     return true;
 }
@@ -823,7 +825,7 @@ void Context::setUser(User *value) {
         return;
     }
 
-    DisplayTimeEntryList();
+    ViewTimeEntryList();
     switchTimelineOn();
     switchWebSocketOn();
     FullSync();
@@ -1022,13 +1024,13 @@ _Bool Context::Start(
     return UI()->DisplayError(save());
 }
 
-void Context::DisplayTimeEntryList() {
+void Context::ViewTimeEntryList() {
     if (!user_) {
         logger().warning("Cannot view time entry list, user logged out");
         return;
     }
     std::vector<TimeEntry *> list = timeEntries();
-    UI()->DisplayTimeEntryList(&list);
+    UI()->DisplayTimeEntryList(true, &list);
 }
 
 void Context::Edit(const std::string GUID,
@@ -1053,7 +1055,7 @@ void Context::Edit(const std::string GUID,
         return;
     }
 
-    UI()->DisplayTimeEntryEditor(te, focused_field_name);
+    UI()->DisplayTimeEntryEditor(true, te, focused_field_name);
 }
 
 _Bool Context::ContinueLatest(
