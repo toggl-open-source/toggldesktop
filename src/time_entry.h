@@ -33,6 +33,7 @@ class TimeEntry : public BaseModel {
     , date_duration_("")
     , start_time_string_("")
     , end_time_string_("") {}
+
     virtual ~TimeEntry() {}
 
     std::vector<std::string> TagNames;

@@ -25,7 +25,9 @@ NSString *const kDisplayUpdate = @"kDisplayUpdate";
 NSString *const kDisplayIdleNotification = @"kDisplayIdleNotification";
 NSString *const kDisplayOnlineState = @"kDisplayOnlineState";
 NSString *const kDisplaySettings = @"kDisplaySettings";
+NSString *const kDisplayProxySettings = @"kDisplayProxySettings";
 NSString *const kDisplayTimerState = @"kDisplayTimerState";
+NSString *const kApplySettings = @"kApplySettings";
 
 const char *kFocusedFieldNameDuration = "duration";
 const char *kFocusedFieldNameDescription = "description";

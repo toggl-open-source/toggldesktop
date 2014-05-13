@@ -146,6 +146,7 @@ KopsikTimeEntryViewItem *time_entry_view_item_init(kopsik::TimeEntry *te) {
     } else {
         view_item->DurOnly = false;
     }
+    view_item->IsHeader = false;
     view_item->Next = 0;
     return view_item;
 }

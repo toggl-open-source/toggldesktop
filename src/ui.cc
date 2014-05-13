@@ -135,6 +135,9 @@ void UI::DisplayTimeEntryList(std::vector<kopsik::TimeEntry *> *visible) {
         KopsikTimeEntryViewItem *item =
             time_entry_view_item_init(visible->at(i));
         item->Next = first;
+        if (!first || strcmp(item->DateHeader, first->DateHeader) != 0) {
+            item->IsHeader = true;
+        }
         first = item;
     }
     on_display_time_entry_list_(first);
