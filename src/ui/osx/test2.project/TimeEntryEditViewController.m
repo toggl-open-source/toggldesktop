@@ -117,11 +117,19 @@ extern int kDurationStringLength;
   [self.projectNameTextField becomeFirstResponder];
 }
 
+-(void) removeCustomConstraints {
+    if (self.topConstraint){
+        [self.view removeConstraints:self.topConstraint];
+        self.topConstraint = nil;
+    }
+    if (self.addProjectBoxHeight){
+        [self.view removeConstraint:self.addProjectBoxHeight];
+        self.addProjectBoxHeight = nil;
+    }
+}
+
 - (IBAction)backButtonClicked:(id)sender {
-  if (self.topConstraint){
-    [self.view removeConstraints:self.topConstraint];
-    self.topConstraint = nil;
-  }
+  [self removeCustomConstraints];
   [self.descriptionCombobox setNextKeyView:self.projectSelect];
   // This is not a good place for this (on Done button!)
   if (![self applyAddProject]) {
@@ -162,6 +170,7 @@ extern int kDurationStringLength;
 }
 
 - (IBAction)continueButtonClicked:(id)sender {
+  [self removeCustomConstraints];
   kopsik_continue(ctx, [self.timeEntry.GUID UTF8String]);
   kopsik_view_time_entry_list(ctx);
 }
