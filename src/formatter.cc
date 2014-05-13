@@ -475,6 +475,10 @@ std::string Formatter::FormatDurationInSecondsHHMM(const Poco::Int64 value) {
     return FormatDurationInSeconds(value, "%M");
 }
 
+std::string Formatter::FormatDurationInSecondsPrettyHHMM(const Poco::Int64 value) {
+    return FormatDurationInSecondsToHM(value);
+}
+
 std::time_t Formatter::Parse8601(const std::string iso_8601_formatted_date) {
     if ("null" == iso_8601_formatted_date) {
         return 0;

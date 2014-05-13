@@ -46,6 +46,9 @@ class Formatter {
     static std::string FormatDurationInSecondsHHMM(
         const Poco::Int64 value);
 
+    static std::string FormatDurationInSecondsPrettyHHMM(
+        const Poco::Int64 value);
+
     static std::time_t Parse8601(
         const std::string iso_8601_formatted_date);
 

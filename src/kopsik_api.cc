@@ -434,6 +434,20 @@ void kopsik_format_duration_in_seconds_hhmm(
     strncpy(out_str, formatted.c_str(), max_strlen);
 }
 
+void kopsik_format_duration_in_seconds_pretty_hhmm(
+    const int64_t duration_in_seconds,
+    char *out_str,
+    const size_t max_strlen) {
+
+    poco_check_ptr(out_str);
+
+    poco_assert(max_strlen);
+
+    std::string formatted = kopsik::Formatter::FormatDurationInSecondsPrettyHHMM(
+        duration_in_seconds);
+    strncpy(out_str, formatted.c_str(), max_strlen);
+}
+
 _Bool kopsik_start(
     void *context,
     const char *description,
@@ -676,7 +690,7 @@ _Bool kopsik_duration_for_date_header(
         return false;
     }
 
-    kopsik_format_duration_in_seconds_hhmm(sum, duration, duration_len);
+    kopsik_format_duration_in_seconds_pretty_hhmm(sum, duration, duration_len);
     return true;
 }
 
