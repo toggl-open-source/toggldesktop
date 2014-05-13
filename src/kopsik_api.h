@@ -45,6 +45,7 @@ extern "C" {
         char *DateHeader;
         char *DateDuration;
         _Bool DurOnly;
+        _Bool IsHeader;
         void *Next;
     } KopsikTimeEntryViewItem;
 

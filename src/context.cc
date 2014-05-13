@@ -1416,7 +1416,10 @@ std::vector<kopsik::TimeEntry *> Context::timeEntries() const {
         te->SetColorCode(color_code);
     }
 
-    // Assign date durations
+    std::sort(result.begin(), result.end(), CompareTimeEntriesByStart);
+
+    // Assign date durations. Set "header" time entries - if date changes,
+    // the time entry will show its date.
     for (std::vector<kopsik::TimeEntry *>::iterator it = result.begin();
             it != result.end(); it++) {
         TimeEntry *te = *it;
@@ -1426,7 +1429,6 @@ std::vector<kopsik::TimeEntry *> Context::timeEntries() const {
         te->SetDateDuration(formatted);
     }
 
-    std::sort(result.begin(), result.end(), CompareTimeEntriesByStart);
     return result;
 }
 

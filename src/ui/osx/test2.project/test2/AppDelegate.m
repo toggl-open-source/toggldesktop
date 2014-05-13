@@ -27,6 +27,7 @@
 #import "ViewItem.h"
 #import "Utils.h"
 #import "Settings.h"
+#import "ProxySettings.h"
 
 @interface AppDelegate()
 @property (nonatomic, strong) IBOutlet MainWindowController *mainWindowController;
@@ -898,16 +899,10 @@ void on_url(const char *url) {
 
 void on_time_entry_list(KopsikTimeEntryViewItem *first) {
   NSMutableArray *viewitems = [[NSMutableArray alloc] init];
-  NSString *date = nil;
   KopsikTimeEntryViewItem *it = first;
   while (it) {
     TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
     [model load:it];
-    // FIXME: move into lib
-    if (date == nil || ![date isEqualToString:model.formattedDate]) {
-      model.isHeader = YES;
-    }
-    date = model.formattedDate;
     [viewitems addObject:model];
     it = it->Next;
   }
@@ -964,14 +959,27 @@ void on_settings(const _Bool use_idle_detection,
                  const _Bool dock_icon,
                  const _Bool on_top,
                  const _Bool reminder) {
-  // FIXME: UI
+  Settings *s = [[Settings alloc] init];
+  s.idle_detection = use_idle_detection;
+  s.menubar_timer = menubar_timer;
+  s.dock_icon = dock_icon;
+  s.on_top = on_top;
+  s.reminder = reminder;
+  [[NSNotificationCenter defaultCenter] postNotificationName:kDisplaySettings
+                                                      object:s];
 }
 
 void on_apply_settings(const _Bool use_idle_detection,
                  const _Bool menubar_timer,
                  const _Bool dock_icon,
                  const _Bool on_top) {
-  // FIXME: UI
+  Settings *s = [[Settings alloc] init];
+  s.idle_detection = use_idle_detection;
+  s.menubar_timer = menubar_timer;
+  s.dock_icon = dock_icon;
+  s.on_top = on_top;
+  [[NSNotificationCenter defaultCenter] postNotificationName:kApplySettings
+                                                      object:s];
 }
 
 void on_proxy_settings(const _Bool use_proxy,
@@ -979,7 +987,14 @@ void on_proxy_settings(const _Bool use_proxy,
                        const uint64_t proxy_port,
                        const char *proxy_username,
                        const char *proxy_password) {
-  // FIXME: UI
+  ProxySettings *proxy = [[ProxySettings alloc] init];
+  proxy.use_proxy = use_proxy;
+  proxy.proxy_host = [NSString stringWithUTF8String:proxy_host];
+  proxy.proxy_port = proxy_port;
+  proxy.proxy_username = [NSString stringWithUTF8String:proxy_username];
+  proxy.proxy_password = [NSString stringWithUTF8String:proxy_password];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayProxySettings
+                                                      object:proxy];
 }
 
 void on_timer_state(KopsikTimeEntryViewItem *te) {
@@ -990,8 +1005,6 @@ void on_timer_state(KopsikTimeEntryViewItem *te) {
   }
   [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimerState
                                                       object:view_item];
-  
-  // FIXME: UI
 }
 
 @end

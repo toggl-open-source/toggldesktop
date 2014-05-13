@@ -62,6 +62,11 @@
   } else {
     self.dateDuration = nil;
   }
+  
+  self.isHeader = NO;
+  if (te->IsHeader) {
+    self.isHeader = YES;
+  }
 
   self.durOnly = NO;
   if (te->DurOnly) {

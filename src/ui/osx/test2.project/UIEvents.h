@@ -27,7 +27,9 @@ extern NSString *const kDisplayUpdate;
 extern NSString *const kDisplayIdleNotification;
 extern NSString *const kDisplayOnlineState;
 extern NSString *const kDisplaySettings;
+extern NSString *const kDisplayProxySettings;
 extern NSString *const kDisplayTimerState;
+extern NSString *const kApplySettings;
 
 const char *kFocusedFieldNameDuration;
 const char *kFocusedFieldNameDescription;
