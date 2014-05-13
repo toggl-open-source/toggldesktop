@@ -88,7 +88,7 @@
                     </view>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="QS9-7g-WQN" secondAttribute="trailing" constant="105" id="2Mb-xj-1TO"/>
-                        <constraint firstItem="deS-e6-3Ui" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" constant="14" id="FOo-PQ-AK1"/>
+                        <constraint firstItem="deS-e6-3Ui" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" constant="12" id="FOo-PQ-AK1"/>
                         <constraint firstItem="xwb-FG-Z4X" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" constant="19" id="HsG-Zm-aF4"/>
                         <constraint firstItem="CwR-d5-aWs" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" constant="15" id="KZ4-JV-5xD"/>
                         <constraint firstAttribute="trailing" secondItem="Gcj-ki-Hus" secondAttribute="trailing" constant="77" id="KeA-dg-xG5"/>
