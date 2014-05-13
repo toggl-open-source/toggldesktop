@@ -27,7 +27,6 @@
 #import "ViewItem.h"
 #import "Utils.h"
 #import "Settings.h"
-#import "ProxySettings.h"
 #import "DisplayCommand.h"
 
 @interface AppDelegate()
@@ -39,7 +38,7 @@
 @property TimeEntryViewItem *lastKnownRunningTimeEntry;
 @property NSTimer *menubarTimer;
 @property NSTimer *idleTimer;
-@property BOOL lastKnownLoginState;
+@property BOOL loggedIn;
 @property long lastIdleSecondsReading;
 @property NSDate *lastIdleStarted;
 
@@ -78,6 +77,7 @@ const int kDurationStringLength = 20;
   NSLog(@"applicationDidFinishLaunching");
 
   self.willTerminate = NO;
+  self.loggedIn = YES;
   
   if (![self.environment isEqualToString:@"production"]) {
     // Turn on UI constraint debugging, if not in production
@@ -121,8 +121,6 @@ const int kDurationStringLength = 20;
   
   [self createStatusItem];
   
-  self.lastKnownLoginState = NO;
-  
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(startStopAt:)
                                                name:kCommandStopAt
@@ -151,15 +149,17 @@ const int kDurationStringLength = 20;
                                            selector:@selector(startDisplayTimerState:)
                                                name:kDisplayTimerState
                                              object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(startDisplayLogin:)
+                                               name:kDisplayLogin
+                                             object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(startDisplaySettings:)
+                                               name:kDisplaySettings
+                                             object:nil];
   
   _Bool started = kopsik_context_start_events(ctx);
   NSAssert(started, @"Failed to start UI");
-  
-  NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
-  NSNumber* checkEnabled = infoDict[@"KopsikCheckForUpdates"];
-  if ([checkEnabled boolValue]) {
-    kopsik_check_for_updates(ctx);
-  }
   
   [MASShortcut registerGlobalShortcutWithUserDefaultsKey:kPreferenceGlobalShortcutShowHide handler:^{
     if ([self.mainWindowController.window isVisible]) {
@@ -283,6 +283,81 @@ const int kDurationStringLength = 20;
   [self onShowMenuItem:self];
 }
 
+- (void)startDisplaySettings:(NSNotification *)notification {
+  [self performSelectorOnMainThread:@selector(displaySettings:)
+                         withObject:nil
+                      waitUntilDone:NO];
+}
+
+- (void)displaySettings:(Settings *)settings {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+  
+  // Start idle detection, if its enabled
+  if (settings.idle_detection) {
+    NSLog(@"Starting idle detection");
+    self.idleTimer = [NSTimer
+                      scheduledTimerWithTimeInterval:1.0
+                      target:self
+                      selector:@selector(idleTimerFired:)
+                      userInfo:nil
+                      repeats:YES];
+  } else {
+    NSLog(@"Idle detection is disabled. Stopping idle detection.");
+    if (self.idleTimer != nil) {
+      [self.idleTimer invalidate];
+      self.idleTimer = nil;
+    }
+    [self.statusItem setTitle:@""];
+  }
+  
+  // Start menubar timer if its enabled
+  if (settings.menubar_timer) {
+    NSLog(@"Starting menubar timer");
+    self.menubarTimer = [NSTimer
+                         scheduledTimerWithTimeInterval:1.0
+                         target:self
+                         selector:@selector(menubarTimerFired:)
+                         userInfo:nil
+                         repeats:YES];
+  } else {
+    NSLog(@"Menubar timer is disabled. Stopping menubar timer.");
+    if (self.menubarTimer != nil) {
+      [self.menubarTimer invalidate];
+      self.menubarTimer = nil;
+    }
+    [self.statusItem setTitle:@""];
+  }
+  
+  // Show/Hide dock icon
+  ProcessSerialNumber psn = { 0, kCurrentProcess };
+  if (settings.dock_icon) {
+    NSLog(@"Showing dock icon");
+    TransformProcessType(&psn, kProcessTransformToForegroundApplication);
+  } else {
+    NSLog(@"Hiding dock icon.");
+    TransformProcessType(&psn, kProcessTransformToUIElementApplication);
+  }
+  
+  // Stay on top
+  if (settings.on_top) {
+    [self.mainWindowController.window setLevel:NSFloatingWindowLevel];
+  } else {
+    [self.mainWindowController.window setLevel:NSNormalWindowLevel];
+  }
+}
+
+- (void)startDisplayLogin:(NSNotification *)notification {
+  [self performSelectorOnMainThread:@selector(displayLogin)
+                         withObject:nil
+                      waitUntilDone:NO];
+}
+
+- (void)displayLogin {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+  self.loggedIn = NO;
+}
+
 - (void)startDisplayOnlineState: (NSNotification *) notification {
     [self performSelectorOnMainThread:@selector(displayOnlineState:)
                            withObject:notification.object
@@ -300,6 +375,12 @@ const int kDurationStringLength = 20;
 
   self.currentOnImage = self.offlineOnImage;
   self.currentOffImage = self.offlineOffImage;
+
+  if (self.lastKnownRunningTimeEntry) {
+    [self.statusItem setImage:self.currentOnImage];
+    return;
+  }
+  [self.statusItem setImage:self.currentOffImage];
 }
 
 - (void)startDisplayTimerState:(NSNotification *)notification {
@@ -320,8 +401,9 @@ const int kDurationStringLength = 20;
       [NSApp setApplicationIconImage: nil];
     }
 
-    // Change tracking time entry row in menu
     [self.statusItem setImage:self.currentOnImage];
+
+    // Change tracking time entry row in menu
     NSString *msg = [NSString stringWithFormat:@"Running: %@",
                      self.lastKnownRunningTimeEntry.Description];
     [self.runningTimeEntryMenuItem setTitle:msg];
@@ -400,63 +482,6 @@ const int kDurationStringLength = 20;
   [self.statusItem setEnabled:YES];
   [self.statusItem setMenu:menu];
   [self.statusItem setImage:self.currentOffImage];
-}
-
-- (void)displaySettings:(Settings *)settings {
-  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-  
-  // Start idle detection, if its enabled
-  if (settings.idle_detection) {
-    NSLog(@"Starting idle detection");
-    self.idleTimer = [NSTimer
-                      scheduledTimerWithTimeInterval:1.0
-                      target:self
-                      selector:@selector(idleTimerFired:)
-                      userInfo:nil
-                      repeats:YES];
-  } else {
-    NSLog(@"Idle detection is disabled. Stopping idle detection.");
-    if (self.idleTimer != nil) {
-      [self.idleTimer invalidate];
-      self.idleTimer = nil;
-    }
-    [self.statusItem setTitle:@""];
-  }
-  
-  // Start menubar timer if its enabled
-  if (settings.menubar_timer) {
-    NSLog(@"Starting menubar timer");
-    self.menubarTimer = [NSTimer
-                         scheduledTimerWithTimeInterval:1.0
-                         target:self
-                         selector:@selector(menubarTimerFired:)
-                         userInfo:nil
-                         repeats:YES];
-  } else {
-    NSLog(@"Menubar timer is disabled. Stopping menubar timer.");
-    if (self.menubarTimer != nil) {
-      [self.menubarTimer invalidate];
-      self.menubarTimer = nil;
-    }
-    [self.statusItem setTitle:@""];
-  }
-  
-  // Show/Hide dock icon
-  ProcessSerialNumber psn = { 0, kCurrentProcess };
-  if (settings.dock_icon) {
-    NSLog(@"Showing dock icon");
-    TransformProcessType(&psn, kProcessTransformToForegroundApplication);
-  } else {
-    NSLog(@"Hiding dock icon.");
-    TransformProcessType(&psn, kProcessTransformToUIElementApplication);
-  }
-  
-  // Stay on top
-  if (settings.on_top) {
-    [self.mainWindowController.window setLevel:NSFloatingWindowLevel];
-  } else {
-    [self.mainWindowController.window setLevel:NSNormalWindowLevel];
-  }
 }
 
 - (void)onNewMenuItem:(id)sender {
@@ -642,10 +667,8 @@ const NSString *appName = @"osx_native_app";
   kopsik_on_tags(ctx, on_tags);
   kopsik_on_time_entry_editor(ctx, on_time_entry_editor);
   kopsik_on_settings(ctx, on_settings);
-  kopsik_on_proxy_settings(ctx, on_proxy_settings);
   kopsik_on_timer_state(ctx, on_timer_state);
-  kopsik_on_apply_settings(ctx, on_apply_settings);
-
+  
   NSLog(@"Version %@", version);
   
   _Bool res = kopsik_set_db_path(ctx, [self.db_path UTF8String]);
@@ -658,9 +681,6 @@ const NSString *appName = @"osx_native_app";
     [self.app_path stringByAppendingPathComponent:@"ui.log"];
     freopen([logPath fileSystemRepresentation],"a+", stderr);
   }
-  
-  res = kopsik_configure_proxy(ctx);
-  NSAssert(res, @"Failed to initialize DB");
   
   if (self.api_url_override != nil) {
     kopsik_set_api_url(ctx, [self.api_url_override UTF8String]);
@@ -725,12 +745,12 @@ const NSString *appName = @"osx_native_app";
 - (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem {
   switch ([anItem tag]) {
     case kMenuItemTagNew:
-      if (self.lastKnownLoginState != YES) {
+      if (!self.loggedIn) {
         return NO;
       }
       break;
     case kMenuItemTagContinue:
-      if (self.lastKnownLoginState != YES) {
+      if (!self.loggedIn) {
         return NO;
       }
       if (self.lastKnownRunningTimeEntry != nil) {
@@ -738,7 +758,7 @@ const NSString *appName = @"osx_native_app";
       }
       break;
     case kMenuItemTagStop:
-      if (self.lastKnownLoginState != YES) {
+      if (!self.loggedIn) {
         return NO;
       }
       if (self.lastKnownRunningTimeEntry == nil) {
@@ -746,27 +766,27 @@ const NSString *appName = @"osx_native_app";
       }
       break;
     case kMenuItemTagSync:
-      if (self.lastKnownLoginState != YES) {
+      if (!self.loggedIn) {
         return NO;
       }
       break;
     case kMenuItemTagLogout:
-      if (self.lastKnownLoginState != YES) {
+      if (!self.loggedIn) {
         return NO;
       }
       break;
     case kMenuItemTagClearCache:
-      if (self.lastKnownLoginState != YES) {
+      if (!self.loggedIn) {
         return NO;
       }
       break;
     case kMenuItemTagSendFeedback:
-      if (self.lastKnownLoginState != YES) {
+      if (!self.loggedIn) {
         return NO;
       }
       break;
     case kMenuItemTagOpenBrowser:
-      if (self.lastKnownLoginState != YES) {
+      if (!self.loggedIn) {
         return NO;
       }
       break;
@@ -965,53 +985,15 @@ void on_error(const char *errmsg, const _Bool is_user_error) {
 }
 
 void on_settings(const _Bool open,
-                 const _Bool use_idle_detection,
-                 const _Bool menubar_timer,
-                 const _Bool dock_icon,
-                 const _Bool on_top,
-                 const _Bool reminder) {
+                 KopsikSettingsViewItem *settings) {
+
   Settings *s = [[Settings alloc] init];
-  s.idle_detection = use_idle_detection;
-  s.menubar_timer = menubar_timer;
-  s.dock_icon = dock_icon;
-  s.on_top = on_top;
-  s.reminder = reminder;
+  [s load:settings];
+  
   DisplayCommand *cmd = [[DisplayCommand alloc] init];
   cmd.open = open;
   cmd.settings = s;
   [[NSNotificationCenter defaultCenter] postNotificationName:kDisplaySettings
-                                                      object:cmd];
-}
-
-void on_apply_settings(const _Bool use_idle_detection,
-                 const _Bool menubar_timer,
-                 const _Bool dock_icon,
-                 const _Bool on_top) {
-  Settings *s = [[Settings alloc] init];
-  s.idle_detection = use_idle_detection;
-  s.menubar_timer = menubar_timer;
-  s.dock_icon = dock_icon;
-  s.on_top = on_top;
-  [[NSNotificationCenter defaultCenter] postNotificationName:kApplySettings
-                                                      object:s];
-}
-
-void on_proxy_settings(const _Bool open,
-                       const _Bool use_proxy,
-                       const char *proxy_host,
-                       const uint64_t proxy_port,
-                       const char *proxy_username,
-                       const char *proxy_password) {
-  ProxySettings *proxy = [[ProxySettings alloc] init];
-  proxy.use_proxy = use_proxy;
-  proxy.proxy_host = [NSString stringWithUTF8String:proxy_host];
-  proxy.proxy_port = proxy_port;
-  proxy.proxy_username = [NSString stringWithUTF8String:proxy_username];
-  proxy.proxy_password = [NSString stringWithUTF8String:proxy_password];
-  DisplayCommand *cmd = [[DisplayCommand alloc] init];
-  cmd.open = open;
-  cmd.proxy = proxy;
-  [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayProxySettings
                                                       object:cmd];
 }
 

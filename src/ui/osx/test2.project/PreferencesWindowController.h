@@ -37,4 +37,5 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 - (IBAction)dockIconCheckboxChanged:(id)sender;
 - (IBAction)ontopCheckboxChanged:(id)sender;
 - (IBAction)reminderCheckboxChanged:(id)sender;
+@property BOOL loggedIn;
 @end

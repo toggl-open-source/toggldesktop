@@ -9,12 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "TimeEntryViewItem.h"
 #import "Settings.h"
-#import "ProxySettings.h"
 
 @interface DisplayCommand : NSObject
 @property BOOL open;
 @property NSMutableArray *timeEntries;
 @property TimeEntryViewItem *timeEntry;
 @property Settings *settings;
-@property ProxySettings *proxy;
 @end

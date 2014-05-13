@@ -99,39 +99,6 @@ _Bool kopsik_get_settings(
     return true;
 }
 
-_Bool kopsik_get_proxy_settings(
-    void *context,
-    _Bool *out_use_proxy,
-    char **out_proxy_host,
-    uint64_t *out_proxy_port,
-    char **out_proxy_username,
-    char **out_proxy_password) {
-
-    poco_check_ptr(out_use_proxy);
-    poco_check_ptr(out_proxy_host);
-    poco_check_ptr(out_proxy_port);
-    poco_check_ptr(out_proxy_username);
-    poco_check_ptr(out_proxy_password);
-
-    bool use_proxy(false);
-    kopsik::Proxy proxy;
-    if (!app(context)->ProxySettings(&use_proxy, &proxy)) {
-        return false;
-    }
-
-    *out_use_proxy = false;
-    if (use_proxy) {
-        *out_use_proxy = true;
-    }
-
-    *out_proxy_host = strdup(proxy.host.c_str());
-    *out_proxy_port = proxy.port;
-    *out_proxy_username = strdup(proxy.username.c_str());
-    *out_proxy_password = strdup(proxy.password.c_str());
-
-    return true;
-}
-
 _Bool kopsik_set_settings(
     void *context,
     const _Bool use_idle_detection,
@@ -167,11 +134,6 @@ _Bool kopsik_set_proxy_settings(void *context,
     proxy.password = std::string(proxy_password);
 
     return app(context)->SetProxySettings(use_proxy, proxy);
-}
-
-_Bool kopsik_configure_proxy(
-    void *context) {
-    return app(context)->ConfigureProxy();
 }
 
 _Bool kopsik_set_db_path(
@@ -320,20 +282,6 @@ _Bool kopsik_user_can_add_projects(
     *can_add = false;
     if (app(context)->CanAddProjects(workspace_id)) {
         *can_add = true;
-    }
-
-    return true;
-}
-
-_Bool kopsik_user_is_logged_in(
-    void *context,
-    _Bool *is_logged_in) {
-
-    poco_check_ptr(is_logged_in);
-
-    *is_logged_in = false;
-    if (app(context)->UserIsLoggedIn()) {
-        *is_logged_in = true;
     }
 
     return true;
@@ -675,35 +623,10 @@ _Bool kopsik_stop_running_time_entry_at(
     return app(context)->StopAt(at, &te);
 }
 
-_Bool kopsik_duration_for_date_header(
-    void *context,
-    const char *date,
-    char *duration,
-    const size_t duration_len) {
-
-    poco_check_ptr(duration);
-    poco_check_ptr(date);
-
-    poco_assert(duration_len);
-
-    int sum(0);
-    if (!app(context)->TrackedPerDateHeader(std::string(date), &sum)) {
-        return false;
-    }
-
-    kopsik_format_duration_in_seconds_pretty_hhmm(sum, duration, duration_len);
-    return true;
-}
-
 void kopsik_timeline_toggle_recording(
     void *context) {
     logger().debug("kopsik_timeline_toggle_recording");
     app(context)->ToggleTimelineRecording();
-}
-
-_Bool kopsik_timeline_is_recording_enabled(
-    void *context) {
-    return app(context)->RecordTimeline();
 }
 
 _Bool kopsik_feedback_send(
@@ -862,20 +785,8 @@ void kopsik_on_settings(
     app(context)->UI()->OnDisplaySettings(cb);
 }
 
-void kopsik_on_proxy_settings(
-    void *context,
-    KopsikDisplayProxySettings cb) {
-    app(context)->UI()->OnDisplayProxySettings(cb);
-}
-
 void kopsik_on_timer_state(
     void *context,
     KopsikDisplayTimerState cb) {
     app(context)->UI()->OnDisplayTimerState(cb);
-}
-
-void kopsik_on_apply_settings(
-    void *context,
-    KopsikApplySettings cb) {
-    app(context)->UI()->OnApplySettings(cb);
 }

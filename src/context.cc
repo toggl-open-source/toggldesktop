@@ -1,5 +1,5 @@
 
-// Copyright 2014 Toggl Desktop developers.
+// Copyright 2014 Toggl Desktop developers
 
 // No exceptions should be thrown from this class.
 // If pointers to models are returned from this
@@ -100,14 +100,9 @@ _Bool Context::StartEvents() {
         return false;
     }
 
-    // Export settings to UI
-    kopsik::Settings settings;
-    err = db()->LoadSettings(&settings);
-    if (err != kopsik::noError) {
-        setUser(0);
-        return UI()->DisplayError(err);
+    if (!applySettings()) {
+        return false;
     }
-    UI()->ApplySettings(settings);
 
     // See was logged in into app previously
     kopsik::User *user = new kopsik::User(app_name_, app_version_);
@@ -153,23 +148,6 @@ void Context::Shutdown() {
     Poco::ThreadPool::defaultPool().joinAll();
 }
 
-_Bool Context::ConfigureProxy() {
-    bool use_proxy(false);
-    kopsik::Proxy proxy;
-    kopsik::error err = db()->LoadProxySettings(&use_proxy, &proxy);
-    if (err != kopsik::noError) {
-        return UI()->DisplayError(err);
-    }
-    if (!use_proxy) {
-        proxy = kopsik::Proxy();  // reset values
-    }
-
-    Poco::Mutex::ScopedLock lock(ws_client_m_);
-    ws_client_->SetProxy(proxy);
-
-    return true;
-}
-
 error Context::save(const bool push_changes) {
     logger().debug("save");
 
@@ -193,9 +171,9 @@ error Context::save(const bool push_changes) {
         if (ch.ModelType() == "tag") {
             display_tags = true;
         }
-        if (ch.ModelType() != "tag") {
-            display_time_entries = true;
+        if (ch.ModelType() != "tag" && ch.ModelType() != "user") {
             display_autocomplete = true;
+            display_time_entries = true;
         }
         if (ch.ModelType() == "client" || ch.ModelType() == "workspace") {
             display_client_select = true;
@@ -684,50 +662,77 @@ _Bool Context::SetSettings(const kopsik::Settings settings) {
     if (err != noError) {
         return UI()->DisplayError(err);
     }
-    UI()->DisplaySettings(false, settings);
-    UI()->ApplySettings(settings);
-    return true;
-}
-
-_Bool Context::ProxySettings(
-    bool *use_proxy,
-    kopsik::Proxy *proxy) {
-    poco_check_ptr(use_proxy);
-    poco_check_ptr(proxy);
-    return UI()->DisplayError(db()->LoadProxySettings(use_proxy, proxy));
+    return applySettings();
 }
 
 _Bool Context::SetProxySettings(
-    const bool use_proxy,
+    const _Bool use_proxy,
     const kopsik::Proxy proxy) {
 
-    bool was_using_proxy(false);
+    _Bool was_using_proxy(false);
     kopsik::Proxy previous_proxy_settings;
-    if (!ProxySettings(&was_using_proxy, &previous_proxy_settings)) {
-        return false;
-    };
-
-    error err = db()->SaveProxySettings(use_proxy, proxy);
+    error err = db()->LoadProxySettings(&was_using_proxy,
+                                        &previous_proxy_settings);
     if (err != kopsik::noError) {
         return UI()->DisplayError(err);
     }
 
-    // If proxy settings have changed, apply new settings:
+    err = db()->SaveProxySettings(use_proxy, proxy);
+    if (err != kopsik::noError) {
+        return UI()->DisplayError(err);
+    }
+
+    if (!applySettings()) {
+        return false;
+    }
+
+    if (!user_) {
+        return true;
+    }
+
     if (use_proxy != was_using_proxy
             || proxy.host != previous_proxy_settings.host
             || proxy.port != previous_proxy_settings.port
             || proxy.username != previous_proxy_settings.username
             || proxy.password != previous_proxy_settings.password) {
-        if (!ConfigureProxy()) {
-            return false;
-        }
-        if (user_) {
-            FullSync();
-            switchWebSocketOn();
-        }
+        FullSync();
+        switchWebSocketOn();
+        FetchUpdates();
     }
 
-    UI()->DisplayProxySettings(false, use_proxy, proxy);
+    return true;
+}
+
+_Bool Context::applySettings() {
+    kopsik::Settings settings;
+    error err = db()->LoadSettings(&settings);
+    if (err != kopsik::noError) {
+        setUser(0);
+        return UI()->DisplayError(err);
+    }
+
+    bool use_proxy(false);
+    Proxy proxy;
+    err = db()->LoadProxySettings(&use_proxy, &proxy);
+    if (err != kopsik::noError) {
+        setUser(0);
+        return UI()->DisplayError(err);
+    }
+
+    bool record_timeline(false);
+    if (user_) {
+        record_timeline = user_->RecordTimeline();
+    }
+
+    UI()->DisplaySettings(false,
+                          record_timeline, settings, use_proxy, proxy);
+
+    Poco::Mutex::ScopedLock lock(ws_client_m_);
+    if (!use_proxy) {
+        ws_client_->SetProxy(kopsik::Proxy());
+    } else {
+        ws_client_->SetProxy(proxy);
+    }
 
     return true;
 }
@@ -820,15 +825,21 @@ void Context::setUser(User *value) {
 
     if (!user_) {
         UI()->DisplayLogin();
+
         switchTimelineOff();
         switchWebSocketOff();
+
         return;
     }
 
     ViewTimeEntryList();
+
     switchTimelineOn();
     switchWebSocketOn();
+
     FullSync();
+
+    FetchUpdates();
 }
 
 _Bool Context::SetLoggedInUserFromJSON(
@@ -938,10 +949,6 @@ bool Context::CanAddProjects(const Poco::UInt64 workspace_id) const {
         return ws->Admin() || !ws->OnlyAdminsMayCreateProjects();
     }
     return user_->CanAddProjects();
-}
-
-bool Context::UserIsLoggedIn() const {
-    return (user_ && user_->ID());
 }
 
 Poco::UInt64 Context::UsersDefaultWID() const {
@@ -1432,29 +1439,6 @@ std::vector<kopsik::TimeEntry *> Context::timeEntries() const {
     }
 
     return result;
-}
-
-_Bool Context::TrackedPerDateHeader(
-    const std::string date_header,
-    int *sum) const {
-    if (!user_) {
-        logger().warning("Cannot access time entries, user logged out");
-        return true;
-    }
-    for (std::vector<kopsik::TimeEntry *>::const_iterator it =
-        user_->related.TimeEntries.begin();
-            it != user_->related.TimeEntries.end(); it++) {
-        kopsik::TimeEntry *te = *it;
-        if (te->DurationInSeconds() >= 0 && !te->DeletedAt() &&
-                te->DateHeaderString() == date_header) {
-            sum += te->DurationInSeconds();
-        }
-    }
-    return true;
-}
-
-bool Context::RecordTimeline() const {
-    return user_ && user_->RecordTimeline();
 }
 
 _Bool Context::SaveUpdateChannel(

@@ -70,6 +70,20 @@ extern "C" {
         void *Next;
     } KopsikViewItem;
 
+    typedef struct {
+        _Bool use_proxy;
+        char *proxy_host;
+        uint64_t proxy_port;
+        char *proxy_username;
+        char *proxy_password;
+        _Bool use_idle_detection;
+        _Bool menubar_timer;
+        _Bool dock_icon;
+        _Bool on_top;
+        _Bool reminder;
+        _Bool record_timeline;
+    } KopsikSettingsViewItem;
+
     // Callbacks that need to be implemented in UI
 
     typedef void (*KopsikDisplayError)(
@@ -81,9 +95,11 @@ extern "C" {
         const char *url,
         const char *version);
 
-    typedef void (*KopsikDisplayOnlineState)(const _Bool is_online);
+    typedef void (*KopsikDisplayOnlineState)(
+        const _Bool is_online);
 
-    typedef void(*KopsikDisplayURL)(const char *url);
+    typedef void(*KopsikDisplayURL)(
+        const char *url);
 
     typedef void (*KopsikDisplayLogin)();
 
@@ -106,27 +122,12 @@ extern "C" {
         KopsikTimeEntryViewItem *te,
         const char *focused_field_name);
 
+    typedef void (*KopsikApplySettings)(
+        KopsikSettingsViewItem *settings);
+
     typedef void (*KopsikDisplaySettings)(
         const _Bool open,
-        const _Bool use_idle_detection,
-        const _Bool menubar_timer,
-        const _Bool dock_icon,
-        const _Bool on_top,
-        const _Bool reminder);
-
-    typedef void (*KopsikApplySettings)(
-        const _Bool use_idle_detection,
-        const _Bool menubar_timer,
-        const _Bool dock_icon,
-        const _Bool on_top);
-
-    typedef void (*KopsikDisplayProxySettings)(
-        const _Bool open,
-        const _Bool use_proxy,
-        const char *proxy_host,
-        const uint64_t proxy_port,
-        const char *proxy_username,
-        const char *proxy_password);
+        KopsikSettingsViewItem *settings);
 
     typedef void (*KopsikDisplayTimerState)(
         KopsikTimeEntryViewItem *te);
@@ -222,17 +223,9 @@ extern "C" {
         void *context,
         KopsikDisplaySettings);
 
-    KOPSIK_EXPORT void kopsik_on_proxy_settings(
-        void *context,
-        KopsikDisplayProxySettings);
-
     KOPSIK_EXPORT void kopsik_on_timer_state(
         void *context,
         KopsikDisplayTimerState);
-
-    KOPSIK_EXPORT void kopsik_on_apply_settings(
-        void *context,
-        KopsikApplySettings);
 
     // After UI callbacks are configured, start pumping UI events
 
@@ -333,6 +326,14 @@ extern "C" {
         const _Bool on_top,
         const _Bool reminder);
 
+    KOPSIK_EXPORT _Bool kopsik_set_proxy_settings(
+        void *context,
+        const _Bool use_proxy,
+        const char *proxy_host,
+        const uint64_t proxy_port,
+        const char *proxy_username,
+        const char *proxy_password);
+
     KOPSIK_EXPORT _Bool kopsik_logout(
         void *context);
 
@@ -360,14 +361,6 @@ extern "C" {
     KOPSIK_EXPORT _Bool kopsik_set_update_channel(
         void *context,
         const char *update_channel);
-
-    KOPSIK_EXPORT _Bool kopsik_set_proxy_settings(
-        void *context,
-        const _Bool use_proxy,
-        const char *proxy_host,
-        const uint64_t proxy_port,
-        const char *proxy_username,
-        const char *proxy_password);
 
     KOPSIK_EXPORT void kopsik_sync(
         void *context);
@@ -406,36 +399,24 @@ extern "C" {
     KOPSIK_EXPORT int64_t kopsik_parse_duration_string_into_seconds(
         const char *duration_string);
 
+    // FIXME: should be invoked inside lib instead
     KOPSIK_EXPORT _Bool kopsik_users_default_wid(
         void *context,
         uint64_t *default_wid);
 
-    KOPSIK_EXPORT _Bool kopsik_configure_proxy(
-        void *context);
-
+    // FIXME: should not be exported from lib
     KOPSIK_EXPORT _Bool kopsik_user_can_see_billable_flag(
         void *context,
         const char *guid,
         _Bool *can_see);
 
+    // FIXME: should not be exported from lib
     KOPSIK_EXPORT _Bool kopsik_user_can_add_projects(
         void *context,
         const uint64_t workspace_id,
         _Bool *can_add);
 
-    KOPSIK_EXPORT _Bool kopsik_user_is_logged_in(
-        void *context,
-        _Bool *is_logged_in);
-
-    KOPSIK_EXPORT _Bool kopsik_duration_for_date_header(
-        void *context,
-        const char *date,
-        char *duration,
-        const size_t duration_len);
-
-    KOPSIK_EXPORT _Bool kopsik_timeline_is_recording_enabled(
-        void *context);
-
+    // FIXME: should not be exported from lib
     KOPSIK_EXPORT _Bool kopsik_get_update_channel(
         void *context,
         char *update_channel,

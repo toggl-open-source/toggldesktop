@@ -35,9 +35,7 @@ class UI {
     , on_display_tags_(0)
     , on_display_time_entry_editor_(0)
     , on_display_settings_(0)
-    , on_display_proxy_settings_(0)
-    , on_display_timer_state_(0)
-    , on_apply_settings_(0) {}
+    , on_display_timer_state_(0) {}
 
     ~UI() {}
 
@@ -59,12 +57,12 @@ class UI {
                                 const std::string focused_field_name);
     void DisplayURL(const std::string);
     void DisplayLogin();
-    void DisplaySettings(const _Bool open, const Settings);
-    void DisplayProxySettings(const _Bool open,
-                              const _Bool use_proxy,
-                              const Proxy proxy);
+    void DisplaySettings(const _Bool open,
+                         const _Bool record_timeline,
+                         const Settings settings,
+                         const _Bool use_proxy,
+                         const Proxy proxy);
     void DisplayTimerState(kopsik::TimeEntry *te);
-    void ApplySettings(const Settings);
 
     error VerifyCallbacks();
 
@@ -120,16 +118,8 @@ class UI {
         on_display_settings_ = cb;
     }
 
-    void OnDisplayProxySettings(KopsikDisplayProxySettings cb) {
-        on_display_proxy_settings_ = cb;
-    }
-
     void OnDisplayTimerState(KopsikDisplayTimerState cb) {
         on_display_timer_state_ = cb;
-    }
-
-    void OnApplySettings(KopsikApplySettings cb) {
-        on_apply_settings_ = cb;
     }
 
  protected:
@@ -149,9 +139,7 @@ class UI {
     KopsikDisplayViewItems on_display_tags_;
     KopsikDisplayTimeEntryEditor on_display_time_entry_editor_;
     KopsikDisplaySettings on_display_settings_;
-    KopsikDisplayProxySettings on_display_proxy_settings_;
     KopsikDisplayTimerState on_display_timer_state_;
-    KopsikApplySettings on_apply_settings_;
 
  private:
     Poco::Logger &logger() const {

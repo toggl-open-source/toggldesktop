@@ -51,9 +51,6 @@ class Context {
     // Load model update from JSON string (from WebSocket)
     _Bool LoadUpdateFromJSONString(const std::string json);
 
-    // Apply proxy settings
-    _Bool ConfigureProxy();
-
     // Configure
     void SetAPIURL(const std::string value) {
         api_url_ = value;
@@ -94,8 +91,6 @@ class Context {
 
     bool CanSeeBillable(const std::string GUID) const;
     bool CanAddProjects(const Poco::UInt64 workspace_id) const;
-
-    bool UserIsLoggedIn() const;
 
     Poco::UInt64 UsersDefaultWID() const;
 
@@ -164,12 +159,6 @@ class Context {
         kopsik::TimeEntry **running) const;
 
     _Bool ToggleTimelineRecording();
-
-    _Bool TrackedPerDateHeader(
-        const std::string date_header,
-        int *sum) const;
-
-    bool RecordTimeline() const;
 
     _Bool SaveUpdateChannel(
         const std::string channel);
@@ -259,6 +248,8 @@ class Context {
     std::vector<std::string> tags() const;
     std::vector<kopsik::Workspace *> workspaces() const;
     std::vector<kopsik::Client *> clients() const;
+
+    _Bool applySettings();
 
     Poco::Mutex db_m_;
     kopsik::Database *db_;
