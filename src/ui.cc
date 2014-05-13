@@ -107,17 +107,12 @@ void UI::DisplayUpdate(const bool is_available,
 void UI::DisplayAutocomplete(std::vector<kopsik::AutocompleteItem> *items) {
     logger().debug("DisplayAutocomplete");
 
-    KopsikAutocompleteItem *previous = 0;
     KopsikAutocompleteItem *first = 0;
     for (std::vector<kopsik::AutocompleteItem>::const_iterator it =
         items->begin(); it != items->end(); it++) {
-        KopsikAutocompleteItem *autocomplete_item = autocomplete_item_init(*it);
-        if (!first) {
-            first = autocomplete_item;
-        }
-        if (previous) {
-            previous->Next = autocomplete_item;
-        }
+        KopsikAutocompleteItem *item = autocomplete_item_init(*it);
+        item->Next = first;
+        first = item;
     }
     on_display_autocomplete_(first);
     autocomplete_item_clear(first);
@@ -132,11 +127,12 @@ void UI::DisplayTimeEntryList(const _Bool open,
         KopsikTimeEntryViewItem *item =
             time_entry_view_item_init(visible->at(i));
         item->Next = first;
-        if (!first || strcmp(item->DateHeader, first->DateHeader) != 0) {
-            item->IsHeader = true;
+        if (first && strcmp(item->DateHeader, first->DateHeader) != 0) {
+            first->IsHeader = true;
         }
         first = item;
     }
+    first->IsHeader = true;
     on_display_time_entry_list_(open, first);
     time_entry_view_item_clear(first);
 }
