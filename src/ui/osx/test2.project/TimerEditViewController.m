@@ -103,17 +103,6 @@ extern void *ctx;
     self.startButtonBox.fillColor = [ConvertHexColor hexCodeToNSColor:@"#4bc800"];
   }
 
-/* FIXME: merge conflict
-  // Display description
-  if (self.time_entry.Description != nil) {
-    self.descriptionComboBox.stringValue = self.time_entry.Description;
-    self.descriptionComboBox.toolTip = self.time_entry.Description;
-  } else {
-    self.descriptionComboBox.toolTip = nil;
-    self.descriptionComboBox.stringValue = @"";
-  }
-*/
-  
   // Description and duration cannot be edited
   // while time entry is running
   if (self.time_entry.duration_in_seconds < 0) {
