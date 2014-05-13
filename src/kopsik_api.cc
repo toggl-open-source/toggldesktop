@@ -443,8 +443,9 @@ void kopsik_format_duration_in_seconds_pretty_hhmm(
 
     poco_assert(max_strlen);
 
-    std::string formatted = kopsik::Formatter::FormatDurationInSecondsPrettyHHMM(
-        duration_in_seconds);
+    std::string formatted =
+        kopsik::Formatter::FormatDurationInSecondsPrettyHHMM(
+            duration_in_seconds);
     strncpy(out_str, formatted.c_str(), max_strlen);
 }
 

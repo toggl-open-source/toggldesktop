@@ -475,7 +475,8 @@ std::string Formatter::FormatDurationInSecondsHHMM(const Poco::Int64 value) {
     return FormatDurationInSeconds(value, "%M");
 }
 
-std::string Formatter::FormatDurationInSecondsPrettyHHMM(const Poco::Int64 value) {
+std::string Formatter::FormatDurationInSecondsPrettyHHMM(
+    const Poco::Int64 value) {
     return FormatDurationInSecondsToHM(value);
 }
 
