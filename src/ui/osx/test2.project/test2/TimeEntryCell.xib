@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CwR-d5-aWs">
-                                <rect key="frame" x="18" y="31" width="161" height="17"/>
+                                <rect key="frame" x="18" y="31" width="101" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="17" id="QDn-DF-0mF"/>
@@ -89,11 +89,11 @@
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="QS9-7g-WQN" secondAttribute="trailing" constant="105" id="2Mb-xj-1TO"/>
                         <constraint firstItem="deS-e6-3Ui" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" constant="12" id="FOo-PQ-AK1"/>
+                        <constraint firstItem="29c-rg-nft" firstAttribute="leading" secondItem="deS-e6-3Ui" secondAttribute="trailing" constant="3" id="FqE-uD-QTX"/>
                         <constraint firstItem="xwb-FG-Z4X" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" constant="19" id="HsG-Zm-aF4"/>
                         <constraint firstItem="CwR-d5-aWs" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" constant="15" id="KZ4-JV-5xD"/>
                         <constraint firstAttribute="trailing" secondItem="Gcj-ki-Hus" secondAttribute="trailing" constant="77" id="KeA-dg-xG5"/>
-                        <constraint firstAttribute="trailing" secondItem="deS-e6-3Ui" secondAttribute="trailing" priority="850" constant="105" id="L9d-4A-NVt"/>
-                        <constraint firstAttribute="trailing" secondItem="CwR-d5-aWs" secondAttribute="trailing" priority="600" constant="105" id="OD9-hN-DXz"/>
+                        <constraint firstItem="29c-rg-nft" firstAttribute="leading" secondItem="CwR-d5-aWs" secondAttribute="trailing" constant="3" id="RDQ-TR-AdG"/>
                         <constraint firstAttribute="trailing" secondItem="xwb-FG-Z4X" secondAttribute="trailing" constant="15" id="SKX-kj-jDT"/>
                         <constraint firstAttribute="trailing" secondItem="29c-rg-nft" secondAttribute="trailing" priority="950" constant="105" id="UBl-Ai-aSo"/>
                         <constraint firstAttribute="bottom" secondItem="xwb-FG-Z4X" secondAttribute="bottom" constant="15" id="Wxi-cu-zKj"/>
