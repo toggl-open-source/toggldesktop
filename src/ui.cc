@@ -200,27 +200,6 @@ void UI::DisplayURL(const std::string URL) {
     on_display_url_(URL.c_str());
 }
 
-KopsikSettingsViewItem settings_view_item_init(const Settings settings,
-        const _Bool use_proxy,
-        const Proxy proxy) {
-    KopsikSettingsViewItem view;
-
-    view.dock_icon = settings.dock_icon;
-    view.menubar_timer = settings.menubar_timer;
-    view.on_top = settings.on_top;
-    view.reminder = settings.reminder;
-    view.use_idle_detection = settings.use_idle_detection;
-
-    view.use_proxy = use_proxy;
-
-    view.proxy_host = strdup(proxy.host.c_str());
-    view.proxy_port = proxy.port;
-    view.proxy_username = strdup(proxy.username.c_str());
-    view.proxy_password = strdup(proxy.password.c_str());
-
-    return view;
-}
-
 void UI::DisplaySettings(const _Bool open,
                          const _Bool record_timeline,
                          const Settings settings,
@@ -228,30 +207,15 @@ void UI::DisplaySettings(const _Bool open,
                          const Proxy proxy) {
     logger().debug("DisplaySettings");
 
-    KopsikSettingsViewItem view = settings_view_item_init(settings,
-                                  use_proxy,
-                                  proxy);
-
-    view.record_timeline = record_timeline;
-
-    view.dock_icon = settings.dock_icon;
-    view.menubar_timer = settings.menubar_timer;
-    view.on_top = settings.on_top;
-    view.reminder = settings.reminder;
-    view.use_idle_detection = settings.use_idle_detection;
-
-    view.use_proxy = use_proxy;
-
-    view.proxy_host = strdup(proxy.host.c_str());
-    view.proxy_port = proxy.port;
-    view.proxy_username = strdup(proxy.username.c_str());
-    view.proxy_password = strdup(proxy.password.c_str());
+    KopsikSettingsViewItem view = settings_view_item_init(
+        record_timeline,
+        settings,
+        use_proxy,
+        proxy);
 
     on_display_settings_(open, &view);
 
-    free(view.proxy_host);
-    free(view.proxy_username);
-    free(view.proxy_password);
+    settings_view_item_clear(&view);
 }
 
 void UI::DisplayTimerState(kopsik::TimeEntry *te) {

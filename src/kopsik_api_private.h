@@ -11,6 +11,8 @@
 #include "./autocomplete_item.h"
 #include "./workspace.h"
 #include "./time_entry.h"
+#include "./settings.h"
+#include "./proxy.h"
 
 KopsikViewItem *view_item_init();
 
@@ -36,5 +38,13 @@ void autocomplete_item_clear(KopsikAutocompleteItem *item);
 KopsikTimeEntryViewItem *time_entry_view_item_init(kopsik::TimeEntry *te);
 
 void time_entry_view_item_clear(KopsikTimeEntryViewItem *item);
+
+KopsikSettingsViewItem settings_view_item_init(
+    const _Bool record_timeline,
+    const kopsik::Settings settings,
+    const _Bool use_proxy,
+    const kopsik::Proxy proxy);
+
+void settings_view_item_clear(KopsikSettingsViewItem *view);
 
 #endif  // SRC_KOPSIK_API_PRIVATE_H_

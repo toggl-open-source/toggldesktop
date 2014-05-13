@@ -204,3 +204,35 @@ void time_entry_view_item_clear(
     }
     delete item;
 }
+
+KopsikSettingsViewItem settings_view_item_init(
+    const _Bool record_timeline,
+    const kopsik::Settings settings,
+    const _Bool use_proxy,
+    const kopsik::Proxy proxy) {
+    KopsikSettingsViewItem view;
+
+    view.record_timeline = record_timeline;
+
+    view.dock_icon = settings.dock_icon;
+    view.menubar_timer = settings.menubar_timer;
+    view.on_top = settings.on_top;
+    view.reminder = settings.reminder;
+    view.use_idle_detection = settings.use_idle_detection;
+
+    view.use_proxy = use_proxy;
+
+    view.proxy_host = strdup(proxy.host.c_str());
+    view.proxy_port = proxy.port;
+    view.proxy_username = strdup(proxy.username.c_str());
+    view.proxy_password = strdup(proxy.password.c_str());
+
+    return view;
+}
+
+void settings_view_item_clear(KopsikSettingsViewItem *view) {
+    poco_check_ptr(view);
+    free(view->proxy_host);
+    free(view->proxy_username);
+    free(view->proxy_password);
+}
