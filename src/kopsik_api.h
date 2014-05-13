@@ -397,7 +397,6 @@ extern "C" {
     KOPSIK_EXPORT int64_t kopsik_parse_duration_string_into_seconds(
         const char *duration_string);
 
-    // FIXME: should not be exported, pass default WID via callback instead
     KOPSIK_EXPORT _Bool kopsik_users_default_wid(
         void *context,
         uint64_t *default_wid);
