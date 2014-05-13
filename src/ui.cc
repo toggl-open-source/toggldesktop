@@ -3,6 +3,8 @@
 
 #include "./ui.h"
 
+#include <cstdlib>
+
 namespace kopsik {
 
 void UI::DisplayLogin() {
@@ -75,14 +77,8 @@ error UI::VerifyCallbacks() {
     if (!on_display_settings_) {
         return error("!on_display_settings_");
     }
-    if (!on_display_proxy_settings_) {
-        return error("!on_display_proxy_settings_");
-    }
     if (!on_display_timer_state_) {
         return error("!on_display_timer_state_");
-    }
-    if (!on_apply_settings_) {
-        return error("!on_apply_settings_");
     }
     return noError;
 }
@@ -204,38 +200,58 @@ void UI::DisplayURL(const std::string URL) {
     on_display_url_(URL.c_str());
 }
 
+KopsikSettingsViewItem settings_view_item_init(const Settings settings,
+        const _Bool use_proxy,
+        const Proxy proxy) {
+    KopsikSettingsViewItem view;
+
+    view.dock_icon = settings.dock_icon;
+    view.menubar_timer = settings.menubar_timer;
+    view.on_top = settings.on_top;
+    view.reminder = settings.reminder;
+    view.use_idle_detection = settings.use_idle_detection;
+
+    view.use_proxy = use_proxy;
+
+    view.proxy_host = strdup(proxy.host.c_str());
+    view.proxy_port = proxy.port;
+    view.proxy_username = strdup(proxy.username.c_str());
+    view.proxy_password = strdup(proxy.password.c_str());
+
+    return view;
+}
+
 void UI::DisplaySettings(const _Bool open,
-                         const Settings settings) {
+                         const _Bool record_timeline,
+                         const Settings settings,
+                         const _Bool use_proxy,
+                         const Proxy proxy) {
     logger().debug("DisplaySettings");
 
-    on_display_settings_(open,
-                         settings.use_idle_detection,
-                         settings.menubar_timer,
-                         settings.dock_icon,
-                         settings.on_top,
-                         settings.reminder);
-}
+    KopsikSettingsViewItem view = settings_view_item_init(settings,
+                                  use_proxy,
+                                  proxy);
 
-void UI::ApplySettings(const Settings settings) {
-    logger().debug("ApplySettings");
+    view.record_timeline = record_timeline;
 
-    on_apply_settings_(settings.use_idle_detection,
-                       settings.menubar_timer,
-                       settings.dock_icon,
-                       settings.on_top);
-}
+    view.dock_icon = settings.dock_icon;
+    view.menubar_timer = settings.menubar_timer;
+    view.on_top = settings.on_top;
+    view.reminder = settings.reminder;
+    view.use_idle_detection = settings.use_idle_detection;
 
-void UI::DisplayProxySettings(const _Bool open,
-                              const _Bool use_proxy,
-                              const Proxy proxy) {
-    logger().debug("DisplayProxySettings");
+    view.use_proxy = use_proxy;
 
-    on_display_proxy_settings_(open,
-                               use_proxy,
-                               proxy.host.c_str(),
-                               proxy.port,
-                               proxy.username.c_str(),
-                               proxy.password.c_str());
+    view.proxy_host = strdup(proxy.host.c_str());
+    view.proxy_port = proxy.port;
+    view.proxy_username = strdup(proxy.username.c_str());
+    view.proxy_password = strdup(proxy.password.c_str());
+
+    on_display_settings_(open, &view);
+
+    free(view.proxy_host);
+    free(view.proxy_username);
+    free(view.proxy_password);
 }
 
 void UI::DisplayTimerState(kopsik::TimeEntry *te) {

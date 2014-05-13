@@ -42,7 +42,6 @@
 		74664DB218AA860800AAD282 /* off.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 74664DB018AA860800AAD282 /* off.pdf */; };
 		74762BA118A139D4004433A9 /* NSUnstripedTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 74762BA018A139D4004433A9 /* NSUnstripedTableView.m */; };
 		7484F622191D92C30038885C /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7484F621191D92C30038885C /* Settings.m */; };
-		7484F625191D93B80038885C /* ProxySettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7484F624191D93B80038885C /* ProxySettings.m */; };
 		748664D0188D6617006DB4C5 /* TimeEntryCellWithHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 748664CF188D6617006DB4C5 /* TimeEntryCellWithHeader.m */; };
 		748664D2188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 748664D1188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib */; };
 		748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 748B3A3319222DB100F31468 /* DisplayCommand.m */; };
@@ -450,8 +449,6 @@
 		74762BA018A139D4004433A9 /* NSUnstripedTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSUnstripedTableView.m; sourceTree = "<group>"; };
 		7484F620191D92C30038885C /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Settings.h; path = ../Settings.h; sourceTree = "<group>"; };
 		7484F621191D92C30038885C /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Settings.m; path = ../Settings.m; sourceTree = "<group>"; };
-		7484F623191D93B80038885C /* ProxySettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProxySettings.h; path = ../ProxySettings.h; sourceTree = "<group>"; };
-		7484F624191D93B80038885C /* ProxySettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProxySettings.m; path = ../ProxySettings.m; sourceTree = "<group>"; };
 		748664CE188D6617006DB4C5 /* TimeEntryCellWithHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCellWithHeader.h; sourceTree = "<group>"; };
 		748664CF188D6617006DB4C5 /* TimeEntryCellWithHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryCellWithHeader.m; sourceTree = "<group>"; };
 		748664D1188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeEntryCellWithHeader.xib; sourceTree = "<group>"; };
@@ -667,8 +664,6 @@
 		69FC17FA17E6534400B96425 /* ui */ = {
 			isa = PBXGroup;
 			children = (
-				7484F623191D93B80038885C /* ProxySettings.h */,
-				7484F624191D93B80038885C /* ProxySettings.m */,
 				7484F620191D92C30038885C /* Settings.h */,
 				7484F621191D92C30038885C /* Settings.m */,
 				74098C311919899600CBDFB9 /* Utils.h */,
@@ -1277,7 +1272,6 @@
 				74AA9472180909F50000539F /* GTMHTTPFetchHistory.m in Sources */,
 				74E3CDC617FBABE400C3ADD3 /* Bugsnag.m in Sources */,
 				74C1579B183BA5DA00550613 /* AutocompleteDataSource.m in Sources */,
-				7484F625191D93B80038885C /* ProxySettings.m in Sources */,
 				74BA5FCF18B6E770009DAA2D /* NSHoverButton.m in Sources */,
 				748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */,
 				74FE0D5F18E260A000ECFED2 /* MASShortcutView+UserDefaults.m in Sources */,

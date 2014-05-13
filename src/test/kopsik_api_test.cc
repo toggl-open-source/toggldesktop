@@ -23,11 +23,10 @@ std::string reminder_title("");
 std::string reminder_informative_text("");
 std::string error("");
 bool online_state(false);
-kopsik::Settings settings;
 bool login(false);
-_Bool use_proxy;
-kopsik::Proxy proxy;
-_Bool is_tracking;
+Settings settings;
+bool use_proxy(false);
+Proxy proxy;
 }  // namespace testresult
 
 void on_error(
@@ -88,40 +87,36 @@ void on_time_entry_editor(
 
 void on_display_settings(
     const _Bool open,
-    const _Bool use_idle_detection,
-    const _Bool menubar_timer,
-    const _Bool dock_icon,
-    const _Bool on_top,
-    const _Bool reminder) {
-    testresult::settings.use_idle_detection = use_idle_detection;
-    testresult::settings.menubar_timer = menubar_timer;
-    testresult::settings.dock_icon = dock_icon;
-    testresult::settings.on_top = on_top;
-    testresult::settings.reminder = reminder;
-}
+    KopsikSettingsViewItem *settings) {
 
-void on_display_proxy_settings(
-    const _Bool open,
-    const _Bool use_proxy,
-    const char *proxy_host,
-    const uint64_t proxy_port,
-    const char *proxy_username,
-    const char *proxy_password) {
-    testresult::use_proxy = use_proxy;
-    testresult::proxy.host = std::string(proxy_host);
-    testresult::proxy.port = proxy_port;
-    testresult::proxy.username = std::string(proxy_username);
-    testresult::proxy.password = std::string(proxy_password);
+    testing::testresult::settings.use_idle_detection =
+        settings->use_idle_detection;
+    testing::testresult::settings.menubar_timer =
+        settings->menubar_timer;
+    testing::testresult::settings.reminder = settings->reminder;
+    testing::testresult::settings.dock_icon = settings->dock_icon;
+    testing::testresult::settings.on_top = settings->on_top;
+
+    testing::testresult::use_proxy = settings->use_proxy;
+
+    testing::testresult::proxy.host = std::string(settings->proxy_host);
+    testing::testresult::proxy.port = settings->proxy_port;
+    testing::testresult::proxy.username = std::string(settings->proxy_username);
+    testing::testresult::proxy.password = std::string(settings->proxy_password);
 }
 
 void on_display_timer_state(KopsikTimeEntryViewItem *te) {
 }
 
 void on_apply_settings(
-    const _Bool use_idle_detection,
-    const _Bool menubar_timer,
-    const _Bool dock_icon,
-    const _Bool on_top) {
+    KopsikSettingsViewItem *settings) {
+    testing::testresult::use_proxy = settings->use_proxy;
+    testing::testresult::settings.use_idle_detection =
+        settings->use_idle_detection;
+    testing::testresult::settings.menubar_timer =
+        settings->menubar_timer;
+    testing::testresult::settings.dock_icon = settings->dock_icon;
+    testing::testresult::settings.on_top = settings->on_top;
 }
 
 class App {
@@ -151,9 +146,7 @@ class App {
         kopsik_on_tags(ctx_, on_tags);
         kopsik_on_time_entry_editor(ctx_, on_time_entry_editor);
         kopsik_on_settings(ctx_, on_display_settings);
-        kopsik_on_proxy_settings(ctx_, on_display_proxy_settings);
         kopsik_on_timer_state(ctx_, on_display_timer_state);
-        kopsik_on_apply_settings(ctx_, on_apply_settings);
     }
     ~App() {
         kopsik_context_clear(ctx_);

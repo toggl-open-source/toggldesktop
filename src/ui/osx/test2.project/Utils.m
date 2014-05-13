@@ -10,6 +10,20 @@
 
 @implementation Utils
 
++ (NSInteger)boolToState:(BOOL)value {
+  if (value) {
+    return NSOnState;
+  }
+  return NSOffState;
+}
+
++ (unsigned int)stateToBool:(NSInteger)state {
+  if (NSOnState == state) {
+    return 1;
+  }
+  return 0;
+}
+
 + (void)disallowDuplicateInstances {
   if ([[NSRunningApplication runningApplicationsWithBundleIdentifier:
         [[NSBundle mainBundle] bundleIdentifier]] count] > 1) {
