@@ -14,6 +14,7 @@
 #import "TimeEntryCell.h"
 #import "TimeEntryCellWithHeader.h"
 #import "UIEvents.h"
+#import "DisplayCommand.h"
 
 @interface TimeEntryListViewController ()
 @property (nonatomic, strong) IBOutlet TimerEditViewController *timerEditViewController;
@@ -59,14 +60,14 @@ extern void *ctx;
   [self.timerEditViewController.view setFrame: self.headerView.bounds];
 }
 
--(void)displayTimeEntryList:(NSMutableArray *)list {
+-(void)displayTimeEntryList:(DisplayCommand *)cmd {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
   NSLog(@"TimeEntryListViewController displayTimeEntryList, thread %@", [NSThread currentThread]);
 
   @synchronized(viewitems) {
     [viewitems removeAllObjects];
-    [viewitems addObjectsFromArray:list];
+    [viewitems addObjectsFromArray:cmd.timeEntries];
   }
 
   [self.timeEntriesTableView reloadData];

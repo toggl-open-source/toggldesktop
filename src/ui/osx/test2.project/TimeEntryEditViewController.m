@@ -15,6 +15,7 @@
 #import "NSCustomComboBoxCell.h"
 #import "NSCustomComboBox.h"
 #import "kopsik_api.h"
+#import "DisplayCommand.h"
 
 @interface TimeEntryEditViewController ()
 @property AutocompleteDataSource *projectAutocompleteDataSource;
@@ -64,6 +65,10 @@ extern int kDurationStringLength;
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(startDisplayTags:)
                                                    name:kDisplayTags
+                                                 object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(startDisplayTimeEntryList:)
+                                                   name:kDisplayTimeEntryList
                                                  object:nil];
     }
     
@@ -204,12 +209,12 @@ extern int kDurationStringLength;
                       waitUntilDone:NO];
 }
 
-- (void)displayTimeEntryEditor:(TimeEntryViewItem *)item {
+- (void)displayTimeEntryEditor:(DisplayCommand *)cmd {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-  self.timeEntry = item;
+  self.timeEntry = cmd.timeEntry;
 
-  NSLog(@"TimeEntryEditViewController render, %@", item);
+  NSLog(@"TimeEntryEditViewController render, %@", self.timeEntry);
 
   if (nil == self.startDate.listener) {
     self.startDate.listener = self;
@@ -226,7 +231,7 @@ extern int kDurationStringLength;
   // Check if TE's can be marked as billable at all
   _Bool can_see_billable = false;
   if (!kopsik_user_can_see_billable_flag(ctx,
-                                         [item.GUID UTF8String],
+                                         [self.timeEntry.GUID UTF8String],
                                          &can_see_billable)) {
     return;
   }
@@ -237,7 +242,7 @@ extern int kDurationStringLength;
     [self.billableCheckbox setHidden:YES];
   }
 
-  if (item.billable) {
+  if (self.timeEntry.billable) {
     [self.billableCheckbox setState:NSOnState];
   } else {
     [self.billableCheckbox setState:NSOffState];
@@ -246,7 +251,7 @@ extern int kDurationStringLength;
   // Check if user can add projects
   _Bool can_add_projects = false;
   if (!kopsik_user_can_add_projects(ctx,
-                                    item.WorkspaceID,
+                                    self.timeEntry.WorkspaceID,
                                     &can_add_projects)) {
     return;
   }
@@ -258,13 +263,13 @@ extern int kDurationStringLength;
 
   // Overwrite description only if user is not editing it:
   if ([self.descriptionCombobox currentEditor] == nil) {
-    [self.descriptionCombobox setStringValue:item.Description];
+    [self.descriptionCombobox setStringValue:self.timeEntry.Description];
   }
   
   // Overwrite project only if user is not editing it
   if ([self.projectSelect currentEditor] == nil) {
-    if (item.ProjectAndTaskLabel != nil) {
-      [self.projectSelect setStringValue:item.ProjectAndTaskLabel];
+    if (self.timeEntry.ProjectAndTaskLabel != nil) {
+      [self.projectSelect setStringValue:self.timeEntry.ProjectAndTaskLabel];
     } else {
       [self.projectSelect setStringValue:@""];
     }
@@ -272,15 +277,15 @@ extern int kDurationStringLength;
 
   // Overwrite duration only if user is not editing it:
   if ([self.durationTextField currentEditor] == nil) {
-    [self.durationTextField setStringValue:item.duration];
+    [self.durationTextField setStringValue:self.timeEntry.duration];
   }
 
-  [self.startTime setStringValue:item.startTimeString];
-  [self.endTime setStringValue:item.endTimeString];
+  [self.startTime setStringValue:self.timeEntry.startTimeString];
+  [self.endTime setStringValue:self.timeEntry.endTimeString];
 
-  [self.startDate setDateValue:item.started];
+  [self.startDate setDateValue:self.timeEntry.started];
 
-  if (item.duration_in_seconds < 0) {
+  if (self.timeEntry.duration_in_seconds < 0) {
     [self.startDate setEnabled:NO];
       [self.continueButton setHidden:YES];
   } else {
@@ -288,24 +293,24 @@ extern int kDurationStringLength;
       [self.continueButton setHidden:NO];
   }
 
-  [self.endTime setHidden:(item.duration_in_seconds < 0)];
+  [self.endTime setHidden:(self.timeEntry.duration_in_seconds < 0)];
   
-  [self.startEndTimeBox setHidden:item.durOnly];
+  [self.startEndTimeBox setHidden:self.timeEntry.durOnly];
 
   // Overwrite tags only if user is not editing them right now
   if ([self.tagsTokenField currentEditor] == nil) {
-    if ([item.tags count] == 0) {
+    if ([self.timeEntry.tags count] == 0) {
       [self.tagsTokenField setObjectValue:nil];
     } else {
-      [self.tagsTokenField setObjectValue:item.tags];
+      [self.tagsTokenField setObjectValue:self.timeEntry.tags];
     }
   }
 
-  if (item.updatedAt != nil) {
+  if (self.timeEntry.updatedAt != nil) {
     NSDateFormatter* df_local = [[NSDateFormatter alloc] init];
     [df_local setTimeZone:[NSTimeZone defaultTimeZone]];
     [df_local setDateFormat:@"yyyy.MM.dd 'at' HH:mm:ss"];
-    NSString* localDate = [df_local stringFromDate:item.updatedAt];
+    NSString* localDate = [df_local stringFromDate:self.timeEntry.updatedAt];
     NSString *updatedAt = [@"Last update " stringByAppendingString:localDate];
     [self.lastUpdateTextField setStringValue:updatedAt];
     [self.lastUpdateTextField setHidden:NO];
@@ -313,10 +318,10 @@ extern int kDurationStringLength;
     [self.lastUpdateTextField setHidden:YES];
   }
 
-  if ([item.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDuration]]) {
+  if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDuration]]) {
     [self.durationTextField becomeFirstResponder];
   }
-  if ([item.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDescription]]) {
+  if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDescription]]) {
     [self.descriptionCombobox becomeFirstResponder];
   }
 }

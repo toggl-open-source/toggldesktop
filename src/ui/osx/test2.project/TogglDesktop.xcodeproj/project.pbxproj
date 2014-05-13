@@ -25,7 +25,6 @@
 		74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C9617EC1DE100CA53D3 /* libc++.dylib */; };
 		74033C9817EC1DF100CA53D3 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C8D17EC1CFD00CA53D3 /* libstdc++.dylib */; };
 		74098C331919899600CBDFB9 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 74098C321919899600CBDFB9 /* Utils.m */; };
-		74098C341919899600CBDFB9 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 74098C321919899600CBDFB9 /* Utils.m */; };
 		741104BF18C7682700BC7A49 /* NSTextFieldWithBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */; };
 		7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7423393A1829B99C00063FA9 /* IdleNotificationWindowController.m */; };
 		7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */; };
@@ -46,6 +45,9 @@
 		7484F625191D93B80038885C /* ProxySettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7484F624191D93B80038885C /* ProxySettings.m */; };
 		748664D0188D6617006DB4C5 /* TimeEntryCellWithHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 748664CF188D6617006DB4C5 /* TimeEntryCellWithHeader.m */; };
 		748664D2188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 748664D1188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib */; };
+		748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 748B3A3319222DB100F31468 /* DisplayCommand.m */; };
+		748B3A3519222DB100F31468 /* DisplayCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 748B3A3319222DB100F31468 /* DisplayCommand.m */; };
+		748B3A3619222E8F00F31468 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 74098C321919899600CBDFB9 /* Utils.m */; };
 		7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7498D2471888B226001390B9 /* TimeEntryCell.xib */; };
 		749A3A7718D8A176000AD2DB /* CrashReporter.framework in Resources */ = {isa = PBXBuildFile; fileRef = 749A3A5918D889BE000AD2DB /* CrashReporter.framework */; };
 		749A3A7918D8A1E3000AD2DB /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 749A3A5918D889BE000AD2DB /* CrashReporter.framework */; };
@@ -446,13 +448,15 @@
 		74762B9E18A12DB8004433A9 /* NSComboBox_Expansion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSComboBox_Expansion.h; sourceTree = "<group>"; };
 		74762B9F18A139D4004433A9 /* NSUnstripedTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUnstripedTableView.h; sourceTree = "<group>"; };
 		74762BA018A139D4004433A9 /* NSUnstripedTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSUnstripedTableView.m; sourceTree = "<group>"; };
-		7484F620191D92C30038885C /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
-		7484F621191D92C30038885C /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
-		7484F623191D93B80038885C /* ProxySettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProxySettings.h; sourceTree = "<group>"; };
-		7484F624191D93B80038885C /* ProxySettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProxySettings.m; sourceTree = "<group>"; };
+		7484F620191D92C30038885C /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Settings.h; path = ../Settings.h; sourceTree = "<group>"; };
+		7484F621191D92C30038885C /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Settings.m; path = ../Settings.m; sourceTree = "<group>"; };
+		7484F623191D93B80038885C /* ProxySettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProxySettings.h; path = ../ProxySettings.h; sourceTree = "<group>"; };
+		7484F624191D93B80038885C /* ProxySettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProxySettings.m; path = ../ProxySettings.m; sourceTree = "<group>"; };
 		748664CE188D6617006DB4C5 /* TimeEntryCellWithHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCellWithHeader.h; sourceTree = "<group>"; };
 		748664CF188D6617006DB4C5 /* TimeEntryCellWithHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryCellWithHeader.m; sourceTree = "<group>"; };
 		748664D1188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeEntryCellWithHeader.xib; sourceTree = "<group>"; };
+		748B3A3219222DB100F31468 /* DisplayCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayCommand.h; sourceTree = "<group>"; };
+		748B3A3319222DB100F31468 /* DisplayCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayCommand.m; sourceTree = "<group>"; };
 		7498D2471888B226001390B9 /* TimeEntryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeEntryCell.xib; sourceTree = "<group>"; };
 		749A3A4318D889BD000AD2DB /* CrashReporter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CrashReporter.xcodeproj; path = "../../../../third_party/plcrashreporter-1.2-rc4/CrashReporter.xcodeproj"; sourceTree = "<group>"; };
 		749BD0BB1833E28400980494 /* NSBoxClickable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSBoxClickable.h; sourceTree = "<group>"; };
@@ -596,10 +600,6 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
-				7484F623191D93B80038885C /* ProxySettings.h */,
-				7484F624191D93B80038885C /* ProxySettings.m */,
-				7484F620191D92C30038885C /* Settings.h */,
-				7484F621191D92C30038885C /* Settings.m */,
 				749A3A4318D889BD000AD2DB /* CrashReporter.xcodeproj */,
 				74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */,
 				74B680A8180759C300B697AA /* Kopsik.xcodeproj */,
@@ -667,6 +667,10 @@
 		69FC17FA17E6534400B96425 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				7484F623191D93B80038885C /* ProxySettings.h */,
+				7484F624191D93B80038885C /* ProxySettings.m */,
+				7484F620191D92C30038885C /* Settings.h */,
+				7484F621191D92C30038885C /* Settings.m */,
 				74098C311919899600CBDFB9 /* Utils.h */,
 				74098C321919899600CBDFB9 /* Utils.m */,
 				3C7B4E8B190FA6D200627DC3 /* NSTextFieldVerticallyAligned.h */,
@@ -748,6 +752,8 @@
 				74BA5FCE18B6E770009DAA2D /* NSHoverButton.m */,
 				74BAD31C18BD7D83002FD4CF /* ViewItem.h */,
 				74BAD31D18BD7D83002FD4CF /* ViewItem.m */,
+				748B3A3219222DB100F31468 /* DisplayCommand.h */,
+				748B3A3319222DB100F31468 /* DisplayCommand.m */,
 			);
 			name = ui;
 			path = test2;
@@ -1273,6 +1279,7 @@
 				74C1579B183BA5DA00550613 /* AutocompleteDataSource.m in Sources */,
 				7484F625191D93B80038885C /* ProxySettings.m in Sources */,
 				74BA5FCF18B6E770009DAA2D /* NSHoverButton.m in Sources */,
+				748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */,
 				74FE0D5F18E260A000ECFED2 /* MASShortcutView+UserDefaults.m in Sources */,
 				7430750818205B88009019CB /* Update.m in Sources */,
 				74E3CDD017FBABE400C3ADD3 /* BugsnagReachability.m in Sources */,
@@ -1329,6 +1336,7 @@
 				74E20DF618EE0A3D00695787 /* GTMHTTPFetchHistory.m in Sources */,
 				74E20DF718EE0A3D00695787 /* Bugsnag.m in Sources */,
 				74E20DF818EE0A3D00695787 /* AutocompleteDataSource.m in Sources */,
+				748B3A3519222DB100F31468 /* DisplayCommand.m in Sources */,
 				74E20DF918EE0A3D00695787 /* NSHoverButton.m in Sources */,
 				74E20DFA18EE0A3D00695787 /* MASShortcutView+UserDefaults.m in Sources */,
 				74E20DFB18EE0A3D00695787 /* Update.m in Sources */,
@@ -1358,11 +1366,11 @@
 				74E20E1618EE0A3D00695787 /* AboutWindowController.m in Sources */,
 				74E20E1718EE0A3D00695787 /* TimerEditViewController.m in Sources */,
 				74E20E1818EE0A3D00695787 /* NSTextFieldWithBackground.m in Sources */,
+				748B3A3619222E8F00F31468 /* Utils.m in Sources */,
 				74E20E1918EE0A3D00695787 /* BugsnagNotifier.m in Sources */,
 				74E20E1A18EE0A3D00695787 /* NSTextFieldClickable.m in Sources */,
 				74E20E1C18EE0A3D00695787 /* NSCustomComboBoxCell.m in Sources */,
 				74E20E1D18EE0A3D00695787 /* BugsnagConfiguration.m in Sources */,
-				74098C341919899600CBDFB9 /* Utils.m in Sources */,
 				74E20E1E18EE0A3D00695787 /* idler.c in Sources */,
 				74E20E1F18EE0A3D00695787 /* GTMOAuth2Authentication.m in Sources */,
 				74E20E2018EE0A3D00695787 /* LoginViewController.m in Sources */,

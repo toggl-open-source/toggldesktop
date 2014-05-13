@@ -116,7 +116,7 @@ class Context {
         const std::string GUID,
         kopsik::TimeEntry **);
 
-    void DisplayTimeEntryList();
+    void ViewTimeEntryList();
 
     void Edit(const std::string GUID,
               const _Bool edit_running_entry,

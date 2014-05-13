@@ -127,7 +127,8 @@ void UI::DisplayAutocomplete(std::vector<kopsik::AutocompleteItem> *items) {
     autocomplete_item_clear(first);
 }
 
-void UI::DisplayTimeEntryList(std::vector<kopsik::TimeEntry *> *visible) {
+void UI::DisplayTimeEntryList(const _Bool open,
+                              std::vector<kopsik::TimeEntry *> *visible) {
     logger().debug("DisplayTimeEntryList");
 
     KopsikTimeEntryViewItem *first = 0;
@@ -140,7 +141,7 @@ void UI::DisplayTimeEntryList(std::vector<kopsik::TimeEntry *> *visible) {
         }
         first = item;
     }
-    on_display_time_entry_list_(first);
+    on_display_time_entry_list_(open, first);
     time_entry_view_item_clear(first);
 }
 
@@ -187,12 +188,13 @@ void UI::DisplayWorkspaceSelect(std::vector<kopsik::Workspace *> *list) {
     view_item_clear(first);
 }
 
-void UI::DisplayTimeEntryEditor(kopsik::TimeEntry *te,
+void UI::DisplayTimeEntryEditor(const _Bool open,
+                                kopsik::TimeEntry *te,
                                 const std::string focused_field_name) {
     logger().debug("DisplayTimeEntryEditor");
 
     KopsikTimeEntryViewItem *view = time_entry_view_item_init(te);
-    on_display_time_entry_editor_(view, focused_field_name.c_str());
+    on_display_time_entry_editor_(open, view, focused_field_name.c_str());
     time_entry_view_item_clear(view);
 }
 
@@ -202,10 +204,12 @@ void UI::DisplayURL(const std::string URL) {
     on_display_url_(URL.c_str());
 }
 
-void UI::DisplaySettings(const Settings settings) {
+void UI::DisplaySettings(const _Bool open,
+                         const Settings settings) {
     logger().debug("DisplaySettings");
 
-    on_display_settings_(settings.use_idle_detection,
+    on_display_settings_(open,
+                         settings.use_idle_detection,
                          settings.menubar_timer,
                          settings.dock_icon,
                          settings.on_top,
@@ -221,10 +225,13 @@ void UI::ApplySettings(const Settings settings) {
                        settings.on_top);
 }
 
-void UI::DisplayProxySettings(const _Bool use_proxy, const Proxy proxy) {
+void UI::DisplayProxySettings(const _Bool open,
+                              const _Bool use_proxy,
+                              const Proxy proxy) {
     logger().debug("DisplayProxySettings");
 
-    on_display_proxy_settings_(use_proxy,
+    on_display_proxy_settings_(open,
+                               use_proxy,
                                proxy.host.c_str(),
                                proxy.port,
                                proxy.username.c_str(),

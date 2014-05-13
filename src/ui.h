@@ -49,16 +49,20 @@ class UI {
         const std::string url,
         const std::string version);
     void DisplayAutocomplete(std::vector<kopsik::AutocompleteItem> *items);
-    void DisplayTimeEntryList(std::vector<kopsik::TimeEntry *> *visible);
+    void DisplayTimeEntryList(const _Bool open,
+                              std::vector<kopsik::TimeEntry *> *visible);
     void DisplayWorkspaceSelect(std::vector<kopsik::Workspace *> *list);
     void DisplayClientSelect(std::vector<kopsik::Client *> *clients);
     void DisplayTags(std::vector<std::string> *tags);
-    void DisplayTimeEntryEditor(kopsik::TimeEntry *te,
+    void DisplayTimeEntryEditor(const _Bool open,
+                                kopsik::TimeEntry *te,
                                 const std::string focused_field_name);
     void DisplayURL(const std::string);
     void DisplayLogin();
-    void DisplaySettings(const Settings);
-    void DisplayProxySettings(const _Bool use_proxy, const Proxy proxy);
+    void DisplaySettings(const _Bool open, const Settings);
+    void DisplayProxySettings(const _Bool open,
+                              const _Bool use_proxy,
+                              const Proxy proxy);
     void DisplayTimerState(kopsik::TimeEntry *te);
     void ApplySettings(const Settings);
 

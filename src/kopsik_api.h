@@ -92,6 +92,7 @@ extern "C" {
         const char *informative_text);
 
     typedef void (*KopsikDisplayTimeEntryList)(
+        const _Bool open,
         KopsikTimeEntryViewItem *first);
 
     typedef void (*KopsikDisplayAutocomplete)(
@@ -101,10 +102,12 @@ extern "C" {
         KopsikViewItem *first);
 
     typedef void (*KopsikDisplayTimeEntryEditor)(
+        const _Bool open,
         KopsikTimeEntryViewItem *te,
         const char *focused_field_name);
 
     typedef void (*KopsikDisplaySettings)(
+        const _Bool open,
         const _Bool use_idle_detection,
         const _Bool menubar_timer,
         const _Bool dock_icon,
@@ -118,6 +121,7 @@ extern "C" {
         const _Bool on_top);
 
     typedef void (*KopsikDisplayProxySettings)(
+        const _Bool open,
         const _Bool use_proxy,
         const char *proxy_host,
         const uint64_t proxy_port,

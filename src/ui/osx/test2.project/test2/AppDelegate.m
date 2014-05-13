@@ -28,6 +28,7 @@
 #import "Utils.h"
 #import "Settings.h"
 #import "ProxySettings.h"
+#import "DisplayCommand.h"
 
 @interface AppDelegate()
 @property (nonatomic, strong) IBOutlet MainWindowController *mainWindowController;
@@ -897,7 +898,8 @@ void on_url(const char *url) {
   [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[NSString stringWithUTF8String:url]]];
 }
 
-void on_time_entry_list(KopsikTimeEntryViewItem *first) {
+void on_time_entry_list(const _Bool open,
+                        KopsikTimeEntryViewItem *first) {
   NSMutableArray *viewitems = [[NSMutableArray alloc] init];
   KopsikTimeEntryViewItem *it = first;
   while (it) {
@@ -906,8 +908,11 @@ void on_time_entry_list(KopsikTimeEntryViewItem *first) {
     [viewitems addObject:model];
     it = it->Next;
   }
+  DisplayCommand *cmd = [[DisplayCommand alloc] init];
+  cmd.open = open;
+  cmd.timeEntries = viewitems;
   [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimeEntryList
-                                                      object:viewitems];
+                                                      object:cmd];
 }
 
 void on_autocomplete(KopsikAutocompleteItem *first) {
@@ -938,11 +943,16 @@ void on_workspace_select(KopsikViewItem *first) {
                                                       object:[ViewItem loadAll:first]];
 }
 
-void on_time_entry_editor(KopsikTimeEntryViewItem *te, const char *focused_field_name) {
+void on_time_entry_editor(const _Bool open,
+                          KopsikTimeEntryViewItem *te,
+                          const char *focused_field_name) {
   TimeEntryViewItem *item = [[TimeEntryViewItem alloc] init];
   [item load:te];
+  DisplayCommand *cmd = [[DisplayCommand alloc] init];
+  cmd.open = open;
+  cmd.timeEntry = item;
   [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimeEntryEditor
-                                                      object:item];
+                                                      object:cmd];
 }
 
 void on_error(const char *errmsg, const _Bool is_user_error) {
@@ -954,7 +964,8 @@ void on_error(const char *errmsg, const _Bool is_user_error) {
   }
 }
 
-void on_settings(const _Bool use_idle_detection,
+void on_settings(const _Bool open,
+                 const _Bool use_idle_detection,
                  const _Bool menubar_timer,
                  const _Bool dock_icon,
                  const _Bool on_top,
@@ -965,8 +976,11 @@ void on_settings(const _Bool use_idle_detection,
   s.dock_icon = dock_icon;
   s.on_top = on_top;
   s.reminder = reminder;
+  DisplayCommand *cmd = [[DisplayCommand alloc] init];
+  cmd.open = open;
+  cmd.settings = s;
   [[NSNotificationCenter defaultCenter] postNotificationName:kDisplaySettings
-                                                      object:s];
+                                                      object:cmd];
 }
 
 void on_apply_settings(const _Bool use_idle_detection,
@@ -982,7 +996,8 @@ void on_apply_settings(const _Bool use_idle_detection,
                                                       object:s];
 }
 
-void on_proxy_settings(const _Bool use_proxy,
+void on_proxy_settings(const _Bool open,
+                       const _Bool use_proxy,
                        const char *proxy_host,
                        const uint64_t proxy_port,
                        const char *proxy_username,
@@ -993,8 +1008,11 @@ void on_proxy_settings(const _Bool use_proxy,
   proxy.proxy_port = proxy_port;
   proxy.proxy_username = [NSString stringWithUTF8String:proxy_username];
   proxy.proxy_password = [NSString stringWithUTF8String:proxy_password];
+  DisplayCommand *cmd = [[DisplayCommand alloc] init];
+  cmd.open = open;
+  cmd.proxy = proxy;
   [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayProxySettings
-                                                      object:proxy];
+                                                      object:cmd];
 }
 
 void on_timer_state(KopsikTimeEntryViewItem *te) {

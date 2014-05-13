@@ -63,7 +63,9 @@ void on_reminder(const char *title, const char *informative_text) {
     testresult::reminder_informative_text = std::string(informative_text);
 }
 
-void on_time_entry_list(KopsikTimeEntryViewItem *first) {
+void on_time_entry_list(
+    const _Bool open,
+    KopsikTimeEntryViewItem *first) {
 }
 
 void on_autocomplete(KopsikAutocompleteItem *first) {
@@ -79,11 +81,13 @@ void on_tags(KopsikViewItem *first) {
 }
 
 void on_time_entry_editor(
+    const _Bool open,
     KopsikTimeEntryViewItem *te,
     const char *focused_field_name) {
 }
 
 void on_display_settings(
+    const _Bool open,
     const _Bool use_idle_detection,
     const _Bool menubar_timer,
     const _Bool dock_icon,
@@ -97,6 +101,7 @@ void on_display_settings(
 }
 
 void on_display_proxy_settings(
+    const _Bool open,
     const _Bool use_proxy,
     const char *proxy_host,
     const uint64_t proxy_port,
