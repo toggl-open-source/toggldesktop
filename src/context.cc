@@ -119,6 +119,10 @@ _Bool Context::StartEvents() {
     setUser(user);
 
     displayTimerState();
+    displayWorkspaceSelect();
+    displayClientSelect();
+    displayTags();
+    displayAutocomplete();
 
     return true;
 }
@@ -206,21 +210,16 @@ error Context::save(const bool push_changes) {
         DisplayTimeEntryList(open_time_entry_list);
     }
     if (display_autocomplete) {
-        std::vector<kopsik::AutocompleteItem> list =
-            autocompleteItems(true, true, true);
-        UI()->DisplayAutocomplete(&list);
+        displayAutocomplete();
     }
     if (display_workspace_select) {
-        std::vector<kopsik::Workspace *> list = workspaces();
-        UI()->DisplayWorkspaceSelect(&list);
+        displayWorkspaceSelect();
     }
     if (display_client_select) {
-        std::vector<kopsik::Client *> list = clients();
-        UI()->DisplayClientSelect(&list);
+        displayClientSelect();
     }
     if (display_tags) {
-        std::vector<std::string> list = tags();
-        UI()->DisplayTags(&list);
+        displayTags();
     }
     if (display_timer_state) {
         displayTimerState();
@@ -231,6 +230,27 @@ error Context::save(const bool push_changes) {
     }
 
     return noError;
+}
+
+void Context::displayAutocomplete() {
+    std::vector<kopsik::AutocompleteItem> list =
+        autocompleteItems(true, true, true);
+    UI()->DisplayAutocomplete(&list);
+}
+
+void Context::displayClientSelect() {
+    std::vector<kopsik::Client *> list = clients();
+    UI()->DisplayClientSelect(&list);
+}
+
+void Context::displayWorkspaceSelect() {
+    std::vector<kopsik::Workspace *> list = workspaces();
+    UI()->DisplayWorkspaceSelect(&list);
+}
+
+void Context::displayTags() {
+    std::vector<std::string> list = tags();
+    UI()->DisplayTags(&list);
 }
 
 void Context::FullSync() {
@@ -1870,6 +1890,7 @@ void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
 
     if (!user_) {
         logger().warning("User logged out, cannot remind");
+        return;
     }
 
     kopsik::Settings settings;
