@@ -72,33 +72,6 @@ void kopsik_context_clear(void *context) {
     delete app(context);
 }
 
-_Bool kopsik_get_settings(
-    void *context,
-    _Bool *out_use_idle_detection,
-    _Bool *out_menubar_timer,
-    _Bool *out_dock_icon,
-    _Bool *out_on_top,
-    _Bool *out_reminder) {
-
-    poco_check_ptr(out_use_idle_detection);
-    poco_check_ptr(out_menubar_timer);
-    poco_check_ptr(out_dock_icon);
-    poco_check_ptr(out_on_top);
-
-    kopsik::Settings settings;
-    if (!app(context)->Settings(&settings)) {
-        return false;
-    }
-
-    *out_use_idle_detection = settings.use_idle_detection;
-    *out_menubar_timer = settings.menubar_timer;
-    *out_dock_icon = settings.dock_icon;
-    *out_on_top = settings.on_top;
-    *out_reminder = settings.reminder;
-
-    return true;
-}
-
 _Bool kopsik_set_settings(
     void *context,
     const _Bool use_idle_detection,
@@ -186,46 +159,6 @@ void kopsik_set_websocket_url(
     poco_check_ptr(websocket_url);
 
     app(context)->SetWebSocketClientURL(websocket_url);
-}
-
-_Bool kopsik_set_api_token(
-    void *context,
-    const char *api_token) {
-    poco_check_ptr(api_token);
-
-    std::stringstream ss;
-    ss << "kopsik_set_api_token api_token=" << api_token;
-    logger().debug(ss.str());
-
-    return app(context)->SetCurrentAPIToken(api_token);
-}
-
-_Bool kopsik_get_api_token(
-    void *context,
-    char *str,
-    const size_t max_strlen) {
-
-    poco_check_ptr(str);
-    poco_assert(max_strlen);
-
-    std::string token("");
-    if (!app(context)->CurrentAPIToken(&token)) {
-        return false;
-    }
-
-    strncpy(str, token.c_str(), max_strlen);
-
-    return true;
-}
-
-_Bool kopsik_set_logged_in_user(
-    void *context,
-    const char *json) {
-    poco_check_ptr(json);
-
-    logger().debug("kopsik_set_logged_in_user");
-
-    return app(context)->SetLoggedInUserFromJSON(std::string(json));
 }
 
 _Bool kopsik_login(

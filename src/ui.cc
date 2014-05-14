@@ -101,7 +101,7 @@ void UI::DisplayUpdate(const bool is_available,
                        const std::string version) {
     logger().debug("DisplayUpdate");
 
-    on_display_update_(true, url.c_str(), version.c_str());
+    on_display_update_(is_available, url.c_str(), version.c_str());
 }
 
 void UI::DisplayAutocomplete(std::vector<kopsik::AutocompleteItem> *items) {
