@@ -702,25 +702,32 @@ _Bool Context::SetProxySettings(
 
 void Context::displayTimerState() {
     if (!user_) {
-        UI()->DisplayTimerState(0, "", "", "", "", "");
+        UI()->DisplayTimerState(0);
         return;
     }
 
     TimeEntry *te = user_->RunningTimeEntry();
+    KopsikTimeEntryViewItem *view = timeEntryViewItem(te);
+    UI()->DisplayTimerState(view);
+    time_entry_view_item_clear(view);
+}
 
-    // FIXME: UI:
+KopsikTimeEntryViewItem *Context::timeEntryViewItem(TimeEntry *te) {
+    if (!te) {
+        return 0;
+    }
+    // FIXME: UI: fill UI
     std::string project_and_task_label("");
     std::string color("");
     std::string start_time_string("");
     std::string end_time_string("");
     std::string date_duration("");
-
-    UI()->DisplayTimerState(te,
-                            project_and_task_label,
-                            color,
-                            start_time_string,
-                            end_time_string,
-                            date_duration);
+    return time_entry_view_item_init(te,
+                                     project_and_task_label,
+                                     color,
+                                     start_time_string,
+                                     end_time_string,
+                                     date_duration);
 }
 
 _Bool Context::DisplaySettings(const _Bool open) {
@@ -1058,7 +1065,35 @@ _Bool Context::Start(
 
 void Context::DisplayTimeEntryList(const _Bool open) {
     std::vector<TimeEntry *> list = timeEntries();
-    UI()->DisplayTimeEntryList(open, &list);
+
+    KopsikTimeEntryViewItem *first = 0;
+    for (unsigned int i = 0; i < list.size(); i++) {
+        // FIXME: UI:
+        std::string project_and_task_label("");
+        std::string color("");
+        std::string start_time_string("");
+        std::string end_time_string("");
+        std::string date_duration("");
+        KopsikTimeEntryViewItem *item =
+            time_entry_view_item_init(list.at(i),
+                                      project_and_task_label,
+                                      color,
+                                      start_time_string,
+                                      end_time_string,
+                                      date_duration);
+        item->Next = first;
+        if (first && strcmp(item->DateHeader, first->DateHeader) != 0) {
+            first->IsHeader = true;
+        }
+        first = item;
+    }
+
+    if (first) {
+        first->IsHeader = true;
+    }
+
+    UI()->DisplayTimeEntryList(open, first);
+    time_entry_view_item_clear(first);
 }
 
 void Context::Edit(const std::string GUID,
@@ -1083,7 +1118,9 @@ void Context::Edit(const std::string GUID,
         return;
     }
 
-    UI()->DisplayTimeEntryEditor(true, te, focused_field_name);
+    KopsikTimeEntryViewItem *view = timeEntryViewItem(te);
+    UI()->DisplayTimeEntryEditor(true, view, focused_field_name);
+    time_entry_view_item_clear(view);
 }
 
 _Bool Context::ContinueLatest(

@@ -48,13 +48,14 @@ class UI {
         const std::string version);
     void DisplayAutocomplete(std::vector<kopsik::AutocompleteItem> *items);
     void DisplayTimeEntryList(const _Bool open,
-                              std::vector<kopsik::TimeEntry *> *visible);
+                              KopsikTimeEntryViewItem *first);
     void DisplayWorkspaceSelect(std::vector<kopsik::Workspace *> *list);
     void DisplayClientSelect(std::vector<kopsik::Client *> *clients);
     void DisplayTags(std::vector<std::string> *tags);
-    void DisplayTimeEntryEditor(const _Bool open,
-                                kopsik::TimeEntry *te,
-                                const std::string focused_field_name);
+    void DisplayTimeEntryEditor(
+        const _Bool open,
+        KopsikTimeEntryViewItem *te,
+        const std::string focused_field_name);
     void DisplayURL(const std::string);
     void DisplayLogin(const _Bool open, const uint64_t user_id);
     void DisplaySettings(const _Bool open,
@@ -62,12 +63,7 @@ class UI {
                          const Settings settings,
                          const _Bool use_proxy,
                          const Proxy proxy);
-    void DisplayTimerState(kopsik::TimeEntry *te,
-                           const std::string project_and_task_label,
-                           const std::string color,
-                           const std::string start_time_string,
-                           const std::string end_time_string,
-                           const std::string date_duration);
+    void DisplayTimerState(KopsikTimeEntryViewItem *te);
 
     error VerifyCallbacks();
 

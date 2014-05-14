@@ -251,6 +251,8 @@ class Context {
     std::vector<kopsik::Workspace *> workspaces() const;
     std::vector<kopsik::Client *> clients() const;
 
+    KopsikTimeEntryViewItem *timeEntryViewItem(TimeEntry *te);
+
     void displayTimerState();
 
     Poco::Mutex db_m_;
