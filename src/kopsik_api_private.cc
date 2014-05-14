@@ -5,6 +5,7 @@
 #include <cstdlib>
 
 #include "./formatter.h"
+#include "./context.h"
 
 KopsikAutocompleteItem *autocomplete_item_init(
     const kopsik::AutocompleteItem item) {
@@ -247,4 +248,13 @@ void settings_view_item_clear(KopsikSettingsViewItem *view) {
     free(view->proxy_host);
     free(view->proxy_username);
     free(view->proxy_password);
+}
+
+_Bool testing_set_logged_in_user(
+    void *context,
+    const char *json) {
+    poco_check_ptr(json);
+
+    kopsik::Context *app = reinterpret_cast<kopsik::Context *>(context);
+    return app->SetLoggedInUserFromJSON(std::string(json));
 }

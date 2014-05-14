@@ -73,12 +73,6 @@ class Context {
         const kopsik::Proxy proxy);
 
     // Session management
-    _Bool CurrentAPIToken(std::string *token);
-
-    _Bool SetCurrentAPIToken(const std::string token);
-
-    _Bool loadCurrentUser();
-
     _Bool Login(
         const std::string email,
         const std::string password);

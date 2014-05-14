@@ -427,22 +427,6 @@ extern "C" {
         char *update_channel,
         const size_t update_channel_len);
 
-    // For testing only
-    _Bool kopsik_set_api_token(
-        void *context,
-        const char *api_token);
-
-    // For testing only
-    _Bool kopsik_get_api_token(
-        void *context,
-        char *str,
-        const size_t max_strlen);
-
-    // For testing only
-    _Bool kopsik_set_logged_in_user(
-        void *context,
-        const char *json);
-
 #undef KOPSIK_EXPORT
 
 #ifdef __cplusplus

@@ -51,4 +51,9 @@ KopsikSettingsViewItem settings_view_item_init(
 
 void settings_view_item_clear(KopsikSettingsViewItem *view);
 
+// For testing only
+_Bool testing_set_logged_in_user(
+    void *context,
+    const char *json);
+
 #endif  // SRC_KOPSIK_API_PRIVATE_H_

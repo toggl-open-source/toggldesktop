@@ -828,15 +828,6 @@ _Bool Context::SetDBPath(
     return true;
 }
 
-_Bool Context::CurrentAPIToken(std::string *token) {
-    return UI()->DisplayError(db()->CurrentAPIToken(token));
-}
-
-_Bool Context::SetCurrentAPIToken(
-    const std::string token) {
-    return UI()->DisplayError(db()->SetCurrentAPIToken(token));
-}
-
 Database *Context::db() const {
     poco_check_ptr(db_);
     return db_;
