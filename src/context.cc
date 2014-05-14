@@ -1890,6 +1890,7 @@ void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
 
     if (!user_) {
         logger().warning("User logged out, cannot remind");
+        return;
     }
 
     kopsik::Settings settings;
