@@ -110,6 +110,10 @@ extern void *ctx;
 - (void)displayTimeEntryList:(DisplayCommand *)cmd {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
   if (cmd.open) {
+    // Close error when loging in
+    if ([self.loginViewController.view superview] != nil) {
+        [self stopDisplayError];
+    }
     [self.contentView addSubview:self.timeEntryListViewController.view];
     [self.timeEntryListViewController.view setFrame:self.contentView.bounds];
 
@@ -136,7 +140,7 @@ extern void *ctx;
   [self.troubleBox setHidden:NO];
 }
 
-- (void)closeError {
+- (void)stopDisplayError {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
   [self.troubleBox setHidden:YES];
   [self.errorLabel setStringValue:@""];
@@ -144,7 +148,7 @@ extern void *ctx;
 }
 
 - (IBAction)errorCloseButtonClicked:(id)sender {
-    [self closeError];
+    [self stopDisplayError];
 }
 
 -(void)textFieldClicked:(id)sender {
