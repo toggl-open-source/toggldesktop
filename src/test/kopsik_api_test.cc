@@ -6,6 +6,7 @@
 #include <iostream>  // NOLINT
 
 #include "./../kopsik_api.h"
+#include "./../kopsik_api_private.h"
 #include "./test_data.h"
 #include "./../settings.h"
 #include "./../proxy.h"
@@ -53,9 +54,8 @@ void on_url(const char *url) {
     testresult::url = std::string(url);
 }
 
-
 void on_login(const _Bool open, const uint64_t user_id) {
-    testresult::user_id = true;
+    testresult::user_id = user_id;
 }
 
 void on_reminder(const char *title, const char *informative_text) {
@@ -122,7 +122,7 @@ void on_apply_settings(
 
 class App {
  public:
-    explicit App() {
+    App() {
         Poco::File f(TESTDB);
         if (f.exists()) {
             f.remove(false);
@@ -148,6 +148,8 @@ class App {
         kopsik_on_time_entry_editor(ctx_, on_time_entry_editor);
         kopsik_on_settings(ctx_, on_display_settings);
         kopsik_on_timer_state(ctx_, on_display_timer_state);
+
+        poco_assert(kopsik_context_start_events(ctx_));
     }
     ~App() {
         kopsik_context_clear(ctx_);
@@ -166,7 +168,6 @@ class App {
 
 TEST(KopsikApiTest, kopsik_context_init) {
     testing::App app;
-    ASSERT_TRUE(kopsik_context_start_events(app.ctx()));
 }
 
 TEST(KopsikApiTest, kopsik_set_settings) {
@@ -239,15 +240,6 @@ TEST(KopsikApiTest, kopsik_set_log_level) {
     kopsik_set_log_level("trace");
 }
 
-TEST(KopsikApiTest, kopsik_set_api_token) {
-    testing::App app;
-    ASSERT_TRUE(kopsik_set_api_token(app.ctx(), "token"));
-    const int kMaxStrLen = 10;
-    char str[kMaxStrLen];
-    ASSERT_TRUE(kopsik_get_api_token(app.ctx(), str, kMaxStrLen));
-    ASSERT_EQ("token", std::string(str));
-}
-
 unsigned int list_length(KopsikTimeEntryViewItem *first) {
     unsigned int n = 0;
     KopsikTimeEntryViewItem *it = first;
@@ -258,46 +250,26 @@ unsigned int list_length(KopsikTimeEntryViewItem *first) {
     return n;
 }
 
-TEST(KopsikApiTest, kopsik_set_logged_in_user) {
+TEST(KopsikApiTest, DISABLED_kopsik_lifecycle) {
     testing::App app;
-    ASSERT_TRUE(kopsik_set_logged_in_user(app.ctx(), loadTestData().c_str()));
-}
-
-TEST(KopsikApiTest, kopsik_lifecycle) {
-    testing::App app;
-
-    std::string json = loadTestData();
 
     testing::testresult::error = "";
-
-    ASSERT_TRUE(kopsik_set_logged_in_user(app.ctx(), json.c_str()));
-
+    testing::testresult::user_id = 0;
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), loadTestData().c_str()));
     ASSERT_EQ("", testing::testresult::error);
+    ASSERT_EQ(10471231, testing::testresult::user_id);
 
-    // We should have the API token now
-    const int kMaxStrLen = 100;
-    char str[kMaxStrLen];
-    ASSERT_TRUE(kopsik_get_api_token(app.ctx(), str, kMaxStrLen));
-    ASSERT_EQ("30eb0ae954b536d2f6628f7fec47beb6", std::string(str));
-
-    ASSERT_EQ("", testing::testresult::error);
-
-    // Start tracking
+    testing::testresult::error = "";
     ASSERT_TRUE(kopsik_start(app.ctx(), "Test", 0, 0, 0));
-
     ASSERT_EQ("", testing::testresult::error);
 
-    // Stop the time entry
+    testing::testresult::error = "";
     ASSERT_TRUE(kopsik_stop(app.ctx()));
-
     ASSERT_EQ("", testing::testresult::error);
 
-    // Log out
+    testing::testresult::error = "";
     ASSERT_TRUE(kopsik_logout(app.ctx()));
-
-    // Check that we have no API token after user logged out.
-    ASSERT_TRUE(kopsik_get_api_token(app.ctx(), str, kMaxStrLen));
-    ASSERT_EQ("", std::string(str));
+    ASSERT_FALSE(testing::testresult::user_id);
 }
 
 TEST(KopsikApiTest, kopsik_parse_time) {
