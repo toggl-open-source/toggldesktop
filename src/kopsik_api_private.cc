@@ -148,7 +148,11 @@ KopsikTimeEntryViewItem *time_entry_view_item_init(
     view_item->DateDuration = strdup(date_duration.c_str());
 
     view_item->Billable = te->Billable();
-    view_item->Tags = strdup(te->Tags().c_str());
+    if (te->Tags().empty()) {
+        view_item->Tags = 0;
+    } else {
+        view_item->Tags = strdup(te->Tags().c_str());
+    }
     view_item->UpdatedAt = static_cast<unsigned int>(te->UpdatedAt());
     view_item->DateHeader = strdup(te->DateHeaderString().c_str());
     view_item->DurOnly = te->DurOnly();
