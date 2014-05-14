@@ -143,7 +143,10 @@ void UI::DisplayTimeEntryList(const _Bool open,
         }
         first = item;
     }
-    first->IsHeader = true;
+
+    if (first) {
+        first->IsHeader = true;
+    }
     on_display_time_entry_list_(open, first);
     time_entry_view_item_clear(first);
 }
