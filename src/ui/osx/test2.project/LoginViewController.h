@@ -8,11 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 #import "kopsik_api.h"
-#import "NSTextFieldClickable.h"
+#import "NSTextFieldClickablePointer.h"
 
 @interface LoginViewController : NSViewController
 @property IBOutlet NSTextField *email;
 @property IBOutlet NSTextField *password;
-@property IBOutlet NSTextFieldClickable *googleLoginTextField;
+@property IBOutlet NSTextFieldClickablePointer *googleLoginTextField;
 - (IBAction)clickLoginButton:(id)sender;
 @end

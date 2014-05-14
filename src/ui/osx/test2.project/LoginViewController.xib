@@ -61,7 +61,7 @@
                                     <outlet property="nextKeyView" destination="MMO-z4-qcY" id="DFu-Vs-Mus"/>
                                 </connections>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Xk-yW-T0s" customClass="NSTextFieldClickable">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Xk-yW-T0s" customClass="NSTextFieldClickablePointer">
                                 <rect key="frame" x="13" y="40" width="223" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Log in with Google Account" id="A3G-xB-gb7">
