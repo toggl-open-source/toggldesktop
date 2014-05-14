@@ -23,7 +23,7 @@ std::string reminder_title("");
 std::string reminder_informative_text("");
 std::string error("");
 bool online_state(false);
-bool login(false);
+uint64_t user_id(0);
 Settings settings;
 bool use_proxy(false);
 Proxy proxy;
@@ -53,8 +53,9 @@ void on_url(const char *url) {
     testresult::url = std::string(url);
 }
 
-void on_login() {
-    testresult::login = true;
+
+void on_login(const _Bool open, const uint64_t user_id) {
+    testresult::user_id = true;
 }
 
 void on_reminder(const char *title, const char *informative_text) {

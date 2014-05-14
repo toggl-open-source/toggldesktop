@@ -15,4 +15,5 @@
 @property NSMutableArray *timeEntries;
 @property TimeEntryViewItem *timeEntry;
 @property Settings *settings;
+@property uint64_t user_id;
 @end

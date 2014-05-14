@@ -101,7 +101,9 @@ extern "C" {
     typedef void(*KopsikDisplayURL)(
         const char *url);
 
-    typedef void (*KopsikDisplayLogin)();
+    typedef void (*KopsikDisplayLogin)(
+        const _Bool open,
+        const uint64_t user_id);
 
     typedef void (*KopsikDisplayReminder)(
         const char *title,

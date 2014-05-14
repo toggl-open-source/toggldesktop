@@ -847,13 +847,15 @@ void Context::setUser(User *value) {
     SetWake();
 
     if (!user_) {
-        UI()->DisplayLogin();
+        UI()->DisplayLogin(true, 0);
 
         switchTimelineOff();
         switchWebSocketOff();
 
         return;
     }
+
+    UI()->DisplayLogin(false, user_->ID());
 
     DisplayTimeEntryList(true);
 
