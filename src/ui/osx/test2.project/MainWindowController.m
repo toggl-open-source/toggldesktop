@@ -56,6 +56,10 @@ extern void *ctx;
                                              selector:@selector(startDisplayError:)
                                                  name:kDisplayError
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(stopDisplayError:)
+                                                   name:kHideDisplayError
+                                                 object:nil];
   }
   return self;
 }
@@ -114,7 +118,7 @@ extern void *ctx;
   if (cmd.open) {
     // Close error when loging in
     if ([self.loginViewController.view superview] != nil) {
-        [self stopDisplayError];
+        [self closeError];
     }
     [self.contentView addSubview:self.timeEntryListViewController.view];
     [self.timeEntryListViewController.view setFrame:self.contentView.bounds];
@@ -142,7 +146,11 @@ extern void *ctx;
   [self.troubleBox setHidden:NO];
 }
 
-- (void)stopDisplayError {
+- (void)stopDisplayError:(NSNotification *)notification {
+  [self closeError];
+}
+
+- (void)closeError {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
   [self.troubleBox setHidden:YES];
   [self.errorLabel setStringValue:@""];
@@ -150,7 +158,7 @@ extern void *ctx;
 }
 
 - (IBAction)errorCloseButtonClicked:(id)sender {
-    [self stopDisplayError];
+    [self closeError];
 }
 
 -(void)textFieldClicked:(id)sender {
