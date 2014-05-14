@@ -716,12 +716,19 @@ KopsikTimeEntryViewItem *Context::timeEntryViewItem(TimeEntry *te) {
     if (!te) {
         return 0;
     }
-    // FIXME: UI: fill UI
+
     std::string project_and_task_label("");
     std::string color("");
+    projectLabelAndColorCode(te, &project_and_task_label, &color);
+
+    // FIXME: UI:
     std::string start_time_string("");
     std::string end_time_string("");
-    std::string date_duration("");
+
+    Poco::Int64 duration = totalDurationForDate(te);
+    std::string date_duration =
+        kopsik::Formatter::FormatDurationInSecondsPrettyHHMM(duration);
+
     return time_entry_view_item_init(te,
                                      project_and_task_label,
                                      color,
@@ -1063,19 +1070,50 @@ _Bool Context::Start(
     return UI()->DisplayError(save());
 }
 
+Poco::Int64 Context::totalDurationForDate(TimeEntry *match) const {
+    Poco::Int64 duration(0);
+    std::string date_header = match->DateHeaderString();
+    std::vector<TimeEntry *> list = timeEntries();
+    for (unsigned int i = 0; i < list.size(); i++) {
+        TimeEntry *te = list.at(i);
+        if (te->DateHeaderString() == date_header) {
+            duration += te->DurationInSeconds();
+        }
+    }
+    return duration;
+}
+
 void Context::DisplayTimeEntryList(const _Bool open) {
     std::vector<TimeEntry *> list = timeEntries();
 
+    std::map<std::string, Poco::Int64> date_durations;
+    for (unsigned int i = 0; i < list.size(); i++) {
+        TimeEntry *te = list.at(i);
+
+        std::string date_header = te->DateHeaderString();
+        Poco::Int64 duration = date_durations[date_header];
+        duration += te->DurationInSeconds();
+        date_durations[date_header] = duration;
+    }
+
     KopsikTimeEntryViewItem *first = 0;
     for (unsigned int i = 0; i < list.size(); i++) {
-        // FIXME: UI:
+        TimeEntry *te = list.at(i);
+
         std::string project_and_task_label("");
         std::string color("");
+        projectLabelAndColorCode(te, &project_and_task_label, &color);
+
+        // FIXME: UI:
         std::string start_time_string("");
         std::string end_time_string("");
-        std::string date_duration("");
+
+        Poco::Int64 duration = date_durations[te->DateHeaderString()];
+        std::string date_duration =
+            kopsik::Formatter::FormatDurationInSecondsPrettyHHMM(duration);
+
         KopsikTimeEntryViewItem *item =
-            time_entry_view_item_init(list.at(i),
+            time_entry_view_item_init(te,
                                       project_and_task_label,
                                       color,
                                       start_time_string,
@@ -1125,7 +1163,6 @@ void Context::Edit(const std::string GUID,
 
 _Bool Context::ContinueLatest(
     kopsik::TimeEntry **result) {
-
     poco_check_ptr(result);
 
     if (!user_) {
