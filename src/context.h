@@ -255,6 +255,10 @@ class Context {
 
     void displayTimerState();
 
+    void displayTimeEntryEditor(const _Bool open,
+                                TimeEntry *te,
+                                const std::string focused_field_name);
+
     Poco::Int64 totalDurationForDate(TimeEntry *te) const;
 
     Poco::Mutex db_m_;
@@ -296,6 +300,8 @@ class Context {
     Poco::Util::Timer timer_;
 
     kopsik::UI ui_;
+
+    std::string time_entry_editor_guid_;
 };
 
 }  // namespace kopsik

@@ -25,25 +25,24 @@
 
 namespace kopsik {
 
-Context::Context(
-    const std::string app_name,
-    const std::string app_version)
-    : db_(0),
-  user_(0),
-  ws_client_(0),
-  timeline_uploader_(0),
-  window_change_recorder_(0),
-  app_name_(app_name),
-  app_version_(app_version),
-  api_url_(""),
-  timeline_upload_url_(""),
-  update_channel_(""),
-  feedback_("", "", ""),
-  next_full_sync_at_(0),
-  next_partial_sync_at_(0),
-  next_fetch_updates_at_(0),
-  next_update_timeline_settings_at_(0),
-  next_reminder_at_(0) {
+Context::Context(const std::string app_name, const std::string app_version)
+    : db_(0)
+, user_(0)
+, ws_client_(0)
+, timeline_uploader_(0)
+, window_change_recorder_(0)
+, app_name_(app_name)
+, app_version_(app_version)
+, api_url_("")
+, timeline_upload_url_("")
+, update_channel_("")
+, feedback_("", "", "")
+, next_full_sync_at_(0)
+, next_partial_sync_at_(0)
+, next_fetch_updates_at_(0)
+, next_update_timeline_settings_at_(0)
+, next_reminder_at_(0)
+, time_entry_editor_guid_("") {
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
@@ -162,6 +161,8 @@ error Context::save(const bool push_changes) {
     bool display_tags(false);
     bool display_workspace_select(false);
     bool display_timer_state(false);
+    bool display_time_entry_editor(false);
+    bool open_time_entry_list(false);
     for (std::vector<kopsik::ModelChange>::const_iterator it =
         changes.begin();
             it != changes.end();
@@ -179,10 +180,30 @@ error Context::save(const bool push_changes) {
         }
         if (ch.ModelType() == "time_entry") {
             display_timer_state = true;
+            // If time entry was edited, check further
+            if (time_entry_editor_guid_ == ch.GUID()) {
+                // If time entry was deleted, close editor and open list view
+                if (ch.ChangeType() == "delete") {
+                    time_entry_editor_guid_ = "";
+                    open_time_entry_list = true;
+                    display_time_entries = true;
+                } else {
+                    display_time_entry_editor = true;
+                }
+            }
+        }
+    }
+    if (display_time_entry_editor) {
+        TimeEntry *te = 0;
+        if (user_) {
+            te = user_->TimeEntryByGUID(time_entry_editor_guid_);
+        }
+        if (te) {
+            displayTimeEntryEditor(false, te, "");
         }
     }
     if (display_time_entries) {
-        DisplayTimeEntryList(false);
+        DisplayTimeEntryList(open_time_entry_list);
     }
     if (display_autocomplete) {
         std::vector<kopsik::AutocompleteItem> list =
@@ -1144,8 +1165,16 @@ void Context::Edit(const std::string GUID,
         return;
     }
 
+    displayTimeEntryEditor(true, te, focused_field_name);
+}
+
+void Context::displayTimeEntryEditor(const _Bool open,
+                                     TimeEntry *te,
+                                     const std::string focused_field_name) {
+    poco_check_ptr(te);
+    time_entry_editor_guid_ = te->GUID();
     KopsikTimeEntryViewItem *view = timeEntryViewItem(te);
-    UI()->DisplayTimeEntryEditor(true, view, focused_field_name);
+    UI()->DisplayTimeEntryEditor(open, view, focused_field_name);
     time_entry_view_item_clear(view);
 }
 
