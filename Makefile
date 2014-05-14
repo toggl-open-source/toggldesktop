@@ -1,4 +1,4 @@
-$(shell mkdir -p build/test coverage build/test)
+$(shell mkdir -p build/test build/test)
 
 pwd=$(shell pwd)
 uname=$(shell uname)
@@ -129,45 +129,6 @@ sikuli: osx
 	--websocket_url http://0.0.0.0:8088 \
 	--db_path kopsik_sikuli.db \
 	--log_path kopsik_sikuli.log 
-
-covflags=-fprofile-arcs -ftest-coverage
-
-coverage: clean
-	$(cxx) $(cflags) $(covflags) -c src/version.cc -o build/version.o
-	$(cxx) $(cflags) $(covflags) -c src/proxy.cc -o build/proxy.o
-	$(cxx) $(cflags) $(covflags) -c src/https_client.cc -o build/https_client.o
-	$(cxx) $(cflags) $(covflags) -c src/websocket_client.cc -o build/websocket_client.o
-	$(cxx) $(cflags) $(covflags) -c src/base_model.cc -o build/base_model.o
-	$(cxx) $(cflags) $(covflags) -c src/user.cc -o build/user.o
-	$(cxx) $(cflags) $(covflags) -c src/workspace.cc -o build/workspace.o
-	$(cxx) $(cflags) $(covflags) -c src/client.cc -o build/client.o
-	$(cxx) $(cflags) $(covflags) -c src/project.cc -o build/project.o
-	$(cxx) $(cflags) $(covflags) -c src/task.cc -o build/task.o
-	$(cxx) $(cflags) $(covflags) -c src/time_entry.cc -o build/time_entry.o
-	$(cxx) $(cflags) $(covflags) -c src/tag.cc -o build/tag.o
-	$(cxx) $(cflags) $(covflags) -c src/related_data.cc -o build/related_data.o
-	$(cxx) $(cflags) $(covflags) -c src/batch_update_result.cc -o build/batch_update_result.o
-	$(cxx) $(cflags) $(covflags) -c src/formatter.cc -o build/formatter.o
-	$(cxx) $(cflags) $(covflags) -c src/json.cc -o build/json.o
-	$(cxx) $(cflags) $(covflags) -c src/model_change.cc -o build/model_change.o
-	$(cxx) $(cflags) $(covflags) -c src/database.cc -o build/database.o
-	$(cxx) $(cflags) $(covflags) -c src/autocomplete_item.cc -o build/autocomplete_item.o
-	$(cxx) $(cflags) $(covflags) -c src/feedback.cc -o build/feedback.o
-	$(cxx) $(cflags) $(covflags) -c src/ui.cc -o build/ui.o
-	$(cxx) $(cflags) $(covflags) -c src/context.cc -o build/context.o
-	$(cxx) $(cflags) $(covflags) -c src/kopsik_api_private.cc -o build/kopsik_api_private.o
-	$(cxx) $(cflags) $(covflags) -c src/kopsik_api.cc -o build/kopsik_api.o
-	$(cxx) $(cflags) $(covflags) -c src/test_data.cc -o build/test_data.o
-	$(cxx) $(cflags) $(covflags) -c src/kopsik_api_test.cc -o build/kopsik_api_test.o
-	$(cxx) $(cflags) $(covflags) -c src/toggl_api_client_test.cc -o build/toggl_api_client_test.o
-	$(cxx) $(cflags) $(covflags) -c src/get_focused_window_$(osname).cc -o build/get_focused_window_$(osname).o
-	$(cxx) $(cflags) $(covflags) -c src/timeline_uploader.cc -o build/timeline_uploader.o
-	$(cxx) $(cflags) $(covflags) -c src/window_change_recorder.cc -o build/window_change_recorder.o
-	$(cxx) $(cflags) $(covflags) -c $(GTEST_ROOT)/src/gtest-all.cc -o build/gtest-all.o
-	$(cxx) $(cflags) $(covflags) -c ${GMOCK_DIR}/src/gmock-all.cc -o build/gmock-all.o
-	$(cxx) -o $(main) -o $(main)_test build/*.o $(libs) $(covflags)
-	./$(main)_test && lcov --capture --directory build --output-file build/coverage.info && \
-	genhtml build/coverage.info --output-directory coverage
 
 lint:
 	./third_party/cpplint/cpplint.py $(source_dirs)
@@ -337,14 +298,14 @@ objects: build/version.o \
 	build/timeline_uploader.o \
 	build/window_change_recorder.o
 
-toggl_test: objects \
-	build/test/gtest-all.o \
+test_objects: build/test/gtest-all.o \
 	build/test/gmock-all.o \
 	build/test/test_data.o \
 	build/test/toggl_api_client_test.o \
 	build/test/kopsik_api_test.o
+
+toggl_test: objects test_objects
 	$(cxx) -o toggl_test build/*.o build/test/*.o $(libs)
 
 test: fmt lint mkdir_build toggl_test
 	./toggl_test
-
