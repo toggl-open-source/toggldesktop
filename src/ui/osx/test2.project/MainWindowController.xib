@@ -60,7 +60,7 @@
                                         <action selector="errorCloseButtonClicked:" target="-2" id="GHW-09-Ovo"/>
                                     </connections>
                                 </button>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z6G-IB-XP8" customClass="NSTextFieldClickable">
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z6G-IB-XP8" customClass="NSTextFieldClickablePointer">
                                     <rect key="frame" x="7" y="7" width="275" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" truncatesLastVisibleLine="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Forgot password?" id="UWw-mV-y9L">

@@ -58,6 +58,8 @@ extern void *ctx;
   [windowController signInSheetModalForWindow:[[NSApplication sharedApplication] mainWindow]
                                      delegate:self
                              finishedSelector:@selector(viewController:finishedWithAuth:error:)];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kHideDisplayError
+                                                        object:nil];
 }
 
 - (void)viewController:(GTMOAuth2WindowController *)viewController

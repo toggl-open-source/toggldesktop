@@ -30,5 +30,7 @@ extern NSString *const kDisplaySettings;
 extern NSString *const kDisplayProxySettings;
 extern NSString *const kDisplayTimerState;
 
+extern NSString *const kHideDisplayError;
+
 const char *kFocusedFieldNameDuration;
 const char *kFocusedFieldNameDescription;
