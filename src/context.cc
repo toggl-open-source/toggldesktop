@@ -119,8 +119,7 @@ _Bool Context::StartEvents() {
     }
     setUser(user);
 
-    // Display timer state in UI
-    UI()->DisplayTimerState(user_->RunningTimeEntry());
+    displayTimerState();
 
     return true;
 }
@@ -183,8 +182,7 @@ error Context::save(const bool push_changes) {
         }
     }
     if (display_time_entries) {
-        std::vector<TimeEntry *> list = timeEntries();
-        UI()->DisplayTimeEntryList(false, &list);
+        DisplayTimeEntryList(false);
     }
     if (display_autocomplete) {
         std::vector<kopsik::AutocompleteItem> list =
@@ -204,7 +202,7 @@ error Context::save(const bool push_changes) {
         UI()->DisplayTags(&list);
     }
     if (display_timer_state) {
-        UI()->DisplayTimerState(user_->RunningTimeEntry());
+        displayTimerState();
     }
 
     if (push_changes) {
@@ -702,7 +700,30 @@ _Bool Context::SetProxySettings(
     return true;
 }
 
-_Bool Context::DisplaySettings(const bool open) {
+void Context::displayTimerState() {
+    if (!user_) {
+        UI()->DisplayTimerState(0, "", "", "", "", "");
+        return;
+    }
+
+    TimeEntry *te = user_->RunningTimeEntry();
+
+    // FIXME: UI:
+    std::string project_and_task_label("");
+    std::string color("");
+    std::string start_time_string("");
+    std::string end_time_string("");
+    std::string date_duration("");
+
+    UI()->DisplayTimerState(te,
+                            project_and_task_label,
+                            color,
+                            start_time_string,
+                            end_time_string,
+                            date_duration);
+}
+
+_Bool Context::DisplaySettings(const _Bool open) {
     kopsik::Settings settings;
     error err = db()->LoadSettings(&settings);
     if (err != kopsik::noError) {
@@ -826,7 +847,7 @@ void Context::setUser(User *value) {
     SetWake();
 
     if (!user_) {
-        UI()->DisplayLogin();
+        UI()->DisplayLogin(true, 0);
 
         switchTimelineOff();
         switchWebSocketOff();
@@ -834,7 +855,9 @@ void Context::setUser(User *value) {
         return;
     }
 
-    ViewTimeEntryList();
+    UI()->DisplayLogin(false, user_->ID());
+
+    DisplayTimeEntryList(true);
 
     switchTimelineOn();
     switchWebSocketOn();
@@ -1033,13 +1056,9 @@ _Bool Context::Start(
     return UI()->DisplayError(save());
 }
 
-void Context::ViewTimeEntryList() {
-    if (!user_) {
-        logger().warning("Cannot view time entry list, user logged out");
-        return;
-    }
+void Context::DisplayTimeEntryList(const _Bool open) {
     std::vector<TimeEntry *> list = timeEntries();
-    UI()->DisplayTimeEntryList(true, &list);
+    UI()->DisplayTimeEntryList(open, &list);
 }
 
 void Context::Edit(const std::string GUID,
@@ -1399,7 +1418,6 @@ std::vector<kopsik::TimeEntry *> Context::timeEntries() const {
     }
 
     // Collect visible time entries
-    std::map<std::string, Poco::Int64> date_durations;
     for (std::vector<kopsik::TimeEntry *>::const_iterator it =
         user_->related.TimeEntries.begin();
             it != user_->related.TimeEntries.end(); it++) {
@@ -1414,31 +1432,9 @@ std::vector<kopsik::TimeEntry *> Context::timeEntries() const {
             continue;
         }
         result.push_back(te);
-
-        std::string date_header = te->DateHeaderString();
-        Poco::Int64 duration = date_durations[date_header];
-        duration += te->DurationInSeconds();
-        date_durations[date_header] = duration;
-
-        std::string project_and_task_label("");
-        std::string color_code("");
-        projectLabelAndColorCode(te, &project_and_task_label, &color_code);
-        te->SetProjectAndTaskLabel(project_and_task_label);
-        te->SetColorCode(color_code);
     }
 
     std::sort(result.begin(), result.end(), CompareTimeEntriesByStart);
-
-    // Assign date durations. Set "header" time entries - if date changes,
-    // the time entry will show its date.
-    for (std::vector<kopsik::TimeEntry *>::iterator it = result.begin();
-            it != result.end(); it++) {
-        TimeEntry *te = *it;
-        Poco::Int64 duration = date_durations[te->DateHeaderString()];
-        std::string formatted =
-            kopsik::Formatter::FormatDurationInSecondsPrettyHHMM(duration);
-        te->SetDateDuration(formatted);
-    }
 
     return result;
 }

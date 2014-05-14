@@ -24,7 +24,7 @@ extern void *ctx;
 - (void)windowDidLoad {
     [super windowDidLoad];
   
-    self.loggedIn = YES;
+    self.user_id = 0;
 
     self.showHideShortcutView.associatedUserDefaultsKey = kPreferenceGlobalShortcutShowHide;
     self.startStopShortcutView.associatedUserDefaultsKey = kPreferenceGlobalShortcutStartStop;
@@ -118,17 +118,15 @@ extern void *ctx;
 }
 
 - (void)startDisplayLogin:(NSNotification *)notification {
-  [self performSelectorOnMainThread:@selector(displayLogin)
+  [self performSelectorOnMainThread:@selector(displayLogin:)
                          withObject:notification.object
                       waitUntilDone:NO];
 }
 
-- (void)displayLogin {
+- (void)displayLogin:(DisplayCommand *)cmd {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-  self.loggedIn = NO;
-  
-  [self.recordTimelineCheckbox setEnabled:self.loggedIn];
+  self.user_id = cmd.user_id;
+  [self.recordTimelineCheckbox setEnabled:self.user_id != 0];
 }
 
 - (void)startDisplaySettings:(NSNotification *)notification {
@@ -147,7 +145,7 @@ extern void *ctx;
   [self.dockIconCheckbox setState:[Utils boolToState:settings.dock_icon]];
   [self.ontopCheckbox setState:[Utils boolToState:settings.on_top]];
   [self.reminderCheckbox setState:[Utils boolToState:settings.reminder]];
-  [self.recordTimelineCheckbox setEnabled:self.loggedIn];
+  [self.recordTimelineCheckbox setEnabled:self.user_id != 0];
   [self.recordTimelineCheckbox setState:[Utils boolToState:settings.timeline_recording_enabled]];
 
   [self.useProxyButton setState:[Utils boolToState:settings.use_proxy]];

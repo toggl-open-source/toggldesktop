@@ -56,13 +56,18 @@ class UI {
                                 kopsik::TimeEntry *te,
                                 const std::string focused_field_name);
     void DisplayURL(const std::string);
-    void DisplayLogin();
+    void DisplayLogin(const _Bool open, const uint64_t user_id);
     void DisplaySettings(const _Bool open,
                          const _Bool record_timeline,
                          const Settings settings,
                          const _Bool use_proxy,
                          const Proxy proxy);
-    void DisplayTimerState(kopsik::TimeEntry *te);
+    void DisplayTimerState(kopsik::TimeEntry *te,
+                           const std::string project_and_task_label,
+                           const std::string color,
+                           const std::string start_time_string,
+                           const std::string end_time_string,
+                           const std::string date_duration);
 
     error VerifyCallbacks();
 
