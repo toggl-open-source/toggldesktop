@@ -76,14 +76,8 @@ std::string Formatter::FormatTimeForTimeEntryEditor(const std::time_t date) {
         return "";
     }
     Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
-    return Poco::DateTimeFormatter::format(ts, "%H:%M");
-}
-
-std::string Formatter::FormatDateWithTime(const std::time_t date) {
-    poco_assert(date);
-
-    Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
-    return Poco::DateTimeFormatter::format(ts, "%w %d. %b %H:%M");
+    Poco::LocalDateTime local(ts);
+    return Poco::DateTimeFormatter::format(local, "%H:%M");
 }
 
 std::string Formatter::FormatDateHeader(const std::time_t date) {

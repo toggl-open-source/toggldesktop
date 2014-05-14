@@ -48,9 +48,6 @@ class Formatter {
     static std::string FormatDateHeader(
         const std::time_t date);
 
-    static std::string FormatDateWithTime(
-        const std::time_t date);
-
     static std::string FormatTimeForTimeEntryEditor(
         const std::time_t date);
 

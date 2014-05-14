@@ -254,10 +254,13 @@ class Context {
     KopsikTimeEntryViewItem *timeEntryViewItem(TimeEntry *te);
 
     void displayTimerState();
-
     void displayTimeEntryEditor(const _Bool open,
                                 TimeEntry *te,
                                 const std::string focused_field_name);
+    void displayAutocomplete();
+    void displayWorkspaceSelect();
+    void displayClientSelect();
+    void displayTags();
 
     Poco::Int64 totalDurationForDate(TimeEntry *te) const;
 
