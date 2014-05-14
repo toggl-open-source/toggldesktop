@@ -252,7 +252,8 @@ _Bool UI::isNetworkingError(const error err) const {
     if (value.find("Connection reset by peer") != std::string::npos) {
         return true;
     }
-    if (value.find("The Internet connection appears to be offline") != std::string::npos) {
+    if (value.find("The Internet connection appears to be offline")
+            != std::string::npos) {
         return true;
     }
     return false;
