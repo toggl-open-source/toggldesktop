@@ -36,9 +36,6 @@
     self.descriptionTextField.toolTip = nil;
   }
 
-  // Set billable and tag constraints
-  [self toggleTagConstraints: (view_item.billable && [view_item.tags count])];
-
   // Set billable label
   if (YES == view_item.billable) {
     [self.billableFlag setHidden:NO];
@@ -91,26 +88,6 @@
 
     // set the attributed string to the NSTextField
     [inTextField setAttributedStringValue: string];
-}
-
-- (void)toggleTagConstraints:(BOOL)flag {
-    if(YES==flag) {
-        if (!self.billableConstraint) {
-            NSLog(@"Create constraints");
-            NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_billableFlag, _tagFlag);
-            self.billableConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"[_tagFlag]-8@1000-[_billableFlag]"
-                                                                              options:0
-                                                                              metrics:nil
-                                                                                views:viewsDict];
-        }
-        [self addConstraints:self.billableConstraint];
-        self.constraintsAdded = YES;
-    } else {
-        if (self.constraintsAdded) {
-            [self removeConstraints:self.billableConstraint];
-            self.constraintsAdded = NO;
-        }
-    }
 }
 
 @end

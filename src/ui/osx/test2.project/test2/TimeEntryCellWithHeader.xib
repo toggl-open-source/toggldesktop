@@ -142,7 +142,7 @@
                         <constraint firstItem="Uzs-Rq-HN0" firstAttribute="leading" secondItem="4mY-N2-UMI" secondAttribute="trailing" constant="3" id="haY-hT-jhB"/>
                         <constraint firstAttribute="trailing" secondItem="HgZ-sm-ajS" secondAttribute="trailing" constant="105" id="xAd-NE-flQ"/>
                         <constraint firstAttribute="trailing" secondItem="9cY-Vq-vDS" secondAttribute="trailing" constant="77" id="xT0-DH-Dat"/>
-                        <constraint firstAttribute="trailing" secondItem="Uzs-Rq-HN0" secondAttribute="trailing" priority="950" constant="105" id="zu9-ZU-mpw"/>
+                        <constraint firstAttribute="trailing" secondItem="Uzs-Rq-HN0" secondAttribute="trailing" constant="120" id="zu9-ZU-mpw"/>
                     </constraints>
                     <size key="contentViewMargins" width="0.0" height="10"/>
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
