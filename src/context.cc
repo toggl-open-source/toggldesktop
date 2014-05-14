@@ -721,10 +721,6 @@ KopsikTimeEntryViewItem *Context::timeEntryViewItem(TimeEntry *te) {
     std::string color("");
     projectLabelAndColorCode(te, &project_and_task_label, &color);
 
-    // FIXME: UI:
-    std::string start_time_string("");
-    std::string end_time_string("");
-
     Poco::Int64 duration = totalDurationForDate(te);
     std::string date_duration =
         kopsik::Formatter::FormatDurationInSecondsPrettyHHMM(duration);
@@ -732,8 +728,6 @@ KopsikTimeEntryViewItem *Context::timeEntryViewItem(TimeEntry *te) {
     return time_entry_view_item_init(te,
                                      project_and_task_label,
                                      color,
-                                     start_time_string,
-                                     end_time_string,
                                      date_duration);
 }
 
@@ -1104,10 +1098,6 @@ void Context::DisplayTimeEntryList(const _Bool open) {
         std::string color("");
         projectLabelAndColorCode(te, &project_and_task_label, &color);
 
-        // FIXME: UI:
-        std::string start_time_string("");
-        std::string end_time_string("");
-
         Poco::Int64 duration = date_durations[te->DateHeaderString()];
         std::string date_duration =
             kopsik::Formatter::FormatDurationInSecondsPrettyHHMM(duration);
@@ -1116,8 +1106,6 @@ void Context::DisplayTimeEntryList(const _Bool open) {
             time_entry_view_item_init(te,
                                       project_and_task_label,
                                       color,
-                                      start_time_string,
-                                      end_time_string,
                                       date_duration);
         item->Next = first;
         if (first && strcmp(item->DateHeader, first->DateHeader) != 0) {

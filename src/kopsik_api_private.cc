@@ -4,6 +4,8 @@
 
 #include <cstdlib>
 
+#include "./formatter.h"
+
 KopsikAutocompleteItem *autocomplete_item_init(
     const kopsik::AutocompleteItem item) {
     KopsikAutocompleteItem *result = new KopsikAutocompleteItem();
@@ -115,8 +117,6 @@ KopsikTimeEntryViewItem *time_entry_view_item_init(
     kopsik::TimeEntry *te,
     const std::string project_and_task_label,
     const std::string color,
-    const std::string start_time_string,
-    const std::string end_time_string,
     const std::string date_duration) {
 
     poco_check_ptr(te);
@@ -136,8 +136,15 @@ KopsikTimeEntryViewItem *time_entry_view_item_init(
 
     view_item->ProjectAndTaskLabel = strdup(project_and_task_label.c_str());
     view_item->Color = strdup(color.c_str());
+
+    std::string start_time_string =
+        kopsik::Formatter::FormatTimeForTimeEntryEditor(te->Start());
+    std::string end_time_string =
+        kopsik::Formatter::FormatTimeForTimeEntryEditor(te->Stop());
+
     view_item->StartTimeString = strdup(start_time_string.c_str());
     view_item->EndTimeString = strdup(end_time_string.c_str());
+
     view_item->DateDuration = strdup(date_duration.c_str());
 
     view_item->Billable = te->Billable();
