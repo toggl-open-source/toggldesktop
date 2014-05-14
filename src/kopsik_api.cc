@@ -438,7 +438,7 @@ _Bool kopsik_continue(
 }
 
 void kopsik_view_time_entry_list(void *context) {
-    app(context)->ViewTimeEntryList();
+    app(context)->DisplayTimeEntryList(true);
 }
 
 void kopsik_edit(

@@ -124,8 +124,19 @@ void UI::DisplayTimeEntryList(const _Bool open,
 
     KopsikTimeEntryViewItem *first = 0;
     for (unsigned int i = 0; i < visible->size(); i++) {
+        // FIXME: UI:
+        std::string project_and_task_label("");
+        std::string color("");
+        std::string start_time_string("");
+        std::string end_time_string("");
+        std::string date_duration("");
         KopsikTimeEntryViewItem *item =
-            time_entry_view_item_init(visible->at(i));
+            time_entry_view_item_init(visible->at(i),
+                                      project_and_task_label,
+                                      color,
+                                      start_time_string,
+                                      end_time_string,
+                                      date_duration);
         item->Next = first;
         if (first && strcmp(item->DateHeader, first->DateHeader) != 0) {
             first->IsHeader = true;
@@ -185,7 +196,20 @@ void UI::DisplayTimeEntryEditor(const _Bool open,
                                 const std::string focused_field_name) {
     logger().debug("DisplayTimeEntryEditor");
 
-    KopsikTimeEntryViewItem *view = time_entry_view_item_init(te);
+    // FIXME: UI:
+    std::string project_and_task_label("");
+    std::string color("");
+    std::string start_time_string("");
+    std::string end_time_string("");
+    std::string date_duration("");
+
+    KopsikTimeEntryViewItem *view =
+        time_entry_view_item_init(te,
+                                  project_and_task_label,
+                                  color,
+                                  start_time_string,
+                                  end_time_string,
+                                  date_duration);
     on_display_time_entry_editor_(open, view, focused_field_name.c_str());
     time_entry_view_item_clear(view);
 }
@@ -214,12 +238,22 @@ void UI::DisplaySettings(const _Bool open,
     settings_view_item_clear(&view);
 }
 
-void UI::DisplayTimerState(kopsik::TimeEntry *te) {
+void UI::DisplayTimerState(kopsik::TimeEntry *te,
+                           const std::string project_and_task_label,
+                           const std::string color,
+                           const std::string start_time_string,
+                           const std::string end_time_string,
+                           const std::string date_duration) {
     logger().debug("DisplayTimerState");
 
     KopsikTimeEntryViewItem *view_item = 0;
     if (te) {
-        view_item = time_entry_view_item_init(te);
+        view_item = time_entry_view_item_init(te,
+                                              project_and_task_label,
+                                              color,
+                                              start_time_string,
+                                              end_time_string,
+                                              date_duration);
     }
     on_display_timer_state_(view_item);
     if (view_item) {

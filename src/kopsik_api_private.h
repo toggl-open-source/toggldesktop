@@ -35,7 +35,13 @@ void view_item_clear(KopsikViewItem *item);
 
 void autocomplete_item_clear(KopsikAutocompleteItem *item);
 
-KopsikTimeEntryViewItem *time_entry_view_item_init(kopsik::TimeEntry *te);
+KopsikTimeEntryViewItem *time_entry_view_item_init(
+    kopsik::TimeEntry *te,
+    const std::string project_and_task_label,
+    const std::string color,
+    const std::string start_time_string,
+    const std::string end_time_string,
+    const std::string date_duration);
 
 void time_entry_view_item_clear(KopsikTimeEntryViewItem *item);
 
