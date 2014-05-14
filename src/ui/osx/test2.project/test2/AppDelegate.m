@@ -810,6 +810,10 @@ const NSString *appName = @"osx_native_app";
 }
 
 - (void)displayUpdate:(Update *)update {
+  if (!update) {
+    return;
+  }
+
   if (self.upgradeDialogVisible) {
     NSLog(@"Upgrade dialog already visible");
     return;
