@@ -56,7 +56,7 @@ class UI {
                                 kopsik::TimeEntry *te,
                                 const std::string focused_field_name);
     void DisplayURL(const std::string);
-    void DisplayLogin();
+    void DisplayLogin(const _Bool open, const uint64_t user_id);
     void DisplaySettings(const _Bool open,
                          const _Bool record_timeline,
                          const Settings settings,

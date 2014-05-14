@@ -38,7 +38,7 @@
 @property TimeEntryViewItem *lastKnownRunningTimeEntry;
 @property NSTimer *menubarTimer;
 @property NSTimer *idleTimer;
-@property BOOL loggedIn;
+@property uint64_t user_id;
 @property long lastIdleSecondsReading;
 @property NSDate *lastIdleStarted;
 
@@ -77,7 +77,8 @@ const int kDurationStringLength = 20;
   NSLog(@"applicationDidFinishLaunching");
 
   self.willTerminate = NO;
-  self.loggedIn = YES;
+
+  self.user_id = 0;
   
   if (![self.environment isEqualToString:@"production"]) {
     // Turn on UI constraint debugging, if not in production
@@ -347,21 +348,22 @@ const int kDurationStringLength = 20;
 
   if (cmd.open) {
     self.preferencesWindowController.originalCmd = cmd;
+    self.preferencesWindowController.user_id = self.user_id;
     [self.preferencesWindowController showWindow:self];
     [NSApp activateIgnoringOtherApps:YES];
   }
 }
 
 - (void)startDisplayLogin:(NSNotification *)notification {
-  [self performSelectorOnMainThread:@selector(displayLogin)
-                         withObject:nil
+  [self performSelectorOnMainThread:@selector(displayLogin:)
+                         withObject:notification.object
                       waitUntilDone:NO];
 }
 
-- (void)displayLogin {
+- (void)displayLogin:(DisplayCommand *)cmd {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-  self.loggedIn = NO;
+  self.user_id = cmd.user_id;
 }
 
 - (void)startDisplayOnlineState: (NSNotification *) notification {
@@ -749,12 +751,12 @@ const NSString *appName = @"osx_native_app";
 - (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem {
   switch ([anItem tag]) {
     case kMenuItemTagNew:
-      if (!self.loggedIn) {
+      if (0 == self.user_id) {
         return NO;
       }
       break;
     case kMenuItemTagContinue:
-      if (!self.loggedIn) {
+      if (0 == self.user_id) {
         return NO;
       }
       if (self.lastKnownRunningTimeEntry != nil) {
@@ -762,7 +764,7 @@ const NSString *appName = @"osx_native_app";
       }
       break;
     case kMenuItemTagStop:
-      if (!self.loggedIn) {
+      if (0 == self.user_id) {
         return NO;
       }
       if (self.lastKnownRunningTimeEntry == nil) {
@@ -770,27 +772,27 @@ const NSString *appName = @"osx_native_app";
       }
       break;
     case kMenuItemTagSync:
-      if (!self.loggedIn) {
+      if (0 == self.user_id) {
         return NO;
       }
       break;
     case kMenuItemTagLogout:
-      if (!self.loggedIn) {
+      if (0 == self.user_id) {
         return NO;
       }
       break;
     case kMenuItemTagClearCache:
-      if (!self.loggedIn) {
+      if (0 == self.user_id) {
         return NO;
       }
       break;
     case kMenuItemTagSendFeedback:
-      if (!self.loggedIn) {
+      if (0 == self.user_id) {
         return NO;
       }
       break;
     case kMenuItemTagOpenBrowser:
-      if (!self.loggedIn) {
+      if (0 == self.user_id) {
         return NO;
       }
       break;
@@ -903,9 +905,15 @@ void on_online_state(const _Bool is_online) {
                                                       object:value];
 }
 
-void on_login() {
-  [Bugsnag setUserAttribute:@"user_id" withValue:nil];
-  [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayLogin object:nil];
+void on_login(const _Bool open, const uint64_t user_id) {
+  [Bugsnag setUserAttribute:@"user_id" withValue:[NSString stringWithFormat:@"%lld", user_id]];
+  
+  DisplayCommand *cmd = [[DisplayCommand alloc] init];
+  cmd.open = open;
+  cmd.user_id = user_id;
+  
+  [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayLogin
+                                                      object:cmd];
 }
 
 void on_reminder(const char *title, const char *informative_text) {

@@ -41,7 +41,7 @@ extern void *ctx;
     [self.timeEntryEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(startDisplayLogin)
+                                             selector:@selector(startDisplayLogin:)
                                                  name:kDisplayLogin
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -60,19 +60,22 @@ extern void *ctx;
   return self;
 }
 
-- (void)startDisplayLogin {
-  [self performSelectorOnMainThread:@selector(displayLogin) withObject:nil waitUntilDone:NO];
+- (void)startDisplayLogin:(NSNotification *)notification {
+  [self performSelectorOnMainThread:@selector(displayLogin:)
+                         withObject:notification.object
+                      waitUntilDone:NO];
 }
 
-- (void)displayLogin {
+- (void)displayLogin:(DisplayCommand *)cmd {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-  [self.contentView addSubview:self.loginViewController.view];
-  [self.loginViewController.view setFrame:self.contentView.bounds];
-  [self.loginViewController.email becomeFirstResponder];
-  
-  [self.timeEntryListViewController.view removeFromSuperview];
-  [self.timeEntryEditViewController.view removeFromSuperview];
+  if (cmd.open) {
+    [self.contentView addSubview:self.loginViewController.view];
+    [self.loginViewController.view setFrame:self.contentView.bounds];
+    [self.loginViewController.email becomeFirstResponder];
+    
+    [self.timeEntryListViewController.view removeFromSuperview];
+    [self.timeEntryEditViewController.view removeFromSuperview];
+  }
 }
 
 - (void)addUnderlineToTextField:(NSTextField *)field {
@@ -91,7 +94,6 @@ extern void *ctx;
 
 - (void)displayTimeEntryEditor:(DisplayCommand *)cmd {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
   if (cmd.open) {
     [self.contentView addSubview:self.timeEntryEditViewController.view];
     [self.timeEntryEditViewController.view setFrame:self.contentView.bounds];
