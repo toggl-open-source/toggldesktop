@@ -111,9 +111,9 @@ class Context {
         const std::string GUID,
         kopsik::TimeEntry **);
 
-    void ViewTimeEntryList();
+    void DisplayTimeEntryList(const _Bool open);
 
-    _Bool DisplaySettings(const bool open);
+    _Bool DisplaySettings(const _Bool open);
 
     void Edit(const std::string GUID,
               const _Bool edit_running_entry,
@@ -250,6 +250,8 @@ class Context {
     std::vector<std::string> tags() const;
     std::vector<kopsik::Workspace *> workspaces() const;
     std::vector<kopsik::Client *> clients() const;
+
+    void displayTimerState();
 
     Poco::Mutex db_m_;
     kopsik::Database *db_;

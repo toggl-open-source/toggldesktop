@@ -111,43 +111,44 @@ void autocomplete_item_clear(KopsikAutocompleteItem *item) {
     delete item;
 }
 
-KopsikTimeEntryViewItem *time_entry_view_item_init(kopsik::TimeEntry *te) {
+KopsikTimeEntryViewItem *time_entry_view_item_init(
+    kopsik::TimeEntry *te,
+    const std::string project_and_task_label,
+    const std::string color,
+    const std::string start_time_string,
+    const std::string end_time_string,
+    const std::string date_duration) {
+
     poco_check_ptr(te);
+
     KopsikTimeEntryViewItem *view_item = new KopsikTimeEntryViewItem();
     poco_check_ptr(view_item);
+
     view_item->DurationInSeconds = static_cast<int>(te->DurationInSeconds());
     view_item->Description = strdup(te->Description().c_str());
     view_item->GUID = strdup(te->GUID().c_str());
     view_item->WID = static_cast<unsigned int>(te->WID());
     view_item->TID = static_cast<unsigned int>(te->TID());
     view_item->PID = static_cast<unsigned int>(te->PID());
-    view_item->ProjectAndTaskLabel = strdup(te->ProjectAndTaskLabel().c_str());
-    view_item->Color = strdup(te->ColorCode().c_str());
     view_item->Duration = strdup(te->DurationString().c_str());
     view_item->Started = static_cast<unsigned int>(te->Start());
     view_item->Ended = static_cast<unsigned int>(te->Stop());
-    view_item->StartTimeString = strdup(te->StartTimeString().c_str());
-    view_item->EndTimeString = strdup(te->EndTimeString().c_str());
-    if (te->Billable()) {
-        view_item->Billable = true;
-    } else {
-        view_item->Billable = false;
-    }
-    if (!te->Tags().empty()) {
-        view_item->Tags = strdup(te->Tags().c_str());
-    }
+
+    view_item->ProjectAndTaskLabel = strdup(project_and_task_label.c_str());
+    view_item->Color = strdup(color.c_str());
+    view_item->StartTimeString = strdup(start_time_string.c_str());
+    view_item->EndTimeString = strdup(end_time_string.c_str());
+    view_item->DateDuration = strdup(date_duration.c_str());
+
+    view_item->Billable = te->Billable();
+    view_item->Tags = strdup(te->Tags().c_str());
     view_item->UpdatedAt = static_cast<unsigned int>(te->UpdatedAt());
     view_item->DateHeader = strdup(te->DateHeaderString().c_str());
-    if (!te->DateDuration().empty()) {
-        view_item->DateDuration = strdup(te->DateDuration().c_str());
-    }
-    if (te->DurOnly()) {
-        view_item->DurOnly = true;
-    } else {
-        view_item->DurOnly = false;
-    }
+    view_item->DurOnly = te->DurOnly();
     view_item->IsHeader = false;
+
     view_item->Next = 0;
+
     return view_item;
 }
 
