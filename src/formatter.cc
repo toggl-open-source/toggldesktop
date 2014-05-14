@@ -70,6 +70,15 @@ std::string Formatter::JoinTaskNameReverse(
     return ss.str();
 }
 
+// FIXME: need am/pm support, depends on users selected format
+std::string Formatter::FormatTimeForTimeEntryEditor(const std::time_t date) {
+    if (!date) {
+        return "";
+    }
+    Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
+    return Poco::DateTimeFormatter::format(ts, "%H:%M");
+}
+
 std::string Formatter::FormatDateWithTime(const std::time_t date) {
     poco_assert(date);
 

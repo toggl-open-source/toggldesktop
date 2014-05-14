@@ -119,36 +119,9 @@ void UI::DisplayAutocomplete(std::vector<kopsik::AutocompleteItem> *items) {
 }
 
 void UI::DisplayTimeEntryList(const _Bool open,
-                              std::vector<kopsik::TimeEntry *> *visible) {
+                              KopsikTimeEntryViewItem* first) {
     logger().debug("DisplayTimeEntryList");
-
-    KopsikTimeEntryViewItem *first = 0;
-    for (unsigned int i = 0; i < visible->size(); i++) {
-        // FIXME: UI:
-        std::string project_and_task_label("");
-        std::string color("");
-        std::string start_time_string("");
-        std::string end_time_string("");
-        std::string date_duration("");
-        KopsikTimeEntryViewItem *item =
-            time_entry_view_item_init(visible->at(i),
-                                      project_and_task_label,
-                                      color,
-                                      start_time_string,
-                                      end_time_string,
-                                      date_duration);
-        item->Next = first;
-        if (first && strcmp(item->DateHeader, first->DateHeader) != 0) {
-            first->IsHeader = true;
-        }
-        first = item;
-    }
-
-    if (first) {
-        first->IsHeader = true;
-    }
     on_display_time_entry_list_(open, first);
-    time_entry_view_item_clear(first);
 }
 
 void UI::DisplayTags(std::vector<std::string> *tags) {
@@ -195,26 +168,10 @@ void UI::DisplayWorkspaceSelect(std::vector<kopsik::Workspace *> *list) {
 }
 
 void UI::DisplayTimeEntryEditor(const _Bool open,
-                                kopsik::TimeEntry *te,
+                                KopsikTimeEntryViewItem *te,
                                 const std::string focused_field_name) {
     logger().debug("DisplayTimeEntryEditor");
-
-    // FIXME: UI:
-    std::string project_and_task_label("");
-    std::string color("");
-    std::string start_time_string("");
-    std::string end_time_string("");
-    std::string date_duration("");
-
-    KopsikTimeEntryViewItem *view =
-        time_entry_view_item_init(te,
-                                  project_and_task_label,
-                                  color,
-                                  start_time_string,
-                                  end_time_string,
-                                  date_duration);
-    on_display_time_entry_editor_(open, view, focused_field_name.c_str());
-    time_entry_view_item_clear(view);
+    on_display_time_entry_editor_(open, te, focused_field_name.c_str());
 }
 
 void UI::DisplayURL(const std::string URL) {
@@ -241,27 +198,9 @@ void UI::DisplaySettings(const _Bool open,
     settings_view_item_clear(&view);
 }
 
-void UI::DisplayTimerState(kopsik::TimeEntry *te,
-                           const std::string project_and_task_label,
-                           const std::string color,
-                           const std::string start_time_string,
-                           const std::string end_time_string,
-                           const std::string date_duration) {
+void UI::DisplayTimerState(KopsikTimeEntryViewItem *te) {
     logger().debug("DisplayTimerState");
-
-    KopsikTimeEntryViewItem *view_item = 0;
-    if (te) {
-        view_item = time_entry_view_item_init(te,
-                                              project_and_task_label,
-                                              color,
-                                              start_time_string,
-                                              end_time_string,
-                                              date_duration);
-    }
-    on_display_timer_state_(view_item);
-    if (view_item) {
-        time_entry_view_item_clear(view_item);
-    }
+    on_display_timer_state_(te);
 }
 
 _Bool UI::isNetworkingError(const error err) const {

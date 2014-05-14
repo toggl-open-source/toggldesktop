@@ -113,7 +113,7 @@ clean:
 	rm -rf third_party/TFDatePicker/TFDatePicker/build && \
 	rm -f toggl toggl_test TogglDesktop*.dmg TogglDesktop*.tar.gz
 
-osx:
+osx: fmt lint
 	xcodebuild -project src/ui/osx/test2.project/TogglDesktop.xcodeproj && \
 	!(otool -L $(osx_executable) | grep "Users" && echo "Executable should not contain hardcoded paths!")
 
@@ -209,7 +209,6 @@ third_party/google-astyle/build/google-astyle:
 
 fmt: third_party/google-astyle/build/google-astyle
 	third_party/google-astyle/build/google-astyle -n $(source_dirs)
-
 
 mkdir_build:
 	mkdir -p build

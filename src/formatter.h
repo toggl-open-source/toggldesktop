@@ -14,6 +14,8 @@ namespace kopsik {
 
 class Formatter {
  public:
+    // Format
+
     static std::string JoinTaskName(
         Task * const,
         Project * const,
@@ -31,15 +33,6 @@ class Formatter {
     static std::string FormatDurationInSecondsToHM(
         const Poco::Int64 value);
 
-    static bool ParseTimeInput(
-        const std::string value,
-        int *hours,
-        int *minutes);
-
-    static time_t ParseLastDate(
-        const std::time_t last,
-        const std::time_t current);
-
     static std::string FormatDurationInSecondsHHMMSS(
         const Poco::Int64 value);
 
@@ -49,12 +42,41 @@ class Formatter {
     static std::string FormatDurationInSecondsPrettyHHMM(
         const Poco::Int64 value);
 
+    static std::string Format8601(
+        const std::time_t date);
+
+    static std::string FormatDateHeader(
+        const std::time_t date);
+
+    static std::string FormatDateWithTime(
+        const std::time_t date);
+
+    static std::string FormatTimeForTimeEntryEditor(
+        const std::time_t date);
+
+    // Parse
+
     static std::time_t Parse8601(
         const std::string iso_8601_formatted_date);
 
     static int ParseDurationString(
         const std::string value);
 
+    static bool ParseTimeInput(
+        const std::string value,
+        int *hours,
+        int *minutes);
+
+    static time_t ParseLastDate(
+        const std::time_t last,
+        const std::time_t current);
+
+    // Escape
+
+    static std::string EscapeJSONString(
+        const std::string input);
+
+ private:
     static bool parseDurationStringHHMMSS(
         const std::string value,
         int *parsed_seconds);
@@ -69,18 +91,6 @@ class Formatter {
 
     static int parseDurationFromDecimal(
         const std::string value);
-
-    static std::string Format8601(
-        const std::time_t date);
-
-    static std::string FormatDateHeader(
-        const std::time_t date);
-
-    static std::string FormatDateWithTime(
-        const std::time_t date);
-
-    static std::string EscapeJSONString(
-        const std::string input);
 };
 
 }  // namespace kopsik
