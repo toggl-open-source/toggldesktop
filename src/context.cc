@@ -1081,17 +1081,14 @@ _Bool Context::Start(
     const std::string description,
     const std::string duration,
     const Poco::UInt64 task_id,
-    const Poco::UInt64 project_id,
-    kopsik::TimeEntry **result) {
-
-    poco_check_ptr(result);
+    const Poco::UInt64 project_id) {
 
     if (!user_) {
         logger().warning("Cannot start tracking, user logged out");
         return true;
     }
 
-    *result = user_->Start(description, duration, task_id, project_id);
+    user_->Start(description, duration, task_id, project_id);
 
     return UI()->DisplayError(save());
 }
@@ -1430,8 +1427,7 @@ _Bool Context::SetTimeEntryDescription(
     return UI()->DisplayError(save());
 }
 
-_Bool Context::Stop(kopsik::TimeEntry **stopped_entry) {
-    *stopped_entry = 0;
+_Bool Context::Stop() {
     if (!user_) {
         logger().warning("Cannot stop tracking, user logged out");
         return true;
@@ -1442,15 +1438,12 @@ _Bool Context::Stop(kopsik::TimeEntry **stopped_entry) {
         logger().warning("No time entry was found to stop");
         return true;
     }
-    *stopped_entry = stopped[0];
+
     return UI()->DisplayError(save());
 }
 
 _Bool Context::StopAt(
-    const Poco::Int64 at,
-    kopsik::TimeEntry **result) {
-
-    poco_check_ptr(result);
+    const Poco::Int64 at) {
 
     if (!user_) {
         logger().warning("Cannot stop time entry, user logged out");
@@ -1462,8 +1455,6 @@ _Bool Context::StopAt(
         logger().warning("Time entry not found");
         return true;
     }
-
-    *result = stopped;
 
     return UI()->DisplayError(save());
 }

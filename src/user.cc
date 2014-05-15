@@ -58,7 +58,7 @@ Project *User::AddProject(
 
 // Start a time entry, mark it as dirty and add to user time entry collection.
 // Do not save here, dirtyness will be handled outside of this module.
-TimeEntry *User::Start(
+void User::Start(
     const std::string description,
     const std::string duration,
     const Poco::UInt64 task_id,
@@ -111,7 +111,6 @@ TimeEntry *User::Start(
     te->SetUIModified();
 
     related.TimeEntries.push_back(te);
-    return te;
 }
 
 void User::ensureWID(TimeEntry *te) const {

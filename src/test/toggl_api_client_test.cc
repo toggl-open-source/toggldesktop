@@ -303,7 +303,14 @@ TEST(TogglApiClientTest, TestStartTimeEntryWithDuration) {
     User user("kopsik_test", "0.1");
     LoadUserFromJSONString(&user, loadTestData(), true, true);
 
-    TimeEntry *te = user.Start("Old work", "1 hour", 0, 0);
+    size_t count = user.related.TimeEntries.size();
+
+    user.Start("Old work", "1 hour", 0, 0);
+
+    ASSERT_EQ(count + 1, user.related.TimeEntries.size());
+
+    TimeEntry *te = user.related.TimeEntries[user.related.TimeEntries.size()-1];
+
     ASSERT_EQ(3600, te->DurationInSeconds());
 }
 
@@ -313,8 +320,11 @@ TEST(TogglApiClientTest, TestStartTimeEntryWithoutDuration) {
     User user("kopsik_test", "0.1");
     LoadUserFromJSONString(&user, loadTestData(), true, true);
 
-    TimeEntry *te = user.Start("Old work", "1 hour", 0, 0);
-    ASSERT_LT(0, te->DurationInSeconds());
+    user.Start("Old work", "", 0, 0);
+
+    TimeEntry *te = user.RunningTimeEntry();
+    ASSERT_TRUE(te);
+    ASSERT_GT(0, te->DurationInSeconds());
 }
 
 TEST(TogglApiClientTest, TestDeletionSteps) {
@@ -324,10 +334,11 @@ TEST(TogglApiClientTest, TestDeletionSteps) {
     LoadUserFromJSONString(&user, loadTestData(), true, true);
 
     // first, mark time entry as deleted
-    TimeEntry *te = user.Start("My new time entry", "", 0, 0);
+    user.Start("My new time entry", "", 0, 0);
+    TimeEntry *te = user.RunningTimeEntry();
+    ASSERT_TRUE(te);
     std::vector<ModelChange> changes;
     ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
-
     te->MarkAsDeletedOnServer();
     {
         Poco::UInt64 te_count(0);

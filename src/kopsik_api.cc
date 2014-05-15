@@ -349,8 +349,7 @@ _Bool kopsik_start(
         dur = std::string(duration);
     }
 
-    kopsik::TimeEntry *te = 0;
-    return app(context)->Start(desc, dur, task_id, project_id, &te);
+    return app(context)->Start(desc, dur, task_id, project_id);
 }
 
 _Bool kopsik_continue(
@@ -542,8 +541,7 @@ _Bool kopsik_stop(
     void *context) {
     logger().debug("kopsik_stop");
 
-    kopsik::TimeEntry *te = 0;
-    return app(context)->Stop(&te);
+    return app(context)->Stop();
 }
 
 _Bool kopsik_stop_running_time_entry_at(
@@ -553,8 +551,7 @@ _Bool kopsik_stop_running_time_entry_at(
 
     logger().debug("kopsik_stop");
 
-    kopsik::TimeEntry *te = 0;
-    return app(context)->StopAt(at, &te);
+    return app(context)->StopAt(at);
 }
 
 void kopsik_timeline_toggle_recording(
