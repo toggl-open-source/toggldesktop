@@ -165,15 +165,11 @@ extern int kDurationStringLength;
 
 - (IBAction)backButtonClicked:(id)sender
 {
-	[self removeCustomConstraints];
-	[self.descriptionCombobox setNextKeyView:self.projectSelect];
 	// This is not a good place for this (on Done button!)
-	if (![self applyAddProject])
+	if ([self applyAddProject])
 	{
-		return;
+		kopsik_view_time_entry_list(ctx);
 	}
-
-	kopsik_view_time_entry_list(ctx);
 }
 
 // Returns NO if there's an error and UI should not go out of the add project
@@ -217,11 +213,11 @@ extern int kDurationStringLength;
 {
 	if (comboBox == self.clientSelect)
 	{
-		return @"";         // Not supported at the moment
+		return @"";                 // Not supported at the moment
 	}
 	if (comboBox == self.workspaceSelect)
 	{
-		return @"";         // Not supported at the moment
+		return @"";                 // Not supported at the moment
 	}
 	NSAssert(false, @"Invalid combo box");
 	return nil;
@@ -376,6 +372,9 @@ extern int kDurationStringLength;
 		[self.addProjectBox setHidden:YES];
 		[self.projectSelectBox setHidden:NO];
 		[self.projectPublicCheckbox setState:NSOffState];
+
+		[self removeCustomConstraints];
+		[self.descriptionCombobox setNextKeyView:self.projectSelect];
 	}
 }
 
@@ -833,11 +832,11 @@ extern int kDurationStringLength;
 {
 	if (self.timeEntry == nil || self.timeEntry.duration_in_seconds >= 0)
 	{
-		return;         // time entry is not running, ignore
+		return;                 // time entry is not running, ignore
 	}
 	if ([self.durationTextField currentEditor] != nil)
 	{
-		return;         // duration field is focussed by user, don't mess with it
+		return;                 // duration field is focussed by user, don't mess with it
 	}
 	char str[kDurationStringLength];
 	kopsik_format_duration_in_seconds_hhmmss(self.timeEntry.duration_in_seconds,
