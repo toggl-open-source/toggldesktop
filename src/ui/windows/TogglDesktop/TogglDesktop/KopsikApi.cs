@@ -1,15 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.IO;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Reflection;
 
 namespace TogglDesktop
 {
     static class KopsikApi
     {
+        public static IntPtr ctx = IntPtr.Zero;
+
         private const string dll = "TogglDesktopDLL.dll";
         private const CharSet charset = CharSet.Ansi;
         private const CallingConvention convention = CallingConvention.Cdecl;
@@ -96,7 +97,7 @@ namespace TogglDesktop
             bool is_online);
 
         [UnmanagedFunctionPointer(convention)]
-        public delegate void KopsikDisplayURL
+        public delegate void KopsikDisplayURL(
             string url);
 
         [UnmanagedFunctionPointer(convention)]
@@ -267,11 +268,11 @@ namespace TogglDesktop
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_password_forgot(
-            IntPtr context)
+            IntPtr context);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_open_in_browser(
-            IntPtr context)
+            IntPtr context);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_get_support(
@@ -378,11 +379,11 @@ namespace TogglDesktop
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern bool kopsik_set_proxy_settings(
             IntPtr context,
-            const _Bool use_proxy,
-            const char *proxy_host,
-            const uint64_t proxy_port,
-            const char *proxy_username,
-            const char *proxy_password);
+            bool use_proxy,
+            string proxy_host,
+            UInt64 proxy_port,
+            string proxy_username,
+            string proxy_password);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern bool kopsik_logout(
@@ -395,19 +396,19 @@ namespace TogglDesktop
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern bool kopsik_start(
             IntPtr context,
-            const char *description,
-            const char *duration,
-            const uint64_t task_id,
-            const uint64_t project_id);
+            string description,
+            string duration,
+            UInt64 task_id,
+            UInt64 project_id);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern bool kopsik_add_project(
             IntPtr context,
-            const char *time_entry_guid,
-            const uint64_t workspace_id,
-            const uint64_t client_id,
-            const char *project_name,
-            const _Bool is_private);
+            string time_entry_guid,
+            UInt64 workspace_id,
+            UInt64 client_id,
+            string project_name,
+            bool is_private);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_check_for_updates(
@@ -416,7 +417,7 @@ namespace TogglDesktop
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern bool kopsik_set_update_channel(
             IntPtr context,
-            string update_channel,
+            string update_channel);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_sync(
@@ -443,13 +444,7 @@ namespace TogglDesktop
             IntPtr minutes);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern bool kopsik_login(
-            IntPtr context,
-            string email,
-            string password);
-
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern  oic kopsik_format_duration_in_seconds_hhmmss(
+        public static extern void kopsik_format_duration_in_seconds_hhmmss(
             IntPtr duration_in_seconds,
             string str,
             int max_strlen);
@@ -469,6 +464,52 @@ namespace TogglDesktop
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern Int64 kopsik_parse_duration_string_into_seconds(
             string duration_string);
+
+        // Events for C#
+
+        public static event KopsikApi.KopsikDisplayError OnError = delegate { };
+        public static event KopsikApi.KopsikDisplayUpdate OnUpdate = delegate { };
+        public static event KopsikApi.KopsikDisplayOnlineState OnOnlineState = delegate { };
+        public static event KopsikApi.KopsikDisplayLogin OnLogin = delegate { };
+        public static event KopsikApi.KopsikDisplayReminder OnReminder = delegate { };
+        public static event KopsikApi.KopsikDisplayTimeEntryList OnTimeEntryList = delegate { };
+        public static event KopsikApi.KopsikDisplayAutocomplete OnAutocomplete = delegate { };
+        public static event KopsikApi.KopsikDisplayTimeEntryEditor OnTimeEntryEditor = delegate { };
+        public static event KopsikApi.KopsikDisplayViewItems OnWorkspaceSelect = delegate { };
+        public static event KopsikApi.KopsikDisplayViewItems OnClientSelect = delegate { };
+        public static event KopsikApi.KopsikDisplayViewItems OnTags = delegate { };
+        public static event KopsikApi.KopsikApplySettings OnApplySettings = delegate { };
+        public static event KopsikApi.KopsikDisplaySettings OnSettings = delegate { };
+        public static event KopsikApi.KopsikDisplayTimerState OnTimerState = delegate { };
+
+        // Start
+
+        public static void Start()
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+
+            ctx = kopsik_context_init("windows_native_app", "7.0.1");
+
+            // Wire up events
+
+            // Configure log, db path
+            string path = Path.Combine(Environment.GetFolderPath(
+                Environment.SpecialFolder.ApplicationData), "Kopsik");
+            System.IO.Directory.CreateDirectory(path);
+            KopsikApi.kopsik_set_log_path(Path.Combine(path, "kopsik.log"));
+            KopsikApi.kopsik_set_log_level("debug");
+            KopsikApi.kopsik_set_db_path(ctx, Path.Combine(path, "kopsik.db"));
+
+            // Start pumping UI events
+            KopsikApi.kopsik_context_start_events(ctx);
+        }
+
+        private static void OnURL(string url)
+        {
+            Process.Start(url);
+        }
+
 
     }
 }

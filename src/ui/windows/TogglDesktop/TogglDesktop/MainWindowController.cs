@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Reflection;
-using System.Diagnostics;
 
 namespace TogglDesktop
 {
@@ -38,24 +30,23 @@ namespace TogglDesktop
 
             loadWindowLocation();
 
-            Kopsik.OnError += on_error;
-            Kopsik.OnUpdate += on_update;
-            Kopsik.OnLoginState += on_login_state;
-            Kopsik.OnLogin += on_login;
-            Kopsik.OnURL += on_url;
-            Kopsik.OnReminder += on_reminder;
-            Kopsik.OnTimeEntryList += on_time_entry_list;
-            Kopsik.OnAutocomplete += on_autocomplete;
-            Kopsik.OnWorkspaceSelect += on_workspace_select;
-            Kopsik.OnClientSelect += on_client_select;
-            Kopsik.OnTags += on_tags;
-            Kopsik.OnTimeEntryEditor += on_time_entry_editor;
-            Kopsik.OnSettings += on_settings;
-            Kopsik.OnTimerState += on_timer_state;
+            KopsikApi.OnError += OnError;
+            /*
+            KopsikApi.OnUpdate += on_update;
+            KopsikApi.OnLoginState += on_login_state;
+            KopsikApi.OnLogin += on_login;
+            KopsikApi.OnReminder += on_reminder;
+            KopsikApi.OnTimeEntryList += on_time_entry_list;
+            KopsikApi.OnAutocomplete += on_autocomplete;
+            KopsikApi.OnWorkspaceSelect += on_workspace_select;
+            KopsikApi.OnClientSelect += on_client_select;
+            KopsikApi.OnTags += on_tags;
+            KopsikApi.OnTimeEntryEditor += on_time_entry_editor;
+            KopsikApi.OnSettings += on_settings;
+            KopsikApi.OnTimerState += on_timer_state;
+            */
 
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
-            Kopsik.Init("windows_native_app", versionInfo.ProductVersion);
+            KopsikApi.Start();
         }
 
         private void loadWindowLocation()
@@ -89,20 +80,29 @@ namespace TogglDesktop
             throw new NotImplementedException();
         }
 
-        void on_error(string errmsg)
+        void OnError(string errmsg, bool user_error)
         {
             errorLabel.Text = errmsg;
             troubleBox.Visible = true;
+
+            if (!user_error)
+            {
+                // FIXME: notify bugsnag
+            }
         }
 
-        void on_login(ulong user_idid)
+        void OnLogin(ulong user_id)
         {
-            if (0 == id) {
+            if (0 == user_id) {
                 Controls.Remove(timeEntryListViewController);
                 Controls.Add(loginViewController);
                 loginViewController.SetAcceptButton(this);
                 return;
             }
+        }
+
+        void OnTimeEntryList()
+        {
             Controls.Remove(loginViewController);
             Controls.Add(timeEntryListViewController);
             timeEntryListViewController.SetAcceptButton(this);
@@ -173,19 +173,19 @@ namespace TogglDesktop
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Kopsik.Start("", "", 0, 0);
+            KopsikApi.kopsik_start(KopsikApi.ctx, "", "", 0, 0);
             show();
         }
 
         private void continueToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Kopsik.ContinueLatest();
+            KopsikApi.kopsik_continue_latest(KopsikApi.ctx);
             show();
         }
 
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Kopsik.Stop();
+            KopsikApi.kopsik_stop(KopsikApi.ctx);
             show();
         }
 
@@ -196,12 +196,12 @@ namespace TogglDesktop
 
         private void syncToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Kopsik.Sync();
+            KopsikApi.kopsik_sync(KopsikApi.ctx);
         }
 
         private void openInBrowserToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Kopsik.OpenInBrowser();
+            KopsikApi.kopsik_open_in_browser(KopsikApi.ctx);
         }
 
         private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -218,7 +218,7 @@ namespace TogglDesktop
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Kopsik.Logout();
+            KopsikApi.kopsik_logout(KopsikApi.ctx);
         }
 
         private void show()

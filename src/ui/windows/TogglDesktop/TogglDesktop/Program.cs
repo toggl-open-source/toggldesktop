@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 namespace TogglDesktop
 {
     static class Program
-    {        
+    {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -23,7 +23,7 @@ namespace TogglDesktop
 
         private static void onApplicationExit(object sender, EventArgs e)
         {
-            Kopsik.Clear();
+            KopsikApi.kopsik_context_clear(KopsikApi.ctx);
         }
     }
 }

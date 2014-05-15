@@ -30,13 +30,7 @@ namespace TogglDesktop
         private void buttonStart_Click(object sender, EventArgs e)
         {
             if (buttonStart.Text == "Start") {
-                Kopsik.Start(comboBoxDescription.Text,
-                    textBoxDuration.Text,
-                    0,
-                    0);
-                return;
             }
-            Kopsik.Stop();
         }
 
         public void SetAcceptButton(Form frm)
