@@ -95,8 +95,7 @@ class Context {
         const std::string description,
         const std::string duration,
         const Poco::UInt64 task_id,
-        const Poco::UInt64 project_id,
-        kopsik::TimeEntry **);
+        const Poco::UInt64 project_id);
 
     _Bool ContinueLatest();
 
@@ -143,11 +142,9 @@ class Context {
         const std::string GUID,
         const std::string value);
 
-    _Bool Stop(kopsik::TimeEntry **stopped_entry);
+    _Bool Stop();
 
-    _Bool StopAt(
-        const Poco::Int64 at,
-        kopsik::TimeEntry **result);
+    _Bool StopAt(const Poco::Int64 at);
 
     _Bool RunningTimeEntry(
         kopsik::TimeEntry **running) const;
