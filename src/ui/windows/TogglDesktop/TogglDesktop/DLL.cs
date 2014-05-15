@@ -14,6 +14,70 @@ namespace TogglDesktop
         private const CharSet charset = CharSet.Ansi;
         private const CallingConvention convention = CallingConvention.Cdecl;
 
+        // Models
+
+        [StructLayout(LayoutKind.Sequential, CharSet = charset)]
+        public struct KopsikTimeEntryViewItem
+        {
+            public int DurationInSeconds;
+            public string Description;
+            public string ProjectAndTaskLabel;
+            public int WID;
+            public int PID;
+            public int TID;
+            public string Duration;
+            public string Color;
+            public string GUID;
+            public bool Billabel;
+            public string Tags;
+            public int Started;
+            public int Ended;
+            public string StartTimeString;
+            public string EndTimeString;
+            public int UpdatedAt;
+            public string DateHeader;
+            public string DateDuration;
+            public bool DurOnly;
+            public bool IsHeader;
+            public IntPtr Next;
+        }
+
+        [StructLayout(LayoutKind.Sequential, CharSet = charset)]
+        public struct KopsikAutocompleteItem
+        {
+            public string Text;
+            public string Description;
+            public string ProjectAndTaskLabel;
+            public int TaskID;
+            public int ProjectID;
+            public IntPtr Next;
+        }
+
+        [StructLayout(LayoutKind.Sequential, CharSet = charset)]
+        public struct KopsikViewItem
+        {
+            public int ID;
+            public string GUID;
+            public string Name;
+            public IntPtr Next;
+        }
+
+        [StructLayout(LayoutKind.Sequential, CharSet = charset)]
+        public struct KopsikSettingsViewItem
+        {
+            public bool UseProxy;
+            public string ProxyHost;
+            public int ProxyPort;
+            public string ProxyUsername;
+            public string ProxyPassword;
+            public bool UseIdleDetection;
+            public bool MenubarTimer;
+            public bool DockIcon;
+            public bool OnTop;
+            public bool Reminder;
+            public bool RecordTimeline;
+        }
+
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern System.IntPtr kopsik_context_init(
             string app_name, string app_version);
