@@ -213,11 +213,11 @@ extern int kDurationStringLength;
 {
 	if (comboBox == self.clientSelect)
 	{
-		return @"";                 // Not supported at the moment
+		return @"";
 	}
 	if (comboBox == self.workspaceSelect)
 	{
-		return @"";                 // Not supported at the moment
+		return @"";
 	}
 	NSAssert(false, @"Invalid combo box");
 	return nil;
@@ -830,13 +830,15 @@ extern int kDurationStringLength;
 // into duration field
 - (void)timerFired:(NSTimer *)timer
 {
+	// if time entry is not running, ignore
 	if (self.timeEntry == nil || self.timeEntry.duration_in_seconds >= 0)
 	{
-		return;                 // time entry is not running, ignore
+		return;
 	}
+	// if duration field is focussed by user, don't mess with it
 	if ([self.durationTextField currentEditor] != nil)
 	{
-		return;                 // duration field is focussed by user, don't mess with it
+		return;
 	}
 	char str[kDurationStringLength];
 	kopsik_format_duration_in_seconds_hhmmss(self.timeEntry.duration_in_seconds,
