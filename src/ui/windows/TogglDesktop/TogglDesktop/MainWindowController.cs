@@ -38,10 +38,20 @@ namespace TogglDesktop
 
             loadWindowLocation();
 
-            Kopsik.OnUserLogin += Core_OnUserLogin;
-            Kopsik.OnError += Core_OnError;
-            Kopsik.OnCheckUpdate += Core_OnCheckUpdate;
-            Kopsik.OnOnline += Core_OnOnline;
+            Kopsik.OnError += on_error;
+            Kopsik.OnUpdate += on_update;
+            Kopsik.OnLoginState += on_login_state;
+            Kopsik.OnLogin += on_login;
+            Kopsik.OnURL += on_url;
+            Kopsik.OnReminder += on_reminder;
+            Kopsik.OnTimeEntryList += on_time_entry_list;
+            Kopsik.OnAutocomplete += on_autocomplete;
+            Kopsik.OnWorkspaceSelect += on_workspace_select;
+            Kopsik.OnClientSelect += on_client_select;
+            Kopsik.OnTags += on_tags;
+            Kopsik.OnTimeEntryEditor += on_time_entry_editor;
+            Kopsik.OnSettings += on_settings;
+            Kopsik.OnTimerState += on_timer_state;
 
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
@@ -69,23 +79,23 @@ namespace TogglDesktop
             }
         }
 
-        void Core_OnOnline()
+        void on_online_state(bool is_online)
         {
             throw new NotImplementedException();
         }
 
-        void Core_OnCheckUpdate(bool is_update_available, string url, string version)
+        void on_update(bool is_update_available, string url, string version)
         {
             throw new NotImplementedException();
         }
 
-        void Core_OnError(string errmsg)
+        void on_error(string errmsg)
         {
             errorLabel.Text = errmsg;
             troubleBox.Visible = true;
         }
 
-        void Core_OnUserLogin(ulong id, string fullname, string timeofdayformat)
+        void on_login(ulong user_idid)
         {
             if (0 == id) {
                 Controls.Remove(timeEntryListViewController);
