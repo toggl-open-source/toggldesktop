@@ -10,7 +10,7 @@
 #import "NSTextFieldClickable.h"
 #import "NSCustomComboBox.h"
 
-@interface TimerEditViewController : NSViewController <NSComboBoxDataSource> {
+@interface TimerEditViewController : NSViewController <NSComboBoxDataSource, NSTextFieldDelegate> {
 }
 @property IBOutlet NSTextFieldClickable *durationTextField;
 @property IBOutlet NSCustomComboBox *descriptionComboBox;

@@ -9,5 +9,5 @@
 #import <Cocoa/Cocoa.h>
 
 @interface NSComboBox (ExpansionAPI)
-@property (getter=isExpanded) BOOL expanded;
+@property (getter = isExpanded) BOOL expanded;
 @end

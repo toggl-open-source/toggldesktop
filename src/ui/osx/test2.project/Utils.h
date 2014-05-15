@@ -14,8 +14,8 @@
 + (unsigned int)stateToBool:(NSInteger)state;
 + (void)disallowDuplicateInstances;
 + (NSString *)applicationSupportDirectory:(NSString *)environment;
-+ (bool) isNumeric:(NSString *) checkText;
-  
++ (bool)isNumeric:(NSString *)checkText;
+
 @end
 
 BOOL wasLaunchedAsLoginOrResumeItem();

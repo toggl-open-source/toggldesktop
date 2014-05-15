@@ -12,23 +12,27 @@
 @implementation NSHoverButton
 
 // http://stackoverflow.com/questions/7889419/cocoa-button-rollovers-with-mouseentered-and-mouseexited
-- (void)awakeFromNib {
-  NSTrackingAreaOptions focusTrackingAreaOptions = NSTrackingActiveInActiveApp;
-  focusTrackingAreaOptions |= NSTrackingMouseEnteredAndExited;
-  focusTrackingAreaOptions |= NSTrackingAssumeInside;
-  focusTrackingAreaOptions |= NSTrackingInVisibleRect;
-  
-  NSTrackingArea *focusTrackingArea = [[NSTrackingArea alloc] initWithRect:NSZeroRect
-                                                                   options:focusTrackingAreaOptions owner:self userInfo:nil];
-  [self addTrackingArea:focusTrackingArea];
+- (void)awakeFromNib
+{
+	NSTrackingAreaOptions focusTrackingAreaOptions = NSTrackingActiveInActiveApp;
+
+	focusTrackingAreaOptions |= NSTrackingMouseEnteredAndExited;
+	focusTrackingAreaOptions |= NSTrackingAssumeInside;
+	focusTrackingAreaOptions |= NSTrackingInVisibleRect;
+
+	NSTrackingArea *focusTrackingArea = [[NSTrackingArea alloc] initWithRect:NSZeroRect
+																	 options:focusTrackingAreaOptions owner:self userInfo:nil];
+	[self addTrackingArea:focusTrackingArea];
 }
 
-- (void)mouseEntered:(NSEvent *)theEvent {
-  [self.animator setAlphaValue:0.5];
+- (void)mouseEntered:(NSEvent *)theEvent
+{
+	[self.animator setAlphaValue:0.5];
 }
 
-- (void)mouseExited:(NSEvent *)theEvent {
-  [self.animator setAlphaValue:1];
+- (void)mouseExited:(NSEvent *)theEvent
+{
+	[self.animator setAlphaValue:1];
 }
 
 @end

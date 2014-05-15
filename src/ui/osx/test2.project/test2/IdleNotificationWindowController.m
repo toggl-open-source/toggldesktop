@@ -16,50 +16,57 @@
 
 @implementation IdleNotificationWindowController
 
-- (id)initWithWindow:(NSWindow *)window {
-    self = [super initWithWindow:window];
-    if (self) {
-      [[NSNotificationCenter defaultCenter] addObserver:self
-                                               selector:@selector(idleFinished:)
-                                                   name:kDisplayIdleNotification
-                                                 object:nil];
-    }
-    return self;
+- (id)initWithWindow:(NSWindow *)window
+{
+	self = [super initWithWindow:window];
+	if (self)
+	{
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(idleFinished:)
+													 name:kDisplayIdleNotification
+												   object:nil];
+	}
+	return self;
 }
 
-- (void)windowDidLoad {
-  [super windowDidLoad];
-  
-  [self renderIdle];
+- (void)windowDidLoad
+{
+	[super windowDidLoad];
+
+	[self renderIdle];
 }
 
-- (void)renderIdle {
-  NSLog(@"IdleNotificationWindowController windowDidLoad");
-  NSDateFormatter *format = [[NSDateFormatter alloc] init];
-  [format setDateFormat:@"HH:mm:ss"];
-  NSString *dateString = [format stringFromDate:self.idleEvent.started];
-  
-  NSString *idleSince = [NSString stringWithFormat:@"You have been idle since %@", dateString];
-  [self.idleSinceTextField setStringValue:idleSince];
+- (void)renderIdle
+{
+	NSLog(@"IdleNotificationWindowController windowDidLoad");
+	NSDateFormatter *format = [[NSDateFormatter alloc] init];
+	[format setDateFormat:@"HH:mm:ss"];
+	NSString *dateString = [format stringFromDate:self.idleEvent.started];
 
-  NSString *idleAmount = [NSString stringWithFormat:@" (%ld minutes)", self.idleEvent.seconds / 60];
-  [self.idleAmountTextField setStringValue:idleAmount];
+	NSString *idleSince = [NSString stringWithFormat:@"You have been idle since %@", dateString];
+	[self.idleSinceTextField setStringValue:idleSince];
+
+	NSString *idleAmount = [NSString stringWithFormat:@" (%ld minutes)", self.idleEvent.seconds / 60];
+	[self.idleAmountTextField setStringValue:idleAmount];
 }
 
-- (IBAction)stopButtonClicked:(id)sender {
-  [[NSNotificationCenter defaultCenter] postNotificationName:kCommandStopAt
-                                                      object:self.idleEvent];
-  [self.window orderOut:nil];
+- (IBAction)stopButtonClicked:(id)sender
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:kCommandStopAt
+														object:self.idleEvent];
+	[self.window orderOut:nil];
 }
 
-- (IBAction)ignoreButtonClicked:(id)sender {
-  [self.window orderOut:nil];
+- (IBAction)ignoreButtonClicked:(id)sender
+{
+	[self.window orderOut:nil];
 }
 
--(void)idleFinished: (NSNotification *) notification {
-  self.idleEvent = notification.object;
-  [self.window makeKeyAndOrderFront:nil];
-  [self renderIdle];
+- (void)idleFinished:(NSNotification *)notification
+{
+	self.idleEvent = notification.object;
+	[self.window makeKeyAndOrderFront:nil];
+	[self renderIdle];
 }
 
 @end

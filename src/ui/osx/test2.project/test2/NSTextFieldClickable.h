@@ -8,5 +8,5 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface NSTextFieldClickable : NSTextField
+@interface NSTextFieldClickable : NSTextField <NSTextFieldDelegate>
 @end
