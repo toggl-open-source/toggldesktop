@@ -1189,10 +1189,7 @@ void Context::displayTimeEntryEditor(const _Bool open,
     time_entry_view_item_clear(view);
 }
 
-_Bool Context::ContinueLatest(
-    kopsik::TimeEntry **result) {
-    poco_check_ptr(result);
-
+_Bool Context::ContinueLatest() {
     if (!user_) {
         logger().warning("Cannot continue tracking, user logged out");
         return true;
@@ -1203,7 +1200,7 @@ _Bool Context::ContinueLatest(
         return true;
     }
 
-    kopsik::error err = user_->Continue(latest->GUID(), result);
+    kopsik::error err = user_->Continue(latest->GUID());
     if (err != kopsik::noError) {
         return UI()->DisplayError(err);
     }
@@ -1212,10 +1209,7 @@ _Bool Context::ContinueLatest(
 }
 
 _Bool Context::Continue(
-    const std::string GUID,
-    kopsik::TimeEntry **result) {
-
-    poco_check_ptr(result);
+    const std::string GUID) {
 
     if (!user_) {
         logger().warning("Cannot continue time entry, user logged out");
@@ -1227,7 +1221,7 @@ _Bool Context::Continue(
     }
 
 
-    kopsik::error err = user_->Continue(GUID, result);
+    kopsik::error err = user_->Continue(GUID);
     if (err != kopsik::noError) {
         return UI()->DisplayError(err);
     }

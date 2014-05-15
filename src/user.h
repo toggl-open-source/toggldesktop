@@ -92,8 +92,7 @@ class User : public BaseModel {
         const Poco::UInt64 project_id);
 
     kopsik::error Continue(
-        const std::string GUID,
-        TimeEntry **);
+        const std::string GUID);
 
     TimeEntry *Latest() const;
 

@@ -122,10 +122,7 @@ void User::ensureWID(TimeEntry *te) const {
 }
 
 kopsik::error User::Continue(
-    const std::string GUID,
-    TimeEntry **result) {
-
-    poco_check_ptr(result);
+    const std::string GUID) {
 
     Stop();
     TimeEntry *existing = TimeEntryByGUID(GUID);
@@ -134,27 +131,28 @@ kopsik::error User::Continue(
         return noError;
     }
 
-    *result = 0;
     if (existing->DurOnly() && existing->IsToday()) {
-        *result = existing;
-        (*result)->SetDurationInSeconds(
-            -time(0) + (*result)->DurationInSeconds());
-    } else {
-        *result = new TimeEntry();
-        (*result)->SetDescription(existing->Description());
-        (*result)->SetDurOnly(existing->DurOnly());
-        (*result)->SetWID(existing->WID());
-        (*result)->SetPID(existing->PID());
-        (*result)->SetTID(existing->TID());
-        (*result)->SetUID(ID());
-        (*result)->SetStart(time(0));
-        (*result)->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
-        (*result)->SetDurationInSeconds(-time(0));
-        (*result)->SetBillable(existing->Billable());
-        (*result)->SetTags(existing->Tags());
-        related.TimeEntries.push_back((*result));
+        existing->SetDurationInSeconds(
+            -time(0) + existing->DurationInSeconds());
+        existing->SetUIModified();
+        return kopsik::noError;
     }
-    (*result)->SetUIModified();
+
+    TimeEntry *result = new TimeEntry();
+    result->SetDescription(existing->Description());
+    result->SetDurOnly(existing->DurOnly());
+    result->SetWID(existing->WID());
+    result->SetPID(existing->PID());
+    result->SetTID(existing->TID());
+    result->SetUID(ID());
+    result->SetStart(time(0));
+    result->SetCreatedWith(kopsik::UserAgent(app_name_, app_version_));
+    result->SetDurationInSeconds(-time(0));
+    result->SetBillable(existing->Billable());
+    result->SetTags(existing->Tags());
+
+    related.TimeEntries.push_back(result);
+
     return kopsik::noError;
 }
 
