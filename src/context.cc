@@ -1217,13 +1217,19 @@ _Bool Context::Continue(
         return UI()->DisplayError("Missing GUID");
     }
 
-
     kopsik::error err = user_->Continue(GUID);
     if (err != kopsik::noError) {
         return UI()->DisplayError(err);
     }
 
-    return UI()->DisplayError(save());
+    err = save();
+    if (err != kopsik::noError) {
+        return UI()->DisplayError(err);
+    }
+
+    DisplayTimeEntryList(true);
+
+    return true;
 }
 
 _Bool Context::DeleteTimeEntryByGUID(const std::string GUID) {
