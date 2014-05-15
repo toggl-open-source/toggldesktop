@@ -39,7 +39,7 @@
                                 <tableViewGridLines key="gridStyleMask" horizontal="YES"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
-                                    <tableColumn identifier="" editable="NO" width="252" minWidth="40" maxWidth="2000" id="Pqa-db-i5f">
+                                    <tableColumn identifier="" editable="NO" width="252" minWidth="40" maxWidth="2500" id="Pqa-db-i5f">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
