@@ -124,9 +124,6 @@ extern "C" {
         KopsikTimeEntryViewItem *te,
         const char *focused_field_name);
 
-    typedef void (*KopsikApplySettings)(
-        KopsikSettingsViewItem *settings);
-
     typedef void (*KopsikDisplaySettings)(
         const _Bool open,
         KopsikSettingsViewItem *settings);

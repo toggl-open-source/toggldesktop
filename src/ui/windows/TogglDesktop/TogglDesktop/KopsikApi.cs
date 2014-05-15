@@ -130,10 +130,6 @@ namespace TogglDesktop
             string focused_field_name);
 
         [UnmanagedFunctionPointer(convention)]
-        public delegate void KopsikApplySettings(
-            KopsikSettingsViewItem settings);
-
-        [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplaySettings(
             bool open,
             KopsikSettingsViewItem settings);
@@ -188,7 +184,7 @@ namespace TogglDesktop
         // Configure the UI callbacks. Required.
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_on_error(
+        private static extern void kopsik_on_error(
             IntPtr context,
             KopsikDisplayError cb);
 
@@ -233,6 +229,11 @@ namespace TogglDesktop
             KopsikDisplayViewItems cb);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        public static extern void kopsik_on_client_select(
+            IntPtr context,
+            KopsikDisplayViewItems cb);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_on_tags(
             IntPtr context,
             KopsikDisplayViewItems cb);
@@ -255,7 +256,7 @@ namespace TogglDesktop
         // After UI callbacks are configured, start pumping UI events
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern bool kopsik_context_start_events(
+        private static extern bool kopsik_context_start_events(
             IntPtr context);
 
         // User interaction with the app
@@ -478,13 +479,12 @@ namespace TogglDesktop
         public static event KopsikApi.KopsikDisplayViewItems OnWorkspaceSelect = delegate { };
         public static event KopsikApi.KopsikDisplayViewItems OnClientSelect = delegate { };
         public static event KopsikApi.KopsikDisplayViewItems OnTags = delegate { };
-        public static event KopsikApi.KopsikApplySettings OnApplySettings = delegate { };
         public static event KopsikApi.KopsikDisplaySettings OnSettings = delegate { };
         public static event KopsikApi.KopsikDisplayTimerState OnTimerState = delegate { };
 
         // Start
 
-        public static void Start()
+        public static bool Start()
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
@@ -492,25 +492,37 @@ namespace TogglDesktop
             ctx = kopsik_context_init("windows_native_app", "7.0.1");
 
             // Wire up events
+            kopsik_on_error(ctx, OnError);
+            kopsik_on_update(ctx, OnUpdate);                
+            kopsik_on_online_state(ctx, OnOnlineState);
+            kopsik_on_login(ctx, OnLogin);
+            kopsik_on_reminder(ctx, OnReminder);
+            kopsik_on_time_entry_list(ctx, OnTimeEntryList);
+            kopsik_on_autocomplete(ctx, OnAutocomplete);
+            kopsik_on_time_entry_editor(ctx, OnTimeEntryEditor);
+            kopsik_on_workspace_select(ctx, OnWorkspaceSelect);
+            kopsik_on_client_select(ctx, OnClientSelect);
+            kopsik_on_tags(ctx, OnTags);
+            kopsik_on_settings(ctx, OnSettings);
+            kopsik_on_timer_state(ctx, OnTimerState);
+            kopsik_on_url(ctx, OnURL);
 
             // Configure log, db path
             string path = Path.Combine(Environment.GetFolderPath(
                 Environment.SpecialFolder.ApplicationData), "Kopsik");
             System.IO.Directory.CreateDirectory(path);
-            KopsikApi.kopsik_set_log_path(Path.Combine(path, "kopsik.log"));
-            KopsikApi.kopsik_set_log_level("debug");
-            KopsikApi.kopsik_set_db_path(ctx, Path.Combine(path, "kopsik.db"));
+            kopsik_set_log_path(Path.Combine(path, "kopsik.log"));
+            kopsik_set_log_level("debug");
+            kopsik_set_db_path(ctx, Path.Combine(path, "kopsik.db"));
 
             // Start pumping UI events
-            KopsikApi.kopsik_context_start_events(ctx);
+            return kopsik_context_start_events(ctx);
         }
 
         private static void OnURL(string url)
         {
             Process.Start(url);
         }
-
-
     }
 }
 

@@ -12,6 +12,7 @@ namespace TogglDesktop
         private PreferencesWindowController preferencesWindowController;
         private FeedbackWindowController feedbackWindowController;
         private bool shuttingDown = false;
+        private UInt64 userID = 0;
 
         public MainWindowController()
         {
@@ -31,22 +32,19 @@ namespace TogglDesktop
             loadWindowLocation();
 
             KopsikApi.OnError += OnError;
-            /*
-            KopsikApi.OnUpdate += on_update;
-            KopsikApi.OnLoginState += on_login_state;
-            KopsikApi.OnLogin += on_login;
-            KopsikApi.OnReminder += on_reminder;
-            KopsikApi.OnTimeEntryList += on_time_entry_list;
-            KopsikApi.OnAutocomplete += on_autocomplete;
-            KopsikApi.OnWorkspaceSelect += on_workspace_select;
-            KopsikApi.OnClientSelect += on_client_select;
-            KopsikApi.OnTags += on_tags;
-            KopsikApi.OnTimeEntryEditor += on_time_entry_editor;
-            KopsikApi.OnSettings += on_settings;
-            KopsikApi.OnTimerState += on_timer_state;
-            */
+            KopsikApi.OnLogin += OnLogin;
 
-            KopsikApi.Start();
+            if (!KopsikApi.Start())
+            {
+                MessageBox.Show("Missing callback. See the log file for details");
+                shutdown();
+            }
+        }
+
+        private void shutdown()
+        {
+            shuttingDown = true;
+            Application.Exit();
         }
 
         private void loadWindowLocation()
@@ -91,13 +89,11 @@ namespace TogglDesktop
             }
         }
 
-        void OnLogin(ulong user_id)
+        void OnLogin(bool open, UInt64 user_id)
         {
+            userID = user_id;
+            if (open) { }
             if (0 == user_id) {
-                Controls.Remove(timeEntryListViewController);
-                Controls.Add(loginViewController);
-                loginViewController.SetAcceptButton(this);
-                return;
             }
         }
 
@@ -157,8 +153,7 @@ namespace TogglDesktop
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            shuttingDown = true;
-            Application.Exit();
+            shutdown();
         }
 
         private void trayIcon_DoubleClick(object sender, EventArgs e)
