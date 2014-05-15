@@ -225,29 +225,29 @@ KopsikSettingsViewItem settings_view_item_init(
     const kopsik::Proxy proxy) {
     KopsikSettingsViewItem view;
 
-    view.record_timeline = record_timeline;
+    view.RecordTimeline = record_timeline;
 
-    view.dock_icon = settings.dock_icon;
-    view.menubar_timer = settings.menubar_timer;
-    view.on_top = settings.on_top;
-    view.reminder = settings.reminder;
-    view.use_idle_detection = settings.use_idle_detection;
+    view.DockIcon = settings.dock_icon;
+    view.MenubarTimer = settings.menubar_timer;
+    view.OnTop = settings.on_top;
+    view.Reminder = settings.reminder;
+    view.UseIdleDetection = settings.use_idle_detection;
 
-    view.use_proxy = use_proxy;
+    view.UseProxy = use_proxy;
 
-    view.proxy_host = strdup(proxy.host.c_str());
-    view.proxy_port = proxy.port;
-    view.proxy_username = strdup(proxy.username.c_str());
-    view.proxy_password = strdup(proxy.password.c_str());
+    view.ProxyHost = strdup(proxy.host.c_str());
+    view.ProxyPort = proxy.port;
+    view.ProxyUsername = strdup(proxy.username.c_str());
+    view.ProxyPassword = strdup(proxy.password.c_str());
 
     return view;
 }
 
 void settings_view_item_clear(KopsikSettingsViewItem *view) {
     poco_check_ptr(view);
-    free(view->proxy_host);
-    free(view->proxy_username);
-    free(view->proxy_password);
+    free(view->ProxyHost);
+    free(view->ProxyUsername);
+    free(view->ProxyPassword);
 }
 
 _Bool testing_set_logged_in_user(

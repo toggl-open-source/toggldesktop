@@ -71,17 +71,17 @@ extern "C" {
     } KopsikViewItem;
 
     typedef struct {
-        _Bool use_proxy;
-        char *proxy_host;
-        uint64_t proxy_port;
-        char *proxy_username;
-        char *proxy_password;
-        _Bool use_idle_detection;
-        _Bool menubar_timer;
-        _Bool dock_icon;
-        _Bool on_top;
-        _Bool reminder;
-        _Bool record_timeline;
+        _Bool UseProxy;
+        char *ProxyHost;;
+        uint64_t ProxyPort;
+        char *ProxyUsername;
+        char *ProxyPassword;
+        _Bool UseIdleDetection;
+        _Bool MenubarTimer;
+        _Bool DockIcon;
+        _Bool OnTop;
+        _Bool Reminder;
+        _Bool RecordTimeline;
     } KopsikSettingsViewItem;
 
     // Callbacks that need to be implemented in UI
