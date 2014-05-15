@@ -222,8 +222,10 @@ extern int kDurationStringLength;
     self.startDate.listener = self;
   }
 
-  [self.projectAutocompleteDataSource setFilter:@""];
-  [self.descriptionComboboxDataSource setFilter:@""];
+  if (cmd.open) {
+    [self.projectAutocompleteDataSource setFilter:@""];
+    [self.descriptionComboboxDataSource setFilter:@""];
+  }
 
   // Check if TE's can be marked as billable at all
   _Bool can_see_billable = false;
@@ -274,13 +276,8 @@ extern int kDurationStringLength;
 
   [self.startDate setDateValue:self.timeEntry.started];
 
-  if (self.timeEntry.duration_in_seconds < 0) {
-    [self.startDate setEnabled:NO];
-      [self.continueButton setHidden:YES];
-  } else {
-    [self.startDate setEnabled:YES];
-      [self.continueButton setHidden:NO];
-  }
+  [self.startDate setEnabled:(self.timeEntry.duration_in_seconds >= 0)];
+  [self.continueButton setHidden:(self.timeEntry.duration_in_seconds < 0)];
 
   [self.endTime setHidden:(self.timeEntry.duration_in_seconds < 0)];
   
@@ -307,11 +304,13 @@ extern int kDurationStringLength;
     [self.lastUpdateTextField setHidden:YES];
   }
 
-  if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDuration]]) {
-    [self.durationTextField becomeFirstResponder];
-  }
-  if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDescription]]) {
-    [self.descriptionCombobox becomeFirstResponder];
+  if (cmd.open) {
+    if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDuration]]) {
+      [self.durationTextField becomeFirstResponder];
+    }
+    if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDescription]]) {
+      [self.descriptionCombobox becomeFirstResponder];
+    }
   }
 }
 
@@ -321,12 +320,13 @@ extern int kDurationStringLength;
                       waitUntilDone:NO];
 }
 
-- (void)displayTimeEntryList:(NSMutableArray *)list {
+- (void)displayTimeEntryList:(DisplayCommand *)cmd {
   NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-  [self.addProjectBox setHidden:YES];
-  [self.projectSelectBox setHidden:NO];
-  [self.projectPublicCheckbox setState:NSOffState];
+  if (cmd.open) {
+    [self.addProjectBox setHidden:YES];
+    [self.projectSelectBox setHidden:NO];
+    [self.projectPublicCheckbox setState:NSOffState];
+  }
 }
   
 - (NSArray *)tokenField:(NSTokenField *)tokenField
