@@ -355,8 +355,9 @@ completionsForSubstring:(NSString *)substring
   NSMutableArray *filteredCompletions = [NSMutableArray array];
 
   [self.tagsList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-    if ([[obj lowercaseString] hasPrefix:[substring lowercaseString]]) {
-      [filteredCompletions addObject:obj];
+    ViewItem *tag = obj;
+    if ([[tag.Name lowercaseString] hasPrefix:[substring lowercaseString]]) {
+      [filteredCompletions addObject:tag.Name];
     }
   }];
 
