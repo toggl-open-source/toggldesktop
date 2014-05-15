@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-#define kMenuItemTagSync 1
-#define kMenuItemTagLogout 2
-#define kMenuItemTagNew 3
-#define kMenuItemTagContinue 4
-#define kMenuItemTagStop 5
-#define kMenuItemTagClearCache 6
+#define kMenuItemTagSync         1
+#define kMenuItemTagLogout       2
+#define kMenuItemTagNew          3
+#define kMenuItemTagContinue     4
+#define kMenuItemTagStop         5
+#define kMenuItemTagClearCache   6
 #define kMenuItemTagSendFeedback 8
-#define kMenuItemTagOpenBrowser 9
+#define kMenuItemTagOpenBrowser  9

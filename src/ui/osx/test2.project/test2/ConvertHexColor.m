@@ -10,17 +10,20 @@
 
 @implementation ConvertHexColor
 
-+ (NSColor *)hexCodeToNSColor:(NSString *)hexCode {
++ (NSColor *)hexCodeToNSColor:(NSString *)hexCode
+{
 	unsigned int colorCode = 0;
-  if (hexCode.length > 1) {
-    NSString *numbers = [hexCode substringWithRange:NSMakeRange(1, [hexCode length] - 1)];
+
+	if (hexCode.length > 1)
+	{
+		NSString *numbers = [hexCode substringWithRange:NSMakeRange(1, [hexCode length] - 1)];
 		NSScanner *scanner = [NSScanner scannerWithString:numbers];
 		[scanner scanHexInt:&colorCode];
 	}
 	return [NSColor
-          colorWithDeviceRed:((colorCode>>16)&0xFF)/255.0
-          green:((colorCode>>8)&0xFF)/255.0
-          blue:((colorCode)&0xFF)/255.0 alpha:1.0];
+			colorWithDeviceRed:((colorCode >> 16) & 0xFF) / 255.0
+						 green:((colorCode >> 8) & 0xFF) / 255.0
+						  blue:((colorCode) & 0xFF) / 255.0 alpha:1.0];
 }
 
 @end

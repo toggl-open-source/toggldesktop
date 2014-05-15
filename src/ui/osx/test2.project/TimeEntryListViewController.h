@@ -11,8 +11,8 @@
 #import "NSUnstripedTableView.h"
 
 @interface TimeEntryListViewController : NSViewController {
-  @private
-  NSMutableArray *viewitems;
+	@private
+	NSMutableArray *viewitems;
 }
 @property (unsafe_unretained) IBOutlet NSView *headerView;
 @property (unsafe_unretained) IBOutlet NSUnstripedTableView *timeEntriesTableView;

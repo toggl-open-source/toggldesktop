@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface NSCustomComboBoxCell: NSComboBoxCell
+@interface NSCustomComboBoxCell : NSComboBoxCell
 @property double cellLength;
 - (void)setCalculatedMaxWidth:(double)length;
 @end

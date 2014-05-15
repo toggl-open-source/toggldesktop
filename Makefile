@@ -113,7 +113,7 @@ clean:
 	rm -rf third_party/TFDatePicker/TFDatePicker/build && \
 	rm -f toggl toggl_test TogglDesktop*.dmg TogglDesktop*.tar.gz
 
-osx: fmt lint
+osx: fmt_lib lint fmt_osx
 	xcodebuild -project src/ui/osx/test2.project/TogglDesktop.xcodeproj && \
 	!(otool -L $(osx_executable) | grep "Users" && echo "Executable should not contain hardcoded paths!")
 
@@ -168,8 +168,11 @@ simian:
 third_party/google-astyle/build/google-astyle:
 	cd third_party/google-astyle && mkdir -p build && g++ *.cpp -o build/google-astyle
 
-fmt: third_party/google-astyle/build/google-astyle
+fmt_lib: third_party/google-astyle/build/google-astyle
 	third_party/google-astyle/build/google-astyle -n $(source_dirs)
+
+fmt_osx:
+	./third_party/Xcode-formatter/CodeFormatter/scripts/formatAllSources.sh src/ui/osx/
 
 mkdir_build:
 	mkdir -p build
@@ -307,5 +310,7 @@ test_objects: build/test/gtest-all.o \
 toggl_test: objects test_objects
 	$(cxx) -o toggl_test build/*.o build/test/*.o $(libs)
 
-test: fmt lint mkdir_build toggl_test
+test_lib: fmt_lib lint mkdir_build toggl_test
 	./toggl_test
+
+test: test_lib

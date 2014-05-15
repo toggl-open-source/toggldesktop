@@ -11,14 +11,16 @@
 
 @implementation NSCustomComboBox
 
-+ (void)load {
-    [self setCellClass:[NSCustomComboBoxCell class]];
++ (void)load
+{
+	[self setCellClass:[NSCustomComboBoxCell class]];
 }
 
-- (void)reloadingData:(NSNumber *)length {
+- (void)reloadingData:(NSNumber *)length
+{
 	[super reloadData];
 	int n = [length intValue];
-	[_cell setCalculatedMaxWidth: fmax(8*n, _frame.size.width)];
+	[_cell setCalculatedMaxWidth:fmax(8 * n, _frame.size.width)];
 }
 
 @end
