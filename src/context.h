@@ -98,12 +98,10 @@ class Context {
         const Poco::UInt64 project_id,
         kopsik::TimeEntry **);
 
-    _Bool ContinueLatest(
-        kopsik::TimeEntry **);
+    _Bool ContinueLatest();
 
     _Bool Continue(
-        const std::string GUID,
-        kopsik::TimeEntry **);
+        const std::string GUID);
 
     void DisplayTimeEntryList(const _Bool open);
 

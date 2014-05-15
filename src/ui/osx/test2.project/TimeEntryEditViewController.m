@@ -172,7 +172,6 @@ extern int kDurationStringLength;
 - (IBAction)continueButtonClicked:(id)sender {
   [self removeCustomConstraints];
   kopsik_continue(ctx, [self.timeEntry.GUID UTF8String]);
-  kopsik_view_time_entry_list(ctx);
 }
 
 - (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString {

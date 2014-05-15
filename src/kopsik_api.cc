@@ -365,9 +365,7 @@ _Bool kopsik_continue(
 
     std::string GUID(guid);
 
-
-    kopsik::TimeEntry *te = 0;
-    return app(context)->Continue(GUID, &te);
+    return app(context)->Continue(GUID);
 }
 
 void kopsik_view_time_entry_list(void *context) {
@@ -403,8 +401,7 @@ _Bool kopsik_continue_latest(
 
     logger().debug("kopsik_continue_latest");
 
-    kopsik::TimeEntry *te = 0;
-    return app(context)->ContinueLatest(&te);
+    return app(context)->ContinueLatest();
 }
 
 _Bool kopsik_delete_time_entry(
