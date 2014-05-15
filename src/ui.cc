@@ -37,7 +37,14 @@ _Bool UI::DisplayError(const error err) {
 
 error UI::VerifyCallbacks() {
     logger().debug("VerifyCallbacks");
+    error err = findMissingCallbacks();
+    if (err != noError) {
+        logger().error(err);
+    }
+    return err;
+}
 
+error UI::findMissingCallbacks() {
     if (!on_display_error_) {
         return error("!on_display_error_");
     }
