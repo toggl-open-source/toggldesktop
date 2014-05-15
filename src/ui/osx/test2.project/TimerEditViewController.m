@@ -34,7 +34,6 @@ extern void *ctx;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
       self.autocompleteDataSource = [[AutocompleteDataSource alloc] init];
-      self.autocompleteDataSource.combobox = self.descriptionComboBox;
 
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(startDisplayTimerState:)
@@ -58,8 +57,15 @@ extern void *ctx;
     return self;
 }
 
-- (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString {
-  return [self.autocompleteDataSource completedString:partialString];
+- (void)viewDidLoad {
+  self.autocompleteDataSource.combobox = self.descriptionComboBox;
+  
+  [self.autocompleteDataSource setFilter:@""];
+}
+
+- (void)loadView {
+  [super loadView];
+  [self viewDidLoad];
 }
 
 - (void)startDisplayTimeEntryList:(NSNotification *)notification {
@@ -205,18 +211,6 @@ extern void *ctx;
   }
 }
 
--(NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox{
-  return [self.autocompleteDataSource count];
-}
-
--(id)comboBox:(NSComboBox *)aComboBox objectValueForItemAtIndex:(NSInteger)row{
-  return [self.autocompleteDataSource keyAtIndex:row];
-}
-
-- (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)aString {
-  return [self.autocompleteDataSource indexOfKey:aString];
-}
-
 - (void)createConstraints {
     NSLog(@"Create constraints");
   NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_descriptionComboBox, _projectTextField);
@@ -256,7 +250,6 @@ extern void *ctx;
 
   // Reset autocomplete filter
   [self.autocompleteDataSource setFilter:@""];
-  [self.descriptionComboBox reloadData];
 
   if (self.time_entry.duration_in_seconds >= 0) {
     [self clear];
@@ -309,7 +302,6 @@ extern void *ctx;
   NSString *filter = [box stringValue];
 
   [self.autocompleteDataSource setFilter:filter];
-  [self.descriptionComboBox reloadingData:self.autocompleteDataSource.textLength];
 
   // Hide dropdown if filter is empty or nothing was found
   if (!filter || ![filter length] || !self.autocompleteDataSource.count) {

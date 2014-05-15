@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "AutocompleteItem.h"
 
-@interface AutocompleteDataSource : NSObject
+@interface AutocompleteDataSource : NSObject <NSComboBoxDataSource>
 @property NSMutableArray *orderedKeys;
 @property NSMutableArray *filteredOrderedKeys;
 @property NSMutableDictionary *dictionary;

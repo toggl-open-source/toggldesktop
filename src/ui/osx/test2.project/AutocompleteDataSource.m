@@ -68,14 +68,20 @@ extern void *ctx;
         [self.dictionary setObject:item forKey:key];
       }
     }
-    [self setFilter:self.currentFilter];
-
+    
+    self.combobox.usesDataSource = YES;
     if (self.combobox.dataSource == nil) {
-      self.combobox.usesDataSource = YES;
       self.combobox.dataSource = self;
     }
-    [self.combobox reloadData];
+
+    [self setFilter:self.currentFilter];
   }
+}
+
+- (void)reload {
+  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+  [self.combobox reloadData];
 }
 
 - (NSUInteger)count {
@@ -108,6 +114,7 @@ extern void *ctx;
     self.currentFilter = filter;
     if (filter == nil || filter.length == 0) {
       self.filteredOrderedKeys = [NSMutableArray arrayWithArray:self.orderedKeys];
+      [self reload];
       return;
     }
     NSMutableArray *filtered = [[NSMutableArray alloc] init];
@@ -122,6 +129,23 @@ extern void *ctx;
     }
     self.filteredOrderedKeys = filtered;
   }
+  [self reload];
+}
+
+- (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString {
+  return [self completedString:partialString];
+}
+
+-(NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox{
+  return [self count];
+}
+
+-(id)comboBox:(NSComboBox *)aComboBox objectValueForItemAtIndex:(NSInteger)row{
+  return [self keyAtIndex:row];
+}
+
+- (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)aString {
+  return [self indexOfKey:aString];
 }
 
 @end

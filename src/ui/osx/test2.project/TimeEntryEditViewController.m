@@ -16,6 +16,7 @@
 #import "NSCustomComboBox.h"
 #import "kopsik_api.h"
 #import "DisplayCommand.h"
+#import "Utils.h"
 
 @interface TimeEntryEditViewController ()
 @property AutocompleteDataSource *projectAutocompleteDataSource;
@@ -39,10 +40,7 @@ extern int kDurationStringLength;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
       self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] init];
-      self.projectAutocompleteDataSource.combobox = self.projectSelect;
-      
       self.descriptionComboboxDataSource = [[AutocompleteDataSource alloc] init];
-      self.descriptionComboboxDataSource.combobox = self.descriptionCombobox;
       
       self.timerMenubarTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                                 target:self
@@ -71,8 +69,33 @@ extern int kDurationStringLength;
                                                    name:kDisplayTimeEntryList
                                                  object:nil];
     }
-    
     return self;
+}
+
+- (void)viewDidLoad {
+  self.projectAutocompleteDataSource.combobox = self.projectSelect;
+  self.descriptionComboboxDataSource.combobox = self.descriptionCombobox;
+
+  [self.projectAutocompleteDataSource setFilter:@""];
+  [self.descriptionComboboxDataSource setFilter:@""];
+  
+  // Setting "Add project" link color to blue
+  NSColor *color = [NSColor alternateSelectedControlColor];
+  NSMutableAttributedString *colorTitle =
+  [[NSMutableAttributedString alloc] initWithAttributedString:[self.addProjectButton attributedTitle]];
+  
+  NSRange titleRange = NSMakeRange(0, [colorTitle length]);
+  
+  [colorTitle addAttribute:NSForegroundColorAttributeName
+                     value:color
+                     range:titleRange];
+  
+  [self.addProjectButton setAttributedTitle:colorTitle];
+}
+
+- (void)loadView {
+  [super loadView];
+  [self viewDidLoad];
 }
 
 - (IBAction)addProjectButtonClicked:(id)sender {
@@ -149,10 +172,7 @@ extern int kDurationStringLength;
   if (!projectName || !projectName.length) {
     return YES;
   }
-  _Bool is_private = true;
-  if (NSOnState == [self.projectPublicCheckbox state]) {
-    is_private = false;
-  }
+  _Bool is_public = [Utils stateToBool:[self.projectPublicCheckbox state]];
   uint64_t workspaceID = [self selectedWorkspaceID];
   if (!workspaceID) {
     [self.workspaceSelect becomeFirstResponder];
@@ -166,7 +186,7 @@ extern int kDurationStringLength;
                           workspaceID,
                           clientID,
                           [projectName UTF8String],
-                          is_private);
+                          !is_public);
 }
 
 - (IBAction)continueButtonClicked:(id)sender {
@@ -175,40 +195,14 @@ extern int kDurationStringLength;
 }
 
 - (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString {
-  if (comboBox == self.descriptionCombobox) {
-    return [self.descriptionComboboxDataSource completedString:partialString];
-  }
-  if (comboBox == self.projectSelect) {
-    return [self.projectAutocompleteDataSource completedString:partialString];
-  }
   if (comboBox == self.clientSelect) {
-    return @":"; // Not supported at the moment
+    return @""; // Not supported at the moment
   }
   if (comboBox == self.workspaceSelect) {
     return @""; // Not supported at the moment
   }
   NSAssert(false, @"Invalid combo box");
   return nil;
-}
-
-- (void)viewDidLoad {
- // Setting button text color to blue
-    NSColor *color = [NSColor alternateSelectedControlColor];
-    NSMutableAttributedString *colorTitle =
-    [[NSMutableAttributedString alloc] initWithAttributedString:[self.addProjectButton attributedTitle]];
-
-    NSRange titleRange = NSMakeRange(0, [colorTitle length]);
-
-    [colorTitle addAttribute:NSForegroundColorAttributeName
-                     value:color
-                     range:titleRange];
-
-    [self.addProjectButton setAttributedTitle:colorTitle];
-}
-
-- (void)loadView {
-    [super loadView];
-    [self viewDidLoad];
 }
 
 - (void)startDisplayTimeEntryEditor:(NSNotification *)notification {
@@ -228,13 +222,8 @@ extern int kDurationStringLength;
     self.startDate.listener = self;
   }
 
-  // Reset project autocomplete filter
   [self.projectAutocompleteDataSource setFilter:@""];
-  [self.projectSelect reloadData];
-
-  // Reset description autocomplete filter
   [self.descriptionComboboxDataSource setFilter:@""];
-  [self.descriptionCombobox reloadData];
 
   // Check if TE's can be marked as billable at all
   _Bool can_see_billable = false;
@@ -244,17 +233,9 @@ extern int kDurationStringLength;
     return;
   }
 
-  if (can_see_billable) {
-    [self.billableCheckbox setHidden:NO];
-  } else {
-    [self.billableCheckbox setHidden:YES];
-  }
+  [self.billableCheckbox setHidden:!can_see_billable];
 
-  if (self.timeEntry.billable) {
-    [self.billableCheckbox setState:NSOnState];
-  } else {
-    [self.billableCheckbox setState:NSOffState];
-  }
+  [self.billableCheckbox setState:[Utils boolToState:self.timeEntry.billable]];
 
   // Check if user can add projects
   _Bool can_add_projects = false;
@@ -405,7 +386,6 @@ completionsForSubstring:(NSString *)substring
     self.workspaceSelect.usesDataSource = YES;
     self.workspaceSelect.dataSource = self;
   }
-
   [self.workspaceSelect reloadData];
 
   NSString *workspaceName = [self.workspaceSelect stringValue];
@@ -589,10 +569,7 @@ completionsForSubstring:(NSString *)substring
 - (IBAction)billableCheckBoxClicked:(id)sender {
   NSAssert(self.timeEntry != nil, @"Time entry expected");
 
-  _Bool value = false;
-  if (NSOnState == [self.billableCheckbox state]) {
-    value = true;
-  }
+  _Bool value = [Utils stateToBool:[self.billableCheckbox state]];
   kopsik_set_time_entry_billable(ctx, [self.timeEntry.GUID UTF8String], value);
 }
 
@@ -646,12 +623,6 @@ completionsForSubstring:(NSString *)substring
 }
 
 -(NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox{
-  if (self.descriptionCombobox == aComboBox) {
-    return [self.descriptionComboboxDataSource count];
-  }
-  if (self.projectSelect == aComboBox) {
-    return [self.projectAutocompleteDataSource count];
-  }
   if (self.clientSelect == aComboBox) {
     return [self.clientList count];
   }
@@ -663,12 +634,6 @@ completionsForSubstring:(NSString *)substring
 }
 
 -(id)comboBox:(NSComboBox *)aComboBox objectValueForItemAtIndex:(NSInteger)row{
-  if (self.descriptionCombobox == aComboBox) {
-    return [self.descriptionComboboxDataSource keyAtIndex:row];
-  }
-  if (self.projectSelect == aComboBox) {
-    return [self.projectAutocompleteDataSource keyAtIndex:row];
-  }
   if (self.clientSelect == aComboBox) {
     ViewItem *client = [self.clientList objectAtIndex:row];
     return client.Name;
@@ -682,12 +647,6 @@ completionsForSubstring:(NSString *)substring
 }
 
 - (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)aString {
-  if (self.descriptionCombobox == aComboBox) {
-    return [self.descriptionComboboxDataSource indexOfKey:aString];
-  }
-  if (self.projectSelect == aComboBox) {
-    return [self.projectAutocompleteDataSource indexOfKey:aString];
-  }
   if (self.clientSelect == aComboBox) {
     for (int i = 0; i < self.clientList.count; i++) {
       ViewItem *client = [self.clientList objectAtIndex:i];
@@ -735,7 +694,6 @@ completionsForSubstring:(NSString *)substring
   }
 
   [dataSource setFilter:filter];
-  [comboBox reloadingData:dataSource.textLength];
 
   if (!filter || ![filter length] || !dataSource.count) {
     if ([comboBox isExpanded] == YES) {
