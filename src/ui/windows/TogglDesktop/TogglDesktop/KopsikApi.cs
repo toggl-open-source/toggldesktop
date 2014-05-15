@@ -375,126 +375,72 @@ namespace TogglDesktop
             bool on_top,
             bool reminder);
 
-        KOPSIK_EXPORT _Bool kopsik_set_proxy_settings(
-        void *context,
-        const _Bool use_proxy,
-        const char *proxy_host,
-        const uint64_t proxy_port,
-        const char *proxy_username,
-        const char *proxy_password);
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        public static extern bool kopsik_set_proxy_settings(
+            IntPtr context,
+            const _Bool use_proxy,
+            const char *proxy_host,
+            const uint64_t proxy_port,
+            const char *proxy_username,
+            const char *proxy_password);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern bool kopsik_login(
-            IntPtr context,
-            string email,
-            string password);
-
-        KOPSIK_EXPORT _Bool kopsik_logout(
-        void *context);
+        public static extern bool kopsik_logout(
+            IntPtr context);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern bool kopsik_login(
-            IntPtr context,
-            string email,
-            string password);
-
-        KOPSIK_EXPORT _Bool kopsik_clear_cache(
-        void *context);
+        public static extern bool kopsik_clear_cache(
+            IntPtr context);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern bool kopsik_login(
+        public static extern bool kopsik_start(
             IntPtr context,
-            string email,
-            string password);
-
-        KOPSIK_EXPORT _Bool kopsik_start(
-        void *context,
-        const char *description,
-        const char *duration,
-        const uint64_t task_id,
-        const uint64_t project_id);
+            const char *description,
+            const char *duration,
+            const uint64_t task_id,
+            const uint64_t project_id);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern bool kopsik_login(
+        public static extern bool kopsik_add_project(
             IntPtr context,
-            string email,
-            string password);
-
-        KOPSIK_EXPORT _Bool kopsik_add_project(
-        void *context,
-        const char *time_entry_guid,
-        const uint64_t workspace_id,
-        const uint64_t client_id,
-        const char *project_name,
-        const _Bool is_private);
+            const char *time_entry_guid,
+            const uint64_t workspace_id,
+            const uint64_t client_id,
+            const char *project_name,
+            const _Bool is_private);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern bool kopsik_login(
-            IntPtr context,
-            string email,
-            string password);
-
-        KOPSIK_EXPORT void kopsik_check_for_updates(
-        void *context);
+        public static extern void kopsik_check_for_updates(
+            IntPtr context);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern bool kopsik_login(
+        public static extern bool kopsik_set_update_channel(
             IntPtr context,
-            string email,
-            string password);
-
-        KOPSIK_EXPORT _Bool kopsik_set_update_channel(
-        void *context,
-        const char *update_channel);
+            string update_channel,
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern bool kopsik_login(
-            IntPtr context,
-            string email,
-            string password);
-
-        KOPSIK_EXPORT void kopsik_sync(
-        void *context);
+        public static extern void kopsik_sync(
+            IntPtr context);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern bool kopsik_login(
-            IntPtr context,
-            string email,
-            string password);
-
-        KOPSIK_EXPORT void kopsik_timeline_toggle_recording(
-        void *context);
+        public static extern void kopsik_timeline_toggle_recording(
+            IntPtr context);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern bool kopsik_login(
-            IntPtr context,
-            string email,
-            string password);
-
-        KOPSIK_EXPORT void kopsik_set_sleep(
-        void *context);
+        public static extern void kopsik_set_sleep(
+            IntPtr context);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern bool kopsik_login(
-            IntPtr context,
-            string email,
-            string password);
-
-        KOPSIK_EXPORT void kopsik_set_wake(
-        void *context);
+        public static extern void kopsik_set_wake(
+            IntPtr context);
 
         // Shared helpers
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern bool kopsik_login(
-            IntPtr context,
-            string email,
-            string password);
-
-        KOPSIK_EXPORT _Bool kopsik_parse_time(
-        const char *input,
-        int *hours,
-        int *minutes);
+        public static extern bool kopsik_parse_time(
+            string input,
+            IntPtr hours,
+            IntPtr minutes);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern bool kopsik_login(
@@ -503,26 +449,16 @@ namespace TogglDesktop
             string password);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern bool kopsik_login(
-            IntPtr context,
-            string email,
-            string password);
-
-        KOPSIK_EXPORT void kopsik_format_duration_in_seconds_hhmmss(
-        const int64_t duration_in_seconds,
-        char *str,
-        const size_t max_strlen);
+        public static extern  oic kopsik_format_duration_in_seconds_hhmmss(
+            IntPtr duration_in_seconds,
+            string str,
+            int max_strlen);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern bool kopsik_login(
-            IntPtr context,
-            string email,
-            string password);
-
-        KOPSIK_EXPORT void kopsik_format_duration_in_seconds_hhmm(
-        const int64_t duration_in_seconds,
-        char *str,
-        const size_t max_strlen);
+        public static extern void kopsik_format_duration_in_seconds_hhmm(
+            Int64 duration_in_seconds,
+            string str,
+            int max_strlen);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern bool kopsik_format_duration_in_seconds_pretty_hhmm(
