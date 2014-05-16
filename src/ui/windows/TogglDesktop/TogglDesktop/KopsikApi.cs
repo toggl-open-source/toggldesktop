@@ -113,30 +113,30 @@ namespace TogglDesktop
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayTimeEntryList(
             bool open,
-            KopsikTimeEntryViewItem first);
+            ref KopsikTimeEntryViewItem first);
 
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayAutocomplete(
-            KopsikAutocompleteItem first);
+            ref KopsikAutocompleteItem first);
 
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayViewItems(
-            KopsikViewItem first);
+            ref KopsikViewItem first);
         
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayTimeEntryEditor(
             bool open,
-            KopsikTimeEntryViewItem te,
+            ref KopsikTimeEntryViewItem te,
             string focused_field_name);
 
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplaySettings(
             bool open,
-            KopsikSettingsViewItem settings);
+            ref KopsikSettingsViewItem settings);
 
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayTimerState(
-            KopsikTimeEntryViewItem te);
+            ref KopsikTimeEntryViewItem te);
 
         // Initialize/destroy an instance of the app
 
