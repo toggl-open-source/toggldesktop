@@ -24,13 +24,13 @@ KopsikAutocompleteItem *autocomplete_item_init(
 KopsikViewItem *view_item_init() {
     KopsikViewItem *result = new KopsikViewItem();
     result->ID = 0;
+    result->WID = 0;
     result->GUID = 0;
     result->Name = 0;
     return result;
 }
 
-KopsikViewItem *project_to_view_item(
-    kopsik::Project * const p) {
+KopsikViewItem *project_to_view_item(kopsik::Project * const p) {
     poco_assert(p);
 
     KopsikViewItem *result = view_item_init();
@@ -40,32 +40,29 @@ KopsikViewItem *project_to_view_item(
     return result;
 }
 
-KopsikViewItem *tag_to_view_item(
-    const std::string tag_name) {
+KopsikViewItem *tag_to_view_item(const std::string tag_name) {
     KopsikViewItem *result = view_item_init();
     result->Name = strdup(tag_name.c_str());
     return result;
 }
 
-KopsikViewItem *workspace_to_view_item(
-    kopsik::Workspace * const ws) {
+KopsikViewItem *workspace_to_view_item(kopsik::Workspace * const ws) {
     KopsikViewItem *result = view_item_init();
     result->ID = static_cast<unsigned int>(ws->ID());
     result->Name = strdup(ws->Name().c_str());
     return result;
 }
 
-KopsikViewItem *client_to_view_item(
-    kopsik::Client * const c) {
+KopsikViewItem *client_to_view_item(kopsik::Client * const c) {
     KopsikViewItem *result = view_item_init();
     result->ID = static_cast<unsigned int>(c->ID());
+    result->WID = static_cast<unsigned int>(c->WID());
     result->GUID = strdup(c->GUID().c_str());
     result->Name = strdup(c->Name().c_str());
     return result;
 }
 
-void view_item_clear(
-    KopsikViewItem *item) {
+void view_item_clear(KopsikViewItem *item) {
     if (!item) {
         return;
     }
