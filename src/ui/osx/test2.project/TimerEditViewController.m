@@ -64,6 +64,12 @@ extern void *ctx;
 	self.autocompleteDataSource.combobox = self.descriptionComboBox;
 
 	[self.autocompleteDataSource setFilter:@""];
+
+    NSDictionary *lightDict = [NSDictionary dictionaryWithObject: [ConvertHexColor hexCodeToNSColor:@"#d0d0d0"]
+                                                         forKey: NSForegroundColorAttributeName];
+    NSAttributedString *lightString = [[NSAttributedString alloc] initWithString: @"What are you doing?"
+                                                                      attributes: lightDict];
+    [[self.descriptionLabel cell] setPlaceholderAttributedString: lightString];
 }
 
 - (void)loadView
@@ -134,7 +140,8 @@ extern void *ctx;
 		[self.descriptionLabel setHidden:NO];
 		[self.durationTextField setEditable:NO];
 		[self.durationTextField setSelectable:NO];
-		[self.durationTextField setTextColor:[NSColor whiteColor]];
+        [self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:@"#d0d0d0"]];
+        [self.descriptionLabel setTextColor:[ConvertHexColor hexCodeToNSColor:@"#d0d0d0"]];
 	}
 	else
 	{
@@ -144,6 +151,7 @@ extern void *ctx;
 		[self.durationTextField setSelectable:YES];
 		[self.durationTextField setDelegate:self.durationTextField];
 		[self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:@"#999999"]];
+        [self.descriptionLabel setTextColor:[ConvertHexColor hexCodeToNSColor:@"#999999"]];
 	}
 
 
