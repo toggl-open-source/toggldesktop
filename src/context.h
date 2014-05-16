@@ -253,6 +253,8 @@ class Context {
 
     Poco::Int64 totalDurationForDate(TimeEntry *te) const;
 
+    void updateUI(std::vector<kopsik::ModelChange> *changes);
+
     Poco::Mutex db_m_;
     kopsik::Database *db_;
 

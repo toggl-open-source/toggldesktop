@@ -159,6 +159,16 @@ error Context::save(const bool push_changes) {
         return err;
     }
 
+    updateUI(&changes);
+
+    if (push_changes) {
+        partialSync();
+    }
+
+    return noError;
+}
+
+void Context::updateUI(std::vector<kopsik::ModelChange> *changes) {
     bool display_time_entries(false);
     bool display_autocomplete(false);
     bool display_client_select(false);
@@ -168,8 +178,8 @@ error Context::save(const bool push_changes) {
     bool display_time_entry_editor(false);
     bool open_time_entry_list(false);
     for (std::vector<kopsik::ModelChange>::const_iterator it =
-        changes.begin();
-            it != changes.end();
+        changes->begin();
+            it != changes->end();
             it++) {
         ModelChange ch = *it;
         if (ch.ModelType() == "tag") {
@@ -224,12 +234,6 @@ error Context::save(const bool push_changes) {
     if (display_timer_state) {
         displayTimerState();
     }
-
-    if (push_changes) {
-        partialSync();
-    }
-
-    return noError;
 }
 
 void Context::displayAutocomplete() {
@@ -1244,6 +1248,11 @@ _Bool Context::DeleteTimeEntryByGUID(const std::string GUID) {
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
         return true;
+    }
+    if (te->IsTracking()) {
+        if (!Stop()) {
+            return false;
+        }
     }
     te->Delete();
     return UI()->DisplayError(save());
