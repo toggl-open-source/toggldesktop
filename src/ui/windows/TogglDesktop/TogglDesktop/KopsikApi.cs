@@ -113,30 +113,30 @@ namespace TogglDesktop
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayTimeEntryList(
             bool open,
-            KopsikTimeEntryViewItem first);
+            ref KopsikTimeEntryViewItem first);
 
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayAutocomplete(
-            KopsikAutocompleteItem first);
+            ref KopsikAutocompleteItem first);
 
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayViewItems(
-            KopsikViewItem first);
+            ref KopsikViewItem first);
         
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayTimeEntryEditor(
             bool open,
-            KopsikTimeEntryViewItem te,
+            ref KopsikTimeEntryViewItem te,
             string focused_field_name);
 
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplaySettings(
             bool open,
-            KopsikSettingsViewItem settings);
+            ref KopsikSettingsViewItem settings);
 
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayTimerState(
-            KopsikTimeEntryViewItem te);
+            ref KopsikTimeEntryViewItem te);
 
         // Initialize/destroy an instance of the app
 
@@ -441,25 +441,25 @@ namespace TogglDesktop
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern bool kopsik_parse_time(
             string input,
-            IntPtr hours,
-            IntPtr minutes);
+            ref int hours,
+            ref int minutes);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_format_duration_in_seconds_hhmmss(
             IntPtr duration_in_seconds,
-            string str,
+            ref string str,
             int max_strlen);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_format_duration_in_seconds_hhmm(
             Int64 duration_in_seconds,
-            string str,
+            ref string str,
             int max_strlen);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern bool kopsik_format_duration_in_seconds_pretty_hhmm(
             Int64 duration_in_seconds,
-            string str,
+            ref string str,
             int max_strlen);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]

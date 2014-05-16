@@ -245,9 +245,12 @@ KopsikSettingsViewItem *settings_view_item_init(
 
 void settings_view_item_clear(KopsikSettingsViewItem *view) {
     poco_check_ptr(view);
+
     free(view->ProxyHost);
     free(view->ProxyUsername);
     free(view->ProxyPassword);
+
+    delete view;
 }
 
 _Bool testing_set_logged_in_user(
