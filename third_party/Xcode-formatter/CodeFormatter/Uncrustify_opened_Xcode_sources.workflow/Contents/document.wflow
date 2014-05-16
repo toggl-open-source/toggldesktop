@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AMApplicationBuild</key>
+	<string>339.2</string>
+	<key>AMApplicationVersion</key>
+	<string>2.2.4</string>
+	<key>AMDocumentVersion</key>
+	<string>2</string>
+	<key>actions</key>
+	<array>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.applescript.object</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>1.0.1</string>
+				<key>AMApplication</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>source</key>
+					<dict/>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.applescript.object</string>
+					</array>
+				</dict>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Run AppleScript.action</string>
+				<key>ActionName</key>
+				<string>Exécuter un script AppleScript</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>source</key>
+					<string>try	if isApplicationRunning("Xcode") then				-- check that uncrustify is correctly installed :		if not (isUncrustifyCorrectlyInstalled()) then			display dialog "Configuration error : uncrustify could not be found at location '/usr/local/bin/uncrustify'. Please install uncrustify at this location."			return		end if				-- format Xcode opened files :		tell application "Xcode"						-- recover uncrustify configuration file :			tell active workspace document				set xcworkspaceFilePath to path				set subprojectPath to (do shell script "dirname " &amp; "'" &amp; xcworkspaceFilePath &amp; "'")				set uncrustifyConfigFilePath to (do shell script "find " &amp; "'" &amp; subprojectPath &amp; "'" &amp; " -name 'uncrustify_objective_c.cfg'")								tell application "System Events"										if not (exists file uncrustifyConfigFilePath) then						set projectPath to (do shell script "dirname " &amp; "'" &amp; subprojectPath &amp; "'")						set uncrustifyConfigFilePath to (do shell script "find " &amp; "'" &amp; projectPath &amp; "'" &amp; " -name 'uncrustify_objective_c.cfg'")					end if										-- if no local config file, use global one :					if not (exists file uncrustifyConfigFilePath) then						set uncrustifyConfigFilePath to (do shell script "dirname " &amp; "~/.uncrustify/uncrustify_objective_c.cfg")						set uncrustifyConfigFilePath to uncrustifyConfigFilePath &amp; "/uncrustify_objective_c.cfg"					end if									end tell			end tell						-- format all opened Xcode sources :			set openedDocumentsCount to count of source document			repeat with n from 1 to openedDocumentsCount								set currentDocument to source document [n]				set currentDocumentPath to path of currentDocument				set suffix to text (length of currentDocumentPath) thru -1 of currentDocumentPath								if (suffix = "m" or suffix = "h") then					set rawSource to quoted form of (text of currentDocument as Unicode text)					set formattedSource to do shell script "echo " &amp; rawSource &amp; " | /usr/local/bin/uncrustify -l OC -q -c " &amp; "'" &amp; uncrustifyConfigFilePath &amp; "'"					set text of currentDocument to formattedSource				end if							end repeat		end tell	end if	on error errorMessage	display dialog "Unknown error : " &amp; errorMessageend tryon isApplicationRunning(applicationName)	tell application "System Events" to (name of processes) contains applicationNameend isApplicationRunningon isUncrustifyCorrectlyInstalled()	tell application "System Events"		return (exists "/usr/local/bin/uncrustify")	end tellend isUncrustifyCorrectlyInstalled</string>
+				</dict>
+				<key>BundleIdentifier</key>
+				<string>com.apple.Automator.RunScript</string>
+				<key>CFBundleVersion</key>
+				<string>1.0.1</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryUtilities</string>
+				</array>
+				<key>Class Name</key>
+				<string>RunScriptAction</string>
+				<key>InputUUID</key>
+				<string>14863381-1697-4687-B73F-82B77BC03E92</string>
+				<key>Keywords</key>
+				<array>
+					<string>Exécuter</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>A21B1C2E-C5B2-4863-A82B-DAADA344E14A</string>
+				<key>UUID</key>
+				<string>B34BCF9F-8C2E-453B-9986-9FA855F0A25A</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<string>on run {input, parameters}
+	
+	(* Your script goes here *)
+	
+	return input
+end run</string>
+						<key>name</key>
+						<string>source</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+				</dict>
+				<key>isViewVisible</key>
+				<true/>
+				<key>location</key>
+				<string>647.500000:704.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Run AppleScript.action/Contents/Resources/French.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<true/>
+		</dict>
+	</array>
+	<key>connectors</key>
+	<dict/>
+	<key>state</key>
+	<dict>
+		<key>AMLogTabViewSelectedIndex</key>
+		<integer>0</integer>
+		<key>libraryState</key>
+		<dict>
+			<key>actionsMajorSplitViewState</key>
+			<dict>
+				<key>expandedPosition</key>
+				<real>269</real>
+				<key>subviewState</key>
+				<array>
+					<string>0.000000, 0.000000, 381.000000, 673.000000, NO</string>
+					<string>0.000000, 674.000000, 381.000000, 268.000000, NO</string>
+				</array>
+			</dict>
+			<key>actionsMinorSplitViewState</key>
+			<dict>
+				<key>expandedPosition</key>
+				<real>0.0</real>
+				<key>subviewState</key>
+				<array>
+					<string>0.000000, 0.000000, 163.000000, 673.000000, NO</string>
+					<string>164.000000, 0.000000, 217.000000, 673.000000, NO</string>
+				</array>
+			</dict>
+			<key>variablesMajorSplitViewState</key>
+			<dict>
+				<key>expandedPosition</key>
+				<real>0.0</real>
+				<key>subviewState</key>
+				<array>
+					<string>0.000000, 0.000000, 381.000000, 555.000000, NO</string>
+					<string>0.000000, 556.000000, 381.000000, 299.000000, NO</string>
+				</array>
+			</dict>
+			<key>variablesMinorSplitViewState</key>
+			<dict>
+				<key>expandedPosition</key>
+				<real>0.0</real>
+				<key>subviewState</key>
+				<array>
+					<string>0.000000, 0.000000, 163.000000, 555.000000, NO</string>
+					<string>164.000000, 0.000000, 217.000000, 555.000000, NO</string>
+				</array>
+			</dict>
+		</dict>
+		<key>majorSplitViewState</key>
+		<dict>
+			<key>expandedPosition</key>
+			<real>0.0</real>
+			<key>subviewState</key>
+			<array>
+				<string>0.000000, 0.000000, 381.000000, 987.000000, NO</string>
+				<string>382.000000, 0.000000, 907.000000, 987.000000, NO</string>
+			</array>
+		</dict>
+		<key>minorSplitViewState</key>
+		<dict>
+			<key>expandedPosition</key>
+			<real>0.0</real>
+			<key>subviewState</key>
+			<array>
+				<string>0.000000, 0.000000, 907.000000, 796.000000, NO</string>
+				<string>0.000000, 806.000000, 907.000000, 162.000000, NO</string>
+			</array>
+		</dict>
+		<key>windowFrame</key>
+		<string>{{239, 339}, {1288, 1064}}</string>
+		<key>workflowViewScrollPosition</key>
+		<string>{{0, 0}, {907, 796}}</string>
+	</dict>
+	<key>workflowMetaData</key>
+	<dict>
+		<key>serviceApplicationBundleID</key>
+		<string>com.apple.dt.Xcode</string>
+		<key>serviceApplicationPath</key>
+		<string>/Developer/Applications/Xcode.app</string>
+		<key>serviceInputTypeIdentifier</key>
+		<string>com.apple.Automator.nothing</string>
+		<key>serviceOutputTypeIdentifier</key>
+		<string>com.apple.Automator.nothing</string>
+		<key>serviceProcessesInput</key>
+		<integer>0</integer>
+		<key>workflowTypeIdentifier</key>
+		<string>com.apple.Automator.servicesMenu</string>
+	</dict>
+</dict>
+</plist>
