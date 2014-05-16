@@ -24,7 +24,8 @@
 @property NSTimer *timerMenubarTimer;
 @property TimeEntryViewItem *timeEntry; // Time entry being edited
 @property NSMutableArray *tagsList;
-@property NSMutableArray *clientList;
+@property NSMutableArray *fullClientList;
+@property NSMutableArray *workspaceClientList;
 @property NSMutableArray *workspaceList;
 @property NSArray *topConstraint;
 @property NSLayoutConstraint *addProjectBoxHeight;
@@ -106,7 +107,6 @@ extern int kDurationStringLength;
 {
 	self.projectNameTextField.stringValue = @"";
 	self.clientSelect.stringValue = @"";
-	self.workspaceSelect.stringValue = @"";
 	[self.descriptionCombobox setNextKeyView:self.projectNameTextField];
 
 	if (!self.addProjectBoxHeight)
@@ -440,43 +440,50 @@ extern int kDurationStringLength;
 		self.workspaceList = workspaces;
 	}
 
+	uint64_t wid = [self selectedWorkspaceID];
+
+	self.workspaceSelect.usesDataSource = YES;
 	if (self.workspaceSelect.dataSource == nil)
 	{
-		self.workspaceSelect.usesDataSource = YES;
 		self.workspaceSelect.dataSource = self;
 	}
 	[self.workspaceSelect reloadData];
 
-	NSString *workspaceName = [self.workspaceSelect stringValue];
-
-	// If no workspace is selected, attempt to select the user's
-	// default workspace.
-	if (!workspaceName.length && self.workspaceList.count)
+	if (!wid)
 	{
-		uint64_t default_wid = 0;
-		if (!kopsik_users_default_wid(ctx, &default_wid))
+		if (self.timeEntry)
+		{
+			wid = self.timeEntry.WorkspaceID;
+		}
+	}
+
+	if (!wid)
+	{
+		if (!kopsik_users_default_wid(ctx, &wid))
 		{
 			return;
 		}
-		for (int i = 0; i < self.workspaceList.count; i++)
+	}
+
+	if (!wid)
+	{
+		if (self.workspaceList.count > 0)
 		{
-			ViewItem *workspace = self.workspaceList[i];
-			if (workspace.ID == default_wid)
-			{
-				workspaceName = workspace.Name;
-				break;
-			}
+			ViewItem *view = self.workspaceList[0];
+			wid = view.ID;
 		}
 	}
 
-	// If user has no default workspace available, select the first WS in the
-	// workspace list.
-	if (!workspaceName.length && self.workspaceList.count)
+	for (int i = 0; i < self.workspaceList.count; i++)
 	{
-		ViewItem *workspace = self.workspaceList[0];
-		workspaceName = workspace.Name;
+		ViewItem *workspace = self.workspaceList[i];
+		if (workspace.ID == wid)
+		{
+			[self.workspaceSelect selectItemAtIndex:i];
+			[self.workspaceSelect setObjectValue:[self.workspaceSelect objectValueOfSelectedItem]];
+			return;
+		}
 	}
-	[self.workspaceSelect setStringValue:workspaceName];
 }
 
 - (void)startDisplayClientSelect:(NSNotification *)notification
@@ -494,8 +501,35 @@ extern int kDurationStringLength;
 
 	@synchronized(self)
 	{
-		self.clientList = clients;
+		self.fullClientList = clients;
+		self.workspaceClientList = [self findWorkspaceClientList];
 	}
+
+	self.clientSelect.usesDataSource = YES;
+	if (self.clientSelect.dataSource == nil)
+	{
+		self.clientSelect.dataSource = self;
+	}
+	[self.clientSelect reloadData];
+}
+
+- (NSMutableArray *)findWorkspaceClientList
+{
+	NSMutableArray *result = [[NSMutableArray alloc] init];
+	uint64_t wid = [self selectedWorkspaceID];
+
+	if (!wid)
+	{
+		return result;
+	}
+	for (ViewItem *n in self.fullClientList)
+	{
+		if (n.WID == wid)
+		{
+			[result addObject:n];
+		}
+	}
+	return result;
 }
 
 - (uint64_t)selectedWorkspaceID
@@ -513,9 +547,9 @@ extern int kDurationStringLength;
 
 - (uint64_t)selectedClientID
 {
-	for (int i = 0; i < self.clientList.count; i++)
+	for (int i = 0; i < self.workspaceClientList.count; i++)
 	{
-		ViewItem *client = self.clientList[i];
+		ViewItem *client = self.workspaceClientList[i];
 		if ([client.Name isEqualToString:self.clientSelect.stringValue])
 		{
 			return client.ID;
@@ -723,7 +757,7 @@ extern int kDurationStringLength;
 {
 	if (self.clientSelect == aComboBox)
 	{
-		return [self.clientList count];
+		return [self.workspaceClientList count];
 	}
 	if (self.workspaceSelect == aComboBox)
 	{
@@ -737,7 +771,7 @@ extern int kDurationStringLength;
 {
 	if (self.clientSelect == aComboBox)
 	{
-		ViewItem *client = [self.clientList objectAtIndex:row];
+		ViewItem *client = [self.workspaceClientList objectAtIndex:row];
 		return client.Name;
 	}
 	if (self.workspaceSelect == aComboBox)
@@ -753,9 +787,9 @@ extern int kDurationStringLength;
 {
 	if (self.clientSelect == aComboBox)
 	{
-		for (int i = 0; i < self.clientList.count; i++)
+		for (int i = 0; i < self.workspaceClientList.count; i++)
 		{
-			ViewItem *client = [self.clientList objectAtIndex:i];
+			ViewItem *client = [self.workspaceClientList objectAtIndex:i];
 			if ([client.Name isEqualToString:aString])
 			{
 				return i;
@@ -854,6 +888,7 @@ extern int kDurationStringLength;
 	// Changing workspace should render the clients
 	// of the selected workspace in the client select combobox.
 	self.clientSelect.stringValue = @"";
+	self.workspaceClientList = [self findWorkspaceClientList];
 }
 
 - (IBAction)clientSelectChanged:(id)sender
