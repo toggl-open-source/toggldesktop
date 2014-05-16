@@ -13,7 +13,7 @@
 {
 	// super would normally draw text at the top of the cell
 	NSInteger offset = floor((NSHeight(frame) -
-							  ([[self font] ascender] - [[self font] descender])) / 3);
+							  ([[self font] ascender] - [[self font] descender])) / 3)-1;
 
 	return NSInsetRect(frame, 10.0, offset);
 }
