@@ -91,19 +91,18 @@ void on_display_settings(
     KopsikSettingsViewItem *settings) {
 
     testing::testresult::settings.use_idle_detection =
-        settings->use_idle_detection;
-    testing::testresult::settings.menubar_timer =
-        settings->menubar_timer;
-    testing::testresult::settings.reminder = settings->reminder;
-    testing::testresult::settings.dock_icon = settings->dock_icon;
-    testing::testresult::settings.on_top = settings->on_top;
+        settings->UseIdleDetection;
+    testing::testresult::settings.menubar_timer = settings->MenubarTimer;
+    testing::testresult::settings.reminder = settings->Reminder;
+    testing::testresult::settings.dock_icon = settings->DockIcon;
+    testing::testresult::settings.on_top = settings->OnTop;
 
-    testing::testresult::use_proxy = settings->use_proxy;
+    testing::testresult::use_proxy = settings->UseProxy;
 
-    testing::testresult::proxy.host = std::string(settings->proxy_host);
-    testing::testresult::proxy.port = settings->proxy_port;
-    testing::testresult::proxy.username = std::string(settings->proxy_username);
-    testing::testresult::proxy.password = std::string(settings->proxy_password);
+    testing::testresult::proxy.host = std::string(settings->ProxyHost);
+    testing::testresult::proxy.port = settings->ProxyPort;
+    testing::testresult::proxy.username = std::string(settings->ProxyUsername);
+    testing::testresult::proxy.password = std::string(settings->ProxyPassword);
 }
 
 void on_display_timer_state(KopsikTimeEntryViewItem *te) {
@@ -111,13 +110,13 @@ void on_display_timer_state(KopsikTimeEntryViewItem *te) {
 
 void on_apply_settings(
     KopsikSettingsViewItem *settings) {
-    testing::testresult::use_proxy = settings->use_proxy;
+    testing::testresult::use_proxy = settings->UseProxy;
     testing::testresult::settings.use_idle_detection =
-        settings->use_idle_detection;
+        settings->UseIdleDetection;
     testing::testresult::settings.menubar_timer =
-        settings->menubar_timer;
-    testing::testresult::settings.dock_icon = settings->dock_icon;
-    testing::testresult::settings.on_top = settings->on_top;
+        settings->MenubarTimer;
+    testing::testresult::settings.dock_icon = settings->DockIcon;
+    testing::testresult::settings.on_top = settings->OnTop;
 }
 
 class App {
