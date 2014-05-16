@@ -441,25 +441,25 @@ namespace TogglDesktop
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern bool kopsik_parse_time(
             string input,
-            IntPtr hours,
-            IntPtr minutes);
+            ref int hours,
+            ref int minutes);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_format_duration_in_seconds_hhmmss(
             IntPtr duration_in_seconds,
-            string str,
+            ref string str,
             int max_strlen);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_format_duration_in_seconds_hhmm(
             Int64 duration_in_seconds,
-            string str,
+            ref string str,
             int max_strlen);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern bool kopsik_format_duration_in_seconds_pretty_hhmm(
             Int64 duration_in_seconds,
-            string str,
+            ref string str,
             int max_strlen);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
