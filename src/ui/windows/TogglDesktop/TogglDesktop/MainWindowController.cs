@@ -92,8 +92,13 @@ namespace TogglDesktop
         void OnLogin(bool open, UInt64 user_id)
         {
             userID = user_id;
-            if (open) { }
+            if (open) {
+                Controls.Remove(timeEntryListViewController);
+                Controls.Add(loginViewController);
+                loginViewController.SetAcceptButton(this);
+            }
             if (0 == user_id) {
+                // FIXME: configure bugsnag
             }
         }
 
