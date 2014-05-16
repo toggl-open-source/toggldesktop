@@ -119,6 +119,7 @@
     <ClInclude Include="..\..\..\timeline_uploader.h" />
     <ClInclude Include="..\..\..\time_entry.h" />
     <ClInclude Include="..\..\..\types.h" />
+    <ClInclude Include="..\..\..\ui.h" />
     <ClInclude Include="..\..\..\user.h" />
     <ClInclude Include="..\..\..\version.h" />
     <ClInclude Include="..\..\..\websocket_client.h" />
@@ -149,6 +150,7 @@
     <ClCompile Include="..\..\..\task.cc" />
     <ClCompile Include="..\..\..\timeline_uploader.cc" />
     <ClCompile Include="..\..\..\time_entry.cc" />
+    <ClCompile Include="..\..\..\ui.cc" />
     <ClCompile Include="..\..\..\user.cc" />
     <ClCompile Include="..\..\..\version.cc" />
     <ClCompile Include="..\..\..\websocket_client.cc" />

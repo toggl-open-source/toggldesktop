@@ -37,7 +37,14 @@ _Bool UI::DisplayError(const error err) {
 
 error UI::VerifyCallbacks() {
     logger().debug("VerifyCallbacks");
+    error err = findMissingCallbacks();
+    if (err != noError) {
+        logger().error(err);
+    }
+    return err;
+}
 
+error UI::findMissingCallbacks() {
     if (!on_display_error_) {
         return error("!on_display_error_");
     }
@@ -187,15 +194,15 @@ void UI::DisplaySettings(const _Bool open,
                          const Proxy proxy) {
     logger().debug("DisplaySettings");
 
-    KopsikSettingsViewItem view = settings_view_item_init(
+    KopsikSettingsViewItem *view = settings_view_item_init(
         record_timeline,
         settings,
         use_proxy,
         proxy);
 
-    on_display_settings_(open, &view);
+    on_display_settings_(open, view);
 
-    settings_view_item_clear(&view);
+    settings_view_item_clear(view);
 }
 
 void UI::DisplayTimerState(KopsikTimeEntryViewItem *te) {

@@ -40,7 +40,7 @@
 - (IBAction)backButtonClicked:(id)sender;
 - (IBAction)continueButtonClicked:(id)sender;
 - (IBAction)addProjectButtonClicked:(id)sender;
-- (NSDateComponents*)parseTime:(NSTextField*)field current:(NSDateComponents*)component;
+- (NSDateComponents *)parseTime:(NSTextField *)field current:(NSDateComponents *)component;
 
 // New project related stuff
 @property IBOutlet NSBox *projectSelectBox;

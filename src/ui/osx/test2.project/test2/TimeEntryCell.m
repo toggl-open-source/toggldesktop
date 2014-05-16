@@ -12,79 +12,92 @@
 
 @implementation TimeEntryCell
 
-- (IBAction)continueTimeEntry:(id)sender {
-  NSLog(@"TimeEntryCell continueTimeEntry GUID=%@", self.GUID);
-
-  [[NSNotificationCenter defaultCenter] postNotificationName:kCommandContinue object:self.GUID];
-}
-
-- (void)render:(TimeEntryViewItem *)view_item {
-  NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-  self.GUID = view_item.GUID;
-  self.durationTextField.stringValue = view_item.duration;
-  
-  // Time entry has a description
-  if (view_item.Description && [view_item.Description length] > 0) {
-    self.descriptionTextField.stringValue = view_item.Description;
-    self.descriptionTextField.toolTip = view_item.Description;
-  } else {
-    self.descriptionTextField.stringValue = @"(no description)";
-    self.descriptionTextField.toolTip = nil;
-  }
-
-  // Set billable label
-  if (YES == view_item.billable) {
-    [self.billableFlag setHidden:NO];
-  } else {
-    [self.billableFlag setHidden:YES];
-  }
-  
-  // Time entry tags icon
-  if ([view_item.tags count]) {
-    [self.tagFlag setHidden:NO];
-  } else {
-    [self.tagFlag setHidden:YES];
-  }
-
-  // Time entry has a project
-  if (view_item.ProjectAndTaskLabel && [view_item.ProjectAndTaskLabel length] > 0) {
-    self.projectTextField.stringValue = view_item.ProjectAndTaskLabel;
-    [self.projectTextField setHidden:NO];
-    self.projectTextField.toolTip = view_item.ProjectAndTaskLabel;
-    self.projectTextField.textColor =
-      [ConvertHexColor hexCodeToNSColor:view_item.ProjectColor];
-    [self setClient:self.projectTextField];
-    return;
-  }
-
-  // Time entry has no project
-  self.projectTextField.stringValue = @"";
-  [self.projectTextField setHidden:YES];
-  self.projectTextField.toolTip = nil;
-}
-
--(void)setClient:(NSTextField*)inTextField
+- (IBAction)continueTimeEntry:(id)sender
 {
-    NSArray *chunks = [[inTextField stringValue] componentsSeparatedByString: @"."];
+	NSLog(@"TimeEntryCell continueTimeEntry GUID=%@", self.GUID);
 
-    if ([chunks count] == 1) {
-        return;
-    }
+	[[NSNotificationCenter defaultCenter] postNotificationName:kCommandContinue object:self.GUID];
+}
 
-    NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:chunks[1]];
-    [clientName setAttributes:
-        @{
-          NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-          NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
-          }
-        range:NSMakeRange(0, [clientName length])];
+- (void)render:(TimeEntryViewItem *)view_item
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-    NSMutableAttributedString* string = [[NSMutableAttributedString alloc] initWithString:[chunks[0] stringByAppendingString:@" "]];
-    [string appendAttributedString: clientName];
+	self.GUID = view_item.GUID;
+	self.durationTextField.stringValue = view_item.duration;
 
-    // set the attributed string to the NSTextField
-    [inTextField setAttributedStringValue: string];
+	// Time entry has a description
+	if (view_item.Description && [view_item.Description length] > 0)
+	{
+		self.descriptionTextField.stringValue = view_item.Description;
+		self.descriptionTextField.toolTip = view_item.Description;
+	}
+	else
+	{
+		self.descriptionTextField.stringValue = @"(no description)";
+		self.descriptionTextField.toolTip = nil;
+	}
+
+	// Set billable label
+	if (YES == view_item.billable)
+	{
+		[self.billableFlag setHidden:NO];
+	}
+	else
+	{
+		[self.billableFlag setHidden:YES];
+	}
+
+	// Time entry tags icon
+	if ([view_item.tags count])
+	{
+		[self.tagFlag setHidden:NO];
+	}
+	else
+	{
+		[self.tagFlag setHidden:YES];
+	}
+
+	// Time entry has a project
+	if (view_item.ProjectAndTaskLabel && [view_item.ProjectAndTaskLabel length] > 0)
+	{
+		self.projectTextField.stringValue = view_item.ProjectAndTaskLabel;
+		[self.projectTextField setHidden:NO];
+		self.projectTextField.toolTip = view_item.ProjectAndTaskLabel;
+		self.projectTextField.textColor =
+			[ConvertHexColor hexCodeToNSColor:view_item.ProjectColor];
+		[self setClient:self.projectTextField];
+		return;
+	}
+
+	// Time entry has no project
+	self.projectTextField.stringValue = @"";
+	[self.projectTextField setHidden:YES];
+	self.projectTextField.toolTip = nil;
+}
+
+- (void)setClient:(NSTextField *)inTextField
+{
+	NSArray *chunks = [[inTextField stringValue] componentsSeparatedByString:@"."];
+
+	if ([chunks count] == 1)
+	{
+		return;
+	}
+
+	NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:chunks[1]];
+	[clientName setAttributes:
+	 @{
+		 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+		 NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
+	 }
+						range:NSMakeRange(0, [clientName length])];
+
+	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:[chunks[0] stringByAppendingString:@" "]];
+	[string appendAttributedString:clientName];
+
+	// set the attributed string to the NSTextField
+	[inTextField setAttributedStringValue:string];
 }
 
 @end

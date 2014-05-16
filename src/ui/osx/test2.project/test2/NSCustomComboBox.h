@@ -8,6 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface NSCustomComboBox: NSComboBox
+@interface NSCustomComboBox : NSComboBox
 - (void)reloadingData:(NSNumber *)length;
 @end

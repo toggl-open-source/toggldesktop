@@ -13,12 +13,14 @@
 
 extern void *ctx;
 
-- (void)mouseUp:(NSEvent*) event {
-  kopsik_edit(ctx, "", true, "");
+- (void)mouseUp:(NSEvent *)event
+{
+	kopsik_edit(ctx, "", true, "");
 }
 
-- (BOOL)acceptsFirstMouse:(NSEvent *)theEvent {
-  return YES;
+- (BOOL)acceptsFirstMouse:(NSEvent *)theEvent
+{
+	return YES;
 }
 
 @end

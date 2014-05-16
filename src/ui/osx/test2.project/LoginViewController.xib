@@ -29,6 +29,10 @@
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kmn-TG-CZe">
                                 <rect key="frame" x="15" y="201" width="213" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="213" id="5vf-yH-5sv"/>
+                                    <constraint firstAttribute="height" constant="42" id="V6F-ee-KaM"/>
+                                </constraints>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="logo-white" id="bAv-hB-mKS"/>
                             </imageView>
                             <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oP1-rJ-O83">
@@ -94,13 +98,14 @@ DQ
                         </subviews>
                     </view>
                     <constraints>
+                        <constraint firstItem="oP1-rJ-O83" firstAttribute="top" secondItem="Kmn-TG-CZe" secondAttribute="bottom" constant="20" id="0aS-7N-0KT"/>
                         <constraint firstAttribute="centerX" secondItem="3Xk-yW-T0s" secondAttribute="centerX" id="LXH-Ma-Rya"/>
-                        <constraint firstItem="Kmn-TG-CZe" firstAttribute="leading" secondItem="AeN-Lk-hKy" secondAttribute="leading" constant="20" id="VSo-Hz-jdc"/>
+                        <constraint firstItem="Kmn-TG-CZe" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="AeN-Lk-hKy" secondAttribute="leading" constant="20" id="VSo-Hz-jdc"/>
                         <constraint firstAttribute="centerX" secondItem="MMO-z4-qcY" secondAttribute="centerX" id="gv7-LY-8d4"/>
                         <constraint firstAttribute="centerX" secondItem="oP1-rJ-O83" secondAttribute="centerX" id="kd4-jf-yf7"/>
                         <constraint firstItem="Sok-9q-fwV" firstAttribute="centerX" secondItem="oP1-rJ-O83" secondAttribute="centerX" id="rsN-lc-xqa"/>
                         <constraint firstAttribute="centerX" secondItem="Kmn-TG-CZe" secondAttribute="centerX" id="snE-Wb-daX"/>
-                        <constraint firstAttribute="trailing" secondItem="Kmn-TG-CZe" secondAttribute="trailing" constant="20" id="xBv-Af-W6D"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Kmn-TG-CZe" secondAttribute="trailing" constant="20" id="xBv-Af-W6D"/>
                     </constraints>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>

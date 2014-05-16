@@ -123,9 +123,10 @@ class UI {
         on_display_timer_state_ = cb;
     }
 
- protected:
+ private:
     _Bool isNetworkingError(const error) const;
     _Bool isUserError(const error) const;
+    error findMissingCallbacks();
 
     KopsikDisplayError on_display_error_;
     KopsikDisplayUpdate on_display_update_;
@@ -142,7 +143,6 @@ class UI {
     KopsikDisplaySettings on_display_settings_;
     KopsikDisplayTimerState on_display_timer_state_;
 
- private:
     Poco::Logger &logger() const {
         return Poco::Logger::get("ui");
     }

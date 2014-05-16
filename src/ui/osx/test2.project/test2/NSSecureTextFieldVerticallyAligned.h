@@ -7,5 +7,5 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface NSSecureTextFieldVerticallyAligned: NSSecureTextFieldCell
+@interface NSSecureTextFieldVerticallyAligned : NSSecureTextFieldCell
 @end

@@ -7,5 +7,5 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface NSTextFieldVerticallyAligned: NSTextFieldCell
+@interface NSTextFieldVerticallyAligned : NSTextFieldCell
 @end
