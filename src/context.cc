@@ -1668,9 +1668,10 @@ void Context::timeEntryAutocompleteItems(
 
         std::string project_label = Formatter::JoinTaskNameReverse(t, p, c);
 
+        std::string description = te->Description();
+
         std::stringstream search_parts;
         search_parts << te->Description();
-        std::string description = search_parts.str();
         if (!project_label.empty()) {
             search_parts << " - " << project_label;
         }

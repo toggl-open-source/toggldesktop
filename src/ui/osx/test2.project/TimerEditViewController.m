@@ -341,12 +341,11 @@ extern void *ctx;
 	// It could be a time entry, a task or a project.
 	self.time_entry.ProjectID = item.ProjectID;
 	self.time_entry.TaskID = item.TaskID;
-	self.time_entry.Description = item.Text;
 	self.time_entry.ProjectAndTaskLabel = item.ProjectAndTaskLabel;
 	self.time_entry.ProjectColor = item.ProjectColor;
 	self.time_entry.Description = item.Description;
-
-	[self displayTimerState:self.time_entry];
+  
+  self.descriptionComboBox.stringValue = self.time_entry.Description;
 }
 
 - (void)controlTextDidChange:(NSNotification *)aNotification

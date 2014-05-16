@@ -480,7 +480,6 @@ extern int kDurationStringLength;
 		if (workspace.ID == wid)
 		{
 			[self.workspaceSelect selectItemAtIndex:i];
-			[self.workspaceSelect setObjectValue:[self.workspaceSelect objectValueOfSelectedItem]];
 			return;
 		}
 	}
