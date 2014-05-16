@@ -12,7 +12,7 @@
 - (void)load:(KopsikViewItem *)data
 {
 	self.ID = data->ID;
-  self.WID = data->WID;
+	self.WID = data->WID;
 	self.Name = [NSString stringWithUTF8String:data->Name];
 	self.GUID = nil;
 	if (data->GUID)
