@@ -194,15 +194,15 @@ void UI::DisplaySettings(const _Bool open,
                          const Proxy proxy) {
     logger().debug("DisplaySettings");
 
-    KopsikSettingsViewItem view = settings_view_item_init(
+    KopsikSettingsViewItem *view = settings_view_item_init(
         record_timeline,
         settings,
         use_proxy,
         proxy);
 
-    on_display_settings_(open, &view);
+    on_display_settings_(open, view);
 
-    settings_view_item_clear(&view);
+    settings_view_item_clear(view);
 }
 
 void UI::DisplayTimerState(KopsikTimeEntryViewItem *te) {

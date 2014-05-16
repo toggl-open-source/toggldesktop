@@ -43,7 +43,7 @@ KopsikTimeEntryViewItem *time_entry_view_item_init(
 
 void time_entry_view_item_clear(KopsikTimeEntryViewItem *item);
 
-KopsikSettingsViewItem settings_view_item_init(
+KopsikSettingsViewItem *settings_view_item_init(
     const _Bool record_timeline,
     const kopsik::Settings settings,
     const _Bool use_proxy,

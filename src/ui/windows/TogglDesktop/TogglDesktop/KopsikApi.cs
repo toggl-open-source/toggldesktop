@@ -489,7 +489,7 @@ namespace TogglDesktop
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
 
-            ctx = kopsik_context_init("windows_native_app", "7.0.1");
+            ctx = kopsik_context_init("windows_native_app", versionInfo.ProductVersion);
 
             // Wire up events
             kopsik_on_error(ctx, OnError);

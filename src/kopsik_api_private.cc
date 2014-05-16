@@ -218,27 +218,27 @@ void time_entry_view_item_clear(
     delete item;
 }
 
-KopsikSettingsViewItem settings_view_item_init(
+KopsikSettingsViewItem *settings_view_item_init(
     const _Bool record_timeline,
     const kopsik::Settings settings,
     const _Bool use_proxy,
     const kopsik::Proxy proxy) {
-    KopsikSettingsViewItem view;
+    KopsikSettingsViewItem *view = new KopsikSettingsViewItem();
 
-    view.RecordTimeline = record_timeline;
+    view->RecordTimeline = record_timeline;
 
-    view.DockIcon = settings.dock_icon;
-    view.MenubarTimer = settings.menubar_timer;
-    view.OnTop = settings.on_top;
-    view.Reminder = settings.reminder;
-    view.UseIdleDetection = settings.use_idle_detection;
+    view->DockIcon = settings.dock_icon;
+    view->MenubarTimer = settings.menubar_timer;
+    view->OnTop = settings.on_top;
+    view->Reminder = settings.reminder;
+    view->UseIdleDetection = settings.use_idle_detection;
 
-    view.UseProxy = use_proxy;
+    view->UseProxy = use_proxy;
 
-    view.ProxyHost = strdup(proxy.host.c_str());
-    view.ProxyPort = proxy.port;
-    view.ProxyUsername = strdup(proxy.username.c_str());
-    view.ProxyPassword = strdup(proxy.password.c_str());
+    view->ProxyHost = strdup(proxy.host.c_str());
+    view->ProxyPort = proxy.port;
+    view->ProxyUsername = strdup(proxy.username.c_str());
+    view->ProxyPassword = strdup(proxy.password.c_str());
 
     return view;
 }
