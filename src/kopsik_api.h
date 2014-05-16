@@ -65,6 +65,7 @@ extern "C" {
 
     typedef struct {
         uint64_t ID;
+        uint64_t WID;
         char *GUID;
         char *Name;
         void *Next;

@@ -13,6 +13,7 @@
 + (NSMutableArray *)loadAll:(KopsikViewItem *)first;
 - (void)load:(KopsikViewItem *)data;
 @property uint64_t ID;
+@property uint64_t WID;
 @property (strong) NSString *GUID;
 @property (strong) NSString *Name;
 @end
