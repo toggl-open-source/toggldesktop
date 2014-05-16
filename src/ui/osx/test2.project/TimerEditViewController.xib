@@ -99,7 +99,7 @@ DQ
                                 <rect key="frame" x="3" y="19" width="200" height="11"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="14" id="wqt-c9-CBt"/>
+                                    <constraint firstAttribute="height" constant="17" id="wqt-c9-CBt"/>
                                 </constraints>
                                 <textFieldCell key="cell" lineBreakMode="charWrapping" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="NEW - TOGGL" id="Wt0-TO-JZG">
                                     <font key="font" metaFont="systemBold"/>
