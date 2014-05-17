@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Reflection;
+using System.Text;
 
 namespace TogglDesktop
 {
@@ -29,6 +30,7 @@ namespace TogglDesktop
             public string Duration;
             public string Color;
             public string GUID;
+            [MarshalAs(UnmanagedType.Bool)]
             public bool Billable;
             public string Tags;
             public UInt64 Started;
@@ -38,7 +40,9 @@ namespace TogglDesktop
             public UInt64 UpdatedAt;
             public string DateHeader;
             public string DateDuration;
+            [MarshalAs(UnmanagedType.Bool)]
             public bool DurOnly;
+            [MarshalAs(UnmanagedType.Bool)]
             public bool IsHeader;
             public IntPtr Next;
         }
@@ -466,6 +470,11 @@ namespace TogglDesktop
         public static extern Int64 kopsik_parse_duration_string_into_seconds(
             string duration_string);
 
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        public static extern void kopsik_debug(
+            IntPtr context,
+            string text);
+
         // Events for C#
 
         public static event KopsikApi.KopsikDisplayError OnError = delegate { };
@@ -488,8 +497,18 @@ namespace TogglDesktop
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
-
             ctx = kopsik_context_init("windows_native_app", versionInfo.ProductVersion);
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append("sizeof(KopsikTimeEntryViewItem)=");
+            sb.Append(Marshal.SizeOf(new KopsikTimeEntryViewItem()));
+            sb.Append(", sizeof(KopsikAutocompleteItem)=");
+            sb.Append(Marshal.SizeOf(new KopsikAutocompleteItem()));
+            sb.Append("sizeof(KopsikViewItem)=");
+            sb.Append(Marshal.SizeOf(new KopsikViewItem()));
+            sb.Append(", sizeof(KopsikSettingsViewItem)=");
+            sb.Append(Marshal.SizeOf(new KopsikSettingsViewItem()));
+            kopsik_debug(ctx, sb.ToString());
 
             // Wire up events
             kopsik_on_error(ctx, OnError);

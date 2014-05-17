@@ -721,3 +721,9 @@ void kopsik_on_timer_state(
     KopsikDisplayTimerState cb) {
     app(context)->UI()->OnDisplayTimerState(cb);
 }
+
+void kopsik_debug(
+    void *context,
+    const char *text) {
+    logger().debug(text);
+}
