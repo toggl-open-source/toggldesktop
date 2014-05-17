@@ -4,6 +4,7 @@
 #include "./ui.h"
 
 #include <cstdlib>
+#include <sstream>
 
 namespace kopsik {
 
@@ -41,6 +42,13 @@ error UI::VerifyCallbacks() {
     if (err != noError) {
         logger().error(err);
     }
+    std::stringstream ss;
+    ss << "sizeof(KopsikTimeEntryViewItem)=" << sizeof(KopsikTimeEntryViewItem)
+       << ", sizeof(KopsikAutocompleteItem)=" << sizeof(KopsikAutocompleteItem)
+       << ", sizeof(KopsikViewItem)=" << sizeof(KopsikViewItem)
+       << ", sizeof(KopsikSettingsViewItem)=" << sizeof(KopsikSettingsViewItem)
+       << std::endl;
+    logger().debug(ss.str());
     return err;
 }
 
