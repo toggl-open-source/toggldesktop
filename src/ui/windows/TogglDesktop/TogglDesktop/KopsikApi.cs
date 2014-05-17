@@ -29,7 +29,7 @@ namespace TogglDesktop
             public string Duration;
             public string Color;
             public string GUID;
-            public bool Billabel;
+            public bool Billable;
             public string Tags;
             public UInt64 Started;
             public UInt64 Ended;
