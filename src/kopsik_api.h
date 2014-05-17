@@ -402,10 +402,10 @@ extern "C" {
     KOPSIK_EXPORT int64_t kopsik_parse_duration_string_into_seconds(
         const char *duration_string);
 
-	// Write to the lib logger
-	KOPSIK_EXPORT void kopsik_debug(
-		void *context,
-		const char *text);
+    // Write to the lib logger
+    KOPSIK_EXPORT void kopsik_debug(
+        void *context,
+        const char *text);
 
     // FIXME: should be invoked inside lib instead
     KOPSIK_EXPORT _Bool kopsik_users_default_wid(

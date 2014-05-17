@@ -723,7 +723,7 @@ void kopsik_on_timer_state(
 }
 
 void kopsik_debug(
-	void *context,
-	const char *text) {
-	logger().debug(text);
+    void *context,
+    const char *text) {
+    logger().debug(text);
 }
