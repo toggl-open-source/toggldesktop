@@ -41,8 +41,8 @@ extern void *ctx;
 											 selector:@selector(startDisplayLogin:)
 												 name:kDisplayLogin
 											   object:nil];
-  
-  [self.recordTimelineCheckbox setEnabled:self.user_id != 0];
+
+	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
 
 	[self displaySettings:self.originalCmd];
 }

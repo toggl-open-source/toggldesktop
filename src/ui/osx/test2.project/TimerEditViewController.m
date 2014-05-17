@@ -344,8 +344,8 @@ extern void *ctx;
 	self.time_entry.ProjectAndTaskLabel = item.ProjectAndTaskLabel;
 	self.time_entry.ProjectColor = item.ProjectColor;
 	self.time_entry.Description = item.Description;
-  
-  self.descriptionComboBox.stringValue = self.time_entry.Description;
+
+	self.descriptionComboBox.stringValue = self.time_entry.Description;
 }
 
 - (void)controlTextDidChange:(NSNotification *)aNotification
