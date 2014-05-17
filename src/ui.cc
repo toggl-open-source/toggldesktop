@@ -43,7 +43,12 @@ error UI::VerifyCallbacks() {
         logger().error(err);
     }
     std::stringstream ss;
-    ss << "sizeof(KopsikTimeEntryViewItem)=" << sizeof(KopsikTimeEntryViewItem)
+    ss << "sizeof(int64_t)=" << sizeof(int64_t)
+       << ", sizeof(uint64_t)=" << sizeof(uint64_t)
+       << ", sizeof(_Bool)=" << sizeof(_Bool)
+       << ", sizeof(void *)=" << sizeof(void *)  // NOLINT
+       << ", sizeof(KopsikTimeEntryViewItem)=" <<
+       sizeof(KopsikTimeEntryViewItem)
        << ", sizeof(KopsikAutocompleteItem)=" << sizeof(KopsikAutocompleteItem)
        << ", sizeof(KopsikViewItem)=" << sizeof(KopsikViewItem)
        << ", sizeof(KopsikSettingsViewItem)=" << sizeof(KopsikSettingsViewItem)
