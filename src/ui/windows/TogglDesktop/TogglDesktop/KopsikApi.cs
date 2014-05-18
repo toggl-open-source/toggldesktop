@@ -62,6 +62,7 @@ namespace TogglDesktop
         public struct KopsikViewItem
         {
             public UInt64 ID;
+            public UInt64 WID;
             public string GUID;
             public string Name;
             public IntPtr Next;
