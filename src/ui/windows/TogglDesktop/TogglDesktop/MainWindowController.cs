@@ -48,6 +48,7 @@ namespace TogglDesktop
             KopsikApi.OnTags += OnTags;
             KopsikApi.OnSettings += OnSettings;
             KopsikApi.OnTimerState += OnTimerState;
+            KopsikApi.OnURL += OnURL;
 
             if (!KopsikApi.Start())
             {
@@ -296,8 +297,7 @@ namespace TogglDesktop
 
         private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            preferencesWindowController.Show();
-            preferencesWindowController.BringToFront();
+            KopsikApi.kopsik_edit_preferences(KopsikApi.ctx);
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -315,21 +315,6 @@ namespace TogglDesktop
         {
             this.Show();
             this.BringToFront();
-        }
-
-        void OnTimerState(bool is_online)
-        {
-            DisplayTimerState(is_online);
-        }
-
-        void DisplayTimerState(bool is_online) 
-        {
-            if (InvokeRequired)
-            {
-                Invoke((MethodInvoker)delegate { DisplayTimerState(is_online); });
-                return;
-            }
-            // FIXME:
         }
 
         void OnReminder(string title, string informative_text)
@@ -409,7 +394,11 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { DisplaySettings(open, settings); });
                 return;
             }
-            // FIXME:
+            if (open)
+            {
+                preferencesWindowController.Show();
+                preferencesWindowController.BringToFront();
+            }
         }
 
         void OnTags(ref KopsikApi.KopsikViewItem first)
@@ -427,10 +416,28 @@ namespace TogglDesktop
             // FIXME: 
         }
 
-        void OnTimerState(ref KopsikApi.KopsikTimeEntryViewItem te)
+        void OnTimerState(IntPtr te)
         {
-            KopsikApi.KopsikTimeEntryViewItem copy = te;
+            if (te == IntPtr.Zero)
+            {
+                DisplayEmptyTimerState();
+                return;
+            }
+            KopsikApi.KopsikTimeEntryViewItem view =
+                (KopsikApi.KopsikTimeEntryViewItem)Marshal.PtrToStructure(
+                te, typeof(KopsikApi.KopsikTimeEntryViewItem));
+            KopsikApi.KopsikTimeEntryViewItem copy = view;
             DisplayTimerState(copy);
+        }
+
+        void DisplayEmptyTimerState()
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayEmptyTimerState(); });
+                return;
+            }
+            // FIXME: 
         }
 
         void DisplayTimerState(KopsikApi.KopsikTimeEntryViewItem te)
