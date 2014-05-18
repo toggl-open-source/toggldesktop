@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace TogglDesktop
 {
@@ -32,7 +36,18 @@ namespace TogglDesktop
             loadWindowLocation();
 
             KopsikApi.OnError += OnError;
+            KopsikApi.OnUpdate += OnUpdate;
             KopsikApi.OnLogin += OnLogin;
+            KopsikApi.OnTimeEntryList += OnTimeEntryList;
+            KopsikApi.OnTimeEntryEditor += OnTimeEntryEditor;
+            KopsikApi.OnOnlineState += OnOnlineState;
+            KopsikApi.OnReminder += OnReminder;
+            KopsikApi.OnAutocomplete += OnAutocomplete;
+            KopsikApi.OnWorkspaceSelect += OnWorkspaceSelect;
+            KopsikApi.OnClientSelect += OnClientSelect;
+            KopsikApi.OnTags += OnTags;
+            KopsikApi.OnSettings += OnSettings;
+            KopsikApi.OnTimerState += OnTimerState;
 
             if (!KopsikApi.Start())
             {
@@ -68,18 +83,53 @@ namespace TogglDesktop
             }
         }
 
-        void on_online_state(bool is_online)
+        void OnOnlineState(bool is_online)
         {
-            throw new NotImplementedException();
+            DisplayOnlineState(is_online);
         }
 
-        void on_update(bool is_update_available, string url, string version)
+        void DisplayOnlineState(bool is_online)
         {
-            throw new NotImplementedException();
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayOnlineState(is_online); });
+                return;
+            }
+            // FIXME:
+        }
+
+        void OnUpdate(bool is_update_available, string url, string version)
+        {
+            DisplayUpdate(is_update_available, url, version);
+        }
+
+        void DisplayUpdate(bool is_update_available, string url, string version)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayUpdate(is_update_available, url, version); });
+                return;
+            }
+            // FIXME:
+        }
+
+        void OnURL(string url)
+        {
+            Process.Start(url);
         }
 
         void OnError(string errmsg, bool user_error)
         {
+            DisplayError(errmsg, user_error);
+        }
+
+        void DisplayError(string errmsg, bool user_error)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayError(errmsg, user_error); });
+                return;
+            }
             errorLabel.Text = errmsg;
             troubleBox.Visible = true;
 
@@ -91,22 +141,62 @@ namespace TogglDesktop
 
         void OnLogin(bool open, UInt64 user_id)
         {
+            DisplayLogin(open, user_id);
+        }
+
+        void DisplayLogin(bool open, UInt64 user_id)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayLogin(open, user_id); });
+                return;
+            }
             userID = user_id;
             if (open) {
                 Controls.Remove(timeEntryListViewController);
                 Controls.Add(loginViewController);
                 loginViewController.SetAcceptButton(this);
             }
-            if (0 == user_id) {
-                // FIXME: configure bugsnag
-            }
+            // FIXME: configure bugsnag
         }
 
-        void OnTimeEntryList()
+        void OnTimeEntryList(bool open, ref KopsikApi.KopsikTimeEntryViewItem te)
         {
+            List<KopsikApi.KopsikTimeEntryViewItem> list = KopsikApi.ConvertToTimeEntryList(ref te);
+            DisplayTimeEntryList(open, list);
+        }
+
+        void DisplayTimeEntryList(bool open, List<KopsikApi.KopsikTimeEntryViewItem> list)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayTimeEntryList(open, list); });
+                return;
+            }
             Controls.Remove(loginViewController);
             Controls.Add(timeEntryListViewController);
             timeEntryListViewController.SetAcceptButton(this);
+        }
+
+        void OnTimeEntryEditor(
+            bool open,
+            ref KopsikApi.KopsikTimeEntryViewItem te,
+            string focused_field_name)
+        {
+            KopsikApi.KopsikTimeEntryViewItem n = te;
+            DisplayTimeEntryEditor(open, n, focused_field_name);
+        }
+
+        void DisplayTimeEntryEditor(
+            bool open,
+            KopsikApi.KopsikTimeEntryViewItem te,
+            string focused_field_name) {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayTimeEntryEditor(open, te, focused_field_name); });
+                return;
+            }
+            // FIXME:
         }
 
         private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)
@@ -225,6 +315,132 @@ namespace TogglDesktop
         {
             this.Show();
             this.BringToFront();
+        }
+
+        void OnTimerState(bool is_online)
+        {
+            DisplayTimerState(is_online);
+        }
+
+        void DisplayTimerState(bool is_online) 
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayTimerState(is_online); });
+                return;
+            }
+            // FIXME:
+        }
+
+        void OnReminder(string title, string informative_text)
+        {
+            DisplayReminder(title, informative_text);
+        }
+
+        void DisplayReminder(string title, string informative_text)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayReminder(title, informative_text); });
+                return;
+            }
+            // FIXME:
+        }
+
+        void OnAutocomplete(ref KopsikApi.KopsikAutocompleteItem first)
+        {
+            List<KopsikApi.KopsikAutocompleteItem> list =
+                KopsikApi.ConvertToAutocompleteList(ref first);
+            DisplayAutocomplete(list);
+        }
+
+        void DisplayAutocomplete(List<KopsikApi.KopsikAutocompleteItem> list)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayAutocomplete(list); });
+                return;
+            }
+            // FIXME:
+        }
+
+        void OnWorkspaceSelect(ref KopsikApi.KopsikViewItem first)
+        {
+            List<KopsikApi.KopsikViewItem> list = KopsikApi.ConvertToViewItemList(ref first);
+            DisplayWorkspaceSelect(list);
+        }
+
+        void DisplayWorkspaceSelect(List<KopsikApi.KopsikViewItem> list)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayWorkspaceSelect(list); });
+                return;
+            }
+            // FIXME:
+        }
+
+        void OnClientSelect(ref KopsikApi.KopsikViewItem first)
+        {
+            List<KopsikApi.KopsikViewItem> list = KopsikApi.ConvertToViewItemList(ref first);
+            DisplayClientSelect(list);
+        }
+
+        void DisplayClientSelect(List<KopsikApi.KopsikViewItem> list)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayClientSelect(list); });
+                return;
+            }
+            // FIXME: 
+        }
+
+        void OnSettings(bool open, ref KopsikApi.KopsikSettingsViewItem settings)
+        {
+            KopsikApi.KopsikSettingsViewItem copy = settings;
+            DisplaySettings(open, copy);
+        }
+
+        void DisplaySettings(bool open, KopsikApi.KopsikSettingsViewItem settings)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplaySettings(open, settings); });
+                return;
+            }
+            // FIXME:
+        }
+
+        void OnTags(ref KopsikApi.KopsikViewItem first)
+        {
+            List<KopsikApi.KopsikViewItem> list = KopsikApi.ConvertToViewItemList(ref first);
+            DisplayTags(list);
+        }
+
+        void DisplayTags(List<KopsikApi.KopsikViewItem> list) {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayTags(list); });
+                return;
+            }
+            // FIXME: 
+        }
+
+        void OnTimerState(ref KopsikApi.KopsikTimeEntryViewItem te)
+        {
+            KopsikApi.KopsikTimeEntryViewItem copy = te;
+            DisplayTimerState(copy);
+        }
+
+        void DisplayTimerState(KopsikApi.KopsikTimeEntryViewItem te)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayTimerState(te); });
+                return;
+            }
+            // FIXME: 
         }
     }
 }
