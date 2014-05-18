@@ -30,7 +30,7 @@ namespace TogglDesktop
             public string Duration;
             public string Color;
             public string GUID;
-            [MarshalAs(UnmanagedType.Bool)]
+            [MarshalAs(UnmanagedType.I1)]
             public bool Billable;
             public string Tags;
             public UInt64 Started;
@@ -40,9 +40,9 @@ namespace TogglDesktop
             public UInt64 UpdatedAt;
             public string DateHeader;
             public string DateDuration;
-            [MarshalAs(UnmanagedType.Bool)]
+            [MarshalAs(UnmanagedType.I1)]
             public bool DurOnly;
-            [MarshalAs(UnmanagedType.Bool)]
+            [MarshalAs(UnmanagedType.I1)]
             public bool IsHeader;
             public IntPtr Next;
         }
@@ -62,6 +62,7 @@ namespace TogglDesktop
         public struct KopsikViewItem
         {
             public UInt64 ID;
+            public UInt64 WID;
             public string GUID;
             public string Name;
             public IntPtr Next;
@@ -70,16 +71,23 @@ namespace TogglDesktop
         [StructLayout(LayoutKind.Sequential, CharSet = charset)]
         public struct KopsikSettingsViewItem
         {
+            [MarshalAs(UnmanagedType.I1)]
             public bool UseProxy;
             public string ProxyHost;
             public UInt64 ProxyPort;
             public string ProxyUsername;
             public string ProxyPassword;
+            [MarshalAs(UnmanagedType.I1)]
             public bool UseIdleDetection;
+            [MarshalAs(UnmanagedType.I1)]
             public bool MenubarTimer;
+            [MarshalAs(UnmanagedType.I1)]
             public bool DockIcon;
+            [MarshalAs(UnmanagedType.I1)]
             public bool OnTop;
+            [MarshalAs(UnmanagedType.I1)]
             public bool Reminder;
+            [MarshalAs(UnmanagedType.I1)]
             public bool RecordTimeline;
         }
 
@@ -88,16 +96,19 @@ namespace TogglDesktop
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayError(
             string errmsg,
+            [MarshalAs(UnmanagedType.I1)]
             bool user_error);
 
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayUpdate(
+            [MarshalAs(UnmanagedType.I1)]
             bool is_update,
             string url,
             string version);
 
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayOnlineState(
+            [MarshalAs(UnmanagedType.I1)]
             bool is_online);
 
         [UnmanagedFunctionPointer(convention)]
@@ -106,6 +117,7 @@ namespace TogglDesktop
 
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayLogin(
+            [MarshalAs(UnmanagedType.I1)]
             bool open,
             UInt64 user_id);
 
@@ -116,6 +128,7 @@ namespace TogglDesktop
 
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayTimeEntryList(
+            [MarshalAs(UnmanagedType.I1)]
             bool open,
             ref KopsikTimeEntryViewItem first);
 
@@ -129,12 +142,14 @@ namespace TogglDesktop
         
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayTimeEntryEditor(
+            [MarshalAs(UnmanagedType.I1)]
             bool open,
             ref KopsikTimeEntryViewItem te,
             string focused_field_name);
 
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplaySettings(
+            [MarshalAs(UnmanagedType.I1)]
             bool open,
             ref KopsikSettingsViewItem settings);
 
@@ -298,6 +313,7 @@ namespace TogglDesktop
         public static extern void kopsik_edit(
             IntPtr context,
             string guid,
+            [MarshalAs(UnmanagedType.I1)]
             bool edit_running_time_entry,
             string focused_field_name);
 
@@ -355,6 +371,7 @@ namespace TogglDesktop
         public static extern bool kopsik_set_time_entry_billable(
             IntPtr context,
             string guid,
+            [MarshalAs(UnmanagedType.I1)]
             bool billable);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -375,15 +392,21 @@ namespace TogglDesktop
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern bool kopsik_set_settings(
             IntPtr context,
+            [MarshalAs(UnmanagedType.I1)]
             bool use_idle_detection,
+            [MarshalAs(UnmanagedType.I1)]
             bool menubar_timer,
+            [MarshalAs(UnmanagedType.I1)]
             bool dock_icon,
+            [MarshalAs(UnmanagedType.I1)]
             bool on_top,
+            [MarshalAs(UnmanagedType.I1)]
             bool reminder);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern bool kopsik_set_proxy_settings(
             IntPtr context,
+            [MarshalAs(UnmanagedType.I1)]
             bool use_proxy,
             string proxy_host,
             UInt64 proxy_port,
@@ -413,6 +436,7 @@ namespace TogglDesktop
             UInt64 workspace_id,
             UInt64 client_id,
             string project_name,
+            [MarshalAs(UnmanagedType.I1)]
             bool is_private);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -500,11 +524,20 @@ namespace TogglDesktop
             ctx = kopsik_context_init("windows_native_app", versionInfo.ProductVersion);
 
             StringBuilder sb = new StringBuilder();
-            sb.Append("sizeof(KopsikTimeEntryViewItem)=");
+            
+            sb.Append("C# sizeof(Int64)=");
+            sb.Append(Marshal.SizeOf((Int64)0));
+            sb.Append(", sizeof(UInt64)=");
+            sb.Append(Marshal.SizeOf((UInt64)0));
+            sb.Append(", sizeof(bool)=");
+            sb.Append(Marshal.SizeOf(true));
+            sb.Append(", sizeof(IntPtr)=");
+            sb.Append(Marshal.SizeOf((IntPtr)0));
+            sb.Append(", sizeof(KopsikTimeEntryViewItem)=");
             sb.Append(Marshal.SizeOf(new KopsikTimeEntryViewItem()));
             sb.Append(", sizeof(KopsikAutocompleteItem)=");
             sb.Append(Marshal.SizeOf(new KopsikAutocompleteItem()));
-            sb.Append("sizeof(KopsikViewItem)=");
+            sb.Append(", sizeof(KopsikViewItem)=");
             sb.Append(Marshal.SizeOf(new KopsikViewItem()));
             sb.Append(", sizeof(KopsikSettingsViewItem)=");
             sb.Append(Marshal.SizeOf(new KopsikSettingsViewItem()));
@@ -544,4 +577,3 @@ namespace TogglDesktop
         }
     }
 }
-
