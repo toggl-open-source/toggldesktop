@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.Text;
+using System.Collections.Generic;
 
 namespace TogglDesktop
 {
@@ -275,7 +276,7 @@ namespace TogglDesktop
         // After UI callbacks are configured, start pumping UI events
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        private static extern bool kopsik_context_start_events(
+        public static extern bool kopsik_context_start_events(
             IntPtr context);
 
         // User interaction with the app
@@ -514,6 +515,7 @@ namespace TogglDesktop
         public static event KopsikApi.KopsikDisplayViewItems OnTags = delegate { };
         public static event KopsikApi.KopsikDisplaySettings OnSettings = delegate { };
         public static event KopsikApi.KopsikDisplayTimerState OnTimerState = delegate { };
+        public static event KopsikApi.KopsikDisplayURL OnURL = delegate { };
 
         // Start
 
@@ -571,9 +573,73 @@ namespace TogglDesktop
             return kopsik_context_start_events(ctx);
         }
 
-        private static void OnURL(string url)
+        public static List<KopsikApi.KopsikViewItem> ConvertToViewItemList(
+            ref KopsikApi.KopsikViewItem first)
         {
-            Process.Start(url);
+            List<KopsikApi.KopsikViewItem> list = new List<KopsikApi.KopsikViewItem>();
+            if (Object.ReferenceEquals(null, first))
+            {
+                return list;
+            }
+            KopsikApi.KopsikViewItem n = first;
+            while (true)
+            {
+                list.Add(n);
+                if (n.Next == IntPtr.Zero)
+                {
+                    break;
+                }
+                n = (KopsikApi.KopsikViewItem)Marshal.PtrToStructure(
+                    n.Next, typeof(KopsikApi.KopsikViewItem));
+            };
+            return list;
         }
+
+        public static List<KopsikApi.KopsikAutocompleteItem> ConvertToAutocompleteList(
+            ref KopsikApi.KopsikAutocompleteItem first)
+        {
+            List<KopsikApi.KopsikAutocompleteItem> list =
+                new List<KopsikApi.KopsikAutocompleteItem>();
+            if (Object.ReferenceEquals(null, first))
+            {
+                return list;
+            }
+            KopsikApi.KopsikAutocompleteItem n = first;
+            while (true)
+            {
+                list.Add(n);
+                if (n.Next == IntPtr.Zero)
+                {
+                    break;
+                }
+                n = (KopsikApi.KopsikAutocompleteItem)Marshal.PtrToStructure(
+                    n.Next, typeof(KopsikApi.KopsikAutocompleteItem));
+            };
+            return list;
+        }
+
+        public static List<KopsikApi.KopsikTimeEntryViewItem> ConvertToTimeEntryList(
+            ref KopsikApi.KopsikTimeEntryViewItem first)
+        {
+            List<KopsikApi.KopsikTimeEntryViewItem> list =
+                new List<KopsikApi.KopsikTimeEntryViewItem>();
+            if (Object.ReferenceEquals(null, first))
+            {
+                return list;
+            }
+            KopsikApi.KopsikTimeEntryViewItem n = first;
+            while (true)
+            {
+                list.Add(n);
+                if (n.Next == IntPtr.Zero)
+                {
+                    break;
+                }
+                n = (KopsikApi.KopsikTimeEntryViewItem)Marshal.PtrToStructure(
+                    n.Next, typeof(KopsikApi.KopsikTimeEntryViewItem));
+            };
+            return list;
+        }
+
     }
 }
