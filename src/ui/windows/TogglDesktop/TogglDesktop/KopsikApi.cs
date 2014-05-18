@@ -158,7 +158,7 @@ namespace TogglDesktop
 
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayTimerState(
-            ref KopsikTimeEntryViewItem te);
+            IntPtr te);
 
         // Initialize/destroy an instance of the app
 
@@ -278,12 +278,14 @@ namespace TogglDesktop
         // After UI callbacks are configured, start pumping UI events
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_context_start_events(
             IntPtr context);
 
         // User interaction with the app
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_login(
             IntPtr context,
             string email,
@@ -302,6 +304,7 @@ namespace TogglDesktop
             IntPtr context);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_feedback_send(
             IntPtr context,
             string topic,
@@ -309,6 +312,7 @@ namespace TogglDesktop
             string filename);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_view_time_entry_list(
             IntPtr context);
 
@@ -325,26 +329,31 @@ namespace TogglDesktop
             IntPtr context);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_continue(
             IntPtr context,
             string guid);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_continue_latest(
             IntPtr context);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_delete_time_entry(
             IntPtr context,
             string guid);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_set_time_entry_duration(
             IntPtr context,
             string guid,
             string value);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_set_time_entry_project(
             IntPtr context,
             string guid,
@@ -353,24 +362,28 @@ namespace TogglDesktop
             string project_guid);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_set_time_entry_start_iso_8601(
             IntPtr context,
             string guid,
             string value);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_set_time_entry_end_iso_8601(
             IntPtr context,
             string guid,
             string value);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_set_time_entry_tags(
             IntPtr context,
             string guid,
             string value);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_set_time_entry_billable(
             IntPtr context,
             string guid,
@@ -378,21 +391,25 @@ namespace TogglDesktop
             bool billable);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_set_time_entry_description(
             IntPtr context,
             string guid,
             string value);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_stop(
             IntPtr context);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_stop_running_time_entry_at(
             IntPtr context,
             UInt64 at);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_set_settings(
             IntPtr context,
             [MarshalAs(UnmanagedType.I1)]
@@ -407,6 +424,7 @@ namespace TogglDesktop
             bool reminder);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_set_proxy_settings(
             IntPtr context,
             [MarshalAs(UnmanagedType.I1)]
@@ -417,14 +435,17 @@ namespace TogglDesktop
             string proxy_password);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_logout(
             IntPtr context);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_clear_cache(
             IntPtr context);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_start(
             IntPtr context,
             string description,
@@ -433,6 +454,7 @@ namespace TogglDesktop
             UInt64 project_id);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_add_project(
             IntPtr context,
             string time_entry_guid,
@@ -447,6 +469,7 @@ namespace TogglDesktop
             IntPtr context);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_set_update_channel(
             IntPtr context,
             string update_channel);
@@ -470,6 +493,7 @@ namespace TogglDesktop
         // Shared helpers
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_parse_time(
             string input,
             ref int hours,
@@ -488,6 +512,7 @@ namespace TogglDesktop
             int max_strlen);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_format_duration_in_seconds_pretty_hhmm(
             Int64 duration_in_seconds,
             ref string str,
