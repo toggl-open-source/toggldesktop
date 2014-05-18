@@ -24,10 +24,4 @@
 
 #define kMaxTimeEntryDurationSeconds 3600000
 
-#ifdef WIN32
-#define kVerifyServerCertificate 0
-#else
-#define kVerifyServerCertificate 1
-#endif
-
 #endif  // SRC_CONST_H_

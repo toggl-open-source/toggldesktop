@@ -778,6 +778,7 @@ KopsikTimeEntryViewItem *Context::timeEntryViewItem(TimeEntry *te) {
 
 _Bool Context::DisplaySettings(const _Bool open) {
     kopsik::Settings settings;
+
     error err = db()->LoadSettings(&settings);
     if (err != kopsik::noError) {
         setUser(0);
@@ -809,6 +810,7 @@ _Bool Context::DisplaySettings(const _Bool open) {
     } else {
         ws_client_->SetProxy(proxy);
     }
+    ws_client_->SetIgnoreCert(settings.ignore_cert);
 
     return true;
 }
@@ -1846,15 +1848,19 @@ _Bool Context::AddProject(
 
 kopsik::HTTPSClient Context::https_client() const {
     kopsik::HTTPSClient result(api_url_, app_name_, app_version_);
+
     bool use_proxy(false);
     kopsik::Proxy proxy;
-
     poco_assert(noError == db()->LoadProxySettings(&use_proxy, &proxy));
-
     if (use_proxy) {
         result.SetProxy(proxy);
         logger().debug("Using proxy to connect: " + proxy.String());
     }
+
+    kopsik::Settings settings;
+    poco_assert(noError == db()->LoadSettings(&settings));
+    result.SetIgnoreCert(settings.ignore_cert);
+
     return result;
 }
 

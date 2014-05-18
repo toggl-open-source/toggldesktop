@@ -19,6 +19,7 @@
 	self.dock_icon = data->DockIcon;
 	self.on_top = data->OnTop;
 	self.reminder = data->Reminder;
+	self.ignore_cert = data->IgnoreCert;
 
 	self.use_proxy = data->UseProxy;
 

@@ -83,6 +83,7 @@ extern "C" {
         _Bool OnTop;
         _Bool Reminder;
         _Bool RecordTimeline;
+        _Bool IgnoreCert;
     } KopsikSettingsViewItem;
 
     // Callbacks that need to be implemented in UI
@@ -327,7 +328,8 @@ extern "C" {
         const _Bool menubar_timer,
         const _Bool dock_icon,
         const _Bool on_top,
-        const _Bool reminder);
+        const _Bool reminder,
+        const _Bool ignore_cert);
 
     KOPSIK_EXPORT _Bool kopsik_set_proxy_settings(
         void *context,
@@ -407,14 +409,14 @@ extern "C" {
         void *context,
         const char *text);
 
-	// Check if sizeof view struct matches those in UI 
-	// Else stuff blows up when Marshalling in C#
-	// Will crash if size is invalid.
-	KOPSIK_EXPORT void kopsik_check_view_item_size(
-		const int time_entry_view_item_size,
-		const int autocomplete_view_item_size,
-		const int view_item_size,
-		const int settings_size);
+    // Check if sizeof view struct matches those in UI
+    // Else stuff blows up when Marshalling in C#
+    // Will crash if size is invalid.
+    KOPSIK_EXPORT void kopsik_check_view_item_size(
+        const int time_entry_view_item_size,
+        const int autocomplete_view_item_size,
+        const int view_item_size,
+        const int settings_size);
 
     // FIXME: should be invoked inside lib instead
     KOPSIK_EXPORT _Bool kopsik_users_default_wid(

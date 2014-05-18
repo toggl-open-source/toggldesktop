@@ -16,6 +16,7 @@
 @property BOOL dock_icon;
 @property BOOL on_top;
 @property BOOL reminder;
+@property BOOL ignore_cert;
 @property BOOL use_proxy;
 @property NSString *proxy_host;
 @property long proxy_port;

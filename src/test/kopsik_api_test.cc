@@ -96,6 +96,7 @@ void on_display_settings(
     testing::testresult::settings.reminder = settings->Reminder;
     testing::testresult::settings.dock_icon = settings->DockIcon;
     testing::testresult::settings.on_top = settings->OnTop;
+    testing::testresult::settings.ignore_cert = settings->IgnoreCert;
 
     testing::testresult::use_proxy = settings->UseProxy;
 
@@ -173,21 +174,24 @@ TEST(KopsikApiTest, kopsik_set_settings) {
     testing::App app;
 
     ASSERT_TRUE(kopsik_set_settings(app.ctx(),
-                                    false, false, false, false, false));
+                                    false, false, false, false, false, false));
 
     ASSERT_FALSE(testing::testresult::settings.use_idle_detection);
     ASSERT_FALSE(testing::testresult::settings.menubar_timer);
     ASSERT_FALSE(testing::testresult::settings.dock_icon);
     ASSERT_FALSE(testing::testresult::settings.on_top);
     ASSERT_FALSE(testing::testresult::settings.reminder);
+    ASSERT_FALSE(testing::testresult::settings.ignore_cert);
 
-    ASSERT_TRUE(kopsik_set_settings(app.ctx(), true, true, true, true, true));
+    ASSERT_TRUE(kopsik_set_settings(app.ctx(),
+                                    true, true, true, true, true, true));
 
     ASSERT_TRUE(testing::testresult::settings.use_idle_detection);
     ASSERT_TRUE(testing::testresult::settings.menubar_timer);
     ASSERT_TRUE(testing::testresult::settings.dock_icon);
     ASSERT_TRUE(testing::testresult::settings.on_top);
     ASSERT_TRUE(testing::testresult::settings.reminder);
+    ASSERT_TRUE(testing::testresult::settings.ignore_cert);
 }
 
 TEST(KopsikApiTest, kopsik_set_proxy_settings) {
