@@ -78,7 +78,8 @@ _Bool kopsik_set_settings(
     const _Bool menubar_timer,
     const _Bool dock_icon,
     const _Bool on_top,
-    const _Bool reminder) {
+    const _Bool reminder,
+    const _Bool ignore_cert) {
 
     kopsik::Settings settings;
     settings.use_idle_detection = use_idle_detection;
@@ -86,6 +87,7 @@ _Bool kopsik_set_settings(
     settings.dock_icon = dock_icon;
     settings.on_top = on_top;
     settings.reminder = reminder;
+    settings.ignore_cert = ignore_cert;
 
     return app(context)->SetSettings(settings);
 }
@@ -726,4 +728,15 @@ void kopsik_debug(
     void *context,
     const char *text) {
     logger().debug(text);
+}
+
+void kopsik_check_view_item_size(
+    const int time_entry_view_item_size,
+    const int autocomplete_view_item_size,
+    const int view_item_size,
+    const int settings_size) {
+    poco_assert(time_entry_view_item_size == sizeof(KopsikTimeEntryViewItem));
+    poco_assert(autocomplete_view_item_size == sizeof(KopsikAutocompleteItem));
+    poco_assert(view_item_size == sizeof(KopsikViewItem));
+    poco_assert(settings_size == sizeof(KopsikSettingsViewItem));
 }

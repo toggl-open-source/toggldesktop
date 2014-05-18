@@ -54,8 +54,10 @@ namespace TogglDesktop
             public string Text;
             public string Description;
             public string ProjectAndTaskLabel;
+            public string ProjectColor;
             public UInt64 TaskID;
             public UInt64 ProjectID;
+            public UInt64 Type;
             public IntPtr Next;
         }
 
@@ -500,6 +502,13 @@ namespace TogglDesktop
             IntPtr context,
             string text);
 
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        public static extern void kopsik_check_view_item_size(
+    		int time_entry_view_item_size,
+		    int autocomplete_view_item_size,
+		    int view_item_size,
+		    int settings_size);
+
         // Events for C#
 
         public static event KopsikApi.KopsikDisplayError OnError = delegate { };
@@ -544,6 +553,12 @@ namespace TogglDesktop
             sb.Append(", sizeof(KopsikSettingsViewItem)=");
             sb.Append(Marshal.SizeOf(new KopsikSettingsViewItem()));
             kopsik_debug(ctx, sb.ToString());
+
+            kopsik_check_view_item_size(
+                Marshal.SizeOf(new KopsikTimeEntryViewItem()),
+                Marshal.SizeOf(new KopsikAutocompleteItem()),
+                Marshal.SizeOf(new KopsikViewItem()),
+                Marshal.SizeOf(new KopsikSettingsViewItem()));
 
             // Wire up events
             kopsik_on_error(ctx, OnError);

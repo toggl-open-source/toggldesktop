@@ -228,6 +228,7 @@ KopsikSettingsViewItem *settings_view_item_init(
     view->MenubarTimer = settings.menubar_timer;
     view->OnTop = settings.on_top;
     view->Reminder = settings.reminder;
+    view->IgnoreCert = settings.ignore_cert;
     view->UseIdleDetection = settings.use_idle_detection;
 
     view->UseProxy = use_proxy;

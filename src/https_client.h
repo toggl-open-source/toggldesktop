@@ -24,7 +24,8 @@ class HTTPSClient {
         const std::string app_version)
         : api_url_(api_url)
     , app_name_(app_name)
-    , app_version_(app_version) {}
+    , app_version_(app_version)
+    , ignore_cert_(false) {}
     virtual ~HTTPSClient() {}
 
     virtual error PostJSON(
@@ -46,6 +47,9 @@ class HTTPSClient {
     void SetProxy(const Proxy value) {
         proxy_ = value;
     }
+    void SetIgnoreCert(const bool value) {
+        ignore_cert_ = value;
+    }
 
  private:
     error request(
@@ -62,13 +66,14 @@ class HTTPSClient {
         const std::string basic_auth_username,
         const std::string basic_auth_password,
         std::string *response_body);
-    Poco::Net::Context *get_context() const;
 
     std::string api_url_;
     std::string app_name_;
     std::string app_version_;
 
     Proxy proxy_;
+
+    bool ignore_cert_;
 };
 
 }  // namespace kopsik

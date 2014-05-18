@@ -67,6 +67,11 @@ extern void *ctx;
 	[self saveSettings];
 }
 
+- (IBAction)ignoreCertCheckboxChanged:(id)sender
+{
+	[self saveSettings];
+}
+
 - (IBAction)hostTextFieldChanged:(id)sender
 {
 	[self saveProxySettings];
@@ -96,7 +101,8 @@ extern void *ctx;
 						[Utils stateToBool:[self.menubarTimerCheckbox state]],
 						[Utils stateToBool:[self.dockIconCheckbox state]],
 						[Utils stateToBool:[self.ontopCheckbox state]],
-						[Utils stateToBool:[self.reminderCheckbox state]]);
+						[Utils stateToBool:[self.reminderCheckbox state]],
+						[Utils stateToBool:[self.ignoreCertCheckbox state]]);
 }
 
 - (void)saveProxySettings
@@ -163,6 +169,8 @@ extern void *ctx;
 	[self.dockIconCheckbox setState:[Utils boolToState:settings.dock_icon]];
 	[self.ontopCheckbox setState:[Utils boolToState:settings.on_top]];
 	[self.reminderCheckbox setState:[Utils boolToState:settings.reminder]];
+	[self.ignoreCertCheckbox setState:[Utils boolToState:settings.ignore_cert]];
+
 	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
 	[self.recordTimelineCheckbox setState:[Utils boolToState:settings.timeline_recording_enabled]];
 

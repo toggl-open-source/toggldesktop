@@ -40,7 +40,8 @@ class WebSocketClient {
     app_name_(app_name),
     app_version_(app_version),
     last_connection_at_(0),
-    api_token_("") {}
+    api_token_(""),
+    ignore_cert_(false) {}
     virtual ~WebSocketClient();
 
     virtual void Start(
@@ -54,6 +55,9 @@ class WebSocketClient {
     }
     void SetProxy(const Proxy value) {
         proxy_ = value;
+    }
+    void SetIgnoreCert(const bool value) {
+        ignore_cert_ = value;
     }
 
  protected:
@@ -88,6 +92,8 @@ class WebSocketClient {
     Poco::Mutex mutex_;
 
     Proxy proxy_;
+
+    bool ignore_cert_;
 };
 }  // namespace kopsik
 

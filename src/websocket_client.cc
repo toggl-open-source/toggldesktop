@@ -81,9 +81,14 @@ error WebSocketClient::createSession() {
         acceptCertHandler =
             new Poco::Net::AcceptCertificateHandler(true);
 
-        Poco::Net::Context::Ptr context(new Poco::Net::Context(
+        Poco::Net::Context::VerificationMode verification_mode =
+            Poco::Net::Context::VERIFY_RELAXED;
+        if (ignore_cert_) {
+            verification_mode = Poco::Net::Context::VERIFY_NONE;
+        }
+        Poco::Net::Context::Ptr context = new Poco::Net::Context(
             Poco::Net::Context::CLIENT_USE, "",
-            Poco::Net::Context::VERIFY_RELAXED, 9, true, "ALL"));
+            verification_mode, 9, true, "ALL");
 
         Poco::Net::SSLManager::instance().initializeClient(
             0, acceptCertHandler, context);
