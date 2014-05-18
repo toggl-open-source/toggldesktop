@@ -92,6 +92,8 @@ namespace TogglDesktop
             public bool Reminder;
             [MarshalAs(UnmanagedType.I1)]
             public bool RecordTimeline;
+            [MarshalAs(UnmanagedType.I1)]
+            public bool IgnoreCert;
         }
 
         // Callbacks
@@ -421,7 +423,9 @@ namespace TogglDesktop
             [MarshalAs(UnmanagedType.I1)]
             bool on_top,
             [MarshalAs(UnmanagedType.I1)]
-            bool reminder);
+            bool reminder,
+            [MarshalAs(UnmanagedType.I1)]
+            bool ignore_cert);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]

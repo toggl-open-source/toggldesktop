@@ -46,7 +46,6 @@ namespace TogglDesktop
             KopsikApi.OnWorkspaceSelect += OnWorkspaceSelect;
             KopsikApi.OnClientSelect += OnClientSelect;
             KopsikApi.OnTags += OnTags;
-            KopsikApi.OnSettings += OnSettings;
             KopsikApi.OnTimerState += OnTimerState;
             KopsikApi.OnURL += OnURL;
 
@@ -379,26 +378,6 @@ namespace TogglDesktop
                 return;
             }
             // FIXME: 
-        }
-
-        void OnSettings(bool open, ref KopsikApi.KopsikSettingsViewItem settings)
-        {
-            KopsikApi.KopsikSettingsViewItem copy = settings;
-            DisplaySettings(open, copy);
-        }
-
-        void DisplaySettings(bool open, KopsikApi.KopsikSettingsViewItem settings)
-        {
-            if (InvokeRequired)
-            {
-                Invoke((MethodInvoker)delegate { DisplaySettings(open, settings); });
-                return;
-            }
-            if (open)
-            {
-                preferencesWindowController.Show();
-                preferencesWindowController.BringToFront();
-            }
         }
 
         void OnTags(ref KopsikApi.KopsikViewItem first)
