@@ -727,3 +727,14 @@ void kopsik_debug(
     const char *text) {
     logger().debug(text);
 }
+
+void kopsik_check_view_item_size(
+	const int time_entry_view_item_size,
+	const int autocomplete_view_item_size,
+	const int view_item_size,
+	const int settings_size) {
+	poco_assert(time_entry_view_item_size == sizeof(KopsikTimeEntryViewItem));
+	poco_assert(autocomplete_view_item_size == sizeof(KopsikAutocompleteItem));
+	poco_assert(view_item_size == sizeof(KopsikViewItem));
+	poco_assert(settings_size == sizeof(KopsikSettingsViewItem));
+}

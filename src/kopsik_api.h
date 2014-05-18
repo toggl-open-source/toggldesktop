@@ -407,6 +407,15 @@ extern "C" {
         void *context,
         const char *text);
 
+	// Check if sizeof view struct matches those in UI 
+	// Else stuff blows up when Marshalling in C#
+	// Will crash if size is invalid.
+	KOPSIK_EXPORT void kopsik_check_view_item_size(
+		const int time_entry_view_item_size,
+		const int autocomplete_view_item_size,
+		const int view_item_size,
+		const int settings_size);
+
     // FIXME: should be invoked inside lib instead
     KOPSIK_EXPORT _Bool kopsik_users_default_wid(
         void *context,
