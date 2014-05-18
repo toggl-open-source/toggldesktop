@@ -46,7 +46,6 @@ namespace TogglDesktop
             KopsikApi.OnWorkspaceSelect += OnWorkspaceSelect;
             KopsikApi.OnClientSelect += OnClientSelect;
             KopsikApi.OnTags += OnTags;
-            KopsikApi.OnTimerState += OnTimerState;
             KopsikApi.OnURL += OnURL;
 
             if (!KopsikApi.Start())
@@ -395,38 +394,5 @@ namespace TogglDesktop
             // FIXME: 
         }
 
-        void OnTimerState(IntPtr te)
-        {
-            if (te == IntPtr.Zero)
-            {
-                DisplayEmptyTimerState();
-                return;
-            }
-            KopsikApi.KopsikTimeEntryViewItem view =
-                (KopsikApi.KopsikTimeEntryViewItem)Marshal.PtrToStructure(
-                te, typeof(KopsikApi.KopsikTimeEntryViewItem));
-            KopsikApi.KopsikTimeEntryViewItem copy = view;
-            DisplayTimerState(copy);
-        }
-
-        void DisplayEmptyTimerState()
-        {
-            if (InvokeRequired)
-            {
-                Invoke((MethodInvoker)delegate { DisplayEmptyTimerState(); });
-                return;
-            }
-            // FIXME: 
-        }
-
-        void DisplayTimerState(KopsikApi.KopsikTimeEntryViewItem te)
-        {
-            if (InvokeRequired)
-            {
-                Invoke((MethodInvoker)delegate { DisplayTimerState(te); });
-                return;
-            }
-            // FIXME: 
-        }
     }
 }

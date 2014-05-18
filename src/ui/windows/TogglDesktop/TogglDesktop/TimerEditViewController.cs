@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace TogglDesktop
 {
@@ -15,6 +16,8 @@ namespace TogglDesktop
         public TimerEditViewController()
         {
             InitializeComponent();
+
+            KopsikApi.OnTimerState += OnTimerState;
         }
 
         private void comboBoxDescription_SelectedIndexChanged(object sender, EventArgs e)
@@ -30,12 +33,51 @@ namespace TogglDesktop
         private void buttonStart_Click(object sender, EventArgs e)
         {
             if (buttonStart.Text == "Start") {
+                KopsikApi.kopsik_start(KopsikApi.ctx,
+                    comboBoxDescription.Text,
+                    textBoxDuration.Text,
+                    0,
+                    0);
             }
         }
 
         public void SetAcceptButton(Form frm)
         {
             frm.AcceptButton = buttonStart;
+        }
+
+        void OnTimerState(IntPtr te)
+        {
+            if (te == IntPtr.Zero)
+            {
+                DisplayEmptyTimerState();
+                return;
+            }
+            KopsikApi.KopsikTimeEntryViewItem view =
+                (KopsikApi.KopsikTimeEntryViewItem)Marshal.PtrToStructure(
+                te, typeof(KopsikApi.KopsikTimeEntryViewItem));
+            KopsikApi.KopsikTimeEntryViewItem copy = view;
+            DisplayTimerState(copy);
+        }
+
+        void DisplayEmptyTimerState()
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayEmptyTimerState(); });
+                return;
+            }
+            buttonStart.Text = "Start";
+        }
+
+        void DisplayTimerState(KopsikApi.KopsikTimeEntryViewItem te)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayTimerState(te); });
+                return;
+            }
+            buttonStart.Text = "Stop";
         }
     }
 }
