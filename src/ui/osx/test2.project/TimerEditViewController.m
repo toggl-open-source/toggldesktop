@@ -154,8 +154,36 @@ extern void *ctx;
 		[self.descriptionLabel setTextColor:[ConvertHexColor hexCodeToNSColor:@"#999999"]];
 	}
 
+    [self checkProjectConstraints];
 
-	// If a project is assigned, then project name
+	// Display project name
+	if (self.time_entry.ProjectAndTaskLabel != nil)
+	{
+		self.projectTextField.stringValue = self.time_entry.ProjectAndTaskLabel;
+		self.projectTextField.toolTip = self.time_entry.ProjectAndTaskLabel;
+		[self setClient:self.projectTextField];
+	}
+	else
+	{
+		self.projectTextField.stringValue = @"";
+		self.projectTextField.toolTip = nil;
+	}
+	self.projectTextField.backgroundColor =
+		[ConvertHexColor hexCodeToNSColor:self.time_entry.ProjectColor];
+
+	// Display duration
+	if (self.time_entry.duration != nil)
+	{
+		self.durationTextField.stringValue = self.time_entry.duration;
+	}
+	else
+	{
+		self.durationTextField.stringValue = @"";
+	}
+}
+
+- (void)checkProjectConstraints {
+    // If a project is assigned, then project name
 	// is visible.
 	if (self.time_entry.ProjectID || self.time_entry.ProjectGUID)
 	{
@@ -183,30 +211,6 @@ extern void *ctx;
 		}
 	}
 
-	// Display project name
-	if (self.time_entry.ProjectAndTaskLabel != nil)
-	{
-		self.projectTextField.stringValue = self.time_entry.ProjectAndTaskLabel;
-		self.projectTextField.toolTip = self.time_entry.ProjectAndTaskLabel;
-		[self setClient:self.projectTextField];
-	}
-	else
-	{
-		self.projectTextField.stringValue = @"";
-		self.projectTextField.toolTip = nil;
-	}
-	self.projectTextField.backgroundColor =
-		[ConvertHexColor hexCodeToNSColor:self.time_entry.ProjectColor];
-
-	// Display duration
-	if (self.time_entry.duration != nil)
-	{
-		self.durationTextField.stringValue = self.time_entry.duration;
-	}
-	else
-	{
-		self.durationTextField.stringValue = @"";
-	}
 }
 
 - (void)setClient:(NSTextField *)inTextField
@@ -256,7 +260,6 @@ extern void *ctx;
 
 - (void)createConstraints
 {
-	NSLog(@"Create constraints");
 	NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_descriptionComboBox, _projectTextField);
 	self.projectComboConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_descriptionComboBox]-1@1000-[_projectTextField]"
 																		  options:0
@@ -346,6 +349,12 @@ extern void *ctx;
 	self.time_entry.Description = item.Description;
 
 	self.descriptionComboBox.stringValue = self.time_entry.Description;
+    if (item.ProjectID) {
+        self.projectTextField.stringValue = self.time_entry.ProjectAndTaskLabel;
+        [self setClient:self.projectTextField];
+    }
+    [self checkProjectConstraints];
+    
 }
 
 - (void)controlTextDidChange:(NSNotification *)aNotification
