@@ -39,6 +39,10 @@ namespace TogglDesktop
                     0,
                     0);
             }
+            else
+            {
+                KopsikApi.kopsik_stop(KopsikApi.ctx);
+            }
         }
 
         public void SetAcceptButton(Form frm)
