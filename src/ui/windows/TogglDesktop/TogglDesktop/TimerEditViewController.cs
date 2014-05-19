@@ -17,6 +17,7 @@ namespace TogglDesktop
         {
             InitializeComponent();
 
+            KopsikApi.OnAutocomplete += OnAutocomplete;
             KopsikApi.OnTimerState += OnTimerState;
         }
 
@@ -82,6 +83,26 @@ namespace TogglDesktop
                 return;
             }
             buttonStart.Text = "Stop";
+        }
+
+        void OnAutocomplete(ref KopsikApi.KopsikAutocompleteItem first)
+        {
+            List<KopsikApi.KopsikAutocompleteItem> list =
+                KopsikApi.ConvertToAutocompleteList(ref first);
+            DisplayAutocomplete(list);
+        }
+
+        void DisplayAutocomplete(List<KopsikApi.KopsikAutocompleteItem> list)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayAutocomplete(list); });
+                return;
+            }
+            comboBoxDescription.Items.Clear();
+            foreach (KopsikApi.KopsikAutocompleteItem item in list) {
+                comboBoxDescription.Items.Add(item.Text);
+            }
         }
     }
 }
