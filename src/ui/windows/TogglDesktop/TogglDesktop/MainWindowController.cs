@@ -42,7 +42,6 @@ namespace TogglDesktop
             KopsikApi.OnTimeEntryEditor += OnTimeEntryEditor;
             KopsikApi.OnOnlineState += OnOnlineState;
             KopsikApi.OnReminder += OnReminder;
-            KopsikApi.OnAutocomplete += OnAutocomplete;
             KopsikApi.OnWorkspaceSelect += OnWorkspaceSelect;
             KopsikApi.OnClientSelect += OnClientSelect;
             KopsikApi.OnTags += OnTags;
@@ -325,23 +324,6 @@ namespace TogglDesktop
             if (InvokeRequired)
             {
                 Invoke((MethodInvoker)delegate { DisplayReminder(title, informative_text); });
-                return;
-            }
-            // FIXME:
-        }
-
-        void OnAutocomplete(ref KopsikApi.KopsikAutocompleteItem first)
-        {
-            List<KopsikApi.KopsikAutocompleteItem> list =
-                KopsikApi.ConvertToAutocompleteList(ref first);
-            DisplayAutocomplete(list);
-        }
-
-        void DisplayAutocomplete(List<KopsikApi.KopsikAutocompleteItem> list)
-        {
-            if (InvokeRequired)
-            {
-                Invoke((MethodInvoker)delegate { DisplayAutocomplete(list); });
                 return;
             }
             // FIXME:
