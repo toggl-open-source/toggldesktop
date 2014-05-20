@@ -16,8 +16,7 @@ namespace TogglDesktop
         private Int64 duration_in_seconds = 0;
         private UInt64 task_id = 0;
         private UInt64 project_id = 0;
-        private bool autocomplete_needs_update = false;
-        private List<KopsikApi.KopsikAutocompleteItem> autocompletedata;
+        private List<KopsikApi.KopsikAutocompleteItem> autocompleteUpdate;
 
         public TimerEditViewController()
         {
@@ -25,27 +24,23 @@ namespace TogglDesktop
 
             KopsikApi.OnAutocomplete += OnAutocomplete;
             KopsikApi.OnTimerState += OnTimerState;
+
+            comboBoxDescription.DisplayMember = "Text";
+
         }
 
         private void comboBoxDescription_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string text = comboBoxDescription.Text;
-            foreach (KopsikApi.KopsikAutocompleteItem item in autocompletedata)
+            object o = comboBoxDescription.SelectedItem;
+            if (o == null)
             {
-                if (item.Text == text)
-                {
-                    applyAutocompleteSelection(item);
-                    return;
-                }
+                task_id = 0;
+                project_id = 0;
+                linkLabelProject.Visible = false;
+                linkLabelProject.Text = "";
+                return;
             }
-            task_id = 0;
-            project_id = 0;
-            linkLabelProject.Visible = false;
-            linkLabelProject.Text = "";
-        }
-
-        private void applyAutocompleteSelection(KopsikApi.KopsikAutocompleteItem item)
-        {
+            KopsikApi.KopsikAutocompleteItem item = (KopsikApi.KopsikAutocompleteItem)o;
             comboBoxDescription.Text = item.Description;
             if (item.ProjectID > 0)
             {
@@ -190,23 +185,17 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { DisplayAutocomplete(list); });
                 return;
             }
-            autocompletedata = list;
-            applyAutocompleteData();
-        }
-
-        private void applyAutocompleteData()
-        {
-            if (comboBoxDescription.DroppedDown)
+            autocompleteUpdate = list;
+            if (comboBoxDescription.DroppedDown || comboBoxDescription.Focused)
             {
-                autocomplete_needs_update = true;
                 return;
             }
             comboBoxDescription.Items.Clear();
-            foreach (KopsikApi.KopsikAutocompleteItem item in autocompletedata)
+            foreach (object o in autocompleteUpdate)
             {
-                comboBoxDescription.Items.Add(item.Text);
+                comboBoxDescription.Items.Add(o);
             }
-            autocomplete_needs_update = false;
+            autocompleteUpdate = null;
         }
 
         private void linkLabelDescription_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -243,9 +232,9 @@ namespace TogglDesktop
 
         private void comboBoxDescription_DropDownClosed(object sender, EventArgs e)
         {
-            if (autocomplete_needs_update)
+            if (autocompleteUpdate != null)
             {
-                applyAutocompleteData();
+                DisplayAutocomplete(autocompleteUpdate);
             }
         }
 

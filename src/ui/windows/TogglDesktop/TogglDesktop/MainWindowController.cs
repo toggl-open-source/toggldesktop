@@ -44,9 +44,6 @@ namespace TogglDesktop
             KopsikApi.OnTimeEntryEditor += OnTimeEntryEditor;
             KopsikApi.OnOnlineState += OnOnlineState;
             KopsikApi.OnReminder += OnReminder;
-            KopsikApi.OnWorkspaceSelect += OnWorkspaceSelect;
-            KopsikApi.OnClientSelect += OnClientSelect;
-            KopsikApi.OnTags += OnTags;
             KopsikApi.OnURL += OnURL;
 
             if (!KopsikApi.Start())
@@ -341,53 +338,6 @@ namespace TogglDesktop
                 return;
             }
             // FIXME:
-        }
-
-        void OnWorkspaceSelect(ref KopsikApi.KopsikViewItem first)
-        {
-            List<KopsikApi.KopsikViewItem> list = KopsikApi.ConvertToViewItemList(ref first);
-            DisplayWorkspaceSelect(list);
-        }
-
-        void DisplayWorkspaceSelect(List<KopsikApi.KopsikViewItem> list)
-        {
-            if (InvokeRequired)
-            {
-                Invoke((MethodInvoker)delegate { DisplayWorkspaceSelect(list); });
-                return;
-            }
-            // FIXME:
-        }
-
-        void OnClientSelect(ref KopsikApi.KopsikViewItem first)
-        {
-            List<KopsikApi.KopsikViewItem> list = KopsikApi.ConvertToViewItemList(ref first);
-            DisplayClientSelect(list);
-        }
-
-        void DisplayClientSelect(List<KopsikApi.KopsikViewItem> list)
-        {
-            if (InvokeRequired)
-            {
-                Invoke((MethodInvoker)delegate { DisplayClientSelect(list); });
-                return;
-            }
-            // FIXME: 
-        }
-
-        void OnTags(ref KopsikApi.KopsikViewItem first)
-        {
-            List<KopsikApi.KopsikViewItem> list = KopsikApi.ConvertToViewItemList(ref first);
-            DisplayTags(list);
-        }
-
-        void DisplayTags(List<KopsikApi.KopsikViewItem> list) {
-            if (InvokeRequired)
-            {
-                Invoke((MethodInvoker)delegate { DisplayTags(list); });
-                return;
-            }
-            // FIXME: 
         }
 
     }
