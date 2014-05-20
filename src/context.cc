@@ -237,8 +237,7 @@ void Context::updateUI(std::vector<kopsik::ModelChange> *changes) {
 }
 
 void Context::displayAutocomplete() {
-    std::vector<kopsik::AutocompleteItem> list =
-        autocompleteItems(true, true, true);
+    std::vector<kopsik::AutocompleteItem> list = autocompleteItems();
     UI()->DisplayAutocomplete(&list);
 }
 
@@ -1793,28 +1792,16 @@ void Context::projectAutocompleteItems(
     }
 }
 
-std::vector<AutocompleteItem> Context::autocompleteItems(
-    const bool include_time_entries,
-    const bool include_tasks,
-    const bool include_projects) const {
-
+std::vector<AutocompleteItem> Context::autocompleteItems() const {
     std::vector<AutocompleteItem> result;
 
     if (!user_) {
         return result;
     }
 
-    if (include_time_entries) {
-        timeEntryAutocompleteItems(&result);
-    }
-
-    if (include_tasks) {
-        taskAutocompleteItems(&result);
-    }
-
-    if (include_projects) {
-        projectAutocompleteItems(&result);
-    }
+    timeEntryAutocompleteItems(&result);
+    taskAutocompleteItems(&result);
+    projectAutocompleteItems(&result);
 
     std::sort(result.begin(), result.end(), CompareAutocompleteItems);
     return result;

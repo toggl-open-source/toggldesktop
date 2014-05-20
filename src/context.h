@@ -206,6 +206,7 @@ class Context {
         std::vector<AutocompleteItem> *list) const;
     void projectAutocompleteItems(
         std::vector<AutocompleteItem> *list) const;
+    std::vector<AutocompleteItem> autocompleteItems() const;
 
     bool isPostponed(
         const Poco::Timestamp value,
@@ -223,11 +224,6 @@ class Context {
     void switchTimelineOn();
 
     Database *db() const;
-
-    std::vector<AutocompleteItem> autocompleteItems(
-        const bool include_time_entries,
-        const bool include_tasks,
-        const bool include_projects) const;
 
     std::vector<kopsik::TimeEntry *> timeEntries() const;
 
