@@ -50,6 +50,8 @@
             this.comboBoxDescription.Text = "What are you doing?";
             this.comboBoxDescription.SelectedIndexChanged += new System.EventHandler(this.comboBoxDescription_SelectedIndexChanged);
             this.comboBoxDescription.DropDownClosed += new System.EventHandler(this.comboBoxDescription_DropDownClosed);
+            this.comboBoxDescription.Enter += new System.EventHandler(this.comboBoxDescription_Enter);
+            this.comboBoxDescription.Leave += new System.EventHandler(this.comboBoxDescription_Leave);
             // 
             // textBoxDuration
             // 
@@ -58,6 +60,8 @@
             this.textBoxDuration.Size = new System.Drawing.Size(31, 20);
             this.textBoxDuration.TabIndex = 1;
             this.textBoxDuration.Text = "0 sec";
+            this.textBoxDuration.Enter += new System.EventHandler(this.textBoxDuration_Enter);
+            this.textBoxDuration.Leave += new System.EventHandler(this.textBoxDuration_Leave);
             // 
             // buttonStart
             // 
@@ -122,6 +126,7 @@
             this.Controls.Add(this.comboBoxDescription);
             this.Name = "TimerEditViewController";
             this.Size = new System.Drawing.Size(305, 55);
+            this.Load += new System.EventHandler(this.TimerEditViewController_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -17,5 +17,20 @@ namespace TogglDesktop
             InitializeComponent();
         }
 
+        private void TimeEntryEditViewController_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        public void SetAcceptButton(Form frm)
+        {
+            frm.AcceptButton = buttonDone;
+        }
+
+        private void buttonDone_Click(object sender, EventArgs e)
+        {
+            KopsikApi.kopsik_view_time_entry_list(KopsikApi.ctx);
+        }
+
     }
 }
