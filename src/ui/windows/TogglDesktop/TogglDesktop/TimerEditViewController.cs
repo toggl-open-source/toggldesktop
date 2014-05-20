@@ -44,6 +44,7 @@ namespace TogglDesktop
 
         private void applyAutocompleteSelection(KopsikApi.KopsikAutocompleteItem item)
         {
+            comboBoxDescription.Text = item.Description;
             linkLabelProject.Text = item.ProjectAndTaskLabel;
             linkLabelProject.BackColor = ColorTranslator.FromHtml(item.ProjectColor);
             linkLabelProject.Visible = true;
