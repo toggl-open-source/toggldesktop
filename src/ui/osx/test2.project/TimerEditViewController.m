@@ -269,6 +269,11 @@ extern void *ctx;
 		kopsik_edit(ctx, [self.time_entry.GUID UTF8String], false, kFocusedFieldNameDescription);
 		return;
 	}
+  
+  if (sender == self.projectTextField) {
+    kopsik_edit(ctx, [self.time_entry.GUID UTF8String], false, kFocusedFieldNameProject);
+    return;
+  }
 }
 
 - (void)createConstraints

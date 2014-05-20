@@ -74,8 +74,15 @@ extern void *ctx;
 	[self.headerView addSubview:self.timerEditViewController.view];
 	[self.timerEditViewController.view setFrame:self.headerView.bounds];
 
-	[self.TimeEntryPopupEditView addSubview:self.timeEntryEditViewController.view];
-	[self.timeEntryEditViewController.view setFrame:self.TimeEntryPopupEditView.bounds];
+	[self.timeEntryPopupEditView addSubview:self.timeEntryEditViewController.view];
+	[self.timeEntryEditViewController.view setFrame:self.timeEntryPopupEditView.bounds];
+}
+
+- (void)startDisplayTimeEntryList:(NSNotification *)notification
+{
+	[self performSelectorOnMainThread:@selector(displayTimeEntryList:)
+                         withObject:notification.object
+                      waitUntilDone:NO];
 }
 
 - (void)displayTimeEntryList:(DisplayCommand *)cmd
@@ -93,19 +100,16 @@ extern void *ctx;
 	[self.timeEntriesTableView reloadData];
 }
 
-- (void)startDisplayTimeEntryList:(NSNotification *)notification
-{
-	[self performSelectorOnMainThread:@selector(displayTimeEntryList:)
-						   withObject:notification.object
-						waitUntilDone:NO];
-}
-
 - (void)displayTimeEntryEditor:(DisplayCommand *)cmd
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
-	[self togglePopover];
+  if (cmd.open) {
+		[self.timeEntrypopover showRelativeToRect:[[self selectedRowView] bounds]
+                                       ofView:[self selectedRowView]
+                                preferredEdge:NSMaxXEdge];
+  }
 }
 
 - (void)startDisplayTimeEntryEditor:(NSNotification *)notification
@@ -202,20 +206,6 @@ extern void *ctx;
 													  makeIfNecessary:NO];
 	[rowView setEmphasized:NO];
 	[rowView setSelected:NO];
-}
-
-- (void)togglePopover
-{
-	if (self.timeEntrypopover.shown)
-	{
-		[self.timeEntrypopover close];
-	}
-	else
-	{
-		[self.timeEntrypopover showRelativeToRect:[[self selectedRowView] bounds]
-										   ofView:[self selectedRowView]
-									preferredEdge:NSMaxXEdge];
-	}
 }
 
 @end

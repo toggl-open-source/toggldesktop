@@ -34,3 +34,4 @@ extern NSString *const kHideDisplayError;
 
 const char *kFocusedFieldNameDuration;
 const char *kFocusedFieldNameDescription;
+const char *kFocusedFieldNameProject;
