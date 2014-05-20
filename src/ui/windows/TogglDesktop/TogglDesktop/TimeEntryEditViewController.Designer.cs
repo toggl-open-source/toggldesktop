@@ -222,6 +222,7 @@
             this.buttonDone.TabIndex = 0;
             this.buttonDone.Text = "Done";
             this.buttonDone.UseVisualStyleBackColor = true;
+            this.buttonDone.Click += new System.EventHandler(this.buttonDone_Click);
             // 
             // checkBoxBillable
             // 
@@ -265,6 +266,7 @@
             this.Controls.Add(this.label1);
             this.Name = "TimeEntryEditViewController";
             this.Size = new System.Drawing.Size(317, 296);
+            this.Load += new System.EventHandler(this.TimeEntryEditViewController_Load);
             this.statusStripLastUpdate.ResumeLayout(false);
             this.statusStripLastUpdate.PerformLayout();
             this.panel1.ResumeLayout(false);
