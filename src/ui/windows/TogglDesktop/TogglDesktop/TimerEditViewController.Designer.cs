@@ -32,10 +32,10 @@
             this.comboBoxDescription = new System.Windows.Forms.ComboBox();
             this.textBoxDuration = new System.Windows.Forms.TextBox();
             this.buttonStart = new System.Windows.Forms.Button();
-            this.labelProject = new System.Windows.Forms.Label();
             this.linkLabelDescription = new System.Windows.Forms.LinkLabel();
             this.linkLabelDuration = new System.Windows.Forms.LinkLabel();
             this.timerRunningDuration = new System.Windows.Forms.Timer(this.components);
+            this.linkLabelProject = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // comboBoxDescription
@@ -49,6 +49,7 @@
             this.comboBoxDescription.TabIndex = 0;
             this.comboBoxDescription.Text = "What are you doing?";
             this.comboBoxDescription.SelectedIndexChanged += new System.EventHandler(this.comboBoxDescription_SelectedIndexChanged);
+            this.comboBoxDescription.DropDownClosed += new System.EventHandler(this.comboBoxDescription_DropDownClosed);
             // 
             // textBoxDuration
             // 
@@ -67,16 +68,6 @@
             this.buttonStart.Text = "Start";
             this.buttonStart.UseVisualStyleBackColor = true;
             this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
-            // 
-            // labelProject
-            // 
-            this.labelProject.AutoSize = true;
-            this.labelProject.Location = new System.Drawing.Point(4, 32);
-            this.labelProject.Name = "labelProject";
-            this.labelProject.Size = new System.Drawing.Size(79, 13);
-            this.labelProject.TabIndex = 3;
-            this.labelProject.Text = "NEW - TOGGL";
-            this.labelProject.Click += new System.EventHandler(this.labelProject_Click);
             // 
             // linkLabelDescription
             // 
@@ -107,13 +98,24 @@
             this.timerRunningDuration.Interval = 1000;
             this.timerRunningDuration.Tick += new System.EventHandler(this.timerRunningDuration_Tick);
             // 
+            // linkLabelProject
+            // 
+            this.linkLabelProject.AutoSize = true;
+            this.linkLabelProject.Location = new System.Drawing.Point(3, 32);
+            this.linkLabelProject.Name = "linkLabelProject";
+            this.linkLabelProject.Size = new System.Drawing.Size(79, 13);
+            this.linkLabelProject.TabIndex = 7;
+            this.linkLabelProject.TabStop = true;
+            this.linkLabelProject.Text = "NEW - TOGGL";
+            this.linkLabelProject.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelProject_LinkClicked);
+            // 
             // TimerEditViewController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.linkLabelProject);
             this.Controls.Add(this.linkLabelDuration);
             this.Controls.Add(this.linkLabelDescription);
-            this.Controls.Add(this.labelProject);
             this.Controls.Add(this.buttonStart);
             this.Controls.Add(this.textBoxDuration);
             this.Controls.Add(this.comboBoxDescription);
@@ -129,9 +131,9 @@
         private System.Windows.Forms.ComboBox comboBoxDescription;
         private System.Windows.Forms.TextBox textBoxDuration;
         private System.Windows.Forms.Button buttonStart;
-        private System.Windows.Forms.Label labelProject;
         private System.Windows.Forms.LinkLabel linkLabelDescription;
         private System.Windows.Forms.LinkLabel linkLabelDuration;
         private System.Windows.Forms.Timer timerRunningDuration;
+        private System.Windows.Forms.LinkLabel linkLabelProject;
     }
 }
