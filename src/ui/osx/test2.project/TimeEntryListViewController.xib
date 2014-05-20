@@ -7,13 +7,29 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimeEntryListViewController">
             <connections>
+                <outlet property="TimeEntryPopupEditView" destination="ozl-58-bBU" id="03m-wT-aNc"/>
                 <outlet property="headerView" destination="OXo-Tz-Vbz" id="vDf-yG-fnR"/>
                 <outlet property="timeEntriesTableView" destination="kSc-tv-Cw1" id="W2U-dC-rBu"/>
+                <outlet property="timeEntrypopover" destination="dIa-oe-UAP" id="CwJ-50-ejV"/>
                 <outlet property="view" destination="3" id="Tzl-sf-sWH"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application"/>
+        <viewController id="U32-F3-bea" userLabel="Popover View Controller">
+            <connections>
+                <outlet property="view" destination="ozl-58-bBU" id="kIv-R4-Xca"/>
+            </connections>
+        </viewController>
+        <popover id="dIa-oe-UAP">
+            <connections>
+                <outlet property="contentViewController" destination="U32-F3-bea" id="o0a-b6-hwv"/>
+            </connections>
+        </popover>
+        <customView id="ozl-58-bBU">
+            <rect key="frame" x="0.0" y="0.0" width="346" height="459"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+        </customView>
         <customView id="3">
             <rect key="frame" x="0.0" y="0.0" width="252" height="260"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -33,7 +49,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="kSc-tv-Cw1" customClass="NSUnstripedTableView">
-                                <rect key="frame" x="0.0" y="0.0" width="252" height="205"/>
+                                <rect key="frame" x="0.0" y="0.0" width="252" height="170"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <color key="backgroundColor" red="0.96078437566757202" green="0.96078437566757202" blue="0.96078437566757202" alpha="1" colorSpace="deviceRGB"/>
                                 <tableViewGridLines key="gridStyleMask" horizontal="YES"/>

@@ -9,7 +9,6 @@
 #import "MainWindowController.h"
 #import "LoginViewController.h"
 #import "TimeEntryListViewController.h"
-#import "TimeEntryEditViewController.h"
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
 #import "Update.h"
@@ -19,7 +18,6 @@
 @interface MainWindowController ()
 @property (nonatomic, strong) IBOutlet LoginViewController *loginViewController;
 @property (nonatomic, strong) IBOutlet TimeEntryListViewController *timeEntryListViewController;
-@property (nonatomic, strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
 @end
 
 @implementation MainWindowController
@@ -35,20 +33,14 @@ extern void *ctx;
 									initWithNibName:@"LoginViewController" bundle:nil];
 		self.timeEntryListViewController = [[TimeEntryListViewController alloc]
 											initWithNibName:@"TimeEntryListViewController" bundle:nil];
-		self.timeEntryEditViewController = [[TimeEntryEditViewController alloc]
-											initWithNibName:@"TimeEntryEditViewController" bundle:nil];
+
 
 		[self.loginViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 		[self.timeEntryListViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-		[self.timeEntryEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayLogin:)
 													 name:kDisplayLogin
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(startDisplayTimeEntryEditor:)
-													 name:kDisplayTimeEntryEditor
 												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayTimeEntryList:)
@@ -83,7 +75,6 @@ extern void *ctx;
 		[self.loginViewController.email becomeFirstResponder];
 
 		[self.timeEntryListViewController.view removeFromSuperview];
-		[self.timeEntryEditViewController.view removeFromSuperview];
 	}
 }
 
@@ -95,26 +86,6 @@ extern void *ctx;
 				   value:[NSNumber numberWithInt:NSUnderlineStyleSingle]
 				   range:NSMakeRange(0, forgot.length)];
 	[field setAttributedStringValue:forgot];
-}
-
-- (void)startDisplayTimeEntryEditor:(NSNotification *)notification
-{
-	[self performSelectorOnMainThread:@selector(displayTimeEntryEditor:)
-						   withObject:notification.object
-						waitUntilDone:NO];
-}
-
-- (void)displayTimeEntryEditor:(DisplayCommand *)cmd
-{
-	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-	if (cmd.open)
-	{
-		[self.contentView addSubview:self.timeEntryEditViewController.view];
-		[self.timeEntryEditViewController.view setFrame:self.contentView.bounds];
-
-		[self.loginViewController.view removeFromSuperview];
-		[self.timeEntryListViewController.view removeFromSuperview];
-	}
 }
 
 - (void)startDisplayTimeEntryList:(NSNotification *)notification
@@ -138,7 +109,6 @@ extern void *ctx;
 		[self.timeEntryListViewController.view setFrame:self.contentView.bounds];
 
 		[self.loginViewController.view removeFromSuperview];
-		[self.timeEntryEditViewController.view removeFromSuperview];
 	}
 }
 
