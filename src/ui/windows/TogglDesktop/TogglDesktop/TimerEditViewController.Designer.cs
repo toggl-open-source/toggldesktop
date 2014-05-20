@@ -107,6 +107,7 @@
             this.linkLabelProject.TabIndex = 7;
             this.linkLabelProject.TabStop = true;
             this.linkLabelProject.Text = "NEW - TOGGL";
+            this.linkLabelProject.Visible = false;
             this.linkLabelProject.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelProject_LinkClicked);
             // 
             // TimerEditViewController
