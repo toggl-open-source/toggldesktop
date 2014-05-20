@@ -28,10 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.comboBoxDescription = new System.Windows.Forms.ComboBox();
             this.textBoxDuration = new System.Windows.Forms.TextBox();
             this.buttonStart = new System.Windows.Forms.Button();
             this.labelProject = new System.Windows.Forms.Label();
+            this.linkLabelDescription = new System.Windows.Forms.LinkLabel();
+            this.linkLabelDuration = new System.Windows.Forms.LinkLabel();
+            this.timerRunningDuration = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // comboBoxDescription
@@ -53,7 +57,6 @@
             this.textBoxDuration.Size = new System.Drawing.Size(31, 20);
             this.textBoxDuration.TabIndex = 1;
             this.textBoxDuration.Text = "0 sec";
-            this.textBoxDuration.TextChanged += new System.EventHandler(this.textBoxDuration_TextChanged);
             // 
             // buttonStart
             // 
@@ -73,11 +76,43 @@
             this.labelProject.Size = new System.Drawing.Size(79, 13);
             this.labelProject.TabIndex = 3;
             this.labelProject.Text = "NEW - TOGGL";
+            this.labelProject.Click += new System.EventHandler(this.labelProject_Click);
+            // 
+            // linkLabelDescription
+            // 
+            this.linkLabelDescription.AutoSize = true;
+            this.linkLabelDescription.Location = new System.Drawing.Point(114, 32);
+            this.linkLabelDescription.Name = "linkLabelDescription";
+            this.linkLabelDescription.Size = new System.Drawing.Size(79, 13);
+            this.linkLabelDescription.TabIndex = 5;
+            this.linkLabelDescription.TabStop = true;
+            this.linkLabelDescription.Text = "(no description)";
+            this.linkLabelDescription.Visible = false;
+            this.linkLabelDescription.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelDescription_LinkClicked);
+            // 
+            // linkLabelDuration
+            // 
+            this.linkLabelDuration.AutoSize = true;
+            this.linkLabelDuration.Location = new System.Drawing.Point(200, 32);
+            this.linkLabelDuration.Name = "linkLabelDuration";
+            this.linkLabelDuration.Size = new System.Drawing.Size(33, 13);
+            this.linkLabelDuration.TabIndex = 6;
+            this.linkLabelDuration.TabStop = true;
+            this.linkLabelDuration.Text = "0 sec";
+            this.linkLabelDuration.Visible = false;
+            this.linkLabelDuration.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelDuration_LinkClicked);
+            // 
+            // timerRunningDuration
+            // 
+            this.timerRunningDuration.Interval = 1000;
+            this.timerRunningDuration.Tick += new System.EventHandler(this.timerRunningDuration_Tick);
             // 
             // TimerEditViewController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.linkLabelDuration);
+            this.Controls.Add(this.linkLabelDescription);
             this.Controls.Add(this.labelProject);
             this.Controls.Add(this.buttonStart);
             this.Controls.Add(this.textBoxDuration);
@@ -95,5 +130,8 @@
         private System.Windows.Forms.TextBox textBoxDuration;
         private System.Windows.Forms.Button buttonStart;
         private System.Windows.Forms.Label labelProject;
+        private System.Windows.Forms.LinkLabel linkLabelDescription;
+        private System.Windows.Forms.LinkLabel linkLabelDuration;
+        private System.Windows.Forms.Timer timerRunningDuration;
     }
 }
