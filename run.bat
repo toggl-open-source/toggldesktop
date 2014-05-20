@@ -1,0 +1,1 @@
+.\src\ui\windows\TogglDesktop\TogglDesktop\bin\Release\TogglDesktop.exe
