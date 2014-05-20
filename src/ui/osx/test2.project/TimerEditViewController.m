@@ -154,7 +154,7 @@ extern void *ctx;
 		[self.descriptionLabel setTextColor:[ConvertHexColor hexCodeToNSColor:@"#999999"]];
 	}
 
-    [self checkProjectConstraints];
+	[self checkProjectConstraints];
 
 	// Display project name
 	if (self.time_entry.ProjectAndTaskLabel != nil)
@@ -182,8 +182,9 @@ extern void *ctx;
 	}
 }
 
-- (void)checkProjectConstraints {
-    // If a project is assigned, then project name
+- (void)checkProjectConstraints
+{
+	// If a project is assigned, then project name
 	// is visible.
 	if (self.time_entry.ProjectID || self.time_entry.ProjectGUID || [self.time_entry.ProjectAndTaskLabel length])
 	{
@@ -210,7 +211,6 @@ extern void *ctx;
 			self.constraintsAdded = NO;
 		}
 	}
-
 }
 
 - (void)setClient:(NSTextField *)inTextField
@@ -221,15 +221,18 @@ extern void *ctx;
 	{
 		return;
 	}
-    NSString *client;
-    NSString *project;
-    if (self.time_entry.duration_in_seconds < 0) {
-        client = chunks[1];
-        project = chunks[0];
-    } else {
-        client = chunks[0];
-        project = [chunks[1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    }
+	NSString *client;
+	NSString *project;
+	if (self.time_entry.duration_in_seconds < 0)
+	{
+		client = chunks[1];
+		project = chunks[0];
+	}
+	else
+	{
+		client = chunks[0];
+		project = [chunks[1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	}
 
 	NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:client];
 	[clientName setAttributes:
@@ -271,6 +274,7 @@ extern void *ctx;
 - (void)createConstraints
 {
 	NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_descriptionComboBox, _projectTextField);
+
 	self.projectComboConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_descriptionComboBox]-2@1000-[_projectTextField]"
 																		  options:0
 																		  metrics:nil
@@ -359,13 +363,13 @@ extern void *ctx;
 	self.time_entry.Description = item.Description;
 
 	self.descriptionComboBox.stringValue = self.time_entry.Description;
-    if (item.ProjectID) {
-        self.projectTextField.stringValue = self.time_entry.ProjectAndTaskLabel;
+	if (item.ProjectID)
+	{
+		self.projectTextField.stringValue = self.time_entry.ProjectAndTaskLabel;
 		self.projectTextField.toolTip = self.time_entry.ProjectAndTaskLabel;
 		[self setClient:self.projectTextField];
-    }
-    [self checkProjectConstraints];
-    
+	}
+	[self checkProjectConstraints];
 }
 
 - (void)controlTextDidChange:(NSNotification *)aNotification
