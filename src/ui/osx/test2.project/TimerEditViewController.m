@@ -221,14 +221,24 @@ extern void *ctx;
 	{
 		return;
 	}
-	NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:chunks[1]];
+    NSString *client;
+    NSString *project;
+    if (self.time_entry.duration_in_seconds < 0) {
+        client = chunks[1];
+        project = chunks[0];
+    } else {
+        client = chunks[0];
+        project = [chunks[1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    }
+
+	NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:client];
 	[clientName setAttributes:
 	 @{
 		 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
 		 NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
 	 }
 						range:NSMakeRange(0, [clientName length])];
-	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:[chunks[0] stringByAppendingString:@" "]];
+	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:[project stringByAppendingString:@" "]];
 	[string appendAttributedString:clientName];
 	// set the attributed string to the NSTextField
 	[inTextField setAttributedStringValue:string];
@@ -267,7 +277,7 @@ extern void *ctx;
 																			views:viewsDict];
 
 	NSDictionary *viewsDict_ = NSDictionaryOfVariableBindings(_descriptionLabel, _projectTextField);
-	self.projectLabelConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_descriptionLabel]-1@1000-[_projectTextField]"
+	self.projectLabelConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_descriptionLabel]-3@1000-[_projectTextField]"
 																		  options:0
 																		  metrics:nil
 																			views:viewsDict_];
@@ -351,7 +361,8 @@ extern void *ctx;
 	self.descriptionComboBox.stringValue = self.time_entry.Description;
     if (item.ProjectID) {
         self.projectTextField.stringValue = self.time_entry.ProjectAndTaskLabel;
-        [self setClient:self.projectTextField];
+		self.projectTextField.toolTip = self.time_entry.ProjectAndTaskLabel;
+		[self setClient:self.projectTextField];
     }
     [self checkProjectConstraints];
     
