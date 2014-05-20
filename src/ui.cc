@@ -291,6 +291,10 @@ _Bool UI::isUserError(const error err) const {
             != std::string::npos) {
         return true;
     }
+    if (value.find("Stop time must be after start time")
+            != std::string::npos) {
+        return true;
+    }
     return false;
 }
 
