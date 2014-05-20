@@ -126,10 +126,6 @@ namespace TogglDesktop
 
             linkLabelDuration.Visible = false;
             linkLabelDuration.Text = "";
-
-            linkLabelProject.Visible = false;
-            task_id = 0;
-            project_id = 0;
         }
 
         void DisplayRunningTimerState(KopsikApi.KopsikTimeEntryViewItem te)
