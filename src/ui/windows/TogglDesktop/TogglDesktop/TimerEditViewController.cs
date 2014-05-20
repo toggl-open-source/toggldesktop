@@ -14,6 +14,10 @@ namespace TogglDesktop
     public partial class TimerEditViewController : UserControl
     {
         private Int64 duration_in_seconds = 0;
+        private UInt64 task_id = 0;
+        private UInt64 project_id = 0;
+        private bool autocomplete_needs_update = false;
+        private List<KopsikApi.KopsikAutocompleteItem> autocompletedata;
 
         public TimerEditViewController()
         {
@@ -25,20 +29,42 @@ namespace TogglDesktop
 
         private void comboBoxDescription_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // FIXME: apply autocomplete selection
+            string text = comboBoxDescription.Text;
+            foreach (KopsikApi.KopsikAutocompleteItem item in autocompletedata)
+            {
+                if (item.Text == text)
+                {
+                    applyAutocompleteSelection(item);
+                    return;
+                }
+            }
+            task_id = 0;
+            project_id = 0;
         }
+
+        private void applyAutocompleteSelection(KopsikApi.KopsikAutocompleteItem item)
+        {
+            linkLabelProject.Text = item.ProjectAndTaskLabel;
+            linkLabelProject.BackColor = ColorTranslator.FromHtml(item.ProjectColor);
+            linkLabelProject.Visible = true;
+            task_id = item.TaskID;
+            project_id = item.ProjectID;
+        }
+
+        private const string defaultDescription = "What are you doing?";
+        private const string defaultDuration = "0 sec";
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
             if (buttonStart.Text == "Start") {
                 string description = comboBoxDescription.Text;
-                if ("What are you doing?" == description)
+                if (defaultDescription == description)
                 {
                     description = "";
                 }
 
                 string duration = textBoxDuration.Text;
-                if ("0 sec" == duration)
+                if (defaultDuration == duration)
                 {
                     duration = "";
                 }
@@ -46,8 +72,8 @@ namespace TogglDesktop
                 KopsikApi.kopsik_start(KopsikApi.ctx,
                     description,
                     duration,
-                    0,
-                    0);
+                    task_id,
+                    project_id);
             }
             else
             {
@@ -88,15 +114,21 @@ namespace TogglDesktop
 
             buttonStart.Text = "Start";
 
+            comboBoxDescription.Text = defaultDescription;
             comboBoxDescription.Visible = true;
-            linkLabelDescription.Visible = !comboBoxDescription.Visible;
 
-            labelProject.Visible = false;
+            linkLabelDescription.Visible = false;
+            linkLabelDescription.Text = "";
 
+            textBoxDuration.Text = defaultDuration;
             textBoxDuration.Visible = true;
-            linkLabelDuration.Visible = !textBoxDuration.Visible;
 
-            labelProject.Visible = false;
+            linkLabelDuration.Visible = false;
+            linkLabelDuration.Text = "";
+
+            linkLabelProject.Visible = false;
+            task_id = 0;
+            project_id = 0;
         }
 
         void DisplayRunningTimerState(KopsikApi.KopsikTimeEntryViewItem te)
@@ -115,17 +147,27 @@ namespace TogglDesktop
             linkLabelDescription.Top = comboBoxDescription.Top;
             linkLabelDescription.Left = comboBoxDescription.Left;
             linkLabelDescription.Text = te.Description;
+            if (linkLabelDescription.Text == "")
+            {
+                linkLabelDescription.Text = "(no description)";
+            }
             linkLabelDescription.Visible = true;
-            comboBoxDescription.Visible = !linkLabelDescription.Visible;
+
+            comboBoxDescription.Visible = false;
+            comboBoxDescription.Text = "";
 
             linkLabelDuration.Top = textBoxDuration.Top;
             linkLabelDuration.Left = textBoxDuration.Left;
             linkLabelDuration.Text = te.Duration;
             linkLabelDuration.Visible = true;
-            textBoxDuration.Visible = !linkLabelDuration.Visible;
 
-            labelProject.Text = te.ProjectAndTaskLabel;
-            labelProject.Visible = true;
+            textBoxDuration.Visible = false;
+            textBoxDuration.Text = "";
+
+            linkLabelProject.Text = te.ProjectAndTaskLabel;
+            linkLabelProject.Visible = true;
+            task_id = 0;
+            project_id = 0;
         }
 
         void OnAutocomplete(ref KopsikApi.KopsikAutocompleteItem first)
@@ -142,15 +184,23 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { DisplayAutocomplete(list); });
                 return;
             }
-            comboBoxDescription.Items.Clear();
-            foreach (KopsikApi.KopsikAutocompleteItem item in list) {
-                comboBoxDescription.Items.Add(item.Text);
-            }
+            autocompletedata = list;
+            applyAutocompleteData();
         }
 
-        private void labelProject_Click(object sender, EventArgs e)
+        private void applyAutocompleteData()
         {
-            KopsikApi.kopsik_edit(KopsikApi.ctx, "", true, "project");
+            if (comboBoxDescription.DroppedDown)
+            {
+                autocomplete_needs_update = true;
+                return;
+            }
+            comboBoxDescription.Items.Clear();
+            foreach (KopsikApi.KopsikAutocompleteItem item in autocompletedata)
+            {
+                comboBoxDescription.Items.Add(item.Text);
+            }
+            autocomplete_needs_update = false;
         }
 
         private void linkLabelDescription_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -177,6 +227,19 @@ namespace TogglDesktop
             string s = sb.ToString();
             if (s != linkLabelDuration.Text) {
                 linkLabelDuration.Text = s;
+            }
+        }
+
+        private void linkLabelProject_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            KopsikApi.kopsik_edit(KopsikApi.ctx, "", true, "project");
+        }
+
+        private void comboBoxDescription_DropDownClosed(object sender, EventArgs e)
+        {
+            if (autocomplete_needs_update)
+            {
+                applyAutocompleteData();
             }
         }
     }
