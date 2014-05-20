@@ -50,9 +50,9 @@ extern "C" {
     } KopsikTimeEntryViewItem;
 
     typedef struct {
-        // This is what is displayed to user
+        // This is what is displayed to user, includes project and task.
         char *Text;
-        // This is copied to description field if item is selected
+        // This is copied to "time_entry.description" field if item is selected
         char *Description;
         // Project label, if has a project
         char *ProjectAndTaskLabel;

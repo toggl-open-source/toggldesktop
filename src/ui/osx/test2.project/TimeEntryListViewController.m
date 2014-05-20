@@ -37,10 +37,10 @@ extern void *ctx;
 	{
 		self.timerEditViewController = [[TimerEditViewController alloc]
 										initWithNibName:@"TimerEditViewController" bundle:nil];
-        self.timeEntryEditViewController = [[TimeEntryEditViewController alloc]
+		self.timeEntryEditViewController = [[TimeEntryEditViewController alloc]
 											initWithNibName:@"TimeEntryEditViewController" bundle:nil];
 		[self.timerEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-        [self.timeEntryEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+		[self.timeEntryEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 
 		viewitems = [NSMutableArray array];
 
@@ -48,14 +48,14 @@ extern void *ctx;
 														 bundle:nil];
 		self.nibTimeEntryCellWithHeader = [[NSNib alloc] initWithNibNamed:@"TimeEntryCellWithHeader"
 																   bundle:nil];
-        self.nibTimeEntryEdit = [[NSNib alloc] initWithNibNamed:@"TimeEntryEdit"
-																   bundle:nil];
+		self.nibTimeEntryEdit = [[NSNib alloc] initWithNibNamed:@"TimeEntryEdit"
+														 bundle:nil];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayTimeEntryList:)
 													 name:kDisplayTimeEntryList
 												   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
+		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayTimeEntryEditor:)
 													 name:kDisplayTimeEntryEditor
 												   object:nil];
@@ -74,7 +74,7 @@ extern void *ctx;
 	[self.headerView addSubview:self.timerEditViewController.view];
 	[self.timerEditViewController.view setFrame:self.headerView.bounds];
 
-    [self.TimeEntryPopupEditView addSubview:self.timeEntryEditViewController.view];
+	[self.TimeEntryPopupEditView addSubview:self.timeEntryEditViewController.view];
 	[self.timeEntryEditViewController.view setFrame:self.TimeEntryPopupEditView.bounds];
 }
 
@@ -105,7 +105,7 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
-    [self togglePopover];
+	[self togglePopover];
 }
 
 - (void)startDisplayTimeEntryEditor:(NSNotification *)notification
@@ -184,11 +184,10 @@ extern void *ctx;
 	{
 		item = viewitems[row];
 	}
-    self.selectedRowView = [self.timeEntriesTableView rowViewAtRow:row
-                                                   makeIfNecessary:NO];
+	self.selectedRowView = [self.timeEntriesTableView rowViewAtRow:row
+												   makeIfNecessary:NO];
 
 	kopsik_edit(ctx, [item.GUID UTF8String], false, "");
-
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification
@@ -207,13 +206,16 @@ extern void *ctx;
 
 - (void)togglePopover
 {
-    if(self.timeEntrypopover.shown){
-        [self.timeEntrypopover close];
-    } else {
-        [self.timeEntrypopover showRelativeToRect:[[self selectedRowView] bounds]
-                                  ofView:[self selectedRowView]
-                           preferredEdge:NSMaxXEdge];
-    }
+	if (self.timeEntrypopover.shown)
+	{
+		[self.timeEntrypopover close];
+	}
+	else
+	{
+		[self.timeEntrypopover showRelativeToRect:[[self selectedRowView] bounds]
+										   ofView:[self selectedRowView]
+									preferredEdge:NSMaxXEdge];
+	}
 }
 
 @end
