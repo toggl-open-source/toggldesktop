@@ -271,13 +271,13 @@ extern void *ctx;
 - (void)createConstraints
 {
 	NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_descriptionComboBox, _projectTextField);
-	self.projectComboConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_descriptionComboBox]-1@1000-[_projectTextField]"
+	self.projectComboConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_descriptionComboBox]-2@1000-[_projectTextField]"
 																		  options:0
 																		  metrics:nil
 																			views:viewsDict];
 
 	NSDictionary *viewsDict_ = NSDictionaryOfVariableBindings(_descriptionLabel, _projectTextField);
-	self.projectLabelConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_descriptionLabel]-3@1000-[_projectTextField]"
+	self.projectLabelConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_descriptionLabel]-0@1000-[_projectTextField]"
 																		  options:0
 																		  metrics:nil
 																			views:viewsDict_];
