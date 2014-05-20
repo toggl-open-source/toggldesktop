@@ -354,6 +354,10 @@ extern int kDurationStringLength;
 		{
 			[self.descriptionCombobox becomeFirstResponder];
 		}
+		if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameProject]])
+		{
+			[self.projectSelectBox becomeFirstResponder];
+		}
 	}
 }
 

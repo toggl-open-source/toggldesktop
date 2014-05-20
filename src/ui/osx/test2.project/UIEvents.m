@@ -32,3 +32,4 @@ NSString *const kHideDisplayError = @"kHideDisplayError";
 
 const char *kFocusedFieldNameDuration = "duration";
 const char *kFocusedFieldNameDescription = "description";
+const char *kFocusedFieldNameProject = "project";
