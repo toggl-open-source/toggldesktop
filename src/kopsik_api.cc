@@ -11,7 +11,6 @@
 #include "./user.h"
 #include "./https_client.h"
 #include "./websocket_client.h"
-#include "./version.h"
 #include "./timeline_uploader.h"
 #include "./window_change_recorder.h"
 #include "./CustomErrorHandler.h"

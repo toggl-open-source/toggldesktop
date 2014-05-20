@@ -29,17 +29,13 @@ namespace kopsik {
 
 class User : public BaseModel {
  public:
-    User(
-        const std::string app_name,
-        const std::string app_version) :
+    User() :
     BasicAuthUsername(""),
     BasicAuthPassword(""),
     api_token_(""),
     default_wid_(0),
     since_(0),
     fullname_(""),
-    app_name_(app_name),
-    app_version_(app_version),
     email_(""),
     last_date_(0),
     record_timeline_(false),
@@ -203,8 +199,6 @@ class User : public BaseModel {
     // Unix timestamp of the user data; returned from API
     Poco::UInt64 since_;
     std::string fullname_;
-    std::string app_name_;
-    std::string app_version_;
     std::string email_;
     std::time_t last_date_;
     bool record_timeline_;

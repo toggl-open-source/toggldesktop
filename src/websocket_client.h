@@ -26,9 +26,7 @@ typedef void (*WebSocketMessageCallback)(
 class WebSocketClient {
  public:
     explicit WebSocketClient(
-        const std::string websocket_url,
-        const std::string app_name,
-        const std::string app_version) :
+        const std::string websocket_url) :
     activity_(this, &WebSocketClient::runActivity),
     session_(0),
     req_(0),
@@ -37,11 +35,8 @@ class WebSocketClient {
     on_websocket_message_(0),
     ctx_(0),
     websocket_url_(websocket_url),
-    app_name_(app_name),
-    app_version_(app_version),
     last_connection_at_(0),
-    api_token_(""),
-    ignore_cert_(false) {}
+    api_token_("") {}
     virtual ~WebSocketClient();
 
     virtual void Start(
@@ -52,12 +47,6 @@ class WebSocketClient {
 
     void SetWebsocketURL(const std::string value) {
         websocket_url_ = value;
-    }
-    void SetProxy(const Proxy value) {
-        proxy_ = value;
-    }
-    void SetIgnoreCert(const bool value) {
-        ignore_cert_ = value;
     }
 
  protected:
@@ -82,18 +71,12 @@ class WebSocketClient {
     void *ctx_;
 
     std::string websocket_url_;
-    std::string app_name_;
-    std::string app_version_;
 
     std::time_t last_connection_at_;
 
     std::string api_token_;
 
     Poco::Mutex mutex_;
-
-    Proxy proxy_;
-
-    bool ignore_cert_;
 };
 }  // namespace kopsik
 

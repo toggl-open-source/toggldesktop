@@ -31,9 +31,6 @@ Context::Context(const std::string app_name, const std::string app_version)
 , ws_client_(0)
 , timeline_uploader_(0)
 , window_change_recorder_(0)
-, app_name_(app_name)
-, app_version_(app_version)
-, api_url_("")
 , timeline_upload_url_("")
 , update_channel_("")
 , feedback_("", "", "")
@@ -45,6 +42,9 @@ Context::Context(const std::string app_name, const std::string app_version)
 , time_entry_editor_guid_("") {
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
+
+    HTTPSClient::AppName = app_name;
+    HTTPSClient::AppVersion = app_version;
 
     Poco::Crypto::OpenSSLInitializer::initialize();
 
@@ -104,7 +104,7 @@ _Bool Context::StartEvents() {
     }
 
     // See was logged in into app previously
-    kopsik::User *user = new kopsik::User(app_name_, app_version_);
+    kopsik::User *user = new kopsik::User();
     err = db()->LoadCurrentUser(user, true);
     if (err != kopsik::noError) {
         delete user;
@@ -294,7 +294,7 @@ void Context::onFullSync(Poco::Util::TimerTask& task) {  // NOLINT
     }
     logger().debug("onFullSync executing");
 
-    kopsik::HTTPSClient client = https_client();
+    kopsik::HTTPSClient client;
     kopsik::error err = user_->FullSync(&client);
     if (err != kopsik::noError) {
         UI()->DisplayError(err);
@@ -329,7 +329,7 @@ void Context::onPartialSync(Poco::Util::TimerTask& task) {  // NOLINT
     }
     logger().debug("onPartialSync executing");
 
-    kopsik::HTTPSClient client = https_client();
+    kopsik::HTTPSClient client;
     kopsik::error err = user_->PartialSync(&client);
     if (err != kopsik::noError) {
         UI()->DisplayError(err);
@@ -474,9 +474,7 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
         timeline_uploader_ = new kopsik::TimelineUploader(
             user_->ID(),
             user_->APIToken(),
-            timeline_upload_url_,
-            app_name_,
-            app_version_);
+            timeline_upload_url_);
     }
 
     {
@@ -541,10 +539,11 @@ void Context::executeUpdateCheck() {
     }
 
     std::string response_body("");
-    err = https_client().GetJSON(updateURL(),
-                                 std::string(""),
-                                 std::string(""),
-                                 &response_body);
+    HTTPSClient https_client;
+    err = https_client.GetJSON(updateURL(),
+                               std::string(""),
+                               std::string(""),
+                               &response_body);
     if (err != kopsik::noError) {
         UI()->DisplayError(err);
         return;
@@ -582,13 +581,13 @@ void Context::executeUpdateCheck() {
 
 const std::string Context::updateURL() const {
     poco_assert(!update_channel_.empty());
-    poco_assert(!app_version_.empty());
+    poco_assert(!HTTPSClient::AppVersion.empty());
 
     std::stringstream relative_url;
     relative_url << "/api/v8/updates?app=td"
                  << "&channel=" << update_channel_
                  << "&platform=" << osName()
-                 << "&version=" << app_version_
+                 << "&version=" << HTTPSClient::AppVersion
                  << "&osname=" << Poco::Environment::osName()
                  << "&osversion=" << Poco::Environment::osVersion()
                  << "&osarch=" << Poco::Environment::osArchitecture();
@@ -634,7 +633,8 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
     }
 
     std::string response_body("");
-    kopsik::error err = https_client().PostJSON("/api/v8/timeline_settings",
+    HTTPSClient https_client;
+    kopsik::error err = https_client.PostJSON("/api/v8/timeline_settings",
                         json,
                         user_->APIToken(),
                         "api_token",
@@ -649,8 +649,6 @@ _Bool Context::SendFeedback(Feedback fb) {
         logger().warning("Cannot send feedback, user logged out");
         return true;
     }
-
-    fb.SetAppVersion(app_version_);
 
     kopsik::error err = fb.Validate();
     if (err != kopsik::noError) {
@@ -673,7 +671,8 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onSendFeedback");
 
     std::string response_body("");
-    kopsik::error err = https_client().PostJSON("/api/v8/feedback",
+    HTTPSClient https_client;
+    kopsik::error err = https_client.PostJSON("/api/v8/feedback",
                         feedback_.JSON(),
                         user_->APIToken(),
                         "api_token",
@@ -689,9 +688,7 @@ void Context::SetWebSocketClientURL(const std::string value) {
     if (ws_client_) {
         delete ws_client_;
     }
-    ws_client_ = new kopsik::WebSocketClient(value,
-            app_name_,
-            app_version_);
+    ws_client_ = new kopsik::WebSocketClient(value);
 }
 
 _Bool Context::Settings(kopsik::Settings *settings) {
@@ -797,19 +794,15 @@ _Bool Context::DisplaySettings(const _Bool open) {
         record_timeline = user_->RecordTimeline();
     }
 
+    HTTPSClient::UseProxy = use_proxy;
+    HTTPSClient::IgnoreCert = settings.ignore_cert;
+    HTTPSClient::ProxySettings = proxy;
+
     UI()->DisplaySettings(open,
                           record_timeline,
                           settings,
                           use_proxy,
                           proxy);
-
-    Poco::Mutex::ScopedLock lock(ws_client_m_);
-    if (!use_proxy) {
-        ws_client_->SetProxy(kopsik::Proxy());
-    } else {
-        ws_client_->SetProxy(proxy);
-    }
-    ws_client_->SetIgnoreCert(settings.ignore_cert);
 
     return true;
 }
@@ -850,9 +843,9 @@ _Bool Context::Login(
         return UI()->DisplayError("Empty password");
     }
 
-    kopsik::User *u = new kopsik::User(app_name_, app_version_);
+    kopsik::User *u = new kopsik::User();
 
-    kopsik::HTTPSClient client = https_client();
+    kopsik::HTTPSClient client;
     kopsik::error err = u->Login(&client, email, password);
     if (err != kopsik::noError) {
         delete u;
@@ -915,7 +908,7 @@ void Context::setUser(User *value) {
 _Bool Context::SetLoggedInUserFromJSON(
     const std::string json) {
 
-    kopsik::User *u = new kopsik::User(app_name_, app_version_);
+    kopsik::User *u = new kopsik::User();
 
     LoadUserFromJSONString(u, json, true, true);
 
@@ -1850,24 +1843,6 @@ _Bool Context::AddProject(
         workspace_id, client_id, project_name, is_private);
 
     return UI()->DisplayError(save());
-}
-
-kopsik::HTTPSClient Context::https_client() const {
-    kopsik::HTTPSClient result(api_url_, app_name_, app_version_);
-
-    bool use_proxy(false);
-    kopsik::Proxy proxy;
-    poco_assert(noError == db()->LoadProxySettings(&use_proxy, &proxy));
-    if (use_proxy) {
-        result.SetProxy(proxy);
-        logger().debug("Using proxy to connect: " + proxy.String());
-    }
-
-    kopsik::Settings settings;
-    poco_assert(noError == db()->LoadSettings(&settings));
-    result.SetIgnoreCert(settings.ignore_cert);
-
-    return result;
 }
 
 void Context::SetSleep() {

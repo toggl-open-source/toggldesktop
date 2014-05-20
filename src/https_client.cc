@@ -22,10 +22,16 @@
 #include "Poco/Net/SecureStreamSocket.h"
 
 #include "./libjson.h"
-#include "./version.h"
 #include "./const.h"
 
 namespace kopsik {
+
+std::string HTTPSClient::AppName = std::string("");
+std::string HTTPSClient::AppVersion = std::string("");
+std::string HTTPSClient::APIURL = std::string(kAPIURL);
+bool HTTPSClient::UseProxy = false;
+bool HTTPSClient::IgnoreCert = false;
+kopsik::Proxy HTTPSClient::ProxySettings = Proxy();
 
 error HTTPSClient::PostJSON(
     const std::string relative_url,
@@ -86,7 +92,7 @@ error HTTPSClient::request(
     *response_body = "";
 
     try {
-        Poco::URI uri(api_url_);
+        Poco::URI uri(APIURL);
 
         Poco::SharedPtr<Poco::Net::InvalidCertificateHandler>
         acceptCertHandler =
@@ -94,7 +100,7 @@ error HTTPSClient::request(
 
         Poco::Net::Context::VerificationMode verification_mode =
             Poco::Net::Context::VERIFY_RELAXED;
-        if (ignore_cert_) {
+        if (IgnoreCert) {
             verification_mode = Poco::Net::Context::VERIFY_NONE;
         }
         Poco::Net::Context::Ptr context = new Poco::Net::Context(
@@ -106,10 +112,11 @@ error HTTPSClient::request(
 
         Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(),
                                               context);
-        if (proxy_.IsConfigured()) {
-            session.setProxy(proxy_.host, proxy_.port);
-            if (proxy_.HasCredentials()) {
-                session.setProxyCredentials(proxy_.username, proxy_.password);
+        if (ProxySettings.IsConfigured()) {
+            session.setProxy(ProxySettings.host, ProxySettings.port);
+            if (ProxySettings.HasCredentials()) {
+                session.setProxyCredentials(ProxySettings.username,
+                                            ProxySettings.password);
             }
         }
         session.setKeepAlive(false);
@@ -127,7 +134,7 @@ error HTTPSClient::request(
                                    Poco::Net::HTTPMessage::HTTP_1_1);
         req.setKeepAlive(false);
         req.setContentType("application/json");
-        req.set("User-Agent", kopsik::UserAgent(app_name_, app_version_));
+        req.set("User-Agent", UserAgent());
         req.setChunkedTransferEncoding(true);
 
         Poco::Net::HTTPBasicCredentials cred(

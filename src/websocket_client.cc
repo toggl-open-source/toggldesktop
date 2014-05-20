@@ -21,7 +21,6 @@
 
 #include "./libjson.h"
 
-#include "./version.h"
 #include "./json.h"
 
 namespace kopsik {
@@ -83,7 +82,7 @@ error WebSocketClient::createSession() {
 
         Poco::Net::Context::VerificationMode verification_mode =
             Poco::Net::Context::VERIFY_RELAXED;
-        if (ignore_cert_) {
+        if (HTTPSClient::IgnoreCert) {
             verification_mode = Poco::Net::Context::VERIFY_NONE;
         }
         Poco::Net::Context::Ptr context = new Poco::Net::Context(
@@ -97,17 +96,20 @@ error WebSocketClient::createSession() {
             uri.getHost(),
             uri.getPort(),
             context);
-        if (proxy_.IsConfigured()) {
-            session_->setProxy(proxy_.host, proxy_.port);
-            if (proxy_.HasCredentials()) {
-                session_->setProxyCredentials(proxy_.username, proxy_.password);
+        if (HTTPSClient::ProxySettings.IsConfigured()) {
+            session_->setProxy(HTTPSClient::ProxySettings.host,
+                               HTTPSClient::ProxySettings.port);
+            if (HTTPSClient::ProxySettings.HasCredentials()) {
+                session_->setProxyCredentials(
+                    HTTPSClient::ProxySettings.username,
+                    HTTPSClient::ProxySettings.password);
             }
         }
         req_ = new Poco::Net::HTTPRequest(
             Poco::Net::HTTPRequest::HTTP_GET, "/ws",
             Poco::Net::HTTPMessage::HTTP_1_1);
         req_->set("Origin", "https://localhost");
-        req_->set("User-Agent", kopsik::UserAgent(app_name_, app_version_));
+        req_->set("User-Agent", HTTPSClient::UserAgent());
         res_ = new Poco::Net::HTTPResponse();
         ws_ = new Poco::Net::WebSocket(*session_, *req_, *res_);
         ws_->setBlocking(false);

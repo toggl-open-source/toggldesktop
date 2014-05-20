@@ -117,7 +117,7 @@ bool TimelineUploader::sync(
     poco_assert(!timeline_events.empty());
     poco_assert(user_id > 0);
 
-    HTTPSClient client(timeline_upload_url_, app_name_, app_version_);
+    HTTPSClient client;
 
     std::stringstream out;
     out << "Uploading " << timeline_events.size()
