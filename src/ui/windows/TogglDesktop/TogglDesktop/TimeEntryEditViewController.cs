@@ -13,12 +13,17 @@ namespace TogglDesktop
     public partial class TimeEntryEditViewController : UserControl
     {
         private string GUID = "";
+        private List<KopsikApi.KopsikAutocompleteItem> autocompleteUpdate = null;
 
         public TimeEntryEditViewController()
         {
             InitializeComponent();
 
             KopsikApi.OnTimeEntryEditor += OnTimeEntryEditor;
+            KopsikApi.OnWorkspaceSelect += OnWorkspaceSelect;
+            KopsikApi.OnClientSelect += OnClientSelect;
+            KopsikApi.OnTags += OnTags;
+            KopsikApi.OnAutocomplete += OnAutocomplete;
         }
 
         private void TimeEntryEditViewController_Load(object sender, EventArgs e)
@@ -124,5 +129,124 @@ namespace TogglDesktop
         {
             KopsikApi.kopsik_continue(KopsikApi.ctx, GUID);
         }
+
+        void OnClientSelect(ref KopsikApi.KopsikViewItem first)
+        {
+            List<KopsikApi.KopsikViewItem> list = KopsikApi.ConvertToViewItemList(ref first);
+            DisplayClientSelect(list);
+        }
+
+        void DisplayClientSelect(List<KopsikApi.KopsikViewItem> list)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayClientSelect(list); });
+                return;
+            }
+            // FIXME: 
+        }
+
+        void OnTags(ref KopsikApi.KopsikViewItem first)
+        {
+            List<KopsikApi.KopsikViewItem> list = KopsikApi.ConvertToViewItemList(ref first);
+            DisplayTags(list);
+        }
+
+        void DisplayTags(List<KopsikApi.KopsikViewItem> list)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayTags(list); });
+                return;
+            }
+            checkedListBoxTags.Items.Clear();
+            foreach (object o in list) {
+                checkedListBoxTags.Items.Add(o);
+            }
+        }
+
+        void OnWorkspaceSelect(ref KopsikApi.KopsikViewItem first)
+        {
+            List<KopsikApi.KopsikViewItem> list = KopsikApi.ConvertToViewItemList(ref first);
+            DisplayWorkspaceSelect(list);
+        }
+
+        void DisplayWorkspaceSelect(List<KopsikApi.KopsikViewItem> list)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayWorkspaceSelect(list); });
+                return;
+            }
+            // FIXME:
+        }
+
+        void OnAutocomplete(ref KopsikApi.KopsikAutocompleteItem first)
+        {
+            List<KopsikApi.KopsikAutocompleteItem> list =
+                KopsikApi.ConvertToAutocompleteList(ref first);
+            DisplayAutocomplete(list);
+        }
+
+        void DisplayAutocomplete(List<KopsikApi.KopsikAutocompleteItem> list)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayAutocomplete(list); });
+                return;
+            }
+            autocompleteUpdate = list;
+            if (comboBoxDescription.DroppedDown || comboBoxDescription.Focused)
+            {
+                return;
+            }
+            comboBoxDescription.Items.Clear();
+            foreach (object o in autocompleteUpdate)
+            {
+                comboBoxDescription.Items.Add(o);
+            }
+            autocompleteUpdate = null;
+        }
+
+        private void comboBoxDescription_TextChanged(object sender, EventArgs e)
+        {
+            KopsikApi.kopsik_set_time_entry_description(KopsikApi.ctx,
+                GUID, comboBoxDescription.Text);
+        }
+
+        private void comboBoxDescription_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            object o = comboBoxDescription.SelectedItem;
+            if (o == null)
+            {
+                return;
+            }
+            KopsikApi.KopsikAutocompleteItem item = (KopsikApi.KopsikAutocompleteItem)o;
+            comboBoxDescription.Text = item.Description;
+            KopsikApi.kopsik_set_time_entry_project(KopsikApi.ctx,
+                GUID,
+                item.TaskID,
+                item.ProjectID,
+                null);
+        }
+
+        private void comboBoxProject_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            object o = comboBoxProject.SelectedItem;
+            if (null == o)
+            {
+                return;
+            }
+            KopsikApi.KopsikViewItem item = (KopsikApi.KopsikViewItem)o;
+            KopsikApi.kopsik_set_time_entry_project(KopsikApi.ctx,
+                GUID, 0, item.ID, "");
+        }
+
+        private void checkBoxBillable_CheckedChanged(object sender, EventArgs e)
+        {
+            KopsikApi.kopsik_set_time_entry_billable(KopsikApi.ctx,
+                GUID, checkBoxBillable.Checked);
+        }
+
     }
 }

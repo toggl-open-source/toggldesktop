@@ -70,6 +70,8 @@
             this.comboBoxDescription.Name = "comboBoxDescription";
             this.comboBoxDescription.Size = new System.Drawing.Size(140, 21);
             this.comboBoxDescription.TabIndex = 1;
+            this.comboBoxDescription.SelectedIndexChanged += new System.EventHandler(this.comboBoxDescription_SelectedIndexChanged);
+            this.comboBoxDescription.TextChanged += new System.EventHandler(this.comboBoxDescription_TextChanged);
             // 
             // label2
             // 
@@ -87,6 +89,7 @@
             this.comboBoxProject.Name = "comboBoxProject";
             this.comboBoxProject.Size = new System.Drawing.Size(140, 21);
             this.comboBoxProject.TabIndex = 3;
+            this.comboBoxProject.SelectedIndexChanged += new System.EventHandler(this.comboBoxProject_SelectedIndexChanged);
             // 
             // linkLabel1
             // 
@@ -235,6 +238,7 @@
             this.checkBoxBillable.TabIndex = 14;
             this.checkBoxBillable.Text = "Billable";
             this.checkBoxBillable.UseVisualStyleBackColor = true;
+            this.checkBoxBillable.CheckedChanged += new System.EventHandler(this.checkBoxBillable_CheckedChanged);
             // 
             // checkedListBoxTags
             // 
