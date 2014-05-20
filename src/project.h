@@ -81,7 +81,7 @@ class Project : public BaseModel {
     bool ResolveError(const kopsik::error);
 
  private:
-    bool userCannotAddOrEditProjectsInWorkspace(const error) const;
+    bool clientIsInAnotherWorkspace(const kopsik::error) const;
 
     Poco::UInt64 wid_;
     Poco::UInt64 cid_;
