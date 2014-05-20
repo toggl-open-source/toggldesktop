@@ -13,6 +13,10 @@ namespace TogglDesktop
     {
         public static IntPtr ctx = IntPtr.Zero;
 
+        public const string Project = "project";
+        public const string Duration = "duration";
+        public const string Description = "description";
+
         private const string dll = "TogglDesktopDLL.dll";
         private const CharSet charset = CharSet.Ansi;
         private const CallingConvention convention = CallingConvention.Cdecl;
@@ -512,14 +516,14 @@ namespace TogglDesktop
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_format_duration_in_seconds_hhmm(
             Int64 duration_in_seconds,
-            ref string str,
+            StringBuilder sb,
             int max_strlen);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool kopsik_format_duration_in_seconds_pretty_hhmm(
             Int64 duration_in_seconds,
-            ref string str,
+            StringBuilder sb,
             int max_strlen);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -683,6 +687,14 @@ namespace TogglDesktop
                     n.Next, typeof(KopsikApi.KopsikTimeEntryViewItem));
             };
             return list;
+        }
+
+        private static readonly DateTime UnixEpoch =
+            new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+        public static DateTime DateTimeFromUnix(UInt64 unix_seconds)
+        {
+            return UnixEpoch.AddSeconds(unix_seconds);
         }
 
     }

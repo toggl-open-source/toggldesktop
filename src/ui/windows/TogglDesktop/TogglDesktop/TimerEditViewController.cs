@@ -40,14 +40,23 @@ namespace TogglDesktop
             }
             task_id = 0;
             project_id = 0;
+            linkLabelProject.Visible = false;
+            linkLabelProject.Text = "";
         }
 
         private void applyAutocompleteSelection(KopsikApi.KopsikAutocompleteItem item)
         {
             comboBoxDescription.Text = item.Description;
-            linkLabelProject.Text = item.ProjectAndTaskLabel;
-            linkLabelProject.BackColor = ColorTranslator.FromHtml(item.ProjectColor);
-            linkLabelProject.Visible = true;
+            if (item.ProjectID > 0)
+            {
+                linkLabelProject.Text = item.ProjectAndTaskLabel;
+                linkLabelProject.BackColor = ColorTranslator.FromHtml(item.ProjectColor);
+                linkLabelProject.Visible = true;
+            }
+            else
+            {
+                linkLabelProject.Visible = false;
+            }
             task_id = item.TaskID;
             project_id = item.ProjectID;
         }
@@ -202,12 +211,12 @@ namespace TogglDesktop
 
         private void linkLabelDescription_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            KopsikApi.kopsik_edit(KopsikApi.ctx, "", true, "description");
+            KopsikApi.kopsik_edit(KopsikApi.ctx, "", true, KopsikApi.Description);
         }
 
         private void linkLabelDuration_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            KopsikApi.kopsik_edit(KopsikApi.ctx, "", true, "duration");
+            KopsikApi.kopsik_edit(KopsikApi.ctx, "", true, KopsikApi.Duration);
         }
 
         private void timerRunningDuration_Tick(object sender, EventArgs e)
@@ -229,7 +238,7 @@ namespace TogglDesktop
 
         private void linkLabelProject_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            KopsikApi.kopsik_edit(KopsikApi.ctx, "", true, "project");
+            KopsikApi.kopsik_edit(KopsikApi.ctx, "", true, KopsikApi.Project);
         }
 
         private void comboBoxDescription_DropDownClosed(object sender, EventArgs e)
@@ -237,6 +246,43 @@ namespace TogglDesktop
             if (autocomplete_needs_update)
             {
                 applyAutocompleteData();
+            }
+        }
+
+        private void TimerEditViewController_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBoxDescription_Enter(object sender, EventArgs e)
+        {
+            if (comboBoxDescription.Text == defaultDescription)
+            {
+                comboBoxDescription.Text = "";
+            }
+        }
+
+        private void comboBoxDescription_Leave(object sender, EventArgs e)
+        {
+            if (comboBoxDescription.Text == "")
+            {
+                comboBoxDescription.Text = defaultDescription;
+            }
+        }
+
+        private void textBoxDuration_Enter(object sender, EventArgs e)
+        {
+            if (textBoxDuration.Text == defaultDuration)
+            {
+                textBoxDuration.Text = "";
+            }
+        }
+
+        private void textBoxDuration_Leave(object sender, EventArgs e)
+        {
+            if (textBoxDuration.Text == "")
+            {
+                textBoxDuration.Text = defaultDuration;
             }
         }
     }

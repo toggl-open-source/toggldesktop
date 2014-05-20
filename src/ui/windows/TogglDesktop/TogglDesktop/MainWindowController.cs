@@ -12,6 +12,7 @@ namespace TogglDesktop
     {
         private LoginViewController loginViewController;
         private TimeEntryListViewController timeEntryListViewController;
+        private TimeEntryEditViewController timeEntryEditViewController;
         private AboutWindowController aboutWindowController;
         private PreferencesWindowController preferencesWindowController;
         private FeedbackWindowController feedbackWindowController;
@@ -24,6 +25,7 @@ namespace TogglDesktop
 
             loginViewController = new LoginViewController();
             timeEntryListViewController = new TimeEntryListViewController();
+            timeEntryEditViewController = new TimeEntryEditViewController();
             aboutWindowController = new AboutWindowController();
             preferencesWindowController = new PreferencesWindowController();
             feedbackWindowController = new FeedbackWindowController();
@@ -152,6 +154,7 @@ namespace TogglDesktop
             userID = user_id;
             if (open) {
                 Controls.Remove(timeEntryListViewController);
+                Controls.Remove(timeEntryEditViewController);
                 Controls.Add(loginViewController);
                 loginViewController.SetAcceptButton(this);
             }
@@ -171,9 +174,13 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { DisplayTimeEntryList(open, list); });
                 return;
             }
-            Controls.Remove(loginViewController);
-            Controls.Add(timeEntryListViewController);
-            timeEntryListViewController.SetAcceptButton(this);
+            if (open)
+            {
+                Controls.Remove(loginViewController);
+                Controls.Remove(timeEntryEditViewController);
+                Controls.Add(timeEntryListViewController);
+                timeEntryListViewController.SetAcceptButton(this);
+            }
         }
 
         void OnTimeEntryEditor(
@@ -194,7 +201,14 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { DisplayTimeEntryEditor(open, te, focused_field_name); });
                 return;
             }
-            // FIXME:
+            if (open)
+            {
+                Controls.Remove(loginViewController);
+                Controls.Remove(timeEntryListViewController);
+                Controls.Add(timeEntryEditViewController);
+                timeEntryEditViewController.SetAcceptButton(this);
+                timeEntryEditViewController.SetFocus(focused_field_name);
+            }
         }
 
         private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)
