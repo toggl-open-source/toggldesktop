@@ -1627,6 +1627,7 @@ bool CompareAutocompleteItems(
 // Add time entries, in format:
 // Description - Task. Project. Client
 void Context::timeEntryAutocompleteItems(
+    std::set<std::string> *unique_names,
     std::vector<AutocompleteItem> *list) const {
 
     poco_check_ptr(list);
@@ -1682,9 +1683,14 @@ void Context::timeEntryAutocompleteItems(
             continue;
         }
 
+        if (unique_names->find(text) != unique_names->end()) {
+            continue;
+        }
+        unique_names->insert(text);
+
         AutocompleteItem autocomplete_item;
-        autocomplete_item.Description = description;
         autocomplete_item.Text = text;
+        autocomplete_item.Description = description;
         autocomplete_item.ProjectAndTaskLabel = project_label;
         if (p) {
             autocomplete_item.ProjectColor = p->ColorCode();
@@ -1701,6 +1707,7 @@ void Context::timeEntryAutocompleteItems(
 // Add tasks, in format:
 // Task. Project. Client
 void Context::taskAutocompleteItems(
+    std::set<std::string> *unique_names,
     std::vector<AutocompleteItem> *list) const {
 
     poco_check_ptr(list);
@@ -1738,6 +1745,11 @@ void Context::taskAutocompleteItems(
             continue;
         }
 
+        if (unique_names->find(text) != unique_names->end()) {
+            continue;
+        }
+        unique_names->insert(text);
+
         AutocompleteItem autocomplete_item;
         autocomplete_item.Text = text;
         autocomplete_item.ProjectAndTaskLabel = text;
@@ -1754,6 +1766,7 @@ void Context::taskAutocompleteItems(
 // Add projects, in format:
 // Project. Client
 void Context::projectAutocompleteItems(
+    std::set<std::string> *unique_names,
     std::vector<AutocompleteItem> *list) const {
 
     poco_check_ptr(list);
@@ -1782,6 +1795,11 @@ void Context::projectAutocompleteItems(
             continue;
         }
 
+        if (unique_names->find(text) != unique_names->end()) {
+            continue;
+        }
+        unique_names->insert(text);
+
         AutocompleteItem autocomplete_item;
         autocomplete_item.Text = text;
         autocomplete_item.ProjectAndTaskLabel = text;
@@ -1799,9 +1817,10 @@ std::vector<AutocompleteItem> Context::autocompleteItems() const {
         return result;
     }
 
-    timeEntryAutocompleteItems(&result);
-    taskAutocompleteItems(&result);
-    projectAutocompleteItems(&result);
+    std::set<std::string> unique_names;
+    timeEntryAutocompleteItems(&unique_names, &result);
+    taskAutocompleteItems(&unique_names, &result);
+    projectAutocompleteItems(&unique_names, &result);
 
     std::sort(result.begin(), result.end(), CompareAutocompleteItems);
     return result;
