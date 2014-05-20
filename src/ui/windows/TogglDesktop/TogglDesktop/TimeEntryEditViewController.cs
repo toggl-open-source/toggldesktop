@@ -12,6 +12,8 @@ namespace TogglDesktop
 {
     public partial class TimeEntryEditViewController : UserControl
     {
+        private string GUID = "";
+
         public TimeEntryEditViewController()
         {
             InitializeComponent();
@@ -51,9 +53,9 @@ namespace TogglDesktop
         }
 
         void OnTimeEntryEditor(
-    bool open,
-    ref KopsikApi.KopsikTimeEntryViewItem te,
-    string focused_field_name)
+            bool open,
+            ref KopsikApi.KopsikTimeEntryViewItem te,
+            string focused_field_name)
         {
             KopsikApi.KopsikTimeEntryViewItem n = te;
             DisplayTimeEntryEditor(open, n, focused_field_name);
@@ -69,6 +71,7 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { DisplayTimeEntryEditor(open, te, focused_field_name); });
                 return;
             }
+            GUID = te.GUID;
             if (!comboBoxDescription.Focused)
             {
                 comboBoxDescription.Text = te.Description;
@@ -104,7 +107,22 @@ namespace TogglDesktop
             {
                 toolStripStatusLabelLastUpdate.Visible = false;
             }
-            
+            textBoxEndTime.Enabled = (te.DurationInSeconds >= 0);
+        }
+
+        private void buttonDelete_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("Delete time entry?", "Please confirm",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (DialogResult.Yes == dr)
+            {
+                KopsikApi.kopsik_delete_time_entry(KopsikApi.ctx, GUID);
+            }
+        }
+
+        private void buttonContinue_Click(object sender, EventArgs e)
+        {
+            KopsikApi.kopsik_continue(KopsikApi.ctx, GUID);
         }
     }
 }
