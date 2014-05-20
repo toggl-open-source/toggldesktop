@@ -121,7 +121,6 @@
     <ClInclude Include="..\..\..\types.h" />
     <ClInclude Include="..\..\..\ui.h" />
     <ClInclude Include="..\..\..\user.h" />
-    <ClInclude Include="..\..\..\version.h" />
     <ClInclude Include="..\..\..\websocket_client.h" />
     <ClInclude Include="..\..\..\window_change_recorder.h" />
     <ClInclude Include="..\..\..\workspace.h" />
@@ -152,7 +151,6 @@
     <ClCompile Include="..\..\..\time_entry.cc" />
     <ClCompile Include="..\..\..\ui.cc" />
     <ClCompile Include="..\..\..\user.cc" />
-    <ClCompile Include="..\..\..\version.cc" />
     <ClCompile Include="..\..\..\websocket_client.cc" />
     <ClCompile Include="..\..\..\window_change_recorder.cc" />
     <ClCompile Include="..\..\..\workspace.cc" />
