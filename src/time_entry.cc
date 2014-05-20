@@ -51,6 +51,10 @@ bool TimeEntry::ResolveError(const kopsik::error err) {
         SetTID(0);
         return true;
     }
+    if (billableIsAPremiumFeature(err)) {
+        SetBillable(false);
+        return true;
+    }
     return false;
 }
 
@@ -74,6 +78,11 @@ bool TimeEntry::durationTooLarge(const kopsik::error err) const {
 bool TimeEntry::stopTimeMustBeAfterStartTime(const kopsik::error err) const {
     return (std::string::npos != std::string(err).find(
         "Stop time must be after start time"));
+}
+
+bool TimeEntry::billableIsAPremiumFeature(const kopsik::error err) const {
+    return (std::string::npos != std::string(err).find(
+        "Billable is a premium feature"));
 }
 
 void TimeEntry::StopAt(const Poco::UInt64 at) {
