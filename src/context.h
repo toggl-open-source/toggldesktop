@@ -54,7 +54,7 @@ class Context {
 
     // Configure
     void SetAPIURL(const std::string value) {
-        api_url_ = value;
+        HTTPSClient::APIURL = value;
     }
     void SetTimelineUploadURL(const std::string value) {
         timeline_upload_url_ = value;
@@ -167,9 +167,6 @@ class Context {
     void SetSleep();
     void SetWake();
 
- protected:
-    kopsik::HTTPSClient https_client() const;
-
  private:
     const std::string updateURL() const;
 
@@ -270,10 +267,6 @@ class Context {
     Poco::Mutex window_change_recorder_m_;
     kopsik::WindowChangeRecorder *window_change_recorder_;
 
-    std::string app_name_;
-    std::string app_version_;
-
-    std::string api_url_;
     std::string timeline_upload_url_;
 
     CustomErrorHandler error_handler_;

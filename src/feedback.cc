@@ -5,6 +5,7 @@
 #include <sstream>
 
 #include "./formatter.h"
+#include "./https_client.h"
 
 #include "Poco/FileStream.h"
 #include "Poco/Base64Encoder.h"
@@ -16,7 +17,9 @@ namespace kopsik {
 const std::string Feedback::JSON() const {
     JSONNODE *root = json_new(JSON_NODE);
     json_push_back(root, json_new_b("desktop", true));
-    json_push_back(root, json_new_a("toggl_version", app_version_.c_str()));
+    json_push_back(root,
+                   json_new_a("toggl_version",
+                              HTTPSClient::AppVersion.c_str()));
     json_push_back(root,
                    json_new_a(
                        "details",
@@ -68,9 +71,6 @@ kopsik::error Feedback::Validate() const {
     }
     if (details_.empty()) {
         return kopsik::error("Missing details");
-    }
-    if (app_version_.empty()) {
-        return kopsik::error("Missing app version");
     }
     return kopsik::noError;
 }

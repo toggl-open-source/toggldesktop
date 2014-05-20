@@ -18,14 +18,7 @@ namespace kopsik {
 
 class HTTPSClient {
  public:
-    explicit HTTPSClient(
-        const std::string api_url,
-        const std::string app_name,
-        const std::string app_version)
-        : api_url_(api_url)
-    , app_name_(app_name)
-    , app_version_(app_version)
-    , ignore_cert_(false) {}
+    HTTPSClient() {}
     virtual ~HTTPSClient() {}
 
     virtual error PostJSON(
@@ -41,14 +34,15 @@ class HTTPSClient {
         const std::string basic_auth_password,
         std::string *response_body);
 
-    void SetApiURL(const std::string value) {
-        api_url_ = value;
-    }
-    void SetProxy(const Proxy value) {
-        proxy_ = value;
-    }
-    void SetIgnoreCert(const bool value) {
-        ignore_cert_ = value;
+    static std::string AppName;
+    static std::string AppVersion;
+    static std::string APIURL;
+    static bool UseProxy;
+    static kopsik::Proxy ProxySettings;
+    static bool IgnoreCert;
+
+    static std::string UserAgent() {
+        return AppName + "/" + AppVersion;
     }
 
  private:
@@ -66,14 +60,6 @@ class HTTPSClient {
         const std::string basic_auth_username,
         const std::string basic_auth_password,
         std::string *response_body);
-
-    std::string api_url_;
-    std::string app_name_;
-    std::string app_version_;
-
-    Proxy proxy_;
-
-    bool ignore_cert_;
 };
 
 }  // namespace kopsik

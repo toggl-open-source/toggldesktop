@@ -177,9 +177,6 @@ fmt_osx:
 mkdir_build:
 	mkdir -p build
 
-build/version.o: src/version.cc
-	$(cxx) $(cflags) -c src/version.cc -o build/version.o
-
 build/proxy.o: src/proxy.cc
 	$(cxx) $(cflags) -c src/proxy.cc -o build/proxy.o
 
@@ -273,8 +270,7 @@ build/test/gtest-all.o: $(GTEST_ROOT)/src/gtest-all.cc
 build/test/gmock-all.o: ${GMOCK_DIR}/src/gmock-all.cc
 	$(cxx) $(cflags) -c ${GMOCK_DIR}/src/gmock-all.cc -o build/test/gmock-all.o
 
-objects: build/version.o \
-	build/proxy.o \
+objects: build/proxy.o \
 	build/https_client.o \
 	build/websocket_client.o \
 	build/base_model.o \
