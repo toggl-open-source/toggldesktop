@@ -158,9 +158,18 @@ bool Project::ResourceCannotBeCreated(const kopsik::error err) const {
         "User cannot add or edit projects in workspace"));
 }
 
+bool Project::clientIsInAnotherWorkspace(const kopsik::error err) const {
+    return (std::string::npos != std::string(err).find(
+        "client is in another workspace"));
+}
+
 bool Project::ResolveError(const kopsik::error err) {
     if (userCannotAccessWorkspace(err)) {
         SetWID(0);
+        return true;
+    }
+    if (clientIsInAnotherWorkspace(err)) {
+        SetCID(0);
         return true;
     }
     return false;
