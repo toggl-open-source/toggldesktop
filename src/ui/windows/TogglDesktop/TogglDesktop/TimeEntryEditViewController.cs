@@ -27,6 +27,22 @@ namespace TogglDesktop
             frm.AcceptButton = buttonDone;
         }
 
+        public void SetFocus(string focusedFieldName)
+        {
+            if (KopsikApi.Project == focusedFieldName)
+            {
+                comboBoxProject.Focus();
+            }
+            else if (KopsikApi.Duration == focusedFieldName)
+            {
+                textBoxDuration.Focus();
+            }
+            else if (KopsikApi.Description == focusedFieldName)
+            {
+                comboBoxDescription.Focus();
+            }
+        }
+
         private void buttonDone_Click(object sender, EventArgs e)
         {
             KopsikApi.kopsik_view_time_entry_list(KopsikApi.ctx);

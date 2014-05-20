@@ -211,12 +211,12 @@ namespace TogglDesktop
 
         private void linkLabelDescription_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            KopsikApi.kopsik_edit(KopsikApi.ctx, "", true, "description");
+            KopsikApi.kopsik_edit(KopsikApi.ctx, "", true, KopsikApi.Description);
         }
 
         private void linkLabelDuration_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            KopsikApi.kopsik_edit(KopsikApi.ctx, "", true, "duration");
+            KopsikApi.kopsik_edit(KopsikApi.ctx, "", true, KopsikApi.Duration);
         }
 
         private void timerRunningDuration_Tick(object sender, EventArgs e)
@@ -238,7 +238,7 @@ namespace TogglDesktop
 
         private void linkLabelProject_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            KopsikApi.kopsik_edit(KopsikApi.ctx, "", true, "project");
+            KopsikApi.kopsik_edit(KopsikApi.ctx, "", true, KopsikApi.Project);
         }
 
         private void comboBoxDescription_DropDownClosed(object sender, EventArgs e)

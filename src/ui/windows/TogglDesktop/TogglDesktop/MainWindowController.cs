@@ -202,6 +202,7 @@ namespace TogglDesktop
             Controls.Remove(timeEntryListViewController);
             Controls.Add(timeEntryEditViewController);
             timeEntryEditViewController.SetAcceptButton(this);
+            timeEntryEditViewController.SetFocus(focused_field_name);
         }
 
         private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)
