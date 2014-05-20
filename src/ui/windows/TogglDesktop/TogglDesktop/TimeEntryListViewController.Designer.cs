@@ -75,6 +75,5 @@
         private System.Windows.Forms.Panel panelHeader;
         private System.Windows.Forms.Panel panelContent;
         private TimerEditViewController timerEditViewController;
-
     }
 }
