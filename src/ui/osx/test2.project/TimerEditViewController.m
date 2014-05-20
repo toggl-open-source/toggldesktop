@@ -185,7 +185,7 @@ extern void *ctx;
 - (void)checkProjectConstraints {
     // If a project is assigned, then project name
 	// is visible.
-	if (self.time_entry.ProjectID || self.time_entry.ProjectGUID)
+	if (self.time_entry.ProjectID || self.time_entry.ProjectGUID || [self.time_entry.ProjectAndTaskLabel length])
 	{
 		if (![self.projectComboConstraint count])
 		{
