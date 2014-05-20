@@ -13,6 +13,10 @@ namespace TogglDesktop
     {
         public static IntPtr ctx = IntPtr.Zero;
 
+        public const string Project = "project";
+        public const string Duration = "duration";
+        public const string Description = "description";
+
         private const string dll = "TogglDesktopDLL.dll";
         private const CharSet charset = CharSet.Ansi;
         private const CallingConvention convention = CallingConvention.Cdecl;
