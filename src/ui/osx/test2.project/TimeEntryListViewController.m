@@ -21,7 +21,7 @@
 @property (nonatomic, strong) IBOutlet TimerEditViewController *timerEditViewController;
 @property NSNib *nibTimeEntryCell;
 @property NSNib *nibTimeEntryCellWithHeader;
-@property NSNib *nibTimeEntryEdit;
+@property NSNib *nibTimeEntryEditViewController;
 @property NSView *selectedRowView;
 @property (nonatomic, strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
 @end
@@ -48,7 +48,7 @@ extern void *ctx;
 														 bundle:nil];
 		self.nibTimeEntryCellWithHeader = [[NSNib alloc] initWithNibNamed:@"TimeEntryCellWithHeader"
 																   bundle:nil];
-		self.nibTimeEntryEdit = [[NSNib alloc] initWithNibNamed:@"TimeEntryEdit"
+		self.nibTimeEntryEditViewController = [[NSNib alloc] initWithNibNamed:@"TimeEntryEditViewController"
 														 bundle:nil];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
