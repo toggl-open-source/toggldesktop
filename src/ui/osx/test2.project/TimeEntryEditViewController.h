@@ -25,7 +25,6 @@
 @property IBOutlet NSTextField *lastUpdateTextField;
 @property IBOutlet NSButton *deleteButton;
 @property IBOutlet NSButton *backButton;
-@property IBOutlet NSButton *continueButton;
 @property IBOutlet NSButton *addProjectButton;
 @property IBOutlet NSTextField *workspaceLabel;
 - (IBAction)descriptionComboboxChanged:(id)sender;
@@ -38,7 +37,6 @@
 - (IBAction)billableCheckBoxClicked:(id)sender;
 - (IBAction)deleteButtonClicked:(id)sender;
 - (IBAction)backButtonClicked:(id)sender;
-- (IBAction)continueButtonClicked:(id)sender;
 - (IBAction)addProjectButtonClicked:(id)sender;
 - (NSDateComponents *)parseTime:(NSTextField *)field current:(NSDateComponents *)component;
 
