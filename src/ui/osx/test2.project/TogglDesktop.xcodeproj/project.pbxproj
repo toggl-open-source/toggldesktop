@@ -607,19 +607,7 @@
 				74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */,
 				74B680A8180759C300B697AA /* Kopsik.xcodeproj */,
 				74E3CDB117FBABE400C3ADD3 /* bugsnag */,
-				744E126617F22AB900ABE72A /* app.icns */,
-				74FE0D3B18E25E8400ECFED2 /* app_inactive.icns */,
-				74664DAF18AA860800AAD282 /* on.pdf */,
-				74664DB018AA860800AAD282 /* off.pdf */,
-				95DBF8CA18BF7A910021FB41 /* offline_off.pdf */,
-				95DBF8CB18BF7A910021FB41 /* offline_on.pdf */,
-				3C996F7C190E4A34005066F6 /* icon-stop-red@2x.png */,
-				3C996F8D190E4A3E005066F6 /* icon-start-green@2x.png */,
-				3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */,
-				3CDA2C571913A4E200A94967 /* icon-start-gray@2x.png */,
-				3CDA2C591913B60F00A94967 /* icon-billable@2x.png */,
-				3CDA2C5A1913B60F00A94967 /* icon-tags@2x.png */,
-				3C8979B61920B7B7007061E0 /* continue.pdf */,
+				745E7FC1192D247300747C18 /* images */,
 				74E1682E180F269F0026261C /* gtm */,
 				74FE0D4C18E260A000ECFED2 /* MASShortcut */,
 				69FC17FA17E6534400B96425 /* ui */,
@@ -794,6 +782,26 @@
 				69FC181A17E6534500B96425 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		745E7FC1192D247300747C18 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				744E126617F22AB900ABE72A /* app.icns */,
+				74FE0D3B18E25E8400ECFED2 /* app_inactive.icns */,
+				74664DAF18AA860800AAD282 /* on.pdf */,
+				74664DB018AA860800AAD282 /* off.pdf */,
+				3C996F8D190E4A3E005066F6 /* icon-start-green@2x.png */,
+				3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */,
+				3CDA2C571913A4E200A94967 /* icon-start-gray@2x.png */,
+				3CDA2C591913B60F00A94967 /* icon-billable@2x.png */,
+				3CDA2C5A1913B60F00A94967 /* icon-tags@2x.png */,
+				3C8979B61920B7B7007061E0 /* continue.pdf */,
+				95DBF8CA18BF7A910021FB41 /* offline_off.pdf */,
+				95DBF8CB18BF7A910021FB41 /* offline_on.pdf */,
+				3C996F7C190E4A34005066F6 /* icon-stop-red@2x.png */,
+			);
+			name = images;
 			sourceTree = "<group>";
 		};
 		749A3A4418D889BD000AD2DB /* Products */ = {
