@@ -49,7 +49,7 @@ extern void *ctx;
 		self.nibTimeEntryCellWithHeader = [[NSNib alloc] initWithNibNamed:@"TimeEntryCellWithHeader"
 																   bundle:nil];
 		self.nibTimeEntryEditViewController = [[NSNib alloc] initWithNibNamed:@"TimeEntryEditViewController"
-														 bundle:nil];
+																	   bundle:nil];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayTimeEntryList:)
