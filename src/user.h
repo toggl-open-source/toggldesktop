@@ -90,8 +90,6 @@ class User : public BaseModel {
     kopsik::error Continue(
         const std::string GUID);
 
-    TimeEntry *Latest() const;
-
     std::vector<TimeEntry *> Stop();
 
     TimeEntry *StopAt(const Poco::Int64 at);
