@@ -98,6 +98,9 @@ extern void *ctx;
 	}
 
 	[self.timeEntriesTableView reloadData];
+    if (self.timeEntrypopover.shown) {
+        [self.timeEntrypopover close];
+    }
 }
 
 - (void)displayTimeEntryEditor:(DisplayCommand *)cmd
