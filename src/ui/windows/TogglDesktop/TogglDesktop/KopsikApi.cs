@@ -616,7 +616,11 @@ namespace TogglDesktop
             System.IO.Directory.CreateDirectory(path);
             kopsik_set_log_path(Path.Combine(path, "kopsik.log"));
             kopsik_set_log_level("debug");
-            kopsik_set_db_path(ctx, Path.Combine(path, "kopsik.db"));
+            string databasePath = Path.Combine(path, "kopsik.db");
+            if (!kopsik_set_db_path(ctx, databasePath))
+            {
+                throw new System.Exception("Failed to initialize database at " + databasePath);
+            }
 
             // Start pumping UI events
             return kopsik_context_start_events(ctx);
