@@ -49,7 +49,7 @@ extern void *ctx;
 		self.nibTimeEntryCellWithHeader = [[NSNib alloc] initWithNibNamed:@"TimeEntryCellWithHeader"
 																   bundle:nil];
 		self.nibTimeEntryEditViewController = [[NSNib alloc] initWithNibNamed:@"TimeEntryEditViewController"
-														 bundle:nil];
+																	   bundle:nil];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayTimeEntryList:)
@@ -58,6 +58,10 @@ extern void *ctx;
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayTimeEntryEditor:)
 													 name:kDisplayTimeEntryEditor
+												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(startDisplayLogin:)
+													 name:kDisplayLogin
 												   object:nil];
 	}
 	return self;
@@ -102,6 +106,16 @@ extern void *ctx;
 	{
 		[self.timeEntrypopover close];
 	}
+}
+
+- (BOOL)popoverShouldClose:(NSPopover *)popover
+{
+	return NO;         // she never sleeps
+}
+
+- (void)popoverWillClose:(NSNotification *)notification
+{
+	NSLog(@"%@", notification.userInfo);
 }
 
 - (void)displayTimeEntryEditor:(DisplayCommand *)cmd
@@ -221,6 +235,22 @@ extern void *ctx;
 													  makeIfNecessary:NO];
 	[rowView setEmphasized:NO];
 	[rowView setSelected:NO];
+}
+
+- (void)startDisplayLogin:(NSNotification *)notification
+{
+	[self performSelectorOnMainThread:@selector(displayLogin:)
+						   withObject:notification.object
+						waitUntilDone:NO];
+}
+
+- (void)displayLogin:(DisplayCommand *)cmd
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+	if (cmd.open && self.timeEntrypopover.shown)
+	{
+		[self.timeEntrypopover close];
+	}
 }
 
 @end
