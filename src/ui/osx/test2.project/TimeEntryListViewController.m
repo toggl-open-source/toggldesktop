@@ -110,7 +110,7 @@ extern void *ctx;
 
 - (BOOL)popoverShouldClose:(NSPopover *)popover
 {
-	return NO;                 // she never sleeps
+	return NO;
 }
 
 - (void)popoverWillClose:(NSNotification *)notification
