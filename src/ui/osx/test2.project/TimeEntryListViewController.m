@@ -98,7 +98,7 @@ extern void *ctx;
 	}
 
 	[self.timeEntriesTableView reloadData];
-	if (self.timeEntrypopover.shown)
+	if (cmd.open && self.timeEntrypopover.shown)
 	{
 		[self.timeEntrypopover close];
 	}
