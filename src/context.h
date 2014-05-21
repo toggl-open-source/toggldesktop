@@ -219,6 +219,8 @@ class Context {
 
     void setUser(User *value);
 
+    void displayUI();
+
     void switchWebSocketOff();
     void switchWebSocketOn();
     void switchTimelineOff();
