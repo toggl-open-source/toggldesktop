@@ -110,7 +110,7 @@ extern void *ctx;
 
 - (BOOL)popoverShouldClose:(NSPopover *)popover
 {
-	return NO;         // she never sleeps
+	return NO;                 // she never sleeps
 }
 
 - (void)popoverWillClose:(NSNotification *)notification
@@ -212,12 +212,13 @@ extern void *ctx;
 		item = viewitems[row];
 	}
 
-    NSView *latestView = [self.timeEntriesTableView rowViewAtRow:row
-                                              makeIfNecessary:NO];
-    if (latestView == self.selectedRowView && self.timeEntrypopover.shown) {
-        [self.timeEntrypopover close];
-        return;
-    }
+	NSView *latestView = [self.timeEntriesTableView rowViewAtRow:row
+												 makeIfNecessary:NO];
+	if (latestView == self.selectedRowView && self.timeEntrypopover.shown)
+	{
+		[self.timeEntrypopover close];
+		return;
+	}
 	self.selectedRowView = latestView;
 
 	kopsik_edit(ctx, [item.GUID UTF8String], false, "");
