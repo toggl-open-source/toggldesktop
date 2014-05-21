@@ -180,20 +180,21 @@ namespace TogglDesktop
         // DB path must be configured from UI
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern System.IntPtr kopsik_set_db_path(
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static extern bool kopsik_set_db_path(
             IntPtr context,
             string path);
 
         // Log path must be configured from UI
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern System.IntPtr kopsik_set_log_path(
+        public static extern void kopsik_set_log_path(
             string path);
 
         // Log level is optional
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern System.IntPtr kopsik_set_log_level(
+        public static extern void kopsik_set_log_level(
             string level);
 
         // API URL can be overriden from UI. Optional
