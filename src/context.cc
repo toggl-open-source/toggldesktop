@@ -118,13 +118,17 @@ _Bool Context::StartEvents() {
     }
     setUser(user);
 
+    displayUI();
+
+    return true;
+}
+
+void Context::displayUI() {
     displayTimerState();
     displayWorkspaceSelect();
     displayClientSelect();
     displayTags();
     displayAutocomplete();
-
-    return true;
 }
 
 void Context::Shutdown() {
@@ -869,6 +873,8 @@ _Bool Context::Login(
     logger().debug("setUser from Login");
 
     setUser(u);
+
+    displayUI();
 
     return UI()->DisplayError(save());
 }
