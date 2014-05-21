@@ -24,6 +24,7 @@
         <popover id="dIa-oe-UAP">
             <connections>
                 <outlet property="contentViewController" destination="U32-F3-bea" id="o0a-b6-hwv"/>
+                <outlet property="delegate" destination="-2" id="Za9-G4-27V"/>
             </connections>
         </popover>
         <customView id="ozl-58-bBU">
