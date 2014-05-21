@@ -66,18 +66,18 @@ void view_item_clear(KopsikViewItem *item) {
     if (!item) {
         return;
     }
-    if (item->Name) {
-        free(item->Name);
-        item->Name = 0;
-    }
-    if (item->GUID) {
-        free(item->GUID);
-        item->GUID = 0;
-    }
+
+    free(item->Name);
+    item->Name = 0;
+
+    free(item->GUID);
+    item->GUID = 0;
+
     if (item->Next) {
         KopsikViewItem *next = reinterpret_cast<KopsikViewItem *>(item->Next);
         view_item_clear(next);
     }
+
     delete item;
     item = 0;
 }
@@ -86,28 +86,26 @@ void autocomplete_item_clear(KopsikAutocompleteItem *item) {
     if (!item) {
         return;
     }
-    if (item->Text) {
-        free(item->Text);
-        item->Text = 0;
-    }
-    if (item->ProjectAndTaskLabel) {
-        free(item->ProjectAndTaskLabel);
-        item->ProjectAndTaskLabel = 0;
-    }
-    if (item->Description) {
-        free(item->Description);
-        item->Description = 0;
-    }
-    if (item->ProjectColor) {
-        free(item->ProjectColor);
-        item->ProjectColor = 0;
-    }
+
+    free(item->Text);
+    item->Text = 0;
+
+    free(item->ProjectAndTaskLabel);
+    item->ProjectAndTaskLabel = 0;
+
+    free(item->Description);
+    item->Description = 0;
+
+    free(item->ProjectColor);
+    item->ProjectColor = 0;
+
     if (item->Next) {
         KopsikAutocompleteItem *next =
             reinterpret_cast<KopsikAutocompleteItem *>(item->Next);
         autocomplete_item_clear(next);
         item->Next = 0;
     }
+
     delete item;
 }
 
@@ -166,52 +164,43 @@ void time_entry_view_item_clear(
     if (!item) {
         return;
     }
-    if (item->Description) {
-        free(item->Description);
-        item->Description = 0;
-    }
-    if (item->ProjectAndTaskLabel) {
-        free(item->ProjectAndTaskLabel);
-        item->ProjectAndTaskLabel = 0;
-    }
-    if (item->Duration) {
-        free(item->Duration);
-        item->Duration = 0;
-    }
-    if (item->Color) {
-        free(item->Color);
-        item->Color = 0;
-    }
-    if (item->GUID) {
-        free(item->GUID);
-        item->GUID = 0;
-    }
-    if (item->Tags) {
-        free(item->Tags);
-        item->Tags = 0;
-    }
-    if (item->DateHeader) {
-        free(item->DateHeader);
-        item->DateHeader = 0;
-    }
-    if (item->DateDuration) {
-        free(item->DateDuration);
-        item->DateDuration = 0;
-    }
-    if (item->StartTimeString) {
-        free(item->StartTimeString);
-        item->StartTimeString = 0;
-    }
-    if (item->EndTimeString) {
-        free(item->EndTimeString);
-        item->EndTimeString = 0;
-    }
+    free(item->Description);
+    item->Description = 0;
+
+    free(item->ProjectAndTaskLabel);
+    item->ProjectAndTaskLabel = 0;
+
+    free(item->Duration);
+    item->Duration = 0;
+
+    free(item->Color);
+    item->Color = 0;
+
+    free(item->GUID);
+    item->GUID = 0;
+
+    free(item->Tags);
+    item->Tags = 0;
+
+    free(item->DateHeader);
+    item->DateHeader = 0;
+
+    free(item->DateDuration);
+    item->DateDuration = 0;
+
+    free(item->StartTimeString);
+    item->StartTimeString = 0;
+
+    free(item->EndTimeString);
+    item->EndTimeString = 0;
+
     if (item->Next) {
         KopsikTimeEntryViewItem *next =
             reinterpret_cast<KopsikTimeEntryViewItem *>(item->Next);
         time_entry_view_item_clear(next);
         item->Next = 0;
     }
+
     delete item;
 }
 
