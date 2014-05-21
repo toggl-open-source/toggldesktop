@@ -197,8 +197,14 @@ extern void *ctx;
 	{
 		item = viewitems[row];
 	}
-	self.selectedRowView = [self.timeEntriesTableView rowViewAtRow:row
-												   makeIfNecessary:NO];
+
+    NSView *latestView = [self.timeEntriesTableView rowViewAtRow:row
+                                              makeIfNecessary:NO];
+    if (latestView == self.selectedRowView && self.timeEntrypopover.shown) {
+        [self.timeEntrypopover close];
+        return;
+    }
+	self.selectedRowView = latestView;
 
 	kopsik_edit(ctx, [item.GUID UTF8String], false, "");
 }
