@@ -203,12 +203,6 @@ extern int kDurationStringLength;
 							  !is_public);
 }
 
-- (IBAction)continueButtonClicked:(id)sender
-{
-	[self removeCustomConstraints];
-	kopsik_continue(ctx, [self.timeEntry.GUID UTF8String]);
-}
-
 - (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString
 {
 	if (comboBox == self.clientSelect)
@@ -310,7 +304,6 @@ extern int kDurationStringLength;
 	[self.startDate setDateValue:self.timeEntry.started];
 
 	[self.startDate setEnabled:(self.timeEntry.duration_in_seconds >= 0)];
-	[self.continueButton setHidden:(self.timeEntry.duration_in_seconds < 0)];
 
 	[self.endTime setHidden:(self.timeEntry.duration_in_seconds < 0)];
 
