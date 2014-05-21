@@ -154,15 +154,6 @@ kopsik::error User::Continue(
     return kopsik::noError;
 }
 
-TimeEntry *User::Latest() const {
-    if (related.TimeEntries.empty()) {
-        return 0;
-    }
-    std::vector<TimeEntry *> list(related.TimeEntries);
-    std::sort(list.begin(), list.end(), CompareTimeEntriesByStart);
-    return list[0];
-}
-
 std::string User::DateDuration(TimeEntry * const te) const {
     Poco::Int64 date_duration(0);
     std::string date_header = te->DateHeaderString();

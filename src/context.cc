@@ -1196,10 +1196,12 @@ _Bool Context::ContinueLatest() {
         return true;
     }
 
-    kopsik::TimeEntry *latest = user_->Latest();
-    if (!latest) {
+    kopsik::TimeEntry *latest = 0;
+    std::vector<TimeEntry*> list = timeEntries();
+    if (list.empty()) {
         return true;
     }
+    latest = list.back();
 
     kopsik::error err = user_->Continue(latest->GUID());
     if (err != kopsik::noError) {
