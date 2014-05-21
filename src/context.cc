@@ -103,7 +103,7 @@ _Bool Context::StartEvents() {
         return false;
     }
 
-    // See was logged in into app previously
+    // See if user was logged in into app previously
     kopsik::User *user = new kopsik::User();
     err = db()->LoadCurrentUser(user, true);
     if (err != kopsik::noError) {
