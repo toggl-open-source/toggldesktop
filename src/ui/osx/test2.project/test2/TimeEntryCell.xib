@@ -45,12 +45,12 @@
                         </subviews>
                     </view>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="deS-e6-3Ui" secondAttribute="trailing" constant="140" id="Cjx-Uq-ege"/>
+                        <constraint firstAttribute="trailing" secondItem="deS-e6-3Ui" secondAttribute="trailing" priority="900" constant="140" id="Cjx-Uq-ege"/>
                         <constraint firstItem="deS-e6-3Ui" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" constant="12" id="FOo-PQ-AK1"/>
                         <constraint firstItem="deS-e6-3Ui" firstAttribute="top" secondItem="CwR-d5-aWs" secondAttribute="bottom" constant="3" id="GPd-NV-pv0"/>
                         <constraint firstItem="CwR-d5-aWs" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" constant="15" id="KZ4-JV-5xD"/>
                         <constraint firstAttribute="bottom" secondItem="deS-e6-3Ui" secondAttribute="bottom" constant="11" id="Yh1-Ch-CaZ"/>
-                        <constraint firstAttribute="trailing" secondItem="CwR-d5-aWs" secondAttribute="trailing" constant="140" id="mbW-Id-47h"/>
+                        <constraint firstAttribute="trailing" secondItem="CwR-d5-aWs" secondAttribute="trailing" priority="750" constant="140" id="mbW-Id-47h"/>
                     </constraints>
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                     <color key="fillColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
