@@ -7,9 +7,9 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimeEntryListViewController">
             <connections>
-                <outlet property="TimeEntryPopupEditView" destination="ozl-58-bBU" id="03m-wT-aNc"/>
                 <outlet property="headerView" destination="OXo-Tz-Vbz" id="vDf-yG-fnR"/>
                 <outlet property="timeEntriesTableView" destination="kSc-tv-Cw1" id="W2U-dC-rBu"/>
+                <outlet property="timeEntryPopupEditView" destination="ozl-58-bBU" id="Tv3-fj-eCx"/>
                 <outlet property="timeEntrypopover" destination="dIa-oe-UAP" id="CwJ-50-ejV"/>
                 <outlet property="view" destination="3" id="Tzl-sf-sWH"/>
             </connections>
@@ -27,7 +27,7 @@
                 <outlet property="delegate" destination="-2" id="Za9-G4-27V"/>
             </connections>
         </popover>
-        <customView id="ozl-58-bBU">
+        <customView id="ozl-58-bBU" customClass="NSViewEscapable">
             <rect key="frame" x="0.0" y="0.0" width="346" height="459"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
         </customView>

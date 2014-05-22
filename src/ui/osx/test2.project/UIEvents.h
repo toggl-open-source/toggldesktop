@@ -31,6 +31,7 @@ extern NSString *const kDisplayProxySettings;
 extern NSString *const kDisplayTimerState;
 
 extern NSString *const kHideDisplayError;
+extern NSString *const kForceCloseEditPopover;
 
 const char *kFocusedFieldNameDuration;
 const char *kFocusedFieldNameDescription;
