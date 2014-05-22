@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "kopsik_api.h"
 #import "NSUnstripedTableView.h"
+#import "NSViewEscapable.h"
 
 @interface TimeEntryListViewController : NSViewController {
 	@private
@@ -17,6 +18,6 @@
 @property (unsafe_unretained) IBOutlet NSView *headerView;
 @property (unsafe_unretained) IBOutlet NSUnstripedTableView *timeEntriesTableView;
 @property (strong) IBOutlet NSPopover *timeEntrypopover;
-@property (strong) IBOutlet NSView *timeEntryPopupEditView;
+@property (strong) IBOutlet NSViewEscapable *timeEntryPopupEditView;
 - (IBAction)performClick:(id)sender;
 @end

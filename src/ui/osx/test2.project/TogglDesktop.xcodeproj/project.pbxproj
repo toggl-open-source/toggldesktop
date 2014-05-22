@@ -14,6 +14,7 @@
 		3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8979C919235EA2007061E0 /* NSTextFieldClickablePointer.m */; };
 		3C996F7D190E4A34005066F6 /* icon-stop-red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C996F7C190E4A34005066F6 /* icon-stop-red@2x.png */; };
 		3C996F8E190E4A3E005066F6 /* icon-start-green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C996F8D190E4A3E005066F6 /* icon-start-green@2x.png */; };
+		3CA14529192DE32300414620 /* NSViewEscapable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA14528192DE32300414620 /* NSViewEscapable.m */; };
 		3CDA2C581913A4E200A94967 /* icon-start-gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDA2C571913A4E200A94967 /* icon-start-gray@2x.png */; };
 		3CDA2C5B1913B61000A94967 /* icon-billable@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDA2C591913B60F00A94967 /* icon-billable@2x.png */; };
 		3CDA2C5C1913B61000A94967 /* icon-tags@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDA2C5A1913B60F00A94967 /* icon-tags@2x.png */; };
@@ -399,6 +400,8 @@
 		3C8979C919235EA2007061E0 /* NSTextFieldClickablePointer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldClickablePointer.m; sourceTree = "<group>"; };
 		3C996F7C190E4A34005066F6 /* icon-stop-red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-stop-red@2x.png"; sourceTree = "<group>"; };
 		3C996F8D190E4A3E005066F6 /* icon-start-green@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-start-green@2x.png"; sourceTree = "<group>"; };
+		3CA14527192DE32300414620 /* NSViewEscapable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSViewEscapable.h; sourceTree = "<group>"; };
+		3CA14528192DE32300414620 /* NSViewEscapable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSViewEscapable.m; sourceTree = "<group>"; };
 		3CDA2C571913A4E200A94967 /* icon-start-gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-start-gray@2x.png"; sourceTree = "<group>"; };
 		3CDA2C591913B60F00A94967 /* icon-billable@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-billable@2x.png"; sourceTree = "<group>"; };
 		3CDA2C5A1913B60F00A94967 /* icon-tags@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tags@2x.png"; sourceTree = "<group>"; };
@@ -754,6 +757,8 @@
 				748B3A3319222DB100F31468 /* DisplayCommand.m */,
 				3C8979C819235EA2007061E0 /* NSTextFieldClickablePointer.h */,
 				3C8979C919235EA2007061E0 /* NSTextFieldClickablePointer.m */,
+				3CA14527192DE32300414620 /* NSViewEscapable.h */,
+				3CA14528192DE32300414620 /* NSViewEscapable.m */,
 			);
 			name = ui;
 			path = test2;
@@ -1296,6 +1301,7 @@
 				74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */,
 				74FE0D6018E260A000ECFED2 /* MASShortcutView.m in Sources */,
 				69FC180817E6534400B96425 /* AppDelegate.m in Sources */,
+				3CA14529192DE32300414620 /* NSViewEscapable.m in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
 				74AA9476180909F50000539F /* GTMOAuth2WindowController.m in Sources */,
 				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,

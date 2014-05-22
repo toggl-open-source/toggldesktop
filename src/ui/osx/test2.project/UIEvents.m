@@ -29,6 +29,7 @@ NSString *const kDisplayProxySettings = @"kDisplayProxySettings";
 NSString *const kDisplayTimerState = @"kDisplayTimerState";
 
 NSString *const kHideDisplayError = @"kHideDisplayError";
+NSString *const kForceCloseEditPopover = @"kForceCloseEditPopover";
 
 const char *kFocusedFieldNameDuration = "duration";
 const char *kFocusedFieldNameDescription = "description";
