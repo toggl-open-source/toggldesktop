@@ -49,17 +49,6 @@
                                 <rect key="frame" x="0.0" y="0.0" width="346" height="434"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wpz-9G-IOZ">
-                                        <rect key="frame" x="7" y="2" width="90" height="32"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="push" title="Delete" bezelStyle="rounded" image="NSActionTemplate" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="am8-Qa-9Ao">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <action selector="deleteButtonClicked:" target="-2" id="Pi8-oI-sCI"/>
-                                        </connections>
-                                    </button>
                                     <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zwE-pW-vQN">
                                         <rect key="frame" x="321" y="407" width="20" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -576,7 +565,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <constraint firstItem="fz4-yg-eQZ" firstAttribute="top" secondItem="6rO-vx-iLH" secondAttribute="bottom" constant="10" id="25x-wn-oe1"/>
                                 <constraint firstAttribute="trailing" secondItem="fz4-yg-eQZ" secondAttribute="trailing" id="57L-lf-wcd"/>
                                 <constraint firstItem="SUF-aH-axf" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" constant="15" id="86b-AG-Ecz"/>
-                                <constraint firstItem="Wpz-9G-IOZ" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" constant="15" id="BXn-6R-j8n"/>
                                 <constraint firstAttribute="trailing" secondItem="6Sh-4d-bKb" secondAttribute="trailing" id="Fst-cd-zU2"/>
                                 <constraint firstItem="zwE-pW-vQN" firstAttribute="top" secondItem="Mka-gG-oqB" secondAttribute="top" id="Oqs-93-6bm"/>
                                 <constraint firstItem="9Ap-t2-bTq" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" id="Rtf-EH-rFR"/>
@@ -589,7 +577,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <constraint firstItem="6rO-vx-iLH" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" constant="118" id="rsw-CB-Mgl"/>
                                 <constraint firstItem="6Sh-4d-bKb" firstAttribute="top" secondItem="Mka-gG-oqB" secondAttribute="top" constant="57" id="sC4-eT-UGB"/>
                                 <constraint firstItem="6Sh-4d-bKb" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" id="sfG-jz-b9T"/>
-                                <constraint firstAttribute="bottom" secondItem="Wpz-9G-IOZ" secondAttribute="bottom" constant="10" id="upy-Df-Fpu"/>
                                 <constraint firstAttribute="trailing" secondItem="9Ap-t2-bTq" secondAttribute="trailing" id="xwk-0I-1Ct"/>
                             </constraints>
                             <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
@@ -604,11 +591,24 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
+                        <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wpz-9G-IOZ" customClass="NSHoverButton">
+                            <rect key="frame" x="10" y="5" width="20" height="22"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="trash_can" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="am8-Qa-9Ao">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="deleteButtonClicked:" target="-2" id="Pi8-oI-sCI"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <constraints>
+                        <constraint firstItem="Wpz-9G-IOZ" firstAttribute="leading" secondItem="JCI-HN-hEk" secondAttribute="leading" constant="10" id="3zc-EX-yuF"/>
                         <constraint firstAttribute="trailing" secondItem="Mka-gG-oqB" secondAttribute="trailing" id="Rxx-Ht-xUe"/>
                         <constraint firstAttribute="bottom" secondItem="byc-AI-Ri7" secondAttribute="bottom" constant="5" id="TAw-fg-Me8"/>
                         <constraint firstItem="Mka-gG-oqB" firstAttribute="top" secondItem="JCI-HN-hEk" secondAttribute="top" id="Xhz-wA-zct"/>
+                        <constraint firstAttribute="bottom" secondItem="Wpz-9G-IOZ" secondAttribute="bottom" constant="5" id="Xmd-SM-Dj1"/>
                         <constraint firstItem="Mka-gG-oqB" firstAttribute="leading" secondItem="JCI-HN-hEk" secondAttribute="leading" id="heO-yY-ga0"/>
                         <constraint firstAttribute="bottom" secondItem="Mka-gG-oqB" secondAttribute="bottom" constant="25" id="mhG-nj-EEC"/>
                         <constraint firstAttribute="trailing" secondItem="byc-AI-Ri7" secondAttribute="trailing" constant="6" id="uXU-7O-AyO"/>
@@ -628,7 +628,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         </customView>
     </objects>
     <resources>
-        <image name="NSActionTemplate" width="14" height="14"/>
         <image name="NSStopProgressTemplate" width="11" height="11"/>
+        <image name="trash_can" width="13" height="16"/>
     </resources>
 </document>

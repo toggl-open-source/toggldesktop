@@ -15,6 +15,7 @@
 		3C996F7D190E4A34005066F6 /* icon-stop-red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C996F7C190E4A34005066F6 /* icon-stop-red@2x.png */; };
 		3C996F8E190E4A3E005066F6 /* icon-start-green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C996F8D190E4A3E005066F6 /* icon-start-green@2x.png */; };
 		3CA14529192DE32300414620 /* NSViewEscapable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA14528192DE32300414620 /* NSViewEscapable.m */; };
+		3CA1453C192DF0DE00414620 /* trash_can.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3CA1453B192DF0DE00414620 /* trash_can.pdf */; };
 		3CDA2C581913A4E200A94967 /* icon-start-gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDA2C571913A4E200A94967 /* icon-start-gray@2x.png */; };
 		3CDA2C5B1913B61000A94967 /* icon-billable@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDA2C591913B60F00A94967 /* icon-billable@2x.png */; };
 		3CDA2C5C1913B61000A94967 /* icon-tags@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDA2C5A1913B60F00A94967 /* icon-tags@2x.png */; };
@@ -402,6 +403,7 @@
 		3C996F8D190E4A3E005066F6 /* icon-start-green@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-start-green@2x.png"; sourceTree = "<group>"; };
 		3CA14527192DE32300414620 /* NSViewEscapable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSViewEscapable.h; sourceTree = "<group>"; };
 		3CA14528192DE32300414620 /* NSViewEscapable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSViewEscapable.m; sourceTree = "<group>"; };
+		3CA1453B192DF0DE00414620 /* trash_can.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = trash_can.pdf; sourceTree = "<group>"; };
 		3CDA2C571913A4E200A94967 /* icon-start-gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-start-gray@2x.png"; sourceTree = "<group>"; };
 		3CDA2C591913B60F00A94967 /* icon-billable@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-billable@2x.png"; sourceTree = "<group>"; };
 		3CDA2C5A1913B60F00A94967 /* icon-tags@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tags@2x.png"; sourceTree = "<group>"; };
@@ -800,6 +802,7 @@
 				95DBF8CA18BF7A910021FB41 /* offline_off.pdf */,
 				95DBF8CB18BF7A910021FB41 /* offline_on.pdf */,
 				3C996F7C190E4A34005066F6 /* icon-stop-red@2x.png */,
+				3CA1453B192DF0DE00414620 /* trash_can.pdf */,
 			);
 			name = images;
 			sourceTree = "<group>";
@@ -1198,6 +1201,7 @@
 				74D1D25F17EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */,
 				3CDA2C581913A4E200A94967 /* icon-start-gray@2x.png in Resources */,
 				7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */,
+				3CA1453C192DF0DE00414620 /* trash_can.pdf in Resources */,
 				748664D2188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib in Resources */,
 				744E126717F22AB900ABE72A /* app.icns in Resources */,
 				95DBF8CC18BF7A910021FB41 /* offline_off.pdf in Resources */,
