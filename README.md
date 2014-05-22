@@ -1,6 +1,10 @@
+Linux CI
+
 [![Build Status](https://drone.io/github.com/toggl/toggldesktop/status.png)](https://drone.io/github.com/toggl/toggldesktop/latest)
 
 [![Build Status](https://travis-ci.org/toggl/toggldesktop.png)](https://travis-ci.org/toggl/toggldesktop)
+
+Windows CI
 
 [![Build status](https://ci.appveyor.com/api/projects/status/8uic9ed9xyspt87f)](https://ci.appveyor.com/project/tanel/toggl-toggldesktop)
 
@@ -41,13 +45,6 @@ No Toggl build and signed app is available yet.
 Linux
 -----
 We haven't started work on Linux UI yet. 
-
-
-Cross platform command line app
--------------------------------
-```
-make
-```
 
 
 Tests
