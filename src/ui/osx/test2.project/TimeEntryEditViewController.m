@@ -232,6 +232,13 @@ extern int kDurationStringLength;
 
 	NSLog(@"TimeEntryEditViewController render, %@", self.timeEntry);
 
+    [self.addProjectBox setHidden:YES];
+    [self.projectSelectBox setHidden:NO];
+    [self.projectPublicCheckbox setState:NSOffState];
+
+    [self removeCustomConstraints];
+    [self.descriptionCombobox setNextKeyView:self.projectSelect];
+
 	if (nil == self.startDate.listener)
 	{
 		self.startDate.listener = self;
