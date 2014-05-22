@@ -14,7 +14,7 @@
 
 - (void)cancelOperation:(id)sender
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kForceCloseEditPopover
+	[[NSNotificationCenter defaultCenter] postNotificationName:kForceCloseEditPopover
 														object:nil];
 }
 

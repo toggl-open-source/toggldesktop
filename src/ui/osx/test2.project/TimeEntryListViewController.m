@@ -63,11 +63,10 @@ extern void *ctx;
 												 selector:@selector(startDisplayLogin:)
 													 name:kDisplayLogin
 												   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
+		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(closeEditPopup:)
 													 name:kForceCloseEditPopover
 												   object:nil];
-
 	}
 	return self;
 }
@@ -245,7 +244,7 @@ extern void *ctx;
 
 - (void)closeEditPopup:(NSNotification *)notification
 {
-    [self.timeEntrypopover close];
+	[self.timeEntrypopover close];
 }
 
 - (void)startDisplayLogin:(NSNotification *)notification
