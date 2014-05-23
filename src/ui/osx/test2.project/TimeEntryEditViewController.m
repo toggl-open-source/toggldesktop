@@ -135,18 +135,19 @@ extern int kDurationStringLength;
 	[self.workspaceLabel setHidden:singleWorkspace];
 	[self.workspaceSelect setHidden:singleWorkspace];
 
-	[self.addProjectBox setHidden:NO];
-
 	NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_addProjectBox, _dataholderBox);
 	self.topConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_addProjectBox]-0-[_dataholderBox]"
 																 options:0
 																 metrics:nil
 																   views:viewsDict];
 	[self.view addConstraints:self.topConstraint];
-
+    [[NSNotificationCenter defaultCenter] postNotificationName:kOpenAddProject
+														object:nil];
+	[self.projectNameTextField becomeFirstResponder];
+    [self.addProjectBox setHidden:NO];
 	[self.projectSelectBox setHidden:YES];
 	[self.addProjectButton setHidden:YES];
-	[self.projectNameTextField becomeFirstResponder];
+
 }
 
 - (void)removeCustomConstraints
