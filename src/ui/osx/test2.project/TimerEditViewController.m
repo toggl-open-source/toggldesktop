@@ -116,17 +116,13 @@ extern void *ctx;
 	// whether time entry is running
 	if (self.time_entry.duration_in_seconds < 0)
 	{
+        self.startButton.toolTip = @"Stop";
 		[self.startButton setImage:[NSImage imageNamed:@"icon-stop-red@2x.png"]];
-		self.startButton.toolTip = @"Stop";
-		self.startButtonBox.borderColor = [ConvertHexColor hexCodeToNSColor:@"#ec0000"];
-		self.startButtonBox.fillColor = [ConvertHexColor hexCodeToNSColor:@"#ec0000"];
 	}
 	else
 	{
 		self.startButton.toolTip = @"Start";
 		[self.startButton setImage:[NSImage imageNamed:@"icon-start-green@2x.png"]];
-		self.startButtonBox.borderColor = [ConvertHexColor hexCodeToNSColor:@"#4bc800"];
-		self.startButtonBox.fillColor = [ConvertHexColor hexCodeToNSColor:@"#4bc800"];
 	}
 
 	// Description and duration cannot be edited
