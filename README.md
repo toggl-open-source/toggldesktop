@@ -1,7 +1,5 @@
 Linux CI
 
-[![Build Status](https://drone.io/github.com/toggl/toggldesktop/status.png)](https://drone.io/github.com/toggl/toggldesktop/latest)
-
 [![Build Status](https://travis-ci.org/toggl/toggldesktop.png)](https://travis-ci.org/toggl/toggldesktop)
 
 Windows CI

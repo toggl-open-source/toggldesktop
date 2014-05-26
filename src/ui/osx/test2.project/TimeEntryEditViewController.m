@@ -71,12 +71,12 @@ extern int kDurationStringLength;
 													 name:kDisplayTags
 												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(startDisplayTimeEntryList:)
-													 name:kDisplayTimeEntryList
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(appWillTerminate:)
 													 name:NSApplicationWillTerminateNotification
+												   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(resetPopover:)
+													 name:NSPopoverDidCloseNotification
 												   object:nil];
 	}
 	return self;
@@ -113,6 +113,16 @@ extern int kDurationStringLength;
 - (void)appWillTerminate:(NSNotification *)notification
 {
 	self.willTerminate = YES;
+}
+
+- (void)resetPopover:(NSNotification *)notification
+{
+    [self.addProjectBox setHidden:YES];
+    [self.projectSelectBox setHidden:NO];
+    [self.projectPublicCheckbox setState:NSOffState];
+
+    [self removeCustomConstraints];
+    [self.descriptionCombobox setNextKeyView:self.projectSelect];
 }
 
 - (IBAction)addProjectButtonClicked:(id)sender
@@ -243,14 +253,7 @@ extern int kDurationStringLength;
 	self.timeEntry = cmd.timeEntry;
 
 	NSLog(@"TimeEntryEditViewController render, %@", self.timeEntry);
-
-	[self.addProjectBox setHidden:YES];
-	[self.projectSelectBox setHidden:NO];
-	[self.projectPublicCheckbox setState:NSOffState];
-
-	[self removeCustomConstraints];
-	[self.descriptionCombobox setNextKeyView:self.projectSelect];
-
+    
 	if (nil == self.startDate.listener)
 	{
 		self.startDate.listener = self;
@@ -370,27 +373,6 @@ extern int kDurationStringLength;
 		{
 			[self.projectSelectBox becomeFirstResponder];
 		}
-	}
-}
-
-- (void)startDisplayTimeEntryList:(NSNotification *)notification
-{
-	[self performSelectorOnMainThread:@selector(displayTimeEntryList:)
-						   withObject:notification.object
-						waitUntilDone:NO];
-}
-
-- (void)displayTimeEntryList:(DisplayCommand *)cmd
-{
-	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-	if (cmd.open)
-	{
-		[self.addProjectBox setHidden:YES];
-		[self.projectSelectBox setHidden:NO];
-		[self.projectPublicCheckbox setState:NSOffState];
-
-		[self removeCustomConstraints];
-		[self.descriptionCombobox setNextKeyView:self.projectSelect];
 	}
 }
 
