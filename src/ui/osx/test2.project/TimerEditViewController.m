@@ -35,7 +35,7 @@ extern void *ctx;
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self)
 	{
-		self.autocompleteDataSource = [[AutocompleteDataSource alloc] init];
+		self.autocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayTimeEntryAutocomplete];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayTimerState:)

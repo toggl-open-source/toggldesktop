@@ -207,7 +207,8 @@ class Context {
     void projectAutocompleteItems(
         std::set<std::string> *unique_names,
         std::vector<AutocompleteItem> *list) const;
-    std::vector<AutocompleteItem> autocompleteItems() const;
+    std::vector<AutocompleteItem> autocompleteItems(
+        const bool including_time_entries) const;
 
     bool isPostponed(
         const Poco::Timestamp value,
@@ -245,7 +246,8 @@ class Context {
     void displayTimeEntryEditor(const _Bool open,
                                 TimeEntry *te,
                                 const std::string focused_field_name);
-    void displayAutocomplete();
+    void displayTimeEntryAutocomplete();
+    void displayProjectAutocomplete();
     void displayWorkspaceSelect();
     void displayClientSelect();
     void displayTags();

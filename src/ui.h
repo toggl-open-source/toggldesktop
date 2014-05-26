@@ -29,7 +29,8 @@ class UI {
     , on_display_url_(0)
     , on_display_reminder_(0)
     , on_display_time_entry_list_(0)
-    , on_display_autocomplete_(0)
+    , on_display_time_entry_autocomplete_(0)
+    , on_display_project_autocomplete_(0)
     , on_display_workspace_select_(0)
     , on_display_client_select_(0)
     , on_display_tags_(0)
@@ -46,7 +47,8 @@ class UI {
         const bool is_available,
         const std::string url,
         const std::string version);
-    void DisplayAutocomplete(std::vector<kopsik::AutocompleteItem> *items);
+    void DisplayTimeEntryAutocomplete(std::vector<kopsik::AutocompleteItem> *);
+    void DisplayProjectAutocomplete(std::vector<kopsik::AutocompleteItem> *);
     void DisplayTimeEntryList(const _Bool open,
                               KopsikTimeEntryViewItem *first);
     void DisplayWorkspaceSelect(std::vector<kopsik::Workspace *> *list);
@@ -111,8 +113,12 @@ class UI {
         on_display_time_entry_editor_ = cb;
     }
 
-    void OnDisplayAutocomplete(KopsikDisplayAutocomplete cb) {
-        on_display_autocomplete_ = cb;
+    void OnDisplayTimeEntryAutocomplete(KopsikDisplayAutocomplete cb) {
+        on_display_time_entry_autocomplete_ = cb;
+    }
+
+    void OnDisplayProjectAutocomplete(KopsikDisplayAutocomplete cb) {
+        on_display_project_autocomplete_ = cb;
     }
 
     void OnDisplaySettings(KopsikDisplaySettings cb) {
@@ -135,7 +141,8 @@ class UI {
     KopsikDisplayURL on_display_url_;
     KopsikDisplayReminder on_display_reminder_;
     KopsikDisplayTimeEntryList on_display_time_entry_list_;
-    KopsikDisplayAutocomplete on_display_autocomplete_;
+    KopsikDisplayAutocomplete on_display_time_entry_autocomplete_;
+    KopsikDisplayAutocomplete on_display_project_autocomplete_;
     KopsikDisplayViewItems on_display_workspace_select_;
     KopsikDisplayViewItems on_display_client_select_;
     KopsikDisplayViewItems on_display_tags_;

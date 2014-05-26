@@ -16,7 +16,8 @@ extern NSString *const kCommandStopAt;
 
 // Display events, UI <- backend
 extern NSString *const kDisplayTimeEntryList;
-extern NSString *const kDisplayAutocomplete;
+extern NSString *const kDisplayTimeEntryAutocomplete;
+extern NSString *const kDisplayProjectAutocomplete;
 extern NSString *const kDisplayClientSelect;
 extern NSString *const kDisplayWorkspaceSelect;
 extern NSString *const kDisplayTags;

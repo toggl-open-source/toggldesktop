@@ -10,6 +10,7 @@
 #import "kopsik_api.h"
 
 @interface AutocompleteItem : NSObject
++ (NSMutableArray *)loadAll:(KopsikAutocompleteItem *)first;
 - (void)load:(KopsikAutocompleteItem *)data;
 - (void)save:(KopsikAutocompleteItem *)data;
 @property NSString *Text;

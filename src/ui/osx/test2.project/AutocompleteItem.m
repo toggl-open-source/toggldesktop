@@ -50,4 +50,19 @@
 			self.Text, self.ProjectID, self.TaskID, self.Type];
 }
 
++ (NSMutableArray *)loadAll:(KopsikAutocompleteItem *)first
+{
+	NSMutableArray *result = [[NSMutableArray alloc] init];
+	KopsikAutocompleteItem *record = first;
+
+	while (record)
+	{
+		AutocompleteItem *item = [[AutocompleteItem alloc] init];
+		[item load:record];
+		[result addObject:item];
+		record = record->Next;
+	}
+	return result;
+}
+
 @end
