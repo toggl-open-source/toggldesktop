@@ -122,6 +122,14 @@ _Bool kopsik_set_db_path(
     return app(context)->SetDBPath(std::string(path));
 }
 
+void kopsik_set_environment(
+    void *context,
+    const char *environment) {
+    poco_check_ptr(environment);
+
+    return app(context)->SetEnvironment(environment);
+}
+
 void kopsik_set_log_path(const char *path) {
     poco_check_ptr(path);
 

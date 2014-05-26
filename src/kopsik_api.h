@@ -142,6 +142,12 @@ extern "C" {
     KOPSIK_EXPORT void kopsik_context_clear(
         void *context);
 
+    // Set environment. By default, production is assumed. Optional.
+
+    KOPSIK_EXPORT void kopsik_set_environment(
+        void *context,
+        const char *environment);
+
     // DB path must be configured from UI
 
     KOPSIK_EXPORT _Bool kopsik_set_db_path(

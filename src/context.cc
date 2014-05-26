@@ -39,7 +39,8 @@ Context::Context(const std::string app_name, const std::string app_version)
 , next_fetch_updates_at_(0)
 , next_update_timeline_settings_at_(0)
 , next_reminder_at_(0)
-, time_entry_editor_guid_("") {
+, time_entry_editor_guid_("")
+, environment_("production") {
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
@@ -845,6 +846,13 @@ _Bool Context::SetDBPath(
     return true;
 }
 
+void Context::SetEnvironment(const std::string value) {
+    poco_assert("production" == value ||
+                "development" == value ||
+                "test" == value);
+    environment_ = value;
+}
+
 Database *Context::db() const {
     poco_check_ptr(db_);
     return db_;
@@ -923,7 +931,9 @@ void Context::setUser(User *value) {
 
     FullSync();
 
-    FetchUpdates();
+    if ("production" == environment_) {
+        FetchUpdates();
+    }
 }
 
 _Bool Context::SetLoggedInUserFromJSON(

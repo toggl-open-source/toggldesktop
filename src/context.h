@@ -63,6 +63,8 @@ class Context {
 
     _Bool SetDBPath(const std::string path);
 
+    void SetEnvironment(const std::string environment);
+
     _Bool Settings(kopsik::Settings *);
 
     _Bool SetSettings(const kopsik::Settings);
@@ -295,6 +297,8 @@ class Context {
     kopsik::UI ui_;
 
     std::string time_entry_editor_guid_;
+
+    std::string environment_;
 };
 
 }  // namespace kopsik

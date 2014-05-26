@@ -165,6 +165,8 @@ const int kDurationStringLength = 20;
 												 name:kDisplaySettings
 											   object:nil];
 
+	kopsik_set_environment(ctx, [self.environment UTF8String]);
+
 	_Bool started = kopsik_context_start_events(ctx);
 	NSAssert(started, @"Failed to start UI");
 
