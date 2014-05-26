@@ -70,7 +70,7 @@ extern void *ctx;
 												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(resizeEditPopup:)
-													 name:kOpenAddProject
+													 name:kResizeEditForm
 												   object:nil];
 	}
 	return self;
@@ -89,7 +89,7 @@ extern void *ctx;
 
 	[self.timeEntryPopupEditView addSubview:self.timeEntryEditViewController.view];
 	[self.timeEntryEditViewController.view setFrame:self.timeEntryPopupEditView.bounds];
-	self.defaultPopupHeight = 350;
+	self.defaultPopupHeight = 220;
 }
 
 - (void)startDisplayTimeEntryList:(NSNotification *)notification
@@ -256,7 +256,8 @@ extern void *ctx;
 
 - (void)resizeEditPopup:(NSNotification *)notification
 {
-	float newHeight = self.timeEntrypopover.contentSize.height + 100;
+    int i = [[[notification userInfo] valueForKey:@"height"] intValue];
+	float newHeight = self.timeEntrypopover.contentSize.height + i;
 	NSSize n = NSMakeSize(self.timeEntrypopover.contentSize.width, newHeight);
 
 	[self.timeEntrypopover setContentSize:n];

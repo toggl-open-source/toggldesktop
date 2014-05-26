@@ -123,6 +123,7 @@ extern int kDurationStringLength;
 
 	[self removeCustomConstraints];
 	[self.descriptionCombobox setNextKeyView:self.projectSelect];
+    [self toggleTimeForm: NO];
 }
 
 - (IBAction)addProjectButtonClicked:(id)sender
@@ -156,15 +157,19 @@ extern int kDurationStringLength;
 	}
 	[self.workspaceLabel setHidden:singleWorkspace];
 	[self.workspaceSelect setHidden:singleWorkspace];
-
+/*
 	NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_addProjectBox, _dataholderBox);
 	self.topConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_addProjectBox]-0-[_dataholderBox]"
 																 options:0
 																 metrics:nil
 																   views:viewsDict];
 	[self.view addConstraints:self.topConstraint];
-	[[NSNotificationCenter defaultCenter] postNotificationName:kOpenAddProject
-														object:nil];
+    */
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:100] forKey:@"height"];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kResizeEditForm
+                                                        object:nil
+                                                      userInfo:userInfo];
 	[self.projectNameTextField becomeFirstResponder];
 	[self.addProjectBox setHidden:NO];
 	[self.projectSelectBox setHidden:YES];
@@ -319,6 +324,17 @@ extern int kDurationStringLength;
 	{
 		[self.durationTextField setStringValue:self.timeEntry.duration];
 	}
+    
+    // Set TimeDateTextBox value
+    NSString *dateString = [NSString stringWithFormat:@"%@ ",self.timeEntry.formattedDate];
+    NSString *timeString;
+    if(self.timeEntry.durOnly) {
+        timeString = [NSString stringWithFormat:@" for %@ ",self.timeEntry.formattedDate];
+    } else {
+        timeString = [NSString stringWithFormat:@" from %@ to %@ ",self.timeEntry.startTimeString, self.timeEntry.endTimeString];
+    }
+    NSString *dateTimeString = [dateString stringByAppendingString:timeString];
+    [self.dateTimeTextField setStringValue:dateTimeString];
 
 	[self.startTime setStringValue:self.timeEntry.startTimeString];
 	[self.endTime setStringValue:self.timeEntry.endTimeString];
@@ -553,6 +569,26 @@ extern int kDurationStringLength;
 		}
 	}
 	return 0;
+}
+
+- (void)textFieldClicked:(id)sender
+{
+	if (sender == self.dateTimeTextField)
+	{
+        [self toggleTimeForm: YES];
+	}
+}
+
+- (void)toggleTimeForm:(BOOL) open {
+    if(open) {
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:110] forKey:@"height"];
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:kResizeEditForm
+                                              object:nil
+                                              userInfo:userInfo];
+    }
+    [self.timeEditBox setHidden:!open];
+    [self.timeTextBox setHidden:open];
 }
 
 - (IBAction)durationTextFieldChanged:(id)sender

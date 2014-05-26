@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "TFDatePicker.h"
 #import "NSCustomComboBox.h"
+#import "NSTextFieldClickable.h"
 
 @interface TimeEntryEditViewController : NSViewController <NSComboBoxDataSource> {
 }
@@ -39,6 +40,7 @@
 - (IBAction)backButtonClicked:(id)sender;
 - (IBAction)addProjectButtonClicked:(id)sender;
 - (NSDateComponents *)parseTime:(NSTextField *)field current:(NSDateComponents *)component;
+@property (strong) IBOutlet NSBox *timeTextBox;
 
 // New project related stuff
 @property IBOutlet NSBox *projectSelectBox;
@@ -49,5 +51,7 @@
 @property IBOutlet NSCustomComboBox *clientSelect;
 - (IBAction)workspaceSelectChanged:(id)sender;
 - (IBAction)clientSelectChanged:(id)sender;
+@property (strong) IBOutlet NSTextField *dateTimeTextField;
+@property (strong) IBOutlet NSBox *timeEditBox;
 
 @end
