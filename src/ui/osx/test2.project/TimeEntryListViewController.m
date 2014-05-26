@@ -68,11 +68,10 @@ extern void *ctx;
 												 selector:@selector(closeEditPopup:)
 													 name:kForceCloseEditPopover
 												   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
+		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(resizeEditPopup:)
 													 name:kOpenAddProject
 												   object:nil];
-        
 	}
 	return self;
 }
@@ -90,7 +89,7 @@ extern void *ctx;
 
 	[self.timeEntryPopupEditView addSubview:self.timeEntryEditViewController.view];
 	[self.timeEntryEditViewController.view setFrame:self.timeEntryPopupEditView.bounds];
-    self.defaultPopupHeight = 350;
+	self.defaultPopupHeight = 350;
 }
 
 - (void)startDisplayTimeEntryList:(NSNotification *)notification
@@ -116,7 +115,7 @@ extern void *ctx;
 	if (cmd.open && self.timeEntrypopover.shown)
 	{
 		[self.timeEntrypopover close];
-        [self setDefaultPopupHeight];
+		[self setDefaultPopupHeight];
 	}
 }
 
@@ -218,18 +217,19 @@ extern void *ctx;
 	{
 		return;
 	}
-    
+
 	TimeEntryViewItem *item = 0;
 	@synchronized(viewitems)
 	{
 		item = viewitems[row];
 	}
-    
+
 	NSView *latestView = [self.timeEntriesTableView rowViewAtRow:row
 												 makeIfNecessary:NO];
-    if (self.selectedRowView != nil ) {
-        [self setDefaultPopupHeight];
-    }
+	if (self.selectedRowView != nil)
+	{
+		[self setDefaultPopupHeight];
+	}
 	if (latestView == self.selectedRowView && self.timeEntrypopover.shown)
 	{
 		[self.timeEntrypopover close];
@@ -256,14 +256,15 @@ extern void *ctx;
 
 - (void)resizeEditPopup:(NSNotification *)notification
 {
-    float newHeight = self.timeEntrypopover.contentSize.height+100;
-    NSSize n = NSMakeSize(self.timeEntrypopover.contentSize.width, newHeight);
-    [self.timeEntrypopover setContentSize:n];
-    NSRect r = NSMakeRect(self.timeEntryEditViewController.view.frame.origin.x,
-                          self.timeEntryEditViewController.view.frame.origin.x,
-                          n.width,
-                          n.height);
-    
+	float newHeight = self.timeEntrypopover.contentSize.height + 100;
+	NSSize n = NSMakeSize(self.timeEntrypopover.contentSize.width, newHeight);
+
+	[self.timeEntrypopover setContentSize:n];
+	NSRect r = NSMakeRect(self.timeEntryEditViewController.view.frame.origin.x,
+						  self.timeEntryEditViewController.view.frame.origin.x,
+						  n.width,
+						  n.height);
+
 	[self.timeEntryPopupEditView setBounds:r];
 	[self.timeEntryEditViewController.view setFrame:self.timeEntryPopupEditView.bounds];
 }
@@ -271,18 +272,19 @@ extern void *ctx;
 - (void)closeEditPopup:(NSNotification *)notification
 {
 	[self.timeEntrypopover close];
-    [self setDefaultPopupHeight];
+	[self setDefaultPopupHeight];
 }
 
 - (void)setDefaultPopupHeight
 {
-    NSSize n = NSMakeSize(self.timeEntrypopover.contentSize.width, self.defaultPopupHeight);
-    [self.timeEntrypopover setContentSize:n];
-    NSRect r = NSMakeRect(self.timeEntryEditViewController.view.frame.origin.x,
-                          self.timeEntryEditViewController.view.frame.origin.x,
-                          n.width,
-                          n.height);
-    
+	NSSize n = NSMakeSize(self.timeEntrypopover.contentSize.width, self.defaultPopupHeight);
+
+	[self.timeEntrypopover setContentSize:n];
+	NSRect r = NSMakeRect(self.timeEntryEditViewController.view.frame.origin.x,
+						  self.timeEntryEditViewController.view.frame.origin.x,
+						  n.width,
+						  n.height);
+
 	[self.timeEntryPopupEditView setBounds:r];
 	[self.timeEntryEditViewController.view setFrame:self.timeEntryPopupEditView.bounds];
 }
@@ -300,7 +302,7 @@ extern void *ctx;
 	if (cmd.open && self.timeEntrypopover.shown)
 	{
 		[self.timeEntrypopover close];
-        [self setDefaultPopupHeight];
+		[self setDefaultPopupHeight];
 	}
 }
 
