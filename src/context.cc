@@ -787,7 +787,8 @@ KopsikTimeEntryViewItem *Context::timeEntryViewItem(TimeEntry *te) {
     return time_entry_view_item_init(te,
                                      project_and_task_label,
                                      color,
-                                     date_duration);
+                                     date_duration,
+                                     timeOfDayFormat());
 }
 
 _Bool Context::DisplaySettings(const _Bool open) {
@@ -1124,6 +1125,13 @@ Poco::Int64 Context::totalDurationForDate(TimeEntry *match) const {
     return duration;
 }
 
+std::string Context::timeOfDayFormat() const {
+    if (user_) {
+        return user_->TimeOfDayFormat();
+    }
+    return "";
+}
+
 void Context::DisplayTimeEntryList(const _Bool open) {
     std::vector<TimeEntry *> list = timeEntries();
 
@@ -1136,6 +1144,8 @@ void Context::DisplayTimeEntryList(const _Bool open) {
         duration += te->DurationInSeconds();
         date_durations[date_header] = duration;
     }
+
+    std::string timeofday_format = timeOfDayFormat();
 
     KopsikTimeEntryViewItem *first = 0;
     for (unsigned int i = 0; i < list.size(); i++) {
@@ -1153,7 +1163,8 @@ void Context::DisplayTimeEntryList(const _Bool open) {
             time_entry_view_item_init(te,
                                       project_and_task_label,
                                       color,
-                                      date_duration);
+                                      date_duration,
+                                      timeofday_format);
         item->Next = first;
         if (first && strcmp(item->DateHeader, first->DateHeader) != 0) {
             first->IsHeader = true;

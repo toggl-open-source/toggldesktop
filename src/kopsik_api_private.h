@@ -39,7 +39,8 @@ KopsikTimeEntryViewItem *time_entry_view_item_init(
     kopsik::TimeEntry *te,
     const std::string project_and_task_label,
     const std::string color,
-    const std::string date_duration);
+    const std::string date_duration,
+    const std::string timeofday_format);
 
 void time_entry_view_item_clear(KopsikTimeEntryViewItem *item);
 

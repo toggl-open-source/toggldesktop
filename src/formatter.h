@@ -49,7 +49,11 @@ class Formatter {
         const std::time_t date);
 
     static std::string FormatTimeForTimeEntryEditor(
-        const std::time_t date);
+        const std::time_t date,
+        const std::string timeofday_format);
+
+    static std::string togglTimeOfDayToPocoFormat(
+        const std::string toggl_format);
 
     // Parse
 

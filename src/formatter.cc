@@ -18,6 +18,14 @@
 
 namespace kopsik {
 
+std::string Formatter::togglTimeOfDayToPocoFormat(
+    const std::string toggl_format) {
+    if ("h:mm A" == toggl_format) {
+        return "%h:%M %A";
+    }
+    return "%H:%M";
+}
+
 std::string Formatter::JoinTaskName(
     Task * const t,
     Project * const p,
@@ -70,14 +78,16 @@ std::string Formatter::JoinTaskNameReverse(
     return ss.str();
 }
 
-// FIXME: need am/pm support, depends on users selected format
-std::string Formatter::FormatTimeForTimeEntryEditor(const std::time_t date) {
+std::string Formatter::FormatTimeForTimeEntryEditor(
+    const std::time_t date,
+    const std::string timeofday_format) {
     if (!date) {
         return "";
     }
     Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
     Poco::LocalDateTime local(ts);
-    return Poco::DateTimeFormatter::format(local, "%H:%M");
+    std::string fmt = togglTimeOfDayToPocoFormat(timeofday_format);
+    return Poco::DateTimeFormatter::format(local, fmt);
 }
 
 std::string Formatter::FormatDateHeader(const std::time_t date) {
