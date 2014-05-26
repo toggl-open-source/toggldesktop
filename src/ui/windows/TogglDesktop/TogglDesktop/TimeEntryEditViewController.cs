@@ -13,7 +13,8 @@ namespace TogglDesktop
     public partial class TimeEntryEditViewController : UserControl
     {
         private string GUID = "";
-        private List<KopsikApi.KopsikAutocompleteItem> autocompleteUpdate = null;
+        private List<KopsikApi.KopsikAutocompleteItem> timeEntryAutocompleteUpdate = null;
+        private List<KopsikApi.KopsikAutocompleteItem> projectAutocompleteUpdate = null;
 
         public TimeEntryEditViewController()
         {
@@ -23,7 +24,8 @@ namespace TogglDesktop
             KopsikApi.OnWorkspaceSelect += OnWorkspaceSelect;
             KopsikApi.OnClientSelect += OnClientSelect;
             KopsikApi.OnTags += OnTags;
-            KopsikApi.OnAutocomplete += OnAutocomplete;
+            KopsikApi.OnTimeEntryAutocomplete += OnTimeEntryAutocomplete;
+            KopsikApi.OnProjectAutocomplete += OnProjectAutocomplete;
         }
 
         private void TimeEntryEditViewController_Load(object sender, EventArgs e)
@@ -181,31 +183,31 @@ namespace TogglDesktop
             // FIXME:
         }
 
-        void OnAutocomplete(ref KopsikApi.KopsikAutocompleteItem first)
+        void OnTimeEntryAutocomplete(ref KopsikApi.KopsikAutocompleteItem first)
         {
             List<KopsikApi.KopsikAutocompleteItem> list =
                 KopsikApi.ConvertToAutocompleteList(ref first);
-            DisplayAutocomplete(list);
+            DisplayTimeEntryAutocomplete(list);
         }
 
-        void DisplayAutocomplete(List<KopsikApi.KopsikAutocompleteItem> list)
+        void DisplayTimeEntryAutocomplete(List<KopsikApi.KopsikAutocompleteItem> list)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayAutocomplete(list); });
+                Invoke((MethodInvoker)delegate { DisplayTimeEntryAutocomplete(list); });
                 return;
             }
-            autocompleteUpdate = list;
+            timeEntryAutocompleteUpdate = list;
             if (comboBoxDescription.DroppedDown || comboBoxDescription.Focused)
             {
                 return;
             }
             comboBoxDescription.Items.Clear();
-            foreach (object o in autocompleteUpdate)
+            foreach (object o in timeEntryAutocompleteUpdate)
             {
                 comboBoxDescription.Items.Add(o);
             }
-            autocompleteUpdate = null;
+            timeEntryAutocompleteUpdate = null;
         }
 
         private void comboBoxDescription_TextChanged(object sender, EventArgs e)
@@ -228,6 +230,33 @@ namespace TogglDesktop
                 item.TaskID,
                 item.ProjectID,
                 null);
+        }
+
+        void OnProjectAutocomplete(ref KopsikApi.KopsikAutocompleteItem first)
+        {
+            List<KopsikApi.KopsikAutocompleteItem> list =
+                KopsikApi.ConvertToAutocompleteList(ref first);
+            DisplayProjectAutocomplete(list);
+        }
+
+        void DisplayProjectAutocomplete(List<KopsikApi.KopsikAutocompleteItem> list)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayProjectAutocomplete(list); });
+                return;
+            }
+            projectAutocompleteUpdate = list;
+            if (comboBoxProject.DroppedDown || comboBoxProject.Focused)
+            {
+                return;
+            }
+            comboBoxProject.Items.Clear();
+            foreach (object o in projectAutocompleteUpdate)
+            {
+                comboBoxProject.Items.Add(o);
+            }
+            projectAutocompleteUpdate = null;
         }
 
         private void comboBoxProject_SelectedIndexChanged(object sender, EventArgs e)
