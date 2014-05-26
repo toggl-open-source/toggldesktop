@@ -14,7 +14,8 @@ NSString *const kCommandContinue = @"Continue";
 NSString *const kCommandStopAt = @"Stop At";
 
 NSString *const kDisplayTimeEntryList = @"kDisplayTimeEntryList";
-NSString *const kDisplayAutocomplete = @"kDisplayAutocomplete";
+NSString *const kDisplayTimeEntryAutocomplete = @"kDisplayTimeEntryAutocomplete";
+NSString *const kDisplayProjectAutocomplete = @"kDisplayProjectAutocomplete";
 NSString *const kDisplayClientSelect = @"kDisplayClientSelect";
 NSString *const kDisplayWorkspaceSelect = @"kDisplayWorkspaceSelect";
 NSString *const kDisplayTags = @"kDisplayTags";

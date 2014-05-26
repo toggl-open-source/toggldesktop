@@ -79,8 +79,11 @@ error UI::findMissingCallbacks() {
     if (!on_display_time_entry_list_) {
         return error("!on_display_time_entry_list_");
     }
-    if (!on_display_autocomplete_) {
-        return error("!on_display_autocomplete_");
+    if (!on_display_time_entry_autocomplete_) {
+        return error("!on_display_time_entry_autocomplete_");
+    }
+    if (!on_display_project_autocomplete_) {
+        return error("!on_display_project_autocomplete_");
     }
     if (!on_display_workspace_select_) {
         return error("!on_display_workspace_select_");
@@ -124,8 +127,9 @@ void UI::DisplayUpdate(const bool is_available,
     on_display_update_(is_available, url.c_str(), version.c_str());
 }
 
-void UI::DisplayAutocomplete(std::vector<kopsik::AutocompleteItem> *items) {
-    logger().debug("DisplayAutocomplete");
+void UI::DisplayTimeEntryAutocomplete(
+    std::vector<kopsik::AutocompleteItem> *items) {
+    logger().debug("DisplayTimeEntryAutocomplete");
 
     KopsikAutocompleteItem *first = 0;
     for (std::vector<kopsik::AutocompleteItem>::const_iterator it =
@@ -134,7 +138,22 @@ void UI::DisplayAutocomplete(std::vector<kopsik::AutocompleteItem> *items) {
         item->Next = first;
         first = item;
     }
-    on_display_autocomplete_(first);
+    on_display_time_entry_autocomplete_(first);
+    autocomplete_item_clear(first);
+}
+
+void UI::DisplayProjectAutocomplete(
+    std::vector<kopsik::AutocompleteItem> *items) {
+    logger().debug("DisplayProjectAutocomplete");
+
+    KopsikAutocompleteItem *first = 0;
+    for (std::vector<kopsik::AutocompleteItem>::const_iterator it =
+        items->begin(); it != items->end(); it++) {
+        KopsikAutocompleteItem *item = autocomplete_item_init(*it);
+        item->Next = first;
+        first = item;
+    }
+    on_display_project_autocomplete_(first);
     autocomplete_item_clear(first);
 }
 

@@ -699,10 +699,16 @@ void kopsik_on_time_entry_list(
     app(context)->UI()->OnDisplayTimeEntryList(cb);
 }
 
-void kopsik_on_autocomplete(
+void kopsik_on_time_entry_autocomplete(
     void *context,
     KopsikDisplayAutocomplete cb) {
-    app(context)->UI()->OnDisplayAutocomplete(cb);
+    app(context)->UI()->OnDisplayTimeEntryAutocomplete(cb);
+}
+
+void kopsik_on_project_autocomplete(
+    void *context,
+    KopsikDisplayAutocomplete cb) {
+    app(context)->UI()->OnDisplayProjectAutocomplete(cb);
 }
 
 void kopsik_on_time_entry_editor(
