@@ -54,7 +54,7 @@
                                 </buttonCell>
                                 <connections>
                                     <action selector="backButtonClicked:" target="-2" id="GSE-4o-Adz"/>
-                                    <outlet property="nextKeyView" destination="Wpz-9G-IOZ" id="Dpt-Py-zRd"/>
+                                    <outlet property="nextKeyView" destination="6rO-vx-iLH" id="4Cd-cr-LPj"/>
                                 </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SUF-aH-axf">
@@ -501,7 +501,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                             </buttonCell>
                                             <connections>
                                                 <action selector="billableCheckBoxClicked:" target="-2" id="KhO-KD-YIr"/>
-                                                <outlet property="nextKeyView" destination="zwE-pW-vQN" id="ZFt-wi-muf"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -597,6 +596,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </buttonCell>
                     <connections>
                         <action selector="deleteButtonClicked:" target="-2" id="Pi8-oI-sCI"/>
+                        <outlet property="nextKeyView" destination="zwE-pW-vQN" id="xLl-BH-UOC"/>
                     </connections>
                 </button>
             </subviews>
