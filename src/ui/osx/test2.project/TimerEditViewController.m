@@ -116,7 +116,7 @@ extern void *ctx;
 	// whether time entry is running
 	if (self.time_entry.duration_in_seconds < 0)
 	{
-        self.startButton.toolTip = @"Stop";
+		self.startButton.toolTip = @"Stop";
 		[self.startButton setImage:[NSImage imageNamed:@"icon-stop-red@2x.png"]];
 	}
 	else

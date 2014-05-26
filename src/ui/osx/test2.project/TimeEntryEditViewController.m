@@ -141,13 +141,12 @@ extern int kDurationStringLength;
 																 metrics:nil
 																   views:viewsDict];
 	[self.view addConstraints:self.topConstraint];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kOpenAddProject
+	[[NSNotificationCenter defaultCenter] postNotificationName:kOpenAddProject
 														object:nil];
 	[self.projectNameTextField becomeFirstResponder];
-    [self.addProjectBox setHidden:NO];
+	[self.addProjectBox setHidden:NO];
 	[self.projectSelectBox setHidden:YES];
 	[self.addProjectButton setHidden:YES];
-
 }
 
 - (void)removeCustomConstraints
