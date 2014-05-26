@@ -248,7 +248,12 @@ namespace TogglDesktop
             KopsikDisplayTimeEntryList cb);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_on_autocomplete(
+        public static extern void kopsik_on_time_entry_autocomplete(
+            IntPtr context,
+            KopsikDisplayAutocomplete cb);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        public static extern void kopsik_on_project_autocomplete(
             IntPtr context,
             KopsikDisplayAutocomplete cb);
 
@@ -551,7 +556,8 @@ namespace TogglDesktop
         public static event KopsikApi.KopsikDisplayLogin OnLogin = delegate { };
         public static event KopsikApi.KopsikDisplayReminder OnReminder = delegate { };
         public static event KopsikApi.KopsikDisplayTimeEntryList OnTimeEntryList = delegate { };
-        public static event KopsikApi.KopsikDisplayAutocomplete OnAutocomplete = delegate { };
+        public static event KopsikApi.KopsikDisplayAutocomplete OnTimeEntryAutocomplete = delegate { };
+        public static event KopsikApi.KopsikDisplayAutocomplete OnProjectAutocomplete = delegate { };
         public static event KopsikApi.KopsikDisplayTimeEntryEditor OnTimeEntryEditor = delegate { };
         public static event KopsikApi.KopsikDisplayViewItems OnWorkspaceSelect = delegate { };
         public static event KopsikApi.KopsikDisplayViewItems OnClientSelect = delegate { };
@@ -601,7 +607,8 @@ namespace TogglDesktop
             kopsik_on_login(ctx, OnLogin);
             kopsik_on_reminder(ctx, OnReminder);
             kopsik_on_time_entry_list(ctx, OnTimeEntryList);
-            kopsik_on_autocomplete(ctx, OnAutocomplete);
+            kopsik_on_time_entry_autocomplete(ctx, OnTimeEntryAutocomplete);
+            kopsik_on_project_autocomplete(ctx, OnProjectAutocomplete);
             kopsik_on_time_entry_editor(ctx, OnTimeEntryEditor);
             kopsik_on_workspace_select(ctx, OnWorkspaceSelect);
             kopsik_on_client_select(ctx, OnClientSelect);

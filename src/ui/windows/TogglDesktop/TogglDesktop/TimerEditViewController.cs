@@ -16,13 +16,13 @@ namespace TogglDesktop
         private Int64 duration_in_seconds = 0;
         private UInt64 task_id = 0;
         private UInt64 project_id = 0;
-        private List<KopsikApi.KopsikAutocompleteItem> autocompleteUpdate;
+        private List<KopsikApi.KopsikAutocompleteItem> timeEntryAutocompleteUpdate;
 
         public TimerEditViewController()
         {
             InitializeComponent();
 
-            KopsikApi.OnAutocomplete += OnAutocomplete;
+            KopsikApi.OnTimeEntryAutocomplete += OnTimeEntryAutocomplete;
             KopsikApi.OnTimerState += OnTimerState;
 
             comboBoxDescription.DisplayMember = "Text";
@@ -171,31 +171,31 @@ namespace TogglDesktop
             project_id = 0;
         }
 
-        void OnAutocomplete(ref KopsikApi.KopsikAutocompleteItem first)
+        void OnTimeEntryAutocomplete(ref KopsikApi.KopsikAutocompleteItem first)
         {
             List<KopsikApi.KopsikAutocompleteItem> list =
                 KopsikApi.ConvertToAutocompleteList(ref first);
-            DisplayAutocomplete(list);
+            DisplayTimeEntryAutocomplete(list);
         }
 
-        void DisplayAutocomplete(List<KopsikApi.KopsikAutocompleteItem> list)
+        void DisplayTimeEntryAutocomplete(List<KopsikApi.KopsikAutocompleteItem> list)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayAutocomplete(list); });
+                Invoke((MethodInvoker)delegate { DisplayTimeEntryAutocomplete(list); });
                 return;
             }
-            autocompleteUpdate = list;
+            timeEntryAutocompleteUpdate = list;
             if (comboBoxDescription.DroppedDown || comboBoxDescription.Focused)
             {
                 return;
             }
             comboBoxDescription.Items.Clear();
-            foreach (object o in autocompleteUpdate)
+            foreach (object o in timeEntryAutocompleteUpdate)
             {
                 comboBoxDescription.Items.Add(o);
             }
-            autocompleteUpdate = null;
+            timeEntryAutocompleteUpdate = null;
         }
 
         private void linkLabelDescription_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -232,9 +232,9 @@ namespace TogglDesktop
 
         private void comboBoxDescription_DropDownClosed(object sender, EventArgs e)
         {
-            if (autocompleteUpdate != null)
+            if (timeEntryAutocompleteUpdate != null)
             {
-                DisplayAutocomplete(autocompleteUpdate);
+                DisplayTimeEntryAutocomplete(timeEntryAutocompleteUpdate);
             }
         }
 
