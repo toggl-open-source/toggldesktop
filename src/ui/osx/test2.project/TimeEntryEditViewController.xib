@@ -87,14 +87,14 @@
                                 </connections>
                             </comboBox>
                             <box autoresizesSubviews="NO" misplaced="YES" title="ProjectBox" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="6Sh-4d-bKb">
-                                <rect key="frame" x="-1" y="253" width="270" height="41"/>
+                                <rect key="frame" x="-1" y="253" width="330" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <view key="contentView">
-                                    <rect key="frame" x="0.0" y="0.0" width="270" height="41"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="330" height="46"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3CJ-Hi-AsT">
-                                            <rect key="frame" x="6" y="15" width="97" height="16"/>
+                                            <rect key="frame" x="6" y="20" width="97" height="16"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="97" id="ruH-0J-Oka"/>
@@ -106,7 +106,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <comboBox verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mxY-tv-UzX" customClass="NSCustomComboBox">
-                                            <rect key="frame" x="114" y="9" width="100" height="26"/>
+                                            <rect key="frame" x="114" y="14" width="100" height="26"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="z8M-J4-cIb" customClass="NSCustomComboBoxCell">
                                                 <font key="font" metaFont="system"/>
@@ -119,16 +119,33 @@
                                                 <outlet property="nextKeyView" destination="mjR-fr-Qy0" id="nU8-El-a5b"/>
                                             </connections>
                                         </comboBox>
+                                        <button toolTip="Add new project" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mjR-fr-Qy0">
+                                            <rect key="frame" x="240" y="0.0" width="90" height="14"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="90" id="CSN-nc-OOp"/>
+                                                <constraint firstAttribute="height" constant="14" id="Sld-Oy-PuH"/>
+                                            </constraints>
+                                            <buttonCell key="cell" type="smallSquare" title="Add new project" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" state="on" imageScaling="proportionallyDown" inset="2" id="HzE-Jo-vAm">
+                                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="smallSystem"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="addProjectButtonClicked:" target="-2" id="Vel-Va-Chi"/>
+                                                <outlet property="nextKeyView" destination="EMR-ul-vEb" id="bya-uz-QTd"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                 </view>
                                 <constraints>
                                     <constraint firstItem="3CJ-Hi-AsT" firstAttribute="leading" secondItem="6Sh-4d-bKb" secondAttribute="leading" constant="15" id="Fgk-AS-rgF"/>
                                     <constraint firstItem="3CJ-Hi-AsT" firstAttribute="top" secondItem="6Sh-4d-bKb" secondAttribute="top" constant="10" id="LXs-uf-Tbx"/>
+                                    <constraint firstAttribute="trailing" secondItem="mjR-fr-Qy0" secondAttribute="trailing" constant="15" id="NLX-MD-BMN"/>
                                     <constraint firstAttribute="trailing" secondItem="mxY-tv-UzX" secondAttribute="trailing" constant="16" id="Rf3-MZ-Xxm"/>
-                                    <constraint firstAttribute="bottom" secondItem="mxY-tv-UzX" secondAttribute="bottom" constant="11" id="g2w-ya-qxx"/>
+                                    <constraint firstAttribute="bottom" secondItem="mxY-tv-UzX" secondAttribute="bottom" constant="16" id="g2w-ya-qxx"/>
                                     <constraint firstItem="mxY-tv-UzX" firstAttribute="leading" secondItem="6Sh-4d-bKb" secondAttribute="leading" constant="118" id="ogx-6Z-nQo"/>
-                                    <constraint firstAttribute="bottom" secondItem="3CJ-Hi-AsT" secondAttribute="bottom" constant="13" id="put-KJ-iFt"/>
-                                    <constraint firstAttribute="height" constant="41" id="vTF-aw-67a"/>
+                                    <constraint firstAttribute="bottom" secondItem="3CJ-Hi-AsT" secondAttribute="bottom" constant="18" id="put-KJ-iFt"/>
+                                    <constraint firstAttribute="height" constant="46" id="vTF-aw-67a"/>
                                 </constraints>
                                 <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                 <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -538,22 +555,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <color key="borderColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                 <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </box>
-                            <button toolTip="Add new project" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mjR-fr-Qy0">
-                                <rect key="frame" x="240" y="245" width="90" height="14"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="90" id="CSN-nc-OOp"/>
-                                    <constraint firstAttribute="height" constant="14" id="Sld-Oy-PuH"/>
-                                </constraints>
-                                <buttonCell key="cell" type="smallSquare" title="Add new project" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" state="on" imageScaling="proportionallyDown" inset="2" id="HzE-Jo-vAm">
-                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="smallSystem"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="addProjectButtonClicked:" target="-2" id="Vel-Va-Chi"/>
-                                    <outlet property="nextKeyView" destination="EMR-ul-vEb" id="bya-uz-QTd"/>
-                                </connections>
-                            </button>
                         </subviews>
                     </view>
                     <constraints>
@@ -565,10 +566,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <constraint firstItem="zwE-pW-vQN" firstAttribute="top" secondItem="Mka-gG-oqB" secondAttribute="top" id="Oqs-93-6bm"/>
                         <constraint firstItem="9Ap-t2-bTq" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" id="Rtf-EH-rFR"/>
                         <constraint firstItem="fz4-yg-eQZ" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" id="YWE-qg-Y32"/>
-                        <constraint firstAttribute="trailing" secondItem="mjR-fr-Qy0" secondAttribute="trailing" constant="16" id="aBm-pK-h6g"/>
                         <constraint firstAttribute="trailing" secondItem="6rO-vx-iLH" secondAttribute="trailing" constant="16" id="fNk-og-RRY"/>
                         <constraint firstAttribute="trailing" secondItem="zwE-pW-vQN" secondAttribute="trailing" constant="5" id="jo4-Jw-Cl1"/>
-                        <constraint firstItem="mjR-fr-Qy0" firstAttribute="top" secondItem="Mka-gG-oqB" secondAttribute="top" constant="91" id="qMc-Md-zoU"/>
                         <constraint firstItem="6Sh-4d-bKb" firstAttribute="top" secondItem="SUF-aH-axf" secondAttribute="bottom" constant="14" id="qYE-Mc-WOC"/>
                         <constraint firstItem="6rO-vx-iLH" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" constant="118" id="rsw-CB-Mgl"/>
                         <constraint firstItem="6Sh-4d-bKb" firstAttribute="top" secondItem="Mka-gG-oqB" secondAttribute="top" constant="57" id="sC4-eT-UGB"/>
