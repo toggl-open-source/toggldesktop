@@ -30,6 +30,7 @@
 @property NSArray *topConstraint;
 @property NSLayoutConstraint *addProjectBoxHeight;
 @property NSDateFormatter *format;
+@property BOOL willTerminate;
 @end
 
 @implementation TimeEntryEditViewController
@@ -42,6 +43,8 @@ extern int kDurationStringLength;
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self)
 	{
+		self.willTerminate = NO;
+
 		self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] init];
 		self.descriptionComboboxDataSource = [[AutocompleteDataSource alloc] init];
 
@@ -70,6 +73,10 @@ extern int kDurationStringLength;
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayTimeEntryList:)
 													 name:kDisplayTimeEntryList
+												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(appWillTerminate:)
+													 name:NSApplicationWillTerminateNotification
 												   object:nil];
 	}
 	return self;
@@ -101,6 +108,11 @@ extern int kDurationStringLength;
 {
 	[super loadView];
 	[self viewDidLoad];
+}
+
+- (void)appWillTerminate:(NSNotification *)notification
+{
+	self.willTerminate = YES;
 }
 
 - (IBAction)addProjectButtonClicked:(id)sender
@@ -563,6 +575,11 @@ extern int kDurationStringLength;
 
 - (IBAction)durationTextFieldChanged:(id)sender
 {
+	if (self.willTerminate)
+	{
+		return;
+	}
+
 	if (nil == self.timeEntry)
 	{
 		NSLog(@"Cannot apply duration text field changes, self.GUID is nil");
@@ -575,6 +592,11 @@ extern int kDurationStringLength;
 
 - (IBAction)projectSelectChanged:(id)sender
 {
+	if (self.willTerminate)
+	{
+		return;
+	}
+
 	NSAssert(self.timeEntry != nil, @"Expected time entry");
 
 	[self.projectSelect.cell setCalculatedMaxWidth:0];
@@ -617,6 +639,11 @@ extern int kDurationStringLength;
 
 - (IBAction)startTimeChanged:(id)sender
 {
+	if (self.willTerminate)
+	{
+		return;
+	}
+
 	if (nil == self.timeEntry)
 	{
 		NSLog(@"Cannot apply start time change, self.timeEntry is nil");
@@ -653,6 +680,11 @@ extern int kDurationStringLength;
 
 - (IBAction)endTimeChanged:(id)sender
 {
+	if (self.willTerminate)
+	{
+		return;
+	}
+
 	[self applyEndTime];
 }
 
@@ -682,6 +714,11 @@ extern int kDurationStringLength;
 
 - (IBAction)dateChanged:(id)sender
 {
+	if (self.willTerminate)
+	{
+		return;
+	}
+
 	[self applyStartTime];
 	if (!self.endTime.isHidden)
 	{
@@ -691,6 +728,11 @@ extern int kDurationStringLength;
 
 - (IBAction)tagsChanged:(id)sender
 {
+	if (self.willTerminate)
+	{
+		return;
+	}
+
 	[self applyTags];
 }
 
@@ -704,6 +746,11 @@ extern int kDurationStringLength;
 
 - (IBAction)descriptionComboboxChanged:(id)sender
 {
+	if (self.willTerminate)
+	{
+		return;
+	}
+
 	NSAssert(self.timeEntry != nil, @"Time entry expected");
 
 	NSString *key = [self.descriptionCombobox stringValue];
@@ -818,6 +865,11 @@ extern int kDurationStringLength;
 
 - (void)controlTextDidEndEditing:(NSNotification *)aNotification
 {
+	if (self.willTerminate)
+	{
+		return;
+	}
+
 	if (![[aNotification object] isKindOfClass:[NSTokenField class]])
 	{
 		return;
@@ -827,6 +879,11 @@ extern int kDurationStringLength;
 
 - (void)controlTextDidChange:(NSNotification *)aNotification
 {
+	if (self.willTerminate)
+	{
+		return;
+	}
+
 	// Don't trigger combobox autocomplete when inside tags field
 	if (![[aNotification object] isKindOfClass:[NSComboBox class]])
 	{
@@ -887,6 +944,11 @@ extern int kDurationStringLength;
 
 - (IBAction)workspaceSelectChanged:(id)sender
 {
+	if (self.willTerminate)
+	{
+		return;
+	}
+
 	NSLog(@"workspaceSelectChanged");
 	// Changing workspace should render the clients
 	// of the selected workspace in the client select combobox.
@@ -896,6 +958,11 @@ extern int kDurationStringLength;
 
 - (IBAction)clientSelectChanged:(id)sender
 {
+	if (self.willTerminate)
+	{
+		return;
+	}
+
 	NSLog(@"clientSelectChanged");
 	// Changing client does not change anything in new project view.
 }
