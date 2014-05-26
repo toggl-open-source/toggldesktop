@@ -113,7 +113,8 @@ KopsikTimeEntryViewItem *time_entry_view_item_init(
     kopsik::TimeEntry *te,
     const std::string project_and_task_label,
     const std::string color,
-    const std::string date_duration) {
+    const std::string date_duration,
+    const std::string timeofday_format) {
 
     poco_check_ptr(te);
 
@@ -134,9 +135,11 @@ KopsikTimeEntryViewItem *time_entry_view_item_init(
     view_item->Color = strdup(color.c_str());
 
     std::string start_time_string =
-        kopsik::Formatter::FormatTimeForTimeEntryEditor(te->Start());
+        kopsik::Formatter::FormatTimeForTimeEntryEditor(te->Start(),
+                timeofday_format);
     std::string end_time_string =
-        kopsik::Formatter::FormatTimeForTimeEntryEditor(te->Stop());
+        kopsik::Formatter::FormatTimeForTimeEntryEditor(te->Stop(),
+                timeofday_format);
 
     view_item->StartTimeString = strdup(start_time_string.c_str());
     view_item->EndTimeString = strdup(end_time_string.c_str());
