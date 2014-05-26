@@ -68,7 +68,10 @@ void on_time_entry_list(
     KopsikTimeEntryViewItem *first) {
 }
 
-void on_autocomplete(KopsikAutocompleteItem *first) {
+void on_time_entry_autocomplete(KopsikAutocompleteItem *first) {
+}
+
+void on_project_autocomplete(KopsikAutocompleteItem *first) {
 }
 
 void on_client_select(KopsikViewItem *first) {
@@ -141,7 +144,8 @@ class App {
         kopsik_on_url(ctx_, on_url);
         kopsik_on_reminder(ctx_, on_reminder);
         kopsik_on_time_entry_list(ctx_, on_time_entry_list);
-        kopsik_on_autocomplete(ctx_, on_autocomplete);
+        kopsik_on_time_entry_autocomplete(ctx_, on_time_entry_autocomplete);
+        kopsik_on_project_autocomplete(ctx_, on_project_autocomplete);
         kopsik_on_workspace_select(ctx_, on_workspace_select);
         kopsik_on_client_select(ctx_, on_client_select);
         kopsik_on_tags(ctx_, on_tags);

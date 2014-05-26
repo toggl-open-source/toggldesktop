@@ -758,7 +758,8 @@ const NSString *appName = @"osx_native_app";
 	kopsik_on_url(ctx, on_url);
 	kopsik_on_reminder(ctx, on_reminder);
 	kopsik_on_time_entry_list(ctx, on_time_entry_list);
-	kopsik_on_autocomplete(ctx, on_autocomplete);
+	kopsik_on_time_entry_autocomplete(ctx, on_time_entry_autocomplete);
+	kopsik_on_project_autocomplete(ctx, on_project_autocomplete);
 	kopsik_on_workspace_select(ctx, on_workspace_select);
 	kopsik_on_client_select(ctx, on_client_select);
 	kopsik_on_tags(ctx, on_tags);
@@ -1093,7 +1094,7 @@ void on_time_entry_list(const _Bool open,
 														object:cmd];
 }
 
-void on_autocomplete(KopsikAutocompleteItem *first)
+void on_time_entry_autocomplete(KopsikAutocompleteItem *first)
 {
 	NSMutableArray *viewitems = [[NSMutableArray alloc] init];
 	KopsikAutocompleteItem *record = first;
@@ -1105,8 +1106,14 @@ void on_autocomplete(KopsikAutocompleteItem *first)
 		[viewitems addObject:item];
 		record = record->Next;
 	}
-	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayAutocomplete
+	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimeEntryAutocomplete
 														object:viewitems];
+}
+
+void on_project_autocomplete(KopsikAutocompleteItem *first)
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayProjectAutocomplete
+														object:[AutocompleteItem loadAll:first]];
 }
 
 void on_tags(KopsikViewItem *first)

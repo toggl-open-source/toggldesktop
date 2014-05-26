@@ -45,8 +45,8 @@ extern int kDurationStringLength;
 	{
 		self.willTerminate = NO;
 
-		self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] init];
-		self.descriptionComboboxDataSource = [[AutocompleteDataSource alloc] init];
+		self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayProjectAutocomplete];
+		self.descriptionComboboxDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayTimeEntryAutocomplete];
 
 		self.timerMenubarTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
 																  target:self

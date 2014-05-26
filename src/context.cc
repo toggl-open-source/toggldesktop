@@ -128,7 +128,8 @@ void Context::displayUI() {
     displayWorkspaceSelect();
     displayClientSelect();
     displayTags();
-    displayAutocomplete();
+    displayTimeEntryAutocomplete();
+    displayProjectAutocomplete();
 }
 
 void Context::Shutdown() {
@@ -174,7 +175,8 @@ error Context::save(const bool push_changes) {
 
 void Context::updateUI(std::vector<kopsik::ModelChange> *changes) {
     bool display_time_entries(false);
-    bool display_autocomplete(false);
+    bool display_time_entry_autocomplete(false);
+    bool display_project_autocomplete(false);
     bool display_client_select(false);
     bool display_tags(false);
     bool display_workspace_select(false);
@@ -190,8 +192,12 @@ void Context::updateUI(std::vector<kopsik::ModelChange> *changes) {
             display_tags = true;
         }
         if (ch.ModelType() != "tag" && ch.ModelType() != "user") {
-            display_autocomplete = true;
+            display_time_entry_autocomplete = true;
             display_time_entries = true;
+        }
+        if (ch.ModelType() != "tag" && ch.ModelType() != "user"
+                && ch.ModelType() != "time_entry") {
+            display_project_autocomplete = true;
         }
         if (ch.ModelType() == "client" || ch.ModelType() == "workspace") {
             display_client_select = true;
@@ -223,8 +229,11 @@ void Context::updateUI(std::vector<kopsik::ModelChange> *changes) {
     if (display_time_entries) {
         DisplayTimeEntryList(open_time_entry_list);
     }
-    if (display_autocomplete) {
-        displayAutocomplete();
+    if (display_time_entry_autocomplete) {
+        displayTimeEntryAutocomplete();
+    }
+    if (display_project_autocomplete) {
+        displayProjectAutocomplete();
     }
     if (display_workspace_select) {
         displayWorkspaceSelect();
@@ -240,9 +249,14 @@ void Context::updateUI(std::vector<kopsik::ModelChange> *changes) {
     }
 }
 
-void Context::displayAutocomplete() {
-    std::vector<kopsik::AutocompleteItem> list = autocompleteItems();
-    UI()->DisplayAutocomplete(&list);
+void Context::displayTimeEntryAutocomplete() {
+    std::vector<kopsik::AutocompleteItem> list = autocompleteItems(true);
+    UI()->DisplayTimeEntryAutocomplete(&list);
+}
+
+void Context::displayProjectAutocomplete() {
+    std::vector<kopsik::AutocompleteItem> list = autocompleteItems(false);
+    UI()->DisplayProjectAutocomplete(&list);
 }
 
 void Context::displayClientSelect() {
@@ -1811,7 +1825,8 @@ void Context::projectAutocompleteItems(
     }
 }
 
-std::vector<AutocompleteItem> Context::autocompleteItems() const {
+std::vector<AutocompleteItem> Context::autocompleteItems(
+    const bool including_time_entries) const {
     std::vector<AutocompleteItem> result;
 
     if (!user_) {
@@ -1819,7 +1834,9 @@ std::vector<AutocompleteItem> Context::autocompleteItems() const {
     }
 
     std::set<std::string> unique_names;
-    timeEntryAutocompleteItems(&unique_names, &result);
+    if (including_time_entries) {
+        timeEntryAutocompleteItems(&unique_names, &result);
+    }
     taskAutocompleteItems(&unique_names, &result);
     projectAutocompleteItems(&unique_names, &result);
 

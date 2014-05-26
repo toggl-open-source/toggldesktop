@@ -15,7 +15,7 @@
 
 extern void *ctx;
 
-- (id)init
+- (id)initWithNotificationName:(NSString *)notificationName
 {
 	self = [super init];
 
@@ -25,7 +25,7 @@ extern void *ctx;
 
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(startDisplayAutocomplete:)
-												 name:kDisplayAutocomplete
+												 name:notificationName
 											   object:nil];
 	return self;
 }

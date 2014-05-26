@@ -200,7 +200,11 @@ extern "C" {
         void *context,
         KopsikDisplayTimeEntryList);
 
-    KOPSIK_EXPORT void kopsik_on_autocomplete(
+    KOPSIK_EXPORT void kopsik_on_time_entry_autocomplete(
+        void *context,
+        KopsikDisplayAutocomplete);
+
+    KOPSIK_EXPORT void kopsik_on_project_autocomplete(
         void *context,
         KopsikDisplayAutocomplete);
 
