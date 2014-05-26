@@ -74,7 +74,7 @@ extern int kDurationStringLength;
 												 selector:@selector(appWillTerminate:)
 													 name:NSApplicationWillTerminateNotification
 												   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
+		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(resetPopover:)
 													 name:NSPopoverDidCloseNotification
 												   object:nil];
@@ -117,12 +117,12 @@ extern int kDurationStringLength;
 
 - (void)resetPopover:(NSNotification *)notification
 {
-    [self.addProjectBox setHidden:YES];
-    [self.projectSelectBox setHidden:NO];
-    [self.projectPublicCheckbox setState:NSOffState];
+	[self.addProjectBox setHidden:YES];
+	[self.projectSelectBox setHidden:NO];
+	[self.projectPublicCheckbox setState:NSOffState];
 
-    [self removeCustomConstraints];
-    [self.descriptionCombobox setNextKeyView:self.projectSelect];
+	[self removeCustomConstraints];
+	[self.descriptionCombobox setNextKeyView:self.projectSelect];
 }
 
 - (IBAction)addProjectButtonClicked:(id)sender
@@ -253,7 +253,7 @@ extern int kDurationStringLength;
 	self.timeEntry = cmd.timeEntry;
 
 	NSLog(@"TimeEntryEditViewController render, %@", self.timeEntry);
-    
+
 	if (nil == self.startDate.listener)
 	{
 		self.startDate.listener = self;
