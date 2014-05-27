@@ -28,7 +28,7 @@
             </connections>
         </popover>
         <customView id="ozl-58-bBU" customClass="NSViewEscapable">
-            <rect key="frame" x="0.0" y="0.0" width="346" height="350"/>
+            <rect key="frame" x="0.0" y="0.0" width="346" height="220"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
         </customView>
         <customView id="3">

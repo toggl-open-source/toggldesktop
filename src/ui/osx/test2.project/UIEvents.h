@@ -33,7 +33,8 @@ extern NSString *const kDisplayTimerState;
 
 extern NSString *const kHideDisplayError;
 extern NSString *const kForceCloseEditPopover;
-extern NSString *const kOpenAddProject;
+extern NSString *const kResizeEditForm;
+extern NSString *const kResetEditPopover;
 
 const char *kFocusedFieldNameDuration;
 const char *kFocusedFieldNameDescription;
