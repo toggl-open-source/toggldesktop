@@ -72,7 +72,7 @@ extern void *ctx;
 												 selector:@selector(resizeEditPopup:)
 													 name:kResizeEditForm
 												   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
+		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(resetEditPopover:)
 													 name:NSPopoverDidCloseNotification
 												   object:nil];
@@ -130,11 +130,12 @@ extern void *ctx;
 
 - (void)resetEditPopover:(NSNotification *)notification
 {
-    if (notification.object == self.timeEntrypopover){
-        [[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopover
-                                                            object:nil
-                                                          userInfo:nil];
-    }
+	if (notification.object == self.timeEntrypopover)
+	{
+		[[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopover
+															object:nil
+														  userInfo:nil];
+	}
 }
 
 - (void)popoverWillClose:(NSNotification *)notification
@@ -269,7 +270,7 @@ extern void *ctx;
 
 - (void)resizeEditPopup:(NSNotification *)notification
 {
-    int i = [[[notification userInfo] valueForKey:@"height"] intValue];
+	int i = [[[notification userInfo] valueForKey:@"height"] intValue];
 	float newHeight = self.timeEntrypopover.contentSize.height + i;
 	NSSize n = NSMakeSize(self.timeEntrypopover.contentSize.width, newHeight);
 
