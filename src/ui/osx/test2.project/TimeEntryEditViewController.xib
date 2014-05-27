@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
@@ -13,10 +13,11 @@
                 <outlet property="billableCheckbox" destination="sSX-ad-7XC" id="cVv-CO-AcK"/>
                 <outlet property="clientSelect" destination="Kdc-c6-b4n" id="6Uc-1n-CV7"/>
                 <outlet property="dataholderBox" destination="9Ap-t2-bTq" id="Wci-J0-Sba"/>
+                <outlet property="dateBox" destination="r22-gF-YfG" id="REl-8J-8Pi"/>
                 <outlet property="dateTimeTextField" destination="f6a-A1-juv" id="eKv-rw-Svk"/>
                 <outlet property="deleteButton" destination="Wpz-9G-IOZ" id="opY-mR-5jK"/>
                 <outlet property="descriptionCombobox" destination="6rO-vx-iLH" id="O03-KW-wgi"/>
-                <outlet property="durationBox" destination="cGh-Uz-aLx" id="MWW-uN-tyN"/>
+                <outlet property="durationBox" destination="cGh-Uz-aLx" id="cmp-Rv-UBY"/>
                 <outlet property="durationTextField" destination="EMR-ul-vEb" id="qbl-PP-fL8"/>
                 <outlet property="endTime" destination="2xJ-Tl-Bgy" id="Dcb-yl-aR2"/>
                 <outlet property="lastUpdateTextField" destination="byc-AI-Ri7" id="bg3-EU-Pr6"/>
@@ -272,7 +273,7 @@
                                 <color key="borderColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                 <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </box>
-                            <box hidden="YES" autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" title="TimeEditBox" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Uof-FM-Nqj">
+                            <box hidden="YES" autoresizesSubviews="NO" misplaced="YES" title="TimeEditBox" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Uof-FM-Nqj">
                                 <rect key="frame" x="0.0" y="67" width="346" height="123"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <view key="contentView">
@@ -485,8 +486,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 </view>
                                 <constraints>
                                     <constraint firstItem="cGh-Uz-aLx" firstAttribute="top" secondItem="Uof-FM-Nqj" secondAttribute="top" id="8sR-uy-9q9"/>
+                                    <constraint firstAttribute="bottom" secondItem="r22-gF-YfG" secondAttribute="bottom" id="GTT-Bu-mcn"/>
                                     <constraint firstItem="TSC-79-BuD" firstAttribute="top" secondItem="Uof-FM-Nqj" secondAttribute="top" constant="41" id="Y8i-i2-ujg"/>
-                                    <constraint firstItem="r22-gF-YfG" firstAttribute="top" secondItem="Uof-FM-Nqj" secondAttribute="top" constant="82" id="nSZ-cV-NVn"/>
+                                    <constraint firstItem="r22-gF-YfG" firstAttribute="top" secondItem="Uof-FM-Nqj" secondAttribute="top" priority="750" constant="82" id="nSZ-cV-NVn"/>
                                 </constraints>
                                 <color key="borderColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                                 <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
