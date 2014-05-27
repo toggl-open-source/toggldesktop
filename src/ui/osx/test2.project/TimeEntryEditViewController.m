@@ -581,7 +581,7 @@ extern int kDurationStringLength;
 
 - (void)toggleTimeForm:(BOOL) open {
     if(open) {
-        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:110] forKey:@"height"];
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:100] forKey:@"height"];
 
         [[NSNotificationCenter defaultCenter] postNotificationName:kResizeEditForm
                                               object:nil
