@@ -32,6 +32,7 @@ NSString *const kDisplayTimerState = @"kDisplayTimerState";
 NSString *const kHideDisplayError = @"kHideDisplayError";
 NSString *const kForceCloseEditPopover = @"kForceCloseEditPopover";
 NSString *const kResizeEditForm = @"kResizeEditForm";
+NSString *const kResetEditPopover = @"kResetEditPopover";
 
 const char *kFocusedFieldNameDuration = "duration";
 const char *kFocusedFieldNameDescription = "description";

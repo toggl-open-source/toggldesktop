@@ -72,6 +72,10 @@ extern void *ctx;
 												 selector:@selector(resizeEditPopup:)
 													 name:kResizeEditForm
 												   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(resetEditPopover:)
+													 name:NSPopoverDidCloseNotification
+												   object:nil];
 	}
 	return self;
 }
@@ -122,6 +126,15 @@ extern void *ctx;
 - (BOOL)popoverShouldClose:(NSPopover *)popover
 {
 	return NO;
+}
+
+- (void)resetEditPopover:(NSNotification *)notification
+{
+    if (notification.object == self.timeEntrypopover){
+        [[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopover
+                                                            object:nil
+                                                          userInfo:nil];
+    }
 }
 
 - (void)popoverWillClose:(NSNotification *)notification

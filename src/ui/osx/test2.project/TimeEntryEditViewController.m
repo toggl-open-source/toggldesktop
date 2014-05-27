@@ -76,7 +76,7 @@ extern int kDurationStringLength;
 												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(resetPopover:)
-													 name:NSPopoverDidCloseNotification
+													 name:kResetEditPopover
 												   object:nil];
 	}
 	return self;
