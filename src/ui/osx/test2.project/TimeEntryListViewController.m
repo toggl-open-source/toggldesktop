@@ -76,7 +76,7 @@ extern void *ctx;
 												 selector:@selector(resetEditPopover:)
 													 name:NSPopoverDidCloseNotification
 												   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
+		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(closeRunningEditPopup:)
 													 name:kCommandStop
 												   object:nil];
@@ -154,18 +154,21 @@ extern void *ctx;
 	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
 	if (cmd.open)
 	{
-        if (self.selectedRowView == self.headerView){
-            [self closeEditPopup: nil];
-            self.selectedRowView = nil;
-        } else {
-            if (cmd.timeEntry.duration_in_seconds < 0)
-            {
-                self.selectedRowView = self.headerView;
-            }
-            [self.timeEntrypopover showRelativeToRect:[[self selectedRowView] bounds]
-										   ofView:[self selectedRowView]
-									preferredEdge:NSMaxXEdge];
-        }
+		if (self.selectedRowView == self.headerView)
+		{
+			[self closeEditPopup:nil];
+			self.selectedRowView = nil;
+		}
+		else
+		{
+			if (cmd.timeEntry.duration_in_seconds < 0)
+			{
+				self.selectedRowView = self.headerView;
+			}
+			[self.timeEntrypopover showRelativeToRect:[[self selectedRowView] bounds]
+											   ofView:[self selectedRowView]
+										preferredEdge:NSMaxXEdge];
+		}
 	}
 }
 
@@ -251,7 +254,7 @@ extern void *ctx;
 												 makeIfNecessary:NO];
 	if (self.selectedRowView != nil)
 	{
-        [[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopover
+		[[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopover
 															object:nil
 														  userInfo:nil];
 		[self setDefaultPopupHeight];
@@ -302,12 +305,13 @@ extern void *ctx;
 	[self setDefaultPopupHeight];
 }
 
-- (void)closeRunningEditPopup:(NSNotification *)notification {
-    if (self.selectedRowView == self.headerView) {
-        [self closeEditPopup:notification];
-    }
+- (void)closeRunningEditPopup:(NSNotification *)notification
+{
+	if (self.selectedRowView == self.headerView)
+	{
+		[self closeEditPopup:notification];
+	}
 }
-
 
 - (void)setDefaultPopupHeight
 {
