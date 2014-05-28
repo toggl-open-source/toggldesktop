@@ -13,7 +13,7 @@
 
 extern void *ctx;
 
-- (void)mouseUp:(NSEvent *)event
+- (void)mouseDown:(NSEvent *)event
 {
 	kopsik_edit(ctx, "", true, "");
 }

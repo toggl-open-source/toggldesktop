@@ -150,13 +150,18 @@ extern void *ctx;
 	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
 	if (cmd.open)
 	{
-		if (cmd.timeEntry.duration_in_seconds < 0)
-		{
-			self.selectedRowView = self.headerView;
-		}
-		[self.timeEntrypopover showRelativeToRect:[[self selectedRowView] bounds]
+        if (self.selectedRowView == self.headerView){
+            [self closeEditPopup: nil];
+            self.selectedRowView = nil;
+        } else {
+            if (cmd.timeEntry.duration_in_seconds < 0)
+            {
+                self.selectedRowView = self.headerView;
+            }
+            [self.timeEntrypopover showRelativeToRect:[[self selectedRowView] bounds]
 										   ofView:[self selectedRowView]
 									preferredEdge:NSMaxXEdge];
+        }
 	}
 }
 
