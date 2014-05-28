@@ -14,6 +14,24 @@
 {
 	self.Text = [NSString stringWithUTF8String:data->Text];
 	self.ProjectAndTaskLabel = [NSString stringWithUTF8String:data->ProjectAndTaskLabel];
+	if (self.ProjectLabel)
+	{
+		self.ProjectLabel = [NSString stringWithUTF8String:data->ProjectLabel];
+	}
+	else
+	{
+		self.ProjectLabel = @"";	
+	}
+
+	if (self.ClientLabel)
+	{
+		self.ClientLabel = [NSString stringWithUTF8String:data->ClientLabel];
+	}
+	else
+	{
+		self.ClientLabel = @"";	
+	}
+
 	if (data->Description)
 	{
 		self.Description = [NSString stringWithUTF8String:data->Description];
@@ -22,6 +40,7 @@
 	{
 		self.Description = @"";
 	}
+
 	if (data->ProjectColor)
 	{
 		self.ProjectColor = [NSString stringWithUTF8String:data->ProjectColor];

@@ -64,12 +64,11 @@
 	// Time entry has a project
 	if (view_item.ProjectAndTaskLabel && [view_item.ProjectAndTaskLabel length] > 0)
 	{
-		self.projectTextField.stringValue = view_item.ProjectAndTaskLabel;
+        [self.projectTextField setAttributedStringValue:[self setProjectClientLabel: view_item]];
 		[self.projectTextField setHidden:NO];
 		self.projectTextField.toolTip = view_item.ProjectAndTaskLabel;
 		self.projectTextField.textColor =
 			[ConvertHexColor hexCodeToNSColor:view_item.ProjectColor];
-		[self setClient:self.projectTextField];
 		return;
 	}
 
@@ -79,28 +78,18 @@
 	self.projectTextField.toolTip = nil;
 }
 
-- (void)setClient:(NSTextField *)inTextField
+- (NSMutableAttributedString*)setProjectClientLabel:(TimeEntryViewItem *)view_item
 {
-	NSArray *chunks = [[inTextField stringValue] componentsSeparatedByString:@"."];
-
-	if ([chunks count] == 1)
-	{
-		return;
-	}
-
-	NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:chunks[1]];
+    NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:view_item.ClientLabel];
 	[clientName setAttributes:
 	 @{
-		 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-		 NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
-	 }
+       NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+       NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
+       }
 						range:NSMakeRange(0, [clientName length])];
-
-	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:[chunks[0] stringByAppendingString:@" "]];
+    
+	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:[view_item.ProjectLabel stringByAppendingString:@" "]];
 	[string appendAttributedString:clientName];
-
-	// set the attributed string to the NSTextField
-	[inTextField setAttributedStringValue:string];
+    return string;
 }
-
 @end

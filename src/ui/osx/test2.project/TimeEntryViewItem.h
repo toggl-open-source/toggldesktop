@@ -14,6 +14,8 @@
 @property int64_t duration_in_seconds;
 @property (strong) NSString *Description; // uppercase to avoid clash with [NSObject description]
 @property (strong) NSString *ProjectAndTaskLabel;
+@property (strong) NSString *ProjectLabel;
+@property (strong) NSString *ClientLabel;
 @property uint64_t WorkspaceID;
 @property uint64_t ProjectID;
 @property uint64_t TaskID;
