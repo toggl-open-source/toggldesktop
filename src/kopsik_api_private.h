@@ -38,6 +38,8 @@ void autocomplete_item_clear(KopsikAutocompleteItem *item);
 KopsikTimeEntryViewItem *time_entry_view_item_init(
     kopsik::TimeEntry *te,
     const std::string project_and_task_label,
+    const std::string project_label,
+    const std::string client_label,
     const std::string color,
     const std::string date_duration,
     const std::string timeofday_format);

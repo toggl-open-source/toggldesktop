@@ -155,9 +155,8 @@ extern void *ctx;
 	// Display project name
 	if (self.time_entry.ProjectAndTaskLabel != nil)
 	{
-		self.projectTextField.stringValue = self.time_entry.ProjectAndTaskLabel;
+        [self.projectTextField setAttributedStringValue:[self setProjectClientLabel: self.time_entry]];
 		self.projectTextField.toolTip = self.time_entry.ProjectAndTaskLabel;
-		[self setClient:self.projectTextField];
 	}
 	else
 	{
@@ -209,38 +208,19 @@ extern void *ctx;
 	}
 }
 
-- (void)setClient:(NSTextField *)inTextField
+- (NSMutableAttributedString*)setProjectClientLabel:(TimeEntryViewItem *)view_item
 {
-	NSArray *chunks = [[inTextField stringValue] componentsSeparatedByString:@"."];
-
-	if ([chunks count] == 1)
-	{
-		return;
-	}
-	NSString *client;
-	NSString *project;
-	if (self.time_entry.duration_in_seconds < 0)
-	{
-		client = chunks[1];
-		project = chunks[0];
-	}
-	else
-	{
-		client = chunks[0];
-		project = [chunks[1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-	}
-
-	NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:client];
+    NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:view_item.ClientLabel];
 	[clientName setAttributes:
 	 @{
-		 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-		 NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
-	 }
+       NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+       NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
+       }
 						range:NSMakeRange(0, [clientName length])];
-	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:[project stringByAppendingString:@" "]];
+    
+	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:[view_item.ProjectLabel stringByAppendingString:@" "]];
 	[string appendAttributedString:clientName];
-	// set the attributed string to the NSTextField
-	[inTextField setAttributedStringValue:string];
+    return string;
 }
 
 - (void)textFieldClicked:(id)sender
@@ -361,15 +341,16 @@ extern void *ctx;
 	self.time_entry.ProjectID = item.ProjectID;
 	self.time_entry.TaskID = item.TaskID;
 	self.time_entry.ProjectAndTaskLabel = item.ProjectAndTaskLabel;
+    self.time_entry.ProjectLabel = item.ProjectLabel;
+    self.time_entry.ClientLabel = item.ClientLabel;
 	self.time_entry.ProjectColor = item.ProjectColor;
 	self.time_entry.Description = item.Description;
 
 	self.descriptionComboBox.stringValue = self.time_entry.Description;
 	if (item.ProjectID)
 	{
-		self.projectTextField.stringValue = self.time_entry.ProjectAndTaskLabel;
+        [self.projectTextField setAttributedStringValue:[self setProjectClientLabel: self.time_entry]];
 		self.projectTextField.toolTip = self.time_entry.ProjectAndTaskLabel;
-		[self setClient:self.projectTextField];
 	}
 	[self checkProjectConstraints];
 }

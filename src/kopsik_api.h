@@ -29,6 +29,8 @@ extern "C" {
         int64_t DurationInSeconds;
         char *Description;
         char *ProjectAndTaskLabel;
+        char *ProjectLabel;
+        char *ClientLabel;
         uint64_t WID;
         uint64_t PID;
         uint64_t TID;
@@ -56,6 +58,8 @@ extern "C" {
         char *Description;
         // Project label, if has a project
         char *ProjectAndTaskLabel;
+        char *ProjectLabel;
+        char *ClientLabel;
         char *ProjectColor;
         uint64_t TaskID;
         uint64_t ProjectID;

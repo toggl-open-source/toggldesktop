@@ -76,6 +76,10 @@ extern void *ctx;
 												 selector:@selector(resetEditPopover:)
 													 name:NSPopoverDidCloseNotification
 												   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(closeRunningEditPopup:)
+													 name:kCommandStop
+												   object:nil];
 	}
 	return self;
 }
@@ -150,13 +154,18 @@ extern void *ctx;
 	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
 	if (cmd.open)
 	{
-		if (cmd.timeEntry.duration_in_seconds < 0)
-		{
-			self.selectedRowView = self.headerView;
-		}
-		[self.timeEntrypopover showRelativeToRect:[[self selectedRowView] bounds]
+        if (self.selectedRowView == self.headerView){
+            [self closeEditPopup: nil];
+            self.selectedRowView = nil;
+        } else {
+            if (cmd.timeEntry.duration_in_seconds < 0)
+            {
+                self.selectedRowView = self.headerView;
+            }
+            [self.timeEntrypopover showRelativeToRect:[[self selectedRowView] bounds]
 										   ofView:[self selectedRowView]
 									preferredEdge:NSMaxXEdge];
+        }
 	}
 }
 
@@ -242,6 +251,9 @@ extern void *ctx;
 												 makeIfNecessary:NO];
 	if (self.selectedRowView != nil)
 	{
+        [[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopover
+															object:nil
+														  userInfo:nil];
 		[self setDefaultPopupHeight];
 	}
 	if (latestView == self.selectedRowView && self.timeEntrypopover.shown)
@@ -289,6 +301,13 @@ extern void *ctx;
 	[self.timeEntrypopover close];
 	[self setDefaultPopupHeight];
 }
+
+- (void)closeRunningEditPopup:(NSNotification *)notification {
+    if (self.selectedRowView == self.headerView) {
+        [self closeEditPopup:notification];
+    }
+}
+
 
 - (void)setDefaultPopupHeight
 {

@@ -112,6 +112,8 @@ void autocomplete_item_clear(KopsikAutocompleteItem *item) {
 KopsikTimeEntryViewItem *time_entry_view_item_init(
     kopsik::TimeEntry *te,
     const std::string project_and_task_label,
+    const std::string project_label,
+    const std::string client_label,
     const std::string color,
     const std::string date_duration,
     const std::string timeofday_format) {
@@ -132,6 +134,8 @@ KopsikTimeEntryViewItem *time_entry_view_item_init(
     view_item->Ended = static_cast<unsigned int>(te->Stop());
 
     view_item->ProjectAndTaskLabel = strdup(project_and_task_label.c_str());
+    view_item->ProjectLabel = strdup(project_label.c_str());
+    view_item->ClientLabel = strdup(client_label.c_str());
     view_item->Color = strdup(color.c_str());
 
     std::string start_time_string =
@@ -172,6 +176,12 @@ void time_entry_view_item_clear(
 
     free(item->ProjectAndTaskLabel);
     item->ProjectAndTaskLabel = 0;
+
+    free(item->ProjectLabel);
+    item->ProjectLabel = 0;
+
+    free(item->ClientLabel);
+    item->ClientLabel = 0;
 
     free(item->Duration);
     item->Duration = 0;

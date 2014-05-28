@@ -236,6 +236,8 @@ class Context {
     void projectLabelAndColorCode(
         kopsik::TimeEntry *te,
         std::string *project_and_task_label,
+        std::string *project_label,
+        std::string *client_label,
         std::string *color_code) const;
 
     std::vector<std::string> tags() const;

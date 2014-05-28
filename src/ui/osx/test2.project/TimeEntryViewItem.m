@@ -18,10 +18,14 @@
 	if (te->ProjectAndTaskLabel)
 	{
 		self.ProjectAndTaskLabel = [NSString stringWithUTF8String:te->ProjectAndTaskLabel];
+        self.ProjectLabel = [NSString stringWithUTF8String:te->ProjectLabel];
+        self.ClientLabel = [NSString stringWithUTF8String:te->ClientLabel];
 	}
 	else
 	{
 		self.ProjectAndTaskLabel = nil;
+        self.ProjectLabel = nil;
+        self.ClientLabel = nil;
 	}
 	self.WorkspaceID = te->WID;
 	self.ProjectID = te->PID;
