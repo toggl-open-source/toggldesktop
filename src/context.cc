@@ -1872,7 +1872,7 @@ void Context::projectAutocompleteItems(
             client_label = c->Name();
         }
 
-        std::string text = Formatter::JoinTaskNameReverse(0, p, c);
+        std::string text = Formatter::JoinTaskName(0, p, c);
         if (text.empty()) {
             continue;
         }
