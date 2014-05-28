@@ -234,7 +234,7 @@ extern void *ctx;
 	{
 		return;
 	}
-
+    [self.descriptionComboBox becomeFirstResponder];
 	if (sender == self.durationTextField)
 	{
 		kopsik_edit(ctx, [self.time_entry.GUID UTF8String], false, kFocusedFieldNameDuration);
