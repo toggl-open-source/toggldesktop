@@ -169,6 +169,16 @@ class Context {
     void SetSleep();
     void SetWake();
 
+ protected:
+    void handleCreateTimelineBatchNotification(
+        CreateTimelineBatchNotification *notification);
+
+    void handleTimelineEventNotification(
+        TimelineEventNotification* notification);
+
+    void handleDeleteTimelineBatchNotification(
+        DeleteTimelineBatchNotification *notification);
+
  private:
     const std::string updateURL() const;
 

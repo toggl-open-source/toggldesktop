@@ -43,7 +43,7 @@ class WebSocketClient {
         void *ctx,
         const std::string api_token,
         WebSocketMessageCallback on_websocket_message);
-    virtual void Stop();
+    virtual void Shutdown();
 
     void SetWebsocketURL(const std::string value) {
         websocket_url_ = value;

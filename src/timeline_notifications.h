@@ -21,24 +21,42 @@ class TimelineEventNotification : public Poco::Notification {
 // Find timeline events (for upload).
 class CreateTimelineBatchNotification : public Poco::Notification {
  public:
-    explicit CreateTimelineBatchNotification(const Poco::UInt64 _user_id) :
-    user_id(_user_id) {}
-    Poco::UInt64 user_id;
+    CreateTimelineBatchNotification() {}
 };
 
 // A batch of timeline events has been found in database, that
 // is ready for upload.
 class TimelineBatchReadyNotification : public Poco::Notification {
  public:
-    TimelineBatchReadyNotification(const Poco::UInt64 _user_id,
-                                   std::vector<TimelineEvent> _batch,
-                                   std::string _desktop_id) :
-    user_id(_user_id),
-    batch(_batch),
-    desktop_id(_desktop_id) {}
-    Poco::UInt64 user_id;
-    std::vector<TimelineEvent> batch;
-    std::string desktop_id;
+    TimelineBatchReadyNotification(const Poco::UInt64 user_id,
+                                   std::string api_token,
+                                   std::vector<TimelineEvent> events,
+                                   std::string desktop_id)
+        : user_id_(user_id)
+    , api_token_(api_token)
+    , events_(events)
+    , desktop_id_(desktop_id) {}
+
+    ~TimelineBatchReadyNotification() {}
+
+    Poco::UInt64 &UserID() {
+        return user_id_;
+    }
+    std::string &APIToken() {
+        return api_token_;
+    }
+    std::vector<TimelineEvent> &Events() {
+        return events_;
+    }
+    std::string &DesktopID() {
+        return desktop_id_;
+    }
+
+ private:
+    Poco::UInt64 user_id_;
+    std::string api_token_;
+    std::vector<TimelineEvent> events_;
+    std::string desktop_id_;
 };
 
 // A batch of timeline events has been upladed and may be deleted.

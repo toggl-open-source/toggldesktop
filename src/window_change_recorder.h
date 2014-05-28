@@ -17,58 +17,33 @@ namespace kopsik {
 
 class WindowChangeRecorder {
  public:
-    explicit WindowChangeRecorder(const Poco::UInt64 user_id) :
-    user_id_(user_id),
-    last_title_(""),
-    last_filename_(""),
-    last_event_started_at_(0),
-    window_focus_seconds_(kWindowFocusThresholdSeconds),
-    recording_interval_ms_(kWindowChangeRecordingIntervalMillis),
-    recording_(this, &WindowChangeRecorder::record_loop) {
-        poco_assert(user_id_);
+    WindowChangeRecorder()
+        : last_title_("")
+    , last_filename_("")
+    , last_event_started_at_(0)
+    , recording_(this, &WindowChangeRecorder::recordLoop) {
         recording_.start();
     }
 
-    error Stop() {
-        try {
-            if (recording_.isRunning()) {
-                recording_.stop();
-                recording_.wait();
-            }
-        } catch(const Poco::Exception& exc) {
-            return exc.displayText();
-        } catch(const std::exception& ex) {
-            return ex.what();
-        } catch(const std::string& ex) {
-            return ex;
-        }
-        return noError;
+    ~WindowChangeRecorder() {
+        Shutdown();
     }
 
-    ~WindowChangeRecorder() {
-        Stop();
-    }
+    error Shutdown();
 
  protected:
-    // Activity callback
-    void record_loop();
+    void recordLoop();
 
  private:
-    void inspect_focused_window();
+    void inspectFocusedWindow();
 
-    // User who is recording the events.
-    Poco::UInt64 user_id_;
+    bool hasTheWindowChanged(const std::string &title,
+                             const std::string &filename);
 
     // Last window focus event data
     std::string last_title_;
     std::string last_filename_;
     time_t last_event_started_at_;
-
-    // How many seconds must be a window focussed,
-    // until the window change is recorded.
-    unsigned int window_focus_seconds_;
-
-    unsigned int recording_interval_ms_;
 
     Poco::Activity<WindowChangeRecorder> recording_;
 };

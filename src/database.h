@@ -15,15 +15,13 @@
 #include "Poco/Logger.h"
 #include "Poco/Data/Common.h"
 #include "Poco/Data/SQLite/Connector.h"
-#include "Poco/NotificationCenter.h"
-#include "Poco/Observer.h"
 
 #include "./types.h"
 #include "./proxy.h"
 #include "./user.h"
-#include "./timeline_notifications.h"
 #include "./model_change.h"
 #include "./settings.h"
+#include "./timeline_event.h"
 
 namespace kopsik {
 
@@ -81,19 +79,19 @@ class Database {
     error SetCurrentAPIToken(const std::string &token);
     error ClearCurrentAPIToken();
 
-    error SaveDesktopID();
+    error SelectTimelineBatch(const Poco::UInt64 user_id,
+                              std::vector<TimelineEvent> *timeline_events);
 
     static std::string GenerateGUID();
 
- protected:
-    void handleTimelineEventNotification(
-        TimelineEventNotification* notification);
+    std::string DesktopID() const {
+        return desktop_id_;
+    }
 
-    void handleCreateTimelineBatchNotification(
-        CreateTimelineBatchNotification *notification);
+    error InsertTimelineEvent(const TimelineEvent& info);
 
-    void handleDeleteTimelineBatchNotification(
-        DeleteTimelineBatchNotification *notification);
+    error DeleteTimelineBatch(
+        const std::vector<TimelineEvent> &timeline_events);
 
  private:
     error initialize_tables();
@@ -156,15 +154,6 @@ class Database {
         const std::string table_name,
         const Poco::Int64 UID);
 
-    error insert_timeline_event(const TimelineEvent& info);
-
-    error select_timeline_batch(
-        const Poco::UInt64 user_id,
-        std::vector<TimelineEvent> *timeline_events);
-
-    error delete_timeline_batch(
-        const std::vector<TimelineEvent> &timeline_events);
-
     error saveModel(
         Workspace *model,
         std::vector<ModelChange> *changes);
@@ -188,6 +177,8 @@ class Database {
     error saveModel(
         TimeEntry *model,
         std::vector<ModelChange> *changes);
+
+    error saveDesktopID();
 
     Poco::Logger &logger() const;
 

@@ -16,6 +16,7 @@
 #include "./const.h"
 #include "./kopsik_api_private.h"
 #include "./settings.h"
+#include "./timeline_notifications.h"
 
 #include "Poco/Util/Timer.h"
 #include "Poco/Util/TimerTask.h"
@@ -48,6 +49,26 @@ Context::Context(const std::string app_name, const std::string app_version)
     HTTPSClient::AppVersion = app_version;
 
     Poco::Crypto::OpenSSLInitializer::initialize();
+
+    Poco::NotificationCenter &nc = Poco::NotificationCenter::defaultCenter();
+
+    {
+        Poco::Observer<Context, CreateTimelineBatchNotification>
+        observer(*this, &Context::handleCreateTimelineBatchNotification);
+        nc.addObserver(observer);
+    }
+
+    {
+        Poco::Observer<Context, TimelineEventNotification>
+        observer(*this, &Context::handleTimelineEventNotification);
+        nc.addObserver(observer);
+    }
+
+    {
+        Poco::Observer<Context, DeleteTimelineBatchNotification>
+        observer(*this, &Context::handleDeleteTimelineBatchNotification);
+        nc.addObserver(observer);
+    }
 
     startPeriodicUpdateCheck();
 
@@ -136,15 +157,15 @@ void Context::displayUI() {
 void Context::Shutdown() {
     if (window_change_recorder_) {
         Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
-        window_change_recorder_->Stop();
+        window_change_recorder_->Shutdown();
     }
     if (ws_client_) {
         Poco::Mutex::ScopedLock lock(ws_client_m_);
-        ws_client_->Stop();
+        ws_client_->Shutdown();
     }
     if (timeline_uploader_) {
         Poco::Mutex::ScopedLock lock(timeline_uploader_m_);
-        timeline_uploader_->Stop();
+        timeline_uploader_->Shutdown();
     }
 
     // cancel tasks but allow them finish
@@ -394,7 +415,7 @@ void Context::onSwitchWebSocketOff(Poco::Util::TimerTask& task) {  // NOLINT
     }
 
     Poco::Mutex::ScopedLock lock(ws_client_m_);
-    ws_client_->Stop();
+    ws_client_->Shutdown();
 }
 
 void on_websocket_message(
@@ -501,10 +522,7 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
             delete timeline_uploader_;
             timeline_uploader_ = 0;
         }
-        timeline_uploader_ = new kopsik::TimelineUploader(
-            user_->ID(),
-            user_->APIToken(),
-            timeline_upload_url_);
+        timeline_uploader_ = new kopsik::TimelineUploader(timeline_upload_url_);
     }
 
     {
@@ -513,7 +531,7 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
             delete window_change_recorder_;
             window_change_recorder_ = 0;
         }
-        window_change_recorder_ = new kopsik::WindowChangeRecorder(user_->ID());
+        window_change_recorder_ = new kopsik::WindowChangeRecorder();
     }
 }
 
@@ -2010,6 +2028,58 @@ void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
     }
 
     UI()->DisplayReminder();
+}
+
+void Context::handleCreateTimelineBatchNotification(
+    CreateTimelineBatchNotification* notification) {
+    logger().debug("handleCreateTimelineBatchNotification");
+
+    if (!user_) {
+        return;
+    }
+
+    std::vector<TimelineEvent> batch;
+    error err = db()->SelectTimelineBatch(user_->ID(), &batch);
+    if (err != kopsik::noError) {
+        logger().error(err);
+        return;
+    }
+    if (batch.empty()) {
+        return;
+    }
+
+    TimelineBatchReadyNotification response(user_->ID(),
+                                            user_->APIToken(),
+                                            batch,
+                                            db()->DesktopID());
+    Poco::AutoPtr<TimelineBatchReadyNotification> ptr(&response);
+    Poco::NotificationCenter::defaultCenter().postNotification(ptr);
+}
+
+void Context::handleTimelineEventNotification(
+    TimelineEventNotification* notification) {
+    logger().debug("handleTimelineEventNotification");
+    if (!user_) {
+        return;
+    }
+    TimelineEvent event = notification->event;
+    event.user_id = static_cast<unsigned int>(user_->ID());
+    error err = db()->InsertTimelineEvent(event);
+    if (err != noError) {
+        logger().error(err);
+    }
+}
+
+void Context::handleDeleteTimelineBatchNotification(
+    DeleteTimelineBatchNotification* notification) {
+    logger().debug("handleDeleteTimelineBatchNotification");
+
+    poco_assert(!notification->batch.empty());
+
+    error err = db()->DeleteTimelineBatch(notification->batch);
+    if (err != noError) {
+        logger().error(err);
+    }
 }
 
 }  // namespace kopsik

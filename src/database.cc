@@ -59,24 +59,6 @@ Database::Database(const std::string db_path)
         logger().error(err);
     }
     poco_assert(err == noError);
-
-    Poco::NotificationCenter& nc =
-        Poco::NotificationCenter::defaultCenter();
-
-    Poco::Observer<Database, TimelineEventNotification>
-    observeCreate(*this,
-                  &Database::handleTimelineEventNotification);
-    nc.addObserver(observeCreate);
-
-    Poco::Observer<Database, CreateTimelineBatchNotification>
-    observeSelect(*this,
-                  &Database::handleCreateTimelineBatchNotification);
-    nc.addObserver(observeSelect);
-
-    Poco::Observer<Database, DeleteTimelineBatchNotification>
-    observeDelete(*this,
-                  &Database::handleDeleteTimelineBatchNotification);
-    nc.addObserver(observeDelete);
 }
 
 Database::~Database() {
@@ -234,7 +216,7 @@ error Database::last_error(const std::string was_doing) {
     Poco::Data::SQLite::SessionImpl* sqlite =
         static_cast<Poco::Data::SQLite::SessionImpl*>(impl);
     std::string last = Poco::Data::SQLite::Utility::lastError(sqlite->db());
-    if (last != "not an error") {
+    if (last != "not an error" && last != "unknown error") {
         return error(was_doing + ": " + last);
     }
     return noError;
@@ -2516,7 +2498,7 @@ error Database::initialize_tables() {
     }
     if (desktop_id_.empty()) {
         desktop_id_ = GenerateGUID();
-        err = SaveDesktopID();
+        err = saveDesktopID();
         if (err != noError) {
             return err;
         }
@@ -2586,7 +2568,7 @@ error Database::SetCurrentAPIToken(const std::string &token) {
     return last_error("SetCurrentAPIToken");
 }
 
-error Database::SaveDesktopID() {
+error Database::saveDesktopID() {
     poco_check_ptr(session_);
 
     Poco::Mutex::ScopedLock lock(session_m_);
@@ -2682,11 +2664,11 @@ error Database::execute(
     return noError;
 }
 
-error Database::select_timeline_batch(
+error Database::SelectTimelineBatch(
     const Poco::UInt64 user_id,
     std::vector<TimelineEvent> *timeline_events) {
     std::stringstream out;
-    out << "select_batch, user_id = " << user_id;
+    out << "SelectTimelineBatch user_id = " << user_id;
     logger().debug(out.str());
 
     poco_assert(user_id > 0);
@@ -2722,24 +2704,29 @@ error Database::select_timeline_batch(
     }
 
     std::stringstream event_count;
-    event_count << "select_batch found " << timeline_events->size()
+    event_count << "SelectTimelineBatch found " << timeline_events->size()
                 <<  " events.";
     logger().debug(event_count.str());
 
-    return last_error("select_timeline_batch");
+    return last_error("SelectTimelineBatch");
 }
 
-error Database::insert_timeline_event(const TimelineEvent& event) {
+error Database::InsertTimelineEvent(const TimelineEvent& event) {
     std::stringstream out;
-    out << "insert " << event.start_time << ";" << event.end_time << ";"
-        << event.filename << ";" << event.title;
+    out << "InsertTimelineEvent " << event.start_time
+        << ";"
+        << event.end_time
+        << ";"
+        << event.filename
+        << ";"
+        << event.title;
     logger().debug(out.str());
 
     poco_assert(event.user_id > 0);
     poco_assert(event.start_time > 0);
     poco_assert(event.end_time > 0);
     if (!session_) {
-        logger().warning("insert database is not open, ignoring request");
+        logger().warning("InsertTimelineEvent db closed, ignoring request");
         return noError;
     }
 
@@ -2757,18 +2744,18 @@ error Database::insert_timeline_event(const TimelineEvent& event) {
               Poco::Data::use(event.end_time),
               Poco::Data::use(event.idle),
               Poco::Data::now;
-    return last_error("insert_timeline_event");
+    return last_error("InsertTimelineEvent");
 }
 
-error Database::delete_timeline_batch(
+error Database::DeleteTimelineBatch(
     const std::vector<TimelineEvent> &timeline_events) {
     std::stringstream out;
-    out << "delete_batch " << timeline_events.size() << " events.";
+    out << "DeleteTimelineBatch " << timeline_events.size() << " events.";
     logger().debug(out.str());
 
     poco_assert(!timeline_events.empty());
     if (!session_) {
-        logger().warning("delete_batch database is not open, ignoring request");
+        logger().warning("DeleteTimelineBatch db closed, ignoring request");
         return noError;
     }
     std::vector<int> ids;
@@ -2784,37 +2771,7 @@ error Database::delete_timeline_batch(
     *session_ << "DELETE FROM timeline_events WHERE id = :id",
               Poco::Data::use(ids),
               Poco::Data::now;
-    return last_error("delete_timeline_batch");
-}
-
-void Database::handleTimelineEventNotification(
-    TimelineEventNotification* notification) {
-    logger().debug("handleTimelineEventNotification");
-    insert_timeline_event(notification->event);
-}
-
-void Database::handleCreateTimelineBatchNotification(
-    CreateTimelineBatchNotification* notification) {
-    logger().debug("handleCreateTimelineBatchNotification");
-    std::vector<TimelineEvent> batch;
-    select_timeline_batch(notification->user_id, &batch);
-    if (batch.empty()) {
-        return;
-    }
-    Poco::NotificationCenter& nc = Poco::NotificationCenter::defaultCenter();
-    TimelineBatchReadyNotification response(
-        notification->user_id, batch, desktop_id_);
-    Poco::AutoPtr<TimelineBatchReadyNotification> ptr(&response);
-    nc.postNotification(ptr);
-}
-
-void Database::handleDeleteTimelineBatchNotification(
-    DeleteTimelineBatchNotification* notification) {
-    logger().debug("handleDeleteTimelineBatchNotification");
-
-    poco_assert(!notification->batch.empty());
-
-    delete_timeline_batch(notification->batch);
+    return last_error("DeleteTimelineBatch");
 }
 
 error Database::String(
