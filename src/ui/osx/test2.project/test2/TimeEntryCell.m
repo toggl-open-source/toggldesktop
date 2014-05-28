@@ -61,7 +61,7 @@
 	// Time entry has a project
 	if (view_item.ProjectAndTaskLabel && [view_item.ProjectAndTaskLabel length] > 0)
 	{
-        [self.projectTextField setAttributedStringValue:[self setProjectClientLabel: view_item]];
+		[self.projectTextField setAttributedStringValue:[self setProjectClientLabel:view_item]];
 		[self.projectTextField setHidden:NO];
 		self.projectTextField.toolTip = view_item.ProjectAndTaskLabel;
 		self.projectTextField.textColor =
@@ -75,19 +75,20 @@
 	self.projectTextField.toolTip = nil;
 }
 
-- (NSMutableAttributedString*)setProjectClientLabel:(TimeEntryViewItem *)view_item
+- (NSMutableAttributedString *)setProjectClientLabel:(TimeEntryViewItem *)view_item
 {
-    NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:view_item.ClientLabel];
+	NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:view_item.ClientLabel];
+
 	[clientName setAttributes:
 	 @{
-       NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-       NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
-       }
+		 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+		 NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
+	 }
 						range:NSMakeRange(0, [clientName length])];
-    
+
 	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:[view_item.ProjectLabel stringByAppendingString:@" "]];
 	[string appendAttributedString:clientName];
-    return string;
+	return string;
 }
 
 @end

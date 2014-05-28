@@ -20,7 +20,7 @@
 	}
 	else
 	{
-		self.ProjectLabel = @"";	
+		self.ProjectLabel = @"";
 	}
 
 	if (self.ClientLabel)
@@ -29,7 +29,7 @@
 	}
 	else
 	{
-		self.ClientLabel = @"";	
+		self.ClientLabel = @"";
 	}
 
 	if (data->Description)

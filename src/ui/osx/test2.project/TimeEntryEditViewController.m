@@ -157,7 +157,7 @@ extern int kDurationStringLength;
 	}
 	[self.workspaceLabel setHidden:singleWorkspace];
 	[self.workspaceSelect setHidden:singleWorkspace];
-    
+
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:100] forKey:@"height"];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:kResizeEditForm
@@ -324,20 +324,21 @@ extern int kDurationStringLength;
 	if (self.timeEntry.durOnly)
 	{
 		timeString = [NSString stringWithFormat:@"for %@ ", self.timeEntry.duration];
-        
-        NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_durationBox, _dateBox);
-        self.topConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_durationBox]-0@1000-[_dateBox]"
-                            options:0
-                            metrics:nil
-                            views:viewsDict];
-        [self.view addConstraints:self.topConstraint];
+
+		NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_durationBox, _dateBox);
+		self.topConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_durationBox]-0@1000-[_dateBox]"
+																	 options:0
+																	 metrics:nil
+																	   views:viewsDict];
+		[self.view addConstraints:self.topConstraint];
 	}
 	else
 	{
-        if (self.topConstraint != nil) {
-            [self.view removeConstraints:self.topConstraint];
-            self.topConstraint = nil;
-        }
+		if (self.topConstraint != nil)
+		{
+			[self.view removeConstraints:self.topConstraint];
+			self.topConstraint = nil;
+		}
 		timeString = [NSString stringWithFormat:@"from %@ to %@ ", self.timeEntry.startTimeString, self.timeEntry.endTimeString];
 	}
 	NSString *dateTimeString = [dateString stringByAppendingString:timeString];
@@ -590,12 +591,15 @@ extern int kDurationStringLength;
 {
 	if (open)
 	{
-        NSNumber *addedHeight;
-        if(self.timeEntry.durOnly) {
-            addedHeight = [NSNumber numberWithInt:60];
-        } else {
-            addedHeight = [NSNumber numberWithInt:100];
-        }
+		NSNumber *addedHeight;
+		if (self.timeEntry.durOnly)
+		{
+			addedHeight = [NSNumber numberWithInt:60];
+		}
+		else
+		{
+			addedHeight = [NSNumber numberWithInt:100];
+		}
 		NSDictionary *userInfo = [NSDictionary dictionaryWithObject:addedHeight forKey:@"height"];
 
 		[[NSNotificationCenter defaultCenter] postNotificationName:kResizeEditForm

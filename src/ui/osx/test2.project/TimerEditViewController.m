@@ -155,7 +155,7 @@ extern void *ctx;
 	// Display project name
 	if (self.time_entry.ProjectAndTaskLabel != nil)
 	{
-        [self.projectTextField setAttributedStringValue:[self setProjectClientLabel: self.time_entry]];
+		[self.projectTextField setAttributedStringValue:[self setProjectClientLabel:self.time_entry]];
 		self.projectTextField.toolTip = self.time_entry.ProjectAndTaskLabel;
 	}
 	else
@@ -208,19 +208,20 @@ extern void *ctx;
 	}
 }
 
-- (NSMutableAttributedString*)setProjectClientLabel:(TimeEntryViewItem *)view_item
+- (NSMutableAttributedString *)setProjectClientLabel:(TimeEntryViewItem *)view_item
 {
-    NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:view_item.ClientLabel];
+	NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:view_item.ClientLabel];
+
 	[clientName setAttributes:
 	 @{
-       NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-       NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
-       }
+		 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+		 NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
+	 }
 						range:NSMakeRange(0, [clientName length])];
-    
+
 	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:[view_item.ProjectLabel stringByAppendingString:@" "]];
 	[string appendAttributedString:clientName];
-    return string;
+	return string;
 }
 
 - (void)textFieldClicked:(id)sender
@@ -341,15 +342,15 @@ extern void *ctx;
 	self.time_entry.ProjectID = item.ProjectID;
 	self.time_entry.TaskID = item.TaskID;
 	self.time_entry.ProjectAndTaskLabel = item.ProjectAndTaskLabel;
-    self.time_entry.ProjectLabel = item.ProjectLabel;
-    self.time_entry.ClientLabel = item.ClientLabel;
+	self.time_entry.ProjectLabel = item.ProjectLabel;
+	self.time_entry.ClientLabel = item.ClientLabel;
 	self.time_entry.ProjectColor = item.ProjectColor;
 	self.time_entry.Description = item.Description;
 
 	self.descriptionComboBox.stringValue = self.time_entry.Description;
 	if (item.ProjectID)
 	{
-        [self.projectTextField setAttributedStringValue:[self setProjectClientLabel: self.time_entry]];
+		[self.projectTextField setAttributedStringValue:[self setProjectClientLabel:self.time_entry]];
 		self.projectTextField.toolTip = self.time_entry.ProjectAndTaskLabel;
 	}
 	[self checkProjectConstraints];
