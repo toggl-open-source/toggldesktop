@@ -76,6 +76,10 @@ extern void *ctx;
 												 selector:@selector(resetEditPopover:)
 													 name:NSPopoverDidCloseNotification
 												   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(closeRunningEditPopup:)
+													 name:kCommandStop
+												   object:nil];
 	}
 	return self;
 }
@@ -297,6 +301,13 @@ extern void *ctx;
 	[self.timeEntrypopover close];
 	[self setDefaultPopupHeight];
 }
+
+- (void)closeRunningEditPopup:(NSNotification *)notification {
+    if (self.selectedRowView == self.headerView) {
+        [self closeEditPopup:notification];
+    }
+}
+
 
 - (void)setDefaultPopupHeight
 {
