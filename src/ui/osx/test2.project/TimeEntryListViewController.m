@@ -242,6 +242,9 @@ extern void *ctx;
 												 makeIfNecessary:NO];
 	if (self.selectedRowView != nil)
 	{
+        [[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopover
+															object:nil
+														  userInfo:nil];
 		[self setDefaultPopupHeight];
 	}
 	if (latestView == self.selectedRowView && self.timeEntrypopover.shown)
