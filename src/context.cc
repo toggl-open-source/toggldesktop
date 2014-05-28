@@ -1852,14 +1852,24 @@ void Context::projectAutocompleteItems(
         user_->related.Projects.begin();
             it != user_->related.Projects.end(); it++) {
         kopsik::Project *p = *it;
+        std::string project_label;
+        std::string client_label;
 
         if (!p->Active()) {
             continue;
         }
 
+        if (p) {
+            project_label = p->Name();
+        }
+
         kopsik::Client *c = 0;
         if (p->CID()) {
             c = user_->ClientByID(p->CID());
+        }
+
+        if (c) {
+            client_label = c->Name();
         }
 
         std::string text = Formatter::JoinTaskNameReverse(0, p, c);
@@ -1875,6 +1885,8 @@ void Context::projectAutocompleteItems(
         AutocompleteItem autocomplete_item;
         autocomplete_item.Text = text;
         autocomplete_item.ProjectAndTaskLabel = text;
+        autocomplete_item.ProjectLabel = project_label;
+        autocomplete_item.ClientLabel = client_label;
         autocomplete_item.ProjectID = p->ID();
         autocomplete_item.ProjectColor = p->ColorCode();
         autocomplete_item.Type = kAutocompleteItemProject;

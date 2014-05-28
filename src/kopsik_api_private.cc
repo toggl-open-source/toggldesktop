@@ -13,6 +13,8 @@ KopsikAutocompleteItem *autocomplete_item_init(
     result->Description = strdup(item.Description.c_str());
     result->Text = strdup(item.Text.c_str());
     result->ProjectAndTaskLabel = strdup(item.ProjectAndTaskLabel.c_str());
+    result->ProjectLabel = strdup(item.ProjectLabel.c_str());
+    result->ClientLabel = strdup(item.ClientLabel.c_str());
     result->ProjectColor = strdup(item.ProjectColor.c_str());
     result->ProjectID = static_cast<unsigned int>(item.ProjectID);
     result->TaskID = static_cast<unsigned int>(item.TaskID);
@@ -92,6 +94,12 @@ void autocomplete_item_clear(KopsikAutocompleteItem *item) {
 
     free(item->ProjectAndTaskLabel);
     item->ProjectAndTaskLabel = 0;
+
+    free(item->ProjectLabel);
+    item->ProjectLabel = 0;
+
+    free(item->ClientLabel);
+    item->ClientLabel = 0;
 
     free(item->Description);
     item->Description = 0;
