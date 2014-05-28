@@ -778,8 +778,11 @@ KopsikTimeEntryViewItem *Context::timeEntryViewItem(TimeEntry *te) {
     }
 
     std::string project_and_task_label("");
+    std::string project_label("");
+    std::string client_label("");
     std::string color("");
-    projectLabelAndColorCode(te, &project_and_task_label, &color);
+    projectLabelAndColorCode(te, &project_and_task_label, &project_label,
+                             &client_label, &color);
 
     Poco::Int64 duration = totalDurationForDate(te);
     std::string date_duration =
@@ -787,6 +790,8 @@ KopsikTimeEntryViewItem *Context::timeEntryViewItem(TimeEntry *te) {
 
     return time_entry_view_item_init(te,
                                      project_and_task_label,
+                                     project_label,
+                                     client_label,
                                      color,
                                      date_duration,
                                      timeOfDayFormat());
@@ -1162,8 +1167,11 @@ void Context::DisplayTimeEntryList(const _Bool open) {
         TimeEntry *te = list.at(i);
 
         std::string project_and_task_label("");
+        std::string project_label("");
+        std::string client_label("");
         std::string color("");
-        projectLabelAndColorCode(te, &project_and_task_label, &color);
+        projectLabelAndColorCode(te, &project_and_task_label, &project_label,
+                                 &client_label, &color);
 
         Poco::Int64 duration = date_durations[te->DateHeaderString()];
         std::string date_duration =
@@ -1172,6 +1180,8 @@ void Context::DisplayTimeEntryList(const _Bool open) {
         KopsikTimeEntryViewItem *item =
             time_entry_view_item_init(te,
                                       project_and_task_label,
+                                      project_label,
+                                      client_label,
                                       color,
                                       date_duration,
                                       timeofday_format);
@@ -1591,10 +1601,14 @@ _Bool Context::LoadUpdateChannel(std::string *channel) {
 void Context::projectLabelAndColorCode(
     kopsik::TimeEntry *te,
     std::string *project_and_task_label,
+    std::string *project_label,
+    std::string *client_label,
     std::string *color_code) const {
 
     poco_check_ptr(te);
     poco_check_ptr(project_and_task_label);
+    poco_check_ptr(project_label);
+    poco_check_ptr(client_label);
     poco_check_ptr(color_code);
 
     if (!user_) {
@@ -1626,6 +1640,11 @@ void Context::projectLabelAndColorCode(
 
     if (p) {
         *color_code = p->ColorCode();
+        *project_label = p->Name();
+    }
+
+    if (c) {
+        *client_label = c->Name();
     }
 }
 
@@ -1704,14 +1723,15 @@ void Context::timeEntryAutocompleteItems(
             c = user_->ClientByID(p->CID());
         }
 
-        std::string project_label = Formatter::JoinTaskNameReverse(t, p, c);
+        std::string project_task_label =
+            Formatter::JoinTaskNameReverse(t, p, c);
 
         std::string description = te->Description();
 
         std::stringstream search_parts;
         search_parts << te->Description();
-        if (!project_label.empty()) {
-            search_parts << " - " << project_label;
+        if (!project_task_label.empty()) {
+            search_parts << " - " << project_task_label;
         }
 
         std::string text = search_parts.str();
@@ -1727,10 +1747,14 @@ void Context::timeEntryAutocompleteItems(
         AutocompleteItem autocomplete_item;
         autocomplete_item.Text = text;
         autocomplete_item.Description = description;
-        autocomplete_item.ProjectAndTaskLabel = project_label;
+        autocomplete_item.ProjectAndTaskLabel = project_task_label;
         if (p) {
             autocomplete_item.ProjectColor = p->ColorCode();
             autocomplete_item.ProjectID = p->ID();
+            autocomplete_item.ProjectLabel = p->Name();
+        }
+        if (c) {
+            autocomplete_item.ClientLabel = c->Name();
         }
         if (t) {
             autocomplete_item.TaskID = t->ID();
@@ -1757,6 +1781,8 @@ void Context::taskAutocompleteItems(
         user_->related.Tasks.begin();
             it != user_->related.Tasks.end(); it++) {
         kopsik::Task *t = *it;
+        std::string project_label;
+        std::string client_label;
 
         if (t->IsMarkedAsDeletedOnServer()) {
             continue;
@@ -1771,9 +1797,17 @@ void Context::taskAutocompleteItems(
             continue;
         }
 
+        if (p) {
+            project_label = p->Name();
+        }
+
         kopsik::Client *c = 0;
         if (p && p->CID()) {
             c = user_->ClientByID(p->CID());
+        }
+
+        if (c) {
+            client_label = c->Name();
         }
 
         std::string text = Formatter::JoinTaskNameReverse(t, p, c);
@@ -1789,6 +1823,8 @@ void Context::taskAutocompleteItems(
         AutocompleteItem autocomplete_item;
         autocomplete_item.Text = text;
         autocomplete_item.ProjectAndTaskLabel = text;
+        autocomplete_item.ProjectLabel = project_label;
+        autocomplete_item.ClientLabel = client_label;
         autocomplete_item.TaskID = t->ID();
         if (p) {
             autocomplete_item.ProjectColor = p->ColorCode();

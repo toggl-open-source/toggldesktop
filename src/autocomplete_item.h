@@ -17,6 +17,8 @@ class AutocompleteItem {
         : Text("")
     , Description("")
     , ProjectAndTaskLabel("")
+    , ProjectLabel("")
+    , ClientLabel("")
     , ProjectColor("")
     , TaskID(0)
     , ProjectID(0)
@@ -36,6 +38,8 @@ class AutocompleteItem {
     std::string Text;
     std::string Description;
     std::string ProjectAndTaskLabel;
+    std::string ProjectLabel;
+    std::string ClientLabel;
     std::string ProjectColor;
     Poco::UInt64 TaskID;
     Poco::UInt64 ProjectID;
