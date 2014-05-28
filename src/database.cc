@@ -246,10 +246,7 @@ std::string Database::GenerateGUID() {
     return uuid.toString();
 }
 
-error Database::LoadCurrentUser(
-    User *user,
-    const bool with_related_data) {
-
+error Database::LoadCurrentUser(User *user) {
     poco_check_ptr(user);
 
     std::string api_token("");
@@ -260,7 +257,7 @@ error Database::LoadCurrentUser(
     if (api_token.empty()) {
         return noError;
     }
-    return LoadUserByAPIToken(api_token, user, with_related_data);
+    return LoadUserByAPIToken(api_token, user);
 }
 
 error Database::LoadSettings(Settings *settings) {
@@ -428,8 +425,7 @@ error Database::SaveUpdateChannel(
 
 error Database::LoadUserByAPIToken(
     const std::string api_token,
-    User *model,
-    const bool with_related_data) {
+    User *model) {
 
     poco_check_ptr(session_);
     poco_check_ptr(model);
@@ -460,7 +456,7 @@ error Database::LoadUserByAPIToken(
     } catch(const std::string& ex) {
         return ex;
     }
-    return LoadUserByID(uid, model, with_related_data);
+    return LoadUserByID(uid, model);
 }
 
 error Database::loadUsersRelatedData(User *user) {
@@ -498,8 +494,7 @@ error Database::loadUsersRelatedData(User *user) {
 
 error Database::LoadUserByID(
     const Poco::UInt64 UID,
-    User *user,
-    const bool with_related_data) {
+    User *user) {
 
     poco_check_ptr(user);
     poco_check_ptr(session_);
@@ -568,17 +563,14 @@ error Database::LoadUserByID(
     } catch(const std::string& ex) {
         return ex;
     }
-    if (with_related_data) {
-        error err = loadUsersRelatedData(user);
-        if (err != noError) {
-            return err;
-        }
+    error err = loadUsersRelatedData(user);
+    if (err != noError) {
+        return err;
     }
 
     stopwatch.stop();
     std::stringstream ss;
-    ss << "User with_related_data=" << with_related_data << " loaded in "
-       << stopwatch.elapsed() / 1000 << " ms";
+    ss << "User loaded in " << stopwatch.elapsed() / 1000 << " ms";
     logger().debug(ss.str());
 
     return noError;

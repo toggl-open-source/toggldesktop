@@ -410,24 +410,34 @@ void User::CollectPushableProjects(
 
 error User::FullSync(
     HTTPSClient *https_client) {
-    BasicAuthUsername = APIToken();
-    BasicAuthPassword = "api_token";
-    error err = pull(https_client, true, true);
-    if (err != noError) {
-        return err;
+    try {
+        Poco::Stopwatch stopwatch;
+        stopwatch.start();
+
+        std::string user_data_json("");
+        error err = Me(https_client, APIToken(), "api_token", &user_data_json);
+        if (err != noError) {
+            return err;
+        }
+
+        LoadUserAndRelatedDataFromJSONString(this, user_data_json);
+
+        stopwatch.stop();
+        std::stringstream ss;
+        ss << "User with related data JSON fetched and parsed in "
+           << stopwatch.elapsed() / 1000 << " ms";
+        logger().debug(ss.str());
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
     }
-    return push(https_client);
+    return Push(https_client);
 }
 
-error User::PartialSync(
-    HTTPSClient *https_client) {
-    BasicAuthUsername = APIToken();
-    BasicAuthPassword = "api_token";
-    // FIXME: if last sync was a while ago, fetch data using "since" parameter
-    return push(https_client);
-}
-
-error User::push(HTTPSClient *https_client) {
+error User::Push(HTTPSClient *https_client) {
     try {
         Poco::Stopwatch stopwatch;
         stopwatch.start();
@@ -495,56 +505,24 @@ std::string User::String() const {
     return ss.str();
 }
 
-error User::Login(
+error User::Me(
     HTTPSClient *https_client,
-    const std::string &email,
-    const std::string &password) {
-    BasicAuthUsername = email;
-    BasicAuthPassword = password;
-    return pull(https_client, true, true);
-}
-
-error User::pull(
-    HTTPSClient *https_client,
-    const bool full_sync,
-    const bool with_related_data) {
+    const std::string email,
+    const std::string password,
+    std::string *user_data_json) {
     try {
-        Poco::Stopwatch stopwatch;
-        stopwatch.start();
+        poco_check_ptr(user_data_json);
+        poco_check_ptr(https_client);
 
         std::stringstream relative_url;
-        relative_url << "/api/v8/me?app_name=kopsik";
+        relative_url << "/api/v8/me"
+                     << "?app_name=" << HTTPSClient::AppName
+                     << "&with_related_data=true";
 
-        if (with_related_data) {
-            relative_url << "&with_related_data=true";
-        } else {
-            relative_url << "&with_related_data=false";
-        }
-
-        if (!full_sync) {
-            relative_url << "&since=" << since_;
-        }
-
-        std::string response_body("");
-
-        error err = https_client->GetJSON(relative_url.str(),
-                                          BasicAuthUsername,
-                                          BasicAuthPassword,
-                                          &response_body);
-        if (err != noError) {
-            return err;
-        }
-
-        LoadUserFromJSONString(this,
-                               response_body,
-                               full_sync,
-                               with_related_data);
-
-        stopwatch.stop();
-        std::stringstream ss;
-        ss << "User with related data JSON fetched and parsed in "
-           << stopwatch.elapsed() / 1000 << " ms";
-        logger().debug(ss.str());
+        return https_client->GetJSON(relative_url.str(),
+                                     email,
+                                     password,
+                                     user_data_json);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -553,7 +531,7 @@ error User::pull(
         return ex;
     }
     return noError;
-};
+}
 
 error User::collectErrors(std::vector<error> * const errors) const {
     std::stringstream ss;
