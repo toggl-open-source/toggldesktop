@@ -217,20 +217,21 @@ extern int kDurationStringLength;
 		return NO;
 	}
 	uint64_t clientID = [self selectedClientID];
-    _Bool isBillable = self.timeEntry.billable;
+	_Bool isBillable = self.timeEntry.billable;
 	// A new project is being added!
 	_Bool projectAdded = kopsik_add_project(ctx,
-                        [self.timeEntry.GUID UTF8String],
-                        workspaceID,
-                        clientID,
-                        [projectName UTF8String],
-                        !is_public);
+											[self.timeEntry.GUID UTF8String],
+											workspaceID,
+											clientID,
+											[projectName UTF8String],
+											!is_public);
 
-    if(projectAdded && isBillable) {
-        kopsik_set_time_entry_billable(ctx, [self.timeEntry.GUID UTF8String], isBillable);
-    }
+	if (projectAdded && isBillable)
+	{
+		kopsik_set_time_entry_billable(ctx, [self.timeEntry.GUID UTF8String], isBillable);
+	}
 
-    return projectAdded;
+	return projectAdded;
 }
 
 - (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString
@@ -358,8 +359,14 @@ extern int kDurationStringLength;
 	NSString *dateTimeString = [dateString stringByAppendingString:timeString];
 	[self.dateTimeTextField setStringValue:dateTimeString];
 
-	[self.startTime setStringValue:self.timeEntry.startTimeString];
-	[self.endTime setStringValue:self.timeEntry.endTimeString];
+	if ([self.startTime currentEditor] == nil)
+	{
+		[self.startTime setStringValue:self.timeEntry.startTimeString];
+	}
+	if ([self.endTime currentEditor] == nil)
+	{
+		[self.endTime setStringValue:self.timeEntry.endTimeString];
+	}
 
 	[self.startDate setDateValue:self.timeEntry.started];
 
