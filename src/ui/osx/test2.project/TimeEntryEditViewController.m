@@ -354,8 +354,14 @@ extern int kDurationStringLength;
 	NSString *dateTimeString = [dateString stringByAppendingString:timeString];
 	[self.dateTimeTextField setStringValue:dateTimeString];
 
-	[self.startTime setStringValue:self.timeEntry.startTimeString];
-	[self.endTime setStringValue:self.timeEntry.endTimeString];
+	if ([self.startTime currentEditor] == nil)
+	{
+		[self.startTime setStringValue:self.timeEntry.startTimeString];
+	}
+	if ([self.endTime currentEditor] == nil)
+	{
+		[self.endTime setStringValue:self.timeEntry.endTimeString];
+	}
 
 	[self.startDate setDateValue:self.timeEntry.started];
 
