@@ -117,9 +117,10 @@ extern int kDurationStringLength;
 
 - (void)resetPopover:(NSNotification *)notification
 {
-    if (!self.addProjectBox.isHidden) {
-        [self applyAddProject];
-    }
+	if (!self.addProjectBox.isHidden)
+	{
+		[self applyAddProject];
+	}
 	[self.addProjectBox setHidden:YES];
 	[self.projectSelectBox setHidden:NO];
 	[self.projectPublicCheckbox setState:NSOffState];
