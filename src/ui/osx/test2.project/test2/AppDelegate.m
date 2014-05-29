@@ -171,7 +171,7 @@ const int kDurationStringLength = 20;
 	NSAssert(started, @"Failed to start UI");
 
 	[MASShortcut registerGlobalShortcutWithUserDefaultsKey:kPreferenceGlobalShortcutShowHide handler:^{
-		 if ([self.mainWindowController.window isVisible])
+		 if ([[NSApplication sharedApplication] isActive] && [self.mainWindowController.window isVisible])
 		 {
 			 [self.mainWindowController.window close];
 		 }
