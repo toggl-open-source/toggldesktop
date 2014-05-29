@@ -216,14 +216,20 @@ extern int kDurationStringLength;
 		return NO;
 	}
 	uint64_t clientID = [self selectedClientID];
-
+    _Bool isBillable = self.timeEntry.billable;
 	// A new project is being added!
-	return kopsik_add_project(ctx,
-							  [self.timeEntry.GUID UTF8String],
-							  workspaceID,
-							  clientID,
-							  [projectName UTF8String],
-							  !is_public);
+	_Bool projectAdded = kopsik_add_project(ctx,
+                        [self.timeEntry.GUID UTF8String],
+                        workspaceID,
+                        clientID,
+                        [projectName UTF8String],
+                        !is_public);
+
+    if(projectAdded && isBillable) {
+        kopsik_set_time_entry_billable(ctx, [self.timeEntry.GUID UTF8String], isBillable);
+    }
+
+    return projectAdded;
 }
 
 - (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString
