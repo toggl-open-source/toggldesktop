@@ -349,7 +349,11 @@ extern int kDurationStringLength;
 			[self.view removeConstraints:self.topConstraint];
 			self.topConstraint = nil;
 		}
-		timeString = [NSString stringWithFormat:@"from %@ to %@ ", self.timeEntry.startTimeString, self.timeEntry.endTimeString];
+        if (self.timeEntry.endTimeString.length) {
+            timeString = [NSString stringWithFormat:@"from %@ to %@", self.timeEntry.startTimeString, self.timeEntry.endTimeString];
+        } else {
+            timeString = [NSString stringWithFormat:@"from %@", self.timeEntry.startTimeString];
+        }
 	}
 	NSString *dateTimeString = [dateString stringByAppendingString:timeString];
 	[self.dateTimeTextField setStringValue:dateTimeString];
