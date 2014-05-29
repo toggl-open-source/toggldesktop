@@ -88,9 +88,9 @@ extern void *ctx;
 {
 	[super loadView];
 	[self.timeEntriesTableView registerNib:self.nibTimeEntryCell
-							 forIdentifier:@"TimeEntryCell"];
+							 forIdentifier :@"TimeEntryCell"];
 	[self.timeEntriesTableView registerNib:self.nibTimeEntryCellWithHeader
-							 forIdentifier:@"TimeEntryCellWithHeader"];
+							 forIdentifier :@"TimeEntryCellWithHeader"];
 
 	[self.headerView addSubview:self.timerEditViewController.view];
 	[self.timerEditViewController.view setFrame:self.headerView.bounds];
@@ -251,7 +251,7 @@ extern void *ctx;
 	}
 
 	NSView *latestView = [self.timeEntriesTableView rowViewAtRow:row
-												 makeIfNecessary:NO];
+												 makeIfNecessary  :NO];
 	if (self.selectedRowView != nil)
 	{
 		[[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopover
@@ -278,13 +278,17 @@ extern void *ctx;
 		return;
 	}
 	NSTableRowView *rowView = [self.timeEntriesTableView rowViewAtRow:selectedRow
-													  makeIfNecessary:NO];
+													  makeIfNecessary  :NO];
 	[rowView setEmphasized:NO];
 	[rowView setSelected:NO];
 }
 
 - (void)resizeEditPopup:(NSNotification *)notification
 {
+	if (!self.timeEntrypopover.shown)
+	{
+		return;
+	}
 	int i = [[[notification userInfo] valueForKey:@"height"] intValue];
 	float newHeight = self.timeEntrypopover.contentSize.height + i;
 	NSSize n = NSMakeSize(self.timeEntrypopover.contentSize.width, newHeight);

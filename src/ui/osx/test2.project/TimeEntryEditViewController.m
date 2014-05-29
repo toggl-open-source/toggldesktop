@@ -365,11 +365,14 @@ extern int kDurationStringLength;
 			[self.view removeConstraints:self.topConstraint];
 			self.topConstraint = nil;
 		}
-        if (self.timeEntry.endTimeString.length) {
-            timeString = [NSString stringWithFormat:@"from %@ to %@", self.timeEntry.startTimeString, self.timeEntry.endTimeString];
-        } else {
-            timeString = [NSString stringWithFormat:@"from %@", self.timeEntry.startTimeString];
-        }
+		if (self.timeEntry.endTimeString.length)
+		{
+			timeString = [NSString stringWithFormat:@"from %@ to %@", self.timeEntry.startTimeString, self.timeEntry.endTimeString];
+		}
+		else
+		{
+			timeString = [NSString stringWithFormat:@"from %@", self.timeEntry.startTimeString];
+		}
 	}
 	NSString *dateTimeString = [dateString stringByAppendingString:timeString];
 	[self.dateTimeTextField setStringValue:dateTimeString];
@@ -410,7 +413,7 @@ extern int kDurationStringLength;
 		[df_local setTimeZone:[NSTimeZone defaultTimeZone]];
 		[df_local setDateFormat:@"yyyy.MM.dd 'at' HH:mm:ss"];
 		NSString *localDate = [df_local stringFromDate:self.timeEntry.updatedAt];
-		NSString *updatedAt = [@"Last update " stringByAppendingString : localDate];
+		NSString *updatedAt = [@"Last update " stringByAppendingString:localDate];
 		[self.lastUpdateTextField setStringValue:updatedAt];
 		[self.lastUpdateTextField setHidden:NO];
 	}
