@@ -514,7 +514,7 @@ const int kDurationStringLength = 20;
 	[menu addItemWithTitle:@"Sync"
 					action:@selector(onSyncMenuItem:)
 			 keyEquivalent:@""].tag = kMenuItemTagSync;
-	[menu addItemWithTitle:@"Open in browser"
+	[menu addItemWithTitle:@"Reports"
 					action:@selector(onOpenBrowserMenuItem:)
 			 keyEquivalent:@""].tag = kMenuItemTagOpenBrowser;
 	[menu addItemWithTitle:@"Preferences"
