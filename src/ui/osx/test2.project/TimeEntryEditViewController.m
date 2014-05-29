@@ -31,6 +31,7 @@
 @property NSLayoutConstraint *addProjectBoxHeight;
 @property NSDateFormatter *format;
 @property BOOL willTerminate;
+@property BOOL resizeOnOpen;
 @end
 
 @implementation TimeEntryEditViewController
@@ -78,6 +79,10 @@ extern int kDurationStringLength;
 												 selector:@selector(resetPopover:)
 													 name:kResetEditPopover
 												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(checkResize:)
+													 name:NSPopoverDidShowNotification
+												   object:nil];
 	}
 	return self;
 }
@@ -113,6 +118,16 @@ extern int kDurationStringLength;
 - (void)appWillTerminate:(NSNotification *)notification
 {
 	self.willTerminate = YES;
+}
+
+- (void)checkResize:(NSNotification *)notification
+{
+	if (self.resizeOnOpen)
+	{
+		[self toggleTimeForm:YES];
+		[self.durationTextField becomeFirstResponder];
+	}
+	self.resizeOnOpen = NO;
 }
 
 - (void)resetPopover:(NSNotification *)notification
@@ -408,6 +423,7 @@ extern int kDurationStringLength;
 	{
 		if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDuration]])
 		{
+			self.resizeOnOpen = YES;
 			[self.durationTextField becomeFirstResponder];
 		}
 		if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDescription]])

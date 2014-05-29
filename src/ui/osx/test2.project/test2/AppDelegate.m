@@ -1146,6 +1146,7 @@ void on_time_entry_editor(const _Bool open,
 	DisplayCommand *cmd = [[DisplayCommand alloc] init];
 	cmd.open = open;
 	cmd.timeEntry = item;
+	cmd.timeEntry.focusedFieldName = [NSString stringWithUTF8String:focused_field_name];
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimeEntryEditor
 														object:cmd];
 }
