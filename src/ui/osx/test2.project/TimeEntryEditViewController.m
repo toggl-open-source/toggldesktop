@@ -849,7 +849,8 @@ extern int kDurationStringLength;
 		return;
 	}
 
-	if (!kopsik_set_time_entry_project(ctx,
+	if (![self.timeEntry.Description isEqualToString:key] &&
+		!kopsik_set_time_entry_project(ctx,
 									   GUID,
 									   autocomplete.TaskID,
 									   autocomplete.ProjectID,
