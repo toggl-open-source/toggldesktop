@@ -91,6 +91,8 @@ guid GUIDFromJSONNode(JSONNODE * const);
 Poco::UInt64 UIModifiedAtFromJSONNode(JSONNODE * const);
 bool IsDeletedAtServer(JSONNODE * const);
 
+std::string LoginTokenFromJSONDataString(const std::string json_data_string);
+
 template<class T>
 void deleteZombies(
     std::vector<T> &list,

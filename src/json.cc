@@ -47,6 +47,26 @@ Poco::UInt64 UserIDFromJSONDataString(const std::string json_data_string) {
     return result;
 }
 
+std::string LoginTokenFromJSONDataString(const std::string json_data_string) {
+    std::string result("");
+
+    JSONNODE *root = json_parse(json_data_string.c_str());
+
+    JSONNODE_ITERATOR current_node = json_begin(root);
+    JSONNODE_ITERATOR last_node = json_end(root);
+    while (current_node != last_node) {
+        json_char *node_name = json_name(*current_node);
+        if (strcmp(node_name, "login_token") == 0) {
+            result = std::string(json_as_string(*current_node));
+        }
+        ++current_node;
+    }
+
+    json_delete(root);
+
+    return result;
+}
+
 guid GUIDFromJSONNode(JSONNODE * const data) {
     poco_check_ptr(data);
 

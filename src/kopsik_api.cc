@@ -676,7 +676,7 @@ void kopsik_set_wake(void *context) {
 }
 
 void kopsik_open_in_browser(void *context) {
-    app(context)->UI()->DisplayURL(kTogglWebsiteURL);
+    app(context)->OpenReportsInBrowser();
 }
 
 void kopsik_get_support(void *context) {
