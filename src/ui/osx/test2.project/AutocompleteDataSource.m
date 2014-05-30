@@ -74,7 +74,8 @@ extern void *ctx;
 		[self.dictionary removeAllObjects];
 		for (AutocompleteItem *item in entries)
 		{
-			NSString *key = item.Text;
+			NSString *key = [self splitTextToMultipleLines:item];
+
 			if ([self.dictionary objectForKey:key] == nil)
 			{
 				[self.orderedKeys addObject:key];
@@ -180,6 +181,26 @@ extern void *ctx;
 - (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)aString
 {
 	return [self indexOfKey:aString];
+}
+
+- (NSString *)splitTextToMultipleLines:(AutocompleteItem *)item
+{
+	NSString *returnString;
+
+	if ([item.Description length])
+	{
+		NSString *clientName = @"";
+		if ([item.ClientLabel length])
+		{
+			clientName = [@". " stringByAppendingString:item.ClientLabel];
+		}
+		returnString = [NSString stringWithFormat:@"%@\n%@%@", item.Description, item.ProjectLabel, clientName];
+	}
+	else
+	{
+		returnString = [NSString stringWithFormat:@"%@\n%@", item.ProjectLabel, item.ClientLabel];
+	}
+	return returnString;
 }
 
 @end

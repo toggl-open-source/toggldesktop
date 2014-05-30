@@ -26,6 +26,7 @@
 
 - (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
+	[self setItemHeight:36.0];
 	if (_cellLength != 0)
 	{
 		NSRect myRect = NSMakeRect(cellFrame.origin.x, cellFrame.origin.y,
