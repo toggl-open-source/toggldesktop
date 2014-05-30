@@ -12,7 +12,12 @@
 
 namespace kopsik {
 
-void WindowChangeRecorder::inspect_focused_window() {
+bool WindowChangeRecorder::hasTheWindowChanged(const std::string &title,
+        const std::string &filename) {
+    return ((title != last_title_) || (filename != last_filename_));
+}
+
+void WindowChangeRecorder::inspectFocusedWindow() {
     std::string title("");
     std::string filename("");
 
@@ -22,7 +27,7 @@ void WindowChangeRecorder::inspect_focused_window() {
     time(&now);
 
     // Has the window changed?
-    if ((title != last_title_) || (filename != last_filename_)) {
+    if (hasTheWindowChanged(title, filename)) {
         // We actually record the *previous* event. Meaning, when
         // you have "terminal" open and then switch to "skype",
         // then "terminal" gets recorded here:
@@ -30,19 +35,16 @@ void WindowChangeRecorder::inspect_focused_window() {
             time_t time_delta = now - last_event_started_at_;
 
             // if window was focussed at least X seconds, save it to timeline
-            if (time_delta >= window_focus_seconds_) {
-                poco_assert(user_id_ > 0);
+            if (time_delta >= kWindowFocusThresholdSeconds) {
                 TimelineEvent event;
                 event.start_time = last_event_started_at_;
                 event.end_time = now;
                 event.filename = last_filename_;
                 event.title = last_title_;
-                event.user_id = static_cast<int>(user_id_);
-                Poco::NotificationCenter& nc =
-                    Poco::NotificationCenter::defaultCenter();
+
                 TimelineEventNotification notification(event);
                 Poco::AutoPtr<TimelineEventNotification> ptr(&notification);
-                nc.postNotification(ptr);
+                Poco::NotificationCenter::defaultCenter().postNotification(ptr);
             }
         }
 
@@ -52,11 +54,27 @@ void WindowChangeRecorder::inspect_focused_window() {
     }
 }
 
-void WindowChangeRecorder::record_loop() {
+void WindowChangeRecorder::recordLoop() {
     while (!recording_.isStopped()) {
-        inspect_focused_window();
-        Poco::Thread::sleep(recording_interval_ms_);
+        inspectFocusedWindow();
+        Poco::Thread::sleep(kWindowChangeRecordingIntervalMillis);
     }
+}
+
+error WindowChangeRecorder::Shutdown() {
+    try {
+        if (recording_.isRunning()) {
+            recording_.stop();
+            recording_.wait();
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
 }
 
 }  // namespace kopsik

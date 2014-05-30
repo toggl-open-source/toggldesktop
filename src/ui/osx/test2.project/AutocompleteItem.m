@@ -14,7 +14,7 @@
 {
 	self.Text = [NSString stringWithUTF8String:data->Text];
 	self.ProjectAndTaskLabel = [NSString stringWithUTF8String:data->ProjectAndTaskLabel];
-	if (self.ProjectLabel)
+	if (data->ProjectLabel)
 	{
 		self.ProjectLabel = [NSString stringWithUTF8String:data->ProjectLabel];
 	}
@@ -23,7 +23,7 @@
 		self.ProjectLabel = @"";
 	}
 
-	if (self.ClientLabel)
+	if (data->ClientLabel)
 	{
 		self.ClientLabel = [NSString stringWithUTF8String:data->ClientLabel];
 	}

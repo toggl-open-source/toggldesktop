@@ -30,8 +30,6 @@ namespace kopsik {
 class User : public BaseModel {
  public:
     User() :
-    BasicAuthUsername(""),
-    BasicAuthPassword(""),
     api_token_(""),
     default_wid_(0),
     since_(0),
@@ -44,11 +42,13 @@ class User : public BaseModel {
     ~User();
 
     error FullSync(HTTPSClient *https_client);
-    error PartialSync(HTTPSClient *https_client);
-    error Login(
+    error Push(HTTPSClient *https_client);
+
+    static error Me(
         HTTPSClient *https_client,
-        const std::string &email,
-        const std::string &password);
+        const std::string email,
+        const std::string password,
+        std::string *user_data);
 
     std::string String() const;
 
@@ -145,11 +145,6 @@ class User : public BaseModel {
     }
     void SetStoreStartAndStopTime(const bool value);
 
-    // Following 2 fields are not saved into database:
-    // They are only used to log user in.
-    std::string BasicAuthUsername;
-    std::string BasicAuthPassword;
-
     RelatedData related;
 
     std::string ModelName() const {
@@ -166,13 +161,6 @@ class User : public BaseModel {
     void RemoveTaskFromRelatedModels(const Poco::UInt64 tid);
 
  private:
-    error pull(
-        HTTPSClient *https_client,
-        const bool full_sync,
-        const bool with_related_data);
-    error push(
-        HTTPSClient *https_client);
-
     std::string dirtyObjectsJSON(std::vector<TimeEntry *> * const) const;
     void processResponseArray(
         std::vector<BatchUpdateResult> * const results,

@@ -95,7 +95,7 @@ TEST(TogglApiClientTest, UpdatesTimeEntryFromJSON) {
     testing::Database db;
 
     User user;
-    LoadUserFromJSONString(&user, loadTestData(), true, true);
+    LoadUserAndRelatedDataFromJSONString(&user, loadTestData());
 
     TimeEntry *te = user.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
@@ -121,7 +121,7 @@ TEST(TogglApiClientTest, UpdatesTimeEntryFromFullUserJSON) {
     std::string json = loadTestData();
 
     User user;
-    LoadUserFromJSONString(&user, loadTestData(), true, true);
+    LoadUserAndRelatedDataFromJSONString(&user, loadTestData());
 
     TimeEntry *te = user.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
@@ -132,7 +132,7 @@ TEST(TogglApiClientTest, UpdatesTimeEntryFromFullUserJSON) {
                         std::string("Important things").length(),
                         "Even more important!");
 
-    LoadUserFromJSONString(&user, json, true, true);
+    LoadUserAndRelatedDataFromJSONString(&user, json);
     te = user.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
     ASSERT_EQ("Even more important!", te->Description());
@@ -142,7 +142,7 @@ TEST(TogglApiClientTest, SavesAndLoadsUserFields) {
     testing::Database db;
 
     User user;
-    LoadUserFromJSONString(&user, loadTestData(), true, true);
+    LoadUserAndRelatedDataFromJSONString(&user, loadTestData());
 
     ASSERT_TRUE(user.StoreStartAndStopTime());
     // Change fields
@@ -153,7 +153,7 @@ TEST(TogglApiClientTest, SavesAndLoadsUserFields) {
 
     // Load user into another instance
     User user2;
-    ASSERT_EQ(noError, db.instance()->LoadUserByID(user.ID(), &user2, false));
+    ASSERT_EQ(noError, db.instance()->LoadUserByID(user.ID(), &user2));
     ASSERT_FALSE(user2.StoreStartAndStopTime());
 
     // Change fields, again
@@ -162,7 +162,7 @@ TEST(TogglApiClientTest, SavesAndLoadsUserFields) {
 
     // Load user into another instance
     User user3;
-    ASSERT_EQ(noError, db.instance()->LoadUserByID(user.ID(), &user3, false));
+    ASSERT_EQ(noError, db.instance()->LoadUserByID(user.ID(), &user3));
     ASSERT_TRUE(user3.StoreStartAndStopTime());
 }
 
@@ -170,7 +170,7 @@ TEST(TogglApiClientTest, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
     testing::Database db;
 
     User user;
-    LoadUserFromJSONString(&user, loadTestData(), true, true);
+    LoadUserAndRelatedDataFromJSONString(&user, loadTestData());
 
     Poco::UInt64 n;
     ASSERT_EQ(noError, db.instance()->UInt("select count(1) from users", &n));
@@ -218,7 +218,7 @@ TEST(TogglApiClientTest,
     std::string json = loadTestData();
 
     User user1;
-    LoadUserFromJSONString(&user1, json, true, true);
+    LoadUserAndRelatedDataFromJSONString(&user1, json);
 
     std::vector<ModelChange> changes;
     ASSERT_EQ(noError, db.instance()->SaveUser(&user1, true, &changes));
@@ -252,7 +252,7 @@ TEST(TogglApiClientTest,
     ASSERT_EQ(Poco::UInt64(5), n);
 
     User user2;
-    ASSERT_EQ(noError, db.instance()->LoadUserByID(user1.ID(), &user2, true));
+    ASSERT_EQ(noError, db.instance()->LoadUserByID(user1.ID(), &user2));
 
     ASSERT_EQ(user1.related.Workspaces.size(),
               user2.related.Workspaces.size());
@@ -267,7 +267,7 @@ TEST(TogglApiClientTest,
     ASSERT_EQ(user1.related.TimeEntries.size(),
               user2.related.TimeEntries.size());
 
-    LoadUserFromJSONString(&user2, json, true, true);
+    LoadUserAndRelatedDataFromJSONString(&user2, json);
 
     ASSERT_EQ(noError, db.instance()->SaveUser(&user2, true, &changes));
 
@@ -301,7 +301,7 @@ TEST(TogglApiClientTest, TestStartTimeEntryWithDuration) {
     testing::Database db;
 
     User user;
-    LoadUserFromJSONString(&user, loadTestData(), true, true);
+    LoadUserAndRelatedDataFromJSONString(&user, loadTestData());
 
     size_t count = user.related.TimeEntries.size();
 
@@ -318,7 +318,7 @@ TEST(TogglApiClientTest, TestStartTimeEntryWithoutDuration) {
     testing::Database db;
 
     User user;
-    LoadUserFromJSONString(&user, loadTestData(), true, true);
+    LoadUserAndRelatedDataFromJSONString(&user, loadTestData());
 
     user.Start("Old work", "", 0, 0);
 
@@ -331,7 +331,7 @@ TEST(TogglApiClientTest, TestDeletionSteps) {
     testing::Database db;
 
     User user;
-    LoadUserFromJSONString(&user, loadTestData(), true, true);
+    LoadUserAndRelatedDataFromJSONString(&user, loadTestData());
 
     // first, mark time entry as deleted
     user.Start("My new time entry", "", 0, 0);
@@ -364,7 +364,7 @@ TEST(TogglApiClientTest, TestDeletionSteps) {
 
 TEST(TogglApiClientTest, SavesModels) {
     User user;
-    LoadUserFromJSONString(&user, loadTestData(), true, true);
+    LoadUserAndRelatedDataFromJSONString(&user, loadTestData());
 
     testing::Database db;
 
@@ -379,7 +379,7 @@ TEST(TogglApiClientTest, AssignsGUID) {
     ASSERT_FALSE(json.empty());
 
     User user;
-    LoadUserFromJSONString(&user, json, true, true);
+    LoadUserAndRelatedDataFromJSONString(&user, json);
 
     ASSERT_EQ(uint(5), user.related.TimeEntries.size());
     TimeEntry *te = user.TimeEntryByID(89837445);
@@ -400,7 +400,7 @@ TEST(TogglApiClientTest, ParsesAndSavesData) {
     ASSERT_FALSE(json.empty());
 
     User user;
-    LoadUserFromJSONString(&user, json, true, true);
+    LoadUserAndRelatedDataFromJSONString(&user, json);
     ASSERT_EQ(Poco::UInt64(1379068550), user.Since());
     ASSERT_EQ(Poco::UInt64(10471231), user.ID());
     ASSERT_EQ(Poco::UInt64(123456788), user.DefaultWID());
@@ -537,7 +537,7 @@ TEST(TogglApiClientTest, ParsesAndSavesData) {
 
     // Select
     User user2;
-    ASSERT_EQ(noError, db.instance()->LoadUserByID(user.ID(), &user2, true));
+    ASSERT_EQ(noError, db.instance()->LoadUserByID(user.ID(), &user2));
 
     ASSERT_TRUE(user2.ID());
     ASSERT_EQ(user.ID(), user2.ID());
@@ -775,7 +775,7 @@ TEST(TogglApiClientTest, Continue) {
     testing::Database db;
 
     User user;
-    LoadUserFromJSONString(&user, loadTestData(), true, true);
+    LoadUserAndRelatedDataFromJSONString(&user, loadTestData());
 
     // User wants to continue time entries,
     // not create new ones

@@ -26,12 +26,6 @@ _Bool UI::DisplayError(const error err) {
 
     logger().debug("DisplayError");
 
-    if (err.find("Request to server failed with status code: 403")
-            != std::string::npos) {
-        on_display_error_("Invalid e-mail or password!", true);
-        return false;
-    }
-
     on_display_error_(err.c_str(), isUserError(err));
     return false;
 }

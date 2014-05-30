@@ -21,26 +21,27 @@ void TimelineUploader::handleTimelineBatchReadyNotification(
     TimelineBatchReadyNotification *notification) {
     logger().debug("handleTimelineBatchReadyNotification");
 
-    poco_assert(user_id_ == notification->user_id);
-    poco_assert(!notification->desktop_id.empty());
-    poco_assert(!notification->batch.empty());
+    poco_assert(notification->UserID() > 0);
+    poco_assert(!notification->APIToken().empty());
+    poco_assert(!notification->DesktopID().empty());
+    poco_assert(!notification->Events().empty());
 
-    if (!sync(user_id_, api_token_, notification->batch,
-              notification->desktop_id)) {
+    if (!sync(notification)) {
         std::stringstream out;
-        out << "Sync of " << notification->batch.size() << " event(s) failed.";
+        out << "Sync of " << notification->Events().size()
+            << " event(s) failed.";
         logger().error(out.str());
         return;
     }
 
     std::stringstream out;
-    out << "Sync of " << notification->batch.size()
+    out << "Sync of " << notification->Events().size()
         << " event(s) was successful.";
     logger().information(out.str());
 
     Poco::NotificationCenter& nc =
         Poco::NotificationCenter::defaultCenter();
-    DeleteTimelineBatchNotification response(notification->batch);
+    DeleteTimelineBatchNotification response(notification->Events());
     Poco::AutoPtr<DeleteTimelineBatchNotification> ptr(&response);
     nc.postNotification(ptr);
 }
@@ -92,11 +93,9 @@ void TimelineUploader::upload_loop_activity() {
 
         {
             // Request data for upload.
-            Poco::NotificationCenter& nc =
-                Poco::NotificationCenter::defaultCenter();
-            CreateTimelineBatchNotification notification(user_id_);
+            CreateTimelineBatchNotification notification;
             Poco::AutoPtr<CreateTimelineBatchNotification> ptr(&notification);
-            nc.postNotification(ptr);
+            Poco::NotificationCenter::defaultCenter().postNotification(ptr);
         }
 
         // Sleep in increments for faster shutdown.
@@ -109,25 +108,22 @@ void TimelineUploader::upload_loop_activity() {
     }
 }
 
-bool TimelineUploader::sync(
-    const Poco::UInt64 user_id,
-    const std::string api_token,
-    const std::vector<TimelineEvent> &timeline_events,
-    const std::string desktop_id) {
-    poco_assert(!timeline_events.empty());
-    poco_assert(user_id > 0);
-
+bool TimelineUploader::sync(TimelineBatchReadyNotification *notification) {
     HTTPSClient client;
 
     std::stringstream out;
-    out << "Uploading " << timeline_events.size()
-        << " event(s) of user " << user_id;
+    out << "Uploading " << notification->Events().size()
+        << " event(s) of user " << notification->UserID();
     logger().debug(out.str());
 
-    std::string json = convert_timeline_to_json(timeline_events, desktop_id);
+    std::string json = convert_timeline_to_json(notification->Events(),
+                       notification->DesktopID());
     std::string response_body("");
-    error err = client.PostJSON("/api/v8/timeline", json,
-                                api_token_, "api_token",  &response_body);
+    error err = client.PostJSON("/api/v8/timeline",
+                                json,
+                                notification->APIToken(),
+                                "api_token",
+                                &response_body);
     if (err != noError) {
         logger().error(err);
         return false;
@@ -135,12 +131,12 @@ bool TimelineUploader::sync(
     return true;
 }
 
-void TimelineUploader::exponential_backoff() {
-    logger().warning("exponential_backoff");
+void TimelineUploader::backoff() {
+    logger().warning("backoff");
     current_upload_interval_seconds_ *= 2;
-    if (current_upload_interval_seconds_ > max_upload_interval_seconds_) {
+    if (current_upload_interval_seconds_ > kTimelineUploadMaxBackoffSeconds) {
         logger().warning("Max upload interval reached.");
-        current_upload_interval_seconds_ = max_upload_interval_seconds_;
+        current_upload_interval_seconds_ = kTimelineUploadMaxBackoffSeconds;
     }
     std::stringstream out;
     out << "Upload interval set to " << current_upload_interval_seconds_ << "s";
@@ -149,7 +145,40 @@ void TimelineUploader::exponential_backoff() {
 
 void TimelineUploader::reset_backoff() {
     logger().debug("reset_backoff");
-    current_upload_interval_seconds_ = upload_interval_seconds_;
+    current_upload_interval_seconds_ = kTimelineUploadIntervalSeconds;
+}
+
+error TimelineUploader::start() {
+    try {
+        Poco::NotificationCenter::defaultCenter().addObserver(observer_);
+
+        uploading_.start();
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
+error TimelineUploader::Shutdown() {
+    try {
+        Poco::NotificationCenter::defaultCenter().removeObserver(observer_);
+
+        if (uploading_.isRunning()) {
+            uploading_.stop();
+            uploading_.wait();
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
 }
 
 }  // namespace kopsik

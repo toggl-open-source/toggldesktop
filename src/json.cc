@@ -26,6 +26,47 @@ Poco::UInt64 IDFromJSONNode(JSONNODE * const data) {
     return 0;
 }
 
+Poco::UInt64 UserIDFromJSONDataString(const std::string json_data_string) {
+    Poco::UInt64 result(0);
+
+    JSONNODE *root = json_parse(json_data_string.c_str());
+
+    JSONNODE_ITERATOR current_node = json_begin(root);
+    JSONNODE_ITERATOR last_node = json_end(root);
+    while (current_node != last_node) {
+        json_char *node_name = json_name(*current_node);
+        if (strcmp(node_name, "data") == 0) {
+            result = IDFromJSONNode(*current_node);
+            break;
+        }
+        ++current_node;
+    }
+
+    json_delete(root);
+
+    return result;
+}
+
+std::string LoginTokenFromJSONDataString(const std::string json_data_string) {
+    std::string result("");
+
+    JSONNODE *root = json_parse(json_data_string.c_str());
+
+    JSONNODE_ITERATOR current_node = json_begin(root);
+    JSONNODE_ITERATOR last_node = json_end(root);
+    while (current_node != last_node) {
+        json_char *node_name = json_name(*current_node);
+        if (strcmp(node_name, "login_token") == 0) {
+            result = std::string(json_as_string(*current_node));
+        }
+        ++current_node;
+    }
+
+    json_delete(root);
+
+    return result;
+}
+
 guid GUIDFromJSONNode(JSONNODE * const data) {
     poco_check_ptr(data);
 
@@ -60,17 +101,15 @@ bool IsValidJSON(const std::string json) {
     return json_is_valid(json.c_str());
 }
 
-void LoadUserFromJSONString(
+void LoadUserAndRelatedDataFromJSONString(
     User *model,
-    const std::string &json,
-    const bool full_sync,
-    const bool with_related_data) {
+    const std::string &json) {
 
     poco_check_ptr(model);
 
     if (json.empty()) {
         Poco::Logger &logger = Poco::Logger::get("json");
-        logger.warning("LoadUserFromJSONString cannot load empty JSON");
+        logger.warning("cannot load empty JSON");
         return;
     }
 
@@ -88,21 +127,16 @@ void LoadUserFromJSONString(
             logger.debug(s.str());
 
         } else if (strcmp(node_name, "data") == 0) {
-            LoadUserFromJSONNode(model,
-                                 *current_node,
-                                 full_sync,
-                                 with_related_data);
+            LoadUserAndRelatedDataFromJSONNode(model, *current_node);
         }
         ++current_node;
     }
     json_delete(root);
 }
 
-void LoadUserFromJSONNode(
+void LoadUserAndRelatedDataFromJSONNode(
     User *model,
-    JSONNODE * const data,
-    const bool full_sync,
-    const bool with_related_data) {
+    JSONNODE * const data) {
 
     poco_check_ptr(model);
     poco_check_ptr(data);
@@ -127,20 +161,18 @@ void LoadUserFromJSONNode(
             model->SetStoreStartAndStopTime(json_as_bool(*n));
         } else if (strcmp(node_name, "timeofday_format") == 0) {
             model->SetTimeOfDayFormat(std::string(json_as_string(*n)));
-        } else if (with_related_data) {
-            if (strcmp(node_name, "projects") == 0) {
-                LoadUserProjectsFromJSONNode(model, *n, full_sync);
-            } else if (strcmp(node_name, "tags") == 0) {
-                LoadUserTagsFromJSONNode(model, *n, full_sync);
-            } else if (strcmp(node_name, "tasks") == 0) {
-                LoadUserTasksFromJSONNode(model, *n, full_sync);
-            } else if (strcmp(node_name, "time_entries") == 0) {
-                LoadUserTimeEntriesFromJSONNode(model, *n, full_sync);
-            } else if (strcmp(node_name, "workspaces") == 0) {
-                LoadUserWorkspacesFromJSONNode(model, *n, full_sync);
-            } else if (strcmp(node_name, "clients") == 0) {
-                LoadUserClientsFromJSONNode(model, *n, full_sync);
-            }
+        } else if (strcmp(node_name, "projects") == 0) {
+            LoadUserProjectsFromJSONNode(model, *n);
+        } else if (strcmp(node_name, "tags") == 0) {
+            LoadUserTagsFromJSONNode(model, *n);
+        } else if (strcmp(node_name, "tasks") == 0) {
+            LoadUserTasksFromJSONNode(model, *n);
+        } else if (strcmp(node_name, "time_entries") == 0) {
+            LoadUserTimeEntriesFromJSONNode(model, *n);
+        } else if (strcmp(node_name, "workspaces") == 0) {
+            LoadUserWorkspacesFromJSONNode(model, *n);
+        } else if (strcmp(node_name, "clients") == 0) {
+            LoadUserClientsFromJSONNode(model, *n);
         }
         ++n;
     }
@@ -166,8 +198,7 @@ void deleteZombies(
 
 void LoadUserTagsFromJSONNode(
     User *model,
-    JSONNODE * const list,
-    const bool full_sync) {
+    JSONNODE * const list) {
 
     poco_check_ptr(model);
     poco_check_ptr(list);
@@ -179,10 +210,6 @@ void LoadUserTagsFromJSONNode(
     while (current_node != last_node) {
         loadUserTagFromJSONNode(model, *current_node, &alive);
         ++current_node;
-    }
-
-    if (!full_sync) {
-        return;
     }
 
     deleteZombies(model->related.Tags, alive);
@@ -224,8 +251,7 @@ void loadUserTagFromJSONNode(
 
 void LoadUserTasksFromJSONNode(
     User *user,
-    JSONNODE * const list,
-    const bool full_sync) {
+    JSONNODE * const list) {
 
     poco_check_ptr(user);
     poco_check_ptr(list);
@@ -237,10 +263,6 @@ void LoadUserTasksFromJSONNode(
     while (current_node != last_node) {
         loadUserTaskFromJSONNode(user, *current_node, &alive);
         ++current_node;
-    }
-
-    if (!full_sync) {
-        return;
     }
 
     deleteZombies(user->related.Tasks, alive);
@@ -448,8 +470,7 @@ Poco::UInt64 UIModifiedAtFromJSONNode(
 
 void LoadUserClientsFromJSONNode(
     User *user,
-    JSONNODE * const list,
-    const bool full_sync) {
+    JSONNODE * const list) {
 
     poco_check_ptr(user);
     poco_check_ptr(list);
@@ -461,10 +482,6 @@ void LoadUserClientsFromJSONNode(
     while (current_node != last_node) {
         loadUserClientFromJSONNode(user, *current_node, &alive);
         ++current_node;
-    }
-
-    if (!full_sync) {
-        return;
     }
 
     deleteZombies(user->related.Clients, alive);
@@ -506,8 +523,7 @@ void loadUserProjectFromJSONNode(
 
 void LoadUserProjectsFromJSONNode(
     User *user,
-    JSONNODE * const list,
-    const bool full_sync) {
+    JSONNODE * const list) {
 
     poco_check_ptr(user);
     poco_check_ptr(list);
@@ -519,10 +535,6 @@ void LoadUserProjectsFromJSONNode(
     while (current_node != last_node) {
         loadUserProjectFromJSONNode(user, *current_node, &alive);
         ++current_node;
-    }
-
-    if (!full_sync) {
-        return;
     }
 
     deleteZombies(user->related.Projects, alive);
@@ -586,8 +598,7 @@ void loadUserTimeEntryFromJSONNode(
 
 void LoadUserWorkspacesFromJSONNode(
     User *user,
-    JSONNODE * const list,
-    const bool full_sync) {
+    JSONNODE * const list) {
 
     poco_check_ptr(user);
     poco_check_ptr(list);
@@ -601,17 +612,12 @@ void LoadUserWorkspacesFromJSONNode(
         ++current_node;
     }
 
-    if (!full_sync) {
-        return;
-    }
-
     deleteZombies(user->related.Workspaces, alive);
 }
 
 void LoadUserTimeEntriesFromJSONNode(
     User *user,
-    JSONNODE * const list,
-    const bool full_sync) {
+    JSONNODE * const list) {
 
     poco_check_ptr(user);
     poco_check_ptr(list);
@@ -625,19 +631,7 @@ void LoadUserTimeEntriesFromJSONNode(
         ++current_node;
     }
 
-    if (!full_sync) {
-        return;
-    }
-
-    for (std::vector<TimeEntry *>::const_iterator it =
-        user->related.TimeEntries.begin();
-            it != user->related.TimeEntries.end();
-            it++) {
-        TimeEntry *model = *it;
-        if (alive.end() == alive.find(model->ID())) {
-            model->MarkAsDeletedOnServer();
-        }
-    }
+    deleteZombies(user->related.TimeEntries, alive);
 }
 
 std::string UpdateJSON(

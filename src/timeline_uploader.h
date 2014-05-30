@@ -20,51 +20,20 @@ namespace kopsik {
 
 class TimelineUploader {
  public:
-    TimelineUploader(
-        const Poco::UInt64 user_id,
-        const std::string api_token,
-        const std::string timeline_upload_url) :
-    user_id_(user_id),
-    api_token_(api_token),
-    upload_interval_seconds_(kTimelineUploadIntervalSeconds),
-    current_upload_interval_seconds_(kTimelineUploadIntervalSeconds),
-    max_upload_interval_seconds_(kTimelineUploadMaxBackoffSeconds),
-    timeline_upload_url_(timeline_upload_url),
-    uploading_(this, &TimelineUploader::upload_loop_activity) {
-        Poco::NotificationCenter& nc =
-            Poco::NotificationCenter::defaultCenter();
-
-        Poco::Observer<TimelineUploader, TimelineBatchReadyNotification>
-        observeUpload(*this,
-                      &TimelineUploader::handleTimelineBatchReadyNotification);
-        nc.addObserver(observeUpload);
-
-        poco_assert(!api_token_.empty());
-        poco_assert(user_id_ > 0);
-        poco_assert(!timeline_upload_url.empty());
-
-        uploading_.start();
-    }
-
-    error Stop() {
-        try {
-            if (uploading_.isRunning()) {
-                uploading_.stop();
-                uploading_.wait();
-            }
-        } catch(const Poco::Exception& exc) {
-            return exc.displayText();
-        } catch(const std::exception& ex) {
-            return ex.what();
-        } catch(const std::string& ex) {
-            return ex;
-        }
-        return noError;
+    explicit TimelineUploader(const std::string upload_url)
+        : current_upload_interval_seconds_(kTimelineUploadIntervalSeconds)
+    , upload_url_(upload_url)
+    , uploading_(this, &TimelineUploader::upload_loop_activity)
+    , observer_(*this,
+                &TimelineUploader::handleTimelineBatchReadyNotification) {
+        start();
     }
 
     ~TimelineUploader() {
-        Stop();
+        Shutdown();
     }
+
+    error Shutdown();
 
  protected:
     // Notification handlers
@@ -75,34 +44,27 @@ class TimelineUploader {
     void upload_loop_activity();
 
  private:
-    // Sync with server
-    bool sync(
-        const Poco::UInt64 user_id,
-        const std::string api_token,
-        const std::vector<TimelineEvent> &timeline_events,
-        const std::string desktop_id);
+    error start();
+
+    bool sync(TimelineBatchReadyNotification *notification);
+
     static std::string convert_timeline_to_json(
         const std::vector<TimelineEvent> &timeline_events,
         const std::string &desktop_id);
 
-    Poco::UInt64 user_id_;
-    std::string api_token_;
-
     // How many seconds to wait before send next batch of timeline
     // events to backend.
-    unsigned int upload_interval_seconds_;
-
-    // Exponential backoff implementation
-    void exponential_backoff();
-    void reset_backoff();
     unsigned int current_upload_interval_seconds_;
-    unsigned int max_upload_interval_seconds_;
+    void backoff();
+    void reset_backoff();
 
-    std::string timeline_upload_url_;
+    std::string upload_url_;
 
     // An Activity is a possibly long running void/no arguments
     // member function running in its own thread.
     Poco::Activity<TimelineUploader> uploading_;
+
+    Poco::Observer<TimelineUploader, TimelineBatchReadyNotification> observer_;
 
     Poco::Logger &logger() const {
         return Poco::Logger::get("timeline_uploader");

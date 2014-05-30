@@ -22,40 +22,32 @@
 
 namespace kopsik {
 
-void LoadUserFromJSONNode(
+void LoadUserAndRelatedDataFromJSONNode(
     User *model,
-    JSONNODE *node,
-    const bool full_sync,
-    const bool with_related_data);
-void LoadUserFromJSONString(
+    JSONNODE *node);
+void LoadUserAndRelatedDataFromJSONString(
     User *model,
-    const std::string &json,
-    const bool full_sync,
-    const bool with_related_data);
+    const std::string &json);
+
 void LoadUserProjectsFromJSONNode(
     User *model,
-    JSONNODE *list,
-    const bool full_sync);
+    JSONNODE *list);
 void LoadUserTagsFromJSONNode(
     User *user,
-    JSONNODE *list,
-    const bool full_sync);
+    JSONNODE *list);
 void LoadUserClientsFromJSONNode(
     User *user,
-    JSONNODE *list,
-    const bool full_sync);
+    JSONNODE *list);
 void LoadUserTasksFromJSONNode(
     User *user,
-    JSONNODE *list,
-    const bool full_sync);
+    JSONNODE *list);
 void LoadUserTimeEntriesFromJSONNode(
     User *user,
-    JSONNODE *list,
-    const bool full_sync);
+    JSONNODE *list);
 void LoadUserWorkspacesFromJSONNode(
     User *user,
-    JSONNODE *list,
-    const bool full_sync);
+    JSONNODE *list);
+
 void LoadUserUpdateFromJSONNode(
     User *user,
     JSONNODE *data);
@@ -93,10 +85,13 @@ std::string UpdateJSON(
     std::vector<Project *> * const,
     std::vector<TimeEntry *> * const);
 
+Poco::UInt64 UserIDFromJSONDataString(const std::string json_data_string);
 Poco::UInt64 IDFromJSONNode(JSONNODE * const);
 guid GUIDFromJSONNode(JSONNODE * const);
 Poco::UInt64 UIModifiedAtFromJSONNode(JSONNODE * const);
 bool IsDeletedAtServer(JSONNODE * const);
+
+std::string LoginTokenFromJSONDataString(const std::string json_data_string);
 
 template<class T>
 void deleteZombies(

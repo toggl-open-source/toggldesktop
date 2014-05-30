@@ -124,6 +124,7 @@ extern void *ctx;
 	{
 		[self.timeEntrypopover close];
 		[self setDefaultPopupHeight];
+		self.selectedRowView = nil;
 	}
 }
 
@@ -285,6 +286,10 @@ extern void *ctx;
 
 - (void)resizeEditPopup:(NSNotification *)notification
 {
+	if (!self.timeEntrypopover.shown)
+	{
+		return;
+	}
 	int i = [[[notification userInfo] valueForKey:@"height"] intValue];
 	float newHeight = self.timeEntrypopover.contentSize.height + i;
 	NSSize n = NSMakeSize(self.timeEntrypopover.contentSize.width, newHeight);
@@ -303,6 +308,7 @@ extern void *ctx;
 {
 	[self.timeEntrypopover close];
 	[self setDefaultPopupHeight];
+	self.selectedRowView = nil;
 }
 
 - (void)closeRunningEditPopup:(NSNotification *)notification

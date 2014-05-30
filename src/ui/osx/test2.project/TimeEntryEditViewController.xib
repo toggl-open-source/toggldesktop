@@ -42,7 +42,7 @@
             <rect key="frame" x="0.0" y="0.0" width="346" height="220"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Mka-gG-oqB">
+                <box autoresizesSubviews="NO" misplaced="YES" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Mka-gG-oqB">
                     <rect key="frame" x="0.0" y="0.0" width="346" height="220"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView">
@@ -493,7 +493,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <color key="borderColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                                 <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </box>
-                            <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" title="TagsAndBillableBox" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="ByL-Em-l61">
+                            <box autoresizesSubviews="NO" misplaced="YES" title="TagsAndBillableBox" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="ByL-Em-l61">
                                 <rect key="frame" x="0.0" y="15" width="346" height="82"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <view key="contentView">
@@ -513,7 +513,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
-                                        <tokenField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Uk-YS-6nx">
+                                        <tokenField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Uk-YS-6nx">
                                             <rect key="frame" x="116" y="49" width="214" height="26"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <constraints>
@@ -566,9 +566,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <constraint firstItem="zwE-pW-vQN" firstAttribute="top" secondItem="Mka-gG-oqB" secondAttribute="top" id="Oqs-93-6bm"/>
                         <constraint firstItem="9Ap-t2-bTq" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" id="Rtf-EH-rFR"/>
                         <constraint firstItem="ByL-Em-l61" firstAttribute="top" secondItem="Uof-FM-Nqj" secondAttribute="bottom" constant="5" id="Sqr-Lh-YiG"/>
+                        <constraint firstItem="ByL-Em-l61" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" id="TIa-Cb-T0v"/>
                         <constraint firstAttribute="trailing" secondItem="6rO-vx-iLH" secondAttribute="trailing" constant="16" id="fNk-og-RRY"/>
+                        <constraint firstAttribute="trailing" secondItem="ByL-Em-l61" secondAttribute="trailing" id="hI2-2l-P1j"/>
                         <constraint firstItem="fz4-yg-eQZ" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" constant="15" id="jfV-DF-uvz"/>
-                        <constraint firstAttribute="trailing" secondItem="zwE-pW-vQN" secondAttribute="trailing" constant="5" id="jo4-Jw-Cl1"/>
+                        <constraint firstAttribute="trailing" secondItem="zwE-pW-vQN" secondAttribute="trailing" constant="10" id="jo4-Jw-Cl1"/>
                         <constraint firstAttribute="trailing" secondItem="Uof-FM-Nqj" secondAttribute="trailing" constant="15" id="lTj-Lw-020"/>
                         <constraint firstItem="6rO-vx-iLH" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" constant="15" id="rsw-CB-Mgl"/>
                         <constraint firstItem="6Sh-4d-bKb" firstAttribute="top" secondItem="Mka-gG-oqB" secondAttribute="top" constant="47" id="sC4-eT-UGB"/>
@@ -602,9 +604,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </subviews>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="byc-AI-Ri7" secondAttribute="bottom" constant="5" id="Ajf-70-v6X"/>
+                <constraint firstItem="Mka-gG-oqB" firstAttribute="leading" secondItem="qjv-II-K0N" secondAttribute="leading" id="Obp-pk-sqd"/>
                 <constraint firstAttribute="bottom" secondItem="Mka-gG-oqB" secondAttribute="bottom" id="PGJ-IN-7Ca"/>
                 <constraint firstItem="Mka-gG-oqB" firstAttribute="top" secondItem="qjv-II-K0N" secondAttribute="top" id="TAW-qc-cWw"/>
                 <constraint firstAttribute="bottom" secondItem="Wpz-9G-IOZ" secondAttribute="bottom" constant="5" id="nN5-CB-K2U"/>
+                <constraint firstAttribute="trailing" secondItem="Mka-gG-oqB" secondAttribute="trailing" id="tNy-no-1kn"/>
             </constraints>
         </customView>
     </objects>

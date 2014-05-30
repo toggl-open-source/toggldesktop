@@ -169,6 +169,18 @@ class Context {
     void SetSleep();
     void SetWake();
 
+    _Bool OpenReportsInBrowser();
+
+ protected:
+    void handleCreateTimelineBatchNotification(
+        CreateTimelineBatchNotification *notification);
+
+    void handleTimelineEventNotification(
+        TimelineEventNotification* notification);
+
+    void handleDeleteTimelineBatchNotification(
+        DeleteTimelineBatchNotification *notification);
+
  private:
     const std::string updateURL() const;
 
@@ -220,7 +232,7 @@ class Context {
         const Poco::Timestamp::TimeDiff
         throttleMicros = kRequestThrottleMicros);
 
-    void setUser(User *value);
+    void setUser(User *value, const bool user_logged_in = false);
 
     void displayUI();
 
@@ -259,6 +271,8 @@ class Context {
     Poco::Int64 totalDurationForDate(TimeEntry *te) const;
 
     void updateUI(std::vector<kopsik::ModelChange> *changes);
+
+    _Bool displayError(const kopsik::error);
 
     std::string timeOfDayFormat() const;
 

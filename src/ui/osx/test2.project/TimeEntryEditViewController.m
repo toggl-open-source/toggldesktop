@@ -31,6 +31,7 @@
 @property NSLayoutConstraint *addProjectBoxHeight;
 @property NSDateFormatter *format;
 @property BOOL willTerminate;
+@property BOOL resizeOnOpen;
 @end
 
 @implementation TimeEntryEditViewController
@@ -78,6 +79,10 @@ extern int kDurationStringLength;
 												 selector:@selector(resetPopover:)
 													 name:kResetEditPopover
 												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(checkResize:)
+													 name:NSPopoverDidShowNotification
+												   object:nil];
 	}
 	return self;
 }
@@ -115,8 +120,22 @@ extern int kDurationStringLength;
 	self.willTerminate = YES;
 }
 
+- (void)checkResize:(NSNotification *)notification
+{
+	if (self.resizeOnOpen)
+	{
+		[self toggleTimeForm:YES];
+		[self.durationTextField becomeFirstResponder];
+	}
+	self.resizeOnOpen = NO;
+}
+
 - (void)resetPopover:(NSNotification *)notification
 {
+	if (!self.addProjectBox.isHidden)
+	{
+		[self applyAddProject];
+	}
 	[self.addProjectBox setHidden:YES];
 	[self.projectSelectBox setHidden:NO];
 	[self.projectPublicCheckbox setState:NSOffState];
@@ -213,14 +232,21 @@ extern int kDurationStringLength;
 		return NO;
 	}
 	uint64_t clientID = [self selectedClientID];
-
+	_Bool isBillable = self.timeEntry.billable;
 	// A new project is being added!
-	return kopsik_add_project(ctx,
-							  [self.timeEntry.GUID UTF8String],
-							  workspaceID,
-							  clientID,
-							  [projectName UTF8String],
-							  !is_public);
+	_Bool projectAdded = kopsik_add_project(ctx,
+											[self.timeEntry.GUID UTF8String],
+											workspaceID,
+											clientID,
+											[projectName UTF8String],
+											!is_public);
+
+	if (projectAdded && isBillable)
+	{
+		kopsik_set_time_entry_billable(ctx, [self.timeEntry.GUID UTF8String], isBillable);
+	}
+
+	return projectAdded;
 }
 
 - (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString
@@ -339,13 +365,26 @@ extern int kDurationStringLength;
 			[self.view removeConstraints:self.topConstraint];
 			self.topConstraint = nil;
 		}
-		timeString = [NSString stringWithFormat:@"from %@ to %@ ", self.timeEntry.startTimeString, self.timeEntry.endTimeString];
+		if (self.timeEntry.endTimeString.length)
+		{
+			timeString = [NSString stringWithFormat:@"from %@ to %@", self.timeEntry.startTimeString, self.timeEntry.endTimeString];
+		}
+		else
+		{
+			timeString = [NSString stringWithFormat:@"from %@", self.timeEntry.startTimeString];
+		}
 	}
 	NSString *dateTimeString = [dateString stringByAppendingString:timeString];
 	[self.dateTimeTextField setStringValue:dateTimeString];
 
-	[self.startTime setStringValue:self.timeEntry.startTimeString];
-	[self.endTime setStringValue:self.timeEntry.endTimeString];
+	if ([self.startTime currentEditor] == nil)
+	{
+		[self.startTime setStringValue:self.timeEntry.startTimeString];
+	}
+	if ([self.endTime currentEditor] == nil)
+	{
+		[self.endTime setStringValue:self.timeEntry.endTimeString];
+	}
 
 	[self.startDate setDateValue:self.timeEntry.started];
 
@@ -387,6 +426,7 @@ extern int kDurationStringLength;
 	{
 		if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDuration]])
 		{
+			self.resizeOnOpen = YES;
 			[self.durationTextField becomeFirstResponder];
 		}
 		if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDescription]])
@@ -809,7 +849,8 @@ extern int kDurationStringLength;
 		return;
 	}
 
-	if (!kopsik_set_time_entry_project(ctx,
+	if (![self.timeEntry.Description isEqualToString:key] &&
+		!kopsik_set_time_entry_project(ctx,
 									   GUID,
 									   autocomplete.TaskID,
 									   autocomplete.ProjectID,

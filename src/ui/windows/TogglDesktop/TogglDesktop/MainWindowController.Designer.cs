@@ -173,7 +173,7 @@
             // 
             this.openInBrowserToolStripMenuItem.Name = "openInBrowserToolStripMenuItem";
             this.openInBrowserToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
-            this.openInBrowserToolStripMenuItem.Text = "Open in browser";
+            this.openInBrowserToolStripMenuItem.Text = "Reports";
             this.openInBrowserToolStripMenuItem.Click += new System.EventHandler(this.openInBrowserToolStripMenuItem_Click);
             // 
             // preferencesToolStripMenuItem

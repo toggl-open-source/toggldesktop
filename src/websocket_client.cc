@@ -52,8 +52,8 @@ void WebSocketClient::Start(
     api_token_ = api_token;
 }
 
-void WebSocketClient::Stop() {
-    logger().debug("Stop");
+void WebSocketClient::Shutdown() {
+    logger().debug("Shutdown");
 
     if (!activity_.isRunning()) {
         return;

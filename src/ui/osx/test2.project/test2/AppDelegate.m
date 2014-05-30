@@ -171,7 +171,7 @@ const int kDurationStringLength = 20;
 	NSAssert(started, @"Failed to start UI");
 
 	[MASShortcut registerGlobalShortcutWithUserDefaultsKey:kPreferenceGlobalShortcutShowHide handler:^{
-		 if ([self.mainWindowController.window isVisible])
+		 if ([[NSApplication sharedApplication] isActive] && [self.mainWindowController.window isVisible])
 		 {
 			 [self.mainWindowController.window close];
 		 }
@@ -514,7 +514,7 @@ const int kDurationStringLength = 20;
 	[menu addItemWithTitle:@"Sync"
 					action:@selector(onSyncMenuItem:)
 			 keyEquivalent:@""].tag = kMenuItemTagSync;
-	[menu addItemWithTitle:@"Open in browser"
+	[menu addItemWithTitle:@"Reports"
 					action:@selector(onOpenBrowserMenuItem:)
 			 keyEquivalent:@""].tag = kMenuItemTagOpenBrowser;
 	[menu addItemWithTitle:@"Preferences"
@@ -1146,6 +1146,7 @@ void on_time_entry_editor(const _Bool open,
 	DisplayCommand *cmd = [[DisplayCommand alloc] init];
 	cmd.open = open;
 	cmd.timeEntry = item;
+	cmd.timeEntry.focusedFieldName = [NSString stringWithUTF8String:focused_field_name];
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimeEntryEditor
 														object:cmd];
 }
