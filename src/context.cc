@@ -957,7 +957,7 @@ void Context::setUser(User *value, const bool user_logged_in) {
     SetWake();
 
     if (!user_) {
-        UI()->DisplayLogin(true, 0);
+        UI()->DisplayLogin(true, 0, 0);
 
         switchTimelineOff();
         switchWebSocketOff();
@@ -965,7 +965,7 @@ void Context::setUser(User *value, const bool user_logged_in) {
         return;
     }
 
-    UI()->DisplayLogin(false, user_->ID());
+    UI()->DisplayLogin(false, user_->ID(), user_->TimeOfDayFormat());
 
     DisplayTimeEntryList(true);
 

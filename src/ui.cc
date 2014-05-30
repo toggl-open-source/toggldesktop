@@ -8,10 +8,10 @@
 
 namespace kopsik {
 
-void UI::DisplayLogin(const _Bool open, const uint64_t user_id) {
+    void UI::DisplayLogin(const _Bool open, const uint64_t user_id, std::string date_format) {
     logger().debug("DisplayLogin");
 
-    on_display_login_(open, user_id);
+    on_display_login_(open, user_id, date_format.c_str());
 }
 
 _Bool UI::DisplayError(const error err) {

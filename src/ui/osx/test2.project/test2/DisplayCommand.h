@@ -16,4 +16,5 @@
 @property TimeEntryViewItem *timeEntry;
 @property Settings *settings;
 @property uint64_t user_id;
+@property NSString *date_format;
 @end

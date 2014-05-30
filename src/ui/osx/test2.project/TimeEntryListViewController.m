@@ -348,6 +348,9 @@ extern void *ctx;
 		[self.timeEntrypopover close];
 		[self setDefaultPopupHeight];
 	}
+	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayLogin
+														object:cmd
+													  userInfo:nil];
 }
 
 @end
