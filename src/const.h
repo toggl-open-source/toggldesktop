@@ -18,7 +18,6 @@
 #define kWebSocketURL "https://stream.toggl.com"
 #define kLostPasswordURL "https://www.toggl.com/forgot-password"
 #define kSupportURL "http://support.toggl.com/toggl-on-my-desktop/"
-#define kTogglWebsiteURL "https://www.toggl.com/"
 
 #define kCheckUpdateIntervalMicros 86400000000
 

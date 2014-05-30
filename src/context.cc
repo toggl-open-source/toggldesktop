@@ -1983,6 +1983,39 @@ void Context::SetSleep() {
     logger().debug("SetSleep");
 }
 
+_Bool Context::OpenReportsInBrowser() {
+    if (!user_) {
+        return displayError("You must log in to view reports");
+    }
+
+    std::string response_body("");
+    HTTPSClient https_client;
+    kopsik::error err = https_client.PostJSON("/api/v8/desktop_login_tokens",
+                        "{}",
+                        user_->APIToken(),
+                        "api_token",
+                        &response_body);
+    if (err != kopsik::noError) {
+        return displayError(err);
+    }
+    if (response_body.empty()) {
+        return displayError("Unexpected empty response from API");
+    }
+
+    std::string login_token = LoginTokenFromJSONDataString(response_body);
+    if (login_token.empty()) {
+        return displayError("Could not extract login token from JSON");
+    }
+
+    std::stringstream ss;
+    ss  << kAPIURL << "/api/v8/desktop_login"
+        << "?login_token=" << login_token
+        << "&goto=reports";
+    UI()->DisplayURL(ss.str());
+
+    return true;
+}
+
 void Context::SetWake() {
     logger().debug("SetWake");
 

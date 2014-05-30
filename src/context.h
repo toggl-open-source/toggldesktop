@@ -169,6 +169,8 @@ class Context {
     void SetSleep();
     void SetWake();
 
+    _Bool OpenReportsInBrowser();
+
  protected:
     void handleCreateTimelineBatchNotification(
         CreateTimelineBatchNotification *notification);
