@@ -264,7 +264,7 @@ TEST(KopsikApiTest, DISABLED_kopsik_lifecycle) {
     testing::testresult::user_id = 0;
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), loadTestData().c_str()));
     ASSERT_EQ("", testing::testresult::error);
-    ASSERT_EQ(10471231, testing::testresult::user_id);
+    ASSERT_EQ(uint64_t(10471231), testing::testresult::user_id);
 
     testing::testresult::error = "";
     ASSERT_TRUE(kopsik_start(app.ctx(), "Test", 0, 0, 0));
