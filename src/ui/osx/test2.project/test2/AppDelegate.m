@@ -1047,14 +1047,13 @@ void on_online_state(const _Bool is_online)
 														object:value];
 }
 
-void on_login(const _Bool open, const uint64_t user_id, const char *date_format)
+void on_login(const _Bool open, const uint64_t user_id)
 {
 	[Bugsnag setUserAttribute:@"user_id" withValue:[NSString stringWithFormat:@"%lld", user_id]];
 
 	DisplayCommand *cmd = [[DisplayCommand alloc] init];
 	cmd.open = open;
 	cmd.user_id = user_id;
-	cmd.date_format = [NSString stringWithUTF8String:date_format];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayLogin
 														object:cmd];

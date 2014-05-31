@@ -109,8 +109,7 @@ extern "C" {
 
     typedef void (*KopsikDisplayLogin)(
         const _Bool open,
-        const uint64_t user_id,
-        const char *date_format);
+        const uint64_t user_id);
 
     typedef void (*KopsikDisplayReminder)(
         const char *title,

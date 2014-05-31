@@ -32,7 +32,6 @@
 @property NSDateFormatter *format;
 @property BOOL willTerminate;
 @property BOOL resizeOnOpen;
-@property BOOL formatSet;
 @end
 
 @implementation TimeEntryEditViewController
@@ -46,11 +45,10 @@ extern int kDurationStringLength;
 	if (self)
 	{
 		self.willTerminate = NO;
-		self.formatSet = NO;
 
 		self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayProjectAutocomplete];
 		self.descriptionComboboxDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayTimeEntryAutocomplete];
-		self.format = [[NSDateFormatter alloc] init];
+
 		self.timerMenubarTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
 																  target:self
 																selector:@selector(timerFired:)
@@ -85,10 +83,6 @@ extern int kDurationStringLength;
 												 selector:@selector(checkResize:)
 													 name:NSPopoverDidShowNotification
 												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(startDisplayLogin:)
-													 name:kDisplayLogin
-												   object:nil];
 	}
 	return self;
 }
@@ -119,36 +113,6 @@ extern int kDurationStringLength;
 {
 	[super loadView];
 	[self viewDidLoad];
-}
-
-- (void)startDisplayLogin:(NSNotification *)notification
-{
-	[self performSelectorOnMainThread:@selector(displayLogin:)
-						   withObject:notification.object
-						waitUntilDone:NO];
-}
-
-- (void)displayLogin:(DisplayCommand *)cmd
-{
-	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-	[self setDateFormat:cmd.date_format];
-}
-
-- (void)setDateFormat:(NSString *)input
-{
-	if (self.formatSet)
-	{
-		return;
-	}
-	if ([input isEqualToString:@"H:mm"])
-	{
-		[self.format setDateFormat:@"HH:mm"];
-	}
-	else
-	{
-		[self.format setDateFormat:@"HH:mm a"];
-	}
-	self.formatSet = YES;
 }
 
 - (void)appWillTerminate:(NSNotification *)notification
@@ -383,8 +347,6 @@ extern int kDurationStringLength;
 	// Set TimeDateTextBox value
 	NSString *dateString = [NSString stringWithFormat:@"%@ ", self.timeEntry.formattedDate];
 	NSString *timeString;
-	NSString *startedString = [self setTimeString:self.timeEntry.started stringValue:self.timeEntry.startTimeString];
-	NSString *endedString = [self setTimeString:self.timeEntry.ended stringValue:self.timeEntry.endTimeString];
 	if (self.timeEntry.durOnly)
 	{
 		timeString = [NSString stringWithFormat:@"for %@ ", self.timeEntry.duration];
@@ -405,11 +367,11 @@ extern int kDurationStringLength;
 		}
 		if (self.timeEntry.endTimeString.length)
 		{
-			timeString = [NSString stringWithFormat:@"from %@ to %@", startedString, endedString];
+			timeString = [NSString stringWithFormat:@"from %@ to %@", self.timeEntry.startTimeString, self.timeEntry.endTimeString];
 		}
 		else
 		{
-			timeString = [NSString stringWithFormat:@"from %@", startedString];
+			timeString = [NSString stringWithFormat:@"from %@", self.timeEntry.startTimeString];
 		}
 	}
 	NSString *dateTimeString = [dateString stringByAppendingString:timeString];
@@ -417,11 +379,11 @@ extern int kDurationStringLength;
 
 	if ([self.startTime currentEditor] == nil)
 	{
-		[self.startTime setStringValue:startedString];
+		[self.startTime setStringValue:self.timeEntry.startTimeString];
 	}
 	if ([self.endTime currentEditor] == nil)
 	{
-		[self.endTime setStringValue:endedString];
+		[self.endTime setStringValue:self.timeEntry.endTimeString];
 	}
 
 	[self.startDate setDateValue:self.timeEntry.started];
@@ -475,18 +437,6 @@ extern int kDurationStringLength;
 		{
 			[self.projectSelectBox becomeFirstResponder];
 		}
-	}
-}
-
-- (NSString *)setTimeString:(NSDate *)timeDate stringValue:(NSString *)timeString
-{
-	if (self.formatSet)
-	{
-		return [[self.format stringFromDate:timeDate] uppercaseString];
-	}
-	else
-	{
-		return timeString;
 	}
 }
 
