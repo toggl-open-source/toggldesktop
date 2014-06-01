@@ -46,6 +46,7 @@ namespace TogglDesktop
         {
             if (Toggl.Project == focusedFieldName)
             {
+                comboBoxDescription.SelectionLength = 0;
                 comboBoxProject.Focus();
             }
             else if (Toggl.Duration == focusedFieldName)
@@ -54,6 +55,7 @@ namespace TogglDesktop
             }
             else if (Toggl.Description == focusedFieldName)
             {
+                comboBoxProject.SelectionLength = 0;
                 comboBoxDescription.Focus();
             }
         }
