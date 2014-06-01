@@ -13,6 +13,7 @@ namespace TogglDesktop
     public partial class TimeEntryEditViewController : UserControl
     {
         private string GUID = "";
+        private UInt64 TEUpdatedAt;
         private Toggl.TimeEntry timeEntry;
         private List<Toggl.AutocompleteItem> timeEntryAutocompleteUpdate = null;
         private List<Toggl.AutocompleteItem> projectAutocompleteUpdate = null;
@@ -62,6 +63,7 @@ namespace TogglDesktop
             if (applyAddProject())
             {
                 Toggl.ViewTimeEntryList();
+                resetForms();
             }
         }
 
@@ -77,16 +79,13 @@ namespace TogglDesktop
             }
 
             timeEntry = te;
-            if (!open)
+            if (GUID == te.GUID && TEUpdatedAt == te.UpdatedAt)
             {
                 return;
             }
-            resetForms();
-            if (GUID == te.GUID)
-            {
-                return;
-            }
+
             GUID = te.GUID;
+            TEUpdatedAt = te.UpdatedAt;
 
             checkBoxBillable.Visible = te.CanSeeBillable;
 
@@ -177,12 +176,14 @@ namespace TogglDesktop
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (DialogResult.Yes == dr)
             {
+                resetForms();
                 Toggl.DeleteTimeEntry(GUID);
             }
         }
 
         private void buttonContinue_Click(object sender, EventArgs e)
         {
+            resetForms();
             Toggl.Continue(GUID);
         }
 
@@ -256,8 +257,20 @@ namespace TogglDesktop
             {
                 return;
             }
+
             Toggl.AutocompleteItem item = (Toggl.AutocompleteItem)o;
             comboBoxDescription.Text = item.Description;
+            if (item.ProjectID != 0) {
+                foreach (object obj in comboBoxProject.Items)
+                {
+                    Toggl.AutocompleteItem projectItem = (Toggl.AutocompleteItem)obj;
+                    if (item.ProjectID == projectItem.ProjectID)
+                    {
+                        comboBoxProject.Text = projectItem.Text;
+                    }
+                }
+            }
+
             Toggl.SetTimeEntryProject(
                 GUID,
                 item.TaskID,
