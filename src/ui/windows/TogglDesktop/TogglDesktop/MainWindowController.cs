@@ -21,6 +21,8 @@ namespace TogglDesktop
         private bool isUpgradeDialogVisible = false;
         private bool isTracking = false;
         private bool isNetworkError = false;
+        private Point defaultContentPosition =  new System.Drawing.Point(0, 0);
+        private Point errorContentPosition = new System.Drawing.Point(0, 28);
 
         [StructLayout(LayoutKind.Sequential)]
         struct LASTINPUTINFO
@@ -54,6 +56,7 @@ namespace TogglDesktop
         private void MainWindowController_Load(object sender, EventArgs e)
         {
             troubleBox.BackColor = Color.FromArgb(239, 226, 121);
+            contentPanel.Location = defaultContentPosition;
 
             Utils.LoadWindowLocation(this);
 
@@ -138,12 +141,14 @@ namespace TogglDesktop
 
                 errorLabel.Text = reason;
                 troubleBox.Visible = true;
+                contentPanel.Location = errorContentPosition;
             }
             else if (isNetworkError)
             {
                 isNetworkError = false;
 
                 troubleBox.Visible = false;
+                contentPanel.Location = defaultContentPosition;
             }
             // FIXME: change tray icon
         }
@@ -210,6 +215,7 @@ namespace TogglDesktop
 
             errorLabel.Text = errmsg;
             troubleBox.Visible = true;
+            contentPanel.Location = errorContentPosition;
 
             if (!user_error)
             {
@@ -311,6 +317,7 @@ namespace TogglDesktop
         private void buttonDismissError_Click(object sender, EventArgs e)
         {
             troubleBox.Visible = false;
+            contentPanel.Location = defaultContentPosition;
         }
 
         private void sendFeedbackToolStripMenuItem_Click(object sender, EventArgs e)

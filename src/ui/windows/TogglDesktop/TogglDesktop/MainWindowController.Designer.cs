@@ -244,7 +244,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.contentPanel.Location = new System.Drawing.Point(0, 28);
             this.contentPanel.Name = "contentPanel";
-            this.contentPanel.Size = new System.Drawing.Size(299, 294);
+            this.contentPanel.Size = new System.Drawing.Size(299, 322);
             this.contentPanel.TabIndex = 7;
             // 
             // MainWindowController
