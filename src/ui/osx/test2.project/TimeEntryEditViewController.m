@@ -165,19 +165,22 @@ extern int kDurationStringLength;
 
 	// If user has only one workspace, do not show the workspace combobox at all.
 	BOOL singleWorkspace = YES;
+	NSNumber *addedHeight;
 	if (self.workspaceList.count > 1)
 	{
 		singleWorkspace = NO;
 		self.addProjectBoxHeight.constant = 129;
+		addedHeight = [NSNumber numberWithInt:100];
 	}
 	else
 	{
 		self.addProjectBoxHeight.constant = 96;
+		addedHeight = [NSNumber numberWithInt:70];
 	}
 	[self.workspaceLabel setHidden:singleWorkspace];
 	[self.workspaceSelect setHidden:singleWorkspace];
 
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:100] forKey:@"height"];
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:addedHeight forKey:@"height"];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:kResizeEditForm
 														object:nil
