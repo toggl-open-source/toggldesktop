@@ -1,5 +1,11 @@
 // Copyright 2014 Toggl Desktop developers.
 
+// Warning! Modifying the public API header
+// will break clients, including C# definitions.
+// You must update the C# definitions in
+// src/ui/windows/TogglDesktop/TogglDesktop/KopsikApi.cs
+// to fix this.
+
 #ifndef SRC_KOPSIK_API_H_
 #define SRC_KOPSIK_API_H_
 

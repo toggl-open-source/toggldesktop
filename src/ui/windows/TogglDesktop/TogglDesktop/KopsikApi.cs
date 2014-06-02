@@ -29,6 +29,8 @@ namespace TogglDesktop
             public Int64 DurationInSeconds;
             public string Description;
             public string ProjectAndTaskLabel;
+            public string ProjectLabel;
+            public string ClientLabel;
             public UInt64 WID;
             public UInt64 PID;
             public UInt64 TID;
