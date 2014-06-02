@@ -16,6 +16,7 @@
 #import "NSTextFieldClickable.h"
 #import "NSCustomComboBoxCell.h"
 #import "NSCustomComboBox.h"
+#import "NSCustomTimerComboBox.h"
 #import "DisplayCommand.h"
 
 @interface TimerEditViewController ()
