@@ -16,6 +16,7 @@
 #import "NSTextFieldClickable.h"
 #import "NSCustomComboBoxCell.h"
 #import "NSCustomComboBox.h"
+#import "NSCustomTimerComboBox.h"
 #import "DisplayCommand.h"
 
 @interface TimerEditViewController ()
@@ -287,6 +288,9 @@ extern void *ctx;
 															object:nil];
 		return;
 	}
+
+	[[NSNotificationCenter defaultCenter] postNotificationName:kForceCloseEditPopover
+														object:nil];
 
 	// resign current FirstResponder
 	[self.durationTextField.window makeFirstResponder:[self.durationTextField superview]];

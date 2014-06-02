@@ -7,6 +7,7 @@
 //
 
 #import "NSTextFieldClickable.h"
+#import "UIEvents.h"
 
 @implementation NSTextFieldClickable
 
@@ -14,6 +15,8 @@
 {
 	if (self.isEditable)
 	{
+		[[NSNotificationCenter defaultCenter] postNotificationName:kForceCloseEditPopover
+															object:nil];
 		return;
 	}
 	[self sendAction:@selector(textFieldClicked:) to:[self delegate]];

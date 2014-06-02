@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C07B75A193C88AE00ED6E6F /* NSCustomTimerComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C07B759193C88AE00ED6E6F /* NSCustomTimerComboBox.m */; };
 		3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */; };
 		3C7B4E9E190FA7F900627DC3 /* logo-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */; };
 		3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */; };
@@ -391,6 +392,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3C07B758193C88AE00ED6E6F /* NSCustomTimerComboBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomTimerComboBox.h; sourceTree = "<group>"; };
+		3C07B759193C88AE00ED6E6F /* NSCustomTimerComboBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomTimerComboBox.m; sourceTree = "<group>"; };
 		3C7B4E8B190FA6D200627DC3 /* NSTextFieldVerticallyAligned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldVerticallyAligned.h; sourceTree = "<group>"; };
 		3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldVerticallyAligned.m; sourceTree = "<group>"; };
 		3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-white@2x.png"; sourceTree = "<group>"; };
@@ -749,6 +752,8 @@
 				3C8979C919235EA2007061E0 /* NSTextFieldClickablePointer.m */,
 				3CA14527192DE32300414620 /* NSViewEscapable.h */,
 				3CA14528192DE32300414620 /* NSViewEscapable.m */,
+				3C07B758193C88AE00ED6E6F /* NSCustomTimerComboBox.h */,
+				3C07B759193C88AE00ED6E6F /* NSCustomTimerComboBox.m */,
 			);
 			name = ui;
 			path = test2;
@@ -1319,6 +1324,7 @@
 				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,
 				749BD0BD1833E28400980494 /* NSBoxClickable.m in Sources */,
 				74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */,
+				3C07B75A193C88AE00ED6E6F /* NSCustomTimerComboBox.m in Sources */,
 				74BAD31E18BD7D83002FD4CF /* ViewItem.m in Sources */,
 				74E3CDD417FBABE400C3ADD3 /* BugsnagOSXNotifier.m in Sources */,
 				74AA9471180909F50000539F /* GTMHTTPFetcher.m in Sources */,

@@ -165,19 +165,22 @@ extern int kDurationStringLength;
 
 	// If user has only one workspace, do not show the workspace combobox at all.
 	BOOL singleWorkspace = YES;
+	NSNumber *addedHeight;
 	if (self.workspaceList.count > 1)
 	{
 		singleWorkspace = NO;
 		self.addProjectBoxHeight.constant = 129;
+		addedHeight = [NSNumber numberWithInt:100];
 	}
 	else
 	{
 		self.addProjectBoxHeight.constant = 96;
+		addedHeight = [NSNumber numberWithInt:70];
 	}
 	[self.workspaceLabel setHidden:singleWorkspace];
 	[self.workspaceSelect setHidden:singleWorkspace];
 
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:100] forKey:@"height"];
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:addedHeight forKey:@"height"];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:kResizeEditForm
 														object:nil
@@ -413,7 +416,7 @@ extern int kDurationStringLength;
 		[df_local setTimeZone:[NSTimeZone defaultTimeZone]];
 		[df_local setDateFormat:@"yyyy.MM.dd 'at' HH:mm:ss"];
 		NSString *localDate = [df_local stringFromDate:self.timeEntry.updatedAt];
-		NSString *updatedAt = [@"Last update " stringByAppendingString : localDate];
+		NSString *updatedAt = [@"Last update " stringByAppendingString:localDate];
 		[self.lastUpdateTextField setStringValue:updatedAt];
 		[self.lastUpdateTextField setHidden:NO];
 	}
@@ -686,6 +689,10 @@ extern int kDurationStringLength;
 	{
 		task_id = autocomplete.TaskID;
 		project_id = autocomplete.ProjectID;
+	}
+	if ([key length] && project_id == 0)
+	{
+		return;
 	}
 	kopsik_set_time_entry_project(ctx, [self.timeEntry.GUID UTF8String], task_id, project_id, 0);
 }

@@ -88,6 +88,9 @@
                                         <comboBox verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mxY-tv-UzX" customClass="NSCustomComboBox">
                                             <rect key="frame" x="15" y="14" width="318" height="26"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="E4l-xk-myE"/>
+                                            </constraints>
                                             <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="z8M-J4-cIb" customClass="NSCustomComboBoxCell">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -570,7 +573,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <constraint firstAttribute="trailing" secondItem="6rO-vx-iLH" secondAttribute="trailing" constant="16" id="fNk-og-RRY"/>
                         <constraint firstAttribute="trailing" secondItem="ByL-Em-l61" secondAttribute="trailing" id="hI2-2l-P1j"/>
                         <constraint firstItem="fz4-yg-eQZ" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" constant="15" id="jfV-DF-uvz"/>
-                        <constraint firstAttribute="trailing" secondItem="zwE-pW-vQN" secondAttribute="trailing" constant="10" id="jo4-Jw-Cl1"/>
+                        <constraint firstAttribute="trailing" secondItem="zwE-pW-vQN" secondAttribute="trailing" constant="7" id="jo4-Jw-Cl1"/>
                         <constraint firstAttribute="trailing" secondItem="Uof-FM-Nqj" secondAttribute="trailing" constant="15" id="lTj-Lw-020"/>
                         <constraint firstItem="6rO-vx-iLH" firstAttribute="leading" secondItem="Mka-gG-oqB" secondAttribute="leading" constant="15" id="rsw-CB-Mgl"/>
                         <constraint firstItem="6Sh-4d-bKb" firstAttribute="top" secondItem="Mka-gG-oqB" secondAttribute="top" constant="47" id="sC4-eT-UGB"/>
