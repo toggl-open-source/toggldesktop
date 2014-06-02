@@ -690,6 +690,10 @@ extern int kDurationStringLength;
 		task_id = autocomplete.TaskID;
 		project_id = autocomplete.ProjectID;
 	}
+	if ([key length] && project_id == 0)
+	{
+		return;
+	}
 	kopsik_set_time_entry_project(ctx, [self.timeEntry.GUID UTF8String], task_id, project_id, 0);
 }
 
