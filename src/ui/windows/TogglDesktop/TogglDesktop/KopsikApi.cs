@@ -60,6 +60,8 @@ namespace TogglDesktop
             public string Text;
             public string Description;
             public string ProjectAndTaskLabel;
+            public string ProjectLabel;
+            public string ClientLabel;
             public string ProjectColor;
             public UInt64 TaskID;
             public UInt64 ProjectID;
