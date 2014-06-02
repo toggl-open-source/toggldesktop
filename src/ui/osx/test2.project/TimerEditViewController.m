@@ -289,6 +289,9 @@ extern void *ctx;
 		return;
 	}
 
+	[[NSNotificationCenter defaultCenter] postNotificationName:kForceCloseEditPopover
+														object:nil];
+
 	// resign current FirstResponder
 	[self.durationTextField.window makeFirstResponder:[self.durationTextField superview]];
 	self.time_entry.Duration = self.durationTextField.stringValue;

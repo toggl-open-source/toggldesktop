@@ -192,7 +192,7 @@ extern void *ctx;
 		NSString *clientName = @"";
 		if ([item.ClientLabel length])
 		{
-			clientName = [@". " stringByAppendingString : item.ClientLabel];
+			clientName = [@". " stringByAppendingString:item.ClientLabel];
 		}
 		returnString = [NSString stringWithFormat:@"%@\n%@%@", item.Description, item.ProjectLabel, clientName];
 	}
