@@ -122,17 +122,17 @@ void UI::DisplayUpdate(const _Bool open,
     logger().debug("DisplayUpdate");
 
     KopsikUpdateViewItem view;
-    view.update_channel = strdup(update_channel.c_str());
-    view.is_checking = is_checking;
-    view.is_update_available = is_available;
-    view.url = strdup(url.c_str());
-    view.version = strdup(version.c_str());
+    view.UpdateChannel = strdup(update_channel.c_str());
+    view.IsChecking = is_checking;
+    view.IsUpdateAvailable = is_available;
+    view.URL = strdup(url.c_str());
+    view.Version = strdup(version.c_str());
 
     on_display_update_(open, &view);
 
-    free(view.update_channel);
-    free(view.url);
-    free(view.version);
+    free(view.UpdateChannel);
+    free(view.URL);
+    free(view.Version);
 }
 
 void UI::DisplayTimeEntryAutocomplete(
