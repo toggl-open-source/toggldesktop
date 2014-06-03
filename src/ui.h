@@ -43,10 +43,12 @@ class UI {
     _Bool DisplayError(const error);
     void DisplayOnlineState(const _Bool);
     void DisplayReminder();
-    void DisplayUpdate(
-        const bool is_available,
-        const std::string url,
-        const std::string version);
+    void DisplayUpdate(const _Bool open,
+                       const std::string update_channel,
+                       const _Bool is_checking,
+                       const _Bool is_available,
+                       const std::string url,
+                       const std::string version);
     void DisplayTimeEntryAutocomplete(std::vector<kopsik::AutocompleteItem> *);
     void DisplayProjectAutocomplete(std::vector<kopsik::AutocompleteItem> *);
     void DisplayTimeEntryList(const _Bool open,

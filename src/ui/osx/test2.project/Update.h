@@ -7,8 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "kopsik_api.h"
 
 @interface Update : NSObject
+- (void)load:(KopsikUpdateViewItem *)view;
+@property BOOL is_checking;
+@property BOOL is_update_available;
+@property (strong) NSString *channel;
 @property (strong) NSString *version;
 @property (strong) NSString *URL;
 @end

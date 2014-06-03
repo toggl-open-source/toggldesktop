@@ -45,7 +45,6 @@ class Context {
 
     // Start tasks
     void FullSync();
-    void FetchUpdates();
     void TimelineUpdateServerSettings();
     _Bool SendFeedback(Feedback);
 
@@ -113,6 +112,8 @@ class Context {
               const _Bool edit_running_entry,
               const std::string focused_field_name);
 
+    void About();
+
     _Bool SetTimeEntryDuration(
         const std::string GUID,
         const std::string duration);
@@ -157,8 +158,6 @@ class Context {
     _Bool SaveUpdateChannel(
         const std::string channel);
 
-    _Bool LoadUpdateChannel(std::string *channel);
-
     _Bool AddProject(
         const Poco::UInt64 workspace_id,
         const Poco::UInt64 client_id,
@@ -182,7 +181,7 @@ class Context {
         DeleteTimelineBatchNotification *notification);
 
  private:
-    const std::string updateURL() const;
+    const std::string updateURL();
 
     static const std::string osName();
 
@@ -195,6 +194,8 @@ class Context {
     error save(const bool push_changes = true);
 
     void partialSync();
+
+    void fetchUpdates();
 
     // timer_ callbacks
     void onFullSync(Poco::Util::TimerTask& task);  // NOLINT
@@ -294,8 +295,6 @@ class Context {
     std::string timeline_upload_url_;
 
     CustomErrorHandler error_handler_;
-
-    std::string update_channel_;
 
     Feedback feedback_;
 

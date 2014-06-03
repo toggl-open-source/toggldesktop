@@ -113,12 +113,26 @@ void UI::DisplayOnlineState(const _Bool is_online) {
     on_display_online_state_(is_online);
 }
 
-void UI::DisplayUpdate(const bool is_available,
+void UI::DisplayUpdate(const _Bool open,
+                       const std::string update_channel,
+                       const _Bool is_checking,
+                       const _Bool is_available,
                        const std::string url,
                        const std::string version) {
     logger().debug("DisplayUpdate");
 
-    on_display_update_(is_available, url.c_str(), version.c_str());
+    KopsikUpdateViewItem view;
+    view.update_channel = strdup(update_channel.c_str());
+    view.is_checking = is_checking;
+    view.is_update_available = is_available;
+    view.url = strdup(url.c_str());
+    view.version = strdup(version.c_str());
+
+    on_display_update_(open, &view);
+
+    free(view.update_channel);
+    free(view.url);
+    free(view.version);
 }
 
 void UI::DisplayTimeEntryAutocomplete(

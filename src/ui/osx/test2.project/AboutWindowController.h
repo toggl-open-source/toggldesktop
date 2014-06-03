@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "DisplayCommand.h"
 
 @interface AboutWindowController : NSWindowController
 @property IBOutlet NSTextField *appnameTextField;
@@ -16,4 +17,5 @@
 @property IBOutlet NSComboBox *updateChannelComboBox;
 - (IBAction)checkForUpdateClicked:(id)sender;
 - (IBAction)updateChannelSelected:(id)sender;
+@property DisplayCommand *displayCommand;
 @end

@@ -10,10 +10,7 @@
 #import "Update.h"
 #import "UIEvents.h"
 #import "kopsik_api.h"
-
-@interface AboutWindowController ()
-@property Update *update;
-@end
+#import "DisplayCommand.h"
 
 @implementation AboutWindowController
 
@@ -37,53 +34,24 @@ extern void *ctx;
 												 name:kDisplayUpdate
 											   object:nil];
 
-	[self showUpdateChannel];
-}
-
-- (void)showUpdateChannel
-{
-	unsigned int update_channel_len = 10;
-	char update_channel[update_channel_len];
-
-	if (!kopsik_get_update_channel(ctx,
-								   update_channel,
-								   update_channel_len))
-	{
-		return;
-	}
-	self.updateChannelComboBox.stringValue = [NSString stringWithUTF8String:update_channel];
+	[self displayUpdate:self.displayCommand];
 }
 
 - (IBAction)updateChannelSelected:(id)sender
 {
 	NSString *updateChannel = self.updateChannelComboBox.stringValue;
 
-	if (!kopsik_set_update_channel(ctx,
-								   [updateChannel UTF8String]))
-	{
-		return;
-	}
-
-	[self check];
-}
-
-- (void)check
-{
-	[self.checkForUpdateButton setEnabled:NO];
-	[self.updateChannelComboBox setEnabled:NO];
-	[self.checkForUpdateButton setTitle:@"Checking for update.."];
-	kopsik_check_for_updates(ctx);
+	kopsik_set_update_channel(ctx, [updateChannel UTF8String]);
 }
 
 - (IBAction)showWindow:(id)sender
 {
-	[self check];
 	[super showWindow:sender];
 }
 
 - (IBAction)checkForUpdateClicked:(id)sender
 {
-	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:self.update.URL]];
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:self.displayCommand.update.URL]];
 	[[NSApplication sharedApplication] terminate:self];
 }
 
@@ -94,25 +62,41 @@ extern void *ctx;
 						waitUntilDone:NO];
 }
 
-- (void)displayUpdate:(Update *)update
+- (void)displayUpdate:(DisplayCommand *)cmd
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	if (!update)
+	self.displayCommand = cmd;
+
+	self.updateChannelComboBox.stringValue = self.displayCommand.update.channel;
+
+	if (self.displayCommand.open)
 	{
-		self.update = nil;
+		[self showWindow:self];
+	}
+
+	if (self.displayCommand.update.is_checking)
+	{
 		[self.checkForUpdateButton setEnabled:NO];
-		[self.updateChannelComboBox setEnabled:YES];
-		[self.checkForUpdateButton setTitle:@"TogglDesktop is up to date."];
+		[self.updateChannelComboBox setEnabled:NO];
+		[self.checkForUpdateButton setTitle:@"Checking for update.."];
 		return;
 	}
 
-	self.update = update;
-	[self.checkForUpdateButton setEnabled:YES];
 	[self.updateChannelComboBox setEnabled:YES];
 
-	NSString *title = [NSString stringWithFormat:@"Click here to download update! (%@)", self.update.version];
-	[self.checkForUpdateButton setTitle:title];
+	if (self.displayCommand.update.is_update_available)
+	{
+		self.checkForUpdateButton.title =
+			[NSString stringWithFormat:@"Click here to download update! (%@)",
+			 self.displayCommand.update.version];
+		[self.checkForUpdateButton setEnabled:YES];
+	}
+	else
+	{
+		self.checkForUpdateButton.title = @"TogglDesktop is up to date.";
+		[self.checkForUpdateButton setEnabled:NO];
+	}
 }
 
 @end

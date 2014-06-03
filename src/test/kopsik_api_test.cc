@@ -28,6 +28,7 @@ uint64_t user_id(0);
 Settings settings;
 bool use_proxy(false);
 Proxy proxy;
+std::string update_channel("");
 }  // namespace testresult
 
 void on_error(
@@ -41,9 +42,9 @@ void on_error(
 }
 
 void on_update(
-    const _Bool is_update_available,
-    const char *url,
-    const char *version) {
+    const _Bool open,
+    KopsikUpdateViewItem *view) {
+    testresult::update_channel = std::string(view->update_channel);
 }
 
 void on_online_state(const _Bool is_online) {
@@ -218,29 +219,25 @@ TEST(KopsikApiTest, kopsik_set_proxy_settings) {
 TEST(KopsikApiTest, kopsik_set_update_channel) {
     testing::App app;
 
-    char update_channel[10];
-
     std::string default_channel("stable");
 
-    ASSERT_TRUE(kopsik_get_update_channel(app.ctx(), update_channel, 10));
-    ASSERT_EQ(default_channel, std::string(update_channel));
+    kopsik_about(app.ctx());
+
+    ASSERT_EQ(default_channel, testing::testresult::update_channel);
 
     ASSERT_FALSE(kopsik_set_update_channel(app.ctx(), "invalid"));
 
     ASSERT_TRUE(kopsik_set_update_channel(app.ctx(), "beta"));
 
-    ASSERT_TRUE(kopsik_get_update_channel(app.ctx(), update_channel, 10));
-    ASSERT_EQ(std::string("beta"), std::string(update_channel));
+    ASSERT_EQ(std::string("beta"), testing::testresult::update_channel);
 
     ASSERT_TRUE(kopsik_set_update_channel(app.ctx(), "dev"));
 
-    ASSERT_TRUE(kopsik_get_update_channel(app.ctx(), update_channel, 10));
-    ASSERT_EQ(std::string("dev"), std::string(update_channel));
+    ASSERT_EQ(std::string("dev"), testing::testresult::update_channel);
 
     ASSERT_TRUE(kopsik_set_update_channel(app.ctx(), "stable"));
 
-    ASSERT_TRUE(kopsik_get_update_channel(app.ctx(), update_channel, 10));
-    ASSERT_EQ(std::string("stable"), std::string(update_channel));
+    ASSERT_EQ(std::string("stable"), testing::testresult::update_channel);
 }
 
 TEST(KopsikApiTest, kopsik_set_log_level) {
