@@ -132,7 +132,8 @@ namespace TogglDesktop
 
             if (!user_error)
             {
-                // FIXME: notify bugsnag
+                Bugsnag.Library.BugSnag bs = new Bugsnag.Library.BugSnag();
+                bs.Notify(new Exception(errmsg));
             }
         }
 
