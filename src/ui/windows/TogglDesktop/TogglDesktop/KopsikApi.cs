@@ -104,6 +104,18 @@ namespace TogglDesktop
             public bool IgnoreCert;
         }
 
+        [StructLayout(LayoutKind.Sequential, CharSet = charset)]
+        public struct KopsikUpdateViewItem
+        {
+            public string UpdateChannel;
+            [MarshalAs(UnmanagedType.I1)]
+            public bool IsChecking;
+            [MarshalAs(UnmanagedType.I1)]
+            public bool IsUpdateAvailable;
+            public string URL;
+            public string Version;
+        }
+
         // Callbacks
 
         [UnmanagedFunctionPointer(convention)]
@@ -115,9 +127,8 @@ namespace TogglDesktop
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayUpdate(
             [MarshalAs(UnmanagedType.I1)]
-            bool is_update,
-            string url,
-            string version);
+            bool open,
+            ref KopsikUpdateViewItem view);
 
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayOnlineState(
@@ -326,6 +337,11 @@ namespace TogglDesktop
             string topic,
             string details,
             string filename);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static extern void kopsik_about(
+            IntPtr context);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]

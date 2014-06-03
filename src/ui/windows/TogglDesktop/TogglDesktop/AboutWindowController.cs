@@ -27,5 +27,10 @@ namespace TogglDesktop
         {
 
         }
+
+        private void AboutWindowController_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
