@@ -83,6 +83,7 @@
             this.buttonCheckingForUpdate.TabIndex = 4;
             this.buttonCheckingForUpdate.Text = "Checking for update...";
             this.buttonCheckingForUpdate.UseVisualStyleBackColor = true;
+            this.buttonCheckingForUpdate.Click += new System.EventHandler(this.buttonCheckingForUpdate_Click);
             // 
             // label2
             // 
@@ -95,6 +96,7 @@
             // 
             // comboBoxChannel
             // 
+            this.comboBoxChannel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxChannel.FormattingEnabled = true;
             this.comboBoxChannel.Items.AddRange(new object[] {
             "stable",
