@@ -566,7 +566,8 @@ namespace TogglDesktop
     		int time_entry_view_item_size,
 		    int autocomplete_view_item_size,
 		    int view_item_size,
-		    int settings_size);
+		    int settings_size,
+            int update_view_item_size);
 
         // Events for C#
 
@@ -618,7 +619,8 @@ namespace TogglDesktop
                 Marshal.SizeOf(new KopsikTimeEntryViewItem()),
                 Marshal.SizeOf(new KopsikAutocompleteItem()),
                 Marshal.SizeOf(new KopsikViewItem()),
-                Marshal.SizeOf(new KopsikSettingsViewItem()));
+                Marshal.SizeOf(new KopsikSettingsViewItem()),
+                Marshal.SizeOf(new KopsikUpdateViewItem()));
 
             // Wire up events
             kopsik_on_error(ctx, OnError);
