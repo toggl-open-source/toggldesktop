@@ -33,5 +33,10 @@ namespace TogglDesktop
             this.labelDateDuration.Text = this.TimeEntry.DateDuration;
             this.labelDuration.Text = this.TimeEntry.Duration;
         }
+
+        private void buttonContinue_Click(object sender, EventArgs e)
+        {
+            KopsikApi.kopsik_continue(KopsikApi.ctx, TimeEntry.GUID);
+        }
     }
 }

@@ -63,6 +63,7 @@
             this.buttonContinue.TabIndex = 7;
             this.buttonContinue.Text = ">";
             this.buttonContinue.UseVisualStyleBackColor = true;
+            this.buttonContinue.Click += new System.EventHandler(this.buttonContinue_Click);
             // 
             // labelDescription
             // 
