@@ -141,6 +141,7 @@
     <Compile Include="TimerEditViewController.Designer.cs">
       <DependentUpon>TimerEditViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utils.cs" />
     <EmbeddedResource Include="AboutWindowController.resx">
       <DependentUpon>AboutWindowController.cs</DependentUpon>
     </EmbeddedResource>

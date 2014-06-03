@@ -35,7 +35,7 @@ namespace TogglDesktop
         {
             troubleBox.BackColor = Color.FromArgb(239, 226, 121);
 
-            loadWindowLocation();
+            Utils.LoadWindowLocation(this);
 
             KopsikApi.OnError += OnError;
             KopsikApi.OnUpdate += OnUpdate;
@@ -53,26 +53,6 @@ namespace TogglDesktop
             }
         }
 
-        private void loadWindowLocation()
-        {
-            if (Properties.Settings.Default.Maximized)
-            {
-                WindowState = FormWindowState.Maximized;
-                Location = Properties.Settings.Default.Location;
-                Size = Properties.Settings.Default.Size;
-            }
-            else if (Properties.Settings.Default.Minimized)
-            {
-                WindowState = FormWindowState.Minimized;
-                Location = Properties.Settings.Default.Location;
-                Size = Properties.Settings.Default.Size;
-            }
-            else
-            {
-                Location = Properties.Settings.Default.Location;
-                Size = Properties.Settings.Default.Size;
-            }
-        }
 
         void OnOnlineState(bool is_online)
         {
@@ -224,38 +204,12 @@ namespace TogglDesktop
 
         private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)
         {
-            saveWindowLocation();
+            Utils.SaveWindowLocation(this);
 
             if (!TogglDesktop.Program.ShuttingDown) {
                 this.Hide();
                 e.Cancel = true;
             }
-        }
-
-        private void saveWindowLocation()
-        {
-            if (WindowState == FormWindowState.Maximized)
-            {
-                Properties.Settings.Default.Location = RestoreBounds.Location;
-                Properties.Settings.Default.Size = RestoreBounds.Size;
-                Properties.Settings.Default.Maximized = true;
-                Properties.Settings.Default.Minimized = false;
-            }
-            else if (WindowState == FormWindowState.Normal)
-            {
-                Properties.Settings.Default.Location = Location;
-                Properties.Settings.Default.Size = Size;
-                Properties.Settings.Default.Maximized = false;
-                Properties.Settings.Default.Minimized = false;
-            }
-            else
-            {
-                Properties.Settings.Default.Location = RestoreBounds.Location;
-                Properties.Settings.Default.Size = RestoreBounds.Size;
-                Properties.Settings.Default.Maximized = false;
-                Properties.Settings.Default.Minimized = true;
-            }
-            Properties.Settings.Default.Save();
         }
 
         private void buttonDismissError_Click(object sender, EventArgs e)

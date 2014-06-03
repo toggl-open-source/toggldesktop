@@ -276,6 +276,5 @@ namespace TogglDesktop
             KopsikApi.kopsik_set_time_entry_billable(KopsikApi.ctx,
                 GUID, checkBoxBillable.Checked);
         }
-
     }
 }
