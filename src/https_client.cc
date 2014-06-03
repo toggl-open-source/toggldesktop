@@ -171,7 +171,8 @@ error HTTPSClient::request(
 
         {
             std::stringstream ss;
-            ss << "Response content length " << response.getContentLength()
+            ss << "Response status code " << response.getStatus()
+               << ", content length " << response.getContentLength()
                << ", content type " << response.getContentType();
             if (response.has("Content-Encoding")) {
                 ss << ", content encoding " << response.get("Content-Encoding");
@@ -207,7 +208,7 @@ error HTTPSClient::request(
                             << response.getStatus();
                 return description.str();
             }
-            return "Data push failed with error: " + *response_body;
+            return "Request failed with error: " + *response_body;
         }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
