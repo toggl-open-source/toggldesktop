@@ -57,6 +57,8 @@
             // 
             // troubleBox
             // 
+            this.troubleBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.troubleBox.Controls.Add(this.buttonDismissError);
             this.troubleBox.Controls.Add(this.errorLabel);
             this.troubleBox.Location = new System.Drawing.Point(0, 0);
@@ -67,6 +69,7 @@
             // 
             // buttonDismissError
             // 
+            this.buttonDismissError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonDismissError.Location = new System.Drawing.Point(394, 4);
             this.buttonDismissError.Name = "buttonDismissError";
             this.buttonDismissError.Size = new System.Drawing.Size(16, 23);
