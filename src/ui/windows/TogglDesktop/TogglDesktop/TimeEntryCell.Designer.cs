@@ -31,7 +31,7 @@
             this.labelBillable = new System.Windows.Forms.Label();
             this.labelDescription = new System.Windows.Forms.Label();
             this.buttonContinue = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelDuration = new System.Windows.Forms.Label();
             this.labelProject = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -62,14 +62,14 @@
             this.buttonContinue.Text = ">";
             this.buttonContinue.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // labelDuration
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(159, 20);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(49, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "03:21:30";
+            this.labelDuration.AutoSize = true;
+            this.labelDuration.Location = new System.Drawing.Point(159, 20);
+            this.labelDuration.Name = "labelDuration";
+            this.labelDuration.Size = new System.Drawing.Size(49, 13);
+            this.labelDuration.TabIndex = 3;
+            this.labelDuration.Text = "03:21:30";
             // 
             // labelProject
             // 
@@ -85,7 +85,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.labelProject);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelDuration);
             this.Controls.Add(this.buttonContinue);
             this.Controls.Add(this.labelDescription);
             this.Controls.Add(this.labelBillable);
@@ -101,7 +101,7 @@
         private System.Windows.Forms.Label labelBillable;
         private System.Windows.Forms.Label labelDescription;
         private System.Windows.Forms.Button buttonContinue;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelDuration;
         private System.Windows.Forms.Label labelProject;
     }
 }
