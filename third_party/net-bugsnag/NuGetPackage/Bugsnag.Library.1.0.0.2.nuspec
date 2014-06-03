@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Bugsnag.Library</id>
+        <version>1.0.0.2</version>
+        <title>.NET Bugsnag</title>
+        <authors>Dan Esparza</authors>
+        <owners>Dan Esparza</owners>
+        <projectUrl>https://github.com/danesparza/net-bugsnag</projectUrl>
+        <iconUrl>https://twimg0-a.akamaihd.net/profile_images/2351270167/1yxa3fmnfehj9yvsf2m5.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>.NET Bugsnag notifier library</description>
+        <releaseNotes>Initial release</releaseNotes>
+        <copyright>Copyright 2013</copyright>
+        <tags>logging bugsnag</tags>
+        <dependencies>
+            <dependency id="ServiceStack.Text" version="3.9.33" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="lib\net40\Bugsnag.Library.dll" target="lib\net40\Bugsnag.Library.dll" />
+    </files>
+</package>
