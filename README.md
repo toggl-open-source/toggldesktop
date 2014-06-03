@@ -38,6 +38,12 @@ ms\do_ms
 nmake -f ms\ntdll.mak 
 ```
 
+Then open the solution in Visual Studio. Next, you'll need to install the net-bugsnag package: from the Tools menu select NuGet Package Manager, then Package Manager Console. Into the console, type:
+
+```
+Install-Package Bugsnag.Library
+```
+
 No Toggl build and signed app is available yet.
 
 Linux
