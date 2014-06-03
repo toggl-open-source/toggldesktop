@@ -17,6 +17,7 @@ namespace TogglDesktop
         private PreferencesWindowController preferencesWindowController;
         private FeedbackWindowController feedbackWindowController;
         private bool shuttingDown = false;
+        private bool upgradeDialogVisible = false;
         private UInt64 userID = 0;
 
         public MainWindowController()
@@ -107,7 +108,30 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { DisplayUpdate(open, view); });
                 return;
             }
-            // FIXME:
+            if (open)
+            {
+                aboutWindowController.Show();
+                aboutWindowController.BringToFront();
+            }
+            if (!view.IsUpdateAvailable)
+            {
+                return;
+            }
+            if (upgradeDialogVisible || aboutWindowController.Visible)
+            {
+                return;
+            }
+            upgradeDialogVisible = true;
+            DialogResult dr = MessageBox.Show(
+                "There's a new version of this app available (" + view.Version + ")." +
+                Environment.NewLine + "Proceed with the download?",
+                "New version available",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            upgradeDialogVisible = false;
+            if (DialogResult.Yes == dr)
+            {
+                OnURL(view.URL);
+            }
         }
 
         void OnURL(string url)
@@ -311,8 +335,7 @@ namespace TogglDesktop
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            aboutWindowController.Show();
-            aboutWindowController.BringToFront();
+            KopsikApi.kopsik_about(KopsikApi.ctx);
         }
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
