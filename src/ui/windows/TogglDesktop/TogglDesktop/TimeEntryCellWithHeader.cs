@@ -38,5 +38,10 @@ namespace TogglDesktop
         {
             KopsikApi.kopsik_continue(KopsikApi.ctx, TimeEntry.GUID);
         }
+
+        private void TimeEntryCellWithHeader_MouseClick(object sender, MouseEventArgs e)
+        {
+            KopsikApi.kopsik_edit(KopsikApi.ctx, TimeEntry.GUID, false, "");
+        }
     }
 }

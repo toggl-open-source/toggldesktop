@@ -92,6 +92,7 @@
             this.Controls.Add(this.labelBillable);
             this.Name = "TimeEntryCell";
             this.Size = new System.Drawing.Size(216, 49);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TimeEntryCell_MouseClick);
             this.ResumeLayout(false);
             this.PerformLayout();
 
