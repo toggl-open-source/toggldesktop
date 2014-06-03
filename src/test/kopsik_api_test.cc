@@ -44,7 +44,7 @@ void on_error(
 void on_update(
     const _Bool open,
     KopsikUpdateViewItem *view) {
-    testresult::update_channel = std::string(view->update_channel);
+    testresult::update_channel = std::string(view->UpdateChannel);
 }
 
 void on_online_state(const _Bool is_online) {

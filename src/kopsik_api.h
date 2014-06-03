@@ -97,11 +97,11 @@ extern "C" {
     } KopsikSettingsViewItem;
 
     typedef struct {
-        char *update_channel;
-        _Bool is_checking;
-        _Bool is_update_available;
-        char *url;
-        char *version;
+        char *UpdateChannel;
+        _Bool IsChecking;
+        _Bool IsUpdateAvailable;
+        char *URL;
+        char *Version;
     } KopsikUpdateViewItem;
 
     // Callbacks that need to be implemented in UI
@@ -443,7 +443,8 @@ extern "C" {
         const int time_entry_view_item_size,
         const int autocomplete_view_item_size,
         const int view_item_size,
-        const int settings_size);
+        const int settings_size,
+        const int update_view_item_size);
 
     // FIXME: should be invoked inside lib instead
     KOPSIK_EXPORT _Bool kopsik_users_default_wid(

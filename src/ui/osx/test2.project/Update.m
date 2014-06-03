@@ -12,11 +12,11 @@
 
 - (void)load:(KopsikUpdateViewItem *)view
 {
-	self.channel = [NSString stringWithUTF8String:view->update_channel];
-	self.is_checking = view->is_checking;
-	self.is_update_available = view->is_update_available;
-	self.URL = [NSString stringWithUTF8String:view->url];
-	self.version = [NSString stringWithUTF8String:view->version];
+	self.channel = [NSString stringWithUTF8String:view->UpdateChannel];
+	self.is_checking = view->IsChecking;
+	self.is_update_available = view->IsUpdateAvailable;
+	self.URL = [NSString stringWithUTF8String:view->URL];
+	self.version = [NSString stringWithUTF8String:view->Version];
 }
 
 @end
