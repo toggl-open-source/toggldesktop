@@ -12,9 +12,26 @@ namespace TogglDesktop
 {
     public partial class TimeEntryCellWithHeader : UserControl
     {
-        public TimeEntryCellWithHeader()
+        private KopsikApi.KopsikTimeEntryViewItem TimeEntry;
+        public TimeEntryCellWithHeader(int y)
         {
             InitializeComponent();
+            Location = new Point(0, y);
+        }
+
+        internal void Setup(KopsikApi.KopsikTimeEntryViewItem item)
+        {
+            this.TimeEntry = item;
+            this.Render();
+        }
+
+        private void Render()
+        {
+            this.labelDescription.Text = this.TimeEntry.Description;
+            this.labelProject.Text = this.TimeEntry.ProjectAndTaskLabel;
+            this.labelFormattedDate.Text = this.TimeEntry.DateHeader;
+            this.labelDateDuration.Text = this.TimeEntry.DateDuration;
+            this.labelDuration.Text = this.TimeEntry.Duration;
         }
     }
 }

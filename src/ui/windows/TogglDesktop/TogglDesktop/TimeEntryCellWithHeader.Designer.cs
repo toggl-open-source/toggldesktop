@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.labelProject = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelDuration = new System.Windows.Forms.Label();
             this.buttonContinue = new System.Windows.Forms.Button();
             this.labelDescription = new System.Windows.Forms.Label();
             this.labelBillable = new System.Windows.Forms.Label();
@@ -46,14 +46,14 @@
             this.labelProject.TabIndex = 9;
             this.labelProject.Text = "NEW - TOGGL";
             // 
-            // label1
+            // labelDuration
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(160, 50);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(49, 13);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "03:21:30";
+            this.labelDuration.AutoSize = true;
+            this.labelDuration.Location = new System.Drawing.Point(160, 50);
+            this.labelDuration.Name = "labelDuration";
+            this.labelDuration.Size = new System.Drawing.Size(49, 13);
+            this.labelDuration.TabIndex = 8;
+            this.labelDuration.Text = "03:21:30";
             // 
             // buttonContinue
             // 
@@ -107,7 +107,7 @@
             this.Controls.Add(this.labelDateDuration);
             this.Controls.Add(this.labelFormattedDate);
             this.Controls.Add(this.labelProject);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelDuration);
             this.Controls.Add(this.buttonContinue);
             this.Controls.Add(this.labelDescription);
             this.Controls.Add(this.labelBillable);
@@ -121,7 +121,7 @@
         #endregion
 
         private System.Windows.Forms.Label labelProject;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelDuration;
         private System.Windows.Forms.Button buttonContinue;
         private System.Windows.Forms.Label labelDescription;
         private System.Windows.Forms.Label labelBillable;

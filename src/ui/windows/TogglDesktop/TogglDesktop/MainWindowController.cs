@@ -178,6 +178,7 @@ namespace TogglDesktop
                 Controls.Remove(timeEntryEditViewController);
                 Controls.Add(timeEntryListViewController);
                 timeEntryListViewController.SetAcceptButton(this);
+                timeEntryListViewController.DrawEntriesList(list);
             }
         }
 
