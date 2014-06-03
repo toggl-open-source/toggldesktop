@@ -167,35 +167,36 @@ error HTTPSClient::request(
 
         // Receive response
         Poco::Net::HTTPResponse response;
-		std::istream& is = session.receiveResponse(response);
+        std::istream& is = session.receiveResponse(response);
 
-		{
-			std::stringstream ss;
-			ss << "Response content length " << response.getContentLength()
-				<< ", content type " << response.getContentType();
-			if (response.has("Content-Encoding")) {
-				ss << ", content encoding " << response.get("Content-Encoding");
-			} else {
-				ss << ", unknown content encoding";
-			}
-			logger.debug(ss.str());
-		}
+        {
+            std::stringstream ss;
+            ss << "Response content length " << response.getContentLength()
+               << ", content type " << response.getContentType();
+            if (response.has("Content-Encoding")) {
+                ss << ", content encoding " << response.get("Content-Encoding");
+            } else {
+                ss << ", unknown content encoding";
+            }
+            logger.debug(ss.str());
+        }
 
         // Inflate, if gzip was sent
-		if (response.has("Content-Encoding") &&
-			"gzip" == response.get("Content-Encoding")) {
-	        Poco::InflatingInputStream inflater(
-		        is,
-				Poco::InflatingStreamBuf::STREAM_GZIP);
-			{
-				std::stringstream ss;
-				ss << inflater.rdbuf();
-				*response_body = ss.str();
-			}
-		} else {
-			std::istreambuf_iterator<char> eos;
-			*response_body = std::string(std::istreambuf_iterator<char>(is), eos);
-		}
+        if (response.has("Content-Encoding") &&
+                "gzip" == response.get("Content-Encoding")) {
+            Poco::InflatingInputStream inflater(
+                is,
+                Poco::InflatingStreamBuf::STREAM_GZIP);
+            {
+                std::stringstream ss;
+                ss << inflater.rdbuf();
+                *response_body = ss.str();
+            }
+        } else {
+            std::istreambuf_iterator<char> eos;
+            *response_body =
+                std::string(std::istreambuf_iterator<char>(is), eos);
+        }
 
         logger.trace(*response_body);
 
