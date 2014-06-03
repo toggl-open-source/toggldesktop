@@ -95,16 +95,16 @@ namespace TogglDesktop
             // FIXME:
         }
 
-        void OnUpdate(bool is_update_available, string url, string version)
+        void OnUpdate(bool open, ref KopsikApi.KopsikUpdateViewItem view)
         {
-            DisplayUpdate(is_update_available, url, version);
+            DisplayUpdate(open, view);
         }
 
-        void DisplayUpdate(bool is_update_available, string url, string version)
+        void DisplayUpdate(bool open, KopsikApi.KopsikUpdateViewItem view)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayUpdate(is_update_available, url, version); });
+                Invoke((MethodInvoker)delegate { DisplayUpdate(open, view); });
                 return;
             }
             // FIXME:
@@ -156,7 +156,6 @@ namespace TogglDesktop
                 Controls.Add(loginViewController);
                 loginViewController.SetAcceptButton(this);
             }
-            // FIXME: configure bugsnag
         }
 
         void OnTimeEntryList(bool open, ref KopsikApi.KopsikTimeEntryViewItem te)
