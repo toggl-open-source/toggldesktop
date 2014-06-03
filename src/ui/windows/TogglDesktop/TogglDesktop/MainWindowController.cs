@@ -16,8 +16,9 @@ namespace TogglDesktop
         private AboutWindowController aboutWindowController;
         private PreferencesWindowController preferencesWindowController;
         private FeedbackWindowController feedbackWindowController;
-        private bool upgradeDialogVisible = false;
-        private UInt64 userID = 0;
+        private bool isUpgradeDialogVisible = false;
+        private bool isLoggedIn = false;
+        private bool isTracking = false;
 
         public MainWindowController()
         {
@@ -45,6 +46,7 @@ namespace TogglDesktop
             KopsikApi.OnOnlineState += OnOnlineState;
             KopsikApi.OnReminder += OnReminder;
             KopsikApi.OnURL += OnURL;
+            KopsikApi.OnTimerState += OnTimerState;
 
             if (!KopsikApi.Start(TogglDesktop.Program.Version()))
             {
@@ -53,6 +55,21 @@ namespace TogglDesktop
             }
         }
 
+        void OnTimerState(IntPtr te)
+        {
+            DisplayTimerState(te != IntPtr.Zero);
+        }
+
+        void DisplayTimerState(bool is_tracking) {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayTimerState(is_tracking); });
+                return;
+            }
+
+            isTracking = is_tracking;
+            enableMenuItems();
+        }
 
         void OnOnlineState(bool is_online)
         {
@@ -90,17 +107,17 @@ namespace TogglDesktop
             {
                 return;
             }
-            if (upgradeDialogVisible || aboutWindowController.Visible)
+            if (isUpgradeDialogVisible || aboutWindowController.Visible)
             {
                 return;
             }
-            upgradeDialogVisible = true;
+            isUpgradeDialogVisible = true;
             DialogResult dr = MessageBox.Show(
                 "There's a new version of this app available (" + view.Version + ")." +
                 Environment.NewLine + "Proceed with the download?",
                 "New version available",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            upgradeDialogVisible = false;
+            isUpgradeDialogVisible = false;
             if (DialogResult.Yes == dr)
             {
                 Process.Start(view.URL);
@@ -136,23 +153,36 @@ namespace TogglDesktop
 
         void OnLogin(bool open, UInt64 user_id)
         {
-            DisplayLogin(open, user_id);
+            DisplayLogin(open, user_id > 0);
         }
 
-        void DisplayLogin(bool open, UInt64 user_id)
+        void DisplayLogin(bool open, bool is_logged_in)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayLogin(open, user_id); });
+                Invoke((MethodInvoker)delegate { DisplayLogin(open, is_logged_in); });
                 return;
             }
-            userID = user_id;
+            isLoggedIn = is_logged_in;
             if (open) {
                 Controls.Remove(timeEntryListViewController);
                 Controls.Remove(timeEntryEditViewController);
                 Controls.Add(loginViewController);
                 loginViewController.SetAcceptButton(this);
             }
+            enableMenuItems();
+        }
+
+        private void enableMenuItems()
+        {
+            newToolStripMenuItem.Enabled = isLoggedIn;
+            continueToolStripMenuItem.Enabled = isLoggedIn && !isTracking;
+            stopToolStripMenuItem.Enabled = isLoggedIn && isTracking;
+            syncToolStripMenuItem.Enabled = isLoggedIn;
+            logoutToolStripMenuItem.Enabled = isLoggedIn;
+            clearCacheToolStripMenuItem.Enabled = isLoggedIn;
+            sendFeedbackToolStripMenuItem.Enabled = isLoggedIn;
+            openInBrowserToolStripMenuItem.Enabled = isLoggedIn;
         }
 
         void OnTimeEntryList(bool open, ref KopsikApi.KopsikTimeEntryViewItem te)
@@ -307,5 +337,18 @@ namespace TogglDesktop
             // FIXME:
         }
 
+        private void clearCacheToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show(
+                "This will remove your Toggl user data from this PC and log you out of the Toggl Desktop app. " +
+                "Any unsynced data will be lost." +
+                Environment.NewLine + "Do you want to continue?",
+                "Clear Cache",
+                MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            if (DialogResult.Yes == dr) 
+            {
+                KopsikApi.kopsik_clear_cache(KopsikApi.ctx);
+            }
+        }
     }
 }
