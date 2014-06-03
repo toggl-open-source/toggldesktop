@@ -192,6 +192,12 @@ namespace TogglDesktop
         public static extern void kopsik_context_clear(
             IntPtr context);
 
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static extern bool kopsik_set_environment(
+            IntPtr context,
+            string environment);
+
         // DB path must be configured from UI
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -646,6 +652,9 @@ namespace TogglDesktop
             kopsik_on_settings(ctx, OnSettings);
             kopsik_on_timer_state(ctx, OnTimerState);
             kopsik_on_url(ctx, OnURL);
+
+            // FIXME: Get environment from app settings
+            kopsik_set_environment(ctx, "development");
 
             // Configure log, db path
             string path = Path.Combine(Environment.GetFolderPath(

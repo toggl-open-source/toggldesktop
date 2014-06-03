@@ -106,6 +106,7 @@
             this.comboBoxChannel.Name = "comboBoxChannel";
             this.comboBoxChannel.Size = new System.Drawing.Size(121, 21);
             this.comboBoxChannel.TabIndex = 6;
+            this.comboBoxChannel.SelectedIndexChanged += new System.EventHandler(this.comboBoxChannel_SelectedIndexChanged);
             // 
             // AboutWindowController
             // 
