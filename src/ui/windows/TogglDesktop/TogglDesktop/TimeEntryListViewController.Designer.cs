@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.panelHeader = new System.Windows.Forms.Panel();
-            this.panelContent = new System.Windows.Forms.Panel();
             this.timerEditViewController = new TogglDesktop.TimerEditViewController();
+            this.panelContent = new System.Windows.Forms.Panel();
             this.panelHeader.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -42,19 +42,23 @@
             this.panelHeader.Size = new System.Drawing.Size(314, 62);
             this.panelHeader.TabIndex = 0;
             // 
-            // panelContent
-            // 
-            this.panelContent.Location = new System.Drawing.Point(0, 61);
-            this.panelContent.Name = "panelContent";
-            this.panelContent.Size = new System.Drawing.Size(314, 295);
-            this.panelContent.TabIndex = 1;
-            // 
             // timerEditViewController
             // 
             this.timerEditViewController.Location = new System.Drawing.Point(4, 4);
             this.timerEditViewController.Name = "timerEditViewController";
             this.timerEditViewController.Size = new System.Drawing.Size(305, 51);
             this.timerEditViewController.TabIndex = 0;
+            // 
+            // panelContent
+            // 
+            this.panelContent.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelContent.AutoScroll = true;
+            this.panelContent.Location = new System.Drawing.Point(0, 61);
+            this.panelContent.Name = "panelContent";
+            this.panelContent.Size = new System.Drawing.Size(314, 295);
+            this.panelContent.TabIndex = 1;
             // 
             // TimeEntryListViewController
             // 
