@@ -15,6 +15,8 @@ namespace TogglDesktop
         public TimeEntryListViewController()
         {
             InitializeComponent();
+
+            KopsikApi.OnTimeEntryList += OnTimeEntryList;
         }
 
         public void SetAcceptButton(Form frm)
@@ -22,8 +24,19 @@ namespace TogglDesktop
             timerEditViewController.SetAcceptButton(frm);
         }
 
-        internal void DrawEntriesList(List<KopsikApi.KopsikTimeEntryViewItem> list)
+        void OnTimeEntryList(bool open, ref KopsikApi.KopsikTimeEntryViewItem te)
         {
+            List<KopsikApi.KopsikTimeEntryViewItem> list = KopsikApi.ConvertToTimeEntryList(ref te);
+            DisplayTimeEntryList(open, list);
+        }
+
+        void DisplayTimeEntryList(bool open, List<KopsikApi.KopsikTimeEntryViewItem> list)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayTimeEntryList(open, list); });
+                return;
+            }
             int y = 0;
             this.panelContent.Controls.Clear();
             foreach (KopsikApi.KopsikTimeEntryViewItem item in list)
@@ -49,6 +62,11 @@ namespace TogglDesktop
         {
             // FIXME:
             //regular 49 header 82
+        }
+
+        private void panelContent_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

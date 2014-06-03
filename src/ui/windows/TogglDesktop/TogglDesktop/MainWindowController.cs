@@ -177,15 +177,14 @@ namespace TogglDesktop
 
         void OnTimeEntryList(bool open, ref KopsikApi.KopsikTimeEntryViewItem te)
         {
-            List<KopsikApi.KopsikTimeEntryViewItem> list = KopsikApi.ConvertToTimeEntryList(ref te);
-            DisplayTimeEntryList(open, list);
+            DisplayTimeEntryList(open);
         }
 
-        void DisplayTimeEntryList(bool open, List<KopsikApi.KopsikTimeEntryViewItem> list)
+        void DisplayTimeEntryList(bool open)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayTimeEntryList(open, list); });
+                Invoke((MethodInvoker)delegate { DisplayTimeEntryList(open); });
                 return;
             }
             if (open)
@@ -194,7 +193,6 @@ namespace TogglDesktop
                 Controls.Remove(timeEntryEditViewController);
                 Controls.Add(timeEntryListViewController);
                 timeEntryListViewController.SetAcceptButton(this);
-                timeEntryListViewController.DrawEntriesList(list);
             }
         }
 
@@ -203,17 +201,15 @@ namespace TogglDesktop
             ref KopsikApi.KopsikTimeEntryViewItem te,
             string focused_field_name)
         {
-            KopsikApi.KopsikTimeEntryViewItem n = te;
-            DisplayTimeEntryEditor(open, n, focused_field_name);
+            DisplayTimeEntryEditor(open, focused_field_name);
         }
 
         void DisplayTimeEntryEditor(
             bool open,
-            KopsikApi.KopsikTimeEntryViewItem te,
             string focused_field_name) {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayTimeEntryEditor(open, te, focused_field_name); });
+                Invoke((MethodInvoker)delegate { DisplayTimeEntryEditor(open, focused_field_name); });
                 return;
             }
             if (open)
