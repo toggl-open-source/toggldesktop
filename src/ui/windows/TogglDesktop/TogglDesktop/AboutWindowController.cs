@@ -22,5 +22,10 @@ namespace TogglDesktop
             Hide();
             e.Cancel = true;
         }
+
+        private void buttonCheckingForUpdate_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
