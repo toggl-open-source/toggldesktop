@@ -129,8 +129,10 @@ error HTTPSClient::request(
             logger.debug(ss.str());
         }
 
+        std::string encoded_url("");
+        Poco::URI::encode(relative_url, "", encoded_url);
         Poco::Net::HTTPRequest req(method,
-                                   relative_url,
+                                   encoded_url,
                                    Poco::Net::HTTPMessage::HTTP_1_1);
         req.setKeepAlive(false);
         req.setContentType("application/json");
