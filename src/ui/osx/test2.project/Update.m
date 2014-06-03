@@ -10,4 +10,13 @@
 
 @implementation Update
 
+- (void)load:(KopsikUpdateViewItem *)view
+{
+	self.channel = [NSString stringWithUTF8String:view->update_channel];
+	self.is_checking = view->is_checking;
+	self.is_update_available = view->is_update_available;
+	self.URL = [NSString stringWithUTF8String:view->url];
+	self.version = [NSString stringWithUTF8String:view->version];
+}
+
 @end

@@ -118,13 +118,17 @@ const int kDurationStringLength = 20;
 
 	self.inactiveAppIcon = [NSImage imageNamed:@"app_inactive"];
 
-	self.preferencesWindowController = [[PreferencesWindowController alloc] initWithWindowNibName:@"PreferencesWindowController"];
+	self.preferencesWindowController = [[PreferencesWindowController alloc]
+										initWithWindowNibName:@"PreferencesWindowController"];
 
-	self.aboutWindowController = [[AboutWindowController alloc] initWithWindowNibName:@"AboutWindowController"];
+	self.aboutWindowController = [[AboutWindowController alloc]
+								  initWithWindowNibName:@"AboutWindowController"];
 
-	self.idleNotificationWindowController = [[IdleNotificationWindowController alloc] initWithWindowNibName:@"IdleNotificationWindowController"];
+	self.idleNotificationWindowController = [[IdleNotificationWindowController alloc]
+											 initWithWindowNibName:@"IdleNotificationWindowController"];
 
-	self.feedbackWindowController = [[FeedbackWindowController alloc] initWithWindowNibName:@"FeedbackWindowController"];
+	self.feedbackWindowController = [[FeedbackWindowController alloc]
+									 initWithWindowNibName:@"FeedbackWindowController"];
 
 	[self createStatusItem];
 
@@ -622,8 +626,7 @@ const int kDurationStringLength = 20;
 
 - (IBAction)onAboutMenuItem:(id)sender
 {
-	[self.aboutWindowController showWindow:self];
-	[NSApp activateIgnoringOtherApps:YES];
+	kopsik_about(ctx);
 }
 
 - (IBAction)onShowMenuItem:(id)sender
@@ -929,14 +932,22 @@ const NSString *appName = @"osx_native_app";
 						waitUntilDone:NO];
 }
 
-- (void)displayUpdate:(Update *)update
+- (void)displayUpdate:(DisplayCommand *)cmd
 {
-	if (!update)
+	if (cmd.open)
+	{
+		self.aboutWindowController.displayCommand = cmd;
+		[self.aboutWindowController showWindow:self];
+		[NSApp activateIgnoringOtherApps:YES];
+		return;
+	}
+
+	if (!cmd.update.is_update_available)
 	{
 		return;
 	}
 
-	if (self.upgradeDialogVisible)
+	if (self.upgradeDialogVisible || self.aboutWindowController.window.isVisible)
 	{
 		NSLog(@"Upgrade dialog already visible");
 		return;
@@ -948,7 +959,7 @@ const NSString *appName = @"osx_native_app";
 	[alert addButtonWithTitle:@"No"];
 	[alert setMessageText:@"Download new version?"];
 	NSString *informative = [NSString stringWithFormat:
-							 @"There's a new version of this app available (%@).", update.version];
+							 @"There's a new version of this app available (%@).", cmd.update.version];
 	[alert setInformativeText:informative];
 	[alert setAlertStyle:NSWarningAlertStyle];
 	if ([alert runModal] != NSAlertFirstButtonReturn)
@@ -957,7 +968,7 @@ const NSString *appName = @"osx_native_app";
 		return;
 	}
 
-	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:update.URL]];
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:cmd.update.URL]];
 	[NSApp terminate:nil];
 }
 
@@ -1023,20 +1034,20 @@ const NSString *appName = @"osx_native_app";
 	[crashReporter purgePendingCrashReport];
 }
 
-void on_update(const _Bool is_update_available,
-			   const char *url,
-			   const char *version)
+void on_update(
+	const _Bool open,
+	KopsikUpdateViewItem *view)
 {
-	Update *update = nil;
+	Update *update = [[Update alloc] init];
 
-	if (is_update_available)
-	{
-		update = [[Update alloc] init];
-		update.URL = [NSString stringWithUTF8String:url];
-		update.version = [NSString stringWithUTF8String:version];
-	}
+	[update load:view];
+
+	DisplayCommand *cmd = [[DisplayCommand alloc] init];
+	cmd.open = open;
+	cmd.update = update;
+
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayUpdate
-														object:update];
+														object:cmd];
 }
 
 void on_online_state(const _Bool is_online)

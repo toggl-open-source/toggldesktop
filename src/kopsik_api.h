@@ -96,6 +96,14 @@ extern "C" {
         _Bool IgnoreCert;
     } KopsikSettingsViewItem;
 
+    typedef struct {
+        char *update_channel;
+        _Bool is_checking;
+        _Bool is_update_available;
+        char *url;
+        char *version;
+    } KopsikUpdateViewItem;
+
     // Callbacks that need to be implemented in UI
 
     typedef void (*KopsikDisplayError)(
@@ -103,9 +111,8 @@ extern "C" {
         const _Bool user_error);
 
     typedef void (*KopsikDisplayUpdate)(
-        const _Bool is_update_available,
-        const char *url,
-        const char *version);
+        const _Bool open,
+        KopsikUpdateViewItem *update);
 
     typedef void (*KopsikDisplayOnlineState)(
         const _Bool is_online);
@@ -275,6 +282,9 @@ extern "C" {
         const char *details,
         const char *filename);
 
+    KOPSIK_EXPORT void kopsik_about(
+        void *context);
+
     KOPSIK_EXPORT void kopsik_view_time_entry_list(
         void *context);
 
@@ -380,9 +390,6 @@ extern "C" {
         const char *project_name,
         const _Bool is_private);
 
-    KOPSIK_EXPORT void kopsik_check_for_updates(
-        void *context);
-
     KOPSIK_EXPORT _Bool kopsik_set_update_channel(
         void *context,
         const char *update_channel);
@@ -454,12 +461,6 @@ extern "C" {
         void *context,
         const uint64_t workspace_id,
         _Bool *can_add);
-
-    // FIXME: should not be exported from lib
-    KOPSIK_EXPORT _Bool kopsik_get_update_channel(
-        void *context,
-        char *update_channel,
-        const size_t update_channel_len);
 
 #undef KOPSIK_EXPORT
 

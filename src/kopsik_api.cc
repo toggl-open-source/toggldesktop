@@ -400,6 +400,10 @@ void kopsik_edit(
                        std::string(focused_field_name));
 }
 
+void kopsik_about(void *context) {
+    app(context)->About();
+}
+
 void kopsik_edit_preferences(void *context) {
     app(context)->DisplaySettings(true);
 }
@@ -583,13 +587,6 @@ _Bool kopsik_feedback_send(
     return app(context)->SendFeedback(feedback);
 }
 
-void kopsik_check_for_updates(
-    void *context) {
-    logger().debug("kopsik_check_for_updates");
-
-    app(context)->FetchUpdates();
-}
-
 _Bool kopsik_set_update_channel(
     void *context,
     const char *update_channel) {
@@ -597,25 +594,6 @@ _Bool kopsik_set_update_channel(
     poco_check_ptr(update_channel);
 
     return app(context)->SaveUpdateChannel(std::string(update_channel));
-}
-
-_Bool kopsik_get_update_channel(
-    void *context,
-    char *update_channel,
-    const size_t update_channel_len) {
-
-    poco_check_ptr(update_channel);
-
-    poco_assert(update_channel_len);
-
-    std::string s("");
-    if (!app(context)->LoadUpdateChannel(&s)) {
-        return false;
-    }
-
-    strncpy(update_channel, s.c_str(), update_channel_len);
-
-    return true;
 }
 
 int64_t kopsik_parse_duration_string_into_seconds(const char *duration_string) {

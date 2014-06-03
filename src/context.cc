@@ -33,7 +33,6 @@ Context::Context(const std::string app_name, const std::string app_version)
 , timeline_uploader_(0)
 , window_change_recorder_(0)
 , timeline_upload_url_("")
-, update_channel_("")
 , feedback_("", "", "")
 , next_full_sync_at_(0)
 , next_partial_sync_at_(0)
@@ -535,8 +534,8 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
     }
 }
 
-void Context::FetchUpdates() {
-    logger().debug("FetchUpdates");
+void Context::fetchUpdates() {
+    logger().debug("fetchUpdates");
 
     next_fetch_updates_at_ = postpone();
     Poco::Util::TimerTask::Ptr ptask =
@@ -580,11 +579,13 @@ void Context::onPeriodicUpdateCheck(Poco::Util::TimerTask& task) {  // NOLINT
 void Context::executeUpdateCheck() {
     logger().debug("executeUpdateCheck");
 
-    kopsik::error err = db()->LoadUpdateChannel(&update_channel_);
+    std::string update_channel("");
+    kopsik::error err = db()->LoadUpdateChannel(&update_channel);
     if (err != kopsik::noError) {
         displayError(err);
         return;
     }
+    UI()->DisplayUpdate(false, update_channel, true, false, "", "");
 
     std::string response_body("");
     HTTPSClient https_client;
@@ -598,7 +599,7 @@ void Context::executeUpdateCheck() {
     }
 
     if ("null" == response_body) {
-        UI()->DisplayUpdate(false, "", "");
+        UI()->DisplayUpdate(false, update_channel, false, false, "", "");
         return;
     }
 
@@ -624,16 +625,22 @@ void Context::executeUpdateCheck() {
     }
     json_delete(root);
 
-    UI()->DisplayUpdate(true, url, version);
+    UI()->DisplayUpdate(false, update_channel, false, true, url, version);
 }
 
-const std::string Context::updateURL() const {
-    poco_assert(!update_channel_.empty());
+const std::string Context::updateURL() {
+    std::string update_channel("");
+    kopsik::error err = db()->LoadUpdateChannel(&update_channel);
+    if (err != kopsik::noError) {
+        displayError(err);
+        return "";
+    }
+
     poco_assert(!HTTPSClient::AppVersion.empty());
 
     std::stringstream relative_url;
     relative_url << "/api/v8/updates?app=td"
-                 << "&channel=" << update_channel_
+                 << "&channel=" << update_channel
                  << "&platform=" << osName()
                  << "&version=" << HTTPSClient::AppVersion
                  << "&osname=" << Poco::Environment::osName()
@@ -977,7 +984,7 @@ void Context::setUser(User *value, const bool user_logged_in) {
     }
 
     if ("production" == environment_) {
-        FetchUpdates();
+        fetchUpdates();
     }
 }
 
@@ -1263,6 +1270,17 @@ void Context::Edit(const std::string GUID,
     }
 
     displayTimeEntryEditor(true, te, focused_field_name);
+}
+
+void Context::About() {
+    std::string update_channel("");
+    kopsik::error err = db()->LoadUpdateChannel(&update_channel);
+    if (err != kopsik::noError) {
+        displayError(err);
+        return;
+    }
+    UI()->DisplayUpdate(true, update_channel, true, false, "", "");
+    fetchUpdates();
 }
 
 void Context::displayTimeEntryEditor(const _Bool open,
@@ -1628,14 +1646,14 @@ std::vector<kopsik::TimeEntry *> Context::timeEntries() const {
     return result;
 }
 
-_Bool Context::SaveUpdateChannel(
-    const std::string channel) {
-    update_channel_ = channel;
-    return displayError(db()->SaveUpdateChannel(std::string(channel)));
-}
-
-_Bool Context::LoadUpdateChannel(std::string *channel) {
-    return displayError(db()->LoadUpdateChannel(channel));
+_Bool Context::SaveUpdateChannel(const std::string channel) {
+    error err = db()->SaveUpdateChannel(channel);
+    if (err != noError) {
+        return displayError(err);
+    }
+    UI()->DisplayUpdate(false, channel, true, false, "", "");
+    fetchUpdates();
+    return true;
 }
 
 void Context::projectLabelAndColorCode(
