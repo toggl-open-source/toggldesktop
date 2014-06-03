@@ -16,7 +16,6 @@ namespace TogglDesktop
         private AboutWindowController aboutWindowController;
         private PreferencesWindowController preferencesWindowController;
         private FeedbackWindowController feedbackWindowController;
-        private bool shuttingDown = false;
         private bool upgradeDialogVisible = false;
         private UInt64 userID = 0;
 
@@ -47,17 +46,11 @@ namespace TogglDesktop
             KopsikApi.OnReminder += OnReminder;
             KopsikApi.OnURL += OnURL;
 
-            if (!KopsikApi.Start())
+            if (!KopsikApi.Start(TogglDesktop.Program.Version()))
             {
                 MessageBox.Show("Missing callback. See the log file for details");
-                shutdown();
+                TogglDesktop.Program.Shutdown(1);
             }
-        }
-
-        private void shutdown()
-        {
-            shuttingDown = true;
-            Application.Exit();
         }
 
         private void loadWindowLocation()
@@ -130,7 +123,7 @@ namespace TogglDesktop
             upgradeDialogVisible = false;
             if (DialogResult.Yes == dr)
             {
-                OnURL(view.URL);
+                Process.Start(view.URL);
             }
         }
 
@@ -237,10 +230,10 @@ namespace TogglDesktop
         {
             saveWindowLocation();
 
-            if (!shuttingDown) {
+            if (!TogglDesktop.Program.ShuttingDown) {
                 this.Hide();
                 e.Cancel = true;
-            }   
+            }
         }
 
         private void saveWindowLocation()
@@ -282,7 +275,7 @@ namespace TogglDesktop
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            shutdown();
+            TogglDesktop.Program.Shutdown(0);
         }
 
         private void trayIcon_DoubleClick(object sender, EventArgs e)

@@ -4,11 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace TogglDesktop
 {
     static class Program
     {
+        public static bool ShuttingDown = false;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -43,6 +47,22 @@ namespace TogglDesktop
         private static void onApplicationExit(object sender, EventArgs e)
         {
             KopsikApi.kopsik_context_clear(KopsikApi.ctx);
+        }
+
+        public static void Shutdown(int exitCode)
+        {
+            ShuttingDown = true;
+            Environment.Exit(exitCode);
+        }
+
+        public static string Version()
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+            return string.Format("{0}.{1}.{2}",
+                versionInfo.ProductMajorPart,
+                versionInfo.ProductMinorPart,
+                versionInfo.ProductBuildPart);
         }
     }
 }

@@ -595,19 +595,9 @@ namespace TogglDesktop
 
         // Start
 
-        private static string version()
+        public static bool Start(string version)
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
-            return string.Format("{0}.{1}.{2}",
-                versionInfo.ProductMajorPart,
-                versionInfo.ProductMinorPart,
-                versionInfo.ProductBuildPart);
-        }
-
-        public static bool Start()
-        {
-            ctx = kopsik_context_init("windows_native_app", version());
+            ctx = kopsik_context_init("windows_native_app", version);
 
             StringBuilder sb = new StringBuilder();
             
