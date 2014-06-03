@@ -66,9 +66,21 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { DisplayTimerState(is_tracking); });
                 return;
             }
-
             isTracking = is_tracking;
             enableMenuItems();
+            displayTrayIcon();
+        }
+
+        private void displayTrayIcon()
+        {
+            if (isLoggedIn && isTracking)
+            {
+                trayIcon.Icon = Properties.Resources.toggl;
+            }
+            else
+            {
+                trayIcon.Icon = Properties.Resources.toggl_inactive;
+            }
         }
 
         void OnOnlineState(bool is_online)
@@ -171,6 +183,7 @@ namespace TogglDesktop
                 loginViewController.SetAcceptButton(this);
             }
             enableMenuItems();
+            displayTrayIcon();
         }
 
         private void enableMenuItems()

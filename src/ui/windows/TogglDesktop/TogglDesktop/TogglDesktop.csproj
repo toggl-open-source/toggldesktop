@@ -53,6 +53,9 @@
   <PropertyGroup>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>toggl.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Bugsnag.Library">
       <HintPath>..\packages\Bugsnag.Library.1.0.0.2\lib\net40\Bugsnag.Library.dll</HintPath>
@@ -168,6 +171,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="TimeEntryCell.resx">
       <DependentUpon>TimeEntryCell.cs</DependentUpon>
@@ -214,6 +218,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="toggl.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="toggl_inactive.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
