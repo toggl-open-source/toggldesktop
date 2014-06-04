@@ -166,6 +166,7 @@ extern void *ctx;
 			{
 				self.selectedRowView = self.headerView;
 			}
+			self.timeEntrypopover.contentViewController = self.timeEntrypopoverViewController;
 			[self.timeEntrypopover showRelativeToRect:[[self selectedRowView] bounds]
 											   ofView:[self selectedRowView]
 										preferredEdge:NSMaxXEdge];

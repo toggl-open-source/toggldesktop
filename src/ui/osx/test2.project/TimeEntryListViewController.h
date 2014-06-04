@@ -18,6 +18,7 @@
 @property (unsafe_unretained) IBOutlet NSView *headerView;
 @property (unsafe_unretained) IBOutlet NSUnstripedTableView *timeEntriesTableView;
 @property (strong) IBOutlet NSPopover *timeEntrypopover;
+@property (strong) IBOutlet NSViewController *timeEntrypopoverViewController;
 @property (strong) IBOutlet NSViewEscapable *timeEntryPopupEditView;
 - (IBAction)performClick:(id)sender;
 @end
