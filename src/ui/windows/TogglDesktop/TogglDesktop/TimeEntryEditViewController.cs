@@ -65,17 +65,16 @@ namespace TogglDesktop
             string focused_field_name)
         {
             KopsikApi.KopsikTimeEntryViewItem n = te;
-            DisplayTimeEntryEditor(open, n, focused_field_name);
+            DisplayTimeEntryEditor(n, focused_field_name);
         }
 
         void DisplayTimeEntryEditor(
-            bool open,
             KopsikApi.KopsikTimeEntryViewItem te,
             string focused_field_name)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayTimeEntryEditor(open, te, focused_field_name); });
+                Invoke((MethodInvoker)delegate { DisplayTimeEntryEditor(te, focused_field_name); });
                 return;
             }
             GUID = te.GUID;
@@ -103,7 +102,15 @@ namespace TogglDesktop
             {
                 dateTimePickerStartDate.Value = KopsikApi.DateTimeFromUnix(te.Started);
             }
-            checkBoxBillable.Checked = te.Billable;
+            checkBoxBillable.Tag = this;
+            try
+            {
+                checkBoxBillable.Checked = te.Billable;
+            }
+            finally
+            {
+                checkBoxBillable.Tag = null;
+            }
             if (te.UpdatedAt >= 0)
             {
                 DateTime updatedAt = KopsikApi.DateTimeFromUnix(te.UpdatedAt);
@@ -210,12 +217,6 @@ namespace TogglDesktop
             timeEntryAutocompleteUpdate = null;
         }
 
-        private void comboBoxDescription_TextChanged(object sender, EventArgs e)
-        {
-            KopsikApi.kopsik_set_time_entry_description(KopsikApi.ctx,
-                GUID, comboBoxDescription.Text);
-        }
-
         private void comboBoxDescription_SelectedIndexChanged(object sender, EventArgs e)
         {
             object o = comboBoxDescription.SelectedItem;
@@ -273,8 +274,17 @@ namespace TogglDesktop
 
         private void checkBoxBillable_CheckedChanged(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_set_time_entry_billable(KopsikApi.ctx,
-                GUID, checkBoxBillable.Checked);
+            if (null == checkBoxBillable.Tag)
+            {
+                KopsikApi.kopsik_set_time_entry_billable(KopsikApi.ctx,
+                    GUID, checkBoxBillable.Checked);
+            }
+        }
+
+        private void comboBoxDescription_Leave(object sender, EventArgs e)
+        {
+            KopsikApi.kopsik_set_time_entry_description(KopsikApi.ctx,
+                GUID, comboBoxDescription.Text);
         }
     }
 }
