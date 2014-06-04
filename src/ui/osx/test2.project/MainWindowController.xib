@@ -8,7 +8,6 @@
             <connections>
                 <outlet property="closeTroubleBoxButton" destination="tgB-wf-G92" id="pzI-01-7SG"/>
                 <outlet property="contentView" destination="av5-A6-9S5" id="g24-fx-drT"/>
-                <outlet property="contentViewController" destination="av5-A6-9S5" id="VD8-35-TOQ"/>
                 <outlet property="errorLabel" destination="3yn-Zh-JYn" id="2lh-8u-0eG"/>
                 <outlet property="errorLink" destination="z6G-IB-XP8" id="G7m-Qe-GhW"/>
                 <outlet property="troubleBox" destination="gBV-Qp-t6E" id="7gd-fC-wYR"/>
