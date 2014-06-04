@@ -727,27 +727,27 @@ void kopsik_check_view_item_size(
     const int view_item_size,
     const int settings_size,
     const int update_view_item_size) {
-	size_t size = sizeof(KopsikTimeEntryViewItem);
+    size_t size = sizeof(KopsikTimeEntryViewItem);
     if (time_entry_view_item_size != size) {
         logger().error("Invalid time entry view item struct size");
         poco_assert(false);
     }
-	size = sizeof(KopsikAutocompleteItem);
+    size = sizeof(KopsikAutocompleteItem);
     if (autocomplete_view_item_size != size) {
         logger().error("Invalid autocomplete view item struct size");
         poco_assert(false);
     }
-	size = sizeof(KopsikViewItem);
+    size = sizeof(KopsikViewItem);
     if (view_item_size != size) {
         logger().error("Invalid view item struct size");
         poco_assert(false);
     }
-	size = sizeof(KopsikSettingsViewItem);
+    size = sizeof(KopsikSettingsViewItem);
     if (settings_size != size) {
         logger().error("Invalid settings view item struct size");
         poco_assert(false);
     }
-	size = sizeof(KopsikUpdateViewItem);
+    size = sizeof(KopsikUpdateViewItem);
     if (update_view_item_size != size) {
         logger().error("Invalid update view item size");
         poco_assert(false);
