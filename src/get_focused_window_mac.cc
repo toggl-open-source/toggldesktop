@@ -3,7 +3,7 @@
 #include <Carbon/Carbon.h>
 #include <string>
 
-#include "/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreGraphics.framework/Headers/CGWindow.h"
+#include <CoreGraphics/CGWindow.h>
 
 static const int kTitleBufferSize = 255;
 static const int kFilenameBufferSize = 255;
