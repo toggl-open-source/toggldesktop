@@ -71,7 +71,7 @@
             this.comboBoxDescription.Size = new System.Drawing.Size(140, 21);
             this.comboBoxDescription.TabIndex = 1;
             this.comboBoxDescription.SelectedIndexChanged += new System.EventHandler(this.comboBoxDescription_SelectedIndexChanged);
-            this.comboBoxDescription.TextChanged += new System.EventHandler(this.comboBoxDescription_TextChanged);
+            this.comboBoxDescription.Leave += new System.EventHandler(this.comboBoxDescription_Leave);
             // 
             // label2
             // 
