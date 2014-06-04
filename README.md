@@ -39,7 +39,6 @@ Then open the solution in Visual Studio. Next, you'll need to install the net-bu
 Install-Package Bugsnag.Library
 ```
 
-No Toggl build and signed app is available yet.
 
 Linux
 -----
