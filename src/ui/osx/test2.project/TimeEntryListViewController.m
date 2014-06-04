@@ -306,11 +306,12 @@ extern void *ctx;
 
 - (void)closeEditPopup:(NSNotification *)notification
 {
-    if (self.timeEntrypopover.shown) {
-        [self.timeEntrypopover close];
-        [self setDefaultPopupHeight];
-        self.selectedRowView = nil;
-    }
+	if (self.timeEntrypopover.shown)
+	{
+		[self.timeEntrypopover close];
+		[self setDefaultPopupHeight];
+		self.selectedRowView = nil;
+	}
 }
 
 - (void)closeRunningEditPopup:(NSNotification *)notification
