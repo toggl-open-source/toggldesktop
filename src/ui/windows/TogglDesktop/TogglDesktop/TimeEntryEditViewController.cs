@@ -217,12 +217,6 @@ namespace TogglDesktop
             timeEntryAutocompleteUpdate = null;
         }
 
-        private void comboBoxDescription_TextChanged(object sender, EventArgs e)
-        {
-            KopsikApi.kopsik_set_time_entry_description(KopsikApi.ctx,
-                GUID, comboBoxDescription.Text);
-        }
-
         private void comboBoxDescription_SelectedIndexChanged(object sender, EventArgs e)
         {
             object o = comboBoxDescription.SelectedItem;
@@ -285,6 +279,12 @@ namespace TogglDesktop
                 KopsikApi.kopsik_set_time_entry_billable(KopsikApi.ctx,
                     GUID, checkBoxBillable.Checked);
             }
+        }
+
+        private void comboBoxDescription_Leave(object sender, EventArgs e)
+        {
+            KopsikApi.kopsik_set_time_entry_description(KopsikApi.ctx,
+                GUID, comboBoxDescription.Text);
         }
     }
 }
