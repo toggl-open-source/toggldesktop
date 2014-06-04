@@ -16,8 +16,9 @@ namespace TogglDesktop
         private AboutWindowController aboutWindowController;
         private PreferencesWindowController preferencesWindowController;
         private FeedbackWindowController feedbackWindowController;
-        private bool shuttingDown = false;
-        private UInt64 userID = 0;
+        private bool isUpgradeDialogVisible = false;
+        private bool isLoggedIn = false;
+        private bool isTracking = false;
 
         public MainWindowController()
         {
@@ -35,7 +36,7 @@ namespace TogglDesktop
         {
             troubleBox.BackColor = Color.FromArgb(239, 226, 121);
 
-            loadWindowLocation();
+            Utils.LoadWindowLocation(this);
 
             KopsikApi.OnError += OnError;
             KopsikApi.OnUpdate += OnUpdate;
@@ -45,38 +46,40 @@ namespace TogglDesktop
             KopsikApi.OnOnlineState += OnOnlineState;
             KopsikApi.OnReminder += OnReminder;
             KopsikApi.OnURL += OnURL;
+            KopsikApi.OnTimerState += OnTimerState;
 
-            if (!KopsikApi.Start())
+            if (!KopsikApi.Start(TogglDesktop.Program.Version()))
             {
                 MessageBox.Show("Missing callback. See the log file for details");
-                shutdown();
+                TogglDesktop.Program.Shutdown(1);
             }
         }
 
-        private void shutdown()
+        void OnTimerState(IntPtr te)
         {
-            shuttingDown = true;
-            Application.Exit();
+            DisplayTimerState(te != IntPtr.Zero);
         }
 
-        private void loadWindowLocation()
-        {
-            if (Properties.Settings.Default.Maximized)
+        void DisplayTimerState(bool is_tracking) {
+            if (InvokeRequired)
             {
-                WindowState = FormWindowState.Maximized;
-                Location = Properties.Settings.Default.Location;
-                Size = Properties.Settings.Default.Size;
+                Invoke((MethodInvoker)delegate { DisplayTimerState(is_tracking); });
+                return;
             }
-            else if (Properties.Settings.Default.Minimized)
+            isTracking = is_tracking;
+            enableMenuItems();
+            displayTrayIcon();
+        }
+
+        private void displayTrayIcon()
+        {
+            if (isLoggedIn && isTracking)
             {
-                WindowState = FormWindowState.Minimized;
-                Location = Properties.Settings.Default.Location;
-                Size = Properties.Settings.Default.Size;
+                trayIcon.Icon = Properties.Resources.toggl;
             }
             else
             {
-                Location = Properties.Settings.Default.Location;
-                Size = Properties.Settings.Default.Size;
+                trayIcon.Icon = Properties.Resources.toggl_inactive;
             }
         }
 
@@ -107,7 +110,30 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { DisplayUpdate(open, view); });
                 return;
             }
-            // FIXME:
+            if (open)
+            {
+                aboutWindowController.Show();
+                aboutWindowController.BringToFront();
+            }
+            if (!view.IsUpdateAvailable)
+            {
+                return;
+            }
+            if (isUpgradeDialogVisible || aboutWindowController.Visible)
+            {
+                return;
+            }
+            isUpgradeDialogVisible = true;
+            DialogResult dr = MessageBox.Show(
+                "There's a new version of this app available (" + view.Version + ")." +
+                Environment.NewLine + "Proceed with the download?",
+                "New version available",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            isUpgradeDialogVisible = false;
+            if (DialogResult.Yes == dr)
+            {
+                Process.Start(view.URL);
+            }
         }
 
         void OnURL(string url)
@@ -139,36 +165,49 @@ namespace TogglDesktop
 
         void OnLogin(bool open, UInt64 user_id)
         {
-            DisplayLogin(open, user_id);
+            DisplayLogin(open, user_id > 0);
         }
 
-        void DisplayLogin(bool open, UInt64 user_id)
+        void DisplayLogin(bool open, bool is_logged_in)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayLogin(open, user_id); });
+                Invoke((MethodInvoker)delegate { DisplayLogin(open, is_logged_in); });
                 return;
             }
-            userID = user_id;
+            isLoggedIn = is_logged_in;
             if (open) {
                 Controls.Remove(timeEntryListViewController);
                 Controls.Remove(timeEntryEditViewController);
                 Controls.Add(loginViewController);
                 loginViewController.SetAcceptButton(this);
             }
+            enableMenuItems();
+            displayTrayIcon();
+        }
+
+        private void enableMenuItems()
+        {
+            newToolStripMenuItem.Enabled = isLoggedIn;
+            continueToolStripMenuItem.Enabled = isLoggedIn && !isTracking;
+            stopToolStripMenuItem.Enabled = isLoggedIn && isTracking;
+            syncToolStripMenuItem.Enabled = isLoggedIn;
+            logoutToolStripMenuItem.Enabled = isLoggedIn;
+            clearCacheToolStripMenuItem.Enabled = isLoggedIn;
+            sendFeedbackToolStripMenuItem.Enabled = isLoggedIn;
+            openInBrowserToolStripMenuItem.Enabled = isLoggedIn;
         }
 
         void OnTimeEntryList(bool open, ref KopsikApi.KopsikTimeEntryViewItem te)
         {
-            List<KopsikApi.KopsikTimeEntryViewItem> list = KopsikApi.ConvertToTimeEntryList(ref te);
-            DisplayTimeEntryList(open, list);
+            DisplayTimeEntryList(open);
         }
 
-        void DisplayTimeEntryList(bool open, List<KopsikApi.KopsikTimeEntryViewItem> list)
+        void DisplayTimeEntryList(bool open)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayTimeEntryList(open, list); });
+                Invoke((MethodInvoker)delegate { DisplayTimeEntryList(open); });
                 return;
             }
             if (open)
@@ -177,7 +216,6 @@ namespace TogglDesktop
                 Controls.Remove(timeEntryEditViewController);
                 Controls.Add(timeEntryListViewController);
                 timeEntryListViewController.SetAcceptButton(this);
-                timeEntryListViewController.DrawEntriesList(list);
             }
         }
 
@@ -186,17 +224,15 @@ namespace TogglDesktop
             ref KopsikApi.KopsikTimeEntryViewItem te,
             string focused_field_name)
         {
-            KopsikApi.KopsikTimeEntryViewItem n = te;
-            DisplayTimeEntryEditor(open, n, focused_field_name);
+            DisplayTimeEntryEditor(open, focused_field_name);
         }
 
         void DisplayTimeEntryEditor(
             bool open,
-            KopsikApi.KopsikTimeEntryViewItem te,
             string focused_field_name) {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayTimeEntryEditor(open, te, focused_field_name); });
+                Invoke((MethodInvoker)delegate { DisplayTimeEntryEditor(open, focused_field_name); });
                 return;
             }
             if (open)
@@ -211,38 +247,12 @@ namespace TogglDesktop
 
         private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)
         {
-            saveWindowLocation();
+            Utils.SaveWindowLocation(this);
 
-            if (!shuttingDown) {
+            if (!TogglDesktop.Program.ShuttingDown) {
                 this.Hide();
                 e.Cancel = true;
-            }   
-        }
-
-        private void saveWindowLocation()
-        {
-            if (WindowState == FormWindowState.Maximized)
-            {
-                Properties.Settings.Default.Location = RestoreBounds.Location;
-                Properties.Settings.Default.Size = RestoreBounds.Size;
-                Properties.Settings.Default.Maximized = true;
-                Properties.Settings.Default.Minimized = false;
             }
-            else if (WindowState == FormWindowState.Normal)
-            {
-                Properties.Settings.Default.Location = Location;
-                Properties.Settings.Default.Size = Size;
-                Properties.Settings.Default.Maximized = false;
-                Properties.Settings.Default.Minimized = false;
-            }
-            else
-            {
-                Properties.Settings.Default.Location = RestoreBounds.Location;
-                Properties.Settings.Default.Size = RestoreBounds.Size;
-                Properties.Settings.Default.Maximized = false;
-                Properties.Settings.Default.Minimized = true;
-            }
-            Properties.Settings.Default.Save();
         }
 
         private void buttonDismissError_Click(object sender, EventArgs e)
@@ -258,7 +268,7 @@ namespace TogglDesktop
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            shutdown();
+            TogglDesktop.Program.Shutdown(0);
         }
 
         private void trayIcon_DoubleClick(object sender, EventArgs e)
@@ -311,8 +321,7 @@ namespace TogglDesktop
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            aboutWindowController.Show();
-            aboutWindowController.BringToFront();
+            KopsikApi.kopsik_about(KopsikApi.ctx);
         }
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -341,5 +350,18 @@ namespace TogglDesktop
             // FIXME:
         }
 
+        private void clearCacheToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show(
+                "This will remove your Toggl user data from this PC and log you out of the Toggl Desktop app. " +
+                "Any unsynced data will be lost." +
+                Environment.NewLine + "Do you want to continue?",
+                "Clear Cache",
+                MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            if (DialogResult.Yes == dr) 
+            {
+                KopsikApi.kopsik_clear_cache(KopsikApi.ctx);
+            }
+        }
     }
 }

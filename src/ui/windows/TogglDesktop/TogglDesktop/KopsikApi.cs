@@ -192,6 +192,12 @@ namespace TogglDesktop
         public static extern void kopsik_context_clear(
             IntPtr context);
 
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static extern bool kopsik_set_environment(
+            IntPtr context,
+            string environment);
+
         // DB path must be configured from UI
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -566,7 +572,8 @@ namespace TogglDesktop
     		int time_entry_view_item_size,
 		    int autocomplete_view_item_size,
 		    int view_item_size,
-		    int settings_size);
+		    int settings_size,
+            int update_view_item_size);
 
         // Events for C#
 
@@ -588,11 +595,9 @@ namespace TogglDesktop
 
         // Start
 
-        public static bool Start()
+        public static bool Start(string version)
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
-            ctx = kopsik_context_init("windows_native_app", versionInfo.ProductVersion);
+            ctx = kopsik_context_init("windows_native_app", version);
 
             StringBuilder sb = new StringBuilder();
             
@@ -618,7 +623,8 @@ namespace TogglDesktop
                 Marshal.SizeOf(new KopsikTimeEntryViewItem()),
                 Marshal.SizeOf(new KopsikAutocompleteItem()),
                 Marshal.SizeOf(new KopsikViewItem()),
-                Marshal.SizeOf(new KopsikSettingsViewItem()));
+                Marshal.SizeOf(new KopsikSettingsViewItem()),
+                Marshal.SizeOf(new KopsikUpdateViewItem()));
 
             // Wire up events
             kopsik_on_error(ctx, OnError);
@@ -636,6 +642,9 @@ namespace TogglDesktop
             kopsik_on_settings(ctx, OnSettings);
             kopsik_on_timer_state(ctx, OnTimerState);
             kopsik_on_url(ctx, OnURL);
+
+            // FIXME: Get environment from app settings
+            kopsik_set_environment(ctx, "development");
 
             // Configure log, db path
             string path = Path.Combine(Environment.GetFolderPath(

@@ -32,10 +32,11 @@
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.labelAppName = new System.Windows.Forms.Label();
             this.labelVersion = new System.Windows.Forms.Label();
-            this.richTextBoxCredits = new System.Windows.Forms.RichTextBox();
             this.buttonCheckingForUpdate = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxChannel = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.linkLabelGithub = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -65,15 +66,6 @@
             this.labelVersion.Size = new System.Drawing.Size(69, 13);
             this.labelVersion.TabIndex = 2;
             this.labelVersion.Text = "Version 1.0.0";
-            // 
-            // richTextBoxCredits
-            // 
-            this.richTextBoxCredits.Enabled = false;
-            this.richTextBoxCredits.Location = new System.Drawing.Point(12, 139);
-            this.richTextBoxCredits.Name = "richTextBoxCredits";
-            this.richTextBoxCredits.Size = new System.Drawing.Size(260, 71);
-            this.richTextBoxCredits.TabIndex = 3;
-            this.richTextBoxCredits.Text = "";
             // 
             // buttonCheckingForUpdate
             // 
@@ -106,16 +98,38 @@
             this.comboBoxChannel.Name = "comboBoxChannel";
             this.comboBoxChannel.Size = new System.Drawing.Size(121, 21);
             this.comboBoxChannel.TabIndex = 6;
+            this.comboBoxChannel.SelectedIndexChanged += new System.EventHandler(this.comboBoxChannel_SelectedIndexChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 148);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(199, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Toggl Desktop is an open source project";
+            // 
+            // linkLabelGithub
+            // 
+            this.linkLabelGithub.AutoSize = true;
+            this.linkLabelGithub.Location = new System.Drawing.Point(12, 176);
+            this.linkLabelGithub.Name = "linkLabelGithub";
+            this.linkLabelGithub.Size = new System.Drawing.Size(189, 13);
+            this.linkLabelGithub.TabIndex = 8;
+            this.linkLabelGithub.TabStop = true;
+            this.linkLabelGithub.Text = "https://github.com/toggl/toggldesktop";
+            this.linkLabelGithub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelGithub_LinkClicked);
             // 
             // AboutWindowController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 290);
+            this.Controls.Add(this.linkLabelGithub);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBoxChannel);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.buttonCheckingForUpdate);
-            this.Controls.Add(this.richTextBoxCredits);
             this.Controls.Add(this.labelVersion);
             this.Controls.Add(this.labelAppName);
             this.Controls.Add(this.pictureBoxLogo);
@@ -134,9 +148,10 @@
         private System.Windows.Forms.PictureBox pictureBoxLogo;
         private System.Windows.Forms.Label labelAppName;
         private System.Windows.Forms.Label labelVersion;
-        private System.Windows.Forms.RichTextBox richTextBoxCredits;
         private System.Windows.Forms.Button buttonCheckingForUpdate;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox comboBoxChannel;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.LinkLabel linkLabelGithub;
     }
 }

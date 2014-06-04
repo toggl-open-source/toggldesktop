@@ -52,6 +52,7 @@
             this.labelDescription.Size = new System.Drawing.Size(102, 13);
             this.labelDescription.TabIndex = 1;
             this.labelDescription.Text = "Blogpost about ne...";
+            this.labelDescription.Click += new System.EventHandler(this.labelDescription_Click);
             // 
             // buttonContinue
             // 
@@ -61,6 +62,7 @@
             this.buttonContinue.TabIndex = 2;
             this.buttonContinue.Text = ">";
             this.buttonContinue.UseVisualStyleBackColor = true;
+            this.buttonContinue.Click += new System.EventHandler(this.buttonContinue_Click);
             // 
             // labelDuration
             // 
@@ -70,6 +72,7 @@
             this.labelDuration.Size = new System.Drawing.Size(49, 13);
             this.labelDuration.TabIndex = 3;
             this.labelDuration.Text = "03:21:30";
+            this.labelDuration.Click += new System.EventHandler(this.labelDuration_Click);
             // 
             // labelProject
             // 
@@ -79,6 +82,7 @@
             this.labelProject.Size = new System.Drawing.Size(79, 13);
             this.labelProject.TabIndex = 4;
             this.labelProject.Text = "NEW - TOGGL";
+            this.labelProject.Click += new System.EventHandler(this.labelProject_Click);
             // 
             // TimeEntryCell
             // 
@@ -91,6 +95,7 @@
             this.Controls.Add(this.labelBillable);
             this.Name = "TimeEntryCell";
             this.Size = new System.Drawing.Size(216, 49);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TimeEntryCell_MouseClick);
             this.ResumeLayout(false);
             this.PerformLayout();
 
