@@ -30,6 +30,7 @@ First, [build OpenSSL for Visual Studio](http://developer.covenanteyes.com/build
 cd third_party\openssl
 perl Configure VC-WIN32
 ms\do_ms
+nmake -f ms\ntdll.mak clean
 nmake -f ms\ntdll.mak 
 ```
 
