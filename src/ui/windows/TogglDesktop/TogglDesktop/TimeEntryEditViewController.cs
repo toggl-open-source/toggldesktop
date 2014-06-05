@@ -127,6 +127,11 @@ namespace TogglDesktop
             }
             textBoxEndTime.Enabled = (te.DurationInSeconds >= 0);
 
+            for (int i = 0; i < this.checkedListBoxTags.Items.Count; i++)
+            {
+                this.checkedListBoxTags.SetItemChecked(i, false);
+            }
+
             if ( te.Tags != null) {
                 string[] tags = te.Tags.Split(',');
 
@@ -343,8 +348,7 @@ namespace TogglDesktop
         {
             DateTime date = this.parseTime(textbox);
             String iso8601String = date.ToString("yyyy-MM-ddTHH:mm:sszzz");
-            byte[] bytes = Encoding.Default.GetBytes(iso8601String);
-            String utf8String = Encoding.UTF8.GetString(bytes);
+            String utf8String = this.getUTF8String(iso8601String);
             if (textbox == this.textBoxStartTime)
             {
                 KopsikApi.kopsik_set_time_entry_start_iso_8601(KopsikApi.ctx, this.TimeEntry.GUID, utf8String);
@@ -366,6 +370,28 @@ namespace TogglDesktop
             }
 
             return date.Date + new TimeSpan(hours, minutes, 0);
+        }
+
+        private void checkedListBoxTags_Leave(object sender, EventArgs e)
+        {
+            String tags = "";
+            foreach (object item in this.checkedListBoxTags.CheckedItems)
+            {
+                if (tags.Length > 0)
+                {
+                    tags += "|";
+                }
+                tags += item.ToString();
+            }
+
+            //this.getUTF8String(tags);
+            KopsikApi.kopsik_set_time_entry_tags(KopsikApi.ctx, this.getUTF8String(this.TimeEntry.GUID), this.getUTF8String(tags));
+        }
+
+        private String getUTF8String(String input)
+        {
+            byte[] bytes = Encoding.Default.GetBytes(input);
+            return Encoding.UTF8.GetString(bytes);
         }
     }
 }

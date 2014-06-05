@@ -251,6 +251,7 @@
             this.checkedListBoxTags.Name = "checkedListBoxTags";
             this.checkedListBoxTags.Size = new System.Drawing.Size(140, 64);
             this.checkedListBoxTags.TabIndex = 13;
+            this.checkedListBoxTags.Leave += new System.EventHandler(this.checkedListBoxTags_Leave);
             // 
             // TimeEntryEditViewController
             // 
