@@ -17,7 +17,6 @@ namespace TogglDesktop
         private PreferencesWindowController preferencesWindowController;
         private FeedbackWindowController feedbackWindowController;
         private bool isUpgradeDialogVisible = false;
-        private bool isLoggedIn = false;
         private bool isTracking = false;
 
         public MainWindowController()
@@ -73,7 +72,7 @@ namespace TogglDesktop
 
         private void displayTrayIcon()
         {
-            if (isLoggedIn && isTracking)
+            if (TogglDesktop.Program.IsLoggedIn && isTracking)
             {
                 trayIcon.Icon = Properties.Resources.toggl;
             }
@@ -165,17 +164,17 @@ namespace TogglDesktop
 
         void OnLogin(bool open, UInt64 user_id)
         {
-            DisplayLogin(open, user_id > 0);
+            DisplayLogin(open, user_id);
         }
 
-        void DisplayLogin(bool open, bool is_logged_in)
+        void DisplayLogin(bool open, UInt64 user_id)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayLogin(open, is_logged_in); });
+                Invoke((MethodInvoker)delegate { DisplayLogin(open, user_id); });
                 return;
             }
-            isLoggedIn = is_logged_in;
+            TogglDesktop.Program.UserID = user_id;
             if (open) {
                 Controls.Remove(timeEntryListViewController);
                 Controls.Remove(timeEntryEditViewController);
@@ -188,6 +187,7 @@ namespace TogglDesktop
 
         private void enableMenuItems()
         {
+            bool isLoggedIn = TogglDesktop.Program.IsLoggedIn;
             newToolStripMenuItem.Enabled = isLoggedIn;
             continueToolStripMenuItem.Enabled = isLoggedIn && !isTracking;
             stopToolStripMenuItem.Enabled = isLoggedIn && isTracking;
