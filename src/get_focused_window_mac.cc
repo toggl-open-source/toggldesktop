@@ -1,9 +1,9 @@
 // Copyright 2014 Toggl Desktop developers.
 
 #include <Carbon/Carbon.h>
-#include <string>
+#include <CoreGraphics/CGWindow.h>
 
-#include "/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreGraphics.framework/Headers/CGWindow.h"
+#include <string>
 
 static const int kTitleBufferSize = 255;
 static const int kFilenameBufferSize = 255;

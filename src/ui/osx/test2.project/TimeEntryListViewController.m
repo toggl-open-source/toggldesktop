@@ -166,6 +166,7 @@ extern void *ctx;
 			{
 				self.selectedRowView = self.headerView;
 			}
+			self.timeEntrypopover.contentViewController = self.timeEntrypopoverViewController;
 			[self.timeEntrypopover showRelativeToRect:[[self selectedRowView] bounds]
 											   ofView:[self selectedRowView]
 										preferredEdge:NSMaxXEdge];
@@ -306,11 +307,12 @@ extern void *ctx;
 
 - (void)closeEditPopup:(NSNotification *)notification
 {
-    if (self.timeEntrypopover.shown) {
-        [self.timeEntrypopover close];
-        [self setDefaultPopupHeight];
-        self.selectedRowView = nil;
-    }
+	if (self.timeEntrypopover.shown)
+	{
+		[self.timeEntrypopover close];
+		[self setDefaultPopupHeight];
+		self.selectedRowView = nil;
+	}
 }
 
 - (void)closeRunningEditPopup:(NSNotification *)notification
