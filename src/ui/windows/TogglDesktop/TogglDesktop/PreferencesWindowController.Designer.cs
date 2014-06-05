@@ -79,6 +79,7 @@
             // 
             this.textBoxProxyPassword.Location = new System.Drawing.Point(81, 108);
             this.textBoxProxyPassword.Name = "textBoxProxyPassword";
+            this.textBoxProxyPassword.PasswordChar = '*';
             this.textBoxProxyPassword.Size = new System.Drawing.Size(156, 20);
             this.textBoxProxyPassword.TabIndex = 7;
             this.textBoxProxyPassword.TextChanged += new System.EventHandler(this.textBoxProxyPassword_TextChanged);
