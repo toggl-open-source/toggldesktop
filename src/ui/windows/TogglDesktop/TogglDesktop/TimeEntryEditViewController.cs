@@ -27,6 +27,8 @@ namespace TogglDesktop
             KopsikApi.OnTags += OnTags;
             KopsikApi.OnTimeEntryAutocomplete += OnTimeEntryAutocomplete;
             KopsikApi.OnProjectAutocomplete += OnProjectAutocomplete;
+            this.checkedListBoxTags.DisplayMember = "Name";
+            this.checkedListBoxTags.ValueMember = "Name";
         }
 
         private void TimeEntryEditViewController_Load(object sender, EventArgs e)
@@ -124,6 +126,21 @@ namespace TogglDesktop
                 toolStripStatusLabelLastUpdate.Visible = false;
             }
             textBoxEndTime.Enabled = (te.DurationInSeconds >= 0);
+
+            if ( te.Tags != null) {
+                string[] tags = te.Tags.Split(',');
+
+                // Tick selected Tags
+                for (int i = 0; i < tags.Length; i++)
+                {
+                    int index = this.checkedListBoxTags.Items.IndexOf(tags[i]);
+                    if (index != -1)
+                    {
+                        this.checkedListBoxTags.SetItemChecked(index, true);
+                    }
+                }
+
+            }
         }
 
         private void buttonDelete_Click(object sender, EventArgs e)
@@ -171,8 +188,9 @@ namespace TogglDesktop
                 return;
             }
             checkedListBoxTags.Items.Clear();
-            foreach (object o in list) {
-                checkedListBoxTags.Items.Add(o);
+            foreach (KopsikApi.KopsikViewItem o in list)
+            {
+                checkedListBoxTags.Items.Add(o.Name);
             }
         }
 
