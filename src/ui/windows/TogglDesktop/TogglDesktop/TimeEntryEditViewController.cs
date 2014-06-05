@@ -13,6 +13,7 @@ namespace TogglDesktop
     public partial class TimeEntryEditViewController : UserControl
     {
         private string GUID = "";
+        private KopsikApi.KopsikTimeEntryViewItem TimeEntry;
         private List<KopsikApi.KopsikAutocompleteItem> timeEntryAutocompleteUpdate = null;
         private List<KopsikApi.KopsikAutocompleteItem> projectAutocompleteUpdate = null;
 
@@ -72,6 +73,7 @@ namespace TogglDesktop
             KopsikApi.KopsikTimeEntryViewItem te,
             string focused_field_name)
         {
+            this.TimeEntry = te;
             if (InvokeRequired)
             {
                 Invoke((MethodInvoker)delegate { DisplayTimeEntryEditor(te, focused_field_name); });
@@ -285,6 +287,67 @@ namespace TogglDesktop
         {
             KopsikApi.kopsik_set_time_entry_description(KopsikApi.ctx,
                 GUID, comboBoxDescription.Text);
+        }
+
+        private void textBoxStartTime_TextChanged(object sender, EventArgs e)
+        {
+            if (this.TimeEntry.Equals(null))
+            {
+                Console.WriteLine("Cannot apply end time change. this.TimeEntry is null");
+                return;
+            }
+
+            this.applyTimeChange(this.textBoxStartTime);
+        }
+
+        private void textBoxDuration_TextChanged(object sender, EventArgs e)
+        {
+            if (this.TimeEntry.Equals(null))
+            {
+                Console.WriteLine("Cannot apply duration change. this.TimeEntry is null");
+                return;
+            }
+            KopsikApi.kopsik_set_time_entry_duration(KopsikApi.ctx, GUID, this.textBoxDuration.Text);
+        }
+
+        private void textBoxEndTime_TextChanged(object sender, EventArgs e)
+        {
+            if (this.TimeEntry.Equals(null))
+            {
+                Console.WriteLine("Cannot apply end time change. this.TimeEntry is null");
+                return;
+            }
+
+            this.applyTimeChange(this.textBoxEndTime);
+        }
+
+        private void applyTimeChange(TextBox textbox)
+        {
+            DateTime date = this.parseTime(textbox);
+            String iso8601String = date.ToString("yyyy-MM-ddTHH:mm:sszzz");
+            byte[] bytes = Encoding.Default.GetBytes(iso8601String);
+            String utf8String = Encoding.UTF8.GetString(bytes);
+            if (textbox == this.textBoxStartTime)
+            {
+                KopsikApi.kopsik_set_time_entry_start_iso_8601(KopsikApi.ctx, this.TimeEntry.GUID, utf8String);
+            }
+            else if (textbox == this.textBoxEndTime)
+            {
+                KopsikApi.kopsik_set_time_entry_end_iso_8601(KopsikApi.ctx, this.TimeEntry.GUID, utf8String);
+            }            
+        }
+
+        private DateTime parseTime(TextBox field) 
+        {
+            DateTime date = KopsikApi.DateTimeFromUnix(this.TimeEntry.Started);
+            int hours = 0;
+            int minutes = 0;
+            if (!KopsikApi.kopsik_parse_time(field.Text, ref hours, ref minutes))
+            {
+                return date;
+            }
+
+            return date.Date + new TimeSpan(hours, minutes, 0);
         }
     }
 }
