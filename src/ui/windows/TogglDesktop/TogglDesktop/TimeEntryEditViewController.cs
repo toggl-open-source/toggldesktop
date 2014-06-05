@@ -126,6 +126,21 @@ namespace TogglDesktop
                 toolStripStatusLabelLastUpdate.Visible = false;
             }
             textBoxEndTime.Enabled = (te.DurationInSeconds >= 0);
+
+            if ( te.Tags != null) {
+                string[] tags = te.Tags.Split(',');
+
+                // Tick selected Tags
+                for (int i = 0; i < tags.Length; i++)
+                {
+                    int index = this.checkedListBoxTags.Items.IndexOf(tags[i]);
+                    if (index != -1)
+                    {
+                        this.checkedListBoxTags.SetItemChecked(index, true);
+                    }
+                }
+
+            }
         }
 
         private void buttonDelete_Click(object sender, EventArgs e)
