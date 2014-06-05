@@ -289,7 +289,7 @@ namespace TogglDesktop
                 GUID, comboBoxDescription.Text);
         }
 
-        private void textBoxStartTime_TextChanged(object sender, EventArgs e)
+        private void textBoxStartTime_Leave(object sender, EventArgs e)
         {
             if (this.TimeEntry.Equals(null))
             {
@@ -300,7 +300,7 @@ namespace TogglDesktop
             this.applyTimeChange(this.textBoxStartTime);
         }
 
-        private void textBoxDuration_TextChanged(object sender, EventArgs e)
+        private void textBoxDuration_Leave(object sender, EventArgs e)
         {
             if (this.TimeEntry.Equals(null))
             {
@@ -310,7 +310,7 @@ namespace TogglDesktop
             KopsikApi.kopsik_set_time_entry_duration(KopsikApi.ctx, GUID, this.textBoxDuration.Text);
         }
 
-        private void textBoxEndTime_TextChanged(object sender, EventArgs e)
+        private void textBoxEndTime_Leave(object sender, EventArgs e)
         {
             if (this.TimeEntry.Equals(null))
             {
