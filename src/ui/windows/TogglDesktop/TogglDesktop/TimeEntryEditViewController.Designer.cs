@@ -116,6 +116,7 @@
             this.textBoxDuration.Name = "textBoxDuration";
             this.textBoxDuration.Size = new System.Drawing.Size(140, 20);
             this.textBoxDuration.TabIndex = 6;
+            this.textBoxDuration.Leave += new System.EventHandler(this.textBoxDuration_TextChanged);
             // 
             // label4
             // 
@@ -132,6 +133,7 @@
             this.textBoxStartTime.Name = "textBoxStartTime";
             this.textBoxStartTime.Size = new System.Drawing.Size(59, 20);
             this.textBoxStartTime.TabIndex = 8;
+            this.textBoxStartTime.Leave += new System.EventHandler(this.textBoxStartTime_TextChanged);
             // 
             // label5
             // 
@@ -148,6 +150,7 @@
             this.textBoxEndTime.Name = "textBoxEndTime";
             this.textBoxEndTime.Size = new System.Drawing.Size(59, 20);
             this.textBoxEndTime.TabIndex = 10;
+            this.textBoxEndTime.Leave += new System.EventHandler(this.textBoxEndTime_TextChanged);
             // 
             // label6
             // 
