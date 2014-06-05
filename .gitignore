@@ -27,6 +27,14 @@ third_party/openssl/apps/openssl
 third_party/openssl/crypto/buildinf.h
 third_party/openssl/test/sha*t
 third_party/openssl/crypto/**/*.s
+third_party/openssl/MINFO
+third_party/openssl/inc32
+third_party/openssl/ms/libeay32.def
+third_party/openssl/ms/nt.mak
+third_party/openssl/ms/ntdll.mak
+third_party/openssl/ms/ssleay32.def
+third_party/openssl/ms/version32.def
+third_party/openssl/ms/version32.rc
 /
 *.0
 *.pc
