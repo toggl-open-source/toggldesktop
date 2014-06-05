@@ -245,6 +245,7 @@
             // 
             // checkedListBoxTags
             // 
+            this.checkedListBoxTags.CheckOnClick = true;
             this.checkedListBoxTags.FormattingEnabled = true;
             this.checkedListBoxTags.Location = new System.Drawing.Point(84, 135);
             this.checkedListBoxTags.Name = "checkedListBoxTags";
