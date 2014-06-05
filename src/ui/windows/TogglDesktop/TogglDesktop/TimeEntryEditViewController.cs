@@ -27,6 +27,8 @@ namespace TogglDesktop
             KopsikApi.OnTags += OnTags;
             KopsikApi.OnTimeEntryAutocomplete += OnTimeEntryAutocomplete;
             KopsikApi.OnProjectAutocomplete += OnProjectAutocomplete;
+            this.checkedListBoxTags.DisplayMember = "Name";
+            this.checkedListBoxTags.ValueMember = "Name";
         }
 
         private void TimeEntryEditViewController_Load(object sender, EventArgs e)
@@ -171,8 +173,9 @@ namespace TogglDesktop
                 return;
             }
             checkedListBoxTags.Items.Clear();
-            foreach (object o in list) {
-                checkedListBoxTags.Items.Add(o);
+            foreach (KopsikApi.KopsikViewItem o in list)
+            {
+                checkedListBoxTags.Items.Add(o.Name);
             }
         }
 
