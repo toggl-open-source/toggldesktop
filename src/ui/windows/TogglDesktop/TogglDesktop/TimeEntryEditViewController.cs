@@ -187,9 +187,9 @@ namespace TogglDesktop
             KopsikApi.kopsik_continue(KopsikApi.ctx, GUID);
         }
 
-        void OnClientSelect(ref KopsikApi.KopsikViewItem first)
+        void OnClientSelect(IntPtr first)
         {
-            List<KopsikApi.KopsikViewItem> list = KopsikApi.ConvertToViewItemList(ref first);
+            List<KopsikApi.KopsikViewItem> list = KopsikApi.ConvertToViewItemList(first);
             DisplayClientSelect(list);
         }
 
@@ -203,9 +203,9 @@ namespace TogglDesktop
             // FIXME: 
         }
 
-        void OnTags(ref KopsikApi.KopsikViewItem first)
+        void OnTags(IntPtr first)
         {
-            List<KopsikApi.KopsikViewItem> list = KopsikApi.ConvertToViewItemList(ref first);
+            List<KopsikApi.KopsikViewItem> list = KopsikApi.ConvertToViewItemList(first);
             DisplayTags(list);
         }
 
@@ -223,9 +223,9 @@ namespace TogglDesktop
             }
         }
 
-        void OnWorkspaceSelect(ref KopsikApi.KopsikViewItem first)
+        void OnWorkspaceSelect(IntPtr first)
         {
-            List<KopsikApi.KopsikViewItem> list = KopsikApi.ConvertToViewItemList(ref first);
+            List<KopsikApi.KopsikViewItem> list = KopsikApi.ConvertToViewItemList(first);
             DisplayWorkspaceSelect(list);
         }
 
@@ -239,10 +239,10 @@ namespace TogglDesktop
             // FIXME:
         }
 
-        void OnTimeEntryAutocomplete(ref KopsikApi.KopsikAutocompleteItem first)
+        void OnTimeEntryAutocomplete(IntPtr first)
         {
             List<KopsikApi.KopsikAutocompleteItem> list =
-                KopsikApi.ConvertToAutocompleteList(ref first);
+                KopsikApi.ConvertToAutocompleteList(first);
             DisplayTimeEntryAutocomplete(list);
         }
 
@@ -282,10 +282,10 @@ namespace TogglDesktop
                 null);
         }
 
-        void OnProjectAutocomplete(ref KopsikApi.KopsikAutocompleteItem first)
+        void OnProjectAutocomplete(IntPtr first)
         {
             List<KopsikApi.KopsikAutocompleteItem> list =
-                KopsikApi.ConvertToAutocompleteList(ref first);
+                KopsikApi.ConvertToAutocompleteList(first);
             DisplayProjectAutocomplete(list);
         }
 
