@@ -158,7 +158,7 @@ namespace TogglDesktop
         public delegate void KopsikDisplayTimeEntryList(
             [MarshalAs(UnmanagedType.I1)]
             bool open,
-            ref KopsikTimeEntryViewItem first);
+            IntPtr first);
 
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayAutocomplete(
@@ -725,15 +725,17 @@ namespace TogglDesktop
         }
 
         public static List<KopsikApi.KopsikTimeEntryViewItem> ConvertToTimeEntryList(
-            ref KopsikApi.KopsikTimeEntryViewItem first)
+            IntPtr first)
         {
             List<KopsikApi.KopsikTimeEntryViewItem> list =
                 new List<KopsikApi.KopsikTimeEntryViewItem>();
-            if (Object.ReferenceEquals(null, first))
+            if (IntPtr.Zero == first)
             {
                 return list;
             }
-            KopsikApi.KopsikTimeEntryViewItem n = first;
+            KopsikApi.KopsikTimeEntryViewItem n = (KopsikApi.KopsikTimeEntryViewItem)Marshal.PtrToStructure(
+                first, typeof(KopsikApi.KopsikTimeEntryViewItem));
+
             while (true)
             {
                 list.Add(n);
