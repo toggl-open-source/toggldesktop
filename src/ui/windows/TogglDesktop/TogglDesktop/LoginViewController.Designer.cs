@@ -54,6 +54,7 @@
             this.googleLoginTextField.TabIndex = 3;
             this.googleLoginTextField.TabStop = true;
             this.googleLoginTextField.Text = "Google login";
+            this.googleLoginTextField.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.googleLoginTextField_LinkClicked);
             // 
             // password
             // 
