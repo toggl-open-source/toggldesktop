@@ -40,6 +40,13 @@ Then open the solution in Visual Studio. Next, you'll need to install the net-bu
 Install-Package Bugsnag.Library
 ```
 
+From the same console, install Oauth2 related packages:
+
+```
+Install-Package Google.Apis.Auth;
+Install-Package Google.Apis.Oauth2.v2;
+```
+
 
 Linux
 -----
