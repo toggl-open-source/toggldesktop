@@ -30,6 +30,7 @@ namespace TogglDesktop
             this.labelDescription.Text = this.TimeEntry.Description;
             this.labelProject.Text = this.TimeEntry.ProjectAndTaskLabel;
             this.labelDuration.Text = this.TimeEntry.Duration;
+            this.labelBillable.Visible = this.TimeEntry.Billable;
         }
 
         private void buttonContinue_Click(object sender, EventArgs e)
