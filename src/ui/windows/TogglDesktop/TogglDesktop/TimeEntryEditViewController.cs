@@ -235,7 +235,7 @@ namespace TogglDesktop
                 return;
             }
             comboBoxDescription.Items.Clear();
-            foreach (object o in timeEntryAutocompleteUpdate)
+            foreach (KopsikApi.KopsikAutocompleteItem o in timeEntryAutocompleteUpdate)
             {
                 comboBoxDescription.Items.Add(o);
             }
@@ -278,7 +278,7 @@ namespace TogglDesktop
                 return;
             }
             comboBoxProject.Items.Clear();
-            foreach (object o in projectAutocompleteUpdate)
+            foreach (KopsikApi.KopsikAutocompleteItem o in projectAutocompleteUpdate)
             {
                 comboBoxProject.Items.Add(o);
             }
@@ -292,9 +292,9 @@ namespace TogglDesktop
             {
                 return;
             }
-            KopsikApi.KopsikViewItem item = (KopsikApi.KopsikViewItem)o;
+            KopsikApi.KopsikAutocompleteItem item = (KopsikApi.KopsikAutocompleteItem)o;
             KopsikApi.kopsik_set_time_entry_project(KopsikApi.ctx,
-                GUID, 0, item.ID, "");
+                GUID, 0, item.ProjectID, "");
         }
 
         private void checkBoxBillable_CheckedChanged(object sender, EventArgs e)
