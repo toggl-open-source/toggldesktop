@@ -46,17 +46,22 @@ namespace TogglDesktop
 
         private void labelDescription_Click(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_edit(KopsikApi.ctx, TimeEntry.GUID, false, "description");
+            KopsikApi.kopsik_edit(KopsikApi.ctx, TimeEntry.GUID, false, KopsikApi.Description);
         }
 
         private void labelDuration_Click(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_edit(KopsikApi.ctx, TimeEntry.GUID, false, "duration");
+            KopsikApi.kopsik_edit(KopsikApi.ctx, TimeEntry.GUID, false, KopsikApi.Duration);
         }
 
         private void labelProject_Click(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_edit(KopsikApi.ctx, TimeEntry.GUID, false, "project");
+            KopsikApi.kopsik_edit(KopsikApi.ctx, TimeEntry.GUID, false, KopsikApi.Project);
+        }
+
+        private void TimeEntryCellWithHeader_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
