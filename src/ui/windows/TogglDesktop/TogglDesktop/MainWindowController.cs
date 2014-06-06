@@ -37,6 +37,7 @@ namespace TogglDesktop
 
             Utils.LoadWindowLocation(this);
 
+            KopsikApi.OnApp += OnApp;
             KopsikApi.OnError += OnError;
             KopsikApi.OnUpdate += OnUpdate;
             KopsikApi.OnLogin += OnLogin;
@@ -156,6 +157,23 @@ namespace TogglDesktop
         void OnURL(string url)
         {
             Process.Start(url);
+        }
+
+        void OnApp(bool open)
+        {
+            DisplayApp(open);
+        }
+
+        void DisplayApp(bool open)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayApp(open); });
+                return;
+            }
+            if (open) {
+                show();
+            }
         }
 
         void OnError(string errmsg, bool user_error)
@@ -302,19 +320,16 @@ namespace TogglDesktop
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             KopsikApi.kopsik_start(KopsikApi.ctx, "", "", 0, 0);
-            show();
         }
 
         private void continueToolStripMenuItem_Click(object sender, EventArgs e)
         {
             KopsikApi.kopsik_continue_latest(KopsikApi.ctx);
-            show();
         }
 
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
             KopsikApi.kopsik_stop(KopsikApi.ctx);
-            show();
         }
 
         private void showToolStripMenuItem_Click(object sender, EventArgs e)
