@@ -24,9 +24,9 @@ namespace TogglDesktop
             timerEditViewController.SetAcceptButton(frm);
         }
 
-        void OnTimeEntryList(bool open, ref KopsikApi.KopsikTimeEntryViewItem te)
+        void OnTimeEntryList(bool open, IntPtr first)
         {
-            List<KopsikApi.KopsikTimeEntryViewItem> list = KopsikApi.ConvertToTimeEntryList(ref te);
+            List<KopsikApi.KopsikTimeEntryViewItem> list = KopsikApi.ConvertToTimeEntryList(first);
             DisplayTimeEntryList(open, list);
         }
 

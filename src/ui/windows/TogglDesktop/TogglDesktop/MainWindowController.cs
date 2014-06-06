@@ -198,7 +198,7 @@ namespace TogglDesktop
             openInBrowserToolStripMenuItem.Enabled = isLoggedIn;
         }
 
-        void OnTimeEntryList(bool open, ref KopsikApi.KopsikTimeEntryViewItem te)
+        void OnTimeEntryList(bool open, IntPtr first)
         {
             DisplayTimeEntryList(open);
         }
