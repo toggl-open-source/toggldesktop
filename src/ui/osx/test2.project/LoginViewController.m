@@ -115,10 +115,7 @@ extern void *ctx;
 		return;
 	}
 
-	if (!kopsik_login(ctx, [auth.accessToken UTF8String], "google_access_token"))
-	{
-		return;
-	}
+	kopsik_login(ctx, [auth.accessToken UTF8String], "google_access_token");
 }
 
 - (void)viewDidLoad
