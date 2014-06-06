@@ -17,6 +17,14 @@ namespace TogglDesktop
         public static Bugsnag.Library.BugSnag bugsnag = null;
         public static UInt64 UserID = 0;
 
+        public static string UserIDString
+        {
+            get
+            {
+                return string.Format("{0}", UserID);
+            }
+        }
+
         public static bool IsLoggedIn
         {
             get
@@ -59,7 +67,7 @@ namespace TogglDesktop
         {
             bugsnag.Notify(e.ExceptionObject as Exception, new
             {
-                UserID = UserID
+                UserID = UserIDString
             });
         }
 
@@ -67,7 +75,7 @@ namespace TogglDesktop
         {
             bugsnag.Notify(e.Exception, new
             {
-                UserID = UserID
+                UserID = UserIDString
             });
         }
 

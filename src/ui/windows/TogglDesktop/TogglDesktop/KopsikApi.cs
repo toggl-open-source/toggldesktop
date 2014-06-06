@@ -123,6 +123,11 @@ namespace TogglDesktop
         // Callbacks
 
         [UnmanagedFunctionPointer(convention)]
+        public delegate void KopsikDisplayApp(
+            [MarshalAs(UnmanagedType.I1)]
+            bool open);
+
+        [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayError(
             string errmsg,
             [MarshalAs(UnmanagedType.I1)]
@@ -236,6 +241,11 @@ namespace TogglDesktop
             string path);
 
         // Configure the UI callbacks. Required.
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        private static extern void kopsik_on_app(
+            IntPtr context,
+            KopsikDisplayApp cb);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         private static extern void kopsik_on_error(
@@ -599,6 +609,7 @@ namespace TogglDesktop
 
         // Events for C#
 
+        public static event KopsikApi.KopsikDisplayApp OnApp = delegate { };
         public static event KopsikApi.KopsikDisplayError OnError = delegate { };
         public static event KopsikApi.KopsikDisplayUpdate OnUpdate = delegate { };
         public static event KopsikApi.KopsikDisplayOnlineState OnOnlineState = delegate { };
@@ -621,26 +632,6 @@ namespace TogglDesktop
         {
             ctx = kopsik_context_init("windows_native_app", version);
 
-            StringBuilder sb = new StringBuilder();
-            
-            sb.Append("C# sizeof(Int64)=");
-            sb.Append(Marshal.SizeOf((Int64)0));
-            sb.Append(", sizeof(UInt64)=");
-            sb.Append(Marshal.SizeOf((UInt64)0));
-            sb.Append(", sizeof(bool)=");
-            sb.Append(Marshal.SizeOf(true));
-            sb.Append(", sizeof(IntPtr)=");
-            sb.Append(Marshal.SizeOf((IntPtr)0));
-            sb.Append(", sizeof(KopsikTimeEntryViewItem)=");
-            sb.Append(Marshal.SizeOf(new KopsikTimeEntryViewItem()));
-            sb.Append(", sizeof(KopsikAutocompleteItem)=");
-            sb.Append(Marshal.SizeOf(new KopsikAutocompleteItem()));
-            sb.Append(", sizeof(KopsikViewItem)=");
-            sb.Append(Marshal.SizeOf(new KopsikViewItem()));
-            sb.Append(", sizeof(KopsikSettingsViewItem)=");
-            sb.Append(Marshal.SizeOf(new KopsikSettingsViewItem()));
-            kopsik_debug(ctx, sb.ToString());
-
             kopsik_check_view_item_size(
                 Marshal.SizeOf(new KopsikTimeEntryViewItem()),
                 Marshal.SizeOf(new KopsikAutocompleteItem()),
@@ -649,6 +640,7 @@ namespace TogglDesktop
                 Marshal.SizeOf(new KopsikUpdateViewItem()));
 
             // Wire up events
+            kopsik_on_app(ctx, OnApp);
             kopsik_on_error(ctx, OnError);
             kopsik_on_update(ctx, OnUpdate);                
             kopsik_on_online_state(ctx, OnOnlineState);
