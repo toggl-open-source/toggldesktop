@@ -519,6 +519,12 @@ namespace TogglDesktop
             string update_channel);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        public static extern bool kopsik_user_can_see_billable_flag(
+            IntPtr context,
+            string time_entry_guid,
+            ref bool can_see);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_sync(
             IntPtr context);
 
