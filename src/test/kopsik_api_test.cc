@@ -31,7 +31,7 @@ Proxy proxy;
 std::string update_channel("");
 }  // namespace testresult
 
-void on_app(const _Bool show) {
+void on_app(const _Bool open) {
 }
 
 void on_error(
