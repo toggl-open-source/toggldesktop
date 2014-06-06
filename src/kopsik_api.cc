@@ -182,6 +182,15 @@ _Bool kopsik_login(
                                std::string(password));
 }
 
+_Bool kopsik_google_login(
+    void *context,
+    const char *access_token) {
+
+    poco_check_ptr(access_token);
+
+    return app(context)->GoogleLogin(std::string(access_token));
+}
+
 _Bool kopsik_logout(
     void *context) {
 

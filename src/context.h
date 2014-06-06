@@ -43,7 +43,6 @@ class Context {
     // Close connections and wait for tasks to finish
     void Shutdown();
 
-    // Start tasks
     void FullSync();
     void TimelineUpdateServerSettings();
     _Bool SendFeedback(Feedback);
@@ -51,7 +50,6 @@ class Context {
     // Load model update from JSON string (from WebSocket)
     _Bool LoadUpdateFromJSONString(const std::string json);
 
-    // Configure
     void SetAPIURL(const std::string value) {
         HTTPSClient::APIURL = value;
     }
@@ -74,10 +72,11 @@ class Context {
         const bool use_proxy,
         const kopsik::Proxy proxy);
 
-    // Session management
     _Bool Login(
         const std::string email,
         const std::string password);
+
+    _Bool GoogleLogin(const std::string access_token);
 
     _Bool Logout();
 

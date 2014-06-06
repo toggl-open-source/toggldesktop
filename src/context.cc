@@ -899,6 +899,10 @@ Database *Context::db() const {
     return db_;
 }
 
+_Bool Context::GoogleLogin(const std::string access_token) {
+    return Login(access_token, "google_access_token");
+}
+
 _Bool Context::Login(
     const std::string email,
     const std::string password) {
