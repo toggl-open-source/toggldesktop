@@ -20,6 +20,8 @@
 #include "Poco/Net/SSLManager.h"
 #include "Poco/Net/PrivateKeyPassphraseHandler.h"
 #include "Poco/Net/SecureStreamSocket.h"
+#include "Poco/TextEncoding.h"
+#include "Poco/UTF8Encoding.h"
 
 #include "./libjson.h"
 #include "./const.h"
@@ -211,6 +213,19 @@ error HTTPSClient::request(
                 return description.str();
             }
             return "Request failed with error: " + *response_body;
+        }
+
+        // Debug encoding
+        {
+            std::stringstream ss;
+            Poco::UTF8Encoding encoding;
+            ss << "Response text encoding ASCII=" << encoding.isA("ASCII")
+               << " Latin-1=" << encoding.isA("Latin-1")
+               << " Latin-9=" << encoding.isA("Latin-9")
+               << " Windows-1252=" << encoding.isA("Windows-1252")
+               << " UTF-8=" << encoding.isA("UTF-8")
+               << " UTF-16=" << encoding.isA("UTF-16");
+            logger.debug(ss.str());
         }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
