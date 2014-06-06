@@ -162,11 +162,11 @@ namespace TogglDesktop
 
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayAutocomplete(
-            ref KopsikAutocompleteItem first);
+            IntPtr first);
 
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayViewItems(
-            ref KopsikViewItem first);
+            IntPtr first);
         
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayTimeEntryEditor(
@@ -680,14 +680,15 @@ namespace TogglDesktop
         }
 
         public static List<KopsikApi.KopsikViewItem> ConvertToViewItemList(
-            ref KopsikApi.KopsikViewItem first)
+            IntPtr first)
         {
             List<KopsikApi.KopsikViewItem> list = new List<KopsikApi.KopsikViewItem>();
-            if (Object.ReferenceEquals(null, first))
+            if (IntPtr.Zero == first)
             {
                 return list;
             }
-            KopsikApi.KopsikViewItem n = first;
+            KopsikApi.KopsikViewItem n = (KopsikApi.KopsikViewItem)Marshal.PtrToStructure(
+                first, typeof(KopsikApi.KopsikViewItem));
             while (true)
             {
                 list.Add(n);
@@ -702,15 +703,16 @@ namespace TogglDesktop
         }
 
         public static List<KopsikApi.KopsikAutocompleteItem> ConvertToAutocompleteList(
-            ref KopsikApi.KopsikAutocompleteItem first)
+            IntPtr first)
         {
             List<KopsikApi.KopsikAutocompleteItem> list =
                 new List<KopsikApi.KopsikAutocompleteItem>();
-            if (Object.ReferenceEquals(null, first))
+            if (IntPtr.Zero == first)
             {
                 return list;
             }
-            KopsikApi.KopsikAutocompleteItem n = first;
+            KopsikApi.KopsikAutocompleteItem n = (KopsikApi.KopsikAutocompleteItem)Marshal.PtrToStructure(
+                first, typeof(KopsikApi.KopsikAutocompleteItem));
             while (true)
             {
                 list.Add(n);

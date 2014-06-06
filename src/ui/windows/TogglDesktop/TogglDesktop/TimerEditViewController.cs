@@ -171,10 +171,10 @@ namespace TogglDesktop
             project_id = 0;
         }
 
-        void OnTimeEntryAutocomplete(ref KopsikApi.KopsikAutocompleteItem first)
+        void OnTimeEntryAutocomplete(IntPtr first)
         {
             List<KopsikApi.KopsikAutocompleteItem> list =
-                KopsikApi.ConvertToAutocompleteList(ref first);
+                KopsikApi.ConvertToAutocompleteList(first);
             DisplayTimeEntryAutocomplete(list);
         }
 
