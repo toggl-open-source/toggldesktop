@@ -65,6 +65,8 @@
             // 
             // comboBoxDescription
             // 
+            this.comboBoxDescription.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBoxDescription.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBoxDescription.FormattingEnabled = true;
             this.comboBoxDescription.Location = new System.Drawing.Point(84, 3);
             this.comboBoxDescription.Name = "comboBoxDescription";
@@ -84,6 +86,8 @@
             // 
             // comboBoxProject
             // 
+            this.comboBoxProject.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBoxProject.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBoxProject.FormattingEnabled = true;
             this.comboBoxProject.Location = new System.Drawing.Point(84, 30);
             this.comboBoxProject.Name = "comboBoxProject";
