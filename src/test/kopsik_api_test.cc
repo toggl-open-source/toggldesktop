@@ -31,6 +31,9 @@ Proxy proxy;
 std::string update_channel("");
 }  // namespace testresult
 
+void on_app(const _Bool show) {
+}
+
 void on_error(
     const char *errmsg,
     const _Bool user_error) {
@@ -138,6 +141,7 @@ class App {
 
         poco_assert(kopsik_set_db_path(ctx_, TESTDB));
 
+        kopsik_on_app(ctx_, on_app);
         kopsik_on_error(ctx_, on_error);
         kopsik_on_update(ctx_, on_update);
         kopsik_on_online_state(ctx_, on_online_state);

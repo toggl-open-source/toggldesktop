@@ -8,6 +8,10 @@
 
 namespace kopsik {
 
+void UI::DisplayApp() {
+    on_display_app_(true);
+}
+
 void UI::DisplayLogin(const _Bool open, const uint64_t user_id) {
     logger().debug("DisplayLogin");
 
@@ -36,22 +40,13 @@ error UI::VerifyCallbacks() {
     if (err != noError) {
         logger().error(err);
     }
-    std::stringstream ss;
-    ss << "sizeof(int64_t)=" << sizeof(int64_t)
-       << ", sizeof(uint64_t)=" << sizeof(uint64_t)
-       << ", sizeof(_Bool)=" << sizeof(_Bool)
-       << ", sizeof(void *)=" << sizeof(void *)  // NOLINT
-       << ", sizeof(KopsikTimeEntryViewItem)=" <<
-       sizeof(KopsikTimeEntryViewItem)
-       << ", sizeof(KopsikAutocompleteItem)=" << sizeof(KopsikAutocompleteItem)
-       << ", sizeof(KopsikViewItem)=" << sizeof(KopsikViewItem)
-       << ", sizeof(KopsikSettingsViewItem)=" << sizeof(KopsikSettingsViewItem)
-       << std::endl;
-    logger().debug(ss.str());
     return err;
 }
 
 error UI::findMissingCallbacks() {
+    if (!on_display_app_) {
+        return error("!on_display_app_");
+    }
     if (!on_display_error_) {
         return error("!on_display_error_");
     }

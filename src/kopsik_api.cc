@@ -612,6 +612,13 @@ int64_t kopsik_parse_duration_string_into_seconds(const char *duration_string) {
     return kopsik::Formatter::ParseDurationString(std::string(duration_string));
 }
 
+void kopsik_on_app(
+    void *context,
+    KopsikDisplayApp cb) {
+
+    app(context)->UI()->OnDisplayApp(cb);
+}
+
 void kopsik_on_error(
     void *context,
     KopsikDisplayError cb) {

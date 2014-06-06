@@ -1034,6 +1034,8 @@ _Bool Context::Logout() {
         logger().debug("setUser from Logout");
 
         setUser(0);
+
+        UI()->DisplayApp();
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -1175,6 +1177,8 @@ _Bool Context::Start(
 
     user_->Start(description, duration, task_id, project_id);
 
+    UI()->DisplayApp();
+
     return displayError(save());
 }
 
@@ -1315,6 +1319,8 @@ _Bool Context::ContinueLatest() {
         return displayError(err);
     }
 
+    UI()->DisplayApp();
+
     return displayError(save());
 }
 
@@ -1334,6 +1340,8 @@ _Bool Context::Continue(
     if (err != kopsik::noError) {
         return displayError(err);
     }
+
+    UI()->DisplayApp();
 
     err = save();
     if (err != kopsik::noError) {
@@ -1563,6 +1571,8 @@ _Bool Context::Stop() {
         return true;
     }
 
+    UI()->DisplayApp();
+
     return displayError(save());
 }
 
@@ -1579,6 +1589,8 @@ _Bool Context::StopAt(
         logger().warning("Time entry not found");
         return true;
     }
+
+    UI()->DisplayApp();
 
     return displayError(save());
 }

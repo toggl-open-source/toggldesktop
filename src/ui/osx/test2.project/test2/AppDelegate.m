@@ -149,6 +149,10 @@ const int kDurationStringLength = 20;
 												 name:kCommandContinue
 											   object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(startDisplayApp:)
+												 name:kDisplayApp
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(startDisplayUpdate:)
 												 name:kDisplayUpdate
 											   object:nil];
@@ -255,8 +259,6 @@ const int kDurationStringLength = 20;
 				 [new_time_entry.duration UTF8String],
 				 new_time_entry.TaskID,
 				 new_time_entry.ProjectID);
-
-	[self onShowMenuItem:self];
 }
 
 - (void)startContinueTimeEntry:(NSNotification *)notification
@@ -278,8 +280,6 @@ const int kDurationStringLength = 20;
 	{
 		kopsik_continue(ctx, [guid UTF8String]);
 	}
-
-	[self onShowMenuItem:self];
 }
 
 - (void)startStop:(NSNotification *)notification
@@ -294,8 +294,6 @@ const int kDurationStringLength = 20;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	kopsik_stop(ctx);
-
-	[self onShowMenuItem:self];
 }
 
 - (void)startStopAt:(NSNotification *)notification
@@ -314,8 +312,6 @@ const int kDurationStringLength = 20;
 	NSTimeInterval startedAt = [idleEvent.started timeIntervalSince1970];
 	NSLog(@"Time entry stop at %f", startedAt);
 	kopsik_stop_running_time_entry_at(ctx, startedAt);
-
-	[self onShowMenuItem:self];
 }
 
 - (void)startDisplaySettings:(NSNotification *)notification
@@ -402,6 +398,22 @@ const int kDurationStringLength = 20;
 		self.preferencesWindowController.user_id = self.user_id;
 		[self.preferencesWindowController showWindow:self];
 		[NSApp activateIgnoringOtherApps:YES];
+	}
+}
+
+- (void)startDisplayApp:(NSNotification *)notification
+{
+	[self performSelectorOnMainThread:@selector(displayApp:)
+						   withObject:notification.object
+						waitUntilDone:NO];
+}
+
+- (void)displayApp:(DisplayCommand *)cmd
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+	if (cmd.open)
+	{
+		[self onShowMenuItem:self];
 	}
 }
 
@@ -605,7 +617,6 @@ const int kDurationStringLength = 20;
 - (IBAction)onLogoutMenuItem:(id)sender
 {
 	kopsik_logout(ctx);
-	[self onShowMenuItem:self];
 }
 
 - (IBAction)onClearCacheMenuItem:(id)sender
@@ -756,6 +767,7 @@ const NSString *appName = @"osx_native_app";
 
 	ctx = kopsik_context_init([appName UTF8String], [version UTF8String]);
 
+	kopsik_on_app(ctx, on_app);
 	kopsik_on_error(ctx, on_error);
 	kopsik_on_update(ctx, on_update);
 	kopsik_on_online_state(ctx, on_online_state);
@@ -1159,6 +1171,15 @@ void on_time_entry_editor(const _Bool open,
 	cmd.timeEntry = item;
 	cmd.timeEntry.focusedFieldName = [NSString stringWithUTF8String:focused_field_name];
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimeEntryEditor
+														object:cmd];
+}
+
+void on_app(const _Bool show)
+{
+	DisplayCommand *cmd = [[DisplayCommand alloc] init];
+
+	cmd.open = show;
+	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayApp
 														object:cmd];
 }
 
