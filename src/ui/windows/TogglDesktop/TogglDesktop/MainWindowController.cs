@@ -46,6 +46,7 @@ namespace TogglDesktop
             KopsikApi.OnReminder += OnReminder;
             KopsikApi.OnURL += OnURL;
             KopsikApi.OnTimerState += OnTimerState;
+            KopsikApi.OnSettings += OnSettings;
 
             if (!KopsikApi.Start(TogglDesktop.Program.Version()))
             {
@@ -68,6 +69,23 @@ namespace TogglDesktop
             isTracking = is_tracking;
             enableMenuItems();
             displayTrayIcon();
+        }
+
+        void OnSettings(bool open,
+            ref KopsikApi.KopsikSettingsViewItem settings)
+        {
+            KopsikApi.KopsikSettingsViewItem view = settings;
+            DisplaySettings(view);
+        }
+
+        void DisplaySettings(KopsikApi.KopsikSettingsViewItem view)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplaySettings(view); });
+                return;
+            }
+            this.TopMost = view.OnTop;
         }
 
         private void displayTrayIcon()
