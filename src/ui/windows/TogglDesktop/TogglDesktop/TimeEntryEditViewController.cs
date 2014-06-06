@@ -82,6 +82,36 @@ namespace TogglDesktop
                 return;
             }
             GUID = te.GUID;
+
+            Boolean can_see_billable = false;
+            if (!KopsikApi.kopsik_user_can_see_billable_flag(KopsikApi.ctx, GUID, ref can_see_billable))
+            {
+                return;
+            }
+            checkBoxBillable.Visible = can_see_billable;
+
+            checkBoxBillable.Tag = this;
+            try
+            {
+                checkBoxBillable.Checked = te.Billable;
+            }
+            finally
+            {
+                checkBoxBillable.Tag = null;
+            }
+
+            Boolean can_add_projects = false;
+            if (!KopsikApi.kopsik_user_can_add_projects(KopsikApi.ctx, TimeEntry.WID, ref can_add_projects))
+            {
+                return;
+            }
+            if (!can_add_projects)
+            {
+                this.linkAddProject.Visible = !can_add_projects;
+            }
+            //TODO: Else if (add project box is hidden) show the button;
+
+
             if (!comboBoxDescription.Focused)
             {
                 comboBoxDescription.Text = te.Description;
@@ -106,22 +136,7 @@ namespace TogglDesktop
             {
                 dateTimePickerStartDate.Value = KopsikApi.DateTimeFromUnix(te.Started);
             }
-            Boolean can_see_billable = false;
-            if (!KopsikApi.kopsik_user_can_see_billable_flag(KopsikApi.ctx, GUID, ref can_see_billable))
-            {
-                return;
-            }
-            checkBoxBillable.Visible = can_see_billable;
 
-            checkBoxBillable.Tag = this;
-            try
-            {
-                checkBoxBillable.Checked = te.Billable;
-            }
-            finally
-            {
-                checkBoxBillable.Tag = null;
-            }
             if (te.UpdatedAt >= 0)
             {
                 DateTime updatedAt = KopsikApi.DateTimeFromUnix(te.UpdatedAt);

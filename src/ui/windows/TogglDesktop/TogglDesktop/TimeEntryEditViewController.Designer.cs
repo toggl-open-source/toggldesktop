@@ -32,7 +32,7 @@
             this.comboBoxDescription = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxProject = new System.Windows.Forms.ComboBox();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.linkAddProject = new System.Windows.Forms.LinkLabel();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxDuration = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -95,15 +95,15 @@
             this.comboBoxProject.TabIndex = 3;
             this.comboBoxProject.SelectedIndexChanged += new System.EventHandler(this.comboBoxProject_SelectedIndexChanged);
             // 
-            // linkLabel1
+            // linkAddProject
             // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(230, 33);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(84, 13);
-            this.linkLabel1.TabIndex = 4;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Add new project";
+            this.linkAddProject.AutoSize = true;
+            this.linkAddProject.Location = new System.Drawing.Point(230, 33);
+            this.linkAddProject.Name = "linkAddProject";
+            this.linkAddProject.Size = new System.Drawing.Size(84, 13);
+            this.linkAddProject.TabIndex = 4;
+            this.linkAddProject.TabStop = true;
+            this.linkAddProject.Text = "Add new project";
             // 
             // label3
             // 
@@ -274,7 +274,7 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.textBoxDuration);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.linkLabel1);
+            this.Controls.Add(this.linkAddProject);
             this.Controls.Add(this.comboBoxProject);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.comboBoxDescription);
@@ -296,7 +296,7 @@
         private System.Windows.Forms.ComboBox comboBoxDescription;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox comboBoxProject;
-        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.LinkLabel linkAddProject;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxDuration;
         private System.Windows.Forms.Label label4;
