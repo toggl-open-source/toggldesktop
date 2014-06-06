@@ -107,7 +107,7 @@ extern "C" {
     // Callbacks that need to be implemented in UI
 
     typedef void (*KopsikDisplayApp)(
-        const _Bool show);
+        const _Bool open);
 
     typedef void (*KopsikDisplayError)(
         const char *errmsg,

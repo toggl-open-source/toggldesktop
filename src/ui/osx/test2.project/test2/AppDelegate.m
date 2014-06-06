@@ -1174,11 +1174,11 @@ void on_time_entry_editor(const _Bool open,
 														object:cmd];
 }
 
-void on_app(const _Bool show)
+void on_app(const _Bool open)
 {
 	DisplayCommand *cmd = [[DisplayCommand alloc] init];
 
-	cmd.open = show;
+	cmd.open = open;
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayApp
 														object:cmd];
 }
