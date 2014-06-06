@@ -267,6 +267,10 @@ extern "C" {
         const char *email,
         const char *password);
 
+    KOPSIK_EXPORT _Bool kopsik_google_login(
+        void *context,
+        const char *access_token);
+
     KOPSIK_EXPORT void kopsik_password_forgot(
         void *context);
 
