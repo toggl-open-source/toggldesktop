@@ -49,7 +49,7 @@ namespace TogglDesktop
 
         private async Task googleLogin() {
             UserCredential credential;
-            credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
+            credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                 new ClientSecrets
                 {
                     ClientId = "426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com",
@@ -61,7 +61,7 @@ namespace TogglDesktop
                 },
                 "user",
                 CancellationToken.None,
-                null);
+                null).Result;
 
             Oauth2Service userInfoService = new Oauth2Service(
                 new BaseClientService.Initializer()
@@ -70,7 +70,9 @@ namespace TogglDesktop
                     ApplicationName = "Toggl Desktop"
                 });
 
-            var userInfo = await userInfoService.Userinfo.Get().ExecuteAsync();
+            var userInfo = userInfoService.Userinfo.Get().Execute();
+
+            Console.WriteLine(userInfo.Email);
         }
     }
 }
