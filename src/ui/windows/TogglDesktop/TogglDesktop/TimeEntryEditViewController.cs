@@ -106,6 +106,13 @@ namespace TogglDesktop
             {
                 dateTimePickerStartDate.Value = KopsikApi.DateTimeFromUnix(te.Started);
             }
+            Boolean can_see_billable = false;
+            if (!KopsikApi.kopsik_user_can_see_billable_flag(KopsikApi.ctx, GUID, ref can_see_billable))
+            {
+                return;
+            }
+            checkBoxBillable.Visible = can_see_billable;
+
             checkBoxBillable.Tag = this;
             try
             {
