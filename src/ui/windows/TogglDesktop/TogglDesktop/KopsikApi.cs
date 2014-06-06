@@ -525,6 +525,12 @@ namespace TogglDesktop
             ref bool can_see);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        public static extern bool kopsik_user_can_add_projects(
+            IntPtr context,
+            UInt64 workspace_id,
+            ref bool can_add);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_sync(
             IntPtr context);
 
