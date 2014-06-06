@@ -67,6 +67,10 @@ namespace TogglDesktop
             public UInt64 ProjectID;
             public UInt64 Type;
             public IntPtr Next;
+            public override string ToString()
+            {
+                return this.Text;
+            }
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = charset)]
