@@ -365,7 +365,7 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { DisplayReminder(title, informative_text); });
                 return;
             }
-            // FIXME:
+            trayIcon.ShowBalloonTip(6000, title, informative_text, ToolTipIcon.None);
         }
 
         private void clearCacheToolStripMenuItem_Click(object sender, EventArgs e)
@@ -380,6 +380,11 @@ namespace TogglDesktop
             {
                 KopsikApi.kopsik_clear_cache(KopsikApi.ctx);
             }
+        }
+
+        private void trayIcon_BalloonTipClicked(object sender, EventArgs e)
+        {
+            show();
         }
     }
 }

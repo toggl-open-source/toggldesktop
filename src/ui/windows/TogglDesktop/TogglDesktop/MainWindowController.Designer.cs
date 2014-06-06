@@ -47,11 +47,11 @@
             this.openInBrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearCacheToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sendFeedbackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.clearCacheToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.troubleBox.SuspendLayout();
             this.trayIconMenu.SuspendLayout();
             this.SuspendLayout();
@@ -93,6 +93,7 @@
             this.trayIcon.ContextMenuStrip = this.trayIconMenu;
             this.trayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("trayIcon.Icon")));
             this.trayIcon.Visible = true;
+            this.trayIcon.BalloonTipClicked += new System.EventHandler(this.trayIcon_BalloonTipClicked);
             this.trayIcon.DoubleClick += new System.EventHandler(this.trayIcon_DoubleClick);
             // 
             // trayIconMenu
@@ -116,7 +117,7 @@
             this.logoutToolStripMenuItem,
             this.quitToolStripMenuItem});
             this.trayIconMenu.Name = "trayIconMenu";
-            this.trayIconMenu.Size = new System.Drawing.Size(154, 336);
+            this.trayIconMenu.Size = new System.Drawing.Size(154, 314);
             // 
             // runningToolStripMenuItem
             // 
@@ -193,12 +194,12 @@
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
             this.toolStripMenuItem4.Size = new System.Drawing.Size(150, 6);
             // 
-            // aboutToolStripMenuItem
+            // clearCacheToolStripMenuItem
             // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
-            this.aboutToolStripMenuItem.Text = "About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            this.clearCacheToolStripMenuItem.Name = "clearCacheToolStripMenuItem";
+            this.clearCacheToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.clearCacheToolStripMenuItem.Text = "Clear Cache";
+            this.clearCacheToolStripMenuItem.Click += new System.EventHandler(this.clearCacheToolStripMenuItem_Click);
             // 
             // sendFeedbackToolStripMenuItem
             // 
@@ -206,6 +207,13 @@
             this.sendFeedbackToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.sendFeedbackToolStripMenuItem.Text = "Send Feedback";
             this.sendFeedbackToolStripMenuItem.Click += new System.EventHandler(this.sendFeedbackToolStripMenuItem_Click);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // logoutToolStripMenuItem
             // 
@@ -220,13 +228,6 @@
             this.quitToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.quitToolStripMenuItem.Text = "Quit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
-            // 
-            // clearCacheToolStripMenuItem
-            // 
-            this.clearCacheToolStripMenuItem.Name = "clearCacheToolStripMenuItem";
-            this.clearCacheToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
-            this.clearCacheToolStripMenuItem.Text = "Clear Cache";
-            this.clearCacheToolStripMenuItem.Click += new System.EventHandler(this.clearCacheToolStripMenuItem_Click);
             // 
             // MainWindowController
             // 
