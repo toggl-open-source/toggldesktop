@@ -93,6 +93,7 @@
             this.Controls.Add(this.loginButton);
             this.Name = "LoginViewController";
             this.Size = new System.Drawing.Size(279, 345);
+            this.Load += new System.EventHandler(this.LoginViewController_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -44,35 +44,48 @@ namespace TogglDesktop
 
         private void googleLoginTextField_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            googleLogin().Wait();
+            try
+            {
+                googleLogin();
+
+            }
+            catch (AggregateException ex)
+            {
+                if (ex.InnerException != null &&
+                    ex.InnerException.Message.Contains("access_denied"))
+                {
+                    KopsikApi.NewError("Login process was canceled", true);
+                }
+                else
+                {
+                    KopsikApi.NewError(ex.Message, false);
+                }
+            }
         }
 
-        private async Task googleLogin() {
-            UserCredential credential;
-            credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+        private void googleLogin()
+        {
+            UserCredential credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                 new ClientSecrets
                 {
                     ClientId = "426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com",
                     ClientSecret = "6IHWKIfTAMF7cPJsBvoGxYui"
                 },
                 new[] {
-                     Oauth2Service.Scope.UserinfoEmail,
-                     Oauth2Service.Scope.UserinfoProfile
+                    Oauth2Service.Scope.UserinfoEmail,
+                    Oauth2Service.Scope.UserinfoProfile
                 },
                 "user",
                 CancellationToken.None,
                 null).Result;
 
-            Oauth2Service userInfoService = new Oauth2Service(
-                new BaseClientService.Initializer()
-                {
-                    HttpClientInitializer = credential,
-                    ApplicationName = "Toggl Desktop"
-                });
+            KopsikApi.kopsik_google_login(KopsikApi.ctx, credential.Token.AccessToken);
+            credential.RevokeTokenAsync(CancellationToken.None).Wait();
+        }
 
-            var userInfo = userInfoService.Userinfo.Get().Execute();
+        private void LoginViewController_Load(object sender, EventArgs e)
+        {
 
-            Console.WriteLine(userInfo.Email);
         }
     }
 }

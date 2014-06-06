@@ -329,6 +329,12 @@ namespace TogglDesktop
             string password);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static extern bool kopsik_google_login(
+            IntPtr context,
+            string access_token);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_password_forgot(
             IntPtr context);
 
@@ -757,6 +763,11 @@ namespace TogglDesktop
         public static DateTime DateTimeFromUnix(UInt64 unix_seconds)
         {
             return UnixEpoch.AddSeconds(unix_seconds);
+        }
+
+        public static void NewError(string errmsg, bool user_error)
+        {
+            OnError(errmsg, user_error);
         }
 
     }
