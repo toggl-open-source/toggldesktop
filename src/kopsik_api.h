@@ -106,6 +106,9 @@ extern "C" {
 
     // Callbacks that need to be implemented in UI
 
+    typedef void (*KopsikDisplayApp)(
+        const _Bool show);
+
     typedef void (*KopsikDisplayError)(
         const char *errmsg,
         const _Bool user_error);
@@ -194,6 +197,10 @@ extern "C" {
         const char *websocket_url);
 
     // Configure the UI callbacks. Required.
+
+    KOPSIK_EXPORT void kopsik_on_app(
+        void *context,
+        KopsikDisplayApp);
 
     KOPSIK_EXPORT void kopsik_on_error(
         void *context,

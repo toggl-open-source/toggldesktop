@@ -13,6 +13,7 @@ NSString *const kCommandStop = @"Stop";
 NSString *const kCommandContinue = @"Continue";
 NSString *const kCommandStopAt = @"Stop At";
 
+NSString *const kDisplayApp = @"kDisplayApp";
 NSString *const kDisplayTimeEntryList = @"kDisplayTimeEntryList";
 NSString *const kDisplayTimeEntryAutocomplete = @"kDisplayTimeEntryAutocomplete";
 NSString *const kDisplayProjectAutocomplete = @"kDisplayProjectAutocomplete";

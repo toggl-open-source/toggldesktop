@@ -21,8 +21,8 @@ namespace kopsik {
 
 class UI {
  public:
-    UI()
-        : on_display_error_(0)
+    UI() : on_display_app_(0)
+    , on_display_error_(0)
     , on_display_update_(0)
     , on_display_online_state_(0)
     , on_display_login_(0)
@@ -40,6 +40,7 @@ class UI {
 
     ~UI() {}
 
+    void DisplayApp();
     _Bool DisplayError(const error);
     void DisplayOnlineState(const _Bool);
     void DisplayReminder();
@@ -70,6 +71,10 @@ class UI {
     void DisplayTimerState(KopsikTimeEntryViewItem *te);
 
     error VerifyCallbacks();
+
+    void OnDisplayApp(KopsikDisplayApp cb) {
+        on_display_app_ = cb;
+    }
 
     void OnDisplayError(KopsikDisplayError cb) {
         on_display_error_ = cb;
@@ -136,6 +141,7 @@ class UI {
     _Bool isUserError(const error) const;
     error findMissingCallbacks();
 
+    KopsikDisplayApp on_display_app_;
     KopsikDisplayError on_display_error_;
     KopsikDisplayUpdate on_display_update_;
     KopsikDisplayOnlineState on_display_online_state_;
