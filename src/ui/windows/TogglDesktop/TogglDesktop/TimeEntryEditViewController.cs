@@ -385,7 +385,7 @@ namespace TogglDesktop
 
         private DateTime parseTime(TextBox field) 
         {
-            DateTime date = KopsikApi.DateTimeFromUnix(this.TimeEntry.Started);
+            DateTime date = this.dateTimePickerStartDate.Value;
             int hours = 0;
             int minutes = 0;
             if (!KopsikApi.kopsik_parse_time(field.Text, ref hours, ref minutes))
@@ -394,6 +394,17 @@ namespace TogglDesktop
             }
 
             return date.Date + new TimeSpan(hours, minutes, 0);
+        }
+
+        private void dateTimePickerStartDate_Leave(object sender, EventArgs e)
+        {
+            if (this.TimeEntry.Equals(null))
+            {
+                Console.WriteLine("Cannot apply end time change. this.TimeEntry is null");
+                return;
+            }
+            this.applyTimeChange(this.textBoxStartTime);
+            this.applyTimeChange(this.textBoxEndTime);
         }
 
         private void checkedListBoxTags_Leave(object sender, EventArgs e)
@@ -408,7 +419,6 @@ namespace TogglDesktop
                 tags += item.ToString();
             }
 
-            //this.getUTF8String(tags);
             KopsikApi.kopsik_set_time_entry_tags(KopsikApi.ctx, this.getUTF8String(this.TimeEntry.GUID), this.getUTF8String(tags));
         }
 
