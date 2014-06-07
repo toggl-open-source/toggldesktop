@@ -317,6 +317,9 @@ _Bool UI::isUserError(const error err) const {
             != std::string::npos) {
         return true;
     }
+    if (value.find("Invalid e-mail or password") != std::string::npos) {
+        return true;
+    }
     return false;
 }
 
