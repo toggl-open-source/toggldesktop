@@ -105,3 +105,7 @@ out32dll
 tmp32dll
 
 ipch
+
+# Nuget
+src/ui/windows/TogglDesktop/packages
+

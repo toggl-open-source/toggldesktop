@@ -58,7 +58,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Bugsnag.Library">
-      <HintPath>..\packages\Bugsnag.Library.1.0.0.2\lib\net40\Bugsnag.Library.dll</HintPath>
+      <HintPath>..\packages\Bugsnag.Library.1.0.6.0\lib\net40\Bugsnag.Library.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Google.Apis">
       <HintPath>..\packages\Google.Apis.1.8.2\lib\net40\Google.Apis.dll</HintPath>
