@@ -114,7 +114,7 @@ error HTTPSClient::request(
 
         Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(),
                                               context);
-        if (ProxySettings.IsConfigured()) {
+        if (UseProxy && ProxySettings.IsConfigured()) {
             session.setProxy(ProxySettings.host, ProxySettings.port);
             if (ProxySettings.HasCredentials()) {
                 session.setProxyCredentials(ProxySettings.username,
@@ -122,7 +122,8 @@ error HTTPSClient::request(
             }
         }
         session.setKeepAlive(false);
-        session.setTimeout(Poco::Timespan(10 * Poco::Timespan::SECONDS));
+        session.setTimeout(Poco::Timespan(kHTTPClientTimeoutSeconds
+                                          * Poco::Timespan::SECONDS));
 
         Poco::Logger &logger = Poco::Logger::get("https_client");
         {
