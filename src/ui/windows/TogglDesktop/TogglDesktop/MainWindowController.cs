@@ -103,6 +103,7 @@ namespace TogglDesktop
                 return;
             }
             this.TopMost = view.OnTop;
+            timerIdleDetection.Enabled = view.UseIdleDetection;
         }
 
         private void displayTrayIcon()
