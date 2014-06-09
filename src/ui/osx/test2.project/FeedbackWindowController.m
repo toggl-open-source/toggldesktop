@@ -57,11 +57,11 @@ extern void *ctx;
 	[self.contentTextView setString:@""];
 	[self.topicComboBox setStringValue:@""];
 
-  [[NSAlert alertWithMessageText:@"Thank you!"
-                   defaultButton:nil
-                 alternateButton:nil
-                     otherButton:nil
-			 informativeTextWithFormat:@"Your feedback was sent successfully."] runModal];
+	[[NSAlert alertWithMessageText:@"Thank you!"
+					 defaultButton:nil
+				   alternateButton:nil
+					   otherButton:nil
+		 informativeTextWithFormat:@"Your feedback was sent successfully."] runModal];
 }
 
 @end
