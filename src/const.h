@@ -23,4 +23,6 @@
 
 #define kMaxTimeEntryDurationSeconds 3600000
 
+#define kHTTPClientTimeoutSeconds 10
+
 #endif  // SRC_CONST_H_
