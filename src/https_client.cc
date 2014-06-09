@@ -122,7 +122,8 @@ error HTTPSClient::request(
             }
         }
         session.setKeepAlive(false);
-        session.setTimeout(Poco::Timespan(kHTTPClientTimeoutSeconds * Poco::Timespan::SECONDS));
+        session.setTimeout(Poco::Timespan(kHTTPClientTimeoutSeconds
+                                          * Poco::Timespan::SECONDS));
 
         Poco::Logger &logger = Poco::Logger::get("https_client");
         {
