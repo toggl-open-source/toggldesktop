@@ -135,8 +135,8 @@ void UI::DisplayTimeEntryAutocomplete(
     logger().debug("DisplayTimeEntryAutocomplete");
 
     KopsikAutocompleteItem *first = 0;
-    for (std::vector<kopsik::AutocompleteItem>::const_iterator it =
-        items->begin(); it != items->end(); it++) {
+    for (std::vector<kopsik::AutocompleteItem>::const_reverse_iterator it =
+        items->rbegin(); it != items->rend(); it++) {
         KopsikAutocompleteItem *item = autocomplete_item_init(*it);
         item->Next = first;
         first = item;
@@ -150,8 +150,8 @@ void UI::DisplayProjectAutocomplete(
     logger().debug("DisplayProjectAutocomplete");
 
     KopsikAutocompleteItem *first = 0;
-    for (std::vector<kopsik::AutocompleteItem>::const_iterator it =
-        items->begin(); it != items->end(); it++) {
+    for (std::vector<kopsik::AutocompleteItem>::const_reverse_iterator it =
+        items->rbegin(); it != items->rend(); it++) {
         KopsikAutocompleteItem *item = autocomplete_item_init(*it);
         item->Next = first;
         first = item;
