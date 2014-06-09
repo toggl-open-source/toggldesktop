@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxDescription = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -50,6 +51,7 @@
             this.buttonDone = new System.Windows.Forms.Button();
             this.checkBoxBillable = new System.Windows.Forms.CheckBox();
             this.checkedListBoxTags = new System.Windows.Forms.CheckedListBox();
+            this.timerRunningDuration = new System.Windows.Forms.Timer(this.components);
             this.statusStripLastUpdate.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -258,6 +260,12 @@
             this.checkedListBoxTags.TabIndex = 13;
             this.checkedListBoxTags.Leave += new System.EventHandler(this.checkedListBoxTags_Leave);
             // 
+            // timerRunningDuration
+            // 
+            this.timerRunningDuration.Enabled = true;
+            this.timerRunningDuration.Interval = 1000;
+            this.timerRunningDuration.Tick += new System.EventHandler(this.timerRunningDuration_Tick);
+            // 
             // TimeEntryEditViewController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -315,5 +323,6 @@
         private System.Windows.Forms.CheckBox checkBoxBillable;
         private System.Windows.Forms.CheckedListBox checkedListBoxTags;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelLastUpdate;
+        private System.Windows.Forms.Timer timerRunningDuration;
     }
 }
