@@ -13,7 +13,7 @@ namespace TogglDesktop
     public partial class TimeEntryEditViewController : UserControl
     {
         private string GUID = "";
-        private KopsikApi.KopsikTimeEntryViewItem TimeEntry;
+        private KopsikApi.KopsikTimeEntryViewItem timeEntry;
         private List<KopsikApi.KopsikAutocompleteItem> timeEntryAutocompleteUpdate = null;
         private List<KopsikApi.KopsikAutocompleteItem> projectAutocompleteUpdate = null;
 
@@ -75,7 +75,7 @@ namespace TogglDesktop
             KopsikApi.KopsikTimeEntryViewItem te,
             string focused_field_name)
         {
-            this.TimeEntry = te;
+            timeEntry = te;
             if (InvokeRequired)
             {
                 Invoke((MethodInvoker)delegate { DisplayTimeEntryEditor(te, focused_field_name); });
@@ -101,7 +101,7 @@ namespace TogglDesktop
             }
 
             Boolean can_add_projects = false;
-            if (!KopsikApi.kopsik_user_can_add_projects(KopsikApi.ctx, TimeEntry.WID, ref can_add_projects))
+            if (!KopsikApi.kopsik_user_can_add_projects(KopsikApi.ctx, timeEntry.WID, ref can_add_projects))
             {
                 return;
             }
@@ -109,8 +109,6 @@ namespace TogglDesktop
             {
                 this.linkAddProject.Visible = !can_add_projects;
             }
-            //TODO: Else if (add project box is hidden) show the button;
-
 
             if (!comboBoxDescription.Focused)
             {
@@ -137,7 +135,7 @@ namespace TogglDesktop
                 dateTimePickerStartDate.Value = KopsikApi.DateTimeFromUnix(te.Started);
             }
 
-            this.textBoxEndTime.Visible = !this.TimeEntry.DurOnly;
+            this.textBoxEndTime.Visible = !timeEntry.DurOnly;
 
             if (te.UpdatedAt >= 0)
             {
@@ -338,7 +336,7 @@ namespace TogglDesktop
 
         private void textBoxStartTime_Leave(object sender, EventArgs e)
         {
-            if (this.TimeEntry.Equals(null))
+            if (timeEntry.Equals(null))
             {
                 Console.WriteLine("Cannot apply end time change. this.TimeEntry is null");
                 return;
@@ -349,7 +347,7 @@ namespace TogglDesktop
 
         private void textBoxDuration_Leave(object sender, EventArgs e)
         {
-            if (this.TimeEntry.Equals(null))
+            if (timeEntry.Equals(null))
             {
                 Console.WriteLine("Cannot apply duration change. this.TimeEntry is null");
                 return;
@@ -359,7 +357,7 @@ namespace TogglDesktop
 
         private void textBoxEndTime_Leave(object sender, EventArgs e)
         {
-            if (this.TimeEntry.Equals(null))
+            if (timeEntry.Equals(null))
             {
                 Console.WriteLine("Cannot apply end time change. this.TimeEntry is null");
                 return;
@@ -375,11 +373,11 @@ namespace TogglDesktop
             String utf8String = this.getUTF8String(iso8601String);
             if (textbox == this.textBoxStartTime)
             {
-                KopsikApi.kopsik_set_time_entry_start_iso_8601(KopsikApi.ctx, this.TimeEntry.GUID, utf8String);
+                KopsikApi.kopsik_set_time_entry_start_iso_8601(KopsikApi.ctx, timeEntry.GUID, utf8String);
             }
             else if (textbox == this.textBoxEndTime)
             {
-                KopsikApi.kopsik_set_time_entry_end_iso_8601(KopsikApi.ctx, this.TimeEntry.GUID, utf8String);
+                KopsikApi.kopsik_set_time_entry_end_iso_8601(KopsikApi.ctx, timeEntry.GUID, utf8String);
             }            
         }
 
@@ -398,7 +396,7 @@ namespace TogglDesktop
 
         private void dateTimePickerStartDate_Leave(object sender, EventArgs e)
         {
-            if (this.TimeEntry.Equals(null))
+            if (timeEntry.Equals(null))
             {
                 Console.WriteLine("Cannot apply end time change. this.TimeEntry is null");
                 return;
@@ -419,13 +417,34 @@ namespace TogglDesktop
                 tags += item.ToString();
             }
 
-            KopsikApi.kopsik_set_time_entry_tags(KopsikApi.ctx, this.getUTF8String(this.TimeEntry.GUID), this.getUTF8String(tags));
+            KopsikApi.kopsik_set_time_entry_tags(KopsikApi.ctx, this.getUTF8String(timeEntry.GUID), this.getUTF8String(tags));
         }
 
         private String getUTF8String(String input)
         {
             byte[] bytes = Encoding.Default.GetBytes(input);
             return Encoding.UTF8.GetString(bytes);
+        }
+
+        private void timerRunningDuration_Tick(object sender, EventArgs e)
+        {
+            if (timeEntry.Equals(null) || timeEntry.DurationInSeconds >= 0)
+            {
+                return;
+            }
+            if (textBoxDuration.Focused)
+            {
+                return;
+            }
+            const int duration_len = 20;
+            StringBuilder sb = new StringBuilder(duration_len);
+            KopsikApi.kopsik_format_duration_in_seconds_hhmmss(
+                timeEntry.DurationInSeconds, sb, duration_len);
+            string s = sb.ToString();
+            if (s != textBoxDuration.Text)
+            {
+                textBoxDuration.Text = s;
+            }
         }
     }
 }
