@@ -19,6 +19,22 @@ namespace TogglDesktop
         private bool isUpgradeDialogVisible = false;
         private bool isTracking = false;
 
+        [StructLayout(LayoutKind.Sequential)]
+        struct LASTINPUTINFO
+        {
+            public static readonly int SizeOf =
+                Marshal.SizeOf(typeof(LASTINPUTINFO));
+
+            [MarshalAs(UnmanagedType.U4)]
+            public int cbSize;
+
+            [MarshalAs(UnmanagedType.U4)]
+            public int dwTime;
+        }
+
+        [DllImport("user32.dll")]
+        static extern bool GetLastInputInfo(out LASTINPUTINFO plii);
+
         public MainWindowController()
         {
             InitializeComponent();
@@ -400,6 +416,34 @@ namespace TogglDesktop
         private void trayIcon_BalloonTipClicked(object sender, EventArgs e)
         {
             show();
+        }
+
+        private void timerIdleDetection_Tick(object sender, EventArgs e)
+        {
+            int idleTime = 0;
+            LASTINPUTINFO lastInputInfo = new LASTINPUTINFO();
+            lastInputInfo.cbSize = Marshal.SizeOf(lastInputInfo);
+            lastInputInfo.dwTime = 0;
+
+            int envTicks = Environment.TickCount;
+
+            if (GetLastInputInfo(out lastInputInfo))
+            {
+                int lastInputTick = lastInputInfo.dwTime;
+                idleTime = envTicks - lastInputTick;
+            }
+
+            int a = 0;
+            if (idleTime > 0)
+            {
+                a = idleTime / 1000;
+            }
+            else
+            {
+                a = idleTime;
+            }
+
+            Console.WriteLine(a);
         }
     }
 }
