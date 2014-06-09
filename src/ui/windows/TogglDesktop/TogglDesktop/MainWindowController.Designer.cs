@@ -232,7 +232,6 @@
             // 
             // timerIdleDetection
             // 
-            this.timerIdleDetection.Enabled = true;
             this.timerIdleDetection.Interval = 1000;
             this.timerIdleDetection.Tick += new System.EventHandler(this.timerIdleDetection_Tick);
             // 
