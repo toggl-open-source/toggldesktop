@@ -22,7 +22,6 @@
 #import "CrashReporter.h"
 #import "FeedbackWindowController.h"
 #import "AutocompleteItem.h"
-#import "const.h"
 #import "MASShortcut+UserDefaults.h"
 #import "ViewItem.h"
 #import "Utils.h"
@@ -39,8 +38,6 @@
 @property NSTimer *menubarTimer;
 @property NSTimer *idleTimer;
 @property uint64_t user_id;
-@property long lastIdleSecondsReading;
-@property NSDate *lastIdleStarted;
 
 // we'll be updating running TE as a menu item, too
 @property (strong) IBOutlet NSMenuItem *runningTimeEntryMenuItem;
@@ -838,36 +835,7 @@ const NSString *appName = @"osx_native_app";
 		return;
 	}
 
-	//  NSLog(@"Idle seconds: %lld", idle_seconds);
-
-	if (idle_seconds >= kIdleThresholdSeconds && self.lastIdleStarted == nil)
-	{
-		NSTimeInterval since = [[NSDate date] timeIntervalSince1970] - idle_seconds;
-		self.lastIdleStarted = [NSDate dateWithTimeIntervalSince1970:since];
-		NSLog(@"User is idle since %@", self.lastIdleStarted);
-	}
-	else if (self.lastIdleStarted != nil &&
-			 self.lastIdleSecondsReading >= idle_seconds)
-	{
-		NSDate *now = [NSDate date];
-		if (self.lastKnownRunningTimeEntry)
-		{
-			IdleEvent *idleEvent = [[IdleEvent alloc] init];
-			idleEvent.started = self.lastIdleStarted;
-			idleEvent.finished = now;
-			idleEvent.seconds = self.lastIdleSecondsReading;
-			[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayIdleNotification
-																object:idleEvent];
-		}
-		else
-		{
-			NSLog(@"Time entry is not running, ignoring idleness");
-		}
-		NSLog(@"User is not idle since %@", now);
-		self.lastIdleStarted = nil;
-	}
-
-	self.lastIdleSecondsReading = idle_seconds;
+	kopsik_set_idle_seconds(ctx, idle_seconds);
 }
 
 - (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
