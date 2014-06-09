@@ -417,6 +417,10 @@ extern "C" {
     KOPSIK_EXPORT void kopsik_set_wake(
         void *context);
 
+    KOPSIK_EXPORT void kopsik_set_idle_seconds(
+        void *context,
+        const uint64_t idle_seconds);
+
     // Shared helpers
 
     KOPSIK_EXPORT _Bool kopsik_parse_time(
@@ -444,7 +448,6 @@ extern "C" {
 
     // Write to the lib logger
     KOPSIK_EXPORT void kopsik_debug(
-        void *context,
         const char *text);
 
     // Check if sizeof view struct matches those in UI
