@@ -596,7 +596,6 @@ namespace TogglDesktop
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_debug(
-            IntPtr context,
             string text);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
