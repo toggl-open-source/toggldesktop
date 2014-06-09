@@ -2152,39 +2152,41 @@ void Context::handleDeleteTimelineBatchNotification(
 }
 
 void Context::SetIdleSeconds(const Poco::UInt64 idle_seconds) {
-    {
-        std::stringstream ss;
-        ss << "Idle seconds: " << idle_seconds;
-        logger().debug(ss.str());
+    if (!user_) {
+        return;
     }
 
+    /*
+    {
+        std::stringstream ss;
+        ss << "SetIdleSeconds idle_seconds=" << idle_seconds;
+        logger().debug(ss.str());
+    }
+    */
+
     if (idle_seconds >= kIdleThresholdSeconds && !last_idle_started_) {
-        /*
-         FIXME:
-        	NSTimeInterval since = [[NSDate date] timeIntervalSince1970] - idle_seconds;
-        	self.lastIdleStarted = [NSDate dateWithTimeIntervalSince1970:since];
-        	NSLog(@"User is idle since %@", self.lastIdleStarted);
-        */
+        last_idle_started_ = time(0) - idle_seconds;
+
+        std::stringstream ss;
+        ss << "User is idle since " << last_idle_started_;
+        logger().debug(ss.str());
+
     } else if (last_idle_started_ &&
-               last_idle_seconds_reading_ >= idle_seconds) {
-        /*
-         FIXME:
-        	NSDate *now = [NSDate date];
-        	if (self.lastKnownRunningTimeEntry)
-        	{
-        		IdleEvent *idleEvent = [[IdleEvent alloc] init];
-        		idleEvent.started = self.lastIdleStarted;
-        		idleEvent.finished = now;
-        		idleEvent.seconds = self.lastIdleSecondsReading;
-        		[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayIdleNotification
-                                                              object:idleEvent];
-        	}
-        	else
-        	{
-        		NSLog(@"Time entry is not running, ignoring idleness");
-        	}
-        	NSLog(@"User is not idle since %@", now);
-        */
+               idle_seconds < last_idle_seconds_reading_) {
+        time_t now = time(0);
+
+        if (!user_->IsTracking()) {
+            logger().warning("Time entry is not tracking, ignoring idleness");
+        } else {
+            UI()->DisplayIdleNotification(last_idle_started_,
+                                          now,
+                                          last_idle_seconds_reading_);
+        }
+
+        std::stringstream ss;
+        ss << "User is not idle since " << now;
+        logger().debug(ss.str());
+
         last_idle_started_ = 0;
     }
 
