@@ -2056,8 +2056,8 @@ error Database::initialize_tables() {
         return err;
     }
 
-    err = migrate("users.email",
-                  "CREATE UNIQUE INDEX id_users_email ON users (email);");
+    err = migrate("drop users.email index",
+                  "DROP INDEX IF EXISTS id_users_email;");
     if (err != noError) {
         return err;
     }

@@ -7,7 +7,11 @@
 #include "Poco/FileStream.h"
 
 std::string loadTestData() {
-    Poco::FileStream fis("testdata/me.json", std::ios::binary);
+    return loadTestDataFile("testdata/me.json");
+}
+
+std::string loadTestDataFile(const std::string filename) {
+    Poco::FileStream fis(filename, std::ios::binary);
     std::stringstream ss;
     ss << fis.rdbuf();
     fis.close();
