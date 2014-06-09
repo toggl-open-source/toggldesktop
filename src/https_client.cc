@@ -114,7 +114,7 @@ error HTTPSClient::request(
 
         Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(),
                                               context);
-        if (ProxySettings.IsConfigured()) {
+        if (UseProxy && ProxySettings.IsConfigured()) {
             session.setProxy(ProxySettings.host, ProxySettings.port);
             if (ProxySettings.HasCredentials()) {
                 session.setProxyCredentials(ProxySettings.username,
