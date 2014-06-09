@@ -92,8 +92,6 @@ TEST(TogglApiClientTest, SaveAndLoadCurrentAPIToken) {
 }
 
 TEST(TogglApiClientTest, UpdatesTimeEntryFromJSON) {
-    testing::Database db;
-
     User user;
     LoadUserAndRelatedDataFromJSONString(&user, loadTestData());
 
@@ -103,6 +101,26 @@ TEST(TogglApiClientTest, UpdatesTimeEntryFromJSON) {
     std::string json = "{\"id\":89818605,\"description\":\"Changed\"}";
     te->LoadFromJSONString(json);
     ASSERT_EQ("Changed", te->Description());
+}
+
+TEST(TogglApiClientTest, AllowsSameEmail) {
+    testing::Database db;
+
+    User user;
+    LoadUserAndRelatedDataFromJSONString(&user, loadTestData());
+
+    std::vector<ModelChange> changes;
+    ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
+
+    User user2;
+    std::string json = loadTestDataFile("testdata/same_email.json");
+    LoadUserAndRelatedDataFromJSONString(&user2, json);
+
+    ASSERT_EQ(noError, db.instance()->SaveUser(&user2, true, &changes));
+
+    ASSERT_EQ(user.Email(), user2.Email());
+    ASSERT_NE(user.ID(), user2.ID());
+    ASSERT_NE(user.APIToken(), user2.APIToken());
 }
 
 TEST(TogglApiClientTest, EscapeJSONString) {

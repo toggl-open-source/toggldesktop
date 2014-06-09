@@ -1982,6 +1982,9 @@ error Database::SaveUser(
 error Database::initialize_tables() {
     poco_check_ptr(session_);
 
+    Poco::Stopwatch stopwatch;
+    stopwatch.start();
+
     Poco::Mutex::ScopedLock lock(session_m_);
 
     std::string table_name;
@@ -2053,8 +2056,8 @@ error Database::initialize_tables() {
         return err;
     }
 
-    err = migrate("users.email",
-                  "CREATE UNIQUE INDEX id_users_email ON users (email);");
+    err = migrate("drop users.email index",
+                  "DROP INDEX IF EXISTS id_users_email;");
     if (err != noError) {
         return err;
     }
@@ -2502,6 +2505,15 @@ error Database::initialize_tables() {
         if (err != noError) {
             return err;
         }
+    }
+
+    stopwatch.stop();
+
+    {
+        std::stringstream ss;
+        ss  << "Migrated in "
+            << stopwatch.elapsed() / 1000 << " ms";
+        logger().debug(ss.str());
     }
 
     return noError;
