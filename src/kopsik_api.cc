@@ -771,5 +771,5 @@ void kopsik_check_view_item_size(
 void kopsik_set_idle_seconds(
     void *context,
     const uint64_t idle_seconds) {
-    // FIXME: process idle seconds
+    app(context)->SetIdleSeconds(idle_seconds);
 }

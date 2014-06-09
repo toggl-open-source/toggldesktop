@@ -40,7 +40,9 @@ Context::Context(const std::string app_name, const std::string app_version)
 , next_update_timeline_settings_at_(0)
 , next_reminder_at_(0)
 , time_entry_editor_guid_("")
-, environment_("production") {
+, environment_("production")
+, last_idle_seconds_reading_(0)
+, last_idle_started_(0) {
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
@@ -2147,6 +2149,46 @@ void Context::handleDeleteTimelineBatchNotification(
     if (err != noError) {
         logger().error(err);
     }
+}
+
+void Context::SetIdleSeconds(const Poco::UInt64 idle_seconds) {
+    {
+        std::stringstream ss;
+        ss << "Idle seconds: " << idle_seconds;
+        logger().debug(ss.str());
+    }
+
+    if (idle_seconds >= kIdleThresholdSeconds && !last_idle_started_) {
+        /*
+         FIXME:
+        	NSTimeInterval since = [[NSDate date] timeIntervalSince1970] - idle_seconds;
+        	self.lastIdleStarted = [NSDate dateWithTimeIntervalSince1970:since];
+        	NSLog(@"User is idle since %@", self.lastIdleStarted);
+        */
+    } else if (last_idle_started_ &&
+               last_idle_seconds_reading_ >= idle_seconds) {
+        /*
+         FIXME:
+        	NSDate *now = [NSDate date];
+        	if (self.lastKnownRunningTimeEntry)
+        	{
+        		IdleEvent *idleEvent = [[IdleEvent alloc] init];
+        		idleEvent.started = self.lastIdleStarted;
+        		idleEvent.finished = now;
+        		idleEvent.seconds = self.lastIdleSecondsReading;
+        		[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayIdleNotification
+                                                              object:idleEvent];
+        	}
+        	else
+        	{
+        		NSLog(@"Time entry is not running, ignoring idleness");
+        	}
+        	NSLog(@"User is not idle since %@", now);
+        */
+        last_idle_started_ = 0;
+    }
+
+    last_idle_seconds_reading_ = idle_seconds;
 }
 
 }  // namespace kopsik

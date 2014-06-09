@@ -169,6 +169,8 @@ class Context {
 
     _Bool OpenReportsInBrowser();
 
+    void SetIdleSeconds(const Poco::UInt64 idle_seconds);
+
  protected:
     void handleCreateTimelineBatchNotification(
         CreateTimelineBatchNotification *notification);
@@ -313,6 +315,9 @@ class Context {
     std::string time_entry_editor_guid_;
 
     std::string environment_;
+
+    Poco::UInt64 last_idle_seconds_reading_;
+    Poco::UInt64 last_idle_started_;
 };
 
 }  // namespace kopsik
