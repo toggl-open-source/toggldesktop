@@ -22,5 +22,39 @@ namespace TogglDesktop
             Hide();
             e.Cancel = true;
         }
+
+        private void FeedbackWindowController_Load(object sender, EventArgs e)
+        {
+            comboBoxTopic.SelectedIndex = 0;
+        }
+
+        private void buttonUploadImage_Click(object sender, EventArgs e)
+        {
+            openFileDialog.ShowDialog();
+        }
+
+        private void buttonSend_Click(object sender, EventArgs e)
+        {
+            if (comboBoxTopic.SelectedIndex == 0)
+            {
+                comboBoxTopic.Focus();
+                return;
+            }
+            if (richTextBoxContents.TextLength == 0) {
+                richTextBoxContents.Focus();
+                return;
+            }
+            if (!KopsikApi.kopsik_feedback_send(KopsikApi.ctx,
+                comboBoxTopic.Text,
+                richTextBoxContents.Text,
+                openFileDialog.FileName)) {
+                return;
+            }
+            MessageBox.Show("Your feedback was sent successfully.", "Thank you!");
+            comboBoxTopic.SelectedIndex = 0;
+            richTextBoxContents.Clear();
+            openFileDialog.Reset();
+            Close();
+        }
     }
 }
