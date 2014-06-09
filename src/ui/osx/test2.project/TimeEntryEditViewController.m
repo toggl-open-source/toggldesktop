@@ -132,11 +132,7 @@ extern int kDurationStringLength;
 
 - (void)resetPopover:(NSNotification *)notification
 {
-	if (!self.addProjectBox.isHidden)
-	{
-		[self applyAddProject];
-	}
-	[self.addProjectBox setHidden:YES];
+	[self applyAddProject];
 	[self.projectSelectBox setHidden:NO];
 	[self.projectPublicCheckbox setState:NSOffState];
 
@@ -247,6 +243,11 @@ extern int kDurationStringLength;
 	if (projectAdded && isBillable)
 	{
 		kopsik_set_time_entry_billable(ctx, [self.timeEntry.GUID UTF8String], isBillable);
+	}
+
+	if (projectAdded)
+	{
+		[self.addProjectBox setHidden:YES];
 	}
 
 	return projectAdded;
