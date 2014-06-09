@@ -78,6 +78,9 @@ class User : public BaseModel {
         std::map<std::string, BaseModel *> *models = 0) const;
 
     TimeEntry *RunningTimeEntry() const;
+    bool IsTracking() const {
+        return RunningTimeEntry();
+    }
 
     bool HasTrackedTimeToday() const;
 
