@@ -92,6 +92,9 @@ error UI::findMissingCallbacks() {
     if (!on_display_timer_state_) {
         return error("!on_display_timer_state_");
     }
+    if (!on_display_idle_notification_) {
+        return error("!on_display_idle_notification_");
+    }
     return noError;
 }
 
@@ -243,6 +246,13 @@ void UI::DisplaySettings(const _Bool open,
 void UI::DisplayTimerState(KopsikTimeEntryViewItem *te) {
     logger().debug("DisplayTimerState");
     on_display_timer_state_(te);
+}
+
+void UI::DisplayIdleNotification(
+    const uint64_t started,
+    const uint64_t finished,
+    const uint64_t seconds) {
+    on_display_idle_notification_(started, finished, seconds);
 }
 
 _Bool UI::isNetworkingError(const error err) const {

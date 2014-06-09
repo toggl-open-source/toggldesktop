@@ -731,6 +731,12 @@ void kopsik_on_timer_state(
     app(context)->UI()->OnDisplayTimerState(cb);
 }
 
+void kopsik_on_idle_notification(
+    void *context,
+    KopsikDisplayIdleNotification cb) {
+    app(context)->UI()->OnDisplayIdleNotification(cb);
+}
+
 void kopsik_debug(const char *text) {
     logger().debug(text);
 }

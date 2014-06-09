@@ -153,6 +153,11 @@ extern "C" {
     typedef void (*KopsikDisplayTimerState)(
         KopsikTimeEntryViewItem *te);
 
+    typedef void (*KopsikDisplayIdleNotification)(
+        const uint64_t started,
+        const uint64_t finished,
+        const uint64_t seconds);
+
     // Initialize/destroy an instance of the app
 
     KOPSIK_EXPORT void *kopsik_context_init(
@@ -261,6 +266,10 @@ extern "C" {
     KOPSIK_EXPORT void kopsik_on_timer_state(
         void *context,
         KopsikDisplayTimerState);
+
+    KOPSIK_EXPORT void kopsik_on_idle_notification(
+        void *context,
+        KopsikDisplayIdleNotification);
 
     // After UI callbacks are configured, start pumping UI events
 
