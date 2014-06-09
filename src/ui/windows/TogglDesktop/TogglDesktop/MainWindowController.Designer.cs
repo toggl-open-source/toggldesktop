@@ -52,6 +52,7 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timerIdleDetection = new System.Windows.Forms.Timer(this.components);
             this.troubleBox.SuspendLayout();
             this.trayIconMenu.SuspendLayout();
             this.SuspendLayout();
@@ -229,6 +230,12 @@
             this.quitToolStripMenuItem.Text = "Quit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
+            // timerIdleDetection
+            // 
+            this.timerIdleDetection.Enabled = true;
+            this.timerIdleDetection.Interval = 1000;
+            this.timerIdleDetection.Tick += new System.EventHandler(this.timerIdleDetection_Tick);
+            // 
             // MainWindowController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -272,6 +279,7 @@
         private System.Windows.Forms.ToolStripMenuItem logoutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearCacheToolStripMenuItem;
+        private System.Windows.Forms.Timer timerIdleDetection;
     }
 }
 
