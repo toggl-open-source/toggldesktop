@@ -780,6 +780,7 @@ const NSString *appName = @"osx_native_app";
 	kopsik_on_time_entry_editor(ctx, on_time_entry_editor);
 	kopsik_on_settings(ctx, on_settings);
 	kopsik_on_timer_state(ctx, on_timer_state);
+	kopsik_on_idle_notification(ctx, on_idle_notification);
 
 	NSLog(@"Version %@", version);
 
@@ -1186,8 +1187,20 @@ void on_timer_state(KopsikTimeEntryViewItem *te)
 		view_item = [[TimeEntryViewItem alloc] init];
 		[view_item load:te];
 	}
-	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimerState
-														object:view_item];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimerState object:view_item];
+}
+
+void on_idle_notification(
+	const uint64_t started,
+	const uint64_t finished,
+	const uint64_t seconds)
+{
+	IdleEvent *idleEvent = [[IdleEvent alloc] init];
+
+	idleEvent.started = [NSDate dateWithTimeIntervalSince1970:started];
+	idleEvent.finished = [NSDate dateWithTimeIntervalSince1970:finished];
+	idleEvent.seconds = seconds;
+	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayIdleNotification object:idleEvent];
 }
 
 @end
