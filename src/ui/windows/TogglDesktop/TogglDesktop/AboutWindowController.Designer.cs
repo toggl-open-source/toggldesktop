@@ -42,26 +42,31 @@
             // 
             // pictureBoxLogo
             // 
-            this.pictureBoxLogo.Location = new System.Drawing.Point(94, 12);
+            this.pictureBoxLogo.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.pictureBoxLogo.Image = global::TogglDesktop.Properties.Resources.logo64;
+            this.pictureBoxLogo.Location = new System.Drawing.Point(111, 12);
             this.pictureBoxLogo.Name = "pictureBoxLogo";
-            this.pictureBoxLogo.Size = new System.Drawing.Size(100, 68);
+            this.pictureBoxLogo.Size = new System.Drawing.Size(65, 68);
             this.pictureBoxLogo.TabIndex = 0;
             this.pictureBoxLogo.TabStop = false;
             // 
             // labelAppName
             // 
+            this.labelAppName.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.labelAppName.AutoSize = true;
-            this.labelAppName.Location = new System.Drawing.Point(108, 83);
+            this.labelAppName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
+            this.labelAppName.Location = new System.Drawing.Point(93, 91);
             this.labelAppName.Name = "labelAppName";
-            this.labelAppName.Size = new System.Drawing.Size(74, 13);
+            this.labelAppName.Size = new System.Drawing.Size(108, 17);
             this.labelAppName.TabIndex = 1;
             this.labelAppName.Text = "TogglDesktop";
             this.labelAppName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelVersion
             // 
+            this.labelVersion.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.labelVersion.AutoSize = true;
-            this.labelVersion.Location = new System.Drawing.Point(108, 108);
+            this.labelVersion.Location = new System.Drawing.Point(108, 117);
             this.labelVersion.Name = "labelVersion";
             this.labelVersion.Size = new System.Drawing.Size(69, 13);
             this.labelVersion.TabIndex = 2;
@@ -80,7 +85,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 253);
+            this.label2.Location = new System.Drawing.Point(12, 256);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(87, 13);
             this.label2.TabIndex = 5;
@@ -134,6 +139,8 @@
             this.Controls.Add(this.labelAppName);
             this.Controls.Add(this.pictureBoxLogo);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximumSize = new System.Drawing.Size(300, 328);
+            this.MinimumSize = new System.Drawing.Size(300, 328);
             this.Name = "AboutWindowController";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AboutWindowController_FormClosing);
             this.Load += new System.EventHandler(this.AboutWindowController_Load);
