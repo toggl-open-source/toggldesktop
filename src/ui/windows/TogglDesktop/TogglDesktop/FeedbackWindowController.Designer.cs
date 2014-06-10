@@ -39,6 +39,8 @@
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
@@ -48,6 +50,8 @@
             // 
             // comboBoxTopic
             // 
+            this.comboBoxTopic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxTopic.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTopic.FormattingEnabled = true;
             this.comboBoxTopic.Items.AddRange(new object[] {
@@ -62,6 +66,9 @@
             // 
             // richTextBoxContents
             // 
+            this.richTextBoxContents.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextBoxContents.Location = new System.Drawing.Point(15, 52);
             this.richTextBoxContents.Name = "richTextBoxContents";
             this.richTextBoxContents.Size = new System.Drawing.Size(257, 155);
@@ -70,6 +77,7 @@
             // 
             // buttonUploadImage
             // 
+            this.buttonUploadImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonUploadImage.Location = new System.Drawing.Point(190, 213);
             this.buttonUploadImage.Name = "buttonUploadImage";
             this.buttonUploadImage.Size = new System.Drawing.Size(82, 23);
@@ -80,6 +88,7 @@
             // 
             // buttonSend
             // 
+            this.buttonSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSend.Location = new System.Drawing.Point(190, 242);
             this.buttonSend.Name = "buttonSend";
             this.buttonSend.Size = new System.Drawing.Size(82, 23);
@@ -103,6 +112,7 @@
             this.Controls.Add(this.comboBoxTopic);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(300, 316);
             this.Name = "FeedbackWindowController";
             this.Text = "Send Feedback";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FeedbackWindowController_FormClosing);
