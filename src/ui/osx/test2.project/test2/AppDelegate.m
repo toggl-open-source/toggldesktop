@@ -22,7 +22,6 @@
 #import "CrashReporter.h"
 #import "FeedbackWindowController.h"
 #import "AutocompleteItem.h"
-#import "const.h"
 #import "MASShortcut+UserDefaults.h"
 #import "ViewItem.h"
 #import "Utils.h"
@@ -39,8 +38,6 @@
 @property NSTimer *menubarTimer;
 @property NSTimer *idleTimer;
 @property uint64_t user_id;
-@property long lastIdleSecondsReading;
-@property NSDate *lastIdleStarted;
 
 // we'll be updating running TE as a menu item, too
 @property (strong) IBOutlet NSMenuItem *runningTimeEntryMenuItem;
@@ -132,10 +129,6 @@ const int kDurationStringLength = 20;
 
 	[self createStatusItem];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(startStopAt:)
-												 name:kCommandStopAt
-											   object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(startStop:)
 												 name:kCommandStop
@@ -294,24 +287,6 @@ const int kDurationStringLength = 20;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	kopsik_stop(ctx);
-}
-
-- (void)startStopAt:(NSNotification *)notification
-{
-	[self performSelectorOnMainThread:@selector(stopAt:)
-						   withObject:notification.object
-						waitUntilDone:NO];
-}
-
-- (void)stopAt:(IdleEvent *)idleEvent
-{
-	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-	NSAssert(idleEvent != nil, @"idle event cannot be nil");
-	NSLog(@"Idle event: %@", idleEvent);
-	NSTimeInterval startedAt = [idleEvent.started timeIntervalSince1970];
-	NSLog(@"Time entry stop at %f", startedAt);
-	kopsik_stop_running_time_entry_at(ctx, startedAt);
 }
 
 - (void)startDisplaySettings:(NSNotification *)notification
@@ -783,6 +758,7 @@ const NSString *appName = @"osx_native_app";
 	kopsik_on_time_entry_editor(ctx, on_time_entry_editor);
 	kopsik_on_settings(ctx, on_settings);
 	kopsik_on_timer_state(ctx, on_timer_state);
+	kopsik_on_idle_notification(ctx, on_idle_notification);
 
 	NSLog(@"Version %@", version);
 
@@ -838,36 +814,7 @@ const NSString *appName = @"osx_native_app";
 		return;
 	}
 
-	//  NSLog(@"Idle seconds: %lld", idle_seconds);
-
-	if (idle_seconds >= kIdleThresholdSeconds && self.lastIdleStarted == nil)
-	{
-		NSTimeInterval since = [[NSDate date] timeIntervalSince1970] - idle_seconds;
-		self.lastIdleStarted = [NSDate dateWithTimeIntervalSince1970:since];
-		NSLog(@"User is idle since %@", self.lastIdleStarted);
-	}
-	else if (self.lastIdleStarted != nil &&
-			 self.lastIdleSecondsReading >= idle_seconds)
-	{
-		NSDate *now = [NSDate date];
-		if (self.lastKnownRunningTimeEntry)
-		{
-			IdleEvent *idleEvent = [[IdleEvent alloc] init];
-			idleEvent.started = self.lastIdleStarted;
-			idleEvent.finished = now;
-			idleEvent.seconds = self.lastIdleSecondsReading;
-			[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayIdleNotification
-																object:idleEvent];
-		}
-		else
-		{
-			NSLog(@"Time entry is not running, ignoring idleness");
-		}
-		NSLog(@"User is not idle since %@", now);
-		self.lastIdleStarted = nil;
-	}
-
-	self.lastIdleSecondsReading = idle_seconds;
+	kopsik_set_idle_seconds(ctx, idle_seconds);
 }
 
 - (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
@@ -1218,8 +1165,20 @@ void on_timer_state(KopsikTimeEntryViewItem *te)
 		view_item = [[TimeEntryViewItem alloc] init];
 		[view_item load:te];
 	}
-	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimerState
-														object:view_item];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimerState object:view_item];
+}
+
+void on_idle_notification(
+	const uint64_t started,
+	const uint64_t finished,
+	const uint64_t seconds)
+{
+	IdleEvent *idleEvent = [[IdleEvent alloc] init];
+
+	idleEvent.started = [NSDate dateWithTimeIntervalSince1970:started];
+	idleEvent.finished = [NSDate dateWithTimeIntervalSince1970:finished];
+	idleEvent.seconds = seconds;
+	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayIdleNotification object:idleEvent];
 }
 
 @end

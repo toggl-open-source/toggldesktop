@@ -153,6 +153,11 @@ extern "C" {
     typedef void (*KopsikDisplayTimerState)(
         KopsikTimeEntryViewItem *te);
 
+    typedef void (*KopsikDisplayIdleNotification)(
+        const uint64_t started,
+        const uint64_t finished,
+        const uint64_t seconds);
+
     // Initialize/destroy an instance of the app
 
     KOPSIK_EXPORT void *kopsik_context_init(
@@ -261,6 +266,10 @@ extern "C" {
     KOPSIK_EXPORT void kopsik_on_timer_state(
         void *context,
         KopsikDisplayTimerState);
+
+    KOPSIK_EXPORT void kopsik_on_idle_notification(
+        void *context,
+        KopsikDisplayIdleNotification);
 
     // After UI callbacks are configured, start pumping UI events
 
@@ -417,6 +426,10 @@ extern "C" {
     KOPSIK_EXPORT void kopsik_set_wake(
         void *context);
 
+    KOPSIK_EXPORT void kopsik_set_idle_seconds(
+        void *context,
+        const uint64_t idle_seconds);
+
     // Shared helpers
 
     KOPSIK_EXPORT _Bool kopsik_parse_time(
@@ -444,7 +457,6 @@ extern "C" {
 
     // Write to the lib logger
     KOPSIK_EXPORT void kopsik_debug(
-        void *context,
         const char *text);
 
     // Check if sizeof view struct matches those in UI

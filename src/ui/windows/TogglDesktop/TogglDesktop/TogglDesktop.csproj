@@ -139,6 +139,12 @@
     <Compile Include="FeedbackWindowController.Designer.cs">
       <DependentUpon>FeedbackWindowController.cs</DependentUpon>
     </Compile>
+    <Compile Include="IdleNotificationWindowController.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IdleNotificationWindowController.Designer.cs">
+      <DependentUpon>IdleNotificationWindowController.cs</DependentUpon>
+    </Compile>
     <Compile Include="KopsikApi.cs" />
     <Compile Include="LoginViewController.cs">
       <SubType>UserControl</SubType>
@@ -204,6 +210,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FeedbackWindowController.resx">
       <DependentUpon>FeedbackWindowController.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IdleNotificationWindowController.resx">
+      <DependentUpon>IdleNotificationWindowController.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LoginViewController.resx">
       <DependentUpon>LoginViewController.cs</DependentUpon>

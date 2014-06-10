@@ -731,9 +731,13 @@ void kopsik_on_timer_state(
     app(context)->UI()->OnDisplayTimerState(cb);
 }
 
-void kopsik_debug(
+void kopsik_on_idle_notification(
     void *context,
-    const char *text) {
+    KopsikDisplayIdleNotification cb) {
+    app(context)->UI()->OnDisplayIdleNotification(cb);
+}
+
+void kopsik_debug(const char *text) {
     logger().debug(text);
 }
 
@@ -768,4 +772,10 @@ void kopsik_check_view_item_size(
         logger().error("Invalid update view item size");
         poco_assert(false);
     }
+}
+
+void kopsik_set_idle_seconds(
+    void *context,
+    const uint64_t idle_seconds) {
+    app(context)->SetIdleSeconds(idle_seconds);
 }

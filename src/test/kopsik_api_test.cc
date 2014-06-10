@@ -116,6 +116,12 @@ void on_display_settings(
 void on_display_timer_state(KopsikTimeEntryViewItem *te) {
 }
 
+void on_display_idle_notification(
+    const uint64_t started,
+    const uint64_t finished,
+    const uint64_t seconds) {
+}
+
 void on_apply_settings(
     KopsikSettingsViewItem *settings) {
     testing::testresult::use_proxy = settings->UseProxy;
@@ -157,6 +163,7 @@ class App {
         kopsik_on_time_entry_editor(ctx_, on_time_entry_editor);
         kopsik_on_settings(ctx_, on_display_settings);
         kopsik_on_timer_state(ctx_, on_display_timer_state);
+        kopsik_on_idle_notification(ctx_, on_display_idle_notification);
 
         poco_assert(kopsik_context_start_events(ctx_));
     }

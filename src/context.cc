@@ -40,7 +40,9 @@ Context::Context(const std::string app_name, const std::string app_version)
 , next_update_timeline_settings_at_(0)
 , next_reminder_at_(0)
 , time_entry_editor_guid_("")
-, environment_("production") {
+, environment_("production")
+, last_idle_seconds_reading_(0)
+, last_idle_started_(0) {
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
@@ -2147,6 +2149,55 @@ void Context::handleDeleteTimelineBatchNotification(
     if (err != noError) {
         logger().error(err);
     }
+}
+
+void Context::SetIdleSeconds(const Poco::UInt64 idle_seconds) {
+    if (!user_) {
+        return;
+    }
+
+    /*
+    {
+        std::stringstream ss;
+        ss << "SetIdleSeconds idle_seconds=" << idle_seconds;
+        logger().debug(ss.str());
+    }
+    */
+
+    if (idle_seconds >= kIdleThresholdSeconds && !last_idle_started_) {
+        last_idle_started_ = time(0) - idle_seconds;
+
+        std::stringstream ss;
+        ss << "User is idle since " << last_idle_started_;
+        logger().debug(ss.str());
+
+    } else if (last_idle_started_ &&
+               idle_seconds < last_idle_seconds_reading_) {
+        time_t now = time(0);
+
+        if (!user_->IsTracking()) {
+            logger().warning("Time entry is not tracking, ignoring idleness");
+        } else {
+            kopsik::Settings settings;
+            error err = db()->LoadSettings(&settings);
+            if (err != kopsik::noError) {
+                displayError(err);
+            }
+            if (settings.use_idle_detection) {
+                UI()->DisplayIdleNotification(last_idle_started_,
+                                              now,
+                                              last_idle_seconds_reading_);
+            }
+        }
+
+        std::stringstream ss;
+        ss << "User is not idle since " << now;
+        logger().debug(ss.str());
+
+        last_idle_started_ = 0;
+    }
+
+    last_idle_seconds_reading_ = idle_seconds;
 }
 
 }  // namespace kopsik

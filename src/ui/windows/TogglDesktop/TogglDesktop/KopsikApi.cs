@@ -190,6 +190,12 @@ namespace TogglDesktop
         public delegate void KopsikDisplayTimerState(
             IntPtr te);
 
+        [UnmanagedFunctionPointer(convention)]
+        public delegate void KopsikDisplayIdleNotification(
+            UInt64 started,
+            UInt64 finished,
+            UInt64 seconds);
+
         // Initialize/destroy an instance of the app
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -321,6 +327,11 @@ namespace TogglDesktop
         public static extern void kopsik_on_timer_state(
             IntPtr context,
             KopsikDisplayTimerState cb);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        public static extern void kopsik_on_idle_notification(
+            IntPtr context,
+            KopsikDisplayIdleNotification cb);
 
         // After UI callbacks are configured, start pumping UI events
 
@@ -562,6 +573,11 @@ namespace TogglDesktop
         public static extern void kopsik_set_wake(
             IntPtr context);
 
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        public static extern void kopsik_set_idle_seconds(
+            IntPtr context,
+            UInt64 idle_seconds);
+
         // Shared helpers
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -596,7 +612,6 @@ namespace TogglDesktop
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         public static extern void kopsik_debug(
-            IntPtr context,
             string text);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -625,6 +640,7 @@ namespace TogglDesktop
         public static event KopsikApi.KopsikDisplaySettings OnSettings = delegate { };
         public static event KopsikApi.KopsikDisplayTimerState OnTimerState = delegate { };
         public static event KopsikApi.KopsikDisplayURL OnURL = delegate { };
+        public static event KopsikApi.KopsikDisplayIdleNotification OnIdleNotification = delegate { };
 
         // Start
 
@@ -656,6 +672,7 @@ namespace TogglDesktop
             kopsik_on_settings(ctx, OnSettings);
             kopsik_on_timer_state(ctx, OnTimerState);
             kopsik_on_url(ctx, OnURL);
+            kopsik_on_idle_notification(ctx, OnIdleNotification);
 
             // FIXME: Get environment from app settings
             kopsik_set_environment(ctx, "development");

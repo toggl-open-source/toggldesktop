@@ -36,7 +36,8 @@ class UI {
     , on_display_tags_(0)
     , on_display_time_entry_editor_(0)
     , on_display_settings_(0)
-    , on_display_timer_state_(0) {}
+    , on_display_timer_state_(0)
+    , on_display_idle_notification_(0) {}
 
     ~UI() {}
 
@@ -69,6 +70,10 @@ class UI {
                          const _Bool use_proxy,
                          const Proxy proxy);
     void DisplayTimerState(KopsikTimeEntryViewItem *te);
+    void DisplayIdleNotification(
+        const uint64_t started,
+        const uint64_t finished,
+        const uint64_t seconds);
 
     error VerifyCallbacks();
 
@@ -136,6 +141,10 @@ class UI {
         on_display_timer_state_ = cb;
     }
 
+    void OnDisplayIdleNotification(KopsikDisplayIdleNotification cb) {
+        on_display_idle_notification_  = cb;
+    }
+
  private:
     _Bool isNetworkingError(const error) const;
     _Bool isUserError(const error) const;
@@ -157,6 +166,7 @@ class UI {
     KopsikDisplayTimeEntryEditor on_display_time_entry_editor_;
     KopsikDisplaySettings on_display_settings_;
     KopsikDisplayTimerState on_display_timer_state_;
+    KopsikDisplayIdleNotification on_display_idle_notification_;
 
     Poco::Logger &logger() const {
         return Poco::Logger::get("ui");

@@ -9,6 +9,8 @@
 #import "IdleNotificationWindowController.h"
 #import "UIEvents.h"
 #import "IdleEvent.h"
+#import "kopsik_api.h"
+#import "TimeEntryViewItem.h"
 
 @interface IdleNotificationWindowController ()
 @property IdleEvent *idleEvent;
@@ -16,14 +18,20 @@
 
 @implementation IdleNotificationWindowController
 
+extern void *ctx;
+
 - (id)initWithWindow:(NSWindow *)window
 {
 	self = [super initWithWindow:window];
 	if (self)
 	{
 		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(idleFinished:)
+												 selector:@selector(startDisplayIdleNotification:)
 													 name:kDisplayIdleNotification
+												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(startDisplayTimerState:)
+													 name:kDisplayTimerState
 												   object:nil];
 	}
 	return self;
@@ -38,7 +46,8 @@
 
 - (void)renderIdle
 {
-	NSLog(@"IdleNotificationWindowController windowDidLoad");
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
 	NSDateFormatter *format = [[NSDateFormatter alloc] init];
 	[format setDateFormat:@"HH:mm:ss"];
 	NSString *dateString = [format stringFromDate:self.idleEvent.started];
@@ -52,8 +61,9 @@
 
 - (IBAction)stopButtonClicked:(id)sender
 {
-	[[NSNotificationCenter defaultCenter] postNotificationName:kCommandStopAt
-														object:self.idleEvent];
+	NSTimeInterval startedAt = [self.idleEvent.started timeIntervalSince1970];
+
+	kopsik_stop_running_time_entry_at(ctx, startedAt);
 	[self.window orderOut:nil];
 }
 
@@ -62,9 +72,35 @@
 	[self.window orderOut:nil];
 }
 
-- (void)idleFinished:(NSNotification *)notification
+- (void)startDisplayTimerState:(NSNotification *)notification
 {
-	self.idleEvent = notification.object;
+	[self performSelectorOnMainThread:@selector(displayTimerState:)
+						   withObject:notification.object
+						waitUntilDone:NO];
+}
+
+- (void)displayTimerState:(TimeEntryViewItem *)te
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+	if (!te)
+	{
+		[self.window orderOut:nil];
+	}
+}
+
+- (void)startDisplayIdleNotification:(NSNotification *)notification
+{
+	[self performSelectorOnMainThread:@selector(displayIdleNotification:)
+						   withObject:notification.object
+						waitUntilDone:NO];
+}
+
+- (void)displayIdleNotification:(IdleEvent *)evt
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+	self.idleEvent = evt;
 	[self.window makeKeyAndOrderFront:nil];
 	[self renderIdle];
 }
