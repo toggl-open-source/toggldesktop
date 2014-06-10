@@ -45,7 +45,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.statusStripLastUpdate = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelLastUpdate = new System.Windows.Forms.ToolStripStatusLabel();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonsPanel = new System.Windows.Forms.Panel();
             this.buttonContinue = new System.Windows.Forms.Button();
             this.buttonDelete = new System.Windows.Forms.Button();
             this.buttonDone = new System.Windows.Forms.Button();
@@ -53,7 +53,7 @@
             this.checkedListBoxTags = new System.Windows.Forms.CheckedListBox();
             this.timerRunningDuration = new System.Windows.Forms.Timer(this.components);
             this.statusStripLastUpdate.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.buttonsPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -67,6 +67,8 @@
             // 
             // comboBoxDescription
             // 
+            this.comboBoxDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxDescription.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.comboBoxDescription.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBoxDescription.FormattingEnabled = true;
@@ -88,6 +90,8 @@
             // 
             // comboBoxProject
             // 
+            this.comboBoxProject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxProject.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.comboBoxProject.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBoxProject.FormattingEnabled = true;
@@ -99,6 +103,7 @@
             // 
             // linkAddProject
             // 
+            this.linkAddProject.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkAddProject.AutoSize = true;
             this.linkAddProject.Location = new System.Drawing.Point(230, 33);
             this.linkAddProject.Name = "linkAddProject";
@@ -199,18 +204,21 @@
             this.toolStripStatusLabelLastUpdate.Size = new System.Drawing.Size(150, 17);
             this.toolStripStatusLabelLastUpdate.Text = "Last update: Today 2:03AM";
             // 
-            // panel1
+            // buttonsPanel
             // 
-            this.panel1.Controls.Add(this.buttonContinue);
-            this.panel1.Controls.Add(this.buttonDelete);
-            this.panel1.Controls.Add(this.buttonDone);
-            this.panel1.Location = new System.Drawing.Point(0, 245);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(314, 31);
-            this.panel1.TabIndex = 16;
+            this.buttonsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonsPanel.Controls.Add(this.buttonContinue);
+            this.buttonsPanel.Controls.Add(this.buttonDelete);
+            this.buttonsPanel.Controls.Add(this.buttonDone);
+            this.buttonsPanel.Location = new System.Drawing.Point(0, 245);
+            this.buttonsPanel.Name = "buttonsPanel";
+            this.buttonsPanel.Size = new System.Drawing.Size(314, 31);
+            this.buttonsPanel.TabIndex = 16;
             // 
             // buttonContinue
             // 
+            this.buttonContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonContinue.Location = new System.Drawing.Point(233, 3);
             this.buttonContinue.Name = "buttonContinue";
             this.buttonContinue.Size = new System.Drawing.Size(75, 23);
@@ -252,6 +260,8 @@
             // 
             // checkedListBoxTags
             // 
+            this.checkedListBoxTags.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.checkedListBoxTags.CheckOnClick = true;
             this.checkedListBoxTags.FormattingEnabled = true;
             this.checkedListBoxTags.Location = new System.Drawing.Point(84, 135);
@@ -272,7 +282,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.checkedListBoxTags);
             this.Controls.Add(this.checkBoxBillable);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.buttonsPanel);
             this.Controls.Add(this.statusStripLastUpdate);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.dateTimePickerStartDate);
@@ -293,7 +303,7 @@
             this.Load += new System.EventHandler(this.TimeEntryEditViewController_Load);
             this.statusStripLastUpdate.ResumeLayout(false);
             this.statusStripLastUpdate.PerformLayout();
-            this.panel1.ResumeLayout(false);
+            this.buttonsPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -316,7 +326,7 @@
         private System.Windows.Forms.DateTimePicker dateTimePickerStartDate;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.StatusStrip statusStripLastUpdate;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel buttonsPanel;
         private System.Windows.Forms.Button buttonDelete;
         private System.Windows.Forms.Button buttonDone;
         private System.Windows.Forms.Button buttonContinue;

@@ -33,7 +33,7 @@ namespace TogglDesktop
 
         private void TimeEntryEditViewController_Load(object sender, EventArgs e)
         {
-
+            this.Dock = DockStyle.Fill;
         }
 
         public void SetAcceptButton(Form frm)
