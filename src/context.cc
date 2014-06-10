@@ -2184,9 +2184,17 @@ void Context::SetIdleSeconds(const Poco::UInt64 idle_seconds) {
                 displayError(err);
             }
             if (settings.use_idle_detection) {
-                UI()->DisplayIdleNotification(last_idle_started_,
-                                              now,
-                                              last_idle_seconds_reading_);
+                std::stringstream since;
+                since << "You have been idle since "
+                      << Formatter::FormatTimeForTimeEntryEditor(
+                          last_idle_started_, user_->TimeOfDayFormat());
+
+                std::stringstream duration;
+                duration << "(" << (idle_seconds / 60) << " minutes)";
+
+                UI()->DisplayIdleNotification(since.str(),
+                                              duration.str(),
+                                              last_idle_started_);
             }
         }
 

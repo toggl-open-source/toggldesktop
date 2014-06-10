@@ -117,9 +117,9 @@ void on_display_timer_state(KopsikTimeEntryViewItem *te) {
 }
 
 void on_display_idle_notification(
-    const uint64_t started,
-    const uint64_t finished,
-    const uint64_t seconds) {
+    const char *since,
+    const char *duration,
+    const uint64_t started) {
 }
 
 void on_apply_settings(
