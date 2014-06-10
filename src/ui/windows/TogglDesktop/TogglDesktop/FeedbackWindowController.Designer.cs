@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FeedbackWindowController));
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxTopic = new System.Windows.Forms.ComboBox();
             this.richTextBoxContents = new System.Windows.Forms.RichTextBox();
@@ -101,6 +102,7 @@
             this.Controls.Add(this.richTextBoxContents);
             this.Controls.Add(this.comboBoxTopic);
             this.Controls.Add(this.label1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FeedbackWindowController";
             this.Text = "Send Feedback";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FeedbackWindowController_FormClosing);

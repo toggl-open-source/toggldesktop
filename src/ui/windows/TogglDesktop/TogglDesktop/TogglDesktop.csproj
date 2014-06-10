@@ -281,9 +281,6 @@
     <None Include="toggl_inactive.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\logo-white%402x.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
