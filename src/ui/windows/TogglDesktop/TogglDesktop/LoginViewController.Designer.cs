@@ -41,7 +41,7 @@
             // loginButton
             // 
             this.loginButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.loginButton.Location = new System.Drawing.Point(81, 217);
+            this.loginButton.Location = new System.Drawing.Point(81, 208);
             this.loginButton.Name = "loginButton";
             this.loginButton.Size = new System.Drawing.Size(110, 35);
             this.loginButton.TabIndex = 2;
@@ -51,15 +51,17 @@
             // 
             // googleLoginTextField
             // 
+            this.googleLoginTextField.ActiveLinkColor = System.Drawing.Color.White;
             this.googleLoginTextField.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.googleLoginTextField.AutoSize = true;
-            this.googleLoginTextField.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(99)))), ((int)(((byte)(99)))));
-            this.googleLoginTextField.Location = new System.Drawing.Point(68, 266);
+            this.googleLoginTextField.LinkColor = System.Drawing.Color.Gray;
+            this.googleLoginTextField.Location = new System.Drawing.Point(68, 268);
             this.googleLoginTextField.Name = "googleLoginTextField";
             this.googleLoginTextField.Size = new System.Drawing.Size(134, 13);
             this.googleLoginTextField.TabIndex = 3;
             this.googleLoginTextField.TabStop = true;
             this.googleLoginTextField.Text = "Login with Google account";
+            this.googleLoginTextField.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(99)))), ((int)(((byte)(99)))));
             this.googleLoginTextField.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.googleLoginTextField_LinkClicked);
             // 
             // password
@@ -81,15 +83,17 @@
             // 
             // passwordForgotTextField
             // 
+            this.passwordForgotTextField.ActiveLinkColor = System.Drawing.Color.White;
             this.passwordForgotTextField.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.passwordForgotTextField.AutoSize = true;
-            this.passwordForgotTextField.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(99)))), ((int)(((byte)(99)))));
-            this.passwordForgotTextField.Location = new System.Drawing.Point(89, 299);
+            this.passwordForgotTextField.LinkColor = System.Drawing.Color.Gray;
+            this.passwordForgotTextField.Location = new System.Drawing.Point(88, 290);
             this.passwordForgotTextField.Name = "passwordForgotTextField";
             this.passwordForgotTextField.Size = new System.Drawing.Size(91, 13);
             this.passwordForgotTextField.TabIndex = 7;
             this.passwordForgotTextField.TabStop = true;
             this.passwordForgotTextField.Text = "Forgot password?";
+            this.passwordForgotTextField.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(99)))), ((int)(((byte)(99)))));
             this.passwordForgotTextField.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.passwordForgotTextField_LinkClicked_1);
             // 
             // togglLogoBox
