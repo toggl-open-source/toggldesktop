@@ -219,7 +219,7 @@ namespace TogglDesktop
             }
         }
 
-        void OnIdleNotification(UInt64 started, UInt64 finished, UInt64 seconds)
+        void OnIdleNotification(string since, string duration, UInt64 started)
         {
             DisplayIdleNotification();
         }

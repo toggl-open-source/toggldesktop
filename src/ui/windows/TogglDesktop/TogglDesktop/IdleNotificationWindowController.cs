@@ -33,18 +33,20 @@ namespace TogglDesktop
             Close();
         }
 
-        void OnIdleNotification(UInt64 started, UInt64 finished, UInt64 seconds)
+        void OnIdleNotification(string since, string duration, UInt64 started)
         {
-            DisplayIdleNotification(started, finished, seconds);
+            DisplayIdleNotification(since, duration, started);
         }
 
-        void DisplayIdleNotification(UInt64 started, UInt64 finished, UInt64 seconds)
+        void DisplayIdleNotification(string since, string duration, UInt64 started)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayIdleNotification(started, finished, seconds); });
+                Invoke((MethodInvoker)delegate { DisplayIdleNotification(since, duration, started); });
                 return;
             }
+            labelIdleSince.Text = since;
+            labelIdleDuration.Text = duration;
             idle_started_at = started;
         }
 
@@ -73,6 +75,11 @@ namespace TogglDesktop
                 this.Hide();
                 e.Cancel = true;
             }
+        }
+
+        private void IdleNotificationWindowController_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
