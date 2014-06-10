@@ -130,10 +130,6 @@ const int kDurationStringLength = 20;
 	[self createStatusItem];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(startStopAt:)
-												 name:kCommandStopAt
-											   object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(startStop:)
 												 name:kCommandStop
 											   object:nil];
@@ -291,24 +287,6 @@ const int kDurationStringLength = 20;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	kopsik_stop(ctx);
-}
-
-- (void)startStopAt:(NSNotification *)notification
-{
-	[self performSelectorOnMainThread:@selector(stopAt:)
-						   withObject:notification.object
-						waitUntilDone:NO];
-}
-
-- (void)stopAt:(IdleEvent *)idleEvent
-{
-	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-	NSAssert(idleEvent != nil, @"idle event cannot be nil");
-	NSLog(@"Idle event: %@", idleEvent);
-	NSTimeInterval startedAt = [idleEvent.started timeIntervalSince1970];
-	NSLog(@"Time entry stop at %f", startedAt);
-	kopsik_stop_running_time_entry_at(ctx, startedAt);
 }
 
 - (void)startDisplaySettings:(NSNotification *)notification
