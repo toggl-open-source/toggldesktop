@@ -16,6 +16,8 @@ namespace TogglDesktop
         private AboutWindowController aboutWindowController;
         private PreferencesWindowController preferencesWindowController;
         private FeedbackWindowController feedbackWindowController;
+        private IdleNotificationWindowController idleNotificationWindowController;
+
         private bool isUpgradeDialogVisible = false;
         private bool isTracking = false;
 
@@ -45,6 +47,7 @@ namespace TogglDesktop
             aboutWindowController = new AboutWindowController();
             preferencesWindowController = new PreferencesWindowController();
             feedbackWindowController = new FeedbackWindowController();
+            idleNotificationWindowController = new IdleNotificationWindowController();
         }
 
         private void MainWindowController_Load(object sender, EventArgs e)
@@ -218,16 +221,17 @@ namespace TogglDesktop
 
         void OnIdleNotification(UInt64 started, UInt64 finished, UInt64 seconds)
         {
-            DisplayIdleNotification(started, finished, seconds);
+            DisplayIdleNotification();
         }
 
-        void DisplayIdleNotification(UInt64 started, UInt64 finished, UInt64 seconds) {
+        void DisplayIdleNotification() {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayIdleNotification(started, finished, seconds); });
+                Invoke((MethodInvoker)delegate { DisplayIdleNotification(); });
                 return;
             }
-            // FIXME: display actual idle notification window
+            idleNotificationWindowController.Show();
+            idleNotificationWindowController.BringToFront();
         }
 
         void OnLogin(bool open, UInt64 user_id)
