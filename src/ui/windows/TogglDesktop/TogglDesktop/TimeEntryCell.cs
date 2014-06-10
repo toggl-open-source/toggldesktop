@@ -13,10 +13,12 @@ namespace TogglDesktop
     public partial class TimeEntryCell : UserControl
     {
         private KopsikApi.KopsikTimeEntryViewItem TimeEntry;
-        public TimeEntryCell(int y)
+        public TimeEntryCell(int y, int w)
         {
             InitializeComponent();
             Location = new Point(0, y);
+            this.Width = w;
+            this.Anchor = (AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top);
         }
 
         internal void Setup(KopsikApi.KopsikTimeEntryViewItem item)
@@ -56,11 +58,6 @@ namespace TogglDesktop
         private void labelProject_Click(object sender, EventArgs e)
         {
             KopsikApi.kopsik_edit(KopsikApi.ctx, TimeEntry.GUID, false, KopsikApi.Project);
-        }
-
-        private void TimeEntryCell_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

@@ -37,22 +37,23 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { DisplayTimeEntryList(open, list); });
                 return;
             }
+            this.Dock = DockStyle.Fill;
             int y = 0;
-            this.panelContent.Controls.Clear();
+            this.EntriesList.Controls.Clear();
             foreach (KopsikApi.KopsikTimeEntryViewItem item in list)
             {
                 if (item.IsHeader)
                 {
-                    TimeEntryCellWithHeader cell = new TimeEntryCellWithHeader(y);
+                    TimeEntryCellWithHeader cell = new TimeEntryCellWithHeader(y, this.Width);
                     cell.Setup(item);
-                    this.panelContent.Controls.Add(cell);
+                    this.EntriesList.Controls.Add(cell);
                     y += 82;
                 }
                 else
                 {
-                    TimeEntryCell cell = new TimeEntryCell(y);
+                    TimeEntryCell cell = new TimeEntryCell(y, this.Width);
                     cell.Setup(item);
-                    this.panelContent.Controls.Add(cell);
+                    this.EntriesList.Controls.Add(cell);
                     y += 49;
                 }                 
             }
@@ -62,11 +63,6 @@ namespace TogglDesktop
         {
             // FIXME:
             //regular 49 header 82
-        }
-
-        private void panelContent_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }

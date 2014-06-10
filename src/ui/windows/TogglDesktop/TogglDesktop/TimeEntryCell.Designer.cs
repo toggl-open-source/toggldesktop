@@ -38,7 +38,7 @@
             // labelBillable
             // 
             this.labelBillable.AutoSize = true;
-            this.labelBillable.Location = new System.Drawing.Point(3, 0);
+            this.labelBillable.Location = new System.Drawing.Point(15, 0);
             this.labelBillable.Name = "labelBillable";
             this.labelBillable.Size = new System.Drawing.Size(13, 13);
             this.labelBillable.TabIndex = 0;
@@ -47,7 +47,7 @@
             // labelDescription
             // 
             this.labelDescription.AutoSize = true;
-            this.labelDescription.Location = new System.Drawing.Point(22, 0);
+            this.labelDescription.Location = new System.Drawing.Point(30, 0);
             this.labelDescription.Name = "labelDescription";
             this.labelDescription.Size = new System.Drawing.Size(102, 13);
             this.labelDescription.TabIndex = 1;
@@ -56,7 +56,8 @@
             // 
             // buttonContinue
             // 
-            this.buttonContinue.Location = new System.Drawing.Point(130, 15);
+            this.buttonContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonContinue.Location = new System.Drawing.Point(215, 15);
             this.buttonContinue.Name = "buttonContinue";
             this.buttonContinue.Size = new System.Drawing.Size(23, 23);
             this.buttonContinue.TabIndex = 2;
@@ -66,18 +67,20 @@
             // 
             // labelDuration
             // 
+            this.labelDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelDuration.AutoSize = true;
-            this.labelDuration.Location = new System.Drawing.Point(159, 20);
+            this.labelDuration.Location = new System.Drawing.Point(250, 20);
             this.labelDuration.Name = "labelDuration";
             this.labelDuration.Size = new System.Drawing.Size(49, 13);
             this.labelDuration.TabIndex = 3;
             this.labelDuration.Text = "03:21:30";
+            this.labelDuration.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.labelDuration.Click += new System.EventHandler(this.labelDuration_Click);
             // 
             // labelProject
             // 
             this.labelProject.AutoSize = true;
-            this.labelProject.Location = new System.Drawing.Point(3, 25);
+            this.labelProject.Location = new System.Drawing.Point(15, 25);
             this.labelProject.Name = "labelProject";
             this.labelProject.Size = new System.Drawing.Size(79, 13);
             this.labelProject.TabIndex = 4;
@@ -94,8 +97,7 @@
             this.Controls.Add(this.labelDescription);
             this.Controls.Add(this.labelBillable);
             this.Name = "TimeEntryCell";
-            this.Size = new System.Drawing.Size(216, 49);
-            this.Load += new System.EventHandler(this.TimeEntryCell_Load);
+            this.Size = new System.Drawing.Size(314, 49);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TimeEntryCell_MouseClick);
             this.ResumeLayout(false);
             this.PerformLayout();
