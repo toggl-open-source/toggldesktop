@@ -130,6 +130,10 @@ const int kDurationStringLength = 20;
 	[self createStatusItem];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(startDisplayIdleNotification:)
+												 name:kDisplayIdleNotification
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(startStop:)
 												 name:kCommandStop
 											   object:nil];
@@ -450,6 +454,14 @@ const int kDurationStringLength = 20;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	self.lastKnownRunningTimeEntry = timeEntry;
+
+	if (!timeEntry)
+	{
+		if (self.idleNotificationWindowController.window.isVisible)
+		{
+			[self.idleNotificationWindowController.window orderOut:nil];
+		}
+	}
 
 	if (timeEntry)
 	{
@@ -931,6 +943,20 @@ const NSString *appName = @"osx_native_app";
 	[NSApp terminate:nil];
 }
 
+- (void)startDisplayIdleNotification:(NSNotification *)notification
+{
+	[self performSelectorOnMainThread:@selector(displayIdleNotification:)
+						   withObject:notification.object
+						waitUntilDone:NO];
+}
+
+- (void)displayIdleNotification:(IdleEvent *)idleEvent
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+	[self.idleNotificationWindowController displayIdleEvent:idleEvent];
+}
+
 - (PLCrashReporter *)configuredCrashReporter
 {
 	PLCrashReporterConfig *config = [[PLCrashReporterConfig alloc]
@@ -1169,15 +1195,15 @@ void on_timer_state(KopsikTimeEntryViewItem *te)
 }
 
 void on_idle_notification(
-	const uint64_t started,
-	const uint64_t finished,
-	const uint64_t seconds)
+	const char *since,
+	const char *duration,
+	const uint64_t started)
 {
 	IdleEvent *idleEvent = [[IdleEvent alloc] init];
 
-	idleEvent.started = [NSDate dateWithTimeIntervalSince1970:started];
-	idleEvent.finished = [NSDate dateWithTimeIntervalSince1970:finished];
-	idleEvent.seconds = seconds;
+	idleEvent.since = [NSString stringWithUTF8String:since];
+	idleEvent.duration = [NSString stringWithUTF8String:duration];
+	idleEvent.started = started;
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayIdleNotification object:idleEvent];
 }
 

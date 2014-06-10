@@ -248,11 +248,10 @@ void UI::DisplayTimerState(KopsikTimeEntryViewItem *te) {
     on_display_timer_state_(te);
 }
 
-void UI::DisplayIdleNotification(
-    const uint64_t started,
-    const uint64_t finished,
-    const uint64_t seconds) {
-    on_display_idle_notification_(started, finished, seconds);
+void UI::DisplayIdleNotification(const std::string since,
+                                 const std::string duration,
+                                 const uint64_t started) {
+    on_display_idle_notification_(since.c_str(), duration.c_str(), started);
 }
 
 _Bool UI::isNetworkingError(const error err) const {
