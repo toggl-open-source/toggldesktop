@@ -64,6 +64,7 @@ namespace TogglDesktop
             KopsikApi.OnURL += OnURL;
             KopsikApi.OnTimerState += OnTimerState;
             KopsikApi.OnSettings += OnSettings;
+            KopsikApi.OnIdleNotification += OnIdleNotification;
 
             if (!KopsikApi.Start(TogglDesktop.Program.Version()))
             {
@@ -130,7 +131,7 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { DisplayOnlineState(is_online); });
                 return;
             }
-            // FIXME:
+            // FIXME: change tray icon
         }
 
         void OnUpdate(bool open, ref KopsikApi.KopsikUpdateViewItem view)
@@ -213,6 +214,20 @@ namespace TogglDesktop
                 Bugsnag.Library.BugSnag bs = new Bugsnag.Library.BugSnag();
                 bs.Notify(new Exception(errmsg));
             }
+        }
+
+        void OnIdleNotification(UInt64 started, UInt64 finished, UInt64 seconds)
+        {
+            DisplayIdleNotification(started, finished, seconds);
+        }
+
+        void DisplayIdleNotification(UInt64 started, UInt64 finished, UInt64 seconds) {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisplayIdleNotification(started, finished, seconds); });
+                return;
+            }
+            // FIXME: display actual idle notification window
         }
 
         void OnLogin(bool open, UInt64 user_id)
@@ -434,17 +449,22 @@ namespace TogglDesktop
                 idleTime = envTicks - lastInputTick;
             }
 
-            int a = 0;
+            int idle_seconds = 0;
             if (idleTime > 0)
             {
-                a = idleTime / 1000;
+                idle_seconds = idleTime / 1000;
             }
             else
             {
-                a = idleTime;
+                idle_seconds = idleTime;
             }
 
-            Console.WriteLine(a);
+            if (idle_seconds < 0)
+            {
+                idle_seconds = 0;
+            }
+
+            KopsikApi.kopsik_set_idle_seconds(KopsikApi.ctx, (ulong)idle_seconds);
         }
     }
 }
