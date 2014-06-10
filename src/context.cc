@@ -2178,9 +2178,16 @@ void Context::SetIdleSeconds(const Poco::UInt64 idle_seconds) {
         if (!user_->IsTracking()) {
             logger().warning("Time entry is not tracking, ignoring idleness");
         } else {
-            UI()->DisplayIdleNotification(last_idle_started_,
-                                          now,
-                                          last_idle_seconds_reading_);
+            kopsik::Settings settings;
+            error err = db()->LoadSettings(&settings);
+            if (err != kopsik::noError) {
+                displayError(err);
+            }
+            if (settings.use_idle_detection) {
+                UI()->DisplayIdleNotification(last_idle_started_,
+                                              now,
+                                              last_idle_seconds_reading_);
+            }
         }
 
         std::stringstream ss;
