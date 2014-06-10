@@ -64,6 +64,7 @@
             // 
             // buttonDiscardTime
             // 
+            this.buttonDiscardTime.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonDiscardTime.Location = new System.Drawing.Point(109, 71);
             this.buttonDiscardTime.Name = "buttonDiscardTime";
             this.buttonDiscardTime.Size = new System.Drawing.Size(75, 23);
@@ -74,15 +75,21 @@
             // 
             // IdleNotificationWindowController
             // 
+            this.AcceptButton = this.buttonKeepTime;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.buttonDiscardTime;
             this.ClientSize = new System.Drawing.Size(198, 109);
-            this.ControlBox = false;
             this.Controls.Add(this.buttonDiscardTime);
             this.Controls.Add(this.buttonKeepTime);
             this.Controls.Add(this.labelIdleDuration);
             this.Controls.Add(this.labelIdleSince);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "IdleNotificationWindowController";
+            this.ShowIcon = false;
+            this.TopMost = true;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.IdleNotificationWindowController_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
