@@ -154,9 +154,9 @@ extern "C" {
         KopsikTimeEntryViewItem *te);
 
     typedef void (*KopsikDisplayIdleNotification)(
-        const uint64_t started,
-        const uint64_t finished,
-        const uint64_t seconds);
+        const char *since,
+        const char *duration,
+        const uint64_t started);
 
     // Initialize/destroy an instance of the app
 

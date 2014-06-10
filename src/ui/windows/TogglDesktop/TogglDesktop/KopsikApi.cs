@@ -192,9 +192,9 @@ namespace TogglDesktop
 
         [UnmanagedFunctionPointer(convention)]
         public delegate void KopsikDisplayIdleNotification(
-            UInt64 started,
-            UInt64 finished,
-            UInt64 seconds);
+            string since,
+            string duration,
+            UInt64 started);
 
         // Initialize/destroy an instance of the app
 

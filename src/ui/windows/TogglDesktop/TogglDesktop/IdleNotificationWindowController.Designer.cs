@@ -90,6 +90,7 @@
             this.ShowIcon = false;
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.IdleNotificationWindowController_FormClosing);
+            this.Load += new System.EventHandler(this.IdleNotificationWindowController_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

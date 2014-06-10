@@ -70,10 +70,9 @@ class UI {
                          const _Bool use_proxy,
                          const Proxy proxy);
     void DisplayTimerState(KopsikTimeEntryViewItem *te);
-    void DisplayIdleNotification(
-        const uint64_t started,
-        const uint64_t finished,
-        const uint64_t seconds);
+    void DisplayIdleNotification(const std::string since,
+                                 const std::string duration,
+                                 const uint64_t started);
 
     error VerifyCallbacks();
 

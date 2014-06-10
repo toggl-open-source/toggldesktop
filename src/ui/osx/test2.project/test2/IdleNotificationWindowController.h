@@ -14,4 +14,6 @@
 @property IBOutlet NSTextField *idleAmountTextField;
 - (IBAction)stopButtonClicked:(id)sender;
 - (IBAction)ignoreButtonClicked:(id)sender;
+@property IdleEvent *idleEvent;
+- (void)displayIdleEvent:(IdleEvent *)idleEvent;
 @end
