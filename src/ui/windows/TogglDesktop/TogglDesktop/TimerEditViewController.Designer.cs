@@ -40,6 +40,8 @@
             // 
             // comboBoxDescription
             // 
+            this.comboBoxDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxDescription.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.comboBoxDescription.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBoxDescription.FormattingEnabled = true;
@@ -55,6 +57,7 @@
             // 
             // textBoxDuration
             // 
+            this.textBoxDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxDuration.Location = new System.Drawing.Point(200, 4);
             this.textBoxDuration.Name = "textBoxDuration";
             this.textBoxDuration.Size = new System.Drawing.Size(31, 20);
@@ -65,6 +68,7 @@
             // 
             // buttonStart
             // 
+            this.buttonStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonStart.Location = new System.Drawing.Point(238, 4);
             this.buttonStart.Name = "buttonStart";
             this.buttonStart.Size = new System.Drawing.Size(64, 23);
@@ -87,6 +91,7 @@
             // 
             // linkLabelDuration
             // 
+            this.linkLabelDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabelDuration.AutoSize = true;
             this.linkLabelDuration.Location = new System.Drawing.Point(200, 32);
             this.linkLabelDuration.Name = "linkLabelDuration";
@@ -118,6 +123,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.Controls.Add(this.linkLabelProject);
             this.Controls.Add(this.linkLabelDuration);
             this.Controls.Add(this.linkLabelDescription);

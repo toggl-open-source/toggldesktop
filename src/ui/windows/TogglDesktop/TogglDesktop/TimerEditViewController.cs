@@ -26,6 +26,8 @@ namespace TogglDesktop
             KopsikApi.OnTimerState += OnTimerState;
 
             comboBoxDescription.DisplayMember = "Text";
+            this.Anchor = (AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top);
+
 
         }
 
