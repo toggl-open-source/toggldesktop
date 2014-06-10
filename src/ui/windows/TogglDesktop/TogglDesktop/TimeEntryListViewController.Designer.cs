@@ -30,7 +30,7 @@
         {
             this.panelHeader = new System.Windows.Forms.Panel();
             this.timerEditViewController = new TogglDesktop.TimerEditViewController();
-            this.panelContent = new System.Windows.Forms.Panel();
+            this.EntriesList = new System.Windows.Forms.Panel();
             this.panelHeader.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,23 +49,22 @@
             this.timerEditViewController.Size = new System.Drawing.Size(305, 51);
             this.timerEditViewController.TabIndex = 0;
             // 
-            // panelContent
+            // EntriesList
             // 
-            this.panelContent.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.EntriesList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelContent.AutoScroll = true;
-            this.panelContent.Location = new System.Drawing.Point(0, 61);
-            this.panelContent.Name = "panelContent";
-            this.panelContent.Size = new System.Drawing.Size(314, 295);
-            this.panelContent.TabIndex = 1;
-            this.panelContent.Paint += new System.Windows.Forms.PaintEventHandler(this.panelContent_Paint);
+            this.EntriesList.AutoScroll = true;
+            this.EntriesList.Location = new System.Drawing.Point(0, 61);
+            this.EntriesList.Name = "EntriesList";
+            this.EntriesList.Size = new System.Drawing.Size(314, 295);
+            this.EntriesList.TabIndex = 1;
             // 
             // TimeEntryListViewController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.panelContent);
+            this.Controls.Add(this.EntriesList);
             this.Controls.Add(this.panelHeader);
             this.Name = "TimeEntryListViewController";
             this.Size = new System.Drawing.Size(317, 359);
@@ -78,7 +77,7 @@
         #endregion
 
         private System.Windows.Forms.Panel panelHeader;
-        private System.Windows.Forms.Panel panelContent;
+        private System.Windows.Forms.Panel EntriesList;
         private TimerEditViewController timerEditViewController;
     }
 }
