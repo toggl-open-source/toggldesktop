@@ -214,6 +214,8 @@
             this.Controls.Add(this.groupBoxProxySettings);
             this.Controls.Add(this.checkBoxUseProxy);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(300, 353);
             this.Name = "PreferencesWindowController";
             this.Text = "Preferences";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PreferencesWindowController_FormClosing);
