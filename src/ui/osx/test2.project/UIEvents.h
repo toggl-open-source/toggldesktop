@@ -12,7 +12,6 @@
 extern NSString *const kCommandNew;
 extern NSString *const kCommandStop;
 extern NSString *const kCommandContinue;
-extern NSString *const kCommandStopAt;
 
 // Display events, UI <- backend
 extern NSString *const kDisplayApp;
