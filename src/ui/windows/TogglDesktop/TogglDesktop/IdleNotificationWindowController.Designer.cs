@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(IdleNotificationWindowController));
             this.labelIdleSince = new System.Windows.Forms.Label();
             this.labelIdleDuration = new System.Windows.Forms.Label();
             this.buttonKeepTime = new System.Windows.Forms.Button();
@@ -36,6 +37,7 @@
             // 
             // labelIdleSince
             // 
+            this.labelIdleSince.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.labelIdleSince.AutoSize = true;
             this.labelIdleSince.Location = new System.Drawing.Point(12, 9);
             this.labelIdleSince.Name = "labelIdleSince";
@@ -45,6 +47,7 @@
             // 
             // labelIdleDuration
             // 
+            this.labelIdleDuration.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.labelIdleDuration.AutoSize = true;
             this.labelIdleDuration.Location = new System.Drawing.Point(68, 38);
             this.labelIdleDuration.Name = "labelIdleDuration";
@@ -64,6 +67,7 @@
             // 
             // buttonDiscardTime
             // 
+            this.buttonDiscardTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonDiscardTime.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonDiscardTime.Location = new System.Drawing.Point(109, 71);
             this.buttonDiscardTime.Name = "buttonDiscardTime";
@@ -84,8 +88,11 @@
             this.Controls.Add(this.buttonKeepTime);
             this.Controls.Add(this.labelIdleDuration);
             this.Controls.Add(this.labelIdleSince);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(214, 147);
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(214, 147);
             this.Name = "IdleNotificationWindowController";
             this.ShowIcon = false;
             this.TopMost = true;
