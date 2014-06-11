@@ -33,16 +33,17 @@
             this.buttonContinue = new System.Windows.Forms.Button();
             this.labelDuration = new System.Windows.Forms.Label();
             this.labelProject = new System.Windows.Forms.Label();
+            this.labelTag = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // labelBillable
             // 
-            this.labelBillable.AutoSize = true;
-            this.labelBillable.Location = new System.Drawing.Point(205, 15);
+            this.labelBillable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelBillable.Image = global::TogglDesktop.Properties.Resources.icon_billable;
+            this.labelBillable.Location = new System.Drawing.Point(200, 15);
             this.labelBillable.Name = "labelBillable";
             this.labelBillable.Size = new System.Drawing.Size(13, 13);
             this.labelBillable.TabIndex = 0;
-            this.labelBillable.Text = "$";
             // 
             // labelDescription
             // 
@@ -50,7 +51,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelDescription.Location = new System.Drawing.Point(15, 10);
             this.labelDescription.Name = "labelDescription";
-            this.labelDescription.Size = new System.Drawing.Size(175, 13);
+            this.labelDescription.Size = new System.Drawing.Size(170, 13);
             this.labelDescription.TabIndex = 1;
             this.labelDescription.Text = "Blogpost about new stuff in Toggl...";
             this.labelDescription.Click += new System.EventHandler(this.labelDescription_Click);
@@ -85,16 +86,26 @@
             this.labelProject.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.labelProject.Location = new System.Drawing.Point(15, 27);
             this.labelProject.Name = "labelProject";
-            this.labelProject.Size = new System.Drawing.Size(175, 13);
+            this.labelProject.Size = new System.Drawing.Size(170, 13);
             this.labelProject.TabIndex = 4;
             this.labelProject.Text = "NEW PROJECT - TOGGL CLIENT";
             this.labelProject.Click += new System.EventHandler(this.labelProject_Click);
+            // 
+            // labelTag
+            // 
+            this.labelTag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelTag.Image = global::TogglDesktop.Properties.Resources.icon_tags;
+            this.labelTag.Location = new System.Drawing.Point(185, 15);
+            this.labelTag.Name = "labelTag";
+            this.labelTag.Size = new System.Drawing.Size(13, 13);
+            this.labelTag.TabIndex = 5;
             // 
             // TimeEntryCell
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.Controls.Add(this.labelTag);
             this.Controls.Add(this.labelProject);
             this.Controls.Add(this.labelDuration);
             this.Controls.Add(this.buttonContinue);
@@ -115,5 +126,6 @@
         private System.Windows.Forms.Button buttonContinue;
         private System.Windows.Forms.Label labelDuration;
         private System.Windows.Forms.Label labelProject;
+        private System.Windows.Forms.Label labelTag;
     }
 }

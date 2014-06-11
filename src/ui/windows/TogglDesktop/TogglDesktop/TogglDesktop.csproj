@@ -286,6 +286,12 @@
   <ItemGroup>
     <None Include="Resources\logo64.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-billable.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-tags.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
