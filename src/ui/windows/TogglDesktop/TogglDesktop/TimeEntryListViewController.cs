@@ -47,15 +47,16 @@ namespace TogglDesktop
                     TimeEntryCellWithHeader cell = new TimeEntryCellWithHeader(y, this.Width);
                     cell.Setup(item);
                     this.EntriesList.Controls.Add(cell);
-                    y += 100;
+                    y += (cell.Height + 1);
                 }
                 else
                 {
                     TimeEntryCell cell = new TimeEntryCell(y, this.Width);
                     cell.Setup(item);
                     this.EntriesList.Controls.Add(cell);
-                    y += 50;
-                }                 
+                    y += (cell.Height + 1);
+                }
+                
             }
         }
 

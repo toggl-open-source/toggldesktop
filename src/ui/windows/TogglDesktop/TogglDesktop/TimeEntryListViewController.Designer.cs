@@ -50,6 +50,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.EntriesList.AutoScroll = true;
+            this.EntriesList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
             this.EntriesList.Location = new System.Drawing.Point(0, 61);
             this.EntriesList.Name = "EntriesList";
             this.EntriesList.Size = new System.Drawing.Size(314, 295);
