@@ -292,6 +292,9 @@
   <ItemGroup>
     <None Include="Resources\icon-tags.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\continue.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
