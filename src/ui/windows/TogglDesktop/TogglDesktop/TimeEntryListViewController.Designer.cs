@@ -41,7 +41,7 @@
             this.panelHeader.Controls.Add(this.timerEditViewController);
             this.panelHeader.Location = new System.Drawing.Point(0, 0);
             this.panelHeader.Name = "panelHeader";
-            this.panelHeader.Size = new System.Drawing.Size(314, 62);
+            this.panelHeader.Size = new System.Drawing.Size(314, 56);
             this.panelHeader.TabIndex = 0;
             // 
             // EntriesList
@@ -51,7 +51,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.EntriesList.AutoScroll = true;
             this.EntriesList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.EntriesList.Location = new System.Drawing.Point(0, 61);
+            this.EntriesList.Location = new System.Drawing.Point(0, 56);
             this.EntriesList.Name = "EntriesList";
             this.EntriesList.Size = new System.Drawing.Size(314, 295);
             this.EntriesList.TabIndex = 1;
@@ -60,10 +60,11 @@
             // 
             this.timerEditViewController.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.timerEditViewController.BackColor = System.Drawing.SystemColors.Control;
-            this.timerEditViewController.Location = new System.Drawing.Point(4, 4);
+            this.timerEditViewController.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
+            this.timerEditViewController.Location = new System.Drawing.Point(0, 0);
+            this.timerEditViewController.Margin = new System.Windows.Forms.Padding(0);
             this.timerEditViewController.Name = "timerEditViewController";
-            this.timerEditViewController.Size = new System.Drawing.Size(305, 51);
+            this.timerEditViewController.Size = new System.Drawing.Size(314, 56);
             this.timerEditViewController.TabIndex = 0;
             // 
             // TimeEntryListViewController
