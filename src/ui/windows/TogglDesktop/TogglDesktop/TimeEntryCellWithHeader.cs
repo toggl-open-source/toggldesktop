@@ -36,6 +36,7 @@ namespace TogglDesktop
             this.labelDateDuration.Text = this.TimeEntry.DateDuration;
             this.labelDuration.Text = this.TimeEntry.Duration;
             this.labelBillable.Visible = this.TimeEntry.Billable;
+            this.labelTag.Visible = (this.TimeEntry.Tags != null && this.TimeEntry.Tags.Length > 0);
         }
 
         private void buttonContinue_Click(object sender, EventArgs e)
