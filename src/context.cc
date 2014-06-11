@@ -243,7 +243,7 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
     if (display_time_entry_editor) {
         TimeEntry *te = 0;
         if (user_) {
-            te = user_->TimeEntryByGUID(time_entry_editor_guid_);
+            te = user_->related.TimeEntryByGUID(time_entry_editor_guid_);
         }
         if (te) {
             displayTimeEntryEditor(false, te, "");
@@ -273,12 +273,19 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
 }
 
 void Context::displayTimeEntryAutocomplete() {
-    std::vector<AutocompleteItem> list = autocompleteItems(true);
+    if (!user_) {
+        return;
+    }
+    std::vector<AutocompleteItem> list = user_->related.AutocompleteItems(true);
     UI()->DisplayTimeEntryAutocomplete(&list);
 }
 
 void Context::displayProjectAutocomplete() {
-    std::vector<AutocompleteItem> list = autocompleteItems(false);
+    if (!user_) {
+        return;
+    }
+    std::vector<AutocompleteItem> list =
+        user_->related.AutocompleteItems(false);
     UI()->DisplayProjectAutocomplete(&list);
 }
 
@@ -442,7 +449,7 @@ _Bool Context::LoadUpdateFromJSONString(const std::string json) {
         return false;
     }
 
-    LoadUserUpdateFromJSONString(user_, json);
+    user_->LoadUserUpdateFromJSONString(json);
 
     return displayError(save());
 }
@@ -941,7 +948,7 @@ _Bool Context::Login(
         return displayError(err);
     }
 
-    LoadUserAndRelatedDataFromJSONString(user, user_data_json);
+    user->LoadUserAndRelatedDataFromJSONString(user_data_json);
 
     err = db()->SetCurrentAPIToken(user->APIToken());
     if (err != noError) {
@@ -999,7 +1006,7 @@ _Bool Context::SetLoggedInUserFromJSON(
 
     User *u = new User();
 
-    LoadUserAndRelatedDataFromJSONString(u, json);
+    u->LoadUserAndRelatedDataFromJSONString(json);
 
     error err = db()->SetCurrentAPIToken(u->APIToken());
     if (err != noError) {
@@ -1077,13 +1084,13 @@ bool Context::CanSeeBillable(const std::string GUID) const {
     if (!user_->HasPremiumWorkspaces()) {
         return false;
     }
-    TimeEntry *te = user_->TimeEntryByGUID(GUID);
+    TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
     if (!te) {
         return false;
     }
     Workspace *ws = 0;
     if (te->WID()) {
-        ws = user_->WorkspaceByID(te->WID());
+        ws = user_->related.WorkspaceByID(te->WID());
     }
     if (ws && !ws->Premium()) {
         return false;
@@ -1097,7 +1104,7 @@ bool Context::CanAddProjects(const Poco::UInt64 workspace_id) const {
     }
     Workspace *ws = 0;
     if (workspace_id) {
-        ws = user_->WorkspaceByID(workspace_id);
+        ws = user_->related.WorkspaceByID(workspace_id);
     }
     if (ws) {
         return ws->Admin() || !ws->OnlyAdminsMayCreateProjects();
@@ -1271,7 +1278,7 @@ void Context::Edit(const std::string GUID,
     if (edit_running_entry) {
         te = user_->RunningTimeEntry();
     } else {
-        te = user_->TimeEntryByGUID(GUID);
+        te = user_->related.TimeEntryByGUID(GUID);
     }
 
     if (!te) {
@@ -1363,7 +1370,7 @@ _Bool Context::DeleteTimeEntryByGUID(const std::string GUID) {
     if (GUID.empty()) {
         return displayError("Missing GUID");
     }
-    TimeEntry *te = user_->TimeEntryByGUID(GUID);
+    TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
         return true;
@@ -1387,7 +1394,7 @@ _Bool Context::SetTimeEntryDuration(
         logger().warning("Cannot set duration, user logged out");
         return true;
     }
-    TimeEntry *te = user_->TimeEntryByGUID(GUID);
+    TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
         return true;
@@ -1413,7 +1420,7 @@ _Bool Context::SetTimeEntryProject(
         return true;
     }
 
-    TimeEntry *te = user_->TimeEntryByGUID(GUID);
+    TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
         return true;
@@ -1421,10 +1428,10 @@ _Bool Context::SetTimeEntryProject(
 
     Project *p = 0;
     if (project_id) {
-        p = user_->ProjectByID(project_id);
+        p = user_->related.ProjectByID(project_id);
     }
     if (!project_guid.empty()) {
-        p = user_->ProjectByGUID(project_guid);
+        p = user_->related.ProjectByGUID(project_guid);
     }
 
     if (p) {
@@ -1452,7 +1459,7 @@ _Bool Context::SetTimeEntryStartISO8601(
         logger().warning("Cannot change start time, user logged out");
         return true;
     }
-    TimeEntry *te = user_->TimeEntryByGUID(GUID);
+    TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
         return true;
@@ -1477,7 +1484,7 @@ _Bool Context::SetTimeEntryEndISO8601(
         logger().warning("Cannot change end time, user logged out");
         return true;
     }
-    TimeEntry *te = user_->TimeEntryByGUID(GUID);
+    TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
         return true;
@@ -1502,7 +1509,7 @@ _Bool Context::SetTimeEntryTags(
         logger().warning("Cannot set tags, user logged out");
         return true;
     }
-    TimeEntry *te = user_->TimeEntryByGUID(GUID);
+    TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
         return true;
@@ -1525,7 +1532,7 @@ _Bool Context::SetTimeEntryBillable(
         logger().warning("Cannot set billable, user logged out");
         return true;
     }
-    TimeEntry *te = user_->TimeEntryByGUID(GUID);
+    TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
         return true;
@@ -1548,7 +1555,7 @@ _Bool Context::SetTimeEntryDescription(
         logger().warning("Cannot set description, user logged out");
         return true;
     }
-    TimeEntry *te = user_->TimeEntryByGUID(GUID);
+    TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
         return true;
@@ -1693,23 +1700,23 @@ void Context::projectLabelAndColorCode(
 
     Task *t = 0;
     if (te->TID()) {
-        t = user_->TaskByID(te->TID());
+        t = user_->related.TaskByID(te->TID());
     }
 
     Project *p = 0;
     if (t) {
-        p = user_->ProjectByID(t->PID());
+        p = user_->related.ProjectByID(t->PID());
     }
     if (!p && te->PID()) {
-        p = user_->ProjectByID(te->PID());
+        p = user_->related.ProjectByID(te->PID());
     }
     if (!p && !te->ProjectGUID().empty()) {
-        p = user_->ProjectByGUID(te->ProjectGUID());
+        p = user_->related.ProjectByGUID(te->ProjectGUID());
     }
 
     Client *c = 0;
     if (p && p->CID()) {
-        c = user_->ClientByID(p->CID());
+        c = user_->related.ClientByID(p->CID());
     }
 
     *project_and_task_label = Formatter::JoinTaskName(t, p, c);
@@ -1722,271 +1729,6 @@ void Context::projectLabelAndColorCode(
     if (c) {
         *client_label = c->Name();
     }
-}
-
-bool CompareAutocompleteItems(
-    AutocompleteItem a,
-    AutocompleteItem b) {
-
-    // Time entries first
-    if (a.IsTimeEntry() && !b.IsTimeEntry()) {
-        return true;
-    }
-    if (b.IsTimeEntry() && !(a.IsTimeEntry())) {
-        return false;
-    }
-
-    // Then tasks
-    if (a.IsTask() && !b.IsTask()) {
-        return true;
-    }
-    if (b.IsTask() && !a.IsTask()) {
-        return false;
-    }
-
-    // Then projects
-    if (a.IsProject() && !b.IsProject()) {
-        return true;
-    }
-    if (b.IsProject() && !a.IsProject()) {
-        return false;
-    }
-
-    return (strcmp(a.Text.c_str(), b.Text.c_str()) < 0);
-}
-
-// Add time entries, in format:
-// Description - Task. Project. Client
-void Context::timeEntryAutocompleteItems(
-    std::set<std::string> *unique_names,
-    std::vector<AutocompleteItem> *list) const {
-
-    poco_check_ptr(list);
-
-    if (!user_) {
-        logger().warning("User logged out, cannot fetch autocomplete items");
-        return;
-    }
-
-    for (std::vector<TimeEntry *>::const_iterator it =
-        user_->related.TimeEntries.begin();
-            it != user_->related.TimeEntries.end(); it++) {
-        TimeEntry *te = *it;
-
-        if (te->DeletedAt() || te->IsMarkedAsDeletedOnServer()
-                || te->Description().empty()) {
-            continue;
-        }
-
-        Task *t = 0;
-        if (te->TID()) {
-            t = user_->TaskByID(te->TID());
-        }
-
-        Project *p = 0;
-        if (t && t->PID()) {
-            p = user_->ProjectByID(t->PID());
-        } else if (te->PID()) {
-            p = user_->ProjectByID(te->PID());
-        }
-
-        if (p && !p->Active()) {
-            continue;
-        }
-
-        Client *c = 0;
-        if (p && p->CID()) {
-            c = user_->ClientByID(p->CID());
-        }
-
-        std::string project_task_label =
-            Formatter::JoinTaskNameReverse(t, p, c);
-
-        std::string description = te->Description();
-
-        std::stringstream search_parts;
-        search_parts << te->Description();
-        if (!project_task_label.empty()) {
-            search_parts << " - " << project_task_label;
-        }
-
-        std::string text = search_parts.str();
-        if (text.empty()) {
-            continue;
-        }
-
-        if (unique_names->find(text) != unique_names->end()) {
-            continue;
-        }
-        unique_names->insert(text);
-
-        AutocompleteItem autocomplete_item;
-        autocomplete_item.Text = text;
-        autocomplete_item.Description = description;
-        autocomplete_item.ProjectAndTaskLabel = project_task_label;
-        if (p) {
-            autocomplete_item.ProjectColor = p->ColorCode();
-            autocomplete_item.ProjectID = p->ID();
-            autocomplete_item.ProjectLabel = p->Name();
-        }
-        if (c) {
-            autocomplete_item.ClientLabel = c->Name();
-        }
-        if (t) {
-            autocomplete_item.TaskID = t->ID();
-        }
-        autocomplete_item.Type = kAutocompleteItemTE;
-        list->push_back(autocomplete_item);
-    }
-}
-
-// Add tasks, in format:
-// Task. Project. Client
-void Context::taskAutocompleteItems(
-    std::set<std::string> *unique_names,
-    std::vector<AutocompleteItem> *list) const {
-
-    poco_check_ptr(list);
-
-    if (!user_) {
-        logger().warning("User logged out, cannot fetch autocomplete items");
-        return;
-    }
-
-    for (std::vector<Task *>::const_iterator it =
-        user_->related.Tasks.begin();
-            it != user_->related.Tasks.end(); it++) {
-        Task *t = *it;
-        std::string project_label;
-        std::string client_label;
-
-        if (t->IsMarkedAsDeletedOnServer()) {
-            continue;
-        }
-
-        Project *p = 0;
-        if (t->PID()) {
-            p = user_->ProjectByID(t->PID());
-        }
-
-        if (p && !p->Active()) {
-            continue;
-        }
-
-        if (p) {
-            project_label = p->Name();
-        }
-
-        Client *c = 0;
-        if (p && p->CID()) {
-            c = user_->ClientByID(p->CID());
-        }
-
-        if (c) {
-            client_label = c->Name();
-        }
-
-        std::string text = Formatter::JoinTaskNameReverse(t, p, c);
-        if (text.empty()) {
-            continue;
-        }
-
-        if (unique_names->find(text) != unique_names->end()) {
-            continue;
-        }
-        unique_names->insert(text);
-
-        AutocompleteItem autocomplete_item;
-        autocomplete_item.Text = text;
-        autocomplete_item.ProjectAndTaskLabel = text;
-        autocomplete_item.ProjectLabel = project_label;
-        autocomplete_item.ClientLabel = client_label;
-        autocomplete_item.TaskID = t->ID();
-        if (p) {
-            autocomplete_item.ProjectColor = p->ColorCode();
-            autocomplete_item.ProjectID = p->ID();
-        }
-        autocomplete_item.Type = kAutocompleteItemTask;
-        list->push_back(autocomplete_item);
-    }
-}
-
-// Add projects, in format:
-// Project. Client
-void Context::projectAutocompleteItems(
-    std::set<std::string> *unique_names,
-    std::vector<AutocompleteItem> *list) const {
-
-    poco_check_ptr(list);
-
-    if (!user_) {
-        logger().warning("User logged out, cannot fetch autocomplete items");
-        return;
-    }
-
-    for (std::vector<Project *>::const_iterator it =
-        user_->related.Projects.begin();
-            it != user_->related.Projects.end(); it++) {
-        Project *p = *it;
-        std::string project_label;
-        std::string client_label;
-
-        if (!p->Active()) {
-            continue;
-        }
-
-        if (p) {
-            project_label = p->Name();
-        }
-
-        Client *c = 0;
-        if (p->CID()) {
-            c = user_->ClientByID(p->CID());
-        }
-
-        if (c) {
-            client_label = c->Name();
-        }
-
-        std::string text = Formatter::JoinTaskName(0, p, c);
-        if (text.empty()) {
-            continue;
-        }
-
-        if (unique_names->find(text) != unique_names->end()) {
-            continue;
-        }
-        unique_names->insert(text);
-
-        AutocompleteItem autocomplete_item;
-        autocomplete_item.Text = text;
-        autocomplete_item.ProjectAndTaskLabel = text;
-        autocomplete_item.ProjectLabel = project_label;
-        autocomplete_item.ClientLabel = client_label;
-        autocomplete_item.ProjectID = p->ID();
-        autocomplete_item.ProjectColor = p->ColorCode();
-        autocomplete_item.Type = kAutocompleteItemProject;
-        list->push_back(autocomplete_item);
-    }
-}
-
-std::vector<AutocompleteItem> Context::autocompleteItems(
-    const bool including_time_entries) const {
-    std::vector<AutocompleteItem> result;
-
-    if (!user_) {
-        return result;
-    }
-
-    std::set<std::string> unique_names;
-    if (including_time_entries) {
-        timeEntryAutocompleteItems(&unique_names, &result);
-    }
-    taskAutocompleteItems(&unique_names, &result);
-    projectAutocompleteItems(&unique_names, &result);
-
-    std::sort(result.begin(), result.end(), CompareAutocompleteItems);
-    return result;
 }
 
 _Bool Context::AddProject(

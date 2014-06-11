@@ -20,7 +20,7 @@
 #include "Poco/Net/PrivateKeyPassphraseHandler.h"
 
 #include "./libjson.h"
-
+#include "./https_client.h"
 #include "./json.h"
 
 namespace kopsik {

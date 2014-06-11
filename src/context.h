@@ -214,18 +214,6 @@ class Context {
     void startPeriodicUpdateCheck();
     void executeUpdateCheck();
 
-    void timeEntryAutocompleteItems(
-        std::set<std::string> *unique_names,
-        std::vector<AutocompleteItem> *list) const;
-    void taskAutocompleteItems(
-        std::set<std::string> *unique_names,
-        std::vector<AutocompleteItem> *list) const;
-    void projectAutocompleteItems(
-        std::set<std::string> *unique_names,
-        std::vector<AutocompleteItem> *list) const;
-    std::vector<AutocompleteItem> autocompleteItems(
-        const bool including_time_entries) const;
-
     bool isPostponed(
         const Poco::Timestamp value,
         const Poco::Timestamp::TimeDiff
