@@ -47,14 +47,14 @@ namespace TogglDesktop
                     TimeEntryCellWithHeader cell = new TimeEntryCellWithHeader(y, this.Width);
                     cell.Setup(item);
                     this.EntriesList.Controls.Add(cell);
-                    y += 82;
+                    y += 100;
                 }
                 else
                 {
                     TimeEntryCell cell = new TimeEntryCell(y, this.Width);
                     cell.Setup(item);
                     this.EntriesList.Controls.Add(cell);
-                    y += 49;
+                    y += 50;
                 }                 
             }
         }
@@ -62,7 +62,7 @@ namespace TogglDesktop
         private void TimeEntryListViewController_Load(object sender, EventArgs e)
         {
             // FIXME:
-            //regular 49 header 82
+            //regular 50 header 100
         }
     }
 }
