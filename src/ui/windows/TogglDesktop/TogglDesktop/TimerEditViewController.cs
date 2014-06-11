@@ -200,12 +200,12 @@ namespace TogglDesktop
             timeEntryAutocompleteUpdate = null;
         }
 
-        private void linkLabelDescription_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void linkLabelDescription_Click(object sender, EventArgs e)
         {
             KopsikApi.kopsik_edit(KopsikApi.ctx, "", true, KopsikApi.Description);
         }
 
-        private void linkLabelDuration_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void linkLabelDuration_Click(object sender, EventArgs e)
         {
             KopsikApi.kopsik_edit(KopsikApi.ctx, "", true, KopsikApi.Duration);
         }
@@ -227,7 +227,7 @@ namespace TogglDesktop
             }
         }
 
-        private void linkLabelProject_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void linkLabelProject_Click(object sender, EventArgs e)
         {
             KopsikApi.kopsik_edit(KopsikApi.ctx, "", true, KopsikApi.Project);
         }
