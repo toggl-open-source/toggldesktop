@@ -30,13 +30,13 @@
         {
             this.labelProject = new System.Windows.Forms.Label();
             this.labelDuration = new System.Windows.Forms.Label();
-            this.buttonContinue = new System.Windows.Forms.Button();
             this.labelDescription = new System.Windows.Forms.Label();
             this.labelBillable = new System.Windows.Forms.Label();
             this.labelFormattedDate = new System.Windows.Forms.Label();
             this.labelDateDuration = new System.Windows.Forms.Label();
             this.headerPanel = new System.Windows.Forms.Panel();
             this.labelTag = new System.Windows.Forms.Label();
+            this.labelContinue = new System.Windows.Forms.Label();
             this.headerPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,17 +63,6 @@
             this.labelDuration.Text = "03:21:30";
             this.labelDuration.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.labelDuration.Click += new System.EventHandler(this.labelDuration_Click);
-            // 
-            // buttonContinue
-            // 
-            this.buttonContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonContinue.Location = new System.Drawing.Point(220, 60);
-            this.buttonContinue.Name = "buttonContinue";
-            this.buttonContinue.Size = new System.Drawing.Size(23, 23);
-            this.buttonContinue.TabIndex = 7;
-            this.buttonContinue.Text = ">";
-            this.buttonContinue.UseVisualStyleBackColor = true;
-            this.buttonContinue.Click += new System.EventHandler(this.buttonContinue_Click);
             // 
             // labelDescription
             // 
@@ -139,16 +128,26 @@
             this.labelTag.Size = new System.Drawing.Size(13, 13);
             this.labelTag.TabIndex = 13;
             // 
+            // labelContinue
+            // 
+            this.labelContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelContinue.Image = global::TogglDesktop.Properties.Resources._continue;
+            this.labelContinue.Location = new System.Drawing.Point(220, 63);
+            this.labelContinue.Name = "labelContinue";
+            this.labelContinue.Size = new System.Drawing.Size(24, 24);
+            this.labelContinue.TabIndex = 14;
+            this.labelContinue.Click += new System.EventHandler(this.labelContinue_Click);
+            // 
             // TimeEntryCellWithHeader
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.Controls.Add(this.labelContinue);
             this.Controls.Add(this.labelTag);
             this.Controls.Add(this.headerPanel);
             this.Controls.Add(this.labelProject);
             this.Controls.Add(this.labelDuration);
-            this.Controls.Add(this.buttonContinue);
             this.Controls.Add(this.labelDescription);
             this.Controls.Add(this.labelBillable);
             this.Name = "TimeEntryCellWithHeader";
@@ -164,12 +163,12 @@
 
         private System.Windows.Forms.Label labelProject;
         private System.Windows.Forms.Label labelDuration;
-        private System.Windows.Forms.Button buttonContinue;
         private System.Windows.Forms.Label labelDescription;
         private System.Windows.Forms.Label labelBillable;
         private System.Windows.Forms.Label labelFormattedDate;
         private System.Windows.Forms.Label labelDateDuration;
         private System.Windows.Forms.Panel headerPanel;
         private System.Windows.Forms.Label labelTag;
+        private System.Windows.Forms.Label labelContinue;
     }
 }

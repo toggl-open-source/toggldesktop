@@ -37,11 +37,6 @@ namespace TogglDesktop
             this.labelTag.Visible = (this.TimeEntry.Tags != null && this.TimeEntry.Tags.Length > 0);
         }
 
-        private void buttonContinue_Click(object sender, EventArgs e)
-        {
-            KopsikApi.kopsik_continue(KopsikApi.ctx, TimeEntry.GUID);
-        }
-
         private void TimeEntryCell_MouseClick(object sender, MouseEventArgs e)
         {
             KopsikApi.kopsik_edit(KopsikApi.ctx, TimeEntry.GUID, false, "");
@@ -61,5 +56,11 @@ namespace TogglDesktop
         {
             KopsikApi.kopsik_edit(KopsikApi.ctx, TimeEntry.GUID, false, KopsikApi.Project);
         }
+
+        private void labelContinue_Click(object sender, EventArgs e)
+        {
+            KopsikApi.kopsik_continue(KopsikApi.ctx, TimeEntry.GUID);
+        }
+
     }
 }

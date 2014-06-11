@@ -30,10 +30,10 @@
         {
             this.labelBillable = new System.Windows.Forms.Label();
             this.labelDescription = new System.Windows.Forms.Label();
-            this.buttonContinue = new System.Windows.Forms.Button();
             this.labelDuration = new System.Windows.Forms.Label();
             this.labelProject = new System.Windows.Forms.Label();
             this.labelTag = new System.Windows.Forms.Label();
+            this.labelContinue = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // labelBillable
@@ -55,17 +55,6 @@
             this.labelDescription.TabIndex = 1;
             this.labelDescription.Text = "Blogpost about new stuff in Toggl...";
             this.labelDescription.Click += new System.EventHandler(this.labelDescription_Click);
-            // 
-            // buttonContinue
-            // 
-            this.buttonContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonContinue.Location = new System.Drawing.Point(220, 10);
-            this.buttonContinue.Name = "buttonContinue";
-            this.buttonContinue.Size = new System.Drawing.Size(23, 23);
-            this.buttonContinue.TabIndex = 2;
-            this.buttonContinue.Text = ">";
-            this.buttonContinue.UseVisualStyleBackColor = true;
-            this.buttonContinue.Click += new System.EventHandler(this.buttonContinue_Click);
             // 
             // labelDuration
             // 
@@ -100,15 +89,25 @@
             this.labelTag.Size = new System.Drawing.Size(13, 13);
             this.labelTag.TabIndex = 5;
             // 
+            // labelContinue
+            // 
+            this.labelContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelContinue.Image = global::TogglDesktop.Properties.Resources._continue;
+            this.labelContinue.Location = new System.Drawing.Point(220, 13);
+            this.labelContinue.Name = "labelContinue";
+            this.labelContinue.Size = new System.Drawing.Size(24, 24);
+            this.labelContinue.TabIndex = 6;
+            this.labelContinue.Click += new System.EventHandler(this.labelContinue_Click);
+            // 
             // TimeEntryCell
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.Controls.Add(this.labelContinue);
             this.Controls.Add(this.labelTag);
             this.Controls.Add(this.labelProject);
             this.Controls.Add(this.labelDuration);
-            this.Controls.Add(this.buttonContinue);
             this.Controls.Add(this.labelDescription);
             this.Controls.Add(this.labelBillable);
             this.Name = "TimeEntryCell";
@@ -123,9 +122,9 @@
 
         private System.Windows.Forms.Label labelBillable;
         private System.Windows.Forms.Label labelDescription;
-        private System.Windows.Forms.Button buttonContinue;
         private System.Windows.Forms.Label labelDuration;
         private System.Windows.Forms.Label labelProject;
         private System.Windows.Forms.Label labelTag;
+        private System.Windows.Forms.Label labelContinue;
     }
 }
