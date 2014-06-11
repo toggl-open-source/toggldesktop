@@ -9,7 +9,9 @@
 
 namespace kopsik {
 
-Poco::UInt64 IDFromJSONNode(JSONNODE * const data) {
+namespace json {
+
+Poco::UInt64 ID(JSONNODE * const data) {
     poco_check_ptr(data);
 
     JSONNODE_ITERATOR current_node = json_begin(data);
@@ -26,7 +28,7 @@ Poco::UInt64 IDFromJSONNode(JSONNODE * const data) {
     return 0;
 }
 
-Poco::UInt64 UserIDFromJSONDataString(const std::string json_data_string) {
+Poco::UInt64 UserID(const std::string json_data_string) {
     Poco::UInt64 result(0);
 
     JSONNODE *root = json_parse(json_data_string.c_str());
@@ -36,7 +38,7 @@ Poco::UInt64 UserIDFromJSONDataString(const std::string json_data_string) {
     while (current_node != last_node) {
         json_char *node_name = json_name(*current_node);
         if (strcmp(node_name, "data") == 0) {
-            result = IDFromJSONNode(*current_node);
+            result = ID(*current_node);
             break;
         }
         ++current_node;
@@ -47,7 +49,7 @@ Poco::UInt64 UserIDFromJSONDataString(const std::string json_data_string) {
     return result;
 }
 
-std::string LoginTokenFromJSONDataString(const std::string json_data_string) {
+std::string LoginToken(const std::string json_data_string) {
     std::string result("");
 
     JSONNODE *root = json_parse(json_data_string.c_str());
@@ -67,7 +69,7 @@ std::string LoginTokenFromJSONDataString(const std::string json_data_string) {
     return result;
 }
 
-guid GUIDFromJSONNode(JSONNODE * const data) {
+guid GUID(JSONNODE * const data) {
     poco_check_ptr(data);
 
     JSONNODE_ITERATOR current_node = json_begin(data);
@@ -97,11 +99,11 @@ bool IsDeletedAtServer(JSONNODE * const data) {
     return false;
 }
 
-bool IsValidJSON(const std::string json) {
+bool IsValid(const std::string json) {
     return json_is_valid(json.c_str());
 }
 
-error LoadTagsFromJSONNode(
+error LoadTags(
     TimeEntry *te,
     JSONNODE * const list) {
 
@@ -122,7 +124,7 @@ error LoadTagsFromJSONNode(
     return noError;
 }
 
-Poco::UInt64 UIModifiedAtFromJSONNode(
+Poco::UInt64 UIModifiedAt(
     JSONNODE * const data) {
 
     poco_check_ptr(data);
@@ -139,7 +141,7 @@ Poco::UInt64 UIModifiedAtFromJSONNode(
     return 0;
 }
 
-error LoadTimeEntryTagsFromJSONNode(
+error LoadTimeEntryTags(
     TimeEntry *te,
     JSONNODE * const list) {
 
@@ -189,5 +191,7 @@ std::string UpdateJSON(
     json_delete(c);
     return json;
 }
+
+}   // namespace json
 
 }   // namespace kopsik

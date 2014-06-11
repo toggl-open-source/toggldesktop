@@ -419,7 +419,7 @@ error User::Push(HTTPSClient *https_client) {
             return noError;
         }
 
-        std::string json = UpdateJSON(&projects, &time_entries);
+        std::string json = kopsik::json::UpdateJSON(&projects, &time_entries);
 
         logger().debug(json);
 
@@ -587,14 +587,14 @@ void User::loadUserTagFromJSONNode(
     poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = IDFromJSONNode(data);
+    Poco::UInt64 id = kopsik::json::ID(data);
     Tag *model = related.TagByID(id);
 
     if (!model) {
-        model = related.TagByGUID(GUIDFromJSONNode(data));
+        model = related.TagByGUID(kopsik::json::GUID(data));
     }
 
-    if (IsDeletedAtServer(data)) {
+    if (kopsik::json::IsDeletedAtServer(data)) {
         if (model) {
             model->MarkAsDeletedOnServer();
         }
@@ -653,12 +653,12 @@ void User::loadUserTaskFromJSONNode(
     poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = IDFromJSONNode(data);
+    Poco::UInt64 id = kopsik::json::ID(data);
     Task *model = related.TaskByID(id);
 
     // Tasks have no GUID
 
-    if (IsDeletedAtServer(data)) {
+    if (kopsik::json::IsDeletedAtServer(data)) {
         if (model) {
             model->MarkAsDeletedOnServer();
         }
@@ -742,12 +742,12 @@ void User::loadUserWorkspaceFromJSONNode(
     poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = IDFromJSONNode(data);
+    Poco::UInt64 id = kopsik::json::ID(data);
     Workspace *model = related.WorkspaceByID(id);
 
     // Workspaces have no GUID
 
-    if (IsDeletedAtServer(data)) {
+    if (kopsik::json::IsDeletedAtServer(data)) {
         if (model) {
             model->MarkAsDeletedOnServer();
         }
@@ -844,14 +844,14 @@ void User::loadUserClientFromJSONNode(
     poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = IDFromJSONNode(data);
+    Poco::UInt64 id = kopsik::json::ID(data);
     Client *model = related.ClientByID(id);
 
     if (!model) {
-        model = related.ClientByGUID(GUIDFromJSONNode(data));
+        model = related.ClientByGUID(kopsik::json::GUID(data));
     }
 
-    if (IsDeletedAtServer(data)) {
+    if (kopsik::json::IsDeletedAtServer(data)) {
         if (model) {
             model->MarkAsDeletedOnServer();
         }
@@ -893,14 +893,14 @@ void User::loadUserProjectFromJSONNode(
     poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = IDFromJSONNode(data);
+    Poco::UInt64 id = kopsik::json::ID(data);
     Project *model = related.ProjectByID(id);
 
     if (!model) {
-        model = related.ProjectByGUID(GUIDFromJSONNode(data));
+        model = related.ProjectByGUID(kopsik::json::GUID(data));
     }
 
-    if (IsDeletedAtServer(data)) {
+    if (kopsik::json::IsDeletedAtServer(data)) {
         if (model) {
             model->MarkAsDeletedOnServer();
         }
@@ -942,14 +942,14 @@ void User::loadUserTimeEntryFromJSONNode(
     poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = IDFromJSONNode(data);
+    Poco::UInt64 id = kopsik::json::ID(data);
     TimeEntry *model = related.TimeEntryByID(id);
 
     if (!model) {
-        model = related.TimeEntryByGUID(GUIDFromJSONNode(data));
+        model = related.TimeEntryByGUID(kopsik::json::GUID(data));
     }
 
-    if (IsDeletedAtServer(data)) {
+    if (kopsik::json::IsDeletedAtServer(data)) {
         if (model) {
             model->MarkAsDeletedOnServer();
         }

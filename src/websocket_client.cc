@@ -150,7 +150,7 @@ std::string WebSocketClient::parseWebSocketMessageType(
     if (json.empty()) {
         return "";
     }
-    if (!IsValidJSON(json)) {
+    if (!kopsik::json::IsValid(json)) {
         return "";
     }
 

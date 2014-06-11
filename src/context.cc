@@ -612,7 +612,7 @@ void Context::executeUpdateCheck() {
         return;
     }
 
-    if (!IsValidJSON(response_body)) {
+    if (!kopsik::json::IsValid(response_body)) {
         displayError(err);
         return;
     }
@@ -935,7 +935,7 @@ _Bool Context::Login(
         return false;
     }
 
-    Poco::UInt64 userID = UserIDFromJSONDataString(user_data_json);
+    Poco::UInt64 userID = kopsik::json::UserID(user_data_json);
 
     if (!userID) {
         return false;
@@ -1780,7 +1780,7 @@ _Bool Context::OpenReportsInBrowser() {
         return displayError("Unexpected empty response from API");
     }
 
-    std::string login_token = LoginTokenFromJSONDataString(response_body);
+    std::string login_token = kopsik::json::LoginToken(response_body);
     if (login_token.empty()) {
         return displayError("Could not extract login token from JSON");
     }

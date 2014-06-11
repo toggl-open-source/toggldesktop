@@ -21,19 +21,27 @@
 
 namespace kopsik {
 
+namespace json {
+
 std::string UpdateJSON(
     std::vector<Project *> * const,
     std::vector<TimeEntry *> * const);
 
-Poco::UInt64 UserIDFromJSONDataString(const std::string json_data_string);
-Poco::UInt64 IDFromJSONNode(JSONNODE * const);
-guid GUIDFromJSONNode(JSONNODE * const);
-Poco::UInt64 UIModifiedAtFromJSONNode(JSONNODE * const);
+Poco::UInt64 UserID(const std::string json_data_string);
+
+Poco::UInt64 ID(JSONNODE * const);
+
+guid GUID(JSONNODE * const);
+
+Poco::UInt64 UIModifiedAt(JSONNODE * const);
+
 bool IsDeletedAtServer(JSONNODE * const);
 
-std::string LoginTokenFromJSONDataString(const std::string json_data_string);
+std::string LoginToken(const std::string json_data_string);
 
-bool IsValidJSON(const std::string json);
+bool IsValid(const std::string json);
+
+}  // namespace json
 
 }  // namespace kopsik
 
