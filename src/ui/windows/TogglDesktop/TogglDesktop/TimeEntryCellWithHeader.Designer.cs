@@ -56,7 +56,7 @@
             // 
             this.labelDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelDuration.AutoSize = true;
-            this.labelDuration.Location = new System.Drawing.Point(250, 65);
+            this.labelDuration.Location = new System.Drawing.Point(250, 68);
             this.labelDuration.Name = "labelDuration";
             this.labelDuration.Size = new System.Drawing.Size(49, 13);
             this.labelDuration.TabIndex = 8;
@@ -79,7 +79,7 @@
             // 
             this.labelBillable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelBillable.Image = global::TogglDesktop.Properties.Resources.icon_billable;
-            this.labelBillable.Location = new System.Drawing.Point(200, 65);
+            this.labelBillable.Location = new System.Drawing.Point(200, 68);
             this.labelBillable.Name = "labelBillable";
             this.labelBillable.Size = new System.Drawing.Size(13, 13);
             this.labelBillable.TabIndex = 5;
@@ -123,7 +123,7 @@
             // 
             this.labelTag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelTag.Image = global::TogglDesktop.Properties.Resources.icon_tags;
-            this.labelTag.Location = new System.Drawing.Point(185, 65);
+            this.labelTag.Location = new System.Drawing.Point(185, 68);
             this.labelTag.Name = "labelTag";
             this.labelTag.Size = new System.Drawing.Size(13, 13);
             this.labelTag.TabIndex = 13;
