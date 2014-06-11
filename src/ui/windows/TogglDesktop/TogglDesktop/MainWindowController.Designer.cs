@@ -65,14 +65,14 @@
             this.troubleBox.Controls.Add(this.errorLabel);
             this.troubleBox.Location = new System.Drawing.Point(0, 0);
             this.troubleBox.Name = "troubleBox";
-            this.troubleBox.Size = new System.Drawing.Size(413, 30);
+            this.troubleBox.Size = new System.Drawing.Size(298, 30);
             this.troubleBox.TabIndex = 5;
             this.troubleBox.Visible = false;
             // 
             // buttonDismissError
             // 
             this.buttonDismissError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDismissError.Location = new System.Drawing.Point(394, 4);
+            this.buttonDismissError.Location = new System.Drawing.Point(279, 4);
             this.buttonDismissError.Name = "buttonDismissError";
             this.buttonDismissError.Size = new System.Drawing.Size(16, 23);
             this.buttonDismissError.TabIndex = 6;
@@ -239,9 +239,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(414, 292);
+            this.ClientSize = new System.Drawing.Size(299, 292);
             this.Controls.Add(this.troubleBox);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(315, 330);
             this.Name = "MainWindowController";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Toggl Desktop";
