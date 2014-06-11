@@ -127,9 +127,9 @@ _Bool Context::StartEvents() {
     }
 
     // See if user was logged in into app previously
-    kopsik::User *user = new kopsik::User();
+    User *user = new User();
     err = db()->LoadCurrentUser(user);
-    if (err != kopsik::noError) {
+    if (err != noError) {
         delete user;
         setUser(0);
         return displayError(err);
@@ -181,9 +181,9 @@ void Context::Shutdown() {
 error Context::save(const bool push_changes) {
     logger().debug("save");
 
-    std::vector<kopsik::ModelChange> changes;
-    kopsik::error err = db()->SaveUser(user_, true, &changes);
-    if (err != kopsik::noError) {
+    std::vector<ModelChange> changes;
+    error err = db()->SaveUser(user_, true, &changes);
+    if (err != noError) {
         return err;
     }
 
@@ -196,7 +196,7 @@ error Context::save(const bool push_changes) {
     return noError;
 }
 
-void Context::updateUI(std::vector<kopsik::ModelChange> *changes) {
+void Context::updateUI(std::vector<ModelChange> *changes) {
     bool display_time_entries(false);
     bool display_time_entry_autocomplete(false);
     bool display_project_autocomplete(false);
@@ -206,7 +206,7 @@ void Context::updateUI(std::vector<kopsik::ModelChange> *changes) {
     bool display_timer_state(false);
     bool display_time_entry_editor(false);
     bool open_time_entry_list(false);
-    for (std::vector<kopsik::ModelChange>::const_iterator it =
+    for (std::vector<ModelChange>::const_iterator it =
         changes->begin();
             it != changes->end();
             it++) {
@@ -273,22 +273,22 @@ void Context::updateUI(std::vector<kopsik::ModelChange> *changes) {
 }
 
 void Context::displayTimeEntryAutocomplete() {
-    std::vector<kopsik::AutocompleteItem> list = autocompleteItems(true);
+    std::vector<AutocompleteItem> list = autocompleteItems(true);
     UI()->DisplayTimeEntryAutocomplete(&list);
 }
 
 void Context::displayProjectAutocomplete() {
-    std::vector<kopsik::AutocompleteItem> list = autocompleteItems(false);
+    std::vector<AutocompleteItem> list = autocompleteItems(false);
     UI()->DisplayProjectAutocomplete(&list);
 }
 
 void Context::displayClientSelect() {
-    std::vector<kopsik::Client *> list = clients();
+    std::vector<Client *> list = clients();
     UI()->DisplayClientSelect(&list);
 }
 
 void Context::displayWorkspaceSelect() {
-    std::vector<kopsik::Workspace *> list = workspaces();
+    std::vector<Workspace *> list = workspaces();
     UI()->DisplayWorkspaceSelect(&list);
 }
 
@@ -328,7 +328,7 @@ bool Context::isPostponed(
     return true;
 }
 
-_Bool Context::displayError(const kopsik::error err) {
+_Bool Context::displayError(const error err) {
     if (err.find("Request to server failed with status code: 403")
             != std::string::npos) {
         if (!user_) {
@@ -346,15 +346,15 @@ void Context::onFullSync(Poco::Util::TimerTask& task) {  // NOLINT
     }
     logger().debug("onFullSync executing");
 
-    kopsik::HTTPSClient client;
-    kopsik::error err = user_->FullSync(&client);
-    if (err != kopsik::noError) {
+    HTTPSClient client;
+    error err = user_->FullSync(&client);
+    if (err != noError) {
         displayError(err);
         return;
     }
 
     err = save(false);
-    if (err != kopsik::noError) {
+    if (err != noError) {
         displayError(err);
         return;
     }
@@ -381,15 +381,15 @@ void Context::onPartialSync(Poco::Util::TimerTask& task) {  // NOLINT
     }
     logger().debug("onPartialSync executing");
 
-    kopsik::HTTPSClient client;
-    kopsik::error err = user_->Push(&client);
-    if (err != kopsik::noError) {
+    HTTPSClient client;
+    error err = user_->Push(&client);
+    if (err != noError) {
         displayError(err);
         return;
     }
 
     err = save(false);
-    if (err != kopsik::noError) {
+    if (err != noError) {
         displayError(err);
         return;
     }
@@ -523,7 +523,7 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
             delete timeline_uploader_;
             timeline_uploader_ = 0;
         }
-        timeline_uploader_ = new kopsik::TimelineUploader(timeline_upload_url_);
+        timeline_uploader_ = new TimelineUploader(timeline_upload_url_);
     }
 
     {
@@ -532,7 +532,7 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
             delete window_change_recorder_;
             window_change_recorder_ = 0;
         }
-        window_change_recorder_ = new kopsik::WindowChangeRecorder();
+        window_change_recorder_ = new WindowChangeRecorder();
     }
 }
 
@@ -582,8 +582,8 @@ void Context::executeUpdateCheck() {
     logger().debug("executeUpdateCheck");
 
     std::string update_channel("");
-    kopsik::error err = db()->LoadUpdateChannel(&update_channel);
-    if (err != kopsik::noError) {
+    error err = db()->LoadUpdateChannel(&update_channel);
+    if (err != noError) {
         displayError(err);
         return;
     }
@@ -595,7 +595,7 @@ void Context::executeUpdateCheck() {
                                std::string(""),
                                std::string(""),
                                &response_body);
-    if (err != kopsik::noError) {
+    if (err != noError) {
         displayError(err);
         return;
     }
@@ -632,8 +632,8 @@ void Context::executeUpdateCheck() {
 
 const std::string Context::updateURL() {
     std::string update_channel("");
-    kopsik::error err = db()->LoadUpdateChannel(&update_channel);
-    if (err != kopsik::noError) {
+    error err = db()->LoadUpdateChannel(&update_channel);
+    if (err != noError) {
         displayError(err);
         return "";
     }
@@ -691,12 +691,12 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
 
     std::string response_body("");
     HTTPSClient https_client;
-    kopsik::error err = https_client.PostJSON("/api/v8/timeline_settings",
-                        json,
-                        user_->APIToken(),
-                        "api_token",
-                        &response_body);
-    if (err != kopsik::noError) {
+    error err = https_client.PostJSON("/api/v8/timeline_settings",
+                                      json,
+                                      user_->APIToken(),
+                                      "api_token",
+                                      &response_body);
+    if (err != noError) {
         logger().warning(err);
     }
 }
@@ -707,8 +707,8 @@ _Bool Context::SendFeedback(Feedback fb) {
         return true;
     }
 
-    kopsik::error err = fb.Validate();
-    if (err != kopsik::noError) {
+    error err = fb.Validate();
+    if (err != noError) {
         return displayError(err);
     }
 
@@ -729,12 +729,12 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
 
     std::string response_body("");
     HTTPSClient https_client;
-    kopsik::error err = https_client.PostJSON("/api/v8/feedback",
-                        feedback_.JSON(),
-                        user_->APIToken(),
-                        "api_token",
-                        &response_body);
-    if (err != kopsik::noError) {
+    error err = https_client.PostJSON("/api/v8/feedback",
+                                      feedback_.JSON(),
+                                      user_->APIToken(),
+                                      "api_token",
+                                      &response_body);
+    if (err != noError) {
         displayError(err);
         return;
     }
@@ -745,15 +745,15 @@ void Context::SetWebSocketClientURL(const std::string value) {
     if (ws_client_) {
         delete ws_client_;
     }
-    ws_client_ = new kopsik::WebSocketClient(value);
+    ws_client_ = new WebSocketClient(value);
 }
 
-_Bool Context::Settings(kopsik::Settings *settings) {
+_Bool Context::LoadSettings(Settings *settings) {
     poco_check_ptr(settings);
     return displayError(db()->LoadSettings(settings));
 }
 
-_Bool Context::SetSettings(const kopsik::Settings settings) {
+_Bool Context::SetSettings(const Settings settings) {
     error err = db()->SaveSettings(settings);
     if (err != noError) {
         return displayError(err);
@@ -763,18 +763,18 @@ _Bool Context::SetSettings(const kopsik::Settings settings) {
 
 _Bool Context::SetProxySettings(
     const _Bool use_proxy,
-    const kopsik::Proxy proxy) {
+    const Proxy proxy) {
 
     _Bool was_using_proxy(false);
-    kopsik::Proxy previous_proxy_settings;
+    Proxy previous_proxy_settings;
     error err = db()->LoadProxySettings(&was_using_proxy,
                                         &previous_proxy_settings);
-    if (err != kopsik::noError) {
+    if (err != noError) {
         return displayError(err);
     }
 
     err = db()->SaveProxySettings(use_proxy, proxy);
-    if (err != kopsik::noError) {
+    if (err != noError) {
         return displayError(err);
     }
 
@@ -824,7 +824,7 @@ KopsikTimeEntryViewItem *Context::timeEntryViewItem(TimeEntry *te) {
 
     Poco::Int64 duration = totalDurationForDate(te);
     std::string date_duration =
-        kopsik::Formatter::FormatDurationInSecondsPrettyHHMM(duration);
+        Formatter::FormatDurationInSecondsPrettyHHMM(duration);
 
     return time_entry_view_item_init(te,
                                      project_and_task_label,
@@ -836,10 +836,10 @@ KopsikTimeEntryViewItem *Context::timeEntryViewItem(TimeEntry *te) {
 }
 
 _Bool Context::DisplaySettings(const _Bool open) {
-    kopsik::Settings settings;
+    Settings settings;
 
     error err = db()->LoadSettings(&settings);
-    if (err != kopsik::noError) {
+    if (err != noError) {
         setUser(0);
         return displayError(err);
     }
@@ -847,7 +847,7 @@ _Bool Context::DisplaySettings(const _Bool open) {
     bool use_proxy(false);
     Proxy proxy;
     err = db()->LoadProxySettings(&use_proxy, &proxy);
-    if (err != kopsik::noError) {
+    if (err != noError) {
         setUser(0);
         return displayError(err);
     }
@@ -878,7 +878,7 @@ _Bool Context::SetDBPath(
             delete db_;
             db_ = 0;
         }
-        db_ = new kopsik::Database(path);
+        db_ = new Database(path);
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -917,10 +917,10 @@ _Bool Context::Login(
         return displayError("Empty password");
     }
 
-    kopsik::HTTPSClient client;
+    HTTPSClient client;
     std::string user_data_json("");
-    kopsik::error err = User::Me(&client, email, password, &user_data_json);
-    if (err != kopsik::noError) {
+    error err = User::Me(&client, email, password, &user_data_json);
+    if (err != noError) {
         return displayError(err);
     }
 
@@ -934,9 +934,9 @@ _Bool Context::Login(
         return false;
     }
 
-    kopsik::User *user = new kopsik::User();
+    User *user = new User();
     err = db()->LoadUserByID(userID, user);
-    if (err != kopsik::noError) {
+    if (err != noError) {
         delete user;
         return displayError(err);
     }
@@ -944,7 +944,7 @@ _Bool Context::Login(
     LoadUserAndRelatedDataFromJSONString(user, user_data_json);
 
     err = db()->SetCurrentAPIToken(user->APIToken());
-    if (err != kopsik::noError) {
+    if (err != noError) {
         delete user;
         return displayError(err);
     }
@@ -997,12 +997,12 @@ void Context::setUser(User *value, const bool user_logged_in) {
 _Bool Context::SetLoggedInUserFromJSON(
     const std::string json) {
 
-    kopsik::User *u = new kopsik::User();
+    User *u = new User();
 
     LoadUserAndRelatedDataFromJSONString(u, json);
 
-    kopsik::error err = db()->SetCurrentAPIToken(u->APIToken());
-    if (err != kopsik::noError) {
+    error err = db()->SetCurrentAPIToken(u->APIToken());
+    if (err != noError) {
         delete u;
         return displayError(err);
     }
@@ -1028,8 +1028,8 @@ _Bool Context::Logout() {
 
         Shutdown();
 
-        kopsik::error err = db()->ClearCurrentAPIToken();
-        if (err != kopsik::noError) {
+        error err = db()->ClearCurrentAPIToken();
+        if (err != noError) {
             return displayError(err);
         }
 
@@ -1054,8 +1054,8 @@ _Bool Context::ClearCache() {
             logger().warning("User is logged out, cannot clear cache");
             return true;
         }
-        kopsik::error err = db()->DeleteUser(user_, true);
-        if (err != kopsik::noError) {
+        error err = db()->DeleteUser(user_, true);
+        if (err != noError) {
             return displayError(err);
         }
 
@@ -1113,7 +1113,7 @@ Poco::UInt64 Context::UsersDefaultWID() const {
 }
 
 void Context::CollectPushableTimeEntries(
-    std::vector<kopsik::TimeEntry *> *models) const {
+    std::vector<TimeEntry *> *models) const {
 
     poco_check_ptr(models);
 
@@ -1129,11 +1129,11 @@ std::vector<std::string> Context::tags() const {
         return tags;
     }
     std::set<std::string> unique_names;
-    for (std::vector<kopsik::Tag *>::const_iterator it =
+    for (std::vector<Tag *>::const_iterator it =
         user_->related.Tags.begin();
             it != user_->related.Tags.end();
             it++) {
-        kopsik::Tag *tag = *it;
+        Tag *tag = *it;
         if (unique_names.find(tag->Name()) != unique_names.end()) {
             continue;
         }
@@ -1144,8 +1144,8 @@ std::vector<std::string> Context::tags() const {
     return tags;
 }
 
-std::vector<kopsik::Workspace *> Context::workspaces() const {
-    std::vector<kopsik::Workspace *> result;
+std::vector<Workspace *> Context::workspaces() const {
+    std::vector<Workspace *> result;
     if (!user_) {
         logger().warning("User logged out, cannot fetch workspaces");
         return result;
@@ -1155,8 +1155,8 @@ std::vector<kopsik::Workspace *> Context::workspaces() const {
     return result;
 }
 
-std::vector<kopsik::Client *> Context::clients() const {
-    std::vector<kopsik::Client *> result;
+std::vector<Client *> Context::clients() const {
+    std::vector<Client *> result;
     if (!user_) {
         logger().warning("User logged out, cannot fetch clients");
         return result;
@@ -1232,7 +1232,7 @@ void Context::DisplayTimeEntryList(const _Bool open) {
 
         Poco::Int64 duration = date_durations[te->DateHeaderString()];
         std::string date_duration =
-            kopsik::Formatter::FormatDurationInSecondsPrettyHHMM(duration);
+            Formatter::FormatDurationInSecondsPrettyHHMM(duration);
 
         KopsikTimeEntryViewItem *item =
             time_entry_view_item_init(te,
@@ -1267,7 +1267,7 @@ void Context::Edit(const std::string GUID,
         return;
     }
 
-    kopsik::TimeEntry *te = 0;
+    TimeEntry *te = 0;
     if (edit_running_entry) {
         te = user_->RunningTimeEntry();
     } else {
@@ -1284,8 +1284,8 @@ void Context::Edit(const std::string GUID,
 
 void Context::About() {
     std::string update_channel("");
-    kopsik::error err = db()->LoadUpdateChannel(&update_channel);
-    if (err != kopsik::noError) {
+    error err = db()->LoadUpdateChannel(&update_channel);
+    if (err != noError) {
         displayError(err);
         return;
     }
@@ -1309,15 +1309,15 @@ _Bool Context::ContinueLatest() {
         return true;
     }
 
-    kopsik::TimeEntry *latest = 0;
+    TimeEntry *latest = 0;
     std::vector<TimeEntry*> list = timeEntries();
     if (list.empty()) {
         return true;
     }
     latest = list.back();
 
-    kopsik::error err = user_->Continue(latest->GUID());
-    if (err != kopsik::noError) {
+    error err = user_->Continue(latest->GUID());
+    if (err != noError) {
         return displayError(err);
     }
 
@@ -1338,15 +1338,15 @@ _Bool Context::Continue(
         return displayError("Missing GUID");
     }
 
-    kopsik::error err = user_->Continue(GUID);
-    if (err != kopsik::noError) {
+    error err = user_->Continue(GUID);
+    if (err != noError) {
         return displayError(err);
     }
 
     UI()->DisplayApp();
 
     err = save();
-    if (err != kopsik::noError) {
+    if (err != noError) {
         return displayError(err);
     }
 
@@ -1363,7 +1363,7 @@ _Bool Context::DeleteTimeEntryByGUID(const std::string GUID) {
     if (GUID.empty()) {
         return displayError("Missing GUID");
     }
-    kopsik::TimeEntry *te = user_->TimeEntryByGUID(GUID);
+    TimeEntry *te = user_->TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
         return true;
@@ -1387,7 +1387,7 @@ _Bool Context::SetTimeEntryDuration(
         logger().warning("Cannot set duration, user logged out");
         return true;
     }
-    kopsik::TimeEntry *te = user_->TimeEntryByGUID(GUID);
+    TimeEntry *te = user_->TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
         return true;
@@ -1413,13 +1413,13 @@ _Bool Context::SetTimeEntryProject(
         return true;
     }
 
-    kopsik::TimeEntry *te = user_->TimeEntryByGUID(GUID);
+    TimeEntry *te = user_->TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
         return true;
     }
 
-    kopsik::Project *p = 0;
+    Project *p = 0;
     if (project_id) {
         p = user_->ProjectByID(project_id);
     }
@@ -1452,7 +1452,7 @@ _Bool Context::SetTimeEntryStartISO8601(
         logger().warning("Cannot change start time, user logged out");
         return true;
     }
-    kopsik::TimeEntry *te = user_->TimeEntryByGUID(GUID);
+    TimeEntry *te = user_->TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
         return true;
@@ -1477,7 +1477,7 @@ _Bool Context::SetTimeEntryEndISO8601(
         logger().warning("Cannot change end time, user logged out");
         return true;
     }
-    kopsik::TimeEntry *te = user_->TimeEntryByGUID(GUID);
+    TimeEntry *te = user_->TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
         return true;
@@ -1502,7 +1502,7 @@ _Bool Context::SetTimeEntryTags(
         logger().warning("Cannot set tags, user logged out");
         return true;
     }
-    kopsik::TimeEntry *te = user_->TimeEntryByGUID(GUID);
+    TimeEntry *te = user_->TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
         return true;
@@ -1525,7 +1525,7 @@ _Bool Context::SetTimeEntryBillable(
         logger().warning("Cannot set billable, user logged out");
         return true;
     }
-    kopsik::TimeEntry *te = user_->TimeEntryByGUID(GUID);
+    TimeEntry *te = user_->TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
         return true;
@@ -1548,7 +1548,7 @@ _Bool Context::SetTimeEntryDescription(
         logger().warning("Cannot set description, user logged out");
         return true;
     }
-    kopsik::TimeEntry *te = user_->TimeEntryByGUID(GUID);
+    TimeEntry *te = user_->TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
         return true;
@@ -1567,7 +1567,7 @@ _Bool Context::Stop() {
         return true;
     }
 
-    std::vector<kopsik::TimeEntry *> stopped = user_->Stop();
+    std::vector<TimeEntry *> stopped = user_->Stop();
     if (stopped.empty()) {
         logger().warning("No time entry was found to stop");
         return true;
@@ -1598,7 +1598,7 @@ _Bool Context::StopAt(
 }
 
 _Bool Context::RunningTimeEntry(
-    kopsik::TimeEntry **running) const {
+    TimeEntry **running) const {
     if (!user_) {
         logger().warning("Cannot fetch time entry, user logged out");
         return true;
@@ -1615,8 +1615,8 @@ _Bool Context::ToggleTimelineRecording() {
     try {
         user_->SetRecordTimeline(!user_->RecordTimeline());
 
-        kopsik::error err = save();
-        if (err != kopsik::noError) {
+        error err = save();
+        if (err != noError) {
             return displayError(err);
         }
 
@@ -1636,17 +1636,17 @@ _Bool Context::ToggleTimelineRecording() {
     return true;
 }
 
-std::vector<kopsik::TimeEntry *> Context::timeEntries() const {
-    std::vector<kopsik::TimeEntry *> result;
+std::vector<TimeEntry *> Context::timeEntries() const {
+    std::vector<TimeEntry *> result;
     if (!user_) {
         return result;
     }
 
     // Collect visible time entries
-    for (std::vector<kopsik::TimeEntry *>::const_iterator it =
+    for (std::vector<TimeEntry *>::const_iterator it =
         user_->related.TimeEntries.begin();
             it != user_->related.TimeEntries.end(); it++) {
-        kopsik::TimeEntry *te = *it;
+        TimeEntry *te = *it;
 
         poco_assert(!te->GUID().empty());
 
@@ -1675,7 +1675,7 @@ _Bool Context::SaveUpdateChannel(const std::string channel) {
 }
 
 void Context::projectLabelAndColorCode(
-    kopsik::TimeEntry *te,
+    TimeEntry *te,
     std::string *project_and_task_label,
     std::string *project_label,
     std::string *client_label,
@@ -1691,12 +1691,12 @@ void Context::projectLabelAndColorCode(
         return;
     }
 
-    kopsik::Task *t = 0;
+    Task *t = 0;
     if (te->TID()) {
         t = user_->TaskByID(te->TID());
     }
 
-    kopsik::Project *p = 0;
+    Project *p = 0;
     if (t) {
         p = user_->ProjectByID(t->PID());
     }
@@ -1707,7 +1707,7 @@ void Context::projectLabelAndColorCode(
         p = user_->ProjectByGUID(te->ProjectGUID());
     }
 
-    kopsik::Client *c = 0;
+    Client *c = 0;
     if (p && p->CID()) {
         c = user_->ClientByID(p->CID());
     }
@@ -1768,22 +1768,22 @@ void Context::timeEntryAutocompleteItems(
         return;
     }
 
-    for (std::vector<kopsik::TimeEntry *>::const_iterator it =
+    for (std::vector<TimeEntry *>::const_iterator it =
         user_->related.TimeEntries.begin();
             it != user_->related.TimeEntries.end(); it++) {
-        kopsik::TimeEntry *te = *it;
+        TimeEntry *te = *it;
 
         if (te->DeletedAt() || te->IsMarkedAsDeletedOnServer()
                 || te->Description().empty()) {
             continue;
         }
 
-        kopsik::Task *t = 0;
+        Task *t = 0;
         if (te->TID()) {
             t = user_->TaskByID(te->TID());
         }
 
-        kopsik::Project *p = 0;
+        Project *p = 0;
         if (t && t->PID()) {
             p = user_->ProjectByID(t->PID());
         } else if (te->PID()) {
@@ -1794,7 +1794,7 @@ void Context::timeEntryAutocompleteItems(
             continue;
         }
 
-        kopsik::Client *c = 0;
+        Client *c = 0;
         if (p && p->CID()) {
             c = user_->ClientByID(p->CID());
         }
@@ -1853,10 +1853,10 @@ void Context::taskAutocompleteItems(
         return;
     }
 
-    for (std::vector<kopsik::Task *>::const_iterator it =
+    for (std::vector<Task *>::const_iterator it =
         user_->related.Tasks.begin();
             it != user_->related.Tasks.end(); it++) {
-        kopsik::Task *t = *it;
+        Task *t = *it;
         std::string project_label;
         std::string client_label;
 
@@ -1864,7 +1864,7 @@ void Context::taskAutocompleteItems(
             continue;
         }
 
-        kopsik::Project *p = 0;
+        Project *p = 0;
         if (t->PID()) {
             p = user_->ProjectByID(t->PID());
         }
@@ -1877,7 +1877,7 @@ void Context::taskAutocompleteItems(
             project_label = p->Name();
         }
 
-        kopsik::Client *c = 0;
+        Client *c = 0;
         if (p && p->CID()) {
             c = user_->ClientByID(p->CID());
         }
@@ -1924,10 +1924,10 @@ void Context::projectAutocompleteItems(
         return;
     }
 
-    for (std::vector<kopsik::Project *>::const_iterator it =
+    for (std::vector<Project *>::const_iterator it =
         user_->related.Projects.begin();
             it != user_->related.Projects.end(); it++) {
-        kopsik::Project *p = *it;
+        Project *p = *it;
         std::string project_label;
         std::string client_label;
 
@@ -1939,7 +1939,7 @@ void Context::projectAutocompleteItems(
             project_label = p->Name();
         }
 
-        kopsik::Client *c = 0;
+        Client *c = 0;
         if (p->CID()) {
             c = user_->ClientByID(p->CID());
         }
@@ -2026,12 +2026,12 @@ _Bool Context::OpenReportsInBrowser() {
 
     std::string response_body("");
     HTTPSClient https_client;
-    kopsik::error err = https_client.PostJSON("/api/v8/desktop_login_tokens",
-                        "{}",
-                        user_->APIToken(),
-                        "api_token",
-                        &response_body);
-    if (err != kopsik::noError) {
+    error err = https_client.PostJSON("/api/v8/desktop_login_tokens",
+                                      "{}",
+                                      user_->APIToken(),
+                                      "api_token",
+                                      &response_body);
+    if (err != noError) {
         return displayError(err);
     }
     if (response_body.empty()) {
@@ -2075,8 +2075,8 @@ void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
 
-    kopsik::Settings settings;
-    if (!Settings(&settings)) {
+    Settings settings;
+    if (!LoadSettings(&settings)) {
         logger().error("Could not load settings");
         return;
     }
@@ -2109,7 +2109,7 @@ void Context::handleCreateTimelineBatchNotification(
 
     std::vector<TimelineEvent> batch;
     error err = db()->SelectTimelineBatch(user_->ID(), &batch);
-    if (err != kopsik::noError) {
+    if (err != noError) {
         logger().error(err);
         return;
     }
@@ -2178,9 +2178,9 @@ void Context::SetIdleSeconds(const Poco::UInt64 idle_seconds) {
         if (!user_->IsTracking()) {
             logger().warning("Time entry is not tracking, ignoring idleness");
         } else {
-            kopsik::Settings settings;
+            Settings settings;
             error err = db()->LoadSettings(&settings);
-            if (err != kopsik::noError) {
+            if (err != noError) {
                 displayError(err);
             }
             if (settings.use_idle_detection) {
