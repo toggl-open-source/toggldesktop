@@ -55,18 +55,6 @@ class User : public BaseModel {
     bool HasPremiumWorkspaces() const;
     bool CanAddProjects() const;
 
-    Workspace *WorkspaceByID(const Poco::UInt64 id);
-    Client *ClientByID(const Poco::UInt64 id);
-    Client *ClientByGUID(const guid GUID);
-    Project *ProjectByID(const Poco::UInt64 id);
-    Project *ProjectByGUID(const guid GUID);
-    Project *ProjectByName(const std::string name) const;
-    Task *TaskByID(const Poco::UInt64 id);
-    Tag *TagByID(const Poco::UInt64 id);
-    Tag *TagByGUID(const guid GUID);
-    TimeEntry *TimeEntryByID(const Poco::UInt64 id);
-    TimeEntry *TimeEntryByGUID(const guid GUID);
-
     void SetLastTEDate(const std::string value);
 
     void CollectPushableTimeEntries(
@@ -163,7 +151,55 @@ class User : public BaseModel {
     void RemoveProjectFromRelatedModels(const Poco::UInt64 pid);
     void RemoveTaskFromRelatedModels(const Poco::UInt64 tid);
 
+    void LoadUserUpdateFromJSONString(const std::string json);
+
+    void LoadUserAndRelatedDataFromJSONString(
+        const std::string &json);
+
+
  private:
+    void loadUserTagFromJSONNode(
+        JSONNODE *data,
+        std::set<Poco::UInt64> *alive = 0);
+
+    void loadUserAndRelatedDataFromJSONNode(JSONNODE *node);
+
+    void loadUserProjectsFromJSONNode(
+        JSONNODE *list);
+
+    void loadUserTagsFromJSONNode(
+        JSONNODE *list);
+
+    void loadUserClientsFromJSONNode(
+        JSONNODE *list);
+    void loadUserTasksFromJSONNode(
+        JSONNODE *list);
+
+    void loadUserTimeEntriesFromJSONNode(
+        JSONNODE *list);
+
+    void loadUserWorkspacesFromJSONNode(
+        JSONNODE *list);
+
+    void loadUserUpdateFromJSONNode(
+        JSONNODE *data);
+
+    void loadUserProjectFromJSONNode(
+        JSONNODE *data,
+        std::set<Poco::UInt64> *alive = 0);
+    void loadUserWorkspaceFromJSONNode(
+        JSONNODE *data,
+        std::set<Poco::UInt64> *alive = 0);
+    void loadUserClientFromJSONNode(
+        JSONNODE *data,
+        std::set<Poco::UInt64> *alive = 0);
+    void loadUserTaskFromJSONNode(
+        JSONNODE *data,
+        std::set<Poco::UInt64> *alive = 0);
+    void loadUserTimeEntryFromJSONNode(
+        JSONNODE *data,
+        std::set<Poco::UInt64> *alive = 0);
+
     std::string dirtyObjectsJSON(std::vector<TimeEntry *> * const) const;
     void processResponseArray(
         std::vector<BatchUpdateResult> * const results,

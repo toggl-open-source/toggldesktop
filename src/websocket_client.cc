@@ -20,7 +20,7 @@
 #include "Poco/Net/PrivateKeyPassphraseHandler.h"
 
 #include "./libjson.h"
-
+#include "./https_client.h"
 #include "./json.h"
 
 namespace kopsik {
@@ -150,7 +150,7 @@ std::string WebSocketClient::parseWebSocketMessageType(
     if (json.empty()) {
         return "";
     }
-    if (!IsValidJSON(json)) {
+    if (!kopsik::json::IsValid(json)) {
         return "";
     }
 

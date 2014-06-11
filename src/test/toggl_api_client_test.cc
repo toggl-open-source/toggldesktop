@@ -93,9 +93,9 @@ TEST(TogglApiClientTest, SaveAndLoadCurrentAPIToken) {
 
 TEST(TogglApiClientTest, UpdatesTimeEntryFromJSON) {
     User user;
-    LoadUserAndRelatedDataFromJSONString(&user, loadTestData());
+    user.LoadUserAndRelatedDataFromJSONString(loadTestData());
 
-    TimeEntry *te = user.TimeEntryByID(89818605);
+    TimeEntry *te = user.related.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
 
     std::string json = "{\"id\":89818605,\"description\":\"Changed\"}";
@@ -107,14 +107,14 @@ TEST(TogglApiClientTest, AllowsSameEmail) {
     testing::Database db;
 
     User user;
-    LoadUserAndRelatedDataFromJSONString(&user, loadTestData());
+    user.LoadUserAndRelatedDataFromJSONString(loadTestData());
 
     std::vector<ModelChange> changes;
     ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
 
     User user2;
     std::string json = loadTestDataFile("testdata/same_email.json");
-    LoadUserAndRelatedDataFromJSONString(&user2, json);
+    user2.LoadUserAndRelatedDataFromJSONString(json);
 
     ASSERT_EQ(noError, db.instance()->SaveUser(&user2, true, &changes));
 
@@ -139,9 +139,9 @@ TEST(TogglApiClientTest, UpdatesTimeEntryFromFullUserJSON) {
     std::string json = loadTestData();
 
     User user;
-    LoadUserAndRelatedDataFromJSONString(&user, loadTestData());
+    user.LoadUserAndRelatedDataFromJSONString(loadTestData());
 
-    TimeEntry *te = user.TimeEntryByID(89818605);
+    TimeEntry *te = user.related.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
 
     size_t n = json.find("Important things");
@@ -150,8 +150,8 @@ TEST(TogglApiClientTest, UpdatesTimeEntryFromFullUserJSON) {
                         std::string("Important things").length(),
                         "Even more important!");
 
-    LoadUserAndRelatedDataFromJSONString(&user, json);
-    te = user.TimeEntryByID(89818605);
+    user.LoadUserAndRelatedDataFromJSONString(json);
+    te = user.related.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
     ASSERT_EQ("Even more important!", te->Description());
 }
@@ -160,7 +160,7 @@ TEST(TogglApiClientTest, SavesAndLoadsUserFields) {
     testing::Database db;
 
     User user;
-    LoadUserAndRelatedDataFromJSONString(&user, loadTestData());
+    user.LoadUserAndRelatedDataFromJSONString(loadTestData());
 
     ASSERT_TRUE(user.StoreStartAndStopTime());
     // Change fields
@@ -188,7 +188,7 @@ TEST(TogglApiClientTest, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
     testing::Database db;
 
     User user;
-    LoadUserAndRelatedDataFromJSONString(&user, loadTestData());
+    user.LoadUserAndRelatedDataFromJSONString(loadTestData());
 
     Poco::UInt64 n;
     ASSERT_EQ(noError, db.instance()->UInt("select count(1) from users", &n));
@@ -236,7 +236,7 @@ TEST(TogglApiClientTest,
     std::string json = loadTestData();
 
     User user1;
-    LoadUserAndRelatedDataFromJSONString(&user1, json);
+    user1.LoadUserAndRelatedDataFromJSONString(json);
 
     std::vector<ModelChange> changes;
     ASSERT_EQ(noError, db.instance()->SaveUser(&user1, true, &changes));
@@ -285,7 +285,7 @@ TEST(TogglApiClientTest,
     ASSERT_EQ(user1.related.TimeEntries.size(),
               user2.related.TimeEntries.size());
 
-    LoadUserAndRelatedDataFromJSONString(&user2, json);
+    user2.LoadUserAndRelatedDataFromJSONString(json);
 
     ASSERT_EQ(noError, db.instance()->SaveUser(&user2, true, &changes));
 
@@ -319,7 +319,7 @@ TEST(TogglApiClientTest, TestStartTimeEntryWithDuration) {
     testing::Database db;
 
     User user;
-    LoadUserAndRelatedDataFromJSONString(&user, loadTestData());
+    user.LoadUserAndRelatedDataFromJSONString(loadTestData());
 
     size_t count = user.related.TimeEntries.size();
 
@@ -336,7 +336,7 @@ TEST(TogglApiClientTest, TestStartTimeEntryWithoutDuration) {
     testing::Database db;
 
     User user;
-    LoadUserAndRelatedDataFromJSONString(&user, loadTestData());
+    user.LoadUserAndRelatedDataFromJSONString(loadTestData());
 
     user.Start("Old work", "", 0, 0);
 
@@ -349,7 +349,7 @@ TEST(TogglApiClientTest, TestDeletionSteps) {
     testing::Database db;
 
     User user;
-    LoadUserAndRelatedDataFromJSONString(&user, loadTestData());
+    user.LoadUserAndRelatedDataFromJSONString(loadTestData());
 
     // first, mark time entry as deleted
     user.Start("My new time entry", "", 0, 0);
@@ -382,7 +382,7 @@ TEST(TogglApiClientTest, TestDeletionSteps) {
 
 TEST(TogglApiClientTest, SavesModels) {
     User user;
-    LoadUserAndRelatedDataFromJSONString(&user, loadTestData());
+    user.LoadUserAndRelatedDataFromJSONString(loadTestData());
 
     testing::Database db;
 
@@ -397,16 +397,16 @@ TEST(TogglApiClientTest, AssignsGUID) {
     ASSERT_FALSE(json.empty());
 
     User user;
-    LoadUserAndRelatedDataFromJSONString(&user, json);
+    user.LoadUserAndRelatedDataFromJSONString(json);
 
     ASSERT_EQ(uint(5), user.related.TimeEntries.size());
-    TimeEntry *te = user.TimeEntryByID(89837445);
+    TimeEntry *te = user.related.TimeEntryByID(89837445);
     ASSERT_TRUE(te);
 
     ASSERT_NE("", te->GUID());
     ASSERT_TRUE(te->GUID().size());
 
-    TimeEntry *te2 = user.TimeEntryByGUID(te->GUID());
+    TimeEntry *te2 = user.related.TimeEntryByGUID(te->GUID());
     ASSERT_TRUE(te2);
 
     ASSERT_EQ(te->GUID(), te2->GUID());
@@ -418,7 +418,7 @@ TEST(TogglApiClientTest, ParsesAndSavesData) {
     ASSERT_FALSE(json.empty());
 
     User user;
-    LoadUserAndRelatedDataFromJSONString(&user, json);
+    user.LoadUserAndRelatedDataFromJSONString(json);
     ASSERT_EQ(Poco::UInt64(1379068550), user.Since());
     ASSERT_EQ(Poco::UInt64(10471231), user.ID());
     ASSERT_EQ(Poco::UInt64(123456788), user.DefaultWID());
@@ -566,37 +566,37 @@ TEST(TogglApiClientTest, ParsesAndSavesData) {
 
     ASSERT_EQ(uint(2), user2.related.Projects.size());
     Project *project_from_db =
-        user2.ProjectByID(user.related.Projects[0]->ID());
+        user2.related.ProjectByID(user.related.Projects[0]->ID());
     ASSERT_TRUE(project_from_db);
     ASSERT_EQ(user.related.Projects[0]->String(),
               project_from_db->String());
-    project_from_db = user2.ProjectByID(user.related.Projects[1]->ID());
+    project_from_db = user2.related.ProjectByID(user.related.Projects[1]->ID());
     ASSERT_EQ(user.related.Projects[1]->String(),
               project_from_db->String());
 
     ASSERT_EQ(uint(5), user2.related.TimeEntries.size());
     TimeEntry *te_from_db =
-        user2.TimeEntryByID(user.related.TimeEntries[0]->ID());
+        user2.related.TimeEntryByID(user.related.TimeEntries[0]->ID());
     ASSERT_TRUE(te_from_db);
     ASSERT_EQ(user.related.TimeEntries[0]->String(), te_from_db->String());
-    te_from_db = user2.TimeEntryByID(user.related.TimeEntries[1]->ID());
+    te_from_db = user2.related.TimeEntryByID(user.related.TimeEntries[1]->ID());
     ASSERT_TRUE(te_from_db);
     ASSERT_EQ(user.related.TimeEntries[1]->String(), te_from_db->String());
-    te_from_db = user2.TimeEntryByID(user.related.TimeEntries[2]->ID());
+    te_from_db = user2.related.TimeEntryByID(user.related.TimeEntries[2]->ID());
     ASSERT_TRUE(te_from_db);
     ASSERT_EQ(user.related.TimeEntries[2]->String(), te_from_db->String());
 
     ASSERT_EQ(uint(2), user2.related.Workspaces.size());
     Workspace *ws_from_db =
-        user2.WorkspaceByID(user.related.Workspaces[0]->ID());
+        user2.related.WorkspaceByID(user.related.Workspaces[0]->ID());
     ASSERT_TRUE(ws_from_db);
     ASSERT_EQ(user.related.Workspaces[0]->String(), ws_from_db->String());
-    ws_from_db = user2.WorkspaceByID(user.related.Workspaces[1]->ID());
+    ws_from_db = user2.related.WorkspaceByID(user.related.Workspaces[1]->ID());
     ASSERT_TRUE(ws_from_db);
     ASSERT_EQ(user.related.Workspaces[1]->String(), ws_from_db->String());
 
     ASSERT_EQ(uint(2), user2.related.Tasks.size());
-    Task *task_from_db = user2.TaskByID(user2.related.Tasks[0]->ID());
+    Task *task_from_db = user2.related.TaskByID(user2.related.Tasks[0]->ID());
     ASSERT_EQ(user.related.Tasks[0]->String(), task_from_db->String());
     ASSERT_EQ(user.related.Tasks[1]->String(),
               user2.related.Tasks[1]->String());
@@ -793,7 +793,7 @@ TEST(TogglApiClientTest, Continue) {
     testing::Database db;
 
     User user;
-    LoadUserAndRelatedDataFromJSONString(&user, loadTestData());
+    user.LoadUserAndRelatedDataFromJSONString(loadTestData());
 
     // User wants to continue time entries,
     // not create new ones
@@ -803,7 +803,7 @@ TEST(TogglApiClientTest, Continue) {
     // change its date to today. Continueing the
     // entry should not create new record, but
     // continue the old one.
-    TimeEntry *te = user.TimeEntryByID(89818605);
+    TimeEntry *te = user.related.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
     te->SetStart(time(0));
     te->SetDurOnly(true);

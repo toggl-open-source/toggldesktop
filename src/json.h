@@ -11,7 +11,6 @@
 
 #include "libjson.h" // NOLINT
 
-#include "./user.h"
 #include "./workspace.h"
 #include "./client.h"
 #include "./project.h"
@@ -22,83 +21,27 @@
 
 namespace kopsik {
 
-void LoadUserAndRelatedDataFromJSONNode(
-    User *model,
-    JSONNODE *node);
-void LoadUserAndRelatedDataFromJSONString(
-    User *model,
-    const std::string &json);
-
-void LoadUserProjectsFromJSONNode(
-    User *model,
-    JSONNODE *list);
-void LoadUserTagsFromJSONNode(
-    User *user,
-    JSONNODE *list);
-void LoadUserClientsFromJSONNode(
-    User *user,
-    JSONNODE *list);
-void LoadUserTasksFromJSONNode(
-    User *user,
-    JSONNODE *list);
-void LoadUserTimeEntriesFromJSONNode(
-    User *user,
-    JSONNODE *list);
-void LoadUserWorkspacesFromJSONNode(
-    User *user,
-    JSONNODE *list);
-
-void LoadUserUpdateFromJSONNode(
-    User *user,
-    JSONNODE *data);
-
-void LoadUserUpdateFromJSONString(
-    User *user,
-    const std::string json);
-
-void loadUserProjectFromJSONNode(
-    User *model,
-    JSONNODE *data,
-    std::set<Poco::UInt64> *alive = 0);
-void loadUserWorkspaceFromJSONNode(
-    User *user,
-    JSONNODE *data,
-    std::set<Poco::UInt64> *alive = 0);
-void loadUserTagFromJSONNode(
-    User *user,
-    JSONNODE *data,
-    std::set<Poco::UInt64> *alive = 0);
-void loadUserClientFromJSONNode(
-    User *user,
-    JSONNODE *data,
-    std::set<Poco::UInt64> *alive = 0);
-void loadUserTaskFromJSONNode(
-    User *user,
-    JSONNODE *data,
-    std::set<Poco::UInt64> *alive = 0);
-void loadUserTimeEntryFromJSONNode(
-    User *user,
-    JSONNODE *data,
-    std::set<Poco::UInt64> *alive = 0);
+namespace json {
 
 std::string UpdateJSON(
     std::vector<Project *> * const,
     std::vector<TimeEntry *> * const);
 
-Poco::UInt64 UserIDFromJSONDataString(const std::string json_data_string);
-Poco::UInt64 IDFromJSONNode(JSONNODE * const);
-guid GUIDFromJSONNode(JSONNODE * const);
-Poco::UInt64 UIModifiedAtFromJSONNode(JSONNODE * const);
+Poco::UInt64 UserID(const std::string json_data_string);
+
+Poco::UInt64 ID(JSONNODE * const);
+
+guid GUID(JSONNODE * const);
+
+Poco::UInt64 UIModifiedAt(JSONNODE * const);
+
 bool IsDeletedAtServer(JSONNODE * const);
 
-std::string LoginTokenFromJSONDataString(const std::string json_data_string);
+std::string LoginToken(const std::string json_data_string);
 
-template<class T>
-void deleteZombies(
-    std::vector<T> &list,
-    std::set<Poco::UInt64> &alive);
+bool IsValid(const std::string json);
 
-bool IsValidJSON(const std::string json);
+}  // namespace json
 
 }  // namespace kopsik
 

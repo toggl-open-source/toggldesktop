@@ -33,7 +33,7 @@ class Context {
         const std::string app_version);
     ~Context();
 
-    kopsik::UI *UI() {
+    UI *UI() {
         return &ui_;
     }
 
@@ -62,15 +62,15 @@ class Context {
 
     void SetEnvironment(const std::string environment);
 
-    _Bool Settings(kopsik::Settings *);
+    _Bool LoadSettings(Settings *settings);
 
-    _Bool SetSettings(const kopsik::Settings);
+    _Bool SetSettings(const Settings);
 
     _Bool ProxySettings(bool *use_proxy, Proxy *proxy);
 
     _Bool SetProxySettings(
         const bool use_proxy,
-        const kopsik::Proxy proxy);
+        const Proxy proxy);
 
     _Bool Login(
         const std::string email,
@@ -90,7 +90,7 @@ class Context {
     Poco::UInt64 UsersDefaultWID() const;
 
     void CollectPushableTimeEntries(
-        std::vector<kopsik::TimeEntry *> *models) const;
+        std::vector<TimeEntry *> *models) const;
 
     _Bool Start(
         const std::string description,
@@ -150,7 +150,7 @@ class Context {
     _Bool StopAt(const Poco::Int64 at);
 
     _Bool RunningTimeEntry(
-        kopsik::TimeEntry **running) const;
+        TimeEntry **running) const;
 
     _Bool ToggleTimelineRecording();
 
@@ -214,18 +214,6 @@ class Context {
     void startPeriodicUpdateCheck();
     void executeUpdateCheck();
 
-    void timeEntryAutocompleteItems(
-        std::set<std::string> *unique_names,
-        std::vector<AutocompleteItem> *list) const;
-    void taskAutocompleteItems(
-        std::set<std::string> *unique_names,
-        std::vector<AutocompleteItem> *list) const;
-    void projectAutocompleteItems(
-        std::set<std::string> *unique_names,
-        std::vector<AutocompleteItem> *list) const;
-    std::vector<AutocompleteItem> autocompleteItems(
-        const bool including_time_entries) const;
-
     bool isPostponed(
         const Poco::Timestamp value,
         const Poco::Timestamp::TimeDiff
@@ -245,18 +233,18 @@ class Context {
 
     Database *db() const;
 
-    std::vector<kopsik::TimeEntry *> timeEntries() const;
+    std::vector<TimeEntry *> timeEntries() const;
 
     void projectLabelAndColorCode(
-        kopsik::TimeEntry *te,
+        TimeEntry *te,
         std::string *project_and_task_label,
         std::string *project_label,
         std::string *client_label,
         std::string *color_code) const;
 
     std::vector<std::string> tags() const;
-    std::vector<kopsik::Workspace *> workspaces() const;
-    std::vector<kopsik::Client *> clients() const;
+    std::vector<Workspace *> workspaces() const;
+    std::vector<Client *> clients() const;
 
     KopsikTimeEntryViewItem *timeEntryViewItem(TimeEntry *te);
 
@@ -272,26 +260,26 @@ class Context {
 
     Poco::Int64 totalDurationForDate(TimeEntry *te) const;
 
-    void updateUI(std::vector<kopsik::ModelChange> *changes);
+    void updateUI(std::vector<ModelChange> *changes);
 
-    _Bool displayError(const kopsik::error);
+    _Bool displayError(const error);
 
     std::string timeOfDayFormat() const;
 
     Poco::Mutex db_m_;
-    kopsik::Database *db_;
+    Database *db_;
 
     Poco::Mutex user_m_;
-    kopsik::User *user_;
+    User *user_;
 
     Poco::Mutex ws_client_m_;
-    kopsik::WebSocketClient *ws_client_;
+    WebSocketClient *ws_client_;
 
     Poco::Mutex timeline_uploader_m_;
-    kopsik::TimelineUploader *timeline_uploader_;
+    TimelineUploader *timeline_uploader_;
 
     Poco::Mutex window_change_recorder_m_;
-    kopsik::WindowChangeRecorder *window_change_recorder_;
+    WindowChangeRecorder *window_change_recorder_;
 
     std::string timeline_upload_url_;
 
@@ -310,7 +298,7 @@ class Context {
     Poco::Mutex timer_m_;
     Poco::Util::Timer timer_;
 
-    kopsik::UI ui_;
+    class UI ui_;
 
     std::string time_entry_editor_guid_;
 

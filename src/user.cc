@@ -12,6 +12,24 @@
 
 namespace kopsik {
 
+template<class T>
+void deleteZombies(
+    std::vector<T> &list,
+    std::set<Poco::UInt64> &alive) {
+    for (size_t i = 0; i < list.size(); ++i) {
+        BaseModel *model = list[i];
+        if (!model->ID()) {
+            // If model has no server-assigned ID, it's not even
+            // pushed to server. So actually we don't know if it's
+            // a zombie or not. Ignore:
+            continue;
+        }
+        if (alive.end() == alive.find(model->ID())) {
+            model->MarkAsDeletedOnServer();
+        }
+    }
+}
+
 template<typename T>
 void clearList(std::vector<T *> *list) {
     for (size_t i = 0; i < list->size(); i++) {
@@ -89,7 +107,7 @@ void User::Start(
 
     // Try to set workspace ID from project
     if (te->PID()) {
-        Project *p = ProjectByID(te->PID());
+        Project *p = related.ProjectByID(te->PID());
         if (p) {
             te->SetWID(p->WID());
             te->SetBillable(p->Billable());
@@ -98,7 +116,7 @@ void User::Start(
 
     // Try to set workspace ID from task
     if (!te->WID() && te->TID()) {
-        Task *t = TaskByID(te->TID());
+        Task *t = related.TaskByID(te->TID());
         if (t) {
             te->SetWID(t->WID());
         }
@@ -123,7 +141,7 @@ kopsik::error User::Continue(
     const std::string GUID) {
 
     Stop();
-    TimeEntry *existing = TimeEntryByGUID(GUID);
+    TimeEntry *existing = related.TimeEntryByGUID(GUID);
     if (!existing) {
         logger().warning("Time entry not found: " + GUID);
         return noError;
@@ -313,59 +331,6 @@ bool User::HasTrackedTimeToday() const {
     return false;
 }
 
-template<typename T>
-T *modelByID(const Poco::UInt64 id, std::vector<T *> *list) {
-    poco_assert(id > 0);
-    typedef typename std::vector<T *>::const_iterator iterator;
-    for (iterator it = list->begin(); it != list->end(); it++) {
-        T *model = *it;
-        if (model->ID() == id) {
-            return model;
-        }
-    }
-    return 0;
-}
-
-Task *User::TaskByID(const Poco::UInt64 id) {
-    return modelByID<Task>(id, &related.Tasks);
-}
-
-Client *User::ClientByID(const Poco::UInt64 id) {
-    return modelByID(id, &related.Clients);
-}
-
-Project *User::ProjectByID(const Poco::UInt64 id) {
-    return modelByID(id, &related.Projects);
-}
-
-template <typename T>
-T *modelByGUID(const guid GUID, std::vector<T *> *list) {
-    if (GUID.empty()) {
-        return 0;
-    }
-    typedef typename std::vector<T *>::const_iterator iterator;
-    for (iterator it = list->begin(); it != list->end(); it++) {
-        T *model = *it;
-        if (model->GUID() == GUID) {
-            return model;
-        }
-    }
-    return 0;
-}
-
-
-TimeEntry *User::TimeEntryByGUID(const guid GUID) {
-    return modelByGUID(GUID, &related.TimeEntries);
-}
-
-Tag *User::TagByGUID(const guid GUID) {
-    return modelByGUID(GUID, &related.Tags);
-}
-
-Tag *User::TagByID(const Poco::UInt64 id) {
-    return modelByID(id, &related.Tags);
-}
-
 void User::CollectPushableTimeEntries(
     std::vector<TimeEntry *> *result,
     std::map<std::string, BaseModel *> *models) const {
@@ -420,7 +385,7 @@ error User::FullSync(
             return err;
         }
 
-        LoadUserAndRelatedDataFromJSONString(this, user_data_json);
+        LoadUserAndRelatedDataFromJSONString(user_data_json);
 
         stopwatch.stop();
         std::stringstream ss;
@@ -454,7 +419,7 @@ error User::Push(HTTPSClient *https_client) {
             return noError;
         }
 
-        std::string json = UpdateJSON(&projects, &time_entries);
+        std::string json = kopsik::json::UpdateJSON(&projects, &time_entries);
 
         logger().debug(json);
 
@@ -558,22 +523,6 @@ error User::collectErrors(std::vector<error> * const errors) const {
     return error(ss.str());
 }
 
-Workspace *User::WorkspaceByID(const Poco::UInt64 id) {
-    return modelByID(id, &related.Workspaces);
-}
-
-Project *User::ProjectByGUID(const guid GUID) {
-    return modelByGUID(GUID, &related.Projects);
-}
-
-Client *User::ClientByGUID(const guid GUID) {
-    return modelByGUID(GUID, &related.Clients);
-}
-
-TimeEntry *User::TimeEntryByID(const Poco::UInt64 id) {
-    return modelByID(id, &related.TimeEntries);
-}
-
 template <typename T>
 void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
                                       std::vector<T *> *list) {
@@ -629,6 +578,428 @@ void User::RemoveTaskFromRelatedModels(const Poco::UInt64 tid) {
             model->SetTID(0);
         }
     }
+}
+
+void User::loadUserTagFromJSONNode(
+    JSONNODE * const data,
+    std::set<Poco::UInt64> *alive) {
+
+    poco_check_ptr(data);
+    // alive can be 0, dont assert/check it
+
+    Poco::UInt64 id = kopsik::json::ID(data);
+    Tag *model = related.TagByID(id);
+
+    if (!model) {
+        model = related.TagByGUID(kopsik::json::GUID(data));
+    }
+
+    if (kopsik::json::IsDeletedAtServer(data)) {
+        if (model) {
+            model->MarkAsDeletedOnServer();
+        }
+        return;
+    }
+
+    if (!model) {
+        model = new Tag();
+        related.Tags.push_back(model);
+    }
+    if (alive) {
+        alive->insert(id);
+    }
+    model->SetUID(ID());
+    model->LoadFromJSONNode(data);
+}
+
+void User::loadUserTagsFromJSONNode(
+    JSONNODE * const list) {
+
+    poco_check_ptr(list);
+
+    std::set<Poco::UInt64> alive;
+
+    JSONNODE_ITERATOR current_node = json_begin(list);
+    JSONNODE_ITERATOR last_node = json_end(list);
+    while (current_node != last_node) {
+        loadUserTagFromJSONNode(*current_node, &alive);
+        ++current_node;
+    }
+
+    deleteZombies(related.Tags, alive);
+}
+
+void User::loadUserTasksFromJSONNode(
+    JSONNODE * const list) {
+
+    poco_check_ptr(list);
+
+    std::set<Poco::UInt64> alive;
+
+    JSONNODE_ITERATOR current_node = json_begin(list);
+    JSONNODE_ITERATOR last_node = json_end(list);
+    while (current_node != last_node) {
+        loadUserTaskFromJSONNode(*current_node, &alive);
+        ++current_node;
+    }
+
+    deleteZombies(related.Tasks, alive);
+}
+
+void User::loadUserTaskFromJSONNode(
+    JSONNODE * const data,
+    std::set<Poco::UInt64> *alive) {
+
+    poco_check_ptr(data);
+    // alive can be 0, dont assert/check it
+
+    Poco::UInt64 id = kopsik::json::ID(data);
+    Task *model = related.TaskByID(id);
+
+    // Tasks have no GUID
+
+    if (kopsik::json::IsDeletedAtServer(data)) {
+        if (model) {
+            model->MarkAsDeletedOnServer();
+        }
+        return;
+    }
+
+    if (!model) {
+        model = new Task();
+        related.Tasks.push_back(model);
+    }
+
+    if (alive) {
+        alive->insert(id);
+    }
+    model->SetUID(ID());
+    model->LoadFromJSONNode(data);
+}
+
+void User::LoadUserUpdateFromJSONString(
+    const std::string json) {
+
+    if (json.empty()) {
+        return;
+    }
+
+    JSONNODE *root = json_parse(json.c_str());
+    loadUserUpdateFromJSONNode(root);
+    json_delete(root);
+}
+
+void User::loadUserUpdateFromJSONNode(
+    JSONNODE * const node) {
+
+    poco_check_ptr(node);
+
+    JSONNODE *data = 0;
+    std::string model("");
+    std::string action("");
+
+    JSONNODE_ITERATOR i = json_begin(node);
+    JSONNODE_ITERATOR e = json_end(node);
+    while (i != e) {
+        json_char *node_name = json_name(*i);
+        if (strcmp(node_name, "data") == 0) {
+            data = *i;
+        } else if (strcmp(node_name, "model") == 0) {
+            model = std::string(json_as_string(*i));
+        } else if (strcmp(node_name, "action") == 0) {
+            action = std::string(json_as_string(*i));
+            Poco::toLowerInPlace(action);
+        }
+        ++i;
+    }
+    poco_check_ptr(data);
+
+    std::stringstream ss;
+    ss << "Update parsed into action=" << action
+       << ", model=" + model;
+    Poco::Logger &logger = Poco::Logger::get("json");
+    logger.debug(ss.str());
+
+    if ("workspace" == model) {
+        loadUserWorkspaceFromJSONNode(data);
+    } else if ("client" == model) {
+        loadUserClientFromJSONNode(data);
+    } else if ("project" == model) {
+        loadUserProjectFromJSONNode(data);
+    } else if ("task" == model) {
+        loadUserTaskFromJSONNode(data);
+    } else if ("time_entry" == model) {
+        loadUserTimeEntryFromJSONNode(data);
+    } else if ("tag" == model) {
+        loadUserTagFromJSONNode(data);
+    }
+}
+
+void User::loadUserWorkspaceFromJSONNode(
+    JSONNODE * const data,
+    std::set<Poco::UInt64> *alive) {
+
+    poco_check_ptr(data);
+    // alive can be 0, dont assert/check it
+
+    Poco::UInt64 id = kopsik::json::ID(data);
+    Workspace *model = related.WorkspaceByID(id);
+
+    // Workspaces have no GUID
+
+    if (kopsik::json::IsDeletedAtServer(data)) {
+        if (model) {
+            model->MarkAsDeletedOnServer();
+        }
+        return;
+    }
+
+    if (!model) {
+        model = new Workspace();
+        related.Workspaces.push_back(model);
+    }
+    if (alive) {
+        alive->insert(id);
+    }
+    model->SetUID(ID());
+    model->LoadFromJSONNode(data);
+}
+
+void User::LoadUserAndRelatedDataFromJSONString(
+    const std::string &json) {
+
+    if (json.empty()) {
+        Poco::Logger &logger = Poco::Logger::get("json");
+        logger.warning("cannot load empty JSON");
+        return;
+    }
+
+    JSONNODE *root = json_parse(json.c_str());
+    JSONNODE_ITERATOR current_node = json_begin(root);
+    JSONNODE_ITERATOR last_node = json_end(root);
+    while (current_node != last_node) {
+        json_char *node_name = json_name(*current_node);
+        if (strcmp(node_name, "since") == 0) {
+            SetSince(json_as_int(*current_node));
+
+            Poco::Logger &logger = Poco::Logger::get("json");
+            std::stringstream s;
+            s << "User data as of: " << Since();
+            logger.debug(s.str());
+
+        } else if (strcmp(node_name, "data") == 0) {
+            loadUserAndRelatedDataFromJSONNode(*current_node);
+        }
+        ++current_node;
+    }
+    json_delete(root);
+}
+
+void User::loadUserAndRelatedDataFromJSONNode(
+    JSONNODE * const data) {
+
+    poco_check_ptr(data);
+
+    JSONNODE_ITERATOR n = json_begin(data);
+    JSONNODE_ITERATOR last_node = json_end(data);
+    while (n != last_node) {
+        json_char *node_name = json_name(*n);
+        if (strcmp(node_name, "id") == 0) {
+            SetID(json_as_int(*n));
+        } else if (strcmp(node_name, "default_wid") == 0) {
+            SetDefaultWID(json_as_int(*n));
+        } else if (strcmp(node_name, "api_token") == 0) {
+            SetAPIToken(std::string(json_as_string(*n)));
+        } else if (strcmp(node_name, "email") == 0) {
+            SetEmail(std::string(json_as_string(*n)));
+        } else if (strcmp(node_name, "fullname") == 0) {
+            SetFullname(std::string(json_as_string(*n)));
+        } else if (strcmp(node_name, "record_timeline") == 0) {
+            SetRecordTimeline(json_as_bool(*n));
+        } else if (strcmp(node_name, "store_start_and_stop_time") == 0) {
+            SetStoreStartAndStopTime(json_as_bool(*n));
+        } else if (strcmp(node_name, "timeofday_format") == 0) {
+            SetTimeOfDayFormat(std::string(json_as_string(*n)));
+        } else if (strcmp(node_name, "projects") == 0) {
+            loadUserProjectsFromJSONNode(*n);
+        } else if (strcmp(node_name, "tags") == 0) {
+            loadUserTagsFromJSONNode(*n);
+        } else if (strcmp(node_name, "tasks") == 0) {
+            loadUserTasksFromJSONNode(*n);
+        } else if (strcmp(node_name, "time_entries") == 0) {
+            loadUserTimeEntriesFromJSONNode(*n);
+        } else if (strcmp(node_name, "workspaces") == 0) {
+            loadUserWorkspacesFromJSONNode(*n);
+        } else if (strcmp(node_name, "clients") == 0) {
+            loadUserClientsFromJSONNode(*n);
+        }
+        ++n;
+    }
+}
+
+void User::loadUserClientFromJSONNode(
+    JSONNODE * const data,
+    std::set<Poco::UInt64> *alive) {
+
+    poco_check_ptr(data);
+    // alive can be 0, dont assert/check it
+
+    Poco::UInt64 id = kopsik::json::ID(data);
+    Client *model = related.ClientByID(id);
+
+    if (!model) {
+        model = related.ClientByGUID(kopsik::json::GUID(data));
+    }
+
+    if (kopsik::json::IsDeletedAtServer(data)) {
+        if (model) {
+            model->MarkAsDeletedOnServer();
+        }
+        return;
+    }
+
+    if (!model) {
+        model = new Client();
+        related.Clients.push_back(model);
+    }
+    if (alive) {
+        alive->insert(id);
+    }
+    model->SetUID(ID());
+    model->LoadFromJSONNode(data);
+}
+
+void User::loadUserClientsFromJSONNode(
+    JSONNODE * const list) {
+
+    poco_check_ptr(list);
+
+    std::set<Poco::UInt64> alive;
+
+    JSONNODE_ITERATOR current_node = json_begin(list);
+    JSONNODE_ITERATOR last_node = json_end(list);
+    while (current_node != last_node) {
+        loadUserClientFromJSONNode(*current_node, &alive);
+        ++current_node;
+    }
+
+    deleteZombies(related.Clients, alive);
+}
+
+void User::loadUserProjectFromJSONNode(
+    JSONNODE * const data,
+    std::set<Poco::UInt64> *alive) {
+
+    poco_check_ptr(data);
+    // alive can be 0, dont assert/check it
+
+    Poco::UInt64 id = kopsik::json::ID(data);
+    Project *model = related.ProjectByID(id);
+
+    if (!model) {
+        model = related.ProjectByGUID(kopsik::json::GUID(data));
+    }
+
+    if (kopsik::json::IsDeletedAtServer(data)) {
+        if (model) {
+            model->MarkAsDeletedOnServer();
+        }
+        return;
+    }
+
+    if (!model) {
+        model = new Project();
+        related.Projects.push_back(model);
+    }
+    if (alive) {
+        alive->insert(id);
+    }
+    model->SetUID(ID());
+    model->LoadFromJSONNode(data);
+}
+
+void User::loadUserProjectsFromJSONNode(
+    JSONNODE * const list) {
+
+    poco_check_ptr(list);
+
+    std::set<Poco::UInt64> alive;
+
+    JSONNODE_ITERATOR current_node = json_begin(list);
+    JSONNODE_ITERATOR last_node = json_end(list);
+    while (current_node != last_node) {
+        loadUserProjectFromJSONNode(*current_node, &alive);
+        ++current_node;
+    }
+
+    deleteZombies(related.Projects, alive);
+}
+
+void User::loadUserTimeEntryFromJSONNode(
+    JSONNODE * const data,
+    std::set<Poco::UInt64> *alive) {
+
+    poco_check_ptr(data);
+    // alive can be 0, dont assert/check it
+
+    Poco::UInt64 id = kopsik::json::ID(data);
+    TimeEntry *model = related.TimeEntryByID(id);
+
+    if (!model) {
+        model = related.TimeEntryByGUID(kopsik::json::GUID(data));
+    }
+
+    if (kopsik::json::IsDeletedAtServer(data)) {
+        if (model) {
+            model->MarkAsDeletedOnServer();
+        }
+        return;
+    }
+
+    if (!model) {
+        model = new TimeEntry();
+        related.TimeEntries.push_back(model);
+    }
+    if (alive) {
+        alive->insert(id);
+    }
+    model->SetUID(ID());
+    model->LoadFromJSONNode(data);
+    model->EnsureGUID();
+}
+
+void User::loadUserWorkspacesFromJSONNode(
+    JSONNODE * const list) {
+
+    poco_check_ptr(list);
+
+    std::set<Poco::UInt64> alive;
+
+    JSONNODE_ITERATOR current_node = json_begin(list);
+    JSONNODE_ITERATOR last_node = json_end(list);
+    while (current_node != last_node) {
+        loadUserWorkspaceFromJSONNode(*current_node, &alive);
+        ++current_node;
+    }
+
+    deleteZombies(related.Workspaces, alive);
+}
+
+void User::loadUserTimeEntriesFromJSONNode(
+    JSONNODE * const list) {
+
+    poco_check_ptr(list);
+
+    std::set<Poco::UInt64> alive;
+
+    JSONNODE_ITERATOR current_node = json_begin(list);
+    JSONNODE_ITERATOR last_node = json_end(list);
+    while (current_node != last_node) {
+        loadUserTimeEntryFromJSONNode(*current_node, &alive);
+        ++current_node;
+    }
+
+    deleteZombies(related.TimeEntries, alive);
 }
 
 }  // namespace kopsik
