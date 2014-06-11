@@ -41,6 +41,7 @@
             // 
             // labelProject
             // 
+            this.labelProject.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.labelProject.Location = new System.Drawing.Point(15, 77);
             this.labelProject.Name = "labelProject";
             this.labelProject.Size = new System.Drawing.Size(175, 13);
@@ -91,21 +92,23 @@
             // 
             // labelFormattedDate
             // 
-            this.labelFormattedDate.AutoSize = true;
+            this.labelFormattedDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
+            this.labelFormattedDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
             this.labelFormattedDate.Location = new System.Drawing.Point(15, 13);
             this.labelFormattedDate.Name = "labelFormattedDate";
-            this.labelFormattedDate.Size = new System.Drawing.Size(64, 13);
+            this.labelFormattedDate.Size = new System.Drawing.Size(75, 13);
             this.labelFormattedDate.TabIndex = 10;
             this.labelFormattedDate.Text = "Thu 22. Jan";
             // 
             // labelDateDuration
             // 
             this.labelDateDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelDateDuration.AutoSize = true;
+            this.labelDateDuration.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
+            this.labelDateDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
             this.labelDateDuration.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.labelDateDuration.Location = new System.Drawing.Point(250, 13);
+            this.labelDateDuration.Location = new System.Drawing.Point(220, 13);
             this.labelDateDuration.Name = "labelDateDuration";
-            this.labelDateDuration.Size = new System.Drawing.Size(56, 13);
+            this.labelDateDuration.Size = new System.Drawing.Size(74, 13);
             this.labelDateDuration.TabIndex = 11;
             this.labelDateDuration.Text = "2 h 12 min";
             this.labelDateDuration.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -137,7 +140,6 @@
             this.Size = new System.Drawing.Size(314, 100);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TimeEntryCellWithHeader_MouseClick);
             this.headerPanel.ResumeLayout(false);
-            this.headerPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

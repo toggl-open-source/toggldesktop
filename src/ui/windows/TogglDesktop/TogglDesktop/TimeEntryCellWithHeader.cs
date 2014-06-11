@@ -30,6 +30,7 @@ namespace TogglDesktop
         private void Render()
         {
             this.labelDescription.Text = this.TimeEntry.Description;
+            this.labelProject.ForeColor = ColorTranslator.FromHtml(this.TimeEntry.Color);
             this.labelProject.Text = this.TimeEntry.ProjectAndTaskLabel;
             this.labelFormattedDate.Text = this.TimeEntry.DateHeader;
             this.labelDateDuration.Text = this.TimeEntry.DateDuration;

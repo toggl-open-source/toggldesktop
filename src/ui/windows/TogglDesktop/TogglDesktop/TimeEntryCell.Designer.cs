@@ -82,6 +82,7 @@
             // 
             this.labelProject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelProject.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.labelProject.Location = new System.Drawing.Point(15, 27);
             this.labelProject.Name = "labelProject";
             this.labelProject.Size = new System.Drawing.Size(175, 13);
