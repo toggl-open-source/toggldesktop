@@ -12,6 +12,7 @@
 *.la
 *.a
 
+tmp/*
 build/*
 src/libkopsik/Kopsik/build
 src/ui/osx/test2.project/build/
