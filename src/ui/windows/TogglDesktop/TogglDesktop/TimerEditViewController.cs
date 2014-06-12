@@ -47,7 +47,6 @@ namespace TogglDesktop
             if (item.ProjectID > 0)
             {
                 linkLabelProject.Text = item.ProjectAndTaskLabel;
-                linkLabelProject.BackColor = ColorTranslator.FromHtml(item.ProjectColor);
                 linkLabelProject.Visible = true;
                 comboBoxDescription.Top = 10;
             }
