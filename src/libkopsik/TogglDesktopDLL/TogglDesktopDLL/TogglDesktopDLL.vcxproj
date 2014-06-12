@@ -138,6 +138,7 @@
     <ClCompile Include="..\..\..\feedback.cc" />
     <ClCompile Include="..\..\..\formatter.cc" />
     <ClCompile Include="..\..\..\get_focused_window_windows.cc" />
+    <ClCompile Include="..\..\..\gui.cc" />
     <ClCompile Include="..\..\..\https_client.cc" />
     <ClCompile Include="..\..\..\json.cc" />
     <ClCompile Include="..\..\..\kopsik_api.cc" />
@@ -149,7 +150,6 @@
     <ClCompile Include="..\..\..\task.cc" />
     <ClCompile Include="..\..\..\timeline_uploader.cc" />
     <ClCompile Include="..\..\..\time_entry.cc" />
-    <ClCompile Include="..\..\..\ui.cc" />
     <ClCompile Include="..\..\..\user.cc" />
     <ClCompile Include="..\..\..\websocket_client.cc" />
     <ClCompile Include="..\..\..\window_change_recorder.cc" />

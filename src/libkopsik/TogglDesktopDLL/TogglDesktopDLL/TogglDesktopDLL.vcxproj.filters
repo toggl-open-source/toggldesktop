@@ -200,7 +200,7 @@
     <ClCompile Include="..\..\..\workspace.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\ui.cc">
+    <ClCompile Include="..\..\..\gui.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
