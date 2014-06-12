@@ -155,7 +155,7 @@ namespace TogglDesktop
             }
 
             if ( te.Tags != null) {
-                string[] tags = te.Tags.Split(',');
+                string[] tags = te.Tags.Split('|');
 
                 // Tick selected Tags
                 for (int i = 0; i < tags.Length; i++)
