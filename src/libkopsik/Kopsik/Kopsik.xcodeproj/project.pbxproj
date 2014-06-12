@@ -15,6 +15,8 @@
 		7408EDB618C51CEB00CBE8F1 /* autocomplete_item.h in Headers */ = {isa = PBXBuildFile; fileRef = 7408EDAE18C51CEB00CBE8F1 /* autocomplete_item.h */; };
 		7408EDB718C51CEB00CBE8F1 /* formatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 7408EDAF18C51CEB00CBE8F1 /* formatter.h */; };
 		7408EDB818C51CEB00CBE8F1 /* feedback.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7408EDB018C51CEB00CBE8F1 /* feedback.cc */; };
+		745E84F5194953A70065E49A /* gui.cc in Sources */ = {isa = PBXBuildFile; fileRef = 745E84F3194953A70065E49A /* gui.cc */; };
+		745E84F6194953A70065E49A /* gui.h in Headers */ = {isa = PBXBuildFile; fileRef = 745E84F4194953A70065E49A /* gui.h */; };
 		7484A2A818887BEE0025A88B /* kopsik_api_private.h in Headers */ = {isa = PBXBuildFile; fileRef = 7484A2A218887BEE0025A88B /* kopsik_api_private.h */; };
 		7484A2AA18887BEE0025A88B /* context.h in Headers */ = {isa = PBXBuildFile; fileRef = 7484A2A418887BEE0025A88B /* context.h */; };
 		7484A2AB18887BEE0025A88B /* context.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7484A2A518887BEE0025A88B /* context.cc */; };
@@ -53,8 +55,6 @@
 		74CAAD21181860F7001B77BB /* timeline_uploader.h in Headers */ = {isa = PBXBuildFile; fileRef = 74CAAD18181860F7001B77BB /* timeline_uploader.h */; };
 		74E16831180F26D90026261C /* websocket_client.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74E1682F180F26D90026261C /* websocket_client.cc */; };
 		74E16832180F26D90026261C /* websocket_client.h in Headers */ = {isa = PBXBuildFile; fileRef = 74E16830180F26D90026261C /* websocket_client.h */; };
-		74E47F4019210BEC00D514C7 /* ui.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74E47F3E19210BEC00D514C7 /* ui.cc */; };
-		74E47F4119210BEC00D514C7 /* ui.h in Headers */ = {isa = PBXBuildFile; fileRef = 74E47F3F19210BEC00D514C7 /* ui.h */; };
 		74EB0F1717F9A2600046ABC1 /* https_client.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74EB0F1517F9A2600046ABC1 /* https_client.cc */; };
 		74EB0F1817F9A2600046ABC1 /* https_client.h in Headers */ = {isa = PBXBuildFile; fileRef = 74EB0F1617F9A2600046ABC1 /* https_client.h */; };
 		74F7CDDB18199FA300630BD0 /* window_change_recorder.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74F7CDD918199FA300630BD0 /* window_change_recorder.cc */; };
@@ -86,6 +86,8 @@
 		7408EDAE18C51CEB00CBE8F1 /* autocomplete_item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = autocomplete_item.h; path = ../../../autocomplete_item.h; sourceTree = "<group>"; };
 		7408EDAF18C51CEB00CBE8F1 /* formatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = formatter.h; path = ../../../formatter.h; sourceTree = "<group>"; };
 		7408EDB018C51CEB00CBE8F1 /* feedback.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = feedback.cc; path = ../../../feedback.cc; sourceTree = "<group>"; };
+		745E84F3194953A70065E49A /* gui.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gui.cc; path = ../../../gui.cc; sourceTree = "<group>"; };
+		745E84F4194953A70065E49A /* gui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gui.h; path = ../../../gui.h; sourceTree = "<group>"; };
 		7484A2A218887BEE0025A88B /* kopsik_api_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kopsik_api_private.h; path = ../../../kopsik_api_private.h; sourceTree = "<group>"; };
 		7484A2A418887BEE0025A88B /* context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = context.h; path = ../../../context.h; sourceTree = "<group>"; };
 		7484A2A518887BEE0025A88B /* context.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = context.cc; path = ../../../context.cc; sourceTree = "<group>"; };
@@ -124,8 +126,6 @@
 		74CAAD18181860F7001B77BB /* timeline_uploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = timeline_uploader.h; path = ../../../timeline_uploader.h; sourceTree = "<group>"; };
 		74E1682F180F26D90026261C /* websocket_client.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = websocket_client.cc; path = ../../../websocket_client.cc; sourceTree = "<group>"; };
 		74E16830180F26D90026261C /* websocket_client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = websocket_client.h; path = ../../../websocket_client.h; sourceTree = "<group>"; };
-		74E47F3E19210BEC00D514C7 /* ui.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ui.cc; path = ../../../ui.cc; sourceTree = "<group>"; };
-		74E47F3F19210BEC00D514C7 /* ui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ui.h; path = ../../../ui.h; sourceTree = "<group>"; };
 		74EB0F1517F9A2600046ABC1 /* https_client.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = https_client.cc; path = ../../../https_client.cc; sourceTree = "<group>"; };
 		74EB0F1617F9A2600046ABC1 /* https_client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = https_client.h; path = ../../../https_client.h; sourceTree = "<group>"; };
 		74F7CDD918199FA300630BD0 /* window_change_recorder.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = window_change_recorder.cc; path = ../../../window_change_recorder.cc; sourceTree = "<group>"; };
@@ -214,8 +214,8 @@
 		C55DA59E17F06A3B00B42178 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				74E47F3E19210BEC00D514C7 /* ui.cc */,
-				74E47F3F19210BEC00D514C7 /* ui.h */,
+				745E84F3194953A70065E49A /* gui.cc */,
+				745E84F4194953A70065E49A /* gui.h */,
 				7408EDA918C51CEB00CBE8F1 /* proxy.cc */,
 				7408EDAA18C51CEB00CBE8F1 /* autocomplete_item.cc */,
 				7408EDAB18C51CEB00CBE8F1 /* const.h */,
@@ -292,6 +292,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				745E84F6194953A70065E49A /* gui.h in Headers */,
 				7408EDB418C51CEB00CBE8F1 /* proxy.h in Headers */,
 				74B587BC18BBC77E00E9F6CE /* tag.h in Headers */,
 				74B587C018BBC77E00E9F6CE /* client.h in Headers */,
@@ -315,7 +316,6 @@
 				C5DA1FB117F18D7B001C4565 /* types.h in Headers */,
 				74E16832180F26D90026261C /* websocket_client.h in Headers */,
 				74CAAD1B181860F7001B77BB /* timeline_constants.h in Headers */,
-				74E47F4119210BEC00D514C7 /* ui.h in Headers */,
 				7484A2A818887BEE0025A88B /* kopsik_api_private.h in Headers */,
 				74EB0F1817F9A2600046ABC1 /* https_client.h in Headers */,
 				74BAD32A18BEC4FD002FD4CF /* base_model.h in Headers */,
@@ -396,7 +396,6 @@
 				7408EDB218C51CEB00CBE8F1 /* autocomplete_item.cc in Sources */,
 				74CAAD19181860F7001B77BB /* get_focused_window_mac.cc in Sources */,
 				74F7CDDB18199FA300630BD0 /* window_change_recorder.cc in Sources */,
-				74E47F4019210BEC00D514C7 /* ui.cc in Sources */,
 				74EB0F1717F9A2600046ABC1 /* https_client.cc in Sources */,
 				74B587C918BBC77E00E9F6CE /* user.cc in Sources */,
 				74B587BB18BBC77E00E9F6CE /* formatter.cc in Sources */,
@@ -404,6 +403,7 @@
 				74B587CC18BBC77E00E9F6CE /* workspace.cc in Sources */,
 				74B587C818BBC77E00E9F6CE /* task.cc in Sources */,
 				74CAAD20181860F7001B77BB /* timeline_uploader.cc in Sources */,
+				745E84F5194953A70065E49A /* gui.cc in Sources */,
 				7484A2AC18887BEE0025A88B /* kopsik_api_private.cc in Sources */,
 				74B587CB18BBC77E00E9F6CE /* project.cc in Sources */,
 				74B587C718BBC77E00E9F6CE /* json.cc in Sources */,
