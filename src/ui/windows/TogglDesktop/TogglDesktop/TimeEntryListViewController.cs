@@ -40,6 +40,7 @@ namespace TogglDesktop
             this.Dock = DockStyle.Fill;
             int y = 0;
             this.EntriesList.Controls.Clear();
+            this.EntriesList.SuspendLayout();
             foreach (KopsikApi.KopsikTimeEntryViewItem item in list)
             {
                 if (item.IsHeader)
@@ -56,8 +57,10 @@ namespace TogglDesktop
                     this.EntriesList.Controls.Add(cell);
                     y += (cell.Height + 1);
                 }
-                
+
             }
+            this.EntriesList.ResumeLayout(false);
+            this.EntriesList.PerformLayout();
         }
 
         private void TimeEntryListViewController_Load(object sender, EventArgs e)
