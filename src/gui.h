@@ -1,7 +1,7 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#ifndef SRC_UI_H_
-#define SRC_UI_H_
+#ifndef SRC_GUI_H_
+#define SRC_GUI_H_
 
 #include <string>
 #include <vector>
@@ -19,9 +19,9 @@
 
 namespace kopsik {
 
-class UI {
+class GUI {
  public:
-    UI() : on_display_app_(0)
+    GUI() : on_display_app_(0)
     , on_display_error_(0)
     , on_display_update_(0)
     , on_display_online_state_(0)
@@ -39,7 +39,7 @@ class UI {
     , on_display_timer_state_(0)
     , on_display_idle_notification_(0) {}
 
-    ~UI() {}
+    ~GUI() {}
 
     void DisplayApp();
     _Bool DisplayError(const error);
@@ -174,4 +174,4 @@ class UI {
 
 }  // namespace kopsik
 
-#endif  // SRC_UI_H_
+#endif  // SRC_GUI_H_

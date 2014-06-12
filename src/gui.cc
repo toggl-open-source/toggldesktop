@@ -1,24 +1,24 @@
 
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./ui.h"
+#include "./gui.h"
 
 #include <cstdlib>
 #include <sstream>
 
 namespace kopsik {
 
-void UI::DisplayApp() {
+void GUI::DisplayApp() {
     on_display_app_(true);
 }
 
-void UI::DisplayLogin(const _Bool open, const uint64_t user_id) {
+void GUI::DisplayLogin(const _Bool open, const uint64_t user_id) {
     logger().debug("DisplayLogin");
 
     on_display_login_(open, user_id);
 }
 
-_Bool UI::DisplayError(const error err) {
+_Bool GUI::DisplayError(const error err) {
     if (noError == err) {
         return true;
     }
@@ -34,7 +34,7 @@ _Bool UI::DisplayError(const error err) {
     return false;
 }
 
-error UI::VerifyCallbacks() {
+error GUI::VerifyCallbacks() {
     logger().debug("VerifyCallbacks");
     error err = findMissingCallbacks();
     if (err != noError) {
@@ -43,7 +43,7 @@ error UI::VerifyCallbacks() {
     return err;
 }
 
-error UI::findMissingCallbacks() {
+error GUI::findMissingCallbacks() {
     if (!on_display_app_) {
         return error("!on_display_app_");
     }
@@ -98,25 +98,25 @@ error UI::findMissingCallbacks() {
     return noError;
 }
 
-void UI::DisplayReminder() {
+void GUI::DisplayReminder() {
     logger().debug("DisplayReminder");
 
     on_display_reminder_("Reminder from Toggl Desktop",
                          "Don't forget to track your time!");
 }
 
-void UI::DisplayOnlineState(const _Bool is_online) {
+void GUI::DisplayOnlineState(const _Bool is_online) {
     logger().debug("DisplayOnlineState");
 
     on_display_online_state_(is_online);
 }
 
-void UI::DisplayUpdate(const _Bool open,
-                       const std::string update_channel,
-                       const _Bool is_checking,
-                       const _Bool is_available,
-                       const std::string url,
-                       const std::string version) {
+void GUI::DisplayUpdate(const _Bool open,
+                        const std::string update_channel,
+                        const _Bool is_checking,
+                        const _Bool is_available,
+                        const std::string url,
+                        const std::string version) {
     logger().debug("DisplayUpdate");
 
     KopsikUpdateViewItem view;
@@ -133,7 +133,7 @@ void UI::DisplayUpdate(const _Bool open,
     free(view.Version);
 }
 
-void UI::DisplayTimeEntryAutocomplete(
+void GUI::DisplayTimeEntryAutocomplete(
     std::vector<kopsik::AutocompleteItem> *items) {
     logger().debug("DisplayTimeEntryAutocomplete");
 
@@ -148,7 +148,7 @@ void UI::DisplayTimeEntryAutocomplete(
     autocomplete_item_clear(first);
 }
 
-void UI::DisplayProjectAutocomplete(
+void GUI::DisplayProjectAutocomplete(
     std::vector<kopsik::AutocompleteItem> *items) {
     logger().debug("DisplayProjectAutocomplete");
 
@@ -163,13 +163,13 @@ void UI::DisplayProjectAutocomplete(
     autocomplete_item_clear(first);
 }
 
-void UI::DisplayTimeEntryList(const _Bool open,
-                              KopsikTimeEntryViewItem* first) {
+void GUI::DisplayTimeEntryList(const _Bool open,
+                               KopsikTimeEntryViewItem* first) {
     logger().debug("DisplayTimeEntryList");
     on_display_time_entry_list_(open, first);
 }
 
-void UI::DisplayTags(std::vector<std::string> *tags) {
+void GUI::DisplayTags(std::vector<std::string> *tags) {
     logger().debug("DisplayTags");
 
     KopsikViewItem *first = 0;
@@ -184,7 +184,7 @@ void UI::DisplayTags(std::vector<std::string> *tags) {
     view_item_clear(first);
 }
 
-void UI::DisplayClientSelect(std::vector<kopsik::Client *> *clients) {
+void GUI::DisplayClientSelect(std::vector<kopsik::Client *> *clients) {
     logger().debug("DisplayClientSelect");
 
     KopsikViewItem *first = 0;
@@ -198,7 +198,7 @@ void UI::DisplayClientSelect(std::vector<kopsik::Client *> *clients) {
     view_item_clear(first);
 }
 
-void UI::DisplayWorkspaceSelect(std::vector<kopsik::Workspace *> *list) {
+void GUI::DisplayWorkspaceSelect(std::vector<kopsik::Workspace *> *list) {
     logger().debug("DisplayWorkspaceSelect");
 
     KopsikViewItem *first = 0;
@@ -212,24 +212,24 @@ void UI::DisplayWorkspaceSelect(std::vector<kopsik::Workspace *> *list) {
     view_item_clear(first);
 }
 
-void UI::DisplayTimeEntryEditor(const _Bool open,
-                                KopsikTimeEntryViewItem *te,
-                                const std::string focused_field_name) {
+void GUI::DisplayTimeEntryEditor(const _Bool open,
+                                 KopsikTimeEntryViewItem *te,
+                                 const std::string focused_field_name) {
     logger().debug("DisplayTimeEntryEditor");
     on_display_time_entry_editor_(open, te, focused_field_name.c_str());
 }
 
-void UI::DisplayURL(const std::string URL) {
+void GUI::DisplayURL(const std::string URL) {
     logger().debug("DisplayURL");
 
     on_display_url_(URL.c_str());
 }
 
-void UI::DisplaySettings(const _Bool open,
-                         const _Bool record_timeline,
-                         const Settings settings,
-                         const _Bool use_proxy,
-                         const Proxy proxy) {
+void GUI::DisplaySettings(const _Bool open,
+                          const _Bool record_timeline,
+                          const Settings settings,
+                          const _Bool use_proxy,
+                          const Proxy proxy) {
     logger().debug("DisplaySettings");
 
     KopsikSettingsViewItem *view = settings_view_item_init(
@@ -243,18 +243,18 @@ void UI::DisplaySettings(const _Bool open,
     settings_view_item_clear(view);
 }
 
-void UI::DisplayTimerState(KopsikTimeEntryViewItem *te) {
+void GUI::DisplayTimerState(KopsikTimeEntryViewItem *te) {
     logger().debug("DisplayTimerState");
     on_display_timer_state_(te);
 }
 
-void UI::DisplayIdleNotification(const std::string since,
-                                 const std::string duration,
-                                 const uint64_t started) {
+void GUI::DisplayIdleNotification(const std::string since,
+                                  const std::string duration,
+                                  const uint64_t started) {
     on_display_idle_notification_(since.c_str(), duration.c_str(), started);
 }
 
-_Bool UI::isNetworkingError(const error err) const {
+_Bool GUI::isNetworkingError(const error err) const {
     std::string value(err);
     if (value.find("Host not found") != std::string::npos) {
         return true;
@@ -310,7 +310,7 @@ _Bool UI::isNetworkingError(const error err) const {
     return false;
 }
 
-_Bool UI::isUserError(const error err) const {
+_Bool GUI::isUserError(const error err) const {
     if (noError == err) {
         return false;
     }

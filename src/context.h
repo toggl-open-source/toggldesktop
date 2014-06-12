@@ -17,7 +17,7 @@
 #include "./autocomplete_item.h"
 #include "./feedback.h"
 #include "./kopsik_api.h"
-#include "./ui.h"
+#include "./gui.h"
 
 #include "Poco/Timestamp.h"
 #include "Poco/Util/TimerTask.h"
@@ -33,7 +33,7 @@ class Context {
         const std::string app_version);
     ~Context();
 
-    UI *UI() {
+    GUI *UI() {
         return &ui_;
     }
 
@@ -298,7 +298,7 @@ class Context {
     Poco::Mutex timer_m_;
     Poco::Util::Timer timer_;
 
-    class UI ui_;
+    class GUI ui_;
 
     std::string time_entry_editor_guid_;
 

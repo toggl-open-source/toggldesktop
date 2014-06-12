@@ -234,8 +234,8 @@ build/autocomplete_item.o: src/autocomplete_item.cc
 build/feedback.o: src/feedback.cc
 	$(cxx) $(cflags) -c src/feedback.cc -o build/feedback.o
 
-build/ui.o: src/ui.cc
-	$(cxx) $(cflags) -c src/ui.cc -o build/ui.o
+build/gui.o: src/gui.cc
+	$(cxx) $(cflags) -c src/gui.cc -o build/gui.o
 
 build/context.o: src/context.cc
 	$(cxx) $(cflags) -c src/context.cc -o build/context.o
@@ -289,7 +289,7 @@ objects: build/proxy.o \
 	build/database.o \
 	build/autocomplete_item.o \
 	build/feedback.o \
-	build/ui.o \
+	build/gui.o \
 	build/context.o \
 	build/kopsik_api_private.o \
 	build/kopsik_api.o \
