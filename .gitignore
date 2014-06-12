@@ -18,6 +18,7 @@ src/libkopsik/Kopsik/build
 src/ui/osx/test2.project/build/
 toggl_test
 toggl
+*.bak
 
 third_party/openssl/Makefile*
 third_party/openssl/test/*test
