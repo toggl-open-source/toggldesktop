@@ -426,7 +426,7 @@ namespace TogglDesktop
                 "Any unsynced data will be lost." +
                 Environment.NewLine + "Do you want to continue?",
                 "Clear Cache",
-                MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (DialogResult.Yes == dr) 
             {
                 KopsikApi.kopsik_clear_cache(KopsikApi.ctx);
