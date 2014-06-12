@@ -373,7 +373,7 @@ void User::CollectPushableProjects(
     }
 }
 
-error User::FullSync(
+error User::PullAllUserData(
     HTTPSClient *https_client) {
     try {
         Poco::Stopwatch stopwatch;
@@ -399,10 +399,10 @@ error User::FullSync(
     } catch(const std::string& ex) {
         return ex;
     }
-    return Push(https_client);
+    return noError;
 }
 
-error User::Push(HTTPSClient *https_client) {
+error User::PushChanges(HTTPSClient *https_client) {
     try {
         Poco::Stopwatch stopwatch;
         stopwatch.start();

@@ -34,8 +34,8 @@ Context::Context(const std::string app_name, const std::string app_version)
 , window_change_recorder_(0)
 , timeline_upload_url_("")
 , feedback_("", "", "")
-, next_full_sync_at_(0)
-, next_partial_sync_at_(0)
+, next_sync_at_(0)
+, next_push_changes_at_(0)
 , next_fetch_updates_at_(0)
 , next_update_timeline_settings_at_(0)
 , next_reminder_at_(0)
@@ -190,7 +190,7 @@ error Context::save(const bool push_changes) {
     updateUI(&changes);
 
     if (push_changes) {
-        partialSync();
+        pushChanges();
     }
 
     return noError;
@@ -304,17 +304,6 @@ void Context::displayTags() {
     UI()->DisplayTags(&list);
 }
 
-void Context::FullSync() {
-    logger().debug("FullSync");
-
-    next_full_sync_at_ = postpone();
-    Poco::Util::TimerTask::Ptr ptask =
-        new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onFullSync);
-
-    Poco::Mutex::ScopedLock lock(timer_m_);
-    timer_.schedule(ptask, next_full_sync_at_);
-}
-
 Poco::Timestamp Context::postpone(
     const Poco::Timestamp::TimeDiff throttleMicros) {
     return Poco::Timestamp() + throttleMicros;
@@ -346,15 +335,32 @@ _Bool Context::displayError(const error err) {
     return UI()->DisplayError(err);
 }
 
-void Context::onFullSync(Poco::Util::TimerTask& task) {  // NOLINT
-    if (isPostponed(next_full_sync_at_)) {
-        logger().debug("onFullSync postponed");
+void Context::Sync() {
+    logger().debug("Sync");
+
+    next_sync_at_ = postpone();
+    Poco::Util::TimerTask::Ptr ptask =
+        new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onSync);
+
+    Poco::Mutex::ScopedLock lock(timer_m_);
+    timer_.schedule(ptask, next_sync_at_);
+}
+
+void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
+    if (isPostponed(next_sync_at_)) {
+        logger().debug("onSync postponed");
         return;
     }
     logger().debug("onFullSync executing");
 
     HTTPSClient client;
-    error err = user_->FullSync(&client);
+    error err = user_->PullAllUserData(&client);
+    if (err != noError) {
+        displayError(err);
+        return;
+    }
+
+    err = user_->PushChanges(&client);
     if (err != noError) {
         displayError(err);
         return;
@@ -369,27 +375,27 @@ void Context::onFullSync(Poco::Util::TimerTask& task) {  // NOLINT
     UI()->DisplayOnlineState(true);
 }
 
-void Context::partialSync() {
-    logger().debug("partialSync");
+void Context::pushChanges() {
+    logger().debug("pushChanges");
 
-    next_partial_sync_at_ = postpone();
+    next_push_changes_at_ = postpone();
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(
-            *this, &Context::onPartialSync);
+            *this, &Context::onPushChanges);
 
     Poco::Mutex::ScopedLock lock(timer_m_);
-    timer_.schedule(ptask, next_partial_sync_at_);
+    timer_.schedule(ptask, next_push_changes_at_);
 }
 
-void Context::onPartialSync(Poco::Util::TimerTask& task) {  // NOLINT
-    if (isPostponed(next_partial_sync_at_)) {
-        logger().debug("onPartialSync postponed");
+void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
+    if (isPostponed(next_push_changes_at_)) {
+        logger().debug("onPushChanges postponed");
         return;
     }
-    logger().debug("onPartialSync executing");
+    logger().debug("onPushChanges executing");
 
     HTTPSClient client;
-    error err = user_->Push(&client);
+    error err = user_->PushChanges(&client);
     if (err != noError) {
         displayError(err);
         return;
@@ -798,7 +804,7 @@ _Bool Context::SetProxySettings(
             || proxy.port != previous_proxy_settings.port
             || proxy.username != previous_proxy_settings.username
             || proxy.password != previous_proxy_settings.password) {
-        FullSync();
+        Sync();
         switchWebSocketOn();
     }
 
@@ -993,7 +999,7 @@ void Context::setUser(User *value, const bool user_logged_in) {
     switchWebSocketOn();
 
     if (!user_logged_in) {
-        FullSync();
+        Sync();
     }
 
     if ("production" == environment_) {

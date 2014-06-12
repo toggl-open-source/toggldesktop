@@ -41,8 +41,9 @@ class User : public BaseModel {
 
     ~User();
 
-    error FullSync(HTTPSClient *https_client);
-    error Push(HTTPSClient *https_client);
+    error PullAllUserData(HTTPSClient *https_client);
+    error PullChanges(HTTPSClient *https_client);
+    error PushChanges(HTTPSClient *https_client);
 
     static error Me(
         HTTPSClient *https_client,
