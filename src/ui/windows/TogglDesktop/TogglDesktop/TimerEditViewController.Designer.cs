@@ -49,7 +49,7 @@
             this.comboBoxDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.comboBoxDescription.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(99)))), ((int)(((byte)(99)))));
             this.comboBoxDescription.FormattingEnabled = true;
-            this.comboBoxDescription.Location = new System.Drawing.Point(15, 4);
+            this.comboBoxDescription.Location = new System.Drawing.Point(15, 10);
             this.comboBoxDescription.Name = "comboBoxDescription";
             this.comboBoxDescription.Size = new System.Drawing.Size(145, 23);
             this.comboBoxDescription.TabIndex = 0;
@@ -64,11 +64,11 @@
             this.textBoxDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxDuration.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
             this.textBoxDuration.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxDuration.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
+            this.textBoxDuration.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.textBoxDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(99)))), ((int)(((byte)(99)))));
-            this.textBoxDuration.Location = new System.Drawing.Point(185, 15);
+            this.textBoxDuration.Location = new System.Drawing.Point(170, 17);
             this.textBoxDuration.Name = "textBoxDuration";
-            this.textBoxDuration.Size = new System.Drawing.Size(65, 17);
+            this.textBoxDuration.Size = new System.Drawing.Size(80, 22);
             this.textBoxDuration.TabIndex = 1;
             this.textBoxDuration.Text = "00:00:00";
             this.textBoxDuration.Enter += new System.EventHandler(this.textBoxDuration_Enter);
@@ -77,7 +77,7 @@
             // buttonStart
             // 
             this.buttonStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonStart.Location = new System.Drawing.Point(265, 7);
+            this.buttonStart.Location = new System.Drawing.Point(259, 10);
             this.buttonStart.Margin = new System.Windows.Forms.Padding(0);
             this.buttonStart.Name = "buttonStart";
             this.buttonStart.Size = new System.Drawing.Size(40, 35);
@@ -122,12 +122,12 @@
             // linkLabelDuration
             // 
             this.linkLabelDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.linkLabelDuration.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
+            this.linkLabelDuration.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.linkLabelDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(99)))), ((int)(((byte)(99)))));
-            this.linkLabelDuration.Location = new System.Drawing.Point(182, 32);
+            this.linkLabelDuration.Location = new System.Drawing.Point(167, 40);
             this.linkLabelDuration.Margin = new System.Windows.Forms.Padding(0);
             this.linkLabelDuration.Name = "linkLabelDuration";
-            this.linkLabelDuration.Size = new System.Drawing.Size(75, 18);
+            this.linkLabelDuration.Size = new System.Drawing.Size(88, 23);
             this.linkLabelDuration.TabIndex = 9;
             this.linkLabelDuration.Text = "00:00:00";
             this.linkLabelDuration.Visible = false;
