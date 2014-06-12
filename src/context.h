@@ -43,7 +43,7 @@ class Context {
     // Close connections and wait for tasks to finish
     void Shutdown();
 
-    void FullSync();
+    void Sync();
     void TimelineUpdateServerSettings();
     _Bool SendFeedback(Feedback);
 
@@ -194,13 +194,13 @@ class Context {
 
     error save(const bool push_changes = true);
 
-    void partialSync();
+    void pushChanges();
 
     void fetchUpdates();
 
     // timer_ callbacks
-    void onFullSync(Poco::Util::TimerTask& task);  // NOLINT
-    void onPartialSync(Poco::Util::TimerTask& task);  // NOLINT
+    void onSync(Poco::Util::TimerTask& task);  // NOLINT
+    void onPushChanges(Poco::Util::TimerTask& task);  // NOLINT
     void onSwitchWebSocketOff(Poco::Util::TimerTask& task);  // NOLINT
     void onSwitchWebSocketOn(Poco::Util::TimerTask& task);  // NOLINT
     void onSwitchTimelineOff(Poco::Util::TimerTask& task);  // NOLINT
@@ -288,8 +288,8 @@ class Context {
     Feedback feedback_;
 
     // Tasks are scheduled at:
-    Poco::Timestamp next_full_sync_at_;
-    Poco::Timestamp next_partial_sync_at_;
+    Poco::Timestamp next_sync_at_;
+    Poco::Timestamp next_push_changes_at_;
     Poco::Timestamp next_fetch_updates_at_;
     Poco::Timestamp next_update_timeline_settings_at_;
     Poco::Timestamp next_reminder_at_;

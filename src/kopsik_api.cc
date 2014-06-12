@@ -254,7 +254,7 @@ _Bool kopsik_users_default_wid(
 
 void kopsik_sync(void *context) {
     logger().debug("kopsik_sync");
-    app(context)->FullSync();
+    app(context)->Sync();
 }
 
 _Bool kopsik_add_project(
