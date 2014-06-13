@@ -119,7 +119,7 @@
             this.Controls.Add(this.googleLoginTextField);
             this.Controls.Add(this.loginButton);
             this.Name = "LoginViewController";
-            this.Size = new System.Drawing.Size(279, 345);
+            this.Size = new System.Drawing.Size(279, 320);
             this.Load += new System.EventHandler(this.LoginViewController_Load);
             ((System.ComponentModel.ISupportInitialize)(this.togglLogoBox)).EndInit();
             this.ResumeLayout(false);
