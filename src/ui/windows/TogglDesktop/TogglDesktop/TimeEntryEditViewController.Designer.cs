@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxDescription = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.labelProject = new System.Windows.Forms.Label();
             this.comboBoxProject = new System.Windows.Forms.ComboBox();
             this.linkAddProject = new System.Windows.Forms.LinkLabel();
             this.label3 = new System.Windows.Forms.Label();
@@ -90,14 +90,14 @@
             this.comboBoxDescription.SelectedIndexChanged += new System.EventHandler(this.comboBoxDescription_SelectedIndexChanged);
             this.comboBoxDescription.Leave += new System.EventHandler(this.comboBoxDescription_Leave);
             // 
-            // label2
+            // labelProject
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(15, 40);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(43, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Project:";
+            this.labelProject.AutoSize = true;
+            this.labelProject.Location = new System.Drawing.Point(15, 40);
+            this.labelProject.Name = "labelProject";
+            this.labelProject.Size = new System.Drawing.Size(43, 13);
+            this.labelProject.TabIndex = 2;
+            this.labelProject.Text = "Project:";
             // 
             // comboBoxProject
             // 
@@ -400,7 +400,7 @@
             this.Controls.Add(this.statusStripLastUpdate);
             this.Controls.Add(this.linkAddProject);
             this.Controls.Add(this.comboBoxProject);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.labelProject);
             this.Controls.Add(this.comboBoxDescription);
             this.Controls.Add(this.label1);
             this.Name = "TimeEntryEditViewController";
@@ -422,7 +422,7 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBoxDescription;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelProject;
         private System.Windows.Forms.ComboBox comboBoxProject;
         private System.Windows.Forms.LinkLabel linkAddProject;
         private System.Windows.Forms.Label label3;
