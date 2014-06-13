@@ -213,7 +213,7 @@
             // 
             // toolStripStatusLabelLastUpdate
             // 
-            this.toolStripStatusLabelLastUpdate.Margin = new System.Windows.Forms.Padding(9, 3, 0, 2);
+            this.toolStripStatusLabelLastUpdate.Margin = new System.Windows.Forms.Padding(8, 3, 0, 2);
             this.toolStripStatusLabelLastUpdate.Name = "toolStripStatusLabelLastUpdate";
             this.toolStripStatusLabelLastUpdate.Size = new System.Drawing.Size(150, 17);
             this.toolStripStatusLabelLastUpdate.Text = "Last update: Today 2:03AM";
@@ -233,7 +233,7 @@
             // buttonContinue
             // 
             this.buttonContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonContinue.Location = new System.Drawing.Point(227, 3);
+            this.buttonContinue.Location = new System.Drawing.Point(230, 3);
             this.buttonContinue.Name = "buttonContinue";
             this.buttonContinue.Size = new System.Drawing.Size(75, 23);
             this.buttonContinue.TabIndex = 2;
@@ -292,6 +292,8 @@
             // 
             // panelBottom
             // 
+            this.panelBottom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelBottom.Controls.Add(this.label3);
             this.panelBottom.Controls.Add(this.checkedListBoxTags);
             this.panelBottom.Controls.Add(this.textBoxDuration);
@@ -347,6 +349,8 @@
             // 
             // textBoxProjectName
             // 
+            this.textBoxProjectName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxProjectName.Location = new System.Drawing.Point(100, 5);
             this.textBoxProjectName.Name = "textBoxProjectName";
             this.textBoxProjectName.Size = new System.Drawing.Size(202, 20);
@@ -364,7 +368,8 @@
             // 
             // comboBoxClient
             // 
-            this.comboBoxClient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.comboBoxClient.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxClient.FormattingEnabled = true;
             this.comboBoxClient.Location = new System.Drawing.Point(100, 91);
             this.comboBoxClient.Name = "comboBoxClient";
@@ -373,6 +378,8 @@
             // 
             // comboBoxWorkspace
             // 
+            this.comboBoxWorkspace.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxWorkspace.FormattingEnabled = true;
             this.comboBoxWorkspace.Location = new System.Drawing.Point(100, 58);
             this.comboBoxWorkspace.Name = "comboBoxWorkspace";
