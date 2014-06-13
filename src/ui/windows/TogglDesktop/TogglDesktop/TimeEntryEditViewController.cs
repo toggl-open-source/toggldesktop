@@ -199,7 +199,12 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { DisplayClientSelect(list); });
                 return;
             }
-            // FIXME: 
+
+            comboBoxClient.Items.Clear();
+            foreach (KopsikApi.KopsikViewItem o in list)
+            {
+                comboBoxClient.Items.Add(o);
+            }
         }
 
         void OnTags(IntPtr first)
@@ -235,7 +240,11 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { DisplayWorkspaceSelect(list); });
                 return;
             }
-            // FIXME:
+            comboBoxWorkspace.Items.Clear();
+            foreach (KopsikApi.KopsikViewItem o in list)
+            {
+                comboBoxWorkspace.Items.Add(o);
+            }
         }
 
         void OnTimeEntryAutocomplete(IntPtr first)
