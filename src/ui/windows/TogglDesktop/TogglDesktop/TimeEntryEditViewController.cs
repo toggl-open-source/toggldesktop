@@ -140,7 +140,7 @@ namespace TogglDesktop
             if (te.UpdatedAt >= 0)
             {
                 DateTime updatedAt = KopsikApi.DateTimeFromUnix(te.UpdatedAt);
-                toolStripStatusLabelLastUpdate.Text = updatedAt.ToString();
+                toolStripStatusLabelLastUpdate.Text = "Last update: " + updatedAt.ToString();
                 toolStripStatusLabelLastUpdate.Visible = true;
             }
             else
