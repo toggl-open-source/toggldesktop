@@ -75,6 +75,7 @@ namespace TogglDesktop
             KopsikApi.KopsikTimeEntryViewItem te,
             string focused_field_name)
         {
+            resetForms();
             timeEntry = te;
             if (InvokeRequired)
             {
@@ -454,6 +455,41 @@ namespace TogglDesktop
             {
                 textBoxDuration.Text = s;
             }
+        }
+
+        private void linkAddProject_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            panelAddProject.Top = panelBottom.Top-10;
+            
+            textBoxProjectName.Text = "";
+            comboBoxClient.Text = "";
+            comboBoxWorkspace.Text = "";
+            linkAddProject.Visible = false;
+            int boxHeight = 89;
+            if (comboBoxWorkspace.Items.Count > 1)
+            {
+                labelWorkspace.Visible = true;
+                comboBoxWorkspace.Visible = true;
+                boxHeight = 122;
+            }
+            panelBottom.Top += boxHeight;
+            panelAddProject.Height = boxHeight;
+
+            panelAddProject.Visible = true;
+            //89
+            //122
+        }
+
+        private void resetForms()
+        {
+            if (panelAddProject.Visible)
+            {
+                panelAddProject.Visible = false;
+                panelBottom.Top = panelAddProject.Top+10;
+                labelWorkspace.Visible = false;
+                comboBoxWorkspace.Visible = false;
+                linkAddProject.Visible = true;
+            }           
         }
     }
 }
