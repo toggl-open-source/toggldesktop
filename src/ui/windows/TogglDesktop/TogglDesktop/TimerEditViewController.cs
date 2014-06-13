@@ -171,7 +171,6 @@ namespace TogglDesktop
             comboBoxDescription.Text = "";
 
             linkLabelDuration.Top = textBoxDuration.Top;
-            linkLabelDuration.Left = textBoxDuration.Left;
             linkLabelDuration.Text = te.Duration;
             linkLabelDuration.Visible = true;
 
