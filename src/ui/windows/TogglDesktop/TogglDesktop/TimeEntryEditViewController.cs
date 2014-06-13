@@ -307,6 +307,15 @@ namespace TogglDesktop
             projectAutocompleteUpdate = null;
         }
 
+        private void comboBoxProject_Leave(object sender, EventArgs e)
+        {
+            if (comboBoxProject.Text.Length == 0)
+            {
+                KopsikApi.kopsik_set_time_entry_project(KopsikApi.ctx,
+                GUID, 0, 0, "");
+            }
+        }
+
         private void comboBoxProject_SelectedIndexChanged(object sender, EventArgs e)
         {
             object o = comboBoxProject.SelectedItem;

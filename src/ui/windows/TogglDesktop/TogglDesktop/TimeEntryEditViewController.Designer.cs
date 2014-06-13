@@ -100,6 +100,7 @@
             this.comboBoxProject.Size = new System.Drawing.Size(140, 21);
             this.comboBoxProject.TabIndex = 3;
             this.comboBoxProject.SelectedIndexChanged += new System.EventHandler(this.comboBoxProject_SelectedIndexChanged);
+            this.comboBoxProject.Leave += new System.EventHandler(this.comboBoxProject_Leave);
             // 
             // linkAddProject
             // 
