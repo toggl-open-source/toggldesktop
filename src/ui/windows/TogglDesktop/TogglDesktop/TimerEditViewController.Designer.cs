@@ -97,9 +97,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabelProject.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.linkLabelProject.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(99)))), ((int)(((byte)(99)))));
-            this.linkLabelProject.Location = new System.Drawing.Point(15, 32);
+            this.linkLabelProject.Location = new System.Drawing.Point(15, 35);
             this.linkLabelProject.Name = "linkLabelProject";
-            this.linkLabelProject.Size = new System.Drawing.Size(145, 23);
+            this.linkLabelProject.Size = new System.Drawing.Size(145, 20);
             this.linkLabelProject.TabIndex = 7;
             this.linkLabelProject.Text = "NEW - TOGGL";
             this.linkLabelProject.Visible = false;
