@@ -81,6 +81,10 @@ namespace TogglDesktop
             public string GUID;
             public string Name;
             public IntPtr Next;
+            public override string ToString()
+            {
+                return this.Name;
+            }
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = charset)]
