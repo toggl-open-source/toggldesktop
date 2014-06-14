@@ -33,13 +33,13 @@ namespace TogglDesktop
                 password.Focus();
                 return;
             }
-            KopsikApi.kopsik_login(KopsikApi.ctx, email.Text, password.Text);
+            KopsikApi.Login(email.Text, password.Text);
             password.Clear();
         }
 
         private void passwordForgotTextField_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            KopsikApi.kopsik_password_forgot(KopsikApi.ctx);
+            KopsikApi.PasswordForgot();
         }
 
         private void googleLoginTextField_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -79,7 +79,7 @@ namespace TogglDesktop
                 CancellationToken.None,
                 null).Result;
 
-            KopsikApi.kopsik_google_login(KopsikApi.ctx, credential.Token.AccessToken);
+            KopsikApi.GoogleLogin(credential.Token.AccessToken);
             credential.RevokeTokenAsync(CancellationToken.None).Wait();
         }
 

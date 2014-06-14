@@ -19,7 +19,7 @@ namespace TogglDesktop
             InitializeComponent();
 
             KopsikApi.OnIdleNotification += OnIdleNotification;
-            KopsikApi.OnTimerState += OnTimerState;
+            KopsikApi.OnStoppedTimerState += OnStoppedTimerState;
         }
 
         private void buttonKeepTime_Click(object sender, EventArgs e)
@@ -29,7 +29,7 @@ namespace TogglDesktop
 
         private void buttonDiscardTime_Click(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_stop_running_time_entry_at(KopsikApi.ctx, idle_started_at);
+            KopsikApi.StopRunningTimeEntryAt(idle_started_at);
             Close();
         }
 
@@ -50,19 +50,14 @@ namespace TogglDesktop
             idle_started_at = started;
         }
 
-        void OnTimerState(IntPtr te)
-        {
-            DisplayTimerState(te != IntPtr.Zero);
-        }
-
-        void DisplayTimerState(bool is_tracking)
+        void OnStoppedTimerState()
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayTimerState(is_tracking); });
+                Invoke((MethodInvoker)delegate { OnStoppedTimerState(); });
                 return;
             }
-            if (!is_tracking && Visible)
+            if (Visible)
             {
                 Close();
             }

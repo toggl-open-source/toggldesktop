@@ -11,7 +11,7 @@ namespace TogglDesktop
 {
     static class KopsikApi
     {
-        public static IntPtr ctx = IntPtr.Zero;
+        private static IntPtr ctx = IntPtr.Zero;
 
         public const string Project = "project";
         public const string Duration = "duration";
@@ -20,6 +20,26 @@ namespace TogglDesktop
         private const string dll = "TogglDesktopDLL.dll";
         private const CharSet charset = CharSet.Ansi;
         private const CallingConvention convention = CallingConvention.Cdecl;
+
+        private static string DecodeString(string default_encoded_text)
+        {
+            if (default_encoded_text == null)
+            {
+                return null;
+            }
+            byte[] b = Encoding.Default.GetBytes(default_encoded_text);
+            return Encoding.UTF8.GetString(b);
+        }
+
+        private static string EncodeString(string utf8_encoded_text)
+        {
+            if (utf8_encoded_text == null)
+            {
+                return null;
+            }
+            byte[] b = Encoding.UTF8.GetBytes(utf8_encoded_text);
+            return Encoding.Default.GetString(b);
+        }
 
         // Models
 
@@ -52,6 +72,19 @@ namespace TogglDesktop
             [MarshalAs(UnmanagedType.I1)]
             public bool IsHeader;
             public IntPtr Next;
+
+            public KopsikTimeEntryViewItem ToUTF8()
+            {
+                Description = DecodeString(Description);
+                ProjectAndTaskLabel = DecodeString(ProjectAndTaskLabel);
+                ProjectLabel = DecodeString(ProjectLabel);
+                ClientLabel = DecodeString(ClientLabel);
+                Duration = DecodeString(Duration);
+                Tags = DecodeString(Tags);
+                DateHeader = DecodeString(DateHeader);
+                DateDuration = DecodeString(DateDuration);
+                return this;
+            }
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = charset)]
@@ -67,9 +100,21 @@ namespace TogglDesktop
             public UInt64 ProjectID;
             public UInt64 Type;
             public IntPtr Next;
+
             public override string ToString()
             {
                 return this.Text;
+            }
+
+            public KopsikAutocompleteItem ToUTF8()
+            {
+                Text = DecodeString(Text);
+                Description = DecodeString(Description);
+                ProjectAndTaskLabel = DecodeString(ProjectAndTaskLabel);
+                ProjectLabel = DecodeString(ProjectLabel);
+                ClientLabel = DecodeString(ClientLabel);
+                ProjectColor = DecodeString(ProjectColor);
+                return this;
             }
         }
 
@@ -81,6 +126,12 @@ namespace TogglDesktop
             public string GUID;
             public string Name;
             public IntPtr Next;
+
+            public KopsikViewItem ToUTF8()
+            {
+                Name = DecodeString(Name);
+                return this;
+            }
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = charset)]
@@ -106,6 +157,14 @@ namespace TogglDesktop
             public bool RecordTimeline;
             [MarshalAs(UnmanagedType.I1)]
             public bool IgnoreCert;
+
+            public KopsikSettingsViewItem ToUTF8()
+            {
+                ProxyHost = DecodeString(ProxyHost);
+                ProxyUsername = DecodeString(ProxyUsername);
+                ProxyPassword = DecodeString(ProxyPassword);
+                return this;
+            }
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = charset)]
@@ -123,75 +182,129 @@ namespace TogglDesktop
         // Callbacks
 
         [UnmanagedFunctionPointer(convention)]
-        public delegate void KopsikDisplayApp(
+        private delegate void KopsikDisplayApp(
             [MarshalAs(UnmanagedType.I1)]
             bool open);
 
+        public delegate void DisplayApp(
+            bool open);
+
         [UnmanagedFunctionPointer(convention)]
-        public delegate void KopsikDisplayError(
+        private delegate void KopsikDisplayError(
             string errmsg,
             [MarshalAs(UnmanagedType.I1)]
             bool user_error);
 
+        public delegate void DisplayError(
+            string errmsg,
+            bool user_error);
+
         [UnmanagedFunctionPointer(convention)]
-        public delegate void KopsikDisplayUpdate(
+        private delegate void KopsikDisplayUpdate(
             [MarshalAs(UnmanagedType.I1)]
             bool open,
             ref KopsikUpdateViewItem view);
 
+        public delegate void DisplayUpdate(
+            bool open,
+            KopsikUpdateViewItem view);
+
         [UnmanagedFunctionPointer(convention)]
-        public delegate void KopsikDisplayOnlineState(
+        private delegate void KopsikDisplayOnlineState(
             [MarshalAs(UnmanagedType.I1)]
             bool is_online);
 
+        public delegate void DisplayOnlineState(
+            bool is_online);
+
         [UnmanagedFunctionPointer(convention)]
-        public delegate void KopsikDisplayURL(
+        private delegate void KopsikDisplayURL(
+            string url);
+
+        public delegate void DisplayURL(
             string url);
 
         [UnmanagedFunctionPointer(convention)]
-        public delegate void KopsikDisplayLogin(
+        private delegate void KopsikDisplayLogin(
             [MarshalAs(UnmanagedType.I1)]
             bool open,
             UInt64 user_id);
 
+        public delegate void DisplayLogin(
+            bool open,
+            UInt64 user_id);
+
         [UnmanagedFunctionPointer(convention)]
-        public delegate void KopsikDisplayReminder(
+        private delegate void KopsikDisplayReminder(
+            string title,
+            string informative_text);
+
+        public delegate void DisplayReminder(
             string title,
             string informative_text);
 
         [UnmanagedFunctionPointer(convention)]
-        public delegate void KopsikDisplayTimeEntryList(
+        private delegate void KopsikDisplayTimeEntryList(
             [MarshalAs(UnmanagedType.I1)]
             bool open,
             IntPtr first);
 
-        [UnmanagedFunctionPointer(convention)]
-        public delegate void KopsikDisplayAutocomplete(
-            IntPtr first);
+        public delegate void DisplayTimeEntryList(
+            bool open,
+            List<KopsikTimeEntryViewItem> list);
 
         [UnmanagedFunctionPointer(convention)]
-        public delegate void KopsikDisplayViewItems(
+        private delegate void KopsikDisplayAutocomplete(
             IntPtr first);
+
+        public delegate void DisplayAutocomplete(
+            List<KopsikAutocompleteItem> list);
+
+        [UnmanagedFunctionPointer(convention)]
+        private delegate void KopsikDisplayViewItems(
+            IntPtr first);
+
+        public delegate void DisplayViewItems(
+            List<KopsikViewItem> list);
         
         [UnmanagedFunctionPointer(convention)]
-        public delegate void KopsikDisplayTimeEntryEditor(
+        private delegate void KopsikDisplayTimeEntryEditor(
             [MarshalAs(UnmanagedType.I1)]
             bool open,
             ref KopsikTimeEntryViewItem te,
             string focused_field_name);
 
+        public delegate void DisplayTimeEntryEditor(
+            bool open,
+            KopsikTimeEntryViewItem te,
+            string focused_field_name);
+
         [UnmanagedFunctionPointer(convention)]
-        public delegate void KopsikDisplaySettings(
+        private delegate void KopsikDisplaySettings(
             [MarshalAs(UnmanagedType.I1)]
             bool open,
             ref KopsikSettingsViewItem settings);
 
-        [UnmanagedFunctionPointer(convention)]
-        public delegate void KopsikDisplayTimerState(
-            IntPtr te);
+        public delegate void DisplaySettings(
+            bool open,
+            KopsikSettingsViewItem settings);
 
         [UnmanagedFunctionPointer(convention)]
-        public delegate void KopsikDisplayIdleNotification(
+        private delegate void KopsikDisplayTimerState(
+            IntPtr te);
+
+        public delegate void DisplayRunningTimerState(
+            KopsikTimeEntryViewItem te);
+
+        public delegate void DisplayStoppedTimerState();
+
+        [UnmanagedFunctionPointer(convention)]
+        private delegate void KopsikDisplayIdleNotification(
+            string since,
+            string duration,
+            UInt64 started);
+
+        public delegate void DisplayIdleNotification(
             string since,
             string duration,
             UInt64 started);
@@ -199,17 +312,22 @@ namespace TogglDesktop
         // Initialize/destroy an instance of the app
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern System.IntPtr kopsik_context_init(
+        private static extern System.IntPtr kopsik_context_init(
             string app_name,
             string app_version);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_context_clear(
+        private static extern void kopsik_context_clear(
             IntPtr context);
+
+        public static void Clear()
+        {
+            kopsik_context_clear(ctx);
+        }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_set_environment(
+        private static extern bool kopsik_set_environment(
             IntPtr context,
             string environment);
 
@@ -217,33 +335,33 @@ namespace TogglDesktop
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_set_db_path(
+        private static extern bool kopsik_set_db_path(
             IntPtr context,
             string path);
 
         // Log path must be configured from UI
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_set_log_path(
+        private static extern void kopsik_set_log_path(
             string path);
 
         // Log level is optional
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_set_log_level(
+        private static extern void kopsik_set_log_level(
             string level);
 
         // API URL can be overriden from UI. Optional
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern System.IntPtr kopsik_set_api_url(
+        private static extern System.IntPtr kopsik_set_api_url(
             IntPtr context,
             string path);
 
         // WebSocket URL can be overriden from UI. Optional
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern System.IntPtr kopsik_set_websocket_url(
+        private static extern System.IntPtr kopsik_set_websocket_url(
             string path);
 
         // Configure the UI callbacks. Required.
@@ -259,77 +377,77 @@ namespace TogglDesktop
             KopsikDisplayError cb);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_on_update(
+        private static extern void kopsik_on_update(
             IntPtr context,
             KopsikDisplayUpdate cb);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_on_online_state(
+        private static extern void kopsik_on_online_state(
             IntPtr context,
             KopsikDisplayOnlineState cb);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_on_url(
+        private static extern void kopsik_on_url(
             IntPtr context,
             KopsikDisplayURL cb);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_on_login(
+        private static extern void kopsik_on_login(
             IntPtr context,
             KopsikDisplayLogin cb);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_on_reminder(
+        private static extern void kopsik_on_reminder(
             IntPtr context,
             KopsikDisplayReminder cb);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_on_time_entry_list(
+        private static extern void kopsik_on_time_entry_list(
             IntPtr context,
             KopsikDisplayTimeEntryList cb);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_on_time_entry_autocomplete(
+        private static extern void kopsik_on_time_entry_autocomplete(
             IntPtr context,
             KopsikDisplayAutocomplete cb);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_on_project_autocomplete(
+        private static extern void kopsik_on_project_autocomplete(
             IntPtr context,
             KopsikDisplayAutocomplete cb);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_on_workspace_select(
+        private static extern void kopsik_on_workspace_select(
             IntPtr context,
             KopsikDisplayViewItems cb);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_on_client_select(
+        private static extern void kopsik_on_client_select(
             IntPtr context,
             KopsikDisplayViewItems cb);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_on_tags(
+        private static extern void kopsik_on_tags(
             IntPtr context,
             KopsikDisplayViewItems cb);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_on_time_entry_editor(
+        private static extern void kopsik_on_time_entry_editor(
             IntPtr context,
             KopsikDisplayTimeEntryEditor cb);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_on_settings(
+        private static extern void kopsik_on_settings(
             IntPtr context,
             KopsikDisplaySettings cb);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_on_timer_state(
+        private static extern void kopsik_on_timer_state(
             IntPtr context,
             KopsikDisplayTimerState cb);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_on_idle_notification(
+        private static extern void kopsik_on_idle_notification(
             IntPtr context,
             KopsikDisplayIdleNotification cb);
 
@@ -337,149 +455,266 @@ namespace TogglDesktop
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_context_start_events(
+        private static extern bool kopsik_context_start_events(
             IntPtr context);
 
         // User interaction with the app
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_login(
+        private static extern bool kopsik_login(
             IntPtr context,
             string email,
             string password);
 
+        public static bool Login(string email, string password)
+        {
+            return kopsik_login(ctx, EncodeString(email), EncodeString(password));
+        }
+
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_google_login(
+        private static extern bool kopsik_google_login(
             IntPtr context,
             string access_token);
 
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_password_forgot(
-            IntPtr context);
+        public static bool GoogleLogin(string access_token)
+        {
+            return kopsik_google_login(ctx, access_token);
+        }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_open_in_browser(
+        private static extern void kopsik_password_forgot(
             IntPtr context);
 
+        public static void PasswordForgot()
+        {
+            kopsik_password_forgot(ctx);
+        }
+
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_get_support(
+        private static extern void kopsik_open_in_browser(
+            IntPtr context);
+
+        public static void OpenInBrowser()
+        {
+            kopsik_open_in_browser(ctx);
+        }
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        private static extern void kopsik_get_support(
             IntPtr context);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_feedback_send(
+        private static extern bool kopsik_feedback_send(
             IntPtr context,
             string topic,
             string details,
             string filename);
 
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        public static extern void kopsik_about(
-            IntPtr context);
+        public static bool SendFeedback(
+            string topic,
+            string details,
+            string filename)
+        {
+            return kopsik_feedback_send(ctx,
+                EncodeString(topic), EncodeString(details), EncodeString(filename));
+        }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_view_time_entry_list(
+        private static extern void kopsik_about(
             IntPtr context);
 
+        public static void About()
+        {
+            kopsik_about(ctx);
+        }
+
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_edit(
+        [return: MarshalAs(UnmanagedType.I1)]
+        private static extern bool kopsik_view_time_entry_list(
+            IntPtr context);
+
+        public static bool ViewTimeEntryList()
+        {
+            return kopsik_view_time_entry_list(ctx);
+        }
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        private static extern void kopsik_edit(
             IntPtr context,
             string guid,
             [MarshalAs(UnmanagedType.I1)]
             bool edit_running_time_entry,
             string focused_field_name);
 
+        public static void Edit(
+            string guid,
+            bool edit_running_time_entry,
+            string focused_field_name)
+        {
+            kopsik_edit(ctx, guid, edit_running_time_entry, focused_field_name);
+        }
+
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_edit_preferences(
+        private static extern void kopsik_edit_preferences(
             IntPtr context);
+
+        public static void EditPreferences()
+        {
+            kopsik_edit_preferences(ctx);
+        }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_continue(
+        private static extern bool kopsik_continue(
             IntPtr context,
             string guid);
 
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_continue_latest(
-            IntPtr context);
+        public static bool Continue(string guid)
+        {
+            return kopsik_continue(ctx, guid);
+        }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_delete_time_entry(
+        private static extern bool kopsik_continue_latest(
+            IntPtr context);
+
+        public static bool ContinueLatest()
+        {
+            return kopsik_continue_latest(ctx);
+        }
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        private static extern bool kopsik_delete_time_entry(
             IntPtr context,
             string guid);
 
+        public static bool DeleteTimeEntry(string guid)
+        {
+            return kopsik_delete_time_entry(ctx, guid);
+        }
+
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_set_time_entry_duration(
+        private static extern bool kopsik_set_time_entry_duration(
             IntPtr context,
             string guid,
             string value);
 
+        public static bool SetTimeEntryDuration(string guid, string value)
+        {
+            return kopsik_set_time_entry_duration(ctx, guid, EncodeString(value));
+        }
+
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_set_time_entry_project(
+        private static extern bool kopsik_set_time_entry_project(
             IntPtr context,
             string guid,
             UInt64 task_id,
             UInt64 project_id,
             string project_guid);
 
+        public static bool SetTimeEntryProject(
+            string guid,
+            UInt64 task_id,
+            UInt64 project_id,
+            string project_guid)
+        {
+            return kopsik_set_time_entry_project(ctx,
+                guid, task_id, project_id, project_guid);
+        }
+
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_set_time_entry_start_iso_8601(
+        private static extern bool kopsik_set_time_entry_start_iso_8601(
             IntPtr context,
             string guid,
             string value);
 
+        public static bool SetTimeEntryStart(string guid, string value)
+        {
+            return kopsik_set_time_entry_start_iso_8601(ctx, guid, EncodeString(value));
+        }
+
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_set_time_entry_end_iso_8601(
+        private static extern bool kopsik_set_time_entry_end_iso_8601(
             IntPtr context,
             string guid,
             string value);
 
+        public static bool SetTimeEntryEnd(string guid, string value)
+        {
+            return kopsik_set_time_entry_end_iso_8601(ctx, guid, EncodeString(value));
+        }
+
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_set_time_entry_tags(
+        private static extern bool kopsik_set_time_entry_tags(
             IntPtr context,
             string guid,
             string value);
 
+        public static bool SetTimeEntryTags(string guid, string value)
+        {
+            return kopsik_set_time_entry_tags(ctx, guid, EncodeString(value));
+        }
+
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_set_time_entry_billable(
+        private static extern bool kopsik_set_time_entry_billable(
             IntPtr context,
             string guid,
             [MarshalAs(UnmanagedType.I1)]
             bool billable);
 
+        public static bool SetTimeEntryBillable(string guid, bool billable)
+        {
+            return kopsik_set_time_entry_billable(ctx, guid, billable);
+        }
+
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_set_time_entry_description(
+        private static extern bool kopsik_set_time_entry_description(
             IntPtr context,
             string guid,
             string value);
 
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_stop(
-            IntPtr context);
+        public static bool SetTimeEntryDescription(string guid, string value)
+        {
+            return kopsik_set_time_entry_description(ctx, guid, EncodeString(value));
+        }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_stop_running_time_entry_at(
+        private static extern bool kopsik_stop(
+            IntPtr context);
+
+        public static bool Stop()
+        {
+            return kopsik_stop(ctx);
+        }
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        private static extern bool kopsik_stop_running_time_entry_at(
             IntPtr context,
             UInt64 at);
 
+        public static bool StopRunningTimeEntryAt(UInt64 at)
+        {
+            return kopsik_stop_running_time_entry_at(ctx, at);
+        }
+
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_set_settings(
+        private static extern bool kopsik_set_settings(
             IntPtr context,
             [MarshalAs(UnmanagedType.I1)]
             bool use_idle_detection,
@@ -494,9 +729,27 @@ namespace TogglDesktop
             [MarshalAs(UnmanagedType.I1)]
             bool ignore_cert);
 
+        public static bool SetSettings(
+            bool use_idle_detection,
+            bool menubar_timer,
+            bool dock_icon,
+            bool on_top,
+            bool reminder,
+            bool ignore_cert)
+        {
+            return kopsik_set_settings(
+                ctx,
+                use_idle_detection,
+                menubar_timer,
+                dock_icon,
+                on_top,
+                reminder,
+                ignore_cert);
+        }
+
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_set_proxy_settings(
+        private static extern bool kopsik_set_proxy_settings(
             IntPtr context,
             [MarshalAs(UnmanagedType.I1)]
             bool use_proxy,
@@ -505,28 +758,66 @@ namespace TogglDesktop
             string proxy_username,
             string proxy_password);
 
+        public static bool SetProxySettings(
+            bool use_proxy,
+            string proxy_host,
+            UInt64 proxy_port,
+            string proxy_username,
+            string proxy_password)
+        {
+            return kopsik_set_proxy_settings(ctx,
+                use_proxy,
+                EncodeString(proxy_host),
+                proxy_port,
+                EncodeString(proxy_username),
+                EncodeString(proxy_password));
+        }
+ 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_logout(
+        private static extern bool kopsik_logout(
             IntPtr context);
+
+        public static bool Logout()
+        {
+            return kopsik_logout(ctx);
+        }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_clear_cache(
+        private static extern bool kopsik_clear_cache(
             IntPtr context);
+
+        public static bool ClearCache()
+        {
+            return kopsik_clear_cache(ctx);
+        }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_start(
+        private static extern bool kopsik_start(
             IntPtr context,
             string description,
             string duration,
             UInt64 task_id,
             UInt64 project_id);
 
+        public static bool Start(
+            string description,
+            string duration,
+            UInt64 task_id,
+            UInt64 project_id)
+        {
+            return kopsik_start(ctx,
+                EncodeString(description),
+                EncodeString(duration),
+                task_id,
+                project_id);
+        }
+
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_add_project(
+        private static extern bool kopsik_add_project(
             IntPtr context,
             string time_entry_guid,
             UInt64 workspace_id,
@@ -535,87 +826,160 @@ namespace TogglDesktop
             [MarshalAs(UnmanagedType.I1)]
             bool is_private);
 
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_check_for_updates(
-            IntPtr context);
+        public static bool AddProject(
+            string time_entry_guid,
+            UInt64 workspace_id,
+            UInt64 client_id,
+            string project_name,
+            bool is_private)
+        {
+            return kopsik_add_project(ctx,
+                time_entry_guid,
+                workspace_id,
+                client_id,
+                EncodeString(project_name),
+                is_private);
+        }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_set_update_channel(
+        private static extern bool kopsik_set_update_channel(
             IntPtr context,
             string update_channel);
 
+        public static bool SetUpdateChannel(string channel)
+        {
+            return kopsik_set_update_channel(ctx, channel);
+        }
+
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern bool kopsik_user_can_see_billable_flag(
+        private static extern bool kopsik_user_can_see_billable_flag(
             IntPtr context,
             string time_entry_guid,
             ref bool can_see);
 
+        public static bool CanUserSeeBillableFlag(
+            string time_entry_guid,
+            ref bool can_see)
+        {
+                return kopsik_user_can_see_billable_flag(ctx, 
+                    time_entry_guid, ref can_see);
+        }
+
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern bool kopsik_user_can_add_projects(
+        private static extern bool kopsik_user_can_add_projects(
             IntPtr context,
             UInt64 workspace_id,
             ref bool can_add);
 
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_sync(
-            IntPtr context);
+        public static bool CanUserAddProjects(
+            UInt64 workspace_id,
+            ref bool can_add)
+        {
+                return kopsik_user_can_add_projects(ctx, workspace_id, ref can_add);
+        }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_timeline_toggle_recording(
+        private static extern void kopsik_sync(
             IntPtr context);
 
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_set_sleep(
-            IntPtr context);
+        public static void Sync()
+        {
+            kopsik_sync(ctx);
+        }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_set_wake(
+        private static extern void kopsik_timeline_toggle_recording(
             IntPtr context);
 
+        public static void ToggleTimelineRecording()
+        {
+            kopsik_timeline_toggle_recording(ctx);
+        }
+
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_set_idle_seconds(
+        private static extern void kopsik_set_sleep(
+            IntPtr context);
+
+        public static void SetSleep()
+        {
+            kopsik_set_sleep(ctx);
+        }
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        private static extern void kopsik_set_wake(
+            IntPtr context);
+
+        public static void SetWake()
+        {
+            kopsik_set_wake(ctx);
+        }
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        private static extern void kopsik_set_idle_seconds(
             IntPtr context,
             UInt64 idle_seconds);
+
+        public static void SetIdleSeconds(UInt64 idle_seconds)
+        {
+            kopsik_set_idle_seconds(ctx, idle_seconds);
+        }
 
         // Shared helpers
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_parse_time(
+        private static extern bool kopsik_parse_time(
             string input,
             ref int hours,
             ref int minutes);
 
+        public static bool ParseTime(
+            string input,
+            ref int hours,
+            ref int minutes)
+        {
+            return kopsik_parse_time(input, ref hours, ref minutes);
+        }
+
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_format_duration_in_seconds_hhmmss(
+        private static extern void kopsik_format_duration_in_seconds_hhmmss(
             Int64 duration_in_seconds,
             StringBuilder sb,
             int max_strlen);
 
+        public static string FormatDurationInSecondsHHMMSS(Int64 duration_in_seconds)
+        {
+            const int duration_len = 20;
+            StringBuilder sb = new StringBuilder(duration_len);
+            kopsik_format_duration_in_seconds_hhmmss(
+                duration_in_seconds, sb, duration_len);
+            return sb.ToString();
+        }
+
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_format_duration_in_seconds_hhmm(
+        private static extern void kopsik_format_duration_in_seconds_hhmm(
             Int64 duration_in_seconds,
             StringBuilder sb,
             int max_strlen);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool kopsik_format_duration_in_seconds_pretty_hhmm(
+        private static extern bool kopsik_format_duration_in_seconds_pretty_hhmm(
             Int64 duration_in_seconds,
             StringBuilder sb,
             int max_strlen);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern Int64 kopsik_parse_duration_string_into_seconds(
+        private static extern Int64 kopsik_parse_duration_string_into_seconds(
             string duration_string);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_debug(
+        private static extern void kopsik_debug(
             string text);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        public static extern void kopsik_check_view_item_size(
+        private static extern void kopsik_check_view_item_size(
     		int time_entry_view_item_size,
 		    int autocomplete_view_item_size,
 		    int view_item_size,
@@ -624,23 +988,24 @@ namespace TogglDesktop
 
         // Events for C#
 
-        public static event KopsikApi.KopsikDisplayApp OnApp = delegate { };
-        public static event KopsikApi.KopsikDisplayError OnError = delegate { };
-        public static event KopsikApi.KopsikDisplayUpdate OnUpdate = delegate { };
-        public static event KopsikApi.KopsikDisplayOnlineState OnOnlineState = delegate { };
-        public static event KopsikApi.KopsikDisplayLogin OnLogin = delegate { };
-        public static event KopsikApi.KopsikDisplayReminder OnReminder = delegate { };
-        public static event KopsikApi.KopsikDisplayTimeEntryList OnTimeEntryList = delegate { };
-        public static event KopsikApi.KopsikDisplayAutocomplete OnTimeEntryAutocomplete = delegate { };
-        public static event KopsikApi.KopsikDisplayAutocomplete OnProjectAutocomplete = delegate { };
-        public static event KopsikApi.KopsikDisplayTimeEntryEditor OnTimeEntryEditor = delegate { };
-        public static event KopsikApi.KopsikDisplayViewItems OnWorkspaceSelect = delegate { };
-        public static event KopsikApi.KopsikDisplayViewItems OnClientSelect = delegate { };
-        public static event KopsikApi.KopsikDisplayViewItems OnTags = delegate { };
-        public static event KopsikApi.KopsikDisplaySettings OnSettings = delegate { };
-        public static event KopsikApi.KopsikDisplayTimerState OnTimerState = delegate { };
-        public static event KopsikApi.KopsikDisplayURL OnURL = delegate { };
-        public static event KopsikApi.KopsikDisplayIdleNotification OnIdleNotification = delegate { };
+        public static event DisplayApp OnApp = delegate { };
+        public static event DisplayError OnError = delegate { };
+        public static event DisplayUpdate OnUpdate = delegate { };
+        public static event DisplayOnlineState OnOnlineState = delegate { };
+        public static event DisplayLogin OnLogin = delegate { };
+        public static event DisplayReminder OnReminder = delegate { };
+        public static event DisplayTimeEntryList OnTimeEntryList = delegate { };
+        public static event DisplayAutocomplete OnTimeEntryAutocomplete = delegate { };
+        public static event DisplayAutocomplete OnProjectAutocomplete = delegate { };
+        public static event DisplayTimeEntryEditor OnTimeEntryEditor = delegate { };
+        public static event DisplayViewItems OnWorkspaceSelect = delegate { };
+        public static event DisplayViewItems OnClientSelect = delegate { };
+        public static event DisplayViewItems OnTags = delegate { };
+        public static event DisplaySettings OnSettings = delegate { };
+        public static event DisplayRunningTimerState OnRunningTimerState = delegate { };
+        public static event DisplayStoppedTimerState OnStoppedTimerState = delegate { };
+        public static event DisplayURL OnURL = delegate { };
+        public static event DisplayIdleNotification OnIdleNotification = delegate { };
 
         // Start
 
@@ -656,23 +1021,102 @@ namespace TogglDesktop
                 Marshal.SizeOf(new KopsikUpdateViewItem()));
 
             // Wire up events
-            kopsik_on_app(ctx, OnApp);
-            kopsik_on_error(ctx, OnError);
-            kopsik_on_update(ctx, OnUpdate);                
-            kopsik_on_online_state(ctx, OnOnlineState);
-            kopsik_on_login(ctx, OnLogin);
-            kopsik_on_reminder(ctx, OnReminder);
-            kopsik_on_time_entry_list(ctx, OnTimeEntryList);
-            kopsik_on_time_entry_autocomplete(ctx, OnTimeEntryAutocomplete);
-            kopsik_on_project_autocomplete(ctx, OnProjectAutocomplete);
-            kopsik_on_time_entry_editor(ctx, OnTimeEntryEditor);
-            kopsik_on_workspace_select(ctx, OnWorkspaceSelect);
-            kopsik_on_client_select(ctx, OnClientSelect);
-            kopsik_on_tags(ctx, OnTags);
-            kopsik_on_settings(ctx, OnSettings);
-            kopsik_on_timer_state(ctx, OnTimerState);
-            kopsik_on_url(ctx, OnURL);
-            kopsik_on_idle_notification(ctx, OnIdleNotification);
+            kopsik_on_app(ctx, delegate(bool open)
+            {
+                OnApp(open);
+            });
+
+            kopsik_on_error(ctx, delegate(string errmsg, bool user_error)
+            {
+                OnError(DecodeString(errmsg), user_error);
+            });
+
+            kopsik_on_update(ctx, delegate(bool open, ref KopsikUpdateViewItem view)
+            {
+                OnUpdate(open, view);
+            });
+
+            kopsik_on_online_state(ctx, delegate(bool is_online)
+            {
+                OnOnlineState(is_online);
+            });
+
+            kopsik_on_login(ctx, delegate(bool open, UInt64 user_id)
+            {
+                OnLogin(open, user_id);
+            });
+
+            kopsik_on_reminder(ctx, delegate(string title, string informative_text)
+            {
+                OnReminder(DecodeString(title), DecodeString(informative_text));
+            });
+
+            kopsik_on_time_entry_list(ctx, delegate(bool open, IntPtr first)
+            {
+                OnTimeEntryList(open, ConvertToTimeEntryList(first));
+            });
+
+            kopsik_on_time_entry_autocomplete(ctx, delegate(IntPtr first)
+            {
+                OnTimeEntryAutocomplete(ConvertToAutocompleteList(first));
+            });
+
+            kopsik_on_project_autocomplete(ctx, delegate(IntPtr first)
+            {
+                OnProjectAutocomplete(ConvertToAutocompleteList(first));
+            });
+
+            kopsik_on_time_entry_editor(ctx, delegate(
+                bool open,
+                ref KopsikTimeEntryViewItem te,
+                string focused_field_name)
+            {
+                OnTimeEntryEditor(open, te.ToUTF8(), focused_field_name);
+            });
+
+            kopsik_on_workspace_select(ctx, delegate(IntPtr first)
+            {
+                OnWorkspaceSelect(ConvertToViewItemList(first));
+            });
+
+            kopsik_on_client_select(ctx, delegate(IntPtr first)
+            {
+                OnClientSelect(ConvertToViewItemList(first));
+            });
+
+            kopsik_on_tags(ctx, delegate(IntPtr first)
+            {
+                OnTags(ConvertToViewItemList(first));
+            });
+
+            kopsik_on_settings(ctx, delegate(bool open, ref KopsikSettingsViewItem settings)
+            {
+                OnSettings(open, settings.ToUTF8());
+            });
+
+            kopsik_on_timer_state(ctx, delegate(IntPtr te)
+            {
+                if (te == IntPtr.Zero)
+                {
+                    OnStoppedTimerState();
+                    return;
+                }
+                KopsikTimeEntryViewItem view =
+                    (KopsikTimeEntryViewItem)Marshal.PtrToStructure(
+                    te, typeof(KopsikTimeEntryViewItem));
+                OnRunningTimerState(view.ToUTF8());
+            });
+
+            kopsik_on_url(ctx, delegate(string url)
+            {
+                OnURL(url);
+            });
+
+            kopsik_on_idle_notification(ctx, delegate(
+                string since, string duration, UInt64 started)
+            {
+                OnIdleNotification(DecodeString(since), DecodeString(duration), started);
+            });
 
             // FIXME: Get environment from app settings
             kopsik_set_environment(ctx, "development");
@@ -694,74 +1138,69 @@ namespace TogglDesktop
             return kopsik_context_start_events(ctx);
         }
 
-        public static List<KopsikApi.KopsikViewItem> ConvertToViewItemList(
-            IntPtr first)
+        public static List<KopsikViewItem> ConvertToViewItemList(IntPtr first)
         {
-            List<KopsikApi.KopsikViewItem> list = new List<KopsikApi.KopsikViewItem>();
+            List<KopsikViewItem> list = new List<KopsikViewItem>();
             if (IntPtr.Zero == first)
             {
                 return list;
             }
-            KopsikApi.KopsikViewItem n = (KopsikApi.KopsikViewItem)Marshal.PtrToStructure(
-                first, typeof(KopsikApi.KopsikViewItem));
+            KopsikViewItem n = (KopsikViewItem)Marshal.PtrToStructure(
+                first, typeof(KopsikViewItem));
             while (true)
             {
-                list.Add(n);
+                list.Add(n.ToUTF8());
                 if (n.Next == IntPtr.Zero)
                 {
                     break;
                 }
-                n = (KopsikApi.KopsikViewItem)Marshal.PtrToStructure(
-                    n.Next, typeof(KopsikApi.KopsikViewItem));
+                n = (KopsikViewItem)Marshal.PtrToStructure(
+                    n.Next, typeof(KopsikViewItem));
             };
             return list;
         }
 
-        public static List<KopsikApi.KopsikAutocompleteItem> ConvertToAutocompleteList(
-            IntPtr first)
+        private static List<KopsikAutocompleteItem> ConvertToAutocompleteList(IntPtr first)
         {
-            List<KopsikApi.KopsikAutocompleteItem> list =
-                new List<KopsikApi.KopsikAutocompleteItem>();
+            List<KopsikAutocompleteItem> list = new List<KopsikAutocompleteItem>();
             if (IntPtr.Zero == first)
             {
                 return list;
             }
-            KopsikApi.KopsikAutocompleteItem n = (KopsikApi.KopsikAutocompleteItem)Marshal.PtrToStructure(
-                first, typeof(KopsikApi.KopsikAutocompleteItem));
+            KopsikAutocompleteItem n = (KopsikAutocompleteItem)Marshal.PtrToStructure(
+                first, typeof(KopsikAutocompleteItem));
             while (true)
             {
-                list.Add(n);
+                list.Add(n.ToUTF8());
                 if (n.Next == IntPtr.Zero)
                 {
                     break;
                 }
-                n = (KopsikApi.KopsikAutocompleteItem)Marshal.PtrToStructure(
-                    n.Next, typeof(KopsikApi.KopsikAutocompleteItem));
+                n = (KopsikAutocompleteItem)Marshal.PtrToStructure(
+                    n.Next, typeof(KopsikAutocompleteItem));
             };
             return list;
         }
 
-        public static List<KopsikApi.KopsikTimeEntryViewItem> ConvertToTimeEntryList(
-            IntPtr first)
+        private static List<KopsikTimeEntryViewItem> ConvertToTimeEntryList(IntPtr first)
         {
-            List<KopsikApi.KopsikTimeEntryViewItem> list =
-                new List<KopsikApi.KopsikTimeEntryViewItem>();
+            List<KopsikTimeEntryViewItem> list = new List<KopsikTimeEntryViewItem>();
             if (IntPtr.Zero == first)
             {
                 return list;
             }
-            KopsikApi.KopsikTimeEntryViewItem n = (KopsikApi.KopsikTimeEntryViewItem)Marshal.PtrToStructure(
-                first, typeof(KopsikApi.KopsikTimeEntryViewItem));
+            KopsikTimeEntryViewItem n = (KopsikTimeEntryViewItem)Marshal.PtrToStructure(
+                first, typeof(KopsikTimeEntryViewItem));
 
             while (true)
             {
-                list.Add(n);
+                list.Add(n.ToUTF8());
                 if (n.Next == IntPtr.Zero)
                 {
                     break;
                 }
-                n = (KopsikApi.KopsikTimeEntryViewItem)Marshal.PtrToStructure(
-                    n.Next, typeof(KopsikApi.KopsikTimeEntryViewItem));
+                n = (KopsikTimeEntryViewItem)Marshal.PtrToStructure(
+                    n.Next, typeof(KopsikTimeEntryViewItem));
             };
             return list;
         }

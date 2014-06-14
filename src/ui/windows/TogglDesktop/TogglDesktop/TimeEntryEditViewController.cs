@@ -59,32 +59,25 @@ namespace TogglDesktop
 
         private void buttonDone_Click(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_view_time_entry_list(KopsikApi.ctx);
+            KopsikApi.ViewTimeEntryList();
         }
 
         void OnTimeEntryEditor(
             bool open,
-            ref KopsikApi.KopsikTimeEntryViewItem te,
-            string focused_field_name)
-        {
-            KopsikApi.KopsikTimeEntryViewItem n = te;
-            DisplayTimeEntryEditor(n, focused_field_name);
-        }
-
-        void DisplayTimeEntryEditor(
             KopsikApi.KopsikTimeEntryViewItem te,
             string focused_field_name)
         {
-            timeEntry = te;
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayTimeEntryEditor(te, focused_field_name); });
+                Invoke((MethodInvoker)delegate { OnTimeEntryEditor(open, te, focused_field_name); });
                 return;
             }
+            timeEntry = te;
+
             GUID = te.GUID;
 
             Boolean can_see_billable = false;
-            if (!KopsikApi.kopsik_user_can_see_billable_flag(KopsikApi.ctx, GUID, ref can_see_billable))
+            if (!KopsikApi.CanUserSeeBillableFlag(GUID, ref can_see_billable))
             {
                 return;
             }
@@ -101,7 +94,7 @@ namespace TogglDesktop
             }
 
             Boolean can_add_projects = false;
-            if (!KopsikApi.kopsik_user_can_add_projects(KopsikApi.ctx, timeEntry.WID, ref can_add_projects))
+            if (!KopsikApi.CanUserAddProjects(timeEntry.WID, ref can_add_projects))
             {
                 return;
             }
@@ -176,42 +169,30 @@ namespace TogglDesktop
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (DialogResult.Yes == dr)
             {
-                KopsikApi.kopsik_delete_time_entry(KopsikApi.ctx, GUID);
+                KopsikApi.DeleteTimeEntry(GUID);
             }
         }
 
         private void buttonContinue_Click(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_continue(KopsikApi.ctx, GUID);
+            KopsikApi.Continue(GUID);
         }
 
-        void OnClientSelect(IntPtr first)
-        {
-            List<KopsikApi.KopsikViewItem> list = KopsikApi.ConvertToViewItemList(first);
-            DisplayClientSelect(list);
-        }
-
-        void DisplayClientSelect(List<KopsikApi.KopsikViewItem> list)
+        void OnClientSelect(List<KopsikApi.KopsikViewItem> list)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayClientSelect(list); });
+                Invoke((MethodInvoker)delegate { OnClientSelect(list); });
                 return;
             }
             // FIXME: 
         }
 
-        void OnTags(IntPtr first)
-        {
-            List<KopsikApi.KopsikViewItem> list = KopsikApi.ConvertToViewItemList(first);
-            DisplayTags(list);
-        }
-
-        void DisplayTags(List<KopsikApi.KopsikViewItem> list)
+        void OnTags(List<KopsikApi.KopsikViewItem> list)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayTags(list); });
+                Invoke((MethodInvoker)delegate { OnTags(list); });
                 return;
             }
             checkedListBoxTags.Items.Clear();
@@ -221,34 +202,21 @@ namespace TogglDesktop
             }
         }
 
-        void OnWorkspaceSelect(IntPtr first)
-        {
-            List<KopsikApi.KopsikViewItem> list = KopsikApi.ConvertToViewItemList(first);
-            DisplayWorkspaceSelect(list);
-        }
-
-        void DisplayWorkspaceSelect(List<KopsikApi.KopsikViewItem> list)
+        void OnWorkspaceSelect(List<KopsikApi.KopsikViewItem> list)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayWorkspaceSelect(list); });
+                Invoke((MethodInvoker)delegate { OnWorkspaceSelect(list); });
                 return;
             }
             // FIXME:
         }
 
-        void OnTimeEntryAutocomplete(IntPtr first)
-        {
-            List<KopsikApi.KopsikAutocompleteItem> list =
-                KopsikApi.ConvertToAutocompleteList(first);
-            DisplayTimeEntryAutocomplete(list);
-        }
-
-        void DisplayTimeEntryAutocomplete(List<KopsikApi.KopsikAutocompleteItem> list)
+        void OnTimeEntryAutocomplete(List<KopsikApi.KopsikAutocompleteItem> list)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayTimeEntryAutocomplete(list); });
+                Invoke((MethodInvoker)delegate { OnTimeEntryAutocomplete(list); });
                 return;
             }
             timeEntryAutocompleteUpdate = list;
@@ -273,25 +241,18 @@ namespace TogglDesktop
             }
             KopsikApi.KopsikAutocompleteItem item = (KopsikApi.KopsikAutocompleteItem)o;
             comboBoxDescription.Text = item.Description;
-            KopsikApi.kopsik_set_time_entry_project(KopsikApi.ctx,
+            KopsikApi.SetTimeEntryProject(
                 GUID,
                 item.TaskID,
                 item.ProjectID,
                 null);
         }
 
-        void OnProjectAutocomplete(IntPtr first)
-        {
-            List<KopsikApi.KopsikAutocompleteItem> list =
-                KopsikApi.ConvertToAutocompleteList(first);
-            DisplayProjectAutocomplete(list);
-        }
-
-        void DisplayProjectAutocomplete(List<KopsikApi.KopsikAutocompleteItem> list)
+        void OnProjectAutocomplete(List<KopsikApi.KopsikAutocompleteItem> list)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayProjectAutocomplete(list); });
+                Invoke((MethodInvoker)delegate { OnProjectAutocomplete(list); });
                 return;
             }
             projectAutocompleteUpdate = list;
@@ -311,8 +272,7 @@ namespace TogglDesktop
         {
             if (comboBoxProject.Text.Length == 0)
             {
-                KopsikApi.kopsik_set_time_entry_project(KopsikApi.ctx,
-                GUID, 0, 0, "");
+                KopsikApi.SetTimeEntryProject(GUID, 0, 0, "");
             }
         }
 
@@ -324,23 +284,20 @@ namespace TogglDesktop
                 return;
             }
             KopsikApi.KopsikAutocompleteItem item = (KopsikApi.KopsikAutocompleteItem)o;
-            KopsikApi.kopsik_set_time_entry_project(KopsikApi.ctx,
-                GUID, 0, item.ProjectID, "");
+            KopsikApi.SetTimeEntryProject(GUID, 0, item.ProjectID, "");
         }
 
         private void checkBoxBillable_CheckedChanged(object sender, EventArgs e)
         {
             if (null == checkBoxBillable.Tag)
             {
-                KopsikApi.kopsik_set_time_entry_billable(KopsikApi.ctx,
-                    GUID, checkBoxBillable.Checked);
+                KopsikApi.SetTimeEntryBillable(GUID, checkBoxBillable.Checked);
             }
         }
 
         private void comboBoxDescription_Leave(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_set_time_entry_description(KopsikApi.ctx,
-                GUID, comboBoxDescription.Text);
+            KopsikApi.SetTimeEntryDescription(GUID, comboBoxDescription.Text);
         }
 
         private void textBoxStartTime_Leave(object sender, EventArgs e)
@@ -361,7 +318,7 @@ namespace TogglDesktop
                 Console.WriteLine("Cannot apply duration change. this.TimeEntry is null");
                 return;
             }
-            KopsikApi.kopsik_set_time_entry_duration(KopsikApi.ctx, GUID, this.textBoxDuration.Text);
+            KopsikApi.SetTimeEntryDuration(GUID, this.textBoxDuration.Text);
         }
 
         private void textBoxEndTime_Leave(object sender, EventArgs e)
@@ -379,14 +336,14 @@ namespace TogglDesktop
         {
             DateTime date = this.parseTime(textbox);
             String iso8601String = date.ToString("yyyy-MM-ddTHH:mm:sszzz");
-            String utf8String = this.getUTF8String(iso8601String);
+            String utf8String = iso8601String;
             if (textbox == this.textBoxStartTime)
             {
-                KopsikApi.kopsik_set_time_entry_start_iso_8601(KopsikApi.ctx, timeEntry.GUID, utf8String);
+                KopsikApi.SetTimeEntryStart(timeEntry.GUID, utf8String);
             }
             else if (textbox == this.textBoxEndTime)
             {
-                KopsikApi.kopsik_set_time_entry_end_iso_8601(KopsikApi.ctx, timeEntry.GUID, utf8String);
+                KopsikApi.SetTimeEntryEnd(timeEntry.GUID, utf8String);
             }            
         }
 
@@ -395,7 +352,7 @@ namespace TogglDesktop
             DateTime date = this.dateTimePickerStartDate.Value;
             int hours = 0;
             int minutes = 0;
-            if (!KopsikApi.kopsik_parse_time(field.Text, ref hours, ref minutes))
+            if (!KopsikApi.ParseTime(field.Text, ref hours, ref minutes))
             {
                 return date;
             }
@@ -426,13 +383,7 @@ namespace TogglDesktop
                 tags += item.ToString();
             }
 
-            KopsikApi.kopsik_set_time_entry_tags(KopsikApi.ctx, this.getUTF8String(timeEntry.GUID), this.getUTF8String(tags));
-        }
-
-        private String getUTF8String(String input)
-        {
-            byte[] bytes = Encoding.Default.GetBytes(input);
-            return Encoding.UTF8.GetString(bytes);
+            KopsikApi.SetTimeEntryTags(timeEntry.GUID, tags);
         }
 
         private void timerRunningDuration_Tick(object sender, EventArgs e)
@@ -445,11 +396,7 @@ namespace TogglDesktop
             {
                 return;
             }
-            const int duration_len = 20;
-            StringBuilder sb = new StringBuilder(duration_len);
-            KopsikApi.kopsik_format_duration_in_seconds_hhmmss(
-                timeEntry.DurationInSeconds, sb, duration_len);
-            string s = sb.ToString();
+            string s = KopsikApi.FormatDurationInSecondsHHMMSS(timeEntry.DurationInSeconds);
             if (s != textBoxDuration.Text)
             {
                 textBoxDuration.Text = s;

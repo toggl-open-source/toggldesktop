@@ -43,17 +43,11 @@ namespace TogglDesktop
             Hide();
         }
 
-        void OnSettings(bool open, ref KopsikApi.KopsikSettingsViewItem settings)
-        {
-            KopsikApi.KopsikSettingsViewItem copy = settings;
-            DisplaySettings(open, copy);
-        }
-
-        void DisplaySettings(bool open, KopsikApi.KopsikSettingsViewItem settings)
+        void OnSettings(bool open, KopsikApi.KopsikSettingsViewItem settings)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplaySettings(open, settings); });
+                Invoke((MethodInvoker)delegate { OnSettings(open, settings); });
                 return;
             }
             mustSaveProxySettings = false;
@@ -101,7 +95,7 @@ namespace TogglDesktop
             {
                 port = 0;
             }
-            return KopsikApi.kopsik_set_proxy_settings(KopsikApi.ctx,
+            return KopsikApi.SetProxySettings(
                 checkBoxUseProxy.Checked,
                 textBoxProxyHost.Text,
                 port,
@@ -115,7 +109,7 @@ namespace TogglDesktop
             {
                 return true;
             }
-            return KopsikApi.kopsik_set_settings(KopsikApi.ctx,
+            return KopsikApi.SetSettings(
                 checkBoxIdleDetection.Checked,
                 true,
                 true,
@@ -151,7 +145,7 @@ namespace TogglDesktop
 
         private void checkBoxRecordTimeline_CheckedChanged(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_timeline_toggle_recording(KopsikApi.ctx);
+            KopsikApi.ToggleTimelineRecording();
         }
 
         private void checkBoxOnTop_CheckedChanged(object sender, EventArgs e)

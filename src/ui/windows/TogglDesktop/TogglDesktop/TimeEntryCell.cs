@@ -39,27 +39,27 @@ namespace TogglDesktop
 
         private void TimeEntryCell_MouseClick(object sender, MouseEventArgs e)
         {
-            KopsikApi.kopsik_edit(KopsikApi.ctx, TimeEntry.GUID, false, "");
+            KopsikApi.Edit(TimeEntry.GUID, false, "");
         }
 
         private void labelDescription_Click(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_edit(KopsikApi.ctx, TimeEntry.GUID, false, KopsikApi.Description);
+            KopsikApi.Edit(TimeEntry.GUID, false, KopsikApi.Description);
         }
 
         private void labelDuration_Click(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_edit(KopsikApi.ctx, TimeEntry.GUID, false, KopsikApi.Duration);
+            KopsikApi.Edit(TimeEntry.GUID, false, KopsikApi.Duration);
         }
 
         private void labelProject_Click(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_edit(KopsikApi.ctx, TimeEntry.GUID, false, KopsikApi.Project);
+            KopsikApi.Edit(TimeEntry.GUID, false, KopsikApi.Project);
         }
 
         private void labelContinue_Click(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_continue(KopsikApi.ctx, TimeEntry.GUID);
+            KopsikApi.Continue(TimeEntry.GUID);
         }
 
     }

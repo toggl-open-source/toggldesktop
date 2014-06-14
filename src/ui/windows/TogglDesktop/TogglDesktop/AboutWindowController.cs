@@ -24,16 +24,11 @@ namespace TogglDesktop
             KopsikApi.OnUpdate += OnUpdate;
         }
 
-        void OnUpdate(bool open, ref KopsikApi.KopsikUpdateViewItem view)
-        {
-            DisplayUpdate(open, view);
-        }
-
-        void DisplayUpdate(bool open, KopsikApi.KopsikUpdateViewItem view)
+        void OnUpdate(bool open, KopsikApi.KopsikUpdateViewItem view)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayUpdate(open, view); });
+                Invoke((MethodInvoker)delegate { OnUpdate(open, view); });
                 return;
             }
 
@@ -93,7 +88,7 @@ namespace TogglDesktop
         {
             if (null == comboBoxChannel.Tag)
             {
-                KopsikApi.kopsik_set_update_channel(KopsikApi.ctx, comboBoxChannel.Text);
+                KopsikApi.SetUpdateChannel(comboBoxChannel.Text);
             }
         }
 

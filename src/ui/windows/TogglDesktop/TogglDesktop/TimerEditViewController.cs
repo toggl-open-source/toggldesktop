@@ -23,7 +23,8 @@ namespace TogglDesktop
             InitializeComponent();
 
             KopsikApi.OnTimeEntryAutocomplete += OnTimeEntryAutocomplete;
-            KopsikApi.OnTimerState += OnTimerState;
+            KopsikApi.OnRunningTimerState += OnRunningTimerState;
+            KopsikApi.OnStoppedTimerState += OnStoppedTimerState;
 
             comboBoxDescription.DisplayMember = "Text";
             this.Anchor = (AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top);
@@ -77,7 +78,7 @@ namespace TogglDesktop
                     duration = "";
                 }
 
-                KopsikApi.kopsik_start(KopsikApi.ctx,
+                KopsikApi.Start(
                     description,
                     duration,
                     task_id,
@@ -85,7 +86,7 @@ namespace TogglDesktop
             }
             else
             {
-                KopsikApi.kopsik_stop(KopsikApi.ctx);
+                KopsikApi.Stop();
             }
         }
 
@@ -94,25 +95,11 @@ namespace TogglDesktop
             frm.AcceptButton = buttonStart;
         }
 
-        void OnTimerState(IntPtr te)
-        {
-            if (te == IntPtr.Zero)
-            {
-                DisplayStoppedTimerState();
-                return;
-            }
-            KopsikApi.KopsikTimeEntryViewItem view =
-                (KopsikApi.KopsikTimeEntryViewItem)Marshal.PtrToStructure(
-                te, typeof(KopsikApi.KopsikTimeEntryViewItem));
-            KopsikApi.KopsikTimeEntryViewItem copy = view;
-            DisplayRunningTimerState(copy);
-        }
-
-        void DisplayStoppedTimerState()
+        void OnStoppedTimerState()
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayStoppedTimerState(); });
+                Invoke((MethodInvoker)delegate { OnStoppedTimerState(); });
                 return;
             }
 
@@ -122,13 +109,19 @@ namespace TogglDesktop
 
             buttonStart.Text = "Start";
 
-            comboBoxDescription.Text = defaultDescription;
+            if (!comboBoxDescription.Focused)
+            {
+                comboBoxDescription.Text = defaultDescription;
+            }
             comboBoxDescription.Visible = true;
 
             linkLabelDescription.Visible = false;
             linkLabelDescription.Text = "";
 
-            textBoxDuration.Text = defaultDuration;
+            if (!textBoxDuration.Focused)
+            {
+                textBoxDuration.Text = defaultDuration;
+            }
             textBoxDuration.Visible = true;
 
             linkLabelDuration.Visible = false;
@@ -139,11 +132,11 @@ namespace TogglDesktop
             comboBoxDescription.Top = 16;
         }
 
-        void DisplayRunningTimerState(KopsikApi.KopsikTimeEntryViewItem te)
+        void OnRunningTimerState(KopsikApi.KopsikTimeEntryViewItem te)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayRunningTimerState(te); });
+                Invoke((MethodInvoker)delegate { OnRunningTimerState(te); });
                 return;
             }
             duration_in_seconds = te.DurationInSeconds;
@@ -181,18 +174,11 @@ namespace TogglDesktop
             project_id = 0;
         }
 
-        void OnTimeEntryAutocomplete(IntPtr first)
-        {
-            List<KopsikApi.KopsikAutocompleteItem> list =
-                KopsikApi.ConvertToAutocompleteList(first);
-            DisplayTimeEntryAutocomplete(list);
-        }
-
-        void DisplayTimeEntryAutocomplete(List<KopsikApi.KopsikAutocompleteItem> list)
+        void OnTimeEntryAutocomplete(List<KopsikApi.KopsikAutocompleteItem> list)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayTimeEntryAutocomplete(list); });
+                Invoke((MethodInvoker)delegate { OnTimeEntryAutocomplete(list); });
                 return;
             }
             timeEntryAutocompleteUpdate = list;
@@ -210,12 +196,12 @@ namespace TogglDesktop
 
         private void linkLabelDescription_Click(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_edit(KopsikApi.ctx, "", true, KopsikApi.Description);
+            KopsikApi.Edit("", true, KopsikApi.Description);
         }
 
         private void linkLabelDuration_Click(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_edit(KopsikApi.ctx, "", true, KopsikApi.Duration);
+            KopsikApi.Edit("", true, KopsikApi.Duration);
         }
 
         private void timerRunningDuration_Tick(object sender, EventArgs e)
@@ -225,11 +211,7 @@ namespace TogglDesktop
                 // Timer is not running
                 return;
             }
-            const int duration_len = 20;
-            StringBuilder sb = new StringBuilder(duration_len);
-            KopsikApi.kopsik_format_duration_in_seconds_hhmmss(
-                duration_in_seconds, sb, duration_len);
-            string s = sb.ToString();
+            string s = KopsikApi.FormatDurationInSecondsHHMMSS(duration_in_seconds);
             if (s != linkLabelDuration.Text) {
                 linkLabelDuration.Text = s;
             }
@@ -237,14 +219,14 @@ namespace TogglDesktop
 
         private void linkLabelProject_Click(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_edit(KopsikApi.ctx, "", true, KopsikApi.Project);
+            KopsikApi.Edit("", true, KopsikApi.Project);
         }
 
         private void comboBoxDescription_DropDownClosed(object sender, EventArgs e)
         {
             if (timeEntryAutocompleteUpdate != null)
             {
-                DisplayTimeEntryAutocomplete(timeEntryAutocompleteUpdate);
+                OnTimeEntryAutocomplete(timeEntryAutocompleteUpdate);
             }
         }
 

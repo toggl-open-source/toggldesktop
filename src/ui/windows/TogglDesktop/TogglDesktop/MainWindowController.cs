@@ -65,7 +65,8 @@ namespace TogglDesktop
             KopsikApi.OnOnlineState += OnOnlineState;
             KopsikApi.OnReminder += OnReminder;
             KopsikApi.OnURL += OnURL;
-            KopsikApi.OnTimerState += OnTimerState;
+            KopsikApi.OnRunningTimerState += OnRunningTimerState;
+            KopsikApi.OnStoppedTimerState += OnStoppedTimerState;
             KopsikApi.OnSettings += OnSettings;
             KopsikApi.OnIdleNotification += OnIdleNotification;
 
@@ -76,38 +77,39 @@ namespace TogglDesktop
             }
         }
 
-        void OnTimerState(IntPtr te)
+        void OnRunningTimerState(KopsikApi.KopsikTimeEntryViewItem te)
         {
-            DisplayTimerState(te != IntPtr.Zero);
-        }
-
-        void DisplayTimerState(bool is_tracking) {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayTimerState(is_tracking); });
+                Invoke((MethodInvoker)delegate { OnRunningTimerState(te); });
                 return;
             }
-            isTracking = is_tracking;
+            isTracking = true;
             enableMenuItems();
             displayTrayIcon();
         }
 
-        void OnSettings(bool open,
-            ref KopsikApi.KopsikSettingsViewItem settings)
-        {
-            KopsikApi.KopsikSettingsViewItem view = settings;
-            DisplaySettings(view);
-        }
-
-        void DisplaySettings(KopsikApi.KopsikSettingsViewItem view)
+        void OnStoppedTimerState()
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplaySettings(view); });
+                Invoke((MethodInvoker)delegate { OnStoppedTimerState(); });
                 return;
             }
-            this.TopMost = view.OnTop;
-            timerIdleDetection.Enabled = view.UseIdleDetection;
+            isTracking = false;
+            enableMenuItems();
+            displayTrayIcon();
+        }
+
+        void OnSettings(bool open, KopsikApi.KopsikSettingsViewItem settings)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { OnSettings(open, settings); });
+                return;
+            }
+            this.TopMost = settings.OnTop;
+            timerIdleDetection.Enabled = settings.UseIdleDetection;
         }
 
         private void displayTrayIcon()
@@ -124,29 +126,19 @@ namespace TogglDesktop
 
         void OnOnlineState(bool is_online)
         {
-            DisplayOnlineState(is_online);
-        }
-
-        void DisplayOnlineState(bool is_online)
-        {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayOnlineState(is_online); });
+                Invoke((MethodInvoker)delegate { OnOnlineState(is_online); });
                 return;
             }
             // FIXME: change tray icon
         }
 
-        void OnUpdate(bool open, ref KopsikApi.KopsikUpdateViewItem view)
-        {
-            DisplayUpdate(open, view);
-        }
-
-        void DisplayUpdate(bool open, KopsikApi.KopsikUpdateViewItem view)
+        void OnUpdate(bool open, KopsikApi.KopsikUpdateViewItem view)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayUpdate(open, view); });
+                Invoke((MethodInvoker)delegate { OnUpdate(open, view); });
                 return;
             }
             if (open)
@@ -182,14 +174,9 @@ namespace TogglDesktop
 
         void OnApp(bool open)
         {
-            DisplayApp(open);
-        }
-
-        void DisplayApp(bool open)
-        {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayApp(open); });
+                Invoke((MethodInvoker)delegate { OnApp(open); });
                 return;
             }
             if (open) {
@@ -199,14 +186,9 @@ namespace TogglDesktop
 
         void OnError(string errmsg, bool user_error)
         {
-            DisplayError(errmsg, user_error);
-        }
-
-        void DisplayError(string errmsg, bool user_error)
-        {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayError(errmsg, user_error); });
+                Invoke((MethodInvoker)delegate { OnError(errmsg, user_error); });
                 return;
             }
             errorLabel.Text = errmsg;
@@ -221,13 +203,9 @@ namespace TogglDesktop
 
         void OnIdleNotification(string since, string duration, UInt64 started)
         {
-            DisplayIdleNotification();
-        }
-
-        void DisplayIdleNotification() {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayIdleNotification(); });
+                Invoke((MethodInvoker)delegate { OnIdleNotification(since, duration, started); });
                 return;
             }
             idleNotificationWindowController.Show();
@@ -236,14 +214,9 @@ namespace TogglDesktop
 
         void OnLogin(bool open, UInt64 user_id)
         {
-            DisplayLogin(open, user_id);
-        }
-
-        void DisplayLogin(bool open, UInt64 user_id)
-        {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayLogin(open, user_id); });
+                Invoke((MethodInvoker)delegate { OnLogin(open, user_id); });
                 return;
             }
             TogglDesktop.Program.UserID = user_id;
@@ -270,16 +243,11 @@ namespace TogglDesktop
             openInBrowserToolStripMenuItem.Enabled = isLoggedIn;
         }
 
-        void OnTimeEntryList(bool open, IntPtr first)
-        {
-            DisplayTimeEntryList(open);
-        }
-
-        void DisplayTimeEntryList(bool open)
+        void OnTimeEntryList(bool open, List<KopsikApi.KopsikTimeEntryViewItem> list)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayTimeEntryList(open); });
+                Invoke((MethodInvoker)delegate { OnTimeEntryList(open, list); });
                 return;
             }
             if (open)
@@ -293,18 +261,12 @@ namespace TogglDesktop
 
         void OnTimeEntryEditor(
             bool open,
-            ref KopsikApi.KopsikTimeEntryViewItem te,
+            KopsikApi.KopsikTimeEntryViewItem te,
             string focused_field_name)
         {
-            DisplayTimeEntryEditor(open, focused_field_name);
-        }
-
-        void DisplayTimeEntryEditor(
-            bool open,
-            string focused_field_name) {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayTimeEntryEditor(open, focused_field_name); });
+                Invoke((MethodInvoker)delegate { OnTimeEntryEditor(open, te, focused_field_name); });
                 return;
             }
             if (open)
@@ -355,17 +317,17 @@ namespace TogglDesktop
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_start(KopsikApi.ctx, "", "", 0, 0);
+            KopsikApi.Start("", "", 0, 0);
         }
 
         private void continueToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_continue_latest(KopsikApi.ctx);
+            KopsikApi.ContinueLatest();
         }
 
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_stop(KopsikApi.ctx);
+           KopsikApi.Stop();
         }
 
         private void showToolStripMenuItem_Click(object sender, EventArgs e)
@@ -375,27 +337,27 @@ namespace TogglDesktop
 
         private void syncToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_sync(KopsikApi.ctx);
+            KopsikApi.Sync();
         }
 
         private void openInBrowserToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_open_in_browser(KopsikApi.ctx);
+            KopsikApi.OpenInBrowser();
         }
 
         private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_edit_preferences(KopsikApi.ctx);
+            KopsikApi.EditPreferences();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_about(KopsikApi.ctx);
+            KopsikApi.About();
         }
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            KopsikApi.kopsik_logout(KopsikApi.ctx);
+            KopsikApi.Logout();
         }
 
         private void show()
@@ -406,14 +368,9 @@ namespace TogglDesktop
 
         void OnReminder(string title, string informative_text)
         {
-            DisplayReminder(title, informative_text);
-        }
-
-        void DisplayReminder(string title, string informative_text)
-        {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayReminder(title, informative_text); });
+                Invoke((MethodInvoker)delegate { OnReminder(title, informative_text); });
                 return;
             }
             trayIcon.ShowBalloonTip(6000, title, informative_text, ToolTipIcon.None);
@@ -429,7 +386,7 @@ namespace TogglDesktop
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (DialogResult.Yes == dr) 
             {
-                KopsikApi.kopsik_clear_cache(KopsikApi.ctx);
+                KopsikApi.ClearCache();
             }
         }
 
@@ -468,7 +425,7 @@ namespace TogglDesktop
                 idle_seconds = 0;
             }
 
-            KopsikApi.kopsik_set_idle_seconds(KopsikApi.ctx, (ulong)idle_seconds);
+            KopsikApi.SetIdleSeconds((ulong)idle_seconds);
         }
     }
 }

@@ -24,17 +24,11 @@ namespace TogglDesktop
             timerEditViewController.SetAcceptButton(frm);
         }
 
-        void OnTimeEntryList(bool open, IntPtr first)
-        {
-            List<KopsikApi.KopsikTimeEntryViewItem> list = KopsikApi.ConvertToTimeEntryList(first);
-            DisplayTimeEntryList(open, list);
-        }
-
-        void DisplayTimeEntryList(bool open, List<KopsikApi.KopsikTimeEntryViewItem> list)
+        void OnTimeEntryList(bool open, List<KopsikApi.KopsikTimeEntryViewItem> list)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayTimeEntryList(open, list); });
+                Invoke((MethodInvoker)delegate { OnTimeEntryList(open, list); });
                 return;
             }
             this.Dock = DockStyle.Fill;
