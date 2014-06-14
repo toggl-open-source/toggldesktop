@@ -104,7 +104,12 @@ endif
 
 cxx=g++
 
+ifeq ($(uname), Linux)
+default: test
+endif
+ifeq ($(uname), Darwin)
 default: osx
+endif
 
 clean:
 	rm -rf build gitstats && \
