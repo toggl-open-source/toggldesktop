@@ -60,6 +60,10 @@ namespace TogglDesktop
         private void buttonDone_Click(object sender, EventArgs e)
         {
             KopsikApi.ViewTimeEntryList();
+            if (applyAddProject())
+            {
+                KopsikApi.ViewTimeEntryList();
+            }
         }
 
         void OnTimeEntryEditor(
@@ -72,6 +76,7 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { OnTimeEntryEditor(open, te, focused_field_name); });
                 return;
             }
+            resetForms();
             timeEntry = te;
 
             GUID = te.GUID;
@@ -133,7 +138,7 @@ namespace TogglDesktop
             if (te.UpdatedAt >= 0)
             {
                 DateTime updatedAt = KopsikApi.DateTimeFromUnix(te.UpdatedAt);
-                toolStripStatusLabelLastUpdate.Text = updatedAt.ToString();
+                toolStripStatusLabelLastUpdate.Text = "Last update: " + updatedAt.ToString();
                 toolStripStatusLabelLastUpdate.Visible = true;
             }
             else
@@ -185,7 +190,12 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { OnClientSelect(list); });
                 return;
             }
-            // FIXME: 
+
+            comboBoxClient.Items.Clear();
+            foreach (KopsikApi.KopsikViewItem o in list)
+            {
+                comboBoxClient.Items.Add(o);
+            }
         }
 
         void OnTags(List<KopsikApi.KopsikViewItem> list)
@@ -209,7 +219,11 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { OnWorkspaceSelect(list); });
                 return;
             }
-            // FIXME:
+            comboBoxWorkspace.Items.Clear();
+            foreach (KopsikApi.KopsikViewItem o in list)
+            {
+                comboBoxWorkspace.Items.Add(o);
+            }
         }
 
         void OnTimeEntryAutocomplete(List<KopsikApi.KopsikAutocompleteItem> list)
@@ -401,6 +415,90 @@ namespace TogglDesktop
             {
                 textBoxDuration.Text = s;
             }
+        }
+
+        private void linkAddProject_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            panelAddProject.Top = 37;
+            
+            textBoxProjectName.Text = "";
+            comboBoxClient.Text = "";
+            comboBoxWorkspace.Text = "";
+            linkAddProject.Visible = false;
+            int boxHeight = 89;
+            if (comboBoxWorkspace.Items.Count > 1)
+            {
+                labelWorkspace.Visible = true;
+                comboBoxWorkspace.Visible = true;
+                boxHeight = 122;
+            }
+            panelBottom.Top = boxHeight+37;
+            panelAddProject.Height = boxHeight;
+
+            labelProject.Visible = true;
+            comboBoxProject.Visible = true;
+
+            panelAddProject.Visible = true;
+        }
+
+        private void resetForms()
+        {
+            if (panelAddProject.Visible)
+            {
+                panelAddProject.Visible = false;
+                panelBottom.Top = 77;
+                labelWorkspace.Visible = false;
+                comboBoxWorkspace.Visible = false;
+                linkAddProject.Visible = true;
+                labelProject.Visible = true;
+                comboBoxProject.Visible = true;
+            }           
+        }
+
+        private Boolean applyAddProject()
+        {
+            if (!panelAddProject.Visible)
+            {
+                return true;
+            }
+
+            if (textBoxProjectName.Text.Length == 0)
+            {
+                return true;
+            }
+
+            bool is_public = checkBoxPublic.Checked;
+            ulong workspaceID = ((KopsikApi.KopsikViewItem)comboBoxWorkspace.Items[0]).ID;
+            if (comboBoxWorkspace.Items.Count > 1)
+            {
+                workspaceID = selectedItemID(comboBoxWorkspace);
+            }
+            if (workspaceID == 0){
+                comboBoxWorkspace.Focus();
+                return false;
+            }
+            ulong clientID = selectedItemID(comboBoxClient);
+            bool isBillable = timeEntry.Billable;
+            bool projectAdded = KopsikApi.AddProject(
+                GUID, workspaceID, clientID, textBoxProjectName.Text, !is_public);
+            if (projectAdded && isBillable)
+            {
+                KopsikApi.SetTimeEntryBillable(GUID, isBillable);
+            }
+            return projectAdded;
+        }
+
+        private ulong selectedItemID(ComboBox combobox)
+        {
+            for (int i = 0; i < combobox.Items.Count; i++)
+            {
+                KopsikApi.KopsikViewItem item = (KopsikApi.KopsikViewItem)combobox.Items[i];
+                if (item.Name == combobox.Text)
+                {
+                    return item.ID;
+                }
+            }
+            return 0;
         }
     }
 }

@@ -132,6 +132,11 @@ namespace TogglDesktop
                 Name = DecodeString(Name);
                 return this;
             }
+
+            public override string ToString()
+            {
+                return Name;
+            }
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = charset)]
