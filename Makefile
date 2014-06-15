@@ -53,6 +53,7 @@ cflags=-g -DNDEBUG -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
 	-I$(pocodir)/Foundation/include \
 	-I$(pocodir)/Util/include \
 	-I$(pocodir)/Data/include \
+	-I$(pocodir)/Data/SQLite/src \
 	-I$(pocodir)/Data/SQLite/include \
 	-I$(pocodir)/Crypto/include \
 	-I$(pocodir)/Net/include \
