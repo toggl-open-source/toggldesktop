@@ -11,7 +11,7 @@ jsondir=third_party/libjson
 GTEST_ROOT=third_party/googletest-read-only
 GMOCK_DIR=third_party/gmock-1.7.0
 
-osx_executable=./src/ui/osx/test2.project/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop
+osx_executable=./src/ui/osx/TogglDesktop/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop
 
 source_dirs=src/*.cc src/*.h src/test/* src/libkopsik/include/*.h
 
@@ -113,13 +113,13 @@ endif
 
 clean:
 	rm -rf build gitstats && \
-	rm -rf src/ui/osx/test2.project/build && \
+	rm -rf src/ui/osx/TogglDesktop/build && \
 	rm -rf src/libkopsik/Kopsik/build && \
 	rm -rf third_party/TFDatePicker/TFDatePicker/build && \
 	rm -f toggl toggl_test TogglDesktop*.dmg TogglDesktop*.tar.gz
 
 osx: fmt_lib lint fmt_osx
-	xcodebuild -project src/ui/osx/test2.project/TogglDesktop.xcodeproj && \
+	xcodebuild -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj && \
 	!(otool -L $(osx_executable) | grep "Users" && echo "Executable should not contain hardcoded paths!")
 
 run: osx

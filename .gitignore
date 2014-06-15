@@ -15,7 +15,7 @@
 tmp/*
 build/*
 src/libkopsik/Kopsik/build
-src/ui/osx/test2.project/build/
+src/ui/osx/TogglDesktop/build/
 toggl_test
 toggl
 *.bak

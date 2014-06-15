@@ -507,7 +507,6 @@
 		74D1D27017EB72D900E709B0 /* TimerEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerEditViewController.m; sourceTree = SOURCE_ROOT; };
 		74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimerEditViewController.xib; sourceTree = SOURCE_ROOT; };
 		74E20E5118EE0A3D00695787 /* TogglDesktop copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TogglDesktop copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		74E20E5218EE0A3D00695787 /* TogglDesktop copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "TogglDesktop copy-Info.plist"; path = "/Users/tanellebedev/projects/toggldesktop/src/ui/osx/test2.project/TogglDesktop copy-Info.plist"; sourceTree = "<absolute>"; };
 		74E3CDB217FBABE400C3ADD3 /* Bugsnag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bugsnag.h; sourceTree = "<group>"; };
 		74E3CDB317FBABE400C3ADD3 /* Bugsnag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bugsnag.m; sourceTree = "<group>"; };
 		74E3CDB417FBABE400C3ADD3 /* BugsnagConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugsnagConfiguration.h; sourceTree = "<group>"; };
@@ -619,7 +618,6 @@
 				69FC181717E6534500B96425 /* kopsikTests */,
 				69FC17F317E6534400B96425 /* Frameworks */,
 				69FC17F217E6534400B96425 /* Products */,
-				74E20E5218EE0A3D00695787 /* TogglDesktop copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1563,6 +1561,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../../../third_party/TFDatePicker/**",
 					"$(SRCROOT)/../../../../third_party/plcrashreporter-1.2-rc4/**",
+					"$(SRCROOT)/../../../libkopsik/include",
 				);
 				INFOPLIST_FILE = "test2/TogglDesktop-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -1598,6 +1597,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../../../third_party/TFDatePicker/**",
 					"$(SRCROOT)/../../../../third_party/plcrashreporter-1.2-rc4/**",
+					"$(SRCROOT)/../../../libkopsik/include",
 				);
 				INFOPLIST_FILE = "test2/TogglDesktop-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
