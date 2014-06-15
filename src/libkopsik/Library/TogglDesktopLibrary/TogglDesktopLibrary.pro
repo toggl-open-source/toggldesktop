@@ -4,10 +4,9 @@
 #
 #-------------------------------------------------
 
-QT       -= core gui
-
 TARGET = TogglDesktopLibrary
 TEMPLATE = lib
+CONFIG += staticlib
 
 DEFINES += TOGGLDESKTOPLIBRARY_LIBRARY
 
@@ -76,11 +75,6 @@ HEADERS += \
     ../../../window_change_recorder.h \
     ../../../workspace.h \
     ../../include/kopsik_api.h
-
-unix {
-    target.path = /usr/lib
-    INSTALLS += target
-}
 
 pocolib = $$PWD/../../../../third_party/poco-1.4.6p2-all/lib/Linux/x86_64
 jsondir = $$PWD/../../../../third_party/libjson
