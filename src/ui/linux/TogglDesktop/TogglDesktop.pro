@@ -28,3 +28,5 @@ else:unix: LIBS += -L$$PWD/../../../libkopsik/Library/build-TogglDesktopLibrary-
 
 INCLUDEPATH += $$PWD/../../../libkopsik/include
 DEPENDPATH += $$PWD/../../../libkopsik/include
+
+unix: LIBS += -lX11
