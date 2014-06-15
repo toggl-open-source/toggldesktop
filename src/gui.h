@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "./kopsik_api.h"
+#include "./libkopsik/include/kopsik_api.h"
 #include "./types.h"
 #include "./autocomplete_item.h"
 #include "./time_entry.h"

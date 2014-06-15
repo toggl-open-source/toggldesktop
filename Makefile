@@ -13,7 +13,7 @@ GMOCK_DIR=third_party/gmock-1.7.0
 
 osx_executable=./src/ui/osx/test2.project/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop
 
-source_dirs=src/*.cc src/*.h src/test/* 
+source_dirs=src/*.cc src/*.h src/test/* src/libkopsik/include/*.h
 
 ifeq ($(uname), Darwin)
 pocolib=$(pocodir)/lib/Darwin/x86_64/
@@ -159,7 +159,7 @@ endif
 
 poco:
 	cd $(pocodir) && \
-	./configure --omit=Data/ODBC,Data/MySQL,Zip --no-tests --no-samples --static \
+	./configure --omit=Data/ODBC,Data/MySQL,Zip --no-tests --no-samples --static -fPIC \
 	--include-path=$(pwd)/$(openssldir)/include --library-path=$(pwd)/$(openssldir) && \
 	make
 

@@ -6,8 +6,8 @@
 // src/ui/windows/TogglDesktop/TogglDesktop/KopsikApi.cs
 // to fix this.
 
-#ifndef SRC_KOPSIK_API_H_
-#define SRC_KOPSIK_API_H_
+#ifndef SRC_LIBKOPSIK_INCLUDE_KOPSIK_API_H_
+#define SRC_LIBKOPSIK_INCLUDE_KOPSIK_API_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -492,4 +492,4 @@ extern "C" {
 }
 #endif
 
-#endif  // SRC_KOPSIK_API_H_
+#endif  // SRC_LIBKOPSIK_INCLUDE_KOPSIK_API_H_

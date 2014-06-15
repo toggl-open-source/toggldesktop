@@ -16,7 +16,7 @@
 #include "./CustomErrorHandler.h"
 #include "./autocomplete_item.h"
 #include "./feedback.h"
-#include "./kopsik_api.h"
+#include "./libkopsik/include/kopsik_api.h"
 #include "./gui.h"
 
 #include "Poco/Timestamp.h"

@@ -111,3 +111,5 @@ ipch
 # Nuget
 src/ui/windows/TogglDesktop/packages
 
+# QT projects
+build-*-Debug
