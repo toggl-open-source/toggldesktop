@@ -56,6 +56,7 @@ sudo apt-get install xorg-dev
 sudo apt-get install qtcreator
 ```
 
+Then open and build the project src\ui\linux\TogglDesktop\TogglDesktop.pro in QT Creator.
 
 Tests
 -----
