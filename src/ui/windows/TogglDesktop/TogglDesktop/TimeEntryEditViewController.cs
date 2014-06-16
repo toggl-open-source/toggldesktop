@@ -451,6 +451,9 @@ namespace TogglDesktop
                 linkAddProject.Visible = true;
                 labelProject.Visible = true;
                 comboBoxProject.Visible = true;
+                checkBoxPublic.Checked = false;
+                comboBoxWorkspace.SelectedIndex = -1;
+                comboBoxClient.SelectedIndex = -1;
             }           
         }
 
