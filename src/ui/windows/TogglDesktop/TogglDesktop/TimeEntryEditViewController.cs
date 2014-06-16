@@ -59,7 +59,6 @@ namespace TogglDesktop
 
         private void buttonDone_Click(object sender, EventArgs e)
         {
-            KopsikApi.ViewTimeEntryList();
             if (applyAddProject())
             {
                 KopsikApi.ViewTimeEntryList();
