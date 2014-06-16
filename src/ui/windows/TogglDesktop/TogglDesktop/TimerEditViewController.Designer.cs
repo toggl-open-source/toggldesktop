@@ -77,13 +77,20 @@
             // buttonStart
             // 
             this.buttonStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonStart.Location = new System.Drawing.Point(260, 10);
+            this.buttonStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(200)))), ((int)(((byte)(0)))));
+            this.buttonStart.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.buttonStart.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(200)))), ((int)(((byte)(0)))));
+            this.buttonStart.FlatAppearance.BorderSize = 0;
+            this.buttonStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
+            this.buttonStart.ForeColor = System.Drawing.Color.White;
+            this.buttonStart.Location = new System.Drawing.Point(260, 0);
             this.buttonStart.Margin = new System.Windows.Forms.Padding(0);
             this.buttonStart.Name = "buttonStart";
-            this.buttonStart.Size = new System.Drawing.Size(40, 35);
+            this.buttonStart.Size = new System.Drawing.Size(55, 56);
             this.buttonStart.TabIndex = 2;
             this.buttonStart.Text = "Start";
-            this.buttonStart.UseVisualStyleBackColor = true;
+            this.buttonStart.UseVisualStyleBackColor = false;
             this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
             // 
             // timerRunningDuration

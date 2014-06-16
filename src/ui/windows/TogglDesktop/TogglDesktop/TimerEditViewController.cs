@@ -108,6 +108,8 @@ namespace TogglDesktop
             duration_in_seconds = 0;
 
             buttonStart.Text = "Start";
+            buttonStart.BackColor = ColorTranslator.FromHtml("#47bc00");
+            buttonStart.FlatAppearance.BorderColor = ColorTranslator.FromHtml("#47bc00");
 
             if (!comboBoxDescription.Focused)
             {
@@ -144,6 +146,8 @@ namespace TogglDesktop
             timerRunningDuration.Enabled = true;
 
             buttonStart.Text = "Stop";
+            buttonStart.BackColor = ColorTranslator.FromHtml("#e20000");
+            buttonStart.FlatAppearance.BorderColor = ColorTranslator.FromHtml("#e20000");
             if (te.ProjectAndTaskLabel.Length > 0)
             {
                 linkLabelProject.Text = te.ProjectAndTaskLabel;
