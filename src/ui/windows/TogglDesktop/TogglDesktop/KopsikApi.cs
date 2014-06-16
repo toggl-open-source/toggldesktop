@@ -336,6 +336,13 @@ namespace TogglDesktop
             IntPtr context,
             string environment);
 
+        // CA cert bundle path must be configured from UI
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        private static extern void kopsik_set_cacert_path(
+            IntPtr context,
+            string path);
+
         // DB path must be configured from UI
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -1017,6 +1024,11 @@ namespace TogglDesktop
         public static bool Start(string version)
         {
             ctx = kopsik_context_init("windows_native_app", version);
+
+            string cacert_path = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "cacert.pem");
+            kopsik_set_cacert_path(ctx, cacert_path);
 
             kopsik_check_view_item_size(
                 Marshal.SizeOf(new KopsikTimeEntryViewItem()),
