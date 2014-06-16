@@ -50,7 +50,11 @@ Install-Package Google.Apis.Oauth2.v2;
 
 Linux
 -----
-We haven't started work on Linux UI yet. 
+Install packages:
+```
+sudo apt-get install xorg-dev
+sudo apt-get install qtcreator
+```
 
 
 Tests
