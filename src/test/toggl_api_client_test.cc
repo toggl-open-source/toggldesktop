@@ -113,7 +113,7 @@ TEST(TogglApiClientTest, AllowsSameEmail) {
     ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
 
     User user2;
-    std::string json = loadTestDataFile("testdata/same_email.json");
+    std::string json = loadTestDataFile("../testdata/same_email.json");
     user2.LoadUserAndRelatedDataFromJSONString(json);
 
     ASSERT_EQ(noError, db.instance()->SaveUser(&user2, true, &changes));

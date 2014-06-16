@@ -117,7 +117,7 @@ clean:
 	rm -rf src/ui/osx/TogglDesktop/build && \
 	rm -rf src/libkopsik/Kopsik/build && \
 	rm -rf third_party/TFDatePicker/TFDatePicker/build && \
-	rm -f toggl toggl_test TogglDesktop*.dmg TogglDesktop*.tar.gz
+	rm -f test TogglDesktop*.dmg TogglDesktop*.tar.gz
 
 osx: fmt_lib lint fmt_osx
 	xcodebuild -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj && \
@@ -160,7 +160,7 @@ endif
 
 poco:
 	cd $(pocodir) && \
-	./configure --omit=Data/ODBC,Data/MySQL,Zip --no-tests --no-samples --static -fPIC \
+	./configure --omit=Data/ODBC,Data/MySQL,Zip --no-tests --no-samples --fPIC \
 	--include-path=$(pwd)/$(openssldir)/include --library-path=$(pwd)/$(openssldir) && \
 	make
 
@@ -310,9 +310,15 @@ test_objects: build/test/gtest-all.o \
 	build/test/kopsik_api_test.o
 
 toggl_test: objects test_objects
-	$(cxx) -o toggl_test build/*.o build/test/*.o $(libs)
+	mkdir -p test
+	$(cxx) -o test/toggl_test build/*.o build/test/*.o $(libs)
 
 test_lib: fmt_lib lint mkdir_build toggl_test
-	./toggl_test
+ifeq ($(uname), Linux)
+	cd test && LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH ./toggl_test
+else
+	cd test && ./toggl_test
+endif
 
 test: test_lib
+
