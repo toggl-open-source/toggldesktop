@@ -67,6 +67,8 @@ void WebSocketClient::Shutdown() {
 error WebSocketClient::createSession() {
     logger().debug("createSession");
 
+    poco_assert(!HTTPSClient::CACertPath.empty());
+
     Poco::Mutex::ScopedLock lock(mutex_);
 
     deleteSession();
@@ -86,7 +88,7 @@ error WebSocketClient::createSession() {
             verification_mode = Poco::Net::Context::VERIFY_NONE;
         }
         Poco::Net::Context::Ptr context = new Poco::Net::Context(
-            Poco::Net::Context::CLIENT_USE, "",
+            Poco::Net::Context::CLIENT_USE, "", "", HTTPSClient::CACertPath,
             verification_mode, 9, true, "ALL");
 
         Poco::Net::SSLManager::instance().initializeClient(

@@ -774,6 +774,9 @@ const NSString *appName = @"osx_native_app";
 
 	NSLog(@"Version %@", version);
 
+	NSString *cacertPath = [[NSBundle mainBundle] pathForResource:@"cacert" ofType:@"pem"];
+	kopsik_set_cacert_path(ctx, [cacertPath UTF8String]);
+
 	_Bool res = kopsik_set_db_path(ctx, [self.db_path UTF8String]);
 	NSAssert(res, ([NSString stringWithFormat:@"Failed to initialize DB with path: %@", self.db_path]));
 

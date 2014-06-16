@@ -113,6 +113,10 @@ _Bool Context::StartEvents() {
 
     poco_assert(!user_);
 
+    if (HTTPSClient::CACertPath.empty()) {
+        return displayError(error("Missing CA cert bundle path!"));
+    }
+
     // Check that UI is wired up
     error err = UI()->VerifyCallbacks();
     if (err != noError) {

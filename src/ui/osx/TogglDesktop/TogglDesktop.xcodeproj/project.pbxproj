@@ -171,6 +171,7 @@
 		74E3CDD417FBABE400C3ADD3 /* BugsnagOSXNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDC517FBABE400C3ADD3 /* BugsnagOSXNotifier.m */; };
 		74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74E3CDD617FBAE0800C3ADD3 /* SystemConfiguration.framework */; };
 		74E3CDD917FC369700C3ADD3 /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74E3CDD817FC369700C3ADD3 /* ExceptionHandling.framework */; };
+		74E857BC194F8854007A88B9 /* cacert.pem in Resources */ = {isa = PBXBuildFile; fileRef = 74E857AB194F8807007A88B9 /* cacert.pem */; };
 		74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F106FF18993FFE00E93BD5 /* FeedbackWindowController.m */; };
 		74F1070218993FFE00E93BD5 /* FeedbackWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74F1070018993FFE00E93BD5 /* FeedbackWindowController.xib */; };
 		74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */; };
@@ -524,6 +525,7 @@
 		74E3CDC517FBABE400C3ADD3 /* BugsnagOSXNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugsnagOSXNotifier.m; sourceTree = "<group>"; };
 		74E3CDD617FBAE0800C3ADD3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		74E3CDD817FC369700C3ADD3 /* ExceptionHandling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExceptionHandling.framework; path = System/Library/Frameworks/ExceptionHandling.framework; sourceTree = SDKROOT; };
+		74E857AB194F8807007A88B9 /* cacert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cacert.pem; sourceTree = "<group>"; };
 		74F106FE18993FFE00E93BD5 /* FeedbackWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeedbackWindowController.h; path = ../FeedbackWindowController.h; sourceTree = "<group>"; };
 		74F106FF18993FFE00E93BD5 /* FeedbackWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FeedbackWindowController.m; path = ../FeedbackWindowController.m; sourceTree = "<group>"; };
 		74F1070018993FFE00E93BD5 /* FeedbackWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FeedbackWindowController.xib; path = ../FeedbackWindowController.xib; sourceTree = "<group>"; };
@@ -614,6 +616,7 @@
 				745E7FC1192D247300747C18 /* images */,
 				74E1682E180F269F0026261C /* gtm */,
 				74FE0D4C18E260A000ECFED2 /* MASShortcut */,
+				74E857AA194F8807007A88B9 /* ssl */,
 				69FC17FA17E6534400B96425 /* ui */,
 				69FC181717E6534500B96425 /* kopsikTests */,
 				69FC17F317E6534400B96425 /* Frameworks */,
@@ -893,6 +896,15 @@
 				74E3CDC517FBABE400C3ADD3 /* BugsnagOSXNotifier.m */,
 			);
 			path = OSX;
+			sourceTree = "<group>";
+		};
+		74E857AA194F8807007A88B9 /* ssl */ = {
+			isa = PBXGroup;
+			children = (
+				74E857AB194F8807007A88B9 /* cacert.pem */,
+			);
+			name = ssl;
+			path = ../../../ssl;
 			sourceTree = "<group>";
 		};
 		74FD8CD818A8EEE200F7DB80 /* Products */ = {
@@ -1176,6 +1188,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74E857BC194F8854007A88B9 /* cacert.pem in Resources */,
 				74FD8CE118A8EFDA00F7DB80 /* TFDatePicker.framework in Resources */,
 				749A3A7718D8A176000AD2DB /* CrashReporter.framework in Resources */,
 				95DBF8D718C48B300021FB41 /* logo.png in Resources */,

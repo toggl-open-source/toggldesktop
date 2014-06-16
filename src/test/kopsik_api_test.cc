@@ -13,6 +13,7 @@
 
 #include "Poco/FileStream.h"
 #include "Poco/File.h"
+#include "Poco/Path.h"
 
 namespace kopsik {
 
@@ -146,6 +147,9 @@ class App {
         ctx_ = kopsik_context_init("tests", "0.1");
 
         poco_assert(kopsik_set_db_path(ctx_, TESTDB));
+
+        Poco::Path path("src/ssl/cacert.pem");
+        kopsik_set_cacert_path(ctx_, path.toString().c_str());
 
         kopsik_on_app(ctx_, on_app);
         kopsik_on_error(ctx_, on_error);

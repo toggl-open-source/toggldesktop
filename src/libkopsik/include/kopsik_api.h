@@ -173,6 +173,12 @@ extern "C" {
         void *context,
         const char *environment);
 
+    // CA cert bundle must be configured from UI
+
+    KOPSIK_EXPORT void kopsik_set_cacert_path(
+        void *context,
+        const char *path);
+
     // DB path must be configured from UI
 
     KOPSIK_EXPORT _Bool kopsik_set_db_path(

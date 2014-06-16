@@ -34,6 +34,7 @@ std::string HTTPSClient::APIURL = std::string(kAPIURL);
 bool HTTPSClient::UseProxy = false;
 bool HTTPSClient::IgnoreCert = false;
 kopsik::Proxy HTTPSClient::ProxySettings = Proxy();
+std::string HTTPSClient::CACertPath = std::string("");
 
 error HTTPSClient::PostJSON(
     const std::string relative_url,
@@ -88,6 +89,7 @@ error HTTPSClient::request(
 
     poco_assert(!method.empty());
     poco_assert(!relative_url.empty());
+    poco_assert(!CACertPath.empty());
 
     poco_check_ptr(response_body);
 
@@ -106,7 +108,7 @@ error HTTPSClient::request(
             verification_mode = Poco::Net::Context::VERIFY_NONE;
         }
         Poco::Net::Context::Ptr context = new Poco::Net::Context(
-            Poco::Net::Context::CLIENT_USE, "",
+            Poco::Net::Context::CLIENT_USE, "", "", CACertPath,
             verification_mode, 9, true, "ALL");
 
         Poco::Net::SSLManager::instance().initializeClient(

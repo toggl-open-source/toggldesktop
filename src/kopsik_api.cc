@@ -110,6 +110,18 @@ _Bool kopsik_set_proxy_settings(void *context,
     return app(context)->SetProxySettings(use_proxy, proxy);
 }
 
+void kopsik_set_cacert_path(
+    void *context,
+    const char *path) {
+    poco_check_ptr(path);
+
+    std::stringstream ss;
+    ss << "kopsik_set_cacert_path path=" << path;
+    logger().debug(ss.str());
+
+    kopsik::HTTPSClient::CACertPath = std::string(path);
+}
+
 _Bool kopsik_set_db_path(
     void *context,
     const char *path) {

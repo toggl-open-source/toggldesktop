@@ -40,6 +40,7 @@ class HTTPSClient {
     static bool UseProxy;
     static kopsik::Proxy ProxySettings;
     static bool IgnoreCert;
+    static std::string CACertPath;
 
     static std::string UserAgent() {
         return AppName + "/" + AppVersion;
