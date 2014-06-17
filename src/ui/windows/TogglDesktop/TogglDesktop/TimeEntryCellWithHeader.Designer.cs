@@ -86,6 +86,7 @@
             // 
             // labelFormattedDate
             // 
+            this.labelFormattedDate.AutoSize = true;
             this.labelFormattedDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.labelFormattedDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
             this.labelFormattedDate.Location = new System.Drawing.Point(15, 13);
@@ -154,6 +155,7 @@
             this.Size = new System.Drawing.Size(314, 100);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TimeEntryCellWithHeader_MouseClick);
             this.headerPanel.ResumeLayout(false);
+            this.headerPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
