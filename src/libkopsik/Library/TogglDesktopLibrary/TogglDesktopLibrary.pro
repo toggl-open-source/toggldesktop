@@ -6,7 +6,6 @@
 
 TARGET = TogglDesktopLibrary
 TEMPLATE = lib
-CONFIG += staticlib
 
 DEFINES += TOGGLDESKTOPLIBRARY_LIBRARY
 
@@ -55,7 +54,6 @@ HEADERS += \
     ../../../gui.h \
     ../../../https_client.h \
     ../../../json.h \
-    ../../../kopsik_api.h \
     ../../../kopsik_api_private.h \
     ../../../model_change.h \
     ../../../project.h \
@@ -84,6 +82,7 @@ LIBS += -L$$OUT_PWD/
 LIBS += -L$$pocolib -lPocoDataSQLite -lPocoData -lPocoNet -lPocoNetSSL -lPocoCrypto -lPocoUtil -lPocoXML -lPocoFoundation
 LIBS += -L$$jsondir -ljson
 LIBS += -L$$openssldir -lssl -lcrypto
+LIBS += -lX11
 
 INCLUDEPATH += $$PWD/../../../../third_party/poco-1.4.6p2-all/Foundation/include
 DEPENDPATH += $$PWD/../../../../third_party/poco-1.4.6p2-all/Foundation/include
