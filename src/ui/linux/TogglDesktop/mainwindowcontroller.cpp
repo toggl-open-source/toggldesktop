@@ -1,14 +1,246 @@
 #include "mainwindowcontroller.h"
 #include "ui_mainwindowcontroller.h"
 
-#include <QErrorMessage>
+#include <iostream>
+
 #include <QStandardPaths>
 #include <QDir>
 #include <QCoreApplication>
 #include <QSettings>
 #include <QCloseEvent>
+#include <QMetaObject>
+#include <QMessageBox>
 
 #include "kopsik_api.h"
+
+MainWindowController *MainWindowController::Instance = 0;
+
+void on_display_app(const _Bool open) {
+    QMetaObject::invokeMethod(MainWindowController::Instance,
+                              "onDisplayApp",
+                              Qt::QueuedConnection,
+                              Q_ARG(_Bool, open));
+}
+
+void MainWindowController::onDisplayApp(const _Bool open)
+{
+
+}
+
+void on_display_error(
+    const char *errmsg,
+    const _Bool user_error)
+{
+
+}
+
+void MainWindowController::onDisplayError(
+    const char *errmsg,
+    const _Bool user_error)
+{
+
+}
+
+void on_display_update(
+    const _Bool open,
+    KopsikUpdateViewItem *update)
+{
+
+}
+
+void MainWindowController::onDisplayUpdate(
+    const _Bool open,
+    KopsikUpdateViewItem *update)
+{
+
+}
+
+void on_display_online_state(
+    const _Bool is_online)
+{
+}
+
+void MainWindowController::onDisplayOnlineState(
+    const _Bool is_online)
+{
+}
+
+void on_display_url(
+    const char *url)
+{
+
+}
+
+void MainWindowController::onDisplayUrl(
+    const char *url)
+{
+
+}
+
+void on_display_login(
+    const _Bool open,
+    const uint64_t user_id)
+{
+    const bool invoked = QMetaObject::invokeMethod(
+                MainWindowController::Instance,
+                "onDisplayLogin",
+                Qt::QueuedConnection,
+                Q_ARG(const bool, open),
+                Q_ARG(const uint64_t, user_id));
+    Q_ASSERT(invoked);
+}
+
+void MainWindowController::onDisplayLogin(
+        const _Bool open,
+        const uint64_t user_id)
+{
+}
+
+void on_display_reminder(
+    const char *title,
+    const char *informative_text)
+{
+
+}
+
+void MainWindowController::onDisplayReminder(
+    const char *title,
+    const char *informative_text)
+{
+
+}
+
+void on_display_time_entry_list(
+    const _Bool open,
+    KopsikTimeEntryViewItem *first)
+{
+
+}
+
+void MainWindowController::onDisplayTimeEntryList(
+    const _Bool open,
+    KopsikTimeEntryViewItem *first)
+{
+
+}
+
+void on_display_time_entry_autocomplete(
+    KopsikAutocompleteItem *first)
+{
+
+}
+
+void MainWindowController::onDisplayTimeEntryAutocomplete(
+    KopsikAutocompleteItem *first)
+{
+
+}
+
+void on_display_project_autocomplete(
+    KopsikAutocompleteItem *first)
+{
+
+}
+
+void MainWindowController::onDisplayProjectAutocomplete(
+        KopsikAutocompleteItem *first)
+{
+
+}
+
+void on_display_workspace_select(
+    KopsikViewItem *first)
+{
+
+}
+
+void MainWindowController::onDisplayWorkspaceSelect(
+    KopsikViewItem *first)
+{
+
+}
+
+void on_display_client_select(
+    KopsikViewItem *first)
+{
+
+}
+
+void MainWindowController::onDisplayClientSelect(
+    KopsikViewItem *first)
+{
+
+}
+
+void on_display_tags(
+        KopsikViewItem *first)
+{
+
+}
+
+void MainWindowController::onDisplayTags(
+        KopsikViewItem *first)
+{
+
+}
+
+void on_display_time_entry_editor(
+    const _Bool open,
+    KopsikTimeEntryViewItem *te,
+    const char *focused_field_name)
+{
+
+}
+
+void MainWindowController::onDisplayTimeEntryEditor(
+    const _Bool open,
+    KopsikTimeEntryViewItem *te,
+    const char *focused_field_name)
+{
+
+}
+
+void on_display_settings(
+    const _Bool open,
+    KopsikSettingsViewItem *settings)
+{
+
+}
+
+void MainWindowController::onDisplaySettings(
+    const _Bool open,
+    KopsikSettingsViewItem *settings)
+{
+
+}
+
+void on_display_timer_state(
+    KopsikTimeEntryViewItem *te)
+{
+
+}
+
+void MainWindowController::onDisplayTimerState(
+    KopsikTimeEntryViewItem *te)
+{
+
+}
+
+void on_display_idle_notification(
+    const char *since,
+    const char *duration,
+    const uint64_t started)
+{
+
+}
+
+void MainWindowController::onDisplayIdleNotification(
+    const char *since,
+    const char *duration,
+    const uint64_t started)
+{
+
+}
 
 MainWindowController::MainWindowController(QWidget *parent) :
     QMainWindow(parent),
@@ -17,6 +249,8 @@ MainWindowController::MainWindowController(QWidget *parent) :
     shutdown_(false)
 {
     ui->setupUi(this);
+
+    Instance = this;
 
     readSettings();
 
@@ -41,8 +275,26 @@ MainWindowController::MainWindowController(QWidget *parent) :
     QString cacertPath = executableDir.filePath("cacert.pem");
     kopsik_set_cacert_path(ctx_, cacertPath.toUtf8().constData());
 
-    if (!kopsik_context_start_events(ctx_)) {
-    }
+    kopsik_on_app(ctx_, on_display_app);
+    kopsik_on_error(ctx_, on_display_error);
+    kopsik_on_update(ctx_, on_display_update);
+    kopsik_on_online_state(ctx_, on_display_online_state);
+    kopsik_on_url(ctx_, on_display_url);
+    kopsik_on_login(ctx_, on_display_login);
+    kopsik_on_reminder(ctx_, on_display_reminder);
+    kopsik_on_time_entry_list(ctx_, on_display_time_entry_list);
+    kopsik_on_time_entry_autocomplete(ctx_, on_display_time_entry_autocomplete);
+    kopsik_on_project_autocomplete(ctx_, on_display_project_autocomplete);
+    kopsik_on_workspace_select(ctx_, on_display_workspace_select);
+    kopsik_on_client_select(ctx_, on_display_client_select);
+    kopsik_on_tags(ctx_, on_display_tags);
+    kopsik_on_time_entry_editor(ctx_, on_display_time_entry_editor);
+    kopsik_on_settings(ctx_, on_display_settings);
+    kopsik_on_timer_state(ctx_, on_display_timer_state);
+    kopsik_on_idle_notification(ctx_, on_display_idle_notification);
+
+    _Bool started = kopsik_context_start_events(ctx_);
+    Q_ASSERT(started);
 }
 
 void MainWindowController::readSettings()
@@ -72,6 +324,7 @@ void MainWindowController::closeEvent(QCloseEvent *event)
 
 MainWindowController::~MainWindowController()
 {
+    Instance = 0;
     kopsik_context_clear(ctx_);
     delete ui;
 }
