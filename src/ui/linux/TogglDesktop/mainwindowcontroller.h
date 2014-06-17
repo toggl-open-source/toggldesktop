@@ -15,9 +15,16 @@ public:
     explicit MainWindowController(QWidget *parent = 0);
     ~MainWindowController();
 
+protected:
+    void closeEvent(QCloseEvent *event);
+
 private:
     Ui::MainWindowController *ui;
     void *ctx_;
+    bool shutdown_;
+
+    void readSettings();
+    void writeSettings();
 };
 
 #endif // MAINWINDOWCONTROLLER_H
