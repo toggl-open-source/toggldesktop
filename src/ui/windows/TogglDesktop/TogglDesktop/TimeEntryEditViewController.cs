@@ -75,11 +75,15 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { OnTimeEntryEditor(open, te, focused_field_name); });
                 return;
             }
-            resetForms();
-            timeEntry = te;
 
+            timeEntry = te;
+            if (!open || GUID == te.GUID)
+            {
+                return;
+            }
             GUID = te.GUID;
 
+            resetForms();
             Boolean can_see_billable = false;
             if (!KopsikApi.CanUserSeeBillableFlag(GUID, ref can_see_billable))
             {
@@ -316,6 +320,10 @@ namespace TogglDesktop
 
         private void comboBoxDescription_Leave(object sender, EventArgs e)
         {
+            if (comboBoxDescription.Text == timeEntry.Description)
+            {
+                return;
+            }
             KopsikApi.SetTimeEntryDescription(GUID, comboBoxDescription.Text);
         }
 
