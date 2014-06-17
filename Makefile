@@ -117,7 +117,7 @@ clean:
 	rm -rf src/ui/osx/TogglDesktop/build && \
 	rm -rf src/libkopsik/Kopsik/build && \
 	rm -rf third_party/TFDatePicker/TFDatePicker/build && \
-	rm -f test TogglDesktop*.dmg TogglDesktop*.tar.gz
+	rm -rf test TogglDesktop*.dmg TogglDesktop*.tar.gz
 
 osx: fmt_lib lint fmt_osx
 	xcodebuild -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj && \
@@ -140,15 +140,18 @@ lint:
 	./third_party/cpplint/cpplint.py $(source_dirs)
 
 clean_deps:
-	cd third_party/libjson && make clean
-	cd third_party/poco-1.4.6p2-all/ && (make clean || true)
-	rm -rf third_party/poco-1.4.6p2-all/**/.dep
-	cd third_party/openssl && (make clean || true)
+	cd $(jsondir) && make clean && SHARED=1 make clean
+	cd $(pocodir) && (make clean || true)
+	rm -rf $(pocodir)/**/.dep
+	cd $(openssldir) && (make clean || true)
 
 deps: clean_deps openssl poco json
 
 json:
-	cd $(jsondir) && make
+	cd $(jsondir) && \
+	SHARED=1 make && \
+	ln -sf libjson.so.7.6.1 libjson.so && \
+	ln -sf libjson.so.7.6.1 libjson.so.7
 
 openssl:
 ifeq ($(uname), Darwin)
@@ -310,11 +313,14 @@ test_objects: build/test/gtest-all.o \
 	build/test/kopsik_api_test.o
 
 toggl_test: objects test_objects
+	rm -rf test
 	mkdir -p test
 	$(cxx) -o test/toggl_test build/*.o build/test/*.o $(libs)
 
 test_lib: fmt_lib lint mkdir_build toggl_test
 ifeq ($(uname), Linux)
+	cp -r $(pocodir)/lib/Linux/x86_64/*.so* test/.
+	cp -r $(jsondir)/libjson.so* test/.
 	cd test && LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH ./toggl_test
 else
 	cd test && ./toggl_test
