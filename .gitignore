@@ -5,6 +5,7 @@
 
 # Compiled Dynamic libraries
 *.so
+*.so.*
 *.dylib
 
 # Compiled Static libraries
@@ -113,3 +114,4 @@ src/ui/windows/TogglDesktop/packages
 
 # QT projects
 build-*-Debug
+
