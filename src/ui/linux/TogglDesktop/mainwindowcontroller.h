@@ -23,46 +23,62 @@ public:
 
 public slots:
     void onDisplayApp(const _Bool open);
+
     void onDisplayError(
-        const char *errmsg,
+        const QString errmsg,
         const _Bool user_error);
+
     void onDisplayUpdate(
         const _Bool open,
         KopsikUpdateViewItem *update);
+
     void onDisplayOnlineState(
         const _Bool is_online);
+
     void onDisplayUrl(
-        const char *url);
+        const QString url);
+
     void onDisplayLogin(
         const _Bool open,
         const uint64_t user_id);
+
     void onDisplayReminder(
-        const char *title,
-        const char *informative_text);
+        const QString title,
+        const QString informative_text);
+
     void onDisplayTimeEntryList(
         const _Bool open,
         KopsikTimeEntryViewItem *first);
+
     void onDisplayTimeEntryAutocomplete(
         KopsikAutocompleteItem *first);
+
     void onDisplayProjectAutocomplete(
         KopsikAutocompleteItem *first);
+
     void onDisplayWorkspaceSelect(
         KopsikViewItem *first);
+
     void onDisplayTimeEntryEditor(
         const _Bool open,
         KopsikTimeEntryViewItem *te,
-        const char *focused_field_name);
+        const QString focused_field_name);
+
     void onDisplaySettings(
         const _Bool open,
         KopsikSettingsViewItem *settings);
+
     void onDisplayTimerState(
         KopsikTimeEntryViewItem *te);
+
     void onDisplayIdleNotification(
-        const char *since,
-        const char *duration,
+        const QString since,
+        const QString duration,
         const uint64_t started);
+
     void onDisplayClientSelect(
         KopsikViewItem *first);
+
     void onDisplayTags(
         KopsikViewItem *first);
 

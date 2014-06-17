@@ -16,10 +16,12 @@
 MainWindowController *MainWindowController::Instance = 0;
 
 void on_display_app(const _Bool open) {
-    QMetaObject::invokeMethod(MainWindowController::Instance,
-                              "onDisplayApp",
-                              Qt::QueuedConnection,
-                              Q_ARG(_Bool, open));
+    const bool invoked = QMetaObject::invokeMethod(
+                MainWindowController::Instance,
+                "onDisplayApp",
+                Qt::QueuedConnection,
+                Q_ARG(_Bool, open));
+    Q_ASSERT(invoked);
 }
 
 void MainWindowController::onDisplayApp(const _Bool open)
@@ -31,11 +33,17 @@ void on_display_error(
     const char *errmsg,
     const _Bool user_error)
 {
-
+    const bool invoked = QMetaObject::invokeMethod(
+                MainWindowController::Instance,
+                "onDisplayError",
+                Qt::QueuedConnection,
+                Q_ARG(QString, QString(errmsg)),
+                Q_ARG(_Bool, user_error));
+    Q_ASSERT(invoked);
 }
 
 void MainWindowController::onDisplayError(
-    const char *errmsg,
+    const QString errmsg,
     const _Bool user_error)
 {
 
@@ -58,6 +66,12 @@ void MainWindowController::onDisplayUpdate(
 void on_display_online_state(
     const _Bool is_online)
 {
+    const bool invoked = QMetaObject::invokeMethod(
+                MainWindowController::Instance,
+                "onDisplayOnlineState",
+                Qt::QueuedConnection,
+                Q_ARG(_Bool, is_online));
+    Q_ASSERT(invoked);
 }
 
 void MainWindowController::onDisplayOnlineState(
@@ -68,11 +82,16 @@ void MainWindowController::onDisplayOnlineState(
 void on_display_url(
     const char *url)
 {
-
+    const bool invoked = QMetaObject::invokeMethod(
+                MainWindowController::Instance,
+                "onDisplayUrl",
+                Qt::QueuedConnection,
+                Q_ARG(QString, QString(url)));
+    Q_ASSERT(invoked);
 }
 
 void MainWindowController::onDisplayUrl(
-    const char *url)
+    const QString url)
 {
 
 }
@@ -100,12 +119,18 @@ void on_display_reminder(
     const char *title,
     const char *informative_text)
 {
-
+    const bool invoked = QMetaObject::invokeMethod(
+                MainWindowController::Instance,
+                "onDisplayReminder",
+                Qt::QueuedConnection,
+                Q_ARG(QString, QString(title)),
+                Q_ARG(QString, QString(informative_text)));
+    Q_ASSERT(invoked);
 }
 
 void MainWindowController::onDisplayReminder(
-    const char *title,
-    const char *informative_text)
+    const QString title,
+    const QString informative_text)
 {
 
 }
@@ -173,13 +198,13 @@ void MainWindowController::onDisplayClientSelect(
 }
 
 void on_display_tags(
-        KopsikViewItem *first)
+    KopsikViewItem *first)
 {
 
 }
 
 void MainWindowController::onDisplayTags(
-        KopsikViewItem *first)
+    KopsikViewItem *first)
 {
 
 }
@@ -195,7 +220,7 @@ void on_display_time_entry_editor(
 void MainWindowController::onDisplayTimeEntryEditor(
     const _Bool open,
     KopsikTimeEntryViewItem *te,
-    const char *focused_field_name)
+    const QString focused_field_name)
 {
 
 }
@@ -231,12 +256,19 @@ void on_display_idle_notification(
     const char *duration,
     const uint64_t started)
 {
-
+    const bool invoked = QMetaObject::invokeMethod(
+                MainWindowController::Instance,
+                "onDisplayIdleNotification",
+                Qt::QueuedConnection,
+                Q_ARG(QString, QString(since)),
+                Q_ARG(QString, QString(duration)),
+                Q_ARG(uint64_t, started));
+    Q_ASSERT(invoked);
 }
 
 void MainWindowController::onDisplayIdleNotification(
-    const char *since,
-    const char *duration,
+    const QString since,
+    const QString duration,
     const uint64_t started)
 {
 
