@@ -17,6 +17,7 @@ namespace TogglDesktop
         private UInt64 task_id = 0;
         private UInt64 project_id = 0;
         private List<KopsikApi.KopsikAutocompleteItem> timeEntryAutocompleteUpdate;
+        private List<KopsikApi.KopsikAutocompleteItem> autoCompleteList;
 
         public TimerEditViewController()
         {
@@ -26,47 +27,18 @@ namespace TogglDesktop
             KopsikApi.OnRunningTimerState += OnRunningTimerState;
             KopsikApi.OnStoppedTimerState += OnStoppedTimerState;
 
-            comboBoxDescription.DisplayMember = "Text";
             this.Anchor = (AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top);
-        }
-
-        private void comboBoxDescription_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            object o = comboBoxDescription.SelectedItem;
-            if (o == null)
-            {
-                task_id = 0;
-                project_id = 0;
-                linkLabelProject.Visible = false;
-                linkLabelProject.Text = "";
-                comboBoxDescription.Top = 16;
-                return;
-            }
-            KopsikApi.KopsikAutocompleteItem item = (KopsikApi.KopsikAutocompleteItem)o;
-            comboBoxDescription.Text = item.Description;
-            
-            if (item.ProjectID > 0)
-            {
-                linkLabelProject.Text = item.ProjectAndTaskLabel;
-                linkLabelProject.Visible = true;
-                comboBoxDescription.Top = 10;
-            }
-            else
-            {
-                linkLabelProject.Visible = false;
-                comboBoxDescription.Top = 16;
-            }
-            task_id = item.TaskID;
-            project_id = item.ProjectID;
         }
 
         private const string defaultDescription = "What are you doing?";
         private const string defaultDuration = "00:00:00";
+        private const int defaultDescriptionTop = 20;
+        private const int projecttDescriptionTop = 10;
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
             if (buttonStart.Text == "Start") {
-                string description = comboBoxDescription.Text;
+                string description = descriptionTextBox.Text;
                 if (defaultDescription == description)
                 {
                     description = "";
@@ -111,11 +83,11 @@ namespace TogglDesktop
             buttonStart.BackColor = ColorTranslator.FromHtml("#47bc00");
             buttonStart.FlatAppearance.BorderColor = ColorTranslator.FromHtml("#47bc00");
 
-            if (!comboBoxDescription.Focused)
+            if (!descriptionTextBox.Focused)
             {
-                comboBoxDescription.Text = defaultDescription;
+                descriptionTextBox.Text = defaultDescription;
             }
-            comboBoxDescription.Visible = true;
+            descriptionTextBox.Visible = true;
 
             linkLabelDescription.Visible = false;
             linkLabelDescription.Text = "";
@@ -131,7 +103,7 @@ namespace TogglDesktop
 
             linkLabelProject.Text = "";
             linkLabelProject.Visible = false;
-            comboBoxDescription.Top = 16;
+            descriptionTextBox.Top = defaultDescriptionTop;
         }
 
         void OnRunningTimerState(KopsikApi.KopsikTimeEntryViewItem te)
@@ -152,11 +124,11 @@ namespace TogglDesktop
             {
                 linkLabelProject.Text = te.ProjectAndTaskLabel;
                 linkLabelProject.Visible = true;
-                comboBoxDescription.Top = 10;
+                descriptionTextBox.Top = projecttDescriptionTop;
             }
 
-            linkLabelDescription.Top = comboBoxDescription.Top;
-            linkLabelDescription.Left = comboBoxDescription.Left;
+            linkLabelDescription.Top = descriptionTextBox.Top-1;
+            linkLabelDescription.Left = descriptionTextBox.Left-3;
             linkLabelDescription.Text = te.Description;
             if (linkLabelDescription.Text == "")
             {
@@ -164,8 +136,8 @@ namespace TogglDesktop
             }
             linkLabelDescription.Visible = true;
 
-            comboBoxDescription.Visible = false;
-            comboBoxDescription.Text = "";
+            descriptionTextBox.Visible = false;
+            descriptionTextBox.Text = "";
 
             linkLabelDuration.Top = textBoxDuration.Top;
             linkLabelDuration.Text = te.Duration;
@@ -186,16 +158,21 @@ namespace TogglDesktop
                 return;
             }
             timeEntryAutocompleteUpdate = list;
-            if (comboBoxDescription.DroppedDown || comboBoxDescription.Focused)
+            autoCompleteList = list;
+            descriptionTextBox.AutoCompleteCustomSource.Clear();
+
+            if (descriptionTextBox.Focused)
             {
                 return;
             }
-            comboBoxDescription.Items.Clear();
+            AutoCompleteStringCollection collection = new AutoCompleteStringCollection();
             foreach (object o in timeEntryAutocompleteUpdate)
             {
-                comboBoxDescription.Items.Add(o);
+                collection.Add(o.ToString());
             }
             timeEntryAutocompleteUpdate = null;
+            
+            descriptionTextBox.AutoCompleteCustomSource = collection;
         }
 
         private void linkLabelDescription_Click(object sender, EventArgs e)
@@ -239,19 +216,19 @@ namespace TogglDesktop
 
         }
 
-        private void comboBoxDescription_Enter(object sender, EventArgs e)
+        private void descriptionTextBox_Enter(object sender, EventArgs e)
         {
-            if (comboBoxDescription.Text == defaultDescription)
+            if (descriptionTextBox.Text == defaultDescription)
             {
-                comboBoxDescription.Text = "";
+                descriptionTextBox.Text = "";
             }
         }
 
-        private void comboBoxDescription_Leave(object sender, EventArgs e)
+        private void descriptionTextBox_Leave(object sender, EventArgs e)
         {
-            if (comboBoxDescription.Text == "")
+            if (descriptionTextBox.Text == "")
             {
-                comboBoxDescription.Text = defaultDescription;
+                descriptionTextBox.Text = defaultDescription;
             }
         }
 
@@ -268,6 +245,41 @@ namespace TogglDesktop
             if (textBoxDuration.Text == "")
             {
                 textBoxDuration.Text = defaultDuration;
+            }
+        }
+
+        private void descriptionTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                if (autoCompleteList == null)
+                {
+                    return;
+                }
+                foreach (KopsikApi.KopsikAutocompleteItem item in autoCompleteList)
+                {
+                    if (item.ToString() == descriptionTextBox.Text)
+                    {
+                        descriptionTextBox.Text = item.Description;
+
+                        if (item.ProjectID > 0)
+                        {
+                            linkLabelProject.Text = item.ProjectAndTaskLabel;
+                            linkLabelProject.Visible = true;
+                            descriptionTextBox.Top = projecttDescriptionTop;
+                        }
+                        else
+                        {
+                            linkLabelProject.Visible = false;
+                            descriptionTextBox.Top = defaultDescriptionTop;
+                        }
+                        task_id = item.TaskID;
+                        project_id = item.ProjectID;
+                        break;
+                    }
+                }
+
+                
             }
         }
     }

@@ -29,35 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.comboBoxDescription = new System.Windows.Forms.ComboBox();
             this.textBoxDuration = new System.Windows.Forms.TextBox();
             this.buttonStart = new System.Windows.Forms.Button();
             this.timerRunningDuration = new System.Windows.Forms.Timer(this.components);
             this.linkLabelProject = new System.Windows.Forms.Label();
             this.linkLabelDescription = new System.Windows.Forms.Label();
             this.linkLabelDuration = new System.Windows.Forms.Label();
+            this.descriptionTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
-            // 
-            // comboBoxDescription
-            // 
-            this.comboBoxDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBoxDescription.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.comboBoxDescription.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.comboBoxDescription.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
-            this.comboBoxDescription.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.comboBoxDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.comboBoxDescription.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
-            this.comboBoxDescription.FormattingEnabled = true;
-            this.comboBoxDescription.Location = new System.Drawing.Point(15, 16);
-            this.comboBoxDescription.Name = "comboBoxDescription";
-            this.comboBoxDescription.Size = new System.Drawing.Size(145, 23);
-            this.comboBoxDescription.TabIndex = 0;
-            this.comboBoxDescription.Text = "What are you doing?";
-            this.comboBoxDescription.SelectedIndexChanged += new System.EventHandler(this.comboBoxDescription_SelectedIndexChanged);
-            this.comboBoxDescription.DropDownClosed += new System.EventHandler(this.comboBoxDescription_DropDownClosed);
-            this.comboBoxDescription.Enter += new System.EventHandler(this.comboBoxDescription_Enter);
-            this.comboBoxDescription.Leave += new System.EventHandler(this.comboBoxDescription_Leave);
             // 
             // textBoxDuration
             // 
@@ -69,7 +48,7 @@
             this.textBoxDuration.Location = new System.Drawing.Point(170, 17);
             this.textBoxDuration.Name = "textBoxDuration";
             this.textBoxDuration.Size = new System.Drawing.Size(80, 22);
-            this.textBoxDuration.TabIndex = 1;
+            this.textBoxDuration.TabIndex = 2;
             this.textBoxDuration.Text = "00:00:00";
             this.textBoxDuration.Enter += new System.EventHandler(this.textBoxDuration_Enter);
             this.textBoxDuration.Leave += new System.EventHandler(this.textBoxDuration_Leave);
@@ -88,7 +67,7 @@
             this.buttonStart.Margin = new System.Windows.Forms.Padding(0);
             this.buttonStart.Name = "buttonStart";
             this.buttonStart.Size = new System.Drawing.Size(55, 56);
-            this.buttonStart.TabIndex = 2;
+            this.buttonStart.TabIndex = 3;
             this.buttonStart.Text = "Start";
             this.buttonStart.UseVisualStyleBackColor = false;
             this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
@@ -140,17 +119,36 @@
             this.linkLabelDuration.Visible = false;
             this.linkLabelDuration.Click += new System.EventHandler(this.linkLabelDuration_Click);
             // 
+            // descriptionTextBox
+            // 
+            this.descriptionTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.descriptionTextBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.descriptionTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.descriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
+            this.descriptionTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.descriptionTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
+            this.descriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(140)))), ((int)(((byte)(140)))));
+            this.descriptionTextBox.Location = new System.Drawing.Point(18, 20);
+            this.descriptionTextBox.Name = "descriptionTextBox";
+            this.descriptionTextBox.Size = new System.Drawing.Size(150, 16);
+            this.descriptionTextBox.TabIndex = 1;
+            this.descriptionTextBox.Text = "What are you doing?";
+            this.descriptionTextBox.Enter += new System.EventHandler(this.descriptionTextBox_Enter);
+            this.descriptionTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.descriptionTextBox_KeyDown);
+            this.descriptionTextBox.Leave += new System.EventHandler(this.descriptionTextBox_Leave);
+            // 
             // TimerEditViewController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
+            this.Controls.Add(this.descriptionTextBox);
             this.Controls.Add(this.linkLabelDuration);
             this.Controls.Add(this.linkLabelDescription);
             this.Controls.Add(this.linkLabelProject);
             this.Controls.Add(this.buttonStart);
             this.Controls.Add(this.textBoxDuration);
-            this.Controls.Add(this.comboBoxDescription);
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "TimerEditViewController";
             this.Size = new System.Drawing.Size(314, 56);
@@ -162,12 +160,12 @@
 
         #endregion
 
-        private System.Windows.Forms.ComboBox comboBoxDescription;
         private System.Windows.Forms.TextBox textBoxDuration;
         private System.Windows.Forms.Button buttonStart;
         private System.Windows.Forms.Timer timerRunningDuration;
         private System.Windows.Forms.Label linkLabelProject;
         private System.Windows.Forms.Label linkLabelDescription;
         private System.Windows.Forms.Label linkLabelDuration;
+        private System.Windows.Forms.TextBox descriptionTextBox;
     }
 }
