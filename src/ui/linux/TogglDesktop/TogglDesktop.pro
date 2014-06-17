@@ -12,14 +12,52 @@ TARGET = TogglDesktop
 TEMPLATE = app
 
 SOURCES += main.cpp\
-        mainwindowcontroller.cpp \
-    loginviewcontroller.cpp
+    loginviewcontroller.cpp \
+    updateview.cpp \
+    timeentryview.cpp \
+    autocompleteview.cpp \
+    genericview.cpp \
+    settingsview.cpp \
+    toggl_api.cpp \
+    settingswindowcontroller.cpp \
+    aboutwindowcontroller.cpp \
+    feedbackwindowcontroller.cpp \
+    timeentrycell.cpp \
+    timeentrycellwithheader.cpp \
+    timeentrylistviewcontroller.cpp \
+    timereditviewcontroller.cpp \
+    timeentryeditviewcontroller.cpp \
+    mainwindowcontroller.cpp
 
-HEADERS  += mainwindowcontroller.h \
-    loginviewcontroller.h
+HEADERS  += \
+    loginviewcontroller.h \
+    updateview.h \
+    timeentryview.h \
+    autocompleteview.h \
+    genericview.h \
+    settingsview.h \
+    toggl_api.h \
+    settingswindowcontroller.h \
+    aboutwindowcontroller.h \
+    feedbackwindowcontroller.h \
+    timeentrycell.h \
+    timeentrycellwithheader.h \
+    timeentrylistviewcontroller.h \
+    timereditviewcontroller.h \
+    timeentryeditviewcontroller.h \
+    mainwindowcontroller.h
 
-FORMS    += mainwindowcontroller.ui \
-    loginviewcontroller.ui
+FORMS    += \
+    loginviewcontroller.ui \
+    settingswindowcontroller.ui \
+    aboutwindowcontroller.ui \
+    feedbackwindowcontroller.ui \
+    timeentrycell.ui \
+    timeentrycellwithheader.ui \
+    timeentrylistviewcontroller.ui \
+    timereditviewcontroller.ui \
+    timeentryeditviewcontroller.ui \
+    mainwindowcontroller.ui
 
 QMAKE_RPATHDIR += $$PWD/../../../libkopsik/Library/build-TogglDesktopLibrary-Desktop-Debug
 

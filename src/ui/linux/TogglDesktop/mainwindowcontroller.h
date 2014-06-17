@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "kopsik_api.h"
+#include "toggl_api.h"
 
 namespace Ui {
 class MainWindowController;
@@ -22,65 +22,52 @@ public:
     static MainWindowController *Instance;
 
 public slots:
-    void onDisplayApp(const _Bool open);
+    void displayApp(const _Bool open);
 
-    void onDisplayError(
+    void displayError(
         const QString errmsg,
-        const _Bool user_error);
+        const bool user_error);
 
-    void onDisplayUpdate(
-        const _Bool open,
-        KopsikUpdateViewItem *update);
+    void displayUpdate(
+        const bool open,
+        UpdateView *update);
 
-    void onDisplayOnlineState(
-        const _Bool is_online);
+    void displayOnlineState(
+        const bool is_online);
 
-    void onDisplayUrl(
+    void displayUrl(
         const QString url);
 
-    void onDisplayLogin(
-        const _Bool open,
+    void displayLogin(
+        const bool open,
         const uint64_t user_id);
 
-    void onDisplayReminder(
+    void displayReminder(
         const QString title,
         const QString informative_text);
 
-    void onDisplayTimeEntryList(
-        const _Bool open,
-        KopsikTimeEntryViewItem *first);
+    void displayTimeEntryList(
+        const bool open,
+        QVector<TimeEntryView *> list);
 
-    void onDisplayTimeEntryAutocomplete(
-        KopsikAutocompleteItem *first);
+    void displayTimeEntryEditor(
+        const bool open,
+        TimeEntryView *te,
+        const QString used_field_name);
 
-    void onDisplayProjectAutocomplete(
-        KopsikAutocompleteItem *first);
+    void displaySettings(
+        const bool open,
+        SettingsView *settings);
 
-    void onDisplayWorkspaceSelect(
-        KopsikViewItem *first);
+    void displayStoppedTimerState();
 
-    void onDisplayTimeEntryEditor(
-        const _Bool open,
-        KopsikTimeEntryViewItem *te,
-        const QString focused_field_name);
+    void displayRunningTimerState(
+        TimeEntryView *te);
 
-    void onDisplaySettings(
-        const _Bool open,
-        KopsikSettingsViewItem *settings);
-
-    void onDisplayTimerState(
-        KopsikTimeEntryViewItem *te);
-
-    void onDisplayIdleNotification(
+    void displayIdleNotification(
         const QString since,
         const QString duration,
         const uint64_t started);
-
-    void onDisplayClientSelect(
-        KopsikViewItem *first);
-
-    void onDisplayTags(
-        KopsikViewItem *first);
 
 protected:
     void closeEvent(QCloseEvent *event);
@@ -89,6 +76,7 @@ private:
     Ui::MainWindowController *ui;
     void *ctx_;
     bool shutdown_;
+    TogglApi *togglApi;
 
     void readSettings();
     void writeSettings();

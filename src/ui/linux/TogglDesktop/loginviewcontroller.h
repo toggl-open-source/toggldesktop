@@ -15,6 +15,8 @@ public:
     explicit LoginViewController(QWidget *parent = 0);
     ~LoginViewController();
 
+private slots:
+
 private:
     Ui::LoginViewController *ui;
 };

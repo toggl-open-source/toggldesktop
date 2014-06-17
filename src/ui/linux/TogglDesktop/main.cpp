@@ -2,6 +2,9 @@
 #include <QApplication>
 #include <QMetaType>
 
+#include <stdint.h>
+#include <stdbool.h>
+
 int main(int argc, char *argv[])
 {
     qRegisterMetaType<uint64_t>("uint64_t");
