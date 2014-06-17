@@ -318,9 +318,9 @@ toggl_test: objects test_objects
 	$(cxx) -o test/toggl_test build/*.o build/test/*.o $(libs)
 
 test_lib: fmt_lib lint mkdir_build toggl_test
+	cp -r $(jsondir)/libjson.so* test/.
 ifeq ($(uname), Linux)
 	cp -r $(pocodir)/lib/Linux/x86_64/*.so* test/.
-	cp -r $(jsondir)/libjson.so* test/.
 	cd test && LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH ./toggl_test
 else
 	cd test && ./toggl_test
