@@ -43,7 +43,7 @@
             // pictureBoxLogo
             // 
             this.pictureBoxLogo.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.pictureBoxLogo.Image = global::TogglDesktop.Properties.Resources.logo64;
+            this.pictureBoxLogo.Image = global::TogglDesktop.Properties.Resources.logo641;
             this.pictureBoxLogo.Location = new System.Drawing.Point(111, 12);
             this.pictureBoxLogo.Name = "pictureBoxLogo";
             this.pictureBoxLogo.Size = new System.Drawing.Size(65, 68);
