@@ -20,6 +20,9 @@ MainWindowController::MainWindowController(QWidget *parent) :
     QString appDirPath =
             QStandardPaths::writableLocation(QStandardPaths::DataLocation);
     QDir appDir = QDir(appDirPath);
+    if (!appDir.exists()) {
+        appDir.mkpath(".");
+    }
 
     QString logPath = appDir.filePath("kopsik.log");
     kopsik_set_log_path(logPath.toUtf8().constData());
