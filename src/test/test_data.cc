@@ -7,7 +7,7 @@
 #include "Poco/FileStream.h"
 
 std::string loadTestData() {
-    return loadTestDataFile("testdata/me.json");
+    return loadTestDataFile("../testdata/me.json");
 }
 
 std::string loadTestDataFile(const std::string filename) {

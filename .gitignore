@@ -5,6 +5,7 @@
 
 # Compiled Dynamic libraries
 *.so
+*.so.*
 *.dylib
 
 # Compiled Static libraries
@@ -16,8 +17,8 @@ tmp/*
 build/*
 src/libkopsik/Kopsik/build
 src/ui/osx/TogglDesktop/build/
-toggl_test
 toggl
+test/*
 *.bak
 
 third_party/openssl/Makefile*
@@ -113,3 +114,4 @@ src/ui/windows/TogglDesktop/packages
 
 # QT projects
 build-*-Debug
+*.pro.user
