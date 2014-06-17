@@ -54,17 +54,19 @@
             this.timerRunningDuration = new System.Windows.Forms.Timer(this.components);
             this.panelBottom = new System.Windows.Forms.Panel();
             this.panelAddProject = new System.Windows.Forms.Panel();
-            this.labelProjectName = new System.Windows.Forms.Label();
-            this.labelClient = new System.Windows.Forms.Label();
-            this.textBoxProjectName = new System.Windows.Forms.TextBox();
-            this.checkBoxPublic = new System.Windows.Forms.CheckBox();
-            this.comboBoxClient = new System.Windows.Forms.ComboBox();
-            this.comboBoxWorkspace = new System.Windows.Forms.ComboBox();
             this.labelWorkspace = new System.Windows.Forms.Label();
+            this.comboBoxWorkspace = new System.Windows.Forms.ComboBox();
+            this.comboBoxClient = new System.Windows.Forms.ComboBox();
+            this.checkBoxPublic = new System.Windows.Forms.CheckBox();
+            this.textBoxProjectName = new System.Windows.Forms.TextBox();
+            this.labelClient = new System.Windows.Forms.Label();
+            this.labelProjectName = new System.Windows.Forms.Label();
+            this.panelStartEndTime = new System.Windows.Forms.Panel();
             this.statusStripLastUpdate.SuspendLayout();
             this.buttonsPanel.SuspendLayout();
             this.panelBottom.SuspendLayout();
             this.panelAddProject.SuspendLayout();
+            this.panelStartEndTime.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -145,7 +147,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(15, 34);
+            this.label4.Location = new System.Drawing.Point(15, 8);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(75, 13);
             this.label4.TabIndex = 7;
@@ -153,7 +155,7 @@
             // 
             // textBoxStartTime
             // 
-            this.textBoxStartTime.Location = new System.Drawing.Point(100, 31);
+            this.textBoxStartTime.Location = new System.Drawing.Point(100, 5);
             this.textBoxStartTime.Name = "textBoxStartTime";
             this.textBoxStartTime.Size = new System.Drawing.Size(60, 20);
             this.textBoxStartTime.TabIndex = 8;
@@ -162,7 +164,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(165, 34);
+            this.label5.Location = new System.Drawing.Point(165, 8);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(10, 13);
             this.label5.TabIndex = 9;
@@ -170,7 +172,7 @@
             // 
             // textBoxEndTime
             // 
-            this.textBoxEndTime.Location = new System.Drawing.Point(180, 31);
+            this.textBoxEndTime.Location = new System.Drawing.Point(180, 5);
             this.textBoxEndTime.Name = "textBoxEndTime";
             this.textBoxEndTime.Size = new System.Drawing.Size(60, 20);
             this.textBoxEndTime.TabIndex = 10;
@@ -178,6 +180,7 @@
             // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(17, 63);
             this.label6.Name = "label6";
@@ -187,6 +190,7 @@
             // 
             // dateTimePickerStartDate
             // 
+            this.dateTimePickerStartDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.dateTimePickerStartDate.Location = new System.Drawing.Point(100, 57);
             this.dateTimePickerStartDate.Name = "dateTimePickerStartDate";
             this.dateTimePickerStartDate.Size = new System.Drawing.Size(140, 20);
@@ -195,6 +199,7 @@
             // 
             // label7
             // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(17, 83);
             this.label7.Name = "label7";
@@ -263,6 +268,7 @@
             // 
             // checkBoxBillable
             // 
+            this.checkBoxBillable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxBillable.AutoSize = true;
             this.checkBoxBillable.Location = new System.Drawing.Point(100, 153);
             this.checkBoxBillable.Name = "checkBoxBillable";
@@ -274,7 +280,7 @@
             // 
             // checkedListBoxTags
             // 
-            this.checkedListBoxTags.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.checkedListBoxTags.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.checkedListBoxTags.CheckOnClick = true;
             this.checkedListBoxTags.FormattingEnabled = true;
@@ -294,15 +300,12 @@
             // 
             this.panelBottom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelBottom.Controls.Add(this.panelStartEndTime);
             this.panelBottom.Controls.Add(this.label3);
             this.panelBottom.Controls.Add(this.checkedListBoxTags);
             this.panelBottom.Controls.Add(this.textBoxDuration);
             this.panelBottom.Controls.Add(this.checkBoxBillable);
-            this.panelBottom.Controls.Add(this.label4);
-            this.panelBottom.Controls.Add(this.textBoxStartTime);
-            this.panelBottom.Controls.Add(this.label5);
             this.panelBottom.Controls.Add(this.label7);
-            this.panelBottom.Controls.Add(this.textBoxEndTime);
             this.panelBottom.Controls.Add(this.dateTimePickerStartDate);
             this.panelBottom.Controls.Add(this.label6);
             this.panelBottom.Location = new System.Drawing.Point(0, 77);
@@ -328,53 +331,15 @@
             this.panelAddProject.TabIndex = 18;
             this.panelAddProject.Visible = false;
             // 
-            // labelProjectName
+            // labelWorkspace
             // 
-            this.labelProjectName.AutoSize = true;
-            this.labelProjectName.Location = new System.Drawing.Point(15, 8);
-            this.labelProjectName.Name = "labelProjectName";
-            this.labelProjectName.Size = new System.Drawing.Size(72, 13);
-            this.labelProjectName.TabIndex = 0;
-            this.labelProjectName.Text = "Project name:";
-            // 
-            // labelClient
-            // 
-            this.labelClient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.labelClient.AutoSize = true;
-            this.labelClient.Location = new System.Drawing.Point(18, 94);
-            this.labelClient.Name = "labelClient";
-            this.labelClient.Size = new System.Drawing.Size(36, 13);
-            this.labelClient.TabIndex = 1;
-            this.labelClient.Text = "Client:";
-            // 
-            // textBoxProjectName
-            // 
-            this.textBoxProjectName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxProjectName.Location = new System.Drawing.Point(100, 5);
-            this.textBoxProjectName.Name = "textBoxProjectName";
-            this.textBoxProjectName.Size = new System.Drawing.Size(202, 20);
-            this.textBoxProjectName.TabIndex = 2;
-            // 
-            // checkBoxPublic
-            // 
-            this.checkBoxPublic.AutoSize = true;
-            this.checkBoxPublic.Location = new System.Drawing.Point(100, 31);
-            this.checkBoxPublic.Name = "checkBoxPublic";
-            this.checkBoxPublic.Size = new System.Drawing.Size(180, 17);
-            this.checkBoxPublic.TabIndex = 3;
-            this.checkBoxPublic.Text = "Public (visible to the whole team)";
-            this.checkBoxPublic.UseVisualStyleBackColor = true;
-            // 
-            // comboBoxClient
-            // 
-            this.comboBoxClient.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBoxClient.FormattingEnabled = true;
-            this.comboBoxClient.Location = new System.Drawing.Point(100, 91);
-            this.comboBoxClient.Name = "comboBoxClient";
-            this.comboBoxClient.Size = new System.Drawing.Size(202, 21);
-            this.comboBoxClient.TabIndex = 4;
+            this.labelWorkspace.AutoSize = true;
+            this.labelWorkspace.Location = new System.Drawing.Point(15, 64);
+            this.labelWorkspace.Name = "labelWorkspace";
+            this.labelWorkspace.Size = new System.Drawing.Size(65, 13);
+            this.labelWorkspace.TabIndex = 6;
+            this.labelWorkspace.Text = "Workspace:";
+            this.labelWorkspace.Visible = false;
             // 
             // comboBoxWorkspace
             // 
@@ -387,15 +352,64 @@
             this.comboBoxWorkspace.TabIndex = 5;
             this.comboBoxWorkspace.Visible = false;
             // 
-            // labelWorkspace
+            // comboBoxClient
             // 
-            this.labelWorkspace.AutoSize = true;
-            this.labelWorkspace.Location = new System.Drawing.Point(15, 64);
-            this.labelWorkspace.Name = "labelWorkspace";
-            this.labelWorkspace.Size = new System.Drawing.Size(65, 13);
-            this.labelWorkspace.TabIndex = 6;
-            this.labelWorkspace.Text = "Workspace:";
-            this.labelWorkspace.Visible = false;
+            this.comboBoxClient.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxClient.FormattingEnabled = true;
+            this.comboBoxClient.Location = new System.Drawing.Point(100, 91);
+            this.comboBoxClient.Name = "comboBoxClient";
+            this.comboBoxClient.Size = new System.Drawing.Size(202, 21);
+            this.comboBoxClient.TabIndex = 4;
+            // 
+            // checkBoxPublic
+            // 
+            this.checkBoxPublic.AutoSize = true;
+            this.checkBoxPublic.Location = new System.Drawing.Point(100, 31);
+            this.checkBoxPublic.Name = "checkBoxPublic";
+            this.checkBoxPublic.Size = new System.Drawing.Size(180, 17);
+            this.checkBoxPublic.TabIndex = 3;
+            this.checkBoxPublic.Text = "Public (visible to the whole team)";
+            this.checkBoxPublic.UseVisualStyleBackColor = true;
+            // 
+            // textBoxProjectName
+            // 
+            this.textBoxProjectName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxProjectName.Location = new System.Drawing.Point(100, 5);
+            this.textBoxProjectName.Name = "textBoxProjectName";
+            this.textBoxProjectName.Size = new System.Drawing.Size(202, 20);
+            this.textBoxProjectName.TabIndex = 2;
+            // 
+            // labelClient
+            // 
+            this.labelClient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelClient.AutoSize = true;
+            this.labelClient.Location = new System.Drawing.Point(18, 94);
+            this.labelClient.Name = "labelClient";
+            this.labelClient.Size = new System.Drawing.Size(36, 13);
+            this.labelClient.TabIndex = 1;
+            this.labelClient.Text = "Client:";
+            // 
+            // labelProjectName
+            // 
+            this.labelProjectName.AutoSize = true;
+            this.labelProjectName.Location = new System.Drawing.Point(15, 8);
+            this.labelProjectName.Name = "labelProjectName";
+            this.labelProjectName.Size = new System.Drawing.Size(72, 13);
+            this.labelProjectName.TabIndex = 0;
+            this.labelProjectName.Text = "Project name:";
+            // 
+            // panelStartEndTime
+            // 
+            this.panelStartEndTime.Controls.Add(this.label4);
+            this.panelStartEndTime.Controls.Add(this.textBoxEndTime);
+            this.panelStartEndTime.Controls.Add(this.label5);
+            this.panelStartEndTime.Controls.Add(this.textBoxStartTime);
+            this.panelStartEndTime.Location = new System.Drawing.Point(0, 26);
+            this.panelStartEndTime.Name = "panelStartEndTime";
+            this.panelStartEndTime.Size = new System.Drawing.Size(317, 30);
+            this.panelStartEndTime.TabIndex = 15;
             // 
             // TimeEntryEditViewController
             // 
@@ -420,6 +434,8 @@
             this.panelBottom.PerformLayout();
             this.panelAddProject.ResumeLayout(false);
             this.panelAddProject.PerformLayout();
+            this.panelStartEndTime.ResumeLayout(false);
+            this.panelStartEndTime.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -459,5 +475,6 @@
         private System.Windows.Forms.TextBox textBoxProjectName;
         private System.Windows.Forms.Label labelClient;
         private System.Windows.Forms.Label labelProjectName;
+        private System.Windows.Forms.Panel panelStartEndTime;
     }
 }

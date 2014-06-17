@@ -132,7 +132,13 @@ namespace TogglDesktop
                 dateTimePickerStartDate.Value = KopsikApi.DateTimeFromUnix(te.Started);
             }
 
-            this.textBoxEndTime.Visible = !timeEntry.DurOnly;
+            this.panelStartEndTime.Visible = !timeEntry.DurOnly;
+            if (timeEntry.DurOnly)
+            {
+                panelBottom.Height = 150;
+            } else {
+                panelBottom.Height = 175;
+            }
 
             if (te.UpdatedAt >= 0)
             {
