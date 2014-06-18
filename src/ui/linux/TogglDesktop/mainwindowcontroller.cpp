@@ -6,8 +6,45 @@
 #include <QSettings>
 #include <QCloseEvent>
 #include <QMessageBox>
+#include <QLabel>
+#include <QVBoxLayout>
 
 #include "toggl_api.h"
+#include "errorviewcontroller.h"
+#include "loginviewcontroller.h"
+#include "timeentrylistviewcontroller.h"
+#include "timeentryeditviewcontroller.h"
+
+MainWindowController::MainWindowController(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindowController),
+    ctx_(0),
+    shutdown_(false),
+    togglApi(new TogglApi()),
+    contentView(0),
+    stackedWidget(0)
+{
+    ui->setupUi(this);
+
+    contentView = new QLabel();
+    setCentralWidget(contentView);
+
+    QLayout *layout = new QVBoxLayout();
+    contentView->setLayout(layout);
+
+    layout->addWidget(new ErrorViewController());
+
+    stackedWidget = new QStackedWidget();
+    layout->addWidget(stackedWidget);
+
+    stackedWidget->addWidget(new LoginViewController());
+    stackedWidget->addWidget(new TimeEntryListViewController());
+    stackedWidget->addWidget(new TimeEntryEditViewController());
+
+    stackedWidget->setCurrentIndex(0);
+
+    readSettings();
+}
 
 MainWindowController::~MainWindowController()
 {
@@ -100,18 +137,6 @@ void MainWindowController::displayIdleNotification(
     const uint64_t started)
 {
 
-}
-
-MainWindowController::MainWindowController(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindowController),
-    ctx_(0),
-    shutdown_(false),
-    togglApi(new TogglApi())
-{
-    ui->setupUi(this);
-
-    readSettings();
 }
 
 void MainWindowController::readSettings()
