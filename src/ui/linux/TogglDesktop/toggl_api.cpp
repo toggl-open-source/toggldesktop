@@ -158,9 +158,7 @@ TogglApi::TogglApi(QObject *parent) :
     QObject(parent),
     ctx(0)
 {
-    QString version = QCoreApplication::applicationVersion();
-    ctx = kopsik_context_init("linux_native_app",
-                              version.toUtf8().constData());
+    ctx = kopsik_context_init("linux_native_app", "7.0.0"); // FIXME: version number
 
     QString appDirPath =
             QStandardPaths::writableLocation(
@@ -202,6 +200,10 @@ TogglApi::TogglApi(QObject *parent) :
     instance = this;
 }
 
-bool TogglApi::StartEvents() {
+bool TogglApi::startEvents() {
     return kopsik_context_start_events(ctx);
+}
+
+void TogglApi::login(const QString email, const QString password) {
+    kopsik_login(ctx, email.toStdString().c_str(), password.toStdString().c_str());
 }

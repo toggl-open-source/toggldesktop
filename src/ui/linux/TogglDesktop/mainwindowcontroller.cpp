@@ -9,9 +9,11 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QDebug>
+#include <qdesktopservices.h>
 
 #include "toggl_api.h"
 #include "errorviewcontroller.h"
+#include "loginwidget.h"
 
 MainWindowController::MainWindowController(QWidget *parent) :
     QMainWindow(parent),
@@ -19,17 +21,25 @@ MainWindowController::MainWindowController(QWidget *parent) :
     ctx_(0),
     shutdown_(false),
     togglApi(new TogglApi()),
-    stackedWidget(0)
+    stackedWidget(0),
+    loginWidget(0)
 {
     ui->setupUi(this);
 
+    ui->mainToolBar->setVisible(false);
+
+    loginWidget = new LoginWidget();
+
     QVBoxLayout *verticalLayout = new QVBoxLayout();
-
     verticalLayout->addWidget(new ErrorViewController());
-
+    verticalLayout->addWidget(loginWidget);
     centralWidget()->setLayout(verticalLayout);
 
     readSettings();
+
+    connect(TogglApi::instance, SIGNAL(displayApp(bool)), this, SLOT(displayApp(bool)));
+    connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)), this, SLOT(displayLogin(bool,uint64_t)));
+    connect(TogglApi::instance, SIGNAL(displayUrl(QUrl)), this, SLOT(displayUrl(QUrl)));
 }
 
 MainWindowController::~MainWindowController()
@@ -42,15 +52,10 @@ MainWindowController::~MainWindowController()
 
 void MainWindowController::displayApp(const bool open)
 {
-
-}
-
-
-void MainWindowController::displayError(
-    const QString errmsg,
-    const bool user_error)
-{
-
+    if (open) {
+        show();
+        raise();
+    }
 }
 
 void MainWindowController::displayUpdate(
@@ -66,15 +71,21 @@ void MainWindowController::displayOnlineState(
 }
 
 void MainWindowController::displayUrl(
-    const QString url)
+    const QUrl url)
 {
-
+    QDesktopServices::openUrl(url);
 }
 
 void MainWindowController::displayLogin(
         const bool open,
         const uint64_t user_id)
 {
+    if (open) {
+        loginWidget->setVisible(true);
+    }
+    if (user_id) {
+        loginWidget->setVisible(false);
+    }
 }
 
 void MainWindowController::displayReminder(
@@ -148,4 +159,11 @@ void MainWindowController::closeEvent(QCloseEvent *event)
         return;
     }
     QMainWindow::closeEvent(event);
+}
+
+void MainWindowController::showEvent(QShowEvent *event)
+{
+    QMainWindow::showEvent(event);
+    bool started = TogglApi::instance->startEvents();
+    Q_ASSERT(started);
 }

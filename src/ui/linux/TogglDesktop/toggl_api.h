@@ -21,7 +21,9 @@ public:
 
     static TogglApi *instance;
 
-    bool StartEvents();
+    bool startEvents();
+
+    void login(const QString email, const QString password);
 
 signals:
     void displayApp(const bool open);

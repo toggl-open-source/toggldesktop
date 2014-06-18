@@ -17,6 +17,9 @@ public:
 
 private slots:
     void on_pushButton_clicked();
+    void displayError(
+        const QString errmsg,
+        const bool user_error);
 
 private:
     Ui::ErrorViewController *ui;

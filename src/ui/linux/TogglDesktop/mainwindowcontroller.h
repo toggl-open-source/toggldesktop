@@ -8,6 +8,7 @@
 #include <stdint.h>
 
 #include "toggl_api.h"
+#include "loginwidget.h"
 
 namespace Ui {
 class MainWindowController;
@@ -24,11 +25,8 @@ public:
     static MainWindowController *Instance;
 
 public slots:
-    void displayApp(const _Bool open);
-
-    void displayError(
-        const QString errmsg,
-        const bool user_error);
+    void displayApp(
+        const bool open);
 
     void displayUpdate(
         const bool open,
@@ -38,7 +36,7 @@ public slots:
         const bool is_online);
 
     void displayUrl(
-        const QString url);
+        const QUrl url);
 
     void displayLogin(
         const bool open,
@@ -73,6 +71,7 @@ public slots:
 
 protected:
     void closeEvent(QCloseEvent *event);
+    void showEvent(QShowEvent *event);
 
 private:
     Ui::MainWindowController *ui;
@@ -80,6 +79,7 @@ private:
     bool shutdown_;
     TogglApi *togglApi;
     QStackedWidget *stackedWidget;
+    LoginWidget *loginWidget;
 
     void readSettings();
     void writeSettings();

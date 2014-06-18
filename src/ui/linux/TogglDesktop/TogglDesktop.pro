@@ -26,6 +26,7 @@ SOURCES += main.cpp\
     ../../../../third_party/qt-solutions/qtsingleapplication/src/qtlockedfile_win.cpp \
     ../../../../third_party/qt-solutions/qtsingleapplication/src/qtsingleapplication.cpp \
     ../../../../third_party/qt-solutions/qtsingleapplication/src/qtsinglecoreapplication.cpp \
+    loginwidget.cpp
 
 HEADERS  += \
     updateview.h \
@@ -35,18 +36,21 @@ HEADERS  += \
     settingsview.h \
     toggl_api.h \
     mainwindowcontroller.h \
-    errorviewcontroller.h \
     ../../../../third_party/qt-solutions/qtsingleapplication/src/qtlocalpeer.h \
     ../../../../third_party/qt-solutions/qtsingleapplication/src/qtlockedfile.h \
     ../../../../third_party/qt-solutions/qtsingleapplication/src/QtLockedFile \
     ../../../../third_party/qt-solutions/qtsingleapplication/src/qtsingleapplication.h \
     ../../../../third_party/qt-solutions/qtsingleapplication/src/QtSingleApplication \
     ../../../../third_party/qt-solutions/qtsingleapplication/src/qtsinglecoreapplication.h \
-    loginviewcontroller.h
+    loginviewcontroller.h \
+    loginwidget.h \
+    errorviewcontroller.h \
+    ../../../libkopsik/include/kopsik_api.h
 
 FORMS    += \
     mainwindowcontroller.ui \
     errorviewcontroller.ui \
+    loginwidget.ui
 
 QMAKE_RPATHDIR += $$PWD/../../../libkopsik/Library/build-TogglDesktopLibrary-Desktop-Debug
 
