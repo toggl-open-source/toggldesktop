@@ -12,3 +12,8 @@ ErrorViewController::~ErrorViewController()
 {
     delete ui;
 }
+
+void ErrorViewController::on_pushButton_clicked()
+{
+    setVisible(false);
+}

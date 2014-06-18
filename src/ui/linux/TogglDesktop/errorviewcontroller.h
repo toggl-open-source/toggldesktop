@@ -15,6 +15,9 @@ public:
     explicit ErrorViewController(QWidget *parent = 0);
     ~ErrorViewController();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::ErrorViewController *ui;
 };

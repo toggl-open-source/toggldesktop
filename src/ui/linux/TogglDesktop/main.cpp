@@ -1,6 +1,7 @@
 #include "mainwindowcontroller.h"
 #include <QApplication>
 #include <QMetaType>
+#include <QDebug>
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -15,6 +16,8 @@ int main(int argc, char *argv[])
     QtSingleApplication a(argc, argv);
 
     if (a.sendMessage(("Wake up!"))) {
+        qDebug() << "An instance of TogglDesktop is already running. "
+                    "This instance will now quit.";
         return 0;
     }
 

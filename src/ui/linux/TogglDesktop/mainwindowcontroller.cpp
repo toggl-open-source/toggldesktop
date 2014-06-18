@@ -8,12 +8,10 @@
 #include <QMessageBox>
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QDebug>
 
 #include "toggl_api.h"
 #include "errorviewcontroller.h"
-#include "loginviewcontroller.h"
-#include "timeentrylistviewcontroller.h"
-#include "timeentryeditviewcontroller.h"
 
 MainWindowController::MainWindowController(QWidget *parent) :
     QMainWindow(parent),
@@ -21,27 +19,15 @@ MainWindowController::MainWindowController(QWidget *parent) :
     ctx_(0),
     shutdown_(false),
     togglApi(new TogglApi()),
-    contentView(0),
     stackedWidget(0)
 {
     ui->setupUi(this);
 
-    contentView = new QLabel();
-    setCentralWidget(contentView);
+    QVBoxLayout *verticalLayout = new QVBoxLayout();
 
-    QLayout *layout = new QVBoxLayout();
-    contentView->setLayout(layout);
+    verticalLayout->addWidget(new ErrorViewController());
 
-    layout->addWidget(new ErrorViewController());
-
-    stackedWidget = new QStackedWidget();
-    layout->addWidget(stackedWidget);
-
-    stackedWidget->addWidget(new LoginViewController());
-    stackedWidget->addWidget(new TimeEntryListViewController());
-    stackedWidget->addWidget(new TimeEntryEditViewController());
-
-    stackedWidget->setCurrentIndex(0);
+    centralWidget()->setLayout(verticalLayout);
 
     readSettings();
 }

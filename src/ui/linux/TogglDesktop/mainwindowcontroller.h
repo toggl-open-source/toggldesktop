@@ -79,7 +79,6 @@ private:
     void *ctx_;
     bool shutdown_;
     TogglApi *togglApi;
-    QWidget *contentView;
     QStackedWidget *stackedWidget;
 
     void readSettings();
