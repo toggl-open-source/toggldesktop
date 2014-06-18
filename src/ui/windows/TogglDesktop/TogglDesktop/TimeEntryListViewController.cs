@@ -33,8 +33,9 @@ namespace TogglDesktop
             }
             this.Dock = DockStyle.Fill;
             int y = 0;
-            this.EntriesList.SuspendLayout();
             this.EntriesList.Controls.Clear();
+            this.EntriesList.SuspendLayout();
+
             foreach (KopsikApi.KopsikTimeEntryViewItem item in list)
             {
                 if (item.IsHeader)
