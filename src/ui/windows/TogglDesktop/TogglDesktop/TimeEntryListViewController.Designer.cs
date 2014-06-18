@@ -30,7 +30,7 @@
         {
             this.panelHeader = new System.Windows.Forms.Panel();
             this.timerEditViewController = new TogglDesktop.TimerEditViewController();
-            this.EntriesList = new System.Windows.Forms.Panel();
+            this.EntriesList = new NonFlickerPanel();
             this.panelHeader.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -87,7 +87,7 @@
         #endregion
 
         private System.Windows.Forms.Panel panelHeader;
-        private System.Windows.Forms.Panel EntriesList;
+        private NonFlickerPanel EntriesList;
         private TimerEditViewController timerEditViewController;
     }
 }

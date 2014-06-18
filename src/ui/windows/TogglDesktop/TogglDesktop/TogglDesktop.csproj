@@ -158,6 +158,9 @@
     <Compile Include="MainWindowController.Designer.cs">
       <DependentUpon>MainWindowController.cs</DependentUpon>
     </Compile>
+    <Compile Include="NonFlickerPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PreferencesWindowController.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -243,10 +246,6 @@
     <EmbeddedResource Include="TimerEditViewController.resx">
       <DependentUpon>TimerEditViewController.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="..\..\..\..\ssl\cacert.pem">
-      <Link>cacert.pem</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
