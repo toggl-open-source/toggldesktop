@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     timeentrylistviewcontroller.cpp \
     timereditviewcontroller.cpp \
     timeentryeditviewcontroller.cpp \
-    mainwindowcontroller.cpp
+    mainwindowcontroller.cpp \
+    errorviewcontroller.cpp
 
 HEADERS  += \
     loginviewcontroller.h \
@@ -45,7 +46,8 @@ HEADERS  += \
     timeentrylistviewcontroller.h \
     timereditviewcontroller.h \
     timeentryeditviewcontroller.h \
-    mainwindowcontroller.h
+    mainwindowcontroller.h \
+    errorviewcontroller.h
 
 FORMS    += \
     loginviewcontroller.ui \
@@ -57,7 +59,8 @@ FORMS    += \
     timeentrylistviewcontroller.ui \
     timereditviewcontroller.ui \
     timeentryeditviewcontroller.ui \
-    mainwindowcontroller.ui
+    mainwindowcontroller.ui \
+    errorviewcontroller.ui
 
 QMAKE_RPATHDIR += $$PWD/../../../libkopsik/Library/build-TogglDesktopLibrary-Desktop-Debug
 
