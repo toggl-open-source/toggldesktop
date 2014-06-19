@@ -2,23 +2,34 @@
 [![Build Status](https://travis-ci.org/toggl/toggldesktop.png)](https://travis-ci.org/toggl/toggldesktop)
 
 
-OSX
----
+Build on OSX or Linux
+---------------------
 First, build dependencies:
 ```
 make deps
 ```
 then the app itself:
 ```
-make osx
+make
 ```
 
-To build and run the app:
+To build, then run the app:
 ```
 make run
 ```
 
-Toggl built and signed app is [available for download](https://www.toggl.com/api/v8/installer?platform=darwin&app=td&channel=stable). Currently OSX 10.8 is the minimum version supported.
+Run unit tets with
+```
+make test
+```
+
+Downloads
+---------
+Toggl built and signed app for OSX is [available for download](https://www.toggl.com/api/v8/installer?platform=darwin&app=td&channel=stable). Currently OSX 10.8 is the minimum version supported.
+
+Linux 
+-----
+You need to install xorg-dev and qtcreator packages.
 
 Windows
 -------
@@ -46,30 +57,3 @@ From the same console, install Oauth2 related packages:
 Install-Package Google.Apis.Auth;
 Install-Package Google.Apis.Oauth2.v2;
 ```
-
-
-Linux
------
-Install packages:
-```
-sudo apt-get install xorg-dev
-sudo apt-get install qtcreator
-```
-
-Build dependencies:
-```
-make deps
-```
-
-Then open and build the project *src\ui\linux\TogglDesktop\TogglDesktop.pro* in QT Creator.
-
-
-Tests
------
-Run unit tets with
-
-```
-make test
-```
-
-GUI tests will be implemented with [Sikuli](http://www.sikuli.org/), using image recognition.
