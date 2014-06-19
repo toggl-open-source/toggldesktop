@@ -66,6 +66,8 @@ Then open and build the project *src\ui\linux\TogglDesktop\TogglDesktop.pro* in 
 
 Tests
 -----
+Run unit tets with
+
 ```
 make test
 ```
