@@ -234,3 +234,8 @@ const QString TogglApi::formatDurationInSecondsHHMMSS(const int64_t duration)
                                              bufSize);
     return QString(buf);
 }
+
+bool TogglApi::continueTimeEntry(const QString guid)
+{
+    return kopsik_continue(ctx, guid.toStdString().c_str());
+}

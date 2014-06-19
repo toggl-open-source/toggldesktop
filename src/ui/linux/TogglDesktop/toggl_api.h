@@ -33,6 +33,8 @@ public:
 
     bool stop();
 
+    bool continueTimeEntry(const QString guid);
+
     static const QString formatDurationInSecondsHHMMSS(const int64_t duration);
 
 signals:
