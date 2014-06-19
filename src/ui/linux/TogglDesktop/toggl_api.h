@@ -33,6 +33,8 @@ public:
 
     bool stop();
 
+    static const QString formatDurationInSecondsHHMMSS(const int64_t duration);
+
 signals:
     void displayApp(const bool open);
 

@@ -224,3 +224,13 @@ bool TogglApi::stop()
 {
     return kopsik_stop(ctx);
 }
+
+const QString TogglApi::formatDurationInSecondsHHMMSS(const int64_t duration)
+{
+    int bufSize = 20;
+    char buf[bufSize];
+    kopsik_format_duration_in_seconds_hhmmss(duration,
+                                             buf,
+                                             bufSize);
+    return QString(buf);
+}

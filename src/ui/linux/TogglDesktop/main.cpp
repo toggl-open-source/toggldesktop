@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
     qRegisterMetaType<uint64_t>("uint64_t");
     qRegisterMetaType<_Bool>("_Bool");
     qRegisterMetaType<QVector<TimeEntryView*> >("QVector<TimeEntryView*>");
+    qRegisterMetaType<QVector<AutocompleteView*> >("QVector<AutocompleteView*");
 
     QtSingleApplication a(argc, argv);
 

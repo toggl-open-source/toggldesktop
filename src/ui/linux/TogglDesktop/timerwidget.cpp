@@ -5,7 +5,9 @@
 
 TimerWidget::TimerWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::TimerWidget)
+    ui(new Ui::TimerWidget),
+    timer(0),
+    duration(0)
 {
     ui->setupUi(this);
 
@@ -13,6 +15,14 @@ TimerWidget::TimerWidget(QWidget *parent) :
             this, SLOT(displayStoppedTimerState()));
     connect(TogglApi::instance, SIGNAL(displayRunningTimerState(TimeEntryView*)),
             this, SLOT(displayRunningTimerState(TimeEntryView*)));
+    connect(TogglApi::instance, SIGNAL(displayTimeEntryAutocomplete(QVector<AutocompleteView*>)),
+            this, SLOT(displayTimeEntryAutocomplete(QVector<AutocompleteView*>)));
+    connect(TogglApi::instance, SIGNAL(displayProjectAutocomplete(QVector<AutocompleteView*>)),
+            this, SLOT(displayProjectAutocomplete(QVector<AutocompleteView*>)));
+
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
+    timer->start(1000);
 }
 
 TimerWidget::~TimerWidget()
@@ -27,6 +37,9 @@ void TimerWidget::displayRunningTimerState(
 
     ui->description->setText(te->Description);
     ui->duration->setText(te->Duration);
+    ui->project->setCurrentText(te->ProjectAndTaskLabel);
+
+    duration = te->DurationInSeconds;
 
     disconnect(this, SLOT(start()));
     disconnect(this, SLOT(stop()));
@@ -40,6 +53,9 @@ void TimerWidget::displayStoppedTimerState()
 
     ui->description->setText("");
     ui->duration->setText("");
+    ui->project->setCurrentText("");
+
+    duration = 0;
 
     disconnect(this, SLOT(start()));
     disconnect(this, SLOT(stop()));
@@ -63,4 +79,29 @@ void TimerWidget::start()
 void TimerWidget::stop()
 {
     TogglApi::instance->stop();
+}
+
+void TimerWidget::displayTimeEntryAutocomplete(
+    QVector<AutocompleteView *> list)
+{
+}
+
+void TimerWidget::displayProjectAutocomplete(
+    QVector<AutocompleteView *> list)
+{
+    ui->project->clear();
+    ui->project->addItem("");
+    foreach(AutocompleteView *view, list)
+    {
+        ui->project->addItem(view->Text, QVariant::fromValue(view));
+    }
+}
+
+void TimerWidget::timeout()
+{
+    if (duration >= 0)
+    {
+        return;
+    }
+    ui->duration->setText(TogglApi::formatDurationInSecondsHHMMSS(duration));
 }

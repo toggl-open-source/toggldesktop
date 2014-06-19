@@ -2,9 +2,12 @@
 #define TIMERWIDGET_H
 
 #include <QWidget>
+#include <QVector>
+#include <QTimer>
 
 #include "timeentryview.h"
 #include "timerwidget.h"
+#include "autocompleteview.h"
 
 namespace Ui {
 class TimerWidget;
@@ -27,13 +30,25 @@ private slots:
     void displayRunningTimerState(
         TimeEntryView *te);
 
+    void displayTimeEntryAutocomplete(
+        QVector<AutocompleteView *> list);
+
+    void displayProjectAutocomplete(
+        QVector<AutocompleteView *> list);
+
     void on_start_clicked();
 
     void start();
     void stop();
 
+    void timeout();
+
 private:
     Ui::TimerWidget *ui;
+
+    QTimer *timer;
+
+    int64_t duration;
 };
 
 #endif // TIMERWIDGET_H

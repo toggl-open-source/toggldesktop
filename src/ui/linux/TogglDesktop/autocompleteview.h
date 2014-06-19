@@ -26,6 +26,7 @@ public:
             view->TaskID = it->TaskID;
             view->ProjectID = it->ProjectID;
             view->Type = it->Type;
+            result.push_back(view);
             it = static_cast<KopsikAutocompleteItem *>(it->Next);
         }
         return result;
