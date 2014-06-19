@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     loginwidget.cpp \
     timeentrylistwidget.cpp \
     timerwidget.cpp \
-    timeentrycellwidget.cpp
+    timeentrycellwidget.cpp \
+    timeentryeditorwidget.cpp
 
 HEADERS  += \
     updateview.h \
@@ -51,7 +52,8 @@ HEADERS  += \
     ../../../libkopsik/include/kopsik_api.h \
     timeentrylistwidget.h \
     timerwidget.h \
-    timeentrycellwidget.h
+    timeentrycellwidget.h \
+    timeentryeditorwidget.h
 
 FORMS    += \
     mainwindowcontroller.ui \
@@ -59,7 +61,8 @@ FORMS    += \
     loginwidget.ui \
     timeentrylistwidget.ui \
     timerwidget.ui \
-    timeentrycellwidget.ui
+    timeentrycellwidget.ui \
+    timeentryeditorwidget.ui
 
 QMAKE_RPATHDIR += $$PWD/../../../libkopsik/Library/build-TogglDesktopLibrary-Desktop-Debug
 
