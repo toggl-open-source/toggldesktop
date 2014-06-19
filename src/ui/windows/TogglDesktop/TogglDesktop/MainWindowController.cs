@@ -362,8 +362,8 @@ namespace TogglDesktop
 
         private void show()
         {
-            this.Show();
-            this.BringToFront();
+            Show();
+            BringToFront();
         }
 
         void OnReminder(string title, string informative_text)

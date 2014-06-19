@@ -246,6 +246,9 @@
     <EmbeddedResource Include="TimerEditViewController.resx">
       <DependentUpon>TimerEditViewController.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="cacert.pem">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
