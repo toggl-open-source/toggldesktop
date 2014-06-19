@@ -33,6 +33,8 @@ public:
 
     bool stop();
 
+    bool deleteTimeEntry(const QString guid);
+
     bool continueTimeEntry(const QString guid);
 
     void edit(const QString guid,

@@ -253,3 +253,8 @@ void TogglApi::viewTimeEntryList()
 {
     kopsik_view_time_entry_list(ctx);
 }
+
+bool TogglApi::deleteTimeEntry(const QString guid)
+{
+    return kopsik_delete_time_entry(ctx, guid.toStdString().c_str());
+}

@@ -39,6 +39,7 @@ private slots:
         TimeEntryView *view,
         const QString focused_field_name);
     void on_doneButton_clicked();
+    void on_deleteButton_clicked();
 };
 
 #endif // TIMEENTRYEDITORWIDGET_H

@@ -1,6 +1,8 @@
 #include "timeentryeditorwidget.h"
 #include "ui_timeentryeditorwidget.h"
 
+#include <QMessageBox>
+
 #include "toggl_api.h"
 
 TimeEntryEditorWidget::TimeEntryEditorWidget(QWidget *parent) :
@@ -88,4 +90,15 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
 void TimeEntryEditorWidget::on_doneButton_clicked()
 {
     TogglApi::instance->viewTimeEntryList();
+}
+
+void TimeEntryEditorWidget::on_deleteButton_clicked()
+{
+    if (QMessageBox::Ok == QMessageBox(QMessageBox::Question,
+                                        "Delete this time entry?",
+                                        "Deleted time entries cannot be restored.",
+                                        QMessageBox::Ok|QMessageBox::Cancel).exec())
+    {
+        TogglApi::instance->deleteTimeEntry(guid);
+    }
 }
