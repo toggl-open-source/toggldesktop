@@ -34,13 +34,15 @@
             this.labelProject = new System.Windows.Forms.Label();
             this.labelTag = new System.Windows.Forms.Label();
             this.labelContinue = new System.Windows.Forms.Label();
+            this.entryNonFlickerPanel = new TogglDesktop.NonFlickerPanel();
+            this.entryNonFlickerPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelBillable
             // 
             this.labelBillable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelBillable.Image = global::TogglDesktop.Properties.Resources.icon_billable;
-            this.labelBillable.Location = new System.Drawing.Point(200, 18);
+            this.labelBillable.Location = new System.Drawing.Point(190, 18);
             this.labelBillable.Name = "labelBillable";
             this.labelBillable.Size = new System.Drawing.Size(13, 13);
             this.labelBillable.TabIndex = 0;
@@ -50,9 +52,9 @@
             this.labelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.labelDescription.Location = new System.Drawing.Point(15, 10);
+            this.labelDescription.Location = new System.Drawing.Point(15, 6);
             this.labelDescription.Name = "labelDescription";
-            this.labelDescription.Size = new System.Drawing.Size(170, 17);
+            this.labelDescription.Size = new System.Drawing.Size(154, 17);
             this.labelDescription.TabIndex = 1;
             this.labelDescription.Text = "Blogpost about new stuff in Toggl...";
             this.labelDescription.Click += new System.EventHandler(this.labelDescription_Click);
@@ -62,7 +64,7 @@
             this.labelDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelDuration.AutoSize = true;
             this.labelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.labelDuration.Location = new System.Drawing.Point(250, 18);
+            this.labelDuration.Location = new System.Drawing.Point(239, 17);
             this.labelDuration.Name = "labelDuration";
             this.labelDuration.Size = new System.Drawing.Size(64, 16);
             this.labelDuration.TabIndex = 3;
@@ -75,9 +77,9 @@
             this.labelProject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.labelProject.Location = new System.Drawing.Point(15, 27);
+            this.labelProject.Location = new System.Drawing.Point(15, 26);
             this.labelProject.Name = "labelProject";
-            this.labelProject.Size = new System.Drawing.Size(170, 17);
+            this.labelProject.Size = new System.Drawing.Size(154, 17);
             this.labelProject.TabIndex = 4;
             this.labelProject.Text = "NEW PROJECT - TOGGL CLIENT";
             this.labelProject.Click += new System.EventHandler(this.labelProject_Click);
@@ -86,7 +88,7 @@
             // 
             this.labelTag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelTag.Image = global::TogglDesktop.Properties.Resources.icon_tags;
-            this.labelTag.Location = new System.Drawing.Point(185, 18);
+            this.labelTag.Location = new System.Drawing.Point(175, 18);
             this.labelTag.Name = "labelTag";
             this.labelTag.Size = new System.Drawing.Size(13, 13);
             this.labelTag.TabIndex = 5;
@@ -95,28 +97,40 @@
             // 
             this.labelContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelContinue.Image = global::TogglDesktop.Properties.Resources._continue;
-            this.labelContinue.Location = new System.Drawing.Point(220, 13);
+            this.labelContinue.Location = new System.Drawing.Point(210, 13);
             this.labelContinue.Name = "labelContinue";
             this.labelContinue.Size = new System.Drawing.Size(24, 24);
             this.labelContinue.TabIndex = 6;
             this.labelContinue.Click += new System.EventHandler(this.labelContinue_Click);
             // 
+            // entryNonFlickerPanel
+            // 
+            this.entryNonFlickerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.entryNonFlickerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.entryNonFlickerPanel.Controls.Add(this.labelDescription);
+            this.entryNonFlickerPanel.Controls.Add(this.labelContinue);
+            this.entryNonFlickerPanel.Controls.Add(this.labelBillable);
+            this.entryNonFlickerPanel.Controls.Add(this.labelTag);
+            this.entryNonFlickerPanel.Controls.Add(this.labelDuration);
+            this.entryNonFlickerPanel.Controls.Add(this.labelProject);
+            this.entryNonFlickerPanel.Location = new System.Drawing.Point(0, 0);
+            this.entryNonFlickerPanel.Name = "entryNonFlickerPanel";
+            this.entryNonFlickerPanel.Size = new System.Drawing.Size(314, 50);
+            this.entryNonFlickerPanel.TabIndex = 7;
+            // 
             // TimeEntryCell
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.Controls.Add(this.labelContinue);
-            this.Controls.Add(this.labelTag);
-            this.Controls.Add(this.labelProject);
-            this.Controls.Add(this.labelDuration);
-            this.Controls.Add(this.labelDescription);
-            this.Controls.Add(this.labelBillable);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
+            this.Controls.Add(this.entryNonFlickerPanel);
             this.Name = "TimeEntryCell";
-            this.Size = new System.Drawing.Size(314, 50);
+            this.Size = new System.Drawing.Size(314, 51);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TimeEntryCell_MouseClick);
+            this.entryNonFlickerPanel.ResumeLayout(false);
+            this.entryNonFlickerPanel.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -128,5 +142,6 @@
         private System.Windows.Forms.Label labelProject;
         private System.Windows.Forms.Label labelTag;
         private System.Windows.Forms.Label labelContinue;
+        private NonFlickerPanel entryNonFlickerPanel;
     }
 }
