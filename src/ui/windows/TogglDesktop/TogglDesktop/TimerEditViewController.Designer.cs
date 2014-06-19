@@ -83,7 +83,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabelProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.linkLabelProject.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(185)))), ((int)(((byte)(185)))));
-            this.linkLabelProject.Location = new System.Drawing.Point(15, 35);
+            this.linkLabelProject.Location = new System.Drawing.Point(15, 30);
             this.linkLabelProject.Name = "linkLabelProject";
             this.linkLabelProject.Size = new System.Drawing.Size(145, 20);
             this.linkLabelProject.TabIndex = 7;

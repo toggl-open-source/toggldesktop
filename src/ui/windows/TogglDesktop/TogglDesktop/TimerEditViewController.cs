@@ -33,7 +33,7 @@ namespace TogglDesktop
         private const string defaultDescription = "What are you doing?";
         private const string defaultDuration = "00:00:00";
         private const int defaultDescriptionTop = 20;
-        private const int projecttDescriptionTop = 10;
+        private const int projectDescriptionTop = 10;
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
@@ -124,7 +124,7 @@ namespace TogglDesktop
             {
                 linkLabelProject.Text = te.ProjectAndTaskLabel;
                 linkLabelProject.Visible = true;
-                descriptionTextBox.Top = projecttDescriptionTop;
+                descriptionTextBox.Top = projectDescriptionTop+1;
             }
 
             linkLabelDescription.Top = descriptionTextBox.Top-1;
@@ -266,7 +266,7 @@ namespace TogglDesktop
                         {
                             linkLabelProject.Text = item.ProjectAndTaskLabel;
                             linkLabelProject.Visible = true;
-                            descriptionTextBox.Top = projecttDescriptionTop;
+                            descriptionTextBox.Top = projectDescriptionTop;
                         }
                         else
                         {
