@@ -12,42 +12,11 @@ class TimeEntryView : public QObject
 public:
     explicit TimeEntryView(QObject *parent = 0);
 
-    static TimeEntryView *importOne(KopsikTimeEntryViewItem *view) {
-        TimeEntryView *result = new TimeEntryView();
-        result->DurationInSeconds = view->DurationInSeconds;
-        result->ProjectAndTaskLabel = view->ProjectAndTaskLabel;
-        result->Description = QString(view->Description);
-        result->ProjectLabel = QString(view->ProjectLabel);
-        result->ClientLabel = QString(view->ClientLabel);
-        result->WID = view->WID;
-        result->PID = view->PID;
-        result->TID = view->TID;
-        result->Duration = QString(view->Duration);
-        result->Color = QString(view->Color);
-        result->GUID = QString(view->GUID);
-        result->Billable = view->Billable;
-        result->Tags = QString(view->Tags);
-        result->Started = view->Started;
-        result->Ended = view->Ended;
-        result->StartTimeString = QString(view->StartTimeString);
-        result->EndTimeString = QString(view->EndTimeString);
-        result->UpdatedAt = view->UpdatedAt;
-        result->DateHeader = QString(view->DateHeader);
-        result->DateDuration = QString(view->DateDuration);
-        result->DurOnly = view->DurOnly;
-        result->IsHeader = view->IsHeader;
-        return result;
-    }
+    static TimeEntryView *importOne(KopsikTimeEntryViewItem *view);
+    static QVector<TimeEntryView *> importAll(KopsikTimeEntryViewItem *first);
 
-    static QVector<TimeEntryView *> importAll(KopsikTimeEntryViewItem *first) {
-        QVector<TimeEntryView *> result;
-        KopsikTimeEntryViewItem *view = first;
-        while (view) {
-            result.push_back(importOne(view));
-            view = static_cast<KopsikTimeEntryViewItem *>(view->Next);
-        }
-        return result;
-    }
+    const QString timeOverview();
+    const QString lastUpdate();
 
     int64_t DurationInSeconds;
     QString Description;

@@ -5,7 +5,8 @@
 
 TimeEntryEditorWidget::TimeEntryEditorWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::TimeEntryEditorWidget)
+    ui(new Ui::TimeEntryEditorWidget),
+    guid("")
 {
     ui->setupUi(this);
 
@@ -60,6 +61,27 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
         ui->addNewProject->setVisible(true);
 
         setVisible(true);
+    }
+
+    guid = view->GUID;
+
+    ui->description->setEditText(view->Description);
+    ui->project->setEditText(view->ProjectAndTaskLabel);
+    ui->start->setText(view->StartTimeString);
+    ui->stop->setText(view->EndTimeString);
+    ui->duration->setText(view->Duration);
+    ui->billable->setChecked(view->Billable);
+    ui->timeOverview->setText(view->timeOverview());
+
+    if (view->UpdatedAt)
+    {
+        ui->lastUpdate->setText(view->lastUpdate());
+        ui->lastUpdate->setVisible(true);
+    }
+    else
+    {
+        ui->lastUpdate->setVisible(false);
+        ui->lastUpdate->setText("");
     }
 }
 

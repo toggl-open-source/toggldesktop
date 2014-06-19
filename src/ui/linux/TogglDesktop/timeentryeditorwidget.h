@@ -23,6 +23,8 @@ public:
 private:
     Ui::TimeEntryEditorWidget *ui;
 
+    QString guid;
+
 private slots:
     void displayLogin(
         const bool open,

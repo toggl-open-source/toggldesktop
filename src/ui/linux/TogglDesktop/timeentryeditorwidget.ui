@@ -250,7 +250,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QLabel" name="label_4">
+       <widget class="QLabel" name="lastUpdate">
         <property name="text">
          <string>Last update: 2014.06.19 at 21:12:34</string>
         </property>

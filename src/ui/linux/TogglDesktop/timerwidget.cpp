@@ -49,7 +49,7 @@ void TimerWidget::displayRunningTimerState(
 {
     ui->start->setText("Stop");
 
-    ui->description->setCurrentText(te->Description);
+    ui->description->setEditText(te->Description);
     ui->description->setEnabled(false);
 
     ui->duration->setText(te->Duration);
@@ -73,7 +73,7 @@ void TimerWidget::displayStoppedTimerState()
 
     if (!ui->description->hasFocus())
     {
-        ui->description->setCurrentText("");
+        ui->description->setEditText("");
     }
     ui->description->setEnabled(true);
 
@@ -160,7 +160,7 @@ void TimerWidget::on_description_currentIndexChanged(int index)
     if (data.canConvert<AutocompleteView *>())
     {
         AutocompleteView *view = data.value<AutocompleteView *>();
-        ui->description->setCurrentText(view->Description);
+        ui->description->setEditText(view->Description);
         ui->project->setText(view->ProjectAndTaskLabel);
     }
 }
