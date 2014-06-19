@@ -115,3 +115,9 @@ src/ui/windows/TogglDesktop/packages
 # QT projects
 build-*-Debug
 *.pro.user
+
+# QT project specific
+src/ui/linux/TogglDesktop/TogglDesktop
+src/ui/linux/TogglDesktop/ui_*.h
+src/ui/linux/TogglDesktop/moc_*.cpp
+src/ui/linux/TogglDesktop/cacert.pem

@@ -11,16 +11,15 @@ jsondir=third_party/libjson
 GTEST_ROOT=third_party/googletest-read-only
 GMOCK_DIR=third_party/gmock-1.7.0
 
-osx_executable=./src/ui/osx/TogglDesktop/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop
-
 source_dirs=src/*.cc src/*.h src/test/* src/libkopsik/include/*.h
 
 ifeq ($(uname), Darwin)
+executable=./src/ui/osx/TogglDesktop/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop
 pocolib=$(pocodir)/lib/Darwin/x86_64/
 osname=mac
 endif
-
 ifeq ($(uname), Linux)
+executable=./src/ui/linux/TogglDesktop/TogglDesktop
 pocolib=$(pocodir)/lib/Linux/x86_64
 osname=linux
 endif
@@ -106,7 +105,7 @@ endif
 cxx=g++
 
 ifeq ($(uname), Linux)
-default: test
+default: linux
 endif
 ifeq ($(uname), Darwin)
 default: osx
@@ -117,20 +116,35 @@ clean:
 	rm -rf src/ui/osx/TogglDesktop/build && \
 	rm -rf src/libkopsik/Kopsik/build && \
 	rm -rf third_party/TFDatePicker/TFDatePicker/build && \
-	rm -rf test TogglDesktop*.dmg TogglDesktop*.tar.gz
+	rm -rf test TogglDesktop*.dmg TogglDesktop*.tar.gz && \
+	rm -rf src/ui/linux/build-TogglDesktop-Desktop-Debug && \
+	((cd src/ui/linux/TogglDesktop && make clean) || true) && \
+	rm -f src/ui/linux/TogglDesktop/TogglDesktop && \
+	rm -f src/ui/linux/TogglDesktop/cacert.pem
 
 osx: fmt_lib lint fmt_osx
 	xcodebuild -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj && \
-	!(otool -L $(osx_executable) | grep "Users" && echo "Executable should not contain hardcoded paths!")
+	!(otool -L $(executable) | grep "Users" && echo "Executable should not contain hardcoded paths!")
 
+linux: fmt_lib lint
+	cd src/ui/linux/TogglDesktop && make && \
+	cp ../../../ssl/cacert.pem .
+	
+
+ifeq ($(uname), Linux)
+run: linux
+	$(executable)
+endif
+ifeq ($(uname), Darwin)
 run: osx
-	$(osx_executable)
+	$(executable)
+endif
 
 sikuli: osx
 	(pkill TogglDesktop) || true
 	rm -rf kopsik_sikuli.db
 	rm -rf kopsik_sikuli.log
-	$(osx_executable) \
+	$(executable) \
 	--api_url http://0.0.0.0:8080 \
 	--websocket_url http://0.0.0.0:8088 \
 	--db_path kopsik_sikuli.db \

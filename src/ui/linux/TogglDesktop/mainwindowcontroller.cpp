@@ -10,6 +10,7 @@
 #include <QVBoxLayout>
 #include <QDebug>
 #include <qdesktopservices.h>
+#include <QMessageBox>
 
 #include "toggl_api.h"
 #include "errorviewcontroller.h"
@@ -25,8 +26,6 @@ MainWindowController::MainWindowController(QWidget *parent) :
     togglApi(new TogglApi())
 {
     ui->setupUi(this);
-
-    ui->mainToolBar->setVisible(false);
 
     QVBoxLayout *verticalLayout = new QVBoxLayout();
     verticalLayout->addWidget(new ErrorViewController());
@@ -85,5 +84,11 @@ void MainWindowController::showEvent(QShowEvent *event)
 {
     QMainWindow::showEvent(event);
     bool started = TogglApi::instance->startEvents();
-    Q_ASSERT(started);
+    if (!started)
+    {
+        QMessageBox(QMessageBox::Warning,
+            "Error",
+            "The application could not start. Please inspect the log file. Sorry :S",
+            QMessageBox::Ok|QMessageBox::Cancel).exec();
+    }
 }
