@@ -39,6 +39,8 @@ public:
               const bool editRunningTimeEntry,
               const QString focusedFieldName);
 
+    void viewTimeEntryList();
+
     static const QString formatDurationInSecondsHHMMSS(const int64_t duration);
 
 signals:

@@ -11,9 +11,16 @@ TimeEntryListWidget::TimeEntryListWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)), this, SLOT(displayLogin(bool,uint64_t)));
+    setVisible(false);
+
+    connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),
+            this, SLOT(displayLogin(bool,uint64_t)));
+
     connect(TogglApi::instance, SIGNAL(displayTimeEntryList(bool,QVector<TimeEntryView*>)),
             this, SLOT(displayTimeEntryList(bool,QVector<TimeEntryView*>)));
+
+    connect(TogglApi::instance, SIGNAL(displayTimeEntryEditor(bool,TimeEntryView*,QString)),
+            this, SLOT(displayTimeEntryEditor(bool,TimeEntryView*,QString)));
 }
 
 TimeEntryListWidget::~TimeEntryListWidget()
@@ -60,3 +67,13 @@ void TimeEntryListWidget::displayTimeEntryList(
     }
 }
 
+void TimeEntryListWidget::displayTimeEntryEditor(
+    const bool open,
+    TimeEntryView *view,
+    const QString focused_field_name)
+{
+    if (open)
+    {
+        setVisible(false);
+    }
+}

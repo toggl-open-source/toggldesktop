@@ -11,7 +11,11 @@ LoginWidget::LoginWidget(QWidget *parent) :
 
     setVisible(false);
 
-    connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)), this, SLOT(displayLogin(bool,uint64_t)));
+    connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),
+            this, SLOT(displayLogin(bool,uint64_t)));
+
+    connect(TogglApi::instance, SIGNAL(displayTimeEntryList(bool,QVector<TimeEntryView*>)),
+            this, SLOT(displayTimeEntryList(bool,QVector<TimeEntryView*>)));
 }
 
 LoginWidget::~LoginWidget()
@@ -27,6 +31,16 @@ void LoginWidget::displayLogin(
         setVisible(true);
     }
     if (user_id) {
+        setVisible(false);
+    }
+}
+
+void LoginWidget::displayTimeEntryList(
+    const bool open,
+    QVector<TimeEntryView *> list)
+{
+    if (open)
+    {
         setVisible(false);
     }
 }

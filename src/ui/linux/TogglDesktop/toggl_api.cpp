@@ -248,3 +248,8 @@ void TogglApi::edit(const QString guid,
                 editRunningTimeEntry,
                 focusedFieldName.toStdString().c_str());
 }
+
+void TogglApi::viewTimeEntryList()
+{
+    kopsik_view_time_entry_list(ctx);
+}

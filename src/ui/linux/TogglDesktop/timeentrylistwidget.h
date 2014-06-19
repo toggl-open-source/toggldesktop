@@ -29,6 +29,11 @@ private slots:
         const bool open,
         QVector<TimeEntryView *> list);
 
+    void displayTimeEntryEditor(
+        const bool open,
+        TimeEntryView *view,
+        const QString focused_field_name);
+
 private:
     Ui::TimeEntryListWidget *ui;
 };

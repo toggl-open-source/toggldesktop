@@ -15,6 +15,7 @@
 #include "errorviewcontroller.h"
 #include "loginwidget.h"
 #include "timeentrylistwidget.h"
+#include "timeentryeditorwidget.h"
 
 MainWindowController::MainWindowController(QWidget *parent) :
     QMainWindow(parent),
@@ -30,7 +31,8 @@ MainWindowController::MainWindowController(QWidget *parent) :
     QVBoxLayout *verticalLayout = new QVBoxLayout();
     verticalLayout->addWidget(new ErrorViewController());
     verticalLayout->addWidget(new LoginWidget());
-    verticalLayout->addWidget(new TimeEntryListWidget());;
+    verticalLayout->addWidget(new TimeEntryListWidget());
+    verticalLayout->addWidget(new TimeEntryEditorWidget());
     centralWidget()->setLayout(verticalLayout);
 
     readSettings();
