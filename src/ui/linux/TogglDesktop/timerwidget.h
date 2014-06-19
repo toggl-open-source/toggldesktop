@@ -39,9 +39,12 @@ private slots:
     void on_start_clicked();
 
     void start();
+
     void stop();
 
     void timeout();
+
+    void focusChanged(QWidget *old, QWidget *now);
 
 private:
     Ui::TimerWidget *ui;
@@ -49,6 +52,12 @@ private:
     QTimer *timer;
 
     int64_t duration;
+
+    bool projectAutocompleteNeedsUpdate;
+    QVector<AutocompleteView *> projectAutocompleteUpdate;
+
+    bool timeEntryAutocompleteNeedsUpdate;
+    QVector<AutocompleteView *> timeEntryAutocompleteUpdate;
 };
 
 #endif // TIMERWIDGET_H

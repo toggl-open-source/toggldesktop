@@ -18,8 +18,11 @@
     <widget class="QFrame" name="frame">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QLineEdit" name="description">
-        <property name="placeholderText">
+       <widget class="QComboBox" name="description">
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+        <property name="currentText">
          <string>What are you doing?</string>
         </property>
        </widget>
