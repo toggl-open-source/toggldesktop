@@ -29,31 +29,6 @@ public slots:
     void displayApp(
         const bool open);
 
-    void displayUpdate(
-        const bool open,
-        UpdateView *update);
-
-    void displayOnlineState(
-        const bool is_online);
-
-    void displayReminder(
-        const QString title,
-        const QString informative_text);
-
-    void displayTimeEntryEditor(
-        const bool open,
-        TimeEntryView *te,
-        const QString used_field_name);
-
-    void displaySettings(
-        const bool open,
-        SettingsView *settings);
-
-    void displayIdleNotification(
-        const QString since,
-        const QString duration,
-        const uint64_t started);
-
 protected:
     void closeEvent(QCloseEvent *event);
     void showEvent(QShowEvent *event);

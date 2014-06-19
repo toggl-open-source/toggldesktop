@@ -9,7 +9,8 @@ TimerWidget::TimerWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(TogglApi::instance, SIGNAL(displayStoppedTimerState()), this, SLOT(displayStoppedTimerState()));
+    connect(TogglApi::instance, SIGNAL(displayStoppedTimerState()),
+            this, SLOT(displayStoppedTimerState()));
     connect(TogglApi::instance, SIGNAL(displayRunningTimerState(TimeEntryView*)),
             this, SLOT(displayRunningTimerState(TimeEntryView*)));
 }

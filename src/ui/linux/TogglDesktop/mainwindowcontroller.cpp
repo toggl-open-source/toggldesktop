@@ -54,48 +54,6 @@ void MainWindowController::displayApp(const bool open)
     }
 }
 
-void MainWindowController::displayUpdate(
-    const bool open,
-    UpdateView *update)
-{
-
-}
-
-void MainWindowController::displayOnlineState(
-    const bool is_online)
-{
-}
-
-void MainWindowController::displayReminder(
-    const QString title,
-    const QString informative_text)
-{
-
-}
-
-void MainWindowController::displayTimeEntryEditor(
-    const bool open,
-    TimeEntryView *te,
-    const QString focused_field_name)
-{
-
-}
-
-void MainWindowController::displaySettings(
-    const bool open,
-    SettingsView *settings)
-{
-
-}
-
-void MainWindowController::displayIdleNotification(
-    const QString since,
-    const QString duration,
-    const uint64_t started)
-{
-
-}
-
 void MainWindowController::readSettings()
 {
     QSettings settings("Toggl", "TogglDesktop");
