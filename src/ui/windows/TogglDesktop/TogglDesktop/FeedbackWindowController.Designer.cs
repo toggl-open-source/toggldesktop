@@ -42,9 +42,10 @@
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.label1.Location = new System.Drawing.Point(12, 15);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(186, 13);
+            this.label1.Size = new System.Drawing.Size(207, 15);
             this.label1.TabIndex = 0;
             this.label1.Text = "Send us your feedback and questions";
             // 
@@ -53,15 +54,16 @@
             this.comboBoxTopic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxTopic.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTopic.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.comboBoxTopic.FormattingEnabled = true;
             this.comboBoxTopic.Items.AddRange(new object[] {
             "- Please specify a topic -",
             "Bug report",
             "Feature request",
             "Other"});
-            this.comboBoxTopic.Location = new System.Drawing.Point(15, 25);
+            this.comboBoxTopic.Location = new System.Drawing.Point(15, 40);
             this.comboBoxTopic.Name = "comboBoxTopic";
-            this.comboBoxTopic.Size = new System.Drawing.Size(257, 21);
+            this.comboBoxTopic.Size = new System.Drawing.Size(257, 23);
             this.comboBoxTopic.TabIndex = 1;
             // 
             // richTextBoxContents
@@ -69,18 +71,20 @@
             this.richTextBoxContents.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.richTextBoxContents.Location = new System.Drawing.Point(15, 52);
+            this.richTextBoxContents.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.richTextBoxContents.Location = new System.Drawing.Point(15, 73);
             this.richTextBoxContents.Name = "richTextBoxContents";
-            this.richTextBoxContents.Size = new System.Drawing.Size(257, 155);
+            this.richTextBoxContents.Size = new System.Drawing.Size(257, 135);
             this.richTextBoxContents.TabIndex = 2;
             this.richTextBoxContents.Text = "";
             // 
             // buttonUploadImage
             // 
             this.buttonUploadImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonUploadImage.Location = new System.Drawing.Point(190, 213);
+            this.buttonUploadImage.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.buttonUploadImage.Location = new System.Drawing.Point(182, 218);
             this.buttonUploadImage.Name = "buttonUploadImage";
-            this.buttonUploadImage.Size = new System.Drawing.Size(82, 23);
+            this.buttonUploadImage.Size = new System.Drawing.Size(90, 23);
             this.buttonUploadImage.TabIndex = 3;
             this.buttonUploadImage.Text = "Upload image";
             this.buttonUploadImage.UseVisualStyleBackColor = true;
@@ -89,9 +93,10 @@
             // buttonSend
             // 
             this.buttonSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSend.Location = new System.Drawing.Point(190, 242);
+            this.buttonSend.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.buttonSend.Location = new System.Drawing.Point(182, 251);
             this.buttonSend.Name = "buttonSend";
-            this.buttonSend.Size = new System.Drawing.Size(82, 23);
+            this.buttonSend.Size = new System.Drawing.Size(90, 23);
             this.buttonSend.TabIndex = 4;
             this.buttonSend.Text = "Send";
             this.buttonSend.UseVisualStyleBackColor = true;
@@ -105,7 +110,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 278);
+            this.ClientSize = new System.Drawing.Size(284, 282);
             this.Controls.Add(this.buttonSend);
             this.Controls.Add(this.buttonUploadImage);
             this.Controls.Add(this.richTextBoxContents);

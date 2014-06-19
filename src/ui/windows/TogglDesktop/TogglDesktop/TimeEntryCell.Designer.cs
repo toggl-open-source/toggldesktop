@@ -49,9 +49,10 @@
             // 
             this.labelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelDescription.Location = new System.Drawing.Point(15, 10);
             this.labelDescription.Name = "labelDescription";
-            this.labelDescription.Size = new System.Drawing.Size(170, 13);
+            this.labelDescription.Size = new System.Drawing.Size(170, 17);
             this.labelDescription.TabIndex = 1;
             this.labelDescription.Text = "Blogpost about new stuff in Toggl...";
             this.labelDescription.Click += new System.EventHandler(this.labelDescription_Click);
@@ -60,9 +61,10 @@
             // 
             this.labelDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelDuration.AutoSize = true;
+            this.labelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelDuration.Location = new System.Drawing.Point(250, 18);
             this.labelDuration.Name = "labelDuration";
-            this.labelDuration.Size = new System.Drawing.Size(49, 13);
+            this.labelDuration.Size = new System.Drawing.Size(64, 16);
             this.labelDuration.TabIndex = 3;
             this.labelDuration.Text = "03:21:30";
             this.labelDuration.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -72,10 +74,10 @@
             // 
             this.labelProject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelProject.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
+            this.labelProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelProject.Location = new System.Drawing.Point(15, 27);
             this.labelProject.Name = "labelProject";
-            this.labelProject.Size = new System.Drawing.Size(170, 13);
+            this.labelProject.Size = new System.Drawing.Size(170, 17);
             this.labelProject.TabIndex = 4;
             this.labelProject.Text = "NEW PROJECT - TOGGL CLIENT";
             this.labelProject.Click += new System.EventHandler(this.labelProject_Click);

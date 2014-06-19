@@ -39,9 +39,10 @@
             // 
             this.labelIdleSince.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.labelIdleSince.AutoSize = true;
-            this.labelIdleSince.Location = new System.Drawing.Point(12, 9);
+            this.labelIdleSince.Font = new System.Drawing.Font("Lucida Sans Unicode", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.labelIdleSince.Location = new System.Drawing.Point(5, 15);
             this.labelIdleSince.Name = "labelIdleSince";
-            this.labelIdleSince.Size = new System.Drawing.Size(172, 13);
+            this.labelIdleSince.Size = new System.Drawing.Size(189, 15);
             this.labelIdleSince.TabIndex = 0;
             this.labelIdleSince.Text = "You have been idle since 12:34:56";
             // 
@@ -49,15 +50,17 @@
             // 
             this.labelIdleDuration.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.labelIdleDuration.AutoSize = true;
-            this.labelIdleDuration.Location = new System.Drawing.Point(68, 38);
+            this.labelIdleDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.labelIdleDuration.Location = new System.Drawing.Point(68, 40);
             this.labelIdleDuration.Name = "labelIdleDuration";
-            this.labelIdleDuration.Size = new System.Drawing.Size(58, 13);
+            this.labelIdleDuration.Size = new System.Drawing.Size(69, 15);
             this.labelIdleDuration.TabIndex = 1;
             this.labelIdleDuration.Text = "(5 minutes)";
             // 
             // buttonKeepTime
             // 
-            this.buttonKeepTime.Location = new System.Drawing.Point(15, 71);
+            this.buttonKeepTime.Font = new System.Drawing.Font("Lucida Sans Unicode", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.buttonKeepTime.Location = new System.Drawing.Point(15, 75);
             this.buttonKeepTime.Name = "buttonKeepTime";
             this.buttonKeepTime.Size = new System.Drawing.Size(75, 23);
             this.buttonKeepTime.TabIndex = 2;
@@ -69,7 +72,8 @@
             // 
             this.buttonDiscardTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonDiscardTime.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonDiscardTime.Location = new System.Drawing.Point(109, 71);
+            this.buttonDiscardTime.Font = new System.Drawing.Font("Lucida Sans Unicode", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.buttonDiscardTime.Location = new System.Drawing.Point(109, 75);
             this.buttonDiscardTime.Name = "buttonDiscardTime";
             this.buttonDiscardTime.Size = new System.Drawing.Size(75, 23);
             this.buttonDiscardTime.TabIndex = 3;

@@ -44,10 +44,10 @@
             // 
             this.labelProject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelProject.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
+            this.labelProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelProject.Location = new System.Drawing.Point(15, 77);
             this.labelProject.Name = "labelProject";
-            this.labelProject.Size = new System.Drawing.Size(170, 13);
+            this.labelProject.Size = new System.Drawing.Size(170, 17);
             this.labelProject.TabIndex = 9;
             this.labelProject.Text = "NEW - TOGGL";
             this.labelProject.Click += new System.EventHandler(this.labelProject_Click);
@@ -56,9 +56,10 @@
             // 
             this.labelDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelDuration.AutoSize = true;
+            this.labelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelDuration.Location = new System.Drawing.Point(250, 68);
             this.labelDuration.Name = "labelDuration";
-            this.labelDuration.Size = new System.Drawing.Size(49, 13);
+            this.labelDuration.Size = new System.Drawing.Size(64, 16);
             this.labelDuration.TabIndex = 8;
             this.labelDuration.Text = "03:21:30";
             this.labelDuration.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -68,9 +69,10 @@
             // 
             this.labelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelDescription.Location = new System.Drawing.Point(15, 60);
             this.labelDescription.Name = "labelDescription";
-            this.labelDescription.Size = new System.Drawing.Size(170, 13);
+            this.labelDescription.Size = new System.Drawing.Size(170, 17);
             this.labelDescription.TabIndex = 6;
             this.labelDescription.Text = "Blogpost about ne...";
             this.labelDescription.Click += new System.EventHandler(this.labelDescription_Click);
@@ -87,18 +89,18 @@
             // labelFormattedDate
             // 
             this.labelFormattedDate.AutoSize = true;
-            this.labelFormattedDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
+            this.labelFormattedDate.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelFormattedDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
             this.labelFormattedDate.Location = new System.Drawing.Point(15, 13);
             this.labelFormattedDate.Name = "labelFormattedDate";
-            this.labelFormattedDate.Size = new System.Drawing.Size(75, 13);
+            this.labelFormattedDate.Size = new System.Drawing.Size(67, 15);
             this.labelFormattedDate.TabIndex = 10;
             this.labelFormattedDate.Text = "Thu 22. Jan";
             // 
             // labelDateDuration
             // 
             this.labelDateDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelDateDuration.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
+            this.labelDateDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelDateDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
             this.labelDateDuration.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.labelDateDuration.Location = new System.Drawing.Point(220, 13);

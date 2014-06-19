@@ -65,14 +65,14 @@
             this.troubleBox.Controls.Add(this.errorLabel);
             this.troubleBox.Location = new System.Drawing.Point(0, 0);
             this.troubleBox.Name = "troubleBox";
-            this.troubleBox.Size = new System.Drawing.Size(298, 30);
+            this.troubleBox.Size = new System.Drawing.Size(299, 30);
             this.troubleBox.TabIndex = 5;
             this.troubleBox.Visible = false;
             // 
             // buttonDismissError
             // 
             this.buttonDismissError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDismissError.Location = new System.Drawing.Point(279, 4);
+            this.buttonDismissError.Location = new System.Drawing.Point(280, 4);
             this.buttonDismissError.Name = "buttonDismissError";
             this.buttonDismissError.Size = new System.Drawing.Size(16, 23);
             this.buttonDismissError.TabIndex = 6;
@@ -83,9 +83,10 @@
             // errorLabel
             // 
             this.errorLabel.AutoSize = true;
+            this.errorLabel.Font = new System.Drawing.Font("Lucida Sans Unicode", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.errorLabel.Location = new System.Drawing.Point(3, 9);
             this.errorLabel.Name = "errorLabel";
-            this.errorLabel.Size = new System.Drawing.Size(64, 13);
+            this.errorLabel.Size = new System.Drawing.Size(78, 16);
             this.errorLabel.TabIndex = 5;
             this.errorLabel.Text = "Login failed!";
             // 
