@@ -30,7 +30,7 @@
         {
             this.panelHeader = new System.Windows.Forms.Panel();
             this.timerEditViewController = new TogglDesktop.TimerEditViewController();
-            this.EntriesList = new NonFlickerPanel();
+            this.EntriesList = new TogglDesktop.NonFlickerPanel();
             this.panelHeader.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,7 +49,7 @@
             // 
             this.timerEditViewController.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.timerEditViewController.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
+            this.timerEditViewController.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
             this.timerEditViewController.Location = new System.Drawing.Point(0, 0);
             this.timerEditViewController.Margin = new System.Windows.Forms.Padding(0);
             this.timerEditViewController.Name = "timerEditViewController";
@@ -73,6 +73,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.Controls.Add(this.EntriesList);
             this.Controls.Add(this.panelHeader);
             this.Margin = new System.Windows.Forms.Padding(0);
