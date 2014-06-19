@@ -56,7 +56,13 @@ sudo apt-get install xorg-dev
 sudo apt-get install qtcreator
 ```
 
-Then open and build the project src\ui\linux\TogglDesktop\TogglDesktop.pro in QT Creator.
+Build dependencies:
+```
+make deps
+```
+
+Then open and build the project *src\ui\linux\TogglDesktop\TogglDesktop.pro* in QT Creator.
+
 
 Tests
 -----
@@ -64,3 +70,4 @@ Tests
 make test
 ```
 
+GUI tests will be implemented with [Sikuli](http://www.sikuli.org/), using image recognition.
