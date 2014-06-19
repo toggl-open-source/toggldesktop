@@ -305,7 +305,7 @@ namespace TogglDesktop
             TogglDesktop.Program.Shutdown(0);
         }
 
-        private void trayIcon_DoubleClick(object sender, EventArgs e)
+        private void toggleVisibility()
         {
             if (this.Visible)
             {
@@ -426,6 +426,14 @@ namespace TogglDesktop
             }
 
             KopsikApi.SetIdleSeconds((ulong)idle_seconds);
+        }
+
+        private void trayIcon_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                toggleVisibility();
+            }
         }
     }
 }
