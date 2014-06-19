@@ -50,7 +50,11 @@ void TimerWidget::displayRunningTimerState(
     ui->start->setText("Stop");
 
     ui->description->setCurrentText(te->Description);
+    ui->description->setEnabled(false);
+
     ui->duration->setText(te->Duration);
+    ui->duration->setEnabled(false);
+
     ui->project->setText(te->ProjectAndTaskLabel);
 
     duration = te->DurationInSeconds;
@@ -71,11 +75,14 @@ void TimerWidget::displayStoppedTimerState()
     {
         ui->description->setCurrentText("");
     }
+    ui->description->setEnabled(true);
+
     if (!ui->duration->hasFocus())
     {
         ui->duration->setText("");
-
     }
+    ui->duration->setEnabled(true);
+
     ui->project->setText("");
 
     duration = 0;
