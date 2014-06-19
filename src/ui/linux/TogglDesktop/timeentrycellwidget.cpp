@@ -29,6 +29,12 @@ TimeEntryCellWidget::~TimeEntryCellWidget()
     delete ui;
 }
 
+void TimeEntryCellWidget::mousePressEvent(QMouseEvent *event)
+{
+    TogglApi::instance->edit(guid, false, "");
+    QWidget::mousePressEvent(event);
+}
+
 void TimeEntryCellWidget::on_continueButton_clicked()
 {
     TogglApi::instance->continueTimeEntry(guid);

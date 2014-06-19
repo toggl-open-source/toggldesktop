@@ -17,6 +17,9 @@ public:
     explicit TimeEntryCellWidget(TimeEntryView *view);
     ~TimeEntryCellWidget();
 
+protected:
+    virtual void mousePressEvent(QMouseEvent *event);
+
 private slots:
     void on_continueButton_clicked();
 

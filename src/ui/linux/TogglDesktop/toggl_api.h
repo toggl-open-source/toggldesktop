@@ -35,6 +35,10 @@ public:
 
     bool continueTimeEntry(const QString guid);
 
+    void edit(const QString guid,
+              const bool editRunningTimeEntry,
+              const QString focusedFieldName);
+
     static const QString formatDurationInSecondsHHMMSS(const int64_t duration);
 
 signals:
