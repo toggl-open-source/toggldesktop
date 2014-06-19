@@ -45,6 +45,8 @@ private slots:
 
     void on_description_editTextChanged(const QString &arg1);
 
+    void on_description_currentIndexChanged(int index);
+
 private:
     Ui::TimerWidget *ui;
 

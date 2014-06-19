@@ -15,7 +15,8 @@ public:
     static TimeEntryView *importOne(KopsikTimeEntryViewItem *view) {
         TimeEntryView *result = new TimeEntryView();
         result->DurationInSeconds = view->DurationInSeconds;
-        result->Description = QString(view->ProjectAndTaskLabel);
+        result->ProjectAndTaskLabel = view->ProjectAndTaskLabel;
+        result->Description = QString(view->Description);
         result->ProjectLabel = QString(view->ProjectLabel);
         result->ClientLabel = QString(view->ClientLabel);
         result->WID = view->WID;

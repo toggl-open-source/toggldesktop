@@ -95,10 +95,19 @@ void TimerWidget::on_start_clicked()
 
 void TimerWidget::start()
 {
+    uint64_t task_id(0);
+    uint64_t project_id(0);
+    QVariant data = ui->description->currentData();
+    if (data.canConvert<AutocompleteView *>())
+    {
+        AutocompleteView *view = data.value<AutocompleteView *>();
+        task_id = view->TaskID;
+        project_id = view->ProjectID;
+    }
     TogglApi::instance->start(ui->description->currentText(),
                               ui->duration->text(),
-                              0, // FIXME: task_id
-                              0); // FIXME: project_id
+                              task_id,
+                              project_id);
 }
 
 void TimerWidget::stop()
@@ -136,4 +145,15 @@ void TimerWidget::timeout()
 void TimerWidget::on_description_editTextChanged(const QString &arg1)
 {
 
+}
+
+void TimerWidget::on_description_currentIndexChanged(int index)
+{
+    QVariant data = ui->description->currentData();
+    if (data.canConvert<AutocompleteView *>())
+    {
+        AutocompleteView *view = data.value<AutocompleteView *>();
+        ui->description->setCurrentText(view->Description);
+        ui->project->setText(view->ProjectAndTaskLabel);
+    }
 }
