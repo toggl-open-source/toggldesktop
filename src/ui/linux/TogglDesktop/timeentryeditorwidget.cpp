@@ -53,6 +53,12 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
 {
     if (open)
     {
+        ui->timeDetails->setVisible(false);
+        ui->timeOverview->setVisible(true);
+
+        ui->newProject->setVisible(false);
+        ui->addNewProject->setVisible(true);
+
         setVisible(true);
     }
 }
