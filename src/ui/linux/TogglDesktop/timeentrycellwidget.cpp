@@ -18,6 +18,10 @@ TimeEntryCellWidget::TimeEntryCellWidget(TimeEntryView *view) :
 
     ui->billable->setVisible(view->Billable);
     ui->tags->setVisible(!view->Tags.isEmpty());
+
+    ui->header->setVisible(view->IsHeader);
+    ui->date->setText(view->DateHeader);
+    ui->dateDuration->setText(view->DateDuration);
 }
 
 TimeEntryCellWidget::~TimeEntryCellWidget()
