@@ -77,13 +77,17 @@ namespace TogglDesktop
             }
 
             timeEntry = te;
-            if (!open || GUID == te.GUID)
+            if (!open)
+            {
+                return;
+            }
+            resetForms();
+            if (GUID == te.GUID)
             {
                 return;
             }
             GUID = te.GUID;
 
-            resetForms();
             Boolean can_see_billable = false;
             if (!KopsikApi.CanUserSeeBillableFlag(GUID, ref can_see_billable))
             {
