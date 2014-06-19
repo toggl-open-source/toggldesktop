@@ -9,6 +9,7 @@
 
 #include "toggl_api.h"
 #include "loginwidget.h"
+#include "timeentrylistwidget.h"
 
 namespace Ui {
 class MainWindowController;
@@ -35,20 +36,9 @@ public slots:
     void displayOnlineState(
         const bool is_online);
 
-    void displayUrl(
-        const QUrl url);
-
-    void displayLogin(
-        const bool open,
-        const uint64_t user_id);
-
     void displayReminder(
         const QString title,
         const QString informative_text);
-
-    void displayTimeEntryList(
-        const bool open,
-        QVector<TimeEntryView *> list);
 
     void displayTimeEntryEditor(
         const bool open,
@@ -58,11 +48,6 @@ public slots:
     void displaySettings(
         const bool open,
         SettingsView *settings);
-
-    void displayStoppedTimerState();
-
-    void displayRunningTimerState(
-        TimeEntryView *te);
 
     void displayIdleNotification(
         const QString since,
@@ -78,8 +63,6 @@ private:
     void *ctx_;
     bool shutdown_;
     TogglApi *togglApi;
-    QStackedWidget *stackedWidget;
-    LoginWidget *loginWidget;
 
     void readSettings();
     void writeSettings();

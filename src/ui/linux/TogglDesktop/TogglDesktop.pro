@@ -26,7 +26,9 @@ SOURCES += main.cpp\
     ../../../../third_party/qt-solutions/qtsingleapplication/src/qtlockedfile_win.cpp \
     ../../../../third_party/qt-solutions/qtsingleapplication/src/qtsingleapplication.cpp \
     ../../../../third_party/qt-solutions/qtsingleapplication/src/qtsinglecoreapplication.cpp \
-    loginwidget.cpp
+    loginwidget.cpp \
+    timeentrylistwidget.cpp \
+    timerwidget.cpp
 
 HEADERS  += \
     updateview.h \
@@ -45,12 +47,16 @@ HEADERS  += \
     loginviewcontroller.h \
     loginwidget.h \
     errorviewcontroller.h \
-    ../../../libkopsik/include/kopsik_api.h
+    ../../../libkopsik/include/kopsik_api.h \
+    timeentrylistwidget.h \
+    timerwidget.h
 
 FORMS    += \
     mainwindowcontroller.ui \
     errorviewcontroller.ui \
-    loginwidget.ui
+    loginwidget.ui \
+    timeentrylistwidget.ui \
+    timerwidget.ui
 
 QMAKE_RPATHDIR += $$PWD/../../../libkopsik/Library/build-TogglDesktopLibrary-Desktop-Debug
 

@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include <stdint.h>
+
 namespace Ui {
 class LoginWidget;
 }
@@ -17,6 +19,9 @@ public:
 
 private slots:
     void on_login_clicked();
+    void displayLogin(
+        const bool open,
+        const uint64_t user_id);
 
 private:
     Ui::LoginWidget *ui;

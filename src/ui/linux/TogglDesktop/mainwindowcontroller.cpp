@@ -14,32 +14,28 @@
 #include "toggl_api.h"
 #include "errorviewcontroller.h"
 #include "loginwidget.h"
+#include "timeentrylistwidget.h"
 
 MainWindowController::MainWindowController(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindowController),
     ctx_(0),
     shutdown_(false),
-    togglApi(new TogglApi()),
-    stackedWidget(0),
-    loginWidget(0)
+    togglApi(new TogglApi())
 {
     ui->setupUi(this);
 
     ui->mainToolBar->setVisible(false);
 
-    loginWidget = new LoginWidget();
-
     QVBoxLayout *verticalLayout = new QVBoxLayout();
     verticalLayout->addWidget(new ErrorViewController());
-    verticalLayout->addWidget(loginWidget);
+    verticalLayout->addWidget(new LoginWidget());
+    verticalLayout->addWidget(new TimeEntryListWidget());;
     centralWidget()->setLayout(verticalLayout);
 
     readSettings();
 
     connect(TogglApi::instance, SIGNAL(displayApp(bool)), this, SLOT(displayApp(bool)));
-    connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)), this, SLOT(displayLogin(bool,uint64_t)));
-    connect(TogglApi::instance, SIGNAL(displayUrl(QUrl)), this, SLOT(displayUrl(QUrl)));
 }
 
 MainWindowController::~MainWindowController()
@@ -70,34 +66,9 @@ void MainWindowController::displayOnlineState(
 {
 }
 
-void MainWindowController::displayUrl(
-    const QUrl url)
-{
-    QDesktopServices::openUrl(url);
-}
-
-void MainWindowController::displayLogin(
-        const bool open,
-        const uint64_t user_id)
-{
-    if (open) {
-        loginWidget->setVisible(true);
-    }
-    if (user_id) {
-        loginWidget->setVisible(false);
-    }
-}
-
 void MainWindowController::displayReminder(
     const QString title,
     const QString informative_text)
-{
-
-}
-
-void MainWindowController::displayTimeEntryList(
-    const bool open,
-    QVector<TimeEntryView *> list)
 {
 
 }
@@ -113,17 +84,6 @@ void MainWindowController::displayTimeEntryEditor(
 void MainWindowController::displaySettings(
     const bool open,
     SettingsView *settings)
-{
-
-}
-
-void MainWindowController::displayRunningTimerState(
-    TimeEntryView *te)
-{
-
-}
-
-void MainWindowController::displayStoppedTimerState()
 {
 
 }

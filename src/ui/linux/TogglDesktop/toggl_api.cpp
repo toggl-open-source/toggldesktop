@@ -5,10 +5,7 @@
 #include <QStandardPaths>
 #include <QDir>
 #include <QCoreApplication>
-#include <QSettings>
-#include <QCloseEvent>
-#include <QMetaObject>
-#include <QMessageBox>
+#include <QDesktopServices>
 
 #include "kopsik_api.h"
 
@@ -48,7 +45,7 @@ void on_display_online_state(
 void on_display_url(
     const char *url)
 {
-    TogglApi::instance->displayUrl(QUrl(url));
+    QDesktopServices::openUrl(QUrl(url));
 }
 
 void on_display_login(
@@ -200,10 +197,30 @@ TogglApi::TogglApi(QObject *parent) :
     instance = this;
 }
 
-bool TogglApi::startEvents() {
+bool TogglApi::startEvents()
+{
     return kopsik_context_start_events(ctx);
 }
 
-void TogglApi::login(const QString email, const QString password) {
+void TogglApi::login(const QString email, const QString password)
+{
     kopsik_login(ctx, email.toStdString().c_str(), password.toStdString().c_str());
+}
+
+bool TogglApi::start(
+    const QString description,
+    const QString duration,
+    const uint64_t task_id,
+    const uint64_t project_id)
+{
+    return kopsik_start(ctx,
+                       description.toStdString().c_str(),
+                       duration.toStdString().c_str(),
+                       task_id,
+                       project_id);
+}
+
+bool TogglApi::stop()
+{
+    return kopsik_stop(ctx);
 }

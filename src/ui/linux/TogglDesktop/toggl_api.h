@@ -25,6 +25,14 @@ public:
 
     void login(const QString email, const QString password);
 
+    bool start(
+        const QString description,
+        const QString duration,
+        const uint64_t task_id,
+        const uint64_t project_id);
+
+    bool stop();
+
 signals:
     void displayApp(const bool open);
 
@@ -38,9 +46,6 @@ signals:
 
     void displayOnlineState(
         const bool is_online);
-
-    void displayUrl(
-        const QUrl url);
 
     void displayLogin(
         const bool open,
