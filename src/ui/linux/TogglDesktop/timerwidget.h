@@ -33,9 +33,6 @@ private slots:
     void displayTimeEntryAutocomplete(
         QVector<AutocompleteView *> list);
 
-    void displayProjectAutocomplete(
-        QVector<AutocompleteView *> list);
-
     void on_start_clicked();
 
     void start();
@@ -46,15 +43,14 @@ private slots:
 
     void focusChanged(QWidget *old, QWidget *now);
 
+    void on_description_editTextChanged(const QString &arg1);
+
 private:
     Ui::TimerWidget *ui;
 
     QTimer *timer;
 
     int64_t duration;
-
-    bool projectAutocompleteNeedsUpdate;
-    QVector<AutocompleteView *> projectAutocompleteUpdate;
 
     bool timeEntryAutocompleteNeedsUpdate;
     QVector<AutocompleteView *> timeEntryAutocompleteUpdate;

@@ -28,9 +28,9 @@
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="project">
-        <property name="editable">
-         <bool>true</bool>
+       <widget class="QLabel" name="project">
+        <property name="text">
+         <string>NEW TOGGL</string>
         </property>
        </widget>
       </item>

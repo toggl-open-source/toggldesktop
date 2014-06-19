@@ -10,7 +10,6 @@ TimerWidget::TimerWidget(QWidget *parent) :
     ui(new Ui::TimerWidget),
     timer(0),
     duration(0),
-    projectAutocompleteNeedsUpdate(false),
     timeEntryAutocompleteNeedsUpdate(false)
 {
     ui->setupUi(this);
@@ -22,8 +21,6 @@ TimerWidget::TimerWidget(QWidget *parent) :
 
     connect(TogglApi::instance, SIGNAL(displayTimeEntryAutocomplete(QVector<AutocompleteView*>)),
             this, SLOT(displayTimeEntryAutocomplete(QVector<AutocompleteView*>)));
-    connect(TogglApi::instance, SIGNAL(displayProjectAutocomplete(QVector<AutocompleteView*>)),
-            this, SLOT(displayProjectAutocomplete(QVector<AutocompleteView*>)));
 
     connect(qApp, SIGNAL(focusChanged(QWidget*,QWidget*)),
             this, SLOT(focusChanged(QWidget*,QWidget*)));
@@ -41,17 +38,9 @@ TimerWidget::~TimerWidget()
 
 void TimerWidget::focusChanged(QWidget *old, QWidget *now)
 {
-    if (!old)
-    {
-        return;
-    }
     if (old == ui->description && timeEntryAutocompleteNeedsUpdate)
     {
         displayTimeEntryAutocomplete(timeEntryAutocompleteUpdate);
-    }
-    if (old == ui->project && projectAutocompleteNeedsUpdate)
-    {
-        displayProjectAutocomplete(projectAutocompleteUpdate);
     }
 }
 
@@ -62,7 +51,7 @@ void TimerWidget::displayRunningTimerState(
 
     ui->description->setCurrentText(te->Description);
     ui->duration->setText(te->Duration);
-    ui->project->setCurrentText(te->ProjectAndTaskLabel);
+    ui->project->setText(te->ProjectAndTaskLabel);
 
     duration = te->DurationInSeconds;
 
@@ -87,10 +76,7 @@ void TimerWidget::displayStoppedTimerState()
         ui->duration->setText("");
 
     }
-    if (!ui->project->hasFocus())
-    {
-        ui->project->setCurrentText("");
-    }
+    ui->project->setText("");
 
     duration = 0;
 
@@ -138,24 +124,6 @@ void TimerWidget::displayTimeEntryAutocomplete(
     timeEntryAutocompleteNeedsUpdate = false;
 }
 
-void TimerWidget::displayProjectAutocomplete(
-    QVector<AutocompleteView *> list)
-{
-    projectAutocompleteUpdate = list;
-    projectAutocompleteNeedsUpdate = true;
-    if (ui->project->hasFocus())
-    {
-        return;
-    }
-    ui->project->clear();
-    ui->project->addItem("");
-    foreach(AutocompleteView *view, list)
-    {
-        ui->project->addItem(view->Text, QVariant::fromValue(view));
-    }
-    projectAutocompleteNeedsUpdate = false;
-}
-
 void TimerWidget::timeout()
 {
     if (duration >= 0)
@@ -163,4 +131,9 @@ void TimerWidget::timeout()
         return;
     }
     ui->duration->setText(TogglApi::formatDurationInSecondsHHMMSS(duration));
+}
+
+void TimerWidget::on_description_editTextChanged(const QString &arg1)
+{
+
 }
