@@ -215,7 +215,7 @@ error WebSocketClient::poll() {
         }
         std::stringstream ss;
         ss << "WebSocket message: " << json;
-        logger().debug(ss.str());
+        logger().trace(ss.str());
 
         last_connection_at_ = time(0);
 
