@@ -177,12 +177,30 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
 
     guid = view->GUID;
 
-    ui->description->setEditText(view->Description);
-    ui->project->setEditText(view->ProjectAndTaskLabel);
-    ui->start->setText(view->StartTimeString);
-    ui->stop->setText(view->EndTimeString);
-    ui->dateEdit->setDateTime(QDateTime::fromTime_t(view->Started));
-    ui->duration->setText(view->Duration);
+    if (!ui->description->hasFocus())
+    {
+        ui->description->setEditText(view->Description);
+    }
+    if (!ui->project->hasFocus())
+    {
+        ui->project->setEditText(view->ProjectAndTaskLabel);
+    }
+    if (!ui->start->hasFocus())
+    {
+        ui->start->setText(view->StartTimeString);
+    }
+    if (!ui->stop->hasFocus())
+    {
+        ui->stop->setText(view->EndTimeString);
+    }
+    if (!ui->dateEdit->hasFocus())
+    {
+        ui->dateEdit->setDateTime(QDateTime::fromTime_t(view->Started));
+    }
+    if (!ui->duration->hasFocus())
+    {
+        ui->duration->setText(view->Duration);
+    }
     ui->billable->setChecked(view->Billable);
     ui->timeOverview->setText("<a href=\"#view_time_details\">" + view->timeOverview() + "</a>");
 
