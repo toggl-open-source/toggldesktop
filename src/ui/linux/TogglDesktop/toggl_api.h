@@ -37,8 +37,10 @@ public:
 
     bool continueTimeEntry(const QString guid);
 
-    void edit(const QString guid,
-              const bool editRunningTimeEntry,
+    void editTimeEntry(const QString guid,
+              const QString focusedFieldName);
+
+    void editRunningTimeEntry(
               const QString focusedFieldName);
 
     void viewTimeEntryList();

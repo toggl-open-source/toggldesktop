@@ -164,3 +164,9 @@ void TimerWidget::on_description_currentIndexChanged(int index)
         ui->project->setText(view->ProjectAndTaskLabel);
     }
 }
+
+void TimerWidget::mousePressEvent(QMouseEvent *event)
+{
+    TogglApi::instance->editRunningTimeEntry("");
+    QWidget::mousePressEvent(event);
+}

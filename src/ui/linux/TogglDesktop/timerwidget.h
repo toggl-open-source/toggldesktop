@@ -24,6 +24,9 @@ public:
 signals:
     void buttonClicked();
 
+protected:
+    void mousePressEvent(QMouseEvent *event);
+
 private slots:
     void displayStoppedTimerState();
 

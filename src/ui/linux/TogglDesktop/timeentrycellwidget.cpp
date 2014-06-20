@@ -31,7 +31,7 @@ TimeEntryCellWidget::~TimeEntryCellWidget()
 
 void TimeEntryCellWidget::mousePressEvent(QMouseEvent *event)
 {
-    TogglApi::instance->edit(guid, false, "");
+    TogglApi::instance->editTimeEntry(guid, "");
     QWidget::mousePressEvent(event);
 }
 

@@ -240,12 +240,21 @@ bool TogglApi::continueTimeEntry(const QString guid)
     return kopsik_continue(ctx, guid.toStdString().c_str());
 }
 
-void TogglApi::edit(const QString guid,
-                    const bool editRunningTimeEntry,
+void TogglApi::editTimeEntry(const QString guid,
                     const QString focusedFieldName)
 {
-    kopsik_edit(ctx, guid.toStdString().c_str(),
-                editRunningTimeEntry,
+    kopsik_edit(ctx,
+                guid.toStdString().c_str(),
+                false,
+                focusedFieldName.toStdString().c_str());
+}
+
+void TogglApi::editRunningTimeEntry(
+                    const QString focusedFieldName)
+{
+    kopsik_edit(ctx,
+                "",
+                true,
                 focusedFieldName.toStdString().c_str());
 }
 
