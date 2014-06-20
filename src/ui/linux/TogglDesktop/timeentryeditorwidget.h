@@ -73,6 +73,7 @@ private slots:
     void on_deleteButton_clicked();
     void on_addNewProject_linkActivated(const QString &link);
     void on_timeOverview_linkActivated(const QString &link);
+    void on_newProjectWorkspace_currentIndexChanged(int index);
 };
 
 #endif // TIMEENTRYEDITORWIDGET_H

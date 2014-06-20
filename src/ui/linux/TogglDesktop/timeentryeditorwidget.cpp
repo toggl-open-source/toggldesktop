@@ -65,14 +65,25 @@ void TimeEntryEditorWidget::displayClientSelect(
     {
         return;
     }
+
+    u_int64_t workspaceID = 0;
+    QVariant data = ui->newProjectWorkspace->currentData();
+    if (data.canConvert<GenericView *>())
+    {
+        GenericView *view = data.value<GenericView *>();
+        workspaceID = view->ID;
+    }
     ui->newProjectClient->clear();
     ui->newProjectClient->addItem("");
     foreach(GenericView *view, clientSelectUpdate)
     {
+        if (workspaceID && workspaceID != view->WID)
+        {
+            continue;
+        }
         ui->newProjectClient->addItem(view->Name, QVariant::fromValue(view));
     }
     clientSelectNeedsUpdate = false;
-
 }
 
 void TimeEntryEditorWidget::displayTimeEntryAutocomplete(
@@ -205,4 +216,9 @@ void TimeEntryEditorWidget::on_timeOverview_linkActivated(const QString &link)
 {
     ui->timeOverview->setVisible(false);
     ui->timeDetails->setVisible(true);
+}
+
+void TimeEntryEditorWidget::on_newProjectWorkspace_currentIndexChanged(int index)
+{
+    displayClientSelect(clientSelectUpdate);
 }
