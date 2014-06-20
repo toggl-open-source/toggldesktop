@@ -33,6 +33,12 @@ private:
     QVector<AutocompleteView *> projectAutocompleteUpdate;
     bool projectAutocompleteNeedsUpdate;
 
+    QVector<GenericView *> workspaceSelectUpdate;
+    bool workspaceSelectNeedsUpdate;
+
+    QVector<GenericView *> clientSelectUpdate;
+    bool clientSelectNeedsUpdate;
+
 private slots:
     void displayLogin(
         const bool open,

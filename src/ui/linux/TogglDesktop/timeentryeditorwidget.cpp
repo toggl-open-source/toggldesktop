@@ -10,7 +10,9 @@ TimeEntryEditorWidget::TimeEntryEditorWidget(QWidget *parent) :
     ui(new Ui::TimeEntryEditorWidget),
     guid(""),
     timeEntryAutocompleteNeedsUpdate(false),
-    projectAutocompleteNeedsUpdate(false)
+    projectAutocompleteNeedsUpdate(false),
+    workspaceSelectNeedsUpdate(false),
+    clientSelectNeedsUpdate(false)
 {
     ui->setupUi(this);
 
@@ -57,6 +59,19 @@ void TimeEntryEditorWidget::displayTags(
 void TimeEntryEditorWidget::displayClientSelect(
     QVector<GenericView *> list)
 {
+    clientSelectUpdate = list;
+    clientSelectNeedsUpdate = true;
+    if (ui->newProjectClient->hasFocus())
+    {
+        return;
+    }
+    ui->newProjectClient->clear();
+    ui->newProjectClient->addItem("");
+    foreach(GenericView *view, clientSelectUpdate)
+    {
+        ui->newProjectClient->addItem(view->Name, QVariant::fromValue(view));
+    }
+    clientSelectNeedsUpdate = false;
 
 }
 
@@ -99,7 +114,18 @@ void TimeEntryEditorWidget::displayProjectAutocomplete(
 void TimeEntryEditorWidget::displayWorkspaceSelect(
     QVector<GenericView *> list)
 {
-
+    workspaceSelectUpdate = list;
+    workspaceSelectNeedsUpdate = true;
+    if (ui->newProjectWorkspace->hasFocus())
+    {
+        return;
+    }
+    ui->newProjectWorkspace->clear();
+    foreach(GenericView *view, workspaceSelectUpdate)
+    {
+        ui->newProjectWorkspace->addItem(view->Name, QVariant::fromValue(view));
+    }
+    workspaceSelectNeedsUpdate = false;
 }
 
 void TimeEntryEditorWidget::displayLogin(
@@ -172,6 +198,7 @@ void TimeEntryEditorWidget::on_addNewProject_linkActivated(const QString &link)
 {
     ui->addNewProject->setVisible(false);
     ui->newProject->setVisible(true);
+    ui->newProjectName->setFocus();
 }
 
 void TimeEntryEditorWidget::on_timeOverview_linkActivated(const QString &link)
