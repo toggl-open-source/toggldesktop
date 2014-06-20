@@ -16,6 +16,8 @@ TimeEntryEditorWidget::TimeEntryEditorWidget(QWidget *parent) :
 
     setVisible(false);
 
+    ui->addNewProject->setText("<a href=\"#add_new_project\">Add new project</a>");
+
     connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),
             this, SLOT(displayLogin(bool,uint64_t)));
 
@@ -144,18 +146,10 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
     ui->stop->setText(view->EndTimeString);
     ui->duration->setText(view->Duration);
     ui->billable->setChecked(view->Billable);
-    ui->timeOverview->setText(view->timeOverview());
+    ui->timeOverview->setText("<a href=\"#view_time_details\">" + view->timeOverview() + "</a>");
 
-    if (view->UpdatedAt)
-    {
-        ui->lastUpdate->setText(view->lastUpdate());
-        ui->lastUpdate->setVisible(true);
-    }
-    else
-    {
-        ui->lastUpdate->setVisible(false);
-        ui->lastUpdate->setText("");
-    }
+    ui->lastUpdate->setVisible(view->UpdatedAt);
+    ui->lastUpdate->setText(view->lastUpdate());
 }
 
 void TimeEntryEditorWidget::on_doneButton_clicked()
@@ -172,4 +166,16 @@ void TimeEntryEditorWidget::on_deleteButton_clicked()
     {
         TogglApi::instance->deleteTimeEntry(guid);
     }
+}
+
+void TimeEntryEditorWidget::on_addNewProject_linkActivated(const QString &link)
+{
+    ui->addNewProject->setVisible(false);
+    ui->newProject->setVisible(true);
+}
+
+void TimeEntryEditorWidget::on_timeOverview_linkActivated(const QString &link)
+{
+    ui->timeOverview->setVisible(false);
+    ui->timeDetails->setVisible(true);
 }

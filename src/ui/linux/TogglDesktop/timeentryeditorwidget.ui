@@ -50,7 +50,16 @@
       <item>
        <widget class="QLabel" name="addNewProject">
         <property name="text">
-         <string>Add new project</string>
+         <string>&lt;a href=&quot;#&quot;&gt;Add new project&lt;/a&gt;</string>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::RichText</enum>
+        </property>
+        <property name="openExternalLinks">
+         <bool>false</bool>
+        </property>
+        <property name="textInteractionFlags">
+         <set>Qt::TextBrowserInteraction</set>
         </property>
        </widget>
       </item>
@@ -128,7 +137,16 @@
    <item>
     <widget class="QLabel" name="timeOverview">
      <property name="text">
-      <string>Today from 08:57 PM to 09:01 PM</string>
+      <string>&lt;a href=&quot;#&quot;&gt;Today from 08:57 PM to 09:01 PM&lt;/a&gt;</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::RichText</enum>
+     </property>
+     <property name="openExternalLinks">
+      <bool>false</bool>
+     </property>
+     <property name="textInteractionFlags">
+      <set>Qt::TextBrowserInteraction</set>
      </property>
     </widget>
    </item>
