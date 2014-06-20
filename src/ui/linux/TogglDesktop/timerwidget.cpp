@@ -8,7 +8,7 @@
 TimerWidget::TimerWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TimerWidget),
-    timer(0),
+    timer(new QTimer(this)),
     duration(0),
     timeEntryAutocompleteNeedsUpdate(false)
 {
@@ -16,6 +16,7 @@ TimerWidget::TimerWidget(QWidget *parent) :
 
     connect(TogglApi::instance, SIGNAL(displayStoppedTimerState()),
             this, SLOT(displayStoppedTimerState()));
+
     connect(TogglApi::instance, SIGNAL(displayRunningTimerState(TimeEntryView*)),
             this, SLOT(displayRunningTimerState(TimeEntryView*)));
 
@@ -25,7 +26,6 @@ TimerWidget::TimerWidget(QWidget *parent) :
     connect(qApp, SIGNAL(focusChanged(QWidget*,QWidget*)),
             this, SLOT(focusChanged(QWidget*,QWidget*)));
 
-    timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
 }
 
@@ -142,6 +142,10 @@ void TimerWidget::displayTimeEntryAutocomplete(
 
 void TimerWidget::timeout()
 {
+    if (!isVisible())
+    {
+        return;
+    }
     if (duration >= 0)
     {
         return;

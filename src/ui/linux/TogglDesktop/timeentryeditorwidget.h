@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QVector>
+#include <QTimer>
 
 #include <stdint.h>
 
@@ -39,6 +40,10 @@ private:
     QVector<GenericView *> clientSelectUpdate;
     bool clientSelectNeedsUpdate;
 
+    QTimer *timer;
+
+    int64_t duration;
+
     bool applyNewProject();
 
 private slots:
@@ -69,6 +74,8 @@ private slots:
 
     void displayProjectAutocomplete(
         QVector<AutocompleteView *> list);
+
+    void timeout();
 
     void on_doneButton_clicked();
     void on_deleteButton_clicked();

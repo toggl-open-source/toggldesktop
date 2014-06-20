@@ -2,6 +2,7 @@
 #include "ui_timeentryeditorwidget.h"
 
 #include <QMessageBox>
+#include <QDebug>
 
 #include "toggl_api.h"
 
@@ -12,7 +13,9 @@ TimeEntryEditorWidget::TimeEntryEditorWidget(QWidget *parent) :
     timeEntryAutocompleteNeedsUpdate(false),
     projectAutocompleteNeedsUpdate(false),
     workspaceSelectNeedsUpdate(false),
-    clientSelectNeedsUpdate(false)
+    clientSelectNeedsUpdate(false),
+    timer(new QTimer(this)),
+    duration(0)
 {
     ui->setupUi(this);
 
@@ -43,6 +46,8 @@ TimeEntryEditorWidget::TimeEntryEditorWidget(QWidget *parent) :
 
     connect(TogglApi::instance, SIGNAL(displayClientSelect(QVector<GenericView*>)),
             this, SLOT(displayClientSelect(QVector<GenericView*>)));
+
+    connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
 }
 
 TimeEntryEditorWidget::~TimeEntryEditorWidget()
@@ -140,6 +145,7 @@ void TimeEntryEditorWidget::displayLogin(
     if (open || !user_id)
     {
         setVisible(false);
+        timer->stop();
     }
 }
 
@@ -150,6 +156,7 @@ void TimeEntryEditorWidget::displayTimeEntryList(
     if (open)
     {
         setVisible(false);
+        timer->stop();
     }
 }
 
@@ -170,6 +177,12 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
     }
 
     guid = view->GUID;
+    duration = view->DurationInSeconds;
+
+    if (duration < 0)
+    {
+        timer->start(1000);
+    }
 
     if (!ui->description->hasFocus())
     {
@@ -200,6 +213,8 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
 
     ui->lastUpdate->setVisible(view->UpdatedAt);
     ui->lastUpdate->setText(view->lastUpdate());
+
+    qDebug() << view->Tags;
 }
 
 void TimeEntryEditorWidget::on_doneButton_clicked()
@@ -341,4 +356,12 @@ void TimeEntryEditorWidget::on_tags_editingFinished()
 void TimeEntryEditorWidget::on_billable_clicked(bool checked)
 {
     TogglApi::instance->setTimeEntryBillable(guid, checked);
+}
+
+void TimeEntryEditorWidget::timeout()
+{
+    if (duration < 0 && ui->duration->isVisible() && !ui->duration->hasFocus())
+    {
+        ui->duration->setText(TogglApi::formatDurationInSecondsHHMMSS(duration));
+    }
 }
