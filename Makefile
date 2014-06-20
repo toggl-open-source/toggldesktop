@@ -111,16 +111,28 @@ ifeq ($(uname), Darwin)
 default: osx
 endif
 
-clean:
-	rm -rf build gitstats && \
-	rm -rf src/ui/osx/TogglDesktop/build && \
-	rm -rf src/libkopsik/Kopsik/build && \
-	rm -rf third_party/TFDatePicker/TFDatePicker/build && \
-	rm -rf test TogglDesktop*.dmg TogglDesktop*.tar.gz && \
+clean: clean_ui clean_lib clean_test
+	rm -rf build gitstats
+
+clean_lib:
+	rm -rf src/libkopsik/Kopsik/build
+
+ifeq ($(uname), Linux)
+clean_ui:
 	rm -rf src/ui/linux/build-TogglDesktop-Desktop-Debug && \
-	((cd src/ui/linux/TogglDesktop && make clean) || true) && \
+	(cd src/ui/linux/TogglDesktop && make clean) && \
 	rm -f src/ui/linux/TogglDesktop/TogglDesktop && \
 	rm -f src/ui/linux/TogglDesktop/cacert.pem
+endif
+ifeq ($(uname), Darwin)
+clean_ui:
+	rm -rf src/ui/osx/TogglDesktop/build && \
+	rm -rf third_party/TFDatePicker/TFDatePicker/build && \
+	rm -rf TogglDesktop*.dmg TogglDesktop*.tar.gz
+endif
+
+clean_test:
+	rm -rf test
 
 osx: fmt_lib lint fmt_osx
 	xcodebuild -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj && \
