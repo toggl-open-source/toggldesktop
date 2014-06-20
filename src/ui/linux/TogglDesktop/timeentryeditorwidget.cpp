@@ -174,6 +174,19 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
         ui->addNewProject->setVisible(true);
 
         setVisible(true);
+
+        if (focused_field_name == TogglApi::Duration)
+        {
+            ui->duration->setFocus();
+        }
+        else if (focused_field_name == TogglApi::Description)
+        {
+            ui->description->setFocus();
+        }
+        else if (focused_field_name == TogglApi::Project)
+        {
+            ui->project->setFocus();
+        }
     }
 
     guid = view->GUID;

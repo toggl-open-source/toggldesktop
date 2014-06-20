@@ -21,6 +21,10 @@ public:
 
     static TogglApi *instance;
 
+    static QString Project;
+    static QString Duration;
+    static QString Description;
+
     bool startEvents();
 
     void login(const QString email, const QString password);

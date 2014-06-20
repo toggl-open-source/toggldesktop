@@ -17,6 +17,10 @@
 
 TogglApi *TogglApi::instance = 0;
 
+QString TogglApi::Project = QString("project");
+QString TogglApi::Duration = QString("duration");
+QString TogglApi::Description = QString("description");
+
 void on_display_app(const _Bool open) {
     TogglApi::instance->displayApp(open);
 }
