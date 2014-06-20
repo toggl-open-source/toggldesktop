@@ -2,7 +2,7 @@
 #define MAINWINDOWCONTROLLER_H
 
 #include <QMainWindow>
-#include <QStackedWidget>
+#include <QActionGroup>
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -33,14 +33,19 @@ protected:
     void closeEvent(QCloseEvent *event);
     void showEvent(QShowEvent *event);
 
+private slots:
+    void onAction(QAction *action);
+
 private:
     Ui::MainWindowController *ui;
-    void *ctx_;
-    bool shutdown_;
+    bool shutdown;
     TogglApi *togglApi;
+    QActionGroup *menuActions;
 
     void readSettings();
     void writeSettings();
+
+    void connectMenuActions();
 };
 
 #endif // MAINWINDOWCONTROLLER_H

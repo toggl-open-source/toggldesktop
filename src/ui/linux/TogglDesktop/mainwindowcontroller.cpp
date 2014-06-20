@@ -9,8 +9,10 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QDebug>
-#include <qdesktopservices.h>
+#include <QDesktopServices>
 #include <QMessageBox>
+#include <QAction>
+#include <QMenu>
 
 #include "toggl_api.h"
 #include "errorviewcontroller.h"
@@ -21,11 +23,13 @@
 MainWindowController::MainWindowController(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindowController),
-    ctx_(0),
-    shutdown_(false),
-    togglApi(new TogglApi())
+    shutdown(false),
+    togglApi(new TogglApi()),
+    menuActions(new QActionGroup(this))
 {
     ui->setupUi(this);
+
+    ui->menuBar->setVisible(true);
 
     QVBoxLayout *verticalLayout = new QVBoxLayout();
     verticalLayout->addWidget(new ErrorViewController());
@@ -37,6 +41,8 @@ MainWindowController::MainWindowController(QWidget *parent) :
     readSettings();
 
     connect(TogglApi::instance, SIGNAL(displayApp(bool)), this, SLOT(displayApp(bool)));
+
+    connectMenuActions();
 }
 
 MainWindowController::~MainWindowController()
@@ -45,6 +51,88 @@ MainWindowController::~MainWindowController()
     togglApi = 0;
 
     delete ui;
+}
+
+void MainWindowController::connectMenuActions()
+{
+    foreach(QMenu *menu, ui->menuBar->findChildren<QMenu *>())
+    {
+        foreach(QAction *action, menu->actions())
+        {
+            menuActions->addAction(action);
+        }
+    }
+    connect(menuActions, SIGNAL(triggered(QAction*)),
+            this, SLOT(onAction(QAction*)));
+}
+
+void MainWindowController::onAction(QAction *action)
+{
+    if (action->objectName() == "actionNew")
+    {
+        TogglApi::instance->start("", "", 0, 0);
+    }
+    else if (action->objectName() == "actionContinue")
+    {
+        TogglApi::instance->continueLatestTimeEntry();
+    }
+    else if (action->objectName() == "actionStop")
+    {
+        TogglApi::instance->stop();
+    }
+    else if (action->objectName() == "actionShow")
+    {
+        displayApp(true);
+    }
+    else if (action->objectName() == "actionSync")
+    {
+        TogglApi::instance->sync();
+    }
+    else if (action->objectName() == "actionReports")
+    {
+        TogglApi::instance->openInBrowser();
+    }
+    else if (action->objectName() == "actionPreferences")
+    {
+        TogglApi::instance->editPreferences();
+    }
+    else if (action->objectName() == "actionAbout")
+    {
+        TogglApi::instance->about();
+    }
+    else if (action->objectName() == "actionSend_Feedback")
+    {
+        // FIXME: display feedback dialog
+    }
+    else if (action->objectName() == "actionLogout")
+    {
+        TogglApi::instance->logout();
+    }
+    else if (action->objectName() == "actionQuit")
+    {
+        shutdown = true;
+        qApp->exit(0);
+    }
+    else if (action->objectName() == "actionClear_Cache")
+    {
+        if (QMessageBox::Ok == QMessageBox(QMessageBox::Question,
+                                            "Clear Cache?",
+                                            "Clearing cache will delete any unsaved time entries and log you out.",
+                                            QMessageBox::Ok|QMessageBox::Cancel).exec())
+        {
+            TogglApi::instance->clearCache();
+
+        }
+    }
+    else if (action->objectName() == "actionHelp")
+    {
+        TogglApi::instance->getSupport();
+    }
+    else
+    {
+        qDebug() << "unknown action " << action->objectName();
+        Q_ASSERT(false);
+    }
 }
 
 void MainWindowController::displayApp(const bool open)
@@ -72,7 +160,7 @@ void MainWindowController::writeSettings()
 void MainWindowController::closeEvent(QCloseEvent *event)
 {
     writeSettings();
-    if (!shutdown_) {
+    if (!shutdown) {
         event->ignore();
         hide();
         return;

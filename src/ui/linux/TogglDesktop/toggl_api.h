@@ -41,6 +41,22 @@ public:
 
     bool continueTimeEntry(const QString guid);
 
+    bool continueLatestTimeEntry();
+
+    void openInBrowser();
+
+    void sync();
+
+    void about();
+
+    bool clearCache();
+
+    void getSupport();
+
+    void logout();
+
+    void editPreferences();
+
     void editTimeEntry(const QString guid,
         const QString focusedFieldName);
 

@@ -244,6 +244,46 @@ bool TogglApi::continueTimeEntry(const QString guid)
     return kopsik_continue(ctx, guid.toStdString().c_str());
 }
 
+bool TogglApi::continueLatestTimeEntry()
+{
+    return kopsik_continue_latest(ctx);
+}
+
+void TogglApi::sync()
+{
+    kopsik_sync(ctx);
+}
+
+void TogglApi::openInBrowser()
+{
+    kopsik_open_in_browser(ctx);
+}
+
+void TogglApi::about()
+{
+    kopsik_about(ctx);
+}
+
+bool TogglApi::clearCache()
+{
+    return kopsik_clear_cache(ctx);
+}
+
+void TogglApi::getSupport()
+{
+    kopsik_get_support(ctx);
+}
+
+void TogglApi::logout()
+{
+    kopsik_logout(ctx);
+}
+
+void TogglApi::editPreferences()
+{
+    kopsik_edit_preferences(ctx);
+}
+
 void TogglApi::editTimeEntry(const QString guid,
                     const QString focusedFieldName)
 {

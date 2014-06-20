@@ -29,6 +29,7 @@ void LoginWidget::displayLogin(
 
     if (open) {
         setVisible(true);
+        ui->email->setFocus();
     }
     if (user_id) {
         setVisible(false);
