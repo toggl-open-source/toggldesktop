@@ -249,6 +249,28 @@ void TogglApi::editTimeEntry(const QString guid,
                 focusedFieldName.toStdString().c_str());
 }
 
+bool TogglApi::setTimeEntryProject(
+        const QString guid,
+        const u_int64_t task_id,
+        const u_int64_t project_id,
+        const QString project_guid)
+{
+    return kopsik_set_time_entry_project(ctx,
+                                         guid.toStdString().c_str(),
+                                         task_id,
+                                         project_id,
+                                         project_guid.toStdString().c_str());
+}
+
+bool TogglApi::setTimeEntryDescription(
+        const QString guid,
+        const QString value)
+{
+    return kopsik_set_time_entry_description(ctx,
+                                             guid.toStdString().c_str(),
+                                             value.toStdString().c_str());
+}
+
 void TogglApi::editRunningTimeEntry(
                     const QString focusedFieldName)
 {
@@ -256,6 +278,30 @@ void TogglApi::editRunningTimeEntry(
                 "",
                 true,
                 focusedFieldName.toStdString().c_str());
+}
+
+bool TogglApi::setTimeEntryBillable(
+    const QString guid,
+    const bool billable)
+{
+    return kopsik_set_time_entry_billable(ctx,
+                                          guid.toStdString().c_str(),
+                                          billable);
+}
+
+bool TogglApi::addProject(
+    const QString time_entry_guid,
+    const u_int64_t workspace_id,
+    const u_int64_t client_id,
+    const QString project_name,
+    const bool is_private)
+{
+    return kopsik_add_project(ctx,
+                              time_entry_guid.toStdString().c_str(),
+                              workspace_id,
+                              client_id,
+                              project_name.toStdString().c_str(),
+                              is_private);
 }
 
 void TogglApi::viewTimeEntryList()
@@ -266,4 +312,13 @@ void TogglApi::viewTimeEntryList()
 bool TogglApi::deleteTimeEntry(const QString guid)
 {
     return kopsik_delete_time_entry(ctx, guid.toStdString().c_str());
+}
+
+bool TogglApi::setTimeEntryDuration(
+    const QString guid,
+    const QString value)
+{
+    return kopsik_set_time_entry_duration(ctx,
+                                          guid.toStdString().c_str(),
+                                          value.toStdString().c_str());
 }

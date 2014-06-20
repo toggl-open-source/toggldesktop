@@ -50,12 +50,6 @@ TimeEntryEditorWidget::~TimeEntryEditorWidget()
     delete ui;
 }
 
-void TimeEntryEditorWidget::displayTags(
-    QVector<GenericView*> tags)
-{
-
-}
-
 void TimeEntryEditorWidget::displayClientSelect(
     QVector<GenericView *> list)
 {
@@ -210,7 +204,44 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
 
 void TimeEntryEditorWidget::on_doneButton_clicked()
 {
-    TogglApi::instance->viewTimeEntryList();
+    if (applyNewProject())
+    {
+        TogglApi::instance->viewTimeEntryList();
+    }
+}
+
+bool TimeEntryEditorWidget::applyNewProject()
+{
+    if (!ui->newProject->isVisible())
+    {
+        return true;
+    }
+
+    if (ui->newProjectName->text().isEmpty())
+    {
+        ui->newProjectName->setFocus();
+        return false;
+    }
+
+    QVariant workspace = ui->newProjectWorkspace->currentData();
+    if (!workspace.canConvert<GenericView *>())
+    {
+        return false;
+    }
+    u_int64_t workspaceID = workspace.value<GenericView *>()->ID;
+
+    u_int64_t clientID = 0;
+    QVariant client = ui->newProjectClient->currentData();
+    if (client.canConvert<GenericView *>())
+    {
+        clientID = client.value<GenericView *>()->ID;
+    }
+
+    return TogglApi::instance->addProject(guid,
+                                          workspaceID,
+                                          clientID,
+                                          ui->newProjectName->text(),
+                                          !ui->publicProject->isChecked());
 }
 
 void TimeEntryEditorWidget::on_deleteButton_clicked()
@@ -241,4 +272,73 @@ void TimeEntryEditorWidget::on_timeOverview_linkActivated(const QString &link)
 void TimeEntryEditorWidget::on_newProjectWorkspace_currentIndexChanged(int index)
 {
     displayClientSelect(clientSelectUpdate);
+}
+
+void TimeEntryEditorWidget::on_description_currentIndexChanged(int index)
+{
+    QVariant data = ui->description->currentData();
+    if (data.canConvert<AutocompleteView *>())
+    {
+        AutocompleteView *view = data.value<AutocompleteView *>();
+        TogglApi::instance->setTimeEntryProject(guid,
+                                                view->TaskID,
+                                                view->ProjectID,
+                                                "");
+        ui->description->setEditText(view->Description);
+    }
+}
+
+void TimeEntryEditorWidget::on_description_activated(const QString &arg1)
+{
+    TogglApi::instance->setTimeEntryDescription(guid, arg1);
+}
+
+void TimeEntryEditorWidget::on_project_activated(int index)
+{
+    QVariant data = ui->project->currentData();
+    if (data.canConvert<AutocompleteView *>())
+    {
+        AutocompleteView *view = data.value<AutocompleteView *>();
+        TogglApi::instance->setTimeEntryProject(guid,
+                                                view->TaskID,
+                                                view->ProjectID,
+                                                "");
+    }
+}
+
+void TimeEntryEditorWidget::on_duration_editingFinished()
+{
+    TogglApi::instance->setTimeEntryDuration(guid,
+                                             ui->duration->text());
+}
+
+void TimeEntryEditorWidget::on_start_editingFinished()
+{
+
+}
+
+void TimeEntryEditorWidget::on_stop_editingFinished()
+{
+
+}
+
+void TimeEntryEditorWidget::on_dateEdit_editingFinished()
+{
+
+}
+
+void TimeEntryEditorWidget::displayTags(
+    QVector<GenericView*> tags)
+{
+
+}
+
+void TimeEntryEditorWidget::on_tags_editingFinished()
+{
+
+}
+
+void TimeEntryEditorWidget::on_billable_clicked(bool checked)
+{
+    TogglApi::instance->setTimeEntryBillable(guid, checked);
 }

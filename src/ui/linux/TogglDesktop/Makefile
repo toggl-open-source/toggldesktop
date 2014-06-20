@@ -1840,6 +1840,8 @@ moc_timeentryeditorwidget.cpp: /usr/include/qt5/QtWidgets/QWidget \
 		timeentryview.h \
 		/usr/include/qt5/QtCore/QObject \
 		../../../libkopsik/include/kopsik_api.h \
+		genericview.h \
+		autocompleteview.h \
 		timeentryeditorwidget.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) $(INCPATH) -I/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8 -I/usr/include/c++/4.8/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include timeentryeditorwidget.h -o moc_timeentryeditorwidget.cpp
 
@@ -2677,40 +2679,6 @@ mainwindowcontroller.o: mainwindowcontroller.cpp mainwindowcontroller.h \
 		/usr/include/qt5/QtWidgets/QWidget \
 		timeentrylistwidget.h \
 		ui_mainwindowcontroller.h \
-		/usr/include/qt5/QtCore/QVariant \
-		/usr/include/qt5/QtWidgets/QAction \
-		/usr/include/qt5/QtWidgets/qaction.h \
-		/usr/include/qt5/QtWidgets/qactiongroup.h \
-		/usr/include/qt5/QtWidgets/QApplication \
-		/usr/include/qt5/QtWidgets/qapplication.h \
-		/usr/include/qt5/QtCore/qcoreapplication.h \
-		/usr/include/qt5/QtCore/qeventloop.h \
-		/usr/include/qt5/QtWidgets/qdesktopwidget.h \
-		/usr/include/qt5/QtGui/qguiapplication.h \
-		/usr/include/qt5/QtGui/qinputmethod.h \
-		/usr/include/qt5/QtWidgets/QButtonGroup \
-		/usr/include/qt5/QtWidgets/qbuttongroup.h \
-		/usr/include/qt5/QtWidgets/QHeaderView \
-		/usr/include/qt5/QtWidgets/qheaderview.h \
-		/usr/include/qt5/QtWidgets/qabstractitemview.h \
-		/usr/include/qt5/QtWidgets/qabstractscrollarea.h \
-		/usr/include/qt5/QtCore/qabstractitemmodel.h \
-		/usr/include/qt5/QtCore/qitemselectionmodel.h \
-		/usr/include/qt5/QtWidgets/qabstractitemdelegate.h \
-		/usr/include/qt5/QtWidgets/qstyleoption.h \
-		/usr/include/qt5/QtWidgets/qabstractspinbox.h \
-		/usr/include/qt5/QtGui/qvalidator.h \
-		/usr/include/qt5/QtCore/qregularexpression.h \
-		/usr/include/qt5/QtWidgets/qslider.h \
-		/usr/include/qt5/QtWidgets/qabstractslider.h \
-		/usr/include/qt5/QtWidgets/qstyle.h \
-		/usr/include/qt5/QtWidgets/qtabbar.h \
-		/usr/include/qt5/QtWidgets/qrubberband.h \
-		/usr/include/qt5/QtWidgets/QMenuBar \
-		/usr/include/qt5/QtWidgets/qmenubar.h \
-		/usr/include/qt5/QtWidgets/qmenu.h \
-		/usr/include/qt5/QtWidgets/QStatusBar \
-		/usr/include/qt5/QtWidgets/qstatusbar.h \
 		/usr/include/qt5/QtCore/QSettings \
 		/usr/include/qt5/QtCore/qsettings.h \
 		/usr/include/qt5/QtGui/QCloseEvent \
@@ -4019,6 +3987,8 @@ timeentryeditorwidget.o: timeentryeditorwidget.cpp timeentryeditorwidget.h \
 		timeentryview.h \
 		/usr/include/qt5/QtCore/QObject \
 		../../../libkopsik/include/kopsik_api.h \
+		genericview.h \
+		autocompleteview.h \
 		ui_timeentryeditorwidget.h \
 		/usr/include/qt5/QtCore/QVariant \
 		/usr/include/qt5/QtWidgets/QAction \
@@ -4084,8 +4054,6 @@ timeentryeditorwidget.o: timeentryeditorwidget.cpp timeentryeditorwidget.h \
 		toggl_api.h \
 		/usr/include/qt5/QtCore/QUrl \
 		updateview.h \
-		autocompleteview.h \
-		genericview.h \
 		settingsview.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o timeentryeditorwidget.o timeentryeditorwidget.cpp
 

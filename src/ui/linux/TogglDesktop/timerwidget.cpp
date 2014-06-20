@@ -149,11 +149,6 @@ void TimerWidget::timeout()
     ui->duration->setText(TogglApi::formatDurationInSecondsHHMMSS(duration));
 }
 
-void TimerWidget::on_description_editTextChanged(const QString &arg1)
-{
-
-}
-
 void TimerWidget::on_description_currentIndexChanged(int index)
 {
     QVariant data = ui->description->currentData();

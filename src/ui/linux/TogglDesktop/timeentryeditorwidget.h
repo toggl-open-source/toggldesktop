@@ -39,6 +39,8 @@ private:
     QVector<GenericView *> clientSelectUpdate;
     bool clientSelectNeedsUpdate;
 
+    bool applyNewProject();
+
 private slots:
     void displayLogin(
         const bool open,
@@ -69,11 +71,19 @@ private slots:
         QVector<AutocompleteView *> list);
 
     void on_doneButton_clicked();
-
     void on_deleteButton_clicked();
     void on_addNewProject_linkActivated(const QString &link);
     void on_timeOverview_linkActivated(const QString &link);
     void on_newProjectWorkspace_currentIndexChanged(int index);
+    void on_description_currentIndexChanged(int index);
+    void on_description_activated(const QString &arg1);
+    void on_project_activated(int index);
+    void on_duration_editingFinished();
+    void on_start_editingFinished();
+    void on_stop_editingFinished();
+    void on_dateEdit_editingFinished();
+    void on_tags_editingFinished();
+    void on_billable_clicked(bool checked);
 };
 
 #endif // TIMEENTRYEDITORWIDGET_H

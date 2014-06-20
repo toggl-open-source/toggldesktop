@@ -36,18 +36,13 @@ private slots:
     void displayTimeEntryAutocomplete(
         QVector<AutocompleteView *> list);
 
-    void on_start_clicked();
-
     void start();
-
     void stop();
 
     void timeout();
 
     void focusChanged(QWidget *old, QWidget *now);
-
-    void on_description_editTextChanged(const QString &arg1);
-
+    void on_start_clicked();
     void on_description_currentIndexChanged(int index);
 
 private:

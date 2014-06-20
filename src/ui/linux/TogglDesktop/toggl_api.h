@@ -38,17 +38,44 @@ public:
     bool continueTimeEntry(const QString guid);
 
     void editTimeEntry(const QString guid,
-              const QString focusedFieldName);
+        const QString focusedFieldName);
 
     void editRunningTimeEntry(
-              const QString focusedFieldName);
+        const QString focusedFieldName);
 
     void viewTimeEntryList();
 
-    static const QString formatDurationInSecondsHHMMSS(const int64_t duration);
+    bool setTimeEntryProject(
+        const QString guid,
+        const u_int64_t task_id,
+        const u_int64_t project_id,
+        const QString project_guid);
+
+    bool setTimeEntryDescription(
+        const QString guid,
+        const QString value);
+
+    bool setTimeEntryDuration(
+        const QString guid,
+        const QString value);
+
+    bool setTimeEntryBillable(
+        const QString guid,
+        const bool billable);
+
+    bool addProject(
+        const QString time_entry_guid,
+        const u_int64_t workspace_id,
+        const u_int64_t client_id,
+        const QString project_name,
+        const bool is_private);
+
+    static const QString formatDurationInSecondsHHMMSS(
+        const int64_t duration);
 
 signals:
-    void displayApp(const bool open);
+    void displayApp(
+        const bool open);
 
     void displayError(
         const QString errmsg,
