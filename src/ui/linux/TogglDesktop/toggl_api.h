@@ -73,15 +73,6 @@ signals:
         const bool open,
         QVector<TimeEntryView *> list);
 
-    void displayTimeEntryAutocomplete(
-        QVector<AutocompleteView *> list);
-
-    void displayProjectAutocomplete(
-        QVector<AutocompleteView *> list);
-
-    void displayWorkspaceSelect(
-        QVector<GenericView *> list);
-
     void displayTimeEntryEditor(
         const bool open,
         TimeEntryView *view,
@@ -105,6 +96,15 @@ signals:
         QVector<GenericView *> list);
 
     void displayTags(
+        QVector<GenericView *> list);
+
+    void displayTimeEntryAutocomplete(
+        QVector<AutocompleteView *> list);
+
+    void displayProjectAutocomplete(
+        QVector<AutocompleteView *> list);
+
+    void displayWorkspaceSelect(
         QVector<GenericView *> list);
 
 private:

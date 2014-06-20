@@ -7,6 +7,8 @@
 #include <stdint.h>
 
 #include "timeentryview.h"
+#include "genericview.h"
+#include "autocompleteview.h"
 
 namespace Ui {
 class TimeEntryEditorWidget;
@@ -25,6 +27,12 @@ private:
 
     QString guid;
 
+    QVector<AutocompleteView *> timeEntryAutocompleteUpdate;
+    bool timeEntryAutocompleteNeedsUpdate;
+
+    QVector<AutocompleteView *> projectAutocompleteUpdate;
+    bool projectAutocompleteNeedsUpdate;
+
 private slots:
     void displayLogin(
         const bool open,
@@ -38,7 +46,24 @@ private slots:
         const bool open,
         TimeEntryView *view,
         const QString focused_field_name);
+
+    void displayTags(
+        QVector<GenericView*> list);
+
+    void displayWorkspaceSelect(
+        QVector<GenericView *> list);
+
+    void displayClientSelect(
+        QVector<GenericView *> list);
+
+    void displayTimeEntryAutocomplete(
+        QVector<AutocompleteView *> list);
+
+    void displayProjectAutocomplete(
+        QVector<AutocompleteView *> list);
+
     void on_doneButton_clicked();
+
     void on_deleteButton_clicked();
 };
 

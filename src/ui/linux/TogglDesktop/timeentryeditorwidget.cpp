@@ -8,7 +8,9 @@
 TimeEntryEditorWidget::TimeEntryEditorWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TimeEntryEditorWidget),
-    guid("")
+    guid(""),
+    timeEntryAutocompleteNeedsUpdate(false),
+    projectAutocompleteNeedsUpdate(false)
 {
     ui->setupUi(this);
 
@@ -22,11 +24,80 @@ TimeEntryEditorWidget::TimeEntryEditorWidget(QWidget *parent) :
 
     connect(TogglApi::instance, SIGNAL(displayTimeEntryEditor(bool,TimeEntryView*,QString)),
             this, SLOT(displayTimeEntryEditor(bool,TimeEntryView*,QString)));
+
+    connect(TogglApi::instance, SIGNAL(displayTags(QVector<GenericView*>)),
+            this, SLOT(displayTags(QVector<GenericView*>)));
+
+    connect(TogglApi::instance, SIGNAL(displayWorkspaceSelect(QVector<GenericView*>)),
+            this, SLOT(displayWorkspaceSelect(QVector<GenericView*>)));
+
+    connect(TogglApi::instance, SIGNAL(displayProjectAutocomplete(QVector<AutocompleteView*>)),
+            this, SLOT(displayProjectAutocomplete(QVector<AutocompleteView*>)));
+
+    connect(TogglApi::instance, SIGNAL(displayTimeEntryAutocomplete(QVector<AutocompleteView*>)),
+            this, SLOT(displayTimeEntryAutocomplete(QVector<AutocompleteView*>)));
+
+    connect(TogglApi::instance, SIGNAL(displayClientSelect(QVector<GenericView*>)),
+            this, SLOT(displayClientSelect(QVector<GenericView*>)));
 }
 
 TimeEntryEditorWidget::~TimeEntryEditorWidget()
 {
     delete ui;
+}
+
+void TimeEntryEditorWidget::displayTags(
+    QVector<GenericView*> tags)
+{
+
+}
+
+void TimeEntryEditorWidget::displayClientSelect(
+    QVector<GenericView *> list)
+{
+
+}
+
+void TimeEntryEditorWidget::displayTimeEntryAutocomplete(
+    QVector<AutocompleteView *> list)
+{
+    timeEntryAutocompleteUpdate = list;
+    timeEntryAutocompleteNeedsUpdate = true;
+    if (ui->description->hasFocus())
+    {
+        return;
+    }
+    ui->description->clear();
+    ui->description->addItem("");
+    foreach(AutocompleteView *view, timeEntryAutocompleteUpdate)
+    {
+        ui->description->addItem(view->Text, QVariant::fromValue(view));
+    }
+    timeEntryAutocompleteNeedsUpdate = false;
+}
+
+void TimeEntryEditorWidget::displayProjectAutocomplete(
+    QVector<AutocompleteView *> list)
+{
+    projectAutocompleteUpdate = list;
+    projectAutocompleteNeedsUpdate = true;
+    if (ui->project->hasFocus())
+    {
+        return;
+    }
+    ui->project->clear();
+    ui->project->addItem("");
+    foreach(AutocompleteView *view, projectAutocompleteUpdate)
+    {
+        ui->project->addItem(view->Text, QVariant::fromValue(view));
+    }
+    projectAutocompleteNeedsUpdate = false;
+}
+
+void TimeEntryEditorWidget::displayWorkspaceSelect(
+    QVector<GenericView *> list)
+{
+
 }
 
 void TimeEntryEditorWidget::displayLogin(
