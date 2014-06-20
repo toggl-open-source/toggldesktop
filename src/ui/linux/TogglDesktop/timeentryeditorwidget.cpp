@@ -181,6 +181,7 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
     ui->project->setEditText(view->ProjectAndTaskLabel);
     ui->start->setText(view->StartTimeString);
     ui->stop->setText(view->EndTimeString);
+    ui->dateEdit->setDateTime(QDateTime::fromTime_t(view->Started));
     ui->duration->setText(view->Duration);
     ui->billable->setChecked(view->Billable);
     ui->timeOverview->setText("<a href=\"#view_time_details\">" + view->timeOverview() + "</a>");
@@ -216,6 +217,7 @@ void TimeEntryEditorWidget::on_timeOverview_linkActivated(const QString &link)
 {
     ui->timeOverview->setVisible(false);
     ui->timeDetails->setVisible(true);
+    ui->duration->setFocus();
 }
 
 void TimeEntryEditorWidget::on_newProjectWorkspace_currentIndexChanged(int index)
