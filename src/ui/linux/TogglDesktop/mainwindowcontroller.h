@@ -2,7 +2,6 @@
 #define MAINWINDOWCONTROLLER_H
 
 #include <QMainWindow>
-#include <QActionGroup>
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -25,27 +24,56 @@ public:
 
     static MainWindowController *Instance;
 
-public slots:
-    void displayApp(
-        const bool open);
-
 protected:
     void closeEvent(QCloseEvent *event);
     void showEvent(QShowEvent *event);
 
 private slots:
-    void onAction(QAction *action);
+    void displayApp(const bool open);
+    void displayRunningTimerState(TimeEntryView *te);
+    void displayStoppedTimerState();
+    void displayLogin(
+        const bool open,
+        const uint64_t user_id);
+
+    void onActionNew();
+    void onActionContinue();
+    void onActionStop();
+    void onActionShow();
+    void onActionSync();
+    void onActionReports();
+    void onActionPreferences();
+    void onActionAbout();
+    void onActionSend_Feedback();
+    void onActionLogout();
+    void onActionQuit();
+    void onActionClear_Cache();
+    void onActionHelp();
 
 private:
     Ui::MainWindowController *ui;
+
     bool shutdown;
+
     TogglApi *togglApi;
-    QActionGroup *menuActions;
+
+    bool tracking;
+    bool loggedIn;
+
+    QAction *actionNew;
+    QAction *actionContinue;
+    QAction *actionStop;
+    QAction *actionSync;
+    QAction *actionLogout;
+    QAction *actionClear_Cache;
+    QAction *actionSend_Feedback;
+    QAction *actionReports;
 
     void readSettings();
     void writeSettings();
 
     void connectMenuActions();
+    void enableMenuActions();
 };
 
 #endif // MAINWINDOWCONTROLLER_H

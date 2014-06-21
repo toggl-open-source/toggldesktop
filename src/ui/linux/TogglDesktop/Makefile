@@ -913,9 +913,6 @@ moc_mainwindowcontroller.cpp: /usr/include/qt5/QtWidgets/QMainWindow \
 		/usr/include/qt5/QtGui/qtouchdevice.h \
 		/usr/include/qt5/QtWidgets/qtabwidget.h \
 		/usr/include/qt5/QtGui/qicon.h \
-		/usr/include/qt5/QtWidgets/QActionGroup \
-		/usr/include/qt5/QtWidgets/qactiongroup.h \
-		/usr/include/qt5/QtWidgets/qaction.h \
 		toggl_api.h \
 		/usr/include/qt5/QtCore/QObject \
 		/usr/include/qt5/QtCore/QVector \
@@ -2342,9 +2339,6 @@ main.o: main.cpp mainwindowcontroller.h \
 		/usr/include/qt5/QtGui/qtouchdevice.h \
 		/usr/include/qt5/QtWidgets/qtabwidget.h \
 		/usr/include/qt5/QtGui/qicon.h \
-		/usr/include/qt5/QtWidgets/QActionGroup \
-		/usr/include/qt5/QtWidgets/qactiongroup.h \
-		/usr/include/qt5/QtWidgets/qaction.h \
 		toggl_api.h \
 		/usr/include/qt5/QtCore/QObject \
 		/usr/include/qt5/QtCore/QVector \
@@ -2905,9 +2899,6 @@ mainwindowcontroller.o: mainwindowcontroller.cpp mainwindowcontroller.h \
 		/usr/include/qt5/QtGui/qtouchdevice.h \
 		/usr/include/qt5/QtWidgets/qtabwidget.h \
 		/usr/include/qt5/QtGui/qicon.h \
-		/usr/include/qt5/QtWidgets/QActionGroup \
-		/usr/include/qt5/QtWidgets/qactiongroup.h \
-		/usr/include/qt5/QtWidgets/qaction.h \
 		toggl_api.h \
 		/usr/include/qt5/QtCore/QObject \
 		/usr/include/qt5/QtCore/QVector \
@@ -2926,6 +2917,8 @@ mainwindowcontroller.o: mainwindowcontroller.cpp mainwindowcontroller.h \
 		ui_mainwindowcontroller.h \
 		/usr/include/qt5/QtCore/QVariant \
 		/usr/include/qt5/QtWidgets/QAction \
+		/usr/include/qt5/QtWidgets/qaction.h \
+		/usr/include/qt5/QtWidgets/qactiongroup.h \
 		/usr/include/qt5/QtWidgets/QApplication \
 		/usr/include/qt5/QtWidgets/qapplication.h \
 		/usr/include/qt5/QtCore/qcoreapplication.h \

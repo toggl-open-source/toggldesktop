@@ -25,7 +25,16 @@ MainWindowController::MainWindowController(QWidget *parent) :
     ui(new Ui::MainWindowController),
     shutdown(false),
     togglApi(new TogglApi()),
-    menuActions(new QActionGroup(this))
+    tracking(false),
+    loggedIn(false),
+    actionNew(0),
+    actionContinue(0),
+    actionStop(0),
+    actionSync(0),
+    actionLogout(0),
+    actionClear_Cache(0),
+    actionSend_Feedback(0),
+    actionReports(0)
 {
     ui->setupUi(this);
 
@@ -42,7 +51,17 @@ MainWindowController::MainWindowController(QWidget *parent) :
 
     connect(TogglApi::instance, SIGNAL(displayApp(bool)), this, SLOT(displayApp(bool)));
 
+    connect(TogglApi::instance, SIGNAL(displayStoppedTimerState()),
+            this, SLOT(displayStoppedTimerState()));
+
+    connect(TogglApi::instance, SIGNAL(displayRunningTimerState(TimeEntryView*)),
+            this, SLOT(displayRunningTimerState(TimeEntryView*)));
+
+    connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),
+            this, SLOT(displayLogin(bool,uint64_t)));
+
     connectMenuActions();
+    enableMenuActions();
 }
 
 MainWindowController::~MainWindowController()
@@ -53,86 +72,179 @@ MainWindowController::~MainWindowController()
     delete ui;
 }
 
+void MainWindowController::displayLogin(
+    const bool open,
+    const uint64_t user_id) {
+
+    loggedIn = !open && user_id;
+    enableMenuActions();
+}
+
+void MainWindowController::displayRunningTimerState(
+    TimeEntryView *te)
+{
+    tracking = true;
+    enableMenuActions();
+}
+
+void MainWindowController::displayStoppedTimerState()
+{
+    tracking = false;
+    enableMenuActions();
+}
+
+void MainWindowController::enableMenuActions()
+{
+    actionNew->setEnabled(loggedIn);
+    actionContinue->setEnabled(loggedIn && !tracking);
+    actionStop->setEnabled(loggedIn && tracking);
+    actionSync->setEnabled(loggedIn);
+    actionLogout->setEnabled(loggedIn);
+    actionClear_Cache->setEnabled(loggedIn);
+    actionSend_Feedback->setEnabled(loggedIn);
+    actionReports->setEnabled(loggedIn);
+}
+
 void MainWindowController::connectMenuActions()
 {
     foreach(QMenu *menu, ui->menuBar->findChildren<QMenu *>())
     {
         foreach(QAction *action, menu->actions())
         {
-            menuActions->addAction(action);
+            if ("actionNew" == action->objectName())
+            {
+                actionNew = action;
+                connect(action, SIGNAL(triggered()), this, SLOT(onActionNew()));
+            }
+            else if ("actionContinue" == action->objectName())
+            {
+                actionContinue = action;
+                connect(action, SIGNAL(triggered()), this, SLOT(onActionContinue()));
+            }
+            else if ("actionStop" == action->objectName())
+            {
+                actionStop = action;
+                connect(action, SIGNAL(triggered()), this, SLOT(onActionStop()));
+            }
+            else if ("actionSync" == action->objectName())
+            {
+                actionSync = action;
+                connect(action, SIGNAL(triggered()), this, SLOT(onActionSync()));
+            }
+            else if ("actionLogout" == action->objectName())
+            {
+                actionLogout = action;
+                connect(action, SIGNAL(triggered()), this, SLOT(onActionLogout()));
+            }
+            else if ("actionClear_Cache" == action->objectName())
+            {
+                actionClear_Cache = action;
+                connect(action, SIGNAL(triggered()), this, SLOT(onActionClear_Cache()));
+            }
+            else if ("actionSend_Feedback" == action->objectName())
+            {
+                actionSend_Feedback = action;
+                connect(action, SIGNAL(triggered()), this, SLOT(onActionSend_Feedback()));
+            }
+            else if ("actionReports" == action->objectName())
+            {
+                actionReports = action;
+                connect(action, SIGNAL(triggered()), this, SLOT(onActionReports()));
+            }
+            else if ("actionShow" == action->objectName())
+            {
+                connect(action, SIGNAL(triggered()), this, SLOT(onActionShow()));
+            }
+            else if ("actionPreferences" == action->objectName())
+            {
+                connect(action, SIGNAL(triggered()), this, SLOT(onActionPreferences()));
+            }
+            else if ("actionAbout" == action->objectName())
+            {
+                connect(action, SIGNAL(triggered()), this, SLOT(onActionAbout()));
+            }
+            else if ("actionQuit" == action->objectName())
+            {
+                connect(action, SIGNAL(triggered()), this, SLOT(onActionQuit()));
+            }
+            else if ("actionHelp" == action->objectName())
+            {
+                connect(action, SIGNAL(triggered()), this, SLOT(onActionHelp()));
+            }
         }
     }
-    connect(menuActions, SIGNAL(triggered(QAction*)),
-            this, SLOT(onAction(QAction*)));
 }
 
-void MainWindowController::onAction(QAction *action)
+void MainWindowController::onActionNew()
 {
-    if (action->objectName() == "actionNew")
-    {
-        TogglApi::instance->start("", "", 0, 0);
-    }
-    else if (action->objectName() == "actionContinue")
-    {
-        TogglApi::instance->continueLatestTimeEntry();
-    }
-    else if (action->objectName() == "actionStop")
-    {
-        TogglApi::instance->stop();
-    }
-    else if (action->objectName() == "actionShow")
-    {
-        displayApp(true);
-    }
-    else if (action->objectName() == "actionSync")
-    {
-        TogglApi::instance->sync();
-    }
-    else if (action->objectName() == "actionReports")
-    {
-        TogglApi::instance->openInBrowser();
-    }
-    else if (action->objectName() == "actionPreferences")
-    {
-        TogglApi::instance->editPreferences();
-    }
-    else if (action->objectName() == "actionAbout")
-    {
-        TogglApi::instance->about();
-    }
-    else if (action->objectName() == "actionSend_Feedback")
-    {
-        // FIXME: display feedback dialog
-    }
-    else if (action->objectName() == "actionLogout")
-    {
-        TogglApi::instance->logout();
-    }
-    else if (action->objectName() == "actionQuit")
-    {
-        shutdown = true;
-        qApp->exit(0);
-    }
-    else if (action->objectName() == "actionClear_Cache")
-    {
-        if (QMessageBox::Ok == QMessageBox(QMessageBox::Question,
-                                            "Clear Cache?",
-                                            "Clearing cache will delete any unsaved time entries and log you out.",
-                                            QMessageBox::Ok|QMessageBox::Cancel).exec())
-        {
-            TogglApi::instance->clearCache();
+    TogglApi::instance->start("", "", 0, 0);
+}
 
-        }
-    }
-    else if (action->objectName() == "actionHelp")
+void MainWindowController::onActionContinue()
+{
+    TogglApi::instance->continueLatestTimeEntry();
+}
+
+void MainWindowController::onActionStop()
+{
+    TogglApi::instance->stop();
+}
+
+void MainWindowController::onActionShow()
+{
+    displayApp(true);
+}
+
+void MainWindowController::onActionSync()
+{
+    TogglApi::instance->sync();
+}
+
+void MainWindowController::onActionReports()
+{
+    TogglApi::instance->openInBrowser();
+}
+
+void MainWindowController::onActionPreferences()
+{
+    TogglApi::instance->editPreferences();
+}
+
+void MainWindowController::onActionAbout()
+{
+    TogglApi::instance->about();
+}
+
+void MainWindowController::onActionSend_Feedback()
+{
+    // FIXME: open feedback dialog
+}
+
+void MainWindowController::onActionLogout()
+{
+    TogglApi::instance->logout();
+}
+
+void MainWindowController::onActionQuit()
+{
+    shutdown = true;
+    qApp->exit(0);
+}
+
+void MainWindowController::onActionClear_Cache()
+{
+    if (QMessageBox::Ok == QMessageBox(QMessageBox::Question,
+                                        "Clear Cache?",
+                                        "Clearing cache will delete any unsaved time entries and log you out.",
+                                        QMessageBox::Ok|QMessageBox::Cancel).exec())
     {
-        TogglApi::instance->getSupport();
+        TogglApi::instance->clearCache();
     }
-    else
-    {
-        qDebug() << "unknown action " << action->objectName();
-        Q_ASSERT(false);
-    }
+}
+
+void MainWindowController::onActionHelp()
+{
+    TogglApi::instance->getSupport();
 }
 
 void MainWindowController::displayApp(const bool open)
