@@ -6,6 +6,7 @@
 #include <QDir>
 #include <QCoreApplication>
 #include <QDesktopServices>
+#include <QDebug>
 
 #include "kopsik_api.h"
 
@@ -171,9 +172,11 @@ TogglApi::TogglApi(QObject *parent) :
 
     QString logPath = appDir.filePath("toggldesktop.log");
     kopsik_set_log_path(logPath.toUtf8().constData());
+    qDebug() << "Log path " << logPath;
 
     QString dbPath = appDir.filePath("toggldesktop.db");
     kopsik_set_db_path(ctx, dbPath.toUtf8().constData());
+    qDebug() << "DB path " << dbPath;
 
     QString executablePath = QCoreApplication::applicationDirPath();
     QDir executableDir = QDir(executablePath);
