@@ -214,6 +214,11 @@ void TogglApi::login(const QString email, const QString password)
     kopsik_login(ctx, email.toStdString().c_str(), password.toStdString().c_str());
 }
 
+void TogglApi::googleLogin(const QString accessToken)
+{
+    kopsik_google_login(ctx, accessToken.toStdString().c_str());
+}
+
 bool TogglApi::start(
     const QString description,
     const QString duration,

@@ -53,7 +53,7 @@
    <item>
     <widget class="QLabel" name="googleLogin">
      <property name="text">
-      <string>&lt;a href=&quot;&quot;&gt;Log in with Google Account&lt;/a&gt;</string>
+      <string>&lt;a href=&quot;#google_login&quot;&gt;Log in with Google Account&lt;/a&gt;</string>
      </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>

@@ -29,6 +29,8 @@ public:
 
     void login(const QString email, const QString password);
 
+    void googleLogin(const QString accessToken);
+
     bool start(
         const QString description,
         const QString duration,

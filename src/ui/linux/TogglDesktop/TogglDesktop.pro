@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network
+QT       += core gui network webkitwidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -30,7 +30,9 @@ SOURCES += main.cpp\
     timeentrylistwidget.cpp \
     timerwidget.cpp \
     timeentrycellwidget.cpp \
-    timeentryeditorwidget.cpp
+    timeentryeditorwidget.cpp \
+    ../../../../third_party/qt-oauth-lib/logindialog.cpp \
+    ../../../../third_party/qt-oauth-lib/oauth2.cpp
 
 HEADERS  += \
     updateview.h \
@@ -53,7 +55,9 @@ HEADERS  += \
     timeentrylistwidget.h \
     timerwidget.h \
     timeentrycellwidget.h \
-    timeentryeditorwidget.h
+    timeentryeditorwidget.h \
+    ../../../../third_party/qt-oauth-lib/logindialog.h \
+    ../../../../third_party/qt-oauth-lib/oauth2.h
 
 FORMS    += \
     mainwindowcontroller.ui \
@@ -62,7 +66,8 @@ FORMS    += \
     timeentrylistwidget.ui \
     timerwidget.ui \
     timeentrycellwidget.ui \
-    timeentryeditorwidget.ui
+    timeentryeditorwidget.ui \
+    ../../../../third_party/qt-oauth-lib/logindialog.ui
 
 QMAKE_RPATHDIR += $$PWD/../../../libkopsik/Library/build-TogglDesktopLibrary-Desktop-Debug
 
@@ -70,6 +75,7 @@ LIBS += -L$$PWD/../../../libkopsik/Library/build-TogglDesktopLibrary-Desktop-Deb
 
 INCLUDEPATH += $$PWD/../../../libkopsik/include
 INCLUDEPATH += $$PWD/../../../../third_party/qt-solutions/qtsingleapplication/src/
+INCLUDEPATH += $$PWD/../../../../third_party/qt-oauth-lib
 
 QMAKE_RPATHDIR += .
 

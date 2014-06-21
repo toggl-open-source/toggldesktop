@@ -7,6 +7,7 @@
 #include <stdint.h>
 
 #include "timeentryview.h"
+#include "oauth2.h"
 
 namespace Ui {
 class LoginWidget;
@@ -31,8 +32,14 @@ private slots:
         const bool open,
         QVector<TimeEntryView *> list);
 
+    void on_googleLogin_linkActivated(const QString &link);
+
+    void loginDone();
+
 private:
     Ui::LoginWidget *ui;
+
+    OAuth2 *oauth2;
 };
 
 #endif // LOGINWIDGET_H

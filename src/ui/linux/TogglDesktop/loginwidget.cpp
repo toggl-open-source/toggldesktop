@@ -5,7 +5,8 @@
 
 LoginWidget::LoginWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::LoginWidget)
+    ui(new Ui::LoginWidget),
+    oauth2(new OAuth2(this))
 {
     ui->setupUi(this);
 
@@ -16,6 +17,13 @@ LoginWidget::LoginWidget(QWidget *parent) :
 
     connect(TogglApi::instance, SIGNAL(displayTimeEntryList(bool,QVector<TimeEntryView*>)),
             this, SLOT(displayTimeEntryList(bool,QVector<TimeEntryView*>)));
+
+    oauth2->setScope("profile email");
+    oauth2->setAppName("Toggl Desktop");
+    oauth2->setClientID("426090949585.apps.googleusercontent.com");
+    oauth2->setRedirectURI("http://www.google.com/robots.txt");
+
+    connect(oauth2, SIGNAL(loginDone()), this, SLOT(loginDone()));
 }
 
 LoginWidget::~LoginWidget()
@@ -57,4 +65,14 @@ void LoginWidget::on_login_clicked()
         return;
     }
     TogglApi::instance->login(ui->email->text(), ui->password->text());
+}
+
+void LoginWidget::on_googleLogin_linkActivated(const QString &link)
+{
+    oauth2->startLogin(true);
+}
+
+void LoginWidget::loginDone()
+{
+    TogglApi::instance->googleLogin(oauth2->accessToken());
 }

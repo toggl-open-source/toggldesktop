@@ -27,7 +27,7 @@ make test
 
 Linux 
 -----
-You need to install xorg-dev and qtcreator packages.
+You need to install *xorg-dev*, *qtcreator* and *libqt5webkit5-dev* packages (on Ubuntu).
 
 Windows
 -------
