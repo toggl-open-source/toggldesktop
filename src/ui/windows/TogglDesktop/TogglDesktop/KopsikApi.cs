@@ -65,18 +65,19 @@ namespace TogglDesktop
             public string StartTimeString;
             public string EndTimeString;
             public UInt64 UpdatedAt;
+            [MarshalAs(UnmanagedType.I1)]
+            public bool DurOnly;
             public string DateHeader;
             public string DateDuration;
             [MarshalAs(UnmanagedType.I1)]
-            public bool DurOnly;
-            [MarshalAs(UnmanagedType.I1)]
             public bool IsHeader;
-            public IntPtr Next;
             [MarshalAs(UnmanagedType.I1)]
             public bool CanAddProjects;
             [MarshalAs(UnmanagedType.I1)]
             public bool CanSeeBillable;
             public UInt64 DefaultWID;
+            public IntPtr Next;
+
             public KopsikTimeEntryViewItem ToUTF8()
             {
                 Description = DecodeString(Description);
