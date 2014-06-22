@@ -88,12 +88,7 @@ namespace TogglDesktop
             }
             GUID = te.GUID;
 
-            Boolean can_see_billable = false;
-            if (!KopsikApi.CanUserSeeBillableFlag(GUID, ref can_see_billable))
-            {
-                return;
-            }
-            checkBoxBillable.Visible = can_see_billable;
+            checkBoxBillable.Visible = te.CanSeeBillable;
 
             checkBoxBillable.Tag = this;
             try
@@ -105,14 +100,9 @@ namespace TogglDesktop
                 checkBoxBillable.Tag = null;
             }
 
-            Boolean can_add_projects = false;
-            if (!KopsikApi.CanUserAddProjects(timeEntry.WID, ref can_add_projects))
+            if (!te.CanAddProjects)
             {
-                return;
-            }
-            if (!can_add_projects)
-            {
-                this.linkAddProject.Visible = !can_add_projects;
+                this.linkAddProject.Visible = !te.CanAddProjects;
             }
 
             if (!comboBoxDescription.Focused)

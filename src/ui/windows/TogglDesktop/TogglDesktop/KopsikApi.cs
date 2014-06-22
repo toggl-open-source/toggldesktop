@@ -72,7 +72,11 @@ namespace TogglDesktop
             [MarshalAs(UnmanagedType.I1)]
             public bool IsHeader;
             public IntPtr Next;
-
+            [MarshalAs(UnmanagedType.I1)]
+            public bool CanAddProjects;
+            [MarshalAs(UnmanagedType.I1)]
+            public bool CanSeeBillable;
+            public UInt64 DefaultWID;
             public KopsikTimeEntryViewItem ToUTF8()
             {
                 Description = DecodeString(Description);
@@ -862,33 +866,6 @@ namespace TogglDesktop
         public static bool SetUpdateChannel(string channel)
         {
             return kopsik_set_update_channel(ctx, channel);
-        }
-
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        private static extern bool kopsik_user_can_see_billable_flag(
-            IntPtr context,
-            string time_entry_guid,
-            ref bool can_see);
-
-        public static bool CanUserSeeBillableFlag(
-            string time_entry_guid,
-            ref bool can_see)
-        {
-                return kopsik_user_can_see_billable_flag(ctx, 
-                    time_entry_guid, ref can_see);
-        }
-
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        private static extern bool kopsik_user_can_add_projects(
-            IntPtr context,
-            UInt64 workspace_id,
-            ref bool can_add);
-
-        public static bool CanUserAddProjects(
-            UInt64 workspace_id,
-            ref bool can_add)
-        {
-                return kopsik_user_can_add_projects(ctx, workspace_id, ref can_add);
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
