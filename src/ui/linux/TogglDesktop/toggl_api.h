@@ -92,6 +92,22 @@ public:
         const QString project_name,
         const bool is_private);
 
+    bool setProxySettings(
+        const bool useProxy,
+        const QString proxyHost,
+        const u_int64_t proxyPort,
+        const QString proxyUsername,
+        const QString proxyPassword);
+
+    bool setSettings(const bool useIdleDetection,
+                     const bool menubarTimer,
+                     const bool dockIcon,
+                     const bool onTop,
+                     const bool reminder,
+                     const bool ignoreCert);
+
+    void toggleTimelineRecording();
+
     static const QString formatDurationInSecondsHHMMSS(
         const int64_t duration);
 

@@ -19,6 +19,7 @@
 #include "loginwidget.h"
 #include "timeentrylistwidget.h"
 #include "timeentryeditorwidget.h"
+#include "preferencesdialog.h"
 
 MainWindowController::MainWindowController(QWidget *parent) :
     QMainWindow(parent),
@@ -34,7 +35,8 @@ MainWindowController::MainWindowController(QWidget *parent) :
     actionLogout(0),
     actionClear_Cache(0),
     actionSend_Feedback(0),
-    actionReports(0)
+    actionReports(0),
+    preferencesDialog(new PreferencesDialog(this))
 {
     ui->setupUi(this);
 

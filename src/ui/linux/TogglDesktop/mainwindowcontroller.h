@@ -9,6 +9,7 @@
 #include "toggl_api.h"
 #include "loginwidget.h"
 #include "timeentrylistwidget.h"
+#include "preferencesdialog.h"
 
 namespace Ui {
 class MainWindowController;
@@ -68,6 +69,8 @@ private:
     QAction *actionClear_Cache;
     QAction *actionSend_Feedback;
     QAction *actionReports;
+
+    PreferencesDialog *preferencesDialog;
 
     void readSettings();
     void writeSettings();

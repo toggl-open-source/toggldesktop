@@ -219,6 +219,42 @@ void TogglApi::googleLogin(const QString accessToken)
     kopsik_google_login(ctx, accessToken.toStdString().c_str());
 }
 
+bool TogglApi::setProxySettings(
+    const bool useProxy,
+    const QString proxyHost,
+    const u_int64_t proxyPort,
+    const QString proxyUsername,
+    const QString proxyPassword)
+{
+    return kopsik_set_proxy_settings(ctx,
+                                     useProxy,
+                                     proxyHost.toStdString().c_str(),
+                                     proxyPort,
+                                     proxyUsername.toStdString().c_str(),
+                                     proxyPassword.toStdString().c_str());
+}
+
+bool TogglApi::setSettings(const bool useIdleDetection,
+                           const bool menubarTimer,
+                           const bool dockIcon,
+                           const bool onTop,
+                           const bool reminder,
+                           const bool ignoreCert)
+{
+    return kopsik_set_settings(ctx,
+                               useIdleDetection,
+                               menubarTimer,
+                               dockIcon,
+                               onTop,
+                               reminder,
+                               ignoreCert);
+}
+
+void TogglApi::toggleTimelineRecording()
+{
+    kopsik_timeline_toggle_recording(ctx);
+}
+
 bool TogglApi::start(
     const QString description,
     const QString duration,
