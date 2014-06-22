@@ -31,6 +31,9 @@ TimeEntryView *TimeEntryView::importOne(KopsikTimeEntryViewItem *view) {
     result->DateDuration = QString(view->DateDuration);
     result->DurOnly = view->DurOnly;
     result->IsHeader = view->IsHeader;
+    result->CanSeeBillable = view->CanSeeBillable;
+    result->CanAddProjects = view->CanAddProjects;
+    result->DefaultWID = view->DefaultWID;
     return result;
 }
 

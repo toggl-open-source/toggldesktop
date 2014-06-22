@@ -40,6 +40,10 @@ public:
     QString DateDuration;
     bool DurOnly;
     bool IsHeader;
+    bool CanAddProjects;
+    bool CanSeeBillable;
+    uint64_t DefaultWID;
+
 signals:
 
 public slots:
