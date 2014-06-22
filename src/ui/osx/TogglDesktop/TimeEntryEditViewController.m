@@ -296,28 +296,11 @@ extern int kDurationStringLength;
 		[self.descriptionComboboxDataSource setFilter:@""];
 	}
 
-	// Check if TE's can be marked as billable at all
-	_Bool can_see_billable = false;
-	if (!kopsik_user_can_see_billable_flag(ctx,
-										   [self.timeEntry.GUID UTF8String],
-										   &can_see_billable))
-	{
-		return;
-	}
-
-	[self.billableCheckbox setHidden:!can_see_billable];
+	[self.billableCheckbox setHidden:!self.timeEntry.CanSeeBillable];
 
 	[self.billableCheckbox setState:[Utils boolToState:self.timeEntry.billable]];
 
-	// Check if user can add projects
-	_Bool can_add_projects = false;
-	if (!kopsik_user_can_add_projects(ctx,
-									  self.timeEntry.WorkspaceID,
-									  &can_add_projects))
-	{
-		return;
-	}
-	if (!can_add_projects)
+	if (!self.timeEntry.CanAddProjects)
 	{
 		[self.addProjectButton setHidden:YES];
 	}
@@ -518,29 +501,18 @@ extern int kDurationStringLength;
 	}
 	[self.workspaceSelect reloadData];
 
-	if (!wid)
-	{
-		if (self.timeEntry)
-		{
-			wid = self.timeEntry.WorkspaceID;
-		}
+	if (!wid && self.timeEntry) {
+    wid = self.timeEntry.WorkspaceID;
 	}
 
-	if (!wid)
-	{
-		if (!kopsik_users_default_wid(ctx, &wid))
-		{
-			return;
-		}
+	if (!wid && self.timeEntry) {
+    wid = self.timeEntry.DefaultWID;
 	}
 
-	if (!wid)
+	if (!wid && self.workspaceList.count)
 	{
-		if (self.workspaceList.count > 0)
-		{
-			ViewItem *view = self.workspaceList[0];
-			wid = view.ID;
-		}
+    ViewItem *view = self.workspaceList[0];
+    wid = view.ID;
 	}
 
 	for (int i = 0; i < self.workspaceList.count; i++)

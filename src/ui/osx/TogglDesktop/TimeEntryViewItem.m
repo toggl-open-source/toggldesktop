@@ -103,6 +103,10 @@
 	{
 		self.durOnly = YES;
 	}
+  
+  self.CanAddProjects = te->CanAddProjects;
+  self.DefaultWID = te->DefaultWID;
+  self.CanSeeBillable = te->CanSeeBillable;
 }
 
 - (NSString *)description

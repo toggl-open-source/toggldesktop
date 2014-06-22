@@ -39,4 +39,7 @@
 @property (strong) NSString *dateDuration;
 // If TE is passed for editing, this is the field that should be focussed
 @property (strong) NSString *focusedFieldName;
+@property BOOL CanSeeBillable;
+@property uint64_t DefaultWID;
+@property BOOL CanAddProjects;
 @end
