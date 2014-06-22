@@ -12,7 +12,7 @@ namespace TogglDesktop
 {
     public partial class TimeEntryCell : UserControl
     {
-        private KopsikApi.KopsikTimeEntryViewItem TimeEntry;
+        private TogglApi.KopsikTimeEntryViewItem TimeEntry;
         public TimeEntryCell(int y, int w)
         {
             InitializeComponent();
@@ -21,7 +21,7 @@ namespace TogglDesktop
             this.Anchor = (AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top);
         }
 
-        internal void Setup(KopsikApi.KopsikTimeEntryViewItem item)
+        internal void Setup(TogglApi.KopsikTimeEntryViewItem item)
         {
             this.TimeEntry = item;
             this.Render();
@@ -39,27 +39,27 @@ namespace TogglDesktop
 
         private void TimeEntryCell_MouseClick(object sender, MouseEventArgs e)
         {
-            KopsikApi.Edit(TimeEntry.GUID, false, "");
+            TogglApi.Edit(TimeEntry.GUID, false, "");
         }
 
         private void labelDescription_Click(object sender, EventArgs e)
         {
-            KopsikApi.Edit(TimeEntry.GUID, false, KopsikApi.Description);
+            TogglApi.Edit(TimeEntry.GUID, false, TogglApi.Description);
         }
 
         private void labelDuration_Click(object sender, EventArgs e)
         {
-            KopsikApi.Edit(TimeEntry.GUID, false, KopsikApi.Duration);
+            TogglApi.Edit(TimeEntry.GUID, false, TogglApi.Duration);
         }
 
         private void labelProject_Click(object sender, EventArgs e)
         {
-            KopsikApi.Edit(TimeEntry.GUID, false, KopsikApi.Project);
+            TogglApi.Edit(TimeEntry.GUID, false, TogglApi.Project);
         }
 
         private void labelContinue_Click(object sender, EventArgs e)
         {
-            KopsikApi.Continue(TimeEntry.GUID);
+            TogglApi.Continue(TimeEntry.GUID);
         }
 
     }

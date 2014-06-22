@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace TogglDesktop
 {
-    static class KopsikApi
+    static class TogglApi
     {
         private static IntPtr ctx = IntPtr.Zero;
 

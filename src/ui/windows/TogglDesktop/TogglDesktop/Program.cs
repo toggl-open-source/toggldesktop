@@ -81,7 +81,7 @@ namespace TogglDesktop
 
         private static void onApplicationExit(object sender, EventArgs e)
         {
-            KopsikApi.Clear();
+            TogglApi.Clear();
         }
 
         public static void Shutdown(int exitCode)

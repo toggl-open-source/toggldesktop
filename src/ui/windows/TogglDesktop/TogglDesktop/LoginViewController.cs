@@ -33,13 +33,13 @@ namespace TogglDesktop
                 password.Focus();
                 return;
             }
-            KopsikApi.Login(email.Text, password.Text);
+            TogglApi.Login(email.Text, password.Text);
             password.Clear();
         }
 
         private void passwordForgotTextField_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            KopsikApi.PasswordForgot();
+            TogglApi.PasswordForgot();
         }
 
         private void googleLoginTextField_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -54,11 +54,11 @@ namespace TogglDesktop
                 if (ex.InnerException != null &&
                     ex.InnerException.Message.Contains("access_denied"))
                 {
-                    KopsikApi.NewError("Login process was canceled", true);
+                    TogglApi.NewError("Login process was canceled", true);
                 }
                 else
                 {
-                    KopsikApi.NewError(ex.Message, false);
+                    TogglApi.NewError(ex.Message, false);
                 }
             }
         }
@@ -79,7 +79,7 @@ namespace TogglDesktop
                 CancellationToken.None,
                 null).Result;
 
-            KopsikApi.GoogleLogin(credential.Token.AccessToken);
+            TogglApi.GoogleLogin(credential.Token.AccessToken);
             credential.RevokeTokenAsync(CancellationToken.None).Wait();
         }
 

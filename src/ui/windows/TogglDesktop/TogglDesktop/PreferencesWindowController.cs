@@ -20,7 +20,7 @@ namespace TogglDesktop
         {
             InitializeComponent();
 
-            KopsikApi.OnSettings += OnSettings;
+            TogglApi.OnSettings += OnSettings;
         }
 
         private void PreferencesWindowController_FormClosing(object sender, FormClosingEventArgs e)
@@ -43,7 +43,7 @@ namespace TogglDesktop
             Hide();
         }
 
-        void OnSettings(bool open, KopsikApi.KopsikSettingsViewItem settings)
+        void OnSettings(bool open, TogglApi.KopsikSettingsViewItem settings)
         {
             if (InvokeRequired)
             {
@@ -95,7 +95,7 @@ namespace TogglDesktop
             {
                 port = 0;
             }
-            return KopsikApi.SetProxySettings(
+            return TogglApi.SetProxySettings(
                 checkBoxUseProxy.Checked,
                 textBoxProxyHost.Text,
                 port,
@@ -109,7 +109,7 @@ namespace TogglDesktop
             {
                 return true;
             }
-            return KopsikApi.SetSettings(
+            return TogglApi.SetSettings(
                 checkBoxIdleDetection.Checked,
                 true,
                 true,
@@ -145,7 +145,7 @@ namespace TogglDesktop
 
         private void checkBoxRecordTimeline_CheckedChanged(object sender, EventArgs e)
         {
-            KopsikApi.ToggleTimelineRecording();
+            TogglApi.ToggleTimelineRecording();
         }
 
         private void checkBoxOnTop_CheckedChanged(object sender, EventArgs e)

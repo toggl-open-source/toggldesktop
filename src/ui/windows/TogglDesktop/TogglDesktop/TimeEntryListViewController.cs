@@ -16,7 +16,7 @@ namespace TogglDesktop
         {
             InitializeComponent();
 
-            KopsikApi.OnTimeEntryList += OnTimeEntryList;
+            TogglApi.OnTimeEntryList += OnTimeEntryList;
         }
 
         public void SetAcceptButton(Form frm)
@@ -24,7 +24,7 @@ namespace TogglDesktop
             timerEditViewController.SetAcceptButton(frm);
         }
 
-        void OnTimeEntryList(bool open, List<KopsikApi.KopsikTimeEntryViewItem> list)
+        void OnTimeEntryList(bool open, List<TogglApi.KopsikTimeEntryViewItem> list)
         {
             if (InvokeRequired)
             {
@@ -36,7 +36,7 @@ namespace TogglDesktop
             this.EntriesList.Controls.Clear();
             this.EntriesList.SuspendLayout();
 
-            foreach (KopsikApi.KopsikTimeEntryViewItem item in list)
+            foreach (TogglApi.KopsikTimeEntryViewItem item in list)
             {
                 if (item.IsHeader)
                 {
