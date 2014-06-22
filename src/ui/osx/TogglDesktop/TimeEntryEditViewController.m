@@ -501,18 +501,20 @@ extern int kDurationStringLength;
 	}
 	[self.workspaceSelect reloadData];
 
-	if (!wid && self.timeEntry) {
-    wid = self.timeEntry.WorkspaceID;
+	if (!wid && self.timeEntry)
+	{
+		wid = self.timeEntry.WorkspaceID;
 	}
 
-	if (!wid && self.timeEntry) {
-    wid = self.timeEntry.DefaultWID;
+	if (!wid && self.timeEntry)
+	{
+		wid = self.timeEntry.DefaultWID;
 	}
 
 	if (!wid && self.workspaceList.count)
 	{
-    ViewItem *view = self.workspaceList[0];
-    wid = view.ID;
+		ViewItem *view = self.workspaceList[0];
+		wid = view.ID;
 	}
 
 	for (int i = 0; i < self.workspaceList.count; i++)
