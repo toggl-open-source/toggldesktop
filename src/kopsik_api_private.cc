@@ -169,6 +169,10 @@ KopsikTimeEntryViewItem *time_entry_view_item_init(
     view_item->DurOnly = te->DurOnly();
     view_item->IsHeader = false;
 
+    view_item->CanAddProjects = false;
+    view_item->CanSeeBillable = false;
+    view_item->DefaultWID = 0;
+
     view_item->Next = 0;
 
     return view_item;

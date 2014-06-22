@@ -50,10 +50,16 @@ extern "C" {
         char *StartTimeString;
         char *EndTimeString;
         uint64_t UpdatedAt;
+        _Bool DurOnly;
+        // In case it's a header
         char *DateHeader;
         char *DateDuration;
-        _Bool DurOnly;
         _Bool IsHeader;
+        // Additional fields; only when in time entry editor
+        _Bool CanAddProjects;
+        _Bool CanSeeBillable;
+        uint64_t DefaultWID;
+        // Next in list
         void *Next;
     } KopsikTimeEntryViewItem;
 
@@ -474,23 +480,6 @@ extern "C" {
         const int view_item_size,
         const int settings_size,
         const int update_view_item_size);
-
-    // FIXME: should be invoked inside lib instead
-    KOPSIK_EXPORT _Bool kopsik_users_default_wid(
-        void *context,
-        uint64_t *default_wid);
-
-    // FIXME: should not be exported from lib
-    KOPSIK_EXPORT _Bool kopsik_user_can_see_billable_flag(
-        void *context,
-        const char *guid,
-        _Bool *can_see);
-
-    // FIXME: should not be exported from lib
-    KOPSIK_EXPORT _Bool kopsik_user_can_add_projects(
-        void *context,
-        const uint64_t workspace_id,
-        _Bool *can_add);
 
 #undef KOPSIK_EXPORT
 

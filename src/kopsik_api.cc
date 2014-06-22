@@ -219,49 +219,6 @@ _Bool kopsik_clear_cache(
     return app(context)->ClearCache();
 }
 
-_Bool kopsik_user_can_see_billable_flag(
-    void *context,
-    const char *guid,
-    _Bool *can_see) {
-
-    poco_check_ptr(can_see);
-    poco_check_ptr(guid);
-
-    *can_see = false;
-    if (app(context)->CanSeeBillable(std::string(guid))) {
-        *can_see = true;
-    }
-
-    return true;
-}
-
-_Bool kopsik_user_can_add_projects(
-    void *context,
-    const uint64_t workspace_id,
-    _Bool *can_add) {
-
-    poco_check_ptr(can_add);
-
-    *can_add = false;
-    if (app(context)->CanAddProjects(workspace_id)) {
-        *can_add = true;
-    }
-
-    return true;
-}
-
-_Bool kopsik_users_default_wid(
-    void *context,
-    uint64_t *default_wid) {
-
-    poco_check_ptr(default_wid);
-
-    *default_wid =
-        static_cast<unsigned int>(app(context)->UsersDefaultWID());
-
-    return true;
-}
-
 // Sync
 
 void kopsik_sync(void *context) {

@@ -1087,20 +1087,11 @@ _Bool Context::ClearCache() {
     return true;
 }
 
-bool Context::CanSeeBillable(const std::string GUID) const {
-    if (!user_) {
-        return false;
-    }
+bool Context::canSeeBillable(
+    TimeEntry *time_entry,
+    Workspace *ws) const {
     if (!user_->HasPremiumWorkspaces()) {
         return false;
-    }
-    TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
-    if (!te) {
-        return false;
-    }
-    Workspace *ws = 0;
-    if (te->WID()) {
-        ws = user_->related.WorkspaceByID(te->WID());
     }
     if (ws && !ws->Premium()) {
         return false;
@@ -1108,26 +1099,6 @@ bool Context::CanSeeBillable(const std::string GUID) const {
     return true;
 }
 
-bool Context::CanAddProjects(const Poco::UInt64 workspace_id) const {
-    if (!user_) {
-        return false;
-    }
-    Workspace *ws = 0;
-    if (workspace_id) {
-        ws = user_->related.WorkspaceByID(workspace_id);
-    }
-    if (ws) {
-        return ws->Admin() || !ws->OnlyAdminsMayCreateProjects();
-    }
-    return user_->CanAddProjects();
-}
-
-Poco::UInt64 Context::UsersDefaultWID() const {
-    if (!user_) {
-        return 0;
-    }
-    return user_->DefaultWID();
-}
 
 void Context::CollectPushableTimeEntries(
     std::vector<TimeEntry *> *models) const {
@@ -1316,7 +1287,22 @@ void Context::displayTimeEntryEditor(const _Bool open,
     poco_check_ptr(te);
     time_entry_editor_guid_ = te->GUID();
     KopsikTimeEntryViewItem *view = timeEntryViewItem(te);
+
+    Workspace *ws = 0;
+    if (te->WID()) {
+        ws = user_->related.WorkspaceByID(te->WID());
+    }
+    view->CanSeeBillable = canSeeBillable(te, ws);
+    view->DefaultWID = user_->DefaultWID();
+    if (ws) {
+        view->CanAddProjects = ws->Admin() ||
+                               !ws->OnlyAdminsMayCreateProjects();
+    } else {
+        view->CanAddProjects = user_->CanAddProjects();
+    }
+
     UI()->DisplayTimeEntryEditor(open, view, focused_field_name);
+
     time_entry_view_item_clear(view);
 }
 

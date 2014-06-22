@@ -84,11 +84,6 @@ class Context {
 
     _Bool ClearCache();
 
-    bool CanSeeBillable(const std::string GUID) const;
-    bool CanAddProjects(const Poco::UInt64 workspace_id) const;
-
-    Poco::UInt64 UsersDefaultWID() const;
-
     void CollectPushableTimeEntries(
         std::vector<TimeEntry *> *models) const;
 
@@ -265,6 +260,10 @@ class Context {
     _Bool displayError(const error);
 
     std::string timeOfDayFormat() const;
+
+    bool canSeeBillable(
+        TimeEntry *time_entry,
+        Workspace *workspace) const;
 
     Poco::Mutex db_m_;
     Database *db_;
