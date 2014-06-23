@@ -67,6 +67,8 @@ public:
 
     void viewTimeEntryList();
 
+    void setIdleSeconds(u_int64_t idleSeconds);
+
     bool setTimeEntryProject(
         const QString guid,
         const uint64_t task_id,

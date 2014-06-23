@@ -239,6 +239,11 @@ bool TogglApi::stopRunningTimeEntryAt(const uint64_t at)
     return kopsik_stop_running_time_entry_at(ctx, at);
 }
 
+void TogglApi::setIdleSeconds(u_int64_t idleSeconds)
+{
+    kopsik_set_idle_seconds(ctx, idleSeconds);
+}
+
 bool TogglApi::setSettings(const bool useIdleDetection,
                            const bool menubarTimer,
                            const bool dockIcon,
