@@ -37,7 +37,8 @@ MainWindowController::MainWindowController(QWidget *parent) :
     actionReports(0),
     preferencesDialog(new PreferencesDialog(this)),
     aboutDialog(new AboutDialog(this)),
-    feedbackDialog(new FeedbackDialog(this))
+    feedbackDialog(new FeedbackDialog(this)),
+    idleNotificationDialog(new IdleNotificationDialog(this))
 {
     ui->setupUi(this);
 

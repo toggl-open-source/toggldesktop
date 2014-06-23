@@ -12,6 +12,7 @@
 #include "preferencesdialog.h"
 #include "aboutdialog.h"
 #include "feedbackdialog.h"
+#include "idlenotificationdialog.h"
 
 namespace Ui {
 class MainWindowController;
@@ -75,6 +76,7 @@ private:
     PreferencesDialog *preferencesDialog;
     AboutDialog *aboutDialog;
     FeedbackDialog *feedbackDialog;
+    IdleNotificationDialog *idleNotificationDialog;
 
     void readSettings();
     void writeSettings();

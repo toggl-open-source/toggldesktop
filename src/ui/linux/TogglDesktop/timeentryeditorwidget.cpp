@@ -65,7 +65,7 @@ void TimeEntryEditorWidget::displayClientSelect(
         return;
     }
 
-    u_int64_t workspaceID = 0;
+    uint64_t workspaceID = 0;
     QVariant data = ui->newProjectWorkspace->currentData();
     if (data.canConvert<GenericView *>())
     {
@@ -262,9 +262,9 @@ bool TimeEntryEditorWidget::applyNewProject()
     {
         return false;
     }
-    u_int64_t workspaceID = workspace.value<GenericView *>()->ID;
+    uint64_t workspaceID = workspace.value<GenericView *>()->ID;
 
-    u_int64_t clientID = 0;
+    uint64_t clientID = 0;
     QVariant client = ui->newProjectClient->currentData();
     if (client.canConvert<GenericView *>())
     {

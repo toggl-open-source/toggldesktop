@@ -69,8 +69,8 @@ public:
 
     bool setTimeEntryProject(
         const QString guid,
-        const u_int64_t task_id,
-        const u_int64_t project_id,
+        const uint64_t task_id,
+        const uint64_t project_id,
         const QString project_guid);
 
     bool setTimeEntryDescription(
@@ -87,15 +87,15 @@ public:
 
     bool addProject(
         const QString time_entry_guid,
-        const u_int64_t workspace_id,
-        const u_int64_t client_id,
+        const uint64_t workspace_id,
+        const uint64_t client_id,
         const QString project_name,
         const bool is_private);
 
     bool setProxySettings(
         const bool useProxy,
         const QString proxyHost,
-        const u_int64_t proxyPort,
+        const uint64_t proxyPort,
         const QString proxyUsername,
         const QString proxyPassword);
 
@@ -113,6 +113,8 @@ public:
     bool sendFeedback(const QString topic,
                       const QString details,
                       const QString filename);
+
+    bool stopRunningTimeEntryAt(const uint64_t at);
 
     static const QString formatDurationInSecondsHHMMSS(
         const int64_t duration);

@@ -222,7 +222,7 @@ void TogglApi::googleLogin(const QString accessToken)
 bool TogglApi::setProxySettings(
     const bool useProxy,
     const QString proxyHost,
-    const u_int64_t proxyPort,
+    const uint64_t proxyPort,
     const QString proxyUsername,
     const QString proxyPassword)
 {
@@ -232,6 +232,11 @@ bool TogglApi::setProxySettings(
                                      proxyPort,
                                      proxyUsername.toStdString().c_str(),
                                      proxyPassword.toStdString().c_str());
+}
+
+bool TogglApi::stopRunningTimeEntryAt(const uint64_t at)
+{
+    return kopsik_stop_running_time_entry_at(ctx, at);
 }
 
 bool TogglApi::setSettings(const bool useIdleDetection,
@@ -344,8 +349,8 @@ void TogglApi::editTimeEntry(const QString guid,
 
 bool TogglApi::setTimeEntryProject(
         const QString guid,
-        const u_int64_t task_id,
-        const u_int64_t project_id,
+        const uint64_t task_id,
+        const uint64_t project_id,
         const QString project_guid)
 {
     return kopsik_set_time_entry_project(ctx,
@@ -384,8 +389,8 @@ bool TogglApi::setTimeEntryBillable(
 
 bool TogglApi::addProject(
     const QString time_entry_guid,
-    const u_int64_t workspace_id,
-    const u_int64_t client_id,
+    const uint64_t workspace_id,
+    const uint64_t client_id,
     const QString project_name,
     const bool is_private)
 {
