@@ -108,6 +108,8 @@ public:
 
     void toggleTimelineRecording();
 
+    bool setUpdateChannel(const QString channel);
+
     static const QString formatDurationInSecondsHHMMSS(
         const int64_t duration);
 

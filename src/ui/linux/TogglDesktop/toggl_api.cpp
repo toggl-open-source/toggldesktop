@@ -255,6 +255,11 @@ void TogglApi::toggleTimelineRecording()
     kopsik_timeline_toggle_recording(ctx);
 }
 
+bool TogglApi::setUpdateChannel(const QString channel)
+{
+    return kopsik_set_update_channel(ctx, channel.toStdString().c_str());
+}
+
 bool TogglApi::start(
     const QString description,
     const QString duration,

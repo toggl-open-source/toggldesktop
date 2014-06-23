@@ -36,7 +36,8 @@ MainWindowController::MainWindowController(QWidget *parent) :
     actionClear_Cache(0),
     actionSend_Feedback(0),
     actionReports(0),
-    preferencesDialog(new PreferencesDialog(this))
+    preferencesDialog(new PreferencesDialog(this)),
+    aboutDialog(new AboutDialog(this))
 {
     ui->setupUi(this);
 

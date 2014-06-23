@@ -10,6 +10,7 @@
 #include "loginwidget.h"
 #include "timeentrylistwidget.h"
 #include "preferencesdialog.h"
+#include "aboutdialog.h"
 
 namespace Ui {
 class MainWindowController;
@@ -71,6 +72,7 @@ private:
     QAction *actionReports;
 
     PreferencesDialog *preferencesDialog;
+    AboutDialog *aboutDialog;
 
     void readSettings();
     void writeSettings();
