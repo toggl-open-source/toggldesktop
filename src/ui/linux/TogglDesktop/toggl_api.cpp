@@ -415,3 +415,13 @@ bool TogglApi::setTimeEntryDuration(
                                           guid.toStdString().c_str(),
                                           value.toStdString().c_str());
 }
+
+bool TogglApi::sendFeedback(const QString topic,
+                            const QString details,
+                            const QString filename)
+{
+    return kopsik_feedback_send(ctx,
+                                topic.toStdString().c_str(),
+                                details.toStdString().c_str(),
+                                filename.toStdString().c_str());
+}

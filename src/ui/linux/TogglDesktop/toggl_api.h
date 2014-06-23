@@ -110,6 +110,10 @@ public:
 
     bool setUpdateChannel(const QString channel);
 
+    bool sendFeedback(const QString topic,
+                      const QString details,
+                      const QString filename);
+
     static const QString formatDurationInSecondsHHMMSS(
         const int64_t duration);
 

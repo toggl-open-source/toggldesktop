@@ -11,6 +11,7 @@
 #include "timeentrylistwidget.h"
 #include "preferencesdialog.h"
 #include "aboutdialog.h"
+#include "feedbackdialog.h"
 
 namespace Ui {
 class MainWindowController;
@@ -73,6 +74,7 @@ private:
 
     PreferencesDialog *preferencesDialog;
     AboutDialog *aboutDialog;
+    FeedbackDialog *feedbackDialog;
 
     void readSettings();
     void writeSettings();

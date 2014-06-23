@@ -19,7 +19,6 @@
 #include "loginwidget.h"
 #include "timeentrylistwidget.h"
 #include "timeentryeditorwidget.h"
-#include "preferencesdialog.h"
 
 MainWindowController::MainWindowController(QWidget *parent) :
     QMainWindow(parent),
@@ -37,7 +36,8 @@ MainWindowController::MainWindowController(QWidget *parent) :
     actionSend_Feedback(0),
     actionReports(0),
     preferencesDialog(new PreferencesDialog(this)),
-    aboutDialog(new AboutDialog(this))
+    aboutDialog(new AboutDialog(this)),
+    feedbackDialog(new FeedbackDialog(this))
 {
     ui->setupUi(this);
 
@@ -220,7 +220,7 @@ void MainWindowController::onActionAbout()
 
 void MainWindowController::onActionSend_Feedback()
 {
-    // FIXME: open feedback dialog
+    feedbackDialog->show();
 }
 
 void MainWindowController::onActionLogout()

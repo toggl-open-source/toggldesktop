@@ -34,7 +34,8 @@ SOURCES += main.cpp\
     ../../../../third_party/qt-oauth-lib/logindialog.cpp \
     ../../../../third_party/qt-oauth-lib/oauth2.cpp \
     preferencesdialog.cpp \
-    aboutdialog.cpp
+    aboutdialog.cpp \
+    feedbackdialog.cpp
 
 HEADERS  += \
     updateview.h \
@@ -61,7 +62,8 @@ HEADERS  += \
     ../../../../third_party/qt-oauth-lib/logindialog.h \
     ../../../../third_party/qt-oauth-lib/oauth2.h \
     preferencesdialog.h \
-    aboutdialog.h
+    aboutdialog.h \
+    feedbackdialog.h
 
 FORMS    += \
     mainwindowcontroller.ui \
@@ -73,7 +75,8 @@ FORMS    += \
     timeentryeditorwidget.ui \
     ../../../../third_party/qt-oauth-lib/logindialog.ui \
     preferencesdialog.ui \
-    aboutdialog.ui
+    aboutdialog.ui \
+    feedbackdialog.ui
 
 QMAKE_RPATHDIR += $$PWD/../../../libkopsik/Library/build-TogglDesktopLibrary-Desktop-Debug
 
