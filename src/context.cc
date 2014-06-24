@@ -1927,8 +1927,13 @@ void Context::SetIdleSeconds(const Poco::UInt64 idle_seconds) {
                       << Formatter::FormatTimeForTimeEntryEditor(
                           last_idle_started_, user_->TimeOfDayFormat());
 
+                int minutes = last_idle_seconds_reading_ / 60;
                 std::stringstream duration;
-                duration << "(" << (idle_seconds / 60) << " minutes)";
+                duration << "(" << minutes << " minute";
+                if (minutes != 1) {
+                    duration << "s";
+                }
+                duration << ")";
 
                 UI()->DisplayIdleNotification(since.str(),
                                               duration.str(),
