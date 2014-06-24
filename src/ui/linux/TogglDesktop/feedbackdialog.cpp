@@ -3,6 +3,7 @@
 
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QMessageBox>
 
 #include "toggl_api.h"
 
@@ -49,4 +50,9 @@ void FeedbackDialog::on_sendButton_clicked()
     ui->selectedImageFilename->setText("");
     path = "";
     hide();
+
+    QMessageBox(QMessageBox::Information,
+                "Thank you!",
+                "Your feedback was sent successfully.",
+                QMessageBox::Ok).exec();
 }
