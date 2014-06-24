@@ -84,6 +84,7 @@ FORMS    += \
 QMAKE_RPATHDIR += $$PWD/../../../libkopsik/Library/build-TogglDesktopLibrary-Desktop-Debug
 
 LIBS += -L$$PWD/../../../libkopsik/Library/build-TogglDesktopLibrary-Desktop-Debug -lTogglDesktopLibrary
+LIBS += -lX11 -lXss
 
 INCLUDEPATH += $$PWD/../../../libkopsik/include
 INCLUDEPATH += $$PWD/../../../../third_party/qt-solutions/qtsingleapplication/src/

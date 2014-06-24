@@ -18,7 +18,7 @@ CXXFLAGS      = -m64 -pipe -O2 -Wall -W -D_REENTRANT -fPIE $(DEFINES)
 INCPATH       = -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I. -I../../../libkopsik/include -I../../../../third_party/qt-solutions/qtsingleapplication/src -I../../../../third_party/qt-oauth-lib -I/usr/include/qt5 -I/usr/include/qt5/QtWebKitWidgets -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtOpenGL -I/usr/include/qt5/QtPrintSupport -I/usr/include/qt5/QtLocation -I/usr/include/qt5/QtWebKit -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtPositioning -I/usr/include/qt5/QtSensors -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I. -I.
 LINK          = g++
 LFLAGS        = -m64 -Wl,-O1 -Wl,-rpath,/home/tanel/projects/toggldesktop/src/libkopsik/Library/build-TogglDesktopLibrary-Desktop-Debug -Wl,-rpath,/home/tanel/projects/toggldesktop/src/ui/linux/TogglDesktop -Wl,-rpath-link,/usr/lib/x86_64-linux-gnu
-LIBS          = $(SUBLIBS) -L/usr/X11R6/lib64 -L/home/tanel/projects/toggldesktop/src/ui/linux/TogglDesktop/../../../libkopsik/Library/build-TogglDesktopLibrary-Desktop-Debug -lTogglDesktopLibrary -lQt5WebKitWidgets -L/usr/lib/x86_64-linux-gnu -lQt5Quick -lQt5OpenGL -lQt5PrintSupport -lQt5Location -lQt5WebKit -lQt5Qml -lQt5Widgets -lQt5Positioning -lQt5Sensors -lQt5Network -lQt5Gui -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -L/usr/X11R6/lib64 -L/home/tanel/projects/toggldesktop/src/ui/linux/TogglDesktop/../../../libkopsik/Library/build-TogglDesktopLibrary-Desktop-Debug -lTogglDesktopLibrary -lX11 -lXss -lQt5WebKitWidgets -L/usr/lib/x86_64-linux-gnu -lQt5Quick -lQt5OpenGL -lQt5PrintSupport -lQt5Location -lQt5WebKit -lQt5Qml -lQt5Widgets -lQt5Positioning -lQt5Sensors -lQt5Network -lQt5Gui -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 QMAKE         = /usr/lib/x86_64-linux-gnu/qt5/bin/qmake
@@ -809,6 +809,9 @@ moc_toggl_api.cpp: /usr/include/qt5/QtCore/QObject \
 		/usr/include/qt5/QtCore/qiodevice.h \
 		/usr/include/qt5/QtCore/qregexp.h \
 		/usr/include/qt5/QtCore/qstringmatcher.h \
+		/usr/include/qt5/QtCore/QTimer \
+		/usr/include/qt5/QtCore/qtimer.h \
+		/usr/include/qt5/QtCore/qbasictimer.h \
 		updateview.h \
 		../../../libkopsik/include/kopsik_api.h \
 		timeentryview.h \
@@ -933,6 +936,9 @@ moc_mainwindowcontroller.cpp: /usr/include/qt5/QtWidgets/QMainWindow \
 		/usr/include/qt5/QtCore/QObject \
 		/usr/include/qt5/QtCore/QVector \
 		/usr/include/qt5/QtCore/QUrl \
+		/usr/include/qt5/QtCore/QTimer \
+		/usr/include/qt5/QtCore/qtimer.h \
+		/usr/include/qt5/QtCore/qbasictimer.h \
 		updateview.h \
 		../../../libkopsik/include/kopsik_api.h \
 		timeentryview.h \
@@ -949,6 +955,7 @@ moc_mainwindowcontroller.cpp: /usr/include/qt5/QtWidgets/QMainWindow \
 		/usr/include/qt5/QtWidgets/qdialog.h \
 		aboutdialog.h \
 		feedbackdialog.h \
+		idlenotificationdialog.h \
 		mainwindowcontroller.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) $(INCPATH) -I/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8 -I/usr/include/c++/4.8/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include mainwindowcontroller.h -o moc_mainwindowcontroller.cpp
 
@@ -2830,6 +2837,9 @@ main.o: main.cpp mainwindowcontroller.h \
 		/usr/include/qt5/QtCore/QObject \
 		/usr/include/qt5/QtCore/QVector \
 		/usr/include/qt5/QtCore/QUrl \
+		/usr/include/qt5/QtCore/QTimer \
+		/usr/include/qt5/QtCore/qtimer.h \
+		/usr/include/qt5/QtCore/qbasictimer.h \
 		updateview.h \
 		../../../libkopsik/include/kopsik_api.h \
 		timeentryview.h \
@@ -2846,6 +2856,7 @@ main.o: main.cpp mainwindowcontroller.h \
 		/usr/include/qt5/QtWidgets/qdialog.h \
 		aboutdialog.h \
 		feedbackdialog.h \
+		idlenotificationdialog.h \
 		/usr/include/qt5/QtWidgets/QApplication \
 		/usr/include/qt5/QtWidgets/qapplication.h \
 		/usr/include/qt5/QtCore/qcoreapplication.h \
@@ -3250,6 +3261,9 @@ toggl_api.o: toggl_api.cpp toggl_api.h \
 		/usr/include/qt5/QtCore/qiodevice.h \
 		/usr/include/qt5/QtCore/qregexp.h \
 		/usr/include/qt5/QtCore/qstringmatcher.h \
+		/usr/include/qt5/QtCore/QTimer \
+		/usr/include/qt5/QtCore/qtimer.h \
+		/usr/include/qt5/QtCore/qbasictimer.h \
 		updateview.h \
 		../../../libkopsik/include/kopsik_api.h \
 		timeentryview.h \
@@ -3395,6 +3409,9 @@ mainwindowcontroller.o: mainwindowcontroller.cpp mainwindowcontroller.h \
 		/usr/include/qt5/QtCore/QObject \
 		/usr/include/qt5/QtCore/QVector \
 		/usr/include/qt5/QtCore/QUrl \
+		/usr/include/qt5/QtCore/QTimer \
+		/usr/include/qt5/QtCore/qtimer.h \
+		/usr/include/qt5/QtCore/qbasictimer.h \
 		updateview.h \
 		../../../libkopsik/include/kopsik_api.h \
 		timeentryview.h \
@@ -3411,6 +3428,7 @@ mainwindowcontroller.o: mainwindowcontroller.cpp mainwindowcontroller.h \
 		/usr/include/qt5/QtWidgets/qdialog.h \
 		aboutdialog.h \
 		feedbackdialog.h \
+		idlenotificationdialog.h \
 		ui_mainwindowcontroller.h \
 		/usr/include/qt5/QtCore/QVariant \
 		/usr/include/qt5/QtWidgets/QAction \
@@ -3465,10 +3483,7 @@ mainwindowcontroller.o: mainwindowcontroller.cpp mainwindowcontroller.h \
 		/usr/include/qt5/QtGui/qdesktopservices.h \
 		/usr/include/qt5/QtCore/qstandardpaths.h \
 		errorviewcontroller.h \
-		timeentryeditorwidget.h \
-		/usr/include/qt5/QtCore/QTimer \
-		/usr/include/qt5/QtCore/qtimer.h \
-		/usr/include/qt5/QtCore/qbasictimer.h
+		timeentryeditorwidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindowcontroller.o mainwindowcontroller.cpp
 
 errorviewcontroller.o: errorviewcontroller.cpp errorviewcontroller.h \
@@ -3627,6 +3642,9 @@ errorviewcontroller.o: errorviewcontroller.cpp errorviewcontroller.h \
 		/usr/include/qt5/QtCore/QObject \
 		/usr/include/qt5/QtCore/QVector \
 		/usr/include/qt5/QtCore/QUrl \
+		/usr/include/qt5/QtCore/QTimer \
+		/usr/include/qt5/QtCore/qtimer.h \
+		/usr/include/qt5/QtCore/qbasictimer.h \
 		updateview.h \
 		../../../libkopsik/include/kopsik_api.h \
 		timeentryview.h \
@@ -4132,6 +4150,9 @@ loginwidget.o: loginwidget.cpp loginwidget.h \
 		/usr/include/qt5/QtWidgets/qgridlayout.h \
 		toggl_api.h \
 		/usr/include/qt5/QtCore/QUrl \
+		/usr/include/qt5/QtCore/QTimer \
+		/usr/include/qt5/QtCore/qtimer.h \
+		/usr/include/qt5/QtCore/qbasictimer.h \
 		updateview.h \
 		autocompleteview.h \
 		genericview.h \
@@ -4642,6 +4663,9 @@ timeentrycellwidget.o: timeentrycellwidget.cpp timeentrycellwidget.h \
 		/usr/include/qt5/QtWidgets/QVBoxLayout \
 		toggl_api.h \
 		/usr/include/qt5/QtCore/QUrl \
+		/usr/include/qt5/QtCore/QTimer \
+		/usr/include/qt5/QtCore/qtimer.h \
+		/usr/include/qt5/QtCore/qbasictimer.h \
 		updateview.h \
 		autocompleteview.h \
 		genericview.h \
@@ -5309,6 +5333,9 @@ preferencesdialog.o: preferencesdialog.cpp preferencesdialog.h \
 		toggl_api.h \
 		/usr/include/qt5/QtCore/QVector \
 		/usr/include/qt5/QtCore/QUrl \
+		/usr/include/qt5/QtCore/QTimer \
+		/usr/include/qt5/QtCore/qtimer.h \
+		/usr/include/qt5/QtCore/qbasictimer.h \
 		updateview.h \
 		timeentryview.h \
 		autocompleteview.h \
@@ -5482,6 +5509,9 @@ aboutdialog.o: aboutdialog.cpp aboutdialog.h \
 		toggl_api.h \
 		/usr/include/qt5/QtCore/QVector \
 		/usr/include/qt5/QtCore/QUrl \
+		/usr/include/qt5/QtCore/QTimer \
+		/usr/include/qt5/QtCore/qtimer.h \
+		/usr/include/qt5/QtCore/qbasictimer.h \
 		timeentryview.h \
 		autocompleteview.h \
 		genericview.h \
@@ -5658,10 +5688,15 @@ feedbackdialog.o: feedbackdialog.cpp feedbackdialog.h \
 		/usr/include/qt5/QtCore/qdir.h \
 		/usr/include/qt5/QtCore/qfileinfo.h \
 		/usr/include/qt5/QtCore/QFileInfo \
+		/usr/include/qt5/QtWidgets/QMessageBox \
+		/usr/include/qt5/QtWidgets/qmessagebox.h \
 		toggl_api.h \
 		/usr/include/qt5/QtCore/QObject \
 		/usr/include/qt5/QtCore/QVector \
 		/usr/include/qt5/QtCore/QUrl \
+		/usr/include/qt5/QtCore/QTimer \
+		/usr/include/qt5/QtCore/qtimer.h \
+		/usr/include/qt5/QtCore/qbasictimer.h \
 		updateview.h \
 		../../../libkopsik/include/kopsik_api.h \
 		timeentryview.h \
@@ -5781,10 +5816,57 @@ idlenotificationdialog.o: idlenotificationdialog.cpp idlenotificationdialog.h \
 		/usr/include/qt5/QtGui/qvector2d.h \
 		/usr/include/qt5/QtGui/qtouchdevice.h \
 		ui_idlenotificationdialog.h \
+		/usr/include/qt5/QtCore/QVariant \
+		/usr/include/qt5/QtWidgets/QAction \
+		/usr/include/qt5/QtWidgets/qaction.h \
+		/usr/include/qt5/QtGui/qicon.h \
+		/usr/include/qt5/QtWidgets/qactiongroup.h \
+		/usr/include/qt5/QtWidgets/QApplication \
+		/usr/include/qt5/QtWidgets/qapplication.h \
+		/usr/include/qt5/QtCore/qcoreapplication.h \
+		/usr/include/qt5/QtCore/qeventloop.h \
+		/usr/include/qt5/QtWidgets/qdesktopwidget.h \
+		/usr/include/qt5/QtGui/qguiapplication.h \
+		/usr/include/qt5/QtGui/qinputmethod.h \
+		/usr/include/qt5/QtWidgets/QButtonGroup \
+		/usr/include/qt5/QtWidgets/qbuttongroup.h \
+		/usr/include/qt5/QtWidgets/QHBoxLayout \
+		/usr/include/qt5/QtWidgets/qboxlayout.h \
+		/usr/include/qt5/QtWidgets/qlayout.h \
+		/usr/include/qt5/QtWidgets/qlayoutitem.h \
+		/usr/include/qt5/QtWidgets/qgridlayout.h \
+		/usr/include/qt5/QtWidgets/QHeaderView \
+		/usr/include/qt5/QtWidgets/qheaderview.h \
+		/usr/include/qt5/QtWidgets/qabstractitemview.h \
+		/usr/include/qt5/QtWidgets/qabstractscrollarea.h \
+		/usr/include/qt5/QtWidgets/qframe.h \
+		/usr/include/qt5/QtCore/qabstractitemmodel.h \
+		/usr/include/qt5/QtCore/qitemselectionmodel.h \
+		/usr/include/qt5/QtWidgets/qabstractitemdelegate.h \
+		/usr/include/qt5/QtWidgets/qstyleoption.h \
+		/usr/include/qt5/QtWidgets/qabstractspinbox.h \
+		/usr/include/qt5/QtGui/qvalidator.h \
+		/usr/include/qt5/QtCore/qregularexpression.h \
+		/usr/include/qt5/QtWidgets/qslider.h \
+		/usr/include/qt5/QtWidgets/qabstractslider.h \
+		/usr/include/qt5/QtWidgets/qstyle.h \
+		/usr/include/qt5/QtWidgets/qtabbar.h \
+		/usr/include/qt5/QtWidgets/qtabwidget.h \
+		/usr/include/qt5/QtWidgets/qrubberband.h \
+		/usr/include/qt5/QtWidgets/QLabel \
+		/usr/include/qt5/QtWidgets/qlabel.h \
+		/usr/include/qt5/QtWidgets/QPushButton \
+		/usr/include/qt5/QtWidgets/qpushbutton.h \
+		/usr/include/qt5/QtWidgets/qabstractbutton.h \
+		/usr/include/qt5/QtWidgets/QVBoxLayout \
+		/usr/include/qt5/QtWidgets/QWidget \
 		toggl_api.h \
 		/usr/include/qt5/QtCore/QObject \
 		/usr/include/qt5/QtCore/QVector \
 		/usr/include/qt5/QtCore/QUrl \
+		/usr/include/qt5/QtCore/QTimer \
+		/usr/include/qt5/QtCore/qtimer.h \
+		/usr/include/qt5/QtCore/qbasictimer.h \
 		updateview.h \
 		../../../libkopsik/include/kopsik_api.h \
 		timeentryview.h \

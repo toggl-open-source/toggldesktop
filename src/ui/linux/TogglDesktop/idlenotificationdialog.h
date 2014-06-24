@@ -2,8 +2,11 @@
 #define IDLENOTIFICATIONDIALOG_H
 
 #include <QDialog>
+#include <QTimer>
 
 #include <stdint.h>
+
+#include "settingsview.h"
 
 namespace Ui {
 class IdleNotificationDialog;
@@ -23,14 +26,22 @@ private slots:
         const QString duration,
         const uint64_t started);
 
+    void displaySettings(
+        const bool open,
+        SettingsView *settings);
+
     void on_keepTimeButton_clicked();
 
     void on_discardTimeButton_clicked();
+
+    void timeout();
 
 private:
     Ui::IdleNotificationDialog *ui;
 
     uint64_t idleStarted;
+
+    QTimer *timer;
 };
 
 #endif // IDLENOTIFICATIONDIALOG_H
