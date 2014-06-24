@@ -11,14 +11,14 @@
 #include "Poco/Notification.h"
 
 // A timeline event is detected, window has changes
-// or there's and idle event.
+// or there's an idle event.
 class TimelineEventNotification : public Poco::Notification {
  public:
     explicit TimelineEventNotification(TimelineEvent _event) : event(_event) {}
     TimelineEvent event;
 };
 
-// Find timeline events (for upload).
+// Find timeline events for upload,
 class CreateTimelineBatchNotification : public Poco::Notification {
  public:
     CreateTimelineBatchNotification() {}
