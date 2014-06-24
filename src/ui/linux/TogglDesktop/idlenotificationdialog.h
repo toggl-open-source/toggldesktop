@@ -21,6 +21,12 @@ public:
     ~IdleNotificationDialog();
 
 private slots:
+    void displayStoppedTimerState();
+
+    void displayLogin(
+        const bool open,
+        const uint64_t user_id);
+
     void displayIdleNotification(
         const QString since,
         const QString duration,

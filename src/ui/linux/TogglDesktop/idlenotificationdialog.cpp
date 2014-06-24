@@ -1,8 +1,6 @@
 #include "idlenotificationdialog.h"
 #include "ui_idlenotificationdialog.h"
 
-#include <QDebug>
-
 #include "toggl_api.h"
 #include "settingsview.h"
 
@@ -23,11 +21,31 @@ IdleNotificationDialog::IdleNotificationDialog(QWidget *parent) :
             this, SLOT(displaySettings(bool,SettingsView*)));
 
     connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
+
+    connect(TogglApi::instance, SIGNAL(displayStoppedTimerState()),
+            this, SLOT(displayStoppedTimerState()));
+
+    connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),
+            this, SLOT(displayLogin(bool,uint64_t)));
 }
 
 IdleNotificationDialog::~IdleNotificationDialog()
 {
     delete ui;
+}
+
+void IdleNotificationDialog::displayLogin(const bool open,
+                                          const uint64_t user_id)
+{
+    if (open || !user_id)
+    {
+        hide();
+    }
+}
+
+void IdleNotificationDialog::displayStoppedTimerState()
+{
+    hide();
 }
 
 void IdleNotificationDialog::on_keepTimeButton_clicked()
@@ -37,7 +55,7 @@ void IdleNotificationDialog::on_keepTimeButton_clicked()
 
 void IdleNotificationDialog::on_discardTimeButton_clicked()
 {
-
+    TogglApi::instance->stopRunningTimeEntryAt(idleStarted);
 }
 
 void IdleNotificationDialog::displaySettings(
@@ -78,7 +96,6 @@ void IdleNotificationDialog::timeout()
     if (XScreenSaverQueryInfo(display, DefaultRootWindow(display), info))
     {
         uint64_t idleSeconds = info->idle / 1000;
-        qDebug() << "idle seconds " << idleSeconds;
         TogglApi::instance->setIdleSeconds(idleSeconds);
     }
     XFree(info);
