@@ -114,8 +114,14 @@ endif
 clean: clean_ui clean_lib clean_test
 	rm -rf build gitstats
 
+ifeq ($(uname), Linux)
+clean_lib:
+	(cd src/libkopsik/Library/TogglDesktopLibrary && make clean)
+endif
+ifeq ($(uname), Darwin)
 clean_lib:
 	rm -rf src/libkopsik/Kopsik/build
+endif
 
 ifeq ($(uname), Linux)
 clean_ui:
