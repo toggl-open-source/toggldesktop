@@ -25,7 +25,6 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 @property IBOutlet NSButton *dockIconCheckbox;
 @property IBOutlet NSButton *ontopCheckbox;
 @property IBOutlet NSButton *reminderCheckbox;
-@property IBOutlet NSButton *ignoreCertCheckbox;
 @property IBOutlet MASShortcutView *showHideShortcutView;
 @property IBOutlet MASShortcutView *startStopShortcutView;
 - (IBAction)useProxyButtonChanged:(id)sender;
@@ -39,7 +38,6 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 - (IBAction)dockIconCheckboxChanged:(id)sender;
 - (IBAction)ontopCheckboxChanged:(id)sender;
 - (IBAction)reminderCheckboxChanged:(id)sender;
-- (IBAction)ignoreCertCheckboxChanged:(id)sender;
 @property uint64_t user_id;
 @property DisplayCommand *originalCmd;
 @end

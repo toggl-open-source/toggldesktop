@@ -12,8 +12,7 @@ class Settings {
     , menubar_timer(false)
     , dock_icon(false)
     , on_top(false)
-    , reminder(false)
-    , ignore_cert(false) {}
+    , reminder(false) {}
     ~Settings() {}
 
     bool use_idle_detection;
@@ -21,7 +20,6 @@ class Settings {
     bool dock_icon;
     bool on_top;
     bool reminder;
-    bool ignore_cert;
 };
 
 }  // namespace kopsik

@@ -99,7 +99,6 @@ extern "C" {
         _Bool OnTop;
         _Bool Reminder;
         _Bool RecordTimeline;
-        _Bool IgnoreCert;
     } KopsikSettingsViewItem;
 
     typedef struct {
@@ -390,8 +389,7 @@ extern "C" {
         const _Bool menubar_timer,
         const _Bool dock_icon,
         const _Bool on_top,
-        const _Bool reminder,
-        const _Bool ignore_cert);
+        const _Bool reminder);
 
     KOPSIK_EXPORT _Bool kopsik_set_proxy_settings(
         void *context,

@@ -875,7 +875,7 @@ _Bool Context::DisplaySettings(const _Bool open) {
     }
 
     HTTPSClient::UseProxy = use_proxy;
-    HTTPSClient::IgnoreCert = settings.ignore_cert;
+    HTTPSClient::IgnoreCert = false;
     HTTPSClient::ProxySettings = proxy;
 
     UI()->DisplaySettings(open,
@@ -1927,7 +1927,7 @@ void Context::SetIdleSeconds(const Poco::UInt64 idle_seconds) {
                       << Formatter::FormatTimeForTimeEntryEditor(
                           last_idle_started_, user_->TimeOfDayFormat());
 
-                int minutes = last_idle_seconds_reading_ / 60;
+                int minutes = static_cast<int>(last_idle_seconds_reading_ / 60);
                 std::stringstream duration;
                 duration << "(" << minutes << " minute";
                 if (minutes != 1) {

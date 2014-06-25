@@ -248,14 +248,13 @@ error Database::LoadSettings(Settings *settings) {
     Poco::Mutex::ScopedLock lock(session_m_);
     try {
         *session_ << "select use_idle_detection, menubar_timer, dock_icon, "
-                  "on_top, reminder, ignore_cert "
+                  "on_top, reminder "
                   "from settings",
                   Poco::Data::into(settings->use_idle_detection),
                   Poco::Data::into(settings->menubar_timer),
                   Poco::Data::into(settings->dock_icon),
                   Poco::Data::into(settings->on_top),
                   Poco::Data::into(settings->reminder),
-                  Poco::Data::into(settings->ignore_cert),
                   Poco::Data::limit(1),
                   Poco::Data::now;
     } catch(const Poco::Exception& exc) {
@@ -308,14 +307,12 @@ error Database::SaveSettings(const Settings settings) {
                   "menubar_timer = :menubar_timer, "
                   "dock_icon = :dock_icon, "
                   "on_top = :on_top, "
-                  "reminder = :reminder, "
-                  "ignore_cert = :ignore_cert",
+                  "reminder = :reminder ",
                   Poco::Data::use(settings.use_idle_detection),
                   Poco::Data::use(settings.menubar_timer),
                   Poco::Data::use(settings.dock_icon),
                   Poco::Data::use(settings.on_top),
                   Poco::Data::use(settings.reminder),
-                  Poco::Data::use(settings.ignore_cert),
                   Poco::Data::now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();

@@ -77,8 +77,7 @@ _Bool kopsik_set_settings(
     const _Bool menubar_timer,
     const _Bool dock_icon,
     const _Bool on_top,
-    const _Bool reminder,
-    const _Bool ignore_cert) {
+    const _Bool reminder) {
 
     kopsik::Settings settings;
     settings.use_idle_detection = use_idle_detection;
@@ -86,7 +85,6 @@ _Bool kopsik_set_settings(
     settings.dock_icon = dock_icon;
     settings.on_top = on_top;
     settings.reminder = reminder;
-    settings.ignore_cert = ignore_cert;
 
     return app(context)->SetSettings(settings);
 }
