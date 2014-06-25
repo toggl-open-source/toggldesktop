@@ -65,7 +65,6 @@ namespace TogglDesktop
                 checkBoxRecordTimeline.Checked = settings.RecordTimeline;
                 checkBoxOnTop.Checked = settings.OnTop;
                 checkBoxRemindToTrackTime.Checked = settings.Reminder;
-                checkBoxIgnoreCert.Checked = settings.IgnoreCert;
             }
             finally
             {
@@ -114,8 +113,7 @@ namespace TogglDesktop
                 true,
                 true,
                 checkBoxOnTop.Checked,
-                checkBoxRemindToTrackTime.Checked,
-                checkBoxIgnoreCert.Checked);
+                checkBoxRemindToTrackTime.Checked);
         }
 
         private void textBoxProxyHost_TextChanged(object sender, EventArgs e)

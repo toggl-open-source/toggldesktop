@@ -165,8 +165,6 @@ namespace TogglDesktop
             public bool Reminder;
             [MarshalAs(UnmanagedType.I1)]
             public bool RecordTimeline;
-            [MarshalAs(UnmanagedType.I1)]
-            public bool IgnoreCert;
 
             public KopsikSettingsViewItem ToUTF8()
             {
@@ -742,17 +740,14 @@ namespace TogglDesktop
             [MarshalAs(UnmanagedType.I1)]
             bool on_top,
             [MarshalAs(UnmanagedType.I1)]
-            bool reminder,
-            [MarshalAs(UnmanagedType.I1)]
-            bool ignore_cert);
+            bool reminder);
 
         public static bool SetSettings(
             bool use_idle_detection,
             bool menubar_timer,
             bool dock_icon,
             bool on_top,
-            bool reminder,
-            bool ignore_cert)
+            bool reminder)
         {
             return kopsik_set_settings(
                 ctx,
@@ -760,8 +755,7 @@ namespace TogglDesktop
                 menubar_timer,
                 dock_icon,
                 on_top,
-                reminder,
-                ignore_cert);
+                reminder);
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]

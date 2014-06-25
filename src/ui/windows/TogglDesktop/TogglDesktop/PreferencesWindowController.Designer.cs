@@ -42,7 +42,6 @@
             this.checkBoxIdleDetection = new System.Windows.Forms.CheckBox();
             this.checkBoxRecordTimeline = new System.Windows.Forms.CheckBox();
             this.checkBoxRemindToTrackTime = new System.Windows.Forms.CheckBox();
-            this.checkBoxIgnoreCert = new System.Windows.Forms.CheckBox();
             this.checkBoxOnTop = new System.Windows.Forms.CheckBox();
             this.groupBoxProxySettings.SuspendLayout();
             this.SuspendLayout();
@@ -179,17 +178,6 @@
             this.checkBoxRemindToTrackTime.UseVisualStyleBackColor = true;
             this.checkBoxRemindToTrackTime.CheckedChanged += new System.EventHandler(this.checkBoxRemindToTrackTime_CheckedChanged);
             // 
-            // checkBoxIgnoreCert
-            // 
-            this.checkBoxIgnoreCert.AutoSize = true;
-            this.checkBoxIgnoreCert.Location = new System.Drawing.Point(13, 288);
-            this.checkBoxIgnoreCert.Name = "checkBoxIgnoreCert";
-            this.checkBoxIgnoreCert.Size = new System.Drawing.Size(137, 17);
-            this.checkBoxIgnoreCert.TabIndex = 5;
-            this.checkBoxIgnoreCert.Text = "Ignore server certificate";
-            this.checkBoxIgnoreCert.UseVisualStyleBackColor = true;
-            this.checkBoxIgnoreCert.CheckedChanged += new System.EventHandler(this.checkBoxIgnoreCert_CheckedChanged);
-            // 
             // checkBoxOnTop
             // 
             this.checkBoxOnTop.AutoSize = true;
@@ -205,9 +193,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 315);
+            this.ClientSize = new System.Drawing.Size(284, 314);
             this.Controls.Add(this.checkBoxOnTop);
-            this.Controls.Add(this.checkBoxIgnoreCert);
             this.Controls.Add(this.checkBoxRemindToTrackTime);
             this.Controls.Add(this.checkBoxRecordTimeline);
             this.Controls.Add(this.checkBoxIdleDetection);
@@ -242,7 +229,6 @@
         private System.Windows.Forms.CheckBox checkBoxIdleDetection;
         private System.Windows.Forms.CheckBox checkBoxRecordTimeline;
         private System.Windows.Forms.CheckBox checkBoxRemindToTrackTime;
-        private System.Windows.Forms.CheckBox checkBoxIgnoreCert;
         private System.Windows.Forms.CheckBox checkBoxOnTop;
     }
 }
