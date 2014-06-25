@@ -31,31 +31,42 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { OnTimeEntryList(open, list); });
                 return;
             }
-            this.Dock = DockStyle.Fill;
+            DateTime start = DateTime.Now;
+
             int y = 0;
-            this.EntriesList.Controls.Clear();
-            this.EntriesList.SuspendLayout();
+            
+            List<Control> controls = new List<Control>();
 
             foreach (TogglApi.KopsikTimeEntryViewItem item in list)
             {
                 if (item.IsHeader)
                 {
-                    TimeEntryCellWithHeader cell = new TimeEntryCellWithHeader(y, this.Width);
+                    TimeEntryCellWithHeader cell = new TimeEntryCellWithHeader(y, Width);
                     cell.Setup(item);
-                    this.EntriesList.Controls.Add(cell);
+                    controls.Add(cell);
                     y += cell.Height;
                 }
                 else
                 {
-                    TimeEntryCell cell = new TimeEntryCell(y, this.Width);
+                    TimeEntryCell cell = new TimeEntryCell(y, Width);
                     cell.Setup(item);
-                    this.EntriesList.Controls.Add(cell);
+                    controls.Add(cell);
                     y += cell.Height;
                 }
 
             }
-            this.EntriesList.ResumeLayout(false);
-            this.EntriesList.PerformLayout();
+
+            Dock = DockStyle.Fill;
+            EntriesList.SuspendLayout();
+            EntriesList.Controls.Clear();
+            EntriesList.Controls.AddRange(controls.ToArray());
+            EntriesList.ResumeLayout(false);
+            EntriesList.PerformLayout();
+
+            TimeSpan spent = DateTime.Now.Subtract(start);
+            Console.WriteLine(String.Format(
+                "Time entries list view rendered in {0} ms",
+                spent.TotalMilliseconds));
         }
 
         private void TimeEntryListViewController_Load(object sender, EventArgs e)

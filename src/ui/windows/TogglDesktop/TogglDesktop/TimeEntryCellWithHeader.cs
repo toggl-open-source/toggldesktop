@@ -13,30 +13,27 @@ namespace TogglDesktop
     public partial class TimeEntryCellWithHeader : UserControl
     {
         private TogglApi.KopsikTimeEntryViewItem TimeEntry;
+
         public TimeEntryCellWithHeader(int y, int w)
         {
             InitializeComponent();
             Location = new Point(0, y);
-            this.Width = w;
-            this.Anchor = (AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top);
+            Width = w;
+            Anchor = (AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top);
         }
 
         internal void Setup(TogglApi.KopsikTimeEntryViewItem item)
         {
-            this.TimeEntry = item;
-            this.Render();
-        }
+            TimeEntry = item;
 
-        private void Render()
-        {
-            this.labelDescription.Text = this.TimeEntry.Description;
-            this.labelProject.ForeColor = ColorTranslator.FromHtml(this.TimeEntry.Color);
-            this.labelProject.Text = this.TimeEntry.ProjectAndTaskLabel;
-            this.labelFormattedDate.Text = this.TimeEntry.DateHeader;
-            this.labelDateDuration.Text = this.TimeEntry.DateDuration;
-            this.labelDuration.Text = this.TimeEntry.Duration;
-            this.labelBillable.Visible = this.TimeEntry.Billable;
-            this.labelTag.Visible = (this.TimeEntry.Tags != null && this.TimeEntry.Tags.Length > 0);
+            labelDescription.Text = TimeEntry.Description;
+            labelProject.ForeColor = ColorTranslator.FromHtml(TimeEntry.Color);
+            labelProject.Text = TimeEntry.ProjectAndTaskLabel;
+            labelFormattedDate.Text = TimeEntry.DateHeader;
+            labelDateDuration.Text = TimeEntry.DateDuration;
+            labelDuration.Text = TimeEntry.Duration;
+            labelBillable.Visible = TimeEntry.Billable;
+            labelTag.Visible = (TimeEntry.Tags != null && TimeEntry.Tags.Length > 0);
         }
 
         private void TimeEntryCellWithHeader_MouseClick(object sender, MouseEventArgs e)
