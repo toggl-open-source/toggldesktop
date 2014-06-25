@@ -135,7 +135,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 290);
+            this.ClientSize = new System.Drawing.Size(284, 289);
             this.Controls.Add(this.linkLabelGithub);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBoxChannel);
@@ -148,6 +148,7 @@
             this.MaximumSize = new System.Drawing.Size(300, 328);
             this.MinimumSize = new System.Drawing.Size(300, 328);
             this.Name = "AboutWindowController";
+            this.Text = "About";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AboutWindowController_FormClosing);
             this.Load += new System.EventHandler(this.AboutWindowController_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
