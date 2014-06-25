@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>292</height>
+    <height>264</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -94,13 +94,6 @@
     <widget class="QCheckBox" name="remindToTrackTime">
      <property name="text">
       <string>Remind to track time</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="ignoreServerCertificate">
-     <property name="text">
-      <string>Ignore server certificate</string>
      </property>
     </widget>
    </item>

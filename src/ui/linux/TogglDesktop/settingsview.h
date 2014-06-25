@@ -24,7 +24,6 @@ public:
         result->OnTop = view->OnTop;
         result->Reminder = view->Reminder;
         result->RecordTimeline = view->RecordTimeline;
-        result->IgnoreCert = view->IgnoreCert;
         return result;
     }
 
@@ -39,7 +38,6 @@ public:
     bool OnTop;
     bool Reminder;
     bool RecordTimeline;
-    bool IgnoreCert;
 
 signals:
 

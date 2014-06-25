@@ -39,7 +39,6 @@ void PreferencesDialog::displaySettings(const bool open,
     ui->idleDetection->setChecked(settings->UseIdleDetection);
     ui->recordTimeline->setChecked(settings->RecordTimeline); // user based!
     ui->remindToTrackTime->setChecked(settings->Reminder);
-    ui->ignoreServerCertificate->setChecked(settings->IgnoreCert);
 }
 
 void PreferencesDialog::displayLogin(const bool open,
@@ -83,11 +82,6 @@ void PreferencesDialog::on_remindToTrackTime_clicked(bool checked)
     setSettings();
 }
 
-void PreferencesDialog::on_ignoreServerCertificate_clicked(bool checked)
-{
-    setSettings();
-}
-
 bool PreferencesDialog::setProxySettings()
 {
     return TogglApi::instance->setProxySettings(ui->useProxy->isChecked(),
@@ -103,8 +97,7 @@ bool PreferencesDialog::setSettings()
                                            false,
                                            false,
                                            false,
-                                           ui->remindToTrackTime->isChecked(),
-                                           ui->ignoreServerCertificate->isChecked());
+                                           ui->remindToTrackTime->isChecked());
 }
 
 void PreferencesDialog::on_useProxy_clicked(bool checked)

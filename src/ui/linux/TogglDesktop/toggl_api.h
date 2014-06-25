@@ -105,8 +105,7 @@ public:
                      const bool menubarTimer,
                      const bool dockIcon,
                      const bool onTop,
-                     const bool reminder,
-                     const bool ignoreCert);
+                     const bool reminder);
 
     void toggleTimelineRecording();
 

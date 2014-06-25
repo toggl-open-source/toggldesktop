@@ -37,7 +37,6 @@ private slots:
     void on_idleDetection_clicked(bool checked);
     void on_recordTimeline_clicked(bool checked);
     void on_remindToTrackTime_clicked(bool checked);
-    void on_ignoreServerCertificate_clicked(bool checked);
     void on_useProxy_clicked(bool checked);
 };
 

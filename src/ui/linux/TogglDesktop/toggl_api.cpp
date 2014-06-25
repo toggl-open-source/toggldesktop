@@ -248,16 +248,14 @@ bool TogglApi::setSettings(const bool useIdleDetection,
                            const bool menubarTimer,
                            const bool dockIcon,
                            const bool onTop,
-                           const bool reminder,
-                           const bool ignoreCert)
+                           const bool reminder)
 {
     return kopsik_set_settings(ctx,
                                useIdleDetection,
                                menubarTimer,
                                dockIcon,
                                onTop,
-                               reminder,
-                               ignoreCert);
+                               reminder);
 }
 
 void TogglApi::toggleTimelineRecording()
