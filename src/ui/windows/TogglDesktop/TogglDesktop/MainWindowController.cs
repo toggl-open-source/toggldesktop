@@ -362,8 +362,10 @@ namespace TogglDesktop
 
         private void show()
         {
+            bool wasTopMost = TopMost;
             Show();
-            BringToFront();
+            TopMost = true;
+            TopMost = wasTopMost;
         }
 
         void OnReminder(string title, string informative_text)
