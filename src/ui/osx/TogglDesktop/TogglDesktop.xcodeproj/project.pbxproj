@@ -178,14 +178,11 @@
 		74FD8CE018A8EF8300F7DB80 /* TFDatePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74FD8CDF18A8EF8300F7DB80 /* TFDatePicker.framework */; };
 		74FD8CE118A8EFDA00F7DB80 /* TFDatePicker.framework in Resources */ = {isa = PBXBuildFile; fileRef = 74FD8CDC18A8EEE200F7DB80 /* TFDatePicker.framework */; };
 		74FE0D3C18E25E8400ECFED2 /* app_inactive.icns in Resources */ = {isa = PBXBuildFile; fileRef = 74FE0D3B18E25E8400ECFED2 /* app_inactive.icns */; };
-		74FE0D5A18E260A000ECFED2 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 74FE0D4D18E260A000ECFED2 /* .gitignore */; };
-		74FE0D5B18E260A000ECFED2 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 74FE0D4E18E260A000ECFED2 /* LICENSE */; };
 		74FE0D5C18E260A000ECFED2 /* MASShortcut+Monitoring.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5018E260A000ECFED2 /* MASShortcut+Monitoring.m */; };
 		74FE0D5D18E260A000ECFED2 /* MASShortcut+UserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5218E260A000ECFED2 /* MASShortcut+UserDefaults.m */; };
 		74FE0D5E18E260A000ECFED2 /* MASShortcut.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5418E260A000ECFED2 /* MASShortcut.m */; };
 		74FE0D5F18E260A000ECFED2 /* MASShortcutView+UserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5618E260A000ECFED2 /* MASShortcutView+UserDefaults.m */; };
 		74FE0D6018E260A000ECFED2 /* MASShortcutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5818E260A000ECFED2 /* MASShortcutView.m */; };
-		74FE0D6118E260A000ECFED2 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 74FE0D5918E260A000ECFED2 /* README.md */; };
 		95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */; };
 		95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707918CDB91500A34D0D /* NSCustomComboBox.m */; };
 		95DBF8CC18BF7A910021FB41 /* offline_off.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CA18BF7A910021FB41 /* offline_off.pdf */; };
@@ -1197,15 +1194,12 @@
 				74664DB218AA860800AAD282 /* off.pdf in Resources */,
 				7430750518204EFB009019CB /* AboutWindowController.xib in Resources */,
 				749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */,
-				74FE0D5A18E260A000ECFED2 /* .gitignore in Resources */,
 				69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */,
 				3CDA2C5C1913B61000A94967 /* icon-tags@2x.png in Resources */,
 				C5DA1FC517F1B38B001C4565 /* LoginViewController.xib in Resources */,
-				74FE0D5B18E260A000ECFED2 /* LICENSE in Resources */,
 				74664DB118AA860800AAD282 /* on.pdf in Resources */,
 				69FC180517E6534400B96425 /* Credits.rtf in Resources */,
 				3C7B4E9E190FA7F900627DC3 /* logo-white@2x.png in Resources */,
-				74FE0D6118E260A000ECFED2 /* README.md in Resources */,
 				74F1070218993FFE00E93BD5 /* FeedbackWindowController.xib in Resources */,
 				7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */,
 				95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */,
