@@ -1,14 +1,23 @@
 #!/usr/bin/env bash
 
 fix() {
-	wheretofix=$1
+	pocolib=$1
 	lib=$2
-	oldpath=$(otool -L $wheretofix|fgrep $lib|awk -F' ' '{print $1}'|grep -v @loader_path|grep -v ":")
+	oldpath=$(otool -L $pocolib|fgrep $lib|awk -F' ' '{print $1}'|grep -v @loader_path|grep -v ":")
 	if [ -z "$oldpath" ]; then
 		return
 	fi
-	install_name_tool -change $oldpath @loader_path/$lib $wheretofix
-	install_name_tool -id @loader_path/$lib $wheretofix
+	install_name_tool -change $oldpath @loader_path/$lib $pocolib
+
+	# get shared library id name
+	file=$(otool -D $pocolib |grep -v ":")
+	echo $file
+	# get base name of the path we got
+	basename=${file##*/}
+	echo $basename
+	# change shared library id name
+	echo "install_name_tool -id @loader_path/$basename $pocolib"
+	install_name_tool -id @loader_path/$basename $pocolib
 }
 
 fix_poco_paths() {
