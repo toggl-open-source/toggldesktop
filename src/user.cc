@@ -732,6 +732,8 @@ void User::loadUserUpdateFromJSONNode(
         loadUserTimeEntryFromJSONNode(data);
     } else if ("tag" == model) {
         loadUserTagFromJSONNode(data);
+    } else if ("user" == model) {
+        loadUserAndRelatedDataFromJSONNode(data);
     }
 }
 
