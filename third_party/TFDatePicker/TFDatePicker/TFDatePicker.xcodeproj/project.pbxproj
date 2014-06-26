@@ -265,7 +265,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TFDatePicker/TFDatePicker-Prefix.pch";
 				INFOPLIST_FILE = "TFDatePicker/TFDatePicker-Info.plist";
-				INSTALL_PATH = "@executable_path/../../Contents/Resources";
+				INSTALL_PATH = "@executable_path/../../Contents/Frameworks";
 				LD_DYLIB_INSTALL_NAME = "$(DYLIB_INSTALL_NAME_BASE:standardizepath)/$(EXECUTABLE_PATH)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = framework;
@@ -282,7 +282,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TFDatePicker/TFDatePicker-Prefix.pch";
 				INFOPLIST_FILE = "TFDatePicker/TFDatePicker-Info.plist";
-				INSTALL_PATH = "@executable_path/../../Contents/Resources";
+				INSTALL_PATH = "@executable_path/../../Contents/Frameworks";
 				LD_DYLIB_INSTALL_NAME = "$(DYLIB_INSTALL_NAME_BASE:standardizepath)/$(EXECUTABLE_PATH)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = framework;
