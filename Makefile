@@ -142,7 +142,8 @@ clean_test:
 
 osx: fmt_lib lint fmt_osx
 	xcodebuild -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj && \
-	!(otool -L $(executable) | grep "Users" && echo "Executable should not contain hardcoded paths!")
+	!(otool -L $(executable) | grep "Users" && echo "Executable should not contain hardcoded paths!") && \
+	!(otool -L /Applications/TogglDesktop.app/Contents/Resources/Kopsik.dylib | grep "Users" && echo "Shared library should not contain hardcoded paths!")
 
 linux: fmt_lib lint
 	cd src/ui/linux/TogglDesktop && make && \
