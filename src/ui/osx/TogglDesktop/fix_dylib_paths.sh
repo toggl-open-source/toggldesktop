@@ -11,12 +11,9 @@ fix() {
 
 	# get shared library id name
 	file=$(otool -D $pocolib |grep -v ":")
-	echo $file
 	# get base name of the path we got
 	basename=${file##*/}
-	echo $basename
 	# change shared library id name
-	echo "install_name_tool -id @loader_path/$basename $pocolib"
 	install_name_tool -id @loader_path/$basename $pocolib
 }
 
