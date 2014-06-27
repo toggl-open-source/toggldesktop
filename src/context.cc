@@ -1431,7 +1431,12 @@ _Bool Context::SetTimeEntryProject(
     }
 
     if (p) {
-        te->SetBillable(p->Billable());
+        // If user re-assigns project, don't mess with the billable
+        // flag any more. (User selected billable project, unchecked billable,
+        // then selected the same project again).
+        if (p->ID() != te->PID()) {
+            te->SetBillable(p->Billable());
+        }
         te->SetWID(p->WID());
     }
     te->SetTID(task_id);
