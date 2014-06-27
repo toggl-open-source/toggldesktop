@@ -323,7 +323,6 @@ const int kDurationStringLength = 20;
 			[self.idleTimer invalidate];
 			self.idleTimer = nil;
 		}
-		[self.statusItem setTitle:@""];
 	}
 
 	// Start menubar timer if its enabled
@@ -806,17 +805,18 @@ const NSString *appName = @"osx_native_app";
 
 - (void)menubarTimerFired:(NSTimer *)timer
 {
-	if (self.lastKnownRunningTimeEntry != nil)
+	if (!self.lastKnownRunningTimeEntry || !self.user_id)
 	{
-		char str[kDurationStringLength];
-		kopsik_format_duration_in_seconds_hhmm(
-			self.lastKnownRunningTimeEntry.duration_in_seconds,
-			str,
-			kDurationStringLength);
-		NSString *statusStr = @" ";
-		statusStr = [statusStr stringByAppendingString:[NSString stringWithUTF8String:str]];
-		[self.statusItem setTitle:statusStr];
+		return;
 	}
+	char str[kDurationStringLength];
+	kopsik_format_duration_in_seconds_hhmm(
+		self.lastKnownRunningTimeEntry.duration_in_seconds,
+		str,
+		kDurationStringLength);
+	NSString *statusStr = @" ";
+	statusStr = [statusStr stringByAppendingString:[NSString stringWithUTF8String:str]];
+	[self.statusItem setTitle:statusStr];
 }
 
 - (void)idleTimerFired:(NSTimer *)timer
