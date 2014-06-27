@@ -407,6 +407,11 @@ const int kDurationStringLength = 20;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	self.user_id = cmd.user_id;
+
+	if (!self.user_id)
+	{
+		[self indicateStoppedTimer]; // maybe its running, but we dont know any more
+	}
 }
 
 - (void)startDisplayOnlineState:(NSNotification *)notification
@@ -481,6 +486,11 @@ const int kDurationStringLength = 20;
 		return;
 	}
 
+	[self indicateStoppedTimer];
+}
+
+- (void)indicateStoppedTimer
+{
 	if (!self.willTerminate)
 	{
 		[NSApp setApplicationIconImage:self.inactiveAppIcon];
