@@ -1,0 +1,141 @@
+/****************************************************************************
+**
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
+**
+** This file is part of the Qt Solutions component.
+**
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Digia Plc and its Subsidiary(-ies) nor the names
+**     of its contributors may be used to endorse or promote products derived
+**     from this software without specific prior written permission.
+**
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \page qtscriptclassic-example-helloscript.html
+    \title Hello Script Example
+
+    The Hello Script example shows the basic use of Qt Script: How to embed
+    a script engine into the application, how to evaluate a script, and how
+    to process the result of the evaluation. The example also shows how to
+    apply internationalization to scripts.
+
+    \snippet examples/script/helloscript/main.cpp 0
+
+    The application will load the script file to evaluate from a resource, so
+    we first make sure that the resource is initialized.
+
+    \snippet examples/script/helloscript/main.cpp 1
+
+    We attempt to load a translation, and install translation functions in the
+    script engine. How to produce a translation is explained later.
+
+    \snippet examples/script/helloscript/main.cpp 2
+
+    A push button is created and exported to the script environment as a
+    global variable, \c button. Scripts will be able to access properties,
+    signals and slots of the button as properties of the \c button script
+    object; the script object acts as a proxy to the C++ button object.
+
+    \snippet examples/script/helloscript/main.cpp 3
+
+    The contents of the script file are read.
+
+    \snippet examples/script/helloscript/helloscript.qs 0
+
+    The script sets the \c text (note that the qTr() function is used to allow
+    for translation) and \c styleSheet properties of the button, and calls the
+    button's \c show() slot.
+
+    \snippet examples/script/helloscript/main.cpp 4
+
+    The script is evaluated. Note that the file name is passed as the
+    (optional) second parameter; this makes it possible for the script engine
+    to produce a meaningful backtrace if something goes wrong, and makes the
+    qTr() function be able to resolve the translations that are associated
+    with this script.
+
+    \snippet examples/script/helloscript/main.cpp 5
+
+    If the result is an Error object (e.g. the script contained a syntax
+    error, or tried to call a function that doesn't exist), we obtain
+    the line number and string representation of the error and display
+    it in a message box.
+
+    \snippet examples/script/helloscript/main.cpp 6
+
+    If the evaluation went well, the application event loop is entered.
+
+    \section1 Translating the Application
+
+    The Qt Script internalization support builds on what Qt already provides
+    for C++; see the \l{Hello tr() Example} for an introduction.
+
+    Since we haven't made the translation file \c helloscript_la.qm, the
+    source text is shown when we run the application ("Hello world!").
+
+    To generate the translation file, run \c lupdate as follows:
+
+    \code
+    lupdate helloscript.qs -ts helloscript_la.ts
+    \endcode
+
+    You should now have a file \c helloscript_la.ts in the current
+    directory. Run \c linguist to edit the translation:
+
+    \code
+    linguist helloscript_la.ts
+    \endcode
+
+    You should now see the text "helloscript.qs" in the top left pane.
+    Double-click it, then click on "Hello world!" and enter "Orbis, te
+    saluto!" in the \gui Translation pane (the middle right of the
+    window). Don't forget the exclamation mark!
+
+    Click the \gui Done checkbox and choose \gui File|Save from the
+    menu bar. The \c .ts file will no longer contain
+
+    \snippet doc/src/snippets/code/doc_src_examples_hellotr.qdoc 3
+
+    but instead will have
+
+    \snippet doc/src/snippets/code/doc_src_examples_hellotr.qdoc 4
+
+    To see the application running in Latin, we have to generate a \c .qm
+    file from the \c .ts file. Generating a \c .qm file can be achieved
+    either from within \e {Qt Linguist} (for a single \c .ts file), or
+    by using the command line program \c lrelease which will produce one \c
+    .qm file for each of the \c .ts files listed in the project file.
+    Generate \c hellotr_la.qm from \c hellotr_la.ts by choosing
+    \gui File|Release from \e {Qt Linguist}'s menu bar and pressing
+    \gui Save in the file save dialog that pops up. Now run the \c helloscript
+    program again. This time the button will be labelled "Orbis, te
+    saluto!".
+*/

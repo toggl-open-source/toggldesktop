@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!-- winhost.qdoc -->
+<head>
+  <title>Qt Application using Win32 Windows</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qt-logo.png" align="left" width="57" height="67" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a></td>
+</tr></table><h1 class="title">Qt Application using Win32 Windows<br /><span class="subtitle"></span>
+</h1>
+<p>This examples shows how to use the <a href="qwinhost.html">QWinHost</a> class to use a native Win32 window inside a Qt based user interface.</p>
+<pre> class HostWindow : public QWinHost
+ {
+     Q_OBJECT
+ public:
+     HostWindow(QWidget *parent = 0, Qt::WFlags f = 0)
+         : QWinHost(parent, f)
+     {
+         setFocusPolicy(Qt::StrongFocus);
+     }
+
+     HWND createWindow(HWND parent, HINSTANCE instance)
+     {
+         static ATOM windowClass = 0;
+         if (!windowClass) {
+             WNDCLASSEX wcex;
+             wcex.cbSize         = sizeof(WNDCLASSEX);
+             wcex.style          = CS_HREDRAW | CS_VREDRAW;
+             wcex.lpfnWndProc    = (WNDPROC)WndProc;
+             wcex.cbClsExtra     = 0;
+             wcex.cbWndExtra     = 0;
+             wcex.hInstance      = instance;
+             wcex.hIcon          = NULL;
+             wcex.hCursor        = LoadCursor(NULL, IDC_ARROW);
+             wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
+             wcex.lpszMenuName   = NULL;
+             wcex.lpszClassName  = L&quot;qtest&quot;;
+             wcex.hIconSm        = NULL;
+
+             windowClass = RegisterClassEx(&amp;wcex);
+         }
+
+         HWND hwnd = CreateWindow((TCHAR*)windowClass, 0, WS_CHILD|WS_CLIPSIBLINGS|WS_TABSTOP,
+             CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, parent, NULL, instance, NULL);
+
+         return hwnd;
+     }</pre>
+<p>The HostWindow class is a subclass of <a href="qwinhost.html">QWinHost</a> and reimplements the virtual function <a href="qwinhost.html#createWindow">QWinHost::createWindow</a>() to register a Win32 window class using the RegisterClassEx API, and to create a window using the CreateWindow API. Note that the UNICODE version of all Win32 APIs is used.</p>
+<pre> signals:
+     void message(const QString &amp;msg, int timeout);
+
+ public slots:
+     void returnPressed()
+     {
+         QMessageBox::information(topLevelWidget(), &quot;Message from Qt&quot;, &quot;Return pressed in QLineEdit!&quot;);
+     }</pre>
+<p>The class implements a signal <tt>message</tt> to report status changes.</p>
+<pre> protected:
+     static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+     {
+         QWidget *widget = QWidget::find(GetParent(hWnd));
+         HostWindow *window = qobject_cast&lt;HostWindow*&gt;(widget);</pre>
+<p>The static <tt>WndProc</tt> function implements the message handling of the Win32 window. Since the method is static we have to use <a href="http://qt.nokia.com/doc/4.6/qwidget.html#find">QWidget::find</a>() to get the <a href="http://qt.nokia.com/doc/4.6/qwidget.html">QWidget</a> object for the window handle. Since we want to use the signal of the HostWindow class, which is the parent window of the native Win32 window, we have to cast the <a href="http://qt.nokia.com/doc/4.6/qwidget.html">QWidget</a> pointer to HostWindow, which is safe when using <a href="http://qt.nokia.com/doc/4.6/qobject.html#qobject_cast">qobject_cast</a>().</p>
+<pre>         if (window) switch (message) {
+         case WM_SETFOCUS:
+             window-&gt;message(&quot;SetFocus for Win32 window!&quot;, 1000);
+             break;
+         case WM_KILLFOCUS:
+             window-&gt;message(&quot;KillFocus for Win32 window!&quot;, 1000);
+             break;
+         case WM_MOUSEMOVE:
+             window-&gt;message(&quot;Moving the mouse, aren't we?&quot;, 200);
+             break;
+         case WM_KEYDOWN:
+             if (wParam != VK_TAB)
+                 window-&gt;message(&quot;Key Pressed!&quot;, 500);
+             break;
+         default:
+             return DefWindowProc(hWnd, message, wParam, lParam);
+         }
+         return 0;
+     }
+ };</pre>
+<p>The message is then handled in the switch statement. Unhandled messages are passed on to the default window procedure.</p>
+<pre> #include &quot;main.moc&quot;
+
+ int main(int argc, char **argv)
+ {
+     QApplication a(argc, argv);
+
+     QMainWindow mw;
+     mw.menuBar()-&gt;addMenu(&quot;&amp;File&quot;)-&gt;addAction(&quot;&amp;Exit&quot;, &amp;a, SLOT(quit()));
+
+     QWidget central(&amp;mw);
+
+     QLineEdit edit(&amp;central);
+     HostWindow host(&amp;central);
+     QObject::connect(&amp;host, SIGNAL(message(const QString&amp;,int)), mw.statusBar(), SLOT(showMessage(const QString&amp;,int)));
+     QObject::connect(&amp;edit, SIGNAL(returnPressed()), &amp;host, SLOT(returnPressed()));
+
+     QVBoxLayout vbox(&amp;central);
+     vbox.addWidget(&amp;edit);
+     vbox.addWidget(&amp;host);
+
+     mw.setCentralWidget(&amp;central);
+     mw.show();
+     return a.exec();
+ }</pre>
+<p>The <tt>main</tt> function creates a standard Qt user interface using <a href="http://qt.nokia.com/doc/4.6/qmainwindow.html">QMainWindow</a>. The main window's central widget contains a <a href="http://qt.nokia.com/doc/4.6/qlineedit.html">QLineEdit</a> as well as the HostWindow. Messages sent by the HostWindow object are displayed in the main window's default statusbar.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td width="30%" align="left">Copyright &copy; 2010 Nokia Corporation and/or its subsidiary(-ies)</td>
+<td width="40%" align="center"><a href="http://qt.nokia.com/doc/trademarks.html">Trademarks</a></td>
+<td width="30%" align="right"><div align="right">Qt Solutions</div></td>
+</tr></table></div></address></body>
+</html>

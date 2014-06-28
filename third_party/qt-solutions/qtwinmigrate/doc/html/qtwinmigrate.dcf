@@ -1,0 +1,56 @@
+<!DOCTYPE DCF>
+<DCF ref="index.html" icon="qtwinmigrate.png" imagedir="../../gif" title="Qt Solutions: Qt/MFC Migration Framework Documentation">
+<section ref="classes.html" title="Classes">
+    <section ref="qmfcapp.html" title="QMfcApp Class Reference">
+        <keyword ref="qmfcapp.html">QMfcApp</keyword>
+        <keyword ref="qmfcapp.html#enterModalLoop">enterModalLoop</keyword>
+        <keyword ref="qmfcapp.html#exitModalLoop">exitModalLoop</keyword>
+        <keyword ref="qmfcapp.html#pluginInstance">pluginInstance</keyword>
+        <keyword ref="qmfcapp.html#winEventFilter">winEventFilter</keyword>
+        <section ref="qmfcapp-members.html" title="List of all members"/>
+    </section>
+    <section ref="qwinhost.html" title="QWinHost Class Reference">
+        <keyword ref="qwinhost.html">QWinHost</keyword>
+        <keyword ref="qwinhost.html#createWindow">createWindow</keyword>
+        <keyword ref="qwinhost.html#event">event</keyword>
+        <keyword ref="qwinhost.html#focusInEvent">focusInEvent</keyword>
+        <keyword ref="qwinhost.html#resizeEvent">resizeEvent</keyword>
+        <keyword ref="qwinhost.html#setWindow">setWindow</keyword>
+        <keyword ref="qwinhost.html#showEvent">showEvent</keyword>
+        <keyword ref="qwinhost.html#winEvent">winEvent</keyword>
+        <keyword ref="qwinhost.html#window">window</keyword>
+        <section ref="qwinhost-members.html" title="List of all members"/>
+    </section>
+    <section ref="qwinwidget.html" title="QWinWidget Class Reference">
+        <keyword ref="qwinwidget.html">QWinWidget</keyword>
+        <keyword ref="qwinwidget.html#center">center</keyword>
+        <keyword ref="qwinwidget.html#childEvent">childEvent</keyword>
+        <keyword ref="qwinwidget.html#eventFilter">eventFilter</keyword>
+        <keyword ref="qwinwidget.html#focusInEvent">focusInEvent</keyword>
+        <keyword ref="qwinwidget.html#focusNextPrevChild">focusNextPrevChild</keyword>
+        <keyword ref="qwinwidget.html#parentWindow">parentWindow</keyword>
+        <keyword ref="qwinwidget.html#show">show</keyword>
+        <keyword ref="qwinwidget.html#winEvent">winEvent</keyword>
+        <section ref="qwinwidget-members.html" title="List of all members"/>
+        <section ref="qwinwidget-obsolete.html" title="Obsolete members"/>
+    </section>
+</section>
+<section ref="overviews.html" title="Overviews">
+    <section ref="winmigrate-walkthrough.html" title="MFC to Qt Migration - Walkthrough">
+        <keyword ref="winmigrate-walkthrough.html">MFC to Qt Migration - Walkthrough</keyword>
+    </section>
+    <section ref="winmigrate-win32-in-qt-example.html" title="Qt Application using Win32 Windows">
+        <keyword ref="winmigrate-win32-in-qt-example.html">Qt Application using Win32 Windows</keyword>
+    </section>
+    <section ref="winmigrate-qt-dll-example.html" title="Qt based Application Extension">
+        <keyword ref="winmigrate-qt-dll-example.html">Qt based Application Extension</keyword>
+    </section>
+    <section ref="winmigrate-qt-in-win32-example.html" title="Qt widgets in Win32">
+        <keyword ref="winmigrate-qt-in-win32-example.html">Qt widgets in Win32</keyword>
+    </section>
+    <section ref="index.html" title="Qt/MFC Migration Framework">
+        <keyword ref="index.html">Qt/MFC Migration Framework</keyword>
+    </section>
+</section>
+<section ref="examples.html" title="Tutorial &amp; Examples"/>
+</DCF>

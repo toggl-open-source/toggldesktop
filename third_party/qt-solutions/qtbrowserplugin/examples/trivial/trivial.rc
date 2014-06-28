@@ -1,0 +1,37 @@
+1 TYPELIB "trivial.rc"
+
+1 VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "Digia\0"
+            VALUE "FileDescription", "trivial\0"
+	    VALUE "FileExtents", "xxx\0"
+	    VALUE "FileOpenName", "Nothing (*.xxx)\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "trivial\0"
+            VALUE "LegalCopyright", "Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).\0"
+	    VALUE "MIMEType", "trivial/very\0"
+            VALUE "OriginalFilename", "trivial.dll\0"
+            VALUE "ProductName", "Qt trivial plugin\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END

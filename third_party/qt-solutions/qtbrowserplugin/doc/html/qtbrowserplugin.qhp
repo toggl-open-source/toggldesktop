@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QtHelpProject version="1.0">
+    <namespace>com.nokia.qtsolutions.qtbrowserplugin_head</namespace>
+    <virtualFolder>qdoc</virtualFolder>
+    <customFilter name="Qt Solutions: Browser Plugin">
+        <filterAttribute>qt</filterAttribute>
+        <filterAttribute>qtbrowserplugin</filterAttribute>
+        <filterAttribute>solutions</filterAttribute>
+    </customFilter>
+    <filterSection>
+        <filterAttribute>qt</filterAttribute>
+        <filterAttribute>qtbrowserplugin</filterAttribute>
+        <filterAttribute>solutions</filterAttribute>
+        <toc>
+            <section ref="index.html" title="Qt Solutions: Browser Plugin Documentation">
+                <section ref="index.html" title="Browser Plugin"/>
+                <section ref="developingplugins.html" title="Developing Plugins"/>
+                <section ref="qtbrowserplugin-example-grapher.html" title="Grapher Plugin"/>
+                <section ref="qtbrowserplugin-example-scripting.html" title="Scripting Example"/>
+                <section ref="qtbrowserplugin-example-trivial.html" title="Trivial Example"/>
+            </section>
+        </toc>
+        <keywords>
+            <keyword name="Browser Plugin" id="Browser Plugin" ref="index.html"/>
+            <keyword name="Developing Plugins" id="Developing Plugins" ref="developingplugins.html"/>
+            <keyword name="Grapher Plugin" id="Grapher Plugin" ref="qtbrowserplugin-example-grapher.html"/>
+            <keyword name="QtNPBindable" id="QtNPBindable" ref="qtnpbindable.html"/>
+            <keyword name="QtNPBindable::DisplayMode" id="QtNPBindable::DisplayMode" ref="qtnpbindable.html#DisplayMode-enum"/>
+            <keyword name="QtNPBindable::Embedded" id="QtNPBindable::Embedded" ref="qtnpbindable.html#DisplayMode-enum"/>
+            <keyword name="QtNPBindable::Fullpage" id="QtNPBindable::Fullpage" ref="qtnpbindable.html#DisplayMode-enum"/>
+            <keyword name="QtNPBindable::Reason" id="QtNPBindable::Reason" ref="qtnpbindable.html#Reason-enum"/>
+            <keyword name="QtNPBindable::ReasonDone" id="QtNPBindable::ReasonDone" ref="qtnpbindable.html#Reason-enum"/>
+            <keyword name="QtNPBindable::ReasonBreak" id="QtNPBindable::ReasonBreak" ref="qtnpbindable.html#Reason-enum"/>
+            <keyword name="QtNPBindable::ReasonError" id="QtNPBindable::ReasonError" ref="qtnpbindable.html#Reason-enum"/>
+            <keyword name="QtNPBindable::ReasonUnknown" id="QtNPBindable::ReasonUnknown" ref="qtnpbindable.html#Reason-enum"/>
+            <keyword name="displayMode" id="QtNPBindable::displayMode" ref="qtnpbindable.html#displayMode"/>
+            <keyword name="getBrowserVersion" id="QtNPBindable::getBrowserVersion" ref="qtnpbindable.html#getBrowserVersion"/>
+            <keyword name="getNppVersion" id="QtNPBindable::getNppVersion" ref="qtnpbindable.html#getNppVersion"/>
+            <keyword name="instance" id="QtNPBindable::instance" ref="qtnpbindable.html#instance"/>
+            <keyword name="mimeType" id="QtNPBindable::mimeType" ref="qtnpbindable.html#mimeType"/>
+            <keyword name="openUrl" id="QtNPBindable::openUrl" ref="qtnpbindable.html#openUrl"/>
+            <keyword name="parameters" id="QtNPBindable::parameters" ref="qtnpbindable.html#parameters"/>
+            <keyword name="readData" id="QtNPBindable::readData" ref="qtnpbindable.html#readData"/>
+            <keyword name="transferComplete" id="QtNPBindable::transferComplete" ref="qtnpbindable.html#transferComplete"/>
+            <keyword name="uploadData" id="QtNPBindable::uploadData" ref="qtnpbindable.html#uploadData"/>
+            <keyword name="uploadFile" id="QtNPBindable::uploadFile" ref="qtnpbindable.html#uploadFile"/>
+            <keyword name="userAgent" id="QtNPBindable::userAgent" ref="qtnpbindable.html#userAgent"/>
+            <keyword name="~QtNPBindable" id="QtNPBindable::~QtNPBindable" ref="qtnpbindable.html#dtor.QtNPBindable"/>
+            <keyword name="QtNPFactory" id="QtNPFactory" ref="qtnpfactory.html"/>
+            <keyword name="createObject" id="QtNPFactory::createObject" ref="qtnpfactory.html#createObject"/>
+            <keyword name="mimeTypes" id="QtNPFactory::mimeTypes" ref="qtnpfactory.html#mimeTypes"/>
+            <keyword name="pluginDescription" id="QtNPFactory::pluginDescription" ref="qtnpfactory.html#pluginDescription"/>
+            <keyword name="pluginName" id="QtNPFactory::pluginName" ref="qtnpfactory.html#pluginName"/>
+            <keyword name="~QtNPFactory" id="QtNPFactory::~QtNPFactory" ref="qtnpfactory.html#dtor.QtNPFactory"/>
+            <keyword name="Scripting Example" id="Scripting Example" ref="qtbrowserplugin-example-scripting.html"/>
+            <keyword name="Trivial Example" id="Trivial Example" ref="qtbrowserplugin-example-trivial.html"/>
+        </keywords>
+        <files>
+            <file>index.html</file>
+            <file>qtbrowserplugin-example-grapher.html</file>
+            <file>qtbrowserplugin-example-scripting.html</file>
+            <file>qtnpbindable.html</file>
+            <file>qtbrowserplugin-example-trivial.html</file>
+            <file>qtnpfactory.html</file>
+            <file>developingplugins.html</file>
+            <file>classic.css</file>
+            <file>images/qt-logo.png</file>
+        </files>
+    </filterSection>
+</QtHelpProject>

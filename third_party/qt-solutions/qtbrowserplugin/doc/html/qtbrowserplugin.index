@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE QDOCINDEX>
+<INDEX url="" title="Qt Solutions: Browser Plugin Documentation" version="">
+    <namespace access="public" threadsafety="unspecified" status="commendable" name="" href="" location="" module="">
+        <class access="public" threadsafety="unspecified" status="commendable" name="QtNPBindable" href="qtnpbindable.html" location="qtbrowserplugin.h" bases="" module="">
+            <enum access="public" threadsafety="unspecified" status="commendable" name="Reason" fullname="QtNPBindable::Reason" href="qtnpbindable.html#Reason-enum" location="qtbrowserplugin.h">
+                <value name="ReasonDone" value="0"/>
+                <value name="ReasonBreak" value="1"/>
+                <value name="ReasonError" value="2"/>
+                <value name="ReasonUnknown" value="-1"/>
+            </enum>
+            <enum access="public" threadsafety="unspecified" status="commendable" name="DisplayMode" fullname="QtNPBindable::DisplayMode" href="qtnpbindable.html#DisplayMode-enum" location="qtbrowserplugin.h">
+                <value name="Embedded" value="1"/>
+                <value name="Fullpage" value="2"/>
+            </enum>
+            <function access="public" threadsafety="unspecified" status="commendable" name="parameters" fullname="QtNPBindable::parameters" href="qtnpbindable.html#parameters" location="qtbrowserplugin.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QMap&lt;QByteArray, QVariant&gt;" signature="parameters() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="displayMode" fullname="QtNPBindable::displayMode" href="qtnpbindable.html#displayMode" location="qtbrowserplugin.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="DisplayMode" signature="displayMode() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="mimeType" fullname="QtNPBindable::mimeType" href="qtnpbindable.html#mimeType" location="qtbrowserplugin.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QString" signature="mimeType() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="userAgent" fullname="QtNPBindable::userAgent" href="qtnpbindable.html#userAgent" location="qtbrowserplugin.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QString" signature="userAgent() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="getNppVersion" fullname="QtNPBindable::getNppVersion" href="qtnpbindable.html#getNppVersion" location="qtbrowserplugin.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="void" signature="getNppVersion(int * major, int * minor) const">
+                <parameter left="int *" right="" name="major" default=""/>
+                <parameter left="int *" right="" name="minor" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="getBrowserVersion" fullname="QtNPBindable::getBrowserVersion" href="qtnpbindable.html#getBrowserVersion" location="qtbrowserplugin.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="void" signature="getBrowserVersion(int * major, int * minor) const">
+                <parameter left="int *" right="" name="major" default=""/>
+                <parameter left="int *" right="" name="minor" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="readData" fullname="QtNPBindable::readData" href="qtnpbindable.html#readData" location="qtbrowserplugin.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="bool" signature="readData(QIODevice * source, const QString &amp; format)">
+                <parameter left="QIODevice *" right="" name="source" default=""/>
+                <parameter left="const QString &amp;" right="" name="format" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="openUrl" fullname="QtNPBindable::openUrl" href="qtnpbindable.html#openUrl" location="qtbrowserplugin.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="int" signature="openUrl(const QString &amp; url, const QString &amp; window)">
+                <parameter left="const QString &amp;" right="" name="url" default=""/>
+                <parameter left="const QString &amp;" right="" name="window" default="QString()"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="uploadData" fullname="QtNPBindable::uploadData" href="qtnpbindable.html#uploadData" location="qtbrowserplugin.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="int" signature="uploadData(const QString &amp; url, const QString &amp; window, const QByteArray &amp; data)">
+                <parameter left="const QString &amp;" right="" name="url" default=""/>
+                <parameter left="const QString &amp;" right="" name="window" default=""/>
+                <parameter left="const QByteArray &amp;" right="" name="data" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="uploadFile" fullname="QtNPBindable::uploadFile" href="qtnpbindable.html#uploadFile" location="qtbrowserplugin.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="int" signature="uploadFile(const QString &amp; url, const QString &amp; window, const QString &amp; filename)">
+                <parameter left="const QString &amp;" right="" name="url" default=""/>
+                <parameter left="const QString &amp;" right="" name="window" default=""/>
+                <parameter left="const QString &amp;" right="" name="filename" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="transferComplete" fullname="QtNPBindable::transferComplete" href="qtnpbindable.html#transferComplete" location="qtbrowserplugin.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="void" signature="transferComplete(const QString &amp; url, int id, Reason reason)">
+                <parameter left="const QString &amp;" right="" name="url" default=""/>
+                <parameter left="int" right="" name="id" default=""/>
+                <parameter left="Reason" right="" name="reason" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="instance" fullname="QtNPBindable::instance" href="qtnpbindable.html#instance" location="qtbrowserplugin.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="NPP" signature="instance() const"/>
+            <function access="protected" threadsafety="unspecified" status="commendable" name="QtNPBindable" fullname="QtNPBindable::QtNPBindable" href="qtnpbindable.html#QtNPBindable" location="qtbrowserplugin.h" virtual="non" meta="constructor" const="false" static="false" overload="false" type="" signature="QtNPBindable()"/>
+            <function access="protected" threadsafety="unspecified" status="commendable" name="~QtNPBindable" fullname="QtNPBindable::~QtNPBindable" href="qtnpbindable.html#dtor.QtNPBindable" location="qtbrowserplugin.h" virtual="impure" meta="destructor" const="false" static="false" overload="false" type="" signature="~QtNPBindable()"/>
+        </class>
+        <class access="public" threadsafety="unspecified" status="commendable" name="QtNPFactory" href="qtnpfactory.html" location="qtbrowserplugin.h" bases="" module="">
+            <function access="public" threadsafety="unspecified" status="commendable" name="QtNPFactory" fullname="QtNPFactory::QtNPFactory" href="qtnpfactory.html#QtNPFactory" location="qtbrowserplugin.h" virtual="non" meta="constructor" const="false" static="false" overload="false" type="" signature="QtNPFactory()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="~QtNPFactory" fullname="QtNPFactory::~QtNPFactory" href="qtnpfactory.html#dtor.QtNPFactory" location="qtbrowserplugin.h" virtual="impure" meta="destructor" const="false" static="false" overload="false" type="" signature="~QtNPFactory()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="mimeTypes" fullname="QtNPFactory::mimeTypes" href="qtnpfactory.html#mimeTypes" location="qtbrowserplugin.h" virtual="pure" meta="plain" const="true" static="false" overload="false" type="QStringList" signature="mimeTypes() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="createObject" fullname="QtNPFactory::createObject" href="qtnpfactory.html#createObject" location="qtbrowserplugin.h" virtual="pure" meta="plain" const="false" static="false" overload="false" type="QObject *" signature="createObject(const QString &amp; type)">
+                <parameter left="const QString &amp;" right="" name="type" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="pluginName" fullname="QtNPFactory::pluginName" href="qtnpfactory.html#pluginName" location="qtbrowserplugin.h" virtual="pure" meta="plain" const="true" static="false" overload="false" type="QString" signature="pluginName() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="pluginDescription" fullname="QtNPFactory::pluginDescription" href="qtnpfactory.html#pluginDescription" location="qtbrowserplugin.h" virtual="pure" meta="plain" const="true" static="false" overload="false" type="QString" signature="pluginDescription() const"/>
+        </class>
+        <page access="public" status="commendable" name="index.html" href="index.html" subtype="page" title="Browser Plugin" fulltitle="Browser Plugin" subtitle="" location="index.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="guidelines" title="Guidelines" level="1"/>
+            <contents name="classes" title="Classes" level="1"/>
+            <contents name="examples" title="Examples" level="1"/>
+            <contents name="tested-platforms" title="Tested platforms" level="1"/>
+        </page>
+        <page access="public" status="commendable" name="qtbrowserplugin-example-scripting.html" href="qtbrowserplugin-example-scripting.html" subtype="page" title="Scripting Example" fulltitle="Scripting Example" subtitle="" location="scripting.qdoc"/>
+        <page access="public" status="commendable" name="qtbrowserplugin-example-grapher.html" href="qtbrowserplugin-example-grapher.html" subtype="page" title="Grapher Plugin" fulltitle="Grapher Plugin" subtitle="" location="grapher.qdoc"/>
+        <page access="public" status="commendable" name="qtbrowserplugin-example-trivial.html" href="qtbrowserplugin-example-trivial.html" subtype="page" title="Trivial Example" fulltitle="Trivial Example" subtitle="" location="trivial.qdoc"/>
+        <page access="public" status="commendable" name="developingplugins.html" href="developingplugins.html" subtype="page" title="Developing Plugins" fulltitle="Developing Plugins" subtitle="" location="qtbrowserplugin.qdoc">
+            <contents name="implementing-plugins" title="Implementing plugins" level="1"/>
+            <contents name="windows-specific-notes" title="Windows specific notes" level="2"/>
+            <contents name="enabling-activex-support" title="Enabling ActiveX support" level="3"/>
+            <contents name="unix-specific-notes" title="Unix specific notes" level="2"/>
+            <contents name="known-issues-on-unix-linux" title="Known Issues on Unix/Linux" level="3"/>
+            <contents name="mac-osx-specific-notes" title="Mac OSX specific notes" level="2"/>
+            <contents name="known-issues-on-mac" title="Known Issues on Mac" level="3"/>
+            <contents name="installing-and-using-plugins" title="Installing and using Plugins" level="1"/>
+            <contents name="embedding-the-plugin-on-a-web-page" title="Embedding the plugin on a web page." level="2"/>
+            <contents name="plugins-with-data" title="Plugins with data:" level="3"/>
+            <contents name="plugins-without-data" title="Plugins without data:" level="3"/>
+            <contents name="tags-not-working-equally-with-all-browsers" title="Tags not working equally with all browsers" level="3"/>
+            <contents name="browser-full-page-view-of-a-plugin" title="Browser full-page view of a plugin" level="2"/>
+            <contents name="scripting" title="Scripting" level="2"/>
+            <contents name="javascript-calling-slots-and-properties" title="JavaScript calling slots and properties" level="3"/>
+            <contents name="the-plugin-calling-javascript" title="The plugin calling JavaScript" level="3"/>
+            <contents name="using-plugins-in-forms" title="Using plugins in forms" level="3"/>
+        </page>
+    </namespace>
+</INDEX>

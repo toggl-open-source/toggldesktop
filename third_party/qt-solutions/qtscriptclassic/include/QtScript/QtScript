@@ -1,0 +1,16 @@
+#ifndef QT_QTSCRIPT_MODULE_H
+#define QT_QTSCRIPT_MODULE_H
+#include <QtCore>
+#include "qscriptextensionplugin.h"
+#include "qscriptvalue.h"
+#include "qscriptstring.h"
+#include "qscriptextensioninterface.h"
+#include "qscriptengineagent.h"
+#include "qscriptable.h"
+#include "qscriptcontext.h"
+#include "qscriptvalueiterator.h"
+#include "qscriptclasspropertyiterator.h"
+#include "qscriptengine.h"
+#include "qscriptcontextinfo.h"
+#include "qscriptclass.h"
+#endif

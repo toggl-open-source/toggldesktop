@@ -1,0 +1,105 @@
+/****************************************************************************
+**
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
+**
+** This file is part of the Qt Solutions component.
+**
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Digia Plc and its Subsidiary(-ies) nor the names
+**     of its contributors may be used to endorse or promote products derived
+**     from this software without specific prior written permission.
+**
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*! \page qtbrowserplugin-example-scripting.html
+
+  \title Scripting Example
+
+  This example demonstrates the combination of Javascript and a
+  trivial plugin, and the use of a plugin in combination with a form.
+
+  If the browser supports scripting plugins, and everything is set up
+  correctly, the plugin below should react to mouse clicks and drags
+  by changing its text. The \c About... button should pop up an
+  \c{About Qt} dialog. The second plugin instance, below the
+  horizontal line, should display the word \c QtBrowserPlugin, and
+  pressing the \c Go! button should navigate the browser to a search
+  for this word at google.com.
+
+  \raw HTML 
+  <object id="ScriptableObject" TYPE=trivial/very WIDTH=200 HEIGHT=100 text="Very Scriptable!"> </object>
+
+  <script language=JavaScript>
+  var ScriptableObject = document.getElementById('ScriptableObject');
+  ScriptableObject.text = 'This is some text'
+
+  var oldText
+  ScriptableObject.mouseDown = function()
+  {
+    oldText = ScriptableObject.text
+    ScriptableObject.text = 'Mouse Down'
+  }
+
+  ScriptableObject.mouseMove = function(x, y)
+  {
+    ScriptableObject.text = 'Mouse at ' + x + ',' + y
+  }
+
+  ScriptableObject.mouseUp = function()
+  {
+    ScriptableObject.text = oldText
+  }
+  </script>
+
+  <!-- Special hookup code required for Internet Explorer -->
+  <!--[if IE]>
+  <script language=JScript>
+  function ScriptableObject::mouseDown() { ScriptableObject.mouseDown() }
+  function ScriptableObject::mouseMove(x, y) { ScriptableObject.mouseMove(x, y) }
+  function ScriptableObject::mouseUp() { ScriptableObject.mouseUp() }
+  </script>
+  <![endif]-->
+
+  <form>
+  <input type="button" value="About..." OnClick="ScriptableObject.about();"/>
+  </form>
+
+  <hr>
+  <form method="GET" action="http://www.google.com/search">
+  Search at Google:
+  <object id="SearchableText" name="q" type=trivial/very width=150 height=40 text="QtBrowserPlugin"></object>
+  <input type="submit" value="Go!">
+  </form>
+  \endraw
+
+  Implementation:
+
+  \quotefile trivial/trivial.cpp
+*/

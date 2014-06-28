@@ -1,0 +1,79 @@
+<!DOCTYPE DCF>
+<DCF ref="index.html" icon="qtservice.png" imagedir="../../gif" title="Qt Solutions: Service Documentation">
+<section ref="classes.html" title="Classes">
+    <section ref="qtservice.html" title="QtService Class Reference">
+        <keyword ref="qtservice.html">QtService</keyword>
+        <keyword ref="qtservice.html#application">application</keyword>
+        <keyword ref="qtservice.html#createApplication">createApplication</keyword>
+        <keyword ref="qtservice.html#executeApplication">executeApplication</keyword>
+        <section ref="qtservice-members.html" title="List of all members"/>
+    </section>
+    <section ref="qtservicebase.html" title="QtServiceBase Class Reference">
+        <keyword ref="qtservicebase.html">QtServiceBase</keyword>
+        <keyword ref="qtservicebase.html#MessageType-enum">MessageType</keyword>
+        <keyword ref="qtservicebase.html#MessageType-enum">QtServiceBase::Warning</keyword>
+        <keyword ref="qtservicebase.html#MessageType-enum">QtServiceBase::Error</keyword>
+        <keyword ref="qtservicebase.html#MessageType-enum">QtServiceBase::Success</keyword>
+        <keyword ref="qtservicebase.html#MessageType-enum">QtServiceBase::Information</keyword>
+        <keyword ref="qtservicebase.html#ServiceFlag-enum">ServiceFlag</keyword>
+        <keyword ref="qtservicebase.html#ServiceFlag-enum">ServiceFlags</keyword>
+        <keyword ref="qtservicebase.html#ServiceFlag-enum">QtServiceBase::Default</keyword>
+        <keyword ref="qtservicebase.html#ServiceFlag-enum">QtServiceBase::NeedsStopOnShutdown</keyword>
+        <keyword ref="qtservicebase.html#ServiceFlag-enum">QtServiceBase::CannotBeStopped</keyword>
+        <keyword ref="qtservicebase.html#ServiceFlag-enum">QtServiceBase::CanBeSuspended</keyword>
+        <keyword ref="qtservicebase.html#createApplication">createApplication</keyword>
+        <keyword ref="qtservicebase.html#exec">exec</keyword>
+        <keyword ref="qtservicebase.html#executeApplication">executeApplication</keyword>
+        <keyword ref="qtservicebase.html#instance">instance</keyword>
+        <keyword ref="qtservicebase.html#logMessage">logMessage</keyword>
+        <keyword ref="qtservicebase.html#pause">pause</keyword>
+        <keyword ref="qtservicebase.html#processCommand">processCommand</keyword>
+        <keyword ref="qtservicebase.html#resume">resume</keyword>
+        <keyword ref="qtservicebase.html#serviceDescription">serviceDescription</keyword>
+        <keyword ref="qtservicebase.html#serviceFlags">serviceFlags</keyword>
+        <keyword ref="qtservicebase.html#serviceName">serviceName</keyword>
+        <keyword ref="qtservicebase.html#setServiceDescription">setServiceDescription</keyword>
+        <keyword ref="qtservicebase.html#setServiceFlags">setServiceFlags</keyword>
+        <keyword ref="qtservicebase.html#setStartupType">setStartupType</keyword>
+        <keyword ref="qtservicebase.html#start">start</keyword>
+        <keyword ref="qtservicebase.html#startupType">startupType</keyword>
+        <keyword ref="qtservicebase.html#stop">stop</keyword>
+        <section ref="qtservicebase-members.html" title="List of all members"/>
+    </section>
+    <section ref="qtservicecontroller.html" title="QtServiceController Class Reference">
+        <keyword ref="qtservicecontroller.html">QtServiceController</keyword>
+        <keyword ref="qtservicecontroller.html#StartupType-enum">StartupType</keyword>
+        <keyword ref="qtservicecontroller.html#StartupType-enum">QtServiceController::AutoStartup</keyword>
+        <keyword ref="qtservicecontroller.html#StartupType-enum">QtServiceController::ManualStartup</keyword>
+        <keyword ref="qtservicecontroller.html#install">install</keyword>
+        <keyword ref="qtservicecontroller.html#isInstalled">isInstalled</keyword>
+        <keyword ref="qtservicecontroller.html#isRunning">isRunning</keyword>
+        <keyword ref="qtservicecontroller.html#pause">pause</keyword>
+        <keyword ref="qtservicecontroller.html#resume">resume</keyword>
+        <keyword ref="qtservicecontroller.html#sendCommand">sendCommand</keyword>
+        <keyword ref="qtservicecontroller.html#serviceDescription">serviceDescription</keyword>
+        <keyword ref="qtservicecontroller.html#serviceFilePath">serviceFilePath</keyword>
+        <keyword ref="qtservicecontroller.html#serviceName">serviceName</keyword>
+        <keyword ref="qtservicecontroller.html#start">start</keyword>
+        <keyword ref="qtservicecontroller.html#startupType">startupType</keyword>
+        <keyword ref="qtservicecontroller.html#stop">stop</keyword>
+        <keyword ref="qtservicecontroller.html#uninstall">uninstall</keyword>
+        <section ref="qtservicecontroller-members.html" title="List of all members"/>
+    </section>
+</section>
+<section ref="overviews.html" title="Overviews">
+    <section ref="qtservice-example-server.html" title="A simple HTTP Server">
+        <keyword ref="qtservice-example-server.html">A simple HTTP Server</keyword>
+    </section>
+    <section ref="qtservice-example-controller.html" title="A simple Service Controller">
+        <keyword ref="qtservice-example-controller.html">A simple Service Controller</keyword>
+    </section>
+    <section ref="qtservice-example-interactive.html" title="An Interactive Service">
+        <keyword ref="qtservice-example-interactive.html">An Interactive Service</keyword>
+    </section>
+    <section ref="index.html" title="Service">
+        <keyword ref="index.html">Service</keyword>
+    </section>
+</section>
+<section ref="examples.html" title="Tutorial &amp; Examples"/>
+</DCF>

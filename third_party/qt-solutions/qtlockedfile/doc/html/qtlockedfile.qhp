@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QtHelpProject version="1.0">
+    <namespace>com.nokia.qtsolutions.qtlockedfile_head</namespace>
+    <virtualFolder>qdoc</virtualFolder>
+    <customFilter name="Qt Solutions: Locked File">
+        <filterAttribute>qt</filterAttribute>
+        <filterAttribute>solutions</filterAttribute>
+        <filterAttribute>qtlockedfile</filterAttribute>
+    </customFilter>
+    <filterSection>
+        <filterAttribute>qt</filterAttribute>
+        <filterAttribute>solutions</filterAttribute>
+        <filterAttribute>qtlockedfile</filterAttribute>
+        <toc>
+            <section ref="index.html" title="Qt Solutions: Locked File Documentation">
+                <section ref="index.html" title="Locked File"/>
+            </section>
+        </toc>
+        <keywords>
+            <keyword name="Locked File" id="Locked File" ref="index.html"/>
+            <keyword name="QtLockedFile" id="QtLockedFile" ref="qtlockedfile.html"/>
+            <keyword name="QtLockedFile::LockMode" id="QtLockedFile::LockMode" ref="qtlockedfile.html#LockMode-enum"/>
+            <keyword name="QtLockedFile::NoLock" id="QtLockedFile::NoLock" ref="qtlockedfile.html#LockMode-enum"/>
+            <keyword name="QtLockedFile::ReadLock" id="QtLockedFile::ReadLock" ref="qtlockedfile.html#LockMode-enum"/>
+            <keyword name="QtLockedFile::WriteLock" id="QtLockedFile::WriteLock" ref="qtlockedfile.html#LockMode-enum"/>
+            <keyword name="isLocked" id="QtLockedFile::isLocked" ref="qtlockedfile.html#isLocked"/>
+            <keyword name="lock" id="QtLockedFile::lock" ref="qtlockedfile.html#lock"/>
+            <keyword name="lockMode" id="QtLockedFile::lockMode" ref="qtlockedfile.html#lockMode"/>
+            <keyword name="open" id="QtLockedFile::open" ref="qtlockedfile.html#open"/>
+            <keyword name="unlock" id="QtLockedFile::unlock" ref="qtlockedfile.html#unlock"/>
+            <keyword name="~QtLockedFile" id="QtLockedFile::~QtLockedFile" ref="qtlockedfile.html#dtor.QtLockedFile"/>
+        </keywords>
+        <files>
+            <file>index.html</file>
+            <file>qtlockedfile.html</file>
+            <file>classic.css</file>
+            <file>images/qt-logo.png</file>
+        </files>
+    </filterSection>
+</QtHelpProject>

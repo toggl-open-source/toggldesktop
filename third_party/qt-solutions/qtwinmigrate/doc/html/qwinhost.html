@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!-- qwinhost.cpp -->
+<head>
+  <title>QWinHost Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qt-logo.png" align="left" width="57" height="67" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a></td>
+</tr></table><h1 class="title">QWinHost Class Reference</h1>
+<p>The QWinHost class provides an API to use native Win32 windows in Qt applications. <a href="#details">More...</a></p>
+<pre> #include &lt;QWinHost&gt;</pre><p>Inherits <a href="http://qt.nokia.com/doc/4.6/qwidget.html">QWidget</a>.</p>
+<ul>
+<li><a href="qwinhost-members.html">List of all members, including inherited members</a></li>
+</ul>
+<hr />
+<a name="public-functions"></a>
+<h2>Public Functions</h2>
+<table class="alignedsummary" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr><td class="memItemLeft" align="right" valign="top"></td><td class="memItemRight" valign="bottom"><b><a href="qwinhost.html#QWinHost">QWinHost</a></b> ( QWidget * <i>parent</i> = 0, Qt::WFlags <i>f</i> = 0 )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"></td><td class="memItemRight" valign="bottom"><b><a href="qwinhost.html#dtor.QWinHost">~QWinHost</a></b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void </td><td class="memItemRight" valign="bottom"><b><a href="qwinhost.html#setWindow">setWindow</a></b> ( HWND <i>window</i> )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">HWND </td><td class="memItemRight" valign="bottom"><b><a href="qwinhost.html#window">window</a></b> () const</td></tr>
+</table>
+<ul>
+<li><div bar="2" class="fn"></div>217 public functions inherited from <a href="http://qt.nokia.com/doc/4.6/qwidget.html#public-functions">QWidget</a></li>
+<li><div bar="2" class="fn"></div>13 public functions inherited from <a href="http://qt.nokia.com/doc/4.6/qpaintdevice.html#public-functions">QPaintDevice</a></li>
+<li><div bar="2" class="fn"></div>29 public functions inherited from <a href="http://qt.nokia.com/doc/4.6/qobject.html#public-functions">QObject</a></li>
+</ul>
+<hr />
+<a name="protected-functions"></a>
+<h2>Protected Functions</h2>
+<table class="alignedsummary" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr><td class="memItemLeft" align="right" valign="top">virtual HWND </td><td class="memItemRight" valign="bottom"><b><a href="qwinhost.html#createWindow">createWindow</a></b> ( HWND <i>parent</i>, HINSTANCE <i>instance</i> )</td></tr>
+</table>
+<hr />
+<a name="reimplemented-protected-functions"></a>
+<h2>Reimplemented Protected Functions</h2>
+<table class="alignedsummary" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr><td class="memItemLeft" align="right" valign="top">virtual bool </td><td class="memItemRight" valign="bottom"><b><a href="qwinhost.html#event">event</a></b> ( QEvent * <i>e</i> )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void </td><td class="memItemRight" valign="bottom"><b><a href="qwinhost.html#focusInEvent">focusInEvent</a></b> ( QFocusEvent * <i>e</i> )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void </td><td class="memItemRight" valign="bottom"><b><a href="qwinhost.html#resizeEvent">resizeEvent</a></b> ( QResizeEvent * <i>e</i> )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void </td><td class="memItemRight" valign="bottom"><b><a href="qwinhost.html#showEvent">showEvent</a></b> ( QShowEvent * <i>e</i> )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual bool </td><td class="memItemRight" valign="bottom"><b><a href="qwinhost.html#winEvent">winEvent</a></b> ( MSG * <i>msg</i>, long * <i>result</i> )</td></tr>
+</table>
+<ul>
+<li><div bar="2" class="fn"></div>37 protected functions inherited from <a href="http://qt.nokia.com/doc/4.6/qwidget.html#protected-functions">QWidget</a></li>
+<li><div bar="2" class="fn"></div>1 protected function inherited from <a href="http://qt.nokia.com/doc/4.6/qpaintdevice.html#protected-functions">QPaintDevice</a></li>
+<li><div bar="2" class="fn"></div>7 protected functions inherited from <a href="http://qt.nokia.com/doc/4.6/qobject.html#protected-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"></div>58 properties inherited from <a href="http://qt.nokia.com/doc/4.6/qwidget.html#properties">QWidget</a></li>
+<li><div class="fn"></div>1 property inherited from <a href="http://qt.nokia.com/doc/4.6/qobject.html#properties">QObject</a></li>
+<li><div class="fn"></div>19 public slots inherited from <a href="http://qt.nokia.com/doc/4.6/qwidget.html#public-slots">QWidget</a></li>
+<li><div class="fn"></div>1 public slot inherited from <a href="http://qt.nokia.com/doc/4.6/qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"></div>1 signal inherited from <a href="http://qt.nokia.com/doc/4.6/qwidget.html#signals">QWidget</a></li>
+<li><div class="fn"></div>1 signal inherited from <a href="http://qt.nokia.com/doc/4.6/qobject.html#signals">QObject</a></li>
+<li><div class="fn"></div>1 public type inherited from <a href="http://qt.nokia.com/doc/4.6/qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"></div>4 static public members inherited from <a href="http://qt.nokia.com/doc/4.6/qwidget.html#static-public-members">QWidget</a></li>
+<li><div class="fn"></div>4 static public members inherited from <a href="http://qt.nokia.com/doc/4.6/qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"></div>1 protected slot inherited from <a href="http://qt.nokia.com/doc/4.6/qwidget.html#protected-slots">QWidget</a></li>
+<li><div class="fn"></div>1 protected type inherited from <a href="http://qt.nokia.com/doc/4.6/qpaintdevice.html#protected-variables">QPaintDevice</a></li>
+<li><div class="fn"></div>2 protected variables inherited from <a href="http://qt.nokia.com/doc/4.6/qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QWinHost class provides an API to use native Win32 windows in Qt applications.</p>
+<p>QWinHost exists to provide a <a href="http://qt.nokia.com/doc/4.6/qwidget.html">QWidget</a> that can act as a parent for any native Win32 control. Since QWinHost is a proper <a href="http://qt.nokia.com/doc/4.6/qwidget.html">QWidget</a>, it can be used as a toplevel widget (e.g&#x2e; 0 parent) or as a child of any other <a href="http://qt.nokia.com/doc/4.6/qwidget.html">QWidget</a>.</p>
+<p>QWinHost integrates the native control into the Qt user interface, e.g&#x2e; handles focus switches and laying out.</p>
+<p>Applications moving to Qt may have custom Win32 controls that will take time to rewrite with Qt. Such applications can use these custom controls as children of QWinHost widgets. This allows the application's user interface to be replaced gradually.</p>
+<p>When the QWinHost is destroyed, and the Win32 window hasn't been set with <a href="qwinhost.html#setWindow">setWindow</a>(), the window will also be destroyed.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QWinHost"></a>QWinHost::QWinHost ( <a href="http://qt.nokia.com/doc/4.6/qwidget.html">QWidget</a> * <i>parent</i> = 0, <a href="http://qt.nokia.com/doc/4.6/qt.html#WFlags-typedef">Qt::WFlags</a> <i>f</i> = 0 )</h3>
+<p>Creates an instance of <a href="qwinhost.html">QWinHost</a>. <i>parent</i> and <i>f</i> are passed on to the <a href="http://qt.nokia.com/doc/4.6/qwidget.html">QWidget</a> constructor. The widget has by default no background.</p>
+<p><b>Warning:</b> You cannot change the parent widget of the <a href="qwinhost.html">QWinHost</a> instance after the native window has been created, i.e&#x2e; do not call QWidget::setParent or move the <a href="qwinhost.html">QWinHost</a> into a different layout.</p>
+<h3 class="fn"><a name="dtor.QWinHost"></a>QWinHost::~QWinHost ()</h3>
+<p>Destroys the <a href="qwinhost.html">QWinHost</a> object. If the hosted Win32 window has not been set explicitly using <a href="qwinhost.html#setWindow">setWindow</a>() the window will be destroyed.</p>
+<h3 class="fn"><a name="createWindow"></a>HWND QWinHost::createWindow ( HWND <i>parent</i>, HINSTANCE <i>instance</i> )&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Reimplement this virtual function to create and return the native Win32 window. <i>parent</i> is the handle to this widget, and <i>instance</i> is the handle to the application instance. The returned HWND must be a child of the <i>parent</i> HWND.</p>
+<p>The default implementation returns null. The window returned by a reimplementation of this function is owned by this <a href="qwinhost.html">QWinHost</a> instance and will be destroyed in the destructor.</p>
+<p>This function is called by the implementation of <a href="http://qt.nokia.com/doc/4.6/qwidget-qt3.html#polish" class="compat">polish</a>() if no window has been set explicitly using <a href="qwinhost.html#setWindow">setWindow</a>(). Call <a href="http://qt.nokia.com/doc/4.6/qwidget-qt3.html#polish" class="compat">polish</a>() to force this function to be called.</p>
+<p>See also <a href="qwinhost.html#setWindow">setWindow</a>().</p>
+<h3 class="fn"><a name="event"></a>bool QWinHost::event ( <a href="http://qt.nokia.com/doc/4.6/qevent.html">QEvent</a> * <i>e</i> )&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Reimplemented from <a href="http://qt.nokia.com/doc/4.6/qobject.html#event">QObject::event</a>().</p>
+<h3 class="fn"><a name="focusInEvent"></a>void QWinHost::focusInEvent ( <a href="http://qt.nokia.com/doc/4.6/qfocusevent.html">QFocusEvent</a> * <i>e</i> )&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Reimplemented from <a href="http://qt.nokia.com/doc/4.6/qwidget.html#focusInEvent">QWidget::focusInEvent</a>().</p>
+<h3 class="fn"><a name="resizeEvent"></a>void QWinHost::resizeEvent ( <a href="http://qt.nokia.com/doc/4.6/qresizeevent.html">QResizeEvent</a> * <i>e</i> )&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Reimplemented from <a href="http://qt.nokia.com/doc/4.6/qwidget.html#resizeEvent">QWidget::resizeEvent</a>().</p>
+<h3 class="fn"><a name="setWindow"></a>void QWinHost::setWindow ( HWND <i>window</i> )</h3>
+<p>Sets the native Win32 window to <i>window</i>. If <i>window</i> is not a child window of this widget, then it is reparented to become one. If <i>window</i> is not a child window (i.e&#x2e; WS_OVERLAPPED is set), then this function does nothing.</p>
+<p>The lifetime of the window handle will be managed by Windows, <a href="qwinhost.html">QWinHost</a> does not call DestroyWindow. To verify that the handle is destroyed when expected, handle WM_DESTROY in the window procedure.</p>
+<p>See also <a href="qwinhost.html#window">window</a>() and <a href="qwinhost.html#createWindow">createWindow</a>().</p>
+<h3 class="fn"><a name="showEvent"></a>void QWinHost::showEvent ( <a href="http://qt.nokia.com/doc/4.6/qshowevent.html">QShowEvent</a> * <i>e</i> )&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Reimplemented from <a href="http://qt.nokia.com/doc/4.6/qwidget.html#showEvent">QWidget::showEvent</a>().</p>
+<h3 class="fn"><a name="winEvent"></a>bool QWinHost::winEvent ( MSG * <i>msg</i>, long * <i>result</i> )&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Reimplemented from <a href="http://qt.nokia.com/doc/4.6/qwidget.html#winEvent">QWidget::winEvent</a>().</p>
+<h3 class="fn"><a name="window"></a>HWND QWinHost::window () const</h3>
+<p>Returns the handle to the native Win32 window, or null if no window has been set or created yet.</p>
+<p>See also <a href="qwinhost.html#setWindow">setWindow</a>() and <a href="qwinhost.html#createWindow">createWindow</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td width="30%" align="left">Copyright &copy; 2010 Nokia Corporation and/or its subsidiary(-ies)</td>
+<td width="40%" align="center"><a href="http://qt.nokia.com/doc/trademarks.html">Trademarks</a></td>
+<td width="30%" align="right"><div align="right">Qt Solutions</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!-- qtdll.qdoc -->
+<head>
+  <title>Qt based Application Extension</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qt-logo.png" align="left" width="57" height="67" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a></td>
+</tr></table><h1 class="title">Qt based Application Extension<br /><span class="subtitle"></span>
+</h1>
+<p>This examples shows how to use the <a href="qwinwidget.html">QWinWidget</a> and <a href="qmfcapp.html">QMfcApp</a> classes to implement a Qt based user interface in a plugin DLL.</p>
+<p>The plugin implements and exports a <tt>C</tt> function <tt>showDialog</tt> that can be called by any Windows application to display a modal Qt dialog. Before a Qt based user interface can be created a <a href="http://qt.nokia.com/doc/4.6/qapplication.html">QApplication</a> object must exist, and the calling application's event loop and the Qt event loop must run together.</p>
+<pre><span class="comment"> /****************************************************************************
+ **
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+ ** Contact: http://www.qt-project.org/legal
+ **
+ ** This file is part of the Qt Solutions component.
+ **
+ ** You may use this file under the terms of the BSD license as follows:
+ **
+ ** &quot;Redistribution and use in source and binary forms, with or without
+ ** modification, are permitted provided that the following conditions are
+ ** met:
+ **   * Redistributions of source code must retain the above copyright
+ **     notice, this list of conditions and the following disclaimer.
+ **   * Redistributions in binary form must reproduce the above copyright
+ **     notice, this list of conditions and the following disclaimer in
+ **     the documentation and/or other materials provided with the
+ **     distribution.
+ **   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+ **     the names of its contributors may be used to endorse or promote
+ **     products derived from this software without specific prior written
+ **     permission.
+ **
+ ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ ** &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&quot;
+ **
+ ****************************************************************************/</span>
+
+ #include &lt;qmfcapp.h&gt;
+ #include &lt;qwinwidget.h&gt;
+
+ #include &lt;QtGui/QMessageBox&gt;
+ #include &lt;windows.h&gt;
+
+ BOOL WINAPI DllMain( HINSTANCE hInstance, DWORD dwReason, LPVOID <span class="comment">/*lpvReserved*/</span> )
+ {
+     static bool ownApplication = FALSE;
+
+     if ( dwReason == DLL_PROCESS_ATTACH )
+         ownApplication = QMfcApp::pluginInstance( hInstance );
+     if ( dwReason == DLL_PROCESS_DETACH &amp;&amp; ownApplication )
+         delete qApp;
+
+     return TRUE;
+ }</pre>
+<p>The DLL entry point function <tt>DllMain</tt> uses the QMfcApp::pluginInstance function to make sure that exactly one instance of <a href="http://qt.nokia.com/doc/4.6/qapplication.html">QApplication</a> exists in the process, and that the DLL owning that instance stays loaded in memory.</p>
+<pre> extern &quot;C&quot; __declspec(dllexport) bool showDialog( HWND parent )
+ {
+     QWinWidget win( parent );
+     win.showCentered();
+     QMessageBox::about( &amp;win, &quot;About QtMfc&quot;, &quot;QtMfc Version 1.0\nCopyright (C) 2003&quot; );
+
+     return TRUE;
+ }</pre>
+<p>The <tt>C</tt> function <tt>showDialog</tt> is exported from the DLL and uses the <a href="qwinwidget.html">QWinWidget</a> class to provide proper stacking and modality between the native Win32 window and the <a href="http://qt.nokia.com/doc/4.6/qmessagebox.html">QMessageBox</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td width="30%" align="left">Copyright &copy; 2010 Nokia Corporation and/or its subsidiary(-ies)</td>
+<td width="40%" align="center"><a href="http://qt.nokia.com/doc/trademarks.html">Trademarks</a></td>
+<td width="30%" align="right"><div align="right">Qt Solutions</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QtHelpProject version="1.0">
+    <namespace>com.nokia.qtsolutions.qtwinmigrate_head</namespace>
+    <virtualFolder>qdoc</virtualFolder>
+    <customFilter name="Qt Solutions: Qt/MFC Migration Framework">
+        <filterAttribute>qt</filterAttribute>
+        <filterAttribute>solutions</filterAttribute>
+        <filterAttribute>qtwinmigrate</filterAttribute>
+    </customFilter>
+    <filterSection>
+        <filterAttribute>qt</filterAttribute>
+        <filterAttribute>solutions</filterAttribute>
+        <filterAttribute>qtwinmigrate</filterAttribute>
+        <toc>
+            <section ref="index.html" title="Qt Solutions: Qt/MFC Migration Framework Documentation">
+                <section ref="winmigrate-walkthrough.html" title="MFC to Qt Migration - Walkthrough"/>
+                <section ref="winmigrate-win32-in-qt-example.html" title="Qt Application using Win32 Windows"/>
+                <section ref="winmigrate-qt-dll-example.html" title="Qt based Application Extension"/>
+                <section ref="winmigrate-qt-in-win32-example.html" title="Qt widgets in Win32"/>
+                <section ref="index.html" title="Qt/MFC Migration Framework"/>
+            </section>
+        </toc>
+        <keywords>
+            <keyword name="MFC to Qt Migration - Walkthrough" id="MFC to Qt Migration - Walkthrough" ref="winmigrate-walkthrough.html"/>
+            <keyword name="QMfcApp" id="QMfcApp" ref="qmfcapp.html"/>
+            <keyword name="enterModalLoop" id="QMfcApp::enterModalLoop" ref="qmfcapp.html#enterModalLoop"/>
+            <keyword name="exitModalLoop" id="QMfcApp::exitModalLoop" ref="qmfcapp.html#exitModalLoop"/>
+            <keyword name="pluginInstance" id="QMfcApp::pluginInstance" ref="qmfcapp.html#pluginInstance"/>
+            <keyword name="winEventFilter" id="QMfcApp::winEventFilter" ref="qmfcapp.html#winEventFilter"/>
+            <keyword name="~QMfcApp" id="QMfcApp::~QMfcApp" ref="qmfcapp.html#dtor.QMfcApp"/>
+            <keyword name="QWinHost" id="QWinHost" ref="qwinhost.html"/>
+            <keyword name="createWindow" id="QWinHost::createWindow" ref="qwinhost.html#createWindow"/>
+            <keyword name="event" id="QWinHost::event" ref="qwinhost.html#event"/>
+            <keyword name="focusInEvent" id="QWinHost::focusInEvent" ref="qwinhost.html#focusInEvent"/>
+            <keyword name="resizeEvent" id="QWinHost::resizeEvent" ref="qwinhost.html#resizeEvent"/>
+            <keyword name="setWindow" id="QWinHost::setWindow" ref="qwinhost.html#setWindow"/>
+            <keyword name="showEvent" id="QWinHost::showEvent" ref="qwinhost.html#showEvent"/>
+            <keyword name="winEvent" id="QWinHost::winEvent" ref="qwinhost.html#winEvent"/>
+            <keyword name="window" id="QWinHost::window" ref="qwinhost.html#window"/>
+            <keyword name="~QWinHost" id="QWinHost::~QWinHost" ref="qwinhost.html#dtor.QWinHost"/>
+            <keyword name="QWinWidget" id="QWinWidget" ref="qwinwidget.html"/>
+            <keyword name="center" id="QWinWidget::center" ref="qwinwidget.html#center"/>
+            <keyword name="childEvent" id="QWinWidget::childEvent" ref="qwinwidget.html#childEvent"/>
+            <keyword name="eventFilter" id="QWinWidget::eventFilter" ref="qwinwidget.html#eventFilter"/>
+            <keyword name="focusInEvent" id="QWinWidget::focusInEvent" ref="qwinwidget.html#focusInEvent"/>
+            <keyword name="focusNextPrevChild" id="QWinWidget::focusNextPrevChild" ref="qwinwidget.html#focusNextPrevChild"/>
+            <keyword name="parentWindow" id="QWinWidget::parentWindow" ref="qwinwidget.html#parentWindow"/>
+            <keyword name="show" id="QWinWidget::show" ref="qwinwidget.html#show"/>
+            <keyword name="showCentered" id="QWinWidget::showCentered" ref="qwinwidget-obsolete.html#showCentered"/>
+            <keyword name="winEvent" id="QWinWidget::winEvent" ref="qwinwidget.html#winEvent"/>
+            <keyword name="~QWinWidget" id="QWinWidget::~QWinWidget" ref="qwinwidget.html#dtor.QWinWidget"/>
+            <keyword name="Qt Application using Win32 Windows" id="Qt Application using Win32 Windows" ref="winmigrate-win32-in-qt-example.html"/>
+            <keyword name="Qt based Application Extension" id="Qt based Application Extension" ref="winmigrate-qt-dll-example.html"/>
+            <keyword name="Qt widgets in Win32" id="Qt widgets in Win32" ref="winmigrate-qt-in-win32-example.html"/>
+            <keyword name="Qt/MFC Migration Framework" id="Qt/MFC Migration Framework" ref="index.html"/>
+        </keywords>
+        <files>
+            <file>qmfcapp.html</file>
+            <file>winmigrate-win32-in-qt-example.html</file>
+            <file>index.html</file>
+            <file>winmigrate-walkthrough.html</file>
+            <file>qwinwidget.html</file>
+            <file>winmigrate-qt-in-win32-example.html</file>
+            <file>qwinhost.html</file>
+            <file>winmigrate-qt-dll-example.html</file>
+            <file>classic.css</file>
+            <file>images/qt-logo.png</file>
+        </files>
+    </filterSection>
+</QtHelpProject>

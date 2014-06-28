@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE QDOCINDEX>
+<INDEX url="" title="Qt Solutions: Locked File Documentation" version="">
+    <namespace access="public" threadsafety="unspecified" status="commendable" name="" href="" location="" module="">
+        <class access="public" threadsafety="unspecified" status="commendable" name="QtLockedFile" href="qtlockedfile.html" location="qtlockedfile.h" bases="QFile" module="">
+            <enum access="public" threadsafety="unspecified" status="commendable" name="LockMode" fullname="QtLockedFile::LockMode" href="qtlockedfile.html#LockMode-enum" location="qtlockedfile.h">
+                <value name="NoLock" value="0"/>
+                <value name="ReadLock" value="1"/>
+                <value name="WriteLock" value="2"/>
+            </enum>
+            <function access="public" threadsafety="unspecified" status="commendable" name="QtLockedFile" fullname="QtLockedFile::QtLockedFile" href="qtlockedfile.html#QtLockedFile" location="qtlockedfile.h" virtual="non" meta="constructor" const="false" static="false" overload="false" type="" signature="QtLockedFile()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="QtLockedFile" fullname="QtLockedFile::QtLockedFile" href="qtlockedfile.html#QtLockedFile-2" location="qtlockedfile.h" virtual="non" meta="constructor" const="false" static="false" overload="true" overload-number="2" type="" signature="QtLockedFile(const QString &amp; name)">
+                <parameter left="const QString &amp;" right="" name="name" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="~QtLockedFile" fullname="QtLockedFile::~QtLockedFile" href="qtlockedfile.html#dtor.QtLockedFile" location="qtlockedfile_unix.cpp" virtual="non" meta="destructor" const="false" static="false" overload="false" type="" signature="~QtLockedFile()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="open" fullname="QtLockedFile::open" href="qtlockedfile.html#open" location="qtlockedfile.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="bool" signature="open(OpenMode mode)">
+                <parameter left="OpenMode" right="" name="mode" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="lock" fullname="QtLockedFile::lock" href="qtlockedfile.html#lock" location="qtlockedfile_unix.cpp" virtual="non" meta="plain" const="false" static="false" overload="false" type="bool" signature="lock(LockMode mode, bool block)">
+                <parameter left="LockMode" right="" name="mode" default=""/>
+                <parameter left="bool" right="" name="block" default="true"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="unlock" fullname="QtLockedFile::unlock" href="qtlockedfile.html#unlock" location="qtlockedfile_unix.cpp" virtual="non" meta="plain" const="false" static="false" overload="false" type="bool" signature="unlock()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="isLocked" fullname="QtLockedFile::isLocked" href="qtlockedfile.html#isLocked" location="qtlockedfile.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="isLocked() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="lockMode" fullname="QtLockedFile::lockMode" href="qtlockedfile.html#lockMode" location="qtlockedfile.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="LockMode" signature="lockMode() const"/>
+        </class>
+        <page access="public" status="commendable" name="index.html" href="index.html" subtype="page" title="Locked File" fulltitle="Locked File" subtitle="" location="index.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="classes" title="Classes" level="1"/>
+            <contents name="tested-platforms" title="Tested platforms" level="1"/>
+        </page>
+    </namespace>
+</INDEX>

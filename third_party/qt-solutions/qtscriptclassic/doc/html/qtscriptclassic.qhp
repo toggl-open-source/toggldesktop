@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QtHelpProject version="1.0">
+    <namespace>com.nokia.qtsolutions.qtscriptclassic_head</namespace>
+    <virtualFolder>qdoc</virtualFolder>
+    <customFilter name="Qt Solutions: QtScript Classic">
+        <filterAttribute>qt</filterAttribute>
+        <filterAttribute>solutions</filterAttribute>
+        <filterAttribute>qtscriptclassic</filterAttribute>
+    </customFilter>
+    <filterSection>
+        <filterAttribute>qt</filterAttribute>
+        <filterAttribute>solutions</filterAttribute>
+        <filterAttribute>qtscriptclassic</filterAttribute>
+        <toc>
+            <section ref="index.html" title="Qt Solutions: QtScript Classic Documentation">
+                <section ref="qtscriptclassic-example-helloscript.html" title="Hello Script Example"/>
+                <section ref="index.html" title="QtScript Classic"/>
+            </section>
+        </toc>
+        <keywords>
+            <keyword name="Hello Script Example" id="Hello Script Example" ref="qtscriptclassic-example-helloscript.html"/>
+            <keyword name="QScriptClass" id="QScriptClass" ref="qscriptclass.html"/>
+            <keyword name="QScriptClass::Extension" id="QScriptClass::Extension" ref="qscriptclass.html#Extension-enum"/>
+            <keyword name="QScriptClass::Callable" id="QScriptClass::Callable" ref="qscriptclass.html#Extension-enum"/>
+            <keyword name="QScriptClass::HasInstance" id="QScriptClass::HasInstance" ref="qscriptclass.html#Extension-enum"/>
+            <keyword name="QScriptClass::QueryFlag" id="QScriptClass::QueryFlag" ref="qscriptclass.html#QueryFlag-enum"/>
+            <keyword name="QScriptClass::HandlesReadAccess" id="QScriptClass::HandlesReadAccess" ref="qscriptclass.html#QueryFlag-enum"/>
+            <keyword name="QScriptClass::HandlesWriteAccess" id="QScriptClass::HandlesWriteAccess" ref="qscriptclass.html#QueryFlag-enum"/>
+            <keyword name="QScriptClass::QueryFlags" id="QScriptClass::QueryFlags" ref="qscriptclass.html#QueryFlag-enum"/>
+            <keyword name="engine" id="QScriptClass::engine" ref="qscriptclass.html#engine"/>
+            <keyword name="extension" id="QScriptClass::extension" ref="qscriptclass.html#extension"/>
+            <keyword name="name" id="QScriptClass::name" ref="qscriptclass.html#name"/>
+            <keyword name="newIterator" id="QScriptClass::newIterator" ref="qscriptclass.html#newIterator"/>
+            <keyword name="property" id="QScriptClass::property" ref="qscriptclass.html#property"/>
+            <keyword name="propertyFlags" id="QScriptClass::propertyFlags" ref="qscriptclass.html#propertyFlags"/>
+            <keyword name="prototype" id="QScriptClass::prototype" ref="qscriptclass.html#prototype"/>
+            <keyword name="queryProperty" id="QScriptClass::queryProperty" ref="qscriptclass.html#queryProperty"/>
+            <keyword name="setProperty" id="QScriptClass::setProperty" ref="qscriptclass.html#setProperty"/>
+            <keyword name="supportsExtension" id="QScriptClass::supportsExtension" ref="qscriptclass.html#supportsExtension"/>
+            <keyword name="~QScriptClass" id="QScriptClass::~QScriptClass" ref="qscriptclass.html#dtor.QScriptClass"/>
+            <keyword name="QScriptClassPropertyIterator" id="QScriptClassPropertyIterator" ref="qscriptclasspropertyiterator.html"/>
+            <keyword name="flags" id="QScriptClassPropertyIterator::flags" ref="qscriptclasspropertyiterator.html#flags"/>
+            <keyword name="hasNext" id="QScriptClassPropertyIterator::hasNext" ref="qscriptclasspropertyiterator.html#hasNext"/>
+            <keyword name="hasPrevious" id="QScriptClassPropertyIterator::hasPrevious" ref="qscriptclasspropertyiterator.html#hasPrevious"/>
+            <keyword name="id" id="QScriptClassPropertyIterator::id" ref="qscriptclasspropertyiterator.html#id"/>
+            <keyword name="name" id="QScriptClassPropertyIterator::name" ref="qscriptclasspropertyiterator.html#name"/>
+            <keyword name="next" id="QScriptClassPropertyIterator::next" ref="qscriptclasspropertyiterator.html#next"/>
+            <keyword name="object" id="QScriptClassPropertyIterator::object" ref="qscriptclasspropertyiterator.html#object"/>
+            <keyword name="previous" id="QScriptClassPropertyIterator::previous" ref="qscriptclasspropertyiterator.html#previous"/>
+            <keyword name="toBack" id="QScriptClassPropertyIterator::toBack" ref="qscriptclasspropertyiterator.html#toBack"/>
+            <keyword name="toFront" id="QScriptClassPropertyIterator::toFront" ref="qscriptclasspropertyiterator.html#toFront"/>
+            <keyword name="~QScriptClassPropertyIterator" id="QScriptClassPropertyIterator::~QScriptClassPropertyIterator" ref="qscriptclasspropertyiterator.html#dtor.QScriptClassPropertyIterator"/>
+            <keyword name="QScriptContext" id="QScriptContext" ref="qscriptcontext.html"/>
+            <keyword name="QScriptContext::Error" id="QScriptContext::Error" ref="qscriptcontext.html#Error-enum"/>
+            <keyword name="QScriptContext::UnknownError" id="QScriptContext::UnknownError" ref="qscriptcontext.html#Error-enum"/>
+            <keyword name="QScriptContext::ReferenceError" id="QScriptContext::ReferenceError" ref="qscriptcontext.html#Error-enum"/>
+            <keyword name="QScriptContext::SyntaxError" id="QScriptContext::SyntaxError" ref="qscriptcontext.html#Error-enum"/>
+            <keyword name="QScriptContext::TypeError" id="QScriptContext::TypeError" ref="qscriptcontext.html#Error-enum"/>
+            <keyword name="QScriptContext::RangeError" id="QScriptContext::RangeError" ref="qscriptcontext.html#Error-enum"/>
+            <keyword name="QScriptContext::URIError" id="QScriptContext::URIError" ref="qscriptcontext.html#Error-enum"/>
+            <keyword name="QScriptContext::ExecutionState" id="QScriptContext::ExecutionState" ref="qscriptcontext.html#ExecutionState-enum"/>
+            <keyword name="QScriptContext::NormalState" id="QScriptContext::NormalState" ref="qscriptcontext.html#ExecutionState-enum"/>
+            <keyword name="QScriptContext::ExceptionState" id="QScriptContext::ExceptionState" ref="qscriptcontext.html#ExecutionState-enum"/>
+            <keyword name="activationObject" id="QScriptContext::activationObject" ref="qscriptcontext.html#activationObject"/>
+            <keyword name="argument" id="QScriptContext::argument" ref="qscriptcontext.html#argument"/>
+            <keyword name="argumentCount" id="QScriptContext::argumentCount" ref="qscriptcontext.html#argumentCount"/>
+            <keyword name="argumentsObject" id="QScriptContext::argumentsObject" ref="qscriptcontext.html#argumentsObject"/>
+            <keyword name="backtrace" id="QScriptContext::backtrace" ref="qscriptcontext.html#backtrace"/>
+            <keyword name="callee" id="QScriptContext::callee" ref="qscriptcontext.html#callee"/>
+            <keyword name="engine" id="QScriptContext::engine" ref="qscriptcontext.html#engine"/>
+            <keyword name="isCalledAsConstructor" id="QScriptContext::isCalledAsConstructor" ref="qscriptcontext.html#isCalledAsConstructor"/>
+            <keyword name="parentContext" id="QScriptContext::parentContext" ref="qscriptcontext.html#parentContext"/>
+            <keyword name="setActivationObject" id="QScriptContext::setActivationObject" ref="qscriptcontext.html#setActivationObject"/>
+            <keyword name="setThisObject" id="QScriptContext::setThisObject" ref="qscriptcontext.html#setThisObject"/>
+            <keyword name="state" id="QScriptContext::state" ref="qscriptcontext.html#state"/>
+            <keyword name="thisObject" id="QScriptContext::thisObject" ref="qscriptcontext.html#thisObject"/>
+            <keyword name="throwError" id="QScriptContext::throwError" ref="qscriptcontext.html#throwError"/>
+            <keyword name="throwValue" id="QScriptContext::throwValue" ref="qscriptcontext.html#throwValue"/>
+            <keyword name="toString" id="QScriptContext::toString" ref="qscriptcontext.html#toString"/>
+            <keyword name="~QScriptContext" id="QScriptContext::~QScriptContext" ref="qscriptcontext.html#dtor.QScriptContext"/>
+            <keyword name="QScriptContextInfo" id="QScriptContextInfo" ref="qscriptcontextinfo.html"/>
+            <keyword name="QScriptContextInfo::FunctionType" id="QScriptContextInfo::FunctionType" ref="qscriptcontextinfo.html#FunctionType-enum"/>
+            <keyword name="QScriptContextInfo::ScriptFunction" id="QScriptContextInfo::ScriptFunction" ref="qscriptcontextinfo.html#FunctionType-enum"/>
+            <keyword name="QScriptContextInfo::QtFunction" id="QScriptContextInfo::QtFunction" ref="qscriptcontextinfo.html#FunctionType-enum"/>
+            <keyword name="QScriptContextInfo::QtPropertyFunction" id="QScriptContextInfo::QtPropertyFunction" ref="qscriptcontextinfo.html#FunctionType-enum"/>
+            <keyword name="QScriptContextInfo::NativeFunction" id="QScriptContextInfo::NativeFunction" ref="qscriptcontextinfo.html#FunctionType-enum"/>
+            <keyword name="columnNumber" id="QScriptContextInfo::columnNumber" ref="qscriptcontextinfo.html#columnNumber"/>
+            <keyword name="fileName" id="QScriptContextInfo::fileName" ref="qscriptcontextinfo.html#fileName"/>
+            <keyword name="functionEndLineNumber" id="QScriptContextInfo::functionEndLineNumber" ref="qscriptcontextinfo.html#functionEndLineNumber"/>
+            <keyword name="functionMetaIndex" id="QScriptContextInfo::functionMetaIndex" ref="qscriptcontextinfo.html#functionMetaIndex"/>
+            <keyword name="functionName" id="QScriptContextInfo::functionName" ref="qscriptcontextinfo.html#functionName"/>
+            <keyword name="functionParameterNames" id="QScriptContextInfo::functionParameterNames" ref="qscriptcontextinfo.html#functionParameterNames"/>
+            <keyword name="functionStartLineNumber" id="QScriptContextInfo::functionStartLineNumber" ref="qscriptcontextinfo.html#functionStartLineNumber"/>
+            <keyword name="functionType" id="QScriptContextInfo::functionType" ref="qscriptcontextinfo.html#functionType"/>
+            <keyword name="isNull" id="QScriptContextInfo::isNull" ref="qscriptcontextinfo.html#isNull"/>
+            <keyword name="lineNumber" id="QScriptContextInfo::lineNumber" ref="qscriptcontextinfo.html#lineNumber"/>
+            <keyword name="operator!=" id="QScriptContextInfo::operator!=" ref="qscriptcontextinfo.html#operator-not-eq"/>
+            <keyword name="operator=" id="QScriptContextInfo::operator=" ref="qscriptcontextinfo.html#operator-eq"/>
+            <keyword name="operator==" id="QScriptContextInfo::operator==" ref="qscriptcontextinfo.html#operator-eq-eq"/>
+            <keyword name="scriptId" id="QScriptContextInfo::scriptId" ref="qscriptcontextinfo.html#scriptId"/>
+            <keyword name="~QScriptContextInfo" id="QScriptContextInfo::~QScriptContextInfo" ref="qscriptcontextinfo.html#dtor.QScriptContextInfo"/>
+            <keyword name="QScriptEngine" id="QScriptEngine" ref="qscriptengine.html"/>
+            <keyword name="QScriptEngine::FunctionSignature" id="QScriptEngine::FunctionSignature" ref="qscriptengine.html#FunctionSignature-typedef"/>
+            <keyword name="QScriptEngine::FunctionWithArgSignature" id="QScriptEngine::FunctionWithArgSignature" ref="qscriptengine.html#FunctionWithArgSignature-typedef"/>
+            <keyword name="QScriptEngine::QObjectWrapOption" id="QScriptEngine::QObjectWrapOption" ref="qscriptengine.html#QObjectWrapOption-enum"/>
+            <keyword name="QScriptEngine::ExcludeChildObjects" id="QScriptEngine::ExcludeChildObjects" ref="qscriptengine.html#QObjectWrapOption-enum"/>
+            <keyword name="QScriptEngine::ExcludeSuperClassMethods" id="QScriptEngine::ExcludeSuperClassMethods" ref="qscriptengine.html#QObjectWrapOption-enum"/>
+            <keyword name="QScriptEngine::ExcludeSuperClassProperties" id="QScriptEngine::ExcludeSuperClassProperties" ref="qscriptengine.html#QObjectWrapOption-enum"/>
+            <keyword name="QScriptEngine::ExcludeSuperClassContents" id="QScriptEngine::ExcludeSuperClassContents" ref="qscriptengine.html#QObjectWrapOption-enum"/>
+            <keyword name="QScriptEngine::SkipMethodsInEnumeration" id="QScriptEngine::SkipMethodsInEnumeration" ref="qscriptengine.html#QObjectWrapOption-enum"/>
+            <keyword name="QScriptEngine::ExcludeDeleteLater" id="QScriptEngine::ExcludeDeleteLater" ref="qscriptengine.html#QObjectWrapOption-enum"/>
+            <keyword name="QScriptEngine::AutoCreateDynamicProperties" id="QScriptEngine::AutoCreateDynamicProperties" ref="qscriptengine.html#QObjectWrapOption-enum"/>
+            <keyword name="QScriptEngine::PreferExistingWrapperObject" id="QScriptEngine::PreferExistingWrapperObject" ref="qscriptengine.html#QObjectWrapOption-enum"/>
+            <keyword name="QScriptEngine::QObjectWrapOptions" id="QScriptEngine::QObjectWrapOptions" ref="qscriptengine.html#QObjectWrapOption-enum"/>
+            <keyword name="QScriptEngine::ValueOwnership" id="QScriptEngine::ValueOwnership" ref="qscriptengine.html#ValueOwnership-enum"/>
+            <keyword name="QScriptEngine::QtOwnership" id="QScriptEngine::QtOwnership" ref="qscriptengine.html#ValueOwnership-enum"/>
+            <keyword name="QScriptEngine::ScriptOwnership" id="QScriptEngine::ScriptOwnership" ref="qscriptengine.html#ValueOwnership-enum"/>
+            <keyword name="QScriptEngine::AutoOwnership" id="QScriptEngine::AutoOwnership" ref="qscriptengine.html#ValueOwnership-enum"/>
+            <keyword name="abortEvaluation" id="QScriptEngine::abortEvaluation" ref="qscriptengine.html#abortEvaluation"/>
+            <keyword name="agent" id="QScriptEngine::agent" ref="qscriptengine.html#agent"/>
+            <keyword name="availableExtensions" id="QScriptEngine::availableExtensions" ref="qscriptengine.html#availableExtensions"/>
+            <keyword name="canEvaluate" id="QScriptEngine::canEvaluate" ref="qscriptengine-obsolete.html#canEvaluate"/>
+            <keyword name="checkSyntax" id="QScriptEngine::checkSyntax" ref="qscriptengine.html#checkSyntax"/>
+            <keyword name="clearExceptions" id="QScriptEngine::clearExceptions" ref="qscriptengine.html#clearExceptions"/>
+            <keyword name="collectGarbage" id="QScriptEngine::collectGarbage" ref="qscriptengine.html#collectGarbage"/>
+            <keyword name="currentContext" id="QScriptEngine::currentContext" ref="qscriptengine.html#currentContext"/>
+            <keyword name="defaultPrototype" id="QScriptEngine::defaultPrototype" ref="qscriptengine.html#defaultPrototype"/>
+            <keyword name="evaluate" id="QScriptEngine::evaluate" ref="qscriptengine.html#evaluate"/>
+            <keyword name="fromScriptValue" id="QScriptEngine::fromScriptValue" ref="qscriptengine.html#fromScriptValue"/>
+            <keyword name="globalObject" id="QScriptEngine::globalObject" ref="qscriptengine.html#globalObject"/>
+            <keyword name="hasUncaughtException" id="QScriptEngine::hasUncaughtException" ref="qscriptengine.html#hasUncaughtException"/>
+            <keyword name="importExtension" id="QScriptEngine::importExtension" ref="qscriptengine.html#importExtension"/>
+            <keyword name="importedExtensions" id="QScriptEngine::importedExtensions" ref="qscriptengine.html#importedExtensions"/>
+            <keyword name="installTranslatorFunctions" id="QScriptEngine::installTranslatorFunctions" ref="qscriptengine.html#installTranslatorFunctions"/>
+            <keyword name="isEvaluating" id="QScriptEngine::isEvaluating" ref="qscriptengine.html#isEvaluating"/>
+            <keyword name="newArray" id="QScriptEngine::newArray" ref="qscriptengine.html#newArray"/>
+            <keyword name="newDate" id="QScriptEngine::newDate" ref="qscriptengine.html#newDate"/>
+            <keyword name="newFunction" id="QScriptEngine::newFunction" ref="qscriptengine.html#newFunction"/>
+            <keyword name="newObject" id="QScriptEngine::newObject" ref="qscriptengine.html#newObject"/>
+            <keyword name="newQMetaObject" id="QScriptEngine::newQMetaObject" ref="qscriptengine.html#newQMetaObject"/>
+            <keyword name="newQObject" id="QScriptEngine::newQObject" ref="qscriptengine.html#newQObject"/>
+            <keyword name="newRegExp" id="QScriptEngine::newRegExp" ref="qscriptengine.html#newRegExp"/>
+            <keyword name="newVariant" id="QScriptEngine::newVariant" ref="qscriptengine.html#newVariant"/>
+            <keyword name="nullValue" id="QScriptEngine::nullValue" ref="qscriptengine.html#nullValue"/>
+            <keyword name="popContext" id="QScriptEngine::popContext" ref="qscriptengine.html#popContext"/>
+            <keyword name="processEventsInterval" id="QScriptEngine::processEventsInterval" ref="qscriptengine.html#processEventsInterval"/>
+            <keyword name="pushContext" id="QScriptEngine::pushContext" ref="qscriptengine.html#pushContext"/>
+            <keyword name="scriptValueFromQMetaObject" id="QScriptEngine::scriptValueFromQMetaObject" ref="qscriptengine.html#scriptValueFromQMetaObject"/>
+            <keyword name="setAgent" id="QScriptEngine::setAgent" ref="qscriptengine.html#setAgent"/>
+            <keyword name="setDefaultPrototype" id="QScriptEngine::setDefaultPrototype" ref="qscriptengine.html#setDefaultPrototype"/>
+            <keyword name="setGlobalObject" id="QScriptEngine::setGlobalObject" ref="qscriptengine.html#setGlobalObject"/>
+            <keyword name="setProcessEventsInterval" id="QScriptEngine::setProcessEventsInterval" ref="qscriptengine.html#setProcessEventsInterval"/>
+            <keyword name="signalHandlerException" id="QScriptEngine::signalHandlerException" ref="qscriptengine.html#signalHandlerException"/>
+            <keyword name="toObject" id="QScriptEngine::toObject" ref="qscriptengine.html#toObject"/>
+            <keyword name="toScriptValue" id="QScriptEngine::toScriptValue" ref="qscriptengine.html#toScriptValue"/>
+            <keyword name="toStringHandle" id="QScriptEngine::toStringHandle" ref="qscriptengine.html#toStringHandle"/>
+            <keyword name="uncaughtException" id="QScriptEngine::uncaughtException" ref="qscriptengine.html#uncaughtException"/>
+            <keyword name="uncaughtExceptionBacktrace" id="QScriptEngine::uncaughtExceptionBacktrace" ref="qscriptengine.html#uncaughtExceptionBacktrace"/>
+            <keyword name="uncaughtExceptionLineNumber" id="QScriptEngine::uncaughtExceptionLineNumber" ref="qscriptengine.html#uncaughtExceptionLineNumber"/>
+            <keyword name="undefinedValue" id="QScriptEngine::undefinedValue" ref="qscriptengine.html#undefinedValue"/>
+            <keyword name="~QScriptEngine" id="QScriptEngine::~QScriptEngine" ref="qscriptengine.html#dtor.QScriptEngine"/>
+            <keyword name="QScriptEngineAgent" id="QScriptEngineAgent" ref="qscriptengineagent.html"/>
+            <keyword name="QScriptEngineAgent::Extension" id="QScriptEngineAgent::Extension" ref="qscriptengineagent.html#Extension-enum"/>
+            <keyword name="QScriptEngineAgent::DebuggerInvocationRequest" id="QScriptEngineAgent::DebuggerInvocationRequest" ref="qscriptengineagent.html#Extension-enum"/>
+            <keyword name="contextPop" id="QScriptEngineAgent::contextPop" ref="qscriptengineagent.html#contextPop"/>
+            <keyword name="contextPush" id="QScriptEngineAgent::contextPush" ref="qscriptengineagent.html#contextPush"/>
+            <keyword name="engine" id="QScriptEngineAgent::engine" ref="qscriptengineagent.html#engine"/>
+            <keyword name="exceptionCatch" id="QScriptEngineAgent::exceptionCatch" ref="qscriptengineagent.html#exceptionCatch"/>
+            <keyword name="exceptionThrow" id="QScriptEngineAgent::exceptionThrow" ref="qscriptengineagent.html#exceptionThrow"/>
+            <keyword name="extension" id="QScriptEngineAgent::extension" ref="qscriptengineagent.html#extension"/>
+            <keyword name="functionEntry" id="QScriptEngineAgent::functionEntry" ref="qscriptengineagent.html#functionEntry"/>
+            <keyword name="functionExit" id="QScriptEngineAgent::functionExit" ref="qscriptengineagent.html#functionExit"/>
+            <keyword name="positionChange" id="QScriptEngineAgent::positionChange" ref="qscriptengineagent.html#positionChange"/>
+            <keyword name="scriptLoad" id="QScriptEngineAgent::scriptLoad" ref="qscriptengineagent.html#scriptLoad"/>
+            <keyword name="scriptUnload" id="QScriptEngineAgent::scriptUnload" ref="qscriptengineagent.html#scriptUnload"/>
+            <keyword name="supportsExtension" id="QScriptEngineAgent::supportsExtension" ref="qscriptengineagent.html#supportsExtension"/>
+            <keyword name="~QScriptEngineAgent" id="QScriptEngineAgent::~QScriptEngineAgent" ref="qscriptengineagent.html#dtor.QScriptEngineAgent"/>
+            <keyword name="QScriptExtensionPlugin" id="QScriptExtensionPlugin" ref="qscriptextensionplugin.html"/>
+            <keyword name="initialize" id="QScriptExtensionPlugin::initialize" ref="qscriptextensionplugin.html#initialize"/>
+            <keyword name="keys" id="QScriptExtensionPlugin::keys" ref="qscriptextensionplugin.html#keys"/>
+            <keyword name="setupPackage" id="QScriptExtensionPlugin::setupPackage" ref="qscriptextensionplugin.html#setupPackage"/>
+            <keyword name="~QScriptExtensionPlugin" id="QScriptExtensionPlugin::~QScriptExtensionPlugin" ref="qscriptextensionplugin.html#dtor.QScriptExtensionPlugin"/>
+            <keyword name="QScriptString" id="QScriptString" ref="qscriptstring.html"/>
+            <keyword name="isValid" id="QScriptString::isValid" ref="qscriptstring.html#isValid"/>
+            <keyword name="operator QString" id="QScriptString::operator QString" ref="qscriptstring.html#operator-QString"/>
+            <keyword name="operator!=" id="QScriptString::operator!=" ref="qscriptstring.html#operator-not-eq"/>
+            <keyword name="operator=" id="QScriptString::operator=" ref="qscriptstring.html#operator-eq"/>
+            <keyword name="operator==" id="QScriptString::operator==" ref="qscriptstring.html#operator-eq-eq"/>
+            <keyword name="toString" id="QScriptString::toString" ref="qscriptstring.html#toString"/>
+            <keyword name="~QScriptString" id="QScriptString::~QScriptString" ref="qscriptstring.html#dtor.QScriptString"/>
+            <keyword name="QScriptSyntaxCheckResult" id="QScriptSyntaxCheckResult" ref="qscriptsyntaxcheckresult.html"/>
+            <keyword name="QScriptSyntaxCheckResult::State" id="QScriptSyntaxCheckResult::State" ref="qscriptsyntaxcheckresult.html#State-enum"/>
+            <keyword name="QScriptSyntaxCheckResult::Error" id="QScriptSyntaxCheckResult::Error" ref="qscriptsyntaxcheckresult.html#State-enum"/>
+            <keyword name="QScriptSyntaxCheckResult::Intermediate" id="QScriptSyntaxCheckResult::Intermediate" ref="qscriptsyntaxcheckresult.html#State-enum"/>
+            <keyword name="QScriptSyntaxCheckResult::Valid" id="QScriptSyntaxCheckResult::Valid" ref="qscriptsyntaxcheckresult.html#State-enum"/>
+            <keyword name="errorColumnNumber" id="QScriptSyntaxCheckResult::errorColumnNumber" ref="qscriptsyntaxcheckresult.html#errorColumnNumber"/>
+            <keyword name="errorLineNumber" id="QScriptSyntaxCheckResult::errorLineNumber" ref="qscriptsyntaxcheckresult.html#errorLineNumber"/>
+            <keyword name="errorMessage" id="QScriptSyntaxCheckResult::errorMessage" ref="qscriptsyntaxcheckresult.html#errorMessage"/>
+            <keyword name="operator=" id="QScriptSyntaxCheckResult::operator=" ref="qscriptsyntaxcheckresult.html#operator-eq"/>
+            <keyword name="state" id="QScriptSyntaxCheckResult::state" ref="qscriptsyntaxcheckresult.html#state"/>
+            <keyword name="~QScriptSyntaxCheckResult" id="QScriptSyntaxCheckResult::~QScriptSyntaxCheckResult" ref="qscriptsyntaxcheckresult.html#dtor.QScriptSyntaxCheckResult"/>
+            <keyword name="QScriptValue" id="QScriptValue" ref="qscriptvalue.html"/>
+            <keyword name="QScriptValue::PropertyFlag" id="QScriptValue::PropertyFlag" ref="qscriptvalue.html#PropertyFlag-enum"/>
+            <keyword name="QScriptValue::ReadOnly" id="QScriptValue::ReadOnly" ref="qscriptvalue.html#PropertyFlag-enum"/>
+            <keyword name="QScriptValue::Undeletable" id="QScriptValue::Undeletable" ref="qscriptvalue.html#PropertyFlag-enum"/>
+            <keyword name="QScriptValue::SkipInEnumeration" id="QScriptValue::SkipInEnumeration" ref="qscriptvalue.html#PropertyFlag-enum"/>
+            <keyword name="QScriptValue::PropertyGetter" id="QScriptValue::PropertyGetter" ref="qscriptvalue.html#PropertyFlag-enum"/>
+            <keyword name="QScriptValue::PropertySetter" id="QScriptValue::PropertySetter" ref="qscriptvalue.html#PropertyFlag-enum"/>
+            <keyword name="QScriptValue::QObjectMember" id="QScriptValue::QObjectMember" ref="qscriptvalue.html#PropertyFlag-enum"/>
+            <keyword name="QScriptValue::KeepExistingFlags" id="QScriptValue::KeepExistingFlags" ref="qscriptvalue.html#PropertyFlag-enum"/>
+            <keyword name="QScriptValue::UserRange" id="QScriptValue::UserRange" ref="qscriptvalue.html#PropertyFlag-enum"/>
+            <keyword name="QScriptValue::PropertyFlags" id="QScriptValue::PropertyFlags" ref="qscriptvalue.html#PropertyFlag-enum"/>
+            <keyword name="QScriptValue::ResolveFlag" id="QScriptValue::ResolveFlag" ref="qscriptvalue.html#ResolveFlag-enum"/>
+            <keyword name="QScriptValue::ResolveLocal" id="QScriptValue::ResolveLocal" ref="qscriptvalue.html#ResolveFlag-enum"/>
+            <keyword name="QScriptValue::ResolvePrototype" id="QScriptValue::ResolvePrototype" ref="qscriptvalue.html#ResolveFlag-enum"/>
+            <keyword name="QScriptValue::ResolveScope" id="QScriptValue::ResolveScope" ref="qscriptvalue.html#ResolveFlag-enum"/>
+            <keyword name="QScriptValue::ResolveFull" id="QScriptValue::ResolveFull" ref="qscriptvalue.html#ResolveFlag-enum"/>
+            <keyword name="QScriptValue::ResolveFlags" id="QScriptValue::ResolveFlags" ref="qscriptvalue.html#ResolveFlag-enum"/>
+            <keyword name="QScriptValue::SpecialValue" id="QScriptValue::SpecialValue" ref="qscriptvalue.html#SpecialValue-enum"/>
+            <keyword name="QScriptValue::NullValue" id="QScriptValue::NullValue" ref="qscriptvalue.html#SpecialValue-enum"/>
+            <keyword name="QScriptValue::UndefinedValue" id="QScriptValue::UndefinedValue" ref="qscriptvalue.html#SpecialValue-enum"/>
+            <keyword name="call" id="QScriptValue::call" ref="qscriptvalue.html#call"/>
+            <keyword name="construct" id="QScriptValue::construct" ref="qscriptvalue.html#construct"/>
+            <keyword name="data" id="QScriptValue::data" ref="qscriptvalue.html#data"/>
+            <keyword name="engine" id="QScriptValue::engine" ref="qscriptvalue.html#engine"/>
+            <keyword name="equals" id="QScriptValue::equals" ref="qscriptvalue.html#equals"/>
+            <keyword name="instanceOf" id="QScriptValue::instanceOf" ref="qscriptvalue.html#instanceOf"/>
+            <keyword name="isArray" id="QScriptValue::isArray" ref="qscriptvalue.html#isArray"/>
+            <keyword name="isBool" id="QScriptValue::isBool" ref="qscriptvalue.html#isBool"/>
+            <keyword name="isBoolean" id="QScriptValue::isBoolean" ref="qscriptvalue-obsolete.html#isBoolean"/>
+            <keyword name="isDate" id="QScriptValue::isDate" ref="qscriptvalue.html#isDate"/>
+            <keyword name="isError" id="QScriptValue::isError" ref="qscriptvalue.html#isError"/>
+            <keyword name="isFunction" id="QScriptValue::isFunction" ref="qscriptvalue.html#isFunction"/>
+            <keyword name="isNull" id="QScriptValue::isNull" ref="qscriptvalue.html#isNull"/>
+            <keyword name="isNumber" id="QScriptValue::isNumber" ref="qscriptvalue.html#isNumber"/>
+            <keyword name="isObject" id="QScriptValue::isObject" ref="qscriptvalue.html#isObject"/>
+            <keyword name="isQMetaObject" id="QScriptValue::isQMetaObject" ref="qscriptvalue.html#isQMetaObject"/>
+            <keyword name="isQObject" id="QScriptValue::isQObject" ref="qscriptvalue.html#isQObject"/>
+            <keyword name="isRegExp" id="QScriptValue::isRegExp" ref="qscriptvalue.html#isRegExp"/>
+            <keyword name="isString" id="QScriptValue::isString" ref="qscriptvalue.html#isString"/>
+            <keyword name="isUndefined" id="QScriptValue::isUndefined" ref="qscriptvalue.html#isUndefined"/>
+            <keyword name="isValid" id="QScriptValue::isValid" ref="qscriptvalue.html#isValid"/>
+            <keyword name="isVariant" id="QScriptValue::isVariant" ref="qscriptvalue.html#isVariant"/>
+            <keyword name="lessThan" id="QScriptValue::lessThan" ref="qscriptvalue.html#lessThan"/>
+            <keyword name="operator=" id="QScriptValue::operator=" ref="qscriptvalue.html#operator-eq"/>
+            <keyword name="property" id="QScriptValue::property" ref="qscriptvalue.html#property"/>
+            <keyword name="propertyFlags" id="QScriptValue::propertyFlags" ref="qscriptvalue.html#propertyFlags"/>
+            <keyword name="prototype" id="QScriptValue::prototype" ref="qscriptvalue.html#prototype"/>
+            <keyword name="scope" id="QScriptValue::scope" ref="qscriptvalue.html#scope"/>
+            <keyword name="scriptClass" id="QScriptValue::scriptClass" ref="qscriptvalue.html#scriptClass"/>
+            <keyword name="setData" id="QScriptValue::setData" ref="qscriptvalue.html#setData"/>
+            <keyword name="setProperty" id="QScriptValue::setProperty" ref="qscriptvalue.html#setProperty"/>
+            <keyword name="setPrototype" id="QScriptValue::setPrototype" ref="qscriptvalue.html#setPrototype"/>
+            <keyword name="setScope" id="QScriptValue::setScope" ref="qscriptvalue.html#setScope"/>
+            <keyword name="setScriptClass" id="QScriptValue::setScriptClass" ref="qscriptvalue.html#setScriptClass"/>
+            <keyword name="strictlyEquals" id="QScriptValue::strictlyEquals" ref="qscriptvalue.html#strictlyEquals"/>
+            <keyword name="toBool" id="QScriptValue::toBool" ref="qscriptvalue.html#toBool"/>
+            <keyword name="toBoolean" id="QScriptValue::toBoolean" ref="qscriptvalue-obsolete.html#toBoolean"/>
+            <keyword name="toDateTime" id="QScriptValue::toDateTime" ref="qscriptvalue.html#toDateTime"/>
+            <keyword name="toInt32" id="QScriptValue::toInt32" ref="qscriptvalue.html#toInt32"/>
+            <keyword name="toInteger" id="QScriptValue::toInteger" ref="qscriptvalue.html#toInteger"/>
+            <keyword name="toNumber" id="QScriptValue::toNumber" ref="qscriptvalue.html#toNumber"/>
+            <keyword name="toObject" id="QScriptValue::toObject" ref="qscriptvalue-obsolete.html#toObject"/>
+            <keyword name="toQMetaObject" id="QScriptValue::toQMetaObject" ref="qscriptvalue.html#toQMetaObject"/>
+            <keyword name="toQObject" id="QScriptValue::toQObject" ref="qscriptvalue.html#toQObject"/>
+            <keyword name="toRegExp" id="QScriptValue::toRegExp" ref="qscriptvalue.html#toRegExp"/>
+            <keyword name="toString" id="QScriptValue::toString" ref="qscriptvalue.html#toString"/>
+            <keyword name="toUInt16" id="QScriptValue::toUInt16" ref="qscriptvalue.html#toUInt16"/>
+            <keyword name="toUInt32" id="QScriptValue::toUInt32" ref="qscriptvalue.html#toUInt32"/>
+            <keyword name="toVariant" id="QScriptValue::toVariant" ref="qscriptvalue.html#toVariant"/>
+            <keyword name="~QScriptValue" id="QScriptValue::~QScriptValue" ref="qscriptvalue.html#dtor.QScriptValue"/>
+            <keyword name="QScriptValueIterator" id="QScriptValueIterator" ref="qscriptvalueiterator.html"/>
+            <keyword name="flags" id="QScriptValueIterator::flags" ref="qscriptvalueiterator.html#flags"/>
+            <keyword name="hasNext" id="QScriptValueIterator::hasNext" ref="qscriptvalueiterator.html#hasNext"/>
+            <keyword name="hasPrevious" id="QScriptValueIterator::hasPrevious" ref="qscriptvalueiterator.html#hasPrevious"/>
+            <keyword name="name" id="QScriptValueIterator::name" ref="qscriptvalueiterator.html#name"/>
+            <keyword name="next" id="QScriptValueIterator::next" ref="qscriptvalueiterator.html#next"/>
+            <keyword name="operator=" id="QScriptValueIterator::operator=" ref="qscriptvalueiterator.html#operator-eq"/>
+            <keyword name="previous" id="QScriptValueIterator::previous" ref="qscriptvalueiterator.html#previous"/>
+            <keyword name="remove" id="QScriptValueIterator::remove" ref="qscriptvalueiterator.html#remove"/>
+            <keyword name="scriptName" id="QScriptValueIterator::scriptName" ref="qscriptvalueiterator.html#scriptName"/>
+            <keyword name="setValue" id="QScriptValueIterator::setValue" ref="qscriptvalueiterator.html#setValue"/>
+            <keyword name="toBack" id="QScriptValueIterator::toBack" ref="qscriptvalueiterator.html#toBack"/>
+            <keyword name="toFront" id="QScriptValueIterator::toFront" ref="qscriptvalueiterator.html#toFront"/>
+            <keyword name="value" id="QScriptValueIterator::value" ref="qscriptvalueiterator.html#value"/>
+            <keyword name="~QScriptValueIterator" id="QScriptValueIterator::~QScriptValueIterator" ref="qscriptvalueiterator.html#dtor.QScriptValueIterator"/>
+            <keyword name="QScriptable" id="QScriptable" ref="qscriptable.html"/>
+            <keyword name="argument" id="QScriptable::argument" ref="qscriptable.html#argument"/>
+            <keyword name="argumentCount" id="QScriptable::argumentCount" ref="qscriptable.html#argumentCount"/>
+            <keyword name="context" id="QScriptable::context" ref="qscriptable.html#context"/>
+            <keyword name="engine" id="QScriptable::engine" ref="qscriptable.html#engine"/>
+            <keyword name="thisObject" id="QScriptable::thisObject" ref="qscriptable.html#thisObject"/>
+            <keyword name="QtScript Classic" id="QtScript Classic" ref="index.html"/>
+        </keywords>
+        <files>
+            <file>qscriptextensionplugin.html</file>
+            <file>qscriptstring.html</file>
+            <file>index.html</file>
+            <file>qscriptengineagent.html</file>
+            <file>qscriptable.html</file>
+            <file>qscriptcontextinfo.html</file>
+            <file>qtscriptclassic-example-helloscript.html</file>
+            <file>qscriptclass.html</file>
+            <file>qscriptcontext.html</file>
+            <file>qscriptvalueiterator.html</file>
+            <file>qscriptsyntaxcheckresult.html</file>
+            <file>qscriptvalue.html</file>
+            <file>qscriptclasspropertyiterator.html</file>
+            <file>qscriptengine.html</file>
+            <file>classic.css</file>
+            <file>images/qt-logo.png</file>
+        </files>
+    </filterSection>
+</QtHelpProject>

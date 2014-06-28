@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE QDOCINDEX>
+<INDEX url="" title="Qt Solutions: QtScript Classic Documentation" version="">
+    <namespace access="public" threadsafety="unspecified" status="commendable" name="" href="" location="" module="">
+        <class access="public" threadsafety="unspecified" status="main" name="QScriptClass" href="qscriptclass.html" location="qscriptclass.h" bases="" module="QtScript">
+            <enum access="public" threadsafety="unspecified" status="commendable" name="QueryFlag" fullname="QScriptClass::QueryFlag" href="qscriptclass.html#QueryFlag-enum" location="qscriptclass.h" typedef="QScriptClass::QueryFlags">
+                <value name="HandlesReadAccess" value="0x01"/>
+                <value name="HandlesWriteAccess" value="0x02"/>
+            </enum>
+            <typedef access="public" threadsafety="unspecified" status="commendable" name="QueryFlags" fullname="QScriptClass::QueryFlags" href="qscriptclass.html#QueryFlags-typedef" location="qscriptclass.h" enum="QScriptClass::QueryFlag"/>
+            <enum access="public" threadsafety="unspecified" status="commendable" name="Extension" fullname="QScriptClass::Extension" href="qscriptclass.html#Extension-enum" location="qscriptclass.h">
+                <value name="Callable" value="0"/>
+                <value name="HasInstance" value="1"/>
+            </enum>
+            <function access="public" threadsafety="unspecified" status="commendable" name="QScriptClass" fullname="QScriptClass::QScriptClass" href="qscriptclass.html#QScriptClass" location="qscriptclass.h" virtual="non" meta="constructor" const="false" static="false" overload="false" type="" signature="QScriptClass(QScriptEngine * engine)">
+                <parameter left="QScriptEngine *" right="" name="engine" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="~QScriptClass" fullname="QScriptClass::~QScriptClass" href="qscriptclass.html#dtor.QScriptClass" location="qscriptclass.h" virtual="impure" meta="destructor" const="false" static="false" overload="false" type="" signature="~QScriptClass()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="engine" fullname="QScriptClass::engine" href="qscriptclass.html#engine" location="qscriptclass.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptEngine *" signature="engine() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="queryProperty" fullname="QScriptClass::queryProperty" href="qscriptclass.html#queryProperty" location="qscriptclass.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="QueryFlags" signature="queryProperty(const QScriptValue &amp; object, const QScriptString &amp; name, QFlags&lt;QScriptClass::QueryFlag&gt; flags, uint * id)">
+                <parameter left="const QScriptValue &amp;" right="" name="object" default=""/>
+                <parameter left="const QScriptString &amp;" right="" name="name" default=""/>
+                <parameter left="QFlags&lt;QScriptClass::QueryFlag&gt;" right="" name="flags" default=""/>
+                <parameter left="uint *" right="" name="id" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="property" fullname="QScriptClass::property" href="qscriptclass.html#property" location="qscriptclass.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="QScriptValue" signature="property(const QScriptValue &amp; object, const QScriptString &amp; name, uint id)">
+                <parameter left="const QScriptValue &amp;" right="" name="object" default=""/>
+                <parameter left="const QScriptString &amp;" right="" name="name" default=""/>
+                <parameter left="uint" right="" name="id" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="setProperty" fullname="QScriptClass::setProperty" href="qscriptclass.html#setProperty" location="qscriptclass.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="void" signature="setProperty(QScriptValue &amp; object, const QScriptString &amp; name, uint id, const QScriptValue &amp; value)">
+                <parameter left="QScriptValue &amp;" right="" name="object" default=""/>
+                <parameter left="const QScriptString &amp;" right="" name="name" default=""/>
+                <parameter left="uint" right="" name="id" default=""/>
+                <parameter left="const QScriptValue &amp;" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="propertyFlags" fullname="QScriptClass::propertyFlags" href="qscriptclass.html#propertyFlags" location="qscriptclass.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="QScriptValue::PropertyFlags" signature="propertyFlags(const QScriptValue &amp; object, const QScriptString &amp; name, uint id)">
+                <parameter left="const QScriptValue &amp;" right="" name="object" default=""/>
+                <parameter left="const QScriptString &amp;" right="" name="name" default=""/>
+                <parameter left="uint" right="" name="id" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="newIterator" fullname="QScriptClass::newIterator" href="qscriptclass.html#newIterator" location="qscriptclass.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="QScriptClassPropertyIterator *" signature="newIterator(const QScriptValue &amp; object)">
+                <parameter left="const QScriptValue &amp;" right="" name="object" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="prototype" fullname="QScriptClass::prototype" href="qscriptclass.html#prototype" location="qscriptclass.h" virtual="impure" meta="plain" const="true" static="false" overload="false" type="QScriptValue" signature="prototype() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="name" fullname="QScriptClass::name" href="qscriptclass.html#name" location="qscriptclass.h" virtual="impure" meta="plain" const="true" static="false" overload="false" type="QString" signature="name() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="supportsExtension" fullname="QScriptClass::supportsExtension" href="qscriptclass.html#supportsExtension" location="qscriptclass.h" virtual="impure" meta="plain" const="true" static="false" overload="false" type="bool" signature="supportsExtension(Extension extension) const">
+                <parameter left="Extension" right="" name="extension" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="extension" fullname="QScriptClass::extension" href="qscriptclass.html#extension" location="qscriptclass.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="QVariant" signature="extension(Extension extension, const QVariant &amp; argument)">
+                <parameter left="Extension" right="" name="extension" default=""/>
+                <parameter left="const QVariant &amp;" right="" name="argument" default="QVariant()"/>
+            </function>
+            <variable access="protected" threadsafety="unspecified" status="commendable" name="d_ptr" fullname="QScriptClass::d_ptr" href="qscriptclass.html#d_ptr-var" location="qscriptclass.h" type="QScriptClassPrivate *" static="false"/>
+        </class>
+        <class access="public" threadsafety="unspecified" status="main" name="QScriptEngineAgent" href="qscriptengineagent.html" location="qscriptengineagent.h" bases="" module="QtScript">
+            <enum access="public" threadsafety="unspecified" status="commendable" name="Extension" fullname="QScriptEngineAgent::Extension" href="qscriptengineagent.html#Extension-enum" location="qscriptengineagent.h">
+                <value name="DebuggerInvocationRequest" value="0"/>
+            </enum>
+            <function access="public" threadsafety="unspecified" status="commendable" name="QScriptEngineAgent" fullname="QScriptEngineAgent::QScriptEngineAgent" href="qscriptengineagent.html#QScriptEngineAgent" location="qscriptengineagent.h" virtual="non" meta="constructor" const="false" static="false" overload="false" type="" signature="QScriptEngineAgent(QScriptEngine * engine)">
+                <parameter left="QScriptEngine *" right="" name="engine" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="~QScriptEngineAgent" fullname="QScriptEngineAgent::~QScriptEngineAgent" href="qscriptengineagent.html#dtor.QScriptEngineAgent" location="qscriptengineagent.h" virtual="impure" meta="destructor" const="false" static="false" overload="false" type="" signature="~QScriptEngineAgent()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="scriptLoad" fullname="QScriptEngineAgent::scriptLoad" href="qscriptengineagent.html#scriptLoad" location="qscriptengineagent.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="void" signature="scriptLoad(qint64 id, const QString &amp; program, const QString &amp; fileName, int baseLineNumber)">
+                <parameter left="qint64" right="" name="id" default=""/>
+                <parameter left="const QString &amp;" right="" name="program" default=""/>
+                <parameter left="const QString &amp;" right="" name="fileName" default=""/>
+                <parameter left="int" right="" name="baseLineNumber" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="scriptUnload" fullname="QScriptEngineAgent::scriptUnload" href="qscriptengineagent.html#scriptUnload" location="qscriptengineagent.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="void" signature="scriptUnload(qint64 id)">
+                <parameter left="qint64" right="" name="id" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="contextPush" fullname="QScriptEngineAgent::contextPush" href="qscriptengineagent.html#contextPush" location="qscriptengineagent.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="void" signature="contextPush()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="contextPop" fullname="QScriptEngineAgent::contextPop" href="qscriptengineagent.html#contextPop" location="qscriptengineagent.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="void" signature="contextPop()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="functionEntry" fullname="QScriptEngineAgent::functionEntry" href="qscriptengineagent.html#functionEntry" location="qscriptengineagent.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="void" signature="functionEntry(qint64 scriptId)">
+                <parameter left="qint64" right="" name="scriptId" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="functionExit" fullname="QScriptEngineAgent::functionExit" href="qscriptengineagent.html#functionExit" location="qscriptengineagent.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="void" signature="functionExit(qint64 scriptId, const QScriptValue &amp; returnValue)">
+                <parameter left="qint64" right="" name="scriptId" default=""/>
+                <parameter left="const QScriptValue &amp;" right="" name="returnValue" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="positionChange" fullname="QScriptEngineAgent::positionChange" href="qscriptengineagent.html#positionChange" location="qscriptengineagent.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="void" signature="positionChange(qint64 scriptId, int lineNumber, int columnNumber)">
+                <parameter left="qint64" right="" name="scriptId" default=""/>
+                <parameter left="int" right="" name="lineNumber" default=""/>
+                <parameter left="int" right="" name="columnNumber" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="exceptionThrow" fullname="QScriptEngineAgent::exceptionThrow" href="qscriptengineagent.html#exceptionThrow" location="qscriptengineagent.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="void" signature="exceptionThrow(qint64 scriptId, const QScriptValue &amp; exception, bool hasHandler)">
+                <parameter left="qint64" right="" name="scriptId" default=""/>
+                <parameter left="const QScriptValue &amp;" right="" name="exception" default=""/>
+                <parameter left="bool" right="" name="hasHandler" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="exceptionCatch" fullname="QScriptEngineAgent::exceptionCatch" href="qscriptengineagent.html#exceptionCatch" location="qscriptengineagent.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="void" signature="exceptionCatch(qint64 scriptId, const QScriptValue &amp; exception)">
+                <parameter left="qint64" right="" name="scriptId" default=""/>
+                <parameter left="const QScriptValue &amp;" right="" name="exception" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="supportsExtension" fullname="QScriptEngineAgent::supportsExtension" href="qscriptengineagent.html#supportsExtension" location="qscriptengineagent.h" virtual="impure" meta="plain" const="true" static="false" overload="false" type="bool" signature="supportsExtension(Extension extension) const">
+                <parameter left="Extension" right="" name="extension" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="extension" fullname="QScriptEngineAgent::extension" href="qscriptengineagent.html#extension" location="qscriptengineagent.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="QVariant" signature="extension(Extension extension, const QVariant &amp; argument)">
+                <parameter left="Extension" right="" name="extension" default=""/>
+                <parameter left="const QVariant &amp;" right="" name="argument" default="QVariant()"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="engine" fullname="QScriptEngineAgent::engine" href="qscriptengineagent.html#engine" location="qscriptengineagent.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptEngine *" signature="engine() const"/>
+            <variable access="protected" threadsafety="unspecified" status="commendable" name="d_ptr" fullname="QScriptEngineAgent::d_ptr" href="qscriptengineagent.html#d_ptr-var" location="qscriptengineagent.h" type="QScriptEngineAgentPrivate *" static="false"/>
+        </class>
+        <class access="public" threadsafety="unspecified" status="main" name="QScriptable" href="qscriptable.html" location="qscriptable.h" bases="" module="QtScript">
+            <function access="public" threadsafety="unspecified" status="commendable" name="engine" fullname="QScriptable::engine" href="qscriptable.html#engine" location="qscriptable.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptEngine *" signature="engine() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="context" fullname="QScriptable::context" href="qscriptable.html#context" location="qscriptable.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptContext *" signature="context() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="thisObject" fullname="QScriptable::thisObject" href="qscriptable.html#thisObject" location="qscriptable.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptValue" signature="thisObject() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="argumentCount" fullname="QScriptable::argumentCount" href="qscriptable.html#argumentCount" location="qscriptable.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="int" signature="argumentCount() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="argument" fullname="QScriptable::argument" href="qscriptable.html#argument" location="qscriptable.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptValue" signature="argument(int index) const">
+                <parameter left="int" right="" name="index" default=""/>
+            </function>
+        </class>
+        <class access="public" threadsafety="unspecified" status="main" name="QScriptValue" href="qscriptvalue.html" location="qscriptvalue.h" bases="" module="QtScript">
+            <enum access="public" threadsafety="unspecified" status="commendable" name="ResolveFlag" fullname="QScriptValue::ResolveFlag" href="qscriptvalue.html#ResolveFlag-enum" location="qscriptvalue.h" typedef="QScriptValue::ResolveFlags">
+                <value name="ResolveLocal" value="0x00"/>
+                <value name="ResolvePrototype" value="0x01"/>
+                <value name="ResolveScope" value="0x02"/>
+                <value name="ResolveFull" value="ResolvePrototype | ResolveScope"/>
+            </enum>
+            <typedef access="public" threadsafety="unspecified" status="commendable" name="ResolveFlags" fullname="QScriptValue::ResolveFlags" href="qscriptvalue.html#ResolveFlags-typedef" location="qscriptvalue.h" enum="QScriptValue::ResolveFlag"/>
+            <enum access="public" threadsafety="unspecified" status="commendable" name="PropertyFlag" fullname="QScriptValue::PropertyFlag" href="qscriptvalue.html#PropertyFlag-enum" location="qscriptvalue.h" typedef="QScriptValue::PropertyFlags">
+                <value name="ReadOnly" value="0x00000001"/>
+                <value name="Undeletable" value="0x00000002"/>
+                <value name="SkipInEnumeration" value="0x00000004"/>
+                <value name="PropertyGetter" value="0x00000008"/>
+                <value name="PropertySetter" value="0x00000010"/>
+                <value name="QObjectMember" value="0x00000020"/>
+                <value name="KeepExistingFlags" value="0x00000800"/>
+                <value name="UserRange" value="0xff000000"/>
+            </enum>
+            <typedef access="public" threadsafety="unspecified" status="commendable" name="PropertyFlags" fullname="QScriptValue::PropertyFlags" href="qscriptvalue.html#PropertyFlags-typedef" location="qscriptvalue.h" enum="QScriptValue::PropertyFlag"/>
+            <enum access="public" threadsafety="unspecified" status="commendable" name="SpecialValue" fullname="QScriptValue::SpecialValue" href="qscriptvalue.html#SpecialValue-enum" location="qscriptvalue.h">
+                <value name="NullValue" value="0"/>
+                <value name="UndefinedValue" value="1"/>
+            </enum>
+            <function access="public" threadsafety="unspecified" status="commendable" name="QScriptValue" fullname="QScriptValue::QScriptValue" href="qscriptvalue.html#QScriptValue" location="qscriptvalue.h" virtual="non" meta="constructor" const="false" static="false" overload="false" type="" signature="QScriptValue()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="~QScriptValue" fullname="QScriptValue::~QScriptValue" href="qscriptvalue.html#dtor.QScriptValue" location="qscriptvalue.h" virtual="non" meta="destructor" const="false" static="false" overload="false" type="" signature="~QScriptValue()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="QScriptValue" fullname="QScriptValue::QScriptValue" href="qscriptvalue.html#QScriptValue-2" location="qscriptvalue.h" virtual="non" meta="constructor" const="false" static="false" overload="true" overload-number="2" type="" signature="QScriptValue(const QScriptValue &amp; other)">
+                <parameter left="const QScriptValue &amp;" right="" name="other" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="obsolete" name="QScriptValue" fullname="QScriptValue::QScriptValue" href="qscriptvalue-obsolete.html#QScriptValue-3" location="qscriptvalue.h" virtual="non" meta="constructor" const="false" static="false" overload="true" overload-number="3" type="" signature="QScriptValue(QScriptEngine * engine, SpecialValue value)">
+                <parameter left="QScriptEngine *" right="" name="engine" default=""/>
+                <parameter left="SpecialValue" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="obsolete" name="QScriptValue" fullname="QScriptValue::QScriptValue" href="qscriptvalue-obsolete.html#QScriptValue-4" location="qscriptvalue.cpp" virtual="non" meta="constructor" const="false" static="false" overload="true" overload-number="4" type="" signature="QScriptValue(QScriptEngine * engine, bool value)">
+                <parameter left="QScriptEngine *" right="" name="engine" default=""/>
+                <parameter left="bool" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="obsolete" name="QScriptValue" fullname="QScriptValue::QScriptValue" href="qscriptvalue-obsolete.html#QScriptValue-5" location="qscriptvalue.cpp" virtual="non" meta="constructor" const="false" static="false" overload="true" overload-number="5" type="" signature="QScriptValue(QScriptEngine * engine, int value)">
+                <parameter left="QScriptEngine *" right="" name="engine" default=""/>
+                <parameter left="int" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="obsolete" name="QScriptValue" fullname="QScriptValue::QScriptValue" href="qscriptvalue-obsolete.html#QScriptValue-6" location="qscriptvalue.cpp" virtual="non" meta="constructor" const="false" static="false" overload="true" overload-number="6" type="" signature="QScriptValue(QScriptEngine * engine, uint value)">
+                <parameter left="QScriptEngine *" right="" name="engine" default=""/>
+                <parameter left="uint" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="obsolete" name="QScriptValue" fullname="QScriptValue::QScriptValue" href="qscriptvalue-obsolete.html#QScriptValue-7" location="qscriptvalue.cpp" virtual="non" meta="constructor" const="false" static="false" overload="true" overload-number="7" type="" signature="QScriptValue(QScriptEngine * engine, qsreal value)">
+                <parameter left="QScriptEngine *" right="" name="engine" default=""/>
+                <parameter left="qsreal" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="obsolete" name="QScriptValue" fullname="QScriptValue::QScriptValue" href="qscriptvalue-obsolete.html#QScriptValue-8" location="qscriptvalue.cpp" virtual="non" meta="constructor" const="false" static="false" overload="true" overload-number="8" type="" signature="QScriptValue(QScriptEngine * engine, const QString &amp; value)">
+                <parameter left="QScriptEngine *" right="" name="engine" default=""/>
+                <parameter left="const QString &amp;" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="obsolete" name="QScriptValue" fullname="QScriptValue::QScriptValue" href="qscriptvalue-obsolete.html#QScriptValue-9" location="qscriptvalue.cpp" virtual="non" meta="constructor" const="false" static="false" overload="true" overload-number="9" type="" signature="QScriptValue(QScriptEngine * engine, const char * value)">
+                <parameter left="QScriptEngine *" right="" name="engine" default=""/>
+                <parameter left="const char *" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="QScriptValue" fullname="QScriptValue::QScriptValue" href="qscriptvalue.html#QScriptValue-10" location="qscriptvalue.h" virtual="non" meta="constructor" const="false" static="false" overload="true" overload-number="10" type="" signature="QScriptValue(SpecialValue value)">
+                <parameter left="SpecialValue" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="QScriptValue" fullname="QScriptValue::QScriptValue" href="qscriptvalue.html#QScriptValue-11" location="qscriptvalue.h" virtual="non" meta="constructor" const="false" static="false" overload="true" overload-number="11" type="" signature="QScriptValue(bool value)">
+                <parameter left="bool" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="QScriptValue" fullname="QScriptValue::QScriptValue" href="qscriptvalue.html#QScriptValue-12" location="qscriptvalue.h" virtual="non" meta="constructor" const="false" static="false" overload="true" overload-number="12" type="" signature="QScriptValue(int value)">
+                <parameter left="int" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="QScriptValue" fullname="QScriptValue::QScriptValue" href="qscriptvalue.html#QScriptValue-13" location="qscriptvalue.h" virtual="non" meta="constructor" const="false" static="false" overload="true" overload-number="13" type="" signature="QScriptValue(uint value)">
+                <parameter left="uint" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="QScriptValue" fullname="QScriptValue::QScriptValue" href="qscriptvalue.html#QScriptValue-14" location="qscriptvalue.h" virtual="non" meta="constructor" const="false" static="false" overload="true" overload-number="14" type="" signature="QScriptValue(qsreal value)">
+                <parameter left="qsreal" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="QScriptValue" fullname="QScriptValue::QScriptValue" href="qscriptvalue.html#QScriptValue-15" location="qscriptvalue.h" virtual="non" meta="constructor" const="false" static="false" overload="true" overload-number="15" type="" signature="QScriptValue(const QString &amp; value)">
+                <parameter left="const QString &amp;" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="QScriptValue" fullname="QScriptValue::QScriptValue" href="qscriptvalue.html#QScriptValue-16" location="qscriptvalue.h" virtual="non" meta="constructor" const="false" static="false" overload="true" overload-number="16" type="" signature="QScriptValue(const QLatin1String &amp; value)">
+                <parameter left="const QLatin1String &amp;" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="QScriptValue" fullname="QScriptValue::QScriptValue" href="qscriptvalue.html#QScriptValue-17" location="qscriptvalue.h" virtual="non" meta="constructor" const="false" static="false" overload="true" overload-number="17" type="" signature="QScriptValue(const char * value)">
+                <parameter left="const char *" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="operator=" fullname="QScriptValue::operator=" href="qscriptvalue.html#operator=" location="qscriptvalue.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptValue &amp;" signature="operator=(const QScriptValue &amp; other)">
+                <parameter left="const QScriptValue &amp;" right="" name="other" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="engine" fullname="QScriptValue::engine" href="qscriptvalue.html#engine" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptEngine *" signature="engine() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="isValid" fullname="QScriptValue::isValid" href="qscriptvalue.html#isValid" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="isValid() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="isBool" fullname="QScriptValue::isBool" href="qscriptvalue.html#isBool" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="isBool() const"/>
+            <function access="public" threadsafety="unspecified" status="obsolete" name="isBoolean" fullname="QScriptValue::isBoolean" href="qscriptvalue-obsolete.html#isBoolean" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="isBoolean() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="isNumber" fullname="QScriptValue::isNumber" href="qscriptvalue.html#isNumber" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="isNumber() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="isFunction" fullname="QScriptValue::isFunction" href="qscriptvalue.html#isFunction" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="isFunction() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="isNull" fullname="QScriptValue::isNull" href="qscriptvalue.html#isNull" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="isNull() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="isString" fullname="QScriptValue::isString" href="qscriptvalue.html#isString" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="isString() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="isUndefined" fullname="QScriptValue::isUndefined" href="qscriptvalue.html#isUndefined" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="isUndefined() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="isVariant" fullname="QScriptValue::isVariant" href="qscriptvalue.html#isVariant" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="isVariant() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="isQObject" fullname="QScriptValue::isQObject" href="qscriptvalue.html#isQObject" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="isQObject() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="isQMetaObject" fullname="QScriptValue::isQMetaObject" href="qscriptvalue.html#isQMetaObject" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="isQMetaObject() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="isObject" fullname="QScriptValue::isObject" href="qscriptvalue.html#isObject" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="isObject() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="isDate" fullname="QScriptValue::isDate" href="qscriptvalue.html#isDate" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="isDate() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="isRegExp" fullname="QScriptValue::isRegExp" href="qscriptvalue.html#isRegExp" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="isRegExp() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="isArray" fullname="QScriptValue::isArray" href="qscriptvalue.html#isArray" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="isArray() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="isError" fullname="QScriptValue::isError" href="qscriptvalue.html#isError" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="isError() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="toString" fullname="QScriptValue::toString" href="qscriptvalue.html#toString" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QString" signature="toString() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="toNumber" fullname="QScriptValue::toNumber" href="qscriptvalue.html#toNumber" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="qsreal" signature="toNumber() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="toBool" fullname="QScriptValue::toBool" href="qscriptvalue.html#toBool" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="toBool() const"/>
+            <function access="public" threadsafety="unspecified" status="obsolete" name="toBoolean" fullname="QScriptValue::toBoolean" href="qscriptvalue-obsolete.html#toBoolean" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="toBoolean() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="toInteger" fullname="QScriptValue::toInteger" href="qscriptvalue.html#toInteger" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="qsreal" signature="toInteger() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="toInt32" fullname="QScriptValue::toInt32" href="qscriptvalue.html#toInt32" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="qint32" signature="toInt32() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="toUInt32" fullname="QScriptValue::toUInt32" href="qscriptvalue.html#toUInt32" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="quint32" signature="toUInt32() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="toUInt16" fullname="QScriptValue::toUInt16" href="qscriptvalue.html#toUInt16" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="quint16" signature="toUInt16() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="toVariant" fullname="QScriptValue::toVariant" href="qscriptvalue.html#toVariant" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QVariant" signature="toVariant() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="toQObject" fullname="QScriptValue::toQObject" href="qscriptvalue.html#toQObject" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QObject *" signature="toQObject() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="toQMetaObject" fullname="QScriptValue::toQMetaObject" href="qscriptvalue.html#toQMetaObject" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="const QMetaObject *" signature="toQMetaObject() const"/>
+            <function access="public" threadsafety="unspecified" status="obsolete" name="toObject" fullname="QScriptValue::toObject" href="qscriptvalue-obsolete.html#toObject" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptValue" signature="toObject() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="toDateTime" fullname="QScriptValue::toDateTime" href="qscriptvalue.html#toDateTime" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QDateTime" signature="toDateTime() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="toRegExp" fullname="QScriptValue::toRegExp" href="qscriptvalue.html#toRegExp" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QRegExp" signature="toRegExp() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="instanceOf" fullname="QScriptValue::instanceOf" href="qscriptvalue.html#instanceOf" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="instanceOf(const QScriptValue &amp; other) const">
+                <parameter left="const QScriptValue &amp;" right="" name="other" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="lessThan" fullname="QScriptValue::lessThan" href="qscriptvalue.html#lessThan" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="lessThan(const QScriptValue &amp; other) const">
+                <parameter left="const QScriptValue &amp;" right="" name="other" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="equals" fullname="QScriptValue::equals" href="qscriptvalue.html#equals" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="equals(const QScriptValue &amp; other) const">
+                <parameter left="const QScriptValue &amp;" right="" name="other" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="strictlyEquals" fullname="QScriptValue::strictlyEquals" href="qscriptvalue.html#strictlyEquals" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="strictlyEquals(const QScriptValue &amp; other) const">
+                <parameter left="const QScriptValue &amp;" right="" name="other" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="prototype" fullname="QScriptValue::prototype" href="qscriptvalue.html#prototype" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptValue" signature="prototype() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="setPrototype" fullname="QScriptValue::setPrototype" href="qscriptvalue.html#setPrototype" location="qscriptvalue.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="setPrototype(const QScriptValue &amp; prototype)">
+                <parameter left="const QScriptValue &amp;" right="" name="prototype" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="scope" fullname="QScriptValue::scope" href="qscriptvalue.html#scope" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptValue" signature="scope() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="setScope" fullname="QScriptValue::setScope" href="qscriptvalue.html#setScope" location="qscriptvalue.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="setScope(const QScriptValue &amp; scope)">
+                <parameter left="const QScriptValue &amp;" right="" name="scope" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="property" fullname="QScriptValue::property" href="qscriptvalue.html#property" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptValue" signature="property(const QString &amp; name, const ResolveFlags &amp; mode) const">
+                <parameter left="const QString &amp;" right="" name="name" default=""/>
+                <parameter left="const ResolveFlags &amp;" right="" name="mode" default="ResolvePrototype"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="setProperty" fullname="QScriptValue::setProperty" href="qscriptvalue.html#setProperty" location="qscriptvalue.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="setProperty(const QString &amp; name, const QScriptValue &amp; value, const PropertyFlags &amp; flags)">
+                <parameter left="const QString &amp;" right="" name="name" default=""/>
+                <parameter left="const QScriptValue &amp;" right="" name="value" default=""/>
+                <parameter left="const PropertyFlags &amp;" right="" name="flags" default="KeepExistingFlags"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="property" fullname="QScriptValue::property" href="qscriptvalue.html#property-3" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="true" overload-number="3" type="QScriptValue" signature="property(quint32 arrayIndex, const ResolveFlags &amp; mode) const">
+                <parameter left="quint32" right="" name="arrayIndex" default=""/>
+                <parameter left="const ResolveFlags &amp;" right="" name="mode" default="ResolvePrototype"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="setProperty" fullname="QScriptValue::setProperty" href="qscriptvalue.html#setProperty-3" location="qscriptvalue.h" virtual="non" meta="plain" const="false" static="false" overload="true" overload-number="3" type="void" signature="setProperty(quint32 arrayIndex, const QScriptValue &amp; value, const PropertyFlags &amp; flags)">
+                <parameter left="quint32" right="" name="arrayIndex" default=""/>
+                <parameter left="const QScriptValue &amp;" right="" name="value" default=""/>
+                <parameter left="const PropertyFlags &amp;" right="" name="flags" default="KeepExistingFlags"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="property" fullname="QScriptValue::property" href="qscriptvalue.html#property-2" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="true" overload-number="2" type="QScriptValue" signature="property(const QScriptString &amp; name, const ResolveFlags &amp; mode) const">
+                <parameter left="const QScriptString &amp;" right="" name="name" default=""/>
+                <parameter left="const ResolveFlags &amp;" right="" name="mode" default="ResolvePrototype"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="setProperty" fullname="QScriptValue::setProperty" href="qscriptvalue.html#setProperty-2" location="qscriptvalue.h" virtual="non" meta="plain" const="false" static="false" overload="true" overload-number="2" type="void" signature="setProperty(const QScriptString &amp; name, const QScriptValue &amp; value, const PropertyFlags &amp; flags)">
+                <parameter left="const QScriptString &amp;" right="" name="name" default=""/>
+                <parameter left="const QScriptValue &amp;" right="" name="value" default=""/>
+                <parameter left="const PropertyFlags &amp;" right="" name="flags" default="KeepExistingFlags"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="propertyFlags" fullname="QScriptValue::propertyFlags" href="qscriptvalue.html#propertyFlags" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptValue::PropertyFlags" signature="propertyFlags(const QString &amp; name, const ResolveFlags &amp; mode) const">
+                <parameter left="const QString &amp;" right="" name="name" default=""/>
+                <parameter left="const ResolveFlags &amp;" right="" name="mode" default="ResolvePrototype"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="propertyFlags" fullname="QScriptValue::propertyFlags" href="qscriptvalue.html#propertyFlags-2" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="true" overload-number="2" type="QScriptValue::PropertyFlags" signature="propertyFlags(const QScriptString &amp; name, const ResolveFlags &amp; mode) const">
+                <parameter left="const QScriptString &amp;" right="" name="name" default=""/>
+                <parameter left="const ResolveFlags &amp;" right="" name="mode" default="ResolvePrototype"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="call" fullname="QScriptValue::call" href="qscriptvalue.html#call" location="qscriptvalue.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptValue" signature="call(const QScriptValue &amp; thisObject, const QScriptValueList &amp; args)">
+                <parameter left="const QScriptValue &amp;" right="" name="thisObject" default="QScriptValue()"/>
+                <parameter left="const QScriptValueList &amp;" right="" name="args" default="QScriptValueList()"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="call" fullname="QScriptValue::call" href="qscriptvalue.html#call-2" location="qscriptvalue.h" virtual="non" meta="plain" const="false" static="false" overload="true" overload-number="2" type="QScriptValue" signature="call(const QScriptValue &amp; thisObject, const QScriptValue &amp; arguments)">
+                <parameter left="const QScriptValue &amp;" right="" name="thisObject" default=""/>
+                <parameter left="const QScriptValue &amp;" right="" name="arguments" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="construct" fullname="QScriptValue::construct" href="qscriptvalue.html#construct" location="qscriptvalue.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptValue" signature="construct(const QScriptValueList &amp; args)">
+                <parameter left="const QScriptValueList &amp;" right="" name="args" default="QScriptValueList()"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="construct" fullname="QScriptValue::construct" href="qscriptvalue.html#construct-2" location="qscriptvalue.h" virtual="non" meta="plain" const="false" static="false" overload="true" overload-number="2" type="QScriptValue" signature="construct(const QScriptValue &amp; arguments)">
+                <parameter left="const QScriptValue &amp;" right="" name="arguments" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="data" fullname="QScriptValue::data" href="qscriptvalue.html#data" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptValue" signature="data() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="setData" fullname="QScriptValue::setData" href="qscriptvalue.html#setData" location="qscriptvalue.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="setData(const QScriptValue &amp; data)">
+                <parameter left="const QScriptValue &amp;" right="" name="data" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="scriptClass" fullname="QScriptValue::scriptClass" href="qscriptvalue.html#scriptClass" location="qscriptvalue.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptClass *" signature="scriptClass() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="setScriptClass" fullname="QScriptValue::setScriptClass" href="qscriptvalue.html#setScriptClass" location="qscriptvalue.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="setScriptClass(QScriptClass * scriptClass)">
+                <parameter left="QScriptClass *" right="" name="scriptClass" default=""/>
+            </function>
+        </class>
+        <class access="public" threadsafety="unspecified" status="main" name="QScriptContext" href="qscriptcontext.html" location="qscriptcontext.h" bases="" module="QtScript">
+            <enum access="public" threadsafety="unspecified" status="commendable" name="ExecutionState" fullname="QScriptContext::ExecutionState" href="qscriptcontext.html#ExecutionState-enum" location="qscriptcontext.h">
+                <value name="NormalState" value="0"/>
+                <value name="ExceptionState" value="1"/>
+            </enum>
+            <enum access="public" threadsafety="unspecified" status="commendable" name="Error" fullname="QScriptContext::Error" href="qscriptcontext.html#Error-enum" location="qscriptcontext.h">
+                <value name="UnknownError" value="0"/>
+                <value name="ReferenceError" value="1"/>
+                <value name="SyntaxError" value="2"/>
+                <value name="TypeError" value="3"/>
+                <value name="RangeError" value="4"/>
+                <value name="URIError" value="5"/>
+            </enum>
+            <function access="public" threadsafety="unspecified" status="commendable" name="~QScriptContext" fullname="QScriptContext::~QScriptContext" href="qscriptcontext.html#dtor.QScriptContext" location="qscriptcontext.h" virtual="non" meta="destructor" const="false" static="false" overload="false" type="" signature="~QScriptContext()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="parentContext" fullname="QScriptContext::parentContext" href="qscriptcontext.html#parentContext" location="qscriptcontext.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptContext *" signature="parentContext() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="engine" fullname="QScriptContext::engine" href="qscriptcontext.html#engine" location="qscriptcontext.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptEngine *" signature="engine() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="state" fullname="QScriptContext::state" href="qscriptcontext.html#state" location="qscriptcontext.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="ExecutionState" signature="state() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="callee" fullname="QScriptContext::callee" href="qscriptcontext.html#callee" location="qscriptcontext.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptValue" signature="callee() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="argumentCount" fullname="QScriptContext::argumentCount" href="qscriptcontext.html#argumentCount" location="qscriptcontext.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="int" signature="argumentCount() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="argument" fullname="QScriptContext::argument" href="qscriptcontext.html#argument" location="qscriptcontext.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptValue" signature="argument(int index) const">
+                <parameter left="int" right="" name="index" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="argumentsObject" fullname="QScriptContext::argumentsObject" href="qscriptcontext.html#argumentsObject" location="qscriptcontext.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptValue" signature="argumentsObject() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="activationObject" fullname="QScriptContext::activationObject" href="qscriptcontext.html#activationObject" location="qscriptcontext.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptValue" signature="activationObject() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="setActivationObject" fullname="QScriptContext::setActivationObject" href="qscriptcontext.html#setActivationObject" location="qscriptcontext.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="setActivationObject(const QScriptValue &amp; activation)">
+                <parameter left="const QScriptValue &amp;" right="" name="activation" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="thisObject" fullname="QScriptContext::thisObject" href="qscriptcontext.html#thisObject" location="qscriptcontext.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptValue" signature="thisObject() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="setThisObject" fullname="QScriptContext::setThisObject" href="qscriptcontext.html#setThisObject" location="qscriptcontext.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="setThisObject(const QScriptValue &amp; thisObject)">
+                <parameter left="const QScriptValue &amp;" right="" name="thisObject" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="isCalledAsConstructor" fullname="QScriptContext::isCalledAsConstructor" href="qscriptcontext.html#isCalledAsConstructor" location="qscriptcontext.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="isCalledAsConstructor() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="throwValue" fullname="QScriptContext::throwValue" href="qscriptcontext.html#throwValue" location="qscriptcontext.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptValue" signature="throwValue(const QScriptValue &amp; value)">
+                <parameter left="const QScriptValue &amp;" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="throwError" fullname="QScriptContext::throwError" href="qscriptcontext.html#throwError" location="qscriptcontext.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptValue" signature="throwError(Error error, const QString &amp; text)">
+                <parameter left="Error" right="" name="error" default=""/>
+                <parameter left="const QString &amp;" right="" name="text" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="throwError" fullname="QScriptContext::throwError" href="qscriptcontext.html#throwError-2" location="qscriptcontext.h" virtual="non" meta="plain" const="false" static="false" overload="true" overload-number="2" type="QScriptValue" signature="throwError(const QString &amp; text)">
+                <parameter left="const QString &amp;" right="" name="text" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="backtrace" fullname="QScriptContext::backtrace" href="qscriptcontext.html#backtrace" location="qscriptcontext.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QStringList" signature="backtrace() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="toString" fullname="QScriptContext::toString" href="qscriptcontext.html#toString" location="qscriptcontext.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QString" signature="toString() const"/>
+        </class>
+        <class access="public" threadsafety="unspecified" status="main" name="QScriptValueIterator" href="qscriptvalueiterator.html" location="qscriptvalueiterator.h" bases="" module="QtScript">
+            <function access="public" threadsafety="unspecified" status="commendable" name="QScriptValueIterator" fullname="QScriptValueIterator::QScriptValueIterator" href="qscriptvalueiterator.html#QScriptValueIterator" location="qscriptvalueiterator.h" virtual="non" meta="constructor" const="false" static="false" overload="false" type="" signature="QScriptValueIterator(const QScriptValue &amp; object)">
+                <parameter left="const QScriptValue &amp;" right="" name="object" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="~QScriptValueIterator" fullname="QScriptValueIterator::~QScriptValueIterator" href="qscriptvalueiterator.html#dtor.QScriptValueIterator" location="qscriptvalueiterator.h" virtual="non" meta="destructor" const="false" static="false" overload="false" type="" signature="~QScriptValueIterator()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="hasNext" fullname="QScriptValueIterator::hasNext" href="qscriptvalueiterator.html#hasNext" location="qscriptvalueiterator.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="hasNext() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="next" fullname="QScriptValueIterator::next" href="qscriptvalueiterator.html#next" location="qscriptvalueiterator.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="next()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="hasPrevious" fullname="QScriptValueIterator::hasPrevious" href="qscriptvalueiterator.html#hasPrevious" location="qscriptvalueiterator.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="hasPrevious() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="previous" fullname="QScriptValueIterator::previous" href="qscriptvalueiterator.html#previous" location="qscriptvalueiterator.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="previous()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="name" fullname="QScriptValueIterator::name" href="qscriptvalueiterator.html#name" location="qscriptvalueiterator.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QString" signature="name() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="scriptName" fullname="QScriptValueIterator::scriptName" href="qscriptvalueiterator.html#scriptName" location="qscriptvalueiterator.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptString" signature="scriptName() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="value" fullname="QScriptValueIterator::value" href="qscriptvalueiterator.html#value" location="qscriptvalueiterator.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptValue" signature="value() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="setValue" fullname="QScriptValueIterator::setValue" href="qscriptvalueiterator.html#setValue" location="qscriptvalueiterator.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="setValue(const QScriptValue &amp; value)">
+                <parameter left="const QScriptValue &amp;" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="flags" fullname="QScriptValueIterator::flags" href="qscriptvalueiterator.html#flags" location="qscriptvalueiterator.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptValue::PropertyFlags" signature="flags() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="remove" fullname="QScriptValueIterator::remove" href="qscriptvalueiterator.html#remove" location="qscriptvalueiterator.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="remove()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="toFront" fullname="QScriptValueIterator::toFront" href="qscriptvalueiterator.html#toFront" location="qscriptvalueiterator.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="toFront()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="toBack" fullname="QScriptValueIterator::toBack" href="qscriptvalueiterator.html#toBack" location="qscriptvalueiterator.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="toBack()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="operator=" fullname="QScriptValueIterator::operator=" href="qscriptvalueiterator.html#operator=" location="qscriptvalueiterator.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptValueIterator &amp;" signature="operator=(QScriptValue &amp; object)">
+                <parameter left="QScriptValue &amp;" right="" name="object" default=""/>
+            </function>
+        </class>
+        <class access="public" threadsafety="unspecified" status="main" name="QScriptSyntaxCheckResult" href="qscriptsyntaxcheckresult.html" location="qscriptengine.h" bases="" module="QtScript">
+            <enum access="public" threadsafety="unspecified" status="commendable" name="State" fullname="QScriptSyntaxCheckResult::State" href="qscriptsyntaxcheckresult.html#State-enum" location="qscriptengine.h">
+                <value name="Error" value="0"/>
+                <value name="Intermediate" value="1"/>
+                <value name="Valid" value="2"/>
+            </enum>
+            <function access="public" threadsafety="unspecified" status="commendable" name="QScriptSyntaxCheckResult" fullname="QScriptSyntaxCheckResult::QScriptSyntaxCheckResult" href="qscriptsyntaxcheckresult.html#QScriptSyntaxCheckResult" location="qscriptengine.h" virtual="non" meta="constructor" const="false" static="false" overload="false" type="" signature="QScriptSyntaxCheckResult(const QScriptSyntaxCheckResult &amp; other)">
+                <parameter left="const QScriptSyntaxCheckResult &amp;" right="" name="other" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="~QScriptSyntaxCheckResult" fullname="QScriptSyntaxCheckResult::~QScriptSyntaxCheckResult" href="qscriptsyntaxcheckresult.html#dtor.QScriptSyntaxCheckResult" location="qscriptengine.h" virtual="non" meta="destructor" const="false" static="false" overload="false" type="" signature="~QScriptSyntaxCheckResult()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="state" fullname="QScriptSyntaxCheckResult::state" href="qscriptsyntaxcheckresult.html#state" location="qscriptengine.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="State" signature="state() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="errorLineNumber" fullname="QScriptSyntaxCheckResult::errorLineNumber" href="qscriptsyntaxcheckresult.html#errorLineNumber" location="qscriptengine.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="int" signature="errorLineNumber() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="errorColumnNumber" fullname="QScriptSyntaxCheckResult::errorColumnNumber" href="qscriptsyntaxcheckresult.html#errorColumnNumber" location="qscriptengine.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="int" signature="errorColumnNumber() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="errorMessage" fullname="QScriptSyntaxCheckResult::errorMessage" href="qscriptsyntaxcheckresult.html#errorMessage" location="qscriptengine.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QString" signature="errorMessage() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="operator=" fullname="QScriptSyntaxCheckResult::operator=" href="qscriptsyntaxcheckresult.html#operator=" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptSyntaxCheckResult &amp;" signature="operator=(const QScriptSyntaxCheckResult &amp; other)">
+                <parameter left="const QScriptSyntaxCheckResult &amp;" right="" name="other" default=""/>
+            </function>
+        </class>
+        <class access="public" threadsafety="reentrant" status="main" name="QScriptEngine" href="qscriptengine.html" location="qscriptengine.h" bases="QObject" module="QtScript">
+            <contents name="evaluating-scripts" title="Evaluating Scripts" level="1"/>
+            <contents name="engine-configuration" title="Engine Configuration" level="1"/>
+            <contents name="script-exceptions" title="Script Exceptions" level="1"/>
+            <contents name="script-object-creation" title="Script Object Creation" level="1"/>
+            <contents name="qobject-integration" title="QObject Integration" level="1"/>
+            <contents name="support-for-custom-c-types" title="Support for Custom C++ Types" level="1"/>
+            <contents name="importing-extensions" title="Importing Extensions" level="1"/>
+            <contents name="native-functions" title="Native Functions" level="1"/>
+            <contents name="long-running-scripts" title="Long-running Scripts" level="1"/>
+            <contents name="core-debugging-tracing-facilities" title="Core Debugging/Tracing Facilities" level="1"/>
+            <enum access="public" threadsafety="unspecified" status="commendable" name="ValueOwnership" fullname="QScriptEngine::ValueOwnership" href="qscriptengine.html#ValueOwnership-enum" location="qscriptengine.h">
+                <value name="QtOwnership" value="0"/>
+                <value name="ScriptOwnership" value="1"/>
+                <value name="AutoOwnership" value="2"/>
+            </enum>
+            <enum access="public" threadsafety="unspecified" status="commendable" name="QObjectWrapOption" fullname="QScriptEngine::QObjectWrapOption" href="qscriptengine.html#QObjectWrapOption-enum" location="qscriptengine.h" typedef="QScriptEngine::QObjectWrapOptions">
+                <value name="ExcludeChildObjects" value="0x0001"/>
+                <value name="ExcludeSuperClassMethods" value="0x0002"/>
+                <value name="ExcludeSuperClassProperties" value="0x0004"/>
+                <value name="ExcludeSuperClassContents" value="0x0006"/>
+                <value name="SkipMethodsInEnumeration" value="0x0008"/>
+                <value name="ExcludeDeleteLater" value="0x0010"/>
+                <value name="AutoCreateDynamicProperties" value="0x0100"/>
+                <value name="PreferExistingWrapperObject" value="0x0200"/>
+            </enum>
+            <typedef access="public" threadsafety="unspecified" status="commendable" name="QObjectWrapOptions" fullname="QScriptEngine::QObjectWrapOptions" href="qscriptengine.html#QObjectWrapOptions-typedef" location="qscriptengine.h" enum="QScriptEngine::QObjectWrapOption"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="QScriptEngine" fullname="QScriptEngine::QScriptEngine" href="qscriptengine.html#QScriptEngine" location="qscriptengine.h" virtual="non" meta="constructor" const="false" static="false" overload="false" type="" signature="QScriptEngine()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="QScriptEngine" fullname="QScriptEngine::QScriptEngine" href="qscriptengine.html#QScriptEngine-2" location="qscriptengine.h" virtual="non" meta="constructor" const="false" static="false" overload="true" overload-number="2" type="" signature="QScriptEngine(QObject * parent)">
+                <parameter left="QObject *" right="" name="parent" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="~QScriptEngine" fullname="QScriptEngine::~QScriptEngine" href="qscriptengine.html#dtor.QScriptEngine" location="qscriptengine.h" virtual="impure" meta="destructor" const="false" static="false" overload="false" type="" signature="~QScriptEngine()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="globalObject" fullname="QScriptEngine::globalObject" href="qscriptengine.html#globalObject" location="qscriptengine.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptValue" signature="globalObject() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="setGlobalObject" fullname="QScriptEngine::setGlobalObject" href="qscriptengine.html#setGlobalObject" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="setGlobalObject(const QScriptValue &amp; object)">
+                <parameter left="const QScriptValue &amp;" right="" name="object" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="currentContext" fullname="QScriptEngine::currentContext" href="qscriptengine.html#currentContext" location="qscriptengine.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptContext *" signature="currentContext() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="pushContext" fullname="QScriptEngine::pushContext" href="qscriptengine.html#pushContext" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptContext *" signature="pushContext()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="popContext" fullname="QScriptEngine::popContext" href="qscriptengine.html#popContext" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="popContext()"/>
+            <function access="public" threadsafety="unspecified" status="obsolete" name="canEvaluate" fullname="QScriptEngine::canEvaluate" href="qscriptengine-obsolete.html#canEvaluate" location="qscriptengine.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="canEvaluate(const QString &amp; program) const">
+                <parameter left="const QString &amp;" right="" name="program" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="checkSyntax" fullname="QScriptEngine::checkSyntax" href="qscriptengine.html#checkSyntax" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="true" overload="false" type="QScriptSyntaxCheckResult" signature="checkSyntax(const QString &amp; program)">
+                <parameter left="const QString &amp;" right="" name="program" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="evaluate" fullname="QScriptEngine::evaluate" href="qscriptengine.html#evaluate" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptValue" signature="evaluate(const QString &amp; program, const QString &amp; fileName, int lineNumber)">
+                <parameter left="const QString &amp;" right="" name="program" default=""/>
+                <parameter left="const QString &amp;" right="" name="fileName" default="QString()"/>
+                <parameter left="int" right="" name="lineNumber" default="1"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="isEvaluating" fullname="QScriptEngine::isEvaluating" href="qscriptengine.html#isEvaluating" location="qscriptengine.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="isEvaluating() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="abortEvaluation" fullname="QScriptEngine::abortEvaluation" href="qscriptengine.html#abortEvaluation" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="abortEvaluation(const QScriptValue &amp; result)">
+                <parameter left="const QScriptValue &amp;" right="" name="result" default="QScriptValue()"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="hasUncaughtException" fullname="QScriptEngine::hasUncaughtException" href="qscriptengine.html#hasUncaughtException" location="qscriptengine.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="hasUncaughtException() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="uncaughtException" fullname="QScriptEngine::uncaughtException" href="qscriptengine.html#uncaughtException" location="qscriptengine.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptValue" signature="uncaughtException() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="uncaughtExceptionLineNumber" fullname="QScriptEngine::uncaughtExceptionLineNumber" href="qscriptengine.html#uncaughtExceptionLineNumber" location="qscriptengine.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="int" signature="uncaughtExceptionLineNumber() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="uncaughtExceptionBacktrace" fullname="QScriptEngine::uncaughtExceptionBacktrace" href="qscriptengine.html#uncaughtExceptionBacktrace" location="qscriptengine.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QStringList" signature="uncaughtExceptionBacktrace() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="clearExceptions" fullname="QScriptEngine::clearExceptions" href="qscriptengine.html#clearExceptions" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="clearExceptions()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="nullValue" fullname="QScriptEngine::nullValue" href="qscriptengine.html#nullValue" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptValue" signature="nullValue()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="undefinedValue" fullname="QScriptEngine::undefinedValue" href="qscriptengine.html#undefinedValue" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptValue" signature="undefinedValue()"/>
+            <typedef access="public" threadsafety="unspecified" status="commendable" name="FunctionSignature" fullname="QScriptEngine::FunctionSignature" href="qscriptengine.html#FunctionSignature-typedef" location="qscriptengine.h"/>
+            <typedef access="public" threadsafety="unspecified" status="commendable" name="FunctionWithArgSignature" fullname="QScriptEngine::FunctionWithArgSignature" href="qscriptengine.html#FunctionWithArgSignature-typedef" location="qscriptengine.h"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="newFunction" fullname="QScriptEngine::newFunction" href="qscriptengine.html#newFunction" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptValue" signature="newFunction(FunctionSignature fun, int length)">
+                <parameter left="FunctionSignature" right="" name="fun" default=""/>
+                <parameter left="int" right="" name="length" default="0"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="newFunction" fullname="QScriptEngine::newFunction" href="qscriptengine.html#newFunction-2" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="true" overload-number="2" type="QScriptValue" signature="newFunction(FunctionSignature fun, const QScriptValue &amp; prototype, int length)">
+                <parameter left="FunctionSignature" right="" name="fun" default=""/>
+                <parameter left="const QScriptValue &amp;" right="" name="prototype" default=""/>
+                <parameter left="int" right="" name="length" default="0"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="newVariant" fullname="QScriptEngine::newVariant" href="qscriptengine.html#newVariant" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptValue" signature="newVariant(const QVariant &amp; value)">
+                <parameter left="const QVariant &amp;" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="newVariant" fullname="QScriptEngine::newVariant" href="qscriptengine.html#newVariant-2" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="true" overload-number="2" type="QScriptValue" signature="newVariant(const QScriptValue &amp; object, const QVariant &amp; value)">
+                <parameter left="const QScriptValue &amp;" right="" name="object" default=""/>
+                <parameter left="const QVariant &amp;" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="newRegExp" fullname="QScriptEngine::newRegExp" href="qscriptengine.html#newRegExp" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptValue" signature="newRegExp(const QRegExp &amp; regexp)">
+                <parameter left="const QRegExp &amp;" right="" name="regexp" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="newObject" fullname="QScriptEngine::newObject" href="qscriptengine.html#newObject" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptValue" signature="newObject()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="newObject" fullname="QScriptEngine::newObject" href="qscriptengine.html#newObject-2" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="true" overload-number="2" type="QScriptValue" signature="newObject(QScriptClass * scriptClass, const QScriptValue &amp; data)">
+                <parameter left="QScriptClass *" right="" name="scriptClass" default=""/>
+                <parameter left="const QScriptValue &amp;" right="" name="data" default="QScriptValue()"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="newArray" fullname="QScriptEngine::newArray" href="qscriptengine.html#newArray" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptValue" signature="newArray(uint length)">
+                <parameter left="uint" right="" name="length" default="0"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="newRegExp" fullname="QScriptEngine::newRegExp" href="qscriptengine.html#newRegExp-2" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="true" overload-number="2" type="QScriptValue" signature="newRegExp(const QString &amp; pattern, const QString &amp; flags)">
+                <parameter left="const QString &amp;" right="" name="pattern" default=""/>
+                <parameter left="const QString &amp;" right="" name="flags" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="newDate" fullname="QScriptEngine::newDate" href="qscriptengine.html#newDate" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptValue" signature="newDate(qsreal value)">
+                <parameter left="qsreal" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="newDate" fullname="QScriptEngine::newDate" href="qscriptengine.html#newDate-2" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="true" overload-number="2" type="QScriptValue" signature="newDate(const QDateTime &amp; value)">
+                <parameter left="const QDateTime &amp;" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="newQObject" fullname="QScriptEngine::newQObject" href="qscriptengine.html#newQObject" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptValue" signature="newQObject(QObject * object, ValueOwnership ownership, const QObjectWrapOptions &amp; options)">
+                <parameter left="QObject *" right="" name="object" default=""/>
+                <parameter left="ValueOwnership" right="" name="ownership" default="QtOwnership"/>
+                <parameter left="const QObjectWrapOptions &amp;" right="" name="options" default="0"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="newQObject" fullname="QScriptEngine::newQObject" href="qscriptengine.html#newQObject-2" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="true" overload-number="2" type="QScriptValue" signature="newQObject(const QScriptValue &amp; scriptObject, QObject * qtObject, ValueOwnership ownership, const QObjectWrapOptions &amp; options)">
+                <parameter left="const QScriptValue &amp;" right="" name="scriptObject" default=""/>
+                <parameter left="QObject *" right="" name="qtObject" default=""/>
+                <parameter left="ValueOwnership" right="" name="ownership" default="QtOwnership"/>
+                <parameter left="const QObjectWrapOptions &amp;" right="" name="options" default="0"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="newQMetaObject" fullname="QScriptEngine::newQMetaObject" href="qscriptengine.html#newQMetaObject" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptValue" signature="newQMetaObject(const QMetaObject * metaObject, const QScriptValue &amp; ctor)">
+                <parameter left="const QMetaObject *" right="" name="metaObject" default=""/>
+                <parameter left="const QScriptValue &amp;" right="" name="ctor" default="QScriptValue()"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="scriptValueFromQMetaObject" fullname="QScriptEngine::scriptValueFromQMetaObject" href="qscriptengine.html#scriptValueFromQMetaObject" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptValue" signature="scriptValueFromQMetaObject()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="defaultPrototype" fullname="QScriptEngine::defaultPrototype" href="qscriptengine.html#defaultPrototype" location="qscriptengine.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptValue" signature="defaultPrototype(int metaTypeId) const">
+                <parameter left="int" right="" name="metaTypeId" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="setDefaultPrototype" fullname="QScriptEngine::setDefaultPrototype" href="qscriptengine.html#setDefaultPrototype" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="setDefaultPrototype(int metaTypeId, const QScriptValue &amp; prototype)">
+                <parameter left="int" right="" name="metaTypeId" default=""/>
+                <parameter left="const QScriptValue &amp;" right="" name="prototype" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="toScriptValue" fullname="QScriptEngine::toScriptValue" href="qscriptengine.html#toScriptValue" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptValue" signature="toScriptValue(const T &amp; value)">
+                <parameter left="const T &amp;" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="fromScriptValue" fullname="QScriptEngine::fromScriptValue" href="qscriptengine.html#fromScriptValue" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="T" signature="fromScriptValue(const QScriptValue &amp; value)">
+                <parameter left="const QScriptValue &amp;" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="installTranslatorFunctions" fullname="QScriptEngine::installTranslatorFunctions" href="qscriptengine.html#installTranslatorFunctions" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="installTranslatorFunctions(const QScriptValue &amp; object)">
+                <parameter left="const QScriptValue &amp;" right="" name="object" default="QScriptValue()"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="importExtension" fullname="QScriptEngine::importExtension" href="qscriptengine.html#importExtension" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptValue" signature="importExtension(const QString &amp; extension)">
+                <parameter left="const QString &amp;" right="" name="extension" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="availableExtensions" fullname="QScriptEngine::availableExtensions" href="qscriptengine.html#availableExtensions" location="qscriptengine.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QStringList" signature="availableExtensions() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="importedExtensions" fullname="QScriptEngine::importedExtensions" href="qscriptengine.html#importedExtensions" location="qscriptengine.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QStringList" signature="importedExtensions() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="collectGarbage" fullname="QScriptEngine::collectGarbage" href="qscriptengine.html#collectGarbage" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="collectGarbage()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="setProcessEventsInterval" fullname="QScriptEngine::setProcessEventsInterval" href="qscriptengine.html#setProcessEventsInterval" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="setProcessEventsInterval(int interval)">
+                <parameter left="int" right="" name="interval" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="processEventsInterval" fullname="QScriptEngine::processEventsInterval" href="qscriptengine.html#processEventsInterval" location="qscriptengine.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="int" signature="processEventsInterval() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="setAgent" fullname="QScriptEngine::setAgent" href="qscriptengine.html#setAgent" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="setAgent(QScriptEngineAgent * agent)">
+                <parameter left="QScriptEngineAgent *" right="" name="agent" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="agent" fullname="QScriptEngine::agent" href="qscriptengine.html#agent" location="qscriptengine.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptEngineAgent *" signature="agent() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="toStringHandle" fullname="QScriptEngine::toStringHandle" href="qscriptengine.html#toStringHandle" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptString" signature="toStringHandle(const QString &amp; str)">
+                <parameter left="const QString &amp;" right="" name="str" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="toObject" fullname="QScriptEngine::toObject" href="qscriptengine.html#toObject" location="qscriptengine.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptValue" signature="toObject(const QScriptValue &amp; value)">
+                <parameter left="const QScriptValue &amp;" right="" name="value" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="signalHandlerException" fullname="QScriptEngine::signalHandlerException" href="qscriptengine.html#signalHandlerException" location="qscriptengine.h" virtual="non" meta="signal" const="false" static="false" overload="false" type="void" signature="signalHandlerException(const QScriptValue &amp; exception)">
+                <parameter left="const QScriptValue &amp;" right="" name="exception" default=""/>
+            </function>
+        </class>
+        <class access="public" threadsafety="unspecified" status="main" name="QScriptContextInfo" href="qscriptcontextinfo.html" location="qscriptcontextinfo.h" bases="" module="QtScript">
+            <enum access="public" threadsafety="unspecified" status="commendable" name="FunctionType" fullname="QScriptContextInfo::FunctionType" href="qscriptcontextinfo.html#FunctionType-enum" location="qscriptcontextinfo.h">
+                <value name="ScriptFunction" value="0"/>
+                <value name="QtFunction" value="1"/>
+                <value name="QtPropertyFunction" value="2"/>
+                <value name="NativeFunction" value="3"/>
+            </enum>
+            <function access="public" threadsafety="unspecified" status="commendable" name="QScriptContextInfo" fullname="QScriptContextInfo::QScriptContextInfo" href="qscriptcontextinfo.html#QScriptContextInfo" location="qscriptcontextinfo.h" virtual="non" meta="constructor" const="false" static="false" overload="false" type="" signature="QScriptContextInfo(const QScriptContext * context)">
+                <parameter left="const QScriptContext *" right="" name="context" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="QScriptContextInfo" fullname="QScriptContextInfo::QScriptContextInfo" href="qscriptcontextinfo.html#QScriptContextInfo-2" location="qscriptcontextinfo.h" virtual="non" meta="constructor" const="false" static="false" overload="true" overload-number="2" type="" signature="QScriptContextInfo(const QScriptContextInfo &amp; other)">
+                <parameter left="const QScriptContextInfo &amp;" right="" name="other" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="QScriptContextInfo" fullname="QScriptContextInfo::QScriptContextInfo" href="qscriptcontextinfo.html#QScriptContextInfo-3" location="qscriptcontextinfo.h" virtual="non" meta="constructor" const="false" static="false" overload="true" overload-number="3" type="" signature="QScriptContextInfo()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="~QScriptContextInfo" fullname="QScriptContextInfo::~QScriptContextInfo" href="qscriptcontextinfo.html#dtor.QScriptContextInfo" location="qscriptcontextinfo.h" virtual="non" meta="destructor" const="false" static="false" overload="false" type="" signature="~QScriptContextInfo()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="operator=" fullname="QScriptContextInfo::operator=" href="qscriptcontextinfo.html#operator=" location="qscriptcontextinfo.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptContextInfo &amp;" signature="operator=(const QScriptContextInfo &amp; other)">
+                <parameter left="const QScriptContextInfo &amp;" right="" name="other" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="isNull" fullname="QScriptContextInfo::isNull" href="qscriptcontextinfo.html#isNull" location="qscriptcontextinfo.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="isNull() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="scriptId" fullname="QScriptContextInfo::scriptId" href="qscriptcontextinfo.html#scriptId" location="qscriptcontextinfo.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="qint64" signature="scriptId() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="fileName" fullname="QScriptContextInfo::fileName" href="qscriptcontextinfo.html#fileName" location="qscriptcontextinfo.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QString" signature="fileName() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="lineNumber" fullname="QScriptContextInfo::lineNumber" href="qscriptcontextinfo.html#lineNumber" location="qscriptcontextinfo.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="int" signature="lineNumber() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="columnNumber" fullname="QScriptContextInfo::columnNumber" href="qscriptcontextinfo.html#columnNumber" location="qscriptcontextinfo.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="int" signature="columnNumber() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="functionName" fullname="QScriptContextInfo::functionName" href="qscriptcontextinfo.html#functionName" location="qscriptcontextinfo.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QString" signature="functionName() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="functionType" fullname="QScriptContextInfo::functionType" href="qscriptcontextinfo.html#functionType" location="qscriptcontextinfo.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="FunctionType" signature="functionType() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="functionParameterNames" fullname="QScriptContextInfo::functionParameterNames" href="qscriptcontextinfo.html#functionParameterNames" location="qscriptcontextinfo.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QStringList" signature="functionParameterNames() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="functionStartLineNumber" fullname="QScriptContextInfo::functionStartLineNumber" href="qscriptcontextinfo.html#functionStartLineNumber" location="qscriptcontextinfo.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="int" signature="functionStartLineNumber() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="functionEndLineNumber" fullname="QScriptContextInfo::functionEndLineNumber" href="qscriptcontextinfo.html#functionEndLineNumber" location="qscriptcontextinfo.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="int" signature="functionEndLineNumber() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="functionMetaIndex" fullname="QScriptContextInfo::functionMetaIndex" href="qscriptcontextinfo.html#functionMetaIndex" location="qscriptcontextinfo.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="int" signature="functionMetaIndex() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="operator==" fullname="QScriptContextInfo::operator==" href="qscriptcontextinfo.html#operator==" location="qscriptcontextinfo.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="operator==(const QScriptContextInfo &amp; other) const">
+                <parameter left="const QScriptContextInfo &amp;" right="" name="other" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="operator!=" fullname="QScriptContextInfo::operator!=" href="qscriptcontextinfo.html#operator!=" location="qscriptcontextinfo.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="operator!=(const QScriptContextInfo &amp; other) const">
+                <parameter left="const QScriptContextInfo &amp;" right="" name="other" default=""/>
+            </function>
+        </class>
+        <class access="public" threadsafety="unspecified" status="commendable" name="QScriptExtensionPlugin" href="qscriptextensionplugin.html" location="qscriptextensionplugin.h" bases="QObject" module="QtScript">
+            <function access="public" threadsafety="unspecified" status="commendable" name="QScriptExtensionPlugin" fullname="QScriptExtensionPlugin::QScriptExtensionPlugin" href="qscriptextensionplugin.html#QScriptExtensionPlugin" location="qscriptextensionplugin.h" virtual="non" meta="constructor" const="false" static="false" overload="false" type="" signature="QScriptExtensionPlugin(QObject * parent)">
+                <parameter left="QObject *" right="" name="parent" default="0"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="~QScriptExtensionPlugin" fullname="QScriptExtensionPlugin::~QScriptExtensionPlugin" href="qscriptextensionplugin.html#dtor.QScriptExtensionPlugin" location="qscriptextensionplugin.h" virtual="non" meta="destructor" const="false" static="false" overload="false" type="" signature="~QScriptExtensionPlugin()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="keys" fullname="QScriptExtensionPlugin::keys" href="qscriptextensionplugin.html#keys" location="qscriptextensionplugin.h" virtual="pure" meta="plain" const="true" static="false" overload="false" type="QStringList" signature="keys() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="initialize" fullname="QScriptExtensionPlugin::initialize" href="qscriptextensionplugin.html#initialize" location="qscriptextensionplugin.h" virtual="pure" meta="plain" const="false" static="false" overload="false" type="void" signature="initialize(const QString &amp; key, QScriptEngine * engine)">
+                <parameter left="const QString &amp;" right="" name="key" default=""/>
+                <parameter left="QScriptEngine *" right="" name="engine" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="setupPackage" fullname="QScriptExtensionPlugin::setupPackage" href="qscriptextensionplugin.html#setupPackage" location="qscriptextensionplugin.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptValue" signature="setupPackage(const QString &amp; key, QScriptEngine * engine) const">
+                <parameter left="const QString &amp;" right="" name="key" default=""/>
+                <parameter left="QScriptEngine *" right="" name="engine" default=""/>
+            </function>
+        </class>
+        <class access="public" threadsafety="unspecified" status="commendable" name="QScriptClassPropertyIterator" href="qscriptclasspropertyiterator.html" location="qscriptclasspropertyiterator.h" bases="" module="QtScript">
+            <function access="protected" threadsafety="unspecified" status="commendable" name="QScriptClassPropertyIterator" fullname="QScriptClassPropertyIterator::QScriptClassPropertyIterator" href="qscriptclasspropertyiterator.html#QScriptClassPropertyIterator" location="qscriptclasspropertyiterator.h" virtual="non" meta="constructor" const="false" static="false" overload="false" type="" signature="QScriptClassPropertyIterator(const QScriptValue &amp; object)">
+                <parameter left="const QScriptValue &amp;" right="" name="object" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="~QScriptClassPropertyIterator" fullname="QScriptClassPropertyIterator::~QScriptClassPropertyIterator" href="qscriptclasspropertyiterator.html#dtor.QScriptClassPropertyIterator" location="qscriptclasspropertyiterator.h" virtual="impure" meta="destructor" const="false" static="false" overload="false" type="" signature="~QScriptClassPropertyIterator()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="object" fullname="QScriptClassPropertyIterator::object" href="qscriptclasspropertyiterator.html#object" location="qscriptclasspropertyiterator.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QScriptValue" signature="object() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="hasNext" fullname="QScriptClassPropertyIterator::hasNext" href="qscriptclasspropertyiterator.html#hasNext" location="qscriptclasspropertyiterator.h" virtual="pure" meta="plain" const="true" static="false" overload="false" type="bool" signature="hasNext() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="next" fullname="QScriptClassPropertyIterator::next" href="qscriptclasspropertyiterator.html#next" location="qscriptclasspropertyiterator.h" virtual="pure" meta="plain" const="false" static="false" overload="false" type="void" signature="next()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="hasPrevious" fullname="QScriptClassPropertyIterator::hasPrevious" href="qscriptclasspropertyiterator.html#hasPrevious" location="qscriptclasspropertyiterator.h" virtual="pure" meta="plain" const="true" static="false" overload="false" type="bool" signature="hasPrevious() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="previous" fullname="QScriptClassPropertyIterator::previous" href="qscriptclasspropertyiterator.html#previous" location="qscriptclasspropertyiterator.h" virtual="pure" meta="plain" const="false" static="false" overload="false" type="void" signature="previous()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="toFront" fullname="QScriptClassPropertyIterator::toFront" href="qscriptclasspropertyiterator.html#toFront" location="qscriptclasspropertyiterator.h" virtual="pure" meta="plain" const="false" static="false" overload="false" type="void" signature="toFront()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="toBack" fullname="QScriptClassPropertyIterator::toBack" href="qscriptclasspropertyiterator.html#toBack" location="qscriptclasspropertyiterator.h" virtual="pure" meta="plain" const="false" static="false" overload="false" type="void" signature="toBack()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="name" fullname="QScriptClassPropertyIterator::name" href="qscriptclasspropertyiterator.html#name" location="qscriptclasspropertyiterator.h" virtual="pure" meta="plain" const="true" static="false" overload="false" type="QScriptString" signature="name() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="id" fullname="QScriptClassPropertyIterator::id" href="qscriptclasspropertyiterator.html#id" location="qscriptclasspropertyiterator.cpp" virtual="impure" meta="plain" const="true" static="false" overload="false" type="uint" signature="id() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="flags" fullname="QScriptClassPropertyIterator::flags" href="qscriptclasspropertyiterator.html#flags" location="qscriptclasspropertyiterator.h" virtual="impure" meta="plain" const="true" static="false" overload="false" type="QScriptValue::PropertyFlags" signature="flags() const"/>
+            <variable access="protected" threadsafety="unspecified" status="commendable" name="d_ptr" fullname="QScriptClassPropertyIterator::d_ptr" href="qscriptclasspropertyiterator.html#d_ptr-var" location="qscriptclasspropertyiterator.h" type="QScriptClassPropertyIteratorPrivate *" static="false"/>
+        </class>
+        <class access="public" threadsafety="unspecified" status="main" name="QScriptString" href="qscriptstring.html" location="qscriptstring.h" bases="" module="QtScript">
+            <function access="public" threadsafety="unspecified" status="commendable" name="QScriptString" fullname="QScriptString::QScriptString" href="qscriptstring.html#QScriptString" location="qscriptstring.h" virtual="non" meta="constructor" const="false" static="false" overload="false" type="" signature="QScriptString()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="QScriptString" fullname="QScriptString::QScriptString" href="qscriptstring.html#QScriptString-2" location="qscriptstring.h" virtual="non" meta="constructor" const="false" static="false" overload="true" overload-number="2" type="" signature="QScriptString(const QScriptString &amp; other)">
+                <parameter left="const QScriptString &amp;" right="" name="other" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="~QScriptString" fullname="QScriptString::~QScriptString" href="qscriptstring.html#dtor.QScriptString" location="qscriptstring.h" virtual="non" meta="destructor" const="false" static="false" overload="false" type="" signature="~QScriptString()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="operator=" fullname="QScriptString::operator=" href="qscriptstring.html#operator=" location="qscriptstring.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="QScriptString &amp;" signature="operator=(const QScriptString &amp; other)">
+                <parameter left="const QScriptString &amp;" right="" name="other" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="isValid" fullname="QScriptString::isValid" href="qscriptstring.html#isValid" location="qscriptstring.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="isValid() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="operator==" fullname="QScriptString::operator==" href="qscriptstring.html#operator==" location="qscriptstring.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="operator==(const QScriptString &amp; other) const">
+                <parameter left="const QScriptString &amp;" right="" name="other" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="operator!=" fullname="QScriptString::operator!=" href="qscriptstring.html#operator!=" location="qscriptstring.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="bool" signature="operator!=(const QScriptString &amp; other) const">
+                <parameter left="const QScriptString &amp;" right="" name="other" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="toString" fullname="QScriptString::toString" href="qscriptstring.html#toString" location="qscriptstring.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="QString" signature="toString() const"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="operator QString" fullname="QScriptString::operator QString" href="qscriptstring.html#operator QString" location="qscriptstring.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="" signature="operator QString() const"/>
+        </class>
+        <function access="public" threadsafety="unspecified" status="commendable" name="Q_SCRIPT_DECLARE_QMETAOBJECT" href="qscriptengine.html#Q_SCRIPT_DECLARE_QMETAOBJECT-2" location="" virtual="non" meta="macrowithparams" const="false" static="false" overload="true" overload-number="2" relates="QScriptEngine" type="" signature="Q_SCRIPT_DECLARE_QMETAOBJECT( QMetaObject,  ArgType)">
+            <parameter left="" right="" name="QMetaObject" default=""/>
+            <parameter left="" right="" name="ArgType" default=""/>
+        </function>
+        <page access="public" status="commendable" name="qtscriptclassic-example-helloscript.html" href="qtscriptclassic-example-helloscript.html" subtype="page" title="Hello Script Example" fulltitle="Hello Script Example" subtitle="" location="helloscript.qdoc">
+            <contents name="translating-the-application" title="Translating the Application" level="1"/>
+        </page>
+        <page access="public" status="commendable" name="index.html" href="index.html" subtype="page" title="QtScript Classic" fulltitle="QtScript Classic" subtitle="" location="index.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="classes" title="Classes" level="1"/>
+            <contents name="examples" title="Examples" level="1"/>
+            <contents name="tested-platforms" title="Tested platforms" level="1"/>
+        </page>
+    </namespace>
+</INDEX>

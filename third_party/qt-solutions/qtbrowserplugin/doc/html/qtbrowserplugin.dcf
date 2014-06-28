@@ -1,0 +1,55 @@
+<!DOCTYPE DCF>
+<DCF ref="index.html" icon="qtbrowserplugin.png" imagedir="../../gif" title="Qt Solutions: Browser Plugin Documentation">
+<section ref="classes.html" title="Classes">
+    <section ref="qtnpbindable.html" title="QtNPBindable Class Reference">
+        <keyword ref="qtnpbindable.html">QtNPBindable</keyword>
+        <keyword ref="qtnpbindable.html#DisplayMode-enum">DisplayMode</keyword>
+        <keyword ref="qtnpbindable.html#DisplayMode-enum">QtNPBindable::Embedded</keyword>
+        <keyword ref="qtnpbindable.html#DisplayMode-enum">QtNPBindable::Fullpage</keyword>
+        <keyword ref="qtnpbindable.html#Reason-enum">Reason</keyword>
+        <keyword ref="qtnpbindable.html#Reason-enum">QtNPBindable::ReasonError</keyword>
+        <keyword ref="qtnpbindable.html#Reason-enum">QtNPBindable::ReasonBreak</keyword>
+        <keyword ref="qtnpbindable.html#Reason-enum">QtNPBindable::ReasonUnknown</keyword>
+        <keyword ref="qtnpbindable.html#Reason-enum">QtNPBindable::ReasonDone</keyword>
+        <keyword ref="qtnpbindable.html#displayMode">displayMode</keyword>
+        <keyword ref="qtnpbindable.html#getBrowserVersion">getBrowserVersion</keyword>
+        <keyword ref="qtnpbindable.html#getNppVersion">getNppVersion</keyword>
+        <keyword ref="qtnpbindable.html#instance">instance</keyword>
+        <keyword ref="qtnpbindable.html#mimeType">mimeType</keyword>
+        <keyword ref="qtnpbindable.html#openUrl">openUrl</keyword>
+        <keyword ref="qtnpbindable.html#parameters">parameters</keyword>
+        <keyword ref="qtnpbindable.html#readData">readData</keyword>
+        <keyword ref="qtnpbindable.html#transferComplete">transferComplete</keyword>
+        <keyword ref="qtnpbindable.html#uploadData">uploadData</keyword>
+        <keyword ref="qtnpbindable.html#uploadFile">uploadFile</keyword>
+        <keyword ref="qtnpbindable.html#userAgent">userAgent</keyword>
+        <section ref="qtnpbindable-members.html" title="List of all members"/>
+    </section>
+    <section ref="qtnpfactory.html" title="QtNPFactory Class Reference">
+        <keyword ref="qtnpfactory.html">QtNPFactory</keyword>
+        <keyword ref="qtnpfactory.html#createObject">createObject</keyword>
+        <keyword ref="qtnpfactory.html#mimeTypes">mimeTypes</keyword>
+        <keyword ref="qtnpfactory.html#pluginDescription">pluginDescription</keyword>
+        <keyword ref="qtnpfactory.html#pluginName">pluginName</keyword>
+        <section ref="qtnpfactory-members.html" title="List of all members"/>
+    </section>
+</section>
+<section ref="overviews.html" title="Overviews">
+    <section ref="index.html" title="Browser Plugin">
+        <keyword ref="index.html">Browser Plugin</keyword>
+    </section>
+    <section ref="developingplugins.html" title="Developing Plugins">
+        <keyword ref="developingplugins.html">Developing Plugins</keyword>
+    </section>
+    <section ref="qtbrowserplugin-example-grapher.html" title="Grapher Plugin">
+        <keyword ref="qtbrowserplugin-example-grapher.html">Grapher Plugin</keyword>
+    </section>
+    <section ref="qtbrowserplugin-example-scripting.html" title="Scripting Example">
+        <keyword ref="qtbrowserplugin-example-scripting.html">Scripting Example</keyword>
+    </section>
+    <section ref="qtbrowserplugin-example-trivial.html" title="Trivial Example">
+        <keyword ref="qtbrowserplugin-example-trivial.html">Trivial Example</keyword>
+    </section>
+</section>
+<section ref="examples.html" title="Tutorial &amp; Examples"/>
+</DCF>

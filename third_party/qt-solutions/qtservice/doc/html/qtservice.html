@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!-- qtservice.cpp -->
+<head>
+  <title>QtService Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qt-logo.png" align="left" width="57" height="67" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a></td>
+</tr></table><h1 class="title">QtService Class Reference</h1>
+<p>The QtService is a convenient template class that allows you to create a service for a particular application type. <a href="#details">More...</a></p>
+<pre> #include &lt;QtService&gt;</pre><p>Inherits <a href="qtservicebase.html">QtServiceBase</a>.</p>
+<ul>
+<li><a href="qtservice-members.html">List of all members, including inherited members</a></li>
+</ul>
+<hr />
+<a name="public-functions"></a>
+<h2>Public Functions</h2>
+<table class="alignedsummary" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr><td class="memItemLeft" align="right" valign="top"></td><td class="memItemRight" valign="bottom"><b><a href="qtservice.html#QtService">QtService</a></b> ( int <i>argc</i>, char ** <i>argv</i>, const QString &amp; <i>name</i> )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"></td><td class="memItemRight" valign="bottom"><b><a href="qtservice.html#dtor.QtService">~QtService</a></b> ()</td></tr>
+</table>
+<ul>
+<li><div bar="2" class="fn"></div>9 public functions inherited from <a href="qtservicebase.html#public-functions">QtServiceBase</a></li>
+</ul>
+<hr />
+<a name="protected-functions"></a>
+<h2>Protected Functions</h2>
+<table class="alignedsummary" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr><td class="memItemLeft" align="right" valign="top">Application * </td><td class="memItemRight" valign="bottom"><b><a href="qtservice.html#application">application</a></b> () const</td></tr>
+</table>
+<hr />
+<a name="reimplemented-protected-functions"></a>
+<h2>Reimplemented Protected Functions</h2>
+<table class="alignedsummary" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr><td class="memItemLeft" align="right" valign="top">virtual void </td><td class="memItemRight" valign="bottom"><b><a href="qtservice.html#createApplication">createApplication</a></b> ( int &amp; <i>argc</i>, char ** <i>argv</i> )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual int </td><td class="memItemRight" valign="bottom"><b><a href="qtservice.html#executeApplication">executeApplication</a></b> ()</td></tr>
+</table>
+<ul>
+<li><div bar="2" class="fn"></div>7 protected functions inherited from <a href="qtservicebase.html#protected-functions">QtServiceBase</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"></div>1 static public member inherited from <a href="qtservicebase.html#static-public-members">QtServiceBase</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QtService is a convenient template class that allows you to create a service for a particular application type.</p>
+<p>A Windows service or Unix daemon (a &quot;service&quot;), is a program that runs &quot;in the background&quot; independently of whether a user is logged in or not. A service is often set up to start when the machine boots up, and will typically run continuously as long as the machine is on.</p>
+<p>Services are usually non-interactive console applications. User interaction, if required, is usually implemented in a separate, normal GUI application that communicates with the service through an IPC channel. For simple communication, <a href="qtservicecontroller.html#sendCommand">QtServiceController::sendCommand</a>() and <a href="qtservicebase.html#processCommand">QtService::processCommand</a>() may be used, possibly in combination with a shared settings file. For more complex, interactive communication, a custom IPC channel should be used, e.g&#x2e; based on Qt's networking classes. (In certain circumstances, a service may provide a GUI itself, ref. the &quot;interactive&quot; example documentation).</p>
+<p><b>Note:</b> On Unix systems, this class relies on facilities provided by the <a href="http://qt.nokia.com/doc/4.6/qtnetwork.html">QtNetwork</a> module, provided as part of the Qt Open Source Edition and certain <a href="http://qt.nokia.com/doc/4.6/commercialeditions.html">Qt Commercial Editions</a>.</p>
+<p>The QtService class functionality is inherited from <a href="qtservicebase.html">QtServiceBase</a>, but in addition the QtService class binds an instance of <a href="qtservicebase.html">QtServiceBase</a> with an application type.</p>
+<p>Typically, you will create a service by subclassing the QtService template class. For example:</p>
+<pre> class MyService : public QtService&lt;QApplication&gt;
+ {
+ public:
+     MyService(int argc, char **argv);
+     ~MyService();
+
+ protected:
+     void start();
+     void stop();
+     void pause();
+     void resume();
+     void processCommand(int code);
+ };</pre>
+<p>The application type can be <a href="http://qt.nokia.com/doc/4.6/qcoreapplication.html">QCoreApplication</a> for services without GUI, <a href="http://qt.nokia.com/doc/4.6/qapplication.html">QApplication</a> for services with GUI or you can use your own custom application type.</p>
+<p>You must reimplement the <a href="qtservicebase.html#start">QtServiceBase::start</a>() function to perform the service's work. Usually you create some main object on the heap which is the heart of your service.</p>
+<p>In addition, you might want to reimplement the <a href="qtservicebase.html#pause">QtServiceBase::pause</a>(), <a href="qtservicebase.html#processCommand">QtServiceBase::processCommand</a>(), <a href="qtservicebase.html#resume">QtServiceBase::resume</a>() and <a href="qtservicebase.html#stop">QtServiceBase::stop</a>() to intervene the service's process on controller requests. You can control any given service using an instance of the <a href="qtservicecontroller.html">QtServiceController</a> class which also allows you to control services from separate applications. The mentioned functions are all virtual and won't do anything unless they are reimplemented.</p>
+<p>Your custom service is typically instantiated in the application's main function. Then the main function will call your service's <a href="qtservicebase.html#exec">exec</a>() function, and return the result of that call. For example:</p>
+<pre>     int main(int argc, char **argv)
+     {
+         MyService service(argc, argv);
+         return service.exec();
+     }</pre>
+<p>When the <a href="qtservicebase.html#exec">exec</a>() function is called, it will parse the <a href="qtservicebase.html#servicespecificarguments">service specific arguments</a> passed in <tt>argv</tt>, perform the required actions, and exit.</p>
+<p>If none of the arguments is recognized as service specific, <a href="qtservicebase.html#exec">exec</a>() will first call the <a href="qtservice.html#createApplication">createApplication</a>() function, then <a href="qtservice.html#executeApplication">executeApplication</a>() and finally the <a href="qtservicebase.html#start">start</a>() function. In the end, <a href="qtservicebase.html#exec">exec</a>() returns while the service continues in its own process waiting for commands from the service controller.</p>
+<p>See also <a href="qtservicebase.html">QtServiceBase</a> and <a href="qtservicecontroller.html">QtServiceController</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QtService"></a>QtService::QtService ( int <i>argc</i>, char ** <i>argv</i>, const <a href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> &amp; <i>name</i> )</h3>
+<p>Constructs a <a href="qtservice.html">QtService</a> object called <i>name</i>. The <i>argc</i> and <i>argv</i> parameters are parsed after the <a href="qtservicebase.html#exec">exec</a>() function has been called. Then they are passed to the application's constructor.</p>
+<p>There can only be one <a href="qtservice.html">QtService</a> object in a process.</p>
+<p>See also <a href="qtservicebase.html#QtServiceBase">QtServiceBase</a>().</p>
+<h3 class="fn"><a name="dtor.QtService"></a>QtService::~QtService ()</h3>
+<p>Destroys the service object.</p>
+<h3 class="fn"><a name="application"></a>Application * QtService::application () const&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Returns a pointer to the application object.</p>
+<h3 class="fn"><a name="createApplication"></a>void QtService::createApplication ( int &amp; <i>argc</i>, char ** <i>argv</i> )&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Reimplemented from <a href="qtservicebase.html#createApplication">QtServiceBase::createApplication</a>().</p>
+<p>Creates application object of type Application passing <i>argc</i> and <i>argv</i> to its constructor.</p>
+<h3 class="fn"><a name="executeApplication"></a>int QtService::executeApplication ()&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Reimplemented from <a href="qtservicebase.html#executeApplication">QtServiceBase::executeApplication</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td width="30%" align="left">Copyright &copy; 2010 Nokia Corporation and/or its subsidiary(-ies)</td>
+<td width="40%" align="center"><a href="http://qt.nokia.com/doc/trademarks.html">Trademarks</a></td>
+<td width="30%" align="right"><div align="right">Qt Solutions</div></td>
+</tr></table></div></address></body>
+</html>

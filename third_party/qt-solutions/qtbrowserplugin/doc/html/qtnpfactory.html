@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!-- qtbrowserplugin.cpp -->
+<head>
+  <title>QtNPFactory Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qt-logo.png" align="left" width="57" height="67" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a></td>
+</tr></table><h1 class="title">QtNPFactory Class Reference</h1>
+<p>The QtNPFactory class provides the factory for plugin objects. <a href="#details">More...</a></p>
+<pre> #include &lt;QtNPFactory&gt;</pre><ul>
+<li><a href="qtnpfactory-members.html">List of all members, including inherited members</a></li>
+</ul>
+<hr />
+<a name="public-functions"></a>
+<h2>Public Functions</h2>
+<table class="alignedsummary" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr><td class="memItemLeft" align="right" valign="top"></td><td class="memItemRight" valign="bottom"><b><a href="qtnpfactory.html#QtNPFactory">QtNPFactory</a></b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual </td><td class="memItemRight" valign="bottom"><b><a href="qtnpfactory.html#dtor.QtNPFactory">~QtNPFactory</a></b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual QObject * </td><td class="memItemRight" valign="bottom"><b><a href="qtnpfactory.html#createObject">createObject</a></b> ( const QString &amp; <i>type</i> ) = 0</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual QStringList </td><td class="memItemRight" valign="bottom"><b><a href="qtnpfactory.html#mimeTypes">mimeTypes</a></b> () const = 0</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual QString </td><td class="memItemRight" valign="bottom"><b><a href="qtnpfactory.html#pluginDescription">pluginDescription</a></b> () const = 0</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual QString </td><td class="memItemRight" valign="bottom"><b><a href="qtnpfactory.html#pluginName">pluginName</a></b> () const = 0</td></tr>
+</table>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QtNPFactory class provides the factory for plugin objects.</p>
+<p>Implement this factory once in your plugin project to provide information about the plugin and to create the plugin objects. Subclass QtNPFactory and implement the pure virtual functions, and export the factory using the <tt>QTNPFACTORY_EXPORT()</tt> macro.</p>
+<p>If you use the Q_CLASSINFO macro in your object classes you can use the <tt>QTNPFACTORY_BEGIN()</tt>, <tt>QTNPCLASS()</tt> and <tt>QTNPFACTORY_END()</tt> macros to generate a factory implementation:</p>
+<pre> class Widget : public QWidget
+ {
+     Q_OBJECT
+     Q_CLASSINFO(&quot;MIME&quot;, &quot;application/x-graphable:g1n:Graphable data&quot;)
+ public:
+     ...
+ };
+
+ QTNPFACTORY_BEGIN(&quot;Plugin name&quot;, &quot;Plugin description&quot;)
+     QTNPCLASS(WidgetClass)
+ QTNPFACTORY_END()</pre>
+<p>The classes exposed must provide a constructor.</p>
+<p>If Qt is linked to the plugin as a dynamic library, only one instance of <a href="http://qt.nokia.com/doc/4.6/qapplication.html">QApplication</a> will exist <i>across all plugins that have been made with Qt</i>. So, your plugin should tread lightly on global settings. Do not, for example, use <a href="http://qt.nokia.com/doc/4.6/qapplication.html#setFont">QApplication::setFont</a>() - that will change the font in every widget of every Qt-based plugin currently loaded!</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QtNPFactory"></a>QtNPFactory::QtNPFactory ()</h3>
+<p>Creates a <a href="qtnpfactory.html">QtNPFactory</a>.</p>
+<h3 class="fn"><a name="dtor.QtNPFactory"></a>QtNPFactory::~QtNPFactory ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys the <a href="qtnpfactory.html">QtNPFactory</a>.</p>
+<p>This is called by the plugin binding code just before the plugin is about to be unloaded from memory. If <a href="qtnpfactory.html#createObject">createObject</a>() has been called, a <a href="http://qt.nokia.com/doc/4.6/qapplication.html">QApplication</a> will still exist at this time, but will be deleted shortly after, just before the plugin is deleted.</p>
+<h3 class="fn"><a name="createObject"></a><a href="http://qt.nokia.com/doc/4.6/qobject.html">QObject</a> * QtNPFactory::createObject ( const <a href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> &amp; <i>type</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Reimplement this function to return the <a href="http://qt.nokia.com/doc/4.6/qobject.html">QObject</a> or <a href="http://qt.nokia.com/doc/4.6/qwidget.html">QWidget</a> subclass supporting the mime type <i>type</i>, or 0 if the factory doesn't support the type requested.</p>
+<p><i>type</i> will be in the same form as the leftmost (mime) part of the string(s) returned by <a href="qtnpfactory.html#mimeTypes">mimeTypes</a>(), e.g&#x2e; &quot;image/png&quot;.</p>
+<h3 class="fn"><a name="mimeTypes"></a><a href="http://qt.nokia.com/doc/4.6/qstringlist.html">QStringList</a> QtNPFactory::mimeTypes () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Reimplement this function to return the MIME types of the data formats supported by your plugin. The format of each string is mime:extension(s):description:</p>
+<pre> QStringList mimeTypes() const
+ {
+     QStringList list;
+     list &lt;&lt; &quot;image/x-png:png:PNG Image&quot;
+          &lt;&lt; &quot;image/png:png:PNG Image&quot;
+          &lt;&lt; &quot;image/jpeg:jpg,jpeg:JPEG Image&quot;;
+     return list;
+ }</pre>
+<h3 class="fn"><a name="pluginDescription"></a><a href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> QtNPFactory::pluginDescription () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Reimplement this function to return the description of the plugin.</p>
+<h3 class="fn"><a name="pluginName"></a><a href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> QtNPFactory::pluginName () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Reimplement this function to return the name of the plugin.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td width="30%" align="left">Copyright &copy; 2010 Nokia Corporation and/or its subsidiary(-ies)</td>
+<td width="40%" align="center"><a href="http://qt.nokia.com/doc/trademarks.html">Trademarks</a></td>
+<td width="30%" align="right"><div align="right">Qt Solutions</div></td>
+</tr></table></div></address></body>
+</html>

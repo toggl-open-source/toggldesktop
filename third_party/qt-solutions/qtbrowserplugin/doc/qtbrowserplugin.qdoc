@@ -1,0 +1,348 @@
+/****************************************************************************
+**
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
+**
+** This file is part of the Qt Solutions component.
+**
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Digia Plc and its Subsidiary(-ies) nor the names
+**     of its contributors may be used to endorse or promote products derived
+**     from this software without specific prior written permission.
+**
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+
+\page developingplugins.html
+\title Developing Plugins
+
+The QtBrowserPlugin solution makes it easy to write browser plugins
+that can be used in Mozilla FireFox, Safari, Opera, Google Chrome,
+QtWebKit and any other web browser that supports the "Netscape Plugin
+API", NPAPI:
+
+\l http://en.wikipedia.org/wiki/NPAPI
+
+\l http://developer.mozilla.org/en/Plugins
+
+Microsoft Internet Explorer does not support this API. However, you
+can use the ActiveQt framework to turn your plugin into an ActiveX
+control, that will work as an IE plugin. Thus, QtBrowserPlugin makes
+it possible to create a single plugin DLL that will work with all
+popular browsers on Windows.
+
+\tableofcontents
+
+\section1 Implementing plugins
+
+Since any QWidget or QObject subclass can be turned into a plugin with
+little effort it is usually easiest to do the development as a 
+stand-alone Qt application - debugging plugins can be cumbersome.
+
+Make sure that the subclass(es) you want to export use the Q_OBJECT
+macro and provide a default constructor. Use the Q_CLASSINFO macro to
+specify a semicolon-delimited list of the MIME types each of your classes
+supports, and export the classes through the QTNPFACTORY macros:
+
+\quotefromfile grapher.cpp
+\skipto QTNPFACTORY_BEGIN
+\printuntil QTNPFACTORY_END()
+
+This should be done only once, in one of the source files. If your
+plugin needs to export multiple classes (i.e. to handle different sets of
+MIME types), make one QTNPCLASS line for each of them.
+
+Include the \c qtbrowserplugin.pri in your .pro file, and regenerate
+the makefile with qmake. The resulting makefile will generate a shared
+library that the browsers will be able to load as a plugin. 
+
+\section2 Windows specific notes
+
+On Windows, the DLL will have \c{"np"} prepended to its name - this is
+required by all browsers to recognize the library as a plugin.
+
+On Windows it is required to link a version resource into the plugin
+library. To do that, create an .rc file (a plain-text file) and add
+it to the \c RC_FILE variable of your project. The .rc file needs to
+contain a version description like here:
+
+\quotefromfile grapher.rc
+\skipto VERSION
+\printuntil VarFileInfo
+\printuntil END
+\printuntil END
+
+\section3 Enabling ActiveX support
+
+To build a plugin project with ActiveX support, use ActiveQt's QAxServer
+module by adding the following line to your project:
+
+CONFIG += qaxserver
+
+Also, add the following line to your resource file
+
+\c{1 TYPELIB "thisfile.rc"}
+
+In your plugin code, use Q_CLASSINFO and the QAxFactory macros as
+usual; refer to the ActiveQt documentation.
+
+When you build the plugin, then ActiveQt will perform the build steps
+required to turn the plugin library into an ActiveX control server 
+which provides your plugin classes not only to browsers supporting the 
+npruntime API, but also to browsers supporting ActiveX controls 
+(i.e. Internet Explorer).
+
+However, note that calling QtNPBindable APIs will not do anything when
+the browser does not support the npruntime API. In some cases,
+QAxBindable provides equivalent APIs (i.e. for reading incoming data).
+
+\section2 Unix specific notes
+
+On Unix/Linux, QtBrowserPlugin uses the XEmbed protocol. Hence,
+plugins will only work for browsers that support this protocol. This
+is true for the recent versions of all the most popular browsers. For
+Opera, it requires at least version 9.6, QtWebKit requires at least Qt
+version 4.5.
+
+\section3 Known Issues on Unix/Linux
+
+In some rare cases, symbol clash with other instances of the Qt
+libraries may occur. That is, if the browser itself uses Qt, or other
+plugins do, and these are loaded into the same address space, your
+plugin's calls to the Qt API may end up in a different version of the
+Qt library than what was intended, leading to undefined results.
+
+If you should hit this problem, it is easily worked around by linking
+your plugin to Qt libraries that are either statically built, or that
+is built to use a separate namespace (by adding the
+\c{-qtnamespace=SomeNamespace} option to Qt's \c configure command).
+
+\section2 Mac OSX specific notes
+
+NOTE: Mac support is experimental only! Expect failure with recent
+versions of Qt!
+
+To build a browser plugin on Mac, two plain-text resource files are
+needed: an \c Info.plist file and a \c .r file. To create these files,
+it is easiest to use the ones provided with the QtBrowserPlugin
+examples as templates, editing as necessary. Then add them to your
+project (\c .pro file) like this:
+
+\quotefromfile grapher.pro
+\skipto QMAKE_INFO_PLIST
+\printuntil QMAKE_BUNDLE_DATA
+
+\section3 Known Issues on Mac
+
+\list
+\o After navigating away from the webpage with the plugin, and then back
+again, the plugin no longer shows up or runs. No workaround currently
+known.
+\endlist
+
+\section1 Installing and using Plugins
+
+Most browsers provide a UI to display all loaded plugins, either as a
+menu choice, and/or by navigating to the url \c{about:plugins}. Use this
+functionality to diagnose problems.
+
+The plugin will need to load the Qt libraries at runtime (unless they
+are statically linked into the plugin). Hence, the required Qt dynamic
+libraries (at least QtCore, QtGui, and QtNetwork) must be located in a
+directory which the system searches for DLLs. This may or may not
+include the directory where the plugin itself is located, depending on
+the OS and browser.
+
+Windows, Netscape-style browsers: To install the plugin, copy the
+plugin library in the "plugins" directory of the browser. See
+\c{src/qtbrowserplugin.pri} for some typical paths. Typically, it is
+sufficient to install it for one browser, and the others will find
+it. Ref. \l http://developer.mozilla.org/en/Plugins/The_First_Install_Problem
+
+Windows, Internet Explorer: The Makefile generated by qmake by default
+runs the necessary commands to register the plugin as an ActiveX
+server (if \c CONFIG includes \c qaxserver). To unregister, use the
+following command:
+
+\code
+c:\Qt-x.y.z\bin\idc.exe path\to\myplugin.dll /unregserver 
+\endcode
+
+Mac: The build will result in a directory called \c
+myplugin.plugin. To install, copy this directory with all contents to
+\c{/Library/Internet Plugins}.
+
+Unix: Copy the file \c myplugin.so to the browser or system plugin
+directory, typically \c /usr/lib/browser-plugins. The path to the Qt
+libraries may be set in the LD_LIBRARY_PATH environment variable of
+the browser process.
+
+\section2 Embedding the plugin on a web page.
+
+Browsers vary slightly in their support for different plugin-embedding
+HTML tags. The following should work for most popular browsers.
+
+\section3 Plugins with data:
+
+Plugins can be initialized with a data file, which will be delivered
+at some point after plugin creation to the plugin through the
+QtNPBindable::readData() virtual function. (This applies to
+ActiveQt-based plugins in IE as well).
+
+Assuming the MIME type is \c{application/x-graphable}, with the
+extension \c{g1n}:
+
+\code
+<object type="application/x-graphable" data="graph.g1n" width=50% height=300>
+Plugin not installed!
+</object>
+\endcode
+
+or
+
+\code
+<object data="http://qt.nokia.com/doc/3.3/graph.g1n" width=50% height=300>
+Plugin not installed!
+</object>
+\endcode
+
+Note that some browsers will not display or immediately unload the plugin 
+if the data file does not exist, while other browsers will display the plugin 
+without ever calling readData().
+
+If the plugin has declared a Q_PROPERTY called \c src, the setter
+function for this property will be called at instantiation time with
+the data URL as parameter.
+
+\section3 Plugins without data:
+
+Assuming the (dummy) MIME type is \c{trivial/very}:
+
+\code
+<embed type="trivial/very" [property]=[value]>
+\endcode
+
+\section3 Tags not working equally with all browsers
+
+\list
+\o \c{<object classid=...>} Only IE supports this.
+\o \c{<embed src=...>} IE will not call readData(), but the \c src property will be set, so manual data loading is possible.
+\o \c{<object type=... data=...><param ...>} Ditto.
+\o \c{<object type=...>} Some browsers do not display plugins without \c data attribute
+\endlist
+
+For additional information, see \l http://developer.mozilla.org/en/Gecko_Plugin_API_Reference/Plug-in_Basics#Using_HTML_to_Display_Plug-ins
+
+
+\section2 Browser full-page view of a plugin
+
+If files viewed by a plugin are provided by an HTTP server 
+(using a \c{http://...} URL) then the server must be configured to send 
+the correct MIME type for the file, e.g. by editing Apache's 
+\c{mime.types} file. (Not required for IE).
+
+If the files are viewed via a \c{file://...} URL (e.g. by the user
+opening the data file with \c{File->Open}), then the browser will use
+the filename extension to decide the file type (and hence the plugin
+to load).
+
+In the full-page case, IE will not call readData(), but the \c src
+property will be set, so manual data loading is possible. See the \c
+grapher example.
+
+\section2 Scripting
+
+Plugins embedded into browsers that support the respecive NPAPI extensions as
+well as ActiveX controls can be accessed from JavaScript in the HTML page.
+
+\quotefromfile ../examples/trivial/scripting.qdoc
+\skipto <object
+\printto var
+
+Before the object can be accessed, some browsers require it to be located 
+based on the \c id in the \c object tag.
+
+\section3 JavaScript calling slots and properties
+
+\printto ScriptableObject.text
+
+Object properties and public slots can then be accessed as usual. The QtBrowserPlugin
+implementation supports properties and slots that have parameters and types that 
+QVariant can be convert to and from strings, or that are QObjects. Only public slots
+and scriptable properties are exposed. If the QObject class sets a "ToSuperClass" 
+Q_CLASSINFO, then only slots and properties up to the specified superclass are exposed.
+See the QAxServer documentation provided with Qt for more information.
+
+\section3 The plugin calling JavaScript
+
+JavaScript functions can be connected to Qt signals emitted by the Qt plugin object.
+
+\printuntil </script>
+
+Assign a function to a property of the object with the same name as the signal. Overloads
+(i.e. two signal with the same name, but different parameters) are not possible.
+
+\printuntil </script>
+
+Internet Explorer requires a special syntax that is not compatible with other browsers,
+but the IE-specific function can just call the other functions.
+
+\section3 Using plugins in forms
+
+Plugin objects can be embedded as form elements. To specify which property value
+the plugin should report to the form upon submission, specify the name of the
+property as the DefaultProperty using a Q_CLASSINFO entry:
+
+\code
+Q_OBJECT
+Q_CLASSINFO("MIME", "trivial/very:xxx:Trivial and useless")
+Q_CLASSINFO("DefaultProperty", "text")
+\endcode
+
+In the HTML page, embed the object as usual:
+
+\code
+<form method="get" action="http://www.server.com/search.asp">
+<table>
+<tr>
+ <td>Search:</td>
+ <td><object type="trivial/very" name="text" WIDTH=100 HEIGHT=20></object></td>
+ <td><input type="submit" value="Check"></td>
+</tr>
+</table>
+</form>
+\endcode
+
+Clicking the button will make the browser request a URL
+
+\c http://www.server.com/search.asp?text=[value from object]
+
+The property type needs to be convertible to a string.
+*/

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!-- qtservice.cpp -->
+<head>
+  <title>QtServiceBase Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qt-logo.png" align="left" width="57" height="67" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a></td>
+</tr></table><h1 class="title">QtServiceBase Class Reference</h1>
+<p>The QtServiceBase class provides an API for implementing Windows services and Unix daemons. <a href="#details">More...</a></p>
+<pre> #include &lt;QtServiceBase&gt;</pre><p>Inherited by <a href="qtservice.html">QtService</a>.</p>
+<ul>
+<li><a href="qtservicebase-members.html">List of all members, including inherited members</a></li>
+</ul>
+<hr />
+<a name="public-types"></a>
+<h2>Public Types</h2>
+<table class="alignedsummary" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr><td class="memItemLeft" align="right" valign="top">enum </td><td class="memItemRight" valign="bottom"><b><a href="qtservicebase.html#MessageType-enum">MessageType</a></b> { Success, Error, Warning, Information }</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum </td><td class="memItemRight" valign="bottom"><b><a href="qtservicebase.html#ServiceFlag-enum">ServiceFlag</a></b> { Default, CanBeSuspended, CannotBeStopped, NeedsStopOnShutdown }</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">flags </td><td class="memItemRight" valign="bottom"><b><a href="qtservicebase.html#ServiceFlag-enum">ServiceFlags</a></b></td></tr>
+</table>
+<hr />
+<a name="public-functions"></a>
+<h2>Public Functions</h2>
+<table class="alignedsummary" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr><td class="memItemLeft" align="right" valign="top"></td><td class="memItemRight" valign="bottom"><b><a href="qtservicebase.html#QtServiceBase">QtServiceBase</a></b> ( int <i>argc</i>, char ** <i>argv</i>, const QString &amp; <i>name</i> )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual </td><td class="memItemRight" valign="bottom"><b><a href="qtservicebase.html#dtor.QtServiceBase">~QtServiceBase</a></b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int </td><td class="memItemRight" valign="bottom"><b><a href="qtservicebase.html#exec">exec</a></b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void </td><td class="memItemRight" valign="bottom"><b><a href="qtservicebase.html#logMessage">logMessage</a></b> ( const QString &amp; <i>message</i>, MessageType <i>type</i> = Success, int <i>id</i> = 0, uint <i>category</i> = 0, const QByteArray &amp; <i>data</i> = QByteArray() )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">QString </td><td class="memItemRight" valign="bottom"><b><a href="qtservicebase.html#serviceDescription">serviceDescription</a></b> () const</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">ServiceFlags </td><td class="memItemRight" valign="bottom"><b><a href="qtservicebase.html#serviceFlags">serviceFlags</a></b> () const</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">QString </td><td class="memItemRight" valign="bottom"><b><a href="qtservicebase.html#serviceName">serviceName</a></b> () const</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void </td><td class="memItemRight" valign="bottom"><b><a href="qtservicebase.html#setServiceDescription">setServiceDescription</a></b> ( const QString &amp; <i>description</i> )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void </td><td class="memItemRight" valign="bottom"><b><a href="qtservicebase.html#setServiceFlags">setServiceFlags</a></b> ( ServiceFlags <i>flags</i> )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void </td><td class="memItemRight" valign="bottom"><b><a href="qtservicebase.html#setStartupType">setStartupType</a></b> ( QtServiceController::StartupType <i>type</i> )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">QtServiceController::StartupType </td><td class="memItemRight" valign="bottom"><b><a href="qtservicebase.html#startupType">startupType</a></b> () const</td></tr>
+</table>
+<hr />
+<a name="static-public-members"></a>
+<h2>Static Public Members</h2>
+<table class="alignedsummary" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr><td class="memItemLeft" align="right" valign="top">QtServiceBase * </td><td class="memItemRight" valign="bottom"><b><a href="qtservicebase.html#instance">instance</a></b> ()</td></tr>
+</table>
+<hr />
+<a name="protected-functions"></a>
+<h2>Protected Functions</h2>
+<table class="alignedsummary" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr><td class="memItemLeft" align="right" valign="top">virtual void </td><td class="memItemRight" valign="bottom"><b><a href="qtservicebase.html#createApplication">createApplication</a></b> ( int &amp; <i>argc</i>, char ** <i>argv</i> ) = 0</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual int </td><td class="memItemRight" valign="bottom"><b><a href="qtservicebase.html#executeApplication">executeApplication</a></b> () = 0</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void </td><td class="memItemRight" valign="bottom"><b><a href="qtservicebase.html#pause">pause</a></b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void </td><td class="memItemRight" valign="bottom"><b><a href="qtservicebase.html#processCommand">processCommand</a></b> ( int <i>code</i> )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void </td><td class="memItemRight" valign="bottom"><b><a href="qtservicebase.html#resume">resume</a></b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void </td><td class="memItemRight" valign="bottom"><b><a href="qtservicebase.html#start">start</a></b> () = 0</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void </td><td class="memItemRight" valign="bottom"><b><a href="qtservicebase.html#stop">stop</a></b> ()</td></tr>
+</table>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QtServiceBase class provides an API for implementing Windows services and Unix daemons.</p>
+<p>A Windows service or Unix daemon (a &quot;service&quot;), is a program that runs &quot;in the background&quot; independently of whether a user is logged in or not. A service is often set up to start when the machine boots up, and will typically run continuously as long as the machine is on.</p>
+<p>Services are usually non-interactive console applications. User interaction, if required, is usually implemented in a separate, normal GUI application that communicates with the service through an IPC channel. For simple communication, <a href="qtservicecontroller.html#sendCommand">QtServiceController::sendCommand</a>() and <a href="qtservicebase.html#processCommand">QtService::processCommand</a>() may be used, possibly in combination with a shared settings file. For more complex, interactive communication, a custom IPC channel should be used, e.g&#x2e; based on Qt's networking classes. (In certain circumstances, a service may provide a GUI itself, ref. the &quot;interactive&quot; example documentation).</p>
+<p>Typically, you will create a service by subclassing the <a href="qtservice.html">QtService</a> template class which inherits QtServiceBase and allows you to create a service for a particular application type.</p>
+<p>The Windows implementation uses the NT Service Control Manager, and the application can be controlled through the system administration tools. Services are usually launched using the system account, which requires that all DLLs that the service executable depends on (i.e&#x2e; Qt), are located in the same directory as the service, or in a system path.</p>
+<p>On Unix a service is implemented as a daemon.</p>
+<p>You can retrieve the service's description, state, and startup type using the <a href="qtservicebase.html#serviceDescription">serviceDescription</a>(), <a href="qtservicebase.html#serviceFlags">serviceFlags</a>() and <a href="qtservicebase.html#startupType">startupType</a>() functions respectively. The service's state is decribed by the <a href="qtservicebase.html#ServiceFlag-enum">ServiceFlag</a> enum. The mentioned properites can also be set using the corresponding set functions. In addition you can retrieve the service's name using the <a href="qtservicebase.html#serviceName">serviceName</a>() function.</p>
+<p>Several of QtServiceBase's protected functions are called on requests from the <a href="qtservicecontroller.html">QtServiceController</a> class:</p>
+<ul>
+<li><a href="qtservicebase.html#start">start</a>()</li>
+<li><a href="qtservicebase.html#pause">pause</a>()</li>
+<li><a href="qtservicebase.html#processCommand">processCommand</a>()</li>
+<li><a href="qtservicebase.html#resume">resume</a>()</li>
+<li><a href="qtservicebase.html#stop">stop</a>()</li>
+</ul>
+<p>You can control any given service using an instance of the <a href="qtservicecontroller.html">QtServiceController</a> class which also allows you to control services from separate applications. The mentioned functions are all virtual and won't do anything unless they are reimplemented. You can reimplement these functions to pause and resume the service's execution, as well as process user commands and perform additional clean-ups before shutting down.</p>
+<p>QtServiceBase also provides the static <a href="qtservicebase.html#instance">instance</a>() function which returns a pointer to an application's QtServiceBase instance. In addition, a service can report events to the system's event log using the <a href="qtservicebase.html#logMessage">logMessage</a>() function. The <a href="qtservicebase.html#MessageType-enum">MessageType</a> enum describes the different types of messages a service reports.</p>
+<p>The implementation of a service application's main function typically creates an service object derived by subclassing the <a href="qtservice.html">QtService</a> template class. Then the main function will call this service's <a href="qtservicebase.html#exec">exec</a>() function, and return the result of that call. For example:</p>
+<pre> int main(int argc, char **argv)
+ {
+     MyService service(argc, argv);
+     return service.exec();
+ }</pre>
+<p>When the <a href="qtservicebase.html#exec">exec</a>() function is called, it will parse the service specific arguments passed in <tt>argv</tt>, perform the required actions, and return.</p>
+<a name="servicespecificarguments"></a><p>The following arguments are recognized as service specific:</p>
+<p><table class="generic" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Short</th><th>Long</th><th>Explanation</th></tr></thead>
+<tr valign="top" class="odd"><td>-i</td><td>-install</td><td>Install the service.</td></tr>
+<tr valign="top" class="even"><td>-u</td><td>-uninstall</td><td>Uninstall the service.</td></tr>
+<tr valign="top" class="odd"><td>-e</td><td>-exec</td><td>Execute the service as a standalone application (useful for debug purposes). This is a blocking call, the service will be executed like a normal application. In this mode you will not be able to communicate with the service from the contoller.</td></tr>
+<tr valign="top" class="even"><td>-t</td><td>-terminate</td><td>Stop the service.</td></tr>
+<tr valign="top" class="odd"><td>-p</td><td>-pause</td><td>Pause the service.</td></tr>
+<tr valign="top" class="even"><td>-r</td><td>-resume</td><td>Resume a paused service.</td></tr>
+<tr valign="top" class="odd"><td>-c <i>cmd</i></td><td>-command <i>cmd</i></td><td>Send the user defined command code <i>cmd</i> to the service application.</td></tr>
+<tr valign="top" class="even"><td>-v</td><td>-version</td><td>Display version and status information.</td></tr>
+</table></p>
+<p>If <i>none</i> of the arguments is recognized as service specific, <a href="qtservicebase.html#exec">exec</a>() will first call the <a href="qtservicebase.html#createApplication">createApplication</a>() function, then <a href="qtservicebase.html#executeApplication">executeApplication</a>() and finally the <a href="qtservicebase.html#start">start</a>() function. In the end, <a href="qtservicebase.html#exec">exec</a>() returns while the service continues in its own process waiting for commands from the service controller.</p>
+<p>See also <a href="qtservice.html">QtService</a> and <a href="qtservicecontroller.html">QtServiceController</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="MessageType-enum"></a>enum QtServiceBase::MessageType</h3>
+<p>This enum describes the different types of messages a service reports to the system log.</p>
+<p><table class="valuelist" border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QtServiceBase::Success</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">An operation has succeeded, e.g&#x2e; the service is started.</td></tr>
+<tr><td valign="top"><tt>QtServiceBase::Error</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">An operation failed, e.g&#x2e; the service failed to start.</td></tr>
+<tr><td valign="top"><tt>QtServiceBase::Warning</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">An operation caused a warning that might require user interaction.</td></tr>
+<tr><td valign="top"><tt>QtServiceBase::Information</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">Any type of usually non-critical information.</td></tr>
+</table></p>
+<h3 class="flags"><a name="ServiceFlag-enum"></a>enum QtServiceBase::ServiceFlag<br />flags QtServiceBase::ServiceFlags</h3>
+<p>This enum describes the different capabilities of a service.</p>
+<p><table class="valuelist" border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QtServiceBase::Default</tt></td><td align="center" valign="top"><tt>0x00</tt></td><td valign="top">The service can be stopped, but not suspended.</td></tr>
+<tr><td valign="top"><tt>QtServiceBase::CanBeSuspended</tt></td><td align="center" valign="top"><tt>0x01</tt></td><td valign="top">The service can be suspended.</td></tr>
+<tr><td valign="top"><tt>QtServiceBase::CannotBeStopped</tt></td><td align="center" valign="top"><tt>0x02</tt></td><td valign="top">The service cannot be stopped.</td></tr>
+<tr><td valign="top"><tt>QtServiceBase::NeedsStopOnShutdown</tt></td><td align="center" valign="top"><tt>0x04</tt></td><td valign="top">(Windows only) The service will be stopped before the system shuts down. Note that Microsoft recommends this only for services that must absolutely clean up during shutdown, because there is a limited time available for shutdown of services.</td></tr>
+</table></p>
+<p>The ServiceFlags type is a typedef for <a href="qflags.html">QFlags</a>&lt;ServiceFlag&gt;. It stores an OR combination of ServiceFlag values.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QtServiceBase"></a>QtServiceBase::QtServiceBase ( int <i>argc</i>, char ** <i>argv</i>, const <a href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> &amp; <i>name</i> )</h3>
+<p>Creates a service instance called <i>name</i>. The <i>argc</i> and <i>argv</i> parameters are parsed after the <a href="qtservicebase.html#exec">exec</a>() function has been called. Then they are passed to the application's constructor. The application type is determined by the <a href="qtservice.html">QtService</a> subclass.</p>
+<p>The service is neither installed nor started. The name must not contain any backslashes or be longer than 255 characters. In addition, the name must be unique in the system's service database.</p>
+<p>See also <a href="qtservicebase.html#exec">exec</a>(), <a href="qtservicebase.html#start">start</a>(), and <a href="qtservicecontroller.html#install">QtServiceController::install</a>().</p>
+<h3 class="fn"><a name="dtor.QtServiceBase"></a>QtServiceBase::~QtServiceBase ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys the service object. This neither stops nor uninstalls the service.</p>
+<p>To stop a service the <a href="qtservicebase.html#stop">stop</a>() function must be called explicitly. To uninstall a service, you can use the <a href="qtservicecontroller.html#uninstall">QtServiceController::uninstall</a>() function.</p>
+<p>See also <a href="qtservicebase.html#stop">stop</a>() and <a href="qtservicecontroller.html#uninstall">QtServiceController::uninstall</a>().</p>
+<h3 class="fn"><a name="createApplication"></a>void QtServiceBase::createApplication ( int &amp; <i>argc</i>, char ** <i>argv</i> )&nbsp;&nbsp;<tt> [pure virtual protected]</tt></h3>
+<p>Creates the application object using the <i>argc</i> and <i>argv</i> parameters.</p>
+<p>This function is only called when no <a href="qtservicebase.html#servicespecificarguments">service specific arguments</a> were passed to the service constructor, and is called by <a href="qtservicebase.html#exec">exec</a>() before it calls the <a href="qtservicebase.html#executeApplication">executeApplication</a>() and <a href="qtservicebase.html#start">start</a>() functions.</p>
+<p>The createApplication() function is implemented in <a href="qtservice.html">QtService</a>, but you might want to reimplement it, for example, if the chosen application type's constructor needs additional arguments.</p>
+<p>See also <a href="qtservicebase.html#exec">exec</a>() and <a href="qtservice.html">QtService</a>.</p>
+<h3 class="fn"><a name="exec"></a>int QtServiceBase::exec ()</h3>
+<p>Executes the service.</p>
+<p>When the exec() function is called, it will parse the <a href="qtservicebase.html#servicespecificarguments">service specific arguments</a> passed in <tt>argv</tt>, perform the required actions, and exit.</p>
+<p>If none of the arguments is recognized as service specific, exec() will first call the <a href="qtservicebase.html#createApplication">createApplication</a>() function, then <a href="qtservicebase.html#executeApplication">executeApplication</a>() and finally the <a href="qtservicebase.html#start">start</a>() function. In the end, exec() returns while the service continues in its own process waiting for commands from the service controller.</p>
+<p>See also <a href="qtservicecontroller.html">QtServiceController</a>.</p>
+<h3 class="fn"><a name="executeApplication"></a>int QtServiceBase::executeApplication ()&nbsp;&nbsp;<tt> [pure virtual protected]</tt></h3>
+<p>Executes the application previously created with the <a href="qtservicebase.html#createApplication">createApplication</a>() function.</p>
+<p>This function is only called when no <a href="qtservicebase.html#servicespecificarguments">service specific arguments</a> were passed to the service constructor, and is called by <a href="qtservicebase.html#exec">exec</a>() after it has called the <a href="qtservicebase.html#createApplication">createApplication</a>() function and before <a href="qtservicebase.html#start">start</a>() function.</p>
+<p>This function is implemented in <a href="qtservice.html">QtService</a>.</p>
+<p>See also <a href="qtservicebase.html#exec">exec</a>() and <a href="qtservicebase.html#createApplication">createApplication</a>().</p>
+<h3 class="fn"><a name="instance"></a>QtServiceBase * QtServiceBase::instance ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns a pointer to the current application's <a href="qtservicebase.html">QtServiceBase</a> instance.</p>
+<h3 class="fn"><a name="logMessage"></a>void QtServiceBase::logMessage ( const <a href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> &amp; <i>message</i>, <a href="qtservicebase.html#MessageType-enum">MessageType</a> <i>type</i> = Success, int <i>id</i> = 0, <a href="http://qt.nokia.com/doc/4.6/qtglobal.html#uint-typedef">uint</a> <i>category</i> = 0, const <a href="http://qt.nokia.com/doc/4.6/qbytearray.html">QByteArray</a> &amp; <i>data</i> = QByteArray() )</h3>
+<p>Reports a message of the given <i>type</i> with the given <i>message</i> to the local system event log. The message identifier <i>id</i> and the message <i>category</i> are user defined values. The <i>data</i> parameter can contain arbitrary binary data.</p>
+<p>Message strings for <i>id</i> and <i>category</i> must be provided by a message file, which must be registered in the system registry. Refer to the MSDN for more information about how to do this on Windows.</p>
+<p>See also <a href="qtservicebase.html#MessageType-enum">MessageType</a>.</p>
+<h3 class="fn"><a name="pause"></a>void QtServiceBase::pause ()&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Reimplement this function to pause the service's execution (for example to stop a polling timer, or to ignore socket notifiers).</p>
+<p>This function is called in reply to controller requests. The default implementation does nothing.</p>
+<p>See also <a href="qtservicebase.html#resume">resume</a>() and <a href="qtservicecontroller.html#pause">QtServiceController::pause</a>().</p>
+<h3 class="fn"><a name="processCommand"></a>void QtServiceBase::processCommand ( int <i>code</i> )&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Reimplement this function to process the user command <i>code</i>.</p>
+<p>This function is called in reply to controller requests. The default implementation does nothing.</p>
+<p>See also <a href="qtservicecontroller.html#sendCommand">QtServiceController::sendCommand</a>().</p>
+<h3 class="fn"><a name="resume"></a>void QtServiceBase::resume ()&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Reimplement this function to continue the service after a call to <a href="qtservicebase.html#pause">pause</a>().</p>
+<p>This function is called in reply to controller requests. The default implementation does nothing.</p>
+<p>See also <a href="qtservicebase.html#pause">pause</a>() and <a href="qtservicecontroller.html#resume">QtServiceController::resume</a>().</p>
+<h3 class="fn"><a name="serviceDescription"></a><a href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> QtServiceBase::serviceDescription () const</h3>
+<p>Returns the description of the service.</p>
+<p>See also <a href="qtservicebase.html#setServiceDescription">setServiceDescription</a>() and <a href="qtservicebase.html#serviceName">serviceName</a>().</p>
+<h3 class="fn"><a name="serviceFlags"></a><a href="qtservicebase.html#ServiceFlag-enum">ServiceFlags</a> QtServiceBase::serviceFlags () const</h3>
+<p>Returns the service's state which is decribed using the <a href="qtservicebase.html#ServiceFlag-enum">ServiceFlag</a> enum.</p>
+<p>See also <a href="qtservicebase.html#ServiceFlag-enum">ServiceFlags</a> and <a href="qtservicebase.html#setServiceFlags">setServiceFlags</a>().</p>
+<h3 class="fn"><a name="serviceName"></a><a href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> QtServiceBase::serviceName () const</h3>
+<p>Returns the name of the service.</p>
+<p>See also <a href="qtservicebase.html#QtServiceBase">QtServiceBase</a>() and <a href="qtservicebase.html#serviceDescription">serviceDescription</a>().</p>
+<h3 class="fn"><a name="setServiceDescription"></a>void QtServiceBase::setServiceDescription ( const <a href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> &amp; <i>description</i> )</h3>
+<p>Sets the description of the service to the given <i>description</i>.</p>
+<p>See also <a href="qtservicebase.html#serviceDescription">serviceDescription</a>().</p>
+<h3 class="fn"><a name="setServiceFlags"></a>void QtServiceBase::setServiceFlags ( <a href="qtservicebase.html#ServiceFlag-enum">ServiceFlags</a> <i>flags</i> )</h3>
+<p>Sets the service's state to the state described by the given <i>flags</i>.</p>
+<p>See also <a href="qtservicebase.html#ServiceFlag-enum">ServiceFlags</a> and <a href="qtservicebase.html#serviceFlags">serviceFlags</a>().</p>
+<h3 class="fn"><a name="setStartupType"></a>void QtServiceBase::setStartupType ( <a href="qtservicecontroller.html#StartupType-enum">QtServiceController::StartupType</a> <i>type</i> )</h3>
+<p>Sets the service's startup type to the given <i>type</i>.</p>
+<p>See also <a href="qtservicecontroller.html#StartupType-enum">QtServiceController::StartupType</a> and <a href="qtservicebase.html#startupType">startupType</a>().</p>
+<h3 class="fn"><a name="start"></a>void QtServiceBase::start ()&nbsp;&nbsp;<tt> [pure virtual protected]</tt></h3>
+<p>This function must be implemented in <a href="qtservicebase.html">QtServiceBase</a> subclasses in order to perform the service's work. Usually you create some main object on the heap which is the heart of your service.</p>
+<p>The function is only called when no service specific arguments were passed to the service constructor, and is called by <a href="qtservicebase.html#exec">exec</a>() after it has called the <a href="qtservicebase.html#executeApplication">executeApplication</a>() function.</p>
+<p>Note that you <i>don't</i> need to create an application object or call its <a href="qtservicebase.html#exec">exec</a>() function explicitly.</p>
+<p>See also <a href="qtservicebase.html#exec">exec</a>(), <a href="qtservicebase.html#stop">stop</a>(), and <a href="qtservicecontroller.html#start">QtServiceController::start</a>().</p>
+<h3 class="fn"><a name="startupType"></a><a href="qtservicecontroller.html#StartupType-enum">QtServiceController::StartupType</a> QtServiceBase::startupType () const</h3>
+<p>Returns the service's startup type.</p>
+<p>See also <a href="qtservicecontroller.html#StartupType-enum">QtServiceController::StartupType</a> and <a href="qtservicebase.html#setStartupType">setStartupType</a>().</p>
+<h3 class="fn"><a name="stop"></a>void QtServiceBase::stop ()&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Reimplement this function to perform additional cleanups before shutting down (for example deleting a main object if it was created in the <a href="qtservicebase.html#start">start</a>() function).</p>
+<p>This function is called in reply to controller requests. The default implementation does nothing.</p>
+<p>See also <a href="qtservicebase.html#start">start</a>() and <a href="qtservicecontroller.html#stop">QtServiceController::stop</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td width="30%" align="left">Copyright &copy; 2010 Nokia Corporation and/or its subsidiary(-ies)</td>
+<td width="40%" align="center"><a href="http://qt.nokia.com/doc/trademarks.html">Trademarks</a></td>
+<td width="30%" align="right"><div align="right">Qt Solutions</div></td>
+</tr></table></div></address></body>
+</html>

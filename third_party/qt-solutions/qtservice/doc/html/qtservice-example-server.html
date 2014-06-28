@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!-- server.qdoc -->
+<head>
+  <title>A simple HTTP Server</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qt-logo.png" align="left" width="57" height="67" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a></td>
+</tr></table><h1 class="title">A simple HTTP Server<br /><span class="subtitle"></span>
+</h1>
+<p>It is a very simple implementation of a HTTP daemon that listens on chosen port (defaultly 8080) and sends back a simple HTML page back for every GET request it gets. After sending the page, it closes the connection.</p>
+<pre><span class="comment"> // HttpDaemon is the the class that implements the simple HTTP server.</span>
+ class HttpDaemon : public QTcpServer
+ {
+     Q_OBJECT
+ public:
+     HttpDaemon(quint16 port, QObject* parent = 0)
+         : QTcpServer(parent), disabled(false)
+     {
+         listen(QHostAddress::Any, port);
+     }
+
+     void incomingConnection(int socket)
+     {
+         if (disabled)
+             return;
+
+         <span class="comment">// When a new client connects, the server constructs a QTcpSocket and all</span>
+         <span class="comment">// communication with the client is done over this QTcpSocket. QTcpSocket</span>
+         <span class="comment">// works asynchronously, this means that all the communication is done</span>
+         <span class="comment">// in the two slots readClient() and discardClient().</span>
+         QTcpSocket* s = new QTcpSocket(this);
+         connect(s, SIGNAL(readyRead()), this, SLOT(readClient()));
+         connect(s, SIGNAL(disconnected()), this, SLOT(discardClient()));
+         s-&gt;setSocketDescriptor(socket);
+
+         QtServiceBase::instance()-&gt;logMessage(&quot;New Connection&quot;);
+     }
+
+     void pause()
+     {
+         disabled = true;
+     }
+
+     void resume()
+     {
+         disabled = false;
+     }
+
+ private slots:
+     void readClient()
+     {
+         if (disabled)
+             return;
+
+         <span class="comment">// This slot is called when the client sent data to the server. The</span>
+         <span class="comment">// server looks if it was a get request and sends a very simple HTML</span>
+         <span class="comment">// document back.</span>
+         QTcpSocket* socket = (QTcpSocket*)sender();
+         if (socket-&gt;canReadLine()) {
+             QStringList tokens = QString(socket-&gt;readLine()).split(QRegExp(&quot;[ \r\n][ \r\n]*&quot;));
+             if (tokens[0] == &quot;GET&quot;) {
+                 QTextStream os(socket);
+                 os.setAutoDetectUnicode(true);
+                 os &lt;&lt; &quot;HTTP/1.0 200 Ok\r\n&quot;
+                     &quot;Content-Type: text/html; charset=\&quot;utf-8\&quot;\r\n&quot;
+                     &quot;\r\n&quot;
+                     &quot;&lt;h1&gt;Nothing to see here&lt;/h1&gt;\n&quot;
+                     &lt;&lt; QDateTime::currentDateTime().toString() &lt;&lt; &quot;\n&quot;;
+                 socket-&gt;close();
+
+                 QtServiceBase::instance()-&gt;logMessage(&quot;Wrote to client&quot;);
+
+                 if (socket-&gt;state() == QTcpSocket::UnconnectedState) {
+                     delete socket;
+                     QtServiceBase::instance()-&gt;logMessage(&quot;Connection closed&quot;);
+                 }
+             }
+         }
+     }
+     void discardClient()
+     {
+         QTcpSocket* socket = (QTcpSocket*)sender();
+         socket-&gt;deleteLater();
+
+         QtServiceBase::instance()-&gt;logMessage(&quot;Connection closed&quot;);
+     }
+
+ private:
+     bool disabled;
+ };</pre>
+<p>The server implementation uses the <a href="qtservicebase.html#logMessage">QtService::logMessage</a>() function to send messages and status reports to the system event log. The server also supports a paused state in which case incoming requests are ignored.</p>
+<p>The <tt>HttpService</tt> class subclasses <a href="qtservice.html">QtService</a> to implement the service functionality.</p>
+<pre> class HttpService : public QtService&lt;QCoreApplication&gt;
+ {
+ public:
+     HttpService(int argc, char **argv)
+         : QtService&lt;QCoreApplication&gt;(argc, argv, &quot;Qt HTTP Daemon&quot;)
+     {
+         setServiceDescription(&quot;A dummy HTTP service implemented with Qt&quot;);
+         setServiceFlags(QtServiceBase::CanBeSuspended);
+     }</pre>
+<p>The constructor calls the <a href="qtservice.html">QtService</a> constructor instantiated with <a href="http://qt.nokia.com/doc/4.6/qcoreapplication.html">QCoreApplication</a> since our service will not use GUI. The first two parameters of our constructor are passed to <a href="qtservice.html">QtService</a>. The last parameter, &quot;Qt HTTP Daemon&quot;, is the name of the service.</p>
+<pre> protected:
+     void start()
+     {
+         QCoreApplication *app = application();
+
+         quint16 port = (app-&gt;argc() &gt; 1) ?
+                 QString::fromLocal8Bit(app-&gt;argv()[1]).toUShort() : 8080;
+         daemon = new HttpDaemon(port, app);
+
+         if (!daemon-&gt;isListening()) {
+             logMessage(QString(&quot;Failed to bind to port %1&quot;).arg(daemon-&gt;serverPort()), QtServiceBase::Error);
+             app-&gt;quit();
+         }
+     }</pre>
+<p>The implementation of <tt>start()</tt> first checks if the user passed a port number. If yes that port is used by server to listen on. Otherwise default 8080 port is used. Then creates an instance of the HTTP server using operator new, passing the application object as the parent to ensure that the object gets destroyed.</p>
+<pre>     void pause()
+     {
+         daemon-&gt;pause();
+     }
+
+     void resume()
+     {
+         daemon-&gt;resume();
+     }
+
+ private:
+     HttpDaemon *daemon;
+ };</pre>
+<p>The implementations of pause() and resume() forward the request to the server object.</p>
+<pre> #include &quot;main.moc&quot;
+
+ int main(int argc, char **argv)
+ {
+ #if !defined(Q_OS_WIN)
+     <span class="comment">// QtService stores service settings in SystemScope, which normally require root privileges.</span>
+     <span class="comment">// To allow testing this example as non-root, we change the directory of the SystemScope settings file.</span>
+     QSettings::setPath(QSettings::NativeFormat, QSettings::SystemScope, QDir::tempPath());
+     qWarning(&quot;(Example uses dummy settings file: %s/QtSoftware.conf)&quot;, QDir::tempPath().toLatin1().constData());
+ #endif
+     HttpService service(argc, argv);
+     return service.exec();
+ }</pre>
+<p>The main entry point function creates the service object and uses the <tt>exec()</tt> function to execute the service.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td width="30%" align="left">Copyright &copy; 2010 Nokia Corporation and/or its subsidiary(-ies)</td>
+<td width="40%" align="center"><a href="http://qt.nokia.com/doc/trademarks.html">Trademarks</a></td>
+<td width="30%" align="right"><div align="right">Qt Solutions</div></td>
+</tr></table></div></address></body>
+</html>

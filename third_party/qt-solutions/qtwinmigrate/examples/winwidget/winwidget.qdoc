@@ -1,0 +1,92 @@
+/****************************************************************************
+**
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
+**
+** This file is part of the Qt Solutions component.
+**
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Digia Plc and its Subsidiary(-ies) nor the names
+**     of its contributors may be used to endorse or promote products derived
+**     from this software without specific prior written permission.
+**
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*! \page winmigrate-qt-in-win32-example.html
+    \title Qt widgets in Win32
+
+    This examples shows how to use the QWinWidget class to use Qt widgets
+    inside a native Win32 user interface.
+
+    \quotefromfile winwidget/main.cpp
+    \skipto WndProc
+
+    The Window procedure for the native Win32 window implements a message 
+    handlers for left and right mouse button clicks.
+
+    \printto WM_RBUTTONUP
+    When the left button is clicked a modal message box is opened. The
+    QWinWidget class is used to provide a bridge between the Win32 window
+    and the QMessageBox, and ensures that the Win32 window is modally
+    blocked by the message box.
+
+    \printto WM_KEYDOWN
+    When the right button is clicked a modeless message box is opened.
+    The QWinWidget class is used again to provide proper placement and
+    stacking of the message box. Note that this time both the QWinWidget
+    and the QMessageBox are created on the heap using operator new. Since
+    the \c WDestructiveClose flag is passed to the QMessageBox constructor
+    it is however not necessary to delete either of those objects.
+
+    \printto return 0;
+    \printuntil }
+    When the Win32 window is closed the application is terminated. Unhandled
+    messages are processed by the default window procedure.
+
+    \printto int argc
+    The application's entry point function \c wWinMain registers a window
+    class and creates a window using the CreateWindow API. Note that the
+    UNICODE versions of all Win32 APIs are used.
+
+    \printuntil QApplication
+    Before the Qt based user interface can be created a QApplication object
+    must exist. The translation of the command line arguments is omitted
+    for brevity.
+
+    \printuntil win.move
+    The QWinWidget class is once again used as a bridge between the Win32
+    window and a Qt widget, QPushButton this time. 
+    Since the QWinWidget is a proper QWidget it can be layouted and 
+    positioned like any other QWidget.
+
+    \printuntil }
+    Finally the Win32 user interface is displayed, and control is passed to
+    the QApplication event loop. Since Windows doesn't show child windows
+    recoursively the Qt widget has to be shown explicitly.
+*/

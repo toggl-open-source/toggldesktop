@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!-- helloscript.qdoc -->
+<head>
+  <title>Hello Script Example</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qt-logo.png" align="left" width="57" height="67" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a></td>
+</tr></table><h1 class="title">Hello Script Example<br /><span class="subtitle"></span>
+</h1>
+<p>The Hello Script example shows the basic use of Qt Script: How to embed a script engine into the application, how to evaluate a script, and how to process the result of the evaluation. The example also shows how to apply internationalization to scripts.</p>
+<pre> int main(int argc, char *argv[])
+ {
+     Q_INIT_RESOURCE(helloscript);</pre>
+<p>The application will load the script file to evaluate from a resource, so we first make sure that the resource is initialized.</p>
+<pre>     QApplication app(argc, argv);
+
+     QScriptEngine engine;
+
+     QTranslator translator;
+     translator.load(&quot;helloscript_la&quot;);
+     app.installTranslator(&amp;translator);
+     engine.installTranslatorFunctions();</pre>
+<p>We attempt to load a translation, and install translation functions in the script engine. How to produce a translation is explained later.</p>
+<pre>     QPushButton button;
+     QScriptValue scriptButton = engine.newQObject(&amp;button);
+     engine.globalObject().setProperty(&quot;button&quot;, scriptButton);</pre>
+<p>A push button is created and exported to the script environment as a global variable, <tt>button</tt>. Scripts will be able to access properties, signals and slots of the button as properties of the <tt>button</tt> script object; the script object acts as a proxy to the C++ button object.</p>
+<pre>     QString fileName(&quot;:/helloscript.js&quot;);
+     QFile scriptFile(fileName);
+     scriptFile.open(QIODevice::ReadOnly);
+     QTextStream stream(&amp;scriptFile);
+     QString contents = stream.readAll();
+     scriptFile.close();</pre>
+<p>The contents of the script file are read.</p>
+<pre></pre>
+<p>The script sets the <tt>text</tt> (note that the qTr() function is used to allow for translation) and <tt>styleSheet</tt> properties of the button, and calls the button's <tt>show()</tt> slot.</p>
+<pre>     QScriptValue result = engine.evaluate(contents, fileName);</pre>
+<p>The script is evaluated. Note that the file name is passed as the (optional) second parameter; this makes it possible for the script engine to produce a meaningful backtrace if something goes wrong, and makes the qTr() function be able to resolve the translations that are associated with this script.</p>
+<pre>     if (result.isError()) {
+         QMessageBox::critical(0, &quot;Hello Script&quot;,
+                               QString::fromLatin1(&quot;%0:%1: %2&quot;)
+                               .arg(fileName)
+                               .arg(result.property(&quot;lineNumber&quot;).toInt32())
+                               .arg(result.toString()));
+         return -1;
+     }</pre>
+<p>If the result is an Error object (e.g&#x2e; the script contained a syntax error, or tried to call a function that doesn't exist), we obtain the line number and string representation of the error and display it in a message box.</p>
+<pre>     return app.exec();
+ }</pre>
+<p>If the evaluation went well, the application event loop is entered.</p>
+<a name="translating-the-application"></a>
+<h2>Translating the Application</h2>
+<p>The Qt Script internalization support builds on what Qt already provides for C++; see the <a href="http://qt.nokia.com/doc/4.6/linguist-hellotr.html">Hello tr</a>() Example for an introduction.</p>
+<p>Since we haven't made the translation file <tt>helloscript_la.qm</tt>, the source text is shown when we run the application (&quot;Hello world!&quot;).</p>
+<p>To generate the translation file, run <tt>lupdate</tt> as follows:</p>
+<pre> lupdate helloscript.qs -ts helloscript_la.ts</pre>
+<p>You should now have a file <tt>helloscript_la.ts</tt> in the current directory. Run <tt>linguist</tt> to edit the translation:</p>
+<pre> linguist helloscript_la.ts</pre>
+<p>You should now see the text &quot;helloscript.qs&quot; in the top left pane. Double-click it, then click on &quot;Hello world!&quot; and enter &quot;Orbis, te saluto!&quot; in the <b>Translation</b> pane (the middle right of the window). Don't forget the exclamation mark!</p>
+<p>Click the <b>Done</b> checkbox and choose <b>File|Save</b> from the menu bar. The <tt>.ts</tt> file will no longer contain</p>
+<pre> &lt;translation type='unfinished'&gt;&lt;/translation&gt;</pre>
+<p>but instead will have</p>
+<pre> &lt;translation&gt;Orbis, te saluto!&lt;/translation&gt;</pre>
+<p>To see the application running in Latin, we have to generate a <tt>.qm</tt> file from the <tt>.ts</tt> file. Generating a <tt>.qm</tt> file can be achieved either from within <i>Qt Linguist</i> (for a single <tt>.ts</tt> file), or by using the command line program <tt>lrelease</tt> which will produce one <tt>.qm</tt> file for each of the <tt>.ts</tt> files listed in the project file. Generate <tt>hellotr_la.qm</tt> from <tt>hellotr_la.ts</tt> by choosing <b>File|Release</b> from <i>Qt Linguist</i>'s menu bar and pressing <b>Save</b> in the file save dialog that pops up. Now run the <tt>helloscript</tt> program again. This time the button will be labelled &quot;Orbis, te saluto!&quot;.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td width="30%" align="left">Copyright &copy; 2010 Nokia Corporation and/or its subsidiary(-ies)</td>
+<td width="40%" align="center"><a href="http://qt.nokia.com/doc/trademarks.html">Trademarks</a></td>
+<td width="30%" align="right"><div align="right">Qt Solutions</div></td>
+</tr></table></div></address></body>
+</html>

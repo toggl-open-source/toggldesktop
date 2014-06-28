@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE QDOCINDEX>
+<INDEX url="" title="Qt Solutions: Qt/MFC Migration Framework Documentation" version="">
+    <namespace access="public" threadsafety="unspecified" status="commendable" name="" href="" location="" module="">
+        <class access="public" threadsafety="unspecified" status="commendable" name="QWinWidget" href="qwinwidget.html" location="qwinwidget.h" bases="QWidget" module="">
+            <function access="public" threadsafety="unspecified" status="commendable" name="QWinWidget" fullname="QWinWidget::QWinWidget" href="qwinwidget.html#QWinWidget" location="qwinwidget.h" virtual="non" meta="constructor" const="false" static="false" overload="false" type="" signature="QWinWidget(HWND hParentWnd, QObject * parent, Qt::WFlags f)">
+                <parameter left="HWND" right="" name="hParentWnd" default=""/>
+                <parameter left="QObject *" right="" name="parent" default="0"/>
+                <parameter left="Qt::WFlags" right="" name="f" default="0"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="~QWinWidget" fullname="QWinWidget::~QWinWidget" href="qwinwidget.html#dtor.QWinWidget" location="qwinwidget.h" virtual="non" meta="destructor" const="false" static="false" overload="false" type="" signature="~QWinWidget()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="show" fullname="QWinWidget::show" href="qwinwidget.html#show" location="qwinwidget.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="show()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="center" fullname="QWinWidget::center" href="qwinwidget.html#center" location="qwinwidget.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="center()"/>
+            <function access="public" threadsafety="unspecified" status="obsolete" name="showCentered" fullname="QWinWidget::showCentered" href="qwinwidget-obsolete.html#showCentered" location="qwinwidget.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="showCentered()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="parentWindow" fullname="QWinWidget::parentWindow" href="qwinwidget.html#parentWindow" location="qwinwidget.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="HWND" signature="parentWindow() const"/>
+            <function access="protected" threadsafety="unspecified" status="commendable" name="childEvent" fullname="QWinWidget::childEvent" href="qwinwidget.html#childEvent" location="qwinwidget.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="void" signature="childEvent(QChildEvent * e)">
+                <parameter left="QChildEvent *" right="" name="e" default=""/>
+            </function>
+            <function access="protected" threadsafety="unspecified" status="commendable" name="eventFilter" fullname="QWinWidget::eventFilter" href="qwinwidget.html#eventFilter" location="qwinwidget.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="bool" signature="eventFilter(QObject * o, QEvent * e)">
+                <parameter left="QObject *" right="" name="o" default=""/>
+                <parameter left="QEvent *" right="" name="e" default=""/>
+            </function>
+            <function access="protected" threadsafety="unspecified" status="commendable" name="focusNextPrevChild" fullname="QWinWidget::focusNextPrevChild" href="qwinwidget.html#focusNextPrevChild" location="qwinwidget.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="bool" signature="focusNextPrevChild(bool next)">
+                <parameter left="bool" right="" name="next" default=""/>
+            </function>
+            <function access="protected" threadsafety="unspecified" status="commendable" name="focusInEvent" fullname="QWinWidget::focusInEvent" href="qwinwidget.html#focusInEvent" location="qwinwidget.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="void" signature="focusInEvent(QFocusEvent * e)">
+                <parameter left="QFocusEvent *" right="" name="e" default=""/>
+            </function>
+            <function access="protected" threadsafety="unspecified" status="commendable" name="winEvent" fullname="QWinWidget::winEvent" href="qwinwidget.html#winEvent" location="qwinwidget.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="bool" signature="winEvent(MSG * msg, long * result)">
+                <parameter left="MSG *" right="" name="msg" default=""/>
+                <parameter left="long *" right="" name="result" default=""/>
+            </function>
+        </class>
+        <class access="public" threadsafety="unspecified" status="commendable" name="QWinHost" href="qwinhost.html" location="qwinhost.h" bases="QWidget" module="">
+            <function access="public" threadsafety="unspecified" status="commendable" name="QWinHost" fullname="QWinHost::QWinHost" href="qwinhost.html#QWinHost" location="qwinhost.h" virtual="non" meta="constructor" const="false" static="false" overload="false" type="" signature="QWinHost(QWidget * parent, Qt::WFlags f)">
+                <parameter left="QWidget *" right="" name="parent" default="0"/>
+                <parameter left="Qt::WFlags" right="" name="f" default="0"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="~QWinHost" fullname="QWinHost::~QWinHost" href="qwinhost.html#dtor.QWinHost" location="qwinhost.h" virtual="non" meta="destructor" const="false" static="false" overload="false" type="" signature="~QWinHost()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="setWindow" fullname="QWinHost::setWindow" href="qwinhost.html#setWindow" location="qwinhost.h" virtual="non" meta="plain" const="false" static="false" overload="false" type="void" signature="setWindow(HWND window)">
+                <parameter left="HWND" right="" name="window" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="window" fullname="QWinHost::window" href="qwinhost.html#window" location="qwinhost.h" virtual="non" meta="plain" const="true" static="false" overload="false" type="HWND" signature="window() const"/>
+            <function access="protected" threadsafety="unspecified" status="commendable" name="createWindow" fullname="QWinHost::createWindow" href="qwinhost.html#createWindow" location="qwinhost.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="HWND" signature="createWindow(HWND parent, HINSTANCE instance)">
+                <parameter left="HWND" right="" name="parent" default=""/>
+                <parameter left="HINSTANCE" right="" name="instance" default=""/>
+            </function>
+            <function access="protected" threadsafety="unspecified" status="commendable" name="event" fullname="QWinHost::event" href="qwinhost.html#event" location="qwinhost.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="bool" signature="event(QEvent * e)">
+                <parameter left="QEvent *" right="" name="e" default=""/>
+            </function>
+            <function access="protected" threadsafety="unspecified" status="commendable" name="showEvent" fullname="QWinHost::showEvent" href="qwinhost.html#showEvent" location="qwinhost.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="void" signature="showEvent(QShowEvent * e)">
+                <parameter left="QShowEvent *" right="" name="e" default=""/>
+            </function>
+            <function access="protected" threadsafety="unspecified" status="commendable" name="focusInEvent" fullname="QWinHost::focusInEvent" href="qwinhost.html#focusInEvent" location="qwinhost.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="void" signature="focusInEvent(QFocusEvent * e)">
+                <parameter left="QFocusEvent *" right="" name="e" default=""/>
+            </function>
+            <function access="protected" threadsafety="unspecified" status="commendable" name="resizeEvent" fullname="QWinHost::resizeEvent" href="qwinhost.html#resizeEvent" location="qwinhost.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="void" signature="resizeEvent(QResizeEvent * e)">
+                <parameter left="QResizeEvent *" right="" name="e" default=""/>
+            </function>
+            <function access="protected" threadsafety="unspecified" status="commendable" name="winEvent" fullname="QWinHost::winEvent" href="qwinhost.html#winEvent" location="qwinhost.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="bool" signature="winEvent(MSG * msg, long * result)">
+                <parameter left="MSG *" right="" name="msg" default=""/>
+                <parameter left="long *" right="" name="result" default=""/>
+            </function>
+        </class>
+        <class access="public" threadsafety="unspecified" status="commendable" name="QMfcApp" href="qmfcapp.html" location="qmfcapp.h" bases="QApplication" module="">
+            <function access="public" threadsafety="unspecified" status="commendable" name="pluginInstance" fullname="QMfcApp::pluginInstance" href="qmfcapp.html#pluginInstance" location="qmfcapp.h" virtual="non" meta="plain" const="false" static="true" overload="false" type="bool" signature="pluginInstance(Qt::HANDLE plugin)">
+                <parameter left="Qt::HANDLE" right="" name="plugin" default="0"/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="~QMfcApp" fullname="QMfcApp::~QMfcApp" href="qmfcapp.html#dtor.QMfcApp" location="qmfcapp.h" virtual="non" meta="destructor" const="false" static="false" overload="false" type="" signature="~QMfcApp()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="winEventFilter" fullname="QMfcApp::winEventFilter" href="qmfcapp.html#winEventFilter" location="qmfcapp.h" virtual="impure" meta="plain" const="false" static="false" overload="false" type="bool" signature="winEventFilter(MSG * msg, long * result)">
+                <parameter left="MSG *" right="" name="msg" default=""/>
+                <parameter left="long *" right="" name="result" default=""/>
+            </function>
+            <function access="public" threadsafety="unspecified" status="commendable" name="enterModalLoop" fullname="QMfcApp::enterModalLoop" href="qmfcapp.html#enterModalLoop" location="qmfcapp.h" virtual="non" meta="plain" const="false" static="true" overload="false" type="void" signature="enterModalLoop()"/>
+            <function access="public" threadsafety="unspecified" status="commendable" name="exitModalLoop" fullname="QMfcApp::exitModalLoop" href="qmfcapp.html#exitModalLoop" location="qmfcapp.h" virtual="non" meta="plain" const="false" static="true" overload="false" type="void" signature="exitModalLoop()"/>
+        </class>
+        <page access="public" status="commendable" name="winmigrate-qt-in-win32-example.html" href="winmigrate-qt-in-win32-example.html" subtype="page" title="Qt widgets in Win32" fulltitle="Qt widgets in Win32" subtitle="" location="winwidget.qdoc"/>
+        <page access="public" status="commendable" name="index.html" href="index.html" subtype="page" title="Qt/MFC Migration Framework" fulltitle="Qt/MFC Migration Framework" subtitle="" location="index.qdoc">
+            <contents name="description" title="Description" level="1"/>
+            <contents name="classes" title="Classes" level="1"/>
+            <contents name="examples-win32-to-qt-migration" title="Examples - Win32 to Qt Migration" level="1"/>
+            <contents name="examples-mfc-to-qt-migration" title="Examples - MFC to Qt Migration" level="1"/>
+            <contents name="tested-platforms" title="Tested platforms" level="1"/>
+            <contents name="unsupported-platforms" title="Unsupported platforms" level="1"/>
+        </page>
+        <page access="public" status="commendable" name="winmigrate-win32-in-qt-example.html" href="winmigrate-win32-in-qt-example.html" subtype="page" title="Qt Application using Win32 Windows" fulltitle="Qt Application using Win32 Windows" subtitle="" location="winhost.qdoc"/>
+        <page access="public" status="commendable" name="winmigrate-walkthrough.html" href="winmigrate-walkthrough.html" subtype="page" title="MFC to Qt Migration - Walkthrough" fulltitle="MFC to Qt Migration - Walkthrough" subtitle="" location="walkthrough.qdoc">
+            <contents name="introduction" title="Introduction" level="1"/>
+            <contents name="goals-for-this-walkthrough" title="Goals for this Walkthrough" level="2"/>
+            <contents name="a-note-about-mfc-s-memory-leak-detection" title="A note about MFC's memory leak detection" level="2"/>
+            <contents name="getting-started" title="Getting Started" level="1"/>
+            <contents name="plugin-extension" title="Plugin extension" level="2"/>
+            <contents name="linking-against-qt" title="Linking against Qt" level="2"/>
+            <contents name="replacing-the-mfc-event-loop" title="Replacing the MFC event loop" level="2"/>
+            <contents name="replacing-a-dialog" title="Replacing a Dialog" level="2"/>
+            <contents name="new-functionality-with-qt" title="New Functionality with Qt" level="1"/>
+            <contents name="creating-qt-widgets" title="Creating Qt widgets" level="2"/>
+            <contents name="a-new-qt-dialog" title="A new Qt Dialog" level="2"/>
+            <contents name="removing-mfc" title="Removing MFC" level="1"/>
+            <contents name="using-the-qt-build-system" title="Using the Qt build system" level="2"/>
+            <contents name="replacing-the-childview" title="Replacing the ChildView" level="2"/>
+            <contents name="replacing-the-mainframe" title="Replacing the MainFrame" level="2"/>
+            <contents name="replacing-the-mfc-application" title="Replacing the MFC application" level="2"/>
+            <contents name="cleaning-up" title="Cleaning up" level="2"/>
+        </page>
+        <page access="public" status="commendable" name="winmigrate-qt-dll-example.html" href="winmigrate-qt-dll-example.html" subtype="page" title="Qt based Application Extension" fulltitle="Qt based Application Extension" subtitle="" location="qtdll.qdoc"/>
+    </namespace>
+</INDEX>

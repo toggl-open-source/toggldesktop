@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QtHelpProject version="1.0">
+    <namespace>com.nokia.qtsolutions.qtservice_head</namespace>
+    <virtualFolder>qdoc</virtualFolder>
+    <customFilter name="Qt Solutions: Service">
+        <filterAttribute>qt</filterAttribute>
+        <filterAttribute>qtservice</filterAttribute>
+        <filterAttribute>solutions</filterAttribute>
+    </customFilter>
+    <filterSection>
+        <filterAttribute>qt</filterAttribute>
+        <filterAttribute>qtservice</filterAttribute>
+        <filterAttribute>solutions</filterAttribute>
+        <toc>
+            <section ref="index.html" title="Qt Solutions: Service Documentation">
+                <section ref="qtservice-example-server.html" title="A simple HTTP Server"/>
+                <section ref="qtservice-example-controller.html" title="A simple Service Controller"/>
+                <section ref="qtservice-example-interactive.html" title="An Interactive Service"/>
+                <section ref="index.html" title="Service"/>
+            </section>
+        </toc>
+        <keywords>
+            <keyword name="A simple HTTP Server" id="A simple HTTP Server" ref="qtservice-example-server.html"/>
+            <keyword name="A simple Service Controller" id="A simple Service Controller" ref="qtservice-example-controller.html"/>
+            <keyword name="An Interactive Service" id="An Interactive Service" ref="qtservice-example-interactive.html"/>
+            <keyword name="QtService" id="QtService" ref="qtservice.html"/>
+            <keyword name="application" id="QtService::application" ref="qtservice.html#application"/>
+            <keyword name="createApplication" id="QtService::createApplication" ref="qtservice.html#createApplication"/>
+            <keyword name="executeApplication" id="QtService::executeApplication" ref="qtservice.html#executeApplication"/>
+            <keyword name="~QtService" id="QtService::~QtService" ref="qtservice.html#dtor.QtService"/>
+            <keyword name="QtServiceBase" id="QtServiceBase" ref="qtservicebase.html"/>
+            <keyword name="QtServiceBase::MessageType" id="QtServiceBase::MessageType" ref="qtservicebase.html#MessageType-enum"/>
+            <keyword name="QtServiceBase::Success" id="QtServiceBase::Success" ref="qtservicebase.html#MessageType-enum"/>
+            <keyword name="QtServiceBase::Error" id="QtServiceBase::Error" ref="qtservicebase.html#MessageType-enum"/>
+            <keyword name="QtServiceBase::Warning" id="QtServiceBase::Warning" ref="qtservicebase.html#MessageType-enum"/>
+            <keyword name="QtServiceBase::Information" id="QtServiceBase::Information" ref="qtservicebase.html#MessageType-enum"/>
+            <keyword name="QtServiceBase::ServiceFlag" id="QtServiceBase::ServiceFlag" ref="qtservicebase.html#ServiceFlag-enum"/>
+            <keyword name="QtServiceBase::Default" id="QtServiceBase::Default" ref="qtservicebase.html#ServiceFlag-enum"/>
+            <keyword name="QtServiceBase::CanBeSuspended" id="QtServiceBase::CanBeSuspended" ref="qtservicebase.html#ServiceFlag-enum"/>
+            <keyword name="QtServiceBase::CannotBeStopped" id="QtServiceBase::CannotBeStopped" ref="qtservicebase.html#ServiceFlag-enum"/>
+            <keyword name="QtServiceBase::NeedsStopOnShutdown" id="QtServiceBase::NeedsStopOnShutdown" ref="qtservicebase.html#ServiceFlag-enum"/>
+            <keyword name="QtServiceBase::ServiceFlags" id="QtServiceBase::ServiceFlags" ref="qtservicebase.html#ServiceFlag-enum"/>
+            <keyword name="createApplication" id="QtServiceBase::createApplication" ref="qtservicebase.html#createApplication"/>
+            <keyword name="exec" id="QtServiceBase::exec" ref="qtservicebase.html#exec"/>
+            <keyword name="executeApplication" id="QtServiceBase::executeApplication" ref="qtservicebase.html#executeApplication"/>
+            <keyword name="instance" id="QtServiceBase::instance" ref="qtservicebase.html#instance"/>
+            <keyword name="logMessage" id="QtServiceBase::logMessage" ref="qtservicebase.html#logMessage"/>
+            <keyword name="pause" id="QtServiceBase::pause" ref="qtservicebase.html#pause"/>
+            <keyword name="processCommand" id="QtServiceBase::processCommand" ref="qtservicebase.html#processCommand"/>
+            <keyword name="resume" id="QtServiceBase::resume" ref="qtservicebase.html#resume"/>
+            <keyword name="serviceDescription" id="QtServiceBase::serviceDescription" ref="qtservicebase.html#serviceDescription"/>
+            <keyword name="serviceFlags" id="QtServiceBase::serviceFlags" ref="qtservicebase.html#serviceFlags"/>
+            <keyword name="serviceName" id="QtServiceBase::serviceName" ref="qtservicebase.html#serviceName"/>
+            <keyword name="setServiceDescription" id="QtServiceBase::setServiceDescription" ref="qtservicebase.html#setServiceDescription"/>
+            <keyword name="setServiceFlags" id="QtServiceBase::setServiceFlags" ref="qtservicebase.html#setServiceFlags"/>
+            <keyword name="setStartupType" id="QtServiceBase::setStartupType" ref="qtservicebase.html#setStartupType"/>
+            <keyword name="start" id="QtServiceBase::start" ref="qtservicebase.html#start"/>
+            <keyword name="startupType" id="QtServiceBase::startupType" ref="qtservicebase.html#startupType"/>
+            <keyword name="stop" id="QtServiceBase::stop" ref="qtservicebase.html#stop"/>
+            <keyword name="~QtServiceBase" id="QtServiceBase::~QtServiceBase" ref="qtservicebase.html#dtor.QtServiceBase"/>
+            <keyword name="QtServiceController" id="QtServiceController" ref="qtservicecontroller.html"/>
+            <keyword name="QtServiceController::StartupType" id="QtServiceController::StartupType" ref="qtservicecontroller.html#StartupType-enum"/>
+            <keyword name="QtServiceController::AutoStartup" id="QtServiceController::AutoStartup" ref="qtservicecontroller.html#StartupType-enum"/>
+            <keyword name="QtServiceController::ManualStartup" id="QtServiceController::ManualStartup" ref="qtservicecontroller.html#StartupType-enum"/>
+            <keyword name="install" id="QtServiceController::install" ref="qtservicecontroller.html#install"/>
+            <keyword name="isInstalled" id="QtServiceController::isInstalled" ref="qtservicecontroller.html#isInstalled"/>
+            <keyword name="isRunning" id="QtServiceController::isRunning" ref="qtservicecontroller.html#isRunning"/>
+            <keyword name="pause" id="QtServiceController::pause" ref="qtservicecontroller.html#pause"/>
+            <keyword name="resume" id="QtServiceController::resume" ref="qtservicecontroller.html#resume"/>
+            <keyword name="sendCommand" id="QtServiceController::sendCommand" ref="qtservicecontroller.html#sendCommand"/>
+            <keyword name="serviceDescription" id="QtServiceController::serviceDescription" ref="qtservicecontroller.html#serviceDescription"/>
+            <keyword name="serviceFilePath" id="QtServiceController::serviceFilePath" ref="qtservicecontroller.html#serviceFilePath"/>
+            <keyword name="serviceName" id="QtServiceController::serviceName" ref="qtservicecontroller.html#serviceName"/>
+            <keyword name="start" id="QtServiceController::start" ref="qtservicecontroller.html#start"/>
+            <keyword name="startupType" id="QtServiceController::startupType" ref="qtservicecontroller.html#startupType"/>
+            <keyword name="stop" id="QtServiceController::stop" ref="qtservicecontroller.html#stop"/>
+            <keyword name="uninstall" id="QtServiceController::uninstall" ref="qtservicecontroller.html#uninstall"/>
+            <keyword name="~QtServiceController" id="QtServiceController::~QtServiceController" ref="qtservicecontroller.html#dtor.QtServiceController"/>
+            <keyword name="Service" id="Service" ref="index.html"/>
+        </keywords>
+        <files>
+            <file>qtservice-example-controller.html</file>
+            <file>index.html</file>
+            <file>qtservice-example-server.html</file>
+            <file>qtservice-example-interactive.html</file>
+            <file>qtservicebase.html</file>
+            <file>qtservice.html</file>
+            <file>qtservicecontroller.html</file>
+            <file>classic.css</file>
+            <file>images/qt-logo.png</file>
+        </files>
+    </filterSection>
+</QtHelpProject>

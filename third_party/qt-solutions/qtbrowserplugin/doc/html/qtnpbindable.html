@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!-- qtbrowserplugin.cpp -->
+<head>
+  <title>QtNPBindable Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qt-logo.png" align="left" width="57" height="67" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a></td>
+</tr></table><h1 class="title">QtNPBindable Class Reference</h1>
+<p>The QtNPBindable class provides an interface between a widget and the web browser. <a href="#details">More...</a></p>
+<pre> #include &lt;QtNPBindable&gt;</pre><ul>
+<li><a href="qtnpbindable-members.html">List of all members, including inherited members</a></li>
+</ul>
+<hr />
+<a name="public-types"></a>
+<h2>Public Types</h2>
+<table class="alignedsummary" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr><td class="memItemLeft" align="right" valign="top">enum </td><td class="memItemRight" valign="bottom"><b><a href="qtnpbindable.html#DisplayMode-enum">DisplayMode</a></b> { Embedded, Fullpage }</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum </td><td class="memItemRight" valign="bottom"><b><a href="qtnpbindable.html#Reason-enum">Reason</a></b> { ReasonDone, ReasonBreak, ReasonError, ReasonUnknown }</td></tr>
+</table>
+<hr />
+<a name="public-functions"></a>
+<h2>Public Functions</h2>
+<table class="alignedsummary" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr><td class="memItemLeft" align="right" valign="top">DisplayMode </td><td class="memItemRight" valign="bottom"><b><a href="qtnpbindable.html#displayMode">displayMode</a></b> () const</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void </td><td class="memItemRight" valign="bottom"><b><a href="qtnpbindable.html#getBrowserVersion">getBrowserVersion</a></b> ( int * <i>major</i>, int * <i>minor</i> ) const</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void </td><td class="memItemRight" valign="bottom"><b><a href="qtnpbindable.html#getNppVersion">getNppVersion</a></b> ( int * <i>major</i>, int * <i>minor</i> ) const</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">NPP </td><td class="memItemRight" valign="bottom"><b><a href="qtnpbindable.html#instance">instance</a></b> () const</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">QString </td><td class="memItemRight" valign="bottom"><b><a href="qtnpbindable.html#mimeType">mimeType</a></b> () const</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int </td><td class="memItemRight" valign="bottom"><b><a href="qtnpbindable.html#openUrl">openUrl</a></b> ( const QString &amp; <i>url</i>, const QString &amp; <i>window</i> = QString() )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">QMap&lt;QByteArray, QVariant&gt; </td><td class="memItemRight" valign="bottom"><b><a href="qtnpbindable.html#parameters">parameters</a></b> () const</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual bool </td><td class="memItemRight" valign="bottom"><b><a href="qtnpbindable.html#readData">readData</a></b> ( QIODevice * <i>source</i>, const QString &amp; <i>format</i> )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void </td><td class="memItemRight" valign="bottom"><b><a href="qtnpbindable.html#transferComplete">transferComplete</a></b> ( const QString &amp; <i>url</i>, int <i>id</i>, Reason <i>reason</i> )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int </td><td class="memItemRight" valign="bottom"><b><a href="qtnpbindable.html#uploadData">uploadData</a></b> ( const QString &amp; <i>url</i>, const QString &amp; <i>window</i>, const QByteArray &amp; <i>data</i> )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int </td><td class="memItemRight" valign="bottom"><b><a href="qtnpbindable.html#uploadFile">uploadFile</a></b> ( const QString &amp; <i>url</i>, const QString &amp; <i>window</i>, const QString &amp; <i>filename</i> )</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">QString </td><td class="memItemRight" valign="bottom"><b><a href="qtnpbindable.html#userAgent">userAgent</a></b> () const</td></tr>
+</table>
+<hr />
+<a name="protected-functions"></a>
+<h2>Protected Functions</h2>
+<table class="alignedsummary" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr><td class="memItemLeft" align="right" valign="top"></td><td class="memItemRight" valign="bottom"><b><a href="qtnpbindable.html#QtNPBindable">QtNPBindable</a></b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual </td><td class="memItemRight" valign="bottom"><b><a href="qtnpbindable.html#dtor.QtNPBindable">~QtNPBindable</a></b> ()</td></tr>
+</table>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QtNPBindable class provides an interface between a widget and the web browser.</p>
+<p>Inherit your plugin widget class from both <a href="http://qt.nokia.com/doc/4.6/qwidget.html">QWidget</a> (or <a href="http://qt.nokia.com/doc/4.6/qobject.html">QObject</a>) and QtNPBindable to be able to call the functions of this class, and to reimplement the virtual functions. The <a href="http://qt.nokia.com/doc/4.6/moc.html">meta-object compiler</a> requires you to inherit from the <a href="http://qt.nokia.com/doc/4.6/qobject.html">QObject</a> subclass first.</p>
+<pre> class PluginWidget : public QWidget, public QtNPBindable
+ {
+     Q_OBJECT
+ public:
+     PluginWidget(QWidget *parent = 0)
+     {
+     }
+
+     <span class="comment">//...</span>
+ };</pre>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="DisplayMode-enum"></a>enum QtNPBindable::DisplayMode</h3>
+<p>This enum specifies the different display modes of a plugin</p>
+<p><table class="valuelist" border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QtNPBindable::Embedded</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The plugin widget is embedded in a web page, usually with the &lt;EMBED&gt; or the &lt;OBJECT&gt; tag.</td></tr>
+<tr><td valign="top"><tt>QtNPBindable::Fullpage</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The plugin widget is the primary content of the web browser, which is usually the case when the web browser displays a file the plugin supports.</td></tr>
+</table></p>
+<h3 class="fn"><a name="Reason-enum"></a>enum QtNPBindable::Reason</h3>
+<p>This enum specifies how an URL operation was completed</p>
+<p><table  class="valuelist" border="1" cellpadding="2" cellspacing="1" width="40%">
+<tr><th width="60%">Constant</th><th width="40%">Value</th></tr>
+<tr><td valign="top"><tt>QtNPBindable::ReasonDone</tt></td><td align="center" valign="top"><tt>0</tt></td></tr>
+<tr><td valign="top"><tt>QtNPBindable::ReasonBreak</tt></td><td align="center" valign="top"><tt>1</tt></td></tr>
+<tr><td valign="top"><tt>QtNPBindable::ReasonError</tt></td><td align="center" valign="top"><tt>2</tt></td></tr>
+<tr><td valign="top"><tt>QtNPBindable::ReasonUnknown</tt></td><td align="center" valign="top"><tt>-1</tt></td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QtNPBindable"></a>QtNPBindable::QtNPBindable ()&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Constructs a <a href="qtnpbindable.html">QtNPBindable</a> object.</p>
+<p>This can only happen when the plugin object is created.</p>
+<h3 class="fn"><a name="dtor.QtNPBindable"></a>QtNPBindable::~QtNPBindable ()&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Destroys the object.</p>
+<p>This can only happen when the plugin object is destroyed.</p>
+<h3 class="fn"><a name="displayMode"></a><a href="qtnpbindable.html#DisplayMode-enum">DisplayMode</a> QtNPBindable::displayMode () const</h3>
+<p>Returns the display mode of the plugin.</p>
+<h3 class="fn"><a name="getBrowserVersion"></a>void QtNPBindable::getBrowserVersion ( int * <i>major</i>, int * <i>minor</i> ) const</h3>
+<p>Extracts the version of the browser into <i>major</i> and <i>minor</i>.</p>
+<p>See http://devedge-temp.mozilla.org/library/manuals/2002/plugin/1.0/ for an explanation of those values.</p>
+<p>See also <a href="qtnpbindable.html#getNppVersion">getNppVersion</a>() and <a href="qtnpbindable.html#userAgent">userAgent</a>().</p>
+<h3 class="fn"><a name="getNppVersion"></a>void QtNPBindable::getNppVersion ( int * <i>major</i>, int * <i>minor</i> ) const</h3>
+<p>Extracts the version of the plugin API used by this plugin into <i>major</i> and <i>minor</i>.</p>
+<p>See http://devedge-temp.mozilla.org/library/manuals/2002/plugin/1.0/ for an explanation of those values.</p>
+<p>See also <a href="qtnpbindable.html#getBrowserVersion">getBrowserVersion</a>() and <a href="qtnpbindable.html#userAgent">userAgent</a>().</p>
+<h3 class="fn"><a name="instance"></a>NPP QtNPBindable::instance () const</h3>
+<p>Returns the browser's plugin instance associated with this plugin object. The instance is required to call functions in the Netscape Plugin API, i.e&#x2e; NPN_GetJavaPeer().</p>
+<p>The instance returned is only valid as long as this object is.</p>
+<p>See http://devedge-temp.mozilla.org/library/manuals/2002/plugin/1.0/ for documentation of the <tt>NPP</tt> type.</p>
+<h3 class="fn"><a name="mimeType"></a><a href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> QtNPBindable::mimeType () const</h3>
+<p>Returns the mime type this plugin has been instantiated for.</p>
+<h3 class="fn"><a name="openUrl"></a>int QtNPBindable::openUrl ( const <a href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> &amp; <i>url</i>, const <a href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> &amp; <i>window</i> = QString() )</h3>
+<p>Requests that the <i>url</i> be retrieved and sent to the named <i>window</i> (or a new window if <i>window</i> is empty), and returns the ID of the request that is delivered to <a href="qtnpbindable.html#transferComplete">transferComplete</a>() when the get-operation has finished. Returns 0 when the browser or the system doesn't support notification, or -1 when an error occured.</p>
+<pre> void MyPlugin::aboutQtSoftware()
+ {
+     openUrl(&quot;http:<span class="comment">//qt.nokia.com&quot;);</span>
+ }</pre>
+<p>See Netscape's JavaScript documentation for an explanation of window names.</p>
+<p>See also <a href="qtnpbindable.html#transferComplete">transferComplete</a>(), <a href="qtnpbindable.html#uploadData">uploadData</a>(), and <a href="qtnpbindable.html#uploadFile">uploadFile</a>().</p>
+<h3 class="fn"><a name="parameters"></a><a href="http://qt.nokia.com/doc/4.6/qmap.html">QMap</a>&lt;<a href="http://qt.nokia.com/doc/4.6/qbytearray.html">QByteArray</a>, <a href="http://qt.nokia.com/doc/4.6/qvariant.html">QVariant</a>&gt; QtNPBindable::parameters () const</h3>
+<p>Returns the parameters passed to the plugin instance.</p>
+<p>The framework sets the properties of the plugin to the corresponding parameters when the plugin object has been created, but you can use this function to process additional parameters.</p>
+<p>Note that the SGML specification does not permit multiple arguments with the same name.</p>
+<h3 class="fn"><a name="readData"></a>bool QtNPBindable::readData ( <a href="http://qt.nokia.com/doc/4.6/qiodevice.html">QIODevice</a> * <i>source</i>, const <a href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> &amp; <i>format</i> )&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Reimplement this function to read data from <i>source</i> provided with mime type <i>format</i>. The data is the one specified in the <tt>src</tt> or <tt>data</tt> attribute of the <tt>&lt;EMBED&gt;</tt> or <tt>&lt;OBJECT&gt;</tt> tag of in HTML page. This function is called once for every stream the browser creates for the plugin.</p>
+<p>Return true to indicate successfull processing of the data, otherwise return false. The default implementation does nothing and returns false.</p>
+<h3 class="fn"><a name="transferComplete"></a>void QtNPBindable::transferComplete ( const <a href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> &amp; <i>url</i>, int <i>id</i>, <a href="qtnpbindable.html#Reason-enum">Reason</a> <i>reason</i> )&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Called as a result of a call to openUrl, uploadData or uploadFile. <i>url</i> corresponds to the respective parameter, and <i>id</i> to value returned by the call. <i>reason</i> indicates how the transfer was completed.</p>
+<h3 class="fn"><a name="uploadData"></a>int QtNPBindable::uploadData ( const <a href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> &amp; <i>url</i>, const <a href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> &amp; <i>window</i>, const <a href="http://qt.nokia.com/doc/4.6/qbytearray.html">QByteArray</a> &amp; <i>data</i> )</h3>
+<p>Posts <i>data</i> to <i>url</i>, and displays the result in <i>window</i>. Returns the ID of the request that is delivered to <a href="qtnpbindable.html#transferComplete">transferComplete</a>() when the post-operation has finished. Returns 0 when the browser or the system doesn't support notification, or -1 when an error occured.</p>
+<pre> void MyPlugin::sendMail()
+ {
+     uploadData(&quot;mailto:fred@somewhere.com&quot;, QString(), &quot;There is a new file for you!&quot;);
+ }</pre>
+<p>See Netscape's JavaScript documentation for an explanation of window names.</p>
+<p>See also <a href="qtnpbindable.html#transferComplete">transferComplete</a>(), <a href="qtnpbindable.html#openUrl">openUrl</a>(), and <a href="qtnpbindable.html#uploadFile">uploadFile</a>().</p>
+<h3 class="fn"><a name="uploadFile"></a>int QtNPBindable::uploadFile ( const <a href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> &amp; <i>url</i>, const <a href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> &amp; <i>window</i>, const <a href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> &amp; <i>filename</i> )</h3>
+<p>Posts <i>filename</i> to <i>url</i>, and displays the result in <i>window</i>. Returns the ID of the request that is delivered to <a href="qtnpbindable.html#transferComplete">transferComplete</a>() when the post-operation has finished. Returns 0 when the browser or the system doesn't support notification, or -1 when an error occured.</p>
+<pre> void MyPlugin::uploadFile()
+ {
+     uploadFile(&quot;ftp:<span class="comment">//ftp.somewhere.com/incoming&quot;, &quot;response&quot;, &quot;c:\\temp\\file.txt&quot;);</span>
+ }</pre>
+<p>See Netscape's JavaScript documentation for an explanation of window names.</p>
+<p>See also <a href="qtnpbindable.html#transferComplete">transferComplete</a>(), <a href="qtnpbindable.html#uploadData">uploadData</a>(), and <a href="qtnpbindable.html#openUrl">openUrl</a>().</p>
+<h3 class="fn"><a name="userAgent"></a><a href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> QtNPBindable::userAgent () const</h3>
+<p>Returns the user agent (browser name) containing this plugin.</p>
+<p>This is a wrapper around NPN_UserAgent.</p>
+<p>See also <a href="qtnpbindable.html#getBrowserVersion">getBrowserVersion</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td width="30%" align="left">Copyright &copy; 2010 Nokia Corporation and/or its subsidiary(-ies)</td>
+<td width="40%" align="center"><a href="http://qt.nokia.com/doc/trademarks.html">Trademarks</a></td>
+<td width="30%" align="right"><div align="right">Qt Solutions</div></td>
+</tr></table></div></address></body>
+</html>

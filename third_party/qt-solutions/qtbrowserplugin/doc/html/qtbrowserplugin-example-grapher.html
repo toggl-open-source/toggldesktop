@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!-- grapher.qdoc -->
+<head>
+  <title>Grapher Plugin</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qt-logo.png" align="left" width="57" height="67" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a></td>
+</tr></table><h1 class="title">Grapher Plugin<br /><span class="subtitle"></span>
+</h1>
+  <object type="application/x-graphable" data="http://qt.nokia.com/doc/3.3/graph.g1n" WIDTH=250 HEIGHT=250></object>
+  <p>Implementation:</p>
+<pre><span class="comment"> /****************************************************************************
+ **
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+ ** Contact: http://www.qt-project.org/legal
+ **
+ ** This file is part of the Qt Solutions component.
+ **
+ ** You may use this file under the terms of the BSD license as follows:
+ **
+ ** &quot;Redistribution and use in source and binary forms, with or without
+ ** modification, are permitted provided that the following conditions are
+ ** met:
+ **   * Redistributions of source code must retain the above copyright
+ **     notice, this list of conditions and the following disclaimer.
+ **   * Redistributions in binary form must reproduce the above copyright
+ **     notice, this list of conditions and the following disclaimer in
+ **     the documentation and/or other materials provided with the
+ **     distribution.
+ **   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+ **     the names of its contributors may be used to endorse or promote
+ **     products derived from this software without specific prior written
+ **     permission.
+ **
+ ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ ** &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&quot;
+ **
+ ****************************************************************************/</span>
+
+ #include &lt;QtGui&gt;
+ #include &lt;qtbrowserplugin.h&gt;
+
+ #ifdef QAXSERVER
+ #include &lt;ActiveQt/QAxBindable&gt;
+ #include &lt;ActiveQt/QAxFactory&gt;
+ #include &lt;qt_windows.h&gt;
+ #endif
+
+ class Graph : public QWidget, public QtNPBindable
+ #ifdef QAXSERVER
+             , public QAxBindable
+ #endif
+ {
+     Q_OBJECT
+     Q_ENUMS(GraphStyle)
+     Q_PROPERTY(GraphStyle graphStyle READ graphStyle WRITE setGraphStyle)
+     Q_PROPERTY(QString src READ dataSourceUrl WRITE setDataSourceUrl)
+
+     Q_CLASSINFO(&quot;ClassID&quot;, &quot;{2e5b2715-46b2-4831-ba9b-6a3b195d5ec8}&quot;)
+     Q_CLASSINFO(&quot;InterfaceID&quot;, &quot;{94581136-3c0c-46cc-97a1-066061356d43}&quot;)
+     Q_CLASSINFO(&quot;EventsID&quot;, &quot;{8c191b77-1894-45c7-9d6b-201dede95410}&quot;)
+
+     Q_CLASSINFO(&quot;MIME&quot;, &quot;application/x-graphable:g1n:Graphable ASCII numeric data&quot;)
+ public:
+     Graph(QWidget *parent = 0);
+     ~Graph();
+
+     enum GraphStyle
+     {
+         Pie,
+         Bar
+     };
+     void setGraphStyle(GraphStyle style);
+     GraphStyle graphStyle() const;
+
+     void setDataSourceUrl(const QString &amp;url);
+     QString dataSourceUrl() const;
+
+     bool readData(QIODevice *source, const QString &amp;format);
+     bool writeData(QIODevice *sink);
+
+     void transferComplete(const QString &amp;url, int id, Reason r);
+
+ protected:
+     void timerEvent(QTimerEvent*);
+     void enterEvent(QEvent *);
+     void leaveEvent(QEvent *);
+     void paintEvent(QPaintEvent*);
+     void mousePressEvent(QMouseEvent *me);
+
+     void paintWait();
+     void paintBar(QPaintEvent*);
+     void paintPie(QPaintEvent*);
+
+ private slots:
+     void stylePie();
+     void styleBar();
+     void aboutPlugin();
+     void aboutData();
+     void aboutQt();
+     void aboutQtDevelopmentFrameworks();
+
+ private:
+
+     struct Datum {
+         double value;
+         QString label;
+     };
+     QList&lt;Datum&gt; data;
+     void processData(QTextStream &amp;in);
+
+     QMenu *menu;
+     QStatusBar *statusbar;
+     QAction *pie, *bar;
+
+     int pieRotation;
+     int pieTimer;
+     GraphStyle m_style;
+
+     <span class="comment">// Developer information for the About Data dialog:</span>
+     QString sourceUrl;
+     int lastReqId, lastConfId;
+     QString lastConfUrl;
+     Reason lastConfReason;
+ };
+
+ Graph::Graph(QWidget *parent)
+ : QWidget(parent), pieRotation(0), pieTimer(0)
+ {
+     menu = new QMenu(this);
+     QMenu *styles = menu-&gt;addMenu(&quot;&amp;Styles&quot;);
+
+     pie = styles-&gt;addAction(&quot;&amp;Pie&quot;,this,SLOT(stylePie()));
+     pie-&gt;setShortcut(QString(&quot;Ctrl+P&quot;));
+     pie-&gt;setCheckable(true);
+
+     bar = styles-&gt;addAction(&quot;&amp;Bar&quot;, this, SLOT(styleBar()));
+     bar-&gt;setShortcut(QString(&quot;Ctrl+B&quot;));
+     bar-&gt;setCheckable(true);
+
+     QActionGroup *group = new QActionGroup(this);
+     group-&gt;setExclusive(true);
+
+     group-&gt;addAction(pie);
+     group-&gt;addAction(bar);
+
+     QMenu* help = menu-&gt;addMenu(&quot;&amp;Help&quot;);
+     help-&gt;addAction(&quot;About &amp;plugin...&quot;, this, SLOT(aboutPlugin()))-&gt;setShortcut(QString(&quot;Ctrl+A&quot;));
+     help-&gt;addAction(&quot;About &amp;data...&quot;, this, SLOT(aboutData()));
+     help-&gt;addAction(&quot;About &amp;Qt...&quot;, this, SLOT(aboutQt()));
+     help-&gt;addAction(&quot;About Qt &amp;Development Frameworks...&quot;, this, SLOT(aboutQtDevelopmentFrameworks()));
+
+     QShortcut *shortcut = new QShortcut(QKeySequence(&quot;Ctrl+F5&quot;), this);
+     connect(shortcut, SIGNAL(activated()), this, SLOT(aboutQt()));
+
+     statusbar = new QStatusBar(this);
+
+     setFocusPolicy(Qt::StrongFocus);
+     setGraphStyle(Pie);
+
+     QPalette pal = palette();
+     pal.setColor(QPalette::Window,Qt::white);
+     setPalette(pal);
+
+     lastReqId = 0;
+     lastConfId = 0;
+     lastConfReason = ReasonUnknown;
+ }
+
+ Graph::~Graph()
+ {
+ }
+
+ void Graph::setGraphStyle(GraphStyle style)
+ {
+     if (pieTimer)
+         killTimer(pieTimer);
+
+     m_style = style;
+     switch(m_style) {
+     case Pie:
+         pieTimer = startTimer(50);
+         pie-&gt;setChecked(true);
+         break;
+     case Bar:
+         bar-&gt;setChecked(true);
+         break;
+     }
+
+     repaint();
+ }
+
+ Graph::GraphStyle Graph::graphStyle() const
+ {
+     return m_style;
+ }
+
+ void Graph::setDataSourceUrl(const QString &amp;url)
+ {
+     sourceUrl = url;
+
+ #ifdef QAXSERVER
+     <span class="comment">// IE does not call our readData() if plugin is fullpage, so do it here</span>
+     if (QAxFactory::isServer() &amp;&amp; clientSite()) {
+         TCHAR cFileName[512];
+         if (URLDownloadToCacheFile(0, url.utf16(), cFileName, 512, 0, 0) == S_OK)
+             readData(&amp;QFile(QString::fromUtf16(cFileName)), QString());
+     }
+ #endif
+ }
+
+ QString Graph::dataSourceUrl() const
+ {
+     return sourceUrl;
+ }
+
+ void Graph::aboutPlugin()
+ {
+     openUrl(&quot;http:<span class="comment">//qt.nokia.com/products/appdev/add-on-products/catalog/4/Utilities/qtbrowserplugin/&quot;);</span>
+ }
+
+ void Graph::aboutData()
+ {
+     QString page = parameters().value(&quot;datapage&quot;).toString();
+     if (!page.isEmpty()) {
+         openUrl(page);
+     } else {
+         QByteArray table;
+         table += &quot;&lt;b&gt;Data loaded from &quot; + sourceUrl.toLatin1() + &quot;&lt;/b&gt;\n&quot;;
+         table += &quot;&lt;p&gt;This data has been loaded with streammode = '&quot;;
+         table += parameters().contains(&quot;streammode&quot;) ? parameters().value(&quot;streammode&quot;).toByteArray() : QByteArray(&quot;Default&quot;);
+         table += &quot;'&lt;/p&gt;\n&quot;;
+         table += &quot;&lt;table&gt;\n&quot;;
+         for (int i = 0; i &lt; data.count(); ++i) {
+             Datum datum = data.at(i);
+             table += &quot;&lt;tr&gt;&lt;td&gt;&quot; + datum.label + &quot;&lt;/td&gt;&lt;td&gt;&quot; + QString::number(datum.value) + &quot;&lt;/td&gt;&lt;/tr&gt;\n&quot;;
+         }
+         table += &quot;&lt;/table&gt;\n&quot;;
+
+         table += &quot;&lt;p&gt;&lt;b&gt;OpenURL() API usage information:&lt;/b&gt;\n&quot;;
+         table += &quot;&lt;br&gt;Last OpenURL() request id: &quot; + QString::number(lastReqId);
+         table += &quot;&lt;br&gt;Last confirmation id: &quot; + QString::number(lastConfId);
+         table += &quot; Reason: &quot; + QString::number((int)lastConfReason);
+         table += &quot;&lt;br&gt;URL: &quot; + lastConfUrl;
+         table += &quot;&lt;/p&gt;\n&quot;;
+         QMessageBox::information(this, &quot;Data information&quot;, QLatin1String(table));
+     }
+ }
+
+ void Graph::transferComplete(const QString &amp;url, int id, Reason r)
+ {
+     lastConfId = id;
+     lastConfUrl = url;
+     lastConfReason = r;
+ }
+
+ void Graph::aboutQt()
+ {
+     QMessageBox::aboutQt(this);
+ }
+
+ void Graph::aboutQtDevelopmentFrameworks()
+ {
+     lastReqId = openUrl(&quot;http:<span class="comment">//qt.nokia.com&quot;);</span>
+ }
+
+ void Graph::stylePie()
+ {
+     setGraphStyle(Pie);
+ }
+
+ void Graph::styleBar()
+ {
+     setGraphStyle(Bar);
+ }
+
+ bool Graph::readData(QIODevice *source, const QString &amp;<span class="comment">/*format*/</span>)
+ {
+     if (!source-&gt;open(QIODevice::ReadOnly|QIODevice::Text))
+         return false;
+
+     data.clear();
+
+     QTextStream in(source);
+     processData(in);
+
+     update();
+
+     return true;
+ }
+
+ void Graph::processData(QTextStream &amp;in)
+ {
+     while (!in.atEnd()) {
+         Datum datum;
+         QString value;
+         in &gt;&gt; value;
+         in &gt;&gt; datum.label;
+         bool ok;
+         datum.value = value.toDouble(&amp;ok);
+         if (ok)
+             data += datum;
+     }
+ }
+
+ bool Graph::writeData(QIODevice *target)
+ {
+     if (!target-&gt;open(QIODevice::WriteOnly|QIODevice::Text))
+         return false;
+
+     QTextStream out(target);
+     foreach(Datum datum, data) {
+         out &lt;&lt; datum.value &lt;&lt; &quot;\t&quot; &lt;&lt; datum.label &lt;&lt; endl;
+     }
+
+     return true;
+ }
+
+ void Graph::timerEvent(QTimerEvent *e)
+ {
+     if (e-&gt;timerId() == pieTimer) {
+         pieRotation = (pieRotation + 1) % 360;
+         update();
+     }
+     QWidget::timerEvent(e);
+ }
+
+ void Graph::enterEvent(QEvent *)
+ {
+     statusbar-&gt;showMessage(QString(&quot;Qt Grapher plugin [%1]&quot;).arg(mimeType()));
+ }
+
+ void Graph::leaveEvent(QEvent *)
+ {
+     if (!QApplication::activePopupWidget()) {
+         statusbar-&gt;clearMessage();
+     }
+ }
+
+ void Graph::paintEvent(QPaintEvent* event)
+ {
+     if (!data.count()) {
+         paintWait();
+     } else {
+         switch (m_style) {
+         case Pie:
+             paintPie(event);
+             break;
+         default:
+             paintBar(event);
+             break;
+         }
+     }
+ }
+
+ void Graph::mousePressEvent(QMouseEvent *me)
+ {
+     menu-&gt;exec(me-&gt;globalPos());
+ }
+
+ void Graph::paintWait()
+ {
+     QPainter p(this);
+     p.drawText(rect(), Qt::AlignCenter, &quot;Loading...&quot;);
+ }
+
+ void Graph::paintBar(QPaintEvent* event)
+ {
+     const int count = data.count();
+     double max = 0.0;
+     for (int i = 0; i &lt; count; ++i) {
+         double value = data.at(i).value;
+         if (value &gt; max)
+             max = value;
+     }
+
+     QPainter painter(this);
+     painter.setClipRect(event-&gt;rect());
+     painter.save();
+     painter.setWindow(0, qRound(max), count * 20, qRound(-max));
+     painter.setViewport(20, 5, width() - 40, height() - 40);
+
+     for (int i = 0; i &lt; count; ++i) {
+         double value = data.at(i).value;
+         QColor c;
+         c.setHsv((i * 255)/count, 255, 255);<span class="comment">// rainbow effect</span>
+         painter.setBrush(c);
+
+         painter.drawRect(i * 20, 0, 20, qRound(value));
+     }
+     painter.restore();
+     painter.setClipRect(QRect());
+ }
+
+ void Graph::paintPie(QPaintEvent* event)
+ {
+     const int count = data.count();
+     double total = 0.0;
+
+     for (int i = 0; i &lt; count; ++i) {
+         double value = data.at(i).value;
+         total += value;
+     }
+
+     int apos = (pieRotation-90)*16;
+
+     QPainter painter(this);
+     painter.setRenderHint(QPainter::Antialiasing);
+     painter.setClipRect(event-&gt;rect());
+     QRect r(rect());
+     r.adjust(10, 10, -10, -10);
+
+     for (int i = 0; i &lt; count; ++i) {
+         double value = data.at(i).value;
+         QColor c;
+         c.setHsv((i * 255)/count, 255, 255);<span class="comment">// rainbow effect</span>
+         painter.setBrush( c );
+
+         int a = int((value * 360.0) / total * 16.0 + 0.5);
+         painter.drawPie(r, -apos, -a);
+         apos += a;
+     }
+ }
+
+ #include &quot;grapher.moc&quot;
+
+ QTNPFACTORY_BEGIN(&quot;Qt-based Graph Plugin&quot;, &quot;A Qt-based NSAPI plug-in that graphs numeric data&quot;);
+     QTNPCLASS(Graph)
+ QTNPFACTORY_END()
+
+ #ifdef QAXSERVER
+ #include &lt;ActiveQt/QAxFactory&gt;
+ QAXFACTORY_BEGIN(&quot;{89ab08da-df8c-4bd0-8327-72f73741c1a6}&quot;, &quot;{082bd921-0832-4ca7-ab5a-ec06ca7f3350}&quot;)
+     QAXCLASS(Graph)
+ QAXFACTORY_END()
+ #endif</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td width="30%" align="left">Copyright &copy; 2010 Nokia Corporation and/or its subsidiary(-ies)</td>
+<td width="40%" align="center"><a href="http://qt.nokia.com/doc/trademarks.html">Trademarks</a></td>
+<td width="30%" align="right"><div align="right">Qt Solutions</div></td>
+</tr></table></div></address></body>
+</html>

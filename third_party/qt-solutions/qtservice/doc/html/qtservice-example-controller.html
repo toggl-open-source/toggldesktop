@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!-- controller.qdoc -->
+<head>
+  <title>A simple Service Controller</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qt-logo.png" align="left" width="57" height="67" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a></td>
+</tr></table><h1 class="title">A simple Service Controller<br /><span class="subtitle"></span>
+</h1>
+<p>It is a very simple implementation of universal command-line controller. This controller can install and control any service written using <a href="qtservice.html">QtService</a> component. It demonstrates how to use <a href="qtservicecontroller.html">QtServiceController</a> class. On Windows, this is an alternative to using the &quot;Services&quot; Administrative Tool or the built-in <tt>sc.exe</tt> command-line tool to control services.</p>
+<p>A note about services on Windows Vista: Installing/uninstalling and starting/stopping services requires security privileges. The simplest way to achieve this is to set the &quot;Run as Administrator&quot; property on the executable (right-click the executable file, select Properties, and choose the Compatibilty tab in the Properties dialog). This applies even if you are logged in as Administrator. Also, the command-line shell should be started with &quot;Run as Administrator&quot;. Note that the service itself does not need special privileges to run. Only if you want the service to be able to install itself (the -i option) or similar, then the service will need to be run as Administrator. Otherwise, the recommended procedure is to use a controller such as this example and/or the &quot;Services&quot; Administrative Tool to manage the service.</p>
+<p>A usability hint: in some circumstances, e.g&#x2e; when running this example on Windows Vista with the &quot;Run as Administrator&quot; property set, output will be sent to a shell window which will close immediately upon termination, not leaving the user enough time to read the output. In such cases, append the -w(ait) argument, which will make the controller wait for a keypress before terminating.</p>
+<p>Here is the complete source code:</p>
+<pre><span class="comment"> /****************************************************************************
+ **
+ ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+ ** Contact: http://www.qt-project.org/legal
+ **
+ ** This file is part of the Qt Solutions component.
+ **
+ ** You may use this file under the terms of the BSD license as follows:
+ **
+ ** &quot;Redistribution and use in source and binary forms, with or without
+ ** modification, are permitted provided that the following conditions are
+ ** met:
+ **   * Redistributions of source code must retain the above copyright
+ **     notice, this list of conditions and the following disclaimer.
+ **   * Redistributions in binary form must reproduce the above copyright
+ **     notice, this list of conditions and the following disclaimer in
+ **     the documentation and/or other materials provided with the
+ **     distribution.
+ **   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+ **     the names of its contributors may be used to endorse or promote
+ **     products derived from this software without specific prior written
+ **     permission.
+ **
+ ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ ** &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&quot;
+ **
+ ****************************************************************************/</span>
+
+ #include &lt;QtCore/QStringList&gt;
+ #include &lt;QtCore/QDir&gt;
+ #include &lt;QtCore/QSettings&gt;
+ #include &quot;qtservice.h&quot;
+
+ int processArgs(int argc, char **argv)
+ {
+     if (argc &gt; 2) {
+         QString arg1(argv[1]);
+         if (arg1 == QLatin1String(&quot;-i&quot;) ||
+             arg1 == QLatin1String(&quot;-install&quot;)) {
+             if (argc &gt; 2) {
+                 QString account;
+                 QString password;
+                 QString path(argv[2]);
+                 if (argc &gt; 3)
+                     account = argv[3];
+                 if (argc &gt; 4)
+                     password = argv[4];
+                 printf(&quot;The service %s installed.\n&quot;,
+                        (QtServiceController::install(path, account, password) ? &quot;was&quot; : &quot;was not&quot;));
+                 return 0;
+             }
+         } else {
+             QString serviceName(argv[1]);
+             QtServiceController controller(serviceName);
+             QString option(argv[2]);
+             if (option == QLatin1String(&quot;-u&quot;) ||
+                 option == QLatin1String(&quot;-uninstall&quot;)) {
+                 printf(&quot;The service \&quot;%s\&quot; %s uninstalled.\n&quot;,
+                             controller.serviceName().toLatin1().constData(),
+                             (controller.uninstall() ? &quot;was&quot; : &quot;was not&quot;));
+                 return 0;
+             } else if (option == QLatin1String(&quot;-s&quot;) ||
+                        option == QLatin1String(&quot;-start&quot;)) {
+                 QStringList args;
+                 for (int i = 3; i &lt; argc; ++i)
+                     args.append(QString::fromLocal8Bit(argv[i]));
+                 printf(&quot;The service \&quot;%s\&quot; %s started.\n&quot;,
+                        controller.serviceName().toLatin1().constData(),
+                             (controller.start(args) ? &quot;was&quot; : &quot;was not&quot;));
+                 return 0;
+             } else if (option == QLatin1String(&quot;-t&quot;) ||
+                        option == QLatin1String(&quot;-terminate&quot;)) {
+                 printf(&quot;The service \&quot;%s\&quot; %s stopped.\n&quot;,
+                        controller.serviceName().toLatin1().constData(),
+                        (controller.stop() ? &quot;was&quot; : &quot;was not&quot;));
+                 return 0;
+             } else if (option == QLatin1String(&quot;-p&quot;) ||
+                     option == QLatin1String(&quot;-pause&quot;)) {
+                 printf(&quot;The service \&quot;%s\&quot; %s paused.\n&quot;,
+                        controller.serviceName().toLatin1().constData(),
+                        (controller.pause() ? &quot;was&quot; : &quot;was not&quot;));
+                 return 0;
+             } else if (option == QLatin1String(&quot;-r&quot;) ||
+                        option == QLatin1String(&quot;-resume&quot;)) {
+                 printf(&quot;The service \&quot;%s\&quot; %s resumed.\n&quot;,
+                        controller.serviceName().toLatin1().constData(),
+                        (controller.resume() ? &quot;was&quot; : &quot;was not&quot;));
+                 return 0;
+             } else if (option == QLatin1String(&quot;-c&quot;) ||
+                        option == QLatin1String(&quot;-command&quot;)) {
+                 if (argc &gt; 3) {
+                     QString codestr(argv[3]);
+                     int code = codestr.toInt();
+                     printf(&quot;The command %s sent to the service \&quot;%s\&quot;.\n&quot;,
+                            (controller.sendCommand(code) ? &quot;was&quot; : &quot;was not&quot;),
+                            controller.serviceName().toLatin1().constData());
+                     return 0;
+                 }
+             } else if (option == QLatin1String(&quot;-v&quot;) ||
+                     option == QLatin1String(&quot;-version&quot;)) {
+                 bool installed = controller.isInstalled();
+                 printf(&quot;The service\n&quot;
+                         &quot;\t\&quot;%s\&quot;\n\n&quot;, controller.serviceName().toLatin1().constData());
+                 printf(&quot;is %s&quot;, (installed ? &quot;installed&quot; : &quot;not installed&quot;));
+                 printf(&quot; and %s\n\n&quot;, (controller.isRunning() ? &quot;running&quot; : &quot;not running&quot;));
+                 if (installed) {
+                     printf(&quot;path: %s\n&quot;, controller.serviceFilePath().toLatin1().data());
+                     printf(&quot;description: %s\n&quot;, controller.serviceDescription().toLatin1().data());
+                     printf(&quot;startup: %s\n&quot;, controller.startupType() == QtServiceController::AutoStartup ? &quot;Auto&quot; : &quot;Manual&quot;);
+                 }
+                 return 0;
+             }
+         }
+     }
+     printf(&quot;controller [-i PATH | SERVICE_NAME [-v | -u | -s | -t | -p | -r | -c CODE] | -h] [-w]\n\n&quot;
+             &quot;\t-i(nstall) PATH\t: Install the service\n&quot;
+             &quot;\t-v(ersion)\t: Print status of the service\n&quot;
+             &quot;\t-u(ninstall)\t: Uninstall the service\n&quot;
+             &quot;\t-s(tart)\t: Start the service\n&quot;
+             &quot;\t-t(erminate)\t: Stop the service\n&quot;
+             &quot;\t-p(ause)\t: Pause the service\n&quot;
+             &quot;\t-r(esume)\t: Resume the service\n&quot;
+             &quot;\t-c(ommand) CODE\t: Send a command to the service\n&quot;
+             &quot;\t-h(elp)\t\t: Print this help info\n&quot;
+             &quot;\t-w(ait)\t\t: Wait for keypress when done\n&quot;);
+     return 0;
+ }
+
+ int main(int argc, char **argv)
+ {
+ #if !defined(Q_OS_WIN)
+     <span class="comment">// QtService stores service settings in SystemScope, which normally require root privileges.</span>
+     <span class="comment">// To allow testing this example as non-root, we change the directory of the SystemScope settings file.</span>
+     QSettings::setPath(QSettings::NativeFormat, QSettings::SystemScope, QDir::tempPath());
+     qWarning(&quot;(Example uses dummy settings file: %s/QtSoftware.conf)&quot;, QDir::tempPath().toLatin1().constData());
+ #endif
+
+     int result = processArgs(argc, argv);
+
+     if (QString::fromLocal8Bit(argv[argc-1]) == QLatin1String(&quot;-w&quot;) ||
+         QString::fromLocal8Bit(argv[argc-1]) == QLatin1String(&quot;-wait&quot;)) {
+         printf(&quot;\nPress Enter to continue...&quot;);
+         QFile input;
+         input.open(stdin, QIODevice::ReadOnly);
+         input.readLine();
+         printf(&quot;\n&quot;);
+     }
+
+     return result;
+ }</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td width="30%" align="left">Copyright &copy; 2010 Nokia Corporation and/or its subsidiary(-ies)</td>
+<td width="40%" align="center"><a href="http://qt.nokia.com/doc/trademarks.html">Trademarks</a></td>
+<td width="30%" align="right"><div align="right">Qt Solutions</div></td>
+</tr></table></div></address></body>
+</html>
