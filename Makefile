@@ -140,14 +140,22 @@ endif
 clean_test:
 	rm -rf test
 
-osx: fmt_lib lint fmt_osx
-	xcodebuild -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj && \
+osx: fmt_lib lint fmt_osx osx_ui
 	!(otool -L $(executable) | grep "Users" && echo "Executable should not contain hardcoded paths!") && \
 	src/ui/osx/TogglDesktop/fix_dylib_paths.sh && \
 	!(otool -L ./src/ui/osx/TogglDesktop/build/Release/TogglDesktop.app/Contents/Frameworks/*.dylib | grep "Users" && echo "Shared library should not contain hardcoded paths!")
 
-linux: fmt_lib lint
-	cd src/ui/linux/TogglDesktop && qmake && make && cp ../../../ssl/cacert.pem .
+osx_ui:
+	xcodebuild -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj
+
+linux: fmt_lib lint linux_lib linux_ui
+	cp ../../../ssl/cacert.pem .
+
+linux_lib:
+	cd src/libkopsik/Library/TogglDesktopLibrary && qmake && make
+
+linux_ui:
+	cd src/ui/linux/TogglDesktop && qmake && make
 
 ifeq ($(uname), Linux)
 run: linux
