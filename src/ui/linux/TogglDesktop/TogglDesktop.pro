@@ -52,7 +52,6 @@ HEADERS  += \
     ../../../../third_party/qt-solutions/qtsingleapplication/src/qtsingleapplication.h \
     ../../../../third_party/qt-solutions/qtsingleapplication/src/QtSingleApplication \
     ../../../../third_party/qt-solutions/qtsingleapplication/src/qtsinglecoreapplication.h \
-    loginviewcontroller.h \
     loginwidget.h \
     errorviewcontroller.h \
     ../../../libkopsik/include/kopsik_api.h \
