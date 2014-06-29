@@ -17,6 +17,6 @@ notifications:
     on_success: change
     on_failure: always
 before_install:
-  - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq qt5-qmake qtbase5-dev qtdeclarative5-dev libqt5webkit5-dev libsqlite3-dev xorg-dev
+  - sudo apt-add-repository -y ppa:beineri/opt-qt531
+  - sudo apt-get -qq update
+  - sudo apt-get -qq install qt53tools qt53svg qt53webkit
