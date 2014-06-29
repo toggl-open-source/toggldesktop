@@ -116,7 +116,7 @@ clean: clean_ui clean_lib clean_test
 
 ifeq ($(uname), Linux)
 clean_lib:
-	(cd src/libkopsik/Library/TogglDesktopLibrary && make clean)
+	(cd src/libkopsik/Library/TogglDesktopLibrary && qmake && make clean)
 endif
 ifeq ($(uname), Darwin)
 clean_lib:
@@ -126,7 +126,7 @@ endif
 ifeq ($(uname), Linux)
 clean_ui:
 	rm -rf src/ui/linux/build-TogglDesktop-Desktop-Debug && \
-	(cd src/ui/linux/TogglDesktop && make clean) && \
+	(cd src/ui/linux/TogglDesktop && qmake && make clean) && \
 	rm -f src/ui/linux/TogglDesktop/TogglDesktop && \
 	rm -f src/ui/linux/TogglDesktop/cacert.pem
 endif
@@ -147,9 +147,7 @@ osx: fmt_lib lint fmt_osx
 	!(otool -L ./src/ui/osx/TogglDesktop/build/Release/TogglDesktop.app/Contents/Frameworks/*.dylib | grep "Users" && echo "Shared library should not contain hardcoded paths!")
 
 linux: fmt_lib lint
-	cd src/ui/linux/TogglDesktop && make && \
-	cp ../../../ssl/cacert.pem .
-	
+	cd src/ui/linux/TogglDesktop && qmake && make && cp ../../../ssl/cacert.pem .
 
 ifeq ($(uname), Linux)
 run: linux
@@ -368,4 +366,3 @@ else
 endif
 
 test: test_lib
-
