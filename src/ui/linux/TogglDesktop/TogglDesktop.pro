@@ -99,3 +99,7 @@ OTHER_FILES += \
     ../../../ssl/cacert.pem \
     ../../../../third_party/qt-solutions/qtsingleapplication/src/qtsingleapplication.pri \
     ../../../../third_party/qt-solutions/qtsingleapplication/src/qtsinglecoreapplication.pri
+
+#QMAKE_CXXFLAGS += -fsanitize=thread -fPIE
+#QMAKE_LFLAGS += -pie -fsanitize=thread
+

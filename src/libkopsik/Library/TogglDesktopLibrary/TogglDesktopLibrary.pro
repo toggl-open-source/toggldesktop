@@ -119,3 +119,7 @@ DEPENDPATH += $$PWD/../../../../third_party/poco-1.4.6p2-all/NetSSL_OpenSSL/incl
 
 INCLUDEPATH += $$PWD/../../../../third_party/poco-1.4.6p2-all/Data/SQLite/src
 DEPENDPATH += $$PWD/../../../../third_party/poco-1.4.6p2-all/Data/SQLite/src
+
+#QMAKE_CXXFLAGS += -fsanitize=thread -fPIE
+#QMAKE_LFLAGS += -pie -fsanitize=thread
+
