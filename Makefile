@@ -19,7 +19,7 @@ pocolib=$(pocodir)/lib/Darwin/x86_64/
 osname=mac
 endif
 ifeq ($(uname), Linux)
-executable=./src/ui/linux/TogglDesktop/TogglDesktop
+executable=./src/ui/linux/TogglDesktop/build/release/TogglDesktop
 pocolib=$(pocodir)/lib/Linux/x86_64
 osname=linux
 endif
@@ -116,6 +116,7 @@ clean: clean_ui clean_lib clean_test
 
 ifeq ($(uname), Linux)
 clean_lib:
+	rm -rf src/libkopsik/Library/TogglDesktopLibrary/build && \
 	(cd src/libkopsik/Library/TogglDesktopLibrary && qmake && make clean)
 endif
 ifeq ($(uname), Darwin)
@@ -127,8 +128,7 @@ ifeq ($(uname), Linux)
 clean_ui:
 	rm -rf src/ui/linux/build-TogglDesktop-Desktop-Debug && \
 	(cd src/ui/linux/TogglDesktop && qmake && make clean) && \
-	rm -f src/ui/linux/TogglDesktop/TogglDesktop && \
-	rm -f src/ui/linux/TogglDesktop/cacert.pem
+	rm -rf src/ui/linux/TogglDesktop/build
 endif
 ifeq ($(uname), Darwin)
 clean_ui:
@@ -149,13 +149,24 @@ osx_ui:
 	xcodebuild -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj
 
 linux: fmt_lib lint linux_lib linux_ui
-	cp ../../../ssl/cacert.pem .
 
 linux_lib:
-	cd src/libkopsik/Library/TogglDesktopLibrary && qmake && make
+	cd src/libkopsik/Library/TogglDesktopLibrary && qmake && make && \
+	cd ../../../../ && \
+	cp third_party/poco-1.4.6p2-all/lib/Linux/x86_64/libPocoCrypto.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release
+	cp third_party/poco-1.4.6p2-all/lib/Linux/x86_64/libPocoData.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
+	cp third_party/poco-1.4.6p2-all/lib/Linux/x86_64/libPocoDataSQLite.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
+	cp third_party/poco-1.4.6p2-all/lib/Linux/x86_64/libPocoFoundation.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
+	cp third_party/poco-1.4.6p2-all/lib/Linux/x86_64/libPocoNet.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
+	cp third_party/poco-1.4.6p2-all/lib/Linux/x86_64/libPocoNetSSL.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
+	cp third_party/poco-1.4.6p2-all/lib/Linux/x86_64/libPocoUtil.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
+	cp third_party/poco-1.4.6p2-all/lib/Linux/x86_64/libPocoXML.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
+	cp third_party/libjson/libjson.so.7.6.1 src/libkopsik/Library/TogglDesktopLibrary/build/release/libjson.so.7
 
 linux_ui:
-	cd src/ui/linux/TogglDesktop && qmake && make
+	cd src/ui/linux/TogglDesktop && qmake && make && \
+	cd ../../../../ && \
+	cp src/ssl/cacert.pem src/ui/linux/TogglDesktop/build/release
 
 ifeq ($(uname), Linux)
 run: linux
