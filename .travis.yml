@@ -6,7 +6,7 @@ before_script:
   - make clean
 install: make deps
 script:
-  - make test && make
+  - source /opt/qt53/bin/qt53-env.sh && make test && make
 branches:
   only:
     - master
