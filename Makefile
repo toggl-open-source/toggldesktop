@@ -13,6 +13,10 @@ GMOCK_DIR=third_party/gmock-1.7.0
 
 source_dirs=src/*.cc src/*.h src/test/* src/libkopsik/include/*.h
 
+ifndef QMAKE
+QMAKE=qmake
+endif
+
 ifeq ($(uname), Darwin)
 executable=./src/ui/osx/TogglDesktop/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop
 pocolib=$(pocodir)/lib/Darwin/x86_64/
@@ -117,7 +121,7 @@ clean: clean_ui clean_lib clean_test
 ifeq ($(uname), Linux)
 clean_lib:
 	rm -rf src/libkopsik/Library/TogglDesktopLibrary/build && \
-	(cd src/libkopsik/Library/TogglDesktopLibrary && qmake && make clean)
+	(cd src/libkopsik/Library/TogglDesktopLibrary && $(QMAKE) && make clean)
 endif
 ifeq ($(uname), Darwin)
 clean_lib:
@@ -127,7 +131,7 @@ endif
 ifeq ($(uname), Linux)
 clean_ui:
 	rm -rf src/ui/linux/build-TogglDesktop-Desktop-Debug && \
-	(cd src/ui/linux/TogglDesktop && qmake && make clean) && \
+	(cd src/ui/linux/TogglDesktop && $(QMAKE) && make clean) && \
 	rm -rf src/ui/linux/TogglDesktop/build
 endif
 ifeq ($(uname), Darwin)
@@ -151,7 +155,7 @@ osx_ui:
 linux: fmt_lib lint linux_lib linux_ui
 
 linux_lib:
-	cd src/libkopsik/Library/TogglDesktopLibrary && qmake && make && \
+	cd src/libkopsik/Library/TogglDesktopLibrary && $(QMAKE) && make && \
 	cd ../../../../ && \
 	cp third_party/poco-1.4.6p2-all/lib/Linux/x86_64/libPocoCrypto.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release
 	cp third_party/poco-1.4.6p2-all/lib/Linux/x86_64/libPocoData.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
@@ -164,7 +168,7 @@ linux_lib:
 	cp third_party/libjson/libjson.so.7.6.1 src/libkopsik/Library/TogglDesktopLibrary/build/release/libjson.so.7
 
 linux_ui:
-	cd src/ui/linux/TogglDesktop && qmake && make && \
+	cd src/ui/linux/TogglDesktop && $(QMAKE) && make && \
 	cd ../../../../ && \
 	cp src/ssl/cacert.pem src/ui/linux/TogglDesktop/build/release
 
