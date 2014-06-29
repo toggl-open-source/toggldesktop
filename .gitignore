@@ -127,3 +127,7 @@ src/ui/linux/TogglDesktop/cacert.pem
 
 third_party/poco-1.4.6p2-all/Foundation/src/pocomsg.h
 third_party/poco-1.4.6p2-all/Foundation/src/pocomsg.rc
+
+# qt generated makefiles
+src/ui/linux/TogglDesktop/Makefile
+src/libkopsik/Library/TogglDesktopLibrary/Makefile
