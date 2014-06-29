@@ -27,12 +27,17 @@ make test
 
 Linux 
 -----
-You need to install the following packages (on Ubuntu):
+On Ubuntu, you'll need to install the following packages ():
 
 * xorg-dev
 * qtcreator
 * libxss-dev
 * libqt5webkit5-dev
+
+On Fedora,
+
+* qt5-qtwebkit-devel
+* libXScrnSaver-devel
 
 Windows
 -------
