@@ -410,7 +410,8 @@ const int kDurationStringLength = 20;
 
 	if (!self.user_id)
 	{
-		[self indicateStoppedTimer]; // maybe its running, but we dont know any more
+		// maybe its running, but we dont know any more
+		[self indicateStoppedTimer];
 	}
 }
 
