@@ -5,7 +5,9 @@ compiler:
 before_script:
   - make clean
 install: make deps
-script: make test && make lint
+script:
+  - qmake -qt=qt5
+  - make test
 branches:
   only:
     - master
@@ -15,3 +17,8 @@ notifications:
   email:
     on_success: change
     on_failure: always
+before_install:
+  - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq qt5-qmake qtbase5-dev qtdeclarative5-dev libqt5webkit5-dev libsqlite3-dev xorg-dev
+  - qmake -qt=qt5
