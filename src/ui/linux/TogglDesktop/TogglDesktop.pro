@@ -4,12 +4,16 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network webkitwidgets
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT       += core gui network webkitwidgets widgets
 
 TARGET = TogglDesktop
 TEMPLATE = app
+
+CONFIG(debug, debug|release) {
+	DESTDIR = build/debug
+} else {
+	DESTDIR = build/release
+}
 
 SOURCES += main.cpp\
     updateview.cpp \
@@ -80,9 +84,9 @@ FORMS    += \
     feedbackdialog.ui \
     idlenotificationdialog.ui
 
-QMAKE_RPATHDIR += $$PWD/../../../libkopsik/Library/build-TogglDesktopLibrary-Desktop-Debug
+QMAKE_RPATHDIR += $$PWD/../../../libkopsik/Library/TogglDesktopLibrary/build/release
 
-LIBS += -L$$PWD/../../../libkopsik/Library/build-TogglDesktopLibrary-Desktop-Debug -lTogglDesktopLibrary
+LIBS += -L$$PWD/../../../libkopsik/Library/TogglDesktopLibrary/build/release -lTogglDesktopLibrary
 LIBS += -lX11 -lXss
 
 INCLUDEPATH += $$PWD/../../../libkopsik/include

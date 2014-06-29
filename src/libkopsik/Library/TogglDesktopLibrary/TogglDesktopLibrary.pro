@@ -9,6 +9,12 @@ TEMPLATE = lib
 
 DEFINES += TOGGLDESKTOPLIBRARY_LIBRARY
 
+CONFIG(debug, debug|release) {
+	DESTDIR = build/debug
+} else {
+	DESTDIR = build/release
+}   
+
 SOURCES += \
     ../../../autocomplete_item.cc \
     ../../../base_model.cc \
