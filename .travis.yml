@@ -6,9 +6,7 @@ before_script:
   - make clean
 install: make deps
 script:
-  - qmake -qt=qt5
-  - make test
-  - make
+  - make test && make
 branches:
   only:
     - master
