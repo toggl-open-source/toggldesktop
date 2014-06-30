@@ -234,9 +234,9 @@ namespace TogglDesktop
             }
             TogglDesktop.Program.UserID = user_id;
             if (open) {
-                Controls.Remove(timeEntryListViewController);
-                Controls.Remove(timeEntryEditViewController);
-                Controls.Add(loginViewController);
+                contentPanel.Controls.Remove(timeEntryListViewController);
+                contentPanel.Controls.Remove(timeEntryEditViewController);
+                contentPanel.Controls.Add(loginViewController);
                 loginViewController.SetAcceptButton(this);
             }
             enableMenuItems();
@@ -281,9 +281,9 @@ namespace TogglDesktop
             }
             if (open)
             {
-                Controls.Remove(loginViewController);
-                Controls.Remove(timeEntryEditViewController);
-                Controls.Add(timeEntryListViewController);
+                contentPanel.Controls.Remove(loginViewController);
+                contentPanel.Controls.Remove(timeEntryEditViewController);
+                contentPanel.Controls.Add(timeEntryListViewController);
                 timeEntryListViewController.SetAcceptButton(this);
             }
         }
@@ -300,9 +300,9 @@ namespace TogglDesktop
             }
             if (open)
             {
-                Controls.Remove(loginViewController);
-                Controls.Remove(timeEntryListViewController);
-                Controls.Add(timeEntryEditViewController);
+                contentPanel.Controls.Remove(loginViewController);
+                contentPanel.Controls.Remove(timeEntryListViewController);
+                contentPanel.Controls.Add(timeEntryEditViewController);
                 timeEntryEditViewController.SetAcceptButton(this);
                 timeEntryEditViewController.SetFocus(focused_field_name);
             }

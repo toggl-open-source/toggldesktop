@@ -68,6 +68,7 @@
             this.mainMenuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenuLogout = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenuQuit = new System.Windows.Forms.ToolStripMenuItem();
+            this.contentPanel = new System.Windows.Forms.Panel();
             this.troubleBox.SuspendLayout();
             this.trayIconMenu.SuspendLayout();
             this.mainMenuStrip.SuspendLayout();
@@ -372,11 +373,20 @@
             this.mainMenuQuit.Text = "Quit";
             this.mainMenuQuit.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
+            // contentPanel
+            // 
+            this.contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.contentPanel.Location = new System.Drawing.Point(0, 24);
+            this.contentPanel.Name = "contentPanel";
+            this.contentPanel.Size = new System.Drawing.Size(299, 298);
+            this.contentPanel.TabIndex = 7;
+            // 
             // MainWindowController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(299, 322);
+            this.Controls.Add(this.contentPanel);
             this.Controls.Add(this.mainMenuStrip);
             this.Controls.Add(this.troubleBox);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -437,6 +447,7 @@
         private System.Windows.Forms.ToolStripMenuItem mainMenuAbout;
         private System.Windows.Forms.ToolStripMenuItem mainMenuLogout;
         private System.Windows.Forms.ToolStripMenuItem mainMenuQuit;
+        private System.Windows.Forms.Panel contentPanel;
     }
 }
 
