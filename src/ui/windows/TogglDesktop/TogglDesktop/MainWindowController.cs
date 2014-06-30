@@ -246,14 +246,30 @@ namespace TogglDesktop
         private void enableMenuItems()
         {
             bool isLoggedIn = TogglDesktop.Program.IsLoggedIn;
+
             newToolStripMenuItem.Enabled = isLoggedIn;
+            mainMenuNew.Enabled = newToolStripMenuItem.Enabled;
+
             continueToolStripMenuItem.Enabled = isLoggedIn && !isTracking;
+            mainMenuContinue.Enabled = continueToolStripMenuItem.Enabled;
+
             stopToolStripMenuItem.Enabled = isLoggedIn && isTracking;
+            mainMenuStop.Enabled = stopToolStripMenuItem.Enabled;
+
             syncToolStripMenuItem.Enabled = isLoggedIn;
+            mainMenuSync.Enabled = syncToolStripMenuItem.Enabled;
+
             logoutToolStripMenuItem.Enabled = isLoggedIn;
+            mainMenuLogout.Enabled = logoutToolStripMenuItem.Enabled;
+
             clearCacheToolStripMenuItem.Enabled = isLoggedIn;
+            mainMenuClearCache.Enabled = clearCacheToolStripMenuItem.Enabled;
+
             sendFeedbackToolStripMenuItem.Enabled = isLoggedIn;
+            mainMenuSendFeedback.Enabled = sendFeedbackToolStripMenuItem.Enabled;
+            
             openInBrowserToolStripMenuItem.Enabled = isLoggedIn;
+            mainMenuReports.Enabled = openInBrowserToolStripMenuItem.Enabled;
         }
 
         void OnTimeEntryList(bool open, List<TogglApi.KopsikTimeEntryViewItem> list)

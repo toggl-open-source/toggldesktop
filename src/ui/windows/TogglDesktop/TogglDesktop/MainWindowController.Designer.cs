@@ -53,8 +53,24 @@
             this.logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timerIdleDetection = new System.Windows.Forms.Timer(this.components);
+            this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
+            this.togglDesktopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenuNew = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenuContinue = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenuStop = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
+            this.mainMenuSync = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenuReports = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenuPreferences = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
+            this.mainMenuClearCache = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenuSendFeedback = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenuAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenuLogout = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenuQuit = new System.Windows.Forms.ToolStripMenuItem();
             this.troubleBox.SuspendLayout();
             this.trayIconMenu.SuspendLayout();
+            this.mainMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // troubleBox
@@ -236,13 +252,135 @@
             this.timerIdleDetection.Interval = 1000;
             this.timerIdleDetection.Tick += new System.EventHandler(this.timerIdleDetection_Tick);
             // 
+            // mainMenuStrip
+            // 
+            this.mainMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.togglDesktopToolStripMenuItem});
+            this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
+            this.mainMenuStrip.Name = "mainMenuStrip";
+            this.mainMenuStrip.Size = new System.Drawing.Size(299, 24);
+            this.mainMenuStrip.TabIndex = 6;
+            this.mainMenuStrip.Text = "menuStrip1";
+            // 
+            // togglDesktopToolStripMenuItem
+            // 
+            this.togglDesktopToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mainMenuNew,
+            this.mainMenuContinue,
+            this.mainMenuStop,
+            this.toolStripMenuItem5,
+            this.mainMenuSync,
+            this.mainMenuReports,
+            this.mainMenuPreferences,
+            this.toolStripMenuItem6,
+            this.mainMenuClearCache,
+            this.mainMenuSendFeedback,
+            this.mainMenuAbout,
+            this.mainMenuLogout,
+            this.mainMenuQuit});
+            this.togglDesktopToolStripMenuItem.Name = "togglDesktopToolStripMenuItem";
+            this.togglDesktopToolStripMenuItem.Size = new System.Drawing.Size(96, 20);
+            this.togglDesktopToolStripMenuItem.Text = "Toggl Desktop";
+            // 
+            // mainMenuNew
+            // 
+            this.mainMenuNew.Name = "mainMenuNew";
+            this.mainMenuNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.N)));
+            this.mainMenuNew.Size = new System.Drawing.Size(161, 22);
+            this.mainMenuNew.Text = "New";
+            this.mainMenuNew.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
+            // 
+            // mainMenuContinue
+            // 
+            this.mainMenuContinue.Name = "mainMenuContinue";
+            this.mainMenuContinue.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.C)));
+            this.mainMenuContinue.Size = new System.Drawing.Size(161, 22);
+            this.mainMenuContinue.Text = "Continue";
+            this.mainMenuContinue.Click += new System.EventHandler(this.continueToolStripMenuItem_Click);
+            // 
+            // mainMenuStop
+            // 
+            this.mainMenuStop.Name = "mainMenuStop";
+            this.mainMenuStop.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.S)));
+            this.mainMenuStop.Size = new System.Drawing.Size(161, 22);
+            this.mainMenuStop.Text = "Stop";
+            this.mainMenuStop.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(158, 6);
+            // 
+            // mainMenuSync
+            // 
+            this.mainMenuSync.Name = "mainMenuSync";
+            this.mainMenuSync.Size = new System.Drawing.Size(161, 22);
+            this.mainMenuSync.Text = "Sync";
+            this.mainMenuSync.Click += new System.EventHandler(this.syncToolStripMenuItem_Click);
+            // 
+            // mainMenuReports
+            // 
+            this.mainMenuReports.Name = "mainMenuReports";
+            this.mainMenuReports.Size = new System.Drawing.Size(161, 22);
+            this.mainMenuReports.Text = "Reports";
+            this.mainMenuReports.Click += new System.EventHandler(this.openInBrowserToolStripMenuItem_Click);
+            // 
+            // mainMenuPreferences
+            // 
+            this.mainMenuPreferences.Name = "mainMenuPreferences";
+            this.mainMenuPreferences.Size = new System.Drawing.Size(161, 22);
+            this.mainMenuPreferences.Text = "Preferences";
+            this.mainMenuPreferences.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem6
+            // 
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(158, 6);
+            // 
+            // mainMenuClearCache
+            // 
+            this.mainMenuClearCache.Name = "mainMenuClearCache";
+            this.mainMenuClearCache.Size = new System.Drawing.Size(161, 22);
+            this.mainMenuClearCache.Text = "Clear Cache";
+            this.mainMenuClearCache.Click += new System.EventHandler(this.clearCacheToolStripMenuItem_Click);
+            // 
+            // mainMenuSendFeedback
+            // 
+            this.mainMenuSendFeedback.Name = "mainMenuSendFeedback";
+            this.mainMenuSendFeedback.Size = new System.Drawing.Size(161, 22);
+            this.mainMenuSendFeedback.Text = "Send Feedback";
+            this.mainMenuSendFeedback.Click += new System.EventHandler(this.sendFeedbackToolStripMenuItem_Click);
+            // 
+            // mainMenuAbout
+            // 
+            this.mainMenuAbout.Name = "mainMenuAbout";
+            this.mainMenuAbout.Size = new System.Drawing.Size(161, 22);
+            this.mainMenuAbout.Text = "About";
+            this.mainMenuAbout.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // mainMenuLogout
+            // 
+            this.mainMenuLogout.Name = "mainMenuLogout";
+            this.mainMenuLogout.Size = new System.Drawing.Size(161, 22);
+            this.mainMenuLogout.Text = "Logout";
+            this.mainMenuLogout.Click += new System.EventHandler(this.logoutToolStripMenuItem_Click);
+            // 
+            // mainMenuQuit
+            // 
+            this.mainMenuQuit.Name = "mainMenuQuit";
+            this.mainMenuQuit.Size = new System.Drawing.Size(161, 22);
+            this.mainMenuQuit.Text = "Quit";
+            this.mainMenuQuit.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
+            // 
             // MainWindowController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(299, 322);
+            this.Controls.Add(this.mainMenuStrip);
             this.Controls.Add(this.troubleBox);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.mainMenuStrip;
             this.MinimumSize = new System.Drawing.Size(315, 360);
             this.Name = "MainWindowController";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -252,7 +390,10 @@
             this.troubleBox.ResumeLayout(false);
             this.troubleBox.PerformLayout();
             this.trayIconMenu.ResumeLayout(false);
+            this.mainMenuStrip.ResumeLayout(false);
+            this.mainMenuStrip.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -281,6 +422,21 @@
         private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearCacheToolStripMenuItem;
         private System.Windows.Forms.Timer timerIdleDetection;
+        private System.Windows.Forms.MenuStrip mainMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem togglDesktopToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mainMenuNew;
+        private System.Windows.Forms.ToolStripMenuItem mainMenuContinue;
+        private System.Windows.Forms.ToolStripMenuItem mainMenuStop;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
+        private System.Windows.Forms.ToolStripMenuItem mainMenuSync;
+        private System.Windows.Forms.ToolStripMenuItem mainMenuReports;
+        private System.Windows.Forms.ToolStripMenuItem mainMenuPreferences;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
+        private System.Windows.Forms.ToolStripMenuItem mainMenuClearCache;
+        private System.Windows.Forms.ToolStripMenuItem mainMenuSendFeedback;
+        private System.Windows.Forms.ToolStripMenuItem mainMenuAbout;
+        private System.Windows.Forms.ToolStripMenuItem mainMenuLogout;
+        private System.Windows.Forms.ToolStripMenuItem mainMenuQuit;
     }
 }
 
