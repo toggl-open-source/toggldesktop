@@ -116,7 +116,7 @@ clean: clean_ui clean_lib clean_test
 
 ifeq ($(uname), Linux)
 clean_lib:
-	(cd src/libkopsik/Library/TogglDesktopLibrary && qmake && make clean)
+	(cd src/libkopsik/Library/TogglDesktopLibrary && qmake -qt=qt5 && make clean)
 endif
 ifeq ($(uname), Darwin)
 clean_lib:
@@ -126,7 +126,7 @@ endif
 ifeq ($(uname), Linux)
 clean_ui:
 	rm -rf src/ui/linux/build-TogglDesktop-Desktop-Debug && \
-	(cd src/ui/linux/TogglDesktop && qmake && make clean) && \
+	(cd src/ui/linux/TogglDesktop && qmake -qt=qt5 && make clean) && \
 	rm -f src/ui/linux/TogglDesktop/TogglDesktop && \
 	rm -f src/ui/linux/TogglDesktop/cacert.pem
 endif
@@ -152,10 +152,10 @@ linux: fmt_lib lint linux_lib linux_ui
 	cp ../../../ssl/cacert.pem .
 
 linux_lib:
-	cd src/libkopsik/Library/TogglDesktopLibrary && qmake && make
+	cd src/libkopsik/Library/TogglDesktopLibrary && qmake -qt=qt5 && make
 
 linux_ui:
-	cd src/ui/linux/TogglDesktop && qmake && make
+	cd src/ui/linux/TogglDesktop && qmake -qt=qt5 && make
 
 ifeq ($(uname), Linux)
 run: linux
