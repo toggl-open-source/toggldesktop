@@ -643,6 +643,12 @@ extern int kDurationStringLength;
 		NSLog(@"Cannot apply duration text field changes, self.GUID is nil");
 		return;
 	}
+  
+  if ([[self.durationTextField stringValue] isEqualToString:self.timeEntry.duration])
+  {
+    NSLog(@"Duration has not changed");
+    return;
+  }
 
 	const char *value = [[self.durationTextField stringValue] UTF8String];
 	kopsik_set_time_entry_duration(ctx, [self.timeEntry.GUID UTF8String], value);
