@@ -89,6 +89,19 @@ namespace TogglDesktop
             displayTrayIcon();
         }
 
+        /*
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000; // Turn on WS_EX_COMPOSITED
+                cp.Style &= ~0x02000000; // Turn off WS_CLIPCHILDREN
+                return cp;
+            }
+        }
+        */
+
         void OnStoppedTimerState()
         {
             if (InvokeRequired)
