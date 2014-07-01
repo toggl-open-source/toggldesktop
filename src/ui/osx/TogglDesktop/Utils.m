@@ -95,13 +95,13 @@
 BOOL wasLaunchedAsLoginOrResumeItem()
 {
 	ProcessSerialNumber psn = { 0, kCurrentProcess };
-	NSDictionary *process_info = (__bridge NSDictionary *)ProcessInformationCopyDictionary(&psn, kProcessDictionaryIncludeAllInformationMask);
+	NSDictionary *process_info = CFBridgingRelease(ProcessInformationCopyDictionary(&psn, kProcessDictionaryIncludeAllInformationMask));
 
 	long long temp = [[process_info objectForKey:@"ParentPSN"] longLongValue];
 	ProcessSerialNumber parent_psn = { (temp >> 32) & 0x00000000FFFFFFFFLL, temp & 0x00000000FFFFFFFFLL };
 
-	NSDictionary *parent_info = (__bridge NSDictionary *)ProcessInformationCopyDictionary(&parent_psn,
-																						  kProcessDictionaryIncludeAllInformationMask);
+	NSDictionary *parent_info = CFBridgingRelease(ProcessInformationCopyDictionary(&parent_psn,
+																						  kProcessDictionaryIncludeAllInformationMask));
 
 	return [[parent_info objectForKey:@"FileCreator"] isEqualToString:@"lgnw"];
 }
