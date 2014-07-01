@@ -145,7 +145,7 @@
     <Compile Include="IdleNotificationWindowController.Designer.cs">
       <DependentUpon>IdleNotificationWindowController.cs</DependentUpon>
     </Compile>
-    <Compile Include="TogglApi.cs" />
+    <Compile Include="Toggl.cs" />
     <Compile Include="LoginViewController.cs">
       <SubType>UserControl</SubType>
     </Compile>

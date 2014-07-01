@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace TogglDesktop
 {
-    static class TogglApi
+    static class Toggl
     {
         private static IntPtr ctx = IntPtr.Zero;
 
@@ -44,7 +44,7 @@ namespace TogglDesktop
         // Models
 
         [StructLayout(LayoutKind.Sequential, CharSet = charset)]
-        public struct KopsikTimeEntryViewItem
+        public struct TimeEntry
         {
             public Int64 DurationInSeconds;
             public string Description;
@@ -78,7 +78,7 @@ namespace TogglDesktop
             public UInt64 DefaultWID;
             public IntPtr Next;
 
-            public KopsikTimeEntryViewItem ToUTF8()
+            public TimeEntry ToUTF8()
             {
                 Description = DecodeString(Description);
                 ProjectAndTaskLabel = DecodeString(ProjectAndTaskLabel);
@@ -93,7 +93,7 @@ namespace TogglDesktop
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = charset)]
-        public struct KopsikAutocompleteItem
+        public struct AutocompleteItem
         {
             public string Text;
             public string Description;
@@ -111,7 +111,7 @@ namespace TogglDesktop
                 return this.Text;
             }
 
-            public KopsikAutocompleteItem ToUTF8()
+            public AutocompleteItem ToUTF8()
             {
                 Text = DecodeString(Text);
                 Description = DecodeString(Description);
@@ -124,7 +124,7 @@ namespace TogglDesktop
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = charset)]
-        public struct KopsikViewItem
+        public struct Model
         {
             public UInt64 ID;
             public UInt64 WID;
@@ -132,7 +132,7 @@ namespace TogglDesktop
             public string Name;
             public IntPtr Next;
 
-            public KopsikViewItem ToUTF8()
+            public Model ToUTF8()
             {
                 Name = DecodeString(Name);
                 return this;
@@ -145,7 +145,7 @@ namespace TogglDesktop
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = charset)]
-        public struct KopsikSettingsViewItem
+        public struct Settings
         {
             [MarshalAs(UnmanagedType.I1)]
             public bool UseProxy;
@@ -166,7 +166,7 @@ namespace TogglDesktop
             [MarshalAs(UnmanagedType.I1)]
             public bool RecordTimeline;
 
-            public KopsikSettingsViewItem ToUTF8()
+            public Settings ToUTF8()
             {
                 ProxyHost = DecodeString(ProxyHost);
                 ProxyUsername = DecodeString(ProxyUsername);
@@ -176,7 +176,7 @@ namespace TogglDesktop
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = charset)]
-        public struct KopsikUpdateViewItem
+        public struct Update
         {
             public string UpdateChannel;
             [MarshalAs(UnmanagedType.I1)]
@@ -211,11 +211,11 @@ namespace TogglDesktop
         private delegate void KopsikDisplayUpdate(
             [MarshalAs(UnmanagedType.I1)]
             bool open,
-            ref KopsikUpdateViewItem view);
+            ref Update view);
 
         public delegate void DisplayUpdate(
             bool open,
-            KopsikUpdateViewItem view);
+            Update view);
 
         [UnmanagedFunctionPointer(convention)]
         private delegate void KopsikDisplayOnlineState(
@@ -259,50 +259,50 @@ namespace TogglDesktop
 
         public delegate void DisplayTimeEntryList(
             bool open,
-            List<KopsikTimeEntryViewItem> list);
+            List<TimeEntry> list);
 
         [UnmanagedFunctionPointer(convention)]
         private delegate void KopsikDisplayAutocomplete(
             IntPtr first);
 
         public delegate void DisplayAutocomplete(
-            List<KopsikAutocompleteItem> list);
+            List<AutocompleteItem> list);
 
         [UnmanagedFunctionPointer(convention)]
         private delegate void KopsikDisplayViewItems(
             IntPtr first);
 
         public delegate void DisplayViewItems(
-            List<KopsikViewItem> list);
+            List<Model> list);
         
         [UnmanagedFunctionPointer(convention)]
         private delegate void KopsikDisplayTimeEntryEditor(
             [MarshalAs(UnmanagedType.I1)]
             bool open,
-            ref KopsikTimeEntryViewItem te,
+            ref TimeEntry te,
             string focused_field_name);
 
         public delegate void DisplayTimeEntryEditor(
             bool open,
-            KopsikTimeEntryViewItem te,
+            TimeEntry te,
             string focused_field_name);
 
         [UnmanagedFunctionPointer(convention)]
         private delegate void KopsikDisplaySettings(
             [MarshalAs(UnmanagedType.I1)]
             bool open,
-            ref KopsikSettingsViewItem settings);
+            ref Settings settings);
 
         public delegate void DisplaySettings(
             bool open,
-            KopsikSettingsViewItem settings);
+            Settings settings);
 
         [UnmanagedFunctionPointer(convention)]
         private delegate void KopsikDisplayTimerState(
             IntPtr te);
 
         public delegate void DisplayRunningTimerState(
-            KopsikTimeEntryViewItem te);
+            TimeEntry te);
 
         public delegate void DisplayStoppedTimerState();
 
@@ -1003,11 +1003,11 @@ namespace TogglDesktop
             kopsik_set_cacert_path(ctx, cacert_path);
 
             kopsik_check_view_item_size(
-                Marshal.SizeOf(new KopsikTimeEntryViewItem()),
-                Marshal.SizeOf(new KopsikAutocompleteItem()),
-                Marshal.SizeOf(new KopsikViewItem()),
-                Marshal.SizeOf(new KopsikSettingsViewItem()),
-                Marshal.SizeOf(new KopsikUpdateViewItem()));
+                Marshal.SizeOf(new TimeEntry()),
+                Marshal.SizeOf(new AutocompleteItem()),
+                Marshal.SizeOf(new Model()),
+                Marshal.SizeOf(new Settings()),
+                Marshal.SizeOf(new Update()));
 
             // Wire up events
             kopsik_on_app(ctx, delegate(bool open)
@@ -1020,7 +1020,7 @@ namespace TogglDesktop
                 OnError(DecodeString(errmsg), user_error);
             });
 
-            kopsik_on_update(ctx, delegate(bool open, ref KopsikUpdateViewItem view)
+            kopsik_on_update(ctx, delegate(bool open, ref Update view)
             {
                 OnUpdate(open, view);
             });
@@ -1057,7 +1057,7 @@ namespace TogglDesktop
 
             kopsik_on_time_entry_editor(ctx, delegate(
                 bool open,
-                ref KopsikTimeEntryViewItem te,
+                ref TimeEntry te,
                 string focused_field_name)
             {
                 OnTimeEntryEditor(open, te.ToUTF8(), focused_field_name);
@@ -1078,7 +1078,7 @@ namespace TogglDesktop
                 OnTags(ConvertToViewItemList(first));
             });
 
-            kopsik_on_settings(ctx, delegate(bool open, ref KopsikSettingsViewItem settings)
+            kopsik_on_settings(ctx, delegate(bool open, ref Settings settings)
             {
                 OnSettings(open, settings.ToUTF8());
             });
@@ -1090,9 +1090,9 @@ namespace TogglDesktop
                     OnStoppedTimerState();
                     return;
                 }
-                KopsikTimeEntryViewItem view =
-                    (KopsikTimeEntryViewItem)Marshal.PtrToStructure(
-                    te, typeof(KopsikTimeEntryViewItem));
+                TimeEntry view =
+                    (TimeEntry)Marshal.PtrToStructure(
+                    te, typeof(TimeEntry));
                 OnRunningTimerState(view.ToUTF8());
             });
 
@@ -1127,15 +1127,15 @@ namespace TogglDesktop
             return kopsik_context_start_events(ctx);
         }
 
-        public static List<KopsikViewItem> ConvertToViewItemList(IntPtr first)
+        public static List<Model> ConvertToViewItemList(IntPtr first)
         {
-            List<KopsikViewItem> list = new List<KopsikViewItem>();
+            List<Model> list = new List<Model>();
             if (IntPtr.Zero == first)
             {
                 return list;
             }
-            KopsikViewItem n = (KopsikViewItem)Marshal.PtrToStructure(
-                first, typeof(KopsikViewItem));
+            Model n = (Model)Marshal.PtrToStructure(
+                first, typeof(Model));
             while (true)
             {
                 list.Add(n.ToUTF8());
@@ -1143,21 +1143,21 @@ namespace TogglDesktop
                 {
                     break;
                 }
-                n = (KopsikViewItem)Marshal.PtrToStructure(
-                    n.Next, typeof(KopsikViewItem));
+                n = (Model)Marshal.PtrToStructure(
+                    n.Next, typeof(Model));
             };
             return list;
         }
 
-        private static List<KopsikAutocompleteItem> ConvertToAutocompleteList(IntPtr first)
+        private static List<AutocompleteItem> ConvertToAutocompleteList(IntPtr first)
         {
-            List<KopsikAutocompleteItem> list = new List<KopsikAutocompleteItem>();
+            List<AutocompleteItem> list = new List<AutocompleteItem>();
             if (IntPtr.Zero == first)
             {
                 return list;
             }
-            KopsikAutocompleteItem n = (KopsikAutocompleteItem)Marshal.PtrToStructure(
-                first, typeof(KopsikAutocompleteItem));
+            AutocompleteItem n = (AutocompleteItem)Marshal.PtrToStructure(
+                first, typeof(AutocompleteItem));
             while (true)
             {
                 list.Add(n.ToUTF8());
@@ -1165,21 +1165,21 @@ namespace TogglDesktop
                 {
                     break;
                 }
-                n = (KopsikAutocompleteItem)Marshal.PtrToStructure(
-                    n.Next, typeof(KopsikAutocompleteItem));
+                n = (AutocompleteItem)Marshal.PtrToStructure(
+                    n.Next, typeof(AutocompleteItem));
             };
             return list;
         }
 
-        private static List<KopsikTimeEntryViewItem> ConvertToTimeEntryList(IntPtr first)
+        private static List<TimeEntry> ConvertToTimeEntryList(IntPtr first)
         {
-            List<KopsikTimeEntryViewItem> list = new List<KopsikTimeEntryViewItem>();
+            List<TimeEntry> list = new List<TimeEntry>();
             if (IntPtr.Zero == first)
             {
                 return list;
             }
-            KopsikTimeEntryViewItem n = (KopsikTimeEntryViewItem)Marshal.PtrToStructure(
-                first, typeof(KopsikTimeEntryViewItem));
+            TimeEntry n = (TimeEntry)Marshal.PtrToStructure(
+                first, typeof(TimeEntry));
 
             while (true)
             {
@@ -1188,8 +1188,8 @@ namespace TogglDesktop
                 {
                     break;
                 }
-                n = (KopsikTimeEntryViewItem)Marshal.PtrToStructure(
-                    n.Next, typeof(KopsikTimeEntryViewItem));
+                n = (TimeEntry)Marshal.PtrToStructure(
+                    n.Next, typeof(TimeEntry));
             };
             return list;
         }

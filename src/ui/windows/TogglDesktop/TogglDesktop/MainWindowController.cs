@@ -56,28 +56,28 @@ namespace TogglDesktop
 
             Utils.LoadWindowLocation(this);
 
-            TogglApi.OnApp += OnApp;
-            TogglApi.OnError += OnError;
-            TogglApi.OnUpdate += OnUpdate;
-            TogglApi.OnLogin += OnLogin;
-            TogglApi.OnTimeEntryList += OnTimeEntryList;
-            TogglApi.OnTimeEntryEditor += OnTimeEntryEditor;
-            TogglApi.OnOnlineState += OnOnlineState;
-            TogglApi.OnReminder += OnReminder;
-            TogglApi.OnURL += OnURL;
-            TogglApi.OnRunningTimerState += OnRunningTimerState;
-            TogglApi.OnStoppedTimerState += OnStoppedTimerState;
-            TogglApi.OnSettings += OnSettings;
-            TogglApi.OnIdleNotification += OnIdleNotification;
+            Toggl.OnApp += OnApp;
+            Toggl.OnError += OnError;
+            Toggl.OnUpdate += OnUpdate;
+            Toggl.OnLogin += OnLogin;
+            Toggl.OnTimeEntryList += OnTimeEntryList;
+            Toggl.OnTimeEntryEditor += OnTimeEntryEditor;
+            Toggl.OnOnlineState += OnOnlineState;
+            Toggl.OnReminder += OnReminder;
+            Toggl.OnURL += OnURL;
+            Toggl.OnRunningTimerState += OnRunningTimerState;
+            Toggl.OnStoppedTimerState += OnStoppedTimerState;
+            Toggl.OnSettings += OnSettings;
+            Toggl.OnIdleNotification += OnIdleNotification;
 
-            if (!TogglApi.Start(TogglDesktop.Program.Version()))
+            if (!Toggl.Start(TogglDesktop.Program.Version()))
             {
                 MessageBox.Show("Missing callback. See the log file for details");
                 TogglDesktop.Program.Shutdown(1);
             }
         }
 
-        void OnRunningTimerState(TogglApi.KopsikTimeEntryViewItem te)
+        void OnRunningTimerState(Toggl.TimeEntry te)
         {
             if (InvokeRequired)
             {
@@ -114,7 +114,7 @@ namespace TogglDesktop
             displayTrayIcon();
         }
 
-        void OnSettings(bool open, TogglApi.KopsikSettingsViewItem settings)
+        void OnSettings(bool open, Toggl.Settings settings)
         {
             if (InvokeRequired)
             {
@@ -147,7 +147,7 @@ namespace TogglDesktop
             // FIXME: change tray icon
         }
 
-        void OnUpdate(bool open, TogglApi.KopsikUpdateViewItem view)
+        void OnUpdate(bool open, Toggl.Update view)
         {
             if (InvokeRequired)
             {
@@ -272,7 +272,7 @@ namespace TogglDesktop
             mainMenuReports.Enabled = openInBrowserToolStripMenuItem.Enabled;
         }
 
-        void OnTimeEntryList(bool open, List<TogglApi.KopsikTimeEntryViewItem> list)
+        void OnTimeEntryList(bool open, List<Toggl.TimeEntry> list)
         {
             if (InvokeRequired)
             {
@@ -290,7 +290,7 @@ namespace TogglDesktop
 
         void OnTimeEntryEditor(
             bool open,
-            TogglApi.KopsikTimeEntryViewItem te,
+            Toggl.TimeEntry te,
             string focused_field_name)
         {
             if (InvokeRequired)
@@ -350,17 +350,17 @@ namespace TogglDesktop
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TogglApi.Start("", "", 0, 0);
+            Toggl.Start("", "", 0, 0);
         }
 
         private void continueToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TogglApi.ContinueLatest();
+            Toggl.ContinueLatest();
         }
 
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           TogglApi.Stop();
+           Toggl.Stop();
         }
 
         private void showToolStripMenuItem_Click(object sender, EventArgs e)
@@ -370,27 +370,27 @@ namespace TogglDesktop
 
         private void syncToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TogglApi.Sync();
+            Toggl.Sync();
         }
 
         private void openInBrowserToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TogglApi.OpenInBrowser();
+            Toggl.OpenInBrowser();
         }
 
         private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TogglApi.EditPreferences();
+            Toggl.EditPreferences();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TogglApi.About();
+            Toggl.About();
         }
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TogglApi.Logout();
+            Toggl.Logout();
         }
 
         private void show()
@@ -421,7 +421,7 @@ namespace TogglDesktop
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (DialogResult.Yes == dr) 
             {
-                TogglApi.ClearCache();
+                Toggl.ClearCache();
             }
         }
 
@@ -460,7 +460,7 @@ namespace TogglDesktop
                 idle_seconds = 0;
             }
 
-            TogglApi.SetIdleSeconds((ulong)idle_seconds);
+            Toggl.SetIdleSeconds((ulong)idle_seconds);
         }
 
         private void trayIcon_MouseClick(object sender, MouseEventArgs e)

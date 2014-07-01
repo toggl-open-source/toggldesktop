@@ -18,8 +18,8 @@ namespace TogglDesktop
         {
             InitializeComponent();
 
-            TogglApi.OnIdleNotification += OnIdleNotification;
-            TogglApi.OnStoppedTimerState += OnStoppedTimerState;
+            Toggl.OnIdleNotification += OnIdleNotification;
+            Toggl.OnStoppedTimerState += OnStoppedTimerState;
         }
 
         private void buttonKeepTime_Click(object sender, EventArgs e)
@@ -29,7 +29,7 @@ namespace TogglDesktop
 
         private void buttonDiscardTime_Click(object sender, EventArgs e)
         {
-            TogglApi.StopRunningTimeEntryAt(idle_started_at);
+            Toggl.StopRunningTimeEntryAt(idle_started_at);
             Close();
         }
 

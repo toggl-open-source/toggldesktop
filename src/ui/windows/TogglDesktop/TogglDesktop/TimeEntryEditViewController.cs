@@ -13,20 +13,20 @@ namespace TogglDesktop
     public partial class TimeEntryEditViewController : UserControl
     {
         private string GUID = "";
-        private TogglApi.KopsikTimeEntryViewItem timeEntry;
-        private List<TogglApi.KopsikAutocompleteItem> timeEntryAutocompleteUpdate = null;
-        private List<TogglApi.KopsikAutocompleteItem> projectAutocompleteUpdate = null;
+        private Toggl.TimeEntry timeEntry;
+        private List<Toggl.AutocompleteItem> timeEntryAutocompleteUpdate = null;
+        private List<Toggl.AutocompleteItem> projectAutocompleteUpdate = null;
 
         public TimeEntryEditViewController()
         {
             InitializeComponent();
 
-            TogglApi.OnTimeEntryEditor += OnTimeEntryEditor;
-            TogglApi.OnWorkspaceSelect += OnWorkspaceSelect;
-            TogglApi.OnClientSelect += OnClientSelect;
-            TogglApi.OnTags += OnTags;
-            TogglApi.OnTimeEntryAutocomplete += OnTimeEntryAutocomplete;
-            TogglApi.OnProjectAutocomplete += OnProjectAutocomplete;
+            Toggl.OnTimeEntryEditor += OnTimeEntryEditor;
+            Toggl.OnWorkspaceSelect += OnWorkspaceSelect;
+            Toggl.OnClientSelect += OnClientSelect;
+            Toggl.OnTags += OnTags;
+            Toggl.OnTimeEntryAutocomplete += OnTimeEntryAutocomplete;
+            Toggl.OnProjectAutocomplete += OnProjectAutocomplete;
             this.checkedListBoxTags.DisplayMember = "Name";
             this.checkedListBoxTags.ValueMember = "Name";
         }
@@ -43,15 +43,15 @@ namespace TogglDesktop
 
         public void SetFocus(string focusedFieldName)
         {
-            if (TogglApi.Project == focusedFieldName)
+            if (Toggl.Project == focusedFieldName)
             {
                 comboBoxProject.Focus();
             }
-            else if (TogglApi.Duration == focusedFieldName)
+            else if (Toggl.Duration == focusedFieldName)
             {
                 textBoxDuration.Focus();
             }
-            else if (TogglApi.Description == focusedFieldName)
+            else if (Toggl.Description == focusedFieldName)
             {
                 comboBoxDescription.Focus();
             }
@@ -61,13 +61,13 @@ namespace TogglDesktop
         {
             if (applyAddProject())
             {
-                TogglApi.ViewTimeEntryList();
+                Toggl.ViewTimeEntryList();
             }
         }
 
         void OnTimeEntryEditor(
             bool open,
-            TogglApi.KopsikTimeEntryViewItem te,
+            Toggl.TimeEntry te,
             string focused_field_name)
         {
             if (InvokeRequired)
@@ -127,7 +127,7 @@ namespace TogglDesktop
             }
             if (!dateTimePickerStartDate.Focused)
             {
-                dateTimePickerStartDate.Value = TogglApi.DateTimeFromUnix(te.Started);
+                dateTimePickerStartDate.Value = Toggl.DateTimeFromUnix(te.Started);
             }
 
             this.panelStartEndTime.Visible = !timeEntry.DurOnly;
@@ -140,7 +140,7 @@ namespace TogglDesktop
 
             if (te.UpdatedAt >= 0)
             {
-                DateTime updatedAt = TogglApi.DateTimeFromUnix(te.UpdatedAt);
+                DateTime updatedAt = Toggl.DateTimeFromUnix(te.UpdatedAt);
                 toolStripStatusLabelLastUpdate.Text = "Last update: " + updatedAt.ToString();
                 toolStripStatusLabelLastUpdate.Visible = true;
             }
@@ -177,16 +177,16 @@ namespace TogglDesktop
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (DialogResult.Yes == dr)
             {
-                TogglApi.DeleteTimeEntry(GUID);
+                Toggl.DeleteTimeEntry(GUID);
             }
         }
 
         private void buttonContinue_Click(object sender, EventArgs e)
         {
-            TogglApi.Continue(GUID);
+            Toggl.Continue(GUID);
         }
 
-        void OnClientSelect(List<TogglApi.KopsikViewItem> list)
+        void OnClientSelect(List<Toggl.Model> list)
         {
             if (InvokeRequired)
             {
@@ -195,13 +195,13 @@ namespace TogglDesktop
             }
 
             comboBoxClient.Items.Clear();
-            foreach (TogglApi.KopsikViewItem o in list)
+            foreach (Toggl.Model o in list)
             {
                 comboBoxClient.Items.Add(o);
             }
         }
 
-        void OnTags(List<TogglApi.KopsikViewItem> list)
+        void OnTags(List<Toggl.Model> list)
         {
             if (InvokeRequired)
             {
@@ -209,13 +209,13 @@ namespace TogglDesktop
                 return;
             }
             checkedListBoxTags.Items.Clear();
-            foreach (TogglApi.KopsikViewItem o in list)
+            foreach (Toggl.Model o in list)
             {
                 checkedListBoxTags.Items.Add(o.Name);
             }
         }
 
-        void OnWorkspaceSelect(List<TogglApi.KopsikViewItem> list)
+        void OnWorkspaceSelect(List<Toggl.Model> list)
         {
             if (InvokeRequired)
             {
@@ -223,13 +223,13 @@ namespace TogglDesktop
                 return;
             }
             comboBoxWorkspace.Items.Clear();
-            foreach (TogglApi.KopsikViewItem o in list)
+            foreach (Toggl.Model o in list)
             {
                 comboBoxWorkspace.Items.Add(o);
             }
         }
 
-        void OnTimeEntryAutocomplete(List<TogglApi.KopsikAutocompleteItem> list)
+        void OnTimeEntryAutocomplete(List<Toggl.AutocompleteItem> list)
         {
             if (InvokeRequired)
             {
@@ -242,7 +242,7 @@ namespace TogglDesktop
                 return;
             }
             comboBoxDescription.Items.Clear();
-            foreach (TogglApi.KopsikAutocompleteItem o in timeEntryAutocompleteUpdate)
+            foreach (Toggl.AutocompleteItem o in timeEntryAutocompleteUpdate)
             {
                 comboBoxDescription.Items.Add(o);
             }
@@ -256,16 +256,16 @@ namespace TogglDesktop
             {
                 return;
             }
-            TogglApi.KopsikAutocompleteItem item = (TogglApi.KopsikAutocompleteItem)o;
+            Toggl.AutocompleteItem item = (Toggl.AutocompleteItem)o;
             comboBoxDescription.Text = item.Description;
-            TogglApi.SetTimeEntryProject(
+            Toggl.SetTimeEntryProject(
                 GUID,
                 item.TaskID,
                 item.ProjectID,
                 null);
         }
 
-        void OnProjectAutocomplete(List<TogglApi.KopsikAutocompleteItem> list)
+        void OnProjectAutocomplete(List<Toggl.AutocompleteItem> list)
         {
             if (InvokeRequired)
             {
@@ -278,7 +278,7 @@ namespace TogglDesktop
                 return;
             }
             comboBoxProject.Items.Clear();
-            foreach (TogglApi.KopsikAutocompleteItem o in projectAutocompleteUpdate)
+            foreach (Toggl.AutocompleteItem o in projectAutocompleteUpdate)
             {
                 comboBoxProject.Items.Add(o);
             }
@@ -289,7 +289,7 @@ namespace TogglDesktop
         {
             if (comboBoxProject.Text.Length == 0)
             {
-                TogglApi.SetTimeEntryProject(GUID, 0, 0, "");
+                Toggl.SetTimeEntryProject(GUID, 0, 0, "");
             }
         }
 
@@ -300,15 +300,15 @@ namespace TogglDesktop
             {
                 return;
             }
-            TogglApi.KopsikAutocompleteItem item = (TogglApi.KopsikAutocompleteItem)o;
-            TogglApi.SetTimeEntryProject(GUID, 0, item.ProjectID, "");
+            Toggl.AutocompleteItem item = (Toggl.AutocompleteItem)o;
+            Toggl.SetTimeEntryProject(GUID, 0, item.ProjectID, "");
         }
 
         private void checkBoxBillable_CheckedChanged(object sender, EventArgs e)
         {
             if (null == checkBoxBillable.Tag)
             {
-                TogglApi.SetTimeEntryBillable(GUID, checkBoxBillable.Checked);
+                Toggl.SetTimeEntryBillable(GUID, checkBoxBillable.Checked);
             }
         }
 
@@ -318,7 +318,7 @@ namespace TogglDesktop
             {
                 return;
             }
-            TogglApi.SetTimeEntryDescription(GUID, comboBoxDescription.Text);
+            Toggl.SetTimeEntryDescription(GUID, comboBoxDescription.Text);
         }
 
         private void textBoxStartTime_Leave(object sender, EventArgs e)
@@ -339,7 +339,7 @@ namespace TogglDesktop
                 Console.WriteLine("Cannot apply duration change. this.TimeEntry is null");
                 return;
             }
-            TogglApi.SetTimeEntryDuration(GUID, this.textBoxDuration.Text);
+            Toggl.SetTimeEntryDuration(GUID, this.textBoxDuration.Text);
         }
 
         private void textBoxEndTime_Leave(object sender, EventArgs e)
@@ -360,11 +360,11 @@ namespace TogglDesktop
             String utf8String = iso8601String;
             if (textbox == this.textBoxStartTime)
             {
-                TogglApi.SetTimeEntryStart(timeEntry.GUID, utf8String);
+                Toggl.SetTimeEntryStart(timeEntry.GUID, utf8String);
             }
             else if (textbox == this.textBoxEndTime)
             {
-                TogglApi.SetTimeEntryEnd(timeEntry.GUID, utf8String);
+                Toggl.SetTimeEntryEnd(timeEntry.GUID, utf8String);
             }            
         }
 
@@ -373,7 +373,7 @@ namespace TogglDesktop
             DateTime date = this.dateTimePickerStartDate.Value;
             int hours = 0;
             int minutes = 0;
-            if (!TogglApi.ParseTime(field.Text, ref hours, ref minutes))
+            if (!Toggl.ParseTime(field.Text, ref hours, ref minutes))
             {
                 return date;
             }
@@ -404,7 +404,7 @@ namespace TogglDesktop
                 tags += item.ToString();
             }
 
-            TogglApi.SetTimeEntryTags(timeEntry.GUID, tags);
+            Toggl.SetTimeEntryTags(timeEntry.GUID, tags);
         }
 
         private void timerRunningDuration_Tick(object sender, EventArgs e)
@@ -417,7 +417,7 @@ namespace TogglDesktop
             {
                 return;
             }
-            string s = TogglApi.FormatDurationInSecondsHHMMSS(timeEntry.DurationInSeconds);
+            string s = Toggl.FormatDurationInSecondsHHMMSS(timeEntry.DurationInSeconds);
             if (s != textBoxDuration.Text)
             {
                 textBoxDuration.Text = s;
@@ -478,7 +478,7 @@ namespace TogglDesktop
             }
 
             bool is_public = checkBoxPublic.Checked;
-            ulong workspaceID = ((TogglApi.KopsikViewItem)comboBoxWorkspace.Items[0]).ID;
+            ulong workspaceID = ((Toggl.Model)comboBoxWorkspace.Items[0]).ID;
             if (comboBoxWorkspace.Items.Count > 1)
             {
                 workspaceID = selectedItemID(comboBoxWorkspace);
@@ -489,11 +489,11 @@ namespace TogglDesktop
             }
             ulong clientID = selectedItemID(comboBoxClient);
             bool isBillable = timeEntry.Billable;
-            bool projectAdded = TogglApi.AddProject(
+            bool projectAdded = Toggl.AddProject(
                 GUID, workspaceID, clientID, textBoxProjectName.Text, !is_public);
             if (projectAdded && isBillable)
             {
-                TogglApi.SetTimeEntryBillable(GUID, isBillable);
+                Toggl.SetTimeEntryBillable(GUID, isBillable);
             }
             return projectAdded;
         }
@@ -502,7 +502,7 @@ namespace TogglDesktop
         {
             for (int i = 0; i < combobox.Items.Count; i++)
             {
-                TogglApi.KopsikViewItem item = (TogglApi.KopsikViewItem)combobox.Items[i];
+                Toggl.Model item = (Toggl.Model)combobox.Items[i];
                 if (item.Name == combobox.Text)
                 {
                     return item.ID;

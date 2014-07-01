@@ -21,10 +21,10 @@ namespace TogglDesktop
 
             labelVersion.Text = TogglDesktop.Program.Version();
 
-            TogglApi.OnUpdate += OnUpdate;
+            Toggl.OnUpdate += OnUpdate;
         }
 
-        void OnUpdate(bool open, TogglApi.KopsikUpdateViewItem view)
+        void OnUpdate(bool open, Toggl.Update view)
         {
             if (InvokeRequired)
             {
@@ -88,7 +88,7 @@ namespace TogglDesktop
         {
             if (null == comboBoxChannel.Tag)
             {
-                TogglApi.SetUpdateChannel(comboBoxChannel.Text);
+                Toggl.SetUpdateChannel(comboBoxChannel.Text);
             }
         }
 

@@ -16,16 +16,16 @@ namespace TogglDesktop
         private Int64 duration_in_seconds = 0;
         private UInt64 task_id = 0;
         private UInt64 project_id = 0;
-        private List<TogglApi.KopsikAutocompleteItem> timeEntryAutocompleteUpdate;
-        private List<TogglApi.KopsikAutocompleteItem> autoCompleteList;
+        private List<Toggl.AutocompleteItem> timeEntryAutocompleteUpdate;
+        private List<Toggl.AutocompleteItem> autoCompleteList;
 
         public TimerEditViewController()
         {
             InitializeComponent();
 
-            TogglApi.OnTimeEntryAutocomplete += OnTimeEntryAutocomplete;
-            TogglApi.OnRunningTimerState += OnRunningTimerState;
-            TogglApi.OnStoppedTimerState += OnStoppedTimerState;
+            Toggl.OnTimeEntryAutocomplete += OnTimeEntryAutocomplete;
+            Toggl.OnRunningTimerState += OnRunningTimerState;
+            Toggl.OnStoppedTimerState += OnStoppedTimerState;
 
             this.Anchor = (AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top);
         }
@@ -50,7 +50,7 @@ namespace TogglDesktop
                     duration = "";
                 }
 
-                TogglApi.Start(
+                Toggl.Start(
                     description,
                     duration,
                     task_id,
@@ -58,7 +58,7 @@ namespace TogglDesktop
             }
             else
             {
-                TogglApi.Stop();
+                Toggl.Stop();
             }
         }
 
@@ -106,7 +106,7 @@ namespace TogglDesktop
             descriptionTextBox.Top = defaultDescriptionTop;
         }
 
-        void OnRunningTimerState(TogglApi.KopsikTimeEntryViewItem te)
+        void OnRunningTimerState(Toggl.TimeEntry te)
         {
             if (InvokeRequired)
             {
@@ -150,7 +150,7 @@ namespace TogglDesktop
             project_id = 0;
         }
 
-        void OnTimeEntryAutocomplete(List<TogglApi.KopsikAutocompleteItem> list)
+        void OnTimeEntryAutocomplete(List<Toggl.AutocompleteItem> list)
         {
             if (InvokeRequired)
             {
@@ -177,12 +177,12 @@ namespace TogglDesktop
 
         private void linkLabelDescription_Click(object sender, EventArgs e)
         {
-            TogglApi.Edit("", true, TogglApi.Description);
+            Toggl.Edit("", true, Toggl.Description);
         }
 
         private void linkLabelDuration_Click(object sender, EventArgs e)
         {
-            TogglApi.Edit("", true, TogglApi.Duration);
+            Toggl.Edit("", true, Toggl.Duration);
         }
 
         private void timerRunningDuration_Tick(object sender, EventArgs e)
@@ -192,7 +192,7 @@ namespace TogglDesktop
                 // Timer is not running
                 return;
             }
-            string s = TogglApi.FormatDurationInSecondsHHMMSS(duration_in_seconds);
+            string s = Toggl.FormatDurationInSecondsHHMMSS(duration_in_seconds);
             if (s != linkLabelDuration.Text) {
                 linkLabelDuration.Text = s;
             }
@@ -200,7 +200,7 @@ namespace TogglDesktop
 
         private void linkLabelProject_Click(object sender, EventArgs e)
         {
-            TogglApi.Edit("", true, TogglApi.Project);
+            Toggl.Edit("", true, Toggl.Project);
         }
 
         private void comboBoxDescription_DropDownClosed(object sender, EventArgs e)
@@ -256,7 +256,7 @@ namespace TogglDesktop
                 {
                     return;
                 }
-                foreach (TogglApi.KopsikAutocompleteItem item in autoCompleteList)
+                foreach (Toggl.AutocompleteItem item in autoCompleteList)
                 {
                     if (item.ToString() == descriptionTextBox.Text)
                     {

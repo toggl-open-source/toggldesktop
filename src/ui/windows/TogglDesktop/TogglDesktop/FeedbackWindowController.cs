@@ -44,7 +44,7 @@ namespace TogglDesktop
                 richTextBoxContents.Focus();
                 return;
             }
-            if (!TogglApi.SendFeedback(
+            if (!Toggl.SendFeedback(
                 comboBoxTopic.Text,
                 richTextBoxContents.Text,
                 openFileDialog.FileName)) {

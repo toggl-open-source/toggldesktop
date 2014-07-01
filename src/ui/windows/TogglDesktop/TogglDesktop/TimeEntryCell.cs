@@ -12,7 +12,7 @@ namespace TogglDesktop
 {
     public partial class TimeEntryCell : UserControl
     {
-        private TogglApi.KopsikTimeEntryViewItem TimeEntry;
+        private Toggl.TimeEntry TimeEntry;
 
         public TimeEntryCell(int y, int w)
         {
@@ -22,7 +22,7 @@ namespace TogglDesktop
             Anchor = (AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top);
         }
 
-        internal void Setup(TogglApi.KopsikTimeEntryViewItem item)
+        internal void Setup(Toggl.TimeEntry item)
         {
             TimeEntry = item;
 
@@ -36,27 +36,27 @@ namespace TogglDesktop
 
         private void TimeEntryCell_MouseClick(object sender, MouseEventArgs e)
         {
-            TogglApi.Edit(TimeEntry.GUID, false, "");
+            Toggl.Edit(TimeEntry.GUID, false, "");
         }
 
         private void labelDescription_Click(object sender, EventArgs e)
         {
-            TogglApi.Edit(TimeEntry.GUID, false, TogglApi.Description);
+            Toggl.Edit(TimeEntry.GUID, false, Toggl.Description);
         }
 
         private void labelDuration_Click(object sender, EventArgs e)
         {
-            TogglApi.Edit(TimeEntry.GUID, false, TogglApi.Duration);
+            Toggl.Edit(TimeEntry.GUID, false, Toggl.Duration);
         }
 
         private void labelProject_Click(object sender, EventArgs e)
         {
-            TogglApi.Edit(TimeEntry.GUID, false, TogglApi.Project);
+            Toggl.Edit(TimeEntry.GUID, false, Toggl.Project);
         }
 
         private void labelContinue_Click(object sender, EventArgs e)
         {
-            TogglApi.Continue(TimeEntry.GUID);
+            Toggl.Continue(TimeEntry.GUID);
         }
 
     }
