@@ -101,7 +101,7 @@ BOOL wasLaunchedAsLoginOrResumeItem()
 	ProcessSerialNumber parent_psn = { (temp >> 32) & 0x00000000FFFFFFFFLL, temp & 0x00000000FFFFFFFFLL };
 
 	NSDictionary *parent_info = CFBridgingRelease(ProcessInformationCopyDictionary(&parent_psn,
-																						  kProcessDictionaryIncludeAllInformationMask));
+																				   kProcessDictionaryIncludeAllInformationMask));
 
 	return [[parent_info objectForKey:@"FileCreator"] isEqualToString:@"lgnw"];
 }
