@@ -23,6 +23,7 @@
 #include "Poco/Util/TimerTaskAdapter.h"
 #include "Poco/Environment.h"
 #include "Poco/Timestamp.h"
+#include "Poco/Stopwatch.h"
 
 namespace kopsik {
 
@@ -1193,6 +1194,9 @@ std::string Context::timeOfDayFormat() const {
 }
 
 void Context::DisplayTimeEntryList(const _Bool open) {
+    Poco::Stopwatch stopwatch;
+    stopwatch.start();
+
     std::vector<TimeEntry *> list = timeEntries();
 
     std::map<std::string, Poco::Int64> date_durations;
@@ -1243,6 +1247,12 @@ void Context::DisplayTimeEntryList(const _Bool open) {
 
     UI()->DisplayTimeEntryList(open, first);
     time_entry_view_item_clear(first);
+
+    stopwatch.stop();
+    std::stringstream ss;
+    ss << "Time entry list rendered in "
+       << stopwatch.elapsed() / 1000 << " ms";
+    logger().debug(ss.str());
 }
 
 void Context::Edit(const std::string GUID,
