@@ -1,7 +1,7 @@
 #include "preferencesdialog.h"
 #include "ui_preferencesdialog.h"
 
-#include "toggl_api.h"
+#include "toggl.h"
 #include "settingsview.h"
 
 PreferencesDialog::PreferencesDialog(QWidget *parent) :

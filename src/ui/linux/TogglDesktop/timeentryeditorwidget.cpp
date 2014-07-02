@@ -4,7 +4,7 @@
 #include <QMessageBox>
 #include <QDebug>
 
-#include "toggl_api.h"
+#include "toggl.h"
 
 TimeEntryEditorWidget::TimeEntryEditorWidget(QWidget *parent) :
     QWidget(parent),

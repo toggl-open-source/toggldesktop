@@ -1,4 +1,4 @@
-#include "toggl_api.h"
+#include "toggl.h"
 
 #include <iostream>
 
@@ -42,9 +42,11 @@ void on_display_update(
 }
 
 void on_display_online_state(
-    const bool is_online)
+    const bool is_online,
+    const char *reason)
 {
-    TogglApi::instance->displayOnlineState(is_online);
+    TogglApi::instance->displayOnlineState(is_online,
+					   QString(reason));
 }
 
 void on_display_url(

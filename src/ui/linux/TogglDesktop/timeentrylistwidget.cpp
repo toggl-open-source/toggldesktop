@@ -1,7 +1,7 @@
 #include "timeentrylistwidget.h"
 #include "ui_timeentrylistwidget.h"
 
-#include "toggl_api.h"
+#include "toggl.h"
 #include "timerwidget.h"
 #include "timeentrycellwidget.h"
 

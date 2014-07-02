@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "toggl_api.h"
+#include "toggl.h"
 #include "loginwidget.h"
 #include "timeentrylistwidget.h"
 #include "preferencesdialog.h"

@@ -21,7 +21,7 @@ SOURCES += main.cpp\
     autocompleteview.cpp \
     genericview.cpp \
     settingsview.cpp \
-    toggl_api.cpp \
+    toggl.cpp \
     mainwindowcontroller.cpp \
     errorviewcontroller.cpp \
     ../../../../third_party/qt-solutions/qtsingleapplication/src/qtlocalpeer.cpp \
@@ -48,7 +48,7 @@ HEADERS  += \
     autocompleteview.h \
     genericview.h \
     settingsview.h \
-    toggl_api.h \
+    toggl.h \
     mainwindowcontroller.h \
     ../../../../third_party/qt-solutions/qtsingleapplication/src/qtlocalpeer.h \
     ../../../../third_party/qt-solutions/qtsingleapplication/src/qtlockedfile.h \

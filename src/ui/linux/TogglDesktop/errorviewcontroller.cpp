@@ -1,6 +1,6 @@
 #include "errorviewcontroller.h"
 #include "ui_errorviewcontroller.h"
-#include "toggl_api.h"
+#include "toggl.h"
 
 ErrorViewController::ErrorViewController(QWidget *parent) :
     QWidget(parent),

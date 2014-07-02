@@ -1,7 +1,7 @@
 #include "idlenotificationdialog.h"
 #include "ui_idlenotificationdialog.h"
 
-#include "toggl_api.h"
+#include "toggl.h"
 #include "settingsview.h"
 
 #include <X11/extensions/scrnsaver.h>

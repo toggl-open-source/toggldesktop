@@ -134,7 +134,8 @@ signals:
         UpdateView *update);
 
     void displayOnlineState(
-        const bool is_online);
+        const bool is_online,
+	const QString reason);
 
     void displayLogin(
         const bool open,

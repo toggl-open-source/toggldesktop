@@ -1,7 +1,7 @@
 #include "loginwidget.h"
 #include "ui_loginwidget.h"
 
-#include "toggl_api.h"
+#include "toggl.h"
 
 LoginWidget::LoginWidget(QWidget *parent) :
     QWidget(parent),

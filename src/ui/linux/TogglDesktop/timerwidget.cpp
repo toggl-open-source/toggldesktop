@@ -3,7 +3,7 @@
 
 #include <QApplication>
 
-#include "toggl_api.h"
+#include "toggl.h"
 
 TimerWidget::TimerWidget(QWidget *parent) :
     QWidget(parent),

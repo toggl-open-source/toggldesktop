@@ -5,7 +5,7 @@
 #include <QFileInfo>
 #include <QMessageBox>
 
-#include "toggl_api.h"
+#include "toggl.h"
 
 FeedbackDialog::FeedbackDialog(QWidget *parent) :
     QDialog(parent),

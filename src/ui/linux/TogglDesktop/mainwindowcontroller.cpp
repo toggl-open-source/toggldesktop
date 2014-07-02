@@ -14,7 +14,7 @@
 #include <QAction>
 #include <QMenu>
 
-#include "toggl_api.h"
+#include "toggl.h"
 #include "errorviewcontroller.h"
 #include "loginwidget.h"
 #include "timeentrylistwidget.h"

@@ -4,7 +4,7 @@
 #include <QDebug>
 #include <QDesktopServices>
 
-#include "toggl_api.h"
+#include "toggl.h"
 
 AboutDialog::AboutDialog(QWidget *parent) :
     QDialog(parent),

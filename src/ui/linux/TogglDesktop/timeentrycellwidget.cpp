@@ -1,7 +1,7 @@
 #include "timeentrycellwidget.h"
 #include "ui_timeentrycellwidget.h"
 
-#include "toggl_api.h"
+#include "toggl.h"
 
 TimeEntryCellWidget::TimeEntryCellWidget(TimeEntryView *view) :
     QWidget(0),
