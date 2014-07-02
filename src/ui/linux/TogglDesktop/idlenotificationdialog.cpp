@@ -10,12 +10,13 @@ IdleNotificationDialog::IdleNotificationDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::IdleNotificationDialog),
     idleStarted(0),
-    timer(new QTimer(this))
+    timer(new QTimer(this)),
+    timeEntryGUID("")
 {
     ui->setupUi(this);
 
-    connect(TogglApi::instance, SIGNAL(displayIdleNotification(QString,QString,uint64_t)),
-            this, SLOT(displayIdleNotification(QString,QString,uint64_t)));
+    connect(TogglApi::instance, SIGNAL(displayIdleNotification(QString,QString,QString,uint64_t)),
+            this, SLOT(displayIdleNotification(QString,QString,QString,uint64_t)));
 
     connect(TogglApi::instance, SIGNAL(displaySettings(bool,SettingsView*)),
             this, SLOT(displaySettings(bool,SettingsView*)));
@@ -55,7 +56,7 @@ void IdleNotificationDialog::on_keepTimeButton_clicked()
 
 void IdleNotificationDialog::on_discardTimeButton_clicked()
 {
-    TogglApi::instance->stopRunningTimeEntryAt(idleStarted);
+    TogglApi::instance->discardTimeAt(timeEntryGUID, idleStarted);
 }
 
 void IdleNotificationDialog::displaySettings(
@@ -73,11 +74,13 @@ void IdleNotificationDialog::displaySettings(
 }
 
 void IdleNotificationDialog::displayIdleNotification(
+    const QString guid,
     const QString since,
     const QString duration,
     const uint64_t started)
 {
     idleStarted = started;
+    timeEntryGUID = guid;
 
     ui->idleSince->setText(since);
     ui->idleDuration->setText(duration);

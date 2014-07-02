@@ -115,7 +115,8 @@ public:
                       const QString details,
                       const QString filename);
 
-    bool stopRunningTimeEntryAt(const uint64_t at);
+    bool discardTimeAt(const QString guid,
+		       const uint64_t at);
 
     static const QString formatDurationInSecondsHHMMSS(
         const int64_t duration);
@@ -162,6 +163,7 @@ signals:
         TimeEntryView *view);
 
     void displayIdleNotification(
+	const QString guid,
         const QString since,
         const QString duration,
         const uint64_t started);

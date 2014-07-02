@@ -28,6 +28,7 @@ private slots:
         const uint64_t user_id);
 
     void displayIdleNotification(
+	const QString guid,
         const QString since,
         const QString duration,
         const uint64_t started);
@@ -48,6 +49,8 @@ private:
     uint64_t idleStarted;
 
     QTimer *timer;
+
+    QString timeEntryGUID;
 };
 
 #endif // IDLENOTIFICATIONDIALOG_H

@@ -146,11 +146,13 @@ void on_display_timer_state(
 }
 
 void on_display_idle_notification(
+    const char *guid,
     const char *since,
     const char *duration,
     const uint64_t started)
 {
     TogglApi::instance->displayIdleNotification(
+		QString(guid),
                 QString(since),
                 QString(duration),
                 started);
@@ -234,9 +236,10 @@ bool TogglApi::setProxySettings(
                                      proxyPassword.toStdString().c_str());
 }
 
-bool TogglApi::stopRunningTimeEntryAt(const uint64_t at)
+bool TogglApi::discardTimeAt(const QString guid,
+			     const uint64_t at)
 {
-    return kopsik_stop_running_time_entry_at(ctx, at);
+    return kopsik_discard_time_at(ctx, guid.toStdString().c_str(), at);
 }
 
 void TogglApi::setIdleSeconds(u_int64_t idleSeconds)
