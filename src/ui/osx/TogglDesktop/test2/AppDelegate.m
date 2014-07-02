@@ -422,11 +422,11 @@ const int kDurationStringLength = 20;
 						waitUntilDone:NO];
 }
 
-- (void)displayOnlineState:(NSString *)is_online
+- (void)displayOnlineState:(NSString *)errorMsg
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	if (is_online)
+	if (!errorMsg)
 	{
 		self.currentOnImage = self.onImage;
 		self.currentOffImage = self.offImage;
@@ -1049,12 +1049,17 @@ void on_update(
 														object:cmd];
 }
 
-void on_online_state(const _Bool is_online)
+void on_online_state(const _Bool is_online, const char *reason)
 {
-	NSString *value = is_online ? @"online" : nil;
+	NSString *err = nil;
+
+	if (!is_online)
+	{
+		err = [NSString stringWithUTF8String:reason];
+	}
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayOnlineState
-														object:value];
+														object:err];
 }
 
 void on_login(const _Bool open, const uint64_t user_id)

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="14A261i" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
     </dependencies>
     <objects>
@@ -9,7 +10,6 @@
                 <outlet property="closeTroubleBoxButton" destination="tgB-wf-G92" id="pzI-01-7SG"/>
                 <outlet property="contentView" destination="av5-A6-9S5" id="g24-fx-drT"/>
                 <outlet property="errorLabel" destination="3yn-Zh-JYn" id="2lh-8u-0eG"/>
-                <outlet property="errorLink" destination="z6G-IB-XP8" id="G7m-Qe-GhW"/>
                 <outlet property="troubleBox" destination="gBV-Qp-t6E" id="7gd-fC-wYR"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>
@@ -18,20 +18,20 @@
         <customObject id="-3" userLabel="Application"/>
         <window title="Toggl Desktop" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" frameAutosaveName="MainWindow" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
-            <rect key="contentRect" x="196" y="240" width="300" height="450"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <rect key="contentRect" x="196" y="240" width="300" height="398"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <value key="minSize" type="size" width="300" height="420"/>
             <value key="maxSize" type="size" width="2500" height="2500"/>
             <view key="contentView" id="2">
-                <rect key="frame" x="0.0" y="0.0" width="300" height="450"/>
+                <rect key="frame" x="0.0" y="0.0" width="300" height="398"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="av5-A6-9S5" userLabel="ContentView">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="419"/>
+                    <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="av5-A6-9S5" userLabel="ContentView">
+                        <rect key="frame" x="0.0" y="1" width="300" height="346"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
                     <box hidden="YES" autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="gBV-Qp-t6E">
-                        <rect key="frame" x="0.0" y="400" width="300" height="50"/>
+                        <rect key="frame" x="0.0" y="348" width="300" height="50"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <view key="contentView">
                             <rect key="frame" x="0.0" y="0.0" width="300" height="50"/>
@@ -60,18 +60,6 @@
                                         <action selector="errorCloseButtonClicked:" target="-2" id="GHW-09-Ovo"/>
                                     </connections>
                                 </button>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z6G-IB-XP8" customClass="NSTextFieldClickablePointer">
-                                    <rect key="frame" x="7" y="7" width="275" height="17"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <textFieldCell key="cell" truncatesLastVisibleLine="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Forgot password?" id="UWw-mV-y9L">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="selectedMenuItemColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                    <connections>
-                                        <outlet property="delegate" destination="-2" id="CCw-oI-jqR"/>
-                                    </connections>
-                                </textField>
                             </subviews>
                         </view>
                         <constraints>
@@ -81,7 +69,6 @@
                             <constraint firstItem="3yn-Zh-JYn" firstAttribute="leading" secondItem="gBV-Qp-t6E" secondAttribute="leading" constant="9" id="ljv-uS-Mff"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="3yn-Zh-JYn" secondAttribute="bottom" constant="7" id="mt7-0l-Mff"/>
                             <constraint firstItem="3yn-Zh-JYn" firstAttribute="top" secondItem="gBV-Qp-t6E" secondAttribute="top" constant="6" id="tW0-nR-BCV"/>
-                            <constraint firstItem="z6G-IB-XP8" firstAttribute="top" secondItem="3yn-Zh-JYn" secondAttribute="bottom" constant="3" id="x8o-BX-MZx"/>
                         </constraints>
                         <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                         <color key="fillColor" red="0.92484454719999998" green="0.87390986770000001" blue="0.37178904140000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -93,7 +80,7 @@
                     <constraint firstItem="av5-A6-9S5" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="P13-nu-UZ0"/>
                     <constraint firstItem="gBV-Qp-t6E" firstAttribute="top" secondItem="2" secondAttribute="top" id="acY-4H-9r7"/>
                     <constraint firstAttribute="trailing" secondItem="gBV-Qp-t6E" secondAttribute="trailing" id="hAW-oO-ES1"/>
-                    <constraint firstItem="av5-A6-9S5" firstAttribute="top" secondItem="2" secondAttribute="top" id="lIn-MP-X7n"/>
+                    <constraint firstItem="av5-A6-9S5" firstAttribute="top" secondItem="gBV-Qp-t6E" secondAttribute="bottom" id="twL-Md-nlY"/>
                     <constraint firstAttribute="trailing" secondItem="av5-A6-9S5" secondAttribute="trailing" id="vIk-4N-Ddi"/>
                 </constraints>
             </view>

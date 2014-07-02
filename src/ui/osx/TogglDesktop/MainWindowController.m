@@ -38,6 +38,8 @@ extern void *ctx;
 		[self.loginViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 		[self.timeEntryListViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 
+		self.isNetworkIssue = NO;
+
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayLogin:)
 													 name:kDisplayLogin
@@ -53,6 +55,10 @@ extern void *ctx;
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(stopDisplayError:)
 													 name:kHideDisplayError
+												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(startDisplayOnlineState:)
+													 name:kDisplayOnlineState
 												   object:nil];
 	}
 	return self;
@@ -123,14 +129,35 @@ extern void *ctx;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	if ([msg rangeOfString:@"Invalid e-mail or password"].location != NSNotFound)
-	{
-		[self.errorLink setStringValue:@"Forgot your password?"];
-		[self addUnderlineToTextField:self.errorLink];
-	}
+	self.isNetworkIssue = NO;
 
 	[self.errorLabel setStringValue:msg];
 	[self.troubleBox setHidden:NO];
+}
+
+- (void)startDisplayOnlineState:(NSNotification *)notification
+{
+	[self performSelectorOnMainThread:@selector(displayOnlineState:)
+						   withObject:notification.object
+						waitUntilDone:NO];
+}
+
+- (void)displayOnlineState:(NSString *)msg
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+	if (msg)
+	{
+		self.isNetworkIssue = YES;
+
+		[self.errorLabel setStringValue:msg];
+		[self.troubleBox setHidden:NO];
+	}
+	else if (self.isNetworkIssue)
+	{
+		self.isNetworkIssue = NO;
+		[self closeError];
+	}
 }
 
 - (void)stopDisplayError:(NSNotification *)notification
@@ -141,22 +168,14 @@ extern void *ctx;
 - (void)closeError
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
 	[self.troubleBox setHidden:YES];
 	[self.errorLabel setStringValue:@""];
-	[self.errorLink setStringValue:@""];
 }
 
 - (IBAction)errorCloseButtonClicked:(id)sender
 {
 	[self closeError];
-}
-
-- (void)textFieldClicked:(id)sender
-{
-	if (sender == self.errorLink)
-	{
-		kopsik_password_forgot(ctx);
-	}
 }
 
 @end

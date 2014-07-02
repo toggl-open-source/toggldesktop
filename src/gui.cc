@@ -26,7 +26,9 @@ _Bool GUI::DisplayError(const error err) {
     logger().error(err);
 
     if (isNetworkingError(err)) {
-        DisplayOnlineState(false, err);
+        std::stringstream ss;
+        ss << "You are offline (" << err << ")";
+        DisplayOnlineState(false, ss.str());
         return false;
     }
 
