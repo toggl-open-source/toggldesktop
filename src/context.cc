@@ -377,7 +377,7 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
 
-    UI()->DisplayOnlineState(true);
+    UI()->DisplayOnlineState(true, "Sync done");
 }
 
 void Context::pushChanges() {
@@ -412,7 +412,7 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
 
-    UI()->DisplayOnlineState(true);
+    UI()->DisplayOnlineState(true, "Changes pushed");
 }
 
 void Context::switchWebSocketOff() {

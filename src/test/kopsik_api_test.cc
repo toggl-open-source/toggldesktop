@@ -51,7 +51,7 @@ void on_update(
     testresult::update_channel = std::string(view->UpdateChannel);
 }
 
-void on_online_state(const _Bool is_online) {
+void on_online_state(const _Bool is_online, const char *reason) {
     testresult::online_state = is_online;
 }
 
