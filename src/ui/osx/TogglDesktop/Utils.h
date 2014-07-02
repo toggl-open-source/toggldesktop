@@ -15,7 +15,7 @@
 + (void)disallowDuplicateInstances;
 + (NSString *)applicationSupportDirectory:(NSString *)environment;
 + (bool)isNumeric:(NSString *)checkText;
-
++ (void)addUnderlineToTextField:(NSTextField *)field;
 @end
 
 BOOL wasLaunchedAsLoginOrResumeItem();

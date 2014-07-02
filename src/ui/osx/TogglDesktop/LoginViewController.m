@@ -8,12 +8,24 @@
 #import "kopsik_api.h"
 #import "UIEvents.h"
 #import "GTMOAuth2WindowController.h"
-
+#import "Utils.h"
 #import "const.h"
 
 @implementation LoginViewController
 
 extern void *ctx;
+
+- (void)viewDidLoad
+{
+	[Utils addUnderlineToTextField:self.googleLoginTextField];
+  [Utils addUnderlineToTextField:self.forgotPasswordTextField];
+}
+
+- (void)loadView
+{
+	[super loadView];
+	[self viewDidLoad];
+}
 
 - (IBAction)clickLoginButton:(id)sender
 {
@@ -122,25 +134,6 @@ extern void *ctx;
 	}
 
 	kopsik_google_login(ctx, [auth.accessToken UTF8String]);
-}
-
-- (void)viewDidLoad
-{
-	[self addUnderlineToTextField:self.googleLoginTextField];
-}
-
-- (void)addUnderlineToTextField:(NSTextField *)field
-{
-	NSMutableAttributedString *forgot = [[field attributedStringValue] mutableCopy];
-
-	[forgot addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSUnderlineStyleSingle] range:NSMakeRange(0, forgot.length)];
-	[field setAttributedStringValue:forgot];
-}
-
-- (void)loadView
-{
-	[super loadView];
-	[self viewDidLoad];
 }
 
 @end

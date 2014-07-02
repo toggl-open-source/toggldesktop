@@ -78,7 +78,7 @@
                                     <outlet property="delegate" destination="-2" id="qtU-ic-uLL"/>
                                 </connections>
                             </textField>
-                            <textField appearanceType="aqua" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jUD-k4-kTh" customClass="NSTextFieldClickablePointer">
+                            <textField appearanceType="aqua" horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jUD-k4-kTh" customClass="NSTextFieldClickablePointer">
                                 <rect key="frame" x="13" y="16" width="223" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Forgot password?" id="sue-36-IQg">
@@ -112,6 +112,7 @@ DQ
                     </view>
                     <constraints>
                         <constraint firstItem="oP1-rJ-O83" firstAttribute="top" secondItem="Kmn-TG-CZe" secondAttribute="bottom" constant="20" id="0aS-7N-0KT"/>
+                        <constraint firstAttribute="centerX" secondItem="jUD-k4-kTh" secondAttribute="centerX" id="JwP-I3-46x"/>
                         <constraint firstAttribute="centerX" secondItem="3Xk-yW-T0s" secondAttribute="centerX" id="LXH-Ma-Rya"/>
                         <constraint firstItem="Kmn-TG-CZe" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="AeN-Lk-hKy" secondAttribute="leading" constant="20" id="VSo-Hz-jdc"/>
                         <constraint firstAttribute="centerX" secondItem="MMO-z4-qcY" secondAttribute="centerX" id="gv7-LY-8d4"/>

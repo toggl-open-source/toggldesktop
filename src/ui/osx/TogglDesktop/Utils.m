@@ -89,6 +89,14 @@
 	return number != nil;
 }
 
++ (void)addUnderlineToTextField:(NSTextField *)field
+{
+	NSMutableAttributedString *forgot = [[field attributedStringValue] mutableCopy];
+  
+	[forgot addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSUnderlineStyleSingle] range:NSMakeRange(0, forgot.length)];
+	[field setAttributedStringValue:forgot];
+}
+
 @end
 
 // See https://codereview.chromium.org/7497056/patch/2002/4002 for inspiration
@@ -145,4 +153,3 @@ BOOL wasLaunchedAsHiddenLoginItem()
 
 	return NO;
 }
-
