@@ -9,7 +9,7 @@
 class GenericView : public QObject
 {
     Q_OBJECT
-public:
+ public:
     explicit GenericView(QObject *parent = 0);
 
     static QVector<GenericView *> importAll(KopsikViewItem *first) {
@@ -32,9 +32,9 @@ public:
     QString GUID;
     QString Name;
 
-signals:
+ signals:
 
-public slots:
+ public slots:
 
 };
 

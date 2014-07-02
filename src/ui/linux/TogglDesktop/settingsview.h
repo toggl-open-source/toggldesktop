@@ -8,7 +8,7 @@
 class SettingsView : public QObject
 {
     Q_OBJECT
-public:
+ public:
     explicit SettingsView(QObject *parent = 0);
 
     static SettingsView *importOne(KopsikSettingsViewItem *view) {
@@ -39,9 +39,9 @@ public:
     bool Reminder;
     bool RecordTimeline;
 
-signals:
+ signals:
 
-public slots:
+ public slots:
 
 };
 

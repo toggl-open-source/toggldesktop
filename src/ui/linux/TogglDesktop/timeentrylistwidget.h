@@ -16,11 +16,11 @@ class TimeEntryListWidget : public QWidget
 {
     Q_OBJECT
 
-public:
+ public:
     explicit TimeEntryListWidget(QWidget *parent = 0);
     ~TimeEntryListWidget();
 
-private slots:
+ private slots:
     void displayLogin(
         const bool open,
         const uint64_t user_id);
@@ -34,7 +34,7 @@ private slots:
         TimeEntryView *view,
         const QString focused_field_name);
 
-private:
+ private:
     Ui::TimeEntryListWidget *ui;
 };
 

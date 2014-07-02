@@ -11,17 +11,17 @@ class ErrorViewController : public QWidget
 {
     Q_OBJECT
 
-public:
+ public:
     explicit ErrorViewController(QWidget *parent = 0);
     ~ErrorViewController();
 
-private slots:
+ private slots:
     void on_pushButton_clicked();
     void displayError(
         const QString errmsg,
         const bool user_error);
 
-private:
+ private:
     Ui::ErrorViewController *ui;
 };
 

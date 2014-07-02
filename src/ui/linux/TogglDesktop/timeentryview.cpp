@@ -3,7 +3,7 @@
 #include <QDateTime>
 
 TimeEntryView::TimeEntryView(QObject *parent) :
-    QObject(parent)
+QObject(parent)
 {
 }
 

@@ -19,11 +19,11 @@ class TimeEntryEditorWidget : public QWidget
 {
     Q_OBJECT
 
-public:
+ public:
     explicit TimeEntryEditorWidget(QWidget *parent = 0);
     ~TimeEntryEditorWidget();
 
-private:
+ private:
     Ui::TimeEntryEditorWidget *ui;
 
     QString guid;
@@ -46,7 +46,7 @@ private:
 
     bool applyNewProject();
 
-private slots:
+ private slots:
     void displayLogin(
         const bool open,
         const uint64_t user_id);

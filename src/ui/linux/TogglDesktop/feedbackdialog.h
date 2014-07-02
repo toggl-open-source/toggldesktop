@@ -11,16 +11,16 @@ class FeedbackDialog : public QDialog
 {
     Q_OBJECT
 
-public:
+ public:
     explicit FeedbackDialog(QWidget *parent = 0);
     ~FeedbackDialog();
 
-private slots:
+ private slots:
     void on_uploadImageButton_clicked();
 
     void on_sendButton_clicked();
 
-private:
+ private:
     Ui::FeedbackDialog *ui;
 
     QString path;

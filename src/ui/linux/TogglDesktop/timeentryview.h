@@ -9,7 +9,7 @@
 class TimeEntryView : public QObject
 {
     Q_OBJECT
-public:
+ public:
     explicit TimeEntryView(QObject *parent = 0);
 
     static TimeEntryView *importOne(KopsikTimeEntryViewItem *view);
@@ -44,9 +44,9 @@ public:
     bool CanSeeBillable;
     uint64_t DefaultWID;
 
-signals:
+ signals:
 
-public slots:
+ public slots:
 
 };
 

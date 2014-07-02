@@ -21,24 +21,24 @@
 #include "timeentryeditorwidget.h"
 
 MainWindowController::MainWindowController(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindowController),
-    shutdown(false),
-    togglApi(new TogglApi()),
-    tracking(false),
-    loggedIn(false),
-    actionNew(0),
-    actionContinue(0),
-    actionStop(0),
-    actionSync(0),
-    actionLogout(0),
-    actionClear_Cache(0),
-    actionSend_Feedback(0),
-    actionReports(0),
-    preferencesDialog(new PreferencesDialog(this)),
-    aboutDialog(new AboutDialog(this)),
-    feedbackDialog(new FeedbackDialog(this)),
-    idleNotificationDialog(new IdleNotificationDialog(this))
+QMainWindow(parent),
+ui(new Ui::MainWindowController),
+shutdown(false),
+togglApi(new TogglApi()),
+tracking(false),
+loggedIn(false),
+actionNew(0),
+actionContinue(0),
+actionStop(0),
+actionSync(0),
+actionLogout(0),
+actionClear_Cache(0),
+actionSend_Feedback(0),
+actionReports(0),
+preferencesDialog(new PreferencesDialog(this)),
+aboutDialog(new AboutDialog(this)),
+feedbackDialog(new FeedbackDialog(this)),
+idleNotificationDialog(new IdleNotificationDialog(this))
 {
     ui->setupUi(this);
 
@@ -238,9 +238,9 @@ void MainWindowController::onActionQuit()
 void MainWindowController::onActionClear_Cache()
 {
     if (QMessageBox::Ok == QMessageBox(QMessageBox::Question,
-                                        "Clear Cache?",
-                                        "Clearing cache will delete any unsaved time entries and log you out.",
-                                        QMessageBox::Ok|QMessageBox::Cancel).exec())
+                                       "Clear Cache?",
+                                       "Clearing cache will delete any unsaved time entries and log you out.",
+                                       QMessageBox::Ok|QMessageBox::Cancel).exec())
     {
         TogglApi::instance->clearCache();
     }
@@ -291,8 +291,8 @@ void MainWindowController::showEvent(QShowEvent *event)
     if (!started)
     {
         QMessageBox(QMessageBox::Warning,
-            "Error",
-            "The application could not start. Please inspect the log file. Sorry :S",
-            QMessageBox::Ok|QMessageBox::Cancel).exec();
+                    "Error",
+                    "The application could not start. Please inspect the log file. Sorry :S",
+                    QMessageBox::Ok|QMessageBox::Cancel).exec();
     }
 }

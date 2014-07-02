@@ -8,8 +8,8 @@
 #include "toggl.h"
 
 FeedbackDialog::FeedbackDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::FeedbackDialog)
+QDialog(parent),
+ui(new Ui::FeedbackDialog)
 {
     ui->setupUi(this);
 
@@ -40,8 +40,8 @@ void FeedbackDialog::on_sendButton_clicked()
         return;
     }
     if (!TogglApi::instance->sendFeedback(ui->topic->currentText(),
-                                         ui->content->toPlainText(),
-                                         path))
+                                          ui->content->toPlainText(),
+                                          path))
     {
         return;
     }

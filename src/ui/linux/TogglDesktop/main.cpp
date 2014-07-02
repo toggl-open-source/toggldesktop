@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 
     if (a.sendMessage(("Wake up!"))) {
         qDebug() << "An instance of TogglDesktop is already running. "
-                    "This instance will now quit.";
+                 "This instance will now quit.";
         return 0;
     }
 

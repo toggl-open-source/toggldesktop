@@ -8,7 +8,7 @@
 class UpdateView : public QObject
 {
     Q_OBJECT
-public:
+ public:
     explicit UpdateView(QObject *parent = 0);
 
     static UpdateView *importOne(KopsikUpdateViewItem *view) {
@@ -27,9 +27,9 @@ public:
     QString URL;
     QString Version;
 
-signals:
+ signals:
 
-public slots:
+ public slots:
 
 };
 

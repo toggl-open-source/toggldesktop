@@ -46,7 +46,7 @@ void on_display_online_state(
     const char *reason)
 {
     TogglApi::instance->displayOnlineState(is_online,
-					   QString(reason));
+                                           QString(reason));
 }
 
 void on_display_url(
@@ -67,8 +67,8 @@ void on_display_reminder(
     const char *informative_text)
 {
     TogglApi::instance->displayReminder(
-                QString(title),
-                QString(informative_text));
+        QString(title),
+        QString(informative_text));
 }
 
 void on_display_time_entry_list(
@@ -76,43 +76,43 @@ void on_display_time_entry_list(
     KopsikTimeEntryViewItem *first)
 {
     TogglApi::instance->displayTimeEntryList(
-                open,
-                TimeEntryView::importAll(first));
+        open,
+        TimeEntryView::importAll(first));
 }
 
 void on_display_time_entry_autocomplete(
     KopsikAutocompleteItem *first)
 {
     TogglApi::instance->displayTimeEntryAutocomplete(
-                AutocompleteView::importAll(first));
+        AutocompleteView::importAll(first));
 }
 
 void on_display_project_autocomplete(
     KopsikAutocompleteItem *first)
 {
     TogglApi::instance->displayProjectAutocomplete(
-                AutocompleteView::importAll(first));
+        AutocompleteView::importAll(first));
 }
 
 void on_display_workspace_select(
     KopsikViewItem *first)
 {
     TogglApi::instance->displayWorkspaceSelect(
-                GenericView::importAll(first));
+        GenericView::importAll(first));
 }
 
 void on_display_client_select(
     KopsikViewItem *first)
 {
     TogglApi::instance->displayClientSelect(
-                GenericView::importAll(first));
+        GenericView::importAll(first));
 }
 
 void on_display_tags(
     KopsikViewItem *first)
 {
     TogglApi::instance->displayTags(
-                GenericView::importAll(first));
+        GenericView::importAll(first));
 }
 
 void on_display_time_entry_editor(
@@ -121,9 +121,9 @@ void on_display_time_entry_editor(
     const char *focused_field_name)
 {
     TogglApi::instance->displayTimeEntryEditor(
-                open,
-                TimeEntryView::importOne(te),
-                QString(focused_field_name));
+        open,
+        TimeEntryView::importOne(te),
+        QString(focused_field_name));
 }
 
 void on_display_settings(
@@ -131,8 +131,8 @@ void on_display_settings(
     KopsikSettingsViewItem *settings)
 {
     TogglApi::instance->displaySettings(
-                open,
-                SettingsView::importOne(settings));
+        open,
+        SettingsView::importOne(settings));
 }
 
 void on_display_timer_state(
@@ -140,7 +140,7 @@ void on_display_timer_state(
 {
     if (te) {
         TogglApi::instance->displayRunningTimerState(
-                    TimeEntryView::importOne(te));
+            TimeEntryView::importOne(te));
         return;
     }
 
@@ -154,21 +154,21 @@ void on_display_idle_notification(
     const uint64_t started)
 {
     TogglApi::instance->displayIdleNotification(
-		QString(guid),
-                QString(since),
-                QString(duration),
-                started);
+        QString(guid),
+        QString(since),
+        QString(duration),
+        started);
 }
 
 TogglApi::TogglApi(QObject *parent) :
-    QObject(parent),
-    ctx(0)
+QObject(parent),
+ctx(0)
 {
     ctx = kopsik_context_init("linux_native_app", "7.0.0"); // FIXME: version number
 
     QString appDirPath =
-            QStandardPaths::writableLocation(
-                QStandardPaths::DataLocation);
+        QStandardPaths::writableLocation(
+            QStandardPaths::DataLocation);
     QDir appDir = QDir(appDirPath);
     if (!appDir.exists()) {
         appDir.mkpath(".");
@@ -239,7 +239,7 @@ bool TogglApi::setProxySettings(
 }
 
 bool TogglApi::discardTimeAt(const QString guid,
-			     const uint64_t at)
+                             const uint64_t at)
 {
     return kopsik_discard_time_at(ctx, guid.toStdString().c_str(), at);
 }
@@ -280,10 +280,10 @@ bool TogglApi::start(
     const uint64_t project_id)
 {
     return kopsik_start(ctx,
-                       description.toStdString().c_str(),
-                       duration.toStdString().c_str(),
-                       task_id,
-                       project_id);
+                        description.toStdString().c_str(),
+                        duration.toStdString().c_str(),
+                        task_id,
+                        project_id);
 }
 
 bool TogglApi::stop()
@@ -296,8 +296,8 @@ const QString TogglApi::formatDurationInSecondsHHMMSS(const int64_t duration)
     int bufSize = 20;
     char buf[bufSize];
     kopsik_format_duration_in_seconds_hhmmss(duration,
-                                             buf,
-                                             bufSize);
+            buf,
+            bufSize);
     return QString(buf);
 }
 
@@ -347,7 +347,7 @@ void TogglApi::editPreferences()
 }
 
 void TogglApi::editTimeEntry(const QString guid,
-                    const QString focusedFieldName)
+                             const QString focusedFieldName)
 {
     kopsik_edit(ctx,
                 guid.toStdString().c_str(),
@@ -356,10 +356,10 @@ void TogglApi::editTimeEntry(const QString guid,
 }
 
 bool TogglApi::setTimeEntryProject(
-        const QString guid,
-        const uint64_t task_id,
-        const uint64_t project_id,
-        const QString project_guid)
+    const QString guid,
+    const uint64_t task_id,
+    const uint64_t project_id,
+    const QString project_guid)
 {
     return kopsik_set_time_entry_project(ctx,
                                          guid.toStdString().c_str(),
@@ -369,16 +369,16 @@ bool TogglApi::setTimeEntryProject(
 }
 
 bool TogglApi::setTimeEntryDescription(
-        const QString guid,
-        const QString value)
+    const QString guid,
+    const QString value)
 {
     return kopsik_set_time_entry_description(ctx,
-                                             guid.toStdString().c_str(),
-                                             value.toStdString().c_str());
+            guid.toStdString().c_str(),
+            value.toStdString().c_str());
 }
 
 void TogglApi::editRunningTimeEntry(
-                    const QString focusedFieldName)
+    const QString focusedFieldName)
 {
     kopsik_edit(ctx,
                 "",

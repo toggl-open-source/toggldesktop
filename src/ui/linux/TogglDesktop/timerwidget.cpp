@@ -6,11 +6,11 @@
 #include "toggl.h"
 
 TimerWidget::TimerWidget(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::TimerWidget),
-    timer(new QTimer(this)),
-    duration(0),
-    timeEntryAutocompleteNeedsUpdate(false)
+QWidget(parent),
+ui(new Ui::TimerWidget),
+timer(new QTimer(this)),
+duration(0),
+timeEntryAutocompleteNeedsUpdate(false)
 {
     ui->setupUi(this);
 

@@ -22,17 +22,17 @@ class MainWindowController : public QMainWindow
 {
     Q_OBJECT
 
-public:
+ public:
     explicit MainWindowController(QWidget *parent = 0);
     ~MainWindowController();
 
     static MainWindowController *Instance;
 
-protected:
+ protected:
     void closeEvent(QCloseEvent *event);
     void showEvent(QShowEvent *event);
 
-private slots:
+ private slots:
     void displayApp(const bool open);
     void displayRunningTimerState(TimeEntryView *te);
     void displayStoppedTimerState();
@@ -54,7 +54,7 @@ private slots:
     void onActionClear_Cache();
     void onActionHelp();
 
-private:
+ private:
     Ui::MainWindowController *ui;
 
     bool shutdown;

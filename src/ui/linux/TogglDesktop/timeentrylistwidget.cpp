@@ -6,8 +6,8 @@
 #include "timeentrycellwidget.h"
 
 TimeEntryListWidget::TimeEntryListWidget(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::TimeEntryListWidget)
+QWidget(parent),
+ui(new Ui::TimeEntryListWidget)
 {
     ui->setupUi(this);
 

@@ -3,8 +3,8 @@
 #include "toggl.h"
 
 ErrorViewController::ErrorViewController(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::ErrorViewController)
+QWidget(parent),
+ui(new Ui::ErrorViewController)
 {
     ui->setupUi(this);
     setVisible(false);

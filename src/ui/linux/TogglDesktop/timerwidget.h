@@ -17,17 +17,17 @@ class TimerWidget : public QWidget
 {
     Q_OBJECT
 
-public:
+ public:
     explicit TimerWidget(QWidget *parent = 0);
     ~TimerWidget();
 
-signals:
+ signals:
     void buttonClicked();
 
-protected:
+ protected:
     void mousePressEvent(QMouseEvent *event);
 
-private slots:
+ private slots:
     void displayStoppedTimerState();
 
     void displayRunningTimerState(
@@ -45,7 +45,7 @@ private slots:
     void on_start_clicked();
     void on_description_currentIndexChanged(int index);
 
-private:
+ private:
     Ui::TimerWidget *ui;
 
     QTimer *timer;

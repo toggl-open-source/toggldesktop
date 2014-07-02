@@ -4,9 +4,9 @@
 #include "toggl.h"
 
 TimeEntryCellWidget::TimeEntryCellWidget(TimeEntryView *view) :
-    QWidget(0),
-    ui(new Ui::TimeEntryCellWidget),
-    guid("")
+QWidget(0),
+ui(new Ui::TimeEntryCellWidget),
+guid("")
 {
     ui->setupUi(this);
 

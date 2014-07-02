@@ -17,11 +17,11 @@ class LoginWidget : public QWidget
 {
     Q_OBJECT
 
-public:
+ public:
     explicit LoginWidget(QWidget *parent = 0);
     ~LoginWidget();
 
-private slots:
+ private slots:
     void on_login_clicked();
 
     void displayLogin(
@@ -36,7 +36,7 @@ private slots:
 
     void loginDone();
 
-private:
+ private:
     Ui::LoginWidget *ui;
 
     OAuth2 *oauth2;

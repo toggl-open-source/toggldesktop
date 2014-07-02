@@ -5,8 +5,8 @@
 #include "settingsview.h"
 
 PreferencesDialog::PreferencesDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::PreferencesDialog)
+QDialog(parent),
+ui(new Ui::PreferencesDialog)
 {
     ui->setupUi(this);
 
@@ -85,10 +85,10 @@ void PreferencesDialog::on_remindToTrackTime_clicked(bool checked)
 bool PreferencesDialog::setProxySettings()
 {
     return TogglApi::instance->setProxySettings(ui->useProxy->isChecked(),
-                                                ui->proxyHost->text(),
-                                                ui->proxyPort->text().toInt(),
-                                                ui->proxyUsername->text(),
-                                                ui->proxyPassword->text());
+            ui->proxyHost->text(),
+            ui->proxyPort->text().toInt(),
+            ui->proxyUsername->text(),
+            ui->proxyPassword->text());
 }
 
 bool PreferencesDialog::setSettings()

@@ -16,7 +16,7 @@
 class TogglApi : public QObject
 {
     Q_OBJECT
-public:
+ public:
     explicit TogglApi(QObject *parent = 0);
 
     static TogglApi *instance;
@@ -60,7 +60,7 @@ public:
     void editPreferences();
 
     void editTimeEntry(const QString guid,
-        const QString focusedFieldName);
+                       const QString focusedFieldName);
 
     void editRunningTimeEntry(
         const QString focusedFieldName);
@@ -116,12 +116,12 @@ public:
                       const QString filename);
 
     bool discardTimeAt(const QString guid,
-		       const uint64_t at);
+                       const uint64_t at);
 
     static const QString formatDurationInSecondsHHMMSS(
         const int64_t duration);
 
-signals:
+ signals:
     void displayApp(
         const bool open);
 
@@ -135,7 +135,7 @@ signals:
 
     void displayOnlineState(
         const bool is_online,
-	const QString reason);
+        const QString reason);
 
     void displayLogin(
         const bool open,
@@ -164,7 +164,7 @@ signals:
         TimeEntryView *view);
 
     void displayIdleNotification(
-	const QString guid,
+        const QString guid,
         const QString since,
         const QString duration,
         const uint64_t started);
@@ -184,7 +184,7 @@ signals:
     void displayWorkspaceSelect(
         QVector<GenericView *> list);
 
-private:
+ private:
     void *ctx;
 };
 

@@ -13,17 +13,17 @@ class TimeEntryCellWidget : public QWidget
 {
     Q_OBJECT
 
-public:
+ public:
     explicit TimeEntryCellWidget(TimeEntryView *view);
     ~TimeEntryCellWidget();
 
-protected:
+ protected:
     virtual void mousePressEvent(QMouseEvent *event);
 
-private slots:
+ private slots:
     void on_continueButton_clicked();
 
-private:
+ private:
     Ui::TimeEntryCellWidget *ui;
 
     QString guid;

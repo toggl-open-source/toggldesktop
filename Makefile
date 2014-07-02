@@ -11,7 +11,8 @@ jsondir=third_party/libjson
 GTEST_ROOT=third_party/googletest-read-only
 GMOCK_DIR=third_party/gmock-1.7.0
 
-source_dirs=src/*.cc src/*.h src/test/* src/libkopsik/include/*.h
+source_dirs=src/*.cc src/*.h src/test/* src/libkopsik/include/*.h \
+	src/ui/linux/TogglDesktop/*.h src/ui/linux/TogglDesktop/*.cpp
 
 ifndef QMAKE
 QMAKE=qmake

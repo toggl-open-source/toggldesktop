@@ -4,9 +4,9 @@
 #include "toggl.h"
 
 LoginWidget::LoginWidget(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::LoginWidget),
-    oauth2(new OAuth2(this))
+QWidget(parent),
+ui(new Ui::LoginWidget),
+oauth2(new OAuth2(this))
 {
     ui->setupUi(this);
 

@@ -9,7 +9,7 @@
 class AutocompleteView : public QObject
 {
     Q_OBJECT
-public:
+ public:
     explicit AutocompleteView(QObject *parent = 0);
 
     static QVector<AutocompleteView *> importAll(KopsikAutocompleteItem *first) {
@@ -43,9 +43,9 @@ public:
     uint64_t Type;
 
 
-signals:
+ signals:
 
-public slots:
+ public slots:
 
 };
 

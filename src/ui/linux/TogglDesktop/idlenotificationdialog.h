@@ -16,11 +16,11 @@ class IdleNotificationDialog : public QDialog
 {
     Q_OBJECT
 
-public:
+ public:
     explicit IdleNotificationDialog(QWidget *parent = 0);
     ~IdleNotificationDialog();
 
-private slots:
+ private slots:
     void displayStoppedTimerState();
 
     void displayLogin(
@@ -28,7 +28,7 @@ private slots:
         const uint64_t user_id);
 
     void displayIdleNotification(
-	const QString guid,
+        const QString guid,
         const QString since,
         const QString duration,
         const uint64_t started);
@@ -43,7 +43,7 @@ private slots:
 
     void timeout();
 
-private:
+ private:
     Ui::IdleNotificationDialog *ui;
 
     uint64_t idleStarted;

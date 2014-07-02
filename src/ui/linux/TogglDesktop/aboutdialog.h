@@ -13,18 +13,18 @@ class AboutDialog : public QDialog
 {
     Q_OBJECT
 
-public:
+ public:
     explicit AboutDialog(QWidget *parent = 0);
     ~AboutDialog();
 
-private slots:
+ private slots:
     void displayUpdate(const bool open, UpdateView *view);
 
     void on_updateButton_clicked();
 
     void on_releaseChannel_activated(const QString &arg1);
 
-private:
+ private:
     Ui::AboutDialog *ui;
 
     QString url;

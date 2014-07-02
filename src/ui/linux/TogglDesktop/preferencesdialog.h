@@ -13,17 +13,17 @@ class PreferencesDialog : public QDialog
 {
     Q_OBJECT
 
-public:
+ public:
     explicit PreferencesDialog(QWidget *parent = 0);
     ~PreferencesDialog();
 
-private:
+ private:
     Ui::PreferencesDialog *ui;
 
     bool setSettings();
     bool setProxySettings();
 
-private slots:
+ private slots:
     void displaySettings(const bool open,
                          SettingsView *settings);
 

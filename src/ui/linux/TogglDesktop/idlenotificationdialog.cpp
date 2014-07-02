@@ -7,11 +7,11 @@
 #include <X11/extensions/scrnsaver.h>
 
 IdleNotificationDialog::IdleNotificationDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::IdleNotificationDialog),
-    idleStarted(0),
-    timer(new QTimer(this)),
-    timeEntryGUID("")
+QDialog(parent),
+ui(new Ui::IdleNotificationDialog),
+idleStarted(0),
+timer(new QTimer(this)),
+timeEntryGUID("")
 {
     ui->setupUi(this);
 
@@ -36,7 +36,7 @@ IdleNotificationDialog::~IdleNotificationDialog()
 }
 
 void IdleNotificationDialog::displayLogin(const bool open,
-                                          const uint64_t user_id)
+        const uint64_t user_id)
 {
     if (open || !user_id)
     {

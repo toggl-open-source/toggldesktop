@@ -7,15 +7,15 @@
 #include "toggl.h"
 
 TimeEntryEditorWidget::TimeEntryEditorWidget(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::TimeEntryEditorWidget),
-    guid(""),
-    timeEntryAutocompleteNeedsUpdate(false),
-    projectAutocompleteNeedsUpdate(false),
-    workspaceSelectNeedsUpdate(false),
-    clientSelectNeedsUpdate(false),
-    timer(new QTimer(this)),
-    duration(0)
+QWidget(parent),
+ui(new Ui::TimeEntryEditorWidget),
+guid(""),
+timeEntryAutocompleteNeedsUpdate(false),
+projectAutocompleteNeedsUpdate(false),
+workspaceSelectNeedsUpdate(false),
+clientSelectNeedsUpdate(false),
+timer(new QTimer(this)),
+duration(0)
 {
     ui->setupUi(this);
 
@@ -281,9 +281,9 @@ bool TimeEntryEditorWidget::applyNewProject()
 void TimeEntryEditorWidget::on_deleteButton_clicked()
 {
     if (QMessageBox::Ok == QMessageBox(QMessageBox::Question,
-                                        "Delete this time entry?",
-                                        "Deleted time entries cannot be restored.",
-                                        QMessageBox::Ok|QMessageBox::Cancel).exec())
+                                       "Delete this time entry?",
+                                       "Deleted time entries cannot be restored.",
+                                       QMessageBox::Ok|QMessageBox::Cancel).exec())
     {
         TogglApi::instance->deleteTimeEntry(guid);
     }
@@ -343,7 +343,7 @@ void TimeEntryEditorWidget::on_project_activated(int index)
 void TimeEntryEditorWidget::on_duration_editingFinished()
 {
     TogglApi::instance->setTimeEntryDuration(guid,
-                                             ui->duration->text());
+            ui->duration->text());
 }
 
 void TimeEntryEditorWidget::on_start_editingFinished()
