@@ -31,7 +31,7 @@
             this.labelFormattedDate = new System.Windows.Forms.Label();
             this.labelDateDuration = new System.Windows.Forms.Label();
             this.headerPanel = new System.Windows.Forms.Panel();
-            this.entryNonFlickerPanel = new TogglDesktop.NonFlickerPanel();
+            this.panel = new System.Windows.Forms.Panel();
             this.labelDescription = new System.Windows.Forms.Label();
             this.labelContinue = new System.Windows.Forms.Label();
             this.labelBillable = new System.Windows.Forms.Label();
@@ -39,7 +39,7 @@
             this.labelDuration = new System.Windows.Forms.Label();
             this.labelProject = new System.Windows.Forms.Label();
             this.headerPanel.SuspendLayout();
-            this.entryNonFlickerPanel.SuspendLayout();
+            this.panel.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelFormattedDate
@@ -80,19 +80,19 @@
             // 
             // entryNonFlickerPanel
             // 
-            this.entryNonFlickerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.panel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.entryNonFlickerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.entryNonFlickerPanel.Controls.Add(this.labelDescription);
-            this.entryNonFlickerPanel.Controls.Add(this.labelContinue);
-            this.entryNonFlickerPanel.Controls.Add(this.labelBillable);
-            this.entryNonFlickerPanel.Controls.Add(this.labelTag);
-            this.entryNonFlickerPanel.Controls.Add(this.labelDuration);
-            this.entryNonFlickerPanel.Controls.Add(this.labelProject);
-            this.entryNonFlickerPanel.Location = new System.Drawing.Point(0, 45);
-            this.entryNonFlickerPanel.Name = "entryNonFlickerPanel";
-            this.entryNonFlickerPanel.Size = new System.Drawing.Size(314, 55);
-            this.entryNonFlickerPanel.TabIndex = 15;
+            this.panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.panel.Controls.Add(this.labelDescription);
+            this.panel.Controls.Add(this.labelContinue);
+            this.panel.Controls.Add(this.labelBillable);
+            this.panel.Controls.Add(this.labelTag);
+            this.panel.Controls.Add(this.labelDuration);
+            this.panel.Controls.Add(this.labelProject);
+            this.panel.Location = new System.Drawing.Point(0, 45);
+            this.panel.Name = "entryNonFlickerPanel";
+            this.panel.Size = new System.Drawing.Size(314, 55);
+            this.panel.TabIndex = 15;
             // 
             // labelDescription
             // 
@@ -164,15 +164,15 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.Controls.Add(this.entryNonFlickerPanel);
+            this.Controls.Add(this.panel);
             this.Controls.Add(this.headerPanel);
             this.Name = "TimeEntryCellWithHeader";
             this.Size = new System.Drawing.Size(314, 101);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TimeEntryCellWithHeader_MouseClick);
             this.headerPanel.ResumeLayout(false);
             this.headerPanel.PerformLayout();
-            this.entryNonFlickerPanel.ResumeLayout(false);
-            this.entryNonFlickerPanel.PerformLayout();
+            this.panel.ResumeLayout(false);
+            this.panel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -188,6 +188,6 @@
         private System.Windows.Forms.Panel headerPanel;
         private System.Windows.Forms.Label labelTag;
         private System.Windows.Forms.Label labelContinue;
-        private NonFlickerPanel entryNonFlickerPanel;
+        private System.Windows.Forms.Panel panel;
     }
 }

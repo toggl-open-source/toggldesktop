@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace TogglDesktop
 {
-    static class Toggl
+    public static class Toggl
     {
         private static IntPtr ctx = IntPtr.Zero;
 
