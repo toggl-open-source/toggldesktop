@@ -8,12 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 #import "kopsik_api.h"
-#import "NSTextFieldClickablePointer.h"
 
 @interface MainWindowController : NSWindowController
 @property IBOutlet NSView *contentView;
 @property IBOutlet NSTextField *errorLabel;
-@property IBOutlet NSTextFieldClickablePointer *errorLink;
 @property IBOutlet NSBox *troubleBox;
 @property IBOutlet NSButton *closeTroubleBoxButton;
+@property BOOL isNetworkIssue;
 @end

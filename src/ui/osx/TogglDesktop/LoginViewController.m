@@ -47,6 +47,12 @@ extern void *ctx;
 		[self startGoogleLogin];
 		return;
 	}
+
+	if (sender == self.forgotPasswordTextField)
+	{
+		kopsik_password_forgot(ctx);
+		return;
+	}
 }
 
 - (void)startGoogleLogin

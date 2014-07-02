@@ -123,7 +123,8 @@ extern "C" {
         KopsikUpdateViewItem *update);
 
     typedef void (*KopsikDisplayOnlineState)(
-        const _Bool is_online);
+        const _Bool is_online,
+        const char *reason);
 
     typedef void(*KopsikDisplayURL)(
         const char *url);

@@ -14,5 +14,6 @@
 @property IBOutlet NSTextField *email;
 @property IBOutlet NSTextField *password;
 @property IBOutlet NSTextFieldClickablePointer *googleLoginTextField;
+@property IBOutlet NSTextFieldClickablePointer *forgotPasswordTextField;
 - (IBAction)clickLoginButton:(id)sender;
 @end

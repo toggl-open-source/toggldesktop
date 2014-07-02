@@ -26,7 +26,9 @@ _Bool GUI::DisplayError(const error err) {
     logger().error(err);
 
     if (isNetworkingError(err)) {
-        DisplayOnlineState(false);
+        std::stringstream ss;
+        ss << "You are offline (" << err << ")";
+        DisplayOnlineState(false, ss.str());
         return false;
     }
 
@@ -107,10 +109,10 @@ void GUI::DisplayReminder() {
                          "Don't forget to track your time!");
 }
 
-void GUI::DisplayOnlineState(const _Bool is_online) {
+void GUI::DisplayOnlineState(const _Bool is_online, const std::string reason) {
     logger().debug("DisplayOnlineState");
 
-    on_display_online_state_(is_online);
+    on_display_online_state_(is_online, reason.c_str());
 }
 
 void GUI::DisplayUpdate(const _Bool open,

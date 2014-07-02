@@ -43,7 +43,7 @@ class GUI {
 
     void DisplayApp();
     _Bool DisplayError(const error);
-    void DisplayOnlineState(const _Bool);
+    void DisplayOnlineState(const _Bool online, const std::string reason);
     void DisplayReminder();
     void DisplayUpdate(const _Bool open,
                        const std::string update_channel,
