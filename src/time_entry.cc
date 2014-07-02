@@ -85,11 +85,7 @@ bool TimeEntry::billableIsAPremiumFeature(const kopsik::error err) const {
         "Billable is a premium feature"));
 }
 
-void TimeEntry::StopAt(const Poco::UInt64 at) {
-    if (!IsTracking()) {
-        return;
-    }
-
+void TimeEntry::DiscardAt(const Poco::UInt64 at) {
     poco_assert(at);
 
     Poco::Int64 duration = at + DurationInSeconds();
@@ -107,7 +103,7 @@ void TimeEntry::StopAt(const Poco::UInt64 at) {
 }
 
 void TimeEntry::StopTracking() {
-    StopAt(time(0));
+    DiscardAt(time(0));
 }
 
 std::string TimeEntry::String() const {

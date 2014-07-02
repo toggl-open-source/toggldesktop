@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface IdleEvent : NSObject
+@property (strong) NSString *guid;
 @property (strong) NSString *since;
 @property (strong) NSString *duration;
 @property uint64_t started;

@@ -142,7 +142,9 @@ class Context {
 
     _Bool Stop();
 
-    _Bool StopAt(const Poco::Int64 at);
+    _Bool DiscardTimeAt(
+        const std::string GUID,
+        const Poco::Int64 at);
 
     _Bool RunningTimeEntry(
         TimeEntry **running) const;

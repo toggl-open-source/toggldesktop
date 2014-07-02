@@ -293,18 +293,20 @@ std::vector<TimeEntry *> User::Stop() {
     return result;
 }
 
-TimeEntry *User::StopAt(const Poco::Int64 at) {
+TimeEntry *User::DiscardTimeAt(
+    const std::string guid,
+    const Poco::Int64 at) {
     poco_assert(at > 0);
 
     std::stringstream ss;
-    ss << "User is stopping running time entry at " << at;
+    ss << "User is discarding time entry " << guid << " at " << at;
     logger().debug(ss.str());
 
-    TimeEntry *running = RunningTimeEntry();
-    if (running) {
-        running->StopAt(at);
+    TimeEntry *te = related.TimeEntryByGUID(guid);
+    if (te) {
+        te->DiscardAt(at);
     }
-    return running;
+    return te;
 }
 
 TimeEntry *User::RunningTimeEntry() const {

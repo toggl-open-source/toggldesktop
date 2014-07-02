@@ -533,14 +533,16 @@ _Bool kopsik_stop(
     return app(context)->Stop();
 }
 
-_Bool kopsik_stop_running_time_entry_at(
+_Bool kopsik_discard_time_at(
     void *context,
+    const char *guid,
     const uint64_t at) {
+    poco_check_ptr(guid);
     poco_assert(at);
 
-    logger().debug("kopsik_stop");
+    logger().debug("kopsik_discard_time_at");
 
-    return app(context)->StopAt(at);
+    return app(context)->DiscardTimeAt(guid, at);
 }
 
 void kopsik_timeline_toggle_recording(

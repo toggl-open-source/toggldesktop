@@ -159,6 +159,7 @@ extern "C" {
         KopsikTimeEntryViewItem *te);
 
     typedef void (*KopsikDisplayIdleNotification)(
+        const char *guid,
         const char *since,
         const char *duration,
         const uint64_t started);
@@ -379,8 +380,9 @@ extern "C" {
     KOPSIK_EXPORT _Bool kopsik_stop(
         void *context);
 
-    KOPSIK_EXPORT _Bool kopsik_stop_running_time_entry_at(
+    KOPSIK_EXPORT _Bool kopsik_discard_time_at(
         void *context,
+        const char *guid,
         const uint64_t at);
 
     KOPSIK_EXPORT _Bool kopsik_set_settings(

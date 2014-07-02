@@ -1596,7 +1596,8 @@ _Bool Context::Stop() {
     return displayError(save());
 }
 
-_Bool Context::StopAt(
+_Bool Context::DiscardTimeAt(
+    const std::string guid,
     const Poco::Int64 at) {
 
     if (!user_) {
@@ -1604,7 +1605,7 @@ _Bool Context::StopAt(
         return true;
     }
 
-    TimeEntry *stopped = user_->StopAt(at);
+    TimeEntry *stopped = user_->DiscardTimeAt(guid, at);
     if (!stopped) {
         logger().warning("Time entry not found");
         return true;
@@ -1928,7 +1929,8 @@ void Context::SetIdleSeconds(const Poco::UInt64 idle_seconds) {
                idle_seconds < last_idle_seconds_reading_) {
         time_t now = time(0);
 
-        if (!user_->IsTracking()) {
+        TimeEntry *te = user_->RunningTimeEntry();
+        if (!te) {
             logger().warning("Time entry is not tracking, ignoring idleness");
         } else {
             Settings settings;
@@ -1950,7 +1952,8 @@ void Context::SetIdleSeconds(const Poco::UInt64 idle_seconds) {
                 }
                 duration << ")";
 
-                UI()->DisplayIdleNotification(since.str(),
+                UI()->DisplayIdleNotification(te->GUID(),
+                                              since.str(),
                                               duration.str(),
                                               last_idle_started_);
             }

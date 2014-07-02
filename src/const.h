@@ -3,7 +3,7 @@
 #ifndef SRC_CONST_H_
 #define SRC_CONST_H_
 
-#define kIdleThresholdSeconds 300
+#define kIdleThresholdSeconds 5
 
 #define kRequestThrottleMicros 2000000
 

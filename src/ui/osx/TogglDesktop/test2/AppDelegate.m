@@ -1209,12 +1209,14 @@ void on_timer_state(KopsikTimeEntryViewItem *te)
 }
 
 void on_idle_notification(
+	const char *guid,
 	const char *since,
 	const char *duration,
 	const uint64_t started)
 {
 	IdleEvent *idleEvent = [[IdleEvent alloc] init];
 
+	idleEvent.guid = [NSString stringWithUTF8String:guid];
 	idleEvent.since = [NSString stringWithUTF8String:since];
 	idleEvent.duration = [NSString stringWithUTF8String:duration];
 	idleEvent.started = started;

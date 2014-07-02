@@ -22,7 +22,7 @@ _Bool GUI::DisplayError(const error err) {
     if (noError == err) {
         return true;
     }
-  
+
     logger().error(err);
 
     if (isNetworkingError(err)) {
@@ -250,10 +250,14 @@ void GUI::DisplayTimerState(KopsikTimeEntryViewItem *te) {
     on_display_timer_state_(te);
 }
 
-void GUI::DisplayIdleNotification(const std::string since,
+void GUI::DisplayIdleNotification(const std::string guid,
+                                  const std::string since,
                                   const std::string duration,
                                   const uint64_t started) {
-    on_display_idle_notification_(since.c_str(), duration.c_str(), started);
+    on_display_idle_notification_(guid.c_str(),
+                                  since.c_str(),
+                                  duration.c_str(),
+                                  started);
 }
 
 _Bool GUI::isNetworkingError(const error err) const {

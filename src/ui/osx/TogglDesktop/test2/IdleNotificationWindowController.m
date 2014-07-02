@@ -30,7 +30,9 @@ extern void *ctx;
 
 - (IBAction)stopButtonClicked:(id)sender
 {
-	kopsik_stop_running_time_entry_at(ctx, self.idleEvent.started);
+	kopsik_discard_time_at(ctx,
+                         [self.idleEvent.guid UTF8String],
+                         self.idleEvent.started);
 	[self.window orderOut:nil];
 }
 

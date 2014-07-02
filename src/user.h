@@ -84,7 +84,9 @@ class User : public BaseModel {
 
     std::vector<TimeEntry *> Stop();
 
-    TimeEntry *StopAt(const Poco::Int64 at);
+    TimeEntry *DiscardTimeAt(
+        const std::string guid,
+        const Poco::Int64 at);
 
     Project *AddProject(
         const Poco::UInt64 workspace_id,
