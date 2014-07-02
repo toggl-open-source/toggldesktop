@@ -220,10 +220,12 @@ namespace TogglDesktop
         [UnmanagedFunctionPointer(convention)]
         private delegate void KopsikDisplayOnlineState(
             [MarshalAs(UnmanagedType.I1)]
-            bool is_online);
+            bool is_online,
+            string reason);
 
         public delegate void DisplayOnlineState(
-            bool is_online);
+            bool is_online,
+            string reason);
 
         [UnmanagedFunctionPointer(convention)]
         private delegate void KopsikDisplayURL(
@@ -1028,9 +1030,9 @@ namespace TogglDesktop
                 OnUpdate(open, view);
             });
 
-            kopsik_on_online_state(ctx, delegate(bool is_online)
+            kopsik_on_online_state(ctx, delegate(bool is_online, string reason)
             {
-                OnOnlineState(is_online);
+                OnOnlineState(is_online, DecodeString(reason));
             });
 
             kopsik_on_login(ctx, delegate(bool open, UInt64 user_id)

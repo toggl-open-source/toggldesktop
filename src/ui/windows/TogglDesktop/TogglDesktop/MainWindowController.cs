@@ -20,6 +20,7 @@ namespace TogglDesktop
 
         private bool isUpgradeDialogVisible = false;
         private bool isTracking = false;
+        private bool isNetworkError = false;
 
         [StructLayout(LayoutKind.Sequential)]
         struct LASTINPUTINFO
@@ -124,12 +125,25 @@ namespace TogglDesktop
             }
         }
 
-        void OnOnlineState(bool is_online)
+        void OnOnlineState(bool is_online, string reason)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { OnOnlineState(is_online); });
+                Invoke((MethodInvoker)delegate { OnOnlineState(is_online, reason); });
                 return;
+            }
+            if (!is_online)
+            {
+                isNetworkError = true;
+
+                errorLabel.Text = reason;
+                troubleBox.Visible = true;
+            }
+            else if (isNetworkError)
+            {
+                isNetworkError = false;
+
+                troubleBox.Visible = false;
             }
             // FIXME: change tray icon
         }
@@ -191,6 +205,9 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { OnError(errmsg, user_error); });
                 return;
             }
+
+            isNetworkError = false;
+
             errorLabel.Text = errmsg;
             troubleBox.Visible = true;
 
@@ -236,28 +253,13 @@ namespace TogglDesktop
             bool isLoggedIn = TogglDesktop.Program.IsLoggedIn;
 
             newToolStripMenuItem.Enabled = isLoggedIn;
-            mainMenuNew.Enabled = newToolStripMenuItem.Enabled;
-
             continueToolStripMenuItem.Enabled = isLoggedIn && !isTracking;
-            mainMenuContinue.Enabled = continueToolStripMenuItem.Enabled;
-
             stopToolStripMenuItem.Enabled = isLoggedIn && isTracking;
-            mainMenuStop.Enabled = stopToolStripMenuItem.Enabled;
-
             syncToolStripMenuItem.Enabled = isLoggedIn;
-            mainMenuSync.Enabled = syncToolStripMenuItem.Enabled;
-
             logoutToolStripMenuItem.Enabled = isLoggedIn;
-            mainMenuLogout.Enabled = logoutToolStripMenuItem.Enabled;
-
             clearCacheToolStripMenuItem.Enabled = isLoggedIn;
-            mainMenuClearCache.Enabled = clearCacheToolStripMenuItem.Enabled;
-
             sendFeedbackToolStripMenuItem.Enabled = isLoggedIn;
-            mainMenuSendFeedback.Enabled = sendFeedbackToolStripMenuItem.Enabled;
-            
             openInBrowserToolStripMenuItem.Enabled = isLoggedIn;
-            mainMenuReports.Enabled = openInBrowserToolStripMenuItem.Enabled;
         }
 
         void OnTimeEntryList(bool open, List<Toggl.TimeEntry> list)
