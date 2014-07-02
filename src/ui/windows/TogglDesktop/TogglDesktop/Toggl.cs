@@ -308,11 +308,13 @@ namespace TogglDesktop
 
         [UnmanagedFunctionPointer(convention)]
         private delegate void KopsikDisplayIdleNotification(
+            string guid,
             string since,
             string duration,
             UInt64 started);
 
         public delegate void DisplayIdleNotification(
+            string guid,
             string since,
             string duration,
             UInt64 started);
@@ -718,13 +720,14 @@ namespace TogglDesktop
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        private static extern bool kopsik_stop_running_time_entry_at(
+        private static extern bool kopsik_discard_time_at(
             IntPtr context,
+            string guid,
             UInt64 at);
 
-        public static bool StopRunningTimeEntryAt(UInt64 at)
+        public static bool DiscardTimeAt(string guid, UInt64 at)
         {
-            return kopsik_stop_running_time_entry_at(ctx, at);
+            return kopsik_discard_time_at(ctx, guid, at);
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -1102,9 +1105,13 @@ namespace TogglDesktop
             });
 
             kopsik_on_idle_notification(ctx, delegate(
-                string since, string duration, UInt64 started)
+                string guid, string since, string duration, UInt64 started)
             {
-                OnIdleNotification(DecodeString(since), DecodeString(duration), started);
+                OnIdleNotification(
+                    DecodeString(guid),
+                    DecodeString(since),
+                    DecodeString(duration),
+                    started);
             });
 
             // FIXME: Get environment from app settings

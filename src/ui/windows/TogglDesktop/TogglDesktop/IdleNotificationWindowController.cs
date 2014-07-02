@@ -13,6 +13,7 @@ namespace TogglDesktop
     public partial class IdleNotificationWindowController : Form
     {
         private UInt64 idle_started_at;
+        private string time_entry_guid;
 
         public IdleNotificationWindowController()
         {
@@ -29,22 +30,27 @@ namespace TogglDesktop
 
         private void buttonDiscardTime_Click(object sender, EventArgs e)
         {
-            Toggl.StopRunningTimeEntryAt(idle_started_at);
+            Toggl.DiscardTimeAt(time_entry_guid, idle_started_at);
             Close();
         }
 
-        void OnIdleNotification(string since, string duration, UInt64 started)
+        void OnIdleNotification(string guid,
+            string since, string duration, UInt64 started)
         {
-            DisplayIdleNotification(since, duration, started);
+            DisplayIdleNotification(guid, since, duration, started);
         }
 
-        void DisplayIdleNotification(string since, string duration, UInt64 started)
+        void DisplayIdleNotification(
+            string guid, string since, string duration, UInt64 started)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayIdleNotification(since, duration, started); });
+                Invoke((MethodInvoker)delegate { DisplayIdleNotification(guid, since, duration, started); });
                 return;
             }
+
+            time_entry_guid = guid;
+
             labelIdleSince.Text = since;
             labelIdleDuration.Text = duration;
             idle_started_at = started;
