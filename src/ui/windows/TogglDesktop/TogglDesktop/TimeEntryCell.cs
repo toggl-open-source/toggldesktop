@@ -12,51 +12,49 @@ namespace TogglDesktop
 {
     public partial class TimeEntryCell : UserControl
     {
-        private Toggl.TimeEntry TimeEntry;
+        public string GUID;
 
-        public TimeEntryCell(int y, int w)
+        public TimeEntryCell()
         {
             InitializeComponent();
-            Location = new Point(0, y);
-            Width = w;
             Anchor = (AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top);
         }
 
-        internal void Setup(Toggl.TimeEntry item)
+        internal void Display(Toggl.TimeEntry item)
         {
-            TimeEntry = item;
+            GUID = item.GUID;
 
-            labelDescription.Text = TimeEntry.Description;
-            labelProject.ForeColor = ColorTranslator.FromHtml(TimeEntry.Color);
-            labelProject.Text = TimeEntry.ProjectAndTaskLabel;
-            labelDuration.Text = TimeEntry.Duration;
-            labelBillable.Visible = TimeEntry.Billable;
-            labelTag.Visible = (TimeEntry.Tags != null && TimeEntry.Tags.Length > 0);
+            labelDescription.Text = item.Description;
+            labelProject.ForeColor = ColorTranslator.FromHtml(item.Color);
+            labelProject.Text = item.ProjectAndTaskLabel;
+            labelDuration.Text = item.Duration;
+            labelBillable.Visible = item.Billable;
+            labelTag.Visible = (item.Tags != null && item.Tags.Length > 0);
         }
 
         private void TimeEntryCell_MouseClick(object sender, MouseEventArgs e)
         {
-            Toggl.Edit(TimeEntry.GUID, false, "");
+            Toggl.Edit(GUID, false, "");
         }
 
         private void labelDescription_Click(object sender, EventArgs e)
         {
-            Toggl.Edit(TimeEntry.GUID, false, Toggl.Description);
+            Toggl.Edit(GUID, false, Toggl.Description);
         }
 
         private void labelDuration_Click(object sender, EventArgs e)
         {
-            Toggl.Edit(TimeEntry.GUID, false, Toggl.Duration);
+            Toggl.Edit(GUID, false, Toggl.Duration);
         }
 
         private void labelProject_Click(object sender, EventArgs e)
         {
-            Toggl.Edit(TimeEntry.GUID, false, Toggl.Project);
+            Toggl.Edit(GUID, false, Toggl.Project);
         }
 
         private void labelContinue_Click(object sender, EventArgs e)
         {
-            Toggl.Continue(TimeEntry.GUID);
+            Toggl.Continue(GUID);
         }
 
     }

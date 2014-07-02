@@ -158,9 +158,6 @@
     <Compile Include="MainWindowController.Designer.cs">
       <DependentUpon>MainWindowController.cs</DependentUpon>
     </Compile>
-    <Compile Include="NonFlickerPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="PreferencesWindowController.cs">
       <SubType>Form</SubType>
     </Compile>

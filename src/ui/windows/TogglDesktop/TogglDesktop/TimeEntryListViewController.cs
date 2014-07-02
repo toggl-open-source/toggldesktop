@@ -16,12 +16,22 @@ namespace TogglDesktop
         {
             InitializeComponent();
 
+            Dock = DockStyle.Fill;
+
             Toggl.OnTimeEntryList += OnTimeEntryList;
         }
 
         public void SetAcceptButton(Form frm)
         {
             timerEditViewController.SetAcceptButton(frm);
+        }
+
+        private int addTableRow()
+        {
+            int index = entries.RowCount++;
+            RowStyle style = new RowStyle(SizeType.AutoSize);
+            entries.RowStyles.Add(style);
+            return index;
         }
 
         void OnTimeEntryList(bool open, List<Toggl.TimeEntry> list)
@@ -33,35 +43,57 @@ namespace TogglDesktop
             }
             DateTime start = DateTime.Now;
 
-            int y = 0;
-            
-            List<Control> controls = new List<Control>();
+            entries.SuspendLayout();
 
             foreach (Toggl.TimeEntry item in list)
             {
+                bool existing = false;
+
+                // Find existing time entry
+                foreach(UserControl c in entries.Controls)
+                {
+                    if (c is TimeEntryCell)
+                    {
+                        TimeEntryCell cell = c as TimeEntryCell;
+                        if (cell.GUID == item.GUID)
+                        {
+                            cell.Display(item);
+                            existing = true;
+                            break;
+                        }
+                    }
+                    if (c is TimeEntryCellWithHeader)
+                    {
+                        TimeEntryCellWithHeader cell = c as TimeEntryCellWithHeader;
+                        if (cell.GUID == item.GUID)
+                        {
+                            cell.Display(item);
+                            existing = true;
+                            break;
+                        }
+                    }
+                }
+                if (existing)
+                {
+                    continue;
+                }
+                int row = addTableRow();
+                Console.WriteLine("Row {0}", row);
                 if (item.IsHeader)
                 {
-                    TimeEntryCellWithHeader cell = new TimeEntryCellWithHeader(y, Width);
-                    cell.Setup(item);
-                    controls.Add(cell);
-                    y += cell.Height;
+                    TimeEntryCellWithHeader cell = new TimeEntryCellWithHeader();
+                    cell.Display(item);
+                    entries.Controls.Add(cell, 0, row);
                 }
                 else
                 {
-                    TimeEntryCell cell = new TimeEntryCell(y, Width);
-                    cell.Setup(item);
-                    controls.Add(cell);
-                    y += cell.Height;
+                    TimeEntryCell cell = new TimeEntryCell();
+                    cell.Display(item);
+                    entries.Controls.Add(cell, 0, row);
                 }
-
             }
 
-            Dock = DockStyle.Fill;
-            EntriesList.SuspendLayout();
-            EntriesList.Controls.Clear();
-            EntriesList.Controls.AddRange(controls.ToArray());
-            EntriesList.ResumeLayout(false);
-            EntriesList.PerformLayout();
+            entries.ResumeLayout();
 
             TimeSpan spent = DateTime.Now.Subtract(start);
             Console.WriteLine(String.Format(
@@ -71,8 +103,6 @@ namespace TogglDesktop
 
         private void TimeEntryListViewController_Load(object sender, EventArgs e)
         {
-            // FIXME:
-            //regular 50 header 100
         }
     }
 }
