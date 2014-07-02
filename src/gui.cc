@@ -22,6 +22,8 @@ _Bool GUI::DisplayError(const error err) {
     if (noError == err) {
         return true;
     }
+  
+    logger().error(err);
 
     if (isNetworkingError(err)) {
         DisplayOnlineState(false);
