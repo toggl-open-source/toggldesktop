@@ -18,7 +18,7 @@ extern void *ctx;
 - (void)viewDidLoad
 {
 	[Utils addUnderlineToTextField:self.googleLoginTextField];
-  [Utils addUnderlineToTextField:self.forgotPasswordTextField];
+	[Utils addUnderlineToTextField:self.forgotPasswordTextField];
 }
 
 - (void)loadView

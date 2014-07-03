@@ -92,7 +92,7 @@
 + (void)addUnderlineToTextField:(NSTextField *)field
 {
 	NSMutableAttributedString *forgot = [[field attributedStringValue] mutableCopy];
-  
+
 	[forgot addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSUnderlineStyleSingle] range:NSMakeRange(0, forgot.length)];
 	[field setAttributedStringValue:forgot];
 }
@@ -153,3 +153,4 @@ BOOL wasLaunchedAsHiddenLoginItem()
 
 	return NO;
 }
+
