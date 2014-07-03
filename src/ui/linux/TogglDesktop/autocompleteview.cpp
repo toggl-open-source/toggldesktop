@@ -1,6 +1,6 @@
-#include "autocompleteview.h"
+// Copyright 2014 Toggl Desktop developers.
 
-AutocompleteView::AutocompleteView(QObject *parent) :
-QObject(parent)
-{
+#include "./autocompleteview.h"
+
+AutocompleteView::AutocompleteView(QObject *parent) : QObject(parent) {
 }

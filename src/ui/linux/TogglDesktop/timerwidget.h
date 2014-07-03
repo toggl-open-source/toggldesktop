@@ -1,20 +1,21 @@
-#ifndef TIMERWIDGET_H
-#define TIMERWIDGET_H
+// Copyright 2014 Toggl Desktop developers.
+
+#ifndef SRC_UI_LINUX_TOGGLDESKTOP_TIMERWIDGET_H_
+#define SRC_UI_LINUX_TOGGLDESKTOP_TIMERWIDGET_H_
 
 #include <QWidget>
 #include <QVector>
 #include <QTimer>
 
-#include "timeentryview.h"
-#include "timerwidget.h"
-#include "autocompleteview.h"
+#include "./timeentryview.h"
+#include "./timerwidget.h"
+#include "./autocompleteview.h"
 
 namespace Ui {
 class TimerWidget;
 }
 
-class TimerWidget : public QWidget
-{
+class TimerWidget : public QWidget {
     Q_OBJECT
 
  public:
@@ -27,7 +28,7 @@ class TimerWidget : public QWidget
  protected:
     void mousePressEvent(QMouseEvent *event);
 
- private slots:
+ private slots:  // NOLINT
     void displayStoppedTimerState();
 
     void displayRunningTimerState(
@@ -56,4 +57,4 @@ class TimerWidget : public QWidget
     QVector<AutocompleteView *> timeEntryAutocompleteUpdate;
 };
 
-#endif // TIMERWIDGET_H
+#endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMERWIDGET_H_

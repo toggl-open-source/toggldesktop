@@ -1,74 +1,65 @@
-#include "idlenotificationdialog.h"
-#include "ui_idlenotificationdialog.h"
+// Copyright 2014 Toggl Desktop developers.
 
-#include "toggl.h"
-#include "settingsview.h"
+#include "./idlenotificationdialog.h"
+#include "./ui_idlenotificationdialog.h"
 
-#include <X11/extensions/scrnsaver.h>
+#include "./toggl.h"
+#include "./settingsview.h"
 
-IdleNotificationDialog::IdleNotificationDialog(QWidget *parent) :
-QDialog(parent),
-ui(new Ui::IdleNotificationDialog),
-idleStarted(0),
-timer(new QTimer(this)),
-timeEntryGUID("")
-{
+#include <X11/extensions/scrnsaver.h>  // NOLINT
+
+IdleNotificationDialog::IdleNotificationDialog(QWidget *parent)
+    : QDialog(parent),
+  ui(new Ui::IdleNotificationDialog),
+  idleStarted(0),
+  timer(new QTimer(this)),
+  timeEntryGUID("") {
     ui->setupUi(this);
 
-    connect(TogglApi::instance, SIGNAL(displayIdleNotification(QString,QString,QString,uint64_t)),
-            this, SLOT(displayIdleNotification(QString,QString,QString,uint64_t)));
+    connect(TogglApi::instance, SIGNAL(displayIdleNotification(QString,QString,QString,uint64_t)),  // NOLINT
+            this, SLOT(displayIdleNotification(QString,QString,QString,uint64_t)));  // NOLINT
 
-    connect(TogglApi::instance, SIGNAL(displaySettings(bool,SettingsView*)),
-            this, SLOT(displaySettings(bool,SettingsView*)));
+    connect(TogglApi::instance, SIGNAL(displaySettings(bool,SettingsView*)),  // NOLINT
+            this, SLOT(displaySettings(bool,SettingsView*)));  // NOLINT
 
-    connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
+    connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));  // NOLINT
 
-    connect(TogglApi::instance, SIGNAL(displayStoppedTimerState()),
-            this, SLOT(displayStoppedTimerState()));
+    connect(TogglApi::instance, SIGNAL(displayStoppedTimerState()),  // NOLINT
+            this, SLOT(displayStoppedTimerState()));  // NOLINT
 
-    connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),
-            this, SLOT(displayLogin(bool,uint64_t)));
+    connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
+            this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
 }
 
-IdleNotificationDialog::~IdleNotificationDialog()
-{
+IdleNotificationDialog::~IdleNotificationDialog() {
     delete ui;
 }
 
 void IdleNotificationDialog::displayLogin(const bool open,
-        const uint64_t user_id)
-{
-    if (open || !user_id)
-    {
+        const uint64_t user_id) {
+    if (open || !user_id) {
         hide();
     }
 }
 
-void IdleNotificationDialog::displayStoppedTimerState()
-{
+void IdleNotificationDialog::displayStoppedTimerState() {
     hide();
 }
 
-void IdleNotificationDialog::on_keepTimeButton_clicked()
-{
+void IdleNotificationDialog::on_keepTimeButton_clicked() {
     hide();
 }
 
-void IdleNotificationDialog::on_discardTimeButton_clicked()
-{
+void IdleNotificationDialog::on_discardTimeButton_clicked() {
     TogglApi::instance->discardTimeAt(timeEntryGUID, idleStarted);
 }
 
 void IdleNotificationDialog::displaySettings(
     const bool open,
-    SettingsView *settings)
-{
-    if (settings->UseIdleDetection && !timer->isActive())
-    {
+    SettingsView *settings) {
+    if (settings->UseIdleDetection && !timer->isActive()) {
         timer->start(1000);
-    }
-    else if (!settings->UseIdleDetection && timer->isActive())
-    {
+    } else if (!settings->UseIdleDetection && timer->isActive()) {
         timer->stop();
     }
 }
@@ -77,8 +68,7 @@ void IdleNotificationDialog::displayIdleNotification(
     const QString guid,
     const QString since,
     const QString duration,
-    const uint64_t started)
-{
+    const uint64_t started) {
     idleStarted = started;
     timeEntryGUID = guid;
 
@@ -88,16 +78,13 @@ void IdleNotificationDialog::displayIdleNotification(
     show();
 }
 
-void IdleNotificationDialog::timeout()
-{
+void IdleNotificationDialog::timeout() {
     Display *display = XOpenDisplay(NULL);
-    if (!display)
-    {
+    if (!display) {
         return;
     }
     XScreenSaverInfo *info = XScreenSaverAllocInfo();
-    if (XScreenSaverQueryInfo(display, DefaultRootWindow(display), info))
-    {
+    if (XScreenSaverQueryInfo(display, DefaultRootWindow(display), info)) {
         uint64_t idleSeconds = info->idle / 1000;
         TogglApi::instance->setIdleSeconds(idleSeconds);
     }

@@ -1,16 +1,16 @@
-#include "feedbackdialog.h"
-#include "ui_feedbackdialog.h"
+// Copyright 2014 Toggl Desktop developers.
 
-#include <QFileDialog>
-#include <QFileInfo>
-#include <QMessageBox>
+#include "./feedbackdialog.h"
+#include "./ui_feedbackdialog.h"
 
-#include "toggl.h"
+#include <QFileDialog>  // NOLINT
+#include <QFileInfo>  // NOLINT
+#include <QMessageBox>  // NOLINT
 
-FeedbackDialog::FeedbackDialog(QWidget *parent) :
-QDialog(parent),
-ui(new Ui::FeedbackDialog)
-{
+#include "./toggl.h"
+
+FeedbackDialog::FeedbackDialog(QWidget *parent) : QDialog(parent),
+ui(new Ui::FeedbackDialog) {
     ui->setupUi(this);
 
     ui->topic->addItem("Bug report");
@@ -19,30 +19,25 @@ ui(new Ui::FeedbackDialog)
     ui->topic->setCurrentIndex(0);
 }
 
-FeedbackDialog::~FeedbackDialog()
-{
+FeedbackDialog::~FeedbackDialog() {
     delete ui;
 }
 
-void FeedbackDialog::on_uploadImageButton_clicked()
-{
+void FeedbackDialog::on_uploadImageButton_clicked() {
     path = QFileDialog::getOpenFileName(this, "Select an image to upload");
     QFileInfo info(path);
     ui->selectedImageFilename->setText(info.fileName());
 }
 
-void FeedbackDialog::on_sendButton_clicked()
-{
+void FeedbackDialog::on_sendButton_clicked() {
     QString content = ui->content->toPlainText();
-    if (content.isEmpty())
-    {
+    if (content.isEmpty()) {
         ui->content->setFocus();
         return;
     }
     if (!TogglApi::instance->sendFeedback(ui->topic->currentText(),
                                           ui->content->toPlainText(),
-                                          path))
-    {
+                                          path)) {
         return;
     }
     ui->topic->setCurrentIndex(0);

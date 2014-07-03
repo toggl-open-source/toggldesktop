@@ -1,26 +1,27 @@
-#ifndef IDLENOTIFICATIONDIALOG_H
-#define IDLENOTIFICATIONDIALOG_H
+// Copyright 2014 Toggl Desktop developers.
+
+#ifndef SRC_UI_LINUX_TOGGLDESKTOP_IDLENOTIFICATIONDIALOG_H_
+#define SRC_UI_LINUX_TOGGLDESKTOP_IDLENOTIFICATIONDIALOG_H_
 
 #include <QDialog>
 #include <QTimer>
 
 #include <stdint.h>
 
-#include "settingsview.h"
+#include "./settingsview.h"
 
 namespace Ui {
 class IdleNotificationDialog;
 }
 
-class IdleNotificationDialog : public QDialog
-{
+class IdleNotificationDialog : public QDialog {
     Q_OBJECT
 
  public:
     explicit IdleNotificationDialog(QWidget *parent = 0);
     ~IdleNotificationDialog();
 
- private slots:
+ private slots:  // NOLINT
     void displayStoppedTimerState();
 
     void displayLogin(
@@ -53,4 +54,4 @@ class IdleNotificationDialog : public QDialog
     QString timeEntryGUID;
 };
 
-#endif // IDLENOTIFICATIONDIALOG_H
+#endif  // SRC_UI_LINUX_TOGGLDESKTOP_IDLENOTIFICATIONDIALOG_H_

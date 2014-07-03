@@ -1,26 +1,27 @@
-#ifndef TIMEENTRYLISTWIDGET_H
-#define TIMEENTRYLISTWIDGET_H
+// Copyright 2014 Toggl Desktop developers.
+
+#ifndef SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYLISTWIDGET_H_
+#define SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYLISTWIDGET_H_
 
 #include <QWidget>
 #include <QVector>
 
 #include <stdint.h>
 
-#include "timeentryview.h"
+#include "./timeentryview.h"
 
 namespace Ui {
 class TimeEntryListWidget;
 }
 
-class TimeEntryListWidget : public QWidget
-{
+class TimeEntryListWidget : public QWidget {
     Q_OBJECT
 
  public:
     explicit TimeEntryListWidget(QWidget *parent = 0);
     ~TimeEntryListWidget();
 
- private slots:
+ private slots:  // NOLINT
     void displayLogin(
         const bool open,
         const uint64_t user_id);
@@ -38,4 +39,4 @@ class TimeEntryListWidget : public QWidget
     Ui::TimeEntryListWidget *ui;
 };
 
-#endif // TIMEENTRYLISTWIDGET_H
+#endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYLISTWIDGET_H_

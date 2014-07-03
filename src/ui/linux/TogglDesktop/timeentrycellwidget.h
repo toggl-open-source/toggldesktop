@@ -1,16 +1,17 @@
-#ifndef TIMEENTRYCELLWIDGET_H
-#define TIMEENTRYCELLWIDGET_H
+// Copyright 2014 Toggl Desktop developers.
+
+#ifndef SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYCELLWIDGET_H_
+#define SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYCELLWIDGET_H_
 
 #include <QWidget>
 
-#include "timeentryview.h"
+#include "./timeentryview.h"
 
 namespace Ui {
 class TimeEntryCellWidget;
 }
 
-class TimeEntryCellWidget : public QWidget
-{
+class TimeEntryCellWidget : public QWidget {
     Q_OBJECT
 
  public:
@@ -20,7 +21,7 @@ class TimeEntryCellWidget : public QWidget
  protected:
     virtual void mousePressEvent(QMouseEvent *event);
 
- private slots:
+ private slots:  // NOLINT
     void on_continueButton_clicked();
 
  private:
@@ -29,4 +30,4 @@ class TimeEntryCellWidget : public QWidget
     QString guid;
 };
 
-#endif // TIMEENTRYCELLWIDGET_H
+#endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYCELLWIDGET_H_

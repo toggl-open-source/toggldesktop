@@ -1,14 +1,16 @@
-#ifndef TIMEENTRYVIEW_H
-#define TIMEENTRYVIEW_H
+// Copyright 2014 Toggl Desktop developers.
+
+#ifndef SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYVIEW_H_
+#define SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYVIEW_H_
 
 #include <QObject>
 #include <QVector>
 
-#include "kopsik_api.h"
+#include "./kopsik_api.h"
 
-class TimeEntryView : public QObject
-{
+class TimeEntryView : public QObject {
     Q_OBJECT
+
  public:
     explicit TimeEntryView(QObject *parent = 0);
 
@@ -43,11 +45,6 @@ class TimeEntryView : public QObject
     bool CanAddProjects;
     bool CanSeeBillable;
     uint64_t DefaultWID;
-
- signals:
-
- public slots:
-
 };
 
-#endif // TIMEENTRYVIEW_H
+#endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYVIEW_H_

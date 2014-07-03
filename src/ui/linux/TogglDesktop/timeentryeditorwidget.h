@@ -1,5 +1,7 @@
-#ifndef TIMEENTRYEDITORWIDGET_H
-#define TIMEENTRYEDITORWIDGET_H
+// Copyright 2014 Toggl Desktop developers.
+
+#ifndef SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYEDITORWIDGET_H_
+#define SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYEDITORWIDGET_H_
 
 #include <QWidget>
 #include <QVector>
@@ -7,16 +9,15 @@
 
 #include <stdint.h>
 
-#include "timeentryview.h"
-#include "genericview.h"
-#include "autocompleteview.h"
+#include "./timeentryview.h"
+#include "./genericview.h"
+#include "./autocompleteview.h"
 
 namespace Ui {
 class TimeEntryEditorWidget;
 }
 
-class TimeEntryEditorWidget : public QWidget
-{
+class TimeEntryEditorWidget : public QWidget {
     Q_OBJECT
 
  public:
@@ -46,7 +47,7 @@ class TimeEntryEditorWidget : public QWidget
 
     bool applyNewProject();
 
- private slots:
+ private slots:  // NOLINT
     void displayLogin(
         const bool open,
         const uint64_t user_id);
@@ -93,4 +94,4 @@ class TimeEntryEditorWidget : public QWidget
     void on_billable_clicked(bool checked);
 };
 
-#endif // TIMEENTRYEDITORWIDGET_H
+#endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYEDITORWIDGET_H_

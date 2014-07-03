@@ -1,36 +1,32 @@
-#include "errorviewcontroller.h"
-#include "ui_errorviewcontroller.h"
-#include "toggl.h"
+// Copyright 2014 Toggl Desktop developers.
 
-ErrorViewController::ErrorViewController(QWidget *parent) :
-QWidget(parent),
-ui(new Ui::ErrorViewController)
-{
+#include "./errorviewcontroller.h"
+#include "./ui_errorviewcontroller.h"
+#include "./toggl.h"
+
+ErrorViewController::ErrorViewController(QWidget *parent) : QWidget(parent),
+ui(new Ui::ErrorViewController) {
     ui->setupUi(this);
     setVisible(false);
 
-    connect(TogglApi::instance, SIGNAL(displayError(QString,bool)), this, SLOT(displayError(QString,bool)));
+    connect(TogglApi::instance, SIGNAL(displayError(QString,bool)),  // NOLINT
+            this, SLOT(displayError(QString,bool)));  // NOLINT
 }
 
-ErrorViewController::~ErrorViewController()
-{
+ErrorViewController::~ErrorViewController() {
     delete ui;
 }
 
-void ErrorViewController::on_pushButton_clicked()
-{
+void ErrorViewController::on_pushButton_clicked() {
     setVisible(false);
 }
 
 void ErrorViewController::displayError(
     const QString errmsg,
-    const bool user_error)
-{
+    const bool user_error) {
     ui->errorMessage->setText(errmsg);
     setVisible(true);
     if (!user_error) {
         // FIXME: notify bugsnag
     }
-
 }
-

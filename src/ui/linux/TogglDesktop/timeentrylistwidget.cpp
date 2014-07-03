@@ -1,62 +1,53 @@
-#include "timeentrylistwidget.h"
-#include "ui_timeentrylistwidget.h"
+// Copyright 2014 Toggl Desktop developers.
 
-#include "toggl.h"
-#include "timerwidget.h"
-#include "timeentrycellwidget.h"
+#include "./timeentrylistwidget.h"
+#include "./ui_timeentrylistwidget.h"
 
-TimeEntryListWidget::TimeEntryListWidget(QWidget *parent) :
-QWidget(parent),
-ui(new Ui::TimeEntryListWidget)
-{
+#include "./toggl.h"
+#include "./timerwidget.h"
+#include "./timeentrycellwidget.h"
+
+TimeEntryListWidget::TimeEntryListWidget(QWidget *parent) : QWidget(parent),
+ui(new Ui::TimeEntryListWidget) {
     ui->setupUi(this);
 
     setVisible(false);
 
-    connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),
-            this, SLOT(displayLogin(bool,uint64_t)));
+    connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
+            this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
 
-    connect(TogglApi::instance, SIGNAL(displayTimeEntryList(bool,QVector<TimeEntryView*>)),
-            this, SLOT(displayTimeEntryList(bool,QVector<TimeEntryView*>)));
+    connect(TogglApi::instance, SIGNAL(displayTimeEntryList(bool,QVector<TimeEntryView*>)),  // NOLINT
+            this, SLOT(displayTimeEntryList(bool,QVector<TimeEntryView*>)));  // NOLINT
 
-    connect(TogglApi::instance, SIGNAL(displayTimeEntryEditor(bool,TimeEntryView*,QString)),
-            this, SLOT(displayTimeEntryEditor(bool,TimeEntryView*,QString)));
+    connect(TogglApi::instance, SIGNAL(displayTimeEntryEditor(bool,TimeEntryView*,QString)),  // NOLINT
+            this, SLOT(displayTimeEntryEditor(bool,TimeEntryView*,QString)));  // NOLINT
 }
 
-TimeEntryListWidget::~TimeEntryListWidget()
-{
+TimeEntryListWidget::~TimeEntryListWidget() {
     delete ui;
 }
 
 void TimeEntryListWidget::displayLogin(
     const bool open,
-    const uint64_t user_id)
-{
+    const uint64_t user_id) {
 
-    if (open || !user_id)
-    {
+    if (open || !user_id) {
         setVisible(false);
     }
 }
 
 void TimeEntryListWidget::displayTimeEntryList(
     const bool open,
-    QVector<TimeEntryView *> list)
-{
-    if (open)
-    {
+    QVector<TimeEntryView *> list) {
+    if (open) {
         setVisible(true);
     }
     ui->list->clear();
-    foreach(TimeEntryView *view, list)
-    {
+    foreach(TimeEntryView *view, list) {
         QWidget *widget = 0;
-        if (view->IsHeader)
-        {
+        if (view->IsHeader) {
             widget = new TimeEntryCellWidget(view);
-        }
-        else
-        {
+        } else {
             widget = new TimeEntryCellWidget(view);
         }
 
@@ -70,10 +61,8 @@ void TimeEntryListWidget::displayTimeEntryList(
 void TimeEntryListWidget::displayTimeEntryEditor(
     const bool open,
     TimeEntryView *view,
-    const QString focused_field_name)
-{
-    if (open)
-    {
+    const QString focused_field_name) {
+    if (open) {
         setVisible(false);
     }
 }

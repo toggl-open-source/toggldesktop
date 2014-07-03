@@ -1,16 +1,17 @@
-#ifndef PREFERENCESDIALOG_H
-#define PREFERENCESDIALOG_H
+// Copyright 2014 Toggl Desktop developers.
+
+#ifndef SRC_UI_LINUX_TOGGLDESKTOP_PREFERENCESDIALOG_H_
+#define SRC_UI_LINUX_TOGGLDESKTOP_PREFERENCESDIALOG_H_
 
 #include <QDialog>
 
-#include "settingsview.h"
+#include "./settingsview.h"
 
 namespace Ui {
 class PreferencesDialog;
 }
 
-class PreferencesDialog : public QDialog
-{
+class PreferencesDialog : public QDialog {
     Q_OBJECT
 
  public:
@@ -23,7 +24,7 @@ class PreferencesDialog : public QDialog
     bool setSettings();
     bool setProxySettings();
 
- private slots:
+ private slots:  // NOLINT
     void displaySettings(const bool open,
                          SettingsView *settings);
 
@@ -40,4 +41,4 @@ class PreferencesDialog : public QDialog
     void on_useProxy_clicked(bool checked);
 };
 
-#endif // PREFERENCESDIALOG_H
+#endif  // SRC_UI_LINUX_TOGGLDESKTOP_PREFERENCESDIALOG_H_

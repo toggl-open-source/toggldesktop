@@ -1,4 +1,5 @@
-#include "mainwindowcontroller.h"
+// Copyright 2014 Toggl Desktop developers.
+
 #include <QApplication>
 #include <QMetaType>
 #include <QDebug>
@@ -7,10 +8,11 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "qtsingleapplication.h"
+#include "qtsingleapplication.h"  // NOLINT
 
-int main(int argc, char *argv[])
-{
+#include "./mainwindowcontroller.h"
+
+int main(int argc, char *argv[]) {
     qRegisterMetaType<uint64_t>("uint64_t");
     qRegisterMetaType<_Bool>("_Bool");
     qRegisterMetaType<QVector<TimeEntryView*> >("QVector<TimeEntryView*>");

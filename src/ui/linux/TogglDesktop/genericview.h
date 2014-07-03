@@ -1,14 +1,16 @@
-#ifndef GENERICVIEW_H
-#define GENERICVIEW_H
+// Copyright 2014 Toggl Desktop developers.
+
+#ifndef SRC_UI_LINUX_TOGGLDESKTOP_GENERICVIEW_H_
+#define SRC_UI_LINUX_TOGGLDESKTOP_GENERICVIEW_H_
 
 #include <QObject>
 #include <QVector>
 
-#include "kopsik_api.h"
+#include "./kopsik_api.h"
 
-class GenericView : public QObject
-{
+class GenericView : public QObject {
     Q_OBJECT
+
  public:
     explicit GenericView(QObject *parent = 0);
 
@@ -31,11 +33,6 @@ class GenericView : public QObject
     uint64_t WID;
     QString GUID;
     QString Name;
-
- signals:
-
- public slots:
-
 };
 
-#endif // GENERICVIEW_H
+#endif  // SRC_UI_LINUX_TOGGLDESKTOP_GENERICVIEW_H_

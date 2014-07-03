@@ -1,23 +1,24 @@
-#ifndef ABOUTDIALOG_H
-#define ABOUTDIALOG_H
+// Copyright 2014 Toggl Desktop developers.
+
+#ifndef SRC_UI_LINUX_TOGGLDESKTOP_ABOUTDIALOG_H_
+#define SRC_UI_LINUX_TOGGLDESKTOP_ABOUTDIALOG_H_
 
 #include <QDialog>
 
-#include "updateview.h"
+#include "./updateview.h"
 
 namespace Ui {
 class AboutDialog;
 }
 
-class AboutDialog : public QDialog
-{
+class AboutDialog : public QDialog {
     Q_OBJECT
 
  public:
     explicit AboutDialog(QWidget *parent = 0);
     ~AboutDialog();
 
- private slots:
+ private slots:  // NOLINT
     void displayUpdate(const bool open, UpdateView *view);
 
     void on_updateButton_clicked();
@@ -30,4 +31,4 @@ class AboutDialog : public QDialog
     QString url;
 };
 
-#endif // ABOUTDIALOG_H
+#endif  // SRC_UI_LINUX_TOGGLDESKTOP_ABOUTDIALOG_H_

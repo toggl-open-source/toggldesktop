@@ -1,22 +1,22 @@
-#include "loginwidget.h"
-#include "ui_loginwidget.h"
+// Copyright 2014 Toggl Desktop developers.
 
-#include "toggl.h"
+#include "./loginwidget.h"
+#include "./ui_loginwidget.h"
 
-LoginWidget::LoginWidget(QWidget *parent) :
-QWidget(parent),
+#include "./toggl.h"
+
+LoginWidget::LoginWidget(QWidget *parent) : QWidget(parent),
 ui(new Ui::LoginWidget),
-oauth2(new OAuth2(this))
-{
+oauth2(new OAuth2(this)) {
     ui->setupUi(this);
 
     setVisible(false);
 
-    connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),
-            this, SLOT(displayLogin(bool,uint64_t)));
+    connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
+            this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
 
-    connect(TogglApi::instance, SIGNAL(displayTimeEntryList(bool,QVector<TimeEntryView*>)),
-            this, SLOT(displayTimeEntryList(bool,QVector<TimeEntryView*>)));
+    connect(TogglApi::instance, SIGNAL(displayTimeEntryList(bool,QVector<TimeEntryView*>)),  // NOLINT
+            this, SLOT(displayTimeEntryList(bool,QVector<TimeEntryView*>)));  // NOLINT
 
     oauth2->setScope("profile email");
     oauth2->setAppName("Toggl Desktop");
@@ -26,8 +26,7 @@ oauth2(new OAuth2(this))
     connect(oauth2, SIGNAL(loginDone()), this, SLOT(loginDone()));
 }
 
-LoginWidget::~LoginWidget()
-{
+LoginWidget::~LoginWidget() {
     delete ui;
 }
 
@@ -46,16 +45,13 @@ void LoginWidget::displayLogin(
 
 void LoginWidget::displayTimeEntryList(
     const bool open,
-    QVector<TimeEntryView *> list)
-{
-    if (open)
-    {
+    QVector<TimeEntryView *> list) {
+    if (open) {
         setVisible(false);
     }
 }
 
-void LoginWidget::on_login_clicked()
-{
+void LoginWidget::on_login_clicked() {
     if (ui->email->text().isEmpty()) {
         ui->email->setFocus();
         return;
@@ -67,12 +63,10 @@ void LoginWidget::on_login_clicked()
     TogglApi::instance->login(ui->email->text(), ui->password->text());
 }
 
-void LoginWidget::on_googleLogin_linkActivated(const QString &link)
-{
+void LoginWidget::on_googleLogin_linkActivated(const QString &link) {
     oauth2->startLogin(true);
 }
 
-void LoginWidget::loginDone()
-{
+void LoginWidget::loginDone() {
     TogglApi::instance->googleLogin(oauth2->accessToken());
 }

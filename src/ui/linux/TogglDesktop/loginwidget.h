@@ -1,27 +1,28 @@
-#ifndef LOGINWIDGET_H
-#define LOGINWIDGET_H
+// Copyright 2014 Toggl Desktop developers.
+
+#ifndef SRC_UI_LINUX_TOGGLDESKTOP_LOGINWIDGET_H_
+#define SRC_UI_LINUX_TOGGLDESKTOP_LOGINWIDGET_H_
 
 #include <QWidget>
 #include <QVector>
 
 #include <stdint.h>
 
-#include "timeentryview.h"
-#include "oauth2.h"
+#include "./timeentryview.h"
+#include "./oauth2.h"
 
 namespace Ui {
 class LoginWidget;
 }
 
-class LoginWidget : public QWidget
-{
+class LoginWidget : public QWidget {
     Q_OBJECT
 
  public:
     explicit LoginWidget(QWidget *parent = 0);
     ~LoginWidget();
 
- private slots:
+ private slots:  // NOLINT
     void on_login_clicked();
 
     void displayLogin(
@@ -42,4 +43,4 @@ class LoginWidget : public QWidget
     OAuth2 *oauth2;
 };
 
-#endif // LOGINWIDGET_H
+#endif  // SRC_UI_LINUX_TOGGLDESKTOP_LOGINWIDGET_H_

@@ -1,10 +1,10 @@
-#include "timeentryview.h"
+// Copyright 2014 Toggl Desktop developers.
+
+#include "./timeentryview.h"
 
 #include <QDateTime>
 
-TimeEntryView::TimeEntryView(QObject *parent) :
-QObject(parent)
-{
+TimeEntryView::TimeEntryView(QObject *parent) : QObject(parent) {
 }
 
 TimeEntryView *TimeEntryView::importOne(KopsikTimeEntryViewItem *view) {
@@ -37,7 +37,8 @@ TimeEntryView *TimeEntryView::importOne(KopsikTimeEntryViewItem *view) {
     return result;
 }
 
-QVector<TimeEntryView *> TimeEntryView::importAll(KopsikTimeEntryViewItem *first) {
+QVector<TimeEntryView *> TimeEntryView::importAll(
+    KopsikTimeEntryViewItem *first) {
     QVector<TimeEntryView *> result;
     KopsikTimeEntryViewItem *view = first;
     while (view) {
@@ -47,17 +48,15 @@ QVector<TimeEntryView *> TimeEntryView::importAll(KopsikTimeEntryViewItem *first
     return result;
 }
 
-const QString TimeEntryView::timeOverview()
-{
+const QString TimeEntryView::timeOverview() {
     QString result = DateHeader + " from " + StartTimeString;
-    if (DurationInSeconds >= 0)
-    {
+    if (DurationInSeconds >= 0) {
         result = result + " to " + EndTimeString;
     }
     return result;
 }
 
-const QString TimeEntryView::lastUpdate()
-{
-    return QString("Last update ") + QDateTime::fromTime_t(UpdatedAt).toString();
+const QString TimeEntryView::lastUpdate() {
+    return QString("Last update ") +
+           QDateTime::fromTime_t(UpdatedAt).toString();
 }

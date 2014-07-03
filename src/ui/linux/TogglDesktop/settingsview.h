@@ -1,13 +1,15 @@
-#ifndef SETTINGSVIEW_H
-#define SETTINGSVIEW_H
+// Copyright 2014 Toggl Desktop developers.
+
+#ifndef SRC_UI_LINUX_TOGGLDESKTOP_SETTINGSVIEW_H_
+#define SRC_UI_LINUX_TOGGLDESKTOP_SETTINGSVIEW_H_
 
 #include <QObject>
 
-#include "kopsik_api.h"
+#include "./kopsik_api.h"
 
-class SettingsView : public QObject
-{
+class SettingsView : public QObject {
     Q_OBJECT
+
  public:
     explicit SettingsView(QObject *parent = 0);
 
@@ -38,11 +40,6 @@ class SettingsView : public QObject
     bool OnTop;
     bool Reminder;
     bool RecordTimeline;
-
- signals:
-
- public slots:
-
 };
 
-#endif // SETTINGSVIEW_H
+#endif  // SRC_UI_LINUX_TOGGLDESKTOP_SETTINGSVIEW_H_

@@ -1,13 +1,13 @@
-#include "timeentrycellwidget.h"
-#include "ui_timeentrycellwidget.h"
+// Copyright 2014 Toggl Desktop developers.
 
-#include "toggl.h"
+#include "./timeentrycellwidget.h"
+#include "./ui_timeentrycellwidget.h"
 
-TimeEntryCellWidget::TimeEntryCellWidget(TimeEntryView *view) :
-QWidget(0),
+#include "./toggl.h"
+
+TimeEntryCellWidget::TimeEntryCellWidget(TimeEntryView *view) : QWidget(0),
 ui(new Ui::TimeEntryCellWidget),
-guid("")
-{
+guid("") {
     ui->setupUi(this);
 
     guid = view->GUID;
@@ -24,19 +24,15 @@ guid("")
     ui->dateDuration->setText(view->DateDuration);
 }
 
-TimeEntryCellWidget::~TimeEntryCellWidget()
-{
+TimeEntryCellWidget::~TimeEntryCellWidget() {
     delete ui;
 }
 
-void TimeEntryCellWidget::mousePressEvent(QMouseEvent *event)
-{
+void TimeEntryCellWidget::mousePressEvent(QMouseEvent *event) {
     TogglApi::instance->editTimeEntry(guid, "");
     QWidget::mousePressEvent(event);
 }
 
-void TimeEntryCellWidget::on_continueButton_clicked()
-{
+void TimeEntryCellWidget::on_continueButton_clicked() {
     TogglApi::instance->continueTimeEntry(guid);
-
 }

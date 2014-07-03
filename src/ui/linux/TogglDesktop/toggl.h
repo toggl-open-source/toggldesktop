@@ -1,5 +1,7 @@
-#ifndef TOGGLAPI_H
-#define TOGGLAPI_H
+// Copyright 2014 Toggl Desktop developers.
+
+#ifndef SRC_UI_LINUX_TOGGLDESKTOP_TOGGL_H_
+#define SRC_UI_LINUX_TOGGLDESKTOP_TOGGL_H_
 
 #include <QObject>
 #include <QVector>
@@ -7,15 +9,15 @@
 
 #include <stdint.h>
 
-#include "updateview.h"
-#include "timeentryview.h"
-#include "autocompleteview.h"
-#include "genericview.h"
-#include "settingsview.h"
+#include "./updateview.h"
+#include "./timeentryview.h"
+#include "./autocompleteview.h"
+#include "./genericview.h"
+#include "./settingsview.h"
 
-class TogglApi : public QObject
-{
+class TogglApi : public QObject {
     Q_OBJECT
+
  public:
     explicit TogglApi(QObject *parent = 0);
 
@@ -188,4 +190,4 @@ class TogglApi : public QObject
     void *ctx;
 };
 
-#endif // TOGGLAPI_H
+#endif  // SRC_UI_LINUX_TOGGLDESKTOP_TOGGL_H_

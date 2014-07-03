@@ -1,6 +1,6 @@
-#include "genericview.h"
+// Copyright 2014 Toggl Desktop developers.
 
-GenericView::GenericView(QObject *parent) :
-QObject(parent)
-{
+#include "./genericview.h"
+
+GenericView::GenericView(QObject *parent) : QObject(parent) {
 }

@@ -1,12 +1,13 @@
-#ifndef UPDATEVIEW_H
-#define UPDATEVIEW_H
+// Copyright 2014 Toggl Desktop developers.
+
+#ifndef SRC_UI_LINUX_TOGGLDESKTOP_UPDATEVIEW_H_
+#define SRC_UI_LINUX_TOGGLDESKTOP_UPDATEVIEW_H_
 
 #include <QObject>
 
-#include "kopsik_api.h"
+#include "./kopsik_api.h"
 
-class UpdateView : public QObject
-{
+class UpdateView : public QObject {
     Q_OBJECT
  public:
     explicit UpdateView(QObject *parent = 0);
@@ -26,11 +27,6 @@ class UpdateView : public QObject
     bool IsUpdateAvailable;
     QString URL;
     QString Version;
-
- signals:
-
- public slots:
-
 };
 
-#endif // UPDATEVIEW_H
+#endif  // SRC_UI_LINUX_TOGGLDESKTOP_UPDATEVIEW_H_

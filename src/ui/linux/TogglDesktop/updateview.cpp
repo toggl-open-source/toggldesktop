@@ -1,6 +1,6 @@
-#include "updateview.h"
+// Copyright 2014 Toggl Desktop developers.
 
-UpdateView::UpdateView(QObject *parent) :
-QObject(parent)
-{
+#include "./updateview.h"
+
+UpdateView::UpdateView(QObject *parent) : QObject(parent) {
 }

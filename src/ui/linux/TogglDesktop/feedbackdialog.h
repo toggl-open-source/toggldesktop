@@ -1,5 +1,7 @@
-#ifndef FEEDBACKDIALOG_H
-#define FEEDBACKDIALOG_H
+// Copyright 2014 Toggl Desktop developers.
+
+#ifndef SRC_UI_LINUX_TOGGLDESKTOP_FEEDBACKDIALOG_H_
+#define SRC_UI_LINUX_TOGGLDESKTOP_FEEDBACKDIALOG_H_
 
 #include <QDialog>
 
@@ -7,15 +9,14 @@ namespace Ui {
 class FeedbackDialog;
 }
 
-class FeedbackDialog : public QDialog
-{
+class FeedbackDialog : public QDialog {
     Q_OBJECT
 
  public:
     explicit FeedbackDialog(QWidget *parent = 0);
     ~FeedbackDialog();
 
- private slots:
+ private slots:  // NOLINT
     void on_uploadImageButton_clicked();
 
     void on_sendButton_clicked();
@@ -26,4 +27,4 @@ class FeedbackDialog : public QDialog
     QString path;
 };
 
-#endif // FEEDBACKDIALOG_H
+#endif  // SRC_UI_LINUX_TOGGLDESKTOP_FEEDBACKDIALOG_H_

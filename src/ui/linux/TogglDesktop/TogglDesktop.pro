@@ -58,7 +58,6 @@ HEADERS  += \
     ../../../../third_party/qt-solutions/qtsingleapplication/src/qtsinglecoreapplication.h \
     loginwidget.h \
     errorviewcontroller.h \
-    ../../../libkopsik/include/kopsik_api.h \
     timeentrylistwidget.h \
     timerwidget.h \
     timeentrycellwidget.h \

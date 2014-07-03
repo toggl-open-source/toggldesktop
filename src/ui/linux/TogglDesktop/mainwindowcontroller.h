@@ -1,25 +1,26 @@
-#ifndef MAINWINDOWCONTROLLER_H
-#define MAINWINDOWCONTROLLER_H
+// Copyright 2014 Toggl Desktop developers.
+
+#ifndef SRC_UI_LINUX_TOGGLDESKTOP_MAINWINDOWCONTROLLER_H_
+#define SRC_UI_LINUX_TOGGLDESKTOP_MAINWINDOWCONTROLLER_H_
 
 #include <QMainWindow>
 
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "toggl.h"
-#include "loginwidget.h"
-#include "timeentrylistwidget.h"
-#include "preferencesdialog.h"
-#include "aboutdialog.h"
-#include "feedbackdialog.h"
-#include "idlenotificationdialog.h"
+#include "./toggl.h"
+#include "./loginwidget.h"
+#include "./timeentrylistwidget.h"
+#include "./preferencesdialog.h"
+#include "./aboutdialog.h"
+#include "./feedbackdialog.h"
+#include "./idlenotificationdialog.h"
 
 namespace Ui {
 class MainWindowController;
 }
 
-class MainWindowController : public QMainWindow
-{
+class MainWindowController : public QMainWindow {
     Q_OBJECT
 
  public:
@@ -32,7 +33,7 @@ class MainWindowController : public QMainWindow
     void closeEvent(QCloseEvent *event);
     void showEvent(QShowEvent *event);
 
- private slots:
+ private slots:  // NOLINT
     void displayApp(const bool open);
     void displayRunningTimerState(TimeEntryView *te);
     void displayStoppedTimerState();
@@ -85,4 +86,4 @@ class MainWindowController : public QMainWindow
     void enableMenuActions();
 };
 
-#endif // MAINWINDOWCONTROLLER_H
+#endif  // SRC_UI_LINUX_TOGGLDESKTOP_MAINWINDOWCONTROLLER_H_

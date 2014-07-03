@@ -1,6 +1,6 @@
-#include "settingsview.h"
+// Copyright 2014 Toggl Desktop developers.
 
-SettingsView::SettingsView(QObject *parent) :
-QObject(parent)
-{
+#include "./settingsview.h"
+
+SettingsView::SettingsView(QObject *parent) : QObject(parent) {
 }
