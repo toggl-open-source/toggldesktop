@@ -115,7 +115,7 @@ void MainWindowController::connectMenuActions() {
     }
 }
 
-void MainWindowController::conectMenuAction(
+void MainWindowController::connectMenuAction(
     QAction *action) {
     if ("actionNew" == action->objectName()) {
         actionNew = action;
@@ -254,4 +254,4 @@ void MainWindowController::showEvent(QShowEvent *event) {
         "The application could not start. Please inspect the log file. Sorry!",
         QMessageBox::Ok|QMessageBox::Cancel).exec();
 }
-}
+

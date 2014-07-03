@@ -83,6 +83,7 @@ class MainWindowController : public QMainWindow {
     void writeSettings();
 
     void connectMenuActions();
+    void connectMenuAction(QAction *action);
     void enableMenuActions();
 };
 
