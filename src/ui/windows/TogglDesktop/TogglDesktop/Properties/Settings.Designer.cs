@@ -70,5 +70,17 @@ namespace TogglDesktop.Properties {
                 this["Minimized"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("production")]
+        public string Environment {
+            get {
+                return ((string)(this["Environment"]));
+            }
+            set {
+                this["Environment"] = value;
+            }
+        }
     }
 }

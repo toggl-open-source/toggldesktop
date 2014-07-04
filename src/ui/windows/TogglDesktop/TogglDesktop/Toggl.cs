@@ -1116,8 +1116,7 @@ namespace TogglDesktop
                     started);
             });
 
-            // FIXME: Get environment from app settings
-            kopsik_set_environment(ctx, "development");
+            kopsik_set_environment(ctx, Properties.Settings.Default.Environment);
 
             // Configure log, db path
             string path = Path.Combine(Environment.GetFolderPath(
