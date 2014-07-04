@@ -7,11 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace TogglDesktop
 {
     public partial class TimeEntryListViewController : UserControl
     {
+        private Object rendering = new Object();
+
         public TimeEntryListViewController()
         {
             InitializeComponent();
@@ -19,19 +22,12 @@ namespace TogglDesktop
             Dock = DockStyle.Fill;
 
             Toggl.OnTimeEntryList += OnTimeEntryList;
+            Toggl.OnLogin += OnLogin;
         }
 
         public void SetAcceptButton(Form frm)
         {
             timerEditViewController.SetAcceptButton(frm);
-        }
-
-        private int addTableRow()
-        {
-            int index = entries.RowCount++;
-            RowStyle style = new RowStyle(SizeType.AutoSize);
-            entries.RowStyles.Add(style);
-            return index;
         }
 
         void OnTimeEntryList(bool open, List<Toggl.TimeEntry> list)
@@ -43,57 +39,10 @@ namespace TogglDesktop
             }
             DateTime start = DateTime.Now;
 
-            entries.SuspendLayout();
-
-            foreach (Toggl.TimeEntry item in list)
+            lock (rendering)
             {
-                bool existing = false;
-
-                // Find existing time entry
-                foreach(UserControl c in entries.Controls)
-                {
-                    if (c is TimeEntryCell)
-                    {
-                        TimeEntryCell cell = c as TimeEntryCell;
-                        if (cell.GUID == item.GUID)
-                        {
-                            cell.Display(item);
-                            existing = true;
-                            break;
-                        }
-                    }
-                    if (c is TimeEntryCellWithHeader)
-                    {
-                        TimeEntryCellWithHeader cell = c as TimeEntryCellWithHeader;
-                        if (cell.GUID == item.GUID)
-                        {
-                            cell.Display(item);
-                            existing = true;
-                            break;
-                        }
-                    }
-                }
-                if (existing)
-                {
-                    continue;
-                }
-                int row = addTableRow();
-                Console.WriteLine("Row {0}", row);
-                if (item.IsHeader)
-                {
-                    TimeEntryCellWithHeader cell = new TimeEntryCellWithHeader();
-                    cell.Display(item);
-                    entries.Controls.Add(cell, 0, row);
-                }
-                else
-                {
-                    TimeEntryCell cell = new TimeEntryCell();
-                    cell.Display(item);
-                    entries.Controls.Add(cell, 0, row);
-                }
+                renderTimeEntryList(list);
             }
-
-            entries.ResumeLayout();
 
             TimeSpan spent = DateTime.Now.Subtract(start);
             Console.WriteLine(String.Format(
@@ -101,8 +50,62 @@ namespace TogglDesktop
                 spent.TotalMilliseconds));
         }
 
+        private void renderTimeEntryList(List<Toggl.TimeEntry> list)
+        {
+            entries.SuspendLayout();
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                Toggl.TimeEntry te = list.ElementAt(i);
+
+                TimeEntryCell cell = null;
+                if (entries.Controls.Count > i)
+                {
+                    cell = entries.Controls[i] as TimeEntryCell;
+                }
+
+                if (cell == null)
+                {
+                    cell = new TimeEntryCell();
+                    entries.Controls.Add(cell);
+                }
+
+                cell.Display(te);
+                entries.Controls.SetChildIndex(cell, i);
+            }
+
+            while (entries.Controls.Count > list.Count)
+            {
+                entries.Controls.RemoveAt(list.Count);
+            }
+
+            entries.ResumeLayout();
+            entries.PerformLayout();
+        }
+
         private void TimeEntryListViewController_Load(object sender, EventArgs e)
         {
+        }
+
+        void OnLogin(bool open, UInt64 user_id)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { OnLogin(open, user_id); });
+                return;
+            }
+            if (open || user_id == 0)
+            {
+                entries.SuspendLayout();
+                entries.Controls.Clear();
+                entries.ResumeLayout();
+                entries.PerformLayout();
+            }
+        }
+
+        private void timerEditViewController_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

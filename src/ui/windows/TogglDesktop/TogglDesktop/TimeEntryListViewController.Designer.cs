@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.panelHeader = new System.Windows.Forms.Panel();
-            this.entries = new System.Windows.Forms.TableLayoutPanel();
+            this.entries = new System.Windows.Forms.FlowLayoutPanel();
             this.timerEditViewController = new TogglDesktop.TimerEditViewController();
             this.panelHeader.SuspendLayout();
             this.SuspendLayout();
@@ -51,14 +51,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.entries.AutoScroll = true;
-            this.entries.ColumnCount = 1;
-            this.entries.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.entries.Location = new System.Drawing.Point(0, 59);
             this.entries.Name = "entries";
-            this.entries.RowCount = 1;
-            this.entries.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.entries.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.entries.Size = new System.Drawing.Size(314, 292);
+            this.entries.Size = new System.Drawing.Size(311, 292);
             this.entries.TabIndex = 1;
             // 
             // timerEditViewController
@@ -92,6 +87,6 @@
 
         private System.Windows.Forms.Panel panelHeader;
         private TimerEditViewController timerEditViewController;
-        private System.Windows.Forms.TableLayoutPanel entries;
+        private System.Windows.Forms.FlowLayoutPanel entries;
     }
 }

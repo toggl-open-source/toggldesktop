@@ -177,12 +177,6 @@
     <Compile Include="TimeEntryCell.Designer.cs">
       <DependentUpon>TimeEntryCell.cs</DependentUpon>
     </Compile>
-    <Compile Include="TimeEntryCellWithHeader.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TimeEntryCellWithHeader.Designer.cs">
-      <DependentUpon>TimeEntryCellWithHeader.cs</DependentUpon>
-    </Compile>
     <Compile Include="TimeEntryEditViewController.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -230,9 +224,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TimeEntryCell.resx">
       <DependentUpon>TimeEntryCell.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TimeEntryCellWithHeader.resx">
-      <DependentUpon>TimeEntryCellWithHeader.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TimeEntryEditViewController.resx">
       <DependentUpon>TimeEntryEditViewController.cs</DependentUpon>

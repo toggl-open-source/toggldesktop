@@ -17,7 +17,6 @@ namespace TogglDesktop
         public TimeEntryCell()
         {
             InitializeComponent();
-            Anchor = (AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top);
         }
 
         internal void Display(Toggl.TimeEntry item)
@@ -30,9 +29,26 @@ namespace TogglDesktop
             labelDuration.Text = item.Duration;
             labelBillable.Visible = item.Billable;
             labelTag.Visible = (item.Tags != null && item.Tags.Length > 0);
+
+            if (item.IsHeader)
+            {
+                labelFormattedDate.Text = item.DateHeader;
+                labelDateDuration.Text = item.DateDuration;
+            }
+            if (item.IsHeader)
+            {
+                Height = headerPanel.Height + panel.Height;
+                panel.Top = headerPanel.Bottom;
+            }
+            else
+            {
+                Height = panel.Height;
+                panel.Top = 0;
+            }
+            headerPanel.Visible = item.IsHeader;
         }
 
-        private void TimeEntryCell_MouseClick(object sender, MouseEventArgs e)
+        private void TimeEntryCellWithHeader_MouseClick(object sender, MouseEventArgs e)
         {
             Toggl.Edit(GUID, false, "");
         }
@@ -56,6 +72,5 @@ namespace TogglDesktop
         {
             Toggl.Continue(GUID);
         }
-
     }
 }
