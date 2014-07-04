@@ -15,7 +15,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Environment" Type="System.String" Scope="User">
-      <Value Profile="(Default)">production</Value>
+      <Value Profile="(Default)">development</Value>
     </Setting>
   </Settings>
 </SettingsFile>

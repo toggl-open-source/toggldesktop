@@ -73,7 +73,7 @@ namespace TogglDesktop.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("production")]
+        [global::System.Configuration.DefaultSettingValueAttribute("development")]
         public string Environment {
             get {
                 return ((string)(this["Environment"]));

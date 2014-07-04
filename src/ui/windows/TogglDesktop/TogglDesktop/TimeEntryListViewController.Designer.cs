@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.panelHeader = new System.Windows.Forms.Panel();
-            this.timerEditViewController = new TogglDesktop.TimerEditViewController();
             this.entries = new System.Windows.Forms.FlowLayoutPanel();
+            this.timerEditViewController = new TogglDesktop.TimerEditViewController();
             this.panelHeader.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,17 +45,6 @@
             this.panelHeader.Size = new System.Drawing.Size(314, 56);
             this.panelHeader.TabIndex = 0;
             // 
-            // timerEditViewController
-            // 
-            this.timerEditViewController.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.timerEditViewController.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
-            this.timerEditViewController.Location = new System.Drawing.Point(0, 0);
-            this.timerEditViewController.Margin = new System.Windows.Forms.Padding(0);
-            this.timerEditViewController.Name = "timerEditViewController";
-            this.timerEditViewController.Size = new System.Drawing.Size(314, 56);
-            this.timerEditViewController.TabIndex = 0;
-            // 
             // entries
             // 
             this.entries.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -69,12 +58,21 @@
             this.entries.TabIndex = 1;
             this.entries.WrapContents = false;
             // 
+            // timerEditViewController
+            // 
+            this.timerEditViewController.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.timerEditViewController.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
+            this.timerEditViewController.Location = new System.Drawing.Point(0, 0);
+            this.timerEditViewController.Margin = new System.Windows.Forms.Padding(0);
+            this.timerEditViewController.Name = "timerEditViewController";
+            this.timerEditViewController.Size = new System.Drawing.Size(314, 56);
+            this.timerEditViewController.TabIndex = 0;
+            // 
             // TimeEntryListViewController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.Controls.Add(this.entries);
             this.Controls.Add(this.panelHeader);
