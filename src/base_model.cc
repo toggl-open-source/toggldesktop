@@ -178,7 +178,9 @@ std::string BaseModel::batchUpdateMethod() const {
 }
 
 // Convert model JSON into batch update format.
-JSONNODE *BaseModel::BatchUpdateJSON() const {
+JSONNODE *BaseModel::BatchUpdateJSON() {
+    EnsureGUID();
+
     poco_assert(!GUID().empty());
 
     JSONNODE *n = SaveToJSONNode();
