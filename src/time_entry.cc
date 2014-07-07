@@ -67,7 +67,7 @@ bool TimeEntry::userCannotAccessTheSelectedProject(
 bool TimeEntry::userCannotAccessSelectedTask(
     const kopsik::error err) const {
     return (std::string::npos != std::string(err).find(
-        "User cannot access selected task."));
+        "User cannot access selected task"));
 }
 
 bool TimeEntry::durationTooLarge(const kopsik::error err) const {
