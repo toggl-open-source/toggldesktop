@@ -40,8 +40,6 @@
     <addaction name="actionContinue"/>
     <addaction name="actionStop"/>
     <addaction name="separator"/>
-    <addaction name="actionShow"/>
-    <addaction name="separator"/>
     <addaction name="actionSync"/>
     <addaction name="actionReports"/>
     <addaction name="actionPreferences"/>
