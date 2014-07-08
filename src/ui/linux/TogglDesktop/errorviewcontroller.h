@@ -18,12 +18,19 @@ class ErrorViewController : public QWidget {
 
  private slots:  // NOLINT
     void on_pushButton_clicked();
+
     void displayError(
         const QString errmsg,
         const bool user_error);
 
+    void displayOnlineState(
+        const bool is_online,
+        const QString reason);
+
  private:
     Ui::ErrorViewController *ui;
+
+    bool networkError;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_ERRORVIEWCONTROLLER_H_
