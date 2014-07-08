@@ -558,10 +558,10 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
 void Context::fetchUpdates() {
     logger().debug("fetchUpdates");
 
-	if (update_check_disabled_) {
-		logger().warning("Updates are disabled on this computer");
-		return;
-	}
+    if (update_check_disabled_) {
+        logger().warning("Updates are disabled on this computer");
+        return;
+    }
 
     next_fetch_updates_at_ = postpone();
     Poco::Util::TimerTask::Ptr ptask =
@@ -584,10 +584,10 @@ void Context::onFetchUpdates(Poco::Util::TimerTask& task) {  // NOLINT
 void Context::startPeriodicUpdateCheck() {
     logger().debug("startPeriodicUpdateCheck");
 
-	if (update_check_disabled_) {
-		logger().warning("Updates are disabled on this computer");
-		return;
-	}
+    if (update_check_disabled_) {
+        logger().warning("Updates are disabled on this computer");
+        return;
+    }
 
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>

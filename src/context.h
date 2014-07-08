@@ -62,9 +62,9 @@ class Context {
 
     void SetEnvironment(const std::string environment);
 
-	void DisableUpdateCheck() {
-		update_check_disabled_ = true;
-	}
+    void DisableUpdateCheck() {
+        update_check_disabled_ = true;
+    }
 
     _Bool LoadSettings(Settings *settings);
 
@@ -312,7 +312,7 @@ class Context {
     Poco::UInt64 last_idle_seconds_reading_;
     Poco::UInt64 last_idle_started_;
 
-	bool update_check_disabled_;
+    bool update_check_disabled_;
 };
 
 }  // namespace kopsik

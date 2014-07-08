@@ -141,9 +141,9 @@ void kopsik_set_environment(
 }
 
 void kopsik_disable_update_check(
-	void *context) {
-	
-	app(context)->DisableUpdateCheck();
+    void *context) {
+
+    app(context)->DisableUpdateCheck();
 }
 
 void kopsik_set_log_path(const char *path) {

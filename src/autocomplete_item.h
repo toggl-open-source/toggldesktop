@@ -36,20 +36,20 @@ class AutocompleteItem {
         return kAutocompleteItemProject == Type;
     }
 
-	std::string String() const {
-		std::stringstream ss;
-		ss << "AutocompleteItem"
-			<< " Text=" << Text
-			<< " Description=" << Description
-			<< " ProjectAndTaskLabel=" << ProjectAndTaskLabel
-			<< " ProjectLabel=" << ProjectLabel
-			<< " ClientLabel=" << ClientLabel
-			<< " ProjectColor=" << ProjectColor
-			<< " TaskID=" << TaskID
-			<< " ProjectID=" << ProjectID
-			<< " Type=" << Type;
-		return ss.str();
-	}
+    std::string String() const {
+        std::stringstream ss;
+        ss << "AutocompleteItem"
+           << " Text=" << Text
+           << " Description=" << Description
+           << " ProjectAndTaskLabel=" << ProjectAndTaskLabel
+           << " ProjectLabel=" << ProjectLabel
+           << " ClientLabel=" << ClientLabel
+           << " ProjectColor=" << ProjectColor
+           << " TaskID=" << TaskID
+           << " ProjectID=" << ProjectID
+           << " Type=" << Type;
+        return ss.str();
+    }
 
     std::string Text;
     std::string Description;
