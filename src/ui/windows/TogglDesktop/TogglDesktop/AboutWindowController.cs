@@ -22,6 +22,12 @@ namespace TogglDesktop
             labelVersion.Text = TogglDesktop.Program.Version();
 
             Toggl.OnUpdate += OnUpdate;
+
+            bool updateCheckDisabled = Toggl.IsUpdateCheckDisabled();
+            buttonCheckingForUpdate.Visible = !updateCheckDisabled;
+            comboBoxChannel.Visible = !updateCheckDisabled;
+            labelReleaseChannel.Visible = !updateCheckDisabled;
+
         }
 
         void OnUpdate(bool open, Toggl.Update view)

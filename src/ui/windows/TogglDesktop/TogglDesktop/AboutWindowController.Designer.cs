@@ -33,7 +33,7 @@
             this.labelAppName = new System.Windows.Forms.Label();
             this.labelVersion = new System.Windows.Forms.Label();
             this.buttonCheckingForUpdate = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
+            this.labelReleaseChannel = new System.Windows.Forms.Label();
             this.comboBoxChannel = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.linkLabelGithub = new System.Windows.Forms.LinkLabel();
@@ -84,15 +84,15 @@
             this.buttonCheckingForUpdate.UseVisualStyleBackColor = true;
             this.buttonCheckingForUpdate.Click += new System.EventHandler(this.buttonCheckingForUpdate_Click);
             // 
-            // label2
+            // labelReleaseChannel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.label2.Location = new System.Drawing.Point(12, 256);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(92, 15);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Release channel";
+            this.labelReleaseChannel.AutoSize = true;
+            this.labelReleaseChannel.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
+            this.labelReleaseChannel.Location = new System.Drawing.Point(12, 256);
+            this.labelReleaseChannel.Name = "labelReleaseChannel";
+            this.labelReleaseChannel.Size = new System.Drawing.Size(92, 15);
+            this.labelReleaseChannel.TabIndex = 5;
+            this.labelReleaseChannel.Text = "Release channel";
             // 
             // comboBoxChannel
             // 
@@ -139,7 +139,7 @@
             this.Controls.Add(this.linkLabelGithub);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBoxChannel);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.labelReleaseChannel);
             this.Controls.Add(this.buttonCheckingForUpdate);
             this.Controls.Add(this.labelVersion);
             this.Controls.Add(this.labelAppName);
@@ -163,7 +163,7 @@
         private System.Windows.Forms.Label labelAppName;
         private System.Windows.Forms.Label labelVersion;
         private System.Windows.Forms.Button buttonCheckingForUpdate;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelReleaseChannel;
         private System.Windows.Forms.ComboBox comboBoxChannel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.LinkLabel linkLabelGithub;
