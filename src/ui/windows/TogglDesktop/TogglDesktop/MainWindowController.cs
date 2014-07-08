@@ -415,7 +415,7 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { OnReminder(title, informative_text); });
                 return;
             }
-            trayIcon.ShowBalloonTip(6000, title, informative_text, ToolTipIcon.None);
+            trayIcon.ShowBalloonTip(6000 * 100, title, informative_text, ToolTipIcon.None);
         }
 
         private void clearCacheToolStripMenuItem_Click(object sender, EventArgs e)
