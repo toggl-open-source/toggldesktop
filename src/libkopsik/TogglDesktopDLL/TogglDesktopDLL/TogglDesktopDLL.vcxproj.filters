@@ -63,9 +63,6 @@
     <ClInclude Include="..\..\..\json.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\kopsik_api.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\kopsik_api_private.h">
       <Filter>Header Files</Filter>
     </ClInclude>

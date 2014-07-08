@@ -180,6 +180,11 @@ extern "C" {
         void *context,
         const char *environment);
 
+	// Optionally, disable update check
+
+	KOPSIK_EXPORT void kopsik_disable_update_check(
+		void *context);
+
     // CA cert bundle must be configured from UI
 
     KOPSIK_EXPORT void kopsik_set_cacert_path(

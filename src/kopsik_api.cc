@@ -140,6 +140,12 @@ void kopsik_set_environment(
     return app(context)->SetEnvironment(environment);
 }
 
+void kopsik_disable_update_check(
+	void *context) {
+	
+	app(context)->DisableUpdateCheck();
+}
+
 void kopsik_set_log_path(const char *path) {
     poco_check_ptr(path);
 

@@ -106,7 +106,6 @@
     <ClInclude Include="..\..\..\get_focused_window.h" />
     <ClInclude Include="..\..\..\https_client.h" />
     <ClInclude Include="..\..\..\json.h" />
-    <ClInclude Include="..\..\..\kopsik_api.h" />
     <ClInclude Include="..\..\..\kopsik_api_private.h" />
     <ClInclude Include="..\..\..\project.h" />
     <ClInclude Include="..\..\..\proxy.h" />

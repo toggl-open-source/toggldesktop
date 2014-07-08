@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Reflection;
 using System.Text;
 using System.Collections.Generic;
+using Microsoft.Win32;
 
 namespace TogglDesktop
 {
@@ -342,6 +343,10 @@ namespace TogglDesktop
         private static extern bool kopsik_set_environment(
             IntPtr context,
             string environment);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        private static extern void kopsik_disable_update_check(
+            IntPtr context);
 
         // CA cert bundle path must be configured from UI
 
@@ -1118,6 +1123,11 @@ namespace TogglDesktop
 
             kopsik_set_environment(ctx, Properties.Settings.Default.Environment);
 
+            if (IsUpdateCheckDisabled())
+            {
+                kopsik_disable_update_check(ctx);
+            }
+
             // Configure log, db path
             string path = Path.Combine(Environment.GetFolderPath(
                 Environment.SpecialFolder.ApplicationData), "Kopsik");
@@ -1215,5 +1225,19 @@ namespace TogglDesktop
             OnError(errmsg, user_error);
         }
 
+        public static bool IsUpdateCheckDisabled()
+        {
+            // On Windows platform, system admin can disable
+            // automatic update check via registry key.
+            object value = Registry.GetValue(
+                "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Toggl\\TogglDesktop",
+                "UpdateCheckDisabled",
+                false);
+            if (value == null)
+            {
+                return false;
+            }
+            return Convert.ToBoolean(value);
+        }
     }
 }
