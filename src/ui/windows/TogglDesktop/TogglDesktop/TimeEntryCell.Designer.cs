@@ -167,6 +167,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
             this.Controls.Add(this.panel);
             this.Controls.Add(this.headerPanel);
+            this.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
             this.Name = "TimeEntryCell";
             this.Size = new System.Drawing.Size(314, 101);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TimeEntryCellWithHeader_MouseClick);

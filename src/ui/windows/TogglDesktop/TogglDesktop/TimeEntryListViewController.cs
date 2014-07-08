@@ -68,6 +68,14 @@ namespace TogglDesktop
                 {
                     cell = new TimeEntryCell();
                     entries.Controls.Add(cell);
+                    if (i == 0)
+                    {
+                        cell.Width = entries.Width;
+                    }
+                    else
+                    {
+                        cell.Dock = DockStyle.Top;
+                    }
                 }
 
                 cell.Display(te);
@@ -103,9 +111,12 @@ namespace TogglDesktop
             }
         }
 
-        private void timerEditViewController_Load(object sender, EventArgs e)
+        private void entries_ClientSizeChanged(object sender, EventArgs e)
         {
-
+            entries.SuspendLayout();
+            entries.Controls[0].Width = entries.ClientSize.Width;
+            entries.ResumeLayout();
         }
+
     }
 }

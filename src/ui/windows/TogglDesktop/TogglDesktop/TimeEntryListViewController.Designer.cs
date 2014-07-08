@@ -53,10 +53,12 @@
             this.entries.AutoScroll = true;
             this.entries.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.entries.Location = new System.Drawing.Point(0, 59);
+            this.entries.Margin = new System.Windows.Forms.Padding(0);
             this.entries.Name = "entries";
-            this.entries.Size = new System.Drawing.Size(311, 292);
+            this.entries.Size = new System.Drawing.Size(314, 292);
             this.entries.TabIndex = 1;
             this.entries.WrapContents = false;
+            this.entries.ClientSizeChanged += new System.EventHandler(this.entries_ClientSizeChanged);
             // 
             // timerEditViewController
             // 
