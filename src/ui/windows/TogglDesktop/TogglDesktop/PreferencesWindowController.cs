@@ -73,7 +73,7 @@ namespace TogglDesktop
             if (open)
             {
                 Show();
-                BringToFront();
+                TopMost = true;
             }
         }
 

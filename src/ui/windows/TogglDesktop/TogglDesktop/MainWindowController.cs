@@ -40,6 +40,15 @@ namespace TogglDesktop
         [DllImport("user32.dll")]
         static extern bool GetLastInputInfo(out LASTINPUTINFO plii);
 
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SetWindowPos(IntPtr hWnd,
+            int hWndInsertAfter, int x, int u, int cx, int cy, int uFlags);
+
+        private const int HWDN_TOPMOST = -1;
+        private const int SWP_NOMOVE = 0x0002;
+        private const int SWP_NOSIZE = 0x0001;
+
         public MainWindowController()
         {
             InitializeComponent();
@@ -112,7 +121,10 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { OnSettings(open, settings); });
                 return;
             }
-            this.TopMost = settings.OnTop;
+            if (settings.OnTop)
+            {
+                SetWindowPos(Handle, HWDN_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+            }
             timerIdleDetection.Enabled = settings.UseIdleDetection;
         }
 
@@ -163,7 +175,7 @@ namespace TogglDesktop
             if (open)
             {
                 aboutWindowController.Show();
-                aboutWindowController.BringToFront();
+                aboutWindowController.TopMost = true;
             }
             if (!view.IsUpdateAvailable)
             {
@@ -392,10 +404,8 @@ namespace TogglDesktop
 
         private void show()
         {
-            bool wasTopMost = TopMost;
             Show();
             TopMost = true;
-            TopMost = wasTopMost;
         }
 
         void OnReminder(string title, string informative_text)
