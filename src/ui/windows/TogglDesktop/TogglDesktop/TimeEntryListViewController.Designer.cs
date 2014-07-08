@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.panelHeader = new System.Windows.Forms.Panel();
-            this.entries = new System.Windows.Forms.FlowLayoutPanel();
             this.timerEditViewController = new TogglDesktop.TimerEditViewController();
+            this.entries = new System.Windows.Forms.FlowLayoutPanel();
             this.panelHeader.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,21 +45,6 @@
             this.panelHeader.Size = new System.Drawing.Size(314, 56);
             this.panelHeader.TabIndex = 0;
             // 
-            // entries
-            // 
-            this.entries.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.entries.AutoScroll = true;
-            this.entries.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.entries.Location = new System.Drawing.Point(0, 59);
-            this.entries.Margin = new System.Windows.Forms.Padding(0);
-            this.entries.Name = "entries";
-            this.entries.Size = new System.Drawing.Size(314, 292);
-            this.entries.TabIndex = 1;
-            this.entries.WrapContents = false;
-            this.entries.ClientSizeChanged += new System.EventHandler(this.entries_ClientSizeChanged);
-            // 
             // timerEditViewController
             // 
             this.timerEditViewController.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -70,6 +55,21 @@
             this.timerEditViewController.Name = "timerEditViewController";
             this.timerEditViewController.Size = new System.Drawing.Size(314, 56);
             this.timerEditViewController.TabIndex = 0;
+            // 
+            // entries
+            // 
+            this.entries.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.entries.AutoScroll = true;
+            this.entries.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.entries.Location = new System.Drawing.Point(0, 56);
+            this.entries.Margin = new System.Windows.Forms.Padding(0);
+            this.entries.Name = "entries";
+            this.entries.Size = new System.Drawing.Size(314, 295);
+            this.entries.TabIndex = 1;
+            this.entries.WrapContents = false;
+            this.entries.ClientSizeChanged += new System.EventHandler(this.entries_ClientSizeChanged);
             // 
             // TimeEntryListViewController
             // 
