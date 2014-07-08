@@ -558,7 +558,6 @@
 					"$(inherited)",
 					"../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64",
 					../../../third_party/libjson,
-					"/Users/tanellebedev/projects/toggl/toggldesktop/third_party/poco-1.4.6p2-all/lib/Darwin/x86_64",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -588,7 +587,6 @@
 					"$(inherited)",
 					"../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64",
 					../../../third_party/libjson,
-					"/Users/tanellebedev/projects/toggl/toggldesktop/third_party/poco-1.4.6p2-all/lib/Darwin/x86_64",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
