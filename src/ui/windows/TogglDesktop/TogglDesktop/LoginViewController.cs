@@ -44,10 +44,29 @@ namespace TogglDesktop
 
         private void googleLoginTextField_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            googleLogin();
+        }
+
+        async Task googleLogin()
+        {
             try
             {
-                googleLogin();
-
+                UserCredential credential;
+                credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    new ClientSecrets
+                    {
+                        ClientId = "426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com",
+                        ClientSecret = "6IHWKIfTAMF7cPJsBvoGxYui"
+                    },
+                    new[] {
+                    Oauth2Service.Scope.UserinfoEmail,
+                    Oauth2Service.Scope.UserinfoProfile
+                },
+                    "user",
+                    CancellationToken.None,
+                    null);
+                Toggl.GoogleLogin(credential.Token.AccessToken);
+                await credential.RevokeTokenAsync(CancellationToken.None);
             }
             catch (AggregateException ex)
             {
@@ -61,26 +80,6 @@ namespace TogglDesktop
                     Toggl.NewError(ex.Message, false);
                 }
             }
-        }
-
-        private void googleLogin()
-        {
-            UserCredential credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                new ClientSecrets
-                {
-                    ClientId = "426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com",
-                    ClientSecret = "6IHWKIfTAMF7cPJsBvoGxYui"
-                },
-                new[] {
-                    Oauth2Service.Scope.UserinfoEmail,
-                    Oauth2Service.Scope.UserinfoProfile
-                },
-                "user",
-                CancellationToken.None,
-                null).Result;
-
-            Toggl.GoogleLogin(credential.Token.AccessToken);
-            credential.RevokeTokenAsync(CancellationToken.None).Wait();
         }
 
         private void LoginViewController_Load(object sender, EventArgs e)
