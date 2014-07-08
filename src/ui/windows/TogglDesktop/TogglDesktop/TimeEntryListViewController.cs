@@ -118,5 +118,10 @@ namespace TogglDesktop
             entries.ResumeLayout();
         }
 
+        private void entries_MouseEnter(object sender, EventArgs e)
+        {
+            entries.Focus();
+        }
+
     }
 }

@@ -70,6 +70,7 @@
             this.entries.TabIndex = 1;
             this.entries.WrapContents = false;
             this.entries.ClientSizeChanged += new System.EventHandler(this.entries_ClientSizeChanged);
+            this.entries.MouseEnter += new System.EventHandler(this.entries_MouseEnter);
             // 
             // TimeEntryListViewController
             // 
