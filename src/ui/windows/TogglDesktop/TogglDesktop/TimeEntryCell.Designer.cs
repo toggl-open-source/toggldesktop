@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.labelFormattedDate = new System.Windows.Forms.Label();
             this.labelDateDuration = new System.Windows.Forms.Label();
             this.headerPanel = new System.Windows.Forms.Panel();
@@ -38,6 +39,7 @@
             this.labelTag = new System.Windows.Forms.Label();
             this.labelDuration = new System.Windows.Forms.Label();
             this.labelProject = new System.Windows.Forms.Label();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.headerPanel.SuspendLayout();
             this.panel.SuspendLayout();
             this.SuspendLayout();
@@ -191,5 +193,6 @@
         private System.Windows.Forms.Label labelTag;
         private System.Windows.Forms.Label labelContinue;
         private System.Windows.Forms.Panel panel;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }

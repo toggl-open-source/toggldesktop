@@ -46,6 +46,12 @@ namespace TogglDesktop
                 panel.Top = 0;
             }
             headerPanel.Visible = item.IsHeader;
+            toolTip.SetToolTip(labelDescription, item.Description);
+            toolTip.SetToolTip(labelProject, item.ProjectAndTaskLabel);
+            if (labelTag.Visible)
+            {
+                toolTip.SetToolTip(labelTag, item.Tags.Replace("|", ", "));
+            }
         }
 
         private void TimeEntryCellWithHeader_MouseClick(object sender, MouseEventArgs e)
