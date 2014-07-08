@@ -32,6 +32,7 @@ void TimeEntryListWidget::displayLogin(
     const uint64_t user_id) {
 
     if (open || !user_id) {
+        ui->list->clear();
         setVisible(false);
     }
 }
@@ -39,23 +40,41 @@ void TimeEntryListWidget::displayLogin(
 void TimeEntryListWidget::displayTimeEntryList(
     const bool open,
     QVector<TimeEntryView *> list) {
+
     if (open) {
         setVisible(true);
     }
-    ui->list->clear();
-    foreach(TimeEntryView *view, list) {
-        QWidget *widget = 0;
-        if (view->IsHeader) {
-            widget = new TimeEntryCellWidget(view);
-        } else {
-            widget = new TimeEntryCellWidget(view);
+
+    render_m_.lock();
+
+    for (int i = 0; i < list.size(); i++) {
+        TimeEntryView *te = list.at(i);
+
+        QListWidgetItem *item = 0;
+        TimeEntryCellWidget *cell = 0;
+
+        if (ui->list->count() > i) {
+            item = ui->list->item(i);
+            cell = static_cast<TimeEntryCellWidget *>(ui->list->itemWidget(item));
         }
 
-        QListWidgetItem *item = new QListWidgetItem();
-        item->setSizeHint(widget->sizeHint());
-        ui->list->addItem(item);
-        ui->list->setItemWidget(item, widget);
+        if (!item) {
+            cell = new TimeEntryCellWidget();
+            item = new QListWidgetItem();
+            item->setSizeHint(cell->sizeHint());
+            ui->list->addItem(item);
+            ui->list->setItemWidget(item, cell);
+        }
+
+        cell->display(te);
     }
+
+    while (ui->list->count() > list.size())
+    {
+        ui->list->model()->removeRow(list.size());
+    }
+
+    render_m_.unlock();
 }
 
 void TimeEntryListWidget::displayTimeEntryEditor(

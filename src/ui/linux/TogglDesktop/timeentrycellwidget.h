@@ -15,8 +15,10 @@ class TimeEntryCellWidget : public QWidget {
     Q_OBJECT
 
  public:
-    explicit TimeEntryCellWidget(TimeEntryView *view);
+    TimeEntryCellWidget();
     ~TimeEntryCellWidget();
+
+    void display(TimeEntryView *view);
 
  protected:
     virtual void mousePressEvent(QMouseEvent *event);

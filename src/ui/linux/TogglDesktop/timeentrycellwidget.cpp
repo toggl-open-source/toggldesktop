@@ -5,11 +5,13 @@
 
 #include "./toggl.h"
 
-TimeEntryCellWidget::TimeEntryCellWidget(TimeEntryView *view) : QWidget(0),
+TimeEntryCellWidget::TimeEntryCellWidget() : QWidget(0),
 ui(new Ui::TimeEntryCellWidget),
 guid("") {
     ui->setupUi(this);
+}
 
+void TimeEntryCellWidget::display(TimeEntryView *view) {
     guid = view->GUID;
 
     ui->description->setText(view->Description);

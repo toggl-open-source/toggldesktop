@@ -5,6 +5,7 @@
 
 #include <QWidget>
 #include <QVector>
+#include <QMutex>
 
 #include <stdint.h>
 
@@ -37,6 +38,8 @@ class TimeEntryListWidget : public QWidget {
 
  private:
     Ui::TimeEntryListWidget *ui;
+
+    QMutex render_m_;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYLISTWIDGET_H_
