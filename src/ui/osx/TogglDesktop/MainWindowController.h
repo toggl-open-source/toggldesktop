@@ -15,4 +15,5 @@
 @property IBOutlet NSBox *troubleBox;
 @property IBOutlet NSButton *closeTroubleBoxButton;
 @property BOOL isNetworkIssue;
+@property (strong) IBOutlet NSView *mainView;
 @end

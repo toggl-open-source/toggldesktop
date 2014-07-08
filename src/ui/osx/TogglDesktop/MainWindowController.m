@@ -18,6 +18,8 @@
 @interface MainWindowController ()
 @property (nonatomic, strong) IBOutlet LoginViewController *loginViewController;
 @property (nonatomic, strong) IBOutlet TimeEntryListViewController *timeEntryListViewController;
+@property NSLayoutConstraint *contentViewTop;
+
 @end
 
 @implementation MainWindowController
@@ -76,6 +78,19 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	if (cmd.open)
 	{
+		if (!self.contentViewTop)
+		{
+			self.contentViewTop = [NSLayoutConstraint constraintWithItem:self.contentView
+															   attribute:NSLayoutAttributeTop
+															   relatedBy:NSLayoutRelationEqual
+																  toItem:self.mainView
+															   attribute:NSLayoutAttributeTop
+															  multiplier:1
+																constant:0];
+			[self.mainView addConstraint:self.contentViewTop];
+		}
+		self.contentViewTop.constant = 0;
+
 		[self.contentView addSubview:self.loginViewController.view];
 		[self.loginViewController.view setFrame:self.contentView.bounds];
 		[self.loginViewController.email becomeFirstResponder];
@@ -122,6 +137,7 @@ extern void *ctx;
 	self.isNetworkIssue = NO;
 
 	[self.errorLabel setStringValue:msg];
+	self.contentViewTop.constant = 50;
 	[self.troubleBox setHidden:NO];
 }
 
@@ -141,6 +157,7 @@ extern void *ctx;
 		self.isNetworkIssue = YES;
 
 		[self.errorLabel setStringValue:msg];
+		self.contentViewTop.constant = 50;
 		[self.troubleBox setHidden:NO];
 	}
 	else if (self.isNetworkIssue)
@@ -160,6 +177,7 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	[self.troubleBox setHidden:YES];
+	self.contentViewTop.constant = 0;
 	[self.errorLabel setStringValue:@""];
 }
 
