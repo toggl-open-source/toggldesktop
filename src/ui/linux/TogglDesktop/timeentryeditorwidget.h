@@ -6,6 +6,7 @@
 #include <QWidget>
 #include <QVector>
 #include <QTimer>
+#include <QListWidgetItem>
 
 #include <stdint.h>
 
@@ -91,6 +92,7 @@ class TimeEntryEditorWidget : public QWidget {
     void on_stop_editingFinished();
     void on_dateEdit_editingFinished();
     void on_billable_clicked(bool checked);
+    void on_tags_itemActivated(QListWidgetItem *item);
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYEDITORWIDGET_H_

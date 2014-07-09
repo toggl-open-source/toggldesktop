@@ -201,10 +201,9 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
         ui->newProject->setVisible(false);
     }
 
-    QStringList tags = view->Tags.split("|", QString::SkipEmptyParts);
     for (int i = 0; i < ui->tags->count(); i++) {
         QListWidgetItem *item = ui->tags->item(i);
-        if (tags.contains(item->text())) {
+        if (view->Tags.contains(item->text())) {
             item->setCheckState(Qt::Checked);
         } else {
             item->setCheckState(Qt::Unchecked);
@@ -337,5 +336,12 @@ void TimeEntryEditorWidget::timeout() {
             !ui->duration->hasFocus()) {
         ui->duration->setText(
             TogglApi::formatDurationInSecondsHHMMSS(duration));
+    }
+}
+
+void TimeEntryEditorWidget::on_tags_itemActivated(QListWidgetItem *item) {
+    // FIXME: set tags
+    if (item->checkState() == Qt::Checked) {
+    } else if (item->checkState() == Qt::Unchecked) {
     }
 }

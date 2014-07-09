@@ -5,6 +5,7 @@
 
 #include <QObject>
 #include <QVector>
+#include <QStringList>
 
 #include "./kopsik_api.h"
 
@@ -32,7 +33,7 @@ class TimeEntryView : public QObject {
     QString Color;
     QString GUID;
     bool Billable;
-    QString Tags;
+    QStringList Tags;
     uint64_t Started;
     uint64_t Ended;
     QString StartTimeString;
