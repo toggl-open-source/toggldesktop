@@ -5,6 +5,7 @@
 
 #include <QDebug>  // NOLINT
 #include <QDesktopServices>  // NOLINT
+#include <QApplication>  // NOLINT
 
 #include "./toggl.h"
 
@@ -15,6 +16,8 @@ ui(new Ui::AboutDialog) {
     ui->releaseChannel->addItem("stable");
     ui->releaseChannel->addItem("beta");
     ui->releaseChannel->addItem("dev");
+
+    ui->version->setText(QApplication::applicationVersion());
 
     connect(TogglApi::instance, SIGNAL(displayUpdate(bool,UpdateView*)),  // NOLINT
             this, SLOT(displayUpdate(bool,UpdateView*)));  // NOLINT

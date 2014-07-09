@@ -26,6 +26,8 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
+    a.setApplicationVersion(APP_VERSION);
+
     MainWindowController w;
     w.show();
 
