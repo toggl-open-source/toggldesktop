@@ -90,7 +90,6 @@ class TimeEntryEditorWidget : public QWidget {
     void on_start_editingFinished();
     void on_stop_editingFinished();
     void on_dateEdit_editingFinished();
-    void on_tags_editingFinished();
     void on_billable_clicked(bool checked);
 };
 

@@ -201,7 +201,15 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
         ui->newProject->setVisible(false);
     }
 
-    qDebug() << view->Tags;
+    QStringList tags = view->Tags.split("|", QString::SkipEmptyParts);
+    for (int i = 0; i < ui->tags->count(); i++) {
+        QListWidgetItem *item = ui->tags->item(i);
+        if (tags.contains(item->text())) {
+            item->setCheckState(Qt::Checked);
+        } else {
+            item->setCheckState(Qt::Unchecked);
+        }
+    }
 }
 
 void TimeEntryEditorWidget::on_doneButton_clicked() {
@@ -311,9 +319,12 @@ void TimeEntryEditorWidget::on_dateEdit_editingFinished() {
 
 void TimeEntryEditorWidget::displayTags(
     QVector<GenericView*> tags) {
-}
-
-void TimeEntryEditorWidget::on_tags_editingFinished() {
+    ui->tags->clear();
+    foreach(GenericView *view, tags) {
+        QListWidgetItem *item = new QListWidgetItem(view->Name, ui->tags);
+        item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+        item->setCheckState(Qt::Unchecked);
+    }
 }
 
 void TimeEntryEditorWidget::on_billable_clicked(bool checked) {

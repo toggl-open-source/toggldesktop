@@ -229,7 +229,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="tags"/>
+       <widget class="QListWidget" name="tags"/>
       </item>
      </layout>
     </widget>
