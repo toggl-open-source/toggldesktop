@@ -23,6 +23,7 @@ namespace TogglDesktop
         private bool isNetworkError = false;
         private Point defaultContentPosition =  new System.Drawing.Point(0, 0);
         private Point errorContentPosition = new System.Drawing.Point(0, 28);
+        private bool remainOnTop = false;
 
         [StructLayout(LayoutKind.Sequential)]
         struct LASTINPUTINFO
@@ -45,7 +46,8 @@ namespace TogglDesktop
         private static extern bool SetWindowPos(IntPtr hWnd,
             int hWndInsertAfter, int x, int u, int cx, int cy, int uFlags);
 
-        private const int HWDN_TOPMOST = -1;
+        private const int HWND_TOPMOST = -1;
+        private const int HWND_NOTOPMOST = -2;
         private const int SWP_NOMOVE = 0x0002;
         private const int SWP_NOSIZE = 0x0001;
 
@@ -121,10 +123,8 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { OnSettings(open, settings); });
                 return;
             }
-            if (settings.OnTop)
-            {
-                SetWindowPos(Handle, HWDN_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-            }
+            remainOnTop = settings.OnTop;
+            setWindowPos();
             timerIdleDetection.Enabled = settings.UseIdleDetection;
         }
 
@@ -406,6 +406,19 @@ namespace TogglDesktop
         {
             Show();
             TopMost = true;
+            setWindowPos();
+        }
+
+        private void setWindowPos()
+        {
+            if (remainOnTop)
+            {
+                SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+            }
+            else
+            {
+                SetWindowPos(Handle, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+            }
         }
 
         void OnReminder(string title, string informative_text)
