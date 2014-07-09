@@ -40,6 +40,9 @@ class MainWindowController : public QMainWindow {
     void displayLogin(
         const bool open,
         const uint64_t user_id);
+    void displayReminder(
+        const QString title,
+        const QString informative_text);
 
     void onActionNew();
     void onActionContinue();
@@ -78,6 +81,8 @@ class MainWindowController : public QMainWindow {
     AboutDialog *aboutDialog;
     FeedbackDialog *feedbackDialog;
     IdleNotificationDialog *idleNotificationDialog;
+
+    bool reminder;
 
     void readSettings();
     void writeSettings();

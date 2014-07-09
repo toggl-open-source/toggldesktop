@@ -40,7 +40,8 @@ MainWindowController::MainWindowController(QWidget *parent)
   preferencesDialog(new PreferencesDialog(this)),
   aboutDialog(new AboutDialog(this)),
   feedbackDialog(new FeedbackDialog(this)),
-  idleNotificationDialog(new IdleNotificationDialog(this)) {
+  idleNotificationDialog(new IdleNotificationDialog(this)),
+  reminder(false) {
     ui->setupUi(this);
 
     ui->menuBar->setVisible(true);
@@ -66,6 +67,9 @@ MainWindowController::MainWindowController(QWidget *parent)
     connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
             this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
 
+    connect(TogglApi::instance, SIGNAL(displayReminder(QString,QString)),  // NOLINT
+            this, SLOT(displayReminder(QString,QString)));  // NOLINT
+
     connectMenuActions();
     enableMenuActions();
 }
@@ -75,6 +79,24 @@ MainWindowController::~MainWindowController() {
     togglApi = 0;
 
     delete ui;
+}
+
+void MainWindowController::displayReminder(
+    const QString title,
+    const QString informative_text) {
+
+    if (reminder) {
+        return;
+    }
+    reminder = true;
+
+    QMessageBox(
+        QMessageBox::Information,
+        title,
+        informative_text,
+        QMessageBox::Ok).exec();
+
+    reminder = false;
 }
 
 void MainWindowController::displayLogin(
@@ -201,7 +223,7 @@ void MainWindowController::onActionQuit() {
 }
 
 void MainWindowController::onActionClear_Cache() {
-    if (QMessageBox::Ok ==QMessageBox(
+    if (QMessageBox::Ok == QMessageBox(
         QMessageBox::Question,
         "Clear Cache?",
         "Clearing cache will delete any unsaved time entries and log you out.",
