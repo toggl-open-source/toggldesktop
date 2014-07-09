@@ -143,7 +143,10 @@ namespace TogglDesktop
 
         private void checkBoxRecordTimeline_CheckedChanged(object sender, EventArgs e)
         {
-            Toggl.ToggleTimelineRecording();
+            if (!loading)
+            {
+                Toggl.ToggleTimelineRecording();
+            }
         }
 
         private void checkBoxOnTop_CheckedChanged(object sender, EventArgs e)
