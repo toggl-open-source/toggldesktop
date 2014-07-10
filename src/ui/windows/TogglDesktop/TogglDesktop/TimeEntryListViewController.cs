@@ -113,9 +113,12 @@ namespace TogglDesktop
 
         private void entries_ClientSizeChanged(object sender, EventArgs e)
         {
-            entries.SuspendLayout();
-            entries.Controls[0].Width = entries.ClientSize.Width;
-            entries.ResumeLayout();
+            if (entries.Controls.Count > 0)
+            {
+                entries.SuspendLayout();
+                entries.Controls[0].Width = entries.ClientSize.Width;
+                entries.ResumeLayout();
+            }
         }
 
         private void entries_MouseEnter(object sender, EventArgs e)
