@@ -316,7 +316,7 @@ namespace TogglDesktop
                 return;
             }
             Toggl.AutocompleteItem item = (Toggl.AutocompleteItem)o;
-            Toggl.SetTimeEntryProject(GUID, 0, item.ProjectID, "");
+            Toggl.SetTimeEntryProject(GUID, item.TaskID, item.ProjectID, "");
         }
 
         private void checkBoxBillable_CheckedChanged(object sender, EventArgs e)
