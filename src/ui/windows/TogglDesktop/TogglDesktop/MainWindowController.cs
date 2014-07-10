@@ -143,7 +143,6 @@ namespace TogglDesktop
             }
             else
             {
-
                 if (TogglDesktop.Program.IsLoggedIn && isTracking)
                 {
                     trayIcon.Icon = Properties.Resources.toggl_offline_active;
@@ -180,7 +179,6 @@ namespace TogglDesktop
                 contentPanel.Location = defaultContentPosition;
                 displayTrayIcon(true);
             }
-            // FIXME: change tray icon
         }
 
         void OnUpdate(bool open, Toggl.Update view)
@@ -307,6 +305,8 @@ namespace TogglDesktop
             }
             if (open)
             {
+                troubleBox.Visible = false;
+                contentPanel.Location = defaultContentPosition;
                 contentPanel.Controls.Remove(loginViewController);
                 contentPanel.Controls.Remove(timeEntryEditViewController);
                 contentPanel.Controls.Add(timeEntryListViewController);
