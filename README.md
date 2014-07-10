@@ -66,6 +66,8 @@ Install-Package Google.Apis.Auth;
 Install-Package Google.Apis.Oauth2.v2;
 ```
 
+Now, select *Release* from the Solution Configurations combobox in the Visual Studio toolbar, and build the solution.
+
 Downloads
 =========
 
