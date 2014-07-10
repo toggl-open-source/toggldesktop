@@ -43,7 +43,7 @@ Windows
 -------
 We're building the Windows app using [Visual Studio Express 2013 for Windows Desktop](http://www.microsoft.com/en-us/download/details.aspx?id=40787) 
 
-First, [build OpenSSL for Visual Studio](http://developer.covenanteyes.com/building-openssl-for-visual-studio/). From Visual Studio Tools, open up a Developer Command Prompt. cd to the project folder, then
+From Visual Studio Tools, open up a Developer Command Prompt. cd to the project folder, then
 
 ```
 cd third_party\openssl
