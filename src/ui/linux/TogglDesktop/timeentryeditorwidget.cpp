@@ -16,7 +16,8 @@ projectAutocompleteNeedsUpdate(false),
 workspaceSelectNeedsUpdate(false),
 clientSelectNeedsUpdate(false),
 timer(new QTimer(this)),
-duration(0) {
+duration(0),
+previousTagList("") {
     ui->setupUi(this);
 
     setVisible(false);
@@ -201,9 +202,13 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
         ui->newProject->setVisible(false);
     }
 
+    QStringList tags = view->Tags.split("|", QString::SkipEmptyParts);
+    tags.sort();
+    previousTagList = tags.join("|");
+
     for (int i = 0; i < ui->tags->count(); i++) {
         QListWidgetItem *item = ui->tags->item(i);
-        if (view->Tags.contains(item->text())) {
+        if (tags.contains(item->text())) {
             item->setCheckState(Qt::Checked);
         } else {
             item->setCheckState(Qt::Unchecked);
@@ -339,9 +344,17 @@ void TimeEntryEditorWidget::timeout() {
     }
 }
 
-void TimeEntryEditorWidget::on_tags_itemActivated(QListWidgetItem *item) {
-    // FIXME: set tags
-    if (item->checkState() == Qt::Checked) {
-    } else if (item->checkState() == Qt::Unchecked) {
+void TimeEntryEditorWidget::on_tags_itemClicked(QListWidgetItem *item) {
+    QStringList tags;
+    for (int i = 0; i < ui->tags->count(); i++) {
+        QListWidgetItem *widgetItem = ui->tags->item(i);
+        if (widgetItem->checkState() == Qt::Checked) {
+            tags.push_back(widgetItem->text());
+        }
+    }
+    tags.sort();
+    QString list = tags.join("|");
+    if (previousTagList != list) {
+        TogglApi::instance->setTimeEntryTags(guid, list);
     }
 }

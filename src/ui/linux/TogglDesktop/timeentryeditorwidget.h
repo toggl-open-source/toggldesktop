@@ -46,6 +46,8 @@ class TimeEntryEditorWidget : public QWidget {
 
     int64_t duration;
 
+    QString previousTagList;
+
     bool applyNewProject();
 
  private slots:  // NOLINT
@@ -92,7 +94,7 @@ class TimeEntryEditorWidget : public QWidget {
     void on_stop_editingFinished();
     void on_dateEdit_editingFinished();
     void on_billable_clicked(bool checked);
-    void on_tags_itemActivated(QListWidgetItem *item);
+    void on_tags_itemClicked(QListWidgetItem *item);
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYEDITORWIDGET_H_

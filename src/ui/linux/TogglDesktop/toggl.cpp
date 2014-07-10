@@ -8,6 +8,7 @@
 #include <QDesktopServices>
 #include <QDebug>
 #include <QApplication>
+#include <QStringList>
 
 #include <iostream>   // NOLINT
 
@@ -340,6 +341,14 @@ bool TogglApi::setTimeEntryDescription(
     return kopsik_set_time_entry_description(ctx,
             guid.toStdString().c_str(),
             value.toStdString().c_str());
+}
+
+bool TogglApi::setTimeEntryTags(
+    const QString guid,
+    const QString tags) {
+    return kopsik_set_time_entry_tags(ctx,
+                                      guid.toStdString().c_str(),
+                                      tags.toStdString().c_str());
 }
 
 void TogglApi::editRunningTimeEntry(

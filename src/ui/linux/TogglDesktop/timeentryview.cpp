@@ -21,7 +21,7 @@ TimeEntryView *TimeEntryView::importOne(KopsikTimeEntryViewItem *view) {
     result->Color = QString(view->Color);
     result->GUID = QString(view->GUID);
     result->Billable = view->Billable;
-    result->Tags = QString(view->Tags).split("|", QString::SkipEmptyParts);
+    result->Tags = QString(view->Tags);
     result->Started = view->Started;
     result->Ended = view->Ended;
     result->StartTimeString = QString(view->StartTimeString);

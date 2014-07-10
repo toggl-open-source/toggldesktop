@@ -81,6 +81,10 @@ class TogglApi : public QObject {
         const QString guid,
         const QString value);
 
+    bool setTimeEntryTags(
+        const QString guid,
+        const QString tags);
+
     bool setTimeEntryDuration(
         const QString guid,
         const QString value);
