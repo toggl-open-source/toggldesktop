@@ -296,6 +296,12 @@
   <ItemGroup>
     <None Include="Resources\toggltray_inactive.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\toggl_offline_active.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\toggl_offline_inactive.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

@@ -101,7 +101,7 @@ namespace TogglDesktop
             }
             isTracking = true;
             enableMenuItems();
-            displayTrayIcon();
+            displayTrayIcon(true);
         }
 
         void OnStoppedTimerState()
@@ -113,7 +113,7 @@ namespace TogglDesktop
             }
             isTracking = false;
             enableMenuItems();
-            displayTrayIcon();
+            displayTrayIcon(true);
         }
 
         void OnSettings(bool open, Toggl.Settings settings)
@@ -128,16 +128,32 @@ namespace TogglDesktop
             timerIdleDetection.Enabled = settings.UseIdleDetection;
         }
 
-        private void displayTrayIcon()
+        private void displayTrayIcon(bool is_online)
         {
-            if (TogglDesktop.Program.IsLoggedIn && isTracking)
+            if (is_online)
             {
-                trayIcon.Icon = Properties.Resources.toggltray;
+                if (TogglDesktop.Program.IsLoggedIn && isTracking)
+                {
+                    trayIcon.Icon = Properties.Resources.toggltray;
+                }
+                else
+                {
+                    trayIcon.Icon = Properties.Resources.toggltray_inactive;
+                }
             }
             else
             {
-                trayIcon.Icon = Properties.Resources.toggltray_inactive;
+
+                if (TogglDesktop.Program.IsLoggedIn && isTracking)
+                {
+                    trayIcon.Icon = Properties.Resources.toggl_offline_active;
+                }
+                else
+                {
+                    trayIcon.Icon = Properties.Resources.toggl_offline_inactive;
+                }
             }
+          
         }
 
         void OnOnlineState(bool is_online, string reason)
@@ -154,6 +170,7 @@ namespace TogglDesktop
                 errorLabel.Text = reason;
                 troubleBox.Visible = true;
                 contentPanel.Location = errorContentPosition;
+                displayTrayIcon(false);
             }
             else if (isNetworkError)
             {
@@ -161,6 +178,7 @@ namespace TogglDesktop
 
                 troubleBox.Visible = false;
                 contentPanel.Location = defaultContentPosition;
+                displayTrayIcon(true);
             }
             // FIXME: change tray icon
         }
@@ -263,7 +281,7 @@ namespace TogglDesktop
                 loginViewController.SetAcceptButton(this);
             }
             enableMenuItems();
-            displayTrayIcon();
+            displayTrayIcon(true);
         }
 
         private void enableMenuItems()
