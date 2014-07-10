@@ -27,6 +27,8 @@ class TogglApi : public QObject {
     static QString Duration;
     static QString Description;
 
+    bool shutdown;
+
     bool startEvents();
 
     void login(const QString email, const QString password);

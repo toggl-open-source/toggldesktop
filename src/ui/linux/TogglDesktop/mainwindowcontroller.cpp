@@ -12,7 +12,6 @@
 #include <QVBoxLayout>  // NOLINT
 #include <QDebug>  // NOLINT
 #include <QDesktopServices>  // NOLINT
-#include <QMessageBox>  // NOLINT
 #include <QAction>  // NOLINT
 #include <QMenu>  // NOLINT
 
@@ -25,7 +24,6 @@
 MainWindowController::MainWindowController(QWidget *parent)
     : QMainWindow(parent),
   ui(new Ui::MainWindowController),
-  shutdown(false),
   togglApi(new TogglApi()),
   tracking(false),
   loggedIn(false),
@@ -69,6 +67,9 @@ MainWindowController::MainWindowController(QWidget *parent)
 
     connect(TogglApi::instance, SIGNAL(displayReminder(QString,QString)),  // NOLINT
             this, SLOT(displayReminder(QString,QString)));  // NOLINT
+
+    connect(TogglApi::instance, SIGNAL(displayUpdate(bool,UpdateView*)),  // NOLINT
+            this, SLOT(displayUpdate(bool,UpdateView*)));  // NOLINT
 
     connectMenuActions();
     enableMenuActions();
@@ -218,7 +219,11 @@ void MainWindowController::onActionLogout() {
 }
 
 void MainWindowController::onActionQuit() {
-    shutdown = true;
+    quitApp();
+}
+
+void MainWindowController::quitApp() {
+    TogglApi::instance->shutdown = true;
     qApp->exit(0);
 }
 
@@ -257,7 +262,7 @@ void MainWindowController::writeSettings() {
 
 void MainWindowController::closeEvent(QCloseEvent *event) {
     writeSettings();
-    if (!shutdown) {
+    if (!TogglApi::instance->shutdown) {
         event->ignore();
         hide();
         return;
@@ -277,3 +282,18 @@ void MainWindowController::showEvent(QShowEvent *event) {
         QMessageBox::Ok|QMessageBox::Cancel).exec();
 }
 
+void MainWindowController::displayUpdate(const bool open, UpdateView *view) {
+    if (open || aboutDialog->isVisible()
+            || view->IsChecking || !view->IsUpdateAvailable) {
+        return;
+    }
+    if (QMessageBox::Yes == QMessageBox(
+        QMessageBox::Question,
+        "Download new version?",
+        "There's a new version of this app available (" + view->Version + ")."
+        + " Continue with download?",
+        QMessageBox::No|QMessageBox::Yes).exec()) {
+        QDesktopServices::openUrl(QUrl(view->URL));
+        quitApp();
+    }
+}

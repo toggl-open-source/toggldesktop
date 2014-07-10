@@ -50,6 +50,8 @@ void AboutDialog::displayUpdate(const bool open, UpdateView *view) {
 
 void AboutDialog::on_updateButton_clicked() {
     QDesktopServices::openUrl(QUrl(url));
+    TogglApi::instance->shutdown = true;
+    qApp->exit(0);
 }
 
 void AboutDialog::on_releaseChannel_activated(const QString &arg1) {

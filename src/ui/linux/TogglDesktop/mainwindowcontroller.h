@@ -29,6 +29,8 @@ class MainWindowController : public QMainWindow {
 
     static MainWindowController *Instance;
 
+    void quitApp();
+
  protected:
     void closeEvent(QCloseEvent *event);
     void showEvent(QShowEvent *event);
@@ -43,6 +45,7 @@ class MainWindowController : public QMainWindow {
     void displayReminder(
         const QString title,
         const QString informative_text);
+    void displayUpdate(const bool open, UpdateView *view);
 
     void onActionNew();
     void onActionContinue();
@@ -60,8 +63,6 @@ class MainWindowController : public QMainWindow {
 
  private:
     Ui::MainWindowController *ui;
-
-    bool shutdown;
 
     TogglApi *togglApi;
 
