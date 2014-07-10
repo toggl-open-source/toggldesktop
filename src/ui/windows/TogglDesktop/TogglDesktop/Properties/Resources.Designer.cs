@@ -148,5 +148,25 @@ namespace TogglDesktop.Properties {
                 return ((System.Drawing.Icon)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon toggltray {
+            get {
+                object obj = ResourceManager.GetObject("toggltray", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon toggltray_inactive {
+            get {
+                object obj = ResourceManager.GetObject("toggltray_inactive", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }

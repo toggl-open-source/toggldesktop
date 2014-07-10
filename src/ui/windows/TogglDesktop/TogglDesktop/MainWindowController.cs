@@ -132,11 +132,11 @@ namespace TogglDesktop
         {
             if (TogglDesktop.Program.IsLoggedIn && isTracking)
             {
-                trayIcon.Icon = Properties.Resources.toggl;
+                trayIcon.Icon = Properties.Resources.toggltray;
             }
             else
             {
-                trayIcon.Icon = Properties.Resources.toggl_inactive;
+                trayIcon.Icon = Properties.Resources.toggltray_inactive;
             }
         }
 

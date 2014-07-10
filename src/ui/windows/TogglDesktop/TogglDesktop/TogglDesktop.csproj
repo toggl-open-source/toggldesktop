@@ -54,7 +54,8 @@
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>toggl.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Bugsnag.Library">
@@ -145,6 +146,11 @@
     <Compile Include="IdleNotificationWindowController.Designer.cs">
       <DependentUpon>IdleNotificationWindowController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Toggl.cs" />
     <Compile Include="LoginViewController.cs">
       <SubType>UserControl</SubType>
@@ -166,11 +172,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="TimeEntryCell.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -269,12 +270,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="toggl.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="toggl_inactive.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\logo.png" />
   </ItemGroup>
   <ItemGroup>
@@ -288,6 +283,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\continue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\toggl.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\toggl_inactive.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\toggltray.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\toggltray_inactive.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

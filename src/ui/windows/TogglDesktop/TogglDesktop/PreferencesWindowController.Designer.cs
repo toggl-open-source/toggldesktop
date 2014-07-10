@@ -193,7 +193,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 314);
+            this.ClientSize = new System.Drawing.Size(284, 315);
             this.Controls.Add(this.checkBoxOnTop);
             this.Controls.Add(this.checkBoxRemindToTrackTime);
             this.Controls.Add(this.checkBoxRecordTimeline);
