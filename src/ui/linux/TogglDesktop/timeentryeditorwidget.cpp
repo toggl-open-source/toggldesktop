@@ -230,8 +230,7 @@ bool TimeEntryEditorWidget::applyNewProject() {
     }
 
     if (ui->newProjectName->text().isEmpty()) {
-        ui->newProjectName->setFocus();
-        return false;
+        return true;
     }
 
     QVariant workspace = ui->newProjectWorkspace->currentData();
