@@ -184,6 +184,8 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
     if (!ui->stop->hasFocus()) {
         ui->stop->setText(view->EndTimeString);
     }
+    ui->stop->setVisible(duration >= 0);
+    ui->timeSeparator->setVisible(duration >= 0);
     if (!ui->dateEdit->hasFocus()) {
         ui->dateEdit->setDateTime(QDateTime::fromTime_t(view->Started));
     }
