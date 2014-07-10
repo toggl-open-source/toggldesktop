@@ -93,6 +93,16 @@ class TogglApi : public QObject {
         const QString guid,
         const bool billable);
 
+    bool setTimeEntryStart(
+        const QString guid,
+        const QDate date,
+        const QString time);
+
+    bool setTimeEntryStop(
+        const QString guid,
+        const QDate date,
+        const QString time);
+
     bool addProject(
         const QString time_entry_guid,
         const uint64_t workspace_id,
@@ -192,6 +202,12 @@ class TogglApi : public QObject {
 
  private:
     void *ctx;
+
+    bool setTime(
+        const QString guid,
+        const QDate date,
+        const QString time,
+        const bool start);
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TOGGL_H_
