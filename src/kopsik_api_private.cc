@@ -13,6 +13,7 @@ KopsikAutocompleteItem *autocomplete_item_init(
     result->Description = strdup(item.Description.c_str());
     result->Text = strdup(item.Text.c_str());
     result->ProjectAndTaskLabel = strdup(item.ProjectAndTaskLabel.c_str());
+    result->TaskLabel = strdup(item.TaskLabel.c_str());
     result->ProjectLabel = strdup(item.ProjectLabel.c_str());
     result->ClientLabel = strdup(item.ClientLabel.c_str());
     result->ProjectColor = strdup(item.ProjectColor.c_str());
@@ -95,6 +96,9 @@ void autocomplete_item_clear(KopsikAutocompleteItem *item) {
     free(item->ProjectAndTaskLabel);
     item->ProjectAndTaskLabel = 0;
 
+    free(item->TaskLabel);
+    item->TaskLabel = 0;
+
     free(item->ProjectLabel);
     item->ProjectLabel = 0;
 
@@ -120,6 +124,7 @@ void autocomplete_item_clear(KopsikAutocompleteItem *item) {
 KopsikTimeEntryViewItem *time_entry_view_item_init(
     kopsik::TimeEntry *te,
     const std::string project_and_task_label,
+    const std::string task_label,
     const std::string project_label,
     const std::string client_label,
     const std::string color,
@@ -142,6 +147,7 @@ KopsikTimeEntryViewItem *time_entry_view_item_init(
     view_item->Ended = static_cast<unsigned int>(te->Stop());
 
     view_item->ProjectAndTaskLabel = strdup(project_and_task_label.c_str());
+    view_item->TaskLabel = strdup(task_label.c_str());
     view_item->ProjectLabel = strdup(project_label.c_str());
     view_item->ClientLabel = strdup(client_label.c_str());
     view_item->Color = strdup(color.c_str());
@@ -188,6 +194,9 @@ void time_entry_view_item_clear(
 
     free(item->ProjectAndTaskLabel);
     item->ProjectAndTaskLabel = 0;
+
+    free(item->TaskLabel);
+    item->TaskLabel = 0;
 
     free(item->ProjectLabel);
     item->ProjectLabel = 0;

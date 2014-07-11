@@ -18,6 +18,7 @@ class AutocompleteItem {
         : Text("")
     , Description("")
     , ProjectAndTaskLabel("")
+    , TaskLabel("")
     , ProjectLabel("")
     , ClientLabel("")
     , ProjectColor("")
@@ -42,6 +43,7 @@ class AutocompleteItem {
            << " Text=" << Text
            << " Description=" << Description
            << " ProjectAndTaskLabel=" << ProjectAndTaskLabel
+           << " TaskLabel=" << TaskLabel
            << " ProjectLabel=" << ProjectLabel
            << " ClientLabel=" << ClientLabel
            << " ProjectColor=" << ProjectColor
@@ -54,6 +56,7 @@ class AutocompleteItem {
     std::string Text;
     std::string Description;
     std::string ProjectAndTaskLabel;
+    std::string TaskLabel;
     std::string ProjectLabel;
     std::string ClientLabel;
     std::string ProjectColor;
