@@ -845,10 +845,12 @@ KopsikTimeEntryViewItem *Context::timeEntryViewItem(TimeEntry *te) {
     }
 
     std::string project_and_task_label("");
+    std::string task_label("");
     std::string project_label("");
     std::string client_label("");
     std::string color("");
-    projectLabelAndColorCode(te, &project_and_task_label, &project_label,
+    projectLabelAndColorCode(te, &project_and_task_label,
+                             &task_label, &project_label,
                              &client_label, &color);
 
     Poco::Int64 duration = totalDurationForDate(te);
@@ -857,6 +859,7 @@ KopsikTimeEntryViewItem *Context::timeEntryViewItem(TimeEntry *te) {
 
     return time_entry_view_item_init(te,
                                      project_and_task_label,
+                                     task_label,
                                      project_label,
                                      client_label,
                                      color,
@@ -1227,10 +1230,12 @@ void Context::DisplayTimeEntryList(const _Bool open) {
         TimeEntry *te = list.at(i);
 
         std::string project_and_task_label("");
+        std::string task_label("");
         std::string project_label("");
         std::string client_label("");
         std::string color("");
-        projectLabelAndColorCode(te, &project_and_task_label, &project_label,
+        projectLabelAndColorCode(te, &project_and_task_label,
+                                 &task_label, &project_label,
                                  &client_label, &color);
 
         Poco::Int64 duration = date_durations[te->DateHeaderString()];
@@ -1240,6 +1245,7 @@ void Context::DisplayTimeEntryList(const _Bool open) {
         KopsikTimeEntryViewItem *item =
             time_entry_view_item_init(te,
                                       project_and_task_label,
+                                      task_label,
                                       project_label,
                                       client_label,
                                       color,
@@ -1707,12 +1713,14 @@ _Bool Context::SaveUpdateChannel(const std::string channel) {
 void Context::projectLabelAndColorCode(
     TimeEntry *te,
     std::string *project_and_task_label,
+    std::string *task_label,
     std::string *project_label,
     std::string *client_label,
     std::string *color_code) const {
 
     poco_check_ptr(te);
     poco_check_ptr(project_and_task_label);
+    poco_check_ptr(task_label);
     poco_check_ptr(project_label);
     poco_check_ptr(client_label);
     poco_check_ptr(color_code);
@@ -1729,6 +1737,7 @@ void Context::projectLabelAndColorCode(
     Project *p = 0;
     if (t) {
         p = user_->related.ProjectByID(t->PID());
+        *task_label = t->Name();
     }
     if (!p && te->PID()) {
         p = user_->related.ProjectByID(te->PID());

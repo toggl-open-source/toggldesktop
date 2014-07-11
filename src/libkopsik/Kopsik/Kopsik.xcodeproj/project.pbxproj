@@ -86,14 +86,14 @@
 		7408EDAE18C51CEB00CBE8F1 /* autocomplete_item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = autocomplete_item.h; path = ../../../autocomplete_item.h; sourceTree = "<group>"; };
 		7408EDAF18C51CEB00CBE8F1 /* formatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = formatter.h; path = ../../../formatter.h; sourceTree = "<group>"; };
 		7408EDB018C51CEB00CBE8F1 /* feedback.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = feedback.cc; path = ../../../feedback.cc; sourceTree = "<group>"; };
-		7421347E195C4D41007EF78B /* libPocoUtil.16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoUtil.16.dylib; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoUtil.16.dylib"; sourceTree = "<group>"; };
-		7421347F195C4D41007EF78B /* libPocoData.16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoData.16.dylib; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoData.16.dylib"; sourceTree = "<group>"; };
-		74213480195C4D41007EF78B /* libPocoNetSSL.16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNetSSL.16.dylib; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoNetSSL.16.dylib"; sourceTree = "<group>"; };
-		74213481195C4D41007EF78B /* libPocoXML.16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoXML.16.dylib; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoXML.16.dylib"; sourceTree = "<group>"; };
-		74213482195C4D41007EF78B /* libPocoDataSQLite.16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoDataSQLite.16.dylib; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoDataSQLite.16.dylib"; sourceTree = "<group>"; };
-		74213483195C4D41007EF78B /* libPocoNet.16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNet.16.dylib; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoNet.16.dylib"; sourceTree = "<group>"; };
-		74213484195C4D41007EF78B /* libPocoFoundation.16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoFoundation.16.dylib; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoFoundation.16.dylib"; sourceTree = "<group>"; };
-		74213485195C4D41007EF78B /* libPocoCrypto.16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoCrypto.16.dylib; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoCrypto.16.dylib"; sourceTree = "<group>"; };
+		7421347E195C4D41007EF78B /* libPocoUtil.16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoUtil.16.dylib; path = "../../../third_party/poco/lib/Darwin/x86_64/libPocoUtil.16.dylib"; sourceTree = "<group>"; };
+		7421347F195C4D41007EF78B /* libPocoData.16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoData.16.dylib; path = "../../../third_party/poco/lib/Darwin/x86_64/libPocoData.16.dylib"; sourceTree = "<group>"; };
+		74213480195C4D41007EF78B /* libPocoNetSSL.16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNetSSL.16.dylib; path = "../../../third_party/poco/lib/Darwin/x86_64/libPocoNetSSL.16.dylib"; sourceTree = "<group>"; };
+		74213481195C4D41007EF78B /* libPocoXML.16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoXML.16.dylib; path = "../../../third_party/poco/lib/Darwin/x86_64/libPocoXML.16.dylib"; sourceTree = "<group>"; };
+		74213482195C4D41007EF78B /* libPocoDataSQLite.16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoDataSQLite.16.dylib; path = "../../../third_party/poco/lib/Darwin/x86_64/libPocoDataSQLite.16.dylib"; sourceTree = "<group>"; };
+		74213483195C4D41007EF78B /* libPocoNet.16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNet.16.dylib; path = "../../../third_party/poco/lib/Darwin/x86_64/libPocoNet.16.dylib"; sourceTree = "<group>"; };
+		74213484195C4D41007EF78B /* libPocoFoundation.16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoFoundation.16.dylib; path = "../../../third_party/poco/lib/Darwin/x86_64/libPocoFoundation.16.dylib"; sourceTree = "<group>"; };
+		74213485195C4D41007EF78B /* libPocoCrypto.16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoCrypto.16.dylib; path = "../../../third_party/poco/lib/Darwin/x86_64/libPocoCrypto.16.dylib"; sourceTree = "<group>"; };
 		745E84F3194953A70065E49A /* gui.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gui.cc; path = ../../../gui.cc; sourceTree = "<group>"; };
 		745E84F4194953A70065E49A /* gui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gui.h; path = ../../../gui.h; sourceTree = "<group>"; };
 		7484A2A218887BEE0025A88B /* kopsik_api_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kopsik_api_private.h; path = ../../../kopsik_api_private.h; sourceTree = "<group>"; };
@@ -148,14 +148,14 @@
 		C5DA1F8E17F18CAA001C4565 /* libjson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjson.a; path = ../../../third_party/libjson/libjson.a; sourceTree = "<group>"; };
 		C5DA1F9017F18CB6001C4565 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../../../third_party/openssl/libssl.a; sourceTree = "<group>"; };
 		C5DA1F9217F18CBB001C4565 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../../../third_party/openssl/libcrypto.a; sourceTree = "<group>"; };
-		C5DA1F9417F18D2B001C4565 /* libPocoCrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoCrypto.a; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoCrypto.a"; sourceTree = "<group>"; };
-		C5DA1F9517F18D2B001C4565 /* libPocoData.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoData.a; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoData.a"; sourceTree = "<group>"; };
-		C5DA1F9617F18D2B001C4565 /* libPocoDataSQLite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoDataSQLite.a; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoDataSQLite.a"; sourceTree = "<group>"; };
-		C5DA1F9717F18D2B001C4565 /* libPocoFoundation.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoFoundation.a; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoFoundation.a"; sourceTree = "<group>"; };
-		C5DA1F9817F18D2B001C4565 /* libPocoNet.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNet.a; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoNet.a"; sourceTree = "<group>"; };
-		C5DA1F9917F18D2B001C4565 /* libPocoNetSSL.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNetSSL.a; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoNetSSL.a"; sourceTree = "<group>"; };
-		C5DA1F9A17F18D2B001C4565 /* libPocoUtil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoUtil.a; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoUtil.a"; sourceTree = "<group>"; };
-		C5DA1F9B17F18D2B001C4565 /* libPocoXML.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoXML.a; path = "../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64/libPocoXML.a"; sourceTree = "<group>"; };
+		C5DA1F9417F18D2B001C4565 /* libPocoCrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoCrypto.a; path = "../../../third_party/poco/lib/Darwin/x86_64/libPocoCrypto.a"; sourceTree = "<group>"; };
+		C5DA1F9517F18D2B001C4565 /* libPocoData.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoData.a; path = "../../../third_party/poco/lib/Darwin/x86_64/libPocoData.a"; sourceTree = "<group>"; };
+		C5DA1F9617F18D2B001C4565 /* libPocoDataSQLite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoDataSQLite.a; path = "../../../third_party/poco/lib/Darwin/x86_64/libPocoDataSQLite.a"; sourceTree = "<group>"; };
+		C5DA1F9717F18D2B001C4565 /* libPocoFoundation.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoFoundation.a; path = "../../../third_party/poco/lib/Darwin/x86_64/libPocoFoundation.a"; sourceTree = "<group>"; };
+		C5DA1F9817F18D2B001C4565 /* libPocoNet.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNet.a; path = "../../../third_party/poco/lib/Darwin/x86_64/libPocoNet.a"; sourceTree = "<group>"; };
+		C5DA1F9917F18D2B001C4565 /* libPocoNetSSL.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoNetSSL.a; path = "../../../third_party/poco/lib/Darwin/x86_64/libPocoNetSSL.a"; sourceTree = "<group>"; };
+		C5DA1F9A17F18D2B001C4565 /* libPocoUtil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoUtil.a; path = "../../../third_party/poco/lib/Darwin/x86_64/libPocoUtil.a"; sourceTree = "<group>"; };
+		C5DA1F9B17F18D2B001C4565 /* libPocoXML.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoXML.a; path = "../../../third_party/poco/lib/Darwin/x86_64/libPocoXML.a"; sourceTree = "<group>"; };
 		C5DA1FA417F18D7B001C4565 /* database.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = database.cc; path = ../../../database.cc; sourceTree = "<group>"; };
 		C5DA1FA517F18D7B001C4565 /* database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = database.h; path = ../../../database.h; sourceTree = "<group>"; };
 		C5DA1FAA17F18D7B001C4565 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = types.h; path = ../../../types.h; sourceTree = "<group>"; };
@@ -474,14 +474,14 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Data/include/",
-					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Util/include/",
-					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Foundation/include/",
-					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Data/SQLite/include/",
-					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Net/include/",
+					"Kopsik/third_party/kopsik/third_party/poco/Data/include/",
+					"Kopsik/third_party/kopsik/third_party/poco/Util/include/",
+					"Kopsik/third_party/kopsik/third_party/poco/Foundation/include/",
+					"Kopsik/third_party/kopsik/third_party/poco/Data/SQLite/include/",
+					"Kopsik/third_party/kopsik/third_party/poco/Net/include/",
 					Kopsik/third_party/kopsik/third_party/libjson,
-					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/NetSSL_OpenSSL/include/",
-					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Crypto/include/",
+					"Kopsik/third_party/kopsik/third_party/poco/NetSSL_OpenSSL/include/",
+					"Kopsik/third_party/kopsik/third_party/poco/Crypto/include/",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
@@ -518,14 +518,14 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Data/include/",
-					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Util/include/",
-					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Foundation/include/",
-					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Data/SQLite/include/",
-					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Net/include/",
+					"Kopsik/third_party/kopsik/third_party/poco/Data/include/",
+					"Kopsik/third_party/kopsik/third_party/poco/Util/include/",
+					"Kopsik/third_party/kopsik/third_party/poco/Foundation/include/",
+					"Kopsik/third_party/kopsik/third_party/poco/Data/SQLite/include/",
+					"Kopsik/third_party/kopsik/third_party/poco/Net/include/",
 					Kopsik/third_party/kopsik/third_party/libjson,
-					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/NetSSL_OpenSSL/include/",
-					"Kopsik/third_party/kopsik/third_party/poco-1.4.6p1-all/Crypto/include/",
+					"Kopsik/third_party/kopsik/third_party/poco/NetSSL_OpenSSL/include/",
+					"Kopsik/third_party/kopsik/third_party/poco/Crypto/include/",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
@@ -544,19 +544,19 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"../../../third_party/poco-1.4.6p2-all/Data/include/",
-					"../../../third_party/poco-1.4.6p2-all/Util/include/",
-					"../../../third_party/poco-1.4.6p2-all/Foundation/include/",
-					"../../../third_party/poco-1.4.6p2-all/Data/SQLite/include/",
-					"../../../third_party/poco-1.4.6p2-all/Net/include/",
+					../../../third_party/poco/Data/include/,
+					../../../third_party/poco/Util/include/,
+					../../../third_party/poco/Foundation/include/,
+					../../../third_party/poco/Data/SQLite/include/,
+					../../../third_party/poco/Net/include/,
 					../../../third_party/libjson,
-					"../../../third_party/poco-1.4.6p2-all/NetSSL_OpenSSL/include/",
-					"../../../third_party/poco-1.4.6p2-all/Crypto/include/",
+					../../../third_party/poco/NetSSL_OpenSSL/include/,
+					../../../third_party/poco/Crypto/include/,
 				);
 				INSTALL_PATH = "@executable_path/../../Contents/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64",
+					../../../third_party/poco/lib/Darwin/x86_64,
 					../../../third_party/libjson,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -573,19 +573,19 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"../../../third_party/poco-1.4.6p2-all/Data/include/",
-					"../../../third_party/poco-1.4.6p2-all/Util/include/",
-					"../../../third_party/poco-1.4.6p2-all/Foundation/include/",
-					"../../../third_party/poco-1.4.6p2-all/Data/SQLite/include/",
-					"../../../third_party/poco-1.4.6p2-all/Net/include/",
+					../../../third_party/poco/Data/include/,
+					../../../third_party/poco/Util/include/,
+					../../../third_party/poco/Foundation/include/,
+					../../../third_party/poco/Data/SQLite/include/,
+					../../../third_party/poco/Net/include/,
 					../../../third_party/libjson,
-					"../../../third_party/poco-1.4.6p2-all/NetSSL_OpenSSL/include/",
-					"../../../third_party/poco-1.4.6p2-all/Crypto/include/",
+					../../../third_party/poco/NetSSL_OpenSSL/include/,
+					../../../third_party/poco/Crypto/include/,
 				);
 				INSTALL_PATH = "@executable_path/../../Contents/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64",
+					../../../third_party/poco/lib/Darwin/x86_64,
 					../../../third_party/libjson,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";

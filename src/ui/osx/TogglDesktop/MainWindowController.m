@@ -66,19 +66,20 @@ extern void *ctx;
 	return self;
 }
 
-- (void)addErrorBoxContraint {
-    if (!self.contentViewTop)
-    {
-        self.contentViewTop = [NSLayoutConstraint constraintWithItem:self.contentView
-                                                           attribute:NSLayoutAttributeTop
-                                                           relatedBy:NSLayoutRelationEqual
-                                                              toItem:self.mainView
-                                                           attribute:NSLayoutAttributeTop
-                                                          multiplier:1
-                                                            constant:0];
-        [self.mainView addConstraint:self.contentViewTop];
-    }
-    self.contentViewTop.constant = 0;
+- (void)addErrorBoxContraint
+{
+	if (!self.contentViewTop)
+	{
+		self.contentViewTop = [NSLayoutConstraint constraintWithItem:self.contentView
+														   attribute:NSLayoutAttributeTop
+														   relatedBy:NSLayoutRelationEqual
+															  toItem:self.mainView
+														   attribute:NSLayoutAttributeTop
+														  multiplier:1
+															constant:0];
+		[self.mainView addConstraint:self.contentViewTop];
+	}
+	self.contentViewTop.constant = 0;
 }
 
 - (void)startDisplayLogin:(NSNotification *)notification
@@ -93,7 +94,7 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	if (cmd.open)
 	{
-        [self addErrorBoxContraint];
+		[self addErrorBoxContraint];
 		[self.contentView addSubview:self.loginViewController.view];
 		[self.loginViewController.view setFrame:self.contentView.bounds];
 		[self.loginViewController.email becomeFirstResponder];
@@ -119,7 +120,7 @@ extern void *ctx;
 		{
 			[self closeError];
 		}
-        [self addErrorBoxContraint];
+		[self addErrorBoxContraint];
 		[self.contentView addSubview:self.timeEntryListViewController.view];
 		[self.timeEntryListViewController.view setFrame:self.contentView.bounds];
 

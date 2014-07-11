@@ -346,6 +346,7 @@ extern void *ctx;
 	self.time_entry.ProjectID = item.ProjectID;
 	self.time_entry.TaskID = item.TaskID;
 	self.time_entry.ProjectAndTaskLabel = item.ProjectAndTaskLabel;
+	self.time_entry.TaskLabel = item.TaskLabel;
 	self.time_entry.ProjectLabel = item.ProjectLabel;
 	self.time_entry.ClientLabel = item.ClientLabel;
 	self.time_entry.ProjectColor = item.ProjectColor;

@@ -239,6 +239,7 @@ class Context {
     void projectLabelAndColorCode(
         TimeEntry *te,
         std::string *project_and_task_label,
+        std::string *task_label,
         std::string *project_label,
         std::string *client_label,
         std::string *color_code) const;

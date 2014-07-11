@@ -114,6 +114,7 @@ void RelatedData::timeEntryAutocompleteItems(
         }
         if (t) {
             autocomplete_item.TaskID = t->ID();
+            autocomplete_item.TaskLabel = t->Name();
         }
         autocomplete_item.Type = kAutocompleteItemTE;
         list->push_back(autocomplete_item);
@@ -134,6 +135,7 @@ void RelatedData::taskAutocompleteItems(
         Task *t = *it;
         std::string project_label;
         std::string client_label;
+        std::string task_label;
 
         if (t->IsMarkedAsDeletedOnServer()) {
             continue;
@@ -161,6 +163,10 @@ void RelatedData::taskAutocompleteItems(
             client_label = c->Name();
         }
 
+        if (t) {
+            task_label = t->Name();
+        }
+
         std::string text = Formatter::JoinTaskNameReverse(t, p, c);
         if (text.empty()) {
             continue;
@@ -174,6 +180,7 @@ void RelatedData::taskAutocompleteItems(
         AutocompleteItem autocomplete_item;
         autocomplete_item.Text = text;
         autocomplete_item.ProjectAndTaskLabel = text;
+        autocomplete_item.TaskLabel = task_label;
         autocomplete_item.ProjectLabel = project_label;
         autocomplete_item.ClientLabel = client_label;
         autocomplete_item.TaskID = t->ID();
