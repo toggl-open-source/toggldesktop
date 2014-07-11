@@ -544,19 +544,19 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"../../../third_party/poco-1.4.6p2-all/Data/include/",
-					"../../../third_party/poco-1.4.6p2-all/Util/include/",
-					"../../../third_party/poco-1.4.6p2-all/Foundation/include/",
-					"../../../third_party/poco-1.4.6p2-all/Data/SQLite/include/",
-					"../../../third_party/poco-1.4.6p2-all/Net/include/",
+					../../../third_party/poco/Data/include/,
+					../../../third_party/poco/Util/include/,
+					../../../third_party/poco/Foundation/include/,
+					../../../third_party/poco/Data/SQLite/include/,
+					../../../third_party/poco/Net/include/,
 					../../../third_party/libjson,
-					"../../../third_party/poco-1.4.6p2-all/NetSSL_OpenSSL/include/",
-					"../../../third_party/poco-1.4.6p2-all/Crypto/include/",
+					../../../third_party/poco/NetSSL_OpenSSL/include/,
+					../../../third_party/poco/Crypto/include/,
 				);
 				INSTALL_PATH = "@executable_path/../../Contents/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64",
+					../../../third_party/poco/lib/Darwin/x86_64,
 					../../../third_party/libjson,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -573,19 +573,19 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"../../../third_party/poco-1.4.6p2-all/Data/include/",
-					"../../../third_party/poco-1.4.6p2-all/Util/include/",
-					"../../../third_party/poco-1.4.6p2-all/Foundation/include/",
-					"../../../third_party/poco-1.4.6p2-all/Data/SQLite/include/",
-					"../../../third_party/poco-1.4.6p2-all/Net/include/",
+					../../../third_party/poco/Data/include/,
+					../../../third_party/poco/Util/include/,
+					../../../third_party/poco/Foundation/include/,
+					../../../third_party/poco/Data/SQLite/include/,
+					../../../third_party/poco/Net/include/,
 					../../../third_party/libjson,
-					"../../../third_party/poco-1.4.6p2-all/NetSSL_OpenSSL/include/",
-					"../../../third_party/poco-1.4.6p2-all/Crypto/include/",
+					../../../third_party/poco/NetSSL_OpenSSL/include/,
+					../../../third_party/poco/Crypto/include/,
 				);
 				INSTALL_PATH = "@executable_path/../../Contents/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"../../../third_party/poco-1.4.6p2-all/lib/Darwin/x86_64",
+					../../../third_party/poco/lib/Darwin/x86_64,
 					../../../third_party/libjson,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";

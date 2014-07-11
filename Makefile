@@ -4,7 +4,7 @@ pwd=$(shell pwd)
 uname=$(shell uname)
 timestamp=$(shell date "+%Y-%m-%d-%H-%M-%S")
 
-pocodir=third_party/poco-1.4.6p2-all
+pocodir=third_party/poco
 openssldir=third_party/openssl
 jsondir=third_party/libjson
 
@@ -174,15 +174,15 @@ linux: fmt_lib lint linux_lib linux_ui
 linux_lib:
 	cd src/libkopsik/Library/TogglDesktopLibrary && $(QMAKE) && make && \
 	cd ../../../../ && \
-	cp third_party/poco-1.4.6p2-all/lib/Linux/x86_64/libPocoCrypto.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release
-	cp third_party/poco-1.4.6p2-all/lib/Linux/x86_64/libPocoData.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
-	cp third_party/poco-1.4.6p2-all/lib/Linux/x86_64/libPocoDataSQLite.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
-	cp third_party/poco-1.4.6p2-all/lib/Linux/x86_64/libPocoFoundation.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
-	cp third_party/poco-1.4.6p2-all/lib/Linux/x86_64/libPocoNet.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
-	cp third_party/poco-1.4.6p2-all/lib/Linux/x86_64/libPocoNetSSL.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
-	cp third_party/poco-1.4.6p2-all/lib/Linux/x86_64/libPocoUtil.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
-	cp third_party/poco-1.4.6p2-all/lib/Linux/x86_64/libPocoXML.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
-	cp third_party/libjson/libjson.so.7.6.1 src/libkopsik/Library/TogglDesktopLibrary/build/release/libjson.so.7
+	cp $(pocodir)/lib/Linux/x86_64/libPocoCrypto.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release
+	cp $(pocodir)/lib/Linux/x86_64/libPocoData.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/x86_64/libPocoDataSQLite.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/x86_64/libPocoFoundation.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/x86_64/libPocoNet.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/x86_64/libPocoNetSSL.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/x86_64/libPocoUtil.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/x86_64/libPocoXML.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
+	cp $(jsondir)/libjson.so.7.6.1 src/libkopsik/Library/TogglDesktopLibrary/build/release/libjson.so.7
 
 linux_ui:
 	cd src/ui/linux/TogglDesktop && $(QMAKE) && make && \
