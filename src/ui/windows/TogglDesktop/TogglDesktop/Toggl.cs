@@ -50,6 +50,7 @@ namespace TogglDesktop
             public Int64 DurationInSeconds;
             public string Description;
             public string ProjectAndTaskLabel;
+            public string TaskLabel;
             public string ProjectLabel;
             public string ClientLabel;
             public UInt64 WID;
@@ -99,6 +100,7 @@ namespace TogglDesktop
             public string Text;
             public string Description;
             public string ProjectAndTaskLabel;
+            public string TaskLabel;
             public string ProjectLabel;
             public string ClientLabel;
             public string ProjectColor;
