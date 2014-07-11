@@ -18,12 +18,14 @@
 	if (te->ProjectAndTaskLabel)
 	{
 		self.ProjectAndTaskLabel = [NSString stringWithUTF8String:te->ProjectAndTaskLabel];
+		self.TaskLabel = [NSString stringWithUTF8String:te->TaskLabel];
 		self.ProjectLabel = [NSString stringWithUTF8String:te->ProjectLabel];
 		self.ClientLabel = [NSString stringWithUTF8String:te->ClientLabel];
 	}
 	else
 	{
 		self.ProjectAndTaskLabel = nil;
+		self.TaskLabel = nil;
 		self.ProjectLabel = nil;
 		self.ClientLabel = nil;
 	}

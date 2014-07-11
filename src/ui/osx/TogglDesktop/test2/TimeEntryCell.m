@@ -85,8 +85,27 @@
 		 NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
 	 }
 						range:NSMakeRange(0, [clientName length])];
+	NSMutableAttributedString *string;
+	if (view_item.TaskID != 0)
+	{
+		string = [[NSMutableAttributedString alloc] initWithString:[view_item.TaskLabel stringByAppendingString:@". "]];
 
-	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:[view_item.ProjectLabel stringByAppendingString:@" "]];
+		[string setAttributes:
+		 @{
+			 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+			 NSForegroundColorAttributeName:[NSColor controlTextColor]
+		 }
+						range:NSMakeRange(0, [string length])];
+
+		NSMutableAttributedString *projectName = [[NSMutableAttributedString alloc] initWithString:[view_item.ProjectLabel stringByAppendingString:@" "]];
+
+		[string appendAttributedString:projectName];
+	}
+	else
+	{
+		string = [[NSMutableAttributedString alloc] initWithString:[view_item.ProjectLabel stringByAppendingString:@" "]];
+	}
+
 	[string appendAttributedString:clientName];
 	return string;
 }

@@ -16,6 +16,7 @@
 @property NSString *Text;
 @property NSString *Description;
 @property NSString *ProjectAndTaskLabel;
+@property NSString *TaskLabel;
 @property NSString *ProjectLabel;
 @property NSString *ClientLabel;
 @property NSString *ProjectColor;

@@ -14,6 +14,15 @@
 {
 	self.Text = [NSString stringWithUTF8String:data->Text];
 	self.ProjectAndTaskLabel = [NSString stringWithUTF8String:data->ProjectAndTaskLabel];
+	if (data->TaskLabel)
+	{
+		self.TaskLabel = [NSString stringWithUTF8String:data->TaskLabel];
+	}
+	else
+	{
+		self.TaskLabel = @"";
+	}
+
 	if (data->ProjectLabel)
 	{
 		self.ProjectLabel = [NSString stringWithUTF8String:data->ProjectLabel];
