@@ -80,7 +80,7 @@ HEADERS += \
     ../../../workspace.h \
     ../../include/kopsik_api.h
 
-pocolib = $$PWD/../../../../third_party/poco-1.4.6p2-all/lib/Linux/x86_64
+pocolib = $$PWD/../../../../third_party/poco/lib/Linux/x86_64
 jsondir = $$PWD/../../../../third_party/libjson
 openssldir = $$PWD/../../../../third_party/openssl
 
@@ -90,35 +90,35 @@ LIBS += -L$$jsondir -ljson
 LIBS += -L$$openssldir -lssl -lcrypto
 LIBS += -lX11
 
-INCLUDEPATH += $$PWD/../../../../third_party/poco-1.4.6p2-all/Foundation/include
-DEPENDPATH += $$PWD/../../../../third_party/poco-1.4.6p2-all/Foundation/include
+INCLUDEPATH += $$PWD/../../../../third_party/poco/Foundation/include
+DEPENDPATH += $$PWD/../../../../third_party/poco/Foundation/include
 
 INCLUDEPATH += $$PWD/../../../../third_party/libjson
 DEPENDPATH += $$PWD/../../../../third_party/libjson
 
-INCLUDEPATH += $$PWD/../../../../third_party/poco-1.4.6p2-all/Util/include
-DEPENDPATH += $$PWD/../../../../third_party/poco-1.4.6p2-all/Util/include
+INCLUDEPATH += $$PWD/../../../../third_party/poco/Util/include
+DEPENDPATH += $$PWD/../../../../third_party/poco/Util/include
 
-INCLUDEPATH += $$PWD/../../../../third_party/poco-1.4.6p2-all/Data/include
-DEPENDPATH += $$PWD/../../../../third_party/poco-1.4.6p2-all/Data/include
+INCLUDEPATH += $$PWD/../../../../third_party/poco/Data/include
+DEPENDPATH += $$PWD/../../../../third_party/poco/Data/include
 
-INCLUDEPATH += $$PWD/../../../../third_party/poco-1.4.6p2-all/Data/SQLite/include
-DEPENDPATH += $$PWD/../../../../third_party/poco-1.4.6p2-all/Data/SQLite/include
+INCLUDEPATH += $$PWD/../../../../third_party/poco/Data/SQLite/include
+DEPENDPATH += $$PWD/../../../../third_party/poco/Data/SQLite/include
 
 INCLUDEPATH += $$PWD/../../../../third_party/openssl/include
 DEPENDPATH += $$PWD/../../../../third_party/openssl/include
 
-INCLUDEPATH += $$PWD/../../../../third_party/poco-1.4.6p2-all/Crypto/include
-DEPENDPATH += $$PWD/../../../../third_party/poco-1.4.6p2-all/Crypto/include
+INCLUDEPATH += $$PWD/../../../../third_party/poco/Crypto/include
+DEPENDPATH += $$PWD/../../../../third_party/poco/Crypto/include
 
-INCLUDEPATH += $$PWD/../../../../third_party/poco-1.4.6p2-all/Net/include
-DEPENDPATH += $$PWD/../../../../third_party/poco-1.4.6p2-all/Net/include
+INCLUDEPATH += $$PWD/../../../../third_party/poco/Net/include
+DEPENDPATH += $$PWD/../../../../third_party/poco/Net/include
 
-INCLUDEPATH += $$PWD/../../../../third_party/poco-1.4.6p2-all/NetSSL_OpenSSL/include
-DEPENDPATH += $$PWD/../../../../third_party/poco-1.4.6p2-all/NetSSL_OpenSSL/include
+INCLUDEPATH += $$PWD/../../../../third_party/poco/NetSSL_OpenSSL/include
+DEPENDPATH += $$PWD/../../../../third_party/poco/NetSSL_OpenSSL/include
 
-INCLUDEPATH += $$PWD/../../../../third_party/poco-1.4.6p2-all/Data/SQLite/src
-DEPENDPATH += $$PWD/../../../../third_party/poco-1.4.6p2-all/Data/SQLite/src
+INCLUDEPATH += $$PWD/../../../../third_party/poco/Data/SQLite/src
+DEPENDPATH += $$PWD/../../../../third_party/poco/Data/SQLite/src
 
 #QMAKE_CXXFLAGS += -fsanitize=thread -fPIE
 #QMAKE_LFLAGS += -pie -fsanitize=thread

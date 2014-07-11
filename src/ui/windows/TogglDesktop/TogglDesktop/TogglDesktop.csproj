@@ -309,7 +309,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>XCOPY $(SolutionDir)\$(ConfigurationName)\TogglDesktopDLL.dll $(TargetDir) /Y
-XCOPY $(SolutionDir)..\..\..\..\third_party\poco-1.4.6p2-all\bin\*.dll $(TargetDir) /Y
+XCOPY $(SolutionDir)..\..\..\..\third_party\poco\bin\*.dll $(TargetDir) /Y
 XCOPY $(SolutionDir)..\..\..\..\third_party\openssl\out32dll\*eay32.dll $(TargetDir) /Y
 </PostBuildEvent>
   </PropertyGroup>
