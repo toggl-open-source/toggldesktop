@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
     </dependencies>
     <objects>
@@ -19,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Eux-yk-8iS">
-                                <rect key="frame" x="15" y="2" width="88" height="18"/>
+                                <rect key="frame" x="13" y="2" width="88" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="ABy-En-546"/>
@@ -32,7 +33,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="A9Z-Z5-Qzd">
-                                <rect key="frame" x="233" y="2" width="84" height="18"/>
+                                <rect key="frame" x="234" y="2" width="84" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="c0p-f3-udt"/>
@@ -41,17 +42,17 @@
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="2 h  12 min" id="6GT-P9-Wsv">
                                     <font key="font" size="11" name="LucidaGrande"/>
                                     <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
                         </subviews>
                     </view>
                     <constraints>
-                        <constraint firstItem="Eux-yk-8iS" firstAttribute="leading" secondItem="PuG-98-30a" secondAttribute="leading" constant="17" id="DgO-Ce-DLf"/>
+                        <constraint firstItem="Eux-yk-8iS" firstAttribute="leading" secondItem="PuG-98-30a" secondAttribute="leading" constant="15" id="DgO-Ce-DLf"/>
                         <constraint firstItem="Eux-yk-8iS" firstAttribute="top" secondItem="PuG-98-30a" secondAttribute="top" constant="16" id="P5J-oo-szz"/>
                         <constraint firstItem="A9Z-Z5-Qzd" firstAttribute="top" secondItem="PuG-98-30a" secondAttribute="top" constant="16" id="WSk-Ks-EzP"/>
                         <constraint firstAttribute="height" constant="46" id="eG2-i6-1iR"/>
-                        <constraint firstAttribute="trailing" secondItem="A9Z-Z5-Qzd" secondAttribute="trailing" constant="15" id="fw4-FX-KbM"/>
+                        <constraint firstAttribute="trailing" secondItem="A9Z-Z5-Qzd" secondAttribute="trailing" constant="14" id="fw4-FX-KbM"/>
                     </constraints>
                     <size key="contentViewMargins" width="0.0" height="10"/>
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
@@ -65,12 +66,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="4mY-N2-UMI" customClass="NSTextFieldWithBackground">
-                                <rect key="frame" x="12" y="0.0" width="178" height="17"/>
+                                <rect key="frame" x="12" y="0.0" width="180" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="17" id="iQU-pZ-Vow"/>
                                 </constraints>
-                                <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="PROJECT NAME - CLIENT" drawsBackground="YES" id="YKk-bz-65B">
+                                <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="PROJECT NAME - CLIENT" id="YKk-bz-65B">
                                     <font key="font" metaFont="systemBold"/>
                                     <color key="textColor" name="controlDarkShadowColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
@@ -82,7 +83,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="17" id="bVb-c6-mrF"/>
                                 </constraints>
-                                <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="This is a time entry" id="bKB-0i-C0M">
+                                <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="This is a time entry" id="bKB-0i-C0M">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -91,7 +92,7 @@
                         </subviews>
                     </view>
                     <constraints>
-                        <constraint firstItem="4mY-N2-UMI" firstAttribute="leading" secondItem="HvF-1T-7Z3" secondAttribute="leading" constant="12" id="7ce-Fx-HQZ"/>
+                        <constraint firstItem="4mY-N2-UMI" firstAttribute="leading" secondItem="HvF-1T-7Z3" secondAttribute="leading" constant="14" id="7ce-Fx-HQZ"/>
                         <constraint firstAttribute="height" constant="56" id="9D9-zv-Fzd"/>
                         <constraint firstAttribute="bottom" secondItem="4mY-N2-UMI" secondAttribute="bottom" constant="10" id="9gS-5E-dWg"/>
                         <constraint firstAttribute="trailing" secondItem="4mY-N2-UMI" secondAttribute="trailing" priority="900" constant="140" id="G9A-kY-BaJ"/>
@@ -183,20 +184,20 @@
                     <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
                 <box autoresizesSubviews="NO" transparent="YES" borderWidth="0.0" title="DurationBox" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="DdV-RE-Kny">
-                    <rect key="frame" x="259" y="19" width="56" height="16"/>
+                    <rect key="frame" x="258" y="19" width="58" height="16"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView">
-                        <rect key="frame" x="0.0" y="0.0" width="56" height="16"/>
+                        <rect key="frame" x="0.0" y="0.0" width="58" height="16"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="chv-we-eud">
-                                <rect key="frame" x="0.0" y="0.0" width="58" height="16"/>
+                                <rect key="frame" x="0.0" y="0.0" width="60" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="cJd-Ab-C5y"/>
-                                    <constraint firstAttribute="width" constant="54" id="p4K-2C-iZl"/>
+                                    <constraint firstAttribute="width" constant="56" id="p4K-2C-iZl"/>
                                 </constraints>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="03:21:30" id="P10-iS-flR">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="03:21:30" id="P10-iS-flR">
                                     <font key="font" metaFont="cellTitle"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -208,7 +209,7 @@
                         <constraint firstItem="chv-we-eud" firstAttribute="centerY" secondItem="DdV-RE-Kny" secondAttribute="centerY" id="exj-Tx-LIL"/>
                         <constraint firstAttribute="height" constant="16" id="f7F-x8-Fmy"/>
                         <constraint firstItem="chv-we-eud" firstAttribute="leading" secondItem="DdV-RE-Kny" secondAttribute="leading" constant="2" id="jfj-Wn-dJ0"/>
-                        <constraint firstAttribute="width" constant="56" id="kOR-ex-wFu"/>
+                        <constraint firstAttribute="width" constant="58" id="kOR-ex-wFu"/>
                     </constraints>
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                     <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -221,7 +222,7 @@
                 <constraint firstAttribute="bottom" secondItem="vMk-19-ANF" secondAttribute="bottom" constant="23" id="8Xs-bM-gBR"/>
                 <constraint firstItem="HvF-1T-7Z3" firstAttribute="top" secondItem="WaA-ag-4kh" secondAttribute="top" constant="45" id="8zg-d8-7UK"/>
                 <constraint firstAttribute="bottom" secondItem="zIj-LV-eXy" secondAttribute="bottom" constant="22" id="HTd-JR-OEj"/>
-                <constraint firstAttribute="trailing" secondItem="DdV-RE-Kny" secondAttribute="trailing" constant="15" id="J3u-Qq-L42"/>
+                <constraint firstAttribute="trailing" secondItem="DdV-RE-Kny" secondAttribute="trailing" constant="14" id="J3u-Qq-L42"/>
                 <constraint firstAttribute="trailing" secondItem="HvF-1T-7Z3" secondAttribute="trailing" id="XBL-sD-Uwu"/>
                 <constraint firstItem="63N-7j-264" firstAttribute="top" secondItem="PuG-98-30a" secondAttribute="bottom" constant="15" id="YgR-g8-rKb"/>
                 <constraint firstAttribute="trailing" secondItem="vMk-19-ANF" secondAttribute="trailing" constant="120" id="Zhq-z7-x7C"/>
