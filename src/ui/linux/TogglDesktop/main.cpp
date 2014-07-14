@@ -12,13 +12,28 @@
 
 #include "./mainwindowcontroller.h"
 
+class TogglApplication : public QtSingleApplication {
+ public:
+    TogglApplication(int &argc, char **argv)  // NOLINT
+        : QtSingleApplication(argc, argv) {}
+
+    virtual bool notify(QObject *receiver, QEvent *event) {
+        try {
+            return QtSingleApplication::notify(receiver, event);
+        } catch(std::exception e) {
+            qCritical() << "Exception thrown: " << e.what();
+        }
+        return false;
+    }
+};
+
 int main(int argc, char *argv[]) {
     qRegisterMetaType<uint64_t>("uint64_t");
     qRegisterMetaType<_Bool>("_Bool");
     qRegisterMetaType<QVector<TimeEntryView*> >("QVector<TimeEntryView*>");
     qRegisterMetaType<QVector<AutocompleteView*> >("QVector<AutocompleteView*");
 
-    QtSingleApplication a(argc, argv);
+    TogglApplication a(argc, argv);
 
     if (a.sendMessage(("Wake up!"))) {
         qDebug() << "An instance of TogglDesktop is already running. "

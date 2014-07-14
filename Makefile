@@ -12,6 +12,8 @@ GTEST_ROOT=third_party/googletest-read-only
 GMOCK_DIR=third_party/gmock-1.7.0
 
 source_dirs=src/*.cc src/*.h src/test/* src/libkopsik/include/*.h \
+	third_party/bugsnag-qt/bugsnag*.h \
+	third_party/bugsnag-qt/bugsnag*.cpp \
 	src/ui/linux/TogglDesktop/toggl.h src/ui/linux/TogglDesktop/toggl.cpp \
 	src/ui/linux/TogglDesktop/aboutdialog.h src/ui/linux/TogglDesktop/aboutdialog.cpp \
 	src/ui/linux/TogglDesktop/autocompleteview.h src/ui/linux/TogglDesktop/autocompleteview.cpp \
@@ -147,7 +149,8 @@ endif
 
 ifeq ($(uname), Linux)
 clean_ui:
-	rm -rf src/ui/linux/build-TogglDesktop-Desktop-Debug && \
+	(cd third_party/bugsnag-qt && $(QMAKE) && make clean) && \
+	rm -rf third_party/bugsnag-qt/build && \
 	(cd src/ui/linux/TogglDesktop && $(QMAKE) && make clean) && \
 	rm -rf src/ui/linux/TogglDesktop/build
 endif
@@ -185,6 +188,8 @@ linux_lib:
 	cp $(jsondir)/libjson.so.7.6.1 src/libkopsik/Library/TogglDesktopLibrary/build/release/libjson.so.7
 
 linux_ui:
+	cd third_party/bugsnag-qt && $(QMAKE) && make && \
+	cd ../../ && \
 	cd src/ui/linux/TogglDesktop && $(QMAKE) && make && \
 	cd ../../../../ && \
 	cp src/ssl/cacert.pem src/ui/linux/TogglDesktop/build/release

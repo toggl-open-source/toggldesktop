@@ -21,6 +21,9 @@ toggl
 test/*
 *.bak
 
+third_party/bugsnag-qt/.git
+third_party/bugsnag-qt/build
+
 third_party/openssl/Makefile*
 third_party/openssl/test/*test
 third_party/openssl/*/lib

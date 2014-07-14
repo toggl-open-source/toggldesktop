@@ -151,8 +151,8 @@ void on_display_idle_notification(
 
 TogglApi::TogglApi(QObject *parent)
     : QObject(parent)
-, ctx(0)
-, shutdown(false) {
+, shutdown(false)
+, ctx(0) {
     QString version = QApplication::applicationVersion();
     ctx = kopsik_context_init("linux_native_app",
                               version.toStdString().c_str());
