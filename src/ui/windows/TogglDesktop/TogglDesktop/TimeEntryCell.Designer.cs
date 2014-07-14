@@ -33,15 +33,19 @@
             this.labelDateDuration = new System.Windows.Forms.Label();
             this.headerPanel = new System.Windows.Forms.Panel();
             this.panel = new System.Windows.Forms.Panel();
+            this.taskProjectPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.labelTask = new System.Windows.Forms.Label();
+            this.labelProject = new System.Windows.Forms.Label();
+            this.labelClient = new System.Windows.Forms.Label();
             this.labelDescription = new System.Windows.Forms.Label();
             this.labelContinue = new System.Windows.Forms.Label();
             this.labelBillable = new System.Windows.Forms.Label();
             this.labelTag = new System.Windows.Forms.Label();
             this.labelDuration = new System.Windows.Forms.Label();
-            this.labelProject = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.headerPanel.SuspendLayout();
             this.panel.SuspendLayout();
+            this.taskProjectPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelFormattedDate
@@ -86,16 +90,66 @@
             this.panel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.panel.Controls.Add(this.taskProjectPanel);
             this.panel.Controls.Add(this.labelDescription);
             this.panel.Controls.Add(this.labelContinue);
             this.panel.Controls.Add(this.labelBillable);
             this.panel.Controls.Add(this.labelTag);
             this.panel.Controls.Add(this.labelDuration);
-            this.panel.Controls.Add(this.labelProject);
             this.panel.Location = new System.Drawing.Point(0, 45);
             this.panel.Name = "panel";
             this.panel.Size = new System.Drawing.Size(314, 55);
             this.panel.TabIndex = 15;
+            // 
+            // taskProjectPanel
+            // 
+            this.taskProjectPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.taskProjectPanel.Controls.Add(this.labelTask);
+            this.taskProjectPanel.Controls.Add(this.labelProject);
+            this.taskProjectPanel.Controls.Add(this.labelClient);
+            this.taskProjectPanel.Location = new System.Drawing.Point(12, 29);
+            this.taskProjectPanel.Name = "taskProjectPanel";
+            this.taskProjectPanel.Size = new System.Drawing.Size(154, 17);
+            this.taskProjectPanel.TabIndex = 15;
+            this.taskProjectPanel.WrapContents = false;
+            // 
+            // labelTask
+            // 
+            this.labelTask.AutoSize = true;
+            this.labelTask.Font = new System.Drawing.Font("Lucida Sans Unicode", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.labelTask.Location = new System.Drawing.Point(0, 0);
+            this.labelTask.Margin = new System.Windows.Forms.Padding(0);
+            this.labelTask.Name = "labelTask";
+            this.labelTask.Size = new System.Drawing.Size(74, 16);
+            this.labelTask.TabIndex = 10;
+            this.labelTask.Text = "TaskName";
+            // 
+            // labelProject
+            // 
+            this.labelProject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelProject.AutoSize = true;
+            this.labelProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.labelProject.Location = new System.Drawing.Point(74, 0);
+            this.labelProject.Margin = new System.Windows.Forms.Padding(0);
+            this.labelProject.Name = "labelProject";
+            this.labelProject.Size = new System.Drawing.Size(106, 16);
+            this.labelProject.TabIndex = 9;
+            this.labelProject.Text = "NEW - TOGGL";
+            this.labelProject.Click += new System.EventHandler(this.labelProject_Click);
+            // 
+            // labelClient
+            // 
+            this.labelClient.AutoSize = true;
+            this.labelClient.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.labelClient.ForeColor = System.Drawing.Color.Gray;
+            this.labelClient.Location = new System.Drawing.Point(180, 0);
+            this.labelClient.Margin = new System.Windows.Forms.Padding(0);
+            this.labelClient.Name = "labelClient";
+            this.labelClient.Size = new System.Drawing.Size(81, 16);
+            this.labelClient.TabIndex = 11;
+            this.labelClient.Text = "ClientName";
             // 
             // labelDescription
             // 
@@ -150,18 +204,6 @@
             this.labelDuration.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.labelDuration.Click += new System.EventHandler(this.labelDuration_Click);
             // 
-            // labelProject
-            // 
-            this.labelProject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.labelProject.Location = new System.Drawing.Point(15, 29);
-            this.labelProject.Name = "labelProject";
-            this.labelProject.Size = new System.Drawing.Size(154, 17);
-            this.labelProject.TabIndex = 9;
-            this.labelProject.Text = "NEW - TOGGL";
-            this.labelProject.Click += new System.EventHandler(this.labelProject_Click);
-            // 
             // TimeEntryCell
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -177,6 +219,8 @@
             this.headerPanel.PerformLayout();
             this.panel.ResumeLayout(false);
             this.panel.PerformLayout();
+            this.taskProjectPanel.ResumeLayout(false);
+            this.taskProjectPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -194,5 +238,8 @@
         private System.Windows.Forms.Label labelContinue;
         private System.Windows.Forms.Panel panel;
         private System.Windows.Forms.ToolTip toolTip;
+        private System.Windows.Forms.FlowLayoutPanel taskProjectPanel;
+        private System.Windows.Forms.Label labelTask;
+        private System.Windows.Forms.Label labelClient;
     }
 }

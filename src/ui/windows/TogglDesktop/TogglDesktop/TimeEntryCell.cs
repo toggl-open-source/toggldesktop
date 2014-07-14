@@ -25,7 +25,9 @@ namespace TogglDesktop
 
             labelDescription.Text = item.Description;
             labelProject.ForeColor = ColorTranslator.FromHtml(item.Color);
-            labelProject.Text = item.ProjectAndTaskLabel;
+            labelProject.Text = item.ProjectLabel;
+            labelClient.Text = item.ClientLabel;
+            labelTask.Text = item.TaskLabel;
             labelDuration.Text = item.Duration;
             labelBillable.Visible = item.Billable;
             labelTag.Visible = (item.Tags != null && item.Tags.Length > 0);
@@ -47,7 +49,9 @@ namespace TogglDesktop
             }
             headerPanel.Visible = item.IsHeader;
             toolTip.SetToolTip(labelDescription, item.Description);
+            toolTip.SetToolTip(labelTask, item.ProjectAndTaskLabel);
             toolTip.SetToolTip(labelProject, item.ProjectAndTaskLabel);
+            toolTip.SetToolTip(labelClient, item.ProjectAndTaskLabel);
             if (labelTag.Visible)
             {
                 toolTip.SetToolTip(labelTag, item.Tags.Replace("|", ", "));
