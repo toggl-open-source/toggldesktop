@@ -32,6 +32,8 @@
 @property NSDateFormatter *format;
 @property BOOL willTerminate;
 @property BOOL resizeOnOpen;
+@property BOOL startTimeChanged;
+@property BOOL endTimeChanged;
 @end
 
 @implementation TimeEntryEditViewController
@@ -45,6 +47,8 @@ extern int kDurationStringLength;
 	if (self)
 	{
 		self.willTerminate = NO;
+		self.startTimeChanged = NO;
+		self.endTimeChanged = NO;
 
 		self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayProjectAutocomplete];
 		self.descriptionComboboxDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayTimeEntryAutocomplete];
@@ -367,13 +371,15 @@ extern int kDurationStringLength;
 	NSString *dateTimeString = [dateString stringByAppendingString:timeString];
 	[self.dateTimeTextField setStringValue:dateTimeString];
 
-	if ([self.startTime currentEditor] == nil)
+	if ([self.startTime currentEditor] == nil || self.startTimeChanged == YES)
 	{
 		[self.startTime setStringValue:self.timeEntry.startTimeString];
+		self.startTimeChanged = NO;
 	}
-	if ([self.endTime currentEditor] == nil)
+	if ([self.endTime currentEditor] == nil || self.endTimeChanged == YES)
 	{
 		[self.endTime setStringValue:self.timeEntry.endTimeString];
+		self.endTimeChanged = NO;
 	}
 
 	[self.startDate setDateValue:self.timeEntry.started];
@@ -717,7 +723,7 @@ extern int kDurationStringLength;
 		NSLog(@"Cannot apply start time change, self.timeEntry is nil");
 		return;
 	}
-
+	self.startTimeChanged = YES;
 	[self applyStartTime];
 }
 
@@ -752,7 +758,7 @@ extern int kDurationStringLength;
 	{
 		return;
 	}
-
+	self.endTimeChanged = YES;
 	[self applyEndTime];
 }
 
