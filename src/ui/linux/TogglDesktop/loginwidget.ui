@@ -21,10 +21,26 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGraphicsView" name="logo"/>
+    <widget class="QLabel" name="logo">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="Rosurces.qrc">:/images/logo.png</pixmap>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QLineEdit" name="email">
+     <property name="baseSize">
+      <size>
+       <width>0</width>
+       <height>20</height>
+      </size>
+     </property>
      <property name="placeholderText">
       <string>Your e-mail address</string>
      </property>
@@ -58,6 +74,9 @@
      <property name="textFormat">
       <enum>Qt::RichText</enum>
      </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
      <property name="textInteractionFlags">
       <set>Qt::TextBrowserInteraction</set>
      </property>
@@ -65,6 +84,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="Rosurces.qrc"/>
+ </resources>
  <connections/>
 </ui>

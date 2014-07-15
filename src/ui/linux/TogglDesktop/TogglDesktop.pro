@@ -109,3 +109,6 @@ OTHER_FILES += \
 #QMAKE_CXXFLAGS += -fsanitize=thread -fPIE
 #QMAKE_LFLAGS += -pie -fsanitize=thread
 
+RESOURCES += \
+    Rosurces.qrc
+
