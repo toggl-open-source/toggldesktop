@@ -264,6 +264,13 @@ void GUI::DisplayIdleNotification(const std::string guid,
 
 _Bool GUI::isNetworkingError(const error err) const {
     std::string value(err);
+    if (value.find("Cannot assign requested address") != std::string::npos) {
+        return true;
+    }
+    if (value.find("Unacceptable certificate from www.toggl.com")
+            != std::string::npos) {
+        return true;
+    }
     if (value.find("Host not found") != std::string::npos) {
         return true;
     }
