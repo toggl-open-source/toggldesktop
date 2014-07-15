@@ -1,7 +1,7 @@
 // Copyright 2014 Tanel Lebedev.
 
-#ifndef THIRD_PARTY_BUGSNAG_QT_BUGSNAG_QT_GLOBAL_H_
-#define THIRD_PARTY_BUGSNAG_QT_BUGSNAG_QT_GLOBAL_H_
+#ifndef BUGSNAG_QT_GLOBAL_H_
+#define BUGSNAG_QT_GLOBAL_H_
 
 #include <QtCore/qglobal.h>
 
@@ -11,4 +11,4 @@
 #  define BUGSNAGQTSHARED_EXPORT Q_DECL_IMPORT
 #endif
 
-#endif  // THIRD_PARTY_BUGSNAG_QT_BUGSNAG_QT_GLOBAL_H_
+#endif  // BUGSNAG_QT_GLOBAL_H_
