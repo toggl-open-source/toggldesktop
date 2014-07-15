@@ -12,8 +12,6 @@ GTEST_ROOT=third_party/googletest-read-only
 GMOCK_DIR=third_party/gmock-1.7.0
 
 source_dirs=src/*.cc src/*.h src/test/* src/libkopsik/include/*.h \
-	third_party/bugsnag-qt/bugsnag*.h \
-	third_party/bugsnag-qt/bugsnag*.cpp \
 	src/ui/linux/TogglDesktop/toggl.h src/ui/linux/TogglDesktop/toggl.cpp \
 	src/ui/linux/TogglDesktop/aboutdialog.h src/ui/linux/TogglDesktop/aboutdialog.cpp \
 	src/ui/linux/TogglDesktop/autocompleteview.h src/ui/linux/TogglDesktop/autocompleteview.cpp \
