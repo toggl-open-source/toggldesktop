@@ -19,35 +19,86 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(45, 45, 45);</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>12</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QLabel" name="logo">
      <property name="text">
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="Rosurces.qrc">:/images/logo.png</pixmap>
+      <pixmap resource="Resurces.qrc">:/images/logo.png</pixmap>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </item>
-   <item>
+   <item alignment="Qt::AlignHCenter">
     <widget class="QLineEdit" name="email">
+     <property name="minimumSize">
+      <size>
+       <width>220</width>
+       <height>35</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>320</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="baseSize">
       <size>
        <width>0</width>
        <height>20</height>
       </size>
      </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
      <property name="placeholderText">
       <string>Your e-mail address</string>
      </property>
     </widget>
    </item>
-   <item>
+   <item alignment="Qt::AlignHCenter">
     <widget class="QLineEdit" name="password">
+     <property name="minimumSize">
+      <size>
+       <width>220</width>
+       <height>35</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>320</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
      <property name="text">
       <string/>
      </property>
@@ -59,8 +110,26 @@
      </property>
     </widget>
    </item>
-   <item>
+   <item alignment="Qt::AlignHCenter">
     <widget class="QPushButton" name="login">
+     <property name="minimumSize">
+      <size>
+       <width>125</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="baseSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
      <property name="text">
       <string>Log in</string>
      </property>
@@ -68,8 +137,14 @@
    </item>
    <item>
     <widget class="QLabel" name="googleLogin">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <property name="text">
-      <string>&lt;a href=&quot;#google_login&quot;&gt;Log in with Google Account&lt;/a&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;#google_login&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#636363;&quot;&gt;Log in with Google Account&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>
@@ -85,7 +160,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="Rosurces.qrc"/>
+  <include location="Resurces.qrc"/>
  </resources>
  <connections/>
 </ui>
