@@ -1,7 +1,7 @@
 // Copyright 2014 Tanel Lebedev.
 
-#ifndef BUGSNAG_H_
-#define BUGSNAG_H_
+#ifndef THIRD_PARTY_BUGSNAG_QT_BUGSNAG_H_
+#define THIRD_PARTY_BUGSNAG_QT_BUGSNAG_H_
 
 #include "./bugsnag-qt_global.h"
 
@@ -286,4 +286,4 @@ class BUGSNAGQTSHARED_EXPORT Bugsnag : public QObject {
     }
 };
 
-#endif  // BUGSNAG_H_
+#endif  // THIRD_PARTY_BUGSNAG_QT_BUGSNAG_H_
