@@ -67,19 +67,27 @@
             // password
             // 
             this.password.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.password.ForeColor = System.Drawing.Color.Gray;
             this.password.Location = new System.Drawing.Point(15, 171);
             this.password.Name = "password";
             this.password.Size = new System.Drawing.Size(249, 20);
             this.password.TabIndex = 1;
+            this.password.Text = "Password";
             this.password.UseSystemPasswordChar = true;
+            this.password.Enter += new System.EventHandler(this.password_Enter);
+            this.password.Leave += new System.EventHandler(this.password_Leave);
             // 
             // email
             // 
             this.email.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.email.ForeColor = System.Drawing.Color.Gray;
             this.email.Location = new System.Drawing.Point(15, 134);
             this.email.Name = "email";
             this.email.Size = new System.Drawing.Size(249, 20);
             this.email.TabIndex = 0;
+            this.email.Text = "Your email address";
+            this.email.Enter += new System.EventHandler(this.email_Enter);
+            this.email.Leave += new System.EventHandler(this.email_Leave);
             // 
             // passwordForgotTextField
             // 

@@ -86,5 +86,41 @@ namespace TogglDesktop
         {
             this.Dock = DockStyle.Fill;
         }
+
+        private void email_Enter(object sender, EventArgs e)
+        {
+            if (email.Text == "Your email address")
+            {
+                email.Text = "";
+                email.ForeColor = System.Drawing.SystemColors.WindowText;
+            }
+        }
+
+        private void email_Leave(object sender, EventArgs e)
+        {
+            if (email.Text == "")
+            {
+                email.Text = "Your email address";
+                email.ForeColor = System.Drawing.Color.Gray;
+            }
+        }
+
+        private void password_Enter(object sender, EventArgs e)
+        {
+            if (password.Text == "Password")
+            {
+                password.Text = "";
+                password.ForeColor = System.Drawing.SystemColors.WindowText;
+            }
+        }
+
+        private void password_Leave(object sender, EventArgs e)
+        {
+            if (password.Text == "")
+            {
+                password.Text = "Password";
+                password.ForeColor = System.Drawing.Color.Gray;
+            }
+        }
     }
 }
