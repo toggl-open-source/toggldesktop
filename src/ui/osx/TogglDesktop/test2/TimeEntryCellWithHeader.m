@@ -55,10 +55,12 @@
 	if ([view_item.tags count])
 	{
 		[self.tagFlag setHidden:NO];
+		self.tagFlag.toolTip = [view_item.tags componentsJoinedByString:@", "];
 	}
 	else
 	{
 		[self.tagFlag setHidden:YES];
+		self.tagFlag.toolTip = nil;
 	}
 
 	// Time entry has a project
