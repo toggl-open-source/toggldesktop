@@ -896,11 +896,19 @@ extern int kDurationStringLength;
 {
 	if (self.clientSelect == aComboBox)
 	{
+		if (row >= self.workspaceClientList.count)
+		{
+			return nil;
+		}
 		ViewItem *client = [self.workspaceClientList objectAtIndex:row];
 		return client.Name;
 	}
 	if (self.workspaceSelect == aComboBox)
 	{
+		if (row >= self.workspaceList.count)
+		{
+			return nil;
+		}
 		ViewItem *workspace = [self.workspaceList objectAtIndex:row];
 		return workspace.Name;
 	}
