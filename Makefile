@@ -2,6 +2,7 @@ $(shell mkdir -p build/test build/test)
 
 pwd=$(shell pwd)
 uname=$(shell uname)
+architecture=$(shell uname -m)
 timestamp=$(shell date "+%Y-%m-%d-%H-%M-%S")
 
 pocodir=third_party/poco
@@ -41,7 +42,7 @@ osname=mac
 endif
 ifeq ($(uname), Linux)
 executable=./src/ui/linux/TogglDesktop/build/release/TogglDesktop
-pocolib=$(pocodir)/lib/Linux/x86_64
+pocolib=$(pocodir)/lib/Linux/$(architecture)
 osname=linux
 endif
 
@@ -175,14 +176,14 @@ linux: fmt_lib lint linux_lib linux_ui
 linux_lib:
 	cd src/libkopsik/Library/TogglDesktopLibrary && $(QMAKE) && make && \
 	cd ../../../../ && \
-	cp $(pocodir)/lib/Linux/x86_64/libPocoCrypto.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/x86_64/libPocoData.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/x86_64/libPocoDataSQLite.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/x86_64/libPocoFoundation.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/x86_64/libPocoNet.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/x86_64/libPocoNetSSL.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/x86_64/libPocoUtil.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/x86_64/libPocoXML.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoCrypto.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoData.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoDataSQLite.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoFoundation.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNet.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNetSSL.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoUtil.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoXML.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
 	cp $(jsondir)/libjson.so.7.6.1 src/libkopsik/Library/TogglDesktopLibrary/build/release/libjson.so.7
 
 linux_ui:
@@ -402,7 +403,7 @@ toggl_test: objects test_objects
 test_lib: fmt_lib lint mkdir_build toggl_test
 ifeq ($(uname), Linux)
 	cp -r $(jsondir)/libjson.so* test/.
-	cp -r $(pocodir)/lib/Linux/x86_64/*.so* test/.
+	cp -r $(pocodir)/lib/Linux/$(architecture)/*.so* test/.
 	cd test && LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH ./toggl_test
 else
 	cd test && ./toggl_test
