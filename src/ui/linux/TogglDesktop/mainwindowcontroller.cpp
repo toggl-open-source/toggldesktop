@@ -49,6 +49,7 @@ MainWindowController::MainWindowController(QWidget *parent)
     verticalLayout->addWidget(new LoginWidget());
     verticalLayout->addWidget(new TimeEntryListWidget());
     verticalLayout->addWidget(new TimeEntryEditorWidget());
+    verticalLayout->setContentsMargins(0, 0, 0, 0);
     centralWidget()->setLayout(verticalLayout);
 
     readSettings();
