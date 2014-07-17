@@ -59,7 +59,6 @@
    </widget>
    <addaction name="menuToggl_Desktop"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNew">
    <property name="text">
     <string>New</string>
