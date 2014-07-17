@@ -36,7 +36,7 @@
 		NSString *msg = [NSString
 						 stringWithFormat:@"Another copy of %@ is already running.",
 						 [[NSBundle mainBundle]
-						  objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey]];
+												  objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey]];
 		[[NSAlert alertWithMessageText:msg
 						 defaultButton:nil
 					   alternateButton:nil
