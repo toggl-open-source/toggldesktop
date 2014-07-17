@@ -74,7 +74,7 @@ void BatchUpdateResult::ProcessResponseArray(
     poco_check_ptr(models);
     poco_check_ptr(errors);
 
-    Poco::Logger &logger = Poco::Logger::get("json");
+    Poco::Logger &logger = Poco::Logger::get("BatchUpdateResult");
     for (std::vector<BatchUpdateResult>::const_iterator it = results->begin();
             it != results->end();
             it++) {
@@ -84,8 +84,13 @@ void BatchUpdateResult::ProcessResponseArray(
 
         poco_assert(!result.GUID.empty());
         BaseModel *model = (*models)[result.GUID];
-        poco_assert(model);
-
+        if (!model) {
+            std::stringstream ss;
+            ss << "Server response includes a model we don't have! GUID="
+               << result.GUID;
+            logger.warning(ss.str());
+            continue;
+        }
         error err = model->ApplyBatchUpdateResult(&result);
         if (err != noError) {
             errors->push_back(err);
@@ -99,7 +104,7 @@ void BatchUpdateResult::ParseResponseArray(
 
     poco_check_ptr(responses);
 
-    Poco::Logger &logger = Poco::Logger::get("json");
+    Poco::Logger &logger = Poco::Logger::get("BatchUpdateResult");
 
     // There seem to be cases where response body is 0.
     // Must investigate further.
