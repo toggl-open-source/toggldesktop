@@ -17,8 +17,36 @@
    <string notr="true">background-color: rgb(229,229,229);</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
-    <widget class="TimerWidget" name="timer" native="true"/>
+    <widget class="TimerWidget" name="timer" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>56</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>56</height>
+      </size>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QListWidget" name="list"/>

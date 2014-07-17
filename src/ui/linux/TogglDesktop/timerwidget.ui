@@ -6,52 +6,203 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>289</width>
-    <height>96</height>
+    <width>442</width>
+    <height>86</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>86</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>86</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
-    <widget class="QFrame" name="frame">
-     <layout class="QVBoxLayout" name="verticalLayout">
+    <widget class="QFrame" name="MainFrame">
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(45, 45, 45, 255);</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <property name="lineWidth">
+      <number>0</number>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
-       <widget class="QComboBox" name="description">
-        <property name="editable">
-         <bool>true</bool>
+       <widget class="QFrame" name="DecrProjFrame">
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <property name="topMargin">
+          <number>10</number>
+         </property>
+         <property name="bottomMargin">
+          <number>10</number>
+         </property>
+         <item>
+          <widget class="QComboBox" name="description">
+           <property name="minimumSize">
+            <size>
+             <width>260</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgba(45, 45, 45, 255);
+color: rgb(200, 200, 200);</string>
+           </property>
+           <property name="editable">
+            <bool>true</bool>
+           </property>
+           <property name="currentText">
+            <string/>
+           </property>
+           <property name="frame">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignTop">
+          <widget class="QLabel" name="project">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: rgb(190, 190, 190);</string>
+           </property>
+           <property name="text">
+            <string>NEW TOGGL</string>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="duration">
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>0</height>
+         </size>
         </property>
-        <property name="currentText">
-         <string>What are you doing?</string>
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>16</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(200, 200, 200);</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="placeholderText">
+         <string>00:00:00</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="project">
+       <widget class="QPushButton" name="start">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>57</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>57</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(69, 185, 0);
+color: rgb(255, 255, 255);</string>
+        </property>
         <property name="text">
-         <string>NEW TOGGL</string>
+         <string>Start</string>
+        </property>
+        <property name="default">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
      </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLineEdit" name="duration">
-     <property name="placeholderText">
-      <string>00:00:00</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="start">
-     <property name="text">
-      <string>Start</string>
-     </property>
-     <property name="default">
-      <bool>true</bool>
-     </property>
     </widget>
    </item>
   </layout>
