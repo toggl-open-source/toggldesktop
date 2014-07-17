@@ -7,7 +7,6 @@
 
 #include <QJsonObject>
 #include <QObject>
-#include <QEvent>
 #include <QList>
 #include <QJsonArray>
 #include <QHash>
@@ -16,6 +15,8 @@
 #include <QNetworkRequest>
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
+#include <QDebug>
+#include <QNetworkReply>
 
 class Notifier {
  public:
@@ -69,13 +70,15 @@ class Exception {
         json["errorClass"] = errorClass;
         json["message"] = message;
 
-        QJsonArray stacktraceJSON;
-        foreach(StackTrace trace, stacktrace) {
-            QJsonObject lineJSON;
-            trace.write(lineJSON);
-            stacktraceJSON.append(lineJSON);
+        if (stacktrace.count()) {
+            QJsonArray stacktraceJSON;
+            foreach(StackTrace trace, stacktrace) {
+                QJsonObject lineJSON;
+                trace.write(lineJSON);
+                stacktraceJSON.append(lineJSON);
+            }
+            json["stacktrace"] = stacktraceJSON;
         }
-        json["stacktrace"] = stacktraceJSON;
     }
 
     QString errorClass;
@@ -141,29 +144,43 @@ class Event {
     void write(QJsonObject &json) const {  // NOLINT
         json["payloadVersion"] = QString("2");
 
-        QJsonArray exceptionsJSON;
-        foreach(Exception e, exceptions) {
-            QJsonObject exceptionJSON;
-            e.write(exceptionJSON);
-            exceptionsJSON.append(exceptionJSON);
+        if (exceptions.count()) {
+            QJsonArray exceptionsJSON;
+            foreach(Exception e, exceptions) {
+                QJsonObject exceptionJSON;
+                e.write(exceptionJSON);
+                exceptionsJSON.append(exceptionJSON);
+            }
+            json["exceptions"] = exceptionsJSON;
         }
-        json["exceptions"] = exceptionsJSON;
 
-        json["context"] = context;
-        json["groupingHash"] = groupingHash;
-        json["severity"] = severity;
+        if (!context.isEmpty()) {
+            json["context"] = context;
+        }
+        if (!groupingHash.isEmpty()) {
+            json["groupingHash"] = groupingHash;
+        }
+        if (!severity.isEmpty()) {
+            json["severity"] = severity;
+        }
 
-        QJsonObject userJSON;
-        user.write(userJSON);
-        json["user"] = userJSON;
+        if (!user.email.isEmpty() || !user.id.isEmpty() || !user.email.isEmpty()) {
+            QJsonObject userJSON;
+            user.write(userJSON);
+            json["user"] = userJSON;
+        }
 
-        QJsonObject appJSON;
-        app.write(appJSON);
-        json["app"] = appJSON;
+        if (!app.releaseStage.isEmpty() || !app.version.isEmpty()) {
+            QJsonObject appJSON;
+            app.write(appJSON);
+            json["app"] = appJSON;
+        }
 
-        QJsonObject deviceJSON;
-        app.write(deviceJSON);
-        json["device"] = deviceJSON;
+        if (!device.hostname.isEmpty() || !device.osVersion.isEmpty()) {
+            QJsonObject deviceJSON;
+            device.write(deviceJSON);
+            json["device"] = deviceJSON;
+        }
 
         QJsonObject metaDataJSON;
         QHash<QString, QHash<QString, QString> >::const_iterator i =
@@ -200,6 +217,14 @@ class Payload {
         QJsonObject notifierJSON;
         notifier.write(notifierJSON);
         json["notifier"] = notifierJSON;
+
+        QJsonArray eventsJSON;
+        foreach(Event event, events) {
+            QJsonObject eventJSON;
+            event.write(eventJSON);
+            eventsJSON.append(eventJSON);
+        }
+        json["events"] = eventsJSON;
     }
 
     QString apiKey;
@@ -211,40 +236,36 @@ class BUGSNAGQTSHARED_EXPORT Bugsnag : public QObject {
     Q_OBJECT
 
  public:
-    Bugsnag();
+    Bugsnag() {}
 
-    bool notify(
-        QObject *receiver,
-        QEvent *evt,
-        std::exception &e,
-        User *user = 0,
-        QString context = QString(""),
-        App *app = 0,
-        Device *device = 0,
+    static bool notify(
+        const QString errorClass,
+        const QString message,
+        const QString context,
         QHash<QString, QHash<QString, QString> > *metadata = 0) {
+
+        qDebug() << "Bugsnag notify message:" << message
+                    << " context:" << context;
+
         Payload payload;
         payload.apiKey = Bugsnag::apiKey;
         payload.notifier = Notifier();
+
         Exception exception;
-        exception.message = e.what();
-        exception.errorClass = "std::exception";
+        exception.message = message;
+        exception.errorClass = errorClass;
         // FIXME: exception.stacktrace
+
         Event event;
         event.context = context;
-        event.groupingHash = receiver->objectName();
         event.exceptions << exception;
-        if (user) {
-            event.user = *user;
-        }
-        if (app) {
-            event.app = *app;
-        }
-        if (device) {
-            event.device = *device;
-        }
+        event.user = Bugsnag::user;
+        event.app = Bugsnag::app;
+        event.device = Bugsnag::device;
         if (metadata) {
             event.metaData = *metadata;
         }
+
         payload.events << event;
 
         QString protocol("https");
@@ -257,10 +278,10 @@ class BUGSNAGQTSHARED_EXPORT Bugsnag : public QObject {
         request.setHeader(QNetworkRequest::ContentTypeHeader,
                           "application/json");
 
-        QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+        QNetworkAccessManager *manager = new QNetworkAccessManager(&instance);
 
         connect(manager, SIGNAL(finished(QNetworkReply*)),  // NOLINT
-                this, SLOT(requestFinished(QNetworkReply*)));  // NOLINT
+                &instance, SLOT(requestFinished(QNetworkReply*)));  // NOLINT
 
         QJsonObject payloadJSON;
         payload.write(payloadJSON);
@@ -280,9 +301,26 @@ class BUGSNAGQTSHARED_EXPORT Bugsnag : public QObject {
     static bool autoNotify;
     static bool useSSL;
 
+    static Device device;
+    static App app;
+    static User user;
+
+    static Bugsnag instance;
+
  private slots:  // NOLINT
     void requestFinished(QNetworkReply *reply) {
-        qDebug() << "requestFinished " << reply;
+        if (reply->error() != QNetworkReply::NoError) {
+            qDebug() << "Bugsnag requestFinished with error " << reply->error()
+                        << reply->errorString();
+        } else {
+            QVariant statusCode = reply->attribute(
+                        QNetworkRequest::HttpStatusCodeAttribute);
+            QByteArray b = reply->readAll();
+            qDebug() << "Bugsnag requestFinished success"
+                        << ", status code " << statusCode
+                           << ", content " << QString(b);
+        }
+        delete reply;
     }
 };
 

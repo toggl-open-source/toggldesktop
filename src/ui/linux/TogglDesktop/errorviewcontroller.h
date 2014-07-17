@@ -5,6 +5,8 @@
 
 #include <QWidget>
 
+#include <stdint.h>
+
 namespace Ui {
 class ErrorViewController;
 }
@@ -26,6 +28,10 @@ class ErrorViewController : public QWidget {
     void displayOnlineState(
         const bool is_online,
         const QString reason);
+
+    void displayLogin(
+        const bool open,
+        const uint64_t user_id);
 
  private:
     Ui::ErrorViewController *ui;

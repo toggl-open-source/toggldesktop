@@ -11,6 +11,7 @@
 #include "qtsingleapplication.h"  // NOLINT
 
 #include "./mainwindowcontroller.h"
+#include "./bugsnag.h"
 
 class TogglApplication : public QtSingleApplication {
  public:
@@ -21,13 +22,17 @@ class TogglApplication : public QtSingleApplication {
         try {
             return QtSingleApplication::notify(receiver, event);
         } catch(std::exception e) {
-            qCritical() << "Exception thrown: " << e.what();
+            Bugsnag::notify("std::exception", e.what(), receiver->objectName());
+        } catch(...) {
+            Bugsnag::notify("unspecified", "exception", receiver->objectName());
         }
-        return false;
+        return true;
     }
 };
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) try {
+    Bugsnag::apiKey = "2a46aa1157256f759053289f2d687c2f";
+
     qRegisterMetaType<uint64_t>("uint64_t");
     qRegisterMetaType<_Bool>("_Bool");
     qRegisterMetaType<QVector<TimeEntryView*> >("QVector<TimeEntryView*>");
@@ -42,9 +47,16 @@ int main(int argc, char *argv[]) {
     }
 
     a.setApplicationVersion(APP_VERSION);
+    Bugsnag::app.version = APP_VERSION;
 
     MainWindowController w;
     w.show();
 
     return a.exec();
+} catch (std::exception &e) {  // NOLINT
+    Bugsnag::notify("std::exception", e.what(), "main");
+    return 1;
+} catch (...) {  // NOLINT
+    Bugsnag::notify("unspecified", "exception", "main");
+    return 1;
 }
