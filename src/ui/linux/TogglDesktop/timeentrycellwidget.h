@@ -19,6 +19,8 @@ class TimeEntryCellWidget : public QWidget {
     ~TimeEntryCellWidget();
 
     void display(TimeEntryView *view);
+    QSize getSizeHint(bool is_header);
+
 
  protected:
     virtual void mousePressEvent(QMouseEvent *event);

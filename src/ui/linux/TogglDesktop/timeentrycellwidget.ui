@@ -10,6 +10,18 @@
     <height>138</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>77</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>138</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -35,10 +47,13 @@
       <string notr="true">background-color: rgb(235, 235, 235);</string>
      </property>
      <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
+      <enum>QFrame::NoFrame</enum>
      </property>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
+     </property>
+     <property name="lineWidth">
+      <number>0</number>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
@@ -76,18 +91,39 @@
    </item>
    <item>
     <widget class="QFrame" name="dataFrame">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>77</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>77</height>
+      </size>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(250, 250, 250);</string>
+      <string notr="true">background-color: rgb(250, 250, 250);border-width: 1px; border-top-style: none; border-right-style: none; border-bottom-style: solid; border-left-style: none; border-color: #cacaca;</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
        <widget class="QFrame" name="descProjFrame">
+        <property name="styleSheet">
+         <string notr="true">border:none;</string>
+        </property>
         <layout class="QVBoxLayout" name="verticalLayout">
          <property name="leftMargin">
           <number>0</number>
          </property>
          <item>
           <widget class="QLabel" name="description">
+           <property name="styleSheet">
+            <string notr="true">border:none;</string>
+           </property>
            <property name="text">
             <string>Blogpost about this</string>
            </property>
@@ -95,6 +131,9 @@
          </item>
          <item>
           <widget class="QLabel" name="project">
+           <property name="styleSheet">
+            <string notr="true">border:none;</string>
+           </property>
            <property name="text">
             <string>NEW - TOGGL</string>
            </property>
@@ -105,6 +144,9 @@
       </item>
       <item>
        <widget class="QLabel" name="tags">
+        <property name="styleSheet">
+         <string notr="true">border:none;</string>
+        </property>
         <property name="text">
          <string>tags</string>
         </property>
@@ -112,6 +154,9 @@
       </item>
       <item>
        <widget class="QLabel" name="billable">
+        <property name="styleSheet">
+         <string notr="true">border:none;</string>
+        </property>
         <property name="text">
          <string>$</string>
         </property>
@@ -119,6 +164,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="continueButton">
+        <property name="styleSheet">
+         <string notr="true">border:none;</string>
+        </property>
         <property name="text">
          <string>&gt;</string>
         </property>
@@ -126,6 +174,9 @@
       </item>
       <item>
        <widget class="QLabel" name="duration">
+        <property name="styleSheet">
+         <string notr="true">border:none;</string>
+        </property>
         <property name="text">
          <string>00:00:00</string>
         </property>

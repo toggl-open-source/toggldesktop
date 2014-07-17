@@ -30,6 +30,13 @@ TimeEntryCellWidget::~TimeEntryCellWidget() {
     delete ui;
 }
 
+QSize TimeEntryCellWidget::getSizeHint(bool is_header) {
+    if (is_header) {
+        return sizeHint();
+    }
+    return QSize(width(), ui->dataFrame->height());
+}
+
 void TimeEntryCellWidget::mousePressEvent(QMouseEvent *event) {
     TogglApi::instance->editTimeEntry(guid, "");
     QWidget::mousePressEvent(event);
