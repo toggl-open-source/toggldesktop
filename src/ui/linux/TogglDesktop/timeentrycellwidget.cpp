@@ -21,7 +21,7 @@ void TimeEntryCellWidget::display(TimeEntryView *view) {
     ui->billable->setVisible(view->Billable);
     ui->tags->setVisible(!view->Tags.isEmpty());
 
-    ui->header->setVisible(view->IsHeader);
+    ui->headerFrame->setVisible(view->IsHeader);
     ui->date->setText(view->DateHeader);
     ui->dateDuration->setText(view->DateDuration);
 }
