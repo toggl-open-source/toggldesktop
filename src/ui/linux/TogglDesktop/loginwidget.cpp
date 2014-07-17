@@ -1,5 +1,7 @@
 // Copyright 2014 Toggl Desktop developers.
 
+#include <QKeyEvent>
+
 #include "./loginwidget.h"
 #include "./ui_loginwidget.h"
 
@@ -28,6 +30,16 @@ oauth2(new OAuth2(this)) {
 
 LoginWidget::~LoginWidget() {
     delete ui;
+}
+
+void LoginWidget::keyPressEvent(QKeyEvent* event) {
+    if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
+        on_login_clicked();
+    }
+}
+
+void LoginWidget::mousePressEvent(QMouseEvent* event) {
+    setFocus();
 }
 
 void LoginWidget::displayLogin(

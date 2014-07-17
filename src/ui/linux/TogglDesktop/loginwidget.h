@@ -22,6 +22,10 @@ class LoginWidget : public QWidget {
     explicit LoginWidget(QWidget *parent = 0);
     ~LoginWidget();
 
+ protected:
+    virtual void keyPressEvent(QKeyEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+
  private slots:  // NOLINT
     void on_login_clicked();
 
