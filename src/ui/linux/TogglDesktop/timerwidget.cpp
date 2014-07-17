@@ -27,6 +27,8 @@ timeEntryAutocompleteNeedsUpdate(false) {
             this, SLOT(focusChanged(QWidget*, QWidget*)));
 
     connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
+
+    descriptionPlaceholder = "What are you doing?";
 }
 
 TimerWidget::~TimerWidget() {
@@ -36,8 +38,17 @@ TimerWidget::~TimerWidget() {
 }
 
 void TimerWidget::focusChanged(QWidget *old, QWidget *now) {
-    if (old == ui->description && timeEntryAutocompleteNeedsUpdate) {
-        displayTimeEntryAutocomplete(timeEntryAutocompleteUpdate);
+    if (old == ui->description) {
+        if (ui->description->currentText().length() == 0) {
+            ui->description->setEditText(descriptionPlaceholder);
+        }
+        if (timeEntryAutocompleteNeedsUpdate) {
+            displayTimeEntryAutocomplete(timeEntryAutocompleteUpdate);
+        }
+    }
+    if (now == ui->description &&
+            ui->description->currentText() == descriptionPlaceholder) {
+        ui->description->setEditText("");
     }
 }
 
@@ -67,7 +78,7 @@ void TimerWidget::displayStoppedTimerState() {
     ui->start->setText("Start");
 
     if (!ui->description->hasFocus()) {
-        ui->description->setEditText("");
+        ui->description->setEditText(descriptionPlaceholder);
     }
     ui->description->setEnabled(true);
 
