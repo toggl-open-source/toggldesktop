@@ -15,21 +15,13 @@ namespace TogglDesktop
         public static bool ShuttingDown = false;
         private const string appGUID = "29067F3B-F706-46CB-92D2-1EA1E72A4CE3";
         public static Bugsnag.Library.BugSnag bugsnag = null;
-        public static UInt64 UserID = 0;
-
-        public static string UserIDString
-        {
-            get
-            {
-                return string.Format("{0}", UserID);
-            }
-        }
+        private static UInt64 uid = 0;
 
         public static bool IsLoggedIn
         {
             get
             {
-                return UserID > 0;
+                return uid > 0;
             }
         }
 
@@ -54,6 +46,11 @@ namespace TogglDesktop
                     OSVersion = Environment.OSVersion.ToString()
                 };
 
+                Toggl.OnLogin += delegate(bool open, UInt64 user_id)
+                {
+                    uid = user_id;
+                };
+
                 Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
                 AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
                 Application.ApplicationExit += new EventHandler(onApplicationExit);
@@ -67,7 +64,7 @@ namespace TogglDesktop
         {
             bugsnag.Notify(e.ExceptionObject as Exception, new
             {
-                UserID = UserIDString
+                UserID = uid.ToString()
             });
         }
 
@@ -75,7 +72,7 @@ namespace TogglDesktop
         {
             bugsnag.Notify(e.Exception, new
             {
-                UserID = UserIDString
+                UserID = uid.ToString()
             });
         }
 

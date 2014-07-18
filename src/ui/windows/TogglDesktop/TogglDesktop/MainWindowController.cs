@@ -271,7 +271,6 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { OnLogin(open, user_id); });
                 return;
             }
-            TogglDesktop.Program.UserID = user_id;
             if (open) {
                 contentPanel.Controls.Remove(timeEntryListViewController);
                 contentPanel.Controls.Remove(timeEntryEditViewController);
