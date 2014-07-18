@@ -34,6 +34,12 @@
    <item>
     <widget class="QWidget" name="widget" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">
@@ -49,6 +55,13 @@
       </item>
       <item>
        <widget class="QLabel" name="addNewProject">
+        <property name="font">
+         <font>
+          <pointsize>9</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="text">
          <string>&lt;a href=&quot;#&quot;&gt;Add new project&lt;/a&gt;</string>
         </property>
@@ -152,31 +165,71 @@
    </item>
    <item>
     <widget class="QWidget" name="timeDetails" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>125</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>300</width>
+       <height>125</height>
+      </size>
+     </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>Duration:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="duration">
-        <property name="text">
-         <string>00:03:05</string>
-        </property>
-       </widget>
-      </item>
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinimumSize</enum>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
       <item row="1" column="0">
-       <widget class="QLabel" name="label_6">
-        <property name="text">
-         <string>Start-end time:</string>
+       <widget class="QFrame" name="timeFrame">
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
         </property>
-       </widget>
-      </item>
-      <item row="1" column="1" rowspan="2">
-       <widget class="QWidget" name="widget_6" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_6">
+           <property name="minimumSize">
+            <size>
+             <width>117</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>117</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Start-end time:</string>
+           </property>
+          </widget>
+         </item>
          <item>
           <widget class="QLineEdit" name="start">
            <property name="text">
@@ -186,8 +239,17 @@
          </item>
          <item>
           <widget class="QLabel" name="timeSeparator">
+           <property name="minimumSize">
+            <size>
+             <width>18</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>-</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
@@ -201,18 +263,122 @@
         </layout>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_8">
-        <property name="text">
-         <string>Date:</string>
+      <item row="0" column="0">
+       <widget class="QFrame" name="durationFrame">
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
         </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_5">
+           <property name="minimumSize">
+            <size>
+             <width>117</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>117</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Duration:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="duration">
+           <property name="text">
+            <string>00:03:05</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
-      <item row="3" column="1">
-       <widget class="QDateEdit" name="dateEdit">
-        <property name="calendarPopup">
-         <bool>true</bool>
+      <item row="2" column="1" rowspan="2">
+       <widget class="QWidget" name="widget_6" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+        </layout>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QFrame" name="dateFrame">
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
         </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_8">
+           <property name="minimumSize">
+            <size>
+             <width>117</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>117</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Date:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDateEdit" name="dateEdit">
+           <property name="calendarPopup">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
@@ -223,6 +389,12 @@
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
        <widget class="QLabel" name="label_3">
+        <property name="minimumSize">
+         <size>
+          <width>103</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="text">
          <string>Tags:</string>
         </property>
@@ -235,10 +407,38 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="billable">
-     <property name="text">
-      <string>Billable</string>
+    <widget class="QFrame" name="billableFrame">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
      </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>105</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="billable">
+        <property name="text">
+         <string>Billable</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
@@ -271,8 +471,36 @@
         </property>
        </spacer>
       </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="lastUpdateFrame">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_6">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QLabel" name="lastUpdate">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
         <property name="text">
          <string>Last update: 2014.06.19 at 21:12:34</string>
         </property>
