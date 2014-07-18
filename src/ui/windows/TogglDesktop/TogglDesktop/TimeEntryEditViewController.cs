@@ -103,7 +103,7 @@ namespace TogglDesktop
 
             if (!te.CanAddProjects)
             {
-                this.linkAddProject.Visible = !te.CanAddProjects;
+                linkAddProject.Visible = !te.CanAddProjects;
             }
 
             if (!comboBoxDescription.Focused)
@@ -131,7 +131,7 @@ namespace TogglDesktop
                 dateTimePickerStartDate.Value = Toggl.DateTimeFromUnix(te.Started);
             }
 
-            this.panelStartEndTime.Visible = !timeEntry.DurOnly;
+            panelStartEndTime.Visible = !timeEntry.DurOnly;
             if (timeEntry.DurOnly)
             {
                 panelBottom.Height = 150;
@@ -151,9 +151,9 @@ namespace TogglDesktop
             }
             textBoxEndTime.Enabled = (te.DurationInSeconds >= 0);
 
-            for (int i = 0; i < this.checkedListBoxTags.Items.Count; i++)
+            for (int i = 0; i < checkedListBoxTags.Items.Count; i++)
             {
-                this.checkedListBoxTags.SetItemChecked(i, false);
+                checkedListBoxTags.SetItemChecked(i, false);
             }
 
             if ( te.Tags != null) {
@@ -162,14 +162,15 @@ namespace TogglDesktop
                 // Tick selected Tags
                 for (int i = 0; i < tags.Length; i++)
                 {
-                    int index = this.checkedListBoxTags.Items.IndexOf(tags[i]);
+                    int index = checkedListBoxTags.Items.IndexOf(tags[i]);
                     if (index != -1)
                     {
-                        this.checkedListBoxTags.SetItemChecked(index, true);
+                        checkedListBoxTags.SetItemChecked(index, true);
                     }
                 }
-
             }
+
+            buttonContinue.Visible = te.DurationInSeconds >= 0;
         }
 
         private void buttonDelete_Click(object sender, EventArgs e)
