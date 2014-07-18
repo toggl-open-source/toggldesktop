@@ -28,13 +28,13 @@ namespace TogglDesktop
             Toggl.OnTags += OnTags;
             Toggl.OnTimeEntryAutocomplete += OnTimeEntryAutocomplete;
             Toggl.OnProjectAutocomplete += OnProjectAutocomplete;
-            this.checkedListBoxTags.DisplayMember = "Name";
-            this.checkedListBoxTags.ValueMember = "Name";
+            checkedListBoxTags.DisplayMember = "Name";
+            checkedListBoxTags.ValueMember = "Name";
         }
 
         private void TimeEntryEditViewController_Load(object sender, EventArgs e)
         {
-            this.Dock = DockStyle.Fill;
+            Dock = DockStyle.Fill;
         }
 
         public void SetAcceptButton(Form frm)
@@ -139,7 +139,7 @@ namespace TogglDesktop
                 panelBottom.Height = 175;
             }
 
-            if (te.UpdatedAt >= 0)
+            if (te.UpdatedAt > 0)
             {
                 DateTime updatedAt = Toggl.DateTimeFromUnix(te.UpdatedAt);
                 toolStripStatusLabelLastUpdate.Text = "Last update: " + updatedAt.ToString();
@@ -345,7 +345,7 @@ namespace TogglDesktop
                 return;
             }
 
-            this.applyTimeChange(this.textBoxStartTime);
+            applyTimeChange(textBoxStartTime);
         }
 
         private void textBoxDuration_Leave(object sender, EventArgs e)
@@ -355,7 +355,7 @@ namespace TogglDesktop
                 Console.WriteLine("Cannot apply duration change. this.TimeEntry is null");
                 return;
             }
-            Toggl.SetTimeEntryDuration(GUID, this.textBoxDuration.Text);
+            Toggl.SetTimeEntryDuration(GUID, textBoxDuration.Text);
         }
 
         private void textBoxEndTime_Leave(object sender, EventArgs e)
@@ -366,19 +366,19 @@ namespace TogglDesktop
                 return;
             }
 
-            this.applyTimeChange(this.textBoxEndTime);
+            applyTimeChange(textBoxEndTime);
         }
 
         private void applyTimeChange(TextBox textbox)
         {
-            DateTime date = this.parseTime(textbox);
+            DateTime date = parseTime(textbox);
             String iso8601String = date.ToString("yyyy-MM-ddTHH:mm:sszzz");
             String utf8String = iso8601String;
-            if (textbox == this.textBoxStartTime)
+            if (textbox == textBoxStartTime)
             {
                 Toggl.SetTimeEntryStart(timeEntry.GUID, utf8String);
             }
-            else if (textbox == this.textBoxEndTime)
+            else if (textbox == textBoxEndTime)
             {
                 Toggl.SetTimeEntryEnd(timeEntry.GUID, utf8String);
             }            
@@ -386,7 +386,7 @@ namespace TogglDesktop
 
         private DateTime parseTime(TextBox field) 
         {
-            DateTime date = this.dateTimePickerStartDate.Value;
+            DateTime date = dateTimePickerStartDate.Value;
             int hours = 0;
             int minutes = 0;
             if (!Toggl.ParseTime(field.Text, ref hours, ref minutes))
@@ -404,14 +404,14 @@ namespace TogglDesktop
                 Console.WriteLine("Cannot apply end time change. this.TimeEntry is null");
                 return;
             }
-            this.applyTimeChange(this.textBoxStartTime);
-            this.applyTimeChange(this.textBoxEndTime);
+            applyTimeChange(textBoxStartTime);
+            applyTimeChange(textBoxEndTime);
         }
 
         private void checkedListBoxTags_Leave(object sender, EventArgs e)
         {
             String tags = "";
-            foreach (object item in this.checkedListBoxTags.CheckedItems)
+            foreach (object item in checkedListBoxTags.CheckedItems)
             {
                 if (tags.Length > 0)
                 {
