@@ -52,6 +52,7 @@ namespace TogglDesktop
 
         private void renderTimeEntryList(List<Toggl.TimeEntry> list)
         {
+            emptyLabel.Visible = (list.Count == 0);
             entries.SuspendLayout();
 
             for (int i = 0; i < list.Count; i++)
