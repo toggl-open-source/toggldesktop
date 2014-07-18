@@ -357,7 +357,7 @@ namespace TogglDesktop
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.Visible)
+            if (Visible)
             {
                 Utils.SaveWindowLocation(this);
             }
@@ -366,9 +366,14 @@ namespace TogglDesktop
 
         private void toggleVisibility()
         {
-            if (this.Visible)
+            if (WindowState == FormWindowState.Minimized)
             {
-                this.Hide();
+                WindowState = FormWindowState.Normal;
+                return;
+            }
+            if (Visible)
+            {
+                Hide();
                 return;
             }
             show();
