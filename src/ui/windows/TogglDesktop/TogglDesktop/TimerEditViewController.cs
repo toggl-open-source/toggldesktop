@@ -37,29 +37,35 @@ namespace TogglDesktop
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
-            if (buttonStart.Text == "Start") {
-                string description = descriptionTextBox.Text;
-                if (defaultDescription == description)
-                {
-                    description = "";
-                }
-
-                string duration = textBoxDuration.Text;
-                if (defaultDuration == duration)
-                {
-                    duration = "";
-                }
-
-                Toggl.Start(
-                    description,
-                    duration,
-                    task_id,
-                    project_id);
-            }
-            else
+            if (buttonStart.Text != "Start")
             {
                 Toggl.Stop();
+                return;
             }
+
+            string description = descriptionTextBox.Text;
+            if (defaultDescription == description)
+            {
+                description = "";
+            }
+
+            string duration = textBoxDuration.Text;
+            if (defaultDuration == duration)
+            {
+                duration = "";
+            }
+
+            if (!Toggl.Start(
+                description,
+                duration,
+                task_id,
+                project_id))
+            {
+                return;
+            }
+
+            descriptionTextBox.Text = defaultDescription;
+            textBoxDuration.Text = defaultDuration;
         }
 
         public void SetAcceptButton(Form frm)
@@ -209,11 +215,6 @@ namespace TogglDesktop
             {
                 OnTimeEntryAutocomplete(timeEntryAutocompleteUpdate);
             }
-        }
-
-        private void TimerEditViewController_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void descriptionTextBox_Enter(object sender, EventArgs e)

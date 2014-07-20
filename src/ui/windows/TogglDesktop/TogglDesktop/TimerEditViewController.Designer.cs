@@ -152,7 +152,6 @@
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "TimerEditViewController";
             this.Size = new System.Drawing.Size(314, 56);
-            this.Load += new System.EventHandler(this.TimerEditViewController_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
