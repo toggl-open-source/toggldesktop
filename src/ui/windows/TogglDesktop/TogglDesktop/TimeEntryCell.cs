@@ -82,5 +82,20 @@ namespace TogglDesktop
         {
             Toggl.Continue(GUID);
         }
+
+        private void panel_Click(object sender, EventArgs e)
+        {
+            Toggl.Edit(GUID, false, "");
+        }
+
+        private void labelBillable_Click(object sender, EventArgs e)
+        {
+            Toggl.Edit(GUID, false, "");
+        }
+
+        private void labelTag_Click(object sender, EventArgs e)
+        {
+            Toggl.Edit(GUID, false, "");
+        }
     }
 }

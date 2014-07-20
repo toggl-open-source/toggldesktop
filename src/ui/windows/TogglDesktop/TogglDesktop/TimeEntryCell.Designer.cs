@@ -100,6 +100,7 @@
             this.panel.Name = "panel";
             this.panel.Size = new System.Drawing.Size(314, 55);
             this.panel.TabIndex = 15;
+            this.panel.Click += new System.EventHandler(this.panel_Click);
             // 
             // taskProjectPanel
             // 
@@ -181,6 +182,7 @@
             this.labelBillable.Name = "labelBillable";
             this.labelBillable.Size = new System.Drawing.Size(13, 13);
             this.labelBillable.TabIndex = 5;
+            this.labelBillable.Click += new System.EventHandler(this.labelBillable_Click);
             // 
             // labelTag
             // 
@@ -190,6 +192,7 @@
             this.labelTag.Name = "labelTag";
             this.labelTag.Size = new System.Drawing.Size(13, 13);
             this.labelTag.TabIndex = 13;
+            this.labelTag.Click += new System.EventHandler(this.labelTag_Click);
             // 
             // labelDuration
             // 
