@@ -122,5 +122,10 @@ namespace TogglDesktop
                 password.ForeColor = System.Drawing.Color.Gray;
             }
         }
+
+        private void linkLabelPreferences_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Toggl.EditPreferences();
+        }
     }
 }

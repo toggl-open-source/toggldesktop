@@ -35,6 +35,7 @@
             this.email = new System.Windows.Forms.TextBox();
             this.passwordForgotTextField = new System.Windows.Forms.LinkLabel();
             this.togglLogoBox = new System.Windows.Forms.PictureBox();
+            this.linkLabelPreferences = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.togglLogoBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -114,12 +115,28 @@
             this.togglLogoBox.TabIndex = 8;
             this.togglLogoBox.TabStop = false;
             // 
+            // linkLabelPreferences
+            // 
+            this.linkLabelPreferences.ActiveLinkColor = System.Drawing.Color.White;
+            this.linkLabelPreferences.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.linkLabelPreferences.AutoSize = true;
+            this.linkLabelPreferences.LinkColor = System.Drawing.Color.Gray;
+            this.linkLabelPreferences.Location = new System.Drawing.Point(97, 313);
+            this.linkLabelPreferences.Name = "linkLabelPreferences";
+            this.linkLabelPreferences.Size = new System.Drawing.Size(64, 13);
+            this.linkLabelPreferences.TabIndex = 9;
+            this.linkLabelPreferences.TabStop = true;
+            this.linkLabelPreferences.Text = "Preferences";
+            this.linkLabelPreferences.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(99)))), ((int)(((byte)(99)))));
+            this.linkLabelPreferences.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelPreferences_LinkClicked);
+            // 
             // LoginViewController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(69)))), ((int)(((byte)(69)))));
+            this.Controls.Add(this.linkLabelPreferences);
             this.Controls.Add(this.togglLogoBox);
             this.Controls.Add(this.passwordForgotTextField);
             this.Controls.Add(this.email);
@@ -127,7 +144,7 @@
             this.Controls.Add(this.googleLoginTextField);
             this.Controls.Add(this.loginButton);
             this.Name = "LoginViewController";
-            this.Size = new System.Drawing.Size(279, 320);
+            this.Size = new System.Drawing.Size(279, 347);
             this.Load += new System.EventHandler(this.LoginViewController_Load);
             ((System.ComponentModel.ISupportInitialize)(this.togglLogoBox)).EndInit();
             this.ResumeLayout(false);
@@ -143,5 +160,6 @@
         private System.Windows.Forms.TextBox email;
         private System.Windows.Forms.LinkLabel passwordForgotTextField;
         private System.Windows.Forms.PictureBox togglLogoBox;
+        private System.Windows.Forms.LinkLabel linkLabelPreferences;
     }
 }
