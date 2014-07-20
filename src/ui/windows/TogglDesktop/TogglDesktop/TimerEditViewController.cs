@@ -65,7 +65,15 @@ namespace TogglDesktop
             }
 
             descriptionTextBox.Text = defaultDescription;
-            textBoxDuration.Text = defaultDuration;
+
+            if (!textBoxDuration.Focused)
+            {
+                textBoxDuration.Text = defaultDuration;
+            }
+            else
+            {
+                textBoxDuration.Text = "";
+            }
         }
 
         public void SetAcceptButton(Form frm)
