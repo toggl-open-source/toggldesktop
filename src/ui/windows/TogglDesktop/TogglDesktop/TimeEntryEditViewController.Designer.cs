@@ -62,13 +62,13 @@
             this.textBoxProjectName = new System.Windows.Forms.TextBox();
             this.labelClient = new System.Windows.Forms.Label();
             this.labelProjectName = new System.Windows.Forms.Label();
-            this.dateTagPanel = new System.Windows.Forms.Panel();
+            this.panelDateTag = new System.Windows.Forms.Panel();
             this.statusStripLastUpdate.SuspendLayout();
             this.buttonsPanel.SuspendLayout();
             this.panelBottom.SuspendLayout();
             this.panelStartEndTime.SuspendLayout();
             this.panelAddProject.SuspendLayout();
-            this.dateTagPanel.SuspendLayout();
+            this.panelDateTag.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -321,7 +321,7 @@
             // 
             this.panelBottom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelBottom.Controls.Add(this.dateTagPanel);
+            this.panelBottom.Controls.Add(this.panelDateTag);
             this.panelBottom.Controls.Add(this.panelStartEndTime);
             this.panelBottom.Controls.Add(this.label3);
             this.panelBottom.Controls.Add(this.textBoxDuration);
@@ -358,7 +358,7 @@
             this.panelAddProject.Location = new System.Drawing.Point(0, 258);
             this.panelAddProject.Name = "panelAddProject";
             this.panelAddProject.Size = new System.Drawing.Size(317, 122);
-            this.panelAddProject.TabIndex = 18;
+            this.panelAddProject.TabIndex = 1;
             this.panelAddProject.Visible = false;
             // 
             // labelWorkspace
@@ -381,7 +381,7 @@
             this.comboBoxWorkspace.Location = new System.Drawing.Point(110, 58);
             this.comboBoxWorkspace.Name = "comboBoxWorkspace";
             this.comboBoxWorkspace.Size = new System.Drawing.Size(192, 23);
-            this.comboBoxWorkspace.TabIndex = 5;
+            this.comboBoxWorkspace.TabIndex = 4;
             this.comboBoxWorkspace.TabStop = false;
             this.comboBoxWorkspace.Visible = false;
             // 
@@ -394,7 +394,7 @@
             this.comboBoxClient.Location = new System.Drawing.Point(110, 91);
             this.comboBoxClient.Name = "comboBoxClient";
             this.comboBoxClient.Size = new System.Drawing.Size(192, 23);
-            this.comboBoxClient.TabIndex = 4;
+            this.comboBoxClient.TabIndex = 5;
             this.comboBoxClient.TabStop = false;
             // 
             // checkBoxPublic
@@ -441,20 +441,20 @@
             this.labelProjectName.TabIndex = 0;
             this.labelProjectName.Text = "Project name:";
             // 
-            // dateTagPanel
+            // panelDateTag
             // 
-            this.dateTagPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.panelDateTag.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dateTagPanel.Controls.Add(this.checkedListBoxTags);
-            this.dateTagPanel.Controls.Add(this.label6);
-            this.dateTagPanel.Controls.Add(this.dateTimePickerStartDate);
-            this.dateTagPanel.Controls.Add(this.label7);
-            this.dateTagPanel.Controls.Add(this.checkBoxBillable);
-            this.dateTagPanel.Location = new System.Drawing.Point(0, 56);
-            this.dateTagPanel.Name = "dateTagPanel";
-            this.dateTagPanel.Size = new System.Drawing.Size(317, 100);
-            this.dateTagPanel.TabIndex = 8;
-            this.dateTagPanel.TabStop = true;
+            this.panelDateTag.Controls.Add(this.checkedListBoxTags);
+            this.panelDateTag.Controls.Add(this.label6);
+            this.panelDateTag.Controls.Add(this.dateTimePickerStartDate);
+            this.panelDateTag.Controls.Add(this.label7);
+            this.panelDateTag.Controls.Add(this.checkBoxBillable);
+            this.panelDateTag.Location = new System.Drawing.Point(0, 56);
+            this.panelDateTag.Name = "panelDateTag";
+            this.panelDateTag.Size = new System.Drawing.Size(317, 100);
+            this.panelDateTag.TabIndex = 8;
+            this.panelDateTag.TabStop = true;
             // 
             // TimeEntryEditViewController
             // 
@@ -481,8 +481,8 @@
             this.panelStartEndTime.PerformLayout();
             this.panelAddProject.ResumeLayout(false);
             this.panelAddProject.PerformLayout();
-            this.dateTagPanel.ResumeLayout(false);
-            this.dateTagPanel.PerformLayout();
+            this.panelDateTag.ResumeLayout(false);
+            this.panelDateTag.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -523,6 +523,6 @@
         private System.Windows.Forms.Label labelClient;
         private System.Windows.Forms.Label labelProjectName;
         private System.Windows.Forms.Panel panelStartEndTime;
-        private System.Windows.Forms.Panel dateTagPanel;
+        private System.Windows.Forms.Panel panelDateTag;
     }
 }

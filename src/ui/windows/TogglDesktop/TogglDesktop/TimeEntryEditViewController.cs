@@ -462,6 +462,27 @@ namespace TogglDesktop
             comboBoxProject.Visible = true;
 
             panelAddProject.Visible = true;
+            recalculateTabIndexes(true);
+        }
+
+        private void recalculateTabIndexes(Boolean openAddProject)
+        {
+            panelAddProject.TabStop = openAddProject;
+            textBoxProjectName.TabStop = openAddProject;
+            checkBoxPublic.TabStop = openAddProject;
+            comboBoxWorkspace.TabStop = openAddProject;
+            comboBoxClient.TabStop = openAddProject;
+            comboBoxProject.TabStop = !openAddProject;
+
+            int addition = openAddProject ? 3 : -3;
+            panelBottom.TabIndex += addition;
+            textBoxDuration.TabIndex += addition;
+            panelStartEndTime.TabIndex += addition;
+            textBoxStartTime.TabIndex += addition;
+            textBoxEndTime.TabIndex += addition;
+            panelDateTag.TabIndex += addition;
+            dateTimePickerStartDate.TabIndex += addition;
+            checkedListBoxTags.TabIndex += addition;
         }
 
         private void resetForms()
@@ -478,6 +499,7 @@ namespace TogglDesktop
                 checkBoxPublic.Checked = false;
                 comboBoxWorkspace.SelectedIndex = -1;
                 comboBoxClient.SelectedIndex = -1;
+                recalculateTabIndexes(false);
             }           
         }
 
