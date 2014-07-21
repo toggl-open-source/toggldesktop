@@ -12,10 +12,6 @@ namespace TogglDesktop
 {
     public partial class PreferencesWindowController : Form
     {
-        private bool loading;
-        private bool mustSaveProxySettings;
-        private bool mustSaveSettings;
-
         public PreferencesWindowController()
         {
             InitializeComponent();
@@ -26,20 +22,6 @@ namespace TogglDesktop
         private void PreferencesWindowController_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = true;
-            if (mustSaveSettings)
-            {
-                if (!saveSettings())
-                {
-                    return;
-                }
-            }
-            if (mustSaveProxySettings)
-            {
-                if (!saveProxySettings())
-                {
-                    return;
-                }
-            }
             Hide();
         }
 
@@ -50,26 +32,17 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { OnSettings(open, settings); });
                 return;
             }
-            mustSaveProxySettings = false;
-            mustSaveSettings = false;
-            loading = true;
-            try
-            {
-                groupBoxProxySettings.Enabled = settings.UseProxy;
-                checkBoxUseProxy.Checked = settings.UseProxy;
-                textBoxProxyHost.Text = settings.ProxyHost;
-                textBoxProxyPort.Text = settings.ProxyPort.ToString();
-                textBoxProxyUsername.Text = settings.ProxyUsername;
-                textBoxProxyPassword.Text = settings.ProxyPassword;
-                checkBoxIdleDetection.Checked = settings.UseIdleDetection;
-                checkBoxRecordTimeline.Checked = settings.RecordTimeline;
-                checkBoxOnTop.Checked = settings.OnTop;
-                checkBoxRemindToTrackTime.Checked = settings.Reminder;
-            }
-            finally
-            {
-                loading = false;
-            }
+            groupBoxProxySettings.Enabled = settings.UseProxy;
+            checkBoxUseProxy.Checked = settings.UseProxy;
+            textBoxProxyHost.Text = settings.ProxyHost;
+            textBoxProxyPort.Text = settings.ProxyPort.ToString();
+            textBoxProxyUsername.Text = settings.ProxyUsername;
+            textBoxProxyPassword.Text = settings.ProxyPassword;
+            checkBoxIdleDetection.Checked = settings.UseIdleDetection;
+            checkBoxRecordTimeline.Checked = settings.RecordTimeline;
+            checkBoxOnTop.Checked = settings.OnTop;
+            checkBoxRemindToTrackTime.Checked = settings.Reminder;
+
             if (open)
             {
                 Show();
@@ -79,89 +52,45 @@ namespace TogglDesktop
 
         private void checkBoxUseProxy_CheckedChanged(object sender, EventArgs e)
         {
-            mustSaveProxySettings = true;
             groupBoxProxySettings.Enabled = checkBoxUseProxy.Checked;
         }
 
-        private bool saveProxySettings()
+        private void buttonCancel_Click(object sender, EventArgs e)
         {
-            if (loading || !mustSaveProxySettings)
-            {
-                return true;
-            }
+            Close();
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
             ulong port = 0;
             if (!ulong.TryParse(textBoxProxyPort.Text, out port))
             {
                 port = 0;
             }
-            return Toggl.SetProxySettings(
-                checkBoxUseProxy.Checked,
-                textBoxProxyHost.Text,
-                port,
-                textBoxProxyUsername.Text,
-                textBoxProxyPassword.Text);
-        }
 
-        private bool saveSettings()
-        {
-            if (loading || !mustSaveSettings)
+            Toggl.Settings settings = new Toggl.Settings();
+
+            settings.UseProxy = checkBoxUseProxy.Checked;
+            settings.ProxyPort = port;
+            settings.ProxyHost = textBoxProxyHost.Text;
+            settings.ProxyUsername = textBoxProxyUsername.Text;
+            settings.ProxyPassword = textBoxProxyPassword.Text;
+
+            settings.UseIdleDetection = checkBoxIdleDetection.Checked;
+            settings.OnTop = checkBoxOnTop.Checked;
+            settings.Reminder = checkBoxRemindToTrackTime.Checked;
+
+            settings.MenubarTimer = true;
+            settings.DockIcon = true;
+
+            settings.RecordTimeline = checkBoxRecordTimeline.Checked;
+
+            if (!Toggl.SetSettings(settings))
             {
-                return true;
+                return;
             }
-            return Toggl.SetSettings(
-                checkBoxIdleDetection.Checked,
-                true,
-                true,
-                checkBoxOnTop.Checked,
-                checkBoxRemindToTrackTime.Checked);
-        }
 
-        private void textBoxProxyHost_TextChanged(object sender, EventArgs e)
-        {
-            mustSaveProxySettings = true;
-        }
-
-        private void textBoxProxyPort_TextChanged(object sender, EventArgs e)
-        {
-            mustSaveProxySettings = true;
-        }
-
-        private void textBoxProxyUsername_TextChanged(object sender, EventArgs e)
-        {
-            mustSaveProxySettings = true;
-        }
-
-        private void textBoxProxyPassword_TextChanged(object sender, EventArgs e)
-        {
-            mustSaveProxySettings = true;
-        }
-
-        private void checkBoxIdleDetection_CheckedChanged(object sender, EventArgs e)
-        {
-            mustSaveSettings = true;
-        }
-
-        private void checkBoxRecordTimeline_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!loading)
-            {
-                Toggl.ToggleTimelineRecording();
-            }
-        }
-
-        private void checkBoxOnTop_CheckedChanged(object sender, EventArgs e)
-        {
-            mustSaveSettings = true;
-        }
-
-        private void checkBoxRemindToTrackTime_CheckedChanged(object sender, EventArgs e)
-        {
-            mustSaveSettings = true;
-        }
-
-        private void checkBoxIgnoreCert_CheckedChanged(object sender, EventArgs e)
-        {
-            mustSaveSettings = true;
+            Close();
         }
     }
 }

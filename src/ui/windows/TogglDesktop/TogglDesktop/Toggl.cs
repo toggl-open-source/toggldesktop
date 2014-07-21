@@ -754,20 +754,33 @@ namespace TogglDesktop
             [MarshalAs(UnmanagedType.I1)]
             bool reminder);
 
-        public static bool SetSettings(
-            bool use_idle_detection,
-            bool menubar_timer,
-            bool dock_icon,
-            bool on_top,
-            bool reminder)
+        public static bool SetSettings(Settings settings)
         {
-            return kopsik_set_settings(
+            if (!kopsik_set_settings(
                 ctx,
-                use_idle_detection,
-                menubar_timer,
-                dock_icon,
-                on_top,
-                reminder);
+                settings.UseIdleDetection,
+                true,
+                true,
+                settings.OnTop,
+                settings.Reminder))
+            {
+                return false;
+            }
+
+            if (!kopsik_set_proxy_settings(
+                ctx,
+                settings.UseProxy,
+                EncodeString(settings.ProxyHost),
+                settings.ProxyPort,
+                EncodeString(settings.ProxyUsername),
+                EncodeString(settings.ProxyPassword)))
+            {
+                return false;
+            }
+
+            kopsik_timeline_toggle_recording(ctx, settings.RecordTimeline);
+        
+            return true;
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -780,21 +793,6 @@ namespace TogglDesktop
             UInt64 proxy_port,
             string proxy_username,
             string proxy_password);
-
-        public static bool SetProxySettings(
-            bool use_proxy,
-            string proxy_host,
-            UInt64 proxy_port,
-            string proxy_username,
-            string proxy_password)
-        {
-            return kopsik_set_proxy_settings(ctx,
-                use_proxy,
-                EncodeString(proxy_host),
-                proxy_port,
-                EncodeString(proxy_username),
-                EncodeString(proxy_password));
-        }
  
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
@@ -886,12 +884,9 @@ namespace TogglDesktop
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         private static extern void kopsik_timeline_toggle_recording(
-            IntPtr context);
-
-        public static void ToggleTimelineRecording()
-        {
-            kopsik_timeline_toggle_recording(ctx);
-        }
+            IntPtr context,
+            [MarshalAs(UnmanagedType.I1)]
+            bool record_timeline);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         private static extern void kopsik_set_sleep(
