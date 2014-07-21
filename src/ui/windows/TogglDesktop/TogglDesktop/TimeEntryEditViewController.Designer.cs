@@ -337,7 +337,7 @@
             this.panelStartEndTime.Controls.Add(this.textBoxEndTime);
             this.panelStartEndTime.Controls.Add(this.label5);
             this.panelStartEndTime.Controls.Add(this.textBoxStartTime);
-            this.panelStartEndTime.Location = new System.Drawing.Point(0, 26);
+            this.panelStartEndTime.Location = new System.Drawing.Point(0, 30);
             this.panelStartEndTime.Name = "panelStartEndTime";
             this.panelStartEndTime.Size = new System.Drawing.Size(317, 30);
             this.panelStartEndTime.TabIndex = 5;
@@ -450,7 +450,7 @@
             this.panelDateTag.Controls.Add(this.dateTimePickerStartDate);
             this.panelDateTag.Controls.Add(this.label7);
             this.panelDateTag.Controls.Add(this.checkBoxBillable);
-            this.panelDateTag.Location = new System.Drawing.Point(0, 56);
+            this.panelDateTag.Location = new System.Drawing.Point(0, 60);
             this.panelDateTag.Name = "panelDateTag";
             this.panelDateTag.Size = new System.Drawing.Size(317, 100);
             this.panelDateTag.TabIndex = 8;
