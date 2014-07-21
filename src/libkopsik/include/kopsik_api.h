@@ -439,7 +439,7 @@ extern "C" {
 
     KOPSIK_EXPORT void kopsik_timeline_toggle_recording(
         void *context,
-		const _Bool record_timeline);
+        const _Bool record_timeline);
 
     KOPSIK_EXPORT void kopsik_set_sleep(
         void *context);

@@ -553,7 +553,7 @@ _Bool kopsik_discard_time_at(
 
 void kopsik_timeline_toggle_recording(
     void *context,
-	const _Bool record_timeline) {
+    const _Bool record_timeline) {
     logger().debug("kopsik_timeline_toggle_recording");
     app(context)->ToggleTimelineRecording(record_timeline);
 }

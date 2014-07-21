@@ -154,7 +154,7 @@ class Context {
         TimeEntry **running) const;
 
     _Bool ToggleTimelineRecording(
-		const _Bool record_timeline);
+        const _Bool record_timeline);
 
     _Bool SaveUpdateChannel(
         const std::string channel);
