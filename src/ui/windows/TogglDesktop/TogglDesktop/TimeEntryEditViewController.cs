@@ -12,7 +12,6 @@ namespace TogglDesktop
 {
     public partial class TimeEntryEditViewController : UserControl
     {
-        private string GUID = "";
         private UInt64 TEUpdatedAt;
         private Toggl.TimeEntry timeEntry;
         private List<Toggl.AutocompleteItem> timeEntryAutocompleteUpdate = null;
@@ -81,13 +80,6 @@ namespace TogglDesktop
             }
 
             timeEntry = te;
-            if (GUID == te.GUID && TEUpdatedAt == te.UpdatedAt)
-            {
-                return;
-            }
-
-            GUID = te.GUID;
-            TEUpdatedAt = te.UpdatedAt;
 
             checkBoxBillable.Visible = te.CanSeeBillable;
 
@@ -118,6 +110,7 @@ namespace TogglDesktop
             {
                 textBoxDuration.Text = te.Duration;
             }
+            Console.WriteLine("Te.duration = {0}", te.Duration);
             if (!textBoxStartTime.Focused)
             {
                 textBoxStartTime.Text = te.StartTimeString;
@@ -180,14 +173,14 @@ namespace TogglDesktop
             if (DialogResult.Yes == dr)
             {
                 resetForms();
-                Toggl.DeleteTimeEntry(GUID);
+                Toggl.DeleteTimeEntry(timeEntry.GUID);
             }
         }
 
         private void buttonContinue_Click(object sender, EventArgs e)
         {
             resetForms();
-            Toggl.Continue(GUID);
+            Toggl.Continue(timeEntry.GUID);
         }
 
         void OnClientSelect(List<Toggl.Model> list)
@@ -275,7 +268,7 @@ namespace TogglDesktop
             }
 
             Toggl.SetTimeEntryProject(
-                GUID,
+                timeEntry.GUID,
                 item.TaskID,
                 item.ProjectID,
                 null);
@@ -305,7 +298,7 @@ namespace TogglDesktop
         {
             if (comboBoxProject.Text.Length == 0)
             {
-                Toggl.SetTimeEntryProject(GUID, 0, 0, "");
+                Toggl.SetTimeEntryProject(timeEntry.GUID, 0, 0, "");
             }
         }
 
@@ -317,14 +310,14 @@ namespace TogglDesktop
                 return;
             }
             Toggl.AutocompleteItem item = (Toggl.AutocompleteItem)o;
-            Toggl.SetTimeEntryProject(GUID, item.TaskID, item.ProjectID, "");
+            Toggl.SetTimeEntryProject(timeEntry.GUID, item.TaskID, item.ProjectID, "");
         }
 
         private void checkBoxBillable_CheckedChanged(object sender, EventArgs e)
         {
             if (null == checkBoxBillable.Tag)
             {
-                Toggl.SetTimeEntryBillable(GUID, checkBoxBillable.Checked);
+                Toggl.SetTimeEntryBillable(timeEntry.GUID, checkBoxBillable.Checked);
             }
         }
 
@@ -334,7 +327,7 @@ namespace TogglDesktop
             {
                 return;
             }
-            Toggl.SetTimeEntryDescription(GUID, comboBoxDescription.Text);
+            Toggl.SetTimeEntryDescription(timeEntry.GUID, comboBoxDescription.Text);
         }
 
         private void textBoxStartTime_Leave(object sender, EventArgs e)
@@ -355,7 +348,7 @@ namespace TogglDesktop
                 Console.WriteLine("Cannot apply duration change. this.TimeEntry is null");
                 return;
             }
-            Toggl.SetTimeEntryDuration(GUID, textBoxDuration.Text);
+            Toggl.SetTimeEntryDuration(timeEntry.GUID, textBoxDuration.Text);
         }
 
         private void textBoxEndTime_Leave(object sender, EventArgs e)
@@ -372,8 +365,7 @@ namespace TogglDesktop
         private void applyTimeChange(TextBox textbox)
         {
             DateTime date = parseTime(textbox);
-            String iso8601String = date.ToString("yyyy-MM-ddTHH:mm:sszzz");
-            String utf8String = iso8601String;
+            String utf8String = date.ToString("yyyy-MM-ddTHH:mm:sszzz");
             if (textbox == textBoxStartTime)
             {
                 Toggl.SetTimeEntryStart(timeEntry.GUID, utf8String);
@@ -381,7 +373,7 @@ namespace TogglDesktop
             else if (textbox == textBoxEndTime)
             {
                 Toggl.SetTimeEntryEnd(timeEntry.GUID, utf8String);
-            }            
+            }
         }
 
         private DateTime parseTime(TextBox field) 
@@ -528,10 +520,14 @@ namespace TogglDesktop
             ulong clientID = selectedItemID(comboBoxClient);
             bool isBillable = timeEntry.Billable;
             bool projectAdded = Toggl.AddProject(
-                GUID, workspaceID, clientID, textBoxProjectName.Text, !is_public);
+                timeEntry.GUID,
+                workspaceID,
+                clientID,
+                textBoxProjectName.Text,
+                !is_public);
             if (projectAdded && isBillable)
             {
-                Toggl.SetTimeEntryBillable(GUID, isBillable);
+                Toggl.SetTimeEntryBillable(timeEntry.GUID, isBillable);
             }
             return projectAdded;
         }
