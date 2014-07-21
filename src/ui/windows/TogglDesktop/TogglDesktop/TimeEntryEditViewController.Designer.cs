@@ -234,7 +234,7 @@
             // toolStripStatusLabelLastUpdate
             // 
             this.toolStripStatusLabelLastUpdate.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.toolStripStatusLabelLastUpdate.Margin = new System.Windows.Forms.Padding(8, 3, 0, 2);
+            this.toolStripStatusLabelLastUpdate.Margin = new System.Windows.Forms.Padding(6, 3, 0, 2);
             this.toolStripStatusLabelLastUpdate.Name = "toolStripStatusLabelLastUpdate";
             this.toolStripStatusLabelLastUpdate.Size = new System.Drawing.Size(152, 17);
             this.toolStripStatusLabelLastUpdate.Text = "Last update: Today 2:03AM";
