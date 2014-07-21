@@ -125,6 +125,7 @@
             this.labelTask.Size = new System.Drawing.Size(74, 16);
             this.labelTask.TabIndex = 10;
             this.labelTask.Text = "TaskName";
+            this.labelTask.Click += new System.EventHandler(this.labelTask_Click);
             // 
             // labelProject
             // 
