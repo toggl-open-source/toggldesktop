@@ -1643,13 +1643,13 @@ _Bool Context::RunningTimeEntry(
     return true;
 }
 
-_Bool Context::ToggleTimelineRecording() {
+_Bool Context::ToggleTimelineRecording(const _Bool record_timeline) {
     if (!user_) {
         logger().warning("Cannot toggle timeline, user logged out");
         return true;
     }
     try {
-        user_->SetRecordTimeline(!user_->RecordTimeline());
+        user_->SetRecordTimeline(record_timeline);
 
         error err = save();
         if (err != noError) {

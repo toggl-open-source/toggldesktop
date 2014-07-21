@@ -438,7 +438,8 @@ extern "C" {
         void *context);
 
     KOPSIK_EXPORT void kopsik_timeline_toggle_recording(
-        void *context);
+        void *context,
+		const _Bool record_timeline);
 
     KOPSIK_EXPORT void kopsik_set_sleep(
         void *context);
