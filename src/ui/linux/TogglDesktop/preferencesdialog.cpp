@@ -64,7 +64,7 @@ void PreferencesDialog::on_idleDetection_clicked(bool checked) {
 }
 
 void PreferencesDialog::on_recordTimeline_clicked(bool checked) {
-    TogglApi::instance->toggleTimelineRecording();
+    TogglApi::instance->toggleTimelineRecording(checked);
 }
 
 void PreferencesDialog::on_remindToTrackTime_clicked(bool checked) {

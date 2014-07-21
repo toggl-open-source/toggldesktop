@@ -286,8 +286,8 @@ bool TogglApi::setSettings(const bool useIdleDetection,
                                reminder);
 }
 
-void TogglApi::toggleTimelineRecording() {
-    kopsik_timeline_toggle_recording(ctx);
+void TogglApi::toggleTimelineRecording(const bool recordTimeline) {
+    kopsik_timeline_toggle_recording(ctx, recordTimeline);
 }
 
 bool TogglApi::setUpdateChannel(const QString channel) {

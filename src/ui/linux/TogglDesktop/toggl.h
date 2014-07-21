@@ -125,7 +125,8 @@ class TogglApi : public QObject {
                      const bool onTop,
                      const bool reminder);
 
-    void toggleTimelineRecording();
+    void toggleTimelineRecording(
+        const bool recordTimeline);
 
     bool setUpdateChannel(const QString channel);
 
