@@ -123,7 +123,9 @@ extern void *ctx;
 
 - (IBAction)recordTimelineCheckboxChanged:(id)sender
 {
-	kopsik_timeline_toggle_recording(ctx);
+	BOOL record_timeline = [Utils stateToBool:[self.recordTimelineCheckbox state]];
+
+	kopsik_timeline_toggle_recording(ctx, record_timeline);
 }
 
 - (IBAction)menubarTimerCheckboxChanged:(id)sender
