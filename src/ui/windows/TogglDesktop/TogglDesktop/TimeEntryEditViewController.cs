@@ -421,17 +421,12 @@ namespace TogglDesktop
 
         private void checkedListBoxTags_Leave(object sender, EventArgs e)
         {
-            String tags = "";
+            List<String> tags = new List<String>();
             foreach (object item in checkedListBoxTags.CheckedItems)
             {
-                if (tags.Length > 0)
-                {
-                    tags += "|";
-                }
-                tags += item.ToString();
+                tags.Add(item.ToString());
             }
-
-            Toggl.SetTimeEntryTags(timeEntry.GUID, tags);
+            Toggl.SetTimeEntryTags(timeEntry.GUID, String.Join("|", tags));
         }
 
         private void timerRunningDuration_Tick(object sender, EventArgs e)
