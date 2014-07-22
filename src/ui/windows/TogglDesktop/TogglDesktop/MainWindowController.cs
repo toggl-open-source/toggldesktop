@@ -328,8 +328,7 @@ namespace TogglDesktop
                 contentPanel.Controls.Remove(loginViewController);
                 contentPanel.Controls.Remove(timeEntryListViewController);
                 contentPanel.Controls.Add(timeEntryEditViewController);
-                timeEntryEditViewController.SetAcceptButton(this);
-                timeEntryEditViewController.SetFocus(focused_field_name);
+                timeEntryEditViewController.setupView(this, focused_field_name);
             }
         }
 

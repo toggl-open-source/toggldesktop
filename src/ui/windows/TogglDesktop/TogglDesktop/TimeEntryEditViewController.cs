@@ -16,6 +16,7 @@ namespace TogglDesktop
         private Toggl.TimeEntry timeEntry;
         private List<Toggl.AutocompleteItem> timeEntryAutocompleteUpdate = null;
         private List<Toggl.AutocompleteItem> projectAutocompleteUpdate = null;
+        private Boolean firstLoad = true;
 
         public TimeEntryEditViewController()
         {
@@ -36,16 +37,35 @@ namespace TogglDesktop
             Dock = DockStyle.Fill;
         }
 
+        public void setupView(Form frm, string focusedFieldName)
+        {
+            SetAcceptButton(frm);
+            SetFocus(focusedFieldName);
+            checkFirstLoad();
+        }
+
         public void SetAcceptButton(Form frm)
         {
             frm.AcceptButton = buttonDone;
+        }
+
+        public void checkFirstLoad() {
+            if (firstLoad)
+            {
+                comboBoxDescription.SelectionLength = 0;
+                comboBoxProject.SelectionLength = 0;
+                if (comboBoxDescription.Text != timeEntry.Description)
+                {
+                    comboBoxDescription.Text = timeEntry.Description;
+                }
+                firstLoad = false;
+            }
         }
 
         public void SetFocus(string focusedFieldName)
         {
             if (Toggl.Project == focusedFieldName)
             {
-                comboBoxDescription.SelectionLength = 0;
                 comboBoxProject.Focus();
             }
             else if (Toggl.Duration == focusedFieldName)
@@ -54,7 +74,6 @@ namespace TogglDesktop
             }
             else if (Toggl.Description == focusedFieldName)
             {
-                comboBoxProject.SelectionLength = 0;
                 comboBoxDescription.Focus();
             }
         }
