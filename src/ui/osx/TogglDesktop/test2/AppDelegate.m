@@ -480,9 +480,15 @@ const int kDurationStringLength = 20;
 		[self.statusItem setImage:self.currentOnImage];
 
 		// Change tracking time entry row in menu
-		NSString *msg = [NSString stringWithFormat:@"Running: %@",
-						 self.lastKnownRunningTimeEntry.Description];
-		[self.runningTimeEntryMenuItem setTitle:msg];
+		if (self.lastKnownRunningTimeEntry.Description
+			&& self.lastKnownRunningTimeEntry.Description.length)
+		{
+			[self.runningTimeEntryMenuItem setTitle:self.lastKnownRunningTimeEntry.Description];
+		}
+		else
+		{
+			[self.runningTimeEntryMenuItem setTitle:@"Timer is tracking"];
+		}
 
 		return;
 	}
@@ -498,7 +504,7 @@ const int kDurationStringLength = 20;
 	}
 	[self.statusItem setTitle:@""];
 	[self.statusItem setImage:self.currentOffImage];
-	[self.runningTimeEntryMenuItem setTitle:@"Timer is not running."];
+	[self.runningTimeEntryMenuItem setTitle:@"Timer is not tracking"];
 }
 
 - (void)createStatusItem
