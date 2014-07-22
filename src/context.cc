@@ -558,16 +558,6 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
 void Context::fetchUpdates() {
     logger().debug("fetchUpdates");
 
-    if ("production" != environment_) {
-        logger().warning("Not running in production, will not check updates");
-        return;
-    }
-
-    if (update_check_disabled_) {
-        logger().warning("Updates are disabled on this computer");
-        return;
-    }
-
     next_fetch_updates_at_ = postpone();
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(
@@ -589,11 +579,6 @@ void Context::onFetchUpdates(Poco::Util::TimerTask& task) {  // NOLINT
 void Context::startPeriodicUpdateCheck() {
     logger().debug("startPeriodicUpdateCheck");
 
-    if (update_check_disabled_) {
-        logger().warning("Updates are disabled on this computer");
-        return;
-    }
-
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>
     (*this, &Context::onPeriodicUpdateCheck);
@@ -614,6 +599,14 @@ void Context::onPeriodicUpdateCheck(Poco::Util::TimerTask& task) {  // NOLINT
 
 void Context::executeUpdateCheck() {
     logger().debug("executeUpdateCheck");
+
+    if ("production" != environment_) {
+        return;
+    }
+
+    if (update_check_disabled_) {
+        return;
+    }
 
     std::string update_channel("");
     error err = db()->LoadUpdateChannel(&update_channel);
