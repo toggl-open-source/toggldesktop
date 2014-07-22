@@ -113,7 +113,7 @@ const int kDurationStringLength = 20;
 		[self onShowMenuItem:self];
 	}
 
-	self.inactiveAppIcon = [NSImage imageNamed:@"app_inactive"];
+	self.activeAppIcon = [NSImage imageNamed:@"app"];
 
 	self.preferencesWindowController = [[PreferencesWindowController alloc]
 										initWithWindowNibName:@"PreferencesWindowController"];
@@ -470,11 +470,9 @@ const int kDurationStringLength = 20;
 
 	if (timeEntry)
 	{
-		// Change app dock icon to default, which is red / tracking
-		// See https://developer.apple.com/library/mac/documentation/Carbon/Conceptual/customizing_docktile/dockconcepts.pdf
 		if (!self.willTerminate)
 		{
-			[NSApp setApplicationIconImage:nil];
+			[NSApp setApplicationIconImage:self.activeAppIcon];
 		}
 
 		[self.statusItem setImage:self.currentOnImage];
@@ -500,7 +498,9 @@ const int kDurationStringLength = 20;
 {
 	if (!self.willTerminate)
 	{
-		[NSApp setApplicationIconImage:self.inactiveAppIcon];
+		// Change app dock icon to default
+		// See https://developer.apple.com/library/mac/documentation/Carbon/Conceptual/customizing_docktile/dockconcepts.pdf
+		[NSApp setApplicationIconImage:nil];
 	}
 	[self.statusItem setTitle:@""];
 	[self.statusItem setImage:self.currentOffImage];
