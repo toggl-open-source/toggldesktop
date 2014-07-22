@@ -558,6 +558,11 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
 void Context::fetchUpdates() {
     logger().debug("fetchUpdates");
 
+    if ("production" != environment_) {
+        logger().warning("Not running in production, will not check updates");
+        return;
+    }
+
     if (update_check_disabled_) {
         logger().warning("Updates are disabled on this computer");
         return;
@@ -1021,9 +1026,7 @@ void Context::setUser(User *value, const bool user_logged_in) {
         Sync();
     }
 
-    if ("production" == environment_) {
-        fetchUpdates();
-    }
+    fetchUpdates();
 }
 
 _Bool Context::SetLoggedInUserFromJSON(
