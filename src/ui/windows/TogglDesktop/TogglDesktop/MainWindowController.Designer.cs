@@ -126,7 +126,7 @@
             // 
             this.runningToolStripMenuItem.Name = "runningToolStripMenuItem";
             this.runningToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
-            this.runningToolStripMenuItem.Text = "Running:";
+            this.runningToolStripMenuItem.Text = "Running";
             // 
             // toolStripMenuItem1
             // 
