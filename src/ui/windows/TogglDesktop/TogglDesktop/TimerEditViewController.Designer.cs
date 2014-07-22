@@ -36,6 +36,7 @@
             this.linkLabelDescription = new System.Windows.Forms.Label();
             this.linkLabelDuration = new System.Windows.Forms.Label();
             this.descriptionTextBox = new System.Windows.Forms.TextBox();
+            this.labelClearProject = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBoxDuration
@@ -88,8 +89,8 @@
             this.linkLabelProject.Size = new System.Drawing.Size(145, 20);
             this.linkLabelProject.TabIndex = 7;
             this.linkLabelProject.Text = "NEW - TOGGL";
-            this.linkLabelProject.Visible = false;
             this.linkLabelProject.Click += new System.EventHandler(this.linkLabelProject_Click);
+            this.linkLabelProject.MouseEnter += new System.EventHandler(this.linkLabelProject_Enter);
             // 
             // linkLabelDescription
             // 
@@ -138,11 +139,28 @@
             this.descriptionTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.descriptionTextBox_KeyDown);
             this.descriptionTextBox.Leave += new System.EventHandler(this.descriptionTextBox_Leave);
             // 
+            // labelClearProject
+            // 
+            this.labelClearProject.BackColor = System.Drawing.Color.Transparent;
+            this.labelClearProject.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.labelClearProject.Enabled = false;
+            this.labelClearProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.labelClearProject.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(185)))), ((int)(((byte)(185)))));
+            this.labelClearProject.Location = new System.Drawing.Point(2, 30);
+            this.labelClearProject.Name = "labelClearProject";
+            this.labelClearProject.Size = new System.Drawing.Size(15, 20);
+            this.labelClearProject.TabIndex = 10;
+            this.labelClearProject.Text = "x";
+            this.labelClearProject.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.labelClearProject.Visible = false;
+            this.labelClearProject.Click += new System.EventHandler(this.labelClearProject_Click);
+            // 
             // TimerEditViewController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
+            this.Controls.Add(this.labelClearProject);
             this.Controls.Add(this.descriptionTextBox);
             this.Controls.Add(this.linkLabelDuration);
             this.Controls.Add(this.linkLabelDescription);
@@ -166,5 +184,6 @@
         private System.Windows.Forms.Label linkLabelDescription;
         private System.Windows.Forms.Label linkLabelDuration;
         private System.Windows.Forms.TextBox descriptionTextBox;
+        private System.Windows.Forms.Label labelClearProject;
     }
 }

@@ -291,5 +291,24 @@ namespace TogglDesktop
                 
             }
         }
+
+        private void labelClearProject_Click(object sender, EventArgs e)
+        {
+            project_id = 0;
+            task_id = 0;
+            linkLabelProject.Text = "";
+            labelClearProject.Visible = false;
+            labelClearProject.Enabled = false;
+            descriptionTextBox.Top = defaultDescriptionTop;
+        }
+
+        private void linkLabelProject_Enter(object sender, EventArgs e)
+        {
+            if (linkLabelProject.Text.Length > 0 && buttonStart.Text == "Start")
+            {
+                labelClearProject.Visible = true;
+                labelClearProject.Enabled = true;
+            }
+        }
     }
 }
