@@ -16,3 +16,4 @@
 #define kMenuItemTagClearCache   6
 #define kMenuItemTagSendFeedback 8
 #define kMenuItemTagOpenBrowser  9
+#define kMenuItemTagEdit         10

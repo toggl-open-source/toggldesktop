@@ -21,6 +21,7 @@
 - (IBAction)onAboutMenuItem:(id)sender;
 - (IBAction)onSyncMenuItem:(id)sender;
 - (IBAction)onShowMenuItem:(id)sender;
+- (IBAction)onEditMenuItem:(id)sender;
 - (IBAction)onClearCacheMenuItem:(id)sender;
 - (IBAction)onLogoutMenuItem:(id)sender;
 - (IBAction)onHelpMenuItem:(id)sender;

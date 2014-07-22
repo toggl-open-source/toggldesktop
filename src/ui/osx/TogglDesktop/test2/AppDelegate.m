@@ -529,6 +529,9 @@ const int kDurationStringLength = 20;
 	[menu addItemWithTitle:@"Show"
 					action:@selector(onShowMenuItem:)
 			 keyEquivalent:@"t"];
+	[menu addItemWithTitle:@"Edit"
+					action:@selector(onEditMenuItem:)
+			 keyEquivalent:@"e"].tag = kMenuItemTagEdit;
 	[menu addItem:[NSMenuItem separatorItem]];
 	[menu addItemWithTitle:@"Sync"
 					action:@selector(onSyncMenuItem:)
@@ -647,6 +650,11 @@ const int kDurationStringLength = 20;
 {
 	[self.mainWindowController showWindow:self];
 	[NSApp activateIgnoringOtherApps:YES];
+}
+
+- (IBAction)onEditMenuItem:(id)sender
+{
+	kopsik_edit(ctx, "", true, "description");
 }
 
 - (IBAction)onPreferencesMenuItem:(id)sender
@@ -853,12 +861,6 @@ const NSString *appName = @"osx_native_app";
 {
 	switch ([anItem tag])
 	{
-		case kMenuItemTagNew :
-			if (0 == self.user_id)
-			{
-				return NO;
-			}
-			break;
 		case kMenuItemTagContinue :
 			if (0 == self.user_id)
 			{
@@ -870,6 +872,7 @@ const NSString *appName = @"osx_native_app";
 			}
 			break;
 		case kMenuItemTagStop :
+		case kMenuItemTagEdit :
 			if (0 == self.user_id)
 			{
 				return NO;
@@ -880,30 +883,11 @@ const NSString *appName = @"osx_native_app";
 			}
 			break;
 		case kMenuItemTagSync :
-			if (0 == self.user_id)
-			{
-				return NO;
-			}
-			break;
 		case kMenuItemTagLogout :
-			if (0 == self.user_id)
-			{
-				return NO;
-			}
-			break;
 		case kMenuItemTagClearCache :
-			if (0 == self.user_id)
-			{
-				return NO;
-			}
-			break;
 		case kMenuItemTagSendFeedback :
-			if (0 == self.user_id)
-			{
-				return NO;
-			}
-			break;
 		case kMenuItemTagOpenBrowser :
+		case kMenuItemTagNew :
 			if (0 == self.user_id)
 			{
 				return NO;
