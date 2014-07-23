@@ -10,9 +10,10 @@
 #define kHTTPClientTimeoutSeconds 10
 #define kPeriodicSyncIntervalSeconds 900
 
-#define kCheckUpdateIntervalMicros 86400000000
-#define kRequestThrottleMicros 2000000
-#define kReminderThrottleMicros 600000000
+// 86400 seconds = 24 hours
+#define kCheckUpdateIntervalSeconds 86400
+#define kRequestThrottleSeconds 2
+#define kReminderThrottleSeconds 600
 
 #define kAutocompleteItemTE  0
 #define kAutocompleteItemTask 1

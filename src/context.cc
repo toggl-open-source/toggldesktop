@@ -367,7 +367,7 @@ void Context::scheduleSync() {
 void Context::Sync() {
     logger().debug("Sync");
 
-    next_sync_at_ = postpone();
+    next_sync_at_ = postpone(kRequestThrottleSeconds * kOneSecondInMicros);
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onSync);
 
@@ -376,7 +376,8 @@ void Context::Sync() {
 }
 
 void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
-    if (isPostponed(next_sync_at_)) {
+    if (isPostponed(next_sync_at_,
+                    kRequestThrottleSeconds * kOneSecondInMicros)) {
         logger().debug("onSync postponed");
         return;
     }
@@ -414,7 +415,8 @@ void Context::displayOnlineState(const std::string reason) {
 void Context::pushChanges() {
     logger().debug("pushChanges");
 
-    next_push_changes_at_ = postpone();
+    next_push_changes_at_ =
+        postpone(kRequestThrottleSeconds * kOneSecondInMicros);
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(
             *this, &Context::onPushChanges);
@@ -424,7 +426,8 @@ void Context::pushChanges() {
 }
 
 void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
-    if (isPostponed(next_push_changes_at_)) {
+    if (isPostponed(next_push_changes_at_,
+                    kRequestThrottleSeconds * kOneSecondInMicros)) {
         logger().debug("onPushChanges postponed");
         return;
     }
@@ -588,7 +591,8 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
 void Context::fetchUpdates() {
     logger().debug("fetchUpdates");
 
-    next_fetch_updates_at_ = postpone();
+    next_fetch_updates_at_ =
+        postpone(kRequestThrottleSeconds * kOneSecondInMicros);
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(
             *this, &Context::onFetchUpdates);
@@ -598,7 +602,8 @@ void Context::fetchUpdates() {
 }
 
 void Context::onFetchUpdates(Poco::Util::TimerTask& task) {  // NOLINT
-    if (isPostponed(next_fetch_updates_at_)) {
+    if (isPostponed(next_fetch_updates_at_,
+                    kRequestThrottleSeconds * kOneSecondInMicros)) {
         logger().debug("onFetchUpdates postponed");
         return;
     }
@@ -635,7 +640,7 @@ void Context::startPeriodicUpdateCheck() {
     (*this, &Context::onPeriodicUpdateCheck);
 
     Poco::Timestamp next_periodic_check_at =
-        Poco::Timestamp() + kCheckUpdateIntervalMicros;
+        Poco::Timestamp() + (kCheckUpdateIntervalSeconds * kOneSecondInMicros);
     Poco::Mutex::ScopedLock lock(timer_m_);
     timer_.schedule(ptask, next_periodic_check_at);
 }
@@ -742,7 +747,8 @@ const std::string Context::osName() {
 void Context::TimelineUpdateServerSettings() {
     logger().debug("TimelineUpdateServerSettings");
 
-    next_update_timeline_settings_at_ = postpone();
+    next_update_timeline_settings_at_ =
+        postpone(kRequestThrottleSeconds * kOneSecondInMicros);
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(*this,
                 &Context::onTimelineUpdateServerSettings);
@@ -755,7 +761,8 @@ const std::string kRecordTimelineEnabledJSON = "{\"record_timeline\": true}";
 const std::string kRecordTimelineDisabledJSON = "{\"record_timeline\": false}";
 
 void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // NOLINT
-    if (isPostponed(next_update_timeline_settings_at_)) {
+    if (isPostponed(next_update_timeline_settings_at_,
+                    kRequestThrottleSeconds * kOneSecondInMicros)) {
         logger().debug("onTimelineUpdateServerSettings postponed");
         return;
     }
@@ -1882,7 +1889,8 @@ void Context::SetWake() {
 }
 
 void Context::remindToTrackTime() {
-    next_reminder_at_ = postpone(kReminderThrottleMicros);
+    next_reminder_at_ =
+        postpone(kReminderThrottleSeconds * kOneSecondInMicros);
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onRemind);
 
@@ -1891,7 +1899,8 @@ void Context::remindToTrackTime() {
 }
 
 void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
-    if (isPostponed(next_reminder_at_, kReminderThrottleMicros)) {
+    if (isPostponed(next_reminder_at_,
+                    kReminderThrottleSeconds * kOneSecondInMicros)) {
         logger().debug("onRemind postponed");
         return;
     }

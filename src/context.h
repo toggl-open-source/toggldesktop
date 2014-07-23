@@ -221,11 +221,9 @@ class Context {
 
     bool isPostponed(
         const Poco::Timestamp value,
-        const Poco::Timestamp::TimeDiff
-        throttleMicros = kRequestThrottleMicros) const;
+        const Poco::Timestamp::TimeDiff throttleMicros) const;
     static Poco::Timestamp postpone(
-        const Poco::Timestamp::TimeDiff
-        throttleMicros = kRequestThrottleMicros);
+        const Poco::Timestamp::TimeDiff throttleMicros);
 
     void setUser(User *value, const bool user_logged_in = false);
 
