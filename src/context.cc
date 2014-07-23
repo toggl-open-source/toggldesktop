@@ -44,6 +44,7 @@ Context::Context(const std::string app_name, const std::string app_version)
 , environment_("production")
 , last_idle_seconds_reading_(0)
 , last_idle_started_(0)
+, last_sync_started_(0)
 , update_check_disabled_(false) {
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
@@ -310,6 +311,8 @@ void Context::displayTags() {
     UI()->DisplayTags(&list);
 }
 
+#define ONE_SECOND_IN_MILLIS 1000000
+
 Poco::Timestamp Context::postpone(
     const Poco::Timestamp::TimeDiff throttleMicros) {
     return Poco::Timestamp() + throttleMicros;
@@ -341,6 +344,22 @@ _Bool Context::displayError(const error err) {
     return UI()->DisplayError(err);
 }
 
+void Context::scheduleSync() {
+    double elapsed_seconds = time(0) - last_sync_started_;
+
+    std::stringstream ss;
+    ss << "scheduleSync elapsed_seconds=" << elapsed_seconds;
+    logger().debug(ss.str());
+
+    // FIXME: set to 15 minutes or so
+    if (elapsed_seconds < 10) {
+        logger().warning("Last sync attempt less than 10 seconds ago, chill");
+        return;
+    }
+
+    Sync();
+}
+
 void Context::Sync() {
     logger().debug("Sync");
 
@@ -358,6 +377,8 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
     logger().debug("onFullSync executing");
+
+    last_sync_started_ = time(0);
 
     HTTPSClient client;
     error err = user_->PullAllUserData(&client);

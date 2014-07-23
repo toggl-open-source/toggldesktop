@@ -273,6 +273,8 @@ class Context {
         TimeEntry *time_entry,
         Workspace *workspace) const;
 
+    void scheduleSync();
+
     Poco::Mutex db_m_;
     Database *db_;
 
@@ -313,6 +315,8 @@ class Context {
 
     Poco::UInt64 last_idle_seconds_reading_;
     Poco::UInt64 last_idle_started_;
+
+    Poco::UInt64 last_sync_started_;
 
     bool update_check_disabled_;
 };
