@@ -20,7 +20,7 @@ To build, then run the app:
 make run
 ```
 
-Run unit tets with
+Run unit tests with
 ```
 make test
 ```
