@@ -212,9 +212,12 @@ class Context {
     void onTimelineUpdateServerSettings(Poco::Util::TimerTask& task);  // NOLINT
     void onSendFeedback(Poco::Util::TimerTask& task);  // NOLINT
     void onRemind(Poco::Util::TimerTask&);  // NOLINT
+    void onPeriodicSync(Poco::Util::TimerTask& task);  // NOLINT
 
     void startPeriodicUpdateCheck();
     void executeUpdateCheck();
+
+    void startPeriodicSync();
 
     bool isPostponed(
         const Poco::Timestamp value,

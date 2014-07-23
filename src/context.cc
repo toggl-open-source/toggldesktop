@@ -76,6 +76,8 @@ Context::Context(const std::string app_name, const std::string app_version)
 
     startPeriodicUpdateCheck();
 
+    startPeriodicSync();
+
     SetWake();  // obviously, we're wake
 }
 
@@ -311,8 +313,6 @@ void Context::displayTags() {
     UI()->DisplayTags(&list);
 }
 
-#define ONE_SECOND_IN_MILLIS 1000000
-
 Poco::Timestamp Context::postpone(
     const Poco::Timestamp::TimeDiff throttleMicros) {
     return Poco::Timestamp() + throttleMicros;
@@ -347,13 +347,17 @@ _Bool Context::displayError(const error err) {
 void Context::scheduleSync() {
     double elapsed_seconds = time(0) - last_sync_started_;
 
-    std::stringstream ss;
-    ss << "scheduleSync elapsed_seconds=" << elapsed_seconds;
-    logger().debug(ss.str());
+    {
+        std::stringstream ss;
+        ss << "scheduleSync elapsed_seconds=" << elapsed_seconds;
+        logger().debug(ss.str());
+    }
 
-    // FIXME: set to 15 minutes or so
-    if (elapsed_seconds < 10) {
-        logger().warning("Last sync attempt less than 10 seconds ago, chill");
+    if (elapsed_seconds < kPeriodicSyncIntervalSeconds) {
+        std::stringstream ss;
+        ss << "Last sync attempt less than " << kPeriodicSyncIntervalSeconds
+           << " seconds ago, chill";
+        logger().trace(ss.str());
         return;
     }
 
@@ -600,6 +604,27 @@ void Context::onFetchUpdates(Poco::Util::TimerTask& task) {  // NOLINT
     }
 
     executeUpdateCheck();
+}
+
+void Context::startPeriodicSync() {
+    logger().trace("startPeriodicSync");
+
+    Poco::Util::TimerTask::Ptr ptask =
+        new Poco::Util::TimerTaskAdapter<Context>
+    (*this, &Context::onPeriodicSync);
+
+    Poco::Timestamp next_periodic_sync_at_ =
+        Poco::Timestamp() + (kPeriodicSyncIntervalSeconds * kOneSecondInMicros);
+    Poco::Mutex::ScopedLock lock(timer_m_);
+    timer_.schedule(ptask, next_periodic_sync_at_);
+}
+
+void Context::onPeriodicSync(Poco::Util::TimerTask& task) {  // NOLINT
+    logger().debug("onPeriodicSync");
+
+    scheduleSync();
+
+    startPeriodicSync();
 }
 
 void Context::startPeriodicUpdateCheck() {
