@@ -399,7 +399,12 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
 
-    UI()->DisplayOnlineState(true, "Sync done");
+    displayOnlineState("Sync done");
+}
+
+void Context::displayOnlineState(const std::string reason) {
+    UI()->DisplayOnlineState(true, reason);
+    scheduleSync();
 }
 
 void Context::pushChanges() {
@@ -434,7 +439,7 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
 
-    UI()->DisplayOnlineState(true, "Changes pushed");
+    displayOnlineState("Changes pushed");
 }
 
 void Context::switchWebSocketOff() {
@@ -1846,6 +1851,12 @@ _Bool Context::OpenReportsInBrowser() {
 void Context::SetWake() {
     logger().debug("SetWake");
 
+    remindToTrackTime();
+
+    scheduleSync();
+}
+
+void Context::remindToTrackTime() {
     next_reminder_at_ = postpone(kReminderThrottleMicros);
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onRemind);

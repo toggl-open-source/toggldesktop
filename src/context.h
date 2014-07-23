@@ -274,6 +274,8 @@ class Context {
         Workspace *workspace) const;
 
     void scheduleSync();
+    void displayOnlineState(const std::string reason);
+    void remindToTrackTime();
 
     Poco::Mutex db_m_;
     Database *db_;
