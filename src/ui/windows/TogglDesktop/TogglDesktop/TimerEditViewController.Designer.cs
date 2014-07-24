@@ -89,6 +89,7 @@
             this.linkLabelProject.Size = new System.Drawing.Size(145, 20);
             this.linkLabelProject.TabIndex = 7;
             this.linkLabelProject.Text = "NEW - TOGGL";
+            this.linkLabelProject.Visible = false;
             this.linkLabelProject.Click += new System.EventHandler(this.linkLabelProject_Click);
             this.linkLabelProject.MouseEnter += new System.EventHandler(this.linkLabelProject_Enter);
             // 
