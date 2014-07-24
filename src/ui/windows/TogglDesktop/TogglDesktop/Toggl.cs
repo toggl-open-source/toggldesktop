@@ -85,6 +85,7 @@ namespace TogglDesktop
                 Description = DecodeString(Description);
                 ProjectAndTaskLabel = DecodeString(ProjectAndTaskLabel);
                 ProjectLabel = DecodeString(ProjectLabel);
+                TaskLabel = DecodeString(TaskLabel);
                 ClientLabel = DecodeString(ClientLabel);
                 Duration = DecodeString(Duration);
                 Tags = DecodeString(Tags);
@@ -119,6 +120,7 @@ namespace TogglDesktop
                 Text = DecodeString(Text);
                 Description = DecodeString(Description);
                 ProjectAndTaskLabel = DecodeString(ProjectAndTaskLabel);
+                TaskLabel = DecodeString(TaskLabel);
                 ProjectLabel = DecodeString(ProjectLabel);
                 ClientLabel = DecodeString(ClientLabel);
                 ProjectColor = DecodeString(ProjectColor);
@@ -1133,7 +1135,7 @@ namespace TogglDesktop
             kopsik_set_log_path(log_path);
             kopsik_set_log_level("debug");
             string databasePath = Path.Combine(path, "kopsik.db");
-            if (!kopsik_set_db_path(ctx, databasePath))
+            if (!kopsik_set_db_path(ctx, DecodeString(databasePath)))
             {
                 throw new System.Exception("Failed to initialize database at " + databasePath);
             }
