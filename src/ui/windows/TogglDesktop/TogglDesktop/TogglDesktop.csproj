@@ -134,6 +134,9 @@
     <Compile Include="AddProjectViewController.Designer.cs">
       <DependentUpon>AddProjectViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="AutoCompleteTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="FeedbackWindowController.cs">
       <SubType>Form</SubType>
     </Compile>

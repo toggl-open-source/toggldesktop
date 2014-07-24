@@ -23,11 +23,35 @@ namespace TogglDesktop
         {
             InitializeComponent();
 
+            descriptionTextBox.autoCompleteListBox.KeyDown += autoCompleteListBox_KeyDown;
+            descriptionTextBox.autoCompleteListBox.Click += autoCompleteListBox_Click;
             Toggl.OnTimeEntryAutocomplete += OnTimeEntryAutocomplete;
             Toggl.OnRunningTimerState += OnRunningTimerState;
             Toggl.OnStoppedTimerState += OnStoppedTimerState;
 
             this.Anchor = (AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top);
+        }
+
+        private void autoCompleteListBox_Click(object sender, EventArgs e)
+        {
+            selectAutoComplete();
+        }
+
+        private void autoCompleteListBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab)
+            {
+                if (autoCompleteList == null)
+                {
+                    return;
+                }
+
+                selectAutoComplete();
+            }
+            else if (e.KeyCode == Keys.Escape)
+            {
+                descriptionTextBox.ResetListBox();
+            }
         }
 
         private const string defaultDescription = "What are you doing?";
@@ -173,20 +197,6 @@ namespace TogglDesktop
             }
             timeEntryAutocompleteUpdate = list;
             autoCompleteList = list;
-            descriptionTextBox.AutoCompleteCustomSource.Clear();
-
-            if (descriptionTextBox.Focused)
-            {
-                return;
-            }
-            AutoCompleteStringCollection collection = new AutoCompleteStringCollection();
-            foreach (object o in timeEntryAutocompleteUpdate)
-            {
-                collection.Add(o.ToString());
-            }
-            timeEntryAutocompleteUpdate = null;
-            
-            descriptionTextBox.AutoCompleteCustomSource = collection;
         }
 
         private void linkLabelDescription_Click(object sender, EventArgs e)
@@ -217,14 +227,6 @@ namespace TogglDesktop
             Toggl.Edit("", true, Toggl.Project);
         }
 
-        private void comboBoxDescription_DropDownClosed(object sender, EventArgs e)
-        {
-            if (timeEntryAutocompleteUpdate != null)
-            {
-                OnTimeEntryAutocomplete(timeEntryAutocompleteUpdate);
-            }
-        }
-
         private void descriptionTextBox_Enter(object sender, EventArgs e)
         {
             if (descriptionTextBox.Text == defaultDescription)
@@ -238,6 +240,10 @@ namespace TogglDesktop
             if (descriptionTextBox.Text == "")
             {
                 descriptionTextBox.Text = defaultDescription;
+            }
+            if (!descriptionTextBox.autoCompleteListBox.Focused)
+            {
+                descriptionTextBox.ResetListBox();
             }
         }
 
@@ -257,39 +263,25 @@ namespace TogglDesktop
             }
         }
 
-        private void descriptionTextBox_KeyDown(object sender, KeyEventArgs e)
+        private void selectAutoComplete()
         {
-            if(e.KeyCode == Keys.Enter)
+            descriptionTextBox.ResetListBox();
+            Toggl.AutocompleteItem item = (Toggl.AutocompleteItem)descriptionTextBox.autoCompleteListBox.SelectedItem;
+            descriptionTextBox.Text = item.Description;
+
+            if (item.ProjectID > 0)
             {
-                if (autoCompleteList == null)
-                {
-                    return;
-                }
-                foreach (Toggl.AutocompleteItem item in autoCompleteList)
-                {
-                    if (item.ToString() == descriptionTextBox.Text)
-                    {
-                        descriptionTextBox.Text = item.Description;
-
-                        if (item.ProjectID > 0)
-                        {
-                            linkLabelProject.Text = item.ProjectAndTaskLabel;
-                            linkLabelProject.Visible = true;
-                            descriptionTextBox.Top = projectDescriptionTop;
-                        }
-                        else
-                        {
-                            linkLabelProject.Visible = false;
-                            descriptionTextBox.Top = defaultDescriptionTop;
-                        }
-                        task_id = item.TaskID;
-                        project_id = item.ProjectID;
-                        break;
-                    }
-                }
-
-                
+                linkLabelProject.Text = item.ProjectAndTaskLabel;
+                linkLabelProject.Visible = true;
+                descriptionTextBox.Top = projectDescriptionTop;
             }
+            else
+            {
+                linkLabelProject.Visible = false;
+                descriptionTextBox.Top = defaultDescriptionTop;
+            }
+            task_id = item.TaskID;
+            project_id = item.ProjectID;
         }
 
         private void labelClearProject_Click(object sender, EventArgs e)
@@ -308,6 +300,23 @@ namespace TogglDesktop
             {
                 labelClearProject.Visible = true;
                 labelClearProject.Enabled = true;
+            }
+        }
+
+        private void descriptionTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (descriptionTextBox.Text.Length == 0)
+            {
+                descriptionTextBox.ResetListBox();
+            }
+            descriptionTextBox.UpdateListBox(autoCompleteList);
+        }
+
+        private void descriptionTextBox_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (descriptionTextBox.parseKeyDown(e, autoCompleteList))
+            {
+                selectAutoComplete();
             }
         }
     }

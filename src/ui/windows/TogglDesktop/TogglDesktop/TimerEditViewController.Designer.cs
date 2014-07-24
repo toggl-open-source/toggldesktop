@@ -35,8 +35,8 @@
             this.linkLabelProject = new System.Windows.Forms.Label();
             this.linkLabelDescription = new System.Windows.Forms.Label();
             this.linkLabelDuration = new System.Windows.Forms.Label();
-            this.descriptionTextBox = new System.Windows.Forms.TextBox();
             this.labelClearProject = new System.Windows.Forms.Label();
+            this.descriptionTextBox = new TogglDesktop.AutoCompleteTextBox();
             this.SuspendLayout();
             // 
             // textBoxDuration
@@ -120,25 +120,6 @@
             this.linkLabelDuration.Visible = false;
             this.linkLabelDuration.Click += new System.EventHandler(this.linkLabelDuration_Click);
             // 
-            // descriptionTextBox
-            // 
-            this.descriptionTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.descriptionTextBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.descriptionTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.descriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
-            this.descriptionTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.descriptionTextBox.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.descriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(185)))), ((int)(((byte)(185)))));
-            this.descriptionTextBox.Location = new System.Drawing.Point(18, 20);
-            this.descriptionTextBox.Name = "descriptionTextBox";
-            this.descriptionTextBox.Size = new System.Drawing.Size(150, 20);
-            this.descriptionTextBox.TabIndex = 1;
-            this.descriptionTextBox.Text = "What are you doing?";
-            this.descriptionTextBox.Enter += new System.EventHandler(this.descriptionTextBox_Enter);
-            this.descriptionTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.descriptionTextBox_KeyDown);
-            this.descriptionTextBox.Leave += new System.EventHandler(this.descriptionTextBox_Leave);
-            // 
             // labelClearProject
             // 
             this.labelClearProject.BackColor = System.Drawing.Color.Transparent;
@@ -154,6 +135,26 @@
             this.labelClearProject.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.labelClearProject.Visible = false;
             this.labelClearProject.Click += new System.EventHandler(this.labelClearProject_Click);
+            // 
+            // descriptionTextBox
+            // 
+            this.descriptionTextBox.AcceptsTab = true;
+            this.descriptionTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.descriptionTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.descriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
+            this.descriptionTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.descriptionTextBox.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.descriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(185)))), ((int)(((byte)(185)))));
+            this.descriptionTextBox.Location = new System.Drawing.Point(18, 20);
+            this.descriptionTextBox.Name = "descriptionTextBox";
+            this.descriptionTextBox.Size = new System.Drawing.Size(150, 20);
+            this.descriptionTextBox.TabIndex = 1;
+            this.descriptionTextBox.Text = "What are you doing?";
+            this.descriptionTextBox.Enter += new System.EventHandler(this.descriptionTextBox_Enter);
+            this.descriptionTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.descriptionTextBox_KeyUp);
+            this.descriptionTextBox.Leave += new System.EventHandler(this.descriptionTextBox_Leave);
+            this.descriptionTextBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.descriptionTextBox_PreviewKeyDown);
             // 
             // TimerEditViewController
             // 
@@ -183,7 +184,7 @@
         private System.Windows.Forms.Label linkLabelProject;
         private System.Windows.Forms.Label linkLabelDescription;
         private System.Windows.Forms.Label linkLabelDuration;
-        private System.Windows.Forms.TextBox descriptionTextBox;
+        private AutoCompleteTextBox descriptionTextBox;
         private System.Windows.Forms.Label labelClearProject;
     }
 }
