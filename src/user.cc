@@ -819,9 +819,9 @@ void User::loadUserAndRelatedDataFromJSONNode(
         } else if (strcmp(node_name, "fullname") == 0) {
             SetFullname(std::string(json_as_string(*n)));
         } else if (strcmp(node_name, "record_timeline") == 0) {
-            SetRecordTimeline(json_as_bool(*n));
+            SetRecordTimeline(json_as_bool(*n) != 0);
         } else if (strcmp(node_name, "store_start_and_stop_time") == 0) {
-            SetStoreStartAndStopTime(json_as_bool(*n));
+            SetStoreStartAndStopTime(json_as_bool(*n) != 0);
         } else if (strcmp(node_name, "timeofday_format") == 0) {
             SetTimeOfDayFormat(std::string(json_as_string(*n)));
         } else if (strcmp(node_name, "projects") == 0) {

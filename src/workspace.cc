@@ -59,11 +59,11 @@ void Workspace::LoadFromJSONNode(JSONNODE * const n) {
         } else if (strcmp(node_name, "name") == 0) {
             SetName(std::string(json_as_string(*i)));
         } else if (strcmp(node_name, "premium") == 0) {
-            SetPremium(json_as_bool(*i));
+            SetPremium(json_as_bool(*i) != 0);
         } else if (strcmp(node_name, "only_admins_may_create_projects") == 0) {
-            SetOnlyAdminsMayCreateProjects(json_as_bool(*i));
+            SetOnlyAdminsMayCreateProjects(json_as_bool(*i) != 0);
         } else if (strcmp(node_name, "admin") == 0) {
-            SetAdmin(json_as_bool(*i));
+            SetAdmin(json_as_bool(*i) != 0);
         }
         ++i;
     }

@@ -348,9 +348,9 @@ void TimeEntry::LoadFromJSONNode(JSONNODE * const data) {
         } else if (strcmp(node_name, "duration") == 0) {
             SetDurationInSeconds(json_as_int(*current_node));
         } else if (strcmp(node_name, "billable") == 0) {
-            SetBillable(json_as_bool(*current_node));
+            SetBillable(json_as_bool(*current_node) != 0);
         } else if (strcmp(node_name, "duronly") == 0) {
-            SetDurOnly(json_as_bool(*current_node));
+            SetDurOnly(json_as_bool(*current_node) != 0);
         } else if (strcmp(node_name, "tags") == 0) {
             loadTagsFromJSONNode(*current_node);
         } else if (strcmp(node_name, "created_with") == 0) {

@@ -345,7 +345,7 @@ _Bool Context::displayError(const error err) {
 }
 
 void Context::scheduleSync() {
-    double elapsed_seconds = time(0) - last_sync_started_;
+    Poco::Int64 elapsed_seconds = Poco::Int64(time(0)) - last_sync_started_;
 
     {
         std::stringstream ss;
@@ -639,8 +639,9 @@ void Context::startPeriodicUpdateCheck() {
         new Poco::Util::TimerTaskAdapter<Context>
     (*this, &Context::onPeriodicUpdateCheck);
 
-    Poco::Timestamp next_periodic_check_at =
-        Poco::Timestamp() + (kCheckUpdateIntervalSeconds * kOneSecondInMicros);
+	Poco::UInt64 micros = kCheckUpdateIntervalSeconds *
+		Poco::UInt64(kOneSecondInMicros);
+    Poco::Timestamp next_periodic_check_at = Poco::Timestamp() + micros;
     Poco::Mutex::ScopedLock lock(timer_m_);
     timer_.schedule(ptask, next_periodic_check_at);
 }

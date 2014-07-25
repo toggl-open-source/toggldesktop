@@ -337,7 +337,7 @@ int Formatter::parseDurationFromDecimal(const std::string value) {
         std::string numbers = value.substr(0, pos);
         double hours = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, hours)) {
-            return hours * 60 * 60;
+            return static_cast<int>(hours * 60 * 60);
         }
     }
 
@@ -346,7 +346,7 @@ int Formatter::parseDurationFromDecimal(const std::string value) {
         std::string numbers = value.substr(0, pos);
         double hours = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, hours)) {
-            return hours * 60 * 60;
+            return static_cast<int>(hours * 60 * 60);
         }
     }
 
@@ -356,7 +356,7 @@ int Formatter::parseDurationFromDecimal(const std::string value) {
         std::string numbers = value.substr(0, pos);
         double minutes = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, minutes)) {
-            return minutes * 60;
+            return static_cast<int>(minutes * 60);
         }
     }
 
@@ -366,7 +366,7 @@ int Formatter::parseDurationFromDecimal(const std::string value) {
         std::string numbers = value.substr(0, pos);
         double seconds = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, seconds)) {
-            return seconds;
+			return static_cast<int>(seconds);
         }
     }
 
@@ -380,9 +380,9 @@ int Formatter::parseDurationFromDecimal(const std::string value) {
             numbers = value.substr(pos+1, std::string::npos);
             double minutes = 0;
             if (Poco::NumberParser::tryParseFloat(numbers, minutes)) {
-                return (hours * 60 * 60) + (minutes * 60);
+				return static_cast<int>((hours * 60 * 60) + (minutes * 60));
             }
-            return hours * 60 * 60;
+			return static_cast<int>(hours * 60 * 60);
         }
     }
 
@@ -392,7 +392,7 @@ int Formatter::parseDurationFromDecimal(const std::string value) {
         std::string numbers = value.substr(0, pos);
         double minutes = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, minutes)) {
-            return minutes * 60;
+			return static_cast<int>(minutes * 60);
         }
     }
 
@@ -402,7 +402,7 @@ int Formatter::parseDurationFromDecimal(const std::string value) {
         std::string numbers = value.substr(0, pos);
         double seconds = 0;
         if (Poco::NumberParser::tryParseFloat(numbers, seconds)) {
-            return seconds;
+			return static_cast<int>(seconds);
         }
     }
 
@@ -417,7 +417,7 @@ int Formatter::parseDurationFromDecimal(const std::string value) {
     // 1,5
     double hours = 0;
     if (Poco::NumberParser::tryParseFloat(value, hours)) {
-        return hours * 60 * 60;
+		return static_cast<int>(hours * 60 * 60);
     }
 
     return 0;

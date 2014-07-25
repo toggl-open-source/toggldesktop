@@ -100,7 +100,7 @@ bool IsDeletedAtServer(JSONNODE * const data) {
 }
 
 bool IsValid(const std::string json) {
-    return json_is_valid(json.c_str());
+    return json_is_valid(json.c_str()) != 0;
 }
 
 error LoadTags(

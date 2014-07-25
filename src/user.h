@@ -68,7 +68,7 @@ class User : public BaseModel {
 
     TimeEntry *RunningTimeEntry() const;
     bool IsTracking() const {
-        return RunningTimeEntry();
+        return RunningTimeEntry() != 0;
     }
 
     bool HasTrackedTimeToday() const;
