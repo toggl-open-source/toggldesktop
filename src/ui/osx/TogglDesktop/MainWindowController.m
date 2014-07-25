@@ -66,7 +66,7 @@ extern void *ctx;
 	return self;
 }
 
-- (void)addErrorBoxContraint
+- (void)addErrorBoxConstraint
 {
 	if (!self.contentViewTop)
 	{
@@ -94,7 +94,7 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	if (cmd.open)
 	{
-		[self addErrorBoxContraint];
+		[self addErrorBoxConstraint];
 		[self.contentView addSubview:self.loginViewController.view];
 		[self.loginViewController.view setFrame:self.contentView.bounds];
 		[self.loginViewController.email becomeFirstResponder];
@@ -120,7 +120,7 @@ extern void *ctx;
 		{
 			[self closeError];
 		}
-		[self addErrorBoxContraint];
+		[self addErrorBoxConstraint];
 		[self.contentView addSubview:self.timeEntryListViewController.view];
 		[self.timeEntryListViewController.view setFrame:self.contentView.bounds];
 
