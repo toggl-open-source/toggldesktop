@@ -381,12 +381,12 @@ extern int kDurationStringLength;
 		[self.endTime setStringValue:self.timeEntry.endTimeString];
 		self.endTimeChanged = NO;
 	}
-
+	BOOL running = (self.timeEntry.duration_in_seconds >= 0);
 	[self.startDate setDateValue:self.timeEntry.started];
+	[self.startDate setEnabled:running];
+	[self.startDate setDrawsBackground:running];
 
-	[self.startDate setEnabled:(self.timeEntry.duration_in_seconds >= 0)];
-
-	[self.endTime setHidden:(self.timeEntry.duration_in_seconds < 0)];
+	[self.endTime setHidden:!running];
 
 	[self.startEndTimeBox setHidden:self.timeEntry.durOnly];
 
