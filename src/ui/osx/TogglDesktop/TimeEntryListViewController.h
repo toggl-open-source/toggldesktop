@@ -10,6 +10,7 @@
 #import "kopsik_api.h"
 #import "NSUnstripedTableView.h"
 #import "NSViewEscapable.h"
+#import "NSTextFieldClickable.h"
 
 @interface TimeEntryListViewController : NSViewController {
 	@private
@@ -20,5 +21,7 @@
 @property (strong) IBOutlet NSPopover *timeEntrypopover;
 @property (strong) IBOutlet NSViewController *timeEntrypopoverViewController;
 @property (strong) IBOutlet NSViewEscapable *timeEntryPopupEditView;
+@property (strong) IBOutlet NSScrollView *timeEntryListScrollView;
 - (IBAction)performClick:(id)sender;
+@property (strong) IBOutlet NSTextFieldClickable *emptyLabel;
 @end

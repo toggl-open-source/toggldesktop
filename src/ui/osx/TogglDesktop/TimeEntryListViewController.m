@@ -16,6 +16,7 @@
 #import "UIEvents.h"
 #import "DisplayCommand.h"
 #import "TimeEntryEditViewController.h"
+#import "ConvertHexColor.h"
 
 @interface TimeEntryListViewController ()
 @property (nonatomic, strong) IBOutlet TimerEditViewController *timerEditViewController;
@@ -98,6 +99,29 @@ extern void *ctx;
 	[self.timeEntryPopupEditView addSubview:self.timeEntryEditViewController.view];
 	[self.timeEntryEditViewController.view setFrame:self.timeEntryPopupEditView.bounds];
 	self.defaultPopupHeight = 220;
+
+	[self setupEmptyLabel];
+}
+
+- (void)setupEmptyLabel
+{
+	NSMutableParagraphStyle *paragrapStyle = NSMutableParagraphStyle.new;
+
+	paragrapStyle.alignment                = kCTTextAlignmentCenter;
+
+	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@" reports"];
+
+	[string setAttributes:
+	 @{
+		 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+		 NSForegroundColorAttributeName:[NSColor alternateSelectedControlColor]
+	 }
+					range:NSMakeRange(0, [string length])];
+	NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:@"Welcome back! Your previous entries are available in the web under" attributes:
+									   @{ NSParagraphStyleAttributeName:paragrapStyle }];
+	[text appendAttributedString:string];
+	[self.emptyLabel setAttributedStringValue:text];
+	[self.emptyLabel setAlignment:NSCenterTextAlignment];
 }
 
 - (void)startDisplayTimeEntryList:(NSNotification *)notification
@@ -126,6 +150,8 @@ extern void *ctx;
 		[self setDefaultPopupHeight];
 		self.selectedRowView = nil;
 	}
+
+	[self.timeEntryListScrollView setHidden:!(self.timeEntriesTableView.numberOfRows > 0)];
 }
 
 - (BOOL)popoverShouldClose:(NSPopover *)popover
@@ -351,6 +377,14 @@ extern void *ctx;
 	{
 		[self.timeEntrypopover close];
 		[self setDefaultPopupHeight];
+	}
+}
+
+- (void)textFieldClicked:(id)sender
+{
+	if (sender == self.emptyLabel)
+	{
+		kopsik_open_in_browser(ctx);
 	}
 }
 

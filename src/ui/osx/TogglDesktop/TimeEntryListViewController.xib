@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="14A238x" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment version="1070" identifier="macosx"/>
+        <deployment version="1070" defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimeEntryListViewController">
             <connections>
+                <outlet property="emptyLabel" destination="6qy-lU-tSK" id="gDu-GF-iBp"/>
                 <outlet property="headerView" destination="OXo-Tz-Vbz" id="vDf-yG-fnR"/>
                 <outlet property="timeEntriesTableView" destination="kSc-tv-Cw1" id="W2U-dC-rBu"/>
+                <outlet property="timeEntryListScrollView" destination="fu8-w4-kYq" id="V9k-N4-LGk"/>
                 <outlet property="timeEntryPopupEditView" destination="ozl-58-bBU" id="Tv3-fj-eCx"/>
                 <outlet property="timeEntrypopover" destination="dIa-oe-UAP" id="CwJ-50-ejV"/>
                 <outlet property="timeEntrypopoverViewController" destination="U32-F3-bea" id="AQr-DI-TYB"/>
@@ -108,14 +110,29 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6qy-lU-tSK" customClass="NSTextFieldClickable">
+                    <rect key="frame" x="15" y="60" width="222" height="100"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" enabled="NO" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="Welcome back! Your previous entries are available in the web under reports" id="kLq-fS-jvh">
+                        <font key="font" metaFont="system" size="15"/>
+                        <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <outlet property="delegate" destination="-2" id="la5-2j-euY"/>
+                    </connections>
+                </textField>
             </subviews>
             <constraints>
+                <constraint firstItem="6qy-lU-tSK" firstAttribute="top" secondItem="OXo-Tz-Vbz" secondAttribute="bottom" constant="25" id="1aS-BJ-Gna"/>
+                <constraint firstAttribute="trailing" secondItem="6qy-lU-tSK" secondAttribute="trailing" constant="15" id="9aY-Zc-xxO"/>
                 <constraint firstItem="fu8-w4-kYq" firstAttribute="leading" secondItem="3" secondAttribute="leading" id="Kzp-8f-L6N"/>
                 <constraint firstAttribute="trailing" secondItem="fu8-w4-kYq" secondAttribute="trailing" id="Mw2-Bk-0wN"/>
                 <constraint firstItem="fu8-w4-kYq" firstAttribute="top" secondItem="3" secondAttribute="top" constant="55" id="Wwe-Qg-cEG"/>
                 <constraint firstItem="OXo-Tz-Vbz" firstAttribute="top" secondItem="3" secondAttribute="top" constant="-1" id="cFn-Dr-igO"/>
                 <constraint firstAttribute="trailing" secondItem="OXo-Tz-Vbz" secondAttribute="trailing" constant="-1" id="dob-uI-NdT"/>
                 <constraint firstItem="fu8-w4-kYq" firstAttribute="top" secondItem="OXo-Tz-Vbz" secondAttribute="bottom" id="ihN-op-Ey5"/>
+                <constraint firstItem="6qy-lU-tSK" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="17" id="jg9-bq-ybM"/>
                 <constraint firstAttribute="bottom" secondItem="fu8-w4-kYq" secondAttribute="bottom" id="tZR-YL-cvO"/>
                 <constraint firstItem="OXo-Tz-Vbz" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="-1" id="twv-Me-Ne4"/>
             </constraints>
