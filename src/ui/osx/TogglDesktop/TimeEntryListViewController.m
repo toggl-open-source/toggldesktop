@@ -152,6 +152,7 @@ extern void *ctx;
 	}
 
 	[self.timeEntryListScrollView setHidden:!(self.timeEntriesTableView.numberOfRows > 0)];
+	[self.emptyLabel setEnabled:!(self.timeEntriesTableView.numberOfRows > 0)];
 }
 
 - (BOOL)popoverShouldClose:(NSPopover *)popover
@@ -382,7 +383,7 @@ extern void *ctx;
 
 - (void)textFieldClicked:(id)sender
 {
-	if (sender == self.emptyLabel)
+	if (sender == self.emptyLabel && [self.emptyLabel isEnabled])
 	{
 		kopsik_open_in_browser(ctx);
 	}
