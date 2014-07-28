@@ -411,6 +411,9 @@
       <property name="rightMargin">
        <number>0</number>
       </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QLabel" name="label_3">
         <property name="minimumSize">
@@ -445,6 +448,9 @@
       <property name="leftMargin">
        <number>0</number>
       </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
       <item>
        <spacer name="horizontalSpacer_3">
         <property name="orientation">
@@ -455,7 +461,7 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>105</width>
+          <width>115</width>
           <height>20</height>
          </size>
         </property>
