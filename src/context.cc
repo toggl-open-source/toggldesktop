@@ -639,8 +639,8 @@ void Context::startPeriodicUpdateCheck() {
         new Poco::Util::TimerTaskAdapter<Context>
     (*this, &Context::onPeriodicUpdateCheck);
 
-	Poco::UInt64 micros = kCheckUpdateIntervalSeconds *
-		Poco::UInt64(kOneSecondInMicros);
+    Poco::UInt64 micros = kCheckUpdateIntervalSeconds *
+                          Poco::UInt64(kOneSecondInMicros);
     Poco::Timestamp next_periodic_check_at = Poco::Timestamp() + micros;
     Poco::Mutex::ScopedLock lock(timer_m_);
     timer_.schedule(ptask, next_periodic_check_at);

@@ -100,7 +100,7 @@ error WebSocketClient::createSession() {
             context);
         if (HTTPSClient::ProxySettings.IsConfigured()) {
             session_->setProxy(
-				HTTPSClient::ProxySettings.host,
+                HTTPSClient::ProxySettings.host,
                 static_cast<Poco::UInt16>(HTTPSClient::ProxySettings.port));
             if (HTTPSClient::ProxySettings.HasCredentials()) {
                 session_->setProxyCredentials(

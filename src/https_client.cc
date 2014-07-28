@@ -118,7 +118,7 @@ error HTTPSClient::request(
                                               context);
         if (UseProxy && ProxySettings.IsConfigured()) {
             session.setProxy(ProxySettings.host,
-				static_cast<Poco::UInt16>(ProxySettings.port));
+                             static_cast<Poco::UInt16>(ProxySettings.port));
             if (ProxySettings.HasCredentials()) {
                 session.setProxyCredentials(ProxySettings.username,
                                             ProxySettings.password);
