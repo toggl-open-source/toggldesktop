@@ -804,27 +804,53 @@ void User::loadUserAndRelatedDataFromJSONNode(
 
     poco_check_ptr(data);
 
+    Poco::UInt64 id(0);
+    Poco::UInt64 default_wid(0);
+    std::string api_token("");
+    std::string email("");
+    std::string fullname("");
+    bool record_timeline(false);
+    bool store_start_and_stop_time(false);
+    std::string timeofday_format("");
+
     JSONNODE_ITERATOR n = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (n != last_node) {
         json_char *node_name = json_name(*n);
         if (strcmp(node_name, "id") == 0) {
-            SetID(json_as_int(*n));
+            id = json_as_int(*n);
         } else if (strcmp(node_name, "default_wid") == 0) {
-            SetDefaultWID(json_as_int(*n));
+            default_wid = json_as_int(*n);
         } else if (strcmp(node_name, "api_token") == 0) {
-            SetAPIToken(std::string(json_as_string(*n)));
+            api_token = std::string(json_as_string(*n));
         } else if (strcmp(node_name, "email") == 0) {
-            SetEmail(std::string(json_as_string(*n)));
+            email = std::string(json_as_string(*n));
         } else if (strcmp(node_name, "fullname") == 0) {
-            SetFullname(std::string(json_as_string(*n)));
+            fullname = std::string(json_as_string(*n));
         } else if (strcmp(node_name, "record_timeline") == 0) {
-            SetRecordTimeline(json_as_bool(*n) != 0);
+            record_timeline = json_as_bool(*n) != 0;
         } else if (strcmp(node_name, "store_start_and_stop_time") == 0) {
-            SetStoreStartAndStopTime(json_as_bool(*n) != 0);
+            store_start_and_stop_time = json_as_bool(*n) != 0;
         } else if (strcmp(node_name, "timeofday_format") == 0) {
-            SetTimeOfDayFormat(std::string(json_as_string(*n)));
-        } else if (strcmp(node_name, "projects") == 0) {
+            timeofday_format = std::string(json_as_string(*n));
+        }
+        ++n;
+    }
+
+    SetID(id);
+    SetDefaultWID(default_wid);
+    SetAPIToken(api_token);
+    SetEmail(email);
+    SetFullname(fullname);
+    SetRecordTimeline(record_timeline);
+    SetStoreStartAndStopTime(store_start_and_stop_time);
+    SetTimeOfDayFormat(timeofday_format);
+
+    n = json_begin(data);
+    last_node = json_end(data);
+    while (n != last_node) {
+        json_char *node_name = json_name(*n);
+        if (strcmp(node_name, "projects") == 0) {
             loadUserProjectsFromJSONNode(*n);
         } else if (strcmp(node_name, "tags") == 0) {
             loadUserTagsFromJSONNode(*n);

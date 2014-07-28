@@ -44,6 +44,8 @@ void BatchUpdateResult::LoadFromJSONNode(JSONNODE * const n) {
     Body = "";
     GUID = "";
     ContentType = "";
+    Method = "";
+
     JSONNODE_ITERATOR i = json_begin(n);
     JSONNODE_ITERATOR e = json_end(n);
     while (i != e) {

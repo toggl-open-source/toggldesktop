@@ -325,41 +325,69 @@ void TimeEntry::LoadFromJSONNode(JSONNODE * const data) {
         return;
     }
 
+    Poco::UInt64 id(0);
+    std::string description("");
+    std::string guid("");
+    Poco::UInt64 wid(0);
+    Poco::UInt64 pid(0);
+    Poco::UInt64 tid(0);
+    std::string start_string("");
+    std::string stop_string("");
+    Poco::Int64 duration_in_seconds(0);
+    bool billable(false);
+    bool duronly(false);
+    std::string created_with("");
+    std::string updated_at_string("");
+
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
         json_char *node_name = json_name(*current_node);
         if (strcmp(node_name, "id") == 0) {
-            SetID(json_as_int(*current_node));
+            id = json_as_int(*current_node);
         } else if (strcmp(node_name, "description") == 0) {
-            SetDescription(std::string(json_as_string(*current_node)));
+            description = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "guid") == 0) {
-            SetGUID(std::string(json_as_string(*current_node)));
+            guid = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "wid") == 0) {
-            SetWID(json_as_int(*current_node));
+            wid = json_as_int(*current_node);
         } else if (strcmp(node_name, "pid") == 0) {
-            SetPID(json_as_int(*current_node));
+            pid = json_as_int(*current_node);
         } else if (strcmp(node_name, "tid") == 0) {
-            SetTID(json_as_int(*current_node));
+            tid = json_as_int(*current_node);
         } else if (strcmp(node_name, "start") == 0) {
-            SetStartString(std::string(json_as_string(*current_node)));
+            start_string = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "stop") == 0) {
-            SetStopString(std::string(json_as_string(*current_node)));
+            stop_string = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "duration") == 0) {
-            SetDurationInSeconds(json_as_int(*current_node));
+            duration_in_seconds = json_as_int(*current_node);
         } else if (strcmp(node_name, "billable") == 0) {
-            SetBillable(json_as_bool(*current_node) != 0);
+            billable = json_as_bool(*current_node) != 0;
         } else if (strcmp(node_name, "duronly") == 0) {
-            SetDurOnly(json_as_bool(*current_node) != 0);
+            duronly = json_as_bool(*current_node) != 0;
         } else if (strcmp(node_name, "tags") == 0) {
             loadTagsFromJSONNode(*current_node);
         } else if (strcmp(node_name, "created_with") == 0) {
-            SetCreatedWith(std::string(json_as_string(*current_node)));
+            created_with = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "at") == 0) {
-            SetUpdatedAtString(std::string(json_as_string(*current_node)));
+            updated_at_string = std::string(json_as_string(*current_node));
         }
         ++current_node;
     }
+
+    SetID(id);
+    SetDescription(description);
+    SetGUID(guid);
+    SetWID(wid);
+    SetPID(pid);
+    SetTID(tid);
+    SetStartString(start_string);
+    SetStopString(stop_string);
+    SetDurationInSeconds(duration_in_seconds);
+    SetBillable(billable);
+    SetDurOnly(duronly);
+    SetCreatedWith(created_with);
+    SetUpdatedAtString(updated_at_string);
 
     SetUIModifiedAt(0);
 }

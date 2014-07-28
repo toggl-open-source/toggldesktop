@@ -38,21 +38,31 @@ bool CompareClientByName(Client *a, Client *b) {
 void Client::LoadFromJSONNode(JSONNODE * const data) {
     poco_check_ptr(data);
 
+    Poco::UInt64 id(0);
+    std::string name("");
+    std::string guid("");
+    Poco::UInt64 wid(0);
+
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
         json_char *node_name = json_name(*current_node);
         if (strcmp(node_name, "id") == 0) {
-            SetID(json_as_int(*current_node));
+            id = json_as_int(*current_node);
         } else if (strcmp(node_name, "name") == 0) {
-            SetName(std::string(json_as_string(*current_node)));
+            name = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "guid") == 0) {
-            SetGUID(std::string(json_as_string(*current_node)));
+            guid = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "wid") == 0) {
-            SetWID(json_as_int(*current_node));
+            wid = json_as_int(*current_node);
         }
         ++current_node;
     }
+
+    SetID(id);
+    SetName(name);
+    SetGUID(guid);
+    SetWID(wid);
 }
 
 }   // namespace kopsik

@@ -104,29 +104,47 @@ void Project::SetCID(const Poco::UInt64 value) {
 void Project::LoadFromJSONNode(JSONNODE * const data) {
     poco_check_ptr(data);
 
+    Poco::UInt64 id(0);
+    std::string name("");
+    std::string guid("");
+    Poco::UInt64 wid(0);
+    Poco::UInt64 cid(0);
+    std::string color("");
+    bool active(false);
+    bool billable(false);
+
     JSONNODE_ITERATOR current_node = json_begin(data);
     JSONNODE_ITERATOR last_node = json_end(data);
     while (current_node != last_node) {
         json_char *node_name = json_name(*current_node);
         if (strcmp(node_name, "id") == 0) {
-            SetID(json_as_int(*current_node));
+            id = json_as_int(*current_node);
         } else if (strcmp(node_name, "name") == 0) {
-            SetName(std::string(json_as_string(*current_node)));
+            name = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "guid") == 0) {
-            SetGUID(std::string(json_as_string(*current_node)));
+            guid = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "wid") == 0) {
-            SetWID(json_as_int(*current_node));
+            wid = json_as_int(*current_node);
         } else if (strcmp(node_name, "cid") == 0) {
-            SetCID(json_as_int(*current_node));
+            cid = json_as_int(*current_node);
         } else if (strcmp(node_name, "color") == 0) {
-            SetColor(std::string(json_as_string(*current_node)));
+            color = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "active") == 0) {
-            SetActive(json_as_bool(*current_node) ? true : false);
+            active = json_as_bool(*current_node) != 0;
         } else if (strcmp(node_name, "billable") == 0) {
-            SetBillable(json_as_bool(*current_node) ? true : false);
+            billable = json_as_bool(*current_node) != 0;
         }
         ++current_node;
     }
+
+    SetID(id);
+    SetName(name);
+    SetGUID(guid);
+    SetWID(wid);
+    SetCID(cid);
+    SetColor(color);
+    SetActive(active);
+    SetBillable(billable);
 }
 
 JSONNODE *Project::SaveToJSONNode() const {
