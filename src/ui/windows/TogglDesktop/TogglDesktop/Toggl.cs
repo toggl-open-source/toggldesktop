@@ -354,23 +354,26 @@ namespace TogglDesktop
 
         // CA cert bundle path must be configured from UI
 
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        private static extern void kopsik_set_cacert_path(
+        [DllImport(dll, CharSet = CharSet.Unicode, CallingConvention = convention)]
+        private static extern void kopsik_set_cacert_path_utf16(
             IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string path);
 
         // DB path must be configured from UI
 
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [DllImport(dll, CharSet = CharSet.Unicode, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        private static extern bool kopsik_set_db_path(
+        private static extern bool kopsik_set_db_path_utf16(
             IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string path);
 
         // Log path must be configured from UI
 
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        private static extern void kopsik_set_log_path(
+        [DllImport(dll, CharSet = CharSet.Unicode, CallingConvention = convention)]
+        private static extern void kopsik_set_log_path_utf16(
+            [MarshalAs(UnmanagedType.LPWStr)]
             string path);
 
         // Log level is optional
@@ -1009,7 +1012,7 @@ namespace TogglDesktop
             string cacert_path = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory,
                 "cacert.pem");
-            kopsik_set_cacert_path(ctx, cacert_path);
+            kopsik_set_cacert_path_utf16(ctx, cacert_path);
 
             kopsik_check_view_item_size(
                 Marshal.SizeOf(new TimeEntry()),
@@ -1131,11 +1134,11 @@ namespace TogglDesktop
             string path = Path.Combine(Environment.GetFolderPath(
                 Environment.SpecialFolder.ApplicationData), "Kopsik");
             System.IO.Directory.CreateDirectory(path);
-            string log_path = Path.Combine(path, "kopsik.log");
-            kopsik_set_log_path(log_path);
+            string logPath = Path.Combine(path, "kopsik.log");
+            kopsik_set_log_path_utf16(logPath);
             kopsik_set_log_level("debug");
             string databasePath = Path.Combine(path, "kopsik.db");
-            if (!kopsik_set_db_path(ctx, EncodeString(databasePath)))
+            if (!kopsik_set_db_path_utf16(ctx, databasePath))
             {
                 throw new System.Exception("Failed to initialize database at " + databasePath);
             }

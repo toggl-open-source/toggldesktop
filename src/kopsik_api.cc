@@ -22,9 +22,7 @@
 #include "Poco/Bugcheck.h"
 #include "Poco/Path.h"
 #include "Poco/Logger.h"
-#include "Poco/SimpleFileChannel.h"
-#include "Poco/FormattingChannel.h"
-#include "Poco/PatternFormatter.h"
+#include "Poco/UnicodeConverter.h"
 
 inline Poco::Logger &logger() {
     return Poco::Logger::get("kopsik_api");
@@ -113,11 +111,18 @@ void kopsik_set_cacert_path(
     const char *path) {
     poco_check_ptr(path);
 
-    std::stringstream ss;
-    ss << "kopsik_set_cacert_path path=" << path;
-    logger().debug(ss.str());
-
     kopsik::HTTPSClient::CACertPath = std::string(path);
+}
+
+void kopsik_set_cacert_path_utf16(
+	void *context,
+	const wchar_t *path) {
+	poco_check_ptr(path);
+
+	std::string utf8("");
+	Poco::UnicodeConverter::toUTF8(path, utf8);
+
+	kopsik::HTTPSClient::CACertPath = utf8;
 }
 
 _Bool kopsik_set_db_path(
@@ -125,11 +130,18 @@ _Bool kopsik_set_db_path(
     const char *path) {
     poco_check_ptr(path);
 
-    std::stringstream ss;
-    ss << "kopsik_set_db_path path=" << path;
-    logger().debug(ss.str());
-
     return app(context)->SetDBPath(std::string(path));
+}
+
+_Bool kopsik_set_db_path_utf16(
+	void *context,
+	const wchar_t *path) {
+	poco_check_ptr(path);
+
+	std::string utf8("");
+	Poco::UnicodeConverter::toUTF8(path, utf8);
+
+	return app(context)->SetDBPath(utf8);
 }
 
 void kopsik_set_environment(
@@ -147,21 +159,18 @@ void kopsik_disable_update_check(
 }
 
 void kopsik_set_log_path(const char *path) {
-    poco_check_ptr(path);
+	poco_check_ptr(path);
 
-    Poco::AutoPtr<Poco::SimpleFileChannel> simpleFileChannel(
-        new Poco::SimpleFileChannel);
-    simpleFileChannel->setProperty("path", path);
-    simpleFileChannel->setProperty("rotation", "1 M");
+	kopsik::Context::SetLogPath(std::string(path));
+}
 
-    Poco::AutoPtr<Poco::FormattingChannel> formattingChannel(
-        new Poco::FormattingChannel(
-            new Poco::PatternFormatter(
-                "%Y-%m-%d %H:%M:%S.%i [%P %I]:%s:%q:%t")));
-    formattingChannel->setChannel(simpleFileChannel);
+void kopsik_set_log_path_utf16(const wchar_t *path) {
+	poco_check_ptr(path);
 
-    rootLogger().setChannel(formattingChannel);
-    rootLogger().setLevel(Poco::Message::PRIO_DEBUG);
+	std::string utf8("");
+	Poco::UnicodeConverter::toUTF8(path, utf8);
+
+	kopsik::Context::SetLogPath(utf8);
 }
 
 void kopsik_set_log_level(const char *level) {
