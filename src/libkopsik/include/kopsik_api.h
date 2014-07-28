@@ -193,9 +193,9 @@ extern "C" {
         void *context,
         const char *path);
 
-	KOPSIK_EXPORT void kopsik_set_cacert_path_utf16(
-		void *context,
-		const wchar_t *path);
+    KOPSIK_EXPORT void kopsik_set_cacert_path_utf16(
+        void *context,
+        const wchar_t *path);
 
     // DB path must be configured from UI
 
@@ -203,17 +203,17 @@ extern "C" {
         void *context,
         const char *path);
 
-	KOPSIK_EXPORT _Bool kopsik_set_db_path_utf16(
-		void *context,
-		const wchar_t *path);
+    KOPSIK_EXPORT _Bool kopsik_set_db_path_utf16(
+        void *context,
+        const wchar_t *path);
 
     // Log path must be configured from UI
 
     KOPSIK_EXPORT void kopsik_set_log_path(
         const char *path);
 
-	KOPSIK_EXPORT void kopsik_set_log_path_utf16(
-		const wchar_t *path);
+    KOPSIK_EXPORT void kopsik_set_log_path_utf16(
+        const wchar_t *path);
 
     // Log level is optional
 

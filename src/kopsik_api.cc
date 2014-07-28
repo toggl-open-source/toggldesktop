@@ -115,14 +115,14 @@ void kopsik_set_cacert_path(
 }
 
 void kopsik_set_cacert_path_utf16(
-	void *context,
-	const wchar_t *path) {
-	poco_check_ptr(path);
+    void *context,
+    const wchar_t *path) {
+    poco_check_ptr(path);
 
-	std::string utf8("");
-	Poco::UnicodeConverter::toUTF8(path, utf8);
+    std::string utf8("");
+    Poco::UnicodeConverter::toUTF8(path, utf8);
 
-	kopsik::HTTPSClient::CACertPath = utf8;
+    kopsik::HTTPSClient::CACertPath = utf8;
 }
 
 _Bool kopsik_set_db_path(
@@ -134,14 +134,14 @@ _Bool kopsik_set_db_path(
 }
 
 _Bool kopsik_set_db_path_utf16(
-	void *context,
-	const wchar_t *path) {
-	poco_check_ptr(path);
+    void *context,
+    const wchar_t *path) {
+    poco_check_ptr(path);
 
-	std::string utf8("");
-	Poco::UnicodeConverter::toUTF8(path, utf8);
+    std::string utf8("");
+    Poco::UnicodeConverter::toUTF8(path, utf8);
 
-	return app(context)->SetDBPath(utf8);
+    return app(context)->SetDBPath(utf8);
 }
 
 void kopsik_set_environment(
@@ -159,18 +159,18 @@ void kopsik_disable_update_check(
 }
 
 void kopsik_set_log_path(const char *path) {
-	poco_check_ptr(path);
+    poco_check_ptr(path);
 
-	kopsik::Context::SetLogPath(std::string(path));
+    kopsik::Context::SetLogPath(std::string(path));
 }
 
 void kopsik_set_log_path_utf16(const wchar_t *path) {
-	poco_check_ptr(path);
+    poco_check_ptr(path);
 
-	std::string utf8("");
-	Poco::UnicodeConverter::toUTF8(path, utf8);
+    std::string utf8("");
+    Poco::UnicodeConverter::toUTF8(path, utf8);
 
-	kopsik::Context::SetLogPath(utf8);
+    kopsik::Context::SetLogPath(utf8);
 }
 
 void kopsik_set_log_level(const char *level) {

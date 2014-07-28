@@ -176,20 +176,20 @@ class Context {
 
     void SetIdleSeconds(const Poco::UInt64 idle_seconds);
 
-	static void SetLogPath(const std::string path) {
-		Poco::AutoPtr<Poco::SimpleFileChannel> simpleFileChannel(
-			new Poco::SimpleFileChannel);
-		simpleFileChannel->setProperty("path", path);
-		simpleFileChannel->setProperty("rotation", "1 M");
+    static void SetLogPath(const std::string path) {
+        Poco::AutoPtr<Poco::SimpleFileChannel> simpleFileChannel(
+            new Poco::SimpleFileChannel);
+        simpleFileChannel->setProperty("path", path);
+        simpleFileChannel->setProperty("rotation", "1 M");
 
-		Poco::AutoPtr<Poco::FormattingChannel> formattingChannel(
-			new Poco::FormattingChannel(
-			new Poco::PatternFormatter(
-			"%Y-%m-%d %H:%M:%S.%i [%P %I]:%s:%q:%t")));
-		formattingChannel->setChannel(simpleFileChannel);
+        Poco::AutoPtr<Poco::FormattingChannel> formattingChannel(
+            new Poco::FormattingChannel(
+                new Poco::PatternFormatter(
+                    "%Y-%m-%d %H:%M:%S.%i [%P %I]:%s:%q:%t")));
+        formattingChannel->setChannel(simpleFileChannel);
 
-		Poco::Logger::get("").setChannel(formattingChannel);
-	}
+        Poco::Logger::get("").setChannel(formattingChannel);
+    }
 
  protected:
     void handleCreateTimelineBatchNotification(

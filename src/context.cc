@@ -967,11 +967,11 @@ _Bool Context::DisplaySettings(const _Bool open) {
 _Bool Context::SetDBPath(
     const std::string path) {
     try {
-		std::stringstream ss;
-		ss << "SetDBPath " << path;
-		logger().debug(ss.str());
+        std::stringstream ss;
+        ss << "SetDBPath " << path;
+        logger().debug(ss.str());
 
-		Poco::Mutex::ScopedLock lock(db_m_);
+        Poco::Mutex::ScopedLock lock(db_m_);
         if (db_) {
             delete db_;
             db_ = 0;
