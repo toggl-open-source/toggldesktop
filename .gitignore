@@ -102,7 +102,7 @@ src/libkopsik/TogglDesktopDLL/TogglDesktopDLL/Release
 
 *.dSYM
 
-third_party/plcrashreporter-1.2-rc4/build
+third_party/plcrashreporter/build
 
 *.sdf
 *.opensdf

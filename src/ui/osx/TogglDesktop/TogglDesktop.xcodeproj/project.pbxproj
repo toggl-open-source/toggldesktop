@@ -345,7 +345,7 @@
 		748B3A3219222DB100F31468 /* DisplayCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayCommand.h; sourceTree = "<group>"; };
 		748B3A3319222DB100F31468 /* DisplayCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayCommand.m; sourceTree = "<group>"; };
 		7498D2471888B226001390B9 /* TimeEntryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeEntryCell.xib; sourceTree = "<group>"; };
-		749A3A4318D889BD000AD2DB /* CrashReporter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CrashReporter.xcodeproj; path = "../../../../third_party/plcrashreporter-1.2-rc4/CrashReporter.xcodeproj"; sourceTree = "<group>"; };
+		749A3A4318D889BD000AD2DB /* CrashReporter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CrashReporter.xcodeproj; path = "../../../../third_party/plcrashreporter/CrashReporter.xcodeproj"; sourceTree = "<group>"; };
 		749BD0BB1833E28400980494 /* NSBoxClickable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSBoxClickable.h; sourceTree = "<group>"; };
 		749BD0BC1833E28400980494 /* NSBoxClickable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSBoxClickable.m; sourceTree = "<group>"; };
 		749CB8C918167D6E00814841 /* PreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesWindowController.h; sourceTree = SOURCE_ROOT; };
@@ -1264,7 +1264,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"$(SRCROOT)/../../../../third_party/plcrashreporter-1.2-rc4/**",
+					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
 					"$(SRCROOT)/../../../../third_party/TFDatePicker/TFDatePicker/build/Release",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1273,7 +1273,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../../../third_party/TFDatePicker/**",
-					"$(SRCROOT)/../../../../third_party/plcrashreporter-1.2-rc4/**",
+					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
 					"$(SRCROOT)/../../../libkopsik/include",
 				);
 				INFOPLIST_FILE = "test2/TogglDesktop-Info.plist";
@@ -1300,7 +1300,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"$(SRCROOT)/../../../../third_party/plcrashreporter-1.2-rc4/**",
+					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
 					"$(SRCROOT)/../../../../third_party/TFDatePicker/TFDatePicker/build/Release",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1309,7 +1309,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../../../third_party/TFDatePicker/**",
-					"$(SRCROOT)/../../../../third_party/plcrashreporter-1.2-rc4/**",
+					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
 					"$(SRCROOT)/../../../libkopsik/include",
 				);
 				INFOPLIST_FILE = "test2/TogglDesktop-Info.plist";
