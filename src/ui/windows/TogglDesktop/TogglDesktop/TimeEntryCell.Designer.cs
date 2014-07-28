@@ -110,6 +110,7 @@
             this.taskProjectPanel.Controls.Add(this.labelProject);
             this.taskProjectPanel.Controls.Add(this.labelClient);
             this.taskProjectPanel.Location = new System.Drawing.Point(12, 29);
+            this.taskProjectPanel.Margin = new System.Windows.Forms.Padding(0);
             this.taskProjectPanel.Name = "taskProjectPanel";
             this.taskProjectPanel.Size = new System.Drawing.Size(154, 17);
             this.taskProjectPanel.TabIndex = 15;
@@ -119,8 +120,8 @@
             // 
             this.labelTask.AutoSize = true;
             this.labelTask.Font = new System.Drawing.Font("Lucida Sans Unicode", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.labelTask.Location = new System.Drawing.Point(0, 0);
-            this.labelTask.Margin = new System.Windows.Forms.Padding(0);
+            this.labelTask.Location = new System.Drawing.Point(3, 0);
+            this.labelTask.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.labelTask.Name = "labelTask";
             this.labelTask.Size = new System.Drawing.Size(74, 16);
             this.labelTask.TabIndex = 10;
