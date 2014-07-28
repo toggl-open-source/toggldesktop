@@ -385,6 +385,11 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
 
     last_sync_started_ = time(0);
 
+    if (!user_) {
+        logger().warning("User is not logged in, cannot sync yet");
+        return;
+    }
+
     HTTPSClient client;
     error err = user_->PullAllUserData(&client);
     if (err != noError) {
