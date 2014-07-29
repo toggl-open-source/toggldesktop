@@ -497,6 +497,9 @@ std::time_t Formatter::Parse8601(const std::string iso_8601_formatted_date) {
     if ("null" == iso_8601_formatted_date) {
         return 0;
     }
+    if (iso_8601_formatted_date.empty()) {
+        return 0;
+    }
     int tzd;
     Poco::DateTime dt;
     if (!Poco::DateTimeParser::tryParse(Poco::DateTimeFormat::ISO8601_FORMAT,
