@@ -14,6 +14,7 @@ namespace TogglDesktop
     public partial class TimeEntryListViewController : UserControl
     {
         private Object rendering = new Object();
+        private DateTime lastRender;
 
         public TimeEntryListViewController()
         {
@@ -37,14 +38,14 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { OnTimeEntryList(open, list); });
                 return;
             }
-            DateTime start = DateTime.Now;
+            lastRender = DateTime.Now;
 
             lock (rendering)
             {
                 renderTimeEntryList(list);
             }
 
-            TimeSpan spent = DateTime.Now.Subtract(start);
+            TimeSpan spent = DateTime.Now.Subtract(lastRender);
             Console.WriteLine(String.Format(
                 "Time entries list view rendered in {0} ms",
                 spent.TotalMilliseconds));
@@ -132,5 +133,12 @@ namespace TogglDesktop
             Toggl.OpenInBrowser();
         }
 
+        internal void CheckDate()
+        {
+            if (!lastRender.Date.Equals(DateTime.Now.Date))
+            {
+                Toggl.ViewTimeEntryList();
+            }
+        }
     }
 }

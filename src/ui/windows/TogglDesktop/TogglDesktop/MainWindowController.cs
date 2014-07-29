@@ -511,5 +511,12 @@ namespace TogglDesktop
                 toggleVisibility();
             }
         }
+
+        private void MainWindowController_Activated(object sender, EventArgs e)
+        {
+            if (!contentPanel.Controls.Contains(timeEntryEditViewController)) {
+                timeEntryListViewController.CheckDate();
+            }
+        }
     }
 }
