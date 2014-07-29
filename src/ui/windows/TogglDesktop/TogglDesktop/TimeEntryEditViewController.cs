@@ -28,8 +28,19 @@ namespace TogglDesktop
             Toggl.OnTags += OnTags;
             Toggl.OnTimeEntryAutocomplete += OnTimeEntryAutocomplete;
             Toggl.OnProjectAutocomplete += OnProjectAutocomplete;
+
             checkedListBoxTags.DisplayMember = "Name";
             checkedListBoxTags.ValueMember = "Name";
+
+            comboBoxDescription.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
+            comboBoxProject.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
+            comboBoxClient.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
+            comboBoxWorkspace.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
+        }
+
+        private void ignoreMouseWheel(object sender, MouseEventArgs args)
+        {
+            ((HandledMouseEventArgs)args).Handled = true;
         }
 
         private void TimeEntryEditViewController_Load(object sender, EventArgs e)

@@ -16,6 +16,7 @@ namespace TogglDesktop
         private Int64 duration_in_seconds = 0;
         private UInt64 task_id = 0;
         private UInt64 project_id = 0;
+
         private List<Toggl.AutocompleteItem> timeEntryAutocompleteUpdate;
         private List<Toggl.AutocompleteItem> autoCompleteList;
 
@@ -30,7 +31,14 @@ namespace TogglDesktop
             Toggl.OnRunningTimerState += OnRunningTimerState;
             Toggl.OnStoppedTimerState += OnStoppedTimerState;
 
-            this.Anchor = (AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top);
+            Anchor = (AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top);
+
+            descriptionTextBox.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
+        }
+
+        private void ignoreMouseWheel(object sender, MouseEventArgs args)
+        {
+            ((HandledMouseEventArgs)args).Handled = true;
         }
 
         private void autoCompleteListBox_Click(object sender, EventArgs e)
