@@ -132,13 +132,5 @@ namespace TogglDesktop
         {
             Toggl.OpenInBrowser();
         }
-
-        internal void CheckDate()
-        {
-            if (!lastRender.Date.Equals(DateTime.Now.Date))
-            {
-                Toggl.ViewTimeEntryList();
-            }
-        }
     }
 }
