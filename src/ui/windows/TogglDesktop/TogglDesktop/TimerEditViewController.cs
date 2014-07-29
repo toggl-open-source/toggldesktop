@@ -25,6 +25,7 @@ namespace TogglDesktop
 
             descriptionTextBox.autoCompleteListBox.KeyDown += autoCompleteListBox_KeyDown;
             descriptionTextBox.autoCompleteListBox.Click += autoCompleteListBox_Click;
+
             Toggl.OnTimeEntryAutocomplete += OnTimeEntryAutocomplete;
             Toggl.OnRunningTimerState += OnRunningTimerState;
             Toggl.OnStoppedTimerState += OnStoppedTimerState;
@@ -164,11 +165,16 @@ namespace TogglDesktop
                 linkLabelProject.Visible = true;
                 descriptionTextBox.Top = projectDescriptionTop+1;
             }
+            else
+            {
+                linkLabelProject.Visible = false;
+                descriptionTextBox.Top = defaultDescriptionTop;
+            }
 
             linkLabelDescription.Top = descriptionTextBox.Top-1;
             linkLabelDescription.Left = descriptionTextBox.Left-3;
             linkLabelDescription.Text = te.Description;
-            if (linkLabelDescription.Text == "")
+            if (linkLabelDescription.Text.Length == 0)
             {
                 linkLabelDescription.Text = "(no description)";
             }
