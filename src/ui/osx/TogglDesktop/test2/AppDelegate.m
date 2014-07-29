@@ -932,7 +932,7 @@ const NSString *appName = @"osx_native_app";
 		return;
 	}
 
-	if (self.upgradeDialogVisible || self.aboutWindowController.window.isVisible)
+	if (self.upgradeDialogVisible || [self.aboutWindowController isVisible])
 	{
 		NSLog(@"Upgrade dialog already visible");
 		return;

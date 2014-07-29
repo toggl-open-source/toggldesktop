@@ -35,6 +35,17 @@ extern void *ctx;
 											   object:nil];
 
 	[self displayUpdate:self.displayCommand];
+
+	self.windowHasLoad = YES;
+}
+
+- (BOOL)isVisible
+{
+	if (!self.windowHasLoad)
+	{
+		return NO;
+	}
+	return self.window.isVisible;
 }
 
 - (IBAction)updateChannelSelected:(id)sender

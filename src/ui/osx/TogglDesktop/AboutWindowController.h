@@ -15,7 +15,9 @@
 @property IBOutlet NSTextView *creditsTextView;
 @property IBOutlet NSButton *checkForUpdateButton;
 @property IBOutlet NSComboBox *updateChannelComboBox;
+@property DisplayCommand *displayCommand;
+@property BOOL windowHasLoad;
 - (IBAction)checkForUpdateClicked:(id)sender;
 - (IBAction)updateChannelSelected:(id)sender;
-@property DisplayCommand *displayCommand;
+- (BOOL)isVisible;
 @end
