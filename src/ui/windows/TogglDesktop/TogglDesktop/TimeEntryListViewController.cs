@@ -127,5 +127,10 @@ namespace TogglDesktop
             entries.Focus();
         }
 
+        private void emptyLabel_Click(object sender, EventArgs e)
+        {
+            Toggl.OpenInBrowser();
+        }
+
     }
 }

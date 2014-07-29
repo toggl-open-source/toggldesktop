@@ -67,6 +67,7 @@
             this.emptyLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.emptyLabel.BackColor = System.Drawing.Color.Transparent;
+            this.emptyLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.emptyLabel.Font = new System.Drawing.Font("Lucida Sans Unicode", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.emptyLabel.ForeColor = System.Drawing.Color.Gray;
             this.emptyLabel.Location = new System.Drawing.Point(0, 56);
@@ -78,6 +79,7 @@
             this.emptyLabel.Text = "Welcome back! Your previous entries are available in the web under reports";
             this.emptyLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.emptyLabel.Visible = false;
+            this.emptyLabel.Click += new System.EventHandler(this.emptyLabel_Click);
             // 
             // timerEditViewController
             // 
