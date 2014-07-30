@@ -341,7 +341,7 @@ class Context {
 
     bool update_check_disabled_;
 
-	Poco::LocalDateTime lastRenderOfTimeEntries;
+    Poco::LocalDateTime lastRenderOfTimeEntries;
 };
 
 }  // namespace kopsik
