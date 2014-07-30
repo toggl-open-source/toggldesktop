@@ -27,7 +27,7 @@ make test
 
 Linux 
 -----
-On Ubuntu, you'll need to install the following packages ():
+On Ubuntu, you'll need to install the following packages:
 
 * xorg-dev
 * qtcreator
