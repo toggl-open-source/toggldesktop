@@ -53,6 +53,7 @@
             this.checkedListBoxTags = new System.Windows.Forms.CheckedListBox();
             this.timerRunningDuration = new System.Windows.Forms.Timer(this.components);
             this.panelBottom = new System.Windows.Forms.Panel();
+            this.panelDateTag = new System.Windows.Forms.Panel();
             this.panelStartEndTime = new System.Windows.Forms.Panel();
             this.panelAddProject = new System.Windows.Forms.Panel();
             this.labelWorkspace = new System.Windows.Forms.Label();
@@ -62,13 +63,12 @@
             this.textBoxProjectName = new System.Windows.Forms.TextBox();
             this.labelClient = new System.Windows.Forms.Label();
             this.labelProjectName = new System.Windows.Forms.Label();
-            this.panelDateTag = new System.Windows.Forms.Panel();
             this.statusStripLastUpdate.SuspendLayout();
             this.buttonsPanel.SuspendLayout();
             this.panelBottom.SuspendLayout();
+            this.panelDateTag.SuspendLayout();
             this.panelStartEndTime.SuspendLayout();
             this.panelAddProject.SuspendLayout();
-            this.panelDateTag.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -192,7 +192,6 @@
             // 
             // label6
             // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.label6.Location = new System.Drawing.Point(15, 8);
@@ -203,7 +202,6 @@
             // 
             // dateTimePickerStartDate
             // 
-            this.dateTimePickerStartDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.dateTimePickerStartDate.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.dateTimePickerStartDate.Location = new System.Drawing.Point(110, 5);
             this.dateTimePickerStartDate.Name = "dateTimePickerStartDate";
@@ -213,7 +211,6 @@
             // 
             // label7
             // 
-            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.label7.Location = new System.Drawing.Point(15, 38);
@@ -226,7 +223,7 @@
             // 
             this.statusStripLastUpdate.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelLastUpdate});
-            this.statusStripLastUpdate.Location = new System.Drawing.Point(0, 428);
+            this.statusStripLastUpdate.Location = new System.Drawing.Point(0, 274);
             this.statusStripLastUpdate.Name = "statusStripLastUpdate";
             this.statusStripLastUpdate.Size = new System.Drawing.Size(317, 22);
             this.statusStripLastUpdate.TabIndex = 14;
@@ -246,7 +243,7 @@
             this.buttonsPanel.Controls.Add(this.buttonContinue);
             this.buttonsPanel.Controls.Add(this.buttonDelete);
             this.buttonsPanel.Controls.Add(this.buttonDone);
-            this.buttonsPanel.Location = new System.Drawing.Point(0, 399);
+            this.buttonsPanel.Location = new System.Drawing.Point(0, 245);
             this.buttonsPanel.Name = "buttonsPanel";
             this.buttonsPanel.Size = new System.Drawing.Size(317, 31);
             this.buttonsPanel.TabIndex = 16;
@@ -300,12 +297,14 @@
             // 
             // checkedListBoxTags
             // 
-            this.checkedListBoxTags.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.checkedListBoxTags.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.checkedListBoxTags.CheckOnClick = true;
             this.checkedListBoxTags.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.checkedListBoxTags.FormattingEnabled = true;
             this.checkedListBoxTags.Location = new System.Drawing.Point(110, 35);
+            this.checkedListBoxTags.MinimumSize = new System.Drawing.Size(4, 60);
             this.checkedListBoxTags.Name = "checkedListBoxTags";
             this.checkedListBoxTags.Size = new System.Drawing.Size(192, 61);
             this.checkedListBoxTags.TabIndex = 10;
@@ -319,7 +318,8 @@
             // 
             // panelBottom
             // 
-            this.panelBottom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.panelBottom.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelBottom.Controls.Add(this.panelDateTag);
             this.panelBottom.Controls.Add(this.panelStartEndTime);
@@ -327,9 +327,26 @@
             this.panelBottom.Controls.Add(this.textBoxDuration);
             this.panelBottom.Location = new System.Drawing.Point(0, 77);
             this.panelBottom.Name = "panelBottom";
-            this.panelBottom.Size = new System.Drawing.Size(317, 156);
+            this.panelBottom.Size = new System.Drawing.Size(317, 160);
             this.panelBottom.TabIndex = 3;
             this.panelBottom.TabStop = true;
+            // 
+            // panelDateTag
+            // 
+            this.panelDateTag.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelDateTag.Controls.Add(this.checkedListBoxTags);
+            this.panelDateTag.Controls.Add(this.label6);
+            this.panelDateTag.Controls.Add(this.dateTimePickerStartDate);
+            this.panelDateTag.Controls.Add(this.label7);
+            this.panelDateTag.Controls.Add(this.checkBoxBillable);
+            this.panelDateTag.Location = new System.Drawing.Point(0, 60);
+            this.panelDateTag.MinimumSize = new System.Drawing.Size(0, 100);
+            this.panelDateTag.Name = "panelDateTag";
+            this.panelDateTag.Size = new System.Drawing.Size(317, 100);
+            this.panelDateTag.TabIndex = 8;
+            this.panelDateTag.TabStop = true;
             // 
             // panelStartEndTime
             // 
@@ -355,7 +372,7 @@
             this.panelAddProject.Controls.Add(this.textBoxProjectName);
             this.panelAddProject.Controls.Add(this.labelClient);
             this.panelAddProject.Controls.Add(this.labelProjectName);
-            this.panelAddProject.Location = new System.Drawing.Point(0, 258);
+            this.panelAddProject.Location = new System.Drawing.Point(0, 558);
             this.panelAddProject.Name = "panelAddProject";
             this.panelAddProject.Size = new System.Drawing.Size(317, 122);
             this.panelAddProject.TabIndex = 1;
@@ -441,21 +458,6 @@
             this.labelProjectName.TabIndex = 0;
             this.labelProjectName.Text = "Project name:";
             // 
-            // panelDateTag
-            // 
-            this.panelDateTag.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelDateTag.Controls.Add(this.checkedListBoxTags);
-            this.panelDateTag.Controls.Add(this.label6);
-            this.panelDateTag.Controls.Add(this.dateTimePickerStartDate);
-            this.panelDateTag.Controls.Add(this.label7);
-            this.panelDateTag.Controls.Add(this.checkBoxBillable);
-            this.panelDateTag.Location = new System.Drawing.Point(0, 60);
-            this.panelDateTag.Name = "panelDateTag";
-            this.panelDateTag.Size = new System.Drawing.Size(317, 100);
-            this.panelDateTag.TabIndex = 8;
-            this.panelDateTag.TabStop = true;
-            // 
             // TimeEntryEditViewController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -470,19 +472,19 @@
             this.Controls.Add(this.comboBoxDescription);
             this.Controls.Add(this.label1);
             this.Name = "TimeEntryEditViewController";
-            this.Size = new System.Drawing.Size(317, 450);
+            this.Size = new System.Drawing.Size(317, 296);
             this.Load += new System.EventHandler(this.TimeEntryEditViewController_Load);
             this.statusStripLastUpdate.ResumeLayout(false);
             this.statusStripLastUpdate.PerformLayout();
             this.buttonsPanel.ResumeLayout(false);
             this.panelBottom.ResumeLayout(false);
             this.panelBottom.PerformLayout();
+            this.panelDateTag.ResumeLayout(false);
+            this.panelDateTag.PerformLayout();
             this.panelStartEndTime.ResumeLayout(false);
             this.panelStartEndTime.PerformLayout();
             this.panelAddProject.ResumeLayout(false);
             this.panelAddProject.PerformLayout();
-            this.panelDateTag.ResumeLayout(false);
-            this.panelDateTag.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

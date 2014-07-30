@@ -155,13 +155,16 @@ namespace TogglDesktop
             }
 
             panelStartEndTime.Visible = !timeEntry.DurOnly;
+            
             if (timeEntry.DurOnly)
             {
-                panelBottom.Height = 150;
+                panelDateTag.Top = 30;
+                panelDateTag.Height = panelBottom.Height - 30;
             } else {
-                panelBottom.Height = 175;
+                panelDateTag.Top = 60;
+                panelDateTag.Height = panelBottom.Height - 60;
             }
-
+            
             if (te.UpdatedAt > 0)
             {
                 DateTime updatedAt = Toggl.DateTimeFromUnix(te.UpdatedAt);
@@ -472,7 +475,8 @@ namespace TogglDesktop
                 comboBoxWorkspace.Visible = true;
                 boxHeight = 122;
             }
-            panelBottom.Top = boxHeight+37;
+            panelBottom.Height -= (boxHeight-40);
+            panelBottom.Top = boxHeight+37;            
             panelAddProject.Height = boxHeight;
 
             labelProject.Visible = true;
@@ -507,6 +511,7 @@ namespace TogglDesktop
             if (panelAddProject.Visible)
             {
                 panelAddProject.Visible = false;
+                panelBottom.Height += panelBottom.Top - 77;
                 panelBottom.Top = 77;
                 labelWorkspace.Visible = false;
                 comboBoxWorkspace.Visible = false;
