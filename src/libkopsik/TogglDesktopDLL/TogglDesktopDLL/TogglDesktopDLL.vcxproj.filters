@@ -111,7 +111,7 @@
     <ClInclude Include="..\..\..\workspace.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\ui.h">
+    <ClInclude Include="..\..\..\gui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

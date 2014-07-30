@@ -104,6 +104,7 @@
     <ClInclude Include="..\..\..\feedback.h" />
     <ClInclude Include="..\..\..\formatter.h" />
     <ClInclude Include="..\..\..\get_focused_window.h" />
+    <ClInclude Include="..\..\..\gui.h" />
     <ClInclude Include="..\..\..\https_client.h" />
     <ClInclude Include="..\..\..\json.h" />
     <ClInclude Include="..\..\..\kopsik_api_private.h" />
@@ -118,7 +119,6 @@
     <ClInclude Include="..\..\..\timeline_uploader.h" />
     <ClInclude Include="..\..\..\time_entry.h" />
     <ClInclude Include="..\..\..\types.h" />
-    <ClInclude Include="..\..\..\ui.h" />
     <ClInclude Include="..\..\..\user.h" />
     <ClInclude Include="..\..\..\websocket_client.h" />
     <ClInclude Include="..\..\..\window_change_recorder.h" />
