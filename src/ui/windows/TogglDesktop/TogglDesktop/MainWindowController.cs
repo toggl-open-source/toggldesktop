@@ -64,6 +64,11 @@ namespace TogglDesktop
             idleNotificationWindowController = new IdleNotificationWindowController();
         }
 
+        public void RemoveTrayIcon()
+        {
+            trayIcon.Visible = false;
+        }
+
         private void MainWindowController_Load(object sender, EventArgs e)
         {
             troubleBox.BackColor = Color.FromArgb(239, 226, 121);
@@ -152,7 +157,6 @@ namespace TogglDesktop
                     trayIcon.Icon = Properties.Resources.toggl_offline_inactive;
                 }
             }
-          
         }
 
         void OnOnlineState(bool is_online, string reason)
@@ -337,7 +341,7 @@ namespace TogglDesktop
             Utils.SaveWindowLocation(this);
 
             if (!TogglDesktop.Program.ShuttingDown) {
-                this.Hide();
+                Hide();
                 e.Cancel = true;
             }
         }

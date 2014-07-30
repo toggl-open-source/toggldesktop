@@ -16,6 +16,7 @@ namespace TogglDesktop
         private const string appGUID = "29067F3B-F706-46CB-92D2-1EA1E72A4CE3";
         public static Bugsnag.Library.BugSnag bugsnag = null;
         private static UInt64 uid = 0;
+        private static MainWindowController mainWindowController;
 
         public static bool IsLoggedIn
         {
@@ -53,10 +54,12 @@ namespace TogglDesktop
 
                 Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
                 AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
-                Application.ApplicationExit += new EventHandler(onApplicationExit);
+
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new MainWindowController());
+
+                mainWindowController = new MainWindowController();
+                Application.Run(mainWindowController);
             }
         }
 
@@ -76,14 +79,17 @@ namespace TogglDesktop
             });
         }
 
-        private static void onApplicationExit(object sender, EventArgs e)
-        {
-            Toggl.Clear();
-        }
-
         public static void Shutdown(int exitCode)
         {
             ShuttingDown = true;
+
+            if (mainWindowController != null)
+            {
+                mainWindowController.RemoveTrayIcon();
+            }
+
+            Toggl.Clear();
+            
             Environment.Exit(exitCode);
         }
 
