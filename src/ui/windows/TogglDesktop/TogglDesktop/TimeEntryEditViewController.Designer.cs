@@ -223,7 +223,7 @@
             // 
             this.statusStripLastUpdate.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelLastUpdate});
-            this.statusStripLastUpdate.Location = new System.Drawing.Point(0, 274);
+            this.statusStripLastUpdate.Location = new System.Drawing.Point(0, 378);
             this.statusStripLastUpdate.Name = "statusStripLastUpdate";
             this.statusStripLastUpdate.Size = new System.Drawing.Size(317, 22);
             this.statusStripLastUpdate.TabIndex = 14;
@@ -243,7 +243,7 @@
             this.buttonsPanel.Controls.Add(this.buttonContinue);
             this.buttonsPanel.Controls.Add(this.buttonDelete);
             this.buttonsPanel.Controls.Add(this.buttonDone);
-            this.buttonsPanel.Location = new System.Drawing.Point(0, 245);
+            this.buttonsPanel.Location = new System.Drawing.Point(0, 349);
             this.buttonsPanel.Name = "buttonsPanel";
             this.buttonsPanel.Size = new System.Drawing.Size(317, 31);
             this.buttonsPanel.TabIndex = 16;
@@ -287,7 +287,7 @@
             this.checkBoxBillable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxBillable.AutoSize = true;
             this.checkBoxBillable.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.checkBoxBillable.Location = new System.Drawing.Point(96, 105);
+            this.checkBoxBillable.Location = new System.Drawing.Point(111, 180);
             this.checkBoxBillable.Name = "checkBoxBillable";
             this.checkBoxBillable.Size = new System.Drawing.Size(63, 19);
             this.checkBoxBillable.TabIndex = 8;
@@ -306,7 +306,7 @@
             this.checkedListBoxTags.Location = new System.Drawing.Point(110, 35);
             this.checkedListBoxTags.MinimumSize = new System.Drawing.Size(4, 60);
             this.checkedListBoxTags.Name = "checkedListBoxTags";
-            this.checkedListBoxTags.Size = new System.Drawing.Size(192, 61);
+            this.checkedListBoxTags.Size = new System.Drawing.Size(192, 137);
             this.checkedListBoxTags.TabIndex = 10;
             this.checkedListBoxTags.Leave += new System.EventHandler(this.checkedListBoxTags_Leave);
             // 
@@ -327,7 +327,7 @@
             this.panelBottom.Controls.Add(this.textBoxDuration);
             this.panelBottom.Location = new System.Drawing.Point(0, 77);
             this.panelBottom.Name = "panelBottom";
-            this.panelBottom.Size = new System.Drawing.Size(317, 160);
+            this.panelBottom.Size = new System.Drawing.Size(317, 264);
             this.panelBottom.TabIndex = 3;
             this.panelBottom.TabStop = true;
             // 
@@ -344,7 +344,7 @@
             this.panelDateTag.Location = new System.Drawing.Point(0, 60);
             this.panelDateTag.MinimumSize = new System.Drawing.Size(0, 100);
             this.panelDateTag.Name = "panelDateTag";
-            this.panelDateTag.Size = new System.Drawing.Size(317, 100);
+            this.panelDateTag.Size = new System.Drawing.Size(317, 204);
             this.panelDateTag.TabIndex = 8;
             this.panelDateTag.TabStop = true;
             // 
@@ -472,7 +472,7 @@
             this.Controls.Add(this.comboBoxDescription);
             this.Controls.Add(this.label1);
             this.Name = "TimeEntryEditViewController";
-            this.Size = new System.Drawing.Size(317, 296);
+            this.Size = new System.Drawing.Size(317, 400);
             this.Load += new System.EventHandler(this.TimeEntryEditViewController_Load);
             this.statusStripLastUpdate.ResumeLayout(false);
             this.statusStripLastUpdate.PerformLayout();

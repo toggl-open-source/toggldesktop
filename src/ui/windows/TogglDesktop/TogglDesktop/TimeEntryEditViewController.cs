@@ -113,6 +113,15 @@ namespace TogglDesktop
 
             checkBoxBillable.Visible = te.CanSeeBillable;
 
+            if (te.CanSeeBillable)
+            {
+                checkedListBoxTags.Height = panelDateTag.Height - 60;
+            }
+            else
+            {
+                checkedListBoxTags.Height = panelDateTag.Height - 50;
+            }
+
             checkBoxBillable.Tag = this;
             try
             {
