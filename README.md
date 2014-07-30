@@ -39,6 +39,8 @@ On Fedora,
 * qt5-qtwebkit-devel
 * libXScrnSaver-devel
 
+QT must be at least version 5.2
+
 Windows
 -------
 We're building the Windows app using [Visual Studio Express 2013 for Windows Desktop](http://www.microsoft.com/en-us/download/details.aspx?id=40787) 
