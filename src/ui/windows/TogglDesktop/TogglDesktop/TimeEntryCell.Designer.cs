@@ -134,7 +134,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelProject.AutoSize = true;
             this.labelProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.labelProject.Location = new System.Drawing.Point(74, 0);
+            this.labelProject.Location = new System.Drawing.Point(77, 0);
             this.labelProject.Margin = new System.Windows.Forms.Padding(0);
             this.labelProject.Name = "labelProject";
             this.labelProject.Size = new System.Drawing.Size(106, 16);
@@ -147,12 +147,13 @@
             this.labelClient.AutoSize = true;
             this.labelClient.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.labelClient.ForeColor = System.Drawing.Color.Gray;
-            this.labelClient.Location = new System.Drawing.Point(180, 0);
+            this.labelClient.Location = new System.Drawing.Point(183, 0);
             this.labelClient.Margin = new System.Windows.Forms.Padding(0);
             this.labelClient.Name = "labelClient";
             this.labelClient.Size = new System.Drawing.Size(81, 16);
             this.labelClient.TabIndex = 11;
             this.labelClient.Text = "ClientName";
+            this.labelClient.Click += new System.EventHandler(this.labelClient_Click);
             // 
             // labelDescription
             // 

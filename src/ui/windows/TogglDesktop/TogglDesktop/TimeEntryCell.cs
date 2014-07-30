@@ -102,5 +102,10 @@ namespace TogglDesktop
         {
             Toggl.Edit(GUID, false, Toggl.Project);
         }
+
+        private void labelClient_Click(object sender, EventArgs e)
+        {
+            Toggl.Edit(GUID, false, Toggl.Project);
+        }
     }
 }
