@@ -77,5 +77,9 @@ Toggl built and signed app for OSX is [available for download](https://www.toggl
 
 Windows
 -------
-Toggl built and signed app for Windows is *beta* and is [available for download](https://www.toggl.com/api/v8/installer?platform=windows&app=td&channel=beta). App has been tested on Windows 7, 8 and 8.1
+Toggl built and signed app for Windows is [available for download](https://www.toggl.com/api/v8/installer?platform=windows&app=td&channel=stable). App has been tested on Windows 7, 8 and 8.1
+
+Linux
+-----
+We'll provide deb and rpm packages soon. Meanwhile, please free to build the app yourself :) It's usable and will enter beta soon.
 
