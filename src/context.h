@@ -340,6 +340,8 @@ class Context {
     Poco::UInt64 last_sync_started_;
 
     bool update_check_disabled_;
+
+	Poco::LocalDateTime lastRenderOfTimeEntries;
 };
 
 }  // namespace kopsik

@@ -78,7 +78,7 @@ Context::Context(const std::string app_name, const std::string app_version)
 
     startPeriodicSync();
 
-    SetWake();  // obviously, we're wake
+	remindToTrackTime();
 }
 
 Context::~Context() {
@@ -1065,8 +1065,6 @@ void Context::setUser(User *value, const bool user_logged_in) {
     }
     user_ = value;
 
-    SetWake();
-
     if (!user_) {
         UI()->DisplayLogin(true, 0);
 
@@ -1328,6 +1326,8 @@ void Context::DisplayTimeEntryList(const _Bool open) {
 
     UI()->DisplayTimeEntryList(open, first);
     time_entry_view_item_clear(first);
+
+	lastRenderOfTimeEntries = Poco::LocalDateTime();
 
     stopwatch.stop();
     std::stringstream ss;
@@ -1896,6 +1896,15 @@ void Context::SetWake() {
     remindToTrackTime();
 
     scheduleSync();
+
+	if (user_) {
+		Poco::LocalDateTime now;
+		if (now.year() != lastRenderOfTimeEntries.year()
+			|| now.month() != lastRenderOfTimeEntries.month()
+			|| now.day() != lastRenderOfTimeEntries.day()) {
+			DisplayTimeEntryList(false);
+		}
+	}
 }
 
 void Context::remindToTrackTime() {
