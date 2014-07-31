@@ -37,7 +37,7 @@ namespace TogglDesktop
                  e.Bounds);
         }
 
-        public void ShowListBox()
+        public void InitListBox()
         {
             if (!_isAdded)
             {
@@ -46,6 +46,10 @@ namespace TogglDesktop
                 autoCompleteListBox.Top = Top + Height;
                 _isAdded = true;
             }
+        }
+
+        public void ShowListBox()
+        {
             autoCompleteListBox.MaximumSize = new Size(Width + 145, Parent.Parent.Parent.Height - 40);
             autoCompleteListBox.Visible = true;
             autoCompleteListBox.BringToFront();
@@ -63,6 +67,7 @@ namespace TogglDesktop
             String word = Text;
             if (autoCompleteList != null && word.Length > 1)
             {
+                ResetListBox();
                 autoCompleteListBox.Items.Clear();
                 foreach (Toggl.AutocompleteItem item in autoCompleteList)
                 {
@@ -73,7 +78,7 @@ namespace TogglDesktop
                 }
                 if (autoCompleteListBox.Items.Count > 0)
                 {
-                    ShowListBox();
+                    InitListBox();
                     autoCompleteListBox.SelectedIndex = 0;
                     autoCompleteListBox.Height = 0;
                     autoCompleteListBox.Width = 0;
@@ -90,8 +95,8 @@ namespace TogglDesktop
                             int itemWidth = (int)graphics.MeasureString((autoCompleteListBox.Items[i].ToString()) + "_", autoCompleteListBox.Font).Width;
                             autoCompleteListBox.Width = (autoCompleteListBox.Width < itemWidth) ? itemWidth : autoCompleteListBox.Width;
                         }
-
                     }
+                    ShowListBox();
                 }
                 else
                 {
