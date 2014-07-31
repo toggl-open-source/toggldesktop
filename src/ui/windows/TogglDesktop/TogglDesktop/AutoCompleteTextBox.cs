@@ -11,7 +11,6 @@ namespace TogglDesktop
         private bool _isAdded;
         private String _formerValue = String.Empty;
 
-
         public AutoCompleteTextBox()
         {
             InitializeComponent();
@@ -22,6 +21,8 @@ namespace TogglDesktop
             autoCompleteListBox = new ListBox();
             autoCompleteListBox.DrawMode = DrawMode.OwnerDrawFixed;
             autoCompleteListBox.DrawItem += autoCompleteListBox_DrawItem;
+            autoCompleteListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Bottom )));
         }
 
         private void autoCompleteListBox_DrawItem(object sender, DrawItemEventArgs e)
@@ -45,6 +46,7 @@ namespace TogglDesktop
                 autoCompleteListBox.Top = Top + Height;
                 _isAdded = true;
             }
+            autoCompleteListBox.MaximumSize = new Size(Width + 145, Parent.Parent.Parent.Height - 40);
             autoCompleteListBox.Visible = true;
             autoCompleteListBox.BringToFront();
         }
@@ -104,7 +106,6 @@ namespace TogglDesktop
 
         public Boolean parseKeyDown(PreviewKeyDownEventArgs e, List<Toggl.AutocompleteItem> autoCompleteList) 
         {
-            Console.WriteLine("Parse: {0}", e.KeyCode);
             switch (e.KeyCode)
             {
                 case Keys.Enter:
