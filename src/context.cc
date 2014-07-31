@@ -83,7 +83,7 @@ Context::Context(const std::string app_name, const std::string app_version)
 }
 
 Context::~Context() {
-	SetQuit(true);
+    SetQuit(true);
 
     if (window_change_recorder_) {
         Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
@@ -168,7 +168,7 @@ void Context::displayUI() {
 }
 
 void Context::Shutdown() {
-	if (window_change_recorder_) {
+    if (window_change_recorder_) {
         Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
         window_change_recorder_->Shutdown();
     }
@@ -416,10 +416,9 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
 }
 
 void Context::displayOnlineState(const std::string reason) {
-	if (quit_)
-	{
-		return;
-	}
+    if (quit_) {
+        return;
+    }
     UI()->DisplayOnlineState(true, reason);
     scheduleSync();
 }
@@ -1072,13 +1071,12 @@ void Context::setUser(User *value, const bool user_logged_in) {
     }
     user_ = value;
 
-	if (quit_)
-	{
-		return;
-	}
+    if (quit_) {
+        return;
+    }
 
-	if (!user_) {
-		UI()->DisplayLogin(true, 0);
+    if (!user_) {
+        UI()->DisplayLogin(true, 0);
 
         switchTimelineOff();
         switchWebSocketOff();
@@ -1339,7 +1337,7 @@ void Context::DisplayTimeEntryList(const _Bool open) {
     UI()->DisplayTimeEntryList(open, first);
     time_entry_view_item_clear(first);
 
-	last_time_entry_list_render_at_ = Poco::LocalDateTime();
+    last_time_entry_list_render_at_ = Poco::LocalDateTime();
 
     stopwatch.stop();
     std::stringstream ss;
@@ -1911,9 +1909,9 @@ void Context::SetWake() {
 
     if (user_) {
         Poco::LocalDateTime now;
-		if (now.year() != last_time_entry_list_render_at_.year()
-			|| now.month() != last_time_entry_list_render_at_.month()
-			|| now.day() != last_time_entry_list_render_at_.day()) {
+        if (now.year() != last_time_entry_list_render_at_.year()
+                || now.month() != last_time_entry_list_render_at_.month()
+                || now.day() != last_time_entry_list_render_at_.day()) {
             DisplayTimeEntryList(false);
         }
     }

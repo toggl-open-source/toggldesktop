@@ -191,9 +191,9 @@ class Context {
         Poco::Logger::get("").setChannel(formattingChannel);
     }
 
-	void SetQuit(const bool value) {
-		quit_ = true;
-	}
+    void SetQuit(const bool value) {
+        quit_ = true;
+    }
 
  protected:
     void handleCreateTimelineBatchNotification(
@@ -347,7 +347,7 @@ class Context {
 
     Poco::LocalDateTime last_time_entry_list_render_at_;
 
-	bool quit_;
+    bool quit_;
 };
 
 }  // namespace kopsik

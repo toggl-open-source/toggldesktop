@@ -64,7 +64,7 @@ void kopsik_password_forgot(void *context) {
 
 void kopsik_context_clear(void *context) {
     if (context) {
-		app(context)->SetQuit(true);
+        app(context)->SetQuit(true);
         app(context)->Shutdown();
     }
     delete app(context);
