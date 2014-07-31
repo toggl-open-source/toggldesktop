@@ -61,7 +61,7 @@ namespace TogglDesktop
             if (Text == _formerValue) return;
             _formerValue = Text;
             String word = Text;
-            if (autoCompleteList != null && word.Length > 0)
+            if (autoCompleteList != null && word.Length > 1)
             {
                 autoCompleteListBox.Items.Clear();
                 foreach (Toggl.AutocompleteItem item in autoCompleteList)
