@@ -336,7 +336,6 @@ void TimeEntry::LoadFromJSONNode(JSONNODE * const data) {
     Poco::Int64 duration_in_seconds(0);
     bool billable(false);
     bool duronly(false);
-    std::string created_with("");
     std::string updated_at_string("");
 
     JSONNODE_ITERATOR current_node = json_begin(data);
@@ -368,7 +367,7 @@ void TimeEntry::LoadFromJSONNode(JSONNODE * const data) {
         } else if (strcmp(node_name, "tags") == 0) {
             loadTagsFromJSONNode(*current_node);
         } else if (strcmp(node_name, "created_with") == 0) {
-            created_with = std::string(json_as_string(*current_node));
+            SetCreatedWith(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "at") == 0) {
             updated_at_string = std::string(json_as_string(*current_node));
         }
@@ -386,7 +385,6 @@ void TimeEntry::LoadFromJSONNode(JSONNODE * const data) {
     SetDurationInSeconds(duration_in_seconds);
     SetBillable(billable);
     SetDurOnly(duronly);
-    SetCreatedWith(created_with);
     SetUpdatedAtString(updated_at_string);
 
     SetUIModifiedAt(0);
