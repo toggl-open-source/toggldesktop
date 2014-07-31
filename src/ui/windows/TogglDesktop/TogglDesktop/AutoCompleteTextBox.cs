@@ -27,7 +27,6 @@ namespace TogglDesktop
 
         private void autoCompleteListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
-            autoCompleteListBox.ItemHeight = 20;
             e.DrawBackground();
             e.DrawFocusRectangle();
             e.Graphics.DrawString(
