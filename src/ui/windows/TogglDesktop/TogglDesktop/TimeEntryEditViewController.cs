@@ -516,6 +516,7 @@ namespace TogglDesktop
         private void linkAddProject_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             panelAddProject.Top = 37;
+            projectButton.Visible = false;
             
             textBoxProjectName.Text = "";
             comboBoxClient.Text = "";
@@ -566,6 +567,7 @@ namespace TogglDesktop
                 panelAddProject.Visible = false;
                 panelBottom.Height += panelBottom.Top - 77;
                 panelBottom.Top = 77;
+                projectButton.Visible = true;
                 labelWorkspace.Visible = false;
                 comboBoxWorkspace.Visible = false;
                 linkAddProject.Visible = true;
@@ -575,7 +577,9 @@ namespace TogglDesktop
                 comboBoxWorkspace.SelectedIndex = -1;
                 comboBoxClient.SelectedIndex = -1;
                 recalculateTabIndexes(false);
-            }           
+            }
+            comboBoxProject.ResetListBox();
+            comboBoxDescription.ResetListBox();
         }
 
         private Boolean applyAddProject()
