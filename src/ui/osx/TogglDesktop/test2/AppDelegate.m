@@ -308,12 +308,15 @@ const int kDurationStringLength = 20;
 	if (cmd.settings.idle_detection)
 	{
 		NSLog(@"Starting idle detection");
-		self.idleTimer = [NSTimer
-						  scheduledTimerWithTimeInterval:1.0
-												  target:self
-												selector:@selector(idleTimerFired:)
-												userInfo:nil
-												 repeats:YES];
+		if (!self.idleTimer)
+		{
+			self.idleTimer = [NSTimer
+							  scheduledTimerWithTimeInterval:1.0
+													  target:self
+													selector:@selector(idleTimerFired:)
+													userInfo:nil
+													 repeats:YES];
+		}
 	}
 	else
 	{
@@ -329,12 +332,15 @@ const int kDurationStringLength = 20;
 	if (cmd.settings.menubar_timer)
 	{
 		NSLog(@"Starting menubar timer");
-		self.menubarTimer = [NSTimer
-							 scheduledTimerWithTimeInterval:1.0
-													 target:self
-												   selector:@selector(menubarTimerFired:)
-												   userInfo:nil
-													repeats:YES];
+		if (!self.menubarTimer)
+		{
+			self.menubarTimer = [NSTimer
+								 scheduledTimerWithTimeInterval:1.0
+														 target:self
+													   selector:@selector(menubarTimerFired:)
+													   userInfo:nil
+														repeats:YES];
+		}
 	}
 	else
 	{
