@@ -46,7 +46,6 @@ namespace TogglDesktop
 
         void projectButton_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("OPENED: {0}", comboBoxProject.autoCompleteListBox.Visible);
             if (!comboBoxProject.autoCompleteListBox.Visible)
             {
                 comboBoxProject.openFullList(autoCompleteEntryList);
