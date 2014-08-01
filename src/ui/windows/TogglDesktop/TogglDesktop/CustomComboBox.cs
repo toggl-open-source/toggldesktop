@@ -24,8 +24,17 @@ namespace TogglDesktop
             autoCompleteListBox.DrawMode = DrawMode.OwnerDrawFixed;
             autoCompleteListBox.DrawItem += autoCompleteListBox_DrawItem;
             autoCompleteListBox.MouseEnter += autoCompleteListBox_MouseEnter;
+            autoCompleteListBox.Leave += autoCompleteListBox_Leave;
             autoCompleteListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Bottom )));
+        }
+
+        void autoCompleteListBox_Leave(object sender, EventArgs e)
+        {
+            if (!Focused)
+            {
+                ResetListBox();
+            }
         }
 
         void autoCompleteListBox_MouseEnter(object sender, EventArgs e)
@@ -201,6 +210,14 @@ namespace TogglDesktop
                 ShowListBox();
             }
             fullListOpened = true;
+        }
+
+        internal void handelLeave()
+        {
+            if (!autoCompleteListBox.Focused)
+            {
+                ResetListBox();
+            }
         }
     }
 }

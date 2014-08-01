@@ -397,6 +397,7 @@ namespace TogglDesktop
             {
                 Toggl.SetTimeEntryProject(timeEntry.GUID, 0, 0, "");
             }
+            comboBoxProject.handelLeave();
         }
 
         private void checkBoxBillable_CheckedChanged(object sender, EventArgs e)
@@ -409,6 +410,7 @@ namespace TogglDesktop
 
         private void comboBoxDescription_Leave(object sender, EventArgs e)
         {
+            comboBoxDescription.handelLeave();
             if (comboBoxDescription.Text == timeEntry.Description || comboBoxDescription.autoCompleteListBox.Visible)
             {
                 return;
