@@ -48,7 +48,7 @@ namespace TogglDesktop
         {
             if (!comboBoxProject.autoCompleteListBox.Visible)
             {
-                comboBoxProject.openFullList(autoCompleteEntryList);
+                comboBoxProject.openFullList(autoCompleteProjectList);
             }
             else if (comboBoxProject.fullListOpened)
             {
