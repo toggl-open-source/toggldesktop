@@ -671,14 +671,6 @@ namespace TogglDesktop
             comboBoxDescription.ResetListBox();
             Toggl.AutocompleteItem item = (Toggl.AutocompleteItem)comboBoxDescription.autoCompleteListBox.SelectedItem;
             comboBoxDescription.Text = item.Description;
-            Toggl.SetTimeEntryProject(timeEntry.GUID, item.TaskID, item.ProjectID, "");            
-        }
-
-        private void selectProjectAutoComplete()
-        {
-            comboBoxProject.ResetListBox();
-            Toggl.AutocompleteItem item = (Toggl.AutocompleteItem)comboBoxProject.autoCompleteListBox.SelectedItem;
-            comboBoxProject.Text = item.Description;
 
             if (item.ProjectID != 0)
             {
@@ -691,6 +683,14 @@ namespace TogglDesktop
                     }
                 }
             }
+            Toggl.SetTimeEntryProject(timeEntry.GUID, item.TaskID, item.ProjectID, "");            
+        }
+
+        private void selectProjectAutoComplete()
+        {
+            comboBoxProject.ResetListBox();
+            Toggl.AutocompleteItem item = (Toggl.AutocompleteItem)comboBoxProject.autoCompleteListBox.SelectedItem;
+            comboBoxProject.Text = item.Text;            
 
             Toggl.SetTimeEntryProject(
                 timeEntry.GUID,

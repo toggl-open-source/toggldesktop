@@ -129,9 +129,9 @@ namespace TogglDesktop
                         }
                         if (autoCompleteListBox.Visible)
                         {
-                            ResetListBox();
+                            //ResetListBox();
                             _formerValue = Text;
-                            return true;
+                            return false;
                         }
 
                         break;
