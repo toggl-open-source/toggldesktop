@@ -135,6 +135,10 @@ namespace TogglDesktop
 
         private void displayTrayIcon(bool is_online)
         {
+            if (null == trayIcon)
+            {
+                return;
+            }
             if (is_online)
             {
                 if (TogglDesktop.Program.IsLoggedIn && isTracking)
