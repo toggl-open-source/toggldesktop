@@ -18,6 +18,13 @@ namespace TogglDesktop
         private static UInt64 uid = 0;
         private static MainWindowController mainWindowController;
 
+        [DllImport("User32")]
+        private static extern int SetForegroundWindow(IntPtr hwnd);
+
+        [DllImport("User32")]
+        private static extern bool ShowWindow(IntPtr hwnd, int cmdshow);
+        private const int SW_RESTORE = 9;
+
         public static bool IsLoggedIn
         {
             get
@@ -36,6 +43,22 @@ namespace TogglDesktop
             {
                 if (!mutex.WaitOne(0, false))
                 {
+                    // See if we get hold of the other process.
+                    // If we do, activate it's window and exit.
+                    Process current = Process.GetCurrentProcess();
+                    Process[] instances = Process.GetProcessesByName(current.ProcessName);
+                    foreach (Process p in instances)
+                    {
+                        if (p.Id != current.Id)
+                        {
+                            // gotcha
+                            ShowWindow(p.MainWindowHandle, SW_RESTORE);
+                            SetForegroundWindow(p.MainWindowHandle);
+                            return;
+                        }
+                    }
+
+                    // If not, print an error message and exit.
                     MessageBox.Show("Another copy of Toggl Desktop is already running." +
                         Environment.NewLine + "This copy will now quit.");
                     return;
