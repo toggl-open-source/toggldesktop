@@ -17,10 +17,13 @@ namespace TogglDesktop
         private List<Toggl.AutocompleteItem> timeEntryAutocompleteUpdate = null;
         private List<Toggl.AutocompleteItem> projectAutocompleteUpdate = null;
         private Boolean firstLoad = true;
+        private List<Toggl.AutocompleteItem> autoCompleteEntryList;
+        private List<Toggl.AutocompleteItem> autoCompleteProjectList;
+
 
         public TimeEntryEditViewController()
         {
-            InitializeComponent();
+            InitializeComponent();            
 
             Toggl.OnTimeEntryEditor += OnTimeEntryEditor;
             Toggl.OnWorkspaceSelect += OnWorkspaceSelect;
@@ -36,6 +39,78 @@ namespace TogglDesktop
             comboBoxProject.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
             comboBoxClient.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
             comboBoxWorkspace.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
+
+            descriptionButton.Click += descriptionButton_Click;
+            projectButton.Click += projectButton_Click;
+        }
+
+        void projectButton_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("OPENED: {0}", comboBoxProject.autoCompleteListBox.Visible);
+            if (!comboBoxProject.autoCompleteListBox.Visible)
+            {
+                comboBoxProject.openFullList(autoCompleteEntryList);
+            }
+            else if (comboBoxProject.fullListOpened)
+            {
+                comboBoxProject.ResetListBox();
+            }            
+        }
+
+        void descriptionButton_Click(object sender, EventArgs e)
+        {
+            if (!comboBoxDescription.autoCompleteListBox.Visible)
+            {
+                comboBoxDescription.openFullList(autoCompleteEntryList);
+            }
+            else if (comboBoxDescription.fullListOpened)
+            {
+                comboBoxDescription.ResetListBox();
+            }
+        }
+
+        private void autoCompleteEntryListBox_Click(object sender, EventArgs e)
+        {
+            selectEntryAutoComplete();
+        }
+
+        private void autoCompleteEntryListBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab)
+            {
+                if (autoCompleteEntryList == null)
+                {
+                    return;
+                }
+
+                selectEntryAutoComplete();
+            }
+            else if (e.KeyCode == Keys.Escape)
+            {
+                comboBoxDescription.ResetListBox();
+            }
+        }
+
+        private void autoCompleteProjectListBox_Click(object sender, EventArgs e)
+        {
+            selectProjectAutoComplete();
+        }
+
+        private void autoCompleteProjectListBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab)
+            {
+                if (autoCompleteProjectList == null)
+                {
+                    return;
+                }
+
+                selectProjectAutoComplete();
+            }
+            else if (e.KeyCode == Keys.Escape)
+            {
+                comboBoxProject.ResetListBox();
+            }
         }
 
         private void ignoreMouseWheel(object sender, MouseEventArgs args)
@@ -46,6 +121,11 @@ namespace TogglDesktop
         private void TimeEntryEditViewController_Load(object sender, EventArgs e)
         {
             Dock = DockStyle.Fill;
+            comboBoxDescription.autoCompleteListBox.KeyDown += autoCompleteEntryListBox_KeyDown;
+            comboBoxDescription.autoCompleteListBox.Click += autoCompleteEntryListBox_Click;
+
+            comboBoxProject.autoCompleteListBox.KeyDown += autoCompleteProjectListBox_KeyDown;
+            comboBoxProject.autoCompleteListBox.Click += autoCompleteProjectListBox_Click;
         }
 
         public void setupView(Form frm, string focusedFieldName)
@@ -276,44 +356,9 @@ namespace TogglDesktop
                 return;
             }
             timeEntryAutocompleteUpdate = list;
-            if (comboBoxDescription.DroppedDown || comboBoxDescription.Focused)
-            {
-                return;
-            }
-            comboBoxDescription.Items.Clear();
-            foreach (Toggl.AutocompleteItem o in timeEntryAutocompleteUpdate)
-            {
-                comboBoxDescription.Items.Add(o);
-            }
+            
             timeEntryAutocompleteUpdate = null;
-        }
-
-        private void comboBoxDescription_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            object o = comboBoxDescription.SelectedItem;
-            if (o == null)
-            {
-                return;
-            }
-
-            Toggl.AutocompleteItem item = (Toggl.AutocompleteItem)o;
-            comboBoxDescription.Text = item.Description;
-            if (item.ProjectID != 0) {
-                foreach (object obj in comboBoxProject.Items)
-                {
-                    Toggl.AutocompleteItem projectItem = (Toggl.AutocompleteItem)obj;
-                    if (item.ProjectID == projectItem.ProjectID)
-                    {
-                        comboBoxProject.Text = projectItem.Text;
-                    }
-                }
-            }
-
-            Toggl.SetTimeEntryProject(
-                timeEntry.GUID,
-                item.TaskID,
-                item.ProjectID,
-                null);
+            autoCompleteEntryList = list;
         }
 
         void OnProjectAutocomplete(List<Toggl.AutocompleteItem> list)
@@ -323,17 +368,7 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { OnProjectAutocomplete(list); });
                 return;
             }
-            projectAutocompleteUpdate = list;
-            if (comboBoxProject.DroppedDown || comboBoxProject.Focused)
-            {
-                return;
-            }
-            comboBoxProject.Items.Clear();
-            foreach (Toggl.AutocompleteItem o in projectAutocompleteUpdate)
-            {
-                comboBoxProject.Items.Add(o);
-            }
-            projectAutocompleteUpdate = null;
+            autoCompleteProjectList = list;
         }
 
         private void comboBoxProject_Leave(object sender, EventArgs e)
@@ -342,17 +377,6 @@ namespace TogglDesktop
             {
                 Toggl.SetTimeEntryProject(timeEntry.GUID, 0, 0, "");
             }
-        }
-
-        private void comboBoxProject_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            object o = comboBoxProject.SelectedItem;
-            if (null == o)
-            {
-                return;
-            }
-            Toggl.AutocompleteItem item = (Toggl.AutocompleteItem)o;
-            Toggl.SetTimeEntryProject(timeEntry.GUID, item.TaskID, item.ProjectID, "");
         }
 
         private void checkBoxBillable_CheckedChanged(object sender, EventArgs e)
@@ -365,7 +389,7 @@ namespace TogglDesktop
 
         private void comboBoxDescription_Leave(object sender, EventArgs e)
         {
-            if (comboBoxDescription.Text == timeEntry.Description)
+            if (comboBoxDescription.Text == timeEntry.Description || comboBoxDescription.autoCompleteListBox.Visible)
             {
                 return;
             }
@@ -582,6 +606,73 @@ namespace TogglDesktop
                 }
             }
             return 0;
+        }
+
+        private void comboBoxDescription_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (comboBoxDescription.Text.Length == 0)
+            {
+                comboBoxDescription.ResetListBox();
+            }
+            comboBoxDescription.UpdateListBox(autoCompleteEntryList);
+        }
+
+        private void comboBoxDescription_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (comboBoxDescription.parseKeyDown(e, autoCompleteEntryList))
+            {
+                selectEntryAutoComplete();
+            }
+        }
+
+        private void comboBoxProject_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (comboBoxProject.Text.Length == 0)
+            {
+                comboBoxProject.ResetListBox();
+            }
+            comboBoxProject.UpdateListBox(autoCompleteProjectList);
+        }
+
+        private void comboBoxProject_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (comboBoxProject.parseKeyDown(e, autoCompleteProjectList))
+            {
+                selectProjectAutoComplete();
+            }
+        }
+
+        private void selectEntryAutoComplete()
+        {
+            comboBoxDescription.ResetListBox();
+            Toggl.AutocompleteItem item = (Toggl.AutocompleteItem)comboBoxDescription.autoCompleteListBox.SelectedItem;
+            comboBoxDescription.Text = item.Description;
+            Toggl.SetTimeEntryProject(timeEntry.GUID, item.TaskID, item.ProjectID, "");            
+        }
+
+        private void selectProjectAutoComplete()
+        {
+            comboBoxProject.ResetListBox();
+            Toggl.AutocompleteItem item = (Toggl.AutocompleteItem)comboBoxProject.autoCompleteListBox.SelectedItem;
+            comboBoxProject.Text = item.Description;
+
+            if (item.ProjectID != 0)
+            {
+                foreach (object obj in comboBoxProject.autoCompleteListBox.Items)
+                {
+                    Toggl.AutocompleteItem projectItem = (Toggl.AutocompleteItem)obj;
+                    if (item.ProjectID == projectItem.ProjectID)
+                    {
+                        comboBoxProject.Text = projectItem.Text;
+                    }
+                }
+            }
+
+            Toggl.SetTimeEntryProject(
+                timeEntry.GUID,
+                item.TaskID,
+                item.ProjectID,
+                null);           
         }
     }
 }

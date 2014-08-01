@@ -30,9 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
-            this.comboBoxDescription = new System.Windows.Forms.ComboBox();
             this.labelProject = new System.Windows.Forms.Label();
-            this.comboBoxProject = new System.Windows.Forms.ComboBox();
             this.linkAddProject = new System.Windows.Forms.LinkLabel();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxDuration = new System.Windows.Forms.TextBox();
@@ -63,6 +61,10 @@
             this.textBoxProjectName = new System.Windows.Forms.TextBox();
             this.labelClient = new System.Windows.Forms.Label();
             this.labelProjectName = new System.Windows.Forms.Label();
+            this.descriptionButton = new System.Windows.Forms.Button();
+            this.projectButton = new System.Windows.Forms.Button();
+            this.comboBoxProject = new TogglDesktop.CustomComboBox();
+            this.comboBoxDescription = new TogglDesktop.CustomComboBox();
             this.statusStripLastUpdate.SuspendLayout();
             this.buttonsPanel.SuspendLayout();
             this.panelBottom.SuspendLayout();
@@ -81,21 +83,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Description:";
             // 
-            // comboBoxDescription
-            // 
-            this.comboBoxDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBoxDescription.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.comboBoxDescription.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.comboBoxDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.comboBoxDescription.FormattingEnabled = true;
-            this.comboBoxDescription.Location = new System.Drawing.Point(110, 10);
-            this.comboBoxDescription.Name = "comboBoxDescription";
-            this.comboBoxDescription.Size = new System.Drawing.Size(192, 23);
-            this.comboBoxDescription.TabIndex = 0;
-            this.comboBoxDescription.SelectedIndexChanged += new System.EventHandler(this.comboBoxDescription_SelectedIndexChanged);
-            this.comboBoxDescription.Leave += new System.EventHandler(this.comboBoxDescription_Leave);
-            // 
             // labelProject
             // 
             this.labelProject.AutoSize = true;
@@ -105,21 +92,6 @@
             this.labelProject.Size = new System.Drawing.Size(47, 15);
             this.labelProject.TabIndex = 2;
             this.labelProject.Text = "Project:";
-            // 
-            // comboBoxProject
-            // 
-            this.comboBoxProject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBoxProject.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.comboBoxProject.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.comboBoxProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.comboBoxProject.FormattingEnabled = true;
-            this.comboBoxProject.Location = new System.Drawing.Point(110, 37);
-            this.comboBoxProject.Name = "comboBoxProject";
-            this.comboBoxProject.Size = new System.Drawing.Size(192, 23);
-            this.comboBoxProject.TabIndex = 1;
-            this.comboBoxProject.SelectedIndexChanged += new System.EventHandler(this.comboBoxProject_SelectedIndexChanged);
-            this.comboBoxProject.Leave += new System.EventHandler(this.comboBoxProject_Leave);
             // 
             // linkAddProject
             // 
@@ -458,10 +430,67 @@
             this.labelProjectName.TabIndex = 0;
             this.labelProjectName.Text = "Project name:";
             // 
+            // descriptionButton
+            // 
+            this.descriptionButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.descriptionButton.BackColor = System.Drawing.Color.Transparent;
+            this.descriptionButton.FlatAppearance.BorderSize = 0;
+            this.descriptionButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.descriptionButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.descriptionButton.Location = new System.Drawing.Point(279, 11);
+            this.descriptionButton.Name = "descriptionButton";
+            this.descriptionButton.Size = new System.Drawing.Size(22, 22);
+            this.descriptionButton.TabIndex = 17;
+            this.descriptionButton.Text = "▼";
+            this.descriptionButton.UseVisualStyleBackColor = false;
+            // 
+            // projectButton
+            // 
+            this.projectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.projectButton.BackColor = System.Drawing.Color.Transparent;
+            this.projectButton.FlatAppearance.BorderSize = 0;
+            this.projectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.projectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.projectButton.Location = new System.Drawing.Point(279, 38);
+            this.projectButton.Name = "projectButton";
+            this.projectButton.Size = new System.Drawing.Size(22, 22);
+            this.projectButton.TabIndex = 18;
+            this.projectButton.Text = "▼";
+            this.projectButton.UseVisualStyleBackColor = false;
+            // 
+            // comboBoxProject
+            // 
+            this.comboBoxProject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
+            this.comboBoxProject.Location = new System.Drawing.Point(110, 37);
+            this.comboBoxProject.Name = "comboBoxProject";
+            this.comboBoxProject.Size = new System.Drawing.Size(192, 24);
+            this.comboBoxProject.TabIndex = 1;
+            this.comboBoxProject.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBoxProject_KeyUp);
+            this.comboBoxProject.Leave += new System.EventHandler(this.comboBoxProject_Leave);
+            this.comboBoxProject.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.comboBoxProject_PreviewKeyDown);
+            // 
+            // comboBoxDescription
+            // 
+            this.comboBoxDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxDescription.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.comboBoxDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
+            this.comboBoxDescription.Location = new System.Drawing.Point(110, 10);
+            this.comboBoxDescription.Name = "comboBoxDescription";
+            this.comboBoxDescription.Size = new System.Drawing.Size(192, 24);
+            this.comboBoxDescription.TabIndex = 0;
+            this.comboBoxDescription.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBoxDescription_KeyUp);
+            this.comboBoxDescription.Leave += new System.EventHandler(this.comboBoxDescription_Leave);
+            this.comboBoxDescription.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.comboBoxDescription_PreviewKeyDown);
+            // 
             // TimeEntryEditViewController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.projectButton);
+            this.Controls.Add(this.descriptionButton);
             this.Controls.Add(this.panelAddProject);
             this.Controls.Add(this.panelBottom);
             this.Controls.Add(this.buttonsPanel);
@@ -493,9 +522,9 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBoxDescription;
+        private CustomComboBox comboBoxDescription;
         private System.Windows.Forms.Label labelProject;
-        private System.Windows.Forms.ComboBox comboBoxProject;
+        private CustomComboBox comboBoxProject;
         private System.Windows.Forms.LinkLabel linkAddProject;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxDuration;
@@ -526,5 +555,7 @@
         private System.Windows.Forms.Label labelProjectName;
         private System.Windows.Forms.Panel panelStartEndTime;
         private System.Windows.Forms.Panel panelDateTag;
+        private System.Windows.Forms.Button descriptionButton;
+        private System.Windows.Forms.Button projectButton;
     }
 }

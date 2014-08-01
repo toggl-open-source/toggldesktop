@@ -137,6 +137,9 @@
     <Compile Include="AutoCompleteTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CustomComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="FeedbackWindowController.cs">
       <SubType>Form</SubType>
     </Compile>
