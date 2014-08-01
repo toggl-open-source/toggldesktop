@@ -44,6 +44,34 @@ namespace TogglDesktop
             projectButton.Click += projectButton_Click;
         }
 
+        private void TimeEntryEditViewController_Load(object sender, EventArgs e)
+        {
+            Dock = DockStyle.Fill;
+            comboBoxDescription.autoCompleteListBox.KeyDown += autoCompleteEntryListBox_KeyDown;
+            comboBoxDescription.autoCompleteListBox.Click += autoCompleteEntryListBox_Click;
+            comboBoxDescription.autoCompleteListBox.Leave += autoCompleteEntryListBox_Leave;
+
+            comboBoxProject.autoCompleteListBox.KeyDown += autoCompleteProjectListBox_KeyDown;
+            comboBoxProject.autoCompleteListBox.Click += autoCompleteProjectListBox_Click;
+            comboBoxProject.autoCompleteListBox.Leave += autoCompleteProjectListBox_Leave;
+        }
+
+        void autoCompleteEntryListBox_Leave(object sender, EventArgs e)
+        {
+            if (!comboBoxDescription.Focused && !descriptionButton.Focused)
+            {
+                comboBoxDescription.ResetListBox();
+            }
+        }
+
+        void autoCompleteProjectListBox_Leave(object sender, EventArgs e)
+        {
+            if (!comboBoxProject.Focused && !projectButton.Focused)
+            {
+                comboBoxProject.ResetListBox();
+            }
+        }
+
         void projectButton_Click(object sender, EventArgs e)
         {
             if (!comboBoxProject.autoCompleteListBox.Visible)
@@ -115,16 +143,6 @@ namespace TogglDesktop
         private void ignoreMouseWheel(object sender, MouseEventArgs args)
         {
             ((HandledMouseEventArgs)args).Handled = true;
-        }
-
-        private void TimeEntryEditViewController_Load(object sender, EventArgs e)
-        {
-            Dock = DockStyle.Fill;
-            comboBoxDescription.autoCompleteListBox.KeyDown += autoCompleteEntryListBox_KeyDown;
-            comboBoxDescription.autoCompleteListBox.Click += autoCompleteEntryListBox_Click;
-
-            comboBoxProject.autoCompleteListBox.KeyDown += autoCompleteProjectListBox_KeyDown;
-            comboBoxProject.autoCompleteListBox.Click += autoCompleteProjectListBox_Click;
         }
 
         public void setupView(Form frm, string focusedFieldName)
@@ -397,7 +415,10 @@ namespace TogglDesktop
             {
                 Toggl.SetTimeEntryProject(timeEntry.GUID, 0, 0, "");
             }
-            comboBoxProject.handelLeave();
+            if (!projectButton.Focused)
+            {
+                comboBoxProject.handleLeave();
+            }
         }
 
         private void checkBoxBillable_CheckedChanged(object sender, EventArgs e)
@@ -410,7 +431,10 @@ namespace TogglDesktop
 
         private void comboBoxDescription_Leave(object sender, EventArgs e)
         {
-            comboBoxDescription.handelLeave();
+            if (!descriptionButton.Focused)
+            {
+                comboBoxDescription.handleLeave();
+            }
             if (comboBoxDescription.Text == timeEntry.Description || comboBoxDescription.autoCompleteListBox.Visible)
             {
                 return;
