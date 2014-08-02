@@ -888,7 +888,8 @@ namespace TogglDesktop
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        private static extern void kopsik_timeline_toggle_recording(
+        [return: MarshalAs(UnmanagedType.I1)]
+        private static extern bool kopsik_timeline_toggle_recording(
             IntPtr context,
             [MarshalAs(UnmanagedType.I1)]
             bool record_timeline);
