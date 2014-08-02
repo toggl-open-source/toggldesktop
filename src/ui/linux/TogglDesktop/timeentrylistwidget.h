@@ -36,7 +36,9 @@ class TimeEntryListWidget : public QWidget {
         TimeEntryView *view,
         const QString focused_field_name);
 
- private:
+    void on_blankView_linkActivated(const QString &link);
+
+private:
     Ui::TimeEntryListWidget *ui;
 
     QMutex render_m_;

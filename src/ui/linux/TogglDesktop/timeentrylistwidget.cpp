@@ -21,6 +21,8 @@ ui(new Ui::TimeEntryListWidget) {
 
     connect(TogglApi::instance, SIGNAL(displayTimeEntryEditor(bool,TimeEntryView*,QString)),  // NOLINT
             this, SLOT(displayTimeEntryEditor(bool,TimeEntryView*,QString)));  // NOLINT
+
+    ui->blankView->setVisible(false);
 }
 
 TimeEntryListWidget::~TimeEntryListWidget() {
@@ -76,6 +78,9 @@ void TimeEntryListWidget::displayTimeEntryList(
         ui->list->model()->removeRow(list.size());
     }
 
+    ui->list->setVisible(!list.isEmpty());
+    ui->blankView->setVisible(list.isEmpty());
+
     render_m_.unlock();
 }
 
@@ -86,4 +91,9 @@ void TimeEntryListWidget::displayTimeEntryEditor(
     if (open) {
         setVisible(false);
     }
+}
+
+void TimeEntryListWidget::on_blankView_linkActivated(const QString &link)
+{
+    TogglApi::instance->openInBrowser();
 }

@@ -49,6 +49,25 @@
     </widget>
    </item>
    <item>
+    <widget class="QLabel" name="blankView">
+     <property name="text">
+      <string>Welcome back! Your previous entries are available in the web under &lt;a href=&quot;#reports&quot;&gt;Reports&lt;/a&gt;</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::RichText</enum>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+     <property name="margin">
+      <number>10</number>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QListWidget" name="list"/>
    </item>
   </layout>
