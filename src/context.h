@@ -159,6 +159,10 @@ class Context {
     _Bool ToggleTimelineRecording(
         const _Bool record_timeline);
 
+    _Bool IsTimelineRecordingEnabled() {
+        return user_ && user_->RecordTimeline();
+    }
+
     _Bool SaveUpdateChannel(
         const std::string channel);
 

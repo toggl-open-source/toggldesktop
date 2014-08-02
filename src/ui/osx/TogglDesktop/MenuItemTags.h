@@ -17,3 +17,4 @@
 #define kMenuItemTagSendFeedback 8
 #define kMenuItemTagOpenBrowser  9
 #define kMenuItemTagEdit         10
+#define kMenuItemRecordTimeline  11

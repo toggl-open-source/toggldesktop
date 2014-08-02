@@ -568,6 +568,11 @@ void kopsik_timeline_toggle_recording(
     app(context)->ToggleTimelineRecording(record_timeline);
 }
 
+_Bool kopsik_timeline_is_recording_enabled(
+    void *context) {
+    return app(context)->IsTimelineRecordingEnabled();
+}
+
 _Bool kopsik_feedback_send(
     void *context,
     const char *topic,

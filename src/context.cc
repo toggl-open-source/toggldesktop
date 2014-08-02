@@ -1736,6 +1736,7 @@ _Bool Context::ToggleTimelineRecording(const _Bool record_timeline) {
         } else {
             switchTimelineOff();
         }
+        return DisplaySettings(false);
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {

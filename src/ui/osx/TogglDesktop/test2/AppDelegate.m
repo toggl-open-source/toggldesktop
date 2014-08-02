@@ -548,6 +548,9 @@ const int kDurationStringLength = 20;
 	[menu addItemWithTitle:@"Preferences"
 					action:@selector(onPreferencesMenuItem:)
 			 keyEquivalent:@""];
+	[menu addItemWithTitle:@"Record Timeline"
+					action:@selector(onToggleRecordTimeline:)
+			 keyEquivalent:@""].tag = kMenuItemRecordTimeline;
 	[menu addItem:[NSMenuItem separatorItem]];
 	[menu addItemWithTitle:@"About"
 					action:@selector(onAboutMenuItem:)
@@ -614,6 +617,12 @@ const int kDurationStringLength = 20;
 - (IBAction)onSyncMenuItem:(id)sender
 {
 	kopsik_sync(ctx);
+}
+
+- (IBAction)onToggleRecordTimeline:(id)sender
+{
+	kopsik_timeline_toggle_recording(ctx,
+									 !kopsik_timeline_is_recording_enabled(ctx));
 }
 
 - (IBAction)onOpenBrowserMenuItem:(id)sender
@@ -897,6 +906,24 @@ const NSString *appName = @"osx_native_app";
 			if (0 == self.user_id)
 			{
 				return NO;
+			}
+			break;
+		case kMenuItemRecordTimeline :
+			if (!self.user_id)
+			{
+				NSMenuItem *menuItem = (NSMenuItem *)anItem;
+				[menuItem setState:NSOffState];
+				return NO;
+			}
+			if (kopsik_timeline_is_recording_enabled(ctx))
+			{
+				NSMenuItem *menuItem = (NSMenuItem *)anItem;
+				[menuItem setState:NSOnState];
+			}
+			else
+			{
+				NSMenuItem *menuItem = (NSMenuItem *)anItem;
+				[menuItem setState:NSOffState];
 			}
 			break;
 		default :
