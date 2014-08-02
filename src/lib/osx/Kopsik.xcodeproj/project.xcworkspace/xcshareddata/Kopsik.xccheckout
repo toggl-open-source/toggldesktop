@@ -14,7 +14,7 @@
 		<string>ssh://github.com/tanel/kopsik.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>src/lib/Kopsik/Kopsik.xcodeproj/project.xcworkspace</string>
+	<string>src/lib/osx/Kopsik.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>A09B8E40-A34A-4E12-AD54-6BD770A002EA</key>

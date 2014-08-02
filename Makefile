@@ -143,7 +143,7 @@ clean_lib:
 endif
 ifeq ($(uname), Darwin)
 clean_lib:
-	rm -rf src/lib/Kopsik/build
+	rm -rf src/lib/osx/build
 endif
 
 ifeq ($(uname), Linux)
