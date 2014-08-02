@@ -159,7 +159,10 @@ endif
 clean_test:
 	rm -rf test
 
-lint: fmt_lib fmt_ui cpplint
+lint:
+	./third_party/cpplint/cpplint.py $(source_dirs)
+
+fmt: fmt_lib fmt_ui
 
 app: lib ui
 
@@ -211,9 +214,6 @@ sikuli: osx
 	--websocket_url http://0.0.0.0:8088 \
 	--db_path kopsik_sikuli.db \
 	--log_path kopsik_sikuli.log 
-
-cpplint:
-	./third_party/cpplint/cpplint.py $(source_dirs)
 
 clean_deps:
 	cd $(jsondir) && make clean && SHARED=1 make clean
