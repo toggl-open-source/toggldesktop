@@ -1,4 +1,4 @@
-$(shell mkdir -p build/test build/test)
+$(shell mkdir -p build/test build/test lib/osx/build)
 
 pwd=$(shell pwd)
 uname=$(shell uname)
@@ -266,9 +266,6 @@ fmt_lib: third_party/google-astyle/build/google-astyle
 fmt_ui:
 	./third_party/Xcode-formatter/CodeFormatter/scripts/formatAllSources.sh src/ui/osx/
 
-mkdir_build:
-	mkdir -p build
-
 build/proxy.o: src/proxy.cc
 	$(cxx) $(cflags) -c src/proxy.cc -o build/proxy.o
 
@@ -400,7 +397,7 @@ toggl_test: objects test_objects
 	mkdir -p test
 	$(cxx) -o test/toggl_test build/*.o build/test/*.o $(libs)
 
-test_lib: fmt_lib lint mkdir_build toggl_test
+test_lib: fmt_lib lint toggl_test
 ifeq ($(uname), Linux)
 	cp -r $(jsondir)/libjson.so* test/.
 	cp -r $(pocodir)/lib/Linux/$(architecture)/*.so* test/.
