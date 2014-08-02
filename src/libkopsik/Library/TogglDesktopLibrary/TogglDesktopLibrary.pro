@@ -80,7 +80,7 @@ HEADERS += \
     ../../../workspace.h \
     ../../include/kopsik_api.h
 
-pocolib = $$PWD/../../../../third_party/poco/lib/Linux/x86_64
+pocolib = $$PWD/../../../../third_party/poco/lib/Linux/$$system(uname -m)
 jsondir = $$PWD/../../../../third_party/libjson
 openssldir = $$PWD/../../../../third_party/openssl
 
