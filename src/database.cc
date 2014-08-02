@@ -2741,6 +2741,9 @@ error Database::InsertTimelineEvent(const TimelineEvent& event) {
 
     Poco::Mutex::ScopedLock lock(session_m_);
 
+    Poco::Int64 start_time(event.start_time);
+    Poco::Int64 end_time(event.end_time);
+
     *session_ << "INSERT INTO timeline_events("
               "user_id, title, filename, start_time, end_time, idle"
               ") VALUES ("
@@ -2749,8 +2752,8 @@ error Database::InsertTimelineEvent(const TimelineEvent& event) {
               Poco::Data::use(event.user_id),
               Poco::Data::use(event.title),
               Poco::Data::use(event.filename),
-              Poco::Data::use(event.start_time),
-              Poco::Data::use(event.end_time),
+              Poco::Data::use(start_time),
+              Poco::Data::use(end_time),
               Poco::Data::use(event.idle),
               Poco::Data::now;
     return last_error("InsertTimelineEvent");
