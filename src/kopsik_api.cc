@@ -5,7 +5,7 @@
 #include <cstring>
 #include <set>
 
-#include "./libkopsik/include/kopsik_api.h"
+#include "./lib/include/kopsik_api.h"
 #include "./kopsik_api_private.h"
 #include "./database.h"
 #include "./user.h"

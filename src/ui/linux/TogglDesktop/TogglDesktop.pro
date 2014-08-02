@@ -87,14 +87,14 @@ FORMS    += \
     feedbackdialog.ui \
     idlenotificationdialog.ui
 
-QMAKE_RPATHDIR += $$PWD/../../../libkopsik/Library/TogglDesktopLibrary/build/release
+QMAKE_RPATHDIR += $$PWD/../../../lib/Library/TogglDesktopLibrary/build/release
 QMAKE_RPATHDIR += $$PWD/../../../../third_party/bugsnag-qt/build/release
 
-LIBS += -L$$PWD/../../../libkopsik/Library/TogglDesktopLibrary/build/release -lTogglDesktopLibrary
+LIBS += -L$$PWD/../../../lib/Library/TogglDesktopLibrary/build/release -lTogglDesktopLibrary
 LIBS += -L$$PWD/../../../../third_party/bugsnag-qt/build/release -lbugsnag-qt
 LIBS += -lX11 -lXss
 
-INCLUDEPATH += $$PWD/../../../libkopsik/include
+INCLUDEPATH += $$PWD/../../../lib/include
 INCLUDEPATH += $$PWD/../../../../third_party/bugsnag-qt
 INCLUDEPATH += $$PWD/../../../../third_party/qt-solutions/qtsingleapplication/src/
 INCLUDEPATH += $$PWD/../../../../third_party/qt-oauth-lib

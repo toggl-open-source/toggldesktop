@@ -13,7 +13,7 @@
 
 #include <iostream>   // NOLINT
 
-#include "./../../../libkopsik/include/kopsik_api.h"
+#include "./../../../lib/include/kopsik_api.h"
 
 #include "./updateview.h"
 #include "./timeentryview.h"

@@ -5,7 +5,7 @@
 
 #include <iostream>  // NOLINT
 
-#include "./../libkopsik/include/kopsik_api.h"
+#include "./../lib/include/kopsik_api.h"
 #include "./../kopsik_api_private.h"
 #include "./test_data.h"
 #include "./../settings.h"

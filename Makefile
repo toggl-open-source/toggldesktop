@@ -12,7 +12,7 @@ jsondir=third_party/libjson
 GTEST_ROOT=third_party/googletest-read-only
 GMOCK_DIR=third_party/gmock-1.7.0
 
-source_dirs=src/*.cc src/*.h src/test/* src/libkopsik/include/*.h \
+source_dirs=src/*.cc src/*.h src/test/* src/lib/include/*.h \
 	src/ui/linux/TogglDesktop/toggl.h src/ui/linux/TogglDesktop/toggl.cpp \
 	src/ui/linux/TogglDesktop/aboutdialog.h src/ui/linux/TogglDesktop/aboutdialog.cpp \
 	src/ui/linux/TogglDesktop/autocompleteview.h src/ui/linux/TogglDesktop/autocompleteview.cpp \
@@ -138,12 +138,12 @@ clean: clean_ui clean_lib clean_test
 
 ifeq ($(uname), Linux)
 clean_lib:
-	rm -rf src/libkopsik/Library/TogglDesktopLibrary/build && \
-	(cd src/libkopsik/Library/TogglDesktopLibrary && $(QMAKE) && make clean)
+	rm -rf src/lib/Library/TogglDesktopLibrary/build && \
+	(cd src/lib/Library/TogglDesktopLibrary && $(QMAKE) && make clean)
 endif
 ifeq ($(uname), Darwin)
 clean_lib:
-	rm -rf src/libkopsik/Kopsik/build
+	rm -rf src/lib/Kopsik/build
 endif
 
 ifeq ($(uname), Linux)
@@ -177,17 +177,17 @@ bugsnag-qt:
 	cd third_party/bugsnag-qt && make clean && $(QMAKE) && make
 
 linux_lib:
-	cd src/libkopsik/Library/TogglDesktopLibrary && $(QMAKE) && make && \
+	cd src/lib/Library/TogglDesktopLibrary && $(QMAKE) && make && \
 	cd ../../../../ && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoCrypto.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoData.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoDataSQLite.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoFoundation.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNet.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNetSSL.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoUtil.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoXML.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
-	cp $(jsondir)/libjson.so.7.6.1 src/libkopsik/Library/TogglDesktopLibrary/build/release/libjson.so.7
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoCrypto.so.16 src/lib/Library/TogglDesktopLibrary/build/release
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoData.so.16 src/lib/Library/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoDataSQLite.so.16 src/lib/Library/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoFoundation.so.16 src/lib/Library/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNet.so.16 src/lib/Library/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNetSSL.so.16 src/lib/Library/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoUtil.so.16 src/lib/Library/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoXML.so.16 src/lib/Library/TogglDesktopLibrary/build/release && \
+	cp $(jsondir)/libjson.so.7.6.1 src/lib/Library/TogglDesktopLibrary/build/release/libjson.so.7
 
 linux_ui: bugsnag-qt
 	cd src/ui/linux/TogglDesktop && $(QMAKE) && make && \

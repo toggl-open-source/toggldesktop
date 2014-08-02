@@ -5,7 +5,7 @@
 
 #include <string>
 
-#include "./libkopsik/include/kopsik_api.h"
+#include "./lib/include/kopsik_api.h"
 #include "./project.h"
 #include "./client.h"
 #include "./autocomplete_item.h"
