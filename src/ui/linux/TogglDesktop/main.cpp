@@ -37,6 +37,7 @@ int main(int argc, char *argv[]) try {
     qRegisterMetaType<_Bool>("_Bool");
     qRegisterMetaType<QVector<TimeEntryView*> >("QVector<TimeEntryView*>");
     qRegisterMetaType<QVector<AutocompleteView*> >("QVector<AutocompleteView*");
+    qRegisterMetaType<QVector<GenericView*> >("QVector<GenericView*");
 
     TogglApplication a(argc, argv);
 
