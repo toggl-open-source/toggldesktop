@@ -1,4 +1,4 @@
-$(shell mkdir -p build/test build/test lib/osx/build)
+$(shell mkdir -p build/test build/test src/lib/osx/build)
 
 pwd=$(shell pwd)
 uname=$(shell uname)
@@ -134,8 +134,8 @@ clean: clean_ui clean_lib clean_test
 
 ifeq ($(uname), Linux)
 clean_lib:
-	rm -rf src/lib/Library/TogglDesktopLibrary/build && \
-	(cd src/lib/Library/TogglDesktopLibrary && $(QMAKE) && make clean)
+	rm -rf src/lib/linux/TogglDesktopLibrary/build && \
+	(cd src/lib/linux/TogglDesktopLibrary && $(QMAKE) && make clean)
 endif
 ifeq ($(uname), Darwin)
 clean_lib:
@@ -171,17 +171,17 @@ lib:
 endif
 ifeq ($(uname), Linux)
 lib:
-	cd src/lib/Library/TogglDesktopLibrary && $(QMAKE) && make && \
+	cd src/lib/linux/TogglDesktopLibrary && $(QMAKE) && make && \
 	cd ../../../../ && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoCrypto.so.16 src/lib/Library/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoData.so.16 src/lib/Library/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoDataSQLite.so.16 src/lib/Library/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoFoundation.so.16 src/lib/Library/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNet.so.16 src/lib/Library/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNetSSL.so.16 src/lib/Library/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoUtil.so.16 src/lib/Library/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoXML.so.16 src/lib/Library/TogglDesktopLibrary/build/release && \
-	cp $(jsondir)/libjson.so.7.6.1 src/lib/Library/TogglDesktopLibrary/build/release/libjson.so.7
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoCrypto.so.16 src/lib/linux/TogglDesktopLibrary/build/release
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoData.so.16 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoDataSQLite.so.16 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoFoundation.so.16 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNet.so.16 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNetSSL.so.16 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoUtil.so.16 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoXML.so.16 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(jsondir)/libjson.so.7.6.1 src/lib/linux/TogglDesktopLibrary/build/release/libjson.so.7
 endif
 
 

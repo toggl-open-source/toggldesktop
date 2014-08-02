@@ -87,10 +87,10 @@ FORMS    += \
     feedbackdialog.ui \
     idlenotificationdialog.ui
 
-QMAKE_RPATHDIR += $$PWD/../../../lib/Library/TogglDesktopLibrary/build/release
+QMAKE_RPATHDIR += $$PWD/../../../lib/linux/TogglDesktopLibrary/build/release
 QMAKE_RPATHDIR += $$PWD/../../../../third_party/bugsnag-qt/build/release
 
-LIBS += -L$$PWD/../../../lib/Library/TogglDesktopLibrary/build/release -lTogglDesktopLibrary
+LIBS += -L$$PWD/../../../lib/linux/TogglDesktopLibrary/build/release -lTogglDesktopLibrary
 LIBS += -L$$PWD/../../../../third_party/bugsnag-qt/build/release -lbugsnag-qt
 LIBS += -lX11 -lXss
 
