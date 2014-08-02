@@ -40,6 +40,7 @@ executable=./src/ui/osx/TogglDesktop/build/Release/TogglDesktop.app/Contents/Mac
 pocolib=$(pocodir)/lib/Darwin/x86_64/
 osname=mac
 endif
+
 ifeq ($(uname), Linux)
 executable=./src/ui/linux/TogglDesktop/build/release/TogglDesktop
 pocolib=$(pocodir)/lib/Linux/$(architecture)
@@ -126,12 +127,7 @@ endif
 
 cxx=g++
 
-ifeq ($(uname), Linux)
-default: linux
-endif
-ifeq ($(uname), Darwin)
-default: osx
-endif
+default: app
 
 clean: clean_ui clean_lib clean_test
 	rm -rf build gitstats
@@ -163,20 +159,18 @@ endif
 clean_test:
 	rm -rf test
 
-osx: fmt_lib lint fmt_osx osx_ui
+lint: fmt_lib fmt_ui lint
+
+app: lib ui
+
+ifeq ($(uname), Darwin)
+lib:
 	!(otool -L $(executable) | grep "Users" && echo "Executable should not contain hardcoded paths!") && \
 	src/ui/osx/TogglDesktop/fix_dylib_paths.sh && \
 	!(otool -L ./src/ui/osx/TogglDesktop/build/Release/TogglDesktop.app/Contents/Frameworks/*.dylib | grep "Users" && echo "Shared library should not contain hardcoded paths!")
-
-osx_ui:
-	xcodebuild -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj
-
-linux: fmt_lib lint linux_lib linux_ui
-
-bugsnag-qt:
-	cd third_party/bugsnag-qt && make clean && $(QMAKE) && make
-
-linux_lib:
+endif
+ifeq ($(uname), Linux)
+lib:
 	cd src/lib/Library/TogglDesktopLibrary && $(QMAKE) && make && \
 	cd ../../../../ && \
 	cp $(pocodir)/lib/Linux/$(architecture)/libPocoCrypto.so.16 src/lib/Library/TogglDesktopLibrary/build/release
@@ -188,20 +182,25 @@ linux_lib:
 	cp $(pocodir)/lib/Linux/$(architecture)/libPocoUtil.so.16 src/lib/Library/TogglDesktopLibrary/build/release && \
 	cp $(pocodir)/lib/Linux/$(architecture)/libPocoXML.so.16 src/lib/Library/TogglDesktopLibrary/build/release && \
 	cp $(jsondir)/libjson.so.7.6.1 src/lib/Library/TogglDesktopLibrary/build/release/libjson.so.7
+endif
 
-linux_ui: bugsnag-qt
+
+ifeq ($(uname), Darwin)
+ui:
+	xcodebuild -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj
+endif
+ifeq ($(uname), Linux)
+ui: bugsnag-qt
 	cd src/ui/linux/TogglDesktop && $(QMAKE) && make && \
 	cd ../../../../ && \
 	cp src/ssl/cacert.pem src/ui/linux/TogglDesktop/build/release
+endif
 
-ifeq ($(uname), Linux)
-run: linux
+bugsnag-qt:
+	cd third_party/bugsnag-qt && make clean && $(QMAKE) && make
+
+run: app
 	$(executable)
-endif
-ifeq ($(uname), Darwin)
-run: osx
-	$(executable)
-endif
 
 sikuli: osx
 	(pkill TogglDesktop) || true
@@ -264,7 +263,7 @@ third_party/google-astyle/build/google-astyle:
 fmt_lib: third_party/google-astyle/build/google-astyle
 	third_party/google-astyle/build/google-astyle -n $(source_dirs)
 
-fmt_osx:
+fmt_ui:
 	./third_party/Xcode-formatter/CodeFormatter/scripts/formatAllSources.sh src/ui/osx/
 
 mkdir_build:
