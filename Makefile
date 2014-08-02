@@ -173,6 +173,9 @@ osx_ui:
 
 linux: fmt_lib lint linux_lib linux_ui
 
+bugsnag-qt:
+	cd third_party/bugsnag-qt && make clean && $(QMAKE) && make
+
 linux_lib:
 	cd src/libkopsik/Library/TogglDesktopLibrary && $(QMAKE) && make && \
 	cd ../../../../ && \
@@ -186,9 +189,7 @@ linux_lib:
 	cp $(pocodir)/lib/Linux/$(architecture)/libPocoXML.so.16 src/libkopsik/Library/TogglDesktopLibrary/build/release && \
 	cp $(jsondir)/libjson.so.7.6.1 src/libkopsik/Library/TogglDesktopLibrary/build/release/libjson.so.7
 
-linux_ui:
-	cd third_party/bugsnag-qt && $(QMAKE) && make && \
-	cd ../../ && \
+linux_ui: bugsnag-qt
 	cd src/ui/linux/TogglDesktop && $(QMAKE) && make && \
 	cd ../../../../ && \
 	cp src/ssl/cacert.pem src/ui/linux/TogglDesktop/build/release
