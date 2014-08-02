@@ -120,10 +120,11 @@
             this.logoutToolStripMenuItem,
             this.quitToolStripMenuItem});
             this.trayIconMenu.Name = "trayIconMenu";
-            this.trayIconMenu.Size = new System.Drawing.Size(154, 314);
+            this.trayIconMenu.Size = new System.Drawing.Size(154, 336);
             // 
             // runningToolStripMenuItem
             // 
+            this.runningToolStripMenuItem.Enabled = false;
             this.runningToolStripMenuItem.Name = "runningToolStripMenuItem";
             this.runningToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.runningToolStripMenuItem.Text = "Running";

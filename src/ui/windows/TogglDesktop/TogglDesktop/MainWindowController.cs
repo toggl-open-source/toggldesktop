@@ -107,6 +107,15 @@ namespace TogglDesktop
             isTracking = true;
             enableMenuItems();
             displayTrayIcon(true);
+
+            if (te.Description.Length > 0) {
+                runningToolStripMenuItem.Text = te.Description;
+            }
+            else
+            {
+                runningToolStripMenuItem.Text = "Timer is tracking";
+
+            }
         }
 
         void OnStoppedTimerState()
@@ -119,6 +128,8 @@ namespace TogglDesktop
             isTracking = false;
             enableMenuItems();
             displayTrayIcon(true);
+
+            runningToolStripMenuItem.Text = "Timer is not tracking";
         }
 
         void OnSettings(bool open, Toggl.Settings settings)
@@ -287,6 +298,11 @@ namespace TogglDesktop
             }
             enableMenuItems();
             displayTrayIcon(true);
+
+            if (open || 0 == user_id)
+            {
+                runningToolStripMenuItem.Text = "Timer is not tracking";
+            }
         }
 
         private void enableMenuItems()
