@@ -159,7 +159,7 @@ endif
 clean_test:
 	rm -rf test
 
-lint: fmt_lib fmt_ui lint
+lint: fmt_lib fmt_ui cpplint
 
 app: lib ui
 
@@ -212,7 +212,7 @@ sikuli: osx
 	--db_path kopsik_sikuli.db \
 	--log_path kopsik_sikuli.log 
 
-lint:
+cpplint:
 	./third_party/cpplint/cpplint.py $(source_dirs)
 
 clean_deps:
