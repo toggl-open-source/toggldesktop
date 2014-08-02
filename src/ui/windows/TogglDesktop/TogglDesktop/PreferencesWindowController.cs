@@ -34,6 +34,7 @@ namespace TogglDesktop
                 return;
             }
             checkBoxRecordTimeline.Enabled = !open && user_id != 0;
+            checkBoxRecordTimeline.Checked = Toggl.IsTimelineRecordingEnabled();
         }
 
         void OnSettings(bool open, Toggl.Settings settings)

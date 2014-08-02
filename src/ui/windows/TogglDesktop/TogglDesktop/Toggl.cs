@@ -788,6 +788,11 @@ namespace TogglDesktop
             return true;
         }
 
+        public static bool IsTimelineRecordingEnabled()
+        {
+            return kopsik_timeline_is_recording_enabled(ctx);
+        }
+
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool kopsik_set_proxy_settings(
@@ -893,6 +898,11 @@ namespace TogglDesktop
             IntPtr context,
             [MarshalAs(UnmanagedType.I1)]
             bool record_timeline);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        private static extern bool kopsik_timeline_is_recording_enabled(
+            IntPtr context);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         private static extern void kopsik_set_sleep(
