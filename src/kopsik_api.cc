@@ -561,11 +561,11 @@ _Bool kopsik_discard_time_at(
     return app(context)->DiscardTimeAt(guid, at);
 }
 
-void kopsik_timeline_toggle_recording(
+_Bool kopsik_timeline_toggle_recording(
     void *context,
     const _Bool record_timeline) {
     logger().debug("kopsik_timeline_toggle_recording");
-    app(context)->ToggleTimelineRecording(record_timeline);
+    return app(context)->ToggleTimelineRecording(record_timeline);
 }
 
 _Bool kopsik_timeline_is_recording_enabled(
