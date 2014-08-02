@@ -17,12 +17,23 @@ namespace TogglDesktop
             InitializeComponent();
 
             Toggl.OnSettings += OnSettings;
+            Toggl.OnLogin += OnLogin;
         }
 
         private void PreferencesWindowController_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = true;
             Hide();
+        }
+
+        void OnLogin(bool open, UInt64 user_id)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { OnLogin(open, user_id); });
+                return;
+            }
+            checkBoxRecordTimeline.Enabled = !open && user_id != 0;
         }
 
         void OnSettings(bool open, Toggl.Settings settings)
