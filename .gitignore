@@ -98,7 +98,7 @@ obj
 
 src/ui/windows/TogglDesktop/TogglDesktop/bin
 src/ui/windows/TogglDesktop/Release
-src/lib/TogglDesktopDLL/TogglDesktopDLL/Release
+src/lib/windows/TogglDesktopDLL/Release
 
 *.dSYM
 
@@ -131,4 +131,4 @@ src/ui/linux/TogglDesktop/cacert.pem
 
 # qt generated makefiles
 src/ui/linux/TogglDesktop/Makefile
-src/lib/Library/TogglDesktopLibrary/Makefile
+src/lib/linux/TogglDesktopLibrary/Makefile
