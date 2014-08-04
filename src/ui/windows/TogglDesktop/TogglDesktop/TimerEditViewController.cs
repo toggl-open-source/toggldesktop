@@ -280,7 +280,11 @@ namespace TogglDesktop
         private void selectAutoComplete()
         {
             descriptionTextBox.ResetListBox();
-            Toggl.AutocompleteItem item = (Toggl.AutocompleteItem)descriptionTextBox.autoCompleteListBox.SelectedItem;
+            object selectedItem = descriptionTextBox.autoCompleteListBox.SelectedItem;
+            if (null == selectedItem) {
+                return;
+            }
+            Toggl.AutocompleteItem item = (Toggl.AutocompleteItem)selectedItem;
             descriptionTextBox.Text = item.Description;
 
             if (item.ProjectID > 0)

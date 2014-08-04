@@ -12,14 +12,10 @@ namespace TogglDesktop
 {
     public partial class TimeEntryEditViewController : UserControl
     {
-        private UInt64 TEUpdatedAt;
         private Toggl.TimeEntry timeEntry;
-        private List<Toggl.AutocompleteItem> timeEntryAutocompleteUpdate = null;
-        private List<Toggl.AutocompleteItem> projectAutocompleteUpdate = null;
         private Boolean firstLoad = true;
         private List<Toggl.AutocompleteItem> autoCompleteEntryList;
         private List<Toggl.AutocompleteItem> autoCompleteProjectList;
-
 
         public TimeEntryEditViewController()
         {
@@ -393,9 +389,6 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { OnTimeEntryAutocomplete(list); });
                 return;
             }
-            timeEntryAutocompleteUpdate = list;
-            
-            timeEntryAutocompleteUpdate = null;
             autoCompleteEntryList = list;
         }
 
