@@ -783,9 +783,7 @@ namespace TogglDesktop
                 return false;
             }
 
-            kopsik_timeline_toggle_recording(ctx, settings.RecordTimeline);
-        
-            return true;
+            return kopsik_timeline_toggle_recording(ctx, settings.RecordTimeline);
         }
 
         public static bool IsTimelineRecordingEnabled()
