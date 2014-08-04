@@ -168,8 +168,7 @@ app: lib ui
 
 ifeq ($(uname), Darwin)
 lib:
-	!(otool -L $(executable) | grep "Users" && echo "Executable should not contain hardcoded paths!") && \
-	src/ui/osx/TogglDesktop/fix_dylib_paths.sh && \
+	xcodebuild -project src/lib/osx/Kopsik.xcodeproj && \
 	!(otool -L ./src/ui/osx/TogglDesktop/build/Release/TogglDesktop.app/Contents/Frameworks/*.dylib | grep "Users" && echo "Shared library should not contain hardcoded paths!")
 endif
 ifeq ($(uname), Linux)
@@ -190,7 +189,9 @@ endif
 
 ifeq ($(uname), Darwin)
 ui:
-	xcodebuild -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj
+	xcodebuild -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj && \
+	!(otool -L $(executable) | grep "Users" && echo "Executable should not contain hardcoded paths!") && \
+	src/ui/osx/TogglDesktop/fix_dylib_paths.sh
 endif
 ifeq ($(uname), Linux)
 ui: bugsnag-qt
