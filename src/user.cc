@@ -84,9 +84,9 @@ void User::Start(
 
     time_t now = time(0);
 
-	std::stringstream ss;
-	ss << "User::Start now=" << now;
-	logger().debug(ss.str());
+    std::stringstream ss;
+    ss << "User::Start now=" << now;
+    logger().debug(ss.str());
 
     TimeEntry *te = new TimeEntry();
     te->SetDescription(description);
