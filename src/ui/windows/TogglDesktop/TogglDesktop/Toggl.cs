@@ -1224,11 +1224,11 @@ namespace TogglDesktop
         }
 
         private static readonly DateTime UnixEpoch =
-            new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local);
+            new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         public static DateTime DateTimeFromUnix(UInt64 unix_seconds)
         {
-            return UnixEpoch.AddSeconds(unix_seconds);
+            return UnixEpoch.AddSeconds(unix_seconds).ToLocalTime();
         }
 
         public static void NewError(string errmsg, bool user_error)
