@@ -327,7 +327,6 @@ void TimeEntry::LoadFromJSONNode(JSONNODE * const data) {
 
     Poco::UInt64 id(0);
     std::string description("");
-    std::string guid("");
     Poco::UInt64 wid(0);
     Poco::UInt64 pid(0);
     Poco::UInt64 tid(0);
@@ -347,7 +346,7 @@ void TimeEntry::LoadFromJSONNode(JSONNODE * const data) {
         } else if (strcmp(node_name, "description") == 0) {
             description = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "guid") == 0) {
-            guid = std::string(json_as_string(*current_node));
+            SetGUID(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "wid") == 0) {
             wid = json_as_int(*current_node);
         } else if (strcmp(node_name, "pid") == 0) {
@@ -376,7 +375,6 @@ void TimeEntry::LoadFromJSONNode(JSONNODE * const data) {
 
     SetID(id);
     SetDescription(description);
-    SetGUID(guid);
     SetWID(wid);
     SetPID(pid);
     SetTID(tid);

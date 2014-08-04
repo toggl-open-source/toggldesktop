@@ -35,7 +35,6 @@ void Tag::LoadFromJSONNode(JSONNODE * const data) {
 
     Poco::UInt64 id(0);
     std::string name("");
-    std::string guid("");
     Poco::UInt64 wid(0);
 
     JSONNODE_ITERATOR current_node = json_begin(data);
@@ -47,7 +46,7 @@ void Tag::LoadFromJSONNode(JSONNODE * const data) {
         } else if (strcmp(node_name, "name") == 0) {
             name = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "guid") == 0) {
-            guid = std::string(json_as_string(*current_node));
+            SetGUID(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "wid") == 0) {
             wid = json_as_int(*current_node);
         }
@@ -56,7 +55,6 @@ void Tag::LoadFromJSONNode(JSONNODE * const data) {
 
     SetID(id);
     SetName(name);
-    SetGUID(guid);
     SetWID(wid);
 }
 

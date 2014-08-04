@@ -106,7 +106,6 @@ void Project::LoadFromJSONNode(JSONNODE * const data) {
 
     Poco::UInt64 id(0);
     std::string name("");
-    std::string guid("");
     Poco::UInt64 wid(0);
     Poco::UInt64 cid(0);
     std::string color("");
@@ -122,7 +121,7 @@ void Project::LoadFromJSONNode(JSONNODE * const data) {
         } else if (strcmp(node_name, "name") == 0) {
             name = std::string(json_as_string(*current_node));
         } else if (strcmp(node_name, "guid") == 0) {
-            guid = std::string(json_as_string(*current_node));
+            SetGUID(std::string(json_as_string(*current_node)));
         } else if (strcmp(node_name, "wid") == 0) {
             wid = json_as_int(*current_node);
         } else if (strcmp(node_name, "cid") == 0) {
@@ -139,7 +138,6 @@ void Project::LoadFromJSONNode(JSONNODE * const data) {
 
     SetID(id);
     SetName(name);
-    SetGUID(guid);
     SetWID(wid);
     SetCID(cid);
     SetColor(color);
