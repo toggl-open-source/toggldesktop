@@ -43,6 +43,7 @@ namespace TogglDesktop
         private void TimeEntryEditViewController_Load(object sender, EventArgs e)
         {
             Dock = DockStyle.Fill;
+
             comboBoxDescription.autoCompleteListBox.KeyDown += autoCompleteEntryListBox_KeyDown;
             comboBoxDescription.autoCompleteListBox.Click += autoCompleteEntryListBox_Click;
             comboBoxDescription.autoCompleteListBox.Leave += autoCompleteEntryListBox_Leave;
@@ -196,6 +197,7 @@ namespace TogglDesktop
             }
         }
 
+        // FIXME: what does it check? what does it mean?
         private bool checkDropDowns()
         {
             if (comboBoxDescription.autoCompleteListBox.Visible)
@@ -688,7 +690,13 @@ namespace TogglDesktop
         private void selectEntryAutoComplete()
         {
             comboBoxDescription.ResetListBox();
-            Toggl.AutocompleteItem item = (Toggl.AutocompleteItem)comboBoxDescription.autoCompleteListBox.SelectedItem;
+
+            object selected = comboBoxDescription.autoCompleteListBox.SelectedItem;
+            if (null == selected) {
+                return;
+            }
+
+            Toggl.AutocompleteItem item = (Toggl.AutocompleteItem)selected;
             comboBoxDescription.Text = item.Description;
 
             if (item.ProjectID != 0)
@@ -708,7 +716,14 @@ namespace TogglDesktop
         private void selectProjectAutoComplete()
         {
             comboBoxProject.ResetListBox();
-            Toggl.AutocompleteItem item = (Toggl.AutocompleteItem)comboBoxProject.autoCompleteListBox.SelectedItem;
+
+            object selected = comboBoxProject.autoCompleteListBox.SelectedItem;
+            if (null == selected)
+            {
+                return;
+            }
+
+            Toggl.AutocompleteItem item = (Toggl.AutocompleteItem)selected;
             comboBoxProject.Text = item.Text;            
 
             Toggl.SetTimeEntryProject(
