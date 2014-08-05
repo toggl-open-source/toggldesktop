@@ -99,7 +99,7 @@ namespace TogglDesktop
 
         private void autoCompleteEntryListBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab)
+            if (e.KeyCode == Keys.Enter)
             {
                 if (autoCompleteEntryList == null)
                 {
@@ -121,7 +121,7 @@ namespace TogglDesktop
 
         private void autoCompleteProjectListBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab)
+            if (e.KeyCode == Keys.Enter)
             {
                 if (autoCompleteProjectList == null)
                 {

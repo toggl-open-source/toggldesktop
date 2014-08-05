@@ -48,7 +48,7 @@ namespace TogglDesktop
 
         private void autoCompleteListBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab)
+            if (e.KeyCode == Keys.Enter)
             {
                 if (autoCompleteList == null)
                 {
