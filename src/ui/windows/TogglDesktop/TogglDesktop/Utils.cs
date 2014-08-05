@@ -28,6 +28,22 @@ namespace TogglDesktop
                 f.Location = Properties.Settings.Default.Location;
                 f.Size = Properties.Settings.Default.Size;
             }
+            if (!visibleOnAnyScreen(f))
+            {
+                f.Location = Screen.PrimaryScreen.WorkingArea.Location;
+            }
+        }
+
+        private static bool visibleOnAnyScreen(Form f)
+        {
+            foreach(Screen s in Screen.AllScreens)
+            {
+                if (s.WorkingArea.IntersectsWith(f.DesktopBounds))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public static void SaveWindowLocation(Form f)
