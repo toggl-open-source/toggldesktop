@@ -450,7 +450,7 @@ namespace TogglDesktop
         private void textBoxDuration_Leave(object sender, EventArgs e)
         {
             if (timeEntry.Equals(null))
-            {
+            {           
                 Console.WriteLine("Cannot apply duration change. this.TimeEntry is null");
                 return;
             }
@@ -470,7 +470,14 @@ namespace TogglDesktop
 
         private void applyTimeChange(TextBox textbox)
         {
-            DateTime date = parseTime(textbox);
+            int hours = 0;
+            int minutes = 0;
+            if (!Toggl.ParseTime(textbox.Text, ref hours, ref minutes))
+            {
+                return;
+            }
+            DateTime date = dateTimePickerStartDate.Value.Date +
+                new TimeSpan(hours, minutes, 0);
             String utf8String = date.ToString("yyyy-MM-ddTHH:mm:sszzz");
             if (textbox == textBoxStartTime)
             {
@@ -480,19 +487,6 @@ namespace TogglDesktop
             {
                 Toggl.SetTimeEntryEnd(timeEntry.GUID, utf8String);
             }
-        }
-
-        private DateTime parseTime(TextBox field) 
-        {
-            DateTime date = dateTimePickerStartDate.Value;
-            int hours = 0;
-            int minutes = 0;
-            if (!Toggl.ParseTime(field.Text, ref hours, ref minutes))
-            {
-                return date;
-            }
-
-            return date.Date + new TimeSpan(hours, minutes, 0);
         }
 
         private void dateTimePickerStartDate_Leave(object sender, EventArgs e)
