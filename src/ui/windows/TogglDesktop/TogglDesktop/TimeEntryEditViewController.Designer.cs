@@ -262,7 +262,7 @@
             this.checkBoxBillable.Location = new System.Drawing.Point(111, 180);
             this.checkBoxBillable.Name = "checkBoxBillable";
             this.checkBoxBillable.Size = new System.Drawing.Size(63, 19);
-            this.checkBoxBillable.TabIndex = 8;
+            this.checkBoxBillable.TabIndex = 11;
             this.checkBoxBillable.Text = "Billable";
             this.checkBoxBillable.UseVisualStyleBackColor = true;
             this.checkBoxBillable.CheckedChanged += new System.EventHandler(this.checkBoxBillable_CheckedChanged);
