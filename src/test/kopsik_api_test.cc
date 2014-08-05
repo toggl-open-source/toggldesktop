@@ -314,6 +314,11 @@ TEST(KopsikApiTest, kopsik_parse_time) {
     ASSERT_EQ(11, hours);
     ASSERT_EQ(20, minutes);
 
+    valid = kopsik_parse_time("5:30", &hours, &minutes);
+    ASSERT_EQ(true, valid);
+    ASSERT_EQ(5, hours);
+    ASSERT_EQ(30, minutes);
+
     valid = kopsik_parse_time("5:30 PM", &hours, &minutes);
     ASSERT_EQ(true, valid);
     ASSERT_EQ(17, hours);
