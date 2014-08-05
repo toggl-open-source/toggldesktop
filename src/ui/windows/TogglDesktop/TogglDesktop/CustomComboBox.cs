@@ -68,53 +68,70 @@ namespace TogglDesktop
             fullListOpened = false;
         }
 
-        public void UpdateListBox(List<Toggl.AutocompleteItem> autoCompleteList)
+        public void UpdateListBox(List<Toggl.AutocompleteItem> autoCompleteList,
+            KeyEventArgs e)
         {
-            if (Text == _formerValue) return;
+            if (Text == _formerValue)
+            {
+                return;
+            }
+
             _formerValue = Text;
             String word = Text;
-            if (autoCompleteList != null && word.Length > 1)
+
+            ResetListBox();
+
+            if (null == autoCompleteList || word.Length == 0)
             {
-                ResetListBox();
-                autoCompleteListBox.Items.Clear();
-                foreach (Toggl.AutocompleteItem item in autoCompleteList)
+                return;
+            }
+
+            autoCompleteListBox.Items.Clear();
+
+            foreach (Toggl.AutocompleteItem item in autoCompleteList)
+            {
+                if (item.ToString().IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0)
                 {
-                    if (item.ToString().IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0)
-                    {
-                        autoCompleteListBox.Items.Add(item);
-                    }
-                }
-                if (autoCompleteListBox.Items.Count > 0)
-                {
-                    InitListBox();
-                    autoCompleteListBox.SelectedIndex = 0;
-                    autoCompleteListBox.Height = 0;
-                    autoCompleteListBox.Width = 0;
-                    Focus();
-                    using (Graphics graphics = autoCompleteListBox.CreateGraphics())
-                    {
-                        for (int i = 0; i < autoCompleteListBox.Items.Count; i++)
-                        {
-                            autoCompleteListBox.Height += autoCompleteListBox.GetItemHeight(i);
-                            // it item width is larger than the current one
-                            // set it to the new max item width
-                            // GetItemRectangle does not work for me
-                            // we add a little extra space by using '_'
-                            int itemWidth = (int)graphics.MeasureString((autoCompleteListBox.Items[i].ToString()) + "_", autoCompleteListBox.Font).Width;
-                            autoCompleteListBox.Width = (autoCompleteListBox.Width < itemWidth) ? itemWidth : autoCompleteListBox.Width;
-                        }
-                    }
-                    ShowListBox();
-                }
-                else
-                {
-                    ResetListBox();
+                    autoCompleteListBox.Items.Add(item);
                 }
             }
-            else
+
+            if (autoCompleteListBox.Items.Count == 0)
             {
                 ResetListBox();
+                return;
             }
+
+            InitListBox();
+
+            autoCompleteListBox.SelectedIndex = 0;
+            autoCompleteListBox.Height = 0;
+            autoCompleteListBox.Width = 0;
+
+            Focus();
+
+            using (Graphics graphics = autoCompleteListBox.CreateGraphics())
+            {
+                for (int i = 0; i < autoCompleteListBox.Items.Count; i++)
+                {
+                    autoCompleteListBox.Height += autoCompleteListBox.GetItemHeight(i);
+                    // if item width is larger than the current one
+                    // set it to the new max item width
+                    // GetItemRectangle does not work for me
+                    // we add a little extra space by using '_'
+                    int itemWidth = (int)graphics.MeasureString((autoCompleteListBox.Items[i].ToString()) + "_", autoCompleteListBox.Font).Width;
+                    autoCompleteListBox.Width = (autoCompleteListBox.Width < itemWidth) ? itemWidth : autoCompleteListBox.Width;
+                }
+            }
+
+            // Don't show the listbox again, when Enter was pressed
+            // (which indicates selection was made)
+            if (e.KeyCode == Keys.Enter)
+            {
+                return;
+            }
+
+            ShowListBox();
         }
 
         public Boolean parseKeyDown(PreviewKeyDownEventArgs e, List<Toggl.AutocompleteItem> autoCompleteList) 
