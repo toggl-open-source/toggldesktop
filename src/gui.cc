@@ -331,6 +331,9 @@ _Bool GUI::isNetworkingError(const error err) const {
             != std::string::npos) {
         return true;
     }
+    if (value.find("Timeout") != std::string::npos) {
+        return true;
+    }
     return false;
 }
 
