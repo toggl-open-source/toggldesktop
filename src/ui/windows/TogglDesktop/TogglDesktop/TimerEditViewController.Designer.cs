@@ -89,6 +89,7 @@
             this.linkLabelProject.Size = new System.Drawing.Size(145, 20);
             this.linkLabelProject.TabIndex = 7;
             this.linkLabelProject.Text = "NEW - TOGGL";
+            this.linkLabelProject.UseMnemonic = false;
             this.linkLabelProject.Visible = false;
             this.linkLabelProject.Click += new System.EventHandler(this.linkLabelProject_Click);
             this.linkLabelProject.MouseEnter += new System.EventHandler(this.linkLabelProject_Enter);
@@ -104,6 +105,7 @@
             this.linkLabelDescription.Size = new System.Drawing.Size(145, 23);
             this.linkLabelDescription.TabIndex = 8;
             this.linkLabelDescription.Text = "(no description)";
+            this.linkLabelDescription.UseMnemonic = false;
             this.linkLabelDescription.Visible = false;
             this.linkLabelDescription.Click += new System.EventHandler(this.linkLabelDescription_Click);
             // 
@@ -118,6 +120,7 @@
             this.linkLabelDuration.Size = new System.Drawing.Size(88, 23);
             this.linkLabelDuration.TabIndex = 9;
             this.linkLabelDuration.Text = "00:00:00";
+            this.linkLabelDuration.UseMnemonic = false;
             this.linkLabelDuration.Visible = false;
             this.linkLabelDuration.Click += new System.EventHandler(this.linkLabelDuration_Click);
             // 

@@ -58,6 +58,7 @@
             this.labelFormattedDate.Size = new System.Drawing.Size(67, 15);
             this.labelFormattedDate.TabIndex = 10;
             this.labelFormattedDate.Text = "Thu 22. Jan";
+            this.labelFormattedDate.UseMnemonic = false;
             // 
             // labelDateDuration
             // 
@@ -71,6 +72,7 @@
             this.labelDateDuration.TabIndex = 11;
             this.labelDateDuration.Text = "2 h 12 min";
             this.labelDateDuration.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelDateDuration.UseMnemonic = false;
             // 
             // headerPanel
             // 
@@ -126,6 +128,7 @@
             this.labelTask.Size = new System.Drawing.Size(74, 16);
             this.labelTask.TabIndex = 10;
             this.labelTask.Text = "TaskName";
+            this.labelTask.UseMnemonic = false;
             this.labelTask.Click += new System.EventHandler(this.labelTask_Click);
             // 
             // labelProject
@@ -140,6 +143,7 @@
             this.labelProject.Size = new System.Drawing.Size(106, 16);
             this.labelProject.TabIndex = 9;
             this.labelProject.Text = "NEW - TOGGL";
+            this.labelProject.UseMnemonic = false;
             this.labelProject.Click += new System.EventHandler(this.labelProject_Click);
             // 
             // labelClient
@@ -153,6 +157,7 @@
             this.labelClient.Size = new System.Drawing.Size(81, 16);
             this.labelClient.TabIndex = 11;
             this.labelClient.Text = "ClientName";
+            this.labelClient.UseMnemonic = false;
             this.labelClient.Click += new System.EventHandler(this.labelClient_Click);
             // 
             // labelDescription
@@ -165,6 +170,7 @@
             this.labelDescription.Size = new System.Drawing.Size(154, 17);
             this.labelDescription.TabIndex = 6;
             this.labelDescription.Text = "Blogpost about ne...";
+            this.labelDescription.UseMnemonic = false;
             this.labelDescription.Click += new System.EventHandler(this.labelDescription_Click);
             // 
             // labelContinue
@@ -175,6 +181,7 @@
             this.labelContinue.Name = "labelContinue";
             this.labelContinue.Size = new System.Drawing.Size(24, 24);
             this.labelContinue.TabIndex = 14;
+            this.labelContinue.UseMnemonic = false;
             this.labelContinue.Click += new System.EventHandler(this.labelContinue_Click);
             // 
             // labelBillable
@@ -185,6 +192,7 @@
             this.labelBillable.Name = "labelBillable";
             this.labelBillable.Size = new System.Drawing.Size(13, 13);
             this.labelBillable.TabIndex = 5;
+            this.labelBillable.UseMnemonic = false;
             this.labelBillable.Click += new System.EventHandler(this.labelBillable_Click);
             // 
             // labelTag
@@ -195,6 +203,7 @@
             this.labelTag.Name = "labelTag";
             this.labelTag.Size = new System.Drawing.Size(13, 13);
             this.labelTag.TabIndex = 13;
+            this.labelTag.UseMnemonic = false;
             this.labelTag.Click += new System.EventHandler(this.labelTag_Click);
             // 
             // labelDuration
@@ -208,6 +217,7 @@
             this.labelDuration.TabIndex = 8;
             this.labelDuration.Text = "03:21:30";
             this.labelDuration.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelDuration.UseMnemonic = false;
             this.labelDuration.Click += new System.EventHandler(this.labelDuration_Click);
             // 
             // TimeEntryCell

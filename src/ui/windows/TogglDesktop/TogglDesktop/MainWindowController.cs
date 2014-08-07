@@ -109,7 +109,7 @@ namespace TogglDesktop
             displayTrayIcon(true);
 
             if (te.Description.Length > 0) {
-                runningToolStripMenuItem.Text = te.Description;
+                runningToolStripMenuItem.Text = te.Description.Replace("&", "&&");
             }
             else
             {
