@@ -967,7 +967,7 @@ const NSString *appName = @"osx_native_app";
 	[alert addButtonWithTitle:@"No"];
 	[alert setMessageText:@"Download new version?"];
 	NSString *informative = [NSString stringWithFormat:
-							 @"There's a new version of this app available (%@).", cmd.update.version];
+							 @"A new version of Toggl Desktop is available (%@).", cmd.update.version];
 	[alert setInformativeText:informative];
 	[alert setAlertStyle:NSWarningAlertStyle];
 	if ([alert runModal] != NSAlertFirstButtonReturn)

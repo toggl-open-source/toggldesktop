@@ -291,7 +291,7 @@ void MainWindowController::displayUpdate(const bool open, UpdateView *view) {
     if (QMessageBox::Yes == QMessageBox(
         QMessageBox::Question,
         "Download new version?",
-        "There's a new version of this app available (" + view->Version + ")."
+        "A new version of Toggl Desktop is available (" + view->Version + ")."
         + " Continue with download?",
         QMessageBox::No|QMessageBox::Yes).exec()) {
         QDesktopServices::openUrl(QUrl(view->URL));

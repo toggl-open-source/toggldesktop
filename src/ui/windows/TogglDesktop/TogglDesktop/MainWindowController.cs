@@ -222,8 +222,8 @@ namespace TogglDesktop
             }
             isUpgradeDialogVisible = true;
             DialogResult dr = MessageBox.Show(
-                "There's a new version of this app available (" + view.Version + ")." +
-                Environment.NewLine + "Proceed with the download?",
+                "A new version of Toggl Desktop is available (" + view.Version + ")." +
+                Environment.NewLine + "Continue with the download?",
                 "New version available",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             isUpgradeDialogVisible = false;
