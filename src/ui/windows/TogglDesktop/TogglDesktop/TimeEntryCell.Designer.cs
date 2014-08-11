@@ -117,6 +117,7 @@
             this.taskProjectPanel.Size = new System.Drawing.Size(154, 17);
             this.taskProjectPanel.TabIndex = 15;
             this.taskProjectPanel.WrapContents = false;
+            this.taskProjectPanel.Click += new System.EventHandler(this.taskProjectPanel_Click);
             // 
             // labelTask
             // 
