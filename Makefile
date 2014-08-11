@@ -143,9 +143,7 @@ clean_lib:
 endif
 
 ifeq ($(uname), Linux)
-clean_ui:
-	(cd third_party/bugsnag-qt && $(QMAKE) && make clean) && \
-	rm -rf third_party/bugsnag-qt/build && \
+clean_ui: clean-bugsnag-qt
 	(cd src/ui/linux/TogglDesktop && $(QMAKE) && make clean) && \
 	rm -rf src/ui/linux/TogglDesktop/build
 endif
@@ -200,8 +198,12 @@ ui: bugsnag-qt
 	cp src/ssl/cacert.pem src/ui/linux/TogglDesktop/build/release
 endif
 
-bugsnag-qt:
-	cd third_party/bugsnag-qt && make clean && $(QMAKE) && make
+clean-bugsnag-qt:
+	rm -rf third_party/bugsnag-qt/build && \
+	cd third_party/bugsnag-qt && $(QMAKE) && make clean
+
+bugsnag-qt: clean-bugsnag-qt
+	cd third_party/bugsnag-qt && $(QMAKE) && make
 
 run: app
 	$(executable)
