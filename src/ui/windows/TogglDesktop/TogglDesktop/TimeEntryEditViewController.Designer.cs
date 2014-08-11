@@ -388,11 +388,12 @@
             // 
             // checkBoxPublic
             // 
-            this.checkBoxPublic.AutoSize = true;
+            this.checkBoxPublic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxPublic.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.checkBoxPublic.Location = new System.Drawing.Point(110, 31);
             this.checkBoxPublic.Name = "checkBoxPublic";
-            this.checkBoxPublic.Size = new System.Drawing.Size(201, 19);
+            this.checkBoxPublic.Size = new System.Drawing.Size(195, 19);
             this.checkBoxPublic.TabIndex = 3;
             this.checkBoxPublic.TabStop = false;
             this.checkBoxPublic.Text = "Public (visible to the whole team)";
