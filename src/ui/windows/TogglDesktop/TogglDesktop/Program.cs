@@ -64,6 +64,8 @@ namespace TogglDesktop
                     return;
                 }
 
+                 if (Environment.OSVersion.Version.Major >= 6) SetProcessDPIAware();
+
                 bugsnag = new Bugsnag.Library.BugSnag()
                 {
                     apiKey = "2a46aa1157256f759053289f2d687c2f",
@@ -85,6 +87,9 @@ namespace TogglDesktop
                 Application.Run(mainWindowController);
             }
         }
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool SetProcessDPIAware();
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
