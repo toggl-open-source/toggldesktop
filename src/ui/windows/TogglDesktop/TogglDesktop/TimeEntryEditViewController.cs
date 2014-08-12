@@ -273,12 +273,11 @@ namespace TogglDesktop
             
             if (timeEntry.DurOnly)
             {
-                panelDateTag.Top = 30;
-                panelDateTag.Height = panelBottom.Height - 30;
+                panelDateTag.Top = panelDuration.Top + panelDuration.Height;
             } else {
-                panelDateTag.Top = 60;
-                panelDateTag.Height = panelBottom.Height - 60;
+                panelDateTag.Top = panelStartEndTime.Top + panelStartEndTime.Height;
             }
+            panelDateTag.Height = panelBottom.Height - panelDateTag.Top;
             
             if (te.UpdatedAt > 0)
             {
