@@ -227,16 +227,7 @@ namespace TogglDesktop
 
             timeEntry = te;
 
-            checkBoxBillable.Visible = te.CanSeeBillable;
-
-            if (te.CanSeeBillable)
-            {
-                checkedListBoxTags.Height = panelDateTag.Height - 60;
-            }
-            else
-            {
-                checkedListBoxTags.Height = panelDateTag.Height - 50;
-            }
+            panelBillable.Visible = te.CanSeeBillable;
 
             checkBoxBillable.Tag = this;
             try

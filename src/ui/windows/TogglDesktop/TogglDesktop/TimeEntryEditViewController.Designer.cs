@@ -63,6 +63,8 @@
             this.labelProjectName = new System.Windows.Forms.Label();
             this.descriptionButton = new System.Windows.Forms.Button();
             this.projectButton = new System.Windows.Forms.Button();
+            this.panelDuration = new System.Windows.Forms.Panel();
+            this.panelBillable = new System.Windows.Forms.Panel();
             this.comboBoxProject = new TogglDesktop.CustomComboBox();
             this.comboBoxDescription = new TogglDesktop.CustomComboBox();
             this.statusStripLastUpdate.SuspendLayout();
@@ -71,15 +73,18 @@
             this.panelDateTag.SuspendLayout();
             this.panelStartEndTime.SuspendLayout();
             this.panelAddProject.SuspendLayout();
+            this.panelDuration.SuspendLayout();
+            this.panelBillable.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelDescription
             // 
             this.labelDescription.AutoSize = true;
             this.labelDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.labelDescription.Location = new System.Drawing.Point(15, 13);
+            this.labelDescription.Location = new System.Drawing.Point(22, 20);
+            this.labelDescription.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelDescription.Name = "labelDescription";
-            this.labelDescription.Size = new System.Drawing.Size(72, 15);
+            this.labelDescription.Size = new System.Drawing.Size(110, 21);
             this.labelDescription.TabIndex = 0;
             this.labelDescription.Text = "Description:";
             // 
@@ -87,9 +92,10 @@
             // 
             this.labelProject.AutoSize = true;
             this.labelProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.labelProject.Location = new System.Drawing.Point(15, 40);
+            this.labelProject.Location = new System.Drawing.Point(22, 62);
+            this.labelProject.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelProject.Name = "labelProject";
-            this.labelProject.Size = new System.Drawing.Size(47, 15);
+            this.labelProject.Size = new System.Drawing.Size(72, 21);
             this.labelProject.TabIndex = 2;
             this.labelProject.Text = "Project:";
             // 
@@ -98,9 +104,10 @@
             this.linkAddProject.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkAddProject.AutoSize = true;
             this.linkAddProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.linkAddProject.Location = new System.Drawing.Point(210, 61);
+            this.linkAddProject.Location = new System.Drawing.Point(315, 94);
+            this.linkAddProject.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.linkAddProject.Name = "linkAddProject";
-            this.linkAddProject.Size = new System.Drawing.Size(94, 15);
+            this.linkAddProject.Size = new System.Drawing.Size(146, 21);
             this.linkAddProject.TabIndex = 2;
             this.linkAddProject.TabStop = true;
             this.linkAddProject.Text = "Add new project";
@@ -110,18 +117,20 @@
             // 
             this.labelDuration.AutoSize = true;
             this.labelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.labelDuration.Location = new System.Drawing.Point(15, 8);
+            this.labelDuration.Location = new System.Drawing.Point(22, 9);
+            this.labelDuration.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelDuration.Name = "labelDuration";
-            this.labelDuration.Size = new System.Drawing.Size(57, 15);
+            this.labelDuration.Size = new System.Drawing.Size(87, 21);
             this.labelDuration.TabIndex = 5;
             this.labelDuration.Text = "Duration:";
             // 
             // textBoxDuration
             // 
             this.textBoxDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.textBoxDuration.Location = new System.Drawing.Point(110, 5);
+            this.textBoxDuration.Location = new System.Drawing.Point(165, 5);
+            this.textBoxDuration.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.textBoxDuration.Name = "textBoxDuration";
-            this.textBoxDuration.Size = new System.Drawing.Size(140, 24);
+            this.textBoxDuration.Size = new System.Drawing.Size(208, 33);
             this.textBoxDuration.TabIndex = 4;
             this.textBoxDuration.Leave += new System.EventHandler(this.textBoxDuration_Leave);
             // 
@@ -129,36 +138,40 @@
             // 
             this.labelStartEnd.AutoSize = true;
             this.labelStartEnd.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.labelStartEnd.Location = new System.Drawing.Point(15, 8);
+            this.labelStartEnd.Location = new System.Drawing.Point(22, 12);
+            this.labelStartEnd.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelStartEnd.Name = "labelStartEnd";
-            this.labelStartEnd.Size = new System.Drawing.Size(88, 15);
+            this.labelStartEnd.Size = new System.Drawing.Size(136, 21);
             this.labelStartEnd.TabIndex = 7;
             this.labelStartEnd.Text = "Start-end time:";
             // 
             // textBoxStartTime
             // 
             this.textBoxStartTime.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.textBoxStartTime.Location = new System.Drawing.Point(110, 5);
+            this.textBoxStartTime.Location = new System.Drawing.Point(165, 8);
+            this.textBoxStartTime.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.textBoxStartTime.Name = "textBoxStartTime";
-            this.textBoxStartTime.Size = new System.Drawing.Size(60, 24);
+            this.textBoxStartTime.Size = new System.Drawing.Size(88, 33);
             this.textBoxStartTime.TabIndex = 6;
             this.textBoxStartTime.Leave += new System.EventHandler(this.textBoxStartTime_Leave);
             // 
             // labelDash
             // 
             this.labelDash.AutoSize = true;
-            this.labelDash.Location = new System.Drawing.Point(175, 8);
+            this.labelDash.Location = new System.Drawing.Point(262, 12);
+            this.labelDash.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelDash.Name = "labelDash";
-            this.labelDash.Size = new System.Drawing.Size(10, 13);
+            this.labelDash.Size = new System.Drawing.Size(14, 20);
             this.labelDash.TabIndex = 9;
             this.labelDash.Text = "-";
             // 
             // textBoxEndTime
             // 
             this.textBoxEndTime.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.textBoxEndTime.Location = new System.Drawing.Point(190, 5);
+            this.textBoxEndTime.Location = new System.Drawing.Point(285, 8);
+            this.textBoxEndTime.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.textBoxEndTime.Name = "textBoxEndTime";
-            this.textBoxEndTime.Size = new System.Drawing.Size(60, 24);
+            this.textBoxEndTime.Size = new System.Drawing.Size(88, 33);
             this.textBoxEndTime.TabIndex = 7;
             this.textBoxEndTime.Leave += new System.EventHandler(this.textBoxEndTime_Leave);
             // 
@@ -166,18 +179,20 @@
             // 
             this.labelDate.AutoSize = true;
             this.labelDate.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.labelDate.Location = new System.Drawing.Point(15, 8);
+            this.labelDate.Location = new System.Drawing.Point(22, 12);
+            this.labelDate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelDate.Name = "labelDate";
-            this.labelDate.Size = new System.Drawing.Size(34, 15);
+            this.labelDate.Size = new System.Drawing.Size(54, 21);
             this.labelDate.TabIndex = 11;
             this.labelDate.Text = "Date:";
             // 
             // dateTimePickerStartDate
             // 
             this.dateTimePickerStartDate.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.dateTimePickerStartDate.Location = new System.Drawing.Point(110, 5);
+            this.dateTimePickerStartDate.Location = new System.Drawing.Point(165, 8);
+            this.dateTimePickerStartDate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dateTimePickerStartDate.Name = "dateTimePickerStartDate";
-            this.dateTimePickerStartDate.Size = new System.Drawing.Size(140, 24);
+            this.dateTimePickerStartDate.Size = new System.Drawing.Size(208, 33);
             this.dateTimePickerStartDate.TabIndex = 9;
             this.dateTimePickerStartDate.Leave += new System.EventHandler(this.dateTimePickerStartDate_Leave);
             // 
@@ -185,9 +200,10 @@
             // 
             this.labelTags.AutoSize = true;
             this.labelTags.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.labelTags.Location = new System.Drawing.Point(15, 38);
+            this.labelTags.Location = new System.Drawing.Point(22, 58);
+            this.labelTags.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelTags.Name = "labelTags";
-            this.labelTags.Size = new System.Drawing.Size(36, 15);
+            this.labelTags.Size = new System.Drawing.Size(55, 21);
             this.labelTags.TabIndex = 13;
             this.labelTags.Text = "Tags:";
             // 
@@ -195,9 +211,10 @@
             // 
             this.statusStripLastUpdate.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelLastUpdate});
-            this.statusStripLastUpdate.Location = new System.Drawing.Point(0, 378);
+            this.statusStripLastUpdate.Location = new System.Drawing.Point(0, 589);
             this.statusStripLastUpdate.Name = "statusStripLastUpdate";
-            this.statusStripLastUpdate.Size = new System.Drawing.Size(317, 22);
+            this.statusStripLastUpdate.Padding = new System.Windows.Forms.Padding(2, 0, 21, 0);
+            this.statusStripLastUpdate.Size = new System.Drawing.Size(476, 26);
             this.statusStripLastUpdate.TabIndex = 14;
             // 
             // toolStripStatusLabelLastUpdate
@@ -205,7 +222,7 @@
             this.toolStripStatusLabelLastUpdate.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.toolStripStatusLabelLastUpdate.Margin = new System.Windows.Forms.Padding(6, 3, 0, 2);
             this.toolStripStatusLabelLastUpdate.Name = "toolStripStatusLabelLastUpdate";
-            this.toolStripStatusLabelLastUpdate.Size = new System.Drawing.Size(152, 17);
+            this.toolStripStatusLabelLastUpdate.Size = new System.Drawing.Size(238, 21);
             this.toolStripStatusLabelLastUpdate.Text = "Last update: Today 2:03AM";
             // 
             // buttonsPanel
@@ -215,18 +232,20 @@
             this.buttonsPanel.Controls.Add(this.buttonContinue);
             this.buttonsPanel.Controls.Add(this.buttonDelete);
             this.buttonsPanel.Controls.Add(this.buttonDone);
-            this.buttonsPanel.Location = new System.Drawing.Point(0, 349);
+            this.buttonsPanel.Location = new System.Drawing.Point(0, 537);
+            this.buttonsPanel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonsPanel.Name = "buttonsPanel";
-            this.buttonsPanel.Size = new System.Drawing.Size(317, 31);
+            this.buttonsPanel.Size = new System.Drawing.Size(476, 48);
             this.buttonsPanel.TabIndex = 16;
             // 
             // buttonContinue
             // 
             this.buttonContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonContinue.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.buttonContinue.Location = new System.Drawing.Point(230, 3);
+            this.buttonContinue.Location = new System.Drawing.Point(345, 5);
+            this.buttonContinue.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonContinue.Name = "buttonContinue";
-            this.buttonContinue.Size = new System.Drawing.Size(75, 23);
+            this.buttonContinue.Size = new System.Drawing.Size(112, 35);
             this.buttonContinue.TabIndex = 11;
             this.buttonContinue.Text = "Continue";
             this.buttonContinue.UseVisualStyleBackColor = true;
@@ -235,9 +254,10 @@
             // buttonDelete
             // 
             this.buttonDelete.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.buttonDelete.Location = new System.Drawing.Point(95, 3);
+            this.buttonDelete.Location = new System.Drawing.Point(142, 5);
+            this.buttonDelete.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(75, 23);
+            this.buttonDelete.Size = new System.Drawing.Size(112, 35);
             this.buttonDelete.TabIndex = 10;
             this.buttonDelete.Text = "Delete";
             this.buttonDelete.UseVisualStyleBackColor = true;
@@ -246,9 +266,10 @@
             // buttonDone
             // 
             this.buttonDone.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.buttonDone.Location = new System.Drawing.Point(10, 3);
+            this.buttonDone.Location = new System.Drawing.Point(15, 5);
+            this.buttonDone.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonDone.Name = "buttonDone";
-            this.buttonDone.Size = new System.Drawing.Size(75, 23);
+            this.buttonDone.Size = new System.Drawing.Size(112, 35);
             this.buttonDone.TabIndex = 9;
             this.buttonDone.Text = "Done";
             this.buttonDone.UseVisualStyleBackColor = true;
@@ -259,9 +280,10 @@
             this.checkBoxBillable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxBillable.AutoSize = true;
             this.checkBoxBillable.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.checkBoxBillable.Location = new System.Drawing.Point(111, 180);
+            this.checkBoxBillable.Location = new System.Drawing.Point(165, 12);
+            this.checkBoxBillable.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBoxBillable.Name = "checkBoxBillable";
-            this.checkBoxBillable.Size = new System.Drawing.Size(63, 19);
+            this.checkBoxBillable.Size = new System.Drawing.Size(97, 25);
             this.checkBoxBillable.TabIndex = 11;
             this.checkBoxBillable.Text = "Billable";
             this.checkBoxBillable.UseVisualStyleBackColor = true;
@@ -275,10 +297,10 @@
             this.checkedListBoxTags.CheckOnClick = true;
             this.checkedListBoxTags.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.checkedListBoxTags.FormattingEnabled = true;
-            this.checkedListBoxTags.Location = new System.Drawing.Point(110, 35);
-            this.checkedListBoxTags.MinimumSize = new System.Drawing.Size(4, 60);
+            this.checkedListBoxTags.Location = new System.Drawing.Point(165, 54);
+            this.checkedListBoxTags.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkedListBoxTags.Name = "checkedListBoxTags";
-            this.checkedListBoxTags.Size = new System.Drawing.Size(192, 137);
+            this.checkedListBoxTags.Size = new System.Drawing.Size(286, 172);
             this.checkedListBoxTags.TabIndex = 10;
             this.checkedListBoxTags.Leave += new System.EventHandler(this.checkedListBoxTags_Leave);
             // 
@@ -293,13 +315,14 @@
             this.panelBottom.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelBottom.Controls.Add(this.panelBillable);
+            this.panelBottom.Controls.Add(this.panelDuration);
             this.panelBottom.Controls.Add(this.panelDateTag);
             this.panelBottom.Controls.Add(this.panelStartEndTime);
-            this.panelBottom.Controls.Add(this.labelDuration);
-            this.panelBottom.Controls.Add(this.textBoxDuration);
-            this.panelBottom.Location = new System.Drawing.Point(0, 77);
+            this.panelBottom.Location = new System.Drawing.Point(0, 118);
+            this.panelBottom.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.panelBottom.Name = "panelBottom";
-            this.panelBottom.Size = new System.Drawing.Size(317, 264);
+            this.panelBottom.Size = new System.Drawing.Size(476, 406);
             this.panelBottom.TabIndex = 3;
             this.panelBottom.TabStop = true;
             // 
@@ -312,23 +335,26 @@
             this.panelDateTag.Controls.Add(this.labelDate);
             this.panelDateTag.Controls.Add(this.dateTimePickerStartDate);
             this.panelDateTag.Controls.Add(this.labelTags);
-            this.panelDateTag.Controls.Add(this.checkBoxBillable);
-            this.panelDateTag.Location = new System.Drawing.Point(0, 60);
-            this.panelDateTag.MinimumSize = new System.Drawing.Size(0, 100);
+            this.panelDateTag.Location = new System.Drawing.Point(0, 92);
+            this.panelDateTag.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.panelDateTag.MinimumSize = new System.Drawing.Size(0, 154);
             this.panelDateTag.Name = "panelDateTag";
-            this.panelDateTag.Size = new System.Drawing.Size(317, 204);
+            this.panelDateTag.Size = new System.Drawing.Size(476, 269);
             this.panelDateTag.TabIndex = 8;
             this.panelDateTag.TabStop = true;
             // 
             // panelStartEndTime
             // 
+            this.panelStartEndTime.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelStartEndTime.Controls.Add(this.labelStartEnd);
             this.panelStartEndTime.Controls.Add(this.textBoxEndTime);
             this.panelStartEndTime.Controls.Add(this.labelDash);
             this.panelStartEndTime.Controls.Add(this.textBoxStartTime);
-            this.panelStartEndTime.Location = new System.Drawing.Point(0, 30);
+            this.panelStartEndTime.Location = new System.Drawing.Point(0, 46);
+            this.panelStartEndTime.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.panelStartEndTime.Name = "panelStartEndTime";
-            this.panelStartEndTime.Size = new System.Drawing.Size(317, 30);
+            this.panelStartEndTime.Size = new System.Drawing.Size(476, 46);
             this.panelStartEndTime.TabIndex = 5;
             this.panelStartEndTime.TabStop = true;
             // 
@@ -344,9 +370,10 @@
             this.panelAddProject.Controls.Add(this.textBoxProjectName);
             this.panelAddProject.Controls.Add(this.labelClient);
             this.panelAddProject.Controls.Add(this.labelProjectName);
-            this.panelAddProject.Location = new System.Drawing.Point(0, 558);
+            this.panelAddProject.Location = new System.Drawing.Point(0, 858);
+            this.panelAddProject.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.panelAddProject.Name = "panelAddProject";
-            this.panelAddProject.Size = new System.Drawing.Size(317, 122);
+            this.panelAddProject.Size = new System.Drawing.Size(474, 187);
             this.panelAddProject.TabIndex = 1;
             this.panelAddProject.Visible = false;
             // 
@@ -354,9 +381,10 @@
             // 
             this.labelWorkspace.AutoSize = true;
             this.labelWorkspace.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.labelWorkspace.Location = new System.Drawing.Point(15, 64);
+            this.labelWorkspace.Location = new System.Drawing.Point(22, 98);
+            this.labelWorkspace.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelWorkspace.Name = "labelWorkspace";
-            this.labelWorkspace.Size = new System.Drawing.Size(68, 15);
+            this.labelWorkspace.Size = new System.Drawing.Size(106, 21);
             this.labelWorkspace.TabIndex = 6;
             this.labelWorkspace.Text = "Workspace:";
             this.labelWorkspace.Visible = false;
@@ -367,9 +395,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxWorkspace.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.comboBoxWorkspace.FormattingEnabled = true;
-            this.comboBoxWorkspace.Location = new System.Drawing.Point(110, 58);
+            this.comboBoxWorkspace.Location = new System.Drawing.Point(165, 89);
+            this.comboBoxWorkspace.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboBoxWorkspace.Name = "comboBoxWorkspace";
-            this.comboBoxWorkspace.Size = new System.Drawing.Size(192, 23);
+            this.comboBoxWorkspace.Size = new System.Drawing.Size(286, 29);
             this.comboBoxWorkspace.TabIndex = 4;
             this.comboBoxWorkspace.TabStop = false;
             this.comboBoxWorkspace.Visible = false;
@@ -380,9 +409,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxClient.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.comboBoxClient.FormattingEnabled = true;
-            this.comboBoxClient.Location = new System.Drawing.Point(110, 91);
+            this.comboBoxClient.Location = new System.Drawing.Point(165, 140);
+            this.comboBoxClient.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboBoxClient.Name = "comboBoxClient";
-            this.comboBoxClient.Size = new System.Drawing.Size(192, 23);
+            this.comboBoxClient.Size = new System.Drawing.Size(286, 29);
             this.comboBoxClient.TabIndex = 5;
             this.comboBoxClient.TabStop = false;
             // 
@@ -391,9 +421,10 @@
             this.checkBoxPublic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxPublic.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.checkBoxPublic.Location = new System.Drawing.Point(110, 31);
+            this.checkBoxPublic.Location = new System.Drawing.Point(165, 48);
+            this.checkBoxPublic.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBoxPublic.Name = "checkBoxPublic";
-            this.checkBoxPublic.Size = new System.Drawing.Size(195, 19);
+            this.checkBoxPublic.Size = new System.Drawing.Size(292, 29);
             this.checkBoxPublic.TabIndex = 3;
             this.checkBoxPublic.TabStop = false;
             this.checkBoxPublic.Text = "Public (visible to the whole team)";
@@ -404,9 +435,10 @@
             this.textBoxProjectName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxProjectName.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.textBoxProjectName.Location = new System.Drawing.Point(110, 5);
+            this.textBoxProjectName.Location = new System.Drawing.Point(165, 8);
+            this.textBoxProjectName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.textBoxProjectName.Name = "textBoxProjectName";
-            this.textBoxProjectName.Size = new System.Drawing.Size(192, 24);
+            this.textBoxProjectName.Size = new System.Drawing.Size(286, 33);
             this.textBoxProjectName.TabIndex = 2;
             this.textBoxProjectName.TabStop = false;
             // 
@@ -415,9 +447,10 @@
             this.labelClient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelClient.AutoSize = true;
             this.labelClient.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.labelClient.Location = new System.Drawing.Point(18, 94);
+            this.labelClient.Location = new System.Drawing.Point(27, 145);
+            this.labelClient.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelClient.Name = "labelClient";
-            this.labelClient.Size = new System.Drawing.Size(41, 15);
+            this.labelClient.Size = new System.Drawing.Size(63, 21);
             this.labelClient.TabIndex = 1;
             this.labelClient.Text = "Client:";
             // 
@@ -425,9 +458,10 @@
             // 
             this.labelProjectName.AutoSize = true;
             this.labelProjectName.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.labelProjectName.Location = new System.Drawing.Point(15, 8);
+            this.labelProjectName.Location = new System.Drawing.Point(22, 12);
+            this.labelProjectName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelProjectName.Name = "labelProjectName";
-            this.labelProjectName.Size = new System.Drawing.Size(80, 15);
+            this.labelProjectName.Size = new System.Drawing.Size(123, 21);
             this.labelProjectName.TabIndex = 0;
             this.labelProjectName.Text = "Project name:";
             // 
@@ -438,9 +472,10 @@
             this.descriptionButton.FlatAppearance.BorderSize = 0;
             this.descriptionButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.descriptionButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.descriptionButton.Location = new System.Drawing.Point(279, 11);
+            this.descriptionButton.Location = new System.Drawing.Point(418, 17);
+            this.descriptionButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.descriptionButton.Name = "descriptionButton";
-            this.descriptionButton.Size = new System.Drawing.Size(22, 22);
+            this.descriptionButton.Size = new System.Drawing.Size(33, 34);
             this.descriptionButton.TabIndex = 17;
             this.descriptionButton.Text = "▼";
             this.descriptionButton.UseVisualStyleBackColor = false;
@@ -452,21 +487,44 @@
             this.projectButton.FlatAppearance.BorderSize = 0;
             this.projectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.projectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.projectButton.Location = new System.Drawing.Point(279, 38);
+            this.projectButton.Location = new System.Drawing.Point(418, 58);
+            this.projectButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.projectButton.Name = "projectButton";
-            this.projectButton.Size = new System.Drawing.Size(22, 22);
+            this.projectButton.Size = new System.Drawing.Size(33, 34);
             this.projectButton.TabIndex = 18;
             this.projectButton.Text = "▼";
             this.projectButton.UseVisualStyleBackColor = false;
+            // 
+            // panelDuration
+            // 
+            this.panelDuration.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelDuration.Controls.Add(this.textBoxDuration);
+            this.panelDuration.Controls.Add(this.labelDuration);
+            this.panelDuration.Location = new System.Drawing.Point(0, 0);
+            this.panelDuration.Name = "panelDuration";
+            this.panelDuration.Size = new System.Drawing.Size(476, 46);
+            this.panelDuration.TabIndex = 9;
+            // 
+            // panelBillable
+            // 
+            this.panelBillable.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelBillable.Controls.Add(this.checkBoxBillable);
+            this.panelBillable.Location = new System.Drawing.Point(0, 359);
+            this.panelBillable.Name = "panelBillable";
+            this.panelBillable.Size = new System.Drawing.Size(476, 47);
+            this.panelBillable.TabIndex = 10;
             // 
             // comboBoxProject
             // 
             this.comboBoxProject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.comboBoxProject.Location = new System.Drawing.Point(110, 37);
+            this.comboBoxProject.Location = new System.Drawing.Point(165, 57);
+            this.comboBoxProject.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboBoxProject.Name = "comboBoxProject";
-            this.comboBoxProject.Size = new System.Drawing.Size(192, 24);
+            this.comboBoxProject.Size = new System.Drawing.Size(286, 33);
             this.comboBoxProject.TabIndex = 1;
             this.comboBoxProject.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBoxProject_KeyUp);
             this.comboBoxProject.Leave += new System.EventHandler(this.comboBoxProject_Leave);
@@ -478,9 +536,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxDescription.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.comboBoxDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.comboBoxDescription.Location = new System.Drawing.Point(110, 10);
+            this.comboBoxDescription.Location = new System.Drawing.Point(165, 15);
+            this.comboBoxDescription.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboBoxDescription.Name = "comboBoxDescription";
-            this.comboBoxDescription.Size = new System.Drawing.Size(192, 24);
+            this.comboBoxDescription.Size = new System.Drawing.Size(286, 33);
             this.comboBoxDescription.TabIndex = 0;
             this.comboBoxDescription.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBoxDescription_KeyUp);
             this.comboBoxDescription.Leave += new System.EventHandler(this.comboBoxDescription_Leave);
@@ -488,7 +547,7 @@
             // 
             // TimeEntryEditViewController
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.projectButton);
             this.Controls.Add(this.descriptionButton);
@@ -501,20 +560,24 @@
             this.Controls.Add(this.labelProject);
             this.Controls.Add(this.comboBoxDescription);
             this.Controls.Add(this.labelDescription);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "TimeEntryEditViewController";
-            this.Size = new System.Drawing.Size(317, 400);
+            this.Size = new System.Drawing.Size(476, 615);
             this.Load += new System.EventHandler(this.TimeEntryEditViewController_Load);
             this.statusStripLastUpdate.ResumeLayout(false);
             this.statusStripLastUpdate.PerformLayout();
             this.buttonsPanel.ResumeLayout(false);
             this.panelBottom.ResumeLayout(false);
-            this.panelBottom.PerformLayout();
             this.panelDateTag.ResumeLayout(false);
             this.panelDateTag.PerformLayout();
             this.panelStartEndTime.ResumeLayout(false);
             this.panelStartEndTime.PerformLayout();
             this.panelAddProject.ResumeLayout(false);
             this.panelAddProject.PerformLayout();
+            this.panelDuration.ResumeLayout(false);
+            this.panelDuration.PerformLayout();
+            this.panelBillable.ResumeLayout(false);
+            this.panelBillable.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -558,5 +621,7 @@
         private System.Windows.Forms.Panel panelDateTag;
         private System.Windows.Forms.Button descriptionButton;
         private System.Windows.Forms.Button projectButton;
+        private System.Windows.Forms.Panel panelDuration;
+        private System.Windows.Forms.Panel panelBillable;
     }
 }
