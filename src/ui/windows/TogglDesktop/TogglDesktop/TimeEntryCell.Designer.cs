@@ -210,7 +210,6 @@
             // labelDuration
             // 
             this.labelDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelDuration.AutoSize = true;
             this.labelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelDuration.Location = new System.Drawing.Point(239, 19);
             this.labelDuration.Name = "labelDuration";
@@ -235,7 +234,6 @@
             this.headerPanel.ResumeLayout(false);
             this.headerPanel.PerformLayout();
             this.panel.ResumeLayout(false);
-            this.panel.PerformLayout();
             this.taskProjectPanel.ResumeLayout(false);
             this.taskProjectPanel.PerformLayout();
             this.ResumeLayout(false);
