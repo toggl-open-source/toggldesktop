@@ -164,6 +164,8 @@ namespace TogglDesktop
 
             timerRunningDuration.Enabled = true;
 
+            labelClearProject.Visible = false;
+
             buttonStart.Text = "Stop";
             buttonStart.BackColor = ColorTranslator.FromHtml("#e20000");
             buttonStart.FlatAppearance.BorderColor = ColorTranslator.FromHtml("#e20000");
@@ -300,6 +302,8 @@ namespace TogglDesktop
             }
             task_id = item.TaskID;
             project_id = item.ProjectID;
+
+            labelClearProject.Visible = linkLabelProject.Visible;
         }
 
         private void labelClearProject_Click(object sender, EventArgs e)
