@@ -14,9 +14,12 @@
 {
 	self.GUID = [NSString stringWithUTF8String:te->GUID];
 	self.duration_in_seconds = te->DurationInSeconds;
-	if (te->Description) {
+	if (te->Description)
+	{
 		self.Description = [NSString stringWithUTF8String:te->Description];
-	} else {
+	}
+	else
+	{
 		self.Description = @"";
 	}
 	if (te->ProjectAndTaskLabel)
