@@ -5,6 +5,10 @@
 
 #include <string>
 
-void GetFocusedWindowInfo(std::string *title, std::string *filename);
+// Return 0 on success, error code otherwise.
+int getFocusedWindowInfo(
+    std::string *title,
+    std::string *filename,
+    bool *idle);
 
 #endif  // SRC_GET_FOCUSED_WINDOW_H_

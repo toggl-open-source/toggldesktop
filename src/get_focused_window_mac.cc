@@ -8,9 +8,13 @@
 static const int kTitleBufferSize = 255;
 static const int kFilenameBufferSize = 255;
 
-int GetFocusedWindowInfo(std::string *title, std::string *filename) {
+int getFocusedWindowInfo(
+    std::string *title,
+    std::string *filename,
+    bool *idle) {
     *title = "";
     *filename = "";
+    *idle = false;
 
     // get pid
     ProcessSerialNumber front_process_serial_number;

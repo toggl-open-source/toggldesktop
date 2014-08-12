@@ -11,7 +11,6 @@
 #include "./types.h"
 
 #include "Poco/Activity.h"
-#include "Poco/Logger.h"
 
 namespace kopsik {
 
@@ -21,6 +20,7 @@ class WindowChangeRecorder {
         : last_title_("")
     , last_filename_("")
     , last_event_started_at_(0)
+    , last_idle_(false)
     , recording_(this, &WindowChangeRecorder::recordLoop) {
         recording_.start();
     }
@@ -37,13 +37,17 @@ class WindowChangeRecorder {
  private:
     void inspectFocusedWindow();
 
-    bool hasTheWindowChanged(const std::string &title,
-                             const std::string &filename);
+    bool hasWindowChanged(
+        const std::string &title,
+        const std::string &filename) const;
+
+    bool hasIdlenessChanged(const bool &idle) const;
 
     // Last window focus event data
     std::string last_title_;
     std::string last_filename_;
     time_t last_event_started_at_;
+    bool last_idle_;
 
     Poco::Activity<WindowChangeRecorder> recording_;
 };

@@ -75,13 +75,17 @@ static char *get_property(Display *disp, Window win, Atom xa_prop_type,
     return ret;
 }
 
-int GetFocusedWindowInfo(std::string *title, std::string *filename) {
+int getFocusedWindowInfo(
+    std::string *title,
+    std::string *filename,
+    bool *idle) {
     *title = "";
     *filename = "";
+    *idle = false;
 
     Display *display = XOpenDisplay(NULL);
     if (!display) {
-        return 0;
+        return 1;
     }
 
     // get active window
@@ -153,5 +157,5 @@ int GetFocusedWindowInfo(std::string *title, std::string *filename) {
     // Must close display, else max window client count is reached quickly
     XCloseDisplay(display);
 
-    return 1;
+    return 0;
 }
