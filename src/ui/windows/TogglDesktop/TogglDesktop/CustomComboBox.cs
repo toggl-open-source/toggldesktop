@@ -12,12 +12,12 @@ namespace TogglDesktop
         private String _formerValue = String.Empty;
         public bool fullListOpened = false;
         private SizeF currentFactor;
-        private int defatulItemHeight;
+        private int defaultItemHeight;
 
         public CustomComboBox()
         {
             InitializeComponent();
-            defatulItemHeight = autoCompleteListBox.ItemHeight;
+            defaultItemHeight = autoCompleteListBox.ItemHeight;
         }
 
         private void InitializeComponent()
@@ -44,7 +44,7 @@ namespace TogglDesktop
 
         private void autoCompleteListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
-            autoCompleteListBox.ItemHeight = (int)(defatulItemHeight*currentFactor.Height);
+            autoCompleteListBox.ItemHeight = (int)(defaultItemHeight*currentFactor.Height);
             e.DrawBackground();
             e.DrawFocusRectangle();
             e.Graphics.DrawString(
