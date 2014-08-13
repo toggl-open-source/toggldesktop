@@ -267,7 +267,7 @@ namespace TogglDesktop
             troubleBox.Visible = true;
             contentPanel.Location = errorContentPosition;
 
-            if (!user_error)
+            if (!user_error && Properties.Settings.Default.Environment != "development")
             {
                 Bugsnag.Library.BugSnag bs = new Bugsnag.Library.BugSnag();
                 bs.Notify(new Exception(errmsg));
