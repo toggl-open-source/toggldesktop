@@ -36,6 +36,12 @@ namespace TogglDesktop
             descriptionTextBox.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
         }
 
+        protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
+        {
+            base.ScaleControl(factor, specified);
+            this.descriptionTextBox.scaleList(factor);
+        }
+
         private void ignoreMouseWheel(object sender, MouseEventArgs args)
         {
             ((HandledMouseEventArgs)args).Handled = true;
