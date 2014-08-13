@@ -112,6 +112,7 @@
             this.togglLogoBox.Location = new System.Drawing.Point(71, 72);
             this.togglLogoBox.Name = "togglLogoBox";
             this.togglLogoBox.Size = new System.Drawing.Size(120, 36);
+            this.togglLogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.togglLogoBox.TabIndex = 8;
             this.togglLogoBox.TabStop = false;
             // 
