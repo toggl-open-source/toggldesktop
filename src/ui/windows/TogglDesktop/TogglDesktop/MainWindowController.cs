@@ -18,6 +18,7 @@ namespace TogglDesktop
         private FeedbackWindowController feedbackWindowController;
         private IdleNotificationWindowController idleNotificationWindowController;
 
+        private string defaultTitle = string.Empty;
         private bool isUpgradeDialogVisible = false;
         private bool isTracking = false;
         private bool isNetworkError = false;
@@ -62,6 +63,7 @@ namespace TogglDesktop
             preferencesWindowController = new PreferencesWindowController();
             feedbackWindowController = new FeedbackWindowController();
             idleNotificationWindowController = new IdleNotificationWindowController();
+            defaultTitle = Text;
         }
 
         public void RemoveTrayIcon()
@@ -110,11 +112,12 @@ namespace TogglDesktop
 
             if (te.Description.Length > 0) {
                 runningToolStripMenuItem.Text = te.Description.Replace("&", "&&");
+                Text = defaultTitle + " - ( "+te.Description+" )";
             }
             else
             {
                 runningToolStripMenuItem.Text = "Timer is tracking";
-
+                Text = defaultTitle;
             }
         }
 
@@ -130,6 +133,7 @@ namespace TogglDesktop
             displayTrayIcon(true);
 
             runningToolStripMenuItem.Text = "Timer is not tracking";
+            Text = defaultTitle;
         }
 
         void OnSettings(bool open, Toggl.Settings settings)
