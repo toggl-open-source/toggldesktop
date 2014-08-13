@@ -63,7 +63,6 @@ namespace TogglDesktop
             preferencesWindowController = new PreferencesWindowController();
             feedbackWindowController = new FeedbackWindowController();
             idleNotificationWindowController = new IdleNotificationWindowController();
-            defaultTitle = Text;
         }
 
         public void RemoveTrayIcon()
@@ -112,12 +111,12 @@ namespace TogglDesktop
 
             if (te.Description.Length > 0) {
                 runningToolStripMenuItem.Text = te.Description.Replace("&", "&&");
-                Text = defaultTitle + " - ( "+te.Description+" )";
+                Text = te.Description + " - Toggl Desktop";
             }
             else
             {
                 runningToolStripMenuItem.Text = "Timer is tracking";
-                Text = defaultTitle;
+                Text = "Toggl Desktop";
             }
         }
 
@@ -133,7 +132,7 @@ namespace TogglDesktop
             displayTrayIcon(true);
 
             runningToolStripMenuItem.Text = "Timer is not tracking";
-            Text = defaultTitle;
+            Text = "Toggl Desktop";
         }
 
         void OnSettings(bool open, Toggl.Settings settings)
