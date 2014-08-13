@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Reflection;
 using System.Diagnostics;
 using System.Threading;
+using System.Text;
 
 namespace TogglDesktop
 {
@@ -17,6 +18,19 @@ namespace TogglDesktop
         public static Bugsnag.Library.BugSnag bugsnag = null;
         private static UInt64 uid = 0;
         private static MainWindowController mainWindowController;
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool SetProcessDPIAware();
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, ref SearchData data);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
         [DllImport("User32")]
         private static extern int SetForegroundWindow(IntPtr hwnd);
@@ -52,8 +66,13 @@ namespace TogglDesktop
                         if (p.Id != current.Id)
                         {
                             // gotcha
-                            ShowWindow(p.MainWindowHandle, SW_RESTORE);
-                            SetForegroundWindow(p.MainWindowHandle);
+                            IntPtr hWnd = p.MainWindowHandle;
+                            if (hWnd == IntPtr.Zero)
+                            {
+                                hWnd = SearchForWindow(current.ProcessName, "Toggl Desktop");
+                            }
+                            ShowWindow(hWnd, SW_RESTORE);
+                            SetForegroundWindow(hWnd);
                             return;
                         }
                     }
@@ -88,8 +107,33 @@ namespace TogglDesktop
             }
         }
 
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        private static extern bool SetProcessDPIAware();
+        public static IntPtr SearchForWindow(string wndclass, string title)
+        {
+            SearchData sd = new SearchData { Wndclass = wndclass, Title = title };
+            EnumWindows(new EnumWindowsProc(EnumProc), ref sd);
+            return sd.hWnd;
+        }
+
+        public class SearchData
+        {
+            public string Wndclass;
+            public string Title;
+            public IntPtr hWnd;
+        } 
+
+        private delegate bool EnumWindowsProc(IntPtr hWnd, ref SearchData data);
+
+        public static bool EnumProc(IntPtr hWnd, ref SearchData data)
+        {
+            StringBuilder sb = new StringBuilder(1024);
+            GetWindowText(hWnd, sb, sb.Capacity);
+            if (sb.ToString().Contains(data.Title))
+            {
+                data.hWnd = hWnd;
+                return false;    // Found the window
+            }
+            return true;
+        }
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
