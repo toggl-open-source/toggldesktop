@@ -65,6 +65,7 @@ void WindowChangeRecorder::inspectFocusedWindow() {
 
     last_title_ = title;
     last_filename_ = filename;
+    last_idle_ = idle;
     last_event_started_at_ = now;
 }
 
