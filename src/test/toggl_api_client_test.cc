@@ -741,11 +741,31 @@ TEST(TogglApiClientTest, ParsesDurationLikeOnTheWeb) {
     ASSERT_EQ("01:30:00", te.DurationString());
 
     te.SetDurationInSeconds(0);
+    te.SetDurationUserInput("1.5 h");
+    ASSERT_EQ("01:30:00", te.DurationString());
+
+    te.SetDurationInSeconds(0);
+    te.SetDurationUserInput("3h");
+    ASSERT_EQ("03:00:00", te.DurationString());
+
+    te.SetDurationInSeconds(0);
+    te.SetDurationUserInput("3 h");
+    ASSERT_EQ("03:00:00", te.DurationString());
+
+    te.SetDurationInSeconds(0);
     te.SetDurationUserInput("15m");
     ASSERT_EQ("00:15:00", te.DurationString());
 
     te.SetDurationInSeconds(0);
+    te.SetDurationUserInput("15 m");
+    ASSERT_EQ("00:15:00", te.DurationString());
+
+    te.SetDurationInSeconds(0);
     te.SetDurationUserInput("25s");
+    ASSERT_EQ("00:00:25", te.DurationString());
+
+    te.SetDurationInSeconds(0);
+    te.SetDurationUserInput("25 s");
     ASSERT_EQ("00:00:25", te.DurationString());
 
     te.SetDurationInSeconds(0);

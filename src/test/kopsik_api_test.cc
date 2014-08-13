@@ -257,38 +257,6 @@ TEST(KopsikApiTest, kopsik_set_log_level) {
     kopsik_set_log_level("trace");
 }
 
-unsigned int list_length(KopsikTimeEntryViewItem *first) {
-    unsigned int n = 0;
-    KopsikTimeEntryViewItem *it = first;
-    while (it) {
-        n++;
-        it = reinterpret_cast<KopsikTimeEntryViewItem *>(it->Next);
-    }
-    return n;
-}
-
-TEST(KopsikApiTest, DISABLED_kopsik_lifecycle) {
-    testing::App app;
-
-    testing::testresult::error = "";
-    testing::testresult::user_id = 0;
-    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), loadTestData().c_str()));
-    ASSERT_EQ("", testing::testresult::error);
-    ASSERT_EQ(uint64_t(10471231), testing::testresult::user_id);
-
-    testing::testresult::error = "";
-    ASSERT_TRUE(kopsik_start(app.ctx(), "Test", 0, 0, 0));
-    ASSERT_EQ("", testing::testresult::error);
-
-    testing::testresult::error = "";
-    ASSERT_TRUE(kopsik_stop(app.ctx()));
-    ASSERT_EQ("", testing::testresult::error);
-
-    testing::testresult::error = "";
-    ASSERT_TRUE(kopsik_logout(app.ctx()));
-    ASSERT_FALSE(testing::testresult::user_id);
-}
-
 TEST(KopsikApiTest, kopsik_parse_time) {
     int hours = 0;
     int minutes = 0;

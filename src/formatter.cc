@@ -133,14 +133,12 @@ bool Formatter::parseTimeInputAMPM(const std::string numbers,
             if (!Poco::NumberParser::tryParse(tokenizer[1], *minutes)) {
                 return false;
             }
-        } else {
-            if (!Poco::NumberParser::tryParse(
-                numbers.substr(0, numbers.length()-2), *hours)
-                    || !Poco::NumberParser::tryParse(
-                        numbers.substr((numbers.length()-2), 2), *minutes)
-               ) {
-                return false;
-            }
+        } else if (!Poco::NumberParser::tryParse(
+            numbers.substr(0, numbers.length()-2), *hours)
+                   || !Poco::NumberParser::tryParse(
+                       numbers.substr((numbers.length()-2), 2), *minutes)
+                  ) {
+            return false;
         }
 
     } else if (!Poco::NumberParser::tryParse(numbers, *hours)) {
@@ -294,36 +292,38 @@ int Formatter::ParseDurationString(const std::string value) {
         return 0;
     }
 
-    size_t separator_pos = value.find(":");
+    std::string input = Poco::replace(value, " ", "");
+
+    size_t separator_pos = input.find(":");
     if (separator_pos != std::string::npos) {
         int parsed_seconds = 0;
 
         // Parse duration in seconds HH:MM:SS
-        if (parseDurationStringHHMMSS(value, &parsed_seconds)) {
+        if (parseDurationStringHHMMSS(input, &parsed_seconds)) {
             return parsed_seconds;
         }
 
         // Parse duration in seconds HH:MM
-        if (parseDurationStringHHMM(value, &parsed_seconds)) {
+        if (parseDurationStringHHMM(input, &parsed_seconds)) {
             return parsed_seconds;
         }
 
         // 05:22 min
-        size_t pos = value.find(" min");
+        size_t pos = input.find("min");
         if (pos != std::string::npos) {
-            std::string numbers = value.substr(0, pos);
+            std::string numbers = input.substr(0, pos);
             if (parseDurationStringMMSS(numbers, &parsed_seconds)) {
                 return parsed_seconds;
             }
         }
     }
 
-    return parseDurationFromDecimal(Poco::replace(value, ",", "."));
+    return parseDurationFromDecimal(Poco::replace(input, ",", "."));
 }
 
 int Formatter::parseDurationFromDecimal(const std::string value) {
     // 1,5 hours
-    size_t pos = value.find(" hour");
+    size_t pos = value.find("hour");
     if (pos != std::string::npos) {
         std::string numbers = value.substr(0, pos);
         double hours = 0;
@@ -332,7 +332,7 @@ int Formatter::parseDurationFromDecimal(const std::string value) {
         }
     }
 
-    pos = value.find(" hr");
+    pos = value.find("hr");
     if (pos != std::string::npos) {
         std::string numbers = value.substr(0, pos);
         double hours = 0;
@@ -342,7 +342,7 @@ int Formatter::parseDurationFromDecimal(const std::string value) {
     }
 
     // 1,5 minutes
-    pos = value.find(" min");
+    pos = value.find("min");
     if (pos != std::string::npos) {
         std::string numbers = value.substr(0, pos);
         double minutes = 0;
@@ -352,7 +352,7 @@ int Formatter::parseDurationFromDecimal(const std::string value) {
     }
 
     // 1,5 seconds
-    pos = value.find(" sec");
+    pos = value.find("sec");
     if (pos != std::string::npos) {
         std::string numbers = value.substr(0, pos);
         double seconds = 0;
