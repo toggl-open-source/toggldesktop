@@ -16,6 +16,8 @@ namespace TogglDesktop
         private Int64 duration_in_seconds = 0;
         private UInt64 task_id = 0;
         private UInt64 project_id = 0;
+        private int defaultDescriptionTop = 20;
+        private int projectDescriptionTop = 10;
 
         private List<Toggl.AutocompleteItem> timeEntryAutocompleteUpdate;
         private List<Toggl.AutocompleteItem> autoCompleteList;
@@ -26,6 +28,10 @@ namespace TogglDesktop
 
             descriptionTextBox.autoCompleteListBox.KeyDown += autoCompleteListBox_KeyDown;
             descriptionTextBox.autoCompleteListBox.Click += autoCompleteListBox_Click;
+            textBoxDuration.Top = (Height / 2) - (linkLabelDuration.Height / 2);
+            descriptionTextBox.Top = (Height / 2) - (descriptionTextBox.Height / 2);
+            defaultDescriptionTop = descriptionTextBox.Top;
+            projectDescriptionTop = defaultDescriptionTop - (descriptionTextBox.Height / 2);
 
             Toggl.OnTimeEntryAutocomplete += OnTimeEntryAutocomplete;
             Toggl.OnRunningTimerState += OnRunningTimerState;
@@ -40,6 +46,10 @@ namespace TogglDesktop
         {
             base.ScaleControl(factor, specified);
             this.descriptionTextBox.scaleList(factor);
+            if (factor.Height > 1)
+            {
+                textBoxDuration.Top = (Height / 2) - (textBoxDuration.Height / 2);
+            }
         }
 
         private void ignoreMouseWheel(object sender, MouseEventArgs args)
@@ -71,8 +81,6 @@ namespace TogglDesktop
 
         private const string defaultDescription = "What are you doing?";
         private const string defaultDuration = "00:00:00";
-        private const int defaultDescriptionTop = 20;
-        private const int projectDescriptionTop = 10;
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
