@@ -14,6 +14,7 @@ namespace TogglDesktop
     {
         private Toggl.TimeEntry timeEntry;
         private Boolean firstLoad = true;
+        private int bottomPanelTop;
         private List<Toggl.AutocompleteItem> autoCompleteEntryList;
         private List<Toggl.AutocompleteItem> autoCompleteProjectList;
 
@@ -224,6 +225,13 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { OnTimeEntryEditor(open, te, focused_field_name); });
                 return;
             }
+            //
+            // Custom Combobox Buttons
+            //
+            this.projectButton.Height = this.projectButton.Width = this.descriptionButton.Height = this.descriptionButton.Width = this.comboBoxDescription.Height - 2;
+            this.projectButton.Left = this.descriptionButton.Left = this.comboBoxProject.Left + this.comboBoxProject.Width - 1 - this.projectButton.Width;
+            this.descriptionButton.Top = this.comboBoxDescription.Top + 1;
+            this.projectButton.Top = this.comboBoxProject.Top + 1;
 
             timeEntry = te;
 
@@ -519,22 +527,23 @@ namespace TogglDesktop
 
         private void linkAddProject_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            panelAddProject.Top = 37;
+            panelAddProject.Top = comboBoxProject.Top - 4;
             projectButton.Visible = false;
+            bottomPanelTop = panelBottom.Top;
             
             textBoxProjectName.Text = "";
             comboBoxClient.Text = "";
             comboBoxWorkspace.Text = "";
             linkAddProject.Visible = false;
-            int boxHeight = 89;
+            int boxHeight = panelDuration.Height*3;
             if (comboBoxWorkspace.Items.Count > 1)
             {
                 labelWorkspace.Visible = true;
                 comboBoxWorkspace.Visible = true;
-                boxHeight = 122;
+                boxHeight = panelDuration.Height * 4;
             }
-            panelBottom.Height -= (boxHeight-40);
-            panelBottom.Top = boxHeight+37;            
+            panelBottom.Top = panelAddProject.Top + boxHeight;
+            panelBottom.Height = buttonsPanel.Top - panelBottom.Top;
             panelAddProject.Height = boxHeight;
 
             labelProject.Visible = true;
@@ -569,8 +578,8 @@ namespace TogglDesktop
             if (panelAddProject.Visible)
             {
                 panelAddProject.Visible = false;
-                panelBottom.Height += panelBottom.Top - 77;
-                panelBottom.Top = 77;
+                panelBottom.Height = buttonsPanel.Top - bottomPanelTop;
+                panelBottom.Top = bottomPanelTop;
                 projectButton.Visible = true;
                 labelWorkspace.Visible = false;
                 comboBoxWorkspace.Visible = false;
