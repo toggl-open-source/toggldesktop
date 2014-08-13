@@ -34,7 +34,7 @@ int getFocusedWindowInfo(
     // get window title
     int length = GetWindowTextLength(window_handle) + 1;
     std::wstring title_wstring;
-    GetWindowText(window_handle, WriteInto(&title_wstring, length), length);
+    GetWindowText(window_handle, writeInto(&title_wstring, length), length);
     std::string str(title_wstring.begin(), title_wstring.end());
     *title = str;
 
