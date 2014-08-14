@@ -2,8 +2,8 @@
 
 // Warning! Modifying the public API header
 // will break clients, including C# definitions.
-// You must update the C# definitions in
-// src/ui/windows/TogglDesktop/TogglDesktop/KopsikApi.cs
+// If you change anything, you must update the C# definitions in
+// src/ui/windows/TogglDesktop/TogglDesktop/Toggl.cs
 // to fix this.
 
 #ifndef SRC_LIB_INCLUDE_KOPSIK_API_H_
