@@ -657,9 +657,9 @@ void kopsik_set_sleep(void *context) {
 }
 
 void kopsik_set_wake(void *context) {
-	if (!context) {
-		return;
-	}
+    if (!context) {
+        return;
+    }
     app(context)->SetWake();
 }
 
