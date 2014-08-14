@@ -55,14 +55,6 @@ namespace TogglDesktop
         public MainWindowController()
         {
             InitializeComponent();
-
-            loginViewController = new LoginViewController();
-            timeEntryListViewController = new TimeEntryListViewController();
-            timeEntryEditViewController = new TimeEntryEditViewController();
-            aboutWindowController = new AboutWindowController();
-            preferencesWindowController = new PreferencesWindowController();
-            feedbackWindowController = new FeedbackWindowController();
-            idleNotificationWindowController = new IdleNotificationWindowController();
         }
 
         public void RemoveTrayIcon()
@@ -90,6 +82,14 @@ namespace TogglDesktop
             Toggl.OnStoppedTimerState += OnStoppedTimerState;
             Toggl.OnSettings += OnSettings;
             Toggl.OnIdleNotification += OnIdleNotification;
+
+            loginViewController = new LoginViewController();
+            timeEntryListViewController = new TimeEntryListViewController();
+            timeEntryEditViewController = new TimeEntryEditViewController();
+            aboutWindowController = new AboutWindowController();
+            preferencesWindowController = new PreferencesWindowController();
+            feedbackWindowController = new FeedbackWindowController();
+            idleNotificationWindowController = new IdleNotificationWindowController();
 
             if (!Toggl.Start(TogglDesktop.Program.Version()))
             {
