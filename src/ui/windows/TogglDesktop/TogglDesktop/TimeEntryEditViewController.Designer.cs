@@ -312,7 +312,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelBillable.Controls.Add(this.checkBoxBillable);
             this.panelBillable.Location = new System.Drawing.Point(0, 233);
-            this.panelBillable.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panelBillable.Margin = new System.Windows.Forms.Padding(2);
             this.panelBillable.Name = "panelBillable";
             this.panelBillable.Size = new System.Drawing.Size(317, 31);
             this.panelBillable.TabIndex = 10;
@@ -324,7 +324,7 @@
             this.panelDuration.Controls.Add(this.textBoxDuration);
             this.panelDuration.Controls.Add(this.labelDuration);
             this.panelDuration.Location = new System.Drawing.Point(0, 0);
-            this.panelDuration.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panelDuration.Margin = new System.Windows.Forms.Padding(2);
             this.panelDuration.Name = "panelDuration";
             this.panelDuration.Size = new System.Drawing.Size(317, 30);
             this.panelDuration.TabIndex = 9;
