@@ -87,18 +87,21 @@ Context::~Context() {
 
     if (window_change_recorder_) {
         Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
+        window_change_recorder_->Shutdown();
         delete window_change_recorder_;
         window_change_recorder_ = 0;
     }
 
     if (timeline_uploader_) {
         Poco::Mutex::ScopedLock lock(timeline_uploader_m_);
+        timeline_uploader_->Shutdown();
         delete timeline_uploader_;
         timeline_uploader_ = 0;
     }
 
     if (ws_client_) {
         Poco::Mutex::ScopedLock lock(ws_client_m_);
+        ws_client_->Shutdown();
         delete ws_client_;
         ws_client_ = 0;
     }
