@@ -169,6 +169,8 @@ TogglApi::TogglApi(QObject *parent)
     kopsik_set_log_path(logPath.toUtf8().constData());
     qDebug() << "Log path " << logPath;
 
+    kopsik_set_log_level("debug");
+
     QString dbPath = appDir.filePath("toggldesktop.db");
     kopsik_set_db_path(ctx, dbPath.toUtf8().constData());
     qDebug() << "DB path " << dbPath;
