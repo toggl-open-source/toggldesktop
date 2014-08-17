@@ -108,13 +108,20 @@ void TimerWidget::on_start_clicked() {
 void TimerWidget::start() {
     uint64_t task_id(0);
     uint64_t project_id(0);
+
     QVariant data = ui->description->currentData();
     if (data.canConvert<AutocompleteView *>()) {
         AutocompleteView *view = data.value<AutocompleteView *>();
         task_id = view->TaskID;
         project_id = view->ProjectID;
     }
-    TogglApi::instance->start(ui->description->currentText(),
+
+    QString description = ui->description->currentText();
+    if (description == descriptionPlaceholder) {
+        description = "";
+    }
+
+    TogglApi::instance->start(description,
                               ui->duration->text(),
                               task_id,
                               project_id);
