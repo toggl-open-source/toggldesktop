@@ -334,6 +334,9 @@ _Bool GUI::isNetworkingError(const error err) const {
     if (value.find("Timeout") != std::string::npos) {
         return true;
     }
+    if (value.find("SSL Exception") != std::string::npos) {
+        return true;
+    }
     return false;
 }
 
