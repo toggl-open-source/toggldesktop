@@ -175,6 +175,7 @@ class Context {
 
     void SetSleep();
     void SetWake();
+    void SetOnline();
 
     _Bool OpenReportsInBrowser();
 

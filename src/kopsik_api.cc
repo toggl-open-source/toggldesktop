@@ -663,6 +663,13 @@ void kopsik_set_wake(void *context) {
     app(context)->SetWake();
 }
 
+void kopsik_set_online(void *context) {
+    if (!context) {
+        return;
+    }
+    app(context)->SetOnline();
+}
+
 void kopsik_open_in_browser(void *context) {
     app(context)->OpenReportsInBrowser();
 }

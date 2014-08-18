@@ -461,6 +461,10 @@ extern "C" {
     KOPSIK_EXPORT void kopsik_set_wake(
         void *context);
 
+    // Notify lib that client is online again.
+    KOPSIK_EXPORT void kopsik_set_online(
+        void *context);
+
     KOPSIK_EXPORT void kopsik_set_idle_seconds(
         void *context,
         const uint64_t idle_seconds);

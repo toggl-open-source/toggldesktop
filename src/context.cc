@@ -1925,6 +1925,12 @@ void Context::SetWake() {
     }
 }
 
+void Context::SetOnline() {
+    logger().debug("SetOnline");
+
+    scheduleSync();
+}
+
 void Context::remindToTrackTime() {
     next_reminder_at_ =
         postpone(kReminderThrottleSeconds * kOneSecondInMicros);
