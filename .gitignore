@@ -132,3 +132,6 @@ src/ui/linux/TogglDesktop/cacert.pem
 # qt generated makefiles
 src/ui/linux/TogglDesktop/Makefile
 src/lib/linux/TogglDesktopLibrary/Makefile
+
+# installer
+toggldesktop
