@@ -206,6 +206,14 @@ const int kDurationStringLength = 20;
 															   name:NSWorkspaceDidWakeNotification object:NULL];
 
 	[[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(reachabilityChanged:)
+												 name:kReachabilityChangedNotification
+											   object:nil];
+
+	self.reach = [Reachability reachabilityForInternetConnection];
+	[self.reach startNotifier];
 }
 
 - (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center
@@ -691,6 +699,7 @@ const int kDurationStringLength = 20;
 {
 	NSLog(@"applicationWillTerminate");
 	self.willTerminate = YES;
+	[self.reach stopNotifier];
 	kopsik_context_clear(ctx);
 	ctx = 0;
 }
@@ -1054,6 +1063,16 @@ const NSString *appName = @"osx_native_app";
 	[Bugsnag notify:exception withData:data];
 
 	[crashReporter purgePendingCrashReport];
+}
+
+- (void)reachabilityChanged:(NSNotification *)notice
+{
+	NetworkStatus remoteHostStatus = [self.reach currentReachabilityStatus];
+
+	if (ctx && remoteHostStatus != NotReachable)
+	{
+		kopsik_set_online(ctx);
+	}
 }
 
 void on_update(
