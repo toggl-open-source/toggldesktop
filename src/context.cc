@@ -1928,7 +1928,15 @@ void Context::SetWake() {
 void Context::SetOnline() {
     logger().debug("SetOnline");
 
-    scheduleSync();
+    // Schedule a sync, a but a bit later
+    // For example, on Windows we're not yet online although
+    // we're told we are. So wait a bit
+    next_sync_at_ = postpone(2 * kRequestThrottleSeconds * kOneSecondInMicros);
+    Poco::Util::TimerTask::Ptr ptask =
+        new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onSync);
+
+    Poco::Mutex::ScopedLock lock(timer_m_);
+    timer_.schedule(ptask, next_sync_at_);
 }
 
 void Context::remindToTrackTime() {
