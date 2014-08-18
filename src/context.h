@@ -212,7 +212,7 @@ class Context {
  private:
     const std::string updateURL();
 
-    static const std::string osName();
+    static const std::string installerPlatform();
 
     Poco::Logger &logger() const {
         return Poco::Logger::get("context");

@@ -741,7 +741,7 @@ const std::string Context::updateURL() {
     std::stringstream relative_url;
     relative_url << "/api/v8/updates?app=td"
                  << "&channel=" << update_channel
-                 << "&platform=" << osName()
+                 << "&platform=" << installerPlatform()
                  << "&version=" << HTTPSClient::AppVersion
                  << "&osname=" << Poco::Environment::osName()
                  << "&osversion=" << Poco::Environment::osVersion()
@@ -749,8 +749,12 @@ const std::string Context::updateURL() {
     return relative_url.str();
 }
 
-const std::string Context::osName() {
+const std::string Context::installerPlatform() {
     if (POCO_OS_LINUX == POCO_OS) {
+        std::string arch = Poco::Environment::osArchitecture();
+        if (arch == "i386" || arch == "i686") {
+            return std::string("linux32");
+        }
         return std::string("linux");
     }
     if (POCO_OS_WINDOWS_NT == POCO_OS) {
