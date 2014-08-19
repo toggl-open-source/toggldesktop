@@ -139,6 +139,12 @@
     <Compile Include="CustomComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CustomForm\CustomBorderForm.cs" />
+    <Compile Include="CustomForm\DrawUtil.cs" />
+    <Compile Include="CustomForm\FormStyle.cs" />
+    <Compile Include="CustomForm\FormWithNonClientArea.cs" />
+    <Compile Include="CustomForm\TogglForm.cs" />
+    <Compile Include="CustomForm\NativeMethods.cs" />
     <Compile Include="FeedbackWindowController.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -306,6 +312,45 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\toggl_offline_inactive.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Border.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CloseDisabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CloseHot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ClosePressed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Maximize.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MaximizeDisabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MaximizeHot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MaximizePressed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Minimize.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MinimizeDisabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MinimizeHot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MinimizePressed.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

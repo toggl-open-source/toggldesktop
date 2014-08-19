@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Kobush.Windows.Forms;
 
 namespace TogglDesktop
 {
-    public partial class MainWindowController : Form
+    public partial class MainWindowController : TogglForm
     {
         private LoginViewController loginViewController;
         private TimeEntryListViewController timeEntryListViewController;
