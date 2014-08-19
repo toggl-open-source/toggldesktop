@@ -70,15 +70,13 @@ class Exception {
         json["errorClass"] = errorClass;
         json["message"] = message;
 
-        if (stacktrace.count()) {
-            QJsonArray stacktraceJSON;
-            foreach(StackTrace trace, stacktrace) {
-                QJsonObject lineJSON;
-                trace.write(lineJSON);
-                stacktraceJSON.append(lineJSON);
-            }
-            json["stacktrace"] = stacktraceJSON;
+        QJsonArray stacktraceJSON;
+        foreach(StackTrace trace, stacktrace) {
+            QJsonObject lineJSON;
+            trace.write(lineJSON);
+            stacktraceJSON.append(lineJSON);
         }
+        json["stacktrace"] = stacktraceJSON;
     }
 
     QString errorClass;
@@ -254,7 +252,15 @@ class BUGSNAGQTSHARED_EXPORT Bugsnag : public QObject {
         Exception exception;
         exception.message = message;
         exception.errorClass = errorClass;
-        // FIXME: exception.stacktrace
+
+	// Bugsnag will reject notifications without a 
+	// stack trace. So just send something to get
+	// things going.
+        StackTrace trace;
+	trace.file = "somefile";
+	trace.lineNumber = 123;
+	trace.method = "somemethod";
+        exception.stacktrace << trace;
 
         Event event;
         event.context = context;
