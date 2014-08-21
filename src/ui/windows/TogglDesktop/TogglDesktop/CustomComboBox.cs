@@ -13,6 +13,7 @@ namespace TogglDesktop
         public bool fullListOpened = false;
         private SizeF currentFactor;
         private int defaultItemHeight;
+        private bool mouseEntered = false;
 
         public CustomComboBox()
         {
@@ -27,13 +28,30 @@ namespace TogglDesktop
             autoCompleteListBox.DrawMode = DrawMode.OwnerDrawFixed;
             autoCompleteListBox.DrawItem += autoCompleteListBox_DrawItem;
             autoCompleteListBox.MouseEnter += autoCompleteListBox_MouseEnter;
+            autoCompleteListBox.MouseLeave += autoCompleteListBox_MouseLeave;
+            autoCompleteListBox.MouseWheel += autoCompleteListBox_MouseWheel;
+            MouseWheel += autoCompleteListBox_MouseWheel;
             autoCompleteListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Bottom )));
         }
 
+        void autoCompleteListBox_MouseLeave(object sender, EventArgs e)
+        {
+            mouseEntered = false;
+        }
+
+        void autoCompleteListBox_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (mouseEntered)
+            {
+                autoCompleteListBox.Focus();
+                mouseEntered = false;
+            }
+        }
+
         void autoCompleteListBox_MouseEnter(object sender, EventArgs e)
         {
-            autoCompleteListBox.Focus();
+            mouseEntered = true;
         }
 
         protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
@@ -76,6 +94,7 @@ namespace TogglDesktop
         {
             autoCompleteListBox.Visible = false;
             fullListOpened = false;
+            mouseEntered = false;
         }
 
         public void UpdateListBox(List<Toggl.AutocompleteItem> autoCompleteList,

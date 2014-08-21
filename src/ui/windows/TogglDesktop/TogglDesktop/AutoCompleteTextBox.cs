@@ -12,6 +12,7 @@ namespace TogglDesktop
         private String _formerValue = String.Empty;
         private SizeF currentFactor;
         private int defaultItemHeight;
+        private bool mouseEntered = false;
 
         public AutoCompleteTextBox()
         {
@@ -25,13 +26,30 @@ namespace TogglDesktop
             autoCompleteListBox.DrawMode = DrawMode.OwnerDrawFixed;
             autoCompleteListBox.DrawItem += autoCompleteListBox_DrawItem;
             autoCompleteListBox.MouseEnter += autoCompleteListBox_MouseEnter;
+            autoCompleteListBox.MouseWheel += autoCompleteListBox_MouseWheel;
+            MouseWheel += autoCompleteListBox_MouseWheel;
+            autoCompleteListBox.MouseLeave += autoCompleteListBox_MouseLeave; 
             autoCompleteListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Bottom )));
         }
 
+        void autoCompleteListBox_MouseLeave(object sender, EventArgs e)
+        {
+            mouseEntered = false;
+        }
+
+        void autoCompleteListBox_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (mouseEntered)
+            {
+                autoCompleteListBox.Focus();
+                mouseEntered = false;
+            }
+        }
+
         void autoCompleteListBox_MouseEnter(object sender, EventArgs e)
         {
-            autoCompleteListBox.Focus();
+            mouseEntered = true;
         }
 
         public void scaleList(SizeF factor)
@@ -72,6 +90,7 @@ namespace TogglDesktop
         public void ResetListBox()
         {
             autoCompleteListBox.Visible = false;
+            mouseEntered = false;
         }
 
         public void UpdateListBox(List<Toggl.AutocompleteItem> autoCompleteList)
