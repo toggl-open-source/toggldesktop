@@ -33,7 +33,7 @@ using System.Windows.Forms;
 
 #endregion
 
-namespace Kobush.Windows.Forms
+namespace TogglDesktop
 {
 
     public enum ImageSizeMode

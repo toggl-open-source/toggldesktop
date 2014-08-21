@@ -35,7 +35,7 @@ using System.Reflection; // used for logging
 
 #endregion
 
-namespace Kobush.Windows.Forms
+namespace TogglDesktop
 {
     // Nonclient Area
     // http://msdn.microsoft.com/library/default.asp?url=/library/en-us/gdi/pantdraw_9uht.asp

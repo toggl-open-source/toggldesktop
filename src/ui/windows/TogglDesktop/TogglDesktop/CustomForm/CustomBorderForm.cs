@@ -37,7 +37,7 @@ using System.Drawing.Imaging; // used for logging
 
 #endregion
 
-namespace Kobush.Windows.Forms
+namespace TogglDesktop
 {
 
 #if !DEBUGFORM

@@ -30,7 +30,7 @@ using System.Windows.Forms;
 
 #endregion
 
-namespace Kobush.Windows.Forms
+namespace TogglDesktop
 {
     public class TogglForm : CustomBorderForm
     {

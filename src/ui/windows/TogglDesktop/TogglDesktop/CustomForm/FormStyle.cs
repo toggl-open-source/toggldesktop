@@ -10,7 +10,7 @@ using System.Xml;
 using System.Collections.ObjectModel;
 using System.Windows.Forms;
 
-namespace Kobush.Windows.Forms
+namespace TogglDesktop
 {
 
     public static class FormStyleManager

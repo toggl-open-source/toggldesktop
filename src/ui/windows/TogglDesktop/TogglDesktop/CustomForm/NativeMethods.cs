@@ -11,7 +11,7 @@ using System.Threading;
 
 #endregion
 
-namespace Kobush.Windows.Forms
+namespace TogglDesktop
 {
 	[System.Security.SuppressUnmanagedCodeSecurity]
 	[System.Runtime.InteropServices.ComVisible(false)]
