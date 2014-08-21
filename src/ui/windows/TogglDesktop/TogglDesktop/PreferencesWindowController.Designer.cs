@@ -45,13 +45,15 @@
             this.checkBoxOnTop = new System.Windows.Forms.CheckBox();
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
+            this.panelMain = new System.Windows.Forms.Panel();
             this.groupBoxProxySettings.SuspendLayout();
+            this.panelMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // checkBoxUseProxy
             // 
             this.checkBoxUseProxy.AutoSize = true;
-            this.checkBoxUseProxy.Location = new System.Drawing.Point(13, 24);
+            this.checkBoxUseProxy.Location = new System.Drawing.Point(15, 16);
             this.checkBoxUseProxy.Name = "checkBoxUseProxy";
             this.checkBoxUseProxy.Size = new System.Drawing.Size(169, 17);
             this.checkBoxUseProxy.TabIndex = 0;
@@ -69,7 +71,7 @@
             this.groupBoxProxySettings.Controls.Add(this.label3);
             this.groupBoxProxySettings.Controls.Add(this.label2);
             this.groupBoxProxySettings.Controls.Add(this.label1);
-            this.groupBoxProxySettings.Location = new System.Drawing.Point(13, 47);
+            this.groupBoxProxySettings.Location = new System.Drawing.Point(15, 39);
             this.groupBoxProxySettings.Name = "groupBoxProxySettings";
             this.groupBoxProxySettings.Size = new System.Drawing.Size(252, 143);
             this.groupBoxProxySettings.TabIndex = 1;
@@ -144,7 +146,7 @@
             // checkBoxIdleDetection
             // 
             this.checkBoxIdleDetection.AutoSize = true;
-            this.checkBoxIdleDetection.Location = new System.Drawing.Point(13, 196);
+            this.checkBoxIdleDetection.Location = new System.Drawing.Point(15, 188);
             this.checkBoxIdleDetection.Name = "checkBoxIdleDetection";
             this.checkBoxIdleDetection.Size = new System.Drawing.Size(90, 17);
             this.checkBoxIdleDetection.TabIndex = 2;
@@ -154,7 +156,7 @@
             // checkBoxRecordTimeline
             // 
             this.checkBoxRecordTimeline.AutoSize = true;
-            this.checkBoxRecordTimeline.Location = new System.Drawing.Point(13, 219);
+            this.checkBoxRecordTimeline.Location = new System.Drawing.Point(15, 211);
             this.checkBoxRecordTimeline.Name = "checkBoxRecordTimeline";
             this.checkBoxRecordTimeline.Size = new System.Drawing.Size(99, 17);
             this.checkBoxRecordTimeline.TabIndex = 3;
@@ -166,7 +168,7 @@
             this.checkBoxRemindToTrackTime.AutoSize = true;
             this.checkBoxRemindToTrackTime.Checked = true;
             this.checkBoxRemindToTrackTime.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxRemindToTrackTime.Location = new System.Drawing.Point(13, 265);
+            this.checkBoxRemindToTrackTime.Location = new System.Drawing.Point(15, 257);
             this.checkBoxRemindToTrackTime.Name = "checkBoxRemindToTrackTime";
             this.checkBoxRemindToTrackTime.Size = new System.Drawing.Size(123, 17);
             this.checkBoxRemindToTrackTime.TabIndex = 4;
@@ -176,7 +178,7 @@
             // checkBoxOnTop
             // 
             this.checkBoxOnTop.AutoSize = true;
-            this.checkBoxOnTop.Location = new System.Drawing.Point(13, 242);
+            this.checkBoxOnTop.Location = new System.Drawing.Point(15, 234);
             this.checkBoxOnTop.Name = "checkBoxOnTop";
             this.checkBoxOnTop.Size = new System.Drawing.Size(141, 17);
             this.checkBoxOnTop.TabIndex = 6;
@@ -185,7 +187,7 @@
             // 
             // buttonSave
             // 
-            this.buttonSave.Location = new System.Drawing.Point(13, 300);
+            this.buttonSave.Location = new System.Drawing.Point(15, 292);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(75, 23);
             this.buttonSave.TabIndex = 7;
@@ -195,7 +197,7 @@
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(94, 300);
+            this.buttonCancel.Location = new System.Drawing.Point(96, 292);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 8;
@@ -203,30 +205,40 @@
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
+            // panelMain
+            // 
+            this.panelMain.Controls.Add(this.groupBoxProxySettings);
+            this.panelMain.Controls.Add(this.buttonCancel);
+            this.panelMain.Controls.Add(this.checkBoxUseProxy);
+            this.panelMain.Controls.Add(this.buttonSave);
+            this.panelMain.Controls.Add(this.checkBoxIdleDetection);
+            this.panelMain.Controls.Add(this.checkBoxOnTop);
+            this.panelMain.Controls.Add(this.checkBoxRecordTimeline);
+            this.panelMain.Controls.Add(this.checkBoxRemindToTrackTime);
+            this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelMain.Location = new System.Drawing.Point(0, 0);
+            this.panelMain.Name = "panelMain";
+            this.panelMain.Size = new System.Drawing.Size(300, 332);
+            this.panelMain.TabIndex = 9;
+            // 
             // PreferencesWindowController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 342);
-            this.Controls.Add(this.buttonCancel);
-            this.Controls.Add(this.buttonSave);
-            this.Controls.Add(this.checkBoxOnTop);
-            this.Controls.Add(this.checkBoxRemindToTrackTime);
-            this.Controls.Add(this.checkBoxRecordTimeline);
-            this.Controls.Add(this.checkBoxIdleDetection);
-            this.Controls.Add(this.groupBoxProxySettings);
-            this.Controls.Add(this.checkBoxUseProxy);
+            this.ClientSize = new System.Drawing.Size(300, 332);
+            this.Controls.Add(this.panelMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(300, 400);
-            this.MinimumSize = new System.Drawing.Size(300, 353);
+            this.MaximumSize = new System.Drawing.Size(300, 363);
+            this.MinimumSize = new System.Drawing.Size(300, 363);
             this.Name = "PreferencesWindowController";
             this.Text = "Preferences";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PreferencesWindowController_FormClosing);
             this.groupBoxProxySettings.ResumeLayout(false);
             this.groupBoxProxySettings.PerformLayout();
+            this.panelMain.ResumeLayout(false);
+            this.panelMain.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -248,5 +260,6 @@
         private System.Windows.Forms.CheckBox checkBoxOnTop;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.Button buttonCancel;
+        private System.Windows.Forms.Panel panelMain;
     }
 }

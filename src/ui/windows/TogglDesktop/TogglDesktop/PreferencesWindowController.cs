@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace TogglDesktop
 {
-    public partial class PreferencesWindowController : Form
+    public partial class PreferencesWindowController : TogglForm
     {
         public PreferencesWindowController()
         {

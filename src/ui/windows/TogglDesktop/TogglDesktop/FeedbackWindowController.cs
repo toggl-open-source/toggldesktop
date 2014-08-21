@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace TogglDesktop
 {
-    public partial class FeedbackWindowController : Form
+    public partial class FeedbackWindowController : TogglForm
     {
         public FeedbackWindowController()
         {

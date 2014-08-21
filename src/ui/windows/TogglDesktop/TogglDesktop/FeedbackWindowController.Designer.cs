@@ -35,6 +35,8 @@
             this.buttonUploadImage = new System.Windows.Forms.Button();
             this.buttonSend = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.panelMain = new System.Windows.Forms.Panel();
+            this.panelMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -63,7 +65,7 @@
             "Other"});
             this.comboBoxTopic.Location = new System.Drawing.Point(15, 40);
             this.comboBoxTopic.Name = "comboBoxTopic";
-            this.comboBoxTopic.Size = new System.Drawing.Size(257, 23);
+            this.comboBoxTopic.Size = new System.Drawing.Size(270, 23);
             this.comboBoxTopic.TabIndex = 1;
             // 
             // richTextBoxContents
@@ -74,7 +76,7 @@
             this.richTextBoxContents.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.richTextBoxContents.Location = new System.Drawing.Point(15, 73);
             this.richTextBoxContents.Name = "richTextBoxContents";
-            this.richTextBoxContents.Size = new System.Drawing.Size(257, 135);
+            this.richTextBoxContents.Size = new System.Drawing.Size(270, 135);
             this.richTextBoxContents.TabIndex = 2;
             this.richTextBoxContents.Text = "";
             // 
@@ -82,9 +84,9 @@
             // 
             this.buttonUploadImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonUploadImage.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.buttonUploadImage.Location = new System.Drawing.Point(182, 218);
+            this.buttonUploadImage.Location = new System.Drawing.Point(194, 214);
             this.buttonUploadImage.Name = "buttonUploadImage";
-            this.buttonUploadImage.Size = new System.Drawing.Size(90, 23);
+            this.buttonUploadImage.Size = new System.Drawing.Size(91, 23);
             this.buttonUploadImage.TabIndex = 3;
             this.buttonUploadImage.Text = "Upload image";
             this.buttonUploadImage.UseVisualStyleBackColor = true;
@@ -94,9 +96,9 @@
             // 
             this.buttonSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSend.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.buttonSend.Location = new System.Drawing.Point(182, 251);
+            this.buttonSend.Location = new System.Drawing.Point(194, 243);
             this.buttonSend.Name = "buttonSend";
-            this.buttonSend.Size = new System.Drawing.Size(90, 23);
+            this.buttonSend.Size = new System.Drawing.Size(91, 23);
             this.buttonSend.TabIndex = 4;
             this.buttonSend.Text = "Send";
             this.buttonSend.UseVisualStyleBackColor = true;
@@ -106,24 +108,34 @@
             // 
             this.openFileDialog.Title = "Select image for upload";
             // 
+            // panelMain
+            // 
+            this.panelMain.Controls.Add(this.label1);
+            this.panelMain.Controls.Add(this.buttonSend);
+            this.panelMain.Controls.Add(this.comboBoxTopic);
+            this.panelMain.Controls.Add(this.buttonUploadImage);
+            this.panelMain.Controls.Add(this.richTextBoxContents);
+            this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelMain.Location = new System.Drawing.Point(0, 0);
+            this.panelMain.Name = "panelMain";
+            this.panelMain.Size = new System.Drawing.Size(300, 285);
+            this.panelMain.TabIndex = 5;
+            // 
             // FeedbackWindowController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 282);
-            this.Controls.Add(this.buttonSend);
-            this.Controls.Add(this.buttonUploadImage);
-            this.Controls.Add(this.richTextBoxContents);
-            this.Controls.Add(this.comboBoxTopic);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(300, 285);
+            this.Controls.Add(this.panelMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(300, 316);
             this.Name = "FeedbackWindowController";
             this.Text = "Send Feedback";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FeedbackWindowController_FormClosing);
             this.Load += new System.EventHandler(this.FeedbackWindowController_Load);
+            this.panelMain.ResumeLayout(false);
+            this.panelMain.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -135,5 +147,6 @@
         private System.Windows.Forms.Button buttonUploadImage;
         private System.Windows.Forms.Button buttonSend;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.Panel panelMain;
     }
 }

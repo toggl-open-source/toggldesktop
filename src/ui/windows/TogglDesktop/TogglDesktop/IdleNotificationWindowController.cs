@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace TogglDesktop
 {
-    public partial class IdleNotificationWindowController : Form
+    public partial class IdleNotificationWindowController : TogglForm
     {
         private UInt64 idle_started_at;
         private string time_entry_guid;

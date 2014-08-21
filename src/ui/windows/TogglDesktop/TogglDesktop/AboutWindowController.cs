@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace TogglDesktop
 {
-    public partial class AboutWindowController : Form
+    public partial class AboutWindowController : TogglForm
     {
         private string updateURL;
 
