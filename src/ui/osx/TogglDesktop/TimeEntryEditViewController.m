@@ -241,11 +241,11 @@ extern int kDurationStringLength;
 	_Bool isBillable = self.timeEntry.billable;
 	// A new project is being added!
 	_Bool projectAdded = toggl_add_project(ctx,
-											[self.timeEntry.GUID UTF8String],
-											workspaceID,
-											clientID,
-											[projectName UTF8String],
-											!is_public);
+										   [self.timeEntry.GUID UTF8String],
+										   workspaceID,
+										   clientID,
+										   [projectName UTF8String],
+										   !is_public);
 
 	if (projectAdded && isBillable)
 	{
@@ -462,8 +462,8 @@ extern int kDurationStringLength;
 	NSArray *tag_names = [self.tagsTokenField objectValue];
 	const char *value = [[tag_names componentsJoinedByString:@"|"] UTF8String];
 	toggl_set_time_entry_tags(ctx,
-							   [self.timeEntry.GUID UTF8String],
-							   value);
+							  [self.timeEntry.GUID UTF8String],
+							  value);
 }
 
 - (void)startDisplayTags:(NSNotification *)notification
@@ -841,17 +841,17 @@ extern int kDurationStringLength;
 	if (!autocomplete)
 	{
 		toggl_set_time_entry_description(ctx,
-										  GUID,
-										  [key UTF8String]);
+										 GUID,
+										 [key UTF8String]);
 		return;
 	}
 
 	if (![self.timeEntry.Description isEqualToString:key] &&
 		!toggl_set_time_entry_project(ctx,
-									   GUID,
-									   autocomplete.TaskID,
-									   autocomplete.ProjectID,
-									   0))
+									  GUID,
+									  autocomplete.TaskID,
+									  autocomplete.ProjectID,
+									  0))
 	{
 		return;
 	}
@@ -1019,8 +1019,8 @@ extern int kDurationStringLength;
 	}
 	char str[kDurationStringLength];
 	toggl_format_duration_in_seconds_hhmmss(self.timeEntry.duration_in_seconds,
-											 str,
-											 kDurationStringLength);
+											str,
+											kDurationStringLength);
 	NSString *newValue = [NSString stringWithUTF8String:str];
 	[self.durationTextField setStringValue:newValue];
 }

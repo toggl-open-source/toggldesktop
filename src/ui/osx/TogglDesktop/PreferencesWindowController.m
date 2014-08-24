@@ -97,11 +97,11 @@ extern void *ctx;
 	NSLog(@"saveSettings");
 
 	toggl_set_settings(ctx,
-						[Utils stateToBool:[self.useIdleDetectionButton state]],
-						[Utils stateToBool:[self.menubarTimerCheckbox state]],
-						[Utils stateToBool:[self.dockIconCheckbox state]],
-						[Utils stateToBool:[self.ontopCheckbox state]],
-						[Utils stateToBool:[self.reminderCheckbox state]]);
+					   [Utils stateToBool:[self.useIdleDetectionButton state]],
+					   [Utils stateToBool:[self.menubarTimerCheckbox state]],
+					   [Utils stateToBool:[self.dockIconCheckbox state]],
+					   [Utils stateToBool:[self.ontopCheckbox state]],
+					   [Utils stateToBool:[self.reminderCheckbox state]]);
 }
 
 - (void)saveProxySettings
@@ -114,11 +114,11 @@ extern void *ctx;
 	NSString *password = [self.passwordTextField stringValue];
 
 	toggl_set_proxy_settings(ctx,
-							  [Utils stateToBool:[self.useProxyButton state]],
-							  [host UTF8String],
-							  (unsigned int)port,
-							  [username UTF8String],
-							  [password UTF8String]);
+							 [Utils stateToBool:[self.useProxyButton state]],
+							 [host UTF8String],
+							 (unsigned int)port,
+							 [username UTF8String],
+							 [password UTF8String]);
 }
 
 - (IBAction)recordTimelineCheckboxChanged:(id)sender

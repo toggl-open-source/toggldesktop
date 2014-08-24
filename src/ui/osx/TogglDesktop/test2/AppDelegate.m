@@ -260,10 +260,10 @@ const int kDurationStringLength = 20;
 	NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
 
 	toggl_start(ctx,
-				 [new_time_entry.Description UTF8String],
-				 [new_time_entry.duration UTF8String],
-				 new_time_entry.TaskID,
-				 new_time_entry.ProjectID);
+				[new_time_entry.Description UTF8String],
+				[new_time_entry.duration UTF8String],
+				new_time_entry.TaskID,
+				new_time_entry.ProjectID);
 }
 
 - (void)startContinueTimeEntry:(NSNotification *)notification
@@ -630,7 +630,7 @@ const int kDurationStringLength = 20;
 - (IBAction)onToggleRecordTimeline:(id)sender
 {
 	toggl_timeline_toggle_recording(ctx,
-									 !toggl_timeline_is_recording_enabled(ctx));
+									!toggl_timeline_is_recording_enabled(ctx));
 }
 
 - (IBAction)onOpenBrowserMenuItem:(id)sender

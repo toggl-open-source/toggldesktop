@@ -31,8 +31,8 @@ extern void *ctx;
 - (IBAction)stopButtonClicked:(id)sender
 {
 	toggl_discard_time_at(ctx,
-						   [self.idleEvent.guid UTF8String],
-						   self.idleEvent.started);
+						  [self.idleEvent.guid UTF8String],
+						  self.idleEvent.started);
 	[self.window orderOut:nil];
 }
 

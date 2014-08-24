@@ -342,8 +342,8 @@ extern void *ctx;
 	// Format seconds as text again
 	char str[kDurationStringLength];
 	toggl_format_duration_in_seconds_hhmmss(seconds,
-											 str,
-											 kDurationStringLength);
+											str,
+											kDurationStringLength);
 	NSString *newValue = [NSString stringWithUTF8String:str];
 	[self.durationTextField setStringValue:newValue];
 }
@@ -411,8 +411,8 @@ extern void *ctx;
 	}
 	char str[kDurationStringLength];
 	toggl_format_duration_in_seconds_hhmmss(self.time_entry.duration_in_seconds,
-											 str,
-											 kDurationStringLength);
+											str,
+											kDurationStringLength);
 	NSString *newValue = [NSString stringWithUTF8String:str];
 	[self.durationTextField setStringValue:newValue];
 }
