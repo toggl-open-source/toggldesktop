@@ -1,6 +1,6 @@
 //
 //  NSTextFieldVerticallyAligned.h
-//  kopsik_ui_osx
+//  Toggl Desktop on the Mac
 //
 //  Copyright (c) 2014 TogglDesktop developers. All rights reserved.
 //

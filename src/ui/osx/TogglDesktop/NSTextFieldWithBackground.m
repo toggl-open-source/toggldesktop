@@ -1,6 +1,6 @@
 //
 //  NSTextFieldWithBackground.m
-//  kopsik_ui_osx
+//  Toggl Desktop on the Mac
 //
 //  Created by Tanel Lebedev on 05/03/2014.
 //  Copyright (c) 2014 Alari. All rights reserved.

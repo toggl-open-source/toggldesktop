@@ -1,6 +1,6 @@
 //
 //  NSHoverButton.m
-//  kopsik_ui_osx
+//  Toggl Desktop on the Mac
 //
 //  Created by Tanel Lebedev on 21/02/2014.
 //  Copyright (c) 2014 Toggl Desktop developers. All rights reserved.

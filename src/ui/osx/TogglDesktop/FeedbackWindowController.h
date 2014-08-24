@@ -1,6 +1,6 @@
 //
 //  FeedbackWindowController.h
-//  kopsik_ui_osx
+//  Toggl Desktop on the Mac
 //
 //  Created by Tanel Lebedev on 29/01/2014.
 //  Copyright (c) 2014 TogglDesktop developers. All rights reserved.
