@@ -12,7 +12,7 @@
 #include "Poco/DateTime.h"
 #include "Poco/LocalDateTime.h"
 
-namespace kopsik {
+namespace toggl {
 
 bool BaseModel::NeedsPush() const {
     return NeedsPOST() || NeedsPUT() || NeedsDELETE();
@@ -127,8 +127,8 @@ error BaseModel::ApplyBatchUpdateResult(
         return noError;
     }
 
-    kopsik::error err = update->Error();
-    if (err != kopsik::noError) {
+    toggl::error err = update->Error();
+    if (err != toggl::noError) {
         if (DuplicateResource(err) || ResourceCannotBeCreated(err)) {
             MarkAsDeletedOnServer();
             return noError;
@@ -150,7 +150,7 @@ error BaseModel::ApplyBatchUpdateResult(
     return noError;
 }
 
-bool BaseModel::userCannotAccessWorkspace(const kopsik::error err) const {
+bool BaseModel::userCannotAccessWorkspace(const toggl::error err) const {
     return (std::string::npos != std::string(err).find(
         "User cannot access workspace"));
 }
@@ -204,4 +204,4 @@ JSONNODE *BaseModel::BatchUpdateJSON() {
     return update;
 }
 
-}   // namespace kopsik
+}   // namespace toggl

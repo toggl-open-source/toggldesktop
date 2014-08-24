@@ -9,7 +9,7 @@
 
 #include "Poco/Logger.h"
 
-namespace kopsik {
+namespace toggl {
 
 error BatchUpdateResult::Error() const {
     if (StatusCode >= 200 && StatusCode < 300) {
@@ -129,4 +129,4 @@ void BatchUpdateResult::ParseResponseArray(
     json_delete(response_array);
 }
 
-}   // namespace kopsik
+}   // namespace toggl

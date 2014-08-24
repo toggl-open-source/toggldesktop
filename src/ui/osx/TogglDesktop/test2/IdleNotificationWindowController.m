@@ -7,7 +7,7 @@
 //
 
 #import "IdleNotificationWindowController.h"
-#import "kopsik_api.h"
+#import "toggl_api.h"
 
 @implementation IdleNotificationWindowController
 
@@ -30,7 +30,7 @@ extern void *ctx;
 
 - (IBAction)stopButtonClicked:(id)sender
 {
-	kopsik_discard_time_at(ctx,
+	toggl_discard_time_at(ctx,
 						   [self.idleEvent.guid UTF8String],
 						   self.idleEvent.started);
 	[self.window orderOut:nil];

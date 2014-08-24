@@ -17,7 +17,7 @@
 #include "Poco/FileStream.h"
 #include "Poco/File.h"
 
-namespace kopsik {
+namespace toggl {
 
 namespace testing {
 class Database {
@@ -27,19 +27,19 @@ class Database {
         if (f.exists()) {
             f.remove(false);
         }
-        db_ = new kopsik::Database(TESTDB);
+        db_ = new toggl::Database(TESTDB);
     }
     ~Database() {
         if (db_) {
             delete db_;
         }
     }
-    kopsik::Database *instance() {
+    toggl::Database *instance() {
         return db_;
     }
 
  private:
-    kopsik::Database *db_;
+    toggl::Database *db_;
 };
 }  // namespace testing
 
@@ -829,18 +829,18 @@ TEST(TogglApiClientTest, Continue) {
     te->SetDurOnly(true);
 
     size_t count = user.related.TimeEntries.size();
-    ASSERT_EQ(kopsik::noError, user.Continue(te->GUID()));
+    ASSERT_EQ(toggl::noError, user.Continue(te->GUID()));
     ASSERT_EQ(count, user.related.TimeEntries.size());
 
     // If the old time entry date is different than
     // today, it should create a new entry when
     // user continues it:
     te->SetStartString("2013-01-25T01:05:15-22:00");
-    ASSERT_EQ(kopsik::noError, user.Continue(te->GUID()));
+    ASSERT_EQ(toggl::noError, user.Continue(te->GUID()));
     ASSERT_EQ(count+1, user.related.TimeEntries.size());
 }
 
-}  // namespace kopsik
+}  // namespace toggl
 
 int main(int argc, char **argv) {
     Poco::Logger &logger = Poco::Logger::get("");

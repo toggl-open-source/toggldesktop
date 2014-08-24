@@ -13,7 +13,7 @@
 
 #include <iostream>   // NOLINT
 
-#include "./../../../lib/include/kopsik_api.h"
+#include "./../../../lib/include/toggl_api.h"
 
 #include "./updateview.h"
 #include "./timeentryview.h"
@@ -39,7 +39,7 @@ void on_display_error(
 
 void on_display_update(
     const _Bool open,
-    KopsikUpdateViewItem *update) {
+    TogglUpdateView *update) {
     TogglApi::instance->displayUpdate(open,
                                       UpdateView::importOne(update));
 }
@@ -72,45 +72,45 @@ void on_display_reminder(
 
 void on_display_time_entry_list(
     const _Bool open,
-    KopsikTimeEntryViewItem *first) {
+    TogglTimeEntryView *first) {
     TogglApi::instance->displayTimeEntryList(
         open,
         TimeEntryView::importAll(first));
 }
 
 void on_display_time_entry_autocomplete(
-    KopsikAutocompleteItem *first) {
+    TogglAutocompleteView *first) {
     TogglApi::instance->displayTimeEntryAutocomplete(
         AutocompleteView::importAll(first));
 }
 
 void on_display_project_autocomplete(
-    KopsikAutocompleteItem *first) {
+    TogglAutocompleteView *first) {
     TogglApi::instance->displayProjectAutocomplete(
         AutocompleteView::importAll(first));
 }
 
 void on_display_workspace_select(
-    KopsikViewItem *first) {
+    TogglGenericView *first) {
     TogglApi::instance->displayWorkspaceSelect(
         GenericView::importAll(first));
 }
 
 void on_display_client_select(
-    KopsikViewItem *first) {
+    TogglGenericView *first) {
     TogglApi::instance->displayClientSelect(
         GenericView::importAll(first));
 }
 
 void on_display_tags(
-    KopsikViewItem *first) {
+    TogglGenericView *first) {
     TogglApi::instance->displayTags(
         GenericView::importAll(first));
 }
 
 void on_display_time_entry_editor(
     const _Bool open,
-    KopsikTimeEntryViewItem *te,
+    TogglTimeEntryView *te,
     const char *focused_field_name) {
     TogglApi::instance->displayTimeEntryEditor(
         open,
@@ -120,14 +120,14 @@ void on_display_time_entry_editor(
 
 void on_display_settings(
     const _Bool open,
-    KopsikSettingsViewItem *settings) {
+    TogglSettingsView *settings) {
     TogglApi::instance->displaySettings(
         open,
         SettingsView::importOne(settings));
 }
 
 void on_display_timer_state(
-    KopsikTimeEntryViewItem *te) {
+    TogglTimeEntryView *te) {
     if (te) {
         TogglApi::instance->displayRunningTimerState(
             TimeEntryView::importOne(te));
@@ -154,8 +154,8 @@ TogglApi::TogglApi(QObject *parent)
 , shutdown(false)
 , ctx(0) {
     QString version = QApplication::applicationVersion();
-    ctx = kopsik_context_init("linux_native_app",
-                              version.toStdString().c_str());
+    ctx = toggl_context_init("linux_native_app",
+                             version.toStdString().c_str());
 
     QString appDirPath =
         QStandardPaths::writableLocation(
@@ -166,49 +166,49 @@ TogglApi::TogglApi(QObject *parent)
     }
 
     QString logPath = appDir.filePath("toggldesktop.log");
-    kopsik_set_log_path(logPath.toUtf8().constData());
+    toggl_set_log_path(logPath.toUtf8().constData());
     qDebug() << "Log path " << logPath;
 
-    kopsik_set_log_level("debug");
+    toggl_set_log_level("debug");
 
     QString dbPath = appDir.filePath("toggldesktop.db");
-    kopsik_set_db_path(ctx, dbPath.toUtf8().constData());
+    toggl_set_db_path(ctx, dbPath.toUtf8().constData());
     qDebug() << "DB path " << dbPath;
 
     QString executablePath = QCoreApplication::applicationDirPath();
     QDir executableDir = QDir(executablePath);
     QString cacertPath = executableDir.filePath("cacert.pem");
-    kopsik_set_cacert_path(ctx, cacertPath.toUtf8().constData());
+    toggl_set_cacert_path(ctx, cacertPath.toUtf8().constData());
 
-    kopsik_on_app(ctx, on_display_app);
-    kopsik_on_error(ctx, on_display_error);
-    kopsik_on_update(ctx, on_display_update);
-    kopsik_on_online_state(ctx, on_display_online_state);
-    kopsik_on_url(ctx, on_display_url);
-    kopsik_on_login(ctx, on_display_login);
-    kopsik_on_reminder(ctx, on_display_reminder);
-    kopsik_on_time_entry_list(ctx, on_display_time_entry_list);
-    kopsik_on_time_entry_autocomplete(ctx, on_display_time_entry_autocomplete);
-    kopsik_on_project_autocomplete(ctx, on_display_project_autocomplete);
-    kopsik_on_workspace_select(ctx, on_display_workspace_select);
-    kopsik_on_client_select(ctx, on_display_client_select);
-    kopsik_on_tags(ctx, on_display_tags);
-    kopsik_on_time_entry_editor(ctx, on_display_time_entry_editor);
-    kopsik_on_settings(ctx, on_display_settings);
-    kopsik_on_timer_state(ctx, on_display_timer_state);
-    kopsik_on_idle_notification(ctx, on_display_idle_notification);
+    toggl_on_show_app(ctx, on_display_app);
+    toggl_on_error(ctx, on_display_error);
+    toggl_on_update(ctx, on_display_update);
+    toggl_on_online_state(ctx, on_display_online_state);
+    toggl_on_url(ctx, on_display_url);
+    toggl_on_login(ctx, on_display_login);
+    toggl_on_reminder(ctx, on_display_reminder);
+    toggl_on_time_entry_list(ctx, on_display_time_entry_list);
+    toggl_on_time_entry_autocomplete(ctx, on_display_time_entry_autocomplete);
+    toggl_on_project_autocomplete(ctx, on_display_project_autocomplete);
+    toggl_on_workspace_select(ctx, on_display_workspace_select);
+    toggl_on_client_select(ctx, on_display_client_select);
+    toggl_on_tags(ctx, on_display_tags);
+    toggl_on_time_entry_editor(ctx, on_display_time_entry_editor);
+    toggl_on_settings(ctx, on_display_settings);
+    toggl_on_timer_state(ctx, on_display_timer_state);
+    toggl_on_idle_notification(ctx, on_display_idle_notification);
 
     instance = this;
 }
 
 bool TogglApi::startEvents() {
-    return kopsik_context_start_events(ctx);
+    return toggl_ui_start(ctx);
 }
 
 void TogglApi::login(const QString email, const QString password) {
-    kopsik_login(ctx,
-                 email.toStdString().c_str(),
-                 password.toStdString().c_str());
+    toggl_login(ctx,
+                email.toStdString().c_str(),
+                password.toStdString().c_str());
 }
 
 bool TogglApi::setTimeEntryStart(
@@ -231,25 +231,25 @@ bool TogglApi::setTime(
     const QString time,
     const bool start) {
     int hours(0), minutes(0);
-    if (!kopsik_parse_time(time.toStdString().c_str(),
-                           &hours,
-                           &minutes)) {
+    if (!toggl_parse_time(time.toStdString().c_str(),
+                          &hours,
+                          &minutes)) {
         return false;
     }
     QDateTime datetime(date, QTime(hours, minutes));
     QString isodate = datetime.toUTC().toString(Qt::ISODate);
     if (start) {
-        return kopsik_set_time_entry_start_iso_8601(ctx,
+        return toggl_set_time_entry_start_iso_8601(ctx,
                 guid.toStdString().c_str(),
                 isodate.toStdString().c_str());
     }
-    return kopsik_set_time_entry_end_iso_8601(ctx,
+    return toggl_set_time_entry_end_iso_8601(ctx,
             guid.toStdString().c_str(),
             isodate.toStdString().c_str());
 }
 
 void TogglApi::googleLogin(const QString accessToken) {
-    kopsik_google_login(ctx, accessToken.toStdString().c_str());
+    toggl_google_login(ctx, accessToken.toStdString().c_str());
 }
 
 bool TogglApi::setProxySettings(
@@ -258,21 +258,21 @@ bool TogglApi::setProxySettings(
     const uint64_t proxyPort,
     const QString proxyUsername,
     const QString proxyPassword) {
-    return kopsik_set_proxy_settings(ctx,
-                                     useProxy,
-                                     proxyHost.toStdString().c_str(),
-                                     proxyPort,
-                                     proxyUsername.toStdString().c_str(),
-                                     proxyPassword.toStdString().c_str());
+    return toggl_set_proxy_settings(ctx,
+                                    useProxy,
+                                    proxyHost.toStdString().c_str(),
+                                    proxyPort,
+                                    proxyUsername.toStdString().c_str(),
+                                    proxyPassword.toStdString().c_str());
 }
 
 bool TogglApi::discardTimeAt(const QString guid,
                              const uint64_t at) {
-    return kopsik_discard_time_at(ctx, guid.toStdString().c_str(), at);
+    return toggl_discard_time_at(ctx, guid.toStdString().c_str(), at);
 }
 
 void TogglApi::setIdleSeconds(u_int64_t idleSeconds) {
-    kopsik_set_idle_seconds(ctx, idleSeconds);
+    toggl_set_idle_seconds(ctx, idleSeconds);
 }
 
 bool TogglApi::setSettings(const bool useIdleDetection,
@@ -280,20 +280,20 @@ bool TogglApi::setSettings(const bool useIdleDetection,
                            const bool dockIcon,
                            const bool onTop,
                            const bool reminder) {
-    return kopsik_set_settings(ctx,
-                               useIdleDetection,
-                               menubarTimer,
-                               dockIcon,
-                               onTop,
-                               reminder);
+    return toggl_set_settings(ctx,
+                              useIdleDetection,
+                              menubarTimer,
+                              dockIcon,
+                              onTop,
+                              reminder);
 }
 
 void TogglApi::toggleTimelineRecording(const bool recordTimeline) {
-    kopsik_timeline_toggle_recording(ctx, recordTimeline);
+    toggl_timeline_toggle_recording(ctx, recordTimeline);
 }
 
 bool TogglApi::setUpdateChannel(const QString channel) {
-    return kopsik_set_update_channel(ctx, channel.toStdString().c_str());
+    return toggl_set_update_channel(ctx, channel.toStdString().c_str());
 }
 
 bool TogglApi::start(
@@ -301,69 +301,69 @@ bool TogglApi::start(
     const QString duration,
     const uint64_t task_id,
     const uint64_t project_id) {
-    return kopsik_start(ctx,
-                        description.toStdString().c_str(),
-                        duration.toStdString().c_str(),
-                        task_id,
-                        project_id);
+    return toggl_start(ctx,
+                       description.toStdString().c_str(),
+                       duration.toStdString().c_str(),
+                       task_id,
+                       project_id);
 }
 
 bool TogglApi::stop() {
-    return kopsik_stop(ctx);
+    return toggl_stop(ctx);
 }
 
 const QString TogglApi::formatDurationInSecondsHHMMSS(
     const int64_t duration) {
     int bufSize = 20;
     char buf[bufSize];  // NOLINT
-    kopsik_format_duration_in_seconds_hhmmss(duration,
-            buf,
-            bufSize);
+    toggl_format_duration_in_seconds_hhmmss(duration,
+                                            buf,
+                                            bufSize);
     return QString(buf);
 }
 
 bool TogglApi::continueTimeEntry(const QString guid) {
-    return kopsik_continue(ctx, guid.toStdString().c_str());
+    return toggl_continue(ctx, guid.toStdString().c_str());
 }
 
 bool TogglApi::continueLatestTimeEntry() {
-    return kopsik_continue_latest(ctx);
+    return toggl_continue_latest(ctx);
 }
 
 void TogglApi::sync() {
-    kopsik_sync(ctx);
+    toggl_sync(ctx);
 }
 
 void TogglApi::openInBrowser() {
-    kopsik_open_in_browser(ctx);
+    toggl_open_in_browser(ctx);
 }
 
 void TogglApi::about() {
-    kopsik_about(ctx);
+    toggl_about(ctx);
 }
 
 bool TogglApi::clearCache() {
-    return kopsik_clear_cache(ctx);
+    return toggl_clear_cache(ctx);
 }
 
 void TogglApi::getSupport() {
-    kopsik_get_support(ctx);
+    toggl_get_support(ctx);
 }
 
 void TogglApi::logout() {
-    kopsik_logout(ctx);
+    toggl_logout(ctx);
 }
 
 void TogglApi::editPreferences() {
-    kopsik_edit_preferences(ctx);
+    toggl_edit_preferences(ctx);
 }
 
 void TogglApi::editTimeEntry(const QString guid,
                              const QString focusedFieldName) {
-    kopsik_edit(ctx,
-                guid.toStdString().c_str(),
-                false,
-                focusedFieldName.toStdString().c_str());
+    toggl_edit(ctx,
+               guid.toStdString().c_str(),
+               false,
+               focusedFieldName.toStdString().c_str());
 }
 
 bool TogglApi::setTimeEntryProject(
@@ -371,43 +371,43 @@ bool TogglApi::setTimeEntryProject(
     const uint64_t task_id,
     const uint64_t project_id,
     const QString project_guid) {
-    return kopsik_set_time_entry_project(ctx,
-                                         guid.toStdString().c_str(),
-                                         task_id,
-                                         project_id,
-                                         project_guid.toStdString().c_str());
+    return toggl_set_time_entry_project(ctx,
+                                        guid.toStdString().c_str(),
+                                        task_id,
+                                        project_id,
+                                        project_guid.toStdString().c_str());
 }
 
 bool TogglApi::setTimeEntryDescription(
     const QString guid,
     const QString value) {
-    return kopsik_set_time_entry_description(ctx,
-            guid.toStdString().c_str(),
-            value.toStdString().c_str());
+    return toggl_set_time_entry_description(ctx,
+                                            guid.toStdString().c_str(),
+                                            value.toStdString().c_str());
 }
 
 bool TogglApi::setTimeEntryTags(
     const QString guid,
     const QString tags) {
-    return kopsik_set_time_entry_tags(ctx,
-                                      guid.toStdString().c_str(),
-                                      tags.toStdString().c_str());
+    return toggl_set_time_entry_tags(ctx,
+                                     guid.toStdString().c_str(),
+                                     tags.toStdString().c_str());
 }
 
 void TogglApi::editRunningTimeEntry(
     const QString focusedFieldName) {
-    kopsik_edit(ctx,
-                "",
-                true,
-                focusedFieldName.toStdString().c_str());
+    toggl_edit(ctx,
+               "",
+               true,
+               focusedFieldName.toStdString().c_str());
 }
 
 bool TogglApi::setTimeEntryBillable(
     const QString guid,
     const bool billable) {
-    return kopsik_set_time_entry_billable(ctx,
-                                          guid.toStdString().c_str(),
-                                          billable);
+    return toggl_set_time_entry_billable(ctx,
+                                         guid.toStdString().c_str(),
+                                         billable);
 }
 
 bool TogglApi::addProject(
@@ -416,35 +416,35 @@ bool TogglApi::addProject(
     const uint64_t client_id,
     const QString project_name,
     const bool is_private) {
-    return kopsik_add_project(ctx,
-                              time_entry_guid.toStdString().c_str(),
-                              workspace_id,
-                              client_id,
-                              project_name.toStdString().c_str(),
-                              is_private);
+    return toggl_add_project(ctx,
+                             time_entry_guid.toStdString().c_str(),
+                             workspace_id,
+                             client_id,
+                             project_name.toStdString().c_str(),
+                             is_private);
 }
 
 void TogglApi::viewTimeEntryList() {
-    kopsik_view_time_entry_list(ctx);
+    toggl_view_time_entry_list(ctx);
 }
 
 bool TogglApi::deleteTimeEntry(const QString guid) {
-    return kopsik_delete_time_entry(ctx, guid.toStdString().c_str());
+    return toggl_delete_time_entry(ctx, guid.toStdString().c_str());
 }
 
 bool TogglApi::setTimeEntryDuration(
     const QString guid,
     const QString value) {
-    return kopsik_set_time_entry_duration(ctx,
-                                          guid.toStdString().c_str(),
-                                          value.toStdString().c_str());
+    return toggl_set_time_entry_duration(ctx,
+                                         guid.toStdString().c_str(),
+                                         value.toStdString().c_str());
 }
 
 bool TogglApi::sendFeedback(const QString topic,
                             const QString details,
                             const QString filename) {
-    return kopsik_feedback_send(ctx,
-                                topic.toStdString().c_str(),
-                                details.toStdString().c_str(),
-                                filename.toStdString().c_str());
+    return toggl_feedback_send(ctx,
+                               topic.toStdString().c_str(),
+                               details.toStdString().c_str(),
+                               filename.toStdString().c_str());
 }

@@ -11,7 +11,7 @@
 #include "Poco/NotificationCenter.h"
 #include "Poco/Logger.h"
 
-namespace kopsik {
+namespace toggl {
 
 bool WindowChangeRecorder::hasWindowChanged(
     const std::string &title,
@@ -92,4 +92,4 @@ error WindowChangeRecorder::Shutdown() {
     return noError;
 }
 
-}  // namespace kopsik
+}  // namespace toggl

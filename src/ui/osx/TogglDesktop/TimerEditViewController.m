@@ -257,19 +257,19 @@ extern void *ctx;
 	[self.descriptionComboBox becomeFirstResponder];
 	if (sender == self.durationTextField)
 	{
-		kopsik_edit(ctx, [self.time_entry.GUID UTF8String], false, kFocusedFieldNameDuration);
+		toggl_edit(ctx, [self.time_entry.GUID UTF8String], false, kFocusedFieldNameDuration);
 		return;
 	}
 
 	if (sender == self.descriptionLabel)
 	{
-		kopsik_edit(ctx, [self.time_entry.GUID UTF8String], false, kFocusedFieldNameDescription);
+		toggl_edit(ctx, [self.time_entry.GUID UTF8String], false, kFocusedFieldNameDescription);
 		return;
 	}
 
 	if (sender == self.projectTextField)
 	{
-		kopsik_edit(ctx, [self.time_entry.GUID UTF8String], false, kFocusedFieldNameProject);
+		toggl_edit(ctx, [self.time_entry.GUID UTF8String], false, kFocusedFieldNameProject);
 		return;
 	}
 }
@@ -337,11 +337,11 @@ extern void *ctx;
 
 	// Parse text into seconds
 	const char *duration_string = [self.durationTextField.stringValue UTF8String];
-	int64_t seconds = kopsik_parse_duration_string_into_seconds(duration_string);
+	int64_t seconds = toggl_parse_duration_string_into_seconds(duration_string);
 
 	// Format seconds as text again
 	char str[kDurationStringLength];
-	kopsik_format_duration_in_seconds_hhmmss(seconds,
+	toggl_format_duration_in_seconds_hhmmss(seconds,
 											 str,
 											 kDurationStringLength);
 	NSString *newValue = [NSString stringWithUTF8String:str];
@@ -410,7 +410,7 @@ extern void *ctx;
 		return;
 	}
 	char str[kDurationStringLength];
-	kopsik_format_duration_in_seconds_hhmmss(self.time_entry.duration_in_seconds,
+	toggl_format_duration_in_seconds_hhmmss(self.time_entry.duration_in_seconds,
 											 str,
 											 kDurationStringLength);
 	NSString *newValue = [NSString stringWithUTF8String:str];

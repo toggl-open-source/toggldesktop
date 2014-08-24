@@ -10,7 +10,7 @@
 
 @implementation AutocompleteItem
 
-- (void)load:(KopsikAutocompleteItem *)data
+- (void)load:(TogglAutocompleteView *)data
 {
 	self.Text = [NSString stringWithUTF8String:data->Text];
 	self.ProjectAndTaskLabel = [NSString stringWithUTF8String:data->ProjectAndTaskLabel];
@@ -63,7 +63,7 @@
 	self.TaskID = data->TaskID;
 }
 
-- (void)save:(KopsikAutocompleteItem *)data
+- (void)save:(TogglAutocompleteView *)data
 {
 	NSAssert(!data->Text, @"data already has text");
 	data->Text = strdup([self.Text UTF8String]);
@@ -78,10 +78,10 @@
 			self.Text, self.ProjectID, self.TaskID, self.Type];
 }
 
-+ (NSMutableArray *)loadAll:(KopsikAutocompleteItem *)first
++ (NSMutableArray *)loadAll:(TogglAutocompleteView *)first
 {
 	NSMutableArray *result = [[NSMutableArray alloc] init];
-	KopsikAutocompleteItem *record = first;
+	TogglAutocompleteView *record = first;
 
 	while (record)
 	{

@@ -1,12 +1,12 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#ifndef SRC_CUSTOMERRORHANDLER_H_
-#define SRC_CUSTOMERRORHANDLER_H_
+#ifndef SRC_CUSTOM_ERROR_HANDLER_H_
+#define SRC_CUSTOM_ERROR_HANDLER_H_
 
 #include "Poco/ErrorHandler.h"
 #include <iostream> // NOLINT
 
-class CustomErrorHandler : public Poco::ErrorHandler {
+class custom_error_handler : public Poco::ErrorHandler {
  public:
     void exception(const Poco::Exception& exc) {
         std::cerr << "unhandled exception! " << exc.displayText() << std::endl;
@@ -19,4 +19,4 @@ class CustomErrorHandler : public Poco::ErrorHandler {
     }
 };
 
-#endif  // SRC_CUSTOMERRORHANDLER_H_
+#endif  // SRC_CUSTOM_ERROR_HANDLER_H_

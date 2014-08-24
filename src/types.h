@@ -5,7 +5,7 @@
 
 #include <string>
 
-namespace kopsik {
+namespace toggl {
 
 typedef std::string error;
 

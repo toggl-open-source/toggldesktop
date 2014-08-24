@@ -25,7 +25,7 @@
 #include "Poco/Types.h"
 #include "Poco/Logger.h"
 
-namespace kopsik {
+namespace toggl {
 
 class User : public BaseModel {
  public:
@@ -79,7 +79,7 @@ class User : public BaseModel {
         const Poco::UInt64 task_id,
         const Poco::UInt64 project_id);
 
-    kopsik::error Continue(
+    toggl::error Continue(
         const std::string GUID);
 
     std::vector<TimeEntry *> Stop();
@@ -234,6 +234,6 @@ class User : public BaseModel {
     std::string timeofday_format_;
 };
 
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_USER_H_

@@ -16,7 +16,7 @@
 #include "Poco/NotificationCenter.h"
 #include "Poco/Logger.h"
 
-namespace kopsik {
+namespace toggl {
 
 class TimelineUploader {
  public:
@@ -71,6 +71,6 @@ class TimelineUploader {
     }
 };
 
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_TIMELINE_UPLOADER_H_

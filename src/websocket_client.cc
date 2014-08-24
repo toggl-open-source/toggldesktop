@@ -23,7 +23,7 @@
 #include "./https_client.h"
 #include "./json.h"
 
-namespace kopsik {
+namespace toggl {
 
 Poco::Logger &WebSocketClient::logger() const {
     return Poco::Logger::get("websocket_client");
@@ -153,7 +153,7 @@ std::string WebSocketClient::parseWebSocketMessageType(
     if (json.empty()) {
         return "";
     }
-    if (!kopsik::json::IsValid(json)) {
+    if (!toggl::json::IsValid(json)) {
         return "";
     }
 
@@ -306,4 +306,4 @@ void WebSocketClient::deleteSession() {
     logger().debug("session deleted");
 }
 
-}   // namespace kopsik
+}   // namespace toggl

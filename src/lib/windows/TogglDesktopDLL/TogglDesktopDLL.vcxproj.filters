@@ -42,7 +42,7 @@
     <ClInclude Include="..\..\..\context.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\CustomErrorHandler.h">
+    <ClInclude Include="..\..\..\custom_error_handler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\database.h">
@@ -63,7 +63,7 @@
     <ClInclude Include="..\..\..\json.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\kopsik_api_private.h">
+    <ClInclude Include="..\..\..\toggl_api_private.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\project.h">
@@ -137,7 +137,7 @@
     <ClCompile Include="..\..\..\context.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\CustomErrorHandler.cc">
+    <ClCompile Include="..\..\..\custom_error_handler.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\database.cc">
@@ -158,10 +158,10 @@
     <ClCompile Include="..\..\..\json.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\kopsik_api.cc">
+    <ClCompile Include="..\..\..\toggl_api.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\kopsik_api_private.cc">
+    <ClCompile Include="..\..\..\toggl_api_private.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\project.cc">

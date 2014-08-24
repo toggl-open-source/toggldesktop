@@ -329,17 +329,17 @@ build/gui.o: src/gui.cc
 build/context.o: src/context.cc
 	$(cxx) $(cflags) -c src/context.cc -o build/context.o
 
-build/kopsik_api_private.o: src/kopsik_api_private.cc
-	$(cxx) $(cflags) -c src/kopsik_api_private.cc -o build/kopsik_api_private.o
+build/kopsik_api_private.o: src/toggl_api_private.cc
+	$(cxx) $(cflags) -c src/toggl_api_private.cc -o build/kopsik_api_private.o
 
-build/kopsik_api.o: src/kopsik_api.cc
-	$(cxx) $(cflags) -c src/kopsik_api.cc -o build/kopsik_api.o
+build/kopsik_api.o: src/toggl_api.cc
+	$(cxx) $(cflags) -c src/toggl_api.cc -o build/kopsik_api.o
 
 build/test/test_data.o: src/test/test_data.cc
 	$(cxx) $(cflags) -c src/test/test_data.cc -o build/test/test_data.o
 
-build/test/kopsik_api_test.o: src/test/kopsik_api_test.cc
-	$(cxx) $(cflags) -c src/test/kopsik_api_test.cc -o build/test/kopsik_api_test.o
+build/test/toggl_api_test.o: src/test/toggl_api_test.cc
+	$(cxx) $(cflags) -c src/test/toggl_api_test.cc -o build/test/toggl_api_test.o
 
 build/test/toggl_api_client_test.o: src/test/toggl_api_client_test.cc
 	$(cxx) $(cflags) -c src/test/toggl_api_client_test.cc -o build/test/toggl_api_client_test.o
@@ -390,7 +390,7 @@ test_objects: build/test/gtest-all.o \
 	build/test/gmock-all.o \
 	build/test/test_data.o \
 	build/test/toggl_api_client_test.o \
-	build/test/kopsik_api_test.o
+	build/test/toggl_api_test.o
 
 toggl_test: objects test_objects
 	rm -rf test

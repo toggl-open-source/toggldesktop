@@ -13,10 +13,10 @@
 #include "./websocket_client.h"
 #include "./window_change_recorder.h"
 #include "./timeline_uploader.h"
-#include "./CustomErrorHandler.h"
+#include "./custom_error_handler.h"
 #include "./autocomplete_item.h"
 #include "./feedback.h"
-#include "./lib/include/kopsik_api.h"
+#include "./lib/include/toggl_api.h"
 #include "./gui.h"
 
 #include "Poco/Timestamp.h"
@@ -27,7 +27,7 @@
 #include "Poco/FormattingChannel.h"
 #include "Poco/PatternFormatter.h"
 
-namespace kopsik {
+namespace toggl {
 
 class Context {
  public:
@@ -277,7 +277,7 @@ class Context {
     std::vector<Workspace *> workspaces() const;
     std::vector<Client *> clients() const;
 
-    KopsikTimeEntryViewItem *timeEntryViewItem(TimeEntry *te);
+    TogglTimeEntryView *timeEntryViewItem(TimeEntry *te);
 
     void displayTimerState();
     void displayTimeEntryEditor(const _Bool open,
@@ -322,7 +322,7 @@ class Context {
 
     std::string timeline_upload_url_;
 
-    CustomErrorHandler error_handler_;
+    custom_error_handler error_handler_;
 
     Feedback feedback_;
 
@@ -355,6 +355,6 @@ class Context {
     bool quit_;
 };
 
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_CONTEXT_H_

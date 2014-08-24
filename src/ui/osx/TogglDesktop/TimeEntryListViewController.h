@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "kopsik_api.h"
+#import "toggl_api.h"
 #import "NSUnstripedTableView.h"
 #import "NSViewEscapable.h"
 #import "NSTextFieldClickable.h"

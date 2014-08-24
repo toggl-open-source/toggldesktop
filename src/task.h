@@ -11,7 +11,7 @@
 
 #include "./base_model.h"
 
-namespace kopsik {
+namespace toggl {
 
 class Task : public BaseModel {
  public:
@@ -56,6 +56,6 @@ class Task : public BaseModel {
     Poco::UInt64 pid_;
 };
 
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_TASK_H_

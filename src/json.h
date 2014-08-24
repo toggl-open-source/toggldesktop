@@ -19,7 +19,7 @@
 #include "./tag.h"
 #include "./batch_update_result.h"
 
-namespace kopsik {
+namespace toggl {
 
 namespace json {
 
@@ -43,6 +43,6 @@ bool IsValid(const std::string json);
 
 }  // namespace json
 
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_JSON_H_

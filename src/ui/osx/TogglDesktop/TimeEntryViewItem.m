@@ -10,7 +10,7 @@
 
 @implementation TimeEntryViewItem
 
-- (void)load:(KopsikTimeEntryViewItem *)te
+- (void)load:(TogglTimeEntryView *)te
 {
 	self.GUID = [NSString stringWithUTF8String:te->GUID];
 	self.duration_in_seconds = te->DurationInSeconds;

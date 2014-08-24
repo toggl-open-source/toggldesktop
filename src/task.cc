@@ -4,7 +4,7 @@
 
 #include <sstream>
 
-namespace kopsik {
+namespace toggl {
 
 std::string Task::String() const {
     std::stringstream ss;
@@ -67,4 +67,4 @@ void Task::LoadFromJSONNode(JSONNODE * const data) {
     SetWID(wid);
 }
 
-}   // namespace kopsik
+}   // namespace toggl

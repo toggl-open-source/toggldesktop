@@ -15,7 +15,7 @@
 #include "./time_entry.h"
 #include "./autocomplete_item.h"
 
-namespace kopsik {
+namespace toggl {
 
 class RelatedData {
  public:
@@ -111,6 +111,6 @@ class RelatedData {
         std::vector<AutocompleteItem> *list);
 };
 
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_RELATED_DATA_H_

@@ -12,7 +12,7 @@
 #include "Poco/StreamCopier.h"
 #include "Poco/Path.h"
 
-namespace kopsik {
+namespace toggl {
 
 const std::string Feedback::JSON() const {
     JSONNODE *root = json_new(JSON_NODE);
@@ -65,14 +65,14 @@ const std::string Feedback::base64encode_attachment() const {
     return oss.str();
 }
 
-kopsik::error Feedback::Validate() const {
+toggl::error Feedback::Validate() const {
     if (subject_.empty()) {
-        return kopsik::error("Missing topic");
+        return toggl::error("Missing topic");
     }
     if (details_.empty()) {
-        return kopsik::error("Missing details");
+        return toggl::error("Missing details");
     }
-    return kopsik::noError;
+    return toggl::noError;
 }
 
-}  // namespace kopsik
+}  // namespace toggl

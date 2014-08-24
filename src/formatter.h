@@ -10,7 +10,7 @@
 #include "./project.h"
 #include "./client.h"
 
-namespace kopsik {
+namespace toggl {
 
 class Formatter {
  public:
@@ -100,6 +100,6 @@ class Formatter {
         const std::string value);
 };
 
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_FORMATTER_H_

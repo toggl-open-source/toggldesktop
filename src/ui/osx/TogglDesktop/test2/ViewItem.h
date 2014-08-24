@@ -7,11 +7,11 @@
 
 #import <Foundation/Foundation.h>
 
-#import "kopsik_api.h"
+#import "toggl_api.h"
 
 @interface ViewItem : NSObject
-+ (NSMutableArray *)loadAll:(KopsikViewItem *)first;
-- (void)load:(KopsikViewItem *)data;
++ (NSMutableArray *)loadAll:(TogglGenericView *)first;
+- (void)load:(TogglGenericView *)data;
 @property uint64_t ID;
 @property uint64_t WID;
 @property (strong) NSString *GUID;

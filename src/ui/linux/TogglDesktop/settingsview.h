@@ -5,7 +5,7 @@
 
 #include <QObject>
 
-#include "./kopsik_api.h"
+#include "./toggl_api.h"
 
 class SettingsView : public QObject {
     Q_OBJECT
@@ -13,7 +13,7 @@ class SettingsView : public QObject {
  public:
     explicit SettingsView(QObject *parent = 0);
 
-    static SettingsView *importOne(KopsikSettingsViewItem *view) {
+    static SettingsView *importOne(TogglSettingsView *view) {
         SettingsView *result = new SettingsView();
         result->UseProxy = view->UseProxy;
         result->ProxyHost = QString(view->ProxyHost);

@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "kopsik_api.h"
+#import "toggl_api.h"
 
 @interface TimeEntryViewItem : NSObject
-- (void)load:(KopsikTimeEntryViewItem *)data;
+- (void)load:(TogglTimeEntryView *)data;
 @property int64_t duration_in_seconds;
 @property (strong) NSString *Description; // uppercase to avoid clash with [NSObject description]
 @property (strong) NSString *ProjectAndTaskLabel;

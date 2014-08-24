@@ -5,11 +5,11 @@
 
 #include "gtest/gtest.h"
 
-namespace kopsik {
+namespace toggl {
 
 class TogglApiClientTest : public ::testing::Test {};
 
-}  // namespace kopsik
+}  // namespace toggl
 
 int main(int argc, char **argv);
 

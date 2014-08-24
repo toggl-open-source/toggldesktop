@@ -17,7 +17,7 @@
 #include "./types.h"
 #include "./proxy.h"
 
-namespace kopsik {
+namespace toggl {
 
 typedef void (*WebSocketMessageCallback)(
     void *callback,
@@ -78,6 +78,6 @@ class WebSocketClient {
 
     Poco::Mutex mutex_;
 };
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_WEBSOCKET_CLIENT_H_

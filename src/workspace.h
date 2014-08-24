@@ -11,7 +11,7 @@
 
 #include "./base_model.h"
 
-namespace kopsik {
+namespace toggl {
 
 class Workspace : public BaseModel {
  public:
@@ -66,6 +66,6 @@ class Workspace : public BaseModel {
 
 bool CompareWorkspaceByName(Workspace *a, Workspace *b);
 
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_WORKSPACE_H_

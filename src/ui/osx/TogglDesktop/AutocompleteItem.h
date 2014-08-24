@@ -7,12 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "kopsik_api.h"
+#import "toggl_api.h"
 
 @interface AutocompleteItem : NSObject
-+ (NSMutableArray *)loadAll:(KopsikAutocompleteItem *)first;
-- (void)load:(KopsikAutocompleteItem *)data;
-- (void)save:(KopsikAutocompleteItem *)data;
++ (NSMutableArray *)loadAll:(TogglAutocompleteView *)first;
+- (void)load:(TogglAutocompleteView *)data;
+- (void)save:(TogglAutocompleteView *)data;
 @property NSString *Text;
 @property NSString *Description;
 @property NSString *ProjectAndTaskLabel;

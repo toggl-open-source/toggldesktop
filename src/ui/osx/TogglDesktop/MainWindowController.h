@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "kopsik_api.h"
+#import "toggl_api.h"
 
 @interface MainWindowController : NSWindowController
 @property IBOutlet NSView *contentView;

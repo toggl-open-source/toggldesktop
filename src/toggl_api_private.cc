@@ -1,15 +1,15 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./kopsik_api_private.h"
+#include "./toggl_api_private.h"
 
 #include <cstdlib>
 
 #include "./formatter.h"
 #include "./context.h"
 
-KopsikAutocompleteItem *autocomplete_item_init(
-    const kopsik::AutocompleteItem item) {
-    KopsikAutocompleteItem *result = new KopsikAutocompleteItem();
+TogglAutocompleteView *autocomplete_item_init(
+    const toggl::AutocompleteItem item) {
+    TogglAutocompleteView *result = new TogglAutocompleteView();
     result->Description = strdup(item.Description.c_str());
     result->Text = strdup(item.Text.c_str());
     result->ProjectAndTaskLabel = strdup(item.ProjectAndTaskLabel.c_str());
@@ -24,8 +24,8 @@ KopsikAutocompleteItem *autocomplete_item_init(
     return result;
 }
 
-KopsikViewItem *view_item_init() {
-    KopsikViewItem *result = new KopsikViewItem();
+TogglGenericView *view_item_init() {
+    TogglGenericView *result = new TogglGenericView();
     result->ID = 0;
     result->WID = 0;
     result->GUID = 0;
@@ -33,31 +33,31 @@ KopsikViewItem *view_item_init() {
     return result;
 }
 
-KopsikViewItem *project_to_view_item(kopsik::Project * const p) {
+TogglGenericView *project_to_view_item(toggl::Project * const p) {
     poco_assert(p);
 
-    KopsikViewItem *result = view_item_init();
+    TogglGenericView *result = view_item_init();
     result->ID = static_cast<unsigned int>(p->ID());
     result->GUID = strdup(p->GUID().c_str());
     result->Name = strdup(p->Name().c_str());
     return result;
 }
 
-KopsikViewItem *tag_to_view_item(const std::string tag_name) {
-    KopsikViewItem *result = view_item_init();
+TogglGenericView *tag_to_view_item(const std::string tag_name) {
+    TogglGenericView *result = view_item_init();
     result->Name = strdup(tag_name.c_str());
     return result;
 }
 
-KopsikViewItem *workspace_to_view_item(kopsik::Workspace * const ws) {
-    KopsikViewItem *result = view_item_init();
+TogglGenericView *workspace_to_view_item(toggl::Workspace * const ws) {
+    TogglGenericView *result = view_item_init();
     result->ID = static_cast<unsigned int>(ws->ID());
     result->Name = strdup(ws->Name().c_str());
     return result;
 }
 
-KopsikViewItem *client_to_view_item(kopsik::Client * const c) {
-    KopsikViewItem *result = view_item_init();
+TogglGenericView *client_to_view_item(toggl::Client * const c) {
+    TogglGenericView *result = view_item_init();
     result->ID = static_cast<unsigned int>(c->ID());
     result->WID = static_cast<unsigned int>(c->WID());
     result->GUID = strdup(c->GUID().c_str());
@@ -65,7 +65,7 @@ KopsikViewItem *client_to_view_item(kopsik::Client * const c) {
     return result;
 }
 
-void view_item_clear(KopsikViewItem *item) {
+void view_item_clear(TogglGenericView *item) {
     if (!item) {
         return;
     }
@@ -77,7 +77,8 @@ void view_item_clear(KopsikViewItem *item) {
     item->GUID = 0;
 
     if (item->Next) {
-        KopsikViewItem *next = reinterpret_cast<KopsikViewItem *>(item->Next);
+        TogglGenericView *next =
+            reinterpret_cast<TogglGenericView *>(item->Next);
         view_item_clear(next);
     }
 
@@ -85,7 +86,7 @@ void view_item_clear(KopsikViewItem *item) {
     item = 0;
 }
 
-void autocomplete_item_clear(KopsikAutocompleteItem *item) {
+void autocomplete_item_clear(TogglAutocompleteView *item) {
     if (!item) {
         return;
     }
@@ -112,8 +113,8 @@ void autocomplete_item_clear(KopsikAutocompleteItem *item) {
     item->ProjectColor = 0;
 
     if (item->Next) {
-        KopsikAutocompleteItem *next =
-            reinterpret_cast<KopsikAutocompleteItem *>(item->Next);
+        TogglAutocompleteView *next =
+            reinterpret_cast<TogglAutocompleteView *>(item->Next);
         autocomplete_item_clear(next);
         item->Next = 0;
     }
@@ -121,8 +122,8 @@ void autocomplete_item_clear(KopsikAutocompleteItem *item) {
     delete item;
 }
 
-KopsikTimeEntryViewItem *time_entry_view_item_init(
-    kopsik::TimeEntry *te,
+TogglTimeEntryView *time_entry_view_item_init(
+    toggl::TimeEntry *te,
     const std::string project_and_task_label,
     const std::string task_label,
     const std::string project_label,
@@ -133,7 +134,7 @@ KopsikTimeEntryViewItem *time_entry_view_item_init(
 
     poco_check_ptr(te);
 
-    KopsikTimeEntryViewItem *view_item = new KopsikTimeEntryViewItem();
+    TogglTimeEntryView *view_item = new TogglTimeEntryView();
     poco_check_ptr(view_item);
 
     view_item->DurationInSeconds = static_cast<int>(te->DurationInSeconds());
@@ -153,10 +154,10 @@ KopsikTimeEntryViewItem *time_entry_view_item_init(
     view_item->Color = strdup(color.c_str());
 
     std::string start_time_string =
-        kopsik::Formatter::FormatTimeForTimeEntryEditor(te->Start(),
+        toggl::Formatter::FormatTimeForTimeEntryEditor(te->Start(),
                 timeofday_format);
     std::string end_time_string =
-        kopsik::Formatter::FormatTimeForTimeEntryEditor(te->Stop(),
+        toggl::Formatter::FormatTimeForTimeEntryEditor(te->Stop(),
                 timeofday_format);
 
     view_item->StartTimeString = strdup(start_time_string.c_str());
@@ -185,7 +186,7 @@ KopsikTimeEntryViewItem *time_entry_view_item_init(
 }
 
 void time_entry_view_item_clear(
-    KopsikTimeEntryViewItem *item) {
+    TogglTimeEntryView *item) {
     if (!item) {
         return;
     }
@@ -229,8 +230,8 @@ void time_entry_view_item_clear(
     item->EndTimeString = 0;
 
     if (item->Next) {
-        KopsikTimeEntryViewItem *next =
-            reinterpret_cast<KopsikTimeEntryViewItem *>(item->Next);
+        TogglTimeEntryView *next =
+            reinterpret_cast<TogglTimeEntryView *>(item->Next);
         time_entry_view_item_clear(next);
         item->Next = 0;
     }
@@ -238,12 +239,12 @@ void time_entry_view_item_clear(
     delete item;
 }
 
-KopsikSettingsViewItem *settings_view_item_init(
+TogglSettingsView *settings_view_item_init(
     const _Bool record_timeline,
-    const kopsik::Settings settings,
+    const toggl::Settings settings,
     const _Bool use_proxy,
-    const kopsik::Proxy proxy) {
-    KopsikSettingsViewItem *view = new KopsikSettingsViewItem();
+    const toggl::Proxy proxy) {
+    TogglSettingsView *view = new TogglSettingsView();
 
     view->RecordTimeline = record_timeline;
 
@@ -263,7 +264,7 @@ KopsikSettingsViewItem *settings_view_item_init(
     return view;
 }
 
-void settings_view_item_clear(KopsikSettingsViewItem *view) {
+void settings_view_item_clear(TogglSettingsView *view) {
     poco_check_ptr(view);
 
     free(view->ProxyHost);
@@ -278,6 +279,6 @@ _Bool testing_set_logged_in_user(
     const char *json) {
     poco_check_ptr(json);
 
-    kopsik::Context *app = reinterpret_cast<kopsik::Context *>(context);
+    toggl::Context *app = reinterpret_cast<toggl::Context *>(context);
     return app->SetLoggedInUserFromJSON(std::string(json));
 }

@@ -16,7 +16,7 @@
 #include "Poco/DateTimeParser.h"
 #include "Poco/LocalDateTime.h"
 
-namespace kopsik {
+namespace toggl {
 
 std::string Formatter::togglTimeOfDayToPocoFormat(
     const std::string toggl_format) {
@@ -561,4 +561,4 @@ std::string Formatter::EscapeJSONString(const std::string input) {
     return ss.str();
 }
 
-}   // namespace kopsik
+}   // namespace toggl

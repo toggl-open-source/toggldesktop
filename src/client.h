@@ -13,7 +13,7 @@
 
 #include "./base_model.h"
 
-namespace kopsik {
+namespace toggl {
 
 class Client : public BaseModel {
  public:
@@ -54,6 +54,6 @@ class Client : public BaseModel {
 
 bool CompareClientByName(Client *a, Client *b);
 
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_CLIENT_H_

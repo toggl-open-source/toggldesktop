@@ -6,7 +6,7 @@
 #include <QObject>
 #include <QVector>
 
-#include "./kopsik_api.h"
+#include "./toggl_api.h"
 
 class TimeEntryView : public QObject {
     Q_OBJECT
@@ -14,8 +14,8 @@ class TimeEntryView : public QObject {
  public:
     explicit TimeEntryView(QObject *parent = 0);
 
-    static TimeEntryView *importOne(KopsikTimeEntryViewItem *view);
-    static QVector<TimeEntryView *> importAll(KopsikTimeEntryViewItem *first);
+    static TimeEntryView *importOne(TogglTimeEntryView *view);
+    static QVector<TimeEntryView *> importAll(TogglTimeEntryView *first);
 
     const QString timeOverview();
     const QString lastUpdate();

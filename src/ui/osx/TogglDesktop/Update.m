@@ -10,7 +10,7 @@
 
 @implementation Update
 
-- (void)load:(KopsikUpdateViewItem *)view
+- (void)load:(TogglUpdateView *)view
 {
 	self.channel = [NSString stringWithUTF8String:view->UpdateChannel];
 	self.is_checking = view->IsChecking;

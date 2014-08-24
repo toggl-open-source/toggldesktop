@@ -6,7 +6,7 @@
 #include <QObject>
 #include <QVector>
 
-#include "./kopsik_api.h"
+#include "./toggl_api.h"
 
 class GenericView : public QObject {
     Q_OBJECT
@@ -14,9 +14,9 @@ class GenericView : public QObject {
  public:
     explicit GenericView(QObject *parent = 0);
 
-    static QVector<GenericView *> importAll(KopsikViewItem *first) {
+    static QVector<GenericView *> importAll(TogglGenericView *first) {
         QVector<GenericView *> result;
-        KopsikViewItem *it = first;
+        TogglGenericView *it = first;
         while (it) {
             GenericView *view = new GenericView();
             view->ID = it->ID;
@@ -24,7 +24,7 @@ class GenericView : public QObject {
             view->GUID = QString(it->GUID);
             view->Name = QString(it->Name);
             result.push_back(view);
-            it = static_cast<KopsikViewItem *>(it->Next);
+            it = static_cast<TogglGenericView *>(it->Next);
         }
         return result;
     }

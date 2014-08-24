@@ -7,7 +7,7 @@
 //
 
 #import "FeedbackWindowController.h"
-#import "kopsik_api.h"
+#import "toggl_api.h"
 
 @implementation FeedbackWindowController
 
@@ -43,7 +43,7 @@ extern void *ctx;
 		return;
 	}
 
-	if (!kopsik_feedback_send(ctx,
+	if (!toggl_feedback_send(ctx,
 							  [self.topicComboBox.stringValue UTF8String],
 							  [self.contentTextView.string UTF8String],
 							  [self.selectedImageTextField.stringValue UTF8String]))

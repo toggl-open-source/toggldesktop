@@ -11,7 +11,7 @@
 
 #include "Poco/Types.h"
 
-namespace kopsik {
+namespace toggl {
 
 class TimeEntry : public BaseModel {
  public:
@@ -128,7 +128,7 @@ class TimeEntry : public BaseModel {
 
     void StopTracking();
 
-    virtual bool ResolveError(const kopsik::error err);
+    virtual bool ResolveError(const toggl::error err);
 
  private:
     Poco::UInt64 wid_;
@@ -149,15 +149,15 @@ class TimeEntry : public BaseModel {
 
     void loadTagsFromJSONNode(JSONNODE * const);
 
-    bool durationTooLarge(const kopsik::error) const;
-    bool stopTimeMustBeAfterStartTime(const kopsik::error) const;
-    bool userCannotAccessTheSelectedProject(const kopsik::error) const;
-    bool userCannotAccessSelectedTask(const kopsik::error) const;
-    bool billableIsAPremiumFeature(const kopsik::error) const;
+    bool durationTooLarge(const toggl::error) const;
+    bool stopTimeMustBeAfterStartTime(const toggl::error) const;
+    bool userCannotAccessTheSelectedProject(const toggl::error) const;
+    bool userCannotAccessSelectedTask(const toggl::error) const;
+    bool billableIsAPremiumFeature(const toggl::error) const;
 };
 
 bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b);
 
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_TIME_ENTRY_H_

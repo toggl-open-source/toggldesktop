@@ -7,7 +7,7 @@
 TimeEntryView::TimeEntryView(QObject *parent) : QObject(parent) {
 }
 
-TimeEntryView *TimeEntryView::importOne(KopsikTimeEntryViewItem *view) {
+TimeEntryView *TimeEntryView::importOne(TogglTimeEntryView *view) {
     TimeEntryView *result = new TimeEntryView();
     result->DurationInSeconds = view->DurationInSeconds;
     result->ProjectAndTaskLabel = view->ProjectAndTaskLabel;
@@ -38,12 +38,12 @@ TimeEntryView *TimeEntryView::importOne(KopsikTimeEntryViewItem *view) {
 }
 
 QVector<TimeEntryView *> TimeEntryView::importAll(
-    KopsikTimeEntryViewItem *first) {
+    TogglTimeEntryView *first) {
     QVector<TimeEntryView *> result;
-    KopsikTimeEntryViewItem *view = first;
+    TogglTimeEntryView *view = first;
     while (view) {
         result.push_back(importOne(view));
-        view = static_cast<KopsikTimeEntryViewItem *>(view->Next);
+        view = static_cast<TogglTimeEntryView *>(view->Next);
     }
     return result;
 }

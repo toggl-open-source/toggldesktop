@@ -3,7 +3,7 @@
 #ifndef SRC_SETTINGS_H_
 #define SRC_SETTINGS_H_
 
-namespace kopsik {
+namespace toggl {
 
 class Settings {
  public:
@@ -22,6 +22,6 @@ class Settings {
     bool reminder;
 };
 
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_SETTINGS_H_

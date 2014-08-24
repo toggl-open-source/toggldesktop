@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "kopsik_api.h"
+#import "toggl_api.h"
 
 @interface Settings : NSObject
-- (void)load:(KopsikSettingsViewItem *)data;
+- (void)load:(TogglSettingsView *)data;
 @property BOOL idle_detection;
 @property BOOL menubar_timer;
 @property BOOL dock_icon;

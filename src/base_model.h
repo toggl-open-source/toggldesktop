@@ -15,7 +15,7 @@
 #include "Poco/Types.h"
 #include "Poco/Logger.h"
 
-namespace kopsik {
+namespace toggl {
 
 class BaseModel {
  public:
@@ -106,10 +106,10 @@ class BaseModel {
 
     void EnsureGUID();
 
-    void SetError(const kopsik::error value) {
+    void SetError(const toggl::error value) {
         error_ = value;
     }
-    kopsik::error Error() const {
+    toggl::error Error() const {
         return error_;
     }
 
@@ -121,13 +121,13 @@ class BaseModel {
         return 0;
     }
 
-    virtual bool DuplicateResource(const kopsik::error) const {
+    virtual bool DuplicateResource(const toggl::error) const {
         return false;
     }
-    virtual bool ResourceCannotBeCreated(const kopsik::error) const {
+    virtual bool ResourceCannotBeCreated(const toggl::error) const {
         return false;
     }
-    virtual bool ResolveError(const kopsik::error) {
+    virtual bool ResolveError(const toggl::error) {
         return false;
     }
 
@@ -146,7 +146,7 @@ class BaseModel {
         return Poco::Logger::get(ModelName());
     }
 
-    bool userCannotAccessWorkspace(const kopsik::error err) const;
+    bool userCannotAccessWorkspace(const toggl::error err) const;
 
  private:
     std::string batchUpdateRelativeURL() const;
@@ -164,9 +164,9 @@ class BaseModel {
 
     // If model push to backend results in an error,
     // the error is attached to the model for later inspection.
-    kopsik::error error_;
+    toggl::error error_;
 };
 
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_BASE_MODEL_H_

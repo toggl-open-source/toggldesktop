@@ -99,7 +99,7 @@
     <ClInclude Include="..\..\..\client.h" />
     <ClInclude Include="..\..\..\const.h" />
     <ClInclude Include="..\..\..\context.h" />
-    <ClInclude Include="..\..\..\CustomErrorHandler.h" />
+    <ClInclude Include="..\..\..\custom_error_handler.h" />
     <ClInclude Include="..\..\..\database.h" />
     <ClInclude Include="..\..\..\feedback.h" />
     <ClInclude Include="..\..\..\formatter.h" />
@@ -107,7 +107,7 @@
     <ClInclude Include="..\..\..\gui.h" />
     <ClInclude Include="..\..\..\https_client.h" />
     <ClInclude Include="..\..\..\json.h" />
-    <ClInclude Include="..\..\..\kopsik_api_private.h" />
+    <ClInclude Include="..\..\..\toggl_api_private.h" />
     <ClInclude Include="..\..\..\project.h" />
     <ClInclude Include="..\..\..\proxy.h" />
     <ClInclude Include="..\..\..\related_data.h" />
@@ -132,7 +132,7 @@
     <ClCompile Include="..\..\..\batch_update_result.cc" />
     <ClCompile Include="..\..\..\client.cc" />
     <ClCompile Include="..\..\..\context.cc" />
-    <ClCompile Include="..\..\..\CustomErrorHandler.cc" />
+    <ClCompile Include="..\..\..\custom_error_handler.cc" />
     <ClCompile Include="..\..\..\database.cc" />
     <ClCompile Include="..\..\..\feedback.cc" />
     <ClCompile Include="..\..\..\formatter.cc" />
@@ -140,8 +140,8 @@
     <ClCompile Include="..\..\..\gui.cc" />
     <ClCompile Include="..\..\..\https_client.cc" />
     <ClCompile Include="..\..\..\json.cc" />
-    <ClCompile Include="..\..\..\kopsik_api.cc" />
-    <ClCompile Include="..\..\..\kopsik_api_private.cc" />
+    <ClCompile Include="..\..\..\toggl_api.cc" />
+    <ClCompile Include="..\..\..\toggl_api_private.cc" />
     <ClCompile Include="..\..\..\project.cc" />
     <ClCompile Include="..\..\..\proxy.cc" />
     <ClCompile Include="..\..\..\related_data.cc" />

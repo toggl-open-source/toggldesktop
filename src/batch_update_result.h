@@ -13,7 +13,7 @@
 
 #include "Poco/Types.h"
 
-namespace kopsik {
+namespace toggl {
 
 class BaseModel;
 
@@ -45,6 +45,6 @@ class BatchUpdateResult {
         std::vector<error> *errors);
 };
 
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_BATCH_UPDATE_RESULT_H_

@@ -6,7 +6,7 @@
 #include <QObject>
 #include <QVector>
 
-#include "./kopsik_api.h"
+#include "./toggl_api.h"
 
 class AutocompleteView : public QObject {
     Q_OBJECT
@@ -15,9 +15,9 @@ class AutocompleteView : public QObject {
     explicit AutocompleteView(QObject *parent = 0);
 
     static QVector<AutocompleteView *> importAll(
-        KopsikAutocompleteItem *first) {
+        TogglAutocompleteView *first) {
         QVector<AutocompleteView *> result;
-        KopsikAutocompleteItem *it = first;
+        TogglAutocompleteView *it = first;
         while (it) {
             AutocompleteView *view = new AutocompleteView();
             view->Text = QString(it->Text);
@@ -30,7 +30,7 @@ class AutocompleteView : public QObject {
             view->ProjectID = it->ProjectID;
             view->Type = it->Type;
             result.push_back(view);
-            it = static_cast<KopsikAutocompleteItem *>(it->Next);
+            it = static_cast<TogglAutocompleteView *>(it->Next);
         }
         return result;
     }

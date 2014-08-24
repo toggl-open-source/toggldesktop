@@ -10,7 +10,7 @@
 
 #include "./formatter.h"
 
-namespace kopsik {
+namespace toggl {
 
 const char *known_colors[] = {
     "#4dc3ff", "#bc85e6", "#df7baa", "#f68d38", "#b27636",
@@ -164,22 +164,22 @@ JSONNODE *Project::SaveToJSONNode() const {
     return n;
 }
 
-bool Project::DuplicateResource(const kopsik::error err) const {
+bool Project::DuplicateResource(const toggl::error err) const {
     return (std::string::npos !=
             std::string(err).find("Name has already been taken"));
 }
 
-bool Project::ResourceCannotBeCreated(const kopsik::error err) const {
+bool Project::ResourceCannotBeCreated(const toggl::error err) const {
     return (std::string::npos != std::string(err).find(
         "User cannot add or edit projects in workspace"));
 }
 
-bool Project::clientIsInAnotherWorkspace(const kopsik::error err) const {
+bool Project::clientIsInAnotherWorkspace(const toggl::error err) const {
     return (std::string::npos != std::string(err).find(
         "client is in another workspace"));
 }
 
-bool Project::ResolveError(const kopsik::error err) {
+bool Project::ResolveError(const toggl::error err) {
     if (userCannotAccessWorkspace(err)) {
         SetWID(0);
         return true;
@@ -191,4 +191,4 @@ bool Project::ResolveError(const kopsik::error err) {
     return false;
 }
 
-}   // namespace kopsik
+}   // namespace toggl

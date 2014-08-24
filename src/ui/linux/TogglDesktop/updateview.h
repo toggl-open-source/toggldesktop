@@ -5,14 +5,14 @@
 
 #include <QObject>
 
-#include "./kopsik_api.h"
+#include "./toggl_api.h"
 
 class UpdateView : public QObject {
     Q_OBJECT
  public:
     explicit UpdateView(QObject *parent = 0);
 
-    static UpdateView *importOne(KopsikUpdateViewItem *view) {
+    static UpdateView *importOne(TogglUpdateView *view) {
         UpdateView *result = new UpdateView();
         result->UpdateChannel = QString(view->UpdateChannel);
         result->IsChecking = view->IsChecking;

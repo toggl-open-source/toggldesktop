@@ -14,7 +14,7 @@
 #include "./json.h"
 #include "./time_entry.h"
 #include "./const.h"
-#include "./kopsik_api_private.h"
+#include "./toggl_api_private.h"
 #include "./settings.h"
 #include "./timeline_notifications.h"
 
@@ -25,7 +25,7 @@
 #include "Poco/Timestamp.h"
 #include "Poco/Stopwatch.h"
 
-namespace kopsik {
+namespace toggl {
 
 Context::Context(const std::string app_name, const std::string app_version)
     : db_(0)
@@ -703,7 +703,7 @@ void Context::executeUpdateCheck() {
         return;
     }
 
-    if (!kopsik::json::IsValid(response_body)) {
+    if (!toggl::json::IsValid(response_body)) {
         displayError(err);
         return;
     }
@@ -909,12 +909,12 @@ void Context::displayTimerState() {
     }
 
     TimeEntry *te = user_->RunningTimeEntry();
-    KopsikTimeEntryViewItem *view = timeEntryViewItem(te);
+    TogglTimeEntryView *view = timeEntryViewItem(te);
     UI()->DisplayTimerState(view);
     time_entry_view_item_clear(view);
 }
 
-KopsikTimeEntryViewItem *Context::timeEntryViewItem(TimeEntry *te) {
+TogglTimeEntryView *Context::timeEntryViewItem(TimeEntry *te) {
     if (!te) {
         return 0;
     }
@@ -1039,7 +1039,7 @@ _Bool Context::Login(
         return false;
     }
 
-    Poco::UInt64 userID = kopsik::json::UserID(user_data_json);
+    Poco::UInt64 userID = toggl::json::UserID(user_data_json);
 
     if (!userID) {
         return false;
@@ -1304,7 +1304,7 @@ void Context::DisplayTimeEntryList(const _Bool open) {
 
     std::string timeofday_format = timeOfDayFormat();
 
-    KopsikTimeEntryViewItem *first = 0;
+    TogglTimeEntryView *first = 0;
     for (unsigned int i = 0; i < list.size(); i++) {
         TimeEntry *te = list.at(i);
 
@@ -1321,7 +1321,7 @@ void Context::DisplayTimeEntryList(const _Bool open) {
         std::string date_duration =
             Formatter::FormatDurationInSecondsPrettyHHMM(duration);
 
-        KopsikTimeEntryViewItem *item =
+        TogglTimeEntryView *item =
             time_entry_view_item_init(te,
                                       project_and_task_label,
                                       task_label,
@@ -1394,7 +1394,7 @@ void Context::displayTimeEntryEditor(const _Bool open,
                                      const std::string focused_field_name) {
     poco_check_ptr(te);
     time_entry_editor_guid_ = te->GUID();
-    KopsikTimeEntryViewItem *view = timeEntryViewItem(te);
+    TogglTimeEntryView *view = timeEntryViewItem(te);
 
     Workspace *ws = 0;
     if (te->WID()) {
@@ -1894,7 +1894,7 @@ _Bool Context::OpenReportsInBrowser() {
         return displayError("Unexpected empty response from API");
     }
 
-    std::string login_token = kopsik::json::LoginToken(response_body);
+    std::string login_token = toggl::json::LoginToken(response_body);
     if (login_token.empty()) {
         return displayError("Could not extract login token from JSON");
     }
@@ -2102,4 +2102,4 @@ void Context::SetIdleSeconds(const Poco::UInt64 idle_seconds) {
     last_idle_seconds_reading_ = idle_seconds;
 }
 
-}  // namespace kopsik
+}  // namespace toggl

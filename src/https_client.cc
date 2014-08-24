@@ -26,14 +26,14 @@
 #include "./libjson.h"
 #include "./const.h"
 
-namespace kopsik {
+namespace toggl {
 
 std::string HTTPSClient::AppName = std::string("");
 std::string HTTPSClient::AppVersion = std::string("");
 std::string HTTPSClient::APIURL = std::string(kAPIURL);
 bool HTTPSClient::UseProxy = false;
 bool HTTPSClient::IgnoreCert = false;
-kopsik::Proxy HTTPSClient::ProxySettings = Proxy();
+toggl::Proxy HTTPSClient::ProxySettings = Proxy();
 std::string HTTPSClient::CACertPath = std::string("");
 
 error HTTPSClient::PostJSON(
@@ -228,4 +228,4 @@ error HTTPSClient::request(
     return noError;
 }
 
-}   // namespace kopsik
+}   // namespace toggl

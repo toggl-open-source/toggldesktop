@@ -9,7 +9,7 @@
 
 @implementation ViewItem
 
-- (void)load:(KopsikViewItem *)data
+- (void)load:(TogglGenericView *)data
 {
 	self.ID = data->ID;
 	self.WID = data->WID;
@@ -21,10 +21,10 @@
 	}
 }
 
-+ (NSMutableArray *)loadAll:(KopsikViewItem *)first
++ (NSMutableArray *)loadAll:(TogglGenericView *)first
 {
 	NSMutableArray *result = [[NSMutableArray alloc] init];
-	KopsikViewItem *it = first;
+	TogglGenericView *it = first;
 
 	while (it)
 	{

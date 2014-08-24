@@ -10,7 +10,7 @@
 
 #include "Poco/Types.h"
 
-namespace kopsik {
+namespace toggl {
 
 class AutocompleteItem {
  public:
@@ -67,6 +67,6 @@ class AutocompleteItem {
 
 bool CompareAutocompleteItems(AutocompleteItem a, AutocompleteItem b);
 
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_AUTOCOMPLETE_ITEM_H_

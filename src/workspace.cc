@@ -5,7 +5,7 @@
 #include <sstream>
 #include <cstring>
 
-namespace kopsik {
+namespace toggl {
 
 std::string Workspace::String() const {
     std::stringstream ss;
@@ -81,4 +81,4 @@ void Workspace::LoadFromJSONNode(JSONNODE * const n) {
     SetAdmin(admin);
 }
 
-}   // namespace kopsik
+}   // namespace toggl

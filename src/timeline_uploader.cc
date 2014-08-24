@@ -15,7 +15,7 @@
 #include "Poco/Util/Application.h"
 #include "Poco/Thread.h"
 
-namespace kopsik {
+namespace toggl {
 
 void TimelineUploader::handleTimelineBatchReadyNotification(
     TimelineBatchReadyNotification *notification) {
@@ -181,4 +181,4 @@ error TimelineUploader::Shutdown() {
     return noError;
 }
 
-}  // namespace kopsik
+}  // namespace toggl

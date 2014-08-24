@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <sstream>
 
-namespace kopsik {
+namespace toggl {
 
 void GUI::DisplayApp() {
     on_display_app_(true);
@@ -123,7 +123,7 @@ void GUI::DisplayUpdate(const _Bool open,
                         const std::string version) {
     logger().debug("DisplayUpdate");
 
-    KopsikUpdateViewItem view;
+    TogglUpdateView view;
     view.UpdateChannel = strdup(update_channel.c_str());
     view.IsChecking = is_checking;
     view.IsUpdateAvailable = is_available;
@@ -138,13 +138,13 @@ void GUI::DisplayUpdate(const _Bool open,
 }
 
 void GUI::DisplayTimeEntryAutocomplete(
-    std::vector<kopsik::AutocompleteItem> *items) {
+    std::vector<toggl::AutocompleteItem> *items) {
     logger().debug("DisplayTimeEntryAutocomplete");
 
-    KopsikAutocompleteItem *first = 0;
-    for (std::vector<kopsik::AutocompleteItem>::const_reverse_iterator it =
+    TogglAutocompleteView *first = 0;
+    for (std::vector<toggl::AutocompleteItem>::const_reverse_iterator it =
         items->rbegin(); it != items->rend(); it++) {
-        KopsikAutocompleteItem *item = autocomplete_item_init(*it);
+        TogglAutocompleteView *item = autocomplete_item_init(*it);
         item->Next = first;
         first = item;
     }
@@ -153,13 +153,13 @@ void GUI::DisplayTimeEntryAutocomplete(
 }
 
 void GUI::DisplayProjectAutocomplete(
-    std::vector<kopsik::AutocompleteItem> *items) {
+    std::vector<toggl::AutocompleteItem> *items) {
     logger().debug("DisplayProjectAutocomplete");
 
-    KopsikAutocompleteItem *first = 0;
-    for (std::vector<kopsik::AutocompleteItem>::const_reverse_iterator it =
+    TogglAutocompleteView *first = 0;
+    for (std::vector<toggl::AutocompleteItem>::const_reverse_iterator it =
         items->rbegin(); it != items->rend(); it++) {
-        KopsikAutocompleteItem *item = autocomplete_item_init(*it);
+        TogglAutocompleteView *item = autocomplete_item_init(*it);
         item->Next = first;
         first = item;
     }
@@ -168,7 +168,7 @@ void GUI::DisplayProjectAutocomplete(
 }
 
 void GUI::DisplayTimeEntryList(const _Bool open,
-                               KopsikTimeEntryViewItem* first) {
+                               TogglTimeEntryView* first) {
     logger().debug("DisplayTimeEntryList");
     on_display_time_entry_list_(open, first);
 }
@@ -176,11 +176,11 @@ void GUI::DisplayTimeEntryList(const _Bool open,
 void GUI::DisplayTags(std::vector<std::string> *tags) {
     logger().debug("DisplayTags");
 
-    KopsikViewItem *first = 0;
+    TogglGenericView *first = 0;
     for (std::vector<std::string>::const_iterator it = tags->begin();
             it != tags->end(); it++) {
         std::string name = *it;
-        KopsikViewItem *item = tag_to_view_item(name);
+        TogglGenericView *item = tag_to_view_item(name);
         item->Next = first;
         first = item;
     }
@@ -188,13 +188,13 @@ void GUI::DisplayTags(std::vector<std::string> *tags) {
     view_item_clear(first);
 }
 
-void GUI::DisplayClientSelect(std::vector<kopsik::Client *> *clients) {
+void GUI::DisplayClientSelect(std::vector<toggl::Client *> *clients) {
     logger().debug("DisplayClientSelect");
 
-    KopsikViewItem *first = 0;
-    for (std::vector<kopsik::Client *>::const_iterator it = clients->begin();
+    TogglGenericView *first = 0;
+    for (std::vector<toggl::Client *>::const_iterator it = clients->begin();
             it != clients->end(); it++) {
-        KopsikViewItem *item = client_to_view_item(*it);
+        TogglGenericView *item = client_to_view_item(*it);
         item->Next = first;
         first = item;
     }
@@ -202,13 +202,13 @@ void GUI::DisplayClientSelect(std::vector<kopsik::Client *> *clients) {
     view_item_clear(first);
 }
 
-void GUI::DisplayWorkspaceSelect(std::vector<kopsik::Workspace *> *list) {
+void GUI::DisplayWorkspaceSelect(std::vector<toggl::Workspace *> *list) {
     logger().debug("DisplayWorkspaceSelect");
 
-    KopsikViewItem *first = 0;
-    for (std::vector<kopsik::Workspace *>::const_iterator it =
+    TogglGenericView *first = 0;
+    for (std::vector<toggl::Workspace *>::const_iterator it =
         list->begin(); it != list->end(); it++) {
-        KopsikViewItem *item = workspace_to_view_item(*it);
+        TogglGenericView *item = workspace_to_view_item(*it);
         item->Next = first;
         first = item;
     }
@@ -217,7 +217,7 @@ void GUI::DisplayWorkspaceSelect(std::vector<kopsik::Workspace *> *list) {
 }
 
 void GUI::DisplayTimeEntryEditor(const _Bool open,
-                                 KopsikTimeEntryViewItem *te,
+                                 TogglTimeEntryView *te,
                                  const std::string focused_field_name) {
     logger().debug("DisplayTimeEntryEditor");
     on_display_time_entry_editor_(open, te, focused_field_name.c_str());
@@ -236,7 +236,7 @@ void GUI::DisplaySettings(const _Bool open,
                           const Proxy proxy) {
     logger().debug("DisplaySettings");
 
-    KopsikSettingsViewItem *view = settings_view_item_init(
+    TogglSettingsView *view = settings_view_item_init(
         record_timeline,
         settings,
         use_proxy,
@@ -247,7 +247,7 @@ void GUI::DisplaySettings(const _Bool open,
     settings_view_item_clear(view);
 }
 
-void GUI::DisplayTimerState(KopsikTimeEntryViewItem *te) {
+void GUI::DisplayTimerState(TogglTimeEntryView *te) {
     logger().debug("DisplayTimerState");
     on_display_timer_state_(te);
 }
@@ -362,4 +362,4 @@ _Bool GUI::isUserError(const error err) const {
     return false;
 }
 
-}  // namespace kopsik
+}  // namespace toggl

@@ -21,7 +21,7 @@ SOURCES += \
     ../../../batch_update_result.cc \
     ../../../client.cc \
     ../../../context.cc \
-    ../../../CustomErrorHandler.cc \
+    ../../../custom_error_handler.cc \
     ../../../database.cc \
     ../../../feedback.cc \
     ../../../formatter.cc \
@@ -29,8 +29,8 @@ SOURCES += \
     ../../../gui.cc \
     ../../../https_client.cc \
     ../../../json.cc \
-    ../../../kopsik_api.cc \
-    ../../../kopsik_api_private.cc \
+    ../../../toggl_api.cc \
+    ../../../toggl_api_private.cc \
     ../../../model_change.cc \
     ../../../project.cc \
     ../../../proxy.cc \
@@ -52,7 +52,7 @@ HEADERS += \
     ../../../client.h \
     ../../../const.h \
     ../../../context.h \
-    ../../../CustomErrorHandler.h \
+    ../../../custom_error_handler.h \
     ../../../database.h \
     ../../../feedback.h \
     ../../../formatter.h \
@@ -60,7 +60,7 @@ HEADERS += \
     ../../../gui.h \
     ../../../https_client.h \
     ../../../json.h \
-    ../../../kopsik_api_private.h \
+    ../../../toggl_api_private.h \
     ../../../model_change.h \
     ../../../project.h \
     ../../../proxy.h \
@@ -78,7 +78,7 @@ HEADERS += \
     ../../../websocket_client.h \
     ../../../window_change_recorder.h \
     ../../../workspace.h \
-    ../../include/kopsik_api.h
+    ../../include/toggl_api.h
 
 pocolib = $$PWD/../../../../third_party/poco/lib/Linux/$$system(uname -m)
 jsondir = $$PWD/../../../../third_party/libjson

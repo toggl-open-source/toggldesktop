@@ -22,9 +22,9 @@
 #include "Poco/DateTime.h"
 #include "Poco/LocalDateTime.h"
 
-namespace kopsik {
+namespace toggl {
 
-bool TimeEntry::ResolveError(const kopsik::error err) {
+bool TimeEntry::ResolveError(const toggl::error err) {
     if (durationTooLarge(err) && Stop() && Start()) {
         Poco::UInt64 seconds =
             (std::min)(Stop() - Start(),
@@ -59,28 +59,28 @@ bool TimeEntry::ResolveError(const kopsik::error err) {
 }
 
 bool TimeEntry::userCannotAccessTheSelectedProject(
-    const kopsik::error err) const {
+    const toggl::error err) const {
     return (std::string::npos != std::string(err).find(
         "User cannot access the selected project"));
 }
 
 bool TimeEntry::userCannotAccessSelectedTask(
-    const kopsik::error err) const {
+    const toggl::error err) const {
     return (std::string::npos != std::string(err).find(
         "User cannot access selected task"));
 }
 
-bool TimeEntry::durationTooLarge(const kopsik::error err) const {
+bool TimeEntry::durationTooLarge(const toggl::error err) const {
     return (std::string::npos != std::string(err).find(
         "Max allowed duration per 1 time entry is 1000 hours"));
 }
 
-bool TimeEntry::stopTimeMustBeAfterStartTime(const kopsik::error err) const {
+bool TimeEntry::stopTimeMustBeAfterStartTime(const toggl::error err) const {
     return (std::string::npos != std::string(err).find(
         "Stop time must be after start time"));
 }
 
-bool TimeEntry::billableIsAPremiumFeature(const kopsik::error err) const {
+bool TimeEntry::billableIsAPremiumFeature(const toggl::error err) const {
     return (std::string::npos != std::string(err).find(
         "Billable is a premium feature"));
 }
@@ -315,7 +315,7 @@ bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
 void TimeEntry::LoadFromJSONNode(JSONNODE * const data) {
     poco_check_ptr(data);
 
-    Poco::UInt64 ui_modified_at = kopsik::json::UIModifiedAt(data);
+    Poco::UInt64 ui_modified_at = toggl::json::UIModifiedAt(data);
     if (UIModifiedAt() > ui_modified_at) {
         std::stringstream ss;
         ss  << "Will not overwrite time entry "
@@ -458,4 +458,4 @@ void TimeEntry::loadTagsFromJSONNode(JSONNODE * const list) {
     }
 }
 
-}   // namespace kopsik
+}   // namespace toggl

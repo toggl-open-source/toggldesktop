@@ -1,3 +1,3 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./CustomErrorHandler.h"
+#include "./custom_error_handler.h"

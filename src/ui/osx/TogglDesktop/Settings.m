@@ -10,7 +10,7 @@
 
 @implementation Settings
 
-- (void)load:(KopsikSettingsViewItem *)data
+- (void)load:(TogglSettingsView *)data
 {
 	self.timeline_recording_enabled = data->RecordTimeline;
 

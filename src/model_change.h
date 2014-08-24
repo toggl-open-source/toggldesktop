@@ -7,7 +7,7 @@
 
 #include "Poco/Types.h"
 
-namespace kopsik {
+namespace toggl {
 
 class ModelChange {
  public:
@@ -44,6 +44,6 @@ class ModelChange {
     std::string GUID_;
 };
 
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_MODEL_CHANGE_H_

@@ -9,7 +9,7 @@
 
 #include "Poco/Types.h"
 
-namespace kopsik {
+namespace toggl {
 
 class Proxy {
  public:
@@ -29,6 +29,6 @@ class Proxy {
     std::string password;
 };
 
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_PROXY_H_

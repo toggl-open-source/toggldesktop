@@ -11,7 +11,7 @@
 
 #include "Poco/Types.h"
 
-namespace kopsik {
+namespace toggl {
 
 class Project : public BaseModel {
  public:
@@ -76,12 +76,12 @@ class Project : public BaseModel {
     void LoadFromJSONNode(JSONNODE * const);
     JSONNODE *SaveToJSONNode() const;
 
-    bool DuplicateResource(const kopsik::error) const;
-    bool ResourceCannotBeCreated(const kopsik::error) const;
-    bool ResolveError(const kopsik::error);
+    bool DuplicateResource(const toggl::error) const;
+    bool ResourceCannotBeCreated(const toggl::error) const;
+    bool ResolveError(const toggl::error);
 
  private:
-    bool clientIsInAnotherWorkspace(const kopsik::error) const;
+    bool clientIsInAnotherWorkspace(const toggl::error) const;
 
     Poco::UInt64 wid_;
     Poco::UInt64 cid_;
@@ -92,6 +92,6 @@ class Project : public BaseModel {
     bool billable_;
 };
 
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_PROJECT_H_

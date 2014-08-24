@@ -444,7 +444,7 @@
 		C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCell.h; sourceTree = "<group>"; };
 		C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryCell.m; sourceTree = "<group>"; };
 		C5DA1FB817F19647001C4565 /* Kopsik.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Kopsik.dylib; path = ../../../lib/osx/build/Kopsik.dylib; sourceTree = "<group>"; };
-		C5DA1FBA17F197BF001C4565 /* kopsik_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kopsik_api.h; path = ../../../../kopsik_api.h; sourceTree = "<group>"; };
+		C5DA1FBA17F197BF001C4565 /* toggl_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = toggl_api.h; path = ../../../../toggl_api.h; sourceTree = "<group>"; };
 		C5DA1FBC17F1B08A001C4565 /* MainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowController.h; sourceTree = SOURCE_ROOT; };
 		C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindowController.m; sourceTree = SOURCE_ROOT; };
 		C5DA1FBE17F1B08A001C4565 /* MainWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindowController.xib; sourceTree = SOURCE_ROOT; };
@@ -577,7 +577,7 @@
 				749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */,
 				7424949C17F1E3D20030121C /* UIEvents.h */,
 				7424949D17F1E3D20030121C /* UIEvents.m */,
-				C5DA1FBA17F197BF001C4565 /* kopsik_api.h */,
+				C5DA1FBA17F197BF001C4565 /* toggl_api.h */,
 				69FC180617E6534400B96425 /* AppDelegate.h */,
 				69FC180717E6534400B96425 /* AppDelegate.m */,
 				69FC180917E6534500B96425 /* MainMenu.xib */,

@@ -7,7 +7,7 @@
 //
 
 #import "NSBoxClickable.h"
-#import "kopsik_api.h"
+#import "toggl_api.h"
 
 @implementation NSBoxClickable
 
@@ -15,7 +15,7 @@ extern void *ctx;
 
 - (void)mouseDown:(NSEvent *)event
 {
-	kopsik_edit(ctx, "", true, "");
+	toggl_edit(ctx, "", true, "");
 }
 
 - (BOOL)acceptsFirstMouse:(NSEvent *)theEvent

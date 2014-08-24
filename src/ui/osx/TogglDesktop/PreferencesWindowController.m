@@ -7,7 +7,7 @@
 //
 
 #import "PreferencesWindowController.h"
-#import "kopsik_api.h"
+#import "toggl_api.h"
 #import "UIEvents.h"
 #import "Settings.h"
 #import "MASShortcutView+UserDefaults.h"
@@ -96,7 +96,7 @@ extern void *ctx;
 {
 	NSLog(@"saveSettings");
 
-	kopsik_set_settings(ctx,
+	toggl_set_settings(ctx,
 						[Utils stateToBool:[self.useIdleDetectionButton state]],
 						[Utils stateToBool:[self.menubarTimerCheckbox state]],
 						[Utils stateToBool:[self.dockIconCheckbox state]],
@@ -113,7 +113,7 @@ extern void *ctx;
 	NSString *username = [self.usernameTextField stringValue];
 	NSString *password = [self.passwordTextField stringValue];
 
-	kopsik_set_proxy_settings(ctx,
+	toggl_set_proxy_settings(ctx,
 							  [Utils stateToBool:[self.useProxyButton state]],
 							  [host UTF8String],
 							  (unsigned int)port,
@@ -125,7 +125,7 @@ extern void *ctx;
 {
 	BOOL record_timeline = [Utils stateToBool:[self.recordTimelineCheckbox state]];
 
-	kopsik_timeline_toggle_recording(ctx, record_timeline);
+	toggl_timeline_toggle_recording(ctx, record_timeline);
 }
 
 - (IBAction)menubarTimerCheckboxChanged:(id)sender

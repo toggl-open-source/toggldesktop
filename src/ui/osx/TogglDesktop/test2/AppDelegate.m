@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "kopsik_api.h"
+#import "toggl_api.h"
 #import "MainWindowController.h"
 #import "PreferencesWindowController.h"
 #import "Bugsnag.h"
@@ -170,9 +170,9 @@ const int kDurationStringLength = 20;
 												 name:kDisplaySettings
 											   object:nil];
 
-	kopsik_set_environment(ctx, [self.environment UTF8String]);
+	toggl_set_environment(ctx, [self.environment UTF8String]);
 
-	_Bool started = kopsik_context_start_events(ctx);
+	_Bool started = toggl_ui_start(ctx);
 	NSAssert(started, @"Failed to start UI");
 
 	[MASShortcut registerGlobalShortcutWithUserDefaultsKey:kPreferenceGlobalShortcutShowHide handler:^{
@@ -238,13 +238,13 @@ const int kDurationStringLength = 20;
 - (void)receiveSleepNote:(NSNotification *)note
 {
 	NSLog(@"receiveSleepNote: %@", [note name]);
-	kopsik_set_sleep(ctx);
+	toggl_set_sleep(ctx);
 }
 
 - (void)receiveWakeNote:(NSNotification *)note
 {
 	NSLog(@"receiveWakeNote: %@", [note name]);
-	kopsik_set_wake(ctx);
+	toggl_set_wake(ctx);
 }
 
 - (void)startNew:(NSNotification *)notification
@@ -259,7 +259,7 @@ const int kDurationStringLength = 20;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
 
-	kopsik_start(ctx,
+	toggl_start(ctx,
 				 [new_time_entry.Description UTF8String],
 				 [new_time_entry.duration UTF8String],
 				 new_time_entry.TaskID,
@@ -279,11 +279,11 @@ const int kDurationStringLength = 20;
 
 	if (guid == nil)
 	{
-		kopsik_continue_latest(ctx);
+		toggl_continue_latest(ctx);
 	}
 	else
 	{
-		kopsik_continue(ctx, [guid UTF8String]);
+		toggl_continue(ctx, [guid UTF8String]);
 	}
 }
 
@@ -298,7 +298,7 @@ const int kDurationStringLength = 20;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	kopsik_stop(ctx);
+	toggl_stop(ctx);
 }
 
 - (void)startDisplaySettings:(NSNotification *)notification
@@ -624,28 +624,28 @@ const int kDurationStringLength = 20;
 
 - (IBAction)onSyncMenuItem:(id)sender
 {
-	kopsik_sync(ctx);
+	toggl_sync(ctx);
 }
 
 - (IBAction)onToggleRecordTimeline:(id)sender
 {
-	kopsik_timeline_toggle_recording(ctx,
-									 !kopsik_timeline_is_recording_enabled(ctx));
+	toggl_timeline_toggle_recording(ctx,
+									 !toggl_timeline_is_recording_enabled(ctx));
 }
 
 - (IBAction)onOpenBrowserMenuItem:(id)sender
 {
-	kopsik_open_in_browser(ctx);
+	toggl_open_in_browser(ctx);
 }
 
 - (IBAction)onHelpMenuItem:(id)sender
 {
-	kopsik_get_support(ctx);
+	toggl_get_support(ctx);
 }
 
 - (IBAction)onLogoutMenuItem:(id)sender
 {
-	kopsik_logout(ctx);
+	toggl_logout(ctx);
 }
 
 - (IBAction)onClearCacheMenuItem:(id)sender
@@ -661,12 +661,12 @@ const int kDurationStringLength = 20;
 	{
 		return;
 	}
-	kopsik_clear_cache(ctx);
+	toggl_clear_cache(ctx);
 }
 
 - (IBAction)onAboutMenuItem:(id)sender
 {
-	kopsik_about(ctx);
+	toggl_about(ctx);
 }
 
 - (IBAction)onShowMenuItem:(id)sender
@@ -677,12 +677,12 @@ const int kDurationStringLength = 20;
 
 - (IBAction)onEditMenuItem:(id)sender
 {
-	kopsik_edit(ctx, "", true, "description");
+	toggl_edit(ctx, "", true, "description");
 }
 
 - (IBAction)onPreferencesMenuItem:(id)sender
 {
-	kopsik_edit_preferences(ctx);
+	toggl_edit_preferences(ctx);
 }
 
 - (IBAction)onHideMenuItem:(id)sender
@@ -700,7 +700,7 @@ const int kDurationStringLength = 20;
 	NSLog(@"applicationWillTerminate");
 	self.willTerminate = YES;
 	[self.reach stopNotifier];
-	kopsik_context_clear(ctx);
+	toggl_context_clear(ctx);
 	ctx = 0;
 }
 
@@ -795,37 +795,37 @@ const NSString *appName = @"osx_native_app";
 	NSLog(@"Starting with db path %@, log path %@, log level %@",
 		  self.db_path, self.log_path, self.log_level);
 
-	kopsik_set_log_path([self.log_path UTF8String]);
-	kopsik_set_log_level([self.log_level UTF8String]);
+	toggl_set_log_path([self.log_path UTF8String]);
+	toggl_set_log_level([self.log_level UTF8String]);
 
 	NSString *version = infoDict[@"CFBundleShortVersionString"];
 
-	ctx = kopsik_context_init([appName UTF8String], [version UTF8String]);
+	ctx = toggl_context_init([appName UTF8String], [version UTF8String]);
 
-	kopsik_on_app(ctx, on_app);
-	kopsik_on_error(ctx, on_error);
-	kopsik_on_update(ctx, on_update);
-	kopsik_on_online_state(ctx, on_online_state);
-	kopsik_on_login(ctx, on_login);
-	kopsik_on_url(ctx, on_url);
-	kopsik_on_reminder(ctx, on_reminder);
-	kopsik_on_time_entry_list(ctx, on_time_entry_list);
-	kopsik_on_time_entry_autocomplete(ctx, on_time_entry_autocomplete);
-	kopsik_on_project_autocomplete(ctx, on_project_autocomplete);
-	kopsik_on_workspace_select(ctx, on_workspace_select);
-	kopsik_on_client_select(ctx, on_client_select);
-	kopsik_on_tags(ctx, on_tags);
-	kopsik_on_time_entry_editor(ctx, on_time_entry_editor);
-	kopsik_on_settings(ctx, on_settings);
-	kopsik_on_timer_state(ctx, on_timer_state);
-	kopsik_on_idle_notification(ctx, on_idle_notification);
+	toggl_on_show_app(ctx, on_app);
+	toggl_on_error(ctx, on_error);
+	toggl_on_update(ctx, on_update);
+	toggl_on_online_state(ctx, on_online_state);
+	toggl_on_login(ctx, on_login);
+	toggl_on_url(ctx, on_url);
+	toggl_on_reminder(ctx, on_reminder);
+	toggl_on_time_entry_list(ctx, on_time_entry_list);
+	toggl_on_time_entry_autocomplete(ctx, on_time_entry_autocomplete);
+	toggl_on_project_autocomplete(ctx, on_project_autocomplete);
+	toggl_on_workspace_select(ctx, on_workspace_select);
+	toggl_on_client_select(ctx, on_client_select);
+	toggl_on_tags(ctx, on_tags);
+	toggl_on_time_entry_editor(ctx, on_time_entry_editor);
+	toggl_on_settings(ctx, on_settings);
+	toggl_on_timer_state(ctx, on_timer_state);
+	toggl_on_idle_notification(ctx, on_idle_notification);
 
 	NSLog(@"Version %@", version);
 
 	NSString *cacertPath = [[NSBundle mainBundle] pathForResource:@"cacert" ofType:@"pem"];
-	kopsik_set_cacert_path(ctx, [cacertPath UTF8String]);
+	toggl_set_cacert_path(ctx, [cacertPath UTF8String]);
 
-	_Bool res = kopsik_set_db_path(ctx, [self.db_path UTF8String]);
+	_Bool res = toggl_set_db_path(ctx, [self.db_path UTF8String]);
 	NSAssert(res, ([NSString stringWithFormat:@"Failed to initialize DB with path: %@", self.db_path]));
 
 	id logToFile = infoDict[@"KopsikLogUserInterfaceToFile"];
@@ -839,12 +839,12 @@ const NSString *appName = @"osx_native_app";
 
 	if (self.api_url_override != nil)
 	{
-		kopsik_set_api_url(ctx, [self.api_url_override UTF8String]);
+		toggl_set_api_url(ctx, [self.api_url_override UTF8String]);
 	}
 
 	if (self.websocket_url_override != nil)
 	{
-		kopsik_set_websocket_url(ctx, [self.websocket_url_override UTF8String]);
+		toggl_set_websocket_url(ctx, [self.websocket_url_override UTF8String]);
 	}
 
 	NSLog(@"AppDelegate init done");
@@ -859,7 +859,7 @@ const NSString *appName = @"osx_native_app";
 		return;
 	}
 	char str[kDurationStringLength];
-	kopsik_format_duration_in_seconds_hhmm(
+	toggl_format_duration_in_seconds_hhmm(
 		self.lastKnownRunningTimeEntry.duration_in_seconds,
 		str,
 		kDurationStringLength);
@@ -878,7 +878,7 @@ const NSString *appName = @"osx_native_app";
 		return;
 	}
 
-	kopsik_set_idle_seconds(ctx, idle_seconds);
+	toggl_set_idle_seconds(ctx, idle_seconds);
 }
 
 - (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
@@ -924,7 +924,7 @@ const NSString *appName = @"osx_native_app";
 				[menuItem setState:NSOffState];
 				return NO;
 			}
-			if (kopsik_timeline_is_recording_enabled(ctx))
+			if (toggl_timeline_is_recording_enabled(ctx))
 			{
 				NSMenuItem *menuItem = (NSMenuItem *)anItem;
 				[menuItem setState:NSOnState];
@@ -1071,13 +1071,13 @@ const NSString *appName = @"osx_native_app";
 
 	if (ctx && remoteHostStatus != NotReachable)
 	{
-		kopsik_set_online(ctx);
+		toggl_set_online(ctx);
 	}
 }
 
 void on_update(
 	const _Bool open,
-	KopsikUpdateViewItem *view)
+	TogglUpdateView *view)
 {
 	Update *update = [[Update alloc] init];
 
@@ -1134,10 +1134,10 @@ void on_url(const char *url)
 }
 
 void on_time_entry_list(const _Bool open,
-						KopsikTimeEntryViewItem *first)
+						TogglTimeEntryView *first)
 {
 	NSMutableArray *viewitems = [[NSMutableArray alloc] init];
-	KopsikTimeEntryViewItem *it = first;
+	TogglTimeEntryView *it = first;
 
 	while (it)
 	{
@@ -1153,10 +1153,10 @@ void on_time_entry_list(const _Bool open,
 														object:cmd];
 }
 
-void on_time_entry_autocomplete(KopsikAutocompleteItem *first)
+void on_time_entry_autocomplete(TogglAutocompleteView *first)
 {
 	NSMutableArray *viewitems = [[NSMutableArray alloc] init];
-	KopsikAutocompleteItem *record = first;
+	TogglAutocompleteView *record = first;
 
 	while (record)
 	{
@@ -1169,32 +1169,32 @@ void on_time_entry_autocomplete(KopsikAutocompleteItem *first)
 														object:viewitems];
 }
 
-void on_project_autocomplete(KopsikAutocompleteItem *first)
+void on_project_autocomplete(TogglAutocompleteView *first)
 {
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayProjectAutocomplete
 														object:[AutocompleteItem loadAll:first]];
 }
 
-void on_tags(KopsikViewItem *first)
+void on_tags(TogglGenericView *first)
 {
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTags
 														object:[ViewItem loadAll:first]];
 }
 
-void on_client_select(KopsikViewItem *first)
+void on_client_select(TogglGenericView *first)
 {
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayClientSelect
 														object:[ViewItem loadAll:first]];
 }
 
-void on_workspace_select(KopsikViewItem *first)
+void on_workspace_select(TogglGenericView *first)
 {
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayWorkspaceSelect
 														object:[ViewItem loadAll:first]];
 }
 
 void on_time_entry_editor(const _Bool open,
-						  KopsikTimeEntryViewItem *te,
+						  TogglTimeEntryView *te,
 						  const char *focused_field_name)
 {
 	TimeEntryViewItem *item = [[TimeEntryViewItem alloc] init];
@@ -1230,7 +1230,7 @@ void on_error(const char *errmsg, const _Bool is_user_error)
 }
 
 void on_settings(const _Bool open,
-				 KopsikSettingsViewItem *settings)
+				 TogglSettingsView *settings)
 {
 	Settings *s = [[Settings alloc] init];
 
@@ -1243,7 +1243,7 @@ void on_settings(const _Bool open,
 														object:cmd];
 }
 
-void on_timer_state(KopsikTimeEntryViewItem *te)
+void on_timer_state(TogglTimeEntryView *te)
 {
 	TimeEntryViewItem *view_item = nil;
 

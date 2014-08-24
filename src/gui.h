@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "./lib/include/kopsik_api.h"
+#include "./lib/include/toggl_api.h"
 #include "./types.h"
 #include "./autocomplete_item.h"
 #include "./time_entry.h"
@@ -15,9 +15,9 @@
 #include "./project.h"
 #include "./settings.h"
 #include "./proxy.h"
-#include "./kopsik_api_private.h"
+#include "./toggl_api_private.h"
 
-namespace kopsik {
+namespace toggl {
 
 class GUI {
  public:
@@ -51,16 +51,16 @@ class GUI {
                        const _Bool is_available,
                        const std::string url,
                        const std::string version);
-    void DisplayTimeEntryAutocomplete(std::vector<kopsik::AutocompleteItem> *);
-    void DisplayProjectAutocomplete(std::vector<kopsik::AutocompleteItem> *);
+    void DisplayTimeEntryAutocomplete(std::vector<toggl::AutocompleteItem> *);
+    void DisplayProjectAutocomplete(std::vector<toggl::AutocompleteItem> *);
     void DisplayTimeEntryList(const _Bool open,
-                              KopsikTimeEntryViewItem *first);
-    void DisplayWorkspaceSelect(std::vector<kopsik::Workspace *> *list);
-    void DisplayClientSelect(std::vector<kopsik::Client *> *clients);
+                              TogglTimeEntryView *first);
+    void DisplayWorkspaceSelect(std::vector<toggl::Workspace *> *list);
+    void DisplayClientSelect(std::vector<toggl::Client *> *clients);
     void DisplayTags(std::vector<std::string> *tags);
     void DisplayTimeEntryEditor(
         const _Bool open,
-        KopsikTimeEntryViewItem *te,
+        TogglTimeEntryView *te,
         const std::string focused_field_name);
     void DisplayURL(const std::string);
     void DisplayLogin(const _Bool open, const uint64_t user_id);
@@ -69,7 +69,7 @@ class GUI {
                          const Settings settings,
                          const _Bool use_proxy,
                          const Proxy proxy);
-    void DisplayTimerState(KopsikTimeEntryViewItem *te);
+    void DisplayTimerState(TogglTimeEntryView *te);
     void DisplayIdleNotification(const std::string guid,
                                  const std::string since,
                                  const std::string duration,
@@ -77,71 +77,71 @@ class GUI {
 
     error VerifyCallbacks();
 
-    void OnDisplayApp(KopsikDisplayApp cb) {
+    void OnDisplayApp(TogglDisplayApp cb) {
         on_display_app_ = cb;
     }
 
-    void OnDisplayError(KopsikDisplayError cb) {
+    void OnDisplayError(TogglDisplayError cb) {
         on_display_error_ = cb;
     }
 
-    void OnDisplayUpdate(KopsikDisplayUpdate cb) {
+    void OnDisplayUpdate(TogglDisplayUpdate cb) {
         on_display_update_ = cb;
     }
 
-    void OnDisplayOnlineState(KopsikDisplayOnlineState cb) {
+    void OnDisplayOnlineState(TogglDisplayOnlineState cb) {
         on_display_online_state_ = cb;
     }
 
-    void OnDisplayLogin(KopsikDisplayLogin cb) {
+    void OnDisplayLogin(TogglDisplayLogin cb) {
         on_display_login_ = cb;
     }
 
-    void OnDisplayURL(KopsikDisplayURL cb) {
+    void OnDisplayURL(TogglDisplayURL cb) {
         on_display_url_ = cb;
     }
 
-    void OnDisplayReminder(KopsikDisplayReminder cb) {
+    void OnDisplayReminder(TogglDisplayReminder cb) {
         on_display_reminder_ = cb;
     }
 
-    void OnDisplayTimeEntryList(KopsikDisplayTimeEntryList cb) {
+    void OnDisplayTimeEntryList(TogglDisplayTimeEntryList cb) {
         on_display_time_entry_list_ = cb;
     }
 
-    void OnDisplayWorkspaceSelect(KopsikDisplayViewItems cb) {
+    void OnDisplayWorkspaceSelect(TogglDisplayViewItems cb) {
         on_display_workspace_select_ = cb;
     }
 
-    void OnDisplayClientSelect(KopsikDisplayViewItems cb) {
+    void OnDisplayClientSelect(TogglDisplayViewItems cb) {
         on_display_client_select_ = cb;
     };
 
-    void OnDisplayTags(KopsikDisplayViewItems cb) {
+    void OnDisplayTags(TogglDisplayViewItems cb) {
         on_display_tags_ = cb;
     }
 
-    void OnDisplayTimeEntryEditor(KopsikDisplayTimeEntryEditor cb) {
+    void OnDisplayTimeEntryEditor(TogglDisplayTimeEntryEditor cb) {
         on_display_time_entry_editor_ = cb;
     }
 
-    void OnDisplayTimeEntryAutocomplete(KopsikDisplayAutocomplete cb) {
+    void OnDisplayTimeEntryAutocomplete(TogglDisplayAutocomplete cb) {
         on_display_time_entry_autocomplete_ = cb;
     }
 
-    void OnDisplayProjectAutocomplete(KopsikDisplayAutocomplete cb) {
+    void OnDisplayProjectAutocomplete(TogglDisplayAutocomplete cb) {
         on_display_project_autocomplete_ = cb;
     }
 
-    void OnDisplaySettings(KopsikDisplaySettings cb) {
+    void OnDisplaySettings(TogglDisplaySettings cb) {
         on_display_settings_ = cb;
     }
 
-    void OnDisplayTimerState(KopsikDisplayTimerState cb) {
+    void OnDisplayTimerState(TogglDisplayTimerState cb) {
         on_display_timer_state_ = cb;
     }
 
-    void OnDisplayIdleNotification(KopsikDisplayIdleNotification cb) {
+    void OnDisplayIdleNotification(TogglDisplayIdleNotification cb) {
         on_display_idle_notification_  = cb;
     }
 
@@ -150,29 +150,29 @@ class GUI {
     _Bool isUserError(const error) const;
     error findMissingCallbacks();
 
-    KopsikDisplayApp on_display_app_;
-    KopsikDisplayError on_display_error_;
-    KopsikDisplayUpdate on_display_update_;
-    KopsikDisplayOnlineState on_display_online_state_;
-    KopsikDisplayLogin on_display_login_;
-    KopsikDisplayURL on_display_url_;
-    KopsikDisplayReminder on_display_reminder_;
-    KopsikDisplayTimeEntryList on_display_time_entry_list_;
-    KopsikDisplayAutocomplete on_display_time_entry_autocomplete_;
-    KopsikDisplayAutocomplete on_display_project_autocomplete_;
-    KopsikDisplayViewItems on_display_workspace_select_;
-    KopsikDisplayViewItems on_display_client_select_;
-    KopsikDisplayViewItems on_display_tags_;
-    KopsikDisplayTimeEntryEditor on_display_time_entry_editor_;
-    KopsikDisplaySettings on_display_settings_;
-    KopsikDisplayTimerState on_display_timer_state_;
-    KopsikDisplayIdleNotification on_display_idle_notification_;
+    TogglDisplayApp on_display_app_;
+    TogglDisplayError on_display_error_;
+    TogglDisplayUpdate on_display_update_;
+    TogglDisplayOnlineState on_display_online_state_;
+    TogglDisplayLogin on_display_login_;
+    TogglDisplayURL on_display_url_;
+    TogglDisplayReminder on_display_reminder_;
+    TogglDisplayTimeEntryList on_display_time_entry_list_;
+    TogglDisplayAutocomplete on_display_time_entry_autocomplete_;
+    TogglDisplayAutocomplete on_display_project_autocomplete_;
+    TogglDisplayViewItems on_display_workspace_select_;
+    TogglDisplayViewItems on_display_client_select_;
+    TogglDisplayViewItems on_display_tags_;
+    TogglDisplayTimeEntryEditor on_display_time_entry_editor_;
+    TogglDisplaySettings on_display_settings_;
+    TogglDisplayTimerState on_display_timer_state_;
+    TogglDisplayIdleNotification on_display_idle_notification_;
 
     Poco::Logger &logger() const {
         return Poco::Logger::get("ui");
     }
 };
 
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_GUI_H_

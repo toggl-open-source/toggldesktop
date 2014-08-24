@@ -7,7 +7,7 @@
 #include "./autocomplete_item.h"
 #include "./formatter.h"
 
-namespace kopsik {
+namespace toggl {
 
 bool compareAutocompleteItems(
     AutocompleteItem a,
@@ -262,4 +262,4 @@ std::vector<AutocompleteItem> RelatedData::AutocompleteItems(
     return result;
 }
 
-}   // namespace kopsik
+}   // namespace toggl

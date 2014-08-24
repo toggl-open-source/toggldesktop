@@ -9,7 +9,7 @@
 #import "AboutWindowController.h"
 #import "Update.h"
 #import "UIEvents.h"
-#import "kopsik_api.h"
+#import "toggl_api.h"
 #import "DisplayCommand.h"
 
 @implementation AboutWindowController
@@ -52,7 +52,7 @@ extern void *ctx;
 {
 	NSString *updateChannel = self.updateChannelComboBox.stringValue;
 
-	kopsik_set_update_channel(ctx, [updateChannel UTF8String]);
+	toggl_set_update_channel(ctx, [updateChannel UTF8String]);
 }
 
 - (IBAction)showWindow:(id)sender

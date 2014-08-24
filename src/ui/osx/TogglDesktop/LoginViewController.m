@@ -5,7 +5,7 @@
 //
 
 #import "LoginViewController.h"
-#import "kopsik_api.h"
+#import "toggl_api.h"
 #import "UIEvents.h"
 #import "GTMOAuth2WindowController.h"
 #import "Utils.h"
@@ -46,7 +46,7 @@ extern void *ctx;
 
 	[self.password setStringValue:@""];
 
-	if (!kopsik_login(ctx, [email UTF8String], [pass UTF8String]))
+	if (!toggl_login(ctx, [email UTF8String], [pass UTF8String]))
 	{
 		return;
 	}
@@ -62,7 +62,7 @@ extern void *ctx;
 
 	if (sender == self.forgotPasswordTextField)
 	{
-		kopsik_password_forgot(ctx);
+		toggl_password_forgot(ctx);
 		return;
 	}
 }
@@ -133,7 +133,7 @@ extern void *ctx;
 		return;
 	}
 
-	kopsik_google_login(ctx, [auth.accessToken UTF8String]);
+	toggl_google_login(ctx, [auth.accessToken UTF8String]);
 }
 
 @end

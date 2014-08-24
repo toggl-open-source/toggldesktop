@@ -14,7 +14,7 @@
 #import "ViewItem.h"
 #import "NSCustomComboBoxCell.h"
 #import "NSCustomComboBox.h"
-#import "kopsik_api.h"
+#import "toggl_api.h"
 #import "DisplayCommand.h"
 #import "Utils.h"
 
@@ -213,7 +213,7 @@ extern int kDurationStringLength;
 	// This is not a good place for this (on Done button!)
 	if ([self applyAddProject])
 	{
-		kopsik_view_time_entry_list(ctx);
+		toggl_view_time_entry_list(ctx);
 	}
 }
 
@@ -240,7 +240,7 @@ extern int kDurationStringLength;
 	uint64_t clientID = [self selectedClientID];
 	_Bool isBillable = self.timeEntry.billable;
 	// A new project is being added!
-	_Bool projectAdded = kopsik_add_project(ctx,
+	_Bool projectAdded = toggl_add_project(ctx,
 											[self.timeEntry.GUID UTF8String],
 											workspaceID,
 											clientID,
@@ -249,7 +249,7 @@ extern int kDurationStringLength;
 
 	if (projectAdded && isBillable)
 	{
-		kopsik_set_time_entry_billable(ctx, [self.timeEntry.GUID UTF8String], isBillable);
+		toggl_set_time_entry_billable(ctx, [self.timeEntry.GUID UTF8String], isBillable);
 	}
 
 	if (projectAdded)
@@ -461,7 +461,7 @@ extern int kDurationStringLength;
 
 	NSArray *tag_names = [self.tagsTokenField objectValue];
 	const char *value = [[tag_names componentsJoinedByString:@"|"] UTF8String];
-	kopsik_set_time_entry_tags(ctx,
+	toggl_set_time_entry_tags(ctx,
 							   [self.timeEntry.GUID UTF8String],
 							   value);
 }
@@ -657,7 +657,7 @@ extern int kDurationStringLength;
 	}
 
 	const char *value = [[self.durationTextField stringValue] UTF8String];
-	kopsik_set_time_entry_duration(ctx, [self.timeEntry.GUID UTF8String], value);
+	toggl_set_time_entry_duration(ctx, [self.timeEntry.GUID UTF8String], value);
 }
 
 - (IBAction)projectSelectChanged:(id)sender
@@ -684,7 +684,7 @@ extern int kDurationStringLength;
 	{
 		return;
 	}
-	kopsik_set_time_entry_project(ctx, [self.timeEntry.GUID UTF8String], task_id, project_id, 0);
+	toggl_set_time_entry_project(ctx, [self.timeEntry.GUID UTF8String], task_id, project_id, 0);
 }
 
 - (NSDateComponents *)parseTime:(NSTextField *)field current:(NSDateComponents *)component
@@ -692,7 +692,7 @@ extern int kDurationStringLength;
 	int hours = 0;
 	int minutes = 0;
 
-	if (!kopsik_parse_time([[field stringValue] UTF8String], &hours, &minutes))
+	if (!toggl_parse_time([[field stringValue] UTF8String], &hours, &minutes))
 	{
 		if (field == self.startTime)
 		{
@@ -749,7 +749,7 @@ extern int kDurationStringLength;
 	[dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
 	NSString *iso8601String = [dateFormatter stringFromDate:combined];
 
-	kopsik_set_time_entry_start_iso_8601(ctx, [self.timeEntry.GUID UTF8String], [iso8601String UTF8String]);
+	toggl_set_time_entry_start_iso_8601(ctx, [self.timeEntry.GUID UTF8String], [iso8601String UTF8String]);
 }
 
 - (IBAction)endTimeChanged:(id)sender
@@ -783,7 +783,7 @@ extern int kDurationStringLength;
 	[dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
 	NSString *iso8601String = [dateFormatter stringFromDate:combined];
 
-	kopsik_set_time_entry_end_iso_8601(ctx, [self.timeEntry.GUID UTF8String], [iso8601String UTF8String]);
+	toggl_set_time_entry_end_iso_8601(ctx, [self.timeEntry.GUID UTF8String], [iso8601String UTF8String]);
 }
 
 - (IBAction)dateChanged:(id)sender
@@ -815,7 +815,7 @@ extern int kDurationStringLength;
 	NSAssert(self.timeEntry != nil, @"Time entry expected");
 
 	_Bool value = [Utils stateToBool:[self.billableCheckbox state]];
-	kopsik_set_time_entry_billable(ctx, [self.timeEntry.GUID UTF8String], value);
+	toggl_set_time_entry_billable(ctx, [self.timeEntry.GUID UTF8String], value);
 }
 
 - (IBAction)descriptionComboboxChanged:(id)sender
@@ -840,14 +840,14 @@ extern int kDurationStringLength;
 
 	if (!autocomplete)
 	{
-		kopsik_set_time_entry_description(ctx,
+		toggl_set_time_entry_description(ctx,
 										  GUID,
 										  [key UTF8String]);
 		return;
 	}
 
 	if (![self.timeEntry.Description isEqualToString:key] &&
-		!kopsik_set_time_entry_project(ctx,
+		!toggl_set_time_entry_project(ctx,
 									   GUID,
 									   autocomplete.TaskID,
 									   autocomplete.ProjectID,
@@ -857,7 +857,7 @@ extern int kDurationStringLength;
 	}
 
 	self.descriptionCombobox.stringValue = autocomplete.Description;
-	kopsik_set_time_entry_description(ctx, GUID, [autocomplete.Description UTF8String]);
+	toggl_set_time_entry_description(ctx, GUID, [autocomplete.Description UTF8String]);
 }
 
 - (IBAction)deleteButtonClicked:(id)sender
@@ -875,7 +875,7 @@ extern int kDurationStringLength;
 		return;
 	}
 
-	kopsik_delete_time_entry(ctx, [self.timeEntry.GUID UTF8String]);
+	toggl_delete_time_entry(ctx, [self.timeEntry.GUID UTF8String]);
 }
 
 - (NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox
@@ -1018,7 +1018,7 @@ extern int kDurationStringLength;
 		return;
 	}
 	char str[kDurationStringLength];
-	kopsik_format_duration_in_seconds_hhmmss(self.timeEntry.duration_in_seconds,
+	toggl_format_duration_in_seconds_hhmmss(self.timeEntry.duration_in_seconds,
 											 str,
 											 kDurationStringLength);
 	NSString *newValue = [NSString stringWithUTF8String:str];

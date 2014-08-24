@@ -2,6 +2,6 @@
 
 #include "./settings.h"
 
-namespace kopsik {
+namespace toggl {
 
-}   // namespace kopsik
+}   // namespace toggl

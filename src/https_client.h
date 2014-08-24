@@ -14,7 +14,7 @@
 #include "./types.h"
 #include "./proxy.h"
 
-namespace kopsik {
+namespace toggl {
 
 class HTTPSClient {
  public:
@@ -38,7 +38,7 @@ class HTTPSClient {
     static std::string AppVersion;
     static std::string APIURL;
     static bool UseProxy;
-    static kopsik::Proxy ProxySettings;
+    static toggl::Proxy ProxySettings;
     static bool IgnoreCert;
     static std::string CACertPath;
 
@@ -63,6 +63,6 @@ class HTTPSClient {
         std::string *response_body);
 };
 
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_HTTPS_CLIENT_H_

@@ -10,7 +10,7 @@
 #import "TimeEntryViewItem.h"
 #import "TimerEditViewController.h"
 #import "UIEvents.h"
-#import "kopsik_api.h"
+#import "toggl_api.h"
 #import "TimeEntryCell.h"
 #import "TimeEntryCellWithHeader.h"
 #import "UIEvents.h"
@@ -295,7 +295,7 @@ extern void *ctx;
 	}
 	self.selectedRowView = latestView;
 
-	kopsik_edit(ctx, [item.GUID UTF8String], false, "");
+	toggl_edit(ctx, [item.GUID UTF8String], false, "");
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification
@@ -385,7 +385,7 @@ extern void *ctx;
 {
 	if (sender == self.emptyLabel && [self.emptyLabel isEnabled])
 	{
-		kopsik_open_in_browser(ctx);
+		toggl_open_in_browser(ctx);
 	}
 }
 

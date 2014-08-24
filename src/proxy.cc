@@ -4,7 +4,7 @@
 
 #include <sstream>
 
-namespace kopsik {
+namespace toggl {
 
 bool Proxy::IsConfigured() const {
     return !host.empty() && port;
@@ -23,4 +23,4 @@ std::string Proxy::String() const {
     return ss.str();
 }
 
-}  // namespace kopsik
+}  // namespace toggl

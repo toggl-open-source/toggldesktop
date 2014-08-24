@@ -10,7 +10,7 @@
 #include "Poco/Logger.h"
 #include "Poco/Stopwatch.h"
 
-namespace kopsik {
+namespace toggl {
 
 template<class T>
 void deleteZombies(
@@ -50,7 +50,7 @@ User::~User() {
 
 void User::ActiveProjects(std::vector<Project *> *list) const {
     for (unsigned int i = 0; i < related.Projects.size(); i++) {
-        kopsik::Project *p = related.Projects[i];
+        toggl::Project *p = related.Projects[i];
         if (p->Active()) {
             list->push_back(p);
         }
@@ -141,7 +141,7 @@ void User::ensureWID(TimeEntry *te) const {
     }
 }
 
-kopsik::error User::Continue(
+toggl::error User::Continue(
     const std::string GUID) {
 
     Stop();
@@ -155,7 +155,7 @@ kopsik::error User::Continue(
         existing->SetDurationInSeconds(
             -time(0) + existing->DurationInSeconds());
         existing->SetUIModified();
-        return kopsik::noError;
+        return toggl::noError;
     }
 
     TimeEntry *result = new TimeEntry();
@@ -173,7 +173,7 @@ kopsik::error User::Continue(
 
     related.TimeEntries.push_back(result);
 
-    return kopsik::noError;
+    return toggl::noError;
 }
 
 std::string User::DateDuration(TimeEntry * const te) const {
@@ -425,7 +425,7 @@ error User::PushChanges(HTTPSClient *https_client) {
             return noError;
         }
 
-        std::string json = kopsik::json::UpdateJSON(&projects, &time_entries);
+        std::string json = toggl::json::UpdateJSON(&projects, &time_entries);
 
         logger().debug(json);
 
@@ -593,14 +593,14 @@ void User::loadUserTagFromJSONNode(
     poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = kopsik::json::ID(data);
+    Poco::UInt64 id = toggl::json::ID(data);
     Tag *model = related.TagByID(id);
 
     if (!model) {
-        model = related.TagByGUID(kopsik::json::GUID(data));
+        model = related.TagByGUID(toggl::json::GUID(data));
     }
 
-    if (kopsik::json::IsDeletedAtServer(data)) {
+    if (toggl::json::IsDeletedAtServer(data)) {
         if (model) {
             model->MarkAsDeletedOnServer();
         }
@@ -659,12 +659,12 @@ void User::loadUserTaskFromJSONNode(
     poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = kopsik::json::ID(data);
+    Poco::UInt64 id = toggl::json::ID(data);
     Task *model = related.TaskByID(id);
 
     // Tasks have no GUID
 
-    if (kopsik::json::IsDeletedAtServer(data)) {
+    if (toggl::json::IsDeletedAtServer(data)) {
         if (model) {
             model->MarkAsDeletedOnServer();
         }
@@ -750,12 +750,12 @@ void User::loadUserWorkspaceFromJSONNode(
     poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = kopsik::json::ID(data);
+    Poco::UInt64 id = toggl::json::ID(data);
     Workspace *model = related.WorkspaceByID(id);
 
     // Workspaces have no GUID
 
-    if (kopsik::json::IsDeletedAtServer(data)) {
+    if (toggl::json::IsDeletedAtServer(data)) {
         if (model) {
             model->MarkAsDeletedOnServer();
         }
@@ -878,14 +878,14 @@ void User::loadUserClientFromJSONNode(
     poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = kopsik::json::ID(data);
+    Poco::UInt64 id = toggl::json::ID(data);
     Client *model = related.ClientByID(id);
 
     if (!model) {
-        model = related.ClientByGUID(kopsik::json::GUID(data));
+        model = related.ClientByGUID(toggl::json::GUID(data));
     }
 
-    if (kopsik::json::IsDeletedAtServer(data)) {
+    if (toggl::json::IsDeletedAtServer(data)) {
         if (model) {
             model->MarkAsDeletedOnServer();
         }
@@ -927,14 +927,14 @@ void User::loadUserProjectFromJSONNode(
     poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = kopsik::json::ID(data);
+    Poco::UInt64 id = toggl::json::ID(data);
     Project *model = related.ProjectByID(id);
 
     if (!model) {
-        model = related.ProjectByGUID(kopsik::json::GUID(data));
+        model = related.ProjectByGUID(toggl::json::GUID(data));
     }
 
-    if (kopsik::json::IsDeletedAtServer(data)) {
+    if (toggl::json::IsDeletedAtServer(data)) {
         if (model) {
             model->MarkAsDeletedOnServer();
         }
@@ -976,14 +976,14 @@ void User::loadUserTimeEntryFromJSONNode(
     poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = kopsik::json::ID(data);
+    Poco::UInt64 id = toggl::json::ID(data);
     TimeEntry *model = related.TimeEntryByID(id);
 
     if (!model) {
-        model = related.TimeEntryByGUID(kopsik::json::GUID(data));
+        model = related.TimeEntryByGUID(toggl::json::GUID(data));
     }
 
-    if (kopsik::json::IsDeletedAtServer(data)) {
+    if (toggl::json::IsDeletedAtServer(data)) {
         if (model) {
             model->MarkAsDeletedOnServer();
         }
@@ -1036,4 +1036,4 @@ void User::loadUserTimeEntriesFromJSONNode(
     deleteZombies(related.TimeEntries, alive);
 }
 
-}  // namespace kopsik
+}  // namespace toggl

@@ -7,7 +7,7 @@
 
 #include "Poco/Logger.h"
 
-namespace kopsik {
+namespace toggl {
 
 namespace json {
 
@@ -194,4 +194,4 @@ std::string UpdateJSON(
 
 }   // namespace json
 
-}   // namespace kopsik
+}   // namespace toggl

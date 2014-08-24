@@ -9,7 +9,7 @@
 
 #include "./types.h"
 
-namespace kopsik {
+namespace toggl {
 
 class Feedback {
  public:
@@ -22,7 +22,7 @@ class Feedback {
     , attachment_path_(attachment_path) {}
     ~Feedback() {}
 
-    kopsik::error Validate() const;
+    toggl::error Validate() const;
     const std::string JSON() const;
 
  private:
@@ -34,6 +34,6 @@ class Feedback {
     std::string attachment_path_;
 };
 
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_FEEDBACK_H_

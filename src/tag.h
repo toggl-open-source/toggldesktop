@@ -11,7 +11,7 @@
 
 #include "./base_model.h"
 
-namespace kopsik {
+namespace toggl {
 
 class Tag : public BaseModel {
  public:
@@ -49,6 +49,6 @@ class Tag : public BaseModel {
     std::string name_;
 };
 
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_TAG_H_

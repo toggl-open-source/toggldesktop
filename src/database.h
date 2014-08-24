@@ -23,7 +23,7 @@
 #include "./settings.h"
 #include "./timeline_event.h"
 
-namespace kopsik {
+namespace toggl {
 
 class Database {
  public:
@@ -188,6 +188,6 @@ class Database {
     std::string desktop_id_;
 };
 
-}  // namespace kopsik
+}  // namespace toggl
 
 #endif  // SRC_DATABASE_H_

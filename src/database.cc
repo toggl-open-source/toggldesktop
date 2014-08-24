@@ -21,7 +21,7 @@
 #include "Poco/Data/SQLite/SessionImpl.h"
 #include "Poco/Data/SQLite/Utility.h"
 
-namespace kopsik {
+namespace toggl {
 
 Database::Database(const std::string db_path)
     : session_(0)
@@ -956,7 +956,7 @@ error Database::saveRelatedModels(
     return noError;
 }
 
-typedef kopsik::error (Database::*saveModel)(
+typedef toggl::error (Database::*saveModel)(
     BaseModel *model, std::vector<ModelChange> *changes);
 
 error Database::saveModel(
@@ -2838,4 +2838,4 @@ error Database::UInt(
     return last_error("UInt");
 }
 
-}   // namespace kopsik
+}   // namespace toggl
