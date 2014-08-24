@@ -149,9 +149,7 @@ clean_ui: clean-bugsnag-qt
 endif
 ifeq ($(uname), Darwin)
 clean_ui:
-	rm -rf src/ui/osx/TogglDesktop/build && \
-	rm -rf third_party/TFDatePicker/TFDatePicker/build && \
-	rm -rf TogglDesktop*.dmg TogglDesktop*.tar.gz
+	rm -rf src/ui/osx/TogglDesktop/build third_party/TFDatePicker/TFDatePicker/build TogglDesktop*.dmg TogglDesktop*.tar.gz
 endif
 
 clean_test:
@@ -210,8 +208,7 @@ run: app
 
 sikuli: osx
 	(pkill TogglDesktop) || true
-	rm -rf kopsik_sikuli.db
-	rm -rf kopsik_sikuli.log
+	rm -rf kopsik_sikuli.db kopsik_sikuli.log
 	$(executable) \
 	--api_url http://0.0.0.0:8080 \
 	--websocket_url http://0.0.0.0:8088 \
