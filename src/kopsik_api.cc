@@ -748,7 +748,7 @@ void kopsik_check_view_item_size(
     const int view_item_size,
     const int settings_size,
     const int update_view_item_size) {
-    size_t size = sizeof(KopsikTimeEntryViewItem);
+    int size = sizeof(KopsikTimeEntryViewItem);
     if (time_entry_view_item_size != size) {
         logger().error("Invalid time entry view item struct size");
         poco_assert(false);
