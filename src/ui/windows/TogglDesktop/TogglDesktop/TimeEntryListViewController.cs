@@ -25,6 +25,11 @@ namespace TogglDesktop
             Toggl.OnLogin += OnLogin;
         }
 
+        public int getEntriesTop()
+        {
+            return entries.Location.Y;
+        }
+
         public void SetAcceptButton(Form frm)
         {
             timerEditViewController.SetAcceptButton(frm);

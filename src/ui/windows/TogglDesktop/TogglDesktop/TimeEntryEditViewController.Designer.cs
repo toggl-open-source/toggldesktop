@@ -46,7 +46,6 @@
             this.buttonsPanel = new System.Windows.Forms.Panel();
             this.buttonContinue = new System.Windows.Forms.Button();
             this.buttonDelete = new System.Windows.Forms.Button();
-            this.buttonDone = new System.Windows.Forms.Button();
             this.checkBoxBillable = new System.Windows.Forms.CheckBox();
             this.checkedListBoxTags = new System.Windows.Forms.CheckedListBox();
             this.timerRunningDuration = new System.Windows.Forms.Timer(this.components);
@@ -197,6 +196,7 @@
             // 
             // statusStripLastUpdate
             // 
+            this.statusStripLastUpdate.BackColor = System.Drawing.Color.Transparent;
             this.statusStripLastUpdate.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelLastUpdate});
             this.statusStripLastUpdate.Location = new System.Drawing.Point(0, 378);
@@ -218,7 +218,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonsPanel.Controls.Add(this.buttonContinue);
             this.buttonsPanel.Controls.Add(this.buttonDelete);
-            this.buttonsPanel.Controls.Add(this.buttonDone);
             this.buttonsPanel.Location = new System.Drawing.Point(0, 349);
             this.buttonsPanel.Name = "buttonsPanel";
             this.buttonsPanel.Size = new System.Drawing.Size(317, 31);
@@ -239,24 +238,13 @@
             // buttonDelete
             // 
             this.buttonDelete.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.buttonDelete.Location = new System.Drawing.Point(95, 3);
+            this.buttonDelete.Location = new System.Drawing.Point(10, 3);
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(75, 23);
             this.buttonDelete.TabIndex = 10;
             this.buttonDelete.Text = "Delete";
             this.buttonDelete.UseVisualStyleBackColor = true;
             this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
-            // 
-            // buttonDone
-            // 
-            this.buttonDone.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.buttonDone.Location = new System.Drawing.Point(10, 3);
-            this.buttonDone.Name = "buttonDone";
-            this.buttonDone.Size = new System.Drawing.Size(75, 23);
-            this.buttonDone.TabIndex = 9;
-            this.buttonDone.Text = "Back";
-            this.buttonDone.UseVisualStyleBackColor = true;
-            this.buttonDone.Click += new System.EventHandler(this.buttonDone_Click);
             // 
             // checkBoxBillable
             // 
@@ -569,7 +557,6 @@
         private System.Windows.Forms.StatusStrip statusStripLastUpdate;
         private System.Windows.Forms.Panel buttonsPanel;
         private System.Windows.Forms.Button buttonDelete;
-        private System.Windows.Forms.Button buttonDone;
         private System.Windows.Forms.Button buttonContinue;
         private System.Windows.Forms.CheckBox checkBoxBillable;
         private System.Windows.Forms.CheckedListBox checkedListBoxTags;

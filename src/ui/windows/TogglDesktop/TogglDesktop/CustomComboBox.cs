@@ -76,7 +76,7 @@ namespace TogglDesktop
         {
             if (!_isAdded)
             {
-                Parent.Parent.Parent.Controls.Add(autoCompleteListBox);
+                Parent.Parent.Controls.Add(autoCompleteListBox);
                 autoCompleteListBox.Left = Left;
                 autoCompleteListBox.Top = Top + Height;
                 _isAdded = true;

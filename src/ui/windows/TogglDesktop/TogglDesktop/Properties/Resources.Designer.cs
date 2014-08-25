@@ -152,6 +152,16 @@ namespace TogglDesktop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icon_x {
+            get {
+                object obj = ResourceManager.GetObject("icon_x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap logo {
             get {
                 object obj = ResourceManager.GetObject("logo", resourceCulture);
@@ -255,6 +265,16 @@ namespace TogglDesktop.Properties {
         internal static System.Drawing.Bitmap MinimizePressed {
             get {
                 object obj = ResourceManager.GetObject("MinimizePressed", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap popup_back_right {
+            get {
+                object obj = ResourceManager.GetObject("popup_back_right", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

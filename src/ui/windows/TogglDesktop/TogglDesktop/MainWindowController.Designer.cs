@@ -66,14 +66,14 @@
             this.troubleBox.Controls.Add(this.errorLabel);
             this.troubleBox.Location = new System.Drawing.Point(0, 0);
             this.troubleBox.Name = "troubleBox";
-            this.troubleBox.Size = new System.Drawing.Size(299, 30);
+            this.troubleBox.Size = new System.Drawing.Size(315, 30);
             this.troubleBox.TabIndex = 5;
             this.troubleBox.Visible = false;
             // 
             // buttonDismissError
             // 
             this.buttonDismissError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDismissError.Location = new System.Drawing.Point(280, 4);
+            this.buttonDismissError.Location = new System.Drawing.Point(296, 4);
             this.buttonDismissError.Name = "buttonDismissError";
             this.buttonDismissError.Size = new System.Drawing.Size(16, 23);
             this.buttonDismissError.TabIndex = 6;
@@ -120,7 +120,7 @@
             this.logoutToolStripMenuItem,
             this.quitToolStripMenuItem});
             this.trayIconMenu.Name = "trayIconMenu";
-            this.trayIconMenu.Size = new System.Drawing.Size(167, 336);
+            this.trayIconMenu.Size = new System.Drawing.Size(167, 314);
             // 
             // runningToolStripMenuItem
             // 
@@ -250,14 +250,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.contentPanel.Location = new System.Drawing.Point(0, 28);
             this.contentPanel.Name = "contentPanel";
-            this.contentPanel.Size = new System.Drawing.Size(299, 341);
+            this.contentPanel.Size = new System.Drawing.Size(315, 341);
             this.contentPanel.TabIndex = 7;
             // 
             // MainWindowController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(299, 341);
+            this.ClientSize = new System.Drawing.Size(315, 349);
             this.Controls.Add(this.contentPanel);
             this.Controls.Add(this.troubleBox);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -268,6 +268,7 @@
             this.Activated += new System.EventHandler(this.MainWindowController_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindowController_FormClosing);
             this.Load += new System.EventHandler(this.MainWindowController_Load);
+            this.LocationChanged += new System.EventHandler(this.MainWindowController_LocationChanged);
             this.troubleBox.ResumeLayout(false);
             this.troubleBox.PerformLayout();
             this.trayIconMenu.ResumeLayout(false);
