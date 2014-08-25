@@ -18,7 +18,6 @@ namespace TogglDesktop
         private FeedbackWindowController feedbackWindowController;
         private IdleNotificationWindowController idleNotificationWindowController;
 
-        private string defaultTitle = string.Empty;
         private bool isUpgradeDialogVisible = false;
         private bool isTracking = false;
         private bool isNetworkError = false;
