@@ -145,8 +145,14 @@ namespace TogglDesktop
 
         public void setupView(Form frm, string focusedFieldName)
         {
+            SetAcceptButton(frm);
             SetFocus(focusedFieldName);
             checkFirstLoad();
+        }
+
+        public void SetAcceptButton(Form frm)
+        {
+            frm.AcceptButton = buttonDone;
         }
 
         public void checkFirstLoad() {

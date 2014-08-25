@@ -121,7 +121,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutWindowController.cs" />
+    <Compile Include="AboutWindowController.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AboutWindowController.Designer.cs">
       <DependentUpon>AboutWindowController.cs</DependentUpon>
     </Compile>
@@ -143,17 +145,15 @@
     <Compile Include="CustomForm\FormWithNonClientArea.cs" />
     <Compile Include="CustomForm\TogglForm.cs" />
     <Compile Include="CustomForm\NativeMethods.cs" />
-    <Compile Include="EditForm.cs">
+    <Compile Include="FeedbackWindowController.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EditForm.Designer.cs">
-      <DependentUpon>EditForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FeedbackWindowController.cs" />
     <Compile Include="FeedbackWindowController.Designer.cs">
       <DependentUpon>FeedbackWindowController.cs</DependentUpon>
     </Compile>
-    <Compile Include="IdleNotificationWindowController.cs" />
+    <Compile Include="IdleNotificationWindowController.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="IdleNotificationWindowController.Designer.cs">
       <DependentUpon>IdleNotificationWindowController.cs</DependentUpon>
     </Compile>
@@ -169,11 +169,15 @@
     <Compile Include="LoginViewController.Designer.cs">
       <DependentUpon>LoginViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainWindowController.cs" />
+    <Compile Include="MainWindowController.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MainWindowController.Designer.cs">
       <DependentUpon>MainWindowController.cs</DependentUpon>
     </Compile>
-    <Compile Include="PreferencesWindowController.cs" />
+    <Compile Include="PreferencesWindowController.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="PreferencesWindowController.Designer.cs">
       <DependentUpon>PreferencesWindowController.cs</DependentUpon>
     </Compile>
@@ -209,9 +213,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddProjectViewController.resx">
       <DependentUpon>AddProjectViewController.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditForm.resx">
-      <DependentUpon>EditForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FeedbackWindowController.resx">
       <DependentUpon>FeedbackWindowController.cs</DependentUpon>
@@ -350,15 +351,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\MinimizePressed.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon-x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\popup_arrow.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\popup_back_right.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
