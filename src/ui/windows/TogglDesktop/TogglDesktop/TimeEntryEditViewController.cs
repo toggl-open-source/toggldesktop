@@ -248,6 +248,8 @@ namespace TogglDesktop
 
             if (open)
             {
+                comboBoxDescription.ResetListBox();
+                comboBoxProject.ResetListBox();
                 comboBoxDescription.Text = te.Description;
                 comboBoxProject.Text = te.ProjectAndTaskLabel;
                 textBoxDuration.Text = te.Duration;
