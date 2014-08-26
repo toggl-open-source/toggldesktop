@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Drawing.Drawing2D;
 
 namespace TogglDesktop
 {
@@ -17,6 +18,8 @@ namespace TogglDesktop
         private PreferencesWindowController preferencesWindowController;
         private FeedbackWindowController feedbackWindowController;
         private IdleNotificationWindowController idleNotificationWindowController;
+        private EditForm editForm;
+        private Control editableEntry;
 
         private bool isUpgradeDialogVisible = false;
         private bool isTracking = false;
@@ -106,6 +109,7 @@ namespace TogglDesktop
             preferencesWindowController = new PreferencesWindowController();
             feedbackWindowController = new FeedbackWindowController();
             idleNotificationWindowController = new IdleNotificationWindowController();
+            initEditForm();
 
             if (!Toggl.Start(TogglDesktop.Program.Version()))
             {
@@ -365,10 +369,57 @@ namespace TogglDesktop
                 troubleBox.Visible = false;
                 contentPanel.Location = defaultContentPosition;
                 contentPanel.Controls.Remove(loginViewController);
-                contentPanel.Controls.Remove(timeEntryEditViewController);
                 contentPanel.Controls.Add(timeEntryListViewController);
                 timeEntryListViewController.SetAcceptButton(this);
             }
+        }
+
+        public static Control FindControlAtPoint(Control container, Point pos)
+        {
+            Control child;
+            if (container.GetType() == typeof(TimeEntryCell)) return container;            
+            foreach (Control c in container.Controls)
+            {
+                if (c.Visible && c.Bounds.Contains(pos))
+                {
+                    child = FindControlAtPoint(c, new Point(pos.X - c.Left, pos.Y - c.Top));
+                    if (child == null) return c;
+                    else if (child.GetType() == typeof(TimeEntryCell)) return child;
+                    else return child;
+                }
+            }
+            return null;
+        }
+
+        public static Control FindControlAtCursor(Form form)
+        {
+            Point pos = Cursor.Position;
+            if (form.Bounds.Contains(pos))
+                return FindControlAtPoint(form, form.PointToClient(Cursor.Position));
+            return null;
+        }
+
+        private void initEditForm()
+        {
+            editForm = new EditForm
+            {
+                ControlBox = false,
+                StartPosition = FormStartPosition.Manual
+            };
+            editForm.Controls.Add(timeEntryEditViewController);
+        }
+
+        public void PopupInput(Toggl.TimeEntry te)
+        {
+            if (te.GUID == editForm.GUID) {
+                editForm.Hide();
+                editForm.GUID = null;
+                return;
+            }
+            editableEntry = FindControlAtCursor(this);
+            setEditFormLocation();
+            editForm.GUID = te.GUID;
+            editForm.Show();
         }
 
         void OnTimeEntryEditor(
@@ -384,9 +435,8 @@ namespace TogglDesktop
             if (open)
             {
                 contentPanel.Controls.Remove(loginViewController);
-                contentPanel.Controls.Remove(timeEntryListViewController);
-                contentPanel.Controls.Add(timeEntryEditViewController);
                 timeEntryEditViewController.setupView(this, focused_field_name);
+                PopupInput(te);                
             }
         }
 
@@ -582,6 +632,22 @@ namespace TogglDesktop
         private void MainWindowController_Activated(object sender, EventArgs e)
         {
             Toggl.SetWake();
+        }
+
+        private void MainWindowController_LocationChanged(object sender, EventArgs e)
+        {
+            if (editForm != null && editForm.Visible)
+            {
+                setEditFormLocation();
+            }
+        }
+
+        private void setEditFormLocation()
+        {
+            Point ctrlpt = this.PointToScreen(editableEntry.Location);
+            ctrlpt.X += this.Width;
+            ctrlpt.Y += timeEntryListViewController.getEntriesTop() + (editableEntry.Height / 2) - (editForm.Height / 2);
+            editForm.Location = ctrlpt;
         }
     }
 }
