@@ -246,29 +246,41 @@ namespace TogglDesktop
                 linkAddProject.Visible = !te.CanAddProjects;
             }
 
-            if (!comboBoxDescription.Focused)
+            if (open)
             {
                 comboBoxDescription.Text = te.Description;
-            }
-            if (!comboBoxProject.Focused)
-            {
                 comboBoxProject.Text = te.ProjectAndTaskLabel;
-            }
-            if (!textBoxDuration.Focused)
-            {
                 textBoxDuration.Text = te.Duration;
-            }
-            if (!textBoxStartTime.Focused)
-            {
                 textBoxStartTime.Text = te.StartTimeString;
-            }
-            if (!textBoxEndTime.Focused)
-            {
                 textBoxEndTime.Text = te.EndTimeString;
-            }
-            if (!dateTimePickerStartDate.Focused)
-            {
                 dateTimePickerStartDate.Value = Toggl.DateTimeFromUnix(te.Started);
+            }
+            else
+            {
+                if (!comboBoxDescription.Focused)
+                {
+                    comboBoxDescription.Text = te.Description;
+                }
+                if (!comboBoxProject.Focused)
+                {
+                    comboBoxProject.Text = te.ProjectAndTaskLabel;
+                }
+                if (!textBoxDuration.Focused)
+                {
+                    textBoxDuration.Text = te.Duration;
+                }
+                if (!textBoxStartTime.Focused)
+                {
+                    textBoxStartTime.Text = te.StartTimeString;
+                }
+                if (!textBoxEndTime.Focused)
+                {
+                    textBoxEndTime.Text = te.EndTimeString;
+                }
+                if (!dateTimePickerStartDate.Focused)
+                {
+                    dateTimePickerStartDate.Value = Toggl.DateTimeFromUnix(te.Started);
+                }
             }
 
             panelStartEndTime.Visible = !timeEntry.DurOnly;
@@ -294,7 +306,7 @@ namespace TogglDesktop
             textBoxEndTime.Enabled = (te.DurationInSeconds >= 0);
 
 
-            if (!checkedListBoxTags.Focused)
+            if (!checkedListBoxTags.Focused || open)
             {
                 for (int i = 0; i < checkedListBoxTags.Items.Count; i++)
                 {
