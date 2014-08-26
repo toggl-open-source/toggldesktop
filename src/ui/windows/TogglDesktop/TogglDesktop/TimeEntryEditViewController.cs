@@ -327,8 +327,17 @@ namespace TogglDesktop
 
         private void buttonDelete_Click(object sender, EventArgs e)
         {
-            DialogResult dr = MessageBox.Show("Delete time entry?", "Please confirm",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult dr;
+            try
+            {
+                MainWindowController.DisableTop();
+                dr = MessageBox.Show("Delete time entry?", "Please confirm",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            }
+            finally
+            {
+                MainWindowController.EnableTop();
+            }
             if (DialogResult.Yes == dr)
             {
                 resetForms();

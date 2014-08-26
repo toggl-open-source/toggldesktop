@@ -50,7 +50,13 @@ namespace TogglDesktop
                 openFileDialog.FileName)) {
                 return;
             }
-            MessageBox.Show("Your feedback was sent successfully.", "Thank you!");
+            try
+            {
+                MainWindowController.DisableTop();
+                MessageBox.Show("Your feedback was sent successfully.", "Thank you!");
+            } finally {
+                MainWindowController.EnableTop();
+            }
             comboBoxTopic.SelectedIndex = 0;
             richTextBoxContents.Clear();
             openFileDialog.Reset();

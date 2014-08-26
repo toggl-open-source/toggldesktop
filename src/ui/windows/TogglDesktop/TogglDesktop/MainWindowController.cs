@@ -24,6 +24,9 @@ namespace TogglDesktop
         private Point defaultContentPosition =  new System.Drawing.Point(0, 0);
         private Point errorContentPosition = new System.Drawing.Point(0, 28);
         private bool remainOnTop = false;
+        private bool topDisabled = false;
+
+        private static MainWindowController instance;
 
         [StructLayout(LayoutKind.Sequential)]
         struct LASTINPUTINFO
@@ -54,6 +57,20 @@ namespace TogglDesktop
         public MainWindowController()
         {
             InitializeComponent();
+
+            instance = this;
+        }
+
+        public static void DisableTop()
+        {
+            instance.topDisabled = true;
+            instance.setWindowPos();
+        }
+
+        public static void EnableTop()
+        {
+            instance.topDisabled = false;
+            instance.setWindowPos();
         }
 
         public void RemoveTrayIcon()
@@ -92,7 +109,13 @@ namespace TogglDesktop
 
             if (!Toggl.Start(TogglDesktop.Program.Version()))
             {
-                MessageBox.Show("Missing callback. See the log file for details");
+                try
+                {
+                    DisableTop();
+                    MessageBox.Show("Missing callback. See the log file for details");
+                } finally {
+                    EnableTop();
+                }
                 TogglDesktop.Program.Shutdown(1);
             }
         }
@@ -223,11 +246,20 @@ namespace TogglDesktop
                 return;
             }
             isUpgradeDialogVisible = true;
-            DialogResult dr = MessageBox.Show(
-                "A new version of Toggl Desktop is available (" + view.Version + ")." +
-                Environment.NewLine + "Continue with the download?",
-                "New version available",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult dr;
+            try
+            {
+                DisableTop();
+                dr = MessageBox.Show(
+                    "A new version of Toggl Desktop is available (" + view.Version + ")." +
+                    Environment.NewLine + "Continue with the download?",
+                    "New version available",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            }
+            finally
+            {
+                EnableTop();
+            }
             isUpgradeDialogVisible = false;
             if (DialogResult.Yes == dr)
             {
@@ -458,7 +490,7 @@ namespace TogglDesktop
 
         private void setWindowPos()
         {
-            if (remainOnTop)
+            if (remainOnTop && !topDisabled)
             {
                 SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
             }
@@ -480,12 +512,21 @@ namespace TogglDesktop
 
         private void clearCacheToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult dr = MessageBox.Show(
-                "This will remove your Toggl user data from this PC and log you out of the Toggl Desktop app. " +
-                "Any unsynced data will be lost." +
-                Environment.NewLine + "Do you want to continue?",
-                "Clear Cache",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult dr;
+            try
+            {
+                DisableTop();
+                dr = MessageBox.Show(
+                    "This will remove your Toggl user data from this PC and log you out of the Toggl Desktop app. " +
+                    "Any unsynced data will be lost." +
+                    Environment.NewLine + "Do you want to continue?",
+                    "Clear Cache",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            }
+            finally
+            {
+                EnableTop();
+            }
             if (DialogResult.Yes == dr) 
             {
                 Toggl.ClearCache();
