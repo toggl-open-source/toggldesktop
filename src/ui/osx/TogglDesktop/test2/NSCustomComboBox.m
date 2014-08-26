@@ -23,4 +23,19 @@
 	[_cell setCalculatedMaxWidth:fmax(8 * n, _frame.size.width)];
 }
 
+- (BOOL)becomeFirstResponder
+{
+	BOOL success = [super becomeFirstResponder];
+
+	if (success)
+	{
+		NSTextView *textField = (NSTextView *)[self currentEditor];
+		if ([textField respondsToSelector:@selector(setInsertionPointColor:)])
+		{
+			[textField setInsertionPointColor:[NSColor blackColor]];
+		}
+	}
+	return success;
+}
+
 @end
