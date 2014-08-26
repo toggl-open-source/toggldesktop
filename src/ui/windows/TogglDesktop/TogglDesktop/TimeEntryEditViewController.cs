@@ -299,21 +299,25 @@ namespace TogglDesktop
             }
             textBoxEndTime.Enabled = (te.DurationInSeconds >= 0);
 
-            for (int i = 0; i < checkedListBoxTags.Items.Count; i++)
+
+            if (!checkedListBoxTags.Focused)
             {
-                checkedListBoxTags.SetItemChecked(i, false);
-            }
-
-            if ( te.Tags != null) {
-                string[] tags = te.Tags.Split('|');
-
-                // Tick selected Tags
-                for (int i = 0; i < tags.Length; i++)
+                for (int i = 0; i < checkedListBoxTags.Items.Count; i++)
                 {
-                    int index = checkedListBoxTags.Items.IndexOf(tags[i]);
-                    if (index != -1)
+                    checkedListBoxTags.SetItemChecked(i, false);
+                }
+                if (te.Tags != null)
+                {
+                    string[] tags = te.Tags.Split('|');
+
+                    // Tick selected Tags
+                    for (int i = 0; i < tags.Length; i++)
                     {
-                        checkedListBoxTags.SetItemChecked(index, true);
+                        int index = checkedListBoxTags.Items.IndexOf(tags[i]);
+                        if (index != -1)
+                        {
+                            checkedListBoxTags.SetItemChecked(index, true);
+                        }
                     }
                 }
             }
