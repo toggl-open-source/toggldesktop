@@ -371,6 +371,10 @@ namespace TogglDesktop
                 contentPanel.Controls.Remove(loginViewController);
                 contentPanel.Controls.Add(timeEntryListViewController);
                 timeEntryListViewController.SetAcceptButton(this);
+                if (editForm.Visible)
+                {
+                    editForm.Hide();
+                }
             }
         }
 
