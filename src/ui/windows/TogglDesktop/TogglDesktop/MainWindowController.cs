@@ -377,7 +377,8 @@ namespace TogglDesktop
         public static Control FindControlAtPoint(Control container, Point pos)
         {
             Control child;
-            if (container.GetType() == typeof(TimeEntryCell)) return container;            
+            if (container.GetType() == typeof(TimeEntryCell)) return container;
+            if (container.GetType() == typeof(TimerEditViewController)) return container;
             foreach (Control c in container.Controls)
             {
                 if (c.Visible && c.Bounds.Contains(pos))
@@ -385,6 +386,8 @@ namespace TogglDesktop
                     child = FindControlAtPoint(c, new Point(pos.X - c.Left, pos.Y - c.Top));
                     if (child == null) return c;
                     else if (child.GetType() == typeof(TimeEntryCell)) return child;
+                    else if (child.GetType() == typeof(TimerEditViewController)) return child;
+
                     else return child;
                 }
             }
@@ -417,7 +420,7 @@ namespace TogglDesktop
                 return;
             }
             editableEntry = FindControlAtCursor(this);
-            setEditFormLocation();
+            setEditFormLocation(te.DurationInSeconds < 0);
             editForm.GUID = te.GUID;
             editForm.Show();
         }
@@ -638,23 +641,30 @@ namespace TogglDesktop
         {
             if (editForm != null && editForm.Visible)
             {
-                setEditFormLocation();
+                setEditFormLocation(editableEntry.GetType() == typeof(TimerEditViewController));
             }
         }
 
-        private void setEditFormLocation()
+        private void setEditFormLocation(bool running)
         {
             Point ctrlpt = this.PointToScreen(editableEntry.Location);
+            int arrowTop = 0;
+            if (running)
+            {
+                arrowTop = timeEntryListViewController.getEntriesTop() / 2;
+            }
+            else
+            {
+                ctrlpt.Y += timeEntryListViewController.getEntriesTop() + (editableEntry.Height / 2) - (editForm.Height / 2);
+            }
 
-            ctrlpt.Y += timeEntryListViewController.getEntriesTop() + (editableEntry.Height / 2) - (editForm.Height / 2);
             if ((editForm.Width + ctrlpt.X + this.Width) > Screen.PrimaryScreen.Bounds.Width) {
                 ctrlpt.X -= editForm.Width;
-                editForm.setPlacement(true);
+                editForm.setPlacement(true, arrowTop, ctrlpt);
             } else {
                 ctrlpt.X += this.Width;
-                editForm.setPlacement(false);
+                editForm.setPlacement(false, arrowTop, ctrlpt);
             }
-            editForm.Location = ctrlpt;
         }
     }
 }

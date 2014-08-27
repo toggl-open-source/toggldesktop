@@ -86,14 +86,23 @@ namespace TogglDesktop
                 base.WndProc(ref m);
         }
 
-        internal void setPlacement(bool left)
+        internal void setPlacement(bool left, int arrowTop, Point p)
         {
             labelArrowLeft.Visible = !left;
             labelArrowRight.Visible = left;
 
-            int posY = (Height / 2) - (labelArrowRight.Height / 2);
+            int posY = ((arrowTop != 0) ? arrowTop: (Height / 2)) - (labelArrowRight.Height / 2);
+
+            if (p.Y < 0)
+            {
+                posY -= Math.Abs(p.Y) - 10;
+                p.Y = 10;
+            }
+
             labelArrowRight.Location = new Point(labelArrowRight.Location.X, posY);
-            labelArrowLeft.Location = new Point(labelArrowLeft.Location.X, posY);
+            labelArrowLeft.Location = new Point(labelArrowLeft.Location.X, posY);           
+
+            Location = p;
         }
     }
 }
