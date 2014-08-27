@@ -13,6 +13,7 @@ namespace TogglDesktop
     public partial class TimeEntryCell : UserControl
     {
         public string GUID;
+        public bool header = false;
 
         public TimeEntryCell()
         {
@@ -36,16 +37,15 @@ namespace TogglDesktop
             {
                 labelFormattedDate.Text = item.DateHeader;
                 labelDateDuration.Text = item.DateDuration;
-            }
-            if (item.IsHeader)
-            {
                 Height = headerPanel.Height + panel.Height;
                 panel.Top = headerPanel.Bottom;
+                header = true;
             }
             else
             {
                 Height = panel.Height;
                 panel.Top = 0;
+                header = false;
             }
             headerPanel.Visible = item.IsHeader;
             toolTip.SetToolTip(labelDescription, item.Description);
@@ -56,6 +56,15 @@ namespace TogglDesktop
             {
                 toolTip.SetToolTip(labelTag, item.Tags.Replace("|", ", "));
             }
+        }
+
+        public int getTopLocation()
+        {
+            if (header)
+            {
+                return headerPanel.Height + (panel.Height / 2);
+            }
+            return Height;
         }
 
         private void TimeEntryCellWithHeader_MouseClick(object sender, MouseEventArgs e)

@@ -661,7 +661,7 @@ namespace TogglDesktop
             }
             else
             {
-                ctrlpt.Y += timeEntryListViewController.getEntriesTop() + (editableEntry.Height / 2) - (editForm.Height / 2);
+                ctrlpt.Y += timeEntryListViewController.getEntriesTop() + (((TimeEntryCell)editableEntry).getTopLocation()) - (editForm.Height / 2);
             }
 
             if ((editForm.Width + ctrlpt.X + this.Width) > Screen.PrimaryScreen.Bounds.Width) {
