@@ -87,6 +87,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "EditForm";
             this.Padding = new System.Windows.Forms.Padding(11, 0, 11, 4);
+            this.ShowInTaskbar = false;
             this.Text = "EditForm";
             this.TransparencyKey = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.ResumeLayout(false);
