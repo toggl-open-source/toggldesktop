@@ -61,6 +61,20 @@ namespace TogglDesktop
                 {
                     if (hitBox.Value.Contains(clientPoint))
                     {
+                        if (this.labelArrowLeft.Visible)
+                        {
+                            if (hitBox.Key == HTBOTTOMLEFT || hitBox.Key == HTTOPLEFT || hitBox.Key == HTLEFT)
+                            {
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            if (hitBox.Key == HTBOTTOMRIGHT || hitBox.Key == HTTOPRIGHT || hitBox.Key == HTRIGHT)
+                            {
+                                continue;
+                            }
+                        }
                         m.Result = (IntPtr)hitBox.Key;
                         handled = true;
                         break;
