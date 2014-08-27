@@ -73,8 +73,6 @@ third_party/poco/Foundation/src/pocomsg.rc
 
 src/branding/
 
-gitstats
-
 *.dmg
 
 coverage

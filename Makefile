@@ -130,7 +130,7 @@ cxx=g++
 default: app
 
 clean: clean_ui clean_lib clean_test
-	rm -rf build gitstats
+	rm -rf build
 
 ifeq ($(uname), Linux)
 clean_lib:
@@ -249,13 +249,6 @@ poco:
 	./configure --omit=Data/ODBC,Data/MySQL,Zip --no-tests --no-samples --fPIC \
 	--include-path=$(pwd)/$(openssldir)/include --library-path=$(pwd)/$(openssldir) && \
 	make
-
-stats:
-	rm -rf gitstats
-	./third_party/gitstats/gitstats -c merge_authors="Tanel","Tanel Lebedev" . gitstats
-
-simian:
-	java -jar third_party/simian/bin/simian-2.3.35.jar src/*
 
 third_party/google-astyle/build/google-astyle:
 	cd third_party/google-astyle && mkdir -p build && g++ *.cpp -o build/google-astyle
