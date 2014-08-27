@@ -64,7 +64,7 @@ namespace TogglDesktop
             {
                 return headerPanel.Height + (panel.Height / 2);
             }
-            return Height;
+            return Height / 2;
         }
 
         private void TimeEntryCellWithHeader_MouseClick(object sender, MouseEventArgs e)
