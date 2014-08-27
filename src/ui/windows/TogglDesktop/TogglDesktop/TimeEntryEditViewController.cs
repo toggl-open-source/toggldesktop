@@ -329,12 +329,6 @@ namespace TogglDesktop
             }
         }
 
-        private void buttonContinue_Click(object sender, EventArgs e)
-        {
-            resetForms();
-            Toggl.Continue(timeEntry.GUID);
-        }
-
         void OnClientSelect(List<Toggl.Model> list)
         {
             if (InvokeRequired)
