@@ -679,6 +679,10 @@ namespace TogglDesktop
         private void comboBoxDescription_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             comboBoxDescription.parseKeyDown(e, autoCompleteEntryList);
+            if (e.KeyCode == Keys.Enter)
+            {
+                selectEntryAutoComplete();
+            }
         }
 
         private void comboBoxProject_KeyUp(object sender, KeyEventArgs e)
@@ -693,6 +697,10 @@ namespace TogglDesktop
         private void comboBoxProject_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             comboBoxProject.parseKeyDown(e, autoCompleteProjectList);
+            if (e.KeyCode == Keys.Enter)
+            {
+                selectProjectAutoComplete();
+            }
         }
 
         private void selectEntryAutoComplete()
@@ -744,6 +752,15 @@ namespace TogglDesktop
                 item.TaskID,
                 item.ProjectID,
                 null);           
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Enter)
+            {
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }
