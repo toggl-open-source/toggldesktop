@@ -684,5 +684,13 @@ namespace TogglDesktop
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
+
+        private void MainWindowController_SizeChanged(object sender, EventArgs e)
+        {
+            if (editForm != null && editForm.Visible)
+            {
+                setEditFormLocation(editableEntry.GetType() == typeof(TimerEditViewController));
+            }
+        }
     }
 }

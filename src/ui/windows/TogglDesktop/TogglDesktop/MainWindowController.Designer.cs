@@ -269,6 +269,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindowController_FormClosing);
             this.Load += new System.EventHandler(this.MainWindowController_Load);
             this.LocationChanged += new System.EventHandler(this.MainWindowController_LocationChanged);
+            this.SizeChanged += new System.EventHandler(this.MainWindowController_SizeChanged);
             this.troubleBox.ResumeLayout(false);
             this.troubleBox.PerformLayout();
             this.trayIconMenu.ResumeLayout(false);
