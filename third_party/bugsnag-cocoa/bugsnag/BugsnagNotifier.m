@@ -68,7 +68,10 @@
     [event addAttribute:@"Application Version" withValue:self.configuration.appVersion toTabWithName:@"application"];
     
     [event addAttribute:@"OS Version" withValue:self.configuration.osVersion toTabWithName:@"device"];
+/*
+    Do not use network reachability. Since we're reachability ourselves, it will blow up.
     [event addAttribute:@"Network" withValue:self.networkReachability toTabWithName:@"device"];
+*/
     
 #ifdef TARGET_IPHONE_SIMULATOR
 #if !TARGET_IPHONE_SIMULATOR
