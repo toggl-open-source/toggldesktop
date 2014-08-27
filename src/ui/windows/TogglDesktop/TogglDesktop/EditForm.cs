@@ -15,6 +15,7 @@ namespace TogglDesktop
         public EditForm()
         {
             InitializeComponent();
+            CancelButton = CloseButton;
         }
         public string GUID = null;
         public TimeEntryEditViewController editView;

@@ -672,5 +672,17 @@ namespace TogglDesktop
                 editForm.setPlacement(false, arrowTop, ctrlpt);
             }
         }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape)
+            {
+                if (editForm.Visible)
+                {
+                    editForm.editView.buttonDone_Click(null, null);
+                }
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
     }
 }
