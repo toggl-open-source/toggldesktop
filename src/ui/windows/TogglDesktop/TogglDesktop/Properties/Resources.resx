@@ -124,6 +124,9 @@
   <data name="toggl_offline_active" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\toggl_offline_active.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="popup_arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\popup_arrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="toggl" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\toggl.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -163,6 +166,9 @@
   <data name="Close" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Close.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Border" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Border.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="icon-billable" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icon-billable.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -196,10 +202,10 @@
   <data name="MaximizeHot" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MaximizeHot.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Border" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Border.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="popup_back_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\popup_back_right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="popup_arrow_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\popup_arrow_right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

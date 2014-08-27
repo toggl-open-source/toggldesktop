@@ -272,6 +272,26 @@ namespace TogglDesktop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap popup_arrow {
+            get {
+                object obj = ResourceManager.GetObject("popup_arrow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap popup_arrow_right {
+            get {
+                object obj = ResourceManager.GetObject("popup_arrow_right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap popup_back_right {
             get {
                 object obj = ResourceManager.GetObject("popup_back_right", resourceCulture);

@@ -645,8 +645,15 @@ namespace TogglDesktop
         private void setEditFormLocation()
         {
             Point ctrlpt = this.PointToScreen(editableEntry.Location);
-            ctrlpt.X += this.Width;
+
             ctrlpt.Y += timeEntryListViewController.getEntriesTop() + (editableEntry.Height / 2) - (editForm.Height / 2);
+            if ((editForm.Width + ctrlpt.X + this.Width) > Screen.PrimaryScreen.Bounds.Width) {
+                ctrlpt.X -= editForm.Width;
+                editForm.setPlacement(true);
+            } else {
+                ctrlpt.X += this.Width;
+                editForm.setPlacement(false);
+            }
             editForm.Location = ctrlpt;
         }
     }

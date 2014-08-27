@@ -80,7 +80,7 @@
             // 
             this.labelDescription.AutoSize = true;
             this.labelDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.labelDescription.Location = new System.Drawing.Point(15, 13);
+            this.labelDescription.Location = new System.Drawing.Point(15, 33);
             this.labelDescription.Name = "labelDescription";
             this.labelDescription.Size = new System.Drawing.Size(72, 15);
             this.labelDescription.TabIndex = 0;
@@ -90,7 +90,7 @@
             // 
             this.labelProject.AutoSize = true;
             this.labelProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.labelProject.Location = new System.Drawing.Point(15, 43);
+            this.labelProject.Location = new System.Drawing.Point(15, 63);
             this.labelProject.Name = "labelProject";
             this.labelProject.Size = new System.Drawing.Size(47, 15);
             this.labelProject.TabIndex = 2;
@@ -101,7 +101,7 @@
             this.linkAddProject.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkAddProject.AutoSize = true;
             this.linkAddProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.linkAddProject.Location = new System.Drawing.Point(210, 64);
+            this.linkAddProject.Location = new System.Drawing.Point(208, 84);
             this.linkAddProject.Name = "linkAddProject";
             this.linkAddProject.Size = new System.Drawing.Size(94, 15);
             this.linkAddProject.TabIndex = 2;
@@ -199,9 +199,9 @@
             this.statusStripLastUpdate.BackColor = System.Drawing.Color.Transparent;
             this.statusStripLastUpdate.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelLastUpdate});
-            this.statusStripLastUpdate.Location = new System.Drawing.Point(0, 378);
+            this.statusStripLastUpdate.Location = new System.Drawing.Point(0, 396);
             this.statusStripLastUpdate.Name = "statusStripLastUpdate";
-            this.statusStripLastUpdate.Size = new System.Drawing.Size(317, 22);
+            this.statusStripLastUpdate.Size = new System.Drawing.Size(315, 22);
             this.statusStripLastUpdate.TabIndex = 14;
             // 
             // toolStripStatusLabelLastUpdate
@@ -218,16 +218,16 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonsPanel.Controls.Add(this.buttonContinue);
             this.buttonsPanel.Controls.Add(this.buttonDelete);
-            this.buttonsPanel.Location = new System.Drawing.Point(0, 349);
+            this.buttonsPanel.Location = new System.Drawing.Point(0, 367);
             this.buttonsPanel.Name = "buttonsPanel";
-            this.buttonsPanel.Size = new System.Drawing.Size(317, 31);
+            this.buttonsPanel.Size = new System.Drawing.Size(315, 31);
             this.buttonsPanel.TabIndex = 16;
             // 
             // buttonContinue
             // 
             this.buttonContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonContinue.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.buttonContinue.Location = new System.Drawing.Point(230, 3);
+            this.buttonContinue.Location = new System.Drawing.Point(228, 3);
             this.buttonContinue.Name = "buttonContinue";
             this.buttonContinue.Size = new System.Drawing.Size(75, 23);
             this.buttonContinue.TabIndex = 11;
@@ -269,7 +269,7 @@
             this.checkedListBoxTags.FormattingEnabled = true;
             this.checkedListBoxTags.Location = new System.Drawing.Point(110, 35);
             this.checkedListBoxTags.Name = "checkedListBoxTags";
-            this.checkedListBoxTags.Size = new System.Drawing.Size(192, 99);
+            this.checkedListBoxTags.Size = new System.Drawing.Size(190, 61);
             this.checkedListBoxTags.TabIndex = 10;
             this.checkedListBoxTags.Leave += new System.EventHandler(this.checkedListBoxTags_Leave);
             // 
@@ -288,9 +288,9 @@
             this.panelBottom.Controls.Add(this.panelDuration);
             this.panelBottom.Controls.Add(this.panelDateTag);
             this.panelBottom.Controls.Add(this.panelStartEndTime);
-            this.panelBottom.Location = new System.Drawing.Point(0, 80);
+            this.panelBottom.Location = new System.Drawing.Point(0, 100);
             this.panelBottom.Name = "panelBottom";
-            this.panelBottom.Size = new System.Drawing.Size(317, 264);
+            this.panelBottom.Size = new System.Drawing.Size(315, 262);
             this.panelBottom.TabIndex = 3;
             this.panelBottom.TabStop = true;
             // 
@@ -299,10 +299,10 @@
             this.panelBillable.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelBillable.Controls.Add(this.checkBoxBillable);
-            this.panelBillable.Location = new System.Drawing.Point(0, 233);
+            this.panelBillable.Location = new System.Drawing.Point(0, 231);
             this.panelBillable.Margin = new System.Windows.Forms.Padding(2);
             this.panelBillable.Name = "panelBillable";
-            this.panelBillable.Size = new System.Drawing.Size(317, 31);
+            this.panelBillable.Size = new System.Drawing.Size(315, 31);
             this.panelBillable.TabIndex = 10;
             // 
             // panelDuration
@@ -314,7 +314,7 @@
             this.panelDuration.Location = new System.Drawing.Point(0, 0);
             this.panelDuration.Margin = new System.Windows.Forms.Padding(2);
             this.panelDuration.Name = "panelDuration";
-            this.panelDuration.Size = new System.Drawing.Size(317, 30);
+            this.panelDuration.Size = new System.Drawing.Size(315, 30);
             this.panelDuration.TabIndex = 9;
             // 
             // panelDateTag
@@ -329,7 +329,7 @@
             this.panelDateTag.Location = new System.Drawing.Point(0, 60);
             this.panelDateTag.MinimumSize = new System.Drawing.Size(67, 100);
             this.panelDateTag.Name = "panelDateTag";
-            this.panelDateTag.Size = new System.Drawing.Size(317, 175);
+            this.panelDateTag.Size = new System.Drawing.Size(315, 173);
             this.panelDateTag.TabIndex = 8;
             this.panelDateTag.TabStop = true;
             // 
@@ -343,7 +343,7 @@
             this.panelStartEndTime.Controls.Add(this.textBoxStartTime);
             this.panelStartEndTime.Location = new System.Drawing.Point(0, 30);
             this.panelStartEndTime.Name = "panelStartEndTime";
-            this.panelStartEndTime.Size = new System.Drawing.Size(317, 30);
+            this.panelStartEndTime.Size = new System.Drawing.Size(315, 30);
             this.panelStartEndTime.TabIndex = 5;
             this.panelStartEndTime.TabStop = true;
             // 
@@ -361,7 +361,7 @@
             this.panelAddProject.Controls.Add(this.labelProjectName);
             this.panelAddProject.Location = new System.Drawing.Point(0, 558);
             this.panelAddProject.Name = "panelAddProject";
-            this.panelAddProject.Size = new System.Drawing.Size(318, 122);
+            this.panelAddProject.Size = new System.Drawing.Size(316, 122);
             this.panelAddProject.TabIndex = 1;
             this.panelAddProject.Visible = false;
             // 
@@ -384,7 +384,7 @@
             this.comboBoxWorkspace.FormattingEnabled = true;
             this.comboBoxWorkspace.Location = new System.Drawing.Point(109, 58);
             this.comboBoxWorkspace.Name = "comboBoxWorkspace";
-            this.comboBoxWorkspace.Size = new System.Drawing.Size(193, 23);
+            this.comboBoxWorkspace.Size = new System.Drawing.Size(191, 23);
             this.comboBoxWorkspace.TabIndex = 4;
             this.comboBoxWorkspace.TabStop = false;
             this.comboBoxWorkspace.Visible = false;
@@ -397,7 +397,7 @@
             this.comboBoxClient.FormattingEnabled = true;
             this.comboBoxClient.Location = new System.Drawing.Point(109, 91);
             this.comboBoxClient.Name = "comboBoxClient";
-            this.comboBoxClient.Size = new System.Drawing.Size(193, 23);
+            this.comboBoxClient.Size = new System.Drawing.Size(191, 23);
             this.comboBoxClient.TabIndex = 5;
             this.comboBoxClient.TabStop = false;
             // 
@@ -408,7 +408,7 @@
             this.checkBoxPublic.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.checkBoxPublic.Location = new System.Drawing.Point(110, 31);
             this.checkBoxPublic.Name = "checkBoxPublic";
-            this.checkBoxPublic.Size = new System.Drawing.Size(196, 19);
+            this.checkBoxPublic.Size = new System.Drawing.Size(194, 19);
             this.checkBoxPublic.TabIndex = 3;
             this.checkBoxPublic.TabStop = false;
             this.checkBoxPublic.Text = "Public (visible to the whole team)";
@@ -421,7 +421,7 @@
             this.textBoxProjectName.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.textBoxProjectName.Location = new System.Drawing.Point(109, 5);
             this.textBoxProjectName.Name = "textBoxProjectName";
-            this.textBoxProjectName.Size = new System.Drawing.Size(193, 24);
+            this.textBoxProjectName.Size = new System.Drawing.Size(191, 24);
             this.textBoxProjectName.TabIndex = 2;
             this.textBoxProjectName.TabStop = false;
             // 
@@ -453,7 +453,7 @@
             this.descriptionButton.FlatAppearance.BorderSize = 0;
             this.descriptionButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.descriptionButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.descriptionButton.Location = new System.Drawing.Point(279, 11);
+            this.descriptionButton.Location = new System.Drawing.Point(277, 31);
             this.descriptionButton.Name = "descriptionButton";
             this.descriptionButton.Size = new System.Drawing.Size(22, 22);
             this.descriptionButton.TabIndex = 17;
@@ -467,7 +467,7 @@
             this.projectButton.FlatAppearance.BorderSize = 0;
             this.projectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.projectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.projectButton.Location = new System.Drawing.Point(279, 41);
+            this.projectButton.Location = new System.Drawing.Point(277, 61);
             this.projectButton.Name = "projectButton";
             this.projectButton.Size = new System.Drawing.Size(22, 22);
             this.projectButton.TabIndex = 18;
@@ -479,9 +479,9 @@
             this.comboBoxProject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.comboBoxProject.Location = new System.Drawing.Point(110, 40);
+            this.comboBoxProject.Location = new System.Drawing.Point(110, 60);
             this.comboBoxProject.Name = "comboBoxProject";
-            this.comboBoxProject.Size = new System.Drawing.Size(192, 24);
+            this.comboBoxProject.Size = new System.Drawing.Size(190, 24);
             this.comboBoxProject.TabIndex = 1;
             this.comboBoxProject.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBoxProject_KeyUp);
             this.comboBoxProject.Leave += new System.EventHandler(this.comboBoxProject_Leave);
@@ -493,9 +493,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxDescription.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.comboBoxDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.comboBoxDescription.Location = new System.Drawing.Point(110, 10);
+            this.comboBoxDescription.Location = new System.Drawing.Point(110, 30);
             this.comboBoxDescription.Name = "comboBoxDescription";
-            this.comboBoxDescription.Size = new System.Drawing.Size(192, 24);
+            this.comboBoxDescription.Size = new System.Drawing.Size(190, 24);
             this.comboBoxDescription.TabIndex = 0;
             this.comboBoxDescription.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBoxDescription_KeyUp);
             this.comboBoxDescription.Leave += new System.EventHandler(this.comboBoxDescription_Leave);
@@ -505,6 +505,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.projectButton);
             this.Controls.Add(this.descriptionButton);
             this.Controls.Add(this.panelAddProject);
@@ -517,7 +518,7 @@
             this.Controls.Add(this.comboBoxDescription);
             this.Controls.Add(this.labelDescription);
             this.Name = "TimeEntryEditViewController";
-            this.Size = new System.Drawing.Size(317, 400);
+            this.Size = new System.Drawing.Size(315, 418);
             this.Load += new System.EventHandler(this.TimeEntryEditViewController_Load);
             this.statusStripLastUpdate.ResumeLayout(false);
             this.statusStripLastUpdate.PerformLayout();
