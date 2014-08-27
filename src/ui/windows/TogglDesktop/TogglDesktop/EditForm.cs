@@ -17,11 +17,11 @@ namespace TogglDesktop
             InitializeComponent();
         }
         public string GUID = null;
+        public TimeEntryEditViewController editView;
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
-            Hide();
-            GUID = null;
+            editView.buttonDone_Click(null, null);
         }
 
         protected override void WndProc(ref Message m)

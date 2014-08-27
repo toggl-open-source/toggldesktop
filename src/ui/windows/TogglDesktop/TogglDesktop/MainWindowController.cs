@@ -374,6 +374,7 @@ namespace TogglDesktop
                 if (editForm.Visible)
                 {
                     editForm.Hide();
+                    editForm.GUID = null;
                 }
             }
         }
@@ -414,6 +415,7 @@ namespace TogglDesktop
                 StartPosition = FormStartPosition.Manual
             };
             editForm.Controls.Add(timeEntryEditViewController);
+            editForm.editView = timeEntryEditViewController;
         }
 
         public void PopupInput(Toggl.TimeEntry te)

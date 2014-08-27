@@ -182,8 +182,8 @@ namespace TogglDesktop
         {
             if (applyAddProject())
             {
-                Toggl.ViewTimeEntryList();
                 resetForms();
+                Toggl.ViewTimeEntryList();
             }
         }
 
@@ -307,8 +307,6 @@ namespace TogglDesktop
                     }
                 }
             }
-
-            buttonContinue.Visible = te.DurationInSeconds >= 0;
         }
 
         private void buttonDelete_Click(object sender, EventArgs e)
