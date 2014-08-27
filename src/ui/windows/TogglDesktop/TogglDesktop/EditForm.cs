@@ -76,6 +76,10 @@ namespace TogglDesktop
         {
             labelArrowLeft.Visible = !left;
             labelArrowRight.Visible = left;
+
+            int posY = (Height / 2) - (labelArrowRight.Height / 2);
+            labelArrowRight.Location = new Point(labelArrowRight.Location.X, posY);
+            labelArrowLeft.Location = new Point(labelArrowLeft.Location.X, posY);
         }
     }
 }
