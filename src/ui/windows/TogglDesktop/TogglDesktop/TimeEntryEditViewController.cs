@@ -178,35 +178,13 @@ namespace TogglDesktop
             }
         }
 
-        private void buttonDone_Click(object sender, EventArgs e)
+        public void buttonDone_Click(object sender, EventArgs e)
         {
-            if (checkDropDowns())
-            {
-                return;
-            }
-
             if (applyAddProject())
             {
                 Toggl.ViewTimeEntryList();
                 resetForms();
             }
-        }
-
-        // FIXME: what does it check? what does it mean?
-        private bool checkDropDowns()
-        {
-            if (comboBoxDescription.autoCompleteListBox.Visible)
-            {
-                selectEntryAutoComplete();
-                return true;
-            }
-
-            if (comboBoxProject.autoCompleteListBox.Visible)
-            {
-                selectProjectAutoComplete();
-                return true;
-            }
-            return false;
         }
 
         void OnTimeEntryEditor(
