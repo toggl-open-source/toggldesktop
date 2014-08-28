@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,6 +13,14 @@ namespace TogglDesktop
 {
     public partial class EditForm : Form
     {
+        private const int SWP_NOMOVE = 0x0002;
+        private const int SWP_NOSIZE = 0x0001;
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SetWindowPos(IntPtr hWnd,
+            int hWndInsertAfter, int x, int u, int cx, int cy, int uFlags);
+
         public EditForm()
         {
             InitializeComponent();
@@ -109,6 +118,11 @@ namespace TogglDesktop
         internal void reset()
         {
             editView.resetForms();
+        }
+
+        internal void setWindowPos(int HWND_TOPMOST)
+        {
+            SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
         }
     }
 }
