@@ -364,7 +364,7 @@
             this.panelAddProject.Controls.Add(this.labelProjectName);
             this.panelAddProject.Location = new System.Drawing.Point(0, 558);
             this.panelAddProject.Name = "panelAddProject";
-            this.panelAddProject.Size = new System.Drawing.Size(316, 122);
+            this.panelAddProject.Size = new System.Drawing.Size(313, 122);
             this.panelAddProject.TabIndex = 1;
             this.panelAddProject.Visible = false;
             // 
@@ -387,7 +387,7 @@
             this.comboBoxWorkspace.FormattingEnabled = true;
             this.comboBoxWorkspace.Location = new System.Drawing.Point(109, 58);
             this.comboBoxWorkspace.Name = "comboBoxWorkspace";
-            this.comboBoxWorkspace.Size = new System.Drawing.Size(191, 23);
+            this.comboBoxWorkspace.Size = new System.Drawing.Size(188, 23);
             this.comboBoxWorkspace.TabIndex = 4;
             this.comboBoxWorkspace.TabStop = false;
             this.comboBoxWorkspace.Visible = false;
@@ -400,7 +400,7 @@
             this.comboBoxClient.FormattingEnabled = true;
             this.comboBoxClient.Location = new System.Drawing.Point(109, 91);
             this.comboBoxClient.Name = "comboBoxClient";
-            this.comboBoxClient.Size = new System.Drawing.Size(191, 23);
+            this.comboBoxClient.Size = new System.Drawing.Size(188, 23);
             this.comboBoxClient.TabIndex = 5;
             this.comboBoxClient.TabStop = false;
             // 
@@ -411,7 +411,7 @@
             this.checkBoxPublic.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.checkBoxPublic.Location = new System.Drawing.Point(110, 31);
             this.checkBoxPublic.Name = "checkBoxPublic";
-            this.checkBoxPublic.Size = new System.Drawing.Size(194, 19);
+            this.checkBoxPublic.Size = new System.Drawing.Size(191, 19);
             this.checkBoxPublic.TabIndex = 3;
             this.checkBoxPublic.TabStop = false;
             this.checkBoxPublic.Text = "Public (visible to the whole team)";
@@ -424,7 +424,7 @@
             this.textBoxProjectName.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.textBoxProjectName.Location = new System.Drawing.Point(109, 5);
             this.textBoxProjectName.Name = "textBoxProjectName";
-            this.textBoxProjectName.Size = new System.Drawing.Size(191, 24);
+            this.textBoxProjectName.Size = new System.Drawing.Size(188, 24);
             this.textBoxProjectName.TabIndex = 2;
             this.textBoxProjectName.TabStop = false;
             // 
