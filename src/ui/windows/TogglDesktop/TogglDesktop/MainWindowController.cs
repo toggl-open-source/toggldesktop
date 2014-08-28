@@ -421,10 +421,10 @@ namespace TogglDesktop
         public void PopupInput(Toggl.TimeEntry te)
         {
             if (te.GUID == editForm.GUID) {
-                editForm.Hide();
-                editForm.GUID = null;
+                editForm.CloseButton_Click(null, null);
                 return;
             }
+            editForm.reset();
             editableEntry = FindControlAtCursor(this);
             setEditFormLocation(te.DurationInSeconds < 0);
             editForm.GUID = te.GUID;

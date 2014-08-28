@@ -564,7 +564,7 @@ namespace TogglDesktop
             checkedListBoxTags.TabIndex += addition;
         }
 
-        private void resetForms()
+        public void resetForms()
         {
             if (panelAddProject.Visible)
             {

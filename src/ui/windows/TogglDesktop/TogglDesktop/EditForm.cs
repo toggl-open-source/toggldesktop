@@ -20,7 +20,7 @@ namespace TogglDesktop
         public string GUID = null;
         public TimeEntryEditViewController editView;
 
-        private void CloseButton_Click(object sender, EventArgs e)
+        public void CloseButton_Click(object sender, EventArgs e)
         {
             editView.buttonDone_Click(null, null);
         }
@@ -104,6 +104,11 @@ namespace TogglDesktop
             labelArrowLeft.Location = new Point(labelArrowLeft.Location.X, posY);           
 
             Location = p;
+        }
+
+        internal void reset()
+        {
+            editView.resetForms();
         }
     }
 }
