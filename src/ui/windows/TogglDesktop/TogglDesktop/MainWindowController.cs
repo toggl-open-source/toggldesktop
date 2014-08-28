@@ -111,6 +111,9 @@ namespace TogglDesktop
             idleNotificationWindowController = new IdleNotificationWindowController();
             initEditForm();
 
+            timeEntryListViewController.getListing().Scroll += MainWindowControllerEntries_Scroll;
+            timeEntryListViewController.getListing().MouseWheel += MainWindowControllerEntries_Scroll;
+
             if (!Toggl.Start(TogglDesktop.Program.Version()))
             {
                 try
@@ -122,6 +125,11 @@ namespace TogglDesktop
                 }
                 TogglDesktop.Program.Shutdown(1);
             }
+        }
+
+        private void MainWindowControllerEntries_Scroll(object sender, EventArgs e)
+        {
+            recalculatePopupPosition();
         }
 
         void OnRunningTimerState(Toggl.TimeEntry te)
@@ -645,10 +653,7 @@ namespace TogglDesktop
 
         private void MainWindowController_LocationChanged(object sender, EventArgs e)
         {
-            if (editForm != null && editForm.Visible)
-            {
-                setEditFormLocation(editableEntry.GetType() == typeof(TimerEditViewController));
-            }
+            recalculatePopupPosition();
         }
 
         private void setEditFormLocation(bool running)
@@ -686,6 +691,11 @@ namespace TogglDesktop
         }
 
         private void MainWindowController_SizeChanged(object sender, EventArgs e)
+        {
+            recalculatePopupPosition();
+        }
+
+        private void recalculatePopupPosition()
         {
             if (editForm != null && editForm.Visible)
             {

@@ -135,5 +135,10 @@ namespace TogglDesktop
         {
             Toggl.OpenInBrowser();
         }
+
+        internal FlowLayoutPanel getListing()
+        {
+            return entries;
+        }
     }
 }
