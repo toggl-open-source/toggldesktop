@@ -49,6 +49,7 @@
             this.CloseButton.Name = "CloseButton";
             this.CloseButton.Size = new System.Drawing.Size(20, 20);
             this.CloseButton.TabIndex = 0;
+            this.CloseButton.TabStop = false;
             this.CloseButton.UseMnemonic = false;
             this.CloseButton.UseVisualStyleBackColor = false;
             this.CloseButton.Click += new System.EventHandler(this.CloseButton_Click);

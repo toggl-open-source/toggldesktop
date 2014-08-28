@@ -125,7 +125,7 @@
             this.textBoxDuration.Location = new System.Drawing.Point(110, 3);
             this.textBoxDuration.Name = "textBoxDuration";
             this.textBoxDuration.Size = new System.Drawing.Size(140, 24);
-            this.textBoxDuration.TabIndex = 4;
+            this.textBoxDuration.TabIndex = 3;
             this.textBoxDuration.Leave += new System.EventHandler(this.textBoxDuration_Leave);
             // 
             // labelStartEnd
@@ -144,7 +144,7 @@
             this.textBoxStartTime.Location = new System.Drawing.Point(110, 5);
             this.textBoxStartTime.Name = "textBoxStartTime";
             this.textBoxStartTime.Size = new System.Drawing.Size(60, 24);
-            this.textBoxStartTime.TabIndex = 6;
+            this.textBoxStartTime.TabIndex = 4;
             this.textBoxStartTime.Leave += new System.EventHandler(this.textBoxStartTime_Leave);
             // 
             // labelDash
@@ -162,7 +162,7 @@
             this.textBoxEndTime.Location = new System.Drawing.Point(190, 5);
             this.textBoxEndTime.Name = "textBoxEndTime";
             this.textBoxEndTime.Size = new System.Drawing.Size(60, 24);
-            this.textBoxEndTime.TabIndex = 7;
+            this.textBoxEndTime.TabIndex = 5;
             this.textBoxEndTime.Leave += new System.EventHandler(this.textBoxEndTime_Leave);
             // 
             // labelDate
@@ -181,7 +181,7 @@
             this.dateTimePickerStartDate.Location = new System.Drawing.Point(110, 5);
             this.dateTimePickerStartDate.Name = "dateTimePickerStartDate";
             this.dateTimePickerStartDate.Size = new System.Drawing.Size(140, 24);
-            this.dateTimePickerStartDate.TabIndex = 9;
+            this.dateTimePickerStartDate.TabIndex = 6;
             this.dateTimePickerStartDate.Leave += new System.EventHandler(this.dateTimePickerStartDate_Leave);
             // 
             // labelTags
@@ -221,7 +221,7 @@
             this.buttonsPanel.Location = new System.Drawing.Point(0, 367);
             this.buttonsPanel.Name = "buttonsPanel";
             this.buttonsPanel.Size = new System.Drawing.Size(315, 31);
-            this.buttonsPanel.TabIndex = 16;
+            this.buttonsPanel.TabIndex = 9;
             // 
             // buttonDone
             // 
@@ -229,7 +229,7 @@
             this.buttonDone.Location = new System.Drawing.Point(10, 4);
             this.buttonDone.Name = "buttonDone";
             this.buttonDone.Size = new System.Drawing.Size(75, 23);
-            this.buttonDone.TabIndex = 11;
+            this.buttonDone.TabIndex = 9;
             this.buttonDone.Text = "Back";
             this.buttonDone.UseVisualStyleBackColor = true;
             this.buttonDone.Click += new System.EventHandler(this.buttonDone_Click);
@@ -259,7 +259,7 @@
             this.checkBoxBillable.Location = new System.Drawing.Point(110, 5);
             this.checkBoxBillable.Name = "checkBoxBillable";
             this.checkBoxBillable.Size = new System.Drawing.Size(63, 19);
-            this.checkBoxBillable.TabIndex = 11;
+            this.checkBoxBillable.TabIndex = 8;
             this.checkBoxBillable.Text = "Billable";
             this.checkBoxBillable.UseVisualStyleBackColor = true;
             this.checkBoxBillable.CheckedChanged += new System.EventHandler(this.checkBoxBillable_CheckedChanged);
@@ -275,7 +275,7 @@
             this.checkedListBoxTags.Location = new System.Drawing.Point(110, 35);
             this.checkedListBoxTags.Name = "checkedListBoxTags";
             this.checkedListBoxTags.Size = new System.Drawing.Size(190, 99);
-            this.checkedListBoxTags.TabIndex = 10;
+            this.checkedListBoxTags.TabIndex = 7;
             this.checkedListBoxTags.Leave += new System.EventHandler(this.checkedListBoxTags_Leave);
             // 
             // timerRunningDuration
@@ -308,7 +308,7 @@
             this.panelBillable.Margin = new System.Windows.Forms.Padding(2);
             this.panelBillable.Name = "panelBillable";
             this.panelBillable.Size = new System.Drawing.Size(315, 31);
-            this.panelBillable.TabIndex = 10;
+            this.panelBillable.TabIndex = 8;
             // 
             // panelDuration
             // 
@@ -320,7 +320,7 @@
             this.panelDuration.Margin = new System.Windows.Forms.Padding(2);
             this.panelDuration.Name = "panelDuration";
             this.panelDuration.Size = new System.Drawing.Size(315, 30);
-            this.panelDuration.TabIndex = 9;
+            this.panelDuration.TabIndex = 3;
             // 
             // panelDateTag
             // 
@@ -335,8 +335,7 @@
             this.panelDateTag.MinimumSize = new System.Drawing.Size(67, 100);
             this.panelDateTag.Name = "panelDateTag";
             this.panelDateTag.Size = new System.Drawing.Size(315, 173);
-            this.panelDateTag.TabIndex = 8;
-            this.panelDateTag.TabStop = true;
+            this.panelDateTag.TabIndex = 6;
             // 
             // panelStartEndTime
             // 
@@ -349,8 +348,7 @@
             this.panelStartEndTime.Location = new System.Drawing.Point(0, 30);
             this.panelStartEndTime.Name = "panelStartEndTime";
             this.panelStartEndTime.Size = new System.Drawing.Size(315, 30);
-            this.panelStartEndTime.TabIndex = 5;
-            this.panelStartEndTime.TabStop = true;
+            this.panelStartEndTime.TabIndex = 4;
             // 
             // panelAddProject
             // 
@@ -462,6 +460,7 @@
             this.descriptionButton.Name = "descriptionButton";
             this.descriptionButton.Size = new System.Drawing.Size(22, 22);
             this.descriptionButton.TabIndex = 17;
+            this.descriptionButton.TabStop = false;
             this.descriptionButton.Text = "▼";
             this.descriptionButton.UseVisualStyleBackColor = false;
             // 
@@ -476,6 +475,7 @@
             this.projectButton.Name = "projectButton";
             this.projectButton.Size = new System.Drawing.Size(22, 22);
             this.projectButton.TabIndex = 18;
+            this.projectButton.TabStop = false;
             this.projectButton.Text = "▼";
             this.projectButton.UseVisualStyleBackColor = false;
             // 
