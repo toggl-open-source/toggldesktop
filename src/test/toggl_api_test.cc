@@ -1,7 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
 #include "gtest/gtest.h"
-#include "gmock/gmock.h"
 
 #include <iostream>  // NOLINT
 

@@ -10,7 +10,6 @@ openssldir=third_party/openssl
 jsondir=third_party/libjson
 
 GTEST_ROOT=third_party/googletest-read-only
-GMOCK_DIR=third_party/gmock-1.7.0
 
 source_dirs=src/*.cc src/*.h src/test/* src/lib/include/*.h \
 	src/ui/linux/TogglDesktop/toggl.h src/ui/linux/TogglDesktop/toggl.cpp \
@@ -52,8 +51,6 @@ cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter \
 	-I$(openssldir)/include \
 	-I$(GTEST_ROOT)/include \
 	-I$(GTEST_ROOT) \
-	-I$(GMOCK_DIR)/include \
-	-I$(GMOCK_DIR) \
 	-I$(pocodir)/Foundation/include \
 	-I$(pocodir)/Util/include \
 	-I$(pocodir)/Data/include \
@@ -70,8 +67,6 @@ cflags=-g -DNDEBUG -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
 	-I$(openssldir)/include \
 	-I$(GTEST_ROOT)/include \
 	-I$(GTEST_ROOT) \
-	-I$(GMOCK_DIR)/include \
-	-I$(GMOCK_DIR) \
 	-I$(pocodir)/Foundation/include \
 	-I$(pocodir)/Util/include \
 	-I$(pocodir)/Data/include \
@@ -349,9 +344,6 @@ build/window_change_recorder.o: src/window_change_recorder.cc
 build/test/gtest-all.o: $(GTEST_ROOT)/src/gtest-all.cc
 	$(cxx) $(cflags) -c $(GTEST_ROOT)/src/gtest-all.cc -o build/test/gtest-all.o
 
-build/test/gmock-all.o: ${GMOCK_DIR}/src/gmock-all.cc
-	$(cxx) $(cflags) -c ${GMOCK_DIR}/src/gmock-all.cc -o build/test/gmock-all.o
-
 objects: build/proxy.o \
 	build/https_client.o \
 	build/websocket_client.o \
@@ -380,7 +372,6 @@ objects: build/proxy.o \
 	build/window_change_recorder.o
 
 test_objects: build/test/gtest-all.o \
-	build/test/gmock-all.o \
 	build/test/test_data.o \
 	build/test/toggl_api_client_test.o \
 	build/test/toggl_api_test.o
