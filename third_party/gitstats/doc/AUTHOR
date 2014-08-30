@@ -1,9 +1,0 @@
-Author can be reached by sending e-mail to <hoxu@users.sf.net>.
-Include "gitstats" in the subject or prepare to battle the spam filters.
-
-See the following command for list of authors who have contributed:
-  $ git shortlog HEAD
-
-Also thanks to the following people:
-Alexander Botero-Lowry
-
