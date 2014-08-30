@@ -103,6 +103,10 @@
 #include "gtest/internal/gtest-port.h"
 #include "gtest/internal/gtest-internal.h"
 
+#if GTEST_HAS_STD_TUPLE_
+# include <tuple>
+#endif
+
 namespace testing {
 
 // Definitions in the 'internal' and 'internal2' name spaces are
@@ -480,14 +484,16 @@ inline void PrintTo(const ::std::wstring& s, ::std::ostream* os) {
 }
 #endif  // GTEST_HAS_STD_WSTRING
 
-#if GTEST_HAS_TR1_TUPLE
-// Overload for ::std::tr1::tuple.  Needed for printing function arguments,
-// which are packed as tuples.
-
+#if GTEST_HAS_TR1_TUPLE || GTEST_HAS_STD_TUPLE_
 // Helper function for printing a tuple.  T must be instantiated with
 // a tuple type.
 template <typename T>
 void PrintTupleTo(const T& t, ::std::ostream* os);
+#endif  // GTEST_HAS_TR1_TUPLE || GTEST_HAS_STD_TUPLE_
+
+#if GTEST_HAS_TR1_TUPLE
+// Overload for ::std::tr1::tuple.  Needed for printing function arguments,
+// which are packed as tuples.
 
 // Overloaded PrintTo() for tuples of various arities.  We support
 // tuples of up-to 10 fields.  The following implementation works
@@ -561,6 +567,13 @@ void PrintTo(
 }
 #endif  // GTEST_HAS_TR1_TUPLE
 
+#if GTEST_HAS_STD_TUPLE_
+template <typename... Types>
+void PrintTo(const ::std::tuple<Types...>& t, ::std::ostream* os) {
+  PrintTupleTo(t, os);
+}
+#endif  // GTEST_HAS_STD_TUPLE_
+
 // Overload for std::pair.
 template <typename T1, typename T2>
 void PrintTo(const ::std::pair<T1, T2>& value, ::std::ostream* os) {
@@ -580,10 +593,7 @@ class UniversalPrinter {
  public:
   // MSVC warns about adding const to a function type, so we want to
   // disable the warning.
-#ifdef _MSC_VER
-# pragma warning(push)          // Saves the current warning state.
-# pragma warning(disable:4180)  // Temporarily disables warning 4180.
-#endif  // _MSC_VER
+  GTEST_DISABLE_MSC_WARNINGS_PUSH_(4180)
 
   // Note: we deliberately don't call this PrintTo(), as that name
   // conflicts with ::testing::internal::PrintTo in the body of the
@@ -600,9 +610,7 @@ class UniversalPrinter {
     PrintTo(value, os);
   }
 
-#ifdef _MSC_VER
-# pragma warning(pop)           // Restores the warning state.
-#endif  // _MSC_VER
+  GTEST_DISABLE_MSC_WARNINGS_POP_()
 };
 
 // UniversalPrintArray(begin, len, os) prints an array of 'len'
@@ -654,10 +662,7 @@ class UniversalPrinter<T&> {
  public:
   // MSVC warns about adding const to a function type, so we want to
   // disable the warning.
-#ifdef _MSC_VER
-# pragma warning(push)          // Saves the current warning state.
-# pragma warning(disable:4180)  // Temporarily disables warning 4180.
-#endif  // _MSC_VER
+  GTEST_DISABLE_MSC_WARNINGS_PUSH_(4180)
 
   static void Print(const T& value, ::std::ostream* os) {
     // Prints the address of the value.  We use reinterpret_cast here
@@ -668,9 +673,7 @@ class UniversalPrinter<T&> {
     UniversalPrint(value, os);
   }
 
-#ifdef _MSC_VER
-# pragma warning(pop)           // Restores the warning state.
-#endif  // _MSC_VER
+  GTEST_DISABLE_MSC_WARNINGS_POP_()
 };
 
 // Prints a value tersely: for a reference type, the referenced value
@@ -756,16 +759,65 @@ void UniversalPrint(const T& value, ::std::ostream* os) {
   UniversalPrinter<T1>::Print(value, os);
 }
 
-#if GTEST_HAS_TR1_TUPLE
 typedef ::std::vector<string> Strings;
 
+// TuplePolicy<TupleT> must provide:
+// - tuple_size
+//     size of tuple TupleT.
+// - get<size_t I>(const TupleT& t)
+//     static function extracting element I of tuple TupleT.
+// - tuple_element<size_t I>::type
+//     type of element I of tuple TupleT.
+template <typename TupleT>
+struct TuplePolicy;
+
+#if GTEST_HAS_TR1_TUPLE
+template <typename TupleT>
+struct TuplePolicy {
+  typedef TupleT Tuple;
+  static const size_t tuple_size = ::std::tr1::tuple_size<Tuple>::value;
+
+  template <size_t I>
+  struct tuple_element : ::std::tr1::tuple_element<I, Tuple> {};
+
+  template <size_t I>
+  static typename AddReference<
+      const typename ::std::tr1::tuple_element<I, Tuple>::type>::type get(
+      const Tuple& tuple) {
+    return ::std::tr1::get<I>(tuple);
+  }
+};
+template <typename TupleT>
+const size_t TuplePolicy<TupleT>::tuple_size;
+#endif  // GTEST_HAS_TR1_TUPLE
+
+#if GTEST_HAS_STD_TUPLE_
+template <typename... Types>
+struct TuplePolicy< ::std::tuple<Types...> > {
+  typedef ::std::tuple<Types...> Tuple;
+  static const size_t tuple_size = ::std::tuple_size<Tuple>::value;
+
+  template <size_t I>
+  struct tuple_element : ::std::tuple_element<I, Tuple> {};
+
+  template <size_t I>
+  static const typename ::std::tuple_element<I, Tuple>::type& get(
+      const Tuple& tuple) {
+    return ::std::get<I>(tuple);
+  }
+};
+template <typename... Types>
+const size_t TuplePolicy< ::std::tuple<Types...> >::tuple_size;
+#endif  // GTEST_HAS_STD_TUPLE_
+
+#if GTEST_HAS_TR1_TUPLE || GTEST_HAS_STD_TUPLE_
 // This helper template allows PrintTo() for tuples and
 // UniversalTersePrintTupleFieldsToStrings() to be defined by
 // induction on the number of tuple fields.  The idea is that
 // TuplePrefixPrinter<N>::PrintPrefixTo(t, os) prints the first N
 // fields in tuple t, and can be defined in terms of
 // TuplePrefixPrinter<N - 1>.
-
+//
 // The inductive case.
 template <size_t N>
 struct TuplePrefixPrinter {
@@ -773,9 +825,14 @@ struct TuplePrefixPrinter {
   template <typename Tuple>
   static void PrintPrefixTo(const Tuple& t, ::std::ostream* os) {
     TuplePrefixPrinter<N - 1>::PrintPrefixTo(t, os);
-    *os << ", ";
-    UniversalPrinter<typename ::std::tr1::tuple_element<N - 1, Tuple>::type>
-        ::Print(::std::tr1::get<N - 1>(t), os);
+    GTEST_INTENTIONAL_CONST_COND_PUSH_()
+    if (N > 1) {
+    GTEST_INTENTIONAL_CONST_COND_POP_()
+      *os << ", ";
+    }
+    UniversalPrinter<
+        typename TuplePolicy<Tuple>::template tuple_element<N - 1>::type>
+        ::Print(TuplePolicy<Tuple>::template get<N - 1>(t), os);
   }
 
   // Tersely prints the first N fields of a tuple to a string vector,
@@ -784,12 +841,12 @@ struct TuplePrefixPrinter {
   static void TersePrintPrefixToStrings(const Tuple& t, Strings* strings) {
     TuplePrefixPrinter<N - 1>::TersePrintPrefixToStrings(t, strings);
     ::std::stringstream ss;
-    UniversalTersePrint(::std::tr1::get<N - 1>(t), &ss);
+    UniversalTersePrint(TuplePolicy<Tuple>::template get<N - 1>(t), &ss);
     strings->push_back(ss.str());
   }
 };
 
-// Base cases.
+// Base case.
 template <>
 struct TuplePrefixPrinter<0> {
   template <typename Tuple>
@@ -798,34 +855,13 @@ struct TuplePrefixPrinter<0> {
   template <typename Tuple>
   static void TersePrintPrefixToStrings(const Tuple&, Strings*) {}
 };
-// We have to specialize the entire TuplePrefixPrinter<> class
-// template here, even though the definition of
-// TersePrintPrefixToStrings() is the same as the generic version, as
-// Embarcadero (formerly CodeGear, formerly Borland) C++ doesn't
-// support specializing a method template of a class template.
-template <>
-struct TuplePrefixPrinter<1> {
-  template <typename Tuple>
-  static void PrintPrefixTo(const Tuple& t, ::std::ostream* os) {
-    UniversalPrinter<typename ::std::tr1::tuple_element<0, Tuple>::type>::
-        Print(::std::tr1::get<0>(t), os);
-  }
 
-  template <typename Tuple>
-  static void TersePrintPrefixToStrings(const Tuple& t, Strings* strings) {
-    ::std::stringstream ss;
-    UniversalTersePrint(::std::tr1::get<0>(t), &ss);
-    strings->push_back(ss.str());
-  }
-};
-
-// Helper function for printing a tuple.  T must be instantiated with
-// a tuple type.
-template <typename T>
-void PrintTupleTo(const T& t, ::std::ostream* os) {
+// Helper function for printing a tuple.
+// Tuple must be either std::tr1::tuple or std::tuple type.
+template <typename Tuple>
+void PrintTupleTo(const Tuple& t, ::std::ostream* os) {
   *os << "(";
-  TuplePrefixPrinter< ::std::tr1::tuple_size<T>::value>::
-      PrintPrefixTo(t, os);
+  TuplePrefixPrinter<TuplePolicy<Tuple>::tuple_size>::PrintPrefixTo(t, os);
   *os << ")";
 }
 
@@ -835,11 +871,11 @@ void PrintTupleTo(const T& t, ::std::ostream* os) {
 template <typename Tuple>
 Strings UniversalTersePrintTupleFieldsToStrings(const Tuple& value) {
   Strings result;
-  TuplePrefixPrinter< ::std::tr1::tuple_size<Tuple>::value>::
+  TuplePrefixPrinter<TuplePolicy<Tuple>::tuple_size>::
       TersePrintPrefixToStrings(value, &result);
   return result;
 }
-#endif  // GTEST_HAS_TR1_TUPLE
+#endif  // GTEST_HAS_TR1_TUPLE || GTEST_HAS_STD_TUPLE_
 
 }  // namespace internal
 

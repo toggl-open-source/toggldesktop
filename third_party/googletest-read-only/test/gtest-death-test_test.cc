@@ -45,7 +45,6 @@ using testing::internal::AlwaysTrue;
 # else
 #  include <unistd.h>
 #  include <sys/wait.h>        // For waitpid.
-#  include <limits>            // For std::numeric_limits.
 # endif  // GTEST_OS_WINDOWS
 
 # include <limits.h>
@@ -327,12 +326,9 @@ TEST_F(TestForDeathTest, EmbeddedNulInMessage) {
 // Tests that death test macros expand to code which interacts well with switch
 // statements.
 TEST_F(TestForDeathTest, SwitchStatement) {
-// Microsoft compiler usually complains about switch statements without
-// case labels. We suppress that warning for this test.
-# ifdef _MSC_VER
-#  pragma warning(push)
-#  pragma warning(disable: 4065)
-# endif  // _MSC_VER
+  // Microsoft compiler usually complains about switch statements without
+  // case labels. We suppress that warning for this test.
+  GTEST_DISABLE_MSC_WARNINGS_PUSH_(4065)
 
   switch (0)
     default:
@@ -342,9 +338,7 @@ TEST_F(TestForDeathTest, SwitchStatement) {
     case 0:
       EXPECT_DEATH(_exit(1), "") << "exit in switch case";
 
-# ifdef _MSC_VER
-#  pragma warning(pop)
-# endif  // _MSC_VER
+  GTEST_DISABLE_MSC_WARNINGS_POP_()
 }
 
 // Tests that a static member function can be used in a "fast" style
@@ -700,13 +694,79 @@ TEST_F(TestForDeathTest, ExpectDebugDeathDoesNotAbort) {
 
 void AssertDebugDeathHelper(bool* aborted) {
   *aborted = true;
-  ASSERT_DEBUG_DEATH(return, "") << "This is expected to fail.";
+  GTEST_LOG_(INFO) << "Before ASSERT_DEBUG_DEATH";
+  ASSERT_DEBUG_DEATH(GTEST_LOG_(INFO) << "In ASSERT_DEBUG_DEATH"; return, "")
+      << "This is expected to fail.";
+  GTEST_LOG_(INFO) << "After ASSERT_DEBUG_DEATH";
   *aborted = false;
 }
 
 // Tests that ASSERT_DEBUG_DEATH in debug mode aborts the function on
 // failure.
 TEST_F(TestForDeathTest, AssertDebugDeathAborts) {
+  static bool aborted;
+  aborted = false;
+  EXPECT_FATAL_FAILURE(AssertDebugDeathHelper(&aborted), "");
+  EXPECT_TRUE(aborted);
+}
+
+TEST_F(TestForDeathTest, AssertDebugDeathAborts2) {
+  static bool aborted;
+  aborted = false;
+  EXPECT_FATAL_FAILURE(AssertDebugDeathHelper(&aborted), "");
+  EXPECT_TRUE(aborted);
+}
+
+TEST_F(TestForDeathTest, AssertDebugDeathAborts3) {
+  static bool aborted;
+  aborted = false;
+  EXPECT_FATAL_FAILURE(AssertDebugDeathHelper(&aborted), "");
+  EXPECT_TRUE(aborted);
+}
+
+TEST_F(TestForDeathTest, AssertDebugDeathAborts4) {
+  static bool aborted;
+  aborted = false;
+  EXPECT_FATAL_FAILURE(AssertDebugDeathHelper(&aborted), "");
+  EXPECT_TRUE(aborted);
+}
+
+TEST_F(TestForDeathTest, AssertDebugDeathAborts5) {
+  static bool aborted;
+  aborted = false;
+  EXPECT_FATAL_FAILURE(AssertDebugDeathHelper(&aborted), "");
+  EXPECT_TRUE(aborted);
+}
+
+TEST_F(TestForDeathTest, AssertDebugDeathAborts6) {
+  static bool aborted;
+  aborted = false;
+  EXPECT_FATAL_FAILURE(AssertDebugDeathHelper(&aborted), "");
+  EXPECT_TRUE(aborted);
+}
+
+TEST_F(TestForDeathTest, AssertDebugDeathAborts7) {
+  static bool aborted;
+  aborted = false;
+  EXPECT_FATAL_FAILURE(AssertDebugDeathHelper(&aborted), "");
+  EXPECT_TRUE(aborted);
+}
+
+TEST_F(TestForDeathTest, AssertDebugDeathAborts8) {
+  static bool aborted;
+  aborted = false;
+  EXPECT_FATAL_FAILURE(AssertDebugDeathHelper(&aborted), "");
+  EXPECT_TRUE(aborted);
+}
+
+TEST_F(TestForDeathTest, AssertDebugDeathAborts9) {
+  static bool aborted;
+  aborted = false;
+  EXPECT_FATAL_FAILURE(AssertDebugDeathHelper(&aborted), "");
+  EXPECT_TRUE(aborted);
+}
+
+TEST_F(TestForDeathTest, AssertDebugDeathAborts10) {
   static bool aborted;
   aborted = false;
   EXPECT_FATAL_FAILURE(AssertDebugDeathHelper(&aborted), "");
@@ -1123,16 +1183,15 @@ TEST(AutoHandleTest, AutoHandleWorks) {
 # if GTEST_OS_WINDOWS
 typedef unsigned __int64 BiggestParsable;
 typedef signed __int64 BiggestSignedParsable;
-const BiggestParsable kBiggestParsableMax = ULLONG_MAX;
-const BiggestSignedParsable kBiggestSignedParsableMax = LLONG_MAX;
 # else
 typedef unsigned long long BiggestParsable;
 typedef signed long long BiggestSignedParsable;
-const BiggestParsable kBiggestParsableMax =
-    ::std::numeric_limits<BiggestParsable>::max();
-const BiggestSignedParsable kBiggestSignedParsableMax =
-    ::std::numeric_limits<BiggestSignedParsable>::max();
 # endif  // GTEST_OS_WINDOWS
+
+// We cannot use std::numeric_limits<T>::max() as it clashes with the
+// max() macro defined by <windows.h>.
+const BiggestParsable kBiggestParsableMax = ULLONG_MAX;
+const BiggestSignedParsable kBiggestSignedParsableMax = LLONG_MAX;
 
 TEST(ParseNaturalNumberTest, RejectsInvalidFormat) {
   BiggestParsable result = 0;
@@ -1240,7 +1299,27 @@ TEST(ConditionalDeathMacrosDeathTest, ExpectsDeathWhenDeathTestsAvailable) {
   EXPECT_FATAL_FAILURE(ASSERT_DEATH_IF_SUPPORTED(;, ""), "");
 }
 
-#else
+TEST(InDeathTestChildDeathTest, ReportsDeathTestCorrectlyInFastStyle) {
+  testing::GTEST_FLAG(death_test_style) = "fast";
+  EXPECT_FALSE(InDeathTestChild());
+  EXPECT_DEATH({
+    fprintf(stderr, InDeathTestChild() ? "Inside" : "Outside");
+    fflush(stderr);
+    _exit(1);
+  }, "Inside");
+}
+
+TEST(InDeathTestChildDeathTest, ReportsDeathTestCorrectlyInThreadSafeStyle) {
+  testing::GTEST_FLAG(death_test_style) = "threadsafe";
+  EXPECT_FALSE(InDeathTestChild());
+  EXPECT_DEATH({
+    fprintf(stderr, InDeathTestChild() ? "Inside" : "Outside");
+    fflush(stderr);
+    _exit(1);
+  }, "Inside");
+}
+
+#else  // !GTEST_HAS_DEATH_TEST follows
 
 using testing::internal::CaptureStderr;
 using testing::internal::GetCapturedStderr;
@@ -1290,27 +1369,7 @@ TEST(ConditionalDeathMacrosTest, AssertDeatDoesNotReturnhIfUnsupported) {
   EXPECT_EQ(1, n);
 }
 
-TEST(InDeathTestChildDeathTest, ReportsDeathTestCorrectlyInFastStyle) {
-  testing::GTEST_FLAG(death_test_style) = "fast";
-  EXPECT_FALSE(InDeathTestChild());
-  EXPECT_DEATH({
-    fprintf(stderr, InDeathTestChild() ? "Inside" : "Outside");
-    fflush(stderr);
-    _exit(1);
-  }, "Inside");
-}
-
-TEST(InDeathTestChildDeathTest, ReportsDeathTestCorrectlyInThreadSafeStyle) {
-  testing::GTEST_FLAG(death_test_style) = "threadsafe";
-  EXPECT_FALSE(InDeathTestChild());
-  EXPECT_DEATH({
-    fprintf(stderr, InDeathTestChild() ? "Inside" : "Outside");
-    fflush(stderr);
-    _exit(1);
-  }, "Inside");
-}
-
-#endif  // GTEST_HAS_DEATH_TEST
+#endif  // !GTEST_HAS_DEATH_TEST
 
 // Tests that the death test macros expand to code which may or may not
 // be followed by operator<<, and that in either case the complete text
@@ -1341,12 +1400,9 @@ TEST(ConditionalDeathMacrosSyntaxDeathTest, SingleStatement) {
 // Tests that conditional death test macros expand to code which interacts
 // well with switch statements.
 TEST(ConditionalDeathMacrosSyntaxDeathTest, SwitchStatement) {
-// Microsoft compiler usually complains about switch statements without
-// case labels. We suppress that warning for this test.
-#ifdef _MSC_VER
-# pragma warning(push)
-# pragma warning(disable: 4065)
-#endif  // _MSC_VER
+  // Microsoft compiler usually complains about switch statements without
+  // case labels. We suppress that warning for this test.
+  GTEST_DISABLE_MSC_WARNINGS_PUSH_(4065)
 
   switch (0)
     default:
@@ -1357,9 +1413,7 @@ TEST(ConditionalDeathMacrosSyntaxDeathTest, SwitchStatement) {
     case 0:
       EXPECT_DEATH_IF_SUPPORTED(_exit(1), "") << "exit in switch case";
 
-#ifdef _MSC_VER
-# pragma warning(pop)
-#endif  // _MSC_VER
+  GTEST_DISABLE_MSC_WARNINGS_POP_()
 }
 
 // Tests that a test case whose name ends with "DeathTest" works fine
