@@ -317,11 +317,11 @@ build/gui.o: src/gui.cc
 build/context.o: src/context.cc
 	$(cxx) $(cflags) -c src/context.cc -o build/context.o
 
-build/kopsik_api_private.o: src/toggl_api_private.cc
-	$(cxx) $(cflags) -c src/toggl_api_private.cc -o build/kopsik_api_private.o
+build/toggl_api_private.o: src/toggl_api_private.cc
+	$(cxx) $(cflags) -c src/toggl_api_private.cc -o build/toggl_api_private.o
 
-build/kopsik_api.o: src/toggl_api.cc
-	$(cxx) $(cflags) -c src/toggl_api.cc -o build/kopsik_api.o
+build/toggl_api.o: src/toggl_api.cc
+	$(cxx) $(cflags) -c src/toggl_api.cc -o build/toggl_api.o
 
 build/test/test_data.o: src/test/test_data.cc
 	$(cxx) $(cflags) -c src/test/test_data.cc -o build/test/test_data.o
@@ -365,8 +365,8 @@ objects: build/proxy.o \
 	build/feedback.o \
 	build/gui.o \
 	build/context.o \
-	build/kopsik_api_private.o \
-	build/kopsik_api.o \
+	build/toggl_api_private.o \
+	build/toggl_api.o \
 	build/get_focused_window_$(osname).o \
 	build/timeline_uploader.o \
 	build/window_change_recorder.o

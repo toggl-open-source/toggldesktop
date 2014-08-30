@@ -25,7 +25,7 @@
 #include "Poco/UnicodeConverter.h"
 
 inline Poco::Logger &logger() {
-    return Poco::Logger::get("kopsik_api");
+    return Poco::Logger::get("toggl_api");
 }
 
 inline Poco::Logger &rootLogger() {
