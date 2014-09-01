@@ -92,6 +92,10 @@ class Formatter {
         const std::string value,
         int *parsed_seconds);
 
+    static bool parseDurationStringHHhMMm(
+        const std::string value,
+        int *parsed_seconds);
+
     static bool parseDurationStringMMSS(
         const std::string value,
         int *parsed_seconds);
