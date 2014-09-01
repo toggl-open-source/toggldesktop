@@ -31,6 +31,7 @@ namespace TogglDesktop
             autoCompleteListBox.MouseLeave += autoCompleteListBox_MouseLeave; 
             autoCompleteListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Bottom )));
+            autoCompleteListBox.Visible = false;
         }
 
         void autoCompleteListBox_MouseLeave(object sender, EventArgs e)
