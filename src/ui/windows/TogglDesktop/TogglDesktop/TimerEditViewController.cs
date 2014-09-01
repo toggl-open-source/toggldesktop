@@ -52,6 +52,11 @@ namespace TogglDesktop
             }
         }
 
+        public bool isAutocompleteOpened()
+        {
+            return descriptionTextBox.autoCompleteListBox.Visible;
+        }
+
         private void ignoreMouseWheel(object sender, MouseEventArgs args)
         {
             ((HandledMouseEventArgs)args).Handled = true;

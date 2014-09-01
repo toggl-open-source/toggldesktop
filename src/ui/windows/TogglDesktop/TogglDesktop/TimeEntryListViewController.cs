@@ -128,7 +128,9 @@ namespace TogglDesktop
 
         private void entries_MouseEnter(object sender, EventArgs e)
         {
-            entries.Focus();
+            if (!timerEditViewController.isAutocompleteOpened()) {
+                entries.Focus();
+            }
         }
 
         private void emptyLabel_Click(object sender, EventArgs e)
