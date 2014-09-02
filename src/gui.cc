@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include <sstream>
 
+#include "Poco/Stopwatch.h"
+
 namespace toggl {
 
 void GUI::DisplayApp() {
@@ -13,7 +15,9 @@ void GUI::DisplayApp() {
 }
 
 void GUI::DisplayLogin(const _Bool open, const uint64_t user_id) {
-    logger().debug("DisplayLogin");
+    std::stringstream ss;
+    ss << "DisplayLogin open=" << open << ", user_id=" << user_id;
+    logger().debug(ss.str());
 
     on_display_login_(open, user_id);
 }
@@ -169,8 +173,23 @@ void GUI::DisplayProjectAutocomplete(
 
 void GUI::DisplayTimeEntryList(const _Bool open,
                                TogglTimeEntryView* first) {
-    logger().debug("DisplayTimeEntryList");
+    Poco::Stopwatch stopwatch;
+    stopwatch.start();
+    {
+        std::stringstream ss;
+        bool has_items = first ? true : false;
+        ss << "DisplayTimeEntryList open=" << open
+           << ", has items=" << has_items;
+        logger().debug(ss.str());
+    }
     on_display_time_entry_list_(open, first);
+    stopwatch.stop();
+    {
+        std::stringstream ss;
+        ss << "DisplayTimeEntryList done in "
+           << stopwatch.elapsed() / 1000 << " ms";
+        logger().debug(ss.str());
+    }
 }
 
 void GUI::DisplayTags(std::vector<std::string> *tags) {
