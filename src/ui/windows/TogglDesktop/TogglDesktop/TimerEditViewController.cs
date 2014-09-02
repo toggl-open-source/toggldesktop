@@ -18,6 +18,7 @@ namespace TogglDesktop
         private UInt64 project_id = 0;
         private int defaultDescriptionTop = 20;
         private int projectDescriptionTop = 10;
+        private SizeF currentFactor;
 
         private List<Toggl.AutocompleteItem> timeEntryAutocompleteUpdate;
         private List<Toggl.AutocompleteItem> autoCompleteList;
@@ -46,10 +47,28 @@ namespace TogglDesktop
         {
             base.ScaleControl(factor, specified);
             this.descriptionTextBox.scaleList(factor);
-            if (factor.Height > 1)
+            if (factor.Height > 1 && currentFactor != factor)
             {
+                currentFactor = factor;
                 textBoxDuration.Top = (Height / 2) - (textBoxDuration.Height / 2);
+                reScale();
             }
+        }
+
+        private void reScale()
+        {
+            scaleChild(descriptionTextBox);
+            scaleChild(linkLabelDescription);
+            scaleChild(textBoxDuration);
+            scaleChild(linkLabelDuration);
+            scaleChild(linkLabelProject);
+            scaleChild(buttonStart);
+        }
+
+        private void scaleChild(Control child)
+        {
+            float scaledFontSize = (float)(int)(child.Font.Size * currentFactor.Height);
+            child.Font = new Font(child.Font.Name, 20, GraphicsUnit.Pixel);
         }
 
         public bool isAutocompleteOpened()

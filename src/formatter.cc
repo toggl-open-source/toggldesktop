@@ -264,6 +264,57 @@ bool Formatter::parseDurationStringHHMM(const std::string value,
     return true;
 }
 
+bool Formatter::parseDurationStringHHhMMm(const std::string value,
+        int *parsed_seconds) {
+    *parsed_seconds = 0;
+
+    std::string whatsleft = value;
+
+    int hours = 0;
+    {
+        Poco::StringTokenizer tokenizer(whatsleft, "h");
+        if (2 != tokenizer.count()) {
+            return false;
+        }
+        if (!Poco::NumberParser::tryParse(tokenizer[0], hours)) {
+            return false;
+        }
+        whatsleft = tokenizer[1];
+    }
+
+    int minutes = 0;
+    {
+        Poco::StringTokenizer tokenizer(whatsleft, "m");
+        if (tokenizer.count() == 0) {
+            return false;
+        }
+        if (!Poco::NumberParser::tryParse(tokenizer[0], minutes)) {
+            return false;
+        }
+        if (tokenizer.count() > 1) {
+            whatsleft = tokenizer[1];
+        } else {
+            whatsleft = "";
+        }
+    }
+
+    int seconds = 0;
+    {
+        Poco::StringTokenizer tokenizer(whatsleft, "s");
+        if (tokenizer.count()) {
+            if (!Poco::NumberParser::tryParse(tokenizer[0], seconds)) {
+                return false;
+            }
+        }
+    }
+
+    Poco::Timespan span(hours*3600 + minutes*60 + seconds, 0);
+
+    *parsed_seconds = span.totalSeconds();
+
+    return true;
+}
+
 bool Formatter::parseDurationStringMMSS(const std::string value,
                                         int *parsed_seconds) {
     *parsed_seconds = 0;
@@ -294,8 +345,15 @@ int Formatter::ParseDurationString(const std::string value) {
 
     std::string input = Poco::replace(value, " ", "");
 
-    size_t separator_pos = input.find(":");
-    if (separator_pos != std::string::npos) {
+    if (input.find("h") != std::string::npos &&
+            input.find("m") != std::string::npos) {
+        int parsed_seconds = 0;
+        if (parseDurationStringHHhMMm(input, &parsed_seconds)) {
+            return parsed_seconds;
+        }
+    }
+
+    if (input.find(":") != std::string::npos) {
         int parsed_seconds = 0;
 
         // Parse duration in seconds HH:MM:SS

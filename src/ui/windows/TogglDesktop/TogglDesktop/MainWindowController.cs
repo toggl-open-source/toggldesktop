@@ -28,6 +28,7 @@ namespace TogglDesktop
         private Point errorContentPosition = new System.Drawing.Point(0, 28);
         private bool remainOnTop = false;
         private bool topDisabled = false;
+        private SizeF currentFactor;
 
         private static MainWindowController instance;
 
@@ -63,6 +64,16 @@ namespace TogglDesktop
 
             instance = this;
         }
+
+        protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
+        {
+            base.ScaleControl(factor, specified);
+            if (currentFactor != factor)
+            {
+                currentFactor = factor;
+            }
+        }
+
 
         public static void DisableTop()
         {
@@ -325,8 +336,8 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { OnIdleNotification(guid, since, duration, started); });
                 return;
             }
-            idleNotificationWindowController.Show();
-            idleNotificationWindowController.BringToFront();
+
+            idleNotificationWindowController.ShowWindow(currentFactor);
         }
 
         void OnLogin(bool open, UInt64 user_id)

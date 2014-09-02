@@ -86,6 +86,7 @@
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(287, 280);
             this.Name = "EditForm";
             this.Padding = new System.Windows.Forms.Padding(11, 0, 11, 4);
             this.ShowInTaskbar = false;

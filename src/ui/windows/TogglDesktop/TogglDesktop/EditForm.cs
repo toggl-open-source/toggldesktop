@@ -24,6 +24,10 @@ namespace TogglDesktop
         public EditForm()
         {
             InitializeComponent();
+            Padding = new System.Windows.Forms.Padding(11, 0, 11, 4);
+            labelArrowLeft.Width = labelArrowRight.Width = 13;
+            labelArrowLeft.Height = labelArrowRight.Height = 24;
+            labelArrowRight.Location = new Point(Width-13, labelArrowRight.Location.Y);
             CancelButton = CloseButton;
         }
         public string GUID = null;

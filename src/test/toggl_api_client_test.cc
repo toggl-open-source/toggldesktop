@@ -787,6 +787,18 @@ TEST(TogglApiClientTest, ParsesDurationLikeOnTheWeb) {
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("2h45");
     ASSERT_EQ("02:45:00", te.DurationString());
+
+    te.SetDurationInSeconds(0);
+    te.SetDurationUserInput("2h");
+    ASSERT_EQ("02:00:00", te.DurationString());
+
+    te.SetDurationInSeconds(0);
+    te.SetDurationUserInput("2h 18m");
+    ASSERT_EQ("02:18:00", te.DurationString());
+
+    te.SetDurationInSeconds(0);
+    te.SetDurationUserInput("2h 18m 50s");
+    ASSERT_EQ("02:18:50", te.DurationString());
 }
 
 TEST(TogglApiClientTest, ParseDurationLargerThan24Hours) {

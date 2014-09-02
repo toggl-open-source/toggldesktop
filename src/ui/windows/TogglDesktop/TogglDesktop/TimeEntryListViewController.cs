@@ -14,6 +14,7 @@ namespace TogglDesktop
     public partial class TimeEntryListViewController : UserControl
     {
         private Object rendering = new Object();
+        private SizeF currentFactor;
 
         public TimeEntryListViewController()
         {
@@ -23,6 +24,12 @@ namespace TogglDesktop
 
             Toggl.OnTimeEntryList += OnTimeEntryList;
             Toggl.OnLogin += OnLogin;
+        }
+
+        protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
+        {
+            base.ScaleControl(factor, specified);
+            currentFactor = factor;
         }
 
         public int getEntriesTop()
@@ -71,7 +78,7 @@ namespace TogglDesktop
 
                 if (cell == null)
                 {
-                    cell = new TimeEntryCell();
+                    cell = new TimeEntryCell(currentFactor);
                     entries.Controls.Add(cell);
                     if (i == 0)
                     {
