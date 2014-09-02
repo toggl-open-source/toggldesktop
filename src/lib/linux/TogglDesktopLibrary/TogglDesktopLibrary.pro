@@ -123,3 +123,10 @@ DEPENDPATH += $$PWD/../../../../third_party/poco/Data/SQLite/src
 #QMAKE_CXXFLAGS += -fsanitize=thread -fPIE
 #QMAKE_LFLAGS += -pie -fsanitize=thread
 
+unix:!mac{
+	QMAKE_LFLAGS += -Wl,--rpath=\\\$\$\ORIGIN
+	QMAKE_LFLAGS += -Wl,--rpath=\\\$\$\ORIGIN/lib
+	QMAKE_LFLAGS += -Wl,--rpath=\\\$\$\ORIGIN/lib
+	QMAKE_RPATH=
+}
+
