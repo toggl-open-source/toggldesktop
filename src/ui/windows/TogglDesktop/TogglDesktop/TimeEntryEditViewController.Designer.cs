@@ -217,7 +217,6 @@
             this.buttonsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonsPanel.Controls.Add(this.buttonDone);
-            this.buttonsPanel.Controls.Add(this.buttonDelete);
             this.buttonsPanel.Location = new System.Drawing.Point(0, 367);
             this.buttonsPanel.Name = "buttonsPanel";
             this.buttonsPanel.Size = new System.Drawing.Size(315, 31);
@@ -236,15 +235,14 @@
             // 
             // buttonDelete
             // 
-            this.buttonDelete.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonDelete.AutoSize = true;
             this.buttonDelete.BackColor = System.Drawing.Color.Transparent;
             this.buttonDelete.FlatAppearance.BorderSize = 0;
             this.buttonDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonDelete.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.buttonDelete.Image = global::TogglDesktop.Properties.Resources.trash_can;
-            this.buttonDelete.Location = new System.Drawing.Point(260, 3);
+            this.buttonDelete.Location = new System.Drawing.Point(274, 371);
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(26, 26);
             this.buttonDelete.TabIndex = 10;
@@ -512,6 +510,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.projectButton);
+            this.Controls.Add(this.buttonDelete);
             this.Controls.Add(this.descriptionButton);
             this.Controls.Add(this.panelAddProject);
             this.Controls.Add(this.panelBottom);
@@ -528,7 +527,6 @@
             this.statusStripLastUpdate.ResumeLayout(false);
             this.statusStripLastUpdate.PerformLayout();
             this.buttonsPanel.ResumeLayout(false);
-            this.buttonsPanel.PerformLayout();
             this.panelBottom.ResumeLayout(false);
             this.panelBillable.ResumeLayout(false);
             this.panelBillable.PerformLayout();
