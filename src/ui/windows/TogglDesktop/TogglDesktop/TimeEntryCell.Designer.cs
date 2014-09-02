@@ -62,13 +62,17 @@
             // 
             // labelDateDuration
             // 
-            this.labelDateDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelDateDuration.AutoSize = true;
+            this.labelDateDuration.Dock = System.Windows.Forms.DockStyle.Right;
             this.labelDateDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelDateDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(133)))), ((int)(((byte)(133)))), ((int)(((byte)(133)))));
             this.labelDateDuration.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.labelDateDuration.Location = new System.Drawing.Point(228, 15);
+            this.labelDateDuration.Location = new System.Drawing.Point(238, 0);
+            this.labelDateDuration.MaximumSize = new System.Drawing.Size(0, 45);
+            this.labelDateDuration.MinimumSize = new System.Drawing.Size(0, 45);
             this.labelDateDuration.Name = "labelDateDuration";
-            this.labelDateDuration.Size = new System.Drawing.Size(74, 15);
+            this.labelDateDuration.Padding = new System.Windows.Forms.Padding(0, 0, 11, 0);
+            this.labelDateDuration.Size = new System.Drawing.Size(76, 45);
             this.labelDateDuration.TabIndex = 11;
             this.labelDateDuration.Text = "2 h 12 min";
             this.labelDateDuration.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -209,11 +213,15 @@
             // 
             // labelDuration
             // 
-            this.labelDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelDuration.AutoSize = true;
+            this.labelDuration.Dock = System.Windows.Forms.DockStyle.Right;
             this.labelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.labelDuration.Location = new System.Drawing.Point(239, 19);
+            this.labelDuration.Location = new System.Drawing.Point(239, 0);
+            this.labelDuration.MaximumSize = new System.Drawing.Size(0, 55);
+            this.labelDuration.MinimumSize = new System.Drawing.Size(0, 55);
             this.labelDuration.Name = "labelDuration";
-            this.labelDuration.Size = new System.Drawing.Size(64, 16);
+            this.labelDuration.Padding = new System.Windows.Forms.Padding(0, 0, 11, 0);
+            this.labelDuration.Size = new System.Drawing.Size(75, 55);
             this.labelDuration.TabIndex = 8;
             this.labelDuration.Text = "03:21:30";
             this.labelDuration.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -234,6 +242,7 @@
             this.headerPanel.ResumeLayout(false);
             this.headerPanel.PerformLayout();
             this.panel.ResumeLayout(false);
+            this.panel.PerformLayout();
             this.taskProjectPanel.ResumeLayout(false);
             this.taskProjectPanel.PerformLayout();
             this.ResumeLayout(false);
