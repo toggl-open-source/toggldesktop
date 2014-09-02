@@ -60,20 +60,19 @@
             // 
             // troubleBox
             // 
-            this.troubleBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.troubleBox.Controls.Add(this.buttonDismissError);
             this.troubleBox.Controls.Add(this.errorLabel);
+            this.troubleBox.Dock = System.Windows.Forms.DockStyle.Top;
             this.troubleBox.Location = new System.Drawing.Point(0, 0);
             this.troubleBox.Name = "troubleBox";
-            this.troubleBox.Size = new System.Drawing.Size(314, 30);
+            this.troubleBox.Size = new System.Drawing.Size(312, 30);
             this.troubleBox.TabIndex = 5;
             this.troubleBox.Visible = false;
             // 
             // buttonDismissError
             // 
             this.buttonDismissError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDismissError.Location = new System.Drawing.Point(295, 4);
+            this.buttonDismissError.Location = new System.Drawing.Point(292, 4);
             this.buttonDismissError.Name = "buttonDismissError";
             this.buttonDismissError.Size = new System.Drawing.Size(16, 23);
             this.buttonDismissError.TabIndex = 6;
@@ -245,23 +244,21 @@
             // 
             // contentPanel
             // 
-            this.contentPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.contentPanel.Location = new System.Drawing.Point(0, 28);
+            this.contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.contentPanel.Location = new System.Drawing.Point(0, 30);
             this.contentPanel.Name = "contentPanel";
-            this.contentPanel.Size = new System.Drawing.Size(314, 342);
+            this.contentPanel.Size = new System.Drawing.Size(312, 313);
             this.contentPanel.TabIndex = 7;
             // 
             // MainWindowController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(314, 349);
+            this.ClientSize = new System.Drawing.Size(312, 343);
             this.Controls.Add(this.contentPanel);
             this.Controls.Add(this.troubleBox);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(314, 380);
+            this.MinimumSize = new System.Drawing.Size(312, 374);
             this.Name = "MainWindowController";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Toggl Desktop";
