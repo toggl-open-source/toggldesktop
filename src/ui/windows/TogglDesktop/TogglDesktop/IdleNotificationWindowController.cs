@@ -14,6 +14,21 @@ namespace TogglDesktop
     {
         private UInt64 idle_started_at;
         private string time_entry_guid;
+        private SizeF currentFactor;
+
+        private void reScale()
+        {
+            scaleChild(labelIdleSince);
+            scaleChild(labelIdleDuration);
+            scaleChild(buttonKeepTime);
+            scaleChild(buttonDiscardTime);
+        }
+
+        private void scaleChild(Control child)
+        {
+            float scaledFontSize = (float)(int)(child.Font.Size * currentFactor.Height);
+            child.Font = new Font(child.Font.Name, 20, GraphicsUnit.Pixel);
+        }
 
         public IdleNotificationWindowController()
         {
@@ -81,6 +96,17 @@ namespace TogglDesktop
         private void IdleNotificationWindowController_Load(object sender, EventArgs e)
         {
 
+        }
+
+        internal void ShowWindow(SizeF factor)
+        {
+            if (factor.Height > 1)
+            {
+                currentFactor = factor;
+                reScale();
+            }
+            Show();
+            BringToFront();
         }
     }
 }

@@ -39,24 +39,27 @@
             // 
             // labelIdleSince
             // 
-            this.labelIdleSince.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.labelIdleSince.AutoSize = true;
+            this.labelIdleSince.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.labelIdleSince.Font = new System.Drawing.Font("Lucida Sans Unicode", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelIdleSince.Location = new System.Drawing.Point(13, 15);
             this.labelIdleSince.Name = "labelIdleSince";
-            this.labelIdleSince.Size = new System.Drawing.Size(189, 15);
+            this.labelIdleSince.Size = new System.Drawing.Size(185, 17);
             this.labelIdleSince.TabIndex = 0;
             this.labelIdleSince.Text = "You have been idle since 12:34:56";
+            this.labelIdleSince.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelIdleDuration
             // 
-            this.labelIdleDuration.AutoSize = true;
+            this.labelIdleDuration.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.labelIdleDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.labelIdleDuration.Location = new System.Drawing.Point(72, 40);
+            this.labelIdleDuration.Location = new System.Drawing.Point(13, 41);
             this.labelIdleDuration.Name = "labelIdleDuration";
-            this.labelIdleDuration.Size = new System.Drawing.Size(69, 15);
+            this.labelIdleDuration.Size = new System.Drawing.Size(185, 14);
             this.labelIdleDuration.TabIndex = 1;
             this.labelIdleDuration.Text = "(5 minutes)";
+            this.labelIdleDuration.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // buttonKeepTime
             // 
@@ -74,7 +77,7 @@
             this.buttonDiscardTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonDiscardTime.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonDiscardTime.Font = new System.Drawing.Font("Lucida Sans Unicode", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.buttonDiscardTime.Location = new System.Drawing.Point(126, 75);
+            this.buttonDiscardTime.Location = new System.Drawing.Point(124, 75);
             this.buttonDiscardTime.Name = "buttonDiscardTime";
             this.buttonDiscardTime.Size = new System.Drawing.Size(75, 23);
             this.buttonDiscardTime.TabIndex = 3;
@@ -91,7 +94,7 @@
             this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelMain.Location = new System.Drawing.Point(0, 0);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(214, 116);
+            this.panelMain.Size = new System.Drawing.Size(212, 110);
             this.panelMain.TabIndex = 4;
             // 
             // IdleNotificationWindowController
@@ -100,20 +103,19 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonDiscardTime;
-            this.ClientSize = new System.Drawing.Size(214, 116);
+            this.ClientSize = new System.Drawing.Size(212, 110);
             this.Controls.Add(this.panelMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(214, 147);
+            this.MaximumSize = new System.Drawing.Size(212, 141);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(214, 147);
+            this.MinimumSize = new System.Drawing.Size(212, 141);
             this.Name = "IdleNotificationWindowController";
             this.Text = "Toggl Desktop";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.IdleNotificationWindowController_FormClosing);
             this.Load += new System.EventHandler(this.IdleNotificationWindowController_Load);
             this.panelMain.ResumeLayout(false);
-            this.panelMain.PerformLayout();
             this.ResumeLayout(false);
 
         }
