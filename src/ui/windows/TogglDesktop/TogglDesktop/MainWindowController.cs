@@ -476,6 +476,10 @@ namespace TogglDesktop
                 Hide();
                 e.Cancel = true;
             }
+            if (editForm.Visible)
+            {
+                editForm.ClosePopup();
+            }
         }
 
         private void buttonDismissError_Click(object sender, EventArgs e)
