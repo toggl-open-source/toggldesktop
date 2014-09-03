@@ -82,6 +82,10 @@ namespace TogglDesktop
                 panel.Top = 0;
                 header = false;
             }
+            if (scaled)
+            {
+                checkLabelHeights();
+            }
             headerPanel.Visible = item.IsHeader;
             toolTip.SetToolTip(labelDescription, item.Description);
             toolTip.SetToolTip(labelTask, item.ProjectAndTaskLabel);
@@ -90,6 +94,22 @@ namespace TogglDesktop
             if (labelTag.Visible)
             {
                 toolTip.SetToolTip(labelTag, item.Tags.Replace("|", ", "));
+            }
+        }
+
+        private void checkLabelHeights()
+        {
+            if (labelDateDuration.Height != headerPanel.Height)
+            {
+                labelDateDuration.Height = headerPanel.Height;
+                this.labelDateDuration.MaximumSize = new System.Drawing.Size(0, headerPanel.Height);
+                this.labelDateDuration.MinimumSize = new System.Drawing.Size(0, headerPanel.Height);
+            }
+            if (labelDuration.Height != panel.Height)
+            {
+                labelDuration.Height = panel.Height;
+                this.labelDuration.MaximumSize = new System.Drawing.Size(0, panel.Height);
+                this.labelDuration.MinimumSize = new System.Drawing.Size(0, panel.Height);
             }
         }
 
