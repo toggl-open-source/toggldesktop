@@ -35,7 +35,7 @@ namespace TogglDesktop
 
         public void CloseButton_Click(object sender, EventArgs e)
         {
-            editView.buttonDone_Click(null, null);
+            ClosePopup();
         }
 
         protected override void WndProc(ref Message m)
@@ -120,7 +120,7 @@ namespace TogglDesktop
             }
             if (posY > Height - labelArrowLeft.Height - 5)
             {
-                editView.buttonDone_Click(null, null);
+                ClosePopup();
             }
 
             labelArrowRight.Location = new Point(labelArrowRight.Location.X, posY);
@@ -137,6 +137,11 @@ namespace TogglDesktop
         internal void setWindowPos(int HWND_TOPMOST)
         {
             SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+        }
+
+        internal void ClosePopup()
+        {
+            editView.buttonDone_Click(null, null);
         }
     }
 }

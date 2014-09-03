@@ -697,7 +697,7 @@ namespace TogglDesktop
             {
                 if (editForm.Visible)
                 {
-                    editForm.editView.buttonDone_Click(null, null);
+                    editForm.ClosePopup();
                 }
             }
             return base.ProcessCmdKey(ref msg, keyData);
