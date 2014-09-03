@@ -112,6 +112,16 @@ namespace TogglDesktop
                 posY -= Math.Abs(p.Y) - 10;
                 p.Y = 10;
             }
+            if (p.Y + Height >= Screen.PrimaryScreen.WorkingArea.Height)
+            {
+                int newPosY = Screen.PrimaryScreen.WorkingArea.Height - Height;
+                posY += Math.Abs(p.Y) - newPosY;
+                p.Y = newPosY;
+            }
+            if (posY > Height - labelArrowLeft.Height - 5)
+            {
+                editView.buttonDone_Click(null, null);
+            }
 
             labelArrowRight.Location = new Point(labelArrowRight.Location.X, posY);
             labelArrowLeft.Location = new Point(labelArrowLeft.Location.X, posY);           
