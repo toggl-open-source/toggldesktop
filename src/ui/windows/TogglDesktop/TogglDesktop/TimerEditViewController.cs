@@ -39,8 +39,20 @@ namespace TogglDesktop
             Toggl.OnStoppedTimerState += OnStoppedTimerState;
 
             Anchor = (AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top);
+        }
 
-            descriptionTextBox.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
+        public AutoCompleteTextBox getDescriptionTextBox() {
+            return descriptionTextBox;
+        }
+
+        public TextBox getDurationTextBox()
+        {
+            return textBoxDuration;
+        }
+
+        public bool areFieldsFocused()
+        {
+            return descriptionTextBox.Focused || textBoxDuration.Focused;
         }
 
         protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
@@ -76,11 +88,6 @@ namespace TogglDesktop
             return descriptionTextBox.autoCompleteListBox.Visible;
         }
 
-        private void ignoreMouseWheel(object sender, MouseEventArgs args)
-        {
-            ((HandledMouseEventArgs)args).Handled = true;
-        }
-
         private void autoCompleteListBox_Click(object sender, EventArgs e)
         {
             selectAutoComplete();
@@ -100,6 +107,7 @@ namespace TogglDesktop
             else if (e.KeyCode == Keys.Escape)
             {
                 descriptionTextBox.ResetListBox();
+                descriptionTextBox.Focus();
             }
         }
 

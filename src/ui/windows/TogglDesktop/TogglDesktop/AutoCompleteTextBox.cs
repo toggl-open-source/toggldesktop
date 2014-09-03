@@ -165,6 +165,7 @@ namespace TogglDesktop
                 case Keys.Escape:
                     {
                         ResetListBox();
+                        Focus();
                         break;
                     }
                 case Keys.Tab:

@@ -24,6 +24,16 @@ namespace TogglDesktop
 
             Toggl.OnTimeEntryList += OnTimeEntryList;
             Toggl.OnLogin += OnLogin;
+            timerEditViewController.getDescriptionTextBox().MouseWheel += TimeEntryListViewController_MouseWheel;
+            timerEditViewController.getDurationTextBox().MouseWheel += TimeEntryListViewController_MouseWheel;
+        }
+
+        void TimeEntryListViewController_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (!timerEditViewController.isAutocompleteOpened())
+            {
+                entries.Focus();
+            }
         }
 
         protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
