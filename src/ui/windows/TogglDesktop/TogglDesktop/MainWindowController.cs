@@ -401,18 +401,19 @@ namespace TogglDesktop
         public static Control FindControlAtPoint(Control container, Point pos)
         {
             Control child;
-            if (container.GetType() == typeof(TimeEntryCell)) return container;
-            if (container.GetType() == typeof(TimerEditViewController)) return container;
+            if (container.GetType() == typeof(TimeEntryCell) || container.GetType() == typeof(TimerEditViewController))
+            {
+                return container;
+            }
             foreach (Control c in container.Controls)
             {
                 if (c.Visible && c.Bounds.Contains(pos))
                 {
                     child = FindControlAtPoint(c, new Point(pos.X - c.Left, pos.Y - c.Top));
-                    if (child == null) return c;
-                    else if (child.GetType() == typeof(TimeEntryCell)) return child;
-                    else if (child.GetType() == typeof(TimerEditViewController)) return child;
-
-                    else return child;
+                    if (child.GetType() == typeof(TimeEntryCell) || child.GetType() == typeof(TimerEditViewController))
+                    {
+                        return child;
+                    }
                 }
             }
             return null;
@@ -445,6 +446,7 @@ namespace TogglDesktop
             }
             editForm.reset();
             editableEntry = FindControlAtCursor(this);
+            if (editableEntry == null) return;
             setEditFormLocation(te.DurationInSeconds < 0);
             editForm.GUID = te.GUID;
             editForm.Show();
