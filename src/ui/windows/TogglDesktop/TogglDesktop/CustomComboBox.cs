@@ -31,8 +31,19 @@ namespace TogglDesktop
             autoCompleteListBox.MouseLeave += autoCompleteListBox_MouseLeave;
             autoCompleteListBox.MouseWheel += autoCompleteListBox_MouseWheel;
             MouseWheel += autoCompleteListBox_MouseWheel;
+            SizeChanged += CustomComboBox_SizeChanged;
             autoCompleteListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Bottom )));
+
+        }
+
+        private void CustomComboBox_SizeChanged(object sender, EventArgs e)
+        {
+            if (Parent == null) {
+                return;
+            }
+            autoCompleteListBox.MaximumSize = new Size(Width + 10, Parent.Height - Height - Top);
+            autoCompleteListBox.Width = Width;
         }
 
         void autoCompleteListBox_MouseLeave(object sender, EventArgs e)
@@ -76,7 +87,7 @@ namespace TogglDesktop
         {
             if (!_isAdded)
             {
-                Parent.Parent.Controls.Add(autoCompleteListBox);
+                Parent.Controls.Add(autoCompleteListBox);
                 autoCompleteListBox.Left = Left;
                 autoCompleteListBox.Top = Top + Height;
                 _isAdded = true;
@@ -138,7 +149,7 @@ namespace TogglDesktop
             autoCompleteListBox.Width = 0;
 
             Focus();
-
+            int maxWidth = 0;
             using (Graphics graphics = autoCompleteListBox.CreateGraphics())
             {
                 for (int i = 0; i < autoCompleteListBox.Items.Count; i++)
@@ -149,8 +160,9 @@ namespace TogglDesktop
                     // GetItemRectangle does not work for me
                     // we add a little extra space by using '_'
                     int itemWidth = (int)graphics.MeasureString((autoCompleteListBox.Items[i].ToString()) + "_", autoCompleteListBox.Font).Width;
-                    autoCompleteListBox.Width = (autoCompleteListBox.Width < itemWidth) ? itemWidth : autoCompleteListBox.Width;
+                    maxWidth = (maxWidth < itemWidth) ? itemWidth : maxWidth;
                 }
+                autoCompleteListBox.Width = Math.Max(maxWidth, Width);
             }
 
             // Don't show the listbox again, when Enter was pressed
@@ -218,6 +230,7 @@ namespace TogglDesktop
 
         internal void openFullList(List<Toggl.AutocompleteItem> autoCompleteList)
         {
+            int maxWidth = 0;
             ResetListBox();
             autoCompleteListBox.Items.Clear();
             foreach (Toggl.AutocompleteItem item in autoCompleteList)
@@ -241,8 +254,9 @@ namespace TogglDesktop
                         // GetItemRectangle does not work for me
                         // we add a little extra space by using '_'
                         int itemWidth = (int)graphics.MeasureString((autoCompleteListBox.Items[i].ToString()) + "_", autoCompleteListBox.Font).Width;
-                        autoCompleteListBox.Width = (autoCompleteListBox.Width < itemWidth) ? itemWidth : autoCompleteListBox.Width;
+                        maxWidth = (maxWidth < itemWidth) ? itemWidth : maxWidth;
                     }
+                    autoCompleteListBox.Width = Math.Max(maxWidth, Width);                   
                 }
                 ShowListBox();
             }
