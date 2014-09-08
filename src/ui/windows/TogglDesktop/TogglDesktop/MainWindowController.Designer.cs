@@ -54,8 +54,10 @@
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timerIdleDetection = new System.Windows.Forms.Timer(this.components);
             this.contentPanel = new System.Windows.Forms.Panel();
+            this.resizeGrip = new System.Windows.Forms.StatusStrip();
             this.troubleBox.SuspendLayout();
             this.trayIconMenu.SuspendLayout();
+            this.contentPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // troubleBox
@@ -244,11 +246,28 @@
             // 
             // contentPanel
             // 
+            this.contentPanel.Controls.Add(this.resizeGrip);
             this.contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.contentPanel.Location = new System.Drawing.Point(0, 30);
             this.contentPanel.Name = "contentPanel";
             this.contentPanel.Size = new System.Drawing.Size(312, 313);
             this.contentPanel.TabIndex = 7;
+            // 
+            // resizeGrip
+            // 
+            this.resizeGrip.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.resizeGrip.AutoSize = false;
+            this.resizeGrip.BackColor = System.Drawing.Color.Transparent;
+            this.resizeGrip.Dock = System.Windows.Forms.DockStyle.None;
+            this.resizeGrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
+            this.resizeGrip.Location = new System.Drawing.Point(296, 297);
+            this.resizeGrip.MaximumSize = new System.Drawing.Size(16, 16);
+            this.resizeGrip.MinimumSize = new System.Drawing.Size(16, 16);
+            this.resizeGrip.Name = "resizeGrip";
+            this.resizeGrip.Size = new System.Drawing.Size(16, 16);
+            this.resizeGrip.Stretch = false;
+            this.resizeGrip.TabIndex = 0;
+            this.resizeGrip.Text = "resizeGrip";
             // 
             // MainWindowController
             // 
@@ -270,6 +289,7 @@
             this.troubleBox.ResumeLayout(false);
             this.troubleBox.PerformLayout();
             this.trayIconMenu.ResumeLayout(false);
+            this.contentPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -300,6 +320,7 @@
         private System.Windows.Forms.ToolStripMenuItem clearCacheToolStripMenuItem;
         private System.Windows.Forms.Timer timerIdleDetection;
         private System.Windows.Forms.Panel contentPanel;
+        private System.Windows.Forms.StatusStrip resizeGrip;
     }
 }
 
