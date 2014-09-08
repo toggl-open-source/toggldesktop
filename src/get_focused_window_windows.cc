@@ -45,10 +45,13 @@ int getFocusedWindowInfo(
     // get the filename of another process
     HANDLE ps = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE,
                             process_id);
+
     CHAR filename_buffer[kFilenameBufferSize];
     if (GetModuleFileNameExA(ps, 0, filename_buffer, kFilenameBufferSize) > 0) {
         *filename = std::string(filename_buffer);
     }
+
+	CloseHandle(ps);
 
     return 0;
 }
