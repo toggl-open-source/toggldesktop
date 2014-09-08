@@ -35,7 +35,10 @@ namespace TogglDesktop
 
         public void CloseButton_Click(object sender, EventArgs e)
         {
-            ClosePopup();
+            if (editView.dropDownsClosed())
+            {
+                ClosePopup();
+            }
         }
 
         protected override void WndProc(ref Message m)

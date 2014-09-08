@@ -110,10 +110,6 @@ namespace TogglDesktop
 
                 selectEntryAutoComplete();
             }
-            else if (e.KeyCode == Keys.Escape)
-            {
-                comboBoxDescription.ResetListBox();
-            }
         }
 
         private void autoCompleteProjectListBox_Click(object sender, EventArgs e)
@@ -131,10 +127,6 @@ namespace TogglDesktop
                 }
 
                 selectProjectAutoComplete();
-            }
-            else if (e.KeyCode == Keys.Escape)
-            {
-                comboBoxProject.ResetListBox();
             }
         }
 
@@ -736,6 +728,22 @@ namespace TogglDesktop
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        internal bool dropDownsClosed()
+        {
+            if (comboBoxDescription.autoCompleteListBox.Visible)
+            {
+                comboBoxDescription.ResetListBox();
+                return false;
+            }
+
+            if (comboBoxProject.autoCompleteListBox.Visible)
+            {
+                comboBoxProject.ResetListBox();
+                return false;
+            }
+            return true;
         }
     }
 }

@@ -194,11 +194,6 @@ namespace TogglDesktop
 
                         break;
                     }
-                case Keys.Escape:
-                    {
-                        ResetListBox();
-                        break;
-                    }
                 case Keys.Tab:
                     {
                         if (autoCompleteListBox.Visible)
