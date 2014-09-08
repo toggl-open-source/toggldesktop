@@ -177,10 +177,12 @@
             // 
             // dateTimePickerStartDate
             // 
+            this.dateTimePickerStartDate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dateTimePickerStartDate.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.dateTimePickerStartDate.Location = new System.Drawing.Point(110, 5);
             this.dateTimePickerStartDate.Name = "dateTimePickerStartDate";
-            this.dateTimePickerStartDate.Size = new System.Drawing.Size(140, 24);
+            this.dateTimePickerStartDate.Size = new System.Drawing.Size(190, 24);
             this.dateTimePickerStartDate.TabIndex = 6;
             this.dateTimePickerStartDate.Leave += new System.EventHandler(this.dateTimePickerStartDate_Leave);
             // 
