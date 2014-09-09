@@ -759,6 +759,13 @@ namespace TogglDesktop
 				button.DrawButton(e.Graphics, false);
 		}
 
+        protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified)
+        {
+            int w = (int)GetType().GetProperty("Width").GetValue(this, null);
+            int h = (int)GetType().GetProperty("Height").GetValue(this, null);
+            base.SetBoundsCore(x, y, w, h, specified);
+        }
+
 		public enum CaptionButtonState
 		{
 			Normal, Pressed, Over
