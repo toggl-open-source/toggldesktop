@@ -116,7 +116,7 @@ namespace TogglDesktop
             style.TitleFont = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular);
 
             style.ClientAreaPadding = new Padding(0, 30, 0, 1);
-            style.IconPadding = new Padding(7, 7, 10, 0);
+            style.IconPadding = new Padding(7, 6, 10, 0);
 
             this.NonClientAreaDoubleBuffering = true;
 
