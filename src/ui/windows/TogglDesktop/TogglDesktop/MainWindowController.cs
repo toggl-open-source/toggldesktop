@@ -65,6 +65,13 @@ namespace TogglDesktop
             instance = this;
         }
 
+        public void toggleMenu()
+        {
+            Point pt = new Point(Width - 90, 0);
+            pt = PointToScreen(pt);
+            trayIconMenu.Show(pt);
+        }
+
         protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
         {
             base.ScaleControl(factor, specified);

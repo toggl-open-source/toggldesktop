@@ -276,6 +276,7 @@
             this.ClientSize = new System.Drawing.Size(312, 343);
             this.Controls.Add(this.contentPanel);
             this.Controls.Add(this.troubleBox);
+            this.HelpButton = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(312, 374);
             this.Name = "MainWindowController";

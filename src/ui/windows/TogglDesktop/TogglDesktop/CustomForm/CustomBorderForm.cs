@@ -355,8 +355,21 @@ namespace TogglDesktop
 						args.Handled = true;
 						break;
 					}
+                case (int)NativeMethods.NCHITTEST.HTHELP:
+                    {
+                        if (DepressButton(helpButton))
+                        {
+                            Type type = this.GetType();
+                            if (type != null)
+                            {
+                                MethodInfo methodInfo = type.GetMethod("toggleMenu");
+                                methodInfo.Invoke(this, new object[] {});
+                            }
+                        }
+                        args.Handled = true;
+                        break;
+                    }
 			}
-
 			//TODO: handle other buttons if exist
 		}
 

@@ -80,13 +80,14 @@ namespace TogglDesktop
             style.CloseButton.DisabledState.Image = TogglDesktop.Properties.Resources.CloseDisabled;
             style.CloseButton.ActiveState.Image = TogglDesktop.Properties.Resources.ClosePressed;
             style.CloseButton.HoverState.Image = TogglDesktop.Properties.Resources.CloseHot;
-
+            /*
             style.MaximizeButton.Size = TogglDesktop.Properties.Resources.Maximize.Size;
             style.MaximizeButton.Margin = new Padding(0, 3, 0, 0); ;
             style.MaximizeButton.NormalState.Image = TogglDesktop.Properties.Resources.Maximize;
             style.MaximizeButton.DisabledState.Image = TogglDesktop.Properties.Resources.MaximizeDisabled;
             style.MaximizeButton.ActiveState.Image = TogglDesktop.Properties.Resources.MaximizePressed;
             style.MaximizeButton.HoverState.Image = TogglDesktop.Properties.Resources.MaximizeHot;
+            */
 
             style.MinimizeButton.Size = TogglDesktop.Properties.Resources.Minimize.Size;
             style.MinimizeButton.Margin = new Padding(0, 3, 0, 0); ;
@@ -94,6 +95,13 @@ namespace TogglDesktop
             style.MinimizeButton.DisabledState.Image = TogglDesktop.Properties.Resources.MinimizeDisabled;
             style.MinimizeButton.ActiveState.Image = TogglDesktop.Properties.Resources.MinimizePressed;
             style.MinimizeButton.HoverState.Image = TogglDesktop.Properties.Resources.MinimizeHot;
+
+            style.HelpButton.Size = TogglDesktop.Properties.Resources.cog.Size;
+            style.HelpButton.Margin = new Padding(0, 3, 0, 0); ;
+            style.HelpButton.NormalState.Image = TogglDesktop.Properties.Resources.cog;
+            style.HelpButton.DisabledState.Image = TogglDesktop.Properties.Resources.cogDisabled;
+            style.HelpButton.ActiveState.Image = TogglDesktop.Properties.Resources.cogPressed;
+            style.HelpButton.HoverState.Image = TogglDesktop.Properties.Resources.cogHot;
 /*
             style.RestoreButton.Size = Properties.Resources.Restore.Size;
             style.RestoreButton.Margin = new Padding(1, 5, 1, 0);

@@ -373,6 +373,18 @@
   <ItemGroup>
     <None Include="Resources\trash_can.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cog.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cogDisabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cogHot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cogPressed.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
