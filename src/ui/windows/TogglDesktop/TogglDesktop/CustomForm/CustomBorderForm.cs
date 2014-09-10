@@ -402,6 +402,11 @@ namespace TogglDesktop
                     (int)(NativeMethods.DCX.DCX_WINDOW | NativeMethods.DCX.DCX_INTERSECTRGN
                         | NativeMethods.DCX.DCX_CACHE | NativeMethods.DCX.DCX_CLIPSIBLINGS));
 
+                if (hDC == IntPtr.Zero)
+                {
+                    hDC = NativeMethods.GetWindowDC(this.Handle);
+                }
+
 			    if (hDC != IntPtr.Zero)
 			    {
 				    using (Graphics g = Graphics.FromHdc(hDC))
