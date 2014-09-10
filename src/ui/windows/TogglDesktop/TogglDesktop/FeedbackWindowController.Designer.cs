@@ -36,6 +36,7 @@
             this.buttonSend = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.panelMain = new System.Windows.Forms.Panel();
+            this.fileNameLabel = new System.Windows.Forms.Label();
             this.panelMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -110,6 +111,7 @@
             // 
             // panelMain
             // 
+            this.panelMain.Controls.Add(this.fileNameLabel);
             this.panelMain.Controls.Add(this.label1);
             this.panelMain.Controls.Add(this.buttonSend);
             this.panelMain.Controls.Add(this.comboBoxTopic);
@@ -120,6 +122,17 @@
             this.panelMain.Name = "panelMain";
             this.panelMain.Size = new System.Drawing.Size(300, 285);
             this.panelMain.TabIndex = 5;
+            // 
+            // fileNameLabel
+            // 
+            this.fileNameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.fileNameLabel.AutoEllipsis = true;
+            this.fileNameLabel.Location = new System.Drawing.Point(15, 215);
+            this.fileNameLabel.Name = "fileNameLabel";
+            this.fileNameLabel.Size = new System.Drawing.Size(173, 23);
+            this.fileNameLabel.TabIndex = 5;
+            this.fileNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // FeedbackWindowController
             // 
@@ -148,5 +161,6 @@
         private System.Windows.Forms.Button buttonSend;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.Panel panelMain;
+        private System.Windows.Forms.Label fileNameLabel;
     }
 }

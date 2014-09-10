@@ -20,6 +20,8 @@ namespace TogglDesktop
         private void FeedbackWindowController_FormClosing(object sender, FormClosingEventArgs e)
         {
             Hide();
+            openFileDialog.Reset();
+            fileNameLabel.Text = "";
             e.Cancel = true;
         }
 
@@ -30,7 +32,10 @@ namespace TogglDesktop
 
         private void buttonUploadImage_Click(object sender, EventArgs e)
         {
-            openFileDialog.ShowDialog();
+            if(openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                fileNameLabel.Text = "Uploaded: " + openFileDialog.SafeFileName;
+            }
         }
 
         private void buttonSend_Click(object sender, EventArgs e)
@@ -59,7 +64,6 @@ namespace TogglDesktop
             }
             comboBoxTopic.SelectedIndex = 0;
             richTextBoxContents.Clear();
-            openFileDialog.Reset();
             Close();
         }
     }
