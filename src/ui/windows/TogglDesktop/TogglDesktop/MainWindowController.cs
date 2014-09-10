@@ -500,7 +500,7 @@ namespace TogglDesktop
         private void sendFeedbackToolStripMenuItem_Click(object sender, EventArgs e)
         {
             feedbackWindowController.Show();
-            feedbackWindowController.BringToFront();
+            feedbackWindowController.TopMost = true;
         }
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
