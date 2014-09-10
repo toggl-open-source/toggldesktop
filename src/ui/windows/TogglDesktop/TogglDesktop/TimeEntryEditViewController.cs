@@ -723,9 +723,8 @@ namespace TogglDesktop
                 if (!comboBoxDescription.autoCompleteListBox.Visible && !comboBoxProject.autoCompleteListBox.Visible)
                 {
                     SendKeys.Send("{TAB}+{TAB}");
+                    return true;
                 }
-
-                return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
