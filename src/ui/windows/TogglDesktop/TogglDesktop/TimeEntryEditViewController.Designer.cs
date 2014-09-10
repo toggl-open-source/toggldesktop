@@ -204,6 +204,7 @@
             this.statusStripLastUpdate.Location = new System.Drawing.Point(0, 396);
             this.statusStripLastUpdate.Name = "statusStripLastUpdate";
             this.statusStripLastUpdate.Size = new System.Drawing.Size(315, 22);
+            this.statusStripLastUpdate.SizingGrip = false;
             this.statusStripLastUpdate.TabIndex = 14;
             // 
             // toolStripStatusLabelLastUpdate
