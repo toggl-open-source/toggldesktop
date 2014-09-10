@@ -133,6 +133,8 @@ src/lib/linux/TogglDesktopLibrary/Makefile
 
 # installer
 toggldesktop
+deb
+rpm
 
 # built lua
 third_party/lua-5.2.3/src/lua
