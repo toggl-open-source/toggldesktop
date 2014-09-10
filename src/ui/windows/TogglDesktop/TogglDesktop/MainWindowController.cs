@@ -359,6 +359,7 @@ namespace TogglDesktop
                 contentPanel.Controls.Remove(timeEntryEditViewController);
                 contentPanel.Controls.Add(loginViewController);
                 loginViewController.SetAcceptButton(this);
+                resizeGrip.Visible = false;
             }
             enableMenuItems();
             displayTrayIcon(true);
@@ -397,6 +398,7 @@ namespace TogglDesktop
                 contentPanel.Controls.Remove(loginViewController);
                 contentPanel.Controls.Add(timeEntryListViewController);
                 timeEntryListViewController.SetAcceptButton(this);
+                resizeGrip.Visible = true;
                 if (editForm.Visible)
                 {
                     editForm.Hide();

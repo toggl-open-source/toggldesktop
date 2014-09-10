@@ -268,6 +268,7 @@
             this.resizeGrip.Stretch = false;
             this.resizeGrip.TabIndex = 0;
             this.resizeGrip.Text = "resizeGrip";
+            this.resizeGrip.Visible = false;
             // 
             // MainWindowController
             // 
