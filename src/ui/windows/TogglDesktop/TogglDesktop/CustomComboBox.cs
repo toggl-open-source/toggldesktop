@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace TogglDesktop
 {
     public class CustomComboBox : TextBox
     {
+        [DllImport("user32", CharSet = CharSet.Auto)]
+        private static extern int GetWindowLong(IntPtr hwnd, int nIndex);
+        private const int GWL_STYLE = (-16);
+        private const int WS_VSCROLL = 0x200000;
+
         public ListBox autoCompleteListBox;
         private bool _isAdded;
         private String _formerValue = String.Empty;
@@ -37,13 +43,25 @@ namespace TogglDesktop
 
         }
 
+        public bool IsVerticalScrollBarVisible(Control c)
+        {
+            if (!c.IsHandleCreated)
+                return false;
+            int style = GetWindowLong(c.Handle, GWL_STYLE);
+            return (style & WS_VSCROLL) != 0;
+        }
+
         private void CustomComboBox_SizeChanged(object sender, EventArgs e)
         {
             if (Parent == null) {
                 return;
             }
-            autoCompleteListBox.MaximumSize = new Size(Width + 10, Parent.Height - Height - Top);
-            autoCompleteListBox.Width = Width;
+            autoCompleteListBox.MaximumSize = new Size(Width + 10 + Height -1, Parent.Height - Height - Top);
+            autoCompleteListBox.Width = Width + Height -1 ;
+            if (IsVerticalScrollBarVisible(autoCompleteListBox))
+            {
+                autoCompleteListBox.Height = Parent.Height - Height - Top;
+            }
         }
 
         void autoCompleteListBox_MouseLeave(object sender, EventArgs e)
@@ -96,7 +114,7 @@ namespace TogglDesktop
 
         public void ShowListBox()
         {
-            autoCompleteListBox.MaximumSize = new Size(Width + 10, Parent.Height - Height - Top);
+            autoCompleteListBox.MaximumSize = new Size(Width + 10 + Height -1, Parent.Height - Height - Top);
             autoCompleteListBox.Visible = true;
             autoCompleteListBox.BringToFront();
         }
@@ -162,7 +180,7 @@ namespace TogglDesktop
                     int itemWidth = (int)graphics.MeasureString((autoCompleteListBox.Items[i].ToString()) + "_", autoCompleteListBox.Font).Width;
                     maxWidth = (maxWidth < itemWidth) ? itemWidth : maxWidth;
                 }
-                autoCompleteListBox.Width = Math.Max(maxWidth, Width);
+                autoCompleteListBox.Width = Math.Max(maxWidth, Width + Height - 1);
             }
 
             // Don't show the listbox again, when Enter was pressed
@@ -251,7 +269,7 @@ namespace TogglDesktop
                         int itemWidth = (int)graphics.MeasureString((autoCompleteListBox.Items[i].ToString()) + "_", autoCompleteListBox.Font).Width;
                         maxWidth = (maxWidth < itemWidth) ? itemWidth : maxWidth;
                     }
-                    autoCompleteListBox.Width = Math.Max(maxWidth, Width);                   
+                    autoCompleteListBox.Width = Math.Max(maxWidth, Width + Height -1);                   
                 }
                 ShowListBox();
             }
