@@ -192,10 +192,10 @@ namespace TogglDesktop
             //
             // Custom Combobox Buttons
             //
-            this.projectButton.Height = this.projectButton.Width = this.descriptionButton.Height = this.descriptionButton.Width = this.comboBoxDescription.Height - 2;
-            this.projectButton.Left = this.descriptionButton.Left = this.comboBoxProject.Left + this.comboBoxProject.Width - 1 - this.projectButton.Width;
-            this.descriptionButton.Top = this.comboBoxDescription.Top + 1;
-            this.projectButton.Top = this.comboBoxProject.Top + 1;
+            this.projectButton.Height = this.projectButton.Width = this.descriptionButton.Height = this.descriptionButton.Width = this.comboBoxDescription.Height;
+            this.projectButton.Left = this.descriptionButton.Left = this.comboBoxProject.Left + this.comboBoxProject.Width - 1;
+            this.descriptionButton.Top = this.comboBoxDescription.Top;
+            this.projectButton.Top = this.comboBoxProject.Top;
 
             timeEntry = te;
 

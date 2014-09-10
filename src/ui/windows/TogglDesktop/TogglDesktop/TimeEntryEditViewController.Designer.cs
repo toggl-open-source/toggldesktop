@@ -453,12 +453,12 @@
             // 
             this.descriptionButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.descriptionButton.BackColor = System.Drawing.Color.Transparent;
-            this.descriptionButton.FlatAppearance.BorderSize = 0;
+            this.descriptionButton.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.descriptionButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.descriptionButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.descriptionButton.Location = new System.Drawing.Point(277, 31);
+            this.descriptionButton.Location = new System.Drawing.Point(276, 30);
             this.descriptionButton.Name = "descriptionButton";
-            this.descriptionButton.Size = new System.Drawing.Size(22, 22);
+            this.descriptionButton.Size = new System.Drawing.Size(24, 24);
             this.descriptionButton.TabIndex = 17;
             this.descriptionButton.TabStop = false;
             this.descriptionButton.Text = "▼";
@@ -468,12 +468,12 @@
             // 
             this.projectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.projectButton.BackColor = System.Drawing.Color.Transparent;
-            this.projectButton.FlatAppearance.BorderSize = 0;
+            this.projectButton.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.projectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.projectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.projectButton.Location = new System.Drawing.Point(277, 61);
+            this.projectButton.Location = new System.Drawing.Point(276, 60);
             this.projectButton.Name = "projectButton";
-            this.projectButton.Size = new System.Drawing.Size(22, 22);
+            this.projectButton.Size = new System.Drawing.Size(24, 24);
             this.projectButton.TabIndex = 18;
             this.projectButton.TabStop = false;
             this.projectButton.Text = "▼";
@@ -486,7 +486,7 @@
             this.comboBoxProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.comboBoxProject.Location = new System.Drawing.Point(110, 60);
             this.comboBoxProject.Name = "comboBoxProject";
-            this.comboBoxProject.Size = new System.Drawing.Size(190, 24);
+            this.comboBoxProject.Size = new System.Drawing.Size(167, 24);
             this.comboBoxProject.TabIndex = 1;
             this.comboBoxProject.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBoxProject_KeyUp);
             this.comboBoxProject.Leave += new System.EventHandler(this.comboBoxProject_Leave);
@@ -500,7 +500,7 @@
             this.comboBoxDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.comboBoxDescription.Location = new System.Drawing.Point(110, 30);
             this.comboBoxDescription.Name = "comboBoxDescription";
-            this.comboBoxDescription.Size = new System.Drawing.Size(190, 24);
+            this.comboBoxDescription.Size = new System.Drawing.Size(167, 24);
             this.comboBoxDescription.TabIndex = 0;
             this.comboBoxDescription.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBoxDescription_KeyUp);
             this.comboBoxDescription.Leave += new System.EventHandler(this.comboBoxDescription_Leave);
