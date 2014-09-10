@@ -51,7 +51,7 @@ int getFocusedWindowInfo(
         *filename = std::string(filename_buffer);
     }
 
-	CloseHandle(ps);
+    CloseHandle(ps);
 
     return 0;
 }
