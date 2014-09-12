@@ -91,6 +91,8 @@ class MainWindowController : public QMainWindow {
     void connectMenuActions();
     void connectMenuAction(QAction *action);
     void enableMenuActions();
+
+    bool hasTrayIcon() const;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_MAINWINDOWCONTROLLER_H_

@@ -263,12 +263,16 @@ void MainWindowController::writeSettings() {
 
 void MainWindowController::closeEvent(QCloseEvent *event) {
     writeSettings();
-    if (!TogglApi::instance->shutdown) {
+    if (hasTrayIcon() && !TogglApi::instance->shutdown) {
         event->ignore();
         hide();
         return;
     }
     QMainWindow::closeEvent(event);
+}
+
+bool MainWindowController::hasTrayIcon() const {
+    return false;  // FIXME:
 }
 
 void MainWindowController::showEvent(QShowEvent *event) {
