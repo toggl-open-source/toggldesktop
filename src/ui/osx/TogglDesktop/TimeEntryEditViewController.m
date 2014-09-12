@@ -536,8 +536,6 @@ extern int kDurationStringLength;
 
 - (void)startDisplayClientSelect:(NSNotification *)notification
 {
-	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
 	[self performSelectorOnMainThread:@selector(displayClientSelect:)
 						   withObject:notification.object
 						waitUntilDone:NO];
