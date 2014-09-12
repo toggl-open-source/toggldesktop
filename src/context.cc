@@ -24,6 +24,8 @@
 #include "Poco/Environment.h"
 #include "Poco/Timestamp.h"
 #include "Poco/Stopwatch.h"
+#include "Poco/File.h"
+#include "Poco/FileStream.h"
 
 namespace toggl {
 
@@ -751,16 +753,29 @@ const std::string Context::updateURL() {
 
 const std::string Context::installerPlatform() {
     if (POCO_OS_LINUX == POCO_OS) {
-        std::string arch = Poco::Environment::osArchitecture();
-        if (arch == "i386" || arch == "i686") {
-            return std::string("linux32");
-        }
-        return std::string("linux");
+        return linuxPlatformName();
     }
     if (POCO_OS_WINDOWS_NT == POCO_OS) {
         return std::string("windows");
     }
     return std::string("darwin");
+}
+
+const std::string Context::linuxPlatformName() {
+    Poco::File f("/opt/toggldesktop/platform");
+    if (f.exists() && f.isFile() && f.canRead()) {
+        Poco::FileInputStream fis(f.path());
+        if (fis.good()) {
+            std::string platform("");
+            fis >> platform;
+            return platform;
+        }
+    }
+    std::string arch = Poco::Environment::osArchitecture();
+    if (arch == "i386" || arch == "i686") {
+        return std::string("linux32");
+    }
+    return std::string("linux");
 }
 
 void Context::TimelineUpdateServerSettings() {

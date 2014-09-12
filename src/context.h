@@ -214,6 +214,7 @@ class Context {
     const std::string updateURL();
 
     static const std::string installerPlatform();
+    static const std::string linuxPlatformName();
 
     Poco::Logger &logger() const {
         return Poco::Logger::get("context");
