@@ -744,5 +744,10 @@ namespace TogglDesktop
             }
             return true;
         }
+
+        private void checkedListBoxTags_MouseEnter(object sender, EventArgs e)
+        {
+            checkedListBoxTags.Focus();
+        }
     }
 }
