@@ -707,12 +707,38 @@ namespace TogglDesktop
                 ctrlpt.Y += timeEntryListViewController.getEntriesTop() + (((TimeEntryCell)editableEntry).getTopLocation()) - (editForm.Height / 2);
             }
 
-            if ((editForm.Width + ctrlpt.X + this.Width) > Screen.PrimaryScreen.Bounds.Width) {
-                ctrlpt.X -= editForm.Width;
-                editForm.setPlacement(true, arrowTop, ctrlpt);
-            } else {
-                ctrlpt.X += this.Width;
-                editForm.setPlacement(false, arrowTop, ctrlpt);
+            if (Screen.AllScreens.Length > 1)
+            {
+                foreach (Screen s in Screen.AllScreens)
+                {
+                    if (s.WorkingArea.Location.X + s.Bounds.Width - Location.X > Width / 2)
+                    {
+                        if ((editForm.Width + ctrlpt.X + this.Width) > s.Bounds.Width + s.WorkingArea.Location.X)
+                        {
+                            ctrlpt.X -= editForm.Width;
+                            editForm.setPlacement(true, arrowTop, ctrlpt);
+                        }
+                        else
+                        {
+                            ctrlpt.X += this.Width;
+                            editForm.setPlacement(false, arrowTop, ctrlpt);
+                        }
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                if ((editForm.Width + ctrlpt.X + this.Width) > Screen.PrimaryScreen.Bounds.Width)
+                {
+                    ctrlpt.X -= editForm.Width;
+                    editForm.setPlacement(true, arrowTop, ctrlpt);
+                }
+                else
+                {
+                    ctrlpt.X += this.Width;
+                    editForm.setPlacement(false, arrowTop, ctrlpt);
+                }
             }
         }
 
