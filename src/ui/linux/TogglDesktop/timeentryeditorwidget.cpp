@@ -253,13 +253,11 @@ bool TimeEntryEditorWidget::applyNewProject() {
                                           !ui->publicProject->isChecked());
 }
 
-bool TimeEntryEditorWidget::eventFilter(QObject *object, QEvent *event)
-{
-    if (event->type() == QEvent::FocusOut)
-    {
-        if (object == ui->description)
-        {
-            TogglApi::instance->setTimeEntryDescription(guid, ui->description->currentText());
+bool TimeEntryEditorWidget::eventFilter(QObject *object, QEvent *event) {
+    if (event->type() == QEvent::FocusOut) {
+        if (object == ui->description) {
+            TogglApi::instance->setTimeEntryDescription(guid,
+                    ui->description->currentText());
         }
     }
     return false;
