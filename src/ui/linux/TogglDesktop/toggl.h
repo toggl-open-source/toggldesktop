@@ -31,6 +31,8 @@ class TogglApi : public QObject {
 
     bool startEvents();
 
+    void setEnvironment(const QString environment);
+
     void login(const QString email, const QString password);
 
     void googleLogin(const QString accessToken);

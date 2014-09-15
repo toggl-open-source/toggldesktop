@@ -211,6 +211,10 @@ void TogglApi::login(const QString email, const QString password) {
                 password.toStdString().c_str());
 }
 
+void TogglApi::setEnvironment(const QString environment) {
+    toggl_set_environment(ctx, environment.toStdString().c_str());
+}
+
 bool TogglApi::setTimeEntryStart(
     const QString guid,
     const QDate date,

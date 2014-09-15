@@ -8,6 +8,10 @@ VERSION = 7.0.0
 
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
+ENVIRONMENT = "development"
+
+DEFINES += APP_ENVIRONMENT=\\\"$$ENVIRONMENT\\\"
+
 QT       += core gui network webkitwidgets widgets
 
 TARGET = TogglDesktop

@@ -40,6 +40,8 @@ MainWindowController::MainWindowController(QWidget *parent)
   feedbackDialog(new FeedbackDialog(this)),
   idleNotificationDialog(new IdleNotificationDialog(this)),
   reminder(false) {
+    TogglApi::instance->setEnvironment(APP_ENVIRONMENT);
+
     ui->setupUi(this);
 
     ui->menuBar->setVisible(true);
