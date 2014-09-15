@@ -48,6 +48,10 @@ namespace TogglDesktop
         [DllImport("user32.dll")]
         static extern bool GetLastInputInfo(out LASTINPUTINFO plii);
 
+        [DllImport("user32", CallingConvention = CallingConvention.Winapi)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool ShowScrollBar(IntPtr hwnd, int wBar, [MarshalAs(UnmanagedType.Bool)] bool bShow);
+
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SetWindowPos(IntPtr hWnd,
@@ -57,6 +61,7 @@ namespace TogglDesktop
         private const int HWND_NOTOPMOST = -2;
         private const int SWP_NOMOVE = 0x0002;
         private const int SWP_NOSIZE = 0x0001;
+        private const int SB_HORZ = 0;
 
         public MainWindowController()
         {
@@ -81,6 +86,11 @@ namespace TogglDesktop
             }
         }
 
+        protected override void OnShown(EventArgs e)
+        {
+            hideHorizontalScrollBar();
+            base.OnShown(e);
+        }
 
         public static void DisableTop()
         {
@@ -721,6 +731,10 @@ namespace TogglDesktop
         private void MainWindowController_SizeChanged(object sender, EventArgs e)
         {
             recalculatePopupPosition();
+            if (this.timeEntryListViewController != null)
+            {
+                hideHorizontalScrollBar();
+            }
         }
 
         private void recalculatePopupPosition()
@@ -729,6 +743,11 @@ namespace TogglDesktop
             {
                 setEditFormLocation(editableEntry.GetType() == typeof(TimerEditViewController));
             }
+        }
+
+        private void hideHorizontalScrollBar()
+        {
+            ShowScrollBar(this.timeEntryListViewController.getListing().Handle, SB_HORZ, false);
         }
     }
 }

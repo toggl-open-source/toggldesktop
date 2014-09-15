@@ -22,6 +22,10 @@ namespace TogglDesktop
 
             Dock = DockStyle.Fill;
 
+            entries.AutoScroll = false;
+            entries.HorizontalScroll.Enabled = false;
+            entries.AutoScroll = true;
+
             Toggl.OnTimeEntryList += OnTimeEntryList;
             Toggl.OnLogin += OnLogin;
             timerEditViewController.getDescriptionTextBox().MouseWheel += TimeEntryListViewController_MouseWheel;
