@@ -83,6 +83,11 @@ namespace TogglDesktop
             child.Font = new Font(child.Font.Name, 20, GraphicsUnit.Pixel);
         }
 
+        public bool focusList()
+        {
+            return !(!isAutocompleteOpened() && !descriptionTextBox.Focused && !textBoxDuration.Focused);
+        }
+
         public bool isAutocompleteOpened()
         {
             return descriptionTextBox.autoCompleteListBox.Visible;

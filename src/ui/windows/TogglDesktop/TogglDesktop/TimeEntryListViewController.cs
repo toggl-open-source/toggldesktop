@@ -149,7 +149,7 @@ namespace TogglDesktop
 
         private void entries_MouseEnter(object sender, EventArgs e)
         {
-            if (!timerEditViewController.isAutocompleteOpened()) {
+            if (!timerEditViewController.focusList()) {
                 entries.Focus();
             }
         }
