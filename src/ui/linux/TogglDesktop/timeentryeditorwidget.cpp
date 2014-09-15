@@ -19,6 +19,7 @@ timer(new QTimer(this)),
 duration(0),
 previousTagList("") {
     ui->setupUi(this);
+    ui->description->installEventFilter(this);
 
     setVisible(false);
 
@@ -250,6 +251,18 @@ bool TimeEntryEditorWidget::applyNewProject() {
                                           clientID,
                                           ui->newProjectName->text(),
                                           !ui->publicProject->isChecked());
+}
+
+bool TimeEntryEditorWidget::eventFilter(QObject *object, QEvent *event)
+{
+    if (event->type() == QEvent::FocusOut)
+    {
+        if (object == ui->description)
+        {
+            TogglApi::instance->setTimeEntryDescription(guid, ui->description->currentText());
+        }
+    }
+    return false;
 }
 
 void TimeEntryEditorWidget::on_deleteButton_clicked() {

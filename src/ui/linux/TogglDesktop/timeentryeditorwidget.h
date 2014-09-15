@@ -49,6 +49,7 @@ class TimeEntryEditorWidget : public QWidget {
     QString previousTagList;
 
     bool applyNewProject();
+    bool eventFilter(QObject *object, QEvent *event);
 
  private slots:  // NOLINT
     void displayLogin(
