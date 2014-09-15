@@ -24,6 +24,7 @@ test/*
 third_party/bugsnag-qt/.git
 third_party/bugsnag-qt/build
 
+third_party/openssl/stnrUhYw
 third_party/openssl/Makefile*
 third_party/openssl/test/*test
 third_party/openssl/*/lib
@@ -41,6 +42,7 @@ third_party/openssl/ms/ntdll.mak
 third_party/openssl/ms/ssleay32.def
 third_party/openssl/ms/version32.def
 third_party/openssl/ms/version32.rc
+third_party/openssl/crypto/x86_64cpuid.s
 /
 *.0
 *.pc
@@ -55,6 +57,7 @@ third_party/poco/*/samples/*/bin/
 third_party/poco/*/*/testsuite/bin/
 third_party/poco/Foundation/src/pocomsg.h
 third_party/poco/Foundation/src/pocomsg.rc
+third_party/poco/PageCompiler/File2Page/bin/
 
 .dep
 
