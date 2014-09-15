@@ -33,18 +33,20 @@
             this.labelDateDuration = new System.Windows.Forms.Label();
             this.headerPanel = new System.Windows.Forms.Panel();
             this.panel = new System.Windows.Forms.Panel();
+            this.tagBillableContinuePanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.labelContinue = new System.Windows.Forms.Label();
+            this.labelBillable = new System.Windows.Forms.Label();
+            this.labelTag = new System.Windows.Forms.Label();
             this.taskProjectPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.labelTask = new System.Windows.Forms.Label();
             this.labelProject = new System.Windows.Forms.Label();
             this.labelClient = new System.Windows.Forms.Label();
             this.labelDescription = new System.Windows.Forms.Label();
-            this.labelContinue = new System.Windows.Forms.Label();
-            this.labelBillable = new System.Windows.Forms.Label();
-            this.labelTag = new System.Windows.Forms.Label();
             this.labelDuration = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.headerPanel.SuspendLayout();
             this.panel.SuspendLayout();
+            this.tagBillableContinuePanel.SuspendLayout();
             this.taskProjectPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -96,17 +98,64 @@
             this.panel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.panel.Controls.Add(this.tagBillableContinuePanel);
             this.panel.Controls.Add(this.taskProjectPanel);
             this.panel.Controls.Add(this.labelDescription);
-            this.panel.Controls.Add(this.labelContinue);
-            this.panel.Controls.Add(this.labelBillable);
-            this.panel.Controls.Add(this.labelTag);
             this.panel.Controls.Add(this.labelDuration);
             this.panel.Location = new System.Drawing.Point(0, 45);
             this.panel.Name = "panel";
             this.panel.Size = new System.Drawing.Size(314, 55);
             this.panel.TabIndex = 15;
             this.panel.Click += new System.EventHandler(this.panel_Click);
+            // 
+            // tagBillableContinuePanel
+            // 
+            this.tagBillableContinuePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.tagBillableContinuePanel.Controls.Add(this.labelContinue);
+            this.tagBillableContinuePanel.Controls.Add(this.labelBillable);
+            this.tagBillableContinuePanel.Controls.Add(this.labelTag);
+            this.tagBillableContinuePanel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.tagBillableContinuePanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this.tagBillableContinuePanel.Location = new System.Drawing.Point(169, 0);
+            this.tagBillableContinuePanel.Name = "tagBillableContinuePanel";
+            this.tagBillableContinuePanel.Size = new System.Drawing.Size(70, 55);
+            this.tagBillableContinuePanel.TabIndex = 16;
+            // 
+            // labelContinue
+            // 
+            this.labelContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelContinue.Image = global::TogglDesktop.Properties.Resources._continue;
+            this.labelContinue.Location = new System.Drawing.Point(43, 15);
+            this.labelContinue.Margin = new System.Windows.Forms.Padding(3, 15, 3, 0);
+            this.labelContinue.Name = "labelContinue";
+            this.labelContinue.Size = new System.Drawing.Size(24, 24);
+            this.labelContinue.TabIndex = 14;
+            this.labelContinue.UseMnemonic = false;
+            this.labelContinue.Click += new System.EventHandler(this.labelContinue_Click);
+            // 
+            // labelBillable
+            // 
+            this.labelBillable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelBillable.Image = global::TogglDesktop.Properties.Resources.icon_billable;
+            this.labelBillable.Location = new System.Drawing.Point(24, 20);
+            this.labelBillable.Margin = new System.Windows.Forms.Padding(3, 20, 3, 0);
+            this.labelBillable.Name = "labelBillable";
+            this.labelBillable.Size = new System.Drawing.Size(13, 13);
+            this.labelBillable.TabIndex = 5;
+            this.labelBillable.UseMnemonic = false;
+            this.labelBillable.Click += new System.EventHandler(this.labelBillable_Click);
+            // 
+            // labelTag
+            // 
+            this.labelTag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelTag.Image = global::TogglDesktop.Properties.Resources.icon_tags;
+            this.labelTag.Location = new System.Drawing.Point(5, 20);
+            this.labelTag.Margin = new System.Windows.Forms.Padding(3, 20, 3, 0);
+            this.labelTag.Name = "labelTag";
+            this.labelTag.Size = new System.Drawing.Size(13, 13);
+            this.labelTag.TabIndex = 13;
+            this.labelTag.UseMnemonic = false;
+            this.labelTag.Click += new System.EventHandler(this.labelTag_Click);
             // 
             // taskProjectPanel
             // 
@@ -179,42 +228,10 @@
             this.labelDescription.UseMnemonic = false;
             this.labelDescription.Click += new System.EventHandler(this.labelDescription_Click);
             // 
-            // labelContinue
-            // 
-            this.labelContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelContinue.Image = global::TogglDesktop.Properties.Resources._continue;
-            this.labelContinue.Location = new System.Drawing.Point(210, 15);
-            this.labelContinue.Name = "labelContinue";
-            this.labelContinue.Size = new System.Drawing.Size(24, 24);
-            this.labelContinue.TabIndex = 14;
-            this.labelContinue.UseMnemonic = false;
-            this.labelContinue.Click += new System.EventHandler(this.labelContinue_Click);
-            // 
-            // labelBillable
-            // 
-            this.labelBillable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelBillable.Image = global::TogglDesktop.Properties.Resources.icon_billable;
-            this.labelBillable.Location = new System.Drawing.Point(190, 20);
-            this.labelBillable.Name = "labelBillable";
-            this.labelBillable.Size = new System.Drawing.Size(13, 13);
-            this.labelBillable.TabIndex = 5;
-            this.labelBillable.UseMnemonic = false;
-            this.labelBillable.Click += new System.EventHandler(this.labelBillable_Click);
-            // 
-            // labelTag
-            // 
-            this.labelTag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelTag.Image = global::TogglDesktop.Properties.Resources.icon_tags;
-            this.labelTag.Location = new System.Drawing.Point(175, 20);
-            this.labelTag.Name = "labelTag";
-            this.labelTag.Size = new System.Drawing.Size(13, 13);
-            this.labelTag.TabIndex = 13;
-            this.labelTag.UseMnemonic = false;
-            this.labelTag.Click += new System.EventHandler(this.labelTag_Click);
-            // 
             // labelDuration
             // 
             this.labelDuration.AutoSize = true;
+            this.labelDuration.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
             this.labelDuration.Dock = System.Windows.Forms.DockStyle.Right;
             this.labelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelDuration.Location = new System.Drawing.Point(239, 0);
@@ -244,6 +261,7 @@
             this.headerPanel.PerformLayout();
             this.panel.ResumeLayout(false);
             this.panel.PerformLayout();
+            this.tagBillableContinuePanel.ResumeLayout(false);
             this.taskProjectPanel.ResumeLayout(false);
             this.taskProjectPanel.PerformLayout();
             this.ResumeLayout(false);
@@ -266,5 +284,6 @@
         private System.Windows.Forms.FlowLayoutPanel taskProjectPanel;
         private System.Windows.Forms.Label labelTask;
         private System.Windows.Forms.Label labelClient;
+        private System.Windows.Forms.FlowLayoutPanel tagBillableContinuePanel;
     }
 }
