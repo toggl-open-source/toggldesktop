@@ -25,6 +25,9 @@
    </property>
    <item>
     <widget class="QComboBox" name="description">
+     <property name="styleSheet">
+      <string notr="true">combobox-popup: 0;</string>
+     </property>
      <property name="editable">
       <bool>true</bool>
      </property>
@@ -35,6 +38,9 @@
    </item>
    <item>
     <widget class="QComboBox" name="project">
+     <property name="styleSheet">
+      <string notr="true">combobox-popup: 0;</string>
+     </property>
      <property name="editable">
       <bool>true</bool>
      </property>
