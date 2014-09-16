@@ -89,12 +89,14 @@ void TimeEntryEditorWidget::displayTimeEntryAutocomplete(
     if (ui->description->hasFocus()) {
         return;
     }
+    QString currentText = ui->description->currentText();
     ui->description->clear();
     ui->description->addItem("");
     foreach(AutocompleteView *view, timeEntryAutocompleteUpdate) {
         ui->description->addItem(view->Text, QVariant::fromValue(view));
     }
     timeEntryAutocompleteNeedsUpdate = false;
+    ui->description->setEditText(currentText);
 }
 
 void TimeEntryEditorWidget::displayProjectAutocomplete(
