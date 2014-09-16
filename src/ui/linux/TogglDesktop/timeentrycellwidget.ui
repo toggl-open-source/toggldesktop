@@ -135,7 +135,7 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QLabel" name="description">
+          <widget class="ClickableLabel" name="description">
            <property name="styleSheet">
             <string notr="true">border:none;</string>
            </property>
@@ -145,7 +145,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="project">
+          <widget class="ClickableLabel" name="project">
            <property name="styleSheet">
             <string notr="true">border:none;</string>
            </property>
@@ -264,7 +264,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="duration">
+          <widget class="ClickableLabel" name="duration">
            <property name="minimumSize">
             <size>
              <width>65</width>
@@ -296,6 +296,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ClickableLabel</class>
+   <extends>QLabel</extends>
+   <header>clickablelabel.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="Resurces.qrc"/>
  </resources>

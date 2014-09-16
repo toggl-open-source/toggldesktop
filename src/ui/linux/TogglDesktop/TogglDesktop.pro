@@ -48,7 +48,8 @@ SOURCES += main.cpp\
     preferencesdialog.cpp \
     aboutdialog.cpp \
     feedbackdialog.cpp \
-    idlenotificationdialog.cpp
+    idlenotificationdialog.cpp \
+    clickablelabel.cpp
 
 HEADERS  += \
     updateview.h \
@@ -75,7 +76,8 @@ HEADERS  += \
     preferencesdialog.h \
     aboutdialog.h \
     feedbackdialog.h \
-    idlenotificationdialog.h
+    idlenotificationdialog.h \
+    clickablelabel.h
 
 FORMS    += \
     mainwindowcontroller.ui \

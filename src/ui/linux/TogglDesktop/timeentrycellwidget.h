@@ -6,6 +6,7 @@
 #include <QWidget>
 
 #include "./timeentryview.h"
+#include "./clickablelabel.h"
 
 namespace Ui {
 class TimeEntryCellWidget;
@@ -20,7 +21,7 @@ class TimeEntryCellWidget : public QWidget {
 
     void display(TimeEntryView *view);
     QSize getSizeHint(bool is_header);
-
+    void labelClicked(QString field_name);
 
  protected:
     virtual void mousePressEvent(QMouseEvent *event);

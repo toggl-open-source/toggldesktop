@@ -36,6 +36,10 @@ void TimeEntryCellWidget::display(TimeEntryView *view) {
         QString("<p style='color:black;'>"+view->ProjectAndTaskLabel+"</p>"));
 }
 
+void TimeEntryCellWidget::labelClicked(QString field_name) {
+    TogglApi::instance->editTimeEntry(guid, field_name);
+}
+
 TimeEntryCellWidget::~TimeEntryCellWidget() {
     delete ui;
 }
