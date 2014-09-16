@@ -16,6 +16,7 @@ void TimeEntryCellWidget::display(TimeEntryView *view) {
 
     ui->description->setText(view->Description);
     ui->project->setText(view->ProjectAndTaskLabel);
+    ui->project->setStyleSheet("color: '" + getProjectColor(view->Color) + "'");
     ui->duration->setText(view->Duration);
 
     ui->billable->setVisible(view->Billable);
@@ -53,4 +54,12 @@ void TimeEntryCellWidget::mousePressEvent(QMouseEvent *event) {
 
 void TimeEntryCellWidget::on_continueButton_clicked() {
     TogglApi::instance->continueTimeEntry(guid);
+}
+
+QString TimeEntryCellWidget::getProjectColor(QString color) {
+    if(color.length() == 0) {
+        return QString("#9d9d9d");
+    } else {
+        return color;
+    }
 }

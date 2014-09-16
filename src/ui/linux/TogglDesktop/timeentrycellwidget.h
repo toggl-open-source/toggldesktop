@@ -32,6 +32,7 @@ class TimeEntryCellWidget : public QWidget {
     Ui::TimeEntryCellWidget *ui;
 
     QString guid;
+    QString getProjectColor(QString color);
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYCELLWIDGET_H_
