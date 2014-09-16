@@ -18,6 +18,6 @@ void ClickableLabel::mousePressEvent(QMouseEvent * event) {
     }
 
     TimeEntryCellWidget *Cell =
-            qobject_cast<TimeEntryCellWidget *>(parentObject);
+        qobject_cast<TimeEntryCellWidget *>(parentObject);
     Cell->labelClicked(this->objectName());
 }
