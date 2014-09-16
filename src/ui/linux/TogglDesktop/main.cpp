@@ -50,10 +50,6 @@ int main(int argc, char *argv[]) try {
     a.setApplicationVersion(APP_VERSION);
     Bugsnag::app.version = APP_VERSION;
 
-    QStringList libPaths = QCoreApplication::libraryPaths();
-    libPaths << QCoreApplication::applicationDirPath() + QString("/plugins");
-    QCoreApplication::setLibraryPaths(libPaths);
-
     MainWindowController w;
     w.show();
 
