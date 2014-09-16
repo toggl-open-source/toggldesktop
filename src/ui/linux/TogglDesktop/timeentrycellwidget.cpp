@@ -57,9 +57,8 @@ void TimeEntryCellWidget::on_continueButton_clicked() {
 }
 
 QString TimeEntryCellWidget::getProjectColor(QString color) {
-    if(color.length() == 0) {
+    if (color.length() == 0) {
         return QString("#9d9d9d");
-    } else {
-        return color;
     }
+    return color;
 }
