@@ -1,20 +1,21 @@
-#ifndef CLICKABLELABEL_H
-#define CLICKABLELABEL_H
+// Copyright 2014 Toggl Desktop developers.
+
+#ifndef SRC_UI_LINUX_TOGGLDESKTOP_CLICKABLELABEL_H_
+#define SRC_UI_LINUX_TOGGLDESKTOP_CLICKABLELABEL_H_
 
 #include <QLabel>
 #include <QDebug>
 
-class ClickableLabel : public QLabel
-{
+class ClickableLabel : public QLabel {
  public:
-    explicit ClickableLabel( QWidget * parent = 0 );
+    explicit ClickableLabel(QWidget * parent = 0);
     ~ClickableLabel();
 
  signals:
     void clicked();
 
  protected:
-    void mousePressEvent ( QMouseEvent * event ) ;
+    void mousePressEvent(QMouseEvent * event);
 };
 
-#endif // CLICKABLELABEL_H
+#endif  // SRC_UI_LINUX_TOGGLDESKTOP_CLICKABLELABEL_H_
