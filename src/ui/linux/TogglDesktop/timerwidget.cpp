@@ -55,7 +55,7 @@ void TimerWidget::focusChanged(QWidget *old, QWidget *now) {
 void TimerWidget::displayRunningTimerState(
     TimeEntryView *te) {
     ui->start->setText("Stop");
-    ui->start->setStyleSheet("background-color: #e20000");
+    ui->start->setStyleSheet("background-color: #e20000; color:'white'; font-weight: bold;");
 
     ui->description->setEditText(te->Description);
     ui->description->setEnabled(false);
@@ -77,7 +77,7 @@ void TimerWidget::displayRunningTimerState(
 
 void TimerWidget::displayStoppedTimerState() {
     ui->start->setText("Start");
-    ui->start->setStyleSheet("background-color: #47bc00");
+    ui->start->setStyleSheet("background-color: #47bc00; color:'white'; font-weight: bold;");
 
     if (!ui->description->hasFocus()) {
         ui->description->setEditText(descriptionPlaceholder);
