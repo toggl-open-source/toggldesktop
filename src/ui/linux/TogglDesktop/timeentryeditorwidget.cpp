@@ -160,7 +160,7 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
         setVisible(true);
 
         if (focused_field_name == TogglApi::Duration) {
-            ui->duration->setFocus();
+            on_timeOverview_linkActivated("");
         } else if (focused_field_name == TogglApi::Description) {
             ui->description->setFocus();
         } else if (focused_field_name == TogglApi::Project) {
