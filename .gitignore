@@ -72,11 +72,6 @@ third_party/poco/PageCompiler/File2Page/bin/
 *.log
 *.zip
 *.app
-*.tar.gz
-
-src/branding/
-
-*.dmg
 
 coverage
 
@@ -135,10 +130,15 @@ src/ui/linux/TogglDesktop/Makefile
 src/lib/linux/TogglDesktopLibrary/Makefile
 
 # installer
+src/branding/
 toggldesktop
 deb
+*.deb
 rpm
+*.tar.gz
+*.dmg
 
 # built lua
 third_party/lua-5.2.3/src/lua
 third_party/lua-5.2.3/src/luac
+
