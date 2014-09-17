@@ -16,10 +16,22 @@ namespace TogglDesktop
         private const int SWP_NOMOVE = 0x0002;
         private const int SWP_NOSIZE = 0x0001;
 
+        private const int wmNcLButtonDown = 0xA1;
+        private const int wmNcLButtonUp = 0xA2;
+        private const int HtBottomRight = 17;
+
+        private bool isResizing = false;
+
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SetWindowPos(IntPtr hWnd,
             int hWndInsertAfter, int x, int u, int cx, int cy, int uFlags);
+
+        [DllImport("user32.dll")]
+        private static extern int ReleaseCapture();
+
+        [DllImport("user32.dll")]
+        private static extern int SendMessage(IntPtr hwnd, int msg, int wparam, int lparam);
 
         public EditForm()
         {
@@ -145,6 +157,28 @@ namespace TogglDesktop
         internal void ClosePopup()
         {
             editView.buttonDone_Click(null, null);
+        }
+
+        private void resizeHandle_MouseDown(object sender, MouseEventArgs e)
+        {
+            isResizing = true;
+        }
+
+        private void resizeHandle_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isResizing)
+            {
+                isResizing = (e.Button == MouseButtons.Left);
+                ReleaseCapture();
+                if (isResizing)
+                {
+                    SendMessage(Handle, wmNcLButtonDown, HtBottomRight, 0);
+                }
+                else
+                {
+                    SendMessage(Handle, wmNcLButtonUp, HtBottomRight, 0);
+                }
+            }
         }
     }
 }

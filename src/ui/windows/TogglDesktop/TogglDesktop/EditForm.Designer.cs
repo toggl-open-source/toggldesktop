@@ -32,6 +32,7 @@
             this.CloseButton = new System.Windows.Forms.Button();
             this.labelArrowLeft = new System.Windows.Forms.Label();
             this.labelArrowRight = new System.Windows.Forms.Label();
+            this.resizeHandle = new System.Windows.Forms.StatusStrip();
             this.SuspendLayout();
             // 
             // CloseButton
@@ -72,6 +73,19 @@
             this.labelArrowRight.Size = new System.Drawing.Size(13, 24);
             this.labelArrowRight.TabIndex = 2;
             // 
+            // resizeHandle
+            // 
+            this.resizeHandle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.resizeHandle.AutoSize = false;
+            this.resizeHandle.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.resizeHandle.Dock = System.Windows.Forms.DockStyle.None;
+            this.resizeHandle.Location = new System.Drawing.Point(293, 395);
+            this.resizeHandle.Name = "resizeHandle";
+            this.resizeHandle.Size = new System.Drawing.Size(20, 20);
+            this.resizeHandle.TabIndex = 3;
+            this.resizeHandle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.resizeHandle_MouseDown);
+            this.resizeHandle.MouseMove += new System.Windows.Forms.MouseEventHandler(this.resizeHandle_MouseMove);
+            // 
             // EditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -80,6 +94,7 @@
             this.BackgroundImage = global::TogglDesktop.Properties.Resources.popup_back_right;
             this.ClientSize = new System.Drawing.Size(325, 420);
             this.ControlBox = false;
+            this.Controls.Add(this.resizeHandle);
             this.Controls.Add(this.labelArrowRight);
             this.Controls.Add(this.labelArrowLeft);
             this.Controls.Add(this.CloseButton);
@@ -101,5 +116,6 @@
         private System.Windows.Forms.Button CloseButton;
         private System.Windows.Forms.Label labelArrowLeft;
         private System.Windows.Forms.Label labelArrowRight;
+        private System.Windows.Forms.StatusStrip resizeHandle;
     }
 }
