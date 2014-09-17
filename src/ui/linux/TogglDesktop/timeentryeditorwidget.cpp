@@ -301,11 +301,13 @@ void TimeEntryEditorWidget::on_description_currentIndexChanged(int index) {
     QVariant data = ui->description->currentData();
     if (data.canConvert<AutocompleteView *>()) {
         AutocompleteView *view = data.value<AutocompleteView *>();
+        ui->description->setEditText(view->Description);
+        ui->project->setFocus();
+        ui->description->setFocus();
         TogglApi::instance->setTimeEntryProject(guid,
                                                 view->TaskID,
                                                 view->ProjectID,
                                                 "");
-        ui->description->setEditText(view->Description);
     }
 }
 
