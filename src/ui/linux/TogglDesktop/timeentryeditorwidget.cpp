@@ -150,6 +150,17 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
     const bool open,
     TimeEntryView *view,
     const QString focused_field_name) {
+
+    if (!ui->description->hasFocus()) {
+        ui->description->setEditText(view->Description);
+    }
+    if (!ui->project->hasFocus()) {
+        ui->project->setEditText(view->ProjectAndTaskLabel);
+    }
+    if (!ui->duration->hasFocus()) {
+        ui->duration->setText(view->Duration);
+    }
+
     if (open) {
         ui->timeDetails->setVisible(false);
         ui->timeOverview->setVisible(true);
@@ -175,12 +186,6 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
         timer->start(1000);
     }
 
-    if (!ui->description->hasFocus()) {
-        ui->description->setEditText(view->Description);
-    }
-    if (!ui->project->hasFocus()) {
-        ui->project->setEditText(view->ProjectAndTaskLabel);
-    }
     if (!ui->start->hasFocus()) {
         ui->start->setText(view->StartTimeString);
     }
@@ -192,9 +197,7 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
     if (!ui->dateEdit->hasFocus()) {
         ui->dateEdit->setDateTime(QDateTime::fromTime_t(view->Started));
     }
-    if (!ui->duration->hasFocus()) {
-        ui->duration->setText(view->Duration);
-    }
+
     ui->billable->setChecked(view->Billable);
     ui->timeOverview->setText(
         "<a href=\"#view_time_details\">" + view->timeOverview() + "</a>");
