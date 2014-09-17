@@ -87,8 +87,7 @@ Toggl built and signed app for Windows is [available for download](https://www.t
 
 Linux
 -----
-* [64 bit app](https://www.toggl.com/api/v8/installer?app=td&platform=linux&channel=beta)
-* [32 bit app](https://www.toggl.com/api/v8/installer?app=td&platform=linux32&channel=beta)
-* [deb 64 bit](https://www.toggl.com/api/v8/installer?app=td&platform=deb64&channel=beta)
+* [app](https://www.toggl.com/api/v8/installer?app=td&platform=linux&channel=beta) (64 bit)
+* [deb](https://www.toggl.com/api/v8/installer?app=td&platform=deb64&channel=beta) (64 bit)
 
-We'll provide deb 32 bit and rpm packages soon.
+We'll provide a rpm package soon, too.
