@@ -59,6 +59,9 @@
       <number>0</number>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="spacing">
+       <number>6</number>
+      </property>
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -75,7 +78,10 @@
        <widget class="QFrame" name="DecrProjFrame">
         <layout class="QVBoxLayout" name="verticalLayout">
          <property name="spacing">
-          <number>6</number>
+          <number>4</number>
+         </property>
+         <property name="leftMargin">
+          <number>7</number>
          </property>
          <property name="topMargin">
           <number>10</number>
@@ -100,7 +106,7 @@
            </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgba(45, 45, 45, 255);
-color: rgb(200, 200, 200);</string>
+color: rgb(200, 200, 200);combobox-popup: 0;</string>
            </property>
            <property name="editable">
             <bool>true</bool>
@@ -133,8 +139,11 @@ color: rgb(200, 200, 200);</string>
            <property name="text">
             <string>NEW TOGGL</string>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           </property>
            <property name="margin">
-            <number>5</number>
+            <number>3</number>
            </property>
           </widget>
          </item>
