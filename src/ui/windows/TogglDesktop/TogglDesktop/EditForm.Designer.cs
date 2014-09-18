@@ -83,6 +83,7 @@
             this.resizeHandle.Name = "resizeHandle";
             this.resizeHandle.Size = new System.Drawing.Size(20, 20);
             this.resizeHandle.TabIndex = 3;
+            this.resizeHandle.Cursor = System.Windows.Forms.Cursors.SizeNWSE;
             this.resizeHandle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.resizeHandle_MouseDown);
             this.resizeHandle.MouseMove += new System.Windows.Forms.MouseEventHandler(this.resizeHandle_MouseMove);
             // 
