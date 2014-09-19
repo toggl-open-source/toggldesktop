@@ -264,55 +264,49 @@ bool Formatter::parseDurationStringHHMM(const std::string value,
     return true;
 }
 
-bool Formatter::parseDurationStringHHhMMm(const std::string value,
-        int *parsed_seconds) {
-    *parsed_seconds = 0;
+void Formatter::take(
+    const std::string delimiter,
+    double &value,
+    std::string &whatsleft) {
 
-    std::string whatsleft = value;
-
-    int hours = 0;
-    {
-        Poco::StringTokenizer tokenizer(whatsleft, "h");
-        if (2 != tokenizer.count()) {
-            return false;
-        }
-        if (!Poco::NumberParser::tryParse(tokenizer[0], hours)) {
-            return false;
-        }
-        whatsleft = tokenizer[1];
+    size_t pos = whatsleft.find(delimiter);
+    if (std::string::npos == pos) {
+        return;
     }
 
-    int minutes = 0;
-    {
-        Poco::StringTokenizer tokenizer(whatsleft, "m");
-        if (tokenizer.count() == 0) {
-            return false;
+    std::string token = whatsleft.substr(0, pos);
+
+    if (token.length()) {
+        double d(0);
+        if (Poco::NumberParser::tryParseFloat(token, d)) {
+            value = d;
         }
-        if (!Poco::NumberParser::tryParse(tokenizer[0], minutes)) {
-            return false;
-        }
-        if (tokenizer.count() > 1) {
-            whatsleft = tokenizer[1];
-        } else {
-            whatsleft = "";
-        }
+        whatsleft.erase(0, whatsleft.find(delimiter) + delimiter.length());
     }
+}
 
-    int seconds = 0;
-    {
-        Poco::StringTokenizer tokenizer(whatsleft, "s");
-        if (tokenizer.count()) {
-            if (!Poco::NumberParser::tryParse(tokenizer[0], seconds)) {
-                return false;
-            }
-        }
-    }
+int Formatter::parseDurationStringHoursMinutesSeconds(
+    std::string &whatsleft) {
 
-    Poco::Timespan span(hours*3600 + minutes*60 + seconds, 0);
+    double hours = 0;
+    take("hours", hours, whatsleft);
+    take("hour", hours, whatsleft);
+    take("hr", hours, whatsleft);
+    take("h", hours, whatsleft);
 
-    *parsed_seconds = span.totalSeconds();
+    double minutes = 0;
+    take("minutes", minutes, whatsleft);
+    take("minute", minutes, whatsleft);
+    take("min", minutes, whatsleft);
+    take("m", minutes, whatsleft);
 
-    return true;
+    double seconds = 0;
+    take("seconds", seconds, whatsleft);
+    take("second", seconds, whatsleft);
+    take("sec", seconds, whatsleft);
+    take("s", seconds, whatsleft);
+
+    return Poco::Timespan(hours*3600 + minutes*60 + seconds, 0).totalSeconds();
 }
 
 bool Formatter::parseDurationStringMMSS(const std::string value,
@@ -344,14 +338,7 @@ int Formatter::ParseDurationString(const std::string value) {
     }
 
     std::string input = Poco::replace(value, " ", "");
-
-    if (input.find("h") != std::string::npos &&
-            input.find("m") != std::string::npos) {
-        int parsed_seconds = 0;
-        if (parseDurationStringHHhMMm(input, &parsed_seconds)) {
-            return parsed_seconds;
-        }
-    }
+    input = Poco::replace(input, ",", ".");
 
     if (input.find(":") != std::string::npos) {
         int parsed_seconds = 0;
@@ -376,100 +363,23 @@ int Formatter::ParseDurationString(const std::string value) {
         }
     }
 
-    return parseDurationFromDecimal(Poco::replace(input, ",", "."));
-}
-
-int Formatter::parseDurationFromDecimal(const std::string value) {
-    // 1,5 hours
-    size_t pos = value.find("hour");
-    if (pos != std::string::npos) {
-        std::string numbers = value.substr(0, pos);
-        double hours = 0;
-        if (Poco::NumberParser::tryParseFloat(numbers, hours)) {
-            return static_cast<int>(hours * 60 * 60);
-        }
-    }
-
-    pos = value.find("hr");
-    if (pos != std::string::npos) {
-        std::string numbers = value.substr(0, pos);
-        double hours = 0;
-        if (Poco::NumberParser::tryParseFloat(numbers, hours)) {
-            return static_cast<int>(hours * 60 * 60);
-        }
-    }
-
-    // 1,5 minutes
-    pos = value.find("min");
-    if (pos != std::string::npos) {
-        std::string numbers = value.substr(0, pos);
-        double minutes = 0;
-        if (Poco::NumberParser::tryParseFloat(numbers, minutes)) {
-            return static_cast<int>(minutes * 60);
-        }
-    }
-
-    // 1,5 seconds
-    pos = value.find("sec");
-    if (pos != std::string::npos) {
-        std::string numbers = value.substr(0, pos);
-        double seconds = 0;
-        if (Poco::NumberParser::tryParseFloat(numbers, seconds)) {
-            return static_cast<int>(seconds);
-        }
-    }
-
-    // 1.5h
-    pos = value.find("h");
-    if (pos != std::string::npos) {
-        std::string numbers = value.substr(0, pos);
-        double hours = 0;
-        if (Poco::NumberParser::tryParseFloat(numbers, hours)) {
-            // 2m45s
-            numbers = value.substr(pos+1, std::string::npos);
-            double minutes = 0;
-            if (Poco::NumberParser::tryParseFloat(numbers, minutes)) {
-                return static_cast<int>((hours * 60 * 60) + (minutes * 60));
-            }
-            return static_cast<int>(hours * 60 * 60);
-        }
-    }
-
-    // 15m
-    pos = value.find("m");
-    if (pos != std::string::npos) {
-        std::string numbers = value.substr(0, pos);
-        double minutes = 0;
-        if (Poco::NumberParser::tryParseFloat(numbers, minutes)) {
-            return static_cast<int>(minutes * 60);
-        }
-    }
-
-    // 25s
-    pos = value.find("s");
-    if (pos != std::string::npos) {
-        std::string numbers = value.substr(0, pos);
-        double seconds = 0;
-        if (Poco::NumberParser::tryParseFloat(numbers, seconds)) {
-            return static_cast<int>(seconds);
-        }
-    }
+    int seconds = parseDurationStringHoursMinutesSeconds(input);
 
     // 15
-    if (value.find(".") == std::string::npos) {
+    if (input.find(".") == std::string::npos) {
         int minutes = 0;
-        if (Poco::NumberParser::tryParse(value, minutes)) {
-            return minutes * 60;
+        if (Poco::NumberParser::tryParse(input, minutes)) {
+            return seconds + (minutes * 60);
         }
     }
 
     // 1,5
     double hours = 0;
-    if (Poco::NumberParser::tryParseFloat(value, hours)) {
+    if (Poco::NumberParser::tryParseFloat(input, hours)) {
         return static_cast<int>(hours * 60 * 60);
     }
 
-    return 0;
+    return seconds;
 }
 
 std::string Formatter::FormatDurationInSeconds(

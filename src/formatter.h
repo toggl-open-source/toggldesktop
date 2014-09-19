@@ -78,6 +78,11 @@ class Formatter {
         const std::string input);
 
  private:
+    static void take(
+        const std::string delimiter,
+        double &value,
+        std::string &whatsleft);
+
     static bool parseTimeInputAMPM(
         const std::string numbers,
         int *hours,
@@ -92,16 +97,12 @@ class Formatter {
         const std::string value,
         int *parsed_seconds);
 
-    static bool parseDurationStringHHhMMm(
-        const std::string value,
-        int *parsed_seconds);
-
     static bool parseDurationStringMMSS(
         const std::string value,
         int *parsed_seconds);
 
-    static int parseDurationFromDecimal(
-        const std::string value);
+    static int parseDurationStringHoursMinutesSeconds(
+        std::string &whatsleft);
 };
 
 }  // namespace toggl
