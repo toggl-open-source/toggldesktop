@@ -10,9 +10,12 @@ namespace TogglDesktop
 {
     public static class Utils
     {
-        public static void LoadWindowLocation(Form f)
+        public static void LoadWindowLocation(Form f, Form edit)
         {
             Size defaultMinimumSize = f.MinimumSize;
+            Size defaultEditMinimumSize = edit.MinimumSize;
+            edit.MinimumSize = Properties.Settings.Default.EditSize;
+            edit.MinimumSize = defaultEditMinimumSize;
             if (Properties.Settings.Default.Maximized)
             {
                 f.WindowState = FormWindowState.Maximized;
@@ -43,7 +46,7 @@ namespace TogglDesktop
             return false;
         }
 
-        public static void SaveWindowLocation(Form f)
+        public static void SaveWindowLocation(Form f, Form edit)
         {
             if (f.WindowState == FormWindowState.Maximized)
             {
@@ -66,6 +69,7 @@ namespace TogglDesktop
                 Properties.Settings.Default.Maximized = false;
                 Properties.Settings.Default.Minimized = true;
             }
+            Properties.Settings.Default.EditSize = edit.Size;
             Properties.Settings.Default.Save();
         }
     }

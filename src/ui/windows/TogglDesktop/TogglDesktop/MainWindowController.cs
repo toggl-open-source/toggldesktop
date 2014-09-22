@@ -114,8 +114,6 @@ namespace TogglDesktop
             troubleBox.BackColor = Color.FromArgb(239, 226, 121);
             contentPanel.Location = defaultContentPosition;
 
-            Utils.LoadWindowLocation(this);
-
             Toggl.OnApp += OnApp;
             Toggl.OnError += OnError;
             Toggl.OnUpdate += OnUpdate;
@@ -138,6 +136,7 @@ namespace TogglDesktop
             feedbackWindowController = new FeedbackWindowController();
             idleNotificationWindowController = new IdleNotificationWindowController();
             initEditForm();
+            Utils.LoadWindowLocation(this, this.editForm);
 
             timeEntryListViewController.getListing().Scroll += MainWindowControllerEntries_Scroll;
             timeEntryListViewController.getListing().MouseWheel += MainWindowControllerEntries_Scroll;
@@ -491,7 +490,7 @@ namespace TogglDesktop
 
         private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Utils.SaveWindowLocation(this);
+            Utils.SaveWindowLocation(this, this.editForm);
 
             if (!TogglDesktop.Program.ShuttingDown) {
                 Hide();
@@ -519,7 +518,7 @@ namespace TogglDesktop
         {
             if (Visible)
             {
-                Utils.SaveWindowLocation(this);
+                Utils.SaveWindowLocation(this, this.editForm);
             }
             TogglDesktop.Program.Shutdown(0);
         }
