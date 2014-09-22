@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace TogglDesktop
 {
@@ -11,23 +12,19 @@ namespace TogglDesktop
     {
         public static void LoadWindowLocation(Form f)
         {
+            Size defaultMinimumSize = f.MinimumSize;
             if (Properties.Settings.Default.Maximized)
             {
                 f.WindowState = FormWindowState.Maximized;
-                f.Location = Properties.Settings.Default.Location;
-                f.Size = Properties.Settings.Default.Size;
             }
             else if (Properties.Settings.Default.Minimized)
             {
                 f.WindowState = FormWindowState.Minimized;
-                f.Location = Properties.Settings.Default.Location;
-                f.Size = Properties.Settings.Default.Size;
             }
-            else
-            {
-                f.Location = Properties.Settings.Default.Location;
-                f.Size = Properties.Settings.Default.Size;
-            }
+            f.Location = Properties.Settings.Default.Location;
+            f.Size = Properties.Settings.Default.Size;
+            f.MinimumSize = Properties.Settings.Default.Size;
+            f.MinimumSize = defaultMinimumSize;
             if (!visibleOnAnyScreen(f))
             {
                 f.Location = Screen.PrimaryScreen.WorkingArea.Location;
