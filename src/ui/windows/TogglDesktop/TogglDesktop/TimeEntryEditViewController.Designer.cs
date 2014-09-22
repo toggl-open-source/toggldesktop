@@ -142,15 +142,16 @@
             // 
             this.textBoxStartTime.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.textBoxStartTime.Location = new System.Drawing.Point(110, 5);
+            this.textBoxStartTime.MaximumSize = new System.Drawing.Size(140, 24);
             this.textBoxStartTime.Name = "textBoxStartTime";
-            this.textBoxStartTime.Size = new System.Drawing.Size(60, 24);
+            this.textBoxStartTime.Size = new System.Drawing.Size(85, 24);
             this.textBoxStartTime.TabIndex = 4;
             this.textBoxStartTime.Leave += new System.EventHandler(this.textBoxStartTime_Leave);
             // 
             // labelDash
             // 
             this.labelDash.AutoSize = true;
-            this.labelDash.Location = new System.Drawing.Point(175, 8);
+            this.labelDash.Location = new System.Drawing.Point(200, 8);
             this.labelDash.Name = "labelDash";
             this.labelDash.Size = new System.Drawing.Size(10, 13);
             this.labelDash.TabIndex = 9;
@@ -159,9 +160,10 @@
             // textBoxEndTime
             // 
             this.textBoxEndTime.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.textBoxEndTime.Location = new System.Drawing.Point(190, 5);
+            this.textBoxEndTime.Location = new System.Drawing.Point(215, 5);
+            this.textBoxEndTime.MaximumSize = new System.Drawing.Size(140, 24);
             this.textBoxEndTime.Name = "textBoxEndTime";
-            this.textBoxEndTime.Size = new System.Drawing.Size(60, 24);
+            this.textBoxEndTime.Size = new System.Drawing.Size(85, 24);
             this.textBoxEndTime.TabIndex = 5;
             this.textBoxEndTime.Leave += new System.EventHandler(this.textBoxEndTime_Leave);
             // 
@@ -528,6 +530,7 @@
             this.Name = "TimeEntryEditViewController";
             this.Size = new System.Drawing.Size(315, 418);
             this.Load += new System.EventHandler(this.TimeEntryEditViewController_Load);
+            this.SizeChanged += new System.EventHandler(this.TimeEntryEditViewController_SizeChanged);
             this.statusStripLastUpdate.ResumeLayout(false);
             this.statusStripLastUpdate.PerformLayout();
             this.buttonsPanel.ResumeLayout(false);
