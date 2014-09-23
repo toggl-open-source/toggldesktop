@@ -67,7 +67,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="WEi-d1-Dbm"/>
                                 </constraints>
-                                <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="OPO-6N-qwd" customClass="NSCustomComboBoxCell">
+                                <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Description" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="OPO-6N-qwd" customClass="NSCustomComboBoxCell">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -91,7 +91,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="E4l-xk-myE"/>
                                             </constraints>
-                                            <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="z8M-J4-cIb" customClass="NSCustomComboBoxCell">
+                                            <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Project" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="z8M-J4-cIb" customClass="NSCustomComboBoxCell">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
