@@ -37,6 +37,8 @@ class ErrorViewController : public QWidget {
     Ui::ErrorViewController *ui;
 
     bool networkError;
+    bool loginError;
+    uint64_t uid;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_ERRORVIEWCONTROLLER_H_

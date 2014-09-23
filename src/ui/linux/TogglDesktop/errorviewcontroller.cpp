@@ -8,7 +8,9 @@
 ErrorViewController::ErrorViewController(QWidget *parent)
     : QWidget(parent)
 , ui(new Ui::ErrorViewController)
-, networkError(false) {
+, networkError(false)
+, loginError(false)
+, uid(0) {
     ui->setupUi(this);
     setVisible(false);
 
@@ -17,6 +19,9 @@ ErrorViewController::ErrorViewController(QWidget *parent)
 
     connect(TogglApi::instance, SIGNAL(displayOnlineState(bool,QString)),  // NOLINT
             this, SLOT(displayOnlineState(bool,QString)));  // NOLINT
+
+    connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
+            this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
 }
 
 ErrorViewController::~ErrorViewController() {
@@ -31,6 +36,7 @@ void ErrorViewController::displayError(
     const QString errmsg,
     const bool user_error) {
     networkError = false;
+    loginError = !uid;
     ui->errorMessage->setText(errmsg);
     setVisible(true);
     if (!user_error) {
@@ -53,5 +59,10 @@ void ErrorViewController::displayOnlineState(
 void ErrorViewController::displayLogin(
     const bool open,
     const uint64_t user_id) {
+    uid = user_id;
     Bugsnag::user.id = QString::number(user_id);
+    if (user_id && isVisible() && loginError) {
+        loginError = false;
+        setVisible(false);
+    }
 }
