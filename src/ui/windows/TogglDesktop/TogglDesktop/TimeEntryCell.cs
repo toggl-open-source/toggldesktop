@@ -142,42 +142,17 @@ namespace TogglDesktop
             Toggl.Edit(GUID, false, Toggl.Duration);
         }
 
-        private void labelProject_Click(object sender, EventArgs e)
-        {
-            Toggl.Edit(GUID, false, Toggl.Project);
-        }
-
         private void labelContinue_Click(object sender, EventArgs e)
         {
             Toggl.Continue(GUID);
         }
 
-        private void panel_Click(object sender, EventArgs e)
+        private void edit_Click(object sender, EventArgs e)
         {
             Toggl.Edit(GUID, false, "");
         }
 
-        private void labelBillable_Click(object sender, EventArgs e)
-        {
-            Toggl.Edit(GUID, false, "");
-        }
-
-        private void labelTag_Click(object sender, EventArgs e)
-        {
-            Toggl.Edit(GUID, false, "");
-        }
-
-        private void labelTask_Click(object sender, EventArgs e)
-        {
-            Toggl.Edit(GUID, false, Toggl.Project);
-        }
-
-        private void labelClient_Click(object sender, EventArgs e)
-        {
-            Toggl.Edit(GUID, false, Toggl.Project);
-        }
-
-        private void taskProjectPanel_Click(object sender, EventArgs e)
+        private void project_Click(object sender, EventArgs e)
         {
             Toggl.Edit(GUID, false, Toggl.Project);
         }
@@ -204,6 +179,11 @@ namespace TogglDesktop
             panel.BackColor = color;
             tagBillableContinuePanel.BackColor = color;
             labelDuration.BackColor = color;
+        }
+
+        private void tagBillableContinuePanel_MouseUp(object sender, MouseEventArgs e)
+        {
+            edit_Click(null, null);
         }
     }
 }

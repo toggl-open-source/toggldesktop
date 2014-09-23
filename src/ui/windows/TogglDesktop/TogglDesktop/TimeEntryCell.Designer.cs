@@ -106,7 +106,7 @@
             this.panel.Name = "panel";
             this.panel.Size = new System.Drawing.Size(314, 55);
             this.panel.TabIndex = 15;
-            this.panel.Click += new System.EventHandler(this.panel_Click);
+            this.panel.Click += new System.EventHandler(this.edit_Click);
             this.panel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
             // 
             // tagBillableContinuePanel
@@ -122,6 +122,7 @@
             this.tagBillableContinuePanel.Size = new System.Drawing.Size(70, 55);
             this.tagBillableContinuePanel.TabIndex = 16;
             this.tagBillableContinuePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
+            this.tagBillableContinuePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tagBillableContinuePanel_MouseUp);
             // 
             // labelContinue
             // 
@@ -147,7 +148,7 @@
             this.labelBillable.Size = new System.Drawing.Size(13, 13);
             this.labelBillable.TabIndex = 5;
             this.labelBillable.UseMnemonic = false;
-            this.labelBillable.Click += new System.EventHandler(this.labelBillable_Click);
+            this.labelBillable.Click += new System.EventHandler(this.edit_Click);
             this.labelBillable.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
             // 
             // labelTag
@@ -160,7 +161,7 @@
             this.labelTag.Size = new System.Drawing.Size(13, 13);
             this.labelTag.TabIndex = 13;
             this.labelTag.UseMnemonic = false;
-            this.labelTag.Click += new System.EventHandler(this.labelTag_Click);
+            this.labelTag.Click += new System.EventHandler(this.edit_Click);
             this.labelTag.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
             // 
             // taskProjectPanel
@@ -176,7 +177,7 @@
             this.taskProjectPanel.Size = new System.Drawing.Size(154, 17);
             this.taskProjectPanel.TabIndex = 15;
             this.taskProjectPanel.WrapContents = false;
-            this.taskProjectPanel.Click += new System.EventHandler(this.taskProjectPanel_Click);
+            this.taskProjectPanel.Click += new System.EventHandler(this.project_Click);
             this.taskProjectPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
             // 
             // labelTask
@@ -190,7 +191,7 @@
             this.labelTask.TabIndex = 10;
             this.labelTask.Text = "TaskName";
             this.labelTask.UseMnemonic = false;
-            this.labelTask.Click += new System.EventHandler(this.labelTask_Click);
+            this.labelTask.Click += new System.EventHandler(this.project_Click);
             this.labelTask.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
             // 
             // labelProject
@@ -206,7 +207,7 @@
             this.labelProject.TabIndex = 9;
             this.labelProject.Text = "NEW - TOGGL";
             this.labelProject.UseMnemonic = false;
-            this.labelProject.Click += new System.EventHandler(this.labelProject_Click);
+            this.labelProject.Click += new System.EventHandler(this.project_Click);
             this.labelProject.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
             // 
             // labelClient
@@ -221,7 +222,7 @@
             this.labelClient.TabIndex = 11;
             this.labelClient.Text = "ClientName";
             this.labelClient.UseMnemonic = false;
-            this.labelClient.Click += new System.EventHandler(this.labelClient_Click);
+            this.labelClient.Click += new System.EventHandler(this.project_Click);
             // 
             // labelDescription
             // 
