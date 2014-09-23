@@ -131,6 +131,7 @@
             this.labelContinue.Size = new System.Drawing.Size(24, 24);
             this.labelContinue.TabIndex = 14;
             this.labelContinue.UseMnemonic = false;
+            this.labelContinue.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelContinue.Click += new System.EventHandler(this.labelContinue_Click);
             // 
             // labelBillable
