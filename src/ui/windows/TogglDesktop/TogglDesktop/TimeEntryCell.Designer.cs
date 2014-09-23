@@ -126,6 +126,7 @@
             // labelContinue
             // 
             this.labelContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelContinue.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelContinue.Image = global::TogglDesktop.Properties.Resources._continue;
             this.labelContinue.Location = new System.Drawing.Point(43, 15);
             this.labelContinue.Margin = new System.Windows.Forms.Padding(3, 15, 3, 0);
