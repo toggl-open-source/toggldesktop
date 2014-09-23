@@ -385,6 +385,9 @@
   <ItemGroup>
     <None Include="Resources\cogPressed.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\continue_hover.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

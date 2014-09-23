@@ -136,6 +136,8 @@
             this.labelContinue.TabIndex = 14;
             this.labelContinue.UseMnemonic = false;
             this.labelContinue.Click += new System.EventHandler(this.labelContinue_Click);
+            this.labelContinue.MouseEnter += new System.EventHandler(this.labelContinue_MouseEnter);
+            this.labelContinue.MouseLeave += new System.EventHandler(this.labelContinue_MouseLeave);
             this.labelContinue.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
             // 
             // labelBillable

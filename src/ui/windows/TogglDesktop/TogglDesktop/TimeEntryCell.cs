@@ -185,5 +185,15 @@ namespace TogglDesktop
         {
             edit_Click(null, null);
         }
+
+        private void labelContinue_MouseEnter(object sender, EventArgs e)
+        {
+            labelContinue.Image = ((System.Drawing.Image)(Properties.Resources.continue_hover));
+        }
+
+        private void labelContinue_MouseLeave(object sender, EventArgs e)
+        {
+            labelContinue.Image = ((System.Drawing.Image)(Properties.Resources._continue));
+        }
     }
 }
