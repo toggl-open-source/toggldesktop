@@ -15,6 +15,7 @@ namespace TogglDesktop
     {
         private Object rendering = new Object();
         private SizeF currentFactor;
+        public TimeEntryCell currentEntry = null;
 
         public TimeEntryListViewController()
         {
@@ -63,6 +64,10 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { OnTimeEntryList(open, list); });
                 return;
             }
+            if (open && currentEntry != null)
+            {
+                currentEntry.opened = false;
+            }
             DateTime start = DateTime.Now;
 
             lock (rendering)
@@ -92,7 +97,7 @@ namespace TogglDesktop
 
                 if (cell == null)
                 {
-                    cell = new TimeEntryCell(currentFactor);
+                    cell = new TimeEntryCell(currentFactor, this);
                     entries.Controls.Add(cell);
                     if (i == 0)
                     {

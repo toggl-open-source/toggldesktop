@@ -16,10 +16,15 @@ namespace TogglDesktop
         public bool header = false;
         private SizeF currentFactor;
         private bool scaled = false;
+        private TimeEntryListViewController list;
+        public bool opened = false;
+        private Color hoverColor = Color.WhiteSmoke;
+        private Color defaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
 
-        public TimeEntryCell(SizeF factor)
+        public TimeEntryCell(SizeF factor, TimeEntryListViewController listContainer)
         {
             currentFactor = factor;
+            list = listContainer;
             InitializeComponent();   
         }
 
@@ -175,6 +180,30 @@ namespace TogglDesktop
         private void taskProjectPanel_Click(object sender, EventArgs e)
         {
             Toggl.Edit(GUID, false, Toggl.Project);
+        }
+
+        private void item_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (list.currentEntry != this)
+            {
+                if (list.currentEntry != null)
+                {
+                    if (list.currentEntry.opened)
+                    {
+                        return;
+                    }
+                    list.currentEntry.toggleBackground(defaultColor);
+                }
+                toggleBackground(hoverColor);
+                list.currentEntry = this;
+            }
+        }
+
+        private void toggleBackground(Color color)
+        {
+            panel.BackColor = color;
+            tagBillableContinuePanel.BackColor = color;
+            labelDuration.BackColor = color;
         }
     }
 }

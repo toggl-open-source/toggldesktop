@@ -459,12 +459,18 @@ namespace TogglDesktop
         public void PopupInput(Toggl.TimeEntry te)
         {
             if (te.GUID == editForm.GUID) {
+                ((TimeEntryCell)editableEntry).opened = false;
                 editForm.CloseButton_Click(null, null);
                 return;
+            }
+            if (editableEntry != null)
+            {
+                ((TimeEntryCell)editableEntry).opened = false;
             }
             editForm.reset();
             editableEntry = FindControlAtCursor(this);
             if (editableEntry == null) return;
+            ((TimeEntryCell)editableEntry).opened = true;
             setEditFormLocation(te.DurationInSeconds < 0);
             editForm.GUID = te.GUID;
             editForm.Show();
@@ -498,6 +504,7 @@ namespace TogglDesktop
             }
             if (editForm.Visible)
             {
+                ((TimeEntryCell)editableEntry).opened = false;
                 editForm.ClosePopup();
             }
         }
@@ -747,6 +754,7 @@ namespace TogglDesktop
             {
                 if (editForm.Visible)
                 {
+                    ((TimeEntryCell)editableEntry).opened = false;
                     editForm.ClosePopup();
                 }
             }
