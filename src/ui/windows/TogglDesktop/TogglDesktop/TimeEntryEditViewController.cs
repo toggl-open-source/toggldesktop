@@ -52,7 +52,7 @@ namespace TogglDesktop
             comboBoxProject.autoCompleteListBox.KeyDown += autoCompleteProjectListBox_KeyDown;
             comboBoxProject.autoCompleteListBox.Click += autoCompleteProjectListBox_Click;
             comboBoxProject.autoCompleteListBox.Leave += autoCompleteProjectListBox_Leave;
-            TimeEntryEditViewController_SizeChanged(sender, e);
+            updateTimeBoxes();
         }
 
         void autoCompleteEntryListBox_Leave(object sender, EventArgs e)
@@ -753,11 +753,17 @@ namespace TogglDesktop
 
         private void TimeEntryEditViewController_SizeChanged(object sender, EventArgs e)
         {
-            textBoxStartTime.Width = textBoxEndTime.Width = (dateTimePickerStartDate.Width / 2) - 10;
-            if (textBoxStartTime.Width == textBoxStartTime.MaximumSize.Width)
+            updateTimeBoxes();
+        }
+
+        private void updateTimeBoxes()
+        {
+            int width = (dateTimePickerStartDate.Width / 2) - 10;
+            if (width > textBoxStartTime.MaximumSize.Width)
             {
                 return;
             }
+            textBoxStartTime.Width = textBoxEndTime.Width = width;
             labelDash.Left = textBoxStartTime.Left + textBoxStartTime.Width + 5;
             textBoxEndTime.Left = labelDash.Left + 15;
         }
