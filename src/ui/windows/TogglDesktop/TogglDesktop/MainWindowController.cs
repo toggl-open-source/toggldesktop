@@ -772,7 +772,7 @@ namespace TogglDesktop
 
         private void recalculatePopupPosition()
         {
-            if (editForm != null && editForm.Visible)
+            if (editForm != null && editForm.Visible && editableEntry != null)
             {
                 setEditFormLocation(editableEntry.GetType() == typeof(TimerEditViewController));
             }
