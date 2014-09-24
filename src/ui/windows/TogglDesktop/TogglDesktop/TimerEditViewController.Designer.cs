@@ -38,9 +38,11 @@
             this.labelClearProject = new System.Windows.Forms.Label();
             this.panelLeft = new System.Windows.Forms.Panel();
             this.durationPanel = new System.Windows.Forms.Panel();
+            this.panelDescription = new System.Windows.Forms.Panel();
             this.descriptionTextBox = new TogglDesktop.AutoCompleteTextBox();
             this.panelLeft.SuspendLayout();
             this.durationPanel.SuspendLayout();
+            this.panelDescription.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBoxDuration
@@ -90,7 +92,7 @@
             this.linkLabelProject.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(185)))), ((int)(((byte)(185)))));
             this.linkLabelProject.Location = new System.Drawing.Point(17, 35);
             this.linkLabelProject.Name = "linkLabelProject";
-            this.linkLabelProject.Size = new System.Drawing.Size(148, 20);
+            this.linkLabelProject.Size = new System.Drawing.Size(146, 20);
             this.linkLabelProject.TabIndex = 7;
             this.linkLabelProject.Text = "NEW - TOGGL";
             this.linkLabelProject.UseMnemonic = false;
@@ -106,7 +108,7 @@
             this.linkLabelDescription.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
             this.linkLabelDescription.Location = new System.Drawing.Point(17, 0);
             this.linkLabelDescription.Name = "linkLabelDescription";
-            this.linkLabelDescription.Size = new System.Drawing.Size(148, 23);
+            this.linkLabelDescription.Size = new System.Drawing.Size(146, 23);
             this.linkLabelDescription.TabIndex = 8;
             this.linkLabelDescription.Text = "(no description)";
             this.linkLabelDescription.UseMnemonic = false;
@@ -146,13 +148,10 @@
             // panelLeft
             // 
             this.panelLeft.Controls.Add(this.durationPanel);
-            this.panelLeft.Controls.Add(this.linkLabelDescription);
-            this.panelLeft.Controls.Add(this.labelClearProject);
-            this.panelLeft.Controls.Add(this.descriptionTextBox);
-            this.panelLeft.Controls.Add(this.linkLabelProject);
+            this.panelLeft.Controls.Add(this.panelDescription);
             this.panelLeft.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelLeft.Location = new System.Drawing.Point(0, 0);
-            this.panelLeft.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panelLeft.Margin = new System.Windows.Forms.Padding(2);
             this.panelLeft.Name = "panelLeft";
             this.panelLeft.Size = new System.Drawing.Size(259, 56);
             this.panelLeft.TabIndex = 11;
@@ -169,6 +168,20 @@
             this.durationPanel.Size = new System.Drawing.Size(96, 56);
             this.durationPanel.TabIndex = 11;
             // 
+            // panelDescription
+            // 
+            this.panelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelDescription.Controls.Add(this.linkLabelDescription);
+            this.panelDescription.Controls.Add(this.labelClearProject);
+            this.panelDescription.Controls.Add(this.descriptionTextBox);
+            this.panelDescription.Controls.Add(this.linkLabelProject);
+            this.panelDescription.Location = new System.Drawing.Point(0, 0);
+            this.panelDescription.Name = "panelDescription";
+            this.panelDescription.Size = new System.Drawing.Size(163, 53);
+            this.panelDescription.TabIndex = 12;
+            // 
             // descriptionTextBox
             // 
             this.descriptionTextBox.AcceptsTab = true;
@@ -181,7 +194,7 @@
             this.descriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(185)))), ((int)(((byte)(185)))));
             this.descriptionTextBox.Location = new System.Drawing.Point(20, 20);
             this.descriptionTextBox.Name = "descriptionTextBox";
-            this.descriptionTextBox.Size = new System.Drawing.Size(145, 20);
+            this.descriptionTextBox.Size = new System.Drawing.Size(142, 20);
             this.descriptionTextBox.TabIndex = 1;
             this.descriptionTextBox.Text = "What are you doing?";
             this.descriptionTextBox.Enter += new System.EventHandler(this.descriptionTextBox_Enter);
@@ -203,6 +216,8 @@
             this.panelLeft.PerformLayout();
             this.durationPanel.ResumeLayout(false);
             this.durationPanel.PerformLayout();
+            this.panelDescription.ResumeLayout(false);
+            this.panelDescription.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -219,5 +234,6 @@
         private System.Windows.Forms.Label labelClearProject;
         private System.Windows.Forms.Panel panelLeft;
         private System.Windows.Forms.Panel durationPanel;
+        private System.Windows.Forms.Panel panelDescription;
     }
 }

@@ -232,7 +232,7 @@ namespace TogglDesktop
                 descriptionTextBox.Top = defaultDescriptionTop;
             }
 
-            linkLabelDescription.Top = descriptionTextBox.Top-1;
+            linkLabelDescription.Top = descriptionTextBox.Top;
             linkLabelDescription.Left = descriptionTextBox.Left-3;
             linkLabelDescription.Text = te.Description;
             if (linkLabelDescription.Text.Length == 0)
