@@ -80,7 +80,7 @@ namespace TogglDesktop
         private void scaleChild(Control child)
         {
             float scaledFontSize = (float)(int)(child.Font.Size * currentFactor.Height);
-            child.Font = new Font(child.Font.Name, 20, GraphicsUnit.Pixel);
+            child.Font = new Font(child.Font.Name, scaledFontSize, GraphicsUnit.Pixel);
         }
 
         public bool focusList()
