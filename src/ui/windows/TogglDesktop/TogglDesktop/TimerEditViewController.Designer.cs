@@ -45,17 +45,16 @@
             // 
             // textBoxDuration
             // 
-            this.textBoxDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxDuration.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
             this.textBoxDuration.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBoxDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.textBoxDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(185)))), ((int)(((byte)(185)))));
             this.textBoxDuration.Location = new System.Drawing.Point(4, 17);
+            this.textBoxDuration.Margin = new System.Windows.Forms.Padding(5, 3, 4, 3);
             this.textBoxDuration.Name = "textBoxDuration";
-            this.textBoxDuration.Size = new System.Drawing.Size(80, 28);
+            this.textBoxDuration.Size = new System.Drawing.Size(86, 28);
             this.textBoxDuration.TabIndex = 2;
             this.textBoxDuration.Text = "00:00:00";
-            this.textBoxDuration.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textBoxDuration.Enter += new System.EventHandler(this.textBoxDuration_Enter);
             this.textBoxDuration.Leave += new System.EventHandler(this.textBoxDuration_Leave);
             // 
@@ -116,16 +115,14 @@
             // 
             // linkLabelDuration
             // 
-            this.linkLabelDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.linkLabelDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(185)))), ((int)(((byte)(185)))));
             this.linkLabelDuration.Location = new System.Drawing.Point(2, 32);
             this.linkLabelDuration.Margin = new System.Windows.Forms.Padding(0);
             this.linkLabelDuration.Name = "linkLabelDuration";
-            this.linkLabelDuration.Size = new System.Drawing.Size(88, 23);
+            this.linkLabelDuration.Size = new System.Drawing.Size(94, 23);
             this.linkLabelDuration.TabIndex = 9;
             this.linkLabelDuration.Text = "00:00:00";
-            this.linkLabelDuration.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.linkLabelDuration.UseMnemonic = false;
             this.linkLabelDuration.Visible = false;
             this.linkLabelDuration.Click += new System.EventHandler(this.linkLabelDuration_Click);
@@ -162,13 +159,14 @@
             // 
             // durationPanel
             // 
+            this.durationPanel.AutoSize = true;
             this.durationPanel.BackColor = System.Drawing.Color.Transparent;
             this.durationPanel.Controls.Add(this.textBoxDuration);
             this.durationPanel.Controls.Add(this.linkLabelDuration);
             this.durationPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.durationPanel.Location = new System.Drawing.Point(166, 0);
+            this.durationPanel.Location = new System.Drawing.Point(163, 0);
             this.durationPanel.Name = "durationPanel";
-            this.durationPanel.Size = new System.Drawing.Size(93, 56);
+            this.durationPanel.Size = new System.Drawing.Size(96, 56);
             this.durationPanel.TabIndex = 11;
             // 
             // descriptionTextBox
