@@ -1298,7 +1298,7 @@
 					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
 					"$(SRCROOT)/../../../../third_party/TFDatePicker/TFDatePicker/build/Release",
 					"$(PROJECT_DIR)",
-					/Users/indrekv/projects/toggldesktop/third_party,
+					"$(SRCROOT)/../../../../third_party",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "test2/TogglDesktop-Prefix.pch";
@@ -1336,7 +1336,7 @@
 					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
 					"$(SRCROOT)/../../../../third_party/TFDatePicker/TFDatePicker/build/Release",
 					"$(PROJECT_DIR)",
-					/Users/indrekv/projects/toggldesktop/third_party,
+					"$(SRCROOT)/../../../../third_party",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "test2/TogglDesktop-Prefix.pch";
