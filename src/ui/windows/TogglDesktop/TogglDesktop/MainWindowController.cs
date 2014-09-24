@@ -463,14 +463,13 @@ namespace TogglDesktop
                 editForm.CloseButton_Click(null, null);
                 return;
             }
-            if (editableEntry != null)
+            if (editableEntry != null && editableEntry.GetType() == typeof(TimeEntryCell))
             {
                 ((TimeEntryCell)editableEntry).opened = false;
             }
             editForm.reset();
             editableEntry = FindControlAtCursor(this);
             if (editableEntry == null) return;
-            ((TimeEntryCell)editableEntry).opened = true;
             setEditFormLocation(te.DurationInSeconds < 0);
             editForm.GUID = te.GUID;
             editForm.Show();
@@ -711,6 +710,7 @@ namespace TogglDesktop
             else
             {
                 ctrlpt.Y += timeEntryListViewController.getEntriesTop() + (((TimeEntryCell)editableEntry).getTopLocation()) - (editForm.Height / 2);
+                ((TimeEntryCell)editableEntry).opened = true;
             }
 
             if (Screen.AllScreens.Length > 1)
