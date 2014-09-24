@@ -70,6 +70,16 @@
 void *ctx;
 const int kDurationStringLength = 20;
 
+- (void) applicationWillFinishLaunching: (NSNotification *)not
+{
+	NSAssert(ctx, @"ctx is not initialized, cannot continue");
+	const int kChannelStringLength = 20;
+	char channel[kChannelStringLength];
+	_Bool result = toggl_get_update_channel(ctx, channel, kChannelStringLength);
+	NSAssert(result, @"Could not read update channel value");
+	[Utils setUpdaterChannel:[NSString stringWithUTF8String:channel]];
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 	NSLog(@"applicationDidFinishLaunching");

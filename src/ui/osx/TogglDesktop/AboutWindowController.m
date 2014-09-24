@@ -11,6 +11,7 @@
 #import "UIEvents.h"
 #import "toggl_api.h"
 #import "DisplayCommand.h"
+#import "Utils.h"
 
 @implementation AboutWindowController
 
@@ -53,6 +54,8 @@ extern void *ctx;
 	NSString *updateChannel = self.updateChannelComboBox.stringValue;
 
 	toggl_set_update_channel(ctx, [updateChannel UTF8String]);
+
+	[Utils setUpdaterChannel:updateChannel];
 }
 
 - (IBAction)showWindow:(id)sender

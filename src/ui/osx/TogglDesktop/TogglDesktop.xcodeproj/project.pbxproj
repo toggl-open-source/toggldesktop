@@ -1308,6 +1308,7 @@
 					"$(SRCROOT)/../../../../third_party/TFDatePicker/**",
 					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
 					"$(SRCROOT)/../../../lib/include",
+					"$(SRCROOT)/../../../../third_party/Sparkle.framework/**",
 				);
 				INFOPLIST_FILE = "test2/TogglDesktop-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -1346,6 +1347,7 @@
 					"$(SRCROOT)/../../../../third_party/TFDatePicker/**",
 					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
 					"$(SRCROOT)/../../../lib/include",
+					"$(SRCROOT)/../../../../third_party/Sparkle.framework/**",
 				);
 				INFOPLIST_FILE = "test2/TogglDesktop-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
