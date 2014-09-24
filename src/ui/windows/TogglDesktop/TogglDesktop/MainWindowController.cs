@@ -428,7 +428,7 @@ namespace TogglDesktop
                 if (c.Visible && c.Bounds.Contains(pos))
                 {
                     child = FindControlAtPoint(c, new Point(pos.X - c.Left, pos.Y - c.Top));
-                    if (child.GetType() == typeof(TimeEntryCell) || child.GetType() == typeof(TimerEditViewController))
+                    if (child != null && (child.GetType() == typeof(TimeEntryCell) || child.GetType() == typeof(TimerEditViewController)))
                     {
                         return child;
                     }
