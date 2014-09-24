@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="14A298i" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
@@ -21,6 +21,12 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="onAboutMenuItem:" target="494" id="tGk-iF-fGC"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Check for updates" id="fZK-ps-0cd">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="checkForUpdates:" target="L4h-36-cEH" id="s3V-9r-CqY"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="236">
@@ -259,5 +265,6 @@
             </segmentedCell>
         </segmentedControl>
         <toolbarItem implicitItemIdentifier="NSToolbarSeparatorItem" id="Xfa-oB-Ta9"/>
+        <customObject id="L4h-36-cEH" customClass="SUUpdater"/>
     </objects>
 </document>
