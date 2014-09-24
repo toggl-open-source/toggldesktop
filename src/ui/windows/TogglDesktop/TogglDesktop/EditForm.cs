@@ -19,6 +19,7 @@ namespace TogglDesktop
         private const int wmNcLButtonDown = 0xA1;
         private const int wmNcLButtonUp = 0xA2;
         private const int HtBottomRight = 17;
+        private const int HtBottom = 15;
 
         private bool isResizing = false;
 
@@ -115,10 +116,19 @@ namespace TogglDesktop
                 base.WndProc(ref m);
         }
 
-        internal void setPlacement(bool left, int arrowTop, Point p)
+        internal void setPlacement(bool left, int arrowTop, Point p, Screen s)
         {
             labelArrowLeft.Visible = !left;
             labelArrowRight.Visible = left;
+
+            if (left)
+            {
+                resizeHandle.Cursor = System.Windows.Forms.Cursors.SizeNS;
+            }
+            else
+            {
+                resizeHandle.Cursor = System.Windows.Forms.Cursors.SizeNWSE;
+            }
 
             int posY = ((arrowTop != 0) ? arrowTop: (Height / 2)) - (labelArrowRight.Height / 2);
 
@@ -127,9 +137,9 @@ namespace TogglDesktop
                 posY -= Math.Abs(p.Y) - 10;
                 p.Y = 10;
             }
-            if (p.Y + Height >= Screen.PrimaryScreen.WorkingArea.Height)
+            if (p.Y + Height >= s.WorkingArea.Height)
             {
-                int newPosY = Screen.PrimaryScreen.WorkingArea.Height - Height;
+                int newPosY = s.WorkingArea.Height - Height;
                 posY += Math.Abs(p.Y) - newPosY;
                 p.Y = newPosY;
             }
@@ -170,13 +180,14 @@ namespace TogglDesktop
             {
                 isResizing = (e.Button == MouseButtons.Left);
                 ReleaseCapture();
+                int location = (labelArrowRight.Visible) ? HtBottom : HtBottomRight;
                 if (isResizing)
                 {
-                    SendMessage(Handle, wmNcLButtonDown, HtBottomRight, 0);
+                    SendMessage(Handle, wmNcLButtonDown, location, 0);
                 }
                 else
                 {
-                    SendMessage(Handle, wmNcLButtonUp, HtBottomRight, 0);
+                    SendMessage(Handle, wmNcLButtonUp, location, 0);
                 }
             }
         }

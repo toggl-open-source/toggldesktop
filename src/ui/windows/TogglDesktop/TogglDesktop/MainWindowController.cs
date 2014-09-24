@@ -722,12 +722,12 @@ namespace TogglDesktop
                         if ((editForm.Width + ctrlpt.X + this.Width) > s.Bounds.Width + s.WorkingArea.Location.X)
                         {
                             ctrlpt.X -= editForm.Width;
-                            editForm.setPlacement(true, arrowTop, ctrlpt);
+                            editForm.setPlacement(true, arrowTop, ctrlpt, s);
                         }
                         else
                         {
                             ctrlpt.X += this.Width;
-                            editForm.setPlacement(false, arrowTop, ctrlpt);
+                            editForm.setPlacement(false, arrowTop, ctrlpt, s);
                         }
                         break;
                     }
@@ -738,12 +738,12 @@ namespace TogglDesktop
                 if ((editForm.Width + ctrlpt.X + this.Width) > Screen.PrimaryScreen.Bounds.Width)
                 {
                     ctrlpt.X -= editForm.Width;
-                    editForm.setPlacement(true, arrowTop, ctrlpt);
+                    editForm.setPlacement(true, arrowTop, ctrlpt, Screen.PrimaryScreen);
                 }
                 else
                 {
                     ctrlpt.X += this.Width;
-                    editForm.setPlacement(false, arrowTop, ctrlpt);
+                    editForm.setPlacement(false, arrowTop, ctrlpt, Screen.PrimaryScreen);
                 }
             }
         }
