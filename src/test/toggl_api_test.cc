@@ -237,19 +237,41 @@ TEST(TogglApiTest, toggl_set_update_channel) {
 
     ASSERT_EQ(default_channel, testing::testresult::update_channel);
 
+    // Also check that the API itself thinks the default channel is
+    const size_t kMaxStrLen = 20;
+    char ch[kMaxStrLen];
+    ASSERT_TRUE(toggl_get_update_channel(app.ctx(), ch, kMaxStrLen));
+    ASSERT_EQ(default_channel, std::string(ch));
+
     ASSERT_FALSE(toggl_set_update_channel(app.ctx(), "invalid"));
+
+    // The channel should be the same in the API
+    ASSERT_TRUE(toggl_get_update_channel(app.ctx(), ch, kMaxStrLen));
+    ASSERT_EQ(default_channel, std::string(ch));
 
     ASSERT_TRUE(toggl_set_update_channel(app.ctx(), "beta"));
 
     ASSERT_EQ(std::string("beta"), testing::testresult::update_channel);
 
+    // The channel should have been changed in the API
+    ASSERT_TRUE(toggl_get_update_channel(app.ctx(), ch, kMaxStrLen));
+    ASSERT_EQ(std::string("beta"), std::string(ch));
+
     ASSERT_TRUE(toggl_set_update_channel(app.ctx(), "dev"));
 
     ASSERT_EQ(std::string("dev"), testing::testresult::update_channel);
 
+    // The channel should have been changed in the API
+    ASSERT_TRUE(toggl_get_update_channel(app.ctx(), ch, kMaxStrLen));
+    ASSERT_EQ(std::string("dev"), std::string(ch));
+
     ASSERT_TRUE(toggl_set_update_channel(app.ctx(), "stable"));
 
     ASSERT_EQ(std::string("stable"), testing::testresult::update_channel);
+
+    // The channel should have been changed in the API
+    ASSERT_TRUE(toggl_get_update_channel(app.ctx(), ch, kMaxStrLen));
+    ASSERT_EQ(std::string("stable"), std::string(ch));
 }
 
 TEST(TogglApiTest, toggl_set_log_level) {

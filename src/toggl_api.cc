@@ -596,6 +596,23 @@ _Bool toggl_set_update_channel(
     return app(context)->SaveUpdateChannel(std::string(update_channel));
 }
 
+_Bool toggl_get_update_channel(
+    void *context,
+    char *out_str,
+    const size_t max_strlen) {
+
+    poco_check_ptr(out_str);
+
+    poco_assert(max_strlen);
+
+    std::string update_channel("");
+    if (!app(context)->UpdateChannel(&update_channel)) {
+        return false;
+    }
+    strncpy(out_str, update_channel.c_str(), max_strlen);
+    return true;
+}
+
 int64_t toggl_parse_duration_string_into_seconds(const char *duration_string) {
     if (!duration_string) {
         return 0;

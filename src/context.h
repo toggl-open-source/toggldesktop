@@ -165,6 +165,8 @@ class Context {
 
     _Bool SaveUpdateChannel(
         const std::string channel);
+    _Bool UpdateChannel(
+        std::string *update_channel);
 
     _Bool AddProject(
         const Poco::UInt64 workspace_id,

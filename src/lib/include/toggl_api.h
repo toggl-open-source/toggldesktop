@@ -445,6 +445,12 @@ extern "C" {
         void *context,
         const char *update_channel);
 
+    // Returns false if reading update channel from DB fails
+    TOGGL_EXPORT _Bool toggl_get_update_channel(
+        void *context,
+        char *str,
+        const size_t max_strlen);
+
     TOGGL_EXPORT void toggl_sync(
         void *context);
 

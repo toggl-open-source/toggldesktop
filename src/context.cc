@@ -670,6 +670,17 @@ void Context::onPeriodicUpdateCheck(Poco::Util::TimerTask& task) {  // NOLINT
     startPeriodicUpdateCheck();
 }
 
+_Bool Context::UpdateChannel(
+    std::string *update_channel) {
+    poco_check_ptr(update_channel);
+
+    error err = db()->LoadUpdateChannel(update_channel);
+    if (err != noError) {
+        return displayError(err);
+    }
+    return true;
+}
+
 void Context::executeUpdateCheck() {
     logger().debug("executeUpdateCheck");
 
