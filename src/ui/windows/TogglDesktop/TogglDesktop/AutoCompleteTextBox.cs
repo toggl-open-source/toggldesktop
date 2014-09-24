@@ -74,7 +74,7 @@ namespace TogglDesktop
         {
             if (!_isAdded)
             {
-                Parent.Parent.Parent.Parent.Controls.Add(autoCompleteListBox);
+                Parent.Parent.Parent.Parent.Parent.Controls.Add(autoCompleteListBox);
                 autoCompleteListBox.Left = Left;
                 autoCompleteListBox.Top = Top + Height;
                 _isAdded = true;
@@ -83,7 +83,7 @@ namespace TogglDesktop
 
         public void ShowListBox()
         {
-            autoCompleteListBox.MaximumSize = new Size(Width + 145, Parent.Parent.Parent.Parent.Height - 40);
+            autoCompleteListBox.MaximumSize = new Size(Width + 145, Parent.Parent.Parent.Parent.Parent.Height - 40);
             autoCompleteListBox.Visible = true;
             autoCompleteListBox.BringToFront();
         }
