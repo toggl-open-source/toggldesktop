@@ -459,7 +459,10 @@ namespace TogglDesktop
         public void PopupInput(Toggl.TimeEntry te)
         {
             if (te.GUID == editForm.GUID) {
-                ((TimeEntryCell)editableEntry).opened = false;
+                if (editableEntry.GetType() == typeof(TimeEntryCell))
+                {
+                    ((TimeEntryCell)editableEntry).opened = false;
+                }
                 editForm.CloseButton_Click(null, null);
                 return;
             }
