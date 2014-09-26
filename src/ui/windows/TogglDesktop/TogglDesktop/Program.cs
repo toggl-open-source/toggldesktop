@@ -104,7 +104,7 @@ namespace TogglDesktop
                 {
                     if (!user_error && Properties.Settings.Default.Environment != "development")
                     {
-                        bugsnag.Notify(new Exception(errmsg));
+                        notifyBugsnag(new Exception(errmsg));
                     }
                 };
 
@@ -147,14 +147,22 @@ namespace TogglDesktop
             return true;
         }
 
+        static void notifyBugsnag(Exception e)
+        {
+            bugsnag.Notify(e, new
+            {
+                UserID = uid.ToString()
+            });
+        }
+
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            bugsnag.Notify(e.ExceptionObject as Exception);
+            notifyBugsnag(e.ExceptionObject as Exception);
         }
 
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
-            bugsnag.Notify(e.Exception);
+            notifyBugsnag(e.Exception);
         }
 
         public static void Shutdown(int exitCode)
