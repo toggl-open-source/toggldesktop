@@ -6,6 +6,8 @@
 #include <sstream>
 #include <cctype>
 
+#include "./time_entry.h"
+
 #include "Poco/Types.h"
 #include "Poco/String.h"
 #include "Poco/Timestamp.h"
@@ -385,18 +387,7 @@ int Formatter::ParseDurationString(const std::string value) {
 std::string Formatter::FormatDurationInSeconds(
     const Poco::Int64 value,
     const std::string format) {
-    Poco::Int64 duration = value;
-    // Duration is negative when time is tracking
-    if (duration < 0) {
-        duration += time(0);
-    }
-    // If after calculation time is still negative,
-    // either computer clock is wrong or user
-    // has set start time to the future. Render positive
-    // duration only:
-    if (duration < 0) {
-        duration *= -1;
-    }
+    Poco::Int64 duration = TimeEntry::AbsDuration(value);
     Poco::Timespan span(duration * Poco::Timespan::SECONDS);
     // Poco DateTimeFormatter will not format hours above 24h.
     // So format hours by hand:
@@ -413,18 +404,7 @@ std::string Formatter::FormatDurationInSeconds(
 
 std::string Formatter::formatDurationInSecondsToHM(
     const Poco::Int64 value) {
-    Poco::Int64 duration = value;
-    // Duration is negative when time is tracking
-    if (duration < 0) {
-        duration += time(0);
-    }
-    // If after calculation time is still negative,
-    // either computer clock is wrong or user
-    // has set start time to the future. Render positive
-    // duration only:
-    if (duration < 0) {
-        duration *= -1;
-    }
+    Poco::Int64 duration = TimeEntry::AbsDuration(value);
     Poco::Timespan span(duration * Poco::Timespan::SECONDS);
     // Poco DateTimeFormatter will not format hours above 24h.
     // So format hours by hand:

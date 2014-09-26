@@ -458,4 +458,22 @@ void TimeEntry::loadTagsFromJSONNode(JSONNODE * const list) {
     }
 }
 
+Poco::Int64 TimeEntry::AbsDuration(const Poco::Int64 value) {
+    Poco::Int64 duration = value;
+
+    // Duration is negative when time is tracking
+    if (duration < 0) {
+        duration += time(0);
+    }
+    // If after calculation time is still negative,
+    // either computer clock is wrong or user
+    // has set start time to the future. Render positive
+    // duration only:
+    if (duration < 0) {
+        duration *= -1;
+    }
+
+    return value;
+}
+
 }   // namespace toggl

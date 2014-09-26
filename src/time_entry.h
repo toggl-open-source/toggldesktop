@@ -130,6 +130,8 @@ class TimeEntry : public BaseModel {
 
     virtual bool ResolveError(const toggl::error err);
 
+    static Poco::Int64 AbsDuration(const Poco::Int64 value);
+
  private:
     Poco::UInt64 wid_;
     Poco::UInt64 pid_;
