@@ -873,6 +873,8 @@ extern int kDurationStringLength;
 		return;
 	}
 
+	NSLog(@"Deleting time entry %@", self.timeEntry);
+
 	toggl_delete_time_entry(ctx, [self.timeEntry.GUID UTF8String]);
 }
 
