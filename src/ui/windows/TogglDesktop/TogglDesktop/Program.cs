@@ -83,17 +83,29 @@ namespace TogglDesktop
                     return;
                 }
 
-                 if (Environment.OSVersion.Version.Major >= 6) SetProcessDPIAware();
-
                 bugsnag = new Bugsnag.Library.BugSnag()
                 {
                     apiKey = "2a46aa1157256f759053289f2d687c2f",
-                    OSVersion = Environment.OSVersion.ToString()
+                    OSVersion = Environment.OSVersion.ToString(),
+                    applicationVersion = Version()
                 };
+
+                if (Environment.OSVersion.Version.Major >= 6)
+                {
+                    SetProcessDPIAware();
+                }
 
                 Toggl.OnLogin += delegate(bool open, UInt64 user_id)
                 {
                     uid = user_id;
+                };
+
+                Toggl.OnError += delegate(string errmsg, bool user_error)
+                {
+                    if (!user_error && Properties.Settings.Default.Environment != "development")
+                    {
+                        bugsnag.Notify(new Exception(errmsg));
+                    }
                 };
 
                 Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);

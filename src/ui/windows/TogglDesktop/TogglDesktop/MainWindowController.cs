@@ -336,12 +336,6 @@ namespace TogglDesktop
             errorLabel.Text = errmsg;
             troubleBox.Visible = true;
             contentPanel.Location = errorContentPosition;
-
-            if (!user_error && Properties.Settings.Default.Environment != "development")
-            {
-                Bugsnag.Library.BugSnag bs = new Bugsnag.Library.BugSnag();
-                bs.Notify(new Exception(errmsg));
-            }
         }
 
         void OnIdleNotification(
