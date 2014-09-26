@@ -234,8 +234,8 @@ namespace TogglDesktop
                 comboBoxDescription.Text = te.Description;
                 comboBoxProject.Text = te.ProjectAndTaskLabel;
                 textBoxDuration.Text = te.Duration;
-                textBoxStartTime.Text = te.StartTimeString;
-                textBoxEndTime.Text = te.EndTimeString;
+                setTimeValue(textBoxStartTime, te.StartTimeString);
+                setTimeValue(textBoxEndTime, te.EndTimeString);
                 dateTimePickerStartDate.Value = Toggl.DateTimeFromUnix(te.Started);
             }
             else
@@ -254,11 +254,11 @@ namespace TogglDesktop
                 }
                 if (!textBoxStartTime.Focused)
                 {
-                    textBoxStartTime.Text = te.StartTimeString;
+                    setTimeValue(textBoxStartTime, te.StartTimeString);
                 }
                 if (!textBoxEndTime.Focused)
                 {
-                    textBoxEndTime.Text = te.EndTimeString;
+                    setTimeValue(textBoxEndTime, te.EndTimeString);
                 }
                 if (!dateTimePickerStartDate.Focused)
                 {
@@ -288,7 +288,6 @@ namespace TogglDesktop
             }
             textBoxEndTime.Enabled = (te.DurationInSeconds >= 0);
 
-
             if (!checkedListBoxTags.Focused || open)
             {
                 for (int i = 0; i < checkedListBoxTags.Items.Count; i++)
@@ -310,6 +309,12 @@ namespace TogglDesktop
                     }
                 }
             }
+        }
+
+        private void setTimeValue(TextBox control, string value)
+        {
+            control.Tag = value;
+            control.Text = value;
         }
 
         private void buttonDelete_Click(object sender, EventArgs e)
@@ -462,6 +467,13 @@ namespace TogglDesktop
 
         private void applyTimeChange(TextBox textbox)
         {
+            // If textbox value is same as it was before user started
+            // don't apply the change. User cannot enter seconds,
+            // only hours and minutes. But we don't want to change the value
+            // if user tabs over the controls.
+            if (textbox.Tag != null && textbox.Tag.ToString() == textbox.Text) {
+                return;
+            }
             int hours = 0;
             int minutes = 0;
             if (!Toggl.ParseTime(textbox.Text, ref hours, ref minutes))
