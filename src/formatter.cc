@@ -411,7 +411,7 @@ std::string Formatter::FormatDurationInSeconds(
     return ss.str();
 }
 
-std::string Formatter::FormatDurationInSecondsToHM(
+std::string Formatter::formatDurationInSecondsToHM(
     const Poco::Int64 value) {
     Poco::Int64 duration = value;
     // Duration is negative when time is tracking
@@ -449,7 +449,7 @@ std::string Formatter::FormatDurationInSecondsHHMM(const Poco::Int64 value) {
 
 std::string Formatter::FormatDurationInSecondsPrettyHHMM(
     const Poco::Int64 value) {
-    return FormatDurationInSecondsToHM(value);
+    return formatDurationInSecondsToHM(value);
 }
 
 std::time_t Formatter::Parse8601(const std::string iso_8601_formatted_date) {
