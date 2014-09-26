@@ -17,6 +17,7 @@ namespace TogglDesktop
         private int bottomPanelTop;
         private List<Toggl.AutocompleteItem> autoCompleteEntryList;
         private List<Toggl.AutocompleteItem> autoCompleteProjectList;
+        private Boolean overTags = false;
 
         public TimeEntryEditViewController()
         {
@@ -36,6 +37,11 @@ namespace TogglDesktop
             comboBoxProject.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
             comboBoxClient.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
             comboBoxWorkspace.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
+            textBoxDuration.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
+            textBoxStartTime.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
+            textBoxEndTime.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
+            textBoxProjectName.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
+            dateTimePickerStartDate.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
 
             descriptionButton.Click += descriptionButton_Click;
             projectButton.Click += projectButton_Click;
@@ -134,6 +140,10 @@ namespace TogglDesktop
         private void ignoreMouseWheel(object sender, MouseEventArgs args)
         {
             ((HandledMouseEventArgs)args).Handled = true;
+            if (overTags)
+            {
+                checkedListBoxTags.Focus();
+            }
         }
 
         public void setupView(Form frm, string focusedFieldName)
@@ -746,9 +756,40 @@ namespace TogglDesktop
             return true;
         }
 
+        private void checkedListBoxTags_MouseLeave(object sender, EventArgs e)
+        {
+            overTags = false;
+        }
+
         private void checkedListBoxTags_MouseEnter(object sender, EventArgs e)
         {
-            checkedListBoxTags.Focus();
+            if (noFieldFocused(this))
+            {
+                checkedListBoxTags.Focus();
+            }
+            else
+            {
+                overTags = true;
+            }
+        }
+
+        private bool noFieldFocused(Control parent)
+        {
+            foreach (Control c in parent.Controls){
+                if (c.Focused)
+                {
+                    return false;
+                }
+                if (c.Controls.Count > 0)
+                {
+                    if (!noFieldFocused(c))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         private void TimeEntryEditViewController_SizeChanged(object sender, EventArgs e)

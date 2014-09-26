@@ -281,6 +281,7 @@
             this.checkedListBoxTags.TabIndex = 7;
             this.checkedListBoxTags.Leave += new System.EventHandler(this.checkedListBoxTags_Leave);
             this.checkedListBoxTags.MouseEnter += new System.EventHandler(this.checkedListBoxTags_MouseEnter);
+            this.checkedListBoxTags.MouseLeave += new System.EventHandler(this.checkedListBoxTags_MouseLeave);
             // 
             // timerRunningDuration
             // 
