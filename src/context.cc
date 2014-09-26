@@ -1295,11 +1295,11 @@ _Bool Context::Start(
 Poco::Int64 Context::totalDurationForDate(TimeEntry *match) const {
     Poco::Int64 duration(0);
     std::string date_header = match->DateHeaderString();
-    std::vector<TimeEntry *> list = timeEntries();
+    std::vector<TimeEntry *> list = timeEntries(true);
     for (unsigned int i = 0; i < list.size(); i++) {
         TimeEntry *te = list.at(i);
         if (te->DateHeaderString() == date_header) {
-            duration += te->DurationInSeconds();
+            duration += TimeEntry::AbsDuration(te->DurationInSeconds());
         }
     }
     return duration;
@@ -1316,7 +1316,7 @@ void Context::DisplayTimeEntryList(const _Bool open) {
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
-    std::vector<TimeEntry *> list = timeEntries();
+    std::vector<TimeEntry *> list = timeEntries(true);
 
     std::map<std::string, Poco::Int64> date_durations;
     for (unsigned int i = 0; i < list.size(); i++) {
@@ -1324,7 +1324,7 @@ void Context::DisplayTimeEntryList(const _Bool open) {
 
         std::string date_header = te->DateHeaderString();
         Poco::Int64 duration = date_durations[date_header];
-        duration += te->DurationInSeconds();
+        duration += TimeEntry::AbsDuration(te->DurationInSeconds());
         date_durations[date_header] = duration;
     }
 
@@ -1333,6 +1333,11 @@ void Context::DisplayTimeEntryList(const _Bool open) {
     TogglTimeEntryView *first = 0;
     for (unsigned int i = 0; i < list.size(); i++) {
         TimeEntry *te = list.at(i);
+
+        if (te->DurationInSeconds() < 0) {
+            // Don't display running entries
+            continue;
+        }
 
         std::string project_and_task_label("");
         std::string task_label("");
@@ -1447,7 +1452,7 @@ _Bool Context::ContinueLatest() {
     }
 
     TimeEntry *latest = 0;
-    std::vector<TimeEntry*> list = timeEntries();
+    std::vector<TimeEntry*> list = timeEntries(false);
     if (list.empty()) {
         return true;
     }
@@ -1780,7 +1785,8 @@ _Bool Context::ToggleTimelineRecording(const _Bool record_timeline) {
     return true;
 }
 
-std::vector<TimeEntry *> Context::timeEntries() const {
+std::vector<TimeEntry *> Context::timeEntries(
+    const bool including_running) const {
     std::vector<TimeEntry *> result;
     if (!user_) {
         return result;
@@ -1794,7 +1800,7 @@ std::vector<TimeEntry *> Context::timeEntries() const {
 
         poco_assert(!te->GUID().empty());
 
-        if (te->DurationInSeconds() < 0) {
+        if (te->DurationInSeconds() < 0 && !including_running) {
             continue;
         }
         if (te->DeletedAt() > 0) {

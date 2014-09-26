@@ -266,7 +266,7 @@ class Context {
 
     Database *db() const;
 
-    std::vector<TimeEntry *> timeEntries() const;
+    std::vector<TimeEntry *> timeEntries(const bool including_running) const;
 
     void projectLabelAndColorCode(
         TimeEntry *te,
