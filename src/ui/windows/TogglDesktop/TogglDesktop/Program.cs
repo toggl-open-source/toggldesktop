@@ -137,18 +137,12 @@ namespace TogglDesktop
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            bugsnag.Notify(e.ExceptionObject as Exception, new
-            {
-                UserID = uid.ToString()
-            });
+            bugsnag.Notify(e.ExceptionObject as Exception);
         }
 
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
-            bugsnag.Notify(e.Exception, new
-            {
-                UserID = uid.ToString()
-            });
+            bugsnag.Notify(e.Exception);
         }
 
         public static void Shutdown(int exitCode)
