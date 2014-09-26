@@ -473,7 +473,7 @@ Poco::Int64 TimeEntry::AbsDuration(const Poco::Int64 value) {
         duration *= -1;
     }
 
-    return value;
+    return duration;
 }
 
 }   // namespace toggl
