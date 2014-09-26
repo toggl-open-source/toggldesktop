@@ -11,11 +11,13 @@
 
 @implementation Utils
 
-+ (void)setUpdaterChannel:(NSString *)channel {
++ (void)setUpdaterChannel:(NSString *)channel
+{
 	NSString *url = [NSString stringWithFormat:@"https://assets.toggl.com/installers/osx_%@_appcast.xml", channel];
+
 	NSAssert([SUUpdater sharedUpdater], @"No updater found");
 	NSLog(@"Setting updater feed URL to %@", url);
-	[[SUUpdater sharedUpdater] setFeedURL: [NSURL URLWithString:url]];
+	[[SUUpdater sharedUpdater] setFeedURL:[NSURL URLWithString:url]];
 }
 
 + (NSInteger)boolToState:(BOOL)value

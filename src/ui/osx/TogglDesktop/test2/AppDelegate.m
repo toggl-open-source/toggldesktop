@@ -70,7 +70,7 @@
 void *ctx;
 const int kDurationStringLength = 20;
 
-- (void) applicationWillFinishLaunching: (NSNotification *)not
+- (void)applicationWillFinishLaunching:(NSNotification *)not
 {
 	NSAssert(ctx, @"ctx is not initialized, cannot continue");
 	const int kChannelStringLength = 20;
