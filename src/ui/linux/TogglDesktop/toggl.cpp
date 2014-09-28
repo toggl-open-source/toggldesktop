@@ -318,12 +318,10 @@ bool TogglApi::stop() {
 
 const QString TogglApi::formatDurationInSecondsHHMMSS(
     const int64_t duration) {
-    int bufSize = 20;
-    char buf[bufSize];  // NOLINT
-    toggl_format_duration_in_seconds_hhmmss(duration,
-                                            buf,
-                                            bufSize);
-    return QString(buf);
+    char *buf = toggl_format_duration_in_seconds_hhmmss(duration);
+    QString res = QString(buf);
+    free(buf);
+    return res;
 }
 
 bool TogglApi::continueTimeEntry(const QString guid) {

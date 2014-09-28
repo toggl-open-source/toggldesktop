@@ -445,11 +445,9 @@ extern "C" {
         void *context,
         const char *update_channel);
 
-    // Returns false if reading update channel from DB fails
-    TOGGL_EXPORT _Bool toggl_get_update_channel(
-        void *context,
-        char *str,
-        const size_t max_strlen);
+    // You must free() the result
+    TOGGL_EXPORT char *toggl_get_update_channel(
+        void *context);
 
     TOGGL_EXPORT void toggl_sync(
         void *context);
@@ -482,20 +480,13 @@ extern "C" {
         int *hours,
         int *minutes);
 
-    TOGGL_EXPORT void toggl_format_duration_in_seconds_hhmmss(
-        const int64_t duration_in_seconds,
-        char *str,
-        const size_t max_strlen);
+    // You must free() the result
+    TOGGL_EXPORT char *toggl_format_duration_in_seconds_hhmmss(
+        const int64_t duration_in_seconds);
 
-    TOGGL_EXPORT void toggl_format_duration_in_seconds_hhmm(
-        const int64_t duration_in_seconds,
-        char *str,
-        const size_t max_strlen);
-
-    TOGGL_EXPORT void toggl_format_duration_in_seconds_pretty_hhmm(
-        const int64_t duration_in_seconds,
-        char *str,
-        const size_t max_strlen);
+    // You must free() the result
+    TOGGL_EXPORT char *toggl_format_duration_in_seconds_hhmm(
+        const int64_t duration_in_seconds);
 
     TOGGL_EXPORT int64_t toggl_parse_duration_string_into_seconds(
         const char *duration_string);

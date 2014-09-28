@@ -238,40 +238,43 @@ TEST(TogglApiTest, toggl_set_update_channel) {
     ASSERT_EQ(default_channel, testing::testresult::update_channel);
 
     // Also check that the API itself thinks the default channel is
-    const size_t kMaxStrLen = 20;
-    char ch[kMaxStrLen];
-    ASSERT_TRUE(toggl_get_update_channel(app.ctx(), ch, kMaxStrLen));
-    ASSERT_EQ(default_channel, std::string(ch));
+    char *str = toggl_get_update_channel(app.ctx());
+    ASSERT_EQ(default_channel, std::string(str));
+    free(str);
 
     ASSERT_FALSE(toggl_set_update_channel(app.ctx(), "invalid"));
 
     // The channel should be the same in the API
-    ASSERT_TRUE(toggl_get_update_channel(app.ctx(), ch, kMaxStrLen));
-    ASSERT_EQ(default_channel, std::string(ch));
+    str = toggl_get_update_channel(app.ctx());
+    ASSERT_EQ(default_channel, std::string(str));
+    free(str);
 
     ASSERT_TRUE(toggl_set_update_channel(app.ctx(), "beta"));
 
     ASSERT_EQ(std::string("beta"), testing::testresult::update_channel);
 
     // The channel should have been changed in the API
-    ASSERT_TRUE(toggl_get_update_channel(app.ctx(), ch, kMaxStrLen));
-    ASSERT_EQ(std::string("beta"), std::string(ch));
+    str = toggl_get_update_channel(app.ctx());
+    ASSERT_EQ(std::string("beta"), std::string(str));
+    free(str);
 
     ASSERT_TRUE(toggl_set_update_channel(app.ctx(), "dev"));
 
     ASSERT_EQ(std::string("dev"), testing::testresult::update_channel);
 
     // The channel should have been changed in the API
-    ASSERT_TRUE(toggl_get_update_channel(app.ctx(), ch, kMaxStrLen));
-    ASSERT_EQ(std::string("dev"), std::string(ch));
+    str = toggl_get_update_channel(app.ctx());
+    ASSERT_EQ(std::string("dev"), std::string(str));
+    free(str);
 
     ASSERT_TRUE(toggl_set_update_channel(app.ctx(), "stable"));
 
     ASSERT_EQ(std::string("stable"), testing::testresult::update_channel);
 
     // The channel should have been changed in the API
-    ASSERT_TRUE(toggl_get_update_channel(app.ctx(), ch, kMaxStrLen));
-    ASSERT_EQ(std::string("stable"), std::string(ch));
+    str = toggl_get_update_channel(app.ctx());
+    ASSERT_EQ(std::string("stable"), std::string(str));
+    free(str);
 }
 
 TEST(TogglApiTest, toggl_set_log_level) {
@@ -328,37 +331,55 @@ TEST(TogglApiTest, toggl_parse_time) {
 }
 
 TEST(TogglApiTest, toggl_format_duration_in_seconds_hhmmss) {
-    const int kMaxStrLen = 100;
-    char str[kMaxStrLen];
-    toggl_format_duration_in_seconds_hhmmss(10, str, kMaxStrLen);
+    char *str = toggl_format_duration_in_seconds_hhmmss(10);
     ASSERT_EQ("00:00:10", std::string(str));
-    toggl_format_duration_in_seconds_hhmmss(60, str, kMaxStrLen);
+    free(str);
+
+    str = toggl_format_duration_in_seconds_hhmmss(60);
     ASSERT_EQ("00:01:00", std::string(str));
-    toggl_format_duration_in_seconds_hhmmss(65, str, kMaxStrLen);
+    free(str);
+
+    str = toggl_format_duration_in_seconds_hhmmss(65);
     ASSERT_EQ("00:01:05", std::string(str));
-    toggl_format_duration_in_seconds_hhmmss(3600, str, kMaxStrLen);
+    free(str);
+
+    str = toggl_format_duration_in_seconds_hhmmss(3600);
     ASSERT_EQ("01:00:00", std::string(str));
-    toggl_format_duration_in_seconds_hhmmss(5400, str, kMaxStrLen);
+    free(str);
+
+    str = toggl_format_duration_in_seconds_hhmmss(5400);
     ASSERT_EQ("01:30:00", std::string(str));
-    toggl_format_duration_in_seconds_hhmmss(5410, str, kMaxStrLen);
+    free(str);
+
+    str = toggl_format_duration_in_seconds_hhmmss(5410);
     ASSERT_EQ("01:30:10", std::string(str));
+    free(str);
 }
 
 TEST(TogglApiTest, toggl_format_duration_in_seconds_hhmm) {
-    const int kMaxStrLen = 100;
-    char str[kMaxStrLen];
-    toggl_format_duration_in_seconds_hhmm(10, str, kMaxStrLen);
+    char *str  = toggl_format_duration_in_seconds_hhmm(10);
     ASSERT_EQ("00:00", std::string(str));
-    toggl_format_duration_in_seconds_hhmm(60, str, kMaxStrLen);
+    free(str);
+
+    str = toggl_format_duration_in_seconds_hhmm(60);
     ASSERT_EQ("00:01", std::string(str));
-    toggl_format_duration_in_seconds_hhmm(65, str, kMaxStrLen);
+    free(str);
+
+    str = toggl_format_duration_in_seconds_hhmm(65);
     ASSERT_EQ("00:01", std::string(str));
-    toggl_format_duration_in_seconds_hhmm(3600, str, kMaxStrLen);
+    free(str);
+
+    str = toggl_format_duration_in_seconds_hhmm(3600);
     ASSERT_EQ("01:00", std::string(str));
-    toggl_format_duration_in_seconds_hhmm(5400, str, kMaxStrLen);
+    free(str);
+
+    str = toggl_format_duration_in_seconds_hhmm(5400);
     ASSERT_EQ("01:30", std::string(str));
-    toggl_format_duration_in_seconds_hhmm(5410, str, kMaxStrLen);
+    free(str);
+
+    str = toggl_format_duration_in_seconds_hhmm(5410);
     ASSERT_EQ("01:30", std::string(str));
+    free(str);
 }
 
 }  // namespace toggl

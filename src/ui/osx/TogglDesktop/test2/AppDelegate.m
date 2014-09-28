@@ -68,16 +68,15 @@
 @implementation AppDelegate
 
 void *ctx;
-const int kDurationStringLength = 20;
 
 - (void)applicationWillFinishLaunching:(NSNotification *)not
 {
 	NSAssert(ctx, @"ctx is not initialized, cannot continue");
-	const int kChannelStringLength = 20;
-	char channel[kChannelStringLength];
-	_Bool result = toggl_get_update_channel(ctx, channel, kChannelStringLength);
-	NSAssert(result, @"Could not read update channel value");
-	[Utils setUpdaterChannel:[NSString stringWithUTF8String:channel]];
+	char *str = toggl_get_update_channel(ctx);
+	NSAssert(str, @"Could not read update channel value");
+	NSString *channel = [NSString stringWithUTF8String:str];
+	free(str);
+	[Utils setUpdaterChannel:channel];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -868,13 +867,11 @@ const NSString *appName = @"osx_native_app";
 	{
 		return;
 	}
-	char str[kDurationStringLength];
-	toggl_format_duration_in_seconds_hhmm(
-		self.lastKnownRunningTimeEntry.duration_in_seconds,
-		str,
-		kDurationStringLength);
+	char *str = toggl_format_duration_in_seconds_hhmm(
+			self.lastKnownRunningTimeEntry.duration_in_seconds);
 	NSString *statusStr = @" ";
 	statusStr = [statusStr stringByAppendingString:[NSString stringWithUTF8String:str]];
+	free(str);
 	[self.statusItem setTitle:statusStr];
 }
 

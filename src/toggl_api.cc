@@ -288,47 +288,22 @@ _Bool toggl_parse_time(
         std::string(input), hours, minutes);
 }
 
-void toggl_format_duration_in_seconds_hhmmss(
-    const int64_t duration_in_seconds,
-    char *out_str,
-    const size_t max_strlen) {
-
-    poco_check_ptr(out_str);
-
-    poco_assert(max_strlen);
+char *toggl_format_duration_in_seconds_hhmmss(
+    const int64_t duration_in_seconds) {
 
     std::string formatted =
         toggl::Formatter::FormatDurationInSecondsHHMMSS(duration_in_seconds);
-    strncpy(out_str, formatted.c_str(), max_strlen);
+
+    return strdup(formatted.c_str());
 }
 
-void toggl_format_duration_in_seconds_hhmm(
-    const int64_t duration_in_seconds,
-    char *out_str,
-    const size_t max_strlen) {
-
-    poco_check_ptr(out_str);
-
-    poco_assert(max_strlen);
+char *toggl_format_duration_in_seconds_hhmm(
+    const int64_t duration_in_seconds) {
 
     std::string formatted = toggl::Formatter::FormatDurationInSecondsHHMM(
         duration_in_seconds);
-    strncpy(out_str, formatted.c_str(), max_strlen);
-}
 
-void toggl_format_duration_in_seconds_pretty_hhmm(
-    const int64_t duration_in_seconds,
-    char *out_str,
-    const size_t max_strlen) {
-
-    poco_check_ptr(out_str);
-
-    poco_assert(max_strlen);
-
-    std::string formatted =
-        toggl::Formatter::FormatDurationInSecondsPrettyHHMM(
-            duration_in_seconds);
-    strncpy(out_str, formatted.c_str(), max_strlen);
+    return strdup(formatted.c_str());
 }
 
 _Bool toggl_start(
@@ -596,21 +571,12 @@ _Bool toggl_set_update_channel(
     return app(context)->SaveUpdateChannel(std::string(update_channel));
 }
 
-_Bool toggl_get_update_channel(
-    void *context,
-    char *out_str,
-    const size_t max_strlen) {
-
-    poco_check_ptr(out_str);
-
-    poco_assert(max_strlen);
+char *toggl_get_update_channel(
+    void *context) {
 
     std::string update_channel("");
-    if (!app(context)->UpdateChannel(&update_channel)) {
-        return false;
-    }
-    strncpy(out_str, update_channel.c_str(), max_strlen);
-    return true;
+    app(context)->UpdateChannel(&update_channel);
+    return strdup(update_channel.c_str());
 }
 
 int64_t toggl_parse_duration_string_into_seconds(const char *duration_string) {

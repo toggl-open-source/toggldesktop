@@ -39,7 +39,6 @@
 @implementation TimeEntryEditViewController
 
 extern void *ctx;
-extern int kDurationStringLength;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -1017,11 +1016,9 @@ extern int kDurationStringLength;
 	{
 		return;
 	}
-	char str[kDurationStringLength];
-	toggl_format_duration_in_seconds_hhmmss(self.timeEntry.duration_in_seconds,
-											str,
-											kDurationStringLength);
+	char *str = toggl_format_duration_in_seconds_hhmmss(self.timeEntry.duration_in_seconds);
 	NSString *newValue = [NSString stringWithUTF8String:str];
+	free(str);
 	[self.durationTextField setStringValue:newValue];
 }
 

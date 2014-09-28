@@ -28,7 +28,6 @@
 
 @implementation TimerEditViewController
 
-extern int kDurationStringLength;
 extern void *ctx;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -340,11 +339,9 @@ extern void *ctx;
 	int64_t seconds = toggl_parse_duration_string_into_seconds(duration_string);
 
 	// Format seconds as text again
-	char str[kDurationStringLength];
-	toggl_format_duration_in_seconds_hhmmss(seconds,
-											str,
-											kDurationStringLength);
+	char *str = toggl_format_duration_in_seconds_hhmmss(seconds);
 	NSString *newValue = [NSString stringWithUTF8String:str];
+	free(str);
 	[self.durationTextField setStringValue:newValue];
 }
 
@@ -409,11 +406,9 @@ extern void *ctx;
 	{
 		return;
 	}
-	char str[kDurationStringLength];
-	toggl_format_duration_in_seconds_hhmmss(self.time_entry.duration_in_seconds,
-											str,
-											kDurationStringLength);
+	char *str = toggl_format_duration_in_seconds_hhmmss(self.time_entry.duration_in_seconds);
 	NSString *newValue = [NSString stringWithUTF8String:str];
+	free(str);
 	[self.durationTextField setStringValue:newValue];
 }
 

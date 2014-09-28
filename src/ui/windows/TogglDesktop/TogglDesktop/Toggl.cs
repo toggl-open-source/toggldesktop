@@ -948,40 +948,14 @@ namespace TogglDesktop
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        private static extern void toggl_format_duration_in_seconds_hhmmss(
-            Int64 duration_in_seconds,
-            StringBuilder sb,
-            int max_strlen);
+        [return: MarshalAs(UnmanagedType.LPStr)]
+        private static extern string toggl_format_duration_in_seconds_hhmmss(
+            Int64 duration_in_seconds);
 
         public static string FormatDurationInSecondsHHMMSS(Int64 duration_in_seconds)
         {
-            const int duration_len = 20;
-            StringBuilder sb = new StringBuilder(duration_len);
-            toggl_format_duration_in_seconds_hhmmss(
-                duration_in_seconds, sb, duration_len);
-            return sb.ToString();
+            return toggl_format_duration_in_seconds_hhmmss(duration_in_seconds);
         }
-
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        private static extern void toggl_format_duration_in_seconds_hhmm(
-            Int64 duration_in_seconds,
-            StringBuilder sb,
-            int max_strlen);
-
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        private static extern bool toggl_format_duration_in_seconds_pretty_hhmm(
-            Int64 duration_in_seconds,
-            StringBuilder sb,
-            int max_strlen);
-
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        private static extern Int64 toggl_parse_duration_string_into_seconds(
-            string duration_string);
-
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        private static extern void toggl_debug(
-            string text);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         private static extern void toggl_check_view_struct_size(
