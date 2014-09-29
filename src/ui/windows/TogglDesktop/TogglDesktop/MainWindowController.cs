@@ -500,7 +500,10 @@ namespace TogglDesktop
             }
             if (editForm.Visible)
             {
-                ((TimeEntryCell)editableEntry).opened = false;
+                if (editableEntry.GetType() == typeof(TimeEntryCell))
+                {
+                    ((TimeEntryCell)editableEntry).opened = false;
+                }
                 editForm.ClosePopup();
             }
         }
@@ -707,7 +710,10 @@ namespace TogglDesktop
             else
             {
                 ctrlpt.Y += timeEntryListViewController.getEntriesTop() + (((TimeEntryCell)editableEntry).getTopLocation()) - (editForm.Height / 2);
-                ((TimeEntryCell)editableEntry).opened = true;
+                if (editableEntry.GetType() == typeof(TimeEntryCell))
+                {
+                    ((TimeEntryCell)editableEntry).opened = true;
+                }
             }
 
             if (Screen.AllScreens.Length > 1)
@@ -751,7 +757,10 @@ namespace TogglDesktop
             {
                 if (editForm.Visible)
                 {
-                    ((TimeEntryCell)editableEntry).opened = false;
+                    if (editableEntry.GetType() == typeof(TimeEntryCell))
+                    {
+                        ((TimeEntryCell)editableEntry).opened = false;
+                    }
                     editForm.ClosePopup();
                 }
             }
