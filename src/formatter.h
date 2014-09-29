@@ -89,6 +89,13 @@ class Formatter {
         int *minutes,
         const bool has_pm);
 
+    static bool parseTimeInputAMPM(
+        const std::string value,
+        const std::string am_symbol,
+        const std::string pm_symbol,
+        int *hours,
+        int *minutes);
+
     static bool parseDurationStringHHMMSS(
         const std::string value,
         int *parsed_seconds);

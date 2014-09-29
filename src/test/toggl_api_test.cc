@@ -316,12 +316,22 @@ TEST(TogglApiTest, toggl_parse_time) {
     ASSERT_EQ(17, hours);
     ASSERT_EQ(30, minutes);
 
+    valid = toggl_parse_time("5:30 odp.", &hours, &minutes);
+    ASSERT_EQ(true, valid);
+    ASSERT_EQ(17, hours);
+    ASSERT_EQ(30, minutes);
+
     valid = toggl_parse_time("17:10", &hours, &minutes);
     ASSERT_EQ(true, valid);
     ASSERT_EQ(17, hours);
     ASSERT_EQ(10, minutes);
 
     valid = toggl_parse_time("12:00 AM", &hours, &minutes);
+    ASSERT_EQ(true, valid);
+    ASSERT_EQ(0, hours);
+    ASSERT_EQ(0, minutes);
+
+    valid = toggl_parse_time("12:00 dop.", &hours, &minutes);
     ASSERT_EQ(true, valid);
     ASSERT_EQ(0, hours);
     ASSERT_EQ(0, minutes);

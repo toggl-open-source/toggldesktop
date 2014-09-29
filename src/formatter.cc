@@ -156,21 +156,38 @@ bool Formatter::parseTimeInputAMPM(const std::string numbers,
     return true;
 }
 
+bool Formatter::parseTimeInputAMPM(
+    const std::string value,
+    const std::string am_symbol,
+    const std::string pm_symbol,
+    int *hours,
+    int *minutes) {
+
+    std::size_t pos = value.find(am_symbol);
+    bool am_pm = pos != std::string::npos;
+    if (!am_pm) {
+        pos = value.find(pm_symbol);
+        am_pm = pos != std::string::npos;
+    }
+    if (am_pm) {
+        std::string numbers = value.substr(0, pos);
+        bool pm = value.find(pm_symbol) != std::string::npos;
+        return parseTimeInputAMPM(numbers, hours, minutes, pm);
+    }
+    return false;
+}
+
 bool Formatter::ParseTimeInput(const std::string input,
                                int *hours,
                                int *minutes) {
     std::string value = Poco::replace(Poco::toUpper(input), " ", "");
 
-    std::size_t pos = value.find("A");
-    bool am_pm = pos != std::string::npos;
-    if (!am_pm) {
-        pos = value.find("P");
-        am_pm = pos != std::string::npos;
+    if (parseTimeInputAMPM(value, "DOP", "ODP", hours, minutes)) {
+        return true;
     }
-    if (am_pm) {
-        std::string numbers = value.substr(0, pos);
-        bool pm = value.find("P") != std::string::npos;
-        return parseTimeInputAMPM(numbers, hours, minutes, pm);
+
+    if (parseTimeInputAMPM(value, "A", "P", hours, minutes)) {
+        return true;
     }
 
     // Handle formats: HH:mm, H:mm etc
