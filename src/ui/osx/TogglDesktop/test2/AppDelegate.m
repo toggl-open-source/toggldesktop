@@ -835,13 +835,14 @@ const NSString *appName = @"osx_native_app";
 	toggl_set_cacert_path(ctx, [cacertPath UTF8String]);
 
 	_Bool res = toggl_set_db_path(ctx, [self.db_path UTF8String]);
-	if (!res) {
+	if (!res)
+	{
 		NSLog(@"Failed to initialize database at %@", self.db_path);
 
 		NSAlert *alert = [[NSAlert alloc] init];
 		[alert setMessageText:@"Failed to initialize database"];
 		NSString *informative = [NSString stringWithFormat:
-			@"Make sure you have permissions to write to folder \"%@\"", self.app_path];
+								 @"Make sure you have permissions to write to folder \"%@\"", self.app_path];
 		[alert setInformativeText:informative];
 		[alert setAlertStyle:NSCriticalAlertStyle];
 		[alert runModal];
