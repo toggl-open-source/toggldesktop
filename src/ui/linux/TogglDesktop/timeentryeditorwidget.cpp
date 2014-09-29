@@ -19,6 +19,15 @@ timer(new QTimer(this)),
 duration(0),
 previousTagList("") {
     ui->setupUi(this);
+
+    ui->description->completer()->setCaseSensitivity(Qt::CaseInsensitive);
+    ui->description->completer()->setCompletionMode(QCompleter::PopupCompletion);
+    ui->description->completer()->setMaxVisibleItems(20);
+
+    ui->project->completer()->setCaseSensitivity(Qt::CaseInsensitive);
+    ui->project->completer()->setCompletionMode(QCompleter::PopupCompletion);
+    ui->project->completer()->setMaxVisibleItems(20);
+
     ui->description->installEventFilter(this);
 
     setVisible(false);
