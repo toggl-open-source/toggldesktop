@@ -21,7 +21,8 @@ previousTagList("") {
     ui->setupUi(this);
 
     ui->description->completer()->setCaseSensitivity(Qt::CaseInsensitive);
-    ui->description->completer()->setCompletionMode(QCompleter::PopupCompletion);
+    ui->description->completer()->setCompletionMode(
+        QCompleter::PopupCompletion);
     ui->description->completer()->setMaxVisibleItems(20);
 
     ui->project->completer()->setCaseSensitivity(Qt::CaseInsensitive);
