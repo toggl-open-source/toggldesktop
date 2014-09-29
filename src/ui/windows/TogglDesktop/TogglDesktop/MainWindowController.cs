@@ -714,7 +714,7 @@ namespace TogglDesktop
             {
                 foreach (Screen s in Screen.AllScreens)
                 {
-                    if (s.WorkingArea.Location.X + s.Bounds.Width - Location.X > Width / 2)
+                    if (s.WorkingArea.IntersectsWith(DesktopBounds))
                     {
                         if ((editForm.Width + ctrlpt.X + this.Width) > s.Bounds.Width + s.WorkingArea.Location.X)
                         {

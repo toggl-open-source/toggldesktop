@@ -132,10 +132,10 @@ namespace TogglDesktop
 
             int posY = ((arrowTop != 0) ? arrowTop: (Height / 2)) - (labelArrowRight.Height / 2);
 
-            if (p.Y < 0)
+            if (p.Y < s.WorkingArea.Location.Y)
             {
-                posY -= Math.Abs(p.Y) - 10;
-                p.Y = 10;
+                posY -= Math.Abs(s.WorkingArea.Location.Y - p.Y) - 10;
+                p.Y = s.WorkingArea.Location.Y + 10;
             }
             if (p.Y + Height >= s.WorkingArea.Height)
             {
