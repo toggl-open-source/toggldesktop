@@ -5,6 +5,7 @@
 
 #include <QMessageBox>  // NOLINT
 #include <QDebug>  // NOLINT
+#include <QCompleter>  // NOLINT
 
 #include "./toggl.h"
 
