@@ -15,6 +15,6 @@ notifications:
     on_success: change
     on_failure: always
 before_install:
-  - sudo apt-add-repository -y ppa:beineri/opt-qt531
+  - sudo apt-add-repository -y ppa:beineri/opt-qt532
   - sudo apt-get -qq update
   - sudo apt-get -qq install qt53tools qt53svg qt53webkit libxss-dev xorg-dev
