@@ -166,7 +166,7 @@
             this.durationPanel.Location = new System.Drawing.Point(163, 0);
             this.durationPanel.Name = "durationPanel";
             this.durationPanel.Size = new System.Drawing.Size(96, 56);
-            this.durationPanel.TabIndex = 11;
+            this.durationPanel.TabIndex = 2;
             // 
             // panelDescription
             // 
@@ -180,7 +180,7 @@
             this.panelDescription.Location = new System.Drawing.Point(0, 0);
             this.panelDescription.Name = "panelDescription";
             this.panelDescription.Size = new System.Drawing.Size(163, 53);
-            this.panelDescription.TabIndex = 12;
+            this.panelDescription.TabIndex = 1;
             // 
             // descriptionTextBox
             // 
