@@ -22,8 +22,6 @@
 	<string>td70</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
-	<key>KopsikCheckForUpdates</key>
-	<false/>
 	<key>KopsikEnvironment</key>
 	<string>development</string>
 	<key>KopsikLogUserInterfaceToFile</key>
