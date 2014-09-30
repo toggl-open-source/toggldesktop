@@ -23,7 +23,7 @@
                                     <action selector="onAboutMenuItem:" target="494" id="tGk-iF-fGC"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Check for updates" id="fZK-ps-0cd">
+                            <menuItem title="Check for update.." id="fZK-ps-0cd">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="checkForUpdates:" target="L4h-36-cEH" id="s3V-9r-CqY"/>
