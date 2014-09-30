@@ -42,5 +42,7 @@
 	<string>https://assets.toggl.com/installers/osx_appcast.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
 </dict>
 </plist>
