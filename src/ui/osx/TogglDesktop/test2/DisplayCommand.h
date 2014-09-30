@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "TimeEntryViewItem.h"
 #import "Settings.h"
-#import "Update.h"
 
 @interface DisplayCommand : NSObject
 @property BOOL open;
@@ -17,5 +16,4 @@
 @property TimeEntryViewItem *timeEntry;
 @property Settings *settings;
 @property uint64_t user_id;
-@property Update *update;
 @end

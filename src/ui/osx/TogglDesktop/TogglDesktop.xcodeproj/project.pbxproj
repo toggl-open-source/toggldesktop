@@ -51,7 +51,6 @@
 		7424949E17F1E3D20030121C /* UIEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 7424949D17F1E3D20030121C /* UIEvents.m */; };
 		7430750418204EFB009019CB /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7430750218204EFB009019CB /* AboutWindowController.m */; };
 		7430750518204EFB009019CB /* AboutWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7430750318204EFB009019CB /* AboutWindowController.xib */; };
-		7430750818205B88009019CB /* Update.m in Sources */ = {isa = PBXBuildFile; fileRef = 7430750718205B88009019CB /* Update.m */; };
 		7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */ = {isa = PBXBuildFile; fileRef = 7438B3D218253CD2002AE43C /* MenuItemTags.m */; };
 		743D782A182791FA00978BCC /* idler.c in Sources */ = {isa = PBXBuildFile; fileRef = 743D7829182791FA00978BCC /* idler.c */; };
 		743D942618279290000E6F70 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 743D942518279290000E6F70 /* IOKit.framework */; };
@@ -335,8 +334,6 @@
 		7430750118204EFB009019CB /* AboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AboutWindowController.h; path = ../AboutWindowController.h; sourceTree = "<group>"; };
 		7430750218204EFB009019CB /* AboutWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AboutWindowController.m; path = ../AboutWindowController.m; sourceTree = "<group>"; };
 		7430750318204EFB009019CB /* AboutWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AboutWindowController.xib; path = ../AboutWindowController.xib; sourceTree = "<group>"; };
-		7430750618205B88009019CB /* Update.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Update.h; path = ../Update.h; sourceTree = "<group>"; };
-		7430750718205B88009019CB /* Update.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Update.m; path = ../Update.m; sourceTree = "<group>"; };
 		7438B3D118253CD2002AE43C /* MenuItemTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuItemTags.h; path = ../MenuItemTags.h; sourceTree = "<group>"; };
 		7438B3D218253CD2002AE43C /* MenuItemTags.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuItemTags.m; path = ../MenuItemTags.m; sourceTree = "<group>"; };
 		743D7829182791FA00978BCC /* idler.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = idler.c; path = ../idler.c; sourceTree = "<group>"; };
@@ -574,8 +571,6 @@
 				743D942E1827C633000E6F70 /* IdleEvent.m */,
 				743D94291827A0E0000E6F70 /* idler.h */,
 				743D7829182791FA00978BCC /* idler.c */,
-				7430750618205B88009019CB /* Update.h */,
-				7430750718205B88009019CB /* Update.m */,
 				7438B3D118253CD2002AE43C /* MenuItemTags.h */,
 				7438B3D218253CD2002AE43C /* MenuItemTags.m */,
 				7430750118204EFB009019CB /* AboutWindowController.h */,
@@ -1131,7 +1126,6 @@
 				3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */,
 				748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */,
 				74FE0D5F18E260A000ECFED2 /* MASShortcutView+UserDefaults.m in Sources */,
-				7430750818205B88009019CB /* Update.m in Sources */,
 				74E3CDD017FBABE400C3ADD3 /* BugsnagReachability.m in Sources */,
 				7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */,
 				74E3CDCC17FBABE400C3ADD3 /* BugsnagMetaData.m in Sources */,

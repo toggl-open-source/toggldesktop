@@ -15,7 +15,6 @@
 #import "TimeEntryViewItem.h"
 #import "AboutWindowController.h"
 #import "MenuItemTags.h"
-#import "Update.h"
 #import "idler.h"
 #import "IdleEvent.h"
 #import "IdleNotificationWindowController.h"
@@ -157,10 +156,6 @@ void *ctx;
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(startDisplayApp:)
 												 name:kDisplayApp
-											   object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(startDisplayUpdate:)
-												 name:kDisplayUpdate
 											   object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(startDisplayOnlineState:)
@@ -675,7 +670,7 @@ void *ctx;
 
 - (IBAction)onAboutMenuItem:(id)sender
 {
-	toggl_about(ctx);
+	[self.aboutWindowController showWindow:self];
 }
 
 - (IBAction)onShowMenuItem:(id)sender
@@ -813,7 +808,7 @@ const NSString *appName = @"osx_native_app";
 
 	toggl_on_show_app(ctx, on_app);
 	toggl_on_error(ctx, on_error);
-	toggl_on_update(ctx, on_update);
+	toggl_on_update(ctx, 0);         // We'll use Sparkle instead
 	toggl_on_online_state(ctx, on_online_state);
 	toggl_on_login(ctx, on_login);
 	toggl_on_url(ctx, on_url);
@@ -962,53 +957,6 @@ const NSString *appName = @"osx_native_app";
 	return YES;
 }
 
-- (void)startDisplayUpdate:(NSNotification *)notification
-{
-	[self performSelectorOnMainThread:@selector(displayUpdate:)
-						   withObject:notification.object
-						waitUntilDone:NO];
-}
-
-- (void)displayUpdate:(DisplayCommand *)cmd
-{
-	if (cmd.open)
-	{
-		self.aboutWindowController.displayCommand = cmd;
-		[self.aboutWindowController showWindow:self];
-		[NSApp activateIgnoringOtherApps:YES];
-		return;
-	}
-
-	if (!cmd.update.is_update_available)
-	{
-		return;
-	}
-
-	if (self.upgradeDialogVisible || [self.aboutWindowController isVisible])
-	{
-		NSLog(@"Upgrade dialog already visible");
-		return;
-	}
-	self.upgradeDialogVisible = YES;
-
-	NSAlert *alert = [[NSAlert alloc] init];
-	[alert addButtonWithTitle:@"Yes"];
-	[alert addButtonWithTitle:@"No"];
-	[alert setMessageText:@"Download new version?"];
-	NSString *informative = [NSString stringWithFormat:
-							 @"A new version of Toggl Desktop is available (%@).", cmd.update.version];
-	[alert setInformativeText:informative];
-	[alert setAlertStyle:NSWarningAlertStyle];
-	if ([alert runModal] != NSAlertFirstButtonReturn)
-	{
-		self.upgradeDialogVisible = NO;
-		return;
-	}
-
-	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:cmd.update.URL]];
-	[NSApp terminate:nil];
-}
-
 - (void)startDisplayIdleNotification:(NSNotification *)notification
 {
 	[self performSelectorOnMainThread:@selector(displayIdleNotification:)
@@ -1093,22 +1041,6 @@ const NSString *appName = @"osx_native_app";
 	{
 		toggl_set_online(ctx);
 	}
-}
-
-void on_update(
-	const _Bool open,
-	TogglUpdateView *view)
-{
-	Update *update = [[Update alloc] init];
-
-	[update load:view];
-
-	DisplayCommand *cmd = [[DisplayCommand alloc] init];
-	cmd.open = open;
-	cmd.update = update;
-
-	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayUpdate
-														object:cmd];
 }
 
 void on_online_state(const _Bool is_online, const char *reason)

@@ -58,9 +58,6 @@ error GUI::findMissingCallbacks() {
     if (!on_display_error_) {
         return error("!on_display_error_");
     }
-    if (!on_display_update_) {
-        return error("!on_display_update_");
-    }
     if (!on_display_online_state_) {
         return error("!on_display_online_state_");
     }
@@ -125,6 +122,11 @@ void GUI::DisplayUpdate(const _Bool open,
                         const _Bool is_available,
                         const std::string url,
                         const std::string version) {
+    if (!on_display_update_) {
+        logger().debug("This GUI has own update system, will not use lib.");
+        return;
+    }
+
     logger().debug("DisplayUpdate");
 
     TogglUpdateView view;

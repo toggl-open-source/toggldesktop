@@ -8,16 +8,14 @@
 
 #import <Cocoa/Cocoa.h>
 #import "DisplayCommand.h"
+#import "Sparkle.h"
 
-@interface AboutWindowController : NSWindowController
+@interface AboutWindowController : NSWindowController <SUUpdaterDelegate>
 @property IBOutlet NSTextField *appnameTextField;
 @property IBOutlet NSTextField *versionTextField;
 @property IBOutlet NSTextView *creditsTextView;
-@property IBOutlet NSButton *checkForUpdateButton;
 @property IBOutlet NSComboBox *updateChannelComboBox;
-@property DisplayCommand *displayCommand;
 @property BOOL windowHasLoad;
-- (IBAction)checkForUpdateClicked:(id)sender;
 - (IBAction)updateChannelSelected:(id)sender;
 - (BOOL)isVisible;
 @end

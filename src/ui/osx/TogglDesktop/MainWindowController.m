@@ -11,7 +11,6 @@
 #import "TimeEntryListViewController.h"
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
-#import "Update.h"
 #import "MenuItemTags.h"
 #import "DisplayCommand.h"
 

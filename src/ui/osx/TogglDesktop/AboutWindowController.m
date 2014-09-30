@@ -7,11 +7,11 @@
 //
 
 #import "AboutWindowController.h"
-#import "Update.h"
 #import "UIEvents.h"
 #import "toggl_api.h"
 #import "DisplayCommand.h"
 #import "Utils.h"
+#import "Sparkle.h"
 
 @implementation AboutWindowController
 
@@ -30,14 +30,13 @@ extern void *ctx;
 	NSString *path = [[NSBundle mainBundle] pathForResource:@"Credits" ofType:@"rtf"];
 	[self.creditsTextView readRTFDFromFile:path];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(startDisplayUpdate:)
-												 name:kDisplayUpdate
-											   object:nil];
-
-	[self displayUpdate:self.displayCommand];
-
 	self.windowHasLoad = YES;
+
+	[[SUUpdater sharedUpdater] setDelegate:self];
+
+	[[SUUpdater sharedUpdater] resetUpdateCycle];
+
+	[[SUUpdater sharedUpdater] checkForUpdates:self];
 }
 
 - (BOOL)isVisible
@@ -56,61 +55,15 @@ extern void *ctx;
 	toggl_set_update_channel(ctx, [updateChannel UTF8String]);
 
 	[Utils setUpdaterChannel:updateChannel];
+
+	[[SUUpdater sharedUpdater] resetUpdateCycle];
+
+	[[SUUpdater sharedUpdater] checkForUpdates:self];
 }
 
 - (IBAction)showWindow:(id)sender
 {
 	[super showWindow:sender];
-}
-
-- (IBAction)checkForUpdateClicked:(id)sender
-{
-	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:self.displayCommand.update.URL]];
-	[[NSApplication sharedApplication] terminate:self];
-}
-
-- (void)startDisplayUpdate:(NSNotification *)notification
-{
-	[self performSelectorOnMainThread:@selector(displayUpdate:)
-						   withObject:notification.object
-						waitUntilDone:NO];
-}
-
-- (void)displayUpdate:(DisplayCommand *)cmd
-{
-	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-	self.displayCommand = cmd;
-
-	self.updateChannelComboBox.stringValue = self.displayCommand.update.channel;
-
-	if (self.displayCommand.open)
-	{
-		[self showWindow:self];
-	}
-
-	if (self.displayCommand.update.is_checking)
-	{
-		[self.checkForUpdateButton setEnabled:NO];
-		[self.updateChannelComboBox setEnabled:NO];
-		[self.checkForUpdateButton setTitle:@"Checking for update.."];
-		return;
-	}
-
-	[self.updateChannelComboBox setEnabled:YES];
-
-	if (self.displayCommand.update.is_update_available)
-	{
-		self.checkForUpdateButton.title =
-			[NSString stringWithFormat:@"Click here to download update! (%@)",
-			 self.displayCommand.update.version];
-		[self.checkForUpdateButton setEnabled:YES];
-	}
-	else
-	{
-		self.checkForUpdateButton.title = @"TogglDesktop is up to date.";
-		[self.checkForUpdateButton setEnabled:NO];
-	}
 }
 
 @end
