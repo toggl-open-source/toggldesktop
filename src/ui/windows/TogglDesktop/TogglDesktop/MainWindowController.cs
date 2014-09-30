@@ -20,7 +20,6 @@ namespace TogglDesktop
         private IdleNotificationWindowController idleNotificationWindowController;
         private EditForm editForm;
         private Control editableEntry;
-        private WinSparkleDotNet.WinSparkle WinSparkle = null;
 
         private bool isUpgradeDialogVisible = false;
         private bool isTracking = false;
@@ -69,11 +68,6 @@ namespace TogglDesktop
             InitializeComponent();
 
             instance = this;
-
-            // FIXME - Start updater in separate thread
-            WinSparkle = new WinSparkleDotNet.WinSparkle();
-            WinSparkle.SetAppCastUrl("https://assets.toggl.com/installers/windows_dev_appcast.xml");
-            WinSparkle.CheckUpdateWithUi();
         }
 
         public void toggleMenu()
@@ -499,7 +493,7 @@ namespace TogglDesktop
         private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)
         {
             Utils.SaveWindowLocation(this, this.editForm);
-            WinSparkle.Cleanup();
+
             if (!TogglDesktop.Program.ShuttingDown) {
                 Hide();
                 e.Cancel = true;
@@ -532,7 +526,7 @@ namespace TogglDesktop
             {
                 Utils.SaveWindowLocation(this, this.editForm);
             }
-            WinSparkle.Cleanup();
+
             TogglDesktop.Program.Shutdown(0);
         }
 

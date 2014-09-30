@@ -14,6 +14,7 @@ namespace TogglDesktop
     public partial class AboutWindowController : TogglForm
     {
         private string updateURL;
+        private WinSparkleDotNet.WinSparkle WinSparkle = null;
 
         public AboutWindowController()
         {
@@ -28,6 +29,8 @@ namespace TogglDesktop
             comboBoxChannel.Visible = !updateCheckDisabled;
             labelReleaseChannel.Visible = !updateCheckDisabled;
 
+            // FIXME - Start updater in separate thread
+            WinSparkle = new WinSparkleDotNet.WinSparkle();
         }
 
         void OnUpdate(bool open, Toggl.Update view)
@@ -77,6 +80,7 @@ namespace TogglDesktop
         {
             Hide();
             e.Cancel = true;
+            WinSparkle.Cleanup();
         }
 
         private void buttonCheckingForUpdate_Click(object sender, EventArgs e)
@@ -87,7 +91,7 @@ namespace TogglDesktop
 
         private void AboutWindowController_Load(object sender, EventArgs e)
         {
-
+            checkChannelUpdate();
         }
 
         private void comboBoxChannel_SelectedIndexChanged(object sender, EventArgs e)
@@ -95,7 +99,15 @@ namespace TogglDesktop
             if (null == comboBoxChannel.Tag)
             {
                 Toggl.SetUpdateChannel(comboBoxChannel.Text);
+                checkChannelUpdate();
             }
+        }
+
+        private void checkChannelUpdate()
+        {
+            String url = "https://assets.toggl.com/installers/windows_" + comboBoxChannel.Text + "_appcast.xml";
+            WinSparkle.SetAppCastUrl(url);
+            WinSparkle.CheckUpdateWithUi();
         }
 
         private void linkLabelGithub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
