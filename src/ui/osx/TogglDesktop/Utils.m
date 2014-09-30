@@ -13,7 +13,7 @@
 
 + (void)setUpdaterChannel:(NSString *)channel
 {
-	NSString *url = [NSString stringWithFormat:@"https://assets.toggl.com/installers/osx_%@_appcast.xml", channel];
+	NSString *url = [NSString stringWithFormat:@"https://assets.toggl.com/installers/darwin_%@_appcast.xml", channel];
 
 	NSAssert([SUUpdater sharedUpdater], @"No updater found");
 	NSLog(@"Setting updater feed URL to %@", url);
