@@ -13,7 +13,6 @@ namespace TogglDesktop
 {
     public partial class AboutWindowController : TogglForm
     {
-        private string updateURL;
         private WinSparkleDotNet.WinSparkle WinSparkle = null;
 
         public AboutWindowController()
@@ -25,11 +24,9 @@ namespace TogglDesktop
             Toggl.OnUpdate += OnUpdate;
 
             bool updateCheckDisabled = Toggl.IsUpdateCheckDisabled();
-            buttonCheckingForUpdate.Visible = !updateCheckDisabled;
             comboBoxChannel.Visible = !updateCheckDisabled;
             labelReleaseChannel.Visible = !updateCheckDisabled;
 
-            // FIXME - Start updater in separate thread
             WinSparkle = new WinSparkleDotNet.WinSparkle();
         }
 
@@ -41,8 +38,6 @@ namespace TogglDesktop
                 return;
             }
 
-            updateURL = view.URL;
-
             comboBoxChannel.Tag = "ignore";
             try
             {
@@ -51,28 +46,6 @@ namespace TogglDesktop
             finally
             {
                 comboBoxChannel.Tag = null;
-            }
-
-            if (view.IsChecking)
-            {
-                buttonCheckingForUpdate.Enabled = false;
-                comboBoxChannel.Enabled = false;
-                buttonCheckingForUpdate.Text = "Checking for update..";
-                return;
-            }
-
-            comboBoxChannel.Enabled = true;
-
-            if (view.IsUpdateAvailable)
-            {
-                buttonCheckingForUpdate.Text = string.Format(
-                    "Click here to download update! {0}", view.Version);
-                buttonCheckingForUpdate.Enabled = true;
-            }
-            else
-            {
-                buttonCheckingForUpdate.Text = "TogglDesktop is up to date.";
-                buttonCheckingForUpdate.Enabled = false;
             }
         }
 
@@ -85,13 +58,11 @@ namespace TogglDesktop
 
         private void buttonCheckingForUpdate_Click(object sender, EventArgs e)
         {
-            Process.Start(updateURL);
-            TogglDesktop.Program.Shutdown(0);
+            checkChannelUpdate(true);
         }
 
         private void AboutWindowController_Load(object sender, EventArgs e)
         {
-            checkChannelUpdate();
         }
 
         private void comboBoxChannel_SelectedIndexChanged(object sender, EventArgs e)
@@ -99,15 +70,23 @@ namespace TogglDesktop
             if (null == comboBoxChannel.Tag)
             {
                 Toggl.SetUpdateChannel(comboBoxChannel.Text);
-                checkChannelUpdate();
+                checkChannelUpdate(false);
             }
         }
 
-        private void checkChannelUpdate()
+        private void checkChannelUpdate(bool withUi)
         {
+            if (comboBoxChannel.Text.Length == 0) return;
             String url = "https://assets.toggl.com/installers/windows_" + comboBoxChannel.Text + "_appcast.xml";
             WinSparkle.SetAppCastUrl(url);
-            WinSparkle.CheckUpdateWithUi();
+            if (withUi)
+            {
+                WinSparkle.CheckUpdateWithUi();
+            }
+            else
+            {
+                WinSparkle.CheckUpdateWithoutUi();
+            }
         }
 
         private void linkLabelGithub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

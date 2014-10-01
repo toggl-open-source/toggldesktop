@@ -82,7 +82,7 @@
             this.buttonCheckingForUpdate.Name = "buttonCheckingForUpdate";
             this.buttonCheckingForUpdate.Size = new System.Drawing.Size(270, 23);
             this.buttonCheckingForUpdate.TabIndex = 4;
-            this.buttonCheckingForUpdate.Text = "Checking for update...";
+            this.buttonCheckingForUpdate.Text = "Check for update...";
             this.buttonCheckingForUpdate.UseVisualStyleBackColor = true;
             this.buttonCheckingForUpdate.Click += new System.EventHandler(this.buttonCheckingForUpdate_Click);
             // 
