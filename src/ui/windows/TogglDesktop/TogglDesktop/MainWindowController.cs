@@ -11,6 +11,17 @@ namespace TogglDesktop
 {
     public partial class MainWindowController : TogglForm
     {
+        [DllImport("user32.dll")]
+        private static extern int ReleaseCapture();
+
+        [DllImport("user32.dll")]
+        private static extern int SendMessage(IntPtr hwnd, int msg, int wparam, int lparam);
+
+        private const int wmNcLButtonDown = 0xA1;
+        private const int wmNcLButtonUp = 0xA2;
+        private const int HtBottomRight = 17;
+        private bool isResizing = false;
+
         private LoginViewController loginViewController;
         private TimeEntryListViewController timeEntryListViewController;
         private TimeEntryEditViewController timeEntryEditViewController;
@@ -362,7 +373,7 @@ namespace TogglDesktop
                 contentPanel.Controls.Remove(timeEntryEditViewController);
                 contentPanel.Controls.Add(loginViewController);
                 loginViewController.SetAcceptButton(this);
-                resizeGrip.Visible = false;
+                resizeHandle.Visible = false;
             }
             enableMenuItems();
             displayTrayIcon(true);
@@ -401,7 +412,7 @@ namespace TogglDesktop
                 contentPanel.Controls.Remove(loginViewController);
                 contentPanel.Controls.Add(timeEntryListViewController);
                 timeEntryListViewController.SetAcceptButton(this);
-                resizeGrip.Visible = true;
+                resizeHandle.Visible = true;
                 if (editForm.Visible)
                 {
                     editForm.Hide();
@@ -788,6 +799,22 @@ namespace TogglDesktop
         private void hideHorizontalScrollBar()
         {
             ShowScrollBar(this.timeEntryListViewController.getListing().Handle, SB_HORZ, false);
+        }
+
+        private void resizeHandle_MouseDown(object sender, MouseEventArgs e)
+        {
+            isResizing = true;
+        }
+
+        private void resizeHandle_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isResizing)
+            {
+                isResizing = (e.Button == MouseButtons.Left);
+                ReleaseCapture();
+                int buttonEvent = (isResizing) ? wmNcLButtonDown : wmNcLButtonUp;
+                SendMessage(Handle, buttonEvent, HtBottomRight, 0);
+            }
         }
     }
 }

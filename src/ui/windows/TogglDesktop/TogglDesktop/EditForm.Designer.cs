@@ -77,13 +77,14 @@
             // 
             this.resizeHandle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.resizeHandle.AutoSize = false;
-            this.resizeHandle.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.resizeHandle.BackColor = System.Drawing.Color.Transparent;
+            this.resizeHandle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.resizeHandle.Dock = System.Windows.Forms.DockStyle.None;
+            this.resizeHandle.ImageScalingSize = new System.Drawing.Size(15, 15);
             this.resizeHandle.Location = new System.Drawing.Point(293, 395);
             this.resizeHandle.Name = "resizeHandle";
             this.resizeHandle.Size = new System.Drawing.Size(20, 20);
             this.resizeHandle.TabIndex = 3;
-            this.resizeHandle.Cursor = System.Windows.Forms.Cursors.SizeNWSE;
             this.resizeHandle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.resizeHandle_MouseDown);
             this.resizeHandle.MouseMove += new System.Windows.Forms.MouseEventHandler(this.resizeHandle_MouseMove);
             // 
