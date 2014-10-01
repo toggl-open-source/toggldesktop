@@ -872,6 +872,28 @@ TEST(TogglApiClientTest, Continue) {
     ASSERT_EQ(count+1, user.related.TimeEntries.size());
 }
 
+TEST(TogglApiClientTest, SetDurationOnRunningTimeEntryWithDurOnlySetting) {
+    testing::Database db;
+
+    std::string json = loadTestDataFile("../testdata/user_with_duronly.json");
+
+    User user;
+    user.LoadUserAndRelatedDataFromJSONString(json);
+
+    TimeEntry *te = user.related.TimeEntryByID(164891639);
+    ASSERT_TRUE(te);
+    ASSERT_TRUE(te->IsTracking());
+    ASSERT_LT(te->Start(), te->Stop());
+
+    te->SetDurationUserInput("00:59:47");
+    ASSERT_TRUE(te->IsTracking());
+    ASSERT_LT(te->Start(), te->Stop());
+
+    te->StopTracking();
+    ASSERT_FALSE(te->IsTracking());
+    ASSERT_LT(te->Start(), te->Stop());
+}
+
 }  // namespace toggl
 
 int main(int argc, char **argv) {

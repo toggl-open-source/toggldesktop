@@ -258,8 +258,8 @@ void TimeEntry::SetDurationUserInput(const std::string value) {
         SetDurationInSeconds(-start);
     } else {
         SetDurationInSeconds(seconds);
-        SetStop(Start() + seconds);
     }
+    SetStop(Start() + seconds);
 }
 
 void TimeEntry::SetProjectGUID(const std::string value) {
