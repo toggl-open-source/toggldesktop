@@ -32,7 +32,6 @@ namespace TogglDesktop
         private EditForm editForm;
         private Control editableEntry;
 
-        private bool isUpgradeDialogVisible = false;
         private bool isTracking = false;
         private bool isNetworkError = false;
         private Point defaultContentPosition =  new System.Drawing.Point(0, 0);
@@ -127,7 +126,6 @@ namespace TogglDesktop
 
             Toggl.OnApp += OnApp;
             Toggl.OnError += OnError;
-            Toggl.OnUpdate += OnUpdate;
             Toggl.OnLogin += OnLogin;
             Toggl.OnTimeEntryList += OnTimeEntryList;
             Toggl.OnTimeEntryEditor += OnTimeEntryEditor;
@@ -272,48 +270,6 @@ namespace TogglDesktop
                 troubleBox.Visible = false;
                 contentPanel.Location = defaultContentPosition;
                 displayTrayIcon(true);
-            }
-        }
-
-        void OnUpdate(bool open, Toggl.Update view)
-        {
-            if (InvokeRequired)
-            {
-                Invoke((MethodInvoker)delegate { OnUpdate(open, view); });
-                return;
-            }
-            if (open)
-            {
-                aboutWindowController.Show();
-                aboutWindowController.TopMost = true;
-            }
-            if (!view.IsUpdateAvailable)
-            {
-                return;
-            }
-            if (isUpgradeDialogVisible || aboutWindowController.Visible)
-            {
-                return;
-            }
-            isUpgradeDialogVisible = true;
-            DialogResult dr;
-            try
-            {
-                DisableTop();
-                dr = MessageBox.Show(
-                    "A new version of Toggl Desktop is available (" + view.Version + ")." +
-                    Environment.NewLine + "Continue with the download?",
-                    "New version available",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            }
-            finally
-            {
-                EnableTop();
-            }
-            isUpgradeDialogVisible = false;
-            if (DialogResult.Yes == dr)
-            {
-                Process.Start(view.URL);
             }
         }
 
@@ -593,7 +549,7 @@ namespace TogglDesktop
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Toggl.About();
+            aboutWindowController.ShowUpdates();
         }
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)

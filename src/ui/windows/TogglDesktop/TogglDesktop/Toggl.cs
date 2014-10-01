@@ -180,18 +180,6 @@ namespace TogglDesktop
             }
         }
 
-        [StructLayout(LayoutKind.Sequential, CharSet = charset)]
-        public struct Update
-        {
-            public string UpdateChannel;
-            [MarshalAs(UnmanagedType.I1)]
-            public bool IsChecking;
-            [MarshalAs(UnmanagedType.I1)]
-            public bool IsUpdateAvailable;
-            public string URL;
-            public string Version;
-        }
-
         // Callbacks
 
         [UnmanagedFunctionPointer(convention)]
@@ -211,16 +199,6 @@ namespace TogglDesktop
         public delegate void DisplayError(
             string errmsg,
             bool user_error);
-
-        [UnmanagedFunctionPointer(convention)]
-        private delegate void TogglDisplayUpdate(
-            [MarshalAs(UnmanagedType.I1)]
-            bool open,
-            ref Update view);
-
-        public delegate void DisplayUpdate(
-            bool open,
-            Update view);
 
         [UnmanagedFunctionPointer(convention)]
         private delegate void TogglDisplayOnlineState(
@@ -408,11 +386,6 @@ namespace TogglDesktop
             TogglDisplayError cb);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        private static extern void toggl_on_update(
-            IntPtr context,
-            TogglDisplayUpdate cb);
-
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         private static extern void toggl_on_online_state(
             IntPtr context,
             TogglDisplayOnlineState cb);
@@ -551,16 +524,6 @@ namespace TogglDesktop
         {
             return toggl_feedback_send(ctx,
                 EncodeString(topic), EncodeString(details), EncodeString(filename));
-        }
-
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        private static extern void toggl_about(
-            IntPtr context);
-
-        public static void About()
-        {
-            toggl_about(ctx);
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -882,6 +845,17 @@ namespace TogglDesktop
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.LPStr)]
+        private static extern string toggl_get_update_channel(
+            IntPtr context);
+
+        public static string UpdateChannel()
+        {
+            return toggl_get_update_channel(ctx);
+        }
+
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         private static extern void toggl_sync(
             IntPtr context);
 
@@ -962,14 +936,12 @@ namespace TogglDesktop
     		int time_entry_view_item_size,
 		    int autocomplete_view_item_size,
 		    int view_item_size,
-		    int settings_size,
-            int update_view_item_size);
+		    int settings_size);
 
         // Events for C#
 
         public static event DisplayApp OnApp = delegate { };
         public static event DisplayError OnError = delegate { };
-        public static event DisplayUpdate OnUpdate = delegate { };
         public static event DisplayOnlineState OnOnlineState = delegate { };
         public static event DisplayLogin OnLogin = delegate { };
         public static event DisplayReminder OnReminder = delegate { };
@@ -1001,8 +973,7 @@ namespace TogglDesktop
                 Marshal.SizeOf(new TimeEntry()),
                 Marshal.SizeOf(new AutocompleteItem()),
                 Marshal.SizeOf(new Model()),
-                Marshal.SizeOf(new Settings()),
-                Marshal.SizeOf(new Update()));
+                Marshal.SizeOf(new Settings()));
 
             // Wire up events
             toggl_on_show_app(ctx, delegate(bool open)
@@ -1013,11 +984,6 @@ namespace TogglDesktop
             toggl_on_error(ctx, delegate(string errmsg, bool user_error)
             {
                 OnError(DecodeString(errmsg), user_error);
-            });
-
-            toggl_on_update(ctx, delegate(bool open, ref Update view)
-            {
-                OnUpdate(open, view);
             });
 
             toggl_on_online_state(ctx, delegate(bool is_online, string reason)

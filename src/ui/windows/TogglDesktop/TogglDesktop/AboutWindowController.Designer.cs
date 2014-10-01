@@ -32,7 +32,6 @@
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.labelAppName = new System.Windows.Forms.Label();
             this.labelVersion = new System.Windows.Forms.Label();
-            this.buttonCheckingForUpdate = new System.Windows.Forms.Button();
             this.labelReleaseChannel = new System.Windows.Forms.Label();
             this.comboBoxChannel = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -74,17 +73,6 @@
             this.labelVersion.TabIndex = 2;
             this.labelVersion.Text = "Version 1.0.0";
             this.labelVersion.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // buttonCheckingForUpdate
-            // 
-            this.buttonCheckingForUpdate.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.buttonCheckingForUpdate.Location = new System.Drawing.Point(15, 216);
-            this.buttonCheckingForUpdate.Name = "buttonCheckingForUpdate";
-            this.buttonCheckingForUpdate.Size = new System.Drawing.Size(270, 23);
-            this.buttonCheckingForUpdate.TabIndex = 4;
-            this.buttonCheckingForUpdate.Text = "Check for update...";
-            this.buttonCheckingForUpdate.UseVisualStyleBackColor = true;
-            this.buttonCheckingForUpdate.Click += new System.EventHandler(this.buttonCheckingForUpdate_Click);
             // 
             // labelReleaseChannel
             // 
@@ -142,18 +130,17 @@
             this.panelMain.Controls.Add(this.comboBoxChannel);
             this.panelMain.Controls.Add(this.labelVersion);
             this.panelMain.Controls.Add(this.labelReleaseChannel);
-            this.panelMain.Controls.Add(this.buttonCheckingForUpdate);
             this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelMain.Location = new System.Drawing.Point(0, 0);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(300, 297);
+            this.panelMain.Size = new System.Drawing.Size(300, 298);
             this.panelMain.TabIndex = 0;
             // 
             // AboutWindowController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(300, 297);
+            this.ClientSize = new System.Drawing.Size(300, 298);
             this.Controls.Add(this.panelMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(300, 328);
@@ -161,7 +148,6 @@
             this.Name = "AboutWindowController";
             this.Text = "About";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AboutWindowController_FormClosing);
-            this.Load += new System.EventHandler(this.AboutWindowController_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
             this.panelMain.ResumeLayout(false);
             this.panelMain.PerformLayout();
@@ -174,7 +160,6 @@
         private System.Windows.Forms.PictureBox pictureBoxLogo;
         private System.Windows.Forms.Label labelAppName;
         private System.Windows.Forms.Label labelVersion;
-        private System.Windows.Forms.Button buttonCheckingForUpdate;
         private System.Windows.Forms.Label labelReleaseChannel;
         private System.Windows.Forms.ComboBox comboBoxChannel;
         private System.Windows.Forms.Label label1;

@@ -502,8 +502,7 @@ extern "C" {
         const int time_entry_view_item_size,
         const int autocomplete_view_item_size,
         const int view_item_size,
-        const int settings_size,
-        const int update_view_item_size);
+        const int settings_size);
 
 #undef TOGGL_EXPORT
 
