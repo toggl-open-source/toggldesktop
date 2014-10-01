@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>td70</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>7.0.0</string>
 	<key>KopsikEnvironment</key>
 	<string>development</string>
 	<key>KopsikLogUserInterfaceToFile</key>
