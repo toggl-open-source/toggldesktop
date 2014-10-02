@@ -9,11 +9,11 @@
 /* Begin PBXBuildFile section */
 		3C07B75A193C88AE00ED6E6F /* NSCustomTimerComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C07B759193C88AE00ED6E6F /* NSCustomTimerComboBox.m */; };
 		3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */; };
-		3C1E015519D2F5DF00DBF9A5 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C1E015419D2F5DF00DBF9A5 /* Sparkle.framework */; };
-		3C1E015619D2F5E900DBF9A5 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3C1E015419D2F5DF00DBF9A5 /* Sparkle.framework */; };
 		3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */; };
 		3C7B4E9E190FA7F900627DC3 /* logo-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */; };
 		3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */; };
+		3C7EEDF519DD8EE6000928C7 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C7EEDF219DD8DF8000928C7 /* Sparkle.framework */; };
+		3C7EEDF619DD8EE6000928C7 /* Sparkle.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 3C7EEDF219DD8DF8000928C7 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3C8979B71920B7B7007061E0 /* continue.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C8979B61920B7B7007061E0 /* continue.pdf */; };
 		3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8979C919235EA2007061E0 /* NSTextFieldClickablePointer.m */; };
 		3C996F7D190E4A34005066F6 /* icon-stop-red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C996F7C190E4A34005066F6 /* icon-stop-red@2x.png */; };
@@ -35,17 +35,17 @@
 		741104BF18C7682700BC7A49 /* NSTextFieldWithBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */; };
 		7421348E195C4EE8007EF78B /* TFDatePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74FD8CDC18A8EEE200F7DB80 /* TFDatePicker.framework */; };
 		7421348F195C4F1A007EF78B /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 749A3A5918D889BE000AD2DB /* CrashReporter.framework */; };
-		74213490195C50B5007EF78B /* CrashReporter.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 749A3A5918D889BE000AD2DB /* CrashReporter.framework */; };
-		74213491195C50BC007EF78B /* TFDatePicker.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 74FD8CDC18A8EEE200F7DB80 /* TFDatePicker.framework */; };
-		74213492195C50C1007EF78B /* Kopsik.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 74B680AD180759C300B697AA /* Kopsik.dylib */; };
-		742134BB195C63A3007EF78B /* libPocoUtil.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B3195C63A3007EF78B /* libPocoUtil.16.dylib */; };
-		742134BC195C63A3007EF78B /* libPocoData.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B4195C63A3007EF78B /* libPocoData.16.dylib */; };
-		742134BD195C63A3007EF78B /* libPocoNetSSL.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B5195C63A3007EF78B /* libPocoNetSSL.16.dylib */; };
-		742134BE195C63A3007EF78B /* libPocoXML.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B6195C63A3007EF78B /* libPocoXML.16.dylib */; };
-		742134BF195C63A3007EF78B /* libPocoDataSQLite.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B7195C63A3007EF78B /* libPocoDataSQLite.16.dylib */; };
-		742134C0195C63A3007EF78B /* libPocoNet.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B8195C63A3007EF78B /* libPocoNet.16.dylib */; };
-		742134C1195C63A3007EF78B /* libPocoFoundation.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B9195C63A3007EF78B /* libPocoFoundation.16.dylib */; };
-		742134C2195C63A3007EF78B /* libPocoCrypto.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134BA195C63A3007EF78B /* libPocoCrypto.16.dylib */; };
+		74213490195C50B5007EF78B /* CrashReporter.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 749A3A5918D889BE000AD2DB /* CrashReporter.framework */; };
+		74213491195C50BC007EF78B /* TFDatePicker.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 74FD8CDC18A8EEE200F7DB80 /* TFDatePicker.framework */; };
+		74213492195C50C1007EF78B /* Kopsik.dylib in Copy Files */ = {isa = PBXBuildFile; fileRef = 74B680AD180759C300B697AA /* Kopsik.dylib */; };
+		742134BB195C63A3007EF78B /* libPocoUtil.16.dylib in Copy Files */ = {isa = PBXBuildFile; fileRef = 742134B3195C63A3007EF78B /* libPocoUtil.16.dylib */; };
+		742134BC195C63A3007EF78B /* libPocoData.16.dylib in Copy Files */ = {isa = PBXBuildFile; fileRef = 742134B4195C63A3007EF78B /* libPocoData.16.dylib */; };
+		742134BD195C63A3007EF78B /* libPocoNetSSL.16.dylib in Copy Files */ = {isa = PBXBuildFile; fileRef = 742134B5195C63A3007EF78B /* libPocoNetSSL.16.dylib */; };
+		742134BE195C63A3007EF78B /* libPocoXML.16.dylib in Copy Files */ = {isa = PBXBuildFile; fileRef = 742134B6195C63A3007EF78B /* libPocoXML.16.dylib */; };
+		742134BF195C63A3007EF78B /* libPocoDataSQLite.16.dylib in Copy Files */ = {isa = PBXBuildFile; fileRef = 742134B7195C63A3007EF78B /* libPocoDataSQLite.16.dylib */; };
+		742134C0195C63A3007EF78B /* libPocoNet.16.dylib in Copy Files */ = {isa = PBXBuildFile; fileRef = 742134B8195C63A3007EF78B /* libPocoNet.16.dylib */; };
+		742134C1195C63A3007EF78B /* libPocoFoundation.16.dylib in Copy Files */ = {isa = PBXBuildFile; fileRef = 742134B9195C63A3007EF78B /* libPocoFoundation.16.dylib */; };
+		742134C2195C63A3007EF78B /* libPocoCrypto.16.dylib in Copy Files */ = {isa = PBXBuildFile; fileRef = 742134BA195C63A3007EF78B /* libPocoCrypto.16.dylib */; };
 		7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7423393A1829B99C00063FA9 /* IdleNotificationWindowController.m */; };
 		7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */; };
 		7424949E17F1E3D20030121C /* UIEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 7424949D17F1E3D20030121C /* UIEvents.m */; };
@@ -250,25 +250,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		74A50AA818434D90006F37BB /* CopyFiles */ = {
+		74A50AA818434D90006F37BB /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				742134BB195C63A3007EF78B /* libPocoUtil.16.dylib in CopyFiles */,
-				742134BC195C63A3007EF78B /* libPocoData.16.dylib in CopyFiles */,
-				742134BD195C63A3007EF78B /* libPocoNetSSL.16.dylib in CopyFiles */,
-				742134BE195C63A3007EF78B /* libPocoXML.16.dylib in CopyFiles */,
-				742134BF195C63A3007EF78B /* libPocoDataSQLite.16.dylib in CopyFiles */,
-				742134C0195C63A3007EF78B /* libPocoNet.16.dylib in CopyFiles */,
-				742134C1195C63A3007EF78B /* libPocoFoundation.16.dylib in CopyFiles */,
-				742134C2195C63A3007EF78B /* libPocoCrypto.16.dylib in CopyFiles */,
-				74213492195C50C1007EF78B /* Kopsik.dylib in CopyFiles */,
-				74213491195C50BC007EF78B /* TFDatePicker.framework in CopyFiles */,
-				74213490195C50B5007EF78B /* CrashReporter.framework in CopyFiles */,
-				3C1E015619D2F5E900DBF9A5 /* Sparkle.framework in CopyFiles */,
+				742134BB195C63A3007EF78B /* libPocoUtil.16.dylib in Copy Files */,
+				742134BC195C63A3007EF78B /* libPocoData.16.dylib in Copy Files */,
+				742134BD195C63A3007EF78B /* libPocoNetSSL.16.dylib in Copy Files */,
+				742134BE195C63A3007EF78B /* libPocoXML.16.dylib in Copy Files */,
+				742134BF195C63A3007EF78B /* libPocoDataSQLite.16.dylib in Copy Files */,
+				742134C0195C63A3007EF78B /* libPocoNet.16.dylib in Copy Files */,
+				742134C1195C63A3007EF78B /* libPocoFoundation.16.dylib in Copy Files */,
+				3C7EEDF619DD8EE6000928C7 /* Sparkle.framework in Copy Files */,
+				742134C2195C63A3007EF78B /* libPocoCrypto.16.dylib in Copy Files */,
+				74213492195C50C1007EF78B /* Kopsik.dylib in Copy Files */,
+				74213491195C50BC007EF78B /* TFDatePicker.framework in Copy Files */,
+				74213490195C50B5007EF78B /* CrashReporter.framework in Copy Files */,
 			);
+			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -277,12 +278,12 @@
 		3C07B758193C88AE00ED6E6F /* NSCustomTimerComboBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomTimerComboBox.h; sourceTree = "<group>"; };
 		3C07B759193C88AE00ED6E6F /* NSCustomTimerComboBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomTimerComboBox.m; sourceTree = "<group>"; };
 		3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
-		3C1E015419D2F5DF00DBF9A5 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = ../../../../third_party/Sparkle.framework; sourceTree = "<group>"; };
 		3C7B4E8B190FA6D200627DC3 /* NSTextFieldVerticallyAligned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldVerticallyAligned.h; sourceTree = "<group>"; };
 		3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldVerticallyAligned.m; sourceTree = "<group>"; };
 		3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-white@2x.png"; sourceTree = "<group>"; };
 		3C7B4EB1190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSecureTextFieldVerticallyAligned.h; sourceTree = "<group>"; };
 		3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSecureTextFieldVerticallyAligned.m; sourceTree = "<group>"; };
+		3C7EEDF219DD8DF8000928C7 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = ../../../../third_party/Sparkle.framework; sourceTree = "<group>"; };
 		3C8979B61920B7B7007061E0 /* continue.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = continue.pdf; sourceTree = "<group>"; };
 		3C8979C819235EA2007061E0 /* NSTextFieldClickablePointer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldClickablePointer.h; sourceTree = "<group>"; };
 		3C8979C919235EA2007061E0 /* NSTextFieldClickablePointer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldClickablePointer.m; sourceTree = "<group>"; };
@@ -468,7 +469,7 @@
 				7421348F195C4F1A007EF78B /* CrashReporter.framework in Frameworks */,
 				74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */,
 				7421348E195C4EE8007EF78B /* TFDatePicker.framework in Frameworks */,
-				3C1E015519D2F5DF00DBF9A5 /* Sparkle.framework in Frameworks */,
+				3C7EEDF519DD8EE6000928C7 /* Sparkle.framework in Frameworks */,
 				74033C9817EC1DF100CA53D3 /* libstdc++.dylib in Frameworks */,
 				74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */,
 				69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */,
@@ -512,7 +513,7 @@
 		69FC17F317E6534400B96425 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3C1E015419D2F5DF00DBF9A5 /* Sparkle.framework */,
+				3C7EEDF219DD8DF8000928C7 /* Sparkle.framework */,
 				74FD8CDF18A8EF8300F7DB80 /* TFDatePicker.framework */,
 				743D94271827929C000E6F70 /* Carbon.framework */,
 				743D942518279290000E6F70 /* IOKit.framework */,
@@ -882,7 +883,7 @@
 				69FC17EE17E6534400B96425 /* Frameworks */,
 				69FC17EF17E6534400B96425 /* Resources */,
 				74E3CDDA17FC37A500C3ADD3 /* ShellScript */,
-				74A50AA818434D90006F37BB /* CopyFiles */,
+				74A50AA818434D90006F37BB /* Copy Files */,
 			);
 			buildRules = (
 			);
@@ -1293,6 +1294,7 @@
 					"$(SRCROOT)/../../../../third_party/TFDatePicker/TFDatePicker/build/Release",
 					"$(PROJECT_DIR)",
 					"$(SRCROOT)/../../../../third_party",
+					/Users/indrekv/projects/toggldesktop/third_party,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "test2/TogglDesktop-Prefix.pch";
@@ -1305,6 +1307,7 @@
 					"$(SRCROOT)/../../../../third_party/Sparkle.framework/**",
 				);
 				INFOPLIST_FILE = "test2/TogglDesktop-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1332,6 +1335,7 @@
 					"$(SRCROOT)/../../../../third_party/TFDatePicker/TFDatePicker/build/Release",
 					"$(PROJECT_DIR)",
 					"$(SRCROOT)/../../../../third_party",
+					/Users/indrekv/projects/toggldesktop/third_party,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "test2/TogglDesktop-Prefix.pch";
@@ -1344,6 +1348,7 @@
 					"$(SRCROOT)/../../../../third_party/Sparkle.framework/**",
 				);
 				INFOPLIST_FILE = "test2/TogglDesktop-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
