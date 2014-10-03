@@ -36,5 +36,7 @@
 	<string>0600</string>
 	<key>DTXcodeBuild</key>
 	<string>6A254o</string>
+	<key>SURelaunchToolName</key>
+	<string>relaunch</string>
 </dict>
 </plist>
