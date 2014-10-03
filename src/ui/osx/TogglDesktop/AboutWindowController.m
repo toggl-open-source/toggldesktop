@@ -32,6 +32,10 @@ extern void *ctx;
 
 	self.windowHasLoad = YES;
 
+	char *str = toggl_get_update_channel(ctx);
+	self.updateChannelComboBox.stringValue = [NSString stringWithUTF8String:str];
+	free(str);
+
 	[[SUUpdater sharedUpdater] setDelegate:self];
 
 	[[SUUpdater sharedUpdater] resetUpdateCycle];
