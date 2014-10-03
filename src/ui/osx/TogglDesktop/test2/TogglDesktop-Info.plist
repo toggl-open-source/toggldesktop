@@ -44,5 +44,7 @@
 	<string>dsa_pub.pem</string>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
+	<key>SUShowReleaseNotes</key>
+	<false/>
 </dict>
 </plist>
