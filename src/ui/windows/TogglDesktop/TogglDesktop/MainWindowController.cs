@@ -161,6 +161,8 @@ namespace TogglDesktop
                 }
                 TogglDesktop.Program.Shutdown(1);
             }
+
+            aboutWindowController.initAndCheck();
         }
 
         private void MainWindowControllerEntries_Scroll(object sender, EventArgs e)
@@ -464,6 +466,7 @@ namespace TogglDesktop
         private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)
         {
             Utils.SaveWindowLocation(this, this.editForm);
+            aboutWindowController.SparkleCleanUp();
 
             if (!TogglDesktop.Program.ShuttingDown) {
                 Hide();
@@ -497,6 +500,7 @@ namespace TogglDesktop
             {
                 Utils.SaveWindowLocation(this, this.editForm);
             }
+            aboutWindowController.SparkleCleanUp();
 
             TogglDesktop.Program.Shutdown(0);
         }

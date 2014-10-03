@@ -57,5 +57,22 @@ namespace TogglDesktop
                 comboBoxChannel.SelectedIndex = comboBoxChannel.Items.IndexOf(channel);
             }
         }
+
+        internal void initAndCheck()
+        {
+            string channel = Toggl.UpdateChannel();
+            comboBoxChannel.SelectedIndex = comboBoxChannel.Items.IndexOf(channel);
+            String url = "https://assets.toggl.com/installers/windows_" + channel + "_appcast.xml";
+            sparkle.SetAppCastUrl(url);
+            if (!Toggl.IsUpdateCheckDisabled())
+            {
+                sparkle.CheckUpdateWithoutUi();
+            }
+        }
+
+        internal void SparkleCleanUp()
+        {
+            sparkle.Cleanup();
+        }
     }
 }
