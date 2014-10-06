@@ -217,6 +217,7 @@
       <DependentUpon>TimerEditViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils.cs" />
+    <Compile Include="WinSparkle.cs" />
     <EmbeddedResource Include="AboutWindowController.resx">
       <DependentUpon>AboutWindowController.cs</DependentUpon>
     </EmbeddedResource>
