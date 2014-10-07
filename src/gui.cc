@@ -297,6 +297,9 @@ _Bool GUI::isNetworkingError(const error err) const {
     if (value.find("Cannot assign requested address") != std::string::npos) {
         return true;
     }
+    if (value.find("Certificate validation error") != std::string::npos) {
+        return true;
+    }
     if (value.find("Unacceptable certificate from www.toggl.com")
             != std::string::npos) {
         return true;
