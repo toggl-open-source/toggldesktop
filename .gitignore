@@ -71,7 +71,7 @@ third_party/poco/PageCompiler/File2Page/bin/
 *.xcuserdatad/
 *.log
 *.zip
-*.app
+TogglDesktop.app
 
 coverage
 
