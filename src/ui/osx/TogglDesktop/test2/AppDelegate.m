@@ -1016,7 +1016,6 @@ const NSString *appName = @"osx_native_app";
 	NSLog(@"Report: %@", humanReadable);
 
 	NSException *exception;
-	NSMutableDictionary *data = [[NSMutableDictionary alloc] init];;
 	if (report.hasExceptionInfo)
 	{
 		exception = [NSException
@@ -1031,7 +1030,7 @@ const NSString *appName = @"osx_native_app";
 								reason:humanReadable
 							  userInfo:nil];
 	}
-	[Bugsnag notify:exception withData:data];
+	[Bugsnag notify:exception withData:[NSDictionary dictionaryWithObjectsAndKeys:@"channel", toggl_get_update_channel(ctx), nil]];
 
 	[crashReporter purgePendingCrashReport];
 }
@@ -1180,7 +1179,8 @@ void on_error(const char *errmsg, const _Bool is_user_error)
 														object:msg];
 	if (!is_user_error)
 	{
-		[Bugsnag notify:[NSException exceptionWithName:msg reason:msg userInfo:nil]];
+		[Bugsnag notify:[NSException exceptionWithName:msg reason:msg userInfo:nil]
+			   withData :[NSDictionary dictionaryWithObjectsAndKeys:@"channel", toggl_get_update_channel(ctx), nil]];
 	}
 }
 
