@@ -151,7 +151,8 @@ namespace TogglDesktop
         {
             bugsnag.Notify(e, new
             {
-                UserID = uid.ToString()
+                UserID = uid.ToString(),
+                channel = Toggl.UpdateChannel()
             });
         }
 
