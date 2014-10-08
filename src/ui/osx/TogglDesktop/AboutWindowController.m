@@ -11,6 +11,7 @@
 #import "toggl_api.h"
 #import "DisplayCommand.h"
 #import "Utils.h"
+#import "Sparkle.h"
 
 @implementation AboutWindowController
 

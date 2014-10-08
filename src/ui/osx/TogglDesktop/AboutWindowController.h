@@ -8,7 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 #import "DisplayCommand.h"
-#import "Sparkle.h"
 
 @interface AboutWindowController : NSWindowController
 @property IBOutlet NSTextField *appnameTextField;

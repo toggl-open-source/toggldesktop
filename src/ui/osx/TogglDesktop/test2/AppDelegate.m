@@ -26,6 +26,7 @@
 #import "Utils.h"
 #import "Settings.h"
 #import "DisplayCommand.h"
+#import "Sparkle.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) IBOutlet MainWindowController *mainWindowController;
@@ -218,6 +219,8 @@ void *ctx;
 
 	self.reach = [Reachability reachabilityForInternetConnection];
 	[self.reach startNotifier];
+
+	[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
 }
 
 - (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center
