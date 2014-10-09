@@ -158,6 +158,7 @@ namespace TogglDesktop
             {
                 textBoxDuration.Text = "";
             }
+            labelClearProject.Visible = false;
         }
 
         public void SetAcceptButton(Form frm)
