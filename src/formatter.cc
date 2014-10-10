@@ -352,10 +352,6 @@ bool Formatter::parseDurationStringMMSS(const std::string value,
 }
 
 int Formatter::ParseDurationString(const std::string value) {
-    if (value.empty()) {
-        return 0;
-    }
-
     std::string input = Poco::replace(value, " ", "");
     input = Poco::replace(input, ",", ".");
 
