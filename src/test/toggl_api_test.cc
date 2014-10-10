@@ -296,10 +296,34 @@ TEST(TogglApiTest, toggl_parse_time) {
     ASSERT_EQ(13, hours);
     ASSERT_EQ(0, minutes);
 
+    ASSERT_FALSE(toggl_parse_time("x", &hours, &minutes));
+
+    valid = toggl_parse_time("2", &hours, &minutes);
+    ASSERT_EQ(true, valid);
+    ASSERT_EQ(2, hours);
+    ASSERT_EQ(0, minutes);
+
+    valid = toggl_parse_time("12", &hours, &minutes);
+    ASSERT_EQ(true, valid);
+    ASSERT_EQ(12, hours);
+    ASSERT_EQ(0, minutes);
+
     valid = toggl_parse_time("1230", &hours, &minutes);
     ASSERT_EQ(true, valid);
     ASSERT_EQ(12, hours);
     ASSERT_EQ(30, minutes);
+
+    ASSERT_FALSE(toggl_parse_time("12x", &hours, &minutes));
+
+    ASSERT_FALSE(toggl_parse_time("12xx", &hours, &minutes));
+
+    ASSERT_FALSE(toggl_parse_time(":", &hours, &minutes));
+
+    ASSERT_FALSE(toggl_parse_time("11:", &hours, &minutes));
+
+    ASSERT_FALSE(toggl_parse_time(":20", &hours, &minutes));
+
+    ASSERT_FALSE(toggl_parse_time("11:xx", &hours, &minutes));
 
     valid = toggl_parse_time("11:20", &hours, &minutes);
     ASSERT_EQ(true, valid);
@@ -336,8 +360,7 @@ TEST(TogglApiTest, toggl_parse_time) {
     ASSERT_EQ(0, hours);
     ASSERT_EQ(0, minutes);
 
-    valid = toggl_parse_time("NOT VALID", &hours, &minutes);
-    ASSERT_EQ(false, valid);
+    ASSERT_FALSE(toggl_parse_time("NOT VALID", &hours, &minutes));
 }
 
 TEST(TogglApiTest, toggl_format_duration_in_seconds_hhmmss) {
@@ -390,6 +413,11 @@ TEST(TogglApiTest, toggl_format_duration_in_seconds_hhmm) {
     str = toggl_format_duration_in_seconds_hhmm(5410);
     ASSERT_EQ("01:30", std::string(str));
     free(str);
+}
+
+TEST(TogglApiTest, toggl_parse_duration_string_into_seconds) {
+    time_t res = toggl_parse_duration_string_into_seconds("");
+    ASSERT_EQ(0, res);
 }
 
 }  // namespace toggl

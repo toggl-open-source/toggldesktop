@@ -16,6 +16,7 @@
 
 #include "Poco/FileStream.h"
 #include "Poco/File.h"
+#include "Poco/LocalDateTime.h"
 
 namespace toggl {
 
@@ -892,6 +893,117 @@ TEST(TogglApiClientTest, SetDurationOnRunningTimeEntryWithDurOnlySetting) {
     te->StopTracking();
     ASSERT_FALSE(te->IsTracking());
     ASSERT_LT(te->Start(), te->Stop());
+}
+
+TEST(FormatterTest, FormatTimeForTimeEntryEditor) {
+    ASSERT_EQ("", Formatter::FormatTimeForTimeEntryEditor(0, "H:mm"));
+
+    //  date -r 1412950844
+    //  Fri Oct 10 16:20:44 CEST 2014
+    time_t t(1412950844);
+    ASSERT_EQ("16:20", Formatter::FormatTimeForTimeEntryEditor(t, "H:mm"));
+}
+
+TEST(FormatterTest, FormatDateHeader) {
+    ASSERT_EQ("", Formatter::FormatDateHeader(0));
+
+    //  date -r 1412120844
+    //  Wed Oct  1 01:47:24 CEST 2014
+    time_t t(1412120844);
+    ASSERT_EQ("Wed 01. Oct", Formatter::FormatDateHeader(t));
+
+    t = time(0);
+    ASSERT_EQ("Today", Formatter::FormatDateHeader(t));
+
+    t = t - 86400;
+    ASSERT_EQ("Yesterday", Formatter::FormatDateHeader(t));
+}
+
+
+TEST(FormatterTest, ParseLastDate) {
+    ASSERT_EQ(0, Formatter::ParseLastDate(0, 0));
+
+    time_t now(0);
+    Poco::DateTime now_date(Poco::Timestamp::fromEpochTime(now));
+
+    //  ate -r 1412220844
+    //  Thu Oct  2 05:34:04 CEST 2014
+    time_t last(1412220844);
+    Poco::DateTime last_date(Poco::Timestamp::fromEpochTime(last));
+
+    time_t res = Formatter::ParseLastDate(last, now);
+    Poco::DateTime res_date(Poco::Timestamp::fromEpochTime(res));
+
+    ASSERT_EQ(last_date.year(), res_date.year());
+    ASSERT_EQ(last_date.month(), res_date.month());
+    ASSERT_EQ(last_date.day(), res_date.day());
+
+    ASSERT_EQ(now_date.hour(), res_date.hour());
+    ASSERT_EQ(now_date.minute(), res_date.minute());
+}
+
+TEST(FormatterTest, JoinTaskName) {
+    std::string res = Formatter::JoinTaskName(0, 0, 0);
+    ASSERT_EQ("", res);
+
+    Task t;
+    t.SetName("Task name");
+    res = Formatter::JoinTaskName(&t, 0, 0);
+    ASSERT_EQ("Task name", res);
+
+    Project p;
+    p.SetName("Project name");
+    res = Formatter::JoinTaskName(0, &p, 0);
+    ASSERT_EQ(p.Name(), res);
+
+    res = Formatter::JoinTaskName(&t, &p, 0);
+    ASSERT_EQ("Task name. Project name", res);
+
+    Client c;
+    c.SetName("Customer name");
+    res = Formatter::JoinTaskName(0, 0, &c);
+    ASSERT_EQ(c.Name(), res);
+
+    res = Formatter::JoinTaskName(&t, 0, &c);
+    ASSERT_EQ("Task name. Customer name", res);
+
+    res = Formatter::JoinTaskName(0, &p, &c);
+    ASSERT_EQ("Project name. Customer name", res);
+
+    res = Formatter::JoinTaskName(&t, &p, &c);
+    ASSERT_EQ("Task name. Project name. Customer name", res);
+}
+
+TEST(FormatterTest, JoinTaskNameReverse) {
+    std::string res = Formatter::JoinTaskName(0, 0, 0);
+    ASSERT_EQ("", res);
+
+    Task t;
+    t.SetName("Task name");
+    res = Formatter::JoinTaskNameReverse(&t, 0, 0);
+    ASSERT_EQ("Task name", res);
+
+    Project p;
+    p.SetName("Project name");
+    res = Formatter::JoinTaskNameReverse(0, &p, 0);
+    ASSERT_EQ(p.Name(), res);
+
+    res = Formatter::JoinTaskNameReverse(&t, &p, 0);
+    ASSERT_EQ("Project name. Task name", res);
+
+    Client c;
+    c.SetName("Customer name");
+    res = Formatter::JoinTaskNameReverse(0, 0, &c);
+    ASSERT_EQ(c.Name(), res);
+
+    res = Formatter::JoinTaskNameReverse(&t, 0, &c);
+    ASSERT_EQ("Customer name. Task name", res);
+
+    res = Formatter::JoinTaskNameReverse(0, &p, &c);
+    ASSERT_EQ("Customer name. Project name", res);
+
+    res = Formatter::JoinTaskNameReverse(&t, &p, &c);
+    ASSERT_EQ("Customer name. Project name. Task name", res);
 }
 
 }  // namespace toggl
