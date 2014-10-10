@@ -127,6 +127,8 @@ TEST(TogglApiClientTest, AllowsSameEmail) {
 TEST(TogglApiClientTest, EscapeJSONString) {
     std::string text("https://github.com/bartschuller");
     ASSERT_EQ(text, Formatter::EscapeJSONString(text));
+    ASSERT_EQ("\"", Formatter::EscapeJSONString("\""));
+    ASSERT_EQ(" ", Formatter::EscapeJSONString("\t"));
 }
 
 TEST(TogglApiClientTest, EscapeControlCharactersInJSONString) {
@@ -902,6 +904,7 @@ TEST(FormatterTest, FormatTimeForTimeEntryEditor) {
     //  Fri Oct 10 16:20:44 CEST 2014
     time_t t(1412950844);
     ASSERT_EQ("16:20", Formatter::FormatTimeForTimeEntryEditor(t, "H:mm"));
+    ASSERT_EQ("04:20 PM", Formatter::FormatTimeForTimeEntryEditor(t, "h:mm A"));
 }
 
 TEST(FormatterTest, FormatDateHeader) {
@@ -926,7 +929,7 @@ TEST(FormatterTest, ParseLastDate) {
     time_t now(0);
     Poco::DateTime now_date(Poco::Timestamp::fromEpochTime(now));
 
-    //  ate -r 1412220844
+    //  date -r 1412220844
     //  Thu Oct  2 05:34:04 CEST 2014
     time_t last(1412220844);
     Poco::DateTime last_date(Poco::Timestamp::fromEpochTime(last));
@@ -940,6 +943,35 @@ TEST(FormatterTest, ParseLastDate) {
 
     ASSERT_EQ(now_date.hour(), res_date.hour());
     ASSERT_EQ(now_date.minute(), res_date.minute());
+}
+
+TEST(FormatterTest, Format8601) {
+    ASSERT_EQ("null", Formatter::Format8601(0));
+
+    //  date -r 1412220844
+    //  Thu Oct  2 05:34:04 CEST 2014
+    time_t t(1412220844);
+
+    ASSERT_EQ("2014-10-02T03:34:04Z", Formatter::Format8601(t));
+}
+
+TEST(FormatterTest, Parse8601) {
+    ASSERT_EQ(0, Formatter::Parse8601("null"));
+
+    //  date -r 1412220844
+    //  Thu Oct  2 05:34:04 CEST 2014
+    time_t t(1412220844);
+
+    ASSERT_EQ(t, Formatter::Parse8601("2014-10-02T03:34:04Z"));
+
+    ASSERT_EQ(0, Formatter::Parse8601("invalid value"));
+
+}
+
+TEST(FormatterTest, FormatDurationInSecondsPrettyHHMM) {
+    ASSERT_EQ("0 min", Formatter::FormatDurationInSecondsToHM(0));
+    ASSERT_EQ("0 min", Formatter::FormatDurationInSecondsToHM(30));
+    ASSERT_EQ("2 min", Formatter::FormatDurationInSecondsToHM(120));
 }
 
 TEST(FormatterTest, JoinTaskName) {
