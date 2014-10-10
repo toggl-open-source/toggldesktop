@@ -126,7 +126,7 @@ cxx=g++
 default: app
 
 clean: clean_ui clean_lib clean_test
-	rm -rf build
+	rm -rf build coverage
 
 ifeq ($(uname), Linux)
 clean_lib:
