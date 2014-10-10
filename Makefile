@@ -381,8 +381,6 @@ toggl_test: objects test_objects
 	rm -rf test
 	mkdir -p test
 	$(cxx) -coverage -o test/toggl_test build/*.o build/test/*.o $(libs)
-	lcov -d . -c -o app.info
-	genhtml -o coverage app.info
 
 test_lib: toggl_test
 ifeq ($(uname), Linux)
@@ -394,3 +392,8 @@ else
 endif
 
 test: test_lib
+
+coverage: test
+	lcov -q -d . -c -o app.info
+	genhtml -q -o coverage app.info
+
