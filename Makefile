@@ -121,7 +121,7 @@ libs=-lX11 \
 	-ldl
 endif
 
-cxx=g++
+cxx=g++ -fprofile-arcs -ftest-coverage
 
 default: app
 
@@ -380,9 +380,11 @@ test_objects: build/test/gtest-all.o \
 toggl_test: objects test_objects
 	rm -rf test
 	mkdir -p test
-	$(cxx) -o test/toggl_test build/*.o build/test/*.o $(libs)
+	$(cxx) -coverage -o test/toggl_test build/*.o build/test/*.o $(libs)
+	lcov -d . -c -o app.info
+	genhtml -o coverage app.info
 
-test_lib: fmt_lib lint toggl_test
+test_lib: toggl_test
 ifeq ($(uname), Linux)
 	cp -r $(jsondir)/libjson.so* test/.
 	cp -r $(pocodir)/lib/Linux/$(architecture)/*.so* test/.
