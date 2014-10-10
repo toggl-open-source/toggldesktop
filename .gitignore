@@ -142,3 +142,5 @@ rpm
 third_party/lua-5.2.3/src/lua
 third_party/lua-5.2.3/src/luac
 
+# code coverage
+app.info
