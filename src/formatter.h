@@ -30,16 +30,13 @@ class Formatter {
         const Poco::Int64 value,
         const std::string format);
 
-    static std::string formatDurationInSecondsToHM(
+    static std::string FormatDurationInSecondsToHM(
         const Poco::Int64 value);
 
     static std::string FormatDurationInSecondsHHMMSS(
         const Poco::Int64 value);
 
     static std::string FormatDurationInSecondsHHMM(
-        const Poco::Int64 value);
-
-    static std::string FormatDurationInSecondsPrettyHHMM(
         const Poco::Int64 value);
 
     static std::string Format8601(

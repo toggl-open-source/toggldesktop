@@ -392,3 +392,8 @@ else
 endif
 
 test: test_lib
+
+coverage: clean_test test
+	lcov -q -d . -c -o app.info
+	genhtml -q -o coverage app.info
+

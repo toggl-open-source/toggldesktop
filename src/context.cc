@@ -956,7 +956,7 @@ TogglTimeEntryView *Context::timeEntryViewItem(TimeEntry *te) {
 
     Poco::Int64 duration = totalDurationForDate(te);
     std::string date_duration =
-        Formatter::FormatDurationInSecondsPrettyHHMM(duration);
+        Formatter::FormatDurationInSecondsToHM(duration);
 
     return time_entry_view_item_init(te,
                                      project_and_task_label,
@@ -1350,7 +1350,7 @@ void Context::DisplayTimeEntryList(const _Bool open) {
 
         Poco::Int64 duration = date_durations[te->DateHeaderString()];
         std::string date_duration =
-            Formatter::FormatDurationInSecondsPrettyHHMM(duration);
+            Formatter::FormatDurationInSecondsToHM(duration);
 
         TogglTimeEntryView *item =
             time_entry_view_item_init(te,

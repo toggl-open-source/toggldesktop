@@ -415,7 +415,7 @@ std::string Formatter::FormatDurationInSeconds(
     return ss.str();
 }
 
-std::string Formatter::formatDurationInSecondsToHM(
+std::string Formatter::FormatDurationInSecondsToHM(
     const Poco::Int64 value) {
     Poco::Int64 duration = TimeEntry::AbsDuration(value);
     Poco::Timespan span(duration * Poco::Timespan::SECONDS);
@@ -438,11 +438,6 @@ std::string Formatter::FormatDurationInSecondsHHMMSS(const Poco::Int64 value) {
 
 std::string Formatter::FormatDurationInSecondsHHMM(const Poco::Int64 value) {
     return FormatDurationInSeconds(value, "%M");
-}
-
-std::string Formatter::FormatDurationInSecondsPrettyHHMM(
-    const Poco::Int64 value) {
-    return formatDurationInSecondsToHM(value);
 }
 
 std::time_t Formatter::Parse8601(const std::string iso_8601_formatted_date) {

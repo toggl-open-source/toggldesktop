@@ -1180,7 +1180,7 @@ void on_error(const char *errmsg, const _Bool is_user_error)
 	if (!is_user_error)
 	{
 		[Bugsnag notify:[NSException exceptionWithName:msg reason:msg userInfo:nil]
-			   withData :[NSDictionary dictionaryWithObjectsAndKeys:@"channel", toggl_get_update_channel(ctx), nil]];
+				 withData:[NSDictionary dictionaryWithObjectsAndKeys:@"channel", toggl_get_update_channel(ctx), nil]];
 	}
 }
 
