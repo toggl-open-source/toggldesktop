@@ -438,4 +438,12 @@ TEST(TogglApiTest, toggl_set_environment) {
     ASSERT_EQ("test", res);
 }
 
+TEST(TogglApiTest, testing_set_logged_in_user) {
+    std::string json = loadTestData();
+    testing::App app;
+    _Bool res = testing_set_logged_in_user(app.ctx(), json.c_str());
+    ASSERT_TRUE(res);
+    ASSERT_EQ(10471231, testing::testresult::user_id);
+}
+
 }  // namespace toggl
