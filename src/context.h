@@ -64,6 +64,9 @@ class Context {
     _Bool SetDBPath(const std::string path);
 
     void SetEnvironment(const std::string environment);
+    std::string Environment() const {
+        return environment_;
+    }
 
     void DisableUpdateCheck() {
         update_check_disabled_ = true;

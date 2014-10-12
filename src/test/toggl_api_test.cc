@@ -420,4 +420,22 @@ TEST(TogglApiTest, toggl_parse_duration_string_into_seconds) {
     ASSERT_EQ(0, res);
 }
 
+TEST(TogglApiTest, toggl_password_forgot) {
+    testing::App app;
+    toggl_password_forgot(app.ctx());
+    ASSERT_EQ("https://www.toggl.com/forgot-password",
+        testing::testresult::url);
+}
+
+TEST(TogglApiTest, toggl_set_environment) {
+    testing::App app;
+
+    toggl_set_environment(app.ctx(), "test");
+
+    char *env = toggl_environment(app.ctx());
+    std::string res(env);
+    free(env);
+    ASSERT_EQ("test", res);
+}
+
 }  // namespace toggl
