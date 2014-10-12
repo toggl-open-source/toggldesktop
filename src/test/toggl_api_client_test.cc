@@ -903,8 +903,12 @@ TEST(FormatterTest, FormatTimeForTimeEntryEditor) {
     //  date -r 1412950844
     //  Fri Oct 10 16:20:44 CEST 2014
     time_t t(1412950844);
-    ASSERT_EQ("16:20", Formatter::FormatTimeForTimeEntryEditor(t, "H:mm"));
-    ASSERT_EQ("04:20 PM", Formatter::FormatTimeForTimeEntryEditor(t, "h:mm A"));
+
+    std::string res = Formatter::FormatTimeForTimeEntryEditor(t, "H:mm");
+    ASSERT_NE(std::string::npos, res.find(":20"));
+
+    res = Formatter::FormatTimeForTimeEntryEditor(t, "h:mm A");
+    ASSERT_NE(std::string::npos, res.find(":20"));
 }
 
 TEST(FormatterTest, FormatDateHeader) {
@@ -965,7 +969,6 @@ TEST(FormatterTest, Parse8601) {
     ASSERT_EQ(t, Formatter::Parse8601("2014-10-02T03:34:04Z"));
 
     ASSERT_EQ(0, Formatter::Parse8601("invalid value"));
-
 }
 
 TEST(FormatterTest, FormatDurationInSecondsPrettyHHMM) {
