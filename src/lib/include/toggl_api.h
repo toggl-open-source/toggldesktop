@@ -182,6 +182,10 @@ extern "C" {
         void *context,
         const char *environment);
 
+    // You must free() the result
+    TOGGL_EXPORT char *toggl_environment(
+        void *context);
+
     // Optionally, disable update check
 
     TOGGL_EXPORT void toggl_disable_update_check(

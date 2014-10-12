@@ -153,6 +153,11 @@ void toggl_set_environment(
     return app(context)->SetEnvironment(environment);
 }
 
+char *toggl_environment(
+    void *context) {
+    return strdup(app(context)->Environment().c_str());
+}
+
 void toggl_disable_update_check(
     void *context) {
 
