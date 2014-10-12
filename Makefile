@@ -330,8 +330,8 @@ build/test/test_data.o: src/test/test_data.cc
 build/test/toggl_api_test.o: src/test/toggl_api_test.cc
 	$(cxx) $(cflags) -c src/test/toggl_api_test.cc -o build/test/toggl_api_test.o
 
-build/test/toggl_api_client_test.o: src/test/toggl_api_client_test.cc
-	$(cxx) $(cflags) -c src/test/toggl_api_client_test.cc -o build/test/toggl_api_client_test.o
+build/test/app_test.o: src/test/app_test.cc
+	$(cxx) $(cflags) -c src/test/app_test.cc -o build/test/app_test.o
 
 build/get_focused_window_$(osname).o: src/get_focused_window_$(osname).cc
 	$(cxx) $(cflags) -c src/get_focused_window_$(osname).cc -o build/get_focused_window_$(osname).o
@@ -374,7 +374,7 @@ objects: build/proxy.o \
 
 test_objects: build/test/gtest-all.o \
 	build/test/test_data.o \
-	build/test/toggl_api_client_test.o \
+	build/test/app_test.o \
 	build/test/toggl_api_test.o
 
 toggl_test: objects test_objects
