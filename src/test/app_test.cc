@@ -44,13 +44,13 @@ class Database {
 };
 }  // namespace testing
 
-TEST(TogglApiClientTest, TimeEntryReturnsTags) {
+TEST(AppTest, TimeEntryReturnsTags) {
     TimeEntry te;
     te.SetTags("alfa|beeta");
     ASSERT_EQ(std::string("alfa|beeta"), te.Tags());
 }
 
-TEST(TogglApiClientTest, ProjectsHaveColorCodes) {
+TEST(AppTest, ProjectsHaveColorCodes) {
     Project p;
     p.SetColor("1");
     ASSERT_EQ("#bc85e6", p.ColorCode());
@@ -64,7 +64,7 @@ TEST(TogglApiClientTest, ProjectsHaveColorCodes) {
     ASSERT_EQ("#a4506c", p.ColorCode());
 }
 
-TEST(TogglApiClientTest, SaveAndLoadCurrentAPIToken) {
+TEST(AppTest, SaveAndLoadCurrentAPIToken) {
     testing::Database db;
     std::string api_token("");
     ASSERT_EQ(noError, db.instance()->CurrentAPIToken(&api_token));
@@ -92,7 +92,7 @@ TEST(TogglApiClientTest, SaveAndLoadCurrentAPIToken) {
     ASSERT_EQ("", api_token_from_db);
 }
 
-TEST(TogglApiClientTest, UpdatesTimeEntryFromJSON) {
+TEST(AppTest, UpdatesTimeEntryFromJSON) {
     User user;
     user.LoadUserAndRelatedDataFromJSONString(loadTestData());
 
@@ -104,7 +104,7 @@ TEST(TogglApiClientTest, UpdatesTimeEntryFromJSON) {
     ASSERT_EQ("Changed", te->Description());
 }
 
-TEST(TogglApiClientTest, AllowsSameEmail) {
+TEST(AppTest, AllowsSameEmail) {
     testing::Database db;
 
     User user;
@@ -124,19 +124,19 @@ TEST(TogglApiClientTest, AllowsSameEmail) {
     ASSERT_NE(user.APIToken(), user2.APIToken());
 }
 
-TEST(TogglApiClientTest, EscapeJSONString) {
+TEST(AppTest, EscapeJSONString) {
     std::string text("https://github.com/bartschuller");
     ASSERT_EQ(text, Formatter::EscapeJSONString(text));
     ASSERT_EQ("\"", Formatter::EscapeJSONString("\""));
     ASSERT_EQ(" ", Formatter::EscapeJSONString("\t"));
 }
 
-TEST(TogglApiClientTest, EscapeControlCharactersInJSONString) {
+TEST(AppTest, EscapeControlCharactersInJSONString) {
     std::string text("\x16");
     ASSERT_EQ(" ", Formatter::EscapeJSONString(text));
 }
 
-TEST(TogglApiClientTest, UpdatesTimeEntryFromFullUserJSON) {
+TEST(AppTest, UpdatesTimeEntryFromFullUserJSON) {
     testing::Database db;
 
     std::string json = loadTestData();
@@ -159,7 +159,7 @@ TEST(TogglApiClientTest, UpdatesTimeEntryFromFullUserJSON) {
     ASSERT_EQ("Even more important!", te->Description());
 }
 
-TEST(TogglApiClientTest, SavesAndLoadsUserFields) {
+TEST(AppTest, SavesAndLoadsUserFields) {
     testing::Database db;
 
     User user;
@@ -187,7 +187,7 @@ TEST(TogglApiClientTest, SavesAndLoadsUserFields) {
     ASSERT_TRUE(user3.StoreStartAndStopTime());
 }
 
-TEST(TogglApiClientTest, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
+TEST(AppTest, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
     testing::Database db;
 
     User user;
@@ -232,7 +232,7 @@ TEST(TogglApiClientTest, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
     }
 }
 
-TEST(TogglApiClientTest,
+TEST(AppTest,
      SavesModelsAndKnowsToUpdateWithSeparateUserInstances) {
     testing::Database db;
 
@@ -318,7 +318,7 @@ TEST(TogglApiClientTest,
     ASSERT_EQ(uint(5), n);
 }
 
-TEST(TogglApiClientTest, TestStartTimeEntryWithDuration) {
+TEST(AppTest, TestStartTimeEntryWithDuration) {
     testing::Database db;
 
     User user;
@@ -335,7 +335,7 @@ TEST(TogglApiClientTest, TestStartTimeEntryWithDuration) {
     ASSERT_EQ(3600, te->DurationInSeconds());
 }
 
-TEST(TogglApiClientTest, TestStartTimeEntryWithoutDuration) {
+TEST(AppTest, TestStartTimeEntryWithoutDuration) {
     testing::Database db;
 
     User user;
@@ -348,7 +348,7 @@ TEST(TogglApiClientTest, TestStartTimeEntryWithoutDuration) {
     ASSERT_GT(0, te->DurationInSeconds());
 }
 
-TEST(TogglApiClientTest, TestDeletionSteps) {
+TEST(AppTest, TestDeletionSteps) {
     testing::Database db;
 
     User user;
@@ -383,7 +383,7 @@ TEST(TogglApiClientTest, TestDeletionSteps) {
     }
 }
 
-TEST(TogglApiClientTest, SavesModels) {
+TEST(AppTest, SavesModels) {
     User user;
     user.LoadUserAndRelatedDataFromJSONString(loadTestData());
 
@@ -395,7 +395,7 @@ TEST(TogglApiClientTest, SavesModels) {
     ASSERT_EQ(noError, db.instance()->SaveUser(&user, false, &changes));
 }
 
-TEST(TogglApiClientTest, AssignsGUID) {
+TEST(AppTest, AssignsGUID) {
     std::string json = loadTestData();
     ASSERT_FALSE(json.empty());
 
@@ -416,7 +416,7 @@ TEST(TogglApiClientTest, AssignsGUID) {
     ASSERT_EQ(te->ID(), te2->ID());
 }
 
-TEST(TogglApiClientTest, ParsesAndSavesData) {
+TEST(AppTest, ParsesAndSavesData) {
     std::string json = loadTestData();
     ASSERT_FALSE(json.empty());
 
@@ -637,7 +637,7 @@ TEST(TogglApiClientTest, ParsesAndSavesData) {
     ASSERT_EQ(Poco::UInt64(0), n);
 }
 
-TEST(TogglApiClientTest, ParsesDurationLikeOnTheWeb) {
+TEST(AppTest, ParsesDurationLikeOnTheWeb) {
     TimeEntry te;
 
     te.SetDurationUserInput("00:00:15");
@@ -824,7 +824,7 @@ TEST(TogglApiClientTest, ParsesDurationLikeOnTheWeb) {
     ASSERT_EQ("01:01:01", te.DurationString());
 }
 
-TEST(TogglApiClientTest, ParseDurationLargerThan24Hours) {
+TEST(AppTest, ParseDurationLargerThan24Hours) {
     TimeEntry te;
 
     te.SetDurationInSeconds(0);
@@ -832,7 +832,7 @@ TEST(TogglApiClientTest, ParseDurationLargerThan24Hours) {
     ASSERT_EQ("90:10:00", te.DurationString());
 }
 
-TEST(TogglApiClientTest, InterpretsCrazyStartAndStopAsMissingValues) {
+TEST(AppTest, InterpretsCrazyStartAndStopAsMissingValues) {
     TimeEntry te;
 
     ASSERT_EQ(Poco::UInt64(0), te.Start());
@@ -844,7 +844,7 @@ TEST(TogglApiClientTest, InterpretsCrazyStartAndStopAsMissingValues) {
     ASSERT_EQ(Poco::UInt64(0), te.Stop());
 }
 
-TEST(TogglApiClientTest, Continue) {
+TEST(AppTest, Continue) {
     testing::Database db;
 
     User user;
@@ -875,7 +875,7 @@ TEST(TogglApiClientTest, Continue) {
     ASSERT_EQ(count+1, user.related.TimeEntries.size());
 }
 
-TEST(TogglApiClientTest, SetDurationOnRunningTimeEntryWithDurOnlySetting) {
+TEST(AppTest, SetDurationOnRunningTimeEntryWithDurOnlySetting) {
     testing::Database db;
 
     std::string json = loadTestDataFile("../testdata/user_with_duronly.json");
