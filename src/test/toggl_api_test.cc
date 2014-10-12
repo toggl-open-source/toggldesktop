@@ -424,7 +424,7 @@ TEST(TogglApiTest, toggl_password_forgot) {
     testing::App app;
     toggl_password_forgot(app.ctx());
     ASSERT_EQ("https://www.toggl.com/forgot-password",
-        testing::testresult::url);
+              testing::testresult::url);
 }
 
 TEST(TogglApiTest, toggl_set_environment) {
