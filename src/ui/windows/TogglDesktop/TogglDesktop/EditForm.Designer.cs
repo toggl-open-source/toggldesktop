@@ -77,7 +77,7 @@
             // 
             this.resizeHandle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.resizeHandle.AutoSize = false;
-            this.resizeHandle.BackColor = System.Drawing.SystemColors.Control;
+            this.resizeHandle.BackColor = System.Drawing.Color.WhiteSmoke;
             this.resizeHandle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.resizeHandle.Dock = System.Windows.Forms.DockStyle.None;
             this.resizeHandle.ImageScalingSize = new System.Drawing.Size(15, 15);
