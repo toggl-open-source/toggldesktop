@@ -7,6 +7,7 @@
 #include <vector>
 #include <map>
 #include <set>
+#include <iostream> // NOLINT
 
 #include "./types.h"
 #include "./database.h"
@@ -201,7 +202,7 @@ class Context {
         Poco::Logger::get("").setChannel(formattingChannel);
     }
 
-    void SetQuit(const bool value) {
+    void SetQuit() {
         quit_ = true;
     }
 
@@ -359,6 +360,12 @@ class Context {
     Poco::LocalDateTime last_time_entry_list_render_at_;
 
     bool quit_;
+
+    Poco::Observer<Context, CreateTimelineBatchNotification>
+        create_timeline_batch_observer_;
+    Poco::Observer<Context, TimelineEventNotification> timeline_event_observer_;
+    Poco::Observer<Context, DeleteTimelineBatchNotification>
+        delete_timeline_batch_observer_;
 };
 
 }  // namespace toggl
