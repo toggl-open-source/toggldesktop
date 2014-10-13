@@ -8,8 +8,6 @@
 
 #include "./context.h"
 
-#include <iostream> // NOLINT
-
 #include "./formatter.h"
 #include "./json.h"
 #include "./time_entry.h"
@@ -48,7 +46,11 @@ Context::Context(const std::string app_name, const std::string app_version)
 , last_idle_started_(0)
 , last_sync_started_(0)
 , update_check_disabled_(false)
-, quit_(false) {
+, quit_(false)
+, create_timeline_batch_observer_(*this, &Context::handleCreateTimelineBatchNotification)
+, timeline_event_observer_(*this, &Context::handleTimelineEventNotification)
+, delete_timeline_batch_observer_(*this, &Context::handleDeleteTimelineBatchNotification)
+{
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
@@ -58,24 +60,9 @@ Context::Context(const std::string app_name, const std::string app_version)
     Poco::Crypto::OpenSSLInitializer::initialize();
 
     Poco::NotificationCenter &nc = Poco::NotificationCenter::defaultCenter();
-
-    {
-        Poco::Observer<Context, CreateTimelineBatchNotification>
-        observer(*this, &Context::handleCreateTimelineBatchNotification);
-        nc.addObserver(observer);
-    }
-
-    {
-        Poco::Observer<Context, TimelineEventNotification>
-        observer(*this, &Context::handleTimelineEventNotification);
-        nc.addObserver(observer);
-    }
-
-    {
-        Poco::Observer<Context, DeleteTimelineBatchNotification>
-        observer(*this, &Context::handleDeleteTimelineBatchNotification);
-        nc.addObserver(observer);
-    }
+    nc.addObserver(create_timeline_batch_observer_);
+    nc.addObserver(timeline_event_observer_);
+    nc.addObserver(delete_timeline_batch_observer_);
 
     startPeriodicUpdateCheck();
 
@@ -85,7 +72,12 @@ Context::Context(const std::string app_name, const std::string app_version)
 }
 
 Context::~Context() {
-    SetQuit(true);
+    SetQuit();
+
+    Poco::NotificationCenter &nc = Poco::NotificationCenter::defaultCenter();
+    nc.removeObserver(create_timeline_batch_observer_);
+    nc.removeObserver(timeline_event_observer_);
+    nc.removeObserver(delete_timeline_batch_observer_);
 
     if (window_change_recorder_) {
         Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
@@ -570,12 +562,20 @@ void Context::switchTimelineOn() {
         new Poco::Util::TimerTaskAdapter<Context>(
             *this, &Context::onSwitchTimelineOn);
 
+    if (quit_) {
+        return;
+    }
+
     Poco::Mutex::ScopedLock lock(timer_m_);
     timer_.schedule(ptask, Poco::Timestamp());
 }
 
 void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onSwitchTimelineOn");
+
+    if (quit_) {
+        return;
+    }
 
     if (!user_) {
         return;
@@ -1012,6 +1012,7 @@ _Bool Context::SetDBPath(
 
         Poco::Mutex::ScopedLock lock(db_m_);
         if (db_) {
+            std::cout << "delete db_ from SetDBPath()" << std::endl;
             delete db_;
             db_ = 0;
         }
@@ -2020,7 +2021,10 @@ void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
 
 void Context::handleCreateTimelineBatchNotification(
     CreateTimelineBatchNotification* notification) {
-    logger().debug("handleCreateTimelineBatchNotification");
+
+    if (quit_) {
+        return;
+    }
 
     if (!user_) {
         return;
