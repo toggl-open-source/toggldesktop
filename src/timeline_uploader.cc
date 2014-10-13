@@ -91,6 +91,10 @@ void TimelineUploader::upload_loop_activity() {
             << current_upload_interval_seconds_ << "s)";
         logger().debug(out.str());
 
+        if (uploading_.isStopped()) {
+            return;
+        }
+
         {
             // Request data for upload.
             CreateTimelineBatchNotification notification;
@@ -98,10 +102,14 @@ void TimelineUploader::upload_loop_activity() {
             Poco::NotificationCenter::defaultCenter().postNotification(ptr);
         }
 
+        if (uploading_.isStopped()) {
+            return;
+        }
+
         // Sleep in increments for faster shutdown.
         for (unsigned int i = 0; i < current_upload_interval_seconds_; i++) {
             if (uploading_.isStopped()) {
-                break;
+                return;
             }
             Poco::Thread::sleep(1000);
         }
