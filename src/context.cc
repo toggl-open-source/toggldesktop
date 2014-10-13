@@ -47,10 +47,10 @@ Context::Context(const std::string app_name, const std::string app_version)
 , last_sync_started_(0)
 , update_check_disabled_(false)
 , quit_(false)
-, create_timeline_batch_observer_(*this, &Context::handleCreateTimelineBatchNotification)
-, timeline_event_observer_(*this, &Context::handleTimelineEventNotification)
-, delete_timeline_batch_observer_(*this, &Context::handleDeleteTimelineBatchNotification)
-{
+, create_timeline_batch_observer_(*this,
+                                  &Context::handleCreateTimelineBatchNotification)  // NOLINT
+, timeline_event_observer_(*this, &Context::handleTimelineEventNotification)  // NOLINT
+, delete_timeline_batch_observer_(*this, &Context::handleDeleteTimelineBatchNotification) {  // NOLINT
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
