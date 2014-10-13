@@ -38,7 +38,7 @@
             // CloseButton
             // 
             this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.CloseButton.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.CloseButton.BackColor = System.Drawing.Color.WhiteSmoke;
             this.CloseButton.BackgroundImage = global::TogglDesktop.Properties.Resources.icon_x;
             this.CloseButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.CloseButton.FlatAppearance.BorderSize = 0;
