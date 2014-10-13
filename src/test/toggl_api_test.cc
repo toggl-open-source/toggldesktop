@@ -420,6 +420,7 @@ TEST(TogglApiTest, toggl_format_duration_in_seconds_hhmm) {
 }
 
 TEST(TogglApiTest, toggl_parse_duration_string_into_seconds) {
+    ASSERT_EQ(0, toggl_parse_duration_string_into_seconds(0));
     ASSERT_EQ(0, toggl_parse_duration_string_into_seconds(""));
     ASSERT_EQ(15, toggl_parse_duration_string_into_seconds("15 seconds"));
 }
