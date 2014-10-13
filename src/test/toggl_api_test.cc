@@ -29,6 +29,11 @@ Settings settings;
 bool use_proxy(false);
 Proxy proxy;
 std::string update_channel("");
+// Idle notification
+std::string idle_guid("");
+std::string idle_since("");
+std::string idle_duration("");
+uint64_t idle_started(0);
 }  // namespace testresult
 
 void on_app(const _Bool open) {
@@ -120,6 +125,10 @@ void on_display_idle_notification(
     const char *since,
     const char *duration,
     const uint64_t started) {
+    testing::testresult::idle_since = std::string(since);
+    testing::testresult::idle_started = started;
+    testing::testresult::idle_duration = std::string(duration);
+    testing::testresult::idle_guid = std::string(guid);
 }
 
 void on_apply_settings(
@@ -284,32 +293,34 @@ TEST(TogglApiTest, toggl_set_log_level) {
 TEST(TogglApiTest, toggl_parse_time) {
     int hours = 0;
     int minutes = 0;
-    bool valid = true;
 
-    valid = toggl_parse_time("120a", &hours, &minutes);
-    ASSERT_EQ(true, valid);
+    ASSERT_FALSE(toggl_parse_time("", &hours, &minutes));
+    ASSERT_EQ(0, hours);
+    ASSERT_EQ(0, minutes);
+
+    ASSERT_TRUE(toggl_parse_time("120a", &hours, &minutes));
     ASSERT_EQ(1, hours);
     ASSERT_EQ(20, minutes);
 
-    valid = toggl_parse_time("1P", &hours, &minutes);
-    ASSERT_EQ(true, valid);
+    ASSERT_TRUE(toggl_parse_time("120a", &hours, &minutes));
+    ASSERT_EQ(1, hours);
+    ASSERT_EQ(20, minutes);
+
+    ASSERT_TRUE(toggl_parse_time("1P", &hours, &minutes));
     ASSERT_EQ(13, hours);
     ASSERT_EQ(0, minutes);
 
     ASSERT_FALSE(toggl_parse_time("x", &hours, &minutes));
 
-    valid = toggl_parse_time("2", &hours, &minutes);
-    ASSERT_EQ(true, valid);
+    ASSERT_TRUE(toggl_parse_time("2", &hours, &minutes));
     ASSERT_EQ(2, hours);
     ASSERT_EQ(0, minutes);
 
-    valid = toggl_parse_time("12", &hours, &minutes);
-    ASSERT_EQ(true, valid);
+    ASSERT_TRUE(toggl_parse_time("12", &hours, &minutes));
     ASSERT_EQ(12, hours);
     ASSERT_EQ(0, minutes);
 
-    valid = toggl_parse_time("1230", &hours, &minutes);
-    ASSERT_EQ(true, valid);
+    ASSERT_TRUE(toggl_parse_time("1230", &hours, &minutes));
     ASSERT_EQ(12, hours);
     ASSERT_EQ(30, minutes);
 
@@ -325,38 +336,31 @@ TEST(TogglApiTest, toggl_parse_time) {
 
     ASSERT_FALSE(toggl_parse_time("11:xx", &hours, &minutes));
 
-    valid = toggl_parse_time("11:20", &hours, &minutes);
-    ASSERT_EQ(true, valid);
+    ASSERT_TRUE(toggl_parse_time("11:20", &hours, &minutes));
     ASSERT_EQ(11, hours);
     ASSERT_EQ(20, minutes);
 
-    valid = toggl_parse_time("5:30", &hours, &minutes);
-    ASSERT_EQ(true, valid);
+    ASSERT_TRUE(toggl_parse_time("5:30", &hours, &minutes));
     ASSERT_EQ(5, hours);
     ASSERT_EQ(30, minutes);
 
-    valid = toggl_parse_time("5:30 PM", &hours, &minutes);
-    ASSERT_EQ(true, valid);
+    ASSERT_TRUE(toggl_parse_time("5:30 PM", &hours, &minutes));
     ASSERT_EQ(17, hours);
     ASSERT_EQ(30, minutes);
 
-    valid = toggl_parse_time("5:30 odp.", &hours, &minutes);
-    ASSERT_EQ(true, valid);
+    ASSERT_TRUE(toggl_parse_time("5:30 odp.", &hours, &minutes));
     ASSERT_EQ(17, hours);
     ASSERT_EQ(30, minutes);
 
-    valid = toggl_parse_time("17:10", &hours, &minutes);
-    ASSERT_EQ(true, valid);
+    ASSERT_TRUE(toggl_parse_time("17:10", &hours, &minutes));
     ASSERT_EQ(17, hours);
     ASSERT_EQ(10, minutes);
 
-    valid = toggl_parse_time("12:00 AM", &hours, &minutes);
-    ASSERT_EQ(true, valid);
+    ASSERT_TRUE(toggl_parse_time("12:00 AM", &hours, &minutes));
     ASSERT_EQ(0, hours);
     ASSERT_EQ(0, minutes);
 
-    valid = toggl_parse_time("12:00 dop.", &hours, &minutes);
-    ASSERT_EQ(true, valid);
+    ASSERT_TRUE(toggl_parse_time("12:00 dop.", &hours, &minutes));
     ASSERT_EQ(0, hours);
     ASSERT_EQ(0, minutes);
 
@@ -443,7 +447,85 @@ TEST(TogglApiTest, testing_set_logged_in_user) {
     testing::App app;
     _Bool res = testing_set_logged_in_user(app.ctx(), json.c_str());
     ASSERT_TRUE(res);
-    ASSERT_EQ(10471231, testing::testresult::user_id);
+    ASSERT_EQ(uint64_t(10471231), testing::testresult::user_id);
+}
+
+TEST(TogglApiTest, toggl_disable_update_check) {
+    testing::App app;
+    toggl_disable_update_check(app.ctx());
+}
+
+TEST(TogglApiTest, toggl_logout) {
+    std::string json = loadTestData();
+    testing::App app;
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+    ASSERT_EQ(uint64_t(10471231), testing::testresult::user_id);
+    ASSERT_TRUE(toggl_logout(app.ctx()));
+    ASSERT_EQ(uint64_t(0), testing::testresult::user_id);
+}
+
+TEST(TogglApiTest, toggl_clear_cache) {
+    std::string json = loadTestData();
+    testing::App app;
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+    ASSERT_EQ(uint64_t(10471231), testing::testresult::user_id);
+    ASSERT_TRUE(toggl_clear_cache(app.ctx()));
+    ASSERT_EQ(uint64_t(0), testing::testresult::user_id);
+}
+
+TEST(TogglApiTest, toggl_debug) {
+    toggl_debug("Test 123");
+}
+
+TEST(TogglApiTest, toggl_set_idle_seconds) {
+    testing::App app;
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    toggl_set_idle_seconds(app.ctx(), 0);
+    ASSERT_EQ("", testing::testresult::idle_since);
+    ASSERT_EQ(uint64_t(0), testing::testresult::idle_started);
+    ASSERT_EQ("", testing::testresult::idle_duration);
+    ASSERT_EQ("", testing::testresult::idle_guid);
+
+    toggl_set_idle_seconds(app.ctx(), kIdleThresholdSeconds-1);
+    ASSERT_EQ("", testing::testresult::idle_since);
+    ASSERT_EQ(uint64_t(0), testing::testresult::idle_started);
+    ASSERT_EQ("", testing::testresult::idle_duration);
+    ASSERT_EQ("", testing::testresult::idle_guid);
+
+    toggl_set_idle_seconds(app.ctx(), kIdleThresholdSeconds);
+    ASSERT_EQ("", testing::testresult::idle_since);
+    ASSERT_EQ(uint64_t(0), testing::testresult::idle_started);
+    ASSERT_EQ("", testing::testresult::idle_duration);
+    ASSERT_EQ("", testing::testresult::idle_guid);
+
+    toggl_set_idle_seconds(app.ctx(), 0);
+    ASSERT_EQ("", testing::testresult::idle_since);
+    ASSERT_EQ(uint64_t(0), testing::testresult::idle_started);
+    ASSERT_EQ("", testing::testresult::idle_duration);
+    ASSERT_EQ("", testing::testresult::idle_guid);
+
+    ASSERT_TRUE(toggl_start(app.ctx(), "test", "", 0, 0));
+
+    toggl_set_idle_seconds(app.ctx(), kIdleThresholdSeconds);
+    ASSERT_EQ("", testing::testresult::idle_since);
+    ASSERT_EQ(uint64_t(0), testing::testresult::idle_started);
+    ASSERT_EQ("", testing::testresult::idle_duration);
+    ASSERT_EQ("", testing::testresult::idle_guid);
+
+    toggl_set_idle_seconds(app.ctx(), 0);
+    ASSERT_NE("", testing::testresult::idle_since);
+    ASSERT_NE(std::string::npos,
+        testing::testresult::idle_since.find("You have been idle since"));
+    ASSERT_NE(uint64_t(0), testing::testresult::idle_started);
+    ASSERT_EQ("(5 minutes)", testing::testresult::idle_duration);
+    ASSERT_NE("", testing::testresult::idle_guid);
+}
+
+TEST(TogglApiTest, toggl_open_in_browser) {
+    testing::App app;
+    toggl_open_in_browser(app.ctx());
 }
 
 }  // namespace toggl
