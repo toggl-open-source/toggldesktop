@@ -1134,19 +1134,19 @@ void Context::setUser(User *value, const bool user_logged_in) {
 _Bool Context::SetLoggedInUserFromJSON(
     const std::string json) {
 
-    User *u = new User();
+    User *user = new User();
 
-    u->LoadUserAndRelatedDataFromJSONString(json);
+    user->LoadUserAndRelatedDataFromJSONString(json);
 
-    error err = db()->SetCurrentAPIToken(u->APIToken());
+    error err = db()->SetCurrentAPIToken(user->APIToken());
     if (err != noError) {
-        delete u;
+        delete user;
         return displayError(err);
     }
 
     logger().debug("setUser from SetLoggedInUserFromJSON");
 
-    setUser(u);
+    setUser(user);
 
     err = save();
     if (err != noError) {
