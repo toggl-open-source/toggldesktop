@@ -536,4 +536,14 @@ TEST(TogglApiTest, toggl_get_support) {
         testing::testresult::url);
 }
 
+TEST(TogglApiTest, toggl_set_api_url) {
+    testing::App app;
+    toggl_set_api_url(app.ctx(), "https://localhost:1234/api/v8");
+}
+
+TEST(TogglApiTest, toggl_set_websocket_url) {
+    testing::App app;
+    toggl_set_websocket_url(app.ctx(), "https://localhost:1234/ws");
+}
+
 }  // namespace toggl
