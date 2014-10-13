@@ -8,13 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
-using WinSparkleDotNet;
 
 namespace TogglDesktop
 {
     public partial class AboutWindowController : TogglForm
     {
-        private WinSparkle sparkle = null;
         private bool loaded = false;
 
         public AboutWindowController()
@@ -26,29 +24,29 @@ namespace TogglDesktop
             bool updateCheckDisabled = Toggl.IsUpdateCheckDisabled();
             comboBoxChannel.Visible = !updateCheckDisabled;
             labelReleaseChannel.Visible = !updateCheckDisabled;
-
-            sparkle = new WinSparkle();
         }
 
         private void AboutWindowController_FormClosing(object sender, FormClosingEventArgs e)
         {
             Hide();
             e.Cancel = true;
-            sparkle.Cleanup();
+            WinSparkle.win_sparkle_cleanup();
         }
 
         private void comboBoxChannel_SelectedIndexChanged(object sender, EventArgs e)
         {
             Toggl.SetUpdateChannel(comboBoxChannel.Text);
             String url = "https://assets.toggl.com/installers/windows_" + comboBoxChannel.Text + "_appcast.xml";
-            sparkle.SetAppCastUrl(url);
+            WinSparkle.win_sparkle_set_appcast_url(url);
+            WinSparkle.setupWinSparkle();
+            WinSparkle.win_sparkle_init();
             if (!loaded && !Toggl.IsUpdateCheckDisabled())
             {
-                sparkle.CheckUpdateWithoutUi();
+                WinSparkle.win_sparkle_check_update_without_ui();
             }
             else
             {
-                sparkle.CheckUpdateWithUi();
+                WinSparkle.win_sparkle_check_update_with_ui();
             }
             loaded = true;
         }
@@ -72,11 +70,6 @@ namespace TogglDesktop
         {
             string channel = Toggl.UpdateChannel();
             comboBoxChannel.SelectedIndex = comboBoxChannel.Items.IndexOf(channel);
-        }
-
-        internal void SparkleCleanUp()
-        {
-            sparkle.Cleanup();
         }
     }
 }

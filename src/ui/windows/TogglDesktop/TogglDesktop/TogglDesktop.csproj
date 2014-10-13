@@ -116,9 +116,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="WinSparkle.Net">
-      <HintPath>..\packages\WinSparkle.Net.0.12\lib\net40\WinSparkle.Net.dll</HintPath>
-    </Reference>
     <Reference Include="Zlib.Portable">
       <HintPath>..\packages\Zlib.Portable.1.9.2\lib\portable-net4+sl4+wp71+win8\Zlib.Portable.dll</HintPath>
     </Reference>
@@ -217,6 +214,7 @@
       <DependentUpon>TimerEditViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils.cs" />
+    <Compile Include="WinSparkle.cs" />
     <EmbeddedResource Include="AboutWindowController.resx">
       <DependentUpon>AboutWindowController.cs</DependentUpon>
     </EmbeddedResource>
