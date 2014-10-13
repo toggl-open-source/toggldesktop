@@ -386,7 +386,7 @@ test_lib: fmt_lib lint toggl_test
 ifeq ($(uname), Linux)
 	cp -r $(jsondir)/libjson.so* test/.
 	cp -r $(pocodir)/lib/Linux/$(architecture)/*.so* test/.
-	cd test && LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH ./toggl_test
+	cd test && LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH ./toggl_test --gtest_shuffle
 else
 	cd test && ./toggl_test
 endif
