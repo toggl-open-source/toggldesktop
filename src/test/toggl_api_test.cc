@@ -294,6 +294,10 @@ TEST(TogglApiTest, toggl_parse_time) {
     int hours = 0;
     int minutes = 0;
 
+    ASSERT_TRUE(toggl_parse_time(0, &hours, &minutes));
+    ASSERT_EQ(0, hours);
+    ASSERT_EQ(0, minutes);
+
     ASSERT_FALSE(toggl_parse_time("", &hours, &minutes));
     ASSERT_EQ(0, hours);
     ASSERT_EQ(0, minutes);
