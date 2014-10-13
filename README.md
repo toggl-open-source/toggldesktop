@@ -25,21 +25,27 @@ Run unit tests with
 make test
 ```
 
-Linux 
+Linux
 -----
-On Ubuntu, you'll need to install the following packages:
+You'll need QT to be at least version 5.2
 
+Below are some distribution specific package requirements:
+
+Debian
+------
+* qt5-default
+
+Ubuntu
+------
 * xorg-dev
 * qtcreator
 * libxss-dev
 * libqt5webkit5-dev
 
-On Fedora,
-
+Fedora
+------
 * qt5-qtwebkit-devel
 * libXScrnSaver-devel
-
-QT must be at least version 5.2
 
 Windows
 -------
