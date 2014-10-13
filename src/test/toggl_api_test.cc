@@ -528,4 +528,11 @@ TEST(TogglApiTest, toggl_open_in_browser) {
     toggl_open_in_browser(app.ctx());
 }
 
+TEST(TogglApiTest, toggl_get_support) {
+    testing::App app;
+    toggl_get_support(app.ctx());
+    ASSERT_EQ("http://support.toggl.com/toggl-on-my-desktop/",
+        testing::testresult::url);
+}
+
 }  // namespace toggl
