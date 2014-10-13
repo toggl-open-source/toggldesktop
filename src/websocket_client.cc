@@ -257,7 +257,12 @@ void WebSocketClient::runActivity() {
                 logger().debug("encountered an error and will delete session");
                 deleteSession();
                 logger().debug("will sleep for 10 sec");
-                Poco::Thread::sleep(10000);
+                for (int i = 0; i < 20; i++) {
+                    if (activity_.isStopped()) {
+                        return;
+                    }
+                    Poco::Thread::sleep(500);
+                }
                 logger().debug("sleep done");
             }
         }
@@ -267,7 +272,12 @@ void WebSocketClient::runActivity() {
             error err = createSession();
             if (err != noError) {
                 logger().error(err);
-                Poco::Thread::sleep(10000);
+                for (int i = 0; i < 20; i++) {
+                    if (activity_.isStopped()) {
+                        return;
+                    }
+                    Poco::Thread::sleep(500);
+                }
             }
         }
 
