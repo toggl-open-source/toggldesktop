@@ -917,7 +917,8 @@ TEST(FormatterTest, FormatDateHeader) {
     //  date -r 1412120844
     //  Wed Oct  1 01:47:24 CEST 2014
     time_t t(1412120844);
-    ASSERT_EQ("Wed 01. Oct", Formatter::FormatDateHeader(t));
+    std::string res = Formatter::FormatDateHeader(t);
+    ASSERT_TRUE("Wed 01. Oct" == res || "Tue 30. Sep" == res);
 
     t = time(0);
     ASSERT_EQ("Today", Formatter::FormatDateHeader(t));
