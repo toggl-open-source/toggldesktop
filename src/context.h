@@ -362,10 +362,10 @@ class Context {
     bool quit_;
 
     Poco::Observer<Context, CreateTimelineBatchNotification>
-        create_timeline_batch_observer_;
+    create_timeline_batch_observer_;
     Poco::Observer<Context, TimelineEventNotification> timeline_event_observer_;
     Poco::Observer<Context, DeleteTimelineBatchNotification>
-        delete_timeline_batch_observer_;
+    delete_timeline_batch_observer_;
 };
 
 }  // namespace toggl
