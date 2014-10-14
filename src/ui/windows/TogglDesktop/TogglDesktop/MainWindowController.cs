@@ -184,11 +184,13 @@ namespace TogglDesktop
             if (te.Description.Length > 0) {
                 runningToolStripMenuItem.Text = te.Description.Replace("&", "&&");
                 Text = te.Description + " - Toggl Desktop";
+                trayIcon.Text = Text;
             }
             else
             {
                 runningToolStripMenuItem.Text = "Timer is tracking";
                 Text = "Toggl Desktop";
+                trayIcon.Text = Text;
             }
         }
 
@@ -205,6 +207,7 @@ namespace TogglDesktop
 
             runningToolStripMenuItem.Text = "Timer is not tracking";
             Text = "Toggl Desktop";
+            trayIcon.Text = Text;
         }
 
         void OnSettings(bool open, Toggl.Settings settings)
