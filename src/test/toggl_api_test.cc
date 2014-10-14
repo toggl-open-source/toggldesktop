@@ -794,8 +794,8 @@ TEST(TogglApiTest, toggl_delete_time_entry) {
     toggl_view_time_entry_list(app.ctx());
     ASSERT_EQ(std::size_t(5), testing::testresult::time_entries.size());
 
-    ASSERT_TRUE(toggl_delete_time_entry(app.ctx(),
-        "6a958efd-0e9a-d777-7e19-001b2d7ced92"));
+    std::string guid("6a958efd-0e9a-d777-7e19-001b2d7ced92");
+    ASSERT_TRUE(toggl_delete_time_entry(app.ctx(), guid.c_str()));
 
     toggl_view_time_entry_list(app.ctx());
     ASSERT_EQ(std::size_t(4), testing::testresult::time_entries.size());
@@ -809,12 +809,12 @@ TEST(TogglApiTest, toggl_set_time_entry_duration) {
     std::string guid = "07fba193-91c4-0ec8-2894-820df0548a8f";
 
     ASSERT_TRUE(toggl_set_time_entry_duration(app.ctx(),
-        guid.c_str(), "2 hours"));
+                guid.c_str(), "2 hours"));
 
     toggl_view_time_entry_list(app.ctx());
     TimeEntry te;
     for (std::size_t i = 0; i < testing::testresult::time_entries.size();
-        i++) {
+            i++) {
         if (testing::testresult::time_entries[i].GUID() == guid) {
             te = testing::testresult::time_entries[i];
             break;
@@ -832,12 +832,12 @@ TEST(TogglApiTest, toggl_set_time_entry_description) {
     std::string guid = "07fba193-91c4-0ec8-2894-820df0548a8f";
 
     ASSERT_TRUE(toggl_set_time_entry_description(app.ctx(),
-        guid.c_str(), "this is a nuclear test"));
+                guid.c_str(), "this is a nuclear test"));
 
     toggl_view_time_entry_list(app.ctx());
     TimeEntry te;
     for (std::size_t i = 0; i < testing::testresult::time_entries.size();
-        i++) {
+            i++) {
         if (testing::testresult::time_entries[i].GUID() == guid) {
             te = testing::testresult::time_entries[i];
             break;
@@ -921,7 +921,7 @@ TEST(TogglApiTest, toggl_discard_time_at) {
 
     TimeEntry te;
     for (std::size_t i = 0; i < testing::testresult::time_entries.size();
-        i++) {
+            i++) {
         if (testing::testresult::time_entries[i].GUID() == guid) {
             te = testing::testresult::time_entries[i];
             break;
@@ -940,12 +940,12 @@ TEST(TogglApiTest, toggl_set_time_entry_start_iso_8601) {
     std::string guid = "07fba193-91c4-0ec8-2894-820df0548a8f";
 
     ASSERT_TRUE(toggl_set_time_entry_start_iso_8601(app.ctx(),
-        guid.c_str(), "2014-10-02T03:34:04Z"));
+                guid.c_str(), "2014-10-02T03:34:04Z"));
 
     toggl_view_time_entry_list(app.ctx());
     TimeEntry te;
     for (std::size_t i = 0; i < testing::testresult::time_entries.size();
-        i++) {
+            i++) {
         if (testing::testresult::time_entries[i].GUID() == guid) {
             te = testing::testresult::time_entries[i];
             break;
@@ -963,12 +963,12 @@ TEST(TogglApiTest, toggl_set_time_entry_end_iso_8601) {
     std::string guid = "07fba193-91c4-0ec8-2894-820df0548a8f";
 
     ASSERT_TRUE(toggl_set_time_entry_end_iso_8601(app.ctx(),
-        guid.c_str(), "2014-10-02T03:34:04Z"));
+                guid.c_str(), "2014-10-02T03:34:04Z"));
 
     toggl_view_time_entry_list(app.ctx());
     TimeEntry te;
     for (std::size_t i = 0; i < testing::testresult::time_entries.size();
-        i++) {
+            i++) {
         if (testing::testresult::time_entries[i].GUID() == guid) {
             te = testing::testresult::time_entries[i];
             break;
