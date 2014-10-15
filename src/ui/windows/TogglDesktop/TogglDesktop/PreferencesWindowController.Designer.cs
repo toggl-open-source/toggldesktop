@@ -80,6 +80,7 @@
             // 
             // textBoxProxyPassword
             // 
+            this.textBoxProxyPassword.AccessibleName = "Proxy password";
             this.textBoxProxyPassword.Location = new System.Drawing.Point(81, 108);
             this.textBoxProxyPassword.Name = "textBoxProxyPassword";
             this.textBoxProxyPassword.PasswordChar = '*';
@@ -88,6 +89,7 @@
             // 
             // textBoxProxyUsername
             // 
+            this.textBoxProxyUsername.AccessibleName = "Proxy username";
             this.textBoxProxyUsername.Location = new System.Drawing.Point(81, 80);
             this.textBoxProxyUsername.Name = "textBoxProxyUsername";
             this.textBoxProxyUsername.Size = new System.Drawing.Size(156, 20);
@@ -95,6 +97,7 @@
             // 
             // textBoxProxyPort
             // 
+            this.textBoxProxyPort.AccessibleName = "Proxy port";
             this.textBoxProxyPort.Location = new System.Drawing.Point(81, 54);
             this.textBoxProxyPort.Name = "textBoxProxyPort";
             this.textBoxProxyPort.Size = new System.Drawing.Size(156, 20);
@@ -102,6 +105,7 @@
             // 
             // textBoxProxyHost
             // 
+            this.textBoxProxyHost.AccessibleName = "Proxy host";
             this.textBoxProxyHost.Location = new System.Drawing.Point(81, 28);
             this.textBoxProxyHost.Name = "textBoxProxyHost";
             this.textBoxProxyHost.Size = new System.Drawing.Size(156, 20);
@@ -218,14 +222,14 @@
             this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelMain.Location = new System.Drawing.Point(0, 0);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(300, 332);
+            this.panelMain.Size = new System.Drawing.Size(300, 333);
             this.panelMain.TabIndex = 9;
             // 
             // PreferencesWindowController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(300, 332);
+            this.ClientSize = new System.Drawing.Size(300, 333);
             this.Controls.Add(this.panelMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;

@@ -47,6 +47,7 @@
             // 
             // textBoxDuration
             // 
+            this.textBoxDuration.AccessibleName = "Time entry duration";
             this.textBoxDuration.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
             this.textBoxDuration.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBoxDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
@@ -86,6 +87,9 @@
             // 
             // linkLabelProject
             // 
+            this.linkLabelProject.AccessibleDescription = "A link label with project name, clicking on it will open the time entry editor";
+            this.linkLabelProject.AccessibleName = "Time entry project";
+            this.linkLabelProject.AccessibleRole = System.Windows.Forms.AccessibleRole.Link;
             this.linkLabelProject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabelProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
@@ -102,6 +106,10 @@
             // 
             // linkLabelDescription
             // 
+            this.linkLabelDescription.AccessibleDescription = "A link label with time entry description, clicking on it opens the time entry edi" +
+    "tor";
+            this.linkLabelDescription.AccessibleName = "Time entry description";
+            this.linkLabelDescription.AccessibleRole = System.Windows.Forms.AccessibleRole.Link;
             this.linkLabelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabelDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
@@ -117,6 +125,10 @@
             // 
             // linkLabelDuration
             // 
+            this.linkLabelDuration.AccessibleDescription = "A link label with time entry duration, clicking on it will open the time entry ed" +
+    "itor";
+            this.linkLabelDuration.AccessibleName = "Time entry duration";
+            this.linkLabelDuration.AccessibleRole = System.Windows.Forms.AccessibleRole.Link;
             this.linkLabelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.linkLabelDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(185)))), ((int)(((byte)(185)))));
             this.linkLabelDuration.Location = new System.Drawing.Point(2, 32);
@@ -131,6 +143,9 @@
             // 
             // labelClearProject
             // 
+            this.labelClearProject.AccessibleDescription = "A button that allows to remove the assigned project from the time entry";
+            this.labelClearProject.AccessibleName = "Clear project";
+            this.labelClearProject.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.labelClearProject.BackColor = System.Drawing.Color.Transparent;
             this.labelClearProject.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelClearProject.Enabled = false;
@@ -185,6 +200,7 @@
             // descriptionTextBox
             // 
             this.descriptionTextBox.AcceptsTab = true;
+            this.descriptionTextBox.AccessibleName = "Time entry description";
             this.descriptionTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.descriptionTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;

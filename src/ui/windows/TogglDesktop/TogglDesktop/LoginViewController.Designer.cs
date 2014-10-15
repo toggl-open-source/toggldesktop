@@ -52,6 +52,7 @@
             // 
             // googleLoginTextField
             // 
+            this.googleLoginTextField.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.googleLoginTextField.ActiveLinkColor = System.Drawing.Color.White;
             this.googleLoginTextField.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.googleLoginTextField.AutoSize = true;
@@ -67,6 +68,7 @@
             // 
             // password
             // 
+            this.password.AccessibleName = "Your password";
             this.password.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.password.ForeColor = System.Drawing.Color.Gray;
             this.password.Location = new System.Drawing.Point(15, 171);
@@ -80,6 +82,7 @@
             // 
             // email
             // 
+            this.email.AccessibleName = "Your e-mail address";
             this.email.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.email.ForeColor = System.Drawing.Color.Gray;
             this.email.Location = new System.Drawing.Point(15, 134);
@@ -92,6 +95,7 @@
             // 
             // passwordForgotTextField
             // 
+            this.passwordForgotTextField.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.passwordForgotTextField.ActiveLinkColor = System.Drawing.Color.White;
             this.passwordForgotTextField.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.passwordForgotTextField.AutoSize = true;
@@ -118,6 +122,7 @@
             // 
             // linkLabelPreferences
             // 
+            this.linkLabelPreferences.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.linkLabelPreferences.ActiveLinkColor = System.Drawing.Color.White;
             this.linkLabelPreferences.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.linkLabelPreferences.AutoSize = true;

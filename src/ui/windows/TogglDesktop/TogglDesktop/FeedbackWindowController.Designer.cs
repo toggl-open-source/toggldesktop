@@ -54,6 +54,7 @@
             // 
             // comboBoxTopic
             // 
+            this.comboBoxTopic.AccessibleName = "Feedback topic";
             this.comboBoxTopic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxTopic.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -71,13 +72,14 @@
             // 
             // richTextBoxContents
             // 
+            this.richTextBoxContents.AccessibleName = "Feedback contents";
             this.richTextBoxContents.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextBoxContents.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.richTextBoxContents.Location = new System.Drawing.Point(15, 73);
             this.richTextBoxContents.Name = "richTextBoxContents";
-            this.richTextBoxContents.Size = new System.Drawing.Size(270, 135);
+            this.richTextBoxContents.Size = new System.Drawing.Size(270, 136);
             this.richTextBoxContents.TabIndex = 2;
             this.richTextBoxContents.Text = "";
             // 
@@ -85,7 +87,7 @@
             // 
             this.buttonUploadImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonUploadImage.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.buttonUploadImage.Location = new System.Drawing.Point(194, 214);
+            this.buttonUploadImage.Location = new System.Drawing.Point(194, 215);
             this.buttonUploadImage.Name = "buttonUploadImage";
             this.buttonUploadImage.Size = new System.Drawing.Size(91, 23);
             this.buttonUploadImage.TabIndex = 3;
@@ -97,7 +99,7 @@
             // 
             this.buttonSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSend.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.buttonSend.Location = new System.Drawing.Point(194, 243);
+            this.buttonSend.Location = new System.Drawing.Point(194, 244);
             this.buttonSend.Name = "buttonSend";
             this.buttonSend.Size = new System.Drawing.Size(91, 23);
             this.buttonSend.TabIndex = 4;
@@ -120,7 +122,7 @@
             this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelMain.Location = new System.Drawing.Point(0, 0);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(300, 285);
+            this.panelMain.Size = new System.Drawing.Size(300, 286);
             this.panelMain.TabIndex = 5;
             // 
             // fileNameLabel
@@ -128,7 +130,7 @@
             this.fileNameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.fileNameLabel.AutoEllipsis = true;
-            this.fileNameLabel.Location = new System.Drawing.Point(15, 215);
+            this.fileNameLabel.Location = new System.Drawing.Point(15, 216);
             this.fileNameLabel.Name = "fileNameLabel";
             this.fileNameLabel.Size = new System.Drawing.Size(173, 23);
             this.fileNameLabel.TabIndex = 5;
@@ -138,7 +140,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(300, 285);
+            this.ClientSize = new System.Drawing.Size(300, 286);
             this.Controls.Add(this.panelMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(300, 316);

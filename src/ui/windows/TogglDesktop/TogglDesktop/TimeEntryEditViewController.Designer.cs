@@ -98,6 +98,9 @@
             // 
             // linkAddProject
             // 
+            this.linkAddProject.AccessibleDescription = "A button that displays additional fields for adding a new project";
+            this.linkAddProject.AccessibleName = "Add new project";
+            this.linkAddProject.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.linkAddProject.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkAddProject.AutoSize = true;
             this.linkAddProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
@@ -121,6 +124,7 @@
             // 
             // textBoxDuration
             // 
+            this.textBoxDuration.AccessibleName = "Time entry duration";
             this.textBoxDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.textBoxDuration.Location = new System.Drawing.Point(110, 3);
             this.textBoxDuration.Name = "textBoxDuration";
@@ -140,6 +144,7 @@
             // 
             // textBoxStartTime
             // 
+            this.textBoxStartTime.AccessibleName = "Time entry start time";
             this.textBoxStartTime.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.textBoxStartTime.Location = new System.Drawing.Point(110, 5);
             this.textBoxStartTime.MaximumSize = new System.Drawing.Size(140, 24);
@@ -159,6 +164,7 @@
             // 
             // textBoxEndTime
             // 
+            this.textBoxEndTime.AccessibleName = "Time entry end time";
             this.textBoxEndTime.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.textBoxEndTime.Location = new System.Drawing.Point(215, 5);
             this.textBoxEndTime.MaximumSize = new System.Drawing.Size(140, 24);
@@ -179,6 +185,7 @@
             // 
             // dateTimePickerStartDate
             // 
+            this.dateTimePickerStartDate.AccessibleName = "Time entry date";
             this.dateTimePickerStartDate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dateTimePickerStartDate.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
@@ -240,6 +247,9 @@
             // 
             // buttonDelete
             // 
+            this.buttonDelete.AccessibleDescription = "A button with a trashcan image, allows to delete the time entry";
+            this.buttonDelete.AccessibleName = "Delete time entry";
+            this.buttonDelete.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.buttonDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonDelete.AutoSize = true;
             this.buttonDelete.BackColor = System.Drawing.Color.Transparent;
@@ -269,6 +279,7 @@
             // 
             // checkedListBoxTags
             // 
+            this.checkedListBoxTags.AccessibleName = "Time entry tags";
             this.checkedListBoxTags.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -386,6 +397,7 @@
             // 
             // comboBoxWorkspace
             // 
+            this.comboBoxWorkspace.AccessibleName = "Workspace of the project";
             this.comboBoxWorkspace.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxWorkspace.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
@@ -399,6 +411,7 @@
             // 
             // comboBoxClient
             // 
+            this.comboBoxClient.AccessibleName = "Client of the project";
             this.comboBoxClient.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxClient.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
@@ -424,6 +437,7 @@
             // 
             // textBoxProjectName
             // 
+            this.textBoxProjectName.AccessibleName = "Project name";
             this.textBoxProjectName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxProjectName.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
@@ -486,6 +500,8 @@
             // 
             // comboBoxProject
             // 
+            this.comboBoxProject.AccessibleDescription = "An editable combobox with autocomplete to assign a project to the time entry";
+            this.comboBoxProject.AccessibleName = "Time entry project";
             this.comboBoxProject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
@@ -499,6 +515,8 @@
             // 
             // comboBoxDescription
             // 
+            this.comboBoxDescription.AccessibleDescription = "An editable combobox with autocomplete for specifying time entry description";
+            this.comboBoxDescription.AccessibleName = "Time entry description";
             this.comboBoxDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxDescription.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;

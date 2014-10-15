@@ -52,6 +52,7 @@
             // 
             // labelFormattedDate
             // 
+            this.labelFormattedDate.AccessibleName = "Date";
             this.labelFormattedDate.AutoSize = true;
             this.labelFormattedDate.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelFormattedDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(133)))), ((int)(((byte)(133)))), ((int)(((byte)(133)))));
@@ -64,6 +65,7 @@
             // 
             // labelDateDuration
             // 
+            this.labelDateDuration.AccessibleName = "Total time tracked per date";
             this.labelDateDuration.AutoSize = true;
             this.labelDateDuration.Dock = System.Windows.Forms.DockStyle.Right;
             this.labelDateDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
@@ -126,6 +128,9 @@
             // 
             // labelContinue
             // 
+            this.labelContinue.AccessibleDescription = "A button with a play image, to continue the time entry";
+            this.labelContinue.AccessibleName = "Continue time entry";
+            this.labelContinue.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
             this.labelContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelContinue.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelContinue.Image = global::TogglDesktop.Properties.Resources._continue;
@@ -142,6 +147,9 @@
             // 
             // labelBillable
             // 
+            this.labelBillable.AccessibleDescription = "A label with a dollar sign image, indicating if the time entry is billable";
+            this.labelBillable.AccessibleName = "Billable label";
+            this.labelBillable.AccessibleRole = System.Windows.Forms.AccessibleRole.Graphic;
             this.labelBillable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelBillable.Image = global::TogglDesktop.Properties.Resources.icon_billable;
             this.labelBillable.Location = new System.Drawing.Point(24, 20);
@@ -155,6 +163,9 @@
             // 
             // labelTag
             // 
+            this.labelTag.AccessibleDescription = "A label with an image of tags, indicating if the time entry has any tags";
+            this.labelTag.AccessibleName = "Tags label";
+            this.labelTag.AccessibleRole = System.Windows.Forms.AccessibleRole.Graphic;
             this.labelTag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelTag.Image = global::TogglDesktop.Properties.Resources.icon_tags;
             this.labelTag.Location = new System.Drawing.Point(5, 20);
@@ -184,6 +195,7 @@
             // 
             // labelTask
             // 
+            this.labelTask.AccessibleName = "Task name";
             this.labelTask.AutoSize = true;
             this.labelTask.Font = new System.Drawing.Font("Lucida Sans Unicode", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.labelTask.Location = new System.Drawing.Point(3, 0);
@@ -198,6 +210,7 @@
             // 
             // labelProject
             // 
+            this.labelProject.AccessibleName = "Project name";
             this.labelProject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelProject.AutoSize = true;
@@ -214,6 +227,7 @@
             // 
             // labelClient
             // 
+            this.labelClient.AccessibleName = "Client name";
             this.labelClient.AutoSize = true;
             this.labelClient.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.labelClient.ForeColor = System.Drawing.Color.Gray;
@@ -228,6 +242,7 @@
             // 
             // labelDescription
             // 
+            this.labelDescription.AccessibleName = "Time entry description";
             this.labelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelDescription.AutoEllipsis = true;

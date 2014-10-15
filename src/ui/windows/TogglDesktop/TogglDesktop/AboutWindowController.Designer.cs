@@ -86,6 +86,8 @@
             // 
             // comboBoxChannel
             // 
+            this.comboBoxChannel.AccessibleDescription = "Select which channel you want to receive the app updates from";
+            this.comboBoxChannel.AccessibleName = "Release channel";
             this.comboBoxChannel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxChannel.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.comboBoxChannel.FormattingEnabled = true;
