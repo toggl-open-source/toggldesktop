@@ -158,9 +158,9 @@ void TimelineUploader::reset_backoff() {
 
 error TimelineUploader::start() {
     try {
-        Poco::NotificationCenter::defaultCenter().addObserver(observer_);
-
         uploading_.start();
+
+        Poco::NotificationCenter::defaultCenter().addObserver(observer_);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -173,11 +173,11 @@ error TimelineUploader::start() {
 
 error TimelineUploader::Shutdown() {
     try {
-        Poco::NotificationCenter::defaultCenter().removeObserver(observer_);
-
         if (uploading_.isRunning()) {
             uploading_.stop();
             uploading_.wait();
+
+            Poco::NotificationCenter::defaultCenter().removeObserver(observer_);
         }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
