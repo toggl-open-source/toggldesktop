@@ -110,6 +110,7 @@ extern void *ctx;
 					   range:titleRange];
 
 	[self.addProjectButton setAttributedTitle:colorTitle];
+	[self.resizeHandle setCursor:[NSCursor resizeLeftRightCursor]];
 }
 
 - (void)loadView
@@ -609,6 +610,23 @@ extern void *ctx;
 	{
 		[self toggleTimeForm:YES];
 	}
+}
+
+- (void)draggingResizeStart:(id)sender
+{
+	self.lastPosition = [NSEvent mouseLocation];
+}
+
+- (void)draggingResize:(id)sender
+{
+	NSPoint mouseLoc = [NSEvent mouseLocation];
+	NSNumber *addedWidth = [NSNumber numberWithInt:(mouseLoc.x - self.lastPosition.x)];
+
+	self.lastPosition = mouseLoc;
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:addedWidth forKey:@"width"];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kResizeEditFormWidth
+														object:nil
+													  userInfo:userInfo];
 }
 
 - (void)toggleTimeForm:(BOOL)open

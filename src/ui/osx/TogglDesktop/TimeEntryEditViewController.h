@@ -10,6 +10,7 @@
 #import "TFDatePicker.h"
 #import "NSCustomComboBox.h"
 #import "NSTextFieldClickable.h"
+#import "NSResize.h"
 
 @interface TimeEntryEditViewController : NSViewController <NSComboBoxDataSource> {
 }
@@ -28,6 +29,7 @@
 @property IBOutlet NSButton *backButton;
 @property IBOutlet NSButton *addProjectButton;
 @property IBOutlet NSTextField *workspaceLabel;
+@property IBOutlet NSResize *resizeHandle;
 - (IBAction)descriptionComboboxChanged:(id)sender;
 - (IBAction)durationTextFieldChanged:(id)sender;
 - (IBAction)projectSelectChanged:(id)sender;
@@ -43,6 +45,7 @@
 @property (strong) IBOutlet NSBox *timeTextBox;
 @property (strong) IBOutlet NSBox *dateBox;
 @property (strong) IBOutlet NSBox *durationBox;
+@property NSPoint lastPosition;
 
 // New project related stuff
 @property IBOutlet NSBox *projectSelectBox;
