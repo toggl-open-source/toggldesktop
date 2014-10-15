@@ -8,48 +8,47 @@
 #include <vector>
 #include <string>
 
+#include "./types.h"
+
 #include "Poco/Notification.h"
 
-// A timeline event is detected, window has changes
-// or there's an idle event.
-class TimelineEventNotification : public Poco::Notification {
- public:
-    explicit TimelineEventNotification(TimelineEvent _event) : event(_event) {}
-    TimelineEvent event;
-};
+namespace toggl {
 
-// Find timeline events for upload,
-class CreateTimelineBatchNotification : public Poco::Notification {
+class TimelineBatch {
  public:
-    CreateTimelineBatchNotification() {}
-};
+    TimelineBatch()
+        : user_id_(0)
+    , api_token_("")
+    , desktop_id_("") {}
 
-// A batch of timeline events has been found in database, that
-// is ready for upload.
-class TimelineBatchReadyNotification : public Poco::Notification {
- public:
-    TimelineBatchReadyNotification(const Poco::UInt64 user_id,
-                                   std::string api_token,
-                                   std::vector<TimelineEvent> events,
-                                   std::string desktop_id)
-        : user_id_(user_id)
-    , api_token_(api_token)
-    , events_(events)
-    , desktop_id_(desktop_id) {}
-
-    ~TimelineBatchReadyNotification() {}
+    ~TimelineBatch() {}
 
     Poco::UInt64 &UserID() {
         return user_id_;
     }
+    void SetUserID(const Poco::UInt64 value) {
+        user_id_ = value;
+    }
+
     std::string &APIToken() {
         return api_token_;
     }
+    void SetAPIToken(const std::string value) {
+        api_token_ = value;
+    }
+
     std::vector<TimelineEvent> &Events() {
         return events_;
     }
+    void SetEvents(std::vector<TimelineEvent> *value) {
+        events_ = *value;
+    }
+
     std::string &DesktopID() {
         return desktop_id_;
+    }
+    void SetDesktopID(const std::string value) {
+        desktop_id_ = value;
     }
 
  private:
@@ -59,12 +58,20 @@ class TimelineBatchReadyNotification : public Poco::Notification {
     std::string desktop_id_;
 };
 
-// A batch of timeline events has been upladed and may be deleted.
-class DeleteTimelineBatchNotification : public Poco::Notification {
+class TimelineDatasource {
  public:
-    explicit DeleteTimelineBatchNotification(std::vector<TimelineEvent> _batch)
-        : batch(_batch) {}
-    std::vector<TimelineEvent> batch;
+    // Find timeline events for upload,
+    virtual error SaveTimelineEvent(TimelineEvent *event) = 0;
+
+    // A timeline event is detected, window has changes
+    // or there's an idle event.
+    virtual error CreateTimelineBatch(TimelineBatch *batch) = 0;
+
+    // A batch of timeline events has been upladed and may be deleted.
+    virtual error DeleteTimelineBatch(
+        const std::vector<TimelineEvent> &events) = 0;
 };
+
+};  // namespace toggl
 
 #endif  // SRC_TIMELINE_NOTIFICATIONS_H_

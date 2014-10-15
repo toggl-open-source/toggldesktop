@@ -30,12 +30,12 @@
 
 namespace toggl {
 
-class Context {
+class Context : public TimelineDatasource {
  public:
     Context(
         const std::string app_name,
         const std::string app_version);
-    ~Context();
+    virtual ~Context();
 
     GUI *UI() {
         return &ui_;
@@ -206,15 +206,10 @@ class Context {
         quit_ = true;
     }
 
- protected:
-    void handleCreateTimelineBatchNotification(
-        CreateTimelineBatchNotification *notification);
-
-    void handleTimelineEventNotification(
-        TimelineEventNotification* notification);
-
-    void handleDeleteTimelineBatchNotification(
-        DeleteTimelineBatchNotification *notification);
+    // Timeline datasource
+    error CreateTimelineBatch(TimelineBatch *batch);
+    error SaveTimelineEvent(TimelineEvent *event);
+    error DeleteTimelineBatch(const std::vector<TimelineEvent> &events);
 
  private:
     const std::string updateURL();
@@ -360,12 +355,6 @@ class Context {
     Poco::LocalDateTime last_time_entry_list_render_at_;
 
     bool quit_;
-
-    Poco::Observer<Context, CreateTimelineBatchNotification>
-    create_timeline_batch_observer_;
-    Poco::Observer<Context, TimelineEventNotification> timeline_event_observer_;
-    Poco::Observer<Context, DeleteTimelineBatchNotification>
-    delete_timeline_batch_observer_;
 };
 
 }  // namespace toggl

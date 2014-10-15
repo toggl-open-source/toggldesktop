@@ -46,11 +46,7 @@ Context::Context(const std::string app_name, const std::string app_version)
 , last_idle_started_(0)
 , last_sync_started_(0)
 , update_check_disabled_(false)
-, quit_(false)
-, create_timeline_batch_observer_(*this,
-                                  &Context::handleCreateTimelineBatchNotification)  // NOLINT
-, timeline_event_observer_(*this, &Context::handleTimelineEventNotification)  // NOLINT
-, delete_timeline_batch_observer_(*this, &Context::handleDeleteTimelineBatchNotification) {  // NOLINT
+, quit_(false) {
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
@@ -58,11 +54,6 @@ Context::Context(const std::string app_name, const std::string app_version)
     HTTPSClient::AppVersion = app_version;
 
     Poco::Crypto::OpenSSLInitializer::initialize();
-
-    Poco::NotificationCenter &nc = Poco::NotificationCenter::defaultCenter();
-    nc.addObserver(create_timeline_batch_observer_);
-    nc.addObserver(timeline_event_observer_);
-    nc.addObserver(delete_timeline_batch_observer_);
 
     startPeriodicUpdateCheck();
 
@@ -73,11 +64,6 @@ Context::Context(const std::string app_name, const std::string app_version)
 
 Context::~Context() {
     SetQuit();
-
-    Poco::NotificationCenter &nc = Poco::NotificationCenter::defaultCenter();
-    nc.removeObserver(create_timeline_batch_observer_);
-    nc.removeObserver(timeline_event_observer_);
-    nc.removeObserver(delete_timeline_batch_observer_);
 
     if (window_change_recorder_) {
         Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
@@ -591,7 +577,7 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
             delete timeline_uploader_;
             timeline_uploader_ = 0;
         }
-        timeline_uploader_ = new TimelineUploader(timeline_upload_url_);
+        timeline_uploader_ = new TimelineUploader(timeline_upload_url_, this);
     }
 
     {
@@ -600,7 +586,7 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
             delete window_change_recorder_;
             window_change_recorder_ = 0;
         }
-        window_change_recorder_ = new WindowChangeRecorder();
+        window_change_recorder_ = new WindowChangeRecorder(this);
     }
 }
 
@@ -2019,59 +2005,39 @@ void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
     UI()->DisplayReminder();
 }
 
-void Context::handleCreateTimelineBatchNotification(
-    CreateTimelineBatchNotification* notification) {
+error Context::CreateTimelineBatch(TimelineBatch *batch) {
+    poco_check_ptr(batch);
 
     if (quit_) {
-        return;
+        return noError;
     }
-
     if (!user_) {
-        return;
+        return noError;
     }
-
-    std::vector<TimelineEvent> batch;
-    error err = db()->SelectTimelineBatch(user_->ID(), &batch);
+    std::vector<TimelineEvent> events;
+    error err = db()->SelectTimelineBatch(user_->ID(), &events);
     if (err != noError) {
-        logger().error(err);
-        return;
+        return err;
     }
-    if (batch.empty()) {
-        return;
-    }
-
-    TimelineBatchReadyNotification response(user_->ID(),
-                                            user_->APIToken(),
-                                            batch,
-                                            db()->DesktopID());
-    Poco::AutoPtr<TimelineBatchReadyNotification> ptr(&response);
-    Poco::NotificationCenter::defaultCenter().postNotification(ptr);
+    batch->SetEvents(&events);
+    batch->SetUserID(user_->ID());
+    batch->SetAPIToken(user_->APIToken());
+    batch->SetDesktopID(db_->DesktopID());
+    return noError;
 }
 
-void Context::handleTimelineEventNotification(
-    TimelineEventNotification* notification) {
-    logger().debug("handleTimelineEventNotification");
+error Context::SaveTimelineEvent(TimelineEvent *event) {
+    poco_check_ptr(event);
+
     if (!user_) {
-        return;
+        return noError;
     }
-    TimelineEvent event = notification->event;
-    event.user_id = static_cast<unsigned int>(user_->ID());
-    error err = db()->InsertTimelineEvent(event);
-    if (err != noError) {
-        logger().error(err);
-    }
+    event->user_id = static_cast<unsigned int>(user_->ID());
+    return db()->InsertTimelineEvent(*event);
 }
 
-void Context::handleDeleteTimelineBatchNotification(
-    DeleteTimelineBatchNotification* notification) {
-    logger().debug("handleDeleteTimelineBatchNotification");
-
-    poco_assert(!notification->batch.empty());
-
-    error err = db()->DeleteTimelineBatch(notification->batch);
-    if (err != noError) {
-        logger().error(err);
-    }
+error Context::DeleteTimelineBatch(const std::vector<TimelineEvent> &events) {
+    return db()->DeleteTimelineBatch(events);
 }
 
 void Context::SetIdleSeconds(const Poco::UInt64 idle_seconds) {

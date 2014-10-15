@@ -12,20 +12,17 @@
 #include "./types.h"
 
 #include "Poco/Activity.h"
-#include "Poco/Observer.h"
-#include "Poco/NotificationCenter.h"
 #include "Poco/Logger.h"
 
 namespace toggl {
 
 class TimelineUploader {
  public:
-    explicit TimelineUploader(const std::string upload_url)
+    TimelineUploader(const std::string upload_url, TimelineDatasource *ds)
         : current_upload_interval_seconds_(kTimelineUploadIntervalSeconds)
     , upload_url_(upload_url)
-    , uploading_(this, &TimelineUploader::upload_loop_activity)
-    , observer_(*this,
-                &TimelineUploader::handleTimelineBatchReadyNotification) {
+    , timeline_datasource_(ds)
+    , uploading_(this, &TimelineUploader::upload_loop_activity) {
         start();
     }
 
@@ -36,17 +33,13 @@ class TimelineUploader {
     error Shutdown();
 
  protected:
-    // Notification handlers
-    void handleTimelineBatchReadyNotification(
-        TimelineBatchReadyNotification *notification);
-
     // Activity callback
     void upload_loop_activity();
 
  private:
     error start();
 
-    bool sync(TimelineBatchReadyNotification *notification);
+    error upload(TimelineBatch *batch);
 
     static std::string convert_timeline_to_json(
         const std::vector<TimelineEvent> &timeline_events,
@@ -58,17 +51,20 @@ class TimelineUploader {
     void backoff();
     void reset_backoff();
 
+    Poco::Logger &logger() const {
+        return Poco::Logger::get("timeline_uploader");
+    }
+
+    error process();
+    void sleep();
+
     std::string upload_url_;
+
+    TimelineDatasource *timeline_datasource_;
 
     // An Activity is a possibly long running void/no arguments
     // member function running in its own thread.
     Poco::Activity<TimelineUploader> uploading_;
-
-    Poco::Observer<TimelineUploader, TimelineBatchReadyNotification> observer_;
-
-    Poco::Logger &logger() const {
-        return Poco::Logger::get("timeline_uploader");
-    }
 };
 
 }  // namespace toggl

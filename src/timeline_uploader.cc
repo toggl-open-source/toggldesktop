@@ -16,36 +16,6 @@
 #include "Poco/Thread.h"
 
 namespace toggl {
-
-void TimelineUploader::handleTimelineBatchReadyNotification(
-    TimelineBatchReadyNotification *notification) {
-    logger().debug("handleTimelineBatchReadyNotification");
-
-    poco_assert(notification->UserID() > 0);
-    poco_assert(!notification->APIToken().empty());
-    poco_assert(!notification->DesktopID().empty());
-    poco_assert(!notification->Events().empty());
-
-    if (!sync(notification)) {
-        std::stringstream out;
-        out << "Sync of " << notification->Events().size()
-            << " event(s) failed.";
-        logger().error(out.str());
-        return;
-    }
-
-    std::stringstream out;
-    out << "Sync of " << notification->Events().size()
-        << " event(s) was successful.";
-    logger().information(out.str());
-
-    Poco::NotificationCenter& nc =
-        Poco::NotificationCenter::defaultCenter();
-    DeleteTimelineBatchNotification response(notification->Events());
-    Poco::AutoPtr<DeleteTimelineBatchNotification> ptr(&response);
-    nc.postNotification(ptr);
-}
-
 std::string TimelineUploader::convert_timeline_to_json(
     const std::vector<TimelineEvent> &timeline_events,
     const std::string &desktop_id) {
@@ -84,59 +54,83 @@ std::string TimelineUploader::convert_timeline_to_json(
     return json;
 }
 
+void TimelineUploader::sleep() {
+    // Sleep in increments for faster shutdown.
+    for (unsigned int i = 0; i < current_upload_interval_seconds_; i++) {
+        if (uploading_.isStopped()) {
+            return;
+        }
+        Poco::Thread::sleep(1000);
+    }
+}
+
 void TimelineUploader::upload_loop_activity() {
     while (!uploading_.isStopped()) {
+        error err = process();
+        if (err != noError) {
+            logger().error(err);
+        }
+        sleep();
+    }
+}
+
+error TimelineUploader::process() {
+    {
         std::stringstream out;
         out << "upload_loop_activity (current interval "
             << current_upload_interval_seconds_ << "s)";
         logger().debug(out.str());
-
-        if (uploading_.isStopped()) {
-            return;
-        }
-
-        {
-            // Request data for upload.
-            CreateTimelineBatchNotification notification;
-            Poco::AutoPtr<CreateTimelineBatchNotification> ptr(&notification);
-            Poco::NotificationCenter::defaultCenter().postNotification(ptr);
-        }
-
-        if (uploading_.isStopped()) {
-            return;
-        }
-
-        // Sleep in increments for faster shutdown.
-        for (unsigned int i = 0; i < current_upload_interval_seconds_; i++) {
-            if (uploading_.isStopped()) {
-                return;
-            }
-            Poco::Thread::sleep(1000);
-        }
     }
+
+    if (uploading_.isStopped()) {
+        return noError;
+    }
+
+    TimelineBatch batch;
+    error err = timeline_datasource_->CreateTimelineBatch(&batch);
+    if (err != noError) {
+        return err;
+    }
+
+    if (!batch.Events().size()) {
+        return noError;
+    }
+
+    if (uploading_.isStopped()) {
+        return noError;
+    }
+
+    err = upload(&batch);
+    if (err != noError) {
+        return err;
+    }
+
+    {
+        std::stringstream out;
+        out << "Sync of " << batch.Events().size()
+            << " event(s) was successful.";
+        logger().debug(out.str());
+    }
+
+    return timeline_datasource_->DeleteTimelineBatch(batch.Events());
 }
 
-bool TimelineUploader::sync(TimelineBatchReadyNotification *notification) {
+error TimelineUploader::upload(TimelineBatch *batch) {
     HTTPSClient client;
 
     std::stringstream out;
-    out << "Uploading " << notification->Events().size()
-        << " event(s) of user " << notification->UserID();
+    out << "Uploading " << batch->Events().size()
+        << " event(s) of user " << batch->UserID();
     logger().debug(out.str());
 
-    std::string json = convert_timeline_to_json(notification->Events(),
-                       notification->DesktopID());
+    std::string json = convert_timeline_to_json(batch->Events(),
+                       batch->DesktopID());
     std::string response_body("");
-    error err = client.PostJSON("/api/v8/timeline",
-                                json,
-                                notification->APIToken(),
-                                "api_token",
-                                &response_body);
-    if (err != noError) {
-        logger().error(err);
-        return false;
-    }
-    return true;
+    return client.PostJSON("/api/v8/timeline",
+                           json,
+                           batch->APIToken(),
+                           "api_token",
+                           &response_body);
 }
 
 void TimelineUploader::backoff() {
@@ -159,8 +153,6 @@ void TimelineUploader::reset_backoff() {
 error TimelineUploader::start() {
     try {
         uploading_.start();
-
-        Poco::NotificationCenter::defaultCenter().addObserver(observer_);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -176,8 +168,6 @@ error TimelineUploader::Shutdown() {
         if (uploading_.isRunning()) {
             uploading_.stop();
             uploading_.wait();
-
-            Poco::NotificationCenter::defaultCenter().removeObserver(observer_);
         }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();

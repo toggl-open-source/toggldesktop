@@ -316,7 +316,7 @@ extern void *ctx;
 		return;
 	}
 	NSTableRowView *rowView = [self.timeEntriesTableView rowViewAtRow:selectedRow
-													  makeIfNecessary  :NO];
+													  makeIfNecessary:NO];
 	[rowView setEmphasized:NO];
 	[rowView setSelected:NO];
 }

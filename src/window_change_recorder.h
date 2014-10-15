@@ -11,16 +11,18 @@
 #include "./types.h"
 
 #include "Poco/Activity.h"
+#include "Poco/Logger.h"
 
 namespace toggl {
 
 class WindowChangeRecorder {
  public:
-    WindowChangeRecorder()
+    explicit WindowChangeRecorder(TimelineDatasource *datasource)
         : last_title_("")
     , last_filename_("")
     , last_event_started_at_(0)
     , last_idle_(false)
+    , timeline_datasource_(datasource)
     , recording_(this, &WindowChangeRecorder::recordLoop) {
         recording_.start();
     }
@@ -43,11 +45,17 @@ class WindowChangeRecorder {
 
     bool hasIdlenessChanged(const bool &idle) const;
 
+    Poco::Logger &logger() {
+        return Poco::Logger::get("WindowChangeRecorder");
+    }
+
     // Last window focus event data
     std::string last_title_;
     std::string last_filename_;
     time_t last_event_started_at_;
     bool last_idle_;
+
+    TimelineDatasource *timeline_datasource_;
 
     Poco::Activity<WindowChangeRecorder> recording_;
 };

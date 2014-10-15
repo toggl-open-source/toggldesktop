@@ -8,8 +8,6 @@
 #include "./timeline_event.h"
 
 #include "Poco/Thread.h"
-#include "Poco/NotificationCenter.h"
-#include "Poco/Logger.h"
 
 namespace toggl {
 
@@ -32,7 +30,7 @@ void WindowChangeRecorder::inspectFocusedWindow() {
     if (err != 0) {
         std::stringstream ss;
         ss << "Failed to get focused window info, error code: " << err;
-        Poco::Logger::get("WindowChangeRecorder").error(ss.str());
+        logger().error(ss.str());
         return;
     }
 
@@ -57,9 +55,10 @@ void WindowChangeRecorder::inspectFocusedWindow() {
             event.title = last_title_;
             event.idle = last_idle_;
 
-            TimelineEventNotification notification(event);
-            Poco::AutoPtr<TimelineEventNotification> ptr(&notification);
-            Poco::NotificationCenter::defaultCenter().postNotification(ptr);
+            error err = timeline_datasource_->SaveTimelineEvent(&event);
+            if (err != noError) {
+                logger().error(err);
+            }
         }
     }
 
