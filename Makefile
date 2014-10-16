@@ -377,8 +377,7 @@ test_objects: build/test/gtest-all.o \
 	build/test/app_test.o \
 	build/test/toggl_api_test.o
 
-toggl_test: objects test_objects
-	rm -rf test
+toggl_test: clean_test objects test_objects
 	mkdir -p test
 	$(cxx) -coverage -o test/toggl_test build/*.o build/test/*.o $(libs)
 
