@@ -149,7 +149,7 @@ clean_ui:
 endif
 
 clean_test:
-	rm -rf test
+	rm -rf test/*
 
 lint:
 	./third_party/cpplint/cpplint.py $(source_dirs)
