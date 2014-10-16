@@ -170,7 +170,7 @@ void Context::Shutdown() {
         timer_.cancel(true);
     }
 
-    Poco::ThreadPool::defaultPool().joinAll();
+    Poco::ThreadPool::defaultPool().stopAll();
 }
 
 error Context::save(const bool push_changes) {
