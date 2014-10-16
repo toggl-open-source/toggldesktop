@@ -39,11 +39,11 @@ void WebSocketClient::Start(
 
     poco_assert(!api_token.empty());
 
+    Poco::Mutex::ScopedLock lock(mutex_);
+
     if (activity_.isRunning()) {
         return;
     }
-
-    Poco::Mutex::ScopedLock lock(mutex_);
 
     activity_.start();
 

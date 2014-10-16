@@ -65,31 +65,39 @@ Context::Context(const std::string app_name, const std::string app_version)
 Context::~Context() {
     SetQuit();
 
-    if (window_change_recorder_) {
+    {
         Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
-        window_change_recorder_->Shutdown();
-        delete window_change_recorder_;
-        window_change_recorder_ = 0;
+        if (window_change_recorder_) {
+            window_change_recorder_->Shutdown();
+            delete window_change_recorder_;
+            window_change_recorder_ = 0;
+        }
     }
 
-    if (timeline_uploader_) {
+    {
         Poco::Mutex::ScopedLock lock(timeline_uploader_m_);
-        timeline_uploader_->Shutdown();
-        delete timeline_uploader_;
-        timeline_uploader_ = 0;
+        if (timeline_uploader_) {
+            timeline_uploader_->Shutdown();
+            delete timeline_uploader_;
+            timeline_uploader_ = 0;
+        }
     }
 
-    if (ws_client_) {
+    {
         Poco::Mutex::ScopedLock lock(ws_client_m_);
-        ws_client_->Shutdown();
-        delete ws_client_;
-        ws_client_ = 0;
+        if (ws_client_) {
+            ws_client_->Shutdown();
+            delete ws_client_;
+            ws_client_ = 0;
+        }
     }
 
-    if (db_) {
+    {
         Poco::Mutex::ScopedLock lock(db_m_);
-        delete db_;
-        db_ = 0;
+        if (db_) {
+            delete db_;
+            db_ = 0;
+        }
     }
 
     logger().debug("setUser from destructor");
@@ -151,17 +159,25 @@ void Context::displayUI() {
 }
 
 void Context::Shutdown() {
-    if (window_change_recorder_) {
+    {
         Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
-        window_change_recorder_->Shutdown();
+        if (window_change_recorder_) {
+            window_change_recorder_->Shutdown();
+        }
     }
-    if (ws_client_) {
+
+    {
         Poco::Mutex::ScopedLock lock(ws_client_m_);
-        ws_client_->Shutdown();
+        if (ws_client_) {
+            ws_client_->Shutdown();
+        }
     }
-    if (timeline_uploader_) {
+
+    {
         Poco::Mutex::ScopedLock lock(timeline_uploader_m_);
-        timeline_uploader_->Shutdown();
+        if (timeline_uploader_) {
+            timeline_uploader_->Shutdown();
+        }
     }
 
     // cancel tasks but allow them finish
@@ -457,11 +473,10 @@ void Context::switchWebSocketOff() {
 void Context::onSwitchWebSocketOff(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onSwitchWebSocketOff");
 
+    Poco::Mutex::ScopedLock lock(ws_client_m_);
     if (!ws_client_) {
         return;
     }
-
-    Poco::Mutex::ScopedLock lock(ws_client_m_);
     ws_client_->Shutdown();
 }
 
@@ -528,16 +543,20 @@ void Context::switchTimelineOff() {
 void Context::onSwitchTimelineOff(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onSwitchTimelineOff");
 
-    if (window_change_recorder_) {
+    {
         Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
-        delete window_change_recorder_;
-        window_change_recorder_ = 0;
+        if (window_change_recorder_) {
+            delete window_change_recorder_;
+            window_change_recorder_ = 0;
+        }
     }
 
-    if (timeline_uploader_) {
+    {
         Poco::Mutex::ScopedLock lock(timeline_uploader_m_);
-        delete timeline_uploader_;
-        timeline_uploader_ = 0;
+        if (timeline_uploader_) {
+            delete timeline_uploader_;
+            timeline_uploader_ = 0;
+        }
     }
 }
 
@@ -998,7 +1017,7 @@ _Bool Context::SetDBPath(
 
         Poco::Mutex::ScopedLock lock(db_m_);
         if (db_) {
-            std::cout << "delete db_ from SetDBPath()" << std::endl;
+            logger().debug("delete db_ from SetDBPath()");
             delete db_;
             db_ = 0;
         }
