@@ -987,4 +987,27 @@ TEST(TogglApiTest, toggl_feedback_send) {
                                     "Help", "I need help", ""));
 }
 
+TEST(ProxyTest, IsConfigured) {
+    Proxy p;
+    ASSERT_FALSE(p.IsConfigured());
+
+    p.host = "localhost";
+    p.port = 123;
+    ASSERT_TRUE(p.IsConfigured());
+}
+
+TEST(ProxyTest, HasCredentials) {
+    Proxy p;
+    ASSERT_FALSE(p.HasCredentials());
+
+    p.username = "foo";
+    p.password = "bar";
+    ASSERT_TRUE(p.HasCredentials());
+}
+
+TEST(ProxyTest, String) {
+    Proxy p;
+    ASSERT_NE("", p.String());
+}
+
 }  // namespace toggl
