@@ -107,7 +107,7 @@ void User::Start(
         // dont set Stop, TE is running
         te->SetStart(now);
     }
-    te->SetCreatedWith(HTTPSClient::UserAgent());
+    te->SetCreatedWith(HTTPSClientConfig::UserAgent());
 
     // Try to set workspace ID from project
     if (te->PID()) {
@@ -166,7 +166,7 @@ toggl::error User::Continue(
     result->SetTID(existing->TID());
     result->SetUID(ID());
     result->SetStart(time(0));
-    result->SetCreatedWith(HTTPSClient::UserAgent());
+    result->SetCreatedWith(HTTPSClientConfig::UserAgent());
     result->SetDurationInSeconds(-time(0));
     result->SetBillable(existing->Billable());
     result->SetTags(existing->Tags());
@@ -487,7 +487,7 @@ error User::Me(
 
         std::stringstream relative_url;
         relative_url << "/api/v8/me"
-                     << "?app_name=" << HTTPSClient::AppName
+                     << "?app_name=" << HTTPSClientConfig::AppName
                      << "&with_related_data=true";
 
         return https_client->GetJSON(relative_url.str(),

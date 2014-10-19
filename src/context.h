@@ -55,7 +55,7 @@ class Context : public TimelineDatasource {
     _Bool LoadUpdateFromJSONString(const std::string json);
 
     void SetAPIURL(const std::string value) {
-        HTTPSClient::APIURL = value;
+        HTTPSClientConfig::APIURL = value;
     }
     void SetTimelineUploadURL(const std::string value) {
         timeline_upload_url_ = value;

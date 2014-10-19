@@ -50,8 +50,8 @@ Context::Context(const std::string app_name, const std::string app_version)
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
-    HTTPSClient::AppName = app_name;
-    HTTPSClient::AppVersion = app_version;
+    HTTPSClientConfig::AppName = app_name;
+    HTTPSClientConfig::AppVersion = app_version;
 
     Poco::Crypto::OpenSSLInitializer::initialize();
 
@@ -112,7 +112,7 @@ _Bool Context::StartEvents() {
 
     poco_assert(!user_);
 
-    if (HTTPSClient::CACertPath.empty()) {
+    if (HTTPSClientConfig::CACertPath.empty()) {
         return displayError(error("Missing CA cert bundle path!"));
     }
 
@@ -754,13 +754,13 @@ const std::string Context::updateURL() {
         return "";
     }
 
-    poco_assert(!HTTPSClient::AppVersion.empty());
+    poco_assert(!HTTPSClientConfig::AppVersion.empty());
 
     std::stringstream relative_url;
     relative_url << "/api/v8/updates?app=td"
                  << "&channel=" << update_channel
                  << "&platform=" << installerPlatform()
-                 << "&version=" << HTTPSClient::AppVersion
+                 << "&version=" << HTTPSClientConfig::AppVersion
                  << "&osname=" << Poco::Environment::osName()
                  << "&osversion=" << Poco::Environment::osVersion()
                  << "&osarch=" << Poco::Environment::osArchitecture();
@@ -995,9 +995,9 @@ _Bool Context::DisplaySettings(const _Bool open) {
         record_timeline = user_->RecordTimeline();
     }
 
-    HTTPSClient::UseProxy = use_proxy;
-    HTTPSClient::IgnoreCert = false;
-    HTTPSClient::ProxySettings = proxy;
+    HTTPSClientConfig::UseProxy = use_proxy;
+    HTTPSClientConfig::IgnoreCert = false;
+    HTTPSClientConfig::ProxySettings = proxy;
 
     UI()->DisplaySettings(open,
                           record_timeline,

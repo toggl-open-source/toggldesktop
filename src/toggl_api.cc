@@ -112,7 +112,7 @@ void toggl_set_cacert_path(
     const char *path) {
     poco_check_ptr(path);
 
-    toggl::HTTPSClient::CACertPath = std::string(path);
+    toggl::HTTPSClientConfig::CACertPath = std::string(path);
 }
 
 void toggl_set_cacert_path_utf16(
@@ -123,7 +123,7 @@ void toggl_set_cacert_path_utf16(
     std::string utf8("");
     Poco::UnicodeConverter::toUTF8(path, utf8);
 
-    toggl::HTTPSClient::CACertPath = utf8;
+    toggl::HTTPSClientConfig::CACertPath = utf8;
 }
 
 _Bool toggl_set_db_path(

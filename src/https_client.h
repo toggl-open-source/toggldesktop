@@ -16,6 +16,21 @@
 
 namespace toggl {
 
+class HTTPSClientConfig {
+ public:
+    static std::string AppName;
+    static std::string AppVersion;
+    static std::string APIURL;
+    static bool UseProxy;
+    static toggl::Proxy ProxySettings;
+    static bool IgnoreCert;
+    static std::string CACertPath;
+
+    static std::string UserAgent() {
+        return AppName + "/" + AppVersion;
+    }
+};
+
 class HTTPSClient {
  public:
     HTTPSClient() {}
@@ -33,18 +48,6 @@ class HTTPSClient {
         const std::string basic_auth_username,
         const std::string basic_auth_password,
         std::string *response_body);
-
-    static std::string AppName;
-    static std::string AppVersion;
-    static std::string APIURL;
-    static bool UseProxy;
-    static toggl::Proxy ProxySettings;
-    static bool IgnoreCert;
-    static std::string CACertPath;
-
-    static std::string UserAgent() {
-        return AppName + "/" + AppVersion;
-    }
 
  private:
     error request(

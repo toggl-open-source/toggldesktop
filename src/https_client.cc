@@ -28,13 +28,13 @@
 
 namespace toggl {
 
-std::string HTTPSClient::AppName = std::string("");
-std::string HTTPSClient::AppVersion = std::string("");
-std::string HTTPSClient::APIURL = std::string(kAPIURL);
-bool HTTPSClient::UseProxy = false;
-bool HTTPSClient::IgnoreCert = false;
-toggl::Proxy HTTPSClient::ProxySettings = Proxy();
-std::string HTTPSClient::CACertPath = std::string("");
+std::string HTTPSClientConfig::AppName = std::string("");
+std::string HTTPSClientConfig::AppVersion = std::string("");
+std::string HTTPSClientConfig::APIURL = std::string(kAPIURL);
+bool HTTPSClientConfig::UseProxy = false;
+bool HTTPSClientConfig::IgnoreCert = false;
+toggl::Proxy HTTPSClientConfig::ProxySettings = Proxy();
+std::string HTTPSClientConfig::CACertPath = std::string("");
 
 error HTTPSClient::PostJSON(
     const std::string relative_url,
@@ -89,14 +89,14 @@ error HTTPSClient::request(
 
     poco_assert(!method.empty());
     poco_assert(!relative_url.empty());
-    poco_assert(!CACertPath.empty());
+    poco_assert(!HTTPSClientConfig::CACertPath.empty());
 
     poco_check_ptr(response_body);
 
     *response_body = "";
 
     try {
-        Poco::URI uri(APIURL);
+        Poco::URI uri(HTTPSClientConfig::APIURL);
 
         Poco::SharedPtr<Poco::Net::InvalidCertificateHandler>
         acceptCertHandler =
@@ -104,11 +104,12 @@ error HTTPSClient::request(
 
         Poco::Net::Context::VerificationMode verification_mode =
             Poco::Net::Context::VERIFY_RELAXED;
-        if (IgnoreCert) {
+        if (HTTPSClientConfig::IgnoreCert) {
             verification_mode = Poco::Net::Context::VERIFY_NONE;
         }
         Poco::Net::Context::Ptr context = new Poco::Net::Context(
-            Poco::Net::Context::CLIENT_USE, "", "", CACertPath,
+            Poco::Net::Context::CLIENT_USE, "", "",
+            HTTPSClientConfig::CACertPath,
             verification_mode, 9, true, "ALL");
 
         Poco::Net::SSLManager::instance().initializeClient(
@@ -116,12 +117,16 @@ error HTTPSClient::request(
 
         Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(),
                                               context);
-        if (UseProxy && ProxySettings.IsConfigured()) {
-            session.setProxy(ProxySettings.host,
-                             static_cast<Poco::UInt16>(ProxySettings.port));
-            if (ProxySettings.HasCredentials()) {
-                session.setProxyCredentials(ProxySettings.username,
-                                            ProxySettings.password);
+        if (HTTPSClientConfig::UseProxy &&
+                HTTPSClientConfig::ProxySettings.IsConfigured()) {
+            session.setProxy(
+                HTTPSClientConfig::ProxySettings.host,
+                static_cast<Poco::UInt16>(
+                    HTTPSClientConfig::ProxySettings.port));
+            if (HTTPSClientConfig::ProxySettings.HasCredentials()) {
+                session.setProxyCredentials(
+                    HTTPSClientConfig::ProxySettings.username,
+                    HTTPSClientConfig::ProxySettings.password);
             }
         }
         session.setKeepAlive(false);
@@ -142,7 +147,7 @@ error HTTPSClient::request(
                                    Poco::Net::HTTPMessage::HTTP_1_1);
         req.setKeepAlive(false);
         req.setContentType("application/json");
-        req.set("User-Agent", UserAgent());
+        req.set("User-Agent", HTTPSClientConfig::UserAgent());
         req.setChunkedTransferEncoding(true);
 
         Poco::Net::HTTPBasicCredentials cred(

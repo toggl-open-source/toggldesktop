@@ -19,7 +19,7 @@ const std::string Feedback::JSON() const {
     json_push_back(root, json_new_b("desktop", true));
     json_push_back(root,
                    json_new_a("toggl_version",
-                              HTTPSClient::AppVersion.c_str()));
+                              HTTPSClientConfig::AppVersion.c_str()));
     json_push_back(root,
                    json_new_a(
                        "details",
