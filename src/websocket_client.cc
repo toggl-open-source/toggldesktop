@@ -88,7 +88,8 @@ error WebSocketClient::createSession() {
             verification_mode = Poco::Net::Context::VERIFY_NONE;
         }
         Poco::Net::Context::Ptr context = new Poco::Net::Context(
-            Poco::Net::Context::CLIENT_USE, "", "", HTTPSClientConfig::CACertPath,
+            Poco::Net::Context::CLIENT_USE, "", "",
+            HTTPSClientConfig::CACertPath,
             verification_mode, 9, true, "ALL");
 
         Poco::Net::SSLManager::instance().initializeClient(
@@ -101,7 +102,8 @@ error WebSocketClient::createSession() {
         if (HTTPSClientConfig::ProxySettings.IsConfigured()) {
             session_->setProxy(
                 HTTPSClientConfig::ProxySettings.host,
-                static_cast<Poco::UInt16>(HTTPSClientConfig::ProxySettings.port));
+                static_cast<Poco::UInt16>(
+                    HTTPSClientConfig::ProxySettings.port));
             if (HTTPSClientConfig::ProxySettings.HasCredentials()) {
                 session_->setProxyCredentials(
                     HTTPSClientConfig::ProxySettings.username,
