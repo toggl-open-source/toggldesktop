@@ -237,7 +237,7 @@ ifeq ($(uname), Darwin)
 	cd $(openssldir) && ./config -fPIC no-shared no-dso && ./Configure darwin64-x86_64-cc && make
 endif
 ifeq ($(uname), Linux)
-	cd $(openssldir) && ./config -fPIC no-shared no-dso && make
+	cd $(openssldir) && ./config -fPIC shared no-dso && make
 endif
 
 poco:
