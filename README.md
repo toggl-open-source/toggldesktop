@@ -46,6 +46,7 @@ Fedora
 ------
 * qt5-qtwebkit-devel
 * libXScrnSaver-devel
+* qt5-qtsvg
 
 Windows
 -------
