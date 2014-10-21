@@ -46,7 +46,11 @@ class TimerWidget : public QWidget {
     void on_start_clicked();
     void on_description_currentIndexChanged(int index);
 
- private:
+    void on_duration_returnPressed();
+
+    void descriptionReturnPressed();
+
+private:
     Ui::TimerWidget *ui;
 
     QTimer *timer;

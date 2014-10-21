@@ -28,6 +28,9 @@ timeEntryAutocompleteNeedsUpdate(false) {
 
     connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
 
+    connect(ui->description->lineEdit(), SIGNAL(returnPressed()),
+            this, SLOT(descriptionReturnPressed()));
+
     descriptionPlaceholder = "What are you doing?";
 }
 
@@ -35,6 +38,10 @@ TimerWidget::~TimerWidget() {
     timer->stop();
 
     delete ui;
+}
+
+void TimerWidget::descriptionReturnPressed() {
+    start();
 }
 
 void TimerWidget::focusChanged(QWidget *old, QWidget *now) {
@@ -172,4 +179,9 @@ void TimerWidget::on_description_currentIndexChanged(int index) {
 void TimerWidget::mousePressEvent(QMouseEvent *event) {
     TogglApi::instance->editRunningTimeEntry("");
     QWidget::mousePressEvent(event);
+}
+
+void TimerWidget::on_duration_returnPressed()
+{
+    start();
 }
