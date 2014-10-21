@@ -684,7 +684,7 @@ void *ctx;
 
 - (IBAction)onEditMenuItem:(id)sender
 {
-    [self.mainWindowController showWindow:self];
+	[self.mainWindowController showWindow:self];
 	toggl_edit(ctx, "", true, "description");
 }
 

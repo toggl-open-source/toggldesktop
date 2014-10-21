@@ -50,7 +50,7 @@ class TimerWidget : public QWidget {
 
     void descriptionReturnPressed();
 
-private:
+ private:
     Ui::TimerWidget *ui;
 
     QTimer *timer;
