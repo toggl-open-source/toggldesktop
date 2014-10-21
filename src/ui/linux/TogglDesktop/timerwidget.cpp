@@ -181,7 +181,6 @@ void TimerWidget::mousePressEvent(QMouseEvent *event) {
     QWidget::mousePressEvent(event);
 }
 
-void TimerWidget::on_duration_returnPressed()
-{
+void TimerWidget::on_duration_returnPressed() {
     start();
 }
