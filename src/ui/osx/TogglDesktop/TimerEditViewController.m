@@ -68,13 +68,13 @@ extern void *ctx;
 	NSDictionary *lightDict = [NSDictionary dictionaryWithObject:[ConvertHexColor hexCodeToNSColor:@"#d0d0d0"]
 														  forKey:NSForegroundColorAttributeName];
 	NSAttributedString *descriptionLightString = [[NSAttributedString alloc] initWithString:@"What are you doing?"
-																	  attributes:lightDict];
-    NSAttributedString *durationLightString = [[NSAttributedString alloc] initWithString:@"00:00:00"
-                                                                      attributes:lightDict];
+																				 attributes:lightDict];
+	NSAttributedString *durationLightString = [[NSAttributedString alloc] initWithString:@"00:00:00"
+																			  attributes:lightDict];
 
-    [[self.durationTextField cell] setPlaceholderAttributedString:durationLightString];
+	[[self.durationTextField cell] setPlaceholderAttributedString:durationLightString];
 	[[self.descriptionLabel cell] setPlaceholderAttributedString:descriptionLightString];
-    [[self.descriptionComboBox cell] setPlaceholderAttributedString:descriptionLightString];
+	[[self.descriptionComboBox cell] setPlaceholderAttributedString:descriptionLightString];
 }
 
 - (void)loadView
