@@ -118,6 +118,7 @@ namespace TogglDesktop
 
         internal void setPlacement(bool left, int arrowTop, Point p, Screen s)
         {
+            TopMost = true;
             labelArrowLeft.Visible = !left;
             labelArrowRight.Visible = left;
 

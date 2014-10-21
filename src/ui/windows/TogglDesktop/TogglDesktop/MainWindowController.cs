@@ -683,8 +683,46 @@ namespace TogglDesktop
 
         private void setEditFormLocation(bool running)
         {
+            if (Screen.AllScreens.Length > 1)
+            {
+                foreach (Screen s in Screen.AllScreens)
+                {
+                    if (s.WorkingArea.IntersectsWith(DesktopBounds))
+                    {
+                        calculateEditFormPosition(running, s);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                calculateEditFormPosition(running,Screen.PrimaryScreen);
+            }
+        }
+
+        private void calculateEditFormPosition(bool running, Screen s)
+        {
             Point ctrlpt = this.PointToScreen(editableEntry.Location);
             int arrowTop = 0;
+            bool left = false;
+
+            if (Location.X < editForm.Width && (s.Bounds.Width - (Location.X + Width)) < editForm.Width)
+            {
+                ctrlpt.X += (Width/2);
+            }
+            else
+            {
+                if ((editForm.Width + ctrlpt.X + this.Width) > s.Bounds.Width)
+                {
+                    ctrlpt.X -= editForm.Width;
+                    left = true;
+                }
+                else
+                {
+                    ctrlpt.X += this.Width;
+                }
+            }
+
             if (running)
             {
                 arrowTop = timeEntryListViewController.getEntriesTop() / 2;
@@ -697,40 +735,8 @@ namespace TogglDesktop
                     ((TimeEntryCell)editableEntry).opened = true;
                 }
             }
+            editForm.setPlacement(left, arrowTop, ctrlpt, s);
 
-            if (Screen.AllScreens.Length > 1)
-            {
-                foreach (Screen s in Screen.AllScreens)
-                {
-                    if (s.WorkingArea.IntersectsWith(DesktopBounds))
-                    {
-                        if ((editForm.Width + ctrlpt.X + this.Width) > s.Bounds.Width + s.WorkingArea.Location.X)
-                        {
-                            ctrlpt.X -= editForm.Width;
-                            editForm.setPlacement(true, arrowTop, ctrlpt, s);
-                        }
-                        else
-                        {
-                            ctrlpt.X += this.Width;
-                            editForm.setPlacement(false, arrowTop, ctrlpt, s);
-                        }
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                if ((editForm.Width + ctrlpt.X + this.Width) > Screen.PrimaryScreen.Bounds.Width)
-                {
-                    ctrlpt.X -= editForm.Width;
-                    editForm.setPlacement(true, arrowTop, ctrlpt, Screen.PrimaryScreen);
-                }
-                else
-                {
-                    ctrlpt.X += this.Width;
-                    editForm.setPlacement(false, arrowTop, ctrlpt, Screen.PrimaryScreen);
-                }
-            }
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
