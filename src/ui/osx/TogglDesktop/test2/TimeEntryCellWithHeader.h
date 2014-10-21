@@ -18,7 +18,9 @@
 @property (nonatomic, strong) IBOutlet NSImageView *billableFlag;
 @property (nonatomic, strong) IBOutlet NSImageView *tagFlag;
 @property (strong) NSString *GUID;
+@property (strong) IBOutlet NSBox *durationBox;
 - (void)render:(TimeEntryViewItem *)view_item;
 - (IBAction)continueTimeEntry:(id)sender;
+- (void)focusFieldName;
 @end
 

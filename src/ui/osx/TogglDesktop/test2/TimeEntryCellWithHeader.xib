@@ -235,6 +235,7 @@
                 <outlet property="billableFlag" destination="HgZ-sm-ajS" id="Jhz-7e-GVO"/>
                 <outlet property="dateDurationTextField" destination="A9Z-Z5-Qzd" id="Pb9-ly-e1l"/>
                 <outlet property="descriptionTextField" destination="IPX-6P-J70" id="zcg-pi-ncm"/>
+                <outlet property="durationBox" destination="DdV-RE-Kny" id="6HJ-J4-BPL"/>
                 <outlet property="durationTextField" destination="chv-we-eud" id="qWe-PN-bgP"/>
                 <outlet property="formattedDateTextField" destination="Eux-yk-8iS" id="Nua-0p-xmm"/>
                 <outlet property="projectTextField" destination="4mY-N2-UMI" id="Kpb-Es-Ieo"/>

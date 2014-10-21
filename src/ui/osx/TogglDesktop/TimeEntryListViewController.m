@@ -304,7 +304,17 @@ extern void *ctx;
 	}
 	self.selectedRowView = latestView;
 
-	toggl_edit(ctx, [item.GUID UTF8String], false, "");
+	for (NSView *subview in [latestView subviews])
+	{
+		if ([subview isKindOfClass:[TimeEntryCell class]])
+		{
+			[(TimeEntryCell *)subview focusFieldName];
+		}
+		else if ([subview isKindOfClass:[TimeEntryCellWithHeader class]])
+		{
+			[(TimeEntryCellWithHeader *)subview focusFieldName];
+		}
+	}
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification

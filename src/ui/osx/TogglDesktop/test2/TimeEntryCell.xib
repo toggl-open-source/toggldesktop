@@ -186,6 +186,7 @@
             <connections>
                 <outlet property="billableFlag" destination="QS9-7g-WQN" id="ftI-OL-nFL"/>
                 <outlet property="descriptionTextField" destination="CwR-d5-aWs" id="Wip-cq-Mwm"/>
+                <outlet property="durationBox" destination="lUV-Fj-IYJ" id="Dc1-m5-YCs"/>
                 <outlet property="durationTextField" destination="xwb-FG-Z4X" id="utn-4y-DUw"/>
                 <outlet property="projectTextField" destination="deS-e6-3Ui" id="pIu-QV-GCm"/>
                 <outlet property="tagFlag" destination="29c-rg-nft" id="LV9-V1-NQ1"/>

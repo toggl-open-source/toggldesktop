@@ -12,6 +12,8 @@
 
 @implementation TimeEntryCellWithHeader
 
+extern void *ctx;
+
 - (IBAction)continueTimeEntry:(id)sender
 {
 	NSLog(@"TimeEntryCell continueTimeEntry GUID=%@", self.GUID);
@@ -113,6 +115,33 @@
 
 	[string appendAttributedString:clientName];
 	return string;
+}
+
+- (void)focusFieldName
+{
+	NSPoint globalLocation = [ NSEvent mouseLocation ];
+	NSPoint windowLocation = [ [ self window ] convertScreenToBase:globalLocation ];
+	NSPoint mouseLocation = [ self convertPoint:windowLocation fromView:nil ];
+
+	if (NSPointInRect(mouseLocation, self.projectTextField.frame))
+	{
+		toggl_edit(ctx, [self.GUID UTF8String], false, kFocusedFieldNameProject);
+		return;
+	}
+
+	if (NSPointInRect(mouseLocation, self.descriptionTextField.frame))
+	{
+		toggl_edit(ctx, [self.GUID UTF8String], false, kFocusedFieldNameDescription);
+		return;
+	}
+
+	if (NSPointInRect(mouseLocation, self.durationBox.frame))
+	{
+		toggl_edit(ctx, [self.GUID UTF8String], false, kFocusedFieldNameDuration);
+		return;
+	}
+
+	toggl_edit(ctx, [self.GUID UTF8String], false, "");
 }
 
 @end
