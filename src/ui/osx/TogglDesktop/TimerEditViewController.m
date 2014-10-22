@@ -261,18 +261,27 @@ extern void *ctx;
 	[self.descriptionComboBox becomeFirstResponder];
 	if (sender == self.durationTextField)
 	{
+		[[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopoverSize
+															object:nil
+														  userInfo:nil];
 		toggl_edit(ctx, [self.time_entry.GUID UTF8String], false, kFocusedFieldNameDuration);
 		return;
 	}
 
 	if (sender == self.descriptionLabel)
 	{
+		[[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopoverSize
+															object:nil
+														  userInfo:nil];
 		toggl_edit(ctx, [self.time_entry.GUID UTF8String], false, kFocusedFieldNameDescription);
 		return;
 	}
 
 	if (sender == self.projectTextField)
 	{
+		[[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopoverSize
+															object:nil
+														  userInfo:nil];
 		toggl_edit(ctx, [self.time_entry.GUID UTF8String], false, kFocusedFieldNameProject);
 		return;
 	}

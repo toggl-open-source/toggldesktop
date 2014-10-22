@@ -88,6 +88,10 @@ extern void *ctx;
 												 selector:@selector(closeRunningEditPopup:)
 													 name:kCommandStop
 												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(resetEditPopoverSize:)
+													 name:kResetEditPopoverSize
+												   object:nil];
 	}
 	return self;
 }
@@ -315,6 +319,14 @@ extern void *ctx;
 			[(TimeEntryCellWithHeader *)subview focusFieldName];
 		}
 	}
+}
+
+- (void)resetEditPopoverSize:(NSNotification *)notification
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopover
+														object:nil
+													  userInfo:nil];
+	[self setDefaultPopupSize];
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification

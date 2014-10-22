@@ -83,7 +83,7 @@ extern void *ctx;
 													 name:kResetEditPopover
 												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(checkResize:)
+												 selector:@selector(setFocus:)
 													 name:NSPopoverDidShowNotification
 												   object:nil];
 	}
@@ -124,7 +124,24 @@ extern void *ctx;
 	self.willTerminate = YES;
 }
 
-- (void)checkResize:(NSNotification *)notification
+- (void)setFocus:(NSNotification *)notification
+{
+	if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDuration]])
+	{
+		self.resizeOnOpen = YES;
+		[self checkResize];
+	}
+	if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDescription]])
+	{
+		[self.descriptionCombobox becomeFirstResponder];
+	}
+	if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameProject]])
+	{
+		[self.projectSelect becomeFirstResponder];
+	}
+}
+
+- (void)checkResize
 {
 	if (self.resizeOnOpen)
 	{
@@ -330,6 +347,13 @@ extern void *ctx;
 		{
 			[self.projectSelect setStringValue:@""];
 		}
+		if (cmd.open)
+		{
+			if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameProject]])
+			{
+				[self.projectSelect becomeFirstResponder];
+			}
+		}
 	}
 
 	// Overwrite duration only if user is not editing it:
@@ -418,22 +442,7 @@ extern void *ctx;
 		[self.lastUpdateTextField setHidden:YES];
 	}
 
-	if (cmd.open)
-	{
-		if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDuration]])
-		{
-			self.resizeOnOpen = YES;
-			[self.durationTextField becomeFirstResponder];
-		}
-		if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDescription]])
-		{
-			[self.descriptionCombobox becomeFirstResponder];
-		}
-		if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameProject]])
-		{
-			[self.projectSelectBox becomeFirstResponder];
-		}
-	}
+	[self setFocus:nil];
 }
 
 - (NSArray *)    tokenField:(NSTokenField *)tokenField

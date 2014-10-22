@@ -36,6 +36,7 @@ extern NSString *const kForceCloseEditPopover;
 extern NSString *const kResizeEditForm;
 extern NSString *const kResizeEditFormWidth;
 extern NSString *const kResetEditPopover;
+extern NSString *const kResetEditPopoverSize;
 
 const char *kFocusedFieldNameDuration;
 const char *kFocusedFieldNameDescription;
