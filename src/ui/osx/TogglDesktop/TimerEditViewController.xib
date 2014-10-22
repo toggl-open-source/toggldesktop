@@ -110,7 +110,7 @@ DQ
                                     <outlet property="nextKeyView" destination="2Fx-4L-YGZ" id="5Y3-fg-tJL"/>
                                 </connections>
                             </textField>
-                            <textField hidden="YES" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tVc-ms-0hr">
+                            <textField hidden="YES" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tVc-ms-0hr" customClass="NSTextFieldClickable">
                                 <rect key="frame" x="3" y="19" width="200" height="11"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <constraints>
@@ -121,6 +121,9 @@ DQ
                                     <color key="textColor" red="0.38823529411764707" green="0.38823529411764707" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="backgroundColor" red="0.92739556759999997" green="0.124813008" blue="0.11691136570000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </textFieldCell>
+                                <connections>
+                                    <outlet property="delegate" destination="-2" id="Adx-f4-gsV"/>
+                                </connections>
                             </textField>
                             <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" borderWidth="0.0" title="Box" boxType="custom" borderType="none" translatesAutoresizingMaskIntoConstraints="NO" id="ow2-8J-rMh">
                                 <rect key="frame" x="132" y="43" width="5" height="30"/>
