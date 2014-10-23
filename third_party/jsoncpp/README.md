@@ -16,7 +16,7 @@ format to store user input files.
 Using JsonCpp in your project
 -----------------------------
 
-The recommended approach to integrating JsonCpp in your project is to build the
+The recommended approach to integrating JsonCpp in your project is to build
 the amalgamated source (a single `.cpp` file) with your own build system. This
 ensures consistency of compilation flags and ABI compatibility. See the section
 "Generating amalgamated source and header" for instructions.
@@ -62,9 +62,9 @@ Steps for generating solution/makefiles using `cmake-gui`:
 
 Alternatively, from the command-line on Unix in the source directory:
 
-    mkdir -p ../build/debug
-    cd ../build/debug
-    cmake -DCMAKE_BUILD_TYPE=debug -DJSONCPP_LIB_BUILD_SHARED=OFF -G "Unix Makefiles" ../../jsoncpp/src
+    mkdir -p build/debug
+    cd build/debug
+    cmake -DCMAKE_BUILD_TYPE=debug -DJSONCPP_LIB_BUILD_SHARED=OFF -G "Unix Makefiles" ../..
     make
 
 Running `cmake -`" will display the list of available generators (passed using
