@@ -7,7 +7,6 @@
 #include "./formatter.h"
 #include "./json.h"
 
-#include "Poco/Logger.h"
 #include "Poco/Stopwatch.h"
 
 namespace toggl {
@@ -86,7 +85,6 @@ void User::Start(
 
     std::stringstream ss;
     ss << "User::Start now=" << now;
-    logger().debug(ss.str());
 
     TimeEntry *te = new TimeEntry();
     te->SetDescription(description);

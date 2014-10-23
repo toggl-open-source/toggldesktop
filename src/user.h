@@ -23,7 +23,6 @@
 #include "./base_model.h"
 
 #include "Poco/Types.h"
-#include "Poco/Logger.h"
 
 namespace toggl {
 

@@ -9,9 +9,10 @@
 #include <vector>
 #include <map>
 
+// FIXME: deprecated
 #include "libjson.h" // NOLINT
 
-#include <json/json.h>
+#include <json/json.h>  // NOLINT
 
 #include "./workspace.h"
 #include "./client.h"
@@ -29,7 +30,7 @@ std::string UpdateJSON(
     std::vector<Project *> * const,
     std::vector<TimeEntry *> * const);
 
-Poco::UInt64 UserID(const std::string json_data_string);
+error UserID(const std::string json_data_string, Poco::UInt64 *result);
 
 Poco::UInt64 ID(JSONNODE * const);
 
@@ -39,7 +40,7 @@ Poco::UInt64 UIModifiedAt(JSONNODE * const);
 
 bool IsDeletedAtServer(JSONNODE * const);
 
-std::string LoginToken(const std::string json_data_string);
+error LoginToken(const std::string json_data_string, std::string *result);
 
 bool IsValid(const std::string json);
 

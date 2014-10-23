@@ -1042,6 +1042,25 @@ TEST(FormatterTest, JoinTaskNameReverse) {
     ASSERT_EQ("Customer name. Project name. Task name", res);
 }
 
+TEST(JSON, UserID) {
+    Poco::UInt64 user_id(0);
+    ASSERT_EQ(noError,
+              toggl::json::UserID("{\"data\": {\"id\": 12345}}", &user_id));
+    ASSERT_EQ(Poco::UInt64(12345), user_id);
+}
+
+TEST(JSON, LoginToken) {
+    std::string token("");
+    ASSERT_EQ(noError,
+              toggl::json::LoginToken("{\"login_token\": \"foobar\"}", &token));
+    ASSERT_EQ("foobar", token);
+}
+
+TEST(JSON, IsValid) {
+    ASSERT_TRUE(toggl::json::IsValid("{\"a\": \"b\"}"));
+    ASSERT_FALSE(toggl::json::IsValid("{\"a\": \"b\""));
+}
+
 }  // namespace toggl
 
 int main(int argc, char **argv) {

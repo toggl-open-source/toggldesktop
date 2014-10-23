@@ -1071,7 +1071,11 @@ _Bool Context::Login(
         return false;
     }
 
-    Poco::UInt64 userID = toggl::json::UserID(user_data_json);
+    Poco::UInt64 userID(0);
+    err = toggl::json::UserID(user_data_json, &userID);
+    if (err != noError) {
+        return displayError(err);
+    }
 
     if (!userID) {
         return false;
@@ -1932,7 +1936,12 @@ _Bool Context::OpenReportsInBrowser() {
         return displayError("Unexpected empty response from API");
     }
 
-    std::string login_token = toggl::json::LoginToken(response_body);
+    std::string login_token("");
+    err = toggl::json::LoginToken(response_body, &login_token);
+    if (err != noError) {
+        return displayError(err);
+    }
+
     if (login_token.empty()) {
         return displayError("Could not extract login token from JSON");
     }

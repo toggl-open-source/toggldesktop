@@ -5,7 +5,7 @@
 #include <sstream>
 #include <cstring>
 
-#include "Poco/Logger.h"
+#include "Poco/NumberParser.h"
 
 namespace toggl {
 
@@ -28,45 +28,31 @@ Poco::UInt64 ID(JSONNODE * const data) {
     return 0;
 }
 
-Poco::UInt64 UserID(const std::string json_data_string) {
-    Poco::UInt64 result(0);
-
-    JSONNODE *root = json_parse(json_data_string.c_str());
-
-    JSONNODE_ITERATOR current_node = json_begin(root);
-    JSONNODE_ITERATOR last_node = json_end(root);
-    while (current_node != last_node) {
-        json_char *node_name = json_name(*current_node);
-        if (strcmp(node_name, "data") == 0) {
-            result = ID(*current_node);
-            break;
-        }
-        ++current_node;
+error UserID(const std::string json_data_string, Poco::UInt64 *result) {
+    *result = 0;
+    Json::Value root;
+    Json::Reader reader;
+    bool ok = reader.parse(json_data_string, root);
+    if (!ok) {
+        return error("error parsing UserID JSON");
     }
-
-    json_delete(root);
-
-    return result;
+    if (!Poco::NumberParser::tryParseUnsigned64(root["data"]["id"].asString(),
+            *result)) {
+        return error("error parsing UserID");
+    }
+    return noError;
 }
 
-std::string LoginToken(const std::string json_data_string) {
-    std::string result("");
-
-    JSONNODE *root = json_parse(json_data_string.c_str());
-
-    JSONNODE_ITERATOR current_node = json_begin(root);
-    JSONNODE_ITERATOR last_node = json_end(root);
-    while (current_node != last_node) {
-        json_char *node_name = json_name(*current_node);
-        if (strcmp(node_name, "login_token") == 0) {
-            result = std::string(json_as_string(*current_node));
-        }
-        ++current_node;
+error LoginToken(const std::string json_data_string, std::string *result) {
+    *result = "";
+    Json::Value root;
+    Json::Reader reader;
+    bool ok = reader.parse(json_data_string, root);
+    if (!ok) {
+        return error("error parsing UserID JSON");
     }
-
-    json_delete(root);
-
-    return result;
+    *result = root["login_token"].asString();
+    return noError;
 }
 
 guid GUID(JSONNODE * const data) {
@@ -100,7 +86,9 @@ bool IsDeletedAtServer(JSONNODE * const data) {
 }
 
 bool IsValid(const std::string json) {
-    return json_is_valid(json.c_str()) != 0;
+    Json::Value root;
+    Json::Reader reader;
+    return reader.parse(json, root);
 }
 
 error LoadTags(

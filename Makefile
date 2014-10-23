@@ -258,6 +258,9 @@ fmt_lib: third_party/google-astyle/build/google-astyle
 fmt_ui:
 	./third_party/Xcode-formatter/CodeFormatter/scripts/formatAllSources.sh src/ui/osx/
 
+build/jsoncpp.o: $(jsoncppdir)/jsoncpp.cpp
+	$(cxx) $(cflags) -c $(jsoncppdir)/jsoncpp.cpp -o build/jsoncpp.o
+
 build/proxy.o: src/proxy.cc
 	$(cxx) $(cflags) -c src/proxy.cc -o build/proxy.o
 
@@ -348,7 +351,8 @@ build/window_change_recorder.o: src/window_change_recorder.cc
 build/test/gtest-all.o: $(GTEST_ROOT)/src/gtest-all.cc
 	$(cxx) $(cflags) -c $(GTEST_ROOT)/src/gtest-all.cc -o build/test/gtest-all.o
 
-objects: build/proxy.o \
+objects: build/jsoncpp.o \
+	build/proxy.o \
 	build/https_client.o \
 	build/websocket_client.o \
 	build/base_model.o \
