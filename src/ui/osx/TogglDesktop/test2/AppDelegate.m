@@ -1031,7 +1031,10 @@ const NSString *appName = @"osx_native_app";
 								reason:humanReadable
 							  userInfo:nil];
 	}
-	[Bugsnag notify:exception withData:[NSDictionary dictionaryWithObjectsAndKeys:@"channel", toggl_get_update_channel(ctx), nil]];
+	char *str = toggl_get_update_channel(ctx);
+	NSString *channel = [NSString stringWithUTF8String:str];
+	free(str);
+	[Bugsnag notify:exception withData:[NSDictionary dictionaryWithObjectsAndKeys:@"channel", channel, nil]];
 
 	[crashReporter purgePendingCrashReport];
 }
@@ -1180,8 +1183,11 @@ void on_error(const char *errmsg, const _Bool is_user_error)
 														object:msg];
 	if (!is_user_error)
 	{
+		char *str = toggl_get_update_channel(ctx);
+		NSString *channel = [NSString stringWithUTF8String:str];
+		free(str);
 		[Bugsnag notify:[NSException exceptionWithName:msg reason:msg userInfo:nil]
-				 withData:[NSDictionary dictionaryWithObjectsAndKeys:@"channel", toggl_get_update_channel(ctx), nil]];
+				 withData:[NSDictionary dictionaryWithObjectsAndKeys:@"channel", channel, nil]];
 	}
 }
 
