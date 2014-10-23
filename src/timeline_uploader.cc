@@ -2,57 +2,19 @@
 
 #include "./timeline_uploader.h"
 
-#include <libjson.h>
-
 #include <sstream>
 #include <string>
 
 #include "./timeline_constants.h"
 #include "./https_client.h"
 #include "./formatter.h"
+#include "./json.h"
 
 #include "Poco/Foundation.h"
 #include "Poco/Util/Application.h"
 #include "Poco/Thread.h"
 
 namespace toggl {
-std::string TimelineUploader::convert_timeline_to_json(
-    const std::vector<TimelineEvent> &timeline_events,
-    const std::string &desktop_id) {
-    // initialize a new JSON array
-    JSONNODE *c = json_new(JSON_ARRAY);
-    for (std::vector<TimelineEvent>::const_iterator i = timeline_events.begin();
-            i != timeline_events.end();
-            ++i) {
-        const TimelineEvent &event = *i;
-        // initialize new event node
-        JSONNODE *n = json_new(JSON_NODE);
-        // add fields to event node
-        if (event.idle) {
-            json_push_back(n, json_new_b("idle", true));
-        } else {
-            json_push_back(n, json_new_a(
-                "filename",
-                Formatter::EscapeJSONString(event.filename).c_str()));
-            json_push_back(n, json_new_a(
-                "title",
-                Formatter::EscapeJSONString(event.title).c_str()));
-        }
-        json_push_back(n,
-                       json_new_i("start_time", (json_int_t)event.start_time));
-        json_push_back(n,
-                       json_new_i("end_time", (json_int_t)event.end_time));
-        json_push_back(n, json_new_a("desktop_id", desktop_id.c_str()));
-        json_push_back(n, json_new_a("created_with", "timeline"));
-        // Push event node to array
-        json_push_back(c, n);
-    }
-    json_char *jc = json_write_formatted(c);
-    std::string json(jc);
-    json_free(jc);
-    json_delete(c);
-    return json;
-}
 
 void TimelineUploader::sleep() {
     // Sleep in increments for faster shutdown.
@@ -123,7 +85,7 @@ error TimelineUploader::upload(TimelineBatch *batch) {
         << " event(s) of user " << batch->UserID();
     logger().debug(out.str());
 
-    std::string json = convert_timeline_to_json(batch->Events(),
+    std::string json = toggl::json::ConvertTimelineToJSON(batch->Events(),
                        batch->DesktopID());
     std::string response_body("");
     return client.PostJSON("/api/v8/timeline",

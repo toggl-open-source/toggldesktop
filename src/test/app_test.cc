@@ -13,6 +13,7 @@
 #include "./test_data.h"
 #include "./../formatter.h"
 #include "./../json.h"
+#include "./../timeline_event.h"
 
 #include "Poco/FileStream.h"
 #include "Poco/File.h"
@@ -1059,6 +1060,58 @@ TEST(JSON, LoginToken) {
 TEST(JSON, IsValid) {
     ASSERT_TRUE(toggl::json::IsValid("{\"a\": \"b\"}"));
     ASSERT_FALSE(toggl::json::IsValid("{\"a\": \"b\""));
+}
+
+TEST(JSON, ConvertTimelineToJSON) {
+    TimelineEvent event;
+    event.start_time = time(0) - 10;
+    event.end_time = time(0);
+    event.filename = "Is this the real life?";
+    event.title = "Is this just fantasy?";
+    event.idle = true;
+
+    std::string desktop_id("12345");
+
+    {
+        std::vector<TimelineEvent> list;
+        list.push_back(event);
+
+        std::string json = toggl::json::ConvertTimelineToJSON(list, desktop_id);
+
+        Json::Value root;
+        Json::Reader reader;
+        ASSERT_TRUE(reader.parse(json, root));
+        ASSERT_EQ(std::size_t(1), root.size());
+
+        const Json::Value v = root[0];
+        ASSERT_EQ("true", v["idle"].asString());
+        ASSERT_EQ("timeline", v["created_with"].asString());
+        ASSERT_EQ(desktop_id, v["desktop_id"].asString());
+        ASSERT_EQ(event.start_time, v["start_time"].asInt());
+        ASSERT_EQ(event.end_time, v["end_time"].asInt());
+    }
+
+    event.idle = false;
+
+    {
+        std::vector<TimelineEvent> list;
+        list.push_back(event);
+
+        std::string json = toggl::json::ConvertTimelineToJSON(list, desktop_id);
+
+        Json::Value root;
+        Json::Reader reader;
+        ASSERT_TRUE(reader.parse(json, root));
+        ASSERT_EQ(std::size_t(1), root.size());
+
+        const Json::Value v = root[0];
+        ASSERT_EQ("timeline", v["created_with"].asString());
+        ASSERT_EQ(desktop_id, v["desktop_id"].asString());
+        ASSERT_EQ(event.start_time, v["start_time"].asInt());
+        ASSERT_EQ(event.end_time, v["end_time"].asInt());
+        ASSERT_EQ(event.filename, v["filename"].asString());
+        ASSERT_EQ(event.title, v["title"].asString());
+    }
 }
 
 }  // namespace toggl

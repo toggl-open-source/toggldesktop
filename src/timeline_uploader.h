@@ -41,10 +41,6 @@ class TimelineUploader {
 
     error upload(TimelineBatch *batch);
 
-    static std::string convert_timeline_to_json(
-        const std::vector<TimelineEvent> &timeline_events,
-        const std::string &desktop_id);
-
     // How many seconds to wait before send next batch of timeline
     // events to backend.
     unsigned int current_upload_interval_seconds_;

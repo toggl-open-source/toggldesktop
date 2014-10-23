@@ -5,6 +5,8 @@
 #include <sstream>
 #include <cstring>
 
+#include "./formatter.h"
+
 #include "Poco/NumberParser.h"
 
 namespace toggl {
@@ -178,6 +180,38 @@ std::string UpdateJSON(
     json_free(jc);
     json_delete(c);
     return json;
+}
+
+std::string ConvertTimelineToJSON(
+    const std::vector<TimelineEvent> &timeline_events,
+    const std::string &desktop_id) {
+
+    Json::Value root;
+
+    for (std::vector<TimelineEvent>::const_iterator i = timeline_events.begin();
+            i != timeline_events.end();
+            ++i) {
+        const TimelineEvent &event = *i;
+        // initialize new event node
+        Json::Value n;
+        // add fields to event node
+        if (event.idle) {
+            n["idle"] = true;
+        } else {
+            n["filename"] = event.filename;
+            n["title"] = event.title;
+        }
+        n["start_time"] = Json::Int64(event.start_time);
+        n["end_time"] = Json::Int64(event.end_time);
+        n["desktop_id"] = desktop_id;
+        n["created_with"] = "timeline";
+
+        // Push event node to array
+        root.append(n);
+    }
+
+    Json::FastWriter writer;
+    return writer.write(root);
 }
 
 }   // namespace json

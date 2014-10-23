@@ -21,6 +21,7 @@
 #include "./time_entry.h"
 #include "./tag.h"
 #include "./batch_update_result.h"
+#include "./timeline_event.h"
 
 namespace toggl {
 
@@ -43,6 +44,10 @@ bool IsDeletedAtServer(JSONNODE * const);
 error LoginToken(const std::string json_data_string, std::string *result);
 
 bool IsValid(const std::string json);
+
+std::string ConvertTimelineToJSON(
+    const std::vector<TimelineEvent> &timeline_events,
+    const std::string &desktop_id);
 
 }  // namespace json
 
