@@ -46,7 +46,9 @@
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6qy-lU-tSK" customClass="NSTextFieldClickable">
                     <rect key="frame" x="15" y="60" width="122" height="100"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="250" id="XeO-lf-n0a"/>
+                    </constraints>
                     <textFieldCell key="cell" enabled="NO" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="Welcome back! Your previous entries are available in the web under reports" id="kLq-fS-jvh">
                         <font key="font" metaFont="system" size="15"/>
                         <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -131,11 +133,9 @@
                 <constraint firstItem="OXo-Tz-Vbz" firstAttribute="top" secondItem="3" secondAttribute="top" constant="-1" id="cFn-Dr-igO"/>
                 <constraint firstAttribute="trailing" secondItem="OXo-Tz-Vbz" secondAttribute="trailing" constant="-1" id="dob-uI-NdT"/>
                 <constraint firstItem="fu8-w4-kYq" firstAttribute="top" secondItem="OXo-Tz-Vbz" secondAttribute="bottom" id="ihN-op-Ey5"/>
-                <constraint firstItem="6qy-lU-tSK" firstAttribute="leading" secondItem="OXo-Tz-Vbz" secondAttribute="leading" id="l7s-yz-SgC"/>
                 <constraint firstAttribute="centerX" secondItem="6qy-lU-tSK" secondAttribute="centerX" id="oe5-9e-iNd"/>
                 <constraint firstAttribute="bottom" secondItem="fu8-w4-kYq" secondAttribute="bottom" id="tZR-YL-cvO"/>
                 <constraint firstItem="OXo-Tz-Vbz" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="-1" id="twv-Me-Ne4"/>
-                <constraint firstItem="6qy-lU-tSK" firstAttribute="trailing" secondItem="OXo-Tz-Vbz" secondAttribute="trailing" id="vRh-ZK-AKg"/>
             </constraints>
         </customView>
     </objects>
