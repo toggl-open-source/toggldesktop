@@ -2,6 +2,8 @@
 
 #include "gtest/gtest.h"
 
+#include <iostream>  // NOLINT
+
 #include "./../user.h"
 #include "./../workspace.h"
 #include "./../client.h"
@@ -1063,15 +1065,14 @@ TEST(JSON, IsValid) {
 }
 
 TEST(JSON, ConvertTimelineToJSON) {
+    const std::string desktop_id("12345");
+
     TimelineEvent event;
     event.start_time = time(0) - 10;
     event.end_time = time(0);
     event.filename = "Is this the real life?";
     event.title = "Is this just fantasy?";
     event.idle = true;
-
-    std::string desktop_id("12345");
-
     {
         std::vector<TimelineEvent> list;
         list.push_back(event);
@@ -1092,8 +1093,8 @@ TEST(JSON, ConvertTimelineToJSON) {
     }
 
     event.idle = false;
-
     {
+
         std::vector<TimelineEvent> list;
         list.push_back(event);
 
@@ -1110,6 +1111,24 @@ TEST(JSON, ConvertTimelineToJSON) {
         ASSERT_EQ(event.start_time, v["start_time"].asInt());
         ASSERT_EQ(event.end_time, v["end_time"].asInt());
         ASSERT_EQ(event.filename, v["filename"].asString());
+        ASSERT_EQ(event.title, v["title"].asString());
+    }
+
+    event.title = "Õhtu jõuab, päev veereb {\"\b\t";
+    {
+        std::vector<TimelineEvent> list;
+        list.push_back(event);
+
+        std::string json = toggl::json::ConvertTimelineToJSON(list, desktop_id);
+
+        std::cout << json << std::endl;
+
+        Json::Value root;
+        Json::Reader reader;
+        ASSERT_TRUE(reader.parse(json, root));
+        ASSERT_EQ(std::size_t(1), root.size());
+
+        const Json::Value v = root[0];
         ASSERT_EQ(event.title, v["title"].asString());
     }
 }
