@@ -181,7 +181,7 @@ endif
 
 ifeq ($(uname), Darwin)
 ui:
-	xcodebuild -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj && \
+	xcodebuild -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj -sdk macosx10.9 && \
 	!(otool -L $(executable) | grep "Users" && echo "Executable should not contain hardcoded paths!") && \
 	src/ui/osx/TogglDesktop/fix_dylib_paths.sh
 endif
