@@ -12,6 +12,7 @@
 #include "./../database.h"
 #include "./test_data.h"
 #include "./../formatter.h"
+#include "./../json.h"
 
 #include "Poco/FileStream.h"
 #include "Poco/File.h"

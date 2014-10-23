@@ -8,6 +8,7 @@ timestamp=$(shell date "+%Y-%m-%d-%H-%M-%S")
 pocodir=third_party/poco
 openssldir=third_party/openssl
 jsondir=third_party/libjson
+jsoncppdir=third_party/jsoncpp/dist
 
 GTEST_ROOT=third_party/googletest-read-only
 
@@ -60,6 +61,7 @@ cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter \
 	-I$(pocodir)/Net/include \
 	-I$(pocodir)/NetSSL_OpenSSL/include \
 	-I$(jsondir) \
+	-I$(jsoncppdir) \
 	-DNDEBUG
 endif
 
@@ -77,6 +79,7 @@ cflags=-g -DNDEBUG -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
 	-I$(pocodir)/Net/include \
 	-I$(pocodir)/NetSSL_OpenSSL/include \
 	-I$(jsondir) \
+	-I$(jsoncppdir) \
 	-DNDEBUG
 endif
 

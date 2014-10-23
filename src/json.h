@@ -11,6 +11,8 @@
 
 #include "libjson.h" // NOLINT
 
+#include <json/json.h>
+
 #include "./workspace.h"
 #include "./client.h"
 #include "./project.h"

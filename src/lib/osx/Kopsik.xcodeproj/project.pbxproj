@@ -552,6 +552,7 @@
 					../../../third_party/libjson,
 					../../../third_party/poco/NetSSL_OpenSSL/include/,
 					../../../third_party/poco/Crypto/include/,
+					../../../third_party/jsoncpp/dist,
 				);
 				INSTALL_PATH = "@executable_path/../../Contents/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -581,6 +582,7 @@
 					../../../third_party/libjson,
 					../../../third_party/poco/NetSSL_OpenSSL/include/,
 					../../../third_party/poco/Crypto/include/,
+					../../../third_party/jsoncpp/dist,
 				);
 				INSTALL_PATH = "@executable_path/../../Contents/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
