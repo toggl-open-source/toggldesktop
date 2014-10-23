@@ -383,6 +383,9 @@ _Bool GUI::isUserError(const error err) const {
     if (value.find("Invalid e-mail or password") != std::string::npos) {
         return true;
     }
+    if (value.find("Maximum length for description") != std::string::npos) {
+        return true;
+    }
     return false;
 }
 
