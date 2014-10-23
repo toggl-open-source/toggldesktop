@@ -11,7 +11,6 @@
 #include "./../tag.h"
 #include "./../database.h"
 #include "./test_data.h"
-#include "./../json.h"
 #include "./../formatter.h"
 
 #include "Poco/FileStream.h"
