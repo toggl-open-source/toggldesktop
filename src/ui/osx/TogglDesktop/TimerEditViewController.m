@@ -64,13 +64,23 @@ extern void *ctx;
 	self.autocompleteDataSource.combobox = self.descriptionComboBox;
 
 	[self.autocompleteDataSource setFilter:@""];
+	NSFont *descriptionFont = [NSFont fontWithName:@"Lucida Grande" size:13.0];
+	NSFont *durationFont = [NSFont fontWithName:@"Lucida Grande" size:16.0];
+	NSColor *color = [ConvertHexColor hexCodeToNSColor:@"#d0d0d0"];
+	NSDictionary *descriptionDictionary = @{
+		NSFontAttributeName : descriptionFont,
+		NSForegroundColorAttributeName : color
+	};
+	NSDictionary *durationDictionary = @{
+		NSFontAttributeName : durationFont,
+		NSForegroundColorAttributeName : color
+	};
 
-	NSDictionary *lightDict = [NSDictionary dictionaryWithObject:[ConvertHexColor hexCodeToNSColor:@"#d0d0d0"]
-														  forKey:NSForegroundColorAttributeName];
 	NSAttributedString *descriptionLightString = [[NSAttributedString alloc] initWithString:@"What are you doing?"
-																				 attributes:lightDict];
+																				 attributes:descriptionDictionary];
+
 	NSAttributedString *durationLightString = [[NSAttributedString alloc] initWithString:@"00:00:00"
-																			  attributes:lightDict];
+																			  attributes:durationDictionary];
 
 	[[self.durationTextField cell] setPlaceholderAttributedString:durationLightString];
 	[[self.descriptionLabel cell] setPlaceholderAttributedString:descriptionLightString];
