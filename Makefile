@@ -154,16 +154,13 @@ fmt: fmt_lib fmt_ui
 
 app: lib ui
 
-$(jsoncppdir):
-	cd third_party/jsoncpp && python amalgamate.py
-
 ifeq ($(uname), Darwin)
-lib: $(jsoncppdir)
+lib:
 	xcodebuild -project src/lib/osx/Kopsik.xcodeproj && \
 	!(otool -L ./src/ui/osx/TogglDesktop/build/Release/TogglDesktop.app/Contents/Frameworks/*.dylib | grep "Users" && echo "Shared library should not contain hardcoded paths!")
 endif
 ifeq ($(uname), Linux)
-lib: $(jsoncppdir)
+lib:
 	cd src/lib/linux/TogglDesktopLibrary && $(QMAKE) && make && \
 	cd ../../../../ && \
 	cp $(pocodir)/lib/Linux/$(architecture)/libPocoCrypto.so.16 src/lib/linux/TogglDesktopLibrary/build/release
@@ -239,7 +236,7 @@ fmt_lib: third_party/google-astyle/build/google-astyle
 fmt_ui:
 	./third_party/Xcode-formatter/CodeFormatter/scripts/formatAllSources.sh src/ui/osx/
 
-build/jsoncpp.o: $(jsoncppdir) $(jsoncppdir)/jsoncpp.cpp
+build/jsoncpp.o: $(jsoncppdir)/jsoncpp.cpp
 	$(cxx) $(cflags) -c $(jsoncppdir)/jsoncpp.cpp -o build/jsoncpp.o
 
 build/proxy.o: src/proxy.cc
