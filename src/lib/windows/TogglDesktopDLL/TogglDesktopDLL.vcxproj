@@ -127,6 +127,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\third_party\jsoncpp\dist\jsoncpp.cpp" />
     <ClCompile Include="..\..\..\autocomplete_item.cc" />
     <ClCompile Include="..\..\..\base_model.cc" />
     <ClCompile Include="..\..\..\batch_update_result.cc" />
