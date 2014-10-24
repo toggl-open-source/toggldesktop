@@ -29,7 +29,7 @@ SOURCES += \
     ../../../gui.cc \
     ../../../https_client.cc \
     ../../../json.cc \
-    $$PWD/../../../../third_party/jsoncpp/dist/json.cpp \
+    $$PWD/../../../../third_party/jsoncpp/dist/jsoncpp.cpp \
     ../../../toggl_api.cc \
     ../../../toggl_api_private.cc \
     ../../../model_change.cc \
