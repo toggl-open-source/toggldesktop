@@ -503,7 +503,10 @@ _Bool Context::LoadUpdateFromJSONString(const std::string json) {
         return false;
     }
 
-    user_->LoadUserUpdateFromJSONString(json);
+    error err = user_->LoadUserUpdateFromJSONString(json);
+    if (err != noError) {
+        return displayError(err);
+    }
 
     return displayError(save());
 }
@@ -721,27 +724,16 @@ void Context::executeUpdateCheck() {
         return;
     }
 
-    if (!toggl::json::IsValid(response_body)) {
-        displayError(err);
+    Json::Value root;
+    Json::Reader reader;
+    bool ok = reader.parse(response_body, root);
+    if (!ok) {
+        displayError(error("Error parsing update check response body"));
         return;
     }
 
-    std::string url("");
-    std::string version("");
-
-    JSONNODE *root = json_parse(response_body.c_str());
-    JSONNODE_ITERATOR i = json_begin(root);
-    JSONNODE_ITERATOR e = json_end(root);
-    while (i != e) {
-        json_char *node_name = json_name(*i);
-        if (strcmp(node_name, "version") == 0) {
-            version = std::string(json_as_string(*i));
-        } else if (strcmp(node_name, "url") == 0) {
-            url = std::string(json_as_string(*i));
-        }
-        ++i;
-    }
-    json_delete(root);
+    std::string url = root["url"].asString();
+    std::string version = root["version"].asString();
 
     UI()->DisplayUpdate(false, update_channel, false, true, url, version);
 }
@@ -1072,7 +1064,7 @@ _Bool Context::Login(
     }
 
     Poco::UInt64 userID(0);
-    err = toggl::json::UserID(user_data_json, &userID);
+    err = User::UserID(user_data_json, &userID);
     if (err != noError) {
         return displayError(err);
     }
@@ -1088,7 +1080,10 @@ _Bool Context::Login(
         return displayError(err);
     }
 
-    user->LoadUserAndRelatedDataFromJSONString(user_data_json);
+    err = user->LoadUserAndRelatedDataFromJSONString(user_data_json);
+    if (err != noError) {
+        return displayError(err);
+    }
 
     err = db()->SetCurrentAPIToken(user->APIToken());
     if (err != noError) {
@@ -1937,7 +1932,7 @@ _Bool Context::OpenReportsInBrowser() {
     }
 
     std::string login_token("");
-    err = toggl::json::LoginToken(response_body, &login_token);
+    err = User::LoginToken(response_body, &login_token);
     if (err != noError) {
         return displayError(err);
     }

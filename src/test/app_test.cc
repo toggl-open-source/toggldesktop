@@ -97,7 +97,8 @@ TEST(AppTest, SaveAndLoadCurrentAPIToken) {
 
 TEST(AppTest, UpdatesTimeEntryFromJSON) {
     User user;
-    user.LoadUserAndRelatedDataFromJSONString(loadTestData());
+    ASSERT_EQ(noError,
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
 
     TimeEntry *te = user.related.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
@@ -111,14 +112,16 @@ TEST(AppTest, AllowsSameEmail) {
     testing::Database db;
 
     User user;
-    user.LoadUserAndRelatedDataFromJSONString(loadTestData());
+    ASSERT_EQ(noError,
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
 
     std::vector<ModelChange> changes;
     ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
 
     User user2;
     std::string json = loadTestDataFile("../testdata/same_email.json");
-    user2.LoadUserAndRelatedDataFromJSONString(json);
+    ASSERT_EQ(noError,
+              user2.LoadUserAndRelatedDataFromJSONString(json));
 
     ASSERT_EQ(noError, db.instance()->SaveUser(&user2, true, &changes));
 
@@ -145,7 +148,8 @@ TEST(AppTest, UpdatesTimeEntryFromFullUserJSON) {
     std::string json = loadTestData();
 
     User user;
-    user.LoadUserAndRelatedDataFromJSONString(loadTestData());
+    ASSERT_EQ(noError,
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
 
     TimeEntry *te = user.related.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
@@ -156,7 +160,8 @@ TEST(AppTest, UpdatesTimeEntryFromFullUserJSON) {
                         std::string("Important things").length(),
                         "Even more important!");
 
-    user.LoadUserAndRelatedDataFromJSONString(json);
+    ASSERT_EQ(noError,
+              user.LoadUserAndRelatedDataFromJSONString(json));
     te = user.related.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
     ASSERT_EQ("Even more important!", te->Description());
@@ -166,7 +171,8 @@ TEST(AppTest, SavesAndLoadsUserFields) {
     testing::Database db;
 
     User user;
-    user.LoadUserAndRelatedDataFromJSONString(loadTestData());
+    ASSERT_EQ(noError,
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
 
     ASSERT_TRUE(user.StoreStartAndStopTime());
     // Change fields
@@ -194,7 +200,8 @@ TEST(AppTest, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
     testing::Database db;
 
     User user;
-    user.LoadUserAndRelatedDataFromJSONString(loadTestData());
+    ASSERT_EQ(noError,
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
 
     Poco::UInt64 n;
     ASSERT_EQ(noError, db.instance()->UInt("select count(1) from users", &n));
@@ -242,7 +249,8 @@ TEST(AppTest,
     std::string json = loadTestData();
 
     User user1;
-    user1.LoadUserAndRelatedDataFromJSONString(json);
+    ASSERT_EQ(noError,
+              user1.LoadUserAndRelatedDataFromJSONString(json));
 
     std::vector<ModelChange> changes;
     ASSERT_EQ(noError, db.instance()->SaveUser(&user1, true, &changes));
@@ -291,7 +299,8 @@ TEST(AppTest,
     ASSERT_EQ(user1.related.TimeEntries.size(),
               user2.related.TimeEntries.size());
 
-    user2.LoadUserAndRelatedDataFromJSONString(json);
+    ASSERT_EQ(noError,
+              user2.LoadUserAndRelatedDataFromJSONString(json));
 
     ASSERT_EQ(noError, db.instance()->SaveUser(&user2, true, &changes));
 
@@ -325,7 +334,8 @@ TEST(AppTest, TestStartTimeEntryWithDuration) {
     testing::Database db;
 
     User user;
-    user.LoadUserAndRelatedDataFromJSONString(loadTestData());
+    ASSERT_EQ(noError,
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
 
     size_t count = user.related.TimeEntries.size();
 
@@ -342,7 +352,8 @@ TEST(AppTest, TestStartTimeEntryWithoutDuration) {
     testing::Database db;
 
     User user;
-    user.LoadUserAndRelatedDataFromJSONString(loadTestData());
+    ASSERT_EQ(noError,
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
 
     user.Start("Old work", "", 0, 0);
 
@@ -355,7 +366,8 @@ TEST(AppTest, TestDeletionSteps) {
     testing::Database db;
 
     User user;
-    user.LoadUserAndRelatedDataFromJSONString(loadTestData());
+    ASSERT_EQ(noError,
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
 
     // first, mark time entry as deleted
     user.Start("My new time entry", "", 0, 0);
@@ -388,7 +400,8 @@ TEST(AppTest, TestDeletionSteps) {
 
 TEST(AppTest, SavesModels) {
     User user;
-    user.LoadUserAndRelatedDataFromJSONString(loadTestData());
+    ASSERT_EQ(noError,
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
 
     testing::Database db;
 
@@ -403,7 +416,8 @@ TEST(AppTest, AssignsGUID) {
     ASSERT_FALSE(json.empty());
 
     User user;
-    user.LoadUserAndRelatedDataFromJSONString(json);
+    ASSERT_EQ(noError,
+              user.LoadUserAndRelatedDataFromJSONString(json));
 
     ASSERT_EQ(uint(5), user.related.TimeEntries.size());
     TimeEntry *te = user.related.TimeEntryByID(89837445);
@@ -424,7 +438,8 @@ TEST(AppTest, ParsesAndSavesData) {
     ASSERT_FALSE(json.empty());
 
     User user;
-    user.LoadUserAndRelatedDataFromJSONString(json);
+    ASSERT_EQ(noError,
+              user.LoadUserAndRelatedDataFromJSONString(json));
     ASSERT_EQ(Poco::UInt64(1379068550), user.Since());
     ASSERT_EQ(Poco::UInt64(10471231), user.ID());
     ASSERT_EQ(Poco::UInt64(123456788), user.DefaultWID());
@@ -851,7 +866,8 @@ TEST(AppTest, Continue) {
     testing::Database db;
 
     User user;
-    user.LoadUserAndRelatedDataFromJSONString(loadTestData());
+    ASSERT_EQ(noError,
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
 
     // User wants to continue time entries,
     // not create new ones
@@ -884,7 +900,8 @@ TEST(AppTest, SetDurationOnRunningTimeEntryWithDurOnlySetting) {
     std::string json = loadTestDataFile("../testdata/user_with_duronly.json");
 
     User user;
-    user.LoadUserAndRelatedDataFromJSONString(json);
+    ASSERT_EQ(noError,
+              user.LoadUserAndRelatedDataFromJSONString(json));
 
     TimeEntry *te = user.related.TimeEntryByID(164891639);
     ASSERT_TRUE(te);
@@ -1048,20 +1065,15 @@ TEST(FormatterTest, JoinTaskNameReverse) {
 TEST(JSON, UserID) {
     Poco::UInt64 user_id(0);
     ASSERT_EQ(noError,
-              toggl::json::UserID("{\"data\": {\"id\": 12345}}", &user_id));
+              User::UserID("{\"data\": {\"id\": 12345}}", &user_id));
     ASSERT_EQ(Poco::UInt64(12345), user_id);
 }
 
 TEST(JSON, LoginToken) {
     std::string token("");
     ASSERT_EQ(noError,
-              toggl::json::LoginToken("{\"login_token\": \"foobar\"}", &token));
+              User::LoginToken("{\"login_token\": \"foobar\"}", &token));
     ASSERT_EQ("foobar", token);
-}
-
-TEST(JSON, IsValid) {
-    ASSERT_TRUE(toggl::json::IsValid("{\"a\": \"b\"}"));
-    ASSERT_FALSE(toggl::json::IsValid("{\"a\": \"b\""));
 }
 
 TEST(JSON, ConvertTimelineToJSON) {
@@ -1094,7 +1106,6 @@ TEST(JSON, ConvertTimelineToJSON) {
 
     event.idle = false;
     {
-
         std::vector<TimelineEvent> list;
         list.push_back(event);
 
@@ -1121,8 +1132,6 @@ TEST(JSON, ConvertTimelineToJSON) {
 
         std::string json = toggl::json::ConvertTimelineToJSON(list, desktop_id);
 
-        std::cout << json << std::endl;
-
         Json::Value root;
         Json::Reader reader;
         ASSERT_TRUE(reader.parse(json, root));
@@ -1131,6 +1140,105 @@ TEST(JSON, ConvertTimelineToJSON) {
         const Json::Value v = root[0];
         ASSERT_EQ(event.title, v["title"].asString());
     }
+}
+
+TEST(JSON, Tag) {
+    std::string json("{\"id\":36253522,\"wid\":123456788,\"name\":\"create new\",\"at\":\"2013-10-15T08:51:46+00:00\",\"guid\":\"041390ba-ed9c-b477-b949-1a4ebb60a9ce\"}");  // NOLINT
+
+    Tag t;
+    t.LoadFromJSONString(json);
+    ASSERT_EQ(Poco::UInt64(36253522), t.ID());
+    ASSERT_EQ(Poco::UInt64(123456788), t.WID());
+    ASSERT_EQ("create new", t.Name());
+    ASSERT_EQ("041390ba-ed9c-b477-b949-1a4ebb60a9ce", t.GUID());
+}
+
+TEST(JSON, Workspace) {
+    std::string json("{\"id\":123456722,\"name\":\"A deleted workspace\",\"premium\":false,\"admin\":true,\"default_hourly_rate\":0,\"default_currency\":\"USD\",\"only_admins_may_create_projects\":false,\"only_admins_see_billable_rates\":false,\"rounding\":1,\"rounding_minutes\":0,\"at\":\"2013-07-02T13:45:36+00:00\",\"server_deleted_at\":\"2013-08-22T09:05:31+00:00\"}");  // NOLINT
+
+    Workspace w;
+    w.LoadFromJSONString(json);
+    ASSERT_EQ(Poco::UInt64(123456722), w.ID());
+    ASSERT_EQ("A deleted workspace", w.Name());
+    ASSERT_FALSE(w.Premium());
+    ASSERT_TRUE(w.Admin());
+    ASSERT_FALSE(w.OnlyAdminsMayCreateProjects());
+}
+
+TEST(JSON, Task) {
+    std::string json("{\"id\":1894712,\"name\":\"A deleted task\",\"wid\":123456789,\"pid\":2598305,\"active\":true,\"at\":\"2013-06-05T07:58:41+00:00\",\"estimated_seconds\":0,\"server_deleted_at\":\"2013-08-22T09:05:31+00:00\"}");  // NOLINT
+
+    Task t;
+    t.LoadFromJSONString(json);
+    ASSERT_EQ(Poco::UInt64(1894712), t.ID());
+    ASSERT_EQ("A deleted task", t.Name());
+    ASSERT_EQ(Poco::UInt64(123456789), t.WID());
+    ASSERT_EQ(Poco::UInt64(2598305), t.PID());
+}
+
+TEST(JSON, Project) {
+    std::string json("{\"id\":2598323,\"guid\":\"2f0b8f11-f898-d992-3e1a-6bc261fc41ef\",\"wid\":123456789,\"name\":\"A deleted project\",\"billable\":true,\"is_private\":false,\"active\":false,\"template\":false,\"at\":\"2013-05-13T10:19:24+00:00\",\"color\":\"21\",\"auto_estimates\":true,\"server_deleted_at\":\"2013-08-22T09:05:31+00:00\"}");  // NOLINT
+
+    Project p;
+    p.LoadFromJSONString(json);
+    ASSERT_EQ(Poco::UInt64(2598323), p.ID());
+    ASSERT_EQ("A deleted project", p.Name());
+    ASSERT_EQ(Poco::UInt64(123456789), p.WID());
+    ASSERT_EQ("2f0b8f11-f898-d992-3e1a-6bc261fc41ef", p.GUID());
+
+    Project p2;
+    p2.LoadFromJSONString(p.SaveToJSONString());
+    ASSERT_EQ(p.ID(), p2.ID());
+    ASSERT_EQ(p.Name(), p2.Name());
+    ASSERT_EQ(p.WID(), p2.WID());
+    ASSERT_EQ(p.GUID(), p2.GUID());
+    ASSERT_EQ(p.CID(), p2.CID());
+    ASSERT_EQ(p.Billable(), p2.Billable());
+    ASSERT_EQ(p.IsPrivate(), p2.IsPrivate());
+    ASSERT_EQ(p.UIModifiedAt(), p2.UIModifiedAt());
+}
+
+TEST(JSON, Client) {
+    std::string json("{\"id\":878318,\"guid\":\"59b464cd-0f8e-e601-ff44-f135225a6738\",\"wid\":123456789,\"name\":\"Big Client\",\"at\":\"2013-03-27T13:17:18+00:00\"}");  // NOLINT
+
+    Client c;
+    c.LoadFromJSONString(json);
+    ASSERT_EQ(Poco::UInt64(878318), c.ID());
+    ASSERT_EQ("Big Client", c.Name());
+    ASSERT_EQ(Poco::UInt64(123456789), c.WID());
+    ASSERT_EQ("59b464cd-0f8e-e601-ff44-f135225a6738", c.GUID());
+}
+
+TEST(JSON, TimeEntry) {
+    std::string json("{\"id\":89818612,\"guid\":\"07fba193-91c4-0ec8-2345-820df0548123\",\"wid\":123456789,\"pid\":2567324,\"billable\":true,\"start\":\"2013-09-05T06:33:50+00:00\",\"stop\":\"2013-09-05T08:19:46+00:00\",\"duration\":6356,\"description\":\"A deleted time entry\",\"tags\":[\"ahaa\"],\"duronly\":false,\"at\":\"2013-09-05T08:19:45+00:00\",\"server_deleted_at\":\"2013-08-22T09:05:31+00:00\"}");  // NOLINT
+
+    TimeEntry t;
+    t.LoadFromJSONString(json);
+    ASSERT_EQ(Poco::UInt64(89818612), t.ID());
+    ASSERT_EQ(Poco::UInt64(2567324), t.PID());
+    ASSERT_EQ(Poco::UInt64(123456789), t.WID());
+    ASSERT_EQ("07fba193-91c4-0ec8-2345-820df0548123", t.GUID());
+    ASSERT_TRUE(t.Billable());
+    ASSERT_EQ(Poco::UInt64(1378362830000 / 1000), t.Start());
+    ASSERT_EQ(Poco::UInt64(1378369186000 / 1000), t.Stop());
+    ASSERT_EQ(Poco::Int64(6356), t.DurationInSeconds());
+    ASSERT_EQ("A deleted time entry", t.Description());
+    ASSERT_EQ("ahaa", t.Tags());
+    ASSERT_FALSE(t.DurOnly());
+
+    TimeEntry t2;
+    t2.LoadFromJSONString(t.SaveToJSONString());
+    ASSERT_EQ(t.ID(), t2.ID());
+    ASSERT_EQ(t.PID(), t2.PID());
+    ASSERT_EQ(t.WID(), t2.WID());
+    ASSERT_EQ(t.GUID(), t2.GUID());
+    ASSERT_EQ(t.Billable(), t2.Billable());
+    ASSERT_EQ(t.Start(), t2.Start());
+    ASSERT_EQ(t.Stop(), t2.Stop());
+    ASSERT_EQ(t.DurationInSeconds(), t2.DurationInSeconds());
+    ASSERT_EQ(t.Description(), t2.Description());
+    ASSERT_EQ(t.Tags(), t2.Tags());
+    ASSERT_EQ(t.DurOnly(), t2.DurOnly());
 }
 
 }  // namespace toggl

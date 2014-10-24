@@ -37,32 +37,12 @@ bool BatchUpdateResult::ResourceIsGone() const {
     return ("DELETE" == Method || 404 == StatusCode);
 }
 
-void BatchUpdateResult::LoadFromJSONNode(JSONNODE * const n) {
-    poco_check_ptr(n);
-
-    StatusCode = 0;
-    Body = "";
-    GUID = "";
-    ContentType = "";
-    Method = "";
-
-    JSONNODE_ITERATOR i = json_begin(n);
-    JSONNODE_ITERATOR e = json_end(n);
-    while (i != e) {
-        json_char *node_name = json_name(*i);
-        if (strcmp(node_name, "status") == 0) {
-            StatusCode = json_as_int(*i);
-        } else if (strcmp(node_name, "body") == 0) {
-            Body = std::string(json_as_string(*i));
-        } else if (strcmp(node_name, "guid") == 0) {
-            GUID = std::string(json_as_string(*i));
-        } else if (strcmp(node_name, "content_type") == 0) {
-            ContentType = std::string(json_as_string(*i));
-        } else if (strcmp(node_name, "method") == 0) {
-            Method = std::string(json_as_string(*i));
-        }
-        ++i;
-    }
+void BatchUpdateResult::LoadFromJSON(Json::Value n) {
+    StatusCode = n["status"].asInt();
+    Body = n["body"].asString();
+    GUID = n["guid"].asString();
+    ContentType = n["content_type"].asString();
+    Method = n["method"].asString();
 }
 
 // Iterate through response array, parse response bodies.
@@ -100,7 +80,7 @@ void BatchUpdateResult::ProcessResponseArray(
     }
 }
 
-void BatchUpdateResult::ParseResponseArray(
+error BatchUpdateResult::ParseResponseArray(
     const std::string response_body,
     std::vector<BatchUpdateResult> *responses) {
 
@@ -112,21 +92,24 @@ void BatchUpdateResult::ParseResponseArray(
     // Must investigate further.
     if (response_body.empty()) {
         logger.warning("Response is empty!");
-        return;
+        return noError;
     }
 
     logger.debug(response_body);
 
-    JSONNODE *response_array = json_parse(response_body.c_str());
-    JSONNODE_ITERATOR i = json_begin(response_array);
-    JSONNODE_ITERATOR e = json_end(response_array);
-    while (i != e) {
-        BatchUpdateResult result;
-        result.LoadFromJSONNode(*i);
-        responses->push_back(result);
-        ++i;
+    Json::Value root;
+    Json::Reader reader;
+    if (!reader.parse(response_body, root)) {
+        return error("error parsing batch update response");
     }
-    json_delete(response_array);
+
+    for (unsigned int i = 0; i < root.size(); i++) {
+        BatchUpdateResult result;
+        result.LoadFromJSON(root[i]);
+        responses->push_back(result);
+    }
+
+    return noError;
 }
 
 }   // namespace toggl

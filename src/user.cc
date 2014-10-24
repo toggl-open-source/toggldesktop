@@ -438,7 +438,10 @@ error User::PushChanges(HTTPSClient *https_client) {
         }
 
         std::vector<BatchUpdateResult> results;
-        BatchUpdateResult::ParseResponseArray(response_body, &results);
+        err = BatchUpdateResult::ParseResponseArray(response_body, &results);
+        if (err != noError) {
+            return err;
+        }
 
         std::vector<error> errors;
 
@@ -584,21 +587,20 @@ void User::RemoveTaskFromRelatedModels(const Poco::UInt64 tid) {
     }
 }
 
-void User::loadUserTagFromJSONNode(
-    JSONNODE * const data,
+void User::loadUserTagFromJSON(
+    Json::Value data,
     std::set<Poco::UInt64> *alive) {
 
-    poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = toggl::json::ID(data);
+    Poco::UInt64 id = data["id"].asUInt64();
     Tag *model = related.TagByID(id);
 
     if (!model) {
-        model = related.TagByGUID(toggl::json::GUID(data));
+        model = related.TagByGUID(data["guid"].asString());
     }
 
-    if (toggl::json::IsDeletedAtServer(data)) {
+    if (!data["server_deleted_at"].asString().empty()) {
         if (model) {
             model->MarkAsDeletedOnServer();
         }
@@ -613,56 +615,45 @@ void User::loadUserTagFromJSONNode(
         alive->insert(id);
     }
     model->SetUID(ID());
-    model->LoadFromJSONNode(data);
+    model->LoadFromJSON(data);
 }
 
-void User::loadUserTagsFromJSONNode(
-    JSONNODE * const list) {
-
-    poco_check_ptr(list);
+void User::loadUserTagsFromJSON(
+    Json::Value list) {
 
     std::set<Poco::UInt64> alive;
 
-    JSONNODE_ITERATOR current_node = json_begin(list);
-    JSONNODE_ITERATOR last_node = json_end(list);
-    while (current_node != last_node) {
-        loadUserTagFromJSONNode(*current_node, &alive);
-        ++current_node;
+    for (unsigned int i = 0; i < list.size(); i++) {
+        loadUserTagFromJSON(list[i], &alive);
     }
 
     deleteZombies(related.Tags, alive);
 }
 
-void User::loadUserTasksFromJSONNode(
-    JSONNODE * const list) {
-
-    poco_check_ptr(list);
+void User::loadUserTasksFromJSON(
+    Json::Value list) {
 
     std::set<Poco::UInt64> alive;
 
-    JSONNODE_ITERATOR current_node = json_begin(list);
-    JSONNODE_ITERATOR last_node = json_end(list);
-    while (current_node != last_node) {
-        loadUserTaskFromJSONNode(*current_node, &alive);
-        ++current_node;
+    for (unsigned int i = 0; i < list.size(); i++) {
+        loadUserTaskFromJSON(list[i], &alive);
     }
 
     deleteZombies(related.Tasks, alive);
 }
 
-void User::loadUserTaskFromJSONNode(
-    JSONNODE * const data,
+void User::loadUserTaskFromJSON(
+    Json::Value data,
     std::set<Poco::UInt64> *alive) {
 
-    poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = toggl::json::ID(data);
+    Poco::UInt64 id = data["id"].asUInt64();
     Task *model = related.TaskByID(id);
 
     // Tasks have no GUID
 
-    if (toggl::json::IsDeletedAtServer(data)) {
+    if (!data["server_deleted_at"].asString().empty()) {
         if (model) {
             model->MarkAsDeletedOnServer();
         }
@@ -678,45 +669,35 @@ void User::loadUserTaskFromJSONNode(
         alive->insert(id);
     }
     model->SetUID(ID());
-    model->LoadFromJSONNode(data);
+    model->LoadFromJSON(data);
 }
 
-void User::LoadUserUpdateFromJSONString(
+error User::LoadUserUpdateFromJSONString(
     const std::string json) {
 
     if (json.empty()) {
-        return;
+        return noError;
     }
 
-    JSONNODE *root = json_parse(json.c_str());
-    loadUserUpdateFromJSONNode(root);
-    json_delete(root);
+    Json::Value root;
+    Json::Reader reader;
+    if (!reader.parse(json, root)) {
+        return error("Failed to LoadUserUpdateFromJSONString");
+    }
+
+    loadUserUpdateFromJSON(root);
+
+    return noError;
 }
 
-void User::loadUserUpdateFromJSONNode(
-    JSONNODE * const node) {
+void User::loadUserUpdateFromJSON(
+    Json::Value node) {
 
-    poco_check_ptr(node);
+    Json::Value data = node["data"];
+    std::string model = node["model"].asString();
+    std::string action = node["action"].asString();
 
-    JSONNODE *data = 0;
-    std::string model("");
-    std::string action("");
-
-    JSONNODE_ITERATOR i = json_begin(node);
-    JSONNODE_ITERATOR e = json_end(node);
-    while (i != e) {
-        json_char *node_name = json_name(*i);
-        if (strcmp(node_name, "data") == 0) {
-            data = *i;
-        } else if (strcmp(node_name, "model") == 0) {
-            model = std::string(json_as_string(*i));
-        } else if (strcmp(node_name, "action") == 0) {
-            action = std::string(json_as_string(*i));
-            Poco::toLowerInPlace(action);
-        }
-        ++i;
-    }
-    poco_check_ptr(data);
+    Poco::toLowerInPlace(action);
 
     std::stringstream ss;
     ss << "Update parsed into action=" << action
@@ -725,35 +706,34 @@ void User::loadUserUpdateFromJSONNode(
     logger.debug(ss.str());
 
     if ("workspace" == model) {
-        loadUserWorkspaceFromJSONNode(data);
+        loadUserWorkspaceFromJSON(data);
     } else if ("client" == model) {
-        loadUserClientFromJSONNode(data);
+        loadUserClientFromJSON(data);
     } else if ("project" == model) {
-        loadUserProjectFromJSONNode(data);
+        loadUserProjectFromJSON(data);
     } else if ("task" == model) {
-        loadUserTaskFromJSONNode(data);
+        loadUserTaskFromJSON(data);
     } else if ("time_entry" == model) {
-        loadUserTimeEntryFromJSONNode(data);
+        loadUserTimeEntryFromJSON(data);
     } else if ("tag" == model) {
-        loadUserTagFromJSONNode(data);
+        loadUserTagFromJSON(data);
     } else if ("user" == model) {
-        loadUserAndRelatedDataFromJSONNode(data);
+        loadUserAndRelatedDataFromJSON(data);
     }
 }
 
-void User::loadUserWorkspaceFromJSONNode(
-    JSONNODE * const data,
+void User::loadUserWorkspaceFromJSON(
+    Json::Value data,
     std::set<Poco::UInt64> *alive) {
 
-    poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = toggl::json::ID(data);
+    Poco::UInt64 id = data["id"].asUInt64();
     Workspace *model = related.WorkspaceByID(id);
 
     // Workspaces have no GUID
 
-    if (toggl::json::IsDeletedAtServer(data)) {
+    if (!data["server_deleted_at"].asString().empty()) {
         if (model) {
             model->MarkAsDeletedOnServer();
         }
@@ -768,122 +748,70 @@ void User::loadUserWorkspaceFromJSONNode(
         alive->insert(id);
     }
     model->SetUID(ID());
-    model->LoadFromJSONNode(data);
+    model->LoadFromJSON(data);
 }
 
-void User::LoadUserAndRelatedDataFromJSONString(
+error User::LoadUserAndRelatedDataFromJSONString(
     const std::string &json) {
 
     if (json.empty()) {
         Poco::Logger &logger = Poco::Logger::get("json");
         logger.warning("cannot load empty JSON");
-        return;
+        return noError;
     }
 
-    JSONNODE *root = json_parse(json.c_str());
-    JSONNODE_ITERATOR current_node = json_begin(root);
-    JSONNODE_ITERATOR last_node = json_end(root);
-    while (current_node != last_node) {
-        json_char *node_name = json_name(*current_node);
-        if (strcmp(node_name, "since") == 0) {
-            SetSince(json_as_int(*current_node));
-
-            Poco::Logger &logger = Poco::Logger::get("json");
-            std::stringstream s;
-            s << "User data as of: " << Since();
-            logger.debug(s.str());
-
-        } else if (strcmp(node_name, "data") == 0) {
-            loadUserAndRelatedDataFromJSONNode(*current_node);
-        }
-        ++current_node;
+    Json::Value root;
+    Json::Reader reader;
+    if (!reader.parse(json, root)) {
+        return error("Failed to LoadUserAndRelatedDataFromJSONString");
     }
-    json_delete(root);
+
+    SetSince(root["since"].asUInt64());
+
+    Poco::Logger &logger = Poco::Logger::get("json");
+    std::stringstream s;
+    s << "User data as of: " << Since();
+    logger.debug(s.str());
+
+    loadUserAndRelatedDataFromJSON(root["data"]);
+
+    return noError;
 }
 
-void User::loadUserAndRelatedDataFromJSONNode(
-    JSONNODE * const data) {
+void User::loadUserAndRelatedDataFromJSON(
+    Json::Value data) {
 
-    poco_check_ptr(data);
+    SetID(data["id"].asUInt64());
+    SetDefaultWID(data["default_wid"].asUInt64());
+    SetAPIToken(data["api_token"].asString());
+    SetEmail(data["email"].asString());
+    SetFullname(data["fullname"].asString());
+    SetRecordTimeline(data["record_timeline"].asBool());
+    SetStoreStartAndStopTime(data["store_start_and_stop_time"].asBool());
+    SetTimeOfDayFormat(data["timeofday_format"].asString());
 
-    Poco::UInt64 id(0);
-    Poco::UInt64 default_wid(0);
-    std::string api_token("");
-    std::string email("");
-    std::string fullname("");
-    bool record_timeline(false);
-    bool store_start_and_stop_time(false);
-    std::string timeofday_format("");
-
-    JSONNODE_ITERATOR n = json_begin(data);
-    JSONNODE_ITERATOR last_node = json_end(data);
-    while (n != last_node) {
-        json_char *node_name = json_name(*n);
-        if (strcmp(node_name, "id") == 0) {
-            id = json_as_int(*n);
-        } else if (strcmp(node_name, "default_wid") == 0) {
-            default_wid = json_as_int(*n);
-        } else if (strcmp(node_name, "api_token") == 0) {
-            api_token = std::string(json_as_string(*n));
-        } else if (strcmp(node_name, "email") == 0) {
-            email = std::string(json_as_string(*n));
-        } else if (strcmp(node_name, "fullname") == 0) {
-            fullname = std::string(json_as_string(*n));
-        } else if (strcmp(node_name, "record_timeline") == 0) {
-            record_timeline = json_as_bool(*n) != 0;
-        } else if (strcmp(node_name, "store_start_and_stop_time") == 0) {
-            store_start_and_stop_time = json_as_bool(*n) != 0;
-        } else if (strcmp(node_name, "timeofday_format") == 0) {
-            timeofday_format = std::string(json_as_string(*n));
-        }
-        ++n;
-    }
-
-    SetID(id);
-    SetDefaultWID(default_wid);
-    SetAPIToken(api_token);
-    SetEmail(email);
-    SetFullname(fullname);
-    SetRecordTimeline(record_timeline);
-    SetStoreStartAndStopTime(store_start_and_stop_time);
-    SetTimeOfDayFormat(timeofday_format);
-
-    n = json_begin(data);
-    last_node = json_end(data);
-    while (n != last_node) {
-        json_char *node_name = json_name(*n);
-        if (strcmp(node_name, "projects") == 0) {
-            loadUserProjectsFromJSONNode(*n);
-        } else if (strcmp(node_name, "tags") == 0) {
-            loadUserTagsFromJSONNode(*n);
-        } else if (strcmp(node_name, "tasks") == 0) {
-            loadUserTasksFromJSONNode(*n);
-        } else if (strcmp(node_name, "time_entries") == 0) {
-            loadUserTimeEntriesFromJSONNode(*n);
-        } else if (strcmp(node_name, "workspaces") == 0) {
-            loadUserWorkspacesFromJSONNode(*n);
-        } else if (strcmp(node_name, "clients") == 0) {
-            loadUserClientsFromJSONNode(*n);
-        }
-        ++n;
-    }
+    loadUserProjectsFromJSON(data["projects"]);
+    loadUserTagsFromJSON(data["tags"]);
+    loadUserTasksFromJSON(data["tasks"]);
+    loadUserTimeEntriesFromJSON(data["time_entries"]);
+    loadUserWorkspacesFromJSON(data["workspaces"]);
+    loadUserClientsFromJSON(data["clients"]);
 }
 
-void User::loadUserClientFromJSONNode(
-    JSONNODE * const data,
+void User::loadUserClientFromJSON(
+    Json::Value data,
     std::set<Poco::UInt64> *alive) {
 
-    poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = toggl::json::ID(data);
+    Poco::UInt64 id = data["id"].asUInt64();
     Client *model = related.ClientByID(id);
 
     if (!model) {
-        model = related.ClientByGUID(toggl::json::GUID(data));
+        model = related.ClientByGUID(data["guid"].asString());
     }
 
-    if (toggl::json::IsDeletedAtServer(data)) {
+    if (!data["server_deleted_at"].asString().empty()) {
         if (model) {
             model->MarkAsDeletedOnServer();
         }
@@ -898,41 +826,35 @@ void User::loadUserClientFromJSONNode(
         alive->insert(id);
     }
     model->SetUID(ID());
-    model->LoadFromJSONNode(data);
+    model->LoadFromJSON(data);
 }
 
-void User::loadUserClientsFromJSONNode(
-    JSONNODE * const list) {
-
-    poco_check_ptr(list);
+void User::loadUserClientsFromJSON(
+    Json::Value list) {
 
     std::set<Poco::UInt64> alive;
 
-    JSONNODE_ITERATOR current_node = json_begin(list);
-    JSONNODE_ITERATOR last_node = json_end(list);
-    while (current_node != last_node) {
-        loadUserClientFromJSONNode(*current_node, &alive);
-        ++current_node;
+    for (unsigned int i = 0; i < list.size(); i++) {
+        loadUserClientFromJSON(list[i], &alive);
     }
 
     deleteZombies(related.Clients, alive);
 }
 
-void User::loadUserProjectFromJSONNode(
-    JSONNODE * const data,
+void User::loadUserProjectFromJSON(
+    Json::Value data,
     std::set<Poco::UInt64> *alive) {
 
-    poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = toggl::json::ID(data);
+    Poco::UInt64 id = data["id"].asUInt64();
     Project *model = related.ProjectByID(id);
 
     if (!model) {
-        model = related.ProjectByGUID(toggl::json::GUID(data));
+        model = related.ProjectByGUID(data["guid"].asString());
     }
 
-    if (toggl::json::IsDeletedAtServer(data)) {
+    if (!data["server_deleted_at"].asString().empty()) {
         if (model) {
             model->MarkAsDeletedOnServer();
         }
@@ -947,41 +869,35 @@ void User::loadUserProjectFromJSONNode(
         alive->insert(id);
     }
     model->SetUID(ID());
-    model->LoadFromJSONNode(data);
+    model->LoadFromJSON(data);
 }
 
-void User::loadUserProjectsFromJSONNode(
-    JSONNODE * const list) {
-
-    poco_check_ptr(list);
+void User::loadUserProjectsFromJSON(
+    Json::Value list) {
 
     std::set<Poco::UInt64> alive;
 
-    JSONNODE_ITERATOR current_node = json_begin(list);
-    JSONNODE_ITERATOR last_node = json_end(list);
-    while (current_node != last_node) {
-        loadUserProjectFromJSONNode(*current_node, &alive);
-        ++current_node;
+    for (unsigned int i = 0; i < list.size(); i++) {
+        loadUserProjectFromJSON(list[i], &alive);
     }
 
     deleteZombies(related.Projects, alive);
 }
 
-void User::loadUserTimeEntryFromJSONNode(
-    JSONNODE * const data,
+void User::loadUserTimeEntryFromJSON(
+    Json::Value data,
     std::set<Poco::UInt64> *alive) {
 
-    poco_check_ptr(data);
     // alive can be 0, dont assert/check it
 
-    Poco::UInt64 id = toggl::json::ID(data);
+    Poco::UInt64 id = data["id"].asUInt64();
     TimeEntry *model = related.TimeEntryByID(id);
 
     if (!model) {
-        model = related.TimeEntryByGUID(toggl::json::GUID(data));
+        model = related.TimeEntryByGUID(data["guid"].asString());
     }
 
-    if (toggl::json::IsDeletedAtServer(data)) {
+    if (!data["server_deleted_at"].asString().empty()) {
         if (model) {
             model->MarkAsDeletedOnServer();
         }
@@ -996,42 +912,60 @@ void User::loadUserTimeEntryFromJSONNode(
         alive->insert(id);
     }
     model->SetUID(ID());
-    model->LoadFromJSONNode(data);
+    model->LoadFromJSON(data);
     model->EnsureGUID();
 }
 
-void User::loadUserWorkspacesFromJSONNode(
-    JSONNODE * const list) {
-
-    poco_check_ptr(list);
+void User::loadUserWorkspacesFromJSON(
+    Json::Value list) {
 
     std::set<Poco::UInt64> alive;
 
-    JSONNODE_ITERATOR current_node = json_begin(list);
-    JSONNODE_ITERATOR last_node = json_end(list);
-    while (current_node != last_node) {
-        loadUserWorkspaceFromJSONNode(*current_node, &alive);
-        ++current_node;
+    for (unsigned int i = 0; i < list.size(); i++) {
+        loadUserWorkspaceFromJSON(list[i], &alive);
     }
 
     deleteZombies(related.Workspaces, alive);
 }
 
-void User::loadUserTimeEntriesFromJSONNode(
-    JSONNODE * const list) {
-
-    poco_check_ptr(list);
+void User::loadUserTimeEntriesFromJSON(
+    Json::Value list) {
 
     std::set<Poco::UInt64> alive;
 
-    JSONNODE_ITERATOR current_node = json_begin(list);
-    JSONNODE_ITERATOR last_node = json_end(list);
-    while (current_node != last_node) {
-        loadUserTimeEntryFromJSONNode(*current_node, &alive);
-        ++current_node;
+    for (unsigned int i = 0; i < list.size(); i++) {
+        loadUserTimeEntryFromJSON(list[i], &alive);
     }
 
     deleteZombies(related.TimeEntries, alive);
+}
+
+error User::UserID(
+    const std::string json_data_string,
+    Poco::UInt64 *result) {
+    *result = 0;
+    Json::Value root;
+    Json::Reader reader;
+    bool ok = reader.parse(json_data_string, root);
+    if (!ok) {
+        return error("error parsing UserID JSON");
+    }
+    *result = root["data"]["id"].asUInt64();
+    return noError;
+}
+
+error User::LoginToken(
+    const std::string json_data_string,
+    std::string *result) {
+    *result = "";
+    Json::Value root;
+    Json::Reader reader;
+    bool ok = reader.parse(json_data_string, root);
+    if (!ok) {
+        return error("error parsing UserID JSON");
+    }
+    *result = root["login_token"].asString();
+    return noError;
 }
 
 }  // namespace toggl

@@ -101,65 +101,32 @@ void Project::SetCID(const Poco::UInt64 value) {
     }
 }
 
-void Project::LoadFromJSONNode(JSONNODE * const data) {
-    poco_check_ptr(data);
-
-    Poco::UInt64 id(0);
-    std::string name("");
-    Poco::UInt64 wid(0);
-    Poco::UInt64 cid(0);
-    std::string color("");
-    bool active(false);
-    bool billable(false);
-
-    JSONNODE_ITERATOR current_node = json_begin(data);
-    JSONNODE_ITERATOR last_node = json_end(data);
-    while (current_node != last_node) {
-        json_char *node_name = json_name(*current_node);
-        if (strcmp(node_name, "id") == 0) {
-            id = json_as_int(*current_node);
-        } else if (strcmp(node_name, "name") == 0) {
-            name = std::string(json_as_string(*current_node));
-        } else if (strcmp(node_name, "guid") == 0) {
-            SetGUID(std::string(json_as_string(*current_node)));
-        } else if (strcmp(node_name, "wid") == 0) {
-            wid = json_as_int(*current_node);
-        } else if (strcmp(node_name, "cid") == 0) {
-            cid = json_as_int(*current_node);
-        } else if (strcmp(node_name, "color") == 0) {
-            color = std::string(json_as_string(*current_node));
-        } else if (strcmp(node_name, "active") == 0) {
-            active = json_as_bool(*current_node) != 0;
-        } else if (strcmp(node_name, "billable") == 0) {
-            billable = json_as_bool(*current_node) != 0;
-        }
-        ++current_node;
+void Project::LoadFromJSON(Json::Value data) {
+    if (data.isMember("guid")) {
+        SetGUID(data["guid"].asString());
     }
 
-    SetID(id);
-    SetName(name);
-    SetWID(wid);
-    SetCID(cid);
-    SetColor(color);
-    SetActive(active);
-    SetBillable(billable);
+    SetID(data["id"].asUInt64());
+    SetName(data["name"].asString());
+    SetWID(data["wid"].asUInt64());
+    SetCID(data["cid"].asUInt64());
+    SetColor(data["color"].asString());
+    SetActive(data["active"].asBool());
+    SetBillable(data["billable"].asBool());
 }
 
-JSONNODE *Project::SaveToJSONNode() const {
-    JSONNODE *n = json_new(JSON_NODE);
-    json_set_name(n, ModelName().c_str());
+Json::Value Project::SaveToJSON() const {
+    Json::Value n;
     if (ID()) {
-        json_push_back(n, json_new_i("id", (json_int_t)ID()));
+        n["id"] = Json::UInt64(ID());
     }
-    json_push_back(n, json_new_a("name",
-                                 Formatter::EscapeJSONString(Name()).c_str()));
-    json_push_back(n, json_new_i("wid", (json_int_t)WID()));
-    json_push_back(n, json_new_a("guid", GUID().c_str()));
-    json_push_back(n, json_new_i("cid", (json_int_t)CID()));
-    json_push_back(n, json_new_b("billable", Billable()));
-    json_push_back(n, json_new_b("is_private", IsPrivate()));
-    json_push_back(n, json_new_i("ui_modified_at",
-                                 (json_int_t)UIModifiedAt()));
+    n["name"] = Formatter::EscapeJSONString(Name());
+    n["wid"] = Json::UInt64(WID());
+    n["guid"] = GUID();
+    n["cid"] = Json::UInt64(CID());
+    n["billable"] = Billable();
+    n["is_private"] = IsPrivate();
+    n["ui_modified_at"] = Json::UInt64(UIModifiedAt());
 
     return n;
 }

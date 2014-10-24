@@ -5,6 +5,8 @@
 #include <string>
 #include <sstream>
 
+#include <json/json.h>  // NOLINT
+
 #include "Poco/Exception.h"
 #include "Poco/InflatingStream.h"
 #include "Poco/DeflatingStream.h"
@@ -23,7 +25,6 @@
 #include "Poco/TextEncoding.h"
 #include "Poco/UTF8Encoding.h"
 
-#include "./libjson.h"
 #include "./const.h"
 
 namespace toggl {

@@ -37,34 +37,11 @@ void Task::SetName(const std::string value) {
     }
 }
 
-void Task::LoadFromJSONNode(JSONNODE * const data) {
-    poco_check_ptr(data);
-
-    Poco::UInt64 id(0);
-    std::string name("");
-    Poco::UInt64 pid(0);
-    Poco::UInt64 wid(0);
-
-    JSONNODE_ITERATOR current_node = json_begin(data);
-    JSONNODE_ITERATOR last_node = json_end(data);
-    while (current_node != last_node) {
-        json_char *node_name = json_name(*current_node);
-        if (strcmp(node_name, "id") == 0) {
-            id = json_as_int(*current_node);
-        } else if (strcmp(node_name, "name") == 0) {
-            name = std::string(json_as_string(*current_node));
-        } else if (strcmp(node_name, "pid") == 0) {
-            pid = json_as_int(*current_node);
-        } else if (strcmp(node_name, "wid") == 0) {
-            wid = json_as_int(*current_node);
-        }
-        ++current_node;
-    }
-
-    SetID(id);
-    SetName(name);
-    SetPID(pid);
-    SetWID(wid);
+void Task::LoadFromJSON(Json::Value data) {
+    SetID(data["id"].asUInt64());
+    SetName(data["name"].asString());
+    SetPID(data["pid"].asUInt64());
+    SetWID(data["wid"].asUInt64());
 }
 
 }   // namespace toggl

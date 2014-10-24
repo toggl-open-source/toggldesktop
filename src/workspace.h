@@ -5,7 +5,7 @@
 
 #include <string>
 
-#include "libjson.h" // NOLINT
+#include <json/json.h>  // NOLINT
 
 #include "Poco/Types.h"
 
@@ -52,10 +52,7 @@ class Workspace : public BaseModel {
         return "/api/v8/workspaces";
     }
 
-    void LoadFromJSONNode(JSONNODE * const);
-    JSONNODE *SaveToJSONNode() const {
-        return 0;
-    }
+    void LoadFromJSON(Json::Value value);
 
  private:
     std::string name_;

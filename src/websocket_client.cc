@@ -5,6 +5,8 @@
 #include <string>
 #include <sstream>
 
+#include <json/json.h>  // NOLINT
+
 #include "Poco/Exception.h"
 #include "Poco/InflatingStream.h"
 #include "Poco/DeflatingStream.h"
@@ -19,7 +21,6 @@
 #include "Poco/Net/SSLManager.h"
 #include "Poco/Net/PrivateKeyPassphraseHandler.h"
 
-#include "./libjson.h"
 #include "./https_client.h"
 #include "./json.h"
 
@@ -136,13 +137,12 @@ error WebSocketClient::createSession() {
 void WebSocketClient::authenticate() {
     logger().debug("authenticate");
 
-    JSONNODE *c = json_new(JSON_NODE);
-    json_push_back(c, json_new_a("type", "authenticate"));
-    json_push_back(c, json_new_a("api_token", api_token_.c_str()));
-    json_char *jc = json_write_formatted(c);
-    std::string payload(jc);
-    json_free(jc);
-    json_delete(c);
+    Json::Value c;
+    c["type"] = "authenticate";
+    c["api_token"] = api_token_;
+
+    Json::StyledWriter writer;
+    std::string payload = writer.write(c);
 
     ws_->sendFrame(payload.data(),
                    static_cast<int>(payload.size()),
@@ -155,26 +155,14 @@ std::string WebSocketClient::parseWebSocketMessageType(
     if (json.empty()) {
         return "";
     }
-    if (!toggl::json::IsValid(json)) {
+
+    Json::Value root;
+    Json::Reader reader;
+    if (!reader.parse(json, root)) {
         return "";
     }
 
-    std::string type("data");
-
-    JSONNODE *root = json_parse(json.c_str());
-    JSONNODE_ITERATOR i = json_begin(root);
-    JSONNODE_ITERATOR e = json_end(root);
-    while (i != e) {
-        json_char *node_name = json_name(*i);
-        if (strcmp(node_name, "type") == 0) {
-            type = std::string(json_as_string(*i));
-            break;
-        }
-        ++i;
-    }
-    json_delete(root);
-
-    return type;
+    return root["type"].asString();
 }
 
 const int kWebsocketBufSize = 1024 * 10;

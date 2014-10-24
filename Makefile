@@ -7,7 +7,6 @@ timestamp=$(shell date "+%Y-%m-%d-%H-%M-%S")
 
 pocodir=third_party/poco
 openssldir=third_party/openssl
-jsondir=third_party/libjson
 jsoncppdir=third_party/jsoncpp/dist
 
 GTEST_ROOT=third_party/googletest-read-only
@@ -60,7 +59,6 @@ cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter \
 	-I$(pocodir)/Crypto/include \
 	-I$(pocodir)/Net/include \
 	-I$(pocodir)/NetSSL_OpenSSL/include \
-	-I$(jsondir) \
 	-I$(jsoncppdir) \
 	-DNDEBUG
 endif
@@ -78,7 +76,6 @@ cflags=-g -DNDEBUG -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
 	-I$(pocodir)/Crypto/include \
 	-I$(pocodir)/Net/include \
 	-I$(pocodir)/NetSSL_OpenSSL/include \
-	-I$(jsondir) \
 	-I$(jsoncppdir) \
 	-DNDEBUG
 endif
@@ -94,8 +91,6 @@ libs=-framework Carbon \
 	-lPocoUtil \
 	-lPocoXML \
 	-lPocoFoundation \
-	-L$(jsondir) \
-	-ljson \
 	-lpthread \
 	-L$(openssldir) \
 	-lssl \
@@ -114,8 +109,6 @@ libs=-lX11 \
 	-lPocoUtil \
 	-lPocoXML \
 	-lPocoFoundation \
-	-L$(jsondir) \
-	-ljson \
 	-lpthread \
 	-L$(openssldir) \
 	-lssl \
@@ -177,8 +170,7 @@ lib:
 	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNet.so.16 src/lib/linux/TogglDesktopLibrary/build/release && \
 	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNetSSL.so.16 src/lib/linux/TogglDesktopLibrary/build/release && \
 	cp $(pocodir)/lib/Linux/$(architecture)/libPocoUtil.so.16 src/lib/linux/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoXML.so.16 src/lib/linux/TogglDesktopLibrary/build/release && \
-	cp $(jsondir)/libjson.so.7.6.1 src/lib/linux/TogglDesktopLibrary/build/release/libjson.so.7
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoXML.so.16 src/lib/linux/TogglDesktopLibrary/build/release
 endif
 
 
@@ -215,25 +207,11 @@ sikuli: osx
 	--log_path kopsik_sikuli.log 
 
 clean_deps:
-	cd $(jsondir) && make clean && SHARED=1 make clean
 	cd $(pocodir) && (make clean || true)
 	rm -rf $(pocodir)/**/.dep
 	cd $(openssldir) && (make clean || true)
 
-deps: clean_deps openssl poco json
-
-ifeq ($(uname), Linux)
-json:
-	cd $(jsondir) && \
-	SHARED=1 make && \
-	ln -sf libjson.so.7.6.1 libjson.so && \
-	ln -sf libjson.so.7.6.1 libjson.so.7
-endif
-ifeq ($(uname), Darwin)
-json:
-	cd $(jsondir) && \
-	SHARED=0 make
-endif
+deps: clean_deps openssl poco
 
 openssl:
 ifeq ($(uname), Darwin)
@@ -390,7 +368,6 @@ toggl_test: clean_test objects test_objects
 
 test_lib: toggl_test
 ifeq ($(uname), Linux)
-	cp -r $(jsondir)/libjson.so* test/.
 	cp -r $(pocodir)/lib/Linux/$(architecture)/*.so* test/.
 	cd test && LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH ./toggl_test --gtest_shuffle
 else

@@ -114,8 +114,8 @@ class TimeEntry : public BaseModel {
         return "/api/v8/time_entries";
     }
 
-    void LoadFromJSONNode(JSONNODE * const);
-    JSONNODE *SaveToJSONNode() const;
+    void LoadFromJSON(Json::Value value);
+    Json::Value SaveToJSON() const;
 
     // User-triggered changes to timer:
     void SetDurationUserInput(const std::string);
@@ -149,7 +149,7 @@ class TimeEntry : public BaseModel {
     bool setDurationStringHHMM(const std::string value);
     bool setDurationStringMMSS(const std::string value);
 
-    void loadTagsFromJSONNode(JSONNODE * const);
+    void loadTagsFromJSON(Json::Value value);
 
     bool durationTooLarge(const toggl::error) const;
     bool stopTimeMustBeAfterStartTime(const toggl::error) const;

@@ -90,27 +90,32 @@ void BaseModel::SetUpdatedAtString(const std::string value) {
     SetUpdatedAt(Formatter::Parse8601(value));
 }
 
-void BaseModel::LoadFromDataString(const std::string data_string) {
-    JSONNODE *n = json_parse(data_string.c_str());
-    JSONNODE_ITERATOR i = json_begin(n);
-    JSONNODE_ITERATOR e = json_end(n);
-    while (i != e) {
-        json_char *node_name = json_name(*i);
-        if (strcmp(node_name, "data") == 0) {
-            LoadFromJSONNode(*i);
-        }
-        ++i;
+error BaseModel::LoadFromDataString(const std::string data_string) {
+    Json::Value root;
+    Json::Reader reader;
+    if (!reader.parse(data_string, root)) {
+        return error("Failed to parse data string");
     }
-    json_delete(n);
+    LoadFromJSON(root["data"]);
+    return noError;
 }
 
-void BaseModel::LoadFromJSONString(const std::string json_string) {
+std::string BaseModel::SaveToJSONString() const {
+    Json::StyledWriter writer;
+    return writer.write(SaveToJSON());
+}
+
+error BaseModel::LoadFromJSONString(const std::string json_string) {
     if (json_string.empty()) {
-        return;
+        return noError;
     }
-    JSONNODE *root = json_parse(json_string.c_str());
-    this->LoadFromJSONNode(root);
-    json_delete(root);
+    Json::Value root;
+    Json::Reader reader;
+    if (!reader.parse(json_string, root)) {
+        return error("Failed to parse JSON string");
+    }
+    LoadFromJSON(root);
+    return noError;
 }
 
 void BaseModel::Delete() {
@@ -142,12 +147,7 @@ error BaseModel::ApplyBatchUpdateResult(
         return err;
     }
 
-    if (!json_is_valid(update->Body.c_str())) {
-        return error("Invalid JSON");
-    }
-    LoadFromDataString(update->Body);
-
-    return noError;
+    return LoadFromDataString(update->Body);
 }
 
 bool BaseModel::userCannotAccessWorkspace(const toggl::error err) const {
@@ -178,29 +178,19 @@ std::string BaseModel::batchUpdateMethod() const {
 }
 
 // Convert model JSON into batch update format.
-JSONNODE *BaseModel::BatchUpdateJSON() {
+Json::Value BaseModel::BatchUpdateJSON() {
     EnsureGUID();
 
     poco_assert(!GUID().empty());
 
-    JSONNODE *n = SaveToJSONNode();
+    Json::Value body;
+    body[ModelName()] = SaveToJSON();
 
-    json_set_name(n, ModelName().c_str());
-
-    JSONNODE *body = json_new(JSON_NODE);
-    json_set_name(body, "body");
-    json_push_back(body, n);
-
-    JSONNODE *update = json_new(JSON_NODE);
-    json_push_back(update,
-                   json_new_a("method", batchUpdateMethod().c_str()));
-    json_push_back(update,
-                   json_new_a(
-                       "relative_url",
-                       batchUpdateRelativeURL().c_str()));
-    json_push_back(update, json_new_a("guid", GUID().c_str()));
-    json_push_back(update, body);
-
+    Json::Value update;
+    update["method"] = batchUpdateMethod();
+    update["relative_url"] = batchUpdateRelativeURL();
+    update["guid"] = GUID();
+    update["body"] = body;
     return update;
 }
 

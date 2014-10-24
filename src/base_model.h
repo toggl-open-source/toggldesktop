@@ -7,7 +7,7 @@
 #include <vector>
 #include <cstring>
 
-#include "libjson.h" // NOLINT
+#include <json/json.h>  // NOLINT
 
 #include "./types.h"
 #include "./batch_update_result.h"
@@ -116,8 +116,9 @@ class BaseModel {
     virtual std::string String() const = 0;
     virtual std::string ModelName() const = 0;
     virtual std::string ModelURL() const = 0;
-    virtual void LoadFromJSONNode(JSONNODE * const) {}
-    virtual JSONNODE *SaveToJSONNode() const {
+
+    virtual void LoadFromJSON(Json::Value value) {}
+    virtual Json::Value SaveToJSON() const {
         return 0;
     }
 
@@ -131,15 +132,16 @@ class BaseModel {
         return false;
     }
 
-    void LoadFromDataString(const std::string);
-    void LoadFromJSONString(const std::string);
+    error LoadFromDataString(const std::string);
+    error LoadFromJSONString(const std::string);
+    std::string SaveToJSONString() const;
 
     void Delete();
 
     error ApplyBatchUpdateResult(BatchUpdateResult * const);
 
     // Convert model JSON into batch update format.
-    JSONNODE *BatchUpdateJSON();
+    Json::Value BatchUpdateJSON();
 
  protected:
     Poco::Logger &logger() const {

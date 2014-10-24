@@ -68,7 +68,6 @@
 		74EB0F1817F9A2600046ABC1 /* https_client.h in Headers */ = {isa = PBXBuildFile; fileRef = 74EB0F1617F9A2600046ABC1 /* https_client.h */; };
 		74F7CDDB18199FA300630BD0 /* window_change_recorder.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74F7CDD918199FA300630BD0 /* window_change_recorder.cc */; };
 		74F7CDDC18199FA300630BD0 /* window_change_recorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 74F7CDDA18199FA300630BD0 /* window_change_recorder.h */; };
-		C5DA1F8F17F18CAA001C4565 /* libjson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA1F8E17F18CAA001C4565 /* libjson.a */; };
 		C5DA1F9117F18CB6001C4565 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA1F9017F18CB6001C4565 /* libssl.a */; };
 		C5DA1F9317F18CBB001C4565 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA1F9217F18CBB001C4565 /* libcrypto.a */; };
 		C5DA1FAB17F18D7B001C4565 /* database.cc in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FA417F18D7B001C4565 /* database.cc */; };
@@ -147,7 +146,6 @@
 		C55DA5D817F06EDA00B42178 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		C55DA5DA17F06EF200B42178 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		C55DA5DB17F06EF200B42178 /* libc++abi.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++abi.dylib"; path = "usr/lib/libc++abi.dylib"; sourceTree = SDKROOT; };
-		C5DA1F8E17F18CAA001C4565 /* libjson.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjson.a; path = ../../../third_party/libjson/libjson.a; sourceTree = "<group>"; };
 		C5DA1F9017F18CB6001C4565 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../../../third_party/openssl/libssl.a; sourceTree = "<group>"; };
 		C5DA1F9217F18CBB001C4565 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../../../third_party/openssl/libcrypto.a; sourceTree = "<group>"; };
 		C5DA1F9417F18D2B001C4565 /* libPocoCrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPocoCrypto.a; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoCrypto.a; sourceTree = "<group>"; };
@@ -180,7 +178,6 @@
 				7421348D195C4D41007EF78B /* libPocoCrypto.16.dylib in Frameworks */,
 				74CAAD0318185A9B001B77BB /* Carbon.framework in Frameworks */,
 				74AA947A18091AE10000539F /* WebKit.framework in Frameworks */,
-				C5DA1F8F17F18CAA001C4565 /* libjson.a in Frameworks */,
 				C5DA1F9317F18CBB001C4565 /* libcrypto.a in Frameworks */,
 				C5DA1F9117F18CB6001C4565 /* libssl.a in Frameworks */,
 			);
@@ -212,7 +209,6 @@
 				C5DA1F9B17F18D2B001C4565 /* libPocoXML.a */,
 				C5DA1F9217F18CBB001C4565 /* libcrypto.a */,
 				C5DA1F9017F18CB6001C4565 /* libssl.a */,
-				C5DA1F8E17F18CAA001C4565 /* libjson.a */,
 				C55DA5DA17F06EF200B42178 /* libc++.dylib */,
 				C55DA5DB17F06EF200B42178 /* libc++abi.dylib */,
 				C55DA5D817F06EDA00B42178 /* libstdc++.dylib */,
@@ -483,7 +479,6 @@
 					Kopsik/third_party/kopsik/third_party/poco/Foundation/include/,
 					Kopsik/third_party/kopsik/third_party/poco/Data/SQLite/include/,
 					Kopsik/third_party/kopsik/third_party/poco/Net/include/,
-					Kopsik/third_party/kopsik/third_party/libjson,
 					Kopsik/third_party/kopsik/third_party/poco/NetSSL_OpenSSL/include/,
 					Kopsik/third_party/kopsik/third_party/poco/Crypto/include/,
 				);
@@ -527,7 +522,6 @@
 					Kopsik/third_party/kopsik/third_party/poco/Foundation/include/,
 					Kopsik/third_party/kopsik/third_party/poco/Data/SQLite/include/,
 					Kopsik/third_party/kopsik/third_party/poco/Net/include/,
-					Kopsik/third_party/kopsik/third_party/libjson,
 					Kopsik/third_party/kopsik/third_party/poco/NetSSL_OpenSSL/include/,
 					Kopsik/third_party/kopsik/third_party/poco/Crypto/include/,
 				);
@@ -553,7 +547,6 @@
 					../../../third_party/poco/Foundation/include/,
 					../../../third_party/poco/Data/SQLite/include/,
 					../../../third_party/poco/Net/include/,
-					../../../third_party/libjson,
 					../../../third_party/poco/NetSSL_OpenSSL/include/,
 					../../../third_party/poco/Crypto/include/,
 					../../../third_party/jsoncpp/dist,
@@ -562,7 +555,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					../../../third_party/poco/lib/Darwin/x86_64,
-					../../../third_party/libjson,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -583,7 +575,6 @@
 					../../../third_party/poco/Foundation/include/,
 					../../../third_party/poco/Data/SQLite/include/,
 					../../../third_party/poco/Net/include/,
-					../../../third_party/libjson,
 					../../../third_party/poco/NetSSL_OpenSSL/include/,
 					../../../third_party/poco/Crypto/include/,
 					../../../third_party/jsoncpp/dist,
@@ -592,7 +583,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					../../../third_party/poco/lib/Darwin/x86_64,
-					../../../third_party/libjson,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;

@@ -7,7 +7,7 @@
 
 #include "./types.h"
 
-#include "libjson.h" // NOLINT
+#include <json/json.h>  // NOLINT
 
 #include "Poco/Types.h"
 
@@ -41,10 +41,7 @@ class Client : public BaseModel {
         return "/api/v8/clients";
     }
 
-    void LoadFromJSONNode(JSONNODE * const);
-    JSONNODE *SaveToJSONNode() const {
-        return 0;
-    }
+    void LoadFromJSON(Json::Value value);
 
  private:
     Poco::UInt64 wid_;

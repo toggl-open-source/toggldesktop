@@ -8,7 +8,7 @@
 #include <set>
 #include <map>
 
-#include "libjson.h" // NOLINT
+#include <json/json.h>  // NOLINT
 
 #include "./types.h"
 #include "./https_client.h"
@@ -153,60 +153,74 @@ class User : public BaseModel {
     void RemoveProjectFromRelatedModels(const Poco::UInt64 pid);
     void RemoveTaskFromRelatedModels(const Poco::UInt64 tid);
 
-    void LoadUserUpdateFromJSONString(const std::string json);
+    error LoadUserUpdateFromJSONString(const std::string json);
 
-    void LoadUserAndRelatedDataFromJSONString(
+    error LoadUserAndRelatedDataFromJSONString(
         const std::string &json);
 
+    static error UserID(
+        const std::string json_data_string,
+        Poco::UInt64 *result);
+
+    static error LoginToken(
+        const std::string json_data_string,
+        std::string *result);
 
  private:
-    void loadUserTagFromJSONNode(
-        JSONNODE *data,
+    void loadUserTagFromJSON(
+        Json::Value data,
         std::set<Poco::UInt64> *alive = 0);
 
-    void loadUserAndRelatedDataFromJSONNode(JSONNODE *node);
+    void loadUserAndRelatedDataFromJSON(Json::Value node);
 
-    void loadUserProjectsFromJSONNode(
-        JSONNODE *list);
+    void loadUserProjectsFromJSON(
+        Json::Value list);
 
-    void loadUserTagsFromJSONNode(
-        JSONNODE *list);
+    void loadUserTagsFromJSON(
+        Json::Value list);
 
-    void loadUserClientsFromJSONNode(
-        JSONNODE *list);
-    void loadUserTasksFromJSONNode(
-        JSONNODE *list);
+    void loadUserClientsFromJSON(
+        Json::Value list);
 
-    void loadUserTimeEntriesFromJSONNode(
-        JSONNODE *list);
+    void loadUserTasksFromJSON(
+        Json::Value list);
 
-    void loadUserWorkspacesFromJSONNode(
-        JSONNODE *list);
+    void loadUserTimeEntriesFromJSON(
+        Json::Value list);
 
-    void loadUserUpdateFromJSONNode(
-        JSONNODE *data);
+    void loadUserWorkspacesFromJSON(
+        Json::Value list);
 
-    void loadUserProjectFromJSONNode(
-        JSONNODE *data,
+    void loadUserUpdateFromJSON(
+        Json::Value list);
+
+    void loadUserProjectFromJSON(
+        Json::Value data,
         std::set<Poco::UInt64> *alive = 0);
-    void loadUserWorkspaceFromJSONNode(
-        JSONNODE *data,
+
+    void loadUserWorkspaceFromJSON(
+        Json::Value data,
         std::set<Poco::UInt64> *alive = 0);
-    void loadUserClientFromJSONNode(
-        JSONNODE *data,
+
+    void loadUserClientFromJSON(
+        Json::Value data,
         std::set<Poco::UInt64> *alive = 0);
-    void loadUserTaskFromJSONNode(
-        JSONNODE *data,
+
+    void loadUserTaskFromJSON(
+        Json::Value data,
         std::set<Poco::UInt64> *alive = 0);
-    void loadUserTimeEntryFromJSONNode(
-        JSONNODE *data,
+
+    void loadUserTimeEntryFromJSON(
+        Json::Value data,
         std::set<Poco::UInt64> *alive = 0);
 
     std::string dirtyObjectsJSON(std::vector<TimeEntry *> * const) const;
+
     void processResponseArray(
         std::vector<BatchUpdateResult> * const results,
         std::vector<TimeEntry *> *dirty,
         std::vector<error> *errors);
+
     error collectErrors(std::vector<error> *errors) const;
 
     error requestJSON(

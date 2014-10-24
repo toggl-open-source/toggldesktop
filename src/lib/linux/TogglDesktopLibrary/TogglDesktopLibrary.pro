@@ -29,6 +29,7 @@ SOURCES += \
     ../../../gui.cc \
     ../../../https_client.cc \
     ../../../json.cc \
+    $$PWD/../../../../third_party/jsoncpp/dist/json.cpp \
     ../../../toggl_api.cc \
     ../../../toggl_api_private.cc \
     ../../../model_change.cc \
@@ -81,20 +82,18 @@ HEADERS += \
     ../../include/toggl_api.h
 
 pocolib = $$PWD/../../../../third_party/poco/lib/Linux/$$system(uname -m)
-jsondir = $$PWD/../../../../third_party/libjson
 openssldir = $$PWD/../../../../third_party/openssl
 
 LIBS += -L$$OUT_PWD/
 LIBS += -L$$pocolib -lPocoDataSQLite -lPocoData -lPocoNet -lPocoNetSSL -lPocoCrypto -lPocoUtil -lPocoXML -lPocoFoundation
-LIBS += -L$$jsondir -ljson
 LIBS += -L$$openssldir -lssl -lcrypto
 LIBS += -lX11
 
 INCLUDEPATH += $$PWD/../../../../third_party/poco/Foundation/include
 DEPENDPATH += $$PWD/../../../../third_party/poco/Foundation/include
 
-INCLUDEPATH += $$PWD/../../../../third_party/libjson
-DEPENDPATH += $$PWD/../../../../third_party/libjson
+INCLUDEPATH += $$PWD/../../../../third_party/jsoncpp/dist
+DEPENDPATH += $$PWD/../../../../third_party/jsoncpp/dist
 
 INCLUDEPATH += $$PWD/../../../../third_party/poco/Util/include
 DEPENDPATH += $$PWD/../../../../third_party/poco/Util/include

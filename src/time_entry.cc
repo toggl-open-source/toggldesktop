@@ -14,6 +14,8 @@
 #include <sstream>
 #include <algorithm>
 
+#include <json/json.h>  // NOLINT
+
 #include "./formatter.h"
 #include "./json.h"
 #include "./const.h"
@@ -21,6 +23,7 @@
 #include "Poco/Timestamp.h"
 #include "Poco/DateTime.h"
 #include "Poco/LocalDateTime.h"
+#include "Poco/NumberParser.h"
 
 namespace toggl {
 
@@ -312,10 +315,15 @@ bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
     return a->Start() < b->Start();
 }
 
-void TimeEntry::LoadFromJSONNode(JSONNODE * const data) {
-    poco_check_ptr(data);
-
-    Poco::UInt64 ui_modified_at = toggl::json::UIModifiedAt(data);
+void TimeEntry::LoadFromJSON(Json::Value data) {
+    Json::Value modified = data["ui_modified_at"];
+    Poco::UInt64 ui_modified_at(0);
+    if (modified.isString()) {
+         ui_modified_at = Poco::NumberParser::parseUnsigned64(
+            modified.asString());
+    } else {
+        ui_modified_at = modified.asUInt64();
+    }
     if (UIModifiedAt() > ui_modified_at) {
         std::stringstream ss;
         ss  << "Will not overwrite time entry "
@@ -325,137 +333,84 @@ void TimeEntry::LoadFromJSONNode(JSONNODE * const data) {
         return;
     }
 
-    Poco::UInt64 id(0);
-    std::string description("");
-    Poco::UInt64 wid(0);
-    Poco::UInt64 pid(0);
-    Poco::UInt64 tid(0);
-    std::string start_string("");
-    std::string stop_string("");
-    Poco::Int64 duration_in_seconds(0);
-    bool billable(false);
-    bool duronly(false);
-    std::string updated_at_string("");
-
-    JSONNODE_ITERATOR current_node = json_begin(data);
-    JSONNODE_ITERATOR last_node = json_end(data);
-    while (current_node != last_node) {
-        json_char *node_name = json_name(*current_node);
-        if (strcmp(node_name, "id") == 0) {
-            id = json_as_int(*current_node);
-        } else if (strcmp(node_name, "description") == 0) {
-            description = std::string(json_as_string(*current_node));
-        } else if (strcmp(node_name, "guid") == 0) {
-            SetGUID(std::string(json_as_string(*current_node)));
-        } else if (strcmp(node_name, "wid") == 0) {
-            wid = json_as_int(*current_node);
-        } else if (strcmp(node_name, "pid") == 0) {
-            pid = json_as_int(*current_node);
-        } else if (strcmp(node_name, "tid") == 0) {
-            tid = json_as_int(*current_node);
-        } else if (strcmp(node_name, "start") == 0) {
-            start_string = std::string(json_as_string(*current_node));
-        } else if (strcmp(node_name, "stop") == 0) {
-            stop_string = std::string(json_as_string(*current_node));
-        } else if (strcmp(node_name, "duration") == 0) {
-            duration_in_seconds = json_as_int(*current_node);
-        } else if (strcmp(node_name, "billable") == 0) {
-            billable = json_as_bool(*current_node) != 0;
-        } else if (strcmp(node_name, "duronly") == 0) {
-            duronly = json_as_bool(*current_node) != 0;
-        } else if (strcmp(node_name, "tags") == 0) {
-            loadTagsFromJSONNode(*current_node);
-        } else if (strcmp(node_name, "created_with") == 0) {
-            SetCreatedWith(std::string(json_as_string(*current_node)));
-        } else if (strcmp(node_name, "at") == 0) {
-            updated_at_string = std::string(json_as_string(*current_node));
-        }
-        ++current_node;
+    if (data.isMember("guid")) {
+        SetGUID(data["guid"].asString());
     }
 
-    SetID(id);
-    SetDescription(description);
-    SetWID(wid);
-    SetPID(pid);
-    SetTID(tid);
-    SetStartString(start_string);
-    SetStopString(stop_string);
-    SetDurationInSeconds(duration_in_seconds);
-    SetBillable(billable);
-    SetDurOnly(duronly);
-    SetUpdatedAtString(updated_at_string);
+    if (data.isMember("tags")) {
+        loadTagsFromJSON(data["tags"]);
+    }
+
+    if (data.isMember("created_with")) {
+        SetCreatedWith(data["created_with"].asString());
+    }
+
+    SetID(data["id"].asUInt64());
+    SetDescription(data["description"].asString());
+    if (data.isMember("wid")) {
+        SetWID(data["wid"].asUInt64());
+    } else {
+        SetWID(0);
+    }
+    if (data.isMember("pid")) {
+        SetPID(data["pid"].asUInt64());
+    } else {
+        SetPID(0);
+    }
+    if (data.isMember("tid")) {
+        SetTID(data["tid"].asUInt64());
+    } else {
+        SetTID(0);
+    }
+    SetStartString(data["start"].asString());
+    SetStopString(data["stop"].asString());
+    SetDurationInSeconds(data["duration"].asInt64());
+    SetBillable(data["billable"].asBool());
+    SetDurOnly(data["duronly"].asBool());
+    SetUpdatedAtString(data["at"].asString());
 
     SetUIModifiedAt(0);
 }
 
-JSONNODE *TimeEntry::SaveToJSONNode() const {
-    JSONNODE *n = json_new(JSON_NODE);
-    json_set_name(n, ModelName().c_str());
+Json::Value TimeEntry::SaveToJSON() const {
+    Json::Value n;
     if (ID()) {
-        json_push_back(n, json_new_i("id", (json_int_t)ID()));
+        n["id"] = Json::UInt64(ID());
     }
-    json_push_back(n,
-                   json_new_a(
-                       "description",
-                       Formatter::EscapeJSONString(Description()).c_str()));
+    n["description"] = Formatter::EscapeJSONString(Description());
     // Workspace ID can't be 0 on server side. So don't
     // send 0 if we have no default workspace ID, because
     // NULL is not 0
     if (WID()) {
-        json_push_back(n, json_new_i("wid", (json_int_t)WID()));
+        n["wid"] = Json::UInt64(WID());
     }
-    json_push_back(n, json_new_a("guid", GUID().c_str()));
+    n["guid"] = GUID();
     if (!PID() && !ProjectGUID().empty()) {
-        json_push_back(n, json_new_a("pid", ProjectGUID().c_str()));
+        n["pid"] = ProjectGUID();
     } else {
-        json_push_back(n, json_new_i("pid", (json_int_t)PID()));
+        n["pid"] = Json::UInt64(PID());
     }
-    json_push_back(n, json_new_i("tid", (json_int_t)TID()));
-    json_push_back(n, json_new_a("start", StartString().c_str()));
+    n["tid"] = Json::UInt64(TID());
+    n["start"] = StartString();
     if (Stop()) {
-        json_push_back(n, json_new_a("stop", StopString().c_str()));
+        n["stop"] = StopString();
     }
-    json_push_back(n, json_new_i("duration",
-                                 (json_int_t)DurationInSeconds()));
-    json_push_back(n, json_new_b("billable", Billable()));
-    json_push_back(n, json_new_b("duronly", DurOnly()));
-    json_push_back(n, json_new_i("ui_modified_at",
-                                 (json_int_t)UIModifiedAt()));
-    json_push_back(n,
-                   json_new_a(
-                       "created_with",
-                       Formatter::EscapeJSONString(CreatedWith()).c_str()));
+    n["duration"] = Json::Int64(DurationInSeconds());
+    n["billable"] = Billable();
+    n["duronly"] = DurOnly();
+    n["ui_modified_at"] = Json::UInt64(UIModifiedAt());
+    n["created_with"] = Formatter::EscapeJSONString(CreatedWith());
 
-    JSONNODE *tag_nodes = json_new(JSON_ARRAY);
-    json_set_name(tag_nodes, "tags");
+    Json::Value tag_nodes;
     for (std::vector<std::string>::const_iterator it = TagNames.begin();
             it != TagNames.end();
             it++) {
-        std::string tag_name = *it;
-        json_push_back(
-            tag_nodes,
-            json_new_a(NULL,
-                       Formatter::EscapeJSONString(tag_name).c_str()));
+        std::string tag_name = Formatter::EscapeJSONString(*it);
+        tag_nodes.append(Json::Value(tag_name));
     }
-    json_push_back(n, tag_nodes);
+    n["tags"] = tag_nodes;
 
     return n;
-}
-
-void TimeEntry::loadTagsFromJSONNode(JSONNODE * const list) {
-    poco_check_ptr(list);
-
-    TagNames.clear();
-
-    JSONNODE_ITERATOR current_node = json_begin(list);
-    JSONNODE_ITERATOR last_node = json_end(list);
-    while (current_node != last_node) {
-        std::string tag = std::string(json_as_string(*current_node));
-        if (!tag.empty()) {
-            TagNames.push_back(tag);
-        }
-        ++current_node;
-    }
 }
 
 Poco::Int64 TimeEntry::AbsDuration(const Poco::Int64 value) {
@@ -474,6 +429,17 @@ Poco::Int64 TimeEntry::AbsDuration(const Poco::Int64 value) {
     }
 
     return duration;
+}
+
+void TimeEntry::loadTagsFromJSON(Json::Value list) {
+    TagNames.clear();
+
+    for (unsigned int i = 0; i < list.size(); i++) {
+        std::string tag = list[i].asString();
+        if (!tag.empty()) {
+            TagNames.push_back(tag);
+        }
+    }
 }
 
 }   // namespace toggl

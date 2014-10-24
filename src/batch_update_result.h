@@ -9,7 +9,7 @@
 
 #include "./types.h"
 
-#include "libjson.h"  // NOLINT
+#include <json/json.h>  // NOLINT
 
 #include "Poco/Types.h"
 
@@ -34,9 +34,9 @@ class BatchUpdateResult {
     std::string String() const;
     bool ResourceIsGone() const;
 
-    void LoadFromJSONNode(JSONNODE * const);
+    void LoadFromJSON(Json::Value value);
 
-    static void ParseResponseArray(
+    static error ParseResponseArray(
         const std::string response_body,
         std::vector<BatchUpdateResult> *responses);
     static void ProcessResponseArray(

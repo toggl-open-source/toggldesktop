@@ -39,10 +39,7 @@ class Tag : public BaseModel {
         return "/api/v8/tags";
     }
 
-    void LoadFromJSONNode(JSONNODE * const data);
-    JSONNODE *SaveToJSONNode() const {
-        return 0;
-    }
+    void LoadFromJSON(Json::Value data);
 
  private:
     Poco::UInt64 wid_;

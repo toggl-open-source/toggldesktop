@@ -73,8 +73,8 @@ class Project : public BaseModel {
         return "/api/v8/projects";
     }
 
-    void LoadFromJSONNode(JSONNODE * const);
-    JSONNODE *SaveToJSONNode() const;
+    void LoadFromJSON(Json::Value value);
+    Json::Value SaveToJSON() const;
 
     bool DuplicateResource(const toggl::error) const;
     bool ResourceCannotBeCreated(const toggl::error) const;

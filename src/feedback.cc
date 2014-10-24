@@ -15,32 +15,19 @@
 namespace toggl {
 
 const std::string Feedback::JSON() const {
-    JSONNODE *root = json_new(JSON_NODE);
-    json_push_back(root, json_new_b("desktop", true));
-    json_push_back(root,
-                   json_new_a("toggl_version",
-                              HTTPSClientConfig::AppVersion.c_str()));
-    json_push_back(root,
-                   json_new_a(
-                       "details",
-                       Formatter::EscapeJSONString(details_).c_str()));
-    json_push_back(root,
-                   json_new_a(
-                       "subject",
-                       Formatter::EscapeJSONString(subject_).c_str()));
+    Json::Value root;
+
+    root["desktop"] = true;
+    root["toggl_version"] = HTTPSClientConfig::AppVersion;
+    root["details"] = Formatter::EscapeJSONString(details_);
+    root["subject"] = Formatter::EscapeJSONString(subject_);
     if (!attachment_path_.empty()) {
-        json_push_back(root, json_new_a("base64_encoded_attachment",
-                                        base64encode_attachment().c_str()));
-        json_push_back(root,
-                       json_new_a(
-                           "attachment_name",
-                           Formatter::EscapeJSONString(filename()).c_str()));
+        root["base64_encoded_attachment"] = base64encode_attachment();
+        root["attachment_name"] = Formatter::EscapeJSONString(filename());
     }
-    json_char *jc = json_write_formatted(root);
-    std::string json(jc);
-    json_free(jc);
-    json_delete(root);
-    return json;
+
+    Json::StyledWriter writer;
+    return writer.write(root);
 }
 
 const std::string Feedback::filename() const {
