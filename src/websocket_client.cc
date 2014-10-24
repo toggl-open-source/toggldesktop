@@ -162,7 +162,11 @@ std::string WebSocketClient::parseWebSocketMessageType(
         return "";
     }
 
-    return root["type"].asString();
+    if (root.isMember("type")) {
+        return root["type"].asString();
+    }
+
+    return "data";
 }
 
 const int kWebsocketBufSize = 1024 * 10;
