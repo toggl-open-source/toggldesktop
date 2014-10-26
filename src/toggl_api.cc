@@ -555,7 +555,7 @@ char_t *toggl_get_update_channel(
 }
 
 int64_t toggl_parse_duration_string_into_seconds(
-        const char_t *duration_string) {
+    const char_t *duration_string) {
     if (!duration_string) {
         return 0;
     }

@@ -790,12 +790,24 @@ void User::loadUserAndRelatedDataFromJSON(
     SetStoreStartAndStopTime(data["store_start_and_stop_time"].asBool());
     SetTimeOfDayFormat(data["timeofday_format"].asString());
 
-    loadUserProjectsFromJSON(data["projects"]);
-    loadUserTagsFromJSON(data["tags"]);
-    loadUserTasksFromJSON(data["tasks"]);
-    loadUserTimeEntriesFromJSON(data["time_entries"]);
-    loadUserWorkspacesFromJSON(data["workspaces"]);
-    loadUserClientsFromJSON(data["clients"]);
+    if (data.isMember("projects")) {
+        loadUserProjectsFromJSON(data["projects"]);
+    }
+    if (data.isMember("tags")) {
+        loadUserTagsFromJSON(data["tags"]);
+    }
+    if (data.isMember("tasks")) {
+        loadUserTasksFromJSON(data["tasks"]);
+    }
+    if (data.isMember("time_entries")) {
+        loadUserTimeEntriesFromJSON(data["time_entries"]);
+    }
+    if (data.isMember("workspaces")) {
+        loadUserWorkspacesFromJSON(data["workspaces"]);
+    }
+    if (data.isMember("clients")) {
+        loadUserClientsFromJSON(data["clients"]);
+    }
 }
 
 void User::loadUserClientFromJSON(
