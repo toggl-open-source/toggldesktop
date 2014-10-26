@@ -27,16 +27,16 @@ int getFocusedWindowInfo(
 
     // get window title
     int length = GetWindowTextLengthW(window_handle);
-	if (length) {
-		const int bufsize = 500;
-		wchar_t buf[bufsize];
-		GetWindowTextW(window_handle, buf, bufsize);
+    if (length) {
+        const int bufsize = 500;
+        wchar_t buf[bufsize];
+        GetWindowTextW(window_handle, buf, bufsize);
 
-		std::string utf8("");
-		Poco::UnicodeConverter::toUTF8(buf, length, utf8);
+        std::string utf8("");
+        Poco::UnicodeConverter::toUTF8(buf, length, utf8);
 
-		*title = utf8;
-	}
+        *title = utf8;
+    }
 
     // get process by window handle
     DWORD process_id;
