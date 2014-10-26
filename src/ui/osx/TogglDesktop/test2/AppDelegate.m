@@ -123,6 +123,7 @@ void *ctx;
 	}
 
 	self.activeAppIcon = [NSImage imageNamed:@"app"];
+	[self.activeAppIcon setTemplate:YES];
 
 	self.preferencesWindowController = [[PreferencesWindowController alloc]
 										initWithWindowNibName:@"PreferencesWindowController"];
@@ -584,10 +585,16 @@ void *ctx;
 	NSStatusBar *bar = [NSStatusBar systemStatusBar];
 
 	self.onImage = [NSImage imageNamed:@"on"];
+	[self.onImage setTemplate:YES];
+
 	self.offImage = [NSImage imageNamed:@"off"];
+	[self.offImage setTemplate:YES];
 
 	self.offlineOnImage = [NSImage imageNamed:@"offline_on"];
+	[self.offlineOnImage setTemplate:YES];
+
 	self.offlineOffImage = [NSImage imageNamed:@"offline_off"];
+	[self.offlineOffImage setTemplate:YES];
 
 	self.currentOnImage = self.onImage;
 	self.currentOffImage = self.offImage;
