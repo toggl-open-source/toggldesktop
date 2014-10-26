@@ -40,26 +40,26 @@ extern "C" {
     typedef struct {
         int64_t DurationInSeconds;
         char_t *Description;
-		char_t *ProjectAndTaskLabel;
-		char_t *TaskLabel;
-		char_t *ProjectLabel;
-		char_t *ClientLabel;
+        char_t *ProjectAndTaskLabel;
+        char_t *TaskLabel;
+        char_t *ProjectLabel;
+        char_t *ClientLabel;
         uint64_t WID;
         uint64_t PID;
         uint64_t TID;
-		char_t *Duration;
-		char_t *Color;
-		char_t *GUID;
+        char_t *Duration;
+        char_t *Color;
+        char_t *GUID;
         _Bool Billable;
-		char_t *Tags;
+        char_t *Tags;
         uint64_t Started;
         uint64_t Ended;
         char_t *StartTimeString;
-		char_t *EndTimeString;
+        char_t *EndTimeString;
         uint64_t UpdatedAt;
         _Bool DurOnly;
         // In case it's a header
-		char_t *DateHeader;
+        char_t *DateHeader;
         char_t *DateDuration;
         _Bool IsHeader;
         // Additional fields; only when in time entry editor

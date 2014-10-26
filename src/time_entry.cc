@@ -319,7 +319,7 @@ void TimeEntry::LoadFromJSON(Json::Value data) {
     Json::Value modified = data["ui_modified_at"];
     Poco::UInt64 ui_modified_at(0);
     if (modified.isString()) {
-         ui_modified_at = Poco::NumberParser::parseUnsigned64(
+        ui_modified_at = Poco::NumberParser::parseUnsigned64(
             modified.asString());
     } else {
         ui_modified_at = modified.asUInt64();

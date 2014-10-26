@@ -38,9 +38,9 @@ _Bool GUI::DisplayError(const error err) {
 
     logger().debug("DisplayError");
 
-	char_t *err_s = copy_string(err);
+    char_t *err_s = copy_string(err);
     on_display_error_(err_s, isUserError(err));
-	free(err_s);
+    free(err_s);
 
     return false;
 }
@@ -107,21 +107,21 @@ error GUI::findMissingCallbacks() {
 }
 
 void GUI::DisplayReminder() {
-	logger().debug("DisplayReminder");
+    logger().debug("DisplayReminder");
 
-	char_t *s1 = copy_string("Reminder from Toggl Desktop");
-	char_t *s2 = copy_string("Don't forget to track your time!");
-	on_display_reminder_(s1, s2);
-	free(s1);
-	free(s2);
+    char_t *s1 = copy_string("Reminder from Toggl Desktop");
+    char_t *s2 = copy_string("Don't forget to track your time!");
+    on_display_reminder_(s1, s2);
+    free(s1);
+    free(s2);
 }
 
 void GUI::DisplayOnlineState(const _Bool is_online, const std::string reason) {
     logger().debug("DisplayOnlineState");
 
-	char_t *reason_s = copy_string(reason);
+    char_t *reason_s = copy_string(reason);
     on_display_online_state_(is_online, reason_s);
-	free(reason_s);
+    free(reason_s);
 }
 
 void GUI::DisplayUpdate(const _Bool open,
@@ -249,17 +249,17 @@ void GUI::DisplayTimeEntryEditor(const _Bool open,
                                  TogglTimeEntryView *te,
                                  const std::string focused_field_name) {
     logger().debug("DisplayTimeEntryEditor");
-	char_t *field_s = copy_string(focused_field_name);
-	on_display_time_entry_editor_(open, te, field_s);
-	free(field_s);
+    char_t *field_s = copy_string(focused_field_name);
+    on_display_time_entry_editor_(open, te, field_s);
+    free(field_s);
 }
 
 void GUI::DisplayURL(const std::string URL) {
     logger().debug("DisplayURL");
 
-	char_t *url_s = copy_string(URL);
+    char_t *url_s = copy_string(URL);
     on_display_url_(url_s);
-	free(url_s);
+    free(url_s);
 }
 
 void GUI::DisplaySettings(const _Bool open,
@@ -289,16 +289,16 @@ void GUI::DisplayIdleNotification(const std::string guid,
                                   const std::string since,
                                   const std::string duration,
                                   const uint64_t started) {
-	char_t *guid_s = copy_string(guid);
-	char_t *since_s = copy_string(since);
-	char_t *duration_s = copy_string(duration);
+    char_t *guid_s = copy_string(guid);
+    char_t *since_s = copy_string(since);
+    char_t *duration_s = copy_string(duration);
     on_display_idle_notification_(guid_s,
                                   since_s,
                                   duration_s,
                                   started);
-	free(guid_s);
-	free(since_s);
-	free(duration_s);
+    free(guid_s);
+    free(since_s);
+    free(duration_s);
 }
 
 _Bool GUI::isNetworkingError(const error err) const {

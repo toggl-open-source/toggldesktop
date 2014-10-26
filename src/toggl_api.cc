@@ -45,7 +45,7 @@ void *toggl_context_init(
     poco_check_ptr(app_version);
 
     toggl::Context *ctx =
-		new toggl::Context(to_string(app_name), to_string(app_version));
+        new toggl::Context(to_string(app_name), to_string(app_version));
 
     ctx->SetAPIURL(kAPIURL);
     ctx->SetTimelineUploadURL(kTimelineUploadURL);
@@ -101,8 +101,8 @@ _Bool toggl_set_proxy_settings(void *context,
     toggl::Proxy proxy;
     proxy.host = to_string(proxy_host);
     proxy.port = proxy_port;
-	proxy.username = to_string(proxy_username);
-	proxy.password = to_string(proxy_password);
+    proxy.username = to_string(proxy_username);
+    proxy.password = to_string(proxy_password);
 
     return app(context)->SetProxySettings(use_proxy, proxy);
 }
@@ -236,15 +236,15 @@ _Bool toggl_add_project(
 
     poco_check_ptr(p);
 
-	char_t *guid_s = copy_string(p->GUID());
+    char_t *guid_s = copy_string(p->GUID());
     _Bool res = toggl_set_time_entry_project(
         context,
         time_entry_guid,
         0, /* no task ID */
         p->ID(),
         guid_s);
-	free(guid_s);
-	return res;
+    free(guid_s);
+    return res;
 }
 
 _Bool toggl_parse_time(
@@ -315,7 +315,7 @@ _Bool toggl_continue(
     ss << "toggl_continue guid=" << guid;
     logger().debug(ss.str());
 
-	return app(context)->Continue(to_string(guid));
+    return app(context)->Continue(to_string(guid));
 }
 
 void toggl_view_time_entry_list(void *context) {
@@ -531,8 +531,8 @@ _Bool toggl_feedback_send(
     logger().debug(ss.str());
 
     toggl::Feedback feedback(to_string(topic),
-		to_string(details),
-		to_string(filename));
+                             to_string(details),
+                             to_string(filename));
 
     return app(context)->SendFeedback(feedback);
 }
@@ -551,7 +551,7 @@ char_t *toggl_get_update_channel(
 
     std::string update_channel("");
     app(context)->UpdateChannel(&update_channel);
-	return copy_string(update_channel);
+    return copy_string(update_channel);
 }
 
 int64_t toggl_parse_duration_string_into_seconds(const char_t *duration_string) {
