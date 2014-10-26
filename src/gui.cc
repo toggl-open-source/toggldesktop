@@ -38,7 +38,10 @@ _Bool GUI::DisplayError(const error err) {
 
     logger().debug("DisplayError");
 
-    on_display_error_(err.c_str(), isUserError(err));
+	char_t *err_s = copy_string(err);
+    on_display_error_(err_s, isUserError(err));
+	free(err_s);
+
     return false;
 }
 
@@ -104,16 +107,21 @@ error GUI::findMissingCallbacks() {
 }
 
 void GUI::DisplayReminder() {
-    logger().debug("DisplayReminder");
+	logger().debug("DisplayReminder");
 
-    on_display_reminder_("Reminder from Toggl Desktop",
-                         "Don't forget to track your time!");
+	char_t *s1 = copy_string("Reminder from Toggl Desktop");
+	char_t *s2 = copy_string("Don't forget to track your time!");
+	on_display_reminder_(s1, s2);
+	free(s1);
+	free(s2);
 }
 
 void GUI::DisplayOnlineState(const _Bool is_online, const std::string reason) {
     logger().debug("DisplayOnlineState");
 
-    on_display_online_state_(is_online, reason.c_str());
+	char_t *reason_s = copy_string(reason);
+    on_display_online_state_(is_online, reason_s);
+	free(reason_s);
 }
 
 void GUI::DisplayUpdate(const _Bool open,
@@ -130,11 +138,11 @@ void GUI::DisplayUpdate(const _Bool open,
     logger().debug("DisplayUpdate");
 
     TogglUpdateView view;
-    view.UpdateChannel = strdup(update_channel.c_str());
+    view.UpdateChannel = copy_string(update_channel);
     view.IsChecking = is_checking;
     view.IsUpdateAvailable = is_available;
-    view.URL = strdup(url.c_str());
-    view.Version = strdup(version.c_str());
+    view.URL = copy_string(url);
+    view.Version = copy_string(version);
 
     on_display_update_(open, &view);
 
@@ -241,13 +249,17 @@ void GUI::DisplayTimeEntryEditor(const _Bool open,
                                  TogglTimeEntryView *te,
                                  const std::string focused_field_name) {
     logger().debug("DisplayTimeEntryEditor");
-    on_display_time_entry_editor_(open, te, focused_field_name.c_str());
+	char_t *field_s = copy_string(focused_field_name);
+	on_display_time_entry_editor_(open, te, field_s);
+	free(field_s);
 }
 
 void GUI::DisplayURL(const std::string URL) {
     logger().debug("DisplayURL");
 
-    on_display_url_(URL.c_str());
+	char_t *url_s = copy_string(URL);
+    on_display_url_(url_s);
+	free(url_s);
 }
 
 void GUI::DisplaySettings(const _Bool open,
@@ -277,10 +289,16 @@ void GUI::DisplayIdleNotification(const std::string guid,
                                   const std::string since,
                                   const std::string duration,
                                   const uint64_t started) {
-    on_display_idle_notification_(guid.c_str(),
-                                  since.c_str(),
-                                  duration.c_str(),
+	char_t *guid_s = copy_string(guid);
+	char_t *since_s = copy_string(since);
+	char_t *duration_s = copy_string(duration);
+    on_display_idle_notification_(guid_s,
+                                  since_s,
+                                  duration_s,
                                   started);
+	free(guid_s);
+	free(since_s);
+	free(duration_s);
 }
 
 _Bool GUI::isNetworkingError(const error err) const {

@@ -19,57 +19,50 @@ namespace TogglDesktop
         public const string Description = "description";
 
         private const string dll = "TogglDesktopDLL.dll";
-        private const CharSet charset = CharSet.Ansi;
+        private const CharSet charset = CharSet.Unicode;
         private const CallingConvention convention = CallingConvention.Cdecl;
-
-        private static string DecodeString(string default_encoded_text)
-        {
-            if (default_encoded_text == null)
-            {
-                return null;
-            }
-            byte[] b = Encoding.Default.GetBytes(default_encoded_text);
-            return Encoding.UTF8.GetString(b);
-        }
-
-        private static string EncodeString(string utf8_encoded_text)
-        {
-            if (utf8_encoded_text == null)
-            {
-                return null;
-            }
-            byte[] b = Encoding.UTF8.GetBytes(utf8_encoded_text);
-            return Encoding.Default.GetString(b);
-        }
 
         // Models
 
-        [StructLayout(LayoutKind.Sequential, CharSet = charset)]
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         public struct TimeEntry
         {
             public Int64 DurationInSeconds;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string Description;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string ProjectAndTaskLabel;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string TaskLabel;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string ProjectLabel;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string ClientLabel;
             public UInt64 WID;
             public UInt64 PID;
             public UInt64 TID;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string Duration;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string Color;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string GUID;
             [MarshalAs(UnmanagedType.I1)]
             public bool Billable;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string Tags;
             public UInt64 Started;
             public UInt64 Ended;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string StartTimeString;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string EndTimeString;
             public UInt64 UpdatedAt;
             [MarshalAs(UnmanagedType.I1)]
             public bool DurOnly;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string DateHeader;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string DateDuration;
             [MarshalAs(UnmanagedType.I1)]
             public bool IsHeader;
@@ -79,32 +72,25 @@ namespace TogglDesktop
             public bool CanSeeBillable;
             public UInt64 DefaultWID;
             public IntPtr Next;
-
-            public TimeEntry ToUTF8()
-            {
-                Description = DecodeString(Description);
-                ProjectAndTaskLabel = DecodeString(ProjectAndTaskLabel);
-                ProjectLabel = DecodeString(ProjectLabel);
-                TaskLabel = DecodeString(TaskLabel);
-                ClientLabel = DecodeString(ClientLabel);
-                Duration = DecodeString(Duration);
-                Tags = DecodeString(Tags);
-                DateHeader = DecodeString(DateHeader);
-                DateDuration = DecodeString(DateDuration);
-                return this;
-            }
         }
 
-        [StructLayout(LayoutKind.Sequential, CharSet = charset)]
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         public struct AutocompleteItem
         {
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string Text;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string Description;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string ProjectAndTaskLabel;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string TaskLabel;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string ProjectLabel;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string ClientLabel;
-            public string ProjectColor;
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public string Project;
             public UInt64 TaskID;
             public UInt64 ProjectID;
             public UInt64 Type;
@@ -114,34 +100,18 @@ namespace TogglDesktop
             {
                 return this.Text;
             }
-
-            public AutocompleteItem ToUTF8()
-            {
-                Text = DecodeString(Text);
-                Description = DecodeString(Description);
-                ProjectAndTaskLabel = DecodeString(ProjectAndTaskLabel);
-                TaskLabel = DecodeString(TaskLabel);
-                ProjectLabel = DecodeString(ProjectLabel);
-                ClientLabel = DecodeString(ClientLabel);
-                ProjectColor = DecodeString(ProjectColor);
-                return this;
-            }
         }
 
-        [StructLayout(LayoutKind.Sequential, CharSet = charset)]
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         public struct Model
         {
             public UInt64 ID;
             public UInt64 WID;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string GUID;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string Name;
             public IntPtr Next;
-
-            public Model ToUTF8()
-            {
-                Name = DecodeString(Name);
-                return this;
-            }
 
             public override string ToString()
             {
@@ -149,14 +119,17 @@ namespace TogglDesktop
             }
         }
 
-        [StructLayout(LayoutKind.Sequential, CharSet = charset)]
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         public struct Settings
         {
             [MarshalAs(UnmanagedType.I1)]
             public bool UseProxy;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string ProxyHost;
             public UInt64 ProxyPort;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string ProxyUsername;
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string ProxyPassword;
             [MarshalAs(UnmanagedType.I1)]
             public bool UseIdleDetection;
@@ -170,14 +143,6 @@ namespace TogglDesktop
             public bool Reminder;
             [MarshalAs(UnmanagedType.I1)]
             public bool RecordTimeline;
-
-            public Settings ToUTF8()
-            {
-                ProxyHost = DecodeString(ProxyHost);
-                ProxyUsername = DecodeString(ProxyUsername);
-                ProxyPassword = DecodeString(ProxyPassword);
-                return this;
-            }
         }
 
         // Callbacks
@@ -192,6 +157,7 @@ namespace TogglDesktop
 
         [UnmanagedFunctionPointer(convention)]
         private delegate void TogglDisplayError(
+            [MarshalAs(UnmanagedType.LPWStr)]
             string errmsg,
             [MarshalAs(UnmanagedType.I1)]
             bool user_error);
@@ -204,6 +170,7 @@ namespace TogglDesktop
         private delegate void TogglDisplayOnlineState(
             [MarshalAs(UnmanagedType.I1)]
             bool is_online,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string reason);
 
         public delegate void DisplayOnlineState(
@@ -212,6 +179,7 @@ namespace TogglDesktop
 
         [UnmanagedFunctionPointer(convention)]
         private delegate void TogglDisplayURL(
+            [MarshalAs(UnmanagedType.LPWStr)]
             string url);
 
         public delegate void DisplayURL(
@@ -229,7 +197,9 @@ namespace TogglDesktop
 
         [UnmanagedFunctionPointer(convention)]
         private delegate void TogglDisplayReminder(
+            [MarshalAs(UnmanagedType.LPWStr)]
             string title,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string informative_text);
 
         public delegate void DisplayReminder(
@@ -308,7 +278,9 @@ namespace TogglDesktop
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         private static extern System.IntPtr toggl_context_init(
+            [MarshalAs(UnmanagedType.LPWStr)]
             string app_name,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string app_version);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -324,6 +296,7 @@ namespace TogglDesktop
         [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_set_environment(
             IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string environment);
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -333,7 +306,7 @@ namespace TogglDesktop
         // CA cert bundle path must be configured from UI
 
         [DllImport(dll, CharSet = CharSet.Unicode, CallingConvention = convention)]
-        private static extern void toggl_set_cacert_path_utf16(
+        private static extern void toggl_set_cacert_path(
             IntPtr context,
             [MarshalAs(UnmanagedType.LPWStr)]
             string path);
@@ -342,7 +315,7 @@ namespace TogglDesktop
 
         [DllImport(dll, CharSet = CharSet.Unicode, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        private static extern bool toggl_set_db_path_utf16(
+        private static extern bool toggl_set_db_path(
             IntPtr context,
             [MarshalAs(UnmanagedType.LPWStr)]
             string path);
@@ -350,7 +323,7 @@ namespace TogglDesktop
         // Log path must be configured from UI
 
         [DllImport(dll, CharSet = CharSet.Unicode, CallingConvention = convention)]
-        private static extern void toggl_set_log_path_utf16(
+        private static extern void toggl_set_log_path(
             [MarshalAs(UnmanagedType.LPWStr)]
             string path);
 
@@ -468,18 +441,21 @@ namespace TogglDesktop
         [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_login(
             IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string email,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string password);
 
         public static bool Login(string email, string password)
         {
-            return toggl_login(ctx, EncodeString(email), EncodeString(password));
+            return toggl_login(ctx, email, password);
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_google_login(
             IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string access_token);
 
         public static bool GoogleLogin(string access_token)
@@ -513,8 +489,11 @@ namespace TogglDesktop
         [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_feedback_send(
             IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string topic,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string details,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string filename);
 
         public static bool SendFeedback(
@@ -522,8 +501,7 @@ namespace TogglDesktop
             string details,
             string filename)
         {
-            return toggl_feedback_send(ctx,
-                EncodeString(topic), EncodeString(details), EncodeString(filename));
+            return toggl_feedback_send(ctx, topic, details, filename);
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -539,9 +517,11 @@ namespace TogglDesktop
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         private static extern void toggl_edit(
             IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string guid,
             [MarshalAs(UnmanagedType.I1)]
             bool edit_running_time_entry,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string focused_field_name);
 
         public static void Edit(
@@ -565,6 +545,7 @@ namespace TogglDesktop
         [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_continue(
             IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string guid);
 
         public static bool Continue(string guid)
@@ -602,16 +583,18 @@ namespace TogglDesktop
 
         public static bool SetTimeEntryDuration(string guid, string value)
         {
-            return toggl_set_time_entry_duration(ctx, guid, EncodeString(value));
+            return toggl_set_time_entry_duration(ctx, guid, value);
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_set_time_entry_project(
             IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string guid,
             UInt64 task_id,
             UInt64 project_id,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string project_guid);
 
         public static bool SetTimeEntryProject(
@@ -628,12 +611,14 @@ namespace TogglDesktop
         [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_set_time_entry_start_iso_8601(
             IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string guid,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string value);
 
         public static bool SetTimeEntryStart(string guid, string value)
         {
-            return toggl_set_time_entry_start_iso_8601(ctx, guid, EncodeString(value));
+            return toggl_set_time_entry_start_iso_8601(ctx, guid, value);
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -645,25 +630,28 @@ namespace TogglDesktop
 
         public static bool SetTimeEntryEnd(string guid, string value)
         {
-            return toggl_set_time_entry_end_iso_8601(ctx, guid, EncodeString(value));
+            return toggl_set_time_entry_end_iso_8601(ctx, guid, value);
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_set_time_entry_tags(
             IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string guid,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string value);
 
         public static bool SetTimeEntryTags(string guid, string value)
         {
-            return toggl_set_time_entry_tags(ctx, guid, EncodeString(value));
+            return toggl_set_time_entry_tags(ctx, guid, value);
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_set_time_entry_billable(
             IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string guid,
             [MarshalAs(UnmanagedType.I1)]
             bool billable);
@@ -677,12 +665,14 @@ namespace TogglDesktop
         [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_set_time_entry_description(
             IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string guid,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string value);
 
         public static bool SetTimeEntryDescription(string guid, string value)
         {
-            return toggl_set_time_entry_description(ctx, guid, EncodeString(value));
+            return toggl_set_time_entry_description(ctx, guid, value);
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -699,6 +689,7 @@ namespace TogglDesktop
         [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_discard_time_at(
             IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string guid,
             UInt64 at);
 
@@ -738,10 +729,10 @@ namespace TogglDesktop
             if (!toggl_set_proxy_settings(
                 ctx,
                 settings.UseProxy,
-                EncodeString(settings.ProxyHost),
+                settings.ProxyHost,
                 settings.ProxyPort,
-                EncodeString(settings.ProxyUsername),
-                EncodeString(settings.ProxyPassword)))
+                settings.ProxyUsername,
+                settings.ProxyPassword))
             {
                 return false;
             }
@@ -760,9 +751,12 @@ namespace TogglDesktop
             IntPtr context,
             [MarshalAs(UnmanagedType.I1)]
             bool use_proxy,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string proxy_host,
             UInt64 proxy_port,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string proxy_username,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string proxy_password);
  
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -789,7 +783,9 @@ namespace TogglDesktop
         [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_start(
             IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string description,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string duration,
             UInt64 task_id,
             UInt64 project_id);
@@ -801,8 +797,8 @@ namespace TogglDesktop
             UInt64 project_id)
         {
             return toggl_start(ctx,
-                EncodeString(description),
-                EncodeString(duration),
+                description,
+                duration,
                 task_id,
                 project_id);
         }
@@ -811,9 +807,11 @@ namespace TogglDesktop
         [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_add_project(
             IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string time_entry_guid,
             UInt64 workspace_id,
             UInt64 client_id,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string project_name,
             [MarshalAs(UnmanagedType.I1)]
             bool is_private);
@@ -829,7 +827,7 @@ namespace TogglDesktop
                 time_entry_guid,
                 workspace_id,
                 client_id,
-                EncodeString(project_name),
+                project_name,
                 is_private);
         }
 
@@ -837,6 +835,7 @@ namespace TogglDesktop
         [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_set_update_channel(
             IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string update_channel);
 
         public static bool SetUpdateChannel(string channel)
@@ -845,7 +844,7 @@ namespace TogglDesktop
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        [return: MarshalAs(UnmanagedType.LPStr)]
+        [return: MarshalAs(UnmanagedType.LPWStr)]
         private static extern string toggl_get_update_channel(
             IntPtr context);
 
@@ -922,7 +921,7 @@ namespace TogglDesktop
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        [return: MarshalAs(UnmanagedType.LPStr)]
+        [return: MarshalAs(UnmanagedType.LPWStr)]
         private static extern string toggl_format_duration_in_seconds_hhmmss(
             Int64 duration_in_seconds);
 
@@ -967,7 +966,7 @@ namespace TogglDesktop
             string cacert_path = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory,
                 "cacert.pem");
-            toggl_set_cacert_path_utf16(ctx, cacert_path);
+            toggl_set_cacert_path(ctx, cacert_path);
 
             toggl_check_view_struct_size(
                 Marshal.SizeOf(new TimeEntry()),
@@ -983,12 +982,12 @@ namespace TogglDesktop
 
             toggl_on_error(ctx, delegate(string errmsg, bool user_error)
             {
-                OnError(DecodeString(errmsg), user_error);
+                OnError(errmsg, user_error);
             });
 
             toggl_on_online_state(ctx, delegate(bool is_online, string reason)
             {
-                OnOnlineState(is_online, DecodeString(reason));
+                OnOnlineState(is_online, reason);
             });
 
             toggl_on_login(ctx, delegate(bool open, UInt64 user_id)
@@ -998,7 +997,7 @@ namespace TogglDesktop
 
             toggl_on_reminder(ctx, delegate(string title, string informative_text)
             {
-                OnReminder(DecodeString(title), DecodeString(informative_text));
+                OnReminder(title, informative_text);
             });
 
             toggl_on_time_entry_list(ctx, delegate(bool open, IntPtr first)
@@ -1021,7 +1020,7 @@ namespace TogglDesktop
                 ref TimeEntry te,
                 string focused_field_name)
             {
-                OnTimeEntryEditor(open, te.ToUTF8(), focused_field_name);
+                OnTimeEntryEditor(open, te, focused_field_name);
             });
 
             toggl_on_workspace_select(ctx, delegate(IntPtr first)
@@ -1041,7 +1040,7 @@ namespace TogglDesktop
 
             toggl_on_settings(ctx, delegate(bool open, ref Settings settings)
             {
-                OnSettings(open, settings.ToUTF8());
+                OnSettings(open, settings);
             });
 
             toggl_on_timer_state(ctx, delegate(IntPtr te)
@@ -1054,7 +1053,7 @@ namespace TogglDesktop
                 TimeEntry view =
                     (TimeEntry)Marshal.PtrToStructure(
                     te, typeof(TimeEntry));
-                OnRunningTimerState(view.ToUTF8());
+                OnRunningTimerState(view);
             });
 
             toggl_on_url(ctx, delegate(string url)
@@ -1065,11 +1064,7 @@ namespace TogglDesktop
             toggl_on_idle_notification(ctx, delegate(
                 string guid, string since, string duration, UInt64 started)
             {
-                OnIdleNotification(
-                    DecodeString(guid),
-                    DecodeString(since),
-                    DecodeString(duration),
-                    started);
+                OnIdleNotification(guid, since, duration, started);
             });
 
             toggl_set_environment(ctx, Properties.Settings.Default.Environment);
@@ -1084,10 +1079,10 @@ namespace TogglDesktop
                 Environment.SpecialFolder.ApplicationData), "Kopsik");
             System.IO.Directory.CreateDirectory(path);
             string logPath = Path.Combine(path, "kopsik.log");
-            toggl_set_log_path_utf16(logPath);
+            toggl_set_log_path(logPath);
             toggl_set_log_level("debug");
             string databasePath = Path.Combine(path, "kopsik.db");
-            if (!toggl_set_db_path_utf16(ctx, databasePath))
+            if (!toggl_set_db_path(ctx, databasePath))
             {
                 throw new System.Exception("Failed to initialize database at " + databasePath);
             }
@@ -1107,7 +1102,7 @@ namespace TogglDesktop
                 first, typeof(Model));
             while (true)
             {
-                list.Add(n.ToUTF8());
+                list.Add(n);
                 if (n.Next == IntPtr.Zero)
                 {
                     break;
@@ -1129,7 +1124,7 @@ namespace TogglDesktop
                 first, typeof(AutocompleteItem));
             while (true)
             {
-                list.Add(n.ToUTF8());
+                list.Add(n);
                 if (n.Next == IntPtr.Zero)
                 {
                     break;
@@ -1152,7 +1147,7 @@ namespace TogglDesktop
 
             while (true)
             {
-                list.Add(n.ToUTF8());
+                list.Add(n);
                 if (n.Next == IntPtr.Zero)
                 {
                     break;

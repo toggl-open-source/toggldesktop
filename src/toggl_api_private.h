@@ -14,6 +14,10 @@
 #include "./settings.h"
 #include "./proxy.h"
 
+int compare_string(const char_t *s1, const char_t *s2);
+char_t *copy_string(const std::string s);
+std::string to_string(const char_t *s);
+
 TogglGenericView *view_item_init();
 
 TogglGenericView *project_to_view_item(

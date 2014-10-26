@@ -39,13 +39,13 @@ inline toggl::Context *app(void *context) {
 }
 
 void *toggl_context_init(
-    const char *app_name,
-    const char *app_version) {
+    const char_t *app_name,
+    const char_t *app_version) {
     poco_check_ptr(app_name);
     poco_check_ptr(app_version);
 
     toggl::Context *ctx =
-        new toggl::Context(std::string(app_name), std::string(app_version));
+		new toggl::Context(to_string(app_name), to_string(app_version));
 
     ctx->SetAPIURL(kAPIURL);
     ctx->SetTimelineUploadURL(kTimelineUploadURL);
@@ -90,72 +90,50 @@ _Bool toggl_set_settings(
 
 _Bool toggl_set_proxy_settings(void *context,
                                const _Bool use_proxy,
-                               const char *proxy_host,
+                               const char_t *proxy_host,
                                const uint64_t proxy_port,
-                               const char *proxy_username,
-                               const char *proxy_password) {
+                               const char_t *proxy_username,
+                               const char_t *proxy_password) {
     poco_check_ptr(proxy_host);
     poco_check_ptr(proxy_username);
     poco_check_ptr(proxy_password);
 
     toggl::Proxy proxy;
-    proxy.host = std::string(proxy_host);
+    proxy.host = to_string(proxy_host);
     proxy.port = proxy_port;
-    proxy.username = std::string(proxy_username);
-    proxy.password = std::string(proxy_password);
+	proxy.username = to_string(proxy_username);
+	proxy.password = to_string(proxy_password);
 
     return app(context)->SetProxySettings(use_proxy, proxy);
 }
 
 void toggl_set_cacert_path(
     void *context,
-    const char *path) {
+    const char_t *path) {
     poco_check_ptr(path);
 
-    toggl::HTTPSClientConfig::CACertPath = std::string(path);
-}
-
-void toggl_set_cacert_path_utf16(
-    void *context,
-    const wchar_t *path) {
-    poco_check_ptr(path);
-
-    std::string utf8("");
-    Poco::UnicodeConverter::toUTF8(path, utf8);
-
-    toggl::HTTPSClientConfig::CACertPath = utf8;
+    toggl::HTTPSClientConfig::CACertPath = to_string(path);
 }
 
 _Bool toggl_set_db_path(
     void *context,
-    const char *path) {
+    const char_t *path) {
     poco_check_ptr(path);
 
-    return app(context)->SetDBPath(std::string(path));
-}
-
-_Bool toggl_set_db_path_utf16(
-    void *context,
-    const wchar_t *path) {
-    poco_check_ptr(path);
-
-    std::string utf8("");
-    Poco::UnicodeConverter::toUTF8(path, utf8);
-
-    return app(context)->SetDBPath(utf8);
+    return app(context)->SetDBPath(to_string(path));
 }
 
 void toggl_set_environment(
     void *context,
-    const char *environment) {
+    const char_t *environment) {
     poco_check_ptr(environment);
 
-    return app(context)->SetEnvironment(environment);
+    return app(context)->SetEnvironment(to_string(environment));
 }
 
-char *toggl_environment(
+char_t *toggl_environment(
     void *context) {
-    return strdup(app(context)->Environment().c_str());
+    return copy_string(app(context)->Environment());
 }
 
 void toggl_disable_update_check(
@@ -164,62 +142,53 @@ void toggl_disable_update_check(
     app(context)->DisableUpdateCheck();
 }
 
-void toggl_set_log_path(const char *path) {
+void toggl_set_log_path(const char_t *path) {
     poco_check_ptr(path);
 
-    toggl::Context::SetLogPath(std::string(path));
+    toggl::Context::SetLogPath(to_string(path));
 }
 
-void toggl_set_log_path_utf16(const wchar_t *path) {
-    poco_check_ptr(path);
-
-    std::string utf8("");
-    Poco::UnicodeConverter::toUTF8(path, utf8);
-
-    toggl::Context::SetLogPath(utf8);
-}
-
-void toggl_set_log_level(const char *level) {
+void toggl_set_log_level(const char_t *level) {
     poco_check_ptr(level);
 
-    rootLogger().setLevel(level);
+    rootLogger().setLevel(to_string(level));
 }
 
 void toggl_set_api_url(
     void *context,
-    const char *api_url) {
+    const char_t *api_url) {
     poco_check_ptr(api_url);
 
-    app(context)->SetAPIURL(std::string(api_url));
+    app(context)->SetAPIURL(to_string(api_url));
 }
 
 void toggl_set_websocket_url(
     void *context,
-    const char *websocket_url) {
+    const char_t *websocket_url) {
     poco_check_ptr(websocket_url);
 
-    app(context)->SetWebSocketClientURL(websocket_url);
+    app(context)->SetWebSocketClientURL(to_string(websocket_url));
 }
 
 _Bool toggl_login(
     void *context,
-    const char *email,
-    const char *password) {
+    const char_t *email,
+    const char_t *password) {
 
     poco_check_ptr(email);
     poco_check_ptr(password);
 
-    return app(context)->Login(std::string(email),
-                               std::string(password));
+    return app(context)->Login(to_string(email),
+                               to_string(password));
 }
 
 _Bool toggl_google_login(
     void *context,
-    const char *access_token) {
+    const char_t *access_token) {
 
     poco_check_ptr(access_token);
 
-    return app(context)->GoogleLogin(std::string(access_token));
+    return app(context)->GoogleLogin(to_string(access_token));
 }
 
 _Bool toggl_logout(
@@ -247,10 +216,10 @@ void toggl_sync(void *context) {
 
 _Bool toggl_add_project(
     void *context,
-    const char *time_entry_guid,
+    const char_t *time_entry_guid,
     const uint64_t workspace_id,
     const uint64_t client_id,
-    const char *project_name,
+    const char_t *project_name,
     const _Bool is_private) {
 
     poco_check_ptr(time_entry_guid);
@@ -259,7 +228,7 @@ _Bool toggl_add_project(
     if (!app(context)->AddProject(
         workspace_id,
         client_id,
-        std::string(project_name),
+        to_string(project_name),
         is_private,
         &p)) {
         return false;
@@ -267,16 +236,19 @@ _Bool toggl_add_project(
 
     poco_check_ptr(p);
 
-    return toggl_set_time_entry_project(
+	char_t *guid_s = copy_string(p->GUID());
+    _Bool res = toggl_set_time_entry_project(
         context,
         time_entry_guid,
         0, /* no task ID */
         p->ID(),
-        p->GUID().c_str());
+        guid_s);
+	free(guid_s);
+	return res;
 }
 
 _Bool toggl_parse_time(
-    const char *input,
+    const char_t *input,
     int *hours,
     int *minutes) {
     poco_check_ptr(hours);
@@ -290,31 +262,31 @@ _Bool toggl_parse_time(
     }
 
     return toggl::Formatter::ParseTimeInput(
-        std::string(input), hours, minutes);
+        to_string(input), hours, minutes);
 }
 
-char *toggl_format_duration_in_seconds_hhmmss(
+char_t *toggl_format_duration_in_seconds_hhmmss(
     const int64_t duration_in_seconds) {
 
     std::string formatted =
         toggl::Formatter::FormatDurationInSecondsHHMMSS(duration_in_seconds);
 
-    return strdup(formatted.c_str());
+    return copy_string(formatted);
 }
 
-char *toggl_format_duration_in_seconds_hhmm(
+char_t *toggl_format_duration_in_seconds_hhmm(
     const int64_t duration_in_seconds) {
 
     std::string formatted = toggl::Formatter::FormatDurationInSecondsHHMM(
         duration_in_seconds);
 
-    return strdup(formatted.c_str());
+    return copy_string(formatted);
 }
 
 _Bool toggl_start(
     void *context,
-    const char *description,
-    const char *duration,
+    const char_t *description,
+    const char_t *duration,
     const uint64_t task_id,
     const uint64_t project_id) {
 
@@ -322,12 +294,12 @@ _Bool toggl_start(
 
     std::string desc("");
     if (description) {
-        desc = std::string(description);
+        desc = to_string(description);
     }
 
     std::string dur("");
     if (duration) {
-        dur = std::string(duration);
+        dur = to_string(duration);
     }
 
     return app(context)->Start(desc, dur, task_id, project_id);
@@ -335,7 +307,7 @@ _Bool toggl_start(
 
 _Bool toggl_continue(
     void *context,
-    const char *guid) {
+    const char_t *guid) {
 
     poco_check_ptr(guid);
 
@@ -343,9 +315,7 @@ _Bool toggl_continue(
     ss << "toggl_continue guid=" << guid;
     logger().debug(ss.str());
 
-    std::string GUID(guid);
-
-    return app(context)->Continue(GUID);
+	return app(context)->Continue(to_string(guid));
 }
 
 void toggl_view_time_entry_list(void *context) {
@@ -354,9 +324,9 @@ void toggl_view_time_entry_list(void *context) {
 
 void toggl_edit(
     void *context,
-    const char *guid,
+    const char_t *guid,
     const _Bool edit_running_entry,
-    const char *focused_field_name) {
+    const char_t *focused_field_name) {
 
     poco_check_ptr(guid);
     poco_check_ptr(focused_field_name);
@@ -367,9 +337,9 @@ void toggl_edit(
        << ", focused_field_name = " << focused_field_name;
     logger().debug(ss.str());
 
-    app(context)->Edit(std::string(guid),
+    app(context)->Edit(to_string(guid),
                        edit_running_entry,
-                       std::string(focused_field_name));
+                       to_string(focused_field_name));
 }
 
 void toggl_about(void *context) {
@@ -390,7 +360,7 @@ _Bool toggl_continue_latest(
 
 _Bool toggl_delete_time_entry(
     void *context,
-    const char *guid) {
+    const char_t *guid) {
 
     poco_check_ptr(guid);
 
@@ -398,15 +368,13 @@ _Bool toggl_delete_time_entry(
     ss << "toggl_delete_time_entry guid=" << guid;
     logger().debug(ss.str());
 
-    std::string GUID(guid);
-
-    return app(context)->DeleteTimeEntryByGUID(GUID);
+    return app(context)->DeleteTimeEntryByGUID(to_string(guid));
 }
 
 _Bool toggl_set_time_entry_duration(
     void *context,
-    const char *guid,
-    const char *value) {
+    const char_t *guid,
+    const char_t *value) {
 
     poco_check_ptr(guid);
     poco_check_ptr(value);
@@ -417,23 +385,23 @@ _Bool toggl_set_time_entry_duration(
     logger().debug(ss.str());
 
     return app(context)->SetTimeEntryDuration(
-        std::string(guid),
-        std::string(value));
+        to_string(guid),
+        to_string(value));
 }
 
 _Bool toggl_set_time_entry_project(
     void *context,
-    const char *guid,
+    const char_t *guid,
     const uint64_t task_id,
     const uint64_t project_id,
-    const char *project_guid) {
+    const char_t *project_guid) {
 
     poco_check_ptr(guid);
     std::string pguid("");
     if (project_guid) {
-        pguid = std::string(project_guid);
+        pguid = to_string(project_guid);
     }
-    return app(context)->SetTimeEntryProject(std::string(guid),
+    return app(context)->SetTimeEntryProject(to_string(guid),
             task_id,
             project_id,
             pguid);
@@ -441,8 +409,8 @@ _Bool toggl_set_time_entry_project(
 
 _Bool toggl_set_time_entry_start_iso_8601(
     void *context,
-    const char *guid,
-    const char *value) {
+    const char_t *guid,
+    const char_t *value) {
 
     poco_check_ptr(guid);
     poco_check_ptr(value);
@@ -452,14 +420,14 @@ _Bool toggl_set_time_entry_start_iso_8601(
         << ", value=" << value;
     logger().debug(ss.str());
 
-    return app(context)->SetTimeEntryStartISO8601(std::string(guid),
-            std::string(value));
+    return app(context)->SetTimeEntryStartISO8601(to_string(guid),
+            to_string(value));
 }
 
 _Bool toggl_set_time_entry_end_iso_8601(
     void *context,
-    const char *guid,
-    const char *value) {
+    const char_t *guid,
+    const char_t *value) {
 
     poco_check_ptr(guid);
     poco_check_ptr(value);
@@ -470,14 +438,14 @@ _Bool toggl_set_time_entry_end_iso_8601(
     logger().debug(ss.str());
 
     return app(context)->SetTimeEntryEndISO8601(
-        std::string(guid),
-        std::string(value));
+        to_string(guid),
+        to_string(value));
 }
 
 _Bool toggl_set_time_entry_tags(
     void *context,
-    const char *guid,
-    const char *value) {
+    const char_t *guid,
+    const char_t *value) {
 
     poco_check_ptr(guid);
     poco_check_ptr(value);
@@ -487,13 +455,13 @@ _Bool toggl_set_time_entry_tags(
         << ", value=" << value;
     logger().debug(ss.str());
 
-    return app(context)->SetTimeEntryTags(std::string(guid),
-                                          std::string(value));
+    return app(context)->SetTimeEntryTags(to_string(guid),
+                                          to_string(value));
 }
 
 _Bool toggl_set_time_entry_billable(
     void *context,
-    const char *guid,
+    const char_t *guid,
     const _Bool value) {
 
     poco_check_ptr(guid);
@@ -503,13 +471,13 @@ _Bool toggl_set_time_entry_billable(
         << ", value=" << value;
     logger().debug(ss.str());
 
-    return app(context)->SetTimeEntryBillable(std::string(guid), value);
+    return app(context)->SetTimeEntryBillable(to_string(guid), value);
 }
 
 _Bool toggl_set_time_entry_description(
     void *context,
-    const char *guid,
-    const char *value) {
+    const char_t *guid,
+    const char_t *value) {
     poco_check_ptr(guid);
     poco_check_ptr(value);
 
@@ -518,8 +486,8 @@ _Bool toggl_set_time_entry_description(
         << ", value=" << value;
     logger().debug(ss.str());
 
-    return app(context)->SetTimeEntryDescription(std::string(guid),
-            std::string(value));
+    return app(context)->SetTimeEntryDescription(to_string(guid),
+            to_string(value));
 }
 
 _Bool toggl_stop(
@@ -531,14 +499,14 @@ _Bool toggl_stop(
 
 _Bool toggl_discard_time_at(
     void *context,
-    const char *guid,
+    const char_t *guid,
     const uint64_t at) {
     poco_check_ptr(guid);
     poco_assert(at);
 
     logger().debug("toggl_discard_time_at");
 
-    return app(context)->DiscardTimeAt(guid, at);
+    return app(context)->DiscardTimeAt(to_string(guid), at);
 }
 
 _Bool toggl_timeline_toggle_recording(
@@ -555,40 +523,42 @@ _Bool toggl_timeline_is_recording_enabled(
 
 _Bool toggl_feedback_send(
     void *context,
-    const char *topic,
-    const char *details,
-    const char *filename) {
+    const char_t *topic,
+    const char_t *details,
+    const char_t *filename) {
     std::stringstream ss;
     ss << "toggl_feedback_send topic=" << topic << " details=" << details;
     logger().debug(ss.str());
 
-    toggl::Feedback feedback(topic, details, filename);
+    toggl::Feedback feedback(to_string(topic),
+		to_string(details),
+		to_string(filename));
 
     return app(context)->SendFeedback(feedback);
 }
 
 _Bool toggl_set_update_channel(
     void *context,
-    const char *update_channel) {
+    const char_t *update_channel) {
 
     poco_check_ptr(update_channel);
 
-    return app(context)->SaveUpdateChannel(std::string(update_channel));
+    return app(context)->SaveUpdateChannel(to_string(update_channel));
 }
 
-char *toggl_get_update_channel(
+char_t *toggl_get_update_channel(
     void *context) {
 
     std::string update_channel("");
     app(context)->UpdateChannel(&update_channel);
-    return strdup(update_channel.c_str());
+	return copy_string(update_channel);
 }
 
-int64_t toggl_parse_duration_string_into_seconds(const char *duration_string) {
+int64_t toggl_parse_duration_string_into_seconds(const char_t *duration_string) {
     if (!duration_string) {
         return 0;
     }
-    return toggl::Formatter::ParseDurationString(std::string(duration_string));
+    return toggl::Formatter::ParseDurationString(to_string(duration_string));
 }
 
 void toggl_on_show_app(
@@ -726,8 +696,8 @@ void toggl_on_idle_notification(
     app(context)->UI()->OnDisplayIdleNotification(cb);
 }
 
-void toggl_debug(const char *text) {
-    logger().debug(text);
+void toggl_debug(const char_t *text) {
+    logger().debug(to_string(text));
 }
 
 void toggl_check_view_struct_size(

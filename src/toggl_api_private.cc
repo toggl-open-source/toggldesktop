@@ -7,16 +7,18 @@
 #include "./formatter.h"
 #include "./context.h"
 
+#include "Poco/UnicodeConverter.h"
+
 TogglAutocompleteView *autocomplete_item_init(
     const toggl::AutocompleteItem item) {
     TogglAutocompleteView *result = new TogglAutocompleteView();
-    result->Description = strdup(item.Description.c_str());
-    result->Text = strdup(item.Text.c_str());
-    result->ProjectAndTaskLabel = strdup(item.ProjectAndTaskLabel.c_str());
-    result->TaskLabel = strdup(item.TaskLabel.c_str());
-    result->ProjectLabel = strdup(item.ProjectLabel.c_str());
-    result->ClientLabel = strdup(item.ClientLabel.c_str());
-    result->ProjectColor = strdup(item.ProjectColor.c_str());
+    result->Description = copy_string(item.Description);
+	result->Text = copy_string(item.Text);
+	result->ProjectAndTaskLabel = copy_string(item.ProjectAndTaskLabel);
+	result->TaskLabel = copy_string(item.TaskLabel);
+	result->ProjectLabel = copy_string(item.ProjectLabel);
+	result->ClientLabel = copy_string(item.ClientLabel);
+	result->ProjectColor = copy_string(item.ProjectColor);
     result->ProjectID = static_cast<unsigned int>(item.ProjectID);
     result->TaskID = static_cast<unsigned int>(item.TaskID);
     result->Type = static_cast<unsigned int>(item.Type);
@@ -38,21 +40,21 @@ TogglGenericView *project_to_view_item(toggl::Project * const p) {
 
     TogglGenericView *result = view_item_init();
     result->ID = static_cast<unsigned int>(p->ID());
-    result->GUID = strdup(p->GUID().c_str());
-    result->Name = strdup(p->Name().c_str());
+	result->GUID = copy_string(p->GUID());
+	result->Name = copy_string(p->Name());
     return result;
 }
 
 TogglGenericView *tag_to_view_item(const std::string tag_name) {
     TogglGenericView *result = view_item_init();
-    result->Name = strdup(tag_name.c_str());
+	result->Name = copy_string(tag_name);
     return result;
 }
 
 TogglGenericView *workspace_to_view_item(toggl::Workspace * const ws) {
     TogglGenericView *result = view_item_init();
     result->ID = static_cast<unsigned int>(ws->ID());
-    result->Name = strdup(ws->Name().c_str());
+	result->Name = copy_string(ws->Name());
     return result;
 }
 
@@ -60,8 +62,8 @@ TogglGenericView *client_to_view_item(toggl::Client * const c) {
     TogglGenericView *result = view_item_init();
     result->ID = static_cast<unsigned int>(c->ID());
     result->WID = static_cast<unsigned int>(c->WID());
-    result->GUID = strdup(c->GUID().c_str());
-    result->Name = strdup(c->Name().c_str());
+	result->GUID = copy_string(c->GUID());
+	result->Name = copy_string(c->Name());
     return result;
 }
 
@@ -122,6 +124,35 @@ void autocomplete_item_clear(TogglAutocompleteView *item) {
     delete item;
 }
 
+std::string to_string(const char_t *s) {
+#ifdef _WIN32
+	std::wstring ws(s);
+	std::string res("");
+	Poco::UnicodeConverter::toUTF8(ws, res);
+	return res;
+#else
+	return std::string(s);
+#endif
+}
+
+char_t *copy_string(const std::string s) {
+#ifdef _WIN32
+	std::wstring ws;
+	Poco::UnicodeConverter::toUTF16(s, ws);
+	return wcsdup(ws.c_str());
+#else
+	return strdrup(s.c_str());
+#endif
+}
+
+int compare_string(const char_t *s1, const char_t *s2) {
+#ifdef _WIN32
+	return wcscmp(s1, s2);
+#else
+	return strcmp(s1, s2);
+#endif
+}
+
 TogglTimeEntryView *time_entry_view_item_init(
     toggl::TimeEntry *te,
     const std::string project_and_task_label,
@@ -138,20 +169,20 @@ TogglTimeEntryView *time_entry_view_item_init(
     poco_check_ptr(view_item);
 
     view_item->DurationInSeconds = static_cast<int>(te->DurationInSeconds());
-    view_item->Description = strdup(te->Description().c_str());
-    view_item->GUID = strdup(te->GUID().c_str());
+	view_item->Description = copy_string(te->Description());
+	view_item->GUID = copy_string(te->GUID());
     view_item->WID = static_cast<unsigned int>(te->WID());
     view_item->TID = static_cast<unsigned int>(te->TID());
     view_item->PID = static_cast<unsigned int>(te->PID());
-    view_item->Duration = strdup(te->DurationString().c_str());
+	view_item->Duration = copy_string(te->DurationString());
     view_item->Started = static_cast<unsigned int>(te->Start());
     view_item->Ended = static_cast<unsigned int>(te->Stop());
 
-    view_item->ProjectAndTaskLabel = strdup(project_and_task_label.c_str());
-    view_item->TaskLabel = strdup(task_label.c_str());
-    view_item->ProjectLabel = strdup(project_label.c_str());
-    view_item->ClientLabel = strdup(client_label.c_str());
-    view_item->Color = strdup(color.c_str());
+    view_item->ProjectAndTaskLabel = copy_string(project_and_task_label);
+	view_item->TaskLabel = copy_string(task_label);
+	view_item->ProjectLabel = copy_string(project_label);
+	view_item->ClientLabel = copy_string(client_label);
+	view_item->Color = copy_string(color);
 
     std::string start_time_string =
         toggl::Formatter::FormatTimeForTimeEntryEditor(te->Start(),
@@ -160,19 +191,19 @@ TogglTimeEntryView *time_entry_view_item_init(
         toggl::Formatter::FormatTimeForTimeEntryEditor(te->Stop(),
                 timeofday_format);
 
-    view_item->StartTimeString = strdup(start_time_string.c_str());
-    view_item->EndTimeString = strdup(end_time_string.c_str());
+	view_item->StartTimeString = copy_string(start_time_string);
+	view_item->EndTimeString = copy_string(end_time_string);
 
-    view_item->DateDuration = strdup(date_duration.c_str());
+	view_item->DateDuration = copy_string(date_duration);
 
     view_item->Billable = te->Billable();
     if (te->Tags().empty()) {
         view_item->Tags = 0;
     } else {
-        view_item->Tags = strdup(te->Tags().c_str());
+		view_item->Tags = copy_string(te->Tags().c_str());
     }
     view_item->UpdatedAt = static_cast<unsigned int>(te->UpdatedAt());
-    view_item->DateHeader = strdup(te->DateHeaderString().c_str());
+	view_item->DateHeader = copy_string(te->DateHeaderString());
     view_item->DurOnly = te->DurOnly();
     view_item->IsHeader = false;
 
@@ -256,10 +287,10 @@ TogglSettingsView *settings_view_item_init(
 
     view->UseProxy = use_proxy;
 
-    view->ProxyHost = strdup(proxy.host.c_str());
+	view->ProxyHost = copy_string(proxy.host);
     view->ProxyPort = proxy.port;
-    view->ProxyUsername = strdup(proxy.username.c_str());
-    view->ProxyPassword = strdup(proxy.password.c_str());
+	view->ProxyUsername = copy_string(proxy.username);
+	view->ProxyPassword = copy_string(proxy.password);
 
     return view;
 }

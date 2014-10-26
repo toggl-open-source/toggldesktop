@@ -29,32 +29,38 @@ extern "C" {
 #define TOGGL_EXPORT
 #endif
 
+#ifdef _WIN32
+#define char_t wchar_t
+#else
+#define char_t char
+#endif
+
     // Models
 
     typedef struct {
         int64_t DurationInSeconds;
-        char *Description;
-        char *ProjectAndTaskLabel;
-        char *TaskLabel;
-        char *ProjectLabel;
-        char *ClientLabel;
+        char_t *Description;
+		char_t *ProjectAndTaskLabel;
+		char_t *TaskLabel;
+		char_t *ProjectLabel;
+		char_t *ClientLabel;
         uint64_t WID;
         uint64_t PID;
         uint64_t TID;
-        char *Duration;
-        char *Color;
-        char *GUID;
+		char_t *Duration;
+		char_t *Color;
+		char_t *GUID;
         _Bool Billable;
-        char *Tags;
+		char_t *Tags;
         uint64_t Started;
         uint64_t Ended;
-        char *StartTimeString;
-        char *EndTimeString;
+        char_t *StartTimeString;
+		char_t *EndTimeString;
         uint64_t UpdatedAt;
         _Bool DurOnly;
         // In case it's a header
-        char *DateHeader;
-        char *DateDuration;
+		char_t *DateHeader;
+        char_t *DateDuration;
         _Bool IsHeader;
         // Additional fields; only when in time entry editor
         _Bool CanAddProjects;
@@ -66,15 +72,15 @@ extern "C" {
 
     typedef struct {
         // This is what is displayed to user, includes project and task.
-        char *Text;
+        char_t *Text;
         // This is copied to "time_entry.description" field if item is selected
-        char *Description;
+        char_t *Description;
         // Project label, if has a project
-        char *ProjectAndTaskLabel;
-        char *TaskLabel;
-        char *ProjectLabel;
-        char *ClientLabel;
-        char *ProjectColor;
+        char_t *ProjectAndTaskLabel;
+        char_t *TaskLabel;
+        char_t *ProjectLabel;
+        char_t *ClientLabel;
+        char_t *ProjectColor;
         uint64_t TaskID;
         uint64_t ProjectID;
         uint64_t Type;
@@ -84,17 +90,17 @@ extern "C" {
     typedef struct {
         uint64_t ID;
         uint64_t WID;
-        char *GUID;
-        char *Name;
+        char_t *GUID;
+        char_t *Name;
         void *Next;
     } TogglGenericView;
 
     typedef struct {
         _Bool UseProxy;
-        char *ProxyHost;;
+        char_t *ProxyHost;;
         uint64_t ProxyPort;
-        char *ProxyUsername;
-        char *ProxyPassword;
+        char_t *ProxyUsername;
+        char_t *ProxyPassword;
         _Bool UseIdleDetection;
         _Bool MenubarTimer;
         _Bool DockIcon;
@@ -104,11 +110,11 @@ extern "C" {
     } TogglSettingsView;
 
     typedef struct {
-        char *UpdateChannel;
+        char_t *UpdateChannel;
         _Bool IsChecking;
         _Bool IsUpdateAvailable;
-        char *URL;
-        char *Version;
+        char_t *URL;
+        char_t *Version;
     } TogglUpdateView;
 
     // Callbacks that need to be implemented in UI
@@ -117,7 +123,7 @@ extern "C" {
         const _Bool open);
 
     typedef void (*TogglDisplayError)(
-        const char *errmsg,
+        const char_t *errmsg,
         const _Bool user_error);
 
     typedef void (*TogglDisplayUpdate)(
@@ -126,18 +132,18 @@ extern "C" {
 
     typedef void (*TogglDisplayOnlineState)(
         const _Bool is_online,
-        const char *reason);
+        const char_t *reason);
 
     typedef void(*TogglDisplayURL)(
-        const char *url);
+        const char_t *url);
 
     typedef void (*TogglDisplayLogin)(
         const _Bool open,
         const uint64_t user_id);
 
     typedef void (*TogglDisplayReminder)(
-        const char *title,
-        const char *informative_text);
+        const char_t *title,
+        const char_t *informative_text);
 
     typedef void (*TogglDisplayTimeEntryList)(
         const _Bool open,
@@ -152,7 +158,7 @@ extern "C" {
     typedef void (*TogglDisplayTimeEntryEditor)(
         const _Bool open,
         TogglTimeEntryView *te,
-        const char *focused_field_name);
+        const char_t *focused_field_name);
 
     typedef void (*TogglDisplaySettings)(
         const _Bool open,
@@ -162,16 +168,16 @@ extern "C" {
         TogglTimeEntryView *te);
 
     typedef void (*TogglDisplayIdleNotification)(
-        const char *guid,
-        const char *since,
-        const char *duration,
+        const char_t *guid,
+        const char_t *since,
+        const char_t *duration,
         const uint64_t started);
 
     // Initialize/destroy an instance of the app
 
     TOGGL_EXPORT void *toggl_context_init(
-        const char *app_name,
-        const char *app_version);
+        const char_t *app_name,
+        const char_t *app_version);
 
     TOGGL_EXPORT void toggl_context_clear(
         void *context);
@@ -180,10 +186,10 @@ extern "C" {
 
     TOGGL_EXPORT void toggl_set_environment(
         void *context,
-        const char *environment);
+        const char_t *environment);
 
     // You must free() the result
-    TOGGL_EXPORT char *toggl_environment(
+    TOGGL_EXPORT char_t *toggl_environment(
         void *context);
 
     // Optionally, disable update check
@@ -195,46 +201,35 @@ extern "C" {
 
     TOGGL_EXPORT void toggl_set_cacert_path(
         void *context,
-        const char *path);
-
-    TOGGL_EXPORT void toggl_set_cacert_path_utf16(
-        void *context,
-        const wchar_t *path);
+        const char_t *path);
 
     // DB path must be configured from UI
 
     TOGGL_EXPORT _Bool toggl_set_db_path(
         void *context,
-        const char *path);
-
-    TOGGL_EXPORT _Bool toggl_set_db_path_utf16(
-        void *context,
-        const wchar_t *path);
+        const char_t *path);
 
     // Log path must be configured from UI
 
     TOGGL_EXPORT void toggl_set_log_path(
-        const char *path);
-
-    TOGGL_EXPORT void toggl_set_log_path_utf16(
-        const wchar_t *path);
+        const char_t *path);
 
     // Log level is optional
 
     TOGGL_EXPORT void toggl_set_log_level(
-        const char *level);
+        const char_t *level);
 
     // API URL can be overriden from UI. Optional
 
     TOGGL_EXPORT void toggl_set_api_url(
         void *context,
-        const char *api_url);
+        const char_t *api_url);
 
     // WebSocket URL can be overriden from UI. Optional
 
     TOGGL_EXPORT void toggl_set_websocket_url(
         void *context,
-        const char *websocket_url);
+        const char_t *websocket_url);
 
     // Configure the UI callbacks. Required.
 
@@ -315,12 +310,12 @@ extern "C" {
 
     TOGGL_EXPORT _Bool toggl_login(
         void *context,
-        const char *email,
-        const char *password);
+        const char_t *email,
+        const char_t *password);
 
     TOGGL_EXPORT _Bool toggl_google_login(
         void *context,
-        const char *access_token);
+        const char_t *access_token);
 
     TOGGL_EXPORT void toggl_password_forgot(
         void *context);
@@ -333,9 +328,9 @@ extern "C" {
 
     TOGGL_EXPORT _Bool toggl_feedback_send(
         void *context,
-        const char *topic,
-        const char *details,
-        const char *filename);
+        const char_t *topic,
+        const char_t *details,
+        const char_t *filename);
 
     TOGGL_EXPORT void toggl_about(
         void *context);
@@ -345,67 +340,67 @@ extern "C" {
 
     TOGGL_EXPORT void toggl_edit(
         void *context,
-        const char *guid,
+        const char_t *guid,
         const _Bool edit_running_time_entry,
-        const char *focused_field_name);
+        const char_t *focused_field_name);
 
     TOGGL_EXPORT void toggl_edit_preferences(
         void *context);
 
     TOGGL_EXPORT _Bool toggl_continue(
         void *context,
-        const char *guid);
+        const char_t *guid);
 
     TOGGL_EXPORT _Bool toggl_continue_latest(
         void *context);
 
     TOGGL_EXPORT _Bool toggl_delete_time_entry(
         void *context,
-        const char *guid);
+        const char_t *guid);
 
     TOGGL_EXPORT _Bool toggl_set_time_entry_duration(
         void *context,
-        const char *guid,
-        const char *value);
+        const char_t *guid,
+        const char_t *value);
 
     TOGGL_EXPORT _Bool toggl_set_time_entry_project(
         void *context,
-        const char *guid,
+        const char_t *guid,
         const uint64_t task_id,
         const uint64_t project_id,
-        const char *project_guid);
+        const char_t *project_guid);
 
     TOGGL_EXPORT _Bool toggl_set_time_entry_start_iso_8601(
         void *context,
-        const char *guid,
-        const char *value);
+        const char_t *guid,
+        const char_t *value);
 
     TOGGL_EXPORT _Bool toggl_set_time_entry_end_iso_8601(
         void *context,
-        const char *guid,
-        const char *value);
+        const char_t *guid,
+        const char_t *value);
 
     TOGGL_EXPORT _Bool toggl_set_time_entry_tags(
         void *context,
-        const char *guid,
-        const char *value);
+        const char_t *guid,
+        const char_t *value);
 
     TOGGL_EXPORT _Bool toggl_set_time_entry_billable(
         void *context,
-        const char *guid,
+        const char_t *guid,
         _Bool);
 
     TOGGL_EXPORT _Bool toggl_set_time_entry_description(
         void *context,
-        const char *guid,
-        const char *value);
+        const char_t *guid,
+        const char_t *value);
 
     TOGGL_EXPORT _Bool toggl_stop(
         void *context);
 
     TOGGL_EXPORT _Bool toggl_discard_time_at(
         void *context,
-        const char *guid,
+        const char_t *guid,
         const uint64_t at);
 
     TOGGL_EXPORT _Bool toggl_set_settings(
@@ -419,10 +414,10 @@ extern "C" {
     TOGGL_EXPORT _Bool toggl_set_proxy_settings(
         void *context,
         const _Bool use_proxy,
-        const char *proxy_host,
+        const char_t *proxy_host,
         const uint64_t proxy_port,
-        const char *proxy_username,
-        const char *proxy_password);
+        const char_t *proxy_username,
+        const char_t *proxy_password);
 
     TOGGL_EXPORT _Bool toggl_logout(
         void *context);
@@ -432,25 +427,25 @@ extern "C" {
 
     TOGGL_EXPORT _Bool toggl_start(
         void *context,
-        const char *description,
-        const char *duration,
+        const char_t *description,
+        const char_t *duration,
         const uint64_t task_id,
         const uint64_t project_id);
 
     TOGGL_EXPORT _Bool toggl_add_project(
         void *context,
-        const char *time_entry_guid,
+        const char_t *time_entry_guid,
         const uint64_t workspace_id,
         const uint64_t client_id,
-        const char *project_name,
+        const char_t *project_name,
         const _Bool is_private);
 
     TOGGL_EXPORT _Bool toggl_set_update_channel(
         void *context,
-        const char *update_channel);
+        const char_t *update_channel);
 
     // You must free() the result
-    TOGGL_EXPORT char *toggl_get_update_channel(
+    TOGGL_EXPORT char_t *toggl_get_update_channel(
         void *context);
 
     TOGGL_EXPORT void toggl_sync(
@@ -480,24 +475,24 @@ extern "C" {
     // Shared helpers
 
     TOGGL_EXPORT _Bool toggl_parse_time(
-        const char *input,
+        const char_t *input,
         int *hours,
         int *minutes);
 
     // You must free() the result
-    TOGGL_EXPORT char *toggl_format_duration_in_seconds_hhmmss(
+    TOGGL_EXPORT char_t *toggl_format_duration_in_seconds_hhmmss(
         const int64_t duration_in_seconds);
 
     // You must free() the result
-    TOGGL_EXPORT char *toggl_format_duration_in_seconds_hhmm(
+    TOGGL_EXPORT char_t *toggl_format_duration_in_seconds_hhmm(
         const int64_t duration_in_seconds);
 
     TOGGL_EXPORT int64_t toggl_parse_duration_string_into_seconds(
-        const char *duration_string);
+        const char_t *duration_string);
 
     // Write to the lib logger
     TOGGL_EXPORT void toggl_debug(
-        const char *text);
+        const char_t *text);
 
     // Check if sizeof view struct matches those in UI
     // Else stuff blows up when Marshalling in C#

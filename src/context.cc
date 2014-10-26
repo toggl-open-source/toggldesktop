@@ -1367,7 +1367,7 @@ void Context::DisplayTimeEntryList(const _Bool open) {
                                       date_duration,
                                       timeofday_format);
         item->Next = first;
-        if (first && strcmp(item->DateHeader, first->DateHeader) != 0) {
+        if (first && compare_string(item->DateHeader, first->DateHeader) != 0) {
             first->IsHeader = true;
         }
         first = item;
