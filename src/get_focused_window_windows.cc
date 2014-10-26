@@ -6,15 +6,9 @@
 #include <time.h>
 #include <string>
 
-static const int kFilenameBufferSize = 255;
+#include "Poco/UnicodeConverter.h"
 
-template <class string_type>
-inline typename string_type::value_type *writeInto(string_type *str,
-        size_t length_with_null) {
-    str->reserve(length_with_null);
-    str->resize(length_with_null - 1);
-    return &((*str)[0]);
-}
+static const int kFilenameBufferSize = 255;
 
 int getFocusedWindowInfo(
     std::string *title,
@@ -33,10 +27,14 @@ int getFocusedWindowInfo(
 
     // get window title
     int length = GetWindowTextLength(window_handle) + 1;
-    std::wstring title_wstring;
-    GetWindowText(window_handle, writeInto(&title_wstring, length), length);
-    std::string str(title_wstring.begin(), title_wstring.end());
-    *title = str;
+
+    std::wstring utf16;
+    GetWindowText(window_handle, utf16, length);
+
+    std::string utf8("");
+    Poco::UnicodeConverter::toUTF8(utf16, utf8);
+
+    *title = utf8;
 
     // get process by window handle
     DWORD process_id;
