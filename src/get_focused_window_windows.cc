@@ -9,6 +9,7 @@
 #include "Poco/UnicodeConverter.h"
 
 static const int kFilenameBufferSize = 255;
+static const int kTitleBufSize = 500;
 
 int getFocusedWindowInfo(
     std::string *title,
@@ -28,9 +29,8 @@ int getFocusedWindowInfo(
     // get window title
     int length = GetWindowTextLengthW(window_handle);
     if (length) {
-        const int bufsize = 500;
-        wchar_t buf[bufsize];
-        GetWindowTextW(window_handle, buf, bufsize);
+        wchar_t buf[kTitleBufSize];
+        GetWindowTextW(window_handle, buf, kTitleBufSize);
 
         std::string utf8("");
         Poco::UnicodeConverter::toUTF8(buf, length, utf8);
