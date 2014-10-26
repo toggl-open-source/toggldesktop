@@ -141,7 +141,7 @@ char_t *copy_string(const std::string s) {
     Poco::UnicodeConverter::toUTF16(s, ws);
     return wcsdup(ws.c_str());
 #else
-    return strdrup(s.c_str());
+    return strdup(s.c_str());
 #endif
 }
 
