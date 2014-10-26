@@ -8,6 +8,5 @@ const unsigned int kTimelineUploadMaxBackoffSeconds =
     kTimelineUploadIntervalSeconds * 10;
 
 const unsigned int kWindowFocusThresholdSeconds = 5;
-const unsigned int kWindowChangeRecordingIntervalMillis = 500;
 
 #endif  // SRC_TIMELINE_CONSTANTS_H_

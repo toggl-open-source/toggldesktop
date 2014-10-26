@@ -18,11 +18,11 @@ namespace toggl {
 
 void TimelineUploader::sleep() {
     // Sleep in increments for faster shutdown.
-    for (unsigned int i = 0; i < current_upload_interval_seconds_; i++) {
+    for (unsigned int i = 0; i < current_upload_interval_seconds_*4; i++) {
         if (uploading_.isStopped()) {
             return;
         }
-        Poco::Thread::sleep(1000);
+        Poco::Thread::sleep(250);
     }
 }
 

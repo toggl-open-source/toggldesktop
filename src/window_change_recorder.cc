@@ -71,7 +71,18 @@ void WindowChangeRecorder::inspectFocusedWindow() {
 void WindowChangeRecorder::recordLoop() {
     while (!recording_.isStopped()) {
         inspectFocusedWindow();
-        Poco::Thread::sleep(kWindowChangeRecordingIntervalMillis);
+
+        if (recording_.isStopped()) {
+            break;
+        }
+
+        Poco::Thread::sleep(250);
+
+        if (recording_.isStopped()) {
+            break;
+        }
+
+        Poco::Thread::sleep(250);
     }
 }
 
