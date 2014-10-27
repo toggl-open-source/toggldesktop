@@ -62,7 +62,7 @@ TEST(AppTest, ProjectsHaveColorCodes) {
     p.SetColor("-10");
     ASSERT_EQ("#14a88e", p.ColorCode());
     p.SetColor("0");
-    ASSERT_EQ("#999999", p.ColorCode());
+    ASSERT_EQ("#4dc3ff", p.ColorCode());
     p.SetColor("999");
     ASSERT_EQ("#a4506c", p.ColorCode());
 }
