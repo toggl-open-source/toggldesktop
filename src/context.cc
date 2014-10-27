@@ -1596,6 +1596,104 @@ _Bool Context::SetTimeEntryProject(
     return displayError(save(), "SetTimeEntryProject");
 }
 
+_Bool Context::SetTimeEntryDate(
+    const std::string GUID,
+    const Poco::Int64 unix_timestamp) {
+
+    if (GUID.empty()) {
+        return displayError("Missing GUID", "SetTimeEntryDate");
+    }
+    if (!user_) {
+        logger().warning("Cannot change date, user logged out");
+        return true;
+    }
+    TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
+    if (!te) {
+        logger().warning("Time entry not found: " + GUID);
+        return true;
+    }
+
+    Poco::DateTime date_part(
+        Poco::Timestamp::fromEpochTime(unix_timestamp));
+    Poco::DateTime time_part(
+        Poco::Timestamp::fromEpochTime(te->Start()));
+
+    Poco::DateTime dt(
+        date_part.year(), date_part.month(), date_part.day(),
+        time_part.hour(), time_part.minute(), time_part.second());
+
+    std::string iso8601_start = toggl::Formatter::Formatter::Format8601(
+        dt.timestamp().epochTime());
+
+    return SetTimeEntryStartISO8601(GUID, iso8601_start);
+}
+
+_Bool Context::SetTimeEntryStart(
+    const std::string GUID,
+    const std::string value) {
+    if (GUID.empty()) {
+        return displayError("Missing GUID", "SetTimeEntryStart");
+    }
+    if (!user_) {
+        logger().warning("Cannot change start time, user logged out");
+        return true;
+    }
+    TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
+    if (!te) {
+        logger().warning("Time entry not found: " + GUID);
+        return true;
+    }
+
+    int hours(0), minutes(0);
+    if (!toggl::Formatter::ParseTimeInput(value, &hours, &minutes)) {
+        return false;
+    }
+
+    Poco::DateTime date_part(Poco::Timestamp::fromEpochTime(te->Start()));
+
+    Poco::DateTime dt(
+        date_part.year(), date_part.month(), date_part.day(),
+        hours, minutes, date_part.second());
+
+    std::string iso8601_start = toggl::Formatter::Formatter::Format8601(
+        dt.timestamp().epochTime());
+
+    return SetTimeEntryStartISO8601(GUID, iso8601_start);
+}
+
+_Bool Context::SetTimeEntryStop(
+    const std::string GUID,
+    const std::string value) {
+    if (GUID.empty()) {
+        return displayError("Missing GUID", "SetTimeEntryStop");
+    }
+    if (!user_) {
+        logger().warning("Cannot change stop time, user logged out");
+        return true;
+    }
+    TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
+    if (!te) {
+        logger().warning("Time entry not found: " + GUID);
+        return true;
+    }
+
+    int hours(0), minutes(0);
+    if (!toggl::Formatter::ParseTimeInput(value, &hours, &minutes)) {
+        return false;
+    }
+
+    Poco::DateTime date_part(Poco::Timestamp::fromEpochTime(te->Stop()));
+
+    Poco::DateTime dt(
+        date_part.year(), date_part.month(), date_part.day(),
+        hours, minutes, date_part.second());
+
+    std::string iso8601_start = toggl::Formatter::Formatter::Format8601(
+        dt.timestamp().epochTime());
+
+    return SetTimeEntryEndISO8601(GUID, iso8601_start);
+}
+
 _Bool Context::SetTimeEntryStartISO8601(
     const std::string GUID,
     const std::string value) {

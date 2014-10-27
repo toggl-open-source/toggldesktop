@@ -407,6 +407,51 @@ _Bool toggl_set_time_entry_project(
             pguid);
 }
 
+_Bool toggl_set_time_entry_date(
+    void *context,
+    const char_t *guid,
+    const int64_t unix_timestamp) {
+
+    poco_check_ptr(guid);
+
+    std::stringstream ss;
+    ss  << "toggl_set_time_entry_date guid=" << guid
+        << ", unix_timestamp=" << unix_timestamp;
+    logger().debug(ss.str());
+
+    return app(context)->SetTimeEntryDate(to_string(guid), unix_timestamp);
+}
+
+_Bool toggl_set_time_entry_start(
+    void *context,
+    const char_t *guid,
+    const char_t *value) {
+    poco_check_ptr(guid);
+    poco_check_ptr(value);
+
+    std::stringstream ss;
+    ss  << "toggl_set_time_entry_start guid=" << guid
+        << ", value=" << value;
+    logger().debug(ss.str());
+
+    return app(context)->SetTimeEntryStart(to_string(guid), to_string(value));
+}
+
+_Bool toggl_set_time_entry_end(
+    void *context,
+    const char_t *guid,
+    const char_t *value) {
+    poco_check_ptr(guid);
+    poco_check_ptr(value);
+
+    std::stringstream ss;
+    ss  << "toggl_set_time_entry_end guid=" << guid
+        << ", value=" << value;
+    logger().debug(ss.str());
+
+    return app(context)->SetTimeEntryStop(to_string(guid), to_string(value));
+}
+
 _Bool toggl_set_time_entry_start_iso_8601(
     void *context,
     const char_t *guid,

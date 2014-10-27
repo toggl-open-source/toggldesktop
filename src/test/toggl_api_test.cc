@@ -11,10 +11,10 @@
 #include "./../settings.h"
 #include "./../proxy.h"
 
-
 #include "Poco/FileStream.h"
 #include "Poco/File.h"
 #include "Poco/Path.h"
+#include "Poco/DateTime.h"
 
 namespace toggl {
 
@@ -59,6 +59,18 @@ std::vector<std::string> projects;
 
 // on_time_entry_list
 std::vector<TimeEntry> time_entries;
+
+TimeEntry time_entry_by_guid(const std::string guid) {
+    TimeEntry te;
+    for (std::size_t i = 0; i < testing::testresult::time_entries.size();
+            i++) {
+        if (testing::testresult::time_entries[i].GUID() == guid) {
+            te = testing::testresult::time_entries[i];
+            break;
+        }
+    }
+    return te;
+}
 
 // on_time_entry_editor
 TimeEntry editor_state;
@@ -109,7 +121,6 @@ void on_time_entry_list(
     testing::testresult::time_entries.clear();
     TogglTimeEntryView *it = first;
     while (it) {
-        // FIXME: need c struct -> c++ object helper?
         TimeEntry te;
         te.SetGUID(it->GUID);
         te.SetDurationInSeconds(it->DurationInSeconds);
@@ -663,7 +674,7 @@ TEST(TogglApiTest, toggl_add_project) {
                             project_name.c_str(),
                             is_private);
     ASSERT_EQ("Project name must not be empty (AddProject)",
-        testing::testresult::error);
+              testing::testresult::error);
     ASSERT_FALSE(res);
 
     project_name = "A new project";
@@ -987,6 +998,94 @@ TEST(TogglApiTest, toggl_feedback_send) {
 
     ASSERT_TRUE(toggl_feedback_send(app.ctx(),
                                     "Help", "I need help", ""));
+}
+
+TEST(TogglApiTest, toggl_set_time_entry_date) {
+    testing::App app;
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    std::string guid("07fba193-91c4-0ec8-2894-820df0548a8f");
+
+    toggl::TimeEntry te = testing::testresult::time_entry_by_guid(guid);
+    Poco::DateTime datetime(Poco::Timestamp::fromEpochTime(te.Start()));
+    ASSERT_EQ(2013, datetime.year());
+    ASSERT_EQ(9, datetime.month());
+    ASSERT_EQ(5, datetime.day());
+    ASSERT_EQ(6, datetime.hour());
+    ASSERT_EQ(33, datetime.minute());
+    ASSERT_EQ(50, datetime.second());
+
+    // 10/27/2014 @ 12:51pm in UTC.
+    int unix_timestamp(1414414311);
+    ASSERT_TRUE(toggl_set_time_entry_date(app.ctx(),
+                                          guid.c_str(),
+                                          unix_timestamp));
+
+    te = testing::testresult::time_entry_by_guid(guid);
+    datetime = Poco::DateTime(Poco::Timestamp::fromEpochTime(te.Start()));
+    ASSERT_EQ(2014, datetime.year());
+    ASSERT_EQ(10, datetime.month());
+    ASSERT_EQ(27, datetime.day());
+    ASSERT_EQ(6, datetime.hour());
+    ASSERT_EQ(33, datetime.minute());
+    ASSERT_EQ(50, datetime.second());
+}
+
+TEST(TogglApiTest, toggl_set_time_entry_start) {
+    testing::App app;
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    std::string guid("07fba193-91c4-0ec8-2894-820df0548a8f");
+
+    toggl::TimeEntry te = testing::testresult::time_entry_by_guid(guid);
+    Poco::DateTime datetime(Poco::Timestamp::fromEpochTime(te.Start()));
+    ASSERT_EQ(2013, datetime.year());
+    ASSERT_EQ(9, datetime.month());
+    ASSERT_EQ(5, datetime.day());
+    ASSERT_EQ(6, datetime.hour());
+    ASSERT_EQ(33, datetime.minute());
+    ASSERT_EQ(50, datetime.second());
+
+    ASSERT_TRUE(toggl_set_time_entry_start(app.ctx(), guid.c_str(), "12:34"));
+
+    te = testing::testresult::time_entry_by_guid(guid);
+    datetime = Poco::DateTime(Poco::Timestamp::fromEpochTime(te.Start()));
+    ASSERT_EQ(2013, datetime.year());
+    ASSERT_EQ(9, datetime.month());
+    ASSERT_EQ(5, datetime.day());
+    ASSERT_EQ(12, datetime.hour());
+    ASSERT_EQ(34, datetime.minute());
+    ASSERT_EQ(50, datetime.second());
+}
+
+TEST(TogglApiTest, toggl_set_time_entry_end) {
+    testing::App app;
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    std::string guid("07fba193-91c4-0ec8-2894-820df0548a8f");
+
+    toggl::TimeEntry te = testing::testresult::time_entry_by_guid(guid);
+    Poco::DateTime datetime(Poco::Timestamp::fromEpochTime(te.Stop()));
+    ASSERT_EQ(2013, datetime.year());
+    ASSERT_EQ(9, datetime.month());
+    ASSERT_EQ(5, datetime.day());
+    ASSERT_EQ(8, datetime.hour());
+    ASSERT_EQ(19, datetime.minute());
+    ASSERT_EQ(46, datetime.second());
+
+    ASSERT_TRUE(toggl_set_time_entry_end(app.ctx(), guid.c_str(), "18:29"));
+
+    te = testing::testresult::time_entry_by_guid(guid);
+    datetime = Poco::DateTime(Poco::Timestamp::fromEpochTime(te.Stop()));
+    ASSERT_EQ(2013, datetime.year());
+    ASSERT_EQ(9, datetime.month());
+    ASSERT_EQ(5, datetime.day());
+    ASSERT_EQ(18, datetime.hour());
+    ASSERT_EQ(29, datetime.minute());
+    ASSERT_EQ(46, datetime.second());
 }
 
 TEST(ProxyTest, IsConfigured) {
