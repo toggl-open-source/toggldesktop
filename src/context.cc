@@ -1626,7 +1626,7 @@ _Bool Context::SetTimeEntryDate(
         date_part.year(), date_part.month(), date_part.day(),
         time_part.hour(), time_part.minute(), time_part.second());
 
-    std::string iso8601_start = toggl::Formatter::Formatter::Format8601(
+    std::string iso8601_start = Formatter::Format8601(
         dt.timestamp().epochTime());
 
     return SetTimeEntryStartISO8601(GUID, iso8601_start);
