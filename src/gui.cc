@@ -22,7 +22,7 @@ void GUI::DisplayLogin(const _Bool open, const uint64_t user_id) {
     on_display_login_(open, user_id);
 }
 
-_Bool GUI::DisplayError(const error err) {
+_Bool GUI::DisplayError(const error err, const std::string calling_method) {
     if (noError == err) {
         return true;
     }
@@ -38,7 +38,13 @@ _Bool GUI::DisplayError(const error err) {
 
     logger().debug("DisplayError");
 
-    char_t *err_s = copy_string(err);
+    std::stringstream ss;
+    ss << err;
+    if (!calling_method.empty()) {
+        ss << " (" << calling_method << ")";
+    }
+
+    char_t *err_s = copy_string(ss.str());
     on_display_error_(err_s, isUserError(err));
     free(err_s);
 

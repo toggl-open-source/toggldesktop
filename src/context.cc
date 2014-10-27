@@ -113,7 +113,8 @@ _Bool Context::StartEvents() {
     poco_assert(!user_);
 
     if (HTTPSClientConfig::CACertPath.empty()) {
-        return displayError(error("Missing CA cert bundle path!"));
+        return displayError(error("Missing CA cert bundle path!"),
+                            "StartEvents");
     }
 
     // Check that UI is wired up
@@ -135,7 +136,7 @@ _Bool Context::StartEvents() {
     if (err != noError) {
         delete user;
         setUser(0);
-        return displayError(err);
+        return displayError(err, "StartEvents");
     }
     if (!user->ID()) {
         delete user;
@@ -335,15 +336,15 @@ bool Context::isPostponed(
     return true;
 }
 
-_Bool Context::displayError(const error err) {
+_Bool Context::displayError(const error err, const std::string calling_method) {
     if (err.find("Request to server failed with status code: 403")
             != std::string::npos) {
         if (!user_) {
-            return UI()->DisplayError("Invalid e-mail or password!");
+            return UI()->DisplayError("Invalid e-mail or password!", "");
         }
         setUser(0);
     }
-    return UI()->DisplayError(err);
+    return UI()->DisplayError(err, calling_method);
 }
 
 void Context::scheduleSync() {
@@ -395,19 +396,19 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
     HTTPSClient client;
     error err = user_->PullAllUserData(&client);
     if (err != noError) {
-        displayError(err);
+        displayError(err, "onSync");
         return;
     }
 
     err = user_->PushChanges(&client);
     if (err != noError) {
-        displayError(err);
+        displayError(err, "onSync");
         return;
     }
 
     err = save(false);
     if (err != noError) {
-        displayError(err);
+        displayError(err, "onSync");
         return;
     }
 
@@ -446,13 +447,13 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
     HTTPSClient client;
     error err = user_->PushChanges(&client);
     if (err != noError) {
-        displayError(err);
+        displayError(err, "onPushChanges");
         return;
     }
 
     err = save(false);
     if (err != noError) {
-        displayError(err);
+        displayError(err, "onPushChanges");
         return;
     }
 
@@ -505,10 +506,10 @@ _Bool Context::LoadUpdateFromJSONString(const std::string json) {
 
     error err = user_->LoadUserUpdateFromJSONString(json);
     if (err != noError) {
-        return displayError(err);
+        return displayError(err, "LoadUpdateFromJSONString");
     }
 
-    return displayError(save());
+    return displayError(save(), "LoadUpdateFromJSONString");
 }
 
 void Context::switchWebSocketOn() {
@@ -684,7 +685,7 @@ _Bool Context::UpdateChannel(
 
     error err = db()->LoadUpdateChannel(update_channel);
     if (err != noError) {
-        return displayError(err);
+        return displayError(err, "UpdateChannel");
     }
     return true;
 }
@@ -703,7 +704,7 @@ void Context::executeUpdateCheck() {
     std::string update_channel("");
     error err = db()->LoadUpdateChannel(&update_channel);
     if (err != noError) {
-        displayError(err);
+        displayError(err, "executeUpdateCheck");
         return;
     }
     UI()->DisplayUpdate(false, update_channel, true, false, "", "");
@@ -715,7 +716,7 @@ void Context::executeUpdateCheck() {
                                std::string(""),
                                &response_body);
     if (err != noError) {
-        displayError(err);
+        displayError(err, "executeUpdateCheck");
         return;
     }
 
@@ -728,7 +729,8 @@ void Context::executeUpdateCheck() {
     Json::Reader reader;
     bool ok = reader.parse(response_body, root);
     if (!ok) {
-        displayError(error("Error parsing update check response body"));
+        displayError(error("Error parsing update check response body"),
+                     "executeUpdateCheck");
         return;
     }
 
@@ -742,7 +744,7 @@ const std::string Context::updateURL() {
     std::string update_channel("");
     error err = db()->LoadUpdateChannel(&update_channel);
     if (err != noError) {
-        displayError(err);
+        displayError(err, "updateURL");
         return "";
     }
 
@@ -836,7 +838,7 @@ _Bool Context::SendFeedback(Feedback fb) {
 
     error err = fb.Validate();
     if (err != noError) {
-        return displayError(err);
+        return displayError(err, "SendFeedback");
     }
 
     feedback_ = fb;
@@ -862,7 +864,7 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
                                       "api_token",
                                       &response_body);
     if (err != noError) {
-        displayError(err);
+        displayError(err, "onSendFeedback");
         return;
     }
 }
@@ -877,13 +879,13 @@ void Context::SetWebSocketClientURL(const std::string value) {
 
 _Bool Context::LoadSettings(Settings *settings) {
     poco_check_ptr(settings);
-    return displayError(db()->LoadSettings(settings));
+    return displayError(db()->LoadSettings(settings), "LoadSettings");
 }
 
 _Bool Context::SetSettings(const Settings settings) {
     error err = db()->SaveSettings(settings);
     if (err != noError) {
-        return displayError(err);
+        return displayError(err, "SetSettings");
     }
     return DisplaySettings(false);
 }
@@ -897,12 +899,12 @@ _Bool Context::SetProxySettings(
     error err = db()->LoadProxySettings(&was_using_proxy,
                                         &previous_proxy_settings);
     if (err != noError) {
-        return displayError(err);
+        return displayError(err, "SetProxySettings");
     }
 
     err = db()->SaveProxySettings(use_proxy, proxy);
     if (err != noError) {
-        return displayError(err);
+        return displayError(err, "SetProxySettings");
     }
 
     if (!DisplaySettings(false)) {
@@ -971,7 +973,7 @@ _Bool Context::DisplaySettings(const _Bool open) {
     error err = db()->LoadSettings(&settings);
     if (err != noError) {
         setUser(0);
-        return displayError(err);
+        return displayError(err, "DisplaySettings");
     }
 
     bool use_proxy(false);
@@ -979,7 +981,7 @@ _Bool Context::DisplaySettings(const _Bool open) {
     err = db()->LoadProxySettings(&use_proxy, &proxy);
     if (err != noError) {
         setUser(0);
-        return displayError(err);
+        return displayError(err, "DisplaySettings");
     }
 
     bool record_timeline(false);
@@ -1015,11 +1017,11 @@ _Bool Context::SetDBPath(
         }
         db_ = new Database(path);
     } catch(const Poco::Exception& exc) {
-        return displayError(exc.displayText());
+        return displayError(exc.displayText(), "SetDBPath");
     } catch(const std::exception& ex) {
-        return displayError(ex.what());
+        return displayError(ex.what(), "SetDBPath");
     } catch(const std::string& ex) {
-        return displayError(ex);
+        return displayError(ex, "SetDBPath");
     }
     return true;
 }
@@ -1045,18 +1047,18 @@ _Bool Context::Login(
     const std::string password) {
 
     if (email.empty()) {
-        return displayError("Empty email");
+        return displayError("Empty email", "Login");
     }
 
     if (password.empty()) {
-        return displayError("Empty password");
+        return displayError("Empty password", "Login");
     }
 
     HTTPSClient client;
     std::string user_data_json("");
     error err = User::Me(&client, email, password, &user_data_json);
     if (err != noError) {
-        return displayError(err);
+        return displayError(err, "Login");
     }
 
     if (user_data_json.empty()) {
@@ -1066,7 +1068,7 @@ _Bool Context::Login(
     Poco::UInt64 userID(0);
     err = User::UserID(user_data_json, &userID);
     if (err != noError) {
-        return displayError(err);
+        return displayError(err, "Login");
     }
 
     if (!userID) {
@@ -1077,18 +1079,18 @@ _Bool Context::Login(
     err = db()->LoadUserByID(userID, user);
     if (err != noError) {
         delete user;
-        return displayError(err);
+        return displayError(err, "Login");
     }
 
     err = user->LoadUserAndRelatedDataFromJSONString(user_data_json);
     if (err != noError) {
-        return displayError(err);
+        return displayError(err, "Login");
     }
 
     err = db()->SetCurrentAPIToken(user->APIToken());
     if (err != noError) {
         delete user;
-        return displayError(err);
+        return displayError(err, "Login");
     }
 
     logger().debug("setUser from Login");
@@ -1097,7 +1099,7 @@ _Bool Context::Login(
 
     displayUI();
 
-    return displayError(save());
+    return displayError(save(), "Login");
 }
 
 void Context::setUser(User *value, const bool user_logged_in) {
@@ -1146,7 +1148,7 @@ _Bool Context::SetLoggedInUserFromJSON(
     error err = db()->SetCurrentAPIToken(user->APIToken());
     if (err != noError) {
         delete user;
-        return displayError(err);
+        return displayError(err, "SetLoggedInUserFromJSON");
     }
 
     logger().debug("setUser from SetLoggedInUserFromJSON");
@@ -1155,7 +1157,7 @@ _Bool Context::SetLoggedInUserFromJSON(
 
     err = save();
     if (err != noError) {
-        return displayError(err);
+        return displayError(err, "SetLoggedInUserFromJSON");
     }
 
     return true;
@@ -1172,7 +1174,7 @@ _Bool Context::Logout() {
 
         error err = db()->ClearCurrentAPIToken();
         if (err != noError) {
-            return displayError(err);
+            return displayError(err, "Logout");
         }
 
         logger().debug("setUser from Logout");
@@ -1181,11 +1183,11 @@ _Bool Context::Logout() {
 
         UI()->DisplayApp();
     } catch(const Poco::Exception& exc) {
-        return displayError(exc.displayText());
+        return displayError(exc.displayText(), "Logout");
     } catch(const std::exception& ex) {
-        return displayError(ex.what());
+        return displayError(ex.what(), "Logout");
     } catch(const std::string& ex) {
-        return displayError(ex);
+        return displayError(ex, "Logout");
     }
     return true;
 }
@@ -1198,16 +1200,16 @@ _Bool Context::ClearCache() {
         }
         error err = db()->DeleteUser(user_, true);
         if (err != noError) {
-            return displayError(err);
+            return displayError(err, "ClearCache");
         }
 
         return Logout();
     } catch(const Poco::Exception& exc) {
-        return displayError(exc.displayText());
+        return displayError(exc.displayText(), "ClearCache");
     } catch(const std::exception& ex) {
-        return displayError(ex.what());
+        return displayError(ex.what(), "ClearCache");
     } catch(const std::string& ex) {
-        return displayError(ex);
+        return displayError(ex, "ClearCache");
     }
     return true;
 }
@@ -1294,7 +1296,7 @@ _Bool Context::Start(
 
     UI()->DisplayApp();
 
-    return displayError(save());
+    return displayError(save(), "Start");
 }
 
 Poco::Int64 Context::totalDurationForDate(TimeEntry *match) const {
@@ -1418,7 +1420,7 @@ void Context::About() {
     std::string update_channel("");
     error err = db()->LoadUpdateChannel(&update_channel);
     if (err != noError) {
-        displayError(err);
+        displayError(err, "About");
         return;
     }
     UI()->DisplayUpdate(true, update_channel, true, false, "", "");
@@ -1465,12 +1467,12 @@ _Bool Context::ContinueLatest() {
 
     error err = user_->Continue(latest->GUID());
     if (err != noError) {
-        return displayError(err);
+        return displayError(err, "ContinueLatest");
     }
 
     UI()->DisplayApp();
 
-    return displayError(save());
+    return displayError(save(), "ContinueLatest");
 }
 
 _Bool Context::Continue(
@@ -1482,19 +1484,19 @@ _Bool Context::Continue(
     }
 
     if (GUID.empty()) {
-        return displayError("Missing GUID");
+        return displayError("Missing GUID", "Continue");
     }
 
     error err = user_->Continue(GUID);
     if (err != noError) {
-        return displayError(err);
+        return displayError(err, "Continue");
     }
 
     UI()->DisplayApp();
 
     err = save();
     if (err != noError) {
-        return displayError(err);
+        return displayError(err, "Continue");
     }
 
     DisplayTimeEntryList(true);
@@ -1508,7 +1510,7 @@ _Bool Context::DeleteTimeEntryByGUID(const std::string GUID) {
         return true;
     }
     if (GUID.empty()) {
-        return displayError("Missing GUID");
+        return displayError("Missing GUID", "DeleteTimeEntryByGUID");
     }
     TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
     if (!te) {
@@ -1521,14 +1523,14 @@ _Bool Context::DeleteTimeEntryByGUID(const std::string GUID) {
         }
     }
     te->Delete();
-    return displayError(save());
+    return displayError(save(), "DeleteTimeEntryByGUID");
 }
 
 _Bool Context::SetTimeEntryDuration(
     const std::string GUID,
     const std::string duration) {
     if (GUID.empty()) {
-        return displayError("Missing GUID");
+        return displayError("Missing GUID", "SetTimeEntryDuration");
     }
     if (!user_) {
         logger().warning("Cannot set duration, user logged out");
@@ -1544,7 +1546,7 @@ _Bool Context::SetTimeEntryDuration(
         te->SetUIModified();
     }
 
-    return displayError(save());
+    return displayError(save(), "SetTimeEntryDuration");
 }
 
 _Bool Context::SetTimeEntryProject(
@@ -1553,7 +1555,7 @@ _Bool Context::SetTimeEntryProject(
     const Poco::UInt64 project_id,
     const std::string project_guid) {
     if (GUID.empty()) {
-        return displayError("Missing GUID");
+        return displayError("Missing GUID", "SetTimeEntryProject");
     }
     if (!user_) {
         logger().warning("Cannot set project, user logged out");
@@ -1591,14 +1593,14 @@ _Bool Context::SetTimeEntryProject(
         te->SetUIModified();
     }
 
-    return displayError(save());
+    return displayError(save(), "SetTimeEntryProject");
 }
 
 _Bool Context::SetTimeEntryStartISO8601(
     const std::string GUID,
     const std::string value) {
     if (GUID.empty()) {
-        return displayError("Missing GUID");
+        return displayError("Missing GUID", "SetTimeEntryStartISO8601");
     }
     if (!user_) {
         logger().warning("Cannot change start time, user logged out");
@@ -1616,14 +1618,14 @@ _Bool Context::SetTimeEntryStartISO8601(
         te->SetUIModified();
     }
 
-    return displayError(save());
+    return displayError(save(), "SetTimeEntryStartISO8601");
 }
 
 _Bool Context::SetTimeEntryEndISO8601(
     const std::string GUID,
     const std::string value) {
     if (GUID.empty()) {
-        return displayError("Missing GUID");
+        return displayError("Missing GUID", "SetTimeEntryEndISO8601");
     }
     if (!user_) {
         logger().warning("Cannot change end time, user logged out");
@@ -1641,14 +1643,14 @@ _Bool Context::SetTimeEntryEndISO8601(
         te->SetUIModified();
     }
 
-    return displayError(save());
+    return displayError(save(), "SetTimeEntryEndISO8601");
 }
 
 _Bool Context::SetTimeEntryTags(
     const std::string GUID,
     const std::string value) {
     if (GUID.empty()) {
-        return displayError("Missing GUID");
+        return displayError("Missing GUID", "SetTimeEntryTags");
     }
     if (!user_) {
         logger().warning("Cannot set tags, user logged out");
@@ -1664,14 +1666,14 @@ _Bool Context::SetTimeEntryTags(
         te->SetUIModified();
     }
 
-    return displayError(save());
+    return displayError(save(), "SetTimeEntryTags");
 }
 
 _Bool Context::SetTimeEntryBillable(
     const std::string GUID,
     const bool value) {
     if (GUID.empty()) {
-        return displayError("Missing GUID");
+        return displayError("Missing GUID", "SetTimeEntryBillable");
     }
     if (!user_) {
         logger().warning("Cannot set billable, user logged out");
@@ -1687,14 +1689,14 @@ _Bool Context::SetTimeEntryBillable(
         te->SetUIModified();
     }
 
-    return displayError(save());
+    return displayError(save(), "SetTimeEntryBillable");
 }
 
 _Bool Context::SetTimeEntryDescription(
     const std::string GUID,
     const std::string value) {
     if (GUID.empty()) {
-        return displayError("Missing GUID");
+        return displayError("Missing GUID", "SetTimeEntryDescription");
     }
     if (!user_) {
         logger().warning("Cannot set description, user logged out");
@@ -1710,7 +1712,7 @@ _Bool Context::SetTimeEntryDescription(
         te->SetUIModified();
     }
 
-    return displayError(save());
+    return displayError(save(), "SetTimeEntryDescription");
 }
 
 _Bool Context::Stop() {
@@ -1727,7 +1729,7 @@ _Bool Context::Stop() {
 
     UI()->DisplayApp();
 
-    return displayError(save());
+    return displayError(save(), "Stop");
 }
 
 _Bool Context::DiscardTimeAt(
@@ -1747,7 +1749,7 @@ _Bool Context::DiscardTimeAt(
 
     UI()->DisplayApp();
 
-    return displayError(save());
+    return displayError(save(), "DiscardTimeAt");
 }
 
 _Bool Context::RunningTimeEntry(
@@ -1770,7 +1772,7 @@ _Bool Context::ToggleTimelineRecording(const _Bool record_timeline) {
 
         error err = save();
         if (err != noError) {
-            return displayError(err);
+            return displayError(err, "ToggleTimelineRecording");
         }
 
         TimelineUpdateServerSettings();
@@ -1781,11 +1783,11 @@ _Bool Context::ToggleTimelineRecording(const _Bool record_timeline) {
         }
         return DisplaySettings(false);
     } catch(const Poco::Exception& exc) {
-        return displayError(exc.displayText());
+        return displayError(exc.displayText(), "ToggleTimelineRecording");
     } catch(const std::exception& ex) {
-        return displayError(ex.what());
+        return displayError(ex.what(), "ToggleTimelineRecording");
     } catch(const std::string& ex) {
-        return displayError(ex);
+        return displayError(ex, "ToggleTimelineRecording");
     }
     return true;
 }
@@ -1822,7 +1824,7 @@ std::vector<TimeEntry *> Context::timeEntries(
 _Bool Context::SaveUpdateChannel(const std::string channel) {
     error err = db()->SaveUpdateChannel(channel);
     if (err != noError) {
-        return displayError(err);
+        return displayError(err, "SaveUpdateChannel");
     }
     UI()->DisplayUpdate(false, channel, true, false, "", "");
     fetchUpdates();
@@ -1896,16 +1898,16 @@ _Bool Context::AddProject(
         return true;
     }
     if (!workspace_id) {
-        return displayError("Please select a workspace");
+        return displayError("Please select a workspace", "AddProject");
     }
     if (project_name.empty()) {
-        return displayError("Project name must not be empty");
+        return displayError("Project name must not be empty", "AddProject");
     }
 
     *result = user_->AddProject(
         workspace_id, client_id, project_name, is_private);
 
-    return displayError(save());
+    return displayError(save(), "AddProject");
 }
 
 void Context::SetSleep() {
@@ -1914,7 +1916,8 @@ void Context::SetSleep() {
 
 _Bool Context::OpenReportsInBrowser() {
     if (!user_) {
-        return displayError("You must log in to view reports");
+        return displayError("You must log in to view reports",
+                            "OpenReportsInBrowser");
     }
 
     std::string response_body("");
@@ -1925,20 +1928,22 @@ _Bool Context::OpenReportsInBrowser() {
                                       "api_token",
                                       &response_body);
     if (err != noError) {
-        return displayError(err);
+        return displayError(err, "OpenReportsInBrowser");
     }
     if (response_body.empty()) {
-        return displayError("Unexpected empty response from API");
+        return displayError("Unexpected empty response from API",
+                            "OpenReportsInBrowser");
     }
 
     std::string login_token("");
     err = User::LoginToken(response_body, &login_token);
     if (err != noError) {
-        return displayError(err);
+        return displayError(err, "OpenReportsInBrowser");
     }
 
     if (login_token.empty()) {
-        return displayError("Could not extract login token from JSON");
+        return displayError("Could not extract login token from JSON",
+                            "OpenReportsInBrowser");
     }
 
     std::stringstream ss;
@@ -2094,7 +2099,7 @@ void Context::SetIdleSeconds(const Poco::UInt64 idle_seconds) {
             Settings settings;
             error err = db()->LoadSettings(&settings);
             if (err != noError) {
-                displayError(err);
+                displayError(err, "SetIdleSeconds");
             }
             if (settings.use_idle_detection) {
                 std::stringstream since;

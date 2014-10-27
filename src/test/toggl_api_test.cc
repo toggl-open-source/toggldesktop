@@ -651,7 +651,8 @@ TEST(TogglApiTest, toggl_add_project) {
                                   cid,
                                   project_name.c_str(),
                                   is_private);
-    ASSERT_EQ("Please select a workspace", testing::testresult::error);
+    ASSERT_EQ("Please select a workspace (AddProject)",
+              testing::testresult::error);
     ASSERT_FALSE(res);
 
     wid = 123456789;
@@ -661,7 +662,8 @@ TEST(TogglApiTest, toggl_add_project) {
                             cid,
                             project_name.c_str(),
                             is_private);
-    ASSERT_EQ("Project name must not be empty", testing::testresult::error);
+    ASSERT_EQ("Project name must not be empty (AddProject)",
+        testing::testresult::error);
     ASSERT_FALSE(res);
 
     project_name = "A new project";
