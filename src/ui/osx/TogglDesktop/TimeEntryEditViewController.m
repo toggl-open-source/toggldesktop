@@ -711,30 +711,6 @@ extern void *ctx;
 	toggl_set_time_entry_project(ctx, [self.timeEntry.GUID UTF8String], task_id, project_id, 0);
 }
 
-- (NSDateComponents *)parseTime:(NSTextField *)field current:(NSDateComponents *)component
-{
-	int hours = 0;
-	int minutes = 0;
-
-	if (!toggl_parse_time([[field stringValue] UTF8String], &hours, &minutes))
-	{
-		if (field == self.startTime)
-		{
-			[field setStringValue:self.timeEntry.startTimeString];
-		}
-		else if (field == self.endTime)
-		{
-			[field setStringValue:self.timeEntry.endTimeString];
-		}
-		return component;
-	}
-
-	[component setHour:hours];
-	[component setMinute:minutes];
-
-	return component;
-}
-
 - (IBAction)startTimeChanged:(id)sender
 {
 	if (self.willTerminate)
@@ -748,32 +724,10 @@ extern void *ctx;
 		return;
 	}
 	self.startTimeChanged = YES;
-	[self applyStartTime];
-}
 
-- (IBAction)applyStartTime
-{
-	NSAssert(self.timeEntry != nil, @"Time entry expected");
-
-	NSDate *startDate = [self.startDate dateValue];
-
-	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
-	NSDateComponents *comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:startDate];
-	NSDate *combined = [[NSCalendar currentCalendar] dateFromComponents:comps];
-
-	unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
-	comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:self.timeEntry.started];
-	comps = [self parseTime:self.startTime current:comps];
-
-	combined = [[NSCalendar currentCalendar] dateByAddingComponents:comps toDate:combined options:0];
-
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	NSLocale *enUSPOSIXLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-	[dateFormatter setLocale:enUSPOSIXLocale];
-	[dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
-	NSString *iso8601String = [dateFormatter stringFromDate:combined];
-
-	toggl_set_time_entry_start_iso_8601(ctx, [self.timeEntry.GUID UTF8String], [iso8601String UTF8String]);
+	toggl_set_time_entry_start(ctx,
+							   [self.timeEntry.GUID UTF8String],
+							   [self.startTime.stringValue UTF8String]);
 }
 
 - (IBAction)endTimeChanged:(id)sender
@@ -782,32 +736,14 @@ extern void *ctx;
 	{
 		return;
 	}
-	self.endTimeChanged = YES;
-	[self applyEndTime];
-}
 
-- (IBAction)applyEndTime
-{
+	self.endTimeChanged = YES;
+
 	NSAssert(self.timeEntry != nil, @"Time entry expected");
 
-	NSDate *startDate = [self.startDate dateValue];
-
-	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
-	NSDateComponents *comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:startDate];
-	NSDate *combined = [[NSCalendar currentCalendar] dateFromComponents:comps];
-
-	unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
-	comps = [[NSCalendar currentCalendar] components:unitFlags fromDate:self.timeEntry.ended];
-	comps = [self parseTime:self.endTime current:comps];
-	combined = [[NSCalendar currentCalendar] dateByAddingComponents:comps toDate:combined options:0];
-
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	NSLocale *enUSPOSIXLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-	[dateFormatter setLocale:enUSPOSIXLocale];
-	[dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
-	NSString *iso8601String = [dateFormatter stringFromDate:combined];
-
-	toggl_set_time_entry_end_iso_8601(ctx, [self.timeEntry.GUID UTF8String], [iso8601String UTF8String]);
+	toggl_set_time_entry_end(ctx,
+							 [self.timeEntry.GUID UTF8String],
+							 [self.endTime.stringValue UTF8String]);
 }
 
 - (IBAction)dateChanged:(id)sender
@@ -817,11 +753,9 @@ extern void *ctx;
 		return;
 	}
 
-	[self applyStartTime];
-	if (!self.endTime.isHidden)
-	{
-		[self applyEndTime];
-	}
+	toggl_set_time_entry_date(ctx,
+							  [self.timeEntry.GUID UTF8String],
+							  [self.startDate.dateValue timeIntervalSince1970]);
 }
 
 - (IBAction)tagsChanged:(id)sender

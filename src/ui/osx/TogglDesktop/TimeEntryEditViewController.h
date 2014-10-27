@@ -41,7 +41,6 @@
 - (IBAction)deleteButtonClicked:(id)sender;
 - (IBAction)backButtonClicked:(id)sender;
 - (IBAction)addProjectButtonClicked:(id)sender;
-- (NSDateComponents *)parseTime:(NSTextField *)field current:(NSDateComponents *)component;
 @property (strong) IBOutlet NSBox *timeTextBox;
 @property (strong) IBOutlet NSBox *dateBox;
 @property (strong) IBOutlet NSBox *durationBox;
