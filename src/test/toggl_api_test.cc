@@ -1,6 +1,5 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include <iostream>  // NOLINT
 #include <vector>
 
 #include "gtest/gtest.h"
@@ -15,6 +14,7 @@
 #include "Poco/File.h"
 #include "Poco/Path.h"
 #include "Poco/DateTime.h"
+#include "Poco/LocalDateTime.h"
 
 namespace toggl {
 
@@ -1051,13 +1051,14 @@ TEST(TogglApiTest, toggl_set_time_entry_start) {
     ASSERT_TRUE(toggl_set_time_entry_start(app.ctx(), guid.c_str(), "12:34"));
 
     te = testing::testresult::time_entry_by_guid(guid);
-    datetime = Poco::DateTime(Poco::Timestamp::fromEpochTime(te.Start()));
-    ASSERT_EQ(2013, datetime.year());
-    ASSERT_EQ(9, datetime.month());
-    ASSERT_EQ(5, datetime.day());
-    ASSERT_EQ(12, datetime.hour());
-    ASSERT_EQ(34, datetime.minute());
-    ASSERT_EQ(50, datetime.second());
+    Poco::LocalDateTime local =
+        Poco::DateTime(Poco::Timestamp::fromEpochTime(te.Start()));
+    ASSERT_EQ(2013, local.year());
+    ASSERT_EQ(9, local.month());
+    ASSERT_EQ(5, local.day());
+    ASSERT_EQ(12, local.hour());
+    ASSERT_EQ(34, local.minute());
+    ASSERT_EQ(50, local.second());
 }
 
 TEST(TogglApiTest, toggl_set_time_entry_end) {
@@ -1079,13 +1080,14 @@ TEST(TogglApiTest, toggl_set_time_entry_end) {
     ASSERT_TRUE(toggl_set_time_entry_end(app.ctx(), guid.c_str(), "18:29"));
 
     te = testing::testresult::time_entry_by_guid(guid);
-    datetime = Poco::DateTime(Poco::Timestamp::fromEpochTime(te.Stop()));
-    ASSERT_EQ(2013, datetime.year());
-    ASSERT_EQ(9, datetime.month());
-    ASSERT_EQ(5, datetime.day());
-    ASSERT_EQ(18, datetime.hour());
-    ASSERT_EQ(29, datetime.minute());
-    ASSERT_EQ(46, datetime.second());
+    Poco::LocalDateTime local =
+        Poco::DateTime(Poco::Timestamp::fromEpochTime(te.Stop()));
+    ASSERT_EQ(2013, local.year());
+    ASSERT_EQ(9, local.month());
+    ASSERT_EQ(5, local.day());
+    ASSERT_EQ(18, local.hour());
+    ASSERT_EQ(29, local.minute());
+    ASSERT_EQ(46, local.second());
 }
 
 TEST(ProxyTest, IsConfigured) {

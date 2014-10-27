@@ -8,6 +8,8 @@
 
 #include "./context.h"
 
+#include <iostream>  // NOLINT
+
 #include "./formatter.h"
 #include "./json.h"
 #include "./time_entry.h"
@@ -24,6 +26,8 @@
 #include "Poco/Stopwatch.h"
 #include "Poco/File.h"
 #include "Poco/FileStream.h"
+#include "Poco/DateTimeFormatter.h"
+#include "Poco/DateTimeFormat.h"
 
 namespace toggl {
 
@@ -1644,21 +1648,22 @@ _Bool Context::SetTimeEntryStart(
         return true;
     }
 
+    Poco::LocalDateTime local(Poco::Timestamp::fromEpochTime(te->Start()));
+
     int hours(0), minutes(0);
     if (!toggl::Formatter::ParseTimeInput(value, &hours, &minutes)) {
         return false;
     }
 
-    Poco::DateTime date_part(Poco::Timestamp::fromEpochTime(te->Start()));
+    Poco::LocalDateTime dt(
+        local.tzd(),
+        local.year(), local.month(), local.day(),
+        hours, minutes, local.second(), 0, 0);
 
-    Poco::DateTime dt(
-        date_part.year(), date_part.month(), date_part.day(),
-        hours, minutes, date_part.second());
+    std::string s = Poco::DateTimeFormatter::format(
+        dt, Poco::DateTimeFormat::ISO8601_FORMAT);
 
-    std::string iso8601_start = toggl::Formatter::Formatter::Format8601(
-        dt.timestamp().epochTime());
-
-    return SetTimeEntryStartISO8601(GUID, iso8601_start);
+    return SetTimeEntryStartISO8601(GUID, s);
 }
 
 _Bool Context::SetTimeEntryStop(
@@ -1677,21 +1682,22 @@ _Bool Context::SetTimeEntryStop(
         return true;
     }
 
+    Poco::LocalDateTime local(Poco::Timestamp::fromEpochTime(te->Stop()));
+
     int hours(0), minutes(0);
     if (!toggl::Formatter::ParseTimeInput(value, &hours, &minutes)) {
         return false;
     }
 
-    Poco::DateTime date_part(Poco::Timestamp::fromEpochTime(te->Stop()));
+    Poco::LocalDateTime dt(
+        local.tzd(),
+        local.year(), local.month(), local.day(),
+        hours, minutes, local.second(), 0, 0);
 
-    Poco::DateTime dt(
-        date_part.year(), date_part.month(), date_part.day(),
-        hours, minutes, date_part.second());
+    std::string s = Poco::DateTimeFormatter::format(
+        dt, Poco::DateTimeFormat::ISO8601_FORMAT);
 
-    std::string iso8601_start = toggl::Formatter::Formatter::Format8601(
-        dt.timestamp().epochTime());
-
-    return SetTimeEntryEndISO8601(GUID, iso8601_start);
+    return SetTimeEntryEndISO8601(GUID, s);
 }
 
 _Bool Context::SetTimeEntryStartISO8601(
