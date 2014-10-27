@@ -207,7 +207,13 @@ extern void *ctx;
 				self.selectedRowView = self.headerView;
 			}
 			self.timeEntrypopover.contentViewController = self.timeEntrypopoverViewController;
-			[self.timeEntrypopover showRelativeToRect:[[self selectedRowView] bounds]
+			NSRect positionRect = [[self selectedRowView] bounds];
+			if (self.selectedRowView.frame.size.height > 56)
+			{
+				positionRect.origin.y += 46;
+				positionRect.size.height -= 46;
+			}
+			[self.timeEntrypopover showRelativeToRect:positionRect
 											   ofView:[self selectedRowView]
 										preferredEdge:NSMaxXEdge];
 		}
