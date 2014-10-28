@@ -235,6 +235,7 @@ namespace TogglDesktop
             [MarshalAs(UnmanagedType.I1)]
             bool open,
             ref TimeEntry te,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string focused_field_name);
 
         public delegate void DisplayTimeEntryEditor(
@@ -263,8 +264,11 @@ namespace TogglDesktop
 
         [UnmanagedFunctionPointer(convention)]
         private delegate void TogglDisplayIdleNotification(
+            [MarshalAs(UnmanagedType.LPWStr)]
             string guid,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string since,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string duration,
             UInt64 started);
 
@@ -331,6 +335,7 @@ namespace TogglDesktop
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         private static extern void toggl_set_log_level(
+            [MarshalAs(UnmanagedType.LPWStr)]
             string level);
 
         // API URL can be overriden from UI. Optional
@@ -338,12 +343,14 @@ namespace TogglDesktop
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         private static extern System.IntPtr toggl_set_api_url(
             IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string path);
 
         // WebSocket URL can be overriden from UI. Optional
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         private static extern System.IntPtr toggl_set_websocket_url(
+            [MarshalAs(UnmanagedType.LPWStr)]
             string path);
 
         // Configure the UI callbacks. Required.
@@ -567,6 +574,7 @@ namespace TogglDesktop
         [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_delete_time_entry(
             IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string guid);
 
         public static bool DeleteTimeEntry(string guid)
@@ -578,7 +586,9 @@ namespace TogglDesktop
         [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_set_time_entry_duration(
             IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string guid,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string value);
 
         public static bool SetTimeEntryDuration(string guid, string value)
@@ -625,7 +635,9 @@ namespace TogglDesktop
         [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_set_time_entry_end_iso_8601(
             IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string guid,
+            [MarshalAs(UnmanagedType.LPWStr)]
             string value);
 
         public static bool SetTimeEntryEnd(string guid, string value)
