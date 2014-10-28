@@ -219,24 +219,25 @@ bool TogglApi::setTimeEntryDate(
     const QString guid,
     const QDate date) {
     return toggl_set_time_entry_date(ctx,
-            guid.toStdString().c_str(),
-            value.toStdString().c_str());d
+                                     guid.toStdString().c_str(),
+                                     value.toStdString().c_str());
+    d
 }
 
 bool TogglApi::setTimeEntryStart(
     const QString guid,
     const QString value) {
     return toggl_set_time_entry_start(ctx,
-            guid.toStdString().c_str(),
-            value.toStdString().c_str());
+                                      guid.toStdString().c_str(),
+                                      value.toStdString().c_str());
 }
 
 bool TogglApi::setTimeEntryStop(
     const QString guid,
     const QString value) {
     return toggl_set_time_entry_end(ctx,
-            guid.toStdString().c_str(),
-            value.toStdString().c_str());
+                                    guid.toStdString().c_str(),
+                                    value.toStdString().c_str());
 }
 
 void TogglApi::googleLogin(const QString accessToken) {
