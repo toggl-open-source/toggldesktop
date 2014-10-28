@@ -217,11 +217,10 @@ void TogglApi::setEnvironment(const QString environment) {
 
 bool TogglApi::setTimeEntryDate(
     const QString guid,
-    const QDate date) {
+    const long unix_timestamp) {
     return toggl_set_time_entry_date(ctx,
                                      guid.toStdString().c_str(),
-                                     value.toStdString().c_str());
-    d
+                                     unix_timestamp);
 }
 
 bool TogglApi::setTimeEntryStart(

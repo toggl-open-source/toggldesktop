@@ -97,15 +97,17 @@ class TogglApi : public QObject {
         const QString guid,
         const bool billable);
 
+    bool setTimeEntryDate(
+        const QString guid,
+        const long unix_timestamp);
+
     bool setTimeEntryStart(
         const QString guid,
-        const QDate date,
-        const QString time);
+        const QString value);
 
     bool setTimeEntryStop(
         const QString guid,
-        const QDate date,
-        const QString time);
+        const QString value);
 
     bool addProject(
         const QString time_entry_guid,
