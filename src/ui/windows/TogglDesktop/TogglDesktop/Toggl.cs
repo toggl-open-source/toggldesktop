@@ -1176,10 +1176,10 @@ namespace TogglDesktop
             return UnixEpoch.AddSeconds(unix_seconds).ToLocalTime();
         }
 
-        public UInt64 UnixFromDateTime(DateTime value)
+        public static Int64 UnixFromDateTime(DateTime value)
         {
             TimeSpan span = (value - UnixEpoch.ToLocalTime());
-            return (UInt64)span.TotalSeconds;
+            return (Int64)span.TotalSeconds;
         }
 
         public static void NewError(string errmsg, bool user_error)
