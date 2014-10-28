@@ -99,7 +99,7 @@ class TogglApi : public QObject {
 
     bool setTimeEntryDate(
         const QString guid,
-        const long unix_timestamp);
+        const int64_t unix_timestamp);
 
     bool setTimeEntryStart(
         const QString guid,
