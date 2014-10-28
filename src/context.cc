@@ -1626,10 +1626,16 @@ _Bool Context::SetTimeEntryDate(
         date_part.year(), date_part.month(), date_part.day(),
         time_part.hour(), time_part.minute(), time_part.second());
 
-    std::string iso8601_start = Formatter::Format8601(
+    std::string s = Formatter::Format8601(
         dt.timestamp().epochTime());
 
-    return SetTimeEntryStartISO8601(GUID, iso8601_start);
+    user_->SetLastTEDate(s);
+    te->SetStartUserInput(s);
+    if (te->Dirty()) {
+        te->SetUIModified();
+    }
+
+    return displayError(save(), "SetTimeEntryDate");
 }
 
 _Bool Context::SetTimeEntryStart(
@@ -1663,7 +1669,13 @@ _Bool Context::SetTimeEntryStart(
     std::string s = Poco::DateTimeFormatter::format(
         dt, Poco::DateTimeFormat::ISO8601_FORMAT);
 
-    return SetTimeEntryStartISO8601(GUID, s);
+    user_->SetLastTEDate(s);
+    te->SetStartUserInput(s);
+    if (te->Dirty()) {
+        te->SetUIModified();
+    }
+
+    return displayError(save(), "SetTimeEntryStart");
 }
 
 _Bool Context::SetTimeEntryStop(
@@ -1697,57 +1709,13 @@ _Bool Context::SetTimeEntryStop(
     std::string s = Poco::DateTimeFormatter::format(
         dt, Poco::DateTimeFormat::ISO8601_FORMAT);
 
-    return SetTimeEntryEndISO8601(GUID, s);
-}
-
-_Bool Context::SetTimeEntryStartISO8601(
-    const std::string GUID,
-    const std::string value) {
-    if (GUID.empty()) {
-        return displayError("Missing GUID", "SetTimeEntryStartISO8601");
-    }
-    if (!user_) {
-        logger().warning("Cannot change start time, user logged out");
-        return true;
-    }
-    TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
-    if (!te) {
-        logger().warning("Time entry not found: " + GUID);
-        return true;
-    }
-
-    user_->SetLastTEDate(value);
-    te->SetStartUserInput(value);
+    user_->SetLastTEDate(s);
+    te->SetStopUserInput(s);
     if (te->Dirty()) {
         te->SetUIModified();
     }
 
-    return displayError(save(), "SetTimeEntryStartISO8601");
-}
-
-_Bool Context::SetTimeEntryEndISO8601(
-    const std::string GUID,
-    const std::string value) {
-    if (GUID.empty()) {
-        return displayError("Missing GUID", "SetTimeEntryEndISO8601");
-    }
-    if (!user_) {
-        logger().warning("Cannot change end time, user logged out");
-        return true;
-    }
-    TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
-    if (!te) {
-        logger().warning("Time entry not found: " + GUID);
-        return true;
-    }
-
-    user_->SetLastTEDate(value);
-    te->SetStopUserInput(value);
-    if (te->Dirty()) {
-        te->SetUIModified();
-    }
-
-    return displayError(save(), "SetTimeEntryEndISO8601");
+    return displayError(save(), "SetTimeEntryStop");
 }
 
 _Bool Context::SetTimeEntryTags(

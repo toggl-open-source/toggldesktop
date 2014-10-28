@@ -143,14 +143,6 @@ class Context : public TimelineDatasource {
         const std::string GUID,
         const std::string value);
 
-    _Bool SetTimeEntryStartISO8601(
-        const std::string GUID,
-        const std::string value);
-
-    _Bool SetTimeEntryEndISO8601(
-        const std::string GUID,
-        const std::string value);
-
     _Bool SetTimeEntryTags(
         const std::string GUID,
         const std::string value);
