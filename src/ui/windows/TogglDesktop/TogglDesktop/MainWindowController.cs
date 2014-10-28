@@ -181,15 +181,22 @@ namespace TogglDesktop
             enableMenuItems();
             displayTrayIcon(true);
 
+            string newText = "Toggl Desktop";
             if (te.Description.Length > 0) {
                 runningToolStripMenuItem.Text = te.Description.Replace("&", "&&");
-                Text = te.Description + " - Toggl Desktop";
-                trayIcon.Text = Text;
+                newText = te.Description + " - Toggl Desktop";
             }
             else
             {
                 runningToolStripMenuItem.Text = "Timer is tracking";
-                Text = "Toggl Desktop";
+            }
+            if (newText.Length > 63)
+            {
+                newText = newText.Substring(0, 60) + "...";
+            }
+            Text = newText;
+            if (trayIcon != null)
+            {
                 trayIcon.Text = Text;
             }
         }
