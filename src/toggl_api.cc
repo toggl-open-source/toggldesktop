@@ -170,6 +170,11 @@ void toggl_set_websocket_url(
     app(context)->SetWebSocketClientURL(to_string(websocket_url));
 }
 
+void toggl_show_app(
+    void *context) {
+    app(context)->UI()->DisplayApp();
+}
+
 _Bool toggl_login(
     void *context,
     const char_t *email,

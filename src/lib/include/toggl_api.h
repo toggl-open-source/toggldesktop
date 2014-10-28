@@ -231,6 +231,11 @@ extern "C" {
         void *context,
         const char_t *websocket_url);
 
+    // Various parts of UI can tell the app to show itself.
+
+    TOGGL_EXPORT void toggl_show_app(
+        void *context);
+
     // Configure the UI callbacks. Required.
 
     TOGGL_EXPORT void toggl_on_show_app(
