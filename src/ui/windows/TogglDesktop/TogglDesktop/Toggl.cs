@@ -617,10 +617,41 @@ namespace TogglDesktop
                 guid, task_id, project_id, project_guid);
         }
 
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        private static extern bool toggl_set_time_entry_start(
+            IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
+            string guid,
+            [MarshalAs(UnmanagedType.LPWStr)]
+            string value);
+
         public static bool SetTimeEntryStart(string guid, string value)
         {
             return toggl_set_time_entry_start(ctx, guid, value);
         }
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        private static extern bool toggl_set_time_entry_date(
+            IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
+            string guid,
+            Int64 value);
+
+        public static bool SetTimeEntryDate(string guid, DateTime value)
+        {
+            return toggl_set_time_entry_date(ctx, guid, UnixFromDateTime(value));
+        }
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        private static extern bool toggl_set_time_entry_end(
+            IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
+            string guid,
+            [MarshalAs(UnmanagedType.LPWStr)]
+            string value);
 
         public static bool SetTimeEntryEnd(string guid, string value)
         {

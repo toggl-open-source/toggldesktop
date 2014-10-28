@@ -441,7 +441,7 @@ namespace TogglDesktop
                 return;
             }
 
-            applyTimeChange(textBoxStartTime, false);
+            applyTimeChange(textBoxStartTime);
         }
 
         private void textBoxDuration_Leave(object sender, EventArgs e)
@@ -462,16 +462,16 @@ namespace TogglDesktop
                 return;
             }
 
-            applyTimeChange(textBoxEndTime, false);
+            applyTimeChange(textBoxEndTime);
         }
 
-        private void applyTimeChange(TextBox textbox, bool dateChange)
+        private void applyTimeChange(TextBox textbox)
         {
             // If textbox value is same as it was before user started
             // don't apply the change. User cannot enter seconds,
             // only hours and minutes. But we don't want to change the value
             // if user tabs over the controls.
-            if (!dateChange && textbox.Tag != null && textbox.Tag.ToString() == textbox.Text) {
+            if (textbox.Tag != null && textbox.Tag.ToString() == textbox.Text) {
                 return;
             }
             if (textbox == textBoxStartTime)
@@ -491,8 +491,8 @@ namespace TogglDesktop
                 Console.WriteLine("Cannot apply end time change. this.TimeEntry is null");
                 return;
             }
-            applyTimeChange(textBoxStartTime, true);
-            applyTimeChange(textBoxEndTime, true);
+            Toggl.SetTimeEntryDate(timeEntry.GUID,
+                dateTimePickerStartDate.Value.ToUniversalTime());
         }
 
         private void checkedListBoxTags_Leave(object sender, EventArgs e)
