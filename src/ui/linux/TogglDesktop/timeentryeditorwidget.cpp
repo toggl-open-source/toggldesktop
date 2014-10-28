@@ -344,20 +344,17 @@ void TimeEntryEditorWidget::on_duration_editingFinished() {
 
 void TimeEntryEditorWidget::on_start_editingFinished() {
     TogglApi::instance->setTimeEntryStart(guid,
-                                          ui->dateEdit->date(),
                                           ui->start->text());
 }
 
 void TimeEntryEditorWidget::on_stop_editingFinished() {
     TogglApi::instance->setTimeEntryStop(guid,
-                                         ui->dateEdit->date(),
                                          ui->stop->text());
 }
 
 void TimeEntryEditorWidget::on_dateEdit_editingFinished() {
-    TogglApi::instance->setTimeEntryStart(guid,
-                                          ui->dateEdit->date(),
-                                          ui->start->text());
+    TogglApi::instance->setTimeEntryDate(guid,
+                                         ui->dateEdit->dateTime().toTime_t());
 }
 
 void TimeEntryEditorWidget::displayTags(
