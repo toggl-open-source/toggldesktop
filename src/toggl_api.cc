@@ -247,24 +247,6 @@ _Bool toggl_add_project(
     return res;
 }
 
-_Bool toggl_parse_time(
-    const char_t *input,
-    int *hours,
-    int *minutes) {
-    poco_check_ptr(hours);
-    poco_check_ptr(minutes);
-
-    *hours = 0;
-    *minutes = 0;
-
-    if (!input) {
-        return true;
-    }
-
-    return toggl::Formatter::ParseTimeInput(
-        to_string(input), hours, minutes);
-}
-
 char_t *toggl_format_duration_in_seconds_hhmmss(
     const int64_t duration_in_seconds) {
 
@@ -450,41 +432,6 @@ _Bool toggl_set_time_entry_end(
     logger().debug(ss.str());
 
     return app(context)->SetTimeEntryStop(to_string(guid), to_string(value));
-}
-
-_Bool toggl_set_time_entry_start_iso_8601(
-    void *context,
-    const char_t *guid,
-    const char_t *value) {
-
-    poco_check_ptr(guid);
-    poco_check_ptr(value);
-
-    std::stringstream ss;
-    ss  << "toggl_set_time_entry_start_iso_8601 guid=" << guid
-        << ", value=" << value;
-    logger().debug(ss.str());
-
-    return app(context)->SetTimeEntryStartISO8601(to_string(guid),
-            to_string(value));
-}
-
-_Bool toggl_set_time_entry_end_iso_8601(
-    void *context,
-    const char_t *guid,
-    const char_t *value) {
-
-    poco_check_ptr(guid);
-    poco_check_ptr(value);
-
-    std::stringstream ss;
-    ss  << "toggl_set_time_entry_end_iso_8601 guid=" << guid
-        << ", value=" << value;
-    logger().debug(ss.str());
-
-    return app(context)->SetTimeEntryEndISO8601(
-        to_string(guid),
-        to_string(value));
 }
 
 _Bool toggl_set_time_entry_tags(

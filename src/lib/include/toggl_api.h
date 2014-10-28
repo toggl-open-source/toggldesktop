@@ -385,16 +385,6 @@ extern "C" {
         const char_t *guid,
         const char_t *value);
 
-    TOGGL_EXPORT _Bool toggl_set_time_entry_start_iso_8601(
-        void *context,
-        const char_t *guid,
-        const char_t *value);
-
-    TOGGL_EXPORT _Bool toggl_set_time_entry_end_iso_8601(
-        void *context,
-        const char_t *guid,
-        const char_t *value);
-
     TOGGL_EXPORT _Bool toggl_set_time_entry_tags(
         void *context,
         const char_t *guid,
@@ -488,11 +478,6 @@ extern "C" {
         const uint64_t idle_seconds);
 
     // Shared helpers
-
-    TOGGL_EXPORT _Bool toggl_parse_time(
-        const char_t *input,
-        int *hours,
-        int *minutes);
 
     // You must free() the result
     TOGGL_EXPORT char_t *toggl_format_duration_in_seconds_hhmmss(

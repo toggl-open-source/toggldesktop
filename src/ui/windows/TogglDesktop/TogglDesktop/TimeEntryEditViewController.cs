@@ -474,22 +474,13 @@ namespace TogglDesktop
             if (!dateChange && textbox.Tag != null && textbox.Tag.ToString() == textbox.Text) {
                 return;
             }
-            int hours = 0;
-            int minutes = 0;
-            if (!Toggl.ParseTime(textbox.Text, ref hours, ref minutes))
-            {
-                return;
-            }
-            DateTime date = dateTimePickerStartDate.Value.Date +
-                new TimeSpan(hours, minutes, 0);
-            String utf8String = date.ToString("yyyy-MM-ddTHH:mm:sszzz");
             if (textbox == textBoxStartTime)
             {
-                Toggl.SetTimeEntryStart(timeEntry.GUID, utf8String);
+                Toggl.SetTimeEntryStart(timeEntry.GUID, textbox.Text);
             }
             else if (textbox == textBoxEndTime)
             {
-                Toggl.SetTimeEntryEnd(timeEntry.GUID, utf8String);
+                Toggl.SetTimeEntryEnd(timeEntry.GUID, textbox.Text);
             }
         }
 

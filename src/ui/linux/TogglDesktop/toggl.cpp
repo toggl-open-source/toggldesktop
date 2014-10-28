@@ -215,41 +215,28 @@ void TogglApi::setEnvironment(const QString environment) {
     toggl_set_environment(ctx, environment.toStdString().c_str());
 }
 
+bool TogglApi::setTimeEntryDate(
+    const QString guid,
+    const QDate date) {
+    return toggl_set_time_entry_date(ctx,
+            guid.toStdString().c_str(),
+            value.toStdString().c_str());d
+}
+
 bool TogglApi::setTimeEntryStart(
     const QString guid,
-    const QDate date,
-    const QString time) {
-    return setTime(guid, date, time, true);
+    const QString value) {
+    return toggl_set_time_entry_start(ctx,
+            guid.toStdString().c_str(),
+            value.toStdString().c_str());
 }
 
 bool TogglApi::setTimeEntryStop(
     const QString guid,
-    const QDate date,
-    const QString time) {
-    return setTime(guid, date, time, false);
-}
-
-bool TogglApi::setTime(
-    const QString guid,
-    const QDate date,
-    const QString time,
-    const bool start) {
-    int hours(0), minutes(0);
-    if (!toggl_parse_time(time.toStdString().c_str(),
-                          &hours,
-                          &minutes)) {
-        return false;
-    }
-    QDateTime datetime(date, QTime(hours, minutes));
-    QString isodate = datetime.toUTC().toString(Qt::ISODate);
-    if (start) {
-        return toggl_set_time_entry_start_iso_8601(ctx,
-                guid.toStdString().c_str(),
-                isodate.toStdString().c_str());
-    }
-    return toggl_set_time_entry_end_iso_8601(ctx,
+    const QString value) {
+    return toggl_set_time_entry_end(ctx,
             guid.toStdString().c_str(),
-            isodate.toStdString().c_str());
+            value.toStdString().c_str());
 }
 
 void TogglApi::googleLogin(const QString accessToken) {

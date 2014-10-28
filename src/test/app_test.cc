@@ -1241,6 +1241,83 @@ TEST(JSON, TimeEntry) {
     ASSERT_EQ(t.DurOnly(), t2.DurOnly());
 }
 
+TEST(FormatterTest, ParseTimeInput) {
+    int hours = 0;
+    int minutes = 0;
+
+    ASSERT_FALSE(Formatter::ParseTimeInput("", &hours, &minutes));
+    ASSERT_EQ(0, hours);
+    ASSERT_EQ(0, minutes);
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("120a", &hours, &minutes));
+    ASSERT_EQ(1, hours);
+    ASSERT_EQ(20, minutes);
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("120a", &hours, &minutes));
+    ASSERT_EQ(1, hours);
+    ASSERT_EQ(20, minutes);
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("1P", &hours, &minutes));
+    ASSERT_EQ(13, hours);
+    ASSERT_EQ(0, minutes);
+
+    ASSERT_FALSE(Formatter::ParseTimeInput("x", &hours, &minutes));
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("2", &hours, &minutes));
+    ASSERT_EQ(2, hours);
+    ASSERT_EQ(0, minutes);
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("12", &hours, &minutes));
+    ASSERT_EQ(12, hours);
+    ASSERT_EQ(0, minutes);
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("1230", &hours, &minutes));
+    ASSERT_EQ(12, hours);
+    ASSERT_EQ(30, minutes);
+
+    ASSERT_FALSE(Formatter::ParseTimeInput("12x", &hours, &minutes));
+
+    ASSERT_FALSE(Formatter::ParseTimeInput("12xx", &hours, &minutes));
+
+    ASSERT_FALSE(Formatter::ParseTimeInput(":", &hours, &minutes));
+
+    ASSERT_FALSE(Formatter::ParseTimeInput("11:", &hours, &minutes));
+
+    ASSERT_FALSE(Formatter::ParseTimeInput(":20", &hours, &minutes));
+
+    ASSERT_FALSE(Formatter::ParseTimeInput("11:xx", &hours, &minutes));
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("11:20", &hours, &minutes));
+    ASSERT_EQ(11, hours);
+    ASSERT_EQ(20, minutes);
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("5:30", &hours, &minutes));
+    ASSERT_EQ(5, hours);
+    ASSERT_EQ(30, minutes);
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("5:30 PM", &hours, &minutes));
+    ASSERT_EQ(17, hours);
+    ASSERT_EQ(30, minutes);
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("5:30 odp.", &hours, &minutes));
+    ASSERT_EQ(17, hours);
+    ASSERT_EQ(30, minutes);
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("17:10", &hours, &minutes));
+    ASSERT_EQ(17, hours);
+    ASSERT_EQ(10, minutes);
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("12:00 AM", &hours, &minutes));
+    ASSERT_EQ(0, hours);
+    ASSERT_EQ(0, minutes);
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("12:00 dop.", &hours, &minutes));
+    ASSERT_EQ(0, hours);
+    ASSERT_EQ(0, minutes);
+
+    ASSERT_FALSE(Formatter::ParseTimeInput("NOT VALID", &hours, &minutes));
+}
+
 }  // namespace toggl
 
 int main(int argc, char **argv) {

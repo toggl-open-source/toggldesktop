@@ -617,32 +617,14 @@ namespace TogglDesktop
                 guid, task_id, project_id, project_guid);
         }
 
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        private static extern bool toggl_set_time_entry_start_iso_8601(
-            IntPtr context,
-            [MarshalAs(UnmanagedType.LPWStr)]
-            string guid,
-            [MarshalAs(UnmanagedType.LPWStr)]
-            string value);
-
         public static bool SetTimeEntryStart(string guid, string value)
         {
-            return toggl_set_time_entry_start_iso_8601(ctx, guid, value);
+            return toggl_set_time_entry_start(ctx, guid, value);
         }
-
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        private static extern bool toggl_set_time_entry_end_iso_8601(
-            IntPtr context,
-            [MarshalAs(UnmanagedType.LPWStr)]
-            string guid,
-            [MarshalAs(UnmanagedType.LPWStr)]
-            string value);
 
         public static bool SetTimeEntryEnd(string guid, string value)
         {
-            return toggl_set_time_entry_end_iso_8601(ctx, guid, value);
+            return toggl_set_time_entry_end(ctx, guid, value);
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -916,21 +898,6 @@ namespace TogglDesktop
         }
 
         // Shared helpers
-
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        private static extern bool toggl_parse_time(
-            string input,
-            ref int hours,
-            ref int minutes);
-
-        public static bool ParseTime(
-            string input,
-            ref int hours,
-            ref int minutes)
-        {
-            return toggl_parse_time(input, ref hours, ref minutes);
-        }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.LPWStr)]
