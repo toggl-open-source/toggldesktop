@@ -34,7 +34,6 @@ class User : public BaseModel {
     since_(0),
     fullname_(""),
     email_(""),
-    last_date_(0),
     record_timeline_(false),
     timeofday_format_("") {}
 
@@ -241,7 +240,6 @@ class User : public BaseModel {
     Poco::UInt64 since_;
     std::string fullname_;
     std::string email_;
-    std::time_t last_date_;
     bool record_timeline_;
     bool store_start_and_stop_time_;
     std::string timeofday_format_;

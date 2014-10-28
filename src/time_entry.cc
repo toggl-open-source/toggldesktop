@@ -200,6 +200,10 @@ void TimeEntry::SetStopUserInput(const std::string value) {
     if (!IsTracking()) {
         SetDurationInSeconds(Stop() - Start());
     }
+
+    if (Dirty()) {
+        SetUIModified();
+    }
 }
 
 void TimeEntry::SetTID(const Poco::UInt64 value) {
@@ -246,6 +250,10 @@ void TimeEntry::SetStartUserInput(const std::string value) {
         SetStop(start + DurationInSeconds());
     }
     SetStart(start);
+
+    if (Dirty()) {
+        SetUIModified();
+    }
 }
 
 void TimeEntry::SetStartString(const std::string value) {

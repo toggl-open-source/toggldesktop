@@ -1546,9 +1546,6 @@ _Bool Context::SetTimeEntryDuration(
         return true;
     }
     te->SetDurationUserInput(duration);
-    if (te->Dirty()) {
-        te->SetUIModified();
-    }
 
     return displayError(save(), "SetTimeEntryDuration");
 }
@@ -1629,11 +1626,7 @@ _Bool Context::SetTimeEntryDate(
     std::string s = Formatter::Format8601(
         dt.timestamp().epochTime());
 
-    user_->SetLastTEDate(s);
     te->SetStartUserInput(s);
-    if (te->Dirty()) {
-        te->SetUIModified();
-    }
 
     return displayError(save(), "SetTimeEntryDate");
 }
@@ -1669,11 +1662,7 @@ _Bool Context::SetTimeEntryStart(
     std::string s = Poco::DateTimeFormatter::format(
         dt, Poco::DateTimeFormat::ISO8601_FORMAT);
 
-    user_->SetLastTEDate(s);
     te->SetStartUserInput(s);
-    if (te->Dirty()) {
-        te->SetUIModified();
-    }
 
     return displayError(save(), "SetTimeEntryStart");
 }
@@ -1709,11 +1698,7 @@ _Bool Context::SetTimeEntryStop(
     std::string s = Poco::DateTimeFormatter::format(
         dt, Poco::DateTimeFormat::ISO8601_FORMAT);
 
-    user_->SetLastTEDate(s);
     te->SetStopUserInput(s);
-    if (te->Dirty()) {
-        te->SetUIModified();
-    }
 
     return displayError(save(), "SetTimeEntryStop");
 }
