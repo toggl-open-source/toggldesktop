@@ -81,9 +81,6 @@ std::string Project::ColorCode() const {
     if (!Poco::NumberParser::tryParse(Color(), index)) {
         return color_codes.back();
     }
-    if (!index) {
-        return color_codes.back();
-    }
     return color_codes[index % color_codes.size()];
 }
 

@@ -370,12 +370,17 @@ extern "C" {
         const uint64_t project_id,
         const char_t *project_guid);
 
-    TOGGL_EXPORT _Bool toggl_set_time_entry_start_iso_8601(
+    TOGGL_EXPORT _Bool toggl_set_time_entry_date(
+        void *context,
+        const char_t *guid,
+        const int64_t unix_timestamp);
+
+    TOGGL_EXPORT _Bool toggl_set_time_entry_start(
         void *context,
         const char_t *guid,
         const char_t *value);
 
-    TOGGL_EXPORT _Bool toggl_set_time_entry_end_iso_8601(
+    TOGGL_EXPORT _Bool toggl_set_time_entry_end(
         void *context,
         const char_t *guid,
         const char_t *value);
@@ -473,11 +478,6 @@ extern "C" {
         const uint64_t idle_seconds);
 
     // Shared helpers
-
-    TOGGL_EXPORT _Bool toggl_parse_time(
-        const char_t *input,
-        int *hours,
-        int *minutes);
 
     // You must free() the result
     TOGGL_EXPORT char_t *toggl_format_duration_in_seconds_hhmmss(

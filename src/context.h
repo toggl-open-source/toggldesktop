@@ -131,6 +131,18 @@ class Context : public TimelineDatasource {
         const Poco::UInt64 project_id,
         const std::string project_guid);
 
+    _Bool SetTimeEntryDate(
+        const std::string GUID,
+        const Poco::Int64 unix_timestamp);
+
+    _Bool SetTimeEntryStart(
+        const std::string GUID,
+        const std::string value);
+
+    _Bool SetTimeEntryStop(
+        const std::string GUID,
+        const std::string value);
+
     _Bool SetTimeEntryStartISO8601(
         const std::string GUID,
         const std::string value);
