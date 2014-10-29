@@ -28,7 +28,6 @@ SOURCES += \
     ../../../get_focused_window_linux.cc \
     ../../../gui.cc \
     ../../../https_client.cc \
-    ../../../json.cc \
     $$PWD/../../../../third_party/jsoncpp/dist/jsoncpp.cpp \
     ../../../toggl_api.cc \
     ../../../toggl_api_private.cc \
@@ -60,7 +59,6 @@ HEADERS += \
     ../../../get_focused_window.h \
     ../../../gui.h \
     ../../../https_client.h \
-    ../../../json.h \
     ../../../toggl_api_private.h \
     ../../../model_change.h \
     ../../../project.h \

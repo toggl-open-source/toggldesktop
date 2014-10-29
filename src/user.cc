@@ -5,7 +5,6 @@
 #include <sstream>
 
 #include "./formatter.h"
-#include "./json.h"
 
 #include "Poco/Stopwatch.h"
 
@@ -413,7 +412,7 @@ error User::PushChanges(HTTPSClient *https_client) {
             return noError;
         }
 
-        std::string json = toggl::json::UpdateJSON(&projects, &time_entries);
+        std::string json = updateJSON(&projects, &time_entries);
 
         logger().debug(json);
 
@@ -968,6 +967,33 @@ error User::LoginToken(
     }
     *result = root["login_token"].asString();
     return noError;
+}
+
+std::string User::updateJSON(
+    std::vector<Project *> * const projects,
+    std::vector<TimeEntry *> * const time_entries) {
+
+    poco_check_ptr(projects);
+    poco_check_ptr(time_entries);
+
+    Json::Value c;
+
+    // First, projects, because time entries depend on projects
+    for (std::vector<Project *>::const_iterator it =
+        projects->begin();
+            it != projects->end(); it++) {
+        c.append((*it)->BatchUpdateJSON());
+    }
+
+    // Time entries go last
+    for (std::vector<TimeEntry *>::const_iterator it =
+        time_entries->begin();
+            it != time_entries->end(); it++) {
+        c.append((*it)->BatchUpdateJSON());
+    }
+
+    Json::StyledWriter writer;
+    return writer.write(c);
 }
 
 }  // namespace toggl

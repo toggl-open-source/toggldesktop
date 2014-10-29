@@ -14,8 +14,8 @@
 #include "./../database.h"
 #include "./test_data.h"
 #include "./../formatter.h"
-#include "./../json.h"
 #include "./../timeline_event.h"
+#include "./../timeline_uploader.h"
 
 #include "Poco/FileStream.h"
 #include "Poco/File.h"
@@ -1089,7 +1089,7 @@ TEST(JSON, ConvertTimelineToJSON) {
         std::vector<TimelineEvent> list;
         list.push_back(event);
 
-        std::string json = toggl::json::ConvertTimelineToJSON(list, desktop_id);
+        std::string json = convertTimelineToJSON(list, desktop_id);
 
         Json::Value root;
         Json::Reader reader;
@@ -1109,7 +1109,7 @@ TEST(JSON, ConvertTimelineToJSON) {
         std::vector<TimelineEvent> list;
         list.push_back(event);
 
-        std::string json = toggl::json::ConvertTimelineToJSON(list, desktop_id);
+        std::string json = convertTimelineToJSON(list, desktop_id);
 
         Json::Value root;
         Json::Reader reader;
@@ -1130,7 +1130,7 @@ TEST(JSON, ConvertTimelineToJSON) {
         std::vector<TimelineEvent> list;
         list.push_back(event);
 
-        std::string json = toggl::json::ConvertTimelineToJSON(list, desktop_id);
+        std::string json = convertTimelineToJSON(list, desktop_id);
 
         Json::Value root;
         Json::Reader reader;

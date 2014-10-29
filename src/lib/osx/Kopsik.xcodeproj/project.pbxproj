@@ -32,7 +32,6 @@
 		74AA947A18091AE10000539F /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74AA947918091AE10000539F /* WebKit.framework */; };
 		74B587BB18BBC77E00E9F6CE /* formatter.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587A618BBC77E00E9F6CE /* formatter.cc */; };
 		74B587BC18BBC77E00E9F6CE /* tag.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B587A718BBC77E00E9F6CE /* tag.h */; };
-		74B587BD18BBC77E00E9F6CE /* json.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B587A818BBC77E00E9F6CE /* json.h */; };
 		74B587BE18BBC77E00E9F6CE /* task.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B587A918BBC77E00E9F6CE /* task.h */; };
 		74B587BF18BBC77E00E9F6CE /* user.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B587AA18BBC77E00E9F6CE /* user.h */; };
 		74B587C018BBC77E00E9F6CE /* client.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B587AB18BBC77E00E9F6CE /* client.h */; };
@@ -42,7 +41,6 @@
 		74B587C418BBC77E00E9F6CE /* related_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B587AF18BBC77E00E9F6CE /* related_data.h */; };
 		74B587C518BBC77E00E9F6CE /* batch_update_result.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B587B018BBC77E00E9F6CE /* batch_update_result.h */; };
 		74B587C618BBC77E00E9F6CE /* tag.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587B118BBC77E00E9F6CE /* tag.cc */; };
-		74B587C718BBC77E00E9F6CE /* json.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587B218BBC77E00E9F6CE /* json.cc */; };
 		74B587C818BBC77E00E9F6CE /* task.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587B318BBC77E00E9F6CE /* task.cc */; };
 		74B587C918BBC77E00E9F6CE /* user.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587B418BBC77E00E9F6CE /* user.cc */; };
 		74B587CA18BBC77E00E9F6CE /* client.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587B518BBC77E00E9F6CE /* client.cc */; };
@@ -103,7 +101,6 @@
 		74AA947918091AE10000539F /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		74B587A618BBC77E00E9F6CE /* formatter.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = formatter.cc; path = ../../../formatter.cc; sourceTree = "<group>"; };
 		74B587A718BBC77E00E9F6CE /* tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tag.h; path = ../../../tag.h; sourceTree = "<group>"; };
-		74B587A818BBC77E00E9F6CE /* json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = json.h; path = ../../../json.h; sourceTree = "<group>"; };
 		74B587A918BBC77E00E9F6CE /* task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = task.h; path = ../../../task.h; sourceTree = "<group>"; };
 		74B587AA18BBC77E00E9F6CE /* user.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = user.h; path = ../../../user.h; sourceTree = "<group>"; };
 		74B587AB18BBC77E00E9F6CE /* client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = client.h; path = ../../../client.h; sourceTree = "<group>"; };
@@ -113,7 +110,6 @@
 		74B587AF18BBC77E00E9F6CE /* related_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = related_data.h; path = ../../../related_data.h; sourceTree = "<group>"; };
 		74B587B018BBC77E00E9F6CE /* batch_update_result.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = batch_update_result.h; path = ../../../batch_update_result.h; sourceTree = "<group>"; };
 		74B587B118BBC77E00E9F6CE /* tag.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tag.cc; path = ../../../tag.cc; sourceTree = "<group>"; };
-		74B587B218BBC77E00E9F6CE /* json.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = json.cc; path = ../../../json.cc; sourceTree = "<group>"; };
 		74B587B318BBC77E00E9F6CE /* task.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = task.cc; path = ../../../task.cc; sourceTree = "<group>"; };
 		74B587B418BBC77E00E9F6CE /* user.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = user.cc; path = ../../../user.cc; sourceTree = "<group>"; };
 		74B587B518BBC77E00E9F6CE /* client.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = client.cc; path = ../../../client.cc; sourceTree = "<group>"; };
@@ -243,7 +239,6 @@
 				74BAD32818BEC4FD002FD4CF /* base_model.h */,
 				74B587A618BBC77E00E9F6CE /* formatter.cc */,
 				74B587A718BBC77E00E9F6CE /* tag.h */,
-				74B587A818BBC77E00E9F6CE /* json.h */,
 				74B587A918BBC77E00E9F6CE /* task.h */,
 				74B587AA18BBC77E00E9F6CE /* user.h */,
 				74B587AB18BBC77E00E9F6CE /* client.h */,
@@ -253,7 +248,6 @@
 				74B587AF18BBC77E00E9F6CE /* related_data.h */,
 				74B587B018BBC77E00E9F6CE /* batch_update_result.h */,
 				74B587B118BBC77E00E9F6CE /* tag.cc */,
-				74B587B218BBC77E00E9F6CE /* json.cc */,
 				74B587B318BBC77E00E9F6CE /* task.cc */,
 				74B587B418BBC77E00E9F6CE /* user.cc */,
 				74B587B518BBC77E00E9F6CE /* client.cc */,
@@ -323,7 +317,6 @@
 				C5DA1FB717F1942A001C4565 /* toggl_api.h in Headers */,
 				7484A2AA18887BEE0025A88B /* context.h in Headers */,
 				74CAAD1E181860F7001B77BB /* timeline_event.h in Headers */,
-				74B587BD18BBC77E00E9F6CE /* json.h in Headers */,
 				74F7CDDC18199FA300630BD0 /* window_change_recorder.h in Headers */,
 				7408EDB518C51CEB00CBE8F1 /* feedback.h in Headers */,
 				7408EDB718C51CEB00CBE8F1 /* formatter.h in Headers */,
@@ -421,7 +414,6 @@
 				745E84F5194953A70065E49A /* gui.cc in Sources */,
 				7484A2AC18887BEE0025A88B /* toggl_api_private.cc in Sources */,
 				74B587CB18BBC77E00E9F6CE /* project.cc in Sources */,
-				74B587C718BBC77E00E9F6CE /* json.cc in Sources */,
 				74B587CF18BBC77E00E9F6CE /* batch_update_result.cc in Sources */,
 				7484A2AB18887BEE0025A88B /* context.cc in Sources */,
 				74B587CD18BBC77E00E9F6CE /* time_entry.cc in Sources */,

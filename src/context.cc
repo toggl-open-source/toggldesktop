@@ -11,7 +11,6 @@
 #include <iostream>  // NOLINT
 
 #include "./formatter.h"
-#include "./json.h"
 #include "./time_entry.h"
 #include "./const.h"
 #include "./toggl_api_private.h"

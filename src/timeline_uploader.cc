@@ -8,7 +8,6 @@
 #include "./timeline_constants.h"
 #include "./https_client.h"
 #include "./formatter.h"
-#include "./json.h"
 
 #include "Poco/Foundation.h"
 #include "Poco/Util/Application.h"
@@ -85,7 +84,7 @@ error TimelineUploader::upload(TimelineBatch *batch) {
         << " event(s) of user " << batch->UserID();
     logger().debug(out.str());
 
-    std::string json = toggl::json::ConvertTimelineToJSON(batch->Events(),
+    std::string json = convertTimelineToJSON(batch->Events(),
                        batch->DesktopID());
     std::string response_body("");
     return client.PostJSON("/api/v8/timeline",
@@ -93,6 +92,38 @@ error TimelineUploader::upload(TimelineBatch *batch) {
                            batch->APIToken(),
                            "api_token",
                            &response_body);
+}
+
+std::string convertTimelineToJSON(
+    const std::vector<TimelineEvent> &timeline_events,
+    const std::string &desktop_id) {
+
+    Json::Value root;
+
+    for (std::vector<TimelineEvent>::const_iterator i = timeline_events.begin();
+            i != timeline_events.end();
+            ++i) {
+        const TimelineEvent &event = *i;
+        // initialize new event node
+        Json::Value n;
+        // add fields to event node
+        if (event.idle) {
+            n["idle"] = true;
+        } else {
+            n["filename"] = event.filename;
+            n["title"] = event.title;
+        }
+        n["start_time"] = Json::Int64(event.start_time);
+        n["end_time"] = Json::Int64(event.end_time);
+        n["desktop_id"] = desktop_id;
+        n["created_with"] = "timeline";
+
+        // Push event node to array
+        root.append(n);
+    }
+
+    Json::StyledWriter writer;
+    return writer.write(root);
 }
 
 void TimelineUploader::backoff() {

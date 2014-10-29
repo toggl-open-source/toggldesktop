@@ -17,7 +17,6 @@
 #include <json/json.h>  // NOLINT
 
 #include "./formatter.h"
-#include "./json.h"
 #include "./const.h"
 
 #include "Poco/Timestamp.h"

@@ -281,9 +281,6 @@ build/batch_update_result.o: src/batch_update_result.cc
 build/formatter.o: src/formatter.cc
 	$(cxx) $(cflags) -c src/formatter.cc -o build/formatter.o
 
-build/json.o: src/json.cc
-	$(cxx) $(cflags) -c src/json.cc -o build/json.o
-
 build/model_change.o: src/model_change.cc
 	$(cxx) $(cflags) -c src/model_change.cc -o build/model_change.o
 
@@ -344,7 +341,6 @@ objects: build/jsoncpp.o \
 	build/related_data.o \
 	build/batch_update_result.o \
 	build/formatter.o \
-	build/json.o \
 	build/model_change.o \
 	build/database.o \
 	build/autocomplete_item.o \

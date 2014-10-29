@@ -16,6 +16,10 @@
 
 namespace toggl {
 
+std::string convertTimelineToJSON(
+    const std::vector<TimelineEvent> &timeline_events,
+    const std::string &desktop_id);
+
 class TimelineUploader {
  public:
     TimelineUploader(const std::string upload_url, TimelineDatasource *ds)

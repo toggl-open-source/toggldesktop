@@ -60,9 +60,6 @@
     <ClInclude Include="..\..\..\https_client.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\json.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\toggl_api_private.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -153,9 +150,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\https_client.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\json.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\toggl_api.cc">

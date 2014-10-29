@@ -166,6 +166,10 @@ class User : public BaseModel {
         std::string *result);
 
  private:
+    std::string updateJSON(
+        std::vector<Project *> * const,
+        std::vector<TimeEntry *> * const);
+
     void loadUserTagFromJSON(
         Json::Value data,
         std::set<Poco::UInt64> *alive = 0);
