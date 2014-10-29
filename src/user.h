@@ -35,7 +35,8 @@ class User : public BaseModel {
     fullname_(""),
     email_(""),
     record_timeline_(false),
-    timeofday_format_("") {}
+    timeofday_format_(""),
+    duration_format_("") {}
 
     ~User();
 
@@ -129,6 +130,11 @@ class User : public BaseModel {
         return record_timeline_;
     }
     void SetRecordTimeline(const bool value);
+
+    void SetDurationFormat(const std::string);
+    std::string DurationFormat() const {
+        return duration_format_;
+    }
 
     void ActiveProjects(std::vector<Project *> *list) const;
 
@@ -247,6 +253,7 @@ class User : public BaseModel {
     bool record_timeline_;
     bool store_start_and_stop_time_;
     std::string timeofday_format_;
+    std::string duration_format_;
 };
 
 }  // namespace toggl

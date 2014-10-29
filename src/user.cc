@@ -228,6 +228,13 @@ void User::SetTimeOfDayFormat(const std::string value) {
     }
 }
 
+void User::SetDurationFormat(const std::string value) {
+    if (duration_format_ != value) {
+        duration_format_ = value;
+        SetDirty();
+    }
+}
+
 void User::SetStoreStartAndStopTime(const bool value) {
     if (store_start_and_stop_time_ != value) {
         store_start_and_stop_time_ = value;
@@ -778,6 +785,7 @@ void User::loadUserAndRelatedDataFromJSON(
     SetRecordTimeline(data["record_timeline"].asBool());
     SetStoreStartAndStopTime(data["store_start_and_stop_time"].asBool());
     SetTimeOfDayFormat(data["timeofday_format"].asString());
+    SetDurationFormat(data["duration_format"].asString());
 
     if (data.isMember("projects")) {
         loadUserProjectsFromJSON(data["projects"]);

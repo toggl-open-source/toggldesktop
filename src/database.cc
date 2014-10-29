@@ -1808,7 +1808,8 @@ error Database::SaveUser(
                           "email = :email, record_timeline = :record_timeline, "
                           "store_start_and_stop_time = "
                           " :store_start_and_stop_time, "
-                          "timeofday_format = :timeofday_format "
+                          "timeofday_format = :timeofday_format, "
+                          "duration_format = :duration_format "
                           "where local_id = :local_id",
                           Poco::Data::use(user->APIToken()),
                           Poco::Data::use(user->DefaultWID()),
@@ -1819,6 +1820,7 @@ error Database::SaveUser(
                           Poco::Data::use(user->RecordTimeline()),
                           Poco::Data::use(user->StoreStartAndStopTime()),
                           Poco::Data::use(user->TimeOfDayFormat()),
+                          Poco::Data::use(user->DurationFormat()),
                           Poco::Data::use(user->LocalID()),
                           Poco::Data::now;
                 error err = last_error("SaveUser");
@@ -1836,12 +1838,12 @@ error Database::SaveUser(
                 *session_ << "insert into users("
                           "id, api_token, default_wid, since, fullname, email, "
                           "record_timeline, store_start_and_stop_time, "
-                          "timeofday_format"
+                          "timeofday_format, duration_format "
                           ") values("
                           ":id, :api_token, :default_wid, :since, :fullname, "
                           ":email, "
                           ":record_timeline, :store_start_and_stop_time, "
-                          ":timeofday_format"
+                          ":timeofday_format, :duration_format "
                           ")",
                           Poco::Data::use(user->ID()),
                           Poco::Data::use(user->APIToken()),
@@ -1852,6 +1854,7 @@ error Database::SaveUser(
                           Poco::Data::use(user->RecordTimeline()),
                           Poco::Data::use(user->StoreStartAndStopTime()),
                           Poco::Data::use(user->TimeOfDayFormat()),
+                          Poco::Data::use(user->DurationFormat()),
                           Poco::Data::now;
                 error err = last_error("SaveUser");
                 if (err != noError) {
@@ -2076,6 +2079,13 @@ error Database::initialize_tables() {
 
     err = migrate("users.id",
                   "CREATE UNIQUE INDEX id_users_id ON users (id);");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("users.duration_format",
+        "alter table users "
+        "add column duration_format varchar not null default 'classic';");
     if (err != noError) {
         return err;
     }
