@@ -821,8 +821,8 @@ namespace TogglDesktop
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        private static extern bool toggl_start(
+        [return: MarshalAs(UnmanagedType.LPWStr)]
+        private static extern string toggl_start(
             IntPtr context,
             [MarshalAs(UnmanagedType.LPWStr)]
             string description,
@@ -831,7 +831,7 @@ namespace TogglDesktop
             UInt64 task_id,
             UInt64 project_id);
 
-        public static bool Start(
+        public static string Start(
             string description,
             string duration,
             UInt64 task_id,
