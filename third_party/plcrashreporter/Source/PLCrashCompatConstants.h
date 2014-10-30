@@ -43,7 +43,7 @@
 
 /* ARM64 compact unwind constants. The iPhoneSimulator 7.0 SDK includes the compact unwind enums,
  * but not the actual CPU_TYPE_ARM64 defines, so we must special case it here. */
-#if !defined(CPU_TYPE_ARM64) && !TARGET_IPHONE_SIMULATOR
+#if !TARGET_IPHONE_SIMULATOR
 enum {
     UNWIND_ARM64_MODE_MASK                  = 0x0F000000,
     UNWIND_ARM64_MODE_FRAME_OLD             = 0x01000000,
