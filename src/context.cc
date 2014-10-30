@@ -1287,7 +1287,7 @@ std::vector<Client *> Context::clients() const {
     return result;
 }
 
-_Bool Context::Start(
+TimeEntry *Context::Start(
     const std::string description,
     const std::string duration,
     const Poco::UInt64 task_id,
@@ -1295,14 +1295,20 @@ _Bool Context::Start(
 
     if (!user_) {
         logger().warning("Cannot start tracking, user logged out");
-        return true;
+        return 0;
     }
 
-    user_->Start(description, duration, task_id, project_id);
+    TimeEntry *te = user_->Start(description, duration, task_id, project_id);
 
     UI()->DisplayApp();
 
-    return displayError(save(), "Start");
+	error err = save();
+	if (err != noError) {
+		displayError(err, "Start");
+		return 0;
+	}
+
+	return te;
 }
 
 Poco::Int64 Context::totalDurationForDate(TimeEntry *match) const {

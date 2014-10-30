@@ -72,7 +72,7 @@ class User : public BaseModel {
 
     bool HasTrackedTimeToday() const;
 
-    void Start(
+    TimeEntry *Start(
         const std::string description,
         const std::string duration,
         const Poco::UInt64 task_id,

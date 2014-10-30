@@ -98,7 +98,7 @@ class Context : public TimelineDatasource {
     void CollectPushableTimeEntries(
         std::vector<TimeEntry *> *models) const;
 
-    _Bool Start(
+    TimeEntry *Start(
         const std::string description,
         const std::string duration,
         const Poco::UInt64 task_id,

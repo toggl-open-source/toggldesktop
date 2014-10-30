@@ -272,7 +272,7 @@ char_t *toggl_format_duration_in_seconds_hhmm(
     return copy_string(formatted);
 }
 
-_Bool toggl_start(
+char_t *toggl_start(
     void *context,
     const char_t *description,
     const char_t *duration,
@@ -291,7 +291,12 @@ _Bool toggl_start(
         dur = to_string(duration);
     }
 
-    return app(context)->Start(desc, dur, task_id, project_id);
+	toggl::TimeEntry *te = app(context)->Start(desc, dur, task_id, project_id);
+	if (te) {
+		return copy_string(te->GUID());
+	}
+
+	return 0;
 }
 
 _Bool toggl_continue(

@@ -438,7 +438,8 @@ extern "C" {
     TOGGL_EXPORT _Bool toggl_clear_cache(
         void *context);
 
-    TOGGL_EXPORT _Bool toggl_start(
+	// if char is received it should be freed
+    TOGGL_EXPORT char_t *toggl_start(
         void *context,
         const char_t *description,
         const char_t *duration,
