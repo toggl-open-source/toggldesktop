@@ -19,6 +19,7 @@ namespace TogglDesktop
         private int defaultDescriptionTop = 20;
         private int projectDescriptionTop = 10;
         private SizeF currentFactor;
+        public Boolean durationFocused = false;
 
         private List<Toggl.AutocompleteItem> timeEntryAutocompleteUpdate;
         private List<Toggl.AutocompleteItem> autoCompleteList;
@@ -139,11 +140,11 @@ namespace TogglDesktop
                 duration = "";
             }
 
-            if (!Toggl.Start(
+            if ( Toggl.Start(
                 description,
                 duration,
                 task_id,
-                project_id))
+                project_id) == null)
             {
                 return;
             }
@@ -321,6 +322,7 @@ namespace TogglDesktop
             {
                 textBoxDuration.Text = "";
             }
+            durationFocused = true;
         }
 
         private void textBoxDuration_Leave(object sender, EventArgs e)
@@ -329,6 +331,7 @@ namespace TogglDesktop
             {
                 textBoxDuration.Text = defaultDuration;
             }
+            durationFocused = false;
         }
 
         private void selectAutoComplete()
@@ -391,6 +394,26 @@ namespace TogglDesktop
             if (descriptionTextBox.parseKeyDown(e, autoCompleteList))
             {
                 selectAutoComplete();
+            }
+        }
+
+        private void textBoxDuration_Click(object sender, EventArgs e)
+        {
+            durationFocused = true;
+            string descriptionText = "";
+            if (descriptionTextBox.Text != defaultDescription)
+            {
+                descriptionText = descriptionTextBox.Text;
+            }
+            string GUID = Toggl.Start(
+                descriptionText,
+                defaultDuration,
+                project_id,
+                task_id);
+
+            if (GUID != null)
+            {
+                Toggl.Edit(GUID, false, Toggl.Duration);
             }
         }
     }

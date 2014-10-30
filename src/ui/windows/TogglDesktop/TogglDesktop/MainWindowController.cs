@@ -450,11 +450,20 @@ namespace TogglDesktop
                 ((TimeEntryCell)editableEntry).opened = false;
             }
             editForm.reset();
-            editableEntry = FindControlAtCursor(this);
+            editableEntry = getSelectedEntryByGUID(te.GUID);
             if (editableEntry == null) return;
             setEditFormLocation(te.DurationInSeconds < 0);
             editForm.GUID = te.GUID;
             editForm.Show();
+        }
+
+        private Control getSelectedEntryByGUID(string GUID)
+        {
+            Control c = timeEntryListViewController.findControlByGUID(GUID);
+            if ( c != null) {
+                return c;
+            }
+            return FindControlAtCursor(this);
         }
 
         void OnTimeEntryEditor(

@@ -168,5 +168,20 @@ namespace TogglDesktop
         {
             return entries;
         }
+
+        internal Control findControlByGUID(string GUID)
+        {
+            if (timerEditViewController.durationFocused)
+            {
+                for (int i = 0; i < entries.Controls.Count; i++)
+                {
+                    if ((entries.Controls[i] as TimeEntryCell).GUID == GUID)
+                    {
+                        return entries.Controls[i];
+                    }
+                }
+            }
+            return null;
+        }
     }
 }

@@ -58,6 +58,7 @@
             this.textBoxDuration.Size = new System.Drawing.Size(86, 28);
             this.textBoxDuration.TabIndex = 2;
             this.textBoxDuration.Text = "00:00:00";
+            this.textBoxDuration.Click += new System.EventHandler(this.textBoxDuration_Click);
             this.textBoxDuration.Enter += new System.EventHandler(this.textBoxDuration_Enter);
             this.textBoxDuration.Leave += new System.EventHandler(this.textBoxDuration_Leave);
             // 
