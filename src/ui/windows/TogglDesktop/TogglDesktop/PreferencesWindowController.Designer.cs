@@ -46,6 +46,8 @@
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.panelMain = new System.Windows.Forms.Panel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textBoxIdleMinutes = new System.Windows.Forms.TextBox();
             this.groupBoxProxySettings.SuspendLayout();
             this.panelMain.SuspendLayout();
             this.SuspendLayout();
@@ -156,6 +158,7 @@
             this.checkBoxIdleDetection.TabIndex = 2;
             this.checkBoxIdleDetection.Text = "Idle detection";
             this.checkBoxIdleDetection.UseVisualStyleBackColor = true;
+            this.checkBoxIdleDetection.CheckedChanged += new System.EventHandler(this.checkBoxIdleDetection_CheckedChanged);
             // 
             // checkBoxRecordTimeline
             // 
@@ -163,7 +166,7 @@
             this.checkBoxRecordTimeline.Location = new System.Drawing.Point(15, 211);
             this.checkBoxRecordTimeline.Name = "checkBoxRecordTimeline";
             this.checkBoxRecordTimeline.Size = new System.Drawing.Size(99, 17);
-            this.checkBoxRecordTimeline.TabIndex = 3;
+            this.checkBoxRecordTimeline.TabIndex = 4;
             this.checkBoxRecordTimeline.Text = "Record timeline";
             this.checkBoxRecordTimeline.UseVisualStyleBackColor = true;
             // 
@@ -175,7 +178,7 @@
             this.checkBoxRemindToTrackTime.Location = new System.Drawing.Point(15, 257);
             this.checkBoxRemindToTrackTime.Name = "checkBoxRemindToTrackTime";
             this.checkBoxRemindToTrackTime.Size = new System.Drawing.Size(123, 17);
-            this.checkBoxRemindToTrackTime.TabIndex = 4;
+            this.checkBoxRemindToTrackTime.TabIndex = 6;
             this.checkBoxRemindToTrackTime.Text = "Remind to track time";
             this.checkBoxRemindToTrackTime.UseVisualStyleBackColor = true;
             // 
@@ -185,7 +188,7 @@
             this.checkBoxOnTop.Location = new System.Drawing.Point(15, 234);
             this.checkBoxOnTop.Name = "checkBoxOnTop";
             this.checkBoxOnTop.Size = new System.Drawing.Size(141, 17);
-            this.checkBoxOnTop.TabIndex = 6;
+            this.checkBoxOnTop.TabIndex = 5;
             this.checkBoxOnTop.Text = "On top of other windows";
             this.checkBoxOnTop.UseVisualStyleBackColor = true;
             // 
@@ -211,6 +214,8 @@
             // 
             // panelMain
             // 
+            this.panelMain.Controls.Add(this.textBoxIdleMinutes);
+            this.panelMain.Controls.Add(this.label5);
             this.panelMain.Controls.Add(this.groupBoxProxySettings);
             this.panelMain.Controls.Add(this.buttonCancel);
             this.panelMain.Controls.Add(this.checkBoxUseProxy);
@@ -224,6 +229,22 @@
             this.panelMain.Name = "panelMain";
             this.panelMain.Size = new System.Drawing.Size(300, 333);
             this.panelMain.TabIndex = 9;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(204, 188);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(43, 13);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "minutes";
+            // 
+            // textBoxIdleMinutes
+            // 
+            this.textBoxIdleMinutes.Location = new System.Drawing.Point(167, 186);
+            this.textBoxIdleMinutes.Name = "textBoxIdleMinutes";
+            this.textBoxIdleMinutes.Size = new System.Drawing.Size(31, 20);
+            this.textBoxIdleMinutes.TabIndex = 3;
             // 
             // PreferencesWindowController
             // 
@@ -265,5 +286,7 @@
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Panel panelMain;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox textBoxIdleMinutes;
     }
 }

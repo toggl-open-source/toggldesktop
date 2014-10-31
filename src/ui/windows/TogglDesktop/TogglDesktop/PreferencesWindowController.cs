@@ -54,6 +54,7 @@ namespace TogglDesktop
             checkBoxRecordTimeline.Checked = settings.RecordTimeline;
             checkBoxOnTop.Checked = settings.OnTop;
             checkBoxRemindToTrackTime.Checked = settings.Reminder;
+            textBoxIdleMinutes.Text = settings.IdleMinutes.ToString();
 
             if (open)
             {
@@ -80,6 +81,12 @@ namespace TogglDesktop
                 port = 0;
             }
 
+            ulong idleMinutes = 5;
+            if (!ulong.TryParse(textBoxIdleMinutes.Text, out idleMinutes))
+            {
+                idleMinutes = 5;
+            }
+
             Toggl.Settings settings = new Toggl.Settings();
 
             settings.UseProxy = checkBoxUseProxy.Checked;
@@ -91,6 +98,7 @@ namespace TogglDesktop
             settings.UseIdleDetection = checkBoxIdleDetection.Checked;
             settings.OnTop = checkBoxOnTop.Checked;
             settings.Reminder = checkBoxRemindToTrackTime.Checked;
+            settings.IdleMinutes = idleMinutes;
 
             settings.MenubarTimer = true;
             settings.DockIcon = true;
@@ -103,6 +111,11 @@ namespace TogglDesktop
             }
 
             Close();
+        }
+
+        private void checkBoxIdleDetection_CheckedChanged(object sender, EventArgs e)
+        {
+            textBoxIdleMinutes.Enabled = checkBoxIdleDetection.Checked;
         }
     }
 }

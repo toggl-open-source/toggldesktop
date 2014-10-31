@@ -143,6 +143,7 @@ namespace TogglDesktop
             public bool Reminder;
             [MarshalAs(UnmanagedType.I1)]
             public bool RecordTimeline;
+            public UInt64 IdleMinutes;
         }
 
         // Callbacks
@@ -747,7 +748,8 @@ namespace TogglDesktop
             [MarshalAs(UnmanagedType.I1)]
             bool on_top,
             [MarshalAs(UnmanagedType.I1)]
-            bool reminder);
+            bool reminder,
+            UInt64 idle_minutes);
 
         public static bool SetSettings(Settings settings)
         {
@@ -757,7 +759,8 @@ namespace TogglDesktop
                 true,
                 true,
                 settings.OnTop,
-                settings.Reminder))
+                settings.Reminder,
+                settings.IdleMinutes))
             {
                 return false;
             }
