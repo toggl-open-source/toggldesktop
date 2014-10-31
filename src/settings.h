@@ -12,7 +12,8 @@ class Settings {
     , menubar_timer(false)
     , dock_icon(false)
     , on_top(false)
-    , reminder(false) {}
+    , reminder(false)
+    , idle_minutes(0) {}
     ~Settings() {}
 
     bool use_idle_detection;
@@ -20,6 +21,7 @@ class Settings {
     bool dock_icon;
     bool on_top;
     bool reminder;
+    int idle_minutes;
 };
 
 }  // namespace toggl

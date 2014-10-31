@@ -254,13 +254,14 @@ error Database::LoadSettings(Settings *settings) {
 
     try {
         *session_ << "select use_idle_detection, menubar_timer, dock_icon, "
-                  "on_top, reminder "
+                  "on_top, reminder, idle_minutes "
                   "from settings",
                   Poco::Data::into(settings->use_idle_detection),
                   Poco::Data::into(settings->menubar_timer),
                   Poco::Data::into(settings->dock_icon),
                   Poco::Data::into(settings->on_top),
                   Poco::Data::into(settings->reminder),
+                  Poco::Data::into(settings->idle_minutes),
                   Poco::Data::limit(1),
                   Poco::Data::now;
     } catch(const Poco::Exception& exc) {
@@ -315,12 +316,14 @@ error Database::SaveSettings(const Settings settings) {
                   "menubar_timer = :menubar_timer, "
                   "dock_icon = :dock_icon, "
                   "on_top = :on_top, "
-                  "reminder = :reminder ",
+                  "reminder = :reminder, "
+                  "idle_minutes = :idle_minutes ",
                   Poco::Data::use(settings.use_idle_detection),
                   Poco::Data::use(settings.menubar_timer),
                   Poco::Data::use(settings.dock_icon),
                   Poco::Data::use(settings.on_top),
                   Poco::Data::use(settings.reminder),
+                  Poco::Data::use(settings.idle_minutes),
                   Poco::Data::now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -2495,6 +2498,13 @@ error Database::initialize_tables() {
     err = migrate("settings.ignore_cert",
                   "ALTER TABLE settings "
                   "ADD COLUMN ignore_cert INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("settings.idle_minutes",
+                  "ALTER TABLE settings "
+                  "ADD COLUMN idle_minutes INTEGER NOT NULL DEFAULT 5;");
     if (err != noError) {
         return err;
     }
