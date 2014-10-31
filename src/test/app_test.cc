@@ -659,63 +659,93 @@ TEST(AppTest, ParsesDurationLikeOnTheWeb) {
     TimeEntry te;
 
     te.SetDurationUserInput("00:00:15");
-    ASSERT_EQ("00:00:15", te.DurationString());
+    ASSERT_EQ("00:00:15",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("00:23:15");
-    ASSERT_EQ("00:23:15", te.DurationString());
+    ASSERT_EQ("00:23:15",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("12:34:56");
-    ASSERT_EQ("12:34:56", te.DurationString());
+    ASSERT_EQ("12:34:56",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("0:1");
-    ASSERT_EQ("00:01:00", te.DurationString());
+    ASSERT_EQ("00:01:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("1:2");
-    ASSERT_EQ("01:02:00", te.DurationString());
+    ASSERT_EQ("01:02:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("1:0");
-    ASSERT_EQ("01:00:00", te.DurationString());
+    ASSERT_EQ("01:00:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("05:22 min");
-    ASSERT_EQ("00:05:22", te.DurationString());
+    ASSERT_EQ("00:05:22",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("00:22 min");
-    ASSERT_EQ("00:00:22", te.DurationString());
+    ASSERT_EQ("00:00:22",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("0 hours");
-    ASSERT_EQ("00:00:00", te.DurationString());
+    ASSERT_EQ("00:00:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("0.5 hours");
-    ASSERT_EQ("00:30:00", te.DurationString());
+    ASSERT_EQ("00:30:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("0,5 hours");
-    ASSERT_EQ("00:30:00", te.DurationString());
+    ASSERT_EQ("00:30:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("1 hour");
-    ASSERT_EQ("01:00:00", te.DurationString());
+    ASSERT_EQ("01:00:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("1 hr");
-    ASSERT_EQ("01:00:00", te.DurationString());
+    ASSERT_EQ("01:00:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("1,5 hours");
-    ASSERT_EQ("01:30:00", te.DurationString());
+    ASSERT_EQ("01:30:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("1.5 hours");
-    ASSERT_EQ("01:30:00", te.DurationString());
+    ASSERT_EQ("01:30:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("24 hours");
@@ -723,123 +753,183 @@ TEST(AppTest, ParsesDurationLikeOnTheWeb) {
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("0 minutes");
-    ASSERT_EQ("00:00:00", te.DurationString());
+    ASSERT_EQ("00:00:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("0 min");
-    ASSERT_EQ("00:00:00", te.DurationString());
+    ASSERT_EQ("00:00:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("5 minutes");
-    ASSERT_EQ("00:05:00", te.DurationString());
+    ASSERT_EQ("00:05:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("5minutes");
-    ASSERT_EQ("00:05:00", te.DurationString());
+    ASSERT_EQ("00:05:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("0,5 minutes");
-    ASSERT_EQ("00:00:30", te.DurationString());
+    ASSERT_EQ("00:00:30",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("1 minute");
-    ASSERT_EQ("00:01:00", te.DurationString());
+    ASSERT_EQ("00:01:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("1,5 minutes");
-    ASSERT_EQ("00:01:30", te.DurationString());
+    ASSERT_EQ("00:01:30",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("1.5 minutes");
-    ASSERT_EQ("00:01:30", te.DurationString());
+    ASSERT_EQ("00:01:30",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("15");
-    ASSERT_EQ("00:15:00", te.DurationString());
+    ASSERT_EQ("00:15:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("0 seconds");
-    ASSERT_EQ("00:00:00", te.DurationString());
+    ASSERT_EQ("00:00:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("1 second");
-    ASSERT_EQ("00:00:01", te.DurationString());
+    ASSERT_EQ("00:00:01",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("1.5h");
-    ASSERT_EQ("01:30:00", te.DurationString());
+    ASSERT_EQ("01:30:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("1.5 h");
-    ASSERT_EQ("01:30:00", te.DurationString());
+    ASSERT_EQ("01:30:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("3h");
-    ASSERT_EQ("03:00:00", te.DurationString());
+    ASSERT_EQ("03:00:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("3 h");
-    ASSERT_EQ("03:00:00", te.DurationString());
+    ASSERT_EQ("03:00:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("15m");
-    ASSERT_EQ("00:15:00", te.DurationString());
+    ASSERT_EQ("00:15:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("15 m");
-    ASSERT_EQ("00:15:00", te.DurationString());
+    ASSERT_EQ("00:15:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("25s");
-    ASSERT_EQ("00:00:25", te.DurationString());
+    ASSERT_EQ("00:00:25",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("25 s");
-    ASSERT_EQ("00:00:25", te.DurationString());
+    ASSERT_EQ("00:00:25",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("1.5");
-    ASSERT_EQ("01:30:00", te.DurationString());
+    ASSERT_EQ("01:30:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("1,5");
-    ASSERT_EQ("01:30:00", te.DurationString());
+    ASSERT_EQ("01:30:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("0.25");
-    ASSERT_EQ("00:15:00", te.DurationString());
+    ASSERT_EQ("00:15:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("0.025");
-    ASSERT_EQ("00:01:30", te.DurationString());
+    ASSERT_EQ("00:01:30",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("2h45");
-    ASSERT_EQ("02:45:00", te.DurationString());
+    ASSERT_EQ("02:45:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("2h");
-    ASSERT_EQ("02:00:00", te.DurationString());
+    ASSERT_EQ("02:00:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("2h 18m");
-    ASSERT_EQ("02:18:00", te.DurationString());
+    ASSERT_EQ("02:18:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("2h 18m 50s");
-    ASSERT_EQ("02:18:50", te.DurationString());
+    ASSERT_EQ("02:18:50",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("1hr 25min 30sec");
-    ASSERT_EQ("01:25:30", te.DurationString());
+    ASSERT_EQ("01:25:30",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("1 hours 25 minutes 30 seconds");
-    ASSERT_EQ("01:25:30", te.DurationString());
+    ASSERT_EQ("01:25:30",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("1 hour 1 minute 1 second");
-    ASSERT_EQ("01:01:01", te.DurationString());
+    ASSERT_EQ("01:01:01",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 }
 
 TEST(AppTest, ParseDurationLargerThan24Hours) {
@@ -847,7 +937,9 @@ TEST(AppTest, ParseDurationLargerThan24Hours) {
 
     te.SetDurationInSeconds(0);
     te.SetDurationUserInput("90:10:00");
-    ASSERT_EQ("90:10:00", te.DurationString());
+    ASSERT_EQ("90:10:00",
+              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+                      true, toggl::Format::Improved));
 }
 
 TEST(AppTest, InterpretsCrazyStartAndStopAsMissingValues) {
@@ -917,17 +1009,94 @@ TEST(AppTest, SetDurationOnRunningTimeEntryWithDurOnlySetting) {
     ASSERT_LT(te->Start(), te->Stop());
 }
 
+TEST(FormatterTest, ParseTimeInput) {
+    int hours = 0;
+    int minutes = 0;
+
+    ASSERT_FALSE(Formatter::ParseTimeInput("", &hours, &minutes));
+    ASSERT_EQ(0, hours);
+    ASSERT_EQ(0, minutes);
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("120a", &hours, &minutes));
+    ASSERT_EQ(1, hours);
+    ASSERT_EQ(20, minutes);
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("120a", &hours, &minutes));
+    ASSERT_EQ(1, hours);
+    ASSERT_EQ(20, minutes);
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("1P", &hours, &minutes));
+    ASSERT_EQ(13, hours);
+    ASSERT_EQ(0, minutes);
+
+    ASSERT_FALSE(Formatter::ParseTimeInput("x", &hours, &minutes));
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("2", &hours, &minutes));
+    ASSERT_EQ(2, hours);
+    ASSERT_EQ(0, minutes);
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("12", &hours, &minutes));
+    ASSERT_EQ(12, hours);
+    ASSERT_EQ(0, minutes);
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("1230", &hours, &minutes));
+    ASSERT_EQ(12, hours);
+    ASSERT_EQ(30, minutes);
+
+    ASSERT_FALSE(Formatter::ParseTimeInput("12x", &hours, &minutes));
+
+    ASSERT_FALSE(Formatter::ParseTimeInput("12xx", &hours, &minutes));
+
+    ASSERT_FALSE(Formatter::ParseTimeInput(":", &hours, &minutes));
+
+    ASSERT_FALSE(Formatter::ParseTimeInput("11:", &hours, &minutes));
+
+    ASSERT_FALSE(Formatter::ParseTimeInput(":20", &hours, &minutes));
+
+    ASSERT_FALSE(Formatter::ParseTimeInput("11:xx", &hours, &minutes));
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("11:20", &hours, &minutes));
+    ASSERT_EQ(11, hours);
+    ASSERT_EQ(20, minutes);
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("5:30", &hours, &minutes));
+    ASSERT_EQ(5, hours);
+    ASSERT_EQ(30, minutes);
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("5:30 PM", &hours, &minutes));
+    ASSERT_EQ(17, hours);
+    ASSERT_EQ(30, minutes);
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("5:30 odp.", &hours, &minutes));
+    ASSERT_EQ(17, hours);
+    ASSERT_EQ(30, minutes);
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("17:10", &hours, &minutes));
+    ASSERT_EQ(17, hours);
+    ASSERT_EQ(10, minutes);
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("12:00 AM", &hours, &minutes));
+    ASSERT_EQ(0, hours);
+    ASSERT_EQ(0, minutes);
+
+    ASSERT_TRUE(Formatter::ParseTimeInput("12:00 dop.", &hours, &minutes));
+    ASSERT_EQ(0, hours);
+    ASSERT_EQ(0, minutes);
+
+    ASSERT_FALSE(Formatter::ParseTimeInput("NOT VALID", &hours, &minutes));
+}
+
 TEST(FormatterTest, FormatTimeForTimeEntryEditor) {
-    ASSERT_EQ("", Formatter::FormatTimeForTimeEntryEditor(0, "H:mm"));
+    ASSERT_EQ("", Formatter::FormatTimeForTimeEntryEditor(0));
 
     //  date -r 1412950844
     //  Fri Oct 10 16:20:44 CEST 2014
     time_t t(1412950844);
 
-    std::string res = Formatter::FormatTimeForTimeEntryEditor(t, "H:mm");
+    std::string res = Formatter::FormatTimeForTimeEntryEditor(t);
     ASSERT_NE(std::string::npos, res.find(":20"));
 
-    res = Formatter::FormatTimeForTimeEntryEditor(t, "h:mm A");
+    res = Formatter::FormatTimeForTimeEntryEditor(t);
     ASSERT_NE(std::string::npos, res.find(":20"));
 }
 
@@ -992,10 +1161,33 @@ TEST(FormatterTest, Parse8601) {
     ASSERT_EQ(0, Formatter::Parse8601("invalid value"));
 }
 
-TEST(FormatterTest, FormatDurationInSecondsPrettyHHMM) {
-    ASSERT_EQ("0 min", Formatter::FormatDurationInSecondsToHM(0));
-    ASSERT_EQ("0 min", Formatter::FormatDurationInSecondsToHM(30));
-    ASSERT_EQ("2 min", Formatter::FormatDurationInSecondsToHM(120));
+TEST(FormatterTest, FormatDuration) {
+    ASSERT_EQ("0 min", Formatter::FormatDuration(0, false, Format::Classic));
+    ASSERT_EQ("0 min", Formatter::FormatDuration(30, false, Format::Classic));
+    ASSERT_EQ("2 min", Formatter::FormatDuration(120, false, Format::Classic));
+    ASSERT_EQ("1 h 30 min",
+              Formatter::FormatDuration(5400, false, Format::Classic));
+
+    ASSERT_EQ("00:00", Formatter::FormatDuration(0, false, Format::Improved));
+    ASSERT_EQ("00:00", Formatter::FormatDuration(30, false, Format::Improved));
+    ASSERT_EQ("00:02",
+              Formatter::FormatDuration(120, false, Format::Improved));
+    ASSERT_EQ("01:30",
+              Formatter::FormatDuration(5400, false, Format::Improved));
+
+    ASSERT_EQ("00:00:00",
+              Formatter::FormatDuration(0, true, Format::Improved));
+    ASSERT_EQ("00:00:30",
+              Formatter::FormatDuration(30, true, Format::Improved));
+    ASSERT_EQ("00:02:00",
+              Formatter::FormatDuration(120, true, Format::Improved));
+    ASSERT_EQ("01:30:00",
+              Formatter::FormatDuration(5400, true, Format::Improved));
+
+    ASSERT_EQ("0.0 h", Formatter::FormatDuration(0, false, Format::Decimal));
+    ASSERT_EQ("0.0 h", Formatter::FormatDuration(30, false, Format::Decimal));
+    ASSERT_EQ("0.0 h", Formatter::FormatDuration(120, false, Format::Decimal));
+    ASSERT_EQ("1.5 h", Formatter::FormatDuration(5400, false, Format::Decimal));
 }
 
 TEST(FormatterTest, JoinTaskName) {
@@ -1241,81 +1433,26 @@ TEST(JSON, TimeEntry) {
     ASSERT_EQ(t.DurOnly(), t2.DurOnly());
 }
 
-TEST(FormatterTest, ParseTimeInput) {
-    int hours = 0;
-    int minutes = 0;
+TEST(User, TimeOfDayFormat) {
+    User u;
+    u.SetTimeOfDayFormat("H:mm");
+    ASSERT_EQ("H:mm", u.TimeOfDayFormat());
+    ASSERT_EQ("H:mm", Formatter::TimeOfDayFormat);
 
-    ASSERT_FALSE(Formatter::ParseTimeInput("", &hours, &minutes));
-    ASSERT_EQ(0, hours);
-    ASSERT_EQ(0, minutes);
+    u.SetTimeOfDayFormat("h:mm A");
+    ASSERT_EQ("h:mm A", u.TimeOfDayFormat());
+    ASSERT_EQ("h:mm A", Formatter::TimeOfDayFormat);
+}
 
-    ASSERT_TRUE(Formatter::ParseTimeInput("120a", &hours, &minutes));
-    ASSERT_EQ(1, hours);
-    ASSERT_EQ(20, minutes);
+TEST(User, DurationFormat) {
+    User u;
+    u.SetDurationFormat("classic");
+    ASSERT_EQ("classic", u.DurationFormat());
+    ASSERT_EQ("classic", Formatter::DurationFormat);
 
-    ASSERT_TRUE(Formatter::ParseTimeInput("120a", &hours, &minutes));
-    ASSERT_EQ(1, hours);
-    ASSERT_EQ(20, minutes);
-
-    ASSERT_TRUE(Formatter::ParseTimeInput("1P", &hours, &minutes));
-    ASSERT_EQ(13, hours);
-    ASSERT_EQ(0, minutes);
-
-    ASSERT_FALSE(Formatter::ParseTimeInput("x", &hours, &minutes));
-
-    ASSERT_TRUE(Formatter::ParseTimeInput("2", &hours, &minutes));
-    ASSERT_EQ(2, hours);
-    ASSERT_EQ(0, minutes);
-
-    ASSERT_TRUE(Formatter::ParseTimeInput("12", &hours, &minutes));
-    ASSERT_EQ(12, hours);
-    ASSERT_EQ(0, minutes);
-
-    ASSERT_TRUE(Formatter::ParseTimeInput("1230", &hours, &minutes));
-    ASSERT_EQ(12, hours);
-    ASSERT_EQ(30, minutes);
-
-    ASSERT_FALSE(Formatter::ParseTimeInput("12x", &hours, &minutes));
-
-    ASSERT_FALSE(Formatter::ParseTimeInput("12xx", &hours, &minutes));
-
-    ASSERT_FALSE(Formatter::ParseTimeInput(":", &hours, &minutes));
-
-    ASSERT_FALSE(Formatter::ParseTimeInput("11:", &hours, &minutes));
-
-    ASSERT_FALSE(Formatter::ParseTimeInput(":20", &hours, &minutes));
-
-    ASSERT_FALSE(Formatter::ParseTimeInput("11:xx", &hours, &minutes));
-
-    ASSERT_TRUE(Formatter::ParseTimeInput("11:20", &hours, &minutes));
-    ASSERT_EQ(11, hours);
-    ASSERT_EQ(20, minutes);
-
-    ASSERT_TRUE(Formatter::ParseTimeInput("5:30", &hours, &minutes));
-    ASSERT_EQ(5, hours);
-    ASSERT_EQ(30, minutes);
-
-    ASSERT_TRUE(Formatter::ParseTimeInput("5:30 PM", &hours, &minutes));
-    ASSERT_EQ(17, hours);
-    ASSERT_EQ(30, minutes);
-
-    ASSERT_TRUE(Formatter::ParseTimeInput("5:30 odp.", &hours, &minutes));
-    ASSERT_EQ(17, hours);
-    ASSERT_EQ(30, minutes);
-
-    ASSERT_TRUE(Formatter::ParseTimeInput("17:10", &hours, &minutes));
-    ASSERT_EQ(17, hours);
-    ASSERT_EQ(10, minutes);
-
-    ASSERT_TRUE(Formatter::ParseTimeInput("12:00 AM", &hours, &minutes));
-    ASSERT_EQ(0, hours);
-    ASSERT_EQ(0, minutes);
-
-    ASSERT_TRUE(Formatter::ParseTimeInput("12:00 dop.", &hours, &minutes));
-    ASSERT_EQ(0, hours);
-    ASSERT_EQ(0, minutes);
-
-    ASSERT_FALSE(Formatter::ParseTimeInput("NOT VALID", &hours, &minutes));
+    u.SetDurationFormat("decimal");
+    ASSERT_EQ("decimal", u.DurationFormat());
+    ASSERT_EQ("decimal", Formatter::DurationFormat);
 }
 
 }  // namespace toggl

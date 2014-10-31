@@ -61,8 +61,6 @@ class TimeEntry : public BaseModel {
     }
     void SetDurationInSeconds(const Poco::Int64 value);
 
-    std::string DurationString() const;
-
     bool DurOnly() const {
         return duronly_;
     }

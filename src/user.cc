@@ -185,7 +185,8 @@ std::string User::DateDuration(TimeEntry * const te) const {
             }
         }
     }
-    return Formatter::FormatDurationInSecondsHHMMSS(date_duration);
+    return Formatter::FormatDuration(date_duration, false,
+                                     DurationFormat());
 }
 
 bool User::HasPremiumWorkspaces() const {
@@ -222,6 +223,7 @@ void User::SetFullname(const std::string value) {
 }
 
 void User::SetTimeOfDayFormat(const std::string value) {
+    Formatter::TimeOfDayFormat = value;
     if (timeofday_format_ != value) {
         timeofday_format_ = value;
         SetDirty();
@@ -229,6 +231,7 @@ void User::SetTimeOfDayFormat(const std::string value) {
 }
 
 void User::SetDurationFormat(const std::string value) {
+    Formatter::DurationFormat = value;
     if (duration_format_ != value) {
         duration_format_ = value;
         SetDirty();

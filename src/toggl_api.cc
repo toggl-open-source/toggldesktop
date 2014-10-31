@@ -255,8 +255,8 @@ _Bool toggl_add_project(
 char_t *toggl_format_duration_in_seconds_hhmmss(
     const int64_t duration_in_seconds) {
 
-    std::string formatted =
-        toggl::Formatter::FormatDurationInSecondsHHMMSS(duration_in_seconds);
+    std::string formatted = toggl::Formatter::FormatDuration(
+        duration_in_seconds, true, toggl::Format::Improved);
 
     return copy_string(formatted);
 }
@@ -264,8 +264,8 @@ char_t *toggl_format_duration_in_seconds_hhmmss(
 char_t *toggl_format_duration_in_seconds_hhmm(
     const int64_t duration_in_seconds) {
 
-    std::string formatted = toggl::Formatter::FormatDurationInSecondsHHMM(
-        duration_in_seconds);
+    std::string formatted = toggl::Formatter::FormatDuration(
+        duration_in_seconds, false, toggl::Format::Improved);
 
     return copy_string(formatted);
 }

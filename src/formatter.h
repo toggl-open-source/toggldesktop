@@ -12,9 +12,19 @@
 
 namespace toggl {
 
+class Format {
+ public:
+    static std::string Classic;
+    static std::string Improved;
+    static std::string Decimal;
+};
+
 class Formatter {
  public:
     // Format
+
+    static std::string TimeOfDayFormat;
+    static std::string DurationFormat;
 
     static std::string JoinTaskName(
         Task * const,
@@ -26,18 +36,10 @@ class Formatter {
         Project * const,
         Client * const);
 
-    static std::string FormatDurationInSeconds(
+    static std::string FormatDuration(
         const Poco::Int64 value,
-        const std::string format);
-
-    static std::string FormatDurationInSecondsToHM(
-        const Poco::Int64 value);
-
-    static std::string FormatDurationInSecondsHHMMSS(
-        const Poco::Int64 value);
-
-    static std::string FormatDurationInSecondsHHMM(
-        const Poco::Int64 value);
+        const bool with_seconds,
+        const std::string format_name);
 
     static std::string Format8601(
         const std::time_t date);
@@ -46,8 +48,7 @@ class Formatter {
         const std::time_t date);
 
     static std::string FormatTimeForTimeEntryEditor(
-        const std::time_t date,
-        const std::string timeofday_format);
+        const std::time_t date);
 
     static std::string togglTimeOfDayToPocoFormat(
         const std::string toggl_format);

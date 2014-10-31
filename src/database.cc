@@ -2084,8 +2084,9 @@ error Database::initialize_tables() {
     }
 
     err = migrate("users.duration_format",
-        "alter table users "
-        "add column duration_format varchar not null default 'classic';");
+                  "alter table users "
+                  "add column duration_format varchar "
+                  "not null default 'classic';");
     if (err != noError) {
         return err;
     }

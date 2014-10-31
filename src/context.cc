@@ -957,8 +957,8 @@ TogglTimeEntryView *Context::timeEntryViewItem(TimeEntry *te) {
                              &client_label, &color);
 
     Poco::Int64 duration = totalDurationForDate(te);
-    std::string date_duration =
-        Formatter::FormatDurationInSecondsToHM(duration);
+    std::string date_duration = Formatter::FormatDuration(
+        duration, true, Formatter::DurationFormat);
 
     return time_entry_view_item_init(te,
                                      project_and_task_label,
@@ -967,7 +967,7 @@ TogglTimeEntryView *Context::timeEntryViewItem(TimeEntry *te) {
                                      client_label,
                                      color,
                                      date_duration,
-                                     timeOfDayFormat());
+                                     true);
 }
 
 _Bool Context::DisplaySettings(const _Bool open) {
@@ -1315,13 +1315,6 @@ Poco::Int64 Context::totalDurationForDate(TimeEntry *match) const {
     return duration;
 }
 
-std::string Context::timeOfDayFormat() const {
-    if (user_) {
-        return user_->TimeOfDayFormat();
-    }
-    return "";
-}
-
 void Context::DisplayTimeEntryList(const _Bool open) {
     Poco::Stopwatch stopwatch;
     stopwatch.start();
@@ -1337,8 +1330,6 @@ void Context::DisplayTimeEntryList(const _Bool open) {
         duration += TimeEntry::AbsDuration(te->DurationInSeconds());
         date_durations[date_header] = duration;
     }
-
-    std::string timeofday_format = timeOfDayFormat();
 
     TogglTimeEntryView *first = 0;
     for (unsigned int i = 0; i < list.size(); i++) {
@@ -1359,8 +1350,8 @@ void Context::DisplayTimeEntryList(const _Bool open) {
                                  &client_label, &color);
 
         Poco::Int64 duration = date_durations[te->DateHeaderString()];
-        std::string date_duration =
-            Formatter::FormatDurationInSecondsToHM(duration);
+        std::string date_duration = Formatter::FormatDuration(
+            duration, false, Formatter::DurationFormat);
 
         TogglTimeEntryView *item =
             time_entry_view_item_init(te,
@@ -1370,7 +1361,7 @@ void Context::DisplayTimeEntryList(const _Bool open) {
                                       client_label,
                                       color,
                                       date_duration,
-                                      timeofday_format);
+                                      false);
         item->Next = first;
         if (first && compare_string(item->DateHeader, first->DateHeader) != 0) {
             first->IsHeader = true;
@@ -2161,7 +2152,7 @@ void Context::SetIdleSeconds(const Poco::UInt64 idle_seconds) {
                 std::stringstream since;
                 since << "You have been idle since "
                       << Formatter::FormatTimeForTimeEntryEditor(
-                          last_idle_started_, user_->TimeOfDayFormat());
+                          last_idle_started_);
 
                 int minutes = static_cast<int>(last_idle_seconds_reading_ / 60);
                 std::stringstream duration;

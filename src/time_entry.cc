@@ -297,10 +297,6 @@ std::string TimeEntry::DateHeaderString() const {
     return Formatter::FormatDateHeader(start_);
 }
 
-std::string TimeEntry::DurationString() const {
-    return Formatter::FormatDurationInSecondsHHMMSS(duration_in_seconds_);
-}
-
 std::string TimeEntry::StopString() const {
     return Formatter::Format8601(stop_);
 }

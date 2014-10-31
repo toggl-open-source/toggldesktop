@@ -161,7 +161,7 @@ TogglTimeEntryView *time_entry_view_item_init(
     const std::string client_label,
     const std::string color,
     const std::string date_duration,
-    const std::string timeofday_format) {
+    const bool time_in_timer_format) {
 
     poco_check_ptr(te);
 
@@ -174,7 +174,14 @@ TogglTimeEntryView *time_entry_view_item_init(
     view_item->WID = static_cast<unsigned int>(te->WID());
     view_item->TID = static_cast<unsigned int>(te->TID());
     view_item->PID = static_cast<unsigned int>(te->PID());
-    view_item->Duration = copy_string(te->DurationString());
+    std::string timer_format(toggl::Format::Improved);
+    if (!time_in_timer_format) {
+        timer_format =toggl::Formatter::DurationFormat;
+    }
+    view_item->Duration =  copy_string(toggl::Formatter::FormatDuration(
+        te->DurationInSeconds(),
+        true,
+        timer_format));
     view_item->Started = static_cast<unsigned int>(te->Start());
     view_item->Ended = static_cast<unsigned int>(te->Stop());
 
@@ -185,11 +192,9 @@ TogglTimeEntryView *time_entry_view_item_init(
     view_item->Color = copy_string(color);
 
     std::string start_time_string =
-        toggl::Formatter::FormatTimeForTimeEntryEditor(te->Start(),
-                timeofday_format);
+        toggl::Formatter::FormatTimeForTimeEntryEditor(te->Start());
     std::string end_time_string =
-        toggl::Formatter::FormatTimeForTimeEntryEditor(te->Stop(),
-                timeofday_format);
+        toggl::Formatter::FormatTimeForTimeEntryEditor(te->Stop());
 
     view_item->StartTimeString = copy_string(start_time_string);
     view_item->EndTimeString = copy_string(end_time_string);

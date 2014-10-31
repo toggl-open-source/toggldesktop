@@ -47,7 +47,7 @@ TogglTimeEntryView *time_entry_view_item_init(
     const std::string client_label,
     const std::string color,
     const std::string date_duration,
-    const std::string timeofday_format);
+    const bool time_in_timer_format);
 
 void time_entry_view_item_clear(TogglTimeEntryView *item);
 
