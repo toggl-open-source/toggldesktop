@@ -5,7 +5,6 @@
 
 #define kOneSecondInMicros 1000000
 
-#define kIdleThresholdSeconds 300
 #define kMaxTimeEntryDurationSeconds 3600000
 #define kHTTPClientTimeoutSeconds 10
 #define kPeriodicSyncIntervalSeconds 900

@@ -280,7 +280,7 @@ TEST(TogglApiTest, toggl_set_settings) {
     testing::App app;
 
     ASSERT_TRUE(toggl_set_settings(app.ctx(),
-                                   false, false, false, false, false));
+                                   false, false, false, false, false, 5));
 
     ASSERT_FALSE(testing::testresult::settings.use_idle_detection);
     ASSERT_FALSE(testing::testresult::settings.menubar_timer);
@@ -289,7 +289,7 @@ TEST(TogglApiTest, toggl_set_settings) {
     ASSERT_FALSE(testing::testresult::settings.reminder);
 
     ASSERT_TRUE(toggl_set_settings(app.ctx(),
-                                   true, true, true, true, true));
+                                   true, true, true, true, true, 5));
 
     ASSERT_TRUE(testing::testresult::settings.use_idle_detection);
     ASSERT_TRUE(testing::testresult::settings.menubar_timer);
@@ -490,13 +490,13 @@ TEST(TogglApiTest, toggl_set_idle_seconds) {
     ASSERT_EQ("", testing::testresult::idle_duration);
     ASSERT_EQ("", testing::testresult::idle_guid);
 
-    toggl_set_idle_seconds(app.ctx(), kIdleThresholdSeconds-1);
+    toggl_set_idle_seconds(app.ctx(), (5*60)-1);
     ASSERT_EQ("", testing::testresult::idle_since);
     ASSERT_EQ(uint64_t(0), testing::testresult::idle_started);
     ASSERT_EQ("", testing::testresult::idle_duration);
     ASSERT_EQ("", testing::testresult::idle_guid);
 
-    toggl_set_idle_seconds(app.ctx(), kIdleThresholdSeconds);
+    toggl_set_idle_seconds(app.ctx(), (5*60));
     ASSERT_EQ("", testing::testresult::idle_since);
     ASSERT_EQ(uint64_t(0), testing::testresult::idle_started);
     ASSERT_EQ("", testing::testresult::idle_duration);
@@ -510,7 +510,7 @@ TEST(TogglApiTest, toggl_set_idle_seconds) {
 
     ASSERT_TRUE(toggl_start(app.ctx(), "test", "", 0, 0));
 
-    toggl_set_idle_seconds(app.ctx(), kIdleThresholdSeconds);
+    toggl_set_idle_seconds(app.ctx(), 5*60);
     ASSERT_EQ("", testing::testresult::idle_since);
     ASSERT_EQ(uint64_t(0), testing::testresult::idle_started);
     ASSERT_EQ("", testing::testresult::idle_duration);

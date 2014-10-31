@@ -55,6 +55,7 @@ extern void *ctx;
 - (IBAction)useIdleDetectionButtonChanged:(id)sender
 {
 	[self saveSettings];
+	self.idleMinutesTextField.enabled = [Utils stateToBool:self.useIdleDetectionButton.state];
 }
 
 - (IBAction)ontopCheckboxChanged:(id)sender
@@ -96,12 +97,15 @@ extern void *ctx;
 {
 	NSLog(@"saveSettings");
 
+	long idleMinutes = [self.idleMinutesTextField.stringValue intValue];
+
 	toggl_set_settings(ctx,
 					   [Utils stateToBool:[self.useIdleDetectionButton state]],
 					   [Utils stateToBool:[self.menubarTimerCheckbox state]],
 					   [Utils stateToBool:[self.dockIconCheckbox state]],
 					   [Utils stateToBool:[self.ontopCheckbox state]],
-					   [Utils stateToBool:[self.reminderCheckbox state]]);
+					   [Utils stateToBool:[self.reminderCheckbox state]],
+					   idleMinutes);
 }
 
 - (void)saveProxySettings
@@ -185,6 +189,14 @@ extern void *ctx;
 	[self.portTextField setEnabled:use_proxy];
 	[self.usernameTextField setEnabled:use_proxy];
 	[self.passwordTextField setEnabled:use_proxy];
+
+	self.idleMinutesTextField.intValue = settings.idle_minutes;
+	self.idleMinutesTextField.enabled = settings.idle_detection;
+}
+
+- (IBAction)idleMinutesChange:(id)sender
+{
+	[self saveSettings];
 }
 
 @end

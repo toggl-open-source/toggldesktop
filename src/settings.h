@@ -21,7 +21,7 @@ class Settings {
     bool dock_icon;
     bool on_top;
     bool reminder;
-    int idle_minutes;
+    Poco::UInt64 idle_minutes;
 };
 
 }  // namespace toggl

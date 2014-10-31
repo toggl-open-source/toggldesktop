@@ -349,6 +349,7 @@ class Context : public TimelineDatasource {
 
     Poco::UInt64 last_idle_seconds_reading_;
     Poco::UInt64 last_idle_started_;
+    Poco::UInt64 idle_minutes_;
 
     Poco::UInt64 last_sync_started_;
 

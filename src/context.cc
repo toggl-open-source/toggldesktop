@@ -47,6 +47,7 @@ Context::Context(const std::string app_name, const std::string app_version)
 , environment_("production")
 , last_idle_seconds_reading_(0)
 , last_idle_started_(0)
+, idle_minutes_(0)
 , last_sync_started_(0)
 , update_check_disabled_(false)
 , quit_(false) {
@@ -991,6 +992,8 @@ _Bool Context::DisplaySettings(const _Bool open) {
     if (user_) {
         record_timeline = user_->RecordTimeline();
     }
+
+    idle_minutes_ = settings.idle_minutes;
 
     HTTPSClientConfig::UseProxy = use_proxy;
     HTTPSClientConfig::IgnoreCert = false;
@@ -2128,7 +2131,9 @@ void Context::SetIdleSeconds(const Poco::UInt64 idle_seconds) {
     }
     */
 
-    if (idle_seconds >= kIdleThresholdSeconds && !last_idle_started_) {
+    if (idle_minutes_ &&
+            (idle_seconds >= (idle_minutes_*60)) &&
+            !last_idle_started_) {
         last_idle_started_ = time(0) - idle_seconds;
 
         std::stringstream ss;

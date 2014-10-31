@@ -22,4 +22,5 @@
 @property NSString *proxy_username;
 @property NSString *proxy_password;
 @property BOOL timeline_recording_enabled;
+@property int idle_minutes;
 @end

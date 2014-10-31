@@ -19,6 +19,7 @@
 	self.dock_icon = data->DockIcon;
 	self.on_top = data->OnTop;
 	self.reminder = data->Reminder;
+	self.idle_minutes = (int)data->IdleMinutes;
 
 	self.use_proxy = data->UseProxy;
 

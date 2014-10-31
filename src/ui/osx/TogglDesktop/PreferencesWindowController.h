@@ -27,6 +27,8 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 @property IBOutlet NSButton *reminderCheckbox;
 @property IBOutlet MASShortcutView *showHideShortcutView;
 @property IBOutlet MASShortcutView *startStopShortcutView;
+@property IBOutlet NSTextField *idleMinutesTextField;
+- (IBAction)idleMinutesChange:(id)sender;
 - (IBAction)useProxyButtonChanged:(id)sender;
 - (IBAction)hostTextFieldChanged:(id)sender;
 - (IBAction)portTextFieldChanged:(id)sender;

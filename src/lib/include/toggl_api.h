@@ -107,6 +107,7 @@ extern "C" {
         _Bool OnTop;
         _Bool Reminder;
         _Bool RecordTimeline;
+        uint64_t IdleMinutes;
     } TogglSettingsView;
 
     typedef struct {
@@ -419,7 +420,8 @@ extern "C" {
         const _Bool menubar_timer,
         const _Bool dock_icon,
         const _Bool on_top,
-        const _Bool reminder);
+        const _Bool reminder,
+        const uint64_t idle_minutes);
 
     TOGGL_EXPORT _Bool toggl_set_proxy_settings(
         void *context,

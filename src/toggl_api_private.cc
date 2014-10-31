@@ -289,6 +289,7 @@ TogglSettingsView *settings_view_item_init(
     view->OnTop = settings.on_top;
     view->Reminder = settings.reminder;
     view->UseIdleDetection = settings.use_idle_detection;
+    view->IdleMinutes = settings.idle_minutes;
 
     view->UseProxy = use_proxy;
 
