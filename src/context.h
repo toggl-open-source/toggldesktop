@@ -159,7 +159,8 @@ class Context : public TimelineDatasource {
 
     _Bool DiscardTimeAt(
         const std::string GUID,
-        const Poco::Int64 at);
+        const Poco::Int64 at,
+        const bool split_into_new_entry);
 
     _Bool RunningTimeEntry(
         TimeEntry **running) const;

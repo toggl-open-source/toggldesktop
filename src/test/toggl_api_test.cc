@@ -841,15 +841,20 @@ TEST(TogglApiTest, toggl_discard_time_at) {
 
     testing::testresult::timer_state = TimeEntry();
 
+    // Start a time entry
+
     ASSERT_TRUE(toggl_start(app.ctx(), "test", "", 0, 0));
 
     Poco::UInt64 started = time(0);
     std::string guid = testing::testresult::timer_state.GUID();
     ASSERT_FALSE(guid.empty());
 
+    // Discard the time entry at some point
+
     Poco::UInt64 stopped = time(0);
-    ASSERT_TRUE(toggl_discard_time_at(app.ctx(), guid.c_str(), stopped));
+    ASSERT_TRUE(toggl_discard_time_at(app.ctx(), guid.c_str(), stopped, false));
     ASSERT_NE(guid, testing::testresult::timer_state.GUID());
+    ASSERT_TRUE(testing::testresult::timer_state.GUID().empty());
 
     TimeEntry te;
     for (std::size_t i = 0; i < testing::testresult::time_entries.size();
@@ -862,6 +867,40 @@ TEST(TogglApiTest, toggl_discard_time_at) {
     ASSERT_EQ(guid, te.GUID());
     ASSERT_EQ(started, te.Start());
     ASSERT_EQ(stopped, te.Stop());
+
+    // Start another time entry
+
+    ASSERT_TRUE(toggl_start(app.ctx(), "test 2", "", 0, 0));
+
+    started = time(0);
+    guid = testing::testresult::timer_state.GUID();
+    ASSERT_FALSE(guid.empty());
+
+    // Discard the time entry, by creating a new one
+
+    stopped = time(0);
+    ASSERT_TRUE(toggl_discard_time_at(app.ctx(), guid.c_str(), stopped, true));
+    ASSERT_NE(guid, testing::testresult::timer_state.GUID());
+
+    te = TimeEntry();
+    for (std::size_t i = 0; i < testing::testresult::time_entries.size();
+            i++) {
+        if (testing::testresult::time_entries[i].GUID() == guid) {
+            te = testing::testresult::time_entries[i];
+            break;
+        }
+    }
+    ASSERT_EQ(guid, te.GUID());
+    ASSERT_EQ(started, te.Start());
+    ASSERT_EQ(stopped, te.Stop());
+
+    // Check that a new time entry was created
+
+    ASSERT_TRUE(!testing::testresult::timer_state.GUID().empty());
+    ASSERT_EQ(stopped, testing::testresult::timer_state.Start());
+    ASSERT_TRUE(testing::testresult::timer_state.IsTracking());
+    ASSERT_EQ(te.Description(),
+              testing::testresult::timer_state.Description());
 }
 
 TEST(TogglApiTest, toggl_feedback_send) {

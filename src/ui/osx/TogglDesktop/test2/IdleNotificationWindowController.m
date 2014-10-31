@@ -32,12 +32,22 @@ extern void *ctx;
 {
 	toggl_discard_time_at(ctx,
 						  [self.idleEvent.guid UTF8String],
-						  self.idleEvent.started);
+						  self.idleEvent.started,
+						  NO);
 	[self.window orderOut:nil];
 }
 
 - (IBAction)ignoreButtonClicked:(id)sender
 {
+	[self.window orderOut:nil];
+}
+
+- (IBAction)addIdleTimeAsNewTimeEntry:(id)sender
+{
+	toggl_discard_time_at(ctx,
+						  [self.idleEvent.guid UTF8String],
+						  self.idleEvent.started,
+						  YES);
 	[self.window orderOut:nil];
 }
 

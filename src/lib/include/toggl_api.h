@@ -412,7 +412,8 @@ extern "C" {
     TOGGL_EXPORT _Bool toggl_discard_time_at(
         void *context,
         const char_t *guid,
-        const uint64_t at);
+        const uint64_t at,
+        const _Bool split_into_new_entry);
 
     TOGGL_EXPORT _Bool toggl_set_settings(
         void *context,

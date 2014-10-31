@@ -1784,7 +1784,8 @@ _Bool Context::Stop() {
 
 _Bool Context::DiscardTimeAt(
     const std::string guid,
-    const Poco::Int64 at) {
+    const Poco::Int64 at,
+    const bool split_into_new_entry) {
 
     if (!user_) {
         logger().warning("Cannot stop time entry, user logged out");

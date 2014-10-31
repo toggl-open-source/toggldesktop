@@ -499,13 +499,17 @@ _Bool toggl_stop(
 _Bool toggl_discard_time_at(
     void *context,
     const char_t *guid,
-    const uint64_t at) {
+    const uint64_t at,
+    const _Bool split_into_new_entry) {
     poco_check_ptr(guid);
     poco_assert(at);
 
     logger().debug("toggl_discard_time_at");
 
-    return app(context)->DiscardTimeAt(to_string(guid), at);
+    return app(context)->DiscardTimeAt(
+        to_string(guid),
+        at,
+        split_into_new_entry);
 }
 
 _Bool toggl_timeline_toggle_recording(
