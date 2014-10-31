@@ -128,7 +128,7 @@ class TogglApi : public QObject {
                      const bool dockIcon,
                      const bool onTop,
                      const bool reminder,
-		     const uint64_t idle_minutes);
+                     const uint64_t idle_minutes);
 
     void toggleTimelineRecording(
         const bool recordTimeline);
