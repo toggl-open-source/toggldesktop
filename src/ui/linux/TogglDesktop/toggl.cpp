@@ -270,13 +270,15 @@ bool TogglApi::setSettings(const bool useIdleDetection,
                            const bool menubarTimer,
                            const bool dockIcon,
                            const bool onTop,
-                           const bool reminder) {
+                           const bool reminder,
+			   const uint64_t idleMinutes) {
     return toggl_set_settings(ctx,
                               useIdleDetection,
                               menubarTimer,
                               dockIcon,
                               onTop,
-                              reminder);
+                              reminder,
+			      idleMinutes);
 }
 
 void TogglApi::toggleTimelineRecording(const bool recordTimeline) {

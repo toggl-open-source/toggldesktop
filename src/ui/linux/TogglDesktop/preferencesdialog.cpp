@@ -36,6 +36,7 @@ void PreferencesDialog::displaySettings(const bool open,
     ui->idleDetection->setChecked(settings->UseIdleDetection);
     ui->recordTimeline->setChecked(settings->RecordTimeline);  // user based!
     ui->remindToTrackTime->setChecked(settings->Reminder);
+    ui->idleMinutes->setText(QString::number(settings->IdleMinutes));
 }
 
 void PreferencesDialog::displayLogin(const bool open,
@@ -84,9 +85,14 @@ bool PreferencesDialog::setSettings() {
                                            false,
                                            false,
                                            false,
-                                           ui->remindToTrackTime->isChecked());
+                                           ui->remindToTrackTime->isChecked(),
+                                           ui->idleMinutes->text().toInt());
 }
 
 void PreferencesDialog::on_useProxy_clicked(bool checked) {
     setProxySettings();
+}
+
+void PreferencesDialog::on_idleMinutes_editingFinished() {
+    setSettings();
 }

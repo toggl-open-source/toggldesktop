@@ -3,6 +3,8 @@
 #ifndef SRC_SETTINGS_H_
 #define SRC_SETTINGS_H_
 
+#include "Poco/Types.h"
+
 namespace toggl {
 
 class Settings {
