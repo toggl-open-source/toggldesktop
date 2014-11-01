@@ -639,34 +639,16 @@ namespace TogglDesktop
 
         private void timerIdleDetection_Tick(object sender, EventArgs e)
         {
-            int idleTime = 0;
             LASTINPUTINFO lastInputInfo = new LASTINPUTINFO();
             lastInputInfo.cbSize = Marshal.SizeOf(lastInputInfo);
             lastInputInfo.dwTime = 0;
-
-            int envTicks = Environment.TickCount;
-
-            if (GetLastInputInfo(out lastInputInfo))
-            {
-                int lastInputTick = lastInputInfo.dwTime;
-                idleTime = envTicks - lastInputTick;
+            if (!GetLastInputInfo(out lastInputInfo)) {
+                return;
             }
-
-            int idle_seconds = 0;
-            if (idleTime > 0)
-            {
-                idle_seconds = idleTime / 1000;
+            int idle_seconds = unchecked(Environment.TickCount - (int)lastInputInfo.dwTime) / 1000;
+            if (idle_seconds < 1) {
+                return;
             }
-            else
-            {
-                idle_seconds = idleTime;
-            }
-
-            if (idle_seconds < 0)
-            {
-                idle_seconds = 0;
-            }
-
             Toggl.SetIdleSeconds((ulong)idle_seconds);
         }
 
