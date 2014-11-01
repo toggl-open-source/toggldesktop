@@ -51,7 +51,8 @@ void IdleNotificationDialog::on_keepTimeButton_clicked() {
 }
 
 void IdleNotificationDialog::on_discardTimeButton_clicked() {
-    TogglApi::instance->discardTimeAt(timeEntryGUID, idleStarted);
+    TogglApi::instance->discardTimeAt(timeEntryGUID, idleStarted, false);
+    hide();
 }
 
 void IdleNotificationDialog::displaySettings(
@@ -90,4 +91,9 @@ void IdleNotificationDialog::timeout() {
     }
     XFree(info);
     XCloseDisplay(display);
+}
+
+void IdleNotificationDialog::on_pushButton_clicked() {
+    TogglApi::instance->discardTimeAt(timeEntryGUID, idleStarted, true);
+    hide();
 }

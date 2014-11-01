@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>245</width>
-    <height>109</height>
+    <width>264</width>
+    <height>182</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,23 +35,24 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="widget" native="true">
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QPushButton" name="keepTimeButton">
-        <property name="text">
-         <string>Keep time</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="discardTimeButton">
-        <property name="text">
-         <string>Discard time</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+    <widget class="QPushButton" name="keepTimeButton">
+     <property name="text">
+      <string>Keep time</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="discardTimeButton">
+     <property name="text">
+      <string>Discard time</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButton">
+     <property name="text">
+      <string>Add idle time as a new time entry</string>
+     </property>
     </widget>
    </item>
   </layout>

@@ -140,7 +140,8 @@ class TogglApi : public QObject {
                       const QString filename);
 
     bool discardTimeAt(const QString guid,
-                       const uint64_t at);
+                       const uint64_t at,
+                       const bool split_into_new_time_entry);
 
     static const QString formatDurationInSecondsHHMMSS(
         const int64_t duration);

@@ -258,8 +258,12 @@ bool TogglApi::setProxySettings(
 }
 
 bool TogglApi::discardTimeAt(const QString guid,
-                             const uint64_t at) {
-    return toggl_discard_time_at(ctx, guid.toStdString().c_str(), at);
+                             const uint64_t at,
+                             const bool split_into_new_time_entry) {
+    return toggl_discard_time_at(ctx,
+                                 guid.toStdString().c_str(),
+                                 at,
+                                 split_into_new_time_entry);
 }
 
 void TogglApi::setIdleSeconds(u_int64_t idleSeconds) {
