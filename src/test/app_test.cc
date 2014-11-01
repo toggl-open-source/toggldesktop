@@ -47,13 +47,13 @@ class Database {
 };
 }  // namespace testing
 
-TEST(AppTest, TimeEntryReturnsTags) {
+TEST(TimeEntry, TimeEntryReturnsTags) {
     TimeEntry te;
     te.SetTags("alfa|beeta");
     ASSERT_EQ(std::string("alfa|beeta"), te.Tags());
 }
 
-TEST(AppTest, ProjectsHaveColorCodes) {
+TEST(Project, ProjectsHaveColorCodes) {
     Project p;
     p.SetColor("1");
     ASSERT_EQ("#bc85e6", p.ColorCode());
@@ -67,7 +67,7 @@ TEST(AppTest, ProjectsHaveColorCodes) {
     ASSERT_EQ("#a4506c", p.ColorCode());
 }
 
-TEST(AppTest, SaveAndLoadCurrentAPIToken) {
+TEST(Database, SaveAndLoadCurrentAPIToken) {
     testing::Database db;
     std::string api_token("");
     ASSERT_EQ(noError, db.instance()->CurrentAPIToken(&api_token));
@@ -95,7 +95,7 @@ TEST(AppTest, SaveAndLoadCurrentAPIToken) {
     ASSERT_EQ("", api_token_from_db);
 }
 
-TEST(AppTest, UpdatesTimeEntryFromJSON) {
+TEST(User, UpdatesTimeEntryFromJSON) {
     User user;
     ASSERT_EQ(noError,
               user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
@@ -108,7 +108,7 @@ TEST(AppTest, UpdatesTimeEntryFromJSON) {
     ASSERT_EQ("Changed", te->Description());
 }
 
-TEST(AppTest, AllowsSameEmail) {
+TEST(Database, AllowsSameEmail) {
     testing::Database db;
 
     User user;
@@ -128,13 +128,6 @@ TEST(AppTest, AllowsSameEmail) {
     ASSERT_EQ(user.Email(), user2.Email());
     ASSERT_NE(user.ID(), user2.ID());
     ASSERT_NE(user.APIToken(), user2.APIToken());
-}
-
-TEST(AppTest, EscapeJSONString) {
-    std::string text("https://github.com/bartschuller");
-    ASSERT_EQ(text, Formatter::EscapeJSONString(text));
-    ASSERT_EQ("\"", Formatter::EscapeJSONString("\""));
-    ASSERT_EQ(" ", Formatter::EscapeJSONString("\t"));
 }
 
 TEST(AppTest, EscapeControlCharactersInJSONString) {
@@ -1252,6 +1245,13 @@ TEST(FormatterTest, JoinTaskNameReverse) {
 
     res = Formatter::JoinTaskNameReverse(&t, &p, &c);
     ASSERT_EQ("Customer name. Project name. Task name", res);
+}
+
+TEST(JSON, EscapeJSONString) {
+    std::string text("https://github.com/bartschuller");
+    ASSERT_EQ(text, Formatter::EscapeJSONString(text));
+    ASSERT_EQ("\"", Formatter::EscapeJSONString("\""));
+    ASSERT_EQ(" ", Formatter::EscapeJSONString("\t"));
 }
 
 TEST(JSON, UserID) {
