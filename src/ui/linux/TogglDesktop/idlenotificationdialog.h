@@ -46,7 +46,7 @@ class IdleNotificationDialog : public QDialog {
 
     void on_pushButton_clicked();
 
-private:
+ private:
     Ui::IdleNotificationDialog *ui;
 
     uint64_t idleStarted;
