@@ -728,11 +728,13 @@ namespace TogglDesktop
             IntPtr context,
             [MarshalAs(UnmanagedType.LPWStr)]
             string guid,
-            UInt64 at);
+            UInt64 at,
+            [MarshalAs(UnmanagedType.I1)]
+            bool split);
 
-        public static bool DiscardTimeAt(string guid, UInt64 at)
+        public static bool DiscardTimeAt(string guid, UInt64 at, bool split)
         {
-            return toggl_discard_time_at(ctx, guid, at);
+            return toggl_discard_time_at(ctx, guid, at, split);
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]

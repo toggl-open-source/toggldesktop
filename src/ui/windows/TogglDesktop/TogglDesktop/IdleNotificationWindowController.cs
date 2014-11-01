@@ -46,7 +46,7 @@ namespace TogglDesktop
 
         private void buttonDiscardTime_Click(object sender, EventArgs e)
         {
-            Toggl.DiscardTimeAt(time_entry_guid, idle_started_at);
+            Toggl.DiscardTimeAt(time_entry_guid, idle_started_at, false);
             Close();
         }
 
@@ -108,6 +108,12 @@ namespace TogglDesktop
             }
             Show();
             BringToFront();
+        }
+
+        private void buttonSplitIdleTimeIntoNewEntry_Click(object sender, EventArgs e)
+        {
+            Toggl.DiscardTimeAt(time_entry_guid, idle_started_at, true);
+            Close();
         }
     }
 }
