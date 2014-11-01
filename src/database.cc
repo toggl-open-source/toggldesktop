@@ -2774,41 +2774,50 @@ error Database::SelectTimelineBatch(
     return last_error("SelectTimelineBatch");
 }
 
-error Database::InsertTimelineEvent(const TimelineEvent& event) {
+const int kMaxTimelineStringSize = 500;
+
+error Database::InsertTimelineEvent(TimelineEvent *event) {
     Poco::Mutex::ScopedLock lock(session_m_);
 
+    if (event->filename.length() > kMaxTimelineStringSize) {
+        event->filename = event->filename.substr(0, kMaxTimelineStringSize);
+    }
+    if (event->title.length() > kMaxTimelineStringSize) {
+        event->title = event->title.substr(0, kMaxTimelineStringSize);
+    }
+
     std::stringstream out;
-    out << "InsertTimelineEvent " << event.start_time
+    out << "InsertTimelineEvent " << event->start_time
         << ";"
-        << event.end_time
+        << event->end_time
         << ";"
-        << event.filename
+        << event->filename
         << ";"
-        << event.title;
+        << event->title;
     logger().debug(out.str());
 
-    poco_assert(event.user_id > 0);
-    poco_assert(event.start_time > 0);
-    poco_assert(event.end_time > 0);
+    poco_assert(event->user_id > 0);
+    poco_assert(event->start_time > 0);
+    poco_assert(event->end_time > 0);
     if (!session_) {
         logger().warning("InsertTimelineEvent db closed, ignoring request");
         return noError;
     }
 
-    Poco::Int64 start_time(event.start_time);
-    Poco::Int64 end_time(event.end_time);
+    Poco::Int64 start_time(event->start_time);
+    Poco::Int64 end_time(event->end_time);
 
     *session_ << "INSERT INTO timeline_events("
               "user_id, title, filename, start_time, end_time, idle"
               ") VALUES ("
               ":user_id, :title, :filename, :start_time, :end_time, :idle"
               ")",
-              Poco::Data::use(event.user_id),
-              Poco::Data::use(event.title),
-              Poco::Data::use(event.filename),
+              Poco::Data::use(event->user_id),
+              Poco::Data::use(event->title),
+              Poco::Data::use(event->filename),
               Poco::Data::use(start_time),
               Poco::Data::use(end_time),
-              Poco::Data::use(event.idle),
+              Poco::Data::use(event->idle),
               Poco::Data::now;
     return last_error("InsertTimelineEvent");
 }

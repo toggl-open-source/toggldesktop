@@ -88,7 +88,7 @@ class Database {
         return desktop_id_;
     }
 
-    error InsertTimelineEvent(const TimelineEvent& info);
+    error InsertTimelineEvent(TimelineEvent *info);
 
     error DeleteTimelineBatch(
         const std::vector<TimelineEvent> &timeline_events);
