@@ -85,7 +85,8 @@ class User : public BaseModel {
 
     TimeEntry *DiscardTimeAt(
         const std::string guid,
-        const Poco::Int64 at);
+        const Poco::Int64 at,
+        const bool split_into_new_entry);
 
     Project *AddProject(
         const Poco::UInt64 workspace_id,

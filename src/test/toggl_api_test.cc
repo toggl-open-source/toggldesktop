@@ -189,7 +189,10 @@ void on_display_settings(
 void on_display_timer_state(TogglTimeEntryView *te) {
     testing::testresult::timer_state = TimeEntry();
     if (te) {
+        testing::testresult::timer_state.SetStart(te->Started);
         testing::testresult::timer_state.SetGUID(te->GUID);
+        testing::testresult::timer_state.SetDurationInSeconds(
+            te->DurationInSeconds);
         testing::testresult::timer_state.SetDescription(te->Description);
         if (te->Tags) {
             testing::testresult::timer_state.SetTags(te->Tags);

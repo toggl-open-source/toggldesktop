@@ -153,17 +153,12 @@ toggl::error User::Continue(
     }
 
     TimeEntry *result = new TimeEntry();
-    result->SetDescription(existing->Description());
-    result->SetDurOnly(existing->DurOnly());
-    result->SetWID(existing->WID());
-    result->SetPID(existing->PID());
-    result->SetTID(existing->TID());
+
+    result->Assign(existing);
+
     result->SetUID(ID());
     result->SetStart(time(0));
-    result->SetCreatedWith(HTTPSClientConfig::UserAgent());
     result->SetDurationInSeconds(-time(0));
-    result->SetBillable(existing->Billable());
-    result->SetTags(existing->Tags());
 
     related.TimeEntries.push_back(result);
 
@@ -296,7 +291,8 @@ std::vector<TimeEntry *> User::Stop() {
 
 TimeEntry *User::DiscardTimeAt(
     const std::string guid,
-    const Poco::Int64 at) {
+    const Poco::Int64 at,
+    const bool split_into_new_entry) {
     poco_assert(at > 0);
 
     std::stringstream ss;
@@ -307,6 +303,20 @@ TimeEntry *User::DiscardTimeAt(
     if (te) {
         te->DiscardAt(at);
     }
+
+    if (te && split_into_new_entry) {
+        TimeEntry *split = new TimeEntry();
+        split->Assign(te);
+
+        split->SetUID(ID());
+        split->SetStart(at);
+        split->SetDurationInSeconds(-at);
+
+        split->SetUIModified();
+
+        related.TimeEntries.push_back(split);
+    }
+
     return te;
 }
 

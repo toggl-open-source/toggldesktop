@@ -445,4 +445,15 @@ void TimeEntry::loadTagsFromJSON(Json::Value list) {
     }
 }
 
+void TimeEntry::Assign(TimeEntry *existing) {
+    SetDescription(existing->Description());
+    SetDurOnly(existing->DurOnly());
+    SetWID(existing->WID());
+    SetPID(existing->PID());
+    SetTID(existing->TID());
+    SetCreatedWith(existing->CreatedWith());
+    SetBillable(existing->Billable());
+    SetTags(existing->Tags());
+}
+
 }   // namespace toggl

@@ -130,6 +130,8 @@ class TimeEntry : public BaseModel {
 
     static Poco::Int64 AbsDuration(const Poco::Int64 value);
 
+    void Assign(TimeEntry *existing);
+
  private:
     Poco::UInt64 wid_;
     Poco::UInt64 pid_;

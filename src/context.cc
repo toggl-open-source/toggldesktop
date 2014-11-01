@@ -1792,7 +1792,7 @@ _Bool Context::DiscardTimeAt(
         return true;
     }
 
-    TimeEntry *stopped = user_->DiscardTimeAt(guid, at);
+    TimeEntry *stopped = user_->DiscardTimeAt(guid, at, split_into_new_entry);
     if (!stopped) {
         logger().warning("Time entry not found");
         return true;
