@@ -4,6 +4,7 @@
 #define SRC_UI_LINUX_TOGGLDESKTOP_MAINWINDOWCONTROLLER_H_
 
 #include <QMainWindow>
+#include <QSystemTrayIcon>
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -82,6 +83,9 @@ class MainWindowController : public QMainWindow {
     AboutDialog *aboutDialog;
     FeedbackDialog *feedbackDialog;
     IdleNotificationDialog *idleNotificationDialog;
+
+    QSystemTrayIcon *trayIcon;
+    QMenu *trayMenu;
 
     bool reminder;
 
