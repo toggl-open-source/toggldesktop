@@ -201,6 +201,13 @@ TogglApi::TogglApi(QObject *parent)
     instance = this;
 }
 
+TogglApi::~TogglApi() {
+    toggl_context_clear(ctx);
+    ctx = 0;
+
+    instance = 0;
+}
+
 bool TogglApi::startEvents() {
     return toggl_ui_start(ctx);
 }

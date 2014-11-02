@@ -20,6 +20,7 @@ class TogglApi : public QObject {
 
  public:
     explicit TogglApi(QObject *parent = 0);
+    ~TogglApi();
 
     static TogglApi *instance;
 
@@ -30,6 +31,8 @@ class TogglApi : public QObject {
     bool shutdown;
 
     bool startEvents();
+
+    void clear();
 
     void setEnvironment(const QString environment);
 
