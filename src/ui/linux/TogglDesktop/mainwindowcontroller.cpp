@@ -14,6 +14,7 @@
 #include <QDesktopServices>  // NOLINT
 #include <QAction>  // NOLINT
 #include <QMenu>  // NOLINT
+#include <QImageReader>  // NOLINT
 
 #include "./toggl.h"
 #include "./errorviewcontroller.h"
@@ -74,19 +75,35 @@ MainWindowController::MainWindowController(QWidget *parent)
     connect(TogglApi::instance, SIGNAL(displayUpdate(bool,UpdateView*)),  // NOLINT
             this, SLOT(displayUpdate(bool,UpdateView*)));  // NOLINT
 
+    // load app icons
+    // FIXME: load all icons into one file
+/*
+	QImageReader ir(path);
+	if (ir.canRead()) {
+		do {
+			icon.addPixmap(QPixmap::fromImage(ir.read()));
+		} while (ir.jumpToNextImage());
+	} else {
+		qDebug() << "Cannot read from path " << path;
+	}
+    }
+*/
+
     trayMenu = new QMenu();
     trayMenu->addAction("Test");
 
     trayIcon = new QSystemTrayIcon(this);
-    trayIcon->setIcon(QIcon(":/images/logo.png"));
-
-    connectMenuActions();
-    enableMenuActions();
+    trayIcon->setIcon(icon);
 
     trayIcon->show();
     if (!hasTrayIcon()) {
 	trayIcon->hide();
     }
+
+    connectMenuActions();
+    enableMenuActions();
+
+    setWindowIcon(icon);
 }
 
 MainWindowController::~MainWindowController() {
