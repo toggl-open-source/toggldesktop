@@ -128,7 +128,7 @@ class TimeEntry : public BaseModel {
 
     virtual bool ResolveError(const toggl::error err);
 
-    static Poco::Int64 AbsDuration(const Poco::Int64 value);
+    static Poco::UInt64 AbsDuration(const Poco::Int64 value);
 
     void Assign(TimeEntry *existing);
 

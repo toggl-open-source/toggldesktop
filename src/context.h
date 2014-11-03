@@ -310,6 +310,8 @@ class Context : public TimelineDatasource {
     void displayOnlineState(const std::string reason);
     void remindToTrackTime();
 
+    void computeIdleState(const Poco::UInt64 idle_seconds);
+
     Poco::Mutex db_m_;
     Database *db_;
 

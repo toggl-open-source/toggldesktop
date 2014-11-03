@@ -520,7 +520,16 @@ TEST(TogglApiTest, toggl_set_idle_seconds) {
     ASSERT_EQ("", testing::testresult::idle_guid);
 
     toggl_set_idle_seconds(app.ctx(), 0);
+    ASSERT_EQ("", testing::testresult::idle_since);
+
+    ASSERT_TRUE(toggl_set_time_entry_duration(app.ctx(),
+                testing::testresult::timer_state.GUID().c_str(),
+                "301 seconds"));
+
+    toggl_set_idle_seconds(app.ctx(), 5*60);
+    toggl_set_idle_seconds(app.ctx(), 0);
     ASSERT_NE("", testing::testresult::idle_since);
+
     ASSERT_NE(std::string::npos,
               testing::testresult::idle_since.find("You have been idle since"));
     ASSERT_NE(uint64_t(0), testing::testresult::idle_started);

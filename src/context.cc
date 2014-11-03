@@ -2120,10 +2120,6 @@ error Context::DeleteTimelineBatch(const std::vector<TimelineEvent> &events) {
 }
 
 void Context::SetIdleSeconds(const Poco::UInt64 idle_seconds) {
-    if (!user_) {
-        return;
-    }
-
     /*
     {
         std::stringstream ss;
@@ -2132,6 +2128,14 @@ void Context::SetIdleSeconds(const Poco::UInt64 idle_seconds) {
     }
     */
 
+    if (user_) {
+        computeIdleState(idle_seconds);
+    }
+
+    last_idle_seconds_reading_ = idle_seconds;
+}
+
+void Context::computeIdleState(const Poco::UInt64 idle_seconds) {
     if (idle_minutes_ &&
             (idle_seconds >= (idle_minutes_*60)) &&
             !last_idle_started_) {
@@ -2141,13 +2145,19 @@ void Context::SetIdleSeconds(const Poco::UInt64 idle_seconds) {
         ss << "User is idle since " << last_idle_started_;
         logger().debug(ss.str());
 
-    } else if (last_idle_started_ &&
-               idle_seconds < last_idle_seconds_reading_) {
+        return;
+    }
+
+    if (last_idle_started_ &&
+            idle_seconds < last_idle_seconds_reading_) {
         time_t now = time(0);
 
         TimeEntry *te = user_->RunningTimeEntry();
         if (!te) {
             logger().warning("Time entry is not tracking, ignoring idleness");
+        } else if (TimeEntry::AbsDuration(te->DurationInSeconds())
+                   < last_idle_seconds_reading_) {
+            logger().warning("Time entry duration is less than idle, ignoring");
         } else {
             Settings settings;
             error err = db()->LoadSettings(&settings);
@@ -2181,8 +2191,6 @@ void Context::SetIdleSeconds(const Poco::UInt64 idle_seconds) {
 
         last_idle_started_ = 0;
     }
-
-    last_idle_seconds_reading_ = idle_seconds;
 }
 
 }  // namespace toggl

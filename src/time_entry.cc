@@ -416,7 +416,7 @@ Json::Value TimeEntry::SaveToJSON() const {
     return n;
 }
 
-Poco::Int64 TimeEntry::AbsDuration(const Poco::Int64 value) {
+Poco::UInt64 TimeEntry::AbsDuration(const Poco::Int64 value) {
     Poco::Int64 duration = value;
 
     // Duration is negative when time is tracking
@@ -431,7 +431,7 @@ Poco::Int64 TimeEntry::AbsDuration(const Poco::Int64 value) {
         duration *= -1;
     }
 
-    return duration;
+    return static_cast<Poco::UInt64>(duration);
 }
 
 void TimeEntry::loadTagsFromJSON(Json::Value list) {
