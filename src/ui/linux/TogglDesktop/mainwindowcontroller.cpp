@@ -75,19 +75,7 @@ MainWindowController::MainWindowController(QWidget *parent)
     connect(TogglApi::instance, SIGNAL(displayUpdate(bool,UpdateView*)),  // NOLINT
             this, SLOT(displayUpdate(bool,UpdateView*)));  // NOLINT
 
-    // load app icons
-    // FIXME: load all icons into one file
-/*
-	QImageReader ir(path);
-	if (ir.canRead()) {
-		do {
-			icon.addPixmap(QPixmap::fromImage(ir.read()));
-		} while (ir.jumpToNextImage());
-	} else {
-		qDebug() << "Cannot read from path " << path;
-	}
-    }
-*/
+    icon.addFile(QString::fromUtf8(":/icons/1024x1024/toggldesktop.png"));
 
     trayMenu = new QMenu();
     trayMenu->addAction("Test");
