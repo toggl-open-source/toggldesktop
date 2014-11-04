@@ -40,7 +40,7 @@ class TogglApi : public QObject {
 
     void googleLogin(const QString accessToken);
 
-    bool start(
+    QString start(
         const QString description,
         const QString duration,
         const uint64_t task_id,
