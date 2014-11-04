@@ -410,6 +410,10 @@ _Bool GUI::isUserError(const error err) const {
     if (value.find("Maximum length for description") != std::string::npos) {
         return true;
     }
+    if (value.find("Start time year must be between 2010 and 2100")
+            != std::string::npos) {
+        return true;
+    }
     return false;
 }
 
