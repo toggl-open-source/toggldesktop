@@ -85,7 +85,7 @@ MainWindowController::MainWindowController(QWidget *parent)
 
     trayIcon->show();
     if (!hasTrayIcon()) {
-	trayIcon->hide();
+        trayIcon->hide();
     }
 
     connectMenuActions();
@@ -292,8 +292,8 @@ void MainWindowController::closeEvent(QCloseEvent *event) {
 
 bool MainWindowController::hasTrayIcon() const {
     return trayIcon
-	&& trayIcon->isVisible()
- 	&& (trayIcon->geometry().width() > 1);
+           && trayIcon->isVisible()
+           && (trayIcon->geometry().width() > 1);
 }
 
 void MainWindowController::showEvent(QShowEvent *event) {

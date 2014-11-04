@@ -83,7 +83,7 @@ class MainWindowController : public QMainWindow {
     AboutDialog *aboutDialog;
     FeedbackDialog *feedbackDialog;
     IdleNotificationDialog *idleNotificationDialog;
- 
+
     QIcon icon;
     QSystemTrayIcon *trayIcon;
     QMenu *trayMenu;

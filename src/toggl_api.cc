@@ -291,12 +291,12 @@ char_t *toggl_start(
         dur = to_string(duration);
     }
 
-	toggl::TimeEntry *te = app(context)->Start(desc, dur, task_id, project_id);
-	if (te) {
-		return copy_string(te->GUID());
-	}
+    toggl::TimeEntry *te = app(context)->Start(desc, dur, task_id, project_id);
+    if (te) {
+        return copy_string(te->GUID());
+    }
 
-	return 0;
+    return 0;
 }
 
 _Bool toggl_continue(

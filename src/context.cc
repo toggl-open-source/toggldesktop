@@ -1302,13 +1302,13 @@ TimeEntry *Context::Start(
 
     UI()->DisplayApp();
 
-	error err = save();
-	if (err != noError) {
-		displayError(err, "Start");
-		return 0;
-	}
+    error err = save();
+    if (err != noError) {
+        displayError(err, "Start");
+        return 0;
+    }
 
-	return te;
+    return te;
 }
 
 Poco::Int64 Context::totalDurationForDate(TimeEntry *match) const {

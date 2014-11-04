@@ -127,7 +127,7 @@ TimeEntry *User::Start(
 
     related.TimeEntries.push_back(te);
 
-	return te;
+    return te;
 }
 
 void User::ensureWID(TimeEntry *te) const {
