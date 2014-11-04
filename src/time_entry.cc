@@ -451,7 +451,6 @@ void TimeEntry::Assign(TimeEntry *existing) {
     SetWID(existing->WID());
     SetPID(existing->PID());
     SetTID(existing->TID());
-    SetCreatedWith(existing->CreatedWith());
     SetBillable(existing->Billable());
     SetTags(existing->Tags());
 }

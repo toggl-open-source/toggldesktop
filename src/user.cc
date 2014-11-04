@@ -161,6 +161,7 @@ toggl::error User::Continue(
     result->SetUID(ID());
     result->SetStart(time(0));
     result->SetDurationInSeconds(-time(0));
+    result->SetCreatedWith(HTTPSClientConfig::UserAgent());
 
     related.TimeEntries.push_back(result);
 
