@@ -80,7 +80,6 @@ MainWindowController::MainWindowController(QWidget *parent)
 
     connectMenuActions();
     enableMenuActions();
-
 }
 
 MainWindowController::~MainWindowController() {
