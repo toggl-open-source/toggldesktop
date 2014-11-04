@@ -163,6 +163,7 @@ ifeq ($(uname), Linux)
 lib:
 	cd src/lib/linux/TogglDesktopLibrary && $(QMAKE) && make && \
 	cd ../../../../ && \
+	cp $(openssldir)/*so* src/lib/linux/TogglDesktopLibrary/build/release
 	cp $(pocodir)/lib/Linux/$(architecture)/libPocoCrypto.so.16 src/lib/linux/TogglDesktopLibrary/build/release
 	cp $(pocodir)/lib/Linux/$(architecture)/libPocoData.so.16 src/lib/linux/TogglDesktopLibrary/build/release && \
 	cp $(pocodir)/lib/Linux/$(architecture)/libPocoDataSQLite.so.16 src/lib/linux/TogglDesktopLibrary/build/release && \
@@ -365,6 +366,7 @@ toggl_test: clean_test objects test_objects
 test_lib: toggl_test
 ifeq ($(uname), Linux)
 	cp -r $(pocodir)/lib/Linux/$(architecture)/*.so* test/.
+	cp -r $(openssldir)/*so* test/.
 	cd test && LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH ./toggl_test --gtest_shuffle
 else
 	cd test && ./toggl_test
