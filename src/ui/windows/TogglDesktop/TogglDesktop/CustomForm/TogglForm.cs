@@ -50,22 +50,6 @@ namespace TogglDesktop
             }
         }
 
-        protected override void OnResize(EventArgs e)
-        {
-            base.OnResize(e);
-            /*
-            int diam = 10;
-            GraphicsPath path = new GraphicsPath();
-            path.AddArc(0, 0, diam, diam, -90, -90);
-            path.AddLines(new Point[] {new Point(0,diam), new Point(0, Height), 
-                new Point(Width, Height), new Point(Width, diam)});
-            path.AddArc(Width - diam, 0, diam, diam, 0, -90);
-            path.CloseFigure();
-
-            this.Region = new Region(path);
-            */
-        }
-
         FormStyle CreateFormStyle()
         {
             FormStyle style = new FormStyle();
@@ -80,14 +64,6 @@ namespace TogglDesktop
             style.CloseButton.DisabledState.Image = TogglDesktop.Properties.Resources.CloseDisabled;
             style.CloseButton.ActiveState.Image = TogglDesktop.Properties.Resources.ClosePressed;
             style.CloseButton.HoverState.Image = TogglDesktop.Properties.Resources.CloseHot;
-            /*
-            style.MaximizeButton.Size = TogglDesktop.Properties.Resources.Maximize.Size;
-            style.MaximizeButton.Margin = new Padding(0, 3, 0, 0); ;
-            style.MaximizeButton.NormalState.Image = TogglDesktop.Properties.Resources.Maximize;
-            style.MaximizeButton.DisabledState.Image = TogglDesktop.Properties.Resources.MaximizeDisabled;
-            style.MaximizeButton.ActiveState.Image = TogglDesktop.Properties.Resources.MaximizePressed;
-            style.MaximizeButton.HoverState.Image = TogglDesktop.Properties.Resources.MaximizeHot;
-            */
 
             style.MinimizeButton.Size = TogglDesktop.Properties.Resources.Minimize.Size;
             style.MinimizeButton.Margin = new Padding(0, 3, 0, 0); ;
@@ -102,17 +78,8 @@ namespace TogglDesktop
             style.HelpButton.DisabledState.Image = TogglDesktop.Properties.Resources.cogDisabled;
             style.HelpButton.ActiveState.Image = TogglDesktop.Properties.Resources.cogPressed;
             style.HelpButton.HoverState.Image = TogglDesktop.Properties.Resources.cogHot;
-/*
-            style.RestoreButton.Size = Properties.Resources.Restore.Size;
-            style.RestoreButton.Margin = new Padding(1, 5, 1, 0);
-            style.RestoreButton.NormalState.Image = Properties.Resources.Restore;
-            style.RestoreButton.DisabledState.Image = Properties.Resources.RestoreDisabled;
-            style.RestoreButton.ActiveState.Image = Properties.Resources.RestorePressed;
-            style.RestoreButton.HoverState.Image = Properties.Resources.RestoreHot;
-             * */
 
             style.TitleColor = Color.White;
-            //style.TitleShadowColor = Color.DimGray;
             style.TitleFont = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular);
 
             style.ClientAreaPadding = new Padding(0, 30, 0, 0);
