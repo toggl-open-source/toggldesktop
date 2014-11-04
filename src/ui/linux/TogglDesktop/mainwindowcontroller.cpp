@@ -76,22 +76,11 @@ MainWindowController::MainWindowController(QWidget *parent)
             this, SLOT(displayUpdate(bool,UpdateView*)));  // NOLINT
 
     icon.addFile(QString::fromUtf8(":/icons/1024x1024/toggldesktop.png"));
-
-    trayMenu = new QMenu();
-    trayMenu->addAction("Test");
-
-    trayIcon = new QSystemTrayIcon(this);
-    trayIcon->setIcon(icon);
-
-    trayIcon->show();
-    if (!hasTrayIcon()) {
-        trayIcon->hide();
-    }
+    setWindowIcon(icon);
 
     connectMenuActions();
     enableMenuActions();
 
-    setWindowIcon(icon);
 }
 
 MainWindowController::~MainWindowController() {
@@ -151,7 +140,6 @@ void MainWindowController::enableMenuActions() {
 
 void MainWindowController::connectMenuActions() {
     foreach(QMenu *menu, ui->menuBar->findChildren<QMenu *>()) {
-        trayIcon->setContextMenu(menu);
         foreach(QAction *action, menu->actions()) {
             connectMenuAction(action);
         }
@@ -291,9 +279,7 @@ void MainWindowController::closeEvent(QCloseEvent *event) {
 }
 
 bool MainWindowController::hasTrayIcon() const {
-    return trayIcon
-           && trayIcon->isVisible()
-           && (trayIcon->geometry().width() > 1);
+    return false;
 }
 
 void MainWindowController::showEvent(QShowEvent *event) {
