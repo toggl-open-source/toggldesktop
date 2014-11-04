@@ -267,11 +267,12 @@ void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
 
-	toggl_start(ctx,
-				[new_time_entry.Description UTF8String],
-				[new_time_entry.duration UTF8String],
-				new_time_entry.TaskID,
-				new_time_entry.ProjectID);
+	char *guid = toggl_start(ctx,
+							 [new_time_entry.Description UTF8String],
+							 [new_time_entry.duration UTF8String],
+							 new_time_entry.TaskID,
+							 new_time_entry.ProjectID);
+	free(guid);
 }
 
 - (void)startContinueTimeEntry:(NSNotification *)notification

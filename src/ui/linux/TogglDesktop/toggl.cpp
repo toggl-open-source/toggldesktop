@@ -300,16 +300,22 @@ bool TogglApi::setUpdateChannel(const QString channel) {
     return toggl_set_update_channel(ctx, channel.toStdString().c_str());
 }
 
-bool TogglApi::start(
+QString TogglApi::start(
     const QString description,
     const QString duration,
     const uint64_t task_id,
     const uint64_t project_id) {
-    return toggl_start(ctx,
-                       description.toStdString().c_str(),
-                       duration.toStdString().c_str(),
-                       task_id,
-                       project_id);
+    char *guid = toggl_start(ctx,
+                             description.toStdString().c_str(),
+                             duration.toStdString().c_str(),
+                             task_id,
+                             project_id);
+    QString res("");
+    if (guid) {
+        res = QString(guid);
+        free(guid);
+    }
+    return res;
 }
 
 bool TogglApi::stop() {
