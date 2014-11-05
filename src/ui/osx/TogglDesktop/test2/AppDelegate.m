@@ -20,6 +20,7 @@
 #import "IdleNotificationWindowController.h"
 #import "CrashReporter.h"
 #import "FeedbackWindowController.h"
+#import "ConsoleViewController.h"
 #import "AutocompleteItem.h"
 #import "MASShortcut+UserDefaults.h"
 #import "ViewItem.h"
@@ -34,6 +35,7 @@
 @property (nonatomic, strong) IBOutlet AboutWindowController *aboutWindowController;
 @property (nonatomic, strong) IBOutlet IdleNotificationWindowController *idleNotificationWindowController;
 @property (nonatomic, strong) IBOutlet FeedbackWindowController *feedbackWindowController;
+@property (nonatomic, strong) IBOutlet ConsoleViewController *consoleWindowController;
 @property TimeEntryViewItem *lastKnownRunningTimeEntry;
 @property NSTimer *menubarTimer;
 @property NSTimer *idleTimer;
@@ -606,6 +608,16 @@ void *ctx;
 	[self.statusItem setEnabled:YES];
 	[self.statusItem setMenu:menu];
 	[self.statusItem setImage:self.currentOffImage];
+}
+
+- (IBAction)onConsoleMenuItem:(id)sender
+{
+	if (!self.consoleWindowController)
+	{
+		self.consoleWindowController = [[ConsoleViewController alloc]
+										initWithWindowNibName:@"ConsoleViewController"];
+	}
+	[self.consoleWindowController showWindow:self];
 }
 
 - (void)onNewMenuItem:(id)sender
