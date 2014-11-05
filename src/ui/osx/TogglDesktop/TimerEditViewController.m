@@ -226,11 +226,11 @@ extern void *ctx;
 - (NSMutableAttributedString *)setProjectClientLabel:(TimeEntryViewItem *)view_item
 {
 	NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:view_item.ClientLabel];
-
+	NSColor *color = [ConvertHexColor hexCodeToNSColor:@"#666666"];
 	[clientName setAttributes:
 	 @{
 		 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-		 NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
+		 NSForegroundColorAttributeName:color
 	 }
 						range:NSMakeRange(0, [clientName length])];
 	NSMutableAttributedString *string;
@@ -241,7 +241,7 @@ extern void *ctx;
 		[string setAttributes:
 		 @{
 			 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-			 NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
+			 NSForegroundColorAttributeName:color
 		 }
 						range:NSMakeRange(0, [string length])];
 
