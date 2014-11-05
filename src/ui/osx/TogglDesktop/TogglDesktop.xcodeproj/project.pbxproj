@@ -834,20 +834,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXLegacyTarget section */
-		74607C1818EDE6BB00571BA6 /* json */ = {
-			isa = PBXLegacyTarget;
-			buildArgumentsString = json;
-			buildConfigurationList = 74607C1918EDE6BB00571BA6 /* Build configuration list for PBXLegacyTarget "json" */;
-			buildPhases = (
-			);
-			buildToolPath = /usr/bin/make;
-			buildWorkingDirectory = ./../../../../;
-			dependencies = (
-			);
-			name = json;
-			passBuildSettingsInEnvironment = 1;
-			productName = json;
-		};
 		74607C1C18EDE6D800571BA6 /* poco */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = poco;
@@ -937,7 +923,6 @@
 			projectRoot = "";
 			targets = (
 				69FC17F017E6534400B96425 /* TogglDesktop */,
-				74607C1818EDE6BB00571BA6 /* json */,
 				74607C1C18EDE6D800571BA6 /* poco */,
 				74607C2018EDE70C00571BA6 /* openssl */,
 			);
@@ -1366,50 +1351,6 @@
 			};
 			name = Release;
 		};
-		74607C1A18EDE6BB00571BA6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				DEBUGGING_SYMBOLS = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		74607C1B18EDE6BB00571BA6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 		74607C1E18EDE6D800571BA6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1515,15 +1456,6 @@
 			buildConfigurations = (
 				69FC182317E6534500B96425 /* Debug */,
 				69FC182417E6534500B96425 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		74607C1918EDE6BB00571BA6 /* Build configuration list for PBXLegacyTarget "json" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				74607C1A18EDE6BB00571BA6 /* Debug */,
-				74607C1B18EDE6BB00571BA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
