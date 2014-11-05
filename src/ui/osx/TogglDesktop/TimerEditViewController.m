@@ -227,6 +227,7 @@ extern void *ctx;
 {
 	NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:view_item.ClientLabel];
 	NSColor *color = [ConvertHexColor hexCodeToNSColor:@"#666666"];
+
 	[clientName setAttributes:
 	 @{
 		 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
