@@ -45,7 +45,7 @@
             this.labelIdleSince.Font = new System.Drawing.Font("Lucida Sans Unicode", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelIdleSince.Location = new System.Drawing.Point(13, 15);
             this.labelIdleSince.Name = "labelIdleSince";
-            this.labelIdleSince.Size = new System.Drawing.Size(273, 17);
+            this.labelIdleSince.Size = new System.Drawing.Size(198, 17);
             this.labelIdleSince.TabIndex = 0;
             this.labelIdleSince.Text = "You have been idle since 12:34:56";
             this.labelIdleSince.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -57,7 +57,7 @@
             this.labelIdleDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelIdleDuration.Location = new System.Drawing.Point(13, 41);
             this.labelIdleDuration.Name = "labelIdleDuration";
-            this.labelIdleDuration.Size = new System.Drawing.Size(273, 14);
+            this.labelIdleDuration.Size = new System.Drawing.Size(198, 14);
             this.labelIdleDuration.TabIndex = 1;
             this.labelIdleDuration.Text = "(5 minutes)";
             this.labelIdleDuration.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -69,7 +69,7 @@
             this.buttonKeepTime.Font = new System.Drawing.Font("Lucida Sans Unicode", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.buttonKeepTime.Location = new System.Drawing.Point(13, 75);
             this.buttonKeepTime.Name = "buttonKeepTime";
-            this.buttonKeepTime.Size = new System.Drawing.Size(273, 23);
+            this.buttonKeepTime.Size = new System.Drawing.Size(198, 23);
             this.buttonKeepTime.TabIndex = 2;
             this.buttonKeepTime.Text = "Keep time";
             this.buttonKeepTime.UseVisualStyleBackColor = true;
@@ -83,7 +83,7 @@
             this.buttonDiscardTime.Font = new System.Drawing.Font("Lucida Sans Unicode", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.buttonDiscardTime.Location = new System.Drawing.Point(13, 104);
             this.buttonDiscardTime.Name = "buttonDiscardTime";
-            this.buttonDiscardTime.Size = new System.Drawing.Size(273, 23);
+            this.buttonDiscardTime.Size = new System.Drawing.Size(198, 23);
             this.buttonDiscardTime.TabIndex = 3;
             this.buttonDiscardTime.Text = "Discard time";
             this.buttonDiscardTime.UseVisualStyleBackColor = true;
@@ -99,7 +99,7 @@
             this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelMain.Location = new System.Drawing.Point(0, 0);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(300, 270);
+            this.panelMain.Size = new System.Drawing.Size(225, 170);
             this.panelMain.TabIndex = 4;
             // 
             // buttonSplitIdleTimeIntoNewEntry
@@ -108,7 +108,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSplitIdleTimeIntoNewEntry.Location = new System.Drawing.Point(13, 134);
             this.buttonSplitIdleTimeIntoNewEntry.Name = "buttonSplitIdleTimeIntoNewEntry";
-            this.buttonSplitIdleTimeIntoNewEntry.Size = new System.Drawing.Size(273, 23);
+            this.buttonSplitIdleTimeIntoNewEntry.Size = new System.Drawing.Size(198, 23);
             this.buttonSplitIdleTimeIntoNewEntry.TabIndex = 4;
             this.buttonSplitIdleTimeIntoNewEntry.Text = "Add idle time as a new time entry";
             this.buttonSplitIdleTimeIntoNewEntry.UseVisualStyleBackColor = true;
@@ -120,11 +120,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonDiscardTime;
-            this.ClientSize = new System.Drawing.Size(300, 270);
+            this.ClientSize = new System.Drawing.Size(225, 170);
             this.Controls.Add(this.panelMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(225, 200);
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(225, 200);
             this.Name = "IdleNotificationWindowController";
             this.Text = "Toggl Desktop";
             this.TopMost = true;
