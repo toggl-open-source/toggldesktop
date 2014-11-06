@@ -168,11 +168,6 @@ extern void *ctx;
 	[self.emptyLabel setEnabled:!(self.timeEntriesTableView.numberOfRows > 0)];
 }
 
-- (BOOL)popoverShouldClose:(NSPopover *)popover
-{
-	return NO;
-}
-
 - (void)resetEditPopover:(NSNotification *)notification
 {
 	if (notification.object == self.timeEntrypopover)
