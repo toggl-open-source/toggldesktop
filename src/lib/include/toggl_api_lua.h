@@ -15,52 +15,61 @@ static void *app = 0;
 // Set environment. By default, production is assumed. Optional.
 
 static int l_toggl_set_environment(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 static int l_toggl_environment(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 // Optionally, disable update check
 
 static int l_toggl_disable_update_check(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 // CA cert bundle must be configured from UI
 
 static int l_toggl_set_cacert_path(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 // DB path must be configured from UI
 
 static int l_toggl_set_db_path(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 // Log path must be configured from UI
 
 static int l_toggl_set_log_path(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 // Log level is optional
 
 static int l_toggl_set_log_level(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 // API URL can be overriden from UI. Optional
 
 static int l_toggl_set_api_url(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 // WebSocket URL can be overriden from UI. Optional
 
 static int l_toggl_set_websocket_url(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
@@ -74,10 +83,12 @@ static int l_toggl_show_app(lua_State *L) {
 // User interaction with the app
 
 static int l_toggl_login(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 static int l_toggl_google_login(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
@@ -97,6 +108,7 @@ static int l_toggl_get_support(lua_State *L) {
 }
 
 static int l_toggl_feedback_send(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
@@ -111,6 +123,7 @@ static int l_toggl_view_time_entry_list(lua_State *L) {
 }
 
 static int l_toggl_edit(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
@@ -120,6 +133,7 @@ static int l_toggl_edit_preferences(lua_State *L) {
 }
 
 static int l_toggl_continue(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
@@ -128,38 +142,47 @@ static int l_toggl_continue_latest(lua_State *L) {
 }
 
 static int l_toggl_delete_time_entry(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 static int l_toggl_set_time_entry_duration(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 static int l_toggl_set_time_entry_project(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 static int l_toggl_set_time_entry_date(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 static int l_toggl_set_time_entry_start(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 static int l_toggl_set_time_entry_end(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 static int l_toggl_set_time_entry_tags(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 static int l_toggl_set_time_entry_billable(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 static int l_toggl_set_time_entry_description(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
@@ -168,14 +191,17 @@ static int l_toggl_stop(lua_State *L) {
 }
 
 static int l_toggl_discard_time_at(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 static int l_toggl_set_settings(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 static int l_toggl_set_proxy_settings(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
@@ -188,20 +214,24 @@ static int l_toggl_clear_cache(lua_State *L) {
 }
 
 static int l_toggl_start(lua_State *L) {
+    // FIXME: pass on params from Lua
     char *guid = toggl_start(app, "", "", 0, 0);
     free(guid);
     return 1;
 }
 
 static int l_toggl_add_project(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 static int l_toggl_set_update_channel(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 static int l_toggl_get_update_channel(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
@@ -211,10 +241,12 @@ static int l_toggl_sync(lua_State *L) {
 }
 
 static int l_toggl_timeline_toggle_recording(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 static int l_toggl_timeline_is_recording_enabled(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
@@ -234,22 +266,27 @@ static int l_toggl_set_online(lua_State *L) {
 }
 
 static int l_toggl_set_idle_seconds(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 static int l_toggl_format_duration_in_seconds_hhmmss(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 static int l_toggl_format_duration_in_seconds_hhmm(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 static int l_toggl_parse_duration_string_into_seconds(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
 static int l_toggl_debug(lua_State *L) {
+    // FIXME: implement
     return 1;
 }
 
