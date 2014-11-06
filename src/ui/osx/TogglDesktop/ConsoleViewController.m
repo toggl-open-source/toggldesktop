@@ -19,8 +19,8 @@ void *ctx;
 {
 	[super windowDidLoad];
 
-	L = luaL_newstate();                                                                  // create a new state structure for the interpreter
-	luaL_openlibs(L);                                                                     // load all the basic libraries into the interpreter
+	L = luaL_newstate();
+	luaL_openlibs(L);
 
 	toggl_register_lua(ctx, L);
 
