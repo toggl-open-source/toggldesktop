@@ -34,17 +34,17 @@
 		741104BF18C7682700BC7A49 /* NSTextFieldWithBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */; };
 		7421348E195C4EE8007EF78B /* TFDatePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74FD8CDC18A8EEE200F7DB80 /* TFDatePicker.framework */; };
 		7421348F195C4F1A007EF78B /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 749A3A5918D889BE000AD2DB /* CrashReporter.framework */; };
-		74213490195C50B5007EF78B /* CrashReporter.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 749A3A5918D889BE000AD2DB /* CrashReporter.framework */; };
-		74213491195C50BC007EF78B /* TFDatePicker.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 74FD8CDC18A8EEE200F7DB80 /* TFDatePicker.framework */; };
-		74213492195C50C1007EF78B /* Kopsik.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 74B680AD180759C300B697AA /* Kopsik.dylib */; };
-		742134BB195C63A3007EF78B /* libPocoUtil.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B3195C63A3007EF78B /* libPocoUtil.16.dylib */; };
-		742134BC195C63A3007EF78B /* libPocoData.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B4195C63A3007EF78B /* libPocoData.16.dylib */; };
-		742134BD195C63A3007EF78B /* libPocoNetSSL.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B5195C63A3007EF78B /* libPocoNetSSL.16.dylib */; };
-		742134BE195C63A3007EF78B /* libPocoXML.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B6195C63A3007EF78B /* libPocoXML.16.dylib */; };
-		742134BF195C63A3007EF78B /* libPocoDataSQLite.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B7195C63A3007EF78B /* libPocoDataSQLite.16.dylib */; };
-		742134C0195C63A3007EF78B /* libPocoNet.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B8195C63A3007EF78B /* libPocoNet.16.dylib */; };
-		742134C1195C63A3007EF78B /* libPocoFoundation.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B9195C63A3007EF78B /* libPocoFoundation.16.dylib */; };
-		742134C2195C63A3007EF78B /* libPocoCrypto.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134BA195C63A3007EF78B /* libPocoCrypto.16.dylib */; };
+		74213490195C50B5007EF78B /* CrashReporter.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 749A3A5918D889BE000AD2DB /* CrashReporter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		74213491195C50BC007EF78B /* TFDatePicker.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 74FD8CDC18A8EEE200F7DB80 /* TFDatePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		74213492195C50C1007EF78B /* Kopsik.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 74B680AD180759C300B697AA /* Kopsik.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		742134BB195C63A3007EF78B /* libPocoUtil.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B3195C63A3007EF78B /* libPocoUtil.16.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		742134BC195C63A3007EF78B /* libPocoData.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B4195C63A3007EF78B /* libPocoData.16.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		742134BD195C63A3007EF78B /* libPocoNetSSL.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B5195C63A3007EF78B /* libPocoNetSSL.16.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		742134BE195C63A3007EF78B /* libPocoXML.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B6195C63A3007EF78B /* libPocoXML.16.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		742134BF195C63A3007EF78B /* libPocoDataSQLite.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B7195C63A3007EF78B /* libPocoDataSQLite.16.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		742134C0195C63A3007EF78B /* libPocoNet.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B8195C63A3007EF78B /* libPocoNet.16.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		742134C1195C63A3007EF78B /* libPocoFoundation.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B9195C63A3007EF78B /* libPocoFoundation.16.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		742134C2195C63A3007EF78B /* libPocoCrypto.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134BA195C63A3007EF78B /* libPocoCrypto.16.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7423393A1829B99C00063FA9 /* IdleNotificationWindowController.m */; };
 		7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */; };
 		7424949E17F1E3D20030121C /* UIEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 7424949D17F1E3D20030121C /* UIEvents.m */; };
@@ -114,7 +114,7 @@
 		749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 749CB8CA18167D6E00814841 /* PreferencesWindowController.m */; };
 		749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */; };
 		74A3D06119E418B800C51BB6 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74A3D06019E418B800C51BB6 /* Sparkle.framework */; };
-		74A3D06219E418CB00C51BB6 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 74A3D06019E418B800C51BB6 /* Sparkle.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		74A3D06219E418CB00C51BB6 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 74A3D06019E418B800C51BB6 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 74A7346918297DD100525BBC /* ConvertHexColor.m */; };
 		74AA9471180909F50000539F /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA9467180909F50000539F /* GTMHTTPFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74AA9472180909F50000539F /* GTMHTTPFetchHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA9469180909F50000539F /* GTMHTTPFetchHistory.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -1105,7 +1105,7 @@
 		69FC17E917E6534400B96425 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = Alari;
 			};
 			buildConfigurationList = 69FC17EC17E6534400B96425 /* Build configuration list for PBXProject "TogglDesktop" */;
