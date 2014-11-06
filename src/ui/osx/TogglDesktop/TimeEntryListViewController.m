@@ -23,7 +23,6 @@
 @property NSNib *nibTimeEntryCell;
 @property NSNib *nibTimeEntryCellWithHeader;
 @property NSNib *nibTimeEntryEditViewController;
-@property NSView *selectedRowView;
 @property NSInteger defaultPopupHeight;
 @property NSInteger defaultPopupWidth;
 @property NSInteger addedHeight;
@@ -161,7 +160,6 @@ extern void *ctx;
 	{
 		[self.timeEntrypopover close];
 		[self setDefaultPopupSize];
-		self.selectedRowView = nil;
 	}
 
 	BOOL hasItems = self.timeEntriesTableView.numberOfRows > 0;
@@ -191,28 +189,12 @@ extern void *ctx;
 	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
 	if (cmd.open)
 	{
-		if (self.selectedRowView == self.headerView)
-		{
-			[self closeEditPopup:nil];
-			self.selectedRowView = nil;
-		}
-		else
-		{
-			if (cmd.timeEntry.duration_in_seconds < 0)
-			{
-				self.selectedRowView = self.headerView;
-			}
-			self.timeEntrypopover.contentViewController = self.timeEntrypopoverViewController;
-			NSRect positionRect = [[self selectedRowView] bounds];
-			if (self.selectedRowView.frame.size.height > 56)
-			{
-				positionRect.origin.y += 46;
-				positionRect.size.height -= 46;
-			}
-			[self.timeEntrypopover showRelativeToRect:positionRect
-											   ofView:self.view
-										preferredEdge:NSMaxXEdge];
-		}
+		self.timeEntrypopover.contentViewController = self.timeEntrypopoverViewController;
+		NSRect positionRect = [self.view bounds];
+
+		[self.timeEntrypopover showRelativeToRect:positionRect
+										   ofView:self.view
+									preferredEdge:NSMaxXEdge];
 	}
 }
 
@@ -296,20 +278,7 @@ extern void *ctx;
 
 	NSView *latestView = [self.timeEntriesTableView rowViewAtRow:row
 												 makeIfNecessary:NO];
-	if (self.selectedRowView != nil)
-	{
-		[[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopover
-															object:nil
-														  userInfo:nil];
-		[self setDefaultPopupSize];
-	}
-	if (latestView == self.selectedRowView && self.timeEntrypopover.shown)
-	{
-		[self.timeEntrypopover close];
-		return;
-	}
-	self.selectedRowView = latestView;
-
+	
 	for (NSView *subview in [latestView subviews])
 	{
 		if ([subview isKindOfClass:[TimeEntryCell class]])
@@ -394,16 +363,12 @@ extern void *ctx;
 	{
 		[self.timeEntrypopover close];
 		[self setDefaultPopupSize];
-		self.selectedRowView = nil;
 	}
 }
 
 - (void)closeRunningEditPopup:(NSNotification *)notification
 {
-	if (self.selectedRowView == self.headerView)
-	{
-		[self closeEditPopup:notification];
-	}
+	[self closeEditPopup:notification];
 }
 
 - (void)setDefaultPopupSize
