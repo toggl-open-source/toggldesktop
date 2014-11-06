@@ -210,7 +210,7 @@ extern void *ctx;
 				positionRect.size.height -= 46;
 			}
 			[self.timeEntrypopover showRelativeToRect:positionRect
-											   ofView:[self selectedRowView]
+											   ofView:self.view
 										preferredEdge:NSMaxXEdge];
 		}
 	}
