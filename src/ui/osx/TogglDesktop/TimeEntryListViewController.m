@@ -164,8 +164,9 @@ extern void *ctx;
 		self.selectedRowView = nil;
 	}
 
-	[self.timeEntryListScrollView setHidden:!(self.timeEntriesTableView.numberOfRows > 0)];
-	[self.emptyLabel setEnabled:!(self.timeEntriesTableView.numberOfRows > 0)];
+	BOOL hasItems = self.timeEntriesTableView.numberOfRows > 0;
+	[self.timeEntryListScrollView setHidden:!hasItems];
+	[self.emptyLabel setEnabled:!hasItems];
 }
 
 - (void)resetEditPopover:(NSNotification *)notification
