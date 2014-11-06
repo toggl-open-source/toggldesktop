@@ -1325,6 +1325,11 @@ Poco::Int64 Context::totalDurationForDate(TimeEntry *match) const {
 }
 
 void Context::DisplayTimeEntryList(const _Bool open) {
+    if (!user_) {
+        logger().warning("Cannot view time entries, user logged out");
+        return;
+    }
+
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 

@@ -12,282 +12,364 @@
 // FIXME: cant we keep it somehow better, in lua state, perhaps?
 static void *app = 0;
 
-// Set environment. By default, production is assumed. Optional.
+static int l_toggl_environment(lua_State *L) {
+    char *str = toggl_environment(app);
+    lua_pushstring(L, str);
+    free(str);
+    return 1;
+}
 
 static int l_toggl_set_environment(lua_State *L) {
-    // FIXME: implement
-    return 1;
+    toggl_set_environment(app,
+                          luaL_checkstring(L, -1));
+    return 0;
 }
-
-static int l_toggl_environment(lua_State *L) {
-    // FIXME: implement
-    return 1;
-}
-
-// Optionally, disable update check
 
 static int l_toggl_disable_update_check(lua_State *L) {
-    // FIXME: implement
-    return 1;
+    toggl_disable_update_check(app);
+    return 0;
 }
-
-// CA cert bundle must be configured from UI
 
 static int l_toggl_set_cacert_path(lua_State *L) {
-    // FIXME: implement
-    return 1;
+    toggl_set_cacert_path(app,
+                          luaL_checkstring(L, -1));
+    return 0;
 }
-
-// DB path must be configured from UI
 
 static int l_toggl_set_db_path(lua_State *L) {
-    // FIXME: implement
-    return 1;
+    toggl_set_db_path(app,
+                      luaL_checkstring(L, -1));
+    return 0;
 }
-
-// Log path must be configured from UI
 
 static int l_toggl_set_log_path(lua_State *L) {
-    // FIXME: implement
-    return 1;
+    toggl_set_log_path(
+        luaL_checkstring(L, -1));
+    return 0;
 }
-
-// Log level is optional
 
 static int l_toggl_set_log_level(lua_State *L) {
-    // FIXME: implement
-    return 1;
+    toggl_set_log_level(
+        luaL_checkstring(L, -1));
+    return 0;
 }
-
-// API URL can be overriden from UI. Optional
 
 static int l_toggl_set_api_url(lua_State *L) {
-    // FIXME: implement
-    return 1;
+    toggl_set_api_url(app,
+                      luaL_checkstring(L, -1));
+    return 0;
 }
-
-// WebSocket URL can be overriden from UI. Optional
 
 static int l_toggl_set_websocket_url(lua_State *L) {
-    // FIXME: implement
-    return 1;
+    toggl_set_websocket_url(app,
+                            luaL_checkstring(L, -1));
+    return 0;
 }
-
-// Various parts of UI can tell the app to show itself.
 
 static int l_toggl_show_app(lua_State *L) {
     toggl_show_app(app);
-    return 1;
+    return 0;
 }
 
-// User interaction with the app
-
 static int l_toggl_login(lua_State *L) {
-    // FIXME: implement
+    _Bool res = toggl_login(app,
+                            luaL_checkstring(L, 1),
+                            luaL_checkstring(L, 2));
+    lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_google_login(lua_State *L) {
-    // FIXME: implement
+    _Bool res = toggl_google_login(app,
+                                   luaL_checkstring(L, -1));
+    lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_password_forgot(lua_State *L) {
     toggl_password_forgot(app);
-    return 1;
+    return 0;
 }
 
 static int l_toggl_open_in_browser(lua_State *L) {
     toggl_open_in_browser(app);
-    return 1;
+    return 0;
 }
 
 static int l_toggl_get_support(lua_State *L) {
     toggl_get_support(app);
-    return 1;
+    return 0;
 }
 
 static int l_toggl_feedback_send(lua_State *L) {
-    // FIXME: implement
+    _Bool res = toggl_feedback_send(app,
+                                    luaL_checkstring(L, 1),
+                                    luaL_checkstring(L, 2),
+                                    luaL_checkstring(L, 3));
+    lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_about(lua_State *L) {
     toggl_about(app);
-    return 1;
+    return 0;
 }
 
 static int l_toggl_view_time_entry_list(lua_State *L) {
     toggl_view_time_entry_list(app);
-    return 1;
+    return 0;
 }
 
 static int l_toggl_edit(lua_State *L) {
-    // FIXME: implement
-    return 1;
+    toggl_edit(app,
+               luaL_checkstring(L, 1),
+               lua_toboolean(L, 2),
+               luaL_checkstring(L, 3));
+    return 0;
 }
 
 static int l_toggl_edit_preferences(lua_State *L) {
     toggl_edit_preferences(app);
-    return 1;
+    return 0;
 }
 
 static int l_toggl_continue(lua_State *L) {
-    // FIXME: implement
+    _Bool res = toggl_continue(app,
+                               luaL_checkstring(L, -1));
+    lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_continue_latest(lua_State *L) {
-    return toggl_continue_latest(app);
+    _Bool res = toggl_continue_latest(app);
+    lua_pushboolean(L, res);
+    return 1;
 }
 
 static int l_toggl_delete_time_entry(lua_State *L) {
-    // FIXME: implement
+    _Bool res = toggl_delete_time_entry(app,
+                                        luaL_checkstring(L, -1));
+    lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_time_entry_duration(lua_State *L) {
-    // FIXME: implement
+    _Bool res = toggl_set_time_entry_duration(app,
+                luaL_checkstring(L, 1),
+                luaL_checkstring(L, 2));
+    lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_time_entry_project(lua_State *L) {
-    // FIXME: implement
+    _Bool res = toggl_set_time_entry_project(app,
+                luaL_checkstring(L, 1),
+                lua_tointeger(L, 2),
+                lua_tointeger(L, 3),
+                luaL_checkstring(L, 4));
+    lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_time_entry_date(lua_State *L) {
-    // FIXME: implement
+    _Bool res = toggl_set_time_entry_date(app,
+                                          luaL_checkstring(L, 1),
+                                          lua_tointeger(L, 2));
+    lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_time_entry_start(lua_State *L) {
-    // FIXME: implement
+    _Bool res = toggl_set_time_entry_start(app,
+                                           luaL_checkstring(L, 1),
+                                           luaL_checkstring(L, 2));
+    lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_time_entry_end(lua_State *L) {
-    // FIXME: implement
+    _Bool res = toggl_set_time_entry_end(app,
+                                         luaL_checkstring(L, 1),
+                                         luaL_checkstring(L, 2));
+    lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_time_entry_tags(lua_State *L) {
-    // FIXME: implement
+    _Bool res = toggl_set_time_entry_tags(app,
+                                          luaL_checkstring(L, 1),
+                                          luaL_checkstring(L, 2));
+    lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_time_entry_billable(lua_State *L) {
-    // FIXME: implement
+    _Bool res = toggl_set_time_entry_billable(app,
+                luaL_checkstring(L, 1),
+                lua_toboolean(L, 2));
+    lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_time_entry_description(lua_State *L) {
-    // FIXME: implement
+    _Bool res = toggl_set_time_entry_description(app,
+                luaL_checkstring(L, 1),
+                luaL_checkstring(L, 2));
+    lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_stop(lua_State *L) {
-    return toggl_stop(app);
+    _Bool res = toggl_stop(app);
+    lua_pushboolean(L, res);
+    return 1;
 }
 
 static int l_toggl_discard_time_at(lua_State *L) {
-    // FIXME: implement
+    _Bool res = toggl_discard_time_at(app,
+                                      luaL_checkstring(L, 1),
+                                      lua_tointeger(L, 2),
+                                      lua_toboolean(L, 3));
+    lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_settings(lua_State *L) {
-    // FIXME: implement
+    _Bool res = toggl_set_settings(app,
+                                   lua_toboolean(L, 1),
+                                   lua_toboolean(L, 2),
+                                   lua_toboolean(L, 3),
+                                   lua_toboolean(L, 4),
+                                   lua_toboolean(L, 5),
+                                   lua_tointeger(L, 6));
+    lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_proxy_settings(lua_State *L) {
-    // FIXME: implement
+    _Bool res = toggl_set_proxy_settings(app,
+                                         lua_toboolean(L, 1),
+                                         luaL_checkstring(L, 2),
+                                         lua_tointeger(L, 3),
+                                         luaL_checkstring(L, 4),
+                                         luaL_checkstring(L, 5));
+    lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_logout(lua_State *L) {
-    return toggl_logout(app);
+    _Bool res = toggl_logout(app);
+    lua_pushboolean(L, res);
+    return 1;
 }
 
 static int l_toggl_clear_cache(lua_State *L) {
-    return toggl_clear_cache(app);
+    _Bool res = toggl_clear_cache(app);
+    lua_pushboolean(L, res);
+    return 1;
 }
 
 static int l_toggl_start(lua_State *L) {
-    // FIXME: pass on params from Lua
-    char *guid = toggl_start(app, "", "", 0, 0);
+    char *guid = toggl_start(app,
+                             luaL_checkstring(L, 1),
+                             luaL_checkstring(L, 2),
+                             lua_tointeger(L, 3),
+                             lua_tointeger(L, 4));
+    lua_pushstring(L, guid);
     free(guid);
     return 1;
 }
 
 static int l_toggl_add_project(lua_State *L) {
-    // FIXME: implement
+    _Bool res = toggl_add_project(app,
+                                  luaL_checkstring(L, 1),
+                                  lua_tointeger(L, 2),
+                                  lua_tointeger(L, 3),
+                                  luaL_checkstring(L, 4),
+                                  lua_toboolean(L, 5));
+    lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_update_channel(lua_State *L) {
-    // FIXME: implement
+    _Bool res = toggl_set_update_channel(app,
+                                         luaL_checkstring(L, -1));
+    lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_get_update_channel(lua_State *L) {
-    // FIXME: implement
+    char_t *str = toggl_get_update_channel(app);
+    lua_pushstring(L, str);
     return 1;
 }
 
 static int l_toggl_sync(lua_State *L) {
     toggl_sync(app);
-    return 1;
+    return 0;
 }
 
 static int l_toggl_timeline_toggle_recording(lua_State *L) {
-    // FIXME: implement
+    _Bool res = toggl_timeline_toggle_recording(app,
+                lua_toboolean(L, 1));
+    lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_timeline_is_recording_enabled(lua_State *L) {
-    // FIXME: implement
+    _Bool res = toggl_timeline_is_recording_enabled(app);
+    lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_sleep(lua_State *L) {
     toggl_set_sleep(app);
-    return 1;
+    return 0;
 }
 
 static int l_toggl_set_wake(lua_State *L) {
     toggl_set_wake(app);
-    return 1;
+    return 0;
 }
 
 static int l_toggl_set_online(lua_State *L) {
     toggl_set_online(app);
-    return 1;
+    return 0;
 }
 
 static int l_toggl_set_idle_seconds(lua_State *L) {
-    // FIXME: implement
-    return 1;
+    toggl_set_idle_seconds(app,
+                           lua_tointeger(L, -1));
+    return 0;
 }
 
 static int l_toggl_format_duration_in_seconds_hhmmss(lua_State *L) {
-    // FIXME: implement
+    char_t *str = toggl_format_duration_in_seconds_hhmmss(
+        lua_tointeger(L, -1));
+    lua_pushstring(L, str);
+    free(str);
     return 1;
 }
 
 static int l_toggl_format_duration_in_seconds_hhmm(lua_State *L) {
-    // FIXME: implement
+    char_t *str = toggl_format_duration_in_seconds_hhmm(
+        lua_tointeger(L, -1));
+    lua_pushstring(L, str);
+    free(str);
     return 1;
 }
 
 static int l_toggl_parse_duration_string_into_seconds(lua_State *L) {
-    // FIXME: implement
+    int64_t res = toggl_parse_duration_string_into_seconds(
+        luaL_checkstring(L, -1));
+    lua_pushinteger(L, res);
     return 1;
 }
 
 static int l_toggl_debug(lua_State *L) {
-    // FIXME: implement
-    return 1;
+    toggl_debug(
+        luaL_checkstring(L, -1));
+    return 0;
 }
 
 static const struct luaL_Reg toggl_f[] = {
@@ -339,12 +421,15 @@ static const struct luaL_Reg toggl_f[] = {
     {"set_wake", l_toggl_set_wake},
     {"set_online", l_toggl_set_online},
     {"set_idle_seconds", l_toggl_set_idle_seconds},
-    {"format_duration_in_seconds_hhmmss",
-        l_toggl_format_duration_in_seconds_hhmmss},
-    {"format_duration_in_seconds_hhmm",
-        l_toggl_format_duration_in_seconds_hhmm},
-    {"parse_duration_string_into_seconds",
-        l_toggl_parse_duration_string_into_seconds},
+    {   "format_duration_in_seconds_hhmmss",
+        l_toggl_format_duration_in_seconds_hhmmss
+    },
+    {   "format_duration_in_seconds_hhmm",
+        l_toggl_format_duration_in_seconds_hhmm
+    },
+    {   "parse_duration_string_into_seconds",
+        l_toggl_parse_duration_string_into_seconds
+    },
     {"debug", l_toggl_debug},
     {NULL, NULL}
 };

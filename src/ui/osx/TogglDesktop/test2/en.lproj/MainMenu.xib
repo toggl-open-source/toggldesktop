@@ -223,8 +223,7 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="8rj-un-SH2"/>
-                            <menuItem title="Console" id="ibF-Ws-y2e">
-                                <modifierMask key="keyEquivalentModifierMask"/>
+                            <menuItem title="Console" keyEquivalent="C" id="ibF-Ws-y2e">
                                 <connections>
                                     <action selector="onConsoleMenuItem:" target="-1" id="O08-8J-Rms"/>
                                 </connections>
