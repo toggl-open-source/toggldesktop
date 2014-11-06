@@ -270,6 +270,10 @@ void TimeEntry::SetDurationUserInput(const std::string value) {
         SetDurationInSeconds(seconds);
     }
     SetStop(Start() + seconds);
+
+    if (Dirty()) {
+        SetUIModified();
+    }
 }
 
 void TimeEntry::SetProjectGUID(const std::string value) {

@@ -45,12 +45,23 @@ class Database {
  private:
     toggl::Database *db_;
 };
+
 }  // namespace testing
 
 TEST(TimeEntry, TimeEntryReturnsTags) {
     TimeEntry te;
     te.SetTags("alfa|beeta");
     ASSERT_EQ(std::string("alfa|beeta"), te.Tags());
+}
+
+TEST(TimeEntry, SetDurationUserInput) {
+    TimeEntry te;
+    ASSERT_FALSE(te.Dirty());
+    ASSERT_FALSE(te.UIModifiedAt());
+
+    te.SetDurationUserInput("1 minute");
+    ASSERT_TRUE(te.Dirty());
+    ASSERT_TRUE(te.UIModifiedAt());
 }
 
 TEST(Project, ProjectsHaveColorCodes) {
