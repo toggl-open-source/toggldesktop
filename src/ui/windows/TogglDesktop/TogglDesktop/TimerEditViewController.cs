@@ -408,8 +408,8 @@ namespace TogglDesktop
             string GUID = Toggl.Start(
                 descriptionText,
                 defaultDuration,
-                project_id,
-                task_id);
+                task_id,
+                project_id);
 
             if (GUID != null)
             {
