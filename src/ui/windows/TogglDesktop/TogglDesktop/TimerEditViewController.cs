@@ -140,12 +140,14 @@ namespace TogglDesktop
                 duration = "";
             }
 
-            if ( Toggl.Start(
+            if (Toggl.Start(
                 description,
                 duration,
                 task_id,
                 project_id) == null)
             {
+                task_id = 0;
+                project_id = 0;
                 return;
             }
 
@@ -160,6 +162,9 @@ namespace TogglDesktop
                 textBoxDuration.Text = "";
             }
             labelClearProject.Visible = false;
+
+            task_id = 0;
+            project_id = 0;
         }
 
         public void SetAcceptButton(Form frm)
@@ -413,6 +418,9 @@ namespace TogglDesktop
 
             if (GUID != null)
             {
+                task_id = 0;
+                project_id = 0;
+                labelClearProject.Visible = false;
                 Toggl.Edit(GUID, false, Toggl.Duration);
             }
         }
