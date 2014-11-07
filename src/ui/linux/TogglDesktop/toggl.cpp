@@ -20,6 +20,7 @@
 #include "./genericview.h"
 #include "./autocompleteview.h"
 #include "./settingsview.h"
+#include "./bugsnag.h"
 
 TogglApi *TogglApi::instance = 0;
 
@@ -198,6 +199,12 @@ TogglApi::TogglApi(QObject *parent)
     toggl_on_timer_state(ctx, on_display_timer_state);
     toggl_on_idle_notification(ctx, on_display_idle_notification);
 
+    char *env = toggl_environment(ctx);
+    if (env) {
+    	Bugsnag::releaseStage = QString(env);
+	free(env);
+    }
+
     instance = this;
 }
 
@@ -220,6 +227,7 @@ void TogglApi::login(const QString email, const QString password) {
 
 void TogglApi::setEnvironment(const QString environment) {
     toggl_set_environment(ctx, environment.toStdString().c_str());
+    Bugsnag::releaseStage = environment;
 }
 
 bool TogglApi::setTimeEntryDate(
