@@ -61,6 +61,7 @@ void on_display_login(
     const _Bool open,
     const uint64_t user_id) {
     TogglApi::instance->displayLogin(open, user_id);
+    Bugsnag::user.id = user_id;
 }
 
 void on_display_reminder(
@@ -215,6 +216,17 @@ TogglApi::~TogglApi() {
     instance = 0;
 }
 
+bool TogglApi::notifyBugsnag(
+  const QString errorClass,
+  const QString message,
+  const QString context) {
+        QHash<QString, QHash<QString, QString> > metadata;
+	if (instance) {
+		metadata["release"]["channel"] = instance->updateChannel();
+	}
+	return Bugsnag::notify(errorClass, message, context, &metadata);
+}
+
 bool TogglApi::startEvents() {
     return toggl_ui_start(ctx);
 }
@@ -306,6 +318,16 @@ void TogglApi::toggleTimelineRecording(const bool recordTimeline) {
 
 bool TogglApi::setUpdateChannel(const QString channel) {
     return toggl_set_update_channel(ctx, channel.toStdString().c_str());
+}
+
+QString TogglApi::updateChannel() {
+     char *channel = toggl_get_update_channel(ctx);
+	QString res;
+     if (channel) {
+	res = QString(channel);
+	free(channel);
+	}
+	return res;
 }
 
 QString TogglApi::start(

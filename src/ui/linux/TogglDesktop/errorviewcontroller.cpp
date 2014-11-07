@@ -3,7 +3,6 @@
 #include "./errorviewcontroller.h"
 #include "./ui_errorviewcontroller.h"
 #include "./toggl.h"
-#include "./bugsnag.h"
 
 ErrorViewController::ErrorViewController(QWidget *parent)
     : QWidget(parent)
@@ -40,7 +39,8 @@ void ErrorViewController::displayError(
     ui->errorMessage->setText(errmsg);
     setVisible(true);
     if (!user_error) {
-        Bugsnag::notify("error in shared lib", errmsg, "ErrorViewController");
+        TogglApi::notifyBugsnag("error in shared lib", errmsg,
+		"ErrorViewController");
     }
 }
 
@@ -60,7 +60,6 @@ void ErrorViewController::displayLogin(
     const bool open,
     const uint64_t user_id) {
     uid = user_id;
-    Bugsnag::user.id = QString::number(user_id);
     if (user_id && isVisible() && loginError) {
         loginError = false;
         setVisible(false);

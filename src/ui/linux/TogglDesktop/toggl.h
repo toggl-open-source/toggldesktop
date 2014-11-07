@@ -28,6 +28,11 @@ class TogglApi : public QObject {
     static QString Duration;
     static QString Description;
 
+    static bool notifyBugsnag(
+        const QString errorClass,
+        const QString message,
+        const QString context);
+
     bool shutdown;
 
     bool startEvents();
@@ -137,6 +142,7 @@ class TogglApi : public QObject {
         const bool recordTimeline);
 
     bool setUpdateChannel(const QString channel);
+    QString updateChannel();
 
     bool sendFeedback(const QString topic,
                       const QString details,

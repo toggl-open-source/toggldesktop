@@ -11,6 +11,7 @@
 #include "qtsingleapplication.h"  // NOLINT
 
 #include "./mainwindowcontroller.h"
+#include "./toggl.h"
 #include "./bugsnag.h"
 
 class TogglApplication : public QtSingleApplication {
@@ -22,9 +23,11 @@ class TogglApplication : public QtSingleApplication {
         try {
             return QtSingleApplication::notify(receiver, event);
         } catch(std::exception e) {
-            Bugsnag::notify("std::exception", e.what(), receiver->objectName());
+            TogglApi::notifyBugsnag("std::exception", e.what(),
+		receiver->objectName());
         } catch(...) {
-            Bugsnag::notify("unspecified", "exception", receiver->objectName());
+            TogglApi::notifyBugsnag("unspecified", "exception",
+		receiver->objectName());
         }
         return true;
     }
@@ -55,9 +58,9 @@ int main(int argc, char *argv[]) try {
 
     return a.exec();
 } catch (std::exception &e) {  // NOLINT
-    Bugsnag::notify("std::exception", e.what(), "main");
+    TogglApi::notifyBugsnag("std::exception", e.what(), "main");
     return 1;
 } catch (...) {  // NOLINT
-    Bugsnag::notify("unspecified", "exception", "main");
+    TogglApi::notifyBugsnag("unspecified", "exception", "main");
     return 1;
 }
