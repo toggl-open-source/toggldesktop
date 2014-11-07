@@ -183,16 +183,21 @@ class Event {
         QJsonObject metaDataJSON;
         QHash<QString, QHash<QString, QString> >::const_iterator i =
             metaData.begin();
+        bool hasMetaData(false);
         while (i != metaData.constEnd()) {
             QJsonObject valuesJSON;
             QHash<QString, QString>::const_iterator j = i.value().constBegin();
             while (j != i.value().constEnd()) {
+                hasMetaData = true;
                 valuesJSON[j.key()] = j.value();
                 ++j;
             }
             metaDataJSON[i.key()] = valuesJSON;
             ++i;
         }
+	if (hasMetaData) {
+		json["metaData"] = metaDataJSON;
+	}
     }
 
     QList<Exception> exceptions;
