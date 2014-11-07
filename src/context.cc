@@ -348,6 +348,12 @@ _Bool Context::displayError(const error err, const std::string calling_method) {
         }
         setUser(0);
     }
+    if (err.find("Request to server failed with status code: 418")
+            != std::string::npos) {
+        return UI()->DisplayError(
+            "This version of the app is not supported any more. "
+            "Please visit Toggl website to download a supported app.", "");
+    }
     return UI()->DisplayError(err, calling_method);
 }
 

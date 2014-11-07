@@ -400,6 +400,10 @@ _Bool GUI::isUserError(const error err) const {
             != std::string::npos) {
         return true;
     }
+    if (value.find("This version of the app is not supported")
+            != std::string::npos) {
+        return true;
+    }
     if (value.find("Stop time must be after start time")
             != std::string::npos) {
         return true;
