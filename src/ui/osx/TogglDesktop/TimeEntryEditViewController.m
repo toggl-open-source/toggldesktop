@@ -34,6 +34,8 @@
 @property BOOL resizeOnOpen;
 @property BOOL startTimeChanged;
 @property BOOL endTimeChanged;
+@property NSString *descriptionComboboxPreviousStringValue;
+@property NSString *projectSelectPreviousStringValue;
 @end
 
 @implementation TimeEntryEditViewController
@@ -331,21 +333,24 @@ extern void *ctx;
 	}
 
 	// Overwrite description only if user is not editing it:
-	if ([self.descriptionCombobox currentEditor] == nil)
+	if (cmd.open || [self.descriptionCombobox currentEditor] == nil)
 	{
-		[self.descriptionCombobox setStringValue:self.timeEntry.Description];
+		self.descriptionCombobox.stringValue = self.timeEntry.Description;
+		self.descriptionComboboxPreviousStringValue = self.timeEntry.Description;
 	}
 
 	// Overwrite project only if user is not editing it
-	if ([self.projectSelect currentEditor] == nil)
+	if (cmd.open || [self.projectSelect currentEditor] == nil)
 	{
 		if (self.timeEntry.ProjectAndTaskLabel != nil)
 		{
-			[self.projectSelect setStringValue:self.timeEntry.ProjectAndTaskLabel];
+			self.projectSelect.stringValue = self.timeEntry.ProjectAndTaskLabel;
+			self.projectSelectPreviousStringValue = self.timeEntry.ProjectAndTaskLabel;
 		}
 		else
 		{
-			[self.projectSelect setStringValue:@""];
+			self.projectSelect.stringValue = @"";
+			self.projectSelectPreviousStringValue = @"";
 		}
 		if (cmd.open)
 		{
@@ -357,7 +362,7 @@ extern void *ctx;
 	}
 
 	// Overwrite duration only if user is not editing it:
-	if ([self.durationTextField currentEditor] == nil)
+	if (cmd.open || [self.durationTextField currentEditor] == nil)
 	{
 		[self.durationTextField setStringValue:self.timeEntry.duration];
 	}
@@ -395,12 +400,12 @@ extern void *ctx;
 	NSString *dateTimeString = [dateString stringByAppendingString:timeString];
 	[self.dateTimeTextField setStringValue:dateTimeString];
 
-	if ([self.startTime currentEditor] == nil || self.startTimeChanged == YES)
+	if (cmd.open || [self.startTime currentEditor] == nil || self.startTimeChanged == YES)
 	{
 		[self.startTime setStringValue:self.timeEntry.startTimeString];
 		self.startTimeChanged = NO;
 	}
-	if ([self.endTime currentEditor] == nil || self.endTimeChanged == YES)
+	if (cmd.open || [self.endTime currentEditor] == nil || self.endTimeChanged == YES)
 	{
 		[self.endTime setStringValue:self.timeEntry.endTimeString];
 		self.endTimeChanged = NO;
@@ -415,7 +420,7 @@ extern void *ctx;
 	[self.startEndTimeBox setHidden:self.timeEntry.durOnly];
 
 	// Overwrite tags only if user is not editing them right now
-	if ([self.tagsTokenField currentEditor] == nil)
+	if (cmd.open || [self.tagsTokenField currentEditor] == nil)
 	{
 		if ([self.timeEntry.tags count] == 0)
 		{
@@ -691,11 +696,17 @@ extern void *ctx;
 		return;
 	}
 
+	if (self.projectSelectPreviousStringValue != nil &&
+		[self.projectSelectPreviousStringValue isEqualToString:self.projectSelect.stringValue])
+	{
+		return;
+	}
+
 	NSAssert(self.timeEntry != nil, @"Expected time entry");
 
 	[self.projectSelect.cell setCalculatedMaxWidth:0];
 
-	NSString *key = [self.projectSelect stringValue];
+	NSString *key = self.projectSelect.stringValue;
 	AutocompleteItem *autocomplete = [self.projectAutocompleteDataSource get:key];
 	uint64_t task_id = 0;
 	uint64_t project_id = 0;
@@ -783,9 +794,15 @@ extern void *ctx;
 		return;
 	}
 
+	if (self.descriptionCombobox.stringValue != nil &&
+		[self.descriptionCombobox.stringValue isEqualToString:self.descriptionComboboxPreviousStringValue])
+	{
+		return;
+	}
+
 	NSAssert(self.timeEntry != nil, @"Time entry expected");
 
-	NSString *key = [self.descriptionCombobox stringValue];
+	NSString *key = self.descriptionCombobox.stringValue;
 
 	NSLog(@"descriptionComboboxChanged, stringValue = %@", key);
 
@@ -814,7 +831,6 @@ extern void *ctx;
 		return;
 	}
 
-	self.descriptionCombobox.stringValue = autocomplete.Description;
 	toggl_set_time_entry_description(ctx, GUID, [autocomplete.Description UTF8String]);
 }
 
