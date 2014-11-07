@@ -278,7 +278,7 @@ extern void *ctx;
 
 	NSView *latestView = [self.timeEntriesTableView rowViewAtRow:row
 												 makeIfNecessary:NO];
-	
+
 	for (NSView *subview in [latestView subviews])
 	{
 		if ([subview isKindOfClass:[TimeEntryCell class]])
