@@ -40,7 +40,7 @@ void ErrorViewController::displayError(
     ui->errorMessage->setText(errmsg);
     setVisible(true);
     if (!user_error) {
-        Bugsnag().notify("error in shared lib", errmsg, "ErrorViewController");
+        Bugsnag::notify("error in shared lib", errmsg, "ErrorViewController");
     }
 }
 
