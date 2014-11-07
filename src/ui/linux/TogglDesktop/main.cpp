@@ -24,10 +24,10 @@ class TogglApplication : public QtSingleApplication {
             return QtSingleApplication::notify(receiver, event);
         } catch(std::exception e) {
             TogglApi::notifyBugsnag("std::exception", e.what(),
-		receiver->objectName());
+                                    receiver->objectName());
         } catch(...) {
             TogglApi::notifyBugsnag("unspecified", "exception",
-		receiver->objectName());
+                                    receiver->objectName());
         }
         return true;
     }

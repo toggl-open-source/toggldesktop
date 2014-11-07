@@ -40,7 +40,7 @@ void ErrorViewController::displayError(
     setVisible(true);
     if (!user_error) {
         TogglApi::notifyBugsnag("error in shared lib", errmsg,
-		"ErrorViewController");
+                                "ErrorViewController");
     }
 }
 

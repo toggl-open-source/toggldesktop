@@ -202,8 +202,8 @@ TogglApi::TogglApi(QObject *parent)
 
     char *env = toggl_environment(ctx);
     if (env) {
-    	Bugsnag::releaseStage = QString(env);
-	free(env);
+        Bugsnag::releaseStage = QString(env);
+        free(env);
     }
 
     instance = this;
@@ -217,14 +217,14 @@ TogglApi::~TogglApi() {
 }
 
 bool TogglApi::notifyBugsnag(
-  const QString errorClass,
-  const QString message,
-  const QString context) {
-        QHash<QString, QHash<QString, QString> > metadata;
-	if (instance) {
-		metadata["release"]["channel"] = instance->updateChannel();
-	}
-	return Bugsnag::notify(errorClass, message, context, &metadata);
+    const QString errorClass,
+    const QString message,
+    const QString context) {
+    QHash<QString, QHash<QString, QString> > metadata;
+    if (instance) {
+        metadata["release"]["channel"] = instance->updateChannel();
+    }
+    return Bugsnag::notify(errorClass, message, context, &metadata);
 }
 
 bool TogglApi::startEvents() {
@@ -321,13 +321,13 @@ bool TogglApi::setUpdateChannel(const QString channel) {
 }
 
 QString TogglApi::updateChannel() {
-     char *channel = toggl_get_update_channel(ctx);
-	QString res;
-     if (channel) {
-	res = QString(channel);
-	free(channel);
-	}
-	return res;
+    char *channel = toggl_get_update_channel(ctx);
+    QString res;
+    if (channel) {
+        res = QString(channel);
+        free(channel);
+    }
+    return res;
 }
 
 QString TogglApi::start(
