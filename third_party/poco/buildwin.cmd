@@ -5,11 +5,11 @@ rem
 rem buildwin.cmd
 rem
 rem POCO C++ Libraries command-line build script 
-rem for MS Visual Studio 2003 to 2012
+rem for MS Visual Studio 2003 to 2013
 rem
-rem $Id: //poco/1.4/dist/buildwin.cmd#7 $
+rem $Id: //poco/1.4/dist/buildwin.cmd#10 $
 rem
-rem Copyright (c) 2006-2013 by Applied Informatics Software Engineering GmbH
+rem Copyright (c) 2006-2014 by Applied Informatics Software Engineering GmbH
 rem and Contributors.
 rem
 rem Original version by Aleksandar Fabijanic.
@@ -18,11 +18,11 @@ rem
 rem Usage:
 rem ------
 rem buildwin VS_VERSION [ACTION] [LINKMODE] [CONFIGURATION] [PLATFORM] [SAMPLES] [TOOL]
-rem VS_VERSION:    71|80|90|100|110
+rem VS_VERSION:    71|80|90|100|110|120
 rem ACTION:        build|rebuild|clean
 rem LINKMODE:      static_mt|static_md|shared|all
 rem CONFIGURATION: release|debug|both
-rem PLATFORM:      Win32|x64|WinCE
+rem PLATFORM:      Win32|x64|WinCE|WEC2013
 rem SAMPLES:       samples|nosamples
 rem TOOL:          devenv|vcexpress|msbuild
 rem
@@ -44,7 +44,7 @@ set LIB=%LIB%;%OPENSSL_LIB%
 set POCO_BASE=%CD%
 set PATH=%POCO_BASE%\bin64;%POCO_BASE%\bin;%PATH%
 
-rem VS version {71|80|90|100|110}
+rem VS version {71|80|90|100|110|120}
 if "%1"=="" goto usage
 set VS_VERSION=vs%1
 
@@ -56,6 +56,7 @@ goto use_custom
 set BUILD_TOOL=devenv
 if "%VS_VERSION%"=="vs100" (set BUILD_TOOL=msbuild)
 if "%VS_VERSION%"=="vs110" (set BUILD_TOOL=msbuild)
+if "%VS_VERSION%"=="vs120" (set BUILD_TOOL=msbuild)
 
 :use_custom
 if not "%BUILD_TOOL%"=="msbuild" (set USEENV=/useenv)
@@ -69,9 +70,10 @@ if not "%BUILD_TOOL%"=="msbuild" (set ACTIONSW=/)
 
 if "%VS_VERSION%"=="vs100" (goto msbuildok)
 if "%VS_VERSION%"=="vs110" (goto msbuildok)
+if "%VS_VERSION%"=="vs120" (goto msbuildok)
 if "%BUILD_TOOL%"=="msbuild" (
 echo "Cannot use msbuild with Visual Studio 2008 or earlier."
-exit
+exit /b 1
 )
 :msbuildok
 
@@ -99,17 +101,28 @@ if not "%CONFIGURATION%"=="debug" (
 if not "%CONFIGURATION%"=="" (
 if not "%CONFIGURATION%"=="both" goto usage)))
 
-rem Platform [Win32|x64|WinCE]
+rem Platform [Win32|x64|WinCE|WEC2013]
 set PLATFORM=%5%
 if not "%PLATFORM%"=="" (
 if not "%PLATFORM%"=="Win32" (
 if not "%PLATFORM%"=="x64" (
-if not "%PLATFORM%"=="WinCE" goto usage)))
+if not "%PLATFORM%"=="WinCE" (
+if not "%PLATFORM%"=="WEC2013" goto usage))))
 
 if "%PLATFORM%"=="" (set PLATFORM_SUFFIX=) else (
 if "%PLATFORM%"=="Win32" (set PLATFORM_SUFFIX=) else (
 if "%PLATFORM%"=="x64" (set PLATFORM_SUFFIX=_x64) else (
-if "%PLATFORM%"=="WinCE" (set PLATFORM_SUFFIX=_CE))))
+if "%PLATFORM%"=="WinCE" (set PLATFORM_SUFFIX=_CE) else (
+if "%PLATFORM%"=="WEC2013" (set PLATFORM_SUFFIX=_WEC2013)))))
+
+if "%PLATFORM%"=="WEC2013" (
+set PLATFORMSW=/p:Platform=%WEC2013_PLATFORM%
+if "%WEC2013_PLATFORM%"=="" (
+echo WEC2013_PLATFORM not set. Exiting.
+exit /b 1
+)
+set USEENV=
+)
 
 rem Samples [samples|nosamples]
 set SAMPLES=%6
@@ -232,12 +245,12 @@ for /f %%G in ('findstr /R "." components') do (
     echo ####
     echo ########################################################################
     echo.
-    if %DEBUG_SHARED%==1      (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_shared %%Q%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-    if %RELEASE_SHARED%==1    (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_shared %%Q%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-    if %DEBUG_STATIC_MT%==1   (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_static_mt %%Q%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-    if %RELEASE_STATIC_MT%==1 (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_static_mt %%Q%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-    if %DEBUG_STATIC_MD%==1   (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_static_md %%Q%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-    if %RELEASE_STATIC_MD%==1 (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_static_md %%Q%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %DEBUG_SHARED%==1      (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_shared %PLATFORMSW% %%Q%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %RELEASE_SHARED%==1    (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_shared %PLATFORMSW% %%Q%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %DEBUG_STATIC_MT%==1   (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_static_mt %PLATFORMSW% %%Q%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %RELEASE_STATIC_MT%==1 (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_static_mt %PLATFORMSW% %%Q%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %DEBUG_STATIC_MD%==1   (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_static_md %PLATFORMSW% %%Q%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %RELEASE_STATIC_MD%==1 (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_static_md %PLATFORMSW% %%Q%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
    )
 
    if exist %%R%PLATFORM_SUFFIX%_%VS_VERSION%.sln (
@@ -249,12 +262,12 @@ for /f %%G in ('findstr /R "." components') do (
     echo ####
     echo ########################################################################
     echo.
-    if %DEBUG_SHARED%==1      (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_shared %%R%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-    if %RELEASE_SHARED%==1    (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_shared %%R%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-    if %DEBUG_STATIC_MT%==1   (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_static_mt %%R%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-    if %RELEASE_STATIC_MT%==1 (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_static_mt %%R%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-    if %DEBUG_STATIC_MD%==1   (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_static_md %%R%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-    if %RELEASE_STATIC_MD%==1 (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_static_md %%R%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %DEBUG_SHARED%==1      (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_shared %PLATFORMSW% %%R%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %RELEASE_SHARED%==1    (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_shared %PLATFORMSW% %%R%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %DEBUG_STATIC_MT%==1   (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_static_mt %PLATFORMSW% %%R%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %RELEASE_STATIC_MT%==1 (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_static_mt %PLATFORMSW% %%R%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %DEBUG_STATIC_MD%==1   (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_static_md %PLATFORMSW% %%R%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %RELEASE_STATIC_MD%==1 (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_static_md %PLATFORMSW% %%R%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
    )
 
    if exist %%S%PLATFORM_SUFFIX%_%VS_VERSION%.sln (
@@ -266,12 +279,12 @@ for /f %%G in ('findstr /R "." components') do (
     echo ####
     echo ########################################################################
     echo.
-    if %DEBUG_SHARED%==1      (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_shared %%S%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-    if %RELEASE_SHARED%==1    (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_shared %%S%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-    if %DEBUG_STATIC_MT%==1   (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_static_mt %%S%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-    if %RELEASE_STATIC_MT%==1 (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_static_mt %%S%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-    if %DEBUG_STATIC_MD%==1   (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_static_md %%S%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-    if %RELEASE_STATIC_MD%==1 (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_static_md %%S%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %DEBUG_SHARED%==1      (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_shared %PLATFORMSW% %%S%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %RELEASE_SHARED%==1    (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_shared %PLATFORMSW% %%S%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %DEBUG_STATIC_MT%==1   (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_static_mt %PLATFORMSW% %%S%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %RELEASE_STATIC_MT%==1 (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_static_mt %PLATFORMSW% %%S%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %DEBUG_STATIC_MD%==1   (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_static_md %PLATFORMSW% %%S%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %RELEASE_STATIC_MD%==1 (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_static_md %PLATFORMSW% %%S%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
    )
 
    if exist %%T%PLATFORM_SUFFIX%_%VS_VERSION%.sln (
@@ -283,12 +296,12 @@ for /f %%G in ('findstr /R "." components') do (
     echo ####
     echo ########################################################################
     echo.
-    if %DEBUG_SHARED%==1      (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_shared %%T%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-    if %RELEASE_SHARED%==1    (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_shared %%T%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-    if %DEBUG_STATIC_MT%==1   (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_static_mt %%T%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-    if %RELEASE_STATIC_MT%==1 (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_static_mt %%T%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-    if %DEBUG_STATIC_MD%==1   (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_static_md %%T%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-    if %RELEASE_STATIC_MD%==1 (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_static_md %%T%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %DEBUG_SHARED%==1      (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_shared %PLATFORMSW% %%T%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %RELEASE_SHARED%==1    (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_shared %PLATFORMSW% %%T%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %DEBUG_STATIC_MT%==1   (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_static_mt %PLATFORMSW% %%T%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %RELEASE_STATIC_MT%==1 (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_static_mt %PLATFORMSW% %%T%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %DEBUG_STATIC_MD%==1   (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_static_md %PLATFORMSW% %%T%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+    if %RELEASE_STATIC_MD%==1 (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_static_md %PLATFORMSW% %%T%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
    )
   )
   cd %POCO_BASE%
@@ -310,12 +323,12 @@ for /f %%G in ('findstr /R "." components') do (
     echo ####
     echo ########################################################################
     echo.
-  if %DEBUG_SHARED%==1      (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_shared samples%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-  if %RELEASE_SHARED%==1    (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_shared samples%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-  if %DEBUG_STATIC_MT%==1   (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_static_mt samples%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-  if %RELEASE_STATIC_MT%==1 (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_static_mt samples%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-  if %DEBUG_STATIC_MD%==1   (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_static_md samples%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
-  if %RELEASE_STATIC_MD%==1 (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_static_md samples%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+  if %DEBUG_SHARED%==1      (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_shared %PLATFORMSW% samples%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+  if %RELEASE_SHARED%==1    (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_shared %PLATFORMSW% samples%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+  if %DEBUG_STATIC_MT%==1   (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_static_mt %PLATFORMSW% samples%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+  if %RELEASE_STATIC_MT%==1 (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_static_mt %PLATFORMSW% samples%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+  if %DEBUG_STATIC_MD%==1   (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%debug_static_md %PLATFORMSW% samples%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
+  if %RELEASE_STATIC_MD%==1 (%BUILD_TOOL% %USEENV% %EXTRASW% %ACTIONSW%%ACTION% %CONFIGSW%release_static_md %PLATFORMSW% samples%PLATFORM_SUFFIX%_%VS_VERSION%.sln && echo. && echo. && echo.)
   cd %POCO_BASE%
  )
 )
@@ -326,11 +339,11 @@ goto :EOF
 echo Usage:
 echo ------
 echo buildwin VS_VERSION [ACTION] [LINKMODE] [CONFIGURATION] [PLATFORM] [SAMPLES] [TOOL]
-echo VS_VERSION:    "71|80|90|100|110"
+echo VS_VERSION:    "71|80|90|100|110|120"
 echo ACTION:        "build|rebuild|clean"
 echo LINKMODE:      "static_mt|static_md|shared|all"
 echo CONFIGURATION: "release|debug|both"
-echo PLATFORM:      "Win32|x64|WinCE"
+echo PLATFORM:      "Win32|x64|WinCE|WEC2013"
 echo SAMPLES:       "samples|nosamples"
 echo TOOL:          "devenv|vcexpress|msbuild"
 echo.
