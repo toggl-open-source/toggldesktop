@@ -19,14 +19,14 @@ fix() {
 
 fix_poco_paths() {
 	f=$1
-	fix $f libPocoUtil.17.dylib
-	fix $f libPocoData.17.dylib
-	fix $f libPocoNetSSL.17.dylib
-	fix $f libPocoXML.17.dylib
-	fix $f libPocoDataSQLite.17.dylib
-	fix $f libPocoNet.17.dylib
-	fix $f libPocoFoundation.17.dylib
-	fix $f libPocoCrypto.17.dylib
+	fix $f libPocoUtil.16.dylib
+	fix $f libPocoData.16.dylib
+	fix $f libPocoNetSSL.16.dylib
+	fix $f libPocoXML.16.dylib
+	fix $f libPocoDataSQLite.16.dylib
+	fix $f libPocoNet.16.dylib
+	fix $f libPocoFoundation.16.dylib
+	fix $f libPocoCrypto.16.dylib
 }
 
 for f in src/ui/osx/TogglDesktop/build/Release/TogglDesktop.app/Contents/Frameworks/*.dylib
