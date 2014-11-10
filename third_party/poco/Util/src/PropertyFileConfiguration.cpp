@@ -1,7 +1,7 @@
 //
 // PropertyFileConfiguration.cpp
 //
-// $Id: //poco/1.4/Util/src/PropertyFileConfiguration.cpp#2 $
+// $Id: //poco/1.4/Util/src/PropertyFileConfiguration.cpp#1 $
 //
 // Library: Util
 // Package: Configuration
@@ -99,32 +99,7 @@ void PropertyFileConfiguration::save(std::ostream& ostr) const
 	MapConfiguration::iterator ed = end();
 	while (it != ed)
 	{
-		ostr << it->first << ": ";
-		for (std::string::const_iterator its = it->second.begin(); its != it->second.end(); ++its)
-		{
-			switch (*its)
-			{
-			case '\t':
-				ostr << "\\t";
-				break;
-			case '\r':
-				ostr << "\\r";
-				break;
-			case '\n':
-				ostr << "\\n";
-				break;
-			case '\f':
-				ostr << "\\f";
-				break;
-			case '\\':
-				ostr << "\\\\";
-				break;
-			default:
-				ostr << *its;
-				break;
-			}
-		}
-		ostr << "\n";
+		ostr << it->first << ": " << it->second << "\n";
 		++it;
 	}
 }

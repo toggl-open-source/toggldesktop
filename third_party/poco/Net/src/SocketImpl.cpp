@@ -1,7 +1,7 @@
 //
 // SocketImpl.cpp
 //
-// $Id: //poco/1.4/Net/src/SocketImpl.cpp#12 $
+// $Id: //poco/1.4/Net/src/SocketImpl.cpp#9 $
 //
 // Library: Net
 // Package: Sockets
@@ -78,17 +78,10 @@ SocketImpl::SocketImpl(poco_socket_t sockfd):
 
 SocketImpl::~SocketImpl()
 {
-	try
-	{
-		close();
-	#if defined(_WIN32)
-		Poco::Net::uninitializeNetwork();
-	#endif
-	}
-	catch (...)
-	{
-		poco_unexpected();
-	}
+	close();
+#if defined(_WIN32)
+	Poco::Net::uninitializeNetwork();
+#endif
 }
 
 	
@@ -327,7 +320,7 @@ int SocketImpl::receiveBytes(void* buffer, int length, int flags)
 	{
 		int err = lastError();
 		if (err == POCO_EAGAIN || err == POCO_ETIMEDOUT)
-			throw TimeoutException(err);
+			throw TimeoutException();
 		else
 			error(err);
 	}
@@ -381,7 +374,7 @@ int SocketImpl::receiveFrom(void* buffer, int length, SocketAddress& address, in
 	{
 		int err = lastError();
 		if (err == POCO_EAGAIN || err == POCO_ETIMEDOUT)
-			throw TimeoutException(err);
+			throw TimeoutException();
 		else
 			error(err);
 	}
@@ -966,7 +959,7 @@ void SocketImpl::error(int code, const std::string& arg)
 	case POCO_EFAULT:
 		throw IOException("Bad address", code);
 	case POCO_EINVAL:
-		throw SystemException("Invalid argument", code);
+		throw InvalidArgumentException(code);
 	case POCO_EMFILE:
 		throw IOException("Too many open files", code);
 	case POCO_EWOULDBLOCK:
@@ -1028,8 +1021,6 @@ void SocketImpl::error(int code, const std::string& arg)
 #if defined(POCO_OS_FAMILY_UNIX)
 	case EPIPE:
 		throw IOException("Broken pipe", code);
-	case EBADF:
-		throw IOException("Bad socket descriptor", code);
 #endif
 	default:
 		throw IOException(NumberFormatter::format(code), arg, code);

@@ -1,7 +1,7 @@
 //
 // SocketAcceptor.h
 //
-// $Id: //poco/1.4/Net/include/Poco/Net/SocketAcceptor.h#2 $
+// $Id: //poco/1.4/Net/include/Poco/Net/SocketAcceptor.h#1 $
 //
 // Library: Net
 // Package: Reactor
@@ -108,14 +108,7 @@ public:
 	virtual ~SocketAcceptor()
 		/// Destroys the SocketAcceptor.
 	{
-		try
-		{
-			unregisterAcceptor();
-		}
-		catch (...)
-		{
-			poco_unexpected();
-		}
+		unregisterAcceptor();
 	}
 	
 	virtual void registerAcceptor(SocketReactor& reactor)

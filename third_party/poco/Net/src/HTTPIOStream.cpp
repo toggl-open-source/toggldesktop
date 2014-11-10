@@ -48,8 +48,6 @@ namespace Net {
 HTTPResponseStreamBuf::HTTPResponseStreamBuf(std::istream& istr):
 	_istr(istr)
 {
-	// make sure exceptions from underlying string propagate
-	_istr.exceptions(std::ios::badbit);
 }
 
 

@@ -1,5 +1,5 @@
 #
-# $Id: //poco/1.4/build/rules/global#2 $
+# $Id: //poco/1.4/build/rules/global#1 $
 #
 # global
 #
@@ -259,9 +259,7 @@ STRIPCMD = $(STRIP) $@$(BINEXT)
 endif
 
 #
-# Make CC, CXX and LINK environment vars
+# Make CC and CXX environment vars
 #
 export CC
 export CXX
-export LINK
-

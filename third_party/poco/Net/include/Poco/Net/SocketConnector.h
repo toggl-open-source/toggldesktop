@@ -1,7 +1,7 @@
 //
 // SocketConnector.h
 //
-// $Id: //poco/1.4/Net/include/Poco/Net/SocketConnector.h#2 $
+// $Id: //poco/1.4/Net/include/Poco/Net/SocketConnector.h#1 $
 //
 // Library: Net
 // Package: Reactor
@@ -112,14 +112,7 @@ public:
 	virtual ~SocketConnector()
 		/// Destroys the SocketConnector.
 	{
-		try
-		{
-			unregisterConnector();
-		}
-		catch (...)
-		{
-			poco_unexpected();
-		}
+		unregisterConnector();
 	}
 	
 	virtual void registerConnector(SocketReactor& reactor)

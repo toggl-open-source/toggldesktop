@@ -1,7 +1,7 @@
 //
 // Stopwatch.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/Stopwatch.h#2 $
+// $Id: //poco/1.4/Foundation/include/Poco/Stopwatch.h#1 $
 //
 // Library: Foundation
 // Package: DateTime
@@ -41,7 +41,7 @@
 
 
 #include "Poco/Foundation.h"
-#include "Poco/Clock.h"
+#include "Poco/Timestamp.h"
 
 
 namespace Poco {
@@ -50,6 +50,11 @@ namespace Poco {
 class Foundation_API Stopwatch
 	/// A simple facility to measure time intervals
 	/// with microsecond resolution.
+	///
+	/// Note that Stopwatch is based on the Timestamp
+	/// class. Therefore, if during a Stopwatch run,
+	/// the system time is changed, the measured time
+	/// will not be correct.
 {
 public:
 	Stopwatch();
@@ -67,7 +72,7 @@ public:
 	void restart();
 		/// Resets and starts the stopwatch.
 		
-	Clock::ClockDiff elapsed() const;
+	Timestamp::TimeDiff elapsed() const;
 		/// Returns the elapsed time in microseconds
 		/// since the stopwatch started.
 		
@@ -75,16 +80,16 @@ public:
 		/// Returns the number of seconds elapsed
 		/// since the stopwatch started.
 
-	static Clock::ClockVal resolution();
+	static Timestamp::TimeVal resolution();
 		/// Returns the resolution of the stopwatch.
 
 private:
 	Stopwatch(const Stopwatch&);
 	Stopwatch& operator = (const Stopwatch&);
 
-	Clock            _start;
-	Clock::ClockDiff _elapsed;
-	bool             _running;
+	Timestamp           _start;
+	Timestamp::TimeDiff _elapsed;
+	bool                _running;
 };
 
 
@@ -105,7 +110,7 @@ inline void Stopwatch::stop()
 {
 	if (_running)
 	{
-		Clock current;
+		Timestamp current;
 		_elapsed += current - _start;
 		_running = false;
 	}
@@ -118,9 +123,9 @@ inline int Stopwatch::elapsedSeconds() const
 }
 
 
-inline Clock::ClockVal Stopwatch::resolution()
+inline Timestamp::TimeVal Stopwatch::resolution()
 {
-	return Clock::resolution();
+	return Timestamp::resolution();
 }
 
 

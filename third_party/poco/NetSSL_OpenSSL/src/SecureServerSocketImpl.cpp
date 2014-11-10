@@ -1,7 +1,7 @@
 //
 // SecureServerSocketImpl.cpp
 //
-// $Id: //poco/1.4/NetSSL_OpenSSL/src/SecureServerSocketImpl.cpp#3 $
+// $Id: //poco/1.4/NetSSL_OpenSSL/src/SecureServerSocketImpl.cpp#2 $
 //
 // Library: NetSSL_OpenSSL
 // Package: SSLSockets
@@ -49,14 +49,7 @@ SecureServerSocketImpl::SecureServerSocketImpl(Context::Ptr pContext):
 
 SecureServerSocketImpl::~SecureServerSocketImpl()
 {
-	try
-	{
-		reset();
-	}
-	catch (...)
-	{
-		poco_unexpected();
-	}
+	reset();
 }
 
 

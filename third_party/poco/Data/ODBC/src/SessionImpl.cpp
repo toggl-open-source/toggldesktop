@@ -1,7 +1,7 @@
 //
 // SessionImpl.cpp
 //
-// $Id: //poco/1.4/Data/ODBC/src/SessionImpl.cpp#3 $
+// $Id: //poco/1.4/Data/ODBC/src/SessionImpl.cpp#2 $
 //
 // Library: Data/ODBC
 // Package: ODBC
@@ -65,14 +65,7 @@ SessionImpl::SessionImpl(const std::string& connect,
 
 SessionImpl::~SessionImpl()
 {
-	try
-	{
-		close();
-	}
-	catch (...)
-	{
-		poco_unexpected();
-	}
+	close();
 }
 
 

@@ -1,7 +1,7 @@
 //
 // EnvironmentHandle.cpp
 //
-// $Id: //poco/1.4/Data/ODBC/src/EnvironmentHandle.cpp#2 $
+// $Id: //poco/1.4/Data/ODBC/src/EnvironmentHandle.cpp#1 $
 //
 // Library: Data/ODBC
 // Package: ODBC
@@ -61,14 +61,8 @@ EnvironmentHandle::EnvironmentHandle(): _henv(SQL_NULL_HENV)
 
 EnvironmentHandle::~EnvironmentHandle()
 {
-	try
-	{
-		SQLRETURN rc = SQLFreeHandle(SQL_HANDLE_ENV, _henv);
-		poco_assert (!Utility::isError(rc));
-	}
-	catch (...)
-	{
-	}
+	SQLRETURN rc = SQLFreeHandle(SQL_HANDLE_ENV, _henv);
+	poco_assert (!Utility::isError(rc));
 }
 
 

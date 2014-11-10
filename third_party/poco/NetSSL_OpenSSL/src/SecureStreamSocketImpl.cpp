@@ -1,7 +1,7 @@
 //
 // SecureStreamSocketImpl.cpp
 //
-// $Id: //poco/1.4/NetSSL_OpenSSL/src/SecureStreamSocketImpl.cpp#7 $
+// $Id: //poco/1.4/NetSSL_OpenSSL/src/SecureStreamSocketImpl.cpp#6 $
 //
 // Library: NetSSL_OpenSSL
 // Package: SSLSockets
@@ -61,14 +61,7 @@ SecureStreamSocketImpl::SecureStreamSocketImpl(StreamSocketImpl* pStreamSocket, 
 
 SecureStreamSocketImpl::~SecureStreamSocketImpl()
 {
-	try
-	{
-		reset();
-	}
-	catch (...)
-	{
-		poco_unexpected();
-	}
+	reset();
 }
 
 

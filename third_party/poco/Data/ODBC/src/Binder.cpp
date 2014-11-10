@@ -1,7 +1,7 @@
 //
 // Binder.cpp
 //
-// $Id: //poco/1.4/Data/ODBC/src/Binder.cpp#4 $
+// $Id: //poco/1.4/Data/ODBC/src/Binder.cpp#3 $
 //
 // Library: Data/ODBC
 // Package: ODBC
@@ -56,14 +56,7 @@ Binder::Binder(const StatementHandle& rStmt, Binder::ParameterBinding dataBindin
 
 Binder::~Binder()
 {
-	try
-	{
-		reset();
-	}
-	catch (...)
-	{
-		poco_unexpected();
-	}
+	reset();
 }
 
 

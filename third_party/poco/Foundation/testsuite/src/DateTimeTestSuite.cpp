@@ -1,7 +1,7 @@
 //
 // DateTimeTestSuite.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/DateTimeTestSuite.cpp#2 $
+// $Id: //poco/1.4/Foundation/testsuite/src/DateTimeTestSuite.cpp#1 $
 //
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
@@ -32,7 +32,6 @@
 
 #include "DateTimeTestSuite.h"
 #include "TimestampTest.h"
-#include "ClockTest.h"
 #include "TimespanTest.h"
 #include "TimezoneTest.h"
 #include "DateTimeTest.h"
@@ -46,7 +45,6 @@ CppUnit::Test* DateTimeTestSuite::suite()
 	CppUnit::TestSuite* pSuite = new CppUnit::TestSuite("DateTimeTestSuite");
 
 	pSuite->addTest(TimestampTest::suite());
-	pSuite->addTest(ClockTest::suite());
 	pSuite->addTest(TimespanTest::suite());
 	pSuite->addTest(TimezoneTest::suite());
 	pSuite->addTest(DateTimeTest::suite());

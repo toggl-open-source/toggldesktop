@@ -1,7 +1,7 @@
 //
 // HTTPCookie.cpp
 //
-// $Id: //poco/1.4/Net/src/HTTPCookie.cpp#3 $
+// $Id: //poco/1.4/Net/src/HTTPCookie.cpp#2 $
 //
 // Library: Net
 // Package: HTTP
@@ -102,10 +102,6 @@ HTTPCookie::HTTPCookie(const NameValueCollection& nvc):
 		{
 			setPath(value);
 		}
-		else if (icompare(name, "priority") == 0)
-		{
-			setPriority(value);
-		}
 		else if (icompare(name, "max-age") == 0)
 		{
 			setMaxAge(NumberParser::parse(value));
@@ -119,7 +115,7 @@ HTTPCookie::HTTPCookie(const NameValueCollection& nvc):
 			int tzd;
 			DateTime exp = DateTimeParser::parse(value, tzd);
 			Timestamp now;
-			setMaxAge((int) ((exp.timestamp() - now) / Timestamp::resolution()));
+			setMaxAge((int) ((exp.timestamp() - now)/Timestamp::resolution()));
 		}
 		else if (icompare(name, "version") == 0)
 		{
@@ -156,7 +152,6 @@ HTTPCookie::HTTPCookie(const HTTPCookie& cookie):
 	_comment(cookie._comment),
 	_domain(cookie._domain),
 	_path(cookie._path),
-	_priority(cookie._priority),
 	_secure(cookie._secure),
 	_maxAge(cookie._maxAge),
 	_httpOnly(cookie._httpOnly)
@@ -179,7 +174,6 @@ HTTPCookie& HTTPCookie::operator = (const HTTPCookie& cookie)
 		_comment  = cookie._comment;
 		_domain   = cookie._domain;
 		_path     = cookie._path;
-		_priority = cookie._priority;
 		_secure   = cookie._secure;
 		_maxAge   = cookie._maxAge;
 		_httpOnly = cookie._httpOnly;
@@ -224,12 +218,6 @@ void HTTPCookie::setPath(const std::string& path)
 }
 
 
-void HTTPCookie::setPriority(const std::string& priority)
-{
-	_priority = priority;
-}
-
-
 void HTTPCookie::setSecure(bool secure)
 {
 	_secure = secure;
@@ -268,15 +256,10 @@ std::string HTTPCookie::toString() const
 			result.append("; path=");
 			result.append(_path);
 		}
-		if (!_priority.empty())
-		{
-			result.append("; Priority=");
-			result.append(_priority);
-		}
 		if (_maxAge != -1)
 		{
 			Timestamp ts;
-			ts += _maxAge * Timestamp::resolution();
+			ts += _maxAge*Timestamp::resolution();
 			result.append("; expires=");
 			DateTimeFormatter::append(result, ts, DateTimeFormat::HTTP_FORMAT);
 		}
@@ -313,13 +296,6 @@ std::string HTTPCookie::toString() const
 			result.append(_path);
 			result.append("\"");
 		}
-		if (!_priority.empty())
-		{
-			result.append("; Priority=\"");
-			result.append(_priority);
-			result.append("\"");
-		}
-
 		if (_maxAge != -1)
 		{
 			result.append("; Max-Age=\"");

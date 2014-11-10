@@ -1,7 +1,7 @@
 //
 // TestApp_WINCE.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/TestApp_WINCE.cpp#2 $
+// $Id: //poco/1.4/Foundation/testsuite/src/TestApp_WINCE.cpp#1 $
 //
 // Copyright (c) 2005-2010, Applied Informatics Software Engineering GmbH.
 // and Contributors.
@@ -34,7 +34,7 @@
 #include <iostream>
 
 
-int wmain(int argc, wchar_t* argv[])
+int _tmain(int argc, wchar_t* argv[])
 {
 	if (argc > 1)
 	{

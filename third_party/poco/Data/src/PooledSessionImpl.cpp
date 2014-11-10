@@ -1,7 +1,7 @@
 //
 // PooledSessionImpl.cpp
 //
-// $Id: //poco/1.4/Data/src/PooledSessionImpl.cpp#2 $
+// $Id: //poco/1.4/Data/src/PooledSessionImpl.cpp#1 $
 //
 // Library: Data
 // Package: SessionPooling
@@ -51,14 +51,7 @@ PooledSessionImpl::PooledSessionImpl(PooledSessionHolder* pHolder):
 
 PooledSessionImpl::~PooledSessionImpl()
 {
-	try
-	{
-		close();
-	}
-	catch (...)
-	{
-		poco_unexpected();
-	}
+	close();
 }
 
 

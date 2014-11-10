@@ -1,7 +1,7 @@
 //
 // Stopwatch.cpp
 //
-// $Id: //poco/1.4/Foundation/src/Stopwatch.cpp#2 $
+// $Id: //poco/1.4/Foundation/src/Stopwatch.cpp#1 $
 //
 // Library: Foundation
 // Package: DateTime
@@ -50,11 +50,11 @@ Stopwatch::~Stopwatch()
 }
 
 
-Clock::ClockDiff Stopwatch::elapsed() const
+Timestamp::TimeDiff Stopwatch::elapsed() const
 {
 	if (_running)
 	{
-		Clock current;
+		Timestamp current;
 		return _elapsed + (current - _start);
 	}
 	else

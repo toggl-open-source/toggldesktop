@@ -1,7 +1,7 @@
 //
 // HTTPCookie.h
 //
-// $Id: //poco/1.4/Net/include/Poco/Net/HTTPCookie.h#3 $
+// $Id: //poco/1.4/Net/include/Poco/Net/HTTPCookie.h#1 $
 //
 // Library: Net
 // Package: HTTP
@@ -139,15 +139,9 @@ public:
 
 	void setPath(const std::string& path);
 		/// Sets the path for the cookie.
-
-	void setPriority(const std::string& priority);
-		/// Sets the priority for the cookie.
 		
 	const std::string& getPath() const;
 		/// Returns the path for the cookie.
-
-	const std::string& getPriority() const;
-		/// Returns the priority for the cookie.
 
 	void setSecure(bool secure);
 		/// Sets the value of the secure flag for
@@ -161,10 +155,8 @@ public:
 		/// Sets the maximum age in seconds for
 		/// the cookie.
 		///
-		/// A value of -1 (default) causes the cookie 
-		/// to become a session cookie, which will
-		/// be deleted when the browser window
-		/// is closed.
+		/// A value of -1 causes the cookie to
+		/// never expire on the client.
 		///
 		/// A value of 0 deletes the cookie on
 		/// the client.
@@ -218,7 +210,6 @@ private:
 	std::string _comment;
 	std::string _domain;
 	std::string _path;
-	std::string _priority;
 	bool        _secure;
 	int         _maxAge;
 	bool        _httpOnly;
@@ -261,12 +252,6 @@ inline const std::string& HTTPCookie::getDomain() const
 inline const std::string& HTTPCookie::getPath() const
 {
 	return _path;
-}
-
-
-inline const std::string& HTTPCookie::getPriority() const
-{
-	return _priority;
 }
 
 

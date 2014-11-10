@@ -1,7 +1,7 @@
 //
 // MultipartReader.cpp
 //
-// $Id: //poco/1.4/Net/src/MultipartReader.cpp#3 $
+// $Id: //poco/1.4/Net/src/MultipartReader.cpp#2 $
 //
 // Library: Net
 // Package: Messages
@@ -151,14 +151,7 @@ MultipartIOS::MultipartIOS(std::istream& istr, const std::string& boundary):
 
 MultipartIOS::~MultipartIOS()
 {
-	try
-	{
-		_buf.sync();
-	}
-	catch (...)
-	{
-		poco_unexpected();
-	}
+	_buf.sync();
 }
 
 

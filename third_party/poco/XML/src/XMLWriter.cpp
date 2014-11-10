@@ -1,7 +1,7 @@
 //
 // XMLWriter.cpp
 //
-// $Id: //poco/1.4/XML/src/XMLWriter.cpp#8 $
+// $Id: //poco/1.4/XML/src/XMLWriter.cpp#7 $
 //
 // Library: XML
 // Package: XML
@@ -892,7 +892,7 @@ XMLString XMLWriter::uniquePrefix()
 }
 
 
-bool XMLWriter::isNamespaceMapped(const XMLString& namespc) const
+bool XMLWriter::isNamespaceMapped(const std::string& namespc) const
 {
 	return _namespaces.isMapped(namespc);
 }

@@ -1,7 +1,7 @@
 //
 // OpenSSLInitializer.cpp
 //
-// $Id: //poco/1.4/Crypto/src/OpenSSLInitializer.cpp#5 $
+// $Id: //poco/1.4/Crypto/src/OpenSSLInitializer.cpp#4 $
 //
 // Library: Crypto
 // Package: CryotpCore
@@ -67,14 +67,7 @@ OpenSSLInitializer::OpenSSLInitializer()
 
 OpenSSLInitializer::~OpenSSLInitializer()
 {
-	try
-	{
-		uninitialize();
-	}
-	catch (...)
-	{
-		poco_unexpected();
-	}
+	uninitialize();
 }
 
 

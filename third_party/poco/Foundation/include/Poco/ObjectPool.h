@@ -1,7 +1,7 @@
 //
 // ObjectPool.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/ObjectPool.h#2 $
+// $Id: //poco/1.4/Foundation/include/Poco/ObjectPool.h#1 $
 //
 // Library: Foundation
 // Package: Core
@@ -214,16 +214,9 @@ public:
 	~ObjectPool()
 		/// Destroys the ObjectPool.
 	{
-		try
+		for (typename std::vector<P>::iterator it = _pool.begin(); it != _pool.end(); ++it)
 		{
-			for (typename std::vector<P>::iterator it = _pool.begin(); it != _pool.end(); ++it)
-			{
-				_factory.destroyObject(*it);
-			}
-		}
-		catch (...)
-		{
-			poco_unexpected();
+			_factory.destroyObject(*it);
 		}
 	}
 		

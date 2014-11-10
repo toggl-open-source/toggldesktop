@@ -1,7 +1,7 @@
 //
 // TimeServer.cpp
 //
-// $Id: //poco/1.4/NetSSL_OpenSSL/samples/HTTPSTimeServer/src/HTTPSTimeServer.cpp#3 $
+// $Id: //poco/1.4/NetSSL_OpenSSL/samples/HTTPSTimeServer/src/HTTPSTimeServer.cpp#2 $
 //
 // This sample demonstrates the HTTPServer and related classes.
 //
@@ -54,11 +54,9 @@
 #include "Poco/Net/SSLManager.h"
 #include "Poco/Net/KeyConsoleHandler.h"
 #include "Poco/Net/AcceptCertificateHandler.h"
-#include "Poco/ErrorHandler.h"
 #include <iostream>
 
 
-using Poco::Net::StreamSocket;
 using Poco::Net::SecureServerSocket;
 using Poco::Net::SecureStreamSocket;
 using Poco::Net::HTTPRequestHandler;
@@ -100,21 +98,17 @@ public:
 		Application& app = Application::instance();
 		app.logger().information("Request from " + request.clientAddress().toString());
 
-		StreamSocket socket = static_cast<HTTPServerRequestImpl&>(request).socket();
-		if (socket.secure())
+		SecureStreamSocket socket = static_cast<HTTPServerRequestImpl&>(request).socket();
+		if (socket.havePeerCertificate())
 		{
-			SecureStreamSocket secSocket = socket;
-			if (secSocket.havePeerCertificate())
-			{
-				X509Certificate cert = secSocket.peerCertificate();
-				app.logger().information("Client certificate: " + cert.subjectName());
-			}
-			else
-			{
-				app.logger().information("No client certificate available.");
-			}
+			X509Certificate cert = socket.peerCertificate();
+			app.logger().information("Client certificate: " + cert.subjectName());
 		}
-				
+		else
+		{
+			app.logger().information("No client certificate available.");
+		}
+		
 		Timestamp now;
 		std::string dt(DateTimeFormatter::format(now, _format));
 
@@ -175,11 +169,8 @@ class HTTPSTimeServer: public Poco::Util::ServerApplication
 	/// To test the TimeServer you can use any web browser (https://localhost:9443/).
 {
 public:
-	HTTPSTimeServer(): 
-		_errorHandler(*this),
-		_helpRequested(false)
+	HTTPSTimeServer(): _helpRequested(false)
 	{
-		Poco::ErrorHandler::set(&_errorHandler);
 		Poco::Net::initializeSSL();
 	}
 	
@@ -248,47 +239,12 @@ protected:
 			// wait for CTRL-C or kill
 			waitForTerminationRequest();
 			// Stop the HTTPServer
-			srv.stopAll(true);
-			// Wait for threads to complete
-			Poco::ThreadPool::defaultPool().joinAll();
+			srv.stop();
 		}
 		return Application::EXIT_OK;
 	}
-
-	class ErrorHandler: public Poco::ErrorHandler
-	{
-	public:
-		ErrorHandler(HTTPSTimeServer& app):
-			_app(app)
-		{
-		}
-		
-		void exception(const Poco::Exception& exc)
-		{
-			log(exc.displayText());
-		}
-
-		void exception(const std::exception& exc)
-		{
-			log(exc.what());
-		}
-
-		void exception()
-		{
-			log("unknown exception");
-		}
-		
-		void log(const std::string& message)
-		{
-			_app.logger().error("A thread was terminated by an unhandled exception: " + message);
-		}
-		
-	private:
-		HTTPSTimeServer& _app;
-	};
-
+	
 private:
-	ErrorHandler _errorHandler;
 	bool _helpRequested;
 };
 

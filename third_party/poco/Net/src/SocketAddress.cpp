@@ -1,7 +1,7 @@
 //
 // SocketAddress.cpp
 //
-// $Id: //poco/1.4/Net/src/SocketAddress.cpp#9 $
+// $Id: //poco/1.4/Net/src/SocketAddress.cpp#8 $
 //
 // Library: Net
 // Package: NetCore
@@ -90,14 +90,7 @@ protected:
 	virtual ~SocketAddressImpl()
 	{
 #if defined(_WIN32)
-		try
-		{
-			Poco::Net::uninitializeNetwork();
-		}
-		catch (...)
-		{
-			poco_unexpected();
-		}
+		Poco::Net::uninitializeNetwork();
 #endif
 	}
 
