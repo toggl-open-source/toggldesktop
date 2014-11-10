@@ -7,7 +7,6 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="IdleNotificationWindowController">
             <connections>
-                <outlet property="addIdleAsNewButton" destination="71P-8X-s86" id="vCy-7E-go8"/>
                 <outlet property="idleAmountTextField" destination="LfR-bu-tys" id="Y6v-ka-ovg"/>
                 <outlet property="idleSinceTextField" destination="sqC-ri-2J8" id="wsN-vw-dVh"/>
                 <outlet property="window" destination="OXh-s9-LHB" id="Cqi-Qk-biq"/>
