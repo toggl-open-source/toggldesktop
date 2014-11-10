@@ -46,10 +46,18 @@
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.panelMain = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnClearStartStopTimer = new System.Windows.Forms.Button();
+            this.btnRecordStartStopShortcut = new System.Windows.Forms.Button();
+            this.btnClearShowHideShortcut = new System.Windows.Forms.Button();
+            this.btnRecordShowHideShortcut = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.textBoxIdleMinutes = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.groupBoxProxySettings.SuspendLayout();
             this.panelMain.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // checkBoxUseProxy
@@ -194,7 +202,7 @@
             // 
             // buttonSave
             // 
-            this.buttonSave.Location = new System.Drawing.Point(15, 292);
+            this.buttonSave.Location = new System.Drawing.Point(15, 362);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(75, 23);
             this.buttonSave.TabIndex = 7;
@@ -204,7 +212,7 @@
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(96, 292);
+            this.buttonCancel.Location = new System.Drawing.Point(96, 362);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 8;
@@ -214,6 +222,7 @@
             // 
             // panelMain
             // 
+            this.panelMain.Controls.Add(this.groupBox1);
             this.panelMain.Controls.Add(this.textBoxIdleMinutes);
             this.panelMain.Controls.Add(this.label5);
             this.panelMain.Controls.Add(this.groupBoxProxySettings);
@@ -227,8 +236,90 @@
             this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelMain.Location = new System.Drawing.Point(0, 0);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(300, 333);
+            this.panelMain.Size = new System.Drawing.Size(280, 410);
             this.panelMain.TabIndex = 9;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.btnClearStartStopTimer);
+            this.groupBox1.Controls.Add(this.btnRecordStartStopShortcut);
+            this.groupBox1.Controls.Add(this.btnClearShowHideShortcut);
+            this.groupBox1.Controls.Add(this.btnRecordShowHideShortcut);
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Location = new System.Drawing.Point(15, 280);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(252, 76);
+            this.groupBox1.TabIndex = 11;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Global shortcuts";
+            // 
+            // btnClearStartStopTimer
+            // 
+            this.btnClearStartStopTimer.Location = new System.Drawing.Point(201, 47);
+            this.btnClearStartStopTimer.Name = "btnClearStartStopTimer";
+            this.btnClearStartStopTimer.Size = new System.Drawing.Size(45, 23);
+            this.btnClearStartStopTimer.TabIndex = 5;
+            this.btnClearStartStopTimer.Text = "Clear";
+            this.btnClearStartStopTimer.UseVisualStyleBackColor = true;
+            this.btnClearStartStopTimer.Click += new System.EventHandler(this.btnClearStartStopTimer_Click);
+            // 
+            // btnRecordStartStopShortcut
+            // 
+            this.btnRecordStartStopShortcut.Location = new System.Drawing.Point(103, 47);
+            this.btnRecordStartStopShortcut.Name = "btnRecordStartStopShortcut";
+            this.btnRecordStartStopShortcut.Size = new System.Drawing.Size(101, 23);
+            this.btnRecordStartStopShortcut.TabIndex = 4;
+            this.btnRecordStartStopShortcut.Text = "Record Shortcut";
+            this.btnRecordStartStopShortcut.UseVisualStyleBackColor = true;
+            this.btnRecordStartStopShortcut.Click += new System.EventHandler(this.btnRecordStartStopShortcut_Click);
+            this.btnRecordStartStopShortcut.KeyUp += new System.Windows.Forms.KeyEventHandler(this.btnRecordStartStopShortcut_KeyUp);
+            // 
+            // btnClearShowHideShortcut
+            // 
+            this.btnClearShowHideShortcut.Location = new System.Drawing.Point(201, 19);
+            this.btnClearShowHideShortcut.Name = "btnClearShowHideShortcut";
+            this.btnClearShowHideShortcut.Size = new System.Drawing.Size(45, 23);
+            this.btnClearShowHideShortcut.TabIndex = 3;
+            this.btnClearShowHideShortcut.Text = "Clear";
+            this.btnClearShowHideShortcut.UseVisualStyleBackColor = true;
+            this.btnClearShowHideShortcut.Click += new System.EventHandler(this.btnClearShowHideShortcut_Click);
+            // 
+            // btnRecordShowHideShortcut
+            // 
+            this.btnRecordShowHideShortcut.Location = new System.Drawing.Point(103, 19);
+            this.btnRecordShowHideShortcut.Name = "btnRecordShowHideShortcut";
+            this.btnRecordShowHideShortcut.Size = new System.Drawing.Size(101, 23);
+            this.btnRecordShowHideShortcut.TabIndex = 2;
+            this.btnRecordShowHideShortcut.Text = "Record Shortcut";
+            this.btnRecordShowHideShortcut.UseVisualStyleBackColor = true;
+            this.btnRecordShowHideShortcut.Click += new System.EventHandler(this.btnRecordShowHideShortcut_Click);
+            this.btnRecordShowHideShortcut.KeyUp += new System.Windows.Forms.KeyEventHandler(this.btnRecordShowHideShortcut_KeyUp);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 52);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(81, 13);
+            this.label7.TabIndex = 1;
+            this.label7.Text = "Start/Stop timer";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 25);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(91, 13);
+            this.label6.TabIndex = 0;
+            this.label6.Text = "Show/Hide Toggl";
+            // 
+            // textBoxIdleMinutes
+            // 
+            this.textBoxIdleMinutes.Location = new System.Drawing.Point(167, 186);
+            this.textBoxIdleMinutes.Name = "textBoxIdleMinutes";
+            this.textBoxIdleMinutes.Size = new System.Drawing.Size(31, 20);
+            this.textBoxIdleMinutes.TabIndex = 3;
             // 
             // label5
             // 
@@ -239,23 +330,16 @@
             this.label5.TabIndex = 10;
             this.label5.Text = "minutes";
             // 
-            // textBoxIdleMinutes
-            // 
-            this.textBoxIdleMinutes.Location = new System.Drawing.Point(167, 186);
-            this.textBoxIdleMinutes.Name = "textBoxIdleMinutes";
-            this.textBoxIdleMinutes.Size = new System.Drawing.Size(31, 20);
-            this.textBoxIdleMinutes.TabIndex = 3;
-            // 
             // PreferencesWindowController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(300, 333);
+            this.ClientSize = new System.Drawing.Size(280, 410);
             this.Controls.Add(this.panelMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(300, 363);
-            this.MinimumSize = new System.Drawing.Size(300, 363);
+            this.MaximumSize = new System.Drawing.Size(280, 440);
+            this.MinimumSize = new System.Drawing.Size(280, 440);
             this.Name = "PreferencesWindowController";
             this.Text = "Preferences";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PreferencesWindowController_FormClosing);
@@ -263,6 +347,8 @@
             this.groupBoxProxySettings.PerformLayout();
             this.panelMain.ResumeLayout(false);
             this.panelMain.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -288,5 +374,12 @@
         private System.Windows.Forms.Panel panelMain;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBoxIdleMinutes;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button btnClearStartStopTimer;
+        private System.Windows.Forms.Button btnRecordStartStopShortcut;
+        private System.Windows.Forms.Button btnClearShowHideShortcut;
+        private System.Windows.Forms.Button btnRecordShowHideShortcut;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
     }
 }

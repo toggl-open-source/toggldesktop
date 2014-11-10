@@ -22,6 +22,15 @@ namespace TogglDesktop
 
         private void PreferencesWindowController_FormClosing(object sender, FormClosingEventArgs e)
         {
+            btnRecordShowHideShortcut.Text = kRecordShortcut;
+            btnRecordShowHideShortcut.Tag = null;
+
+            btnRecordStartStopShortcut.Text = kRecordShortcut;
+            btnRecordStartStopShortcut.Tag = null;
+
+            btnClearShowHideShortcut.Tag = null;
+            btnClearStartStopTimer.Tag = null;
+
             e.Cancel = true;
             Hide();
         }
@@ -55,6 +64,31 @@ namespace TogglDesktop
             checkBoxOnTop.Checked = settings.OnTop;
             checkBoxRemindToTrackTime.Checked = settings.Reminder;
             textBoxIdleMinutes.Text = settings.IdleMinutes.ToString();
+
+            // Load shortcuts
+            {
+                bool alt = false;
+                bool ctrl = false;
+                bool shift = false;
+                string keyCode = "";
+                Utils.GetShortcutForShow(ref alt, ref ctrl, ref shift, ref keyCode);
+                if (keyCode != "" && keyCode != null)
+                {
+                    btnRecordShowHideShortcut.Text = keyEventToString(alt, ctrl, shift, keyCode);
+                }
+            }
+
+            {
+                bool alt = false;
+                bool ctrl = false;
+                bool shift = false;
+                string keyCode = "";
+                Utils.GetShortcutForStart(ref alt, ref ctrl, ref shift, ref keyCode);
+                if (keyCode != "" && keyCode != null)
+                {
+                    btnRecordStartStopShortcut.Text = keyEventToString(alt, ctrl, shift, keyCode);
+                }
+            }
 
             if (open)
             {
@@ -110,12 +144,102 @@ namespace TogglDesktop
                 return;
             }
 
+            // Save shortcut keys
+
+            if (btnRecordShowHideShortcut.Tag != null)
+            {
+                Utils.SetShortcutForShow((KeyEventArgs)btnRecordShowHideShortcut.Tag);
+            }
+            if (btnClearShowHideShortcut.Tag != null)
+            {
+                Utils.SetShortcutForShow(null);
+            }
+
+            if (btnRecordStartStopShortcut.Tag != null)
+            {
+                Utils.SetShortcutForStart((KeyEventArgs)btnRecordStartStopShortcut.Tag);
+            }
+            if (btnClearStartStopTimer.Tag != null)
+            {
+                Utils.SetShortcutForStart(null);
+            }
+
             Close();
         }
 
         private void checkBoxIdleDetection_CheckedChanged(object sender, EventArgs e)
         {
             textBoxIdleMinutes.Enabled = checkBoxIdleDetection.Checked;
+        }
+
+        private void btnRecordShowHideShortcut_Click(object sender, EventArgs e)
+        {
+            btnRecordShowHideShortcut.Text = kTypeShortcut;
+        }
+
+        const string kTypeShortcut = "Type Shortcut";
+
+        private void btnRecordStartStopShortcut_Click(object sender, EventArgs e)
+        {
+            btnRecordStartStopShortcut.Text = kTypeShortcut;
+        }
+
+        string kRecordShortcut = "Record Shortcut";
+
+        private void btnClearShowHideShortcut_Click(object sender, EventArgs e)
+        {
+            btnRecordShowHideShortcut.Text = kRecordShortcut;
+            btnClearShowHideShortcut.Tag = true;
+        }
+
+        private void btnClearStartStopTimer_Click(object sender, EventArgs e)
+        {
+            btnRecordStartStopShortcut.Text = kRecordShortcut;
+            btnClearStartStopTimer.Tag = true;
+        }
+
+        string keyEventToString(bool alt, bool ctrl, bool shift, string keyCode)
+        {
+            string res = "";
+            if (alt)
+            {
+                res += "Alt + ";
+            }
+            if (ctrl)
+            {
+                res += "Ctrl + ";
+            }
+            if (shift)
+            {
+                res += "Shift + ";
+            }
+            res += keyCode;
+            return res;
+        }
+
+        void handleKeyPress(Button btn, Button clearBtn, KeyEventArgs e)
+        {
+            if (kTypeShortcut != btn.Text)
+            {
+                return;
+            }
+            if (!e.Alt && !e.Control)
+            {
+                return;
+            }
+            btn.Tag = e;
+            btn.Text = keyEventToString(e.Alt, e.Control, e.Shift, e.KeyCode.ToString());
+            clearBtn.Tag = null;
+        }
+
+        private void btnRecordShowHideShortcut_KeyUp(object sender, KeyEventArgs e)
+        {
+            handleKeyPress(btnRecordShowHideShortcut, btnClearShowHideShortcut, e);
+        }
+
+        private void btnRecordStartStopShortcut_KeyUp(object sender, KeyEventArgs e)
+        {
+            handleKeyPress(btnRecordStartStopShortcut, btnClearStartStopTimer, e);
         }
     }
 }
