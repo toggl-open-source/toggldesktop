@@ -18,6 +18,7 @@
 
 #include "./formatter.h"
 #include "./const.h"
+#include "./https_client.h"
 
 #include "Poco/Timestamp.h"
 #include "Poco/DateTime.h"
@@ -26,7 +27,7 @@
 
 namespace toggl {
 
-bool TimeEntry::ResolveError(const toggl::error err) {
+bool TimeEntry::ResolveError(const error err) {
     if (durationTooLarge(err) && Stop() && Start()) {
         Poco::UInt64 seconds =
             (std::min)(Stop() - Start(),
@@ -57,32 +58,41 @@ bool TimeEntry::ResolveError(const toggl::error err) {
         SetBillable(false);
         return true;
     }
+    if (isMissingCreatedWith(err)) {
+        SetCreatedWith(HTTPSClientConfig::UserAgent());
+        return true;
+    }
     return false;
 }
 
+bool TimeEntry::isMissingCreatedWith(const error err) const {
+    return std::string::npos != std::string(err).find(
+        "created_with needs to be provided an a valid string");
+}
+
 bool TimeEntry::userCannotAccessTheSelectedProject(
-    const toggl::error err) const {
+    const error err) const {
     return (std::string::npos != std::string(err).find(
         "User cannot access the selected project"));
 }
 
 bool TimeEntry::userCannotAccessSelectedTask(
-    const toggl::error err) const {
+    const error err) const {
     return (std::string::npos != std::string(err).find(
         "User cannot access selected task"));
 }
 
-bool TimeEntry::durationTooLarge(const toggl::error err) const {
+bool TimeEntry::durationTooLarge(const error err) const {
     return (std::string::npos != std::string(err).find(
         "Max allowed duration per 1 time entry is 1000 hours"));
 }
 
-bool TimeEntry::stopTimeMustBeAfterStartTime(const toggl::error err) const {
+bool TimeEntry::stopTimeMustBeAfterStartTime(const error err) const {
     return (std::string::npos != std::string(err).find(
         "Stop time must be after start time"));
 }
 
-bool TimeEntry::billableIsAPremiumFeature(const toggl::error err) const {
+bool TimeEntry::billableIsAPremiumFeature(const error err) const {
     return (std::string::npos != std::string(err).find(
         "Billable is a premium feature"));
 }

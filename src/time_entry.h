@@ -126,7 +126,7 @@ class TimeEntry : public BaseModel {
 
     void StopTracking();
 
-    virtual bool ResolveError(const toggl::error err);
+    virtual bool ResolveError(const error err);
 
     static Poco::UInt64 AbsDuration(const Poco::Int64 value);
 
@@ -151,11 +151,12 @@ class TimeEntry : public BaseModel {
 
     void loadTagsFromJSON(Json::Value value);
 
-    bool durationTooLarge(const toggl::error) const;
-    bool stopTimeMustBeAfterStartTime(const toggl::error) const;
-    bool userCannotAccessTheSelectedProject(const toggl::error) const;
-    bool userCannotAccessSelectedTask(const toggl::error) const;
-    bool billableIsAPremiumFeature(const toggl::error) const;
+    bool durationTooLarge(const error) const;
+    bool stopTimeMustBeAfterStartTime(const error) const;
+    bool userCannotAccessTheSelectedProject(const error) const;
+    bool userCannotAccessSelectedTask(const error) const;
+    bool billableIsAPremiumFeature(const error) const;
+    bool isMissingCreatedWith(const error err) const;
 };
 
 bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b);
