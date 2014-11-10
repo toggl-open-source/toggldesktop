@@ -488,11 +488,12 @@ namespace TogglDesktop
         private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)
         {
             Utils.SaveWindowLocation(this, this.editForm);
-            WinSparkle.win_sparkle_cleanup();
 
             if (!TogglDesktop.Program.ShuttingDown) {
                 Hide();
                 e.Cancel = true;
+            } else {
+                WinSparkle.win_sparkle_cleanup();
             }
             if (editForm.Visible)
             {
