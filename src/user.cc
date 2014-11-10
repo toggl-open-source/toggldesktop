@@ -86,6 +86,7 @@ TimeEntry *User::Start(
     ss << "User::Start now=" << now;
 
     TimeEntry *te = new TimeEntry();
+    te->SetCreatedWith(HTTPSClientConfig::UserAgent());
     te->SetDescription(description);
     te->SetUID(ID());
     te->SetPID(project_id);
@@ -101,7 +102,6 @@ TimeEntry *User::Start(
         // dont set Stop, TE is running
         te->SetStart(now);
     }
-    te->SetCreatedWith(HTTPSClientConfig::UserAgent());
 
     // Try to set workspace ID from project
     if (te->PID()) {
@@ -155,9 +155,8 @@ toggl::error User::Continue(
     }
 
     TimeEntry *result = new TimeEntry();
-
+    result->SetCreatedWith(HTTPSClientConfig::UserAgent());
     result->Assign(existing);
-
     result->SetUID(ID());
     result->SetStart(time(0));
     result->SetDurationInSeconds(-time(0));
@@ -309,14 +308,12 @@ TimeEntry *User::DiscardTimeAt(
 
     if (te && split_into_new_entry) {
         TimeEntry *split = new TimeEntry();
+        split->SetCreatedWith(HTTPSClientConfig::UserAgent());
         split->Assign(te);
-
         split->SetUID(ID());
         split->SetStart(at);
         split->SetDurationInSeconds(-at);
-
         split->SetUIModified();
-
         related.TimeEntries.push_back(split);
     }
 
