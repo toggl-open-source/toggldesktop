@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# $Id: //poco/1.4/build/script/makedepend.SunCC#1 $
+# $Id: //poco/1.4/build/script/makedepend.SunCC#2 $
 #
 # makedepend.SunCC
 #
@@ -21,4 +21,4 @@ shift
 dir4=$1
 shift
 
-CC -xM1 $@ $source | sed "s#\(.*\.o\)#$dir1/\1 $dir2/\1 $dir3/\1 $dir4/\1#" >$target
+CC -xM1 $@ $source | sed "s#\(.*\.o$\)#$dir1/\1 $dir2/\1 $dir3/\1 $dir4/\1#" >$target

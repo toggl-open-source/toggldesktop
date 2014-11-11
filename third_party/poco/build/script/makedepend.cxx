@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# $Id: //poco/1.4/build/script/makedepend.cxx#1 $
+# $Id: //poco/1.4/build/script/makedepend.cxx#2 $
 #
 # makedepend.cxx
 #
@@ -21,4 +21,4 @@ shift
 dir4=$1
 shift
 
-cxx -M $@ $source | sed "s#\(.*\.o\)#$dir1/\1 $dir2/\1 $dir3/\1 $dir4/\1#" >$target
+cxx -M $@ $source | sed "s#\(.*\.o$\)#$dir1/\1 $dir2/\1 $dir3/\1 $dir4/\1#" >$target
