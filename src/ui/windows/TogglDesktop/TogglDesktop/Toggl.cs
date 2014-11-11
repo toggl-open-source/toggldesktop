@@ -298,6 +298,16 @@ namespace TogglDesktop
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.LPWStr)]
+        private static extern string toggl_environment(
+            IntPtr context);
+
+        public static string Environment()
+        {
+            return toggl_environment(ctx);
+        }
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_set_environment(
             IntPtr context,
@@ -893,7 +903,6 @@ namespace TogglDesktop
         {
             return toggl_get_update_channel(ctx);
         }
-
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         private static extern void toggl_sync(
