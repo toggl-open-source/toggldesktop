@@ -1227,7 +1227,6 @@ _Bool Context::ClearCache() {
 }
 
 bool Context::canSeeBillable(
-    TimeEntry *time_entry,
     Workspace *ws) const {
     if (!user_->HasPremiumWorkspaces()) {
         return false;
@@ -1452,7 +1451,7 @@ void Context::displayTimeEntryEditor(const _Bool open,
     if (te->WID()) {
         ws = user_->related.WorkspaceByID(te->WID());
     }
-    view->CanSeeBillable = canSeeBillable(te, ws);
+    view->CanSeeBillable = canSeeBillable(ws);
     view->DefaultWID = user_->DefaultWID();
     if (ws) {
         view->CanAddProjects = ws->Admin() ||

@@ -303,7 +303,6 @@ class Context : public TimelineDatasource {
     _Bool displayError(const error err, const std::string calling_method);
 
     bool canSeeBillable(
-        TimeEntry *time_entry,
         Workspace *workspace) const;
 
     void scheduleSync();
