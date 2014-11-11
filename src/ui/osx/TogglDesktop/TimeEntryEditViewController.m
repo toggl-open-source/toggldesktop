@@ -831,6 +831,7 @@ extern void *ctx;
 		return;
 	}
 
+	self.descriptionCombobox.stringValue = autocomplete.Description;
 	toggl_set_time_entry_description(ctx, GUID, [autocomplete.Description UTF8String]);
 }
 
