@@ -36,11 +36,25 @@ namespace TogglDesktop
         private void comboBoxChannel_SelectedIndexChanged(object sender, EventArgs e)
         {
             Toggl.SetUpdateChannel(comboBoxChannel.Text);
+            check();
+            loaded = true;
+        }
+
+        private void check()
+        {
+            if (Toggl.IsUpdateCheckDisabled())
+            {
+                return;
+            }
+            if ("development" == Properties.Settings.Default.Environment)
+            {
+                return;
+            }
             String url = "https://assets.toggl.com/installers/windows_" + comboBoxChannel.Text + "_appcast.xml";
             WinSparkle.win_sparkle_set_appcast_url(url);
             WinSparkle.setupWinSparkle();
             WinSparkle.win_sparkle_init();
-            if (!loaded && !Toggl.IsUpdateCheckDisabled())
+            if (!loaded)
             {
                 WinSparkle.win_sparkle_check_update_without_ui();
             }
@@ -48,7 +62,6 @@ namespace TogglDesktop
             {
                 WinSparkle.win_sparkle_check_update_with_ui();
             }
-            loaded = true;
         }
 
         private void linkLabelGithub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
