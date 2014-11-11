@@ -491,8 +491,7 @@ namespace TogglDesktop
                 Console.WriteLine("Cannot apply end time change. this.TimeEntry is null");
                 return;
             }
-            Toggl.SetTimeEntryDate(timeEntry.GUID,
-                dateTimePickerStartDate.Value.ToUniversalTime());
+            Toggl.SetTimeEntryDate(timeEntry.GUID, dateTimePickerStartDate.Value);
         }
 
         private void checkedListBoxTags_Leave(object sender, EventArgs e)
@@ -811,6 +810,5 @@ namespace TogglDesktop
             labelDash.Left = textBoxStartTime.Left + textBoxStartTime.Width + 5;
             textBoxEndTime.Left = labelDash.Left + 15;
         }
-
     }
 }
