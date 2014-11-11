@@ -727,9 +727,9 @@ namespace TogglDesktop
             }
             else
             {
-                ctrlpt.Y += timeEntryListViewController.getEntriesTop() + (((TimeEntryCell)editableEntry).getTopLocation()) - (editForm.Height / 2);
                 if (editableEntry.GetType() == typeof(TimeEntryCell))
                 {
+                    ctrlpt.Y += timeEntryListViewController.getEntriesTop() + (((TimeEntryCell)editableEntry).getTopLocation()) - (editForm.Height / 2);
                     ((TimeEntryCell)editableEntry).opened = true;
                 }
             }
