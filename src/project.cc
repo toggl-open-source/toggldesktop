@@ -5,7 +5,7 @@
 #include <sstream>
 #include <ctime>
 
-#include "Poco/String.h"
+#include "Poco/UTF8String.h"
 #include "Poco/NumberParser.h"
 
 #include "./formatter.h"
@@ -35,10 +35,6 @@ std::string Project::String() const {
         << " color=" << color_
         << " billable=" << billable_;
     return ss.str();
-}
-
-std::string Project::UppercaseName() const {
-    return Poco::toUpper(name_);
 }
 
 void Project::SetActive(const bool value) {

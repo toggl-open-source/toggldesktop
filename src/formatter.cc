@@ -9,6 +9,7 @@
 #include "./time_entry.h"
 
 #include "Poco/Types.h"
+#include "Poco/UTF8String.h"
 #include "Poco/String.h"
 #include "Poco/Timestamp.h"
 #include "Poco/DateTimeFormatter.h"
@@ -187,7 +188,7 @@ bool Formatter::parseTimeInputAMPM(
 bool Formatter::ParseTimeInput(const std::string input,
                                int *hours,
                                int *minutes) {
-    std::string value = Poco::replace(Poco::toUpper(input), " ", "");
+    std::string value = Poco::replace(Poco::UTF8::toUpper(input), " ", "");
 
     if (parseTimeInputAMPM(value, "DOP", "ODP", hours, minutes)) {
         return true;
@@ -515,6 +516,45 @@ std::string Formatter::EscapeJSONString(const std::string input) {
         }
     }
     return ss.str();
+}
+
+bool CompareClientByName(Client *a, Client *b) {
+    return (Poco::UTF8::icompare(a->Name(), b->Name()) < 0);
+}
+
+bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
+    return a->Start() < b->Start();
+}
+
+bool CompareAutocompleteItems(
+    AutocompleteItem a,
+    AutocompleteItem b) {
+
+    // Time entries first
+    if (a.IsTimeEntry() && !b.IsTimeEntry()) {
+        return true;
+    }
+    if (b.IsTimeEntry() && !(a.IsTimeEntry())) {
+        return false;
+    }
+
+    // Then tasks
+    if (a.IsTask() && !b.IsTask()) {
+        return true;
+    }
+    if (b.IsTask() && !a.IsTask()) {
+        return false;
+    }
+
+    // Then projects
+    if (a.IsProject() && !b.IsProject()) {
+        return true;
+    }
+    if (b.IsProject() && !a.IsProject()) {
+        return false;
+    }
+
+    return (Poco::UTF8::icompare(a.Text, b.Text) < 0);
 }
 
 }   // namespace toggl

@@ -49,8 +49,6 @@ class Client : public BaseModel {
     bool dirty_;
 };
 
-bool CompareClientByName(Client *a, Client *b);
-
 }  // namespace toggl
 
 #endif  // SRC_CLIENT_H_

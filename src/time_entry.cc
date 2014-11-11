@@ -330,10 +330,6 @@ bool TimeEntry::IsToday() const {
            today.day() == datetime.day();
 }
 
-bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
-    return a->Start() < b->Start();
-}
-
 void TimeEntry::LoadFromJSON(Json::Value data) {
     Json::Value modified = data["ui_modified_at"];
     Poco::UInt64 ui_modified_at(0);

@@ -9,6 +9,8 @@
 #include "./task.h"
 #include "./project.h"
 #include "./client.h"
+#include "./time_entry.h"
+#include "./autocomplete_item.h"
 
 namespace toggl {
 
@@ -109,6 +111,10 @@ class Formatter {
     static int parseDurationStringHoursMinutesSeconds(
         std::string &whatsleft);
 };
+
+bool CompareClientByName(Client *a, Client *b);
+bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b);
+bool CompareAutocompleteItems(AutocompleteItem a, AutocompleteItem b);
 
 }  // namespace toggl
 

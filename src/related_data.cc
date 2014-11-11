@@ -9,37 +9,6 @@
 
 namespace toggl {
 
-bool compareAutocompleteItems(
-    AutocompleteItem a,
-    AutocompleteItem b) {
-
-    // Time entries first
-    if (a.IsTimeEntry() && !b.IsTimeEntry()) {
-        return true;
-    }
-    if (b.IsTimeEntry() && !(a.IsTimeEntry())) {
-        return false;
-    }
-
-    // Then tasks
-    if (a.IsTask() && !b.IsTask()) {
-        return true;
-    }
-    if (b.IsTask() && !a.IsTask()) {
-        return false;
-    }
-
-    // Then projects
-    if (a.IsProject() && !b.IsProject()) {
-        return true;
-    }
-    if (b.IsProject() && !a.IsProject()) {
-        return false;
-    }
-
-    return (strcmp(a.Text.c_str(), b.Text.c_str()) < 0);
-}
-
 // Add time entries, in format:
 // Description - Task. Project. Client
 void RelatedData::timeEntryAutocompleteItems(
@@ -258,7 +227,7 @@ std::vector<AutocompleteItem> RelatedData::AutocompleteItems(
     taskAutocompleteItems(&unique_names, &result);
     projectAutocompleteItems(&unique_names, &result);
 
-    std::sort(result.begin(), result.end(), compareAutocompleteItems);
+    std::sort(result.begin(), result.end(), CompareAutocompleteItems);
     return result;
 }
 

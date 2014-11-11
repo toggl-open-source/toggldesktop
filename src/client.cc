@@ -31,10 +31,6 @@ void Client::SetWID(const Poco::UInt64 value) {
     }
 }
 
-bool CompareClientByName(Client *a, Client *b) {
-    return (strcmp(a->Name().c_str(), b->Name().c_str()) < 0);
-}
-
 void Client::LoadFromJSON(Json::Value data) {
     std::string guid = data["guid"].asString();
     if (!guid.empty()) {

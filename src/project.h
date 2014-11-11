@@ -35,7 +35,6 @@ class Project : public BaseModel {
     }
     void SetCID(const Poco::UInt64 value);
 
-    std::string UppercaseName() const;
     std::string Name() const {
         return name_;
     }

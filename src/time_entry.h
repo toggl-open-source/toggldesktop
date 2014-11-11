@@ -159,8 +159,6 @@ class TimeEntry : public BaseModel {
     bool isMissingCreatedWith(const error err) const;
 };
 
-bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b);
-
 }  // namespace toggl
 
 #endif  // SRC_TIME_ENTRY_H_

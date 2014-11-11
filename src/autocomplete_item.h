@@ -65,8 +65,6 @@ class AutocompleteItem {
     Poco::UInt64 Type;
 };
 
-bool CompareAutocompleteItems(AutocompleteItem a, AutocompleteItem b);
-
 }  // namespace toggl
 
 #endif  // SRC_AUTOCOMPLETE_ITEM_H_
