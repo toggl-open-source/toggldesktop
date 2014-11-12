@@ -501,7 +501,7 @@ namespace TogglDesktop
             {
                 tags.Add(item.ToString());
             }
-            Toggl.SetTimeEntryTags(timeEntry.GUID, String.Join("|", tags));
+            Toggl.SetTimeEntryTags(timeEntry.GUID, String.Join("\t", tags));
         }
 
         private void timerRunningDuration_Tick(object sender, EventArgs e)
