@@ -38,13 +38,7 @@ _Bool GUI::DisplayError(const error err, const std::string calling_method) {
 
     logger().debug("DisplayError");
 
-    std::stringstream ss;
-    ss << err;
-    if (!calling_method.empty()) {
-        ss << " (" << calling_method << ")";
-    }
-
-    char_t *err_s = copy_string(ss.str());
+    char_t *err_s = copy_string(err);
     on_display_error_(err_s, isUserError(err));
     free(err_s);
 
