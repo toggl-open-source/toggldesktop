@@ -51,7 +51,7 @@
 	if (te->Tags)
 	{
 		NSString *tagList = [NSString stringWithUTF8String:te->Tags];
-		self.tags = [tagList componentsSeparatedByString:@"|"];
+		self.tags = [tagList componentsSeparatedByString:@"\t"];
 	}
 	else
 	{

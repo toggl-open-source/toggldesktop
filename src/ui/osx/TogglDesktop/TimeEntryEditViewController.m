@@ -474,7 +474,7 @@ extern void *ctx;
 	NSAssert(self.tagsTokenField != nil, @"tags field cant be nil");
 
 	NSArray *tag_names = [self.tagsTokenField objectValue];
-	const char *value = [[tag_names componentsJoinedByString:@"|"] UTF8String];
+	const char *value = [[tag_names componentsJoinedByString:@"\t"] UTF8String];
 	toggl_set_time_entry_tags(ctx,
 							  [self.timeEntry.GUID UTF8String],
 							  value);
