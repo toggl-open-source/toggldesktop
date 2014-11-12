@@ -29,7 +29,7 @@ void TimeEntryCellWidget::display(TimeEntryView *view) {
 
     ui->tags->setToolTip(
         QString("<p style='color:black;'>"+
-                (view->Tags).replace(QString("|"), QString(", "))+"</p>"));
+                (view->Tags).replace(QString("\t"), QString(", "))+"</p>"));
     ui->description->setToolTip(
         QString("<p style='color:black;'>"+view->Description+"</p>"));
     ui->project->setToolTip(

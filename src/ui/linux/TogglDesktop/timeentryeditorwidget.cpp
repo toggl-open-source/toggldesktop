@@ -221,9 +221,9 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
         ui->newProject->setVisible(false);
     }
 
-    QStringList tags = view->Tags.split("|", QString::SkipEmptyParts);
+    QStringList tags = view->Tags.split("\t", QString::SkipEmptyParts);
     tags.sort();
-    previousTagList = tags.join("|");
+    previousTagList = tags.join("\t");
 
     for (int i = 0; i < ui->tags->count(); i++) {
         QListWidgetItem *item = ui->tags->item(i);
@@ -389,7 +389,7 @@ void TimeEntryEditorWidget::on_tags_itemClicked(QListWidgetItem *item) {
         }
     }
     tags.sort();
-    QString list = tags.join("|");
+    QString list = tags.join("\t");
     if (previousTagList != list) {
         TogglApi::instance->setTimeEntryTags(guid, list);
     }
