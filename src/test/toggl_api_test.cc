@@ -954,6 +954,23 @@ TEST(TogglApiTest, toggl_set_time_entry_date) {
     ASSERT_EQ(6, datetime.hour());
     ASSERT_EQ(33, datetime.minute());
     ASSERT_EQ(50, datetime.second());
+
+    // Check that the date makes sense in local time, too
+    ASSERT_TRUE(toggl_set_time_entry_date(app.ctx(),
+                                          guid.c_str(),
+                                          time(0)));
+
+    te = testing::testresult::time_entry_by_guid(guid);
+    datetime = Poco::DateTime(Poco::Timestamp::fromEpochTime(te.Start()));
+
+    Poco::LocalDateTime local;
+
+    ASSERT_EQ(datetime.year(), local.year());
+    ASSERT_EQ(datetime.month(), local.month());
+    ASSERT_EQ(datetime.day(), datetime.day());
+    ASSERT_EQ(datetime.hour(), datetime.hour());
+    ASSERT_EQ(datetime.minute(), datetime.minute());
+    ASSERT_EQ(datetime.second(), datetime.second());
 }
 
 TEST(TogglApiTest, toggl_set_time_entry_start) {
