@@ -227,19 +227,6 @@ bool Formatter::ParseTimeInput(const std::string input,
     return true;
 }
 
-time_t Formatter::ParseLastDate(const std::time_t last,
-                                const std::time_t current) {
-    Poco::Timestamp last_ts = Poco::Timestamp::fromEpochTime(last);
-    Poco::DateTime last_date(last_ts);
-
-    Poco::Timestamp current_ts = Poco::Timestamp::fromEpochTime(current);
-    Poco::DateTime current_date(current_ts);
-
-    current_date.assign(last_date.year(), last_date.month(), last_date.day());
-
-    return current_date.timestamp().epochTime();
-}
-
 bool Formatter::parseDurationStringHHMMSS(const std::string value,
         int *parsed_seconds) {
     *parsed_seconds = 0;

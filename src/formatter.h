@@ -68,10 +68,6 @@ class Formatter {
         int *hours,
         int *minutes);
 
-    static time_t ParseLastDate(
-        const std::time_t last,
-        const std::time_t current);
-
     // Escape
 
     static std::string EscapeJSONString(

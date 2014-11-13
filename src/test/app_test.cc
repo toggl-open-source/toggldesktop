@@ -1120,29 +1120,6 @@ TEST(FormatterTest, FormatDateHeader) {
     ASSERT_EQ("Yesterday", Formatter::FormatDateHeader(t));
 }
 
-
-TEST(FormatterTest, ParseLastDate) {
-    ASSERT_EQ(0, Formatter::ParseLastDate(0, 0));
-
-    time_t now(0);
-    Poco::DateTime now_date(Poco::Timestamp::fromEpochTime(now));
-
-    //  date -r 1412220844
-    //  Thu Oct  2 05:34:04 CEST 2014
-    time_t last(1412220844);
-    Poco::DateTime last_date(Poco::Timestamp::fromEpochTime(last));
-
-    time_t res = Formatter::ParseLastDate(last, now);
-    Poco::DateTime res_date(Poco::Timestamp::fromEpochTime(res));
-
-    ASSERT_EQ(last_date.year(), res_date.year());
-    ASSERT_EQ(last_date.month(), res_date.month());
-    ASSERT_EQ(last_date.day(), res_date.day());
-
-    ASSERT_EQ(now_date.hour(), res_date.hour());
-    ASSERT_EQ(now_date.minute(), res_date.minute());
-}
-
 TEST(FormatterTest, Format8601) {
     ASSERT_EQ("null", Formatter::Format8601(0));
 
