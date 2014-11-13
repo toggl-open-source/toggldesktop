@@ -1623,17 +1623,22 @@ _Bool Context::SetTimeEntryDate(
         return true;
     }
 
-    Poco::DateTime date_part(
+    Poco::LocalDateTime loco(
         Poco::Timestamp::fromEpochTime(unix_timestamp));
-    Poco::DateTime time_part(
+
+    Poco::LocalDateTime date_part(
+        Poco::Timestamp::fromEpochTime(unix_timestamp));
+
+    Poco::LocalDateTime time_part(
         Poco::Timestamp::fromEpochTime(te->Start()));
 
-    Poco::DateTime dt(
+    Poco::LocalDateTime dt(
         date_part.year(), date_part.month(), date_part.day(),
         time_part.hour(), time_part.minute(), time_part.second());
 
-    std::string s = Formatter::Format8601(
-        dt.timestamp().epochTime());
+    std::string s = Poco::DateTimeFormatter::format(
+        dt,
+        Poco::DateTimeFormat::ISO8601_FORMAT);
 
     te->SetStartUserInput(s);
 
@@ -1664,9 +1669,8 @@ _Bool Context::SetTimeEntryStart(
     }
 
     Poco::LocalDateTime dt(
-        local.tzd(),
         local.year(), local.month(), local.day(),
-        hours, minutes, local.second(), 0, 0);
+        hours, minutes, local.second());
 
     std::string s = Poco::DateTimeFormatter::format(
         dt, Poco::DateTimeFormat::ISO8601_FORMAT);
