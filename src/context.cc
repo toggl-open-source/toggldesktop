@@ -1472,11 +1472,30 @@ _Bool Context::ContinueLatest() {
     }
 
     TimeEntry *latest = 0;
-    std::vector<TimeEntry*> list = timeEntries(false);
-    if (list.empty()) {
+
+    // Find the time entry that was stopped most recently
+    for (std::vector<TimeEntry *>::const_iterator it =
+        user_->related.TimeEntries.begin();
+            it != user_->related.TimeEntries.end(); it++) {
+        TimeEntry *te = *it;
+
+        poco_assert(!te->GUID().empty());
+
+        if (te->DurationInSeconds() < 0) {
+            continue;
+        }
+        if (te->DeletedAt() > 0) {
+            continue;
+        }
+
+        if (!latest || (te->Stop() > latest->Stop())) {
+            latest = te;
+        }
+    }
+
+    if (!latest) {
         return true;
     }
-    latest = list.back();
 
     error err = user_->Continue(latest->GUID());
     if (err != noError) {

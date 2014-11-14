@@ -727,7 +727,7 @@ TEST(TogglApiTest, toggl_continue_latest) {
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
     ASSERT_TRUE(toggl_continue_latest(app.ctx()));
-    ASSERT_EQ("guidless entry", testing::testresult::timer_state.Description());
+    ASSERT_EQ("arendus käib", testing::testresult::timer_state.Description());
 }
 
 TEST(TogglApiTest, toggl_delete_time_entry) {
