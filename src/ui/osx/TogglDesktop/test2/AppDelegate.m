@@ -694,6 +694,7 @@ void *ctx;
 - (IBAction)onAboutMenuItem:(id)sender
 {
 	[self.aboutWindowController showWindow:self];
+	[NSApp activateIgnoringOtherApps:YES];
 }
 
 - (IBAction)onShowMenuItem:(id)sender
