@@ -951,7 +951,6 @@ TEST(TogglApiTest, toggl_set_time_entry_date) {
     ASSERT_EQ(2014, datetime.year());
     ASSERT_EQ(10, datetime.month());
     ASSERT_EQ(27, datetime.day());
-    ASSERT_EQ(7, datetime.hour());
     ASSERT_EQ(33, datetime.minute());
     ASSERT_EQ(50, datetime.second());
 }
