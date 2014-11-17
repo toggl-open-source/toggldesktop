@@ -18,6 +18,8 @@ namespace TogglDesktop
         public const string Duration = "duration";
         public const string Description = "description";
 
+        public const string TagSeparator = "\t";
+
         private const string dll = "TogglDesktopDLL.dll";
         private const CharSet charset = CharSet.Unicode;
         private const CallingConvention convention = CallingConvention.Cdecl;

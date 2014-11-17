@@ -98,7 +98,7 @@ namespace TogglDesktop
             toolTip.SetToolTip(labelClient, item.ProjectAndTaskLabel);
             if (labelTag.Visible)
             {
-                toolTip.SetToolTip(labelTag, item.Tags.Replace("\t", ", "));
+                toolTip.SetToolTip(labelTag, item.Tags.Replace(Toggl.TagSeparator, ", "));
             }
         }
 

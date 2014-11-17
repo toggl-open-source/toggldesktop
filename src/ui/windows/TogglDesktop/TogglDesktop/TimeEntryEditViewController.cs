@@ -296,7 +296,7 @@ namespace TogglDesktop
                 }
                 if (te.Tags != null)
                 {
-                    string[] tags = te.Tags.Split('|');
+                    string[] tags = te.Tags.Split(Toggl.TagSeparator.ToCharArray());
 
                     // Tick selected Tags
                     for (int i = 0; i < tags.Length; i++)
@@ -501,7 +501,8 @@ namespace TogglDesktop
             {
                 tags.Add(item.ToString());
             }
-            Toggl.SetTimeEntryTags(timeEntry.GUID, String.Join("\t", tags));
+            Toggl.SetTimeEntryTags(timeEntry.GUID,
+                String.Join(Toggl.TagSeparator, tags));
         }
 
         private void timerRunningDuration_Tick(object sender, EventArgs e)
