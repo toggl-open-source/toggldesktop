@@ -332,10 +332,11 @@ extern void *ctx;
 	{
 		return;
 	}
-    NSInteger tmp = [[[notification userInfo] valueForKey:@"height"] intValue];
-    if (tmp == self.addedHeight) {
-        return;
-    }
+	NSInteger tmp = [[[notification userInfo] valueForKey:@"height"] intValue];
+	if (tmp == self.addedHeight)
+	{
+		return;
+	}
 	self.addedHeight = tmp;
 	float newHeight = self.timeEntrypopover.contentSize.height + self.addedHeight;
 	NSSize n = NSMakeSize(self.timeEntrypopover.contentSize.width, newHeight);
