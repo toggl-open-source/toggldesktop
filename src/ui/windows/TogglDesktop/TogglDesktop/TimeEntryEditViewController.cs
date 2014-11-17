@@ -547,6 +547,7 @@ namespace TogglDesktop
 
             panelAddProject.Visible = true;
             recalculateTabIndexes(true);
+            textBoxProjectName.Focus();
         }
 
         private void recalculateTabIndexes(Boolean openAddProject)
