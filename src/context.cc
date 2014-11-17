@@ -1237,18 +1237,6 @@ bool Context::canSeeBillable(
     return true;
 }
 
-
-void Context::CollectPushableTimeEntries(
-    std::vector<TimeEntry *> *models) const {
-
-    poco_check_ptr(models);
-
-    if (!user_) {
-        return;
-    }
-    user_->CollectPushableTimeEntries(models);
-}
-
 std::vector<std::string> Context::tags() const {
     std::vector<std::string> tags;
     if (!user_) {
@@ -1974,7 +1962,7 @@ void Context::projectLabelAndColorCode(
     }
 }
 
-_Bool Context::AddProject(
+_Bool Context::CreateProject(
     const Poco::UInt64 workspace_id,
     const Poco::UInt64 client_id,
     const std::string project_name,
@@ -1988,16 +1976,36 @@ _Bool Context::AddProject(
         return true;
     }
     if (!workspace_id) {
-        return displayError("Please select a workspace", "AddProject");
+        return displayError("Please select a workspace", "CreateProject");
     }
     if (project_name.empty()) {
-        return displayError("Project name must not be empty", "AddProject");
+        return displayError("Project name must not be empty", "CreateProject");
     }
 
-    *result = user_->AddProject(
+    *result = user_->CreateProject(
         workspace_id, client_id, project_name, is_private);
 
-    return displayError(save(), "AddProject");
+    return displayError(save(), "CreateProject");
+}
+
+_Bool Context::CreateClient(
+    const Poco::UInt64 workspace_id,
+    const std::string client_name) {
+
+    if (!user_) {
+        logger().warning("Cannot create a client, user logged out");
+        return true;
+    }
+    if (!workspace_id) {
+        return displayError("Please select a workspace", "CreateClient");
+    }
+    if (client_name.empty()) {
+        return displayError("Client name must not be empty", "CreateClient");
+    }
+
+    user_->CreateClient(workspace_id, client_name);
+
+    return displayError(save(), "CreateClient");
 }
 
 void Context::SetSleep() {

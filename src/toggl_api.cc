@@ -214,11 +214,35 @@ _Bool toggl_clear_cache(
     return app(context)->ClearCache();
 }
 
-// Sync
-
 void toggl_sync(void *context) {
     logger().debug("toggl_sync");
     app(context)->Sync();
+}
+
+_Bool toggl_create_project(
+    void *context,
+    const uint64_t workspace_id,
+    const uint64_t client_id,
+    const char_t *project_name,
+    const _Bool is_private) {
+
+    toggl::Project *p = 0;
+    return app(context)->CreateProject(
+        workspace_id,
+        client_id,
+        to_string(project_name),
+        is_private,
+        &p);
+}
+
+_Bool toggl_create_client(
+    void *context,
+    const uint64_t workspace_id,
+    const char_t *client_name) {
+
+    return app(context)->CreateClient(
+        workspace_id,
+        to_string(client_name));
 }
 
 _Bool toggl_add_project(
@@ -232,7 +256,7 @@ _Bool toggl_add_project(
     poco_check_ptr(time_entry_guid);
 
     toggl::Project *p = 0;
-    if (!app(context)->AddProject(
+    if (!app(context)->CreateProject(
         workspace_id,
         client_id,
         to_string(project_name),
@@ -243,14 +267,12 @@ _Bool toggl_add_project(
 
     poco_check_ptr(p);
 
-    char_t *guid_s = copy_string(p->GUID());
     _Bool res = toggl_set_time_entry_project(
         context,
         time_entry_guid,
         0, /* no task ID */
         p->ID(),
-        guid_s);
-    free(guid_s);
+        p->GUID().c_str());
     return res;
 }
 

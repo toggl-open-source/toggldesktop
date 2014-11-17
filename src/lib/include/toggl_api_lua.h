@@ -291,6 +291,24 @@ static int l_toggl_add_project(lua_State *L) {
     return 1;
 }
 
+static int l_toggl_create_project(lua_State *L) {
+    _Bool res = toggl_create_project(app,
+                                     lua_tointeger(L, 1),
+                                     lua_tointeger(L, 2),
+                                     luaL_checkstring(L, 3),
+                                     lua_toboolean(L, 4));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
+static int l_toggl_create_client(lua_State *L) {
+    _Bool res = toggl_create_client(app,
+                                    lua_tointeger(L, 1),
+                                    luaL_checkstring(L, 2));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
 static int l_toggl_set_update_channel(lua_State *L) {
     _Bool res = toggl_set_update_channel(app,
                                          luaL_checkstring(L, -1));
@@ -412,6 +430,8 @@ static const struct luaL_Reg toggl_f[] = {
     {"clear_cache", l_toggl_clear_cache},
     {"start", l_toggl_start},
     {"add_project", l_toggl_add_project},
+    {"create_project", l_toggl_create_project},
+    {"create_client", l_toggl_create_client},
     {"set_update_channel", l_toggl_set_update_channel},
     {"get_update_channel", l_toggl_get_update_channel},
     {"sync", l_toggl_sync},

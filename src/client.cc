@@ -5,6 +5,8 @@
 #include <sstream>
 #include <cstring>
 
+#include "./formatter.h"
+
 namespace toggl {
 
 std::string Client::String() const {
@@ -40,6 +42,18 @@ void Client::LoadFromJSON(Json::Value data) {
     SetID(data["id"].asUInt64());
     SetName(data["name"].asString());
     SetWID(data["wid"].asUInt64());
+}
+
+Json::Value Client::SaveToJSON() const {
+    Json::Value n;
+    if (ID()) {
+        n["id"] = Json::UInt64(ID());
+    }
+    n["name"] = Formatter::EscapeJSONString(Name());
+    n["wid"] = Json::UInt64(WID());
+    n["guid"] = GUID();
+    n["ui_modified_at"] = Json::UInt64(UIModifiedAt());
+    return n;
 }
 
 }   // namespace toggl

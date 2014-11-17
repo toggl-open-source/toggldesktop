@@ -95,9 +95,6 @@ class Context : public TimelineDatasource {
 
     _Bool ClearCache();
 
-    void CollectPushableTimeEntries(
-        std::vector<TimeEntry *> *models) const;
-
     TimeEntry *Start(
         const std::string description,
         const std::string duration,
@@ -177,12 +174,15 @@ class Context : public TimelineDatasource {
     _Bool UpdateChannel(
         std::string *update_channel);
 
-    _Bool AddProject(
+    _Bool CreateProject(
         const Poco::UInt64 workspace_id,
         const Poco::UInt64 client_id,
         const std::string project_name,
         const _Bool is_private,
         Project **result);
+    _Bool CreateClient(
+        const Poco::UInt64 workspace_id,
+        const std::string client_name);
 
     void SetSleep();
     void SetWake();

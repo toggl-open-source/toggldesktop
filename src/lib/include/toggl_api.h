@@ -454,6 +454,18 @@ extern "C" {
         const char_t *project_name,
         const _Bool is_private);
 
+    TOGGL_EXPORT _Bool toggl_create_client(
+        void *context,
+        const uint64_t workspace_id,
+        const char_t *client_name);
+
+    TOGGL_EXPORT _Bool toggl_create_project(
+        void *context,
+        const uint64_t workspace_id,
+        const uint64_t client_id,
+        const char_t *project_name,
+        const _Bool is_private);
+
     TOGGL_EXPORT _Bool toggl_set_update_channel(
         void *context,
         const char_t *update_channel);

@@ -57,12 +57,10 @@ class User : public BaseModel {
 
     void SetLastTEDate(const std::string value);
 
-    void CollectPushableTimeEntries(
-        std::vector<TimeEntry *> *result,
-        std::map<std::string, BaseModel *> *models = 0) const;
-
-    void CollectPushableProjects(
-        std::vector<Project *> *result,
+    template<typename T>
+    void CollectPushableModels(
+        const std::vector<T *> list,
+        std::vector<T *> *result,
         std::map<std::string, BaseModel *> *models = 0) const;
 
     TimeEntry *RunningTimeEntry() const;
@@ -88,11 +86,15 @@ class User : public BaseModel {
         const Poco::Int64 at,
         const bool split_into_new_entry);
 
-    Project *AddProject(
+    Project *CreateProject(
         const Poco::UInt64 workspace_id,
         const Poco::UInt64 client_id,
         const std::string project_name,
         const bool is_private);
+
+    Client *CreateClient(
+        const Poco::UInt64 workspace_id,
+        const std::string client_name);
 
     std::string DateDuration(TimeEntry *te) const;
 
@@ -174,6 +176,7 @@ class User : public BaseModel {
 
  private:
     std::string updateJSON(
+        std::vector<Client *> * const,
         std::vector<Project *> * const,
         std::vector<TimeEntry *> * const);
 
@@ -243,7 +246,8 @@ class User : public BaseModel {
         const std::string response_body,
         std::vector<BatchUpdateResult> *responses);
 
-    void ensureWID(TimeEntry *te) const;
+    template<typename T>
+    void ensureWID(T *model) const;
 
     std::string api_token_;
     Poco::UInt64 default_wid_;

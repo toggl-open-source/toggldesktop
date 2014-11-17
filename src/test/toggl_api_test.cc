@@ -57,6 +57,9 @@ TimeEntry timer_state;
 // on_project_autocomplete
 std::vector<std::string> projects;
 
+// on_client_select
+std::vector<std::string> clients;
+
 // on_time_entry_list
 std::vector<TimeEntry> time_entries;
 
@@ -146,6 +149,12 @@ void on_project_autocomplete(TogglAutocompleteView *first) {
 }
 
 void on_client_select(TogglGenericView *first) {
+    testing::testresult::clients.clear();
+    TogglGenericView *it = first;
+    while (it) {
+        testing::testresult::clients.push_back(std::string(it->Name));
+        it = reinterpret_cast<TogglGenericView *>(it->Next);
+    }
 }
 
 void on_workspace_select(TogglGenericView *first) {
@@ -622,6 +631,99 @@ TEST(TogglApiTest, toggl_add_project) {
     bool found(false);
     for (std::size_t i = 0; i < testing::testresult::projects.size(); i++) {
         if (project_name == testing::testresult::projects[i]) {
+            found = true;
+            break;
+        }
+    }
+    ASSERT_TRUE(found);
+}
+
+TEST(TogglApiTest, toggl_create_project) {
+    testing::App app;
+
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    uint64_t wid = 0;
+    uint64_t cid = 0;
+    std::string project_name("");
+    _Bool is_private = false;
+
+    testing::testresult::error = "";
+    _Bool res = toggl_create_project(app.ctx(),
+                                     wid,
+                                     cid,
+                                     project_name.c_str(),
+                                     is_private);
+    ASSERT_EQ("Please select a workspace",
+              testing::testresult::error);
+    ASSERT_FALSE(res);
+
+    wid = 123456789;
+    res = toggl_create_project(app.ctx(),
+                               wid,
+                               cid,
+                               project_name.c_str(),
+                               is_private);
+    ASSERT_EQ("Project name must not be empty",
+              testing::testresult::error);
+    ASSERT_FALSE(res);
+
+    project_name = "A new project";
+    testing::testresult::error = "";
+    res = toggl_create_project(app.ctx(),
+                               wid,
+                               cid,
+                               project_name.c_str(),
+                               is_private);
+    ASSERT_EQ("", testing::testresult::error);
+    ASSERT_TRUE(res);
+
+    bool found(false);
+    for (std::size_t i = 0; i < testing::testresult::projects.size(); i++) {
+        if (project_name == testing::testresult::projects[i]) {
+            found = true;
+            break;
+        }
+    }
+    ASSERT_TRUE(found);
+}
+
+TEST(TogglApiTest, toggl_create_client) {
+    testing::App app;
+
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    uint64_t wid = 0;
+    std::string client_name("");
+
+    testing::testresult::error = "";
+    _Bool res = toggl_create_client(app.ctx(),
+                                    wid,
+                                    client_name.c_str());
+    ASSERT_EQ("Please select a workspace", testing::testresult::error);
+    ASSERT_FALSE(res);
+
+    wid = 123456789;
+    res = toggl_create_client(app.ctx(),
+                              wid,
+                              client_name.c_str());
+    ASSERT_EQ("Client name must not be empty",
+              testing::testresult::error);
+    ASSERT_FALSE(res);
+
+    client_name = "A new client";
+    testing::testresult::error = "";
+    res = toggl_create_client(app.ctx(),
+                              wid,
+                              client_name.c_str());
+    ASSERT_EQ("", testing::testresult::error);
+    ASSERT_TRUE(res);
+
+    bool found(false);
+    for (std::size_t i = 0; i < testing::testresult::clients.size(); i++) {
+        if (client_name == testing::testresult::clients[i]) {
             found = true;
             break;
         }

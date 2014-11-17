@@ -42,6 +42,7 @@ class Client : public BaseModel {
     }
 
     void LoadFromJSON(Json::Value value);
+    Json::Value SaveToJSON() const;
 
  private:
     Poco::UInt64 wid_;

@@ -55,7 +55,7 @@ void User::ActiveProjects(std::vector<Project *> *list) const {
     }
 }
 
-Project *User::AddProject(
+Project *User::CreateProject(
     const Poco::UInt64 workspace_id,
     const Poco::UInt64 client_id,
     const std::string project_name,
@@ -69,6 +69,16 @@ Project *User::AddProject(
     p->SetPrivate(is_private);
     related.Projects.push_back(p);
     return p;
+}
+
+Client *User::CreateClient(
+    const Poco::UInt64 workspace_id,
+    const std::string client_name) {
+    Client *c = new Client();
+    c->SetWID(workspace_id);
+    c->SetName(client_name);
+    related.Clients.push_back(c);
+    return c;
 }
 
 // Start a time entry, mark it as dirty and add to user time entry collection.
@@ -130,10 +140,11 @@ TimeEntry *User::Start(
     return te;
 }
 
-void User::ensureWID(TimeEntry *te) const {
+template<typename T>
+void User::ensureWID(T *model) const {
     // Set default wid
-    if (!te->WID()) {
-        te->SetWID(DefaultWID());
+    if (!model->WID()) {
+        model->SetWID(DefaultWID());
     }
 }
 
@@ -344,17 +355,19 @@ bool User::HasTrackedTimeToday() const {
     return false;
 }
 
-void User::CollectPushableTimeEntries(
-    std::vector<TimeEntry *> *result,
+template<typename T>
+void User::CollectPushableModels(
+    const std::vector<T *> list,
+    std::vector<T *> *result,
     std::map<std::string, BaseModel *> *models) const {
 
     poco_check_ptr(result);
 
-    for (std::vector<TimeEntry *>::const_iterator it =
-        related.TimeEntries.begin();
-            it != related.TimeEntries.end();
+    for (typename std::vector<T *>::const_iterator it =
+        list.begin();
+            it != list.end();
             it++) {
-        TimeEntry *model = *it;
+        T *model = *it;
         if (!model->NeedsPush()) {
             continue;
         }
@@ -362,26 +375,6 @@ void User::CollectPushableTimeEntries(
         result->push_back(model);
         if (models) {
             (*models)[model->GUID()] = model;
-        }
-    }
-}
-
-void User::CollectPushableProjects(
-    std::vector<Project *> *result,
-    std::map<std::string, BaseModel *> *models) const {
-
-    poco_check_ptr(result);
-
-    for (std::vector<Project *>::const_iterator it =
-        related.Projects.begin();
-            it != related.Projects.end();
-            it++) {
-        Project *model = *it;
-        if (model->NeedsPush()) {
-            result->push_back(model);
-            if (models) {
-                (*models)[model->GUID()] = model;
-            }
         }
     }
 }
@@ -423,16 +416,18 @@ error User::PushChanges(HTTPSClient *https_client) {
         std::map<std::string, BaseModel *> models;
 
         std::vector<TimeEntry *> time_entries;
-        CollectPushableTimeEntries(&time_entries, &models);
-
         std::vector<Project *> projects;
-        CollectPushableProjects(&projects, &models);
+        std::vector<Client *> clients;
 
-        if (time_entries.empty() && projects.empty()) {
+        CollectPushableModels(related.TimeEntries, &time_entries, &models);
+        CollectPushableModels(related.Projects, &projects, &models);
+        CollectPushableModels(related.Clients, &clients, &models);
+
+        if (time_entries.empty() && projects.empty() && clients.empty()) {
             return noError;
         }
 
-        std::string json = updateJSON(&projects, &time_entries);
+        std::string json = updateJSON(&clients, &projects, &time_entries);
 
         logger().debug(json);
 
@@ -991,13 +986,22 @@ error User::LoginToken(
 }
 
 std::string User::updateJSON(
+    std::vector<Client *> * const clients,
     std::vector<Project *> * const projects,
     std::vector<TimeEntry *> * const time_entries) {
 
+    poco_check_ptr(clients);
     poco_check_ptr(projects);
     poco_check_ptr(time_entries);
 
     Json::Value c;
+
+    // First, clients, because projects depend on clients
+    for (std::vector<Client *>::const_iterator it =
+        clients->begin();
+            it != clients->end(); it++) {
+        c.append((*it)->BatchUpdateJSON());
+    }
 
     // First, projects, because time entries depend on projects
     for (std::vector<Project *>::const_iterator it =
