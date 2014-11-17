@@ -267,12 +267,14 @@ _Bool toggl_add_project(
 
     poco_check_ptr(p);
 
+	char_t *guid = copy_string(p->GUID());
     _Bool res = toggl_set_time_entry_project(
         context,
         time_entry_guid,
         0, /* no task ID */
         p->ID(),
-        p->GUID().c_str());
+        guid);
+	free(guid);
     return res;
 }
 
