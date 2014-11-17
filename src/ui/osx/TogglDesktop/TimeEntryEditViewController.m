@@ -192,7 +192,7 @@ extern void *ctx;
 	{
 		singleWorkspace = NO;
 		self.addProjectBoxHeight.constant = 129;
-		addedHeight = [NSNumber numberWithInt:100];
+		addedHeight = [NSNumber numberWithInt:105];
 	}
 	else
 	{
