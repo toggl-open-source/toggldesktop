@@ -275,7 +275,7 @@
             this.Controls.Add(this.troubleBox);
             this.HelpButton = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(230, 190);
+            this.MinimumSize = new System.Drawing.Size(230, 86);
             this.Name = "MainWindowController";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Toggl Desktop";

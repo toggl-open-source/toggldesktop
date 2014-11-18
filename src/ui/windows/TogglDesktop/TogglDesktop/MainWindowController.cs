@@ -383,7 +383,7 @@ namespace TogglDesktop
                 troubleBox.Visible = false;
                 contentPanel.Location = defaultContentPosition;
                 contentPanel.Controls.Remove(loginViewController);
-                this.MinimumSize = new Size(230, 190);
+                this.MinimumSize = new Size(230, 86);
                 contentPanel.Controls.Add(timeEntryListViewController);
                 timeEntryListViewController.SetAcceptButton(this);
                 resizeHandle.Visible = true;
@@ -479,7 +479,7 @@ namespace TogglDesktop
             if (open)
             {
                 contentPanel.Controls.Remove(loginViewController);
-                this.MinimumSize = new Size(230, 190);
+                this.MinimumSize = new Size(230, 86);
                 timeEntryEditViewController.setupView(this, focused_field_name);
                 PopupInput(te);                
             }
