@@ -30,6 +30,9 @@
 
 extern void *ctx;
 
+NSString *kTrackingColor = @"#d0d0d0";
+NSString *kInactiveTimerColor = @"#999999";
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -66,7 +69,7 @@ extern void *ctx;
 	[self.autocompleteDataSource setFilter:@""];
 	NSFont *descriptionFont = [NSFont fontWithName:@"Lucida Grande" size:13.0];
 	NSFont *durationFont = [NSFont fontWithName:@"Lucida Grande" size:16.0];
-	NSColor *color = [ConvertHexColor hexCodeToNSColor:@"#d0d0d0"];
+	NSColor *color = [ConvertHexColor hexCodeToNSColor:kTrackingColor];
 	NSDictionary *descriptionDictionary = @{
 		NSFontAttributeName : descriptionFont,
 		NSForegroundColorAttributeName : color
@@ -144,21 +147,21 @@ extern void *ctx;
 	// while time entry is running
 	if (self.time_entry.duration_in_seconds < 0)
 	{
-		[self.durationTextField setDelegate:self];
 		self.descriptionLabel.stringValue = self.time_entry.Description;
 		self.descriptionLabel.toolTip = self.time_entry.Description;
 		[self.descriptionComboBox setHidden:YES];
 		[self.descriptionLabel setHidden:NO];
-		[self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:@"#d0d0d0"]];
-		[self.descriptionLabel setTextColor:[ConvertHexColor hexCodeToNSColor:@"#d0d0d0"]];
+		[self.descriptionLabel setTextColor:[ConvertHexColor hexCodeToNSColor:kTrackingColor]];
+
+		[self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:kTrackingColor]];
 	}
 	else
 	{
 		[self.descriptionComboBox setHidden:NO];
 		[self.descriptionLabel setHidden:YES];
-		[self.durationTextField setDelegate:self.durationTextField];
-		[self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:@"#999999"]];
-		[self.descriptionLabel setTextColor:[ConvertHexColor hexCodeToNSColor:@"#999999"]];
+		[self.descriptionLabel setTextColor:[ConvertHexColor hexCodeToNSColor:kInactiveTimerColor]];
+
+		[self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:kInactiveTimerColor]];
 	}
 
 	[self checkProjectConstraints];
@@ -257,41 +260,40 @@ extern void *ctx;
 
 - (void)textFieldClicked:(id)sender
 {
-	if (nil == self.time_entry)
-	{
-		return;
-	}
-	if (nil == self.time_entry.GUID)
-	{
-		return;
-	}
 	[self.descriptionComboBox becomeFirstResponder];
-	if (sender == self.durationTextField)
+
+	[[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopoverSize
+														object:nil
+													  userInfo:nil];
+
+	if (nil == self.time_entry || nil == self.time_entry.GUID)
 	{
-		[[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopoverSize
-															object:nil
-														  userInfo:nil];
-		toggl_edit(ctx, [self.time_entry.GUID UTF8String], false, kFocusedFieldNameDuration);
+		if (sender == self.durationTextField)
+		{
+			char *guid = toggl_start(ctx,
+									 [self.time_entry.Description UTF8String],
+									 "0",
+									 self.time_entry.TaskID,
+									 self.time_entry.ProjectID);
+			NSString *GUID = [NSString stringWithUTF8String:guid];
+			free(guid);
+
+			toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameDuration);
+		}
 		return;
 	}
 
-	if (sender == self.descriptionLabel)
-	{
-		[[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopoverSize
-															object:nil
-														  userInfo:nil];
-		toggl_edit(ctx, [self.time_entry.GUID UTF8String], false, kFocusedFieldNameDescription);
-		return;
-	}
-
+	const char *focusField = kFocusedFieldNameDescription;
 	if (sender == self.projectTextField)
 	{
-		[[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopoverSize
-															object:nil
-														  userInfo:nil];
-		toggl_edit(ctx, [self.time_entry.GUID UTF8String], false, kFocusedFieldNameProject);
-		return;
+		focusField = kFocusedFieldNameProject;
 	}
+	else if (sender == self.durationTextField)
+	{
+		focusField = kFocusedFieldNameDuration;
+	}
+
+	toggl_edit(ctx, [self.time_entry.GUID UTF8String], false, focusField);
 }
 
 - (void)createConstraints
@@ -331,7 +333,7 @@ extern void *ctx;
 	[[NSNotificationCenter defaultCenter] postNotificationName:kForceCloseEditPopover
 														object:nil];
 
-	// resign current FirstResponder
+	// resign current firstResponder
 	[self.durationTextField.window makeFirstResponder:[self.durationTextField superview]];
 	self.time_entry.Duration = self.durationTextField.stringValue;
 	self.time_entry.Description = self.descriptionComboBox.stringValue;
@@ -346,24 +348,6 @@ extern void *ctx;
 		[self clear];
 		self.time_entry = [[TimeEntryViewItem alloc] init];
 	}
-}
-
-- (IBAction)durationFieldChanged:(id)sender
-{
-	if (![self.durationTextField.stringValue length])
-	{
-		return;
-	}
-
-	// Parse text into seconds
-	const char *duration_string = [self.durationTextField.stringValue UTF8String];
-	int64_t seconds = toggl_parse_duration_string_into_seconds(duration_string);
-
-	// Format seconds as text again
-	char *str = toggl_format_duration_in_seconds_hhmmss(seconds);
-	NSString *newValue = [NSString stringWithUTF8String:str];
-	free(str);
-	[self.durationTextField setStringValue:newValue];
 }
 
 - (IBAction)descriptionComboBoxChanged:(id)sender
@@ -427,9 +411,11 @@ extern void *ctx;
 	{
 		return;
 	}
+
 	char *str = toggl_format_duration_in_seconds_hhmmss(self.time_entry.duration_in_seconds);
 	NSString *newValue = [NSString stringWithUTF8String:str];
 	free(str);
+
 	[self.durationTextField setStringValue:newValue];
 }
 

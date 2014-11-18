@@ -22,6 +22,5 @@
 @property NSArray *projectLabelConstraint;
 - (IBAction)startButtonClicked:(id)sender;
 - (IBAction)descriptionComboBoxChanged:(id)sender;
-- (IBAction)durationFieldChanged:(id)sender;
 - (void)timerFired:(NSTimer *)timer;
 @end
