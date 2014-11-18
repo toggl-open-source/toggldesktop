@@ -149,8 +149,6 @@ extern void *ctx;
 		self.descriptionLabel.toolTip = self.time_entry.Description;
 		[self.descriptionComboBox setHidden:YES];
 		[self.descriptionLabel setHidden:NO];
-		[self.durationTextField setEditable:NO];
-		[self.durationTextField setSelectable:NO];
 		[self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:@"#d0d0d0"]];
 		[self.descriptionLabel setTextColor:[ConvertHexColor hexCodeToNSColor:@"#d0d0d0"]];
 	}
@@ -158,8 +156,6 @@ extern void *ctx;
 	{
 		[self.descriptionComboBox setHidden:NO];
 		[self.descriptionLabel setHidden:YES];
-		[self.durationTextField setEditable:YES];
-		[self.durationTextField setSelectable:YES];
 		[self.durationTextField setDelegate:self.durationTextField];
 		[self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:@"#999999"]];
 		[self.descriptionLabel setTextColor:[ConvertHexColor hexCodeToNSColor:@"#999999"]];
