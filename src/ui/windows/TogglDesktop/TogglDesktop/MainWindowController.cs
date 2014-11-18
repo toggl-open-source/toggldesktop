@@ -761,6 +761,14 @@ namespace TogglDesktop
                 hideHorizontalScrollBar();
             }
             resizeHandle.Location = new Point(Width-16, Height-46);
+            if (this.Height <= this.MinimumSize.Height)
+            {
+                resizeHandle.BackColor = ColorTranslator.FromHtml("#e20000");
+            }
+            else
+            {
+                resizeHandle.BackColor = System.Drawing.Color.Transparent;
+            }
         }
 
         private void recalculatePopupPosition()
