@@ -35,8 +35,6 @@ namespace TogglDesktop
 
             comboBoxDescription.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
             comboBoxProject.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
-            comboBoxClient.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
-            comboBoxWorkspace.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
             textBoxDuration.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
             textBoxStartTime.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
             textBoxEndTime.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
