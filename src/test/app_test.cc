@@ -1013,7 +1013,7 @@ TEST(AppTest, SetDurationOnRunningTimeEntryWithDurOnlySetting) {
     ASSERT_LT(te->Start(), te->Stop());
 }
 
-TEST(FormatterTest, ParseTimeInput) {
+TEST(Formatter, ParseTimeInput) {
     int hours = 0;
     int minutes = 0;
 
@@ -1090,7 +1090,7 @@ TEST(FormatterTest, ParseTimeInput) {
     ASSERT_FALSE(Formatter::ParseTimeInput("NOT VALID", &hours, &minutes));
 }
 
-TEST(FormatterTest, FormatTimeForTimeEntryEditor) {
+TEST(Formatter, FormatTimeForTimeEntryEditor) {
     ASSERT_EQ("", Formatter::FormatTimeForTimeEntryEditor(0));
 
     //  date -r 1412950844
@@ -1104,7 +1104,7 @@ TEST(FormatterTest, FormatTimeForTimeEntryEditor) {
     ASSERT_NE(std::string::npos, res.find(":20"));
 }
 
-TEST(FormatterTest, FormatDateHeader) {
+TEST(Formatter, FormatDateHeader) {
     ASSERT_EQ("", Formatter::FormatDateHeader(0));
 
     //  date -r 1412120844
@@ -1120,7 +1120,7 @@ TEST(FormatterTest, FormatDateHeader) {
     ASSERT_EQ("Yesterday", Formatter::FormatDateHeader(t));
 }
 
-TEST(FormatterTest, Format8601) {
+TEST(Formatter, Format8601) {
     ASSERT_EQ("null", Formatter::Format8601(0));
 
     //  date -r 1412220844
@@ -1130,7 +1130,7 @@ TEST(FormatterTest, Format8601) {
     ASSERT_EQ("2014-10-02T03:34:04Z", Formatter::Format8601(t));
 }
 
-TEST(FormatterTest, Parse8601) {
+TEST(Formatter, Parse8601) {
     ASSERT_EQ(0, Formatter::Parse8601("null"));
 
     //  date -r 1412220844
@@ -1142,7 +1142,7 @@ TEST(FormatterTest, Parse8601) {
     ASSERT_EQ(0, Formatter::Parse8601("invalid value"));
 }
 
-TEST(FormatterTest, FormatDuration) {
+TEST(Formatter, FormatDuration) {
     ASSERT_EQ("0 min", Formatter::FormatDuration(0, false, Format::Classic));
     ASSERT_EQ("0 min", Formatter::FormatDuration(30, false, Format::Classic));
     ASSERT_EQ("2 min", Formatter::FormatDuration(120, false, Format::Classic));
@@ -1165,13 +1165,43 @@ TEST(FormatterTest, FormatDuration) {
     ASSERT_EQ("01:30:00",
               Formatter::FormatDuration(5400, true, Format::Improved));
 
-    ASSERT_EQ("0.0 h", Formatter::FormatDuration(0, false, Format::Decimal));
-    ASSERT_EQ("0.0 h", Formatter::FormatDuration(30, false, Format::Decimal));
-    ASSERT_EQ("0.0 h", Formatter::FormatDuration(120, false, Format::Decimal));
-    ASSERT_EQ("1.5 h", Formatter::FormatDuration(5400, false, Format::Decimal));
+    ASSERT_EQ("0.00 h",
+        Formatter::FormatDuration(0, false, Format::Decimal));
+    ASSERT_EQ("0.01 h",
+        Formatter::FormatDuration(30, false, Format::Decimal));
+    ASSERT_EQ("0.03 h",
+        Formatter::FormatDuration(120, false, Format::Decimal));
+    ASSERT_EQ("1.50 h",
+        Formatter::FormatDuration(5400, false, Format::Decimal));
 }
 
-TEST(FormatterTest, JoinTaskName) {
+TEST(Formatter, FormatDecimal) {
+    const int kMinute = 60;
+    ASSERT_EQ("0.00 h",
+              Formatter::FormatDuration(0*kMinute, false, Format::Decimal));
+    ASSERT_EQ("0.17 h",
+              Formatter::FormatDuration(10*kMinute, false, Format::Decimal));
+    ASSERT_EQ("0.25 h",
+              Formatter::FormatDuration(15*kMinute, false, Format::Decimal));
+    ASSERT_EQ("0.33 h",
+              Formatter::FormatDuration(20*kMinute, false, Format::Decimal));
+    ASSERT_EQ("0.50 h",
+              Formatter::FormatDuration(30*kMinute, false, Format::Decimal));
+    ASSERT_EQ("0.58 h",
+              Formatter::FormatDuration(35*kMinute, false, Format::Decimal));
+    ASSERT_EQ("0.67 h",
+              Formatter::FormatDuration(40*kMinute, false, Format::Decimal));
+    ASSERT_EQ("0.75 h",
+              Formatter::FormatDuration(45*kMinute, false, Format::Decimal));
+    ASSERT_EQ("0.83 h",
+              Formatter::FormatDuration(50*kMinute, false, Format::Decimal));
+    ASSERT_EQ("0.92 h",
+              Formatter::FormatDuration(55*kMinute, false, Format::Decimal));
+    ASSERT_EQ("1.00 h",
+              Formatter::FormatDuration(60*kMinute, false, Format::Decimal));
+}
+
+TEST(Formatter, JoinTaskName) {
     std::string res = Formatter::JoinTaskName(0, 0, 0);
     ASSERT_EQ("", res);
 
@@ -1203,7 +1233,7 @@ TEST(FormatterTest, JoinTaskName) {
     ASSERT_EQ("Task name. Project name. Customer name", res);
 }
 
-TEST(FormatterTest, JoinTaskNameReverse) {
+TEST(Formatter, JoinTaskNameReverse) {
     std::string res = Formatter::JoinTaskName(0, 0, 0);
     ASSERT_EQ("", res);
 

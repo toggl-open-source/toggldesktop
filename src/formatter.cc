@@ -402,7 +402,7 @@ std::string Formatter::FormatDuration(
     std::stringstream ss;
     if (Format::Decimal == format_name) {
         double hours = duration / 3600.0;
-        ss << Poco::NumberFormatter::format(hours, 1) << " h";
+        ss << Poco::NumberFormatter::format(hours, 2) << " h";
     } else if (Format::Classic == format_name) {
         Poco::Int64 hours = duration / 3600;
         Poco::Int64 minutes = (duration - (hours * 3600)) / 60;
