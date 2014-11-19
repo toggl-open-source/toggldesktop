@@ -18,6 +18,7 @@ namespace TogglDesktop
         private List<Toggl.AutocompleteItem> autoCompleteEntryList;
         private List<Toggl.AutocompleteItem> autoCompleteProjectList;
         private Boolean overTags = false;
+        private List<Toggl.Model> tagsList;
 
         public TimeEntryEditViewController()
         {
@@ -292,20 +293,7 @@ namespace TogglDesktop
                 {
                     checkedListBoxTags.SetItemChecked(i, false);
                 }
-                if (te.Tags != null)
-                {
-                    string[] tags = te.Tags.Split(Toggl.TagSeparator.ToCharArray());
-
-                    // Tick selected Tags
-                    for (int i = 0; i < tags.Length; i++)
-                    {
-                        int index = checkedListBoxTags.Items.IndexOf(tags[i]);
-                        if (index != -1)
-                        {
-                            checkedListBoxTags.SetItemChecked(index, true);
-                        }
-                    }
-                }
+                setCheckedTags(te);
             }
         }
 
@@ -357,11 +345,13 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { OnTags(list); });
                 return;
             }
+            tagsList = list;
             checkedListBoxTags.Items.Clear();
             foreach (Toggl.Model o in list)
             {
                 checkedListBoxTags.Items.Add(o.Name);
             }
+            setCheckedTags(timeEntry);
         }
 
         void OnWorkspaceSelect(List<Toggl.Model> list)
@@ -494,13 +484,7 @@ namespace TogglDesktop
 
         private void checkedListBoxTags_Leave(object sender, EventArgs e)
         {
-            List<String> tags = new List<String>();
-            foreach (object item in checkedListBoxTags.CheckedItems)
-            {
-                tags.Add(item.ToString());
-            }
-            Toggl.SetTimeEntryTags(timeEntry.GUID,
-                String.Join(Toggl.TagSeparator, tags));
+            saveTimeEntryTags();
         }
 
         private void timerRunningDuration_Tick(object sender, EventArgs e)
@@ -809,6 +793,76 @@ namespace TogglDesktop
             textBoxStartTime.Width = textBoxEndTime.Width = width;
             labelDash.Left = textBoxStartTime.Left + textBoxStartTime.Width + 5;
             textBoxEndTime.Left = labelDash.Left + 15;
+        }
+
+        private void tagTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            checkedListBoxTags.Items.Clear();
+            foreach (Toggl.Model item in tagsList)
+            {
+                if (tagTextBox.Text.Length == 0 || item.Name.IndexOf(tagTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    checkedListBoxTags.Items.Add(item.Name);
+                }
+            }
+
+            setCheckedTags(timeEntry);
+        }
+
+        private void setCheckedTags(Toggl.TimeEntry te)
+        {
+            if (te.Tags != null)
+            {
+                string[] tags = te.Tags.Split(Toggl.TagSeparator.ToCharArray());
+
+                // Tick selected Tags
+                for (int i = 0; i < tags.Length; i++)
+                {
+                    int index = checkedListBoxTags.Items.IndexOf(tags[i]);
+                    if (index != -1)
+                    {
+                        checkedListBoxTags.SetItemChecked(index, true);
+                    }
+                }
+            }
+        }
+
+        private void addTagButton_Click(object sender, EventArgs e)
+        {
+            String word = tagTextBox.Text;
+            tagTextBox.Text = "";
+            tagTextBox_KeyUp(null, null);
+            int index = checkedListBoxTags.Items.IndexOf(word);
+            if (index != -1)
+            {
+                checkedListBoxTags.SetItemChecked(index, true);
+            }
+            else
+            {
+                checkedListBoxTags.Items.Insert(0,word);
+                checkedListBoxTags.SetItemChecked(0, true);
+                saveTimeEntryTags();
+            }
+            
+        }
+
+        private void saveTimeEntryTags()
+        {
+            List<String> tags = new List<String>();
+            foreach (object item in checkedListBoxTags.CheckedItems)
+            {
+                tags.Add(item.ToString());
+            }      
+            Toggl.SetTimeEntryTags(timeEntry.GUID,
+                String.Join(Toggl.TagSeparator, tags));
+        }
+
+        private void tagTextBox_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                addTagButton_Click(null, null);
+            }
         }
     }
 }

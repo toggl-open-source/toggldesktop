@@ -53,6 +53,8 @@
             this.panelBillable = new System.Windows.Forms.Panel();
             this.panelDuration = new System.Windows.Forms.Panel();
             this.panelDateTag = new System.Windows.Forms.Panel();
+            this.addTagButton = new System.Windows.Forms.Button();
+            this.tagTextBox = new System.Windows.Forms.TextBox();
             this.panelStartEndTime = new System.Windows.Forms.Panel();
             this.panelAddProject = new System.Windows.Forms.Panel();
             this.labelWorkspace = new System.Windows.Forms.Label();
@@ -286,9 +288,9 @@
             this.checkedListBoxTags.CheckOnClick = true;
             this.checkedListBoxTags.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.checkedListBoxTags.FormattingEnabled = true;
-            this.checkedListBoxTags.Location = new System.Drawing.Point(110, 35);
+            this.checkedListBoxTags.Location = new System.Drawing.Point(110, 65);
             this.checkedListBoxTags.Name = "checkedListBoxTags";
-            this.checkedListBoxTags.Size = new System.Drawing.Size(190, 99);
+            this.checkedListBoxTags.Size = new System.Drawing.Size(190, 80);
             this.checkedListBoxTags.TabIndex = 7;
             this.checkedListBoxTags.Leave += new System.EventHandler(this.checkedListBoxTags_Leave);
             this.checkedListBoxTags.MouseEnter += new System.EventHandler(this.checkedListBoxTags_MouseEnter);
@@ -343,6 +345,8 @@
             this.panelDateTag.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelDateTag.Controls.Add(this.addTagButton);
+            this.panelDateTag.Controls.Add(this.tagTextBox);
             this.panelDateTag.Controls.Add(this.checkedListBoxTags);
             this.panelDateTag.Controls.Add(this.labelDate);
             this.panelDateTag.Controls.Add(this.dateTimePickerStartDate);
@@ -352,6 +356,35 @@
             this.panelDateTag.Name = "panelDateTag";
             this.panelDateTag.Size = new System.Drawing.Size(315, 173);
             this.panelDateTag.TabIndex = 6;
+            // 
+            // addTagButton
+            // 
+            this.addTagButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.addTagButton.BackColor = System.Drawing.Color.Transparent;
+            this.addTagButton.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.addTagButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.addTagButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.addTagButton.Location = new System.Drawing.Point(276, 35);
+            this.addTagButton.Name = "addTagButton";
+            this.addTagButton.Size = new System.Drawing.Size(24, 24);
+            this.addTagButton.TabIndex = 19;
+            this.addTagButton.TabStop = false;
+            this.addTagButton.Text = "➕";
+            this.addTagButton.UseVisualStyleBackColor = false;
+            this.addTagButton.Click += new System.EventHandler(this.addTagButton_Click);
+            // 
+            // tagTextBox
+            // 
+            this.tagTextBox.AccessibleName = "Time entry tags";
+            this.tagTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tagTextBox.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
+            this.tagTextBox.Location = new System.Drawing.Point(110, 35);
+            this.tagTextBox.Name = "tagTextBox";
+            this.tagTextBox.Size = new System.Drawing.Size(167, 24);
+            this.tagTextBox.TabIndex = 6;
+            this.tagTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tagTextBox_KeyUp);
+            this.tagTextBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.tagTextBox_PreviewKeyDown);
             // 
             // panelStartEndTime
             // 
@@ -609,5 +642,7 @@
         private System.Windows.Forms.Panel panelDuration;
         private System.Windows.Forms.Panel panelBillable;
         private System.Windows.Forms.Button buttonDone;
+        private System.Windows.Forms.TextBox tagTextBox;
+        private System.Windows.Forms.Button addTagButton;
     }
 }
