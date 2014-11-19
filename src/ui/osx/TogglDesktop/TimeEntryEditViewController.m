@@ -130,7 +130,7 @@ extern void *ctx;
 {
 	if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDuration]])
 	{
-        [self.durationTextField becomeFirstResponder];
+		[self.durationTextField becomeFirstResponder];
 	}
 	if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDescription]])
 	{
