@@ -130,8 +130,7 @@ extern void *ctx;
 {
 	if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDuration]])
 	{
-		self.resizeOnOpen = YES;
-		[self checkResize];
+        [self.durationTextField becomeFirstResponder];
 	}
 	if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDescription]])
 	{
@@ -141,16 +140,6 @@ extern void *ctx;
 	{
 		[self.projectSelect becomeFirstResponder];
 	}
-}
-
-- (void)checkResize
-{
-	if (self.resizeOnOpen)
-	{
-		[self toggleTimeForm:YES];
-		[self.durationTextField becomeFirstResponder];
-	}
-	self.resizeOnOpen = NO;
 }
 
 - (void)resetPopover:(NSNotification *)notification
@@ -164,7 +153,6 @@ extern void *ctx;
 
 	[self removeCustomConstraints];
 	[self.descriptionCombobox setNextKeyView:self.projectSelect];
-	[self toggleTimeForm:NO];
 }
 
 - (IBAction)addProjectButtonClicked:(id)sender
@@ -366,39 +354,6 @@ extern void *ctx;
 	{
 		[self.durationTextField setStringValue:self.timeEntry.duration];
 	}
-
-	// Set TimeDateTextBox value
-	NSString *dateString = [NSString stringWithFormat:@"%@ ", self.timeEntry.formattedDate];
-	NSString *timeString;
-	if (self.timeEntry.durOnly)
-	{
-		timeString = [NSString stringWithFormat:@"for %@ ", self.timeEntry.duration];
-
-		NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_durationBox, _dateBox);
-		self.topConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_durationBox]-0@1000-[_dateBox]"
-																	 options:0
-																	 metrics:nil
-																	   views:viewsDict];
-		[self.view addConstraints:self.topConstraint];
-	}
-	else
-	{
-		if (self.topConstraint != nil)
-		{
-			[self.view removeConstraints:self.topConstraint];
-			self.topConstraint = nil;
-		}
-		if (self.timeEntry.endTimeString.length)
-		{
-			timeString = [NSString stringWithFormat:@"from %@ to %@", self.timeEntry.startTimeString, self.timeEntry.endTimeString];
-		}
-		else
-		{
-			timeString = [NSString stringWithFormat:@"from %@", self.timeEntry.startTimeString];
-		}
-	}
-	NSString *dateTimeString = [dateString stringByAppendingString:timeString];
-	[self.dateTimeTextField setStringValue:dateTimeString];
 
 	if (cmd.open || [self.startTime currentEditor] == nil || self.startTimeChanged == YES)
 	{
@@ -618,14 +573,6 @@ extern void *ctx;
 	return 0;
 }
 
-- (void)textFieldClicked:(id)sender
-{
-	if (sender == self.dateTimeTextField)
-	{
-		[self toggleTimeForm:YES];
-	}
-}
-
 - (void)draggingResizeStart:(id)sender
 {
 	self.lastPosition = [NSEvent mouseLocation];
@@ -641,29 +588,6 @@ extern void *ctx;
 	[[NSNotificationCenter defaultCenter] postNotificationName:kResizeEditFormWidth
 														object:nil
 													  userInfo:userInfo];
-}
-
-- (void)toggleTimeForm:(BOOL)open
-{
-	if (open)
-	{
-		NSNumber *addedHeight;
-		if (self.timeEntry.durOnly)
-		{
-			addedHeight = [NSNumber numberWithInt:60];
-		}
-		else
-		{
-			addedHeight = [NSNumber numberWithInt:100];
-		}
-		NSDictionary *userInfo = [NSDictionary dictionaryWithObject:addedHeight forKey:@"height"];
-
-		[[NSNotificationCenter defaultCenter] postNotificationName:kResizeEditForm
-															object:nil
-														  userInfo:userInfo];
-	}
-	[self.timeEditBox setHidden:!open];
-	[self.timeTextBox setHidden:open];
 }
 
 - (IBAction)durationTextFieldChanged:(id)sender
