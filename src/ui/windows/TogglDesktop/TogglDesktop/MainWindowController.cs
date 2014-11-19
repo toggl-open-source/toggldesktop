@@ -199,6 +199,7 @@ namespace TogglDesktop
             {
                 trayIcon.Text = Text;
             }
+            updateResizeHandleBackground();
         }
 
         void OnStoppedTimerState()
@@ -215,6 +216,7 @@ namespace TogglDesktop
             runningToolStripMenuItem.Text = "Timer is not tracking";
             Text = "Toggl Desktop";
             trayIcon.Text = Text;
+            updateResizeHandleBackground();
         }
 
         void OnSettings(bool open, Toggl.Settings settings)
@@ -761,16 +763,23 @@ namespace TogglDesktop
                 hideHorizontalScrollBar();
             }
             resizeHandle.Location = new Point(Width-16, Height-46);
+            updateResizeHandleBackground();
+        }
+
+        private void updateResizeHandleBackground() {
             if (this.Height <= this.MinimumSize.Height)
             {
-                resizeHandle.BackColor = ColorTranslator.FromHtml("#e20000");
+                String c = "#47bc00";
+                if(isTracking) {
+                    c = "#e20000";
+                } 
+                resizeHandle.BackColor = ColorTranslator.FromHtml(c);
             }
             else
             {
                 resizeHandle.BackColor = System.Drawing.Color.Transparent;
             }
         }
-
         private void recalculatePopupPosition()
         {
             if (editForm != null && editForm.Visible && editableEntry != null)
