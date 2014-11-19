@@ -1166,13 +1166,13 @@ TEST(Formatter, FormatDuration) {
               Formatter::FormatDuration(5400, true, Format::Improved));
 
     ASSERT_EQ("0.00 h",
-        Formatter::FormatDuration(0, false, Format::Decimal));
+              Formatter::FormatDuration(0, false, Format::Decimal));
     ASSERT_EQ("0.01 h",
-        Formatter::FormatDuration(30, false, Format::Decimal));
+              Formatter::FormatDuration(30, false, Format::Decimal));
     ASSERT_EQ("0.03 h",
-        Formatter::FormatDuration(120, false, Format::Decimal));
+              Formatter::FormatDuration(120, false, Format::Decimal));
     ASSERT_EQ("1.50 h",
-        Formatter::FormatDuration(5400, false, Format::Decimal));
+              Formatter::FormatDuration(5400, false, Format::Decimal));
 }
 
 TEST(Formatter, FormatDecimal) {

@@ -268,17 +268,17 @@ void MainWindowController::writeSettings() {
 }
 
 void MainWindowController::closeEvent(QCloseEvent *event) {
-	QMessageBox::StandardButton dialog;
-	dialog = QMessageBox::question(this,
-		"Toggl Desktop",
-		"Really quit the app?",
-		QMessageBox::Ok | QMessageBox::Cancel);
-	if (QMessageBox::Ok == dialog) {
-    		writeSettings();
-		close();
-	} else {
-		event->ignore();
-	}
+    QMessageBox::StandardButton dialog;
+    dialog = QMessageBox::question(this,
+                                   "Toggl Desktop",
+                                   "Really quit the app?",
+                                   QMessageBox::Ok | QMessageBox::Cancel);
+    if (QMessageBox::Ok == dialog) {
+        writeSettings();
+        close();
+    } else {
+        event->ignore();
+    }
 }
 
 void MainWindowController::showEvent(QShowEvent *event) {
