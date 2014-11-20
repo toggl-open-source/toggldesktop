@@ -167,7 +167,13 @@ toggl::error User::Continue(
 
     TimeEntry *result = new TimeEntry();
     result->SetCreatedWith(HTTPSClientConfig::UserAgent());
-    result->Assign(existing);
+    result->SetDescription(existing->Description());
+    result->SetDurOnly(existing->DurOnly());
+    result->SetWID(existing->WID());
+    result->SetPID(existing->PID());
+    result->SetTID(existing->TID());
+    result->SetBillable(existing->Billable());
+    result->SetTags(existing->Tags());
     result->SetUID(ID());
     result->SetStart(time(0));
     result->SetDurationInSeconds(-time(0));
@@ -320,7 +326,7 @@ TimeEntry *User::DiscardTimeAt(
     if (te && split_into_new_entry) {
         TimeEntry *split = new TimeEntry();
         split->SetCreatedWith(HTTPSClientConfig::UserAgent());
-        split->Assign(te);
+        split->SetDurOnly(te->DurOnly());
         split->SetUID(ID());
         split->SetStart(at);
         split->SetDurationInSeconds(-at);

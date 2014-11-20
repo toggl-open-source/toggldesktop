@@ -1013,8 +1013,7 @@ TEST(TogglApiTest, toggl_discard_time_at) {
     ASSERT_TRUE(!testing::testresult::timer_state.GUID().empty());
     ASSERT_EQ(stopped, testing::testresult::timer_state.Start());
     ASSERT_TRUE(testing::testresult::timer_state.IsTracking());
-    ASSERT_EQ(te.Description(),
-              testing::testresult::timer_state.Description());
+    ASSERT_EQ("", testing::testresult::timer_state.Description());
 }
 
 TEST(TogglApiTest, toggl_feedback_send) {
