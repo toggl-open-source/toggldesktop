@@ -102,9 +102,6 @@ void RelatedData::taskAutocompleteItems(
         Tasks.begin();
             it != Tasks.end(); it++) {
         Task *t = *it;
-        std::string project_label;
-        std::string client_label;
-        std::string task_label;
 
         if (t->IsMarkedAsDeletedOnServer()) {
             continue;
@@ -119,21 +116,9 @@ void RelatedData::taskAutocompleteItems(
             continue;
         }
 
-        if (p) {
-            project_label = p->Name();
-        }
-
         Client *c = 0;
         if (p && p->CID()) {
             c = ClientByID(p->CID());
-        }
-
-        if (c) {
-            client_label = c->Name();
-        }
-
-        if (t) {
-            task_label = t->Name();
         }
 
         std::string text = Formatter::JoinTaskNameReverse(t, p, c);
@@ -146,10 +131,20 @@ void RelatedData::taskAutocompleteItems(
         }
         unique_names->insert(text);
 
+        std::string client_label("");
+        if (c) {
+            client_label = c->Name();
+        }
+
+        std::string project_label("");
+        if (p) {
+            project_label = p->Name();
+        }
+
         AutocompleteItem autocomplete_item;
         autocomplete_item.Text = text;
         autocomplete_item.ProjectAndTaskLabel = text;
-        autocomplete_item.TaskLabel = task_label;
+        autocomplete_item.TaskLabel = t->Name();
         autocomplete_item.ProjectLabel = project_label;
         autocomplete_item.ClientLabel = client_label;
         autocomplete_item.TaskID = t->ID();
@@ -174,24 +169,14 @@ void RelatedData::projectAutocompleteItems(
         Projects.begin();
             it != Projects.end(); it++) {
         Project *p = *it;
-        std::string project_label;
-        std::string client_label;
 
         if (!p->Active()) {
             continue;
         }
 
-        if (p) {
-            project_label = p->Name();
-        }
-
         Client *c = 0;
         if (p->CID()) {
             c = ClientByID(p->CID());
-        }
-
-        if (c) {
-            client_label = c->Name();
         }
 
         std::string text = Formatter::JoinTaskName(0, p, c);
@@ -204,10 +189,15 @@ void RelatedData::projectAutocompleteItems(
         }
         unique_names->insert(text);
 
+        std::string client_label("");
+        if (c) {
+            client_label = c->Name();
+        }
+
         AutocompleteItem autocomplete_item;
         autocomplete_item.Text = text;
         autocomplete_item.ProjectAndTaskLabel = text;
-        autocomplete_item.ProjectLabel = project_label;
+        autocomplete_item.ProjectLabel = p->Name();
         autocomplete_item.ClientLabel = client_label;
         autocomplete_item.ProjectID = p->ID();
         autocomplete_item.ProjectColor = p->ColorCode();
@@ -228,6 +218,47 @@ std::vector<AutocompleteItem> RelatedData::AutocompleteItems(
     projectAutocompleteItems(&unique_names, &result);
 
     std::sort(result.begin(), result.end(), CompareAutocompleteItems);
+    return result;
+}
+
+std::vector<AutocompleteItem> RelatedData::StructuredAutocompleteItems() {
+    std::vector<AutocompleteItem> result;
+
+    for (std::vector<Project *>::const_iterator it =
+        Projects.begin();
+            it != Projects.end(); it++) {
+        Project *p = *it;
+
+        if (!p->Active()) {
+            continue;
+        }
+
+        Client *c = 0;
+        if (p->CID()) {
+            c = ClientByID(p->CID());
+        }
+
+        std::string text = Formatter::JoinTaskName(0, p, c);
+        if (text.empty()) {
+            continue;
+        }
+
+        std::string client_label("");
+        if (c) {
+            client_label = c->Name();
+        }
+
+        AutocompleteItem autocomplete_item;
+        autocomplete_item.Text = text;
+        autocomplete_item.ProjectAndTaskLabel = text;
+        autocomplete_item.ProjectLabel = p->Name();
+        autocomplete_item.ClientLabel = client_label;
+        autocomplete_item.ProjectID = p->ID();
+        autocomplete_item.ProjectColor = p->ColorCode();
+        autocomplete_item.Type = kAutocompleteItemProject;
+        result.push_back(autocomplete_item);
+    }
+
     return result;
 }
 

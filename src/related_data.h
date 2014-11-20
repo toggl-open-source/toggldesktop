@@ -97,6 +97,8 @@ class RelatedData {
     std::vector<AutocompleteItem> AutocompleteItems(
         const bool including_time_entries);
 
+    std::vector<AutocompleteItem> StructuredAutocompleteItems();
+
  private:
     void timeEntryAutocompleteItems(
         std::set<std::string> *unique_names,
