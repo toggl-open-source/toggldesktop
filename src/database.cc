@@ -512,11 +512,12 @@ error Database::LoadUserByID(
         bool record_timeline(false);
         bool store_start_and_stop_time(false);
         std::string timeofday_format("");
+        std::string duration_format("");
         *session_ <<
                   "select local_id, id, api_token, default_wid, since, "
                   "fullname, "
                   "email, record_timeline, store_start_and_stop_time, "
-                  "timeofday_format "
+                  "timeofday_format, duration_format "
                   "from users where id = :id",
                   Poco::Data::into(local_id),
                   Poco::Data::into(id),
@@ -528,6 +529,7 @@ error Database::LoadUserByID(
                   Poco::Data::into(record_timeline),
                   Poco::Data::into(store_start_and_stop_time),
                   Poco::Data::into(timeofday_format),
+                  Poco::Data::into(duration_format),
                   Poco::Data::use(UID),
                   Poco::Data::limit(1),
                   Poco::Data::now;
@@ -552,6 +554,7 @@ error Database::LoadUserByID(
         user->SetRecordTimeline(record_timeline);
         user->SetStoreStartAndStopTime(store_start_and_stop_time);
         user->SetTimeOfDayFormat(timeofday_format);
+        user->SetDurationFormat(duration_format);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
