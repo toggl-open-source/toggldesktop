@@ -46,65 +46,47 @@ namespace TogglDesktop
             return false;
         }
 
-        public static void GetShortcutForShow(
-            ref bool alt,
-            ref bool ctrl,
-            ref bool shift,
-            ref string keyCode)
+        public static TogglDesktop.ModifierKeys GetModifiers(KeyEventArgs e)
         {
-            alt = Properties.Settings.Default.ShowAlt;
-            ctrl = Properties.Settings.Default.ShowCtrl;
-            shift = Properties.Settings.Default.ShowShift;
-            keyCode = Properties.Settings.Default.ShowKey;
+            TogglDesktop.ModifierKeys modifiers = 0;
+            if (e != null)
+            {
+                if (e.Alt)
+                {
+                    modifiers = modifiers | TogglDesktop.ModifierKeys.Alt;
+                }
+                if (e.Control)
+                {
+                    modifiers = modifiers | TogglDesktop.ModifierKeys.Control;
+                }
+                if (e.Shift)
+                {
+                    modifiers = modifiers | TogglDesktop.ModifierKeys.Shift;
+                }
+            }
+            return modifiers;
         }
 
-        public static void GetShortcutForStart(
-            ref bool alt,
-            ref bool ctrl,
-            ref bool shift,
-            ref string keyCode)
+        public static string GetKeyCode(KeyEventArgs e)
         {
-            alt = Properties.Settings.Default.StartAlt;
-            ctrl = Properties.Settings.Default.StartCtrl;
-            shift = Properties.Settings.Default.StartShift;
-            keyCode = Properties.Settings.Default.StartKey;
+            if (e != null)
+            {
+                return e.KeyCode.ToString();
+            }
+            return null;
         }
 
         public static void SetShortcutForShow(KeyEventArgs e)
         {
-            if (e != null)
-            {
-                Properties.Settings.Default.ShowAlt = e.Alt;
-                Properties.Settings.Default.ShowCtrl = e.Control;
-                Properties.Settings.Default.ShowShift = e.Shift;
-                Properties.Settings.Default.ShowKey = e.KeyCode.ToString();
-            }
-            else
-            {
-                Properties.Settings.Default.ShowAlt = false;
-                Properties.Settings.Default.ShowCtrl = false;
-                Properties.Settings.Default.ShowShift = false;
-                Properties.Settings.Default.ShowKey = null;
-            }
+            Properties.Settings.Default.ShowModifiers = GetModifiers(e);
+            Properties.Settings.Default.ShowKey = GetKeyCode(e);
             Properties.Settings.Default.Save();
         }
 
         public static void SetShortcutForStart(KeyEventArgs e)
         {
-            if (e != null)
-            {
-                Properties.Settings.Default.StartAlt = e.Alt;
-                Properties.Settings.Default.StartCtrl = e.Control;
-                Properties.Settings.Default.StartShift = e.Shift;
-                Properties.Settings.Default.StartKey = e.KeyCode.ToString();
-            }
-            else
-            {
-                Properties.Settings.Default.StartAlt = false;
-                Properties.Settings.Default.StartCtrl = false;
-                Properties.Settings.Default.StartShift = false;
-                Properties.Settings.Default.StartKey = null;
-            }
+            Properties.Settings.Default.StartModifiers = GetModifiers(e);
+            Properties.Settings.Default.StartKey = GetKeyCode(e);
             Properties.Settings.Default.Save();
         }
 

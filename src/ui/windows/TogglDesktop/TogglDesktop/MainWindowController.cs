@@ -42,6 +42,8 @@ namespace TogglDesktop
 
         private static MainWindowController instance;
 
+        KeyboardHook hook = new KeyboardHook();
+
         [StructLayout(LayoutKind.Sequential)]
         struct LASTINPUTINFO
         {
@@ -78,6 +80,18 @@ namespace TogglDesktop
             InitializeComponent();
 
             instance = this;
+
+            // register the event that is fired after the key press.
+            hook.KeyPressed +=
+                new EventHandler<KeyPressedEventArgs>(hook_KeyPressed);
+            // register the control + alt + F12 combination as hot key.
+            hook.RegisterHotKey(TogglDesktop.ModifierKeys.Control
+                | TogglDesktop.ModifierKeys.Alt, Keys.Z);
+        }
+
+        void hook_KeyPressed(object sender, KeyPressedEventArgs e)
+        {
+            Console.WriteLine("hotkey");
         }
 
         public void toggleMenu()
@@ -807,43 +821,6 @@ namespace TogglDesktop
                 int buttonEvent = (isResizing) ? wmNcLButtonDown : wmNcLButtonUp;
                 SendMessage(Handle, buttonEvent, HtBottomRight, 0);
             }
-        }
-
-        // Registers a hot key with Windows.
-        [DllImport("user32.dll")]
-        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
-
-        private static int WM_HOTKEY = 0x0312;
-
-        public static void RegisterShortcutKeys()
-        {
-
-        }
-
-        // Unregisters the hot key with Windows.
-        [DllImport("user32.dll")]
-        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-
-        public static void UnregisterShortcutKeys()
-        {
-
-        }
-
-        protected override void WndProc(ref Message m)
-        {
-            base.WndProc(ref m);
-
-            if (m.Msg != WM_HOTKEY)
-                return;
-            {
-
-            // get the keys.
-            Keys key = (Keys)(((int)m.LParam >> 16) & 0xFFFF);
-//            ModifierKeys modifier = (ModifierKeys)((int)m.LParam & 0xFFFF);
-
-            // invoke the event to notify the parent.
-            if (KeyPressed != null)
-                KeyPressed(this, new KeyPressedEventArgs(modifier, key));
         }
     }
 }

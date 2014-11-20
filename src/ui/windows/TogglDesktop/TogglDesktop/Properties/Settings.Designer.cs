@@ -97,37 +97,13 @@ namespace TogglDesktop.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ShowAlt {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public global::TogglDesktop.ModifierKeys ShowModifiers {
             get {
-                return ((bool)(this["ShowAlt"]));
+                return ((global::TogglDesktop.ModifierKeys)(this["ShowModifiers"]));
             }
             set {
-                this["ShowAlt"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ShowCtrl {
-            get {
-                return ((bool)(this["ShowCtrl"]));
-            }
-            set {
-                this["ShowCtrl"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ShowShift {
-            get {
-                return ((bool)(this["ShowShift"]));
-            }
-            set {
-                this["ShowShift"] = value;
+                this["ShowModifiers"] = value;
             }
         }
         
@@ -145,37 +121,13 @@ namespace TogglDesktop.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool StartAlt {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public global::TogglDesktop.ModifierKeys StartModifiers {
             get {
-                return ((bool)(this["StartAlt"]));
+                return ((global::TogglDesktop.ModifierKeys)(this["StartModifiers"]));
             }
             set {
-                this["StartAlt"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool StartCtrl {
-            get {
-                return ((bool)(this["StartCtrl"]));
-            }
-            set {
-                this["StartCtrl"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool StartShift {
-            get {
-                return ((bool)(this["StartShift"]));
-            }
-            set {
-                this["StartShift"] = value;
+                this["StartModifiers"] = value;
             }
         }
         

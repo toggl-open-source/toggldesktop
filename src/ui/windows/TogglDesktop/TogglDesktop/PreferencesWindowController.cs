@@ -67,26 +67,22 @@ namespace TogglDesktop
 
             // Load shortcuts
             {
-                bool alt = false;
-                bool ctrl = false;
-                bool shift = false;
-                string keyCode = "";
-                Utils.GetShortcutForShow(ref alt, ref ctrl, ref shift, ref keyCode);
+                string keyCode = Properties.Settings.Default.ShowKey;
                 if (keyCode != "" && keyCode != null)
                 {
-                    btnRecordShowHideShortcut.Text = keyEventToString(alt, ctrl, shift, keyCode);
+                    TogglDesktop.ModifierKeys modifiers =
+                        Properties.Settings.Default.ShowModifiers;
+                    btnRecordShowHideShortcut.Text = keyEventToString(modifiers, keyCode);
                 }
             }
 
             {
-                bool alt = false;
-                bool ctrl = false;
-                bool shift = false;
-                string keyCode = "";
-                Utils.GetShortcutForStart(ref alt, ref ctrl, ref shift, ref keyCode);
+                string keyCode = Properties.Settings.Default.StartKey;
                 if (keyCode != "" && keyCode != null)
                 {
-                    btnRecordStartStopShortcut.Text = keyEventToString(alt, ctrl, shift, keyCode);
+                    TogglDesktop.ModifierKeys modifiers =
+                        Properties.Settings.Default.StartModifiers;
+                    btnRecordStartStopShortcut.Text = keyEventToString(modifiers, keyCode);
                 }
             }
 
@@ -198,18 +194,18 @@ namespace TogglDesktop
             btnClearStartStopTimer.Tag = true;
         }
 
-        string keyEventToString(bool alt, bool ctrl, bool shift, string keyCode)
+        string keyEventToString(TogglDesktop.ModifierKeys modifiers, string keyCode)
         {
             string res = "";
-            if (alt)
+            if (modifiers.HasFlag(TogglDesktop.ModifierKeys.Alt))
             {
                 res += "Alt + ";
             }
-            if (ctrl)
+            if (modifiers.HasFlag(TogglDesktop.ModifierKeys.Control))
             {
                 res += "Ctrl + ";
             }
-            if (shift)
+            if (modifiers.HasFlag(TogglDesktop.ModifierKeys.Shift))
             {
                 res += "Shift + ";
             }
@@ -228,7 +224,7 @@ namespace TogglDesktop
                 return;
             }
             btn.Tag = e;
-            btn.Text = keyEventToString(e.Alt, e.Control, e.Shift, e.KeyCode.ToString());
+            btn.Text = keyEventToString(Utils.GetModifiers(e), Utils.GetKeyCode(e));
             clearBtn.Tag = null;
         }
 

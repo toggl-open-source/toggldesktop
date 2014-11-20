@@ -157,6 +157,7 @@
     <Compile Include="FeedbackWindowController.Designer.cs">
       <DependentUpon>FeedbackWindowController.cs</DependentUpon>
     </Compile>
+    <Compile Include="GlobalShortcuts.cs" />
     <Compile Include="IdleNotificationWindowController.cs">
       <SubType>Form</SubType>
     </Compile>
