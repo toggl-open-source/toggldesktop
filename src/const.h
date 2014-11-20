@@ -17,6 +17,7 @@
 #define kAutocompleteItemTE  0
 #define kAutocompleteItemTask 1
 #define kAutocompleteItemProject 2
+#define kAutocompleteItemWorkspace 3
 
 #define kAPIURL "https://www.toggl.com"
 #define kTimelineUploadURL "https://timeline.toggl.com"
