@@ -1084,6 +1084,9 @@ TEST(TogglApiTest, toggl_set_time_entry_start) {
     ASSERT_EQ(12, local.hour());
     ASSERT_EQ(34, local.minute());
     ASSERT_EQ(50, local.second());
+
+    // Setting an invalid value should not crash the app
+    ASSERT_FALSE(toggl_set_time_entry_start(app.ctx(), guid.c_str(), "12:558"));
 }
 
 TEST(TogglApiTest, toggl_set_time_entry_end) {
@@ -1113,6 +1116,9 @@ TEST(TogglApiTest, toggl_set_time_entry_end) {
     ASSERT_EQ(18, local.hour());
     ASSERT_EQ(29, local.minute());
     ASSERT_EQ(46, local.second());
+
+    // Setting an invalid value should not crash the app
+    ASSERT_FALSE(toggl_set_time_entry_end(app.ctx(), guid.c_str(), "12:558"));
 }
 
 TEST(ProxyTest, IsConfigured) {

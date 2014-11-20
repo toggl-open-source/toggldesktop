@@ -185,17 +185,29 @@ bool Formatter::parseTimeInputAMPM(
     return false;
 }
 
+// Validate time output a bit. Else it will blow up
+// in Poco DateTime constructor
+bool timeIsWithinLimits(int *hours, int *minutes) {
+    if ((*hours < 0) || (*hours > 23)) {
+        return false;
+    }
+    if ((*minutes < 0) || (*minutes > 59)) {
+        return false;
+    }
+    return true;
+}
+
 bool Formatter::ParseTimeInput(const std::string input,
                                int *hours,
                                int *minutes) {
     std::string value = Poco::replace(Poco::UTF8::toUpper(input), " ", "");
 
     if (parseTimeInputAMPM(value, "DOP", "ODP", hours, minutes)) {
-        return true;
+        return timeIsWithinLimits(hours, minutes);
     }
 
     if (parseTimeInputAMPM(value, "A", "P", hours, minutes)) {
-        return true;
+        return timeIsWithinLimits(hours, minutes);
     }
 
     // Handle formats: HH:mm, H:mm etc
@@ -224,7 +236,8 @@ bool Formatter::ParseTimeInput(const std::string input,
     } else if (!Poco::NumberParser::tryParse(value, *hours)) {
         return false;
     }
-    return true;
+
+    return timeIsWithinLimits(hours, minutes);
 }
 
 bool Formatter::parseDurationStringHHMMSS(const std::string value,
