@@ -199,15 +199,15 @@ namespace TogglDesktop
             string res = "";
             if (modifiers.HasFlag(TogglDesktop.ModifierKeys.Alt))
             {
-                res += "Alt + ";
+                res += "Alt ";
             }
             if (modifiers.HasFlag(TogglDesktop.ModifierKeys.Control))
             {
-                res += "Ctrl + ";
+                res += "Ctrl ";
             }
             if (modifiers.HasFlag(TogglDesktop.ModifierKeys.Shift))
             {
-                res += "Shift + ";
+                res += "Shift ";
             }
             res += keyCode;
             return res;

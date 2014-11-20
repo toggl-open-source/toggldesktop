@@ -42,7 +42,8 @@ namespace TogglDesktop
 
         private static MainWindowController instance;
 
-        KeyboardHook hook = new KeyboardHook();
+        KeyboardHook startHook = new KeyboardHook();
+        KeyboardHook showHook = new KeyboardHook();
 
         [StructLayout(LayoutKind.Sequential)]
         struct LASTINPUTINFO
@@ -81,17 +82,65 @@ namespace TogglDesktop
 
             instance = this;
 
-            // register the event that is fired after the key press.
-            hook.KeyPressed +=
-                new EventHandler<KeyPressedEventArgs>(hook_KeyPressed);
-            // register the control + alt + F12 combination as hot key.
-            hook.RegisterHotKey(TogglDesktop.ModifierKeys.Control
-                | TogglDesktop.ModifierKeys.Alt, Keys.Z);
+            startHook.KeyPressed +=
+                new EventHandler<KeyPressedEventArgs>(hookStartKeyPressed);
+
+            string startKey = Properties.Settings.Default.StartKey;
+            if (startKey != null && startKey != "")
+            {
+                try
+                {
+                    startHook.RegisterHotKey(
+                        Properties.Settings.Default.StartModifiers,
+                        (Keys)Enum.Parse(typeof(Keys), startKey));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Could not register start shortcut: ", e);
+                }
+            }
+
+            showHook.KeyPressed +=
+                new EventHandler<KeyPressedEventArgs>(hookShowKeyPressed);
+
+            string showKey = Properties.Settings.Default.ShowKey;
+            if (showKey != null && showKey != "")
+            {
+                try
+                {
+                    showHook.RegisterHotKey(
+                        Properties.Settings.Default.ShowModifiers,
+                        (Keys)Enum.Parse(typeof(Keys), showKey));
+                } 
+                catch (Exception e)
+                {
+                    Console.WriteLine("Could not register show hotkey: ", e);
+                }
+            }
         }
 
-        void hook_KeyPressed(object sender, KeyPressedEventArgs e)
+        void hookStartKeyPressed(object sender, KeyPressedEventArgs e)
         {
-            Console.WriteLine("hotkey");
+            if (isTracking)
+            {
+                Toggl.Stop();
+            }
+            else
+            {
+                Toggl.ContinueLatest();
+            }
+        }
+
+        void hookShowKeyPressed(object sender, KeyPressedEventArgs e)
+        {
+            if (Visible)
+            {
+                Hide();
+            }
+            else
+            {
+                show();
+            }
         }
 
         public void toggleMenu()
