@@ -111,6 +111,8 @@ class Formatter {
 bool CompareClientByName(Client *a, Client *b);
 bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b);
 bool CompareAutocompleteItems(AutocompleteItem a, AutocompleteItem b);
+bool CompareStructuredAutocompleteItems(
+    AutocompleteItem a, AutocompleteItem b);
 
 }  // namespace toggl
 

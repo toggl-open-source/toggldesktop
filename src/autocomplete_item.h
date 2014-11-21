@@ -25,7 +25,7 @@ class AutocompleteItem {
     , TaskID(0)
     , ProjectID(0)
     , Type(0)
-    , WorkspaceID(0) {}
+    , WorkspaceName("") {}
     ~AutocompleteItem() {}
 
     bool IsTimeEntry() const {
@@ -54,7 +54,7 @@ class AutocompleteItem {
            << " TaskID=" << TaskID
            << " ProjectID=" << ProjectID
            << " Type=" << Type
-           << " WorkspaceID=" << WorkspaceID;
+           << " WorkspaceName=" << WorkspaceName;
         return ss.str();
     }
 
@@ -68,7 +68,7 @@ class AutocompleteItem {
     Poco::UInt64 TaskID;
     Poco::UInt64 ProjectID;
     Poco::UInt64 Type;
-    Poco::UInt64 WorkspaceID;
+    std::string WorkspaceName;
 };
 
 }  // namespace toggl

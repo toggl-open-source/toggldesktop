@@ -4,6 +4,8 @@
 
 #include <sstream>
 
+#include "Poco/UTF8String.h"
+
 #include "./autocomplete_item.h"
 #include "./formatter.h"
 
@@ -224,6 +226,22 @@ std::vector<AutocompleteItem> RelatedData::AutocompleteItems(
 std::vector<AutocompleteItem> RelatedData::StructuredAutocompleteItems() {
     std::vector<AutocompleteItem> result;
 
+    std::map<Poco::UInt64, std::string> ws_names;
+    for (std::vector<Workspace *>::const_iterator it =
+        Workspaces.begin();
+            it != Workspaces.end(); it++) {
+        Workspace *ws = *it;
+
+        std::string ws_name = Poco::UTF8::toUpper(ws->Name());
+        ws_names[ws->ID()] = ws_name;
+
+        AutocompleteItem autocomplete_item;
+        autocomplete_item.Text = ws_name;
+        autocomplete_item.WorkspaceName = ws_name;
+        autocomplete_item.Type = kAutocompleteItemWorkspace;
+        result.push_back(autocomplete_item);
+    }
+
     for (std::vector<Project *>::const_iterator it =
         Projects.begin();
             it != Projects.end(); it++) {
@@ -255,9 +273,12 @@ std::vector<AutocompleteItem> RelatedData::StructuredAutocompleteItems() {
         autocomplete_item.ClientLabel = client_label;
         autocomplete_item.ProjectID = p->ID();
         autocomplete_item.ProjectColor = p->ColorCode();
+        autocomplete_item.WorkspaceName = ws_names[p->WID()];
         autocomplete_item.Type = kAutocompleteItemProject;
         result.push_back(autocomplete_item);
     }
+
+    std::sort(result.begin(), result.end(), CompareStructuredAutocompleteItems);
 
     return result;
 }

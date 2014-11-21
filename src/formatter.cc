@@ -557,4 +557,21 @@ bool CompareAutocompleteItems(
     return (Poco::UTF8::icompare(a.Text, b.Text) < 0);
 }
 
+bool CompareStructuredAutocompleteItems(
+    AutocompleteItem a,
+    AutocompleteItem b) {
+
+    if (a.WorkspaceName == b.WorkspaceName) {
+        if (a.IsWorkspace() && !b.IsWorkspace()) {
+            return true;
+        }
+        if (!a.IsWorkspace() && b.IsWorkspace()) {
+            return false;
+        }
+        return (Poco::UTF8::icompare(a.Text, b.Text) < 0);
+    }
+
+    return (Poco::UTF8::icompare(a.WorkspaceName, b.WorkspaceName) < 0);
+}
+
 }   // namespace toggl
