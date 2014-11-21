@@ -2217,7 +2217,7 @@ void Context::computeIdleState(const Poco::UInt64 idle_seconds) {
                       << Formatter::FormatTimeForTimeEntryEditor(
                           last_idle_started_);
 
-                int minutes = static_cast<int>(last_idle_seconds_reading_ / 60);
+                int minutes = static_cast<int>((now - last_idle_started_) / 60);
                 std::stringstream duration;
                 duration << "(" << minutes << " minute";
                 if (minutes != 1) {
