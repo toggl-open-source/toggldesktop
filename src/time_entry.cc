@@ -27,6 +27,13 @@
 
 namespace toggl {
 
+bool TimeEntry::NeedsPOST() const {
+    if (BaseModel::NeedsPOST()) {
+        return ((duration_in_seconds_ < 0) || (duration_in_seconds_ > 5));
+    }
+    return false;
+}
+
 bool TimeEntry::ResolveError(const error err) {
     if (durationTooLarge(err) && Stop() && Start()) {
         Poco::UInt64 seconds =

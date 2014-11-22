@@ -128,6 +128,8 @@ class TimeEntry : public BaseModel {
 
     virtual bool ResolveError(const error err);
 
+    bool NeedsPOST() const;
+
     static Poco::UInt64 AbsDuration(const Poco::Int64 value);
 
  private:
