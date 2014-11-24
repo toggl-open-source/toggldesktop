@@ -1825,8 +1825,6 @@ _Bool Context::DiscardTimeAt(
         return true;
     }
 
-    UI()->DisplayApp();
-
     return displayError(save(), "DiscardTimeAt");
 }
 
