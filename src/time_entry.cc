@@ -367,8 +367,12 @@ void TimeEntry::LoadFromJSON(Json::Value data) {
         SetCreatedWith(data["created_with"].asString());
     }
 
-    SetID(data["id"].asUInt64());
+    if (data.isMember("id")) {
+        SetID(data["id"].asUInt64());
+    }
+
     SetDescription(data["description"].asString());
+
     if (data.isMember("wid")) {
         SetWID(data["wid"].asUInt64());
     } else {
