@@ -361,26 +361,19 @@ static int l_toggl_set_idle_seconds(lua_State *L) {
     return 0;
 }
 
-static int l_toggl_format_duration_in_seconds_hhmmss(lua_State *L) {
-    char_t *str = toggl_format_duration_in_seconds_hhmmss(
+static int l_toggl_format_tracking_time_duration(lua_State *L) {
+    char_t *str = toggl_format_tracking_time_duration(
         lua_tointeger(L, -1));
     lua_pushstring(L, str);
     free(str);
     return 1;
 }
 
-static int l_toggl_format_duration_in_seconds_hhmm(lua_State *L) {
-    char_t *str = toggl_format_duration_in_seconds_hhmm(
+static int l_toggl_format_tracked_time_duration(lua_State *L) {
+    char_t *str = toggl_format_tracked_time_duration(
         lua_tointeger(L, -1));
     lua_pushstring(L, str);
     free(str);
-    return 1;
-}
-
-static int l_toggl_parse_duration_string_into_seconds(lua_State *L) {
-    int64_t res = toggl_parse_duration_string_into_seconds(
-        luaL_checkstring(L, -1));
-    lua_pushinteger(L, res);
     return 1;
 }
 
@@ -441,14 +434,11 @@ static const struct luaL_Reg toggl_f[] = {
     {"set_wake", l_toggl_set_wake},
     {"set_online", l_toggl_set_online},
     {"set_idle_seconds", l_toggl_set_idle_seconds},
-    {   "format_duration_in_seconds_hhmmss",
-        l_toggl_format_duration_in_seconds_hhmmss
+    {   "toggl_format_tracking_time_duration",
+        l_toggl_format_tracking_time_duration
     },
-    {   "format_duration_in_seconds_hhmm",
-        l_toggl_format_duration_in_seconds_hhmm
-    },
-    {   "parse_duration_string_into_seconds",
-        l_toggl_parse_duration_string_into_seconds
+    {   "toggl_format_tracked_time_duration",
+        l_toggl_format_tracked_time_duration
     },
     {"debug", l_toggl_debug},
     {NULL, NULL}

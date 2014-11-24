@@ -278,20 +278,20 @@ _Bool toggl_add_project(
     return res;
 }
 
-char_t *toggl_format_duration_in_seconds_hhmmss(
+char_t *toggl_format_tracking_time_duration(
     const int64_t duration_in_seconds) {
 
     std::string formatted = toggl::Formatter::FormatDuration(
-        duration_in_seconds, true, toggl::Format::Improved);
+        duration_in_seconds, toggl::Format::Classic);
 
     return copy_string(formatted);
 }
 
-char_t *toggl_format_duration_in_seconds_hhmm(
+char_t *toggl_format_tracked_time_duration(
     const int64_t duration_in_seconds) {
 
     std::string formatted = toggl::Formatter::FormatDuration(
-        duration_in_seconds, false, toggl::Format::Improved);
+        duration_in_seconds, toggl::Format::Improved, false);
 
     return copy_string(formatted);
 }
@@ -584,14 +584,6 @@ char_t *toggl_get_update_channel(
     std::string update_channel("");
     app(context)->UpdateChannel(&update_channel);
     return copy_string(update_channel);
-}
-
-int64_t toggl_parse_duration_string_into_seconds(
-    const char_t *duration_string) {
-    if (!duration_string) {
-        return 0;
-    }
-    return toggl::Formatter::ParseDurationString(to_string(duration_string));
 }
 
 void toggl_on_show_app(

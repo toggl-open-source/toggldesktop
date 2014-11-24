@@ -123,7 +123,7 @@ std::string Formatter::FormatDateHeader(const std::time_t date) {
         return "Yesterday";
     }
 
-    return Poco::DateTimeFormatter::format(datetime, "%w %d. %b");
+    return Poco::DateTimeFormatter::format(datetime, "%w, %d %b");
 }
 
 bool Formatter::parseTimeInputAMPM(const std::string numbers,
@@ -405,38 +405,73 @@ int Formatter::ParseDurationString(const std::string value) {
     return seconds;
 }
 
-std::string Formatter::FormatDuration(
-    const Poco::Int64 value,
-    const bool with_seconds,
-    const std::string format_name) {
+std::string Formatter::FormatDurationForDateHeader(
+    const Poco::Int64 value) {
     Poco::Int64 duration = TimeEntry::AbsDuration(value);
-    Poco::Timespan span(duration * Poco::Timespan::SECONDS);
 
     std::stringstream ss;
+
+    Poco::Int64 hours = duration / 3600;
+    ss << hours << " h ";
+
+    Poco::Int64 minutes = (duration - (hours * 3600)) / 60;
+    if (minutes < 10) {
+        ss << "0";
+    }
+    ss << minutes << " min";
+
+    return ss.str();
+}
+
+std::string Formatter::FormatDuration(
+    const Poco::Int64 value,
+    const std::string format_name,
+    const bool with_seconds) {
+    Poco::Int64 duration = TimeEntry::AbsDuration(value);
+
     if (Format::Decimal == format_name) {
         double hours = duration / 3600.0;
+        std::stringstream ss;
         ss << Poco::NumberFormatter::format(hours, 2) << " h";
-    } else if (Format::Classic == format_name) {
-        Poco::Int64 hours = duration / 3600;
-        Poco::Int64 minutes = (duration - (hours * 3600)) / 60;
-        if (hours > 0) {
-            ss << hours << " h ";
+        return ss.str();
+    }
+
+    if (Format::Classic == format_name) {
+        if (duration < 60) {
+            std::stringstream ss;
+            ss << duration << " sec";
+            return ss.str();
         }
-        ss << minutes << " min";
-    } else {
+        if (duration < 3600) {
+            Poco::Timespan span(duration * Poco::Timespan::SECONDS);
+            return Poco::DateTimeFormatter::format(span, "%M:%S min");
+        }
+        std::stringstream ss;
+        Poco::Int64 hours = duration / 3600;
         // Poco DateTimeFormatter will not format hours above 24h.
         // So format hours by hand:
-        Poco::Int64 hours = duration / 3600;
         if (hours < 10) {
             ss << "0";
         }
         ss << hours;
         ss << ":";
-        if (with_seconds) {
-            ss << Poco::DateTimeFormatter::format(span, "%M:%S");
-        } else {
-            ss << Poco::DateTimeFormatter::format(span, "%M");
-        }
+        Poco::Timespan span(duration * Poco::Timespan::SECONDS);
+        ss << Poco::DateTimeFormatter::format(span, "%M:%S");
+        return ss.str();
+    }
+
+    // Default, 'improved' format
+    // Poco DateTimeFormatter will not format hours above 24h.
+    // So format hours by hand:
+    std::stringstream ss;
+    Poco::Int64 hours = duration / 3600;
+    ss << hours;
+    ss << ":";
+    Poco::Timespan span(duration * Poco::Timespan::SECONDS);
+    if (with_seconds) {
+        ss << Poco::DateTimeFormatter::format(span, "%M:%S");
+    } else {
+        ss << Poco::DateTimeFormatter::format(span, "%M");
     }
     return ss.str();
 }

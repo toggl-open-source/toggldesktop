@@ -174,14 +174,12 @@ TogglTimeEntryView *time_entry_view_item_init(
     view_item->WID = static_cast<unsigned int>(te->WID());
     view_item->TID = static_cast<unsigned int>(te->TID());
     view_item->PID = static_cast<unsigned int>(te->PID());
-    std::string timer_format(toggl::Format::Improved);
-    if (!time_in_timer_format) {
-        timer_format =toggl::Formatter::DurationFormat;
+    if (time_in_timer_format) {
+        view_item->Duration = toggl_format_tracking_time_duration(te->DurationInSeconds());
+    } else {
+        view_item->Duration = copy_string(toggl::Formatter::FormatDuration(
+            te->DurationInSeconds(), toggl::Formatter::DurationFormat));
     }
-    view_item->Duration =  copy_string(toggl::Formatter::FormatDuration(
-        te->DurationInSeconds(),
-        true,
-        timer_format));
     view_item->Started = static_cast<unsigned int>(te->Start());
     view_item->Ended = static_cast<unsigned int>(te->Stop());
 

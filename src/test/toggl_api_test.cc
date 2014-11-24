@@ -380,62 +380,56 @@ TEST(TogglApiTest, toggl_set_log_level) {
     toggl_set_log_level("trace");
 }
 
-TEST(TogglApiTest, toggl_format_duration_in_seconds_hhmmss) {
-    char *str = toggl_format_duration_in_seconds_hhmmss(10);
-    ASSERT_EQ("00:00:10", std::string(str));
+TEST(TogglApiTest, toggl_format_tracking_time_duration) {
+    char *str = toggl_format_tracking_time_duration(10);
+    ASSERT_EQ("10 sec", std::string(str));
     free(str);
 
-    str = toggl_format_duration_in_seconds_hhmmss(60);
-    ASSERT_EQ("00:01:00", std::string(str));
+    str = toggl_format_tracking_time_duration(60);
+    ASSERT_EQ("01:00 min", std::string(str));
     free(str);
 
-    str = toggl_format_duration_in_seconds_hhmmss(65);
-    ASSERT_EQ("00:01:05", std::string(str));
+    str = toggl_format_tracking_time_duration(65);
+    ASSERT_EQ("01:05 min", std::string(str));
     free(str);
 
-    str = toggl_format_duration_in_seconds_hhmmss(3600);
+    str = toggl_format_tracking_time_duration(3600);
     ASSERT_EQ("01:00:00", std::string(str));
     free(str);
 
-    str = toggl_format_duration_in_seconds_hhmmss(5400);
+    str = toggl_format_tracking_time_duration(5400);
     ASSERT_EQ("01:30:00", std::string(str));
     free(str);
 
-    str = toggl_format_duration_in_seconds_hhmmss(5410);
+    str = toggl_format_tracking_time_duration(5410);
     ASSERT_EQ("01:30:10", std::string(str));
     free(str);
 }
 
-TEST(TogglApiTest, toggl_format_duration_in_seconds_hhmm) {
-    char *str  = toggl_format_duration_in_seconds_hhmm(10);
-    ASSERT_EQ("00:00", std::string(str));
+TEST(TogglApiTest, toggl_format_tracked_time_duration) {
+    char *str  = toggl_format_tracked_time_duration(10);
+    ASSERT_EQ("0:00", std::string(str));
     free(str);
 
-    str = toggl_format_duration_in_seconds_hhmm(60);
-    ASSERT_EQ("00:01", std::string(str));
+    str = toggl_format_tracked_time_duration(60);
+    ASSERT_EQ("0:01", std::string(str));
     free(str);
 
-    str = toggl_format_duration_in_seconds_hhmm(65);
-    ASSERT_EQ("00:01", std::string(str));
+    str = toggl_format_tracked_time_duration(65);
+    ASSERT_EQ("0:01", std::string(str));
     free(str);
 
-    str = toggl_format_duration_in_seconds_hhmm(3600);
-    ASSERT_EQ("01:00", std::string(str));
+    str = toggl_format_tracked_time_duration(3600);
+    ASSERT_EQ("1:00", std::string(str));
     free(str);
 
-    str = toggl_format_duration_in_seconds_hhmm(5400);
-    ASSERT_EQ("01:30", std::string(str));
+    str = toggl_format_tracked_time_duration(5400);
+    ASSERT_EQ("1:30", std::string(str));
     free(str);
 
-    str = toggl_format_duration_in_seconds_hhmm(5410);
-    ASSERT_EQ("01:30", std::string(str));
+    str = toggl_format_tracked_time_duration(5410);
+    ASSERT_EQ("1:30", std::string(str));
     free(str);
-}
-
-TEST(TogglApiTest, toggl_parse_duration_string_into_seconds) {
-    ASSERT_EQ(0, toggl_parse_duration_string_into_seconds(0));
-    ASSERT_EQ(0, toggl_parse_duration_string_into_seconds(""));
-    ASSERT_EQ(15, toggl_parse_duration_string_into_seconds("15 seconds"));
 }
 
 TEST(TogglApiTest, toggl_password_forgot) {

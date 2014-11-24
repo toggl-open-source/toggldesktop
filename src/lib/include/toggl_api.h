@@ -501,15 +501,12 @@ extern "C" {
     // Shared helpers
 
     // You must free() the result
-    TOGGL_EXPORT char_t *toggl_format_duration_in_seconds_hhmmss(
+    TOGGL_EXPORT char_t *toggl_format_tracking_time_duration(
         const int64_t duration_in_seconds);
 
     // You must free() the result
-    TOGGL_EXPORT char_t *toggl_format_duration_in_seconds_hhmm(
+    TOGGL_EXPORT char_t *toggl_format_tracked_time_duration(
         const int64_t duration_in_seconds);
-
-    TOGGL_EXPORT int64_t toggl_parse_duration_string_into_seconds(
-        const char_t *duration_string);
 
     // Write to the lib logger
     TOGGL_EXPORT void toggl_debug(

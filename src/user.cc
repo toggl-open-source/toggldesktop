@@ -199,8 +199,7 @@ std::string User::DateDuration(TimeEntry * const te) const {
             }
         }
     }
-    return Formatter::FormatDuration(date_duration, false,
-                                     DurationFormat());
+    return Formatter::FormatDurationForDateHeader(date_duration);
 }
 
 bool User::HasPremiumWorkspaces() const {

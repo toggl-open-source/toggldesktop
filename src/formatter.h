@@ -40,8 +40,11 @@ class Formatter {
 
     static std::string FormatDuration(
         const Poco::Int64 value,
-        const bool with_seconds,
-        const std::string format_name);
+        const std::string format_name,
+        const bool with_seconds=true);
+
+    static std::string FormatDurationForDateHeader(
+        const Poco::Int64 value);
 
     static std::string Format8601(
         const std::time_t date);
@@ -51,9 +54,6 @@ class Formatter {
 
     static std::string FormatTimeForTimeEntryEditor(
         const std::time_t date);
-
-    static std::string togglTimeOfDayToPocoFormat(
-        const std::string toggl_format);
 
     // Parse
 
@@ -74,6 +74,9 @@ class Formatter {
         const std::string input);
 
  private:
+    static std::string togglTimeOfDayToPocoFormat(
+        const std::string toggl_format);
+
     static void take(
         const std::string delimiter,
         double &value,

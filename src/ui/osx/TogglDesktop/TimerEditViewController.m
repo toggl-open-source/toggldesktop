@@ -414,7 +414,7 @@ NSString *kInactiveTimerColor = @"#999999";
 		return;
 	}
 
-	char *str = toggl_format_duration_in_seconds_hhmmss(self.time_entry.duration_in_seconds);
+	char *str = toggl_format_tracking_time_duration(self.time_entry.duration_in_seconds);
 	NSString *newValue = [NSString stringWithUTF8String:str];
 	free(str);
 

@@ -900,7 +900,7 @@ const NSString *appName = @"osx_native_app";
 	{
 		return;
 	}
-	char *str = toggl_format_duration_in_seconds_hhmm(
+	char *str = toggl_format_tracked_time_duration(
 			self.lastKnownRunningTimeEntry.duration_in_seconds);
 	NSString *statusStr = @" ";
 	statusStr = [statusStr stringByAppendingString:[NSString stringWithUTF8String:str]];
