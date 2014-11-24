@@ -272,11 +272,11 @@ NSString *kInactiveTimerColor = @"#999999";
 		{
 			char *guid = toggl_start(ctx,
 									 [self.descriptionComboBox.stringValue UTF8String],
-                                     "0",
+									 "0",
 									 self.time_entry.TaskID,
 									 self.time_entry.ProjectID);
-            [self clear];
-            self.time_entry = [[TimeEntryViewItem alloc] init];
+			[self clear];
+			self.time_entry = [[TimeEntryViewItem alloc] init];
 			NSString *GUID = [NSString stringWithUTF8String:guid];
 			free(guid);
 
