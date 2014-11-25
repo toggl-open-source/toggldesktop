@@ -6,6 +6,7 @@
 #include <vector>
 #include <set>
 #include <string>
+#include <map>
 
 #include "./workspace.h"
 #include "./client.h"
@@ -106,10 +107,17 @@ class RelatedData {
 
     void taskAutocompleteItems(
         std::set<std::string> *unique_names,
+        std::map<Poco::UInt64, std::string> *ws_names,
         std::vector<AutocompleteItem> *list);
 
     void projectAutocompleteItems(
         std::set<std::string> *unique_names,
+        std::map<Poco::UInt64, std::string> *ws_names,
+        std::vector<AutocompleteItem> *list);
+
+    void workspaceAutocompleteItems(
+        std::set<std::string> *unique_names,
+        std::map<Poco::UInt64, std::string> *ws_names,
         std::vector<AutocompleteItem> *list);
 };
 

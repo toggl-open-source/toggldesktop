@@ -96,6 +96,7 @@ void RelatedData::timeEntryAutocompleteItems(
 // Task. Project. Client
 void RelatedData::taskAutocompleteItems(
     std::set<std::string> *unique_names,
+    std::map<Poco::UInt64, std::string> *ws_names,
     std::vector<AutocompleteItem> *list) {
 
     poco_check_ptr(list);
@@ -154,6 +155,9 @@ void RelatedData::taskAutocompleteItems(
             autocomplete_item.ProjectColor = p->ColorCode();
             autocomplete_item.ProjectID = p->ID();
         }
+        if (ws_names) {
+            autocomplete_item.WorkspaceName = (*ws_names)[t->WID()];
+        }
         autocomplete_item.Type = kAutocompleteItemTask;
         list->push_back(autocomplete_item);
     }
@@ -163,6 +167,7 @@ void RelatedData::taskAutocompleteItems(
 // Project. Client
 void RelatedData::projectAutocompleteItems(
     std::set<std::string> *unique_names,
+    std::map<Poco::UInt64, std::string> *ws_names,
     std::vector<AutocompleteItem> *list) {
 
     poco_check_ptr(list);
@@ -203,6 +208,9 @@ void RelatedData::projectAutocompleteItems(
         autocomplete_item.ClientLabel = client_label;
         autocomplete_item.ProjectID = p->ID();
         autocomplete_item.ProjectColor = p->ColorCode();
+        if (ws_names) {
+            autocomplete_item.WorkspaceName = (*ws_names)[p->WID()];
+        }
         autocomplete_item.Type = kAutocompleteItemProject;
         list->push_back(autocomplete_item);
     }
@@ -211,76 +219,46 @@ void RelatedData::projectAutocompleteItems(
 std::vector<AutocompleteItem> RelatedData::AutocompleteItems(
     const bool including_time_entries) {
     std::vector<AutocompleteItem> result;
-
     std::set<std::string> unique_names;
     if (including_time_entries) {
         timeEntryAutocompleteItems(&unique_names, &result);
     }
-    taskAutocompleteItems(&unique_names, &result);
-    projectAutocompleteItems(&unique_names, &result);
-
+    taskAutocompleteItems(&unique_names, 0, &result);
+    projectAutocompleteItems(&unique_names, 0, &result);
     std::sort(result.begin(), result.end(), CompareAutocompleteItems);
     return result;
 }
 
 std::vector<AutocompleteItem> RelatedData::StructuredAutocompleteItems() {
     std::vector<AutocompleteItem> result;
-
+    std::set<std::string> unique_names;
     std::map<Poco::UInt64, std::string> ws_names;
+    workspaceAutocompleteItems(&unique_names, &ws_names, &result);
+    projectAutocompleteItems(&unique_names, &ws_names, &result);
+    taskAutocompleteItems(&unique_names, &ws_names, &result);
+    std::sort(result.begin(), result.end(), CompareStructuredAutocompleteItems);
+    return result;
+}
+
+void RelatedData::workspaceAutocompleteItems(
+    std::set<std::string> *unique_names,
+    std::map<Poco::UInt64, std::string> *ws_names,
+    std::vector<AutocompleteItem> *list) {
+
     for (std::vector<Workspace *>::const_iterator it =
         Workspaces.begin();
             it != Workspaces.end(); it++) {
         Workspace *ws = *it;
 
         std::string ws_name = Poco::UTF8::toUpper(ws->Name());
-        ws_names[ws->ID()] = ws_name;
+        (*ws_names)[ws->ID()] = ws_name;
 
         AutocompleteItem autocomplete_item;
         autocomplete_item.Text = ws_name;
         autocomplete_item.WorkspaceName = ws_name;
         autocomplete_item.Type = kAutocompleteItemWorkspace;
-        result.push_back(autocomplete_item);
+        list->push_back(autocomplete_item);
     }
-
-    for (std::vector<Project *>::const_iterator it =
-        Projects.begin();
-            it != Projects.end(); it++) {
-        Project *p = *it;
-
-        if (!p->Active()) {
-            continue;
-        }
-
-        Client *c = 0;
-        if (p->CID()) {
-            c = ClientByID(p->CID());
-        }
-
-        std::string text = Formatter::JoinTaskName(0, p, c);
-        if (text.empty()) {
-            continue;
-        }
-
-        std::string client_label("");
-        if (c) {
-            client_label = c->Name();
-        }
-
-        AutocompleteItem autocomplete_item;
-        autocomplete_item.Text = text;
-        autocomplete_item.ProjectAndTaskLabel = text;
-        autocomplete_item.ProjectLabel = p->Name();
-        autocomplete_item.ClientLabel = client_label;
-        autocomplete_item.ProjectID = p->ID();
-        autocomplete_item.ProjectColor = p->ColorCode();
-        autocomplete_item.WorkspaceName = ws_names[p->WID()];
-        autocomplete_item.Type = kAutocompleteItemProject;
-        result.push_back(autocomplete_item);
-    }
-
-    std::sort(result.begin(), result.end(), CompareStructuredAutocompleteItems);
-
-    return result;
 }
 
 }   // namespace toggl
