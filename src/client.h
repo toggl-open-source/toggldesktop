@@ -44,10 +44,14 @@ class Client : public BaseModel {
     void LoadFromJSON(Json::Value value);
     Json::Value SaveToJSON() const;
 
+    bool ResolveError(const toggl::error);
+
  private:
     Poco::UInt64 wid_;
     std::string name_;
     bool dirty_;
+
+    static bool nameHasAlreadyBeenTaken(const error err);
 };
 
 }  // namespace toggl
