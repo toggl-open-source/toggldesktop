@@ -694,7 +694,7 @@ error Database::loadProjects(
     try {
         Poco::Data::Statement select(*session_);
         select << "SELECT local_id, id, uid, name, guid, wid, color, cid, "
-               "active, billable "
+               "active, billable, client_guid "
                "FROM projects "
                "WHERE uid = :uid "
                "ORDER BY name",
@@ -719,6 +719,7 @@ error Database::loadProjects(
                 model->SetCID(rs[7].convert<Poco::UInt64>());
                 model->SetActive(rs[8].convert<bool>());
                 model->SetBillable(rs[9].convert<bool>());
+                model->SetClientGUID(rs[10].convert<std::string>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -1402,7 +1403,8 @@ error Database::saveModel(
                     *session_ << "update projects set "
                               "id = :id, uid = :uid, name = :name, "
                               "wid = :wid, color = :color, cid = :cid, "
-                              "active = :active, billable = :billable "
+                              "active = :active, billable = :billable, "
+                              "client_guid = :client_guid "
                               "where local_id = :local_id",
                               Poco::Data::use(model->ID()),
                               Poco::Data::use(model->UID()),
@@ -1412,6 +1414,7 @@ error Database::saveModel(
                               Poco::Data::use(model->CID()),
                               Poco::Data::use(model->Active()),
                               Poco::Data::use(model->Billable()),
+                              Poco::Data::use(model->ClientGUID()),
                               Poco::Data::use(model->LocalID()),
                               Poco::Data::now;
                 } else {
@@ -1419,7 +1422,8 @@ error Database::saveModel(
                               "id = :id, uid = :uid, name = :name, "
                               "guid = :guid,"
                               "wid = :wid, color = :color, cid = :cid, "
-                              "active = :active, billable = :billable "
+                              "active = :active, billable = :billable, "
+                              "client_guid = :client_guid "
                               "where local_id = :local_id",
                               Poco::Data::use(model->ID()),
                               Poco::Data::use(model->UID()),
@@ -1430,6 +1434,7 @@ error Database::saveModel(
                               Poco::Data::use(model->CID()),
                               Poco::Data::use(model->Active()),
                               Poco::Data::use(model->Billable()),
+                              Poco::Data::use(model->ClientGUID()),
                               Poco::Data::use(model->LocalID()),
                               Poco::Data::now;
                 }
@@ -1438,7 +1443,8 @@ error Database::saveModel(
                     *session_ << "update projects set "
                               "uid = :uid, name = :name, "
                               "wid = :wid, color = :color, cid = :cid, "
-                              "active = :active, billable = :billable "
+                              "active = :active, billable = :billable, "
+                              "client_guid = :client_guid "
                               "where local_id = :local_id",
                               Poco::Data::use(model->UID()),
                               Poco::Data::use(model->Name()),
@@ -1447,13 +1453,15 @@ error Database::saveModel(
                               Poco::Data::use(model->CID()),
                               Poco::Data::use(model->Active()),
                               Poco::Data::use(model->Billable()),
+                              Poco::Data::use(model->ClientGUID()),
                               Poco::Data::use(model->LocalID()),
                               Poco::Data::now;
                 } else {
                     *session_ << "update projects set "
                               "uid = :uid, name = :name, guid = :guid,"
                               "wid = :wid, color = :color, cid = :cid, "
-                              "active = :active, billable = :billable "
+                              "active = :active, billable = :billable, "
+                              "client_guid = :client_guid "
                               "where local_id = :local_id",
                               Poco::Data::use(model->UID()),
                               Poco::Data::use(model->Name()),
@@ -1463,6 +1471,7 @@ error Database::saveModel(
                               Poco::Data::use(model->CID()),
                               Poco::Data::use(model->Active()),
                               Poco::Data::use(model->Billable()),
+                              Poco::Data::use(model->ClientGUID()),
                               Poco::Data::use(model->LocalID()),
                               Poco::Data::now;
                 }
@@ -1484,10 +1493,10 @@ error Database::saveModel(
                     *session_ <<
                               "insert into projects("
                               "id, uid, name, wid, color, cid, active, "
-                              "is_private, billable"
+                              "is_private, billable, client_guid"
                               ") values("
                               ":id, :uid, :name, :wid, :color, :cid, :active, "
-                              ":is_private, :billable"
+                              ":is_private, :billable, :client_guid"
                               ")",
                               Poco::Data::use(model->ID()),
                               Poco::Data::use(model->UID()),
@@ -1498,16 +1507,18 @@ error Database::saveModel(
                               Poco::Data::use(model->Active()),
                               Poco::Data::use(model->IsPrivate()),
                               Poco::Data::use(model->Billable()),
+                              Poco::Data::use(model->ClientGUID()),
                               Poco::Data::now;
                 } else {
                     *session_ <<
                               "insert into projects("
-                              "id, uid, name, guid, wid, color, cid, active, "
-                              "is_private, billable"
+                              "id, uid, name, guid, wid, color, cid, "
+                              "active, is_private, "
+                              "billable, client_guid"
                               ") values("
                               ":id, :uid, :name, :guid, :wid, :color, :cid, "
                               ":active, :is_private, "
-                              ":billable"
+                              ":billable, :client_guid"
                               ")",
                               Poco::Data::use(model->ID()),
                               Poco::Data::use(model->UID()),
@@ -1519,6 +1530,7 @@ error Database::saveModel(
                               Poco::Data::use(model->Active()),
                               Poco::Data::use(model->IsPrivate()),
                               Poco::Data::use(model->Billable()),
+                              Poco::Data::use(model->ClientGUID()),
                               Poco::Data::now;
                 }
             } else {
@@ -1526,10 +1538,10 @@ error Database::saveModel(
                     *session_ <<
                               "insert into projects("
                               "uid, name, wid, color, cid, active, "
-                              "is_private, billable"
+                              "is_private, billable, client_guid"
                               ") values("
                               ":uid, :name, :wid, :color, :cid, :active, "
-                              ":is_private, :billable"
+                              ":is_private, :billable, :client_guid"
                               ")",
                               Poco::Data::use(model->UID()),
                               Poco::Data::use(model->Name()),
@@ -1539,15 +1551,18 @@ error Database::saveModel(
                               Poco::Data::use(model->Active()),
                               Poco::Data::use(model->IsPrivate()),
                               Poco::Data::use(model->Billable()),
+                              Poco::Data::use(model->ClientGUID()),
                               Poco::Data::now;
                 } else {
                     *session_ <<
                               "insert into projects("
                               "uid, name, guid, wid, color, cid, "
-                              "active, is_private, billable"
+                              "active, is_private, billable, "
+                              "client_guid "
                               ") values("
                               ":uid, :name, :guid, :wid, :color, :cid, "
-                              ":active, :is_private, :billable"
+                              ":active, :is_private, :billable, "
+                              ":client_guid "
                               ")",
                               Poco::Data::use(model->UID()),
                               Poco::Data::use(model->Name()),
@@ -1558,6 +1573,7 @@ error Database::saveModel(
                               Poco::Data::use(model->Active()),
                               Poco::Data::use(model->IsPrivate()),
                               Poco::Data::use(model->Billable()),
+                              Poco::Data::use(model->ClientGUID()),
                               Poco::Data::now;
                 }
             }
