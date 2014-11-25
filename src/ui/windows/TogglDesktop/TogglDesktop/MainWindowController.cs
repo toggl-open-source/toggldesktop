@@ -664,11 +664,15 @@ namespace TogglDesktop
             if (remainOnTop && !topDisabled)
             {
                 SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-                editForm.setWindowPos(HWND_TOPMOST);
+                if (editForm != null)
+                {
+                    editForm.setWindowPos(HWND_TOPMOST);
+                }
+                return;
             }
-            else
+            SetWindowPos(Handle, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+            if (editForm != null)
             {
-                SetWindowPos(Handle, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
                 editForm.setWindowPos(HWND_NOTOPMOST);
             }
         }
