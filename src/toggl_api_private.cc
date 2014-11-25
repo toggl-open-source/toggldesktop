@@ -175,7 +175,8 @@ TogglTimeEntryView *time_entry_view_item_init(
     view_item->TID = static_cast<unsigned int>(te->TID());
     view_item->PID = static_cast<unsigned int>(te->PID());
     if (time_in_timer_format) {
-        view_item->Duration = toggl_format_tracking_time_duration(te->DurationInSeconds());
+        view_item->Duration =
+            toggl_format_tracking_time_duration(te->DurationInSeconds());
     } else {
         view_item->Duration = copy_string(toggl::Formatter::FormatDuration(
             te->DurationInSeconds(), toggl::Formatter::DurationFormat));

@@ -41,7 +41,7 @@ class Formatter {
     static std::string FormatDuration(
         const Poco::Int64 value,
         const std::string format_name,
-        const bool with_seconds=true);
+        const bool with_seconds = true);
 
     static std::string FormatDurationForDateHeader(
         const Poco::Int64 value);
