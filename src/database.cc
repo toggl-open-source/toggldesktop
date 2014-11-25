@@ -2221,6 +2221,13 @@ error Database::initialize_tables() {
         return err;
     }
 
+    err = migrate("projects.client_guid",
+                  "ALTER TABLE projects "
+                  "ADD COLUMN client_guid VARCHAR;");
+    if (err != noError) {
+        return err;
+    }
+
     err = migrate("projects.id",
                   "CREATE UNIQUE INDEX id_projects_id ON projects (uid, id);");
     if (err != noError) {
