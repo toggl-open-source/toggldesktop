@@ -25,7 +25,7 @@ bool BaseModel::NeedsPOST() const {
 
 bool BaseModel::NeedsPUT() const {
     // Model has been updated and is not deleted, needs a PUT
-    return ui_modified_at_ > 0 && !(deleted_at_ > 0);
+    return id_ && ui_modified_at_ > 0 && !(deleted_at_ > 0);
 }
 
 bool BaseModel::NeedsDELETE() const {
