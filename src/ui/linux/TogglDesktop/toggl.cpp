@@ -354,7 +354,7 @@ bool TogglApi::stop() {
 
 const QString TogglApi::formatDurationInSecondsHHMMSS(
     const int64_t duration) {
-    char *buf = toggl_format_duration_in_seconds_hhmmss(duration);
+    char *buf = toggl_format_tracking_time_duration(duration);
     QString res = QString(buf);
     free(buf);
     return res;
