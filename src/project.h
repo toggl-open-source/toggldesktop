@@ -23,7 +23,8 @@ class Project : public BaseModel {
     , color_("")
     , active_(false)
     , private_(false)
-    , billable_(false) {}
+    , billable_(false)
+    , client_guid_("") {}
 
     Poco::UInt64 WID() const {
         return wid_;
@@ -34,6 +35,11 @@ class Project : public BaseModel {
         return cid_;
     }
     void SetCID(const Poco::UInt64 value);
+
+    std::string ClientGUID() const {
+        return client_guid_;
+    }
+    void SetClientGUID(const std::string);
 
     std::string Name() const {
         return name_;
@@ -89,6 +95,7 @@ class Project : public BaseModel {
     bool active_;
     bool private_;
     bool billable_;
+    std::string client_guid_;
 };
 
 }  // namespace toggl

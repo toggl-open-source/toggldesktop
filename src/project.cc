@@ -33,8 +33,16 @@ std::string Project::String() const {
         << " active=" << active_
         << " public=" << private_
         << " color=" << color_
-        << " billable=" << billable_;
+        << " billable=" << billable_
+        << " client_guid=" << client_guid_;
     return ss.str();
+}
+
+void Project::SetClientGUID(const std::string value) {
+    if (client_guid_ != value) {
+        client_guid_ = value;
+        SetDirty();
+    }
 }
 
 void Project::SetActive(const bool value) {
