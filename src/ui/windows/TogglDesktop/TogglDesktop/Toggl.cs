@@ -950,12 +950,12 @@ namespace TogglDesktop
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.LPWStr)]
-        private static extern string toggl_format_duration_in_seconds_hhmmss(
+        private static extern string toggl_format_tracking_time_duration(
             Int64 duration_in_seconds);
 
         public static string FormatDurationInSecondsHHMMSS(Int64 duration_in_seconds)
         {
-            return toggl_format_duration_in_seconds_hhmmss(duration_in_seconds);
+            return toggl_format_tracking_time_duration(duration_in_seconds);
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
