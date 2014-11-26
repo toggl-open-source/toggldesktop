@@ -36,6 +36,8 @@
 @property BOOL endTimeChanged;
 @property NSString *descriptionComboboxPreviousStringValue;
 @property NSString *projectSelectPreviousStringValue;
+@property NSMutableAttributedString *clientColorTitle;
+@property NSMutableAttributedString *clientColorTitleCancel;
 @end
 
 @implementation TimeEntryEditViewController
@@ -111,7 +113,31 @@ extern void *ctx;
 					   value:color
 					   range:titleRange];
 
+	self.clientColorTitle =
+		[[NSMutableAttributedString alloc] initWithAttributedString:[self.addClientButton attributedTitle]];
+
+	NSRange clientTitleRange = NSMakeRange(0, [self.clientColorTitle length]);
+
+	[self.clientColorTitle addAttribute:NSForegroundColorAttributeName
+								  value:color
+								  range:clientTitleRange];
+
+	self.clientColorTitleCancel =
+		[[NSMutableAttributedString alloc] initWithString:@"cancel"];
+
+	NSRange clientTitleRangeCancel = NSMakeRange(0, [self.clientColorTitleCancel length]);
+
+	[self.clientColorTitleCancel addAttribute:NSForegroundColorAttributeName
+										value:color
+										range:clientTitleRangeCancel];
+
+	NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+	[paragraphStyle setAlignment:kCTTextAlignmentRight];
+
+	[self.clientColorTitleCancel addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:clientTitleRangeCancel];
+
 	[self.addProjectButton setAttributedTitle:colorTitle];
+	[self.addClientButton setAttributedTitle:self.clientColorTitle];
 	[self.resizeHandle setCursor:[NSCursor resizeLeftRightCursor]];
 }
 
@@ -153,6 +179,7 @@ extern void *ctx;
 
 	[self removeCustomConstraints];
 	[self.descriptionCombobox setNextKeyView:self.projectSelect];
+	[self toggleAddClient:YES];
 }
 
 - (IBAction)addProjectButtonClicked:(id)sender
@@ -169,7 +196,7 @@ extern void *ctx;
 																   toItem:nil
 																attribute:NSLayoutAttributeNotAnAttribute
 															   multiplier:1
-																 constant:129];
+																 constant:139];
 		[self.view addConstraint:self.addProjectBoxHeight];
 	}
 
@@ -179,13 +206,13 @@ extern void *ctx;
 	if (self.workspaceList.count > 1)
 	{
 		singleWorkspace = NO;
-		self.addProjectBoxHeight.constant = 129;
-		addedHeight = [NSNumber numberWithInt:105];
+		self.addProjectBoxHeight.constant = 139;
+		addedHeight = [NSNumber numberWithInt:115];
 	}
 	else
 	{
-		self.addProjectBoxHeight.constant = 96;
-		addedHeight = [NSNumber numberWithInt:70];
+		self.addProjectBoxHeight.constant = 106;
+		addedHeight = [NSNumber numberWithInt:80];
 	}
 	[self.workspaceLabel setHidden:singleWorkspace];
 	[self.workspaceSelect setHidden:singleWorkspace];
@@ -947,6 +974,55 @@ extern void *ctx;
 
 	NSLog(@"clientSelectChanged");
 	// Changing client does not change anything in new project view.
+}
+
+- (IBAction)addClientButtonClicked:(id)sender
+{
+	[self toggleAddClient:[self.addClientButton.title isEqualToString:@"cancel"]];
+
+
+	NSLog(@"addClientButtonClicked");
+}
+
+- (IBAction)saveAddClientButtonClicked:(id)sender;
+{
+	NSString *clientName = self.clientNameTextField.stringValue;
+	if (!clientName || !clientName.length)
+	{
+		return;
+	}
+
+	uint64_t workspaceID = [self selectedWorkspaceID];
+	if (!workspaceID)
+	{
+		[self.workspaceSelect becomeFirstResponder];
+		return;
+	}
+
+	_Bool clientAdded = toggl_create_client(ctx,
+											workspaceID,
+											[clientName UTF8String]);
+	if (clientAdded)
+	{
+		[self toggleAddClient:YES];
+		self.clientSelect.stringValue = clientName;
+	}
+}
+
+- (void)toggleAddClient:(BOOL)showAddClient
+{
+	if (showAddClient)
+	{
+		[self.addClientButton setAttributedTitle:self.clientColorTitle];
+		[self.clientNameTextField setStringValue:@""];
+	}
+	else
+	{
+		[self.addClientButton setAttributedTitle:self.clientColorTitleCancel];
+	}
+	[self.clientNameTextField setHidden:showAddClient];
+	[self.saveNewClientButton setHidden:showAddClient];
+	[self.clientSelect setHidden:!showAddClient];
 }
 
 @end

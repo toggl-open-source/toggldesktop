@@ -55,7 +55,12 @@
 @property IBOutlet NSCustomComboBox *clientSelect;
 - (IBAction)workspaceSelectChanged:(id)sender;
 - (IBAction)clientSelectChanged:(id)sender;
+- (IBAction)addClientButtonClicked:(id)sender;
+- (IBAction)saveAddClientButtonClicked:(id)sender;
 @property (strong) IBOutlet NSTextField *dateTimeTextField;
 @property (strong) IBOutlet NSBox *timeEditBox;
+@property (strong) IBOutlet NSButton *addClientButton;
+@property (strong) IBOutlet NSTextField *clientNameTextField;
+@property (strong) IBOutlet NSButton *saveNewClientButton;
 
 @end

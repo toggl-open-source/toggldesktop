@@ -7,10 +7,13 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimeEntryEditViewController">
             <connections>
+                <outlet property="addClientButton" destination="sRN-Rb-j5x" id="P58-9L-Te0"/>
                 <outlet property="addProjectBox" destination="fz4-yg-eQZ" id="KJH-d8-GtM"/>
                 <outlet property="addProjectButton" destination="mjR-fr-Qy0" id="2fN-So-QBH"/>
+                <outlet property="as" destination="sRN-Rb-j5x" id="kjf-jg-9jN"/>
                 <outlet property="backButton" destination="zwE-pW-vQN" id="7gS-kR-H67"/>
                 <outlet property="billableCheckbox" destination="sSX-ad-7XC" id="cVv-CO-AcK"/>
+                <outlet property="clientNameTextField" destination="TGq-XU-G0v" id="jY6-Lx-mvf"/>
                 <outlet property="clientSelect" destination="Kdc-c6-b4n" id="6Uc-1n-CV7"/>
                 <outlet property="dateBox" destination="r22-gF-YfG" id="REl-8J-8Pi"/>
                 <outlet property="deleteButton" destination="Wpz-9G-IOZ" id="opY-mR-5jK"/>
@@ -24,6 +27,7 @@
                 <outlet property="projectSelect" destination="mxY-tv-UzX" id="eym-qD-quf"/>
                 <outlet property="projectSelectBox" destination="6Sh-4d-bKb" id="gbr-B6-ncX"/>
                 <outlet property="resizeHandle" destination="oCY-bD-X7j" id="jvV-pq-l2V"/>
+                <outlet property="saveNewClientButton" destination="z0P-ED-dJk" id="JI2-N7-OMA"/>
                 <outlet property="startDate" destination="xTj-21-Dv1" id="E4C-ml-uuJ"/>
                 <outlet property="startEndTimeBox" destination="TSC-79-BuD" id="6rV-Ia-R9i"/>
                 <outlet property="startTime" destination="hWW-Ak-Wbd" id="X0F-Hu-KWt"/>
@@ -205,17 +209,61 @@
                                                 <outlet property="nextKeyView" destination="EMR-ul-vEb" id="FcR-hA-6P5"/>
                                             </connections>
                                         </comboBox>
+                                        <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TGq-XU-G0v">
+                                            <rect key="frame" x="114" y="3" width="144" height="25"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="24" id="5eD-cK-W31"/>
+                                            </constraints>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="AMw-dT-8wQ">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <outlet property="nextKeyView" destination="Q41-iI-nk2" id="Q1K-Sb-M7l"/>
+                                            </connections>
+                                        </textField>
+                                        <button hidden="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z0P-ED-dJk">
+                                            <rect key="frame" x="280" y="3" width="60" height="32"/>
+                                            <buttonCell key="cell" type="bevel" title="Add" bezelStyle="regularSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Act-2y-tZr">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="saveAddClientButtonClicked:" target="-2" id="juw-sr-0Vh"/>
+                                            </connections>
+                                        </button>
+                                        <button toolTip="Add new project" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sRN-Rb-j5x">
+                                            <rect key="frame" x="243" y="2" width="90" height="14"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="14" id="h1a-Gw-Hiv"/>
+                                                <constraint firstAttribute="width" constant="90" id="r6N-J2-DCb"/>
+                                            </constraints>
+                                            <buttonCell key="cell" type="smallSquare" title="Add new client" bezelStyle="smallSquare" imagePosition="overlaps" alignment="right" controlSize="small" state="on" userInterfaceLayoutDirection="rightToLeft" imageScaling="proportionallyDown" inset="2" id="ffk-sS-pCk">
+                                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="smallSystem"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="addClientButtonClicked:" target="-2" id="p0v-Fn-2Bi"/>
+                                                <outlet property="nextKeyView" destination="EMR-ul-vEb" id="kup-eJ-Ku9"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                 </view>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="qlN-P5-EqC" secondAttribute="bottom" constant="10" id="0T9-0Z-ZTB"/>
+                                    <constraint firstAttribute="bottom" secondItem="qlN-P5-EqC" secondAttribute="bottom" constant="20" id="0T9-0Z-ZTB"/>
+                                    <constraint firstItem="TGq-XU-G0v" firstAttribute="leading" secondItem="qlN-P5-EqC" secondAttribute="trailing" constant="6" id="2TH-uP-oCT"/>
                                     <constraint firstAttribute="trailing" secondItem="Kdc-c6-b4n" secondAttribute="trailing" constant="16" id="3CY-nz-Z4S"/>
+                                    <constraint firstAttribute="bottom" secondItem="z0P-ED-dJk" secondAttribute="bottom" constant="18" id="3U9-xo-Lok"/>
                                     <constraint firstItem="2Pz-WE-b3h" firstAttribute="leading" secondItem="4nJ-ND-RNO" secondAttribute="trailing" constant="6" id="3qJ-WZ-I91"/>
+                                    <constraint firstAttribute="trailing" secondItem="TGq-XU-G0v" secondAttribute="trailing" constant="66" id="5mf-Wx-v6G"/>
                                     <constraint firstItem="IVd-y9-OXp" firstAttribute="leading" secondItem="fz4-yg-eQZ" secondAttribute="leading" constant="15" id="7ZE-zh-bfr"/>
+                                    <constraint firstAttribute="bottom" secondItem="sRN-Rb-j5x" secondAttribute="bottom" constant="1" id="7hW-rI-tFL"/>
                                     <constraint firstItem="b5J-U3-cc3" firstAttribute="leading" secondItem="fz4-yg-eQZ" secondAttribute="leading" constant="108" id="VPm-8L-c1Z"/>
                                     <constraint firstItem="qlN-P5-EqC" firstAttribute="leading" secondItem="fz4-yg-eQZ" secondAttribute="leading" constant="15" id="XqX-pg-7H3"/>
-                                    <constraint firstAttribute="bottom" secondItem="Kdc-c6-b4n" secondAttribute="bottom" constant="8" id="YQX-i8-qQW"/>
+                                    <constraint firstAttribute="bottom" secondItem="Kdc-c6-b4n" secondAttribute="bottom" constant="18" id="YQX-i8-qQW"/>
                                     <constraint firstAttribute="trailing" secondItem="2Pz-WE-b3h" secondAttribute="trailing" constant="16" id="ZLU-1I-gYf"/>
+                                    <constraint firstAttribute="trailing" secondItem="z0P-ED-dJk" secondAttribute="trailing" constant="16" id="ZNH-dy-Gnv"/>
                                     <constraint firstItem="Kdc-c6-b4n" firstAttribute="leading" secondItem="qlN-P5-EqC" secondAttribute="trailing" constant="6" id="cac-OP-GiD"/>
                                     <constraint firstItem="Kdc-c6-b4n" firstAttribute="top" secondItem="Q41-iI-nk2" secondAttribute="bottom" constant="13" id="ct7-Ea-YIq"/>
                                     <constraint firstItem="Q41-iI-nk2" firstAttribute="leading" secondItem="IVd-y9-OXp" secondAttribute="trailing" constant="6" id="h6G-vu-vX3"/>
@@ -224,6 +272,8 @@
                                     <constraint firstItem="b5J-U3-cc3" firstAttribute="top" secondItem="fz4-yg-eQZ" secondAttribute="top" constant="42" id="rdd-c3-q9F"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="b5J-U3-cc3" secondAttribute="trailing" constant="16" id="tad-S8-4Kd"/>
                                     <constraint firstAttribute="trailing" secondItem="Q41-iI-nk2" secondAttribute="trailing" constant="16" id="u1n-M8-GpJ"/>
+                                    <constraint firstAttribute="bottom" secondItem="TGq-XU-G0v" secondAttribute="bottom" constant="18" id="ym7-ed-EHJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="sRN-Rb-j5x" secondAttribute="trailing" constant="14" id="ysQ-Ds-lkS"/>
                                 </constraints>
                                 <color key="borderColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                                 <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
