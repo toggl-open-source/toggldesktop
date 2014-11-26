@@ -19,6 +19,7 @@ namespace TogglDesktop
         private List<Toggl.AutocompleteItem> autoCompleteProjectList;
         private Boolean overTags = false;
         private List<Toggl.Model> tagsList;
+        private string newestClient = "";
 
         public TimeEntryEditViewController()
         {
@@ -335,6 +336,11 @@ namespace TogglDesktop
             foreach (Toggl.Model o in list)
             {
                 comboBoxClient.Items.Add(o);
+            }
+            if (this.newestClient.Length > 0)
+            {
+                comboBoxClient.Text = this.newestClient;
+                this.newestClient = "";
             }
         }
 
@@ -887,7 +893,8 @@ namespace TogglDesktop
 
         private void addClientButton_Click(object sender, EventArgs e)
         {
-            if(addClientTextBox.Text.Length == 0) {
+            if (addClientTextBox.Text.Length == 0)
+            {
                 addClientLinkLabel_Click(null, null);
                 return;
             }
@@ -903,7 +910,20 @@ namespace TogglDesktop
                 return;
             }
 
-            Toggl.AddClient(workspaceID, addClientTextBox.Text);
+            // Client with the same name already in list
+            if (comboBoxClient.FindStringExact(addClientTextBox.Text) != -1)
+            {
+                comboBoxClient.Text = addClientTextBox.Text;
+                addClientLinkLabel_Click(null, null);
+                return;
+            }
+
+            bool clientCreated = Toggl.AddClient(workspaceID, addClientTextBox.Text);
+            if (clientCreated)
+            {
+                comboBoxClient.Text = addClientTextBox.Text;
+                this.newestClient = addClientTextBox.Text;
+            }
             addClientLinkLabel_Click(null, null);
         }
     }
