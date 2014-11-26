@@ -876,6 +876,23 @@ namespace TogglDesktop
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
+        private static extern bool toggl_create_client(
+            IntPtr context,
+            UInt64 workspace_id,
+            [MarshalAs(UnmanagedType.LPWStr)]
+            string client_name);
+
+        public static bool AddClient(
+            UInt64 workspace_id,
+            string client_name)
+        {
+            return toggl_create_client(ctx,
+                workspace_id,
+                client_name);
+        }
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_set_update_channel(
             IntPtr context,
             [MarshalAs(UnmanagedType.LPWStr)]

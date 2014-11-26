@@ -64,6 +64,9 @@
             this.textBoxProjectName = new System.Windows.Forms.TextBox();
             this.labelClient = new System.Windows.Forms.Label();
             this.labelProjectName = new System.Windows.Forms.Label();
+            this.addClientTextBox = new System.Windows.Forms.TextBox();
+            this.addClientLinkLabel = new System.Windows.Forms.LinkLabel();
+            this.addClientButton = new System.Windows.Forms.Button();
             this.descriptionButton = new System.Windows.Forms.Button();
             this.projectButton = new System.Windows.Forms.Button();
             this.comboBoxProject = new TogglDesktop.CustomComboBox();
@@ -411,9 +414,12 @@
             this.panelAddProject.Controls.Add(this.textBoxProjectName);
             this.panelAddProject.Controls.Add(this.labelClient);
             this.panelAddProject.Controls.Add(this.labelProjectName);
+            this.panelAddProject.Controls.Add(this.addClientTextBox);
+            this.panelAddProject.Controls.Add(this.addClientLinkLabel);
+            this.panelAddProject.Controls.Add(this.addClientButton);
             this.panelAddProject.Location = new System.Drawing.Point(0, 558);
             this.panelAddProject.Name = "panelAddProject";
-            this.panelAddProject.Size = new System.Drawing.Size(313, 122);
+            this.panelAddProject.Size = new System.Drawing.Size(313, 142);
             this.panelAddProject.TabIndex = 1;
             this.panelAddProject.Visible = false;
             // 
@@ -449,7 +455,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxClient.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.comboBoxClient.FormattingEnabled = true;
-            this.comboBoxClient.Location = new System.Drawing.Point(109, 91);
+            this.comboBoxClient.Location = new System.Drawing.Point(109, 100);
             this.comboBoxClient.Name = "comboBoxClient";
             this.comboBoxClient.Size = new System.Drawing.Size(188, 23);
             this.comboBoxClient.TabIndex = 5;
@@ -485,7 +491,7 @@
             this.labelClient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelClient.AutoSize = true;
             this.labelClient.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.labelClient.Location = new System.Drawing.Point(14, 94);
+            this.labelClient.Location = new System.Drawing.Point(14, 104);
             this.labelClient.Name = "labelClient";
             this.labelClient.Size = new System.Drawing.Size(41, 15);
             this.labelClient.TabIndex = 1;
@@ -500,6 +506,51 @@
             this.labelProjectName.Size = new System.Drawing.Size(80, 15);
             this.labelProjectName.TabIndex = 0;
             this.labelProjectName.Text = "Project name:";
+            // 
+            // addClientTextBox
+            // 
+            this.addClientTextBox.AccessibleName = "Add client field";
+            this.addClientTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.addClientTextBox.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
+            this.addClientTextBox.Location = new System.Drawing.Point(109, 100);
+            this.addClientTextBox.Name = "addClientTextBox";
+            this.addClientTextBox.Size = new System.Drawing.Size(154, 24);
+            this.addClientTextBox.TabIndex = 6;
+            this.addClientTextBox.Visible = false;
+            // 
+            // addClientLinkLabel
+            // 
+            this.addClientLinkLabel.AccessibleDescription = "A button that displays additional fields for adding a new project";
+            this.addClientLinkLabel.AccessibleName = "Add new project";
+            this.addClientLinkLabel.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.addClientLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.addClientLinkLabel.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
+            this.addClientLinkLabel.Location = new System.Drawing.Point(214, 124);
+            this.addClientLinkLabel.Name = "addClientLinkLabel";
+            this.addClientLinkLabel.Size = new System.Drawing.Size(85, 15);
+            this.addClientLinkLabel.TabIndex = 19;
+            this.addClientLinkLabel.TabStop = true;
+            this.addClientLinkLabel.Text = "Add new client";
+            this.addClientLinkLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.addClientLinkLabel.Click += new System.EventHandler(this.addClientLinkLabel_Click);
+            // 
+            // addClientButton
+            // 
+            this.addClientButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.addClientButton.BackColor = System.Drawing.Color.Transparent;
+            this.addClientButton.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.addClientButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.addClientButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.addClientButton.Location = new System.Drawing.Point(262, 88);
+            this.addClientButton.Name = "addClientButton";
+            this.addClientButton.Size = new System.Drawing.Size(35, 24);
+            this.addClientButton.TabIndex = 20;
+            this.addClientButton.TabStop = false;
+            this.addClientButton.Text = "Add";
+            this.addClientButton.UseVisualStyleBackColor = false;
+            this.addClientButton.Visible = false;
+            this.addClientButton.Click += new System.EventHandler(this.addClientButton_Click);
             // 
             // descriptionButton
             // 
@@ -644,5 +695,8 @@
         private System.Windows.Forms.Button buttonDone;
         private System.Windows.Forms.TextBox tagTextBox;
         private System.Windows.Forms.Button addTagButton;
+        private System.Windows.Forms.TextBox addClientTextBox;
+        private System.Windows.Forms.LinkLabel addClientLinkLabel;
+        private System.Windows.Forms.Button addClientButton;
     }
 }

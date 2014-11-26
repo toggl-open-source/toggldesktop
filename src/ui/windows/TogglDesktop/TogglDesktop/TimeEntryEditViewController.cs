@@ -521,6 +521,7 @@ namespace TogglDesktop
                 comboBoxWorkspace.Visible = true;
                 boxHeight = panelDuration.Height * 4;
             }
+            boxHeight += 10;
             panelBottom.Top = panelAddProject.Top + boxHeight;
             panelBottom.Height = buttonsPanel.Top - panelBottom.Top;
             panelAddProject.Height = boxHeight;
@@ -863,6 +864,47 @@ namespace TogglDesktop
             {
                 addTagButton_Click(null, null);
             }
+        }
+
+        private void addClientLinkLabel_Click(object sender, EventArgs e)
+        {
+            bool showCombobox = (addClientLinkLabel.Text == "cancel");
+            comboBoxClient.Visible = showCombobox;
+            addClientTextBox.Visible = !showCombobox;
+            addClientButton.Visible = !showCombobox;
+            if (showCombobox)
+            {
+                comboBoxClient.Focus();
+                addClientLinkLabel.Text = "Add new client";
+                addClientTextBox.Text = "";
+            }
+            else
+            {
+                addClientLinkLabel.Text = "cancel";
+                addClientTextBox.Focus();
+            }            
+        }
+
+        private void addClientButton_Click(object sender, EventArgs e)
+        {
+            if(addClientTextBox.Text.Length == 0) {
+                addClientLinkLabel_Click(null, null);
+                return;
+            }
+
+            ulong workspaceID = ((Toggl.Model)comboBoxWorkspace.Items[0]).ID;
+            if (comboBoxWorkspace.Items.Count > 1)
+            {
+                workspaceID = selectedItemID(comboBoxWorkspace);
+            }
+            if (workspaceID == 0)
+            {
+                comboBoxWorkspace.Focus();
+                return;
+            }
+
+            Toggl.AddClient(workspaceID, addClientTextBox.Text);
+            addClientLinkLabel_Click(null, null);
         }
     }
 }
