@@ -837,6 +837,10 @@ namespace TogglDesktop
         private void addTagButton_Click(object sender, EventArgs e)
         {
             String word = tagTextBox.Text;
+            if (word.Length == 0)
+            {
+                return;
+            }
             tagTextBox.Text = "";
             tagTextBox_KeyUp(null, null);
             int index = checkedListBoxTags.Items.IndexOf(word);
